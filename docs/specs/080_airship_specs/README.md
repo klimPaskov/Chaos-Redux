@@ -2,25 +2,23 @@
 
 ## Use
 
-This package is installed at `docs/specs/080_airship_specs/`.
+Read the numbered specifications in order. For implementation, start with the coding prompt and its linked specialist prompts. The goal prompt is ready to copy as a `/goal` instruction and stays under 4,000 characters.
 
-Read the numbered specifications in order. For implementation, use the coding prompt and its linked specialist prompts. The separate goal prompt is ready to copy as a `/goal` instruction and stays within the planning skill's 3,500 to 4,000 character range.
-
-This is a detailed design proposal. New balance values, capacities, content situations, reward conditions, and the rare Flying City super-event are proposed expansions. The user's catalog entry, existing route, 121 two-day transitions, controller-based host rules, real deaths, immediate foreign-controller war, and named evolutions remain fixed.
+This is a rework design for the legacy `events/080_airship.txt` and is not implemented. The user's catalog entry, existing route, 121 two-day transitions, controller-based host rules, real deaths, immediate foreign-controller war, and named evolutions are fixed user requirements. Balance values, capacities, story situations, reward conditions, and the rare Flying City super-event are authored design, accepted within the original planning brief and revised by the 10 Oct 2026 spec audit under the user's planning-package brief. They are not playtested.
 
 ## Specifications
 
 | Part | File | Content |
 |---|---|---|
 | 1 | [Core voyage](080_airship_spec_part_1_core.md) | Identity, launch, route, timing, stops, diversions, phases, and endings |
-| 2 | [Condition and operations](080_airship_spec_part_2_condition_and_operations.md) | Condition, incident model, standing orders, service costs, missions, and AI |
-| 3 | [Passengers and hosts](080_airship_spec_part_3_passengers_and_hosts.md) | Population-backed manifest, 36 passenger situations, 24 host situations, and story continuity |
+| 2 | [Condition and operations](080_airship_spec_part_2_condition_and_operations.md) | Condition, incident model, risk band, standing orders, services, missions, and AI |
+| 3 | [Passengers and hosts](080_airship_spec_part_3_passengers_and_hosts.md) | Boarding-group manifest, deaths, 36 passenger situations, 24 host situations, and story continuity |
 | 4 | [War, crashes, and rescue](080_airship_spec_part_4_war_crashes_and_rescue.md) | Combat encounters, capture, casualty profiles, state damage, immediate war, fires, and rescue |
-| 5 | [Evolutions and experiments](080_airship_spec_part_5_evolutions_and_experiments.md) | Grand Tour, Experimental Flight, Flying City, six trial families, and exposure-based rewards |
-| 6 | [Rewards, Chaos, and achievements](080_airship_spec_part_6_rewards_chaos_and_achievements.md) | Success and failure benefits, host rewards, complete Chaos map, shared connections, and eight achievements |
+| 5 | [Evolutions and experiments](080_airship_spec_part_5_evolutions_and_experiments.md) | Grand Tour, Experimental Flight, Flying City, four trial families, and exposure-based rewards |
+| 6 | [Rewards, Chaos, and achievements](080_airship_spec_part_6_rewards_chaos_and_achievements.md) | Success and failure results, host rewards, Chaos map, shared connections, and eight achievements |
 | 7 | [Map and presentation](080_airship_spec_part_7_map_and_presentation.md) | Existing map, native interface, ship forms, scene inventory, news, super-event, and writing direction |
 
-## Ready prompts
+## Prompts
 
 | Prompt | File |
 |---|---|
@@ -31,20 +29,25 @@ This is a detailed design proposal. New balance values, capacities, content situ
 | Achievement implementation and icons | [Achievement prompt](080_airship_achievement_prompt.md) |
 | Rare catastrophe presentation research | [Super-event prompt](080_airship_super_event_prompt.md) |
 
-## Supporting handoffs and evidence
+## Supporting documents
 
-[Implementation handoff](080_airship_implementation_handoff.md) defines the owner boundaries and important integration gates. [Specialist handoffs](080_airship_specialist_handoffs.md) give bounded assignments for the actual agent environment. [Validation matrix](080_airship_validation_matrix.md) contains 64 functional fixtures and 16 probability scenario groups. [Risk arithmetic](080_airship_risk_arithmetic.md) checks only the illustrative fixed-Condition formula and is not a probability-tool audit.
+The [implementation handoff](080_airship_implementation_handoff.md) defines owner boundaries, integration contracts, and specialist routing. The [validation matrix](080_airship_validation_matrix.md) holds 64 functional fixtures, 16 probability scenario groups, and the fixed-Condition reference arithmetic. The [route crosswalk](080_airship_route_crosswalk.md) preserves the legacy region predicates for indices 0 through 121; exact geographic binding remains required. The [research and source report](080_airship_research_and_source_report.md) records legacy evidence, historical leads, and the release gates.
 
-[Route crosswalk](080_airship_route_crosswalk.md) preserves all inspected legacy indices from departure 0 through return 121. It contains region predicates, not fabricated state IDs or city stops. Exact geographic binding remains required.
+No `docs/plans/080_airship_plans/` companion exists yet; implementation records belong there.
 
-[Research and source report](080_airship_research_and_source_report.md) records all reading, repository inspection, source conflicts, historical research leads, and outstanding gates. The [supplied-source reading ledger](080_airship_supplied_source_read_ledger.json) includes the exact file hashes and completed reading coverage.
+## Revision log
 
-## Original planning-session evidence
+### 2026-10-10 spec audit
 
-The reading and execution claims below describe the original supplied-source planning session, not current tool availability or current implementation.
-The referenced companion `docs/plans/080_airship_plans/` is absent from this checkout; its external handoffs are blocked dependencies, not accessible evidence.
-Use the in-package handoff and matrices for the available design basis and record any recovery of the missing companion separately.
+Basis: 10 Oct 2026 spec audit under the user's planning-package brief.
 
-All 42 supplied text files were read in full, including all twenty subagent definitions. They total 1,202,682 bytes and 14,072 lines. Externally referenced required resources were not all available or fully read. These include the original map files, exact state and stop bindings, installed vanilla sources, offline wiki, actual canonical visual references and processors, the dedicated MTTH skill, the authoritative workbook, and complete shared custody and fire implementation contracts.
+- Replaced population-backed travel custody with a boarding-group manifest: travellers stay resident in their origin state and only deaths are debited, once, from origin states. This keeps the user's real-deaths requirement, removes the travel-custody release gate, and makes births, stowaways, and detention population-neutral (Parts 3, 4, handoff, validation).
+- Unresolved disappearances end as presumed losses registered once when the voyage closes, instead of a permanent missing-person ledger (Parts 1, 2, 3, 4, 6).
+- Reduced standing services from six to four by moving provisions and extended programmes into story and reception choices, and merged six trial families into four with no hidden one-off protections (Parts 2 and 5).
+- Replaced the host's 90-day state construction bonus with a USA opinion modifier, and removed the +2 dispute and crowd-accident Chaos rows and the small crash reversals (Part 6).
+- Added a four-step risk band so players see the danger and its main cause instead of incident percentages (Parts 1 and 2).
+- Deleted `080_airship_supplied_source_read_ledger.json` (obsolete archive-reading evidence), `080_airship_risk_arithmetic.md` (moved into the validation matrix), and `080_airship_specialist_handoffs.md` (routing moved into the implementation handoff); removed archive-session narration from the README and research report.
 
-No provided subagent was launched. No HOI4 MCP probability, GUI, technology, or runtime test was performed. No finished artwork, final super-event quotation or audio, source-code implementation, or workbook edit was produced. The package gives the complete planned design and the exact work needed to close those gaps. It does not label missing evidence as a passed check.
+## Open questions
+
+- The 084 Peace Movement package still describes Airship boarding as removing people from their origin state (its Part 10 world-denominator paragraph and acceptance case QA59). Under the boarding-group model that proof gate is satisfied automatically; the 084 owner should simplify those lines.

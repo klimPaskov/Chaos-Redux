@@ -14,7 +14,7 @@ A local war exposure is based on actual relevant fighting, hostile aircraft, ant
 | Forced landing order | A reachable host demands that the ship land | Land and face inspection or detention, or refuse and risk a combat incident |
 | Anti-aircraft incident | Fire affects the actual route segment | Resolve damage and any resulting emergency at that segment |
 | Deliberate attack | A hostile actor takes a concrete destructive action | Resolve a single combat encounter, with rescue or crash consequences |
-| Capture attempt | The ship is forced down but remains intact | Start bounded custody and passenger-release work |
+| Capture attempt | The ship is forced down but remains intact | Start bounded detention and passenger-release work |
 | Suspected espionage | Authorities object to actual observation or photography | Inspect the disputed material, restrict a demonstration, or accept detention |
 
 A country's ability to attack must be grounded in reach. A distant rival cannot buy an instant crash over a neighbour for 30 Political Power. An interception option requires actual local capability or a properly established event-owned opportunity. Peaceful hosts can cause serious danger through mishandling or escalation, but low opinion alone is not a standing command to kill passengers.
@@ -25,7 +25,7 @@ An accusation can be false. The final text should distinguish an American allega
 
 A controlled forced landing can leave the ship intact. The host can inspect it, negotiate civilian departure, or continue impoundment. The United States can fund civilian return, negotiate release, or abandon the flight while maintaining a record of the people held ashore.
 
-A ten-day release mission handles the immediate diplomatic episode. Failure ends the voyage as captured or impounded and moves surviving people into an accepted shared custody or settlement state. It cannot leave thousands of people in a forgotten event variable forever. A later release of those people is a population movement, not a second successful voyage.
+A ten-day release mission handles the immediate diplomatic episode. Failure ends the voyage as an impoundment, and the captor releases the detained people when the voyage closes. They never left their home population, so release needs no population transaction and is not a second successful voyage.
 
 No automatic war is introduced solely for intact capture. A war can already exist, arise through other game systems, or follow a separately justified diplomatic choice. The hard automatic rule below applies when the ship crashes in foreign-controlled territory.
 
@@ -107,11 +107,11 @@ A four-day rescue mission works with the actual initially living rescue pool. Pr
 
 Post-crash rescue support costs 25 motorized equipment and 25 support equipment for each started group of 600 people requiring rescue, with a minimum of one package for a nonempty group. This people-based work order is separate from the pre-crash grounded evacuation service in Part 2. Do not multiply this same rescue charge again by physical form. The AI must not accept a cost larger than its available resources. Smaller partial assistance can be meaningful and must state how much of the living pool it covers.
 
-A new controller inherits unfinished rescue responsibilities. Completed rescue work and confirmed survivor counts remain credited to their actual contributors. The population ledger must survive that transfer without duplicated people.
+A new controller inherits unfinished rescue responsibilities. Completed rescue work and confirmed survivor counts remain credited to their actual contributors, and no survivor or death is counted twice across the transfer.
 
 A resolved land crash during a missing-contact episode closes that episode immediately. The required American declaration does not wait for the search timer or wreck-discovery popup. Do not hide a known foreign territorial crash merely to prolong a disappearance story.
 
-Ocean rescue requires a verified reachable rescue capability. The search can locate survivors, a grounded ship on a validated shore, or wreckage. It cannot invent a random land state simply to force American retaliation. An unresolved disappearance ends with missing people still in a persistent shared custody or missing-person account. It grants neither a clean-voyage achievement nor confirmed-death credit until evidence establishes the outcome.
+Ocean rescue requires a verified reachable rescue capability. The search can locate survivors, a grounded ship on a validated shore, or wreckage. It cannot invent a random land state simply to force American retaliation. A disappearance the search cannot resolve ends as an ocean loss, and everyone still unaccounted for is presumed lost under Part 3. It never qualifies for a clean-voyage achievement.
 
 ## Aftermath
 

@@ -100,4 +100,4 @@ Review departure, open water, an occupied host, a normal stop, damage, critical 
 
 Match these states at the supported resolutions, including 1920 by 1080 and 2560 by 1440 unless the project defines a narrower supported set. Test long country and state names, large casualty counts, and translated text expansion. An unclickable control hidden by the map is a failure even if a still image looks attractive.
 
-Before native implementation, create and review reference images for the event-owned layout. Afterwards, inspect the real GUI hierarchy and render matched scenarios. Reference-image review, native element mapping, hit regions, and final comparisons must all agree. No screenshot, asset filename, or planning image alone proves that the actual GUI works.
+Layout work follows the reference-image and review workflow in `chaos-redux-scripted-gui`.

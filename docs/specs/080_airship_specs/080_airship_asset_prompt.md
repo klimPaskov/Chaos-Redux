@@ -1,10 +1,10 @@
 # Event 080: Asset-production prompt
 
-Produce the complete Airship visual package through `chaos-redux-event-assets`, with `chaos-redux-scripted-gui` and `chaos-redux-frame-animation` where relevant. Read all seven spec parts, especially Part 7, and the source report before production. No final artwork or original route DDS files were produced or inspected by the planning session.
+Produce the complete Airship visual package through `chaos-redux-event-assets`, with `chaos-redux-scripted-gui` and `chaos-redux-frame-animation` where relevant. Read all seven spec parts, especially Part 7, and the research and source report before production.
 
 ## Inspect actual references first
 
-Use the canonical project reference library under `.agents/skills/chaos-redux-event-assets/assets/gfx_references/`. The supplied skill records the user's installation root as `C:\Users\klimp\OneDrive\Documents\Paradox Interactive\Hearts of Iron IV\mod\chaos_redux\.agents\skills\chaos-redux-event-assets\assets\gfx_references`. Resolve the current real repository location instead of assuming this Windows path exists in another environment.
+Use the canonical project reference library under `.agents/skills/chaos-redux-event-assets/assets/gfx_references/`.
 
 Inspect the matching contact sheets and individual native-size examples for report images, news, super-events, decision icons, ideas, and achievements. Recover and visually inspect the actual Airship route maps and marker assets before proposing changes. If a required reference contact sheet is missing, build and label it from the real reference images and update the reference README and catalog according to the skill. Do not claim to have inspected an image based only on its filename.
 
@@ -22,15 +22,15 @@ Provide country report scenes for departure, flyover, service, passenger interio
 
 Provide news scenes for departure, major landmark arrival, diplomatic impoundment, serious emergency, confirmed disappearance, major crash, and successful homecoming. Provide the rare Flying City catastrophe scene in coordination with the super-event specialists. Do not portray the impact as a nuclear strike or add landmarks that are not present at the actual site.
 
-Create a coherent decision icon family covering standing orders, repair, specialist inspection, supplies, passenger transfer, local reception, search, rescue, technical trial, refit, departure, and abort. Create the needed aviation-prestige and mourning idea art without exceeding the spec's active spirit budget. These symbolic families must match their own canonical references, not borrow focus frames.
+Create a coherent decision icon family covering standing orders, repair, specialist inspection, emergency evacuation, passenger transfer, local reception, search, rescue, technical trial, refit, departure, and abort. Create the needed aviation-prestige and mourning idea art without exceeding the spec's active spirit budget. These symbolic families must match their own canonical references, not borrow focus frames.
 
 Create all eight achievement subjects listed in Part 6 and the achievement prompt, including their complete three-state runtime outputs. No country flags, leader portraits, focus-tree art, or runtime 3D meshes are planned.
 
 ## Correct format and processing
 
-Country reports use the 210 by 176 slanted monochrome or sepia card with the prescribed transparent-corner processing. Use the actual `.agents/skills/chaos-redux-event-assets/tools/process_report_event_image.py` workflow. News images use 397 by 153 monochrome output. Super-event art uses 457 by 328. Decision icons are 32 by 32 and idea icons 64 by 64. The original map and its ship panels use their inspected native consumer dimensions, which were not verified by the planning session.
+Country reports use the 210 by 176 slanted monochrome or sepia card with the prescribed transparent-corner processing. Use the actual `.agents/skills/chaos-redux-event-assets/tools/process_report_event_image.py` workflow. News images use 397 by 153 monochrome output. Super-event art uses 457 by 328. Decision icons are 32 by 32 and idea icons 64 by 64. The original map and its ship panels use their inspected native consumer dimensions.
 
-Use [the current achievement asset contract](../../../.agents/skills/chaos-redux-event-assets/SKILL.md#achievement-icons) for the exact contact sheet, immutable templates, native transparent ImageGen subjects, deterministic three-state derivation, processor, and decoded compositing checks.
+Use [the current achievement asset contract](../../../.agents/skills/chaos-redux-event-assets/references/icon-and-ui-families.md#achievement-icons) for the exact contact sheet, immutable templates, native transparent ImageGen subjects, deterministic three-state derivation, processor, and decoded compositing checks.
 Keep all eight subjects and 24 final states; do not copy archive-era template hashes or processing commands into this prompt.
 
 All three achievement DDS files go directly under `gfx/achievements/`, named from the exact registered achievement ID with base, `_grey`, and `_not_eligible` suffixes. Do not create `gfx/achievements/080_airship/`. Keep the shared registry's single-root structure and update its owner-approved sections, localisation, GFX, and manifest consistently.

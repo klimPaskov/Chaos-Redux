@@ -7,23 +7,21 @@ Passengers give the voyage continuity. A story begun at one stop can matter at a
 
 The headline manifest separates passengers and crew in its expanded view while showing one total aboard. Proposed capacity is 500 passengers and 100 crew at baseline, 1,500 passengers and 250 crew for Grand Tour, and 9,000 passengers and 1,000 crew for Flying City. Experimental Flight uses the current physical ship's capacity until a later physical refit changes it.
 
-Not all berths must remain filled. An emergency disembarkation reduces later crash exposure. Filling an enlarged ship requires boarding real people at a valid stop. Reaching an evolution threshold does not instantly create passengers while the ship is over the ocean.
+Not all berths must remain filled. An emergency disembarkation reduces later crash exposure. Filling an enlarged ship requires boarding people at a valid stop, so reaching an evolution threshold does not fill new berths while the ship is over the ocean.
 
-At ordinary visits, up to 50 passengers at baseline, 150 during Grand Tour, or 500 in Flying City can exchange places with new guests, within capacity and the actual available local population. Crew are not routinely replaced by the sightseeing exchange. A specific medical, safety, or staffing incident can require a crew replacement.
+At ordinary visits, up to 50 passengers at baseline, 150 during Grand Tour, or 500 in Flying City can exchange places with new guests, within capacity. A stop in a nearly empty state offers proportionally fewer new guests. Crew are not routinely replaced by the sightseeing exchange. A specific medical, safety, or staffing incident can require a crew replacement.
 
 ## Population conservation
 
-Every group aboard has an origin state, a recorded responsible country, a count, and a current custody status. The relevant statuses are aboard, temporarily ashore, missing but unconfirmed, rescued, settled, returned, and confirmed dead. A person belongs to one status at a time.
+A voyage is a trip, not migration. Travellers stay resident in their origin state's population while aboard, so boarding, disembarking, and passenger exchanges never move population between states, and living travellers are always counted in the world population exactly once.
 
-The required accounting model is population-backed travel custody. Boarding removes the actual group from its origin state's resident population into a shared in-transit population balance. This is movement, not death. The shared world population accounting must include people in that balance. Surviving disembarkation adds the people to an accepted destination and closes the corresponding travel balance. Death removes people from the balance and registers the actual loss once. Ground residents killed by a crash are removed from the impact state separately.
+The manifest is a short list of boarding groups. Each group records the state where it boarded, the controller of that state at boarding, and its current count. The departure group holds the American passengers and the whole crew. Each later boarding stop adds or tops up one group for its state. Disembarking only reduces a group's count.
 
-This prevents an American passenger from being charged against a foreign town's population and prevents a passenger from being removed twice after having already left a resident population. It also allows a ship to carry survivors whose home state has changed controller or suffered a disaster during the voyage.
+Deaths are the only population transaction. Confirmed onboard and rescue deaths are spread across the boarding groups in proportion to their counts and debited once from each group's origin state through `apply_exact_state_civilian_population_loss`, with Deaths registration and the voyage recorded as the cause. Ground deaths at an impact site are debited from the impact state separately. Where the shared minimum-population rule caps a debit, the applied amount is the number every report shows.
 
-The supplied shared-effect documentation proves exact state population loss and Deaths registration, but it does not prove a complete reusable travel-custody contract. The implementation handoff therefore requires an owner-approved shared population or migration adapter before the manifest is considered implemented. This package does not present a newly invented helper name as an existing public API.
+People who are still unaccounted for when the voyage closes after a completed search are presumed lost. They are registered as deaths once at that point and reported as presumed lost rather than as confirmed casualties of a known cause. Until then a missing group stays counted in its boarding group and is never reported dead.
 
-Births add one actual person to the appropriate travelling household and the conserved population total. A birth is not migration and is never counted as a death. A stowaway must come from an actual boarding location. Uncovering a stowaway changes the manifest's known status, without creating an extra person a second time.
-
-Illness and injury can create a bounded group requiring care. They do not create a new transmissible disease system. A missing person is not a confirmed fatality. Rescue claims use the recorded living pool. Reported casualties always match the actual population transaction, including any valid cap.
+Births and stowaways are personal stories. A birth or a discovered stowaway adds one traveller to the relevant boarding group's count without creating or moving population. Illness and injury can create a bounded group needing care without creating a transmissible disease system.
 
 ## Choosing who travels
 
@@ -47,15 +45,15 @@ The labels below are functional planning labels. Each row defines a concrete sit
 
 | ID | Situation and recipient | Choice direction | Outcome and continuation |
 |---|---|---|---|
-| P01 | A birth occurs while over a land host | Host arranges care at the next actual landing or the crew continues with onboard care | Add one person through the population contract, record the household, and allow a later safe-arrival follow-up |
+| P01 | A birth occurs while over a land host | Host arranges care at the next actual landing or the crew continues with onboard care | Add one traveller to the household's boarding group and allow a later safe-arrival follow-up |
 | P02 | A passenger needs urgent noninfectious medical care | Host supplies transport and a hospital place, or the US carries the patient to the next usable stop | Ground transfer reduces the aboard count and ends that person's flight exposure, continuation can worsen the case |
 | P03 | Several people become ill after a stop meal | The host investigates provisions or permits a quiet replacement | Consume replacement supplies or accept a two-day delay, no invented epidemic or global disease spread |
 | P04 | Two passengers from hostile countries become close | Permit a modest celebration or keep the matter out of an official reception | A later host can welcome them or turn the story into a press dispute, with no forced state marriage policy |
 | P05 | A gambling dispute involves a wealthy guest | Enforce ordinary ship rules or let a patron negotiate compensation | End the dispute, lose a guest at the next stop, or create a later scandal, with no free treasury windfall |
-| P06 | A stowaway is found after departure | A land host accepts a return transfer or the US formally admits the traveller | Reclassify the already backed traveller, use one berth, and resolve their return at a real location |
+| P06 | A stowaway is found after departure | A land host accepts a return transfer or the US formally admits the traveller | Add the traveller to the group of the state where they boarded, use one berth, and resolve their return at a real location |
 | P07 | A journalist asks to inspect an earlier repair | Allow a supervised inspection or restrict access | Honest access can close a rumour, concealment can reopen after the next related failure |
 | P08 | Passengers demand to leave after a dangerous approach | Host helps them disembark or US asks them to remain until a safer stop | Remove the actual group only on completed transfer, refusal can generate a bounded protest thread |
-| P09 | A sightseeing group misses departure | Host organises a search or the expedition departs while arranging later transport | A four-day local search can return the group, settle them ashore, or retain an unconfirmed missing record |
+| P09 | A sightseeing group misses departure | Host organises a search or the expedition departs while arranging later transport | A four-day local search returns the group or confirms they stayed ashore safely; an unresolved case stays missing until the voyage closes |
 | P10 | A famous entertainer attracts an unsafe crowd | Limit attendance or use a protected venue | Lower crowd exposure or pay for ground support, possible later successful cultural visit |
 | P11 | Travellers argue about politics in the dining room | Crew enforces a quiet public space or host offers a moderated reception ashore | Resolve onboard disruption or risk a local protest, no automatic ideology conversion |
 | P12 | A child becomes separated from a household during a visit | Host prioritises a local search or asks the ship to delay while regular police search | Resolve reunion or continued protected custody, never award a fatality without evidence |
@@ -70,7 +68,7 @@ The labels below are functional planning labels. Each row defines a concrete sit
 | P21 | An experienced crew member must leave for family reasons | Recruit a verified replacement or postpone departure | Actual crew exchange and staffing resolution, no creation of an army commander |
 | P22 | A travelling wedding party wants a ceremony | Host permits a small ceremony or folds it into the official programme | Personal follow-up, with commercial or protocol consequences only if the larger event succeeds |
 | P23 | Passengers complain about the long delay | Explain the damage openly or promise an early departure | Openness allows orderly voluntary departures, a broken promise makes the next press story harsher |
-| P24 | A missing visitor returns with a credible local account | Host accepts the explanation or asks for an interview | Close the missing record and prevent duplicate search or death reporting |
+| P24 | A missing visitor returns with a credible local account | Host accepts the explanation or asks for an interview | Close the missing record so no later search or presumed-loss report includes them |
 | P25 | A private quarrel becomes a newspaper scandal | Permit a correction or let the local press pursue it | Local reputation consequence and a later correction opportunity, no global news unless a real diplomatic dispute develops |
 | P26 | An important guest has unplanned business ashore | Grant a short leave or insist on the advertised schedule | The person returns on time or joins the missing-departure family, not a separate duplicate incident |
 | P27 | Crew and passengers celebrate a safe ocean crossing | Hold a modest onboard event or save supplies for the next difficult stretch | A once-per-voyage social beat and a possible later account of the voyage |
@@ -82,7 +80,7 @@ The labels below are functional planning labels. Each row defines a concrete sit
 | P33 | Flying City residents organise neighbourhood duties | Crew accepts supervised volunteers or retains professional-only work | Improve one ground evacuation task after training, without generating equipment or permanent manpower |
 | P34 | Flying City workshops attract civilian engineers | Host permits an exchange or restricts workshop access | Qualify a structural or engine trial context, with security friction if access is refused |
 | P35 | Flying City facilities fail to serve a full passenger district | Reduce the programme and repair the facility or continue with temporary arrangements | A provision or repair task affecting a bounded population group, not a second Condition bar |
-| P36 | Survivors reunite with an earlier travelling household | Current rescue host arranges a verified meeting | Resolve real custody records and a final human account, with no resurrection of confirmed dead passengers |
+| P36 | Survivors reunite with an earlier travelling household | Current rescue host arranges a verified meeting | Close the related missing records with a final human account, with no resurrection of confirmed dead passengers |
 
 ## Host story catalogue
 
@@ -100,12 +98,12 @@ The labels below are functional planning labels. Each row defines a concrete sit
 | H10 | An intelligence service requests technical access | Permit a narrow escorted visit or decline | Diplomatic friction or an eligible scientific contact, not a free intelligence agency upgrade |
 | H11 | A mooring fitting is damaged during handling | Stop and repair it or attempt a reduced-risk alternative | A repair task or an unsafe-approach concern on the next actual manoeuvre |
 | H12 | A local celebration conflicts with the ship's timetable | Keep the ordinary stop or fund an extension | Stronger local cultural value at the cost of time |
-| H13 | A landing ground changes controller during the stop | New authorities confirm custody and service orders | Outstanding work transfers only after agreement, earlier delivered aid remains credited |
+| H13 | A landing ground changes controller during the stop | New authorities confirm the ship's status and service orders | Outstanding work transfers only after agreement, earlier delivered aid remains credited |
 | H14 | A neutral host objects to armed escorts | Keep escorts outside its airspace or negotiate a limited arrangement | Diplomatic service outcome, not automatic entry into the escort's war |
 | H15 | Emergency landings threaten a dense settlement | Direct the ship toward a validated open approach or prepare rescue at the actual approach | Change documented exposure through real geography, not a random remote impact location |
 | H16 | A hostile host orders the ship to land | Impound it, allow civilian release, or attempt interception if it refuses | Capture, passenger-release work, or combat exposure, with the crash rule explained in advance |
 | H17 | A damaged ship approaches an industrial district | Suspend exposed operations and organise ground rescue | Reduce eligible local losses and improve rescue, without restoring Airship Condition remotely |
-| H18 | A rural landing attracts people seeking work aboard | Accept a verified crew exchange or decline politely | A backed crew movement or a local story, no free population growth |
+| H18 | A rural landing attracts people seeking work aboard | Accept a verified crew exchange or decline politely | A crew exchange within the existing crew count or a local story |
 | H19 | A previous host offers to relay family messages | Permit private communications or use the public press office | Close a personal thread and support a later reunion |
 | H20 | Grand Tour diplomats propose a joint aviation statement | Sign a limited civilian agreement or restrict the event to hospitality | Temporary bilateral goodwill after a completed safe visit, no automatic faction or guarantee |
 | H21 | Flying City needs more supplies than the original contract | US covers the difference, host offers a reduced delivery, or the programme is shortened | Real scaled costs and a clear provision outcome |

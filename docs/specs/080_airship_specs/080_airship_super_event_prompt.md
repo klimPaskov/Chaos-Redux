@@ -1,6 +1,6 @@
 # Event 080: Super-event research and production prompt
 
-Use `chaos-redux-super-events`, `chaos-redux-event-assets`, the Airship source spec, and the current shared super-event framework to research and produce one rare Flying City crash presentation. Read Part 4, Part 6, Part 7, the source report, and the specialist handoffs before proposing final text or audio.
+Use `chaos-redux-super-events`, `chaos-redux-event-assets`, the Airship source spec, and the current shared super-event framework to research and produce one rare Flying City crash presentation. Read Parts 4, 6, and 7 and the research and source report before proposing final text or audio.
 
 This prompt supplies a functional role only: confirmed large Flying City crash. It does not supply a final title, button, quotation, cultural remark, slogan, lyric, or recording. Unresearched final text and unverified audio rights are blockers. Do not convert the working role, an asset filename, or an achievement phrase into final localisation by convenience.
 
@@ -39,5 +39,3 @@ Integrate through the existing framework without redesigning it. Coordinate ordi
 ## Delivery and acceptance
 
 Deliver the final researched text package, source and attribution notes, audio rights and production manifest, final image and conversion evidence, exact framework bindings, trigger fixture, once-only test, and matched in-game or tool-rendered presentation evidence. Mark every unresolved source, licence, missing tool, or untested integration explicitly.
-
-No final quote, title, audio, or artwork was produced in the planning session. Treat this as a complete research and production assignment, not as an approved finished presentation.

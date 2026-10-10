@@ -29,11 +29,11 @@ All figures introduced in these parts are proposed balancing values. The user's 
 
 ## Launch
 
-The event becomes available when the United States exists as a normal civilian country and can launch from the existing route's American departure location. It must control a valid departure site and have enough real civilian population to support the initial manifest. Being at war does not by itself prevent departure. There is no prerequisite American air superiority, special research, or victory in an existing war.
+The event becomes available when the United States exists as a normal civilian country and can launch from the existing route's American departure location. It must control a valid departure site. Being at war does not by itself prevent departure. There is no prerequisite American air superiority, special research, or victory in an existing war.
 
 The event launches the ship when it fires. It does not ask the player to buy an unlock with Political Power or repeat a preparation chain. The opening introduces the route, the manifest, Condition, and the consequences of a foreign crash. It establishes a civilian expedition funded before the event began. No military airship unit or new aircraft technology is created as a substitute for the expedition.
 
-The opening ship has Condition 100 and a proposed complement of 500 passengers and 100 crew. These are fictional design figures for this giant airship. They are not claims about the capacity of a historical model. The manifest must be backed by actual people under the population contract in Part 3.
+The opening ship has Condition 100 and a proposed complement of 500 passengers and 100 crew. These are fictional design figures for this giant airship. They are not claims about the capacity of a historical model. Their deaths are real population losses under the rules in Part 3.
 
 The launch notification tells the United States about its next practical choice. The departure news tells the world that the voyage has begun. Countries along the entire route do not all receive a personal welcome event on launch day. They become hosts when the ship actually reaches their territory.
 
@@ -101,10 +101,10 @@ The map retains the canonical path and draws a temporary branch. A diversion tha
 | At a planned stop | Service, local programme, passenger handling | Normal departure or a declared extension |
 | Delayed | Complete the named repair, negotiation, or search | Work finishes, a different response is chosen, or the voyage is ended |
 | Emergency | Landing, evacuation, rescue, or acceptance of a dangerous continuation | Ship stabilises, becomes lost, or crashes |
-| Missing | Search and communication recovery | Contact restored, a confirmed loss, or a bounded unresolved-loss ending |
+| Missing | Search and communication recovery | Contact restored, a confirmed loss, or a presumed loss after the search ends |
 | Completed | Homecoming and earned rewards | Terminal |
 | Crashed | Immediate impact, retaliation, survivor recovery | Flight terminal, shared aftermath may continue |
-| Aborted | Safe withdrawal from the voyage and passenger settlement | Terminal |
+| Aborted | Safe withdrawal from the voyage and disembarkation of everyone aboard | Terminal |
 
 A safe abort is allowed at a usable landing location. It gives no completion reward and does not reopen the fire-once event. It remains a meaningful alternative to forcing a broken ship through another hostile region. Capture or permanent impoundment can also end the expedition without a crash. The distinction matters because the automatic war rule is tied to a crash in foreign-controlled territory.
 
@@ -114,10 +114,10 @@ The United States always has the expedition view. Other human countries can insp
 
 Routine updates go into the expedition's own voyage notes and map state. They do not each create a separate random-event history row. The event pool records one Event 80 firing. Subsequent developments belong to that same voyage.
 
-Only Condition, route progress, and people aboard are persistent headline values. A contextual delay timer or experiment result can appear in the current task panel. The player is never asked to manage a fourth permanent risk or morale meter. Warnings explain the relevant causes of danger in ordinary language and expose the actual probability through a detailed tooltip where supported.
+Only Condition, route progress, and people aboard are persistent headline values. A contextual delay timer or experiment result can appear in the current task panel. The player is never asked to manage a fourth permanent risk or morale meter. Warnings name the main cause of danger and its risk band (low, elevated, high, or severe) in ordinary language rather than listing every modifier.
 
 ## Endings
 
-Success means completing all 121 progression transitions and surviving the final arrival. Crash means a physically destroyed ship, with real casualty and damage resolution. Safe abort means the ship and surviving people leave the expedition at a valid landing location. Permanent capture means the voyage ends with a grounded ship and an unresolved political outcome, followed by bounded passenger-release work. Confirmed ocean loss ends the voyage without assigning a false land controller.
+Success means completing all 121 progression transitions and surviving the final arrival. Crash means a physically destroyed ship, with real casualty and damage resolution. Safe abort means the ship and surviving people leave the expedition at a valid landing location. Permanent capture means the voyage ends with a grounded ship and an unresolved political outcome, followed by bounded passenger-release work. An ocean loss, confirmed or presumed after the search, ends the voyage without assigning a false land controller.
 
 These endings are mutually exclusive. A delayed success report cannot overwrite a crash. Rescue and fire recovery can continue after flight has ended, but they never restart the route or grant a second launch.

@@ -21,7 +21,7 @@ The proposal applies 5 Condition of normal wear after each block of ten complete
 
 A ship should not make a separate full crash roll for every country, aircraft wing, state, and passenger story on the same leg. Each two-day flight window has one combined operational exposure assessment. A single incident is selected if that assessment succeeds.
 
-Proposed incident probabilities are 5% while sound, 10% while worn, 20% while damaged, and 35% while critical. Severe weather adds 5 percentage points. A nearby active combat area adds 5 points, or direct hostile interception adds 10 points instead. An active experimental trial adds 5 points. A known unsafe approach adds 5 points. A previously ignored safety warning can add another 5 points for the next relevant exposure. The combined chance is capped at 60%.
+Proposed incident probabilities are 5% while sound, 10% while worn, 20% while damaged, and 35% while critical. Severe weather adds 5 percentage points. A nearby active combat area adds 5 points, or direct hostile interception adds 10 points instead. An active experimental trial adds 5 points. A known unsafe approach adds 5 points. A previously ignored safety warning can add another 5 points for the next relevant exposure. The combined chance is capped at 60%. The player sees this as one risk band beside Condition (low below 10%, elevated below 20%, high below 35%, severe from 35%) with the largest named cause; the individual surcharges, severity weights, and family weights stay internal.
 
 Modifiers require evidence at the current location. A host being at war on another continent does not by itself qualify as a local combat zone. A historical enemy who is currently friendly does not acquire an invisible attack bonus. Anti-aircraft concentrations and hostile aircraft affect the local combat category, without producing an unlimited additive probability.
 
@@ -65,16 +65,14 @@ No policy forces a player to crash. An urgent response can override standing ord
 
 ## Service choices
 
-The basic scheduled service is included in the visit. Extra work uses real resources and time. The following figures define the proposed relative price of each intervention. The decision and mission prompt requires exact native affordability and delivery validation.
+The basic scheduled service is included in the visit. Extra work uses real resources and time. Provision shortages and a host's wish for a longer public programme are resolved inside the relevant story or reception choice (P03, H05, H12, H21) rather than through standing decisions, so the service list stays at four actions.
 
 | Service | Provider and proposed cost | Additional time | Result |
 |---|---|---:|---|
 | Patch repair | US or willing host, 25 support equipment and 250 fuel | 2 days | Restore 25 Condition |
 | Major repair | US or willing host, 75 support equipment, 25 motorized equipment, and 500 fuel | 4 days | Restore 50 Condition and clear a repairable persistent fault |
 | Specialist inspection | US, 25 Political Power and 25 support equipment | 2 days | Find or clear one eligible safety concern and remove the next unsafe-approach surcharge where causally relevant |
-| Replacement supplies | US or willing host, 25 support equipment and 250 fuel | 2 days | Resolve a documented provision shortage, without granting Condition above ordinary service |
 | Emergency evacuation | Host, 25 motorized equipment and 25 support equipment | 2 days | Remove selected survivors from an already grounded dangerous ship |
-| Extended public programme | Host, 25 Political Power and 25 support equipment | 2 days | Improve the visit's cultural or commercial outcome if the site remains safe |
 
 Prices scale with the physical ship form. Grand Tour uses twice the equipment and fuel of baseline service. Flying City uses five times the baseline equipment and fuel. Political Power costs do not scale automatically with headcount. A host sees the exact payable cost before accepting help.
 
@@ -97,11 +95,11 @@ A damaged continuation accepts the current incident's resolved damage and procee
 | Mission | Normal duration | Owner | Success | Failure or expiry |
 |---|---:|---|---|---|
 | Extra repair | 2 or 4 days | Payer, with host consent | Apply the purchased repair once | Refund undelivered work only under the defined interrupted-service rule |
-| Find missing visitors | 4 days | Current or recent host | Return the actual people or establish that they left safely | Resolve a bounded missing-person outcome, not automatic death |
+| Find missing visitors | 4 days | Current or recent host | Return the people or establish that they stayed ashore safely | The case stays open and is presumed lost only if still unresolved when the voyage closes |
 | Restore contact | 4 days | United States | Recover communication and reveal actual position | Expand to the single eight-day search window |
-| Search for the missing ship | 8 days | United States with eligible assistance | Locate survivors, a grounded ship, or wreckage | End as unresolved loss with no fabricated confirmed casualties |
+| Search for the missing ship | 8 days | United States with eligible assistance | Locate survivors, a grounded ship, or wreckage | End the voyage as an ocean loss; everyone still unaccounted for is presumed lost under Part 3 |
 | Ground rescue | 4 days | Impact controller | Recover the recorded living casualty pool | Apply only newly proven deaths among that pool |
-| Passenger release | 10 days | Captor and United States | Return or settle detained people through actual population movement | End the voyage with surviving people still in a tracked custody settlement |
+| Passenger release | 10 days | Captor and United States | Detained people go home and the captor gains goodwill for releasing them | End the voyage as an impoundment; the captor releases the detained people when the voyage closes, and the US records the diplomatic cost |
 | Experimental trial | Five completed flight steps | United States | Resolve a valid trial in its family | Interrupted trials yield no successful-trial reward |
 
 Short missions are intentional because the basic voyage step is two days. The longer shared disaster recovery remains the responsibility of the disaster system. Airship does not replace it with a second competing fire-recovery panel.
@@ -110,7 +108,7 @@ A partly delivered service consumes only its documented delivered share. The sim
 
 ## Action budget and AI
 
-Underway, show standing orders, the next-stop assistance request, and a currently eligible experiment. At a stop, show repair, the local programme, passenger handling, eligible experimentation or refit, and departure. During an emergency, replace routine actions with the relevant response. This keeps the main action set at three to five rather than showing every possible decision throughout the voyage.
+Underway, show standing orders, the next-stop assistance request, and a currently eligible experiment. At a stop, show repair, passenger handling, eligible experimentation or refit, and departure; the host's reception choice arrives as its own event. During an emergency, replace routine actions with the relevant response. This keeps the main action set at three to five rather than showing every possible decision throughout the voyage.
 
 The United States AI plans ahead using the next known route exposure and actual service opportunities. It repairs before a long hazardous stretch, stops trials when seriously damaged, and safely aborts when no credible recovery exists. A wealthy AI can fund host work. A poor AI can shorten ceremonies and abandon optional trials without being forced into an avoidable loss.
 

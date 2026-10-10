@@ -139,6 +139,6 @@ Departure is index 0. Indices 1 through 121 are the requested 121 progression tr
 
 The movement effect's inspected index-1 branch matches region 170 but appends both 170 and 366 to its region array. The corresponding trigger row above contains only 170. Resolve this from the original route and actual game geography. Do not silently add 366 to this evidence table or assume that the extra entry is correct.
 
-The old decision mission ends at index 120 despite the trigger containing a return branch at 121 with region 117. The corrected voyage must complete the final transition. The GFX search found `GFX_airship_trail_120`, but this session did not verify the availability or content of a final 121 sprite. Inspect the registry and actual files before choosing the final presentation strategy.
+The old decision mission ends at index 120 despite the trigger containing a return branch at 121 with region 117. The corrected voyage must complete the final transition. The GFX search found `GFX_airship_trail_120`, but a final 121 sprite has not been verified. Inspect the registry and actual files before choosing the final presentation strategy.
 
 A bound implementation record should state the actual point, exact state or verified water location, original stop status, host-resolution method, qualified services, any allowed local diversion connection, and the source asset used to prove it. Preserve all 122 records including departure. Never fill a missing state by selecting an arbitrary state that happens to share the strategic region.
