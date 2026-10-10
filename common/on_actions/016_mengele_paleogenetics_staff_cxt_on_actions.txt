@@ -1,0 +1,18 @@
+# Bounded startup and CXT-only registration. No workforce or resource grants.
+on_actions = {
+	on_startup = {
+		effect = {
+			GER = { if = { limit = { exists = yes } brilliant_scientist_mengele_paleogenetics_staff_register_cxt = yes } }
+		}
+	}
+	on_daily_CXT = {
+		effect = {
+			if = {
+				limit = { has_country_flag = chaosx_test_country_initialized }
+				set_temp_variable = { chaosx_test_country_extension_registration_added = constant:mengele_paleogenetics_staff.zero }
+				brilliant_scientist_mengele_paleogenetics_staff_register_cxt = yes
+				if = { limit = { check_variable = { chaosx_test_country_extension_registration_added > constant:mengele_paleogenetics_staff.zero } } set_country_flag = chaosx_test_country_registered_sync_pending }
+			}
+		}
+	}
+}

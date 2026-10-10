@@ -1,0 +1,73 @@
+# Private team status and exact support/manpower cost colours, COUNTRY scope.
+# Numeric output and formatting belong to the English localisation keys.
+defined_text = {
+	name = GetMengelePaleoStaffSupportCost
+	text = {
+		trigger = {
+			set_temp_variable = { paleo_staff_quote_support = constant:mengele_paleogenetics_staff.zero }
+			set_temp_variable = { paleo_staff_quote_source = constant:mengele_paleogenetics_staff.zero }
+			set_temp_variable = { paleo_staff_quote_source_count = constant:mengele_paleogenetics_staff.zero }
+			set_temp_variable = { paleo_staff_quote_valid = constant:mengele_paleogenetics_staff.zero }
+			brilliant_scientist_mengele_paleogenetics_staff_quote = yes
+			brilliant_scientist_mengele_paleogenetics_staff_can_pay_support = yes
+		}
+		localization_key = mengele_paleo_staff_support_ready
+	}
+	text = {
+		trigger = {
+			set_temp_variable = { paleo_staff_quote_support = constant:mengele_paleogenetics_staff.zero }
+			set_temp_variable = { paleo_staff_quote_source = constant:mengele_paleogenetics_staff.zero }
+			set_temp_variable = { paleo_staff_quote_source_count = constant:mengele_paleogenetics_staff.zero }
+			set_temp_variable = { paleo_staff_quote_valid = constant:mengele_paleogenetics_staff.zero }
+			brilliant_scientist_mengele_paleogenetics_staff_quote = yes
+			check_variable = { var = paleo_staff_quote_valid value = constant:mengele_paleogenetics_staff.one compare = equals }
+		}
+		localization_key = mengele_paleo_staff_support_blocked
+	}
+	text = { trigger = { always = yes } localization_key = mengele_paleo_staff_quote_unavailable }
+}
+defined_text = {
+	name = GetMengelePaleoStaffWorkforceCost
+	text = {
+		trigger = {
+			set_temp_variable = { paleo_staff_display_workforce = constant:mengele_paleogenetics_staff.workforce }
+			brilliant_scientist_mengele_paleogenetics_staff_can_allocate_personnel = yes
+		}
+		localization_key = mengele_paleo_staff_workforce_ready
+	}
+	text = { trigger = { set_temp_variable = { paleo_staff_display_workforce = constant:mengele_paleogenetics_staff.workforce } always = yes } localization_key = mengele_paleo_staff_workforce_blocked }
+}
+defined_text = {
+	name = GetMengelePaleoStaffFactories
+	text = { trigger = { set_temp_variable = { paleo_staff_display_cic = constant:mengele_paleogenetics_staff.civilian_factories } always = yes } localization_key = mengele_paleo_staff_cic_value }
+}
+defined_text = {
+	name = GetMengelePaleoStaffDuration
+	text = { trigger = { set_temp_variable = { paleo_staff_display_days = constant:mengele_paleogenetics_staff.duration_days } always = yes } localization_key = mengele_paleo_staff_days_value }
+}
+defined_text = {
+	name = GetMengelePaleoStaffHandlers
+	text = { trigger = { set_temp_variable = { paleo_staff_display_handlers = constant:mengele_paleogenetics_staff.handlers } always = yes } localization_key = mengele_paleo_staff_handlers_value }
+}
+defined_text = {
+	name = GetMengelePaleoStaffVeterinaryStaff
+	text = { trigger = { set_temp_variable = { paleo_staff_display_veterinary_staff = constant:mengele_paleogenetics_staff.veterinary_staff } always = yes } localization_key = mengele_paleo_staff_veterinary_staff_value }
+}
+defined_text = {
+	name = GetMengelePaleoStaffStatus
+	text = {
+		trigger = { brilliant_scientist_mengele_paleogenetics_staff_identity_is_visible = yes OR = { has_country_flag = mengele_event016_paleogenetics_staff_debit_unverified has_country_flag = mengele_event016_paleogenetics_staff_crew_credit_inflight has_country_flag = mengele_event016_paleogenetics_staff_support_credit_inflight } }
+		localization_key = mengele_paleo_staff_status_uncertain
+	}
+	text = { trigger = { brilliant_scientist_mengele_paleogenetics_staff_identity_is_visible = yes has_country_flag = mengele_event016_paleogenetics_staff_release_pending } localization_key = mengele_paleo_staff_status_release }
+	text = { trigger = { brilliant_scientist_mengele_paleogenetics_staff_is_qualified = yes } localization_key = mengele_paleo_staff_status_qualified }
+	text = { trigger = { brilliant_scientist_mengele_paleogenetics_staff_identity_is_visible = yes has_country_flag = mengele_event016_paleogenetics_staff_trained } localization_key = mengele_paleo_staff_status_suspended }
+	text = { trigger = { brilliant_scientist_mengele_paleogenetics_staff_identity_is_visible = yes has_country_flag = mengele_event016_paleogenetics_staff_timer_active } localization_key = mengele_paleo_staff_status_training }
+	text = { trigger = { brilliant_scientist_mengele_paleogenetics_staff_identity_is_visible = yes } localization_key = mengele_paleo_staff_status_settlement }
+	text = { trigger = { always = yes } localization_key = mengele_paleo_staff_status_unstaffed }
+}
+defined_text = {
+	name = GetMengelePaleoOperationsSummary
+	text = { trigger = { has_country_flag = mengele_event016_paleogenetics_operations_view } localization_key = mengele_paleo_operations_summary }
+	text = { trigger = { always = yes } localization_key = mengele_paleo_operations_summary_hidden }
+}
