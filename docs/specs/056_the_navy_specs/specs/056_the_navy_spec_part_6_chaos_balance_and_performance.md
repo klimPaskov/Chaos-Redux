@@ -14,11 +14,14 @@ Event-owned Chaos changes apply only to concrete first milestones. The event doe
 
 | Milestone | Chaos change | Repeat guard | Reason |
 | --- | ---: | --- | --- |
-| First global manifestation of Event 56 | +5 | Once per campaign | Complete fleets appearing worldwide are a direct anomalous event outcome. |
-| First Event 56 firing that successfully commissions fleets in at least 25 countries | +5 | Once per campaign | The event has crossed from scattered naval gifts into a world-scale military redistribution. |
-| First experimental naval asset actually delivered through Evolution II | +10 | Once per campaign | A registered special or experimental capability has entered ordinary national service. |
-| First impossible fleet package actually delivered through Evolution III | +15 | Once per campaign | The evolved event has produced a formation outside ordinary naval procurement logic. |
-| First country that was previously skipped as landlocked later receives a package after gaining direct usable coast | +3 | Once globally | The anomaly has followed a changed coastline into a new navy. |
+| First global manifestation of Event 56 | +2 | Once per campaign | Complete fleets appearing worldwide are a direct anomalous event outcome. |
+| First Event 56 firing that successfully commissions fleets in at least 25 countries | +2 | Once per campaign | The event has crossed from scattered naval gifts into a world-scale military redistribution. |
+| First experimental naval asset actually delivered through Evolution II | +4 | Once per campaign | A registered special or experimental capability has entered ordinary national service. |
+| First impossible fleet package actually delivered through Evolution III | +6 | Once per campaign | The evolved event has produced a formation outside ordinary naval procurement logic. |
+| First country that was previously skipped as landlocked later receives a package after gaining direct usable coast | +1 | Once globally | The anomaly has followed a changed coastline into a new navy. |
+
+The lifetime total is 15.
+Ships appearing in friendly ports kill no one, and the Chaos Meter charges 5 for a major war declaration and 10 for a first nuclear detonation, so a naval gift stays below both; any war the fleets enable pays through the shared sources.
 
 The first two milestones can occur during the same firing. That is intentional when the first manifestation reaches at least 25 countries.
 

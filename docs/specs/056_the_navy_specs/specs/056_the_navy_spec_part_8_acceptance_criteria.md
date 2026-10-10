@@ -152,11 +152,11 @@ Baseline Event 56 must remain complete in every valid toggle combination.
 
 Confirm the exact one-time milestones:
 
-- first manifestation: +5
-- first firing reaching at least 25 successful recipients: +5
-- first experimental delivery: +10
-- first impossible delivery: +15
-- first previously landlocked recipient after gaining coast: +3
+- first manifestation: +2
+- first firing reaching at least 25 successful recipients: +2
+- first experimental delivery: +4
+- first impossible delivery: +6
+- first previously landlocked recipient after gaining coast: +1
 
 Confirm that:
 

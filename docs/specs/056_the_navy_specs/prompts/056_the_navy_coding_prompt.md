@@ -39,11 +39,11 @@ Implement first through fourth-or-later recipient scaling and the Evolution I la
 
 Implement the complete one-time map:
 
-- +5 for first manifestation
-- +5 for the first firing with at least 25 successful recipients
-- +10 for the first actual experimental delivery
-- +15 for the first actual impossible package
-- +3 for the first previously landlocked country later receiving a package after gaining direct usable coast
+- +2 for first manifestation
+- +2 for the first firing with at least 25 successful recipients
+- +4 for the first actual experimental delivery
+- +6 for the first actual impossible package
+- +1 for the first previously landlocked country later receiving a package after gaining direct usable coast
 
 Use repeat guards. Do not double count shared war, tension, death, famine, blockade, nuclear, or other generic sources. Do not add Event 56 Chaos per ship, recipient, convoy, aircraft, battle, blockade, or evolution activation. Do not invent a negative reversal.
 

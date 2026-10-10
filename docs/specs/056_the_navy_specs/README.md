@@ -59,4 +59,5 @@ This package defines the full event design and implementation acceptance criteri
 ### 2026-10-10 spec audit
 
 - The Famine connection now states the useful direction as well as the forbidden one: a convoy or escort package can break an island blockade famine through Famine's existing convoy and escort test, with no new Event 56 effect. The AI prefers Full Commissioning for such a package when an owned state is under blockade famine, so the AI uses the gift where it matters most.
+- Event-owned Chaos is rescaled from a lifetime 38 to 15 (+2, +2, +4, +6, +1). Fleets delivered to friendly ports kill no one, and the old impossible-package milestone alone outweighed a first nuclear detonation; the wars the fleets enable already pay through the shared sources.
 - Subagent instructions use the Claude-first wording; historical runtime-blocker notes in `quality/` are unchanged records.
