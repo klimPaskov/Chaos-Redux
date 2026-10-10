@@ -67,9 +67,9 @@ Use the established general achievement-validity rules after inspecting their cu
 
 These rules are achievement qualifications. They do not alter normal event gates, global Chaos behavior, arsenal availability, baseline combat strength, peace policy, or the requester's scenario control.
 
-The user-approved manual relaunch in Part 09 creates a new challenge episode after confirmed destruction and cleanup. Freeze new actor enrollment, provenance, intensity, geography, dates and thresholds for that episode without resetting completed achievements or finalized earlier history. Never combine state recoveries, family-use receipts, operation results, continuous holds or victory milestones across attempts. A valid fresh launch may qualify under the same natural/manual intensity rules, while a duplicate request or refill of an active episode remains excluded.
+The user-approved manual relaunch in Part 09 creates a new challenge episode after confirmed destruction and cleanup. Freeze new actor enrollment, provenance, intensity, geography, dates and thresholds for that episode without resetting completed achievements or finalized earlier history. Never combine state recoveries, family-use receipts, operation results, continuous holds or victory milestones across attempts. A duplicate request or refill of an active episode stays excluded.
 
-Pending post-defeat checks, including R2 and R5, retain their original frozen episode, actor identity, destruction receipt, state set and due date. They may evaluate only their own accepted outcome and the required surviving resistance actor. They cannot read a replacement CXT as their destroyed boss or consume the new episode's captures, shipments, defeat or terminal receipts. Tag equality alone does not establish incarnation identity. Actor-mutating old work must be retired before carrier reuse, while independent frozen historical score checks remain separately bound.
+Pending post-defeat checks, including R2 and R5, retain their original frozen episode, actor identity, destruction receipt, state set and due date, and evaluate only their own accepted outcome. They cannot read a replacement CXT as their destroyed boss or consume the new episode's receipts. Tag equality alone does not establish incarnation identity.
 
 ### Evidence vocabulary
 
@@ -117,7 +117,7 @@ State and action receipts are idempotent per episode, actor, source owner, targe
 
 **Tracking:** initial core-state set, initial capital state, unique loss receipts, frozen crisis set, personal recovery subset, and a persisted 90-day hold due date. If the boss dies during the hold, retain a one-time actor-owned delayed check after event cleanup.
 
-**Icon direction:** a ruined civic structure being reclaimed beneath a torn institutional standard, with a readable repaired center. **Writing direction:** recovery of a country that was close to being consumed. **Related systems:** counterattack, reconstruction, evacuation consequences, and persistent post-defeat receipts.
+**Icon direction:** a ruined civic structure being reclaimed beneath a torn institutional standard, with a readable repaired center. **Writing direction:** recovery of a country that was close to being consumed. **Related systems:** counterattack, industrial evacuation, and persistent post-defeat receipts.
 
 #### R3. Final continental holdout
 
@@ -133,7 +133,7 @@ The 90-percent qualification is a one-time historical crisis entry condition. Di
 
 **Tracking:** unique crisis date, selected eligible anchor, persistent 90-day due date, continuous control and Chaos/setting invalidation latches, personal arrival-state recovery, and destruction receipt.
 
-**Icon direction:** a small fortified remnant with a surviving light set against the encircling Directorate emblem, without an invented geographic border. **Writing direction:** sustained resistance after almost an entire continent has fallen. **Related systems:** defence objectives, sea corridors where appropriate, exact-state navigation, and counterattack.
+**Icon direction:** a small fortified remnant with a surviving light set against the encircling Directorate emblem, without an invented geographic border. **Writing direction:** sustained resistance after almost an entire continent has fallen. **Related systems:** defence objectives, aid convoys where appropriate, exact-state navigation, and counterattack.
 
 #### R4. Intervention from outside the origin continent
 
@@ -147,7 +147,7 @@ This is outside intervention. It does not claim that a naval landing occurred wh
 
 **Tracking:** arrival geography and sovereign status, frozen denominator, distinct actor-state recovery set, per-state due dates for the bounded scored set, and destruction receipt.
 
-**Icon direction:** an expeditionary supply vessel or transport column carrying a resistance standard into an occupied shore or frontier. **Writing direction:** costly intervention in a crisis that began elsewhere. **Related systems:** sea corridors, material aid, reconnaissance, overseas logistics and counterattack.
+**Icon direction:** an expeditionary supply vessel or transport column carrying a resistance standard into an occupied shore or frontier. **Writing direction:** costly intervention in a crisis that began elsewhere. **Related systems:** aid convoys, reconnaissance, overseas logistics and counterattack.
 
 #### R5. Military reversal after the terminal event
 

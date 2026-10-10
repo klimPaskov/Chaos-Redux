@@ -55,11 +55,11 @@ Resistance countries can coordinate through existing factions, access, expeditio
 
 The AI chooses equipment and protective responses from the capabilities actually observed or credibly detected. It does not need omniscient access to hidden provider data to make a sensible defense. Direct battlefield observation supplies knowledge of visible families and operations. Intelligence work can improve early warning of an ocean operation without guaranteeing the landing location.
 
-A defender nearing capitulation prefers saving a viable fighting force and denying movable reserves when those actions remain feasible. It cannot evacuate the same population or equipment repeatedly, create a duplicate army abroad, or move fixed industry instantly because a mission expired.
+A defender nearing capitulation prefers saving a viable fighting force and denying movable reserves when those actions remain feasible. It cannot move the same equipment or factories repeatedly, create a duplicate army abroad, or move fixed industry instantly because a mission expired. Civilian evacuation follows the migration and famine systems.
 
 ## Probability and timing review cases
 
-These are acceptance targets for the supplied probability auditor. The live HOI4 probability tools were not exposed during this planning pass, so no row below claims a measured engine probability.
+These are acceptance targets for `chaosx_ai_probability_auditor`. No row claims a measured engine probability.
 
 | Case | Required inspection | Expected ordering or invariant |
 | --- | --- | --- |
@@ -79,7 +79,10 @@ These are acceptance targets for the supplied probability auditor. The live HOI4
 | Critical fuel shortage | Construction, production and decisions | Supply recovery outranks a discretionary new offensive |
 | Losing the last required island at terminal commit | Shared ending conflict evaluation | Terminal request fails without a stale local latch |
 | Global random scheduler stopped | Owner lifecycle inspection | Active boss work continues without ordinary event dispatch |
+| Spawn-state supply hub cut during the opening | Boss AI and production evaluation | Supply repair outranks a new large assault, and the sustainment coverage value falls |
+| Resistance holds one offshore origin-continent state | Boss and resistance AI evaluation | Boss builds and protects the sea or air route first, and resistance reinforces that state before a symbolic counterattack |
+| Observer without and with a live Reconnaissance receipt | Information and target-list inspection | Without it only the broad sustainment condition and visible targets appear. With it the limiting component and its node join the Counterattack and Local asset denial lists until the receipt expires |
 
-Use the exposed `probability_inspect` route first when available. Build complete scenario inputs from current source, then evaluate and sweep relevant boundaries. Compare implemented source against the accepted design using the same scenarios and preserve before/after source for changed weights. Use simulation only for declared uncertain inputs. Use sequence analysis only with a complete model of candidate pools, cadence, resets, removals, cooldowns and terminal states. Render a comparison or unresolved view when it helps reviewers see the result. After the AGENTS.md retry limit, use named representative calculations from the actual source and state score-versus-probability assumptions and unsupported behavior. An unavailable analyzer alone is a verification limitation.
+Begin with `hoi4.probability_inspect`, build complete scenario inputs from current source, and use evaluate or sweep for the boundaries. Use simulation only for declared uncertain inputs and sequence analysis only with a complete model of pools, cadence, resets, removals, cooldowns and terminal states. Preserve before and after source for changed weights. After the AGENTS.md retry limit, calculate named cases from the actual source and state score-versus-probability assumptions. An unavailable analyzer is a verification limitation.
 
 Balance review should report time to viable first combat, survival of the initial foothold, family representation, conquest momentum, supply failures, naval attempts, operation use and late-game entity cost. It must not weaken the boss simply because a normal country cannot beat it alone. Early defeat should require unusually effective concentration or favorable circumstances. A mature Directorate should be close to impossible to stop while remaining a real military country.

@@ -50,7 +50,7 @@ P01 deliberately shares one flat generated institutional design across all five 
 Keep the inherited arsenal's valid distinct visuals and native green counters.
 
 The exact Part 10 background and consumer requirements govern production.
-Read the current [asset skill](../../../.agents/skills/chaos-redux-event-assets/SKILL.md), [icon family contracts](../../../.agents/skills/chaos-redux-event-assets/references/icon-and-ui-families.md), and [portrait contract](../../../.agents/skills/chaos-redux-event-assets/references/portrait-production.md) for mutable processing, review and provenance rules.
+Read the current [asset skill](../../../.claude/skills/chaos-redux-event-assets/SKILL.md), [icon family contracts](../../../.claude/skills/chaos-redux-event-assets/references/icon-and-ui-families.md), and [portrait contract](../../../.claude/skills/chaos-redux-event-assets/references/portrait-production.md) for mutable processing, review and provenance rules.
 
 ## Proposed names and exact consumer binding
 
@@ -97,10 +97,10 @@ Read [Part 10: Image direction](10_presentation_and_assets.md#image-direction) i
 Use 1936 to 1945 documentary language around the deliberately unusual installed forces.
 Keep text and controls native, and retain the exact checked source-family identities.
 
-Follow the current asset skill's [Sources and references](../../../.agents/skills/chaos-redux-event-assets/SKILL.md#sources-and-references), [Generation and editing](../../../.agents/skills/chaos-redux-event-assets/SKILL.md#generation-and-editing), [Flags](../../../.agents/skills/chaos-redux-event-assets/SKILL.md#flags), [DDS conversion](../../../.agents/skills/chaos-redux-event-assets/SKILL.md#dds-conversion), and [Evidence and completion](../../../.agents/skills/chaos-redux-event-assets/SKILL.md#evidence-and-completion).
+Follow the current asset skill's [Sources and references](../../../.claude/skills/chaos-redux-event-assets/SKILL.md#sources-and-references), [Generation and editing](../../../.claude/skills/chaos-redux-event-assets/SKILL.md#generation-and-editing), [Flags](../../../.claude/skills/chaos-redux-event-assets/SKILL.md#flags), [DDS conversion](../../../.claude/skills/chaos-redux-event-assets/SKILL.md#dds-conversion), and [Evidence and completion](../../../.claude/skills/chaos-redux-event-assets/SKILL.md#evidence-and-completion).
 These are required owner procedures, including canonical reference/contact-sheet inspection, exact current converter arguments and strict BGRA header/pixel review.
 Do not substitute a copied planning-era procedure for the current owner.
-Use `.agents/skills/chaos-redux-event-assets/tools/convert_to_dds.py` for ordinary 2D output.
+Use `.claude/skills/chaos-redux-event-assets/tools/convert_to_dds.py` for ordinary 2D output.
 Model textures follow the separate 3D BC1/BC3 full-mip contract.
 
 Request `transparent_background = true` in the initial native ImageGen call for every alpha-backed icon, emblem or overlay, and preserve native alpha through processing and conversion.
@@ -108,9 +108,9 @@ Full-canvas news/terminal scenes, flags and this portrait preserve their consume
 Apply the owner's recorded fallback removal only after native alpha fails or for an inherited opaque source.
 Save immutable sources, exact requests and reference roles, candidate lineage, final selection, source/native-size reviews and decoded final-file comparisons.
 
-All achievement production follows [Achievement icons](../../../.agents/skills/chaos-redux-event-assets/references/icon-and-ui-families.md#achievement-icons), including supplied template paths and integrity hashes, one original transparent subject, deterministic grey and unchanged-overlay sources, the mandatory complete-triplet processor and exact decoded-pixel equality.
+All achievement production follows [Achievement icons](../../../.claude/skills/chaos-redux-event-assets/references/icon-and-ui-families.md#achievement-icons), including supplied template paths and integrity hashes, one original transparent subject, deterministic grey and unchanged-overlay sources, the mandatory complete-triplet processor and exact decoded-pixel equality.
 Read that complete section and the current processor contract before execution.
-Use `.agents/skills/chaos-redux-event-assets/tools/process_achievement_icons.py`, a checked final ID and separate output directory.
+Use `.claude/skills/chaos-redux-event-assets/tools/process_achievement_icons.py`, a checked final ID and separate output directory.
 Deliver 24 strict 64x64 runtime DDS files directly under `gfx/achievements/`.
 The eight source subjects in this prompt remain mandatory, with their exact achievement conditions in Part 11.
 
@@ -139,7 +139,7 @@ At full event completion, first promote durable provenance, rights, requests, li
 ## Conditional motion, objectives and audio
 
 Static presentation is the baseline.
-Any later accepted 2D animation row follows [chaos-redux-frame-animation](../../../.agents/skills/chaos-redux-frame-animation/SKILL.md), with real source frames, explicit timing/state/consumer, frame review and static fallback.
+Any later accepted 2D animation row follows [chaos-redux-frame-animation](../../../.claude/skills/chaos-redux-frame-animation/SKILL.md), with real source frames, explicit timing/state/consumer, frame review and static fallback.
 Transform-only still-image animation does not satisfy that contract.
 Portrait motion remains with the portrait creator.
 
@@ -151,8 +151,8 @@ An ordinary native category integration is not that worker's scope.
 No additional dashboard, category picture, probability countdown or currency is authorized.
 
 P09 first reuses every actual owner model, material, counter and sound consumer.
-For a concrete accepted repair requiring model production, follow [3D route selection](../../../.agents/skills/chaos-redux-3d-model-pipeline/SKILL.md#route-selection-and-component-completion), [job intake](../../../.agents/skills/chaos-redux-3d-model-pipeline/SKILL.md#job-intake-and-deterministic-layout), [bounded role](../../../.agents/skills/chaos-redux-3d-model-pipeline/SKILL.md#bounded-subagent-route), and [evidence package](../../../.agents/skills/chaos-redux-3d-model-pipeline/SKILL.md#evidence-package-and-handoff).
-Route to `chaosx_3d_model_pipeline` with `fork_turns="none"`, exact source/profile/component/action/scale inputs, consumer identifiers, dependency lock and handoff path.
+For a concrete accepted repair requiring model production, follow [3D route selection](../../../.claude/skills/chaos-redux-3d-model-pipeline/SKILL.md#route-selection-and-component-completion), [job intake](../../../.claude/skills/chaos-redux-3d-model-pipeline/SKILL.md#job-intake-and-deterministic-layout), [bounded role](../../../.claude/skills/chaos-redux-3d-model-pipeline/SKILL.md#bounded-subagent-route), and [evidence package](../../../.claude/skills/chaos-redux-3d-model-pipeline/SKILL.md#evidence-package-and-handoff).
+Route to `chaosx_3d_model_pipeline` through `chaos-redux-subagents` with a self-contained prompt, exact source/profile/component/action/scale inputs, consumer identifiers, dependency lock and handoff path.
 Current operations govern separate Meshy 7 body/items, one supported rig/action attempt, authorized Blender assembly/fallback/component completion, export/reimport, licensed sourced unit audio and bespoke vanilla-green counter handoff.
 The parent owns runtime `.asset`, entity, GFX, sound and gameplay wiring.
 

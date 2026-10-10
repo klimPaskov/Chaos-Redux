@@ -1,8 +1,6 @@
 # 12. Implementation handoff
 
-This part distinguishes existing source interfaces from the new work required for the design. None of the proposed Event 103 helpers is asserted to exist. Source-backed repository paths and revisions are listed in Part 14. The package is a design handoff, not a gameplay patch or a completed engine audit.
-
-Repository descriptions below came from the original planning reads. Current checkout findings, reservations and catalog status belong to the import evidence linked from the package guide. Inspect the actual relevant source before treating a historical path, count, defect or receipt description as current.
+This part distinguishes existing source interfaces from the new work required for the design. None of the proposed Event 103 helpers is asserted to exist. The repository descriptions below came from the original planning reads, so inspect the actual relevant source before treating a path, count or defect description as current. Current catalog status and identifier facts belong to the shared registry and the [import evidence](../../plans/103_chaos_directorate_plans/103_import_evidence_2026-10-10.json).
 
 ## Ownership
 
@@ -40,9 +38,7 @@ The source documents identify several unresolved historical path and registry co
 
 Event 103 and its required numbered entry `chaosx.nr103.1` come from the accepted brief and event convention. CXT comes from the verified repository documentation. The logical owner slug is `103_chaos_directorate`.
 
-The Final Boss needs a manual-scenario numeric identity. Chaos Always Wins needs a world-end identity, a linked super-event display slot and an audio identity. Their current reservations belong to [the shared identifier registry](../shared_identifier_registry.md) and import evidence. The original planning lookup of that registry returned 404, so the archive supplied logical names only. That historical route failure is superseded as a current reservation instruction by the existing local registry.
-
-The original world-end and scenario reads found retained historical identities and raw-runtime/workbook conflicts. Neither the next apparent integer nor a blank CSV row proves a safe reservation. Extend the existing central registry through its accepted allocation workflow when a required assignment is still missing, recording namespace, owner, source evidence and disposition. Runtime binding remains later work and must update all dependent call sites together. Do not create a duplicate registry or renumber existing content to accommodate this package.
+The Final Boss needs a manual-scenario numeric identity. Chaos Always Wins needs a world-end identity, a linked super-event display slot and an audio identity. Their current reservations are the table below and the [shared identifier registry](../shared_identifier_registry.md). Neither the next apparent integer nor a blank CSV row proves a safe reservation. Extend the central registry through its accepted allocation workflow when an assignment is missing, recording namespace, owner, source evidence and disposition. Runtime binding must update all dependent call sites together. Do not create a duplicate registry or renumber existing content.
 
 | Namespace | Current planning reservation | Binding limit |
 | --- | --- | --- |
@@ -72,7 +68,7 @@ Do not overwrite a live test session, another human's CXT control or a committed
 
 The active owner is one episode with an immutable actor incarnation and origin state. Global state holds the current episode identity and generation, arrival provenance, dates and origin continent, alongside retained historical terminal and defeat records and the independent automatic fire-once history. The country holds military plans and private owner receipts. States and operations hold their own durable transaction and due-date records.
 
-A fresh manual episode is allowed only through Part 09 after confirmed destruction and completed actor-mutating cleanup. Freeze a new generation and isolate all pending work before reusing CXT. Old callbacks, shipments, reports, grants, payments, refunds and owner results cannot resolve the new tag incarnation as their actor. Preserve finalized provenance and completed achievements. Any remaining post-defeat score check uses its old frozen episode and destruction receipt and cannot draw evidence from the replacement boss. Automatic grace and history remain unchanged, and separate attempts cannot combine challenge progress.
+A fresh manual episode is allowed only through [Part 09's relaunch contract](09_chaos_always_wins_and_the_final_boss.md#relaunch-after-confirmed-defeat). Freeze a new generation and retire every pending old-generation callback, shipment, report, grant, payment, refund and owner result before reusing CXT, so none can resolve the new incarnation as its actor. Part 16 section 9 holds the callback mechanics.
 
 Use an actor-root entry for initialization and later country work. Entering a CXT scope does not by itself rebind ROOT in all helpers. State callbacks, RAID_INSTANCE outcomes, participant loops and nested effects must bind actor, target, source and episode explicitly. Every temporary output is initialized in its caller, including nested helpers. A validator's tombstone is not the consuming call's fresh success receipt.
 
@@ -102,7 +98,7 @@ Upstream package changes belong with their owners. An owner adds a neutral Direc
 
 Use current `assets/gfx_references/` families and exact active consumers before creating art. A dedicated event-owned objective extension belongs to `chaosx_event_ui_worker` only if native state targeting is insufficient. Give it exact files, identifiers, entry point, context, layout, two indicators, states, resolutions and allowed changes. Shared settings, Event Details, logs, super-event framework and registries remain with the parent implementation owner.
 
-Prefer inspect and render checks over matching before-and-after GUI scenarios, reconstruct useful returned MCP resources and inspect the actual images before claiming rendered coverage. `gui_rewrite` is optional. No `gui_compare` tool is assumed. Compare captured source identities and matched rendered artifacts. After the bounded AGENTS.md retry limit, review the same layout and state contract from source, correct confirmed defects and record unavailable visual checks without treating them as missing implementation.
+Use the scripted GUI skill's inspect and render checks where available, and review the same layout and state contract from source when rendering is unavailable, recording the visual limitation. `gui_rewrite` is optional.
 
 New assets are not produced in this planning package. The separate asset, super-event and achievement prompts contain their complete production handoffs. Full country flags, every visible focus node, three spirit slots, real action rows, eight achievement triplets and the actual super-event consumers must be accounted for. Art file counts do not prove runtime use.
 

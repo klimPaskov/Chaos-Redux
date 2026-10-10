@@ -40,7 +40,7 @@ These are baseline campaign stages. They do not create a separate optional evolu
 
 The country has a fixed goal and meaningful operational choices. The player or AI may emphasize rapid exploitation, restoration of captured industry, durable supply, massed anomalous troops, technical operations, or maritime concentration. Each choice changes where resources and focus time go. None removes the country's access to a family of Chaos content or turns it into a cooperative political route.
 
-The world confronting it has three practical priorities. It can destroy the initial foothold, keep the Directorate fragmented and undersupplied, or maintain a defensible territory on the origin continent while preparing a larger counteroffensive. These are demanding military plans. Holding one island delays the ending but gives no protection against a boss that already has the means to reach it.
+The world confronting it has three practical priorities. It can destroy the initial foothold, keep the Directorate fragmented and undersupplied, or maintain a defensible territory on the origin continent while preparing a larger counteroffensive. These are demanding military plans. Holding one island delays the ending but gives no protection against a boss that already has the means to reach it. Part 09's counterplay table lists the concrete levers.
 
 The largest source of variety is the actual campaign. A Directorate inside an industrial European front, a large Asian interior, a sparse African rail network, an American continental bloc or the Australian mainland faces different strategic problems. The origin changes geography and enemy capabilities. It does not substitute a regional imitation for the universal arsenal.
 
@@ -52,6 +52,6 @@ The arsenal is broad underneath that simple surface. Every installed unit, techn
 
 ## Reading order
 
-Parts 02 through 05 define arrival, military scale, arsenal and conquest. Parts 06 through 08 define the country, focus paths, actions and AI. Part 09 defines the ending and manual scenario. Parts 10 and 11 cover presentation, achievements and Chaos consequences. Parts 12 through 15 contain implementation contracts, validation cases, source reconciliation and the completed design review. Part 16 supplies the detailed arsenal interfaces and migration sequence. The six separate prompts are implementation handoffs generated from the finished specifications.
+Parts 02 through 05 define arrival, military scale, arsenal and conquest. Parts 06 through 08 define the country, focus paths, actions and AI. Part 09 defines the ending and manual scenario. Parts 10 and 11 cover presentation, achievements and Chaos consequences. Parts 12 through 15 contain implementation contracts, validation cases, source conflict dispositions and the completed design review. Part 16 supplies the detailed arsenal interfaces and migration sequence. The six separate prompts are implementation handoffs generated from the finished specifications.
 
 All tuning values in this package are proposed starting anchors. They are design choices, not claims of measured HOI4 balance. Exact bindings and engine behavior are verified during implementation using the concrete cases in Part 13.

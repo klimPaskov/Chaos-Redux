@@ -1,6 +1,6 @@
 # 13. Validation and acceptance matrix
 
-The cases below are future implementation acceptance. No HOI4 engine, MCP renderer, probability service or live campaign was run for this planning package. The local package checks and actual specialist design review are recorded separately in Part 15.
+The cases below are future implementation acceptance. Nothing here has been run in the engine.
 
 ## Arrival and selection
 
@@ -62,7 +62,8 @@ The cases below are future implementation acceptance. No HOI4 engine, MCP render
 | W02 | Shared white-peace event targets a Directorate war | Conquest hostility is preserved without disabling unrelated peace |
 | W03 | First capture, loss and recapture of a state | Live capacity changes correctly. Permanent reserves and premiums do not repeat |
 | W04 | Native annexation and scripted stockpile transfer overlap | Actual concrete equipment credited exactly once and source debited exactly once |
-| W05 | Evacuation, interception, partial arrival and lost destination | Population and equipment conservation, real deaths once, only actual delivery credited |
+| W05 | Aid convoy and industrial evacuation with interception, partial arrival and lost destination | Equipment and factory conservation, convoy losses once, only actual delivery credited. Civilian evacuation stays with migration and is not duplicated |
+| W12 | Directorate captures a state next to a former-owner state | Migration front flight starts from the former owner's neighbouring states as for any Chaos capture, with no Event 103 refugee mechanic |
 | W06 | Industrial relocation or demolition interrupted halfway | No duplicated factories, free destination capacity or invisible full refund |
 | W07 | Controller changes around a review date | State-owned cadence survives, callback count cannot accelerate growth |
 | W08 | Every mainland state held but one remote origin island remains | Continental completion stays false and a pre-terminal delivery campaign begins |
@@ -107,6 +108,8 @@ The cases below are future implementation acceptance. No HOI4 engine, MCP render
 | P11 | Repeated spirit refresh, recapture, surge allocation, servicing and terminal amplification affect the same production dimension | Part 03's additive approved improvements and single phase factor reach one target. No duplicated opening allowance, compounding old spirit stages or free future equipment shipment |
 | P12 | Campaign or counterattack capture, loss during the 30-day hold, empty formation, changed priority and already-controlled target | Frozen force and supply work is required. Hold reset cannot move the original 120-day deadline, and payment or existing control grants no success |
 | P13 | Defense objective in standard and emergency form | Full disclosed 90-day or 30-day work is required with real threat, force and supply coverage. Acceptance starts work, not success, and a broken interval cannot be relabeled complete |
+| P14 | Observer with, without and after expiry of a Reconnaissance receipt | The limiting sustainment component and its node appear and join the Counterattack and Local asset denial target lists only while the receipt is live |
+| P15 | Each counterplay lever in Part 09 exercised once | Starving the foothold lowers sustainment coverage and the AI repairs supply first. Holding one island blocks the ending. A denied or evacuated asset is not absorbed. A Chaos reversal near 1000 can hold the ending closed |
 
 ## Achievement proof
 
@@ -118,6 +121,4 @@ For R2 and R5, delayed proof must survive boss cleanup and save/load. For R3, te
 
 ## Evidence standard and stop condition
 
-Separate source coverage, parser validity, arithmetic reasoning, reference evidence, inspected graph, rendered layout, probability classification, save observation and live-game observation. Record exact source revision, scenario and limitations for each meaningful result. Resolve a concrete risk before broadening tests.
-
-The code goal is complete only when every accepted required design row has a current implemented consumer, every accepted review finding has a disposition, all output files and identifiers agree, and no missing capability is disguised as a balance decision. Apply the current AGENTS.md completion rules to the evidence matrix. Use the meaningful available checks and relevant local reference/source alternatives after the bounded retry limit, and distinguish unverified engine behavior from missing implementation or a missing specifically requested measurement. Unavailable optional verification alone does not keep otherwise finished work open. User-owned game testing is neither requested nor awaited, and static review is not reported as observed game behavior.
+Separate source coverage, parser validity, arithmetic reasoning, reference evidence, inspected graph, rendered layout, probability classification, save observation and live-game observation, and record the source revision, scenario and limitations for each meaningful result. The code goal is complete when every accepted design row has a current implemented consumer, every accepted review finding has a disposition, all files and identifiers agree, and no missing capability is disguised as a balance decision. Apply AGENTS.md's completion rules. Unobserved engine behavior stays labelled as such, and an unavailable optional check does not reopen finished work.

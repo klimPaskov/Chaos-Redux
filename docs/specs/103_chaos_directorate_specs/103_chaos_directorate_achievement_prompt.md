@@ -90,39 +90,9 @@ When achievement evidence consumes a real Part 07 mission outcome, keep that mis
 
 Payment display, blocked text, availability, AI and settlement must use one fresh authoritative quote and one payer. Custom payment has one inclusive affordability check and one debit. A native payment is not debited again. Respect the four-type payment limit and three-type inline display rule. A success receipt describes actual finished work, not an offer, pledge, duplicate callback or refund.
 
-### R3 first-crisis and anchor binding
+### High-risk bindings
 
-Implement the actor-specific first qualifying crisis exactly. All entry facts must coincide: enrolled actor at war, direct boss control at least 90 percent of the required continent, Chaos strictly above 1000, both ending settings enabled and at least one directly controlled initially owned core state of the actor on that continent.
-
-At that check, choose the frozen arrival-era capital if eligible. Otherwise choose the eligible state with the smallest stable native state ID. Record the candidate set, selected anchor, crisis date and 90-day due date and disclose the result immediately through the appropriate achievement or existing objective context. Do not wait for the player to open a selector. Do not add a new anchor-selection UI.
-
-Later decreases in the boss's continental share do not invalidate the historical crisis qualification. Anchor loss, Chaos dropping to 1000 or below, interrupted ending settings and the other explicit disqualifiers still apply to the hold. An invalidated anchor attempt is not replaced with a convenient island or a fresh date. Save/load preserves the exact original selection and due date.
-
-### B1 geography-scaled deadline
-
-Compute `deadline_days = 5 * ceil(min(300, max(150, 120 + 5 * sqrt(S) + 10 * L)) / 5)` once at committed arrival and store its inputs and absolute deadline. Use the count of actual required origin states and disconnected ownable landmasses excluding the mainland. Count landmasses rather than individual states as the latter term. Apply the 150 through 300-day clamp and then round upward to five days exactly as Part 11 states.
-
-Do not recalculate from shrinking territory, later player enrollment, intensity changes or save/load. Low Chaos after a manual launch still requires genuine play to reach the normal terminal condition inside the same deadline. Real terminal success, live complete origin control, arrival-state continuity and no capitulation remain necessary.
-
-### B2 current dynamic coverage
-
-Derive the required deployable family set from the complete effective-definition and owner-registration contract in Parts 04 and 16. Do not hardcode a short named roster. Keep stable owner and capability IDs, effective version, acquisition and use form, instrumentation status and exact qualifying use receipt.
-
-New required families registered before unlock join the required set. Retain existing receipts under stable owner identities. Handle renames and supersessions with an explicit owner migration disposition. A missing or inaccessible required family, unregistered effective definition or absent actual-use evidence is a release gap. Pure registry carriers and nondeployable utilities are excluded only with explicit owner-type evidence.
-
-The canonical current set and its actual-use coverage are separate from the broad capability-class taxonomy used for bounded Chaos premiums. A shared Chaos milestone must not pretend that every deployable family was used. Conversely, adding many new families must not create unbounded duplicate Chaos premiums. Achievement tracking observes actual owner work without triggering the original host country's evolution, ending or exclusive character.
-
-### B3 frozen force and sustainment
-
-B3 requires two separate military-health checks in addition to actual world conquest and its other conditions. Freeze the victory-check requirement immediately before the final sovereign's final defeat. Retain the real final-theater planned force and essential equipment requirements, plus the committed serviceable-force equivalents used for that snapshot. Bind the snapshot to the actual final-defeat transaction and retain the pre-transition evidence. Do not reconstruct an empty postwar plan and call it the original requirement.
-
-Require at least 75 percent of that committed serviceable-force equivalent snapshot and at least 75 percent sustainment against the frozen requirement. Treat both as required predicates. Unit names, empty templates, a division counter count or a perfect ratio against a zero plan cannot substitute for serviceable force.
-
-Use Part 03's actual limiting coverage of essential reinforcement equipment, relevant human or manufactured bodies, fuel for active consumers and delivered supply against the active theater's demand. The normal active-force sustainment horizon is 30 days. Omit only a genuinely inapplicable requirement, never divide by zero, and do not add fictitious human manpower demand for zero-manpower families. A nonessential reserve prototype is not an essential active requirement. Preserve the real final theater's transport and basing needs in the frozen victory check where they apply.
-
-Disbanding, emptying the plan, removing equipment, changing a priority or ending the last war cannot shrink either frozen requirement into an easy award. Legitimate production, repair and owner-authorized absorption may restore losses while the real world-conquest state remains true. No debug refill, retroactive grant or new private production path is created for the achievement.
-
-Keep production accounting consistent with Part 03. The opening industrial allowance is frozen once, real conquered usable factories add real output, and focus and terminal changes feed one output target. A refreshed spirit or repeated capture cannot multiply production or materialize free stockpiles to satisfy B3.
+R3's first-crisis anchor, B1's geography-scaled deadline, B2's growing actual-use set and B3's frozen force and sustainment snapshot take their exact formulas, freeze points, thresholds and disqualifiers from [Part 11](11_chaos_consequences_and_achievements.md#achievement-concepts) and Part 03, and are not restated here. Bind each as follows. Freeze every denominator, anchor, deadline and snapshot at its accepted moment, from stored inputs and never from later control, intensity, enrollment, UI opening or save/load. Count each unique state or family once. Derive the B2 family set from the effective-definition and owner-registration contract in Parts 04 and 16, keeping it separate from the broad capability-class taxonomy used for bounded Chaos premiums. Bind B3's snapshot to the actual final-defeat transaction so disbanding, an emptied plan or a priority change cannot shrink it. No debug refill, retroactive grant or private production path serves any award.
 
 ### Persistent receipts, holds and cleanup
 
@@ -148,10 +118,10 @@ Write final achievement titles and descriptions to communicate the accepted chal
 
 ## Required icon production and processor owner
 
-Read the complete current [Achievement icons](../../../.agents/skills/chaos-redux-event-assets/references/icon-and-ui-families.md#achievement-icons) contract before production.
+Read the complete current [Achievement icons](../../../.claude/skills/chaos-redux-event-assets/references/icon-and-ui-families.md#achievement-icons) contract before production.
 It owns exact immutable template paths and SHA-256 checks, one original native-transparent subject, deterministic grey and unchanged-overlay sources, the complete-triplet processor, strict one-level BGRA and exact decoded-pixel equality, review evidence and root-only placement.
-Read the actual current `.agents/skills/chaos-redux-event-assets/tools/process_achievement_icons.py` contract before invoking it with checked IDs and a separate output directory.
-Ordinary 2D conversion follows [DDS conversion](../../../.agents/skills/chaos-redux-event-assets/SKILL.md#dds-conversion), using the current skill-local converter.
+Read the actual current `.claude/skills/chaos-redux-event-assets/tools/process_achievement_icons.py` contract before invoking it with checked IDs and a separate output directory.
+Ordinary 2D conversion follows [DDS conversion](../../../.claude/skills/chaos-redux-event-assets/SKILL.md#dds-conversion), using the current skill-local converter.
 Do not copy planning-era CLI assumptions or replace the supplied backgrounds/overlay.
 
 `chaosx_icon_artist` produces eight independent original subjects under Part 11's exact icon directions, with `transparent_background = true` in the first native ImageGen call.

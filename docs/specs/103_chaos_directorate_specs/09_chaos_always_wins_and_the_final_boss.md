@@ -51,6 +51,23 @@ The distinction is intentional. The ending records the world's failure to contai
 
 If a different ending begins before this one, Event 103 neither replaces nor erases it. The Directorate continues as an already active hostile country unless that other ending's explicit verified world rules physically destroy it. Its unrestricted use of in-game special weapons is allowed to contribute to another ending. AI must not suppress its arsenal merely to protect the eligibility of Chaos Always Wins.
 
+## Counterplay
+
+The Directorate is meant to be nearly unstoppable once it is mature, and early containment is still a real plan. Every lever below is ordinary warfare against a stated dependency. None is a kill switch, a checklist or a diplomatic answer.
+
+| Lever | What the defender does | What it costs the Directorate | Backing mechanic |
+| --- | --- | --- | --- |
+| Starve the foothold | Hold or cut the spawn state's rail hub, port and airfield during the opening so delivered supply falls below the force's demand. The opening replacement reserve (90 to 240 days by intensity) only lasts while stockpiles do | The sustainment coverage indicator falls. The AI repairs supply before ordering another large assault, so tempo drops | Part 03 readiness and sustainment, Part 08 AI, reconnaissance receipt for the limiting component |
+| Keep one state | Keep or retake any single required origin-continent state, including an offshore island. The ending cannot begin while one is missing | The Directorate must win a naval or air campaign for the last territory, and every delay lets the world prepare a counteroffensive | Part 05 live control set, Part 05 reach campaign |
+| Contest the crossing | Interdict convoys, staging ports and airfields with fleets and air power | Overseas staging pauses without teleporting forces. Lost sites remove the network's contribution | Part 05 reach table, Part 07 Overseas staging |
+| Deny the yield | Local asset denial and Industrial evacuation before a capture, then counterattack states that are still on fast exploitation | Conquest adds less output and fewer reserves, so the snowball slows | Part 05 absorption, Part 07 |
+| Answer the special arsenal | Capability-specific protection, the existing CBRN protective systems and early reconnaissance blunt a named operation | The operation costs more for less. Nothing grants global immunity | Parts 04 and 07, CBRN warfare system |
+| Close the Chaos gate | The event-owned reversals in Part 11 lower Chaos when a captured major base is restored (-5 to -10) or first continental completion is broken (-10). When Chaos is within that distance of 1000, such a reversal can hold the ending closed until Chaos rises again | The ending cannot commit while Chaos is not strictly above 1000 | Part 11 |
+
+Do not plan around the Chaos lever when Chaos is far above 1000. The Directorate's own wars, deaths and special weapons keep adding to it. The reversals are small and one-shot, and defeating the Directorate does not refund dead populations or clean the atmosphere.
+
+The windows are different in kind. In the opening, the foothold and its supply are the target. During the continental war, bypassed pockets, absorbed-but-unrestored states and the last remote territories are the targets. After Chaos Always Wins, the terminal reinforcement is a one-time package and later strength comes from production, so the targets are the Directorate's transport, ports and industry. The objective display (Part 10) shows how many required states remain, and the single milestone notice when resistance becomes extremely narrow tells exposed countries how little room is left.
+
 ## The Final Boss
 
 The manual scenario presents one fixed setup identity with the existing four intensity stops. It creates the same Directorate in one uniformly chosen valid non-island state. The launching player remains in their own country. There is no automatic tag switch or hidden preference that spawns the boss next to the requester.
@@ -90,7 +107,7 @@ Each successful manual attempt receives a fresh immutable episode identity and g
 
 Automatic Event 103 remains fire-once. A manual relaunch neither restarts its grace nor clears or resets its prior fired, defeat or arrival history. It bypasses ordinary prior-event state only for the fresh manual setup. Existing terminal history remains intact, so a prior ending may still block launch through the actual shared terminal-conflict rule.
 
-**Disposition: promoted into an accepted spec.** The acceptance basis is the user's 10 October 2026 selection, **Allow relaunch after defeat**, reported by the parent during import. It supersedes the original planning parent's lifetime manual-launch lock. Parts 02, 11, 12, 13 and 16 consume this episode-isolation contract. The original archive and its JSON receipts preserve the earlier policy as history. Failed provisional requests still consume no successful attempt.
+**Disposition: promoted into an accepted spec.** Basis: the user's 10 October 2026 selection, **Allow relaunch after defeat**, which supersedes the original lifetime manual-launch lock. Parts 02, 11, 12, 13 and 16 consume this episode-isolation contract. Failed provisional requests consume no successful attempt.
 
 The same setup preflight controls the button, its visual disabled state and final confirmation. Confirmation is consequence-free until accepted. The first native option is Cancel, and acceptance revalidates the frozen request, selected intensity, carrier, state candidate and terminal conflict. A duplicate pending request cannot overwrite the first. If the shared window intentionally uses live selectors, freeze them on confirmation and keep that exact accepted request through commit.
 
@@ -100,6 +117,4 @@ The Final Boss uses the shared scenario list, sort controls, detail area, intens
 
 Chaos Always Wins is one public, default-enabled world-end row owned by Event 103. It has independent disabled persistence, title and premise direction, active-state binding and a linked super-event identity. Its checkbox does not disable the Directorate country or cancel an ending already committed.
 
-Event ID 103, the scenario numeric ID, ending numeric ID, super-event display ID, audio ID and sort values are distinct namespaces. The original package reserved no new number, and its historical repository read could not access the central reservation file. Use the current shared registry and import evidence linked from the package guide for assignments. Part 12 defines the binding work required before implementation. Existing IDs must be preserved.
-
-Current reserved bindings are `the_final_boss = 33` (`SCN-033`), the separate `the_final_boss_name = 4.375` name-sort value, `chaos_always_wins = 19` owned by Event 103, presentation `124` and independently reserved playback audio `124`. The public ending uses the shared primary per-event sort `10`. These are planning reservations checked by the import parent, with source evidence retained in the current import record. No scenario, ending, super-event, audio file or catalog row is implemented by assigning them here.
+Event ID 103, the scenario numeric ID, ending numeric ID, super-event display ID, audio ID and sort values are distinct namespaces. Their current assignments are the table in [Part 12](12_implementation_and_integration_contracts.md#identifier-reservation) and the shared identifier registry. They are planning reservations, and assigning them registers no scenario, ending, super-event, audio file or catalog row. Existing IDs must be preserved.

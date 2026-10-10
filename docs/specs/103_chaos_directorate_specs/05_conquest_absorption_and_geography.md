@@ -23,9 +23,9 @@ This distinction gives conquest a durable snowball without turning every provinc
 
 ### State absorption sequence
 
-On the first committed control gain, remember the state, source authority, episode and before-transfer measurements. Native occupation supplies its ordinary benefits once. The Directorate then chooses between fast exploitation and deeper restoration through its existing priorities.
+On the first committed control gain, remember the state, source authority, episode and before-transfer measurements. Native occupation supplies its ordinary benefits once. Every captured state starts on fast exploitation. Deeper restoration is the paid Reconstruction action in Part 07, the only place this choice is made.
 
-Fast exploitation yields useful output and military access immediately, with heavier repair demand, resistance and strain. Restoration preserves more infrastructure and increases long-run throughput, with an upfront allocation of civilian capacity and equipment. Neither choice waits for an ideology branch or excludes the other forever. A later switch works on the remaining physical capacity and never grants the original one-time benefit again.
+Fast exploitation yields useful output and military access immediately, with heavier repair demand, resistance and strain. Restoration preserves more infrastructure and increases long-run throughput, with an upfront allocation of civilian capacity and equipment. Neither path waits for an ideology branch or excludes the other forever. Starting Reconstruction later works on the remaining physical capacity and never grants the original one-time benefit again. Fast exploitation trades long-run throughput for early output and leaves the state carrying its repair demand, resistance and strain until restored, so a recently taken state that has not been restored is where resistance denial and counterattacks cost the Directorate most.
 
 Use the actual native occupation and compliance systems wherever they support this behavior. New state records hold only owner, version, already-accounted contributions, pending transaction and review date. They do not create a second public compliance meter. A captured state's processing date survives a controller change.
 

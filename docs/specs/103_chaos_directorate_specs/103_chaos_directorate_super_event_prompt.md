@@ -79,7 +79,7 @@ It owns each live gate, commit-time arbitration/revalidation and the separation 
 A successful receipt requires the live actor/episode, complete direct origin-state control including islands, Chaos strictly above 1000, branch/global enablement and no prior world-end.
 Presentation consumes that receipt and cannot create it.
 
-Read the current [quote workflow](../../../.agents/skills/chaos-redux-super-events/SKILL.md#quote-research-workflow), [cultural remark workflow](../../../.agents/skills/chaos-redux-super-events/SKILL.md#cultural-remark-research-workflow), and complete [audio research and implementation](../../../.agents/skills/chaos-redux-super-events/SKILL.md#7-audio-research-and-implementation) contract.
+Read the current [quote workflow](../../../.claude/skills/chaos-redux-super-events/SKILL.md#quote-research-workflow), [cultural remark workflow](../../../.claude/skills/chaos-redux-super-events/SKILL.md#cultural-remark-research-workflow), and complete [audio research and implementation](../../../.claude/skills/chaos-redux-super-events/SKILL.md#7-audio-research-and-implementation) contract.
 They own reusable candidate research, attribution/rights, lawful download, final WAV preparation, sound wrappers, catalogue and evidence requirements.
 Task-specific research directions above remain mandatory.
 
@@ -104,7 +104,7 @@ P12 is the single 457x328 terminal image in Part 10. The asset prompt owns origi
 
 Use a period-documentary view of the mixed Directorate army moving through an occupied continental port toward a wider campaign. Check the actual installed source families before choosing visible conventional, organic or mechanical silhouettes. The composition communicates a real institutional army, functioning embarkation and captured industrial depth. It is not an exact roster, a full-world-conquest map or a false photograph of a built game model.
 
-Inspect `.agents/skills/chaos-redux-event-assets/assets/gfx_references/event_art/super_event/` together with the current live super-event consumer. Verify the final 457x328 crop, contrast and foreground readability. Functional title, description, quote and button text remain native interface elements. Do not paint them into the image.
+Inspect `.claude/skills/chaos-redux-event-assets/assets/gfx_references/event_art/super_event/` together with the current live super-event consumer. Verify the final 457x328 crop, contrast and foreground readability. Functional title, description, quote and button text remain native interface elements. Do not paint them into the image.
 
 Retain the exact ImageGen request, reference roles, source candidate and edit lineage, explicit final selection, processed PNG and final DDS. Proposed runtime image path is `gfx/super_events/103_chaos_directorate/super_event_103_chaos_always_wins.dds`, subject to the implementation owner's checked binding. The asset worker returns the exact final sprite and consumer handoff. Generated final scene art must not be labeled archival or replaced with a flat emblem, diagram, title card or UI mockup.
 

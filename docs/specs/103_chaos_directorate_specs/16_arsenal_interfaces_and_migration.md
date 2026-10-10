@@ -2,17 +2,9 @@
 
 ## Status and scope
 
-This is the accepted detailed architecture from the dedicated scripted system architect review. It extends Parts 04 and 12 with the proposed owner interfaces, migration order and exact lifecycle obligations. Proposed helper names are working technical names and are not claimed to exist in the repository.
-
-Its acceptance basis is the original planning parent's promotion of the architect contribution recorded in Parts 14 and 15. Cache counts, provider discrepancies, tool availability and source descriptions below belong to that historical evidence. Current source reconciliation and numeric assignments belong to the import evidence linked from the package guide. Use the current owner skills for workflow, with source contracts preserved and genuine design conflicts left explicit.
+This is the accepted detailed architecture from the dedicated scripted system architect review, promoted by the original planning parent as recorded in Parts 14 and 15. It extends Parts 04 and 12 with proposed owner interfaces, migration order and lifecycle obligations. Helper names are working technical names, not claimed to exist. Cache counts and provider discrepancies below are historical observations, so recheck them against current source. Repository documentation proves the documented contract, not engine behavior or implementation closure.
 
 Event 103 owns its country identity, committed force plan, episode receipts, orchestration and final defeat settlement. Each upstream capability owner retains native behavior, valid tokens, compatibility, payment, physical requirements, neutral authorization and cleanup. Shared discovery extends existing contracts without creating a second family registry.
-
-### Evidence and limits
-
-The architect fully read the current supplied AGENTS, events, subagents, dynamic effects and dynamic triggers guidance, the live repository CXT and unit-family registry documentation, the parent design contract and Parts 03 and 05. The complete source gate and individual reader receipts are preserved in Part 14 and the evidence files. Repository documentation proves the current documented contract, not the behavior of the engine or the entire implementation closure.
-
-The live tool inventory contained zero HOI4 tools. No installed vanilla or offline wiki reference was verified, and no viewer, renderer, probability audit, engine test or game run was used. Standalone Technology Tree Viewer availability remains unverified. The source protocol permits this planning handoff with a concrete future validation map. The exact helper closure and native behavior remain implementation acceptance gates.
 
 ## 1. Universal capability access
 
@@ -260,7 +252,7 @@ Keep the installed project registered and usable for subsequent real work.
 No project disappears merely because its ordinary completion callback has mixed side effects.
 
 Before the public arrival and episode commit, prove complete legal templates, exact full-strength equipment, valid placement, human and nonhuman personnel obligations, functioning supply and reinforcement, and usable starting land operations in the single selected state.
-Part 03's measured demand and delivered-throughput preflight is authoritative. The initial 70 to 90 percent reduction is a tuning band, not a ceiling. A required legal concession above that band must be proved, and an unsupported setup remains blocked without reducing the committed force or taking more territory.
+Part 03's measured demand and delivered-throughput preflight is authoritative.
 Air formations require actual legal bases.
 Ships require a legal coast and deployment consumer.
 An inland origin holds naval designs, transport knowledge, convoys and equipment in reserve, with an immediate real coastal campaign path.
@@ -443,29 +435,10 @@ It does not approve bulk target/source rewrites or supply a full code plan for e
 | Other world end stops random scheduler | Active conquest and authorised owner work continue, own ending stays blocked | Full event state-flow and impact inspection with terminal scenario fixture |
 | Repeated recapture or used receipt | No duplicate salvage, grant, payment, Chaos or compensation | Fresh-consumption tests including between-validation mutation and stale outputs |
 
-Future MCP work starts by discovering relevant current exposure and live schemas, reusing unchanged discovery and successful read-only domain calls. Verify service version, health and client task negotiation before advanced helper or asynchronous routes that require them. Optional route negotiation must not block ordinary supported domain inspection or local source review.
-Use `hoi4.reference_context`, `reference_search`, `reference_read` and `source_lookup` for scopes, token consumption, arrays, technology exclusions, project outputs, facilities, constants, native callback ROOT/FROM and destruction semantics.
-Read installed vanilla and offline wiki references in parallel, keeping exact path, line and revision receipts.
-
-Prefer supported event `state_flow` and `impact` analysis with useful helper coverage for setup, registration, version consumption, callback recovery, terminal continuation and defeat.
-A focused trace with zero helpers cannot prove lifecycle completeness.
-Retain render and compare artifacts over matching source revisions and scenarios.
-Technology and doctrine work uses meaningful available inspect, render and compare checks for grants, unlocks, exclusions and mode behavior.
-Map inspection must establish actual placement, coast, supply, adjacency and all ownable-land objective membership, including ownable impassable administrative states.
-If an exact objective GUI is implemented, its owner worker reviews the linked category/window, required states, resolutions and click regions using supported inspect/render evidence or the same source-layout contract with unavailable visual checks recorded.
-
-Every weighted force allocation or AI choice begins with `hoi4.probability_inspect` and the read-only probability auditor.
-Keep immutable before sources and the same named scenarios for mandatory comparison.
-This specification defines no audited probability result.
-Deterministic all-family coverage is a completeness rule rather than a random family draw.
-Meaningful live consumer evidence belongs to the user's game session under the repository rules.
-
-Apply the initial request and at most one useful corrected retry to each underlying MCP failure, then use the relevant local references, helper source and named scenario calculations. A focused trace with incomplete helper coverage does not establish lifecycle closure, but the unavailable analyzer alone is not missing implementation. Record attempts and the condition for retry in the existing handoff rather than polling unchanged failures. User-owned live consumer observation is a distinct evidence class and is neither requested nor awaited to deliver otherwise finished authorized implementation. Required assets, valid consumers, confirmed defects and specifically requested measurements retain their own completion obligations.
+Follow AGENTS.md's reference workflow and bounded retry policy. Use `hoi4.reference_search` and `hoi4.reference_read` for scopes, token consumption, arrays, technology exclusions, project outputs, facilities, constants, native callback ROOT/FROM and destruction semantics, and `hoi4.event_inspect` state-flow analysis with helper coverage for setup, registration, version consumption, callback recovery, terminal continuation and defeat. A focused trace with incomplete helper coverage does not establish lifecycle closure. Map inspection must establish placement, coast, supply, adjacency and all ownable-land objective membership, including ownable impassable administrative states. Every weighted force allocation or AI choice begins with `hoi4.probability_inspect`. Deterministic all-family coverage is a completeness rule, not a random draw.
 
 ## 13. Required implementation closure
 
 The architecture retains every installed capability and every future registered addition. It does not authorize shipping with a missing adapter, a debug substitute, an illegal opening force or an unproven universal inventory.
 
 The highest-risk implementation gates are the dormant-history migration, neutral authorization for identity-gated providers, safe project-output separation, native compatible technology representation, effective-definition completeness and provider census, one-state military readiness under real supply rules, and dead-actor callback and destruction semantics. Parts 12 and 13 assign the integration sequence and acceptance cases. Part 15 records the final design review disposition.
-
-No gameplay implementation, asset generation or live-game completion is claimed. Commit and validation work belongs in the actual Chaos Redux repository when this specification is implemented.
