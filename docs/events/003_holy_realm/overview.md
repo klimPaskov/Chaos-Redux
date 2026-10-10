@@ -7,6 +7,16 @@ The 12 active portrait DDS files are parent-reviewed and installed; 47 main-cate
 Seven native shortcuts, the above 600 Secure High Passes authorization, twelve reviewed filter icons and parent-accepted 6+3 arrow-to-visible-requirement simplifications are applied without removing gameplay gates or route content.
 Default Refuge1920/UI1 and the final D584 native focus layout are visually reviewed; the other tab/risk/sprite matrix, full AI race and native gameplay remain pending.
 
+## Release logic pass, 2026-10-11
+
+Open refuge roads ease Compassion Drift in the formation event and in `THR_open_refuge_roads`, and the restraint choice in `chaosx.nr3.31` grants the Peacekeeping Mandate like the restraint decision and `THR_lamps_remain_lit`.
+Proclaiming the mandate at formation (`chaosx.nr3.2.e`) raises Spiritual Legitimacy, Final Silence Pressure and Chaos instead of recording an unread memory flag, and the formation event's flat resources read `holy_realm_event` script constants.
+`Walk the Refuge Circuit` is the only refuge-circuit decision, and the retired Mandala panel, ledger, map icon and peace-letter chance text is removed.
+A harmful Buddha power needs a special actor that is fighting a defensive war against the Realm or a living Sangha Compact member through `holy_realm_buddha_power_hostile_front`, so a war the Realm declared cannot qualify; the owning event's own hostile-conduct evidence is not consumed yet.
+A country that refuses a peace letter is not asked again for a year.
+The late Vow crusade reads Totalen Chaos instead of a calendar date, and no Holy Realm decision or focus weight reads a date.
+Flat Political Power, Command Power, army experience, compliance and resistance values in decisions read `holy_realm_reward` script constants.
+
 ## Overview
 
 The Holy Realm is event ID 3 and remains registered as a fire-once Chaos Redux event. It transforms Tibet into a full country path rather than a short event chain. If Tibet no longer exists, Bhutan or Nepal can serve as the Himalayan fallback host. If none of those countries exists as a valid normal country, automatic event selection is unavailable and shows the shared no-host reason; a manual request or direct forced entry receives the event-owned explanation. The route starts as a mountain refuge, becomes a Bodhisattva-led state, creates the Arhat Administration, prepares the Unshaken Seat, and can then realize Buddhahood through teaching, meditation, and low Defilements. Peaceful renunciation, Sangha Compact work, anti-chaos Buddha powers, pilgrimage-protection ledgers, and Final Silence are separate commitments with their own gates and consequences.

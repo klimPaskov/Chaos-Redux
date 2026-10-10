@@ -55,7 +55,7 @@ The balance should move because of what the Realm does in the world, not because
 
 ### 3. Date gates become conditions
 
-Disposition: accepted and queued under the user's 2026-10-10 decision that dates influence and gameplay conditions decide; the replacement conditions are proposed.
+Disposition: implemented on 2026-10-11 under the user's 2026-10-10 decision that dates influence and gameplay conditions decide; the late Vow crusade reads `holy_realm_chaos_at_least_totalen_chaos`, and the Empty Mandala session and All Roads End in Silence weights no longer read a date.
 
 - `holy_realm_late_vow_against_annihilation_crusade` in `common/scripted_effects/003_holy_realm_effects.txt` grants the large Vow against Annihilation crusade idea on renunciation when `date > 1944.12.31`, even if the doctrine was never armed and pressure stayed low.
   Replace the date with a real crisis condition, such as `holy_realm_chaos_at_least_totalen_chaos` or an active world-threat source other than the Realm.
