@@ -273,7 +273,7 @@ holy_realm_mandala_category = {
 				add_stability = -0.02
 				set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.medium_gain }
 				holy_realm_add_spiritual_legitimacy = yes
-			set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.small_gain }
+			set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.small_loss }
 			holy_realm_add_compassion_drift = yes
 			set_country_flag = holy_realm_memory_open_refuge_roads
 			if = {
@@ -1003,44 +1003,6 @@ holy_realm_mandala_category = {
 			remove_effect = {
 				holy_realm_finish_teaching_mission_slot = yes
 			}
-		ai_will_do = { factor = 2 }
-	}
-
-	THR_bodhisattva_mission_refuge_circuit = {
-		icon = generic_welfare
-		cost = global.black_friday_price_pp_90
-		days_remove = constant:holy_realm_decision.refuge_days
-		available = {
-			is_holy_realm_country = yes
-			holy_realm_bodhisattva_path_unlocked = yes
-			NOT = { has_country_flag = holy_realm_bodhisattva_mission_refuge_memory }
-			custom_trigger_tooltip = {
-				tooltip = THR_bodhisattva_bhumi_advancement_required_tt
-				holy_realm_bhumi_advancement_available = yes
-			}
-		}
-		visible = {
-			is_holy_realm_country = yes
-			holy_realm_bodhisattva_path_unlocked = yes
-			NOT = { has_country_flag = holy_realm_bodhisattva_mission_refuge_memory }
-			holy_realm_mandala_refuge_tab_actions_visible = yes
-		}
-		complete_effect = {
-			hidden_effect = { black_friday_credit_political_power_purchase = yes }
-			set_country_flag = holy_realm_bodhisattva_mission_refuge_memory
-			holy_realm_advance_bodhisattva_bhumi = yes
-			set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.small_gain }
-			holy_realm_add_spiritual_legitimacy = yes
-			set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.small_loss }
-			holy_realm_add_final_silence_pressure = yes
-			if = {
-				limit = { NOT = { has_country_flag = holy_realm_chaos_bodhisattva_refuge_mission_logged } }
-				set_country_flag = holy_realm_chaos_bodhisattva_refuge_mission_logged
-				set_temp_variable = { holy_realm_chaos_delta = constant:holy_realm_chaos.minor_peace_loss }
-				set_temp_variable = { holy_realm_chaos_reason = constant:chaos_meter_history_reason.special.holy_realm_refuge_relief }
-				holy_realm_add_chaos = yes
-			}
-		}
 		ai_will_do = { factor = 2 }
 	}
 
@@ -2052,9 +2014,9 @@ holy_realm_bodhisattva_category = {
 				holy_realm_has_open_teaching_slot = yes
 			}
 			check_variable = { spiritual_legitimacy > 32 }
-			OR = {
-				NOT = { has_variable = bodhisattva_bhumi }
-				check_variable = { bodhisattva_bhumi < 10 }
+			custom_trigger_tooltip = {
+				tooltip = THR_bodhisattva_bhumi_advancement_required_tt
+				holy_realm_bhumi_advancement_available = yes
 			}
 		}
 		visible = {
@@ -2064,7 +2026,6 @@ holy_realm_bodhisattva_category = {
 		complete_effect = {
 			hidden_effect = { black_friday_credit_political_power_purchase = yes }
 			holy_realm_start_teaching_mission_slot = yes
-			set_country_flag = holy_realm_bodhisattva_mission_refuge_memory
 			holy_realm_advance_bodhisattva_bhumi = yes
 			set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.small_gain }
 			holy_realm_add_spiritual_legitimacy = yes
@@ -3780,7 +3741,6 @@ holy_realm_doctrine_balance_category = {
 			modifier = {
 				add = 0.7
 				is_ai = yes
-				date > 1943.12.31
 				check_variable = { global.chaos_meter_value > 900 }
 				check_variable = { final_silence_pressure > 75 }
 			}
