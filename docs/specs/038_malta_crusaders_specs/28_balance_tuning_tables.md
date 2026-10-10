@@ -12,7 +12,7 @@ Balance must be judged from viable campaigns, not from isolated modifiers. Malta
 | --- | --- | --- |
 | `event_038_identity` | event, evolution, scenario, terminal, and package numeric IDs | registry, logs, scenario, Event Details |
 | `event_038_setup` | opening package thresholds and bounded grants | release transaction |
-| `event_038_values` | Authority, Cohesion, and Legitimacy floors, caps, and thresholds | council, focus, decisions, AI |
+| `event_038_values` | Cohesion and Legitimacy floors, caps, and thresholds, and the Command Standing anchor hold time | council, focus, decisions, AI |
 | `event_038_orders` | order demand cadence, influence bands, headquarters limits | council runtime |
 | `event_038_units` | family caps, equipment ratios, training, sustainment, spawn bounds | unit providers and AI |
 | `event_038_campaign` | objective durations, route readiness, war pacing, regional limits | campaign decisions |
@@ -27,15 +27,28 @@ Balance must be judged from viable campaigns, not from isolated modifiers. Malta
 
 ## Public mechanic values
 
-All three values use a normalized `0` to `100` display range. Hidden calculations can be more detailed.
+Cohesion and Legitimacy use a whole-number `0` to `100` range.
+Command Standing has five steps and no number.
+Hidden calculations can be more detailed.
 
-| Value | Opening target | Stable band | Warning band | Crisis band | Typical gains | Typical losses | Major thresholds |
-| --- | --- | --- | --- | --- | --- | --- | --- |
-| Crusade Authority | `45` to `60` by package | `50` to `79` | `25` to `49` | below `25` | held objectives, fulfilled campaigns, centralized command, successful settlements | defeats, abandoned fronts, refused obligations, failed command missions | `25` crisis decisions, `50` ordinary governance, `75` strong centralization, `90` rare high-authority outcomes |
-| Order Cohesion | `45` to `65` by package | `50` to `79` | `30` to `49` | below `30` | fair charters, joint command, fulfilled demands, shared victories | favoritism, repeated refusal, territorial disputes, rival headquarters | `30` incident risk, `50` mixed-order operations, `75` confederal strength, `90` exceptional unity |
-| Sacred Legitimacy | `30` to `55` by package | `45` to `79` | `20` to `44` | below `20` | Jerusalem custody, relief, Papal support, relic confidence, fair governance | civilian harm, exposed fraud, religious repression, loss of sacred centres | `40` broad religious support, `65` Blessed formations, `80` Papal transformation support, `90` strongest Holy World alignment |
+| Value | Warning | Crisis | Thresholds | Typical gains | Typical losses |
+| --- | --- | --- | --- | --- | --- |
+| Command Standing | Disputed (two anchors) | Fractured (fewer than two anchors, or a rupture) | Functional three anchors, Recognized all four for `120` days, Supreme after a settlement | anchors held, demands answered, settlement completed | anchor lost, rupture, suppressed incident |
+| Order Cohesion | `30` to `49` | below `30` | `30` incident risk, `50` joint actions, `75` confederal strength | fair charters, joint command, fulfilled demands, shared victories | favoritism, refused demands, territorial disputes, rival headquarters |
+| Sacred Legitimacy | `20` to `39` | below `20` | `40` broad religious support, `65` Blessed formations, `80` Kingdom of God and Holy World preparation | Jerusalem custody, relief, Papal support, accepted relic, fair governance | civilian harm, exposed fraud, religious repression, public Condemnation, loss of sacred centres |
 
-Values should normally move in packets of `3` to `12`. One-point changes are reserved for repeated small ticks that visibly accumulate. A major campaign success or scandal can move a value by `10` to `20` once.
+Opening values by package:
+
+| Package | Command Standing | Cohesion | Legitimacy |
+| --- | --- | --- | --- |
+| Baseline | Functional | `35` to `55` | `35` to `50` |
+| Evolution I | Functional | `30` to `55` | `40` to `55` |
+| Evolution II | Functional | `35` to `60` | `45` to `65` |
+| Evolution III | Recognized | `40` to `65` | `60` to `75` |
+
+Ranges allow route and random setup variation.
+Values move in packets of `2` to `5` for a minor event, `5` to `10` for a decision or mission, and `10` to `20` for a defining victory, scandal, or settlement.
+One action never crosses more than one band without a route-defining event.
 
 ## Opening package bands
 
@@ -72,12 +85,12 @@ No action may have more than four spendable cost types. Every displayed cost nee
 
 | Action class | Typical cost families | Duration band | Scale factors |
 | --- | --- | --- | --- |
-| Council arbitration | political power, command power, Authority or concession | instant to `30` days | order count, dispute severity, government route |
+| Council arbitration | political power, command power, or concession | instant to `30` days | order count, dispute severity, government route |
 | Military preparation | army XP, command power, equipment, fuel | `30` to `90` days | target strength, distance, route, current readiness |
 | Port and logistics project | civilian factory burden, trains, convoys, support equipment | `60` to `180` days | state damage, distance, port level, war state |
 | Foreign chapter call | convoys, equipment, political obligation, legitimacy | `60` to `150` days | relations, contributor industry, ideology, condemnation |
-| Principality charter | Authority, political power, equipment, administrative burden | `30` to `120` days | region size, resistance, local identity, route |
-| Integration | civilian burden, Authority, equipment, time | `180` to `540` days | population, resistance, compliance, cultural and political fit |
+| Principality charter | political power, equipment, administrative burden | `30` to `120` days | region size, resistance, local identity, route |
+| Integration | civilian burden, equipment, time | `180` to `540` days | population, resistance, compliance, cultural and political fit |
 | Relic expedition | civilian burden, convoys, equipment, intelligence exposure | `90` to `240` days | distance, conflict, competing claimant, route security |
 | Eleventh Crusade recovery | equipment, convoys, fuel, civilian burden | `60` to `365` days by stage | surviving cadres, refuge, industry, enemy control |
 | Holy World preparation | factories, equipment, diplomatic commitments, legitimacy | `90` to `365` days | continent, aligned countries, opposition, route distance |

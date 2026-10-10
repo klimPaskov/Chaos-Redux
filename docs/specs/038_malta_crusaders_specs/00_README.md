@@ -103,3 +103,4 @@ Planning-era source receipts preserve the superseded `SCN-015` candidate as hist
 ## Planning status
 
 The planning pack contains no approved fallback. Exact state IDs, exact country carrier decisions, final numerical values, final player-facing wording, final quotes, final music, final images, and final model sources remain implementation-time evidence gates. Those gates are defined precisely so they cannot be filled by guesswork.
+- 2026-10-10 spec audit: pass 2 incomplete. Parts 01 to 28 were tidied and the decision register reconciled; the unchanged files were not re-read.

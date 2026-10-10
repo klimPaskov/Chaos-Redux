@@ -24,6 +24,9 @@ All of these are required:
 
 The German flags represent Nazi belief, fabrication, or propaganda about racial origins. They do not establish a real biological or historical fact.
 
+All three flags already exist in the shipped Germany route: `germany_master_race_claim_established` is read by the Brilliant Scientist and Mengele effects, and `germany_holy_realm_contact_positive` and `holy_realm_german_origin_claim_contact` are set together in `common/scripted_effects/germany_mengele_effects.txt`.
+Event 38 only reads them and never sets them.
+
 ## Readiness checks
 
 The route also needs practical readiness:
@@ -316,17 +319,5 @@ After formation, the faction and Final Crusade become public. Atlantis remains h
 
 ## Acceptance scenarios
 
-1. all required flags exist and all actors are valid
-2. Germany has changed government
-3. Holy Realm exists but is hostile
-4. Malta is Holy See rather than base Malta
-5. human Germany, human Malta, or human Holy Realm
-6. Hitler already transferred by another route
-7. one member belongs to another faction
-8. one member capitulates during negotiations
-9. alliance exists for 729 days
-10. alliance exists for 730 days
-11. member leaves and rejoins
-12. Final Crusade active when world_end is set by another event
-13. alliance dissolves without Atlantis
-14. save and reload during the two-year timer
+The Teutonic Order scenarios are section J of `23_acceptance_scenarios.md`.
+That section also covers the Germany regime change, hostile Holy Realm, Holy See rather than base Malta, human members, a member already in another faction, a member capitulating during talks, the 729 and 730 day boundary, leaving and rejoining, and dissolution without Atlantis.

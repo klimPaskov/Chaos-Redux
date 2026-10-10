@@ -50,7 +50,7 @@ The opening performs one bounded release transaction:
 - create templates and units
 - grant equipment, fuel, trains, convoys, and manpower through dynamic setup formulas
 - create immediate wars against displaced owners
-- initialize the three public mechanic values
+- initialize Order Cohesion, Sacred Legitimacy, and Command Standing
 - initialize focus, decision, AI, and event-log state
 - issue regional reaction events
 - clear every temporary request, selection, and bypass marker
@@ -113,13 +113,15 @@ The Believers vs Nonbelievers scenario bypasses the source event and progression
 
 ## Player-facing mechanic budget
 
-Event 38 exposes three persistent custom values:
+Event 38 exposes two numeric values and one standing line, all owned by the Crusade Council (`04_crusade_council_mechanic.md`):
 
-- **Crusade Authority** measures central command, recognized control, and the ability to govern the expedition.
-- **Order Cohesion** measures cooperation among the military orders and the risk of command rupture.
-- **Sacred Legitimacy** measures religious recognition, relic prestige, Papal support, and public belief.
+- **Command Standing** is a five-step readout of whether the expedition holds its four anchors (Malta, Jerusalem, the sea road, and the supply port).
+- **Order Cohesion** (0 to 100) measures cooperation among the military orders and the risk of command rupture.
+- **Sacred Legitimacy** (0 to 100) measures religious recognition, relic prestige, Papal support, and public belief.
 
-The event can track many internal facts, but no fourth persistent public value is approved. Supply is shown through normal HOI4 systems and concise status text. Resistance, relic authenticity, foreign support, local Christian cooperation, Papal relations, order demands, and principality loyalty remain hidden components or qualitative statuses.
+The event can track many internal facts, but no further persistent public value is approved.
+Supply is shown through normal HOI4 systems.
+Resistance, relic standing, foreign support, local Christian cooperation, Papal relations, order grievance, and principality loyalty stay internal and reach the player as events, a demand card, or a one-line tooltip cause.
 
 ## Design boundaries
 

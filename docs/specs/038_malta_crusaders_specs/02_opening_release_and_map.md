@@ -13,30 +13,36 @@ The opening map is therefore divided into four roles:
 
 The implementation must select from curated state groups. It must never select an arbitrary coastal state from the whole Mediterranean.
 
-## Provisional state anchors
+## State anchors
 
-The table below records current public-wiki anchors for planning. These values are not implementation proof. The coding agent must inspect the installed vanilla state files and use `hoi4.map_inspect` before freezing the registry.
+The table records the installed vanilla `history/states` files for the curated opening pool.
+Names and 1936 owners were read from `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/history/states` on 10 October 2026.
+Chaos Redux and installed mods can change ownership, so the freeze and validate steps below still run against the live map, and `hoi4.map_inspect` (or direct reads of the state files if the route is unavailable) confirms ports, adjacency, and supply before the registry is frozen.
 
-| Strategic role | State | Provisional ID | Status |
+| Strategic role | State file name | State ID | 1936 owner |
 | --- | --- | ---: | --- |
-| Sovereign heartland | Malta | `116` | Provisional, locally verify |
-| Holy Land command | Palestine | `454` | Provisional, locally verify |
-| Holy Land corridor | Jordan | `455` | Provisional, locally verify |
-| Maritime bridge | Cyprus | `183` | Provisional, locally verify |
-| Aegean island option | Dodecanese | `164` | Provisional, locally verify |
-| Aegean island option | Aegean Islands | `187` | Provisional, locally verify |
-| Aegean reserve | Crete | `182` | Provisional, locally verify |
-| Greek mainland option | Attica | `47` | Provisional, locally verify |
-| Greek mainland option | Peloponnese | `186` | Provisional, locally verify |
-| Greek mainland option | Epirus | `185` | Provisional, locally verify |
-| Greek mainland option | Central Macedonia | `731` | Provisional, locally verify |
-| Greek mainland option | Thrace | `184` | Provisional, locally verify |
-| Southern Anatolian option | Antalya | `342` | Provisional, locally verify |
-| Cilician option | Adana | `344` | Provisional, locally verify |
-| Cilician option | Mersin | `345` | Provisional, locally verify |
-| Cilician option | Hatay | `799` | Provisional, locally verify |
-| North African option | Tripolitania | `661` | Provisional, locally verify |
-| North African option | Cyrenaica | `663` | Provisional, locally verify |
+| Sovereign heartland | Malta | `116` | ENG |
+| Holy Land command (holds the Jerusalem victory point) | Israel | `454` | PAL |
+| Holy Land corridor | Jordan | `455` | JOR |
+| Maritime bridge | Cyprus | `183` | ENG |
+| Aegean island option | Dodecanese | `164` | ITA |
+| Aegean island option | Aegean Islands | `187` | GRE |
+| Aegean reserve | Crete | `182` | GRE |
+| Greek mainland option | Greece (Attica) | `47` | GRE |
+| Greek mainland option | Peloponnese | `186` | GRE |
+| Greek mainland option | Epirus | `185` | GRE |
+| Greek mainland option | Central Macedonia | `731` | GRE |
+| Greek mainland option | Thrace | `184` | GRE |
+| Southern Anatolian option | Antalya | `342` | TUR |
+| Cilician option | Adana | `344` | TUR |
+| Cilician option | Mersin | `345` | TUR |
+| Cilician option | Hatay | `799` | SYR |
+| North African option | Tripolitania | `661` | ITA |
+| North African option | Cyrenaica | `663` | ITA |
+
+The earlier runtime stub also transferred Aleppo `677`, Lebanon `553`, Diyarbekir `350`, Sinai `453`, and Cairo `446`.
+Aleppo and Lebanon belong to the Antioch and Tripoli principality groups rather than the opening pool.
+Diyarbekir, Sinai, and Cairo are outside the curated pool and are not part of the design, because they would make the opening a Turkish and Egyptian war instead of a regional one.
 
 The exact local state list can contain newer subdivisions. When local files differ, the local installed game is authoritative.
 
@@ -125,7 +131,7 @@ Evolution III includes all lower packages and adds:
 - one relic or equivalent legitimacy advantage
 - Blessed formation access
 - stronger air and naval transport support
-- a higher opening Crusade Authority floor
+- an opening Command Standing of Recognized, because the coalition has already proven the anchors
 - a larger but still bounded force package
 
 The opening remains regional. Evolution III must not divide every country into believers and nonbelievers. That division belongs only to the Holy World route or its manual scenario.
@@ -178,7 +184,8 @@ If commit cannot complete, the transaction restores previous ownership and clear
 
 ## Existing Malta handling
 
-The implementation must audit the local vanilla Malta identity before choosing a strategy.
+The vanilla `MLT` tag exists (`common/country_tags/00_countries.txt`, `history/countries/MLT - Malta.txt`), and Chaos Redux already defines the `CRU` cosmetic tag in `common/countries/cosmetic.txt`.
+The implementation must still audit the live Malta identity before choosing a strategy.
 
 Preferred order:
 

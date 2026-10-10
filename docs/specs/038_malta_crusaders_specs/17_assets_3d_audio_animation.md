@@ -54,17 +54,10 @@ Use sourced research for Vatican and Papal flag geometry. The Kingdom of God can
 
 ### Principalities
 
-Required only for created country actors:
+Required only for created country actors, by tier from `08_principalities_and_governance.md`:
 
-- Kingdom of Jerusalem
-- Principality of Antioch
-- County of Tripoli
-- Crusader Cyprus
-- Aegean Crusader State
-- Anatolian Order State
-- North African March
-
-Each needs normal, medium, and small flags plus government variants that actually appear.
+- major principalities (Kingdom of Jerusalem, Crusader Cyprus, Principality of Antioch): normal, medium, and small flags plus the government variants that actually appear
+- minor marches (County of Tripoli, Aegean Crusader State, Anatolian Order State, North African March): one design each in normal, medium, and small sizes
 
 ### Hidden route flags
 
@@ -203,9 +196,8 @@ Required families:
 - raise formation
 - foreign volunteers
 - equipment conversion
-- siege workshop
 - regional target selection
-- invasion preparation
+- regional crusade launch
 - settlements
 - relic expeditions
 - principality obligations
@@ -222,14 +214,13 @@ Decision icons must remain readable at the actual 32 by 32 or inspected consumer
 A dedicated event-owned GUI is planned. It needs:
 
 - full background panel
-- three meter frames and fill states
+- two meter frames and fill states (Cohesion and Legitimacy) and a Command Standing line with five step marks
+- four anchor icons with held and lost states
 - six order emblems
-- dominant, marginalized, warning, and demand frames
-- sacred-center status icons
-- demand card art
-- territorial or relic card frame
+- dominant, suspended, warning, and demand frames
+- demand and incident card art
 - available and blocked button states
-- close, target, and detail controls
+- close and detail controls
 
 The UI worker owns layout and MCP visual evidence after the gameplay helpers exist.
 
@@ -246,7 +237,7 @@ Use animation only for meaningful state.
 Approved candidates:
 
 - subtle Crusade Council active seal
-- warning pulse when Authority or Cohesion enters collapse
+- warning pulse when Cohesion falls below 30 or Command Standing drops to Fractured
 - order demand card emphasis
 - disputed relic shimmer or instability
 - Holy World Ready seal
@@ -329,7 +320,7 @@ Use texture, emblem, and entity variants when sufficient. Create new geometry on
 
 ## 3D source and provider rules
 
-Use the current [3D model owner skill](../../../.agents/skills/chaos-redux-3d-model-pipeline/SKILL.md) for source eligibility, separated body/item inputs, provider gates and attempt limits, authorized Blender completion, calibration, actions, export/reimport, and handoff evidence.
+Use the current [3D model owner skill](../../../.claude/skills/chaos-redux-3d-model-pipeline/SKILL.md) for source eligibility, separated body/item inputs, provider gates and attempt limits, authorized Blender completion, calibration, actions, export/reimport, and handoff evidence.
 Each model retains the event-specific silhouette, component inventory, period fit, runtime consumer, action roles, sourced audio, and counter requirements above.
 The per-model dispatch brief is `prompts/15_3d_model_pipeline_prompt.md`; replace all job fields before dispatch.
 

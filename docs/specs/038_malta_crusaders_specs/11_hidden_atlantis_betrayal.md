@@ -345,20 +345,5 @@ After the super-event, these become visible through normal gameplay text and too
 
 ## Acceptance scenarios
 
-1. Germany is strongest by each relevant industrial measure
-2. Germany briefly becomes strongest, then falls below before the choice
-3. human Germany accepts
-4. human Germany rejects
-5. Hitler is in Germany
-6. Hitler is in Holy Realm
-7. Malta is Holy See
-8. Malta is Kingdom of God
-9. one founding member leaves on day 729
-10. world_end activates during the choice
-11. Atlantis forms with limited fuel
-12. some Roman registry states no longer exist after a map update
-13. 20 formations cannot all deploy in one state
-14. atrocities remain hidden and later become public
-15. migration and famine interact without duplicate population loss
-16. Atlantis is defeated before later regional wars
-17. save and reload throughout the betrayal and defeat
+The Atlantis scenarios are section K of `23_acceptance_scenarios.md`.
+That section also covers each strength comparison, the human accept and reject choices, both Hitler locations, Holy See and Kingdom of God as the Malta successor, the day 729 member exit, a limited-fuel start, a map update that removes registry states, a 20-formation deployment that cannot fit one state, hidden then public atrocity evidence, migration and famine without double debits, and defeat before the later regional wars.

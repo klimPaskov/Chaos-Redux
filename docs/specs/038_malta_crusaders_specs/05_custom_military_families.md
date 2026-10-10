@@ -79,7 +79,7 @@ The AI and player should not fill entire armies with Armored Knights. A country-
 
 - heavy armour production
 - order headquarters
-- Crusade Authority
+- Command Standing
 - relevant technology
 - active principalities
 - evolution stage

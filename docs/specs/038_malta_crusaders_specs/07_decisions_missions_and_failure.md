@@ -2,446 +2,203 @@
 
 ## Decision design principles
 
-Event 38 decisions represent military, political, logistical, territorial, religious, and diplomatic actions. They cannot become a store where political power buys small modifiers.
+Event 38 decisions are military, political, logistical, territorial, religious, and diplomatic actions.
+They are not a store where political power buys small modifiers.
 
-Each phase should show three to five primary actions, with six as the hard maximum. One to three missions can be active. Costs use no more than four spendable types per action.
+Each phase shows three to five primary actions, with six as the hard maximum, and one to three missions can be active.
+An action has at most four spendable cost types.
+Costs are icon-first, and complex requirements use a concise summary with named-state tooltips.
+The full action list with IDs, costs, and risks is `25_decision_register.md`, which owns the row-level detail.
+This file owns the principles, the phase structure, and the rules behind them.
 
-Player-facing costs are icon-first. Complex requirements use concise summaries and named-state tooltips.
+A decision exists only when it asks the player to choose between real alternatives or to commit scarce resources to a risk.
+These were removed as busywork: preparation chains that each unlock the next click (coast surveys, local contacts, landing-fleet and depot staging before a regional crusade), repeated construction slots (depots, remount services, siege workshops), and one-click temporary supply boosts.
+Their costs and requirements moved into the action they used to precede.
 
 ## Decision categories
 
-The event should use a small number of long-lived categories:
+1. **The Crusade Council** for order, relic, and government actions.
+2. **Mediterranean Campaigns** for target selection, regional crusades, logistics, and settlements.
+3. **Crusader Principalities** for subject obligations and disputes.
+4. **The Eleventh Crusade**, only during failure recovery.
+5. **The Holy World**, only during public terminal preparation and the terminal war.
 
-1. **The Crusade Council** for order, authority, relic, and government actions
-2. **Mediterranean Campaigns** for target selection, war preparation, ports, and settlements
-3. **Crusader Principalities** for created subject obligations and disputes
-4. **The Eleventh Crusade** only during failure recovery
-5. **The Holy World** only during public terminal preparation and terminal war
+There is no category per order or region.
+Target selectors and phase visibility keep the categories readable.
 
-Do not create one category per order or region. Target selectors and phased visibility keep the categories readable.
+## Council actions
 
-## Crusade Council actions
+The Crusade Council category offers the demand answers (Accept, Compromise, Refuse), Convene Joint Command, Arbitrate Jerusalem, Reform the Crusade Council, Name the Dominant Order, and a few route-specific actions listed in the register.
+The mechanics behind them are in `04_crusade_council_mechanic.md`.
 
-### Resolve the active order demand
+### Convene Joint Command
 
-**Visibility:** one active demand exists.
-
-**Choices:** accept, negotiate, refuse, or defer once.
-
-**Costs:** depend on the demand and can include equipment, command power, civilian factory burden, territory, order autonomy, or legitimacy.
-
-**Result:** moves the three public values and the requesting order's hidden grievance.
-
-**AI:** weighs war state, order route, current values, and ability to pay.
-
-### Convene a joint command
-
-**Purpose:** address low Cohesion or coordinate an offensive.
-
-**Requirements:** at least two active orders and no recent failed conference.
-
-**Costs:** command power, army experience, and temporary planning delay.
-
-**Success:** raises Cohesion and creates a timed mixed-order command benefit.
-
-**Failure:** exposes rivalry, lowers Authority, and can start an incident.
-
-### Reassign a headquarters
-
-**Purpose:** move an order's center to a valid controlled city.
-
-**Requirements:** named eligible state, stable control, supply, and no active siege.
-
-**Costs:** trains, support equipment, and civilian capacity.
-
-**Consequences:** changes local unit recruitment, order influence, and regional stability.
+**Purpose:** raise Cohesion and coordinate a front.
+**Requirements:** Cohesion of 50 or more, at least two seated orders, and no recent failed conference.
+**Costs:** command power, army experience, and a short planning delay.
+**Success:** raises Cohesion and gives a timed mixed-order command bonus.
+**Failure:** exposes the rivalry, opens an incident, and lowers Command Standing by one step for 90 days.
 
 ### Arbitrate Jerusalem
 
 **Purpose:** settle competing claims over sacred and administrative control.
-
-**Requirements:** stable control of Jerusalem and at least one claimant.
-
-**Outcomes:** central administration, order custody, principality custody, local church compact, or Papal administration.
-
-**Consequences:** major Authority, Cohesion, and Legitimacy movement. This is not repeatable without a major constitutional change.
+**Requirements:** Jerusalem held for 120 days and at least one claimant order.
+**Outcomes:** central administration, order custody, principality custody, a local church compact, or Papal administration.
+**Consequences:** large Cohesion and Legitimacy movement.
+It is not repeatable without a major constitutional change.
 
 ### Reform the Crusade Council
 
-**Purpose:** enact the route settlement chosen by focuses.
-
-**Requirements:** route focus, threshold proof, no active council rupture.
-
+**Purpose:** enact the settlement chosen by focuses.
+**Requirements:** route focus, Functional standing or better, and no open incident.
 **Result:** transforms opening ideas, changes decision families, and may install a dominant order or confederation.
 
 ## Logistics actions
 
-### Escort the Malta to Cyprus route
+Logistics has four actions.
+Each is a timed mission with a real failure outcome.
 
-**Goal:** protect a named sea route for a timed period.
+### Escort the Sea Road
 
-**Requirements:** convoys, escorts or naval presence, and valid ports.
-
+**Goal:** protect a named sea route for 120 to 180 days.
 **Costs:** fuel, convoys, and naval commitment.
+**Success:** keeps the sea-road anchor safe and improves supply.
+**Failure:** convoy losses, delayed reinforcements, and a risk to the sea-road anchor.
 
-**Success:** improves supply and Authority.
+### Repair the Holy Land Rail
 
-**Failure:** convoy losses, delayed reinforcements, and lower Authority.
-
-### Repair the Holy Land rail corridor
-
-**Goal:** control and repair named rail and supply nodes.
-
+**Goal:** control and repair named rail and supply nodes and the depot they feed.
 **Costs:** trains, support equipment, and civilian factory commitment.
-
-**Duration:** 120 to 180 days depending on damage and war state.
-
+**Duration:** 120 to 180 days depending on damage and war.
 **Success:** visible infrastructure improvement and lower future campaign costs.
 
-### Build a fortified port
+### Fortify a Port
 
-**Target:** one selected eligible coastal state.
+**Target:** one selected eligible coastal state, including Malta after bombing.
+**Costs:** civilian capacity, equipment, and time.
+**Result:** naval base repair, coastal defence, and order headquarters eligibility.
+**Limit:** a bounded project ledger per region prevents port spam.
 
-**Costs:** civilian capacity, steel or equipment abstraction, and time.
-
-**Result:** naval base, coastal defence, depot support, and order headquarters eligibility.
-
-**Restriction:** no repeatable free port spam. Each region uses a bounded project ledger.
-
-### Emergency air bridge
+### Emergency Air Bridge
 
 **Availability:** land and sea routes are blocked or severely disrupted.
+**Costs:** transport aircraft, fuel, and air commitment.
+**Result:** limited supply relief and evacuation support, with a risk of aircraft loss.
 
-**Costs:** transport aircraft, fuel, air command, and temporary equipment loss risk.
+## Recruitment actions
 
-**Result:** limited supply relief and evacuation support.
+### Raise a banner
 
-### Requisition local transport
-
-**Purpose:** short-term logistics at a legitimacy and local cooperation cost.
-
-**Result:** temporary supply improvement, hidden local grievance, and possible migration pressure.
-
-## Recruitment and equipment actions
-
-### Raise a knight banner
-
-**Requirements:** order capacity, manpower, complete equipment, and a valid training state.
-
+One action per family (Armored Knights, Mounted Knights, Ranged Company covering Archers and Crossbows by technology, Siege Host, Blessed Guard, Crusader Engineers).
+**Requirements:** provider eligibility, order capacity, manpower, complete equipment, and a training state.
 **Costs:** equipment, manpower, army experience, and training time.
+**Result:** one formation only after the mission completes, never an instant free unit.
 
-**Result:** one formation only after the mission completes. No instant free unit.
+### Convert captured equipment
 
-### Call foreign volunteers
+**Target:** a selected captured stockpile family.
+**Costs:** captured equipment and factory burden.
+**Result:** crusader equipment at a dynamic conversion rate, with a loss on every conversion so the action never produces net value.
 
-**Requirements:** eligible sponsor, relations, route access, and no recent refusal.
+### Request foreign equipment
 
+**Requirements:** an eligible sponsor.
 **Costs:** diplomatic obligation, convoys, or sponsor influence.
+**Result:** a bounded equipment or convoy package with a cooldown and refusal memory.
 
-**Result:** volunteer receipt, equipment, officers, or a capped expeditionary unit.
+## Campaign actions
 
-### Convert captured weapons
+The human player selects one regional objective at a time, and the AI evaluates every valid target directly.
+Target families are Jerusalem and Jordan restoration, the Levantine frontier, Cyprus and the Aegean, southern Anatolia and Cilicia, the Greek mainland, North African ports, and Rome under valid routes.
+Selecting a target activates only its relevant actions and missions.
 
-**Target:** selected stockpile family.
+### Issue Crusader Ultimatum
 
-**Costs:** captured equipment, civilian or military factory burden, and time.
+**Requirements:** Functional standing or better and a credible force.
+**Outcome:** the target accepts, bargains, or refuses, and a refusal leaves the regional crusade available.
 
-**Result:** crusader equipment according to a dynamic conversion rate.
+### Launch the Regional Crusade
 
-### Establish a siege workshop
+**Requirements:** a selected valid target, supplied forces, convoys and fuel for the crossing when the target is overseas, and no duplicate war.
+**Costs:** command power and an equipment reserve.
+**Result:** a limited war or intervention.
+It never declares against every holder in one step.
 
-**Target:** valid industrial state.
+### Request Papal Blessing and Call Foreign Chapters
 
-**Costs:** steel, support equipment, civilian capacity, and construction time.
-
-**Result:** siege equipment production capacity and regional recruitment.
-
-### Create a remount service
-
-**Costs:** manpower, local agricultural burden, equipment, and time.
-
-**Result:** Mounted Knight sustainment and recovery.
-
-## Campaign preparation actions
-
-### Select the next regional objective
-
-The human player selects one target region at a time. AI can evaluate all valid targets directly.
-
-Target families:
-
-- Jerusalem and Jordan restoration
-- Levantine frontier
-- Cyprus and Aegean
-- southern Anatolia and Cilicia
-- Greek mainland
-- North African ports
-- Rome under valid routes
-
-Selecting a target activates only the relevant actions and missions.
-
-### Survey the coast
-
-**Purpose:** identify ports, naval risk, supply, and local allies.
-
-**Costs:** naval or air experience, fuel, and intelligence capacity.
-
-**Result:** improves invasion preparation and target information.
-
-### Prepare the landing fleet
-
-**Costs:** convoys, fuel, support equipment, and temporary dockyard burden.
-
-**Result:** creates a time-limited invasion opportunity.
-
-### Establish local contacts
-
-**Costs:** political capital, equipment, and exposure risk.
-
-**Result:** local support, intelligence, or a negotiated entry route.
-
-### Demand passage or surrender
-
-**Requirements:** sufficient Authority, credible force, and valid diplomacy.
-
-**Outcome:** target can accept, bargain, refuse, or mobilize resistance.
-
-### Launch the regional crusade
-
-**Requirements:** completed preparation, supplied forces, valid target, and no duplicate war.
-
-**Result:** limited war or intervention. It must not declare against every holder in one tick.
+Request Papal Blessing needs a Papal relation and yields Legitimacy and volunteers with Papal conditions.
+Call Foreign Chapters needs Evolution I and yields officers and volunteers at a sponsor obligation.
 
 ## Hold and secure missions
 
-Examples:
-
-### Hold Jerusalem for 120 days
-
-Requires stable control and supply. Failure opens a local crisis and lowers legitimacy.
-
-### Keep Malta connected for 150 days
-
-Requires an active supply route and at least one usable bridge port.
-
-### Guard the Jordan corridor
-
-Requires supplied divisions in named states and functional rail or road access.
-
-### Protect the Grand Harbour
-
-Requires garrison strength, naval access, and air or anti-air readiness according to current threat.
-
-### Break a named fortress line
-
-Requires control of approach states and a Siege Host or equivalent support.
-
-### Relieve a principality capital
-
-Requires restoring supply or lifting a siege before the deadline.
-
-Mission timers vary by difficulty. Ordinary missions should not be shorter than 90 days without a real emergency.
+Mission timers are 90 days at the shortest outside a real emergency.
+Examples are Hold Jerusalem for 120 days, Keep Malta Connected for 150 days, Guard the Jordan Corridor, Protect the Grand Harbour, Break a Named Fortress Line with a Siege Host, and Relieve a Principality Capital.
+Missions are the register's `mission_*` rows.
 
 ## Settlement actions
 
 After victory, the player chooses a governance form for each eligible region.
 
-### Direct commandery
+| Form | Benefit | Cost |
+| --- | --- | --- |
+| Direct commandery | direct output and military access | occupation burden, resistance, lower Cohesion if orders expected land |
+| Grant to an order | specialist units and local administration | order autonomy and rival grievance |
+| Charter a principality | local recruitment, lower occupation burden | lower direct output and succession risk |
+| Restore local Christian government | Legitimacy and local acceptance | reduced direct control |
+| Papal administration | Legitimacy and Papal route support | clerical control and church disputes |
+| Return under treaty | peace, lower Condemnation, possible small Chaos reduction | territorial ambition and a Command Standing step for 90 days |
 
-**Benefit:** direct output and military access.
-
-**Cost:** occupation burden, resistance, administration, and lower Cohesion if orders expected land.
-
-### Grant to an order
-
-**Benefit:** specialized unit and local administration.
-
-**Cost:** order autonomy and rival grievances.
-
-### Create a principality
-
-**Benefit:** local recruitment, reduced direct occupation burden, subject contribution.
-
-**Cost:** lower direct output and future succession risk.
-
-### Restore a local Christian government
-
-**Benefit:** legitimacy, local acceptance, diplomatic improvement.
-
-**Cost:** reduced direct control and possible ideological divergence.
-
-### Papal administration
-
-**Benefit:** Sacred Legitimacy and Papal route support.
-
-**Cost:** clerical control, local church disputes, and reduced political flexibility.
-
-### Withdraw under treaty
-
-**Benefit:** peace, lower condemnation, and possible Chaos reduction from a concrete settlement.
-
-**Cost:** territorial ambition and Authority.
-
-The settlement action freezes the selected region and owner facts before applying effects. It cannot be used twice on the same settlement generation.
+The settlement freezes the selected region and owner facts before applying effects and cannot be used twice on the same settlement generation.
 
 ## Relic actions
 
-### Sponsor an expedition
-
-**Requirements:** a valid claim location and no active relic expedition.
-
-**Costs:** convoys, civilian capacity, equipment, or intelligence resources.
-
-**Outcome:** find nothing, find a disputed object, recover a recognized tradition, expose a fraud, or trigger foreign competition.
-
-### Submit a relic for examination
-
-**Purpose:** improve public credibility at the risk of exposure.
-
-### Transfer custody
-
-**Targets:** selected order, Jerusalem, Malta, or Pope.
-
-**Consequences:** order relations, legitimacy, foreign claims, and theft risk.
-
-### Protect the pilgrimage route
-
-A timed mission tied to real route control and security.
-
-## Order incidents
-
-Incidents occur when Cohesion is low, demands fail, or land distribution is badly skewed.
-
-Possible incidents:
-
-- refusal to reinforce another order
-- seizure of a treasury
-- rival appointments in Jerusalem
-- disputed relic custody
-- independent foreign negotiations
-- a headquarters refuses central orders
-- command duel or disciplinary crisis
-- principality aligned with one order
-
-Incidents offer bounded responses. They should not default to civil war. Severe repeated incidents can create a breakaway headquarters or leadership contest when the map and force package support it.
+Relic actions exist only from Evolution III and are limited to four: Sponsor an Expedition, Examine the Claim, Display in Jerusalem, and Transfer Custody (to an order, to Jerusalem, or to the Pope).
+Protecting the pilgrimage route is a mission, not a repeatable action.
+Details are in `04_crusade_council_mechanic.md`.
 
 ## Eleventh Crusade failure route
 
 ### Activation
 
-The category activates when any accepted failure condition is met:
+The category activates when any of these holds for a sustained period:
 
-- Jerusalem and the Holy Land command are lost for a sustained period
+- Jerusalem and the Holy Land command are lost
 - Malta controls fewer than the minimum expeditionary footholds
 - the maritime bridge is lost and no alternative route exists
-- Crusade Authority falls below the collapse threshold after a major defeat
+- Command Standing stays Fractured after a major defeat
 
-It does not activate from a one-day occupation change.
+A one-day occupation change never triggers it.
 
-### Recovery phases
+### Phases
 
-#### Phase 1: Count the survivors
+**Phase 1, Count the survivors.** Evacuate exposed orders, fortify Malta (which also consolidates equipment), and optionally seek temporary refuge.
+The mission is to preserve a trained core and one viable port.
 
-Visible actions:
+**Phase 2, Rebuild the crusade.** Call for volunteers, rebuild transports and reopen workshops, and select a new landing target.
+The mission is to assemble a dynamic invasion package.
 
-- evacuate exposed formations
-- rescue order headquarters
-- consolidate equipment
-- fortify Malta
-- negotiate temporary refuge
+**Phase 3, Launch the Eleventh Crusade.** Launching stages the fleet, secures local allies where they exist, and lands the knight banners in one action with a hold mission afterward.
 
-Primary mission: preserve a minimum trained force and one viable port.
+**Phase 4, Settlement.** Restore Jerusalem, establish an alternative principality, negotiate a protectorate, accept a Fortress Malta ending, or dissolve the expedition into a humanitarian order state.
 
-#### Phase 2: Rebuild the crusade
-
-Visible actions:
-
-- call foreign volunteers
-- rebuild convoys
-- reopen workshops
-- select a new landing target
-- reconcile the council
-
-Primary mission: assemble a dynamic invasion package.
-
-#### Phase 3: Launch the Eleventh Crusade
-
-Visible actions:
-
-- feint in one region
-- secure local allies
-- stage the fleet
-- commit the knight banners
-- launch the invasion
-
-Primary mission: establish and hold a new foothold.
-
-#### Phase 4: Settlement
-
-Outcomes:
-
-- restore Jerusalem
-- establish an alternative principality
-- negotiate a limited protectorate
-- accept a fortified Malta ending
-- dissolve the expedition into a humanitarian order state
-
-### Failure of the comeback
-
-A second failed crusade increases costs and can permanently close some aggressive routes. It should not create an infinite loop of free armies. A final negotiated or island-focused route remains available when possible.
+A second failed crusade raises costs and can close aggressive routes.
+It never produces an infinite loop of free armies, and a final negotiated or island-focused route stays open when possible.
+Recovery requires time, equipment, sponsors, and a real military plan, so it cannot restore the original state for free.
 
 ## Holy World decisions
 
-Preparation and terminal decisions are detailed in the terminal specification. The decision category must remain hidden until the route is publicly available.
+Preparation and terminal decisions are in `12_holy_world_terminal.md`.
+The category stays hidden until the route is publicly available.
 
 ## AI behavior
 
-Decision AI evaluates:
-
-- current phase and active mission
-- supply and equipment
-- value bands
-- target strength and distance
-- naval access
-- order route
-- sponsor availability
-- resistance and local cooperation
-- principality loyalty
-- current war burden
-- terminal or hidden-route state
-
-AI must not launch an invasion without a viable route and supplied force. It must not create a principality without a valid country package. It must not spend scarce convoys on a low-value relic expedition during supply collapse.
+Decision AI reads the current phase and active mission, supply and equipment, Command Standing and the two meters, target strength and distance, naval access, order seats, sponsor availability, local resistance, principality loyalty, war burden, and terminal or hidden-route state.
+It must not launch an invasion without a viable route and supplied force, create a principality without a valid country package, or spend scarce convoys on a relic expedition during a supply collapse.
 
 ## Exploit controls
 
-Required controls include:
-
-- one active regional target for human presentation
-- one active relic expedition
-- one major order demand
-- region settlement generation flags
-- escalating or dynamic unit-raising costs
-- formation caps
-- no equipment refund above remaining strength
-- cooldowns after failed sponsor requests
-- no repeated capital or port construction in the same slot
-- no duplicate war creation
-- cleanup after owner or target invalidation
-- AI visibility separate from human target selection where needed
+Required controls include one regional target for human presentation, one relic expedition, one major demand, region settlement generation flags, escalating unit-raising costs, formation caps, no equipment refund above remaining strength, cooldowns after failed sponsor requests, no repeated port construction in the same slot, no duplicate war creation, cleanup after owner or target invalidation, and AI visibility separate from human target selection.
 
 ## Decision audit evidence
 
-Completion requires:
-
-- category lifecycle and phased visibility
-- named-state tooltips
-- icon-first costs with no more than four spendable types
-- meaningful success and failure
-- varied mission durations
-- one to three active missions
-- route-specific AI
-- target cleanup
-- save and reload persistence
-- exploit audit
-- probability audit for every weighted decision or target selection
-- event-owned GUI helper alignment
+Completion requires category lifecycle and phased visibility, named-state tooltips, icon-first costs, meaningful success and failure, varied mission durations, one to three active missions, route-specific AI, target cleanup, save and reload persistence, an exploit audit, a probability audit for every weighted decision or target selection, and alignment with the event-owned GUI helpers.

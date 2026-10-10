@@ -4,6 +4,22 @@
 
 Event 38 must use the existing Chaos Redux systems as owners of global state. It can publish Event 38 facts, call stable APIs, and register exact consequences. It must not create parallel Chaos, Deaths, Condemnation, famine, migration, camp, contamination, or world-threat ledgers.
 
+## Connections the player feels
+
+Every integration below earns its place by changing a player decision.
+Anything that would only add a number, flag, or tooltip line is left to the owner system.
+
+| Shared system | What the player sees in Event 38 | Where it is defined |
+| --- | --- | --- |
+| Condemnation | a new public Condemnation against an Event 38 actor lowers Sacred Legitimacy once per source event, so exposed camps, chemical use, and cover-ups cost foreign support, Blessed access, and Papal routes | Condemnation below |
+| Camps and repression | harsh direct rule or Papal coercion can open sites, and a seated Hospitaller or Saint Lazarus order objects, which strains Order Cohesion and can trigger an incident; humane routes can inspect and close sites | Camps below |
+| Famine | a blockade of Malta or an island principality threatens the sea-road anchor and so Command Standing; relief delivered through the famine owner's actions raises Legitimacy once per contract generation; Conceal Hunger and Continue Requisitions on an Event 38 state cost Legitimacy | Famine below |
+| Migration | seizures and sieges create refugees; the owner's Evacuate Civilians action is the only evacuation action, and a state packed with trapped people hurts the occupation choice between a commandery and a principality | Migration below |
+| Fallout and contamination | a seated Saint Lazarus or Hospitaller order reduces attrition and recovery penalties in contaminated owned states, and nothing else about contamination changes | Air Cleanliness below |
+| Chaos Meter | a short list of one-shot milestones moves Chaos, and every other source stays with its owner | Chaos Meter below |
+| Deaths | sack and siege outcomes use the exact population-loss contract and one Deaths record | Deaths below |
+| CBRN | siege ammunition upgrades need the Event 36 treaty stance and technology, and use creates shared Condemnation | Event 36 in `14_event_chain_reactions_cross_events.md` |
+
 ## Chaos Meter
 
 ### Generic sources
@@ -132,9 +148,9 @@ Ordinary conquest and religious government do not automatically create Condemnat
 
 ### Malta route effects
 
-High Condemnation can:
+Each new public Condemnation against an Event 38 actor lowers Sacred Legitimacy by a script-constant step, once per source event.
+High Condemnation can also:
 
-- reduce Sacred Legitimacy
 - expel supporters
 - block Papal recognition
 - increase embargo pressure
@@ -152,33 +168,18 @@ Atlantis is expected to accumulate severe atrocity and repeat-use condemnation a
 
 ## Famine
 
-Event 38 interacts with famine through the existing state-owned food-security system.
+Famine is owned by `docs/systems/famine_system.md`.
+Event 38 adds no famine decisions and no famine values.
+The owner's category offers Release Food Stores, Import Food, Restore Relief, Escort Relief, Airlift Relief, Requisition Food, Evacuate, Conceal Hunger, and Continue Requisitions, and Malta and its principalities use those actions as they stand.
 
-Likely pressures:
+Event 38 supplies pressure through the owner's adapter contract: blockade of Malta or an island principality, damaged ports and convoys, the siege of Jerusalem, forced requisition, scorched territory, and terminal war disruption.
+Blockade famine follows the owner's proof, which needs war, geographic isolation, maritime dependence, port or route disruption, convoy or escort shortage, inadequate local supply, and no proven relief corridor.
+Island status alone is insufficient.
 
-- blockade of Malta or island principalities
-- damaged ports and convoys
-- siege of Jerusalem
-- forced requisition
-- migration load
-- scorched territory
-- terminal war disruption
-
-Malta and principalities can use accepted famine decisions and adapters:
-
-- reserve release
-- emergency imports
-- route repair
-- escorted relief convoys
-- airlift
-- invited relief
-- evacuation
-- safer-state requisition
-- concealment or extraction under harsh routes
-
-Blockade famine requires war, isolation or maritime dependence, route disruption, convoy or escort shortage, inadequate local supply, and no relief corridor. Island status alone is insufficient.
-
-Hospitaller routes improve relief access and response. They do not make famine impossible.
+Event 38 reads two outcomes.
+Relief delivered to an Event 38 state raises Legitimacy once per relief contract generation.
+Concealing hunger or continuing requisitions on an Event 38 state lowers Legitimacy, because the owner already condemns the cover-up.
+A seated Hospitaller order improves nothing hidden here; its value is the recovery and attrition effects described in `04_crusade_council_mechanic.md`.
 
 ## Migration
 
@@ -196,18 +197,12 @@ Migration can arise from:
 
 Movement uses the shared migration cohort transaction. Closed borders create trapped populations. Forced return and violent pushback can produce Deaths through the migration owner.
 
-### Event 38 decisions
+### Event 38 and migration actions
 
-Event 38 can request:
-
-- organized evacuation
-- corridor negotiation
-- reception in Malta or a principality
-- third-country resettlement
-- safe return after settlement
-- forced removal only on harsh routes with full consequences
-
-It must not reduce origin population and then independently add destination population outside the shared transaction.
+Migration is owned by `docs/systems/migration_system.md`, which offers Evacuate Civilians, Open Emergency Reception, Screen Incoming Civilians, Distribute Arrivals, Close the Border, Local Integration, Resettle Abroad, Help Families Return, and Force Repatriation among others.
+Event 38 adds no migration decisions.
+Its settlement choices (commandery, principality, restoration, Papal administration, treaty return) read the owner's trapped-people and reception facts, and forced removal under a harsh route goes through the owner's repatriation action with full consequences.
+Event 38 must not reduce origin population and then independently add destination population outside the shared transaction.
 
 ### Holy World side assignment
 
@@ -219,6 +214,7 @@ The terminal setup should not instantly move whole populations merely because go
 
 Direct rule, harsh order government, or Papal coercion can activate detention or repression sites through the shared system. The event should not assume the player must use them.
 
+A seated Hospitaller or Saint Lazarus order objects to active sites, which strains Order Cohesion and can open an incident.
 Humane and constitutional routes can:
 
 - inspect sites
@@ -290,11 +286,10 @@ Before adding them, inspect the current `refresh_world_threat_state` registry an
 
 Baseline Malta does not need a world-threat source merely because it is at war.
 
-## Natural disaster gateway
+## Natural disasters
 
-Event 38 may call `call_natural_disaster` only through documented inputs and owner validation. Example uses might include a route-specific disaster during a relic expedition or terminal war only when accepted in final design.
-
-The event should normally react to disasters rather than generate them.
+Event 38 reacts to disasters through the shared state and population contracts and does not generate them.
+No Event 38 action calls `call_natural_disaster`.
 
 ## Stockpile debits
 

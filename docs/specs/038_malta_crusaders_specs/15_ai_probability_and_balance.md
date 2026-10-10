@@ -133,14 +133,14 @@ Expected behavior:
 
 - escort, air bridge, evacuation, and port defence dominate relic or expansion actions
 
-### AI-007 High Authority, low Cohesion
+### AI-007 Recognized Command Standing, low Cohesion
 
 Expected behavior:
 
 - centralization or formal dominance becomes more attractive
 - AI addresses open rivalry before new expansion
 
-### AI-008 High Cohesion, moderate Authority
+### AI-008 High Cohesion, Functional Command Standing
 
 Expected behavior:
 
@@ -174,7 +174,7 @@ Expected behavior:
 
 - several regions controlled
 - resistance high
-- Authority functional
+- Command Standing Functional
 
 Expected behavior:
 
@@ -311,24 +311,8 @@ These are battalion and division budget bands, not fixed spawn counts. The final
 
 ## Public value balance
 
-### Initial bands
-
-| Package | Authority | Cohesion | Legitimacy |
-| --- | ---: | ---: | ---: |
-| Baseline | 42 to 55 | 35 to 55 | 35 to 50 |
-| Evolution I | 45 to 60 | 30 to 55 | 40 to 55 |
-| Evolution II | 45 to 65 | 35 to 60 | 45 to 65 |
-| Evolution III | 55 to 70 | 40 to 65 | 60 to 75 |
-
-Ranges allow route and random setup variation. Values should be rounded and visible as whole numbers.
-
-### Movement scale
-
-- minor event: 2 to 5 points
-- meaningful decision or mission: 5 to 10 points
-- major victory, loss, scandal, or settlement: 10 to 20 points
-
-One action should not move a value from collapse to maximum without a route-defining event.
+Opening bands, thresholds, and movement scale for Command Standing, Cohesion, and Legitimacy are owned by `28_balance_tuning_tables.md`.
+The balance review checks that no single action crosses more than one band and that the opening package lands in the stated band.
 
 ## Decision costs
 
@@ -338,7 +322,7 @@ Costs should scale from country capability. Suggested cost families:
 - fuel, convoys, and naval commitment for sea operations
 - trains, support equipment, and civilian capacity for logistics
 - army or navy experience for doctrine and command
-- Authority, Cohesion, or Legitimacy as consequences, not generic currencies spent on every action
+- Cohesion or Legitimacy as consequences, not generic currencies spent on every action
 - stability or war support only when the action genuinely affects domestic politics
 
 No action uses more than four spendable cost types.
@@ -397,7 +381,7 @@ Malta should depend on a port network and external support. Balance review must 
 
 Principalities should reduce occupation burden and provide local forces. They should also cost direct output and create obligations or succession risk.
 
-A principality should not be strictly better than direct rule in every region. AI weights should consider resistance, supply, local cooperation, Authority, and route.
+A principality should not be strictly better than direct rule in every region. AI weights should consider resistance, supply, local cooperation, Command Standing, and route.
 
 ## Holy World balance
 

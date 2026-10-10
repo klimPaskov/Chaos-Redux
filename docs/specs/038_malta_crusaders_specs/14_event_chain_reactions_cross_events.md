@@ -177,30 +177,12 @@ Event 38 must reuse protected carriers and origin facts. It cannot create a dupl
 
 When a selected state belongs to a newly released actor, the opening and settlement logic treats that actor as the displaced owner and preserves its release origin.
 
-## Event 11: Secret Alliance
-
-Event 38 should inspect existing secret and revealed alliance structures before creating new blocs.
-
-Possible interactions:
-
-- a secret alliance supports Malta
-- a hidden coalition backs regional resistance
-- Malta exposes an alliance through relic or order diplomacy
-- Holy World preparation absorbs an aligned revealed coalition
-
-Do not create overlapping factions when an existing alliance can be extended safely.
-
 ## Event 13: Natural Disasters
 
-Disasters can damage ports, forts, rail, populations, and supply in Event 38 regions. Malta can call the stable natural-disaster gateway only when an Event 38 decision deliberately requests a disaster consequence.
+Disasters can damage ports, forts, rail, populations, and supply in Event 38 regions, which can threaten an anchor.
+Event 38 never causes a disaster.
 
 Ordinary disaster effects remain Event 13-owned. Hospitaller and engineer decisions can respond through documented adapters.
-
-## Event 14: Cannibalism and humanitarian systems
-
-There is no default thematic alliance. Event 38 can interact through shared famine, migration, Deaths, atrocity, and special-country routing.
-
-Malta and ordinary principalities use normal civilian systems. Cannibal or actual nonhuman actors are excluded from ordinary local-government and believer assignment where the shared classifier says so.
 
 ## Event 16: Brilliant Scientist
 
@@ -213,7 +195,7 @@ Event 38 can receive:
 
 Custom technology grants use the owner API and compatibility checks. Event 38 does not copy Brilliant Scientist's project system.
 
-The hidden Atlantis or Papal terminal routes can create special requests, but no cross-event grant should bypass its source conditions.
+No cross-event grant bypasses its source conditions.
 
 ## Event 19: Infantry Spawn and unit registry
 
@@ -251,7 +233,7 @@ Atlantis uses the shared camp and repression network. Malta can also enter this 
 
 The event must not create a separate atrocity ledger.
 
-Hospitaller or civilian routes can discover, reform, close, or expose sites according to the shared system.
+A seated Hospitaller or Saint Lazarus order objects to active sites and strains Order Cohesion, and Hospitaller or civilian routes can discover, reform, close, or expose sites according to the shared system.
 
 ## Event 33: Acid Rain
 
@@ -319,10 +301,6 @@ Leaks can expose:
 - Atlantis preparations after eligibility
 
 Hidden routes remain protected before an actual leak proof exists.
-
-## Event 56: The Navy
-
-Naval abundance or special naval grants can support Malta's sea road. Event 38 uses source-owned grant effects and does not duplicate fleets.
 
 ## Event 126: Heroic Crusade
 

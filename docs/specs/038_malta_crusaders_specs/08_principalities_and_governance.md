@@ -40,6 +40,19 @@ Every persistent principality needs:
 
 A principality cannot be a flag, name, and one militia division.
 
+## Principality tiers
+
+Seven regional identities are too many to build as equally deep countries, so they split into two tiers.
+
+| Tier | Identities | Package |
+| --- | --- | --- |
+| Major | Kingdom of Jerusalem, Crusader Cyprus, Principality of Antioch | full contract above: bespoke leader or regency, flags for each government variant that can appear, route overlay on the shared tree, own AI weights |
+| Minor march | County of Tripoli, Aegean Crusader State, Anatolian Order State, North African March | shared tree with a short region overlay, one regency-council leader, one flag, charter decisions and the standard obligations, no bespoke government variants |
+
+At most four principalities are active at once, and at most two of them can be minor marches.
+A minor march is created only where a major principality would be invalid, or where the player explicitly charters it.
+The tiers change only the amount of bespoke content, never the rules for creation, loyalty, succession, or cleanup.
+
 ## Shared tree strategy
 
 The principalities can use one deep shared **Crusader Principality** tree with country-specific overlays. The shared tree must still feel different by using:
@@ -343,7 +356,7 @@ The player sees a qualitative charter summary and active obligation mission. Hid
 
 ## Loyalty and succession
 
-Principality loyalty is hidden and feeds public events, cohesion, and authority. It changes through:
+Principality loyalty is hidden and feeds public events, Order Cohesion, and Command Standing. It changes through:
 
 - charter fulfillment
 - military protection
@@ -377,7 +390,7 @@ Direct integration requires time and proof. Suggested requirements include:
 - no active famine or migration catastrophe
 - resolved charter and succession
 - no severe public atrocity evidence tied to the region
-- sufficient Authority
+- Recognized Command Standing
 - a route focus or decision
 - a named integration mission
 
@@ -391,7 +404,7 @@ Requirements:
 
 - minimum member count
 - fulfilled obligations
-- sufficient Authority or Sacred Legitimacy
+- Recognized Command Standing or sufficient Sacred Legitimacy
 - acceptable Order Cohesion
 - no active member rebellion
 - shared military or legal framework

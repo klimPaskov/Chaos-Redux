@@ -2,433 +2,216 @@
 
 ## Purpose
 
-The Crusade Council is the event's central management loop. It converts the abstract idea of a new crusade into a system of command, rival orders, religious recognition, territorial obligations, and visible tradeoffs.
+The Crusade Council is the event's single management loop.
+It turns the abstract idea of a new crusade into three questions the player can answer: whether the expedition holds together, whether the military orders cooperate, and whether the cause is believed.
+Everything else the campaign tracks stays internal and surfaces only as an event, a tooltip sentence, or an unlocked or locked action.
 
-The system uses exactly three persistent public values. It can use many internal ledgers, but those ledgers do not become extra numbers that the player must memorize.
+## What the player sees
 
-## Public values
-
-### Crusade Authority
-
-**Range:** 0 to 100
-
-**Meaning:** the central government's recognized ability to command armies, collect obligations, appoint governors, and make settlement decisions.
-
-**Main gains:**
-
-- securing Jerusalem
-- holding Malta and the primary maritime bridge
-- completing supply and command missions
-- winning major regional wars
-- integrating command structures
-- receiving Papal recognition
-- resolving order demands successfully
-- creating stable principalities
-
-**Main losses:**
-
-- losing sacred centers
-- supply collapse
-- contradictory orders
-- failed offensives
-- principality defiance
-- foreign sponsor humiliation
-- order mutiny
-- civilian atrocities that discredit central rule
-
-**Threshold roles:**
-
-| Band | Public state | Main consequence |
+| Readout | Form | Answers |
 | --- | --- | --- |
-| 0 to 19 | Fractured Command | emergency actions, strong order autonomy, possible command breakdown |
-| 20 to 39 | Disputed Command | limited integration, frequent demands, weak subject control |
-| 40 to 59 | Functional Command | normal campaign actions and principality management |
-| 60 to 79 | Recognized Command | stronger administration, order arbitration, wider diplomatic access |
-| 80 to 100 | Supreme Command | advanced formables, Papal supremacy preparation, terminal readiness support |
+| Command Standing | five named steps, no number | Does the expedition hold its four anchors? |
+| Order Cohesion | whole number 0 to 100 | Will the orders obey, bargain, or break? |
+| Sacred Legitimacy | whole number 0 to 100 | Do the Church, donors, volunteers, and pilgrims believe? |
 
-Authority should move in meaningful increments. One major mission or outcome should normally move it by 5 to 15 points before scaling and caps.
+Two numeric meters and one standing line are the whole public budget.
+No other persistent Event 38 value is shown.
+Supply uses the normal supply interface.
+Resistance, relic standing, principality loyalty, Papal relations, and order grievance are internal and reach the player only through events, the demand card, and one-line tooltip causes.
 
-### Order Cohesion
+Each readout shows its current band and the one thing that would move it to the next band.
+A meter never shows a list of contributing numbers.
 
-**Range:** 0 to 100
+## Command Standing
 
-**Meaning:** the ability of the military orders to cooperate without turning the crusade into a rivalry over land, money, command, relics, and prestige.
+Command Standing replaces a 0 to 100 authority meter.
+Authority would only restate things the player can already see on the map, so the standing is computed from them.
 
-**Main gains:**
+### The four anchors
 
-- shared command missions
-- balanced territory grants
-- joint victories
-- transparent spoils settlement
-- Papal arbitration
-- mixed-order formations
-- protecting wounded members and civilian hospitals
-- honouring negotiated order charters
+- Malta, held with a usable Grand Harbour.
+- Jerusalem, held for at least 30 days.
+- The sea road, meaning at least one bridge port connects Malta by sea to a Holy Land port without a proven blockade.
+- The primary supply port, meaning the best port of the Holy Land command, reselected by the owner trigger if it is lost.
 
-**Main losses:**
+### Steps
 
-- repeatedly favouring one order without formal dominance
-- denying promised land or wealth
-- competing claims to Jerusalem
-- casualties blamed on another order
-- false relic scandals
-- separate diplomacy with foreign sponsors
-- succession disputes
-- command autonomy during a crisis
-
-**Threshold roles:**
-
-| Band | Public state | Main consequence |
+| Step | Condition | Consequence |
 | --- | --- | --- |
-| 0 to 19 | Open Rivalry | order incidents, command refusal, possible breakaway headquarters |
-| 20 to 39 | Bitter Competition | higher costs, weaker mixed formations, frequent demands |
-| 40 to 59 | Uneasy Council | ordinary coexistence and limited joint actions |
-| 60 to 79 | Common Cause | stronger joint formations and lower demand pressure |
-| 80 to 100 | United Orders | confederation capstones, elite mixed formations, stable succession |
+| Fractured | fewer than two anchors held, or an unresolved order rupture | only emergency and survival actions are offered, no new charters, the Eleventh Crusade check starts |
+| Disputed | two anchors held | regional campaigns and principality charters are blocked |
+| Functional | three anchors held, or all four held for less than 120 days | normal campaign actions and settlement choices |
+| Recognized | all four anchors held for 120 uninterrupted days | direct integration, order arbitration, wider diplomacy |
+| Supreme | Recognized, a completed government settlement, and no unanswered demand | Holy See, Kingdom of God, and Holy World preparation gates |
 
-A dominant-order route changes the meaning of low cohesion. Once formal dominance is established, the system measures obedience to the dominant order. The UI keeps the same public value and changes its label or tooltip context. It does not create a fourth value.
+The opening release starts at Functional, because Malta, Jerusalem, the sea road, and the port are all held on day one but have not yet proven stable.
+The step is stored as one integer and recomputed by an owner-local refresh effect.
+The refresh runs when a registered anchor state changes control, when a demand resolves, when a government settlement completes, and when the council window opens.
+It does not poll.
 
-### Sacred Legitimacy
+## Order Cohesion
 
-**Range:** 0 to 100
+**Meaning:** whether the orders cooperate or turn the crusade into a rivalry over land, money, command, and relics.
 
-**Meaning:** religious recognition, public belief, Papal support, sacred-site control, and the prestige attached to relics and victories.
+**Gains:** a demand honoured fairly, a joint command that succeeds, a shared victory, Papal arbitration accepted, a charter honoured.
 
-**Main gains:**
+**Losses:** a demand refused, favouritism toward one order, a casualty blamed on another order, a relic scandal, an order dealing with a foreign sponsor on its own.
 
-- control of Jerusalem and Rome under valid routes
-- Papal recognition
-- authentic or widely accepted relic claims
-- pilgrim protection
-- humane administration of sacred sites
-- defending Christian communities
-- major victories framed as providential
-- support from Catholic governments
-
-**Main losses:**
-
-- loss or looting of sacred sites
-- exposure of false relics
-- conflict with the Pope
-- attacks on Christian communities
-- order corruption
-- sacrilege scandals
-- atrocities tied to religious policy
-- failed prophecies or public claims
-
-**Threshold roles:**
-
-| Band | Public state | Main consequence |
+| Band | Name | Effect |
 | --- | --- | --- |
-| 0 to 19 | Discredited Cause | weak foreign support, no blessed units, possible clerical opposition |
-| 20 to 39 | Contested Cause | limited donations and uncertain relic effects |
-| 40 to 59 | Recognized Cause | normal religious diplomacy and volunteer access |
-| 60 to 79 | Sacred Mandate | blessed formations, Papal routes, stronger foreign movements |
-| 80 to 100 | Universal Claim | Kingdom of God and Holy World preparation support |
-
-Sacred Legitimacy is not proof of divine truth. It measures political and public belief.
+| below 30 | Open Rivalry | one order incident is always open, joint actions are blocked |
+| 30 to 49 | Strained | demands cost more and mixed-order formations are weaker |
+| 50 to 74 | Working | Convene Joint Command is available and mixed-order operations work |
+| 75 and above | United | confederation capstones and the elite mixed formation unlock |
 
-## Hidden supporting ledgers
+A formal dominant-order settlement changes what Cohesion measures.
+The value then reads as obedience to the dominant order, with the same thresholds and a different tooltip.
+It does not create another value.
 
-The system can track these private facts:
+## Sacred Legitimacy
 
-- strength and influence of each order
-- unresolved demand count
-- order headquarters by state
-- principality loyalty and obligations
-- foreign sponsor receipts
-- local Christian cooperation
-- Muslim and Orthodox resistance pressure
-- Papal support state
-- relic custody and controversy
-- supply network quality
-- holy site control duration
-- recent major victory or defeat
-- atrocity evidence and public condemnation
-- governance method by state group
+**Meaning:** religious recognition, public belief, Papal support, and the prestige of sacred sites and relics.
+It measures political belief and never proves divine truth.
 
-These facts feed the three values, events, AI, and tooltips. They should not appear as an exposed wall of numbers.
+**Gains:** Jerusalem held under humane administration, pilgrim routes kept open, relief of a stricken Christian community, Papal recognition, a relic accepted by the Church.
 
-## Council presentation
+**Losses:** a sacred site looted or lost, a relic exposed as false, open conflict with the Pope, public Condemnation for an atrocity, a sacrilege scandal.
 
-### Preferred surface
+| Band | Name | Effect |
+| --- | --- | --- |
+| below 20 | Discredited | foreign donations stop and Blessed access is lost |
+| 20 to 39 | Contested | limited volunteers, relic effects uncertain |
+| 40 to 64 | Recognized | normal religious diplomacy and volunteer access |
+| 65 to 79 | Sacred Mandate | Blessed formations and Papal routes open |
+| 80 and above | Universal Claim | Kingdom of God and Holy World preparation gates |
 
-The normal campaign should use a dedicated event-owned **Crusade Council** window because the player manages order seats, active demands, territorial grants, relic custody, and three linked values. A normal decision category alone would make the target and status relationships difficult to read.
+Condemnation is the one shared-system input with a fixed rule: a new public Condemnation event against an Event 38 actor lowers Legitimacy by a script-constant step once per source event.
+This is the player-visible link to camps, chemical or biological use, and exposed atrocities (see `16_chaos_deaths_condemnation_migration.md`).
 
-The window must remain compact and usable. It should not become a ledger.
+## Movement scale
 
-### Layout
+A minor event moves Cohesion or Legitimacy by 2 to 5, a decision or mission by 5 to 10, and a defining victory, scandal, or settlement by 10 to 20.
+No single action crosses more than one band without a route-defining event.
+Values clamp at 0 and 100 and report only the applied change.
 
-The recommended layout contains:
+## Orders
 
-- a top band with three meters and their next material thresholds
-- a central order council with six order emblems and one dominant-order frame
-- one active demand card
-- one selected territorial or relic matter card
-- no more than five primary action buttons in the current phase
-- a small status strip for Jerusalem, Malta, Rome, and the maritime bridge
-- concise tooltips that explain the current cause, next threshold, and available response
+### Seats
 
-The decision category remains the owner of timed missions, map-targeted actions, and ordinary decision costs. The GUI calls accepted decision helpers and does not create a second gameplay implementation.
+The council has up to six order seats, and a demand can only come from a seated order.
+At the opening the Hospitallers, the Templar Revival, and the Naval Orders hold seats.
+The Teutonic Chapter, the Order of Saint Lazarus, and the Siege Brotherhoods receive a seat when Evolution I activates, or earlier when the player completes the first focus of that order's path.
+This keeps the baseline council to three voices and lets Evolution I add three more.
 
-### States
+### Order record
 
-The UI needs:
+Each seated order keeps only three internal facts: influence (low, normal, high), grievance (0 to 3), and headquarters state.
+Influence is shown as seat prominence.
+Grievance is shown only as a warning mark on the seat when it reaches 3.
+Everything else about an order (unit variants, commanders, route compatibility) derives from the focus path and is not stored on the order.
 
-- normal
-- hover
-- selected
-- available
-- blocked
-- warning
-- demand active
-- order dominant
-- order marginalized
-- relic disputed
-- Jerusalem lost
-- Papal route active
-- terminal ready
-- closed after defeat or annexation
+| Order | Identity | What a seat gives | What it costs |
+| --- | --- | --- | --- |
+| Hospitallers | care, fortification, endurance | field hospitals, recovery, attrition reduction | refuse to serve camps or harsh requisition, which strains Cohesion if the player uses them |
+| Templar Revival | finance, offence, conquest | procurement, breakthrough, war finance | debt and sponsor dependence, treasury demands |
+| Teutonic Chapter | discipline, heavy armour | Armored Knight quality, organization | command-post and ideology demands, hidden-route exposure |
+| Order of Saint Lazarus | disease, contaminated regions | outbreak and fallout resilience, relief missions | public fear, conflict with biological warfare |
+| Naval Orders | islands, ports, convoys | marines, convoy defence, island invasion | dockyard and transport command demands |
+| Siege Brotherhoods | engineers, fortress assault | Siege Hosts, engineer support, fort attack | heavy transport, workshop, and civilian-damage demands |
 
-Every visual state needs a static fallback. Animation is allowed only when it clarifies a live danger or active selection.
+## Demands
 
-## Order system
+One major demand is open at a time.
+The first demand arrives no earlier than 90 days after the opening and after the council window has first opened, so the player learns the opening war before council pressure peaks.
+After that the interval follows the cadence table in `28_balance_tuning_tables.md`: 150 to 240 days when stable, 210 to 330 days while United, and 75 to 150 days below Cohesion 30, never shorter than 60 days.
 
-### Order registry
+A demand states the requesting order, one concrete request, a 45-day deadline, and what each answer costs.
+Typical requests are a headquarters in a named state, a share of captured equipment, funding for hospitals or workshops, an order commander, operational autonomy for a front, a principality charter, custody of a relic, or a role in Jerusalem.
 
-The public order families are:
+The answers are:
 
-1. Hospitallers
-2. Templar Revival
-3. Teutonic Chapter
-4. Order of Saint Lazarus
-5. Naval Orders
-6. Siege Brotherhoods
+| Answer | Cost | Result |
+| --- | --- | --- |
+| Accept | the full request | Cohesion gain, grievance of that order falls by 1 |
+| Compromise | half the request, once per order and demand | half the Cohesion gain, grievance unchanged |
+| Refuse | none | Cohesion loss, grievance of that order rises by 1 |
 
-Each order record contains:
+An unanswered demand at its deadline counts as a refusal.
+There is no deferral.
+A deferral would be a free cooldown reset, and the 45-day deadline already gives the player time to prepare.
 
-- current influence
-- current headquarters state
-- land grants
-- treasury or equipment obligations
-- commander roster
-- unlocked unit variants
-- current demand
-- demand cooldown
-- grievance memory
-- foreign sponsor ties
-- route compatibility
-- dominance status
+## Incidents
 
-Influence remains hidden and is represented through council seat prominence, order status labels, demands, and route availability.
+An incident opens when an order's grievance reaches 3 or Cohesion falls below 30.
+Only one incident is open at a time, and it offers three bounded responses: concede the grievance, send it to Papal or council arbitration, or suppress it.
+Suppression lowers Command Standing by one step for 90 days and Cohesion by a script-constant amount.
+An order that causes three incidents within 365 days loses its seat for 180 days and its headquarters state gains local resistance.
+No incident creates a country split or a civil war.
 
-### Hospitallers
+## Dominant order
 
-**Identity:** hospitals, casualty recovery, fortification, local care, medical logistics, and defensive endurance.
+One order can become the formal dominant order through a route focus.
+It requires at least Functional standing, the order's own path progress, no open incident, and a settlement event.
+Dominance strengthens that order's tools, weakens rivals, and changes the Cohesion reading to obedience.
+Dominant-order capstones are mutually exclusive.
+The confederation route instead rewards high Cohesion and balanced seats with broader unit access and less specialization.
 
-**Gameplay:** field hospitals, HP, recovery, attrition reduction, forts, disease response, contaminated-region operations, relief access.
+## Relics
 
-**Demands:** hospital sites, protected budgets, authority over wounded troops, neutral medical access, control of key fortresses.
+Relics exist only from Evolution III.
+The campaign has at most three relic claims, each drawn from a researched tradition such as a True Cross fragment, a Holy Lance tradition, or a Maltese or Rhodian order relic.
 
-**Failure risk:** medical neutrality disputes, underfunded hospitals, refusal to serve harsh regimes, conflict with extermination routes.
+Each claim has a custodian (Malta, Jerusalem, an order, or the Pope) and a standing: unexamined, accepted, disputed, or exposed.
+Whether a claim holds up is decided once, at examination, by a fixed weighted roll whose weights depend on the custodian and the claim's tradition.
+The result is stored only as the standing and is never printed as a true or false value.
 
-### Templar Revival
+Four actions drive the system: sponsor an expedition, examine a claim, display a relic in Jerusalem, and transfer custody.
+Outcomes move Legitimacy, Cohesion (custody disputes), and foreign interest.
+A relic never gives a permanent flat combat bonus.
+Accepted relics are the sponsorship basis for Blessed formations.
 
-**Identity:** offensive warfare, finance, debt, conquest, and centralized elite command.
+## Blessed formations
 
-**Gameplay:** breakthrough, attack planning, war finance, procurement, rapid war preparation, captured wealth.
+Blessed formations are elite variants for the player who has built Sacred Mandate.
+They require Evolution III or an approved terminal setup, Legitimacy of 65 or more, a relic or Papal sponsor, full equipment and manpower, and a strict country cap.
+Losses are permanent, and losing Sacred Mandate stops new formations without deleting existing ones.
+Battlefield miracle reports are event flavour and add no hidden power.
 
-**Demands:** treasury control, land concessions, banking privileges, operational independence, priority equipment.
+## Council window
 
-**Failure risk:** debt dependency, corruption, rival claims, sponsor capture, aggressive overreach.
+The Crusade Council is a dedicated event-owned window because the player seats orders, answers demands, and reads three linked readouts together.
+A decision category alone cannot show those relationships.
+The decision category keeps ownership of timed missions, map-targeted actions, and ordinary costs, and the window calls the same accepted helpers.
 
-### Teutonic Chapter
+The window contains:
 
-**Identity:** discipline, heavy armour, eastern military tradition, and doctrinal rigidity.
+- the Command Standing line with four anchor icons showing held or lost
+- the Cohesion and Legitimacy meters with the next material threshold
+- the order seats, three at the opening and up to six, with a dominant-order frame and a warning mark when a grievance is at 3
+- one demand or incident card with its deadline
+- three answer buttons (Accept, Compromise, Refuse) and one Convene Joint Command button
 
-**Gameplay:** Armored Knight quality, organization, training, heavy equipment, harsh winter preparation, high command.
+It carries no relic card, no ledger, and no list of hidden numbers.
 
-**Demands:** command posts, heavy workshops, exclusive training grounds, ideological authority.
+States to design and review: normal, hover, selected seat, demand open, incident open, order dominant, seat suspended, Jerusalem lost, Papal route active, terminal ready, and closed after defeat or annexation.
+Every state has a static fallback, and animation is allowed only to mark a live danger or the current selection.
 
-**Failure risk:** factional radicalization and hidden German route exposure. The public branch must remain viable without entering the hidden Teutonic Order faction.
+### Sample tooltip text
 
-### Order of Saint Lazarus
-
-**Identity:** care for the diseased, service in contaminated regions, attrition warfare, and social stigma.
-
-**Gameplay:** field hospitals, outbreak protection, attrition resistance, contaminated state operations, relief missions, casualty recovery.
-
-**Demands:** hospitals, quarantine authority, access to vulnerable populations, separate chapters.
-
-**Failure risk:** public fear, false disease accusations, conflict with biological warfare, exploitation of the sick.
-
-### Naval Orders
-
-**Identity:** islands, ports, convoy protection, marines, boarding, and amphibious war.
-
-**Gameplay:** naval invasion planning, convoy defence, marine units, coastal forts, captured ports, light escorts.
-
-**Demands:** island headquarters, dockyard priority, command of transports, naval autonomy.
-
-**Failure risk:** convoy losses, piracy allegations, competition with Malta's civilian port authority.
-
-### Siege Brotherhoods
-
-**Identity:** engineers, catapults, trebuchets, fort assault, demolition, and battlefield construction.
-
-**Gameplay:** siege formations, fort attack, engineer support, rail and depot work, bridging, demolition.
-
-**Demands:** workshops, heavy transport, state construction rights, captured engineer corps.
-
-**Failure risk:** extreme supply burden, civilian damage, obsolete doctrine, unsafe explosive experiments.
-
-## Demand loop
-
-Only one major order demand should normally be active at a time. A second emergency demand is allowed during terminal or civil conflict states.
-
-A demand contains:
-
-- requesting order
-- concrete request
-- deadline
-- cost or commitment
-- immediate effect
-- long-term consequence
-- refusal consequence
-- compromise route
-- AI choice weights
-
-Examples include:
-
-- grant an order headquarters in a named city
-- transfer captured equipment
-- fund hospitals or workshops
-- appoint an order commander
-- recognize an order's operational autonomy
-- grant a principality charter
-- transfer relic custody
-- reserve Jerusalem administration for a chosen body
-
-The player can normally accept, refuse, negotiate, or defer once. Repeated deferral raises grievance pressure and cannot become a free cooldown reset.
-
-## Dominant-order settlement
-
-One order can become politically dominant through focus and council choices. Dominance requires:
-
-- a route focus
-- a minimum Authority threshold
-- the order's relevant campaign proof
-- no unresolved council rupture
-- a formal settlement event
-
-Dominance provides stronger order-specific tools and weakens some rivals. It also creates route-specific risks. The player cannot gain every dominant-order capstone in one campaign.
-
-The confederation route instead rewards high cohesion, balanced chapters, and shared command. It gains broader unit access but less extreme specialization.
-
-## Relic system
-
-### Purpose
-
-Relics provide legitimacy, foreign interest, custody disputes, and uncertainty. The system never confirms supernatural authenticity.
-
-### Candidate families
-
-- fragments associated with the True Cross
-- Holy Lance traditions
-- saint relics
-- crusader banners
-- icons and manuscripts
-- objects associated with Jerusalem
-- Maltese and Rhodian order relics
-
-Final names and historical claims require research. The implementation must distinguish a real historical tradition from a fictional object invented for the event.
-
-### Relic record
-
-Each relic has:
-
-- custody actor and state
-- public claim quality
-- controversy state
-- discovery source
-- recognition state
-- theft or loss state
-- associated order
-- public effect family
-- hidden authenticity state or unresolved marker
-
-The hidden authenticity state must never print as a raw true or false value.
-
-### Relic outcomes
-
-A relic can be:
-
-- accepted
-- disputed
-- exposed as false
-- stolen
-- hidden
-- transferred to the Pope
-- held by an order
-- displayed in Jerusalem
-- destroyed or lost during war
-
-Effects should change legitimacy, diplomacy, recruitment, resistance, order relations, and events. A relic should not give a permanent flat combat bonus without custody and public context.
-
-## Sacred sites
-
-The system tracks a small fixed set of sites:
-
-- Malta and Fort St Angelo
-- Jerusalem
-- Rome after the Papal route
-- selected order headquarters
-- route-specific relic sites
-
-Control duration matters. A single-day occupation does not count as stable sacred control.
-
-## Miracles and blessed formations
-
-At high legitimacy and Chaos, battlefield reports can describe improbable survival, unexplained morale, or disputed miracles. The mechanics remain grounded in organization, recovery, morale, command, and recruitment.
-
-Blessed formations require:
-
-- Evolution III or an approved terminal setup
-- high Sacred Legitimacy
-- equipment and manpower
-- an order or Papal sponsor
-- a bounded formation cap
-
-They are elite units, not free immortal troops. Losses remain real.
+- Command Standing: Functional. Hold all four anchors for 98 more days to be recognized.
+- Order Cohesion: Strained. The Templar request for the Cyprus treasury is unanswered.
+- Sacred Legitimacy: Recognized. A relic accepted by Rome would carry the cause toward a sacred mandate.
+- Demand: The Hospitallers ask for a field hospital in Haifa within 45 days.
+- Incident: The Naval Orders have refused to escort the Teutonic convoy.
 
 ## AI behavior
 
-AI evaluates council actions from:
-
-- current value bands
-- active war state
-- order strength and route
-- equipment and supply
-- imminent demand deadline
-- control of Jerusalem and Malta
-- Papal relations
-- principality stability
-- human allies and enemies
-- hidden-route eligibility
-
-AI should prioritize preventing collapse when Authority or Cohesion is below 20. It should pursue specialization only when the relevant order can be supplied. It should avoid relic claims when recent scandals make another exposure likely.
-
-All demand timing, order selection, relic selection, and route choices require probability inspection and named scenarios.
+The AI answers the same demands and incidents as the player and uses the same availability rules.
+It prefers to accept a demand it can afford while Cohesion is below 50, to compromise when the cost is above its reserve, and to refuse only when the order is low influence and the cost is a hardship.
+It resolves an open incident before opening a new offensive and avoids relic examination when a scandal is recent.
+Demand timing, answer choice, and relic examination odds are weighted surfaces and need named probability scenarios (see `15_ai_probability_and_balance.md`).
 
 ## Cleanup
 
-The mechanic closes or transforms when:
-
-- Malta is annexed with no successor
-- the country becomes the Holy See or Kingdom of God
-- the Teutonic faction changes the council structure
-- Atlantis destroys or occupies the Malta actor
-- the Holy World terminal replaces ordinary management
-- the event is cleanly defeated or dissolved
-
-Transformation preserves durable order, relic, principality, and legitimacy facts needed by later routes. It removes stale buttons, invalid targets, expired demands, and temporary selected-card state.
+The mechanic closes or transforms when Malta is annexed with no successor, when the country becomes the Holy See or Kingdom of God, when the Teutonic Order changes the council structure, when Atlantis destroys the actor, when the Holy World replaces ordinary management, or when the event is cleanly defeated.
+Transformation keeps the durable order, relic, principality, and Legitimacy facts that later routes need and removes stale buttons, invalid targets, expired demands, and selected-card state.

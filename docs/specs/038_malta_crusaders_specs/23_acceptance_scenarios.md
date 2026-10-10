@@ -76,15 +76,19 @@ A passing source check is not live-game proof.
 | D01 | opening initialization | values in accepted bands |
 | D02 | value gain above 100 | clamp to 100 with actual applied change only |
 | D03 | value loss below 0 | clamp to 0 with actual applied change only |
-| D04 | Authority below 20 | emergency state and actions |
-| D05 | Cohesion below 20 | open-rivalry incidents |
-| D06 | Legitimacy below 20 | foreign support and blessed access weaken |
+| D04 | Command Standing Fractured | emergency-only actions and the Eleventh Crusade check |
+| D05 | Cohesion below 30 | one incident always open and joint actions blocked |
+| D06 | Legitimacy below 20 | donations stop and Blessed access is lost |
 | D07 | one active demand | no second ordinary major demand |
 | D08 | demand target invalidates | demand closes or retargets safely |
 | D09 | dominant order chosen | value context updates without fourth meter |
 | D10 | GUI all states and resolutions | no clipping, overlap, misalignment, or bad click regions |
 | D11 | decorative animation disabled | static fallback remains functional |
 | D12 | AI actor | AI-equivalent actions work without clicking GUI |
+| D13 | demand unanswered at its 45-day deadline | counts as a refusal, no deferral exists |
+| D14 | three incidents from one order within 365 days | seat suspended for 180 days, no country split |
+| D15 | Command Standing recompute | runs only on anchor control change, demand resolution, settlement, and window open |
+| D16 | opening seats | three seats at the baseline, six from Evolution I |
 
 ## E. Custom units
 
@@ -147,6 +151,7 @@ A passing source check is not live-game proof.
 | H08 | integration | staged proof and no instant blanket cores |
 | H09 | annex and recreate exploit | generation prevents farming |
 | H10 | shared tree | country-specific text, AI, rewards, and capital goals |
+| H11 | principality tiers | at most four active, at most two minor marches, minor marches use the short overlay |
 
 ## I. Evolutions
 
@@ -160,6 +165,10 @@ A passing source check is not live-game proof.
 | I06 | actor invalid during delay | cancel or transfer safely |
 | I07 | log row | correct event, date, actor, tier, and stage |
 | I08 | activation | zero direct Chaos |
+| I09 | Evolution II active before firing, no valid principality region | documented alternative actor or none, no empty tag |
+| I10 | Evolution III active before firing, no valid sponsor | equivalent Legitimacy package, no invalid ally |
+| I11 | Jerusalem lost during the activation delay | activation still resolves or cancels cleanly |
+| I12 | save and reload before and after activation | one activation, no duplicate package or formations |
 
 ## J. Teutonic Order
 
@@ -175,6 +184,13 @@ A passing source check is not live-game proof.
 | J08 | faction dissolves before two years | Atlantis timer resets |
 | J09 | save on day 729 and reload | day count remains correct |
 | J10 | public secrecy | no pre-reveal catalog or Event Details leak |
+| J11 | Germany changed government or a member joined another faction | route blocked, no malformed faction |
+| J12 | a member capitulates during negotiations | talks fail cleanly |
+| J13 | human Germany, Malta, or Holy Realm | direct player choices |
+| J14 | Malta is the Holy See or Kingdom of God | route still evaluates from the successor |
+| J15 | member leaves and rejoins | timer does not continue |
+| J16 | 729 versus 730 days | Atlantis eligible only at 730 |
+| J17 | alliance dissolves without Atlantis | settlement and cleanup, no world end |
 
 ## K. Atlantis
 
@@ -192,6 +208,14 @@ A passing source check is not live-game proof.
 | K10 | hidden evidence | absent from public UI until discovery |
 | K11 | defeat | policy dismantled, evidence preserved, threat cleared |
 | K12 | public secrecy | no pre-betrayal spoilers |
+| K13 | Germany briefly strongest, then not at the choice | route unavailable, no one-day flip |
+| K14 | Hitler in Germany versus the Holy Realm | one leader-ownership outcome |
+| K15 | Malta is the Holy See or Kingdom of God | betrayal war targets the successor |
+| K16 | founding member leaves on day 729 | route unavailable |
+| K17 | 20 formations cannot all deploy in one state | documented reduced package, no duplicates |
+| K18 | map update removes registry states | missing states reported, proof not eased |
+| K19 | migration and famine in an Atlantis state | no duplicate population debit |
+| K20 | Atlantis defeated before later regional wars | clean aftermath |
 
 ## L. Holy World normal route
 
@@ -213,6 +237,13 @@ A passing source check is not live-game proof.
 | L14 | regional pulses | rapid, bounded, no duplicate wars |
 | L15 | terminal victory | coherent continued sandbox or final presentation |
 | L16 | terminal defeat | settlement and cleanup |
+| L17 | proof held 89 versus 90 days | readiness recorded only at 90 |
+| L18 | readiness lost before 1000 | 30-day grace, then revoked |
+| L19 | a subject rebels or a qualifying state is occupied but not owned | proof pauses or resets |
+| L20 | Pope ceremonial only, or Rome controlled but not owned | preparation unavailable |
+| L21 | Papal actor capitulates during regional pulses | pulses stop cleanly |
+| L22 | active Atlantis and Holy World both ready | Holy World activation blocks new Atlantis |
+| L23 | save and reload during proof, readiness, activation, and terminal war | all state persists |
 
 ## M. Manual scenario
 

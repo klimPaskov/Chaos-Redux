@@ -40,7 +40,7 @@ Faster when:
 - Malta controls several coherent regions
 - direct occupation burden is high
 - at least one order demands territory
-- Crusade Authority is functional
+- Command Standing is Functional or better
 - Evolution I is active
 
 Slower when:
@@ -48,7 +48,7 @@ Slower when:
 - no valid principality region exists
 - Malta has only its island heartland
 - all candidate country carriers are invalid
-- Authority is fractured
+- Command Standing is Fractured
 
 ### Evolution III factors
 
@@ -93,8 +93,8 @@ The event must not spawn baseline Malta and schedule a later catch-up pulse. Cat
 
 ### Mechanics
 
-- three public values initialized in the functional but unstable range
-- Crusade Council open
+- Command Standing starts Functional, and Cohesion and Legitimacy start in the Strained to Recognized range
+- three order seats (Hospitallers, Templar Revival, Naval Orders) and the Crusade Council open
 - core focus tree routes open
 - no principality required at start
 - no relic required at start
@@ -117,8 +117,8 @@ Normally unchanged from baseline. Territorial scaling is not the primary Evoluti
 
 ### Orders
 
+- the Teutonic Chapter, Order of Saint Lazarus, and Siege Brotherhoods hold council seats from the first day
 - additional order headquarters already active
-- at least four public order families represented
 - one initial order demand can be queued after the player sees the setup
 - stronger foreign chapter presence
 
@@ -130,7 +130,6 @@ Normally unchanged from baseline. Territorial scaling is not the primary Evoluti
 
 ### Values
 
-- slightly higher Authority floor
 - wider Cohesion variance because more orders compete
 - modest Legitimacy support from foreign arrivals
 
@@ -169,7 +168,7 @@ The actor receives a full minimum country package and cannot be created when no 
 
 ### Values
 
-- Authority reflects the broader administration burden
+- Command Standing stays Functional because the wider footprint has not yet proven stable
 - Cohesion reflects land grants
 - Legitimacy reflects the first recognized principality
 
@@ -211,7 +210,7 @@ The setup cannot invent a real relic without a sourced tradition. A fictional cl
 ### Values
 
 - higher Sacred Legitimacy floor
-- higher Authority floor
+- Command Standing starts Recognized because the coalition has already proven the anchors
 - Cohesion can start high under a coordinated coalition or lower under intense order competition
 
 ## Pre-fire setup matrix
@@ -223,7 +222,7 @@ The setup cannot invent a real relic without a sourced tradition. A fictional cl
 | Maritime bridge | Yes | Yes | Yes | Yes |
 | Extra footholds | 1 conditional | same normally | up to 1 additional coherent foothold | same as II, stronger support |
 | Principality | No requirement | No requirement | 1 valid actor | 1 or more within cap |
-| Order families | core set | expanded | expanded | expanded |
+| Council seats | 3 | 6 | 6 | 6 |
 | Custom formations | baseline | reinforced | reinforced plus subject forces | strongest bounded package |
 | Relic | No requirement | No requirement | optional | at least one claim or equivalent legitimacy |
 | Blessed formations | No | No | optional | at least one |
@@ -357,15 +356,5 @@ Evolution state gives zero Chaos. Examples of concrete Event 38 outcomes that ca
 
 ## Evolution acceptance tests
 
-1. Event fires below 200 Chaos
-2. Evolution I active before event fires
-3. Evolution II active before event fires without a valid principality region
-4. Evolution III active before event fires with no valid foreign supporter
-5. Event fires first, then each evolution activates through MTTH
-6. each evolution disabled separately
-7. actor annexed during evolution delay
-8. Jerusalem lost during evolution delay
-9. human and AI Malta
-10. save and reload before and after activation
-11. event-log row metadata and ordering
-12. no duplicate setup package or duplicate formations
+The evolution scenarios are section I of `23_acceptance_scenarios.md`.
+That section also covers the constrained cases: Evolution II with no valid principality region, Evolution III with no valid sponsor, an actor annexed or Jerusalem lost during the activation delay, human and AI Malta, save and reload before and after activation, and duplicate setup packages.

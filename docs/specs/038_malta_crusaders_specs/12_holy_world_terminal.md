@@ -122,7 +122,7 @@ A nominal faction member does not count.
 
 ### Stabilization period
 
-The full continent must remain valid for a recommended 90 days before readiness is recorded. Losing a qualifying state pauses or resets the proof according to the final mission design.
+The full continent must remain valid for 90 days before readiness is recorded. Losing a qualifying state pauses or resets the proof according to the final mission design.
 
 The public mission names the selected continent and shows qualitative progress with a concise state-group tooltip. It does not print a developer ledger of every state ID.
 
@@ -154,7 +154,7 @@ Once one continent contract passes:
 
 If Chaos is below 1000, the route waits. It cannot set the shared terminal state early.
 
-If the continent later becomes invalid before activation, readiness is suspended or revoked. The exact policy should be public and consistent. A recommended design is a 30-day grace period before revocation so one transient battle does not erase months of preparation.
+If the continent later becomes invalid before activation, readiness is suspended or revoked. The policy is public and consistent: a 30-day grace period applies before revocation, so one transient battle does not erase months of preparation.
 
 ## Final activation
 
@@ -339,7 +339,7 @@ Conquered countries can be:
 - restored under believer governments
 - assigned to existing principalities
 
-The outcome depends on route, local administration, strategic value, Authority, and Papal policy.
+The outcome depends on route, local administration, strategic value, Command Standing, and Papal policy.
 
 Terminal conquest does not automatically give actual cores everywhere. The terminal state can use extreme compliance, subject, and administration tools without erasing all population and resistance logic.
 
@@ -400,7 +400,7 @@ The Holy World does not require them.
 
 If Atlantis activates first, it becomes a hostile separate route and cannot be automatically assigned as a believer. Atlantis and Holy World can fight when both reach their valid campaign states, but only one shared world-end state can be active. The implementation must define which route owns terminal activation when both are ready.
 
-Recommended rule:
+Rule:
 
 - Atlantis betrayal can occur before any terminal state
 - once Holy World activates, new Atlantis activation is blocked
@@ -452,22 +452,5 @@ It should not list exact AI formulas, hidden state arrays, Atlantis interactions
 
 ## Acceptance scenarios
 
-1. preparation appears at 799 and 800 Chaos
-2. branch toggle disabled and enabled
-3. Pope is ceremonial only
-4. Rome controlled but not owned
-5. continent controlled directly
-6. continent controlled through valid subjects
-7. one subject enters rebellion
-8. one tiny excluded island remains hostile
-9. one qualifying state is occupied but not owned
-10. full proof held for 89 and 90 days
-11. readiness achieved at 900 Chaos
-12. readiness lost before 1000
-13. readiness and 1000 occur on same day
-14. another world-end route activates first
-15. multiple human countries choose sides
-16. wars already exist across several regions
-17. believer coalition too strong at Maximum scenario intensity
-18. Papal actor capitulates during regional pulses
-19. save and reload during proof, readiness, activation, and terminal war
+The Holy World scenarios are section L of `23_acceptance_scenarios.md`.
+That section also covers the 799 and 800 Chaos boundary, the 89 and 90 day proof boundary, readiness reached at 900 Chaos and lost before 1000, readiness and 1000 on the same day, a subject entering rebellion, occupied but unowned states, an excluded island, simultaneous human side choices, existing wars across regions, a Papal capitulation during the regional pulses, and save and reload at each stage.

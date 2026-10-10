@@ -7,7 +7,6 @@
 | Scenario ID | `SCN-021`, raw integer `21`, reserved for Event 038 |
 | Scenario name | Believers vs Nonbelievers |
 | Owning event | Event 38 |
-| Type control | Holy World actor setup mode, if final design retains useful variants |
 | Intensity | Low, Medium, High, Maximum |
 | Terminal runtime | Shared Event 38 Holy World runtime |
 
@@ -48,7 +47,7 @@ The launch cannot be blocked by:
 
 ## Confirmation flow
 
-The scenario row opens a detail view. The player chooses intensity and any approved scenario type. Pressing Launch Scenario opens a confirmation window that reads the values at confirmation time.
+The scenario row opens a detail view. The player chooses an intensity. Pressing Launch Scenario opens a confirmation window that reads the values at confirmation time.
 
 Cancel leaves the world unchanged.
 
@@ -112,7 +111,7 @@ The player does not need to begin at 1000 Chaos.
 
 ## Scenario setup transaction
 
-1. save selected scenario, type, and intensity
+1. save selected scenario and intensity
 2. set a narrow Event 38 scenario setup flag
 3. freeze or create the Papal actor
 4. install Rome as primary capital and Jerusalem as secondary sacred center
@@ -232,19 +231,10 @@ At every intensity:
 
 If the current world cannot satisfy the intended balance, the setup adapts or rejects. It does not force a predetermined ratio that produces broken factions.
 
-## Scenario type options
+## No scenario type control
 
-A type control is useful only if it changes the setup materially. Recommended options are:
-
-### Papal Dominion
-
-More direct Papal territory, fewer autonomous believers, stronger central terminal actor.
-
-### League of Believers
-
-More allied believer governments, fewer direct Papal possessions, stronger multinational coalition.
-
-If the type control adds clutter without changing play, omit it and keep one scenario type. The scenario window should not expose a cosmetic switch.
+The scenario has one setup shape and four intensities.
+A separate type switch (direct Papal dominion versus a league of believers) was rejected because intensity already changes Papal territory, believer reach, and subject count, and a second switch would add a control that does not change the decision the player is making.
 
 ## Immediate war
 
@@ -313,7 +303,7 @@ The scenario is incomplete until:
 - stable ID and sort registration
 - launch eligibility
 - confirmation flow
-- intensity slider and optional type control
+- intensity selector (Low, Medium, High, Maximum)
 - actor selection and creation
 - Chaos transition
 - human side choice

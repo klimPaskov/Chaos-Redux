@@ -66,7 +66,7 @@ These choices change the first 180 days. They can later converge, but they must 
 
 **Narrative:** one central order government imposes command over the expedition.
 
-**Mechanical identity:** high Authority, strict command, fewer order disputes, stronger direct administration, higher resistance and autonomy pressure.
+**Mechanical identity:** a high Command Standing ceiling, strict command, fewer order disputes, stronger direct administration, higher resistance and autonomy pressure.
 
 **Key groups:**
 
@@ -258,10 +258,6 @@ Creates a small readable template set and centralized provider management.
 
 Develops modern knight armour equipment and improves protection.
 
-### The Remount Service
-
-Builds horse, truck, and cavalry logistics.
-
 ### Ranged Orders
 
 Splits Archer and Crossbow roles and unlocks production.
@@ -400,7 +396,7 @@ The route should handle a pre-existing Vatican or Papal actor without duplicatin
 
 ## Kingdom of God route
 
-The Kingdom of God is a late public formable route. It requires major territorial success, Papal supremacy, high Authority, and high Sacred Legitimacy.
+The Kingdom of God is a late public formable route. It requires major territorial success, Papal supremacy, Supreme Command Standing, and Sacred Legitimacy of 80 or more.
 
 It changes:
 
@@ -499,7 +495,7 @@ Examples of required interactions:
 - Grand Magistry improves direct rule but worsens order and principality autonomy disputes.
 - Papal rule increases sacred legitimacy but narrows secular diplomacy.
 - High Cohesion improves principality federation and mixed-order units.
-- High Authority improves direct integration and terminal readiness.
+- Recognized or Supreme Command Standing improves direct integration and terminal readiness.
 
 Branches must not exist as isolated stat columns.
 

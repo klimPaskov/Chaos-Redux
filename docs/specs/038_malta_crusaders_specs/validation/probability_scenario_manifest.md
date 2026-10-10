@@ -12,8 +12,8 @@ No scenario authorizes source changes by the probability auditor. Exact normaliz
 | --- | --- | --- | --- | --- |
 | `E38-P001` | opening focus AI | Malta at war, supply critical, Jerusalem held | survival and supply outrank political and relic content | exact or score-only depending on full focus pool |
 | `E38-P002` | opening focus AI | Malta at war, supply secure, enemy weak | campaign preparation can outrank defensive focus, but logistics remains viable | comparison and sensitivity |
-| `E38-P003` | government route | high Authority, low Cohesion, one dominant order | centralization preferred over confederation | score ordering |
-| `E38-P004` | government route | moderate Authority, high Cohesion, four strong orders | confederation preferred and centralization remains possible only when valid | score ordering |
+| `E38-P003` | government route | Recognized Command Standing, low Cohesion, one dominant order | centralization preferred over confederation | score ordering |
+| `E38-P004` | government route | Functional Command Standing, high Cohesion, four strong orders | confederation preferred and centralization remains possible only when valid | score ordering |
 | `E38-P005` | Hospitaller route | high casualties, disease or famine active, weak industry | Hospitaller and Lazarite paths outrank Templar aggression | sweep over casualty and humanitarian pressure |
 | `E38-P006` | Templar route | strong army, stable supply, low enemy strength, no active humanitarian crisis | Templar and siege paths rise without starving logistics | sweep over force ratio |
 | `E38-P007` | Holy See route | Rome controlled and safe, valid Pope, high Legitimacy | Papal route becomes competitive | exact candidate comparison |
@@ -30,9 +30,9 @@ No scenario authorizes source changes by the probability auditor. Exact normaliz
 | `E38-P013` | regional campaign target | no convoy margin and hostile navy | overseas targets approach zero | exact invalidation or strong penalty proof |
 | `E38-P014` | campaign action | active severe supply deficit | depot, port, convoy, and repair actions outrank new offensive | decision score ordering |
 | `E38-P015` | settlement choice | high resistance, weak administration, valid principality | charter or local restoration outranks direct integration | option or decision evaluation |
-| `E38-P016` | settlement choice | compact strategic state, high compliance, strong Authority | direct commandery or integration becomes competitive | sensitivity sweep |
-| `E38-P017` | council response | high Cohesion and affordable demand | accept or negotiate outranks refusal | option pool exact evaluation |
-| `E38-P018` | council response | low Authority and unaffordable territorial demand | negotiation or refusal remains viable, acceptance does not bankrupt actor | bounded evaluation |
+| `E38-P016` | settlement choice | compact strategic state, high compliance, Recognized Command Standing | direct commandery or integration becomes competitive | sensitivity sweep |
+| `E38-P017` | council response | high Cohesion and affordable demand | accept or compromise outranks refusal | option pool exact evaluation |
+| `E38-P018` | council response | low Cohesion and unaffordable territorial demand | compromise or refusal remains viable, acceptance does not bankrupt actor | bounded evaluation |
 | `E38-P019` | demand selection | stable council with several active orders | no single demand family dominates and immediate repeat is prevented | complete random pool evaluation |
 | `E38-P020` | demand selection | low Cohesion and dominant Templar order | stronger operational or land demand becomes more likely | sweep by Cohesion and influence |
 

@@ -147,7 +147,6 @@ Workbook fields need:
 - stable ID
 - name
 - player-facing details
-- optional type options
 - intensity scaling summary
 - implementation status
 
