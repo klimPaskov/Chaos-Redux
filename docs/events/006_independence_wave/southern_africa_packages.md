@@ -39,7 +39,7 @@ Radical sovereignty is excluded for all three. Barotseland and Madagascar are va
 
 ## Formables
 
-FORM-30 Southern African Confederation and FORM-31 Indian Ocean League State remain closed: their profiles exist for discovery, but neither has a carrier tag, member contract, consent rule, territory proof or flag, and neither is in the shared commit allowlist. The admitted rows register no formable family.
+FORM-31 Indian Ocean League State is implemented as a two-member ready contract for Madagascar and Mauritius under the IOX cosmetic identity (see `systems/ready_formable_contracts.md`); the Comoros and Zanzibar are not members. FORM-30 Southern African Confederation stays closed: it has no carrier tag, member contract, consent rule, territory proof or flag, and is not in the shared commit allowlist.
 
 ## Assets
 
@@ -56,4 +56,4 @@ Imported-node geometry/connectors, native project behavior, full campaign AI and
 ## Future plans
 
 - A sourced Zulu regency package once a rights-cleared portrait of Mshiyeni kaDinuzulu exists.
-- An FORM-31 contract for Madagascar and Mauritius, and for the Comoros once a sourced claimant re-admits it.
+- The Comoros as a FORM-31 member once a sourced claimant re-admits them.

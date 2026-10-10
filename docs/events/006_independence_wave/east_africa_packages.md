@@ -75,7 +75,7 @@ Vanilla UGA, HAR, SOM and TIG have no country-leader characters, so the game app
 
 ## Formables
 
-FORM-27 Great Lakes Federation, FORM-28 East African Federation and FORM-29 Horn League State remain closed: their profiles exist for discovery, but none has a carrier tag, member contract, consent rule, territory proof or flag, and none is in the shared commit allowlist. The admitted rows register no formable family.
+FORM-27 Great Lakes Federation and FORM-29 Horn League State are implemented as ready-member contracts under the LKX and HLX cosmetic identities (see `systems/ready_formable_contracts.md`): FORM-27 needs Buganda, Rwanda and Burundi, and FORM-29 needs three or four of Harar, the Afar state, Somaliland and Tigray. FORM-28 East African Federation stays closed: it has no carrier tag, member contract, consent rule, territory proof or flag, and is not in the shared commit allowlist. Bunyoro and Ankole stay blocked rows and are not members.
 
 ## Assets
 
@@ -92,4 +92,4 @@ Imported-node geometry/connectors, native project behavior, full campaign AI and
 ## Future plans
 
 - Sourced leaders for the Buganda, Harar, Somaliland and Tigray governments.
-- FORM-27 and FORM-29 carrier contracts now that two or more members of each exist.
+- A FORM-28 contract once its blocked member rows are admitted.

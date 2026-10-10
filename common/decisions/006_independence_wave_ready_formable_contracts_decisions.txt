@@ -2,7 +2,7 @@
 # CHAOS REDUX - EVENT 006 READY FORMABLE ROUTE DECISIONS
 # ============================================================================
 # Overview:
-# - Offers the four accepted ready-member families to an existing admitted
+# - Offers the seven accepted ready-member families to an existing admitted
 #   Event 006 member country after every required live member anchor is valid.
 # - The selected carrier then enters the generic FORM method, invitation,
 #   consent, congress, cost, and commit protocol.
@@ -115,6 +115,84 @@ independence_wave_ready_formable_routes_category = {
 		}
 	}
 
+	independence_wave_ready_formable_convene_great_lakes_congress = {
+		name = independence_wave_ready_formable_convene_great_lakes_congress
+		desc = independence_wave_ready_formable_convene_great_lakes_congress_desc
+		icon = GFX_decision_independence_wave_formable_proclamation
+		visible = {
+			is_independence_wave_regional_power = yes
+			is_independence_wave_form27_member = yes
+			NOT = { has_country_flag = independence_wave_formable_family_selected }
+			NOT = { has_country_flag = independence_wave_formable_active }
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = independence_wave_ready_formable_form27_requirements_tt
+				can_independence_wave_ready_formable_choose_form27 = yes
+			}
+		}
+		complete_effect = {
+			custom_effect_tooltip = independence_wave_ready_formable_route_registered_tt
+			independence_wave_ready_formable_choose_form27 = yes
+		}
+		ai_will_do = {
+			base = constant:independence_wave_decision_ai.standard
+			modifier = { factor = constant:independence_wave_value.minimum NOT = { should_independence_wave_ready_formable_ai_choose_form27 = yes } }
+		}
+	}
+
+	independence_wave_ready_formable_open_horn_league_council = {
+		name = independence_wave_ready_formable_open_horn_league_council
+		desc = independence_wave_ready_formable_open_horn_league_council_desc
+		icon = GFX_decision_independence_wave_league_votes
+		visible = {
+			is_independence_wave_regional_power = yes
+			is_independence_wave_form29_member = yes
+			NOT = { has_country_flag = independence_wave_formable_family_selected }
+			NOT = { has_country_flag = independence_wave_formable_active }
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = independence_wave_ready_formable_form29_requirements_tt
+				can_independence_wave_ready_formable_choose_form29 = yes
+			}
+		}
+		complete_effect = {
+			custom_effect_tooltip = independence_wave_ready_formable_route_registered_tt
+			independence_wave_ready_formable_choose_form29 = yes
+		}
+		ai_will_do = {
+			base = constant:independence_wave_decision_ai.low
+			modifier = { factor = constant:independence_wave_value.minimum NOT = { should_independence_wave_ready_formable_ai_choose_form29 = yes } }
+		}
+	}
+
+	independence_wave_ready_formable_convene_indian_ocean_conference = {
+		name = independence_wave_ready_formable_convene_indian_ocean_conference
+		desc = independence_wave_ready_formable_convene_indian_ocean_conference_desc
+		icon = GFX_decision_independence_wave_network_aid
+		visible = {
+			is_independence_wave_regional_power = yes
+			is_independence_wave_form31_member = yes
+			NOT = { has_country_flag = independence_wave_formable_family_selected }
+			NOT = { has_country_flag = independence_wave_formable_active }
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = independence_wave_ready_formable_form31_requirements_tt
+				can_independence_wave_ready_formable_choose_form31 = yes
+			}
+		}
+		complete_effect = {
+			custom_effect_tooltip = independence_wave_ready_formable_route_registered_tt
+			independence_wave_ready_formable_choose_form31 = yes
+		}
+		ai_will_do = {
+			base = constant:independence_wave_decision_ai.high
+			modifier = { factor = constant:independence_wave_value.minimum NOT = { should_independence_wave_ready_formable_ai_choose_form31 = yes } }
+		}
+	}
+
 	independence_wave_ready_formable_abandon_unopened_contract = {
 		name = independence_wave_ready_formable_abandon_unopened_contract
 		desc = independence_wave_ready_formable_abandon_unopened_contract_desc
@@ -147,7 +225,7 @@ independence_wave_ready_formable_routes_category = {
 	}
 }
 
-# Two paid, sequential post-formation integration projects for the four ready
+# Two paid, sequential post-formation integration projects for the seven ready
 # families. The generic formation ledger supplies consent and member identity;
 # these decisions do not transfer states, cores, or Event 006 origins.
 independence_wave_ready_formable_integration_category = {
@@ -339,5 +417,143 @@ independence_wave_ready_formable_integration_category = {
 		}
 		cancel_effect = { independence_wave_ready_formable_clear_integration_stage2 = yes }
 		ai_will_do = { base = constant:independence_wave_decision_ai.standard modifier = { factor = constant:independence_wave_value.minimum NOT = { should_independence_wave_ready_formable_form37_ai_start_stage2 = yes } } }
+	}
+
+	independence_wave_ready_formable_form27_stage1_lakes_transport_board = {
+		name = independence_wave_ready_formable_form27_stage1_lakes_transport_board
+		desc = independence_wave_ready_formable_form27_stage1_lakes_transport_board_desc
+		icon = GFX_decision_independence_wave_network_aid
+		visible = { is_independence_wave_ready_formable_form27_integration_carrier = yes NOT = { has_country_flag = independence_wave_ready_formable_stage1_complete } NOT = { has_country_flag = independence_wave_ready_formable_stage1_in_progress } }
+		available = { custom_trigger_tooltip = { tooltip = independence_wave_ready_formable_form27_stage1_requirements_tt can_independence_wave_ready_formable_form27_start_stage1 = yes } }
+		custom_cost_trigger = { can_pay_independence_wave_diplomatic_standard_cost = yes }
+		custom_cost_text = independence_wave_cost_diplomatic_standard
+		days_remove = constant:independence_wave_formable_duration.integration_days
+		days_re_enable = constant:independence_wave_formable_duration.integration_days
+		complete_effect = { hidden_effect = { independence_wave_ready_formable_start_form27_stage1 = yes } }
+		remove_effect = { custom_effect_tooltip = independence_wave_ready_formable_form27_stage1_outcome_tt custom_effect_tooltip = independence_wave_ready_formable_integration_stage_resolved_tt hidden_effect = { independence_wave_ready_formable_complete_form27_stage1 = yes } }
+		cancel_trigger = {
+			NOT = { has_country_flag = independence_wave_ready_formable_stage1_complete }
+			OR = {
+				NOT = { is_independence_wave_ready_formable_form27_integration_carrier = yes }
+				NOT = { has_independence_wave_ready_formable_stage1_project_current = yes }
+			}
+		}
+		cancel_effect = { independence_wave_ready_formable_clear_integration_stage1 = yes }
+		ai_will_do = { base = constant:independence_wave_decision_ai.high modifier = { factor = constant:independence_wave_value.minimum NOT = { should_independence_wave_ready_formable_form27_ai_start_stage1 = yes } } }
+	}
+
+	independence_wave_ready_formable_form27_stage2_lakeshore_settlement = {
+		name = independence_wave_ready_formable_form27_stage2_lakeshore_settlement
+		desc = independence_wave_ready_formable_form27_stage2_lakeshore_settlement_desc
+		icon = GFX_decision_independence_wave_border_arbitration
+		visible = { is_independence_wave_ready_formable_form27_integration_carrier = yes has_country_flag = independence_wave_ready_formable_stage1_complete NOT = { has_country_flag = independence_wave_ready_formable_stage2_complete } NOT = { has_country_flag = independence_wave_ready_formable_stage2_in_progress } }
+		available = { custom_trigger_tooltip = { tooltip = independence_wave_ready_formable_form27_stage2_requirements_tt can_independence_wave_ready_formable_form27_start_stage2 = yes } }
+		custom_cost_trigger = { can_pay_independence_wave_security_standard_cost = yes }
+		custom_cost_text = independence_wave_cost_security_standard
+		days_remove = constant:independence_wave_formable_duration.integration_days
+		days_re_enable = constant:independence_wave_formable_duration.integration_days
+		complete_effect = { hidden_effect = { independence_wave_ready_formable_start_form27_stage2 = yes } }
+		remove_effect = { custom_effect_tooltip = independence_wave_ready_formable_form27_stage2_outcome_tt custom_effect_tooltip = independence_wave_ready_formable_integration_stage_resolved_tt hidden_effect = { independence_wave_ready_formable_complete_form27_stage2 = yes } }
+		cancel_trigger = {
+			NOT = { has_country_flag = independence_wave_ready_formable_stage2_complete }
+			OR = {
+				NOT = { is_independence_wave_ready_formable_form27_integration_carrier = yes }
+				NOT = { has_independence_wave_ready_formable_stage2_project_current = yes }
+			}
+		}
+		cancel_effect = { independence_wave_ready_formable_clear_integration_stage2 = yes }
+		ai_will_do = { base = constant:independence_wave_decision_ai.standard modifier = { factor = constant:independence_wave_value.minimum NOT = { should_independence_wave_ready_formable_form27_ai_start_stage2 = yes } } }
+	}
+
+	independence_wave_ready_formable_form29_stage1_caravan_road_garrison = {
+		name = independence_wave_ready_formable_form29_stage1_caravan_road_garrison
+		desc = independence_wave_ready_formable_form29_stage1_caravan_road_garrison_desc
+		icon = GFX_decision_independence_wave_integration_missions
+		visible = { is_independence_wave_ready_formable_form29_integration_carrier = yes NOT = { has_country_flag = independence_wave_ready_formable_stage1_complete } NOT = { has_country_flag = independence_wave_ready_formable_stage1_in_progress } }
+		available = { custom_trigger_tooltip = { tooltip = independence_wave_ready_formable_form29_stage1_requirements_tt can_independence_wave_ready_formable_form29_start_stage1 = yes } }
+		custom_cost_trigger = { can_pay_independence_wave_security_standard_cost = yes }
+		custom_cost_text = independence_wave_cost_security_standard
+		days_remove = constant:independence_wave_formable_duration.integration_days
+		days_re_enable = constant:independence_wave_formable_duration.integration_days
+		complete_effect = { hidden_effect = { independence_wave_ready_formable_start_form29_stage1 = yes } }
+		remove_effect = { custom_effect_tooltip = independence_wave_ready_formable_form29_stage1_outcome_tt custom_effect_tooltip = independence_wave_ready_formable_integration_stage_resolved_tt hidden_effect = { independence_wave_ready_formable_complete_form29_stage1 = yes } }
+		cancel_trigger = {
+			NOT = { has_country_flag = independence_wave_ready_formable_stage1_complete }
+			OR = {
+				NOT = { is_independence_wave_ready_formable_form29_integration_carrier = yes }
+				NOT = { has_independence_wave_ready_formable_stage1_project_current = yes }
+			}
+		}
+		cancel_effect = { independence_wave_ready_formable_clear_integration_stage1 = yes }
+		ai_will_do = { base = constant:independence_wave_decision_ai.high modifier = { factor = constant:independence_wave_value.minimum NOT = { should_independence_wave_ready_formable_form29_ai_start_stage1 = yes } } }
+	}
+
+	independence_wave_ready_formable_form29_stage2_highland_and_coast_settlement = {
+		name = independence_wave_ready_formable_form29_stage2_highland_and_coast_settlement
+		desc = independence_wave_ready_formable_form29_stage2_highland_and_coast_settlement_desc
+		icon = GFX_decision_independence_wave_league_votes
+		visible = { is_independence_wave_ready_formable_form29_integration_carrier = yes has_country_flag = independence_wave_ready_formable_stage1_complete NOT = { has_country_flag = independence_wave_ready_formable_stage2_complete } NOT = { has_country_flag = independence_wave_ready_formable_stage2_in_progress } }
+		available = { custom_trigger_tooltip = { tooltip = independence_wave_ready_formable_form29_stage2_requirements_tt can_independence_wave_ready_formable_form29_start_stage2 = yes } }
+		custom_cost_trigger = { can_pay_independence_wave_diplomatic_standard_cost = yes }
+		custom_cost_text = independence_wave_cost_diplomatic_standard
+		days_remove = constant:independence_wave_formable_duration.integration_days
+		days_re_enable = constant:independence_wave_formable_duration.integration_days
+		complete_effect = { hidden_effect = { independence_wave_ready_formable_start_form29_stage2 = yes } }
+		remove_effect = { custom_effect_tooltip = independence_wave_ready_formable_form29_stage2_outcome_tt custom_effect_tooltip = independence_wave_ready_formable_integration_stage_resolved_tt hidden_effect = { independence_wave_ready_formable_complete_form29_stage2 = yes } }
+		cancel_trigger = {
+			NOT = { has_country_flag = independence_wave_ready_formable_stage2_complete }
+			OR = {
+				NOT = { is_independence_wave_ready_formable_form29_integration_carrier = yes }
+				NOT = { has_independence_wave_ready_formable_stage2_project_current = yes }
+			}
+		}
+		cancel_effect = { independence_wave_ready_formable_clear_integration_stage2 = yes }
+		ai_will_do = { base = constant:independence_wave_decision_ai.standard modifier = { factor = constant:independence_wave_value.minimum NOT = { should_independence_wave_ready_formable_form29_ai_start_stage2 = yes } } }
+	}
+
+	independence_wave_ready_formable_form31_stage1_island_shipping_pact = {
+		name = independence_wave_ready_formable_form31_stage1_island_shipping_pact
+		desc = independence_wave_ready_formable_form31_stage1_island_shipping_pact_desc
+		icon = GFX_decision_independence_wave_network_aid
+		visible = { is_independence_wave_ready_formable_form31_integration_carrier = yes NOT = { has_country_flag = independence_wave_ready_formable_stage1_complete } NOT = { has_country_flag = independence_wave_ready_formable_stage1_in_progress } }
+		available = { custom_trigger_tooltip = { tooltip = independence_wave_ready_formable_form31_stage1_requirements_tt can_independence_wave_ready_formable_form31_start_stage1 = yes } }
+		custom_cost_trigger = { can_pay_independence_wave_diplomatic_standard_cost = yes }
+		custom_cost_text = independence_wave_cost_diplomatic_standard
+		days_remove = constant:independence_wave_formable_duration.integration_days
+		days_re_enable = constant:independence_wave_formable_duration.integration_days
+		complete_effect = { hidden_effect = { independence_wave_ready_formable_start_form31_stage1 = yes } }
+		remove_effect = { custom_effect_tooltip = independence_wave_ready_formable_form31_stage1_outcome_tt custom_effect_tooltip = independence_wave_ready_formable_integration_stage_resolved_tt hidden_effect = { independence_wave_ready_formable_complete_form31_stage1 = yes } }
+		cancel_trigger = {
+			NOT = { has_country_flag = independence_wave_ready_formable_stage1_complete }
+			OR = {
+				NOT = { is_independence_wave_ready_formable_form31_integration_carrier = yes }
+				NOT = { has_independence_wave_ready_formable_stage1_project_current = yes }
+			}
+		}
+		cancel_effect = { independence_wave_ready_formable_clear_integration_stage1 = yes }
+		ai_will_do = { base = constant:independence_wave_decision_ai.high modifier = { factor = constant:independence_wave_value.minimum NOT = { should_independence_wave_ready_formable_form31_ai_start_stage1 = yes } } }
+	}
+
+	independence_wave_ready_formable_form31_stage2_roadstead_defence_and_autonomy = {
+		name = independence_wave_ready_formable_form31_stage2_roadstead_defence_and_autonomy
+		desc = independence_wave_ready_formable_form31_stage2_roadstead_defence_and_autonomy_desc
+		icon = GFX_decision_independence_wave_border_arbitration
+		visible = { is_independence_wave_ready_formable_form31_integration_carrier = yes has_country_flag = independence_wave_ready_formable_stage1_complete NOT = { has_country_flag = independence_wave_ready_formable_stage2_complete } NOT = { has_country_flag = independence_wave_ready_formable_stage2_in_progress } }
+		available = { custom_trigger_tooltip = { tooltip = independence_wave_ready_formable_form31_stage2_requirements_tt can_independence_wave_ready_formable_form31_start_stage2 = yes } }
+		custom_cost_trigger = { can_pay_independence_wave_security_standard_cost = yes }
+		custom_cost_text = independence_wave_cost_security_standard
+		days_remove = constant:independence_wave_formable_duration.integration_days
+		days_re_enable = constant:independence_wave_formable_duration.integration_days
+		complete_effect = { hidden_effect = { independence_wave_ready_formable_start_form31_stage2 = yes } }
+		remove_effect = { custom_effect_tooltip = independence_wave_ready_formable_form31_stage2_outcome_tt custom_effect_tooltip = independence_wave_ready_formable_integration_stage_resolved_tt hidden_effect = { independence_wave_ready_formable_complete_form31_stage2 = yes } }
+		cancel_trigger = {
+			NOT = { has_country_flag = independence_wave_ready_formable_stage2_complete }
+			OR = {
+				NOT = { is_independence_wave_ready_formable_form31_integration_carrier = yes }
+				NOT = { has_independence_wave_ready_formable_stage2_project_current = yes }
+			}
+		}
+		cancel_effect = { independence_wave_ready_formable_clear_integration_stage2 = yes }
+		ai_will_do = { base = constant:independence_wave_decision_ai.standard modifier = { factor = constant:independence_wave_value.minimum NOT = { should_independence_wave_ready_formable_form31_ai_start_stage2 = yes } } }
 	}
 }

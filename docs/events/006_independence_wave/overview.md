@@ -5,7 +5,7 @@
 The source includes the synchronized 3/4/5/7/10 allocator, country openings and host/foreign responses, the common survival and government framework, forty-four regional focus groups and the Oyo/Aceh/Mon signature modules.
 The admitted pool contains 109 attested packages in 78 reservation groups, with 112 adapters; the remaining selectable rows retain their individual research, identity, map, package or asset dependencies.
 IW-076 Hadhramaut, IW-131 Comoros and IW-179 Micronesia remain outside admission.
-FORM-07/08/11 and the exact CHU/ASY signature families have their accepted source contracts, and FORM-17/32/36/37 use the four sovereignty-preserving contracts integrated in `9e2837f8`.
+FORM-07/08/11 and the exact CHU/ASY signature families have their accepted source contracts, and FORM-17/32/36/37 use the four sovereignty-preserving contracts integrated in `9e2837f8`, and FORM-27/29/31 reuse that framework for the Great Lakes, Horn and Indian Ocean.
 The grouped puzzle source covers nineteen families, 66 candidate-state rows, 132 paired pieces and twenty category attachments; this does not make all 48 registry families operational.
 The [current takeover report](../../plans/006_independence_wave_plans/takeover_status_2026-10-06.md) and [resume packet](../../plans/006_independence_wave_plans/006_independence_wave_resume_packet.md) carry the current requirement dispositions.
 The dated findings below remain historical evidence and do not reopen completed source work solely because an optional analyzer or renderer was unavailable.

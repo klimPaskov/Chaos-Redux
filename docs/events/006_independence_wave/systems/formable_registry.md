@@ -37,13 +37,13 @@ No other family is promoted by this historical disposition.
 The Event 006 formable registry is the shared discovery and transaction framework for FORM-01 through FORM-48. It replaces family-by-family copied decisions with one profile table, one method and consent surface, and one bounded member and anchor ledger.
 
 All 48 family rows have stable discovery metadata, but metadata alone does not authorize formation.
-The source contracts cover FORM-01 through FORM-05, FORM-07 through FORM-09, FORM-11 through FORM-13, FORM-16 through FORM-18, FORM-32, FORM-36, FORM-37, FORM-39 and FORM-48.
+The source contracts cover FORM-01 through FORM-05, FORM-07 through FORM-09, FORM-11 through FORM-13, FORM-16 through FORM-18, FORM-27, FORM-29, FORM-31, FORM-32, FORM-36, FORM-37, FORM-39 and FORM-48.
 FORM-07 uses the IFX identity, FORM-08 uses TRA at 84 and AXX at 82 with the DCX identity, and FORM-11 uses the two admitted Cossack hosts with the CHX identity.
-FORM-17, FORM-32, FORM-36 and FORM-37 use the exact current package owners of their accepted anchors and the NCX, IDX, MRX and MSX cosmetic identities respectively.
+FORM-17, FORM-27, FORM-29, FORM-31, FORM-32, FORM-36 and FORM-37 use the exact current package owners of their accepted anchors and the NCX, LKX, HLX, IOX, IDX, MRX and MSX cosmetic identities respectively.
 Their members remain sovereign, answer one proposal-specific invitation, and retain their own territorial ownership.
 Two paid integration projects evolve each compact after its shared formation cost and consent checks succeed.
 FORM-32 accepts either Punjab anchor 440 or 986 only when that is the live FDX package's stored loader anchor; its four-member requirement never counts both Punjab states.
-The Event 006 state-puzzle assets cover nineteen families and sixty-six candidate state rows, with one hundred and thirty-two unresolved/qualifying DDS pieces.
+The Event 006 state-puzzle assets cover twenty-two families and seventy-five candidate state rows, with one hundred and fifty unresolved/qualifying DDS pieces.
 The four new contract families remain subject to the source and MCP coverage limits in their current handoffs and to native acceptance in the takeover status.
 FORM-48 has a carrier/member source contract but remains operationally unreachable until an admitted HBX/HAW/FSM member set exists.
 Other families remain fail-closed until their exact members, identity, flags, territory and integration contract are accepted and wired.
@@ -271,9 +271,9 @@ The complete state-machine reference is `docs/events/006_independence_wave/syste
 
 ## Event 006 state-puzzle consumers
 
-The Event 006 state-puzzle group is declared by nineteen consumer specs in `docs/formables/state_registry/consumers/006_form*_state_puzzle.json`.
+The Event 006 state-puzzle group is declared by twenty-two consumer specs in `docs/formables/state_registry/consumers/006_form*_state_puzzle.json`.
 Each spec uses `group_id = independence_wave_formables`, shared scripted GUI `independence_wave_formable_state_puzzle_scripted_gui`, shared window `chaosx_independence_wave_formable_state_puzzle_window`, a family activation helper and a finite `summary_required_count`.
-The current source manifests contain nineteen families, 66 candidate-state rows and 132 paired unresolved/qualifying DDS pieces.
+The current source manifests contain twenty-two families, 75 candidate-state rows and 150 paired unresolved/qualifying DDS pieces.
 The family territory helper shown by the window remains part of the corresponding player and AI formation gate.
 
 | Family | Candidate states | Summary count | Territory helper |
@@ -291,6 +291,9 @@ The family territory helper shown by the window remains part of the correspondin
 | FORM-13 | 249, 651, 833, 399, 397 | carrier plus 3 members | `independence_wave_formable_state_puzzle_form13_territory` |
 | FORM-16 | 230, 231, 229 | 3 | `independence_wave_formable_state_puzzle_form16_territory` |
 | FORM-17 | 232, 821, 827 | 3 | `has_independence_wave_ready_formable_state_puzzle_territory` |
+| FORM-27 | 548, 768, 769 | 3 | `has_independence_wave_ready_formable_state_puzzle_territory` |
+| FORM-29 | 835, 908, 269, 842 | 3 of 4 | `has_independence_wave_ready_formable_state_puzzle_territory` |
+| FORM-31 | 543, 707 | 2 | `has_independence_wave_ready_formable_state_puzzle_territory` |
 | FORM-32 | 440 or 986, 442, 443, 1012 | 4 distinct members | `has_independence_wave_ready_formable_state_puzzle_territory` |
 | FORM-36 | 673, 1050, 1052 | 3 | `has_independence_wave_ready_formable_state_puzzle_territory` |
 | FORM-37 | 994, 998, 999 | 3 | `has_independence_wave_ready_formable_state_puzzle_territory` |
@@ -299,7 +302,7 @@ The family territory helper shown by the window remains part of the correspondin
 | FORM-48 | 378, 629, 684 | 3 | `independence_wave_formable_state_puzzle_form48_territory` |
 
 The qualification wrappers delegate to the package, tag, anchor, invitation, and frozen-consent contracts in the owning FORM trigger files. FORM-03 accepts either the second Event 006 carrier anchor or the sovereign `BEL_flanders` delegation at state 6. FORM-09 enumerates the finite twenty triplets needed for three of six candidates. FORM-12 and FORM-13 require the state 249 carrier plus three distinct consenting member anchors. FORM-18 requires the state 676 carrier plus both consenting member anchors. FORM-08 requires both states 84 and 82 under its accepted two-member contract.
-The four ready-family rows use the shared ready-contract territory dispatcher for their selected exact family, and FORM-32's two Punjab candidates count as one live stored anchor, not two members. No helper performs an all-country or geography scan, and the integration does not use GUI event targets.
+The seven ready-family rows use the shared ready-contract territory dispatcher for their selected exact family, and FORM-32's two Punjab candidates count as one live stored anchor, not two members. No helper performs an all-country or geography scan, and the integration does not use GUI event targets.
 
 The shared GUI is attached to twenty current Event 006 formable decision categories, comprising the prior eighteen plus `independence_wave_ready_formable_routes_category` and `independence_wave_ready_formable_integration_category`.
 The prior eighteen are: the discovery category, shared transaction and membership, FORM-01 congress, FORM-02 union, FORM-03 low countries, FORM-04 league, FORM-05 charter, FORM-08 Danube, FORM-09 Balkan, the FORM-11 Host Federation Charter, the Middle Volga Congress for FORM-12 and FORM-13, the Council of Communities for FORM-18, FORM-16 integration, FORM-39 invitation and federal compact, and FORM-48 invitation and federal compact.

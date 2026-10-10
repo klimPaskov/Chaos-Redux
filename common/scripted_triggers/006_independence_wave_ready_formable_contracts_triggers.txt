@@ -3,12 +3,14 @@
 # ============================================================================
 # Overview:
 # - Defines the admitted live members, anchors, peace, connections, and route
-#   gates for FORM-17, FORM-32, FORM-36, and FORM-37.
+#   gates for FORM-17, FORM-27, FORM-29, FORM-31, FORM-32, FORM-36, and FORM-37.
 # - Dynamic X-origin members are accepted only when the current Event 006
 #   active-country registry contains the live country and its package and
 #   stored anchor still match the accepted package loader.
 # - The generic formable registry owns invitations, aligned member ledgers,
 #   consent snapshots, congress, commit, and cleanup.
+# - FORM-29 admits three or four of its four packages; every other family
+#   requires its complete listed roster.
 # - No trigger scans every country or invents a member, tag, anchor, or fallback.
 # ============================================================================
 
@@ -18,6 +20,9 @@ is_independence_wave_ready_formable_family = {
 		check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.indus_federation }
 		check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.maritime_federation }
 		check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.mainland_southeast_asian_federation }
+		check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.great_lakes_federation }
+		check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.horn_league_state }
+		check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.indian_ocean_league_state }
 	}
 }
 
@@ -203,6 +208,129 @@ is_independence_wave_form37_member = {
 	}
 }
 
+is_independence_wave_form27_member = {
+	exists = yes
+	is_independence_wave_active_country = yes
+	is_independence_wave_package_content_active = yes
+	independence_wave_active_country_arrays_are_aligned = yes
+	is_in_array = { array = global.independence_wave_active_countries value = THIS }
+	is_subject = no
+	NOT = { has_country_flag = independence_wave_formable_active }
+	NOT = { has_country_flag = independence_wave_form27_autonomous_member }
+	OR = {
+		NOT = { has_country_flag = independence_wave_formable_family_selected }
+		check_variable = { independence_wave_formable_family = constant:independence_wave_formable_family.great_lakes_federation }
+	}
+	OR = {
+		AND = {
+			original_tag = UGA
+			check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_108 }
+			check_variable = { var = independence_wave_anchor_state value = constant:independence_wave_ready_formable_anchor.form27_uga compare = equals }
+			owns_state = constant:independence_wave_ready_formable_anchor.form27_uga
+			controls_state = constant:independence_wave_ready_formable_anchor.form27_uga
+			capital_scope = { state = constant:independence_wave_ready_formable_anchor.form27_uga }
+		}
+		AND = {
+			original_tag = RWA
+			check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_110 }
+			check_variable = { var = independence_wave_anchor_state value = constant:independence_wave_ready_formable_anchor.form27_rwa compare = equals }
+			owns_state = constant:independence_wave_ready_formable_anchor.form27_rwa
+			controls_state = constant:independence_wave_ready_formable_anchor.form27_rwa
+			capital_scope = { state = constant:independence_wave_ready_formable_anchor.form27_rwa }
+		}
+		AND = {
+			original_tag = BRD
+			check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_111 }
+			check_variable = { var = independence_wave_anchor_state value = constant:independence_wave_ready_formable_anchor.form27_brd compare = equals }
+			owns_state = constant:independence_wave_ready_formable_anchor.form27_brd
+			controls_state = constant:independence_wave_ready_formable_anchor.form27_brd
+			capital_scope = { state = constant:independence_wave_ready_formable_anchor.form27_brd }
+		}
+	}
+}
+
+is_independence_wave_form29_member = {
+	exists = yes
+	is_independence_wave_active_country = yes
+	is_independence_wave_package_content_active = yes
+	independence_wave_active_country_arrays_are_aligned = yes
+	is_in_array = { array = global.independence_wave_active_countries value = THIS }
+	is_subject = no
+	NOT = { has_country_flag = independence_wave_formable_active }
+	NOT = { has_country_flag = independence_wave_form29_autonomous_member }
+	OR = {
+		NOT = { has_country_flag = independence_wave_formable_family_selected }
+		check_variable = { independence_wave_formable_family = constant:independence_wave_formable_family.horn_league_state }
+	}
+	OR = {
+		AND = {
+			original_tag = HAR
+			check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_113 }
+			check_variable = { var = independence_wave_anchor_state value = constant:independence_wave_ready_formable_anchor.form29_har compare = equals }
+			owns_state = constant:independence_wave_ready_formable_anchor.form29_har
+			controls_state = constant:independence_wave_ready_formable_anchor.form29_har
+			capital_scope = { state = constant:independence_wave_ready_formable_anchor.form29_har }
+		}
+		AND = {
+			original_tag = AFA
+			check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_114 }
+			check_variable = { var = independence_wave_anchor_state value = constant:independence_wave_ready_formable_anchor.form29_afa compare = equals }
+			owns_state = constant:independence_wave_ready_formable_anchor.form29_afa
+			controls_state = constant:independence_wave_ready_formable_anchor.form29_afa
+			capital_scope = { state = constant:independence_wave_ready_formable_anchor.form29_afa }
+		}
+		AND = {
+			original_tag = SOM
+			check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_115 }
+			check_variable = { var = independence_wave_anchor_state value = constant:independence_wave_ready_formable_anchor.form29_som compare = equals }
+			owns_state = constant:independence_wave_ready_formable_anchor.form29_som
+			controls_state = constant:independence_wave_ready_formable_anchor.form29_som
+			capital_scope = { state = constant:independence_wave_ready_formable_anchor.form29_som }
+		}
+		AND = {
+			original_tag = TIG
+			check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_119 }
+			check_variable = { var = independence_wave_anchor_state value = constant:independence_wave_ready_formable_anchor.form29_tig compare = equals }
+			owns_state = constant:independence_wave_ready_formable_anchor.form29_tig
+			controls_state = constant:independence_wave_ready_formable_anchor.form29_tig
+			capital_scope = { state = constant:independence_wave_ready_formable_anchor.form29_tig }
+		}
+	}
+}
+
+is_independence_wave_form31_member = {
+	exists = yes
+	is_independence_wave_active_country = yes
+	is_independence_wave_package_content_active = yes
+	independence_wave_active_country_arrays_are_aligned = yes
+	is_in_array = { array = global.independence_wave_active_countries value = THIS }
+	is_subject = no
+	NOT = { has_country_flag = independence_wave_formable_active }
+	NOT = { has_country_flag = independence_wave_form31_autonomous_member }
+	OR = {
+		NOT = { has_country_flag = independence_wave_formable_family_selected }
+		check_variable = { independence_wave_formable_family = constant:independence_wave_formable_family.indian_ocean_league_state }
+	}
+	OR = {
+		AND = {
+			original_tag = MAD
+			check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_130 }
+			check_variable = { var = independence_wave_anchor_state value = constant:independence_wave_ready_formable_anchor.form31_mad compare = equals }
+			owns_state = constant:independence_wave_ready_formable_anchor.form31_mad
+			controls_state = constant:independence_wave_ready_formable_anchor.form31_mad
+			capital_scope = { state = constant:independence_wave_ready_formable_anchor.form31_mad }
+		}
+		AND = {
+			original_tag = FBX
+			check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_132 }
+			check_variable = { var = independence_wave_anchor_state value = constant:independence_wave_ready_formable_anchor.form31_fbx compare = equals }
+			owns_state = constant:independence_wave_ready_formable_anchor.form31_fbx
+			controls_state = constant:independence_wave_ready_formable_anchor.form31_fbx
+			capital_scope = { state = constant:independence_wave_ready_formable_anchor.form31_fbx }
+		}
+	}
+}
+
 has_independence_wave_ready_formable_connection_to_root = {
 	exists = yes
 	NOT = { has_war_with = ROOT }
@@ -317,6 +445,21 @@ has_independence_wave_ready_formable_member_for_root = {
 			is_independence_wave_form37_member = yes
 			has_independence_wave_ready_formable_connection_to_root = yes
 		}
+		AND = {
+			ROOT = { check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.great_lakes_federation } }
+			is_independence_wave_form27_member = yes
+			has_independence_wave_ready_formable_connection_to_root = yes
+		}
+		AND = {
+			ROOT = { check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.horn_league_state } }
+			is_independence_wave_form29_member = yes
+			has_independence_wave_ready_formable_connection_to_root = yes
+		}
+		AND = {
+			ROOT = { check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.indian_ocean_league_state } }
+			is_independence_wave_form31_member = yes
+			has_independence_wave_ready_formable_connection_to_root = yes
+		}
 	}
 }
 
@@ -342,6 +485,21 @@ has_independence_wave_ready_formable_invited_member = {
 			is_independence_wave_form37_member = yes
 			has_independence_wave_ready_formable_connection_to_inviting_carrier = yes
 		}
+		AND = {
+			check_variable = { independence_wave_formable_invitation_family = constant:independence_wave_formable_family.great_lakes_federation }
+			is_independence_wave_form27_member = yes
+			has_independence_wave_ready_formable_connection_to_inviting_carrier = yes
+		}
+		AND = {
+			check_variable = { independence_wave_formable_invitation_family = constant:independence_wave_formable_family.horn_league_state }
+			is_independence_wave_form29_member = yes
+			has_independence_wave_ready_formable_connection_to_inviting_carrier = yes
+		}
+		AND = {
+			check_variable = { independence_wave_formable_invitation_family = constant:independence_wave_formable_family.indian_ocean_league_state }
+			is_independence_wave_form31_member = yes
+			has_independence_wave_ready_formable_connection_to_inviting_carrier = yes
+		}
 	}
 }
 
@@ -364,7 +522,7 @@ has_independence_wave_form32_current_roster = {
 }
 
 has_independence_wave_form36_shipping_proof = {
-	has_equipment = { convoy > constant:independence_wave_decision_cost.convoy_standard }
+	NOT = { has_equipment = { convoy < constant:independence_wave_decision_cost.convoy_standard } }
 	1050 = { naval_base > 0 owner = { has_independence_wave_form36_atj_anchor_owner_from_root = yes } }
 	673 = { naval_base > 0 owner = { has_independence_wave_form36_fxx_anchor_owner_from_root = yes } }
 	1052 = { naval_base > 0 owner = { has_independence_wave_form36_bli_anchor_owner_from_root = yes } }
@@ -385,6 +543,39 @@ has_independence_wave_form37_current_roster = {
 	998 = { owner = { has_independence_wave_form37_ibx_anchor_owner_from_root = yes } }
 }
 
+has_independence_wave_form27_current_roster = {
+	independence_wave_active_country_arrays_are_aligned = yes
+	548 = { owner = { has_independence_wave_form27_uga_anchor_owner_from_root = yes } }
+	768 = { owner = { has_independence_wave_form27_rwa_anchor_owner_from_root = yes } }
+	769 = { owner = { has_independence_wave_form27_brd_anchor_owner_from_root = yes } }
+}
+
+# Three or four admitted Horn packages may hold their founding capitals.
+has_independence_wave_form29_current_roster = {
+	independence_wave_active_country_arrays_are_aligned = yes
+	OR = {
+		AND = { 835 = { owner = { has_independence_wave_form29_har_anchor_owner_from_root = yes } } 908 = { owner = { has_independence_wave_form29_afa_anchor_owner_from_root = yes } } 269 = { owner = { has_independence_wave_form29_som_anchor_owner_from_root = yes } } }
+		AND = { 835 = { owner = { has_independence_wave_form29_har_anchor_owner_from_root = yes } } 908 = { owner = { has_independence_wave_form29_afa_anchor_owner_from_root = yes } } 842 = { owner = { has_independence_wave_form29_tig_anchor_owner_from_root = yes } } }
+		AND = { 835 = { owner = { has_independence_wave_form29_har_anchor_owner_from_root = yes } } 269 = { owner = { has_independence_wave_form29_som_anchor_owner_from_root = yes } } 842 = { owner = { has_independence_wave_form29_tig_anchor_owner_from_root = yes } } }
+		AND = { 908 = { owner = { has_independence_wave_form29_afa_anchor_owner_from_root = yes } } 269 = { owner = { has_independence_wave_form29_som_anchor_owner_from_root = yes } } 842 = { owner = { has_independence_wave_form29_tig_anchor_owner_from_root = yes } } }
+	}
+}
+
+# The convoy reserve and both island naval bases are proven by the proposing
+# carrier before the family is selected, as for FORM-36.
+has_independence_wave_form31_shipping_proof = {
+	NOT = { has_equipment = { convoy < constant:independence_wave_decision_cost.convoy_standard } }
+	543 = { naval_base > 0 owner = { has_independence_wave_form31_mad_anchor_owner_from_root = yes } }
+	707 = { naval_base > 0 owner = { has_independence_wave_form31_fbx_anchor_owner_from_root = yes } }
+}
+
+has_independence_wave_form31_current_roster = {
+	independence_wave_active_country_arrays_are_aligned = yes
+	has_independence_wave_form31_shipping_proof = yes
+	543 = { owner = { has_independence_wave_form31_mad_anchor_owner_from_root = yes } }
+	707 = { owner = { has_independence_wave_form31_fbx_anchor_owner_from_root = yes } }
+}
+
 has_independence_wave_ready_formable_current_roster = {
 	OR = {
 		AND = {
@@ -402,6 +593,18 @@ has_independence_wave_ready_formable_current_roster = {
 		AND = {
 			check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.mainland_southeast_asian_federation }
 			has_independence_wave_form37_current_roster = yes
+		}
+		AND = {
+			check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.great_lakes_federation }
+			has_independence_wave_form27_current_roster = yes
+		}
+		AND = {
+			check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.horn_league_state }
+			has_independence_wave_form29_current_roster = yes
+		}
+		AND = {
+			check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.indian_ocean_league_state }
+			has_independence_wave_form31_current_roster = yes
 		}
 	}
 }
@@ -437,6 +640,39 @@ can_independence_wave_ready_formable_choose_form36 = {
 	NOT = { has_country_flag = independence_wave_formable_founding_proposal_active }
 	NOT = { has_global_flag = independence_wave_form36_identity_in_use }
 	has_independence_wave_form36_current_roster = yes
+}
+
+can_independence_wave_ready_formable_choose_form27 = {
+	is_independence_wave_regional_power = yes
+	is_independence_wave_active_country = yes
+	is_independence_wave_form27_member = yes
+	NOT = { has_country_flag = independence_wave_formable_family_selected }
+	NOT = { has_country_flag = independence_wave_formable_active }
+	NOT = { has_country_flag = independence_wave_formable_founding_proposal_active }
+	NOT = { has_global_flag = independence_wave_form27_identity_in_use }
+	has_independence_wave_form27_current_roster = yes
+}
+
+can_independence_wave_ready_formable_choose_form29 = {
+	is_independence_wave_regional_power = yes
+	is_independence_wave_active_country = yes
+	is_independence_wave_form29_member = yes
+	NOT = { has_country_flag = independence_wave_formable_family_selected }
+	NOT = { has_country_flag = independence_wave_formable_active }
+	NOT = { has_country_flag = independence_wave_formable_founding_proposal_active }
+	NOT = { has_global_flag = independence_wave_form29_identity_in_use }
+	has_independence_wave_form29_current_roster = yes
+}
+
+can_independence_wave_ready_formable_choose_form31 = {
+	is_independence_wave_regional_power = yes
+	is_independence_wave_active_country = yes
+	is_independence_wave_form31_member = yes
+	NOT = { has_country_flag = independence_wave_formable_family_selected }
+	NOT = { has_country_flag = independence_wave_formable_active }
+	NOT = { has_country_flag = independence_wave_formable_founding_proposal_active }
+	NOT = { has_global_flag = independence_wave_form31_identity_in_use }
+	has_independence_wave_form31_current_roster = yes
 }
 
 has_independence_wave_form37_several_stable_members = {
@@ -492,6 +728,27 @@ should_independence_wave_ready_formable_ai_choose_form37 = {
 	can_independence_wave_ready_formable_choose_form37 = yes
 	has_independence_wave_ready_formable_mainland_route = yes
 	has_independence_wave_ready_formable_several_stable_mainland_members = yes
+}
+
+should_independence_wave_ready_formable_ai_choose_form27 = {
+	is_ai = yes
+	can_independence_wave_ready_formable_choose_form27 = yes
+	has_independence_wave_ready_formable_negotiated_route = yes
+	NOT = { has_independence_wave_severe_instability = yes }
+}
+
+should_independence_wave_ready_formable_ai_choose_form29 = {
+	is_ai = yes
+	can_independence_wave_ready_formable_choose_form29 = yes
+	has_independence_wave_severe_host_threat = yes
+	NOT = { has_independence_wave_severe_instability = yes }
+}
+
+should_independence_wave_ready_formable_ai_choose_form31 = {
+	is_ai = yes
+	can_independence_wave_ready_formable_choose_form31 = yes
+	has_independence_wave_form31_shipping_proof = yes
+	NOT = { has_independence_wave_severe_instability = yes }
 }
 
 # The carrier's own generation/family/sequence receipt permits the integration
@@ -551,12 +808,48 @@ has_independence_wave_form37_identity_slot_available = {
 	}
 }
 
+has_independence_wave_form27_identity_slot_available = {
+	OR = {
+		NOT = { has_global_flag = independence_wave_form27_identity_in_use }
+		AND = {
+			has_country_flag = independence_wave_form27_carrier
+			has_cosmetic_tag = LKX
+			has_independence_wave_ready_formable_owned_identity_reservation = yes
+		}
+	}
+}
+
+has_independence_wave_form29_identity_slot_available = {
+	OR = {
+		NOT = { has_global_flag = independence_wave_form29_identity_in_use }
+		AND = {
+			has_country_flag = independence_wave_form29_carrier
+			has_cosmetic_tag = HLX
+			has_independence_wave_ready_formable_owned_identity_reservation = yes
+		}
+	}
+}
+
+has_independence_wave_form31_identity_slot_available = {
+	OR = {
+		NOT = { has_global_flag = independence_wave_form31_identity_in_use }
+		AND = {
+			has_country_flag = independence_wave_form31_carrier
+			has_cosmetic_tag = IOX
+			has_independence_wave_ready_formable_owned_identity_reservation = yes
+		}
+	}
+}
+
 has_independence_wave_ready_formable_identity_clearance = {
 	OR = {
 		AND = { check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.north_caucasian_federation } has_independence_wave_form17_identity_slot_available = yes }
 		AND = { check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.indus_federation } has_independence_wave_form32_identity_slot_available = yes }
 		AND = { check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.maritime_federation } has_independence_wave_form36_identity_slot_available = yes }
 		AND = { check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.mainland_southeast_asian_federation } has_independence_wave_form37_identity_slot_available = yes }
+		AND = { check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.great_lakes_federation } has_independence_wave_form27_identity_slot_available = yes }
+		AND = { check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.horn_league_state } has_independence_wave_form29_identity_slot_available = yes }
+		AND = { check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.indian_ocean_league_state } has_independence_wave_form31_identity_slot_available = yes }
 	}
 }
 
@@ -587,6 +880,18 @@ has_independence_wave_ready_formable_family_readiness_attested = {
 			check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.mainland_southeast_asian_federation }
 			has_country_flag = independence_wave_form37_readiness_attested
 		}
+		AND = {
+			check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.great_lakes_federation }
+			has_country_flag = independence_wave_form27_readiness_attested
+		}
+		AND = {
+			check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.horn_league_state }
+			has_country_flag = independence_wave_form29_readiness_attested
+		}
+		AND = {
+			check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.indian_ocean_league_state }
+			has_country_flag = independence_wave_form31_readiness_attested
+		}
 	}
 }
 
@@ -614,6 +919,29 @@ has_independence_wave_ready_formable_live_roster_ledger = {
 			check_variable = { var = independence_wave_formable_member_country_entries^num value = constant:independence_wave_ready_formable_member_count.form37 compare = equals }
 			check_variable = { independence_wave_formable_anchor_count = constant:independence_wave_ready_formable_member_count.form37 compare = equals }
 		}
+		AND = {
+			check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.great_lakes_federation }
+			check_variable = { var = independence_wave_formable_member_country_entries^num value = constant:independence_wave_ready_formable_member_count.form27 compare = equals }
+			check_variable = { independence_wave_formable_anchor_count = constant:independence_wave_ready_formable_member_count.form27 compare = equals }
+		}
+		AND = {
+			check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.indian_ocean_league_state }
+			check_variable = { var = independence_wave_formable_member_country_entries^num value = constant:independence_wave_ready_formable_member_count.form31 compare = equals }
+			check_variable = { independence_wave_formable_anchor_count = constant:independence_wave_ready_formable_member_count.form31 compare = equals }
+		}
+		AND = {
+			check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.horn_league_state }
+			OR = {
+				AND = {
+					check_variable = { var = independence_wave_formable_member_country_entries^num value = constant:independence_wave_ready_formable_member_count.form29 compare = equals }
+					check_variable = { independence_wave_formable_anchor_count = constant:independence_wave_ready_formable_member_count.form29 compare = equals }
+				}
+				AND = {
+					check_variable = { var = independence_wave_formable_member_country_entries^num value = constant:independence_wave_ready_formable_member_count.form29_full compare = equals }
+					check_variable = { independence_wave_formable_anchor_count = constant:independence_wave_ready_formable_member_count.form29_full compare = equals }
+				}
+			}
+		}
 	}
 }
 
@@ -637,6 +965,21 @@ has_independence_wave_ready_formable_exact_invitation_ledger = {
 			check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.mainland_southeast_asian_federation }
 			check_variable = { var = independence_wave_formable_invited_country_entries^num value = constant:independence_wave_ready_formable_member_count.form37 compare = equals }
 		}
+		AND = {
+			check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.great_lakes_federation }
+			check_variable = { var = independence_wave_formable_invited_country_entries^num value = constant:independence_wave_ready_formable_member_count.form27 compare = equals }
+		}
+		AND = {
+			check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.indian_ocean_league_state }
+			check_variable = { var = independence_wave_formable_invited_country_entries^num value = constant:independence_wave_ready_formable_member_count.form31 compare = equals }
+		}
+		AND = {
+			check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.horn_league_state }
+			OR = {
+				check_variable = { var = independence_wave_formable_invited_country_entries^num value = constant:independence_wave_ready_formable_member_count.form29 compare = equals }
+				check_variable = { var = independence_wave_formable_invited_country_entries^num value = constant:independence_wave_ready_formable_member_count.form29_full compare = equals }
+			}
+		}
 	}
 }
 
@@ -656,6 +999,9 @@ has_independence_wave_ready_formable_state_puzzle_territory = {
 		AND = { check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.indus_federation } OR = { has_independence_wave_form32_current_roster = yes has_independence_wave_form32_postformation_roster = yes } }
 		AND = { check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.maritime_federation } OR = { has_independence_wave_form36_current_roster = yes has_independence_wave_form36_postformation_roster = yes } }
 		AND = { check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.mainland_southeast_asian_federation } OR = { has_independence_wave_form37_current_roster = yes has_independence_wave_form37_postformation_roster = yes } }
+		AND = { check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.great_lakes_federation } OR = { has_independence_wave_form27_current_roster = yes has_independence_wave_form27_postformation_roster = yes } }
+		AND = { check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.horn_league_state } OR = { has_independence_wave_form29_current_roster = yes has_independence_wave_form29_postformation_roster = yes } }
+		AND = { check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.indian_ocean_league_state } OR = { has_independence_wave_form31_current_roster = yes has_independence_wave_form31_postformation_roster = yes } }
 	}
 }
 
@@ -758,6 +1104,16 @@ has_independence_wave_ready_formable_mainland_route = {
 	}
 }
 
+# Constitutional, council or traditional governments qualify for the
+# negotiated Great Lakes and Indian Ocean routes.
+has_independence_wave_ready_formable_negotiated_route = {
+	OR = {
+		has_country_flag = independence_wave_route_constitutional_republic
+		has_country_flag = independence_wave_route_popular_council
+		has_country_flag = independence_wave_route_traditional_restoration
+	}
+}
+
 should_independence_wave_ready_formable_ai_launch = {
 	is_ai = yes
 	OR = {
@@ -780,6 +1136,21 @@ should_independence_wave_ready_formable_ai_launch = {
 			check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.mainland_southeast_asian_federation }
 			has_independence_wave_ready_formable_mainland_route = yes
 			has_independence_wave_ready_formable_several_stable_mainland_members = yes
+		}
+		AND = {
+			check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.great_lakes_federation }
+			has_independence_wave_ready_formable_negotiated_route = yes
+			NOT = { has_independence_wave_severe_instability = yes }
+		}
+		AND = {
+			check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.horn_league_state }
+			has_independence_wave_severe_host_threat = yes
+			NOT = { has_independence_wave_severe_instability = yes }
+		}
+		AND = {
+			check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.indian_ocean_league_state }
+			has_independence_wave_form31_shipping_proof = yes
+			NOT = { has_independence_wave_severe_instability = yes }
 		}
 	}
 }
@@ -829,6 +1200,19 @@ should_independence_wave_ready_formable_ai_consent_to_root = {
 			check_variable = { independence_wave_formable_invitation_family = constant:independence_wave_formable_family.mainland_southeast_asian_federation }
 			has_independence_wave_formable_route_compatibility_with_root = yes
 			var:independence_wave_formable_inviting_carrier = { has_independence_wave_ready_formable_several_stable_mainland_members = yes }
+		}
+		AND = {
+			check_variable = { independence_wave_formable_invitation_family = constant:independence_wave_formable_family.great_lakes_federation }
+			has_independence_wave_formable_route_compatibility_with_root = yes
+		}
+		AND = {
+			check_variable = { independence_wave_formable_invitation_family = constant:independence_wave_formable_family.horn_league_state }
+			OR = { has_independence_wave_severe_host_threat = yes has_independence_wave_formable_route_compatibility_with_root = yes }
+		}
+		AND = {
+			check_variable = { independence_wave_formable_invitation_family = constant:independence_wave_formable_family.indian_ocean_league_state }
+			is_independence_wave_form31_member = yes
+			var:independence_wave_formable_inviting_carrier = { has_independence_wave_form31_shipping_proof = yes }
 		}
 	}
 }
@@ -932,6 +1316,66 @@ is_independence_wave_form37_postformation_carrier = {
 	}
 }
 
+is_independence_wave_form27_postformation_carrier = {
+	is_independence_wave_active_country = yes
+	is_independence_wave_package_content_active = yes
+	independence_wave_active_country_arrays_are_aligned = yes
+	is_in_array = { array = global.independence_wave_active_countries value = THIS }
+	check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.great_lakes_federation }
+	has_country_flag = independence_wave_form27_carrier
+	has_country_flag = independence_wave_formable_active
+	has_country_flag = independence_wave_formable_committed
+	has_country_flag = independence_wave_formable_identity_committed
+	has_country_flag = independence_wave_formable_integration_committed
+	has_cosmetic_tag = LKX
+	check_variable = { independence_wave_formable_transaction_state = constant:independence_wave_formable_transaction.committed }
+	OR = {
+		AND = { original_tag = UGA check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_108 } check_variable = { var = independence_wave_anchor_state value = constant:independence_wave_ready_formable_anchor.form27_uga compare = equals } owns_state = constant:independence_wave_ready_formable_anchor.form27_uga controls_state = constant:independence_wave_ready_formable_anchor.form27_uga capital_scope = { state = constant:independence_wave_ready_formable_anchor.form27_uga } }
+		AND = { original_tag = RWA check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_110 } check_variable = { var = independence_wave_anchor_state value = constant:independence_wave_ready_formable_anchor.form27_rwa compare = equals } owns_state = constant:independence_wave_ready_formable_anchor.form27_rwa controls_state = constant:independence_wave_ready_formable_anchor.form27_rwa capital_scope = { state = constant:independence_wave_ready_formable_anchor.form27_rwa } }
+		AND = { original_tag = BRD check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_111 } check_variable = { var = independence_wave_anchor_state value = constant:independence_wave_ready_formable_anchor.form27_brd compare = equals } owns_state = constant:independence_wave_ready_formable_anchor.form27_brd controls_state = constant:independence_wave_ready_formable_anchor.form27_brd capital_scope = { state = constant:independence_wave_ready_formable_anchor.form27_brd } }
+	}
+}
+
+is_independence_wave_form29_postformation_carrier = {
+	is_independence_wave_active_country = yes
+	is_independence_wave_package_content_active = yes
+	independence_wave_active_country_arrays_are_aligned = yes
+	is_in_array = { array = global.independence_wave_active_countries value = THIS }
+	check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.horn_league_state }
+	has_country_flag = independence_wave_form29_carrier
+	has_country_flag = independence_wave_formable_active
+	has_country_flag = independence_wave_formable_committed
+	has_country_flag = independence_wave_formable_identity_committed
+	has_country_flag = independence_wave_formable_integration_committed
+	has_cosmetic_tag = HLX
+	check_variable = { independence_wave_formable_transaction_state = constant:independence_wave_formable_transaction.committed }
+	OR = {
+		AND = { original_tag = HAR check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_113 } check_variable = { var = independence_wave_anchor_state value = constant:independence_wave_ready_formable_anchor.form29_har compare = equals } owns_state = constant:independence_wave_ready_formable_anchor.form29_har controls_state = constant:independence_wave_ready_formable_anchor.form29_har capital_scope = { state = constant:independence_wave_ready_formable_anchor.form29_har } }
+		AND = { original_tag = AFA check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_114 } check_variable = { var = independence_wave_anchor_state value = constant:independence_wave_ready_formable_anchor.form29_afa compare = equals } owns_state = constant:independence_wave_ready_formable_anchor.form29_afa controls_state = constant:independence_wave_ready_formable_anchor.form29_afa capital_scope = { state = constant:independence_wave_ready_formable_anchor.form29_afa } }
+		AND = { original_tag = SOM check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_115 } check_variable = { var = independence_wave_anchor_state value = constant:independence_wave_ready_formable_anchor.form29_som compare = equals } owns_state = constant:independence_wave_ready_formable_anchor.form29_som controls_state = constant:independence_wave_ready_formable_anchor.form29_som capital_scope = { state = constant:independence_wave_ready_formable_anchor.form29_som } }
+		AND = { original_tag = TIG check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_119 } check_variable = { var = independence_wave_anchor_state value = constant:independence_wave_ready_formable_anchor.form29_tig compare = equals } owns_state = constant:independence_wave_ready_formable_anchor.form29_tig controls_state = constant:independence_wave_ready_formable_anchor.form29_tig capital_scope = { state = constant:independence_wave_ready_formable_anchor.form29_tig } }
+	}
+}
+
+is_independence_wave_form31_postformation_carrier = {
+	is_independence_wave_active_country = yes
+	is_independence_wave_package_content_active = yes
+	independence_wave_active_country_arrays_are_aligned = yes
+	is_in_array = { array = global.independence_wave_active_countries value = THIS }
+	check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.indian_ocean_league_state }
+	has_country_flag = independence_wave_form31_carrier
+	has_country_flag = independence_wave_formable_active
+	has_country_flag = independence_wave_formable_committed
+	has_country_flag = independence_wave_formable_identity_committed
+	has_country_flag = independence_wave_formable_integration_committed
+	has_cosmetic_tag = IOX
+	check_variable = { independence_wave_formable_transaction_state = constant:independence_wave_formable_transaction.committed }
+	OR = {
+		AND = { original_tag = MAD check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_130 } check_variable = { var = independence_wave_anchor_state value = constant:independence_wave_ready_formable_anchor.form31_mad compare = equals } owns_state = constant:independence_wave_ready_formable_anchor.form31_mad controls_state = constant:independence_wave_ready_formable_anchor.form31_mad capital_scope = { state = constant:independence_wave_ready_formable_anchor.form31_mad } }
+		AND = { original_tag = FBX check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_132 } check_variable = { var = independence_wave_anchor_state value = constant:independence_wave_ready_formable_anchor.form31_fbx compare = equals } owns_state = constant:independence_wave_ready_formable_anchor.form31_fbx controls_state = constant:independence_wave_ready_formable_anchor.form31_fbx capital_scope = { state = constant:independence_wave_ready_formable_anchor.form31_fbx } }
+	}
+}
+
 is_independence_wave_ready_formable_postformation_carrier = {
 	independence_wave_active_country_arrays_are_aligned = yes
 	is_in_array = { array = global.independence_wave_active_countries value = THIS }
@@ -940,6 +1384,9 @@ is_independence_wave_ready_formable_postformation_carrier = {
 		AND = { check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.indus_federation } is_independence_wave_form32_postformation_carrier = yes }
 		AND = { check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.maritime_federation } is_independence_wave_form36_postformation_carrier = yes }
 		AND = { check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.mainland_southeast_asian_federation } is_independence_wave_form37_postformation_carrier = yes }
+		AND = { check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.great_lakes_federation } is_independence_wave_form27_postformation_carrier = yes }
+		AND = { check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.horn_league_state } is_independence_wave_form29_postformation_carrier = yes }
+		AND = { check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.indian_ocean_league_state } is_independence_wave_form31_postformation_carrier = yes }
 	}
 	has_independence_wave_ready_formable_postformation_roster = yes
 	check_variable = { independence_wave_formable_transaction_state = constant:independence_wave_formable_transaction.committed }
@@ -993,6 +1440,30 @@ is_independence_wave_ready_formable_current_contract_member = {
 				AND = { original_tag = IBX check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_162 } check_variable = { var = independence_wave_anchor_state value = constant:independence_wave_ready_formable_anchor.form37_ibx compare = equals } owns_state = constant:independence_wave_ready_formable_anchor.form37_ibx controls_state = constant:independence_wave_ready_formable_anchor.form37_ibx capital_scope = { state = constant:independence_wave_ready_formable_anchor.form37_ibx } }
 			}
 		}
+		AND = {
+			ROOT = { check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.great_lakes_federation } }
+			OR = {
+				AND = { original_tag = UGA check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_108 } check_variable = { var = independence_wave_anchor_state value = constant:independence_wave_ready_formable_anchor.form27_uga compare = equals } owns_state = constant:independence_wave_ready_formable_anchor.form27_uga controls_state = constant:independence_wave_ready_formable_anchor.form27_uga capital_scope = { state = constant:independence_wave_ready_formable_anchor.form27_uga } }
+				AND = { original_tag = RWA check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_110 } check_variable = { var = independence_wave_anchor_state value = constant:independence_wave_ready_formable_anchor.form27_rwa compare = equals } owns_state = constant:independence_wave_ready_formable_anchor.form27_rwa controls_state = constant:independence_wave_ready_formable_anchor.form27_rwa capital_scope = { state = constant:independence_wave_ready_formable_anchor.form27_rwa } }
+				AND = { original_tag = BRD check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_111 } check_variable = { var = independence_wave_anchor_state value = constant:independence_wave_ready_formable_anchor.form27_brd compare = equals } owns_state = constant:independence_wave_ready_formable_anchor.form27_brd controls_state = constant:independence_wave_ready_formable_anchor.form27_brd capital_scope = { state = constant:independence_wave_ready_formable_anchor.form27_brd } }
+			}
+		}
+		AND = {
+			ROOT = { check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.horn_league_state } }
+			OR = {
+				AND = { original_tag = HAR check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_113 } check_variable = { var = independence_wave_anchor_state value = constant:independence_wave_ready_formable_anchor.form29_har compare = equals } owns_state = constant:independence_wave_ready_formable_anchor.form29_har controls_state = constant:independence_wave_ready_formable_anchor.form29_har capital_scope = { state = constant:independence_wave_ready_formable_anchor.form29_har } }
+				AND = { original_tag = AFA check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_114 } check_variable = { var = independence_wave_anchor_state value = constant:independence_wave_ready_formable_anchor.form29_afa compare = equals } owns_state = constant:independence_wave_ready_formable_anchor.form29_afa controls_state = constant:independence_wave_ready_formable_anchor.form29_afa capital_scope = { state = constant:independence_wave_ready_formable_anchor.form29_afa } }
+				AND = { original_tag = SOM check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_115 } check_variable = { var = independence_wave_anchor_state value = constant:independence_wave_ready_formable_anchor.form29_som compare = equals } owns_state = constant:independence_wave_ready_formable_anchor.form29_som controls_state = constant:independence_wave_ready_formable_anchor.form29_som capital_scope = { state = constant:independence_wave_ready_formable_anchor.form29_som } }
+				AND = { original_tag = TIG check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_119 } check_variable = { var = independence_wave_anchor_state value = constant:independence_wave_ready_formable_anchor.form29_tig compare = equals } owns_state = constant:independence_wave_ready_formable_anchor.form29_tig controls_state = constant:independence_wave_ready_formable_anchor.form29_tig capital_scope = { state = constant:independence_wave_ready_formable_anchor.form29_tig } }
+			}
+		}
+		AND = {
+			ROOT = { check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.indian_ocean_league_state } }
+			OR = {
+				AND = { original_tag = MAD check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_130 } check_variable = { var = independence_wave_anchor_state value = constant:independence_wave_ready_formable_anchor.form31_mad compare = equals } owns_state = constant:independence_wave_ready_formable_anchor.form31_mad controls_state = constant:independence_wave_ready_formable_anchor.form31_mad capital_scope = { state = constant:independence_wave_ready_formable_anchor.form31_mad } }
+				AND = { original_tag = FBX check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_132 } check_variable = { var = independence_wave_anchor_state value = constant:independence_wave_ready_formable_anchor.form31_fbx compare = equals } owns_state = constant:independence_wave_ready_formable_anchor.form31_fbx controls_state = constant:independence_wave_ready_formable_anchor.form31_fbx capital_scope = { state = constant:independence_wave_ready_formable_anchor.form31_fbx } }
+			}
+		}
 	}
 	has_independence_wave_ready_formable_connection_to_root = yes
 }
@@ -1003,6 +1474,9 @@ has_independence_wave_ready_formable_postformation_member_for_root = {
 		AND = { ROOT = { check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.indus_federation } } OR = { is_independence_wave_form32_postformation_carrier = yes is_independence_wave_ready_formable_current_contract_member = yes } }
 		AND = { ROOT = { check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.maritime_federation } } OR = { is_independence_wave_form36_postformation_carrier = yes is_independence_wave_ready_formable_current_contract_member = yes } }
 		AND = { ROOT = { check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.mainland_southeast_asian_federation } } OR = { is_independence_wave_form37_postformation_carrier = yes is_independence_wave_ready_formable_current_contract_member = yes } }
+		AND = { ROOT = { check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.great_lakes_federation } } OR = { is_independence_wave_form27_postformation_carrier = yes is_independence_wave_ready_formable_current_contract_member = yes } }
+		AND = { ROOT = { check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.horn_league_state } } OR = { is_independence_wave_form29_postformation_carrier = yes is_independence_wave_ready_formable_current_contract_member = yes } }
+		AND = { ROOT = { check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.indian_ocean_league_state } } OR = { is_independence_wave_form31_postformation_carrier = yes is_independence_wave_ready_formable_current_contract_member = yes } }
 	}
 	has_independence_wave_ready_formable_connection_to_root = yes
 }
@@ -1039,12 +1513,39 @@ has_independence_wave_form37_postformation_roster = {
 	998 = { owner = { has_independence_wave_form37_ibx_anchor_owner_from_root = yes } }
 }
 
+has_independence_wave_form27_postformation_roster = {
+	independence_wave_active_country_arrays_are_aligned = yes
+	548 = { owner = { has_independence_wave_form27_uga_anchor_owner_from_root = yes } }
+	768 = { owner = { has_independence_wave_form27_rwa_anchor_owner_from_root = yes } }
+	769 = { owner = { has_independence_wave_form27_brd_anchor_owner_from_root = yes } }
+}
+
+has_independence_wave_form29_postformation_roster = {
+	independence_wave_active_country_arrays_are_aligned = yes
+	OR = {
+		AND = { 835 = { owner = { has_independence_wave_form29_har_anchor_owner_from_root = yes } } 908 = { owner = { has_independence_wave_form29_afa_anchor_owner_from_root = yes } } 269 = { owner = { has_independence_wave_form29_som_anchor_owner_from_root = yes } } }
+		AND = { 835 = { owner = { has_independence_wave_form29_har_anchor_owner_from_root = yes } } 908 = { owner = { has_independence_wave_form29_afa_anchor_owner_from_root = yes } } 842 = { owner = { has_independence_wave_form29_tig_anchor_owner_from_root = yes } } }
+		AND = { 835 = { owner = { has_independence_wave_form29_har_anchor_owner_from_root = yes } } 269 = { owner = { has_independence_wave_form29_som_anchor_owner_from_root = yes } } 842 = { owner = { has_independence_wave_form29_tig_anchor_owner_from_root = yes } } }
+		AND = { 908 = { owner = { has_independence_wave_form29_afa_anchor_owner_from_root = yes } } 269 = { owner = { has_independence_wave_form29_som_anchor_owner_from_root = yes } } 842 = { owner = { has_independence_wave_form29_tig_anchor_owner_from_root = yes } } }
+	}
+}
+
+# The convoy reserve spent by the FORM-31 shipping project is not required again.
+has_independence_wave_form31_postformation_roster = {
+	independence_wave_active_country_arrays_are_aligned = yes
+	543 = { naval_base > 0 owner = { has_independence_wave_form31_mad_anchor_owner_from_root = yes } }
+	707 = { naval_base > 0 owner = { has_independence_wave_form31_fbx_anchor_owner_from_root = yes } }
+}
+
 has_independence_wave_ready_formable_postformation_roster = {
 	OR = {
 		AND = { check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.north_caucasian_federation } has_independence_wave_form17_postformation_roster = yes }
 		AND = { check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.indus_federation } has_independence_wave_form32_postformation_roster = yes }
 		AND = { check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.maritime_federation } has_independence_wave_form36_postformation_roster = yes }
 		AND = { check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.mainland_southeast_asian_federation } has_independence_wave_form37_postformation_roster = yes }
+		AND = { check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.great_lakes_federation } has_independence_wave_form27_postformation_roster = yes }
+		AND = { check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.horn_league_state } has_independence_wave_form29_postformation_roster = yes }
+		AND = { check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.indian_ocean_league_state } has_independence_wave_form31_postformation_roster = yes }
 	}
 }
 
@@ -1055,6 +1556,9 @@ has_independence_wave_ready_formable_all_members_consented = {
 		AND = { check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.indus_federation } check_variable = { var = independence_wave_formable_member_country_entries^num value = constant:independence_wave_ready_formable_member_count.form32 compare = equals } check_variable = { var = independence_wave_formable_consent_count value = constant:independence_wave_ready_formable_member_count.form32 compare = equals } }
 		AND = { check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.maritime_federation } check_variable = { var = independence_wave_formable_member_country_entries^num value = constant:independence_wave_ready_formable_member_count.form36 compare = equals } check_variable = { var = independence_wave_formable_consent_count value = constant:independence_wave_ready_formable_member_count.form36 compare = equals } }
 		AND = { check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.mainland_southeast_asian_federation } check_variable = { var = independence_wave_formable_member_country_entries^num value = constant:independence_wave_ready_formable_member_count.form37 compare = equals } check_variable = { var = independence_wave_formable_consent_count value = constant:independence_wave_ready_formable_member_count.form37 compare = equals } }
+		AND = { check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.great_lakes_federation } check_variable = { var = independence_wave_formable_member_country_entries^num value = constant:independence_wave_ready_formable_member_count.form27 compare = equals } check_variable = { var = independence_wave_formable_consent_count value = constant:independence_wave_ready_formable_member_count.form27 compare = equals } }
+		AND = { check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.indian_ocean_league_state } check_variable = { var = independence_wave_formable_member_country_entries^num value = constant:independence_wave_ready_formable_member_count.form31 compare = equals } check_variable = { var = independence_wave_formable_consent_count value = constant:independence_wave_ready_formable_member_count.form31 compare = equals } }
+		AND = { check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.horn_league_state } check_variable = { var = independence_wave_formable_member_country_entries^num value = constant:independence_wave_ready_formable_member_count.form29 compare = greater_than_or_equals } check_variable = { var = independence_wave_formable_consent_count value = constant:independence_wave_ready_formable_member_count.form29 compare = greater_than_or_equals } }
 	}
 }
 
@@ -1068,6 +1572,9 @@ can_independence_wave_ready_formable_start_integration_stage1 = {
 		AND = { check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.indus_federation } has_independence_wave_ready_formable_indus_route = yes can_pay_independence_wave_administration_standard_cost = yes }
 		AND = { check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.maritime_federation } has_independence_wave_form36_shipping_proof = yes can_pay_independence_wave_diplomatic_standard_cost = yes }
 		AND = { check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.mainland_southeast_asian_federation } has_independence_wave_ready_formable_mainland_route = yes can_pay_independence_wave_diplomatic_standard_cost = yes }
+		AND = { check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.great_lakes_federation } has_independence_wave_ready_formable_negotiated_route = yes can_pay_independence_wave_diplomatic_standard_cost = yes }
+		AND = { check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.horn_league_state } can_pay_independence_wave_security_standard_cost = yes }
+		AND = { check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.indian_ocean_league_state } has_independence_wave_form31_shipping_proof = yes can_pay_independence_wave_diplomatic_standard_cost = yes }
 	}
 }
 
@@ -1083,6 +1590,9 @@ can_independence_wave_ready_formable_start_integration_stage2 = {
 		AND = { check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.indus_federation } has_independence_wave_ready_formable_indus_route = yes can_pay_independence_wave_security_standard_cost = yes }
 		AND = { check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.maritime_federation } can_pay_independence_wave_administration_standard_cost = yes }
 		AND = { check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.mainland_southeast_asian_federation } has_independence_wave_ready_formable_mainland_route = yes can_pay_independence_wave_security_standard_cost = yes }
+		AND = { check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.great_lakes_federation } has_independence_wave_ready_formable_negotiated_route = yes can_pay_independence_wave_security_standard_cost = yes }
+		AND = { check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.horn_league_state } can_pay_independence_wave_diplomatic_standard_cost = yes }
+		AND = { check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.indian_ocean_league_state } can_pay_independence_wave_security_standard_cost = yes }
 	}
 }
 
@@ -1134,6 +1644,9 @@ should_independence_wave_ready_formable_ai_start_stage1 = {
 		AND = { check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.indus_federation } has_independence_wave_ready_formable_indus_route = yes }
 		AND = { check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.maritime_federation } has_independence_wave_form36_shipping_proof = yes }
 		AND = { check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.mainland_southeast_asian_federation } has_independence_wave_ready_formable_mainland_route = yes has_independence_wave_ready_formable_several_stable_mainland_members = yes }
+		AND = { check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.great_lakes_federation } has_independence_wave_ready_formable_negotiated_route = yes }
+		AND = { check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.horn_league_state } OR = { has_independence_wave_severe_host_threat = yes has_independence_wave_formable_route_compatibility_with_root = yes } }
+		AND = { check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.indian_ocean_league_state } has_independence_wave_form31_shipping_proof = yes }
 	}
 }
 
@@ -1146,6 +1659,9 @@ should_independence_wave_ready_formable_ai_start_stage2 = {
 		AND = { check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.indus_federation } has_independence_wave_ready_formable_indus_route = yes }
 		AND = { check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.maritime_federation } is_independence_wave_active_country = yes }
 		AND = { check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.mainland_southeast_asian_federation } has_independence_wave_ready_formable_several_stable_mainland_members = yes }
+		AND = { check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.great_lakes_federation } has_independence_wave_ready_formable_negotiated_route = yes }
+		AND = { check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.horn_league_state } is_independence_wave_active_country = yes }
+		AND = { check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.indian_ocean_league_state } is_independence_wave_active_country = yes }
 	}
 }
 
@@ -1300,6 +1816,117 @@ has_independence_wave_ready_formable_form37_stage2_project_current = {
 	is_independence_wave_ready_formable_form37_integration_carrier = yes
 }
 
+is_independence_wave_ready_formable_form27_integration_carrier = {
+	is_independence_wave_ready_formable_postformation_carrier = yes
+	is_independence_wave_form27_postformation_carrier = yes
+}
+
+can_independence_wave_ready_formable_form27_start_stage1 = {
+	is_independence_wave_ready_formable_form27_integration_carrier = yes
+	can_independence_wave_ready_formable_start_integration_stage1 = yes
+}
+
+can_independence_wave_ready_formable_form27_start_stage2 = {
+	is_independence_wave_ready_formable_form27_integration_carrier = yes
+	can_independence_wave_ready_formable_start_integration_stage2 = yes
+}
+
+should_independence_wave_ready_formable_form27_ai_start_stage1 = {
+	can_independence_wave_ready_formable_form27_start_stage1 = yes
+	should_independence_wave_ready_formable_ai_start_stage1 = yes
+}
+
+should_independence_wave_ready_formable_form27_ai_start_stage2 = {
+	can_independence_wave_ready_formable_form27_start_stage2 = yes
+	should_independence_wave_ready_formable_ai_start_stage2 = yes
+}
+
+has_independence_wave_ready_formable_form27_stage1_project_current = {
+	has_independence_wave_ready_formable_stage1_project_current = yes
+	check_variable = { var = independence_wave_ready_formable_stage1_family value = constant:independence_wave_formable_family.great_lakes_federation compare = equals }
+	is_independence_wave_ready_formable_form27_integration_carrier = yes
+}
+
+has_independence_wave_ready_formable_form27_stage2_project_current = {
+	has_independence_wave_ready_formable_stage2_project_current = yes
+	check_variable = { var = independence_wave_ready_formable_stage2_family value = constant:independence_wave_formable_family.great_lakes_federation compare = equals }
+	is_independence_wave_ready_formable_form27_integration_carrier = yes
+}
+
+is_independence_wave_ready_formable_form29_integration_carrier = {
+	is_independence_wave_ready_formable_postformation_carrier = yes
+	is_independence_wave_form29_postformation_carrier = yes
+}
+
+can_independence_wave_ready_formable_form29_start_stage1 = {
+	is_independence_wave_ready_formable_form29_integration_carrier = yes
+	can_independence_wave_ready_formable_start_integration_stage1 = yes
+}
+
+can_independence_wave_ready_formable_form29_start_stage2 = {
+	is_independence_wave_ready_formable_form29_integration_carrier = yes
+	can_independence_wave_ready_formable_start_integration_stage2 = yes
+}
+
+should_independence_wave_ready_formable_form29_ai_start_stage1 = {
+	can_independence_wave_ready_formable_form29_start_stage1 = yes
+	should_independence_wave_ready_formable_ai_start_stage1 = yes
+}
+
+should_independence_wave_ready_formable_form29_ai_start_stage2 = {
+	can_independence_wave_ready_formable_form29_start_stage2 = yes
+	should_independence_wave_ready_formable_ai_start_stage2 = yes
+}
+
+has_independence_wave_ready_formable_form29_stage1_project_current = {
+	has_independence_wave_ready_formable_stage1_project_current = yes
+	check_variable = { var = independence_wave_ready_formable_stage1_family value = constant:independence_wave_formable_family.horn_league_state compare = equals }
+	is_independence_wave_ready_formable_form29_integration_carrier = yes
+}
+
+has_independence_wave_ready_formable_form29_stage2_project_current = {
+	has_independence_wave_ready_formable_stage2_project_current = yes
+	check_variable = { var = independence_wave_ready_formable_stage2_family value = constant:independence_wave_formable_family.horn_league_state compare = equals }
+	is_independence_wave_ready_formable_form29_integration_carrier = yes
+}
+
+is_independence_wave_ready_formable_form31_integration_carrier = {
+	is_independence_wave_ready_formable_postformation_carrier = yes
+	is_independence_wave_form31_postformation_carrier = yes
+}
+
+can_independence_wave_ready_formable_form31_start_stage1 = {
+	is_independence_wave_ready_formable_form31_integration_carrier = yes
+	can_independence_wave_ready_formable_start_integration_stage1 = yes
+}
+
+can_independence_wave_ready_formable_form31_start_stage2 = {
+	is_independence_wave_ready_formable_form31_integration_carrier = yes
+	can_independence_wave_ready_formable_start_integration_stage2 = yes
+}
+
+should_independence_wave_ready_formable_form31_ai_start_stage1 = {
+	can_independence_wave_ready_formable_form31_start_stage1 = yes
+	should_independence_wave_ready_formable_ai_start_stage1 = yes
+}
+
+should_independence_wave_ready_formable_form31_ai_start_stage2 = {
+	can_independence_wave_ready_formable_form31_start_stage2 = yes
+	should_independence_wave_ready_formable_ai_start_stage2 = yes
+}
+
+has_independence_wave_ready_formable_form31_stage1_project_current = {
+	has_independence_wave_ready_formable_stage1_project_current = yes
+	check_variable = { var = independence_wave_ready_formable_stage1_family value = constant:independence_wave_formable_family.indian_ocean_league_state compare = equals }
+	is_independence_wave_ready_formable_form31_integration_carrier = yes
+}
+
+has_independence_wave_ready_formable_form31_stage2_project_current = {
+	has_independence_wave_ready_formable_stage2_project_current = yes
+	check_variable = { var = independence_wave_ready_formable_stage2_family value = constant:independence_wave_formable_family.indian_ocean_league_state compare = equals }
+	is_independence_wave_ready_formable_form31_integration_carrier = yes
+}
+
 has_independence_wave_ready_formable_stage1_project_current = {
 	has_country_flag = independence_wave_ready_formable_stage1_in_progress
 	has_variable = independence_wave_ready_formable_stage1_generation
@@ -1375,6 +2002,30 @@ has_independence_wave_ready_formable_active_autonomous_member_from_root = {
 				AND = { original_tag = IAX check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_161 } check_variable = { var = independence_wave_anchor_state value = constant:independence_wave_ready_formable_anchor.form37_iax compare = equals } owns_state = constant:independence_wave_ready_formable_anchor.form37_iax controls_state = constant:independence_wave_ready_formable_anchor.form37_iax capital_scope = { state = constant:independence_wave_ready_formable_anchor.form37_iax } }
 				AND = { original_tag = GCX check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_159 } check_variable = { var = independence_wave_anchor_state value = constant:independence_wave_ready_formable_anchor.form37_gcx compare = equals } owns_state = constant:independence_wave_ready_formable_anchor.form37_gcx controls_state = constant:independence_wave_ready_formable_anchor.form37_gcx capital_scope = { state = constant:independence_wave_ready_formable_anchor.form37_gcx } }
 				AND = { original_tag = IBX check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_162 } check_variable = { var = independence_wave_anchor_state value = constant:independence_wave_ready_formable_anchor.form37_ibx compare = equals } owns_state = constant:independence_wave_ready_formable_anchor.form37_ibx controls_state = constant:independence_wave_ready_formable_anchor.form37_ibx capital_scope = { state = constant:independence_wave_ready_formable_anchor.form37_ibx } }
+			}
+		}
+		AND = {
+			ROOT = { check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.great_lakes_federation } }
+			OR = {
+				AND = { original_tag = UGA check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_108 } check_variable = { var = independence_wave_anchor_state value = constant:independence_wave_ready_formable_anchor.form27_uga compare = equals } owns_state = constant:independence_wave_ready_formable_anchor.form27_uga controls_state = constant:independence_wave_ready_formable_anchor.form27_uga capital_scope = { state = constant:independence_wave_ready_formable_anchor.form27_uga } }
+				AND = { original_tag = RWA check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_110 } check_variable = { var = independence_wave_anchor_state value = constant:independence_wave_ready_formable_anchor.form27_rwa compare = equals } owns_state = constant:independence_wave_ready_formable_anchor.form27_rwa controls_state = constant:independence_wave_ready_formable_anchor.form27_rwa capital_scope = { state = constant:independence_wave_ready_formable_anchor.form27_rwa } }
+				AND = { original_tag = BRD check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_111 } check_variable = { var = independence_wave_anchor_state value = constant:independence_wave_ready_formable_anchor.form27_brd compare = equals } owns_state = constant:independence_wave_ready_formable_anchor.form27_brd controls_state = constant:independence_wave_ready_formable_anchor.form27_brd capital_scope = { state = constant:independence_wave_ready_formable_anchor.form27_brd } }
+			}
+		}
+		AND = {
+			ROOT = { check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.horn_league_state } }
+			OR = {
+				AND = { original_tag = HAR check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_113 } check_variable = { var = independence_wave_anchor_state value = constant:independence_wave_ready_formable_anchor.form29_har compare = equals } owns_state = constant:independence_wave_ready_formable_anchor.form29_har controls_state = constant:independence_wave_ready_formable_anchor.form29_har capital_scope = { state = constant:independence_wave_ready_formable_anchor.form29_har } }
+				AND = { original_tag = AFA check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_114 } check_variable = { var = independence_wave_anchor_state value = constant:independence_wave_ready_formable_anchor.form29_afa compare = equals } owns_state = constant:independence_wave_ready_formable_anchor.form29_afa controls_state = constant:independence_wave_ready_formable_anchor.form29_afa capital_scope = { state = constant:independence_wave_ready_formable_anchor.form29_afa } }
+				AND = { original_tag = SOM check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_115 } check_variable = { var = independence_wave_anchor_state value = constant:independence_wave_ready_formable_anchor.form29_som compare = equals } owns_state = constant:independence_wave_ready_formable_anchor.form29_som controls_state = constant:independence_wave_ready_formable_anchor.form29_som capital_scope = { state = constant:independence_wave_ready_formable_anchor.form29_som } }
+				AND = { original_tag = TIG check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_119 } check_variable = { var = independence_wave_anchor_state value = constant:independence_wave_ready_formable_anchor.form29_tig compare = equals } owns_state = constant:independence_wave_ready_formable_anchor.form29_tig controls_state = constant:independence_wave_ready_formable_anchor.form29_tig capital_scope = { state = constant:independence_wave_ready_formable_anchor.form29_tig } }
+			}
+		}
+		AND = {
+			ROOT = { check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.indian_ocean_league_state } }
+			OR = {
+				AND = { original_tag = MAD check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_130 } check_variable = { var = independence_wave_anchor_state value = constant:independence_wave_ready_formable_anchor.form31_mad compare = equals } owns_state = constant:independence_wave_ready_formable_anchor.form31_mad controls_state = constant:independence_wave_ready_formable_anchor.form31_mad capital_scope = { state = constant:independence_wave_ready_formable_anchor.form31_mad } }
+				AND = { original_tag = FBX check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_132 } check_variable = { var = independence_wave_anchor_state value = constant:independence_wave_ready_formable_anchor.form31_fbx compare = equals } owns_state = constant:independence_wave_ready_formable_anchor.form31_fbx controls_state = constant:independence_wave_ready_formable_anchor.form31_fbx capital_scope = { state = constant:independence_wave_ready_formable_anchor.form31_fbx } }
 			}
 		}
 	}
