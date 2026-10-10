@@ -659,9 +659,19 @@ missiles_score_site_candidate = {
 	}
 	if = {
 		limit = {
-			check_variable = { var = missiles_candidate_score value = ROOT.missiles_best_site_score compare = greater_than }
+			OR = {
+				ROOT = { NOT = { has_country_flag = missiles_site_selection_found } }
+				check_variable = { var = missiles_candidate_score value = ROOT.missiles_best_site_score compare = greater_than }
+				AND = {
+					check_variable = { var = missiles_candidate_score value = ROOT.missiles_best_site_score compare = equals }
+					check_variable = { var = id value = ROOT.missiles_best_site_state_id compare = less_than }
+				}
+			}
 		}
 		set_variable = { ROOT.missiles_best_site_score = missiles_candidate_score }
+		set_variable = { ROOT.missiles_best_site_state = THIS }
+		set_variable = { ROOT.missiles_best_site_state_id = id }
+		ROOT = { set_country_flag = missiles_site_selection_found }
 		save_event_target_as = missiles_selected_site
 	}
 }
@@ -671,11 +681,15 @@ missiles_score_site_candidate = {
 # a strategic-region selector and a one-state array membership filter, then
 # stores the exact region on the site's durable record. It runs only while a
 # site candidate is scored or registered; it is not a recurring world scan.
+# Each caller proves control by its program country. Bind that actual
+# controller explicitly before the nested STATE query, independently of ROOT
+# and of the scope stack retained by the caller's scripted helpers.
 missiles_assign_site_strategic_region = {
 	if = {
 		limit = { NOT = { has_variable = missiles_site_strategic_region } }
 		save_event_target_as = missiles_region_probe_state
-		ROOT = {
+		controller = { save_event_target_as = missiles_region_probe_country }
+		event_target:missiles_region_probe_country = {
 			clear_array = missiles_region_probe_states
 			add_to_array = { array = missiles_region_probe_states value = event_target:missiles_region_probe_state }
 			set_variable = { missiles_region_probe_found = constant:missiles_program_value.zero }
@@ -694,7 +708,7 @@ missiles_assign_site_strategic_region = {
 							text = {
 								any_state_in = {
 									strategic_region = [REGION_ID]
-									is_in_array = { array = ROOT.missiles_region_probe_states value = THIS }
+									is_in_array = { array = event_target:missiles_region_probe_country.missiles_region_probe_states value = THIS }
 								}
 							}
 							REGION_ID = "[?missiles_region_probe_id|.0]"
@@ -706,7 +720,7 @@ missiles_assign_site_strategic_region = {
 				}
 			}
 			event_target:missiles_region_probe_state = {
-				set_variable = { missiles_site_strategic_region = ROOT.missiles_region_probe_found_id }
+				set_variable = { missiles_site_strategic_region = event_target:missiles_region_probe_country.missiles_region_probe_found_id }
 			}
 			clear_variable = missiles_region_probe_found
 			clear_variable = missiles_region_probe_found_id
@@ -715,21 +729,43 @@ missiles_assign_site_strategic_region = {
 	}
 }
 
+# COUNTRY scope. A regular event target can survive another helper call in the
+# same chain; only this fresh flag and normal winner tuple authorize selection.
+missiles_reset_site_selection = {
+	clr_country_flag = missiles_site_selection_found
+	clear_variable = missiles_best_site_state
+	clear_variable = missiles_best_site_state_id
+	clear_variable = missiles_best_site_score
+}
+
 missiles_select_best_site = {
+	missiles_reset_site_selection = yes
 	set_variable = { missiles_best_site_score = constant:missiles_site_score.baseline }
+	# Upgrade a usable existing site before founding another. A level-capped,
+	# captured, rogue or destroyed site cannot win through legacy flags.
 	every_owned_state = {
 		limit = {
-			is_controlled_by = ROOT
-			impassable = no
+			missiles_state_is_valid_site_target = yes
+			missiles_site_can_upgrade = yes
 			OR = {
-				missiles_state_is_valid_site_target = yes
 				has_state_flag = missiles_site_active
 				has_state_flag = missiles_site_hardened
 			}
 		}
+		set_temp_variable = { missiles_candidate_score = constant:missiles_site_score.baseline }
 		missiles_score_site_candidate = yes
 	}
-	clear_variable = missiles_best_site_score
+	if = {
+		limit = { NOT = { has_country_flag = missiles_site_selection_found } }
+		every_owned_state = {
+			limit = {
+				missiles_state_is_valid_site_target = yes
+				NOT = { is_in_array = { array = ROOT.missiles_launch_site_states value = THIS } }
+			}
+			set_temp_variable = { missiles_candidate_score = constant:missiles_site_score.baseline }
+			missiles_score_site_candidate = yes
+		}
+	}
 }
 
 missiles_register_site = {
@@ -814,21 +850,14 @@ missiles_create_primary_site = {
 		limit = { NOT = { has_country_flag = missiles_primary_site_established } }
 		missiles_select_best_site = yes
 		if = {
-			limit = { has_event_target = missiles_selected_site }
-			event_target:missiles_selected_site = { missiles_register_site = yes }
-		}
-		else = {
-			capital_scope = {
-				if = {
-					limit = {
-						is_owned_by = ROOT
-						is_controlled_by = ROOT
-						impassable = no
-					}
-					missiles_register_site = yes
-				}
+			limit = {
+				has_country_flag = missiles_site_selection_found
+				has_variable = missiles_best_site_state
+				var:missiles_best_site_state = { missiles_state_is_valid_site_target = yes }
 			}
+			var:missiles_best_site_state = { missiles_register_site = yes }
 		}
+		missiles_reset_site_selection = yes
 	}
 }
 

@@ -33,6 +33,13 @@ missiles_survey_payment_receipt_is_current = {
 	check_variable = { missiles_survey_payment_id > constant:missiles_program_value.zero }
 	has_variable = missiles_survey_generation
 	check_variable = { var = missiles_survey_payment_id value = missiles_survey_generation compare = equals }
+	has_variable = missiles_survey_candidate_generation
+	check_variable = { var = missiles_survey_candidate_generation value = missiles_survey_payment_id compare = equals }
+	has_country_flag = missiles_survey_candidate_selected
+	has_variable = missiles_survey_candidate_state
+	check_variable = { var = missiles_survey_candidate_state value = missiles_survey_site_state compare = equals }
+	check_variable = { var = missiles_survey_candidate_state_id value = missiles_survey_payment_site_id compare = equals }
+	is_in_array = { array = missiles_survey_candidate_states value = missiles_survey_site_state }
 	has_variable = missiles_survey_payment_actor_id
 	check_variable = { var = missiles_survey_payment_actor_id value = id compare = equals }
 	has_variable = missiles_survey_site_state
@@ -119,11 +126,22 @@ missiles_survey_owner_is_ready = {
 	NOT = { has_country_flag = missiles_survey_refund_pending }
 	NOT = { has_country_flag = missiles_survey_native_accounting_quarantined }
 	NOT = { has_active_mission = missiles_launch_state_survey_mission }
+	NOT = { has_country_flag = missiles_civil_war_split_transaction_active }
 }
 
-# COUNTRY decision entry; FROM is its exact native state target.
+# COUNTRY decision entry. State choice is deterministic and independent of AI.
+missiles_survey_has_eligible_candidate = {
+	any_owned_state = { missiles_state_is_valid_survey_target = yes }
+}
+
 missiles_survey_selected_project_can_start = {
 	missiles_survey_owner_is_ready = yes
-	FROM = { missiles_state_is_valid_survey_target = yes }
+	has_country_flag = missiles_survey_candidate_selected
+	has_variable = missiles_survey_candidate_state
+	is_in_array = { array = missiles_survey_candidate_states value = missiles_survey_candidate_state }
+	var:missiles_survey_candidate_state = {
+		missiles_state_is_valid_survey_target = yes
+		check_variable = { var = id value = PREV.missiles_survey_candidate_state_id compare = equals }
+	}
 	missiles_survey_quote_is_affordable = yes
 }

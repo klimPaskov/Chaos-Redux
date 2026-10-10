@@ -9,6 +9,59 @@ missiles_refresh_survey_quote = {
 	set_variable = { missiles_survey_quote_fuel = constant:missiles_survey_payment.fuel }
 }
 
+# COUNTRY decision/mission owner. Freeze the complete valid owned-state set
+# once per fresh order. Scoring selects one state before any payment starts.
+missiles_freeze_survey_candidates = {
+	clr_country_flag = missiles_survey_candidate_selected
+	clear_array = missiles_survey_candidate_states
+	clear_array = missiles_survey_candidate_scores
+	clear_variable = missiles_survey_candidate_state
+	clear_variable = missiles_survey_candidate_state_id
+	clear_variable = missiles_survey_candidate_score
+	clear_variable = missiles_survey_candidate_generation
+	every_owned_state = {
+		limit = { missiles_state_is_valid_survey_target = yes }
+		ROOT = { add_to_array = { array = missiles_survey_candidate_states value = PREV } }
+	}
+}
+
+# COUNTRY scope. Rank only the immutable order pool; new acquisitions cannot
+# enter this pass. Caller owns the scorer output used for the aligned ledger.
+missiles_select_frozen_survey_candidate = {
+	missiles_reset_site_selection = yes
+	set_temp_variable = { missiles_survey_scoring_break = constant:missiles_program_value.zero }
+	for_each_scope_loop = {
+		array = missiles_survey_candidate_states
+		break = missiles_survey_scoring_break
+		set_temp_variable = { missiles_candidate_score = constant:missiles_site_score.baseline }
+		missiles_score_site_candidate = yes
+		ROOT = { add_to_array = { array = missiles_survey_candidate_scores value = missiles_candidate_score } }
+	}
+	if = {
+		limit = { has_country_flag = missiles_site_selection_found }
+		set_variable = { missiles_survey_candidate_state = missiles_best_site_state }
+		set_variable = { missiles_survey_candidate_state_id = missiles_best_site_state_id }
+		set_variable = { missiles_survey_candidate_score = missiles_best_site_score }
+		set_country_flag = missiles_survey_candidate_selected
+	}
+	missiles_reset_site_selection = yes
+}
+
+# Retire only a closed project's selection. A quarantined physical payment
+# keeps its frozen pool and winner identity for explicit settlement.
+missiles_clear_closed_survey_candidates = {
+	if = {
+		limit = { NOT = { has_country_flag = missiles_survey_payment_active } }
+		clr_country_flag = missiles_survey_candidate_selected
+		clear_array = missiles_survey_candidate_states
+		clear_array = missiles_survey_candidate_scores
+		clear_variable = missiles_survey_candidate_state
+		clear_variable = missiles_survey_candidate_state_id
+		clear_variable = missiles_survey_candidate_score
+		clear_variable = missiles_survey_candidate_generation
+	}
+}
+
 # COUNTRY. Input: universal_cost_payment_resource_kind. Output is created
 # by the caller. Installed native readers return manpower/fuel in thousands.
 missiles_measure_survey_resource = {
@@ -221,21 +274,28 @@ missiles_refund_cancelled_survey = {
 	else = { missiles_settle_pending_survey_refund = yes }
 }
 
-# COUNTRY state-targeted decision, FROM is the frozen state. All three costs
+# COUNTRY programme-wide decision. The full pool and highest-scoring state
+# are frozen before any payment. All three costs
 # are checked together before payment; duplicate starts do not alter a hold.
 missiles_start_paid_survey = {
 	set_variable = { missiles_survey_start_result = constant:missiles_result.rejected }
 	missiles_refresh_survey_quote = yes
 	missiles_settle_pending_survey_refund = yes
 	if = {
+		limit = { missiles_survey_owner_is_ready = yes missiles_survey_quote_is_affordable = yes }
+		missiles_freeze_survey_candidates = yes
+		missiles_select_frozen_survey_candidate = yes
+	}
+	if = {
 		limit = { missiles_survey_selected_project_can_start = yes }
 		if = { limit = { NOT = { has_variable = missiles_survey_generation } } set_variable = { missiles_survey_generation = constant:missiles_program_value.zero } }
 		if = { limit = { check_variable = { var = missiles_survey_generation value = missiles_survey_last_settlement_id compare = less_than } } set_variable = { missiles_survey_generation = missiles_survey_last_settlement_id } }
 		add_to_variable = { missiles_survey_generation = constant:missiles_program_value.one }
 		set_variable = { missiles_survey_payment_id = missiles_survey_generation }
+		set_variable = { missiles_survey_candidate_generation = missiles_survey_generation }
 		set_variable = { missiles_survey_payment_actor_id = id }
-		set_variable = { missiles_survey_site_state = FROM }
-		set_variable = { missiles_survey_payment_site_id = FROM.id }
+		set_variable = { missiles_survey_site_state = missiles_survey_candidate_state }
+		set_variable = { missiles_survey_payment_site_id = missiles_survey_candidate_state_id }
 		set_variable = { missiles_survey_started_date = global.date }
 		set_variable = { missiles_survey_paid_duration_days = constant:missiles_evolution_timing.survey_mission_days }
 		set_variable = { missiles_survey_paid_manpower = constant:missiles_program_value.zero }
@@ -286,6 +346,7 @@ missiles_start_paid_survey = {
 			set_temp_variable = { missiles_survey_refund_ratio = constant:missiles_program_value.one }
 			missiles_close_survey_payment_with_refund = yes
 			if = { limit = { NOT = { has_country_flag = missiles_survey_payment_active } } clear_variable = missiles_survey_site_state }
+			missiles_clear_closed_survey_candidates = yes
 		}
 	}
 }

@@ -2,9 +2,11 @@
 
 Run: python -B .tools/test_event32_site_work_transactions.py
 Production quote, universal native cost dispatch, measurements, date conversion,
-receipt, mode, recovery and decision/mission bodies execute in conservative
+receipt, site eligibility/scorer/region probe, recovery and decision/mission bodies execute in conservative
 helper frames. Unknown commands fail. Only native wallet/world facts, native
 mutation, scheduling/presentation primitives and survey registration are leaves.
+State buildings, cores, category, neighbours and native strategic-region
+membership are explicit world fixtures, never replacement scorer/helper bodies.
 Registration records its exact input without claiming downstream construction.
 This is not native engine stock, mission ordering, supply or AI-order proof.
 """
@@ -94,7 +96,18 @@ class SiteMachine(EvolutionMachine):
         self.getter_outcomes = defaultdict(deque)
         self.registrations, self.presentation, self.mission_requests = [], [], []
         self.garrison_reads = []
+        self.scored_states, self.score_outputs, self.payment_pools = [], [], []
+        self.native_regions = {}
         self.truncate = truncate
+
+    def scope(self, token):
+        return super().scope(token.upper() if token in ('controller', 'owner') else token)
+
+    def storage(self, token):
+        if token.startswith(('ROOT.', 'PREV.', 'THIS.', 'event_target:')):
+            owner, key = token.split('.', 1)
+            return self.scope(owner), self.targeted(key)
+        return super().storage(token)
 
     def temp(self, name, value):
         if self.truncate and isinstance(value, D):
@@ -102,6 +115,10 @@ class SiteMachine(EvolutionMachine):
         super().temp(name, value)
 
     def value(self, token):
+        if token == 'infrastructure_level':
+            if self.current.kind != 'state':
+                raise AssertionError('Native infrastructure getter outside STATE')
+            return self.current.infrastructure
         if token == 'FROM':
             return self.scope(token)
         if token == 'FROM.id':
@@ -126,7 +143,10 @@ class SiteMachine(EvolutionMachine):
         if token.startswith(('ROOT.', 'PREV.', 'THIS.', 'event_target:')):
             owner, key = token.split('.', 1)
             return self.scope(owner).arrays.get(key, [])
-        return self.rows(token)
+        return super().rows(token)
+
+    def rows(self, token):
+        return self.array(token)
 
     def predicate(self, n):
         k, v = n.key, n.value
@@ -145,6 +165,34 @@ class SiteMachine(EvolutionMachine):
             return v in self.current.missions
         if k == 'is_owned_by':
             return self.current.owner is self.scope(v)
+        if k == 'is_owned_and_controlled_by':
+            return self.current.owner is self.scope(v) and self.current.controller is self.scope(v)
+        if k == 'is_core_of':
+            return self.scope(v) in self.current.cores
+        if k == 'is_island_state':
+            return self.current.is_island == (v == 'yes')
+        if k == 'has_state_category':
+            return self.current.category == v
+        if k == 'any_neighbor_state':
+            return any(self.enter(s, v, True) for s in self.current.neighbors)
+        if k == 'any_state_in':
+            # Installed triggers 1693-1714. Region IDs come from the supplied
+            # native map fixture. Production meta expansion and membership
+            # filters still execute, including PREV/ROOT scope transitions.
+            if not isinstance(v, list) or item(v, 'strategic_region') is None:
+                self.unmodeled(n)
+            region = item(v, 'strategic_region')
+            if not region.isdigit():
+                raise AssertionError('Region selector must be emitted as a static native ID')
+            body = [c for c in v if c.key != 'strategic_region']
+            return any(self.enter(s, body, True) for s in self.native_regions.get(int(region), []))
+        if k in ('rocket_site', 'supply_node', 'anti_air_building', 'radar_station',
+                 'rail_way', 'arms_factory', 'industrial_complex', 'dockyard',
+                 'resistance', 'resistance_target'):
+            if self.current.kind != 'state':
+                raise AssertionError('Native state value outside STATE')
+            return {'<': operator.lt, '>': operator.gt, '=': operator.eq}[n.op](
+                self.current.native_values[k], self.value(v))
         if k == 'is_in_array':
             return self.value(item(v, 'value')) in self.array(item(v, 'array'))
         if k in ('has_manpower', 'has_fuel', 'command_power'):
@@ -188,12 +236,28 @@ class SiteMachine(EvolutionMachine):
                 'missiles_survey_payment_active' in self.root.flags,
                 'missiles_survey_fully_paid' in self.root.flags))
             return None
+        if name == 'missiles_score_site_candidate' and not trigger:
+            # Trace the real helper, verify caller-owned output lifetime rather
+            # than permitting its newly created local temporary to escape.
+            if self.temp_owner('missiles_candidate_score') is None:
+                raise AssertionError('Scorer output was not initialized by its caller')
+            state = self.current
+            self.scored_states.append(state)
+            result = super().call(name, trigger)
+            self.score_outputs.append((state, self.value('missiles_candidate_score')))
+            return result
         return super().call(name, trigger)
 
     def mutate_wallet(self, key, delta):
         if self.current.kind != 'country':
             raise AssertionError('Wallet mutation outside COUNTRY')
         kind = 'debit' if delta < 0 else 'credit'
+        if kind == 'debit' and 'missiles_survey_payment_active' in self.current.flags:
+            self.payment_pools.append((list(self.current.arrays['missiles_survey_candidate_states']),
+                list(self.current.arrays['missiles_survey_candidate_scores']),
+                self.current.variables['missiles_survey_candidate_state'],
+                self.current.variables['missiles_survey_candidate_generation'],
+                self.current.variables['missiles_survey_payment_id']))
         queue = self.wallet_outcomes[(self.current.name, key, kind)]
         fraction = queue.popleft() if queue else D(1)
         before = self.current.stocks[key]
@@ -247,9 +311,38 @@ class SiteMachine(EvolutionMachine):
             elif k in ('add_dynamic_modifier', 'remove_dynamic_modifier', 'add_ideas', 'remove_ideas'):
                 self.presentation.append((self.current, k, v))
             elif k in ('every_owned_state', 'every_controlled_state'):
+                if self.current.kind != 'country':
+                    raise AssertionError('Native owned/control iterator outside COUNTRY')
                 for s in list(getattr(self.current, k[6:])):
                     if self.enter(s, item(v, 'limit', []), True):
                         self.enter(s, [c for c in v if c.key != 'limit'])
+            elif k == 'controller':
+                self.enter(self.scope(k), v)
+            elif k in ('clear_array', 'add_to_array', 'remove_from_array'):
+                token = v if isinstance(v, str) else item(v, 'array')
+                owner, key = self.storage(token)
+                if k == 'clear_array':
+                    owner.arrays[key] = []
+                elif k == 'add_to_array':
+                    owner.arrays.setdefault(key, []).append(self.value(item(v, 'value')))
+                else:
+                    val = self.value(item(v, 'value'))
+                    owner.arrays[key] = [s for s in owner.arrays.get(key, []) if s != val]
+            elif k == 'for_loop_effect':
+                # Installed effects 4312-4330. Only the region probe's supported
+                # ascending inclusive form is implemented. Unlike foreach,
+                # this numeric iterator has the documented 1,000 bound.
+                if item(v, 'compare') != 'less_than_or_equals' or item(v, 'add', '1') != '1':
+                    self.unmodeled(n)
+                start, end = self.value(item(v, 'start')), self.value(item(v, 'end'))
+                if start != start.to_integral_value() or end != end.to_integral_value():
+                    self.unmodeled(n)
+                body = [c for c in v if c.key not in ('start', 'end', 'compare', 'add', 'value', 'break')]
+                for index in range(int(start), min(int(end) + 1, int(start) + 1000)):
+                    self.temp(item(v, 'value', 'v'), D(index))
+                    self.execute(body)
+                    if self.value(item(v, 'break', 'break')) != ZERO:
+                        break
             else:
                 super().execute([n])
 
@@ -295,8 +388,7 @@ def setup(ai=False, rogue=False, root_foreign=False, truncate=False):
         country.controlled_state = list(country.owned_state)
         country.native_controlled_states = len(country.controlled_state)
     for s in (site, other):
-        s.owner = s.controller = actor
-        s.infrastructure, s.is_capital = D(5), False
+        native_state(s, actor)
         s.divisions = {actor: 2 if rogue else 0, foreign: 20}
         s.variables['missiles_site_strategic_region'] = D(7)
     actor.flags.update({'missiles_program_initialized', 'missiles_command_control_secure',
@@ -316,6 +408,21 @@ def setup(ai=False, rogue=False, root_foreign=False, truncate=False):
     machine = SiteMachine(source, actor, site, foreign if root_foreign else actor, truncate)
     machine.world.variables['missiles_rogue_active_incidents'] = D(1 if rogue else 0)
     return machine, actor, site, foreign, other
+
+
+def native_state(state, actor, infrastructure=5):
+    """Explicit native facts, independently supplied from production scores."""
+    state.owner = state.controller = actor
+    state.infrastructure, state.is_capital = D(infrastructure), False
+    state.cores, state.neighbors, state.is_island = {actor}, [], False
+    state.category = 'rural'
+    state.native_values = dict.fromkeys(('rocket_site', 'supply_node', 'anti_air_building',
+        'radar_station', 'rail_way', 'arms_factory', 'industrial_complex', 'dockyard',
+        'resistance', 'resistance_target'), ZERO)
+    # Most scenarios supply the durable region cache. The explicit region-probe
+    # scenario removes it and supplies native_regions, exercising the real probe.
+    state.variables['missiles_site_strategic_region'] = D(7)
+    return state
 
 
 def wallet(actor, parts=WALLET_PARTS):
@@ -342,7 +449,7 @@ class SurveyTransactions(unittest.TestCase):
                         before = snapshot(a)
                         decision = m.source.decisions['missiles_survey_launch_state']
                         self.assertEqual(m.call(f'missiles_survey_{SURVEY_PARTS[index]}_is_affordable', True), offset >= 0)
-                        self.assertEqual(m.surface(decision, 'available', True), offset >= 0)
+                        self.assertTrue(m.surface(decision, 'available', True))
                         self.assertEqual(m.surface(decision, 'custom_cost_trigger', True), offset >= 0)
                         self.assertEqual(snapshot(a), before)
                         self.assertGreater(m.calls['universal_cost_component_is_affordable'], 0)
@@ -372,14 +479,20 @@ class SurveyTransactions(unittest.TestCase):
         self.assertEqual(m.calls['universal_cost_pay_component'], 3)
 
     def test_rejected_start_has_no_payment_receipt_mission_or_site_mutation(self):
-        for reason in ('poor', 'foreign', 'registered', 'impassable', 'cleanup', 'active', 'stale_active', 'native_active'):
+        for reason in ('poor', 'foreign', 'registered', 'impassable', 'wasteland',
+                       'cleanup', 'active', 'stale_active', 'native_active', 'split'):
             with self.subTest(reason=reason):
-                m, a, s, foreign, _ = setup()
+                m, a, s, foreign, other = setup()
                 if reason == 'poor': a.stocks['fuel'] = D(249)
-                if reason == 'foreign': s.owner = foreign
-                if reason == 'registered': a.arrays['missiles_launch_site_states'] = [s]
-                if reason == 'impassable': s.impassable = True
+                if reason == 'foreign':
+                    for state in (s, other): state.owner = foreign
+                if reason == 'registered': a.arrays['missiles_launch_site_states'] = [s, other]
+                if reason == 'impassable':
+                    for state in (s, other): state.impassable = True
+                if reason == 'wasteland':
+                    for state in (s, other): state.category = 'wasteland'
                 if reason == 'cleanup': a.flags.add('missiles_program_cleanup_complete')
+                if reason == 'split': a.flags.add('missiles_civil_war_split_transaction_active')
                 if reason in ('active', 'stale_active'):
                     a.flags.add('missiles_survey_payment_active')
                     a.variables['missiles_survey_payment_id'] = D(5)
@@ -388,7 +501,11 @@ class SurveyTransactions(unittest.TestCase):
                 self.start(m)
                 expected_vars = dict(before[0], missiles_survey_start_result=ZERO,
                     missiles_survey_quote_manpower=D(300), missiles_survey_quote_support=D(40), missiles_survey_quote_fuel=D(250))
-                self.assertEqual(snapshot(a), (expected_vars, *before[1:]))
+                expected_arrays = before[2]
+                # An all-impassable country has no controlled land, so the owner gate rejects before any pool is frozen.
+                if reason in ('foreign', 'registered', 'wasteland'):
+                    expected_arrays = dict(expected_arrays, missiles_survey_candidate_states=[], missiles_survey_candidate_scores=[])
+                self.assertEqual(snapshot(a), (expected_vars, before[1], expected_arrays, *before[3:]))
                 self.assertEqual(m.nativecalls, [])
                 self.assertEqual(m.mission_requests, [])
                 self.assertEqual(m.registrations, [])
@@ -424,6 +541,9 @@ class SurveyTransactions(unittest.TestCase):
                  'negative_id': ('missiles_survey_payment_id', D(-1)),
                  'actor': ('missiles_survey_payment_actor_id', D(22)),
                  'generation': ('missiles_survey_generation', D(99)),
+                 'pool_generation': ('missiles_survey_candidate_generation', D(99)),
+                 'missing_pool_generation': ('missiles_survey_candidate_generation', None),
+                 'frozen_winner_id': ('missiles_survey_candidate_state_id', D(999)),
                  'site_id': ('missiles_survey_payment_site_id', D(999)),
                  'zero_duration': ('missiles_survey_paid_duration_days', ZERO),
                  'missing_actual': ('missiles_survey_paid_support', None),

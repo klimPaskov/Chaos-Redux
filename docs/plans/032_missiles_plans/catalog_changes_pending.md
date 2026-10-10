@@ -16,3 +16,5 @@ The `Details`, `Evo II`, `Evo III`, and `Evo IV` cells already match `missiles.e
 Disposition: the exact `D33` and `H33` wording is `implemented` under the user's catalog/localisation alignment goal, with repository-generated CSV exports and a two-cell HEAD projection for the shared-tree commit.
 The former `M33 = Needs Testing` proposal is `superseded` by the retained status above following the current contract reconciliation at `subagent_handoffs/032_current_contract_reconciliation_2026-10-07.md`.
 This distinction preserves the post-20 existing-root status rule and does not treat incomplete gameplay or source-only validation as completion.
+
+2026-10-10: the Details, Evo I and Evo III cells (`C33`, `D33`, `F33`) were respelled to US English (programs, defenses, authorized) to match the in-game text; status stays `To Be Reworked`.

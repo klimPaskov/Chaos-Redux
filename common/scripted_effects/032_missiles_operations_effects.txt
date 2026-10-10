@@ -1435,7 +1435,7 @@ missiles_secure_launch_codes = {
 # pointer. Each mission completes on the first day its date and objective hold.
 
 missiles_begin_survey = {
-	# COUNTRY scope from the state-targeted decision; FROM is the surveyed state.
+	# COUNTRY scope; the paid order freezes and ranks the full eligible pool.
 	missiles_start_paid_survey = yes
 }
 
@@ -1454,6 +1454,7 @@ missiles_complete_survey = {
 			clr_country_flag = missiles_survey_in_progress
 			clear_variable = missiles_survey_due_date
 			clear_variable = missiles_survey_site_state
+			missiles_clear_closed_survey_candidates = yes
 		}
 		else = { missiles_cancel_site_survey = yes }
 		missiles_recalculate_network = yes
@@ -3603,6 +3604,7 @@ missiles_cancel_site_survey = {
 	clear_variable = missiles_survey_due_date
 	# A malformed paid hold keeps its state identity for explicit settlement.
 	if = { limit = { NOT = { has_country_flag = missiles_survey_payment_active } } clear_variable = missiles_survey_site_state }
+	missiles_clear_closed_survey_candidates = yes
 }
 
 missiles_cancel_secondary_site_project = {
@@ -6845,6 +6847,8 @@ missiles_refresh_program_from_receiver = {
 }
 
 missiles_preflight_country_split = {
+	# COUNTRY scope on the actual donor. Entering it from another country's
+	# event does not rebind ROOT; the saved parent owns all split accounting.
 	set_variable = { missiles_split_preflight_result = constant:missiles_result.rejected }
 	if = {
 		limit = {
@@ -6878,10 +6882,10 @@ missiles_preflight_country_split = {
 				NOT = { has_state_flag = missiles_site_scuttled }
 			}
 			set_state_flag = missiles_site_civil_war_split_pending
-			set_variable = { missiles_site_civil_war_split_receipt_id = ROOT.missiles_civil_war_split_receipt_id }
+			set_variable = { missiles_site_civil_war_split_receipt_id = event_target:missiles_civil_war_parent.missiles_civil_war_split_receipt_id }
 			if = {
 				limit = { has_variable = missiles_site_capacity }
-				ROOT = { add_to_variable = { missiles_civil_war_split_original_capacity = PREV.missiles_site_capacity } }
+				event_target:missiles_civil_war_parent = { add_to_variable = { missiles_civil_war_split_original_capacity = PREV.missiles_site_capacity } }
 			}
 		}
 		set_country_flag = missiles_civil_war_split_transaction_active
@@ -6892,6 +6896,7 @@ missiles_preflight_country_split = {
 # COUNTRY scope on the civil-war child, called inside start_civil_war after the
 # engine has assigned physical states. The parent pointer is the regular event
 # target saved by preflight, so the transaction cannot drift to another war.
+# PREV inside the state iterator is the child, regardless of callback ROOT.
 missiles_finalize_civil_war_split_child = {
 	if = {
 		limit = {
@@ -6924,10 +6929,10 @@ missiles_finalize_civil_war_split_child = {
 				has_variable = missiles_site_civil_war_split_receipt_id
 				check_variable = { var = missiles_site_civil_war_split_receipt_id value = event_target:missiles_civil_war_parent.missiles_civil_war_split_receipt_id compare = equals }
 			}
-			add_to_array = { array = ROOT.missiles_launch_site_states value = THIS }
+			add_to_array = { array = PREV.missiles_launch_site_states value = THIS }
 			if = {
 				limit = { has_variable = missiles_site_capacity }
-				ROOT = { add_to_variable = { missiles_civil_war_received_capacity = PREV.missiles_site_capacity } }
+				PREV = { add_to_variable = { missiles_civil_war_received_capacity = PREV.missiles_site_capacity } }
 			}
 			set_state_flag = missiles_site_compromised
 			set_state_flag = missiles_site_isolated
@@ -6937,9 +6942,9 @@ missiles_finalize_civil_war_split_child = {
 			# The new controller can suspend and repair the site; the former
 			# owner's repair programme ends through its own cleanup.
 			clr_state_flag = missiles_site_suspended
-			set_variable = { missiles_site_owner_id = ROOT.id }
-			set_variable = { missiles_site_controller_id = ROOT.id }
-			set_variable = { missiles_site_current_controller = ROOT }
+			set_variable = { missiles_site_owner_id = PREV.id }
+			set_variable = { missiles_site_controller_id = PREV.id }
+			set_variable = { missiles_site_current_controller = PREV }
 			set_variable = { missiles_site_reserve = constant:missiles_program_value.zero }
 			set_variable = { missiles_site_operation_id = constant:missiles_program_value.zero }
 			clr_state_flag = missiles_site_civil_war_split_pending
@@ -6998,6 +7003,7 @@ missiles_finalize_civil_war_split_child = {
 # COUNTRY scope on the original side. Child finalization has already debited
 # the exact child share. This pass retires the pending state markers, applies
 # the symmetric command shock, and records a zero conservation residual.
+# PREV inside the state iterator is the donor, including child callbacks.
 missiles_finalize_civil_war_split_parent = {
 	if = {
 		limit = {
@@ -7017,17 +7023,17 @@ missiles_finalize_civil_war_split_parent = {
 			limit = {
 				has_state_flag = missiles_site_civil_war_split_pending
 				has_variable = missiles_site_civil_war_split_receipt_id
-				check_variable = { var = missiles_site_civil_war_split_receipt_id value = ROOT.missiles_civil_war_split_receipt_id compare = equals }
+				check_variable = { var = missiles_site_civil_war_split_receipt_id value = PREV.missiles_civil_war_split_receipt_id compare = equals }
 			}
-			add_to_array = { array = ROOT.missiles_launch_site_states value = THIS }
+			add_to_array = { array = PREV.missiles_launch_site_states value = THIS }
 			set_state_flag = missiles_site_compromised
 			set_state_flag = missiles_site_isolated
 			clr_state_flag = missiles_site_active
 			clr_state_flag = missiles_site_hardened
 			clr_state_flag = missiles_site_rogue
-			set_variable = { missiles_site_owner_id = ROOT.id }
-			set_variable = { missiles_site_controller_id = ROOT.id }
-			set_variable = { missiles_site_current_controller = ROOT }
+			set_variable = { missiles_site_owner_id = PREV.id }
+			set_variable = { missiles_site_controller_id = PREV.id }
+			set_variable = { missiles_site_current_controller = PREV }
 			set_variable = { missiles_site_reserve = constant:missiles_program_value.zero }
 			set_variable = { missiles_site_operation_id = constant:missiles_program_value.zero }
 			clr_state_flag = missiles_site_civil_war_split_pending

@@ -56,27 +56,17 @@
 missiles_program_management_category = {
 	missiles_survey_launch_state = {
 		icon = GFX_decision_032_missiles_survey_launch_state
-		state_target = any_owned_state
-		on_map_mode = map_and_decisions_view
 		visible = {
 			has_country_flag = missiles_program_phase_establishment
 			missiles_country_can_manage_program = yes
 			NOT = { has_active_mission = missiles_launch_state_survey_mission }
-			FROM = { missiles_state_is_valid_survey_target = yes }
-		}
-		target_root_trigger = {
-			has_country_flag = missiles_program_phase_establishment
-			missiles_country_can_start_survey = yes
-		}
-		target_trigger = {
-			FROM = { missiles_state_is_valid_survey_target = yes }
+			missiles_survey_has_eligible_candidate = yes
 		}
 		available = {
-			hidden_trigger = { missiles_survey_selected_project_can_start = yes }
 			custom_trigger_tooltip = { tooltip = missiles_survey_owner_ready_tt missiles_survey_owner_is_ready = yes }
 			custom_trigger_tooltip = {
 				tooltip = missiles_survey_requirements_tt
-				FROM = { missiles_state_is_valid_survey_target = yes }
+				missiles_survey_has_eligible_candidate = yes
 			}
 		}
 		custom_cost_trigger = {
@@ -99,8 +89,6 @@ missiles_program_management_category = {
 			base = @m32_ai_high
 			modifier = { factor = 0 NOT = { missiles_country_can_manage_program = yes } }
 			modifier = { factor = 2 is_major = yes }
-			modifier = { factor = 2 FROM = { is_core_of = ROOT } }
-			modifier = { factor = 0.5 FROM = { is_capital = yes } }
 		}
 	}
 

@@ -1,6 +1,6 @@
 # Event 027 catalog changes pending
 
-Disposition: accepted and queued. Agents may not edit `docs/spreadsheets/chaos_redux_events_catalog.xlsx` or the exported CSV files, so the workbook owner applies these changes.
+Disposition: the `M28` Status change to `Needs Testing` is `implemented` in the workbook on 2026-10-10 with regenerated CSV exports. The Cluster Memberships notes stay `accepted and queued`.
 
 Basis: the Event 027 rework is implemented in commits `b55edd969`, `317e43684`, and `2a8be6e32` and awaits live acceptance (see `agent_decisions_2026-10-04.md`).
 

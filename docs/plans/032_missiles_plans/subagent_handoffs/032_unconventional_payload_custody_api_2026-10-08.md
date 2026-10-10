@@ -309,3 +309,141 @@ No fallback or simplification was adopted.
 Completed work is this bounded architecture handoff and source/reference audit.
 Blocked work is native identity and callback proof plus current event-render coverage.
 Implementation remains with the parent and cannot be marked complete from this handoff.
+
+## Bounded inventory API sidecar, 2026-10-09
+
+This append-only review answers the two native inventory questions in the parent assignment.
+Historical findings above are retained.
+Current conclusion: producer-filtered concrete-model removal is documented, but exact named-variant removal and per-variant quantity observation are not established by the installed references.
+The documented nuclear scripting surface provides an untyped count and explicit delivery types, without a documented typed inventory getter or typed stock credit/debit.
+This does not prove that the engine internally stores only one interchangeable nuclear pool.
+The installed thermonuclear production modifier and separate production scales make that stronger claim unjustified.
+Neither exact mixed-variant biological custody nor separately produced thermonuclear custody can be certified from these APIs.
+These are indispensable identity semantics for those claims, rather than missing optional rendering evidence.
+No fallback or simplification is adopted.
+
+### Biological equipment selection and observation
+
+Installed `effects_documentation.md:1252-1266` explicitly supports negative `amount` and an optional `producer` filter in COUNTRY scope.
+Omitting `producer` applies the effect to all creators according to the installed text, which takes precedence over the wiki's differing default wording.
+The offline Effects row at line 2253 explicitly says producer-filtered negative amounts remove only that producer's equipment and notes that the producer must have unlocked the equipment.
+Thus a concrete model plus a known foreign producer is a supported removal request, without substituting the current holder as producer.
+
+The same wiki row describes `variant_name` as the variant to add, and the installed effect section does not document that field or its negative-selection semantics.
+Vanilla `events\BBA_Ethiopia.txt:6313-6317` supplies a positive amount with both foreign `producer = SOV` and `variant_name`.
+Vanilla `events\SEA_Communist_China.txt:442-455` supplies negative amounts with `producer = THIS`, but its `variant_name` lines are commented out.
+Kaiserreich `events\INS events (Indonesia).txt:3163-3177` contains a real negative named-variant request followed by a foreign-produced named-variant credit.
+That precedent omits `producer` on removal and contains no quantity observation or acknowledgement.
+It establishes authored use of negative `variant_name`, not documented exact selection, combined producer/variant semantics, or proof that a shortfall never falls through to another variant.
+The earlier occurrence at 3094-3112 is inside `effect_tooltip` and is not payment evidence.
+
+Installed `dynamic_variables_documentation.md:557-559` and offline Data structures line 1615 expose only `num_equipment@MODEL_OR_ARCHETYPE` for this stock measurement.
+Installed `has_equipment:3835-3843` and offline Triggers line 1516 likewise describe equipment amounts without producer/variant selectors.
+Targeted searches of installed documentation, its collection inputs and localisation-object documentation, and offline Data structures, Scopes and Triggers found no documented stock iterator or getter that yields producer/variant quantities.
+This is bounded absence of documented support, not a claim about every internal engine API.
+Do not invent `num_equipment` suffixes, equipment scopes, localisation getters, or providers to fill that gap.
+The concrete biological models remain the four definitions at `common\units\equipment\bioweapons.txt:101-178`.
+Those definitions identify models, not the identities or quantities of variants currently held by another country.
+
+An immediate model-wide before/after measurement around one producer-filtered removal can establish the observed model quantity removed, with producer attribution inferred from the documented filter, provided no nested effect or other stock mutation intervenes.
+It cannot enumerate that producer's available quantity in advance or reveal which named variants were removed.
+For example, a total of ten units with only two from the requested producer cannot justify a five-unit receipt merely because the model total was ten.
+The receipt must use the observed delta and retain any partial holding.
+A producer filter therefore narrows the payment primitive, but does not complete the exact-variant return contract.
+
+### Nuclear inventory and existing owners
+
+Installed `num_of_nukes` dynamic-variable and trigger sections provide no type argument.
+Installed `add_nuclear_bombs` documents a country stock mutation without a `nuke_type` argument.
+Installed `launch_nuke:4745-4761` does document `nuke_type = nuclear_bomb` or `thermonuclear_bomb` and `use_nuke`.
+The type identifies delivery behavior, and the documentation does not establish a typed stock query or an exact-type refund.
+Do not treat these delivery tokens as concrete equipment IDs, or invent `num_of_nukes@thermonuclear_bomb` or an `add_nuclear_bombs` argument block.
+
+The installed raid schema at `common\raids\_documentation.md:167-186` uses `nukes = 1` and a separate `nuke_type` field.
+Vanilla `nuclear_raids.txt:312-320` requires missile equipment independently of a bomb, while its thermonuclear raid at 673-676 uses the same `nukes` cost key with explicit thermonuclear type.
+This common cost spelling does not establish common internal stock semantics, because the schema tells the reader to consider `nuke_type`.
+`common\units\equipment\nuclear_missiles.txt:3-29,55-85` defines delivery vehicles and their concrete models, not atomic and thermonuclear bomb inventory equipment IDs.
+`common\technologies\special_projects_tech.txt:75-85` enables `thermonuclear_production = 1`, installed modifier docs at 5019-5028 describe its boolean and production-factor surfaces, and `common\defines\00_defines.lua:4553-4559` has separate nuclear and thermonuclear production scales and damage bands.
+These establish distinct native production/delivery concepts without exposing their separately countable stock to the documented scripting surface.
+
+Event 023 uses `num_of_nukes` snapshots at runtime effects 53-62, scalar native stock changes including line 699, and an owner allocation ledger.
+At 893-912 it expects a one-unit native delta, sets its atomic-delivery context and calls `launch_nuke` with `use_nuke = yes` and `nuke_type = nuclear_bomb`.
+At 1099-1125 it checks the native snapshot through its callback validator before committing the allocation.
+Its runtime Markdown at 29,98,116-118 explicitly distinguishes the allocation ledger from native stock and preserves atomic consequences even when thermonuclear research exists.
+This is the available represented-origin atomic owner, not a per-type native inventory API or a thermonuclear production ledger.
+
+The current `events\076_usa_tests_weapons.txt:23-66` contains conventional event-option penalties, damaged buildings, diplomacy and a war choice.
+It contains no biological or nuclear stock read, grant, debit, yield registry, production contract or custody receipt.
+The bounded literal Event 076 identifier search in `common` and `events` found no separate stock-owning call site.
+This does not exclude constructed event dispatch, but Event 076 cannot be cited as an already implemented exact inventory provider from the current source.
+Preserve its ownership boundary without assuming the absent provider exists.
+
+Offline On actions line 509 and vanilla `common\on_actions\00_on_actions.txt:384-402` provide launcher ROOT and struck-state context, without an echoed payload type, equipment identity or operation nonce in these references.
+They do not resolve either stock identity gap.
+The earlier callback correlation proposal remains separate from this inventory-only review.
+
+### Smallest source-ready contract and implementation boundary
+
+| Primitive | Supported identity and inputs | Acknowledgement and return limit |
+| --- | --- | --- |
+| Concrete equipment debit in payer COUNTRY | Frozen concrete model, known original producer, positive requested quantity copied and negated with the documented variable operation | Observe `num_equipment@MODEL` immediately before and after one producer-filtered command, persist requested and observed quantity, reject full preparation on partial/invalid payment. This proves model quantity with producer-filter inference, not named-variant identity. |
+| Equipment credit in current authorized holder COUNTRY | Frozen original model and producer, remaining acknowledged quantity, existing variant token only when its identity was independently established | Positive `producer` plus `variant_name` has a vanilla precedent. Measure model-wide credit, retain unpaid remainder, and never replace a foreign producer with `THIS`. Aggregate credit cannot prove the refunded named variant. |
+| Existing nuclear count transaction in actual payer/holder COUNTRY | Frozen native count request and separate immutable delivery profile, plus Event 023 allocation receipt when provenance is tracked | Measure `num_of_nukes` around the existing scalar stock operation and conserve acknowledged quantity. This is an untyped native-count receipt, and neither its measurement nor `nuke_type` proves independently produced thermonuclear custody. |
+
+Keep the actor generation, operation nonce, exact site, original payer, current holder and remaining quantity fields already proposed above.
+Do not create another registry, helper layer or target lifecycle for this sidecar.
+Payment/return measurement belongs inside the existing proposed owner endpoints, with the receipt retained until acknowledged closure.
+The existing dynamic debit helpers at `chaosx_dynamic_effects.txt:748-812` and docs at 305-351 do not add producer/variant observation, so merely calling them cannot satisfy the missing identity requirement.
+
+Recommended next implementation: preserve the parent-owned survey work and implement only receipt behavior whose inventory identity is established by these sources and the existing owner ledger.
+Keep exact named-variant biological settlement and independently produced thermonuclear settlement unresolved until the parent identifies an authoritative identity source/owner contract for them.
+The indispensable question is which authoritative source establishes those two identities when native scripting cannot read their quantities.
+An explicit design decision to accept model/producer-only biological identity or a generic nuclear count with a selected yield profile would change the accepted exact-identity claim and is not authorized by this handoff.
+Do not grant replacement domestic stock or stamp a proven typed receipt from an aggregate observation.
+
+### Evidence, route limits and completed scope
+
+The four reference/source tools were verified in the connected list with their live schemas.
+Reference context/search/read succeeded, and the needed installed effect, trigger, dynamic-variable, modifier and raid sections and offline equipment/count/on-action rows were read.
+The context's omitted Modifiers and Scopes headings did not supply rule coverage, so relevant modifier sections were retrieved separately and the stock-iterator question was checked directly in the offline scope reference.
+No stock iteration API was found in the searched documentation.
+`script_doc` remains unavailable, while installed `game_doc` and offline `wiki` were available.
+
+Source lookup for `nuclear_missile_strike` returned zero definitions under workspace revision `fde387e58e3c83bf8558bcbed5c91ecc2df012abb17aeb35bbb3b39a255f6ee5`.
+The initial request specified `kind = raid`, and the single useful correction omitted that filter, again returning zero definitions.
+The two-attempt allowance for this lookup question is exhausted.
+Local vanilla source supplied the answer, and another request would require changed indexing or input evidence that addresses the zero-definition result.
+No exhausted graph, provenance, temporary/meta probability capability or render was retried.
+The historical render gap above is an optional-check limitation for this sidecar and does not block its delivered source findings.
+
+Previously recorded documentation revisions remain unchanged: installed Effects `2cdc93d26775990468eed167442f7a416b13059fb8fe07d139b54250b79209af`, Dynamic variables `538525747f0c285062c9ce8db14b4e07c3cf6bac1013115fa4f57291cb4ebdda`, Triggers `7d27ed77dadaf3a213a4b3e2c624bf9c02dae495317abe8eee833b27c2d1de29`, raid schema `eac06474fcbde3920523b9b49364f7797851c0cc45f4f0ef41321999a93be43e`, offline Effects `997ddb09bfd63efb41a425149c46bd812d5f8953217a403386b2f6c85196aa0c`, Data structures `62273f37ed30e5479acb331a8973f48dadc1867c4913c8a940e3e790e7af32d4`, Triggers `abc51ad18a2c46e46d47baa795c5a840ebaf7c4ae3e777426c64a9f4c0c0ce06`, and On actions `6822adc85a374a1c1364f2def6f32c6d66da9fb0280319ddd6af4b84b33d882a`.
+Additional installed `documentation\modifiers_documentation.md:5019-5028` revision is `00a0eca6d2b3a70ce4b8a0d38997dd609aa0c9349ddcd04c8cac92849425be7e`.
+Documentation paths resolve against the exact roots below and the earlier evidence table.
+The parent identifies this installation as 1.19.2, and the source hashes identify the actual inspected bytes.
+Executable PE metadata reports 1.0 and does not independently verify the patch version.
+
+For direct source citations, G is `C:\Program Files (x86)\Steam\steamapps\common\Hearts of Iron IV`, M is `C:\Users\klimp\OneDrive\Documents\Paradox Interactive\Hearts of Iron IV\mod\chaos_redux`, and K is `C:\Program Files (x86)\Steam\steamapps\workshop\content\394360\1521695605`.
+
+| Source | Answering lines | SHA-256 revision |
+| --- | --- | --- |
+| G `common\raids\nuclear_raids.txt` | 312-320,673-676 | `966408c81eba9f5928ed352d5f95f6648977b23a8e12ce9aa2cd2cdbca76256f` |
+| G `common\units\equipment\nuclear_missiles.txt` | 3-29,55-85 | `ffefd87305fbf4f4b4f640d3720b31a53e828822c8366192b2429ca10e10cf7f` |
+| G `common\technologies\special_projects_tech.txt` | 75-85 | `1057a007cdfb2c7841ecfd85e075c84e6fc4279edc29d50c4cca3017945cc946` |
+| G `common\defines\00_defines.lua` | 4553-4559 | `405a24ce579815443cafe052cff1361e20c712ca8182e3f10ccbf45330dd4be4` |
+| G `common\on_actions\00_on_actions.txt` | 384-402 | `52a751456f1774ad5001c86d41d4e46494f751d79b6c224b6cd4c0eebb615eb9` |
+| G `events\BBA_Ethiopia.txt` | 6313-6317 | `cd7cfaa1208dfdaf4e96e7eab1d64feba5ebffb18e34017c6831a40706d50c08` |
+| G `events\SEA_Communist_China.txt` | 442-455 | `cc48f14fcbbea2612f0041cf43e2d817edb7d96830292ff88773ad74bc3ef941` |
+| K `events\INS events (Indonesia).txt` | 3094-3112,3163-3177 | `75a73f3ed59f1a99ed7a55302074889d7c0a45468281b752c1ab1702b692e6ac` |
+| M `common\units\equipment\bioweapons.txt` | 101-178 | `b2ff978eaaca5920efddcf334aec347c4df0b56b5a2aa768d263c8f8e965e429` |
+| M `events\076_usa_tests_weapons.txt` | 23-66 | `ba98dbcc8121f480aeedd727d02dc8c9b3d8183f6dd65452ff1bda7b0b5003fe` |
+| M `common\scripted_effects\023_sov_nuclear_bombs_runtime_effects.txt` | 53-62,699,893-912,1099-1125 | `9cf6c619f477c6989a724029463e078603155f4ab2f83585021393696f027db7` |
+| M `common\scripted_effects\023_sov_nuclear_bombs_runtime_effects.md` | 29,98,116-118 | `1ba51697f7870ec2900a774820c72c25bcd41a666c1be5a3ef83f411b5fb3e24` |
+
+Completed: bounded reference/source inventory review and this append to the existing handoff.
+Meaningful validation was source-specific comparison of documented selectors, stock getters, native production/delivery fields and current owner behavior, including distinguishing the Kaiserreich tooltip from its executing option.
+No implementation tests or engine execution are claimed, because this sidecar authorizes neither.
+Blocked exact claims: named-variant biological identity and typed thermonuclear inventory payment/return semantics lack the indispensable authoritative API/owner evidence described above.
+Gameplay files, localisation, assets, tests, Git, the game, runtime logs and other agents were untouched.
+Only this handoff changed, with no scratch files or new reports.
+Skills used: `chaos-redux-events`, `chaos-redux-subagents`, `chaos-redux-native-raids`.
+No skill was created or modified, no constants or cleanup logic were changed, and no simplification was made.

@@ -13,6 +13,36 @@ Warning scheduling consumes its temporary duration when queuing `chaosx.nr32.82`
 Nested helpers do not read any of these names after their terminal use without a fresh initializer; loop iterations recompute their scratch values.
 No manual temporary-clear effect exists.
 
+## Country split under a foreign event ROOT
+
+`missiles_preflight_country_split` runs on the actual donor COUNTRY, including an ordinary claimant entered by the government's `chaosx.nr21.20` callback.
+It requires an initialized programme, a normal operational-reserve record and no active split transaction, and returns a normal donor-owned `missiles_split_preflight_result` with rejected as the default.
+On acceptance it aborts and cleans that donor's live operation, snapshots its reserve and programme settings, allocates a global sequence number, and saves that donor as regular `missiles_civil_war_parent`.
+Only its controlled registered non-scuttled sites receive the split receipt, and their capacity accumulates on the saved donor rather than event ROOT.
+There are no new inputs, temporary outputs or tuning defaults.
+
+`missiles_finalize_civil_war_split_child`, reached through `missiles_split_program_after_civil_war`, runs on the native child COUNTRY with that regular parent target still available and accepted.
+Its state iterator uses `PREV` for the child registry, received capacity and owner/controller pointers, while the saved parent provides the matching receipt and reserve snapshot.
+It writes the child share, debits the donor and calls `missiles_finalize_civil_war_split_parent` in the saved donor's scope.
+That parent finalizer uses its own iterator's `PREV` for receipt matching, its retained site registry and site owner/controller pointers, independently of the original ROOT or child callback ROOT.
+The normal finalized receipt guards repeat parent settlement.
+The existing reserve-share percentage, rounding, readiness loss and command-control loss remain the tuning authority in `032_missiles_constants.txt`.
+
+`missiles_abort_operation` and `missiles_cleanup_operation` already act on the current COUNTRY.
+Reserve refunds read its normal escrow and cost, payload release returns its held nuclear or biological warhead, and operation-site cleanup compares each STATE receipt with its enclosing country's active operation ID through `PREV`.
+Cleanup clears that country's operation arrays and private fields, removes its four preparation missions and refreshes its network, custody and programme phase.
+Chemical agent stays in its existing CBRN storage until release, and split preflight introduces no payload debit.
+The regular parent target expires with the originating chain and has no manual-clear operation, while normal finalized country receipts remain as idempotence history and pending state markers clear on settlement.
+
+Example: enter the recorded claimant COUNTRY, call `missiles_preflight_country_split = yes`, run the owning native split, then call `missiles_split_program_after_civil_war = yes` in its child callback.
+The caller must retain the same effect chain and exact source target through the split.
+No new helper or call-site migration is required.
+
+Validation: `.tools/test_event021_claimant_missile_scope.py` executes the current preflight, abort/refund, payload release, operation cleanup, split allocation and parent settlement source with distinct country/state/global storage and conservative helper-temporary lifetimes.
+Its native stockpile and mission operations are explicit model boundaries and its arithmetic residual is source-model evidence only.
+The region lookup `missiles_assign_site_strategic_region` binds the actual controller explicitly, as described in [missile region lookup](032_missiles_effects.md).
+The Event021 adapter has no demonstrated missile-specific rollback after accepted preflight without a child callback, which stays a parent follow-up item with exact evidence in the [Event021 claimant missile scope repair handoff](../../docs/plans/021_random_civil_war_plans/subagent_handoffs/event021_claimant_missile_scope_repair_2026-10-07.md).
+
 ## Physical custody and site-loss transactions
 
 `missiles_rebalance_site_custody` runs in the programme COUNTRY and projects its available `missiles_operational_reserve` onto its controlled registered sites.

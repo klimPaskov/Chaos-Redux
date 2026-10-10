@@ -33,7 +33,7 @@ See [Chemical payload reservations](../../systems/cbrn_warfare/chemical_payload_
 
 ## Evolutions
 
-The [site-work transaction contract](systems/site_work_transactions.md) documents survey payment and progress refunds, native quantity acknowledgements, and the shared human/AI loyal-garrison recovery goal.
+The [site-work transaction contract](systems/site_work_transactions.md) documents complete frozen survey selection, payment and progress refunds, native quantity acknowledgements, and the shared human/AI loyal-garrison recovery goal.
 
 The five separate evolution tracks are Saturation Arsenals, Unreliable Guidance, Special Warheads, Rogue Launch Commands, and Automatic Retaliation. Each track has its own eligibility gate, pacing entry, log row, AI factors, adoption state, interaction hooks, and disabled-safe behavior.
 

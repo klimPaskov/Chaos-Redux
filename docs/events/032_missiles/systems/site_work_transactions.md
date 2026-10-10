@@ -1,6 +1,9 @@
 # Launch-site work and loyal recovery
 
 Site surveys own a country payment receipt for one frozen state, distinct from launch-operation escrow and other site projects.
+One programme-wide order freezes every eligible owned state and an aligned score for each entry.
+The best state is selected before payment, and its pool generation, exact state and score remain attached to the receipt throughout the mission.
+Later acquisitions cannot enter that pool, and loss of the chosen state cancels the work instead of silently choosing a replacement.
 The receipt records its generation, payer, exact state ID and pointer, start date, purchased duration, three quoted amounts and three observed native payments.
 Manpower, support equipment and fuel use one centralized quote and the shared native cost predicates and payment helpers.
 The native decision, displayed resource colours and payment entry use inclusive affordability checks.
@@ -59,15 +62,19 @@ Its whole-transaction refund API does not express a progress fraction, so the su
 The native resource readers are `manpower_k`, `fuel_k` and `num_equipment@support_equipment`; thousand-unit readers are converted before measuring deltas.
 All cross-helper temporary outputs are created by their caller before use.
 
-`missiles_start_paid_survey` runs in COUNTRY decision scope with FROM as the native selected STATE.
+`missiles_start_paid_survey` runs in COUNTRY decision scope without a native FROM target.
 It returns normal `missiles_survey_start_result`, defaults to rejected and publishes the timer only after complete observed payment.
+`missiles_freeze_survey_candidates` records the complete owned, controlled, geographically suitable unregistered-state pool for a fresh affordable order only.
+`missiles_select_frozen_survey_candidate` initializes its own loop break and caller-owned scorer output for every entry, records aligned scores and copies the selected state, state ID and score into the survey receipt fields.
+`missiles_clear_closed_survey_candidates` clears only a retired project's pool; a quarantined paid holding keeps its exact selection identity.
+The funding receipt also requires matching pool/payment generations and selected-state membership in the frozen pool.
 `missiles_refund_cancelled_survey` runs in the actual payer COUNTRY, needs no surviving wallet or state ownership, and defaults to no credit without current payment proof.
 `missiles_close_survey_payment_with_refund` consumes caller-created temporary `missiles_survey_refund_ratio`; it closes a current receipt before creating fixed pending credits.
 `missiles_settle_pending_survey_refund` runs in its recorded payer and retries three existing balances only, without repricing or scheduling another observation.
 `missiles_measure_survey_resource`, `missiles_pay_survey_component` and `missiles_credit_survey_component` use caller-owned native resource-kind/amount and observation outputs; invalid changes retain quarantine rather than manufacturing success.
 `missiles_floor_survey_refund_amount` accepts and returns caller-owned `missiles_survey_credit_amount`, defaulting negative values to zero.
 
-Example: the state-targeted survey decision calls `missiles_begin_survey`, then activates the existing mission only when the paid start marked work in progress.
+Example: the ordinary country survey decision calls `missiles_begin_survey`, then activates the existing mission only when the paid start marked work in progress.
 Native cancellation and timeout call `missiles_cancel_site_survey`, which preserves the settlement before clearing active work.
 Country removal calls the same settlement before removing native missions.
 
@@ -83,9 +90,14 @@ They do not establish engine reader visibility, producer/variant restoration, mi
 The survey registration consumer is an explicit boundary in this transaction suite; physical construction remains covered by its own site implementation and acceptance work.
 Native decision-list layout remains a separate visual check.
 
-The survey's complete candidate-pool and highest-score selection requirement remains accepted work requiring reconciliation with the existing state-targeted entry.
-This document describes the paid transaction and current selected-state registration and does not promote that selection gap to an approved simplification.
+The shared site scorer accepts the first valid candidate even when its score is below the numeric baseline.
+Exact score ties choose the lower state ID, independent of traversal order.
+Every selection clears the fresh winner flag and normal winner tuple; a lingering regular event target cannot authorize a later empty selection.
+Primary-site selection prefers a valid upgradeable Event 32 site before considering the complete unregistered pool, rejects wasteland geography and defers an empty result rather than bypassing geometry through the capital.
+The scoring coefficients remain centralized and unchanged.
+Survey willingness is a country action score of 8, doubled for a major; core and capital preferences are evaluated by the state scorer rather than repeated targeted decision rows.
+These deterministic ranks and willingness scores are not normalized choice probabilities.
 Secondary construction's separate cancellation contract and physical unconventional payload custody remain separate accepted work.
 
-Future work should preserve these payer/receipt interfaces while completing candidate selection and owner-specific payload custody.
+Future work should preserve these payer/receipt interfaces while completing owner-specific payload custody and remaining site-geography interactions.
 It must retain unacknowledged balances and must not add a periodic country/world refund or mission-grant scan.

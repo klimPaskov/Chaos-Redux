@@ -84,11 +84,15 @@ class MissileStateScopeContract(unittest.TestCase):
         ):
             if helper == 'missiles_begin_survey':
                 self.assertEqual(OPERATIONS[helper], [('missiles_start_paid_survey', 'yes')])
+                # The programme-wide order freezes its pool and winner before payment;
+                # the pointer comes from the frozen winner, never from FROM.
                 selected = SURVEY_TRIGGERS['missiles_survey_selected_project_can_start']
-                self.assertEqual(value(selected, 'FROM'), [(predicate, 'yes')])
-                guarded = value(SURVEY['missiles_start_paid_survey'], 'if')
-                self.assertIn(('missiles_survey_selected_project_can_start', 'yes'), value(guarded, 'limit'))
-                self.assertIn(('set_variable', [(pointer, 'FROM')]), guarded)
+                self.assertEqual(value(value(selected, 'var:missiles_survey_candidate_state'), predicate), 'yes')
+                pool = SURVEY_TRIGGERS['missiles_survey_has_eligible_candidate']
+                self.assertEqual(value(value(pool, 'any_owned_state'), predicate), 'yes')
+                self.assertEqual(value(value(SURVEY['missiles_freeze_survey_candidates'], 'every_owned_state'), 'limit'), [(predicate, 'yes')])
+                guarded = [v for k, v in SURVEY['missiles_start_paid_survey'] if k == 'if' and ('missiles_survey_selected_project_can_start', 'yes') in value(v, 'limit')][0]
+                self.assertIn(('set_variable', [(pointer, 'missiles_survey_candidate_state')]), guarded)
                 continue
             guarded = value(OPERATIONS[helper], 'if')
             self.assertEqual(value(value(guarded, 'limit'), 'FROM'), [(predicate, 'yes')])

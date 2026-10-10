@@ -144,7 +144,7 @@ Saturation is a strike profile, not a target profile; it is defined below.
 
 ## Strike profiles
 
-The implemented costs, preparation days, readiness costs and damage values live in `missiles_cost`, `missiles_tuning`, `missiles_program_value` and `missiles_operation_damage`.
+The implemented decision costs live in the `@m32_*` constants at the top of `common/decisions/032_missiles_decisions.txt`, survey and recovery quotes in `missiles_survey_payment` and the recovery constants, and preparation days, readiness costs and damage values in `missiles_tuning`, `missiles_program_value` and `missiles_operation_damage`.
 The suggested ranges in this part are the design envelope those constants must stay inside, not a second source of numbers.
 
 ### Precision strike
