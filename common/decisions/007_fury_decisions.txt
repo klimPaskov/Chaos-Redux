@@ -140,25 +140,25 @@ fury_war_office_category = {
 		complete_effect = {
 			custom_effect_tooltip = fury_register_occupation_settlement_tt
 			hidden_effect = {
-			# Existing-owner caller output storage.
-			set_temp_variable = { black_friday_fury_payment_success = constant:universal_cost_framework.zero }
-			fury_decision_pay_settlement_cost = yes
-			if = {
-				limit = { black_friday_fury_payment_succeeded = yes }
-				add_ideas = fury_compliance_drive
-				random_controlled_state = {
-					limit = {
-						is_owned_by = ROOT
-						is_controlled_by = ROOT
-						NOT = { is_core_of = ROOT }
-						NOT = { has_state_flag = fury_settlement_registered }
+				# Existing-owner caller output storage.
+				set_temp_variable = { black_friday_fury_payment_success = constant:universal_cost_framework.zero }
+				fury_decision_pay_settlement_cost = yes
+				if = {
+					limit = { black_friday_fury_payment_succeeded = yes }
+					add_ideas = fury_compliance_drive
+					random_controlled_state = {
+						limit = {
+							is_owned_by = ROOT
+							is_controlled_by = ROOT
+							NOT = { is_core_of = ROOT }
+							NOT = { has_state_flag = fury_settlement_registered }
+						}
+						set_state_flag = fury_settlement_registered
+						add_compliance = constant:fury_balance.settlement_compliance_gain
 					}
-					set_state_flag = fury_settlement_registered
-					add_compliance = constant:fury_balance.settlement_compliance_gain
+					fury_update_occupation_pressure = yes
 				}
-				fury_update_occupation_pressure = yes
 			}
-		}
 		}
 		ai_will_do = {
 			base = @fury_decision_ai_medium
