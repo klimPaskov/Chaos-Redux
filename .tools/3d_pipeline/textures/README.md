@@ -30,7 +30,7 @@ For an existing PDX normal, `packed_normal_cleanup` copies occupied G into R, pr
 
 Specular maps use R=0, G=specular strength, and A=255 minus provider roughness; the explicit steel mask sets B to zero outside steel and to `max(200, provider metalness)` inside steel, or 200 inside steel when no metalness map exists.
 
-The class recipe ranges are cloth G 40–90/A 60–100, skin G 110–160/A 120–160, leather G 120–160 with provider-derived alpha, steel G 180–255/A 150–180, stone G 60–90/A 50–70, and fur G 20–40/A 40–70.
+The class recipe ranges are cloth G 40–90/A 60–100, skin G 110–160/A 120–160, leather G 120–160 with provider-derived alpha, steel G 180–255/A 150–180, stone G 60–90/A 50–70, and fur G 20–40/A 40–70. Two vanilla-calibrated classes, `matte_cloth` (G 40–90/A 25–50) and `dry_skin` (G 80–130/A 30–70), cover unit fabric and dry flesh: the installed vanilla infantry specular alpha averages 44 (p95 76) and gloss of 114–122 read as plastic or wet chrome in the 2026-10 footage review, so the wet `skin` range is reserved for explicitly wet flesh.
 
 The specular gate rejects constant G, mean B above 5 outside the explicit steel mask, steel B below 200, and mean A above 110 on nonwet classes; the decoded BC3 check allows up to five values of blue-channel quantization error, and skin and steel may exceed 110 only inside their explicit masks and within their listed alpha ranges.
 

@@ -22,6 +22,11 @@ MATERIAL_RECIPES = {
     "steel": {"green": (180, 255), "alpha": (150, 180)},
     "stone": {"green": (60, 90), "alpha": (50, 70)},
     "fur": {"green": (20, 40), "alpha": (40, 70)},
+    # Vanilla-calibrated low-gloss classes. The installed vanilla infantry specular alpha averages 44 (p95 76); the
+    # 2026-10 footage review measured A 114-122 reading as plastic or wet chrome on dry cloth and skin, so unit
+    # fabric and dry flesh stay inside the vanilla alpha band instead of the wet-skin range above.
+    "matte_cloth": {"green": (40, 90), "alpha": (25, 50)},
+    "dry_skin": {"green": (80, 130), "alpha": (30, 70)},
 }
 
 NORMAL_FLAT_RGBA = (128, 128, 0, 128)
