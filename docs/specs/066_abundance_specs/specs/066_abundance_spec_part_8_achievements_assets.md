@@ -192,8 +192,8 @@ The final runtime paths must not point into the temporary `docs/assets/066_abund
 
 Before production, inspect the matching canonical reference families:
 
-- report event art: `.agents/skills/chaos-redux-event-assets/assets/gfx_references/event_art/report/`
-- achievements: `.agents/skills/chaos-redux-event-assets/assets/gfx_references/icons/achievements/`
+- report event art: `.claude/skills/chaos-redux-event-assets/assets/gfx_references/event_art/report/`
+- achievements: `.claude/skills/chaos-redux-event-assets/assets/gfx_references/icons/achievements/`
 
 The event image should follow the actual report-event crop, contrast, border, and consumer pattern found in the installed game or established Chaos Redux files.
 The achievement icons should follow the current triplet naming, canvas, state, and overlay pattern.

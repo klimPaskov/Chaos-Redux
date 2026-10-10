@@ -1,10 +1,10 @@
 # Event 066 AI and Probability Audit Prompt
 
-Follow the [current probability audit-patch-compare contract](../../../../.agents/skills/chaos-redux-subagents/SKILL.md#active-small-patch-agents).
+Follow the [current probability audit-patch-compare contract](../../../../.claude/skills/chaos-redux-subagents/SKILL.md#active-small-patch-agents).
 Before an owner changes weights, preserve immutable pre-edit source bytes at a real path with SHA-256 and the exact named scenario fixture; compare that source with the owner’s final source under the same scenarios.
 Never substitute the current file for both sides or treat an analysis artifact as the before-source file.
 
-Use `chaosx_ai_probability_auditor` with `fork_turns="none"`.
+Use `chaosx_ai_probability_auditor` with no inherited parent context.
 This is a read-only audit.
 Do not patch source or choose the intended balance target.
 

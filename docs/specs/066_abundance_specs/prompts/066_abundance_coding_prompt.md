@@ -45,7 +45,7 @@ Persist pending choices, cards, option order, targets, evolution state, novelty 
 
 ## Provider contract
 
-Use `prompts/066_abundance_provider_contract_prompt.md` and route the reusable architecture to `chaosx_scripted_system_architect` with `fork_turns="none"`.
+Use `prompts/066_abundance_provider_contract_prompt.md` and route the reusable architecture to `chaosx_scripted_system_architect` with no inherited parent context.
 
 Do not create a small central candidate list.
 Build an idempotent registry populated by core providers, dynamic family providers, DLC providers, country packages, event systems, and crisis owners.
@@ -182,7 +182,7 @@ Never edit the three CSV exports directly.
 
 ## Required final passes
 
-After meaningful implementation, use `chaosx_improvement_loop_planner` with `fork_turns="none"`.
+After meaningful implementation, use `chaosx_improvement_loop_planner` with no inherited parent context.
 Fold an accepted addendum into the source specs or record a closure handoff.
 Do not spawn another pass while an earlier addendum remains unresolved.
 

@@ -1,6 +1,6 @@
 # Event 066 Abundance Spreadsheet Alignment Prompt
 
-Use `chaosx_spreadsheet_doc_worker` with `fork_turns="none"` only after the Event 66 implementation and final player-facing localisation are available.
+Use `chaosx_spreadsheet_doc_worker` with no inherited parent context only after the Event 66 implementation and final player-facing localisation are available.
 
 ## Required reading
 

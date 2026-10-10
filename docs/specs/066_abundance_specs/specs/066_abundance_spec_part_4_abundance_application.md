@@ -194,6 +194,14 @@ It does not bypass hidden evidence or write only the displayed total.
 A provider touching food security, reserves, relief access, displacement, reception, or border pressure uses the famine or migration owner interfaces.
 It must not duplicate population transfers, deaths, trapped populations, or relief ledgers.
 
+The famine owner exposes two values, and each has one defined abundance operation:
+
+- **Food Reserves**: every owned state's reserve ledger fills to its current capacity, which lets a starving country recover through the owner's ordinary one-stage-at-a-time recovery windows
+- **Hunger** (harmful): the owner empties the reserves of the country's most food-vulnerable states and commits acute shortage through the same scenario-pressure seam the Hunger Lines use, after which the stage moves under normal famine rules
+
+Food Security and Relief Access are derived values and are not offered as cards, because setting them directly would bypass the stage hold rules.
+Migration exposes no abundance card at baseline; reception capacity and displacement come from real cohorts, so an abundant number would have nothing to move.
+
 ### Event-owned mechanics
 
 A provider attached to another event changes the exposed value without marking the owner event as fired.

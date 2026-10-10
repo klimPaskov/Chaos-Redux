@@ -40,8 +40,8 @@ Repository inspection can add more rows.
 | Country-specific military readiness or command values | country | gauge or stage | country package owner | Public meaning, route validity, cap | owner provider |
 | Event-owned project resources | country and project | accumulator or stage | event owner | Owner event active, no fired-state side effect, safe reveal | owner provider |
 | Crisis pressure | country or states | harmful gauge | crisis owner | Active crisis or explicit activation permission, recovery path | owner provider |
-| Famine values | country or state system | gauge, stock, or access | famine owner | Food Security, reserves, relief access, no population double count | owner adapter |
-| Migration values | country or route system | gauge or capacity | migration owner | Displacement, reception, border policy semantics, no transfer duplication | owner adapter |
+| Famine values | country or state system | stock or harmful pressure | famine owner | Food Reserves and Hunger cards only; derived Food Security and Relief Access are not cards; no population double count | owner adapter |
+| Migration values | country or route system | none at baseline | migration owner | No card: displacement and reception come from real cohorts; no transfer duplication | not offered |
 | Air Cleanliness contributions | country contribution to global ledger | source contribution | Air Cleanliness owner | Country attribution, source ledger, global total protection | owner adapter only |
 | Condemnation values | country responsibility ledger | source contribution or gauge | condemnation owner | Public evidence, hidden evidence, source categories | owner adapter only |
 | Death-linked burdens | country or state | owner-defined pressure | Deaths or event owner | Never create duplicate death records, public semantic value needed | owner adapter or exclusion |

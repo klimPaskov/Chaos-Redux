@@ -5,7 +5,7 @@
 The user-brief coverage matrix records reported user requirements; the decision log records planner choices.
 Provider architecture, deduplication, pending-choice handling, Chaos, and achievements require acceptance independently of that coverage label.
 Acceptance remains `unresolved` where the original user brief or attributable parent decision cannot be recovered; preserve those claims for review under [AGENTS.md](../../../AGENTS.md#specs-and-plans).
-The [design record](quality/066_abundance_design_decision_log.md) and numbered specifications are the design map; [current event guidance](../../../.agents/skills/chaos-redux-events/SKILL.md) and [subagent routing](../../../.agents/skills/chaos-redux-subagents/SKILL.md) own implementation workflow.
+The [design record](quality/066_abundance_design_decision_log.md) and numbered specifications are the design map; [current event guidance](../../../.claude/skills/chaos-redux-events/SKILL.md) and [subagent routing](../../../.claude/skills/chaos-redux-subagents/SKILL.md) own implementation workflow.
 Original source-reading, repository-baseline, tooling-failure, and manual-review reports are historical planning evidence, not current source verification, service-health findings, or completed independent audits.
 The parent’s 2026-10-07 allocation sets Sudden Abundance to cluster ID `15` after workbook/runtime occupancy verification; see the [shared identifier registry](../shared_identifier_registry.md).
 The user authorized unused identifier assignments; this numeric allocation does not approve the broader design.
@@ -71,3 +71,10 @@ The authoritative workbook was not supplied, so this pack records the required w
 
 This package is a source specification and implementation handoff.
 It does not claim that Event 66 has been implemented, tested in HOI4, added to the authoritative workbook, or validated through the HOI4 MCP tools.
+
+## Changelog
+
+### 2026-10-10 spec audit
+
+- The famine provider now has two defined cards, Food Reserves and Hunger, with concrete owner operations that respect famine's one-stage-at-a-time rules. Food Security and Relief Access are not cards because they are derived values, and migration exposes no card because its values come from real cohorts. The earlier wording allowed abundance to jump a famine stage directly, which the current famine owner forbids.
+- Subagent instructions use the Claude-first wording.

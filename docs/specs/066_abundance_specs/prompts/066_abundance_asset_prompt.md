@@ -1,11 +1,11 @@
 # Event 066 Abundance Asset Prompt
 
-The [asset skill](../../../../.agents/skills/chaos-redux-event-assets/SKILL.md) owns reference families, native ImageGen source evidence, consumer-dependent alpha, processing, and DDS validation.
+The [asset skill](../../../../.claude/skills/chaos-redux-event-assets/SKILL.md) owns reference families, native ImageGen source evidence, consumer-dependent alpha, processing, and DDS validation.
 For alpha-backed families request real transparency in the first ImageGen call and preserve it through processing; opaque scene sources follow the final consumer’s report or panel treatment.
-For achievements use the skill’s [single-subject, deterministic-state pipeline](../../../../.agents/skills/chaos-redux-event-assets/SKILL.md#achievement-icons), including the completed, grey, and not-eligible source layers and exact supplied templates.
+For achievements use the skill’s [single-subject, deterministic-state pipeline](../../../../.claude/skills/chaos-redux-event-assets/SKILL.md#achievement-icons), including the completed, grey, and not-eligible source layers and exact supplied templates.
 
 Create the final visual asset package for Event 66 Abundance under the rules in `chaos-redux-event-assets`.
-Use the project subagents with `fork_turns="none"` and bounded prompts.
+Use the project subagents with no inherited parent context and bounded prompts.
 Use `chaosx_generated_event_art` for the report image and `chaosx_icon_artist` for achievement icons.
 The required visual scope is one report image and three achievement icon families.
 
@@ -22,8 +22,8 @@ Read:
 Inspect the exact installed game and Chaos Redux consumer before final processing.
 Inspect these canonical reference families first:
 
-- `.agents/skills/chaos-redux-event-assets/assets/gfx_references/event_art/report/`
-- `.agents/skills/chaos-redux-event-assets/assets/gfx_references/icons/achievements/`
+- `.claude/skills/chaos-redux-event-assets/assets/gfx_references/event_art/report/`
+- `.claude/skills/chaos-redux-event-assets/assets/gfx_references/icons/achievements/`
 
 Review each folder's contact sheet and provenance catalog.
 Report a genuinely missing reference family or contact sheet to the parent for `chaosx_skill_maintainer`; keep shared-library edits outside this asset assignment.

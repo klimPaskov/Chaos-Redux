@@ -43,7 +43,7 @@ Never edit catalog CSV exports directly.
 
 Use HOI4 MCP event inspect, render, lint, and compare.
 Run the named probability baseline, tuning, and `hoi4.probability_compare` cycle.
-Use the correct project subagents with `fork_turns="none"` for architecture, assets, localisation, probability, completion, and spreadsheet work.
+Use the correct project subagents with no inherited parent context for architecture, assets, localisation, probability, completion, and spreadsheet work.
 Run and resolve `chaosx_improvement_loop_planner` after a meaningful implementation tranche.
 
 Keep iterating until `specs/066_abundance_spec_part_9_acceptance_criteria.md` passes in full.
