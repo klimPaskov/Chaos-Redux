@@ -172,10 +172,13 @@ class OccupationAccountingTests(unittest.TestCase):
         self.assertLess(shares[0], ceiling)
 
     def test_chronology_is_source_gated(self):
-        self.assertIn('date > 1937.7.6', TRIGGERS)
-        self.assertIn('date > 1941.6.21', TRIGGERS)
-        self.assertIn('camp_admin_mandate = 3', TRIGGERS)
+        # The campaign opens through war and mandate, never a calendar date; day counts only pace its stages.
+        self.assertIsNone(re.search(r'\bdate\s*[<>]', TRIGGERS))
+        self.assertIn('camp_admin_jap_china_war = yes', TRIGGERS)
+        self.assertIn('camp_admin_ger_war_of_conquest = yes', TRIGGERS)
+        self.assertIn('camp_admin_mandate = constant:camp_admin_mandate.radical', TRIGGERS)
         self.assertIn('camp_admin_country_regime_valid = yes', TRIGGERS)
+        self.assertIn('camp_occ_campaign_opened', TRIGGERS)
 
     def test_million_scale_is_finite_not_quota(self):
         cohorts = [Cohort(10000, 9000, owner='JAP') for _ in range(10)]

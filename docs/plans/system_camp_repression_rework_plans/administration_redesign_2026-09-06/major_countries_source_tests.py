@@ -28,6 +28,12 @@ class CountryRuntime(Runtime):
         for cat,o,b in parse((ROOT/'common/script_constants/camp_administration_ui_constants.txt').read_text()):
             for k,o,v in b:
                 if k!='schema': self.constants[cat+'.'+k]=float(v)
+        # National gates read war and campaign state, not calendar dates. The harness declares
+        # each war condition through the country's single war field.
+        self.triggers['camp_admin_jap_china_war']=[('has_war','=','yes')]
+        self.triggers['camp_admin_ger_war_of_conquest']=[('has_war','=','yes')]
+        self.triggers['camp_admin_country_major_war']=[('has_war','=','yes')]
+        self.triggers['camp_admin_country_postwar_reckoning']=[('NOT','=',[('has_war','=','yes')])]
         self.awards=[]
 
     def start_program(self, country, program):
@@ -136,11 +142,11 @@ def tests():
     results.append('Japanese transport selects an industrial labor host rather than Pingfang; completed development grows only bounded project capacity')
 
     r,c=new_country(); a=r.state('88'); prime_existing_custody(r,'88',4)
-    for date,expect in [((1943,5,29),False),((1943,5,30),True)]:
-        r.date=datetime.date(*date); assert r.cond([('camp_admin_country_mengele_historical_gate','=','yes')],'GER')==expect
-    c['leader_ideology']='conservatism'; assert not r.cond([('camp_admin_country_mengele_historical_gate','=','yes')],'GER')
-    c['leader_ideology']='nazism'; a['controller']='OTHER'; assert not r.cond([('camp_admin_country_mengele_historical_gate','=','yes')],'GER')
-    results.append('Mengele cutoff, Nazi authority and actual Auschwitz control gate')
+    assert r.cond([('camp_admin_country_mengele_site_gate','=','yes')],'GER')
+    c['leader_ideology']='conservatism'; assert not r.cond([('camp_admin_country_mengele_site_gate','=','yes')],'GER')
+    c['leader_ideology']='nazism'; a['controller']='OTHER'; assert not r.cond([('camp_admin_country_mengele_site_gate','=','yes')],'GER')
+    a['controller']='GER'; a['flags'].add('camp_admin_closed'); assert not r.cond([('camp_admin_country_mengele_site_gate','=','yes')],'GER')
+    results.append('Mengele site gate: Nazi authority and an operating state-88 site under German control, with no calendar date')
 
     r,c=new_country(); a=r.state('A'); prime_existing_custody(r,'A',20); a['camp_admin_support_ratio']=1
     c['flags'].add('camp_admin_country_programs_authorized')
@@ -190,7 +196,7 @@ def tests():
     results.append('Soviet wartime industry pauses for an industry award and ignores an unrelated engineers award')
 
     r,c=new_country('SOV',(1944,2,1)); a=r.state('A','SOV'); a['gulag_labor_camp_network']=2; prime_existing_custody(r,'A',20); a['camp_admin_support_ratio']=1
-    c['flags'].update({'camp_admin_country_programs_authorized','camp_admin_country_oversight_authorized'})
+    c['flags'].update({'camp_admin_country_programs_authorized','camp_admin_country_oversight_authorized','camp_admin_done_sov_design_bureaux'})
     r.start_program('SOV','sov_engineer_release')
     c.update(camp_admin_institution_progress=6,camp_admin_budget_support_remaining=100,camp_admin_budget_pp_remaining=20)
     population=a['state_population_k']; r.run('camp_admin_country_tick_institution','SOV')

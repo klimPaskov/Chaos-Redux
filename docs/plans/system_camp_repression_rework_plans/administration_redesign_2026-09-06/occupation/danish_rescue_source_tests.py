@@ -1,10 +1,13 @@
-"""Danish October 1943 rescue through the production occupation pass.
+"""Danish rescue once Denmark's own government falls, through the production occupation pass.
 
 Runs the real camp_occ_monthly_country, registration, campaign, rescue and
 exact movement bodies with the existing joined harness. Engine primitives
 (population credit/debit, Deaths projection) are the harness mocks; the
-controller series is declared per scenario. Not HOI4 execution.
-Run from the mod root: python <this file>.
+controller series is declared per scenario. Danish states are shielded while
+Denmark's government stands (camp_occ_danish_government_shields); the harness
+ends that government on DEN_FALLS to stage the autumn 1943 collapse of Danish
+cooperation. The gate itself is the production trigger, not the date.
+Not HOI4 execution. Run from the mod root: python <this file>.
 """
 from pathlib import Path
 from decimal import Decimal as D
@@ -38,15 +41,27 @@ def transform(block):
     return out
 
 
+# Harness timeline only: the day Denmark's government ends. The shield, the
+# rescue window and the deportation order all follow from that state change.
+DEN_FALLS = datetime.date(1943, 10, 1)
+
+
 class RescueRuntime(JoinedRuntime):
     def __init__(self):
         super().__init__()
+        self.den_falls = DEN_FALLS
         self.triggers = {name: transform(body) for name, body in self.triggers.items()}
         # External shared Deaths reason enum; its value is immaterial to conservation.
         self.constants.setdefault('chaos_meter_deaths_reason.occupation_repression', 1)
 
     def cond(self, block, scope, previous=None):
         return super().cond(transform(block), scope, previous)
+
+    def run(self, name, scope, params=None, prev=None):
+        den = self.scopes.get('DEN')
+        if den is not None and self.den_falls is not None and self.date >= self.den_falls:
+            den['has_capitulated'] = True
+        return super().run(name, scope, params, prev)
 
     def target(self, x, s, prev):
         if x == 'capital_scope':
@@ -146,7 +161,7 @@ def tests():
     results['pre_change_no_deferral_no_refuge'] = {'deaths': control_deaths, 'escaped': 0, 'living_at_end': control_living}
     cases.append('pre-change production control reproduces the rejected no-rescue source model (%d vs %d deaths)' % (control_deaths, envelope_deaths))
 
-    # Current rule without a refuge: no Danish deaths before the October 1943 order.
+    # Current rule without a refuge: the Danish government shields its cohorts until it falls.
     no_refuge = world(sweden='absent')
     run_months(no_refuge, end=(1943, 9))
     assert totals(no_refuge)[0] == 0 and no_refuge.logged == 0
@@ -154,9 +169,9 @@ def tests():
     nr_deaths, nr_escaped, nr_living = totals(no_refuge)
     assert nr_escaped == 0 and not no_refuge.scopes['GER']['arrays'].get('camp_admin_history_kinds', [])
     results['deferral_without_refuge'] = {'deaths': nr_deaths, 'escaped': 0, 'living_at_end': nr_living}
-    cases.append('Danish cohorts take no campaign deaths before October 1943; without a refuge nothing moves or is recorded')
+    cases.append('Danish cohorts take no campaign deaths while the Danish government stands; without a refuge nothing moves or is recorded')
 
-    # Current rule with neutral Sweden: one rescue per Danish home state.
+    # Current rule with neutral Sweden: one rescue per Danish home state once the shield ends.
     r = world()
     run_months(r, end=(1943, 9))
     assert totals(r) == (0, 0, allocated)
@@ -195,7 +210,7 @@ def tests():
     assert kinds.count(r.constants['camp_admin_history_kind.escape']) == len(DEN_STATES)
     r.run('camp_occ_try_danish_rescue', 'GER')
     assert round(ger['camp_occ_total_escaped_k'] * 1000) == moved and r.debits - debits == len(DEN_STATES)
-    cases.append('the October 1943 rescue moves each Danish home row once to Skane: one measured debit and credit per row, GER authority, origin and root kept, arrival retired as released, no death, two Records entries, repeat does nothing')
+    cases.append('the rescue after the Danish government falls moves each Danish home row once to Skane: one measured debit and credit per row, GER authority, origin and root kept, arrival retired as released, no death, two Records entries, repeat does nothing')
 
     run_months(r, start=(1943, 10))
     rescue_deaths, rescue_escaped, rescue_living = totals(r)
@@ -217,7 +232,8 @@ def tests():
     assert fallback.scopes[38]['state_population_k'] > 1500
     cases.append('with Skane under German control the escape reaches the Swedish capital instead')
 
-    # A Danish cohort first exposed after the order flees in its first exposed month.
+    # A Danish cohort first under German authority after the government fell must also
+    # wait until German authority over its state has consolidated, then flees.
     late = world()
     for state_id in DEN_STATES:
         late.scopes[state_id]['controller'] = 'DEN'
@@ -225,9 +241,12 @@ def tests():
     for state_id in DEN_STATES:
         late.scopes[state_id]['controller'] = 'GER'
     run_months(late, start=(1944, 3), end=(1944, 3))
+    # German authority has held the states for under 45 days: still deferred.
+    assert late.scopes['GER'].get('camp_occ_total_escaped_k', 0) == 0
+    run_months(late, start=(1944, 4), end=(1944, 5))
     assert late.scopes['GER']['camp_occ_total_escaped_k'] > 0
     assert all('camp_occ_danish_rescue_done' in late.scopes[s]['flags'] for s in DEN_STATES)
-    cases.append('a Danish cohort first under German control in 1944 escapes in its first exposed month')
+    cases.append('a Danish cohort first under German control in 1944 stays deferred until German authority has held its state for 45 days, then escapes')
     return cases, results, allocated
 
 

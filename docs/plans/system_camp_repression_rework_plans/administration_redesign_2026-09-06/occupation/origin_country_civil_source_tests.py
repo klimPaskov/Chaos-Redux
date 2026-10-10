@@ -62,7 +62,8 @@ def setup(tag="GER", programme="ger_inspectorate", held=20):
              camp_admin_budget_pp_remaining=20)
     c["flags"].add("camp_admin_country_programs_authorized")
     if tag == "SOV":
-        c["flags"].add("camp_admin_country_oversight_authorized")
+        # The engineer release follows completed design bureaux and a review, not a calendar date.
+        c["flags"].update({"camp_admin_country_oversight_authorized", "camp_admin_done_sov_design_bureaux"})
     a = r.state("A", tag, population=1000, buildings=4)
     if tag == "SOV":
         a["gulag_labor_camp_network"] = 2

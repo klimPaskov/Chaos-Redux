@@ -63,7 +63,7 @@ def legacy_mengele_occupied_owner_case():
         ('closed', lambda r, c, s: s['flags'].add('camp_admin_closed')),
         ('captured', lambda r, c, s: (r.country('USA'), s.update(controller='USA'))),
         ('unfunded', lambda r, c, s: (s.update(camp_admin_support_ratio=0), c.update(camp_admin_budget=1))),
-        ('before_historical_gate', lambda r, c, s: setattr(r, 'date', date(1943, 5, 29))),
+        ('program_inactive', lambda r, c, s: c['flags'].discard('test_mengele_active')),
         ('lower_physical_floor', lambda r, c, s: s.update(state_population_k=r.constants['camp_admin_value.minimum_population_k'])),
     ]:
         runtime, country, site, _ = experiment_site()
@@ -169,10 +169,10 @@ def run_cases():
     results.append({'case': 'jap_subject_authority_lost', 'additional_people': 0})
 
     runtime, country, site, state_id = experiment_site(tag='JAP')
-    runtime.date = date(1938, 12, 31)
+    country['flags'].discard('japan_ishii_program_active')
     runtime.run('camp_admin_country_apply_institutional_site_mortality', state_id)
     assert runtime.debits == 0 and runtime.logged == 0
-    results.append({'case': 'jap_before_1939', 'additional_people': 0})
+    results.append({'case': 'jap_ishii_program_inactive', 'additional_people': 0})
 
     for label, change in [
         ('support_below_minimum', lambda r, c, s: s.update(camp_admin_support_ratio=.74)),
@@ -228,10 +228,10 @@ def run_cases():
     results.append({'case': 'population_floor', 'additional_people': 0})
 
     runtime, country, site, state_id = experiment_site()
-    runtime.date = date(1943, 5, 29)
+    country['flags'].discard('test_mengele_active')
     runtime.run('camp_admin_country_apply_institutional_site_mortality', state_id)
     assert runtime.debits == 0
-    results.append({'case': 'ger_before_1943_05_30', 'additional_people': 0})
+    results.append({'case': 'ger_mengele_program_inactive', 'additional_people': 0})
 
     for tag, year in [('GER', 1944), ('JAP', 1942)]:
         runtime, country, site, state_id = experiment_site(tag=tag)

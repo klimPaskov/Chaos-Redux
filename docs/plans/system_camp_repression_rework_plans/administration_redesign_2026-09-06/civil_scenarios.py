@@ -40,7 +40,7 @@ constants = {}
 for name, value in re.findall(r'^(@[A-Z_]+)\s*=\s*(-?\d+(?:\.\d+)?)',
         (ROOT_DIR / 'common/scripted_effects/camp_administration_effects.txt').read_text(encoding='utf-8-sig'), re.M):
     constants[name] = float(value)
-for filename in ('camp_administration_constants.txt', 'camp_administration_civil_constants.txt', 'camp_administration_ui_constants.txt'):
+for filename in ('camp_administration_constants.txt', 'camp_administration_civil_constants.txt', 'camp_administration_ui_constants.txt', '026_black_friday_constants.txt'):
     for category, _, entries in load('common/script_constants/' + filename):
         for key, _, value in entries:
             if key != 'schema':
@@ -51,6 +51,20 @@ for filename in ('camp_administration_effects.txt', 'camp_administration_civil_e
 triggers = {}
 for filename in ('camp_administration_triggers.txt', 'camp_administration_civil_triggers.txt', 'camp_administration_ui_triggers.txt'):
     triggers.update({key: value for key, _, value in load('common/scripted_triggers/' + filename)})
+
+# The origin-observer layer is exercised by the origin_* source suites; this restricted evaluator
+# declares every origin helper satisfied (reconciled, provenance-ready host, no ambiguity) so the
+# civil flows run on their own.
+for _key, _, _value in load('common/scripted_effects/camp_administration_origin_effects.txt'):
+    effects[_key] = []
+for _key, _, _value in load('common/scripted_triggers/camp_administration_origin_triggers.txt'):
+    triggers[_key] = [('always', '=', 'no')] if any(word in _key for word in ('incomplete', 'ambiguous', 'uncertain', 'quarantine', 'frozen', 'paused')) else []
+
+# National war gate read by the civil authorities: the scenario scope's single war field.
+triggers['camp_admin_country_major_war'] = [('has_war', '=', 'yes')]
+# The scenarios hold no site registry: every country site is treated as ready for reform.
+triggers['camp_admin_country_sites_ready_for_reform'] = []
+
 
 @dataclass
 class Scope:
@@ -71,6 +85,7 @@ class VM:
         self.targets = {}
         self.previous_scope = None
         self.countries = {root.tag: root, 'ENG': Scope('ENG'), 'GER': Scope('GER', 'fascism')}
+        self.globals = set()
     def value(self, token, scope):
         if token == 'ROOT': return self.root
         if token == 'THIS': return scope
@@ -135,6 +150,9 @@ class VM:
         if key == 'is_core_of':
             target = self.value(value, scope)
             return (target.tag if isinstance(target, Scope) else target) in scope.values.get('cores', [])
+        if key == 'has_global_flag': return value in self.globals
+        if key == 'has_dynamic_modifier': return {k: v for k, _, v in value}.get('modifier') in scope.values.get('modifiers', ())
+        if key == 'has_capitulated': return scope.values.get('capitulated', False) == (value == 'yes')
         if key == 'exists': return value == 'yes'
         if key in ('has_country_flag', 'has_state_flag'): return value in scope.flags
         if key == 'has_variable': return value in self.temp or value in scope.values
@@ -163,6 +181,13 @@ class VM:
                 continue
             if key in ('camp_admin_refresh_interface','camp_admin_record_history'):
                 scope.values.setdefault('presentation_calls',[]).append(key)
+                continue
+            if key == 'hidden_effect':
+                # Hidden sale-credit bookkeeping (Event 026) is outside this suite.
+                continue
+            if key == 'black_friday_price_table_quote':
+                # Ordinary price: the sale table is outside this suite (black_friday_sale_prices.py).
+                self.temp['black_friday_price_payable'] = self.temp.get('black_friday_price_ordinary', 0)
                 continue
             if key in effects:
                 self.run(effects[key], scope)
@@ -226,20 +251,24 @@ class VM:
             raise ValueError(f'Unsupported effect {key}')
 
 results = []
-def authority(tag, gate, before, after, **kwargs):
+def authority(tag, gate, **kwargs):
+    # War, government and the course of the war open each authority; no calendar date does.
     country = Scope(tag, **kwargs)
-    vm = VM(country, before)
-    assert not vm.check(triggers[gate], country)
-    vm.date = after
+    vm = VM(country)
     assert vm.check(triggers[gate], country)
     country.war = False
-    if tag in ('ENG', 'USA', 'RAJ', 'ITA'): assert not vm.check(triggers[gate], country)
-    results.append({'scenario': gate, 'before': before, 'after': after, 'passed': True})
+    assert not vm.check(triggers[gate], country)
+    country.war = True
+    # The Raj follows its overlord's government; every other authority follows its own.
+    changed = vm.countries['ENG'] if tag == 'RAJ' else country
+    changed.government = 'communism'
+    assert not vm.check(triggers[gate], country)
+    results.append({'scenario': gate, 'opens_with': 'war and government', 'passed': True})
 
-authority('ENG', 'camp_administration_civil_british_authority', '1940.5.15', '1940.5.16')
-authority('USA', 'camp_administration_civil_usa_authority', '1942.2.18', '1942.2.19')
-authority('RAJ', 'camp_administration_civil_raj_authority', '1939.9.2', '1939.9.3', subject='ENG')
-authority('ITA', 'camp_administration_civil_italian_authority', '1940.6.9', '1940.6.10', government='fascism')
+authority('ENG', 'camp_administration_civil_british_authority')
+authority('USA', 'camp_administration_civil_usa_authority')
+authority('RAJ', 'camp_administration_civil_raj_authority', subject='ENG')
+authority('ITA', 'camp_administration_civil_italian_authority', government='fascism')
 for category, _, entries in load('common/script_constants/camp_repression_rework_constants.txt'):
     if category in ('camp_rework_burden', 'camp_rework_country_value', 'camp_rework_threshold', 'camp_rework_cost', 'camp_rework_equipment_cost', 'camp_rework_colonial'):
         for key, _, value in entries:
@@ -248,131 +277,27 @@ for category, _, entries in load('common/script_constants/camp_repression_rework
                 except ValueError: pass
 effects.update({key: value for key, _, value in load('common/scripted_effects/camp_repression_rework_effects.txt')
                 if key == 'camp_rework_recalculate_burdens'})
-italy_guard = Scope('ITA', 'fascism', values={'camp_active_site_count':3, 'camp_radicalized_site_count':0,
-    'camp_overstretch':0, 'camp_contaminated_site_count':0, 'camp_active_site_states':[]})
-italy_vm = VM(italy_guard, '1942.5.1')
-italy_vm.run(effects['camp_rework_recalculate_burdens'], italy_guard)
-base_guard = italy_guard.values['camp_guard_burden']
-italy_guard.flags.add('camp_rework_italy_security_battalions_active')
-italy_vm.run(effects['camp_rework_recalculate_burdens'], italy_guard)
-active_guard = italy_guard.values['camp_guard_burden']
-italy_vm.run(effects['camp_rework_recalculate_burdens'], italy_guard)
-assert italy_guard.values['camp_guard_burden'] == active_guard
-italy_guard.flags.add('camp_admin_civil_initialized')
-italy_vm.run(effects['camp_rework_recalculate_burdens'], italy_guard)
-assert italy_guard.values['camp_guard_burden'] == base_guard
-italy_guard.flags.remove('camp_admin_civil_initialized')
-italy_guard.flags.remove('camp_rework_italy_security_battalions_active')
-italy_vm.run(effects['camp_rework_recalculate_burdens'], italy_guard)
-assert italy_guard.values['camp_guard_burden'] == base_guard
-assert active_guard == base_guard + constants['camp_rework_country_value.overstretch_minor']
-results.append({'scenario':'italian_security_guard_burden_survives_recalculation_without_stacking',
-    'baseline':base_guard,'active':active_guard,'after_cutover':base_guard,'passed':True})
-
-security_triggers = {key: value for key, _, value in load('common/scripted_triggers/camp_repression_rework_triggers.txt')}
-triggers['is_italy_libya_repression_pool_state'] = security_triggers['is_italy_libya_repression_pool_state']
-security_ready = security_triggers['camp_rework_italy_security_battalions_resources_ready']
-security_stock = Scope('ITA', 'fascism', values={
-    'manpower':constants['camp_rework_cost.guard_manpower'],
-    'equipment':{
-        'infantry_equipment':constants['camp_rework_equipment_cost.infantry_equipment'],
-        'support_equipment_1':constants['camp_rework_equipment_cost.support_equipment'],
-    },
-})
-security_vm = VM(security_stock)
-assert security_vm.check(security_ready, security_stock)
-for stock, key in (('manpower', None), ('equipment', 'infantry_equipment'), ('equipment', 'support_equipment_1')):
-    if key is None:
-        security_stock.values[stock] -= 1
-        assert not security_vm.check(security_ready, security_stock)
-        security_stock.values[stock] += 1
-    else:
-        security_stock.values[stock][key] -= 1
-        assert not security_vm.check(security_ready, security_stock)
-        security_stock.values[stock][key] += 1
-results.append({'scenario':'italian_security_exact_manpower_and_equipment_quote_is_affordable',
-    'quote_manpower':security_stock.values['manpower'], 'passed':True})
-triggers['camp_rework_italy_security_battalions_site_ready'] = security_triggers['camp_rework_italy_security_battalions_site_ready']
-triggers['is_valid_camp_active_site_state'] = []  # Registered active camp fixture; region and responsibility are source checks.
-italy_actor = Scope('ITA', 'fascism')
-site = Scope('LIB', controller=italy_actor, values={'cores':['LBA'], 'genocide_responsible_country':italy_actor})
-site_vm = VM(italy_actor)
-assert site_vm.check(triggers['camp_rework_italy_security_battalions_site_ready'], site)
-site.values['cores'] = ['ETH']
-assert not site_vm.check(triggers['camp_rework_italy_security_battalions_site_ready'], site)
-site.values['cores'] = ['LBA']
-site.controller = Scope('GER')
-assert not site_vm.check(triggers['camp_rework_italy_security_battalions_site_ready'], site)
-site.controller = italy_actor
-site.values['cores'].append('ITA')
-assert not site_vm.check(triggers['camp_rework_italy_security_battalions_site_ready'], site)
-results.append({'scenario':'italian_security_site_requires_responsible_direct_control_and_libyan_noncore_state','passed':True})
-
-# Execute the production success effect and the Italy bridge's actual
-# local-to-national pressure comparison. A successful paid repeat must give
-# real relief when pressures are equal, while preserving evidence and floors.
-colonial_effects = {key: value for key, _, value in load('common/scripted_effects/camp_repression_colonial_country_effects.txt')}
-effects['camp_rework_complete_italy_security_sweep'] = colonial_effects['camp_rework_complete_italy_security_sweep']
-effects['camp_rework_italy_clear_security_sweep_state'] = []  # Local modifier lifecycle has a separate source test.
-def italy_branch(entries):
-    for key, _, value in entries:
-        limit = next((sub for subkey, _, sub in value if subkey == 'limit'), []) if isinstance(value, list) else []
-        if key == 'else_if' and any(k == 'original_tag' and v == 'ITA' for k, _, v in limit):
-            return value
-        if isinstance(value, list):
-            found = italy_branch(value)
-            if found is not None: return found
-    return None
-italy_bridge = italy_branch(colonial_effects['camp_rework_update_colonial_country_monthly_bridge'])
-assert italy_bridge is not None
-pressure_bridge = next(value for key, _, value in italy_bridge if key == 'if' and 'libyan_resistance_pressure' in str(value) and 'camp_policy_resistance_pressure' in str(value))
-effects['camp_rework_update_colonial_country_monthly_bridge'] = [('if', '=', pressure_bridge)]
-triggers['camp_rework_italy_security_sweep_requirements_met'] = []  # Valid supplied garrison fixture.
-for policy_before, local_before, policy_after, local_after in ((12, 12, 9, 9), (1, 1, 0, 0), (15, 10, 10, 7)):
-    italy = Scope('ITA', 'fascism', values={'camp_policy_resistance_pressure':policy_before,
-        'libyan_resistance_pressure':local_before, 'camp_policy_evidence':0, 'ita_security_sweep_state_id':1})
-    vm = VM(italy, '1942.5.1')
-    vm.run(effects['camp_rework_complete_italy_security_sweep'], italy)
-    assert italy.values['camp_policy_resistance_pressure'] == policy_after
-    assert italy.values['libyan_resistance_pressure'] == local_after
-    assert italy.values['camp_policy_evidence'] == constants['camp_rework_country_value.evidence_minor']
-    assert 'ita_security_sweep_state_id' not in italy.values
-results.append({'scenario':'italian_successful_security_sweep_reduces_local_and_reconciled_policy_pressure_without_negative_stock',
-    'equal_pressure_after':9,'floor_after':0,'high_policy_after':10,'passed':True})
-
-# The failure branch may physically harm a site only while Italy still has
-# direct control and remains the recorded responsible authority.
-triggers['camp_rework_italy_security_sweep_requirements_met'] = [('has_country_flag', '=', 'mock_success')]
-effects['camp_rework_colonial_apply_major_harm_to_current_state'] = [('add_to_variable', '=', [('mock_harm', '=', '1')])]
-for direct, libya, expected_harm in ((True, True, 1), (False, True, 0), (True, False, 0)):
-    italy = Scope('ITA', 'fascism', values={'libyan_resistance_pressure':5, 'camp_policy_evidence':0,
-        'camp_policy_resistance_pressure':5})
-    site = Scope('LIB', controller=italy if direct else Scope('GER'), values={'genocide_responsible_country':italy, 'cores':['LBA'] if libya else ['ETH']})
-    italy.values['ita_security_sweep_state_id'] = site
-    vm = VM(italy, '1942.5.1')
-    vm.run(effects['camp_rework_complete_italy_security_sweep'], italy)
-    assert site.values.get('mock_harm', 0) == expected_harm
-    assert italy.values['camp_policy_evidence'] == constants['camp_rework_country_value.evidence_major']
-    assert 'ita_security_sweep_state_id' not in italy.values
-results.append({'scenario':'italian_failed_security_sweep_harms_site_only_under_direct_responsible_control',
-    'direct_libyan_site_harm':1,'captured_site_harm':0,'non_libyan_site_harm':0,'passed':True})
-usa = Scope('USA'); vm = VM(usa, '1944.12.18'); assert not vm.check(triggers['camp_administration_civil_usa_authority'], usa)
+usa = Scope('USA', flags={'camp_rework_usa_authority_terminated'}); vm = VM(usa); assert not vm.check(triggers['camp_administration_civil_usa_authority'], usa)
 raj = Scope('RAJ'); vm = VM(raj); assert not vm.check(triggers['camp_administration_civil_raj_authority'], raj)
 results.append({'scenario': 'USA_end_authority_and_RAJ_independence', 'passed': True})
-france=Scope('FRA');vm=VM(france,'1939.2.1');assert vm.check(triggers['camp_administration_civil_french_refugee_authority'],france)
-vm.date='1940.7.10';assert not vm.check(triggers['camp_administration_civil_french_refugee_authority'],france)
-france.government='neutrality';france.cosmetic='FRA_VICHY';assert vm.check(triggers['camp_administration_civil_french_collaboration'],france)
-france.cosmetic='FRA_FREE';assert not vm.check(triggers['camp_administration_civil_french_collaboration'],france)
-results.append({'scenario':'French_refugee_Vichy_Free_France_distinction','passed':True})
-usa=Scope('USA',values={'camp_admin_civil_admitted_k':120},flags={'camp_rework_usa_authority_terminated','camp_admin_civil_review_complete'})
-vm=VM(usa,'1948.7.1');assert not vm.check(triggers['camp_administration_civil_action_two_visible'],usa)
-vm.date='1948.7.2';assert vm.check(triggers['camp_administration_civil_action_two_visible'],usa)
-usa.government='fascism';assert not vm.check(triggers['camp_administration_civil_action_two_visible'],usa)
-results.append({'scenario':'property_claims_date_and_government','passed':True})
-early_usa=Scope('USA',values={'camp_admin_civil_admitted_k':120})
-vm=VM(early_usa,'1942.2.18');assert not vm.check(triggers['camp_administration_civil_action_two_visible'],early_usa)
-vm.date='1942.2.19';assert vm.check(triggers['camp_administration_civil_action_two_visible'],early_usa)
-results.append({'scenario':'usa_review_cannot_terminate_authority_before_historical_start','passed':True})
+france = Scope('FRA'); vm = VM(france)
+assert not vm.check(triggers['camp_administration_civil_french_refugee_authority'], france)
+vm.globals.add('nationalist_victory'); assert vm.check(triggers['camp_administration_civil_french_refugee_authority'], france)
+france.values['capitulated'] = True; assert not vm.check(triggers['camp_administration_civil_french_refugee_authority'], france)
+france.values['capitulated'] = False
+france.government = 'neutrality'; france.cosmetic = 'FRA_VICHY'; assert vm.check(triggers['camp_administration_civil_french_collaboration'], france)
+france.cosmetic = 'FRA_FREE'; assert not vm.check(triggers['camp_administration_civil_french_collaboration'], france)
+results.append({'scenario': 'French_refugee_Vichy_Free_France_distinction', 'passed': True})
+usa = Scope('USA', values={'camp_admin_civil_admitted_k': 120}, flags={'camp_rework_usa_authority_terminated', 'camp_admin_civil_review_complete'})
+vm = VM(usa); assert not vm.check(triggers['camp_administration_civil_action_two_visible'], usa)
+usa.war = False; assert vm.check(triggers['camp_administration_civil_action_two_visible'], usa)
+usa.government = 'fascism'; assert not vm.check(triggers['camp_administration_civil_action_two_visible'], usa)
+results.append({'scenario': 'property_claims_open_after_authority_ends_and_war_over', 'passed': True})
+early_usa = Scope('USA'); vm = VM(early_usa)
+assert not vm.check(triggers['camp_administration_civil_action_two_visible'], early_usa)
+early_usa.values['camp_admin_civil_admitted_k'] = 120
+assert vm.check(triggers['camp_administration_civil_action_two_visible'], early_usa)
+results.append({'scenario': 'usa_review_needs_a_detained_cohort_or_relocation_authority', 'passed': True})
 
 country = Scope('ENG'); vm = VM(country)
 site = Scope(controller=country, values={'camp_admin_responsible_country': country, 'state_population_k': 100,
@@ -407,35 +332,19 @@ assert site.values['camp_admin_total_deaths_k'] == 3 and site.values['state_popu
 vm.run(effects['camp_admin_release_survivors'],site)
 assert site.values['camp_admin_total_released_k'] == 12
 results.append({'scenario':'survivor_release_idempotent_no_population_or_death_reversal','passed':True})
-country.values['ita_desert_road_project_state_id'] = 1
-vm.run(effects['camp_administration_civil_cancel_routine_projects'],country)
-decision_ids = {key for _, _, content in load('common/decisions/camp_repression_colonial_country_decisions.txt') if isinstance(content,list) for key,_,_ in content}
-assert set(country.values['removed_missions']) <= decision_ids
-assert 'ita_desert_road_project_state_id' not in country.values
-results.append({'scenario':'terminal_cancel_ids_and_target_cleanup','passed':True})
 integration_source = (ROOT_DIR / 'common/scripted_effects/camp_administration_integration_effects.txt').read_text(encoding='utf-8-sig')
 terminal_close = integration_source.split('camp_admin_integration_close_country = {', 1)[1].split('# State scope, literal history-kind constant.', 1)[0]
-for mission in ('usa_court_review_period', 'usa_redress_commission_work'):
-    assert f'has_active_mission = {mission}' in terminal_close
-    assert f'remove_mission = {mission}' in terminal_close
 assert 'camp_rework_usa_cancel_security_sunset = yes' in terminal_close
 colonial_source = (ROOT_DIR / 'common/scripted_effects/camp_repression_colonial_country_effects.txt').read_text(encoding='utf-8-sig')
-usa_cancel = colonial_source.split('camp_rework_usa_cancel_security_sunset = {', 1)[1].split('camp_rework_usa_begin_relocation_termination = {', 1)[0]
-assert 'has_active_mission = usa_security_authority_sunset' in usa_cancel
-assert 'remove_mission = usa_security_authority_sunset' in usa_cancel
+usa_cancel = colonial_source.split('camp_rework_usa_cancel_security_sunset = {', 1)[1].split('# -----', 1)[0]
 assert 'clr_country_flag = camp_rework_usa_authority_active' in usa_cancel
 assert 'clr_country_flag = camp_rework_democratic_emergency_authorized' in usa_cancel
 civil_source = (ROOT_DIR / 'common/scripted_effects/camp_administration_civil_effects.txt').read_text(encoding='utf-8-sig')
 assert civil_source.count('camp_rework_usa_cancel_security_sunset = yes') == 2
-usa_sunset_decision = (ROOT_DIR / 'common/decisions/camp_repression_colonial_country_decisions.txt').read_text(encoding='utf-8-sig').split('usa_security_authority_sunset = {', 1)[1].split('usa_redress_commission_work = {', 1)[0]
-assert 'cancel_trigger = {' in usa_sunset_decision and 'NOT = { has_country_flag = camp_rework_usa_authority_active }' in usa_sunset_decision
-usa_timeout = colonial_source.split('camp_rework_complete_usa_security_sunset = {', 1)[1].split('camp_rework_complete_usa_redress_commission = {', 1)[0]
-assert 'has_country_flag = camp_rework_usa_authority_active' in usa_timeout
-assert 'NOT = { has_country_flag = camp_admin_civil_review_active }' in usa_timeout
 rework_source = (ROOT_DIR / 'common/scripted_effects/camp_repression_rework_effects.txt').read_text(encoding='utf-8-sig')
 assert 'camp_admin_integration_close_country = yes' in rework_source.split('camp_rework_exclude_special_country = {', 1)[1][:1500]
 assert 'camp_admin_integration_close_country = yes' in rework_source.split('camp_rework_on_country_annexed = {', 1)[1]
-results.append({'scenario':'usa_terminal_missions_removed_without_timeout_effects','passed':True})
+results.append({'scenario':'usa_terminal_cleanup_clears_authority_flags','passed':True})
 country.flags.add('camp_admin_civil_policy_authorized')
 country.values.update(camp_admin_civil_intake_ceiling_k=27,camp_admin_civil_admitted_k=26.5)
 site.controller = country
@@ -464,6 +373,7 @@ for label,ai,paused,pp,initial,wanted,expected in [
     ('same_budget_no_second_debit',True,False,100,2,2,2),
 ]:
     country=Scope('ENG',values={'is_ai':ai,'political_power':pp,'camp_admin_budget':initial,'camp_active_site_count':0,'camp_admin_budget_support_remaining':17,'camp_admin_budget_pp_remaining':3})
+    country.flags.add('camp_admin_initialized')
     if paused: country.flags.add('camp_admin_development_paused')
     vm=VM(country);vm.temp['camp_admin_control_requested']=wanted
     vm.run(effects['camp_administration_civil_choose_ai_budget'],country)
@@ -488,8 +398,9 @@ results.append({'scenario':'monthly_requires_recipient_country_root','passed':Tr
 monthly_body=[v for k,_,v in effects['camp_administration_civil_monthly'] if k=='if'][0]
 for stage in ('review','claims'):
     flag=f'camp_admin_civil_{stage}_active'
-    branch=next(v for k,_,v in monthly_body if k=='if' and ('has_country_flag','=',flag) in dict((a,c) for a,_,c in v).get('limit',[]))
-    country=Scope('USA',values={'political_power':100,'num_equipment@support_equipment':1000,'camp_admin_budget_support_remaining':100,'camp_admin_budget_pp_remaining':50},flags={flag,'camp_admin_development_paused','camp_rework_usa_authority_terminated'})
+    marker=('camp_administration_civil_review_ready','=','yes') if stage=='review' else ('has_country_flag','=',flag)
+    branch=next(v for k,_,v in monthly_body if k=='if' and marker in dict((a,c) for a,_,c in v).get('limit',[]))
+    country=Scope('USA',war=False,values={'political_power':100,'num_equipment@support_equipment':1000,'camp_admin_budget_support_remaining':100,'camp_admin_budget_pp_remaining':50},flags={flag,'camp_admin_development_paused','camp_rework_usa_authority_terminated'})
     vm=VM(country,'1948.7.2');vm.run([('if','=',branch)],country)
     assert country.values[f'camp_admin_civil_{stage}_progress']==1
     results.append({'scenario':f'committed_{stage}_continues_during_development_pause','passed':True})

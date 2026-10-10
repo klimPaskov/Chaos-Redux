@@ -253,13 +253,13 @@ class OccupationCustodyTransferTests(unittest.TestCase):
             self.assertRegex(LOCALISATION, r"(?m)^" + key + r': "')
             self.assertIn("localization_key = " + key, SCRIPTED_LOCALISATION)
 
-    def test_manual_route_is_dated_and_requires_a_live_occupied_source(self):
+    def test_manual_route_requires_a_live_occupied_source(self):
         prerequisites = TRIGGERS.split("camp_occ_manual_transfer_country_prerequisites_ready = {", 1)[1].split("camp_occ_manual_transfer_country_ready = {", 1)[0]
         country = TRIGGERS.split("camp_occ_manual_transfer_country_ready = {", 1)[1].split("camp_occ_manual_transfer_destination_ready = {", 1)[0]
         destination = TRIGGERS.split("camp_occ_manual_transfer_destination_ready = {", 1)[1].split("camp_occ_manual_transfer_source_ready = {", 1)[0]
         source = TRIGGERS.split("camp_occ_manual_transfer_source_ready = {", 1)[1].split("camp_occ_manual_transfer_can_pay = {", 1)[0]
         for required in ("has_country_flag = camp_admin_initialized", "original_tag = GER", "camp_occ_authority_has_campaign = yes",
-                         "date > 1943.5.29", "germany_mengele_program_active = yes", "germany_mengele_restricted_program_active = yes"):
+                         "has_war = yes", "germany_mengele_program_active = yes", "germany_mengele_restricted_program_active = yes"):
             self.assertIn(required, prerequisites)
         self.assertIn("camp_occ_manual_transfer_any_source_ready = yes", country)
         killing_site = TRIGGERS.split("camp_occ_killing_destination_active = {", 1)[1].split("camp_occ_manual_transfer_destination_ready = {", 1)[0]
@@ -362,11 +362,12 @@ class OccupationCustodyTransferTests(unittest.TestCase):
         self.assertEqual(s.source_population + s.destination_population, before)
         self.assertEqual(s.deaths, [])
 
-    def test_dated_route_source_gates_and_bounded_arrival_waves(self):
+    def test_lodz_route_source_gates_and_bounded_arrival_waves(self):
         body = SOURCE.split("camp_occ_try_lodz_auschwitz_transfer = {", 1)[1].split("camp_occ_monthly_country = {", 1)[0]
         monthly = SOURCE.split("camp_occ_monthly_country = {", 1)[1]
         for required in (
-            "original_tag = GER", "date > 1944.8.8", "date < 1944.10.1",
+            "original_tag = GER", "camp_occ_lodz_window_open = yes", "genocide_state_has_enemy_forces_near_root = yes",
+            "set_country_flag = camp_occ_lodz_liquidation_ordered",
             "NOT = { has_country_flag = camp_occ_lodz_auschwitz_transfer_recorded }",
             "camp_occ_authority_has_campaign = yes", "87 = {", "88 = {",
             "camp_occ_state_has_current_authority = yes",

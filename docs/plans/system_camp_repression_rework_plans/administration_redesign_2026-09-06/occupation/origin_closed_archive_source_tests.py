@@ -22,13 +22,12 @@ class ArchiveRuntime(LifecycleRuntime):
         for name in ("camp_administration_ui_triggers", "camp_administration_integration_triggers", "camp_administration_country_triggers"):
             self.triggers.update({k: b for k, _, b in foundation.parse((ROOT / f"common/scripted_triggers/{name}.txt").read_text())})
         legacy = {k: b for k, _, b in foundation.parse((ROOT / "common/scripted_effects/camp_repression_rework_effects.txt").read_text())}
-        for name in ("camp_rework_unregister_inactive_site", "camp_rework_validate_selected_state", "camp_rework_clear_selected_state", "camp_rework_select_state_for_display", "camp_rework_resolve_site_evidence", "camp_rework_on_country_annexed", "camp_rework_cancel_selected_dismantlement_on_terminal", "camp_rework_clear_ledger_arrays", "camp_rework_run_versioned_migration", "camp_rework_open_ledger"):
+        for name in ("camp_rework_unregister_inactive_site", "camp_rework_validate_selected_state", "camp_rework_clear_selected_state", "camp_rework_on_country_annexed", "camp_rework_cancel_selected_dismantlement_on_terminal", "camp_rework_clear_ledger_arrays", "camp_rework_run_versioned_migration", "camp_rework_open_ledger"):
             self.effects[name] = legacy[name]
-        self.effects.update({k: b for k, _, b in foundation.parse((ROOT / "common/scripted_effects/camp_repression_colonial_country_effects.txt").read_text()) if k in ("camp_rework_italy_end_security_sweep_state", "camp_rework_clear_legacy_closure_attempt")})
+        self.effects.update({k: b for k, _, b in foundation.parse((ROOT / "common/scripted_effects/camp_repression_colonial_country_effects.txt").read_text()) if k in ("camp_rework_clear_legacy_closure_attempt",)})
         self.triggers.update({k: b for k, _, b in foundation.parse((ROOT / "common/scripted_triggers/camp_repression_rework_triggers.txt").read_text()) if k in ("has_camp_category_visible_action", "camp_rework_country_is_eligible")})
         self.effects["chaosx_refresh_camp_visual_anchor"] = []
         self.effects["genocide_try_discover_state_atrocity"] = []
-        self.effects["camp_rework_clear_country_gui_action_display"] = legacy["camp_rework_clear_country_gui_action_display"]
         self.temp_arrays = {}
         self.register_calls = 0
         self.display_rebuild_calls = 0
@@ -153,7 +152,7 @@ def run_cases():
     assert not r.cond(r.triggers["camp_origin_host_provenance_ready"], 88)
     cases.append("national reform closes an open sticky-ambiguous host once with a records-incomplete entry: no survivor release, civilian target, population change, debit or death, rows frozen and origin orders still unproven")
 
-    for route in ("capture", "evidence", "annexation"):
+    for route in ("capture", "annexation"):
         r, c, a = fixture()
         # A is the only actual active custody host; B is an origin fixture.
         c["arrays"]["camp_admin_known_site_states"] = [88]
@@ -161,10 +160,6 @@ def run_cases():
         if route == "capture":
             a["controller"] = "POL"
             r.run("camp_rework_unregister_inactive_site", 88)
-        elif route == "evidence":
-            c["arrays"]["camp_evidence_states"] = [88]
-            r.run("camp_rework_resolve_site_evidence", 88)
-            assert "genocide_responsible_country" not in a and not c["arrays"]["camp_evidence_states"]
         else:
             c["exists"] = False
             a["controller"] = "POL"
@@ -192,8 +187,8 @@ def run_cases():
     a["controller"] = "POL"
     r.run("camp_rework_unregister_inactive_site", 88)
     c["flags"].discard("camp_admin_initialized")
-    c["camp_gui_requested_state_id"] = 88
-    r.run("camp_rework_select_state_for_display", "GER")
+    # The Locations list selects a site by writing its state id directly.
+    c["camp_selected_state_id"] = 88
     assert c["camp_selected_state_id"] == 88
     r.run("camp_admin_refresh_interface", "GER")
     assert c["arrays"]["camp_admin_gui_states"] == [88]

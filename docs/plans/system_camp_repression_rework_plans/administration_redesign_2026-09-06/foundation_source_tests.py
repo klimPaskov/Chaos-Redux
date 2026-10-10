@@ -167,7 +167,18 @@ class Runtime:
             if k=='has_event_target': return v in self.targets
             if k=='has_decision': return v in self.scopes[s].get('missions',set())
             if k=='has_global_flag': return v in self.global_flags
-            if k in ('has_state_flag','has_country_flag'): return v in self.scopes[s]['flags']
+            if k in ('has_state_flag','has_country_flag'):
+                if isinstance(v,list):
+                    # Timed form: { flag = X days > N } counts days since the flag was set.
+                    flag=get(v,'flag')
+                    if flag not in self.scopes[s]['flags']: return False
+                    for dk,dop,dv in v:
+                        if dk=='days':
+                            since=(self.date-self.scopes[s].get('flag_dates',{}).get(flag,datetime.date.min)).days
+                            quoted=self.val(dv,s,prev)
+                            return since>quoted if dop=='>' else since<quoted if dop=='<' else since==quoted
+                    return True
+                return v in self.scopes[s]['flags']
             if k=='has_dynamic_modifier': return get(v,'modifier') in self.scopes[s]['mods']
             if k=='is_controlled_by': return self.scopes[s]['controller']==self.target(v,s,prev)
             if k=='is_subject_of': return self.scopes[s].get('overlord')==self.target(v,s,prev)
@@ -226,8 +237,12 @@ class Runtime:
                     self.execute([x for x in v if x[0]!='limit'],s,prev)
                 else: raise AssertionError('Unbounded source loop')
             elif k=='save_event_target_as': self.targets[v]=s
-            elif k in ('set_country_flag','set_state_flag'): self.scopes[s]['flags'].add(get(v,'flag') if isinstance(v,list) else v)
-            elif k in ('clr_country_flag','clr_state_flag'): self.scopes[s]['flags'].discard(v)
+            elif k in ('set_country_flag','set_state_flag'):
+                flag=get(v,'flag') if isinstance(v,list) else v
+                if flag not in self.scopes[s]['flags']: self.scopes[s].setdefault('flag_dates',{})[flag]=self.date
+                self.scopes[s]['flags'].add(flag)
+            elif k in ('clr_country_flag','clr_state_flag'):
+                self.scopes[s]['flags'].discard(v); self.scopes[s].get('flag_dates',{}).pop(v,None)
             elif k=='clear_variable': self.scopes[s].pop(v,None)
             elif k in ('add_dynamic_modifier','remove_dynamic_modifier'):
                 getattr(self.scopes[s]['mods'],'add' if k.startswith('add') else 'discard')(get(v,'modifier'))
@@ -520,91 +535,10 @@ def tests():
         report.run('genocide_dispatch_discoverer_report_from_state','S1')
         assert report.temp['last_country_event']==expected,(responsible,state_id,cores,markers,report.temp['last_country_event'])
     results.append('Named Raj, Libya and Congo reports require matching regions; Auschwitz and Pingfang reports also require their actual institution marker')
-    for tag in ('ENG','FRA'):
-        bulk=Runtime(); bulk.country(tag)
-        bulk.country('GER')
-        bulk.root=tag
-        old_target=bulk.target
-        bulk.target=lambda x,s,prev,old_target=old_target,bulk=bulk: bulk.root if x=='ROOT' else old_target(x,s,prev)
-        bulk.triggers.update({key:value for key,_,value in legacy_triggers if key.startswith('camp_rework_colonial_') or key.startswith('camp_rework_french_') or key in ('camp_rework_site_can_start_dismantlement','camp_rework_site_can_complete_dismantlement','camp_rework_state_is_actor_or_subject_controlled','camp_rework_legacy_closure_site_can_begin')})
-        bulk.triggers['is_valid_camp_active_site_state']=[('has_state_flag','=','camp_rework_site_active')]
-        ready='camp_rework_colonial_dismantlement_sites_ready' if tag=='ENG' else 'camp_rework_french_inherited_dismantlement_sites_ready'
-        completable='camp_rework_colonial_dismantlement_sites_completable' if tag=='ENG' else 'camp_rework_french_inherited_dismantlement_sites_completable'
-        assert bulk.cond(bulk.triggers[ready],tag) # Empty-network national sunset remains possible.
-        assert bulk.cond(bulk.triggers[completable],tag)
-        bs=bulk.state(country=tag)
-        if tag=='FRA': bs['flags'].add('camp_rework_france_camp_legacy')
-        assert bulk.cond(bulk.triggers[ready],tag)
-        assert bulk.cond(bulk.triggers[completable],tag)
-        bs['controller']='GER'
-        assert not bulk.cond(bulk.triggers[ready],tag) # Responsible but uncollected site blocks payment.
-        assert not bulk.cond(bulk.triggers[completable],tag) # The same site blocks a stale timer's success.
-        bs['controller']=tag
-        prime_existing_custody(bulk,'S1',10)
-        bs['arrays']['camp_admin_row_amounts_k'][0]=9
-        assert not bulk.cond(bulk.triggers[ready],tag) # No payment against inconsistent rows.
-        bs['arrays']['camp_admin_row_amounts_k'][0]=10
-        bulk.run('camp_admin_close_site','S1')
-        assert bs['camp_admin_detainees_k']==0 and 'camp_admin_closed' in bs['flags']
-        assert not bulk.cond(bulk.triggers[ready],tag) # Closed custody requires its first-attempt receipt.
-        bs['flags'].add('camp_rework_legacy_closure_custody_accepted')
-        assert bulk.cond(bulk.triggers[ready],tag) # Retry can rearm physical closure without a second release.
-        bulk.scopes[tag]['flags'].add('camp_rework_legacy_closure_active')
-        assert not bulk.cond(bulk.triggers[ready],tag) # One national attempt at a time.
-        bulk.scopes[tag]['flags'].discard('camp_rework_legacy_closure_active')
     colonial_effects=parse((ROOT/'common/scripted_effects/camp_repression_colonial_country_effects.txt').read_text(encoding='utf-8-sig'))
-    for helper,target in [('camp_rework_start_all_colonial_site_dismantlement','camp_rework_colonial_dismantlement_target'),('camp_rework_complete_all_colonial_site_dismantlement','camp_rework_colonial_dismantlement_target'),('camp_rework_start_all_french_inherited_site_dismantlement','camp_rework_french_inherited_dismantlement_target'),('camp_rework_complete_all_french_inherited_site_dismantlement','camp_rework_french_inherited_dismantlement_target')]:
-        assert target in str(get(colonial_effects,helper)) # Start and completion collect the same guarded registry members.
-    assert 'camp_rework_colonial_dismantlement_sites_completable' in str(get(colonial_effects,'camp_rework_complete_all_colonial_site_dismantlement'))
-    assert 'camp_rework_french_inherited_dismantlement_sites_completable' in str(get(colonial_effects,'camp_rework_complete_all_french_inherited_site_dismantlement'))
     rework_effects=parse((ROOT/'common/scripted_effects/camp_repression_rework_effects.txt').read_text(encoding='utf-8-sig'))
-    cleanup=Runtime(); cleanup.country('ENG'); owned=cleanup.state('S1',country='ENG'); other=cleanup.state('S2',country='ENG')
-    cleanup.effects['camp_rework_clear_legacy_closure_attempt']=get(colonial_effects,'camp_rework_clear_legacy_closure_attempt')
-    cleanup.effects['camp_rework_clear_dismantlement_progress_if_idle']=get(rework_effects,'camp_rework_clear_dismantlement_progress_if_idle')
-    cleanup.scopes['ENG']['arrays']['camp_rework_legacy_closure_active_states']=['S1']
-    cleanup.scopes['ENG']['flags'].update({'camp_rework_legacy_closure_active','camp_rework_dismantlement_in_progress'})
-    owned['flags'].update({'camp_rework_legacy_closure_site_active','camp_rework_legacy_closure_custody_accepted','camp_rework_site_reforming','camp_rework_site_dismantlement_in_progress'})
-    other['flags'].add('camp_rework_site_reforming')
-    cleanup.run('camp_rework_clear_legacy_closure_attempt','ENG')
-    assert 'camp_rework_site_reforming' not in owned['flags'] and 'camp_rework_legacy_closure_custody_accepted' in owned['flags']
-    assert 'camp_rework_site_reforming' in other['flags'] and 'camp_rework_dismantlement_in_progress' in cleanup.scopes['ENG']['flags']
-    other['flags'].discard('camp_rework_site_reforming')
-    cleanup.scopes['ENG']['flags'].add('camp_rework_legacy_closure_active')
-    cleanup.run('camp_rework_clear_legacy_closure_attempt','ENG')
-    assert 'camp_rework_dismantlement_in_progress' not in cleanup.scopes['ENG']['flags']
-    results.append('Colonial zero-site, custody-receipt retry, overlap and owned-attempt cleanup preserve unrelated reforming sites')
-    retry=Runtime(); retry.country('ENG'); retried=retry.state(country='ENG'); prime_existing_custody(retry,'S1',10)
-    retry.root='ENG'
-    old_target=retry.target
-    retry.target=lambda x,s,prev,old_target=old_target,retry=retry: retry.root if x=='ROOT' else old_target(x,s,prev)
-    retry.triggers.update({key:value for key,_,value in legacy_triggers if key in ('camp_rework_legacy_closure_site_can_begin','camp_rework_site_can_start_dismantlement','camp_rework_state_is_actor_or_subject_controlled')})
-    retry.constants['camp_rework_timing.dismantle_days']=float(get(get(parse((ROOT/'common/script_constants/camp_repression_rework_constants.txt').read_text(encoding='utf-8-sig')),'camp_rework_timing'),'dismantle_days'))
-    retry.constants['camp_rework_timing.dismantle_flag_grace_days']=float(get(get(parse((ROOT/'common/script_constants/camp_repression_rework_constants.txt').read_text(encoding='utf-8-sig')),'camp_rework_timing'),'dismantle_flag_grace_days'))
-    retry.effects['camp_rework_begin_legacy_closure_site']=get(colonial_effects,'camp_rework_begin_legacy_closure_site')
-    retry.effects['camp_rework_clear_legacy_closure_attempt']=get(colonial_effects,'camp_rework_clear_legacy_closure_attempt')
-    retry.effects['camp_rework_clear_dismantlement_progress_if_idle']=get(rework_effects,'camp_rework_clear_dismantlement_progress_if_idle')
-    retry.effects['camp_rework_rearm_dismantlement_site']=get(rework_effects,'camp_rework_rearm_dismantlement_site')
-    retry.effects['camp_rework_start_dismantlement']=get(parse('camp_rework_start_dismantlement = { camp_admin_close_site = yes set_state_flag = camp_rework_site_reforming }'),'camp_rework_start_dismantlement') # External building/timer consumers stubbed; finite close is production.
-    retry.run('camp_rework_begin_legacy_closure_site','S1')
-    assert retried['camp_admin_total_released_k']==10 and 'camp_rework_legacy_closure_custody_accepted' in retried['flags']
-    retry.run('camp_rework_clear_legacy_closure_attempt','ENG')
-    assert 'camp_rework_site_reforming' not in retried['flags']
-    retry.run('camp_rework_begin_legacy_closure_site','S1')
-    assert retried['camp_admin_total_released_k']==10 and retried['camp_admin_detainees_k']==0 and 'camp_rework_site_reforming' in retried['flags']
-    assert retry.temp['camp_dismantlement_days']>retry.constants['camp_rework_timing.dismantle_days']
-    assert retry.scopes['ENG']['arrays']['camp_rework_legacy_closure_active_states']==['S1']
-    retry.run('camp_rework_clear_legacy_closure_attempt','ENG')
-    retried['flags'].discard('camp_admin_closed') # Simulated authorized reopening with a distinct new cohort.
-    prime_existing_custody(retry,'S1',10)
-    retry.run('camp_rework_begin_legacy_closure_site','S1')
-    assert retried['camp_admin_total_released_k']==20 and retried['camp_admin_detainees_k']==0 # Old receipt cannot skip the new release.
-    retried['flags'].add('camp_rework_site_dismantled')
-    retry.run('camp_rework_clear_legacy_closure_attempt','ENG')
-    assert 'camp_rework_legacy_closure_custody_accepted' not in retried['flags']
-    for callback in ('camp_rework_complete_uk_postwar_review','camp_rework_resolve_usa_security_sunset_active','camp_rework_france_complete_legacy_closure','camp_rework_complete_france_post_liberation_reckoning','camp_rework_complete_italy_desert_camp_closure','camp_rework_complete_belgium_concession_reform'):
-        assert 'camp_rework_clear_legacy_closure_attempt' in str(get(colonial_effects,callback)),callback
-    assert 'camp_rework_resolve_usa_security_sunset_active' in str(get(colonial_effects,'camp_rework_complete_usa_security_sunset'))
-    results.append('Accepted colonial custody receipt permits physical retry once, but a reopened new cohort releases separately and final demolition clears the receipt')
+    # The retired national UK and French dismantlement lifecycle (bulk sunset, closure attempts, legacy closure retry)
+    # was removed with its decisions; the live closure paths are covered by the administration reform scenarios.
     import black_friday_sale_prices as sale
     tuning=parse((ROOT/'common/script_constants/camp_repression_rework_constants.txt').read_text(encoding='utf-8-sig'))
     # Fixed order stock is checked at the Event 026 sale price: exactly the quoted
@@ -612,7 +546,7 @@ def tests():
     stock_checks={'camp_rework_can_pay_dismantle_manpower':('manpower',None,'dismantle_manpower','camp_rework_cost'),
                   'camp_rework_can_pay_support_equipment':('equipment','support_equipment_1','support_equipment','camp_rework_equipment_cost'),
                   'camp_rework_can_pay_convoys':('equipment','convoy_1','convoys','camp_rework_equipment_cost')}
-    decisions=[('common/decisions/camp_repression_major_country_decisions.txt','germany_dismantle_auschwitz_complex',2),('common/decisions/camp_repression_major_country_decisions.txt','japan_shut_down_prisoner_experiments',2),('common/decisions/camp_repression_major_country_decisions.txt','sov_dismantle_overextended_gulags',2),('common/decisions/camp_repression_generic_decisions.txt','camp_repression_close_dormant_legacy_site',2),('common/decisions/camp_repression_colonial_country_decisions.txt','uk_dismantle_raj_detention_network',1),('common/decisions/camp_repression_colonial_country_decisions.txt','fr_close_camp_legacy_sites',1),('common/decisions/camp_repression_colonial_country_decisions.txt','fr_dismantle_north_africa_labor_network',2)]
+    decisions=[('common/decisions/camp_repression_major_country_decisions.txt','germany_dismantle_auschwitz_complex',2),('common/decisions/camp_repression_major_country_decisions.txt','japan_shut_down_prisoner_experiments',2),('common/decisions/camp_repression_major_country_decisions.txt','sov_dismantle_overextended_gulags',2),('common/decisions/camp_repression_generic_decisions.txt','camp_repression_close_dormant_legacy_site',2)]
     for ratio in sale.SALE_RATIOS:
         exact=Runtime(); exact.country('TEST'); sale.install(exact,ratio)
         for file,decision_name,expected in decisions:
@@ -629,7 +563,7 @@ def tests():
                 assert exact.cond([(check,'=','yes')],'TEST')
                 exact.scopes['TEST'][field]={kind:quoted-1} if kind else quoted-1
                 assert not exact.cond([(check,'=','yes')],'TEST')
-    results.append('Seven fixed-cost legacy closure decisions accept exactly the quoted manpower/equipment/convoy stock and reject one unit short, at the full, half and quarter sale price')
+    results.append('Four fixed-cost legacy closure decisions accept exactly the quoted manpower/equipment/convoy stock and reject one unit short, at the full, half and quarter sale price')
     activation_runs=[]
     for ratio in sale.SALE_RATIOS:
         activation=Runtime(); activation.country('TEST'); sale.install(activation,ratio)
@@ -660,7 +594,6 @@ def tests():
     assert get(activation_modifiers[-1],'factor')=='0'
     assert 'camp_rework_country_under_ai_site_cap' in str(activation_modifiers[-1])
     assert all(get(value,'add') is not None for value in activation_modifiers[:2])
-    assert 'camp_rework_generic_activation_resources_ready' in str(get(legacy_effects,'camp_rework_gui_expand_selected_pool'))
     ai_cap=str(get(legacy_effects,'camp_rework_apply_ai_cap'))
     assert "('NOT', '=', [('has_manpower', '<', 'constant:camp_rework_cost.activation_manpower')])" in ai_cap
     activation_loc=parse((ROOT/'common/scripted_localisation/camp_repression_ui_scripted_localisation.txt').read_text(encoding='utf-8-sig'))
@@ -720,10 +653,8 @@ def tests():
     for key in ('camp_admin_site_dismantle','camp_admin_site_dismantle_locked_site','camp_admin_site_dismantle_locked_route','camp_admin_site_dismantle_locked_progress','camp_admin_site_dismantle_locked_custody','camp_admin_site_dismantle_locked_resources'):
         assert layout.count('name = "'+key+'"')==1,key
     results.append('Locations selected-site dismantlement partitions five locked reasons and one active command, with exactly one native button and dispatcher entry')
-    assert 'camp_gui_selected_dismantlement_mission' not in str(get(rework_effects,'camp_rework_cancel_active_expansion_projects'))
     assert 'camp_rework_cancel_selected_dismantlement_on_terminal' in str(get(rework_effects,'camp_rework_exclude_special_country'))
     assert 'camp_rework_cancel_selected_dismantlement_on_terminal' in str(get(rework_effects,'camp_rework_on_country_annexed'))
-    assert 'camp_rework_cancel_active_expansion_projects' in str(get(rework_effects,'camp_rework_apply_country_monthly_pressure'))
     results.append('Monthly frozen-policy cleanup leaves selected-site closure mission active; only terminal country cleanup cancels it')
     assert 'camp_rework_timing.dismantle_flag_grace_days' in str(get(rework_effects,'camp_rework_start_dismantlement'))
     assert 'camp_rework_timing.dismantle_flag_grace_days' in str(get(rework_effects,'camp_rework_rearm_dismantlement_site'))
@@ -850,7 +781,7 @@ def tests():
         # Availability is tested above; the paid effect reads the production sale-priced quote.
         g.triggers['camp_admin_generic_reform_quote']=get(integration_triggers,'camp_admin_generic_reform_quote')
         g.triggers['camp_admin_generic_reform_available']=[('camp_admin_generic_reform_quote','=','yes')]
-        for consumer in ('camp_admin_integration_record_site_history','camp_occ_close_country','camp_admin_begin_reform','camp_rework_unregister_inactive_site','camp_admin_integration_cancel_routine_projects','camp_rework_refresh_country_specific_ideas','camp_rework_rebuild_display_values'):
+        for consumer in ('camp_admin_integration_record_site_history','camp_occ_close_country','camp_admin_begin_reform','camp_rework_unregister_inactive_site','camp_rework_refresh_country_specific_ideas','camp_rework_rebuild_display_values'):
             g.effects[consumer]=[]
         g.run('camp_admin_generic_reform','HUN')
         return g,country
@@ -864,8 +795,8 @@ def tests():
     results.append('Generic national reform availability rejects mismatched, foreign-authority, inactive-live and misaligned custody rows; effect-time checks prevent payment if a one-site or two-site ledger changes before execution')
     results.append('A sticky provenance host does not gate the generic national order: availability and the paid effect accept it because reform closes that host with incomplete records')
     paid=sale.check_native_costs()
-    assert len(paid)==80,len(paid)
-    results.append('Event 026 sale: all 80 positive native camp costs (78 camp decisions and the two partner halt actions) read a registered price-table global and each order credits one purchase')
+    assert len(paid)==18,len(paid)
+    results.append('Event 026 sale: all 18 positive native camp costs (16 camp decisions and the two partner halt actions) read a registered price-table global and each order credits one purchase')
     sale.check_stock_prices()
     results.append('Event 026 sale: no camp purchase check compares stock with an ordinary price; only the AI capacity heuristic keeps ordinary thresholds')
     for ratio in sale.SALE_RATIOS:

@@ -1,10 +1,10 @@
-"""Dated start of the German campaign for Western, Greek and Italian origins.
+"""Campaign-age start of the German campaign for Western, Greek and Italian origins.
 
-Evaluates the production camp_occ_origin_campaign_deferred trigger at each
-documented start date, runs the production monthly occupation pass and the
+Evaluates the production camp_occ_origin_campaign_deferred trigger at the
+boundaries of the campaign age and the German-authority age, runs the production monthly occupation pass and the
 manual-transfer source check with the joined harness of the Danish rescue
-suite, and reruns the 13-state dated sensitivity with each origin's first
-deportation month. Engine primitives are harness mocks and controllers are
+suite, and reruns the 13-state sensitivity with each origin's first
+deportation month under the campaign-age rule. Engine primitives are harness mocks and controllers are
 declared; the monthly pass is modeled on the first of each month.
 Not HOI4 execution. Run: python <this file>.
 """
@@ -21,30 +21,27 @@ from partner_deportation_source_tests import PartnerRuntime, transform as partne
 from test_historical_envelopes import vanilla_european_origin_inventory, staged_direct_control_rows, NINE_STAGED_CONTROL_WINDOWS
 from test_occupation_accounting import constant
 
-# First day on which the deferral no longer holds (USHMM chronology, agent decision 16).
-START = {
-    'DEN': datetime.date(1943, 10, 1),   # unchanged rule (agent decision 6)
-    'FRA': datetime.date(1942, 3, 27),   # first train from Drancy/Compiegne to Auschwitz
-    'HOL': datetime.date(1942, 7, 15),   # first train from Westerbork
-    'BEL': datetime.date(1942, 8, 4),    # first train from Mechelen
-    'NOR': datetime.date(1942, 10, 26),  # arrest of Jewish men by Norwegian police
-    'GRE': datetime.date(1943, 3, 15),   # first train from Salonika, state 731
+# Harness staging, not gates: the day Germany's campaign opens and the day German
+# authority over each origin state begins. The production trigger decides deferral
+# from the two ages (camp_occ_timing.foreign_origin_campaign_days and
+# foreign_origin_held_days) and, for Denmark, from the standing Danish government.
+CAMPAIGN_OPENED = datetime.date(1941, 6, 22)
+FOREIGN_ORIGIN_CAMPAIGN_DAYS = int(constant('foreign_origin_campaign_days'))
+FOREIGN_ORIGIN_HELD_DAYS = int(constant('foreign_origin_held_days'))
+HELD = {
+    'DEN': datetime.date(1940, 4, 9),
+    'FRA': datetime.date(1940, 6, 25),
+    'HOL': datetime.date(1940, 5, 15),
+    'BEL': datetime.date(1940, 5, 28),
+    'NOR': datetime.date(1940, 6, 10),
+    'GRE_SALONIKA': datetime.date(1941, 4, 9),
+    'GRE_OTHER': datetime.date(1941, 4, 30),
+    'ITA': datetime.date(1943, 9, 9),
 }
-GREEK_OTHER_START = datetime.date(1944, 3, 24)
-ITALIAN_START = datetime.date(1943, 10, 16)
+HELD_TAGS = ('DEN', 'FRA', 'HOL', 'BEL', 'NOR', 'GRE', 'ITA')
 UNDEFERRED = ('POL', 'SOV', 'LIT', 'LAT', 'CZE', 'YUG', 'HUN')
-# The trigger before this change: only Denmark was deferred.
-PRIOR_RULE = [('is_core_of', '=', 'DEN'), ('date', '<', '1943.10.1')]
-# Baseline for incremental Greece and Italy sensitivity, including the prior
-# single date applied to every Greek state.
-PRE_GREECE_ITALY_RULE = [('OR', '=', [
-    ('AND', '=', [('is_core_of', '=', 'DEN'), ('date', '<', '1943.10.1')]),
-    ('AND', '=', [('is_core_of', '=', 'FRA'), ('date', '<', '1942.3.27')]),
-    ('AND', '=', [('is_core_of', '=', 'HOL'), ('date', '<', '1942.7.15')]),
-    ('AND', '=', [('is_core_of', '=', 'BEL'), ('date', '<', '1942.8.4')]),
-    ('AND', '=', [('is_core_of', '=', 'NOR'), ('date', '<', '1942.10.26')]),
-    ('AND', '=', [('is_core_of', '=', 'GRE'), ('date', '<', '1943.3.15')]),
-])]
+# Baseline for the sensitivities: the campaign without any pacing.
+UNPACED_RULE = [('always', '=', 'no')]
 
 RESULTS = json.loads((HERE / 'historical_envelope_results.json').read_text(encoding='utf-8'))
 
@@ -56,6 +53,8 @@ class DatedRuntime(PartnerRuntime):
         # This suite isolates origin-date behavior; extended partner responses
         # are exercised by their own source suite and are not loaded here.
         self.effects['camp_occ_try_extended_partner_orders'] = []
+        # Denmark's government is staged explicitly below, not by the rescue suite's timeline.
+        self.den_falls = None
         # Provenance readiness is supplied as a fixture below; the boundary
         # being tested is campaign timing after a valid row exists.
         self.triggers['camp_origin_host_provenance_ready'] = []
@@ -111,27 +110,38 @@ def stored_windows(key):
     return windows, rows
 
 
-def origin_start(tag, state_id):
-    if tag == 'GRE' and int(state_id) != 731:
-        return GREEK_OTHER_START
-    if tag == 'ITA':
-        return ITALIAN_START
-    return START[tag]
+def held_since(tag, state_id):
+    """Harness staging: the day German authority over the origin state began."""
+    if tag == 'GRE':
+        return HELD['GRE_SALONIKA'] if int(state_id) == 731 else HELD['GRE_OTHER']
+    return HELD[tag]
 
 
-def first_pass_month(tag, state_id=None):
-    start = START[tag] if state_id is None else origin_start(tag, state_id)
-    return (start.year, start.month) if start.day == 1 else ((start.year + 1, 1) if start.month == 12 else (start.year, start.month + 1))
+def deferral_end(held):
+    """First day a paced origin is no longer deferred: both ages strictly exceed their thresholds."""
+    return max(CAMPAIGN_OPENED + datetime.timedelta(days=FOREIGN_ORIGIN_CAMPAIGN_DAYS + 1),
+               held + datetime.timedelta(days=FOREIGN_ORIGIN_HELD_DAYS + 1))
+
+
+def first_pass_of(day):
+    """The monthly pass (first of the month) on or after a day."""
+    if day.day == 1:
+        return (day.year, day.month)
+    return (day.year + 1, 1) if day.month == 12 else (day.year, day.month + 1)
+
+
+def first_pass_month(tag, state_id):
+    return first_pass_of(deferral_end(held_since(tag, state_id)))
 
 
 def adjusted(windows):
+    """Shift each paced origin's stored first month to its first pass under the campaign-age rule."""
     out = []
     for origin, state_id, first, last in windows:
         tag = origin.upper()
-        if tag in START and tag != 'DEN':
-            first = max(first, first_pass_month(tag, state_id))
-        elif tag in ('GRE', 'ITA'):
-            first = max(first, first_pass_month(tag, state_id))
+        if tag in HELD_TAGS and tag != 'DEN':
+            began = datetime.date(first[0], first[1], 1)
+            first = max(first, first_pass_of(deferral_end(began)))
         out.append((origin, state_id, first, last))
     return out
 
@@ -142,21 +152,25 @@ def allocation(origin, state_id):
     return states[state_id], int(D(states[state_id]) * constant(origin) * 1000 / D(sum(states.values())))
 
 
-def world(tag, state_id, prior=False, deferred_rule=None):
+def world(tag, state_id, unpaced=False, held=None):
     r = DatedRuntime()
-    if prior:
-        r.triggers['camp_occ_origin_campaign_deferred'] = list(PRIOR_RULE)
-    if deferred_rule is not None:
-        r.triggers['camp_occ_origin_campaign_deferred'] = deferred_rule
+    if unpaced:
+        r.triggers['camp_occ_origin_campaign_deferred'] = list(UNPACED_RULE)
     r.date = datetime.date(1941, 7, 1)
     ger = r.country('GER')
     ger['flags'].add('origin_test_campaign_eligible')
+    # Germany's campaign opened on CAMPAIGN_OPENED; German authority over the origin
+    # state began on `held`. Both flags carry the staged day, as the production pass
+    # would record them.
+    ger['flags'].add('camp_occ_campaign_opened')
+    ger.setdefault('flag_dates', {})['camp_occ_campaign_opened'] = CAMPAIGN_OPENED
     r.run('camp_occ_initialize_country', 'GER')
     r.scopes[tag] = {'id': tag, 'exists': True, 'flags': set(), 'arrays': {}, 'mods': set()}
     r.global_flags.add('test_exists_' + tag)
     population, allocated = allocation(tag.lower(), state_id)
     r.scopes[state_id] = {
-        'id': state_id, 'state': state_id, 'flags': {'camp_occ_origin_assigned', 'test_continent_europe'},
+        'id': state_id, 'state': state_id, 'flags': {'camp_occ_origin_assigned', 'test_continent_europe', 'camp_occ_german_authority_held'},
+        'flag_dates': {'camp_occ_german_authority_held': held or held_since(tag, state_id)},
         'arrays': {}, 'mods': set(), 'owner': tag, 'controller': 'GER', 'cores': {tag},
         'state_population_k': population / 1000, 'chaos_state_civilian_deaths_total': 0,
         'camp_occ_origin_country': tag, 'camp_occ_origin_ceiling_k': allocated / 1000,
@@ -164,7 +178,7 @@ def world(tag, state_id, prior=False, deferred_rule=None):
     }
     ger['arrays'].setdefault('camp_occ_eligible_states', []).append(state_id)
     # Seed the production row once, independently of the monthly country
-    # registration scan, so this suite isolates only campaign-date eligibility.
+    # registration scan, so this suite isolates only campaign-age eligibility.
     r.temp.update(camp_occ_source_proven=1, camp_occ_source_requested_k=allocated / 1000,
                   camp_occ_source_membership_k=allocated / 1000, camp_occ_source_authority='GER',
                   camp_occ_source_profile=r.constants['camp_occ_profile.germany'])
@@ -183,9 +197,12 @@ def deaths(r):
     return round(sum(rows.get('camp_occ_row_deaths_k', [])) * 1000)
 
 
-def origin_scope(r, tag, state_id=None):
+def origin_scope(r, tag, state_id=None, held=None):
     key = state_id if state_id is not None else 'origin_' + tag
     r.scopes[key] = {'id': key, 'state': key, 'flags': set(), 'arrays': {}, 'mods': set(), 'cores': {tag}}
+    if held is not None:
+        r.scopes[key]['flags'].add('camp_occ_german_authority_held')
+        r.scopes[key]['flag_dates'] = {'camp_occ_german_authority_held': held}
     return key
 
 
@@ -201,43 +218,86 @@ def by_origin(rows):
     return totals
 
 
+def deferred(r, scope):
+    return r.cond([('camp_occ_origin_campaign_deferred', '=', 'yes')], scope)
+
+
 def tests():
     cases = []
     results = {}
+    assert FOREIGN_ORIGIN_CAMPAIGN_DAYS == 240 and FOREIGN_ORIGIN_HELD_DAYS == 45, 'camp_occ_timing constants changed'
 
-    # 1. The production trigger at each documented boundary, including both
-    #    Greek regions and an Italian core state.
+    # 1. The production trigger at each boundary of the two ages, including both Greek
+    #    regions and an Italian core state. Denmark is covered by its own shield below.
     r = DatedRuntime()
+    r.global_flags.add('test_exists_DEN')
+    r.scopes['DEN'] = {'id': 'DEN', 'exists': True, 'flags': set(), 'arrays': {}, 'mods': set(), 'has_war': False, 'wars': set()}
+    ger = r.country('GER')
     boundaries = {}
     boundary_cases = {
-        'DEN': ('DEN', 37, START['DEN']),
-        'FRA': ('FRA', 16, START['FRA']),
-        'HOL': ('HOL', 7, START['HOL']),
-        'BEL': ('BEL', 6, START['BEL']),
-        'NOR': ('NOR', 110, START['NOR']),
-        'GRE_SALONIKA': ('GRE', 731, START['GRE']),
-        'GRE_OTHER': ('GRE', 47, GREEK_OTHER_START),
-        'ITA': ('ITA', 114, ITALIAN_START),
+        'FRA': ('FRA', 16, HELD['FRA']),
+        'HOL': ('HOL', 7, HELD['HOL']),
+        'BEL': ('BEL', 6, HELD['BEL']),
+        'NOR': ('NOR', 110, HELD['NOR']),
+        'GRE_SALONIKA': ('GRE', 731, HELD['GRE_SALONIKA']),
+        'GRE_OTHER': ('GRE', 47, HELD['GRE_OTHER']),
+        'ITA': ('ITA', 114, HELD['ITA']),
     }
-    for label, (tag, state_id, start) in boundary_cases.items():
-        scope = origin_scope(r, tag, state_id)
-        r.date = start - datetime.timedelta(days=1)
-        before = r.cond([('camp_occ_origin_campaign_deferred', '=', 'yes')], scope)
-        r.date = start
-        after = r.cond([('camp_occ_origin_campaign_deferred', '=', 'yes')], scope)
-        r.date = datetime.date(1941, 7, 1)
-        early = r.cond([('camp_occ_origin_campaign_deferred', '=', 'yes')], scope)
-        assert before and early and not after, (tag, before, after, early)
-        boundaries[label] = {'origin': tag, 'state_id': state_id, 'deferred_until': start.isoformat(),
-                             'first_campaign_pass': '%d-%02d' % first_pass_month(tag, state_id)}
+    for label, (tag, state_id, held) in boundary_cases.items():
+        scope = origin_scope(r, tag, state_id, held=held)
+        end = deferral_end(held)
+        ger['flags'].add('camp_occ_campaign_opened')
+        ger.setdefault('flag_dates', {})['camp_occ_campaign_opened'] = CAMPAIGN_OPENED
+        r.date = end - datetime.timedelta(days=1)
+        before = deferred(r, scope)
+        r.date = end
+        after = deferred(r, scope)
+        r.date = CAMPAIGN_OPENED + datetime.timedelta(days=10)
+        early = deferred(r, scope)
+        assert before and early and not after, (label, before, after, early)
+        # Each age alone is not enough: a fresh campaign or a fresh conquest keeps the origin deferred.
+        young = origin_scope(r, tag, 'young_' + str(state_id), held=end)
+        r.date = end
+        assert deferred(r, young), (label, 'authority held only a day')
+        boundaries[label] = {'origin': tag, 'state_id': state_id, 'authority_since': held.isoformat(),
+                             'deferred_until': end.isoformat(), 'first_campaign_pass': '%d-%02d' % first_pass_month(tag, state_id)}
+    # A campaign younger than its threshold defers even a long-held state.
+    fresh = origin_scope(r, 'FRA', 'fresh_fra', held=HELD['FRA'])
+    r.date = CAMPAIGN_OPENED + datetime.timedelta(days=FOREIGN_ORIGIN_CAMPAIGN_DAYS)
+    assert deferred(r, fresh)
+    r.date = CAMPAIGN_OPENED + datetime.timedelta(days=FOREIGN_ORIGIN_CAMPAIGN_DAYS + 1)
+    assert not deferred(r, fresh)
+    # No campaign yet: every paced origin is deferred.
+    ger['flags'].discard('camp_occ_campaign_opened')
+    r.date = datetime.date(1945, 1, 1)
+    assert deferred(r, fresh)
+    ger['flags'].add('camp_occ_campaign_opened')
     for tag in UNDEFERRED:
-        scope = origin_scope(r, tag)
-        r.date = datetime.date(1941, 7, 1)
-        assert not r.cond([('camp_occ_origin_campaign_deferred', '=', 'yes')], scope), tag
+        scope = origin_scope(r, tag, held=HELD['FRA'])
+        r.date = CAMPAIGN_OPENED + datetime.timedelta(days=10)
+        assert not deferred(r, scope), tag
     results['deferral_boundaries'] = boundaries
-    cases.append('the production deferral holds the day before and not on the documented start for Denmark, the Western origins, Salonika state 731, other Greek cores, and Italian cores; the non-dated Poland, Soviet, Baltic, Czech, Yugoslav and Hungarian origins remain unchanged')
+    cases.append('the production deferral holds until both the campaign is older than %d days and German authority has held the state more than %d days, for France, the Low Countries, Norway, Salonika state 731, other Greek cores and Italian cores; a young campaign, a fresh conquest and a missing campaign each keep the origin deferred, and the unpaced Poland, Soviet, Baltic, Czech, Yugoslav and Hungarian origins are never deferred' % (FOREIGN_ORIGIN_CAMPAIGN_DAYS, FOREIGN_ORIGIN_HELD_DAYS))
 
-    # 2. The 13-state dated sensitivity before and after the change.
+    # Denmark: the cooperating government shields its Jews while it stands unbeaten and at peace.
+    den = origin_scope(r, 'DEN', 37, held=HELD['DEN'])
+    r.date = deferral_end(HELD['DEN']) + datetime.timedelta(days=400)
+    assert deferred(r, den), 'both ages long passed, government standing'
+    r.scopes['DEN']['wars'] = {'GER'}
+    r.scopes['DEN']['has_war'] = True
+    assert not deferred(r, den), 'at war with Germany ends the shield'
+    r.scopes['DEN']['wars'] = set()
+    r.scopes['DEN']['has_war'] = False
+    r.scopes['DEN']['has_capitulated'] = True
+    assert not deferred(r, den), 'a fallen government ends the shield'
+    r.scopes['DEN']['has_capitulated'] = False
+    r.date = CAMPAIGN_OPENED + datetime.timedelta(days=10)
+    r.scopes['DEN']['has_capitulated'] = True
+    assert deferred(r, den), 'a fallen government alone does not skip the campaign ages'
+    results['denmark_shield'] = {'standing': 'deferred', 'at_war_with_germany': 'released', 'capitulated': 'released', 'campaign_young': 'deferred'}
+    cases.append('Denmark stays deferred while its government stands unbeaten and at peace with Germany, is released when it goes to war with Germany or falls, and still waits for the campaign and authority ages')
+
+    # 2. The 13-state sensitivity before and after the campaign-age rule.
     nine, nine_rows = stored_windows('staged_nine_state_direct_control_sensitivity')
     four, four_rows = stored_windows('staged_four_additional_state_direct_control_sensitivity')
     assert [w for w in nine] == [(o, s, f, l) for o, s, f, l in NINE_STAGED_CONTROL_WINDOWS]
@@ -272,14 +332,15 @@ def tests():
         'campaign_months_after': sum(row['accepted_campaign_receipts'] for row in after_rows),
         'apportioned_source_people': sum(row['apportioned_source_people'] for row in after_rows),
     }
-    cases.append('13-state dated sensitivity: modeled campaign deaths fall from %d to %d; only the FRA, HOL, BEL, NOR and GRE rows change, and every row still conserves its people' % (total_before, total_after))
+    cases.append('13-state sensitivity: modeled campaign deaths fall from %d (unpaced) to %d once paced origins wait for the campaign age; only the FRA, HOL, BEL, NOR and GRE rows change, and every row still conserves its people' % (total_before, total_after))
 
-    # The existing 13-state set has only Salonika state 731. Add one other
-    # Greek core and one Italian core for the newly dated zones, comparing the
-    # previous policy with the current dates over the same declared window.
+    # The 13-state set has only Salonika state 731. Add one other Greek core and one
+    # Italian core, comparing the unpaced campaign with the paced one over the same window.
+    gre_first = (HELD['GRE_OTHER'].year, HELD['GRE_OTHER'].month)
+    ita_first = (HELD['ITA'].year, HELD['ITA'].month)
     representative_windows = [
-        ('gre', 47, (first_pass_month('GRE', 731)[0], first_pass_month('GRE', 731)[1]), (1945, 4)),
-        ('ita', 114, (1941, 7), (1945, 4)),
+        ('gre', 47, gre_first, (1945, 4)),
+        ('ita', 114, ita_first, (1945, 4)),
     ]
     representative_before = staged_direct_control_rows(representative_windows)
     representative_after = staged_direct_control_rows(adjusted(representative_windows))
@@ -297,18 +358,19 @@ def tests():
             'source_people': new['apportioned_source_people'],
         }
     results['incremental_greek_other_and_italian_sensitivity'] = representative_sensitivity
-    cases.append('representative Thessaly state 47 and Italian Sardinia state 114 sensitivity reruns the prior and new dated windows with conserved source people')
+    cases.append('representative Thessaly state 47 and Italian Sardinia state 114 sensitivity reruns the unpaced and paced windows with conserved source people')
 
-    # 3. The production monthly pass matches the rerun for each changed origin, before and after.
+    # 3. The production monthly pass matches the rerun for each changed origin, unpaced and paced.
     production = {}
     for origin, state_id, first, last in nine + four:
         tag = origin.upper()
         if tag not in ('FRA', 'HOL', 'BEL', 'NOR', 'GRE'):
             continue
-        old_world, allocated = world(tag, state_id, prior=True)
+        began = datetime.date(first[0], first[1], 1)
+        old_world, allocated = world(tag, state_id, unpaced=True, held=began)
         run_months(old_world, (1941, 7), last)
-        new_world, _ = world(tag, state_id)
-        start = first_pass_month(tag, state_id)
+        new_world, _ = world(tag, state_id, held=began)
+        start = first_pass_of(deferral_end(began))
         previous = (start[0], start[1] - 1) if start[1] > 1 else (start[0] - 1, 12)
         run_months(new_world, (1941, 7), previous)
         assert deaths(new_world) == 0, (tag, deaths(new_world))
@@ -323,16 +385,16 @@ def tests():
                            'production_deaths_before': deaths(old_world), 'production_deaths_after': deaths(new_world),
                            'model_deaths_before': old_model, 'model_deaths_after': new_model}
     results['production_monthly_pass'] = production
-    cases.append('the production monthly pass records no campaign death for a FRA, HOL, BEL, NOR or GRE origin row before its first deportation month and then matches the rerun sensitivity within one person per campaign month, before and after the change')
+    cases.append('the production monthly pass records no campaign death for a FRA, HOL, BEL, NOR or GRE origin row before the campaign and authority ages pass, then matches the rerun sensitivity within one person per campaign month, unpaced and paced')
 
     # Run the production monthly pass for an additional Greek zone and Italy.
-    # The baseline preserves the old shared Greek date and has no Italian date.
     incremental_production = {}
-    for tag, state_id, last in (('GRE', 47, (1945, 4)), ('ITA', 114, (1945, 4))):
-        old_world, allocated = world(tag, state_id, deferred_rule=PRE_GREECE_ITALY_RULE)
-        run_months(old_world, (1941, 7), last)
-        new_world, _ = world(tag, state_id)
-        start = first_pass_month(tag, state_id)
+    for tag, state_id, first, last in (('GRE', 47, gre_first, (1945, 4)), ('ITA', 114, ita_first, (1945, 4))):
+        began = datetime.date(first[0], first[1], 1)
+        old_world, allocated = world(tag, state_id, unpaced=True, held=began)
+        run_months(old_world, first, last)
+        new_world, _ = world(tag, state_id, held=began)
+        start = first_pass_of(deferral_end(began))
         previous = (start[0], start[1] - 1) if start[1] > 1 else (start[0] - 1, 12)
         run_months(new_world, (1941, 7), previous)
         assert deaths(new_world) == 0, (tag, state_id, deaths(new_world))
@@ -349,9 +411,9 @@ def tests():
             'model_deaths_before': old_model, 'model_deaths_after': new_model,
         }
     results['incremental_production_monthly_pass'] = incremental_production
-    cases.append('the production monthly pass records no Greek-other or Italian campaign death before its new first month, then matches each representative sensitivity within one person per campaign month')
+    cases.append('the production monthly pass records no Greek-other or Italian campaign death before the ages pass, then matches each representative sensitivity within one person per campaign month')
 
-    # 4. The manual Auschwitz order reads the same dates.
+    # 4. The manual Auschwitz order reads the same gate.
     manual = {}
     for tag, state_id in (('FRA', 16), ('HOL', 7), ('BEL', 6), ('NOR', 110), ('GRE', 731), ('GRE', 47), ('ITA', 114)):
         m, _ = world(tag, state_id)
@@ -359,19 +421,19 @@ def tests():
         previous = (start[0], start[1] - 1) if start[1] > 1 else (start[0] - 1, 12)
         run_months(m, (1941, 7), previous)
         m.scopes[state_id]['camp_occ_cohort_origin_state'] = state_id
-        origin_date = origin_start(tag, state_id)
-        m.date = origin_date - datetime.timedelta(days=1)
+        end = deferral_end(held_since(tag, state_id))
+        m.date = end - datetime.timedelta(days=1)
         early = m.cond([('camp_occ_manual_transfer_source_ready', '=', 'yes')], state_id)
         deferral = m.triggers['camp_occ_origin_campaign_deferred']
-        m.triggers['camp_occ_origin_campaign_deferred'] = list(PRIOR_RULE)
-        early_prior = m.cond([('camp_occ_manual_transfer_source_ready', '=', 'yes')], state_id)
+        m.triggers['camp_occ_origin_campaign_deferred'] = list(UNPACED_RULE)
+        early_unpaced = m.cond([('camp_occ_manual_transfer_source_ready', '=', 'yes')], state_id)
         m.triggers['camp_occ_origin_campaign_deferred'] = deferral
-        m.date = origin_date
+        m.date = end
         late = m.cond([('camp_occ_manual_transfer_source_ready', '=', 'yes')], state_id)
-        assert not early and late and early_prior, (tag, early, late, early_prior)
-        manual[tag + '_' + str(state_id)] = {'source_ready_day_before': early, 'source_ready_day_before_under_prior_rule': early_prior, 'source_ready_on_start': late}
+        assert not early and late and early_unpaced, (tag, early, late, early_unpaced)
+        manual[tag + '_' + str(state_id)] = {'source_ready_day_before': early, 'source_ready_day_before_unpaced': early_unpaced, 'source_ready_on_first_open_day': late}
     results['manual_transfer_source'] = manual
-    cases.append('the manual Auschwitz order skips French, Dutch, Belgian, Norwegian, Salonika, other Greek, and Italian source cohorts before their own start dates and permits them on those dates')
+    cases.append('the manual Auschwitz order skips French, Dutch, Belgian, Norwegian, Salonika, other Greek and Italian source cohorts until the campaign and authority ages pass, and permits them from the first open day')
 
     # 5. The generic campaign rate is unchanged.
     assert constant('german_campaign_monthly_fraction') == D('0.025')
@@ -382,6 +444,6 @@ def tests():
 if __name__ == '__main__':
     cases, results = tests()
     payload = {'status': 'passed', 'count': len(cases), 'cases': cases, 'scenarios': results,
-               'limits': 'Parsed production triggers/effects with harness primitives, declared GER controllers over staged windows, and monthly passes on the first of each month. The harness seeds an aligned cohort row and mocks its provenance/row proof to isolate date eligibility; extended partner orders use their separate suite. Modeled campaign cause only; no deportation, arrival, custody or outside losses; no HOI4 execution.'}
+               'limits': 'Parsed production triggers/effects with harness primitives, declared GER controllers over staged windows, and monthly passes on the first of each month. The harness stages the campaign opening and each state\'s German authority day, seeds an aligned cohort row and mocks the population and Deaths primitives; it is not HOI4 execution.'}
     (HERE / 'deportation_start_dates_source_results.json').write_text(json.dumps(payload, indent=2) + '\n')
     print(json.dumps(payload, indent=2))

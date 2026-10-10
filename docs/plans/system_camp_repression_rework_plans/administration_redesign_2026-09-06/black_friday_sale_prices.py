@@ -39,8 +39,7 @@ SALE_RATIOS = (10000, 5000, 2500)
 PRICE_GROUPS = ('camp_rework_cost.', 'camp_rework_equipment_cost.', 'genocide_decision_cost.', 'camp_occ_partner_response.')
 CREDIT_COUNTER = 'camp_test_black_friday_credits'
 TABLE_RATIO = 'global.black_friday_price_table_ratio'
-SALE_HELPER_EFFECTS = ('camp_rework_mark_sale_stock_equipment', 'camp_rework_mark_sale_stock_convoys',
-                       'camp_rework_credit_sale_order')
+SALE_HELPER_EFFECTS = ('camp_rework_mark_sale_stock_equipment', 'camp_rework_credit_sale_order')
 
 
 def _constants(path, categories):

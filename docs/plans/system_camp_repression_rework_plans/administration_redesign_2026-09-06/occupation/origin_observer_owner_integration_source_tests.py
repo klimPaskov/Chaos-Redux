@@ -20,6 +20,11 @@ class JoinedRuntime(OriginRuntime):
         # Country campaign eligibility is an explicitly declared external actor
         # assumption. All owned route, row, scope, physical and bind gates run.
         self.triggers["camp_occ_authority_has_campaign"] = [("has_country_flag", "=", "origin_test_campaign_eligible")]
+        # The same declared assumption opens the campaign: the production monthly pass
+        # then records camp_occ_campaign_opened on its first run, and the day-count
+        # gates (campaign age, held age, partner windows) run against that real date.
+        self.triggers["camp_occ_campaign_can_open"] = [("has_country_flag", "=", "origin_test_campaign_eligible")]
+        self.triggers["camp_admin_country_regime_valid"] = []
         self.effects["camp_rework_register_country_for_monthly_pulse"] = []
         self.effects["origin_test_add_manpower"] = []
         self.after_bind = False

@@ -24,7 +24,10 @@ class KrakowSetupTests(unittest.TestCase):
     def test_context_and_spending_are_separate_for_ai_budget(self):
         context = block(TRIGGERS, "camp_admin_ger_krakow_setup_context", "camp_admin_ger_krakow_setup_eligible")
         eligible = block(TRIGGERS, "camp_admin_ger_krakow_setup_eligible", "camp_admin_country_regime_valid")
-        self.assertIn("date > 1943.5.29", context)
+        self.assertIsNone(re.search(r"\bdate\s*[<>]", context))
+        self.assertIn("camp_admin_country_nazi_authority = yes", context)
+        self.assertIn("camp_admin_ger_war_of_conquest = yes", context)
+        self.assertIn("camp_admin_mandate > constant:camp_admin_mandate.custody", context)
         self.assertIn("88 = {", context)
         self.assertIn("camp_occ_state_has_german_authority = yes", context)
         self.assertIn("NOT = { concentration_camp > 0 }", context)

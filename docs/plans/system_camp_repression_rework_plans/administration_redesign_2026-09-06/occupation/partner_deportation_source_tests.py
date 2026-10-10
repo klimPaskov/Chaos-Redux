@@ -1,4 +1,9 @@
-"""Hungary 1944 partner deportation through the production occupation pass.
+"""Hungarian partner deportation through the production occupation pass.
+
+The order window follows German domination of Hungary (the HUN flag
+camp_occ_partner_dominated, set by the production monthly pass), not a calendar date:
+it stands from camp_occ_timing.hun_order_delay_days to hun_order_end_days after the flag.
+The harness stages the German occupation of Hungary on DOMINATION_DAY.
 
 Runs the real camp_occ_monthly_country, partner registration, exact custody
 transfer, arrival-phase loss and closure bodies with the existing joined
@@ -155,6 +160,10 @@ def allocations():
 
 HUN_STATES = tuple(sorted(allocations()))
 
+# Harness timeline only: the day German domination of Hungary begins. The deportation
+# window (57 to 113 days later) is derived from the production flag, not from this date.
+DOMINATION_DAY = datetime.date(1944, 3, 19)
+
 
 def world(government='fascism', faction=True, puppet=False, at_war=False, destination='killing', runtime=PartnerRuntime):
     r = runtime()
@@ -181,6 +190,11 @@ def world(government='fascism', faction=True, puppet=False, at_war=False, destin
         }
     site = r.state(88, 'GER', population=2000, buildings=2)
     site.update(extermination_camp=2, camp_admin_support_ratio=1)
+    # The production monthly pass opens Germany's campaign and, while Hungary stands under
+    # German influence, records the domination day that starts the order clock.
+    r.date = DOMINATION_DAY
+    r.run('camp_occ_monthly_country', 'GER')
+    r.date = datetime.date(1944, 5, 1)
     if destination == 'killing':
         site['camp_admin_role'] = r.constants['camp_admin_role.killing']
     elif destination == 'detention':
@@ -225,7 +239,7 @@ def tests():
     r = world()
     share = r.constants['camp_occ_partner.hungary_deportation_share']
     run_months(r, (1944, 5), (1944, 5))
-    assert not hungarian_rows(r), 'no registration before 15 May 1944'
+    assert not hungarian_rows(r), 'no registration before the order window opens (43 days after domination)'
     population_before = {s: r.scopes[s]['state_population_k'] for s in HUN_STATES + (88,)}
     debits, credits, logged = r.debits, r.credits, r.logged
     r.date = datetime.date(1944, 6, 1)
@@ -269,7 +283,7 @@ def tests():
     assert second['deported_people'] >= first['deported_people']
     run_months(r, (1944, 8), (1944, 9))
     final = snapshot(r)
-    assert final['deported_people'] == second['deported_people'], 'no movement after 9 July 1944'
+    assert final['deported_people'] == second['deported_people'], 'no movement after the order window closes (113 days after domination)'
     for i in hungarian_rows(r):
         host = rows['camp_occ_row_hosts'][i]
         assert 'camp_occ_closed' in r.scopes[host]['flags']
@@ -278,7 +292,7 @@ def tests():
     assert final['registered_people'] == final['deported_people'] + final['released_at_home_people']
     assert final['registered_people'] <= round(allocated * share) + len(HUN_STATES)
     results['fascist_axis_hungary'] = dict(final, origin_ceiling_people=allocated, order_share=share)
-    cases.append('after the 9 July 1944 halt nothing more moves; every Hungarian host closes and its remaining order cohort (%d people) is released at home; no campaign death is recorded inside Hungary; registered = deported + released' % final['released_at_home_people'])
+    cases.append('after the order window closes nothing more moves; every Hungarian host closes and its remaining order cohort (%d people) is released at home; no campaign death is recorded inside Hungary; registered = deported + released' % final['released_at_home_people'])
 
     # Repeat month does nothing twice.
     again = copy.deepcopy(r.scopes)
@@ -304,12 +318,19 @@ def tests():
         assert bad.debits == 0 and bad.credits == 0 and bad.logged == 0, label
         cases.append('%s: nothing is registered, moved or recorded' % label)
 
-    for year in (1942, 1943):
-        r2 = world()
-        r2.date = datetime.date(year, 6, 1)
-        r2.run('camp_occ_monthly_country', 'GER')
-        assert not hungarian_rows(r2)
-    cases.append('outside 15 May - 9 July 1944 (June 1942, June 1943) nothing is registered or moved')
+    # Before domination there is no order clock; after the window closes nothing starts again.
+    early = world()
+    early.scopes['HUN']['flags'].discard('camp_occ_partner_dominated')
+    early.scopes['HUN'].get('flag_dates', {}).pop('camp_occ_partner_dominated', None)
+    early.scopes['HUN']['flags'].discard('test_faction_GER')
+    early.date = datetime.date(1944, 6, 1)
+    early.run('camp_occ_monthly_country', 'GER')
+    assert not hungarian_rows(early)
+    closed = world()
+    closed.date = datetime.date(1944, 8, 1)
+    closed.run('camp_occ_monthly_country', 'GER')
+    assert not hungarian_rows(closed)
+    cases.append('before German domination starts the clock, and again after the window closes, nothing is registered or moved')
 
     # Hungary leaves the faction after the first pass: the order lapses, hosts close.
     lapse = world()

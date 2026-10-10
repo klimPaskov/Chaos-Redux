@@ -1,4 +1,5 @@
 from pathlib import Path
+import re
 import sys
 sys.path.insert(0, str(Path(__file__).resolve().parents[4] / 'docs/plans/system_camp_repression_rework_plans/administration_redesign_2026-09-06'))
 from foundation_source_tests import parse, get
@@ -88,7 +89,7 @@ def test_country_settlements():
     assert not run_finish('USA', progress=constant('review_months') - 1).__contains__('camp_admin_civil_review_complete')
     assert not run_finish('USA', ready=False).__contains__('camp_admin_civil_review_complete')
 
-def test_achievement_68_and_claims_date():
+def test_achievement_68_and_claims_open():
     block68 = block(ACHIEVEMENTS, '000_chaos_redux_68_roads_without_camps')
     text = str(block68)
     assert 'camp_admin_civil_review_complete' in text and 'camp_rework_italy_desert_camps_closed' in text
@@ -96,7 +97,8 @@ def test_achievement_68_and_claims_date():
     assert 'camp_rework_achievement_italy_conventional_garrison_used' not in text
     assert 'is_core_of' in text and 'infrastructure' in text and 'divisions_in_state' in text
     source = CLAIMS.read_text(encoding='utf-8-sig')
-    assert 'date > 1948.7.1' in source
+    assert 'camp_administration_civil_usa_claims_open = yes' in source
+    assert not re.search(r'\bdate\s*[<>]', source)
     assert 'camp_rework_achievement_usa_redress_before_victory' in source
     assert 'has_war = yes' in source[source.index('camp_rework_achievement_usa_redress_before_victory')-80:source.index('camp_rework_achievement_usa_redress_before_victory')]
     loc = LOCALISATION.read_text(encoding='utf-8-sig')
@@ -105,5 +107,5 @@ def test_achievement_68_and_claims_date():
 
 if __name__ == '__main__':
     test_country_settlements()
-    test_achievement_68_and_claims_date()
-    print('PASS: ENG, USA wartime, USA peacetime, ITA review completion; progress/readiness gates; 68 retained-state checks; 1948 claims date.')
+    test_achievement_68_and_claims_open()
+    print('PASS: ENG, USA wartime, USA peacetime, ITA review completion; progress/readiness gates; 68 retained-state checks; claims open once relocation authority ends and the war is over.')

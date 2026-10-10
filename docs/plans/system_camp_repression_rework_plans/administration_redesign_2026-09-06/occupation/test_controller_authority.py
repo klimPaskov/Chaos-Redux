@@ -100,7 +100,7 @@ class ControllerAuthorityTests(unittest.TestCase):
         self.assertIn("camp_occ_eligible_states", track)
         self.assertIn("camp_occ_state_has_german_authority = yes", block(SITE_TRIGGERS, "camp_admin_site_authority_is_valid"))
         self.assertIn("camp_occ_state_has_german_authority = yes", block(COUNTRY_TRIGGERS, "camp_admin_ger_krakow_setup_context"))
-        self.assertIn("camp_occ_state_has_german_authority = yes", block(COUNTRY_TRIGGERS, "camp_admin_country_mengele_historical_gate"))
+        self.assertIn("camp_occ_state_has_german_authority = yes", block(COUNTRY_TRIGGERS, "camp_admin_country_mengele_site_gate"))
         legacy = (ROOT / 'common/scripted_triggers/germany_mengele_triggers.txt').read_text(encoding='utf-8-sig')
         self.assertIn('camp_occ_state_has_german_authority = yes', block(legacy, 'germany_controls_auschwitz_area'))
         self.assertIn("camp_occ_state_has_german_authority = yes", block(TRIGGERS, "camp_occ_killing_destination_active"))
