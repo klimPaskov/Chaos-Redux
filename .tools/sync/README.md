@@ -1,48 +1,69 @@
 # Agent synchronizers
 
-This directory contains the maintained one-way generators that project canonical `.codex/agents/*.toml` definitions into the Qoder, Cursor, opencode, and Claude Code runtime formats.
+This directory holds the maintained one-way generator that projects the canonical Claude Code definitions into the other runtimes, plus the shared read-limit applier.
 
-DSH is intentionally absent.
-It reads `AGENTS.md` and `.agents/skills/` directly, so it has neither generated agent files nor a skills mirror to refresh. Its layout and its profile-scoped MCP registration are documented in [`docs/runtimes.md`](../../docs/runtimes.md).
+Claude Code is the primary development environment.
+The canonical sources are:
 
-The available generator commands are:
+- `.claude/agents/<kebab-name>.md` for subagents, with `name`, `description`, and `model` (`haiku`, `sonnet`, or `opus`) frontmatter and a runtime-neutral prompt body.
+- `.claude/skills/<name>/` for skills, including their `references/`, `assets/`, `tools/`, and `templates/`.
+- `CLAUDE.md` for the Claude Code project instructions.
+
+Everything else is generated or maintained per runtime, and none of it is a second authoring source.
 
 ```powershell
-python .tools/sync/sync_qoder_agents.py
-python .tools/sync/sync_cursor_agents.py
-python .tools/sync/sync_opencode_agents.py
-python .tools/sync/sync_claude_agents.py
+python .tools/sync/sync_agents.py                 # every target
+python .tools/sync/sync_agents.py codex skills    # selected targets
+python .tools/sync/sync_agents.py --verify        # read the outputs back and compare with the routing policy
+python .tools/sync/sync_read_limits.py --check    # reader and output budgets
 ```
 
-The Codex TOML files remain authoritative. Never hand-edit generated Qoder, Cursor, opencode, or Claude Code agent definitions.
+## What each target writes
 
-## What each generator writes
+| Target | Writes | Destination | Tracked |
+| --- | --- | --- | --- |
+| `claude-map` | Subagent map derived from the canonical frontmatter | `.claude/agent-map.md` | yes |
+| `codex` | Codex subagent TOMLs with the tier-mapped model and reasoning effort | `.codex/agents/*.toml` | no |
+| `qoder` | Qoder subagents with a tool list derived from the authority class | `.qoder/agents/*.md` | no |
+| `cursor` | Cursor subagents and agent map | `.cursor/agents/*.md`, `.cursor/agent-map.md` | no |
+| `opencode` | opencode subagents and agent map | `.opencode/agent/*.md`, `.opencode/agent-map.md` | no |
+| `skills` | Shared skill root: a junction (or copy) per skill | `.agents/skills/<name>` to `.claude/skills/<name>` | no |
 
-| Generator | Writes | Destinations |
-| --- | --- | --- |
-| `sync_qoder_agents.py` | Qoder subagent definitions | `.qoder/agents/*.md` |
-| `sync_cursor_agents.py` | Cursor subagent definitions | `.cursor/agents/*.md`, `.cursor/agent-map.md` |
-| `sync_opencode_agents.py` | opencode subagent definitions | `.opencode/agent/*.md`, `.opencode/agent-map.md` |
-| `sync_claude_agents.py` | Claude Code subagents, skill links, MCP registration, and the generated instruction copy | `.claude/agents/*.md`, `.claude/skills/<name>`, `.claude/agent-map.md`, repo-root `.mcp.json`, repo-root `CLAUDE.md` |
+`.agents/skills/` is the shared skill root read by Codex, DSH, and opencode.
+It is a mirror, so `.agents/skills/<name>/SKILL.md` and `.claude/skills/<name>/SKILL.md` are the same file.
+A new skill is created under `.claude/skills/<name>/` and the `skills` target links it.
+After a fresh clone, run `python .tools/sync/sync_agents.py` once to create every ignored runtime artifact.
+Pass `--mode copy` to copy skills instead of linking them, for a machine or archive where junctions are unavailable.
+A refused junction degrades to a copy and the run reports it.
 
-`sync_claude_agents.py` writes more than agent definitions because Claude Code has no configuration option that points at an external skills folder or a shared MCP file, and it reads `CLAUDE.md` rather than `AGENTS.md`.
-It therefore also writes the repo-root `CLAUDE.md` as a byte-identical copy of `AGENTS.md`.
-`AGENTS.md` stays canonical; rerun this generator after changing it and commit the generated copy with the source change.
-Claude Code project agents and the agent map are also versioned, while `.cursor/` stays local and gitignored.
-It mirrors each `.agents/skills/<name>` into `.claude/skills/<name>` as a Windows junction, so a skill's bundled `assets/` and `tools/` stay readable and the skill content stays single-sourced.
-Skill mirrors and Claude Code worktrees, lock files, and local settings remain gitignored.
-Pass `--mode copy` to copy the skill directories instead, for a machine or archive where junctions are unavailable.
-A junction that is refused degrades to a copy and the run reports it.
+## Runtime-specific facts
+
+`agent_profiles.json` holds what a single runtime needs and the canonical Markdown cannot carry:
+
+- `tier_policy` is the model routing table: Opus for the improvement loop planner; Sonnet for the 3D model pipeline, event completion auditor, localisation auditor, scripted system architect, and skill maintainer; Haiku for every other specialist.
+  `--verify` fails when a canonical definition drifts from it.
+- `tiers` maps each Claude tier to the model field of the other runtimes.
+  Codex pins a model and reasoning effort.
+  Cursor receives `fast` for Haiku and `inherit` otherwise.
+  opencode receives `inherit`, because no Anthropic model identifier is verified for it in this repository.
+  Qoder subagents have no model field.
+- `agents` holds each role's authority class (read-only, patch-capable, or asset and research) and the Codex nickname candidates.
+
+A new subagent needs its `.claude/agents/<name>.md` definition and one `agents` entry in the profile.
+The generator stops on a definition without an entry or with a model outside `haiku`, `sonnet`, and `opus`.
+
+## Instruction files
+
+`CLAUDE.md` is canonical for Claude Code and is edited directly.
+`AGENTS.md` serves Codex, Cursor, Qoder, opencode, and DSH, and keeps the Codex wording for image generation.
+The two files share their structure, so apply a rule change to both and keep only the runtime-specific image-generation wording different.
 
 ## Write rules
 
 Before running a generator, check the active runtime's destination-write rules in [`.codex/README.md`](../../.codex/README.md#anti-interference-and-instruction-changes).
-A listed command does not authorize writing another runtime's files.
-If the synchronization requirement conflicts with a rule to leave the destination untouched, preserve both requirements, record blocked synchronization, and request a specific ownership decision through the handoff.
-Keep canonical instruction changes and unresolved generated-file consistency visible in the same handoff.
+Generated agent folders accept only agent files, because Cursor, opencode, Qoder, and Claude Code load every Markdown file in them.
 
 ## Verification
 
-Every generator is idempotent, so a second run must report every artifact unchanged.
-Run the applicable generator twice and confirm the second run reports `0 created, 0 updated` and unchanged skills and MCP config.
-A stale definition that no longer has a canonical source is reported and left in place, never deleted, so a renamed agent shows up as a stale-file warning until the parent removes it deliberately.
+The generator is idempotent, so a second run must report `0 created, 0 updated` for every agent target and only unchanged skill links.
+A stale output without a canonical source is reported and left in place, never deleted, so a renamed agent shows up as a stale-file warning until the parent removes it deliberately.

@@ -1,8 +1,7 @@
 ---
-# Generated from .codex/agents/chaosx_asset_source_researcher.toml by python .tools/sync/sync_claude_agents.py. Do not hand-edit.
 name: chaosx-asset-source-researcher
 description: "Finds, verifies, and documents non-portrait real or archival visual source assets for Chaos Redux. Use for report, news, and super-event images, historical flags, and historically attested symbols. Character portraits belong entirely to chaosx_portrait_creator. Does not edit GFX or gameplay files."
-model: sonnet
+model: haiku
 ---
 
 You are the Chaos Redux sourced visual asset subagent.

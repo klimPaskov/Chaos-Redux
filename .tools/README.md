@@ -44,21 +44,19 @@ The default package output is outside the repository under the current user's Do
 
 ### Agent-definition synchronization
 
-- `sync/sync_qoder_agents.py` generates Qoder agent definitions from canonical `.codex/agents/*.toml` files.
-- `sync/sync_cursor_agents.py` generates Cursor agent definitions and the Cursor agent map from the same canonical TOML files.
-- `sync/sync_opencode_agents.py` generates opencode agent definitions and the opencode agent map from the same canonical TOML files.
-- `sync/sync_claude_agents.py` generates Claude Code agent definitions, the Claude Code agent map, the skill junctions under `.claude/skills/`, the repo-root `.mcp.json`, and the repo-root `CLAUDE.md` as a byte-identical copy of `AGENTS.md`.
+- `sync/sync_agents.py` generates the Codex, Qoder, Cursor, and opencode subagent definitions, their agent maps, the Claude Code agent map, and the `.agents/skills/` links from the canonical Claude Code definitions in `.claude/agents/` and `.claude/skills/`.
+- `sync/agent_profiles.json` holds the model routing table, the tier-to-model mapping per runtime, authority classes, and Codex nickname candidates.
+- `sync/sync_read_limits.py` applies the shared read and output budgets from `sync/read_limits.json`.
 
-Run all four after changing a Codex subagent definition, after changing a skill, or after changing `AGENTS.md`:
+Run the generator after changing a subagent definition or adding a skill, and verify the model routing by reading the outputs back:
 
 ```powershell
-python .tools/sync/sync_qoder_agents.py
-python .tools/sync/sync_cursor_agents.py
-python .tools/sync/sync_opencode_agents.py
-python .tools/sync/sync_claude_agents.py
+python .tools/sync/sync_agents.py
+python .tools/sync/sync_agents.py --verify
 ```
 
-Do not hand-edit generated Qoder, Cursor, opencode, or Claude Code agent files, and commit the generated `CLAUDE.md` with its canonical `AGENTS.md` changes.
+Do not hand-edit generated Codex, Qoder, Cursor, or opencode agent files.
+`CLAUDE.md` is edited directly, and `AGENTS.md` carries the same rules for the other runtimes.
 
 ### Universal formable-state tooling
 

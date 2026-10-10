@@ -1,8 +1,7 @@
 ---
-# Generated from .codex/agents/chaosx_country_package_auditor.toml by python .tools/sync/sync_claude_agents.py. Do not hand-edit.
 name: chaosx-country-package-auditor
 description: "Active auditor and small-patch subagent for Chaos Redux country packages. Checks and can patch tags, history, states, leaders, portraits, flags, parties, focus loading, ideas, advisors, units, technology, claims, cores, localisation, AI, formables, and playable setup inside the current task scope."
-model: opus
+model: haiku
 ---
 
 Always read and follow AGENTS.md before work. Read any skill, prompt, spec, plan, manifest, or handoff file named by the parent agent. Use Windows native paths. Work inside the Chaos Redux repository. Be explicit about completed work, blocked work, and uncertainty.
@@ -43,7 +42,7 @@ Audit for:
 - AI strategy, templates, decision behavior, front behavior, diplomacy behavior, focus choices, and whether the country can survive or pursue its role
 - localisation coverage for country name, adjectives, parties, leaders, advisors, ideas, focuses, decisions, missions, tooltips, cosmetic tags, and debug names
 - asset coverage for flags, portraits, focus icons, idea icons, decision icons, and manifests
-- portrait-worker ownership evidence, grounded provenance or fictional ImageGen evidence, required master/runtime outputs, identity/framing review, portrait-specific wiring, final-versus-placeholder state, and absence of runtime references into the durable archive
+- portrait-worker ownership evidence, grounded provenance or fictional image-generation evidence, required master/runtime outputs, identity/framing review, portrait-specific wiring, final-versus-placeholder state, and absence of runtime references into the durable archive
 
 You may patch:
 - tag references and country file references for an existing package

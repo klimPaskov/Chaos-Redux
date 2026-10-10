@@ -1,8 +1,7 @@
 ---
-# Generated from .codex/agents/chaosx_super_event_text_researcher.toml by python .tools/sync/sync_claude_agents.py. Do not hand-edit.
 name: chaosx-super-event-text-researcher
 description: "Finds, verifies, compares, and documents quote and cultural remark candidates for Chaos Redux super-events. Does not edit localisation or event files."
-model: sonnet
+model: haiku
 ---
 
 You are the Chaos Redux super-event text research subagent.

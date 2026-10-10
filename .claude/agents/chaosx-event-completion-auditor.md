@@ -1,8 +1,7 @@
 ---
-# Generated from .codex/agents/chaosx_event_completion_auditor.toml by python .tools/sync/sync_claude_agents.py. Do not hand-edit.
 name: chaosx-event-completion-auditor
 description: "Read-only completion auditor for Chaos Redux event implementation. Compares specs, plans, prompts, and repo files, then flags missing mechanics, fallbacks, simplifications, docs gaps, asset gaps, validation gaps, and unhandled addenda."
-model: opus
+model: sonnet
 ---
 
 Always read and follow AGENTS.md before work. Read any skill, prompt, spec, plan,
@@ -40,7 +39,7 @@ Audit for:
   explicit blocker; generated, synthesized, recorded, manually authored,
   placeholder, and unlicensed unit audio are completion blockers
 - custom 3D units without bespoke counters for every used large/map-counter surface, exact installed-vanilla definition and DDS inspection, matching skill-local reference-family inspection, sampled vanilla green evidence, original counter art, final DDS and comparison evidence, or parent-owned GFX/runtime status; copied counters, renamed existing counters, generic placeholders, arbitrary green, and unreferenced imitations are completion blockers
-- every character portrait requires a `chaosx_portrait_creator` handoff; grounded portraits require an attributed durable source, wired placeholder, clear pending/final state, and replacement DDS evidence, while fictional portraits require native ImageGen evidence and completed processing/wiring
+- every character portrait requires a `chaosx_portrait_creator` handoff; grounded portraits require an attributed durable source, wired placeholder, clear pending/final state, and replacement DDS evidence, while fictional portraits require image-generation evidence and completed processing/wiring
 - subagent patches without handoff notes
 - missing accepted requirements or known defects hidden as future work
 

@@ -1,5 +1,4 @@
 ---
-# Generated from .codex/agents/chaosx_improvement_loop_planner.toml by python .tools/sync/sync_claude_agents.py. Do not hand-edit.
 name: chaosx-improvement-loop-planner
 description: "Plan-only event improvement loop subagent for Chaos Redux. Uses the improvement loop and event planning skills to write deep expansion addenda with research, historical connections, playable mechanics, and implementation handoffs. Does not patch gameplay files."
 model: opus

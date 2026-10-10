@@ -5,6 +5,8 @@ Default: project Codex, Claude and OpenCode settings. --user-defaults also updat
 their user defaults. --dsh-profile names an existing profile patch explicitly.
 Cursor/Qoder have no verified equivalent setting; AGENTS.md carries the policy.
 Byte-based caps are explicit byte budgets, not exact tokenizer conversions.
+Measured with the Claude Code Read tool on repository skill prose: about 3.0 bytes per token.
+The guidance check lists skill files and instruction files over the byte ceilings.
 """
 import argparse
 import json
@@ -105,6 +107,28 @@ def dsh(path, limits, byte_limit, check):
     return write(path, updated, check)
 
 
+def guidance_over_budget(limits):
+    """Return (path, bytes, ceiling) for guidance files over their byte ceilings."""
+    ceiling = limits['guidance_file_tokens'] * limits['estimated_bytes_per_token']
+    root_ceiling = limits['root_skill_max_bytes']
+    found = []
+    for name in ('CLAUDE.md', 'AGENTS.md'):
+        path = ROOT / name
+        if path.is_file() and path.stat().st_size > ceiling:
+            found.append((path, path.stat().st_size, ceiling))
+    skills = ROOT / '.claude' / 'skills'
+    for skill in sorted(skills.iterdir()) if skills.is_dir() else []:
+        root_file = skill / 'SKILL.md'
+        if root_file.is_file() and root_file.stat().st_size > root_ceiling:
+            found.append((root_file, root_file.stat().st_size, root_ceiling))
+        for path in sorted(skill.rglob('*.md')):
+            if path == root_file or 'assets' in path.relative_to(skill).parts:
+                continue
+            if path.stat().st_size > ceiling:
+                found.append((path, path.stat().st_size, ceiling))
+    return found
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--check', action='store_true', help='Report drift without writing; exit 1 for drift')
@@ -115,6 +139,8 @@ def main():
     for key, value in limits.items():
         if type(value) is not int or value <= 0:
             raise ValueError(key + ' must be a positive integer')
+    if limits['root_skill_max_bytes'] > limits['guidance_file_tokens'] * limits['estimated_bytes_per_token']:
+        raise ValueError('The root skill byte ceiling must stay under the guidance file ceiling')
     if limits['guidance_file_tokens'] >= limits['read_output_tokens']:
         raise ValueError('The file budget must leave reader headroom')
     tokens = limits['read_output_tokens']
@@ -136,9 +162,12 @@ def main():
         }, args.check)
     if args.dsh_profile:
         changed += dsh(args.dsh_profile.resolve(), limits, byte_limit, args.check)
+    over = guidance_over_budget(limits)
+    for path, size, ceiling in over:
+        print('Over budget: %s is %d bytes, ceiling %d' % (path.relative_to(ROOT).as_posix(), size, ceiling))
     print('Read target: %d tokens; guidance ceiling: %d tokens.' % (tokens, limits['guidance_file_tokens']))
     print('OpenCode/DSH use byte/line caps; Cursor/Qoder inherit the guidance policy, not an invented native setting.')
-    return 1 if args.check and changed else 0
+    return 1 if args.check and (changed or over) else 0
 
 
 if __name__ == '__main__':

@@ -1,5 +1,4 @@
 ---
-# Generated from .codex/agents/chaosx_skill_maintainer.toml by python .tools/sync/sync_claude_agents.py. Do not hand-edit.
 name: chaosx-skill-maintainer
 description: "Creates, updates, audits, and trims Chaos Redux repo skills. Use when a reusable workflow, repeated mistake, validation pattern, asset workflow, prompt pattern, or project convention should be captured in a skill. Does not edit gameplay files."
 model: sonnet

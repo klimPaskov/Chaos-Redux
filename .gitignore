@@ -85,9 +85,12 @@ docs/assets/
 # opencode agent runtime (generated subagent definitions + local MCP registration + imagegen sidecar)
 .opencode/
 
-# Claude Code project agents, agent map, and the generated CLAUDE.md are public.
-# Keep machine-local skill junctions and session state out of version control.
-.claude/skills/
+# Claude Code definitions are canonical and public: .claude/agents, .claude/skills and CLAUDE.md.
+# Every other runtime is generated from them by python .tools/sync/sync_agents.py:
+# the shared skill root .agents/skills (junctions to .claude/skills) and the Codex agent TOMLs.
+.agents/skills/
+.codex/agents/
+# Keep machine-local session state out of version control.
 .claude/worktrees/
 .claude/*.lock
 .claude/settings.local.json

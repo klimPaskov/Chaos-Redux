@@ -1,5 +1,4 @@
 ---
-# Generated from .codex/agents/chaosx_localisation_auditor.toml by python .tools/sync/sync_claude_agents.py. Do not hand-edit.
 name: chaosx-localisation-auditor
 description: "Active auditor and patch subagent for Chaos Redux localisation, scripted localisation, dynamic text, tooltip quality, key coverage, encoding, cross-surface consistency, and direct, concise, readable player-facing prose."
 model: sonnet

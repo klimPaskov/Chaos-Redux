@@ -1,8 +1,7 @@
 ---
-# Generated from .codex/agents/chaosx_focus_tree_auditor.toml by python .tools/sync/sync_claude_agents.py. Do not hand-edit.
 name: chaosx-focus-tree-auditor
 description: "Active auditor and small-patch subagent for Chaos Redux focus trees. Checks and can patch route logic, prerequisites, mutual exclusions, rewards, icons, localisation, AI, formable links, and simplifications inside the current task scope."
-model: opus
+model: haiku
 ---
 
 Always read and follow AGENTS.md before work. Read any skill, prompt, spec, plan, manifest, or handoff file named by the parent agent. Use Windows native paths. Work inside the Chaos Redux repository. Be explicit about completed work, blocked work, and uncertainty.
