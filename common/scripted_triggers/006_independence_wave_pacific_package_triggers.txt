@@ -189,10 +189,10 @@ should_cancel_independence_wave_fsm_government_settlement = {
 # attention, manpower, and convoy capacity rather than an impossible factory
 # reservation.
 can_pay_independence_wave_pacific_island_strategic_cost = {
-	has_stability > constant:independence_wave_decision_cost.stability_standard
-	command_power > constant:independence_wave_decision_cost.command_power_standard
-	has_manpower > constant:independence_wave_decision_cost.manpower_light
-	has_equipment = { convoy > constant:independence_wave_decision_cost.convoy_light }
+	NOT = { has_stability < constant:independence_wave_decision_cost.stability_standard }
+	NOT = { command_power < constant:independence_wave_decision_cost.command_power_standard }
+	NOT = { has_manpower < constant:independence_wave_decision_cost.manpower_light }
+	NOT = { has_equipment = { convoy < constant:independence_wave_decision_cost.convoy_light } }
 }
 
 # IW-179 pays the displayed strategic debit directly. Keep its adapter gate
