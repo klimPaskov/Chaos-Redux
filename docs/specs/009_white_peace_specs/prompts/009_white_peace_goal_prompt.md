@@ -1,4 +1,4 @@
-/goal Implement Event 009 White Peace to the fullest extent from `docs/specs/009_white_peace_specs/`. Read and follow `AGENTS.md`, `chaos-redux-events`, `chaos-redux-improvement-loop`, `chaos-redux-event-assets`, `chaos-redux-subagents`, and relevant HOI4 wiki/vanilla docs before editing.
+/goal Implement Event 009 White Peace to the fullest extent from `docs/specs/009_white_peace_specs/`. Read and follow `CLAUDE.md`, `chaos-redux-events`, `chaos-redux-improvement-loop`, `chaos-redux-event-assets`, `chaos-redux-subagents`, and relevant HOI4 wiki/vanilla docs before editing.
 
 Use `prompts/009_white_peace_coding_prompt.md`, `prompts/009_white_peace_asset_prompt.md`, and `prompts/009_white_peace_achievement_prompt.md` as implementation handoffs.
 

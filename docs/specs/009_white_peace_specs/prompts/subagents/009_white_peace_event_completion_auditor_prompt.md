@@ -4,9 +4,9 @@ Spawn with `fork_turns="none"`.
 
 Read:
 
-- `AGENTS.md`
-- `.agents/skills/chaos-redux-events/SKILL.md`
-- `.agents/skills/chaos-redux-subagents/SKILL.md`
+- `CLAUDE.md`
+- `.claude/skills/chaos-redux-events/SKILL.md`
+- `.claude/skills/chaos-redux-subagents/SKILL.md`
 - `docs/specs/009_white_peace_specs/`
 - all implementation files changed for Event 009
 - all subagent handoffs under `docs/plans/009_white_peace_plans/subagent_handoffs/`

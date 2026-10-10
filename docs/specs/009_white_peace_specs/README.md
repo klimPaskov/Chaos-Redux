@@ -42,10 +42,36 @@ The assigned probability inspection timed out after 600 seconds, so numerical sc
 
 Research and prompts remain supporting briefs subordinate to the accepted decisions above.
 Their workflow/navigation instructions were reconciled in the October 7 package audit; this does not approve every historical design claim or certify implementation.
-Use [chaos-redux-subagents](../../../.agents/skills/chaos-redux-subagents/SKILL.md) for current routing and evidence requirements.
+Use [chaos-redux-subagents](../../../.claude/skills/chaos-redux-subagents/SKILL.md) for current routing and evidence requirements.
 The three legacy handoffs retain their original bodies beneath superseded notices.
 
 The source package excludes broad focus trees, country packages, formables, dedicated scripted GUI windows, and high-spectacle presentation.
 The installed observer image is `gfx/event_pictures/009_white_peace/news_event_009_white_peace.dds`, using `GFX_news_event_009_white_peace` in `interface/009_white_peace_event_images.gfx`.
 Production evidence is linked by [the news-art handoff](../../plans/009_white_peace_plans/subagent_handoffs/white_peace_news_art_handoff.md).
 Parent review, required MCP evidence, and completion claims remain parent-owned.
+
+## Open questions
+
+Each item is proposed (spec audit 2026-10-10) and needs parent or user acceptance before implementation.
+
+1. Random War re-ignition: Event 004 Random War does not read White Peace memory, so it can declare a fresh war between a pair White Peace has just settled.
+   Proposal: Event 004 skips a pair while either side carries `recent_white_peace_pair_<TAG>` for the other (owner: Event 004).
+   This keeps a settlement meaningful without adding any White Peace value.
+2. Return after a settlement: a completed settlement ends the only war behind its front states, yet displaced civilians wait on the migration system's general return path.
+   Proposal: the settlement calls the migration owner's existing return helper for front-flight cohorts displaced by that war, so Help Families Return is immediately useful for the two countries (owner: famine and migration system).
+   White Peace adds no migration values or tooltip lines of its own.
+3. Close the dangling legacy tuning ideas as rejected: the optional stale-war weight bonus, the broad candidate score, the major `-3` and broad `-4` Chaos alternatives, and extra weight after repeated Peace-cluster checks without a firing.
+   Each adds a tuning knob without a difference the player can see, and the implemented drivers already scale with war clutter.
+4. Event 012 opt-out: the Scramble, liberation and forced-withdrawal chains should set and clear `white_peace_protected_war_actor` through an owner marker, following Event 039's working pattern.
+   This stays an unresolved integration requirement for the Event 012 owner.
+
+## Changelog
+
+- 2026-10-10 spec audit, pass 1:
+  - Aligned the main spec with source: Chaos `-1` per minor pair, `-2` per major war, chain cap `-3`, 181-day country memory, the Stage II multi branch, and an isolated major war.
+  - Removed the stale "narrow enemy side" major wording, optional debug metadata, the optional `-4`, and the conditional-news wording, and replaced the duplicated weight formula with a pointer to the weight model.
+  - Condensed the weight model's retained historical proposal, whose tables duplicated source or the main spec, into its still-valid design intent.
+  - Repointed skill links to `.claude/skills/` and prompt instructions to `CLAUDE.md`.
+  - Named the two protection flags and Event 039 as the working opt-out precedent, and marked installed assets as implemented.
+- 2026-10-10 spec audit, pass 2:
+  - Added the open questions above and two validation cases (recent pair memory, enemy-occupied capital).

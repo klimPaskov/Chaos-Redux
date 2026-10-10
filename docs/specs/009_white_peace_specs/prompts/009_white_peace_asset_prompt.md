@@ -24,8 +24,8 @@ Use `chaos-redux-event-assets` for all visual asset work. Route sourced real/arc
 - Suggested sprite: `GFX_report_event_009_white_peace`
 - Suggested final folder: follow existing report-event image folder pattern.
 - Source mode: generated period-documentary image unless a strong public-domain/source image is found.
-- Reference folder to inspect first: `.agents/skills/chaos-redux-event-assets/assets/gfx_references/event_art/report`
-- Required processing: use the report-card workflow in [chaos-redux-event-assets](../../../../.agents/skills/chaos-redux-event-assets/SKILL.md) and discover its current processor.
+- Reference folder to inspect first: `.claude/skills/chaos-redux-event-assets/assets/gfx_references/event_art/report`
+- Required processing: use the report-card workflow in [chaos-redux-event-assets](../../../../.claude/skills/chaos-redux-event-assets/SKILL.md) and discover its current processor.
 
 Visual direction:
 
@@ -49,7 +49,7 @@ The following composition is retained as earlier planning direction; it does not
 - Suggested filename: `news_event_009_white_peace_circular.dds`
 - Suggested sprite: `GFX_news_event_009_white_peace_circular`
 - Source mode: generated period-news/documentary image or sourced archival telegraph/newsroom image.
-- Reference folder: `.agents/skills/chaos-redux-event-assets/assets/gfx_references/event_art/news`
+- Reference folder: `.claude/skills/chaos-redux-event-assets/assets/gfx_references/event_art/news`
 - Required final style: black-and-white.
 
 Visual direction:
@@ -64,7 +64,7 @@ General achievement icon rules:
 
 - Target size: `64x64`
 - Source mode: generated icon art.
-- Reference folder: `.agents/skills/chaos-redux-event-assets/assets/gfx_references/icons/achievements`
+- Reference folder: `.claude/skills/chaos-redux-event-assets/assets/gfx_references/icons/achievements`
 - Create completed icon first.
 - Grey and not-eligible variants can be generated/processed according to the achievement system pattern.
 
@@ -111,5 +111,5 @@ Create or update:
 - `docs/assets/009_white_peace/manifest.md`
 - `docs/assets/009_white_peace/gfx_handoff.md`
 
-Use [chaos-redux-event-assets](../../../../.agents/skills/chaos-redux-event-assets/SKILL.md) for current provenance, alpha, processing, manifest, durable-record, and parent-wiring requirements.
+Use [chaos-redux-event-assets](../../../../.claude/skills/chaos-redux-event-assets/SKILL.md) for current provenance, alpha, processing, manifest, durable-record, and parent-wiring requirements.
 Retain the package destinations above and asset-specific sprite/consumer mappings.

@@ -7,7 +7,7 @@ Implement Event ID `9`, **White Peace**, from the spec package at:
 
 `docs/specs/009_white_peace_specs/`
 
-Follow `AGENTS.md`, `chaos-redux-events`, `chaos-redux-improvement-loop`, `chaos-redux-event-assets`, `chaos-redux-subagents`, and relevant HOI4 wiki/vanilla documentation before editing. Fallbacks or design simplifications require explicit user approval; report every omission and blocker.
+Follow `CLAUDE.md`, `chaos-redux-events`, `chaos-redux-improvement-loop`, `chaos-redux-event-assets`, `chaos-redux-subagents`, and relevant HOI4 wiki/vanilla documentation before editing. Fallbacks or design simplifications require explicit user approval; report every omission and blocker.
 
 ## Core requirements
 
@@ -67,7 +67,7 @@ Validate these cases and report real evidence:
 ## Audit and subagent routing
 
 Use `chaosx_scripted_system_architect` for dynamic helper design/patching if repeated logic is needed. Use `chaosx_localisation_auditor` before completion. Use `chaosx_event_completion_auditor` before claiming the event complete. Use `chaosx_spreadsheet_doc_worker` after final player-facing wording exists. Route visual work through the asset prompt and the correct asset subagents.
-Weighted surfaces require `chaosx_ai_probability_auditor` under [chaos-redux-subagents](../../../../.agents/skills/chaos-redux-subagents/SKILL.md); inspection is not numerical balance approval.
+Weighted surfaces require `chaosx_ai_probability_auditor` under [chaos-redux-subagents](../../../../.claude/skills/chaos-redux-subagents/SKILL.md); inspection is not numerical balance approval.
 
 ## Completion report
 

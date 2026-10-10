@@ -4,9 +4,9 @@ Spawn with `fork_turns="none"`.
 
 Read:
 
-- `AGENTS.md`
-- `.agents/skills/chaos-redux-events/SKILL.md`
-- `.agents/skills/chaos-redux-subagents/SKILL.md`
+- `CLAUDE.md`
+- `.claude/skills/chaos-redux-events/SKILL.md`
+- `.claude/skills/chaos-redux-subagents/SKILL.md`
 - relevant HOI4 wiki/vanilla docs for triggers/effects/scopes/event targets/script constants
 - `docs/specs/009_white_peace_specs/specs/009_white_peace_spec.md`
 - `docs/specs/009_white_peace_specs/specs/009_white_peace_dynamic_weight_model.md`

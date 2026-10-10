@@ -57,7 +57,7 @@ White Peace has baseline behavior and three global evolution stages. These stage
 | --- | --- | --- | --- | --- |
 | Base | Minor White Peace | One minor pair signs a no-gain settlement. | Settles one safe minor-versus-minor pair. | Uses the full dynamic cap for the current environment. |
 | I | Repeated Minor Settlements | The machinery of quiet settlements begins repeating. | One firing can settle several minor pairs when safe. | Dynamic cap is multiplied down so stronger effects do not become common. |
-| II | Major-Country Settlement | A major power can be pulled into a no-gain exit. | A rare branch can settle a major country with one enemy participant or narrow enemy side. | Stronger multiplier penalty; major branch remains uncommon even when eligible. |
+| II | Major-Country Settlement | A major power can be pulled into a no-gain exit. | A rare branch can settle one isolated war between a major and its only enemy; the multi branch can settle up to three separate minor wars. | Stronger multiplier penalty; major branch remains uncommon even when eligible. |
 | III | Broad Diplomatic Settlement | Separate minor-country frontiers fall quiet under the same terms. | Can settle up to five separate isolated minor wars. | Strongest multiplier penalty; this stage is impactful but rare. |
 
 The event can reach a higher stage before White Peace has settled a war if existing war-pressure thresholds are already met. The matching Event Settings evolution and Chaos tier gate must also be enabled. A disabled stage does not regain gameplay access through an older global unlock flag.
@@ -119,35 +119,35 @@ Use one option per displayed event, not parallel accept/decline options.
 
 ## Settlement effects
 
-Base settlement effects:
+All amounts and durations live in `common/script_constants/009_white_peace_constants.txt` (`white_peace_chaos_delta`, `white_peace_memory`, `white_peace_settlement_cap`).
+
+Base settlement effects (implemented):
 
 - apply white peace between the selected countries in an isolated one-on-one war;
-- mark both countries with a short recent-settlement flag;
-- mark the pair with a short pair-cooldown if pair tracking is available;
+- mark both countries with the 181-day recent-settlement flag `recent_white_peace_country`;
+- mark the pair with the 360-day pair memory `recent_white_peace_pair_<TAG>`;
 - add a modest temporary opinion modifier between the two countries;
-- reduce Chaos by a small amount, normally `-1` for a single minor pair;
+- reduce Chaos by `1` for a single minor pair;
 - write one event-history entry;
 - count the firing as one repeatable event and one Peace cluster incident when the cluster path fired.
 
-Multi-settlement effects:
+Multi-settlement effects (implemented):
 
 - apply the same effects to each selected pair from a separate isolated war;
-- cap Chaos reduction so the event cannot erase the consequences of a war-heavy world;
-- write one history entry summarizing the primary settlement and count of additional settlements;
-- optionally write compact internal debug metadata for validation, not player-facing spam.
+- reduce Chaos by `1` per settled pair, capped at `3` for the chain, so the event cannot erase the consequences of a war-heavy world;
+- write one history entry for the chain and one aggregate result report.
 
-Major-country settlement effects:
+Major-country settlement effects (implemented):
 
-- use a stronger but still restrained Chaos reduction, normally `-2` or `-3` depending on war importance;
-- set longer recent-settlement memory on the major actor;
-- avoid clearing scripted wargoals unless a specific helper marks them safe;
+- reduce Chaos by `2`;
+- set the 540-day major memory on the major actor;
+- never clear scripted wargoals;
 - add relation memory but not enough to create artificial alliances.
 
-Broad-settlement effects:
+Broad-settlement effects (implemented):
 
-- scale by settled pair count but cap the final Chaos reduction;
-- suggested cap: `-3` at stage III, with an optional `-4` only if many wars were active and several separate wars ended;
-- add a world-news style notification only if the implementation already has a normal-news pattern for repeatable events; otherwise use the ordinary report/event popup and history entry.
+- reduce Chaos by `1` per settled war, capped at `3`, and set the 720-day broad memory;
+- deliver the result through the same aggregate report, or the observer news event when every settled participant is AI.
 
 ## Dynamic weight design intent
 
@@ -155,28 +155,22 @@ White Peace must usually be less likely than ordinary events. It should sit belo
 
 The normal repeatable recovery system still applies. White Peace should recover like other repeatable events, and its repeated firings should reduce the recoverable cap through the normal repeatable decay model. The dynamic cap only controls the maximum value the event can recover toward under the current war environment.
 
-The implementation should treat selection weight as:
-
-```text
-live_weight = min(recovered_repeatable_weight, effective_dynamic_cap)
-
-effective_dynamic_cap = floor(environment_cap * repeatable_decay_multiplier)
-
-environment_cap <= 1500
-```
-
-This preserves repeatable-event recovery while allowing the event to become more or less likely as war clutter changes.
+The live weight is the recovered repeatable weight clipped by an effective cap; the effective cap is the war-environment cap (`120..1500`) multiplied by repeatable decay and the stage multiplier, then clamped again.
+The cap clips the live value and never erases stored recovery.
+The exact current formula and constants are recorded in [the dynamic weight model](009_white_peace_dynamic_weight_model.md).
 
 ## What should make the event more likely
 
-The event should become more likely when:
+Implemented drivers:
 
-- there are many active wars;
-- there are many safe minor-versus-minor candidate pairs;
-- several wars involve minor countries without major allies;
-- the Peace cluster has had valid candidates for repeated checks without firing;
-- the event has not fired for a long time and the normal repeatable recovery has had time to rebuild;
-- a war has dragged on long enough to feel stale, if war age can be tracked safely.
+- many active wars (country-at-war proxy, capped);
+- many safe minor-versus-minor candidate pairs (capped);
+- wars without major participants (capped);
+- world war clutter at 5, 8 and 12 active wars;
+- time since the last firing, through normal repeatable recovery.
+
+War age affects which pair is chosen (candidate score), not how likely the event is.
+The legacy ideas of a stale-war weight bonus and of extra weight after repeated Peace-cluster checks without a firing are not implemented; see the open questions in the package README.
 
 ## What should make the event less likely
 
@@ -239,7 +233,7 @@ The parent also accepted a 181-day country cooldown around the 180-day No Winner
 
 ## Safe-war protection and event ownership
 
-Use the existing Event 009 country and pair gates, including `can_country_be_white_peace_target`, `can_pair_receive_white_peace`, the isolated-enemy test, recent-settlement memory, and the two existing protection flags. The owning event supplies any temporary opt-out and closes it with its own war lifecycle. Event 009 never clears another event's claims, target, crisis mission, defeat proof, or native faction in order to make a settlement possible.
+Use the existing Event 009 country and pair gates, including `can_country_be_white_peace_target`, `can_pair_receive_white_peace`, the isolated-enemy test, recent-settlement memory, and the two existing protection flags `white_peace_protected_country` and `white_peace_protected_war_actor`. The owning event supplies any temporary opt-out and closes it with its own war lifecycle. Event 039 Murder Mystery is the working precedent: `murder_mystery_set_white_peace_protection` sets `white_peace_protected_war_actor` with an owner marker, and its lifecycle clears only the flag it set. Event 009 never clears another event's claims, target, crisis mission, defeat proof, or native faction in order to make a settlement possible.
 
 | Current owner state | White Peace consequence | Release boundary |
 | --- | --- | --- |
@@ -381,15 +375,13 @@ Achievement implementation must track that the settlement came from Event 009 an
 
 ## Asset coverage
 
-Required asset directions:
+Installed (implemented):
 
-- one report event image, `210x176`, period-documentary style, likely generated unless a public-domain/source image clearly fits;
-- one AI-only global news image, `397x153`, black-and-white;
-- five achievement icons, `64x64`, each with completed, grey, and not-eligible variants if the achievement system requires variants;
-- no focus icons, leader portraits, flags, or country assets;
-- no animated assets for the base spec.
+- report image `GFX_report_event_009_white_peace` and AI-only observer news image `GFX_news_event_009_white_peace` (`397x153`, black-and-white), both in `interface/009_white_peace_event_images.gfx`;
+- achievement icons under `gfx/achievements/009_white_peace_*` with completed, grey and not-eligible variants.
 
-The asset prompt in this package gives source mode and reference-folder instructions.
+No focus icons, leader portraits, flags, country assets or animated assets belong to this event.
+The asset prompt in this package is retained only for a replacement pass.
 
 ## Documentation requirements
 
@@ -429,4 +421,4 @@ The event is complete only when:
 16. Candidate selection excludes protected scripted content, civil conflict, nonhuman/special threat actors, near-capitulation cases, and recent pair repeats.
 17. Event log, event detail, evolution detail, cluster detail, and localisation agree.
 18. Report and AI-news images and achievement icon needs are wired and documented.
-19. Future implementation validation includes no-war, forced major-locked, one isolated minor war, multiple isolated wars, a third-country war participant, major-war, repeated-firing, and high-evolution cases. Protected-owner cases separately cover an isolated active Fury war, a Death front, a revealed Secret Alliance war, a concealed member's unrelated ordinary war, an opted-out Scramble war, and a normal pair becoming protected between preselection and settlement.
+19. Future implementation validation includes no-war, forced major-locked, one isolated minor war, multiple isolated wars, a third-country war participant, major-war, repeated-firing, recent-pair-memory, enemy-occupied-capital, and high-evolution cases. Protected-owner cases separately cover an isolated active Fury war, a Death front, a revealed Secret Alliance war, a concealed member's unrelated ordinary war, an opted-out Scramble war, and a normal pair becoming protected between preselection and settlement.
