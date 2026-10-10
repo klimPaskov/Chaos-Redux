@@ -11,6 +11,16 @@ This skill is for implementation and cleanup. For broader Chaos Redux event wiri
 
 For large or reworked decision systems, spawn `chaosx_decision_mission_auditor` after implementation and before completion. The subagent is patch-capable by default inside the current task scope. It should audit objective quality, costs, tooltips, AI validity, cleanup, duplicate missions, route integration, fairy-dust rewards, exploit risk, localisation, and balance evidence. Route every in-scope decision or mission weight to `chaosx_ai_probability_auditor` for one bounded review of representative cases from the script with MCP support when available. The probability auditor remains read-only. The `chaosx_decision_mission_auditor` may directly patch small decision, mission, tooltip, dynamic localisation, AI, cleanup, cooldown, visibility, and existing formable requirement issues when the fix is local and clearly safer.
 
+## Reference map
+
+Read the reference that matches the work before editing; the root keeps the policy gates and each reference holds the full requirements for its topic.
+
+- [references/formables-and-category-presentation.md](references/formables-and-category-presentation.md): read when choosing a decision category presentation, writing formable nation decisions, attaching a scripted GUI or mechanic window to a category, or wiring GUI action integrity.
+- [references/cost-payment-and-localisation.md](references/cost-payment-and-localisation.md): read when a decision charges a custom cost, a timed paid decision, a refundable political-power credit, or a registry release, and when writing inline cost text.
+- [references/mechanic-values-and-faction-goals.md](references/mechanic-values-and-faction-goals.md): read when a decision or mission system changes special mechanic values, creates or manages a faction, league, bloc, or coalition, or presents mechanic values and faction outcomes.
+- [references/validation-addenda-and-handoffs.md](references/validation-addenda-and-handoffs.md): read when writing paid-action contract tests, an improvement addendum for decisions or mechanic windows, or a decision subagent patch handoff.
+- `templates/formable_state_puzzle/`: read the README and `universal_state_registry_workflow.md` when a formable's proof uses exact state control.
+
 ## 1. Required reading
 
 Before editing decisions or missions:
@@ -192,48 +202,7 @@ Do not hide a fifth cost in a tooltip, scripted effect, confirmation popup, or s
 
 Every player-facing cost must have the correct texticon for the value it represents. If a custom spendable value has no valid texticon, add and wire a proper texticon before using it as a displayed cost, or redesign that part of the action as a requirement, risk, or consequence. Never fall back to a literal resource name in the cost string.
 
-### Custom-cost affordability and payment
-
-Every native `custom_cost_text = <base>` needs localisation for `<base>`, `<base>_blocked`, and `<base>_tooltip`; the engine selects the row key through `custom_cost_trigger` and the tooltip key on hover (offline Decision modding, lines 311-329).
-Per-resource scripted colour selectors do not replace these parent native keys.
-When the base already renders each resource's ready or blocked colour independently, exact `$base$` aliases for the suffixed keys can reuse that quote without duplicating amounts or adding fees.
-Trace actual decision consumers, scripted getters, and texticon definitions; missing source-key coverage establishes a contract gap, not proof that a native row displayed a raw key.
-
-Custom-cost display is not sufficient evidence that a decision is selectable. Define one shared, inclusive affordability predicate and invoke it from both `available` and `custom_cost_trigger`. Manually debit the custom payment once in `complete_effect`, and set the fixed `ai_hint_pp_cost` amount when political power is included. If the cost row already fully explains payment, the `available` duplicate may use `hidden_trigger` to keep raw requirements out of the visible block. Keep the display, affordability gate, and debit aligned, and document any engine uncertainty rather than inferring behavior.
-Each resource's cost colour/display selector must call the same authoritative inclusive affordability component used by that shared gate, with the same payer, quote, units, and equipment token.
-Do not copy strict, deprecated, or inexact reserve/equipment predicates into display logic.
-Check agreement just below, exactly at, and just above the quoted cost.
-
-For pending-payment actions, use one authoritative pure preflight for cost display, hover text, and availability that requires a positive record ID, matching actor and target, the correct transaction phase, and an existing positive actual-paid field.
-A pointer's presence alone must neither expose a pending-payment quote nor authorize fresh payment when the referenced record is malformed.
-
-When accepted design requires emergency resolution to remain available while every other recovery is unaffordable, do not gate it on full nominal reserves. Bound each actual fee by its nominal fee and the nonnegative current reserve, show the actual quote with matching texticons, and recompute all fees together before any debit, then charge that coherent quote once. Avoid hidden partial payments and threshold fee-waiver cliffs. For variable-fee emergency actions, use an `ai_hint_pp_cost` matching the actual quote only if that input form is verified as supported, otherwise omit the fixed nominal hint so a zero quote remains available to AI at zero political power. Never assume `ai_hint_pp_cost` accepts dynamic values. Verify exact numeric reader tokens in installed dynamic-variable documentation rather than assuming a display or stat name: `has_political_power`, `has_stability`, and `has_war_support` are documented readers, while raw `war_support` is not a documented built-in reader. This does not forbid a custom normal variable named `war_support`. Make final resolution and cleanup idempotent with a closed-state guard, and require queued work and late timed callbacks to match the active context before invoking cleanup. Preserve earned finite aftermath until its intended expiry and retain achievement receipts when removing active-crisis state.
-
-### Paid timed-decision entry and expiry
-
-For a `days_remove` decision, selection must pass the full quote, including free factories committed by its native `civilian_factory_use` modifier.
-At `complete_effect` entry, recheck live requirements and spendable reserves without counting that project's own native factory reservation twice.
-Limit that factory exception to the exact native-reserved path, retaining full affordability checks elsewhere.
-Reject duplicate starts and publish the actor/family/generation-bound active receipt before the custom debit, then charge once.
-At `remove_effect` expiry, require exact current paid-project proof and continuing finish requirements without rerunning the purchase quote or slot-open start gate.
-Publish the success receipt before clearing active proof so cancellation cannot mistake successful closure for receipt loss.
-Cover exact-quote selection, reservation-before-entry, duplicate start, depleted reserves after payment, stale generation, and successful expiry in source cases.
-Local simulations cannot confirm exactly when the game holds resources or runs completion effects. Use documented cost and timer settings and tested project patterns even when their behavior cannot be observed in game. Review resource payments, resources held while actions run, timers, completion, cancellation, and cleanup; explain any important behavior these checks cannot confirm. Do not add a second debit, synthetic timer, free payment path, or gameplay rewrite to avoid a verification limit. Known errors in costs, timing, or cleanup still need to be fixed.
-
-### Refundable native political-power credit receipts
-
-For refundable native political-power decisions using the sale price table, read the [receipt API contract](../../../common/scripted_effects/026_black_friday_simple_cost_api.md#refundable-native-political-power-decisions) and its [production helpers](../../../common/scripted_effects/026_black_friday_effects.txt).
-Keep the exact paid quote in an owner normal variable for currency refunds; achievement credit is a separate receipt and must never be inferred from the price or sale activity.
-
-Clear the previous owner receipt before crediting, initialize both `black_friday_political_power_receipt_credited` and `black_friday_political_power_receipt_sale_sequence` temps to zero in the caller chain, then invoke `black_friday_credit_political_power_purchase_with_receipt` once after payment.
-Persist a positive credited output as an owner country flag and its sale sequence as an owner normal variable, with separate pairs for decisions whose timers can overlap.
-
-On cancellation, load that flag and saved sequence into the receipt temps and call `black_friday_withdraw_political_power_purchase_with_receipt`; it withdraws only when the positive receipt sequence matches both the global sale sequence and the payer's retained achievement index.
-Refund the recorded paid quote once and clear the persistent receipt pair and paid marker, so repeated cancellation cannot refund currency or withdraw another purchase's credit.
-Successful completion clears the receipt and paid marker without withdrawing earned credit.
-Do not invent a historical credit ledger, reverse an older sale through a newer index, or revoke an awarded achievement.
-
-Verify same-sale refunds, purchases made outside a sale, older-sale refunds after a newer purchase, excluded credit eligibility, repeated cancellation, and successful completion through the actual helper chain.
+### Cost display and requirements
 
 For upfront payments, draw each spendable cost once in the native or custom cost row. Remove duplicated amounts, debit prose, and affordability prose from the ordinary decision tooltip when the cost row already shows them. Retain tooltip text for meaningful ongoing consequences, duration, risk, cleanup, and non-consumed requirements.
 
@@ -241,40 +210,30 @@ Requirements are separate from costs. A requirement such as `Depot control` can 
 
 The same rules apply to ordinary decisions, missions with payment actions, scripted GUI buttons, confirmation windows, and any other player-facing action that spends resources.
 
+### Custom-cost affordability and payment
+
+A displayed custom cost must match what is selectable and what is paid: one shared inclusive affordability predicate feeds both `available` and `custom_cost_trigger`, the payment is debited once in `complete_effect`, and every native `custom_cost_text` base needs its blocked and tooltip keys. It applies to any decision that spends a custom resource, a pending payment, a fractional quote, or an emergency resolution.
+Read the complete requirements in [Custom-cost affordability and payment](references/cost-payment-and-localisation.md#custom-cost-affordability-and-payment) before this work.
+
+### Paid timed-decision entry and expiry
+
+A paid `days_remove` decision must pass the full quote at selection, publish its active receipt before the single debit, and prove the paid project at expiry without re-quoting the purchase.
+Read the complete requirements in [Paid timed-decision entry and expiry](references/cost-payment-and-localisation.md#paid-timed-decision-entry-and-expiry) before this work.
+
+### Refundable native political-power credit receipts
+
+Refundable native political-power decisions that use the sale price table keep the paid quote and the achievement credit as separate receipts, and each is refunded or withdrawn only once through the documented helpers.
+Read the complete requirements in [Refundable native political-power credit receipts](references/cost-payment-and-localisation.md#refundable-native-political-power-credit-receipts) before this work.
+
+### Paid finite-registry release receipts
+
+A paid decision that releases people from a finite row registry gates `available` and `complete_effect` on one read-only reconciliation preflight, and a rejected post-payment receipt refunds every debited cost.
+Read the complete requirements in [Paid finite-registry release receipts](references/cost-payment-and-localisation.md#paid-finite-registry-release-receipts) before this work.
+
 ## 6. Cost localisation
 
-Inline decision cost localisation must be compact and show at most three values, each identified by its matching texticon.
-When normal text is necessary, use no more than four words in the entire inline cost/status string.
-Separate each texticon name from following formatting codes with whitespace, or use a closed texticon syntax verified in installed vanilla.
-Do not repeat a cost already drawn by the native row or expand resource names beside their texticons.
-Keep every payment and reserved resource explicit in the full cost tooltip, and check the longest available and blocked strings beside the decision title in an available native preview or inspected text/asset bounds.
-The inline display limit does not change the payment contract or the separate gameplay cost budget.
-
-Each cost entry pairs its amount with the matching texticon; either order is allowed when native renders confirm fit and valid icon separation.
-
-`<amount> <matching_texticon>` or `<matching_texticon> <amount>`
-
-Good examples:
-
-- `2,000 <infantry_equipment_texticon>`
-- `20 <army_xp_texticon> 20 <command_power_texticon>`
-- `20 <army_xp_texticon> 20 <command_power_texticon> 2,000 <infantry_equipment_texticon>`
-
-Do not write literal cost labels such as `Manpower:`, `Fuel:`, `Political Power:`, or `Support Equipment:` in the cost string. Do not use filler words such as `and`, `plus`, `requires`, or `needed` between cost entries. The texticon identifies the resource.
-
-Use:
-
-`20 <army_xp_texticon> 20 <command_power_texticon>`
-
-Do not use:
-
-`20 Army XP and 20 Command Power`
-
-Do not use:
-
-`20 <army_xp_texticon> and 20 <command_power_texticon>`
-
-If the country cannot pay a cost, show the affected amount and texticon in the blocked or red state used by the owning UI. Satisfied costs remain in the normal state.
+Inline decision cost text is compact: at most three values, each paired with its matching texticon, with no literal resource labels and no filler words between entries. Blocked amounts show the owning UI's blocked state, and the full cost tooltip keeps every payment explicit.
+Read the complete requirements in [6. Cost localisation](references/cost-payment-and-localisation.md#6-cost-localisation) before this work.
 
 ## 7. Trigger and requirement clarity
 
@@ -617,45 +576,13 @@ Decision localisation should describe the visible baseline effect of the decisio
 
 ### 15.4 Special mechanic values and faction goals
 
-Large decision and mission systems should interact with special mechanic values.
-
-Special mechanic values can include legitimacy, authority, influence, faction cohesion, command obedience, public panic, regional control, military readiness, industrial capacity, corruption, foreign penetration, balance-of-power position, league cohesion, or sponsor pressure.
-
-Decisions and missions should change these values through visible actions. Do not make a mechanic where values only drift passively or change through a few flat hidden effects.
-
-Good examples:
-
-- a recognition mission increases legitimacy and foreign influence
-- a rail repair mission increases authority and logistics control
-- a military crackdown increases command obedience but lowers legitimacy
-- an industrial program increases industrial capacity but consumes civilian capacity
-- a foreign aid decision increases arms influence and patronage risk
-- a league vote increases faction cohesion or member confidence
-- a failed border mission lowers authority and raises enemy momentum
-
-Use the [content and interaction budget](../chaos-redux-scripted-gui/SKILL.md#content-and-interaction-budget) for visible values and their explanations. Show only material contributors the player can act on when a total has several inputs; keep the remaining calculation internal. Keep each value's colour identity and non-colour cues consistent across decisions, missions, events, tooltips, and UI summaries.
-
-Balance-of-power or equivalent internal struggle mechanics should be considered when a country has competing power centers. Decisions and missions should push the balance, create risks, unlock branch content, and affect leaders, laws, advisors, events, or crises.
-
-When a decision system creates or manages a faction, league, bloc, coalition, compact, or alliance, define its goals and rules. Include membership conditions, joining logic, refusal logic, expulsion or removal logic where relevant, shared decisions, war goals, AI behavior, victory conditions, and failure conditions.
-
-Important event-created factions should usually have a mechanic such as cohesion, shared command, war council support, joint reserves, recognition, member confidence, sponsor pressure, or strategic goals. Decisions and missions should interact with that mechanic.
-
-A faction should not form just because one country exists. Use minimum membership, crisis pressure, ideological compatibility, war state, diplomatic preparation, or regional logic.
+Large decision and mission systems must change special mechanic values (such as legitimacy, authority, influence, or cohesion) through visible actions rather than passive drift, and any faction, league, bloc, or coalition they create needs membership rules, goals, AI behavior, rewards, and failure states.
+Read the complete requirements in [15.4 Special mechanic values and faction goals](references/mechanic-values-and-faction-goals.md#154-special-mechanic-values-and-faction-goals) before this work.
 
 ### 15.5 Mechanic presentation, value clarity, and faction outcomes
 
-Special mechanic values must be visible somewhere the player can understand them. A decision category can show values in its header, a custom scripted GUI, a progress meter, a scripted localisation tooltip, or national spirit tooltips.
-
-Follow the [content and interaction budget](../chaos-redux-scripted-gui/SKILL.md#content-and-interaction-budget) for visual state, value meaning, and concise explanations. Special mechanics may hide future surprises, but public cause and effect must remain clear: what changed the visible value, its consequence, and the broad response available.
-
-Faction, league, bloc, or coalition goals need rewards and failure states. A successful faction goal can unlock shared decisions, war goals, legitimacy, cohesion, member rewards, postwar settlements, or new faction leadership. A failed goal can reduce cohesion, trigger member exits, invite foreign pressure, start leadership contests, weaken shared defenses, or open emergency missions.
-
-AI strategy must respect route and decision validity. AI should not take decisions that require missing states, dead sponsors, non-existent factions, unavailable ideologies, disabled evolutions, impossible borders, absent enemies, invalid targets, or closed routes. Invalid actions should be hidden, bypassed, or weighted to zero.
-
-Decision systems for shared trees or shared mechanics must still feel country-specific. Use scripted localisation, country-specific targets, country-specific AI weights, local leaders, regional decisions, and route-specific rewards to prevent every country from playing the same.
-
-Important thresholds, caps, gains, losses, duration bands, AI weights, and scaling values should be centralized in script constants or a documented tuning file. Do not scatter magic numbers across decision files, events, focuses, scripted effects, and scripted triggers.
+Special mechanic values must be visible and explained within the content and interaction budget, faction goals need rewards and failure states, AI must respect route validity, shared systems must stay country-specific, and tuning values must be centralized in script constants or a documented tuning file.
+Read the complete requirements in [15.5 Mechanic presentation, value clarity, and faction outcomes](references/mechanic-values-and-faction-goals.md#155-mechanic-presentation-value-clarity-and-faction-outcomes) before this work.
 
 ### 15.6 Reward dumps and exploit checks
 
@@ -846,34 +773,18 @@ Document test scenarios or observations. Do not only say “balanced.”
 
 ### Production action contract tests
 
-When source contract tests cover a paid action, execute the real selector, action mapper, debit, refund, receipt, and cooldown helpers that belong to the tested path.
-Restrict mocks to native primitives or explicitly out-of-scope consumers, and record those boundaries in the evidence.
-Assert the actual native flag identifier, requested cooldown duration, and write count on success, rejection, refund, and repeated invocation where applicable; a mocked success counter does not prove that the production mapper has the required branch.
-Do not replace a required production helper with a no-op solely to pass a loader error; fix the test loader or report the uncovered path.
-Exercise the production pending-payment preflight and display/gate consumers with valid records, presence-only pointers, nonpositive IDs, actor/target or phase mismatches, and missing or nonpositive actual-paid fields, asserting display/gate agreement, no fabricated quote or fresh debit on rejection, and no durable-state mutation by the preflight.
-These source tests do not establish native engine execution or timed expiry.
+Source contract tests for a paid action must run the real selector, action mapper, debit, refund, receipt, and cooldown helpers and mock only native primitives; they do not prove native engine execution or timed expiry.
+Read the complete requirements in [Production action contract tests](references/validation-addenda-and-handoffs.md#production-action-contract-tests) before this work.
 
 ### Improvement addenda for decisions and mechanic windows
 
-When an improvement addendum proposes decision depth, scripted GUI, or mechanic windows, translate the design into active play. The decision category should show the mechanic clearly, but the gameplay should still live in decisions, missions, scripted effects, scripted triggers, AI rules, and cleanup logic.
-
-Use scripted GUI when the player needs to read or manage values that would otherwise be buried in tooltips. Good uses include influence boards, federation congresses, formable progress, patron leverage, resource routing, public fear, occult pressure, faction cohesion, reform votes, target cards, and timed crisis panels.
-
-The addendum must choose the [presentation layer](references/formables-and-category-presentation.md#decision-category-presentation-hierarchy) before requesting art or controls and explain why it is the clearest option. For a justified GUI, use the [reference-image workflow](../chaos-redux-scripted-gui/SKILL.md#reference-image-before-implementation), [content and interaction budget](../chaos-redux-scripted-gui/SKILL.md#content-and-interaction-budget), and [background mapping](../chaos-redux-scripted-gui/SKILL.md#background-and-reference-coverage). Do not respond to a shallow mechanic by adding meters, decisions, text, or decorative controls. Every gameplay-changing button must satisfy [GUI action integrity](references/formables-and-category-presentation.md#gui-action-integrity); animation must not obscure costs or compensate for weak effects.
-
-For formables, the decision should verify the map state. Focuses may reveal claims, prepare institutions, or reduce costs, but the formation decision should prove control, legitimacy, recognition, or integration when those are central to the idea. When exact state control is the main formation proof, the addendum should use the reusable state-puzzle template and keep the visible pieces synchronized with the real eligibility helper.
-
-The state-puzzle package is manifest-driven. Follow `templates/formable_state_puzzle/universal_state_registry_workflow.md`, generate the runtime surfaces from the complete manifest, and complete `templates/formable_state_puzzle/category_attachment_audit.md` before parent review. The audit must enumerate every category in the formable family and prove that each category metadata block attaches the exact generated `scripted_gui` whose block uses `context_type = decision_category`. Do not treat a correct state-piece render as proof that a category is attached.
-
-When an owning event or system declares a strict all-category attachment policy, every shared or phase-specific category that exposes the formable's formation or integration decisions must attach its relevant generated state-puzzle GUI. A static category picture, text-only category, or unrelated status GUI cannot replace that state-puzzle attachment when exact state control is the formation proof. Missing category coverage is a blocker and must be recorded in the owner handoff.
+An addendum that proposes decision depth, scripted GUI, or mechanic windows must translate the design into active play in decisions, missions, effects, AI, and cleanup, choose the presentation layer first, and use the manifest-driven state-puzzle package and category attachment audit for exact-state formables.
+Read the complete requirements in [Improvement addenda for decisions and mechanic windows](references/validation-addenda-and-handoffs.md#improvement-addenda-for-decisions-and-mechanic-windows) before this work.
 
 ### Subagent patches for decision systems
 
-Decision and mission subagents are active small-patch agents by default inside the current task scope. They can patch varied costs, clearer dynamic localisation, custom trigger tooltips, AI target checks, cleanup hooks, visibility checks, cooldown fixes, scripted GUI button text, narrow helper call sites, and existing formable requirement fixes without waiting for a separate permission prompt.
-
-They should not expand a whole decision system, create a new mechanic window, add a new event chain, or invent a formable suite. When the gap is broad, they should write an improvement plan under `docs/plans/<event_id>_<event_slug>_plans/` and leave implementation to the main agent.
-
-Every patch must write a handoff with changed files, changed decision or mission ids, localisation keys, behavior before and after, meaningful validation, skipped task-specific validation, and remaining design risks.
+Decision and mission subagents make small local patches inside the current task scope; broad gaps become plans under `docs/plans/<event_id>_<event_slug>_plans/`, and every patch writes a handoff.
+Read the complete requirements in [Subagent patches for decision systems](references/validation-addenda-and-handoffs.md#subagent-patches-for-decision-systems) before this work.
 
 ## 20. Completion report
 
