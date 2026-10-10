@@ -2,6 +2,17 @@
 
 ## Part 2: Targeting and incident engine
 
+## Implementation status
+
+Implemented: the bounded wave with per-country load tickets, exact state incidents through `random_terror_apply_incident`, measured civilian losses through the shared exact population-loss helper, the per-government pulse (D4), domestic and cross-border spread with a 90-day window, survivor displacement and distant demonstration attacks (R33), safe havens (R42), the Event 14 clash prefilter (R39), and closure that cancels pulses (R30).
+
+Open:
+
+- Incident validity (C13): the current draw samples all 24 families and converts invalid results afterwards (an inland port attack becomes a civilian attack). The pool must be filtered before the draw, as required under Incident selection by stage.
+- Deaths reasons (C11): every loss currently uses the shared `civilian_combat` reason. The reason map below is still required.
+- Direct Chaos: the current incident tail adds Chaos on every incident. The [Part 10 Chaos impact map](031_random_terror_spec_part_10_cross_event_system_interactions.md#chaos-impact-map) replaces it.
+- Relief strain: the incident currently only records a flag. It must use the migration adapter described under Border displacement and relief strain.
+
 ## Targeting purpose
 
 The target engine should create variety without treating random selection as careless selection.
@@ -183,7 +194,7 @@ A named Event 31 fictional character can be killed when the character package an
 
 The network seizes civilians or officials and creates a timed response.
 
-The government chooses between negotiation, a prepared rescue, delay, or a rapid assault.
+The hostage report asks the government to negotiate, prepare a rescue, or storm at once (Part 3 The Hostage Deadline).
 
 Intelligence quality and Response Legitimacy influence casualties and later recruitment.
 
@@ -263,6 +274,11 @@ Nearby states receive relief, housing, transport, and service pressure.
 
 The event treats displaced people as victims and never adds terror activity because refugees arrived.
 
+Event 31 does not move people itself.
+It submits an owner-proven flight request to the migration system (state, people affected, cause, responsible actor) and migration performs the exact transfer, reception and Deaths accounting.
+The incident therefore shows up as Displacement Load in the migration category when it is large enough, and Event 31 keeps only the relief consequence on its own side: Support Victims and Secure Relief Corridor become the priority actions in the source state.
+When the migration interface rejects the request, nobody moves and the incident keeps only its relief consequence.
+
 A network can exploit disrupted routes only through a separate corridor or criminal-support incident with its own evidence.
 
 ### Military defection
@@ -335,13 +351,18 @@ A military defection requires an armed or security presence.
 
 When no suitable incident exists, the engine should select another state or postpone the pulse. It should not substitute an unrelated capital event.
 
+Validity is applied before the draw: families whose context the state lacks get zero weight, so the remaining weights keep their intended proportions.
+Converting an invalid result into another family after the draw is not acceptable, because it silently inflates the families that absorb the conversions.
+
 ## Recurring incident pacing
 
 Event-owned pacing applies only to affected countries and active states.
 
 The design does not require a recurring whole-world daily, weekly, or monthly scan.
 
-A country crisis should receive an assessment pulse around every `30` days while active.
+Each affected government holds one hidden incident pulse and one hidden recovery check.
+The recovery check runs every `30` days while the crisis is open and handles decay and closure.
+The incident pulse picks its next date from the band of the government's most severe state.
 
 Individual incident timing should vary with state activity, Terror Pressure, protection, foreign supply, and current missions.
 
@@ -408,6 +429,7 @@ An occupying Event 31 actor should not receive the same government-victim respon
 ## Deaths and population loss
 
 Every civilian death removes real state population and records the loss through the shared Deaths system when enabled.
+The measured applied loss, not the requested loss, is what Event 31 reports and counts.
 
 Death amounts scale with incident type, state population, activity stage, protection, current war damage, and outcome quality.
 
@@ -423,6 +445,7 @@ Every amount is clamped against a protected population floor.
 The same deaths must not be applied twice through an event effect and a recurring state modifier.
 
 Government-caused civilian deaths use a separate Deaths reason so the aftermath can distinguish attack victims from counterterror casualties.
+The full reason map is in [Part 10 Deaths system](031_random_terror_spec_part_10_cross_event_system_interactions.md#deaths-system).
 
 ## Building and infrastructure damage
 
@@ -438,11 +461,9 @@ Repair and restoration decisions must use real construction capacity, equipment,
 
 ## Chaos and Condemnation
 
-Ordinary incidents feed Chaos indirectly through tracked deaths and wider campaign consequences.
-
-A major public attack, captured capital, coordinated international wave, or territorial atrocity can also add a modest direct Chaos shock.
-
-Direct Chaos should be reserved for a public strategic change and must not duplicate the full effect of the same deaths.
+Ordinary incidents add no direct Chaos.
+Their deaths reach the meter through the shared Deaths conversion.
+Direct Chaos belongs to the strategic milestones in the [Part 10 Chaos impact map](031_random_terror_spec_part_10_cross_event_system_interactions.md#chaos-impact-map).
 
 Condemnation can arise from:
 

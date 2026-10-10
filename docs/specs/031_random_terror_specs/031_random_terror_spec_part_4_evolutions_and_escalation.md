@@ -2,6 +2,16 @@
 
 ## Part 4: Evolutions and escalation
 
+## Implementation status
+
+Implemented: delayed MTTH scheduling at Chaos `200`, `400`, `600`, `800` and `1000` with the anchors below, enable checks at scheduling and resolution, the highest-enabled evolved opening, one shared evolution log entry each, one report or news presentation per evolution (D10), survivor displacement and distant attacks (Evolution I and II, R33), safe havens and host demands (R42), Network Reach, International Unity, and the Event 14 rivalry (R39).
+
+Open:
+
+- Evolution I organization identity: the named organization with one support profile per network is not implemented, so Disrupt Finance and Smuggling cannot yet be strong against the right profile and weak against the wrong one.
+- An evolution disabled after it was already recorded must stop its later consequences (completion audit C03 covers the terminal case).
+- International Unity is recomputed from every actor's Network Authority, including non-jihadist actors, and overwrites rivalry and rejection losses (C04). Unity must count only International members and keep authored losses.
+
 ## Evolution model
 
 Event 31 has five true evolutions.
@@ -356,9 +366,9 @@ Territorial Insurgency is complete when a created actor can survive for a meanin
 
 ## Evolution IV: The Jihadist International
 
-## Public change
+### Public change
 
-One fictional jihadist current emerges from the wider network and attempts to bind several organizations into an international movement.
+One jihadist current emerges from the wider network and attempts to bind several organizations into an international movement.
 
 It declares secular governments, rival Muslim movements, nonbelievers, and Muslim governments that reject its authority to be enemies.
 
@@ -366,7 +376,7 @@ The branch is specific to Event 31 and appears only after Evolution IV.
 
 ### Representation rules
 
-The movement must remain fictional.
+The movement is invented for the game, and in-world text names it directly without calling it fictional (D13).
 
 Its name, leaders, flag, emblem, doctrine, institutions, and territorial claims are invented.
 
@@ -448,6 +458,9 @@ It never affects ordinary Event 31 vulnerability or recruitment.
 Captured states can face forced rule, expulsions, destruction, prison systems, coerced extraction, and mass killing.
 
 These actions cause real population loss and can add Condemnation.
+
+Expulsions are submitted to the migration system as deportation requests, so the expelled people arrive somewhere as real arrivals instead of disappearing.
+Mass killing uses the Event 31 atrocity Deaths reason from Part 10.
 
 They also damage long-term control and can create resistance, defections, and foreign intervention.
 

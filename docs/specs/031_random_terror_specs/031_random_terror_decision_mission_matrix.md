@@ -4,7 +4,9 @@
 
 This matrix maps the accepted national response and territorial-actor actions into implementation-ready design rows.
 
-Working IDs can be adjusted to match repository naming style.
+Every ID below exists in `common/decisions/031_random_terror_decisions.txt` or `common/decisions/031_random_terror_missions.txt`.
+The completion audit lists each row's open criterion.
+Two accepted additions are recorded under Accepted additions, giving 43 decisions and 8 missions in all.
 
 The action identity, phase, purpose, cost family, outcome family, AI intent, and cleanup obligation should remain intact.
 
@@ -48,7 +50,7 @@ No action may show more than four spendable cost types.
 | `random_terror_prevent_capital_seizure` | `60` to `90` days | maintain capital control and command continuity | seizure blocked, compromised actors exposed | capital held, nearby loss | coup, paralysis, civil war, or capital loss | capital valid, emergency protection maintained |
 | `random_terror_retake_lost_state` | about `180` days | regain and hold extremist territory | control restored and recovery opens | military control without civil restoration | actor entrenches and gains authority | real war or state objective, forces and supply |
 | `random_terror_restore_civil_authority` | `120` to `180` days | repair services, prevent revenge, rebuild administration | activity clears, legitimacy rises, cooldown extends | state remains contested | dormant or entrenched return | recaptured state, relief and administration actions |
-| `random_terror_hostage_deadline` | `30` to `75` days | resolve a named hostage crisis | hostages recovered or released with bounded casualties | some freed, leaders escape | mass casualties, propaganda victory, pressure rise | one active crisis, chosen response remains valid |
+| `random_terror_hostage_deadline` | `30` to `75` days | resolve a named hostage crisis through the approach chosen on the hostage report (negotiate, prepare a rescue, storm at once; Part 3) | hostages recovered or released with bounded casualties | some freed, leaders escape | mass casualties, propaganda victory, pressure rise | one active crisis, chosen approach remains valid |
 | `random_terror_stop_coordinated_uprising` | `60` to `120` days | prevent Final Jihad cells from seizing states during offensive | uprising collapses and world revolt weakens | one state held, cells survive | civil war or transfer | Evolution V, real pressure and active cells |
 
 ## Territorial-actor decisions
@@ -73,6 +75,15 @@ No action may show more than four spendable cost types.
 | `random_terror_join_jihadist_international` | Evolution IV | Jihadist International | compatible route, unity, authority | faction membership and shared content | subordination and new enemies | leave or split only through valid route |
 | `random_terror_call_coordinated_uprising` | Evolution V | high-pressure foreign country | authority, reach, unity, real local cell | pressure-scaled uprising | exposure, cell loss, unity cost | one uprising per target window |
 | `random_terror_accelerate_revelation` | Evolution V | dominant command | `1000+` Chaos, readiness near threshold, public branch enabled | shortens terminal delay | internal split, readiness loss, leader death | cannot bypass hard gates, one attempt |
+
+## Accepted additions
+
+| Decision ID | Basis | Phase | Target | Result | Guard |
+| --- | --- | --- | --- | --- | --- |
+| `random_terror_press_safe_haven` | R42 | Active and Transnational | a live safe-haven host that fed this government | the host accepts (cells and reach fall, marker clears, legitimacy and opinion for the demander) or refuses (Condemnation and opinion penalty) | one demand per host within the memory window, hidden while a sponsor evidence case is open |
+| `random_terror_terminal_counteroffensive` | D12, R38 | Final state | the final command | coalition denial that lowers the terminal strengths through a three-contribution quorum | must stay visible after world end (Part 8, C01) |
+
+The hostage approach choice is an event option on the hostage report, not a decision, so it adds no row here.
 
 ## Visible-action budgets
 

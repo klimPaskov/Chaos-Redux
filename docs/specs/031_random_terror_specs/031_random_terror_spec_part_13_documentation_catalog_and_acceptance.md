@@ -2,6 +2,16 @@
 
 ## Part 13: Documentation, catalog alignment, and acceptance
 
+## Implementation status
+
+Implemented: shared name, type, evolution and world-end selectors, the Event Details text, the public False Revelation row, Global Jihad as `SCN-016` with the compact `#016` label, default enablement (R41), and the event documentation at [docs/events/031_random_terror/overview.md](../../events/031_random_terror/overview.md).
+
+Open:
+
+- The workbook's Evolution IV description still uses the older "A fictional jihadist current" sentence, and the Events-sheet status change from `To Be Reworked` to `Needs Testing` is queued in [catalog_changes_pending.md](../../plans/031_random_terror_plans/catalog_changes_pending.md) for the workbook owner.
+- The overview's validation prose cites D1 to D13 and R1 to R43, while the decisions file runs to R47.
+- V01 to V20 have no current acceptance evidence.
+
 ## Source-of-truth location
 
 The completed specification package belongs under:
@@ -12,9 +22,7 @@ Implementation plans, subagent handoffs, audit follow-up notes, blocked reports,
 
 `docs/plans/031_random_terror_plans/`
 
-The final event documentation should use an event-owned folder under `docs/events/` that matches current repository convention.
-
-The implementation agent must inspect the live repository before choosing exact documentation filenames.
+The event documentation lives at `docs/events/031_random_terror/overview.md`.
 
 ## Catalog alignment
 
@@ -50,7 +58,8 @@ Event 31 should contain player-facing fields aligned with final in-game wording.
 
 The detail should explain that several countries suffer fictional armed attacks in exact active states, governments manage a compact response, unresolved cells spread and organize, and severe failure can create coups, civil wars, territorial extremist countries, and international networks.
 
-It should state that the later jihadist movement is fictional and that Muslim governments and communities can be among its main opponents.
+It should state that Muslim governments and communities can be among the later jihadist movement's main opponents.
+The text is in-world and does not call the movement fictional (D13).
 
 It should not list raw modifiers, exact thresholds, hidden readiness, or the entity's true identity.
 
@@ -118,13 +127,12 @@ Raw cluster `9` belongs to National Breakthroughs.
 
 ## Event registration and status
 
-Implementation should register Event 31 in the repeatable-event array and add it to the reworked-event default enable allowlist only in the same change that delivers the complete playable event.
+Event 31 is registered in the repeatable-event array and joined the reworked-event default-enable allowlist under R41, after the recurring pulse, closure, spread and sponsor work landed.
+Default enablement is accepted design and does not mean the completion audit has passed.
 
 The event must resolve through the shared type and name selectors.
 
 It should show a live weight when available and `N/A` only when no valid target exists.
-
-A partially implemented event should remain disabled by default.
 
 ## Event log history
 

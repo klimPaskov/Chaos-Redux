@@ -132,6 +132,17 @@ The manifest must include setup order, carrier limits, actor removals, evolution
 | W07 | `1000+` | yes | high | wide | high | yes | delayed candidate, not instant |
 | W08 | `1000+` | yes | falling | restored countries | falling | yes | readiness declines and candidate can lapse |
 
+## Chaos feedback scenario
+
+| Scenario ID | World and actor state | Surfaces to inspect | Expected ordering | Invalid outcome | Preferred evidence |
+| --- | --- | --- | --- | --- | --- |
+| `P11_chaos_feedback` | ten affected countries at Evolution II, no actor, twelve months of pulses and spread, all crises contained | Event 31 direct Chaos rows, Deaths conversion | Event 31 direct Chaos stays zero, milestone rows fire once, the rolling cap holds | per-incident Chaos accumulates toward the next evolution threshold | source calculation from the Part 10 map and constants |
+
+## Current evidence
+
+No scenario in this matrix has current baseline and comparison evidence.
+Earlier probability routes timed out or returned partial inventories, and the dated attempts are recorded in the [completion audit](../../plans/031_random_terror_plans/subagent_handoffs/031_current_completion_audit_20261007.md).
+
 ## Audit-patch-compare cycle
 
 For every weighted surface:

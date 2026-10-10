@@ -2,6 +2,17 @@
 
 ## Part 6: Focus tree and political routes
 
+## Implementation status
+
+Implemented: `random_terror_actor_focus_tree` with 114 focuses covering every route family below, search filters on every focus, nine Focus Navigation shortcuts, route flags that open matching decision families, concrete rewards for every focus (R9, R17), focus rewards that never lock actor decisions (R14), and three idea slots holding one stable command, economy and legitimacy spirit each, with failure forms managed separately (R16, R19, R21).
+The last structural render reported no connector crossings or spacing violations.
+
+Open:
+
+- Forge the Seal cores every state the command owns and holds at once. This conflicts with the staged-core rule under Consolidate captured territory and needs a staged rule (for example, cores only for states held for a set period with Territorial Control above the middle band).
+- The economy failure form Famine becomes Supply Collapse (see Part 5).
+- Current specialist route review, normal-zoom render and maximum simultaneous spirit count remain unverified.
+
 ## Tree purpose
 
 Every durable Event 31 territorial actor uses a shared event-owned focus framework that adapts to its organization profile, region, origin, evolution, territory, sponsor, and leadership.
@@ -664,8 +675,8 @@ They should not fill the tree.
 | Idea | Start | Mitigation | Route upgrade | Failure form | Final forms |
 | --- | --- | --- | --- | --- | --- |
 | Improvised Command | all new actors | opening survival | Distributed Command, Unified Field Command, or Cadre Authority | Compromised Network, Rival Warlords, or Doctrinal Schism | Network Directorate, Directorate General Staff, or Ideological State |
-| Captured Economy | all new actors | repair, supply, administration | External Supply System, Directed War Economy, Civil Administration, or Patron Development Mission | Looting Spiral, Famine, or Sponsor Dependency | route-specific stable economy |
-| Contested Legitimacy | all new actors | service, coercion, recognition, ideology | Security State, Claimed Revolutionary Authority, Recognized Enclave, or International Mandate | Local Revolt, Mass Defection, or Failed Rule | route-specific territorial identity |
+| Captured Economy | all new actors | repair, supply, administration | External Supply System, Directed War Economy, Civil Administration, or Patron Development Mission | Looting Spiral, Supply Collapse, or Sponsor Dependency | route-specific stable economy |
+| Contested Legitimacy | all new actors | service, coercion, recognition, ideology | Security State, Claimed Authority, Recognized Enclave, or International Mandate | Local Revolt, Mass Defection, or Failed Rule | route-specific territorial identity |
 
 No route should create a large stack of separate ideas when one lifecycle can carry the institution.
 

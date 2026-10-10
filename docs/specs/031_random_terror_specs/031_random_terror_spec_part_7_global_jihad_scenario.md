@@ -2,6 +2,17 @@
 
 ## Part 7: Global Jihad triggerable scenario
 
+## Implementation status
+
+Implemented: registration in the shared scenario window as `#016` with all five types and four intensities, fail-closed launch status, a preflight that counts only free carriers the selected intensity unlocks (D2), evolution flags applied only after the preflight passes, Jihadist International formation at Medium and above with one independent command at High and Maximum (D10), held-back evolution popups with a launch report and news, and Maximum activating the Final Jihad without bypassing the False Revelation gates.
+
+Open (C06):
+
+- Border Corridors and Territorial Fronts change only pressure and activity values. They do not yet build connected border, port or rail groups or larger contiguous actors.
+- Random Pattern draws one of the four patterns instead of a mixture.
+- Actors receive one random state each, and the preflight counts states without reserving a complete allocation before mutations.
+- The twenty type and intensity cases have no acceptance evidence.
+
 ## Scenario identity
 
 - Scenario name: `Global Jihad`

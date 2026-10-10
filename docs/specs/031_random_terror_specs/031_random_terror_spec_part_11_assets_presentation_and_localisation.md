@@ -2,6 +2,18 @@
 
 ## Part 11: Assets, presentation, and localisation direction
 
+## Implementation status
+
+Implemented and wired: three category pictures, sixteen report and six news pictures, 114 focus icons with shine variants, 29 idea icons, 40 decision and 8 mission icons, 45 leader portraits with recruitment or selection consumers (D11), the ten-frame entity animation with a static fallback, four large and four small faction emblems, 37 cosmetic flag identities plus the base carrier flags, 36 achievement icon files, two super-event images and two licensed audio cues, the Network Authority text icon, and the Terror Activity map mode with its two buttons (D7, R8).
+The row-level inventory and audit are in [the visual asset inventory](../../plans/031_random_terror_plans/031_random_terror_visual_asset_inventory.md) and [the visual asset audit](../../plans/031_random_terror_plans/031_random_terror_visual_asset_audit.md).
+
+Open:
+
+- The entity animation is selected for the Evolution V detail before the terminal state exists. Part 8 requires the static portrait until the revelation.
+- The 36 achievement icon hashes in the inventory are stale, and the two map-mode buttons are outside the inventory.
+- The flag pool below asks for distinct ordinary actor flags, while the implementation cycles 16 active ordinary identities and assigns 8 dormant identities at cleanup. That substitution needs an explicit disposition.
+- Submitted image prompts for the portraits and two source-to-DDS equality records are missing. Original audio downloads are missing although the runtime files match their handoff hashes.
+
 ## Presentation strategy
 
 Event 31 needs strong visual identity across four scales.
@@ -423,7 +435,8 @@ Avoid generic crisis language, dramatic filler, and map-summary prose.
 
 ### Organization names
 
-Use fictional names that fit the profile and region without copying real organizations.
+Use invented names that fit the profile and region without copying real organizations.
+In-world text uses the names directly and does not label them fictional (D13).
 
 Do not place an ordinary ethnic, religious, or national group name beside a generic terror label.
 
@@ -441,7 +454,7 @@ Each route needs a distinct voice.
 - War Directorate uses military command and territorial necessity
 - Ideological Secretariat uses doctrinal authority and state-building
 - criminal-political variants use patronage, extraction, and coercive bargains
-- jihadist variants use fictional absolutist religious claims while preserving clear opposition by Muslim actors
+- jihadist variants use invented absolutist religious claims while preserving clear opposition by Muslim actors
 - terminal text focuses on the entity's command, uprisings, coercion, and uncertainty
 
 Do not copy real propaganda or sacred text.

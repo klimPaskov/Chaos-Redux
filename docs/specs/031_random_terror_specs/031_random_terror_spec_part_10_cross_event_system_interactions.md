@@ -2,6 +2,18 @@
 
 ## Part 10: Cross-event and shared-system interactions
 
+## Implementation status
+
+Implemented: the Event 14 rivalry with a real cannibal-border clash, hostile AI strategies and no shared membership path (R39), the Event 21 duplicate civil-war guard and preserved government ideology (R45), live actors in the shared special-country classifier and outside the nonhuman classifier (R36), the world-threat source (R47), public Condemnation for sponsors, atrocities, cover-ups and safe-haven refusals, and exact population loss through the shared helper.
+
+Open:
+
+- Deaths reasons (C11): all Event 31 losses use the shared `civilian_combat` reason. The reason map below is required.
+- Chaos: every incident currently adds `+5` direct Chaos with a generic reason. The Chaos impact map below replaces it.
+- Famine, migration and camps: the bridges below are 2026-10-10 audit revisions and are not implemented.
+- The Event 32 seizure connection stays queued until Event 32's custody interface is verified.
+- The cooperation strategies still befriend an independent command, which contradicts the independent-command role. Independent commands should be neither befriended nor supported by the other carriers.
+
 ## Interaction purpose
 
 Event 31 should exist inside the Chaos Redux world.
@@ -292,17 +304,19 @@ The final state can pursue existing weapons through capture or research, but the
 ## Deaths system
 
 Every Event 31 civilian death uses the shared exact population-loss route and a stable Event 31 reason.
+The measured applied loss is the amount recorded.
 
-Separate reasons should distinguish:
+Event 31 needs three event-owned reasons in `chaos_meter_deaths_reason`, numbered like Event 029's event-owned block:
 
-- terrorist attack
-- hostage or public attack
-- territorial atrocity
-- government counterterror casualties
-- Event 31 civil war or uprising where the shared military ledger needs attribution
-- False Revelation occupation and uprising
+| Reason | Covers |
+| --- | --- |
+| Terror attack | every incident family, hostage outcomes, cannibal clashes, distant attacks and uprising-day incidents |
+| Counterterror casualties | civilians killed by government operations: costly and abusive raid outcomes, abusive surges, sieges of an enclave |
+| Movement atrocity | forced rule, mass killing and executions in territory held by an Event 31 actor or the final command |
 
-The event must avoid double counting between immediate events, state pulses, battles, and aftermath.
+Each new reason needs its cause line in the shared Deaths tab selectors in `common/scripted_localisation/chaosx_scripted_localisation_chaos_meter.txt`, following the Event 029 and Event 033 entries.
+
+Battle deaths in Event 31 civil wars and uprisings stay with the shared combat ledger, and expulsions stay with migration, so neither is counted twice.
 
 Deaths remain in the global history after the crisis ends.
 
@@ -324,22 +338,58 @@ Ordinary police or intelligence work does not generate Condemnation merely becau
 
 The selected country detail should identify the responsible actor and source category.
 
-## Chaos Meter
+## Chaos impact map
 
-Event 31 contributes to Chaos through:
+Event 31 feeds the Chaos Meter through strategic milestones, not through repetition.
+Ordinary incidents add no direct Chaos, because their deaths already reach the meter through the shared Deaths conversion and because a repeatable event that adds Chaos on every incident would push the world through its own evolution thresholds.
 
-- tracked deaths
-- major public attack waves
-- captured capitals
-- civil wars
-- territorial actor formation
-- global network milestones
-- Final Jihad activation
-- world-end transition
+Milestone flags guard every row.
+Positive Event 31 direct Chaos is capped at `+25` within any `180` days.
+The Final Jihad wave and the reversal rows are outside that cap.
+All amounts are tuning anchors for `common/script_constants/031_random_terror_constants.txt`.
 
-Containment, liberation, reconstruction, and defeat of a global threat can reduce Chaos through the appropriate shared systems.
+| Milestone or outcome | Why global Chaos changes | Direction | Starting magnitude | Dynamic factors | Repeat guard | Shared-source overlap | Reversal |
+| --- | --- | --- | ---: | --- | --- | --- | --- |
+| Ordinary incident of any family | none beyond its deaths | none | `0` | none | none | Deaths conversion owns the losses | none |
+| First Event 31 firing of a campaign | first public manifestation of a coordinated terror wave | up | `+2` | none | once per campaign | none | none |
+| First cross-border spread or distant attack of a campaign | the crisis stops being national | up | `+3` | none | once per campaign | none | none |
+| Territorial actor forms | a new special Chaos polity appears | up | `+3`, `+5` for the first of the campaign | none | once per actor lifetime (a reused carrier starts a new lifetime) | special-country creation has no shared source | actor destroyed, annexed or surrendered: `-3` |
+| Event 31 coup succeeds or an actor takes over its parent | a government falls to the movement | up | `+10` | `+5` more when the parent is a major power | once per country per crisis | shared ideology-change or annexation Chaos stays separate, because this premium is for the abnormal actor | parent government restored: `-5` |
+| Actor captures an original national capital | the movement holds a seat of government | up | `+5` | `+10` instead for a major power's capital | once per capital per campaign | shared war and annexation sources stay separate | capital retaken by its owner: `-3` |
+| Event 31 civil war begins | a terror crisis splits a country in open war | up | `+3` | none | once per country per crisis | `0` when the shared war-declaration counter already records that civil war | none |
+| Jihadist International founded with at least two members | a multinational extremist structure exists | up | `+5` | none | once per campaign | faction formation has no shared source | International dissolved or its leader defeated: `-3` |
+| First coordinated uprising wave of the Final Jihad | synchronized risings across several countries | up | `+10` | none | once per campaign | civil wars counted by the shared counter add separately | none |
+| Severe crisis contained: a government that reached State Challenge pressure closes its crisis with no actor formed | a destabilizing force was pushed back | down | `-2` | none | once per crisis | none | none |
+| The False Revelation commits | world end | none from Event 31 | `0` | none | none | owned by the shared world-end transition | none |
+| The False Revelation is defeated | the world-level threat is destroyed | down | `-20` | none | once per campaign | none | none |
 
-Direct Event 31 Chaos changes should remain modest outside major strategic milestones so deaths and wars are not counted twice.
+Evolution activation adds no Chaos, following the event-planning Chaos standard.
+Each row records a Chaos history reason specific to Event 31 instead of the generic increase reason.
+
+## Famine, migration and camps
+
+Both systems were reworked on 2026-10-10.
+They accept owner-proven requests from relevant events and keep their own ledgers, categories and Deaths.
+Event 31 never reads or writes their internal variables.
+
+### Migration
+
+- Relief strain incidents submit a flight request for the struck state (state, people affected, cause, responsible actor). Migration performs the exact transfer and reception. See Part 2.
+- Expulsions in territory held by an Event 31 actor or the final command submit deportation requests. See Part 4.
+- When an Event 31 actor captures a state, the existing special-front capture adapter already sends people in neighboring states of the former owner into flight, because live actors are special Chaos countries (R36). Event 31 adds nothing on top.
+- Secure Relief Corridor is the Event 31 action that protects people on the move. It does not duplicate migration's reception or corridor decisions.
+
+### Famine
+
+- Force Extraction and the Coerced Extraction focuses submit an owner-proven extraction request for the extracted state, so coercive actor economies can produce real shortages.
+- Transport disruption and depot sabotage in a state that famine already tracks submit a transport request, so a terror attack on a starving region's rail line worsens its food security.
+- The actor economy failure spirit is Supply Collapse, not Famine (see Part 5).
+- A famine in a government's crisis state is a valid reason for Support Victims to rank first in AI priority there.
+
+### Camps
+
+- A government that operates a camp in a state of its own Event 31 crisis is treated as using collective punishment (see Part 3 Coercive response). Event 31 reads the camp system's state facts and never creates or counts camps.
+- Event 31 actors do not build camps. Their forced rule uses the atrocity Deaths reason above and the migration deportation route.
 
 ## Air Cleanliness
 
@@ -455,3 +505,5 @@ Cross-event integration is complete only when:
 10. The Event 31 world-threat source activates and clears from real world state.
 11. Event 31 actors are special Chaos and remain outside actual nonhuman classification.
 12. The proposed cluster remains unregistered until its member package is ready.
+13. A contained campaign with many incidents gains no Event 31 direct Chaos.
+14. A relief strain incident moves people only through migration, and an extraction-driven shortage appears only through famine.

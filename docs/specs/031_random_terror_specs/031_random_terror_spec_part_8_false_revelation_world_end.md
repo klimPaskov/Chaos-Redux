@@ -2,6 +2,19 @@
 
 ## Part 8: The False Revelation world-end branch
 
+## Implementation status
+
+Implemented: the initial gate (Chaos `1000+`, Evolution V, public toggle, readiness, unity, territory, crisis states, strategic victories), the delayed transition with an acceleration decision, the entity as a gated final leader with five research slots, the three objective-based strengths as dynamic modifiers recomputed from world state (R38), the opening uprising wave limited to governments with real pressure and an active state, the Terminal Counteroffensive (D12), the reveal and defeat super-events with researched text, art and audio, and the world-threat source (R47).
+
+Open, from the completion audit:
+
+- C01 terminal access: the government response category is hidden once `world_end` is set, so the counteroffensive and the emergency missions cannot be used after the transition. See World-end transition below.
+- C02 player control: a human dominant actor is promoted before it can choose, the rejection option starts no rival war, and every AI Event 31 actor is subordinated, including non-jihadist actors. See Player control and Actor unification.
+- C03 commit revalidation: the delayed commit does not recheck the full gate. See Delayed transition.
+- C04 strategic victory and unity: the victory counter increments even when a takeover fails, does not distinguish major victories, and unity counts every actor. See Major strategic victory.
+- C10 campaign beats and aftermath: see the two sections below, both revised by the 2026-10-10 audit.
+- The entity animation is shown in the Evolution V detail before the revelation. It must stay static until the terminal state exists.
+
 ## Terminal role
 
 The False Revelation is Event 31's public world-end branch.
@@ -84,6 +97,9 @@ A qualifying victory can include:
 
 A minor isolated state does not satisfy the requirement by itself.
 
+A victory is counted only after the state transfer, capital capture or merger actually succeeds, and each qualifying victory is counted once.
+International Unity for this gate counts only members of the Jihadist International and keeps the losses from rivalry and community rejection between refreshes.
+
 ### Hidden requirement
 
 Apocalyptic Readiness must reach its threshold.
@@ -122,6 +138,9 @@ Eligibility does not trigger the branch instantly.
 The branch uses its own delayed event with mean time to happen influenced by readiness, unity, territorial success, and leadership stability.
 
 This gives the world a final chance to reduce readiness.
+
+When the delay ends, the commit rechecks the complete public and hidden gate, that the host still exists, that no other world end began, and that the branch and Evolution V are still enabled.
+A failed recheck cancels the pending transition without any partial change, and readiness must be rebuilt before a new delay starts.
 
 A dominant actor can also attempt to accelerate the transition through a visible high-risk route, but it cannot bypass the `1000+` Chaos gate or public enable state.
 
@@ -176,7 +195,7 @@ The transition must:
 - set a scenario-specific False Revelation flag
 - activate the dedicated super-event
 - stop ordinary random-event firing
-- preserve Event 31 terminal missions and campaign logic
+- preserve Event 31 terminal missions and campaign logic, including a usable government response category with the Terminal Counteroffensive, Stop the Coordinated Uprising, Prevent Capital Seizure and Retake the Lost State
 - transform or create the final state
 - assign the entity as visible leader
 - reconcile faction membership and actor mergers
@@ -261,6 +280,14 @@ These ideas should change as the final campaign advances or loses key objectives
 
 They should not give unlimited power at full strength regardless of world state.
 
+They are implemented as three scaling modifiers, each with a 0 to 100 score, a floor the coalition cannot remove, and a cap.
+
+### Terminal presentation budget
+
+The final command's category shows exactly the three strength scores, the state of the command capital, and one line naming what lowers each strength.
+Raw International Unity, External Supply, readiness and counts stay out of the header.
+Government players see the same three scores in the Terminal Counteroffensive tooltip, because those scores are what the coalition is trying to lower.
+
 ## Extreme abilities
 
 The user brief requires intentionally extreme recruitment, organization, recovery, supply, resistance, uprising, expansion, and combat abilities.
@@ -305,7 +332,7 @@ It should prioritize connected fronts and strategic capitals.
 
 ### Combat
 
-The state receives strong attack, defense, breakthrough, planning, reinforcement, and recovery bonuses in terminal phases.
+The state receives strong attack, defense, breakthrough, planning, reinforcement, and recovery bonuses while it holds its command capital and keeps its strengths high.
 
 These bonuses scale down when the entity loses command sites, International Unity collapses, or the final network is severed.
 
@@ -338,38 +365,22 @@ A high-pressure country can receive:
 
 The setup should choose the outcome that fits geography and carrier capacity.
 
-## Terminal campaign phases
+## Terminal campaign beats
 
-### Phase 1: Revelation and synchronized uprisings
+The terminal campaign has no separate phase counter.
+Its stages are readouts of the objectives the coalition and the final command fight over, so every beat is caused by something on the map.
 
-The final state consolidates command, chooses merger outcomes, and triggers the first uprising wave.
+- Revelation: the transition commits, the opening uprising wave rises where pressure is real, and governments receive Stop the Coordinated Uprising where their emergency slot is free.
+- Offensive: while the command capital is held and the strengths stay high, the final command pushes connected fronts and the coalition targets command capitals, corridors and pressured countries.
+- Forced rule: conquered states can suffer forced administration, expulsions and mass killing. These add Deaths, Condemnation and deportations through migration, and they raise resistance and defections, which lower the strengths over time.
+- Resolution: the campaign ends in one of four outcomes.
 
-Governments receive emergency capital, relief, defection, and coalition actions.
+The four outcomes are:
 
-The phase ends after the initial transaction, major uprising objectives, and first command front are resolved.
-
-### Phase 2: Coordinated global offensive
-
-The final state launches regional campaigns, protects corridors, captures capitals, and supports foreign cells.
-
-The coalition targets command capitals, safe havens, transport, International Unity, and Network Authority.
-
-### Phase 3: Forced world order
-
-The final state attempts to consolidate conquered regions through forced administration, expulsions, mass killing, ideological control, and permanent military occupation.
-
-These actions create severe Deaths and Condemnation, but can also raise resistance, foreign unity, and internal defections.
-
-### Phase 4: Collapse or final victory
-
-The branch ends through one of the final outcomes.
-
-- the entity state conquers or subordinates every meaningful opposition center
-- the world coalition destroys the final state and command network
-- the entity disappears after loss of readiness and command, leaving fragmented actors
-- rival claimants destroy the final unity and the world enters a prolonged extremist civil war
-
-The exact campaign resolution should be defined in implementation once the repository's terminal-state conventions are inspected.
+- the final command conquers or subordinates every meaningful opposition center
+- the coalition destroys the final command and its surviving commands
+- the entity disappears when all three strengths sit at their floors and the command capital is lost, leaving fragmented actors that fall back to ordinary Event 31 rules
+- a rival claimant destroys the final unity, and the remaining commands fight each other as ordinary Event 31 actors
 
 ## Global counterplay
 
@@ -445,55 +456,20 @@ A player controlling a victim government receives immediate objectives and coali
 
 In multiplayer, no player country should disappear without an explicit handoff, consent path, or documented terminal takeover rule.
 
-## Super-event presentation direction
+A human dominant actor makes the accept, contest or independence choice before any promotion or merger.
+Contesting must start a real war against the new final command or create a rival claimant, and non-jihadist actors are never subordinated automatically.
 
-The world-end transition receives one dedicated super-event.
+## Super-event presentation
 
-### Role
+The reveal and defeat super-events are implemented with researched titles, quotes, remarks, images and licensed audio.
+Their research records live under `docs/super_events/031_random_terror/`.
+Any revision keeps these rules:
 
-First reveal and terminal campaign announcement.
-
-### Title direction
-
-The title should be short, specific, and centered on false divinity, disputed revelation, or the movement's final claim.
-
-The researcher must not treat the working branch name as automatically final localisation.
-
-### Description direction
-
-Describe the entity's appearance, the acceptance by extremist leaders, simultaneous uprisings, public fear, and open rejection by religious and civic opponents.
-
-Preserve uncertainty about the entity.
-
-### Button direction
-
-Use a brief researched reaction suited to an impossible and coercive claim.
-
-Avoid a sacred Islamic phrase, cheap joke, generic statement, or unverified cultural reference.
-
-### Quote direction
-
-Research public-domain religious, philosophical, literary, or historical material about false prophets, deception, idolatry, coercive belief, or judgment.
-
-Do not invent or misattribute a quote.
-
-Do not use a Quranic verse as villain presentation without a carefully justified and user-approved treatment. The preferred direction is a broader public-domain source that preserves the event's ambiguity and avoids turning Islamic scripture into enemy branding.
-
-### Image direction
-
-Generated period-authentic documentary or surreal report art.
-
-Show the entity indirectly through impossible light, a command hall, altered shadow, followers, damaged architecture, or a mass reaction.
-
-Do not depict Allah, sacred calligraphy, real extremist emblems, modern equipment, or a generic fantasy demon portrait detached from the 1936 to 1945 world.
-
-### Audio direction
-
-Research a unique licensed or public-domain musical recording with an ominous, processional, or apocalyptic structure.
-
-Do not use Quran recitation, the call to prayer, Islamic sacred chant, generated audio, drones, test tones, or unlicensed commercial music.
-
-The final cue needs source and recording rights evidence.
+- preserve uncertainty about the entity and show it only indirectly
+- no depiction of Allah, sacred calligraphy, real extremist emblems, modern equipment, or a generic fantasy demon
+- no Quranic verse as villain presentation, no sacred Islamic phrase as a button, and no invented or misattributed quote
+- no Quran recitation, call to prayer, Islamic sacred chant, generated audio, drones, test tones, or unlicensed music
+- every quote and audio cue keeps its source and rights evidence
 
 ## Entity portrait and animation
 
@@ -511,28 +487,21 @@ Transform-only motion, glow filters, or a GIF made from one shifted still cannot
 
 The animation needs a static fallback and verified GUI consumer before implementation.
 
+The animated portrait belongs to the terminal state.
+Before the revelation, including the Evolution V entry in Event Details, the static portrait is shown.
+
 ## Defeat aftermath
 
-Defeating the final state qualifies for a major aftermath because the threat is global, prolonged, and destructive.
+Defeating the final command qualifies for a major aftermath because the threat was global, prolonged, and destructive.
+The world does not return to normal at once, but the aftermath is kept to a few consequential choices.
 
-The aftermath should include:
+- The reflective defeat super-event and news report announce the outcome.
+- Liberated states keep their damage and become recovering states, so the ordinary Support Victims, Restore Services and Restore Civil Authority actions carry the reconstruction.
+- Each government that held liberated territory receives one accounting event about prisoners and defectors. Tribunals raise Response Legitimacy and lower recurrence but cost stability. Broad amnesty ends the remaining cells faster but lowers legitimacy and leaves Dormant traces. Summary punishment ends the crisis quickest, adds Condemnation and disqualifies the No Collective Punishment achievement.
+- Surviving splinter cells remain as Dormant traces under ordinary Event 31 rules.
+- Chaos falls through the reversal rows of the Part 10 Chaos impact map. Deaths and Condemnation history stay.
 
-- a reflective defeat super-event
-- liberation and reconstruction missions
-- victim and survivor support
-- treatment of prisoners and defectors
-- restoration of states and governments
-- a counterterror and human-rights compact
-- remaining splinter cells
-- debate over the entity's nature
-- memorial and vigilance events
-- continuing Condemnation and Deaths history
-
-The world should not return instantly to normal.
-
-The aftermath can reduce Chaos through liberation and reconstruction while preserving long-term damage and political consequences.
-
-The defeat super-event requires separate quote, image, remark, and audio research.
+The earlier plan items for a counterterror compact, a debate over the entity's nature and recurring vigilance events are folded into the accounting event text and the defeat news, and do not become separate systems.
 
 ## Event Details public branch
 

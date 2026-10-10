@@ -2,6 +2,17 @@
 
 ## Part 5: Territorial insurgency and country packages
 
+## Implementation status
+
+Implemented: eight predeclared carrier tags (JHX, JIX, JKX, JLX, JMX, JNX, JOX, JPX) behind one free-carrier predicate with lazy release (D1, R1), parent capital protection and a war on the parent at formation (D3), leaders promoted from roleless candidate pools (D11), flags and cosmetic identity cycles, the three starting spirits with one stable spirit per slot and owned failure overlays (R16, R19, R21), research slots 2, 3, 4 and 5 by profile with curated parent technology inheritance (R40), real formations through existing templates (D9), orphaned-state return (R12), surrender terms with consent (R46), Event 21 civil-war guards and ideology preservation (R45), and the shared special-country classifier (R36).
+
+Open:
+
+- Starting forces and capitals (C07): every profile starts with the same manpower and equipment grant and a fixed division floor, and the capital is the founding state. The resource and capital rules below still apply.
+- Mergers and takeover (C08): absorption transfers states without stockpiles, compatible technology or troops, and a parent that loses all territory is only flagged.
+- Leadership contest (C05): the contest compares the challenger's authority with itself, so the designed contest cannot be won.
+- Supply Collapse: the economy failure form described under Captured Economy is an audit revision. The current implementation still names it Famine.
+
 ## Country-package purpose
 
 A territorial Event 31 actor must be a real playable country package.
@@ -261,8 +272,12 @@ Mitigation paths:
 Failure forms:
 
 - looting spiral
-- famine and collapse
+- supply collapse
 - sponsor dependency
+
+Supply Collapse replaces the earlier Famine failure spirit.
+An actor spirit named Famine would imitate the famine system without its food ledger.
+Real hunger in actor territory comes from the famine system instead: Force Extraction and the Coerced Extraction focuses submit an owner-proven extraction request for the extracted state, so a command that strips its land can push that state into shortage, which then costs it stability, manpower and, through migration, people.
 
 ### Contested Legitimacy
 

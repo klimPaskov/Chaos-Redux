@@ -2,6 +2,18 @@
 
 ## Part 12: Achievement package
 
+## Implementation status
+
+Implemented: all twelve IDs in `common/achievements/chaos_redux_achievements.txt` with completion predicates, persistent proof flags, English localisation and icon triplets, country-owned capital tracking, measured-loss counting, the success-only civil-authority fact, and country-local control-change disqualification.
+
+Open (C12):
+
+- Cut Every Route counts corridors by physical state and does not prove three corridors from one connected network. Its corridor receipts must be keyed to the network they belong to.
+- Accepting a safe-haven demand clears the host without awarding the safe-haven elimination receipt, while older receipts award it when a training-area corridor or lost state is cleared. Only a real haven elimination (an accepted demand, the host's crisis closing, or the haven actor's defeat) may award it.
+- No Collective Punishment gains the camp disqualifier from Part 3 and the summary-punishment disqualifier from the Part 8 aftermath.
+- Same-day tag round trips and swaps between countries that stay human are outside the daily control marker's observation.
+- Every valid, near-miss, disqualifier, contribution and save case remains unproven.
+
 ## Achievement design rules
 
 Event 31 achievements should reward mastery of pressure, legitimacy, territorial war, cross-border networks, the manual scenario, actor play, and the world-end branch.
@@ -24,12 +36,12 @@ Each achievement needs:
 - completed, grey, and not-eligible icon variants
 - documentation and catalog coverage where relevant
 
-The working labels below are not final localisation.
+The names below match the registered English localisation, whose descriptions are the player-facing wording.
 
 ## 1. No Second Blast
 
-- Proposed ID: `031_no_second_blast`
-- Working label: No Second Blast
+- ID: `031_no_second_blast`
+- Name: No Second Blast
 - Eligibility: any ordinary government affected by Event 31
 - Difficulty: hard
 - Visibility: visible
@@ -64,8 +76,8 @@ A guarded city skyline behind one extinguished fuse or shattered detonator symbo
 
 ## 2. The Long Watch
 
-- Proposed ID: `031_the_long_watch`
-- Working label: The Long Watch
+- ID: `031_the_long_watch`
+- Name: The Long Watch
 - Eligibility: any ordinary government
 - Difficulty: hard
 - Visibility: visible
@@ -98,8 +110,8 @@ A period watchtower or guarded station with five marked lamps and a calm city be
 
 ## 3. The City Still Stands
 
-- Proposed ID: `031_the_city_still_stands`
-- Working label: The City Still Stands
+- ID: `031_the_city_still_stands`
+- Name: The City Still Stands
 - Eligibility: any government with an active capital-seizure mission
 - Difficulty: medium to hard
 - Visibility: visible
@@ -125,8 +137,8 @@ A fortified government building with intact lights behind damaged streets.
 
 ## 4. Cut Every Route
 
-- Proposed ID: `031_cut_every_route`
-- Working label: Cut Every Route
+- ID: `031_cut_every_route`
+- Name: Cut Every Route
 - Eligibility: any ordinary government or coalition leader
 - Difficulty: hard
 - Visibility: visible
@@ -152,8 +164,8 @@ Three broken transport lines converging on a sealed border gate.
 
 ## 5. The False Claim Rejected
 
-- Proposed ID: `031_the_false_claim_rejected`
-- Working label: The False Claim Rejected
+- ID: `031_the_false_claim_rejected`
+- Name: The False Claim Rejected
 - Eligibility: an ordinary Muslim-majority government identified through the event-local reaction registry
 - Difficulty: hard
 - Visibility: visible
@@ -184,8 +196,8 @@ A fictional council seal and protected city gate facing a broken false crown, wi
 
 ## 6. No Collective Punishment
 
-- Proposed ID: `031_no_collective_punishment`
-- Working label: No Collective Punishment
+- ID: `031_no_collective_punishment`
+- Name: No Collective Punishment
 - Eligibility: any ordinary government fighting an Event 31 territorial actor
 - Difficulty: very hard
 - Visibility: visible
@@ -198,6 +210,7 @@ Defeat or secure the full surrender of a territorial Event 31 actor while:
 - no movement restriction exceeds its ordinary duration
 - no abusive failure occurs
 - no government atrocity or cover-up Condemnation source is recorded
+- the government operates no camp in a state of its own Event 31 crisis
 - every recaptured state completes Restore Civil Authority
 
 ### Disqualifiers
@@ -211,8 +224,8 @@ A restrained sword beside an open relief gate and restored civic building.
 
 ## 7. The Enemy of My Enemy Is Still My Enemy
 
-- Proposed ID: `031_enemy_of_my_enemy`
-- Working label: The Enemy of My Enemy Is Still My Enemy
+- ID: `031_enemy_of_my_enemy`
+- Name: The Enemy of My Enemy Is Still My Enemy
 - Eligibility: any ordinary government or Event 31 actor
 - Difficulty: hard
 - Visibility: visible
@@ -239,8 +252,8 @@ Two broken hostile emblems separated by one defended civilian settlement.
 
 ## 8. Fracture from Within
 
-- Proposed ID: `031_fracture_from_within`
-- Working label: Fracture from Within
+- ID: `031_fracture_from_within`
+- Name: Fracture from Within
 - Eligibility: a player-controlled Event 31 territorial actor
 - Difficulty: very hard
 - Visibility: hidden until the player controls an eligible actor
@@ -266,8 +279,8 @@ A fictional faction seal split through its center with three diverging banners.
 
 ## 9. Maximum Survivor
 
-- Proposed ID: `031_maximum_survivor`
-- Working label: Maximum Survivor
+- ID: `031_maximum_survivor`
+- Name: Maximum Survivor
 - Eligibility: the player country selected when Global Jihad launches at Maximum intensity
 - Difficulty: extreme
 - Visibility: visible
@@ -295,8 +308,8 @@ A battered national capital surrounded by cleared crisis markers and broken fact
 
 ## 10. The False Revelation Denied
 
-- Proposed ID: `031_false_revelation_denied`
-- Working label: The False Revelation Denied
+- ID: `031_false_revelation_denied`
+- Name: The False Revelation Denied
 - Eligibility: any country fighting the final state
 - Difficulty: extreme
 - Visibility: hidden until the world-end branch begins
@@ -323,8 +336,8 @@ An ambiguous dark figure fading above a recaptured command hall at dawn, without
 
 ## 11. Victims Before Victory
 
-- Proposed ID: `031_victims_before_victory`
-- Working label: Victims Before Victory
+- ID: `031_victims_before_victory`
+- Name: Victims Before Victory
 - Eligibility: any ordinary government with major Event 31 civilian losses
 - Difficulty: hard
 - Visibility: visible
@@ -351,8 +364,8 @@ Relief workers opening a restored railway station while soldiers remain outside 
 
 ## 12. War Without a Capital
 
-- Proposed ID: `031_war_without_a_capital`
-- Working label: War Without a Capital
+- ID: `031_war_without_a_capital`
+- Name: War Without a Capital
 - Eligibility: any ordinary government
 - Difficulty: extreme
 - Visibility: hidden until the capital is lost to Event 31

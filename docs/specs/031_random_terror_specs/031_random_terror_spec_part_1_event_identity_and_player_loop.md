@@ -2,6 +2,13 @@
 
 ## Part 1: Event identity and player loop
 
+## Implementation status
+
+Implemented: the bounded multi-country wave counted as one pacing event, the two national values, the 0 to 100 state activity ladder with staged dynamic modifiers (D7), the first emphasis choice on the opening report (R32), the event-owned recurring pulse (D4), spread and survivor displacement (R33), the recovery phase and crisis closure (R30), and default enablement (R41).
+See [the event documentation](../../events/031_random_terror/overview.md) for identifiers.
+
+Open: campaign-length and multiplayer validation, and the global firing scale question in the README open questions.
+
 ## Catalog identity
 
 - Event ID: `31`
@@ -9,8 +16,8 @@
 - Event type: `Minor Repeatable`
 - Chaos level: `1`, Calm World
 - Entry event: `chaosx.nr31.1`
-- Status after implementation: Reworked and enabled for normal selection
-- Future cluster role: severe member of the proposed Internal Fracture cluster
+- Status: enabled for normal selection by default (R41); the workbook status change to `Needs Testing` is queued for the workbook owner
+- Cluster: Domestic Unrest, raw `event_cluster_id` `16`; a severe-member role in the optional Internal Fracture proposal (reserved raw ID `22`) is not accepted
 
 The event remains repeatable because a defeated network does not remove the possibility of another unrelated movement appearing later.
 
@@ -48,7 +55,9 @@ The movement's hostility toward Muslim governments comes from its fictional clai
 
 Displaced civilians and refugees are victims of the crisis. They can create relief and transport pressure because people need protection and services. Their identity never raises terror recruitment or infiltration chance.
 
-Player-facing text must describe fictional actors by their actions, structure, stated goals, territory, and public behavior. It must not use real extremist propaganda, real organization names, real symbols, sacred calligraphy, slurs, or collective suspicion.
+Player-facing text describes the movements by their actions, structure, stated goals, territory, and public behavior.
+In-world text names them directly and does not call them fictional (D13).
+It must not use real extremist propaganda, real organization names, real symbols, sacred calligraphy, slurs, or collective suspicion.
 
 ## Core national values
 
@@ -110,6 +119,13 @@ Major failures, coordinated attack waves, or a connected territorial actor can a
 
 State recovery also moves in stages. A retaken state can remain damaged, frightened, or contested after the armed modifier is removed.
 
+### Values shown to the player
+
+The government category header shows Terror Pressure with its band name, Response Legitimacy and the number of crisis states.
+Response Capacity (R37) is also shown in the header in the current implementation, and the README open questions propose moving it into the raid and sweep tooltips.
+The spread status line tells the player whether a cell can move next and why.
+Everything else (incident memory, cooldowns, spread windows, readiness, pulse timing) stays internal.
+
 ## Supporting global and actor values
 
 Later evolutions introduce additional values only when they become useful.
@@ -137,15 +153,14 @@ The country gains Terror Pressure and opens the response category.
 
 ### Assessment
 
-The government chooses its first emphasis from protection, intelligence, victim support, or rapid coercion.
+The opening report of a crisis asks for the first emphasis: Protective Cordons, Intelligence Priority, Relief First, or Rapid Crackdown.
 
-The choice changes the available actions, the next mission pool, and the likely outcome of the first operation.
-
-It should not permanently lock the country into one doctrine.
+Each emphasis lasts a fixed period, gives one immediate effect, and changes how one decision family behaves while it lasts, so it shapes the first operation without locking a doctrine.
+Later reports in the same crisis only inform.
 
 ### Recurring crisis
 
-Active states can produce further incidents through event-owned pacing.
+Active states produce further incidents through one hidden pulse per affected government, scheduled from the timing bands in Part 2.
 
 The player responds through decisions and timed objectives.
 
@@ -228,7 +243,7 @@ Territorial insurgencies can become lasting states.
 
 Several conflicts may connect through supply, training, propaganda, and coordinated takeover attempts.
 
-Evolution IV can introduce the fictional jihadist international and its conflict with Muslim governments and other rivals.
+Evolution IV can introduce the jihadist international and its conflict with Muslim governments and other rivals.
 
 ### World Collapse
 
@@ -302,7 +317,8 @@ A player controlling a Muslim-majority government is never treated as secretly a
 
 The event name remains visible as Random Terror.
 
-Event Details should explain that fictional armed cells attack several countries, damage active states, and can grow into territorial movements when governments fail to contain them.
+Event Details should explain that armed cells attack several countries, damage active states, and can grow into territorial movements when governments fail to contain them.
+The text is written in-world (D13).
 
 It should mention the compact response loop, recurring state activity, cross-border growth, and possible extremist countries.
 

@@ -1,8 +1,11 @@
 # Event 31 supplied-source audit and limitations
 
-Historical evidence: source names, hashes, repository observations, and tool/runtime limitations below belong to the original planning pass.
-They do not establish current local file availability, current service health, implementation status, or design approval.
-Use the package entry point and current owner skills for active guidance.
+Disposition: `superseded` for current facts by [the package README](README.md) and [the current completion audit](../../plans/031_random_terror_plans/subagent_handoffs/031_current_completion_audit_20261007.md).
+
+This file records what the original planning pass in August 2026 could read.
+Its source list is kept as historical evidence.
+Its limitation and blocker lists described a planning environment without the repository, the wiki, the game files or the HOI4 tools.
+Those limits no longer hold: the event is implemented in the repository and later work used the local references and tools, so the lists are reduced to the summary below.
 
 ## Supplied source coverage
 
@@ -66,43 +69,11 @@ The design treats the CSV files as read-only exports.
 
 No CSV was edited.
 
-## Sources that were not present in the supplied bundle
+## Planning-time limits, resolved
 
-The live Chaos Redux repository was not mounted in this environment.
-
-The offline Paradox wiki snapshot was not present.
-
-The installed Hearts of Iron IV game files and vanilla documentation were not present.
-
-The authoritative event catalog XLSX workbook was not present.
-
-The HOI4 MCP server was described in the supplied configuration, but no `hoi4.*` tool surface was available in this chat environment.
-
-The Windows desktop, game executable, debug shortcut, current runtime logs, and live game were not available.
-
-The project subagent execution interface was not available.
-
-The supplied subagent definitions were fully read and converted into bounded routing prompts, but the subagents were not actually spawned.
-
-The improvement loop was therefore performed manually against the same planning contract.
-
-## Consequences of those limits
-
-This package is a complete design specification.
-
-It is not repository implementation evidence.
-
-It does not claim that a tag, sprite, super-event slot, sound ID, country carrier, collection, state trigger, map mode registration, focus navigation token, or scenario registry ID is free in the live project.
-
-The implementation agent must verify every proposed identifier against the repository before use.
-
-The implementation agent must inspect the offline wiki, current vanilla documentation, vanilla precedents, Chaos Redux precedents, and required MCP surfaces before editing code.
-
-The implementation agent must use `hoi4.event_inspect`, event render and compare tools, focus inspect and render tools, probability tools, GUI tools when applicable, and map tools when applicable.
-
-The implementation agent must run the relevant project subagents with `fork_turns="none"` and context-complete prompts.
-
-The implementation agent must update only the authoritative XLSX workbook, then run the repository CSV exporter.
+The planning pass had no access to the repository, the offline wiki, the installed game and documentation, the workbook, the HOI4 MCP tools, the live game, or subagent execution.
+The improvement loop was therefore run manually.
+Every identifier the package proposed was later checked against the repository during implementation, and the identity corrections (`SCN-016`, cluster reservation `22`, playback IDs `114` and `115`) are recorded in the README and the shared identifier registry.
 
 ## Simplification statement
 
@@ -114,19 +85,7 @@ The deliberate absence of a custom 3D unit and dedicated mechanic window is an a
 
 Existing unit types and a compact decision category can deliver the event's mechanics with lower maintenance cost and clearer play.
 
-## Required implementation blockers to clear
+## Implementation blockers
 
-Before code can be called complete, the implementation pass must clear these blockers:
-
-1. Confirm the Event 31 current source, namespace, registration state, and default disabled state.
-2. Confirm an available event-owned country carrier collection large enough for maximum scenario coverage.
-3. Preserve Global Jihad `SCN-016`, the optional Internal Fracture reservation `22`, and current Domestic Unrest membership `16` under the authoritative workbook, runtime and shared identifier registry.
-4. Confirm the Event 31 world-threat source flag name and register it in the shared aggregate.
-5. Confirm the special chaos country classifier update and keep all Event 31 actors outside the actual nonhuman classifier.
-6. Confirm the event-owned state map mode pattern and exact update transaction.
-7. Confirm the event log prefire actor preparation pattern for a multi-country global repeatable event.
-8. Confirm the shared focus tree loading and Focus Navigation pattern for dynamic carriers.
-9. Confirm all asset consumers, sizes, paths, and sprite identifiers against current references.
-10. Confirm a unique super-event slot, audio ID, image sprite, and public world-end registry row.
-11. Run the probability audit before and after every weighted implementation change.
-12. Run the event completion audit after all source, asset, documentation, catalog, and AI surfaces are present.
+The original twelve blockers were cleared or carried into the implementation record.
+Open work is tracked only in the part status sections, the README and the completion audit.

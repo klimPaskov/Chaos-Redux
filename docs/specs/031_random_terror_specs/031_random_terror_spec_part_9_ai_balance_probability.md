@@ -2,6 +2,16 @@
 
 ## Part 9: AI, balance, and probability
 
+## Implementation status
+
+Implemented in source: government decision and mission weights, first-emphasis and consent-event weights, the incident pool with its context filters, spread odds, the Response Capacity raid bonus, actor route and focus weights, country AI strategies for the Event 14 rivalry and parent wars, and the evolution and revelation MTTH entries.
+
+Open:
+
+- No named scenario below has current baseline and comparison evidence. Probability routes timed out or returned partial inventories, so every weight is reviewed in source only.
+- The probability specialist reported four source findings: the leadership contest self-comparison (C05), context-invalid incident weight (C13), first-found tie retention in strongest-actor selection, and cooperation strategies that still befriend an independent command.
+- Chaos feedback: the scenario `P11_chaos_feedback` below is new in the 2026-10-10 audit.
+
 ## Balance purpose
 
 Event 31 should create uncertainty and hard choices without turning every firing into an unavoidable state loss.
@@ -54,114 +64,17 @@ The coalition can still weaken it through command capitals, supply corridors, re
 
 ## Government AI profiles
 
-Current conditions determine government AI actions. Permanent national labels do not.
+Current conditions decide government AI behavior, not permanent national labels.
+The profiles below are readings of those conditions, and they map onto the response tendencies in Part 3.
 
-### Capacity-led government
-
-Traits:
-
-- high industry
-- adequate equipment
-- functioning intelligence
-- high stability
-- few active states
-
-Behavior:
-
-- establishes coordination early
-- uses intelligence before raids
-- supports victims after major attacks
-- protects critical supply
-- accepts joint operations with trusted partners
-- avoids indiscriminate restrictions
-
-### Security-first government
-
-Traits:
-
-- active war
-- threatened capital
-- low patience
-- available military units
-- high war support
-
-Behavior:
-
-- reinforces states quickly
-- protects the capital
-- uses rapid raids and restrictions
-- accepts a higher legitimacy risk
-- shifts toward relief and accountability after severe civilian harm when capacity allows
-
-### Fragile government
-
-Traits:
-
-- low stability
-- weak industry
-- low equipment
-- several internal crises
-- divided army
-
-Behavior:
-
-- seeks foreign aid
-- protects the capital and one priority corridor
-- avoids expensive simultaneous missions
-- may negotiate with a weakened enclave
-- faces a higher failure and takeover risk
-
-### Authoritarian coercive government
-
-Traits:
-
-- low concern for legitimacy
-- strong police or army
-- high political control
-- active opposition
-
-Behavior:
-
-- favors broad restrictions and rapid raids
-- accepts civilian harm risk
-- conceals some failures
-- can achieve fast local suppression
-- creates stronger recurrence and Condemnation risk
-
-The profile does not guarantee abuse. High-quality intelligence and severe immediate danger can still produce a precise operation.
-
-### Coalition-oriented government
-
-Traits:
-
-- faction membership
-- good relations with neighbors
-- transnational threat
-- adequate convoys and intelligence
-
-Behavior:
-
-- shares intelligence
-- protects corridors
-- supports a threatened ally
-- exposes sponsors
-- avoids unilateral intervention without access
-
-### Isolationist government
-
-Traits:
-
-- no faction
-- low foreign trust
-- limited overseas capacity
-- domestic priority
-
-Behavior:
-
-- focuses on national cells
-- refuses expensive distant operations
-- accepts border cooperation when the threat is adjacent
-- can reconsider after a demonstration attack
+| Profile | Recognized by | Leans toward | Must still do |
+| --- | --- | --- | --- |
+| Capacity-led | high industry and stability, adequate equipment, few active states | response cell first, intelligence before raids, transport protection, joint work with trusted partners | support victims after major attacks |
+| Security-first | active war, threatened capital, available units, high war support | reinforcement, capital security, rapid raids and restrictions | shift toward relief and accounting after severe civilian harm |
+| Fragile | low stability, weak industry and equipment, several internal crises | foreign aid, capital and one corridor, negotiation with a weakened enclave | avoid running several expensive missions at once |
+| Authoritarian coercive | low concern for legitimacy, strong police or army | broad restrictions, rapid raids, concealment | use a precise operation when intelligence is good and danger is immediate |
+| Coalition-oriented | faction membership, good neighbors, transnational threat | intelligence sharing, corridor protection, sponsor exposure, help to allies | avoid unilateral intervention without access |
+| Isolationist | no faction, low foreign trust, domestic priority | national cells first, border cooperation only when the threat is adjacent | reconsider after a demonstration attack |
 
 ## Government priority ordering
 
@@ -469,6 +382,17 @@ A player should be able to identify:
 
 The branch should not become a single enormous modifier that remains fixed until annexation.
 
+## Chaos feedback balance
+
+Event 31 must not climb the Chaos ladder through repetition alone.
+Ordinary incidents add no direct Chaos, and milestone Chaos follows the [Part 10 Chaos impact map](031_random_terror_spec_part_10_cross_event_system_interactions.md#chaos-impact-map) with its repeat guards and rolling cap.
+
+The intended ordering:
+
+- a campaign where every crisis is contained gains only the Deaths conversion from Event 31
+- a campaign with one durable territorial actor gains a few milestone rows
+- reaching Evolution IV and V needs several actors, captured capitals or coups, not many incidents
+
 ## Performance budget
 
 The event can affect many countries, but it must remain bounded.
@@ -608,6 +532,16 @@ Expected result:
 - extremist AI coordinates strategic fronts
 - government AI protects capitals and forms coalitions
 - The False Revelation remains unavailable below `1000` Chaos
+
+### `P11_chaos_feedback`
+
+Ten affected countries at Evolution II, no territorial actor, twelve months of pulses and spread, all crises eventually contained.
+
+Expected result:
+
+- Event 31 direct Chaos stays at zero, and the meter rises only through Deaths
+- a single actor formation and one captured capital add only their mapped rows
+- the rolling cap holds when several milestones land in the same window
 
 ## Probability evidence contract
 

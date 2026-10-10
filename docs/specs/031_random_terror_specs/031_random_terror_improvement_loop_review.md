@@ -6,9 +6,11 @@ This review applies the Chaos Redux improvement loop to the completed Event 31 s
 
 The purpose is to test whether the event promise has become a playable, connected, readable system and whether another broad expansion would improve play or create bloat.
 
-The review was performed manually from the supplied improvement-loop and subagent contracts.
+Disposition: historical planning record.
+Its accepted improvements are already part of the canonical parts, and its rejected additions remain rejected.
+The 2026-10-10 audit revisions in the README changelog supersede its "Remaining implementation decisions" list, which the implementation has since worked through.
 
-The project subagent definitions were fully read, but this environment did not expose the Codex subagent-spawn interface. No subagent execution is claimed.
+The review was performed manually because the planning environment could not run subagents.
 
 ## Playable promise
 

@@ -39,7 +39,7 @@
 | Idea | Starting penalties and limits | Early mitigation | Stable route forms | Failure forms | Removal or replacement condition |
 | --- | --- | --- | --- | --- | --- |
 | Improvised Command | planning, organization, coordination, officer weakness | appoint command, secure communications, integrate officers | Network Directorate, Directorate General Staff, Ideological State | Compromised Network, Rival Warlords, Doctrinal Schism | replaced through leadership route, never stacked beside final form |
-| Captured Economy | construction, repair, production efficiency, supply instability | repair depots, restore transport, secure external supply | External Supply System, Directed War Economy, Civil Administration, Patron Development Mission | Looting Spiral, Famine, Sponsor Dependency | replaced when one economic model stabilizes |
+| Captured Economy | construction, repair, production efficiency, supply instability | repair depots, restore transport, secure external supply | External Supply System, Directed War Economy, Civil Administration, Patron Development Mission | Looting Spiral, Supply Collapse, Sponsor Dependency | replaced when one economic model stabilizes |
 | Contested Legitimacy | resistance, recruitment reliability, recognition, local control | services, coercion, ideology, recognition, negotiated rule | Security State, Claimed Authority, Recognized Enclave, International Mandate | Local Revolt, Mass Defection, Failed Rule | replaced through territorial consolidation or final route |
 
 ## Force package matrix
@@ -88,6 +88,12 @@
 | Split | valid territory allocated to two actors | stockpiles and units divided once | each receives route-appropriate crisis state | new valid leader and flag assigned | values divided or reset from world state | second carrier required before split |
 | Final transformation | dominant actor transforms, others merge or subordinate | terminal reconciliation | final branch replaces ordinary route where appropriate | entity and final assets activate | terminal values initialized | safe final carrier or transformed host retained |
 | Total cleanup | ordinary countries restored | no actor forces or obligations remain | no actor decisions or focus loading | no active actor identity | every active value and target cleared | all Event 31 carriers available again |
+
+## Implementation notes
+
+The eight carriers, the free-carrier predicate, leader pools, flags, research slots and technology inheritance are implemented (D1, D11, R40).
+The force rows for police and military defection, captured depots, sponsor aid and actor mergers are not yet backed by real source ledgers: every profile starts from the same manpower and equipment grant, and absorption transfers states without stockpiles, technology or troops (completion audit C07 and C08).
+Those rows remain requirements.
 
 ## Matrix acceptance
 

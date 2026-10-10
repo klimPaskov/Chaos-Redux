@@ -2,6 +2,17 @@
 
 ## Part 3: Government response decisions and missions
 
+## Implementation status
+
+Implemented: every government decision and mission in the [matrix](031_random_terror_decision_mission_matrix.md), one target row per decision through the priority crisis state (D8), measured mission objectives with success, partial and failure outcomes (D5, R4), one inclusive affordability trigger per costed decision, the escalating Temporary Movement Restrictions price (R11), the first emphasis (R32), Response Capacity (R37), Press the Safe-Haven Host (R42), surrender terms with consent (R46), the recovery phase with Public Accounting and Security Reform (R30), and the Terminal Counteroffensive (D12).
+
+Open:
+
+- Costs and commitments (C09): most costs are fixed constants, and Military Reinforcement and Isolate the Enclave set timed flags without a maintained force commitment. The scaling and commitment rules under Cost design still apply.
+- Hostage approach: the approach choice under Hostage Deadline below is an audit revision and is not yet implemented.
+- Collective punishment through camps: the bridge under Coercive response is an audit revision and is not yet implemented.
+- Terminal access (C01): the response category is hidden once `world_end` is set. Part 8 requires it to stay usable.
+
 ## Presentation choice
 
 The national response uses an ordinary decision category.
@@ -10,10 +21,10 @@ It should have:
 
 - one static category picture
 - concise dynamic category text
-- the current Terror Pressure stage
-- the current Response Legitimacy stage
-- the number and names of active states
-- one next important threshold or objective
+- the current Terror Pressure value and band
+- the current Response Legitimacy value
+- the number of crisis states, with the priority crisis state named on its decisions
+- one line saying whether and why a cell can spread next
 - three to five visible primary actions
 - no more than three active missions
 - an event-owned map highlight for active states and current operation targets
@@ -51,6 +62,10 @@ The category should show military reinforcement, capital security, relief corrid
 No active armed cell remains, but victims, damaged transport, displaced civilians, and damaged legitimacy still require attention.
 
 The category should show only relevant reconstruction and institutional choices, then close.
+
+The recovery phase shows Support Victims and Restore Services on the priority recovering state, Publish a Public Accounting after recent harm or exposed failure, and Reform the Security Services after a response.
+Public Accounting and Security Reform run once per crisis.
+Security Reform and a clean containment also build a small lasting response capacity that carries into the next crisis.
 
 ## Cost design
 
@@ -273,6 +288,14 @@ The action is available in any country and adapts its visible target to the inst
 
 It must not imply that religion itself causes the crisis.
 
+### Press the Safe-Haven Host
+
+A government that a safe haven actually fed (the source of a cross-border spread into it, or the sponsor of an actor that rose against it) can demand that the host act.
+The host answers through a consent event.
+Accepting costs the host stability, weakens its own cells and the network's reach, and clears its safe-haven marker.
+Refusing keeps the marker and draws public Condemnation.
+The decision is hidden while a sponsor evidence case is open, so the network phase never shows more than six actions.
+
 ### Expose the Sponsor
 
 After sufficient evidence, the country can publish a foreign-support case.
@@ -387,6 +410,29 @@ Partial success:
 Failure:
 
 - the territorial actor entrenches, gains equipment, and may receive recognition or foreign support
+
+### The Hostage Deadline
+
+Typical duration: `30` to `75` days.
+
+The hostage report itself asks for the approach, so the choice lives in one place instead of in extra decisions.
+
+- Negotiate: the deadline extends once, Response Legitimacy holds, and the captives come out at a price the network can use (Terror Pressure rises a little, and the next incident in the state comes sooner).
+- Prepare a rescue: the next Targeted Raid on the hostage state draws one outcome band better, and a Security Surge alone can no longer resolve the crisis.
+- Storm at once: an immediate Security Surge on the state, with the abusive-failure weight raised when intelligence is poor.
+
+Each approach feeds the existing surge, raid and deadline outcomes.
+No new decision is added.
+The AI prefers negotiation with high legitimacy and no intelligence, preparation with an intelligence breakthrough or response cell, and storming at war or with a short deadline.
+
+Success frees the captives, partial success frees some while the leaders escape, and failure ends in mass casualties and a pressure rise.
+
+### Stop the Coordinated Uprising
+
+Typical duration: `60` to `120` days.
+
+This mission appears only when a real uprising begins in a state the government controls.
+Success breaks the rising, partial success holds the state while the cells survive, and failure loses control of the state.
 
 ### Restore Civil Authority
 
@@ -531,6 +577,11 @@ It can prevent territorial loss but carries high costs and civilian-risk pressur
 Favors broad restrictions, mass detention, rapid raids, and secrecy.
 
 It can suppress a weak cell quickly and can also produce severe legitimacy damage, false arrests, and future recurrence.
+
+Event 31 has no detention decision of its own.
+When a government operates a camp from the camp system in a state that is in its own Event 31 crisis, the camp owner's facts make that crisis a case of collective punishment.
+The government loses Response Legitimacy once per camp and crisis, the state's activity gains one spread reason (retaliatory recruitment), and the No Collective Punishment achievement is disqualified.
+Event 31 reads the camp system's state facts and never creates, staffs or counts camps itself.
 
 ### Negotiated response
 
