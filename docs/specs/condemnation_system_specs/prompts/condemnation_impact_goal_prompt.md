@@ -1,21 +1,13 @@
-/goal Implement the Condemnation Impact System expansion to its fullest extent.
+/goal Implement the queued Condemnation refinements to their fullest extent.
 
-Read AGENTS.md, CHAOS_REDUX_MECHANICS.md and applicable owner skills. Use docs/specs/condemnation_system_specs/specs/condemnation_impact_system_spec.md and its recorded acceptance boundary. The 2026-09-20 tuning amendment controls conflicts. Keep unsupported broader acceptance unresolved.
+Read CLAUDE.md, docs/specs/condemnation_system_specs/specs/condemnation_impact_system_spec.md and the implemented docs/systems/cbrn_warfare/condemnation/condemnation_sanctions.md. The accepted 2026-09-20 tuning (0-1000 range, cost multiplier 1 + C/500 rounded up, 5-15% Consumer Goods inspection burden for 180 days) stays unchanged.
 
-Treat this as a standalone system-level mechanic. Condemnation must stop being mainly an opinion modifier. High condemnation must create practical diplomatic, economic, military, and trade consequences, including real embargo relationships where HOI4 supports them.
+The sanctions system already exists. Implement only the rows the spec marks accepted and queued:
 
-Implement tiered condemnation sanctions: concern, formal censure, arms embargo, strategic embargo, total embargo, and pariah state. Track source-aware condemnation from chemical warfare, biological warfare, nuclear and thermonuclear strikes, camp and atrocity discovery, restricted chemical sites, coverups, and repeated use. Use script constants or a documented tuning file for thresholds, caps, decay, participant scoring, AI weights, duration bands, and scaling values.
+1. Consolidate target responses to the spec's twelve decisions: Admit inspectors (inspections plus observers), Destroy stockpiles (chemical plus biological, per-family restrictions), Dismantle restricted sites, Pay compensation, Non-use pledge, Reform the command; Refuse inspections, Rally the nation, Sanctions war economy, Lean on subjects; Smuggle arms, Covert fuel route, Front companies. Each merged response keeps the strongest effect of its parts, uses the shared cost multiplier, and migrates running legacy timers and flags so a save keeps remaining durations.
+2. Fold repeat use into the repeated source's bucket and remove the separate public repeat-use line without changing pledge-breach cover-up.
+3. Reduce the Condemnation detail panel to the spec's six elements; keep fatigue, dependency, vulnerability, severity and hidden evidence internal. Use the chaos-redux-scripted-gui skill and review the changed panel with gui_render where available.
+4. Make enforcing participants at Tier 4 and above ineligible as Import Food donors for the target unless the pair has a humanitarian carve-out, through a famine-owned donor trigger that reads a condemnation pair trigger.
+5. Retune AI weights for the merged responses so weak targets comply and strong targets defy, and compare representative scenarios with chaosx_ai_probability_auditor.
 
-Build real player and AI counterplay. Condemned targets need compliance, inspections, stockpile destruction, compensation, non-use pledges, observer access, defiance, autarky, black market procurement, sanction busting, and pledge-breaking consequences where supported by the spec. Sanction participants need enforcement, abstention, humanitarian carve-outs, quiet breach, exposure, shielding, sanction fatigue, and trade-dependency costs.
-
-Use the spec's concrete costs and conservative coordination prices. Political power or command power must not become the default cost for every action. Preserve existing resource types where the accepted amendment requires them.
-
-Preserve the Condemnation tab layout. Make country entries clickable to open details containing total, tier, sources, sanctions, participants, thresholds, decay, compliance and practical penalties. Use scripted localisation, clear tooltips and the scripted-GUI skill with matching MCP evidence. Shared system UI remains parent-owned.
-
-Implement AI for condemned targets, sanction participants, faction leaders, neutral traders, subjects, and high-condemnation hypocrites. AI must be able to sanction, abstain, shield, comply, defy, or break sanctions based on ideology, faction, subject status, trade dependency, strategic resource dependency, war state, target strength, distance, recent source severity, own condemnation, sanction fatigue, and world tension.
-
-Keep affected docs aligned, including CHAOS_REDUX_MECHANICS.md, a dedicated condemnation sanctions system doc, and any chemical warfare, biological warfare, camps, genocide, restricted site, Chaos Warfare, UI, and asset docs touched by the implementation. Do not guess player-facing records that must mirror final localisation.
-
-Use chaosx_scripted_system_architect for reusable helper, trigger, constant, cleanup, and tuning design when needed. Use chaosx_decision_mission_auditor for the decision and mission layer. Use chaosx_localisation_auditor for broad visible text and dynamic tooltip work. Use chaosx_event_completion_auditor for final review. Follow chaos-redux-subagents with self-contained prompts and Codex fork_turns="none". Use chaosx_ai_probability_auditor for weighted baseline and matching comparison. Resolve the improvement-loop planner's previous addendum before another pass and its accepted findings before completion.
-
-Do not claim completion until actual sanctions, real embargoes where supported, AI, UI, localisation, cleanup, docs, and meaningful validation scenarios satisfy the spec. No fallbacks, placeholders, simplifications, or cosmetic-only substitutes are allowed without explicit user approval.
+Update localisation (UTF-8 with BOM), the system document, the decision category, and the famine system document in the same change. Remove obsolete decisions, ideas, localisation and constants rather than leaving them unused. Report any simplification under a clear heading.

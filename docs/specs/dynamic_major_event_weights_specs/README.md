@@ -1,9 +1,7 @@
 # Dynamic Major Event Weights Package
 
-The maintained source design is [specs/dynamic_major_event_weights_spec.md](specs/dynamic_major_event_weights_spec.md).
-The [goal prompt](prompts/dynamic_major_event_weights_goal_prompt.md) is the implementation handoff.
-The [root forwarder](dynamic_major_event_weights_spec.md) preserves the older prompt path without duplicating the design.
+The source design is [specs/dynamic_major_event_weights_spec.md](specs/dynamic_major_event_weights_spec.md).
+The design is implemented; the [event-system document](../../systems/event_system/dynamic_major_event_weights.md) records current behaviour.
 
-Disposition: unresolved for acceptance and current implementation evidence.
-No attributable acceptance record or current source/MCP audit is included in this package. The formula examples are design targets, not measured behavior.
-Use [chaos-redux-subagents](../../../.agents/skills/chaos-redux-subagents/SKILL.md) and its dedicated probability auditor for any weighted implementation audit or change.
+Disposition: implemented, with acceptance unresolved because no attributable acceptance record exists.
+The spec's revision log records the 10 Oct 2026 audit, which removed the completed goal prompt and the root forwarder.
