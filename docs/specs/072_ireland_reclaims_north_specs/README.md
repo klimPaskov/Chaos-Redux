@@ -1,6 +1,6 @@
 # Event 072: Ireland Reclaims the North
 
-[Read the campaign specification](specs/core/072_campaign.md) · [Browse every file](INDEX.md) · [Open the Codex goal prompt](prompts/072_ireland_reclaims_north_goal_prompt.md)
+[Read the campaign specification](specs/core/072_campaign.md) · [Browse every file](INDEX.md) · [Open the goal prompt](prompts/072_ireland_reclaims_north_goal_prompt.md)
 
 A real northern reclamation war earns the new Irish campaign only after a successful limited settlement.
 Failure permanently leaves the previous focus tree in place.
@@ -8,10 +8,8 @@ The later design includes national integration, Gaelic institutions, a substanti
 
 ## Package structure
 
-The archive has one parent folder, `072_ireland_reclaims_north_specs/`, with thematic source subfolders.
-The specification belongs in `docs/specs/072_ireland_reclaims_north_specs/` in the repository.
-Implementation plans and review handoffs belong separately in `docs/plans/072_ireland_reclaims_north_plans/`.
-Their bundled copy is under `handoff/072_ireland_reclaims_north_plans/`.
+The specification lives in `docs/specs/072_ireland_reclaims_north_specs/` with thematic source subfolders.
+Implementation plans and review reports belong in `docs/plans/072_ireland_reclaims_north_plans/`, which does not exist yet. The bundled dispatch template is under `handoff/072_ireland_reclaims_north_plans/`.
 
 | Directory | Content |
 | --- | --- |
@@ -33,20 +31,7 @@ The 65 focus groups are not a fixed final node count.
 The implementation agent chooses the actual node layout and splits groups where each focus has a meaningful purpose.
 The asset inventory likewise contains planned requirements, not generated files or a claim of completed artwork.
 
-## Put the files in the repository
-
-This package is already present in the repository.
-For a separate extracted copy, inspect the optional installer and preview its documentation-only changes with the repository path:
-
-```powershell
-python .\install_spec_package.py "C:\Users\klimp\OneDrive\Documents\Paradox Interactive\Hearts of Iron IV\mod\chaos_redux" --dry-run
-```
-
-The installer copies only this documentation package into the two locations above.
-It does not edit game scripts, run the game, contact the network, commit changes, or alter catalog workbooks.
-It refuses conflicting existing files unless `--overwrite` is explicitly supplied.
-Use `--dry-run` to print the planned changes first.
-Manual copying is also possible by placing the source folder in docs/specs and its bundled plan folder in docs/plans.
+## Using the package
 
 Then use [the goal prompt](prompts/072_ireland_reclaims_north_goal_prompt.md) with the installed specification.
 The goal prompt is within the required 3,500 to 4,000 character range.
@@ -72,7 +57,7 @@ The national spirit budget is three owned families, including temporary variants
 ## Original planning read record and limits
 
 The source-reading and environment statements below describe the authoring run.
-Use [current AGENTS.md](../../../AGENTS.md) and [the subagent skill](../../../.agents/skills/chaos-redux-subagents/SKILL.md) for current capabilities and ownership.
+Use [current AGENTS.md](../../../AGENTS.md) and [the subagent skill](../../../.claude/skills/chaos-redux-subagents/SKILL.md) for current capabilities and ownership.
 The bundled handoff folder is an unexecuted dispatch template, while actual implementation reports belong under `docs/plans/072_ireland_reclaims_north_plans/`.
 Retain original user requirements and keep authored expansion unresolved until attributable adoption is recorded.
 
@@ -98,3 +83,11 @@ From this package folder, run `python .\validate_package.py` to check the archiv
 Those checks cover files, internal links, focus-group and action coverage, asset inventory, source-reading records, cost-type limits and prompt length.
 They do not execute HOI4 or establish live balance.
 The [verification report](handoff/072_ireland_reclaims_north_plans/validation/072_package_verification.md) records that distinction.
+
+## Changelog
+
+### 2026-10-10 spec audit
+
+- The one-off `install_spec_package.py` installer and its instructions are removed because the package is installed and the installer had no other consumer. `validate_package.py` stays as the package's own consistency check.
+- The README describes where the package and its future plans live instead of ZIP archive placement. Subagent instructions use the Claude-first wording.
+- The design was already disciplined (two public values with explicit per-commitment contributions, a three-spirit budget, and a proven-settlement gate) and is otherwise unchanged.

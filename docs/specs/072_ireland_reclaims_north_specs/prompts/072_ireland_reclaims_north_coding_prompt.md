@@ -14,7 +14,7 @@ Resolve missing references, schemas, existing helper files, actual country data,
 State exactly which required sources or tools remain unavailable.
 Never report an unrun operation as completed.
 
-Use the supplied subagent roles through the actual available collaboration tool with fork_turns="none".
+Use the supplied subagent roles with self-contained prompts and no inherited parent context.
 Give each worker a bounded assignment and owned files.
 The parent integrates shared settings, event log, dispatcher, catalogs and cross-event behavior.
 Do not launch irrelevant paid model work.

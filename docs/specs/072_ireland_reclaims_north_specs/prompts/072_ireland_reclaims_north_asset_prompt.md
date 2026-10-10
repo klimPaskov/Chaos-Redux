@@ -57,4 +57,4 @@ Do not claim a rendered reference image is an implemented GUI or that an asset m
 The final delivery must identify every produced file, unresolved source or consumer, and remaining evidence gate.
 
 For consumers with transparent unused canvas, request native ImageGen transparency in the initial call and preserve alpha through processing and DDS conversion.
-Use [the current asset skill](../../../../.agents/skills/chaos-redux-event-assets/SKILL.md) for alpha, source preservation, processing and fallback evidence.
+Use [the current asset skill](../../../../.claude/skills/chaos-redux-event-assets/SKILL.md) for alpha, source preservation, processing and fallback evidence.

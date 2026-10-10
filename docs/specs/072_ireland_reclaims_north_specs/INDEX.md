@@ -26,7 +26,6 @@ All links below refer to files included in this archive.
 
 ## Package tools
 
-[install spec package](install_spec_package.py)  
 [validate package](validate_package.py)  
 
 ## original

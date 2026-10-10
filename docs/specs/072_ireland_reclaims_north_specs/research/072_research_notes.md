@@ -24,7 +24,7 @@ This is a pinned observed revision, not a claim that the implementation checkout
 | R01 | events/072_ireland_reclaims_north.txt | Full file | Existing namespace, state 119, old refusal civil war, owner event, Britain-only optional peace |
 | R02 | localisation/english/072_ireland_reclaims_north_l_english.yml | Full file | Existing keys, empty opening description, old holder and peace framing |
 | R03 | common/scripted_triggers/009_white_peace_triggers.txt | Full file | Generic peace excludes factions and has protection flags, so it is not proof of British coalition settlement |
-| R04 | .agents/skills/chaos-redux-mtth/SKILL.md | Full file | MTTH value conventions and mandatory probability inspection workflow |
+| R04 | .claude/skills/chaos-redux-mtth/SKILL.md | Full file | MTTH value conventions and mandatory probability inspection workflow |
 | R05 | Formable state-puzzle README under the decisions skill | Substantial sections, full coverage not proven | Exact-state geometry, one helper and category attachment requirements |
 | R06 | Formable universal_state_registry_workflow.md | Full file | Canonical geometry, archived producer caveat, current runtime generator and evidence gates |
 | R07 | Formable category_attachment_audit.md | Full file | Strict category enumeration and actual generated block linkage |
@@ -33,7 +33,7 @@ This is a pinned observed revision, not a claim that the implementation checkout
 | R10 | Repository root, search results and offline wiki directory | Partial listings and search snippets | Discovery only, no claim of complete repository inspection |
 
 The exact state-puzzle reference directory is:
-`.agents/skills/chaos-redux-decisions-missions/templates/formable_state_puzzle/`.
+`.claude/skills/chaos-redux-decisions-missions/templates/formable_state_puzzle/`.
 No full offline wiki corpus, installed game documentation, installed mod inventory, final music catalog, or live GUI evidence was read here.
 Those required external implementation sources are listed as open gates in the handoff.
 The online Paradox wiki was not used to replace the project's required local snapshots.

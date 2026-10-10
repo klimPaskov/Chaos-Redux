@@ -6,7 +6,7 @@ No independent subagent was launched in this chat.
 Their instructions were used as parent-review lenses and the bounded implementation assignments below were prepared.
 This is not a claim of 20 independent completed reviews.
 
-During implementation, use the actual available collaboration tool with fork_turns="none" as required by the supplied subagent workflow.
+During implementation, spawn subagents with no inherited parent context as required by the supplied subagent workflow.
 Give each agent only the relevant source files, owned paths, task boundary, evidence requirements, and expected output.
 The parent owns integration and conflict resolution.
 If an agent or required tool is unavailable, record the missing operation and keep its evidence gate open.
