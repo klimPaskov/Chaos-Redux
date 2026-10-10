@@ -295,6 +295,12 @@ A safety-first project should normally require eighteen to thirty months. A reck
 
 The project must not be a single button or one event option.
 
+Implementation status (verified 2026-10-10): the schedule is set by the native special project (`prototype_time = sp_time.prototype.very_long` and the Black Plague complexity), not by a Black Plague timer.
+The four postures are 30-day native decisions that change the risk and countermeasure ledgers.
+Only Dual-Use and Military Acceleration add to the 0 to 100 `black_plague_weaponization_progress` meter (7 and 10 per choice), each of the 18 iteration roles adds 7, and Safety-First adds none, so the postures differ in risk and countermeasure gain rather than in speed.
+`progress_safe` and `project_duration_days` in `020_black_plague_weaponization_constants.txt` have no consumer.
+The month ranges above are therefore targets that need a live timing check rather than a measured result.
+
 ### Project phases
 
 #### Phase 1: Acquisition and containment
@@ -510,6 +516,12 @@ The source clears only when no rat country exists, no Severe Crisis or Collapsed
 
 This source contributes to the existing `world_in_threat` framework. It must not create a parallel global cooperation flag.
 
+Implementation status (verified 2026-10-10): `black_plague_scenario_refresh_shared_threat` sets `world_threat_source_black_plague` on every ordinary weekly pulse when Evolution III is active, the Rat King is active, or the established-state count exceeds `black_plague_scenario.minimum_established_states_for_shared_threat`.
+That constant is 0, so the source and therefore `world_in_threat` switch on as soon as the first state is Incubating, which contradicts the rule above and the Part 1 statement that the source stays inactive until a global danger threshold.
+Other systems read the aggregate flag (for example the Utopia Manifesto decision and event weights), so a single quiet outbreak currently raises their urgency.
+Proposed (spec audit 2026-10-10): raise the constant to the Evolution II establishment floor (`black_plague_evolution_runtime.minimum_established_for_ii`, 6) so the source needs a real regional epidemic, and keep the Evolution III and Rat King triggers.
+The scenario is unaffected because its lowest intensity seeds 14 established states.
+
 ## Other event connections
 
 ### Event 41 Disease in Divisions
@@ -535,6 +547,29 @@ Migration pays and records movement and distinct route deaths once, and Event 20
 Neither owner re-debits the other's accepted loss or creates another migration pool.
 When the migration connection is absent, ordinary Event 20 adjacency, troop-route, port, and containment play remains complete.
 
+Implementation status (verified 2026-10-10):
+
+- Migration side, implemented: no migrant is admitted into a state that is Infected or worse (`black_plague_state_is_infected_or_worse` in the destination triggers), and the medical-reception observation mission fails when its host reaches that phase.
+  The migration owner also records a reception exposure receipt when the origin cohort comes from an infected state (`migration_mission_reception_exposure_receipt`).
+- Event 20 side, accepted and queued: the Black Plague spread pulse does not read that receipt or any migration cohort.
+  Its `refugee_movement` route reads only `black_plague_refugee_pressure` and the Event 013 refugee flags.
+  Target behavior: on an accepted passage from a Severe or Collapsed origin, queue one `refugee_movement` exposure on the receiving state through `black_plague_queue_current_target_exposure`, scaled by the receipt's moved population and reduced when the receiver's medical reception is prepared, and retire `black_plague_refugee_pressure` as a separate route signal once the receipt drives the route.
+- Flight pressure, proposed (spec audit 2026-10-10): Severe, Collapsed and Rat-Controlled states should register migration pressure through the migration owner's pressure request instead of only setting a local flag, so people leave a collapsing state as real cohorts that the receiver can accept or refuse.
+  `humanitarian_handle_special_front_capture` already does this for neighbouring states ahead of a rat captor, which shows the request seam.
+
+### Famine system
+
+Event 20 pays famine once and does not own food.
+Status (verified 2026-10-10, implemented): every non-rat mortality pulse that applies a positive exact loss to an established state calls `famine_adapt_black_plague_state`, which submits the loss and the proven pulse receipt as `famine_request_outbreak_pressure` and, when accepted, opens a 30-day outbreak food context in `famine_open_outbreak_food_context`.
+Rat-occupation provenance is excluded, and outbreak deaths are never treated as movement.
+The famine and migration decision owners also exclude Infected-or-worse states as ration donors, safer-state destinations and reception hosts.
+The link is one-directional: nothing in Event 20 reads a state's food stage.
+
+Proposed (spec audit 2026-10-10): let famine make an outbreak worse where it is already dangerous, using the existing `famine_food_stage` variable (stable, supply strain, acute shortage, famine, catastrophic famine) and no new value.
+In the origin weighting the stage replaces a separate "weak local capacity" guess for the food part of the score, in Spread Pressure an acute-shortage-or-worse source state adds a small refugee-route weight, and in the mortality calculation famine or catastrophic famine raises the weekly rate by a bounded band.
+The existing outbreak food context then closes the loop: plague kills workers, the famine system records the pressure, and the resulting hunger raises the next pulse's mortality.
+Treatment Coverage and relief corridors remain the player's counter, and the stage must be read through one scripted trigger so the bands live in `common/script_constants`.
+
 ### Event 22 camp networks and survivor relief
 
 An operational, abandoned, or liberated camp site uses the existing selected-state response when it has proven Black Plague infection or an eligible exposure route.
@@ -549,6 +584,10 @@ Record medical loss and any qualifying obstruction evidence through their existi
 A jointly delivered service has one owning payment receipt and cannot automatically complete an independent project twice.
 Relief AI chooses supported care in place when a safe medical route or receiver capacity is missing.
 Without active Black Plague, ordinary camp disease and relief continue.
+
+Implementation status (verified 2026-10-10): neither the Event 20 scripts nor the camp scripts reference the other owner, so the contract above is accepted and queued on both sides.
+The seam to build is one camp-side read of `black_plague_state_is_infected_or_worse` and `black_plague_state_is_established` on a registered site state, with the plague-side crowding term reading the camp owner's active-site predicate (`is_valid_camp_active_site_state`, already used by the migration destination filters).
+Event 20 gains no camp logic beyond that one predicate in its exposure weight, and the camp owner gains no plague logic beyond its medical-care branch.
 
 ### Event 2 Zombie Outbreak and Event 10 Death
 
@@ -583,6 +622,27 @@ Eradication records a major event-chain milestone and removes the active natural
 - Project accident chances cannot be removed by saving and reopening a single iteration choice.
 - AI does not start weaponization without sample access, capacity, and route permission.
 - Countries cannot use disease cleanup to bypass occupation, resistance, or other unrelated state systems.
+
+## Cross-system link register
+
+Verified against source on 2026-10-10.
+Each row names the single owner of the quantity and the hook that exists today.
+A hook marked queued or proposed does not exist yet.
+
+| System | Owner of the quantity | Hook today | Status |
+| --- | --- | --- | --- |
+| Deaths and Chaos Meter | shared exact-loss transaction | `apply_exact_state_civilian_population_loss` with `constant:chaos_meter_deaths_reason.black_plague`, then the Event 20 total reads the applied amount | implemented |
+| Famine | Famine owner | `famine_adapt_black_plague_state` after each non-rat mortality pulse | implemented, one direction |
+| Migration | Migration owner | destination and reception filters read `black_plague_state_is_infected_or_worse`; no Event 20 read of migration receipts | partial, Event 20 read queued |
+| Camps | Camp owner | none on either side | accepted and queued |
+| Air cleanliness | Air cleanliness owner | `black_plague_refresh_air_cleanliness_source` on each pulse | implemented |
+| Condemnation | Condemnation owner | `condemnation_add_source` from weaponization accidents, completion and delivery only | implemented, natural outbreaks add none by design |
+| World threat | World-threat framework | `world_threat_source_black_plague`, switched on too early (see World-threat integration) | implemented, threshold proposal open |
+| CBRN and Directorates | CBRN project registry | `black_plague_weaponization_program` in the random and project registries, Kruger and Mengele provider access | implemented |
+| Event 013 Natural Disasters | Event 013 | its refugee-disease flags feed `black_plague_state_has_refugee_pressure` | implemented |
+| Event 026 Black Friday | Event 026 price table | every Event 20 payment reads `global.black_friday_price_*` | implemented |
+| Event 041 Disease in Divisions | Event 041 | none, no shared hook was built | queued behind that rework |
+| Event cluster and log | cluster and log owners | Diseases cluster `8`, Severe member, evolution log rows | implemented |
 
 ## Acceptance criteria for countermeasures and biowarfare
 

@@ -45,7 +45,7 @@ Party and government text should describe instinctive hierarchy, dominant scent,
 
 ## Shared country classification
 
-Every Rat Nation must be registered in:
+Both rat tags (`RTA` and `RTX`) must be registered in:
 
 - the shared special chaos country classifier
 - the shared actual nonhuman country classifier
@@ -85,6 +85,14 @@ The scenario distributes internal broods among selected continents and assigns o
 - occupied human states remain populated and continue to die from plague
 - release or annexation must not leave invalid controllers or stranded units
 - Rat Nation destruction transfers or liberates states through normal war outcomes, but plague cleanup remains separate
+
+## Implementation status
+
+Verified in source on 2026-10-10.
+The RTA tree is 52 focus nodes, above the 40 to 50 role target, and the RTA and RTX decision categories hold 39 decisions in `020_black_plague_rat_decisions.txt`.
+Rat players see their meters through decision text and cost rows rather than a dashboard.
+Brood Mass, Hunger and Coherence are the RTA meters; the King's decisions also spend Brood Mass and read Hunger beside Dominion, Sentience and Cohesion, which makes five values where Part 6 names four.
+That mismatch is listed as an open question in the package README.
 
 ## Core rat mechanic values
 
@@ -697,11 +705,12 @@ A late-tree portrait variant can show a more organized central figure or council
 
 ## Flags
 
-Every registered rat tag needs a readable base flag in normal, medium, and small sizes. Because the tags are fictional, generated art is appropriate.
+Each of the two rat tags needs a readable base flag in normal, medium, and small sizes. Because the tags are fictional, generated art is appropriate.
+Internal broods are state markers, so they have no flag of their own.
 
 ### Flag design rules
 
-- unique central symbol for each RTA brood marker, with one shared RTA flag family
+- one RTA flag family whose central symbol can vary by origin archetype only where the country package can display the variant
 - common visual family so the player recognizes Rat Nations
 - no simple recolors of one flag
 - readable at 10 by 7 pixels
@@ -709,7 +718,7 @@ Every registered rat tag needs a readable base flag in normal, medium, and small
 - motifs can include tails, teeth, burrow spirals, grain, docks, trenches, crowns denied, or plague marks
 - ideology variants are created only when the country package can actually display them
 
-A complete two-tag country package with distinct RTA brood markers is better than a larger pool with duplicated flags.
+A complete two-tag country package is better than a larger pool with duplicated flags.
 
 ## Diplomacy and peace
 
@@ -803,7 +812,7 @@ The base rat package requires:
 - unit names and template descriptions
 - mechanic value names and tooltips
 - four collective portraits plus optional late variants
-- unique tag flag sets
+- flag sets for RTA and RTX
 - base focus icon family
 - unit and decision icons
 - report and news images for first emergence and major absorption

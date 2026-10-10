@@ -155,7 +155,8 @@ A Cured state can be infected again by a major new exposure, a weaponized deploy
 
 ## Disease values
 
-Every affected state tracks a small set of meaningful values. These values should be shown in the shared disease interface rather than hidden entirely in script.
+Every affected state tracks a small set of meaningful values.
+The shared disease interface shows them without hiding them entirely in script, but not all at once: the proposed value budget in Part 2 gives the selected-state card four headline values (Disease Load, Containment, Treatment Coverage, Rat Infestation) and keeps Mortality Pressure, Spread Pressure and Relapse Risk in the tooltip, with Relapse Risk promoted only while the state is Contained or Recovering.
 
 | Value | Meaning | Main sources | Main reducers |
 | --- | --- | --- | --- |
@@ -225,8 +226,13 @@ A country can restrict troop movement through threatened regions, but doing so s
 
 ### Refugees and occupied territory
 
-A state with high resistance, collapsing administration, population displacement, or a recent front movement creates additional exposure to neighboring states. When the [independent migration mechanic](../../famine_and_migration_system_specs/README.md) supplies a compatible committed movement route, the Black Plague consumes that route and receiving-state context rather than creating a duplicate refugee variable.
+A state with high resistance, collapsing administration, population displacement, or a recent front movement creates additional exposure to neighboring states.
+When the [independent migration mechanic](../../famine_and_migration_system_specs/README.md) supplies a compatible committed movement route, the Black Plague consumes that route and receiving-state context rather than creating a duplicate refugee variable.
 Event 149's retired random-event identity is not the migration owner; Part 3 defines how accepted passage and medical reception interact with exposure.
+
+Implementation status (verified 2026-10-10): the refugee route is currently driven by the Black Plague's own `black_plague_refugee_pressure` state flag, which Severe Crisis, Collapsed and Rat-Controlled states set and Contained, Recovery and Cured states clear, together with the Event 013 refugee-pressure flags (`black_plague_state_has_refugee_pressure`).
+It does not yet read committed migration movement.
+Reading migration receipts is accepted design that remains queued; Part 3 names the exact seams.
 
 ### Ports before Evolution II
 

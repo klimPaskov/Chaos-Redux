@@ -354,7 +354,7 @@ Mortality should be tuned through cumulative scenario tests, not one isolated ti
 - first Rat Nation should appear only after the player has experienced uncontrolled connected spread
 - minimum starting force must survive a normal local response
 - catastrophic basins can create a regional front immediately
-- global tag and division caps protect performance
+- global division and brood-marker caps protect performance
 
 ## Rat growth
 
@@ -391,6 +391,7 @@ Counterplay should not become one universal rat debuff button.
 
 ## Achievement design
 
+The live registry holds exactly these thirteen achievements (`020_black_plague_*` identifiers in `common/achievements/chaos_redux_achievements.txt`).
 Achievements are difficult route and mastery goals. All titles are working labels. A permanent Black Plague triggerable-scenario launch flag disqualifies these ordinary achievements unless the live achievement framework explicitly marks one as scenario-eligible. Launching an instant Evolution III and IV setup must not award natural-campaign mastery achievements.
 
 ### Achievement 1: The First Cordon
@@ -496,7 +497,7 @@ Achievements are difficult route and mastery goals. All titles are working label
 
 **Goal**:
 
-- personally destroy or lead the destruction of every Rat Nation before the Rat King appears
+- personally destroy or lead the destruction of the RTA carrier before the Rat King appears
 - clear every burrow node in liberated territory
 - complete global plague eradication
 
@@ -520,7 +521,7 @@ Achievements are difficult route and mastery goals. All titles are working label
 
 **Goal**:
 
-- absorb at least five rival Rat Nations
+- absorb at least five internal brood basins (the achievement matrix defines the tracked counter)
 - win Evolution IV candidacy
 - become the Rat King
 
@@ -593,7 +594,7 @@ The full asset inventory is in the asset matrix and prompt. The core package inc
 
 - collective leader portraits for four origin archetypes
 - optional proto-sentience variants
-- unique flag sets for every tag in the final pool
+- flag sets for the two rat tags, RTA and RTX
 - base focus icon families
 - unit, brood pulse, dominance, burrow, and anti-rat decision icons
 

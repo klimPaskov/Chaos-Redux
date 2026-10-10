@@ -4,6 +4,14 @@
 
 All labels in this file are working labels, not final localisation.
 
+## Implementation status
+
+Verified in source on 2026-10-10.
+`common/decisions/020_black_plague_response_decisions.txt` holds the 14 Black Plague-specific state and national response decisions (medical reserve, rat clearing, food-store sealing, sewers and burrows, flea and shelter control, transport purge, demolition, standard and accelerated hospitals, quarantine, cordon, treatment reserves, warren purge, countermeasure site).
+`common/decisions/020_black_plague_shared_response_decisions.txt` holds the 26 ordinary selected-state actions, the knowledge and cooperation decisions, the aftermath programmes and the terminal missions.
+The generic and Black Plague-specific action tables below remain the design contract for what each action must do.
+The proposals marked as such in this part are not implemented.
+
 ## Design rule
 
 The Black Plague registers as a disease inside the existing biological warfare and disease-containment interface and also receives one dedicated national cure and strategic-management category. Generic disease actions and Black Plague state containment remain shared. The dedicated category owns cure research, medical logistics, knowledge policy, cooperation, and recovery, while city rat clearing, food-store sealing, sewer and burrow clearance, shelter treatment, transport-hub vermin control, and harsh district demolition remain separate selected-state entries inside the shared category.
@@ -12,59 +20,64 @@ The two categories share the same disease state, selected country, selected stat
 
 ## Interface layout
 
-The existing disease interface should be expanded only as much as needed to make the Black Plague legible. The implementation agent should preserve the established visual structure when the live repository already has one.
+The existing disease interface is expanded only as much as needed to make the Black Plague legible.
+The implementation preserves the established visual structure of the shared board.
 
-### Global strain strip
+### Value budget
+
+Status: proposed (spec audit 2026-10-10).
+Each strip shows the few values that change a decision.
+Everything else is an input or an output of those values and lives in one tooltip instead of a permanent line.
+A new value is added to a strip only when a decision, an action cost or an AI rule reads it and the player can change it.
+
+The live board (verified in `localisation/english/biowarfare_disease_containment_l_english.yml`) already follows this for the global strip.
+Its country strip shows seven values and its selected-state card shows seven numbers plus provenance, which this section reduces.
+
+### Global strip
 
 The top strip shows the selected disease and world state.
 
-- current Black Plague evolution
-- total active infected states
-- total contained states
-- total countries with active infection
-- event-attributed civilian deaths
-- global countermeasure knowledge
-- known weaponization status when publicly attributed
-- world threat status
+- current Black Plague evolution stage
+- visible infected states and how many of them are critical
+- terminal readiness summary once Evolution V has opened
+- world-threat status when the source is active
 
-The strip should not reveal hidden weaponization projects, hidden incubation states, future Rat King conditions, or secret world-end thresholds.
+Active-country count, contained-state count, event-attributed deaths, global countermeasure knowledge and public weaponization status move to the strip tooltip.
+The strip does not reveal hidden weaponization projects, hidden incubation states, future Rat King conditions or secret world-end thresholds.
 
-### Country response strip
+### Country strip
 
-The selected country area shows:
+The selected country area shows four lines.
 
-- national preparedness
-- national medical capacity
-- national Black Plague countermeasure progress
-- number of threatened, infected, contained, and recovering states
-- border and port exposure summary
-- current emergency burden
-- current economic and military cost of active containment
+- country phase (Prepared, Exposed, Infected, Containment, Recovered), whose tooltip lists national preparedness, national medical capacity and the border and port exposure summary
+- Black Plague countermeasure progress with its stage name
+- Medical Reserve against its capacity, because it is the one stock that response actions spend
+- Response Capacity remaining against total
 
-Preparedness and medical capacity must have readable breakdown tooltips. The player should understand which laws, hospitals, decisions, war conditions, and infrastructure factors are changing the values.
+Response Capacity remaining is total capacity minus the current burden (`black_plague_response_capacity_remaining` is computed by subtracting `black_plague_response_burden` from `black_plague_response_capacity`).
+Showing the burden as a separate number repeats the same quantity, so the separate Burden line is removed and the capacity line carries the burden in its tooltip.
+Preparedness and medical capacity are inputs of the phase and of the origin and exposure rules, so they appear in the phase tooltip with their breakdown (laws, hospitals, war conditions, infrastructure) rather than as permanent lines.
+The dedicated category's read-only dashboard shows Countermeasure Progress, National Deaths and Response Capacity (see the dashboard correction).
+Progress and capacity therefore appear on both surfaces, which is intentional because each surface sits beside a different set of actions, while National Deaths and Medical Reserve each appear on only one.
 
 ### Selected state card
 
-The selected state card shows the state name, owner or controller, and current status. It should display:
+The selected state card shows the state name, owner or controller and current phase, then four headline values.
 
-- disease load
-- mortality pressure
-- outgoing spread pressure
-- containment
-- treatment coverage
-- relapse risk when relevant
+- Disease Load
+- Containment
+- Treatment Coverage
 - Rat Infestation when Black Plague is selected
-- current death rate band
-- strongest incoming exposure routes
-- active local measures
-- whether the state is under Rat Nation control
-- whether the known outbreak has weaponized provenance
 
-The death rate should use a descriptive band and projected range rather than claiming a precise number when daily script factors can change. A detailed tooltip can show the main positive and negative factors.
+These are the four levers the response actions move.
+Mortality Pressure and Spread Pressure are outputs of those levers, so the card shows one descriptive death-rate band and the strongest incoming exposure route in their place, and the tooltip shows the numeric values and main factors.
+Relapse Risk is promoted to a headline value only while the state is Contained or in Recovery, the only phases where it is read by a decision.
+Rat-Controlled and weaponized provenance appear as the existing status icon and border rather than as text lines.
+The death rate uses a descriptive band and projected range rather than claiming a precise number when daily script factors can change.
 
 ### State list
 
-The country list should prioritize the most urgent current states.
+The country list prioritizes the most urgent current states.
 
 1. Collapsed
 2. Severe Crisis
@@ -75,11 +88,15 @@ The country list should prioritize the most urgent current states.
 7. Recovery
 8. Cured states still under monitoring
 
-The list needs filters by status, owner, region, and urgency. Human players should be able to select one state at a time. AI should evaluate every valid state without using the human selection flow.
+The list is filtered by status and urgency.
+Owner and region filters are proposed only if playtests show more than one screen of states.
+Human players select one state at a time.
+AI evaluates every valid state without using the human selection flow.
 
 ### Disease switcher
 
-If several diseases are active, the player can switch the selected disease. The Black Plague uses the shared board and does not replace other disease entries.
+If several diseases are active, the player can switch the selected disease.
+The Black Plague uses the shared board and does not replace other disease entries.
 
 ## Disease mapmode
 
@@ -777,6 +794,30 @@ Applies immediate quarantine and medical relief when a rat-controlled state is r
 ### International extermination coordination
 
 Available when the shared world-threat flag is active. It supports intelligence, aid, and synchronized operations without creating a new faction automatically.
+
+## Action consolidation
+
+Status: proposed (spec audit 2026-10-10), pending user acceptance because it changes implemented decisions.
+
+The live shared category exposes 26 ordinary selected-state timed decisions (listed with their factories, Response Capacity and durations in `docs/plans/020_black_plague_plans/subagent_handoffs/decision_costs_2026-10-05.md`) beside the Black Plague-specific entries in the decision matrix.
+All 26 pay the same support-equipment and fuel quote, and in source most of them set a state flag and move one tracked value by a flat amount (`black_plague_apply_shared_action_pulse` and the finish effect in `020_black_plague_shared_response_effects.txt`).
+The September shared-cost correction records that one threatened state can satisfy eight of them at once, above the six-action ceiling for a readable surface, and leaves the action count as a named follow-up.
+The following consolidation resolves that follow-up without removing a distinct result.
+
+| Change | Actions | Reason |
+| --- | --- | --- |
+| Move to the national category | `sentinel_surveillance`, `stronger_prevention_law` | They are country postures that do not use the selected state, so they crowd the state list and belong beside the other national programmes. |
+| Fold into one action | `preserve_sentinel_surveillance` becomes the completion step of Stronger Prevention Law | A separate click to keep what the law already pays for is bookkeeping. |
+| Merge | `inspect_transport_hubs` and `port_inspections` become Inspect Transport Hubs and Ports | Both lower transport and port exposure in a state that has either, and the target filter already distinguishes them. |
+| Remove | `suspend_civilian_travel` | It duplicates the border corridor and the transport seal. Corridor closure and the seal remain the light and heavy options. |
+| Merge | `maintain_containment` absorbs `rotate_exhausted_personnel` | Rotation adds a flat Containment gain (8, against 15 for maintaining) and no fatigue value exists for it to counter, so it is a weaker copy of the maintenance action. |
+| Merge | `restore_local_administration` and `support_surviving_households` become Restore Administration and Households | Both are civilian recovery with the same target phase and cost profile. `rebuild_hospitals_transport` stays separate because it is the choice between disease resilience and economic reopening. |
+| Automate | `remove_emergency_restrictions` | The action is unavailable until the state is Cured and then always correct, so the restrictions lift when the state reaches Cured. |
+
+The result is 18 selected-state decisions plus the two national postures.
+A threatened state then meets at most four ordinary actions at once (field hospitals, transport hubs and ports, border corridor, troop routes).
+Costs, durations, Response Capacity burdens, AI willingness and cancellation rules of the retained actions stay as implemented, and merged actions take the larger of the two burdens.
+The Black Plague-specific entries are not part of this consolidation.
 
 ## Cleanup and category lifecycle
 

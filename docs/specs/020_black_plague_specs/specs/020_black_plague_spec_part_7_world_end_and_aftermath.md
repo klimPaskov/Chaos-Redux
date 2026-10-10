@@ -31,8 +31,8 @@ Evolution V can begin rolling when all of the following are true.
 
 The live implementation should use dynamic map-size aware thresholds. The following are balance targets.
 
-- at least 15 to 25 percent of eligible world states under Rat King control
-- at least five absorbed Rat Nations or equivalent dominance history
+- at least 15 to 25 percent of eligible world states under Rat King control (the live gate uses an absolute 24 King-controlled states)
+- absorbed-brood history as dominance evidence (the live gate does not count absorbed broods and requires the completed King route and terminal preparation of 100 instead)
 - at least 250 million event-attributed civilian deaths in a normal world population setup
 - high Dominion and Sentience
 - no active disputed crown crisis
@@ -42,6 +42,7 @@ The death threshold should scale when the total world population differs greatly
 ## Evolution V pacing
 
 The evolution should normally take about ninety to one hundred eighty days after full eligibility.
+The live window is 180 to 300 days (see the implemented gates in Part 4).
 
 It accelerates when:
 

@@ -20,9 +20,18 @@ Each evolution belongs to one Chaos Meter tier and enters through dynamic mean-t
 
 No evolution happens instantly merely because the chaos threshold is crossed. Evolution V can record its unlock after its own pacing, while the final world-end scenario fires only when the Rat King completes the required route and controls a continent.
 
+## Gating principle
+
+Evolutions are gated by Chaos tier and by live outbreak conditions, never by a calendar date.
+The only elapsed-time terms are the establishment period and the per-evolution mean-time window, both measured in days from the real event that made the evolution eligible.
+This keeps the rule that dates may influence weights while gameplay conditions decide.
+
 ## Common evolution entry rules
 
 Each evolution supports two ordinary entry paths. The triggerable scenario defined in Part 9 is an explicit third entry. During its tightly scoped bootstrap, Evolutions I through IV resolve immediately in order and ignore ordinary Chaos gates, eligibility, and mean-time pacing. The scenario does not record Evolution V and does not change the natural evolution rules after bootstrap cleanup.
+
+Disabled evolutions (the five Event 020 settings) must not set recorded flags or unlock later content during ordinary play.
+The triggerable scenario is the only exception and clears its bypass afterwards.
 
 ### Active-event evolution
 
@@ -60,6 +69,24 @@ The target base mean time is around ninety to one hundred eighty days after an e
 - no valid geographic or political condition for the next evolution
 
 An evolution should not remain eligible while the required actor or state no longer exists. Its timer should pause or rebuild rather than firing into an invalid context.
+
+## Implemented gates and windows
+
+Verified against `020_black_plague_evolution_triggers.txt`, `020_black_plague_rat_constants.txt` and `020_black_plague_evolution_constants.txt` on 2026-10-10.
+The prose gates below remain the design intent where this table is silent.
+
+| Evolution | Chaos gate | Live conditions beyond the gate | Mean-time window |
+| --- | ---: | --- | --- |
+| I | 200 | an Infected-or-worse state exists, and at least one of 100,000 attributed deaths, 3 established states or a Collapsed state | 90 to 150 days |
+| II | 400 | Evolution I active, 6 established states, and a human-controlled coastal established state with a dock signal | 120 to 180 days |
+| III | 600 | Evolution II active and recorded, 3 established states, a connected basin of at least 3 states, and a Collapsed state | 120 to 210 days |
+| IV | 800 | Evolution III active, and one active RTA carrier | 150 to 240 days |
+| V | 1000 | RTX is the active King, completed King route and terminal preparation of 100, deaths at the larger of 250 million and 15 percent of the starting world population, 24 King-controlled states, then a committed continent | 180 to 300 days |
+
+Differences from the prose below are recorded here rather than left silent, and none of them is recorded as a user decision.
+Evolution IV needs one active RTA carrier instead of two internal broods or an absorbed rival, because internal broods are state markers and the carrier is the only country-level object (`minimum_rat_nations_for_king = 1`).
+The Evolution IV and V windows are longer than the 90 to 180 day target, and Evolution V uses an absolute 24-state floor where the target describes a map-scaled share of eligible states.
+Whether these windows and floors are acceptable is listed as an open question in the package README.
 
 # Evolution I
 
@@ -427,7 +454,8 @@ The first Rat Nation triggers a major global milestone.
 - all human countries gain intelligence on Rat-Controlled states in the disease mapmode
 - cure work remains essential because retaking states does not remove plague
 
-The event should not create a separate rat-crisis decision category when the disease board can host the needed actions.
+Human anti-rat actions live in the shared disease category and add no rat-crisis category for humans.
+The two rat countries use their own decision categories (`black_plague_rat_brood_category` for RTA and `black_plague_rat_king_court_category` for RTX) because their actions are not disease responses.
 
 ## Rat resurgence
 

@@ -16,7 +16,7 @@ The natural Evolution IV path can begin rolling when all of the following are tr
 
 - Chaos is at least 800.
 - Evolution III is recorded.
-- At least two internal RTA broods exist or one RTA brood has already absorbed another.
+- At least two internal RTA broods exist or one RTA brood has already absorbed another (the live gate requires one active RTA carrier, see the implemented gates in Part 4).
 - A valid candidate has high Coherence or proto-sentience progress.
 - Rat-controlled territory and cumulative event deaths pass meaningful thresholds.
 - The candidate is not in immediate military collapse.
@@ -99,7 +99,7 @@ The public map name should be a direct country name rather than an office name. 
 The Rat King is a sentient individual and should have:
 
 - a generated one-person leader portrait
-- a small pool of actual-like nonhuman personal names and epithets
+- a small pool of actual-like nonhuman personal names and epithets, which is unresolved: the 2026-10-05 review found no acceptance basis for a sovereign-name pool, so the existing Rat King identity stands until a pool is accepted
 - route-aware leader traits
 - no generic office-only leader name
 - no human gender pool mismatch
@@ -119,9 +119,17 @@ The generated portrait's apparent presentation determines the matching name pool
 
 The animated version can use subtle breathing, whisker movement, eye light, cloak movement, and background fog. Every frame must be real source art, not a transformed still.
 
+## Implementation status
+
+Verified in source on 2026-10-10.
+The RTX tree is 71 nodes (one tree identifier plus 70 focus blocks) with the three government cores, the six-focus lanes per route and the earned terminal branch.
+The human population policy lane is attached to each government instead of being a free choice: Absolute Crown carries Preserve and Rule, Council of Burrows carries Selective Harvest, and Black-Breath Hierophancy carries Empty the Cities (`black_plague_rat_king_population_policy` is set by the matching focus).
+That keeps the three policies mutually exclusive as the lane below requires, and it gives each route one policy rather than a separate fourth decision.
+
 ## Rat King mechanic values
 
-The Rat King replaces the base Brood Mass, Hunger, and Coherence presentation with four connected values.
+The Rat King replaces the base Hunger and Coherence presentation with four connected values.
+In the live decisions Brood Mass is also spent by eight King actions (Royal Strike, Crown Tithe, the harbor and capital operations, Break Human Coordination and the three population policies), so the King carries a fifth value that this section does not name.
 
 ### Dominion
 
@@ -193,7 +201,7 @@ Brood Cohesion replaces base Coherence and measures loyalty to the new crown or 
 - overcentralization in the council route
 - excessive decentralization in the crown route
 
-Low Brood Cohesion can reduce pulse quality, create local brood revolts, or temporarily reactivate a base rat tag from the dormant pool.
+Low Brood Cohesion can reduce pulse quality, create local brood revolts, or empower a challenger among the internal RTA brood markers (there is no dormant tag pool, only RTA and RTX exist).
 
 ### Hunger
 
