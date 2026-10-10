@@ -53,17 +53,16 @@ Chaos Warfare becomes a high-power doctrine with real logistics and counterplay.
 
 The doctrine no longer grants broad, stacked attack bonuses as its main identity. It changes what the player can build, assign, prepare, deliver, defend against, conceal, clean up, and politically survive.
 
-## Historical planning source-reading statement
+## Status and evidence
 
-Every project file supplied with this task was read in full, including the skill markdown files, subagent TOML files, three catalog CSV files, the mechanics guide, AGENTS.md, and every markdown file in `biological_warfare.zip`.
+Chaos Warfare is implemented; current behaviour lives in [`docs/systems/cbrn_warfare/`](../../systems/cbrn_warfare/README.md) and the condemnation layer in [`condemnation_sanctions.md`](../../systems/cbrn_warfare/condemnation/condemnation_sanctions.md).
+Design authority is the accepted amendment in [`specs/13_2026_09_20_accepted_cbrn_overhaul.md`](specs/13_2026_09_20_accepted_cbrn_overhaul.md); the [requirement ledger](../../plans/chaos_warfare_system_plans/2026-09-20_cbrn_overhaul_requirement_ledger.md) and the [6 October takeover status](../../plans/chaos_warfare_system_plans/takeover_status_2026-10-06.md) hold accepted requirements and unresolved implementation evidence.
+The original package's source-reading statements, validation report and manifest describe the 2026-09 planning environment, not this checkout; they are provenance, and the implementation gates they raised are tracked in the takeover record instead.
 
-The entire live GitHub repository, the user's local offline Paradox wiki snapshot, and the user's local Hearts of Iron IV installation were not available as a complete mounted filesystem. Targeted current repository files were inspected through the GitHub connector. Current vanilla 1.19 behavior was checked through official Hearts of Iron IV announcements and patch notes. This limitation is carried into the implementation handoff and must be closed by the implementation agent before changing engine-facing files.
+## Revision log
 
-Project custom subagents were provided as definitions but no subagent-spawn tool was available in this environment. Their standards were applied manually. A manual improvement-loop pass and completion audit are included. No claim is made that the actual custom agents ran.
+### 2026-10-10 spec audit
 
-## Implementation evidence after the takeover
-
-The source-reading statement above records the original planning environment, not the mounted repository used for the October implementation.
-The user's October 6 takeover authorizes the current pass, whose source references, specialist audits, commits, graphics dispositions and exact orchestrator checks are recorded in the [takeover status](../../plans/chaos_warfare_system_plans/takeover_status_2026-10-06.md).
-The accepted amendment remains the design authority, and the [requirement ledger](../../plans/chaos_warfare_system_plans/2026-09-20_cbrn_overhaul_requirement_ledger.md) retains accepted requirements and unresolved implementation evidence.
-The historical package manifest is provenance rather than a current integrity checksum list.
+- Replaced the 2026-09 planning source-reading, subagent-availability and post-takeover evidence paragraphs with one status section that names the implemented system documents, the design authority and the ledgers that track unresolved evidence.
+- Prompts now use the repository's self-contained-prompt rule instead of Codex spawning syntax, and skill links point at the tracked `.claude/skills/` location.
+- Checked the condemnation tier table and the humanitarian carve-out owner link against the reworked condemnation spec: both still match.
