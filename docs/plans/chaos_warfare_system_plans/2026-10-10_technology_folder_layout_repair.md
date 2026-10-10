@@ -34,3 +34,14 @@ The two folders used `format = "UP"` gridboxes with `slotsize = { width = 90 hei
 ## Not verified
 
 The GUI renderer does not draw native technology cards, tooltips or scrolling, so in-game scroll reach, card tooltips, the locked-card tooltip text for the project technologies, and final DDS appearance are left to live play.
+
+## Second pass, same day: card size and link length
+
+The first pass kept `force_use_small_tech_layout = yes` on every CBRN technology, so all 33 cards drew in the 72-pixel doctrine box with no name, and the two-slot column pitch produced links of up to nine slots.
+
+- Every technology placed in either folder lost `force_use_small_tech_layout`. The engine now applies the vanilla rule: a technology that unlocks equipment draws the full-size named card, everything else draws the small box. Chemical: 20 full-size cards and Dimercaprol small. Biological: the four bomb cards full-size, the eight service technologies small.
+- The column pitch went from two slots (140 pixels) to three (210 pixels), which is the room the 183-pixel card needs; vanilla never places two full-size cards closer. The grid origin moved from x = 170 to x = 220 so the gutter labels stay clear of the card's left edge at x = 164, and the row pitch went from 100 to 110 pixels so the 84-pixel cards keep a gap.
+- The 1937 column was removed. Lewisite and tabun are 1936 research and Rapid Decontamination Plants is 1941 research, so every branch advances one column per step and the longest link in either folder is two columns (420 pixels), the same as the longest vanilla support-folder link. Before this, Improved Service Masks to Advanced Protective Clothing and the matching projector link spanned 630 pixels.
+- Fillers resized to 1450x980 (chemical) and 1040x715 (biological).
+
+Render evidence after the second pass, from `hoi4.tech_render view = folder`: chemical columns at renderer x = 217, 427, 637, 847, 1057, 1267 and rows at y = 315, 425, 535, 645, 755, 865, 975; biological columns at 217, 427, 637, 847 and rows at 315, 425, 535, 645. Card boxes are 183x84 (full-size) and 72x72 (small), pairwise overlap count zero in both folders, no unresolved icon sprite, and the per-row maximum column gap is 420 pixels. `hoi4.gui_render` at 1920x1080 and 2560x1440 shows the six year headers and seven branch labels inside the window with no clipping.
