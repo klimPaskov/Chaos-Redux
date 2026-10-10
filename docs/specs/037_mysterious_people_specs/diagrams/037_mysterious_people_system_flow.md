@@ -1,107 +1,51 @@
 # Event 037 system flow
 
-## Ownership map
+## Runtime flow
 
 ```mermaid
 flowchart TD
-    A[Event 037 selected once] --> B[Snapshot valid inhabited states]
-    B --> C[Apply stage-scaled real population grants]
-    C --> D[Increase state mysterious-population provenance]
-    D --> E[Update country and world totals]
-    E --> F[Register active states and countries]
-    F --> G[Calculate state support pressure]
-    G --> H[Aggregate national Overpopulation Pressure]
-    H --> I[Country policy, projects, and missions]
+    A[Event 037 selected once] --> B[World pass over valid states]
+    B --> C[Measured real population grant per state]
+    C --> D[State share and unsettled backlog]
+    D --> E[Country and world counts, hotspots, milestones]
+    E --> F[National Overpopulation Pressure]
+    F --> G[Newcomers modifier]
+    F --> H[Stance, actions, mission]
+    H --> D
 
-    I --> J[Famine request or published burden]
-    I --> K[Migration request]
-    I --> L[Camp and Repression request]
+    P[Monthly host pulse, registered countries only] --> D
+    P --> F
 
-    J --> M[Famine applies food state, relief, and mortality]
-    K --> N[Migration applies origin debit, route result, and destination credit]
-    L --> O[Camp system applies site, labor, evidence, and mortality]
+    D -->|hotspot pressure 60+| I[famine_apply_pressure_request]
+    D -->|hotspot pressure 80+| J[migration_request_flight_pressure]
+    I --> K[Famine stage, relief, mortality]
+    K -->|committed stage| D
+    J --> L[Civilian transfer primitive]
+    L -->|Event 037 hook: share blend, backlog debit| D
 
-    M --> P[Shared exact population transaction]
-    N --> P
-    O --> P
-
-    P --> Q[Shared Deaths and Condemnation owners]
-    P --> R[Event 037 updates provenance from applied result]
-    R --> E
-
-    H --> S[Manifestation and flavour reports]
-    H --> T[One-shot demographic Chaos milestones]
+    M[Any untargeted population loss] -->|share unchanged, count shrinks| D
 ```
 
-## Data ownership table
+## Ownership
 
-| Fact or action | Owner | Event 037 responsibility |
+| Fact or action | Owner | Event 037 role |
 | --- | --- | --- |
-| Real population creation | Event 037 | create once and record applied amount |
-| Mysterious provenance | Event 037 | maintain state, country, and world totals |
-| Integration | Event 037 | track administrative absorption |
-| Overpopulation Pressure | Event 037 | summarize support burden |
-| Food Security, reserves, relief | Famine | publish burden and receive results |
-| Movement, routes, reception | Migration | submit composition-proven request and reconcile results |
-| Camps, forced labor, killing | Camp and Repression | identify targeted cohort and reconcile applied results |
-| Civilian deaths | Deaths owner for the cause | reduce provenance after the applied transaction |
-| Public atrocity consequence | Condemnation | provide evidence-linked context only |
-| Special-country eligibility | shared civilian classifiers | call shared result, no private tag list |
-| Event history and evolution history | shared Event Logs | provide one firing and clean evolution context |
-| Direct event Chaos | Event 037 | apply one-shot demographic milestones only |
+| Population creation at a manifestation | Event 037 | Create once through the neutral gain helper |
+| Newcomer share and unsettled backlog | Event 037 | Store per state |
+| Overpopulation Pressure and the Newcomers modifier | Event 037 | Compute and apply |
+| Food values, stages, relief, famine deaths | Famine | Submit one need component per crowded hotspot |
+| Cohorts, routes, borders, reception, route deaths | Migration | Request flight from Breakdown hotspots |
+| Physical moves and conservation | Civilian transfer primitive | One finalization hook |
+| Deaths and Chaos from deaths | Owner of each cause | None |
+| Special and nonhuman eligibility | Shared civilian classifiers | Call `humanitarian_state_is_valid` |
+| History and evolution logging | Event Logs | One firing row and evolution rows |
 
-## Runtime cadence
-
-### At manifestation
-
-- one bounded world-state pass
-- one grant per valid state
-- one global transaction identity
-- one event-history row
-- relevant player reports after totals are final
-
-### After manifestation
-
-- active state and country registries only
-- event-driven refresh after creation, movement, mortality, ownership, capacity, and policy changes
-- bounded pressure updates
-- incremental totals
-- resolved entries removed
-
-### Reconciliation
-
-A full recount is an explicit repair, save migration, or debug action. It is not normal daily or monthly processing.
-
-## Transaction invariants
+## Invariants
 
 ```text
-real state population after grant
-= real state population before grant
-+ applied Event 037 grant
+state population after grant = state population before grant + measured grant
+newcomers in a state = newcomer share x live state population
+0 <= unsettled newcomers <= newcomers in the state
 ```
 
-```text
-living mysterious population after grant
-= living mysterious population before grant
-+ applied Event 037 grant
-```
-
-```text
-ordinary mysterious deaths
-= applied ordinary civilian loss
-multiplied by the pre-loss mysterious share
-subject to rounding and population bounds
-```
-
-```text
-targeted mysterious deaths or movement
-= the applied targeted transaction result
-bounded by living mysterious population
-```
-
-```text
-world living mysterious population
-= sum of current state provenance
-```
-
-The same person cannot be credited to two states, killed twice, moved without origin debit, or removed from provenance without a matching real population transaction.
+A grant never repeats for one firing identity, and no Event 037 step removes population.

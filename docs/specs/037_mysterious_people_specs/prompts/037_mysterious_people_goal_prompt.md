@@ -1,27 +1,27 @@
 # Goal: Complete Event 037 Mysterious People
 
-Implement Event 037 from `docs/specs/037_mysterious_people_specs/`. Use its README to resolve acceptance before execution. Read `AGENTS.md`, owning skills, shared systems, offline wiki, vanilla documentation, and relevant precedents.
+Implement Event 037 from `docs/specs/037_mysterious_people_specs/`, starting with its README and the coding prompt, under `CLAUDE.md`.
 
-The event is Minor Repeatable, Chaos level `1`, Various Anomalies, Low severity, with entry `chaosx.nr37.1`. One firing creates real civilian population in every valid inhabited state through one bounded global transaction. It applies once across normal, cluster, multiplayer, delayed-report, and reload paths. Use current real population for stage-scaled grants, update state provenance by the applied amount, maintain country and world totals, and prevent replay.
+Event 037 is Minor Repeatable, Chaos level `1`, a Medium member of the unregistered Sudden Abundance cluster, with entry `chaosx.nr37.1`.
+Retire the legacy stub, which gives one country recruits and hints at aliens.
 
-Real population is authoritative. Implement provenance after ordinary deaths, targeted deaths, Migration transfers, route deaths, trapped cohorts, ownership changes, and reconciliation. Reuse the shared exact civilian-loss path. Prove the positive population-gain route. Add a shared helper only when neutral, necessary, and documented.
+Each firing runs one world pass: every inhabited state with ordinary civilian owners gains real population, scaled by stage, through a neutral gain helper that removes the instant recruitable gain.
+Each state stores a newcomer share, an unsettled backlog, and a settlement rate.
+Ordinary losses need no callbacks because the share is proportional, and one hook in the civilian transfer primitive handles moves.
+A monthly host pulse touches only countries with unsettled newcomers and at most eight hotspots each.
 
-Expose one public value, Overpopulation Pressure from `0` to `100`, with thresholds `20`, `40`, `60`, and `80`. Keep detailed factors internal. Implement integration, demographic dividend, severe strain, sparse registries, and event-driven refresh. Do not add recurring whole-world scans or immediate full military use of new population.
+The player sees newcomers in the country, Overpopulation Pressure from `0` to `100` in five stages, and a stance.
+One Newcomers modifier gives a workforce bonus at low pressure and costs stability and construction at high pressure.
+Hotspots at `60+` send food need to Famine and at `80+` request flight through Migration, using their public entry points only.
 
-Implement and log Population Surge at `200+`, Overpopulation Crisis at `400+`, and Humanity Multiplies at `600+`. Evolution state adds zero Chaos. Disabled lower stages cannot block a higher enabled stage. A first firing at high Chaos uses the highest enabled eligible scale once.
+Evolutions at `200`, `400`, and `600` Chaos raise the grant scale, add zero Chaos, and respect disabled stages.
+Decisions are two stances, a Registration Drive, Requisition, Emergency Housing, Roads and Water, and an Evolution III New City, plus one mission, Absorb the Newcomers.
+No action targets people by origin.
 
-Keep shared ownership exact. Famine owns food crisis. Migration owns cohorts and movement. Camp and Repression owns forced labor, extermination, evidence, and site mortality. Condemnation owns public diplomatic consequence. Event 037 changes provenance only from applied proof and creates no duplicate humanitarian systems.
+Events are one manifestation report per human country, three evolution reports, a seventeen-event flavour pool with diversity memory, and a rewritten first-firing news event.
+Never confirm an origin.
+Direct Chaos comes only from four one-shot milestones.
 
-Implement the ordinary decision category, static picture, three policies, selected-state workflow, phased actions, missions, Evolution III programs, and extreme routes. One action uses no more than four spendable costs with correct texticons. Missions require active work and real failure. AI follows the named probability scenarios. Run the probability auditor before and after every weight patch.
+Produce and wire the asset inventory and three achievements, write the event overview, and update the workbook through the catalog handoff.
 
-Implement one global report per firing, national reports, the full flavour pool, Event Details, Event Logs, and final localisation. Preserve the mystery firewall. Never confirm a specific origin or a shared origin with another event. Use no developer-facing, update-history, raw-variable, debug, or hidden-spoiler wording.
-
-Implement one-shot direct Chaos milestones and guarded stable-world recovery. Do not duplicate Chaos from deaths, famine, displacement, wars, annexations, or atrocities.
-
-Create and wire the authorized report image, category picture, separate icons, modifier and state icons, and three achievement triplets. Implement achievement triggers, timers, disqualifiers, persistence, and documentation. Do not use copied, placeholder, or unwired assets.
-
-Replace the obsolete workbook premise only in the authoritative XLSX after final wording exists, then run the CSV exporter. Assign a Various Anomalies ID only after collision and member-contract checks. Do not edit CSV exports directly.
-
-Use mandatory HOI4 MCP event and probability evidence. Use the mapped scripted-system, decision, localisation, asset, spreadsheet, completion, and improvement-loop workers with complete prompts. Resolve every handoff and accepted addendum.
-
-Keep iterating until every acceptance scenario passes and every mapped surface is complete. Do not claim completion for a parser-clean partial implementation. List every simplification, missing validation, fallback, or blocker. If none remain, provide task-specific evidence from the final repository state.
+Finish when every acceptance criterion and balance case is checked, and report anything unresolved.

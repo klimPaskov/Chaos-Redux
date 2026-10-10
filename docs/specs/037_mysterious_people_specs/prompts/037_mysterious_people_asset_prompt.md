@@ -1,155 +1,32 @@
-# Prompt: Event 037 visual asset package
+# Prompt: Event 037 visual assets
 
-Create the complete authorized visual asset package for Chaos Redux Event 037, Mysterious People.
+Produce the asset inventory in [Part 7](../specs/037_mysterious_people_spec_part_7_assets_achievements_and_catalog.md#asset-inventory) under `.claude/skills/chaos-redux-event-assets/SKILL.md`.
+Part 7 owns the inventory, the visual identity, and the forbidden imagery.
+The asset skill owns the image-generation route, reference inspection, transparency, processing, DDS conversion, temporary workspace rules, and handoff format.
 
-Read the full Event 037 specification pack, especially Part 7, the event-assets skill, the subagent skill, and the relevant source-manifest and acceptance files. Inspect the canonical skill-local reference library, each matching contact sheet, installed vanilla consumers, and existing Chaos Redux precedents before producing files.
+## Routing
 
-Split actual production by asset owner:
+- `chaosx_generated_event_art`: the manifestation report image, the category picture, and the news picture if the review in Part 7 finds the existing one unusable.
+- `chaosx_icon_artist`: the category icon, two stance icons, five action icons, the mission icon, the Newcomers modifier icon, and the three achievement triplets.
 
-- `chaosx_generated_event_art` for the report image and static decision-category picture
-- `chaosx_icon_artist` for category, decision, modifier, state, and achievement art
+Each subagent receives a self-contained prompt with this inventory, the exact consumer for each asset, the paths below, and the forbidden imagery.
+The parent owns `.gfx` registration and runtime wiring.
 
-Each subagent receives a fully explicit prompt with no inherited context. The parent owns final non-portrait sprite wiring and runtime review.
+## Paths
 
-## Visual rule
+| Asset family | Final folder |
+| --- | --- |
+| Report and news images | `gfx/event_pictures/037_mysterious_population/` |
+| Category picture, category icon, stance, action, mission, and modifier icons | `gfx/interface/decisions/037_mysterious_population/` |
+| Achievement triplets | `gfx/achievements/`, named after the achievement IDs in Part 7 |
+| Sprite registration | `interface/037_mysterious_population.gfx` |
+| Temporary workspace | `docs/assets/037_mysterious_people/` |
 
-The anomaly must look documentary, domestic, municipal, and credible. Show people, homes, roads, schools, factories, farms, and established settlements that appear to have existed for years.
+Inspect each live consumer before choosing a canvas.
+The vanilla report-event family is the starting reference for the report image, and the existing Chaos Redux decision-category pictures are the reference for the category picture.
 
-Do not imply a canonical explanation. Avoid portals, aliens, cloning equipment, laboratories, time machines, supernatural beams, science-fiction machinery, readable generated text, modern clothing, modern vehicles, maps as the main scene, hostile caricature, disease symbolism, or criminal symbolism.
+## Subjects
 
-## Generated full-canvas art
-
-### Report-event image
-
-Working basename:
-
-```text
-mysterious_people_report
-```
-
-Final event folder:
-
-```text
-gfx/event_pictures/037_mysterious_people/
-```
-
-Inspect the active report-event family and verify the final canvas. The planning reference is `210x176`.
-
-Create a period-authentic 1936 to 1945 documentary scene showing a newly populated settlement with families, complete homes, ordinary local work, and physical signs of an established community. Use monochrome or restrained sepia treatment matching the verified report precedent.
-
-The image must remain useful for baseline and evolved manifestations.
-
-### Decision-category picture
-
-Working basename:
-
-```text
-mysterious_people_category
-```
-
-Final event folder:
-
-```text
-gfx/interface/decisions/037_mysterious_people/
-```
-
-Inspect the canonical decision-category picture family and the exact runtime consumer. The reference family uses `114x101`, which is not an automatic final size.
-
-Show a crowded district, settlement office, or local service scene. Do not paint controls, buttons, values, labels, or meters into the image.
-
-Both full-canvas assets keep the opaque or painted background treatment required by their consumers.
-
-## Transparent icon package
-
-Request genuine native transparency in the first ImageGen call for every alpha-backed icon. Preserve alpha through processing and DDS conversion. Reject white matte, fake checkerboard, halo, opaque square, clipped edge, or internal transparent hole.
-
-Create separate source art for every asset type. A resized report image, focus icon, category icon, or other icon cannot satisfy another surface.
-
-### Category icon
-
-Working basename:
-
-```text
-mysterious_people_category_icon
-```
-
-Direction: a compact civilian group beside a house, registry book, or settlement marker.
-
-### Decision icons
-
-Create separate source art for:
-
-- `mysterious_people_population_office`
-- `mysterious_people_housing_program`
-- `mysterious_people_services_program`
-- `mysterious_people_planned_settlement`
-- `mysterious_people_workforce_integration`
-- `mysterious_people_military_logistics`
-- `mysterious_people_foreign_relief`
-- `mysterious_people_restrictive_registry`
-- `mysterious_people_closed_zone`
-- `mysterious_people_origin_classification`
-
-Inspect the exact decision-icon consumer and final size. Keep one strong subject and readable silhouette.
-
-Shared Famine, Migration, Camp, and Condemnation actions should reuse established art only after a semantic consumer audit. Do not create neutral Event 037 replacements for forced relocation, forced labor, extermination, or other actions owned by those systems.
-
-### Modifier icons
-
-Create separate source art for:
-
-- `mysterious_people_demographic_dividend`
-- `mysterious_people_state_pressure`
-
-Inspect whether each consumer is an idea, dynamic modifier, state modifier, or another verified family. Do not assume one canvas for both.
-
-Dividend direction: integrated workforce, active settlement, factory and farm capacity.
-
-Pressure direction: compressed housing, crowded road, strained utilities.
-
-## Achievement triplets
-
-Create full achievement triplets in `gfx/achievements/` using filenames matching these exact achievement IDs:
-
-- `chaos_redux_037_room_for_everyone`
-- `chaos_redux_037_a_billion_more`
-- `chaos_redux_037_three_censuses`
-
-For each, provide normal, grey, and not-eligible DDS files according to the established suffix convention and overlay workflow.
-
-Use separate source art:
-
-- Room for Everyone: orderly dense settlement and open civic capacity
-- A Billion More: immense integrated population across city, farm, and industry
-- Three Censuses: three layered household records paired with growing settlement
-
-Do not generate readable lettering.
-
-## Evidence and packaging
-
-Use the temporary workspace:
-
-```text
-docs/assets/037_mysterious_people/
-```
-
-Keep source PNGs, prompts, processed previews, contact sheets, transparency checks, dimensions, manifests, provenance, and `gfx_handoff.md`.
-
-Place final DDS files in verified runtime folders. The handoff must list:
-
-- asset type
-- source mode
-- exact prompt
-- source and final paths
-- native dimensions
-- alpha treatment
-- DDS format
-- proposed sprite name
-- target `.gfx` consumer
-- contact-sheet path
-- review status
-- unresolved blockers
-
-Before final event completion, the parent must promote durable provenance and crosswalk facts, verify no runtime reference points into `docs/assets/`, and delete the complete temporary event workspace. Keep it when work remains blocked or under review.
-
-Do not create portraits, flags, focus icons, animation, 3D models, sound, or additional assets outside the accepted inventory.
+Use the subject column in Part 7.
+Full-canvas images keep the opaque treatment of their consumer, and icons are transparent.
+No readable lettering in any asset.

@@ -1,70 +1,118 @@
-# Event 037: Mysterious People specification pack
+# Event 037: Mysterious People specification package
 
-This folder contains the imported planning handoff for Chaos Redux Event 037, **Mysterious People**.
-Its design and provenance are preserved; the imported accepted label does not supply a claim-specific approval record.
-Acceptance of planning expansion remains `unresolved` until the parent records the explicit user decision or acceptance within existing authorization.
-Use the [repository acceptance rules](../../../AGENTS.md#specs-and-plans) and [current event workflow](../../../.agents/skills/chaos-redux-events/SKILL.md) independently of the historical package checks.
+This package is the design source for Event 037, a repeatable global anomaly: people with homes, families, and histories appear in every inhabited state, and each wave has to be settled before the next one arrives.
+The player manages one value, Overpopulation Pressure, through a stance, a few settlement actions, and one mission, while hunger and flight from crowded states run through the existing Famine and Migration systems.
 
-Place the folder at:
+Workflow owners: [event integration](../../../.claude/skills/chaos-redux-events/SKILL.md), [decisions and missions](../../../.claude/skills/chaos-redux-decisions-missions/SKILL.md), [subagent routing](../../../.claude/skills/chaos-redux-subagents/SKILL.md), and [asset production](../../../.claude/skills/chaos-redux-event-assets/SKILL.md).
 
-```text
-docs/specs/037_mysterious_people_specs/
-```
+## Status
 
-The ZIP is arranged for extraction into the repository root.
+Event 037 is in the active Events 1 to 40 milestone.
+The runtime holds only a legacy two-event stub that gives one random country `2,500,000` manpower and hints that the newcomers are aliens.
+This package retires that stub, and every mechanic in it is **Pending**.
+There is no plans folder yet, and implementation handoffs go to `docs/plans/037_mysterious_people_plans/`.
 
-## Event identity
+The implementation entry point is [the coding prompt](prompts/037_mysterious_people_coding_prompt.md).
 
-| Field | Value |
+## Acceptance basis
+
+- User requirements: the workbook row, which fixes the name Mysterious People, Minor Repeatable, Chaos level `1`, cluster `15` (Sudden Abundance), and the To Be Reworked status.
+- Design: the global civilian-population design came from an imported planning handoff whose acceptance label carried no attributable approval record.
+  Parent acceptance, 2026-10-10 (release orchestrator, under the user's 2026-10-10 brief section 2.2 authority, recorded in the release ledger): the redesign is accepted as the Event 037 premise, since it keeps the same core of unexplained new people; origin-targeted repression actions stay removed because the shared camp system offers no such target; the `population_surge` pressure source stays a proposal.
+  Disposition: `accepted and queued` for the Event 037 implementation owner, who must prove gradual manpower growth (Implementation question 1).
+- The 2026-10-10 audit changes in the changelog were made under the user's 2026-10-10 audit brief, which authorized substantial rework to remove redundant values, repetitive decisions, and micromanagement.
+
+## Package map
+
+| File | Owns |
 | --- | --- |
-| Event ID | `37` |
-| Event name | Mysterious People |
-| Event type | Minor Repeatable |
-| Status before implementation | To Be Reworked |
-| Chaos level | `1` |
-| Cluster | Various Anomalies |
-| Member severity | Low |
+| [Part 1, core](specs/037_mysterious_people_spec_part_1_core.md) | Identity, legacy stub, promise, core loop, firing, valid states, mystery firewall, log and cluster role, direct Chaos |
+| [Part 2, population and ledger](specs/037_mysterious_people_spec_part_2_population_and_ledger.md) | Gain helper, grant model, newcomer share, unsettled backlog, settlement, counts, ownership, runtime cadence |
+| [Part 3, pressure and evolutions](specs/037_mysterious_people_spec_part_3_pressure_and_evolutions.md) | Pressure formulas, visible values, Newcomers modifier, Famine and Migration thresholds, evolutions |
+| [Part 4, decisions, mission, AI](specs/037_mysterious_people_spec_part_4_decisions_missions_and_ai.md) | Category, stances, actions, costs, mission, visibility budget, AI, cleanup |
+| [Part 5, events and flavour](specs/037_mysterious_people_spec_part_5_events_flavour_and_reactions.md) | Event map, manifestation report, flavour pool with options, writing direction |
+| [Part 6, system connections](specs/037_mysterious_people_spec_part_6_system_connections.md) | Ownership table, proportional losses, no origin-targeted actions, unconnected systems, multiplayer |
+| [Part 7, assets, achievements, catalog](specs/037_mysterious_people_spec_part_7_assets_achievements_and_catalog.md) | Asset inventory, three achievements, Event Details, log detail, documentation set |
+| [Balance matrix](quality/037_mysterious_people_balance_matrix.md) | Worked numbers for grants, pressure, settlement, consequences, and balance cases |
+| [Probability scenarios](quality/037_mysterious_people_probability_scenarios.md) | Named scenarios for every weighted surface |
+| [Acceptance criteria](quality/037_mysterious_people_acceptance_criteria.md) | Pass or fail checks and validation scenarios |
+| [System flow](diagrams/037_mysterious_people_system_flow.md) | Runtime flow, ownership, invariants |
+| [Research boundary](research/037_mysterious_people_research_boundary.md) | Useful research and its limits |
+| [Catalog and cluster alignment](handoffs/037_mysterious_people_catalog_and_cluster_alignment.md) | Workbook row, replacement wording, cluster record |
+| [Coding prompt](prompts/037_mysterious_people_coding_prompt.md) | Entry point, work order, subagent routing |
+| [Goal prompt](prompts/037_mysterious_people_goal_prompt.md) | Compact goal statement |
+| [Ledger prompt](prompts/037_mysterious_people_population_ledger_and_adapters_prompt.md) | Delegation to the scripted-system architect |
+| [Decision prompt](prompts/037_mysterious_people_decision_mission_prompt.md) | Decision implementation and audit focus |
+| [Asset prompt](prompts/037_mysterious_people_asset_prompt.md) | Asset routing and paths |
+| [Achievement prompt](prompts/037_mysterious_people_achievement_prompt.md) | Achievement implementation focus |
 
-## Source specification
+## Main design decisions
 
-1. [`specs/037_mysterious_people_spec_part_1_core.md`](specs/037_mysterious_people_spec_part_1_core.md)
-2. [`specs/037_mysterious_people_spec_part_2_population_and_ledger.md`](specs/037_mysterious_people_spec_part_2_population_and_ledger.md)
-3. [`specs/037_mysterious_people_spec_part_3_pressure_and_evolutions.md`](specs/037_mysterious_people_spec_part_3_pressure_and_evolutions.md)
-4. [`specs/037_mysterious_people_spec_part_4_decisions_missions_and_ai.md`](specs/037_mysterious_people_spec_part_4_decisions_missions_and_ai.md)
-5. [`specs/037_mysterious_people_spec_part_5_events_flavour_and_reactions.md`](specs/037_mysterious_people_spec_part_5_events_flavour_and_reactions.md)
-6. [`specs/037_mysterious_people_spec_part_6_system_connections.md`](specs/037_mysterious_people_spec_part_6_system_connections.md)
-7. [`specs/037_mysterious_people_spec_part_7_assets_achievements_and_catalog.md`](specs/037_mysterious_people_spec_part_7_assets_achievements_and_catalog.md)
+- Newcomers are real state population, created through a neutral gain helper that removes the engine's instant recruitable gain so armies grow as people settle.
+- Each state stores a newcomer share rather than a count, so every ordinary loss and proportional move keeps the ledger correct without adapters in other systems.
+- Unsettled newcomers are the only pressure input Event 037 owns, settled at a monthly rate the player raises through stance and projects.
+- One national value (Overpopulation Pressure) and one modifier (Newcomers) carry every national effect.
+- Famine and Migration receive requests through their public entry points only, at fixed hotspot pressure thresholds.
+- Recurring work touches only countries with unsettled newcomers and at most eight hotspots each, and the only world-wide pass happens once per firing.
 
-## Supporting design files
+## Scope boundaries
 
-- [`quality/037_mysterious_people_balance_matrix.md`](quality/037_mysterious_people_balance_matrix.md) defines grant examples, pressure expectations, exploit limits, and tuning review cases.
-- [`quality/037_mysterious_people_probability_scenarios.md`](quality/037_mysterious_people_probability_scenarios.md) defines the named scenarios required for AI and weighted-logic inspection.
-- [`quality/037_mysterious_people_acceptance_criteria.md`](quality/037_mysterious_people_acceptance_criteria.md) defines implementation and validation gates.
-- [`quality/037_mysterious_people_parent_improvement_review.md`](quality/037_mysterious_people_parent_improvement_review.md) records the final parent-led depth and anti-bloat review.
-- [`quality/037_mysterious_people_source_reading_manifest.md`](quality/037_mysterious_people_source_reading_manifest.md) records the complete uploaded-source review.
-- [`quality/037_mysterious_people_package_manifest.md`](quality/037_mysterious_people_package_manifest.md) records the final file inventory and checksums.
-- [`diagrams/037_mysterious_people_system_flow.md`](diagrams/037_mysterious_people_system_flow.md) maps ownership and runtime flow.
-- [`research/037_mysterious_people_research_boundary.md`](research/037_mysterious_people_research_boundary.md) defines the research boundary and explanation firewall.
-- [`handoffs/037_mysterious_people_catalog_and_cluster_alignment.md`](handoffs/037_mysterious_people_catalog_and_cluster_alignment.md) replaces the obsolete catalog premise and records cluster disposition.
-- [`handoffs/037_mysterious_people_subagent_routing.md`](handoffs/037_mysterious_people_subagent_routing.md) defines the recommended implementation and audit sequence.
+Event 037 has no food value, refugee system, relief action, or movement decision, because Famine and Migration already own them.
+It has no origin-targeted action, no canonical origin, no scripted GUI, no focus tree, no country tag, no super-event, no world-end scenario, and no portraits, flags, animation, audio, or 3D assets.
+Any later expansion needs a specific observed gameplay gap.
 
-## Prompt files
+## Open questions
 
-- [`prompts/037_mysterious_people_asset_prompt.md`](prompts/037_mysterious_people_asset_prompt.md)
-- [`prompts/037_mysterious_people_achievement_prompt.md`](prompts/037_mysterious_people_achievement_prompt.md)
-- [`prompts/037_mysterious_people_decision_mission_prompt.md`](prompts/037_mysterious_people_decision_mission_prompt.md)
-- [`prompts/037_mysterious_people_population_ledger_and_adapters_prompt.md`](prompts/037_mysterious_people_population_ledger_and_adapters_prompt.md)
-- [`prompts/037_mysterious_people_coding_prompt.md`](prompts/037_mysterious_people_coding_prompt.md)
-- [`prompts/037_mysterious_people_goal_prompt.md`](prompts/037_mysterious_people_goal_prompt.md)
+### Conflicts with recorded requirements or imported design
 
-## Design boundaries
+1. Premise replacement (decided 2026-10-10: accepted, see Acceptance basis; the workbook row is updated with the implementation).
+   The workbook row still describes the legacy premise, a major country receiving millions of unexplained recruits.
+   This package replaces it with a global civilian-population event.
+   The user should confirm the replacement before the workbook row changes and before the design is marked accepted.
+2. Origin-targeted persecution (decided 2026-10-10: stays removed, see Acceptance basis).
+   The imported concept let governments at the highest evolution persecute the newcomers through closed settlement zones, forced relocation, forced labor, and systematic killing aimed at them.
+   This audit removed those actions because the shared camp system never offers a protected-class target selector, and it kept persecution as politics through Restricted Registration, the origin register event, and flight.
+   The user decides whether origin-targeted routes should return, which would also need a change to the camp system's boundary.
 
-Event 037 is a global civilian-population anomaly. It creates real population, records the created cohort by state, and later converts that demographic gift into support pressure. It uses the existing Famine, Migration, Deaths, Camp and Repression, and Condemnation systems for consequences that those systems already own.
+### Proposals awaiting acceptance
 
-The player manages one public event value, **Overpopulation Pressure**. Detailed state provenance, support calculations, integration facts, Famine inputs, Migration receipts, and population-composition accounting remain internal.
+1. A dedicated `population_surge` value in `humanitarian_pressure_source`, so Famine and Migration reports can name crowding as a cause.
+   It touches shared constants, so the coding prompt falls back to the existing `event` source unless the Famine and Migration owners accept it.
 
-The event uses ordinary events, an ordinary decision category, selected-state actions, shared map modes, and static visual assets. The design remains focused on the demographic loop and does not add unrelated presentation or country systems.
+### Implementation questions
 
-## Evidence boundary
+1. Whether recruitable manpower grows gradually after the instant gain is removed is an engine-proof gate (Part 2).
+   If it does not, the timed recruitable-population fallback described there needs user approval.
+2. The inhabited-state threshold, grant table, settlement rate, and pressure scale are planning anchors to tune against the installed state-population distribution.
 
-The planning pack was created from the complete uploaded project bundle and the complete extracted subagent definitions. It is a design handoff. It does not claim repository implementation, HOI4 MCP evidence, offline wiki inspection, vanilla-file inspection, workbook editing, custom subagent execution, desktop testing, or in-game validation.
+## Changelog
+
+### 2026-10-10 orchestrator review
+
+- Recorded the parent acceptance of the redesigned premise and the removal of origin-targeted repression actions.
+
+### 2026-10-10 spec audit
+
+Pass 1, consistency and cleanup:
+
+- Corrected the cluster record: Event 037 is a Medium member of Sudden Abundance (catalog cluster `15`, not yet registered in the runtime), not a Low member of Various Anomalies, which is live at ID `11` with Events 42 and 47, and removed the provisional cluster ID `9`.
+- Recorded the legacy runtime stub, its retirement, and the existing `037_mysterious_population` file stem and folders that the implementation keeps.
+- Replaced the original planning-environment claims (no repository, wiki, MCP, workbook, or subagent access, uploaded-file hashes, Codex TOML definitions, `AGENTS.md`, `fork_turns`, and the `.agents/skills` mirror) with the current Claude workflow, `CLAUDE.md`, and `.claude/skills`.
+- Named the real repository surfaces the design depends on: `humanitarian_state_is_valid`, the loss helper and the two owner-specific credit precedents, `famine_apply_pressure_request`, `migration_request_flight_pressure`, the civilian transfer primitive, and `on_state_control_changed`.
+- Renamed the achievement IDs to the repository's `037_` pattern and moved event-owned asset paths to the existing slug.
+- Made one owner per topic and turned the coding, goal, decision, ledger, asset, and achievement prompts and the acceptance criteria into pointers to the owning part, removing restated rules, MCP gates, and completion rules that `CLAUDE.md` already owns.
+- Deleted `quality/037_mysterious_people_package_manifest.md` (stale checksums), `quality/037_mysterious_people_source_reading_manifest.md` (upload hashes and environment limits), `quality/037_mysterious_people_parent_improvement_review.md` (its rationale now lives in Scope boundaries and Main design decisions), and `handoffs/037_mysterious_people_subagent_routing.md` (now the routing table in the coding prompt).
+- Reflowed every file to one sentence per line.
+
+Pass 2, design improvement:
+
+- Replaced the per-state integration meter, the hidden-population and registration-confidence mechanics, and the absolute provenance ledger with one newcomer share and one unsettled backlog per state, which removes the need for loss adapters in about fifteen other systems and keeps the ledger inside real population automatically.
+- Gave Overpopulation Pressure a concrete formula and cut the visible values to three in the header and four in a hotspot tooltip, dropping trend, next threshold, strongest positive and negative factors, and integration labels.
+- Folded the demographic dividend and strain into one Newcomers modifier with concrete scaling.
+- Replaced the open-ended "sparse registry" with a bounded monthly host pulse over countries with unsettled newcomers and at most eight hotspots each, since a global event would otherwise register nearly every state.
+- Cut the decision list from about twenty actions and four missions to two stances, five actions, and one mission, removing everything that only redirected to Famine or Migration (agricultural support, emergency food channels, military logistics, foreign relief, planned settlement, redistribution, national food program, settlement compact, corridor and settlement missions) and the one-time Population Office gate and Employ the New Workforce button.
+- Removed origin-targeted closed zones, forced relocation, forced labor, and extermination to match the camp system's no protected-class selector rule (see Open questions).
+- Connected Famine and Migration through fixed hotspot thresholds with worked magnitudes, and stated where Event 037 deliberately has no connection (Condemnation, CBRN, fallout, Air Cleanliness, world threat).
+- Trimmed the flavour pool from thirty-four outlines to seventeen events with concrete options, merged the national report into the manifestation report, and moved scenes away from records and archives toward people and places.
+- Reduced direct Chaos to four milestones by dropping the `1%` and single-firing milestones, which fired alongside others, and the guarded recovery, which cost a crisis-cycle tracker for `-2` Chaos.
+- Rewrote the achievements around the remaining values and cut the asset inventory to the icons that have a consumer.

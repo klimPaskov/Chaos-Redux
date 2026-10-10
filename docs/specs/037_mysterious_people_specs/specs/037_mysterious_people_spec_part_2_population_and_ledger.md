@@ -1,298 +1,143 @@
 # Event 037: Mysterious People
 
-## Part 2: Population creation and provenance ledger
+## Part 2: Population creation and the newcomer ledger
 
 ## Real population is authoritative
 
-Every person created by Event 037 becomes part of the state's real civilian population. The event cannot represent the newcomers only through recruitable manpower, a national spirit, a temporary modifier, a hidden reserve, or an abstract country total.
+Every person created by Event 037 is real state population.
+The event never represents the newcomers through recruitable manpower alone, a national spirit, or an abstract country total.
+Every system that reads state population, including recruitment, Deaths, Famine, Migration, bombing, nuclear and disease mortality, and occupation, sees the larger population through its ordinary rules.
 
-After a firing, the following systems must read the larger population through their ordinary rules:
+The ledger below records provenance and settlement only.
+It never replaces real population as the gameplay source of truth.
 
-- state and country population displays
-- world population totals
-- recruitable-population calculations
-- civilian death calculations
-- strategic bombing and nuclear mortality
-- disease and outbreak mortality
-- famine mortality
-- camp and atrocity mortality
-- migration and forced-displacement transactions
-- occupation and resistance systems that use population
-- the shared Deaths denominator and country totals
+## Positive population helper
 
-The Event 037 ledger records provenance. It never replaces real population as the gameplay source of truth.
+**Pending.** The repository has a neutral loss helper, `apply_state_population_loss_without_recruitable_manpower_gain` in `common/scripted_effects/chaosx_dynamic_effects.txt`, but no neutral gain helper.
+The positive credit pattern exists twice in owner-specific form: `camp_occ_apply_population_credit` and `civilian_transfer_apply_destination_credit`.
+Both apply state `add_manpower`, measure the real population change, and remove the recruitable manpower the engine grants the owner and controller at the same moment.
 
-## State provenance ledger
+Event 037 adds the neutral counterpart, planned as `apply_state_population_gain_without_recruitable_manpower_gain`, with the same measured-result contract, and documents it in `common/scripted_effects/chaosx_dynamic_effects.md`.
+The grant uses the measured applied amount for every later step.
 
-Each state keeps one persistent value for living people created through Event 037. The working design name is `mysterious population`, with final script naming left to implementation.
+Removing the instant recruitable gain is how newcomers settle into the army: they become recruitable through the engine's ordinary recruitable-population growth instead of all at once.
+Whether that growth is gradual enough is an engine-proof gate for implementation.
+If it is instant, the fallback is a timed recruitable-population modifier that shrinks as unsettled newcomers settle, and that fallback needs user approval.
 
-The ledger follows these invariants:
+## Grant model
 
-1. The value begins at zero.
-2. A successful Event 037 grant increases it by the amount actually added to state population.
-3. The value can never fall below zero.
-4. The value can never exceed the state's current real population.
-5. General civilian losses reduce it by the mysterious share of the affected population.
-6. Explicit persecution of mysterious people reduces it by actual targeted deaths or survivors moved.
-7. Ownership and control changes do not erase it.
-8. Migration transfers the appropriate mysterious share to the destination.
-9. A state with zero living mysterious people leaves active Event 037 processing after any remaining local consequence has ended.
-
-The state keeps one total after several firings. The event may retain a compact internal generation reference for flavour or reconciliation, but the gameplay system must not require the player to manage separate first-wave, second-wave, and third-wave populations.
-
-## Derived original population
-
-The population that did not originate through Event 037 is derived as:
+Each state uses its own pre-fire population `P`.
+Previous newcomers count in `P`, so repeated firings compound naturally.
 
 ```text
-original population = current real state population minus living mysterious population
+practical floor = minimum of (nominal floor, P x small-state ceiling)
+grant = minimum of (stage cap, maximum of (P x stage ratio, practical floor))
 ```
 
-The result has a floor of zero.
-
-This derived value supports proportional loss accounting and flavour. It does not become another player-facing population total.
-
-## Population grant model
-
-Each state uses its pre-fire real population, not a country or world average. The grant model should create proportional growth while protecting small states from a meaningless result and protecting the largest states from an uncontrolled single-state increase.
-
-The intended shape is:
-
-```text
-stage grant = a population ratio clamped between a practical local floor and a stage cap
-```
-
-The practical floor is limited by a local share ceiling. This prevents a fixed minimum from doubling a very small state.
-
-| Event stage | Main ratio | Nominal floor | Per-state cap | Small-state local ceiling |
+| Stage | Ratio | Nominal floor | Per-state cap | Small-state ceiling |
 | --- | ---: | ---: | ---: | ---: |
 | Baseline | `2.5%` | `1,000` | `1,500,000` | `5%` |
 | Evolution I | `6%` | `2,500` | `3,000,000` | `10%` |
 | Evolution II | `12%` | `5,000` | `7,500,000` | `20%` |
 | Evolution III | `25%` | `10,000` | `20,000,000` | `40%` |
 
-The balance matrix provides examples across small islands, rural states, normal industrial states, and very large urban states. These values are planning anchors. Implementation should tune them against installed state-population distribution while preserving the intended scale relationship.
+The values are planning anchors held in `common/script_constants/` and tuned against the installed state-population distribution.
+Worked examples are in the [balance matrix](../quality/037_mysterious_people_balance_matrix.md).
 
-## Grant calculation principles
+Rules:
 
-The final calculation must preserve these rules:
+- one grant per state per firing
+- the grant is rounded to whole people
+- the ledger records the measured applied amount, never the requested amount
+- a state that becomes invalid during the pass receives nothing and keeps its ledger unchanged
+- the grant does not shrink because a state already holds many newcomers
 
-- current stage sets the ratio, floor, cap, and small-state ceiling
-- each state snapshots population before the grant
-- previous Event 037 arrivals count in the snapshot
-- the grant is rounded to a whole number of people
-- applied amount is never larger than the calculated grant
-- the ledger increases only by the applied amount
-- one state cannot receive multiple grants from one firing
-- cluster, manual test, or multiplayer presentation cannot duplicate the transaction
-- states that become invalid during the firing fail closed and receive no partial ledger update
+## State ledger
 
-The event should not reduce the grant because a state already contains many mysterious people. Compounding is part of the premise. Support pressure, policy, migration, famine, and deaths provide the consequences of excessive concentration.
+Each state stores three values.
 
-## World and country totals
+| Value | Meaning | Changed by |
+| --- | --- | --- |
+| Newcomer share | The fraction of the state's living population that arrived through Event 037 | Grants, and arrivals through the civilian transfer primitive |
+| Unsettled newcomers | People from recent grants who have no settled home and work yet | Grants add, monthly settlement and projects remove, Breakdown flight removes |
+| Settlement rate | People settled per month | Recomputed at firings, project completion, stance change, and hotspot refresh |
 
-The event tracks derived totals for presentation and milestone checks:
+The newcomer count is derived as share times live population.
+Storing a share instead of a count means every ordinary population loss and every proportional move already keeps the ledger correct.
+Famine, bombing, nuclear attack, disease, disasters, cannibalism, camps, and war kill newcomers in proportion to their share without any Event 037 callback, and the count can never exceed real population or fall below zero.
 
-- living mysterious population in each country
-- living mysterious population controlled by each country when occupation matters
-- total living mysterious population in the world
-- population created by the latest firing
-- lifetime population created by Event 037
-- lifetime Event 037 deaths, divided between ordinary losses and targeted atrocity losses where the source system can prove the distinction
-- lifetime Event 037 survivors transferred through Migration
+The share is stored as a scaled fixed-point value (for example parts per hundred thousand) so small shares keep their precision.
 
-Country totals should update incrementally when population is created, killed, moved, or changes owner. They should not require a whole-world recount every day or every month.
+Unsettled newcomers are clamped to the derived newcomer count after any read, so losses that shrink the state also shrink its unsettled backlog.
 
-A bounded reconciliation pass may rebuild totals after a migration transaction, ownership change, save migration, detected invariant failure, or explicit debug action. Reconciliation is a repair path, not the normal runtime loop.
+### Share changes
 
-## General civilian losses
+A grant `G` into a state with live population `P` and share `s` sets the new share to `(s x P + G) / (P + G)`.
 
-Most disasters and wars do not target Event 037 arrivals by origin. When an ordinary population-loss system removes civilians, the mysterious ledger loses the same proportional share as the state's living mysterious population.
+An arrival through the civilian transfer primitive blends the destination share with the origin share for the measured survivors.
+This is one Event 037 call in the primitive's finalization, and it is the only shared-system hook the ledger needs.
+Population credited by other owners outside that primitive is treated as having the destination's share, which keeps the ledger inside real population.
 
-Example:
+### Settlement
 
-- a state has `1,000,000` people
-- `200,000` are recorded as mysterious
-- an untargeted disaster kills `100,000`
-- the mysterious share is `20%`
-- the Event 037 ledger loses approximately `20,000`
-- real state population loses the full `100,000`
+Each month a state settles unsettled newcomers equal to its population times the base settlement rate, adjusted by:
 
-Rounding must conserve the actual population transaction. The ledger reduction cannot exceed real loss or living mysterious population.
-
-This rule applies to ordinary mortality from famine, disease, bombing, conventional civilian harm, chemical and biological incidents, nuclear attacks, natural disasters, cannibalism, and other untargeted population loss.
-
-The population-loss owner remains responsible for the real mutation and Deaths registration. Event 037 receives the applied result and adjusts provenance once.
-
-## Targeted losses
-
-A policy that explicitly targets mysterious people uses exact provenance accounting.
-
-1. The atrocity or forced-movement owner requests a target amount.
-2. The request is limited by living mysterious population in the state.
-3. The shared population transaction applies the real loss or transfer.
-4. Event 037 reduces its ledger by the amount actually killed or moved.
-5. Deaths, evidence, Condemnation, resistance, migration, and other consequences remain with their owners.
-
-A targeted action cannot remove more mysterious people than exist. It cannot reduce the ledger without the matching real population transaction. It cannot lower food pressure through a hidden ledger-only subtraction.
-
-## Migration composition
-
-Every Migration cohort originating in an Event 037 state carries provenance composition.
-
-For ordinary flight, evacuation, reception, resettlement, or return, the mysterious share matches the origin state's current mysterious share unless a narrower group was explicitly selected.
-
-For forced relocation or deportation aimed at mysterious people, the transferred cohort can be fully mysterious up to the living ledger amount.
-
-The transfer must satisfy these conservation rules:
-
-- origin real population loses the full departing cohort once
-- origin mysterious population loses mysterious survivors and any mysterious route deaths once
-- destination real population gains survivors once
-- destination mysterious population gains only mysterious survivors
-- route deaths enter the shared Deaths system through Migration
-- no survivor exists in both states
-- a blocked border creates trapped population, not erased population
-
-The destination inherits the support burden created by arriving survivors. A successful planned settlement may distribute people across several destinations while preserving the same total.
-
-## Ownership and control changes
-
-The state ledger belongs to the state, not the country that controlled it when the population appeared.
-
-When control changes:
-
-- the controller becomes responsible for immediate food, order, settlement, and relief actions
-- the owner retains country-history facts that describe earlier policy
-- national pressure calculations use the current policy authority defined by the relevant humanitarian system
-- occupied-state actions respect occupation and access rules
-- Event 037 country totals update without changing state total
-
-When ownership changes:
-
-- living mysterious population transfers with the state
-- the former owner's current living total falls
-- the new owner's current living total rises
-- lifetime created and lifetime death records remain historical
-- active missions and decisions re-evaluate target validity
-
-Annexation cannot reset pressure or erase evidence. Liberation cannot duplicate population. A civil war keeps the ledger attached to the states divided between the sides.
-
-## Integration state
-
-Each active state may keep an internal integration status from `0` to `100`. A higher value means the newcomers have entered ordinary employment, registration, education, military administration, and local institutions.
-
-Integration is not a second public meter. The state can show a qualitative status when it affects an immediate decision.
-
-| Internal range | State status direction |
+| Factor | Planning effect |
 | --- | --- |
-| `0` to below `25` | Unregistered |
-| `25` to below `50` | Processing |
-| `50` to below `75` | Settling |
-| `75` to below `100` | Integrated |
-| `100` | Fully absorbed |
+| Infrastructure level `L` | multiplier `0.6 + 0.08 x L` |
+| Open Integration stance | `x 1.25` |
+| Restricted Registration stance | `x 0.75` |
+| Registration Drive active | `x 1.5` |
+| Completed Emergency Housing | `+25%` of the base, once per state |
+| Completed Roads and Water | `+25%` of the base, once per state |
+| Completed New City | `+50%` of the base, once per state |
+| Famine stage acute shortage or worse | `x 0.5` |
+| Occupied (controller is not owner) | `x 0.5` |
 
-Recommended starting direction:
+The planned base rate is `1%` of state population per month.
+A baseline grant of `2.5%` therefore settles in about two and a half months, and an Evolution III grant of `25%` needs two years without help.
 
-| Stage | Starting integration |
-| --- | --- |
-| Baseline | High, usually near Integrated |
-| Evolution I | Moderate to high |
-| Evolution II | Moderate |
-| Evolution III | Low to moderate in overloaded states |
+## Country and world counts
 
-Integration rises through stability, spare services, housing, employment, open policy, successful missions, and time. It falls or stalls through occupation, famine, severe overcrowding, persecution, isolation, war damage, and repeated arrivals.
+| Count | Shown to | Updated |
+| --- | --- | --- |
+| Newcomers living in the country | Player, in the category header | At every firing from the world pass, and on state ownership change |
+| Unsettled newcomers in the country | Player, in the pressure tooltip | At firings, on the monthly pulse, and when projects or flight remove people |
+| Living newcomers in the world | Event Log detail and milestones | At every firing from the world pass |
+| People created by the latest firing and in total | Event Log detail | At every firing |
 
-If the engine cannot distinguish recruitable share by provenance, implementation should preserve real population and represent incomplete military integration through a temporary effect tied to the unintegrated share. The effect must be verified against actual recruitable behavior and must disappear as integration completes.
+The country count is labelled as the figure from the latest count, because ordinary deaths between firings lower it without a recount.
+The world pass at each firing refreshes it exactly.
+Lifetime newcomer deaths and lifetime transfers are not tracked, since no decision uses them.
 
-## Children, age structure, and military use
+## Ownership and control
 
-The event does not need a public age pyramid. Created population includes families and a plausible age distribution.
+The ledger belongs to the state.
+When ownership changes, the state's newcomers and unsettled backlog move with it, the old owner's counts fall, and the new owner's rise through the existing `on_state_control_changed` path.
+Annexation and liberation cannot duplicate or erase newcomers.
 
-Military benefit should arrive in stages:
+## Runtime cadence
 
-- existing military-age adults contribute after registration and integration
-- children contribute only through ordinary future population logic when supported
-- immediate full mobilization of every created person is forbidden
-- high conscription laws still face integration delay
-- military governments can accelerate registration at a political and social cost
+### At firing
 
-The exact conversion must follow engine behavior. The design goal is a strong long-term manpower benefit without several million instantly deployable soldiers on the same day.
+One world pass applies grants, refreshes every state's settlement from the months elapsed since its last update, rebuilds country and world counts, and picks each country's hotspots.
 
-## Settlement and strategic capacity
+### Between firings
 
-Mysterious houses and villages exist in the event fiction, but strategic support capacity does not rise automatically to match population.
+A self-rescheduling hidden host event runs every 30 days.
+It processes only countries with unsettled newcomers.
+For each, it settles its hotspot states exactly, reduces the rest of the country's unsettled backlog by its stored national settlement rate, recomputes pressure, and calls the Famine and Migration adapters for qualifying hotspots (Part 3).
 
-These remain separate investments:
+A **hotspot** is one of a country's states with the highest state pressure, up to `8` per country.
+Hotspots are the only states the monthly pulse reads one by one, and the only targets for state decisions.
+Unsettled newcomers can only grow at a firing, so the hotspot list changes only at firings, ownership changes, and when a hotspot falls to zero.
 
-- infrastructure
-- railways
-- supply hubs
-- housing
-- agricultural expansion
-- water and sanitation
-- urban transport
-- clinics, schools, and administration
-- civilian and military industry
+A country with no unsettled newcomers leaves the registry.
+There is no daily, weekly, or monthly scan of every state.
 
-This distinction drives the later crisis. The anomaly creates people and local social context. It does not create an unlimited national logistics system.
+## Integrity rules
 
-## State concentration
-
-A state can contain more mysterious people than original inhabitants. The ledger remains valid when mysterious share passes `50%` or approaches the full living population after repeated firings, migration, and ordinary losses.
-
-High concentration changes flavour and pressure:
-
-- memory contradictions become more common
-- institutions can be dominated by people whose records predate appearance
-- persecution risk rises under hostile policy
-- migration carries a larger mysterious share
-- ordinary disaster kills a larger mysterious share through proportional accounting
-- successful integration can produce a powerful workforce
-
-The design does not impose a hidden cap that deletes arrivals above a chosen share.
-
-## Ledger visibility
-
-The player sees the national living total and selected-state status. Detailed data belongs in tooltips or debug surfaces only when it explains a specific action.
-
-A selected-state tooltip should answer:
-
-- how many mysterious people live here
-- what share of state population they represent
-- whether integration is broadly healthy or failing
-- which main factor drives current pressure
-- which action can improve the situation
-
-It should not show every internal multiplier, adapter version, receipt, or reconciliation value.
-
-## Integrity failures
-
-The system fails closed when provenance proof is incomplete.
-
-Examples include:
-
-- a targeted killing request has no valid state
-- a migration receipt lacks an applied survivor count
-- a loss transaction reports more mysterious deaths than living mysterious population
-- a destination cannot receive credited survivors
-- a state ledger exceeds real population after an external mutation
-- a stale country total disagrees with active state registry
-
-A failed transaction applies no guessed population change. A bounded reconciliation may repair totals from authoritative state data. Debug evidence identifies the owner and failed transaction without exposing developer text to players.
-
-## Save and reload contract
-
-All state ledgers, country totals, world totals, milestone flags, policy states, active registries, and pending receipts survive save and reload.
-
-After reload:
-
-- no firing repeats because a delayed report was pending
-- no Migration transfer credits survivors twice
-- no population grant reapplies
-- no ownership update duplicates a country total
-- no zero-ledger state remains registered without a consequence
-- no active pressure state disappears while population remains
-- milestone Chaos gains remain one-shot
-
-Acceptance scenarios include save and reload after creation, migration, ownership change, famine mortality, and targeted atrocity mortality.
+- A transaction with missing proof applies no guessed population change.
+- A repeated firing identity cannot apply a second grant after reload or from a delayed report.
+- All ledgers, counts, milestone flags, stances, projects, and the host pulse survive save and reload.
+- A debug action can rebuild counts from state data, and that repair is never part of normal runtime.

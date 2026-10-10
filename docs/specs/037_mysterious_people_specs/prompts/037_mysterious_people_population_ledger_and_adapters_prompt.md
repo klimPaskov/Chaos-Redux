@@ -1,88 +1,30 @@
-# Prompt: Event 037 population ledger and shared adapters
+# Prompt: Event 037 ledger, world transaction, and adapters
 
-Implement the reusable scripted-system layer required by Event 037, Mysterious People.
+Delegation prompt for `chaosx_scripted_system_architect`.
+The parent pastes this prompt with the repository root, the exact paths below, and any decisions taken since, because the subagent receives no conversation context.
 
-Read the complete Event 037 specification pack, especially Parts 1, 2, 3, and 6, the system-flow diagram, balance matrix, probability scenarios, and acceptance criteria. Read `AGENTS.md`, the event skill, the scripted-effects and scripted-triggers registries, the current Famine, Migration, Deaths, Camp and Repression, Condemnation, Event Logs, and civilian-classifier sources. Consult required offline wiki pages, installed vanilla documentation, and a local population precedent before editing.
+## Read first
 
-Use `chaosx_scripted_system_architect` with a complete context prompt and no inherited thread context. The parent remains responsible for final integration.
+- `docs/specs/037_mysterious_people_specs/specs/037_mysterious_people_spec_part_2_population_and_ledger.md` (the whole design for this task)
+- Part 1 sections Valid state definition, Firing sequence, and Direct Chaos
+- Part 3 sections Overpopulation Pressure, Famine connection, and Migration connection
+- `docs/systems/civilian_transfer_system.md`, `docs/systems/famine_system.md` (Adapters), `docs/systems/migration_system.md` (Adapters)
+- `common/scripted_effects/chaosx_dynamic_effects.txt` and `.md`, `common/scripted_effects/camp_administration_occupation_effects.txt` (`camp_occ_apply_population_credit`), `common/scripted_effects/civilian_transfer_effects.txt`, `common/scripted_triggers/humanitarian_validation_triggers.txt`
 
-## Required system behavior
+## Build
 
-Create one event-owned population-creation transaction that:
+1. The neutral gain helper `apply_state_population_gain_without_recruitable_manpower_gain`, with a measured applied output, documented in `chaosx_dynamic_effects.md`.
+2. The world transaction called from `chaosx.nr37.1`: stage resolution, one grant per valid state, share and backlog update, lazy settlement of states not processed since the last firing, country and world counts, hotspot selection, a firing identity that cannot replay, and the four Chaos milestones.
+3. The settlement rate per state and the monthly self-rescheduling host pulse over registered countries.
+4. State and national pressure, and the variables that drive the Newcomers modifier.
+5. The Famine adapter call and the Migration flight request for qualifying hotspots.
+6. The one finalization hook in the civilian transfer primitive, which blends the destination share and removes measured departures from the origin backlog.
+7. Ownership-change handling through the existing `on_state_control_changed` path.
 
-- snapshots each valid state's real pre-fire population
-- calculates the current-stage grant from centralized constants
-- applies real state population gain exactly once
-- returns the amount actually applied
-- increases Event 037 state provenance by the applied amount
-- updates country and world totals incrementally
-- records one transaction identity so delayed reports, cluster calls, multiplayer clients, and reload cannot replay it
-- fails closed on invalid state or incomplete contract
+All tuning goes in `common/script_constants/037_mysterious_population_constants.txt`.
+No recurring whole-world scan, no edit to Famine or Migration ledgers, and no population removal by Event 037.
 
-First prove the supported engine route for positive real state population gain. Reuse an existing neutral helper when it fits. If a new cross-system helper is genuinely required, give it a behavior-based name, keep it neutral, and document purpose, scope, inputs, outputs, defaults, side effects, and example in the shared dynamic-effects documentation. Do not place Event 037 lifecycle inside the shared registry.
+## Handoff
 
-## Provenance invariants
-
-Implement state provenance, country totals, world total, latest-firing total, lifetime-created total, and guarded one-shot demographic milestones.
-
-Guarantee:
-
-- provenance never below zero
-- provenance never above real state population
-- repeated firings add to one living state total
-- ownership and control changes update country views without changing state total
-- general civilian loss reduces provenance by the pre-loss mysterious share of actual applied loss
-- targeted loss or movement reduces provenance by the exact applied targeted amount
-- no ledger-only population removal
-- no double Deaths entry
-- no double destination credit
-- safe rounding and population floors
-- save and reload persistence
-- bounded reconciliation from authoritative state data
-
-Use the existing exact civilian-population loss contract for actual deaths. Add a narrow Event 037 provenance callback or adapter only where the owner can provide applied loss proof.
-
-## Migration adapter
-
-Create a versioned, proof-carrying Event 037 composition contract for Migration.
-
-It must support:
-
-- ordinary proportional composition
-- explicitly targeted mysterious cohorts
-- origin debit
-- route deaths
-- survivors
-- destination credit
-- trapped population
-- failed and invalid route
-- ownership or controller change
-- idempotent receipt consumption
-
-Event 037 updates provenance only from an applied Migration result. It does not mutate the Migration primary ledger.
-
-## Famine adapter
-
-Publish Event 037 population burden and support facts in the format the current Famine owner can consume. Famine remains responsible for Food Security, reserves, relief access, stages, decisions, missions, and mortality.
-
-When Famine applies deaths, reconcile Event 037 provenance from the exact applied loss once. Do not create a second food value or death reason.
-
-## Camp and atrocity adapter
-
-Expose living mysterious population as a valid targeted cohort only through the existing Camp and Repression route.
-
-Require exact applied deaths, transfers, releases, and survivors before provenance changes. Preserve evidence, discovery, Condemnation, resistance, Migration, Deaths, and perpetrator history under their current owners.
-
-## Pressure and active registries
-
-Implement sparse active-state and active-country processing. One bounded world pass is allowed at Event 037 firing. Do not add recurring full-world country or state scans.
-
-Overpopulation Pressure must aggregate state burden into one country value from `0` to `100`, with public thresholds `20`, `40`, `60`, and `80`. Keep detailed factors internal. Refresh after creation, population loss, movement, ownership, policy, capacity, Famine, and occupation changes.
-
-## Validation
-
-Write an implementation handoff listing files, identifiers, helpers, constants, adapters, call sites, before and after behavior, meaningful tests, unresolved engine questions, and skipped evidence.
-
-Validate the acceptance scenarios for baseline grant, cap and floor, repeated firing, ordinary deaths, targeted deaths, internal and cross-border movement, trapped cohorts, ownership change, nonhuman exclusion, save and reload, duplicate prevention, reconciliation, and sparse-registry cleanup.
-
-Do not claim completion without engine proof for positive state population gain and final parent review.
+Write the handoff to `docs/plans/037_mysterious_people_plans/` with changed files, identifiers, constants, call sites, the engine result for recruitable manpower, checks run, and open risks.
+Patch only inside this scope, and return broader gaps as a plan.

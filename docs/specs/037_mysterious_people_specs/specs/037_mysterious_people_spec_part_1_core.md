@@ -2,6 +2,9 @@
 
 ## Part 1: Core event design
 
+Status markers: **Pending** means design that is not in source yet, **Legacy** means current source that this design retires, and **Proposed** means a change that waits for acceptance.
+Every mechanic in this package is Pending unless it says otherwise.
+
 ## Catalog identity
 
 | Field | Value |
@@ -10,210 +13,156 @@
 | Event name | Mysterious People |
 | Event type | Minor Repeatable |
 | Chaos level | `1` |
-| Cluster | Various Anomalies |
-| Member severity | Low |
+| Cluster | Sudden Abundance (catalog cluster `15`), Medium member |
+| Catalog status | To Be Reworked |
+
+The authoritative workbook row and the cluster rules are in [the catalog handoff](../handoffs/037_mysterious_people_catalog_and_cluster_alignment.md).
+
+## Legacy runtime
+
+**Legacy.** `events/037_mysterious_population.txt` holds a two-event stub.
+`chaosx.nr37.1` is hidden and sends `chaosx.nr37.2` to one random country, which gains `2,500,000` recruitable manpower and triggers `chaosx.news.42`.
+The stub's text calls the newcomers "green", offers to enslave them, and the news title asks whether they are aliens.
+
+This design retires the whole stub.
+Recruitable manpower given to one country, the enslavement option, and the alien headline all contradict the premise below and the mystery firewall.
+The implementation keeps the existing file stem `037_mysterious_population` for the event file, localisation file, and picture folder, and rewrites their contents.
 
 ## Playable promise
 
-Mysterious People is a global demographic anomaly. Each firing adds real civilian population to every valid inhabited state in the world. The newcomers arrive with homes, possessions, memories, family ties, local-language knowledge, and enough apparent history to enter ordinary life with little immediate friction.
+Mysterious People is a global demographic anomaly.
+Each firing adds real civilian population to every inhabited state in the world.
+The newcomers arrive with homes, possessions, family ties, local speech, and enough apparent history to enter ordinary life.
 
-The first manifestation should feel useful and unsettling. Factories find workers. Farms gain families. Empty streets fill. Recruitment pools grow after integration. Tax bases expand. Local authorities discover complete household records for people whom nobody remembers meeting.
+The first manifestation feels useful and unsettling.
+Factories find workers, farms gain families, and recruitment grows as the newcomers settle.
 
-Repeated manifestations change the meaning of the event. Housing, services, food distribution, transport, and settlement capacity begin to fail under the growing population. Countries that invest early can turn the anomaly into sustained economic and military strength. Countries that ignore it face overcrowding, famine, displacement, unrest, and political collapse. At the highest evolution, governments under severe pressure may begin persecuting the population they once welcomed.
+Repeated manifestations change the meaning of the event.
+Each wave arrives before the last one has found homes and work, so unsettled newcomers pile up.
+Countries that build housing and roads turn the anomaly into lasting strength.
+Countries that ignore it slide into overcrowding, then hunger and flight through the existing Famine and Migration systems.
+At the highest evolution, governments under severe pressure start asking who the newcomers really are, and some of them start registering people by origin.
 
-The event never establishes where the newcomers came from. Every explanation remains an interpretation, rumour, doctrine, accusation, or failed theory.
+The event never establishes where the newcomers came from.
+
+## The core loop
+
+1. A manifestation adds people to every valid state.
+2. Each state's new arrivals start as **unsettled newcomers**.
+3. Every state settles a share of its unsettled newcomers each month, at a rate set by its size, infrastructure, condition, and the country's choices.
+4. Unsettled newcomers relative to population produce **Overpopulation Pressure**.
+5. Low pressure lets settled newcomers strengthen the country, and high pressure costs stability, feeds Famine, and pushes people into Migration.
+6. The player lowers pressure by settling people faster: housing, roads and water, a registration drive, requisitioned property, and at the highest evolution new cities.
+
+The player manages one national value, Overpopulation Pressure, and one count, the newcomers living in the country.
+Part 2 owns the population ledger, Part 3 owns pressure and its consequences, and Part 4 owns the decisions.
 
 ## Global firing rule
 
-Every firing runs one bounded world transaction. It evaluates each state once, creates the appropriate population in every valid state, updates the Event 037 provenance ledger, records country and world totals, and registers states that need later pressure processing.
+Every firing runs one bounded world transaction from the hidden entry event.
+It visits each state once, creates population in every valid state, updates the newcomer ledger, and records country and world counts.
 
-The firing is global even when the entry popup is shown through one player country. It does not choose one recipient country, one major power, or one region.
+The firing is global even when the report is shown through one player country.
+It does not choose a recipient country, a major power, or a region.
+It does not move population from anywhere.
 
-The event does not move population from another state. Every applied grant raises world population by the same amount.
+This single pass at firing is the only world-wide iteration in the design.
+Recurring work is bounded and described in [Part 2](037_mysterious_people_spec_part_2_population_and_ledger.md#runtime-cadence).
 
 ## Valid state definition
 
-A state qualifies when all of these conditions are true at the moment of firing:
+A state qualifies when all of these hold at the moment of firing:
 
-- it has a valid state scope and a living civilian population
-- its current real population meets the event's minimum inhabited-state threshold
-- it is not a wasteland or another state type that cannot support ordinary civilian life
-- it belongs to an ordinary human civilian society, or its current controller can safely receive ordinary civilian population
-- it is not owned and controlled only by an actual nonhuman country
-- it is not excluded by a stronger owner system because adding civilians would corrupt that system's population contract
+- `humanitarian_state_is_valid = yes`, so its owner and controller run ordinary civilian systems and are not special Chaos countries
+- its real population is at least the inhabited-state threshold, planned at `5,000`
 
-A populated occupied state remains eligible. The population appears in the state itself. The controller handles immediate order, relief, and movement decisions while control lasts. The state ledger survives control and ownership changes.
+The threshold keeps empty map fragments and wasteland remnants out while keeping small islands and rural states with a real community.
+Implementation may move it after checking the installed state-population distribution.
 
-A state below the inhabited-state threshold is skipped for that firing. It can qualify later if ordinary population rises above the threshold.
+A populated occupied state qualifies.
+The population appears in the state itself and the owner's national pressure carries it (Part 3).
+A state below the threshold is skipped for that firing and can qualify later.
 
-The recommended design threshold is `5,000` real inhabitants. This avoids adding settlements to empty map fragments while retaining small islands and rural states with a real community. Final implementation tuning may move the threshold if installed state data shows that `5,000` excludes meaningful inhabited states or includes invalid remnants.
+Event 037 adds no tag list of its own.
+The shared `uses_normal_civilian_systems` and `is_special_chaos_country` classifiers decide special and nonhuman countries.
 
 ## Firing sequence
 
-The intended sequence is:
+1. Event 037 is selected through the normal Minor Repeatable pool, or once through a cluster when Sudden Abundance becomes live.
+2. The transaction resolves the manifestation stage (baseline or the highest enabled evolution, Part 3).
+3. For each valid state it reads pre-fire population, applies one grant, updates the state ledger, and adds to country and world counts.
+4. It recomputes each affected country's hotspot list and pressure.
+5. It checks the one-shot Chaos milestones below.
+6. It records one Event 037 history entry with the applied totals.
+7. It sends the manifestation report to human players.
 
-1. Event 037 is selected through the normal Minor Repeatable system.
-2. The global transaction snapshots each qualifying state's pre-fire population.
-3. Every qualifying state receives one stage-scaled population grant.
-4. Each state's mysterious-population ledger increases by the amount actually created.
-5. Country and world totals update from applied grants.
-6. Newly relevant states and countries enter sparse Event 037 processing.
-7. The global manifestation report appears to human players.
-8. Human-controlled countries with meaningful local impact receive a concise national follow-up when needed.
-9. Pressure, integration, Famine, Migration, and other consequences continue through their normal owners.
-10. Repeatable weight and event-log handling follow the shared event system.
-
-The transaction must finish before reports describe totals. Every number shown to the player should come from applied results, not a forecast.
+The transaction finishes before any report reads totals, so every number shown comes from applied results.
 
 ## First manifestation
 
-The first firing introduces the anomaly through observations that cannot be reconciled with memory:
+The first firing introduces the anomaly through the people and places that cannot be reconciled with memory.
+A village stands where the county map shows open fields, and its fruit trees are mature.
+Children walk to a school that the town does not remember building, and their teacher knows every family by name.
+Neighbours are greeted at the market by people who remember attending their weddings.
 
-- villages stand on land that local maps showed as open fields
-- schools contain enrolled children with several years of records
-- municipal rolls include households with paid taxes and old addresses
-- families possess photographs of local weddings attended by people who deny being there
-- roads connect new settlements to existing routes with weathering that suggests long use
-- employers remember workers whose personnel files appeared that morning
-- graves, family trees, property deeds, and medical histories reach backward beyond the event date
+The opening is curious and uneasy rather than panicked.
+At baseline the newcomers settle quickly, and many governments treat the arrival as a windfall.
 
-The event should present the scale clearly. The world has gained population. The records support the newcomers. The social fabric accommodates them with unusual ease. No authority can identify a departure point, transport route, migration wave, military operation, or administrative process that brought them into being.
-
-The opening should avoid panic as the default. Baseline integration is smooth enough that many governments see the arrival as a demographic windfall.
-
-## Baseline demographic gift
-
-At baseline, each qualifying state receives a moderate population increase based mainly on its pre-fire population. Small states receive a bounded local addition. Large urban and industrial states can gain hundreds of thousands or more. The grant is real state population and enters all ordinary population systems.
-
-Baseline effects should create visible benefits without granting free strategic infrastructure:
-
-- the future workforce expands
-- the future recruitable population expands as integration completes
-- consumer demand and the tax base rise
-- underused land and industry gain inhabitants
-- countries with spare capacity can gain a temporary demographic-dividend effect
-- populated frontier and rural states may become more viable
-
-The new houses, villages, roads, and records are part of the anomaly's narrative reality. They do not automatically grant infrastructure levels, factories, supply hubs, railways, or building slots. Strategic capacity still requires state development and country investment.
-
-## Integration at baseline
-
-Newcomers arrive with the practical knowledge needed to function in their apparent home society. They speak relevant local languages, know local customs, recognize nearby institutions, and possess plausible qualifications. Their integration is not instant in every administrative sense, but it is unusually fast.
-
-Baseline integration should normally produce:
-
-- low resistance from the newcomers
-- no automatic crime or insurgency wave
-- no automatic ideological conversion
-- no automatic epidemic
-- no automatic foreign allegiance
-- a short administrative delay before the full military benefit becomes available
-- faster integration in stable, well-served states
-- slower integration in occupied, damaged, starving, or heavily displaced states
-
-The integration delay prevents an immediate manpower exploit and represents registration, age verification, medical processing, employment, and military administration. It must not turn the population grant into a fake manpower modifier. The people already exist in real state population while integration catches up.
-
-## Repeated firings
-
-Every firing uses current real state population as its starting point. Previous mysterious arrivals therefore contribute to the next grant. This makes the event compound naturally without a separate exponential multiplier.
-
-Repeated manifestations add to the same per-state ledger. A state can contain several waves without a separate player-facing cohort list. Internal history may retain a compact firing reference for audits or flavour, but the public mechanic uses one living mysterious-population total.
-
-The event remains repeatable under the shared diminishing-weight rules. Repeated firings become less common through the normal cap reduction. A short presentation cooldown may prevent flavour popup repetition without changing event selection eligibility.
-
-## Player information
-
-The player should be able to learn:
-
-- how many mysterious people currently live in the country
-- the current national Overpopulation Pressure stage
-- which owned or controlled states have the most severe Event 037 pressure
-- which public policy is active
-- which responses can reduce support pressure
-- when Famine, Migration, or atrocity systems have taken ownership of a consequence
-
-The player should not receive a permanent component ledger for every hidden input. Housing, food projection, service capacity, infrastructure stress, integration, refugee burden, occupation damage, and mysterious share feed the public result through short causal tooltips and state status text.
+The first manifestation also fires the rewritten world news event `chaosx.news.42`, once per campaign.
 
 ## Mystery firewall
 
-These explanations may appear as theories, accusations, propaganda, cult beliefs, intelligence hypotheses, or scientific speculation:
+These explanations may appear as theories, accusations, propaganda, sermons, or scientific speculation, and none of them is confirmed:
 
 - falsified records on an impossible scale
-- a religious miracle
-- a census error that somehow created living people
+- a miracle or a judgement
+- a census error that somehow produced living people
 - a hidden migration operation
-- mass shared memory failure
-- a demographic correction by an unknown force
-- spontaneous settlement formation
-- a reality or history anomaly described without a confirmed mechanism
+- shared memory failure
+- a correction of history by an unknown force
 
-The event must never confirm any of these identities:
+The event never confirms that the newcomers are aliens, time travellers, clones, returned dead, people from another world, products of a government project, a known supernatural species, or linked by origin to another Chaos Redux event.
 
-- aliens
-- time travellers
-- clones
-- returned dead
-- people from an alternate universe
-- a secret government population project
-- a known supernatural species
-- a shared origin with another Chaos Redux event
-
-Later systems may create suggestive coincidences. A mysterious surname may match another anomaly. An officer from Event 019 may recognize a village name. A time-travel event may produce a contradictory theory. These links must deepen uncertainty and must never solve Event 037.
+Other events may create suggestive coincidences, such as an Event 019 soldier recognizing a village name or an Event 030 traveller's records contradicting a family history.
+These links deepen uncertainty and never solve Event 037.
+The [research boundary](../research/037_mysterious_people_research_boundary.md) applies the same rule to research and art.
 
 ## Event-log role
 
-The entry event uses the canonical `chaosx.nr37.1` identity during implementation.
+The entry event is `chaosx.nr37.1`.
+Each firing produces one Event 037 history entry, never one per state or country.
+The entry's detail view shows the people created worldwide, the number of states affected, and the manifestation stage (Part 7).
 
-Each normal firing produces one Event 037 history entry even though every valid state receives population. The history row should record the global incident once, with applied world population growth available in the detail view. It must not create one history row per state or one pacing event per country.
-
-Evolution milestones use the shared evolution log. Ordinary pressure stages, local policy changes, and state crises are baseline runtime states and do not become evolution entries.
+Evolution milestones use the shared evolution log.
+Pressure stages and state crises are runtime status and never become evolution entries.
 
 ## Cluster role
 
-Mysterious People remains a Low member of Various Anomalies. Its baseline is beneficial, its origin is unexplained, and its destructive potential arrives through later evolutions and poor management.
+The workbook lists Event 037 as a Medium member of Sudden Abundance, catalog cluster `15`.
+That cluster is not registered in the runtime cluster constants yet, so Event 037 fires only through its ordinary Minor Repeatable path until it is.
+When the cluster becomes live, one cluster activation calls Event 037 once and produces one world transaction, one history entry, one repeatable-weight update, and one set of milestone checks.
 
-Cluster participation must preserve the event's one-firing global transaction. A cluster call cannot apply Event 037 once for every cluster actor or report. The cluster provides one Event 037 firing, one event-history entry, and one repeatable-weight transaction.
+## Direct Chaos
 
-## Concrete Chaos contribution
+Event 037 adds direct Chaos only at concrete demographic milestones, checked at the end of each firing.
+Evolution activation adds no Chaos.
 
-Event 037 contributes modest direct Chaos only when the anomaly reaches concrete demographic milestones. Evolution eligibility and activation add no Chaos.
-
-| Concrete outcome | Direct Chaos | Repeat rule |
+| Milestone | Direct Chaos | Repeat rule |
 | --- | ---: | --- |
-| First confirmed global manifestation | `+2` | Once per campaign |
-| Living mysterious population first reaches `1%` of world population | `+2` | Once per campaign |
-| Living mysterious population first reaches `5%` of world population | `+3` | Once per campaign |
-| Living mysterious population first reaches `10%` of world population | `+5` | Once per campaign |
-| Living mysterious population first reaches `25%` of world population | `+10` | Once per campaign |
-| One firing creates at least `5%` of pre-fire world population | `+5` | Once per campaign |
+| First manifestation | `+2` | Once per campaign |
+| Living newcomers first reach `5%` of world population | `+3` | Once per campaign |
+| Living newcomers first reach `10%` of world population | `+5` | Once per campaign |
+| Living newcomers first reach `25%` of world population | `+10` | Once per campaign |
 
-These gains represent a real global anomaly with lasting demographic consequences. Routine pressure, famine deaths, forced-displacement deaths, atrocities, wars, annexations, and other consequences use their existing shared Chaos sources. Event 037 must not duplicate them.
-
-A managed world can earn a small, tightly guarded recovery milestone. After the world has crossed the `5%` mysterious-population threshold, a full year with no Event 037-linked Famine state, no Event 037 state at Emergency or Breakdown, and no ongoing Event 037 atrocity campaign may remove `2` Chaos. This recovery can occur once for each distinct global crisis cycle and requires a prior crisis threshold.
+Deaths from famine, flight, war, disasters, camps, and any other cause reach Chaos through the shared Deaths ledger of the owner that caused them.
+Event 037 never adds a second Chaos source for them.
 
 ## Success and failure shape
 
-A well-managed country can receive:
-
-- a larger integrated workforce
-- higher long-term recruitment potential
-- stronger use of underpopulated states
-- faster recovery from prior population loss
-- a durable demographic advantage after repeated firings
-
-A poorly managed country can suffer:
-
-- urban and rural overcrowding
-- service and transport failure
-- Famine pressure
-- internal and cross-border displacement
-- political radicalization
-- repression and atrocities
-- shrinking real population after preventable deaths
-- state collapse when demographic pressure combines with war or existing humanitarian crises
-
-The event supports mixed outcomes. A country can prosper nationally while one damaged region fails. A state can absorb the newcomers after an early crisis. A regime can reduce pressure through forced movement while creating severe diplomatic and moral consequences.
+A well-managed country gains a larger workforce, more recruits over time, and faster construction while pressure stays low.
+A poorly managed country loses stability, sees Famine stages in its most crowded states, and watches people leave through Migration.
+Mixed outcomes are normal: a country can prosper while one crowded region fails.
 
 ## Core acceptance statement
 
-The implemented event succeeds only when every applied grant changes real state population, every mysterious cohort remains traceable through the Event 037 ledger, ordinary population losses reconcile that ledger, Famine and Migration retain their existing ownership, systematic killing enters the existing atrocity pipeline, and the player can manage the crisis through one readable pressure system.
+The event succeeds when every grant changes real state population exactly once, the newcomer ledger stays inside real population through every later loss and move, Famine and Migration keep their ownership, and the player manages the crisis through one readable pressure value and a short list of real actions.

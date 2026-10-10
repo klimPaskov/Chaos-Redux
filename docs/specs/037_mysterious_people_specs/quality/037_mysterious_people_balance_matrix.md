@@ -2,35 +2,14 @@
 
 ## Purpose
 
-This file defines planning anchors for population creation, pressure, recovery, and exploit control. Final values must be validated against the installed state-population distribution and the full shared Famine, Migration, Deaths, construction, and recruitment mechanics.
+This file shows what the planning anchors in Parts 2 to 4 produce, so implementation can check its constants against the intended feel.
+Every value here is a planning anchor held in `common/script_constants/` and tuned against the installed state-population distribution.
 
-The goal is a useful baseline manifestation, a major Evolution I opportunity, a dangerous Evolution II crisis, and an extreme Evolution III demographic transformation.
+The intended feel is a useful baseline, an Evolution I that makes building pay, an Evolution II that strains food in crowded states, and an Evolution III that can break unprepared countries while prepared ones grow stronger.
 
-## Grant model
+## Grant examples
 
-For pre-fire state population `P`:
-
-1. Calculate the stage ratio grant.
-2. Calculate a practical floor equal to the smaller of the nominal floor and the state's small-state ceiling.
-3. Use the larger of ratio grant and practical floor.
-4. Apply the per-state cap.
-5. Round to whole people.
-
-```text
-practical floor = minimum of nominal floor and P multiplied by local ceiling
-grant = minimum of stage cap and maximum of P multiplied by stage ratio and practical floor
-```
-
-## Planning values
-
-| Stage | Ratio | Nominal floor | Per-state cap | Small-state ceiling |
-| --- | ---: | ---: | ---: | ---: |
-| Baseline | `2.5%` | `1,000` | `1,500,000` | `5%` |
-| Evolution I | `6%` | `2,500` | `3,000,000` | `10%` |
-| Evolution II | `12%` | `5,000` | `7,500,000` | `20%` |
-| Evolution III | `25%` | `10,000` | `20,000,000` | `40%` |
-
-## State examples
+The formula and stage table are owned by [Part 2](../specs/037_mysterious_people_spec_part_2_population_and_ledger.md#grant-model).
 
 | Pre-fire population | Baseline | Evolution I | Evolution II | Evolution III |
 | ---: | ---: | ---: | ---: | ---: |
@@ -43,64 +22,60 @@ grant = minimum of stage cap and maximum of P multiplied by stage ratio and prac
 | `60,000,000` | `1,500,000` | `3,000,000` | `7,200,000` | `15,000,000` |
 | `100,000,000` | `1,500,000` | `3,000,000` | `7,500,000` | `20,000,000` |
 
-## Intended interpretation
+The small-state ceiling keeps the floor from doubling a tiny state, and the cap keeps the largest states from absorbing a disproportionate share.
 
-### Baseline
+## Pressure after one firing
 
-- Small inhabited states grow by a noticeable local share without an absurd fixed minimum.
-- Normal industrial states gain tens or hundreds of thousands.
-- Very large states can reach the `1.5` million cap.
-- Stable countries should usually absorb the first manifestation with limited investment.
+For a country whose states are below the cap, start with no backlog, and have average infrastructure:
 
-### Evolution I
+| Stage | Grant share | National pressure | Stage reached | Months to settle at the plain rate |
+| --- | ---: | ---: | --- | ---: |
+| Baseline | `2.5%` | `10` | Absorbing | `2.5` |
+| Evolution I | `6%` | `24` | Strained | `6` |
+| Evolution II | `12%` | `48` | Overcrowded | `12` |
+| Evolution III | `25%` | `100` | Breakdown | `25` |
 
-- The increase changes national development priorities.
-- Small islands and rural states remain locally bounded.
-- Large states can gain millions.
-- Housing and services become meaningful before Famine is inevitable.
+National pressure is `100 x backlog / (population x 0.25)` before the worst-hotspot term (Part 3).
+A second firing before the first wave settles stacks on the remaining backlog.
 
-### Evolution II
+## Settlement speed
 
-- One firing can destabilize food and transport.
-- Most uncapped states gain close to `12%`.
-- Poor, damaged, blockaded, and refugee-heavy states can enter genuine crisis.
-- Prepared countries can preserve the advantage.
+| Setup | Monthly settlement (share of state population) |
+| --- | ---: |
+| Plain rate, infrastructure `5` | `1.0%` |
+| Infrastructure `1` | `0.68%` |
+| Infrastructure `8` | `1.24%` |
+| Open Integration | `1.25%` |
+| Open Integration, housing and roads built | `1.875%` |
+| The same during a Registration Drive | `2.8%` |
+| Restricted Registration, occupied | `0.375%` |
 
-### Evolution III
+An Evolution III wave in a state with housing, roads, and Open Integration settles in about `13` months instead of `25`.
+Emergency Housing settles `30%` of the backlog at once, and a New City settles `50%`.
 
-- Most uncapped states gain roughly one quarter of population.
-- The largest states still gain tens of millions within caps.
-- Repeated firings can make mysterious people a majority.
-- The world faces extreme food, construction, settlement, and political pressure.
+## Consequence scale
 
-## World-impact review
+| National pressure | Stability | Construction speed | Workforce bonus |
+| ---: | ---: | ---: | --- |
+| `10` | `0` | `0` | full |
+| `30` | `0` | `0` | half |
+| `50` | `-2.5%` | `0` | none |
+| `70` | `-7.5%` | `-5%` | none |
+| `100` | `-15%` | `-20%` | none |
 
-For a representative 1936 setup, record:
+Restricted Registration halves the stability column.
+The workforce bonus reaches its `+10%` construction and `+5%` factory output ceiling when settled newcomers are `25%` of the country.
 
-- total valid states
-- total qualifying population
-- total population created at each stage
-- created population as a share of pre-fire world population
-- states affected by the practical floor
-- states affected by the cap
-- largest and smallest grants
-- countries crossing each pressure threshold
-- first-month and first-year Famine and Migration outcomes without intervention
+## Famine and Migration reach
 
-Expected character:
-
-| Stage | Intended world effect |
-| --- | --- |
-| Baseline | several percent of qualifying population, usually manageable in stable states |
-| Evolution I | large surge requiring widespread capacity work |
-| Evolution II | crisis-scale increase creating Famine and Migration risk |
-| Evolution III | extreme increase transforming world demographics |
-
-If baseline is too weak to change play, raise ratio or cap. If it causes immediate universal Famine in a stable setup, reduce first-order pressure or grant scale while retaining real population.
+- A hotspot at state pressure `60` submits a food-need component of `20`, worth `8` food-security points, and at `100` it submits `60`, worth `24`.
+  Supply strain starts at `25`, so crowding needs another cause, such as war in the state, a blockade, or low stores, to start a famine stage.
+- A hotspot at state pressure `80` or more requests flight for `2%` of its backlog each month, so a Breakdown state sheds roughly `0.5%` of its population a month while Migration allows it.
+- Famine stages feed back by adding `+10` to `+30` to state pressure and halving settlement, which is the spiral the player prevents with housing, roads, and Famine's own relief.
 
 ## Repeat compounding
 
-For an uncapped state with no deaths or migration:
+For an uncapped state with no deaths or movement:
 
 | Stage | After one firing | After two | After three |
 | --- | ---: | ---: | ---: |
@@ -109,161 +84,30 @@ For an uncapped state with no deaths or migration:
 | Evolution II `12%` | `112%` | `125.4%` | `140.5%` |
 | Evolution III `25%` | `125%` | `156.3%` | `195.3%` |
 
-The shared repeatable-event weight provides frequency control. Do not add a hidden grant-reduction factor that makes later firings feel false.
-
-## Pressure scale
-
-| Stage | Range | Intended response |
-| --- | --- | --- |
-| Absorbing | `0` to below `20` | exploit workforce, invest selectively, maintain integration |
-| Strained | `20` to below `40` | begin housing, service, agriculture, or settlement work |
-| Overcrowded | `40` to below `60` | commit real resources and coordinate humanitarian systems |
-| Emergency | `60` to below `80` | prioritize relief, routes, redistribution, and crisis missions |
-| Breakdown | `80` to `100` | prevent sustained mortality, forced movement, repression, or collapse |
-
-## Pressure behavior tests
-
-- One tiny catastrophic state raises concern but cannot place a huge country at Breakdown alone.
-- A capital or major industrial state at Breakdown materially affects national pressure.
-- Many moderate states can create national crisis.
-- High mysterious share with strong food, housing, and transport can remain manageable.
-- Low mysterious share in a bombed, blockaded, starving state can still be severe.
-- Settlement shifts pressure according to real origin and destination capacity.
-- Deaths lower demand, but event text identifies mortality or atrocity as the cause.
-
-A useful aggregation shape is a population-weighted average plus a smaller worst-state component. Final weights require scenario evidence.
-
-## Demographic-dividend balance
-
-Desired behavior:
-
-- no full dividend before meaningful integration
-- benefit scales with integrated population
-- spare capacity and low pressure strengthen it
-- Overcrowded pressure largely neutralizes it
-- Emergency and Breakdown replace it with strain
-- excluded, trapped, starving, or imprisoned people cannot produce full benefit
-- recruitment benefit arrives after integration
-
-Compare construction, production, and recruitable manpower before firing, immediately after firing, and after integration for a minor and a major country. Check threshold oscillation and stacking with existing economic modifiers.
-
-## Project-cost balance
-
-### Housing
-
-- affordable enough to save an important state
-- expensive enough that every state cannot be solved instantly
-- slower and costlier after bombing or repeated manifestations
-- permanent capacity only after completion
-
-### Transport and utilities
-
-- uses trains or trucks where appropriate
-- uses fuel where motor transport matters
-- competes with military logistics in war
-- weak without a valid route connection
-
-### Services
-
-- improves integration and pressure
-- requires real civilian or support capacity
-- responds to occupation, Famine, and state damage
-
-### Planned settlement
-
-- cost follows cohort, distance, route, and destination preparation
-- no movement without a valid Migration result
-- failed preparation can consume real resources without deleting people
-
-### New cities
-
-- major Evolution III program
-- long duration and major construction commitment
-- durable state development
-- no city-scale name for a small temporary modifier
-
-## Direct Chaos balance
-
-| Milestone | Chaos |
-| --- | ---: |
-| First manifestation | `+2` |
-| Living mysterious population reaches `1%` of world population | `+2` |
-| Reaches `5%` | `+3` |
-| Reaches `10%` | `+5` |
-| Reaches `25%` | `+10` |
-| One firing creates at least `5%` of pre-fire world population | `+5` once |
-
-Indirect Chaos through deaths, famine, displacement, wars, and atrocities remains with shared systems.
-
-The recovery milestone removes `2` Chaos only after a proven crisis and a full stable year. It cannot repeat without a new material crisis.
+The shared repeatable weight controls frequency.
+There is no hidden reduction of later grants.
 
 ## Exploit controls
 
-### Population duplication
-
-- one state transaction per firing
-- applied results saved before reports
-- delayed reports do not reapply
-- cluster and multiplayer presentation cannot duplicate
-
-### Manpower
-
-- real population appears immediately
-- full military use waits for integration
-- conscription cannot bypass integration
-- integration delay does not protect civilians from ordinary mortality
-
-### Construction
-
-- mysterious houses do not grant strategic buildings
-- housing and cities need costs and time
-- temporary capacity does not become permanent without completion
-
-### Settlement
-
-- Migration owns origin debit and destination credit
-- Event 037 moves provenance from proven results
-- failed and trapped cohorts remain accounted for
-
-### Pressure farming
-
-- no repeated reward for threshold oscillation
-- one-shot flags persist
-- mission rewards require active work
-- dividend follows sustained integration and capacity
-
-### Atrocity as economic policy
-
-- population loss can reduce pressure
-- atrocities create resistance, Condemnation, sanctions, evidence, isolation, labor loss, and history
-- viable support actions dominate ordinary incentives
-- systematic killing cannot be the cheapest general response
-
-### Donor and reception abuse
-
-- donors cannot send missing resources
-- destinations inherit real pressure
-- aid can create dependency and cooldowns
-- one cohort cannot be promised to several destinations
+- One grant per state per firing, keyed to one firing identity that survives reload.
+- The instant recruitable gain is removed, so a firing never hands an army millions of soldiers on the same day.
+- Projects are once per state, settle a fraction of the backlog, and fail closed without refunds when the state changes hands.
+- The mission rewards one success per manifestation, and Three Censuses counts a success once.
+- Pressure that falls through deaths or flight earns no reward, since the mission and achievements require low pressure over time and Room for Everyone forbids famine stages.
 
 ## Required balance cases
 
-1. Stable industrial major after baseline.
-2. Small island after baseline.
-3. Poor agrarian state after Evolution I.
-4. Blockaded island at Evolution II.
-5. Major at world war during Evolution II.
-6. High-capacity Evolution III country building cities.
-7. Damaged Evolution III country at Breakdown.
-8. Forced relocation.
-9. Systematic killing.
-10. Three firings without intervention.
-11. Three firings with strong intervention.
-12. Ownership transfer after each major transaction.
-13. Mysterious-majority state hit by famine, bombing, and migration.
-14. Nonhuman actor controlling otherwise valid territory.
-15. Multiplayer with several human reports from one firing.
+1. Stable industrial major after a baseline firing.
+2. Small island after a baseline firing.
+3. Poor agrarian country after an Evolution I firing, with and without housing.
+4. Blockaded island hotspot at Evolution II.
+5. Major at war during Evolution II, with too few free factories for projects.
+6. Prepared Evolution III country with Open Integration, housing, roads, and a New City.
+7. Unprepared Evolution III country at Breakdown.
+8. Three firings without intervention and three with strong intervention.
+9. Ownership transfer of a hotspot with a running project.
+10. Newcomer-majority state hit by famine, bombing, and flight.
 
 ## Balance acceptance
 
-Balance passes when baseline creates a clear benefit, Evolution I changes investment, Evolution II creates serious but avoidable crisis, Evolution III transforms demographics while rewarding preparation, state size bounds work, no transaction duplicates population, mass death is not the dominant cheap strategy, AI ordering matches named scenarios, and shared repeatable frequency remains authoritative.
+Baseline gives a clear benefit, Evolution I makes building pay, Evolution II strains food in crowded states, Evolution III can break unprepared countries while rewarding preparation, no transaction duplicates population, and the shared repeatable frequency stays authoritative.
