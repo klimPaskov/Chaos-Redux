@@ -1,15 +1,18 @@
 # Proposed tuning register
 
-The original brief's five main acceptances, Chaos thresholds, zero-punishment first refusal, and baseline/evolution distinction remain requirements. The other quantities below are explicit new starting proposals. They need reconciliation with current accepted project mechanics and live balance; they are not certified inherited constants.
+The brief's five main acceptances, four-visit clean courtship, Chaos thresholds, unpunished first refusal, retaliation and punitive offers after acceptance, and baseline/evolution distinction are requirements.
+The quantities below are starting tuning for balance review, not certified constants.
+Rows marked *(10 Oct)* were set by the 10 Oct 2026 spec audit; the others are 2 Oct draft proposals.
 
 | Subject | Starting proposal | Primary owner in this draft |
 | --- | --- | --- |
-| Clean invitations before open total-refusal route | At most 5 | Part 2 |
-| Improved clean bid | Two 25-percent increases; maximum 50 percent above relevant initial package | Part 2 |
-| Delay between clean invitations | 180–270 days | Part 2 |
+| Clean visits before open total-refusal route | 4, per the brief | Part 2 |
+| Improved clean bid | Second visit +25%, third visit up to +50% on the principal component; final visit at initial value with a 30-day answer window *(10 Oct)* | Part 2 |
+| Delay between clean visits | 180–270 days | Part 2 |
 | Delay after a main acceptance | 240–360 days; hard minimum 120 | Part 2 |
 | Main offer postponement | Once, 30 days | Part 2 |
-| One-arrangement revised bid | One; no sooner than 180 days | Part 2 |
+| Retaliation delay after a refusal following acceptance | 30–90 days *(10 Oct)* | Part 2 |
+| Punitive offer answer window | 30 days *(10 Oct)* | Part 2 |
 | Two/three-arrangement settlement | 90 days | Part 2 |
 | Actionable counterplay before final offer | At least 60 days | Part 2 |
 | Concurrent unresolved side favors | At most 2 | Part 2 |
@@ -26,10 +29,13 @@ The original brief's five main acceptances, Chaos thresholds, zero-punishment fi
 | Lost slot restoration | One genuinely lost slot, never above prior entitlement | Part 4 |
 | Relevant research surge alternative | +35% for 365 days | Part 4 |
 | Treated-state initial maximum | 5 / 10 / 20; real disease-owner outcome required | Part 4 |
+| Famine relief states (A Winter Without Funerals) | 3 / 6 / 10 worst states through the famine owner *(10 Oct)* | Part 4 |
+| Condemnation evasion through the envoy | 180 days; no exposure; up to 2 participants breach *(10 Oct)* | Part 4 |
 | Sustained relief or cohort protection | 180 days | Part 4 |
 | Quiet inquiry | 45 days, 75 PP before specialist-owned substitutions | Part 5 |
 | Witness protection | 30 days, 50 PP before specialist-owned substitutions | Part 5 |
 | Announced clean manifestation interval | 60 days | Part 6 |
+| Enclave opening defense | +25% defense and entrenchment on own territory for 120 days *(10 Oct)* | Part 6 |
 | Revolt effective land-strength targets | Clean 15%; one arrangement 20%; two 30%; three 40%; four 50% | Part 6 |
 | Chaos contribution to supernatural force envelope | 5-percentage-point steps, maximum additional 20 points | Part 6 |
 | Common focus pacing | Mostly 35 or 70 days | Part 7 |
@@ -51,4 +57,6 @@ The original brief's five main acceptances, Chaos thresholds, zero-punishment fi
 
 ## Unfixed quantities
 
-Exact unit battalion statistics, family equipment recipes, absolute force floors/caps, native diplomatic or subject representation, client combined-burden caps, source-specific treatment magnitudes, and the terminal military metric are deliberately not disguised as verified engine constants. The draft establishes their roles and constraints. Their final numbers require the current owners and concrete source definitions.
+Exact unit battalion statistics, family equipment recipes, absolute force floors/caps, native diplomatic or subject representation, client combined-burden caps, source-specific treatment magnitudes, and the terminal military metric are deliberately not disguised as verified engine constants.
+The draft establishes their roles and constraints.
+Their final numbers require the current owners and concrete source definitions.

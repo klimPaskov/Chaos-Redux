@@ -1,141 +1,67 @@
-# Requirement coverage and remaining verification
+# Requirement coverage
 
-“Developed” means the draft contains a substantive design treatment. It does not mean user acceptance, full source reconciliation, implemented code, produced assets, or a successful live test.
+“Developed” means the parts contain a substantive design treatment.
+It does not mean implemented code, produced assets, or a live test.
+Gate numbers refer to the [parent review gates](../../../plans/090_deal_with_the_devil_plans/review/2026-10-02_parent_review.md).
 
-| Requirement | Design location | Current state |
+## Brief reconciliation
+
+The 10 Oct 2026 spec audit compared every section of the [original brief](../../../plans/090_deal_with_the_devil_plans/sources/090_original_user_brief.txt) with the parts.
+This closes G01 for the brief; reconciliation with current owner interfaces remains under G06 and G07.
+
+| Brief sections | Where | Result |
 | --- | --- | --- |
-| Replace Suicide Craft; one authoritative Devil concept; unclustered fire-once identity | Part 1; catalog handoff | Developed; no catalog edits |
-| Random valid human player/major pool, deduplicated | Part 1 | Developed; one-state gate unresolved |
-| Plausible hidden visitor and real immediate rewards | Parts 1, 3, 4 | Developed |
-| Seven tailored offer families | Parts 3, 4; offer index | 21 variants developed |
-| Five accepted main deals, not five invitations | Part 2; route map | Developed; abstract model included |
-| First clean refusal unpunished; total refusal manifests | Parts 2, 6 | Developed; invitation cap is proposed tuning |
-| Partial acceptance and meaningful resistance | Parts 2, 5, 6 | Developed; actual force integration unverified |
-| No side or unsolicited acceptance bypass | Part 2 | Developed; abstract model included |
-| Multi-year pacing and one pending main offer | Part 2 | Developed; timing proposed |
-| Concrete evidence before final choice | Part 5 | Developed; game scheduling unverified |
-| Five reusable portrait stages and successors | Part 5 | Developed; renderer/alignment gate |
-| Sacrifice and discovered specific loopholes | Parts 3, 4, 5 | Developed |
-| Three origins with different territory and resources | Part 6 | Developed; one-state and transfer gates |
-| Intact peaceful possession and human player control | Parts 2, 6 | Developed; engine integration unverified |
-| One full shared political tree | Part 7 | Branch-level design developed |
-| Human mask, direct revelation, distributed possession | Part 7 | Developed |
-| Hidden post-possession liberation and lasting scars | Parts 5, 7 | Developed |
-| Human, possessed, demonic, combined and client armies | Part 8 | Roles developed; exact recipes and assets outstanding |
-| Complete custom 3D, rig, animation, sound and counters | Parts 8, 12; asset manifest | Requirements and prompts developed; no assets produced |
-| Industry, supply, research and specialist collaboration | Parts 7, 8, 10 | Developed; current owner APIs not certified |
-| Baseline foreign bargains, clients, obligations and Compact | Part 9 | Developed; foreign sequence and capacities proposed |
-| Client refusal, defection, conquest distinction and liberation | Part 9 | Developed |
-| Exact four source evolutions and shared eligibility | Part 10; original evolution matrix | Source wording preserved; full semantic reconciliation outstanding |
-| Early cross-border contacts and Hidden Army | Part 10 | Developed; no retroactive control or free main acceptances |
-| Last Signature above 1000 with genuine global order | Part 10 | Developed; numeric tuning and terminal metric/arbitration gates |
-| Scientist, Wu, Traveler, disease, famine, research and other actors | Parts 4, 8, 10; ownership map | Substantive hooks developed; several full current sources outstanding |
-| AI uses observed needs and evidence | Part 11 | Developed; no seeded game trials |
-| Concrete Chaos accounting without duplicate deaths/outcomes | Part 11; Chaos map | Proposed tuning; owner reconciliation required |
-| Entire ordinary UI respects knowledge | Parts 1, 5, 12; scenarios | Developed; no runtime UI walkthrough |
-| Max three Event 090 spirits and no secret custom dashboard | Part 12 | Developed |
-| Achievements remember genuine route histories | Part 12 | Eight proposed; no runtime implementation |
-| Current full source reading and independent specialists | Reading report; parent review | Not certified; no independent subagents claimed |
-| Implementation, catalog alignment, assets, and live validation | Prompts; scenarios; gates | Future execution work, not delivered completion |
+| Catalog entry, concept replacement, core idea | Part 1 | Covered; Event 161 duplicate and legacy `events/090_kamikaze.txt` handled at implementation |
+| Design rules, what the player sees, hidden internal progression | Parts 1, 2, 12 | Covered; no meter, counter, contract window or secret-phase GUI |
+| Host selection | Part 1 | Covered; one-state hosts are open question 1 |
+| The first visit | Part 1 | Covered |
+| Dynamic offer selection and the seven offer families | Parts 3, 4; offer index | Covered by 21 variants; category repetition rule restored in Part 3 |
+| Number of main deals, side bargains | Part 2 | Covered |
+| First refusal, repeated clean refusal | Part 2 | Corrected to the brief's four-visit pattern with a less generous final visit and shorter deadline (the 2 Oct draft used five invitations) |
+| Refusal after accepting deals, punitive offers | Part 2 | Restored: delayed retaliation from an accepted institution, then a punitive offer, then settlement (the 2 Oct draft had dropped retaliation) |
+| Accepted-deal progression (one to five deals) | Parts 2, 5 | Covered; foreign opinion signs at two deals and influence moving at four deals added |
+| Hidden signs before the reveal | Part 5 | Covered by six incident patterns |
+| Leader portrait transformation | Part 5 | Covered; personal deals advance one extra stage, capped at four |
+| Discovering the danger | Part 5 | Covered; discovery sources map to the four safeguards |
+| Breaking away, loopholes and counterplay | Parts 3, 4, 5 | Covered; one settlement event per institution |
+| Open manifestation after total refusal | Part 6 | Covered; opening defensive bonus and host emergency tools added |
+| Manifestation after partial acceptance | Part 6 | Covered; safeguards shape the footprint |
+| Peaceful possession | Parts 2, 6 | Covered |
+| Mephistophelean country identity | Parts 1, 6, 12 | Covered as one Dominion package with origin cosmetic variants |
+| Mephistopheles as a character | Parts 1, 12 | Covered |
+| Shared focus tree and the three opening paths | Parts 6, 7 | Covered; brief names kept as branch names |
+| Common political branch, hidden liberation route | Part 7 | Covered; liberation bases are the surviving safeguards |
+| Demon army branch and its three approaches | Part 8 | Covered |
+| Economy and research branch | Parts 7, 8 | Covered |
+| Foreign bargains, client states, Infernal faction | Part 9 | Covered |
+| Baseline progression | Part 10 | Covered |
+| Evolution I: The Offer Learns | Part 10 | Developed by the audit (arrangement adapts event; pre-fire demonstration); previously only gestured at |
+| Evolution II: Possession Moves | Part 10 | Developed by the audit (influence moves; three leader-change outcomes); previously missing |
+| Evolutions III and IV | Part 10 | Covered |
+| Evolution pacing | Part 10 | Covered |
+| World-end route | Part 10 | Covered; world-threat registration at ratification added |
+| Brilliant Scientist, Doctor Wu, Time Traveler | Part 10 | Covered; each can be an Outside Witness |
+| Disease, Research Failure, economic and military crises, other supernatural events | Parts 4, 10 | Covered; system connection table added |
+| AI behavior, balance rules | Part 11 | Covered; punitive offer and adaptation AI added |
+| Presentation, visual assets, focus-tree layout | Parts 7, 12; asset manifest | Covered |
+| Starting military package (three origins) | Parts 6, 8 | Covered |
+| Defeat and aftermath | Part 10 | Developed by the audit: one final attempt to move into an existing host; defeat super-event for a Compact-wide war |
+| Rare variants (all eight) | Part 2 | Developed by the audit; resistant minister, divided cabinet and the leader who bargains back were previously missing |
+| Failure handling and cleanup | Parts 2, 6, 9, 10 | Covered as rules; implementation and save/reload tests outstanding (G10) |
+| Research direction | Part 12 voice; super-event research at implementation | Faust and Marlowe sources, quotes and audio require verification before use |
 
-The original brief is preserved in full. The heading inventory appended below is an aid to the next semantic reconciliation, not a claim that an automatic keyword match verified every source requirement.
+## Implementation coverage
 
-## Original brief heading inventory
-
-| Original line | Heading | Reconciliation status |
+| Requirement | Design location | State |
 | --- | --- | --- |
-| 1 | Deal with the Devil | Fresh semantic comparison required under G01 |
-| 3 | Catalog entry | Fresh semantic comparison required under G01 |
-| 11 | Concept replacement | Fresh semantic comparison required under G01 |
-| 21 | Core idea | Fresh semantic comparison required under G01 |
-| 37 | Design rules | Fresh semantic comparison required under G01 |
-| 57 | Host selection | Fresh semantic comparison required under G01 |
-| 72 | The first visit | Fresh semantic comparison required under G01 |
-| 92 | What the player sees | Fresh semantic comparison required under G01 |
-| 121 | Hidden internal progression | Fresh semantic comparison required under G01 |
-| 141 | Dynamic offer selection | Fresh semantic comparison required under G01 |
-| 163 | Military salvation offers | Fresh semantic comparison required under G01 |
-| 182 | Economic recovery offers | Fresh semantic comparison required under G01 |
-| 201 | Political order offers | Fresh semantic comparison required under G01 |
-| 220 | Scientific advancement offers | Fresh semantic comparison required under G01 |
-| 239 | Medical rescue offers | Fresh semantic comparison required under G01 |
-| 258 | Diplomatic escape offers | Fresh semantic comparison required under G01 |
-| 277 | Personal offers to the leader | Fresh semantic comparison required under G01 |
-| 296 | Number of main deals | Fresh semantic comparison required under G01 |
-| 306 | First refusal | Fresh semantic comparison required under G01 |
-| 316 | Repeated clean refusal | Fresh semantic comparison required under G01 |
-| 334 | Refusal after accepting deals | Fresh semantic comparison required under G01 |
-| 368 | Accepted-deal progression | Fresh semantic comparison required under G01 |
-| 372 | One accepted deal | Fresh semantic comparison required under G01 |
-| 384 | Two accepted deals | Fresh semantic comparison required under G01 |
-| 396 | Three accepted deals | Fresh semantic comparison required under G01 |
-| 408 | Four accepted deals | Fresh semantic comparison required under G01 |
-| 420 | Five accepted deals | Fresh semantic comparison required under G01 |
-| 432 | Hidden signs before the reveal | Fresh semantic comparison required under G01 |
-| 455 | Leader portrait transformation | Fresh semantic comparison required under G01 |
-| 463 | After one accepted deal | Fresh semantic comparison required under G01 |
-| 470 | After two accepted deals | Fresh semantic comparison required under G01 |
-| 476 | After three accepted deals | Fresh semantic comparison required under G01 |
-| 483 | After four accepted deals | Fresh semantic comparison required under G01 |
-| 490 | After five accepted deals | Fresh semantic comparison required under G01 |
-| 502 | Discovering the danger | Fresh semantic comparison required under G01 |
-| 526 | Breaking away | Fresh semantic comparison required under G01 |
-| 555 | Loopholes and counterplay | Fresh semantic comparison required under G01 |
-| 576 | Open manifestation after total refusal | Fresh semantic comparison required under G01 |
-| 592 | Manifestation after partial acceptance | Fresh semantic comparison required under G01 |
-| 619 | Peaceful possession | Fresh semantic comparison required under G01 |
-| 637 | Mephistophelean country identity | Fresh semantic comparison required under G01 |
-| 665 | Mephistopheles as a character | Fresh semantic comparison required under G01 |
-| 677 | Shared focus tree | Fresh semantic comparison required under G01 |
-| 683 | Opening path: Rejected at Every Door | Fresh semantic comparison required under G01 |
-| 700 | Opening path: Collect What Was Promised | Fresh semantic comparison required under G01 |
-| 717 | Opening path: Rule Through the Leader | Fresh semantic comparison required under G01 |
-| 734 | Common political branch | Fresh semantic comparison required under G01 |
-| 740 | Keep the human mask | Fresh semantic comparison required under G01 |
-| 749 | Reveal Mephistopheles | Fresh semantic comparison required under G01 |
-| 757 | Spread possession through the government | Fresh semantic comparison required under G01 |
-| 765 | Hidden liberation route | Fresh semantic comparison required under G01 |
-| 780 | Demon army branch | Fresh semantic comparison required under G01 |
-| 797 | Use human armies | Fresh semantic comparison required under G01 |
-| 805 | Raise an open demon army | Fresh semantic comparison required under G01 |
-| 813 | Combine both forces | Fresh semantic comparison required under G01 |
-| 822 | Economy and research branch | Fresh semantic comparison required under G01 |
-| 840 | Foreign bargains branch | Fresh semantic comparison required under G01 |
-| 870 | Client states | Fresh semantic comparison required under G01 |
-| 889 | Infernal faction | Fresh semantic comparison required under G01 |
-| 911 | Baseline progression | Fresh semantic comparison required under G01 |
-| 939 | Evolution I: The Offer Learns | Fresh semantic comparison required under G01 |
-| 953 | Evolution II: Possession Moves | Fresh semantic comparison required under G01 |
-| 967 | Evolution III: Offers Across Borders | Fresh semantic comparison required under G01 |
-| 981 | Evolution IV: The Hidden Army | Fresh semantic comparison required under G01 |
-| 1005 | Evolution pacing | Fresh semantic comparison required under G01 |
-| 1015 | World-end route | Fresh semantic comparison required under G01 |
-| 1037 | Interaction with Brilliant Scientist | Fresh semantic comparison required under G01 |
-| 1053 | Interaction with Doctor Wu | Fresh semantic comparison required under G01 |
-| 1069 | Interaction with Time Traveler | Fresh semantic comparison required under G01 |
-| 1081 | Interaction with disease and biological events | Fresh semantic comparison required under G01 |
-| 1099 | Interaction with Research Failure | Fresh semantic comparison required under G01 |
-| 1107 | Interaction with economic and military crises | Fresh semantic comparison required under G01 |
-| 1113 | Interaction with other supernatural events | Fresh semantic comparison required under G01 |
-| 1124 | AI behavior | Fresh semantic comparison required under G01 |
-| 1157 | Balance rules | Fresh semantic comparison required under G01 |
-| 1178 | Presentation | Fresh semantic comparison required under G01 |
-| 1196 | Visual assets | Fresh semantic comparison required under G01 |
-| 1221 | Focus-tree layout direction | Fresh semantic comparison required under G01 |
-| 1241 | Starting military package | Fresh semantic comparison required under G01 |
-| 1247 | Total-refusal origin | Fresh semantic comparison required under G01 |
-| 1256 | Partial-acceptance origin | Fresh semantic comparison required under G01 |
-| 1265 | Peaceful-possession origin | Fresh semantic comparison required under G01 |
-| 1275 | Defeat and aftermath | Fresh semantic comparison required under G01 |
-| 1294 | Rare variants | Fresh semantic comparison required under G01 |
-| 1296 | The unsigned gift | Fresh semantic comparison required under G01 |
-| 1302 | The false name | Fresh semantic comparison required under G01 |
-| 1308 | The resistant minister | Fresh semantic comparison required under G01 |
-| 1314 | The willing government | Fresh semantic comparison required under G01 |
-| 1320 | The divided cabinet | Fresh semantic comparison required under G01 |
-| 1326 | The rival tempter | Fresh semantic comparison required under G01 |
-| 1332 | The leader who bargains back | Fresh semantic comparison required under G01 |
-| 1338 | The contract survives annexation | Fresh semantic comparison required under G01 |
-| 1344 | Failure handling and cleanup | Fresh semantic comparison required under G01 |
-| 1368 | Research direction for the full specification | Fresh semantic comparison required under G01 |
-| 1389 | Your Task | Fresh semantic comparison required under G01 |
+| One-state separate country | Parts 1, 6 | Open question 1; G02 |
+| Portrait overlays and successors | Part 5 | Developed; renderer and alignment gate G03 |
+| Formation transfer in revolts | Part 6 | Developed; G04 |
+| Custom 3D units, rigs, animation, sound, counters | Parts 8, 12; asset manifest | Requirements developed; G05, G08, G09 |
+| Specialist and medical interfaces | Parts 4, 10; ownership map | Hooks developed; G06 |
+| Terminal metric and arbitration | Part 10 | Developed; G07 |
+| AI policy | Part 11 | Developed; needs seeded trials |
+| Chaos accounting | Part 11; Chaos impact map | Proposed tuning; owner reconciliation |
+| Spoiler-free ordinary UI | Parts 1, 5, 12; scenarios | Developed; needs a UI walkthrough |
+| Achievements | Part 12 | Eight proposed |
+| Live campaign acceptance | Acceptance scenarios | G10 |

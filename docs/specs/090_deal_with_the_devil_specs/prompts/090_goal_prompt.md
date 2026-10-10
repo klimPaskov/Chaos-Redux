@@ -1,19 +1,32 @@
 # Goal: implement Event 090, Deal with the Devil
 
-Implement the accepted design for Chaos Redux Event 090 using the package at `docs/specs/090_deal_with_the_devil_specs/` and its plans at `docs/plans/090_deal_with_the_devil_plans/`.
+Implement Chaos Redux Event 090 from `docs/specs/090_deal_with_the_devil_specs/` (start at its README) and the plans in `docs/plans/090_deal_with_the_devil_plans/`.
 
-First read the current project source protocol, every current supplied Project Source, AGENTS rules, applicable skills and specialist definitions, the original user brief, the package README, source/decision register, parent review, and unresolved gates. This is a full design draft, not evidence that every new proposal is approved or any implementation is complete. Reconcile the draft with current sources before coding. Preserve the user's required concept over inferred conventions.
+Read `CLAUDE.md`, the applicable skills, the original user brief, the twelve parts, the matrices, and the README's open questions and gates.
+Settle open questions with the user before building what depends on them.
 
-Event 090 replaces Suicide Craft, is Minor Fire-Once, Chaos level 1, and unclustered. Reconcile the duplicate Event 161 concept without creating two parents. Do not mark catalog status complete or claim user approval without evidence.
+Event 090 replaces Suicide Craft (legacy `events/090_kamikaze.txt`), is Minor Fire-Once, Chaos level 1, and unclustered.
+Retire the duplicate Event 161 concept without creating two parents.
 
-Deliver the complete baseline: tailored substantial real rewards; five explicitly accepted main arrangements for peaceful possession; safe first clean refusal; finite total-refusal manifestation; costly partial breakaway; gradual evidence and portrait transformation; three distinct origins into one shared focus tree; human, demonic and combined armies; foreign bargains, clients, the Infernal Compact and liberation. Evolutions change behavior and danger, not the availability of basic content. Preserve their exact source labels and requirements.
+Deliver the complete baseline: tailored, substantial, real rewards; five explicitly accepted main arrangements for peaceful possession; the four-visit clean courtship with an unpunished first refusal; retaliation and a punitive offer after a refusal that follows one to three acceptances; the four safeguards; gradual evidence and portrait transformation; three distinct origins of the Mephistophelean Dominion feeding one shared focus tree; human, demonic and combined armies; foreign bargains, clients, the Infernal Compact, liberation, and the Last Signature.
+Evolutions change behavior and danger, not the availability of basic content.
 
-Keep secrecy across the entire ordinary UI: no corruption meter, deal counter, contract window, secret-phase custom dashboard, premature Event Details, achievement or registry spoilers. Show immediate rewards, duration and stated ordinary concessions honestly. Give actionable evidence and time before the fifth offer. Personal symptoms, side favors and unsolicited gifts never supply a missing main acceptance. Five valid main acceptances never start an opening civil war. The player retains control of the possessed country.
+Keep secrecy across the ordinary UI: no corruption meter, deal counter, contract window, secret-phase custom GUI, or premature Event Details, achievement or registry spoilers.
+Show immediate rewards, durations and stated concessions honestly.
+Give actionable evidence and time before the fifth offer.
+Personal symptoms, side favors and unsolicited gifts never supply a missing main acceptance.
+Five valid acceptances never start an opening civil war, and the player keeps control of the possessed country.
 
-Resolve the one-state separate-country requirement, reusable aligned portrait overlays, exact military transfer behavior, mixed human/demon audio routing, current Doctor Wu interface, and terminal-strength/arbitration gates with decisions or real evidence. Do not silently substitute a same-tag revolt, repainted portrait library, renamed vanilla demons, fictitious cure, flat research bonus or unsupported engine syntax.
+Resolve the one-state, portrait-overlay, formation-transfer, mixed-audio, Doctor Wu interface and terminal-arbitration gates with decisions or real evidence.
+Do not silently substitute a same-tag revolt, a repainted portrait library, renamed vanilla demons, a fictitious cure, a flat research bonus, or unsupported engine syntax.
 
-Use existing disease, famine, death, biological-raid, research-loss, diplomacy and Event 019 ownership. Real cures stay real; dead people are not restored by a recovery reward. Human populations stay human. New unit families use owner-side registration and CXT coverage, never a second central registry. Derivatives do not inherit Mephistopheles, his tree, bargains or ending.
+Use existing famine, migration, disease, deaths, condemnation, camp, world-threat, biological-raid, research-loss, diplomacy and Event 019 ownership.
+Real cures stay real; dead people are not restored; human populations stay human.
+New unit families use owner-side registration and CXT coverage.
+Derivatives never inherit Mephistopheles, his tree, bargains or ending.
 
-Run actual named specialists with self-contained prompts and no inherited thread. Record unavailable mandatory audits as blocked, and distinguish parent-only review. Produce the required complete models, rigs, animation, licensed audio, counters, portraits, flags and art through the project workflow. Record planned, produced, integrated and live-tested evidence separately.
-
-Complete the acceptance scenarios, source checks, UI spoiler audit, balance trials and user-owned live-game evidence. The supplied abstract Python checks prove only their stated design invariants. Maintain exact costs, one-time outcomes, ownership, save continuity and rollback. Preserve unresolved work in a concrete continuation packet; never report planned assets, mock output or static inspection as live completion.
+Route specialist work through the `chaos-redux-subagents` skill with self-contained prompts, and record parent-only review where a role is unavailable.
+Produce models, rigs, animation, licensed audio, counters, portraits, flags and art through the asset skills.
+Record planned, produced, integrated and user-tested evidence separately.
+Agents do not launch the game; the user performs live testing.
+Complete the acceptance scenarios, source checks, UI spoiler audit and balance checks, and never report planned assets or static inspection as live completion.

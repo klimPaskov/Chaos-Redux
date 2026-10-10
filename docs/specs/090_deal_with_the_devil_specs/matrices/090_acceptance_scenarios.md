@@ -1,6 +1,8 @@
 # Acceptance scenarios
 
-These are required tests, not performed game results. The included Python model checks only selected abstract design invariants. Engine, visual, AI, asset, and live campaign evidence remain outstanding.
+These are required tests, not performed game results.
+The included Python model checks only selected abstract design invariants.
+Engine, visual, AI, asset, and live campaign evidence remain outstanding.
 
 | ID | Scenario | Required observation | Evidence needed |
 | --- | --- | --- | --- |
@@ -8,8 +10,8 @@ These are required tests, not performed game results. The included Python model 
 | A02 | Small functioning human player | Eligible under accepted final territorial policy; no fixed-major bias | Game; one-state policy first |
 | A03 | Empty or exclusively invalid pool | No arbitrary target, no false completion | Source and game |
 | A04 | First clean refusal | No immediate penalty or free control | Game before/after comparison |
-| A05 | Five clean refusals | Weakest announced manifestation; no human collaborators invented | Model plus game |
-| A06 | Four clean refusals followed by five acceptances | Peaceful possession after five acceptances, not after five invitations | Model plus game |
+| A05 | Four clean refusals | Weakest announced manifestation with its opening defense; no human collaborators invented | Game |
+| A06 | Three clean refusals followed by five acceptances | Peaceful possession after five acceptances, not after five visits | Game |
 | A07 | Five uninterrupted acceptances | Intact playable possessed host and no opening civil war | Model plus game |
 | A08 | Four acceptances without adequate evidence interval | Final main offer is not scheduled | Model plus game |
 | A09 | Personal main offer at every stage | Earlier symptoms; no skipped principal acceptance | Model plus portraits in game |
@@ -49,7 +51,19 @@ These are required tests, not performed game results. The included Python model 
 | A43 | Save/reload during reward, split, delivery, or finale | No duplicate costs, rewards, actors, or Chaos | Save/reload game |
 | A44 | Secure versus desperate AI; with and without evidence | Bounded different choices using observed information only | Repeated seeded trials and policy inspection |
 | A45 | All three origins reach the shared tree | Distinct starts; baseline military/foreign/client content available | Three complete campaigns |
+| A46 | Refusal after one acceptance | Delayed limited retaliation from that institution, then one punitive offer; no reversal of completed cures | Game |
+| A47 | Punitive offer accepted after two arrangements | Counts exactly once as the third main acceptance with its own reward and concession | Game |
+| A48 | Four-deal refusal with and without Loyal Command or a Protected Successor | Seizure attempt and final chance to submit only without them; revolt with them | Game |
+| A49 | The Offer Learns adapts an ongoing gift | One adaptation per arrangement; accepting widens the footprint, refusing ends the ongoing component; no acceptance change | Game |
+| A50 | Possession Moves with a minister removal and a leader change | Influence moves to a named official; leader outcome follows safeguards; no acceptance change | Game and portrait checks |
+| A51 | A Winter Without Funerals during famine, then separation | Famine owner reserves and relief rise and states recover; separation hands relief to the famine actions; no death subtraction | Game with famine owner state |
+| A52 | A Door Back into the World for a condemned host, then expulsion | Sanctions ease without score change; expulsion triggers exposed evasion | Game with condemnation owner state |
+| A53 | Last Signature ratification starts, then is cancelled | World-threat source registers and clears once | Source plus game |
+| A54 | Principal Dominion capitulates with one bound client surviving | One announced final attempt into that client; no fresh major; none when no host exists | Game |
 
 ## Completion evidence
 
-For each performed test, record the source revision, setup, actual inputs, observed result, and remaining uncertainty. A screenshot proves only the surface shown. A source check proves the relevant code condition, not the whole campaign. Do not turn a passing abstract model into “all tests passed.”
+For each performed test, record the source revision, setup, actual inputs, observed result, and remaining uncertainty.
+A screenshot proves only the surface shown.
+A source check proves the relevant code condition, not the whole campaign.
+Do not turn a passing abstract model into “all tests passed.”

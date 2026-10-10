@@ -1,11 +1,13 @@
 # Chaos impact map
 
-All numeric additions below are new proposed Event 090-specific tuning. The shared system's existing award takes precedence for an outcome it already owns; reconcile to one owner instead of stacking duplicates. None is the root scheduler's catalog-level accounting.
+All numeric additions below are new proposed Event 090-specific tuning.
+The shared system's existing award takes precedence for an outcome it already owns; reconcile to one owner instead of stacking duplicates.
+None is the root scheduler's catalog-level accounting.
 
 | Concrete outcome | Proposed Event 090 addition | Once-only identity | Important exclusion |
 | --- | ---: | --- | --- |
 | Original random-event firing | Shared scheduler only | Original Event 090 parent | Do not infer an extra point from level 1. |
-| Normal offer acceptance, side favor, investigation, portrait stage | 0 | No separate award | Actual later outcomes carry their own consequences. |
+| Normal offer acceptance, side favor, investigation, portrait stage, retaliation, punitive offer, arrangement adaptation | 0 | No separate award | Actual later outcomes carry their own consequences. |
 | Evolution activates | 0 | Evolution state | Eligibility and state alone are not a consequence. |
 | Clean manifestation | 20 | Parent's clean opening | Ordinary war/death consequences remain separate owners. |
 | One-arrangement contested breach becomes open | 25 | Actual breach opening | No payout for a mere disagreement or peaceful settlement. |
