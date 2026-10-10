@@ -1,5 +1,9 @@
 # Achievement Prompt: Event 24 Video Game in Sweden
 
+> Historical build contract: Event 24 is implemented; current state and remaining acceptance live in `docs/plans/024_video_game_in_sweden_plans/acceptance_status_2026-10-07.md` and `takeover_status_2026-10-06.md`.
+> Do not rerun this contract against the installed event; take new work from the package README open questions.
+> Under the current `CLAUDE.md`, an unavailable MCP check limits evidence but does not block otherwise finished work.
+
 Implement the Event 24 achievements defined in the source specification package at:
 
 `docs/specs/024_video_game_in_sweden_specs/`

@@ -1,6 +1,10 @@
 # Asset Prompt: Event 24 Video Game in Sweden
 
-Use the current [asset contract](../../../.agents/skills/chaos-redux-event-assets/SKILL.md) for source modes, native ImageGen transparency, alpha preservation, exact consumer dimensions, achievement states, and ownership.
+> Historical build contract: Event 24 is implemented; current state and remaining acceptance live in `docs/plans/024_video_game_in_sweden_plans/acceptance_status_2026-10-07.md` and `takeover_status_2026-10-06.md`.
+> Do not rerun this contract against the installed event; take new work from the package README open questions.
+> Under the current `CLAUDE.md`, an unavailable MCP check limits evidence but does not block otherwise finished work.
+
+Use the current [asset contract](../../../.claude/skills/chaos-redux-event-assets/SKILL.md) for source modes, native ImageGen transparency, alpha preservation, exact consumer dimensions, achievement states, and ownership.
 Reconcile this design inventory with current manifests and runtime consumers before producing another asset.
 
 Create the complete visual asset package required by the Event 24 specifications under:
@@ -35,7 +39,7 @@ Before production, inspect the exact canonical reference family and its contact 
 
 For the decision category picture family, require:
 
-`C:\Users\klimp\OneDrive\Documents\Paradox Interactive\Hearts of Iron IV\mod\chaos_redux\.agents\skills\chaos-redux-event-assets\assets\gfx_references\icons\decision_categories\pictures`
+`C:\Users\klimp\OneDrive\Documents\Paradox Interactive\Hearts of Iron IV\mod\chaos_redux\.claude\skills\chaos-redux-event-assets\assets\gfx_references\icons\decision_categories\pictures`
 
 If `contact_sheet.png` is missing, report the reference-family gap to the parent before production.
 Do not expand this assignment into shared reference-library maintenance. Reference assets are review material and must not be shipped, recolored, traced, or wired.

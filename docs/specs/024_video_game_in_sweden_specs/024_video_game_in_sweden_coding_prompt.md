@@ -1,5 +1,9 @@
 # Coding Prompt: Event 24 Video Game in Sweden
 
+> Historical build contract: Event 24 is implemented; current state and remaining acceptance live in `docs/plans/024_video_game_in_sweden_plans/acceptance_status_2026-10-07.md` and `takeover_status_2026-10-06.md`.
+> Do not rerun this contract against the installed event; take new work from the package README open questions.
+> Under the current `CLAUDE.md`, an unavailable MCP check limits evidence but does not block otherwise finished work.
+
 Implement Chaos Redux Event 24 from the accepted source specification under `docs/specs/024_video_game_in_sweden_specs/`.
 
 Read every file in that folder before editing. Treat the four main specification parts as acceptance criteria. Use the decision map, probability scenarios, asset prompt, achievement prompt, decision and mission prompt, catalog alignment note, research note, review handoff, and source reading audit as supporting contracts.
