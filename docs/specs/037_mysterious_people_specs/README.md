@@ -8,9 +8,8 @@ Workflow owners: [event integration](../../../.claude/skills/chaos-redux-events/
 ## Status
 
 Event 037 is in the active Events 1 to 40 milestone.
-The runtime holds only a legacy two-event stub that gives one random country `2,500,000` manpower and hints that the newcomers are aliens.
-This package retires that stub, and every mechanic in it is **Pending**.
-There is no plans folder yet, and implementation handoffs go to `docs/plans/037_mysterious_people_plans/`.
+The legacy two-event stub (manpower for one random country and an alien headline) is retired, and every mechanic in this package is implemented (2026-10-10).
+Implementation handoffs are in `docs/plans/037_mysterious_people_plans/`, and the implementation record is `docs/events/037_mysterious_people/overview.md`.
 
 The implementation entry point is [the coding prompt](prompts/037_mysterious_people_coding_prompt.md).
 

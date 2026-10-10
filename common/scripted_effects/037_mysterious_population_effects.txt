@@ -20,6 +20,7 @@
 # - mysterious_people_cause          what slows settlement (see *_cause keys)
 # - mysterious_people_loss_cause     1 hunger or 2 flight lowered the backlog
 # - flag mysterious_people_hotspot   one of the owner's three hotspots
+# - flag mysterious_people_rate_factored  the stored rate includes a timed factor
 #
 # Country ledger: mysterious_people_newcomers_k, _unsettled_k, _population_k,
 # _rest_unsettled_k, _rest_rate_k, _pressure, _pressure_stage, arrays
@@ -28,7 +29,9 @@
 # Global: global.mysterious_people_firings, _stage, _world_newcomers_k,
 # _world_population_k, _world_share, arrays global.mysterious_people_countries
 # (unsettled newcomers, processed by the pulse) and
-# global.mysterious_people_newcomer_countries (any newcomers).
+# global.mysterious_people_newcomer_countries (any newcomers, used by the
+# firing pass) and global.mysterious_people_human_countries (human countries
+# that received a manifestation report, read by the monthly pulse).
 #
 # The only world-wide iteration is the single pass in
 # mysterious_people_run_manifestation. The monthly pulse touches only
@@ -98,12 +101,14 @@ mysterious_people_refresh_state_rate = {
 		multiply_temp_variable = { mysterious_people_rate_work = constant:mysterious_people_settlement.occupied_factor }
 		set_variable = { mysterious_people_cause = constant:mysterious_people_code.cause_occupied }
 	}
+	clr_state_flag = mysterious_people_rate_factored
 	if = {
 		limit = {
 			has_variable = mysterious_people_event_factor_until
 			check_variable = { var = mysterious_people_event_factor_until value = global.num_days compare = greater_than }
 		}
 		multiply_temp_variable = { mysterious_people_rate_work = mysterious_people_event_factor }
+		set_state_flag = mysterious_people_rate_factored
 	}
 	set_variable = { mysterious_people_rate_k = mysterious_people_rate_work }
 	mysterious_people_refresh_state_quotes = yes
@@ -153,11 +158,33 @@ mysterious_people_settle_state_lazy = {
 		set_temp_variable = { mysterious_people_settle_amount = global.num_days }
 		subtract_from_temp_variable = { mysterious_people_settle_amount = mysterious_people_settled_day }
 		clamp_temp_variable = { var = mysterious_people_settle_amount min = 0 }
+		# A timed factor that ran out inside the interval applies only to the
+		# days it was active; the days after use the unfactored rate.
+		set_temp_variable = { mysterious_people_factor_expired = 0 }
+		if = {
+			limit = {
+				has_state_flag = mysterious_people_rate_factored
+				has_variable = mysterious_people_event_factor_until
+				check_variable = { var = mysterious_people_event_factor_until value = global.num_days compare = less_than }
+			}
+			set_temp_variable = { mysterious_people_factor_expired = 1 }
+			set_temp_variable = { mysterious_people_after_expiry = global.num_days }
+			subtract_from_temp_variable = { mysterious_people_after_expiry = mysterious_people_event_factor_until }
+			clamp_temp_variable = { var = mysterious_people_after_expiry min = 0 max = mysterious_people_settle_amount }
+			set_temp_variable = { mysterious_people_after_scaled = mysterious_people_after_expiry }
+			divide_temp_variable = { mysterious_people_after_scaled = mysterious_people_event_factor }
+			subtract_from_temp_variable = { mysterious_people_settle_amount = mysterious_people_after_expiry }
+			add_to_temp_variable = { mysterious_people_settle_amount = mysterious_people_after_scaled }
+		}
 		divide_temp_variable = { mysterious_people_settle_amount = constant:mysterious_people_settlement.days_per_month }
 		multiply_temp_variable = { mysterious_people_settle_amount = mysterious_people_rate_k }
 		multiply_temp_variable = { mysterious_people_settle_amount = mysterious_people_national_factor }
 		subtract_from_variable = { mysterious_people_unsettled_k = mysterious_people_settle_amount }
 		clamp_variable = { var = mysterious_people_unsettled_k min = 0 }
+		if = {
+			limit = { check_variable = { mysterious_people_factor_expired = 1 } }
+			mysterious_people_refresh_state_rate = yes
+		}
 	}
 	set_variable = { mysterious_people_settled_day = global.num_days }
 	mysterious_people_clamp_state_ledger = yes
@@ -711,6 +738,7 @@ mysterious_people_finalize_country = {
 	subtract_from_variable = { mysterious_people_rest_rate_k = mysterious_people_hot_rate }
 	clamp_variable = { var = mysterious_people_rest_rate_k min = 0 }
 	set_variable = { mysterious_people_created_firing = global.mysterious_people_firings }
+	set_variable = { mysterious_people_rest_day = global.num_days }
 	mysterious_people_refresh_national_pressure = yes
 	mysterious_people_refresh_modifier = yes
 	if = {
@@ -801,10 +829,12 @@ mysterious_people_run_pulse = {
 			array = mysterious_people_drop_countries
 			mysterious_people_unregister_country = yes
 		}
+		# Only human countries can earn Room for Everyone, so the monthly pass
+		# reads the small human registry instead of every country with newcomers.
 		for_each_scope_loop = {
-			array = global.mysterious_people_newcomer_countries
+			array = global.mysterious_people_human_countries
 			if = {
-				limit = { is_ai = no }
+				limit = { exists = yes }
 				mysterious_people_track_room_achievement = yes
 			}
 		}
@@ -872,8 +902,18 @@ mysterious_people_pulse_country = {
 			add_to_array = { array = mysterious_people_hotspot_ranks value = mysterious_people_keep_ranks^mysterious_people_keep_i }
 		}
 		mysterious_people_sort_hotspots = yes
+		set_temp_variable = { mysterious_people_rest_months = constant:mysterious_people_value.one }
+		if = {
+			limit = { has_variable = mysterious_people_rest_day }
+			set_temp_variable = { mysterious_people_rest_months = global.num_days }
+			subtract_from_temp_variable = { mysterious_people_rest_months = mysterious_people_rest_day }
+			clamp_temp_variable = { var = mysterious_people_rest_months min = 0 }
+			divide_temp_variable = { mysterious_people_rest_months = constant:mysterious_people_settlement.days_per_month }
+		}
+		set_variable = { mysterious_people_rest_day = global.num_days }
 		set_temp_variable = { mysterious_people_rest_settle = mysterious_people_rest_rate_k }
 		multiply_temp_variable = { mysterious_people_rest_settle = mysterious_people_national_factor }
+		multiply_temp_variable = { mysterious_people_rest_settle = mysterious_people_rest_months }
 		subtract_from_variable = { mysterious_people_rest_unsettled_k = mysterious_people_rest_settle }
 		clamp_variable = { var = mysterious_people_rest_unsettled_k min = 0 }
 		set_variable = { mysterious_people_unsettled_k = mysterious_people_rest_unsettled_k }
@@ -1004,8 +1044,11 @@ mysterious_people_on_civilian_transfer = {
 		}
 		set_temp_variable = { mysterious_people_departed_k = civilian_transfer_actual_origin_debit }
 		divide_temp_variable = { mysterious_people_departed_k = constant:mysterious_people_value.people_per_k }
+		clamp_temp_variable = { var = mysterious_people_departed_k max = mysterious_people_unsettled_k }
+		set_temp_variable = { mysterious_people_settle_now = mysterious_people_departed_k }
 		subtract_from_variable = { mysterious_people_unsettled_k = mysterious_people_departed_k }
 		clamp_variable = { var = mysterious_people_unsettled_k min = 0 }
+		mysterious_people_reduce_rest_backlog = yes
 		set_variable = { mysterious_people_loss_cause = constant:mysterious_people_code.loss_flight }
 		mysterious_people_refresh_after_state_action = yes
 	}
@@ -1238,6 +1281,10 @@ mysterious_people_dispatch_reports = {
 			mysterious_people_country_has_newcomers = yes
 		}
 		country_event = { id = chaosx.nr37.2 }
+		if = {
+			limit = { NOT = { is_in_array = { array = global.mysterious_people_human_countries value = THIS } } }
+			add_to_array = { array = global.mysterious_people_human_countries value = THIS }
+		}
 	}
 	if = {
 		limit = { NOT = { has_global_flag = mysterious_people_news_published } }
@@ -1400,18 +1447,21 @@ mysterious_people_record_evolution = {
 
 mysterious_people_send_evolution_report = {
 	set_variable = { global.mysterious_people_report_evolution = mysterious_people_evo_stage }
-	every_country = {
-		limit = { is_ai = no }
+	for_each_scope_loop = {
+		array = global.mysterious_people_human_countries
 		if = {
-			limit = { check_variable = { global.mysterious_people_report_evolution = constant:mysterious_people_event.evolution_i_stage } }
-			country_event = { id = chaosx.nr37.3 }
-		}
-		else_if = {
-			limit = { check_variable = { global.mysterious_people_report_evolution = constant:mysterious_people_event.evolution_ii_stage } }
-			country_event = { id = chaosx.nr37.4 }
-		}
-		else = {
-			country_event = { id = chaosx.nr37.5 }
+			limit = { exists = yes }
+			if = {
+				limit = { check_variable = { global.mysterious_people_report_evolution = constant:mysterious_people_event.evolution_i_stage } }
+				country_event = { id = chaosx.nr37.3 }
+			}
+			else_if = {
+				limit = { check_variable = { global.mysterious_people_report_evolution = constant:mysterious_people_event.evolution_ii_stage } }
+				country_event = { id = chaosx.nr37.4 }
+			}
+			else = {
+				country_event = { id = chaosx.nr37.5 }
+			}
 		}
 	}
 }

@@ -127,3 +127,11 @@ Exploit checks: Registration Drive cooldown is 180 days; Requisition is once per
 ## Validation limits
 
 Source-only checks above. No game launch and no in-game testing. Decision-AI classification (`hoi4.decision_inspect`) and probability routes were not run. The patched files are untracked new Event 037 work, so there is no git diff baseline; the pre-patch copies in the scratchpad serve as the baseline.
+
+## Resolution (release orchestrator decisions, 2026-10-10)
+
+1. The hotspot list is capped at three rows by `mysterious_people_event.max_hotspots`, so at most six rows show at once.
+2. A mission ending in success when the backlog reaches zero is intended.
+3. Stance re-choice after the 180-day lock is intended; the stance AI scores zero for the other stance unless the country clearly favours switching, so it does not flip every lock period.
+4. The tiered AI weights stay.
+5. The owner-change lag until the monthly pulse is accepted; the project `cancel_trigger` already releases factories when the state changes hands.

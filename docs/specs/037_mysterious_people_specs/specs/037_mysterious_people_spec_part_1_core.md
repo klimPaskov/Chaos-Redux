@@ -3,7 +3,7 @@
 ## Part 1: Core event design
 
 Status markers: **Pending** means design that is not in source yet, **Legacy** means current source that this design retires, and **Proposed** means a change that waits for acceptance.
-Every mechanic in this package is Pending unless it says otherwise.
+The mechanics in this package are implemented (2026-10-10); `docs/events/037_mysterious_people/overview.md` is the implementation record.
 
 ## Catalog identity
 

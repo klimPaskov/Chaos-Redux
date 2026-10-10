@@ -128,7 +128,7 @@ Success doubles the workforce bonus for 180 days and counts toward Three Censuse
 
 After each firing every country with newcomers rolls once, 20 to 60 days later.
 The dispatcher (`mysterious_people_dispatch_flavour`) builds the pool of events whose state trigger (`mysterious_people_flavour_state_<id>`) holds for an owned state, excludes the last four events the country saw, picks one uniformly and saves the state as `mysterious_people_flavour_state`.
-Every option changes something visible: settlement in the state, a timed settlement factor, a project discount, stability, factory output, opinion, political power or world tension.
+Every option except the five plain declines (`.10b`, `.13b`, `.14b`, `.17b`, `.18b`) changes something visible: settlement in the state, a timed settlement factor, a project discount, stability, factory output, opinion, political power or world tension.
 `.24` can switch a non-democratic country to Restricted Registration for free and slow settlement everywhere for a year.
 `.26` fires once for a country that has kept pressure below Strained for 180 days at Evolution III with newcomers at least a quarter of its population.
 
@@ -168,7 +168,7 @@ Evolution titles and bodies are wired on all five Event Logs surfaces.
 
 ## AI
 
-- Stance: `mtth:mysterious_people_ai_open_stance` and `..._restricted_stance` (democracy x3, fascism x0.2 or x3, stability above 60% or below 40% while Overcrowded, switching x0.1).
+- Stance: `mtth:mysterious_people_ai_open_stance` and `..._restricted_stance` (democracy x3, fascism x0.2 or x3, stability above 60% or below 40% while Overcrowded). A country that already chose a stance scores zero for the other one unless it is a stable democracy (switching to Open) or fascist or unstable and crowded (switching to Restricted), so the stance does not flip every lock period.
 - Projects weigh capital x3, urban x2, industrial x1.5, Emergency x2. Roads and Water leads below infrastructure 5 and Emergency Housing above it. A country at war with fewer than 10 free civilian factories takes no project and favours the drive and requisition. New City needs 25 civilian factories.
 - Requisition is x0.1 above 50% stability and x3 at Emergency.
 

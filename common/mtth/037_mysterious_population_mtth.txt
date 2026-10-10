@@ -46,7 +46,18 @@ mysterious_people_ai_open_stance = {
 		has_stability < constant:mysterious_people_ai.restricted_stability
 		mysterious_people_country_is_overcrowded = yes
 	}
-	modifier = { factor = constant:mysterious_people_mtth.switch_factor has_country_flag = mysterious_people_stance_restricted }
+	# A country that already chose Restricted Registration switches only when
+	# it is a stable democracy, so the stance does not flip every lock period.
+	modifier = {
+		factor = 0
+		has_country_flag = mysterious_people_stance_restricted
+		NOT = {
+			AND = {
+				has_government = democratic
+				has_stability > constant:mysterious_people_ai.open_stability
+			}
+		}
+	}
 }
 
 # COUNTRY scope. Fascist and unstable crowded countries prefer Restricted
@@ -61,5 +72,19 @@ mysterious_people_ai_restricted_stance = {
 		has_stability < constant:mysterious_people_ai.restricted_stability
 		mysterious_people_country_is_overcrowded = yes
 	}
-	modifier = { factor = constant:mysterious_people_mtth.switch_factor has_country_flag = mysterious_people_stance_open }
+	# A country that already chose Open Integration switches only when it is
+	# fascist or unstable and crowded.
+	modifier = {
+		factor = 0
+		has_country_flag = mysterious_people_stance_open
+		NOT = {
+			OR = {
+				has_government = fascism
+				AND = {
+					has_stability < constant:mysterious_people_ai.restricted_stability
+					mysterious_people_country_is_overcrowded = yes
+				}
+			}
+		}
+	}
 }

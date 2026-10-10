@@ -61,7 +61,7 @@ Its values come from variables, so it never stacks per firing or per stage.
 | Overloaded building trades | Construction speed `-0.5%` per pressure point above `60`, up to `-20%`. |
 
 "Settled share" is settled newcomers divided by country population.
-Recruits need no modifier because the newcomers are real population and become recruitable through the engine (Part 2).
+The same modifier carries a `conscription_factor` equal to minus the unsettled share of the country population, so newcomers become recruitable as they settle (Part 2).
 
 ### Famine connection
 

@@ -10,7 +10,7 @@ No portals, alien silhouettes, laboratories, beams, science-fiction machinery, r
 
 ## Asset inventory
 
-All assets are **Pending**.
+All assets are implemented.
 Production follows `.claude/skills/chaos-redux-event-assets/SKILL.md` and the [asset prompt](../prompts/037_mysterious_people_asset_prompt.md), which owns sizes, paths, and the handoff format.
 
 | Asset | Consumer | Subject |
@@ -30,7 +30,7 @@ Event 037 adds no art for Famine, Migration, or camp actions.
 
 ## Achievements
 
-All three are **Pending** and live in `common/achievements/chaos_redux_achievements.txt` with the existing shared rules for game mode, country continuation, and persistence.
+All three are implemented and live in `common/achievements/chaos_redux_achievements.txt` with the existing shared rules for game mode, country continuation, and persistence.
 Their IDs follow the repository pattern for event achievements.
 
 ### `037_room_for_everyone`

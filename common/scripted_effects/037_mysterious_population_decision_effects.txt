@@ -48,6 +48,22 @@ mysterious_people_recount_from_hotspots = {
 	mysterious_people_refresh_modifier = yes
 }
 
+# STATE scope. A state outside the hotspot list is counted in its owner's
+# rest-of-country backlog, so a one-off reduction of its backlog (temp
+# mysterious_people_settle_now, in thousands) lowers that value too.
+mysterious_people_reduce_rest_backlog = {
+	if = {
+		limit = { NOT = { has_state_flag = mysterious_people_hotspot } }
+		OWNER = {
+			if = {
+				limit = { has_variable = mysterious_people_rest_unsettled_k }
+				subtract_from_variable = { mysterious_people_rest_unsettled_k = mysterious_people_settle_now }
+				clamp_variable = { var = mysterious_people_rest_unsettled_k min = 0 }
+			}
+		}
+	}
+}
+
 # STATE scope. Settles a share of this state's backlog at once.
 # Input temp mysterious_people_settle_share.
 mysterious_people_settle_state_share = {
@@ -60,6 +76,7 @@ mysterious_people_settle_state_share = {
 		subtract_from_variable = { mysterious_people_unsettled_k = mysterious_people_settle_now }
 		clamp_variable = { var = mysterious_people_unsettled_k min = 0 }
 		clear_variable = mysterious_people_loss_cause
+		mysterious_people_reduce_rest_backlog = yes
 		mysterious_people_refresh_after_state_action = yes
 	}
 }
@@ -68,10 +85,38 @@ mysterious_people_settle_state_share = {
 # earlier one. Inputs temps mysterious_people_event_factor_value and
 # mysterious_people_event_factor_days.
 mysterious_people_set_state_event_factor = {
+	set_temp_variable = { mysterious_people_rate_before = 0 }
+	if = {
+		limit = {
+			mysterious_people_state_has_unsettled = yes
+			has_variable = mysterious_people_rate_k
+		}
+		set_temp_variable = { mysterious_people_rate_before = mysterious_people_rate_k }
+		clamp_temp_variable = { var = mysterious_people_rate_before max = mysterious_people_unsettled_k }
+	}
 	set_variable = { mysterious_people_event_factor = mysterious_people_event_factor_value }
 	set_variable = { mysterious_people_event_factor_until = global.num_days }
 	add_to_variable = { mysterious_people_event_factor_until = mysterious_people_event_factor_days }
 	mysterious_people_refresh_after_state_action = yes
+	# A state outside the hotspot list is counted in its owner's rest-of-country
+	# settlement rate, which moves by the change in this state's capped rate.
+	if = {
+		limit = {
+			NOT = { has_state_flag = mysterious_people_hotspot }
+			mysterious_people_state_has_unsettled = yes
+			has_variable = mysterious_people_rate_k
+		}
+		set_temp_variable = { mysterious_people_rate_after = mysterious_people_rate_k }
+		clamp_temp_variable = { var = mysterious_people_rate_after max = mysterious_people_unsettled_k }
+		subtract_from_temp_variable = { mysterious_people_rate_after = mysterious_people_rate_before }
+		OWNER = {
+			if = {
+				limit = { has_variable = mysterious_people_rest_rate_k }
+				add_to_variable = { mysterious_people_rest_rate_k = mysterious_people_rate_after }
+				clamp_variable = { var = mysterious_people_rest_rate_k min = 0 }
+			}
+		}
+	}
 }
 
 # ---------------------------------------------------------------------------
@@ -121,6 +166,7 @@ mysterious_people_apply_shift = {
 # country that left the pulse registry loses the doubled bonus on time.
 # Input temp mysterious_people_boost_days.
 mysterious_people_schedule_modifier_refresh = {
+	add_to_temp_variable = { mysterious_people_boost_days = 1 }
 	country_event = { id = chaosx.nr37.8 days = mysterious_people_boost_days }
 }
 
@@ -217,21 +263,25 @@ mysterious_people_compute_project_factories = {
 # STATE scope. Starts a project: stores its factories on the state and adds
 # them to the country commitment. Input temp mysterious_people_project_kind.
 mysterious_people_start_project = {
-	mysterious_people_compute_project_factories = yes
-	set_variable = { mysterious_people_project_factories = mysterious_people_project_cost }
+	# The stored quote carries any flavour discount, so the committed
+	# factories match what the decision checked and showed.
 	if = {
 		limit = { check_variable = { mysterious_people_project_kind = constant:mysterious_people_code.project_housing } }
+		set_variable = { mysterious_people_project_factories = mysterious_people_quote_housing }
 		set_state_flag = mysterious_people_housing_running
 		clr_state_flag = mysterious_people_housing_discount
 	}
 	else_if = {
 		limit = { check_variable = { mysterious_people_project_kind = constant:mysterious_people_code.project_roads } }
+		set_variable = { mysterious_people_project_factories = mysterious_people_quote_roads }
 		set_state_flag = mysterious_people_roads_running
 		clr_state_flag = mysterious_people_roads_discount
 	}
 	else = {
+		set_variable = { mysterious_people_project_factories = mysterious_people_quote_city }
 		set_state_flag = mysterious_people_city_running
 	}
+	mysterious_people_refresh_state_quotes = yes
 	ROOT = {
 		add_to_variable = { mysterious_people_running_projects = 1 }
 		mysterious_people_refresh_project_commitment = yes

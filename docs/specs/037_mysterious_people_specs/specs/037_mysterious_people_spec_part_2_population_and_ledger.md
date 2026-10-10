@@ -13,7 +13,7 @@ It never replaces real population as the gameplay source of truth.
 
 ## Positive population helper
 
-**Pending.** The repository has a neutral loss helper, `apply_state_population_loss_without_recruitable_manpower_gain` in `common/scripted_effects/chaosx_dynamic_effects.txt`, but no neutral gain helper.
+**Implemented.** The repository had a neutral loss helper, `apply_state_population_loss_without_recruitable_manpower_gain` in `common/scripted_effects/chaosx_dynamic_effects.txt`, and Event 037 added the neutral gain helper beside it.
 The positive credit pattern exists twice in owner-specific form: `camp_occ_apply_population_credit` and `civilian_transfer_apply_destination_credit`.
 Both apply state `add_manpower`, measure the real population change, and remove the recruitable manpower the engine grants the owner and controller at the same moment.
 
@@ -22,7 +22,7 @@ The grant uses the measured applied amount for every later step.
 
 Removing the instant recruitable gain is how newcomers settle into the army: they become recruitable through the engine's ordinary recruitable-population growth instead of all at once.
 Whether that growth is gradual enough is an engine-proof gate for implementation.
-If it is instant, the fallback is a timed recruitable-population modifier that shrinks as unsettled newcomers settle, and that fallback needs user approval.
+Installed documentation cannot prove the growth rate, so the Newcomers modifier carries the closest faithful mechanism: a `conscription_factor` equal to minus the unsettled share, which keeps unsettled newcomers out of the recruitable target until they settle. Accepted by the release orchestrator on 2026-10-10 under the brief's instruction to implement the closest faithful mechanism and record the deviation; live confirmation is user-owned.
 
 ## Grant model
 

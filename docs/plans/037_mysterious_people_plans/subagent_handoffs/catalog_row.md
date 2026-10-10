@@ -7,17 +7,17 @@ Workbook: `docs/spreadsheets/chaos_redux_events_catalog.xlsx`, sheet `Events`, r
 | Cell | Header | Before | After |
 | --- | --- | --- | --- |
 | C38 | Details | A major country receives millions of unexplained new recruits. | People with homes, families and histories appear overnight in every inhabited land, and their neighbours cannot remember a time without them. The arrivals repeat, and each wave needs houses, work and food before the next one comes. Nobody knows where they come from. |
-| D38 | Evo I | (empty) | Population Surge: Each manifestation brings far more people, enough to fill new streets in every town. |
-| E38 | Evo II | (empty) | Overpopulation Crisis: Manifestations outgrow the housing and food of crowded regions. |
-| F38 | Evo III | (empty) | Humanity Multiplies: Manifestations large enough to swamp whole countries, and governments that begin counting origins. |
+| D38 | Evo I | (empty) | Each manifestation brings far more people, enough to fill new streets in every town. |
+| E38 | Evo II | (empty) | Manifestations outgrow the housing and food of crowded regions. |
+| F38 | Evo III | (empty) | Manifestations grow large enough to swamp whole countries, and governments begin counting origins. |
 | M38 | Status | To Be Reworked (fill FFF4B183) | Needs Testing (fill FFD9D2E9, Legend colour) |
 
 Unchanged: B38 Event Name (Mysterious People), G38 to I38 (Evo IV, Evo V, World-End Scenario, empty), J38 Type (Minor Repeatable), K38 Chaos level (1), L38 Cluster ID (15).
 
 ## Hashes
 
-- Before: `6aeab76b7cb5e094286ec6cfa9abdb5e1aa102937f84f14a1a0c91b588927334`
-- After: `d300319b751d3de3ae376eaba3b64fd32a5aef1e419f15f65065f5ee9bef2ce9`
+- First write, before: `6aeab76b7cb5e094286ec6cfa9abdb5e1aa102937f84f14a1a0c91b588927334`
+- Committed workbook (the previous commit's workbook with only row 38 changed, so other sessions' uncommitted catalog rows are not included): `56712223e16a2361a1c0aaf4cac56c8f67306fe89c6215c91ed19d282c3ad852`
 
 The before-copy was kept outside the tracked tree in the session scratchpad. The hash was rechecked immediately before replacement.
 
@@ -51,7 +51,7 @@ A CSV-parser check against the workbook found equal headers and zero mismatched 
 
 ## Gaps and review notes
 
-- The parent-specified Evo I to III cells carry the stage title as a lead-in (`Title: body`). Other event rows hold body text without a title. The localisation keeps titles separate. Kept as instructed; `needs_user_review` if the lead-in format should be aligned with other rows.
+- Evo I to III hold the stage body text without a title lead-in, like the other event rows; the titles stay in the localisation (`mysterious_people.evolution.stage_N.title`). The cells were aligned with the final localisation after the localisation audit.
 - Row height stays at the existing fixed 22.5. The longer Details and Evo texts may not fully show in a fixed-height row. This follows the existing row pattern and was not changed.
 - Visual inspection of the workbook was not performed.
 - Cluster 15 membership was not touched, so no cluster comparison was needed.
