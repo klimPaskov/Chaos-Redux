@@ -1,369 +1,149 @@
 # Recurring conventions and treaty families
 
-## Role of recurring conferences
+Per-family stage, eligible postures, quorum class, capability gate, reservation clause, benefits, obligations, and breach consequence are tabulated in [the treaty matrix](matrices/treaty_family_matrix.md).
+This file owns the conference process and what makes each family distinct.
 
-The opening convention establishes a living diplomatic process.
-
-Later conferences decide how members regulate, support, verify, and expand unconventional warfare.
-
-They are not repeated copies of the opening event.
-
-Each agenda changes access, obligations, doctrine, cooperation, or reaction logic in a distinct way.
-
-All treaty names in this file are working labels for design and implementation.
-
-Final player-facing names require the event localisation pass.
+Treaty names are working labels until the localisation pass.
 
 ## Conference scheduler
 
-Only one ordinary conference agenda can be active at a time.
+One agenda is active at a time.
+The coordinator schedules it with a self-rescheduling hidden event and reads only the registries.
 
-The scheduler uses the convention coordinator and registered member arrays.
+| Interval | Rule |
+| --- | --- |
+| First agenda | 90 to 180 days after the opening ([01](01_event_identity_and_playable_promise.md#early-pacing)) |
+| Later agendas | 180 to 360 days after the previous resolution, never below 120 |
+| Emergency agenda | 30 to 90 days after a public member CBRN use, a reservation breach, or a project cancellation |
 
-It does not use a recurring whole-world country scan.
+Established or Dominant Standing, a war between members, recent public CBRN use, and a newly activated evolution shorten the interval.
+Divided Standing, widespread reservations, and two consecutive failed agendas lengthen it.
+Provisional Standing pauses ordinary agendas and leaves only a reconstruction agenda.
 
-The first agenda starts after a dynamic interval between 90 and 180 days.
+## Agenda pool
 
-Later agendas use a base interval between 180 and 360 days.
+An agenda family is eligible when its evolution is active and enabled, its capability gate passes among current members, it is not already in force, and its failure cooldown has ended.
 
-The interval is shortened by:
+The pool is weighted by the campaign:
 
-- Established or Dominant standing
-- an active global war involving several members
-- recent public CBRN use
-- a large number of members with relevant technology
-- a failed agenda that left a high-priority issue unresolved
-- a newly activated evolution
+- Protection and assistance after a member suffers a CBRN attack
+- Inspection after hidden evidence disputes or a covert exposure
+- Delivery when members hold payloads without delivery technology
+- Nuclear when two or more members have nuclear technology
+- The newest unlocked family after an evolution activates
 
-The interval is lengthened by:
+The weighted agenda pool needs the probability workflow in [10](10_ai_behavior_and_probability_contract.md).
+Equal-probability selection applies only to Chaos weapon projects, never to agendas.
 
-- Provisional standing
-- a small valid membership registry
-- widespread reservations
-- recent repeated conference failure
-- no eligible agenda beyond renewals
+## Sponsor
 
-A normal agenda cannot begin within 120 days of the previous resolution.
+Each agenda has one sponsor: the eligible member with the best fit for the family (technology, industry, recent attack or use) outside a 365-day sponsorship cooldown.
 
-An emergency conference may begin after 30 to 90 days when a public CBRN action, treaty breach, catastrophic outbreak, project cancellation, or member attack creates a valid emergency issue.
-
-An emergency conference does not bypass evolution requirements.
-
-## Agenda pool construction
-
-Before each conference, Event 036 builds an eligible agenda pool from registered treaty families.
-
-An agenda is eligible only when:
-
-- its evolution requirement is active
-- the relevant evolution is enabled
-- enough valid countries can ratify it
-- its required technology or system exists in the repository
-- it is not already active in an equivalent or stronger form
-- it is not inside its failed-agenda cooldown
-- its required sponsor can be selected
-- its effects have valid owner adapters
-
-The pool may weight agendas according to the current campaign state.
-
-Protection agendas rise after members suffer CBRN attacks.
-
-Inspection agendas rise after evidence disputes.
-
-Delivery agendas rise when members have relevant weapons but weak delivery systems.
-
-Nuclear agendas rise when several members possess nuclear capability.
-
-The International Chaos Weapons Program Charter becomes eligible only under Evolution III and only when at least one registered unavailable project exists.
-
-Every weighted agenda surface requires the probability audit contract.
-
-The equal-random rule applies to Chaos weapon project selection, not ordinary treaty agenda selection.
-
-## Sponsor selection
-
-Every agenda has one sponsor.
-
-A sponsor must be a valid active member that can use the agenda and has enough diplomatic, military, scientific, or industrial capacity to support it.
-
-Sponsor selection considers:
-
-- posture compatibility
-- treaty history
-- relevant technology
-- industry
-- current war state
-- protection need
-- recent CBRN use or victim status
-- prior sponsorship cooldown
-- AI strategic priorities
-
-A human player can volunteer to sponsor an eligible agenda through a decision.
-
-Sponsorship provides influence over clause direction and creates implementation obligations.
-
-It does not give the sponsor control over other countries.
+A human member can claim sponsorship through Sponsor the Current Agenda while the agenda is open.
+The sponsor's ratification is automatic, its Lobby for Ratification counts double, and it must deliver the family's obligation first if the treaty enters force.
 
 ## Conference sequence
 
-Each ordinary conference uses five stages.
-
-### Agenda announcement
-
-Members and opponents learn the subject, sponsor, broad clause direction, ratification deadline, and public consequences.
-
-The announcement does not reveal hidden AI scores or surprise follow-up events.
-
-### Negotiation period
-
-The negotiation period lasts 60 to 120 days according to agenda complexity.
-
-Countries may lobby, offer assistance, demand reservations, organize opposition, publish evidence, or prepare implementation.
-
-The public display shows qualitative support as Weak, Contested, Strong, or Near Adoption.
-
-### National response
-
-Each eligible country selects one response:
-
-- ratify the proposal
-- ratify with an allowed reservation
-- reject the proposal while remaining in the convention
-- abstain
-- organize external opposition when it is not a member
-
-The available reservation depends on the agenda.
-
-A treaty that has no meaningful partial implementation should not offer a fake reservation.
-
-### Resolution
-
-An ordinary treaty enters force when it reaches both:
-
-- at least `max(3, ceiling(35% of eligible active members))` ratifiers
-- every agenda-specific capability requirement
-
-A strategic treaty under Evolution II uses at least `max(4, ceiling(45% of eligible active members))` ratifiers.
-
-An Evolution III arsenal or program charter uses at least `max(5, ceiling(50% of eligible active members))` ratifiers and requires either one valid major contributor or two valid industrial and scientific contributors.
-
-These formulas must be centralized and tested against low-country-count worlds.
-
-A successful treaty applies only to ratifying countries and compatible reservation members.
-
-It does not force a rejected clause on all convention members.
-
-### Implementation and review
-
-Persistent framework treaties remain active until withdrawal, replacement, or convention collapse.
-
-Operational assistance programs may last 365 days and can be renewed.
-
-Implementation missions enforce declarations, inspections, deliveries, facility commitments, or retaliation guarantees.
-
-A later conference can strengthen, replace, suspend, or repeal an earlier treaty.
-
-## Treaty family matrix
-
-### Protection and Assistance Compact
-
-Availability: Baseline.
-
-Purpose: create shared access to masks, protective equipment, decontamination, detection, emergency medical aid, and assistance after attack.
-
-Ratifier benefits can include protection research bonuses, production cooperation, emergency aid decisions, and faster access to compatible protection projects.
-
-Ratifier obligations can include equipment deliveries, convoy access, or a timed assistance mission after another ratifier is attacked.
-
-Failure to assist weakens trust and future guarantee support.
-
-This treaty cannot erase casualties, evidence, or responsibility.
-
-### Chemical Production and Delivery Articles
-
-Availability: Baseline.
-
-Purpose: recognize chemical production, stockpiling, and delivery as legitimate military preparation among ratifiers.
-
-The treaty increases chemical research and production priority, supports compatible delivery research, and creates declarations or quotas according to the accepted clause.
-
-It grants no chemical technology, cylinder, shell, bomb, projector, or stockpile directly.
-
-A restrictive clause can emphasize declaration and safety.
-
-A permissive clause can emphasize production and transfer.
-
-### Biological Laboratory Registry
-
-Availability: Baseline.
-
-Purpose: establish a weak international registry for biological laboratories, containment standards, research cooperation, and declared military programs.
-
-The registry should be less reliable than the chemical inspection system.
-
-Ratifiers may receive biological research bonuses, containment support, and laboratory cooperation.
-
-They also accept exposure risk when declarations conflict with public evidence.
-
-The registry cannot provide a universal verification claim that the underlying game systems cannot prove.
-
-### Inspection and Verification Protocol
-
-Availability: Baseline.
-
-Purpose: create declarations, inspections, clarification requests, and evidence publication routes.
-
-The chemical branch can use stronger inspection rights.
-
-The biological branch relies more on declarations, intelligence, confidence-building measures, and bounded site access.
-
-A successful inspection reveals only evidence the shared system can prove.
-
-Refusal can create suspicion and treaty breach.
-
-Falsification can create cover-up Condemnation after valid exposure.
-
-### Retaliation Guarantee
-
-Availability: Baseline.
-
-Purpose: promise assistance, sanctions, protection deliveries, intelligence support, or retaliation planning when a ratifier suffers a public CBRN attack.
-
-The treaty does not force an automatic war declaration.
-
-Countries choose a guarantee level during ratification.
-
-A member that fails its guarantee loses trust and may lose access to stronger joint doctrine treaties.
-
-### Missile and Delivery Cooperation Accord
-
-Availability: Evolution I.
-
-Purpose: connect chemical, biological, missile, rocket, aircraft, and other compatible delivery research.
-
-Benefits use research bonuses, owner-approved project progress, and production priority.
-
-The treaty never creates missiles or payloads without ordinary production.
-
-### First-Use Revision
-
-Availability: Evolution I.
-
-Purpose: remove or narrow first-use restrictions among ratifiers.
-
-Clause variants can authorize chemical first use, authorize chemical and biological first use, or retain biological restrictions while accepting chemical first use.
-
-A nuclear first-use clause remains separate and receives lower support.
-
-Ratification changes public policy, AI willingness, and Event 036 Condemnation treatment.
-
-It does not bypass target, payload, readiness, or physical-use gates.
-
-### Biological Mobilization Articles
-
-Availability: Evolution I.
-
-Purpose: move biological programs from research legitimacy toward operational stockpiling and delivery preparation.
-
-The treaty increases biological research, containment, stockpile, delivery, and protection priorities.
-
-It retains a stronger outbreak and civilian-harm floor than chemical treaties.
-
-### Strategic WMD Doctrine Charter
-
-Availability: Evolution II.
-
-Purpose: integrate chemical, biological, nuclear, missile, protection, and conventional operations into one planning doctrine.
-
-Ratifiers gain access to strategic integration decisions, joint planning, reserve targets, protection requirements, and doctrine modifiers.
-
-The treaty should change AI planning and use, not add a generic combat-stat package.
-
-### Nuclear Materials and Targeting Accord
-
-Availability: Evolution II.
-
-Purpose: support nuclear research, materials, delivery systems, retaliation planning, and accepted military or industrial targeting doctrine.
-
-The treaty grants no nuclear weapons.
-
-It can provide research bonuses and owner-approved special-project progress when a valid project exists.
-
-Populated-capital and thermonuclear actions remain outside ordinary relief.
-
-### Allied CBRN Command Compact
-
-Availability: Evolution II.
-
-Purpose: coordinate ratifying allies through targeting doctrine, protection, reserve planning, and retaliation support.
-
-The compact applies only between compatible ratifiers that are allied or in the same faction.
-
-It does not convert the convention into a faction.
-
-It must have an AI-equivalent path for countries without a player-facing interface.
-
-### Arsenal Without Limits Articles
-
-Availability: Evolution III.
-
-Purpose: remove most remaining production, stockpile, transfer, and first-use restraint among ratifiers.
-
-The treaty sharply lowers ordinary member-on-member diplomatic backlash and unlocks the strongest CBRN doctrine behavior.
-
-It preserves severity floors, thermonuclear treatment, atrocity sources, cover-up sources, and physical consequence systems.
-
-### International Chaos Weapons Program Charter
-
-Availability: Evolution III.
-
-Purpose: establish the shared program described in `08_international_chaos_weapons_program.md`.
-
-The charter enters force only when the registered project pool contains at least one eligible project and the ratification capability gate is met.
-
-Once active, the program persists through project completion, cancellation, dormancy, and reselection until the charter is repealed or the convention becomes unable to maintain it.
+1. **Announcement.**
+   A report event names the sponsor, the subject, the clause dispute, and the deadline.
+2. **Negotiation, 60 to 120 days.**
+   The header shows the ratification count against the quorum.
+   Members can lobby, opponents can organize opposition, and AI response weights move with those actions.
+3. **National response.**
+   At the deadline each eligible human member receives a response event with up to three options: Ratify, Ratify with the family's reservation clause where the matrix defines one, or Decline.
+   A human who does not answer declines.
+   AI members resolve through their response weights.
+4. **Resolution.**
+   The treaty enters force when the ratifications meet the quorum and the capability gate still passes.
+   It binds only its ratifiers.
+5. **Implementation.**
+   Framework treaties persist until withdrawal or repeal, and operational programs last 365 days with renewal at a later agenda.
+   Obligations open the implementation missions in [09](09_decisions_missions_costs_and_visibility.md#mission-catalog).
+
+## Quorum
+
+| Quorum class | Ratifications needed | Additional rule |
+| --- | --- | --- |
+| Ordinary | `max(3, ceiling(35% of active members))` | The family's capability gate |
+| Strategic | `max(4, ceiling(45% of active members))` | Ratifiers cover the family's capability gate |
+| Arsenal | `max(5, ceiling(50% of active members))` | One major ratifier or two ratifiers with at least 40 factories each |
+
+Chemical Accession members count only for families they may ratify.
+The minimums and percentages are script constants and must be checked in a world with five or fewer members.
+
+## Treaty families
+
+### Baseline
+
+**Protection and Assistance Compact.**
+Shared masks, decontamination, detection, and medical aid, plus the guarantee clause: when a ratifier suffers a confirmed hostile CBRN action, every other ratifier receives an Assistance Guarantee mission.
+The mission is fulfilled by delivering protective equipment or by the existing `cbrn_sponsor_decontamination_mission`, for which Compact ratification counts as valid access.
+Failing it suspends the ratifier.
+
+**Chemical Production Articles.**
+Chemical production and stockpiling become declared military preparation.
+Ratifiers gain chemical research and production modifiers and a Declaration Deadline mission every 365 days, where a missed declaration suspends them.
+The reservation clause keeps declarations and drops the production modifiers.
+
+**Biological Laboratory Registry.**
+A weak registry for laboratories and containment.
+Ratifiers gain biological research and containment modifiers and the same declaration obligation.
+It never claims verification the game cannot prove, and a covert biological program inside a ratifier is exposed only through ordinary disclosure.
+
+**Inspection and Verification Protocol.**
+Ratifiers may use `cbrn_demand_inspections` against another ratifier without the Formal Censure and sanctions-participant requirements.
+Accepted inspections start the existing international inspections and disclose hidden evidence, including camp and restricted-site atrocity evidence.
+Refusal records the existing blocked-inspection cover-up source and suspends the refuser.
+The reservation clause limits it to chemical inspections.
+
+### Evolution I
+
+**First-Use Revision.**
+Two clauses, chemical and biological, each ratified separately in the same response event.
+A ratified clause makes first use of that family policy-compatible, moves the country to relief stage I for the family, and raises AI first-use willingness.
+The biological clause also raises biological stockpile and delivery priorities.
+Chemical Accession members can ratify only the chemical clause, and Retaliation Reservation members cannot ratify either without repealing.
+Nuclear first use is not a clause, it belongs to the Nuclear Materials and Targeting Accord.
+
+**Missile and Delivery Cooperation Accord.**
+Research bonuses for rockets, missiles, and air delivery, and owner-approved special-project progress where a delivery project exists.
+It never creates missiles or payloads.
+
+### Evolution II
+
+**Strategic WMD Doctrine Charter.**
+Ratifiers can run the Doctrine Integration mission ([06](06_evolution_ii_strategic_wmd_doctrine.md#integrated-doctrine)), whose success moves them to relief stage II.
+Its allied clause lets ratifiers in the same faction share protective equipment and assistance without an assistance request.
+Reservation members can ratify its defensive sections only.
+
+**Nuclear Materials and Targeting Accord.**
+Nuclear research cooperation, nuclear relief stage II, and higher AI willingness against military, industrial, and logistical targets.
+It grants no bomb, and capital and thermonuclear limits in [03](03_condemnation_normalization_and_cbrn_integration.md#eligible-contexts) still hold.
+
+### Evolution III
+
+**Arsenal Without Limits Articles.**
+Relief stage III, every use policy-compatible for its ratifiers, the strongest AI production and use priorities, and minimal member-on-member sanction pressure.
+Every hard limit in [07](07_evolution_iii_arsenal_without_limits.md#remaining-hard-limits) remains.
+
+**International Chaos Weapons Program Charter.**
+Opens the program in [08](08_international_chaos_weapons_program.md) when at least one registered project is eligible.
 
 ## Research cooperation
 
-Treaty research cooperation should use timed research bonuses, owner-approved special-project progress, or bounded scripted helpers.
-
-Do not rely on a permanent research-sharing membership that the event cannot later revoke cleanly.
-
-A country that leaves a treaty loses future bonuses and contribution access.
-
-Already completed research is never removed.
+Treaty research help uses timed research bonuses, owner-approved special-project progress, or modifiers on the posture idea.
+Event 036 never creates a native research-sharing group, because one cannot be revoked cleanly.
+Leaving a treaty ends future bonuses and never removes completed research.
 
 ## Agenda failure
 
-A failed agenda records:
+A failed agenda records its family, sponsor, final count, and failure date.
+It starts a 180-day cooldown after a narrow failure (at least two-thirds of the quorum) and a 365-day cooldown otherwise.
+A failure costs the sponsor political power and gives the Opposition Leader a 90-day lobbying bonus.
+Failure creates no Chaos.
 
-- sponsor
-- agenda family
-- support state
-- ratifiers
-- reservation count
-- opponents
-- failure date
-- retry cooldown
+## Collapse and reconstruction
 
-Failure can weaken Convention Standing, empower the opposition leader, increase withdrawal willingness, or unlock a narrower compromise agenda.
-
-Failure does not create generic Chaos by itself unless the failed proposal had already produced a concrete destabilizing action.
-
-## Convention collapse and reconstruction
-
-If active membership falls below the minimum viable network, Convention Standing becomes Provisional and ordinary conferences pause.
-
-Members retain their national posture and active treaty history.
-
-The coordinator opens a reconstruction agenda after a dynamic delay.
-
-Public opponents may attempt to keep the convention below quorum.
-
-Successful reconstruction creates a new membership generation only when the previous registry is invalid or structurally stale.
-
-A routine drop in membership does not wipe every treaty or project automatically.
-
-An active Chaos weapon project pauses if the program charter loses its capability quorum.
-
-It resumes when quorum returns unless the selected weapon became normally available during the pause, in which case it cancels.
+When Standing becomes Provisional, ordinary agendas pause, treaties already in force stay active, and the coordinator opens a reconstruction agenda after 90 days.
+Reconstruction succeeds when Standing leaves Provisional, which needs accessions rather than a vote.
+An active project pauses while the program charter's ratifiers fall below the Arsenal quorum and resumes when they return, as [08](08_international_chaos_weapons_program.md#quorum-pause) describes.

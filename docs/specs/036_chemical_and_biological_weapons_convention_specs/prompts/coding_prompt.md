@@ -1,68 +1,33 @@
-# Full coding prompt
+# Coding prompt
 
-Implement Chaos Redux Event 036, Chemical and Biological Weapons Convention, from the complete source specification folder at `docs/specs/036_chemical_and_biological_weapons_convention_specs/`.
+Implement Chaos Redux Event 036, Chemical and Biological Weapons Convention, from `docs/specs/036_chemical_and_biological_weapons_convention_specs/`.
 
-Apply the README's acceptance rules and resolve acceptance bases and current catalog state before treating mapped proposals as approved changes.
+Read the README first, including its acceptance basis and open questions.
+Do not implement a Proposal or resolve an open question without the user's decision.
+The README's map names the owning file for each topic, and `CLAUDE.md` owns the general workflow, references, audits, and completion rules.
 
-Treat every mapped mechanic, posture, treaty family, evolution, achievement, asset, AI surface, catalog field, and acceptance scenario as required unless the source spec explicitly marks it conditional on live repository support.
+## Starting state
 
-## Required preparation
-
-Fully read `AGENTS.md`, every Event 036 spec and matrix, `chaos-redux-events`, `chaos-redux-decisions-missions`, `chaos-redux-event-assets`, `chaos-redux-improvement-loop`, `chaos-redux-subagents`, relevant CBRN and project documentation, the offline Paradox wiki pages, vanilla documentation, vanilla precedents, and current Chaos Redux precedents.
-
-Inspect the current Event 036 implementation and every connected chemical, biological, nuclear, protection, evidence, Condemnation, Deaths, Air Cleanliness, missile, project, event-log, evolution, achievement, and catalog surface.
-
-Use the mandatory HOI4 MCP event, probability, technology, GUI, and other supported routes for every in-scope surface.
-
-Do not treat source-only review as equivalent when an MCP route is required.
+Slot 36 holds the Alien Spacecraft stub (`events/036_alien_spacecraft.txt`) whose receipts feed Event 016 and Event 025.
+No Event 036 convention source exists yet.
 
 ## Implementation order
 
-1. Map exact live files, identifiers, owner APIs, and candidate weapon projects.
-2. Register Event 036 as Minor Fire-Once, Chaos level 1, Diplomacy cluster, High severity.
-3. Implement canonical setup, human and AI opening responses, membership generations, all five postures, Convention Standing, accession, revision, withdrawal, opposition, and covert exposure.
-4. Integrate source-specific Condemnation multipliers, severity floors, one-time normalization, action snapshots, evidence, protection, deaths, contamination, first-use, retaliation, and repeat-use behavior.
-5. Implement the bounded recurring conference scheduler, sponsors, agendas, votes, reservations, quorums, implementation missions, failure memory, collapse, and reconstruction.
-6. Implement all three ordered evolutions with zero Chaos on activation and correct enable handling.
-7. Implement the provider-based International Chaos Weapons Program from live repository sources, with uniform project selection, contributions, immediate cancellation callbacks, atomic completion, contributor-only grants, dormancy, pause, and source isolation.
-8. Implement the phased decision category, missions, costs, selected targets, AI equivalents, cleanup, and save state.
-9. Implement event chains, news, Event History, Event Details, evolution views, AI, achievements, assets, localisation, documentation, and workbook alignment.
-10. Run the improvement loop, specialist audits, acceptance scenarios, final completion audit, and source reconciliation.
+1. Discovery: map the identifiers listed in [15](../15_acceptance_and_completion_contract.md#discovery-before-implementation) and every event-gated weapon special project with its access trigger.
+2. Remove Alien Spacecraft from slot 36 and relocate its alien jet recovery into Event 025 with unchanged receipt names ([01](../01_event_identity_and_playable_promise.md#legacy-alien-spacecraft-relocation)); coordinate the Event 025 side with that event's owner.
+3. Register the event (Minor Fire-Once, Chaos level 1) and its cluster 3 member row.
+4. Opening, responses, registries, Standing, coordinator, Opposition Leader, posture ideas, and the covert program ([01](../01_event_identity_and_playable_promise.md), [02](../02_national_postures_and_membership.md)).
+5. Condemnation hooks, retaliation, reservation breach, participant-score term, and opening normalization ([03](../03_condemnation_normalization_and_cbrn_integration.md)), using `chaosx_scripted_system_architect` for the shared adapters.
+6. Scheduler, responses, quorums, the ten families, failure, and collapse ([04](../04_recurring_conventions_and_treaty_families.md)).
+7. Evolutions and integrated doctrine ([05](../05_evolution_i_first_use_becomes_acceptable.md) to [07](../07_evolution_iii_arsenal_without_limits.md)).
+8. Program: provider rows and access flags from live source, equal selection, contributions, completion, cancellation calls, dormancy, pause, and lapse ([08](../08_international_chaos_weapons_program.md)).
+9. Decision category and missions ([09](../09_decisions_missions_costs_and_visibility.md)), with the existing CBRN actions extended rather than copied.
+10. AI and probability evidence ([10](../10_ai_behavior_and_probability_contract.md), [the AI matrix](../matrices/ai_probability_scenarios.md)).
+11. Event chain, logs, Event Details, news, and localisation ([11](../11_event_chain_reactions_and_localisation_direction.md)), then [the localisation prompt](localisation_prompt.md).
+12. Chaos outcomes ([12](../12_chaos_impact_and_cross_event_connections.md)), achievements ([13](../13_achievements.md), [the achievement prompt](achievement_prompt.md)), and assets ([the asset prompt](asset_prompt.md)).
+13. Documentation under `docs/` for the mechanic, the workbook ([the spreadsheet prompt](spreadsheet_alignment_prompt.md)), the acceptance scenarios, and [the completion audit](completion_audit_prompt.md).
 
-## Hard rules
+## Event-specific hard rules
 
-Do not grant free weapons or technology on opening.
-
-Do not guess a Chaos weapon list.
-
-Do not fire source events through the international project.
-
-Do not change source-event weight, history, countries, crises, evolutions, threats, super-events, narrative, or terminal state through a project grant.
-
-Do not weight project selection strategically.
-
-Do not reduce thermonuclear, atrocity, cover-up, doomsday, catastrophic outbreak, or extreme civilian consequences below their specified floors.
-
-Do not suppress deaths, contamination, evidence, attribution, or generic Chaos.
-
-Do not add a whole-world recurring daily or monthly scan.
-
-Do not create a custom interface unless an accepted follow-up plan proves it is necessary.
-
-Do not edit catalog CSVs directly.
-
-Do not use placeholders or unreported simplifications.
-
-## Subagent routing
-
-Use context-free project specialists where required.
-
-Use the scripted-system architect for reusable provider and ledger design, the decision auditor for the completed category, the probability auditor before and after weighted changes, the localisation auditor for all visible text, the generated-art and icon workers for authorized assets, the spreadsheet worker for the XLSX, the improvement planner after a meaningful tranche, and the event completion auditor before any completion claim.
-
-The parent owns integration and reviews every handoff.
-
-## Final evidence
-
-Produce a completion report that lists exact files, IDs, provider rows, callbacks, source-isolation proofs, probability comparisons, decisions, missions, assets, achievements, documentation, workbook changes, acceptance results, blockers, and every simplification.
-
-Do not mark the goal complete while any accepted surface, audit, final asset, localisation key, AI path, provider callback, catalog field, or source-isolation proof is missing.
+The non-negotiable boundaries in [00](../00_master_spec.md#non-negotiable-boundaries) apply throughout.
+Every shared-owner change (Condemnation, CBRN diplomacy, special-project access triggers, cluster registry) is a narrow adapter documented by its owner.

@@ -1,210 +1,111 @@
 # Event 036 achievements
 
-## Achievement design rules
+Titles are working titles and the ids are stable.
+Each achievement needs tracking flags, an unlock trigger, disqualifiers that survive save and reload, localisation, and the three image states from [14](14_asset_requirements.md#achievement-assets), following [the custom achievements system](../../systems/custom_achievements.md).
 
-These are working titles and stable technical IDs.
-
-Final names and descriptions require the localisation pass.
-
-Each achievement needs:
-
-- exact tracking flags and variables
-- unlock trigger
-- disqualifiers
-- save persistence
-- three achievement image states
-- documentation
-- catalog or achievement surface alignment
-
-Achievements must use CBRN action records, treaty receipts, posture history, project receipts, and source-event isolation proofs.
-
-They must not infer conduct from current ideas alone.
+Proof comes from posture history flags, treaty ratification receipts, the CBRN action ledger, and program contribution receipts.
+A current idea or posture alone never proves a route, and a disqualified route never becomes valid again.
 
 ## `chaosx_036_the_reservation_holds`
 
-Working title: The Reservation Holds.
-
-Playable challenge: remain inside the convention without authorizing offensive first use.
+The Reservation Holds: stay inside the convention to the end without ever starting a war of gas or plague.
 
 Requirements:
 
-- adopt Retaliation Reservation during the opening or before Evolution I
-- remain an active reservation member when Evolution III activates
-- ratify the Protection and Assistance Compact
-- ratify the Inspection and Verification Protocol
-- ratify a Retaliation Guarantee
-- never create a chemical, biological, or nuclear action record marked as first use
+- hold Retaliation Reservation from the opening or from before Evolution I
+- still hold it when Evolution III is recorded
+- have ratified the Protection and Assistance Compact and the Inspection and Verification Protocol
+- never appear as attacker on a CBRN ledger row marked first use
 
-Valid retaliatory use does not disqualify the achievement.
+Valid retaliation does not disqualify.
+Repeal, withdrawal, expulsion, a reservation breach, or a covert program disqualifies.
 
-Disqualifiers:
-
-- repeal the reservation
-- initiate chemical, biological, nuclear, or thermonuclear use
-- leave the convention before Evolution III
-- use a covert preparation route
-
-Icon direction: a sealed treaty beneath a gas mask and shield, with an unbroken red line across offensive weapon silhouettes.
+Icon direction: a sealed treaty under a gas mask and shield, with an unbroken red line across offensive weapon silhouettes.
 
 ## `chaosx_036_a_convention_against_the_convention`
 
-Working title: A Convention Against the Convention.
-
-Playable challenge: lead the public opposition and break the permissive order through diplomacy.
+A Convention Against the Convention: lead the opposition and break the permissive order through diplomacy.
 
 Requirements:
 
-- choose Public Rejection without covert preparation
-- become the Opposition Leader
-- after Evolution II becomes active, either defeat the Arsenal Without Limits vote or reduce Convention Standing from Established or Dominant to Provisional through public withdrawals
-- keep the country’s public Condemnation below Formal Censure at completion
+- hold Public Rejection from the opening without ever running a covert program
+- be the Opposition Leader when the decisive outcome happens
+- after Evolution II is recorded, either see an Arsenal Without Limits agenda fail or see Standing fall from Established or Dominant to Provisional
+- have public Condemnation below Formal Censure at that moment
 
-Disqualifiers:
+Joining the convention, starting a covert program, or appearing as attacker on a first-use ledger row disqualifies.
 
-- join the convention
-- start covert preparation
-- initiate a public unconventional attack
-- lose Opposition Leader status before the decisive outcome
-
-Icon direction: a treaty document split by a clean black prohibition bar, surrounded by withdrawing national seals.
+Icon direction: a treaty split by a clean black prohibition bar, surrounded by withdrawing national seals.
 
 ## `chaosx_036_small_state_large_ledger`
 
-Working title: Small State, Large Ledger.
+Small State, Large Ledger: make a minor country indispensable to a shared weapons program.
 
-Playable challenge: make a minor country indispensable to a shared Chaos weapon project.
+Requirements:
 
-Snapshot requirement at project selection:
+- when the project is selected, the country is not a major and has at most 15 civilian and military factories, recorded as a snapshot
+- complete contributions in at least three different families for that project
+- apply at least `8%` of its final progress
+- receive the grant at completion
 
-- country is not a major
-- country has no more than 15 total civilian and military factories
+Withdrawal before completion or receiving the project through another route first disqualifies for that project.
 
-Completion requirements:
-
-- complete at least three distinct contribution families
-- contribute at least `8%` of the final applied project progress
-- remain an active valid participant at completion
-- receive the registered prerequisite through the program
-
-Disqualifiers:
-
-- become a major before the first contribution completes
-- receive the prerequisite through the normal route before program completion
-- withdraw before completion
-
-Icon direction: a small national ledger beside a large shared laboratory apparatus, with three distinct contribution symbols entering one progress seal.
+Icon direction: a small national ledger beside a large shared apparatus, with three contribution symbols entering one seal.
 
 ## `chaosx_036_without_the_incident`
 
-Working title: Without the Incident.
-
-Playable challenge: complete a registered Chaos weapon route without triggering its source incident.
+Without the Incident: receive a Chaos weapon project through the program before the world ever sees its source event.
 
 Requirements:
 
-- participate in a successful International Chaos Weapons Program project
-- receive the registered prerequisite
-- prove that the source event was not fired
-- prove that the normal source route remained unavailable immediately before the atomic completion transaction
-- prove that no source crisis, country, evolution, threat, super-event, or terminal state was activated by the grant
+- receive a program grant at completion
+- the grant's provider still had a false global normal-route proof at completion, which the completion transaction already guarantees
 
-Disqualifiers:
-
-- source event fires before completion
-- project is cancelled by normal availability
-- prerequisite was already owned before the project
-
-Icon direction: an unopened event dossier beside a completed research key, with the incident seal visibly intact.
+Icon direction: an unopened dossier beside a completed research key, with its seal intact.
 
 ## `chaosx_036_the_secret_article`
 
-Working title: The Secret Article.
-
-Playable challenge: maintain a concealed unconventional program behind public rejection.
+The Secret Article: keep a covert program hidden while the world believes your rejection.
 
 Requirements:
 
-- choose Public Rejection with Covert Preparation
-- complete one valid chemical or biological research milestone through ordinary research
-- reach the provider-defined minimum compatible stockpile or readiness threshold
-- remain unexposed for 365 days after both conditions are true
+- run a covert program
+- research one chemical or biological technology of the program's family while the program runs
+- hold at least one unit of a chemical or biological payload of that family in stock
+- stay unexposed for 365 days after both conditions are met
 
-Disqualifiers:
+Joining the convention, ending the program, or exposure before the timer ends disqualifies.
 
-- join the convention before the timer completes
-- end covert preparation
-- become publicly exposed
-- receive the capability through a free grant or invalid route
-
-Icon direction: a folded treaty page concealing a laboratory diagram and sealed cylinder, with a narrow intelligence-eye motif.
+Icon direction: a folded treaty page hiding a laboratory sketch and a sealed cylinder, with a narrow eye motif.
 
 ## `chaosx_036_masks_before_missiles`
 
-Working title: Masks Before Missiles.
-
-Playable challenge: build protection and survive an enemy unconventional attack without initiating one.
+Masks Before Missiles: take a gas or plague attack and come through it without ever striking first.
 
 Requirements:
 
-- ratify the Protection and Assistance Compact
-- ratify the Inspection and Verification Protocol
-- ratify a Retaliation Guarantee
-- reach the owner-defined high protection state
-- become the victim of a valid hostile chemical, biological, or nuclear action
-- receive a casualty-mitigation receipt proving that protection reduced harm
-- never create a first-use CBRN action record
+- have ratified the Protection and Assistance Compact
+- be the affected country of a confirmed hostile CBRN ledger row while ratified
+- receive at least one Assistance Guarantee delivery or decontamination mission from another ratifier for that attack
+- end that war without capitulating
+- never appear as attacker on a first-use ledger row
 
-Disqualifiers:
-
-- initiate unconventional use
-- falsify an inspection declaration
-- leave every relevant protection treaty before the hostile action
-
-Icon direction: rows of gas masks and medical filters in the foreground, with a distant missile silhouette stopped by a protective shield.
+Icon direction: rows of gas masks and filters in the foreground, with a distant missile stopped by a shield.
 
 ## `chaosx_036_all_articles_invoked`
 
-Working title: All Articles Invoked.
-
-Playable challenge: use the complete permissive doctrine in one war.
+All Articles Invoked: use the whole permissive doctrine in one war.
 
 Requirements:
 
-- hold Full Ratification
-- ratify a chemical and biological first-use article
-- ratify the Strategic WMD Doctrine Charter
-- ratify the Arsenal Without Limits Articles
-- during one continuous war, create one valid attributed chemical first-use action record
-- during the same war, create one valid attributed biological first-use action record
-- during the same war, create one valid attributed nuclear first-use action record
+- hold Full Ratification with both First-Use Revision clauses, the Strategic WMD Doctrine Charter, and the Arsenal Without Limits Articles ratified
+- during one continuous war, appear as attacker on a chemical first-use ledger row and a biological first-use ledger row
+- during the same war, carry out a non-thermonuclear nuclear strike
 
-Disqualifiers:
+Thermonuclear strikes, Final Silence, and doomsday releases do not count, and losing a required ratification before the last action disqualifies.
 
-- use a thermonuclear weapon for the nuclear requirement
-- use a doomsday effect
-- satisfy two requirements from one duplicated action record
-- lose the required ratifications before the third action
+Icon direction: chemical, biological, and nuclear symbols arranged as clauses around one signed doctrine seal.
 
-Icon direction: three distinct chemical, biological, and nuclear symbols arranged as clauses around one signed military doctrine seal.
+## Asset rule
 
-## Achievement tracking architecture
-
-Use event-owned stable flags for route history and arrays or variables for project share.
-
-Use the shared CBRN action ledger for first-use, retaliation, victim, attribution, and weapon-family proof.
-
-Use treaty receipts for ratification proof.
-
-Use the project history for source isolation and contribution proof.
-
-Snapshot small-country eligibility when the project is selected so later economic growth does not invalidate legitimate play.
-
-Every achievement must remain disabled in observer, invalid setup, or unsupported test states according to the repository achievement framework.
-
-## Asset requirements
-
-Each achievement needs an original asset family designed for the achievement surface.
-
-Create the normal, grey, and not-eligible states under the root achievement folder using filenames that match the full achievement ID.
-
-Do not derive the achievement art by resizing a decision or idea icon.
+Each achievement has its own master art and its normal, grey, and not-eligible states, never resized from a decision or idea icon.

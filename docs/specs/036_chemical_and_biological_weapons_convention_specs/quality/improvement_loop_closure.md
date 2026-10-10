@@ -1,5 +1,10 @@
 # Improvement-loop closure
 
+This is the historical record of the original planning loop and is not a requirement source.
+The 2026-10-10 audit changed several resolutions below, folding three treaty families, replacing the separate first-use and integration states with existing systems, and reusing existing CBRN actions.
+The README changelog lists every change.
+After a meaningful implementation tranche, `chaosx_improvement_loop_planner` may review the implemented event under `CLAUDE.md` routing.
+
 ## Playable promise reviewed
 
 The event promises a world in which governments openly rewrite the rules of unconventional warfare.

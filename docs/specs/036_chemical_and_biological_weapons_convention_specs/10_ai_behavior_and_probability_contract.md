@@ -1,285 +1,71 @@
-# AI behavior and probability contract
+# AI behaviour and probability contract
 
-## AI design purpose
+AI chooses from its military, diplomatic, scientific, and industrial situation.
+Ideology adjusts weights but never replaces capability and campaign logic.
 
-AI must understand Event 036 as a strategic diplomatic system.
+Named scenarios and their expected orderings live in [the AI matrix](matrices/ai_probability_scenarios.md).
+The probability workflow and auditor routing follow `CLAUDE.md` and [the subagent skill](../../../.claude/skills/chaos-redux-subagents/SKILL.md).
 
-It should choose a posture and later actions from its actual military, diplomatic, scientific, industrial, and humanitarian situation.
+## Hard gates
 
-Government ideology can influence choices, but it cannot replace capability and campaign logic.
+Every weight is zero when the country is ineligible, the target is invalid, the action cannot be paid, the evolution is disabled, the project is paused or cancelled, the participant trigger is false, or the action would duplicate a receipt.
+No positive factor overrides a hard gate.
 
-## Opening posture evaluation
+## Opening posture
 
-### Full Ratification score factors
+| Response | Raised by | Lowered by |
+| --- | --- | --- |
+| Full Ratification | Chemical and biological technology, strong industry, war or expected major war, high Condemnation tolerance, existing Condemnation that normalization would cut | No CBRN capability, low threat, leading role among opponents |
+| Chemical Accession Only | Chemical capability without a biological program, outbreak fear | Biological program central to strategy |
+| Retaliation Reservation | Threat without capability, recent victim of CBRN use, minor or subject status, democratic government | Planned offensive use |
+| Public Rejection | Little military benefit, high diplomatic weight among holdouts, active sanctions against users | Need for protection or program access |
+| Reject publicly, prepare in secret | Public restraint combined with research capacity and a non-democratic government | Weak research base, existing exposure, low threat |
 
-Increase willingness when the country:
+The covert response stays uncommon and situational.
 
-- already possesses chemical or biological technology
-- has strong industry and research capacity
-- is at war or expects a major war
-- has missile, aircraft, nuclear, or protection relevance
-- tolerates public Condemnation
-- seeks a research or military network
-- has recently used or suffered unconventional warfare
-- is aligned with a likely sponsor
+## Treaty responses
 
-Reduce willingness when the country:
-
-- has no relevant capability or strategic need
-- strongly prioritizes public restraint
-- has high public Condemnation and low tolerance for further sanctions
-- faces internal instability that makes ratification costly
-- is a leading public opponent of unconventional warfare
-
-### Chemical Accession score factors
-
-Increase willingness when the country:
-
-- has chemical technology or production capacity
-- lacks a viable biological program
-- fears uncontrolled outbreaks
-- wants protection and delivery cooperation
-- prefers a narrower military commitment
-
-Reduce willingness when biological capability is central to national strategy or when the country rejects all unconventional normalization.
-
-### Retaliation Reservation score factors
-
-Increase willingness when the country:
-
-- prioritizes protection and deterrence
-- has been attacked or threatened
-- wants treaty access without offensive first use
-- is politically sensitive to civilian harm
-- has high protection capability
-- is a subject or minor power seeking guarantees
-- has high Condemnation aversion
-
-Reduce willingness when the country is planning offensive first use or rejects the convention entirely.
-
-### Public Rejection score factors
-
-Increase willingness when the country:
-
-- prioritizes the old prohibition
-- has little military benefit from membership
-- has high diplomatic influence among holdouts
-- is strongly concerned about civilian harm or outbreak risk
-- has active sanctions against unconventional users
-- belongs to another restraint-oriented treaty network
-
-Reduce willingness when it needs member research, protection, or project access.
-
-### Covert Preparation score factors
-
-Increase willingness when the country:
-
-- publicly benefits from rejection
-- secretly values chemical or biological capability
-- has strong counter-intelligence
-- can support hidden research or production
-- distrusts inspection and foreign control
-- accepts cover-up and exposure risk
-
-Reduce willingness when the country lacks research capacity, has weak intelligence protection, faces high discovery risk, or already has a public member route that serves its strategy better.
-
-The covert route must remain uncommon and situational.
-
-## Treaty voting
-
-AI treaty response uses:
-
-- primary posture
-- current first-use policy
-- active evolution
-- treaty family
-- sponsor relationship
-- war state
-- relevant technology
-- protection need
-- recent attack or use
-- public Condemnation
-- opposition leadership
-- implementation capacity
-- prior treaty failures
-- reservation compatibility
-
-A country must never ratify a treaty whose participant trigger is false.
-
-A reservation should be preferred only when it preserves a coherent part of the treaty.
-
-AI should abstain or reject when a reservation would have no meaning.
+AI ratifies when the family suits its posture, capability, war state, and threat, and declines otherwise.
+It uses the reservation clause only when that clause keeps a coherent part of the treaty for it.
+Lobbying and opposition from the current agenda move these weights for the rest of the negotiation.
+AI never ratifies a family its posture forbids.
 
 ## Sponsorship and lobbying
 
-AI sponsors an agenda when it can implement the treaty and expects enough support.
+AI sponsors when it can pay the commitment, expects the quorum, and is not near capitulation or in sponsorship cooldown.
+AI lobbies when the count is within two ratifications of the quorum and organizes opposition when the agenda would expand first use and it is an opponent or reservation member.
 
-It should avoid sponsorship when:
+## First use
 
-- it cannot pay the commitment
-- the agenda conflicts with its posture
-- the ratification pool is impossible
-- it is near capitulation
-- a recent failed sponsorship cooldown is active
-- the relevant capability does not exist
+First-use behaviour lives in the existing CBRN use-policy and delivery AI.
+Event 036 adds bounded factors only:
 
-Lobbying targets countries that can legally change their response.
+- a ratified first-use clause raises the weight of Battlefield Authorization and of initiating a valid chemical or biological action
+- the Arsenal raises Unrestricted Authorization
+- a Retaliation Reservation member keeps Retaliation Only and has zero weight for initiating use unless it repeals first
+- integrated doctrine raises use of the existing battlefield operations and raids when payload, delivery, and protection exist
+- the Nuclear Accord raises nuclear use against military, industrial, and logistical targets only
 
-AI must not target invalid actors, current enemies when the agenda forbids it, or countries already locked into an incompatible response.
+Every existing payload, delivery, readiness, target, friendly-exposure, outbreak, and fallout check stays in force.
+Thermonuclear use gets no Event 036 factor.
 
-## First-use AI
+## Doctrine
 
-A permissive policy increases willingness but does not guarantee use.
+AI starts Doctrine Integration when it has two usable families and a war plan that benefits.
+Small countries without two families skip it and invest in protection research.
 
-Chemical first use requires:
+## Opposition
 
-- war or another valid hostile context
-- a valid target
-- physical payload
-- delivery system
-- readiness
-- military benefit
-- acceptable friendly exposure
+The Opposition Leader prioritizes defeating first-use and Arsenal agendas, recruits withdrawals, publishes forensic evidence, and demands inspections.
+It does not spend on opposition it cannot pay for.
 
-Biological first use additionally evaluates:
+## Covert program
 
-- outbreak control
-- spread direction
-- border proximity
-- friendly population risk
-- containment
-- expected retaliation
-- target logistical or strategic value
+A covert AI expands the program only while its hidden evidence is low and ends it when an inspection demand is pending or exposure would cost it a sanction tier.
 
-Nuclear first use additionally evaluates:
+## Project contributions
 
-- payload scarcity
-- target value
-- fallout
-- civilian density
-- retaliation risk
-- war trajectory
-- national survival
-
-Thermonuclear willingness does not receive an Event 036 routine-use bonus.
-
-## Doctrine AI
-
-AI adopts Theater Integration when it has at least two usable capability components and a war plan that benefits from integration.
-
-AI adopts Strategic Integration when it has major-power, alliance, nuclear, missile, or large-war reasons to coordinate several capability families.
-
-Small countries should specialize in protection, laboratories, delivery support, equipment, or regional deterrence when full strategic integration is wasteful.
-
-## Opposition AI
-
-The Opposition Leader should:
-
-- prioritize defeating permissive treaty votes
-- recruit public opponents and reservation members
-- publish valid evidence
-- support sanctions
-- protect members from attack without normalizing first use
-- exploit treaty breaches
-- avoid spending resources on an opposition campaign it cannot sustain
-
-Ordinary opponents can support the leader or pursue bilateral policy.
-
-They do not form a normal faction through Event 036.
-
-## Covert AI
-
-A covert opponent should:
-
-- choose one plausible chemical or biological route
-- invest only when it can protect the program
-- avoid obvious public contradictions
-- respond to inspection and evidence risk
-- end or reveal the program when continued concealment is irrational
-- never receive hidden free technology or equipment
-
-Exposure must change its strategy immediately.
-
-## Project AI
-
-AI contribution willingness depends on:
-
-- provider relevance
-- recipient eligibility
-- project progress
-- expected completion time
-- industry
-- research capacity
-- equipment stockpile
-- manpower
-- current war needs
-- current contribution share
-- intention to remain a member
-- safety reserves
-
-A large country can lead repeated tranches.
-
-A small country should choose the contribution family it can afford and still reach the minimum meaningful amount.
-
-AI should avoid overcontributing after its expected share is already high unless the project is near completion or strategically critical.
-
-The active project identity does not affect selection probability.
-
-## Required probability scenarios
-
-The implementation must audit at least these named scenarios:
-
-| Scenario ID | Situation | Expected ordering |
-| --- | --- | --- |
-| `E36_P01` | Aggressive major at war with chemical and biological technology | Full Ratification above Chemical Accession, reservation, rejection, and covert rejection |
-| `E36_P02` | Peaceful restraint-oriented democracy with no CBRN technology and low threat | Retaliation Reservation or Public Rejection above Full Ratification |
-| `E36_P03` | Threatened minor with weak industry and no weapons | Retaliation Reservation above Full Ratification and covert preparation |
-| `E36_P04` | Chemical-capable country with no biological program and high outbreak fear | Chemical Accession above Full Ratification and rejection |
-| `E36_P05` | Public opponent with strong intelligence and secret research capacity | Covert Preparation above Full Ratification, but not dominant without additional risk tolerance |
-| `E36_P06` | Nuclear power losing a major war after Evolution II | Nuclear first-use willingness rises, but invalid targets and missing payload still force zero |
-| `E36_P07` | Reservation member attacked with chemical weapons | Retaliatory use above continued restraint when payload and target are valid |
-| `E36_P08` | Reservation member considering offensive use | Offensive use at zero unless reservation is repealed or breached through an explicit path |
-| `E36_P09` | Major program participant with surplus industry | Industrial and research contributions above no action |
-| `E36_P10` | Minor program participant with low stockpiles | Affordable facility or research contribution above equipment depletion |
-| `E36_P11` | Opposition Leader during a close first-use vote | Organize Opposition above unrelated posture revision |
-| `E36_P12` | Project candidate pool with three eligible projects | Each project has exactly one-third probability |
-| `E36_P13` | Project candidate pool with duplicated provider registration attempt | Deduplication restores equal probability across unique project IDs |
-| `E36_P14` | Active selected project becomes normally available | Cancellation probability is one and completion probability is zero |
-| `E36_P15` | Thermonuclear target after Evolution III | Event 036 does not increase willingness through routine convention doctrine |
-
-## MCP probability workflow
-
-Every probability-bearing surface begins with `hoi4.probability_inspect`.
-
-The audit must state whether the full candidate pool and external factors are known.
-
-Use:
-
-- `hoi4.probability_evaluate` for named posture and action scenarios
-- `hoi4.probability_sweep` for Chaos, war-state, Condemnation, and capability thresholds
-- `hoi4.probability_simulate` for sampled conference outcomes when exact normalization is impractical
-- `hoi4.probability_sequence` only when the complete conference cadence and state-transition contract is declared
-- `hoi4.probability_compare` after every source change to AI weights or project selection logic
-- `hoi4.probability_render` when a comparison or sensitivity view improves review
-
-The `chaosx_ai_probability_auditor` remains read-only.
-
-The parent or owning patch agent chooses the intended balance target and applies changes.
-
-## Hard AI safety rules
-
-AI weights are zero when:
-
-- the posture or treaty is invalid
-- the country is not eligible
-- the target is invalid
-- the physical payload is absent
-- the delivery system is absent
-- the active evolution is disabled
-- the country cannot pay the action cost
-- a project contribution is paused or cancelled
-- a project recipient trigger is false
-- a selected weapon became normally available
-- the action would duplicate an existing receipt
-
-No positive strategic factor can override a hard invalidity gate.
+AI contributes when it passes the participant trigger and expects to remain a member until completion.
+Industry-rich countries prefer industrial and research families, and minors prefer the family they can afford without dropping below their own equipment reserve.
+Contribution weight rises near completion and falls once the country's share is already high.
+The selected project never changes selection probability.

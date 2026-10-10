@@ -67,7 +67,7 @@ Current United Nations discussions still refer to the absence of a BWC verificat
 Design use:
 
 - Event 036’s biological branch should have weaker verification than its chemical branch.
-- Laboratory declarations, confidence-building measures, intelligence, and limited inspections provide the credible model. A universal perfect inspection system would not.
+- Laboratory declarations, confidence-building measures, intelligence, and limited inspections provide the credible model, and a universal perfect inspection system would not.
 - Biological cooperation can create research and containment benefits while preserving suspicion and exposure risk.
 - Catastrophic outbreaks need a higher Condemnation floor because a permissive treaty cannot make uncontrolled spread administratively routine.
 
@@ -89,7 +89,7 @@ Design use:
 - Event 036 can invert the purpose of a strong chemical verification structure while retaining its institutional forms.
 - Chemical treaty families can use declarations, production records, challenge inspections, facility commitments, assistance, and protection.
 - Protection and assistance should remain valuable to reservation members and opponents.
-- A chemical inspection system can use stronger verification. A biological registry should remain less reliable.
+- A chemical inspection system can use stronger verification, while a biological registry should remain less reliable.
 - Inspections should reveal only evidence that the game can prove.
 
 Sources:

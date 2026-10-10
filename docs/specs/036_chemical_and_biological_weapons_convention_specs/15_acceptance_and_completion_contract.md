@@ -1,205 +1,59 @@
 # Acceptance and completion contract
 
-## Completion meaning
+The general completion, simplification-reporting, audit-routing, and validation rules are in `CLAUDE.md` and [the subagent skill](../../../.claude/skills/chaos-redux-subagents/SKILL.md).
+This file lists only what is specific to Event 036.
 
-Event 036 is complete only when the full source design is implemented and the final repository state proves that every connected surface agrees.
+## Required surfaces
 
-A functioning opening popup is not completion.
+- Alien Spacecraft removed from slot 36 and its recovery relocated into Event 025 with unchanged receipt names ([01](01_event_identity_and_playable_promise.md#legacy-alien-spacecraft-relocation))
+- Canonical entry, Minor Fire-Once registration, Chaos level 1, and the cluster 3 member row at High severity
+- Opening responses for humans and AI, registries, Standing, coordinator, and Opposition Leader
+- Four postures, the covert program, accession, revision, withdrawal, suspension, and expulsion
+- Condemnation relief at the correct pipeline point, context limits, combined floors, retaliation through Retaliation Authority, reservation breach, the participant-score term, and opening normalization
+- Conference scheduler, three-option responses, quorums, and all ten treaty families
+- Evolutions I to III with enable handling and accelerated ordered activation
+- Integrated doctrine
+- Program providers, equal selection, contributions, completion, cancellation calls, dormancy, pause, and Charter lapse
+- Decision category, header, missions, and the reuse of existing CBRN actions
+- AI for every decision and response, with probability evidence for every weighted surface
+- Event-owned Chaos rows, History, evolution rows, Event Details, news, localisation, assets, and achievements
+- Workbook update and CSV export
 
-A convention modifier without recurring treaties is not completion.
+## Discovery before implementation
 
-A project button that grants guessed technologies is not completion.
+The implementation names exact live identifiers for:
 
-## Required implementation surfaces
+- the chemical doctrine mitigation point (`cbrn_prepare_chemical_action_record` and the exposure calculation) and every other Condemnation caller that needs the convention hook
+- the Retaliation Authority classification and the CBRN ledger first-use field
+- the pledge-breach consequence inside `condemnation_add_source`
+- the participant scoring inside `condemnation_recalculate_participants`
+- the eligibility triggers of `cbrn_demand_inspections` and `cbrn_sponsor_decontamination_mission`
+- every event-gated weapon special project and its access trigger
+- the cluster 3 runtime registry and the evolution registration
 
-Completion requires:
+These specifications supply no guessed substitutes.
 
-- canonical Event 036 entry
-- Minor Fire-Once registration
-- Chaos level 1 registration
-- Diplomacy cluster registration at High severity
-- opening human and AI posture responses
-- membership generations and registries
-- all five national postures
-- accession, revision, withdrawal, suspension, and opposition behavior
-- Convention Standing
-- recurring treaty scheduler
-- every supported treaty family
-- Evolution I, II, and III
-- evolution enable and disable handling
-- CBRN action-record integration
-- one-time Condemnation normalization
-- new-source Condemnation multipliers and severity floors
-- protection, evidence, deaths, contamination, and attribution preservation
-- first-use and retaliation policy
-- doctrine integration
-- project provider registry
-- equal project selection
-- four contribution families
-- project progress, pause, dormancy, completion, and cancellation
-- immediate normal-availability callback
-- source-event isolation
-- AI behavior
-- probability evidence
-- event logs and Event Details
-- decisions and missions
-- localisation
-- assets
-- achievements
-- documentation
-- authoritative workbook update and CSV export
+## Performance
 
-## Static source inspection
-
-Before implementation, inspect:
-
-- current chemical warfare source
-- current biological warfare source
-- current nuclear and thermonuclear source
-- CBRN action records
-- protection and command
-- Condemnation source registration and sanctions
-- evidence and inspection paths
-- Deaths and exact population loss helpers
-- Air Cleanliness integration
-- special-project and project-bridge APIs
-- missile and delivery systems
-- every candidate source event for the Chaos weapon registry
-- event-log registration
-- evolution registration
-- decision and mission precedents
-- current event catalog workbook
-- cluster registry
-
-The implementation must identify exact live identifiers from the repository. These specifications do not supply inferred substitutes.
-
-## Required audits
-
-Use the project specialists at the correct stage:
-
-- scripted-system architect for the provider registry, membership ledger, project transaction, and Condemnation adapters
-- decision and mission auditor after the full category is implemented
-- AI probability auditor before and after every weighted source patch
-- localisation auditor after player-facing text is complete
-- generated event art and icon artist for authorized assets
-- achievement and asset review through the parent workflow
-- spreadsheet worker after final in-game wording exists
-- improvement-loop planner after a meaningful implementation tranche
-- event completion auditor before the completion claim
-
-The parent agent reviews every handoff and owns final integration.
-
-## Acceptance scenarios
-
-The detailed scenario matrix under `matrices/acceptance_scenarios.md` is mandatory.
-
-At minimum, prove:
-
-- all five postures
-- posture revision cooldowns
-- multiplayer independent choices
-- special-country exclusion
-- one-time normalization
-- source-specific multipliers
-- retaliation proof
-- reservation breach
-- catastrophic outbreak floor
-- thermonuclear no-relief rule
-- hidden evidence preservation
-- treaty agenda success and failure
-- evolution disable handling
-- high-Chaos accelerated ordered evolutions
-- AI validity and ordering
-- equal project selection
-- duplicate provider deduplication
-- small-country project contribution
-- immediate cancellation on normal availability
-- atomic completion
-- source-event isolation
-- contributor-only access
-- dormant wake-up
-- quorum pause and resume
-- save and reload persistence
-- event-log and Event Details alignment
-- achievement proof
-- asset consumer coverage
-- workbook and CSV alignment
-
-## Performance contract
-
-Do not add a whole-world daily or monthly country iteration.
-
-The opening may use one bounded event-time country pass.
-
-Later processing uses registered arrays, active agenda countries, project participants, selected targets, and the coordinator.
-
-The project normal-availability callback is event-driven from the source owner.
-
-The coordinator heartbeat is a bounded fail-safe.
+No whole-world daily or monthly country scan.
+The opening uses one bounded event-time pass, and later work iterates the registries, the active agenda, project participants, and the coordinator's timed events.
+Program cancellation is called by the provider, and the 30-day recheck is only a fail-safe.
 
 ## Save contract
 
-A save and reload must preserve:
+Save and reload preserve the fired state, postures, covert flags, Standing, the active agenda with its responses and deadline, ratifications, evolution state, integrated doctrine, the selected project, progress, receipts, program state, Chaos and normalization flags, and achievement tracking.
+Reloading never duplicates responses, normalization, resolution, progress, or grants.
 
-- event fired state
-- active membership generation
-- national posture
-- public reversal history
-- Convention Standing
-- current sponsor and agenda
-- treaty response receipts
-- treaty ratifications and reservations
-- evolution state
-- first-use policy
-- doctrine integration
-- active project ID
-- progress target and applied progress
-- participant receipts and shares
-- project sequence
-- pause, cancellation, completion, and dormancy state
-- source isolation history
-- achievement tracking
+## Forbidden substitutes
 
-Reloading must not duplicate invitations, normalization, agenda resolution, progress, or unlock grants.
-
-## No-fallback rule
-
-Do not substitute:
-
-- a generic national spirit for recurring treaty play
-- free technologies for research access
-- a guessed Chaos weapon list for provider registration
-- a random weighted project selection for equal selection
-- source-event firing for the narrow prerequisite grant
-- a permanent research group that cannot be cleaned up
-- a decorative custom GUI for clear ordinary decisions
-- placeholder assets
-- missing AI
-- missing localisation
+- a national spirit in place of recurring treaties
+- free technologies or projects in place of access
+- a guessed provider list or weighted project selection
+- source-event firing in place of the access flag
+- a research-sharing group that cannot be removed
+- a custom GUI in place of ordinary decisions
 - direct CSV edits
 
-Any required simplification or blocked owner API must be reported before completion.
+## Completion report additions
 
-## Completion report
-
-The final implementation report must list:
-
-- files changed
-- event and helper IDs
-- postures and treaty families implemented
-- Condemnation source behavior
-- project providers registered from live source
-- project selection proof
-- cancellation callbacks
-- source-isolation proof
-- decisions and missions
-- AI probability evidence
-- assets created and wired
-- achievements
-- event log and Event Details updates
-- workbook and CSV export
-- meaningful acceptance results
-- unresolved blockers
-- simplifications or a clear statement that none were used
-
-A completion claim requires the final event completion audit to find no missing accepted surface, unresolved addendum, placeholder, or unreported simplification.
+Besides the `CLAUDE.md` report, list the registered providers with their access flags and cancellation calls, the selection proof for one, two, and three candidates, and the Condemnation checks from [03](03_condemnation_normalization_and_cbrn_integration.md#required-checks).

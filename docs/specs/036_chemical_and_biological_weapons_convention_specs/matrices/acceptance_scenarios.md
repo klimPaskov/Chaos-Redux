@@ -1,54 +1,78 @@
 # Acceptance scenarios
 
-| ID | Setup | Action | Expected proof |
+The Condemnation arithmetic checks are listed in [03](../03_condemnation_normalization_and_cbrn_integration.md#required-checks) and are not repeated here.
+
+## Opening and membership
+
+| ID | Setup | Action | Expected result |
 | --- | --- | --- | --- |
-| `E36_A01` | Calm World, several ordinary countries, Event 036 unfired | Fire canonical event | One global setup, one History row, correct fire-once state, all eligible countries receive one posture receipt |
-| `E36_A02` | Five human countries in multiplayer | Fire canonical event | Each human chooses independently, global setup is not duplicated, shared standing resolves after responses |
-| `E36_A03` | Special nonhuman actor and ordinary countries | Fire event | Nonhuman actor excluded unless explicit compatibility provider exists |
-| `E36_A04` | Human selects Full Ratification | Resolve opening | Full member registry, full posture modifier, no free technology or stockpile |
-| `E36_A05` | Human selects Chemical Accession | Resolve opening | Chemical rights active, biological benefits and relief absent |
-| `E36_A06` | Human selects Retaliation Reservation | Resolve opening | Protection and treaty rights active, offensive first-use policy blocked |
-| `E36_A07` | Human selects Public Rejection | Resolve opening | Opponent actions visible, convention benefits absent |
-| `E36_A08` | Human selects covert rejection | Resolve opening | Public state reads rejection, hidden preparation actions visible only to controller |
-| `E36_A09` | Country has mixed existing Condemnation sources | Apply opening normalization | Only eligible source buckets fall once, action records and hidden evidence remain unchanged |
-| `E36_A10` | Full member performs ordinary chemical military action | Register action | Physical effect and action record unchanged, chemical source uses posture multiplier |
-| `E36_A11` | Chemical-only member performs biological action | Register action | Biological source remains normal and no chemical-only relief leaks |
-| `E36_A12` | Reservation member retaliates after valid hostile record | Register action | Retaliation multiplier applies and action remains attributed |
-| `E36_A13` | Reservation member initiates chemical use | Register action | Normal or floored source value, public treaty-breach reaction, no reservation relief |
-| `E36_A14` | Full member creates catastrophic biological outbreak | Register action | Final biological source stays at or above `0.70` of normal |
-| `E36_A15` | Evolution III member uses thermonuclear weapon | Register action | Condemnation multiplier remains `1.00`, fallout, deaths, contamination, and Chaos remain normal |
-| `E36_A16` | Baseline convention with eligible agendas | Advance scheduler | One agenda selected, one sponsor, no random-event pacing transaction |
-| `E36_A17` | Treaty reaches ordinary quorum | Resolve vote | Treaty applies only to ratifiers and compatible reservations |
-| `E36_A18` | Treaty fails decisively | Resolve vote | Failure memory and cooldown recorded, no false benefits or generic Chaos |
-| `E36_A19` | Evolution I disabled at 250 Chaos | Advance time | Evolution I does not record or unlock first-use content, baseline conferences continue |
-| `E36_A20` | Event fires first at 450 Chaos | Resolve opening and advance | Evolution I then Evolution II activate on separate accelerated ordered schedules and separate logs |
-| `E36_A21` | Event fires first at 650 Chaos | Resolve opening and advance | All three evolutions activate in order, no same-transaction stacking, no Chaos from activation |
-| `E36_A22` | First-use treaty adopted | Resolve treaty | First-use policy updates only for ratifiers, one-time `+5` Chaos milestone applies |
-| `E36_A23` | Strategic doctrine treaty adopted | Complete doctrine mission | Integration state changes only when capability and readiness pass |
-| `E36_A24` | Three unique registered project candidates | Activate program | Uniform one-third selection across unique IDs |
-| `E36_A25` | Duplicate provider registration attempt | Build pool | Duplicate ID rejected or deduplicated without added weight |
-| `E36_A26` | No eligible project exists | Activate program | Program becomes Dormant, no guessed selection or missing key |
-| `E36_A27` | Dormant program receives new provider callback | Register eligible project | Wake-up rebuilds pool and selects project after administrative interval |
-| `E36_A28` | Small eligible participant with 12 factories | Complete affordable contribution | At least minimum meaningful progress applies and receipt records exact costs |
-| `E36_A29` | Major participant with large surplus | Complete contribution | Progress respects per-action and 90-day caps, project cannot finish in one unbounded action |
-| `E36_A30` | Country reloads during contribution mission | Save and reload | One mission resumes, one receipt applies, no duplicated cost or progress |
-| `E36_A31` | Active selected project becomes normally available | Run source owner normal unlock | Immediate cancellation, progress discarded, no project unlock, pool rebuild queued |
-| `E36_A32` | Normal-availability callback omitted in test provider | Advance fail-safe heartbeat | Fail-safe detects availability within 30 days and reports provider defect |
-| `E36_A33` | Project reaches target while still unavailable normally | Complete atomically | Only valid active contributors receive prerequisite, no source event state changes |
-| `E36_A34` | Participant withdraws before completion | Complete project | Historical contribution preserved, country receives no unlock |
-| `E36_A35` | Non-contributor remains signatory | Complete project | Country receives no unlock |
-| `E36_A36` | Recipient already owns prerequisite | Complete project | No duplicate grant, recipient skip reason recorded |
-| `E36_A37` | Program loses quorum | Recalculate membership | Project pauses, progress preserved, contribution decisions hidden |
-| `E36_A38` | Paused program regains quorum | Recalculate membership | Same project resumes with preserved progress unless normal availability occurred |
-| `E36_A39` | Charter repealed during active project | Resolve repeal | Project cancels, progress discarded, spent costs retained |
-| `E36_A40` | Covert opponent has valid hidden program evidence | Complete inspection disclosure | Public exposure, cover-up source, hidden decisions close, no invented capability |
-| `E36_A41` | Air Cleanliness Treaty member also joins Event 036 | Use chemical weapon | Air Cleanliness betrayal rules still apply independently |
-| `E36_A42` | Member CBRN attack causes deaths and contamination | Register action | Deaths and Air Cleanliness update once, Event 036 only changes eligible Condemnation conversion |
-| `E36_A43` | Country changes posture after an earlier action | Recalculate current state | Earlier action retains its original treaty snapshot and source value |
-| `E36_A44` | Convention falls from Dominant to Provisional twice in same generation | Process standing | Collapse relief applies once, no threshold farming |
-| `E36_A45` | Event launched through approved Diplomacy cluster | Resolve cluster | Event fires once, cluster counts one pacing event, member severity and History stay correct |
-| `E36_A46` | Event Details opened before and after evolutions | Inspect views | Correct premise, Chaos level, enabled evolutions, no raw multipliers or hidden project pool |
-| `E36_A47` | All seven achievement routes tested | Trigger and violate conditions | Each unlock uses exact receipts and disqualifiers, no false positive from current modifiers |
-| `E36_A48` | Assets wired | Inspect every consumer | No missing texture, wrong size, opaque icon square, duplicate icon type, or unused authorized asset |
-| `E36_A49` | Workbook updated | Export CSVs | Event 036 row, evolution details, cluster membership, status, type, Chaos level, and severity match in-game wording |
-| `E36_A50` | Final source state | Run completion audit | No missing accepted surface, placeholder, guessed provider, unresolved addendum, or unreported simplification |
+| `E36_A01` | Calm World, Event 036 unfired | Fire the event | One setup, one History row, fire-once state, every eligible country gets one response |
+| `E36_A02` | Five human countries | Fire the event | Each chooses independently, setup is not duplicated, Standing resolves after responses |
+| `E36_A03` | A country failing `uses_normal_civilian_systems` | Fire the event | Excluded without a compatibility trigger |
+| `E36_A04` | Human picks each of the five responses in turn | Resolve the opening | Correct posture, idea, registry, and covert flag, with no free technology, stockpile, or project |
+| `E36_A05` | Human ignores the response | Event timeout | Retaliation Reservation |
+| `E36_A06` | Country under Arms Embargo picks Full Ratification | Opening normalization | Public chemical and biological buckets fall once, tier recalculates, hidden buckets unchanged |
+| `E36_A07` | A save holding Event 025 and Event 016 Alien Spacecraft receipts | Load after the rework | Both consumers keep their receipts, and the relocated Event 025 recovery entry writes the same receipt names in a new campaign |
+| `E36_A08` | Member revises posture after 200 days | Try Revise Posture | Blocked until 365 days |
+| `E36_A09` | Reservation member before Evolution I | Try to repeal | Not offered |
+| `E36_A10` | Opponent seeks accession after 180 days | Complete Accession Review | Chosen member posture, open treaties only |
+| `E36_A11` | Member withdraws during a project after contributing | Complete the project | Receipt kept, no grant |
+| `E36_A12` | Covert country accepts an inspection | Disclosure pulse | Hidden cover-up evidence becomes public, exposure report fires, covert decisions close |
+
+## Condemnation and CBRN
+
+| ID | Setup | Action | Expected result |
+| --- | --- | --- | --- |
+| `E36_A13` | Full member, chemical battlefield use | Register the action | Ledger row unchanged, base relieved at Baseline, death and contamination terms full |
+| `E36_A14` | Chemical Accession member, biological strike | Register the action | No biological relief |
+| `E36_A15` | Reservation member retaliates under Retaliation Authority | Register the action | Reservation relief applies |
+| `E36_A16` | Reservation member strikes first | Register the action | `1.00`, pledge-breach consequence once, suspension |
+| `E36_A17` | Reservation member selects Battlefield Authorization | Policy decision | Reservation breach |
+| `E36_A18` | Arsenal ratifier, thermonuclear strike | Register the strike | `1.00`, fallout, deaths, and Chaos unchanged |
+| `E36_A19` | Air Cleanliness member and convention member uses gas | Register the action | Air Cleanliness betrayal applies independently |
+| `E36_A20` | Acid Rain state, later confirmed chemical strike | Register both | Only the strike gets treaty treatment and retaliation proof |
+| `E36_A21` | Protocol ratifier runs a camp | Accept a ratifier's inspection demand | Hidden atrocity evidence discloses at the existing rate |
+
+## Conferences and evolutions
+
+| ID | Setup | Action | Expected result |
+| --- | --- | --- | --- |
+| `E36_A22` | Baseline convention | Run the scheduler | One agenda, one sponsor, no pacing transaction |
+| `E36_A23` | Agenda reaches quorum | Resolve | Treaty binds only ratifiers, header count matched the result |
+| `E36_A24` | Agenda fails narrowly | Resolve | 180-day cooldown, sponsor cost, no Chaos |
+| `E36_A25` | Five members only | Each quorum class | Minimums hold and the Arsenal rule can still pass with a major |
+| `E36_A26` | Evolution I disabled at 250 Chaos | Advance time | No evolution record or first-use agenda, baseline agendas continue |
+| `E36_A27` | Event first fires at 650 Chaos | Advance | Evolutions I, II, III in order, separate entries, no Chaos from activation |
+| `E36_A28` | Both First-Use clauses ratified in one resolution | Resolve | Two `+5` outcomes, each once |
+| `E36_A29` | Charter ratifier with one usable family | Try Doctrine Integration | Blocked |
+| `E36_A30` | Integrated country loses its second family | Recheck | Doctrine lost, relief drops to the highest held step |
+| `E36_A31` | Standing falls to Provisional twice | Process withdrawals | `-5` applies once |
+| `E36_A32` | Event launched through cluster 3 | Resolve the cluster | Event fires once, cluster pacing counts once, severity and History correct |
+
+## Program
+
+| ID | Setup | Action | Expected result |
+| --- | --- | --- | --- |
+| `E36_A33` | Three eligible providers | Select | Each has exactly one third |
+| `E36_A34` | One provider registered twice | Build the pool | One entry |
+| `E36_A35` | No eligible provider | Charter enters force | Dormant, no guessed selection |
+| `E36_A36` | Dormant program, provider wake-up call | Register | Selection after the interval |
+| `E36_A37` | Minor with 12 factories | Contribute | At least `20` units, exact receipt |
+| `E36_A38` | Major with surplus industry | Contribute repeatedly | Per-action and 90-day caps hold |
+| `E36_A39` | Save during a contribution mission | Reload and finish | One receipt, one cost, one progress change |
+| `E36_A40` | Selected provider's source event fires | Provider calls cancellation | Progress discarded, no grant, reselection queued, no Chaos |
+| `E36_A41` | Provider omits its cancellation call | Advance 30 days | Fail-safe cancels and records the defect |
+| `E36_A42` | Target reached, global proof false | Complete | Only current contributing members passing the participant trigger receive the access flag, source event untouched |
+| `E36_A43` | Contributor already has access through the Mengele directorate | Complete | Skipped, no duplicate grant, program not cancelled |
+| `E36_A44` | Charter ratifiers fall below quorum | Recalculate | Paused, progress kept, contributions hidden |
+| `E36_A45` | Paused for 365 days | Advance | Charter lapses, project cancelled, program Inactive |
+
+## Presentation and catalog
+
+| ID | Setup | Action | Expected result |
+| --- | --- | --- | --- |
+| `E36_A46` | Any state | Read the header | Three lines only, no internal values |
+| `E36_A47` | Before and after evolutions | Open Event Details | Correct premise and enabled evolutions, no multipliers or candidates |
+| `E36_A48` | Each achievement | Meet and violate it | Unlocks from receipts, disqualifiers persist |
+| `E36_A49` | Assets wired | Inspect consumers | No missing texture, wrong size, opaque icon square, or unused asset |
+| `E36_A50` | Workbook updated | Export CSVs | Event 036 row and cluster row match in-game wording |

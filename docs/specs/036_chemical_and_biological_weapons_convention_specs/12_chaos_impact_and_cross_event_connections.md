@@ -1,194 +1,79 @@
 # Chaos impact and cross-event connections
 
-## Event-owned Chaos rule
+## Event-owned Chaos
 
-Event 036 adds or removes Chaos only for concrete diplomatic outcomes that change the accepted international order.
+Event 036 changes Chaos only when the international order concretely changes, through `add_chaos_meter_value` with an Event 036 history reason.
+Evolutions, postures, votes, research bonuses, stage reports, contributions, and cancellations add nothing.
+Actual warfare, deaths, contamination, nuclear use, and annexation keep their own generic sources.
 
-Evolution eligibility, activation, logging, national posture, treaty voting, research bonuses, project milestones, contribution decisions, and ordinary membership movement give zero Chaos unless a listed one-time outcome occurs.
-
-Actual warfare, deaths, contamination, nuclear use, annexation, war, famine, and other shared sources remain owned by their existing systems.
-
-## One-time Chaos outcomes
-
-| Outcome | Chaos change | Gate |
+| Outcome | Chaos | Gate |
 | --- | ---: | --- |
-| Convention enters force with Provisional or Divided standing | `+3` | Once per campaign |
-| Convention enters force with Established or Dominant standing | `+5` | Once per campaign, replaces the smaller opening value |
-| First treaty authorizing offensive chemical first use | `+5` | Once |
-| First separate treaty authorizing offensive biological first use | `+5` | Once when not already included in the chemical first-use milestone |
-| First Strategic WMD Doctrine Charter | `+7` | Once |
-| First Nuclear Materials and Targeting Accord with real cooperation | `+5` | Once |
-| First Arsenal Without Limits treaty | `+10` | Once |
-| International Chaos Weapons Program Charter enters force | `+5` | Once |
-| Registered Chaos weapon project completes | `+10` | Once per unique completed project ID |
-| Convention collapses from Established or Dominant to Provisional through broad withdrawal | `-5` | Once per genuine collapse generation |
-| Convention is fully repudiated and the program charter is repealed | `-10` | Once per campaign, not cumulative with the same collapse transaction |
+| Convention enters force with Provisional or Divided Standing | `+3` | Once, instead of the next row |
+| Convention enters force with Established or Dominant Standing | `+5` | Once, instead of the previous row |
+| First chemical First-Use Revision clause in force | `+5` | Once |
+| First biological First-Use Revision clause in force | `+5` | Once |
+| First Strategic WMD Doctrine Charter in force | `+7` | Once |
+| First Nuclear Materials and Targeting Accord in force with a nuclear-capable ratifier | `+5` | Once |
+| First Arsenal Without Limits Articles in force | `+10` | Once |
+| Program Charter in force | `+5` | Once |
+| Program project completed | `+10` | Once per project id |
+| Standing falls from Established or Dominant to Provisional through withdrawals | `-5` | Once per campaign |
 
-The opening applies either `+3` or `+5`, never both.
+Each row uses a once-only global flag or a per-project history entry, so repeal and re-ratification, threshold oscillation, and repeated selection cannot farm Chaos.
 
-The complete repudiation applies either the collapse value or the repudiation value in one transaction, never both.
+## Shared systems
 
-## Anti-farming rules
-
-Every one-time outcome uses a stable recorded flag or project ID receipt.
-
-A treaty cannot be repealed and reratified to repeat its Chaos change.
-
-A convention cannot oscillate around a standing threshold to repeat collapse relief.
-
-A project cancellation gives zero Chaos.
-
-A project completion cannot repeat for the same registered project ID.
-
-Changing posture gives zero Chaos.
-
-## Chemical warfare systems
-
-Event 036 reads chemical technology, production, stockpile, delivery, protection, contamination, evidence, action history, Condemnation, and policy state through existing owner APIs.
-
-The event can change:
-
-- research priority
-- production priority
-- treaty access
-- first-use policy
-- AI use willingness
-- ordinary Condemnation conversion
-- protection cooperation
-
-It cannot create a valid chemical action without the physical owner system.
-
-## Biological warfare systems
-
-Event 036 reads biological research, laboratory, stockpile, delivery, outbreak, containment, evidence, action history, Condemnation, and protection state through existing owner APIs.
-
-Biological treaty benefits must retain stronger spread, outbreak, civilian, and verification risks than chemical benefits.
-
-The event cannot convert a normal research bonus into an outbreak or weapon grant.
-
-## Nuclear systems
-
-Event 036 can change nuclear research cooperation, targeting doctrine, first-use willingness, ordinary Condemnation conversion, and missile or delivery priorities.
-
-It cannot grant bombs, remove fallout, suppress deaths, suppress contamination, or reduce thermonuclear Condemnation.
-
-The existing nuclear action and generic Chaos ladders remain authoritative.
-
-## Missile and delivery systems
-
-Treaties may grant research bonuses or owner-approved project progress for rockets, missiles, aircraft delivery, and other supported systems.
-
-No delivery system is invented by Event 036.
-
-A treaty action must fail closed when its referenced delivery technology or project does not exist.
-
-## Protection and CBRN command
-
-Protection and CBRN command are central to every member route.
-
-Full members use them to make offensive doctrine sustainable.
-
-Reservation members use them for deterrence and retaliation.
-
-Opponents use them to survive without normalizing first use.
-
-The event should reuse current protection, readiness, command, and diplomacy APIs. It should not create parallel values.
-
-## Condemnation and sanctions
-
-The shared Condemnation total remains authoritative.
-
-Event 036 supplies source multipliers and diplomatic reaction policy.
-
-Non-signatories can continue sanctions, embargo participation, observer pressure, and bilateral restrictions.
-
-The convention does not promise cancellation of native relationships or agreements that the engine cannot revoke generically.
-
-A separate event such as a global embargo should not be fired automatically merely because Event 036 opposition is strong.
+| System | Event 036 reads or changes | Event 036 never |
+| --- | --- | --- |
+| CBRN use policy and delivery ([doctrine](../../systems/cbrn_warfare/chaos_warfare_doctrine.md#use-policy)) | Diplomatic cost of each policy and AI weights | Adds a parallel first-use state or a new delivery route |
+| CBRN action ledger and Retaliation Authority | First-use and retaliation classification for relief | Writes or edits a ledger row |
+| Condemnation ([03](03_condemnation_normalization_and_cbrn_integration.md)) | Base relief, one participant-score term, opening normalization | Creates a second Condemnation total or touches atrocity and cover-up |
+| CBRN diplomacy actions | Extra eligibility for inspections and decontamination aid | Duplicates the actions |
+| Protection equipment | Treaty research and production modifiers | Creates a protection value |
+| Deaths | Nothing, because Event 036 kills no one | Adds a Deaths reason |
+| Air Cleanliness and fallout | Nothing | Changes contamination or fallout |
+| Native special projects | Access flags through provider rows | Grants a completed project |
+| Event log, evolutions, clusters | One History row, three evolutions, one cluster member row | Advances pacing through follow-ups |
 
 ## Air Cleanliness Treaty
 
-Membership in Event 036 does not override the Air Cleanliness Treaty.
+Membership in Event 036 never overrides the [Air Cleanliness Treaty](../../systems/air_cleanliness/air_cleanliness_treaty.md).
+An Air Cleanliness member that uses an unconventional weapon still triggers `air_cleanliness_treaty_on_unconventional_use`, even when Event 036 relieved the Condemnation.
+The two memberships, their sanctions, and their betrayal memories stay separate, which gives a country in both treaties a real conflict.
 
-A country that violates Air Cleanliness Treaty rules through unconventional use can still be expelled or sanctioned by that treaty even when Event 036 normalized the action.
+## Camps
 
-The two memberships and their betrayal memories remain separate.
+Ratifying the Inspection and Verification Protocol exposes a country to inspections that disclose hidden camp and restricted-site atrocity evidence through the existing disclosure path.
+That is the only camp connection, and it is a deliberate cost of ratifying.
+Event 036 creates and activates no camp, site, or atrocity source.
 
-Event 036 protection cooperation can support decontamination and relief projects only through approved owner connections.
+## Famine and migration
 
-## Deaths, famine, and migration
+Event 036 adds no famine or migration link.
+CBRN attacks already reach famine and migration through their own owners, and a treaty changes no food, shelter, or movement fact, so a separate link would only restate the same consequence.
 
-Every civilian death remains registered through the shared Deaths pipeline.
+## World threat and super-events
 
-Famine and migration respond only to their own proof-carrying requests.
+Event 036 sets no world-threat flag and owns no super-event or world-end scenario.
 
-Event 036 cannot suppress famine, migration, evacuation, trapped-population, or relief consequences because a weapon was used by a signatory.
+## Other events
 
-## Camp and repression systems
+| Event | Connection |
+| --- | --- |
+| Event 020 Black Plague | Program provider for `black_plague_weaponization_program` ([08](08_international_chaos_weapons_program.md#known-candidates)) |
+| Zombie outbreak and weaponized zombies | Program provider for `weaponize_the_zombies` |
+| Event 016 Brilliant Scientist and the Mengele directorate | Their per-country project access is the precedent for the grant flag and never cancels the program |
+| Event 016 and Event 025 alien recovery | Consumers of the Alien Spacecraft receipts, which keep their names when the recovery moves into Event 025 ([01](01_event_identity_and_playable_promise.md#legacy-alien-spacecraft-relocation)) |
+| Event 033 Acid Rain | Environmental harm never proves weapon use ([03](03_condemnation_normalization_and_cbrn_integration.md#evidence-and-inspections)) |
+| Event 050 The Great Embargo | Never fired by Event 036, and its embargo ownership stays separate |
+| Event 076 USA Tests Weapons | Proposed: an unconventional test by the United States reads its Event 036 posture (README, Proposals) |
 
-Restricted chemical sites, biological sites, experiment sites, evidence, inspections, concealment, and Condemnation remain owned by the camp and repression system.
+## Cluster
 
-An Event 036 inspection treaty can provide a disclosure or inspection request route when the owner confirms compatibility.
+Event 036 is a High-severity member of cluster 3, Diplomacy, in the workbook.
+Implementation adds its runtime member row to the cluster 3 registry (still under the `diplomatic_panic` constant names) and keeps one canonical fire-once transaction when launched through the cluster.
 
-It cannot create or activate a camp site.
+## Special countries and shared helpers
 
-Atrocity and cover-up sources remain fully condemned.
-
-## Chaos Warfare
-
-The convention may affect registered chemical, biological, nuclear, missile, protection, or Chaos weapon research routes.
-
-It does not create a general permission to unlock every Chaos Warfare technology.
-
-Only explicit provider registrations can enter the International Chaos Weapons Program.
-
-## Source events and event-gated weapons
-
-A source event retains:
-
-- its random-event weight
-- fired history
-- evolutions
-- countries
-- crises
-- threat flags
-- super-event logic
-- terminal logic
-- narrative progression
-- normal unlock route
-
-Event 036 can open only the narrow registered prerequisite.
-
-The source owner must call the immediate cancellation callback when normal availability occurs.
-
-## Event log and clusters
-
-Event 036 records one History entry and three evolution entries.
-
-Its treaty and project subevents do not advance event pacing.
-
-The event belongs to the approved Diplomacy cluster with High member severity.
-
-The cluster registry must be reconciled in the authoritative workbook and runtime source before normal cluster firing is enabled.
-
-Do not assign Event 036 to Diplomatic Panic merely because that cluster already exists in the supplied export.
-
-When fired as a cluster member, Event 036 still performs one canonical fire-once transaction and follows normal cluster pacing rules.
-
-## Special-country classifiers
-
-Countries that fail `uses_normal_civilian_systems` are excluded by default.
-
-Event-owned exceptions require a compatibility provider and must not be added directly to the shared classifier unless their actual civilian or nonhuman treatment changes for all systems.
-
-Event-specific validation remains in Event 036 owner triggers.
-
-## Shared dynamic helpers
-
-Implementation should reuse existing neutral helpers where their contracts fit.
-
-New Event 036 orchestration belongs in Event 036 files.
-
-A new helper belongs in the shared dynamic registry only when its behavior is neutral and useful across unrelated systems.
-
-Every new shared helper requires matching documentation of scope, inputs, outputs, defaults, side effects, and usage.
+Countries failing `uses_normal_civilian_systems` are excluded unless their owner supplies the compatibility trigger in [01](01_event_identity_and_playable_promise.md#country-eligibility).
+Event 036 orchestration stays in Event 036 files, and a helper moves to the shared dynamic registry only if it is neutral and documented there.

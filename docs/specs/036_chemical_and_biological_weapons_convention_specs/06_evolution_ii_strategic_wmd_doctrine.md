@@ -2,201 +2,54 @@
 
 ## Availability and pacing
 
-Evolution II becomes eligible at `400+` Chaos after Evolution I is active.
+Evolution II becomes eligible at `400+` Chaos after Evolution I is recorded and while it is enabled.
 
-The base MTTH is 120 days.
+Its base MTTH is 120 days.
+Ratified first-use clauses, members holding stockpiles with delivery, nuclear-capable members, and a major war between members shorten it.
+A failed First-Use Revision, a reservation majority, and Provisional Standing lengthen it.
 
-The MTTH shortens when:
+If Event 036 first fires at `400+` Chaos, Evolution I and then Evolution II follow on accelerated ordered schedules with separate events and log entries, never in one transaction.
 
-- first-use articles are active
-- several members maintain unconventional stockpiles
-- members possess rockets, missiles, aircraft, nuclear capability, or advanced laboratories
-- convention members are fighting a major war
-- allied members already coordinate retaliation or protection
-- recent conventional offensives used chemical preparation
-
-It lengthens when:
-
-- the first-use vote failed
-- most members preserve reservations
-- the convention is Provisional
-- active public opposition is strong
-- the relevant evolution is disabled
-
-If Event 036 first fires at `400+` Chaos, Evolution I is queued first and Evolution II follows on an accelerated ordered schedule.
-
-The two evolutions must record separate entries and cannot activate in the same transaction.
-
-Evolution activation gives zero Chaos.
+Activation changes no Chaos.
 
 ## Playable change
 
-Unconventional weapons stop being treated as isolated emergency tools.
+Unconventional weapons stop being isolated emergency tools and become part of war planning.
+The player's concern moves from permission to integration, and a country with only a paper policy gains little.
 
-Ratifiers begin planning chemical preparation, biological disruption, missile delivery, nuclear targeting, protection, and conventional exploitation as one military system.
+Evolution II unlocks the Strategic WMD Doctrine Charter and the Nuclear Materials and Targeting Accord ([04](04_recurring_conventions_and_treaty_families.md#evolution-ii)).
 
-The player’s concern shifts from permission to integration.
+## Integrated doctrine
 
-The event should reward countries that can support an actual doctrine with stockpiles, delivery, protection, intelligence, and conventional forces.
+Integrated doctrine is one binary country state shown through its own idea.
 
-A country with only a paper policy gains little.
+A Strategic WMD Doctrine Charter ratifier earns it by completing the 150-day Doctrine Integration mission, which requires usable capability in at least two of chemical, biological, nuclear, and missile delivery, protective equipment in stock, and active Chaos Warfare doctrine adoption.
 
-## Strategic integration state
+The idea gives bounded CBRN research speed, protective-equipment production, and lower command-power cost on existing CBRN operations, and moves the country to relief stage II.
+It adds no attack, defence, or organization statistics.
 
-Evolution II adds an internal integration state:
+The doctrine is lost on withdrawal, on losing the Charter, or when the country drops below two usable families, which returns the country to its previous relief stage.
 
-- Isolated Capability
-- Theater Integration
-- Strategic Integration
+Integrated doctrine adds no new operations.
+Chemical preparation of offensives and biological strikes remain the existing CBRN battlefield operations and raids, which integrated AI uses more readily.
 
-This state is presented through an idea or posture tooltip, not as a new public meter.
+## Nuclear targeting
 
-Isolated Capability means the country owns or researches weapons without integrating them into war plans.
+The Nuclear Materials and Targeting Accord raises AI willingness to strike military concentrations, industrial centers, supply hubs, and logistical corridors, and moves nuclear relief to stage II.
+Capital and dense-population limits and thermonuclear treatment stay as [03](03_condemnation_normalization_and_cbrn_integration.md#eligible-contexts) defines them.
 
-Theater Integration links chemical and biological actions to fronts, offensives, logistics, and protection.
+## Small countries
 
-Strategic Integration adds nuclear, missile, allied planning, reserve targets, and high-value targeting doctrine.
+A country without two usable families gains from the Charter only through protection research and the allied clause.
+That is intended, and no scaled-down doctrine is offered.
 
-The state rises through treaty ratification, decisions, valid technology, stockpiles, protection, and completed planning missions.
+## Chaos outcomes
 
-It falls through withdrawal, loss of capability, failed guarantees, or doctrine reversal.
-
-## Strategic treaty rounds
-
-Evolution II unlocks:
-
-- Strategic WMD Doctrine Charter
-- Nuclear Materials and Targeting Accord
-- Allied CBRN Command Compact
-
-These agendas use the stronger strategic ratification quorum.
-
-A country can ratify a doctrine charter only when it has a plausible route to at least two relevant capability families.
-
-A treaty should not grant strategic integration to a country that cannot use any CBRN system.
-
-## Doctrine content
-
-Strategic doctrine can change:
-
-- AI research priorities
-- stockpile reserve targets
-- missile and delivery priorities
-- protection production
-- target valuation
-- offensive preparation decisions
-- retaliation planning
-- allied assistance
-- decontamination and containment planning
-- nuclear use willingness against military, industrial, and logistical targets
-
-It should not become a flat attack, defense, or organization modifier without a connection to actual capability.
-
-The strongest bonuses should be conditional on valid readiness and stockpiles.
-
-## Chemical preparation of offensives
-
-A theater-integrated country can use chemical preparation decisions before a conventional offensive.
-
-The action requires a valid front or state target, chemical payload, delivery, readiness, and a planned conventional follow-up.
-
-It may improve local combat conditions through the owning chemical system.
-
-It cannot be represented as a free national attack bonus.
-
-The AI should prefer this action when it has a valid offensive plan, sufficient payload, adequate protection, and a favorable expected result.
-
-## Biological rear-area doctrine
-
-A theater or strategic country can plan biological action against valid rear-area, logistical, or other owner-supported targets.
-
-The action retains the biological system’s outbreak, spread, evidence, civilian, and containment logic.
-
-It should remain less predictable than chemical preparation.
-
-The AI must account for blowback, friendly exposure, border proximity, containment, and potential catastrophic spread.
-
-## Nuclear targeting doctrine
-
-Evolution II makes nuclear use more acceptable against:
-
-- military concentrations
-- industrial centers
-- supply hubs
-- logistical corridors
-- air and naval infrastructure
-- hardened strategic targets
-
-The convention does not convert every city into a legitimate target.
-
-Populated-capital and extreme civilian actions retain the high Condemnation floor.
-
-Thermonuclear actions retain full normal Condemnation.
-
-## Allied cooperation
-
-Allied ratifiers may share:
-
-- protection assistance
-- targeting intelligence
-- research bonuses
-- retaliation planning
-- delivery research
-- reserve planning
-- emergency decontamination support
-
-The cooperation applies only to compatible ratifiers.
-
-It does not grant access to another country’s physical stockpile without an explicit transfer supported by the owning system.
-
-The event must not assume that an engine research-sharing membership can be revoked safely.
-
-Use timed bonuses and treaty receipts instead.
-
-## AI doctrine adoption
-
-AI willingness to move from Isolated Capability to Theater Integration should depend on:
-
-- current war
-- available payloads
-- delivery systems
-- protection
-- industrial capacity
-- doctrine compatibility
-- recent use or attack
-- public Condemnation tolerance
-- active first-use policy
-
-Strategic Integration additionally requires strong industrial or scientific capacity, nuclear or missile relevance, a major war, or an alliance role that makes strategic planning useful.
-
-Small countries may specialize in protection, laboratories, equipment, or regional delivery. They should not receive a scaled-down copy of major-power doctrine.
-
-## Condemnation effect
-
-Ratifiers use the Evolution II source multiplier targets after the relevant doctrine treaty is active.
-
-A Full Ratification country that did not ratify strategic doctrine remains on its previous multiplier stage for the affected source family.
-
-A reservation member receives only retaliation-compatible relief.
-
-This prevents the evolution log from granting every member automatic stronger relief.
-
-## Concrete Chaos outcomes
-
-Evolution II activation gives zero Chaos.
-
-The first successful Strategic WMD Doctrine Charter adds `+7` Chaos once.
-
-The first Nuclear Materials and Targeting Accord adds `+5` Chaos once when it creates actual research or targeting cooperation.
-
-Routine integration decisions and research bonuses add zero Chaos.
-
-Actual use remains covered by generic shared sources.
+The first Strategic WMD Doctrine Charter entering force adds `+7` Chaos once.
+The first Nuclear Materials and Targeting Accord entering force with at least one nuclear-capable ratifier adds `+5` Chaos once.
+Doctrine missions, research bonuses, and actual use add no Event 036 Chaos.
 
 ## Event and log presentation
 
-The evolution receives one Event 036 evolution log entry.
-
-The player-facing presentation should focus on military planning, reserves, delivery, protection, and accepted target categories.
-
-It must not expose the International Chaos Weapons Program before Evolution III.
+One Event 036 evolution log entry focused on joint planning, reserves, delivery, protection, and accepted target categories.
+It never mentions the International Chaos Weapons Program.
