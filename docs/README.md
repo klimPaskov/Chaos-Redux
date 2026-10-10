@@ -3,6 +3,7 @@
 This directory separates implementation documentation, design specifications, working plans, provenance records, and generated catalog exports.
 Start with the relevant package index and its recorded acceptance basis.
 Document location, catalog status, timestamps, and old completion reports do not establish approval or current behavior.
+Evidence images, screenshots, contact sheets and source art that these documents once linked are not versioned in Git: the game never loads them. The maintainer keeps them byte for byte in `Documents/chaos_redux_lfs_archive/` at the same relative path, with their LFS OIDs in its `README.md`, so a link such as `docs/plans/x/y.png` resolves there.
 
 ## Documentation map
 

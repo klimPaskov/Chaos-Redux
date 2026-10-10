@@ -3,6 +3,7 @@
 This directory is the working documentation area.
 Accepted design belongs in `docs/specs/`, and evidence-backed implementation summaries belong in `docs/events/`.
 An old plan, prompt, or handoff does not authorize a new task or prove current behavior.
+Evidence images, screenshots, contact sheets and source art that these documents once linked are not versioned in Git: the game never loads them. The maintainer keeps them byte for byte in `Documents/chaos_redux_lfs_archive/` at the same relative path, with their LFS OIDs in its `README.md`, so a link such as `docs/plans/x/y.png` resolves there.
 
 ## Folder convention
 
