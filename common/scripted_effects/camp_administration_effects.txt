@@ -683,6 +683,61 @@ camp_admin_clear_state_output = {
 		remove_dynamic_modifier = { modifier = camp_admin_state_economy }
 	}
 }
+# State scope. Temporary output: camp_admin_labor_output_factor and camp_admin_labor_death_factor.
+# Forced labor under a radical mandate yields more output at a much higher labor mortality;
+# every other site works at the base rates.
+camp_admin_prepare_labor_pressure = {
+	set_temp_variable = { camp_admin_labor_output_factor = constant:camp_admin_labor.coercive_output }
+	set_temp_variable = { camp_admin_labor_death_factor = constant:camp_admin_labor.coercive_mortality }
+	if = {
+		limit = {
+			OR = {
+				check_variable = { camp_admin_role = constant:camp_admin_role.labor }
+				check_variable = { camp_admin_role = constant:camp_admin_role.penal }
+			}
+			has_variable = camp_admin_responsible_country
+			var:camp_admin_responsible_country = { check_variable = { camp_admin_mandate = constant:camp_admin_mandate.radical } }
+		}
+		set_temp_variable = { camp_admin_labor_output_factor = constant:camp_admin_labor.radical_output }
+		set_temp_variable = { camp_admin_labor_death_factor = constant:camp_admin_labor.radical_mortality }
+	}
+}
+
+# State scope. Starving detainees cannot work: the host state's food stage scales the workforce.
+camp_admin_apply_famine_workforce_drag = {
+	if = {
+		limit = { has_variable = famine_food_stage }
+		if = {
+			limit = { check_variable = { var = famine_food_stage value = constant:famine_food_stage.catastrophic_famine compare = greater_than_or_equals } }
+			multiply_variable = { camp_admin_workforce_k = constant:camp_admin_labor.catastrophic_famine_workforce }
+		}
+		else_if = {
+			limit = { check_variable = { var = famine_food_stage value = constant:famine_food_stage.famine compare = greater_than_or_equals } }
+			multiply_variable = { camp_admin_workforce_k = constant:camp_admin_labor.famine_workforce }
+		}
+		else_if = {
+			limit = { check_variable = { var = famine_food_stage value = constant:famine_food_stage.acute_shortage compare = greater_than_or_equals } }
+			multiply_variable = { camp_admin_workforce_k = constant:camp_admin_labor.acute_shortage_workforce }
+		}
+	}
+}
+
+# State scope. The legacy labor burden index of the site profile follows the labor actually
+# assigned at an administered site, so idle or suspended sites add no labor burden.
+camp_admin_scale_profile_labor_output = {
+	if = {
+		limit = { has_state_flag = camp_admin_initialized }
+		if = {
+			limit = { NOT = { check_variable = { camp_admin_workforce_k > 0 } } }
+			set_variable = { camp_state_labor_output = 0 }
+		}
+		else = {
+			camp_admin_prepare_labor_pressure = yes
+			multiply_variable = { camp_state_labor_output = camp_admin_labor_output_factor }
+		}
+	}
+}
+
 camp_admin_refresh_state_economy = {
 	camp_admin_clear_state_output = yes
 	camp_admin_refresh_capacity = yes
@@ -700,6 +755,7 @@ camp_admin_refresh_state_economy = {
 		clamp_variable = { var = camp_admin_workforce_k min = 0 max = camp_admin_capacity_k }
 		multiply_variable = { camp_admin_workforce_k = constant:camp_admin_value.workforce_share }
 		multiply_variable = { camp_admin_workforce_k = camp_admin_support_ratio }
+		camp_admin_apply_famine_workforce_drag = yes
 	}
 	else_if = {
 		limit = {
@@ -720,6 +776,8 @@ camp_admin_refresh_state_economy = {
 		clamp_temp_variable = { var = camp_admin_development_factor min = 0 max = 1 }
 		clamp_variable = { var = camp_admin_site_output_scale min = 0 max = 1 }
 		multiply_temp_variable = { camp_admin_development_factor = camp_admin_site_output_scale }
+		camp_admin_prepare_labor_pressure = yes
+		multiply_temp_variable = { camp_admin_development_factor = camp_admin_labor_output_factor }
 		if = {
 			limit = { check_variable = { camp_admin_chosen_priority = constant:camp_admin_priority.industry } }
 			set_temp_variable = { camp_admin_opportunity = non_damaged_building_level@arms_factory }
@@ -1280,6 +1338,8 @@ camp_admin_monthly_state = {
 		add_to_temp_variable = { camp_admin_death_requested_k = camp_admin_works_k }
 		add_to_temp_variable = { camp_admin_death_requested_k = camp_admin_extraction_k }
 		multiply_temp_variable = { camp_admin_death_requested_k = constant:camp_admin_value.labor_monthly_rate }
+		camp_admin_prepare_labor_pressure = yes
+		multiply_temp_variable = { camp_admin_death_requested_k = camp_admin_labor_death_factor }
 		set_temp_variable = { camp_admin_death_cause = constant:camp_admin_cause.labor }
 		set_temp_variable = { camp_admin_death_contract = 1 }
 		camp_admin_record_deaths = yes

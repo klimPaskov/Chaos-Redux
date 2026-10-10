@@ -109,6 +109,11 @@ Industrial participation uses undamaged military factories and 10,000 allocated 
 Construction uses up to 20,000 workers and a 40 percent developed maximum only while that state is the current live works project, through the vanilla-supported `state_production_speed_infrastructure_factor` for the project's actual building type.
 Extraction uses existing local resource opportunity, 1,000 workers per resource unit and a 40 percent developed maximum.
 There is no permanent construction bonus merely for having civilian factories or unfinished infrastructure.
+Forced-labor pressure: `camp_admin_prepare_labor_pressure` (state scope) returns temporary `camp_admin_labor_output_factor` and `camp_admin_labor_death_factor`, both 1 at a coercive mandate and `camp_admin_labor.radical_output` and `camp_admin_labor.radical_mortality` for a labor or penal site under a radical mandate.
+The output factor scales the development factor of every allocation, and the death factor scales the monthly labor deaths requested in `camp_admin_monthly_state`.
+`camp_admin_apply_famine_workforce_drag` (state scope) multiplies the assigned workforce by `camp_admin_labor.acute_shortage_workforce`, `famine_workforce` or `catastrophic_famine_workforce` from the host state's `famine_food_stage`.
+`camp_admin_scale_profile_labor_output` (state scope) sets the legacy site-profile labor index to zero for an administered site without assigned workers and scales it by the output factor otherwise.
+The player-facing description is `docs/systems/camp_forced_labor.md`.
 Development level starts at zero with a 25 percent productive-development fraction; three completed upgrades reach the full fraction.
 
 `camp_admin_prepare_project_quote` is read-only country-scope quotation: temporary `camp_admin_quote_support = 40` and `camp_admin_quote_pp = 0` for an ordinary monthly development installment.
