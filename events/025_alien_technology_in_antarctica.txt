@@ -81,6 +81,10 @@ country_event = {
 			# A country that recovered Event 036 material before the race opened
 			# joins the Evolution V holder watch now.
 			chaosx_nr25_enroll_event036_recoverers = yes
+			# A smaller forerunner craft is recovered outside Antarctica once
+			# the race has its entrants. It keeps the shared Event 036
+			# recovery receipts that Event 016 and the holder watch read.
+			country_event = { id = chaosx.nr25.260 days = constant:chaosx_nr25_timing.spacecraft_recovery_days }
 			set_temp_variable = { chaosx_nr25_super_event_visible_days = constant:chaosx_nr25_timing.super_event_visible_days }
 			set_global_flag = { flag = super_event_visible days = chaosx_nr25_super_event_visible_days value = constant:chaosx_nr25_identity.super_event_id }
 			set_variable = { global.current_super_event_audio_id = constant:chaosx_nr25_identity.super_event_audio_id }
@@ -2594,5 +2598,87 @@ country_event = {
 		name = chaosx.nr25.346.a
 		custom_effect_tooltip = chaosx_nr25_contaminated_fragment_tt
 		ai_chance = { base = 100 }
+	}
+}
+
+# ============================================================================
+# Forerunner craft. A smaller craft comes down outside Antarctica after the
+# race has its entrants and one government recovers it. The recovery writes
+# the shared Event 036 ledger receipts (chaosx_alien_recovery_event036_*),
+# which Event 016's alien-arms lead and Event 025's reward arbitration and
+# holder watch already read. Fires once per campaign.
+# ============================================================================
+country_event = {
+	id = chaosx.nr25.260
+	title = chaosx.nr25.260.t
+	hidden = yes
+	is_triggered_only = yes
+
+	immediate = {
+		if = {
+			limit = { NOT = { has_global_flag = chaosx_nr25_forerunner_craft_resolved } }
+			set_global_flag = chaosx_nr25_forerunner_craft_resolved
+			random_country = {
+				limit = {
+					exists = yes
+					num_of_controlled_states > 0
+					uses_normal_civilian_systems = yes
+					is_special_chaos_country = no
+					NOT = { has_country_flag = chaosx_alien_recovery_event036_recorded }
+				}
+				country_event = { id = chaosx.nr25.261 days = 1 }
+			}
+		}
+	}
+}
+
+country_event = {
+	id = chaosx.nr25.261
+	title = chaosx.nr25.261.t
+	desc = chaosx.nr25.261.d
+	picture = GFX_report_event_alien_spacecraft
+	is_triggered_only = yes
+
+	immediate = {
+		hidden_effect = { chaosx_alien_recovery_ledger_resolve_event036 = yes }
+	}
+
+	option = {
+		trigger = { has_country_flag = chaosx_alien_recovery_legacy_reward_allowed }
+		ai_chance = { base = 100 }
+		name = chaosx.nr25.261.a
+		set_technology = { jet_fighter1 = 1 }
+		set_technology = { jet_fighter2 = 1 }
+		add_equipment_to_stockpile = {
+			type = jet_fighter_equipment_2
+			amount = 200
+		}
+		hidden_effect = {
+			set_country_flag = brilliant_scientist_alien_spacecraft_recovered
+			brilliant_scientist_try_schedule_alien_spacecraft_contact = yes
+			chaosx_nr25_enroll_event036_recoverers = yes
+			news_event = { id = chaosx.news.41 days = 2 }
+		}
+	}
+
+	option = {
+		trigger = { has_country_flag = chaosx_alien_recovery_event036_reward_applied }
+		ai_chance = { base = 100 }
+		name = chaosx.nr25.261.b
+		hidden_effect = {
+			set_country_flag = chaosx_nr36_overlap_converted
+			chaosx_nr25_enroll_event036_recoverers = yes
+			news_event = { id = chaosx.news.41 days = 2 }
+		}
+	}
+
+	option = {
+		trigger = {
+			NOT = { has_country_flag = chaosx_alien_recovery_legacy_reward_allowed }
+			NOT = { has_country_flag = chaosx_alien_recovery_event036_reward_applied }
+		}
+		ai_chance = { base = 100 }
+		name = chaosx.nr25.261.c
+		hidden_effect = { set_country_flag = chaosx_nr36_overlap_conversion_pending }
 	}
 }

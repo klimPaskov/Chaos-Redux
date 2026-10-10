@@ -243,6 +243,13 @@ common/scripted_effects/025_alien_technology_in_antarctica_ledger_effects.txt ow
 
 Fragment slots are persistent and exclusive. Invalid saved event targets are cleaned before resolution.
 
+The Event 036 recovery is the Forerunner Craft, an Event 025 beat that Event 036 used to hold as the Alien Spacecraft stub.
+`chaosx.nr25.260` (hidden, once per campaign, `chaosx_nr25_forerunner_craft_resolved`) fires `chaosx_nr25_timing.spacecraft_recovery_days` (45) days after the race opens and picks one ordinary country that holds no recovery yet, and `chaosx.nr25.261` resolves the ledger through `chaosx_alien_recovery_ledger_resolve_event036`.
+Its three options keep the old results: the jet package (`jet_fighter1`, `jet_fighter2`, 200 `jet_fighter_equipment_2`, `brilliant_scientist_alien_spacecraft_recovered` and the Event 016 contact) when the legacy reward is allowed, the converted upgrade when the country already holds an applied Event 025 reward, and a sealed hangar that leaves the conversion pending.
+The receipts keep their names (`chaosx_alien_recovery_event036_*`, `global.chaosx_alien_recovery_event036_recoverers`), and the news is `chaosx.news.41`.
+The report and news art live in `gfx/event_pictures/025_alien_technology_in_antarctica/`.
+Event 036 itself is now the Chemical and Biological Weapons Convention.
+
 Exact overlap is country-scoped: Event 036 overlaps only with an applied Event 025 reward in the flight, propulsion and weapons field, and then receives an upgrade or the Integration capstone instead of its jet package.
 The architect's proposed aviation-owner extension remains a proposal.
 
