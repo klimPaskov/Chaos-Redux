@@ -73,7 +73,7 @@ Generate icon families from their own readable silhouette and material treatment
 
 ## Source and pipeline discipline
 
-The supplied canonical reference root is `C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/gfx_references`. This reference library was not mounted in the current planning environment. The implementation asset worker must open the matching contact sheet and representative individual samples before producing each asset family.
+The supplied canonical reference root is `C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.claude/skills/chaos-redux-event-assets/assets/gfx_references`. This reference library was not mounted in the current planning environment. The implementation asset worker must open the matching contact sheet and representative individual samples before producing each asset family.
 
 Reference images guide composition and finish. They are not final deliverables copied into new names. Record the inspected reference, generation prompt, original master, crop and processing settings, final dimensions, alpha treatment, sprite consumer, checksum and review result.
 

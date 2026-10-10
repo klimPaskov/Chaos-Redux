@@ -49,3 +49,11 @@ It does not establish present service health, current implementation status, or 
 Every text file supplied in the archive, including all 20 subagent definitions, was read. The original event brief was also read. A bounded read-only inspection of the repository used commit `879b3007d3b6bf75c726c11635473fccda45c569`. The full live repository, all linked reference files, installed vanilla files and offline wiki set were not read. The source-limit document identifies the actual inspected material and remaining requirements.
 
 No supplied subagent was executed. No HOI4 MCP analysis, game run, asset production, audio licensing approval, workbook edit or repository change was performed. This is a full design handoff with explicit implementation gates, not a claim that Event 076 has been implemented.
+
+## Changelog
+
+### 2026-10-10 spec audit
+
+- Part 08 gains a Hunger and flight section: tests reach Famine and Migration through the shared nuclear, bombing, and fallout transactions, the victim answers with its ordinary food and evacuation decisions, and foreign relief delivered through Famine's relief route is what lowers Domestic Hostility. The package previously had no famine or migration consequence for repeatedly bombed and irradiated towns.
+- Part 07 names the concrete biological owner seam: a sibling of the prototype field-test seed (`field_test_release`) with a foreign-trial source, instead of an unspecified outbreak request. Biological attacks moved to native raids on 8 October 2026, but a coerced test has no attack route, so the lifecycle seed is the right entry.
+- Subagent instructions use the Claude-first wording.

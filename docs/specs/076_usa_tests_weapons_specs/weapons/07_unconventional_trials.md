@@ -32,7 +32,8 @@ Long-term loss, air contamination and clearance remain with the chemical system.
 
 Biological providers identify an existing owner-controlled disease or weapon system. The rough brief explicitly includes weaponized diseases and smallpox. Those categories must be considered where the current owner supports them. Their names do not authorize an invented epidemiological model.
 
-The experiment requests a bounded, abstract outbreak initiation through the owner. It passes the USA as the responsible actor and the test's causal identifier where supported. The disease owner handles exposure, incubation, outbreaks, spread, protection, mortality and recovery. Event 076 handles the demand, schedule, research reward and political consequences.
+The experiment requests a bounded, abstract outbreak initiation through the owner. It passes the USA as the responsible actor and the test's causal identifier where supported.
+The biological lifecycle already accepts exact actor-and-victim seeds, as the prototype field-test accident does through `field_test_release` in `common/scripted_effects/biological_field_test_effects.txt`; a foreign trial needs a sibling seed with its own source token, the USA as actor and the host state's controller as victim, rather than a native biological raid, because the host consented under coercion and no attack route exists. The disease owner handles exposure, incubation, outbreaks, spread, protection, mortality and recovery. Event 076 handles the demand, schedule, research reward and political consequences.
 
 An outbreak can spread beyond the accepted state. Those later infections are a continuing consequence, not another American testing wave. They can harm allies or the USA itself if the owning system permits that spread. The event must not grant the American public or its armed forces automatic immunity.
 

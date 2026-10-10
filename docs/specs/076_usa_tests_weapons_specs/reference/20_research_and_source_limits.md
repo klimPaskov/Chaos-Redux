@@ -48,7 +48,7 @@ Other attempted official historical, weapons-control and archive searches did no
 
 ## Required references that were not fully available
 
-The attached skills refer to more files than the ZIP contains. The dedicated `.agents/skills/chaos-redux-mtth/SKILL.md` was not supplied. Installed vanilla documentation, the full offline wiki, current shared owner implementation files, matching asset contact sheets, individual vanilla references, locked image templates, actual helper scripts and full runtime registry assignments were not fully available and read in this task.
+The attached skills refer to more files than the ZIP contains. The dedicated `.claude/skills/chaos-redux-mtth/SKILL.md` was not supplied. Installed vanilla documentation, the full offline wiki, current shared owner implementation files, matching asset contact sheets, individual vanilla references, locked image templates, actual helper scripts and full runtime registry assignments were not fully available and read in this task.
 
 The supplied configuration describes tools and locations, but a described tool is not automatically callable here. The Windows reference paths are not mounted local directories in this environment. The canonical workbook and its export tool were not opened or executed.
 

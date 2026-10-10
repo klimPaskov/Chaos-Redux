@@ -39,7 +39,7 @@ Use shared Condemnation, treaties, sanctions, nuclear-use Chaos, war and Deaths-
 
 ## Delegate and integrate
 
-Use the actual supplied agents available in the current runtime, with clean context, bounded scope and explicit expected outputs. Use `fork_turns="none"` where the spawning contract supports it. Suitable work includes repository exploration, architecture, AI probability, decisions and missions, localisation, asset research and production, icon production, super-event text and audio, catalog work and documentation. Coordinate shared file ownership and integrate every real result.
+Use the actual supplied agents available in the current runtime, with clean context, bounded scope and explicit expected outputs. Suitable work includes repository exploration, architecture, AI probability, decisions and missions, localisation, asset research and production, icon production, super-event text and audio, catalog work and documentation. Coordinate shared file ownership and integrate every real result.
 
 Use the separate prompts in this package for assets, achievements, decisions and missions, and the super-event. Follow direction-only planning text to write final player-facing localisation during implementation. Do not copy planning instructions into the game. Preserve the single achievement registry and inspect the existing unique-ID allocation.
 

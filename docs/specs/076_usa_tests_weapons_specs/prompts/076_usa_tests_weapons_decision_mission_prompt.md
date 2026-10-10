@@ -34,7 +34,7 @@ Native categories, decision icons and mission text must follow the actual layout
 
 ## Validation and handoff
 
-Use `chaosx_decision_mission_auditor` and the read-only probability auditor with self-contained tasks and bounded ownership under the current [subagent skill](../../../../.agents/skills/chaos-redux-subagents/SKILL.md).
+Use `chaosx_decision_mission_auditor` and the read-only probability auditor with self-contained tasks and bounded ownership under the current [subagent skill](../../../../.claude/skills/chaos-redux-subagents/SKILL.md).
 This design uses native categories and introduces no dedicated Event 076 window, so it does not qualify for `chaosx_event_ui_worker`.
 Use matching installed MCP routes for supported event, probability and GUI surfaces; record unavailable capabilities instead of inventing decision, mission or cost endpoints.
 The parent reviews supported native renders and user-supplied live evidence with multiple jobs, long names, exact-cost resources and changing ownership.

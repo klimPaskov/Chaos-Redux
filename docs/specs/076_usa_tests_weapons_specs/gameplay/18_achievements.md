@@ -72,6 +72,6 @@ Each full achievement ID receives one original color master with genuine alpha. 
 
 The required locked inputs are `icons/achievements/template/achievement_template.png`, `achievement_template_grey.png` and `overlay.png`. Inspect the supplied skill and actual repository versions before use. The final template canvas is 64 × 64, and the exact red not-eligible overlay must remain intact.
 
-Use `.agents/skills/chaos-redux-event-assets/tools/process_achievement_icons.py` with the current validated arguments. Inspect its output and use the required DDS conversion and round-trip checks. The final files sit directly under `gfx/achievements/` as `<full_id>.dds`, `<full_id>_grey.dds` and `<full_id>_not_eligible.dds`.
+Use `.claude/skills/chaos-redux-event-assets/tools/process_achievement_icons.py` with the current validated arguments. Inspect its output and use the required DDS conversion and round-trip checks. The final files sit directly under `gfx/achievements/` as `<full_id>.dds`, `<full_id>_grey.dds` and `<full_id>_not_eligible.dds`.
 
 All six entries, their individual icon directions and proof contracts are planning proposals. No registry entry, icon triplet or achievement test has been produced or executed here.

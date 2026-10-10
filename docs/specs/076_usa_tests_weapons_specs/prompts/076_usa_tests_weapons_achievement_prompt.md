@@ -26,7 +26,7 @@ Write final achievement names, descriptions and progress tooltips during impleme
 
 For each full achievement ID, create one original color subject with genuine alpha and the specific simple icon direction in document 18. Inspect the current vanilla references and immutable achievement templates. Do not create three independently generated variants that only roughly resemble one another.
 
-Use the locked 64 by 64 template inputs `icons/achievements/template/achievement_template.png`, `achievement_template_grey.png` and `overlay.png`. Preserve the exact red not-eligible overlay. Run `.agents/skills/chaos-redux-event-assets/tools/process_achievement_icons.py` with actual validated arguments, then the required conversion and round-trip checks.
+Use the locked 64 by 64 template inputs `icons/achievements/template/achievement_template.png`, `achievement_template_grey.png` and `overlay.png`. Preserve the exact red not-eligible overlay. Run `.claude/skills/chaos-redux-event-assets/tools/process_achievement_icons.py` with actual validated arguments, then the required conversion and round-trip checks.
 
 Place final files directly under `gfx/achievements/` using `<full_id>.dds`, `<full_id>_grey.dds` and `<full_id>_not_eligible.dds`. No extra event subfolder is used for those final DDS triplets. Preserve original masters and processing evidence in the asset workspace and actual handoff locations.
 

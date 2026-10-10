@@ -23,7 +23,7 @@ The title should identify the first American nuclear proving ground in foreign t
 The final title, quote, attribution and button text are deliberately not supplied in this planning file. The text researcher must locate and verify a suitable primary source for any real quotation. Preserve exact attribution, publication context and date. A paraphrase must be identified as a paraphrase and cannot be put in quotation marks as historical speech.
 
 The author proposed an original in-universe prose alternative when no verified quotation fits.
-That alternative remains unresolved without explicit acceptance; the current [super-event skill](../../../../.agents/skills/chaos-redux-super-events/SKILL.md) requires continued source research instead of inventing a quotation.
+That alternative remains unresolved without explicit acceptance; the current [super-event skill](../../../../.claude/skills/chaos-redux-super-events/SKILL.md) requires continued source research instead of inventing a quotation.
 Do not attach a famous scientist or politician's name to an invented line merely to make the announcement sound period-appropriate.
 
 ## Audio direction

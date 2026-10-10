@@ -54,6 +54,14 @@ A continuing owner effect sends actual pulse receipts containing its instance, s
 
 Native bombing detection, global military aggregation, nuclear impacts, contamination pulses and disease outbreaks can all overlap. Establish an ownership table before implementation and test the overlaps deliberately. The same person cannot be counted once as a bomb victim and again as an unobserved estimate added by the reporting layer.
 
+## Hunger and flight
+
+A test that damages a populated state reaches the shared humanitarian owners through the same transactions any strike uses.
+Nuclear-scale trials use the shared nuclear strike path, whose famine input already commits acute shortage in the struck state, and heavy bombardment or contamination submits the ordinary bombing, nuclear-damage, or fallout flight request to Migration.
+Event 076 adds no food penalty or refugee movement of its own.
+The victim answers with its ordinary Release Food Stores, Import Food, Restore Relief, and Evacuate Civilians decisions, and a relief delivery that another country makes through Famine's relief route counts as the "effectively supplied external relief" that lowers Domestic Hostility in Part 10.
+This gives repeated tests a visible human cost in the victim's map and decision list without a second casualty or hunger counter.
+
 ## Chaos accounting
 
 Deaths-to-Chaos remains in the shared Deaths system. Nuclear use remains on the shared nuclear-use ladder. Wars and air contamination keep their existing contributions. Event 076 does not add those same values a second time.

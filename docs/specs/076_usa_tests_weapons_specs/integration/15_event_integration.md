@@ -60,7 +60,7 @@ Do not treat a documentation update as a behavioral migration. Inspect all calle
 
 ## Delivery responsibility
 
-The implementation agent must inspect the current working tree before editing and preserve unrelated user work. Split bounded work through the actual available supplied agents with explicit scope, clean context and expected handoffs. Use `fork_turns="none"` where the current subagent tool supports the supplied contract.
+The implementation agent must inspect the current working tree before editing and preserve unrelated user work. Split bounded work through the actual available supplied agents with explicit scope, clean context and expected handoffs. Use no inherited parent context where the current subagent tool supports the supplied contract.
 
 Required specialist checks include architecture, probability, decisions and missions, localisation, assets, event completion and the independent near-completion improvement loop. A real report belongs in the working-plan folder. A prompt addressed to an agent is not evidence that the agent ran.
 
