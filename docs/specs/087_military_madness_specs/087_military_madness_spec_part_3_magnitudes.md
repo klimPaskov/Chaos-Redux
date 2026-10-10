@@ -2,13 +2,22 @@
 
 ## Magnitude philosophy
 
-A successful roll should matter immediately to the relevant military calculation. The ordinary positive range is measured in hundreds of percent. Sensitive statistics use a different scale because a small change in their displayed number can have an enormous effect.
+A successful roll should matter immediately to the relevant military calculation.
+The ordinary positive range is measured in hundreds of percent.
+Sensitive statistics use a different scale because a small change in their displayed number can have an enormous effect.
 
-The ranges below are selected design targets. They have not been certified against the user's installed HOI4 executable, documentation, and full modifier composition. Production admission requires that verification for every actual engine binding.
+The ranges below are selected design targets.
+They have not been certified against the user's installed HOI4 executable, documentation, and full modifier composition.
+Production admission requires that verification for every actual engine binding.
 
-A percentage bonus, an added percentage point, a flat value, and a reduction in a penalty are different units. The catalog must retain the distinction. A modifier increasing a percentage-based chance by twenty percentage points cannot be implemented as a twenty-percent relative increase by accident.
+A percentage bonus, an added percentage point, a flat value, and a reduction in a penalty are different units.
+The registry must retain the distinction.
+A modifier increasing a percentage-based chance by twenty percentage points cannot be implemented as a twenty-percent relative increase by accident.
 
-All magnitude draws use discrete steps. The displayed values are normally multiples of five. Percentages use steps of 5 or 25 percentage points as listed. These are magnitude increments, not a statement that every modifier is an additive probability.
+All magnitude draws use discrete steps.
+The displayed values are normally multiples of five.
+Percentages use steps of 5 or 25 percentage points as listed.
+These are magnitude increments, not a statement that every modifier is an additive probability.
 
 ## Broad pool targets
 
@@ -44,7 +53,9 @@ All magnitude draws use discrete steps. The displayed values are normally multip
 | Broad naval protection | +100% to +300% | 25% | Actual protection statistic, never invented ship health |
 | Naval speed | +50% to +150% | 25% | Broad fleet mobility |
 
-The table defines semantic statistics, not a claim that every row corresponds to one native modifier token. A narrow engine key cannot masquerade as a broad effect. A national adapter must deliver the stated scope or the binding remains unresolved.
+The table defines semantic statistics, not a claim that every row corresponds to one native modifier token.
+A narrow engine key cannot masquerade as a broad effect.
+A national adapter must deliver the stated scope or the binding remains unresolved.
 
 ## Evolution I targets
 
@@ -71,7 +82,9 @@ The table defines semantic statistics, not a claim that every row corresponds to
 | Naval retreat or disengagement | +100% to +300%, or 40% to 80% shorter | Typed profile | Beneficial sign depends on the actual statistic |
 | Military training or exercise losses | 40% to 80% lower | 5% | Loss reduction with a valid floor |
 
-A descriptive family can discover several entries. Each entry still has one fixed value type and one fixed range before sampling. The game never randomly chooses between percentage and flat units for the same entry.
+A descriptive family can discover several entries.
+Each entry still has one fixed value type and one fixed range before sampling.
+The game never randomly chooses between percentage and flat units for the same entry.
 
 ## Evolution II targets
 
@@ -100,32 +113,53 @@ A descriptive family can discover several entries. Each entry still has one fixe
 | Specific air mission damage | +100% to +300% | 25% | One mission type |
 | Intelligence-derived combat advantage | +50% to +150% | 25% | Requires a real combat consumer |
 
-The terrain family includes every compatible mountain, hill, forest, jungle, desert, marsh, urban, plain, and other installed terrain entry. Snow and extreme temperatures follow the actual weather or climate definitions. Labels do not create new terrain.
+The terrain family includes every compatible mountain, hill, forest, jungle, desert, marsh, urban, plain, and other installed terrain entry.
+Snow and extreme temperatures follow the actual weather or climate definitions.
+Labels do not create new terrain.
 
 ## Evolution III and newly discovered statistics
 
-Every new statistic receives the profile that matches its actual calculation. Unit-specific attack, defense, endurance, or mission power ordinarily uses +100% to +300% in 25% steps. A direct broad statistical equivalent retains its broad-pool magnitude profile.
+Every new statistic receives the profile that matches its actual calculation.
+Unit-specific attack, defense, endurance, or mission power ordinarily uses +100% to +300% in 25% steps.
+A direct broad statistical equivalent retains its broad-pool magnitude profile.
 
-A flat capacity normally uses a range with at least five meaningful steps in multiples of five. Its exact minimum and maximum must be chosen after the installed system's scale is known. An unknown custom capacity cannot inherit +100% by default.
+A flat capacity normally uses a range with at least five meaningful steps in multiples of five.
+Its exact minimum and maximum must be chosen after the installed system's scale is known.
+An unknown custom capacity cannot inherit +100% by default.
 
-A bounded chance normally uses +15 to +40 percentage points in 5-point steps when those points remain meaningful and safe. A cost, loss, visibility, time, or penalty reduction normally uses 40% to 80% lower in 5% steps.
+A bounded chance normally uses +15 to +40 percentage points in 5-point steps when those points remain meaningful and safe.
+A cost, loss, visibility, time, or penalty reduction normally uses 40% to 80% lower in 5% steps.
 
-A Chaos Redux statistic without an interpretable unit, clear beneficial direction, real military consumer, and certified reversible range remains unverified. The system owner must supply that meaning rather than receiving an arbitrary gigantic number.
+A Chaos Redux statistic without an interpretable unit, clear beneficial direction, real military consumer, and certified reversible range remains unverified.
+The system owner must supply that meaning rather than receiving an arbitrary gigantic number.
 
 ## Safety without national balancing
 
-A single roll uses a certified range. Repeated rolls retain their original values and stack in the package record. The combined applied result also respects the statistic's genuine technical domain.
+A single roll uses a certified range.
+Repeated rolls retain their original values and stack in the package record.
+The combined applied result also respects the statistic's genuine technical domain.
 
-For an additive percentage statistic with no reached technical bound, +200% and +300% contribute +500%. They are not multiplied together. Any base value and unrelated modifiers remain governed by the actual game calculation.
+For an additive percentage statistic with no reached technical bound, +200% and +300% contribute +500%.
+They are not multiplied together.
+Any base value and unrelated modifiers remain governed by the actual game calculation.
 
-For a reduction, two individually valid rolls may exceed a safe total. The event therefore distinguishes the requested combined contribution from the amount the engine can safely apply. Excess contributions are retained until their own expiry. They can continue holding the result at a technical bound after another package expires.
+For a reduction, two individually valid rolls may exceed a safe total.
+The event therefore distinguishes the requested combined contribution from the amount the engine can safely apply.
+Excess contributions are retained until their own expiry.
+They can continue holding the result at a technical bound after another package expires.
 
-A safety bound is never chosen to make the event fair. Positive advantages must not be clipped at a convenient balance target. Every production bound requires an identified engine limitation, a documented valid domain, or measured overflow protection.
+A safety bound is never chosen to make the event fair.
+Positive advantages must not be clipped at a convenient balance target.
+Every production bound requires an identified engine limitation, a documented valid domain, or measured overflow protection.
 
-A proposed 5% remaining-consumption floor can be used as an initial verification target for a reduction adapter. It is not a claim that every HOI4 cost uses that floor. The final floor is selected per actual statistic and must account for supported effects outside Event 087.
+A proposed 5% remaining-consumption floor can be used as an initial verification target for a reduction adapter.
+It is not a claim that every HOI4 cost uses that floor.
+The final floor is selected per actual statistic and must account for supported effects outside Event 087.
 
 ## Communicating the result
 
-The player sees the rolled magnitude with its correct unit and sign. When a genuine technical limit constrains the combined effect, the result view distinguishes the rolled total from the currently applied amount and explains why they differ.
+The package row shows each rolled magnitude with its correct unit and sign, and the combined spirit shows the applied totals.
+When a technical limit holds a reduction below its rolled total, the spirit tooltip adds one line naming the statistic and the limit.
 
-That display does not offer a reroll. A saturated or presently irrelevant result is still a valid result with its original expiry.
+There is no reroll.
+A saturated or presently irrelevant result is still a valid result with its original expiry.

@@ -1,19 +1,54 @@
 # Military Madness: Goal Prompt
 
-Implement the full Chaos Redux rework of Event 087, Military Madness, from `docs/specs/087_military_madness_specs/`. Read every specification part, acceptance scenario, source note, and separate production prompt before editing. Follow AGENTS.md, the applicable full skills, and source hierarchy. Finish the missing required-source review honestly. The planning package does not certify installed-engine bindings, numerical safety, tool audits, or asset production.
+Implement the full Chaos Redux rework of Event 087, Military Madness, from `docs/specs/087_military_madness_specs/`.
+Read the README, every specification part, the acceptance scenarios, the research notes and the coding, asset and achievement prompts before editing.
+Follow CLAUDE.md and the applicable skills.
+The planning package certifies no engine binding, numeric safety bound, tool audit or asset.
 
-Preserve the existing root `chaosx.nr87.1`. Replace the old nine-month fixed entrenchment award with a worldwide, immediate, beneficial military lottery. Every valid country rolls independently. Every package lasts exactly 365 days. Repeats add independent packages without replacing older results, refreshing their timers, or merging their deadlines. Apply rewards independently of popup acknowledgement.
+Keep the root `chaosx.nr87.1`.
+Replace the old nine-month fixed entrenchment report option with a worldwide, immediate, beneficial military lottery.
+Every valid country rolls independently.
+Every package lasts exactly 365 days.
+Repeats add independent packages without replacing older ones, refreshing their timers or merging deadlines.
+Rewards never depend on popup acknowledgement.
 
-Use the highest eligible enabled stage at each firing, frozen before the event's own Chaos change. Baseline grants one broad roll. Military Insanity at 200+ grants three rolls with at least one broad. Impossible Warfare at 400+ grants six with at least two broad. Gods of War at 600+ grants ten with at least three broad. There is no later stage. Broader pools retain every supported earlier entry. Existing packages never evolve retroactively.
+Use the highest eligible enabled stage at each firing, frozen before the event's Chaos change.
+Baseline grants one broad roll.
+Military Insanity at 200+ grants three with at least one broad.
+Impossible Warfare at 400+ grants six with at least two broad.
+Gods of War at 600+ grants ten with at least three broad.
+There is no later stage, and existing packages never evolve.
 
-Select individual canonical statistics and their magnitudes randomly with replacement. Preserve duplicates and country inequality. Never introduce archetypes, rerolls, usefulness filters, compensation, guaranteed service coverage, or player-selected combinations. A technically valid naval result remains possible without a navy. Implement the specified equal-entry distribution and discrete magnitude bands without confusing percentages, percentage points, or flat values.
+Draw statistics and magnitudes randomly with replacement and equal weights.
+Keep duplicates and country inequality.
+No archetypes, rerolls, usefulness filters, compensation or player-chosen results.
+A naval result stays possible without a navy.
+Keep percentages, percentage points and flat values distinct.
 
-Build broad coverage from actual vanilla, DLC, country, and Chaos Redux sources. Discover candidates, prove compatible reversible national bindings, record technical exclusions and unresolved entries, and compile a versioned registry for runtime sampling. Do not pretend scripts can reflect arbitrary modifier keys or silently reduce the design to a small whitelist. Resolve the disclosed Boolean and scope conflicts explicitly. Prove every admitted key's direction, units, magnitude range, and cumulative safety.
+Audit vanilla, DLC, country and Chaos Redux sources into one append-only registry with a coverage document that gives every candidate an admission or technical exclusion.
+Prove each admitted entry's binding, sign, units, range and reversible application.
+Never attach fake magnitudes to Boolean unlocks.
 
-Maintain immutable per-package records and raw per-stat contributions. Apply only proven technical saturation, never balance caps. Expiry must rebuild from surviving raw contributions, including previously saturated duplicates. Repeated reductions must not create invalid costs or undo another system's effects. Verify update ordering, civil-war behavior, country lifetimes, save/load, dependency changes, and exact calendar boundaries. Keep earned campaign results after temporary bonuses expire.
+Keep raw per-package contributions and derive applied totals.
+Clamp only at proved technical limits, never at balance caps.
+Rebuild from surviving contributions at expiry.
+Verify update order, civil wars, country lifetimes, save and load, and calendar boundaries.
+Earned results stay after bonuses expire.
+Civil-war countries never copy packages, annexation never transfers them, and new countries wait for the next firing.
 
-Use one visible combined spirit and a private read-only ledger with paged package and draw details. Preserve cluster 18 Military Preparation, Low role, Minor Repeatable status, and catalog Chaos level 1. Apply the specified global Chaos impulse once per natural committed occurrence. Update the authoritative workbook through its exporter, not CSV snapshots.
+Show one combined dynamic-modifier spirit and one decision-category row per active package with its rolls and remaining days; build no scripted GUI.
+Add the Part 5 AI strategy responses to large land-offense and naval-invasion results, without touching draws.
+Keep Military Preparation Low, Minor Repeatable and Chaos level 1.
+Add +5 Chaos once per natural occurrence.
+Update the authoritative workbook through its exporter, never the CSV snapshots.
 
-Produce the four report images, one spirit icon, and three achievement triplets through the exact asset prompt. Implement all three action-based achievement objectives in the existing single registry. Delegate only through real available subagent tools with bounded ownership. Do not claim that reading TOML definitions is execution.
+Produce the four report images, one spirit icon and three achievement triplets through the asset prompt, and the three action-based achievements in the existing registry through the achievement prompt.
+Delegate through named specialists with self-contained prompts.
 
-Run the relevant repository checks and available HOI4 probability, event, and GUI audits. Review all 84 acceptance scenarios with evidence or an explicit blocker. Perform the required independent improvement and completion passes, integrate accepted findings, and rerun affected checks. Do not launch the user's game or invent results. Deliver the implementation, coverage records, asset evidence, catalog updates, and remaining live-validation requirements.
+Use HOI4 MCP checks where they answer a concrete question and record unavailable tools as limits.
+Cover all 80 acceptance scenarios (probability, lifecycle, safety, presentation, AI and achievements) with evidence or explicit blockers.
+Run the near-completion improvement-loop planner and the completion auditor, integrate accepted findings and recheck.
+Do not launch the game or invent results.
+
+Keep iterating until the goal is accomplished to its fullest extent.
+Do not claim completion until the implemented files satisfy the specification, and report every blocker.

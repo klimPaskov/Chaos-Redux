@@ -2,123 +2,103 @@
 
 ## Acting on an advantage
 
-Military Madness gives the player a deadline and a reason to reconsider existing plans. It does not choose those plans.
+Military Madness gives the player a deadline and a reason to reconsider existing plans.
+It does not choose those plans.
 
-A speed result can turn a limited offensive into an attempt to cut a rail junction or close a pocket. It does not protect an overextended spearhead. A defense result can support a delaying action while factories replace lost equipment. A recovery result can support repeated attacks, but the army still needs a viable front.
+A speed result can turn a limited offensive into an attempt to cut a rail junction or close a pocket.
+It does not protect an overextended spearhead.
+A defense result can support a delaying action while factories replace lost equipment.
+A recovery result can support repeated attacks, but the army still needs a viable front.
 
-An extreme armor result can make ordinary opposition ineffective until the enemy changes its equipment or receives a countervailing piercing result. A planning bonus rewards preparation, while a late deadline can make a long preparation waste the opportunity. Broad and specialist results can therefore pull the player toward different timing choices.
+An extreme armor result can make ordinary opposition ineffective until the enemy changes its equipment or rolls a countervailing piercing result.
+A planning bonus rewards preparation, while a near deadline can make a long preparation waste the opportunity.
 
-A weak naval power can spend the year constructing a force that benefits from its roll, use what it already owns, or leave the bonus unused. The event provides no free fleet to rescue that result.
+A weak naval power can spend the year building a force that benefits from its roll, use what it already owns, or leave the bonus unused.
+The event provides no free fleet.
 
 ## Reading an enemy
 
-An opposing country can have its own exceptional advantages, including the statistic that counters a player's result. The event does not equalize the two sides.
-
-Combat, reconnaissance, and the normal national-information interface remain the sources of military knowledge. A player's result ledger is private to the country they control. It is not a global database revealing every hidden enemy modifier and exact remaining duration.
-
-A visible national spirit follows ordinary national-information rules. The event must not use its custom interface to bypass those rules.
-
-An enemy package expiring can create an opportunity, but the player only receives information that the normal interface or their legitimate knowledge supports.
+An opposing country can hold its own exceptional advantages, including the one that counters the player's result.
+The event does not equalize the two sides.
+Combat, reconnaissance and the normal national-information interface remain the only sources of knowledge about an enemy's results; the package rows are visible only to their own country.
+An enemy package expiring can open an opportunity, but the player learns of it only through what the normal interface shows.
 
 ## Overlapping opportunities
 
-Repeated firings create different clocks. A country might hold a powerful defense result that ends soon and a newer offensive result that lasts much longer. It can prepare to attack before the defensive protection disappears, or keep the newer advantage in reserve.
-
-A broad result and a narrow terrain result can align with a specific front. Their interaction is discovered through play. The event does not construct or name a special package for that pairing.
-
-An enormous combined bonus can remain powerful after the oldest package expires. A technically saturated reduction can remain at its limit while enough surviving contributions still support it. The player must be able to inspect the actual next change rather than assuming that every expiry removes the whole displayed advantage.
+Repeated firings create different clocks.
+A country might hold a strong defense result that ends soon and a newer offensive result that lasts much longer, and can attack before the protection disappears or keep the newer advantage in reserve.
+A broad result and a narrow terrain result can align with one front; the event does not name or construct that pairing.
+A saturated reduction can stay at its limit while enough surviving contributions support it, so the player needs to see the next change rather than assume every expiry removes everything.
 
 ## AI behavior
 
-AI countries receive exactly the same draw count, minimum broad coverage, magnitude rules, duplicate rules, and expiry rules as human countries.
+AI countries receive exactly the same draw counts, broad minima, magnitudes, duplicates and expiry as human countries, with no archetype, war order or reroll.
+The native military calculations must include every bonus; a custom Chaos Redux statistic needs a real military consumer, not a tooltip.
 
-The AI continues to use its ordinary military planning, force construction, and diplomacy. It is not assigned an event-specific military archetype, ordered into a new war, or given an extra reroll because it cannot use a result well.
+The AI also uses what it rolls, without changing any draw:
 
-The native military calculations must actually include the bonuses. For a custom Chaos Redux effect, the owning system must identify its real combat or military consumer. A tooltip-only bonus is not sufficient.
+| Active result | AI response while the contribution lasts |
+| --- | --- |
+| Land attack, breakthrough, speed or organization recovery totaling at least +200% across active packages, while at war | A temporary aggressive front-control strategy toward its current enemies |
+| Naval invasion preparation or capacity, while at war with a coastal enemy | A temporary raised naval-invasion priority |
+| Defensive results only | No change |
 
-This package does not promise that ordinary AI can optimally exploit every novel specialist effect. Any later AI improvement must be a separate, reviewed use of the actual sampled result, without changing the draw, creating a new reward, or guaranteeing a national play style.
-
-Mandatory probability review covers the random selection system and inherited event-selection rules. A cosmetic acknowledgement with no reward branch must not be represented as a meaningful AI strategic choice.
+The strategies end when the qualifying contribution expires.
+They create no war, target or reward, and the AI probability auditor checks that they do not dominate ordinary AI planning.
 
 ## Player information
 
-The opening report explains the military anomaly and shows the local package's stage, fixed duration, and actual results through the result surface. Its acknowledgement never grants or modifies the package.
+The opening report explains the anomaly and names the stage, the 365-day duration and the country's actual results.
+Reading, postponing or reopening it never changes the package.
+Event Details holds the premise and progression only, never rolled values.
 
-The shared Event Details description contains the premise and progression identity. It is not a warehouse for rolled statistics, numeric reward tables, or debug records.
+### The combined spirit
 
-The combined national spirit shows that Military Madness is active and supports inspection of the current contribution. There is only one visible new spirit for the event, regardless of the number of rolls and overlaps.
+The country has one visible Military Madness spirit built on a dynamic modifier.
+Its native tooltip shows the applied total for each statistic across all active packages, plus one line for any statistic held at a technical limit (Part 3) and the date of the next expiry.
+Ten rolls never become ten spirits.
 
-The result interface is an event-owned, read-only ledger reached through a single ordinary decision-category entry. That entry costs nothing, performs no gameplay action, and cannot consume random numbers.
+### Package rows
 
-## The result ledger
+Each active package appears as one row in the Military Madness decision category, using the native timed-decision display for its remaining days.
+The row's tooltip lists that package's stage and every individual roll, including duplicates, with signs and units.
+Rows cost nothing, do nothing when hovered or opened and cannot consume randomness; there is no reroll, selection, renewal or exchange control.
+The category is hidden while the country has no active package.
 
-The ledger separates three questions: what is active now, which packages remain, and what a selected package originally rolled.
-
-The active view groups contributions by statistic. The package view sorts records by expiry. Selecting a package opens its preserved individual draws, including duplicates.
-
-Long packages use pages rather than a giant tooltip. A detailed page shows at most three numerical modifier rows and the selected package's expiry information. Ten-roll packages therefore remain fully inspectable without squeezing every effect into one panel. Navigation never hides unlisted effects from later pages.
-
-The summary is similarly paged. It does not invent a single combined military power score for incomparable statistics.
-
-A limited statistic offers a focused detail view showing its raw combined request, applied amount, and technical boundary with correct units. Those values replace the ordinary detail content rather than appearing beside several unrelated counters.
-
-Normal, empty, active, crowded, duplicate-heavy, partially expired, technically constrained, and unsupported-migration states need distinct handling. An empty ledger cannot present an old package as active.
-
-The UI contains no reroll, reward selection, renewal, exchange, suppression, or confirmation control. Package selection means selecting a record to inspect.
-
-## Visual hierarchy
-
-Use a compact native military-report interface with clear headings, an expiry-ordered list, and readable effect rows. The numeric result is more important than decorative imagery.
-
-Stage names provide atmosphere. Expiry and magnitude provide operational meaning. A near-expiry marker may highlight the final 30 days, but it cannot consume gameplay randomness or require a new recurring worldwide scan.
-
-The page controls, row areas, scroll bounds, and tooltips must be real native elements. No interactive text or control is baked into a background image.
-
-The dedicated UI belongs only to Event 087. Its worker has no authority to redesign the shared event log, Event Details, settings, or super-event interfaces.
+The row pool is sized for the most packages the event's repeat cadence can overlap within 365 days, and the implementation documents that bound; a package must never exist without a row.
+No dedicated scripted GUI is needed.
 
 ## Report tone
 
-The event's humor comes from military professionals attempting to explain impossible results in ordinary reports. Measuring equipment can fail, staff estimates can become absurd, and officers can insist that the improvement confirms their doctrine.
-
-Different stages increase the scale of the incident. The baseline is a startling result. Military Insanity produces several incompatible successes at once. Impossible Warfare makes terrain and operational conditions unreliable. Gods of War leaves familiar military categories unable to describe what armies are doing.
-
-The writing should remain concrete and readable. It should not suggest that every country rolled the same advantage, that a report caused the modifier, or that the event gave free units.
-
-Final event descriptions, option wording, achievement names, and UI strings are written during implementation. This specification supplies their meaning and direction.
+The humor comes from military professionals trying to explain impossible results in ordinary reports: instruments fail, staff estimates turn absurd, officers insist the improvement proves their doctrine.
+Each stage raises the scale: a startling result at baseline, several incompatible successes in Military Insanity, unreliable terrain and conditions in Impossible Warfare, and familiar military categories failing to describe what armies do in Gods of War.
+The writing stays concrete and never implies that every country rolled the same thing, that the report caused the bonus or that free units were granted.
+Final text is written during implementation from these directions.
 
 ## Connections with other events
 
-Doctrine Research can give a country methods for using a temporary advantage. Military Madness does not spend or grant doctrine choices on its behalf.
+Doctrine Research can give a country methods for using a temporary advantage; Military Madness spends or grants no doctrine choices.
+Law Upgrade can raise mobilization while Military Madness improves what the forces can do; neither refreshes the other.
+Agency Upgrade and Intel Leaked affect what governments know through their own systems and never expose another country's package rows.
 
-Law Upgrade can increase mobilization while Military Madness improves what the armed forces can do. Neither event refreshes the other's effects.
+When the recipient already has a [World Claims target](../086_world_claims_specs/086_world_claims_spec_part_4_integration.md), a useful speed, attack, defense or recovery result creates a choice between taking that state during the package and consolidating ground already held.
+The target must carry the recipient's own World Claims provenance, and ordinary diplomatic restrictions still decide whether an offensive is possible.
+Control and high-Compliance intervals run under World Claims rules even if the military advantage ends earlier.
+Expiry removes only the sampled contribution, leaving holdings, spent integration entitlements and valid control history intact.
+A speed result cannot substitute for holding time, and a claim cannot supply divisions.
+If an offensive fails and control is lost, World Claims resets its clocks under its own rules without refreshing the package.
+This connection adds no war order, reward or claim wave.
 
-Agency Upgrade and Intel Leaked can affect what governments know or can investigate through their own established systems. They do not expose Event 087's complete private ledger.
-
-When the recipient already has a [World Claims target](../086_world_claims_specs/086_world_claims_spec_part_4_integration.md), a useful speed, attack, defense, or recovery result can create a choice between taking that state during the remaining package and consolidating ground already held.
-The target must have that recipient's own World Claims provenance, and ordinary diplomatic restrictions still decide whether an offensive is possible.
-Its control and high-Compliance intervals start and continue under World Claims rules, even if the military advantage ends earlier.
-Expiry removes only the sampled contribution, leaving actual holdings, spent integration entitlements, and valid elapsed control history intact.
-A speed result cannot substitute for holding time, and a claim cannot supply divisions to exploit the result.
-If an offensive fails and state control is lost, World Claims resets the affected clocks under its own rules without refreshing the military package.
-The player can judge that exposure against the local expiry information, while the existing military AI retains responsibility for operations and World Claims retains its own route qualification.
-This connection supplies no additional war order, reward, or claim wave.
-
-Existing equipment, naval, and military reinforcement events can make a previously unused result useful later. They receive no extra trigger chance merely because Military Madness rolled a compatible statistic.
-
-A movement restriction or division lock remains authoritative. A speed modifier cannot bypass a rule that actually prohibits movement. A supply or fuel crisis can still matter after consumption becomes cheaper, particularly when the package expires.
-
-Other armor bonuses and military event modifiers combine through the genuine game calculations. Military Madness does not consume their assets, assume ownership of them, or rewrite their timers.
-
-These are mechanical interactions. They are not new chained events or mandatory cross-event dependency requirements.
+Equipment, naval and reinforcement events can make an unused result useful later, without extra trigger chance.
+Movement restrictions and division locks stay authoritative over speed results, and a supply or fuel crisis still matters, especially after expiry.
+Other bonuses combine through the game's normal calculations.
 
 ## Chaos impact
 
-A naturally committed worldwide occurrence adds one event-owned Chaos impulse: +5 at baseline, +10 at Evolution I, +15 at Evolution II, or +20 at Evolution III.
+A naturally committed worldwide occurrence adds +5 Chaos once, at any stage.
+The planning rules give a pre-fire evolved opening no extra Chaos for its stage, and the larger packages' consequences reach Chaos through the wars, deaths and destruction they cause, which their own systems already count.
+Recipients and rolls never multiply the impulse.
 
-The impulse represents the new worldwide military anomaly. It is recorded once for the whole occurrence, after its stage has been frozen. Neither recipients nor individual rolls multiply it.
-
-Logging, opening a report, selecting a record, technical recomputation, later threshold eligibility, and expiry add zero Chaos. Debug or force-triggered occurrences do not create farmable impulses or achievement progress.
-
-A naturally repeated occurrence is a new manifestation and can produce its own one-time impulse. Existing repeat weights and cluster pacing remain authoritative. The event introduces no player-operated farm.
-
-The contribution must enter the shared Chaos accounting path exactly once. Any generic member or cluster shock that represents this same manifestation must not be added a second time. Wars, deaths, and destruction resulting from later combat remain accounted for by their existing systems.
+Reports, package rows, recomputation, threshold changes and expiry add nothing.
+Debug or forced occurrences create no Chaos and no achievement progress.
+Each natural repeat is a new manifestation with its own impulse, under the existing repeat weights and cluster pacing, and any generic member or cluster shock for the same occurrence is not added a second time.

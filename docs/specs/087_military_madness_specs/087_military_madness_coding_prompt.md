@@ -1,89 +1,57 @@
 # Implement Military Madness
 
-Before implementing authored additions or numerical tuning, record their explicit user decision or parent acceptance within the authorized scope.
-The package's location, delivery status and older parent review do not approve unresolved proposals.
-Retain unresolved choices in the event plans until that basis exists.
+Implement Chaos Redux Event 087, Military Madness, from `docs/specs/087_military_madness_specs/`.
+Read the README (authority, gates, open question), Parts 1–6, the acceptance scenarios, the research notes and the asset and achievement prompts before editing.
+The user-locked rules in the README are not negotiable; proposed tuning is recorded in the plans folder with its acceptance when it changes.
+This is not permission to ship a short whitelist or a fixed entrenchment substitute.
 
-Implement Chaos Redux Event 087, Military Madness, from the complete source-spec package at `docs/specs/087_military_madness_specs/`. Preserve the user's design. This is a full implementation assignment, not permission to ship a short whitelist or a fixed entrenchment substitute.
+Follow the repository rules (`CLAUDE.md`) and the `chaos-redux-events`, `chaos-redux-decisions-missions`, `chaos-redux-subagents`, `chaos-redux-event-assets`, `hoi4-ideas-modifiers`, `hoi4-ai-strategies` and `chaos-redux-improvement-loop` skills.
 
-## Read before changing source
+## Start from current source
 
-Read `AGENTS.md`, the complete six numbered specification parts, `087_military_madness_acceptance_and_probability_scenarios.md`, `087_military_madness_research_and_source_notes.md`, the asset and achievement prompts, and the source reading manifest.
+- Read the relevant offline wiki and installed documentation sections for dynamic modifiers, ideas, timed decisions, scopes, on actions and AI strategies.
+- Search `chaosx.nr87.1`, `chaosx.nr87.2`, `entrenchment_bonus`, event selection, cluster registration and localisation consumers; keep the `chaosx.nr87.1` entry and retire the legacy report option and idea.
 
-Read the current full planning, events, subagents, improvement-loop, decisions-missions, scripted-GUI, and event-assets skills. Read other owner skills when their surfaces are actually used. Read the required core offline wiki set and all relevant installed vanilla documentation and exact precedents. The planning package did not complete that external-source audit. Do not inherit its unverified assumptions as engine facts.
+## Behavior
 
-Inspect the current worktree rather than assuming the pinned repository revision in the research notes matches it. Search the existing entry `chaosx.nr87.1`, recipient report `chaosx.nr87.2`, `entrenchment_bonus`, event-selection and cluster registration, and the event's UI and localisation consumers.
+- Every valid country draws independently at the frozen stage: one roll at baseline, three with one broad at 200 Chaos, six with two broad at 400, ten with three broad at 600, and no further stage (Part 1).
+- The stage is the highest enabled eligible one, frozen before distribution and the Chaos impulse; older packages never change.
+- Packages last exactly 365 days, stack with duplicates and expire independently; rewards never depend on popup acknowledgement.
+- Guaranteed broad slots sample broad entries with replacement; the other slots sample the deduplicated stage union with replacement; every entry and every magnitude step has equal weight (Parts 2 and 3).
+- No usefulness, force composition, prior luck or human control filters the pool.
 
-The inspected legacy files were `events/087_ww1.txt` and `common/ideas/087_ww1_ideas.txt`. Preserve the actual existing entry identity unless a reviewed migration updates every reference. Do not create `chaosx.nr087` merely because the catalog ID is padded.
+## The registry
 
-## Non-negotiable behavior
+- Audit the installed modifier documentation, enabled DLC content, country systems and Chaos Redux military systems, and write a coverage document in the plans folder giving every candidate's admission or technical exclusion.
+- Each admitted entry needs a stable ID, binding, value type, beneficial sign, real military consumer, minimum stage, magnitude profile, reversible application and localisation.
+- Entries are append-only; resolve Boolean candidates per the README open question.
+- Do not put idea-only `equipment_bonus` or `research_bonus` attributes in a dynamic-modifier block, and do not turn a leader or state effect into a national one through unsupported scopes.
 
-Every valid existing country draws independently. Baseline grants one roll. Evolution I at 200 Chaos grants three with at least one broad. Evolution II at 400 grants six with at least two broad. Evolution III at 600 grants ten with at least three broad. There is no further evolution.
+## Stacking and safety
 
-Use the specified pre-fire evolved-opening rule. Freeze the highest enabled eligible tier for the entire occurrence before distribution or its Chaos impulse. Old packages do not gain rolls, reroll, or downgrade when Chaos changes.
+Keep raw per-package contributions and derive the applied totals; clamp only at proved technical limits, never at a balance cap; rebuild from surviving contributions at expiry; prove reductions stay valid with external modifiers and the dynamic-modifier update order (Parts 3 and 4).
+Follow Part 4 for country lifetimes, civil wars, annexation, exile and same-day firings.
+Add no recurring world scan.
 
-Every new package lasts exactly 365 game days. Repeats stack, including identical statistics. Every individual roll and every package retains its original record and expiry. A new package never resets an old timer.
+## Presentation, AI and integration
 
-Apply rewards independently of popup acknowledgement. Reopening a report, changing a page, or refreshing the spirit cannot grant a package or consume gameplay randomness.
+- One combined dynamic-modifier spirit and one decision-category row per active package with its rolls and native remaining days (Part 5); no scripted GUI.
+- The AI strategy responses in Part 5, ending with their contribution.
+- Military Preparation Low member, Minor Repeatable, Chaos level 1, one history record and one +5 Chaos impulse per natural occurrence, no double cluster accounting, no Chaos or achievement progress from debug paths.
+- Event Details holds the premise only; final localisation follows the Part 5 tone with correct units and expiry meaning.
+- The package-owned idempotent CXT setup registration required by the repository rules.
 
-Use one visible combined national spirit, supported hidden adapters when genuinely required, and the event-owned read-only result ledger. Preserve every active package without a hidden gameplay storage cap.
+## Delegation and checks
 
-## Build the real compatible pool
+Route bounded work through `chaos-redux-subagents` with self-contained prompts: the registry, adapters and aggregation to `chaosx_scripted_system_architect`; the draw and AI strategy weights to `chaosx_ai_probability_auditor`; the decision rows to `chaosx_decision_mission_auditor`; player text to `chaosx_localisation_auditor`; art to the asset prompt's roles; achievements through the achievement prompt.
+Use HOI4 MCP checks where they answer a concrete question, within the repository retry limits; when a tool or specialist is unavailable, do the review directly and record the limit.
+Cover the acceptance scenarios with evidence or an explicit blocker.
+Near completion, run `chaosx_improvement_loop_planner` and resolve its handoff, then `chaosx_event_completion_auditor`.
+Do not launch the game; live validation belongs to the user.
 
-Generate a deterministic catalog from the supported installed game, enabled content, country systems, and owner-provided Chaos Redux military systems. Runtime sampling uses that compiled catalog. Do not claim runtime reflection of arbitrary modifier keys without actual engine support.
+## Documentation and catalog
 
-Each admitted entry needs a stable semantic identity, exact engine or adapter binding, value type, beneficial sign, military consumer, minimum stage, real technical availability conditions, excessive safe range, magnitude step, temporary application and rollback proof, localisation, and a documented composition policy.
+Write `docs/events/087_military_madness/overview.md` and keep working evidence and the coverage document under `docs/plans/087_military_madness_plans/`.
+After final wording exists, the spreadsheet worker updates Event 087 and the Military Preparation row in `docs/spreadsheets/chaos_redux_events_catalog.xlsx` and runs `python .tools/export_event_catalog_csv.py`; never edit the CSV exports or set Playable without approval.
 
-The semantic magnitude table is a design target. It is not a list of verified tokens. Establish direct soft attack, hard attack, armor, piercing, terrain, weather, mission, unit, and custom-system bindings through real sources.
-
-Do not put idea-only `equipment_bonus` or `research_bonus` attributes into an unsupported dynamic-modifier block. Do not turn a leader or state effect into a national effect through unsupported scope changes.
-
-Deduplicate aliases. Preserve distinct conditions and scopes. Guaranteed broad draws sample broad entries with replacement. Other draws sample the deduplicated eligible union with replacement. Each canonical entry has equal weight in its draw, and each permitted magnitude step has equal weight.
-
-Naval results remain eligible for a landlocked country. Lack of current units, current peace, poor synergy, prior luck, and human control are not filters. Missing technical support is a valid blocker. Missing implementation effort is not.
-
-Produce a full discovered-candidate disposition report. Unverified entries remain visible and block a claim that coverage is complete. Resolve Boolean-only and non-scalable candidates explicitly. Never attach large meaningless values to unlock flags.
-
-## Prove stacking and safety
-
-Retain raw contributions and derive the applied result. Clamp only at proven technical boundaries, never at a balance cap.
-
-A reduction can become unsafe after several rolls or an unrelated external modifier appears. Certify total composition over the package lifetime, including actual dynamic-modifier evaluation order. Avoid circular total-minus-self feedback.
-
-Rebuild surviving contributions after expiry. Do not subtract a raw expired roll from an already clamped total. Preserve results across save/load, repeated callbacks, same-day firings, country lifetime changes, and catalog revisions.
-
-Country creation, civil war, annexation, exile, cosmetic changes, and tag reuse must follow Part 4. Existing legacy instances are not new packages. Do not invent remaining durations or redraw a reward to conceal a migration gap.
-
-Do not introduce a recurring daily, weekly, or monthly whole-world sweep. Distribution may process the recipient set on occurrence. Cleanup and observations remain bounded to active records and relevant changes.
-
-## Integrate the event
-
-Preserve shared random-event weights and cluster pacing. Register Military Madness as Military Preparation's Low member, catalog Chaos level 1, Minor Repeatable. The event remains To Be Reworked until the actual project status requirements permit a change. Never assign Playable without approval.
-
-Use one global history occurrence and the specified single Chaos impulse. Prevent duplicate member, cluster, recipient, and roll accounting. Debug paths cannot farm Chaos or achievements.
-
-Keep Event Details premise-only. Write final localisation from the directions, with correct dynamic units and expiry meaning. Do not copy developer notes into player text.
-
-Use the ordinary free navigation entry for the dedicated read-only ledger. Route only that event-owned window to `chaosx_event_ui_worker`. Its allowed source scope must be explicitly named after discovery. Do not give that worker the shared event log, settings, or Event Details.
-
-Before implementing the ledger, create or select its approved layout reference and inspect exact vanilla precedents. Obtain mandatory MCP before-and-after GUI inspection, actual renders, states, resolutions, and click-region comparisons. Source-only review is not visual acceptance.
-
-## Delegate with explicit ownership
-
-Use relevant supplied `chaosx_*` agents with fully self-contained prompts and `fork_turns="none"` through the actual discovered Codex collaboration tool. Do not invent tool calls or claim independent agents ran when they did not.
-
-Use the architect for the bounded catalog, adapters, and timed aggregation. Use the read-only probability auditor for complete-pool evidence. Use the UI worker only for the dedicated ledger. Use the localisation auditor for the full player-text surface. Use the icon and generated-art owners for their exact asset families.
-
-Create the fourteen planned runtime textures through the asset prompt. Create the three achievement objectives and exact registry entries through the achievement prompt. The parent owns final integration and shared runtime wiring.
-
-The spreadsheet worker edits only `docs/spreadsheets/chaos_redux_events_catalog.xlsx`, preserving its structure. Mirror implemented in-game text for Event 087 and the affected Military Preparation row, then run the repository exporter. Never edit exported CSVs directly.
-
-## Validation and completion
-
-Use all named acceptance cases. For weighted surfaces, obtain the mandatory inspect, evaluate, sweep, and same-scenario compare evidence. Inspect and render the complete event flow, including helper effects, queued deliveries, cleanup, and failure paths.
-
-Run the mandatory near-completion `chaosx_improvement_loop_planner` review after the meaningful implementation is assembled. Resolve every returned addendum by implementation, promotion, reasoned queueing, or explicit rejection. An unavailable route is a blocker, not closure.
-
-Then use the read-only event completion auditor and relevant bounded audits. Reconcile docs, manifests, catalog, assets, and remaining validation limits. The user performs live-game validation. Do not launch the game or fabricate that evidence.
-
-Report implemented surfaces, exact changed files, source and MCP evidence, remaining unverified candidates, unsupported migrations, missing assets, and unresolved blockers. Never replace a missing requirement with a silent fallback or claim implementation completion from document generation alone.
+Report implemented surfaces, changed files, evidence, unverified candidates, missing assets and blockers, and never replace a requirement with a silent fallback.

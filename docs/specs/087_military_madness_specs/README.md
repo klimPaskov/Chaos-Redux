@@ -1,59 +1,68 @@
 # Event 087: Military Madness
 
-## Handoff
+**Minor Repeatable · Chaos level 1 · Military Preparation / Low · root `chaosx.nr87.1`**
 
-This is the design specification and production-prompt package at `docs/specs/087_military_madness_specs/`.
+This package is the rework design for Event 087.
+The legacy implementation is `events/087_ww1.txt` with `common/ideas/087_ww1_ideas.txt` (a fixed nine-month entrenchment idea granted through a report option), and the catalog row still names it "It’s WW1"; the rework is not implemented.
+Implementation working evidence belongs under `docs/plans/087_military_madness_plans/`.
 
-Start with Parts 1–6, then use the coding prompt for implementation. The goal prompt is a shorter task entry point. Asset and achievement production have separate complete assignments.
+## Authority
 
-This package does not contain game scripts, generated textures, a changed workbook, or a playable implementation.
+| Source | Status |
+| --- | --- |
+| User brief (recorded in [Research and source notes](087_military_madness_research_and_source_notes.md)) | Explicit user decisions: identity and cluster role, Minor Repeatable at Chaos level 1, every valid country rolls independently, 365-day packages, one/three/six/ten rolls with broad minima of one/one/two/three, thresholds 200/400/600, no stage after Gods of War, duplicates allowed, random statistic and magnitude, no archetypes or balancing, and a pool covering every technically usable vanilla, DLC, country and Chaos Redux military statistic |
+| World Claims connection (Part 5) | Accepted by the parent in the 8 October 2026 planning improvement pass |
+| Design changes listed in the revision log | Accepted under the 10 October 2026 spec audit, within the user's planning-package brief |
+| Magnitude bands, equal-entry sampling, pre-fire stage selection, technical saturation, achievements | Proposed design elaborating the brief; tune during implementation and record acceptance in the plans folder |
+| [Open questions](#open-questions) | Unresolved |
 
 ## Specification
 
 | Read order | Document | Contents |
 |---|---|---|
-| 1 | [Core](087_military_madness_spec_part_1_core.md) | Identity, recipient rules, independent lottery, stage selection, cluster treatment |
-| 2 | [Pools and evolutions](087_military_madness_spec_part_2_pools_and_evolutions.md) | Broad through full pools, exact draw rules, candidate admission and compatibility |
-| 3 | [Magnitudes](087_military_madness_spec_part_3_magnitudes.md) | Proposed excessive per-statistic bands, units, safe direction, aggregate safety |
-| 4 | [Stacking and lifecycle](087_military_madness_spec_part_4_stacking_and_lifecycle.md) | Independent 365-day packages, duplicate contributions, saturation, expiry, saves, country lifetimes |
-| 5 | [Campaign and presentation](087_military_madness_spec_part_5_campaign_and_presentation.md) | Strategic opportunities, AI parity, reports, private ledger, connections and Chaos accounting |
-| 6 | [Assets and achievements](087_military_madness_spec_part_6_assets_and_achievements.md) | Four report images, one spirit, three action-based achievements and their art |
+| 1 | [Core](087_military_madness_spec_part_1_core.md) | Identity, recipients, stages, cluster role |
+| 2 | [Pools and evolutions](087_military_madness_spec_part_2_pools_and_evolutions.md) | Broad through full pools, draw rules, the audited registry |
+| 3 | [Magnitudes](087_military_madness_spec_part_3_magnitudes.md) | Per-statistic bands, units, technical saturation |
+| 4 | [Stacking and lifecycle](087_military_madness_spec_part_4_stacking_and_lifecycle.md) | Independent packages, expiry, country lifetimes, legacy saves |
+| 5 | [Campaign and presentation](087_military_madness_spec_part_5_campaign_and_presentation.md) | Strategy, AI, the spirit and package rows, connections, Chaos |
+| 6 | [Assets and achievements](087_military_madness_spec_part_6_assets_and_achievements.md) | Four reports, one spirit icon, three achievements |
+| — | [Acceptance and probability scenarios](087_military_madness_acceptance_and_probability_scenarios.md) | Future implementation checks |
+| — | [Research and source notes](087_military_madness_research_and_source_notes.md) | Source hierarchy, legacy mismatch, technical findings |
 
-The user-locked rules remain one, three, six, or ten rolls with broad-pool minima of one, one, two, or three. Thresholds are 200, 400, and 600. Every package lasts 365 days. Every country draws independently, duplicates remain possible, and no stage follows Gods of War.
-
-Pre-fire stage selection, uniform canonical-entry sampling, exact magnitude bands, the ledger, Chaos impulses, and achievement objectives are explicit design elaborations. They are recorded as such in the source notes.
-
-## Production prompts
+## Prompts
 
 | Document | Use |
 |---|---|
-| [Goal prompt](087_military_madness_goal_prompt.md) | Short task entry point within the planning skill's 4,000-character limit |
-| [Coding prompt](087_military_madness_coding_prompt.md) | Complete implementation assignment with required source, integration, and validation work |
-| [Asset prompt](087_military_madness_asset_prompt.md) | Four report scenes, one spirit icon, and three achievement triplets through canonical production routes |
-| [Achievement prompt](087_military_madness_achievement_prompt.md) | Exact action-based objectives, bounded tracking, registration, writing, and art ownership |
-| [Review and agent assignments](087_military_madness_review_and_agent_assignments.md) | Applicability of all twenty supplied roles and ready independent-review assignments |
+| [Goal prompt](087_military_madness_goal_prompt.md) | Short task entry point within 4,000 characters |
+| [Coding prompt](087_military_madness_coding_prompt.md) | Complete implementation assignment |
+| [Asset prompt](087_military_madness_asset_prompt.md) | Four report scenes, one spirit icon and three achievement triplets |
+| [Achievement prompt](087_military_madness_achievement_prompt.md) | Registry, tracking and art routing for the three achievements |
 
-There is no super-event, focus-tree, portrait, or new military-unit assignment because none is part of this event design.
+There is no super-event, focus tree, portrait, scripted GUI or new unit in this design.
 
-## Acceptance and evidence
+## Implementation gates
 
-| Document | What it records |
-|---|---|
-| [Acceptance and probability scenarios](087_military_madness_acceptance_and_probability_scenarios.md) | 84 defined implementation scenarios, not 84 tests already passed |
-| [Research and source notes](087_military_madness_research_and_source_notes.md) | Source precedence, legacy mismatch, exact partial-reading boundaries, and verification blockers |
-| [Source-reading manifest](087_military_madness_source_reading_manifest.json) | All 42 supplied text files, full-read line ranges, sizes and hashes |
-| [Asset manifest](087_military_madness_asset_manifest.json) | Fourteen proposed runtime textures, all marked as not produced |
-| [Document checks](087_military_madness_document_checks.md) | Historical delivery checks and their limited scope |
-| [Package manifest](087_military_madness_package_manifest.json) | File inventory, hashes, measured counts, and validation status |
+- Every admitted statistic needs a real country-scoped binding, value type, beneficial sign and reversible application, proved against the installed game (Part 2).
+- Reduction statistics need a proved technical floor that stays valid with external modifiers (Part 3).
+- The acceptance scenarios are future checks; none has been executed.
 
-## Important limits
+## Open questions
 
-All 42 textual files in the supplied archive, including every supplied skill and all twenty agent definitions, were read in full before writing the specifications.
+1. **Boolean military capabilities (Part 2).**
+The brief asks for every usable military statistic with a random magnitude; on-off capabilities have no meaningful magnitude.
+Proposal: exclude them with a recorded technical reason rather than giving them a fake numeric range.
 
-The larger set of external references mandated by those files was not fully read. Only the first 200 lines of the supplementary Modifiers reference were inspected. The rest of the required offline wiki set, installed-game definitions, complete live helper and provider implementations, canonical visual references, and editable workbook remain unverified or unavailable.
+## Revision log
 
-No independent subagents were spawned. No HOI4 MCP audit, installed-engine validation, live-game test, asset production, or in-game visual review was performed. The mandatory independent improvement pass remains unrun.
+### 2026-10-10 spec audit
 
-Magnitude bands are detailed design targets rather than certified engine-safe limits. The complete supported modifier registry must be derived and proved against the actual supported installation. Dynamic coverage must not be claimed from an incomplete whitelist.
+Basis: 10 Oct 2026 spec audit under the user's planning-package brief.
 
-The source notes distinguish these gaps from completed bundle reading and completed document checks. Production must retain that distinction until actual evidence closes each item.
+- Replaced the dedicated read-only ledger window with native surfaces: the combined dynamic-modifier spirit shows the active totals, and each active package is one row in the event's decision category with its rolls and remaining days (Part 5).
+  The ledger duplicated the spirit tooltip, needed a custom GUI for a Minor event and multiplied player-facing values.
+- Made the Chaos impulse a flat +5 per natural occurrence, because the planning rules give no extra Chaos for a higher pre-fire stage (Part 5).
+- Replaced the versioned catalog build, revision provenance and catalog-migration rules with one audited, append-only registry while keeping the user's full-breadth requirement (Parts 2 and 4).
+- Added bounded AI use of sampled results: temporary front aggression for large land-offense results and invasion priority for naval-invasion results, without touching the draws (Part 5).
+- Trimmed the acceptance scenarios to the new design (removed ledger interface and catalog-revision cases) and removed process narration from the research notes and prompts; prompts now use `.claude` skill paths and the repository policy for unavailable tools and specialists.
+- Deleted `087_military_madness_source_reading_manifest.json`, `087_military_madness_document_checks.md`, `087_military_madness_review_and_agent_assignments.md`, `087_military_madness_asset_manifest.json` and `087_military_madness_package_manifest.json`.
+  They held planning-session reading evidence, historical document checks, unexecuted role assignments duplicated by the coding prompt, an asset list duplicated by Part 6, and a hash inventory with no consumer.
