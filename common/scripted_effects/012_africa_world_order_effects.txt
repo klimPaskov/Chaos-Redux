@@ -2530,6 +2530,11 @@ africa_world_install_current_package = {
 			set_country_flag = africa_world_package_sponsored
 			set_country_flag = africa_world_order_partner
 			set_country_flag = africa_world_sponsorship_obligation_due
+			# A sponsorship installed outside the four-mode offer is a material duty.
+			if = {
+				limit = { NOT = { africa_world_sponsorship_mode_is_grounded = yes } }
+				set_variable = { africa_world_sponsorship_mode = constant:africa_world_sponsorship_mode.material }
+			}
 		}
 		else_if = {
 			limit = { check_variable = { africa_world_install_status = constant:africa_world_package_status.independent } }
@@ -2590,41 +2595,7 @@ africa_world_install_current_package = {
 				limit = { PREV = { has_country_flag = africa_world_package_sponsored } }
 				add_to_variable = { africa_world_sponsorship_overextension = constant:africa_world_order.sponsorship_overextension_per_package }
 				add_to_array = { array = africa_world_sponsorship_targets value = PREV }
-				if = {
-					limit = {
-						PREV = {
-							check_variable = { africa_world_sponsorship_mode = constant:africa_world_sponsorship_mode.diplomatic }
-						}
-					}
-					activate_targeted_decision = { target = PREV decision = africa_world_sponsorship_diplomatic_obligation }
-				}
-				else_if = {
-					limit = {
-						PREV = {
-							check_variable = { africa_world_sponsorship_mode = constant:africa_world_sponsorship_mode.material }
-						}
-					}
-					activate_targeted_decision = { target = PREV decision = africa_world_sponsorship_material_obligation }
-				}
-				else_if = {
-					limit = {
-						PREV = {
-							check_variable = { africa_world_sponsorship_mode = constant:africa_world_sponsorship_mode.military }
-						}
-					}
-					activate_targeted_decision = { target = PREV decision = africa_world_sponsorship_military_obligation }
-				}
-				else_if = {
-					limit = {
-						PREV = {
-							check_variable = { africa_world_sponsorship_mode = constant:africa_world_sponsorship_mode.ideological }
-						}
-					}
-					activate_targeted_decision = { target = PREV decision = africa_world_sponsorship_ideological_obligation }
-				}
-				else = {
-					activate_targeted_decision = { target = PREV decision = africa_world_sponsorship_obligation }
-				}
+				activate_targeted_decision = { target = PREV decision = africa_world_sponsorship_obligation }
 			}
 		}
 

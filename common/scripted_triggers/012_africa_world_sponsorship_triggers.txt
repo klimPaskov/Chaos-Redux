@@ -165,3 +165,31 @@ africa_world_sponsorship_active_cleanup_is_needed = {
 		has_country_flag = africa_world_sponsorship_military_defence_call_pending
 	}
 }
+
+# COUNTRY scope on the Event 012 host. Offer prices are paid once, when the host
+# picks a mode in africa_world_package.32; these gates keep each option honest.
+africa_world_sponsorship_host_can_pay_diplomatic = {
+	check_variable = { var = political_power value = constant:africa_world_sponsorship_mode.diplomatic_offer_pp compare = greater_than_or_equals }
+}
+
+africa_world_sponsorship_host_can_pay_material = {
+	check_variable = { var = political_power value = constant:africa_world_sponsorship_mode.material_offer_pp compare = greater_than_or_equals }
+}
+
+africa_world_sponsorship_host_can_pay_military = {
+	check_variable = { var = political_power value = constant:africa_world_sponsorship_mode.military_offer_pp compare = greater_than_or_equals }
+	NOT = { command_power < constant:africa_world_sponsorship_mode.military_offer_command_power }
+}
+
+africa_world_sponsorship_host_can_pay_ideological = {
+	check_variable = { var = political_power value = constant:africa_world_sponsorship_mode.ideological_offer_pp compare = greater_than_or_equals }
+}
+
+africa_world_sponsorship_host_can_open_any_offer = {
+	OR = {
+		africa_world_sponsorship_host_can_pay_diplomatic = yes
+		africa_world_sponsorship_host_can_pay_material = yes
+		africa_world_sponsorship_host_can_pay_military = yes
+		africa_world_sponsorship_host_can_pay_ideological = yes
+	}
+}

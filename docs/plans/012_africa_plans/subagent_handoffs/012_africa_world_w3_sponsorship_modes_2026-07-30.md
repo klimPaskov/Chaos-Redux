@@ -465,3 +465,14 @@ The host-side legitimacy field is not a shared Event 012 variable in the inspect
 The parent must wire the military war hook that calls `africa_world_sponsorship_call_military_defence`; no unrestricted `on_daily` or world iteration was added.
 
 No high-chaos mode, tag creation, model work, fallback tree, or duplicated material store effect was added.
+
+## Decision consolidation, 2026-10-10
+
+The sixteen sponsorship decisions and missions are five.
+`africa_world_choose_sponsorship` is one targeted offer per candidate and fires `africa_world_package.32`, where the host picks the mode and pays its price; the four per-mode offer decisions are removed.
+`africa_world_fulfil_sponsorship` is the single duty decision for every mode and dispatches by the accepted mode; it replaces the four per-mode duty decisions and the un-moded `africa_world_fulfil_sponsorship_obligation`.
+`africa_world_sponsorship_obligation` is the single 180-day mission for every mode and replaces the four per-mode missions.
+`africa_world_renegotiate_sponsorship_safeguards` and `africa_world_close_sponsorship_after_refusal` are unchanged.
+A package installed outside the four-mode offer (the `sponsor_continent_unifier` action) now records the material mode, so it follows the same duty decision and mission; the extra political power that the removed un-moded duty decision charged is no longer charged.
+`africa_world_sponsorship_prepare_offer` copies the requested mode to the host from the candidate scope, so the offer price is charged under the mode the host chose.
+Duty and obligation texts come from the `GetAfricaSponsorship*` scripted localisation functions in `common/scripted_localisation/012_africa_world_sponsorship_scripted_localisation.txt`.

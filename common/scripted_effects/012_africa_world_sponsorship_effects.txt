@@ -80,10 +80,10 @@ africa_world_sponsorship_prepare_offer = {
 		set_country_flag = africa_world_sponsorship_offer_pending
 		set_country_flag = africa_world_sponsorship_offer_opened
 		event_target:africa_host = {
-			set_variable = { var = africa_world_sponsorship_mode value = ROOT.africa_world_sponsorship_mode }
+			set_variable = { var = africa_world_sponsorship_mode value = PREV.africa_world_sponsorship_mode }
 			set_country_flag = africa_world_sponsorship_offer_pending
 			set_country_flag = africa_world_sponsorship_offer_opened
-			set_variable = { var = africa_world_requested_sponsorship_mode value = ROOT.africa_world_sponsorship_mode }
+			set_variable = { var = africa_world_requested_sponsorship_mode value = PREV.africa_world_sponsorship_mode }
 			africa_world_sponsorship_charge_offer = yes
 		}
 		country_event = { id = africa_world_package.20 }
@@ -244,18 +244,10 @@ africa_world_sponsorship_close_offer = {
 	}
 }
 
-# COUNTRY scope on the host. Removes all four mode-specific action and mission
-# instances for the candidate. The existing generic material mission is also
-# removed so a migrated save cannot leave a duplicate obligation visible.
+# COUNTRY scope on the host. Removes the duty decision and the obligation
+# mission for the candidate.
 africa_world_sponsorship_remove_mode_decisions = {
-	remove_targeted_decision = { target = PREV decision = africa_world_fulfil_diplomatic_sponsorship }
-	remove_targeted_decision = { target = PREV decision = africa_world_fulfil_material_sponsorship }
-	remove_targeted_decision = { target = PREV decision = africa_world_fulfil_military_sponsorship }
-	remove_targeted_decision = { target = PREV decision = africa_world_fulfil_ideological_sponsorship }
-	remove_targeted_decision = { target = PREV decision = africa_world_sponsorship_diplomatic_obligation }
-	remove_targeted_decision = { target = PREV decision = africa_world_sponsorship_material_obligation }
-	remove_targeted_decision = { target = PREV decision = africa_world_sponsorship_military_obligation }
-	remove_targeted_decision = { target = PREV decision = africa_world_sponsorship_ideological_obligation }
+	remove_targeted_decision = { target = PREV decision = africa_world_fulfil_sponsorship }
 	remove_targeted_decision = { target = PREV decision = africa_world_sponsorship_obligation }
 }
 

@@ -2229,11 +2229,10 @@ africa_world_order_actions_category = {
 		}
 	}
 
-	# Grounded sponsorship offers. The preparation helper charges the host,
-	# so these targeted actions use custom-cost checks only.
-	africa_world_choose_diplomatic_sponsorship = {
-		name = africa_world_choose_diplomatic_sponsorship
-		desc = africa_world_choose_diplomatic_sponsorship_desc
+	# Grounded sponsorship. One offer decision per candidate opens a host event
+	# where the host picks the mode and pays its cost; one duty decision and one
+	# obligation mission cover whichever mode the sponsored country accepted.
+	africa_world_choose_sponsorship = {
 		icon = GFX_decision_012_africa_charter_ledger
 		target_array = africa_world_package_candidates
 		target_root_trigger = { africa_world_sponsorship_host_can_offer = yes }
@@ -2241,251 +2240,84 @@ africa_world_order_actions_category = {
 		visible = { africa_world_sponsorship_host_can_offer = yes }
 		available = {
 			FROM = { africa_world_sponsorship_candidate_is_offerable = yes }
-				check_variable = { var = political_power value = constant:africa_world_sponsorship_mode.diplomatic_offer_pp compare = greater_than_or_equals }
-		}
-			custom_cost_trigger = { check_variable = { var = political_power value = constant:africa_world_sponsorship_mode.diplomatic_offer_pp compare = greater_than_or_equals } }
-		custom_cost_text = africa_world_sponsorship_diplomatic_offer_cost
-		complete_effect = {
-			FROM = {
-				save_event_target_as = africa_world_sponsorship_candidate
-				set_variable = { africa_world_requested_sponsorship_mode = constant:africa_world_sponsorship_mode.diplomatic }
-				africa_world_sponsorship_prepare_offer = yes
+			custom_trigger_tooltip = {
+				tooltip = africa_world_sponsorship_offer_funds_tt
+				africa_world_sponsorship_host_can_open_any_offer = yes
 			}
 		}
-		ai_will_do = { base = constant:africa_world_sponsorship_mode.ai_offer_diplomatic_base }
-	}
-
-	africa_world_choose_material_sponsorship = {
-		name = africa_world_choose_material_sponsorship
-		desc = africa_world_choose_material_sponsorship_desc
-		icon = GFX_decision_012_africa_charter_ledger
-		target_array = africa_world_package_candidates
-		target_root_trigger = { africa_world_sponsorship_host_can_offer = yes }
-		target_trigger = { FROM = { africa_world_sponsorship_candidate_is_offerable = yes } }
-		visible = { africa_world_sponsorship_host_can_offer = yes }
-		available = {
-			FROM = { africa_world_sponsorship_candidate_is_offerable = yes }
-				check_variable = { var = political_power value = constant:africa_world_sponsorship_mode.material_offer_pp compare = greater_than_or_equals }
-		}
-			custom_cost_trigger = { check_variable = { var = political_power value = constant:africa_world_sponsorship_mode.material_offer_pp compare = greater_than_or_equals } }
-		custom_cost_text = africa_world_sponsorship_material_offer_cost
 		complete_effect = {
-			FROM = {
-				save_event_target_as = africa_world_sponsorship_candidate
-				set_variable = { africa_world_requested_sponsorship_mode = constant:africa_world_sponsorship_mode.material }
-				africa_world_sponsorship_prepare_offer = yes
-			}
-		}
-		ai_will_do = { base = constant:africa_world_sponsorship_mode.ai_offer_material_base }
-	}
-
-	africa_world_choose_military_sponsorship = {
-		name = africa_world_choose_military_sponsorship
-		desc = africa_world_choose_military_sponsorship_desc
-		icon = GFX_decision_012_africa_charter_ledger
-		target_array = africa_world_package_candidates
-		target_root_trigger = { africa_world_sponsorship_host_can_offer = yes }
-		target_trigger = { FROM = { africa_world_sponsorship_candidate_is_offerable = yes } }
-		visible = { africa_world_sponsorship_host_can_offer = yes }
-		available = {
-			FROM = { africa_world_sponsorship_candidate_is_offerable = yes }
-				check_variable = { var = political_power value = constant:africa_world_sponsorship_mode.military_offer_pp compare = greater_than_or_equals }
-				NOT = { command_power < constant:africa_world_sponsorship_mode.military_offer_command_power }
-		}
-		custom_cost_trigger = {
-				check_variable = { var = political_power value = constant:africa_world_sponsorship_mode.military_offer_pp compare = greater_than_or_equals }
-				NOT = { command_power < constant:africa_world_sponsorship_mode.military_offer_command_power }
-		}
-		custom_cost_text = africa_world_sponsorship_military_offer_cost
-		complete_effect = {
-			FROM = {
-				save_event_target_as = africa_world_sponsorship_candidate
-				set_variable = { africa_world_requested_sponsorship_mode = constant:africa_world_sponsorship_mode.military }
-				africa_world_sponsorship_prepare_offer = yes
-			}
-		}
-		ai_will_do = { base = constant:africa_world_sponsorship_mode.ai_offer_military_base }
-	}
-
-	africa_world_choose_ideological_sponsorship = {
-		name = africa_world_choose_ideological_sponsorship
-		desc = africa_world_choose_ideological_sponsorship_desc
-		icon = GFX_decision_012_africa_charter_ledger
-		target_array = africa_world_package_candidates
-		target_root_trigger = { africa_world_sponsorship_host_can_offer = yes }
-		target_trigger = { FROM = { africa_world_sponsorship_candidate_is_offerable = yes } }
-		visible = { africa_world_sponsorship_host_can_offer = yes }
-		available = {
-			FROM = { africa_world_sponsorship_candidate_is_offerable = yes }
-				check_variable = { var = political_power value = constant:africa_world_sponsorship_mode.ideological_offer_pp compare = greater_than_or_equals }
-		}
-			custom_cost_trigger = { check_variable = { var = political_power value = constant:africa_world_sponsorship_mode.ideological_offer_pp compare = greater_than_or_equals } }
-		custom_cost_text = africa_world_sponsorship_ideological_offer_cost
-		complete_effect = {
-			FROM = {
-				save_event_target_as = africa_world_sponsorship_candidate
-				set_variable = { africa_world_requested_sponsorship_mode = constant:africa_world_sponsorship_mode.ideological }
-				africa_world_sponsorship_prepare_offer = yes
-			}
-		}
-		ai_will_do = { base = constant:africa_world_sponsorship_mode.ai_offer_ideological_base }
-	}
-
-	# Mode-specific obligation actions replace the generic presentation for
-	# newly installed packages while retaining the old action for migration.
-	africa_world_fulfil_diplomatic_sponsorship = {
-		name = africa_world_fulfil_diplomatic_sponsorship
-		desc = africa_world_fulfil_diplomatic_sponsorship_desc
-		icon = GFX_decision_012_africa_charter_ledger
-		target_array = africa_world_sponsorship_targets
-		activation = { africa_is_current_host = yes }
-		target_root_trigger = { africa_is_current_host = yes }
-		target_trigger = { FROM = { africa_world_sponsorship_diplomatic_obligation_is_due = yes } }
-		visible = { africa_is_current_host = yes }
-		available = { FROM = { africa_world_sponsorship_diplomatic_obligation_is_due = yes } }
-		cost = 0
-		complete_effect = {
-			custom_effect_tooltip = africa_world_fulfil_diplomatic_sponsorship_tt
+			custom_effect_tooltip = africa_world_choose_sponsorship_tt
 			FROM = { save_event_target_as = africa_world_sponsorship_candidate }
-			africa_world_sponsorship_open_diplomatic_mediation = yes
+			country_event = { id = africa_world_package.32 }
 		}
-		ai_will_do = { base = constant:africa_world_sponsorship_mode.ai_mediate_base }
+		ai_will_do = { base = constant:africa_world_sponsorship_mode.ai_offer_base }
 	}
 
-	africa_world_fulfil_material_sponsorship = {
-		name = africa_world_fulfil_material_sponsorship
-		desc = africa_world_fulfil_material_sponsorship_desc
+	africa_world_fulfil_sponsorship = {
 		icon = GFX_decision_012_africa_charter_ledger
 		target_array = africa_world_sponsorship_targets
 		activation = { africa_is_current_host = yes }
 		target_root_trigger = { africa_is_current_host = yes }
-		target_trigger = { FROM = { africa_world_sponsorship_material_obligation_is_due = yes } }
+		target_trigger = { FROM = { africa_world_sponsorship_any_obligation_is_due = yes } }
 		visible = { africa_is_current_host = yes }
 		available = {
-			FROM = { africa_world_sponsorship_material_obligation_is_due = yes }
-				NOT = { has_equipment = { infantry_equipment < constant:africa_world_order.sponsorship_equipment } }
-				NOT = { has_equipment = { support_equipment < constant:africa_world_order.sponsorship_support_equipment } }
-				NOT = { has_equipment = { convoy < constant:africa_world_order.sponsorship_convoys } }
-		}
-		cost = 0
-		complete_effect = {
-			custom_effect_tooltip = africa_world_fulfil_material_sponsorship_tt
-			FROM = { africa_world_sponsorship_fulfil_current_mode = yes }
-		}
-		ai_will_do = { base = constant:africa_world_sponsorship_mode.ai_offer_material_base }
-	}
-
-	africa_world_fulfil_military_sponsorship = {
-		name = africa_world_fulfil_military_sponsorship
-		desc = africa_world_fulfil_military_sponsorship_desc
-		icon = GFX_decision_012_africa_charter_ledger
-		target_array = africa_world_sponsorship_targets
-		activation = { africa_is_current_host = yes }
-		target_root_trigger = { africa_is_current_host = yes }
-		target_trigger = { FROM = { africa_world_sponsorship_military_obligation_is_due = yes } }
-		visible = { africa_is_current_host = yes }
-		available = { FROM = { africa_world_sponsorship_military_obligation_is_due = yes } }
-		cost = 0
-		complete_effect = {
-			custom_effect_tooltip = africa_world_fulfil_military_sponsorship_tt
-			FROM = {
-				save_event_target_as = africa_world_sponsorship_candidate
-				africa_world_sponsorship_fulfil_current_mode = yes
+			FROM = { africa_world_sponsorship_any_obligation_is_due = yes }
+			OR = {
+				FROM = { NOT = { check_variable = { africa_world_sponsorship_mode = constant:africa_world_sponsorship_mode.material } } }
+				AND = {
+					NOT = { has_equipment = { infantry_equipment < constant:africa_world_order.sponsorship_equipment } }
+					NOT = { has_equipment = { support_equipment < constant:africa_world_order.sponsorship_support_equipment } }
+					NOT = { has_equipment = { convoy < constant:africa_world_order.sponsorship_convoys } }
+				}
 			}
 		}
-		ai_will_do = { base = constant:africa_world_sponsorship_mode.ai_honor_military_base }
-	}
-
-	africa_world_fulfil_ideological_sponsorship = {
-		name = africa_world_fulfil_ideological_sponsorship
-		desc = africa_world_fulfil_ideological_sponsorship_desc
-		icon = GFX_decision_012_africa_charter_ledger
-		target_array = africa_world_sponsorship_targets
-		activation = { africa_is_current_host = yes }
-		target_root_trigger = { africa_is_current_host = yes }
-		target_trigger = { FROM = { africa_world_sponsorship_ideological_obligation_is_due = yes } }
-		visible = { africa_is_current_host = yes }
-		available = { FROM = { africa_world_sponsorship_ideological_obligation_is_due = yes } }
 		cost = 0
 		complete_effect = {
-			custom_effect_tooltip = africa_world_fulfil_ideological_sponsorship_tt
+			custom_effect_tooltip = africa_world_fulfil_sponsorship_tt
 			FROM = { save_event_target_as = africa_world_sponsorship_candidate }
-			africa_world_sponsorship_open_ideological_congress = yes
+			if = {
+				limit = { FROM = { check_variable = { africa_world_sponsorship_mode = constant:africa_world_sponsorship_mode.diplomatic } } }
+				africa_world_sponsorship_open_diplomatic_mediation = yes
+			}
+			else_if = {
+				limit = { FROM = { check_variable = { africa_world_sponsorship_mode = constant:africa_world_sponsorship_mode.ideological } } }
+				africa_world_sponsorship_open_ideological_congress = yes
+			}
+			else = { FROM = { africa_world_sponsorship_fulfil_current_mode = yes } }
 		}
-		ai_will_do = { base = constant:africa_world_sponsorship_mode.ai_congress_base }
-	}
-
-	africa_world_sponsorship_diplomatic_obligation = {
-		name = africa_world_sponsorship_diplomatic_obligation
-		desc = africa_world_sponsorship_diplomatic_obligation_desc
-		icon = GFX_decision_012_africa_charter_ledger
-		activation = { africa_is_current_host = yes }
-		target_array = africa_world_sponsorship_targets
-		target_trigger = { FROM = { africa_world_sponsorship_diplomatic_obligation_is_due = yes } }
-		days_mission_timeout = constant:africa_world_sponsorship_mode.obligation_days
-		is_good = no
-		available = { always = no }
-		cancel_trigger = {
-			OR = {
-				has_global_flag = world_end
-				FROM = { NOT = { africa_world_sponsorship_diplomatic_obligation_is_due = yes } }
+		ai_will_do = {
+			base = 0
+			modifier = {
+				add = constant:africa_world_sponsorship_mode.ai_mediate_base
+				FROM = { check_variable = { africa_world_sponsorship_mode = constant:africa_world_sponsorship_mode.diplomatic } }
+			}
+			modifier = {
+				add = constant:africa_world_sponsorship_mode.ai_offer_material_base
+				FROM = { check_variable = { africa_world_sponsorship_mode = constant:africa_world_sponsorship_mode.material } }
+			}
+			modifier = {
+				add = constant:africa_world_sponsorship_mode.ai_honor_military_base
+				FROM = { check_variable = { africa_world_sponsorship_mode = constant:africa_world_sponsorship_mode.military } }
+			}
+			modifier = {
+				add = constant:africa_world_sponsorship_mode.ai_congress_base
+				FROM = { check_variable = { africa_world_sponsorship_mode = constant:africa_world_sponsorship_mode.ideological } }
 			}
 		}
-		timeout_effect = { FROM = { africa_world_sponsorship_default_current_mode = yes } }
 	}
 
-	africa_world_sponsorship_material_obligation = {
-		name = africa_world_sponsorship_material_obligation
-		desc = africa_world_sponsorship_material_obligation_desc
+	africa_world_sponsorship_obligation = {
 		icon = GFX_decision_012_africa_charter_ledger
 		activation = { africa_is_current_host = yes }
 		target_array = africa_world_sponsorship_targets
-		target_trigger = { FROM = { africa_world_sponsorship_material_obligation_is_due = yes } }
+		target_trigger = { FROM = { africa_world_sponsorship_any_obligation_is_due = yes } }
 		days_mission_timeout = constant:africa_world_sponsorship_mode.obligation_days
 		is_good = no
 		available = { always = no }
 		cancel_trigger = {
 			OR = {
 				has_global_flag = world_end
-				FROM = { NOT = { africa_world_sponsorship_material_obligation_is_due = yes } }
-			}
-		}
-		timeout_effect = { FROM = { africa_world_sponsorship_default_current_mode = yes } }
-	}
-
-	africa_world_sponsorship_military_obligation = {
-		name = africa_world_sponsorship_military_obligation
-		desc = africa_world_sponsorship_military_obligation_desc
-		icon = GFX_decision_012_africa_charter_ledger
-		activation = { africa_is_current_host = yes }
-		target_array = africa_world_sponsorship_targets
-		target_trigger = { FROM = { africa_world_sponsorship_military_obligation_is_due = yes } }
-		days_mission_timeout = constant:africa_world_sponsorship_mode.obligation_days
-		is_good = no
-		available = { always = no }
-		cancel_trigger = {
-			OR = {
-				has_global_flag = world_end
-				FROM = { NOT = { africa_world_sponsorship_military_obligation_is_due = yes } }
-			}
-		}
-		timeout_effect = { FROM = { africa_world_sponsorship_default_current_mode = yes } }
-	}
-
-	africa_world_sponsorship_ideological_obligation = {
-		name = africa_world_sponsorship_ideological_obligation
-		desc = africa_world_sponsorship_ideological_obligation_desc
-		icon = GFX_decision_012_africa_charter_ledger
-		activation = { africa_is_current_host = yes }
-		target_array = africa_world_sponsorship_targets
-		target_trigger = { FROM = { africa_world_sponsorship_ideological_obligation_is_due = yes } }
-		days_mission_timeout = constant:africa_world_sponsorship_mode.obligation_days
-		is_good = no
-		available = { always = no }
-		cancel_trigger = {
-			OR = {
-				has_global_flag = world_end
-				FROM = { NOT = { africa_world_sponsorship_ideological_obligation_is_due = yes } }
+				FROM = { NOT = { africa_world_sponsorship_any_obligation_is_due = yes } }
 			}
 		}
 		timeout_effect = { FROM = { africa_world_sponsorship_default_current_mode = yes } }
@@ -2517,79 +2349,6 @@ africa_world_order_actions_category = {
 		cost = 0
 		complete_effect = { FROM = { set_country_flag = africa_world_sponsorship_refusal_reviewed } }
 		ai_will_do = { base = constant:africa_world_sponsorship_mode.ai_notice_base }
-	}
-
-	africa_world_fulfil_sponsorship_obligation = {
-		icon = GFX_decision_012_africa_charter_ledger
-		target_array = africa_world_sponsorship_targets
-		target_root_trigger = { africa_is_current_host = yes }
-		visible = {
-			FROM = {
-				has_country_flag = africa_world_sponsorship_obligation_due
-				NOT = { africa_world_sponsorship_mode_is_grounded = yes }
-			}
-		}
-		target_trigger = {
-			FROM = {
-				africa_world_package_is_installed = yes
-				NOT = { africa_world_sponsorship_mode_is_grounded = yes }
-			}
-		}
-		available = {
-			NOT = { has_equipment = { infantry_equipment < constant:africa_world_order.sponsorship_equipment } }
-			NOT = { has_equipment = { support_equipment < constant:africa_world_order.sponsorship_support_equipment } }
-			NOT = { has_equipment = { convoy < constant:africa_world_order.sponsorship_convoys } }
-		}
-		cost = constant:africa_world_order.sponsorship_pp_cost
-		complete_effect = {
-			FROM = {
-				if = {
-					limit = { africa_world_sponsorship_mode_is_grounded = yes }
-					africa_world_sponsorship_fulfil_current_mode = yes
-				}
-				else = { africa_world_fulfil_current_sponsorship_obligation = yes }
-			}
-		}
-		ai_will_do = {
-			base = constant:africa_world_order.ai_normal
-			modifier = { factor = constant:africa_world_order.ai_modifier_double NOT = { has_war = yes } }
-		}
-	}
-
-	africa_world_sponsorship_obligation = {
-		icon = GFX_decision_012_africa_charter_ledger
-		target_array = africa_world_sponsorship_targets
-		activation = { africa_is_current_host = yes }
-		target_trigger = {
-			FROM = {
-				has_country_flag = africa_world_sponsorship_obligation_due
-				NOT = { africa_world_sponsorship_mode_is_grounded = yes }
-			}
-		}
-		days_mission_timeout = constant:africa_world_order.sponsorship_obligation_days
-		is_good = no
-		available = { always = no }
-		cancel_trigger = {
-			OR = {
-				has_global_flag = world_end
-				FROM = { NOT = { africa_world_package_is_installed = yes } }
-				FROM = {
-					OR = {
-						NOT = { has_country_flag = africa_world_sponsorship_obligation_due }
-						africa_world_sponsorship_mode_is_grounded = yes
-					}
-				}
-			}
-		}
-		timeout_effect = {
-			FROM = {
-				if = {
-					limit = { africa_world_sponsorship_mode_is_grounded = yes }
-					africa_world_sponsorship_default_current_mode = yes
-				}
-				else = { africa_world_default_current_sponsorship_obligation = yes }
-			}
-		}
 	}
 
 	africa_world_launch_prepared_war = {
