@@ -24,14 +24,14 @@ List only concrete remaining fixes; optional proposals, unavailable verification
 
 Read and apply:
 - AGENTS.md.
-- .agents/skills/chaos-redux-improvement-loop/SKILL.md.
-- .agents/skills/chaos-redux-event-planning/SKILL.md.
-- .agents/skills/chaos-redux-events/SKILL.md when the feature belongs to an event.
-- .agents/skills/chaos-redux-focus-trees/SKILL.md when the feature touches focus trees.
-- .agents/skills/chaos-redux-decisions-missions/SKILL.md when the feature touches decisions, missions, scripted GUI decision surfaces, or formables.
-- .agents/skills/chaos-redux-event-assets/SKILL.md when visual depth, animated sprites, animated portraits, or asset handoffs matter.
-- .agents/skills/chaos-redux-super-events/SKILL.md when the expansion could require a super-event.
-- .agents/skills/chaos-redux-subagents/SKILL.md for folder paths and handoff rules.
+- .claude/skills/chaos-redux-improvement-loop/SKILL.md.
+- .claude/skills/chaos-redux-event-planning/SKILL.md.
+- .claude/skills/chaos-redux-events/SKILL.md when the feature belongs to an event.
+- .claude/skills/chaos-redux-focus-trees/SKILL.md when the feature touches focus trees.
+- .claude/skills/chaos-redux-decisions-missions/SKILL.md when the feature touches decisions, missions, scripted GUI decision surfaces, or formables.
+- .claude/skills/chaos-redux-event-assets/SKILL.md when visual depth, animated sprites, animated portraits, or asset handoffs matter.
+- .claude/skills/chaos-redux-super-events/SKILL.md when the expansion could require a super-event.
+- .claude/skills/chaos-redux-subagents/SKILL.md for folder paths and handoff rules.
 
 Own this scope:
 - Write expansion addenda, design notes, route maps, country package proposals, decision maps, focus route plans, formable plans, scripted GUI design notes, asset needs, AI behavior notes, and acceptance criteria.

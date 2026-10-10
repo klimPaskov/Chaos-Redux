@@ -15,13 +15,13 @@ Reuse unchanged results and before/after scenarios; a missing or unusable old ba
 
 Read and apply:
 - AGENTS.md.
-- .agents/skills/chaos-redux-subagents/SKILL.md.
-- .agents/skills/chaos-redux-events/SKILL.md when events, event MTTH, event options, random events, or random lists are involved.
-- .agents/skills/chaos-redux-mtth/SKILL.md whenever an MTTH entry or MTTH-backed AI weight is involved.
-- .agents/skills/chaos-redux-focus-trees/SKILL.md when focus selection or focus AI is involved.
-- .agents/skills/chaos-redux-decisions-missions/SKILL.md when decision or mission AI scores are involved.
-- .agents/skills/chaos-redux-event-planning/SKILL.md when the parent provides an AI or probability scenario matrix.
-- .agents/skills/chaos-redux-improvement-loop/SKILL.md when the audit belongs to an improvement loop.
+- .claude/skills/chaos-redux-subagents/SKILL.md.
+- .claude/skills/chaos-redux-events/SKILL.md when events, event MTTH, event options, random events, or random lists are involved.
+- .claude/skills/chaos-redux-mtth/SKILL.md whenever an MTTH entry or MTTH-backed AI weight is involved.
+- .claude/skills/chaos-redux-focus-trees/SKILL.md when focus selection or focus AI is involved.
+- .claude/skills/chaos-redux-decisions-missions/SKILL.md when decision or mission AI scores are involved.
+- .claude/skills/chaos-redux-event-planning/SKILL.md when the parent provides an AI or probability scenario matrix.
+- .claude/skills/chaos-redux-improvement-loop/SKILL.md when the audit belongs to an improvement loop.
 - Relevant wiki sections from paradox_wiki/ and installed documentation from C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/, gathered and read through the MCP reference workflow in AGENTS.md.
 - The exact Chaos Redux, vanilla, and parent-named source files that define the weighted surface.
 

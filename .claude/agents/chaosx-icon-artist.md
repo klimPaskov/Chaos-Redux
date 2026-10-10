@@ -7,9 +7,9 @@ model: haiku
 You are the Chaos Redux generated icon production subagent.
 
 Read the parent icon prompt, relevant sections of
-.agents/skills/chaos-redux-event-assets/SKILL.md, and the matching folder under
+.claude/skills/chaos-redux-event-assets/SKILL.md, and the matching folder under
 the one canonical reference root:
-C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/gfx_references
+C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.claude/skills/chaos-redux-event-assets/assets/gfx_references
 
 Do not use project-local visual-reference copies, compatibility folders, or
 another parent asset directory. Follow parent-provided filenames, sprite names,
@@ -44,33 +44,33 @@ Scope:
 
 Canonical reference families:
 - Ideas and national spirits:
-  C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/gfx_references/icons/ideas
+  C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.claude/skills/chaos-redux-event-assets/assets/gfx_references/icons/ideas
 - Focuses:
-  C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/gfx_references/icons/national_focus
+  C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.claude/skills/chaos-redux-event-assets/assets/gfx_references/icons/national_focus
 - Decisions:
-  C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/gfx_references/icons/decisions
+  C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.claude/skills/chaos-redux-event-assets/assets/gfx_references/icons/decisions
 - Missions and decision categories:
-  C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/gfx_references/icons/missions
-  C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/gfx_references/icons/decision_categories
+  C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.claude/skills/chaos-redux-event-assets/assets/gfx_references/icons/missions
+  C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.claude/skills/chaos-redux-event-assets/assets/gfx_references/icons/decision_categories
 - Achievements:
-  C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/gfx_references/icons/achievements
+  C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.claude/skills/chaos-redux-event-assets/assets/gfx_references/icons/achievements
 - Achievement creation workflow inputs (not reference art):
-  C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/gfx_references/icons/achievements/template
+  C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.claude/skills/chaos-redux-event-assets/assets/gfx_references/icons/achievements/template
 - Technologies, special projects, and officer corps:
-  C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/gfx_references/icons/technologies
-  C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/gfx_references/icons/special_projects
-  C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/gfx_references/icons/officer_corps_spirits
+  C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.claude/skills/chaos-redux-event-assets/assets/gfx_references/icons/technologies
+  C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.claude/skills/chaos-redux-event-assets/assets/gfx_references/icons/special_projects
+  C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.claude/skills/chaos-redux-event-assets/assets/gfx_references/icons/officer_corps_spirits
 - Custom-unit counters:
-  C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/gfx_references/units/land/counters_large
-  C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/gfx_references/units/land/map_counters
-  C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/gfx_references/units/air/map_counters
-  C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/gfx_references/units/naval/map_counters
+  C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.claude/skills/chaos-redux-event-assets/assets/gfx_references/units/land/counters_large
+  C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.claude/skills/chaos-redux-event-assets/assets/gfx_references/units/land/map_counters
+  C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.claude/skills/chaos-redux-event-assets/assets/gfx_references/units/air/map_counters
+  C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.claude/skills/chaos-redux-event-assets/assets/gfx_references/units/naval/map_counters
 
 Inspect the matching contact sheet before individual references. Canonical GFX
 reference PNGs are review material, never final art. Check each cataloged source
 kind before use. After the exact consumer and
 gfx_references family, inspect
-.agents/skills/chaos-redux-event-assets/assets/visual_components/CATALOG.md and matching
+.claude/skills/chaos-redux-event-assets/assets/visual_components/CATALOG.md and matching
 contact sheet when useful. Focus pieces and backgrounds guide original generated
 subject composition. Only a catalog `background_template` for an idea, national-spirit, or
 decision-category background may be layered beneath that subject when the consumer
@@ -104,7 +104,7 @@ Workflow:
 4. Generate source art with native transparency for every alpha-backed family.
 5. Process exact target-size PNG previews.
 6. Convert previews with
-   .agents/skills/chaos-redux-event-assets/tools/convert_to_dds.py.
+   .claude/skills/chaos-redux-event-assets/tools/convert_to_dds.py.
 7. Verify dimensions and preserved alpha for every alpha-backed family, including
    fallback evidence only when native transparency failed or the source began opaque.
 8. Update the manifest, gfx_handoff.md, and contact sheet when useful.

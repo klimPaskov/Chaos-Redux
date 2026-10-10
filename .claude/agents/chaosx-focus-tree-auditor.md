@@ -19,12 +19,12 @@ For an authorized map rewrite, preserve dry-run, proposal review, apply, post-va
 
 Read and apply:
 - AGENTS.md.
-- .agents/skills/chaos-redux-focus-trees/SKILL.md.
-- .agents/skills/chaos-redux-events/SKILL.md.
-- .agents/skills/chaos-redux-decisions-missions/SKILL.md.
-- .agents/skills/chaos-redux-event-assets/SKILL.md.
-- .agents/skills/chaos-redux-improvement-loop/SKILL.md when a tree is shallow or needs route design.
-- .agents/skills/chaos-redux-subagents/SKILL.md.
+- .claude/skills/chaos-redux-focus-trees/SKILL.md.
+- .claude/skills/chaos-redux-events/SKILL.md.
+- .claude/skills/chaos-redux-decisions-missions/SKILL.md.
+- .claude/skills/chaos-redux-event-assets/SKILL.md.
+- .claude/skills/chaos-redux-improvement-loop/SKILL.md when a tree is shallow or needs route design.
+- .claude/skills/chaos-redux-subagents/SKILL.md.
 
 Audit for:
 - required routes from the spec versus implemented branches

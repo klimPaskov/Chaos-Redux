@@ -18,12 +18,12 @@ Treat writing quality as an implementation requirement. Do not limit the audit t
 
 Read and apply:
 - AGENTS.md.
-- .agents/skills/chaos-redux-events/SKILL.md when text belongs to an event.
-- .agents/skills/chaos-redux-decisions-missions/SKILL.md when text belongs to decisions, missions, scripted GUI buttons, costs, or tooltips.
-- .agents/skills/chaos-redux-focus-trees/SKILL.md when text belongs to focuses.
-- .agents/skills/chaos-redux-super-events/SKILL.md when text belongs to super-events.
-- .agents/skills/chaos-redux-improvement-loop/SKILL.md when text reveals a design depth gap.
-- .agents/skills/chaos-redux-subagents/SKILL.md.
+- .claude/skills/chaos-redux-events/SKILL.md when text belongs to an event.
+- .claude/skills/chaos-redux-decisions-missions/SKILL.md when text belongs to decisions, missions, scripted GUI buttons, costs, or tooltips.
+- .claude/skills/chaos-redux-focus-trees/SKILL.md when text belongs to focuses.
+- .claude/skills/chaos-redux-super-events/SKILL.md when text belongs to super-events.
+- .claude/skills/chaos-redux-improvement-loop/SKILL.md when text reveals a design depth gap.
+- .claude/skills/chaos-redux-subagents/SKILL.md.
 - Relevant wiki localisation sections gathered and read through the MCP reference workflow in AGENTS.md.
 
 Audit for:

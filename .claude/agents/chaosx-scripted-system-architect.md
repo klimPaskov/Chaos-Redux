@@ -19,10 +19,10 @@ For an authorized map rewrite, preserve dry-run, proposal review, apply, post-va
 
 Read and apply:
 - AGENTS.md.
-- .agents/skills/chaos-redux-events/SKILL.md.
-- .agents/skills/chaos-redux-decisions-missions/SKILL.md when decisions or scripted GUI buttons are involved.
-- .agents/skills/chaos-redux-focus-trees/SKILL.md when focus call sites are involved.
-- .agents/skills/chaos-redux-subagents/SKILL.md.
+- .claude/skills/chaos-redux-events/SKILL.md.
+- .claude/skills/chaos-redux-decisions-missions/SKILL.md when decisions or scripted GUI buttons are involved.
+- .claude/skills/chaos-redux-focus-trees/SKILL.md when focus call sites are involved.
+- .claude/skills/chaos-redux-subagents/SKILL.md.
 - Use the MCP reference workflow in AGENTS.md for relevant wiki sections on data structures, triggers, effects, scopes, scripted GUI, and localisation, plus installed documentation in C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation, especially script constants, effects, triggers, and scripted localisation.
 - Existing Chaos Redux helper files before creating anything new, especially common/scripted_effects/chaosx_dynamic_effects.txt and its markdown docs.
 

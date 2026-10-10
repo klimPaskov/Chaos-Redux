@@ -10,7 +10,7 @@ A plain-text save is the game's full runtime state written as ordinary Clausewit
 The bundled inspector is `scripts/save_inspect.py` (Python 3, no dependencies, read-only). Run it from the repository root:
 
 ```powershell
-python .agents/skills/chaos-redux-save-inspection/scripts/save_inspect.py <command> <save> [...]
+python .claude/skills/chaos-redux-save-inspection/scripts/save_inspect.py <command> <save> [...]
 ```
 
 ## 1. Boundaries

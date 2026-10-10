@@ -585,7 +585,7 @@ Default rule:
 
 - use generated super-event images when the moment is fictional, alternate-history, symbolic, supernatural, high-chaos, or needs a unique emotional composition
 - use internet-sourced images when the super-event must depict a real historical person, real photographed event, or real archival artifact
-- follow `chaos-redux-event-assets` and the official `$imagegen` workflow for generated images
+- follow `chaos-redux-event-assets` and the image-generation route defined there for generated images
 
 The super-event skill should define the image direction:
 
@@ -608,7 +608,7 @@ The asset skill handles:
 - main-agent `.gfx` wiring
 - manifest
 
-Treat project-root `docs/assets/<event_id>_<event_slug>/` as temporary evidence for super-event image and audio work. Retain source files, previews, contact sheets, manifests, provenance, research notes, and handoffs while work is active, blocked, awaiting review, or undergoing acceptance scenarios. Before declaring the event goal fully complete, move or copy durable evidence into `docs/events/`, `docs/plans/`, `docs/specs/`, `docs/super_events/`, or another permanent documentation surface, then delete only that event-scoped workspace. Never delete skill-local reusable assets under `.agents/skills/.../assets/` or unrelated workspaces. Do not require the deleted workspace to exist for a completion claim.
+Treat project-root `docs/assets/<event_id>_<event_slug>/` as temporary evidence for super-event image and audio work. Retain source files, previews, contact sheets, manifests, provenance, research notes, and handoffs while work is active, blocked, awaiting review, or undergoing acceptance scenarios. Before declaring the event goal fully complete, move or copy durable evidence into `docs/events/`, `docs/plans/`, `docs/specs/`, `docs/super_events/`, or another permanent documentation surface, then delete only that event-scoped workspace. Never delete skill-local reusable assets under `.claude/skills/.../assets/` or unrelated workspaces. Do not require the deleted workspace to exist for a completion claim.
 
 ## 9. Super-event slot wiring
 

@@ -24,13 +24,13 @@ Use this skill with `chaos-redux-event-assets`.
 
 `chaos-redux-event-assets` owns source mode, reference folders, DDS conversion, manifests, final asset placement, and sprite handoffs. This skill owns frame planning, per-frame generation discipline, anchor normalization, sheet construction, GIF previews, contact sheets, and HOI4 animation QA.
 
-Use `$imagegen` for generated frame art. If `$imagegen` is unavailable, stop and report the blocker. Do not invent another image generation route.
+Use the image-generation route defined in `chaos-redux-event-assets` (Image-generation route section) for generated frame art. If it is unavailable, stop and report the blocker. Do not invent another image generation route.
 
 Every animation asset and every animation frame must use ChatGPT Images 2.5 Sunburst only for generation, iteration, edits, and final frames, including seed images and quick drafts. Never use Flare for animation work; its quick-generation route applies only to static assets. Sunburst-only animation generation and editing is required to preserve pixel consistency across frames: stable canvas, transparent bounds, anchors, silhouette, palette, edge treatment, lighting, proportions, and unchanged regions. Model choice does not replace frame-to-frame validation or drift checks. Sunburst remains the required named model wherever selection is available; when the active image tool exposes no model selector, accurately record the actual exposed execution path without claiming an unreported backend model.
 
 Read the event-assets skill's integrated [Generate and refine source art](../chaos-redux-event-assets/SKILL.md#generate-and-refine-source-art) workflow for reference roles, focused edits, and candidate lineage. After accepting the generated seed, prefer an accepted seed or neighbouring accepted frame as the edit target for each subsequent generated frame, state the exact motion-state delta, and preserve the seed's subject, camera, palette, canvas, and anchor invariants. Record the input candidate for each frame and each repair, restate transparency in every edit, and compare all accepted frames with the seed to catch accumulated drift and loop discontinuity. Every frame still requires its own real generated or sourced visual state; improved edit consistency does not authorize transform-only motion.
 
-For every alpha-backed animation family, request a genuine transparent background in the initial ImageGen call for every generated source frame and preserve the alpha through normalization, sheet assembly, preview creation, and DDS conversion. Do not generate opaque or chroma-backed frames as the normal route. Use the fallback background-removal workflow in `chaos-redux-event-assets` only when native transparency fails or an inherited, sourced, or user-provided frame begins with an unwanted opaque backdrop.
+For every alpha-backed animation family, request a genuine transparent background in the initial image-generation call for every generated source frame and preserve the alpha through normalization, sheet assembly, preview creation, and DDS conversion. Do not generate opaque or chroma-backed frames as the normal route. Use the fallback background-removal workflow in `chaos-redux-event-assets` only when native transparency fails or an inherited, sourced, or user-provided frame begins with an unwanted opaque backdrop.
 
 Use `chaos-redux-super-events`, `chaos-redux-focus-trees`, `chaos-redux-decisions-missions`, or `chaos-redux-events` for the gameplay surface that uses the animation.
 
@@ -83,7 +83,7 @@ If the user explicitly asks for a temporary mockup, a transform-only preview may
 
 A valid source frame can be:
 
-- a separate `$imagegen` output created from the frame plan
+- a separate image-generation output created from the frame plan
 - an edit of the approved seed frame where the frame prompt asks for a specific visual state
 - a sourced historical image frame when the animation is based on real material
 - a user-provided frame
@@ -148,7 +148,7 @@ The brief must include:
 
 ### Frame plan
 
-Create a frame plan before calling `$imagegen`.
+Create a frame plan before calling the image-generation route.
 
 Recommended frame plan table:
 
@@ -173,12 +173,12 @@ For generated frames:
 2. Keep one subject, one camera angle, one palette, and one composition across all frames.
 3. Use the same target framing and anchor language in every frame prompt.
 4. Vary only the planned motion state, light state, expression, particle state, or route-state element.
-5. For an alpha-backed family, request real transparency in the first ImageGen call for every frame and retain the native-alpha source. Do not plan routine background removal.
+5. For an alpha-backed family, request real transparency in the first image-generation call for every frame and retain the native-alpha source. Do not plan routine background removal.
 6. Do not ask for text in generated frames.
 7. Save every source frame before processing.
 8. Reject frames with drifted silhouettes, wrong subject identity, wrong palette, opaque background for an alpha-backed family, fake checkerboards, halos, matte pixels, alpha drift, visible generated text, or broken loop behavior.
 
-If a frame fails native-transparency validation, use the `chaos-redux-event-assets` fallback order: targeted built-in ImageGen edit-to-transparency first, then an actually available verified local removal process only if necessary. Preserve the untouched source, record the fallback and settings, and reject clipped silhouettes, coloured spill, internal holes, or edge drift. Never allow one repaired frame to use materially different alpha bounds from the rest of the family without an explicit motion reason.
+If a frame fails native-transparency validation, use the `chaos-redux-event-assets` fallback order: targeted image-generation edit-to-transparency first, then an actually available verified local removal process only if necessary. Preserve the untouched source, record the fallback and settings, and reject clipped silhouettes, coloured spill, internal holes, or edge drift. Never allow one repaired frame to use materially different alpha bounds from the rest of the family without an explicit motion reason.
 
 For real people, do not generate fake motion that implies real footage, speech, or new real-world behavior. Use sourced stills and subtle symbolic layers only when the parent scope allows it. Keep the result clearly an in-game portrait or UI asset.
 
@@ -211,7 +211,7 @@ For the common `frameAnimatedSpriteType` pattern, build a one-row horizontal she
 Rules:
 
 - every processed frame must have identical dimensions
-- each frame must use the target asset type's background rule. Alpha-backed families default to native ImageGen transparency, while deliberately painted full-canvas families remain opaque only when their inspected consumer requires it
+- each frame must use the target asset type's background rule. Alpha-backed families default to generated-image transparency, while deliberately painted full-canvas families remain opaque only when their inspected consumer requires it
 - frame order is left to right
 - sheet width must be `frame_width * noOfFrames`
 - sheet height must be `frame_height`
@@ -488,7 +488,7 @@ Before marking an animation complete, verify:
 
 Stop and report a blocker when:
 
-- `$imagegen` is unavailable for generated frame art
+- the image-generation route is unavailable for generated frame art
 - required native transparency cannot be obtained or fallback removal damages the subject, silhouette, or frame-to-frame alpha bounds
 - required source frames for a sourced animation cannot be found
 - the offline HOI4 wiki page, vanilla file, or existing Chaos Redux example needed for wiring cannot be inspected

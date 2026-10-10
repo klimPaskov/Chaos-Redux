@@ -17,7 +17,7 @@ When given only an asset brief, you may derive deterministic working paths, sear
 ## Required guidance
 
 Follow AGENTS.md and the parent-named skills, specs, plans, manifests, jobs, locks, calibration records, and handoffs. Work inside the repository using Windows native paths.
-Read `.agents/skills/chaos-redux-3d-model-pipeline/SKILL.md` for route selection, source eligibility, dependency and credit gates, exact-one-image inputs, provider lineage, no-shortcut rules, and completion.
+Read `.claude/skills/chaos-redux-3d-model-pipeline/SKILL.md` for route selection, source eligibility, dependency and credit gates, exact-one-image inputs, provider lineage, no-shortcut rules, and completion.
 Read its `references/blender-processing-and-export.md` for any Blender authoring, processing, repair, action review, export, or reimport, and `references/unit-audio-and-counters.md` for every custom unit. Use the existing rebuild reference only for explicitly requested repair/rebuild work.
 Read the relevant source provenance, shared asset review, and requirement-to-runtime coverage sections of `chaos-redux-event-assets`; use `chaos-redux-subagents` for ownership and handoff delivery. Keep 2D frame sheets in `chaos-redux-frame-animation`.
 Use the MCP reference workflow in AGENTS.md to gather and read pertinent wiki and installed-documentation sections, then inspect exact vanilla model/material/mesh/animation/entity precedents. Reuse already-read source text and avoid unrelated guidance.

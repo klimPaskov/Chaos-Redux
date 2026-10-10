@@ -46,7 +46,7 @@ This restriction applies to runtime player-facing text and art. Internal Markdow
 
 Before designing or auditing a category picture, inspect:
 
-`C:\Users\klimp\OneDrive\Documents\Paradox Interactive\Hearts of Iron IV\mod\chaos_redux\.agents\skills\chaos-redux-event-assets\assets\gfx_references\icons\decision_categories\pictures`
+`C:\Users\klimp\OneDrive\Documents\Paradox Interactive\Hearts of Iron IV\mod\chaos_redux\.claude\skills\chaos-redux-event-assets\assets\gfx_references\icons\decision_categories\pictures`
 
 This folder is the canonical picture reference family. It is separate from `icons/decision_categories/`, which contains small category icons.
 
@@ -92,7 +92,7 @@ Each required state must be represented separately:
 - hovering a piece should name the state and explain whether it qualifies
 - the panel should show the current qualifying count, required count, and final eligibility state without exposing raw internal variables
 
-The pieces must use the exact state geometry from the installed map data. Do not approximate state outlines by hand, generate them with ImageGen, replace them with generic tiles, or use province blobs that do not match the actual formable requirement. Every piece must share one map projection, scale, origin, and border treatment so the territory assembles correctly.
+The pieces must use the exact state geometry from the installed map data. Do not approximate state outlines by hand, generate them with image generation, replace them with generic tiles, or use province blobs that do not match the actual formable requirement. Every piece must share one map projection, scale, origin, and border treatment so the territory assembles correctly.
 
 The display must update from current game state. Reopening or refreshing the category must show current ownership and control, subject or ally counting rules, alternate state-set rules, route locks, and formation eligibility. Do not cache a green piece after the state stops qualifying. Do not run a whole-world daily scan for this display unless the user explicitly authorizes that performance pattern. Prefer scoped scripted triggers, event-driven refresh, or the verified scripted GUI evaluation pattern.
 
@@ -102,7 +102,7 @@ The state-puzzle display is a justified scripted GUI surface because it communic
 
 Create and maintain a reusable template package under:
 
-`.agents/skills/chaos-redux-decisions-missions/templates/formable_state_puzzle/`
+`.claude/skills/chaos-redux-decisions-missions/templates/formable_state_puzzle/`
 
 The template package should include:
 

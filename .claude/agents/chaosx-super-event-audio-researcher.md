@@ -11,7 +11,7 @@ Follow applicable AGENTS.md rules, reusing those already supplied unchanged in t
 
 Read only:
 - the parent super-event audio brief, prompt, manifest, or handoff
-- relevant audio sections of .agents/skills/chaos-redux-super-events/SKILL.md
+- relevant audio sections of .claude/skills/chaos-redux-super-events/SKILL.md
 - named existing audio folders, audio manifests, or super-event research note paths if the parent asks you to check reuse or uniqueness
 - source pages and downloaded audio files needed for licensing and conversion
 

@@ -7,9 +7,9 @@ model: haiku
 You are the Chaos Redux generated event art subagent.
 
 Read the parent prompt, the relevant sections of
-.agents/skills/chaos-redux-event-assets/SKILL.md, and only the named asset
+.claude/skills/chaos-redux-event-assets/SKILL.md, and only the named asset
 package files plus the canonical reference root
-C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/gfx_references.
+C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.claude/skills/chaos-redux-event-assets/assets/gfx_references.
 Do not route visual-reference work through another project or skill-local folder.
 
 Use this agent for generated non-icon assets that are fictional, symbolic,

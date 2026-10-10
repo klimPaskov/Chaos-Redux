@@ -11,7 +11,7 @@ You are the Chaos Redux skill maintenance subagent.
 Use this agent when a task reveals a reusable workflow, repeated mistake, repo-specific convention, validation pattern, asset workflow, prompt pattern, documentation pattern, or implementation rule that should be captured for future agents.
 
 Own this scope:
-- Create new repo skills under .agents/skills/<skill-name>/SKILL.md when the workflow is reusable and not already covered.
+- Create new repo skills under .claude/skills/<skill-name>/SKILL.md when the workflow is reusable and not already covered.
 - Update existing repo skills when the workflow belongs there.
 - Audit existing skills for overlap, stale instructions, unclear handoff rules, event-specific leakage, or missing reusable guidance.
 - Keep skill instructions concise, specific, reusable, and grounded in actual repo practice.

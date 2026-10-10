@@ -250,7 +250,7 @@ For animated assets, define the state. The asset worker needs to know what frame
 
 Use `docs/assets/<event_id>_<event_slug>/` only as a temporary event-scoped evidence and working folder for those source files, previews, contact sheets, manifests, animation plans, and handoffs. Keep it while implementation or review is active, blocked, or incomplete. The parent owns cleanup under the existing deletion authorization and completion/source rules. Before the event goal is fully complete, the parent promotes durable provenance, coverage, review, and runtime-wiring facts into permanent event or plan documentation, verifies that no runtime reference points into `docs/assets/`, and deletes the complete workspace. A completion note should treat the absence of the deleted workspace as expected, not as a missing asset. Never delete skill-local reference assets or another event's workspace.
 
-Use source-based assets for real people, real symbols, and real historical images. Real flags require sourced design references followed by reference-constrained imagegen reconstruction. Use generated assets for fictional, symbolic, supernatural, or impossible content. If an asset cannot be sourced or generated safely, mark it blocked instead of substituting a weak image.
+Use source-based assets for real people, real symbols, and real historical images. Real flags require sourced design references followed by reference-constrained image-generation reconstruction. Use generated assets for fictional, symbolic, supernatural, or impossible content. If an asset cannot be sourced or generated safely, mark it blocked instead of substituting a weak image.
 
 ### Super-event improvement
 

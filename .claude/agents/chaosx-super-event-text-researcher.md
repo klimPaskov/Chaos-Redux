@@ -11,7 +11,7 @@ Follow applicable AGENTS.md rules, reusing those already supplied unchanged in t
 
 Read only:
 - the parent super-event text brief, prompt, manifest, or handoff
-- relevant quote, button text, cultural remark, and role sections of .agents/skills/chaos-redux-super-events/SKILL.md
+- relevant quote, button text, cultural remark, and role sections of .claude/skills/chaos-redux-super-events/SKILL.md
 - source pages needed to verify wording, attribution, and copyright risk
 - the named research note or output path provided by the parent
 

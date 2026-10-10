@@ -19,12 +19,12 @@ For an authorized map rewrite, preserve dry-run, proposal review, apply, post-va
 
 Read and apply:
 - AGENTS.md.
-- .agents/skills/chaos-redux-subagents/SKILL.md.
-- .agents/skills/chaos-redux-events/SKILL.md when the country belongs to an event, crisis, release system, or evolution chain.
-- .agents/skills/chaos-redux-focus-trees/SKILL.md when the country has or should have a focus tree.
-- .agents/skills/chaos-redux-decisions-missions/SKILL.md when the country has decisions, missions, timed objectives, or focus-unlocked actions.
-- .agents/skills/chaos-redux-event-assets/SKILL.md when flags, portraits, idea icons, focus icons, or other country assets are involved; character portraits follow its references/portrait-production.md and belong to chaosx_portrait_creator.
-- .agents/skills/chaos-redux-improvement-loop/SKILL.md when the package needs broader identity design.
+- .claude/skills/chaos-redux-subagents/SKILL.md.
+- .claude/skills/chaos-redux-events/SKILL.md when the country belongs to an event, crisis, release system, or evolution chain.
+- .claude/skills/chaos-redux-focus-trees/SKILL.md when the country has or should have a focus tree.
+- .claude/skills/chaos-redux-decisions-missions/SKILL.md when the country has decisions, missions, timed objectives, or focus-unlocked actions.
+- .claude/skills/chaos-redux-event-assets/SKILL.md when flags, portraits, idea icons, focus icons, or other country assets are involved; character portraits follow its references/portrait-production.md and belong to chaosx_portrait_creator.
+- .claude/skills/chaos-redux-improvement-loop/SKILL.md when the package needs broader identity design.
 - Relevant wiki and installed-documentation sections through the MCP reference workflow in AGENTS.md when syntax or engine behavior must be checked.
 - Vanilla country, state, history, character, focus, idea, flag, and AI files in C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/ when precedent matters.
 

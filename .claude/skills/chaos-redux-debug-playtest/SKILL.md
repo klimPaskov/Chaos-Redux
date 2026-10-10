@@ -68,7 +68,7 @@ For catalog coverage:
 At the start of each invocation, read:
 
 - `AGENTS.md`
-- `.agents/skills/hoi4-autonomous-debug-playtest/SKILL.md`, or the packaged generic copy
+- `.claude/skills/hoi4-autonomous-debug-playtest/SKILL.md`, or the packaged generic copy
 - this skill
 - the task brief, accepted spec, plan, handoff, issue report, and implementation files for the test scope
 - the relevant system skills for every surface that may be patched

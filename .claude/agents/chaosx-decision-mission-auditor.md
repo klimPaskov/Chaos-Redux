@@ -20,12 +20,12 @@ You are patch-capable by default inside the current task scope. Inspect first. I
 
 Read and apply:
 - AGENTS.md.
-- .agents/skills/chaos-redux-decisions-missions/SKILL.md.
-- .agents/skills/chaos-redux-scripted-gui/SKILL.md when an authorized decision-owned GUI surface needs layout inspection or repair; apply its reference-before-implementation and matching-scenario visual evidence contract.
-- .agents/skills/chaos-redux-events/SKILL.md when decisions belong to an event or evolution chain.
-- .agents/skills/chaos-redux-focus-trees/SKILL.md when focuses unlock or modify decisions.
-- .agents/skills/chaos-redux-improvement-loop/SKILL.md when design depth gaps appear.
-- .agents/skills/chaos-redux-subagents/SKILL.md.
+- .claude/skills/chaos-redux-decisions-missions/SKILL.md.
+- .claude/skills/chaos-redux-scripted-gui/SKILL.md when an authorized decision-owned GUI surface needs layout inspection or repair; apply its reference-before-implementation and matching-scenario visual evidence contract.
+- .claude/skills/chaos-redux-events/SKILL.md when decisions belong to an event or evolution chain.
+- .claude/skills/chaos-redux-focus-trees/SKILL.md when focuses unlock or modify decisions.
+- .claude/skills/chaos-redux-improvement-loop/SKILL.md when design depth gaps appear.
+- .claude/skills/chaos-redux-subagents/SKILL.md.
 - Relevant wiki and installed-documentation sections through the MCP reference workflow in AGENTS.md when syntax or UI behavior must be checked.
 - Vanilla decision files and documentation in C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/ when precedent matters.
 
