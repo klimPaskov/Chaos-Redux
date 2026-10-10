@@ -170,7 +170,8 @@ country_event = {
 		set_temp_variable = { black_friday_option_spend = global.black_friday_price_cp_10 }
 		multiply_temp_variable = { black_friday_option_spend = -1 }
 		add_command_power = black_friday_option_spend
-		add_stability = -0.01
+		add_stability = constant:communism_spread_response.security_detachment_stability_cost
+		custom_effect_tooltip = chaosx_tt_1_2b
 		hidden_effect = { set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.command_power } set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one } black_friday_credit_sale_purchase = yes }
 		hidden_effect = {
 			event_target:communist_sabotage_state = {
@@ -216,6 +217,10 @@ country_event = {
 		custom_effect_tooltip = chaosx_tt_1_34a
 		add_stability = constant:communism_spread_strikes.strike_stability_loss
 		add_war_support = constant:communism_spread_strikes.strike_war_support_loss
+		add_popularity = {
+			ideology = communism
+			popularity = constant:communism_spread_strikes.strike_support_gain
+		}
 		hidden_effect = {
 			event_target:communist_sabotage_state = {
 				if = {
@@ -229,10 +234,6 @@ country_event = {
 				else = {
 					apply_heavy_communist_sabotage_damage = yes
 				}
-			}
-			add_popularity = {
-				ideology = communism
-				popularity = constant:communism_spread_strikes.strike_support_gain
 			}
 			refresh_communism_spread_pressure = yes
 		}
@@ -361,13 +362,17 @@ country_event = {
 		trigger = {
 			NOT = { has_country_flag = fighting_communist_rebels }
 			NOT = { has_country_flag = communist_emergency_intervention_in_progress }
+			custom_trigger_tooltip = {
+				tooltip = communism_emergency_launch_cp_requirement
+				NOT = { command_power < global.black_friday_price_cp_25 }
+			}
 		}
 		name = chaosx.nr1.8.a
 		ai_chance = { base = 45 }
 		set_temp_variable = { black_friday_option_spend = global.black_friday_price_cp_25 }
 		multiply_temp_variable = { black_friday_option_spend = -1 }
 		add_command_power = black_friday_option_spend
-		add_stability = -0.03
+		add_stability = constant:communism_spread_response.emergency_launch_stability_cost
 		hidden_effect = { set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.command_power } set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one } black_friday_credit_sale_purchase = yes }
 		hidden_effect = {
 			set_temp_variable = { communist_uprising_chance = 0 }
@@ -413,16 +418,16 @@ country_event = {
 		ai_chance = { base = 20 }
 		add_popularity = {
 			ideology = communism
-			popularity = 0.03
+			popularity = constant:communism_spread_response.concessions_support_gain
 		}
-		add_stability = 0.02
+		add_stability = constant:communism_spread_response.concessions_stability_gain
 		hidden_effect = {
 			every_owned_state = {
-			limit = { has_state_flag = communist_control_level_1 }
-			set_temp_variable = { communist_report_modifier_days = constant:communism_spread_timing.moderate_crackdown_scars_days }
-			add_dynamic_modifier = {
-				modifier = communism_post_crackdown_scars
-				days = communist_report_modifier_days
+				limit = { has_state_flag = communist_control_level_1 }
+				set_temp_variable = { communist_report_modifier_days = constant:communism_spread_timing.moderate_crackdown_scars_days }
+				add_dynamic_modifier = {
+					modifier = communism_post_crackdown_scars
+					days = communist_report_modifier_days
 				}
 			}
 		}
@@ -434,8 +439,8 @@ country_event = {
 		}
 		name = chaosx.nr1.8.c
 		ai_chance = { base = 35 }
-		add_command_power = 20
-		add_war_support = 0.03
+		add_command_power = constant:communism_spread_response.loyalist_command_power
+		add_war_support = constant:communism_spread_response.loyalist_war_support
 		set_temp_variable = { communist_report_modifier_days = constant:communism_spread_timing.warning_response_days }
 		add_dynamic_modifier = {
 			modifier = communism_emergency_disruption
@@ -895,7 +900,7 @@ country_event = {
 					limit = { has_state_flag = communist_worker_ritual_state }
 					add_dynamic_modifier = {
 						modifier = communism_worker_ritual_fear
-					days = communist_report_modifier_days
+						days = communist_report_modifier_days
 					}
 				}
 			}

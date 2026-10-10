@@ -22,7 +22,7 @@ The event does not unlock World Revolution immediately. World Revolution enters 
 - `chaosx.nr1.5`: controlled state escalates to a stronger level
 - `chaosx.nr1.6`: local intervention succeeds
 - `chaosx.nr1.7`: local intervention backfires
-- `chaosx.nr1.8`: revolutionary war warning when control is severe
+- `chaosx.nr1.8`: revolutionary war warning when control is severe. Launching the emergency operation from the popup requires the current Black Friday command power price (25 base); the stability, support and command power values of the three answers live in `communism_spread_response`
 - `chaosx.nr1.9`: emergency intervention restores control without uprising
 - `chaosx.nr1.10`: emergency intervention triggers a custom uprising
 - `chaosx.nr1.11`: evolution milestone, Unstable Revolutionary Activity
