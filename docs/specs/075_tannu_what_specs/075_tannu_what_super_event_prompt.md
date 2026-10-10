@@ -51,6 +51,6 @@ Deliver final text only after research selection, final audio only after rights 
 Bind both events to their real separate once-only milestones and correct human-observer delivery.
 Settings that disable presentation must not undo the underlying gameplay outcome.
 
-Use explicit no-inherited-context delegation, including `fork_turns="none"` when supported by the documented Codex tool.
+Use explicit no-inherited-context delegation.
 Report any missing source, unavailable role, rights blocker or unperformed audition honestly.
 No quote, file name, or candidate list is itself a finished super-event.

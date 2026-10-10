@@ -14,10 +14,10 @@ No new named historical portrait, custom subunit, 3D model, or animation is requ
 Do not create any merely to demonstrate that a tool was used.
 
 Route source research, generic scenes, icons, and any genuinely newly required portrait work to their proper supplied roles through the actual runtime.
-Use explicit self-contained prompts with no inherited context, including `fork_turns="none"` where the documented Codex spawning tool exists.
+Use explicit self-contained prompts with no inherited context.
 If delegation is unavailable, say so and do not fabricate role reviews.
 Final non-portrait `.gfx` and gameplay consumer wiring remain with the main implementation owner unless specifically assigned.
-Any authorized portrait package belongs entirely to `chaosx_portrait_creator` under the current [asset skill](../../../.agents/skills/chaos-redux-event-assets/SKILL.md), including its standing narrow portrait-wiring exception.
+Any authorized portrait package belongs entirely to `chaosx_portrait_creator` under the current [asset skill](../../../.claude/skills/chaos-redux-event-assets/SKILL.md), including its standing narrow portrait-wiring exception.
 
 ## Production requirements
 

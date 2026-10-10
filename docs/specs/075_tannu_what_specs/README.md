@@ -58,7 +58,7 @@ Other titles, copy, numerical tuning and achievement IDs are proposed directions
 | All six achievements | [Achievement prompt](075_tannu_what_achievement_prompt.md) |
 | Decisions and missions | [Decision and mission prompt](075_tannu_what_decision_mission_prompt.md) |
 
-The goal prompt must remain within the current [event-planning skill](../../../.agents/skills/chaos-redux-event-planning/SKILL.md) limit.
+The goal prompt must remain within the current [event-planning skill](../../../.claude/skills/chaos-redux-event-planning/SKILL.md) limit.
 It points to the complete source package and does not replace its reading requirement.
 
 ## Important added design choices
@@ -95,10 +95,8 @@ Resolve final source-checked super-event text and item-level audio rights, then 
 Review user-owned live evidence for the runtime cases.
 A coherent source file or local arithmetic check is not a substitute for these results.
 
-The original delivery described a separate `075_tannu_what_review_handoff.zip` containing the source manifest, added-choice map, unresolved-capability review, 20 prepared UNRUN role handoffs and local package-check evidence under `075_tannu_what_plans/`.
-Neither that ZIP nor `docs/plans/075_tannu_what_plans/` is present in the audited checkout on 2026-10-07.
-Those supplementary receipts remain unavailable; do not assume their contents were reviewed here.
-The main source package already states every essential design and production gate and can be read without that supplementary review archive.
+The original delivery's separate review archive and `docs/plans/075_tannu_what_plans/` were never imported, so those supplementary receipts are unavailable.
+The source package states every essential design and production gate without them.
 
 ## Catalog update
 
@@ -106,3 +104,10 @@ The supplied event CSV still uses the old faction-entry name and details, and it
 The user's newer brief controls this proposed rework.
 The production workbook owner must update the authoritative event and cluster records, assign any necessary scenario registry record through the real workflow, and regenerate exports.
 No arbitrary new scenario ID or direct CSV-only edit is supplied here.
+
+## Changelog
+
+### 2026-10-10 spec audit
+
+- Reviewed against the current shared systems. The design already keeps one Readiness summary based on the weakest required component, bounded one-time Chaos milestones with matching containment reversals, and real stock transfers instead of granted armies, so no design change was needed.
+- The note about the missing review archive is shortened. Subagent instructions use the Claude-first wording.

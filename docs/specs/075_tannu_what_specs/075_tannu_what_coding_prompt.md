@@ -2,7 +2,7 @@
 
 Implement **Event 075: Tannu What?** to the full source specification in `docs/specs/075_tannu_what_specs/`.
 Read the README, all 21 specification parts, the research notes and the five other prompt files in full before implementation.
-Read current `AGENTS.md`, the [planning](../../../.agents/skills/chaos-redux-event-planning/SKILL.md) and [events](../../../.agents/skills/chaos-redux-events/SKILL.md) skills, applicable owner skills and required contracts, and the actual current implementation.
+Read current `AGENTS.md`, the [planning](../../../.claude/skills/chaos-redux-event-planning/SKILL.md) and [events](../../../.claude/skills/chaos-redux-events/SKILL.md) skills, applicable owner skills and required contracts, and the actual current implementation.
 Use relevant offline-wiki and installed-documentation sections through the current reference workflow.
 Record explicit user or authorized parent acceptance before treating added design choices as approved.
 Do not claim full reading when a required source is unavailable or only a truncated excerpt was read.
@@ -124,7 +124,6 @@ Document actual changes, support coverage, assets, rights, tests and unresolved 
 ## Required verification and completion
 
 Use the supplied roles with explicit self-contained prompts and no inherited parent context.
-When the documented Codex action is present, set `fork_turns="none"`.
 Inspect runtime-specific delegation elsewhere.
 The source-planning session did not run any subagents and no prepared handoff is an independent review.
 
