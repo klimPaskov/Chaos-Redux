@@ -21,14 +21,12 @@ The central design rule is that famine and migration remain dynamic. Historical 
 
 ## Current authority and continuation
 
-Begin with [the 10 October improvement plan](../../plans/famine_and_migration_system_plans/improvement_plan_2026-10-10.md); [takeover status, 6 October](../../plans/famine_and_migration_system_plans/takeover_status_2026-10-06.md) and [the continuation decision log](../../plans/famine_and_migration_system_plans/agent_decisions_2026-10-05.md) are historical.
-The takeover status supersedes the older source-of-truth map, completion report and stopped-thread checkpoints for current implementation status.
-The workstream remains incomplete under that record; publication of reviewed source fixes is distinct from native, visual, probability and external-owner acceptance.
+Begin with [the 10 October improvement plan](../../plans/famine_and_migration_system_plans/improvement_plan_2026-10-10.md), the single current plan and status record for both systems; [takeover status, 6 October](../../plans/famine_and_migration_system_plans/takeover_status_2026-10-06.md) and [the continuation decision log](../../plans/famine_and_migration_system_plans/agent_decisions_2026-10-05.md) are historical.
+Current behaviour is documented in [the famine system](../../systems/famine_system.md) and [the migration system](../../systems/migration_system.md).
 The August 25 split and event-free clarification above is retained recorded design; [the dated source map](../../plans/famine_and_migration_system_plans/source_of_truth_map.md) preserves its earlier acceptance and source evidence.
 Further matrix or source-part claims need their own attributable acceptance; neither a spec location nor a prompt establishes it.
 Original matrix terms such as shared system, combined adapters or Event 149 conversion alternatives are historical planning labels; they do not override independent owners, the current event-free contract or recorded retirement.
-Current source repairs and parent choices are evidenced by the takeover record and decision log, with scope and limits carried forward.
-Do not modify other system owners or restart completed work from these original prompts.
+Do not modify other system owners or restart completed work from the original prompts.
 
 Use [the subagent skill](../../../.agents/skills/chaos-redux-subagents/SKILL.md) for routing, [the event skill](../../../.agents/skills/chaos-redux-events/SKILL.md) for accepted adapters, [the state-ledger skill](../../../.agents/skills/chaos-redux-state-ledgers/SKILL.md) for transfer contracts, and [the GUI skill](../../../.agents/skills/chaos-redux-scripted-gui/SKILL.md) for mandatory current-source visual evidence.
 Subagent templates require a self-contained parent prompt with exact remaining scope and no inherited context.
@@ -104,3 +102,12 @@ No package-integrity validator or gameplay completion is asserted by these recei
 The input manifest records every supplied project file and every extracted subagent definition with size and SHA-256. All listed files were fully read before this package was written.
 
 The original planning environment did not expose the Windows Chaos Redux repository, the offline Paradox wiki snapshot, installed vanilla game files, the HOI4 MCP server, or a callable custom-subagent runtime. The package therefore contains repository-ready design, research, matrices, and context-complete subagent prompts. The coding prompt requires the implementation agent to perform the mandatory local source, wiki, vanilla, MCP, and probability passes before editing or claiming completion.
+
+## Revision log
+
+### 2026-10-10 spec audit
+
+- Aligned the source parts with the 10 October rework (commit 839850b0d) without changing its design: the Part 6 decision families now match the implemented inventory (Import Food absorbs foreign relief requests, Evacuate Civilians absorbs preparation and the vulnerable and worker lanes, phases lock no decision, host-relieving actions stay available when overloaded).
+- Part 1 records the famine country registry; Part 2 adds the national food crisis and the bounded Conceal Hunger and Continue Requisitions shocks; Part 3 states the single evacuation decision; Part 7 records the Hunger Lines launch-day stage commit, special Chaos front flight, and the queued Condemnation donor link.
+- Maritime evacuation, abandoning a state, prioritized entry and internment reception are listed in Part 6 as unresolved source proposals outside the current inventory.
+- The decision and mission prompt's family list matches the merged decisions; pass 2 design changes were not applied because another agent's rework owns the current design.

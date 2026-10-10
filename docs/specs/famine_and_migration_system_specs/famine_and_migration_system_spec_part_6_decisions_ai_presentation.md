@@ -112,338 +112,72 @@ These events should use current ideology, party support, regional identity, and 
 
 ## Decision-category lifecycle
 
-### Hidden phase
+Each category is hidden at game start and appears only for its own genuine problem: a famine-owned stage threshold for famine, and a large, repeated, trapped, corridor or reception issue for migration.
+A country can receive accounting and presentation context and use valid owner-local actions before its category appears.
 
-The category is hidden at game start.
+The emerging, active, resolution and dormant phases are presentation for the category header and the missions.
+They lock no ordinary decision: every decision is shown by its own state, route and capacity conditions, so a departure policy can be reversed during a crisis and a country that both hosts arrivals and has its own displaced people can act on both.
+The famine phase is refreshed from the famine country registry, independently of migration.
+A category closes when no material issue remains and can reopen later with prior policy memory intact.
 
-A country can receive accounting/presentation context and use only valid owner-local actions before its own standing category appears.
-
-### Emerging issue phase
-
-The category becomes eligible after a meaningful threshold such as:
-
-- two or more displacement incidents in the recent window
-- one large flow
-- one severe trapped-population crisis
-- one organized national evacuation
-- one mass foreign arrival
-- sustained famine-driven movement
-
-The first category-opening event explains why the issue now requires a standing policy.
-
-### Active management phase
-
-The category shows:
-
-- current Displacement Load
-- current Reception Capacity
-- current Border Policy
-- up to three urgent state or border missions
-- three to five relevant actions
-
-The actions depend on whether the country is mainly an origin, destination, transit state, occupier, or mixed case.
-
-### Resolution phase
-
-When the issue becomes manageable, the category shifts toward return, integration, resettlement, and cleanup.
-
-### Dormant phase
-
-The category closes when no material issue remains. It can reopen later with prior policy memory intact.
+When active, a category shows its one primary and two supporting values, up to three urgent missions, and the decisions whose own conditions hold.
 
 ## Famine response decision family
 
-Famine decisions belong to `famine_decision_category` under the famine-owned visibility gates.
-They do not require `migration_decision_category`; each mechanic owns its category lifecycle.
+Famine decisions belong to `famine_decision_category`; they do not require `migration_decision_category`.
+The [decision map](famine_and_migration_system_decision_map.csv) is the canonical inventory; this section states each decision's role.
 
-### Release reserves and impose rationing
+| Decision | Role | Effect and risk |
+| --- | --- | --- |
+| Release Food Stores | Ration and release a state's reserve | Immediate relief; the reserve is spent |
+| Import Food | Arrange a foreign land donor and deliver in one paid action | Relief points over the delivery window; needs a valid donor and route, so a blockade can deny it |
+| Restore Relief | Repair or secure the named route into a state | Restores relief access; creates a route mission when actual locations must be held |
+| Escort Relief | Break an island or coastal blockade with an escorted convoy | Full, partial or lost delivery depending on hostile naval and air pressure |
+| Airlift Relief | Deliver limited priority aid by air | Prevents a stage rise for a small or isolated state; never replaces a sea or rail route for a dense state |
+| Requisition Food | Shift food from a safer neighbouring state | Relief for the target, pressure and grievance in the donor; abusive when the donor is occupied, persecuted or strained |
+| Evacuate (famine) | Move a bounded cohort out of a famine state through Migration | Lowers need; requires a destination, and reception that is not already over capacity |
+| Conceal Hunger | Hide one state's crisis from the public for 90 days | The state stops counting toward the national food crisis but its food shock rises by 10; the first famine deaths there are condemned as a cover-up |
+| Continue Requisitions | Keep extracting from a hungry state | Adds 15 extraction pressure for war support and supply at the cost of deeper famine; available only where a real extraction policy exists |
 
-Narrative role:
-
-The government redirects stored food and controls distribution.
-
-Likely costs:
-
-- civilian factory burden
-- stability or war support risk
-- military supply opportunity cost
-- reserve depletion represented through an existing or system stock value
-
-Effects:
-
-- immediate reduction in food pressure
-- lower mortality risk
-- possible black-market and fairness consequences
-
-AI preference:
-
-High when the state is populated, mortality is active, reserves exist, and the war front can tolerate the cost.
-
-### Emergency food imports
-
-Narrative role:
-
-The country secures food from a foreign source.
-
-Likely costs:
-
-- convoys
-- fuel
-- trade or diplomatic obligation
-- civilian factories
-
-Requirements:
-
-- valid donor or market access
-- functioning port or land route
-- no complete blockade
-
-Effects:
-
-- reduces availability pressure
-- can create dependence or foreign influence
-
-### Repair the relief route
-
-Narrative role:
-
-The country commits trains, trucks, fuel, engineers, and units to restore access.
-
-Likely costs:
-
-- trains
-- trucks
-- fuel
-- support equipment or civilian factory burden
-
-Objective:
-
-Repair or secure named rail, port, bridge, hub, or corridor states.
-
-The action should create a timed mission when the player must hold or repair actual locations.
-
-### Escorted relief convoy
-
-Narrative role:
-
-The country attempts to break an island or coastal blockade.
-
-Likely costs:
-
-- convoys
-- fuel
-- naval or air escort commitment
-- supplies
-
-Outcome factors:
-
-- hostile naval and air pressure
-- port damage
-- escort strength
-- weather
-- route distance
-
-The result can be full delivery, partial delivery, delay, or loss.
-
-### Emergency airlift
-
-Narrative role:
-
-The country uses transport aircraft and fuel to deliver limited high-priority relief.
-
-The airlift should be expensive and limited. It can save vulnerable groups or prevent a stage increase. It should not replace a functioning sea or rail route for a dense state.
-
-### Invite international relief
-
-Narrative role:
-
-The government accepts foreign aid, observers, and logistical access.
-
-Tradeoffs:
-
-- lower mortality
-- improved diplomacy
-- reduced concealment
-- possible exposure of camps, requisition, or corruption
-- foreign influence or inspection pressure
-
-### Organize famine evacuation
-
-Narrative role:
-
-The country moves a bounded cohort to a safe state.
-
-The action calls the migration system and requires a destination, transport, and reception capacity.
-
-### Requisition from safer states
-
-Narrative role:
-
-The government shifts food from one region to another.
-
-Effects:
-
-- reduces pressure in the target
-- increases pressure and grievance in the donor
-- can become abusive when the donor is occupied, persecuted, or already strained
-
-### Conceal the shortage
-
-Narrative role:
-
-The government suppresses reporting and delays public action.
-
-Effects:
-
-- lower immediate public pressure
-- delayed foreign response
-- higher hidden cover-up evidence
-- higher mortality and exposure risk
-
-### Maintain extraction
-
-Narrative role:
-
-The government prioritizes military, export, occupation, or ideological goals.
-
-Effects:
-
-- short-term resource or supply benefit
-- higher famine pressure
-- opposition and evidence
-- possible forced movement
-
-This option should be available only when a real extraction policy exists.
+Costs use the shared humanitarian cost profiles recorded in the [famine system document](../../systems/famine_system.md).
+Foreign relief is not a separate request: Import Food arranges and delivers the shipment.
+Decisions are never hidden country-wide by an unrelated state's condition; each one checks the selected state.
 
 ## Migration origin decision family
 
-### Prepare an evacuation plan
+| Decision | Role |
+| --- | --- |
+| Evacuate Civilians | Organize departure and move civilians from a state with sustained flight, trapped people or food insecurity to a safe destination; route deaths occur only on a dangerous route |
+| Open Departure | Permit and support spontaneous flight; lowers trapped pressure with less control over destinations |
+| Restrict Departure | Hold the population in place; preserves labor and secrecy, raises trapped pressure while danger remains |
+| Request Passage | Ask an enemy, neutral, partner or neighbour for a humanitarian corridor; the counterpart answers with Accept or Refuse Passage, and rejecting a corridor it could have received is condemned through the famine owner |
 
-The country selects priority states, destination capacity, and transport reserves before the crisis peaks.
-
-Preparation reduces later route deaths and congestion.
-
-### Evacuate vulnerable civilians
-
-The country moves a smaller, high-need cohort.
-
-Costs can include trains or convoys, support equipment, fuel, and reception capacity.
-
-### Evacuate industrial workers and machinery support staff
-
-The country preserves critical labor and production knowledge.
-
-Tradeoff:
-
-- lower origin production
-- better destination production recovery
-- vulnerable civilians receive less transport priority
-
-The decision should not physically move factories unless a separate industry relocation system supports that action.
-
-### Open civilian departure routes
-
-The country permits and supports spontaneous flight.
-
-This lowers trapped pressure but creates less controlled destination selection.
-
-### Restrict civilian departure
-
-The country holds labor and population in place.
-
-This can preserve local production and secrecy. It increases trapped pressure when danger remains.
-
-### Negotiate a humanitarian corridor
-
-The country targets an enemy, neutral, faction partner, or neighbor.
-
-The action can create a timed diplomatic mission with acceptance factors based on ideology, condemnation, war goals, route value, and military advantage.
-
-### Organize maritime evacuation
-
-The country uses ports, convoys, fuel, and escorts to move civilians.
-
-### Abandon the state
-
-The government orders rapid withdrawal and accepts high property loss and disorder.
-
-This can move more people quickly when a route exists. It creates severe local economic and political consequences.
+Evacuate Civilians is one decision.
+Preparation, vulnerable-civilian and worker evacuation were merged because they moved the same people through the same transfer and differed only in price; a priority choice returns only if a real production-recovery consumer for worker cohorts is added.
+Evacuation is blocked only when national reception is already over capacity.
 
 ## Migration destination decision family
 
-### Open emergency reception
+| Decision | Role | Availability |
+| --- | --- | --- |
+| Open Emergency Reception | Admit arrivals and assign temporary shelter | Needs spare capacity |
+| Screen Incoming Civilians | Controlled medical and security reception for exposed arrivals, without treating all migrants as diseased | Needs spare capacity |
+| Distribute Arrivals | Move arrivals from an overloaded border or port state to safer states | Available to an overloaded host |
+| Permit Transit | Allow passage to a confirmed onward destination | Available to an overloaded host |
+| Close the Border | Refuse ordinary entry; explains reduced inflow and the risk of trapped people, irregular crossings and foreign pressure | Available to an overloaded host |
+| Enforce the Closure | Commit units and authority to stop irregular crossings; can turn violent by policy | Available to an overloaded host |
+| Local Integration | Settle a long-term hosted cohort as ordinary population | Available to an overloaded host |
+| Resettle Abroad | Transfer part of a hosted population to an accepting third country | Available to an overloaded host |
+| Help Families Return | Transport and aid for voluntary return to a safe origin | Available to an overloaded host |
+| Force Repatriation | Send people back regardless of willingness; route deaths and condemnation when the origin is dangerous | Available to an overloaded host |
 
-The country accepts arrivals and assigns temporary shelter.
+Actions that relieve a host stay available when it is overloaded; actions that admit more people need spare capacity.
 
-### Distribute arrivals among safe states
+## Source proposals outside the current inventory
 
-The country reduces border-state overload by moving people through its internal network.
-
-Requirements:
-
-- valid safe states
-- transport
-- receiving capacity
-
-### Establish controlled medical reception
-
-The country accepts exposed arrivals through quarantine and medical support.
-
-This should reduce outbreak risk without treating all migrants as diseased.
-
-### Prioritize vulnerable groups
-
-The country accepts children, elderly people, injured civilians, or persecuted cohorts first.
-
-Excluded groups remain in the route system and can become trapped.
-
-### Prioritize skilled workers or co-nationals
-
-The country selects people who fit labor or national policy.
-
-This can improve long-term integration while creating diplomatic and moral consequences.
-
-### Allow transit
-
-The country provides route access to a confirmed destination.
-
-### Close the border
-
-The country prevents normal entry.
-
-The decision must explain the expected reduction in inflow and the risk of trapped populations, irregular crossings, and foreign pressure.
-
-### Enforce the closure
-
-The country commits units, equipment, and political authority to stop irregular crossings.
-
-The action can become violent depending on policy and AI. It should never be a harmless free toggle.
-
-### Establish internment or labor reception
-
-The country detains or exploits arrivals.
-
-This can reduce security pressure or provide labor. It creates resistance, condemnation, forced-labor, and atrocity risks.
-
-### Begin local integration
-
-The country converts a long-term displaced population into normal local population over time.
-
-Costs can include housing construction, civilian factories, food, administration, and stability work.
-
-### Seek third-country resettlement
-
-The country asks partners or neutral states to accept part of the population.
-
-### Support voluntary return
-
-The country provides transport and reconstruction aid after the origin becomes safe.
-
-### Force repatriation
-
-The country sends people back regardless of willingness.
-
-The action can create route deaths and condemnation when the origin remains dangerous.
+The source design also described maritime evacuation, abandoning a state, prioritized entry for vulnerable groups or skilled co-nationals, and internment or labor reception.
+None of them is in the current decision inventory, and no acceptance record makes them requirements.
+Disposition: unresolved; any revival needs a distinct mechanical effect rather than a priced copy of an existing decision.
 
 ## Border and corridor missions
 
@@ -606,7 +340,7 @@ The AI should:
 - use evacuation when relief cannot arrive in time
 - avoid draining another state into famine without a high-priority reason
 - consider military survival before diverting all transport
-- accept foreign relief when mortality and collapse risk exceed secrecy or ideological cost
+- import food when mortality and collapse risk exceed secrecy or ideological cost
 - conceal or maintain extraction according to regime profile, war pressure, condemnation, and opposition risk
 - stop a failed policy when evidence and mortality become severe unless the regime is deliberately exterminatory
 
@@ -618,8 +352,7 @@ The AI should:
 - prefer internal destinations when safe
 - use allies, guarantees, neighbors, and historical ties for foreign destinations
 - preserve transport for military survival
-- prioritize vulnerable cohorts when mortality is immediate
-- prioritize workers when national survival depends on critical industry
+- evacuate first where mortality is immediate or people are trapped
 - avoid routing civilians into another active crisis
 - seek corridors when no safe route exists
 
@@ -755,7 +488,7 @@ The asset prompt defines source modes and target surfaces.
 
 This part is complete only when:
 
-- the category is hidden until the issue becomes sustained
+- the category is hidden until the issue becomes sustained, and its phases never lock an ordinary decision
 - initial accounting seams present meaningful context without an event object, event ID, event-pool entry, or pacing pulse
 - the category shows one primary value and at most two supporting values
 - each phase shows only current actions

@@ -520,6 +520,17 @@ False reporting can also cause central requisition to continue after local produ
 
 The player should see that concealment hides information. The exact hidden evidence and future exposure route should remain unrevealed.
 
+In the current decision set, Conceal Hunger hides one state for 90 days: it stops counting toward the national food crisis, its food shock rises by 10, and the first famine deaths there are condemned as a cover-up.
+Continue Requisitions adds 15 extraction pressure and war support.
+Both shocks stay inside the 0–100 component range, so neither choice can push a state to catastrophe in one click.
+
+## National food crisis
+
+Famine has a national political cost so that ignoring it is never free.
+The `famine_national_food_crisis` country modifier lowers stability and war support for each acute, famine and catastrophic state the public can see, with caps; the tuning lives in `famine_national_crisis` script constants and the [famine system document](../../systems/famine_system.md).
+A single famine state costs about as much as an ordinary unpopular decision, and five famine states reach the cap.
+Concealed states do not count until their concealment ends, which is the real purpose of concealment: national calm bought with worse local hunger and later condemnation.
+
 ## Political escalation from famine
 
 Famine political pressure should grow from lived conditions and visible responsibility.

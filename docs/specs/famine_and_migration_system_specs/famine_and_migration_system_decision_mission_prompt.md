@@ -51,17 +51,14 @@ Implement every accepted row in `famine_and_migration_system_decision_map.csv` t
 Required families include:
 
 - rationing and reserve release
-- emergency imports
+- emergency imports (one paid decision that arranges a donor and delivers; foreign relief requests are part of it)
 - relief-route repair
 - escorted relief convoy
 - emergency airlift
-- foreign relief and observers
 - famine evacuation
 - requisition from safer states
 - concealment and continued extraction
-- evacuation preparation
-- vulnerable-civilian evacuation
-- skilled-worker evacuation
+- civilian evacuation (one decision: preparation and the former vulnerable and worker lanes are merged)
 - departure-route opening or restriction
 - humanitarian corridors
 - emergency reception

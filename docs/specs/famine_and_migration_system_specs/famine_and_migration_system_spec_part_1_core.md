@@ -108,7 +108,9 @@ The system does not need a detailed demographic simulator. It should still disti
 - camp, prison, gulag, and forced-labor populations
 - military dependants and administrative evacuees
 
-A response can prioritize one cohort. This creates a visible tradeoff. Evacuating skilled industrial workers protects production knowledge but leaves vulnerable civilians exposed. Prioritizing vulnerable civilians saves more lives but may require more transport and medical support. Forced labor or targeted persecution can block a cohort from normal evacuation routes.
+Cohorts shape who is endangered and who can leave.
+Forced labor or targeted persecution can block a cohort from normal evacuation routes.
+The current evacuation decision moves one undifferentiated cohort; a priority choice between workers and vulnerable civilians returns only if a real production-recovery consumer for worker cohorts exists, because a priority that moves the same people through the same transfer is a false choice.
 
 ### Route and border state
 
@@ -314,7 +316,10 @@ The system should react quickly to major shocks and slowly to structural decline
 
 The design uses event-driven requests and bounded active registries.
 
-A state enters the food-security registry when a qualifying source creates material pressure. A state leaves after recovery and memory settlement. A country enters the displacement registry when it has an active origin, destination, route, or trapped cohort. Only registered states and countries receive scheduled processing.
+A state enters the food-security registry when a qualifying source creates material pressure, and leaves after recovery and memory settlement.
+A country enters the famine country registry when one of its states registers; that registry refreshes the famine phase and the national food crisis independently of migration, and the country leaves once its phase is dormant with no visible food problem or famine mission.
+A country enters the displacement registry when it has an active origin, destination, route, or trapped cohort.
+Only registered states and countries receive scheduled processing.
 
 Relevant hooks include state-control change, occupation-law change, strategic bombing aftermath, nuclear aftermath, outbreak creation or escalation, camp and gulag changes, disaster effects, event adapters, war and peace transitions, route restoration, and direct decisions.
 

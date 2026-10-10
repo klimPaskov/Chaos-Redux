@@ -37,6 +37,7 @@ Moving people away from contamination changes their host and reception demand, n
 Condemnation receives proven deliberate starvation, relief obstruction, lethal forced labor, deportation, violent pushback, forced return and concealment through the appropriate owner.
 Public and hidden evidence retain that owner's visibility and repeat rules.
 Reusing a death or obstruction receipt for presentation must not charge another condemnation award.
+The [Condemnation spec](../condemnation_system_specs/specs/condemnation_impact_system_spec.md#integration) queues one consumer of this boundary: an enforcing sanctions participant at Tier 4 or above stops serving as an Import Food donor for its target unless it grants a humanitarian carve-out; famine keeps ownership of the donor check.
 
 ## Camps, custody and liberation
 
@@ -87,6 +88,8 @@ Future check: end the matching war while the origin remains hungry and the borde
 The successful Hunger Lines launch provides bounded live Event 014 node states and launch intensity to the existing famine-owned scenario adapter.
 Setup failure supplies neither food context nor flight request.
 The adapter opens its dated food context and requests living-survivor flight through Migration; it changes no Event 014 progression or native population itself.
+On launch day it seizes each node state's food stores (recorded as depleted stock) and commits the starting stage immediately: acute shortage at Low intensity, famine at Medium and above, so the owner sees the famine category, map colours and report on the first day.
+The context holds that stage for its window without relief, and relief, imports, requisition or evacuation end it through the ordinary recovery windows.
 Repeated calls within that context window do not duplicate starting pressure.
 
 [Event 014's integration contract](../014_cannibalism_specs/specs/014_cannibalism_spec_part_9_ai_balance_and_integrations.md) keeps consumption, Larder, cells and evolutions with Cannibalism.
@@ -95,6 +98,11 @@ Relief food does not become free Larder, and improved food cannot cure an establ
 Camp exploitation requires Event 014's own active policy and cell conditions; camps do not automatically become cannibal nodes.
 Ordinary AI can fund relief and evacuation while retaining the separate containment task.
 Future check: successful and failed scenario launches, repeated launch-adapter calls, and real relief before and after ideological escalation must retain distinct results and exactly one owning death path.
+
+## Special Chaos fronts
+
+A state captured by a special Chaos power that runs no civilian system (the walking dead, a rat swarm, ZIN, Death, a revolutionary or terror command) leaves both mechanics.
+The capture instead sends 2% of each neighbouring state the former owner still holds into flight (4% for a nonhuman captor), with the ordinary population gate and cooldown, so these fronts drive refugee waves ahead of them.
 
 ## Black Plague and controlled reception
 
