@@ -218,12 +218,12 @@ Starting magnitude target:
 
 | Source | Starting target | Allowed band | Scaling ceiling | Guard |
 | --- | ---: | ---: | ---: | --- |
-| First natural global wave | +8 | +5 to +12 | no more than +12 | one-time, natural, material footprint |
-| Meaningful repeat wave | +2 | +1 to +3 | no more than +3 | 365-day family cooldown, minimum footprint |
-| First Defense in Depth materialization | +5 | +3 to +7 | no more than +7 | one-time concrete stage result |
-| First Fortress States materialization | +10 | +6 to +14 | no more than +14 | one-time concrete stage result |
-| First Fortress World materialization | +15 | +10 to +20 | no more than +20 | one-time concrete stage result |
-| Distinct cluster convergence | +3 | +2 to +4 | no more than +4 | once per cluster incident, requires another real military-abundance result |
+| First natural global wave | +4 | +2 to +5 | no more than +5 | one-time, natural, material footprint |
+| Meaningful repeat wave | +1 | +1 | no more than +1 | 365-day family cooldown, minimum footprint |
+| First Defense in Depth materialization | +2 | +1 to +3 | no more than +3 | one-time concrete stage result |
+| First Fortress States materialization | +4 | +2 to +5 | no more than +5 | one-time concrete stage result |
+| First Fortress World materialization | +6 | +4 to +8 | no more than +8 | one-time concrete stage result |
+| Distinct cluster convergence | +1 | +1 to +2 | no more than +2 | once per cluster incident, requires another real military-abundance result |
 | No-op, debug, eligibility, posture choice | 0 | 0 | 0 | automatic |
 
 ### Footprint factors

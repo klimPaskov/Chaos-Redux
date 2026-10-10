@@ -647,7 +647,7 @@ Common skip reasons:
 
 The final option and target weights cannot be accepted through source reading alone.
 
-During implementation, spawn `chaosx_ai_probability_auditor` with `fork_turns="none"`. Give it the complete Event 064 option blocks, project AI blocks, target pools, country scenarios, external modifiers, and required acceptance ranges.
+During implementation, spawn `chaosx_ai_probability_auditor` with no inherited parent context. Give it the complete Event 064 option blocks, project AI blocks, target pools, country scenarios, external modifiers, and required acceptance ranges.
 
 The audit must cover:
 

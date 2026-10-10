@@ -5,7 +5,7 @@
 The introduction attributes Border Fortifications and the three evolution names to the original user brief.
 The five numbered parts and matrices also contain planner targeting, response, Chaos, achievement, and equivalent-proof proposals.
 Acceptance remains `unresolved` where the original user brief or attributable parent decision cannot be recovered; preserve those claims for review under [AGENTS.md](../../../AGENTS.md#specs-and-plans).
-The [design record](research/improvement_loop_review.md) and numbered specifications are the design map; [current event guidance](../../../.agents/skills/chaos-redux-events/SKILL.md) and [subagent routing](../../../.agents/skills/chaos-redux-subagents/SKILL.md) own implementation workflow.
+The [design record](research/improvement_loop_review.md) and numbered specifications are the design map; [current event guidance](../../../.claude/skills/chaos-redux-events/SKILL.md) and [subagent routing](../../../.claude/skills/chaos-redux-subagents/SKILL.md) own implementation workflow.
 Original source-reading, repository-baseline, tooling-failure, and manual-review reports are historical planning evidence, not current source verification, service-health findings, or completed independent audits.
 
 
@@ -106,3 +106,10 @@ The available tool registry did not expose a subagent execution function. The ma
 ## Package status
 
 The specification is complete as a planning handoff. It has not implemented or live-tested Event 064. The event catalog status therefore remains To Be Reworked until the repository implementation and acceptance work are completed.
+
+## Changelog
+
+### 2026-10-10 spec audit
+
+- Event-owned Chaos is rescaled to the Chaos Meter: first wave +2 to +5 (was +5 to +12), repeat waves +1, Defense in Depth +1 to +3, Fortress States +2 to +5, Fortress World +4 to +8 (was +10 to +20), cluster convergence +1 to +2. Forts kill no one and slow wars, yet Fortress World alone outweighed a first nuclear detonation (10). Lifetime direct Chaos is now about 16 instead of about 38.
+- Subagent instructions use the Claude-first wording.

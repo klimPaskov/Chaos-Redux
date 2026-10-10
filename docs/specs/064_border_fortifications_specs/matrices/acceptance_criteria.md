@@ -443,7 +443,7 @@ These checks define implementation acceptance for Border Fortifications. A check
 
 ## V. Probability evidence
 
-- [ ] V001 `chaosx_ai_probability_auditor` is spawned with `fork_turns="none"`.
+- [ ] V001 `chaosx_ai_probability_auditor` is spawned with no inherited parent context.
 - [ ] V002 Auditor receives complete option and decision blocks.
 - [ ] V003 Auditor receives complete target pools.
 - [ ] V004 Auditor receives every scenario from the probability matrix.
@@ -463,7 +463,7 @@ These checks define implementation acceptance for Border Fortifications. A check
 
 - [ ] W001 First global premium requires actual construction footprint.
 - [ ] W002 First global premium is one-time.
-- [ ] W003 Starting target is around +8 within the accepted band.
+- [ ] W003 Starting target is around +4 within the accepted band.
 - [ ] W004 Surviving-world percentage fallback handles late unified maps.
 - [ ] W005 Repeat premium requires a meaningful new footprint.
 - [ ] W006 Repeat premium uses a family cooldown.
@@ -691,7 +691,7 @@ These checks define implementation acceptance for Border Fortifications. A check
 - [ ] AE013 Breach counterplay is tested against levels three, five, seven, and eight.
 - [ ] AE014 Project affordability is tested for small, medium, and large countries.
 - [ ] AE015 Direct Chaos gain is tested against repeated and no-op waves.
-- [ ] AE016 `chaosx_improvement_loop_planner` is spawned near completion with `fork_turns="none"`.
+- [ ] AE016 `chaosx_improvement_loop_planner` is spawned near completion with no inherited parent context.
 - [ ] AE017 Any accepted improvement addendum is resolved.
 - [ ] AE018 A closure handoff is recorded when no further depth change is needed.
 - [ ] AE019 `chaosx_event_completion_auditor` receives all evidence.

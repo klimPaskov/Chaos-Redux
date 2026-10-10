@@ -6,7 +6,7 @@ Use the three-digit `064` prefix for every project-facing event-scoped folder, f
 
 Read every specification, matrix, diagram, research note, and specialist prompt before editing. Follow `AGENTS.md`, `chaos-redux-events`, `chaos-redux-decisions-missions`, `chaos-redux-event-assets`, `chaos-redux-improvement-loop`, the dynamic trigger and effect references, current event-log and Event Details documentation, current achievement conventions, and current cluster system ownership.
 
-Use project subagents with `fork_turns="none"`. Pass self-contained tasks and exact paths. Do not rely on inherited chat context.
+Use project subagents with no inherited parent context. Pass self-contained tasks and exact paths. Do not rely on inherited chat context.
 
 ## Repository starting point
 
@@ -207,7 +207,7 @@ AI posture and project behavior must react to:
 
 Invalid choices receive zero probability. AI can skip a project.
 
-Spawn `chaosx_ai_probability_auditor` with `fork_turns="none"`. Use the configured probability inspection, evaluation, sweep, comparison, rendering, simulation, and sequence tools. Save full effective-weight, normalized probability, target-pool, and cluster-arbitration evidence. Do not close AI probability through source inspection alone.
+Spawn `chaosx_ai_probability_auditor` with no inherited parent context. Use the configured probability inspection, evaluation, sweep, comparison, rendering, simulation, and sequence tools. Save full effective-weight, normalized probability, target-pool, and cluster-arbitration evidence. Do not close AI probability through source inspection alone.
 
 ## Chaos impact map
 
@@ -215,12 +215,12 @@ Implement every row in Part 4 and the tuning matrix.
 
 Starting targets:
 
-- first natural global wave about +8, scaled within +5 to +12
-- meaningful repeat wave about +2, scaled within +1 to +3, with cooldown and minimum footprint
-- first concrete Defense in Depth materialization about +5
-- first concrete Fortress States materialization about +10
-- first concrete Fortress World materialization about +15
-- distinct military-abundance cluster convergence about +3 when another member produced a real relevant gain
+- first natural global wave about +4, scaled within +2 to +5
+- meaningful repeat wave +1, with cooldown and minimum footprint
+- first concrete Defense in Depth materialization about +2
+- first concrete Fortress States materialization about +4
+- first concrete Fortress World materialization about +6
+- distinct military-abundance cluster convergence about +1 when another member produced a real relevant gain
 
 Pay zero for no-op, duplicate, debug, eligibility, maturation, posture choice, and trivial waves.
 
@@ -280,7 +280,7 @@ Required families:
 
 Use the existing HOI4 map building visuals for the fortified provinces and state buildings.
 
-Spawn the appropriate generated-event-art and icon specialists with `fork_turns="none"`. Complete sources, previews, final DDS files, provenance, manifest, hashes, and `.gfx` handoff. Do not use placeholders or temporary runtime paths.
+Spawn the appropriate generated-event-art and icon specialists with no inherited parent context. Complete sources, previews, final DDS files, provenance, manifest, hashes, and `.gfx` handoff. Do not use placeholders or temporary runtime paths.
 
 ## Final localisation
 
@@ -353,7 +353,7 @@ Prove there is one world pass per incident, bounded candidates, no duplicate pro
 
 ## Mandatory near-completion review
 
-Before claiming the goal near complete, spawn `chaosx_improvement_loop_planner` with `fork_turns="none"` using the task preserved in:
+Before claiming the goal near complete, spawn `chaosx_improvement_loop_planner` with no inherited parent context using the task preserved in:
 
 `docs/plans/064_border_fortifications_plans/subagent_handoffs/064_border_fortifications_improvement_loop_tooling_blocker.md`
 

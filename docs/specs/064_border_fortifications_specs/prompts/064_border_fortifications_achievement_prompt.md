@@ -9,7 +9,7 @@ Read the full package, especially:
 - `matrices/tuning_and_balance_framework.md`
 - `prompts/064_border_fortifications_asset_prompt.md`
 
-Follow `AGENTS.md`, current Chaos Redux achievement conventions, current event and debug-context conventions, the icon asset rules, and the completion-auditor definition. Use `fork_turns="none"` for spawned specialists.
+Follow `AGENTS.md`, current Chaos Redux achievement conventions, current event and debug-context conventions, the icon asset rules, and the completion-auditor definition. Use no inherited parent context for spawned specialists.
 
 All achievement titles below are working labels, not final localisation. Write final titles and descriptions from the direction in the spec. Do not expose internal variables or omit important disqualifiers from tooltips.
 

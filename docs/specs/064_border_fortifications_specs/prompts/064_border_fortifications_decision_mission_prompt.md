@@ -11,7 +11,7 @@ Read the full package, especially:
 - `matrices/acceptance_criteria.md`
 - `prompts/064_border_fortifications_asset_prompt.md`
 
-Follow `AGENTS.md`, `chaos-redux-decisions-missions`, current repository decision patterns, current AI conventions, the localisation handoff rules, and the event log conventions. Use `fork_turns="none"` for spawned specialists.
+Follow `AGENTS.md`, `chaos-redux-decisions-missions`, current repository decision patterns, current AI conventions, the localisation handoff rules, and the event log conventions. Use no inherited parent context for spawned specialists.
 
 All names below are working labels, not final localisation. Write final player-facing text during implementation.
 
@@ -367,7 +367,7 @@ Target priority begins with capital survival, active hostile front, major supply
 
 ## Mandatory decision audit
 
-Spawn `chaosx_decision_mission_auditor` with `fork_turns="none"` after the system is substantially implemented. Pass all Event 064 decision, mission, modifier, localisation, AI, and cleanup files. Resolve its findings before completion.
+Spawn `chaosx_decision_mission_auditor` with no inherited parent context after the system is substantially implemented. Pass all Event 064 decision, mission, modifier, localisation, AI, and cleanup files. Resolve its findings before completion.
 
 The audit must inspect:
 
@@ -385,7 +385,7 @@ The audit must inspect:
 
 ## Mandatory probability audit
 
-Spawn `chaosx_ai_probability_auditor` with `fork_turns="none"` and use every scenario in `matrices/ai_probability_scenario_matrix.md`.
+Spawn `chaosx_ai_probability_auditor` with no inherited parent context and use every scenario in `matrices/ai_probability_scenario_matrix.md`.
 
 Use configured probability inspection, evaluation, sweep, comparison, rendering, simulation, and sequence tools when available. Save normalized posture probabilities, project start results, target pool evidence, and cluster arbitration evidence.
 
