@@ -1,387 +1,159 @@
 # Industrial Boom specification, part 1: Core event and baseline lifecycle
 
-## Catalog entry
-
-- Event ID: `34`
-- Event name: Industrial Boom
-- Type: Minor Repeatable
-- Status: To Be Reworked
-- Chaos level: 1
-- Cluster: Not assigned
+Catalog identity, implementation status and open questions live in the [package README](034_industrial_boom_spec_index.md).
 
 ## Event premise
 
-A major country or player-controlled country experiences an abrupt industrial acceleration that exceeds the capacity suggested by its factories, labor force, infrastructure, and access to materials. Production lines fill, construction schedules shorten, new shifts appear, and firms accept orders that would normally take years to complete. The benefit begins immediately and remains large enough to alter the country's military and civilian plans.
+A major country or player-controlled country experiences an abrupt industrial acceleration that exceeds what its factories, labor force, infrastructure and material access should allow.
+Production lines fill, construction schedules shorten, new shifts appear, and firms accept orders that would normally take years to complete.
+The benefit begins immediately and is large enough to change the country's military and civilian plans.
 
-The expansion is unstable. Every new order competes for labor, fuel, transport, machine time, credit, imports, and maintenance. These strains are gathered into one public value, `Overheating`. The country may use the boom as a short power window, convert it into lasting development, or push the system into Event 35 Great Depression 2.0.
+The expansion is unstable.
+Every new order competes for labor, fuel, transport, machine time, credit, imports and maintenance.
+These strains are gathered into one public value, Overheating (part 2).
+The country may use the boom as a short power window, convert it into lasting development, or push it into Event 35 Great Depression 2.0.
 
-The event should feel generous before it becomes urgent. The player must have time to exploit the initial opportunity, observe the first signs of strain, and choose a management philosophy. A target that receives only a brief bonus followed by an unavoidable punishment would fail the premise.
+The event should feel generous before it becomes urgent.
+The player must have time to exploit the opening, see the first signs of strain, and choose how to manage it.
+A brief bonus followed by an unavoidable punishment fails the premise.
 
 ## Core player experience
 
-The event creates five linked experiences.
-
-1. **Immediate abundance**
-   - The first day changes production and construction priorities.
-   - Existing lines accelerate enough to matter in an active war.
-   - New lines become viable because production efficiency grows rapidly.
-   - Civilian construction and industrial expansion become attractive.
-
-2. **Visible strain**
-   - Overheating rises according to the country's decisions and material condition.
-   - The player sees the current band, trend, and next threshold.
-   - The game explains the strongest actionable causes without exposing a full formula.
-
-3. **Competing uses of the boom**
-   - Running the economy harder gives more short-term output.
-   - Stabilization consumes logistics and civilian capacity.
-   - Reserves sacrifice current performance for shock protection.
-   - Regional investment can produce lasting gains if the landing succeeds.
-
-4. **A landing problem**
-   - The boom does not end because a hidden timer expires.
-   - The country must become structurally ready to leave the extreme phase.
-   - A controlled landing preserves part of the transformation.
-   - A forced or failed landing can leave exhaustion or activate Event 35.
-
-5. **Campaign memory**
-   - Repeat firings remember earlier booms, protected regions, exhausted states, permanent gains, and previous crashes.
-   - A country can benefit more than once, but repeated booms produce diminishing permanent returns and greater fragility.
+1. **Immediate abundance.** The first day changes production and construction priorities, and new lines become worth opening.
+2. **Visible strain.** Overheating rises for readable reasons, and the category shows its band, trend, next threshold and leading cause.
+3. **Competing uses of the boom.** Running hot buys output, stabilization costs logistics, a reserve sacrifices output for safety, and regional projects can become lasting gains.
+4. **A landing problem.** The boom never ends on a hidden timer. The country lands it deliberately, is forced down, or crashes into Event 35.
+5. **Campaign memory.** Later firings remember earlier landings and crashes, with diminishing permanent returns.
 
 ## Target selection
 
-Each normal firing selects one country from a valid target pool.
+Each normal or cluster firing selects one country from the valid pool.
 
 ### Eligible countries
 
-A country is eligible when all of the following are true:
+A country is eligible when it:
 
-- It exists.
-- It is a major country or is controlled by a human player.
-- It uses ordinary civilian and industrial systems.
-- It controls at least one populated, valid state with civilian or military industrial capacity.
-- It does not have an active Industrial Boom.
-- It is not in the unresolved handoff between Event 34 collapse and Event 35 activation.
+- is a major country or is controlled by a human player, including a non-major player;
+- passes Event 35's `great_depression_has_viable_economy` (ordinary civilian economy with a usable industrial state);
+- has no active boom, no frozen collapse snapshot and no pending collapse delivery;
+- has no active Great Depression and no incompatible economic state.
 
-A player-controlled non-major remains eligible. The event should scale to that country's real economy and avoid costs or permanent rewards sized for a great power.
-
-### Excluded countries
-
-Special Chaos actors and actual nonhuman countries should not receive the event through ordinary selection. Their economies may not use normal labor, credit, consumption, logistics, or civilian production assumptions. A later owning event may create a specific adapter when a special actor genuinely needs the mechanic.
-
-A country with Event 35 already active remains eligible only when the Industrial Boom design can coexist with that depression. The default rule is exclusion. An independent boom should not erase an active depression or create contradictory modifiers. A later Event 35 specification may define a rare recovery-boom interaction, but Event 34 does not assume it.
+The implemented entry already applies these gates (README, implementation status).
+Special Chaos actors and nonhuman economies fail the viable-economy gate and do not receive the event.
+Coexistence with an active Event 35 crisis is excluded by default.
 
 ### Target weighting
 
-Every valid country needs a nonzero path to selection. Weighting should produce variety without making the same largest major dominate.
+The implemented entry uses an unweighted `random_country`.
+The design replaces it with a weighted pool in which every valid country keeps a nonzero chance.
 
-Weight can rise with:
+Weight rises with a substantial industrial base, good infrastructure, high stability, a major war creating equipment demand, and a human player who has not recently received the event.
+Weight falls sharply for a recent Event 34 firing in the same country, and moderately for an earlier Event 34 crash, a blockade, very low stability, or heavy loss of core industry.
+Weighting prevents repetition, not difficulty: a country with weak logistics can still receive the event and face a harder version of it.
 
-- Substantial existing civilian and military industry.
-- High infrastructure and a connected rail network.
-- Strong production efficiency and stable trade access.
-- High stability.
-- A major war that creates strong industrial demand.
-- A human player who has not recently received the event.
-
-Weight can fall with:
-
-- A recent Industrial Boom firing in the same country.
-- An earlier Event 34 crash.
-- Severe infrastructure loss.
-- A blockade or sustained convoy crisis.
-- Very low stability.
-- Loss of a large share of core industry.
-- Another active event-owned economic crisis that would create a conflict.
-
-The weighting should not preselect the easiest country. Weak logistics can still receive the event and face a dangerous version of the management problem. The weighting only prevents obviously invalid or repetitive outcomes.
-
-### Impossible target pool
-
-When no valid country exists, Event 34 contributes no live candidate to normal selection and should appear as unavailable in the event list. It should not queue against a dead or invalid tag and should not display a misleading zero weight as though it were merely unlikely.
+When no valid country exists, the event reports itself unavailable through the shared event-pool evaluator, as Event 35 already does for `great_depression_target`.
 
 ## Opening sequence
 
-### World event entry
+The firing chooses the target and records the event once, with the target as the Event History actor.
+The target then receives the visible opening, the boom package, starting Overheating and its Industrial Regions.
 
-The global Event 34 firing chooses the target and records the event once. The affected country then receives the player-facing opening and the active economic package. The target country becomes the actor shown in Event History.
+The opening shows speed through concrete evidence: cleared backlogs, rail yards and ports at capacity, construction crews on several shifts, ministries and firms competing for workers, and new districts growing around existing works.
+At baseline the cause is industrial mobilization and investment, not a mysterious gift; later evolutions can make the expansion physically impossible.
 
-The opening should communicate speed through concrete industrial evidence:
+### Opening package
 
-- Lines that had months of backlog begin clearing orders.
-- Rail yards and ports operate at full capacity.
-- Construction crews work multiple shifts.
-- Factory owners, ministries, unions, military procurement offices, and local authorities compete for workers and materials.
-- New industrial districts appear around existing centers.
+The functional target is roughly doubling practical industrial productivity after normal stacking, not `+100%` on every modifier.
+The package should:
 
-The opening should not present the boom as a mysterious magical gift at baseline. The cause remains uncertain because no single policy explains the scale, but the visible mechanism is industrial mobilization and investment. Later evolutions can make the expansion physically impossible.
+- raise factory output and civilian construction speed sharply;
+- accelerate production-efficiency growth, with a modest efficiency-cap increase;
+- raise dockyard output at a lower rate unless the country is strongly maritime;
+- make new lines and large construction queues immediately attractive.
 
-### Immediate package
-
-On the first day, the target receives an extraordinary temporary country effect. Exact HOI4 values require implementation tuning. The functional target is more important than one literal modifier.
-
-The opening package should:
-
-- Raise effective military factory output sharply.
-- Raise civilian construction speed sharply.
-- Accelerate production-efficiency growth.
-- Raise the useful production-efficiency ceiling when the engine behavior supports it cleanly.
-- Improve repair and conversion capacity enough to support expansion.
-- Improve dockyard output for countries with a meaningful naval industry, at a lower relative rate than land production unless the country is strongly maritime.
-- Make new production lines and large construction queues immediately attractive.
-
-The intended total effect should feel roughly comparable to doubling the country's practical industrial productivity after normal stacking and bottlenecks are considered. The implementation should not simply apply `+100%` to every industrial modifier. That would interact unpredictably with laws, spirits, technologies, and other events.
+The implemented `industrial_boom` idea (static output, efficiency, construction, local resources and research speed) is interim.
+Research speed and broad local resources are not part of the design promise, and the final package must not stack the old idea beneath the new staged effects.
 
 ### Starting Overheating
 
-The boom begins below the first dangerous threshold. Starting Overheating varies by the target's real condition.
+A baseline opening starts in the Sustainable band with a real benefit window before drift alone creates danger.
+Exact ranges are in part 2.
 
-Lower starting pressure is appropriate when the country has:
+### Industrial Regions
 
-- Strong infrastructure and rail coverage.
-- High stability.
-- Fuel and convoy security.
-- A broad industrial base spread across several states.
-- Accessible resources and stable imports.
-- No recent Event 34 history.
+The opening names one to three existing industrial states as the boom's centers (part 4).
+They anchor reports, projects, protection and incidents.
+The implemented entry already freezes one random owned, controlled, populated industrial state as the inherited region for Event 35; the design replaces that random pick with the region ranking in part 4.
 
-Higher starting pressure is appropriate when the country has:
+## Lifecycle
 
-- Concentrated industry in a few vulnerable states.
-- A blockade or severe convoy shortage.
-- Damaged infrastructure.
-- Low stability.
-- Lost industrial cores.
-- A recent boom or depression history.
-- An evolved opening.
+The boom has three lifecycle states.
+They are not evolutions and never appear as evolution records.
+Pressure inside the Running state is described by the Overheating bands in part 2, so the player follows one value instead of a second phase ladder.
 
-A baseline opening should normally begin in the stable band. The target must receive a real period of benefit before normal drift alone creates danger.
+### Opening
 
-### Initial Industrial Regions
+The first 90 days, tuned through a constant.
+The full package is active, base drift is reduced, and Cool the Expansion is hidden unless the start was unusually high.
+Prepare a Controlled Landing cannot start.
+The player reorganizes production, starts construction, decides whether to run hot, and designates the first project.
 
-The opening identifies a small number of existing industrial states as the first centers of the boom. These are not yet permanent Miracle Regions. They provide state-level anchors for reports, protection, incidents, and later projects.
+### Running
 
-Selection should prefer:
+The main period.
+All actions are available according to the current band.
+Projects advance, incidents occur, evolutions can arrive, and the player chooses between pushing, stabilizing and preparing to land.
+High bands erode part of the package (part 2), so a near-crash economy is never a free maximum-output state.
 
-- Controlled core states.
-- States with civilian or military factories.
-- States with usable infrastructure.
-- States connected to the capital or a supply network.
-- States with enough population to support industrial activity.
+### Landing
 
-Selection should avoid:
+Prepare a Controlled Landing is active (part 3).
+Voluntary pressure actions close, evolution pacing pauses, and the transition ends the boom in stages.
 
-- Impassable or unpopulated states.
-- States controlled by another country.
-- Isolated holdings that cannot plausibly support the main economy.
-- States already exhausted by a previous boom unless no better state exists.
+## Outcomes
 
-The number of initial regions scales with the economy, from one for a small player country to a small capped group for a large major. The player should never need to manage a long list of industrial state counters.
+The boom resolves into one of four outcomes.
 
-## Baseline lifecycle
+| Outcome | How it happens | Result |
+| --- | --- | --- |
+| Controlled landing | Landing mission completes below 40 Overheating with at least one secured project | Package ends in stages, secured projects convert to legacy, short reconversion modifier |
+| Rough landing | Landing mission completes at 40 or above, or with no secured project | Package ends, limited legacy, temporary industrial exhaustion |
+| Forced landing | Emergency Production Halt succeeds in the Dangerous or Critical band | Package ends at once, no project converts, long exhaustion |
+| Crash | Overheating reaches 100, Prevent the Crash fails, or the halt fails | Package ends, snapshot freezes, the same country enters Event 35 (part 6) |
 
-The baseline lifecycle has four ordinary phases. These phases are not evolutions and should not appear as evolution records.
+A live supplier contract with a depressed country (part 7) upgrades a rough landing to a controlled one once, because foreign orders absorb the capacity that would otherwise go idle.
 
-### Phase 1: Ignition
+Rough and forced landings set Event 35's recent-industrial-expansion target signal for its normal duration, which raises the chance that an independent Great Depression later selects the country.
+This replaces a hidden post-boom relapse trigger with an existing, documented Event 35 weight.
 
-The event has just fired. The full opening bonus is active. Overheating is low enough that ordinary management actions are optional.
-
-Player priorities:
-
-- Reorganize production.
-- Begin high-value construction.
-- Decide whether to push the boom harder.
-- Inspect the first Industrial Regions.
-- Begin reserves or protection before visible danger.
-
-Available content:
-
-- Run the Economy Hot.
-- Stabilize Supply Chains.
-- Build Industrial Reserves.
-- Protect Key Industrial Regions.
-- One early project or survey action that identifies where lasting development is possible.
-
-The opening phase should last long enough for production changes to matter. It ends through accumulated pressure and structural progress, not a fixed day count.
-
-### Phase 2: Expansion
-
-The boom has become a national economic condition. The country is still receiving extreme benefits. More contracts, construction, migration, and regional pressure appear.
-
-Player priorities:
-
-- Choose which industrial centers deserve lasting investment.
-- Balance output against infrastructure and transport.
-- Build reserve capacity.
-- Decide whether another short acceleration is worth the added pressure.
-
-Available content:
-
-- All core management actions.
-- Region designation and protection.
-- Project work that can later become permanent legacy.
-- Supply and logistics objectives.
-- Evolution-specific incidents when enabled.
-
-The best path through this phase builds both structural progress and a safety margin. A player who only lowers Overheating without completing any structural work should land safely but retain little.
-
-### Phase 3: Strain
-
-Overheating has entered a dangerous band or the economy has suffered repeated shocks. The extraordinary bonus begins to lose some efficiency. Shortages, maintenance debt, labor exhaustion, and speculative pressure become visible.
-
-Player priorities:
-
-- Stop avoidable shocks.
-- Protect or abandon fragile projects.
-- Complete reserves.
-- Prepare a controlled landing.
-- Choose whether wartime need justifies a final period of maximum output.
-
-Available content:
-
-- Strong cooling action.
-- Emergency supply stabilization.
-- Speculative liquidation when Evolution I is active.
-- Emergency protection or project suspension.
-- Controlled Landing preparation once structural conditions are met.
-- Forced Landing when the crisis is close to collapse.
-
-The event should not remain a pure positive modifier in this phase. High pressure should reduce part of the output bonus, increase disruption, and make further pushing less efficient. This prevents a player from treating a near-crash economy as a free permanent maximum-output state.
-
-### Phase 4: Landing or collapse
-
-The boom resolves through one of four result bands.
-
-#### Controlled landing
-
-The country completes the landing objective with Overheating under control and enough structural preparation. The extraordinary bonus ends in stages. Completed projects convert into lasting or long-duration gains. Reserve strength reduces disruption during the transition.
-
-#### Rough landing
-
-The country exits before terminal collapse, but pressure remains high or structural preparation is weak. Most temporary benefits disappear. The country receives temporary exhaustion, keeps only limited legacy, and may begin with a mild risk of later Event 35 activation if a new shock occurs during the recovery period.
-
-#### Forced landing
-
-The player or AI uses an emergency shutdown near the terminal threshold. The action prevents immediate full collapse at a heavy price. Projects may be cancelled, temporary output falls sharply, stability is strained, and a long exhaustion period follows. Event 35 is avoided only when the forced-landing calculation succeeds.
-
-#### Economic crash
-
-Overheating reaches the terminal threshold or a late catastrophic shock exceeds the remaining safety margin. All boom-only benefits end. Event 34 freezes its result snapshot and hands the same country into Event 35. Evolution inheritance follows the active Event 34 level.
-
-## Outcome quality
-
-The landing outcome should derive from several factors. One final Overheating reading cannot decide it.
-
-Positive factors:
-
-- Low or falling Overheating.
-- Completed industrial projects.
-- Strong reserve status.
-- Protected regions that remain controlled.
-- Stable supply and trade access.
-- High infrastructure in the main Industrial Regions.
-- A sustained period below the danger band.
-- No recent major boom accident.
-
-Negative factors:
-
-- High or sharply rising Overheating.
-- Cancelled or unfinished projects.
-- Lost Industrial Regions.
-- Repeated use of Run the Economy Hot near the danger threshold.
-- A blockade or fuel crisis.
-- Recent industrial accidents.
-- A previous Event 34 crash.
-- Evolution II or III fragility that was not consolidated.
-
-The final outcome should be readable before commitment. The player should see a qualitative landing forecast such as strong, uncertain, or dangerous. Exact hidden probability components need not be shown.
+The landing forecast in the category header (part 9) shows which outcome the current conditions point to before the player commits.
 
 ## Repeatability
 
-Event 34 remains Minor Repeatable. Repeatability changes the strategic context across firings and prevents an identical reward loop.
+Event 34 remains Minor Repeatable.
+The country remembers the number of booms, controlled landings, crashes, the highest evolution reached, its consumed legacy budget and the states that already hold a strong legacy (part 4).
 
-### Country memory
+A later firing starts with slightly higher Overheating after each earlier crash, finds fewer untouched states for raw capacity, and shifts its rewards toward efficiency, logistics and conversion.
+A country with an earlier controlled landing gains a shorter Opening state and a better landing forecast.
+History creates both advantages and liabilities, and never a permanent ban.
 
-The event remembers:
-
-- Number of prior Industrial Booms.
-- Number of controlled landings.
-- Number of rough or forced landings.
-- Number of crashes into Event 35.
-- Highest evolution previously reached.
-- Permanent industrial legacy already retained.
-- States that received legacy projects.
-- States marked as exhausted by a failed boom.
-
-### Later openings
-
-A later firing may:
-
-- Start with slightly higher Overheating.
-- Offer fewer untouched states for permanent development.
-- Make reserve construction more expensive.
-- Make experienced regions easier to reactivate but less rewarding permanently.
-- Unlock reports that acknowledge institutional memory.
-- Let a country with a strong previous landing begin structural preparation faster.
-- Give a country with a previous crash stronger political resistance to aggressive expansion.
-
-Repeat history creates advantages and liabilities. A successful country learns how to manage a boom. Its easiest permanent gains have already been taken. A failed country recognizes the danger but carries fragile institutions and exhausted regions.
-
-### Permanent reward ceiling
-
-Repeat firings cannot create an uncapped factory and building-slot engine. Permanent legacy is bounded at country and state level.
-
-- Each state has a campaign limit on permanent Event 34 legacy packages.
-- Each country has a cumulative Event 34 legacy budget that scales with its original and current economy.
-- Later projects increasingly favor timed efficiency, infrastructure, rail, repair, conversion, or resource-use improvements over additional factories and slots.
-- A crash can damage unprotected earlier legacy and can consume part of the remaining country budget.
-
-The event should still feel worth receiving again. The reward shifts from raw expansion toward faster mobilization, stronger logistics, better conversion, and safer use of an existing industrial base.
-
-## Event flow map
+## Event flow
 
 ```text
-Normal event selection
-  -> choose valid major or player country
-  -> apply evolved opening when already unlocked and enabled
-  -> opening report and extreme temporary boom
-  -> initialize Overheating and Industrial Regions
-  -> Ignition
-       -> exploit output
-       -> prepare supply, reserves, protection
-  -> Expansion
-       -> designate projects
-       -> convert temporary growth into structural progress
-       -> possible active-event evolution
-  -> Strain when pressure rises or shocks accumulate
-       -> stabilize and prepare landing
-       -> force an early landing
-       -> continue pushing for wartime gain
-  -> resolution
-       -> controlled landing
-       -> rough landing
-       -> forced landing
-       -> crash into Event 35
-  -> clean active Event 34 state
-  -> retain bounded country and state memory
-  -> restore repeatable eligibility after resolution cooldown
+Normal or cluster selection
+  -> valid target, evolved opening when a stage is unlocked and enabled
+  -> opening report, boom package, Overheating, Industrial Regions
+  -> Opening (exploit, designate the first project, optional reserve)
+  -> Running
+       -> run hot, stabilize, cool, protect, build projects
+       -> incidents and possible active evolution
+  -> Landing mission, Emergency Production Halt, or collapse
+  -> controlled, rough, forced, or crash into Event 35
+  -> cleanup, bounded country and state memory
 ```
 
 ## Success standard
 
-A successful Event 34 firing should leave the player able to answer four questions without reading hidden formulas:
-
-- How hot is the economy now?
-- Is pressure rising or falling?
-- What is the next threshold?
-- Which action best addresses the current cause or strategic goal?
-
-The event succeeds as design when a player may rationally choose any of the following:
-
-- Exploit a short wartime production window and accept a rough landing.
-- Sacrifice current output to preserve a large permanent legacy.
-- Use reserves and protection to survive external shocks.
-- End the boom early because the country's strategic situation changed.
-- Push too far and knowingly risk Event 35.
-
-No one route should dominate every country and war state.
+Without reading formulas, the player can answer: how hot is the economy, is it rising, what happens at the next threshold, and which action addresses the leading cause.
+A player may rationally exploit a short wartime window and accept a rough landing, sacrifice output for lasting legacy, survive a shock with a reserve and protection, end the boom early, or push too far and knowingly risk Event 35.
+No single route dominates every country and war state.

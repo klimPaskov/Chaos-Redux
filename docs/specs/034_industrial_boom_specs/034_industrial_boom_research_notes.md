@@ -30,7 +30,7 @@ Design use:
 - Baseline Industrial Boom can combine abundant finance with a real shortage risk.
 - Speculative Mania can amplify the part of the boom driven by cheap credit and confidence.
 - `Cool the Expansion` can represent credit restraint, contract cancellation, and slower project approval.
-- `Build Industrial Reserves` can represent spare capacity and inventories that are deliberately withheld from immediate output.
+- `Build an Industrial Reserve` can represent spare capacity and inventories that are deliberately withheld from immediate output.
 - A boom can appear healthy in output terms while Overheating rises through shortages and credit expansion.
 
 Primary source:
@@ -94,7 +94,7 @@ Design use:
 
 - Evolution I should create sudden speculative opportunities and sudden Overheating spikes.
 - Some high-yield projects should be fragile and easier to cancel before they become embedded.
-- `Liquidate Speculative Projects` can be an emergency action that lowers Overheating but damages stability and temporary output.
+- Abandoning a speculative project can lower Overheating sharply while losing its progress and temporary output.
 - The event should not model stock prices as a second public value.
 
 Primary source:
@@ -138,7 +138,7 @@ Design use:
 - A controlled landing should be a real phase with a public objective.
 - Removing emergency controls too quickly can produce a late Overheating rebound.
 - A country may preserve capacity while losing part of the extraordinary bonus.
-- A poor landing can enter Event 35 even when the country avoided the first terminal threshold.
+- A poor landing leaves exhaustion and makes a later depression more likely even when the country avoided the terminal threshold.
 
 Primary source:
 

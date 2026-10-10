@@ -1,558 +1,159 @@
 # Industrial Boom specification, part 3: Decisions and missions
 
-## Decision category role
+None of this layer is implemented yet; the implemented stub has no decision category (README, implementation status).
 
-Industrial Boom uses one temporary decision category for the affected country. The category is a management surface, not an economic shop. It should show the current state of the boom and present only the actions that matter in the current phase.
+## Category role
 
-The category remains visible from the opening until Event 34 cleanup. It changes its picture state, header, available actions, and active objective as the boom moves through Ignition, Expansion, Strain, and Landing.
+Industrial Boom uses one decision category for the affected country, from the opening until cleanup.
+It is a management surface, not a shop.
+Its presentation (header lines, picture and texticons) is defined in part 9.
 
-## Presentation hierarchy
+The national list shows at most five rows: the core actions valid in the current band, one evolution action, the active mission and the Emergency Production Halt when it applies.
+Each Industrial Region adds at most one row, its single most relevant action: Designate an Industrial Project when it has no project, Protect an Industrial Region when it has a project and no protection, and Abandon a Project only when the project is threatened or the band is Dangerous or worse.
+With the three-region cap the category therefore stays at eight rows or fewer, and normally shows five or six.
+Actions that are invalid for the current band, lifecycle state or evolution are hidden rather than shown disabled, except Run the Economy Hot, which stays visible with its lock in the Dangerous band so the player learns the rule.
 
-The planned presentation uses:
+The phase-by-phase visibility table lives in the [decision map](034_industrial_boom_decision_map.md).
 
-1. One category icon.
-2. One static category picture with phase variants when useful.
-3. One Overheating progress display or equivalent compact meter.
-4. One trend indicator.
-5. One next-threshold line.
-6. One reserve status line.
-7. Up to three short cause indicators.
-8. Three to five primary actions in normal phases.
-9. One to two active missions.
+## Costs
 
-A separate scripted GUI is unnecessary at planning stage. One public numeric value, one qualitative reserve state, and a small action set fit the normal decision interface. The implementation agent may propose a compact event-owned window only after inspecting the live category and proving that state selection or meter presentation cannot be made clear in the normal surface.
+Costs scale with the country's civilian and military factory count and the current band, so a small player country can afford every essential action and a major feels the commitment.
+Each action uses at most three spendable cost types.
+Costs favor trains, trucks, convoys, fuel, support equipment, temporary civilian-factory commitments and temporary output sacrifice.
+Political power appears only on actions that represent coercion, such as forcing continued work during an incident.
+Stabilize Supply Chains picks its transport cost from the country's real profile: a landlocked country never pays convoys, and an import-dependent maritime country cannot stabilize with trains alone.
+Costs are validated before payment, and a rejected target or failed transaction refunds what was paid.
+Every displayed cost uses the matching texticon.
 
-## Action visibility budget
-
-The category follows a strict visibility budget.
-
-| Phase | Normal visible primary actions | Active missions | State-targeted rows |
-| --- | ---: | ---: | ---: |
-| Ignition | 3 to 4 | 0 to 1 | Hidden until region work begins |
-| Expansion | 4 to 5 | 1 | Only the selected region or a compact selector |
-| Strain | 3 to 5 | 1 to 2 | Current vulnerable regions only |
-| Pre-crash | 2 to 4 | 1 emergency mission | No ordinary expansion rows |
-| Landing | 2 to 3 | 1 landing mission | Only project completion or cancellation rows |
-
-Six primary actions is the hard maximum in any phase. Obsolete actions must disappear or be replaced by stronger versions.
-
-## Cost scaling model
-
-Every cost scales to the country's economy and current pressure. A small player-controlled country must be able to manage the event. A major must commit enough resources to feel the sacrifice.
-
-Useful scaling inputs include:
-
-- Total civilian and military factories.
-- Number of active Industrial Regions.
-- Current evolution level.
-- Current Overheating band.
-- Number of previous Event 34 firings.
-- War state.
-- Convoy dependence.
-- Fuel and logistics condition.
-- Project count.
-
-Each action has no more than four spendable cost types. Non-consumed requirements such as controlling a region do not count as costs.
-
-Costs should normally use:
-
-- Temporary civilian factory commitment.
-- Trains.
-- Trucks.
-- Convoys.
-- Fuel.
-- Support equipment.
-- Infantry equipment when it represents guards, work crews, or emergency stores.
-- Stability or war support when policy resistance is central.
-- Temporary factory output or construction sacrifice.
-
-Political power should be rare. It may support a coercive price-control, credit-control, or forced shutdown incident, but it should not become the default payment for managing the economy.
-
-## Core action family
-
-The names below are working labels inherited from the concept. Final localisation should follow the direction in part 9.
+## Core actions
 
 ### Run the Economy Hot
 
-#### Player meaning
+Firms, ministries and procurement offices accept every order and defer maintenance.
 
-The government, firms, procurement offices, or industrial authorities accept the highest available order volume and defer maintenance, reserve building, and caution. The decision creates a clear short-term production window.
+- Available in the Sustainable and Strained bands; locked from Dangerous upward and during the Landing state.
+- 60-day active period, cannot overlap itself or Cool the Expansion, 30-day cooldown after it ends.
+- Gives a strong temporary boost to factory output, efficiency growth and project progress.
+- Adds Overheating at once and raises Output intensity drift for the period; in the Strained band the immediate cost is higher and the project boost is lower.
+- Under Evolution I the immediate cost is lower and the drift higher, because confidence feeds itself.
 
-#### Availability
-
-- Available during Ignition and Expansion.
-- Available during early Visible Strain only when Overheating is below the emergency lock.
-- Blocked in Pre-crash and Terminal Instability.
-- Blocked while a previous hot-running period is active.
-- Blocked during controlled landing.
-
-#### Costs and commitments
-
-- Immediate Overheating increase.
-- Additional Overheating drift during the active period.
-- Temporary increase in maintenance pressure.
-- Optional stability or war support cost under Evolution I when restraint has become politically difficult.
-
-It should not consume an arbitrary equipment stockpile merely to create cost variety. Its real price is the increased risk and deferred maintenance.
-
-#### Benefits
-
-- Strong temporary factory output.
-- Strong production-efficiency growth.
-- Construction acceleration where the current phase supports it.
-- Faster project progress at low pressure.
-- Reduced project quality and higher accident risk at high pressure.
-
-#### Tradeoff
-
-The action is efficient while the economy has slack and becomes inefficient near danger. This makes early exploitation rational and late repeated use reckless.
-
-#### AI behavior
-
-AI may use it when:
-
-- Overheating is low.
-- Supply and fuel are sound.
-- A major war creates an equipment need.
-- The country has reserve protection.
-- The expected production window matters before a front or operation.
-
-AI avoids it when:
-
-- Overheating is high.
-- A controlled landing is nearly ready.
-- The country is blockaded.
-- A key Industrial Region is damaged or lost.
-- Event 35 inheritance would be especially severe.
+Its real price is risk, not equipment.
+Early use is efficient and late repeated use is reckless.
 
 ### Stabilize Supply Chains
 
-#### Player meaning
+Transport and procurement authorities commit scarce movement capacity to the worst links.
 
-The country commits transport, fuel, civilian capacity, and priority authority to move materials and repair critical links. The action addresses the largest baseline source of avoidable Overheating.
+- Available in every band before collapse, with a 45-day cooldown.
+- Pays trains or trucks, fuel, and convoys only when the country depends on sea routes.
+- Relief scales with the Supply and materials driver: large when that driver leads, small when it does not.
+- In the Dangerous and Critical bands the same decision costs more, gives more relief, and protects against the next supply shock for 30 days. This replaces a separate emergency logistics decision.
+- Partial relief is explained: a blockaded country sees that relief is reduced while the blockade lasts. Full costs are never paid for silent nothing.
 
-#### Availability
+### Build an Industrial Reserve
 
-- Available in every active phase before collapse.
-- Replaced by an emergency variant in Pre-crash.
-- Requires at least one valid logistics or material pressure source.
-- A low-pressure country can still use it as preparation, but receives less immediate relief.
+The country deliberately leaves machine time, spare parts and repair stores unused.
 
-#### Dynamic costs
+- Available in the Sustainable and Strained bands when no reserve is held.
+- Costs a 90-day output reduction and a civilian-factory commitment for the same period.
+- Lowers Overheating slightly at once and gives the country one held reserve when the period ends.
+- A held reserve absorbs most of the next severe shock, improves landing legacy, and is passed to Event 35 as reserve units.
+- When the reserve absorbs a shock it is spent, and a new one can be built after a 90-day cooldown.
 
-The action draws from up to four of these according to country profile:
-
-- Trains.
-- Trucks.
-- Fuel.
-- Convoys for maritime or import-dependent economies.
-- Temporary civilian factory commitment.
-
-A landlocked self-sufficient country should not pay a large convoy cost. A maritime empire should not stabilize an import crisis with trains alone.
-
-#### Benefits
-
-- Immediate Overheating relief scaled by actual pressure.
-- Temporary reduction in supply and material drift.
-- Faster recovery of damaged region logistics.
-- Better success chance for supply objectives.
-- Reduced severity from the next trade or transport shock.
-
-#### Failure and partial success
-
-The action can give partial relief when the country lacks enough fuel, loses a target region, or remains under blockade. It should never debit full costs and silently do nothing. The player sees why the result was reduced.
-
-#### AI behavior
-
-AI prioritizes this action when supply pressure is among the strongest causes, when Overheating is rising, or when an Industrial Region has transport damage.
-
-### Build Industrial Reserves
-
-#### Player meaning
-
-The country deliberately leaves some machine time, spare parts, transport, material stock, and repair capacity unused. The immediate economy slows so the next shock or landing does less damage.
-
-#### Availability
-
-- Available during Ignition, Expansion, and early Strain.
-- Hidden when reserve status is Strong.
-- Replaced by a rebuilding action when reserves are Depleted.
-- Blocked during the final landing transition.
-
-#### Costs
-
-- Temporary reduction in factory output.
-- Temporary reduction in construction speed.
-- Civilian factory commitment.
-- Optional support equipment, trains, or fuel according to the reserve profile.
-
-#### Benefits
-
-- Improves reserve status by one bounded step.
-- Lowers a small amount of Overheating because immediate utilization falls.
-- Absorbs part of a later shock.
-- Improves controlled-landing quality.
-- Reduces inherited Depression Severity after a crash when some reserves remain.
-
-#### Tradeoff
-
-Reserve building is strongest when begun early. Rebuilding depleted reserves near collapse is expensive and slow. A player who waits until the last threshold cannot buy complete safety instantly.
-
-#### AI behavior
-
-AI builds reserves when Overheating is below the danger band and one of these is true:
-
-- The country expects a long war.
-- Industrial Regions are exposed to bombing.
-- Trade is fragile.
-- Evolution II or III is active.
-- A landing objective requires reserve strength.
+The header shows the reserve as one word: none, building, held or spent.
 
 ### Cool the Expansion
 
-#### Player meaning
+The government restrains credit, delays contracts and reduces shifts.
 
-The country restrains credit, delays contracts, cancels marginal construction, reduces shift intensity, and returns part of the economy to sustainable operation.
+- Available in the Running state; in the Opening state only if Overheating started at 40 or above.
+- 60-day active period, cannot overlap Run the Economy Hot.
+- Suppresses most of the package's output share for the period and slows projects.
+- Gives a large immediate reduction and lowers drift for the period.
+- Under Evolution I it becomes Impose Credit Restraint: the same mechanics plus a stability cost, and it also clears the speculative contribution to the Finance driver.
 
-#### Availability
+Cooling is the safest large relief and has the highest opportunity cost.
 
-- Available in Expansion and Strain.
-- Always available in Pre-crash through an emergency variant.
-- Hidden in early Ignition unless Overheating started unusually high.
-- Cannot overlap with Run the Economy Hot.
+## Region actions
 
-#### Costs
-
-- Strong temporary loss of boom output.
-- Strong temporary reduction in construction speed.
-- Slower project progress.
-- Under Evolution I, possible stability or war support pressure because firms and workers resist restraint.
-
-#### Benefits
-
-- Large immediate Overheating reduction.
-- Lower drift during the cooling period.
-- Faster maintenance recovery.
-- Better landing forecast.
-- Reduced serious-incident chance.
-
-#### Tradeoff
-
-Cooling is the safest large relief action and has the highest opportunity cost. The output lost during the cooling window should matter in war. The action must not allow a player to keep the full boom modifier while resetting the meter.
-
-#### AI behavior
-
-AI chooses cooling when Overheating is dangerous, a landing is close, the country can tolerate reduced output, or an external shock has made further expansion inefficient.
-
-### Protect Key Industrial Regions
-
-#### Player meaning
-
-The country invests in redundancy, repair stores, transport alternatives, fire control, dispersal, civil defense, and priority material access in one important state.
-
-#### Availability
-
-- The action opens a compact target selector.
-- Valid targets are current Industrial Regions or active project states.
-- Each state can receive the protection package once per boom.
-- The country has a capped number of protected regions based on economy and evolution.
-
-#### Costs
-
-- Civilian factory commitment.
-- Trains or trucks.
-- Support equipment or infantry equipment for repair and guard functions.
-- Fuel when the protection plan depends on transport redundancy.
-
-#### Benefits
-
-- Reduces the state's contribution to shocks.
-- Protects project progress from bombing, disaster, and infrastructure loss.
-- Speeds local repair.
-- Improves landing conversion when the state remains controlled.
-- Reduces Event 35 local shutdown severity after a crash.
-
-#### Tradeoff
-
-Protection is state-specific. It does not reduce every national pressure. Choosing one region leaves another exposed.
-
-#### AI behavior
-
-AI targets the most valuable vulnerable region, considering industry share, project progress, infrastructure, bombing risk, port dependence, and loss risk.
-
-## Structural development actions
-
-These actions appear during Expansion and are hidden when no valid state exists.
-
-### Survey Lasting Capacity
-
-This early action evaluates the current Industrial Regions and identifies where temporary growth can become lasting capacity. It should normally be completed once per boom.
-
-Effects:
-
-- Reveals or confirms valid long-term project states.
-- Establishes the maximum number of active regional projects.
-- Improves landing forecast accuracy.
-- Does not grant a permanent reward by itself.
-
-The survey uses civilian capacity and time. Avoid a large political power cost.
+These rows target one Industrial Region at a time (part 4).
+The player sees only current regions, never every controlled state.
 
 ### Designate an Industrial Project
 
-The player selects one valid Industrial Region and one available project profile. The number of simultaneous projects remains small.
+Choose one region without a project and one profile: Production Practices, Rail and Supply Integration or Factory Conversion (part 4).
 
-Baseline project profiles:
+- Locked from Dangerous upward and during the Landing state.
+- Costs a civilian-factory commitment for the project's Building stage plus trains or support equipment by profile.
+- Adds a small amount of Regional strain while the project is active.
+- Does not grant buildings or slots by itself; it opens a path to legacy at landing.
 
-- Production Practices.
-- Rail and Supply Integration.
-- Factory Conversion Capacity.
-- Industrial Repair Network.
-- Resource Efficiency when the state and economy support it.
+### Protect an Industrial Region
 
-Evolution II and III add stronger project profiles described in part 5.
+Harden one region with repair stores, alternative transport and civil defence.
 
-Project designation does not immediately grant factories or slots. It creates a timed and state-sensitive development path.
-
-### Suspend a Fragile Project
-
-The player pauses a project to stop its pressure and protect part of its progress.
-
-- Available when Overheating is high or the target state is threatened.
-- Reduces project-related drift.
-- Slows or stops permanent conversion.
-- May preserve the right to resume after the crisis improves.
-- Repeated suspension can reduce final project quality.
+- One protection per region at a time; renewable 90 days after it is spent.
+- Costs a civilian-factory commitment, support equipment and trains or trucks.
+- A protected region absorbs most of its next local shock and keeps its project progress, then loses its protection.
+- Protection does not survive the state leaving the country's control.
 
 ### Abandon a Project
 
-The country cancels a project that can no longer be supported.
+Cancel a project that can no longer be supported.
 
-- Reduces Overheating immediately.
-- Removes continuing project pressure.
-- Loses most unfinished progress.
-- May create a temporary local disappointment or unfinished-works modifier.
-- Prevents a dangerous project from worsening Event 35 inheritance.
+- Removes its pressure and gives immediate relief; a speculative project gives larger relief (this replaces a separate liquidation decision).
+- Loses the project's progress and leaves an unfinished-works state modifier for one year.
+- A project cancelled after state loss is removed automatically without this decision.
 
-A player should not be forced to maintain an invalid project after state loss or blockade.
+## Evolution actions
 
-## Phase-specific emergency actions
+Each evolution adds at most one decision row.
 
-### Emergency Logistics Command
+- Evolution I: Approve a Speculative Expansion (part 5).
+- Evolution II: Declare a Miracle Region (part 5).
+- Evolution III: Contain the Spread (part 5); the spread policy itself is chosen in the evolution event.
 
-Appears in Pre-crash when supply or material pressure is dominant.
-
-- Uses a larger one-time commitment of trains, trucks, fuel, convoys, and civilian capacity.
-- Gives immediate relief and a short protected period.
-- Cannot be repeated until the protected period ends.
-- Consumes reserve status when the country lacks enough physical resources.
-
-### Liquidate Speculative Projects
-
-Appears under Evolution I when speculative pressure is active.
-
-- Cancels high-risk projects.
-- Reduces Overheating sharply.
-- Damages temporary output and stability.
-- May create a local unfinished-project modifier.
-- Improves Event 35 severity if collapse still occurs because less speculative exposure remains.
-
-### Order an Emergency Production Halt
-
-Appears at Terminal Instability.
-
-- Ends aggressive output modifiers immediately.
-- Cancels Run the Economy Hot.
-- Freezes ordinary project growth.
-- Attempts a forced landing.
-- Carries a major temporary production and construction penalty.
-- Can prevent Event 35 only when enough reserve, protection, and structural control remain.
-
-This is a last-resort action, not a guaranteed escape.
-
-## Mission and objective family
-
-Missions represent sustained work. They should auto-complete when the required conditions are met.
-
-### Secure the Material Flow
-
-#### Role
-
-A medium-duration objective that proves the economy can feed its current industrial pace.
-
-#### Typical requirements
-
-- Maintain a viable train and truck reserve.
-- Maintain acceptable fuel access.
-- Keep required ports or rail connections controlled.
-- Avoid a severe material deficit.
-- Keep Overheating below a defined danger threshold for the final part of the mission.
-
-The exact objective should adapt to the country. A landlocked country receives rail and resource requirements. A maritime country receives port, convoy, and import requirements.
-
-#### Duration
-
-Normally 120 to 180 days, adjusted by economy, evolution, and current disruption.
-
-#### Success
-
-- Reduces supply and material drift.
-- Improves project progress.
-- Improves landing quality.
-- May convert a temporary supply measure into a long-duration logistics benefit.
-
-#### Failure
-
-- Raises Overheating.
-- Marks the strongest weak link.
-- Can trigger a serious transport or material incident.
-- Does not duplicate a failure penalty already caused by losing the required state.
-
-### Consolidate Industrial Capacity
-
-#### Role
-
-An Expansion-phase objective that converts emergency growth into reliable practices.
-
-#### Typical requirements
-
-- Complete a minimum amount of regional project progress.
-- Keep key project states controlled.
-- Avoid Pre-crash for a sustained period.
-- Maintain at least Limited reserves.
-- Do not run the economy hot during the final consolidation window.
-
-#### Duration
-
-Normally 150 to 240 days. Evolution II and III increase difficulty or require more regional proof.
-
-#### Success
-
-- Opens Controlled Landing.
-- Improves permanent legacy quality.
-- Reduces maintenance drift.
-
-#### Failure
-
-- Does not automatically crash the economy.
-- Removes some project progress.
-- Raises maintenance pressure.
-- Allows a later retry with higher cost or a shorter emergency route.
+## Missions
 
 ### Prepare a Controlled Landing
 
-#### Role
+The main resolution objective, started by decision.
 
-The main resolution objective.
-
-#### Availability
-
-- Requires structural development or a minimum active duration.
-- Requires Overheating below Pre-crash.
-- Requires valid control of at least one Industrial Region.
-- Becomes easier after Consolidate Industrial Capacity.
-
-#### Public requirements
-
-The category should show a concise checklist:
-
-- Keep Overheating below the stated band.
-- Maintain or rebuild reserves.
-- Keep selected Industrial Regions controlled.
-- Avoid Run the Economy Hot during the final transition.
-- Complete or safely close active projects.
-
-#### Duration
-
-Normally 90 to 180 days. A well-prepared baseline economy can land faster. Evolution III needs a longer confirmation period unless special stabilization projects are complete.
-
-#### Success
-
-- Ends the extraordinary phase.
-- Applies the landing result.
-- Converts eligible projects.
-- Applies temporary transition modifiers.
-- Begins Event 34 cleanup.
-
-#### Failure
-
-Failure depends on cause:
-
-- Threshold breach returns the economy to Strain or Pre-crash.
-- State loss pauses or cancels the relevant part.
-- A major shock can force an emergency landing check.
-- Deliberate Run the Economy Hot cancels the mission and records the choice.
-
-The player should not lose the entire boom merely because one objective tick occurred during a temporary state mismatch.
+- Requires the Running state and Overheating below 70.
+- Lasts 120 days, shortened by 30 for a country with an earlier controlled landing and lengthened by 30 under Evolution III.
+- While active, Run the Economy Hot and new projects close, and evolution pacing pauses.
+- The category lists the checklist: stay below 70, keep the project regions controlled, finish or abandon active projects.
+- Success resolves the outcome from part 1: controlled below 40 with a secured project, otherwise rough.
+- Rising to 70 or losing every project region cancels the mission, returns the country to Running, and starts a 60-day cooldown.
 
 ### Prevent the Crash
 
-#### Role
+An emergency objective that starts automatically on entering the Critical band.
 
-A short emergency mission at Pre-crash or Terminal Instability.
+- 60 days to fall below 80.
+- Success returns the country to Running and blocks Run the Economy Hot for 90 days.
+- Failure is a crash into Event 35.
 
-#### Requirements
+## Emergency Production Halt
 
-- Lower Overheating below the emergency threshold.
-- End aggressive output actions.
-- Resolve or suspend critical projects.
-- Restore at least one viable supply route.
+The last-resort forced landing, available in the Dangerous and Critical bands.
 
-#### Duration
+- Ends the package and every active action at once, cancels all projects without legacy, and applies a long exhaustion modifier.
+- Succeeds when the country holds a reserve, or when Overheating is below 90 and at least one region is protected.
+- Otherwise it fails and the country crashes into Event 35, with the failed landing recorded in the snapshot.
+- The decision tooltip states which of those conditions currently holds, so the outcome is known before the click.
 
-Normally 60 to 90 days, with a shorter duration when the economy is already at 95 or above.
+## AI
 
-#### Success
+The AI uses the same decisions, missions, costs and outcomes, scored by the profiles in part 8.
+No action depends on a human-only path, and the AI receives no relief the player cannot get.
 
-- Returns the event to Strain.
-- Applies a temporary no-push recovery period.
-- Preserves remaining projects.
+## Cleanup
 
-#### Failure
+When the boom ends:
 
-- Performs the Event 35 handoff.
-- Uses the final state of the mission to calculate severity.
-
-## Incident response decisions
-
-Incidents should not add a permanent wall of buttons. Each incident exposes at most two or three responses and closes when resolved.
-
-Response families can use:
-
-- Repair and compensate.
-- Reroute production.
-- Accept the shutdown.
-- Force continued operation.
-- Cancel a project.
-- Use reserves.
-
-Each response should change Overheating, state condition, project progress, output, or stability in a way that matches the incident.
-
-## AI equivalent
-
-AI countries use the same decisions and missions through weighted choices. No action should depend on a human-only click path. The AI can receive hidden evaluation helpers, but its costs and results must match the player action.
-
-AI should:
-
-- Understand its current threshold.
-- Preserve a safety margin when not under urgent wartime pressure.
-- Use reserves before severe shocks when possible.
-- Protect valuable vulnerable states.
-- Stop starting projects when Overheating is dangerous.
-- Begin landing when the expected permanent return is high enough.
-- Accept a rough landing when war needs outweigh long-term value.
-- Avoid repeated emergency actions that cannot succeed.
-
-## Cleanup rules
-
-When the event ends:
-
-- Hide and remove all Event 34 decisions and missions.
-- Release temporary civilian factory commitments.
-- End temporary action modifiers.
-- Clear selected-state markers and invalid project targets.
-- Consume or convert reserve status according to outcome.
-- Preserve only documented country and state memory.
-- Pass the frozen collapse snapshot to Event 35 before clearing the active boom state.
-- Restore repeatable eligibility only after the result cooldown.
-
-No decision may remain visible because a state target or mission flag survived cleanup.
+- every Event 34 decision, mission and target marker closes;
+- temporary commitments are released and timed action modifiers end;
+- the reserve converts to landing value, or to Event 35 reserve units after a crash;
+- the frozen snapshot is delivered to Event 35 before active state clears (part 6);
+- only the country and state memory listed in parts 1 and 4 remains.

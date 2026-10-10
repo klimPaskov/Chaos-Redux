@@ -1,411 +1,92 @@
 # Industrial Boom specification, part 6: Event 35 inheritance
 
-## Direct failure relationship
+Event 35 Great Depression 2.0 is the failure state of Industrial Boom.
+Event 34 keeps no depression modifier, severity value, recovery category or state shutdown system of its own.
+It freezes its final condition and calls Event 35's public gateway `great_depression_start_or_deepen` for the same country.
 
-Event 35 Great Depression 2.0 is the failure state of Industrial Boom. Event 34 does not maintain a separate depression modifier, recovery category, severity value, or state shutdown system. It freezes the final boom condition and calls Event 35's reusable crisis-start or crisis-deepen package for the same country.
+Event 35's side of this contract is implemented and documented in [docs/events/035_great_depression.md](../../events/035_great_depression.md) (Reusable crisis API and Event 34 inheritance) and in [the reusable crisis API spec](../035_great_depression_specs/035_great_depression_reusable_crisis_api.md).
+This part defines what Event 34 must produce.
 
-The direct handoff is a consequence of one Event 34 firing. It does not consume another random event selection, add another global pacing count, reset the timer again, or count as an independent Event 35 normal firing.
+## Implemented handoff
 
-Event 35 can still fire independently through its own normal selection. It must know whether the crisis began independently or from Event 34.
+The implemented Event 34 side lives in `common/scripted_effects/034_industrial_boom_collapse_handoff_effects.txt` and runs from `chaosx.nr34.3`:
 
-## Ownership boundary
+1. `industrial_boom_freeze_collapse_snapshot` copies live owner fields into `industrial_boom_snapshot_*` variables once, allocates the collapse receipt, and freezes one inherited region.
+2. The boom idea is removed and `industrial_boom_active` is cleared, so no boom bonus survives into the depression.
+3. `industrial_boom_deliver_collapse_snapshot` prepares the request with caller `industrial_boom_collapse`, `consequence_no_pacing`, inherited history, queued report and news, the evolution floor, and the severity and opening-shock profile for the evolution.
+4. A rejected delivery retries privately through `chaosx.nr34.4` up to `industrial_boom_handoff.maximum_attempts` times, `retry_days` apart, then records `industrial_boom_collapse_retry_exhausted`.
+5. An accepted delivery counts the completed boom, sets the inherited-Overheating pressure (`overheating_pressure_factor` of final Overheating), the Event 35 recent-industrial-expansion target signal for 730 days, and any supplier-contract carryover, then clears the frozen state.
 
-### Event 34 owns before handoff
+The handoff is a consequence, not a second pacing event, and never rolls the Negative Economy cluster.
+If Event 35 is already active, the same call deepens the existing episode in place without a second category or modifier.
 
-- Active Industrial Boom state.
-- Overheating and recent trend.
-- Baseline phase.
-- Active evolution level.
-- Aggressive-action history.
-- Reserve status.
-- Industrial Region list.
-- Project profiles and stages.
-- Protection and fragility state.
-- Region control and loss history.
-- Unfinished speculative exposure.
-- Landing attempt state.
-- Repeat-boom history.
+What remains pending is the producer side: the snapshot currently records interim defaults because the live boom state of parts 2 to 5 does not exist yet.
 
-### Event 35 owns after handoff
+## Snapshot fields
 
-- Depression Severity.
-- Depression phase and recovery logic.
-- Depression decisions and missions.
-- State unemployment, idling, closure, rescue, or abandonment state.
-- Depression evolution behavior.
-- Recovery and relapse.
-- Political consequences of prolonged depression.
-- Final cleanup of inherited depression data.
+Event 34 must fill every field from live state at the moment of collapse.
 
-### Frozen handoff snapshot
+| Snapshot field | Source in the design | Current value |
+| --- | --- | --- |
+| `industrial_boom_snapshot_evolution` | Active stage, 0 to 3 (part 5) | Always 0 |
+| `industrial_boom_snapshot_final_overheating`, `_peak_overheating` | Overheating at collapse and the highest value this boom | Opening seed (part 2), raised only by supplier contracts |
+| `industrial_boom_snapshot_landing_state` | Failed when the landing mission, Prevent the Crash or the Emergency Production Halt failed; prepared when a landing mission was active; otherwise unknown | Constant `landing_state` (prepared) |
+| `industrial_boom_snapshot_reserve_units` | 1 when a reserve is held, 0 otherwise | Constant 1 |
+| `industrial_boom_snapshot_project_units` | Number of projects at Integrating or Secured | Constant 1 |
+| `industrial_boom_snapshot_region_units` | Number of Industrial Regions still controlled | Constant 1 |
+| `industrial_boom_snapshot_shock_units` | Severe unabsorbed shocks in the last 180 days | 0 |
+| `industrial_boom_snapshot_dangerous_days` | Days spent in Dangerous or Critical | 0 |
+| `industrial_boom_snapshot_repeat_history_count` | Completed booms before this one | Counted on accepted delivery |
 
-Event 34 should create a one-time snapshot before clearing its active state. Event 35 reads that snapshot once and stores any long-lived values in its own ledger. Event 35 should not keep reading mutable Event 34 working values after activation.
-
-This boundary prevents cleanup order from changing starting severity and prevents future Event 34 firings from altering an active depression.
-
-## Handoff conditions
-
-The handoff begins when any of the following occurs:
-
-- Overheating reaches 100.
-- The Prevent the Crash mission fails at terminal pressure.
-- An emergency production halt fails its forced-landing check.
-- A critical shock pushes effective pressure beyond the remaining safety margin.
-- A rough landing suffers a mapped post-boom failure during its vulnerability period.
-
-The handoff should resolve after the current action or incident transaction finishes. It should not interrupt an equipment debit, state selection, or project update halfway through.
-
-## Handoff data
-
-The snapshot should carry the design information below. The implementation can encode it through variables, flags, arrays, state markers, or event targets according to engine constraints.
-
-### Country identity
-
-- Valid target country.
-- Source marker: Industrial Boom collapse.
-- Event 34 firing receipt or unique sequence identity.
-- Date of collapse.
-- Whether the collapse followed an ordinary crash, failed forced landing, failed emergency mission, or post-boom relapse.
-
-### Evolution inheritance
-
-- Active Event 34 evolution level.
-- Proof that lower inherited stages are active.
-- Whether any stage was disabled and therefore absent.
-- Highest abnormal manifestation reached.
-
-### Pressure state
-
-- Final Overheating.
-- Recent trend.
-- Highest Overheating reached during the firing.
-- Time spent in Dangerous Imbalance, Pre-crash, and Terminal Instability.
-- Number and severity of recent major shocks.
-
-### Management history
-
-- Number of Run the Economy Hot uses.
-- Whether an aggressive push was active at collapse.
-- Whether cooling was active.
-- Reserve status and whether reserves were consumed.
-- Whether the country attempted a controlled or forced landing.
-- Whether speculative projects were liquidated.
-
-### Regional state
-
-For each primary Industrial Region:
-
-- State identity.
-- Project profile.
-- Project stage.
-- Protection state.
-- Fragility state.
-- Control state.
-- Damage or disruption state.
-- Whether the region was lost and recovered.
-- Whether a permanent legacy receipt had been secured but not converted.
-
-For Evolution III spread:
-
-- Primary region linkage.
-- Secondary state identity.
-- Spread status.
-- Integration state.
-- Fragility state.
-
-### Repeat history
-
-- Prior Event 34 crashes.
-- Prior Event 35 crises caused by Event 34.
-- Existing Event 34 legacy.
-- Existing state exhaustion.
+The landing-state values are Event 35's `great_depression_event34_snapshot_state` (unknown, prepared, failed).
+Event 35 turns these fields into starting Severity; Event 34 never computes Severity itself.
 
 ## Evolution mapping
 
-The inheritance mapping is direct.
+| Event 34 stage at collapse | Event 35 floor | Severity profile | Opening shock |
+| --- | --- | --- | --- |
+| Baseline | Baseline | `inherited_baseline` | `event_34_baseline_collapse` |
+| I Speculative Mania | Financial Contagion | `inherited_contagion` | `event_34_speculative_collapse` |
+| II The Industrial Miracle | Social Collapse | `inherited_social` | `event_34_miracle_collapse` |
+| III Runaway Industrialization | The Second Great Depression | `inherited_worldwide` | `event_34_runaway_collapse` |
 
-| Event 34 state at collapse | Event 35 entry |
+The mapping is implemented in `industrial_boom_prepare_collapse_request`.
+The inherited stage is a floor: Event 35 keeps a higher stage it already has.
+
+## Regional handoff
+
+Event 35 registers inherited states through `great_depression_register_inherited_region`, keyed by Event 34 episode and region receipt, and turns them into Depression Centers or hidden liabilities.
+The implemented freezer sends one primary state and copies optional per-region fields when they exist.
+Event 35's plans record multi-region and corridor delivery as blocked on these Event 34 producers.
+
+Event 34 must deliver every controlled Industrial Region as a primary role and every Evolution III spread state as a corridor role, each with its own region receipt, using Event 35's region constants:
+
+| Event 34 state | Event 35 field and value |
 | --- | --- |
-| Baseline | Baseline Event 35 |
-| Evolution I active | Event 35 Evolution I active |
-| Evolution II active | Event 35 Evolutions I and II active |
-| Evolution III active | Event 35 Evolutions I, II, and III active |
-
-Event 35 should treat the inherited stage as a minimum. It may begin at a higher stage only when its own rules and current world state require that result. Event 34 does not infer or invent Event 35 stages that are disabled or unavailable.
-
-## Starting Depression Severity
-
-Starting Depression Severity should be dynamic. Final Overheating is the main anchor, but two crashes at the same number should not be identical when one country built reserves and another lost every Miracle Region.
-
-### Severity contributors
-
-Increase starting severity for:
-
-- Higher final Overheating.
-- Sharply rising trend.
-- Longer time spent at dangerous pressure.
-- Higher Event 34 evolution.
-- Active speculative projects.
-- Unfinished high-value projects.
-- Depleted reserves.
-- Lost primary regions.
-- Damaged or compromised regions.
-- Fragile Miracle Regions.
-- Several Runaway spread states.
-- Recent major industrial accidents.
-- A failed forced landing.
-- A previous Event 34 crash.
-- Low stability.
-- Blockade, fuel collapse, or severe trade isolation.
-
-Reduce starting severity for:
-
-- Limited or Strong reserves that remain available.
-- Protected regions.
-- Completed integration stages.
-- Prior liquidation of speculative projects.
-- A near-successful controlled landing.
-- Stable supply and trade.
-- A falling trend before one external shock caused collapse.
-- Strong repair capacity.
-
-### Severity outcome bands
-
-The exact Event 35 scale belongs to Event 35. Event 34 should pass a severity seed that produces four broad entry outcomes.
-
-#### Severe but recoverable
-
-Typical source:
-
-- Baseline crash near the threshold.
-- Some reserves.
-- Few damaged projects.
-- No major region loss.
-
-Event 35 begins with a strong immediate shock and a viable recovery path.
-
-#### Deep depression
-
-Typical source:
-
-- Baseline or Evolution I crash with high speculative exposure.
-- Weak reserves.
-- Several unfinished projects.
-- High trend and recent incidents.
-
-Event 35 begins deeper and may idle more Industrial Regions.
-
-#### Systemic industrial collapse
-
-Typical source:
-
-- Evolution II crash.
-- Fragile Miracle Regions.
-- Damaged supply network.
-- Failed landing.
-
-Event 35 begins with severe physical and financial overcapacity.
-
-#### Near-total economic paralysis
-
-Typical source:
-
-- Evolution III crash.
-- Unrestricted spread.
-- Several fragile states.
-- Depleted reserves.
-- Terminal instability sustained for a long period.
-
-Event 35 begins at Evolution III with very high Severity. The crisis remains playable and does not delete the country automatically.
-
-## State conversion into Event 35
-
-Inherited states should enter Event 35 according to their Event 34 condition.
-
-### Secured and protected project
-
-Possible Event 35 state:
-
-- Strategic industry under stress.
-- Temporarily idled but recoverable.
-- Eligible for rescue decisions.
-- Lower risk of physical factory loss.
-
-### Secured but fragile Miracle Region
-
-Possible Event 35 state:
-
-- Overbuilt industrial center.
-- High unemployment and credit failure.
-- Large severity contribution.
-- Valuable recovery target.
-
-### Unfinished project
-
-Possible Event 35 state:
-
-- Abandoned works.
-- Construction burden.
-- Local stability pressure.
-- Lower rescue value until basic cleanup occurs.
-
-### Lost or damaged region
-
-Possible Event 35 state:
-
-- Broken supply chain.
-- Idle or inaccessible industry.
-- Strong initial severity contribution.
-- Recovery tied to control and repair.
-
-### Integrated Evolution III corridor
-
-Possible Event 35 state:
-
-- Network collapse affecting several connected states.
-- Shared recovery objective.
-- Strong infrastructure and capacity value if rescued.
-- High relapse risk when only one part is repaired.
-
-Event 35 should never recreate a state project reward that Event 34 did not secure. It can rescue inherited capacity, but it should not turn a failed speculative shell into free permanent factories.
-
-## Existing Event 35 crisis
-
-A collapse can occur while Event 35 is already active only through an approved overlap path or later event interaction. When this happens:
-
-- Do not create a second category.
-- Do not apply a duplicate base depression modifier.
-- Do not reset recovery progress blindly.
-- Raise Event 35 evolution to at least the inherited Event 34 level.
-- Add a severity increase based on the frozen boom snapshot.
-- Register new inherited states in the existing Event 35 ledger.
-- Replace lower state conditions with stronger inherited conditions only when the new crash is worse.
-- Record the Industrial Boom collapse as a new source episode inside the same depression.
-
-If the active Event 35 stage is already higher than the inherited stage, keep the higher stage and deepen severity.
-
-## Event history and player-facing continuity
-
-### Event 34 history
-
-Event History should record Event 34 once with the target actor. The result can later show controlled landing, rough landing, forced landing, or collapse through the selected-event details or result history when the framework supports it.
-
-### Event 35 history
-
-The direct crisis is a consequence, not another global pacing event. Event 35 may record a country crisis entry or source episode according to its own logging design. It should not masquerade as an independently selected random event.
-
-### Text direction
-
-The Event 35 opening after a boom should acknowledge:
-
-- Production that had seemed inexhaustible stopping or reversing.
-- Orders being cancelled.
-- Credit or contracts failing.
-- Industrial Regions idling.
-- The speed of the reversal.
-- The named target country and important affected states.
-
-The text should not list inherited evolution variables, severity formulas, or raw project stages. The player already sees the consequence in Event 35's crisis surface.
-
-## Transition of modifiers
-
-The order matters conceptually:
-
-1. Freeze the Event 34 snapshot.
-2. End all aggressive and temporary Event 34 actions.
-3. Remove the extraordinary boom bonuses.
-4. Convert state project markers into Event 35 inherited states.
-5. Start or deepen Event 35.
-6. Apply the Event 35 opening shock.
-7. Clear active Event 34 data that Event 35 has already consumed.
-8. Preserve repeat-history and crash memory.
-
-This order prevents the positive boom effect from coexisting with the final depression package and prevents Event 34 cleanup from erasing inheritance data.
-
-## Post-boom vulnerability period
-
-A rough landing may avoid immediate Event 35 while leaving the economy vulnerable.
-
-During this bounded recovery period:
-
-- Event 34 is no longer active.
-- The main decision category is closed.
-- Temporary exhaustion remains.
-- A severe mapped economic or industrial shock can activate Event 35 with a lower inherited stage and severity seed.
-- Ordinary minor setbacks do not retroactively turn every rough landing into a depression.
-
-The vulnerability period should be visible through the exhaustion modifier. It should not maintain a hidden second version of Overheating after cleanup.
-
-## Repeated boom and depression history
-
-A country that has already passed from Event 34 into Event 35 should carry that memory into later firings.
-
-Effects on later Event 34:
-
-- Lower target selection weight for a recovery period.
-- Higher starting pressure.
-- Stronger speculative and maintenance risk.
-- Better access to experienced emergency responses.
-- Reduced remaining permanent capacity budget.
-
-Effects on later Event 35:
-
-- Prior crash history can increase relapse risk.
-- States rescued in a prior depression can be more resilient.
-- States abandoned in a prior depression can remain exhausted.
-
-The history should not create permanent unavoidable failure. A country that recovered and prepared well can manage a later boom successfully.
-
-## Conflict handling
-
-The handoff must define responses to other active systems.
-
-### Another economic crisis
-
-When another system owns a country-wide economic crisis, Event 35 should either integrate it through a defined adapter or treat it as a severity factor. Event 34 should not create a duplicate parallel depression package.
-
-### Natural disaster during handoff
-
-The disaster retains ownership of its damage and deaths. Event 34 records the shock contribution. Event 35 receives the damaged state. No system applies the same building loss twice.
-
-### State annexation during handoff
-
-The snapshot uses the last valid state and country data. Event 35 registers only states still valid for the target. Lost regions still affect severity through broken supply and lost investment, but the target does not receive modifiers in a state it no longer owns or controls.
-
-### Target country capitulation or deletion
-
-If the country ceases to exist before Event 35 can start:
-
-- The handoff ends safely.
-- No invalid country target remains.
-- State project markers are cleaned or transferred only through a separately approved rule.
-- The Event 34 history records collapse without creating a ghost depression.
-
-If the country survives as a government in exile or valid subject, Event 35 decides whether its ordinary civilian economy remains playable.
-
-## Event 35 contract acceptance tests
-
-The handoff passes when:
-
-- The same country receives Event 35.
-- The inherited evolution level is correct.
-- Starting severity changes with actual boom condition.
-- Reserves and protection reduce severity without erasing the crisis.
-- Miracle Regions and spread states enter Event 35 coherently.
-- Event 35 does not duplicate its category or modifier.
-- The direct handoff does not count as a second global pacing event.
-- Event 34 positive effects are gone before Event 35 penalties apply.
-- Event 35 no longer depends on mutable Event 34 working values after activation.
-- Invalid state and country targets clean safely.
-- Repeat history records the crash.
-- A saved game preserves the active depression and inherited state ledger.
-
-The handoff fails when:
-
-- Event 34 maintains a second depression implementation.
-- Every crash starts Event 35 with the same severity.
-- Evolution III can start only baseline Event 35.
-- Existing Event 35 creates duplicate categories.
-- Event 34 cleanup erases inherited regions.
-- A crash grants permanent Event 34 project rewards.
-- Generic disaster damage, deaths, or Chaos are applied twice.
+| Ordinary project, speculative project, Miracle project, spread state | `profile`: ordinary, speculative, miracle, corridor |
+| Building or Integrating | `project_stage`: unfinished |
+| Secured | `project_stage`: completed |
+| Abandoned, or abandoned speculative project | `project_stage`: abandoned, liquidated |
+| Protected / protection spent in the last 90 days / never protected | `protection`: protected, failed, none |
+| Sound / Fragile Miracle Region / Fragile region under Let It Run | `fragility`: sound, fragile, severe |
+| Controlled / occupied / lost | `control`: connected, temporary_loss, transferred (already measured by the freezer) |
+| Building damage share | `damage`: intact, damaged, heavy (already measured by the freezer) |
+
+A state the target no longer owns still informs Severity through region and shock units, but receives no modifiers.
+Event 35 never recreates a project reward that Event 34 did not secure.
+
+## Edge cases
+
+- **Country deleted before delivery.** The delivery fails closed, retries stop when the country no longer exists, and no ghost depression is created.
+- **Natural disaster during handoff.** The disaster keeps its damage and Deaths; Event 34 records only the shock; Event 35 receives the damaged state once.
+- **Another economic crisis.** Event 35's own conflict rules decide; Event 34 never runs a parallel depression.
+
+## Acceptance
+
+- The same country receives Event 35 at the mapped floor, once, without counting pacing.
+- Starting Severity differs between a boom that crashed with a held reserve and secured projects and one that crashed with none.
+- Boom bonuses are gone before Event 35's opening shock applies.
+- Event 35 reads only the frozen snapshot, never live Event 34 variables, after delivery.
+- An active depression is deepened in place.
+- Every controlled region and spread state reaches the Event 35 region ledger with the mapped values.
+- A save and reload during retry neither duplicates nor loses the handoff.

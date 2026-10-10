@@ -1,311 +1,123 @@
 # Industrial Boom specification, part 7: Connections, Chaos, and cluster role
 
-## Connection philosophy
+## Connection rule
 
-Industrial Boom reads existing economic conditions and accepts bounded owner-reported shocks or relief. Event 35 is its direct failure relationship and receives the frozen collapse snapshot. Other events affect the boom through actual infrastructure, fuel, trade, control, damage, and stability, with a pressure adapter only when those facts cannot express the industrial consequence clearly.
+Event 34 reads existing world conditions and accepts bounded shock or relief requests from other owners.
+The owner of a physical loss applies that loss, Deaths, environmental effects and their Chaos once; Event 34 manages only the industrial strain it causes.
+A connection is kept only when it changes a choice the player makes about the boom.
 
-One loss can affect several systems. Its owner applies the physical loss, while Event 34 manages the resulting industrial strain. A connection must identify the affected region and the choice it changes.
+## Shock and relief adapter (pending)
 
-## Direct connection: Event 35 Great Depression 2.0
+Another owner can submit a request naming the active boom country, the source family, a magnitude band, an optional state, and the owner's proof and receipt.
+Unknown sources, invalid states, inactive booms and replayed receipts change nothing.
+An accepted request changes Overheating once and, when it names a region, can pause that region's project or spend its protection.
+The leading-cause line names the source.
+A request and Event 34's own observation of the same damage never both apply the immediate shock; continuing damage can keep the Regional strain driver high until repaired, but repair removes that cause and never refunds the original shock.
 
-Event 35 owns every depression consequence after collapse. The complete relationship is defined in part 6.
+## Event 35 Great Depression 2.0 (implemented)
 
-Key rules:
+Event 35 is the direct failure relationship (part 6).
+Two further links are implemented in Event 35 and Event 34 owner files:
 
-- Same target country.
-- Direct evolution inheritance.
-- Dynamic starting severity.
-- State project memory.
-- No duplicate crisis category.
-- No second global pacing event.
-- Independent Event 35 remains possible through normal selection.
+**Boom supply contract.** A country in its own depression with an active Financial Contagion surface can take Offer Boom Supply Contract toward an active boom country.
+Event 34's `industrial_boom_receive_depressed_market_demand` accepts it when the supplier passes `industrial_boom_supplier_market_demand_target_is_valid`, then adds `supplier_demand_overheating` to the supplier's Overheating and opens a `supplier_contract_days` contract, marked at risk when Overheating is at or above `supplier_contract_overheat_risk`.
+The depressed country gains Severity relief and secured freight.
+Event 35 reads the supplier only through the `industrial_boom_supplier_adapter_*` triggers.
 
-## Shared economic pressure adapter
+**Worldwide depression supplier.** A boom that fires while a worldwide depression episode is active joins it as a supplier through `great_depression_event34_supplier_adapter`.
 
-A shock or relief request identifies the active boom country, source family, magnitude band, optional state and duration, and the source's proof and receipt. Unknown sources, invalid states, inactive booms, and replayed one-shot receipts produce no change.
+Design additions on the Event 34 side (pending):
 
-Event 34 applies the accepted change to Overheating or hidden pressure once. A state-linked request can affect its existing project or protection state, and the cause summary identifies the responsible loss or relief. The caller gains no authority over landing or cleanup.
+- The contract gives the supplier an output opportunity, a 120-day export-order modifier that raises factory output, as Event 35's API already expects Event 34 to return.
+- A contract still active at landing upgrades a rough landing to a controlled one once (part 1).
 
-An adapter and an ordinary state observation must not each impose the same immediate shock. After that shock, continuing damage can still sustain maintenance or supply pressure until repaired. Repair removes that ongoing cause rather than granting the original shock amount back as repeatable relief.
+Together these make the contract a real choice for the supplier: more pressure now in exchange for output and a softer landing.
+Whether the supplier may refuse is an open question in the README.
 
-## Natural disasters and state damage
+## Natural disasters, Acid Rain and bombing
 
-A confirmed disaster loss in an active Industrial Region can interrupt a project, consume applicable protection, worsen Overheating, and lower landing quality according to the region's importance. A forecast changes preparation priorities without proving damage. The player can protect the endangered region and preserve output, or cool the expansion to reduce exposure to a disrupted supply chain.
+A confirmed disaster, corrosion or bombing loss in an Industrial Region shocks Overheating in proportion to the region's industrial share, pauses its project, and spends its protection if it had one.
+[Acid Rain's state consequence contract](../033_acid_rain_specs/specs/033_acid_rain_consequence_repair_acceptance_2026_10_03.md) is the reference owner: Event 34 protection reduces industrial strain only and never lowers Acid Rain mortality or settles that event's recovery.
+A forecast changes priorities without proving damage, so it applies no shock.
+War both helps and hurts: equipment demand makes running hot worthwhile, and losing industrial states can crash the boom quickly.
 
-[Acid Rain's state consequence contract](../033_acid_rain_specs/specs/033_acid_rain_consequence_repair_acceptance_2026_10_03.md) supplies a concrete example. Use actual corrosion, disrupted transport, or retained state burden, and preserve paid recovery already recorded there. Event 34 protection mitigates industrial strain only. It does not remove rain, lower Acid Rain mortality, grant Preparedness, or settle that event's recovery obligation.
+## Trade, fuel and logistics
 
-The disaster owner applies building damage, population loss, Deaths, environmental aftermath, Air changes, and their shared Chaos once. Event 34 observes the industrial result. If the same loss causes a boom collapse, its condition enters the frozen Event 35 snapshot without a second adapter charge for the old incident. New damage after the handoff can affect the active depression through Event 35's own connection.
+Fuel, trains, trucks, convoys, ports, infrastructure, embargo and blockade feed the Supply and materials driver (part 2).
+Stabilize Supply Chains pays the costs that match the country's real route.
+Event 34 creates no embargo or blockade of its own.
 
-AI compares protection and supply repair with cooling or landing according to the exposed region's remaining value and valid project requirements. It cannot certify damaged work merely to secure a legacy. When no compatible disaster evidence exists, ordinary boom management continues.
+## Resources Found and other positive economy events
 
-Acceptance case: one corrosion receipt interrupts a Miracle Region, is reported twice, and then precedes a crash. The physical loss and immediate economic shock occur once, Event 35 inherits the remaining damage, and later repair clears only the continuing industrial cause.
+A resource discovery in or near an Industrial Region lowers the Supply and materials driver through ordinary resource availability.
+No positive event resets Overheating, grants a project receipt, or bypasses the legacy budgets of part 4.
 
-## Strategic bombing and war damage
+## Famine and migration (pending owner seams)
 
-Event 34 can observe:
+Both systems were reworked on 2026-10-10 and expose narrow owner triggers and receipts rather than raw variables.
 
-- Building damage in Industrial Regions.
-- Infrastructure and railway loss.
-- State control change.
-- Port and supply-node damage.
-- National fuel and convoy pressure.
+- **Famine.** An Industrial Region in an active famine stage pauses its project and adds to the Supply and materials driver, read through a famine-owned state trigger. Famine keeps food, mortality and Deaths. A crash creates no famine by itself.
+- **Migration.** A displaced cohort locally integrated in an Industrial Region state, through migration's own Local Integration settlement, lowers the Output intensity driver for that region for 180 days, because the works gain labor. Migration keeps cohorts, reception load and Deaths; Event 34 moves no population.
 
-The boom should become harder to sustain under bombing. Protection should reduce the local pressure contribution and improve repair. Event 34 should not attempt to calculate or register bombing deaths unless the shared bombing system already does so.
+The migration link gives a booming host a concrete reason to integrate arrivals rather than move them on.
+Both links need a migration- or famine-owned trigger before implementation; Event 34 must not read their private ledgers.
 
-A country at war can still benefit from the boom. War creates both demand and vulnerability. Winning a war with stable supply can justify running hot. Losing industrial states can cause a rapid crash.
+## Air contamination, fallout and CBRN
 
-## Resources Found and material relief
+A state under a severe contamination or fallout condition cannot be chosen as an Industrial Region or spread state, and an existing project there pauses.
+Air Cleanliness, fallout and CBRN owners keep contamination, Deaths and their Chaos.
 
-Event 18 Resources Found belongs to the Positive Economy cluster and can create resource development. Event 34 can benefit through ordinary resource availability or a shared material-relief input.
+## Condemnation
 
-Possible interaction:
+Condemnation has no direct effect.
+Its sanctions and trade consequences reach the boom only through the trade conditions above.
+Economic success never lowers condemnation.
 
-- A discovery in or near an Industrial Region lowers material pressure.
-- A developed field can improve a Resource Efficiency project.
-- A cleanly managed Event 18 resource network can improve landing quality.
-- A dangerous Event 18 underground or cave outcome should not automatically become an Event 34 benefit without its owning event's adapter.
+## Camps and Deaths
 
-Event 34 should not reference Event 18's private stages or duplicate its decision system.
+Event 34 has no camp connection: forced labor is not a boom management tool, and camp output stays within the camp system.
+Event 34 records no Deaths; incident text may mention injuries or casualties without numbers, and no incident moves the Deaths ledger.
 
-## Trade, embargo, and blockade
+## Event 39 Murder Mystery (implemented)
 
-Trade access is one of the strongest hidden contributors.
+Event 39 reads `industrial_boom_active` and gives a booming country better-equipped investigators.
+Event 34 must keep that flag set for the whole active boom.
 
-Event 34 should react to:
+## Chaos
 
-- Convoy loss.
-- Port loss.
-- Embargo or trade isolation.
-- Resource deficit.
-- Inability to import needed inputs.
-- Restored trade routes.
+Industrial Boom adds no Chaos for firing, for any management action, or for an evolution activating.
+Chaos comes only from concrete abnormal outcomes, applied once through the shared Chaos Meter helpers in `common/scripted_effects/chaos_meter_effects.txt` (`add_chaos_meter_value` with its history entry, see [the Chaos Meter docs](../../systems/chaos_meter/README.md)) and guarded by an Event 34 source receipt.
+Magnitudes are constants in the Event 34 tuning file.
 
-A severe embargo can turn a safe boom into strain. A self-sufficient country should be less exposed. Stabilize Supply Chains should adapt its cost and relief to the actual route.
+| Source | Direction | Guard |
+| --- | --- | --- |
+| First Miracle project reaches Secured (Evolution II) | Small gain | Once per boom |
+| First spread state integrates (Evolution III) | Small gain | Once per boom |
+| Controlled landing of a boom that recorded either gain | Reduction no larger than the recorded gains | Once per boom, closes only its own sources |
 
-The event should not create its own diplomatic embargo system. It reads the existing condition and accepts a shock receipt when needed.
+Speculative Mania adds no Chaos, because its consequences are ordinary economic ones that Event 35 already covers.
+A crash adds no Event 34 Chaos; Event 35 owns the Chaos of the depression.
+Event 34 never duplicates Chaos from Deaths, war, annexation, nuclear use, Air contamination, world tension or building damage.
 
-## Fuel and logistics systems
+## Cluster role
 
-Fuel, trains, trucks, convoys, railways, ports, infrastructure, and supply nodes affect Overheating and decision costs.
+The authoritative catalog places Event 34 in Positive Economy (cluster 7) as its Low member, alongside Events 18, 26, 29, 55, 57 and 58.
+Positive Economy is catalogued but not yet registered in the cluster runtime; that registration belongs to the event system.
 
-Important behavior:
+When a cluster dispatches Event 34:
 
-- A fuel deficit reduces the value of pushing output and weakens stabilization.
-- A train deficit makes internal material movement unreliable.
-- A convoy deficit matters only when the economy depends on maritime routes.
-- Repair of a key railway or port should visibly improve trend.
-- Supply investment during the boom can become part of permanent legacy.
+- the entry is the same `chaosx.nr34.1` with the same target gate and weighting, so a country with an active boom is never chosen;
+- Event 34 reads no cluster context and grants nothing extra for being part of a batch;
+- rewards stacked with other Positive Economy members on the same country stay inside Event 34's own legacy budget;
+- a later crash into Event 35 never rolls Negative Economy or records a cluster row.
 
-Event 34 should avoid consuming equipment merely because the stockpile is large. Costs should correspond to a real action and be debited through supported stockpile helpers where implementation requires them.
+The earlier planning statement that Event 34 stays unclustered is superseded by the catalog assignment.
 
-## Famine and migration systems
+## Acceptance
 
-Industrial expansion can attract population to Industrial Regions. Event 34 does not create a new migration system or transfer population by itself.
-
-When the shared migration system records a large inflow:
-
-- Labor pressure can fall temporarily.
-- Housing and local infrastructure pressure can rise.
-- A region project can gain progress or fragility according to reception capacity.
-
-When famine or mass displacement disrupts an Industrial Region:
-
-- Project progress can slow.
-- Labor and supply pressure can rise.
-- The shared humanitarian system retains ownership of deaths, population transfer, food pressure, and cohorts.
-
-Only countries that use normal civilian systems participate in this connection.
-
-## Air contamination and environmental pressure
-
-Severe contamination or environmental damage can reduce Industrial Region reliability through shared state conditions.
-
-Event 34 response can include:
-
-- Higher maintenance and supply pressure.
-- Slower project progress.
-- Lower state eligibility for new development.
-- Stronger landing need.
-
-Event 34 must not add duplicate Air Contamination, deaths, or environmental damage. It observes the existing state.
-
-## Condemnation and unconventional warfare
-
-Condemnation has no normal direct effect on Event 34. Indirect effects can matter through sanctions, embargoes, trade isolation, volunteer withdrawal, or industrial access.
-
-The event should not reduce public condemnation because a country is economically successful. A boom can make sanctions easier to bear or harder to supply, but moral and diplomatic responsibility remains with the condemnation system.
-
-## Other positive economic events
-
-A compatible positive economic event may:
-
-- Lower a specific hidden pressure.
-- Improve one project.
-- Add a temporary opportunity.
-- Improve a landing result.
-
-It should not:
-
-- Reset Overheating to zero.
-- Grant another permanent project receipt automatically.
-- bypass Event 34's country and state legacy caps.
-- remove Event 35 inheritance after a crash.
-
-## Other negative economic events
-
-A compatible economic crisis may:
-
-- Add a shock.
-- Weaken reserves.
-- Suspend a project.
-- Raise Event 35 severity.
-
-Conflict rule:
-
-- One system owns the visible crisis category.
-- Event 34 should not run beside an incompatible depression or paralysis mechanic unless a specific integration has been designed.
-- When overlap cannot be represented clearly, the normal target gate excludes the country.
-
-## Event 34 Chaos identity
-
-Industrial Boom begins as a beneficial but unusual event. Baseline mobilization remains within the broad limits of an extraordinary wartime economy. The event does not add Chaos at the opening merely because production increases.
-
-Chaos appears only when the event creates a concrete abnormal consequence that makes the world more unstable or physically less comprehensible.
-
-## Chaos impact map
-
-### Opening
-
-- Baseline firing: zero event-owned Chaos.
-- Evolution I evolved opening: zero on activation.
-- Evolution II or III evolved opening: zero until an abnormal physical result becomes visible.
-
-### Ordinary management
-
-- Run the Economy Hot: zero direct Chaos.
-- Stabilize Supply Chains: zero direct Chaos.
-- Build Industrial Reserves: zero direct Chaos.
-- Cool the Expansion: zero direct Chaos.
-- Protect Key Industrial Regions: zero direct Chaos.
-- Controlled landing: normally zero direct Chaos.
-
-These actions change one country's economic risk. They do not automatically change global instability.
-
-### Speculative Mania
-
-Possible guarded source:
-
-- A major speculative expansion creates observable capacity before its physical and financial basis exists.
-
-Guard:
-
-- Once per firing.
-- Requires completed visible consequence.
-- No gain for a proposal, normal credit expansion, or failed small project.
-
-### The Industrial Miracle
-
-Possible guarded sources:
-
-- First completed project whose construction speed or output is physically impossible.
-- First confirmed material discrepancy tied to a completed major project.
-
-Guard:
-
-- Once per abnormal family per firing.
-- Longer repeat guard for the same country.
-- No gain for ordinary factory, railway, infrastructure, or resource construction.
-
-### Runaway Industrialization
-
-Possible guarded sources:
-
-- First integrated abnormal spread state.
-- A production corridor reaching a large abnormal threshold.
-- Unrestricted spread reaching several states.
-- A visible network cascade affecting a large industrial share.
-
-Guard:
-
-- Milestone receipts.
-- State identity receipts.
-- No repeat gain from occupation and reconquest.
-- No duplicate generic Chaos from building damage, deaths, war, or annexation.
-
-### Crash into Event 35
-
-Event 34 does not add a generic crash Chaos change when Event 35 owns the depression consequence. Event 35 should decide whether the new depression, radicalization, international spread, or other concrete result adds Chaos.
-
-Event 34 may add one abnormal-collapse milestone only when an evolved industrial anomaly visibly fails at a scale not represented by Event 35's ordinary economic crisis. This must be coordinated with Event 35 to avoid duplication.
-
-### Containment and reversal
-
-A guarded Chaos reduction may occur when:
-
-- A recorded abnormal Miracle source is dismantled or stabilized.
-- Runaway spread is contained and the same abnormal source closes.
-- An evolved network is safely integrated and no longer produces the recorded instability.
-
-Rules:
-
-- The reduction must reference an earlier event-owned abnormal source.
-- Ordinary landing gives zero.
-- Repeated cooling gives zero.
-- The reduction cannot exceed the source it closes.
-- The same source cannot be closed twice.
-
-## Shared-source overlap
-
-Event 34 should not duplicate:
-
-- Chaos from deaths.
-- Chaos from war or peace.
-- Chaos from annexation or puppeting.
-- Chaos from nuclear or thermonuclear use.
-- Chaos from Air Contamination.
-- Chaos from world tension.
-- Chaos from generic building destruction.
-
-Event-owned Chaos records the abnormal industrial significance only.
-
-## Cluster analysis
-
-The current catalog includes Positive Economy as Cluster 7 with Event 18 Resources Found as its member. Industrial Boom fits the broad theme but has a direct failure link to Event 35 and a long active lifecycle.
-
-### Reasons to leave Event 34 unassigned now
-
-- The user specified no cluster assignment.
-- Event 34 already has a large country-specific management system.
-- A cluster firing could create Event 34 beside another positive economy event and produce unclear stacking.
-- Event 34 can become a severe negative crisis without becoming a separate cluster event.
-- Event 35 has no current cluster assignment.
-- The Event 34 to Event 35 relationship is a consequence chain, not a cluster relationship.
-
-### Future Positive Economy compatibility
-
-A later cluster review may add Event 34 as a severe or rare member when all of these are defined:
-
-- How cluster selection treats an event with a long active lifecycle.
-- How Event 18 and Event 34 rewards stack.
-- How a country target is chosen once for the cluster.
-- How event pacing remains one cluster firing.
-- How an Event 34 crash is logged without creating a second cluster entry.
-- How countries with active Event 34 or Event 18 systems are excluded or handled.
-
-Until then, Event 34 remains unassigned.
-
-## Connection acceptance tests
-
-The connection design passes when:
-
-- Event 35 is the only direct crisis dependency.
-- Disasters and bombing change Event 34 through real state damage and one bounded shock.
-- Resource relief can help without bypassing legacy caps.
+- Event 35 is the only direct crisis dependency, and the supplier contract is a real choice with a cost and a gain.
+- Disasters and bombing shock the boom once and are not duplicated by an adapter request.
 - Maritime and land economies react differently to trade and logistics problems.
-- Humanitarian systems retain ownership of population and deaths.
-- Air contamination retains ownership of environmental pressure and Chaos.
-- Other events can call a reusable pressure adapter without editing Event 34's private ledger.
-- Duplicate source receipts do not apply twice.
-- Event-owned Chaos occurs only after a concrete abnormal outcome.
-- Reversal removes only an earlier recorded source.
-- Event 34 remains unclustered until a later catalog decision defines the role cleanly.
+- Famine, migration, contamination and Deaths stay with their owners.
+- Event-owned Chaos occurs only after a concrete abnormal outcome and reverses only its own recorded source.
+- A cluster dispatch behaves exactly like a normal firing.
