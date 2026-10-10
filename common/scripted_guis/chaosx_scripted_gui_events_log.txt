@@ -222,6 +222,9 @@ scripted_gui = {
 			events_log_all_clusters_checkbox_visible = {
 				has_country_flag = events_log_clusters_tab
 			}
+			events_log_all_clusters_label_visible = {
+				has_country_flag = events_log_clusters_tab
+			}
 			events_log_all_clusters_checkbox_click_enabled = {
 				always = yes
 			}
@@ -955,7 +958,7 @@ scripted_gui = {
 
 		triggers = {
 			clusters_no_entries_info_visible = {
-				check_variable = { global.events_log_cluster_view_id_entries^num < 1 }
+				NOT = { check_variable = { global.events_log_cluster_view_id_entries^num > 0 } }
 			}
 			events_log_cluster_filter_prev_click_enabled = {
 				always = yes
@@ -1026,14 +1029,28 @@ scripted_gui = {
 					compare = greater_than
 				}
 			}
-			cluster_entry_text_actor_visible = {
+			cluster_entry_name_actor_visible = {
 				check_variable = {
 					var = global.events_log_cluster_view_has_actor_entries^events_log_cluster_index
 					value = 0
 					compare = greater_than
 				}
 			}
-			cluster_entry_text_generic_visible = {
+			cluster_entry_meta_actor_visible = {
+				check_variable = {
+					var = global.events_log_cluster_view_has_actor_entries^events_log_cluster_index
+					value = 0
+					compare = greater_than
+				}
+			}
+			cluster_entry_name_plain_visible = {
+				check_variable = {
+					var = global.events_log_cluster_view_has_actor_entries^events_log_cluster_index
+					value = 0
+					compare = less_than_or_equals
+				}
+			}
+			cluster_entry_meta_plain_visible = {
 				check_variable = {
 					var = global.events_log_cluster_view_has_actor_entries^events_log_cluster_index
 					value = 0
