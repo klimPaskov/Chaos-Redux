@@ -13,7 +13,7 @@ docs/specs/056_the_navy_specs/
 The package attributes its premise to the supplied user brief.
 The original user message and claim-level acceptance record are not reproduced here, so approval of expanded mechanics remains unresolved until the implementation owner records the supporting user decision or parent acceptance.
 Historical planning reviews, catalog snapshots, and package status labels do not establish approval or current implementation.
-Use current [AGENTS.md](../../../AGENTS.md), [event guidance](../../../.agents/skills/chaos-redux-events/SKILL.md), [asset guidance](../../../.agents/skills/chaos-redux-event-assets/SKILL.md), and [subagent guidance](../../../.agents/skills/chaos-redux-subagents/SKILL.md) for execution.
+Use current [AGENTS.md](../../../AGENTS.md), [event guidance](../../../.claude/skills/chaos-redux-events/SKILL.md), [asset guidance](../../../.claude/skills/chaos-redux-event-assets/SKILL.md), and [subagent guidance](../../../.claude/skills/chaos-redux-subagents/SKILL.md) for execution.
 The source design remains in the files listed below.
 
 ## Specification order
@@ -53,3 +53,10 @@ The supplied CSV catalogs are export snapshots. They are historical evidence for
 ## Planning boundary
 
 This package defines the full event design and implementation acceptance criteria. It does not claim that gameplay code, final localisation, final artwork, achievements, cluster registrations, or catalog workbook updates have already been implemented.
+
+## Changelog
+
+### 2026-10-10 spec audit
+
+- The Famine connection now states the useful direction as well as the forbidden one: a convoy or escort package can break an island blockade famine through Famine's existing convoy and escort test, with no new Event 56 effect. The AI prefers Full Commissioning for such a package when an owned state is under blockade famine, so the AI uses the gift where it matters most.
+- Subagent instructions use the Claude-first wording; historical runtime-blocker notes in `quality/` are unchanged records.

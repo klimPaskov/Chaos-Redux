@@ -20,6 +20,7 @@ The AI should prefer immediate full commissioning when several of these conditio
 - commissioning ports have adequate repair capacity
 - enemy naval or invasion pressure is immediate
 - the package fills an urgent role, such as escorts under submarine attack
+- an owned island or coastal state is under Famine's blockade proof and the package carries convoys or escorts
 - the country has aircraft support for a carrier package
 - the defining ships can join an existing operational force safely
 
@@ -382,6 +383,9 @@ New fleets can create real blockades through ordinary war and naval control. Tho
 Event 56 never applies famine pressure merely because submarines or capital ships appeared. Island status, package size, or a theoretical capacity to blockade is insufficient.
 
 This prevents a double event effect and preserves Famine ownership.
+
+The same rule works in the recipient's favour: Famine's island blockade test already requires a convoy or escort shortage, so a convoy-heavy or escort package delivered to a blockaded island can break the blockade proof through ordinary convoy and escort strength.
+Event 56 adds no relief effect of its own; the gain comes from commissioning the right ships now, which is why the AI rule below prefers Full Commissioning in that case.
 
 ## Natural disaster and damage connections
 
