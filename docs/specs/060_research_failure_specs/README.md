@@ -5,7 +5,7 @@
 The package attributes its premise to the supplied user brief.
 The original user message and claim-level acceptance record are not reproduced here, so approval of expanded mechanics remains unresolved until the implementation owner records the supporting user decision or parent acceptance.
 Historical planning reviews, catalog snapshots, and package status labels do not establish approval or current implementation.
-Use current [AGENTS.md](../../../AGENTS.md), [event guidance](../../../.agents/skills/chaos-redux-events/SKILL.md), [asset guidance](../../../.agents/skills/chaos-redux-event-assets/SKILL.md), and [subagent guidance](../../../.agents/skills/chaos-redux-subagents/SKILL.md) for execution.
+Use current [AGENTS.md](../../../AGENTS.md), [event guidance](../../../.claude/skills/chaos-redux-events/SKILL.md), [asset guidance](../../../.claude/skills/chaos-redux-event-assets/SKILL.md), and [subagent guidance](../../../.claude/skills/chaos-redux-subagents/SKILL.md) for execution.
 The source design remains in the files listed below.
 
 ## Package identity
@@ -86,10 +86,7 @@ The specification therefore defines the required behavior and evidence gates wit
 Implementation may not replace real technology regression with a flat research penalty merely because those checks remain outstanding.
 Unsafe technology families must fail closed until their graph and runtime behavior are verified.
 
-The configured Codex subagent bridge was also unreachable during the original planning session and returned an HTTP 404 response during discovery.
-No live specialist subagent is claimed to have run.
-The parent planning pass applied the written review contracts of the improvement-loop planner, scripted-system architect, decision and mission auditor, probability auditor, asset rules, localisation rules, and event completion auditor directly.
-The failed subagent route is recorded in the quality report.
+No live specialist subagent ran during the original planning pass; the quality report records that route and the review contracts the parent applied directly.
 
 ## Package location
 
@@ -101,3 +98,15 @@ docs/specs/060_research_failure_specs/
 
 The package contains planning files only.
 It does not modify gameplay scripts, assets, localisation, or the authoritative catalog workbook.
+
+## Open questions
+
+- `unresolved`: the three Event 54 interaction choices in Part 4. Recommendation, shared with the Event 54 package: keep Event 54's equal random draw with no lost-technology priority, give gifted nodes no protection from later safe regression, and run Event 60's rollback before Event 54's grant inside one Scientific Research episode so a same-episode gift can only restore, never be erased.
+
+## Changelog
+
+### 2026-10-10 spec audit
+
+- Starting Scientific Capacity and Archive Recovery bands rise at baseline (Capacity 35 to 45, Archive 15 to 25) and Evolution I and II, while Evolution III is unchanged. This is a Minor Repeatable event at Chaos level 1 that can hit a player more than once; starting in the three-fifths-slower band plus technology regression left the evolutions little room to escalate.
+- Secondary incidents are capped at two per crisis, each at most once, and only incidents whose cause is present can fire. Seven incident types without a budget would turn a long reconstruction into popup churn.
+- The README no longer repeats the original planning environment's subagent failure; the quality report keeps it. Subagent instructions use the Claude-first wording.

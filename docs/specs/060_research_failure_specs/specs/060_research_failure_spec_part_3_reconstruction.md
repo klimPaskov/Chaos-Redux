@@ -22,9 +22,9 @@ The following bands are design targets:
 
 | Severity | Scientific Capacity at opening | Archive Recovery at opening | Operational slot floor |
 | --- | --- | --- | --- |
-| Baseline | Usually `20-30` | Usually `10-20` | `2` |
-| Evolution I | Usually `12-22` | Usually `5-12` | `2` |
-| Evolution II | Usually `5-15` | Usually `0-8` | `2` |
+| Baseline | Usually `35-45` | Usually `15-25` | `2` |
+| Evolution I | Usually `20-30` | Usually `8-15` | `2` |
+| Evolution II | Usually `8-18` | Usually `0-8` | `2` |
 | Evolution III | Usually `0-5` | Usually `0-3` | `1` |
 
 A physical-destruction profile lowers Capacity.
@@ -381,6 +381,10 @@ When no outstanding recoverable technology remains, the category closes and the 
 
 Secondary incidents should arise from player choices, unresolved profiles, war, foreign activity, and rushed projects.
 They are not a random punishment disconnected from the recovery plan.
+
+One incident can occur at most once per Research Failure crisis, and a crisis receives at most two secondary incidents in total: one during Phase II and one during Phase III.
+Only incidents whose cause is present are eligible, so a country that never sealed its institutions cannot draw Concealment exposed and a country that never rushed a project cannot draw False archive.
+
 
 ### Second laboratory loss
 
