@@ -80,7 +80,7 @@ The baseline model is a modern Iranian imperial guard infantryman suitable for t
 The mountain and desert interpretation needs a practical adaptation of clothing and carried equipment. The heavy and mechanized interpretation needs appropriate protective and operational gear. Reuse one properly designed body across compatible variants when it remains visually and technically suitable. Do not commission a new body for every focus upgrade.
 
 A firearm is a separate controlled weapon asset. The dedicated 3D pipeline skill requires a fresh Meshy 7 weapon-free body task and a separate Meshy 7 firearm task. The firearm-equipped character proceeds to Blender rigging, weights, attachment, and actions under the required model configuration. Do not run firearm characters through Meshy rigging and animation. The supplied planning prose and TOMLs contained conflicting firearm instructions during authoring.
-Use [the current 3D pipeline](../../../.agents/skills/chaos-redux-3d-model-pipeline/SKILL.md) for route selection, attempt allowances, component completion and Blender fallbacks.
+Use [the current 3D pipeline](../../../.claude/skills/chaos-redux-3d-model-pipeline/SKILL.md) for route selection, attempt allowances, component completion and Blender fallbacks.
 
 Modern professional concept art, game art, or tabletop references provide the 3D input basis under the supplied pipeline. Historical and museum material can inform research, but cannot be substituted as a direct 3D source when the pipeline disallows it. Respect source rights and NoAI or no-derivative restrictions. Do not use a disallowed image merely because it is easy to find.
 

@@ -47,7 +47,7 @@ Static assets are sufficient for this plan. Do not add animation to increase the
 
 ## Immortals 3D and sound
 
-Delegate the actual body, firearm, rig, weights, animations, textures, and export work to `chaosx_3d_model_pipeline` through the supported runtime. Read the dedicated 3D pipeline fully. Follow its separate fresh Meshy 7 weapon-free body and firearm tasks, then the firearm-safe Blender rigging and action route. Use [the current 3D pipeline](../../../.agents/skills/chaos-redux-3d-model-pipeline/SKILL.md) for route selection, attempt allowances, component completion and Blender fallbacks.
+Delegate the actual body, firearm, rig, weights, animations, textures, and export work to `chaosx_3d_model_pipeline` through the supported runtime. Read the dedicated 3D pipeline fully. Follow its separate fresh Meshy 7 weapon-free body and firearm tasks, then the firearm-safe Blender rigging and action route. Use [the current 3D pipeline](../../../.claude/skills/chaos-redux-3d-model-pipeline/SKILL.md) for route selection, attempt allowances, component completion and Blender fallbacks.
 Do not reopen the historical wording conflict as an extra production approval gate.
 
 Use allowed modern professional, game, tabletop, or concept-art references with documented rights. Do not use a prohibited historical photo or museum object as direct 3D input. Respect NoAI and no-derivative restrictions. A reference refinement uses the permitted single-source process.
@@ -63,4 +63,4 @@ For every asset record its consumer, family, dimensions, source or generation me
 Coordinate ownership with the icon artist, generated-event-art worker, portrait creator, 3D worker, and super-event researchers. Return the manifest, contact sheets, final files, and evidence under the repository's accepted paths. Report exact unresolved blockers. Do not call the asset package complete until every required consumer has a reviewed final asset and the prescribed validation evidence.
 
 For consumers with transparent unused canvas, request native ImageGen transparency in the initial call and preserve alpha through processing and DDS conversion.
-Use [the current asset skill](../../../.agents/skills/chaos-redux-event-assets/SKILL.md) for alpha, source preservation, processing and fallback evidence.
+Use [the current asset skill](../../../.claude/skills/chaos-redux-event-assets/SKILL.md) for alpha, source preservation, processing and fallback evidence.

@@ -54,7 +54,7 @@ Use `hoi4.probability_simulate` only for declared uncertain inputs and `hoi4.pro
 
 Follow the separate asset and super-event prompts. Produce every required final static asset and any later accepted animation with a static fallback. Inspect canonical references before production. Every flag uses flat reference-constrained ImageGen. Historical designs need evidence and faithful geometry. Fictional designs need explicit documentation. All portraits go to `chaosx_portrait_creator`, preserving grounded identity and using the prescribed RunPod styling route.
 
-Delegate required 3D and skeletal animation production to `chaosx_3d_model_pipeline` through Codex `collaboration.spawn_agent` with `fork_turns="none"` when that runtime is available. Use a self-contained handoff. Follow the dedicated 3D skill's separate Meshy 7 body and firearm generation rule, then the firearm-safe Blender route. Use the current owner skill for route selection, attempt allowances, component completion and Blender fallbacks.
+Delegate required 3D and skeletal animation production to `chaosx_3d_model_pipeline` with a self-contained prompt and no inherited parent context. Use a self-contained handoff. Follow the dedicated 3D skill's separate Meshy 7 body and firearm generation rule, then the firearm-safe Blender route. Use the current owner skill for route selection, attempt allowances, component completion and Blender fallbacks.
 Do not reopen the historical wording conflict as an extra production approval gate.
 
 Wire and validate final `.asset`, entity, `.gfx`, unit consumer, attachments, actions, scale, counters, and sound routing. Review available user-supplied live in-game evidence. A rendered model without a working unit consumer is incomplete.
@@ -73,6 +73,6 @@ Run the required event, decision, country, focus, technology, AI, GUI, localisat
 
 Use the supplied role handoffs to coordinate all required specialties. Actual agent runs need returned handoffs and evidence. Reading TOMLs or assigning yourself an agent name is not independent review.
 
-Before declaring the goal near complete, spawn `chaosx_improvement_loop_planner` with Codex `collaboration.spawn_agent` and `fork_turns="none"`. Resolve its accepted addendum or closure handoff. Put working plans under `docs/plans/071_persia_plans/` and fold accepted design into the source specs. Do not create `docs/planning/`.
+Before declaring the goal near complete, spawn `chaosx_improvement_loop_planner` with a self-contained prompt and no inherited parent context. Resolve its accepted addendum or closure handoff. Put working plans under `docs/plans/071_persia_plans/` and fold accepted design into the source specs. Do not create `docs/planning/`.
 
 Keep iterating until the goal is accomplished to its fullest extent. Do not claim completion until implemented files satisfy the full specification. Do not hide missing work behind temporary versions, placeholder assets, approximated maps, or untested fallbacks. If an essential source, tool, authorization, or engine capability is unavailable, identify the exact blocker and the affected acceptance gate. Report completed work and evidence separately from blocked work.

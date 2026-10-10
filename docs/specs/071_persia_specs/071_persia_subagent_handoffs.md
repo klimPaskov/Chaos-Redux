@@ -4,7 +4,7 @@
 
 These are future dispatch prompts. None is a returned subagent report. All twenty supplied role definitions were read during planning, but this session did not expose a callable delegation runner. The current package therefore has a parent-only design review. Required independent planning and implementation reviews remain unperformed.
 
-Use the actual supported delegation runtime. For Codex roles requiring it, use `collaboration.spawn_agent` with `fork_turns="none"` and an explicit self-contained handoff. Do not invent an unavailable tool or a runtime token. Role configuration files alone do not launch workers.
+Use the actual supported delegation runtime. Give each role an explicit self-contained handoff with no inherited parent context. Do not invent an unavailable tool or a runtime token. Role configuration files alone do not launch workers.
 
 All workers receive this common context: implement or audit Event 071 Persia from `docs/specs/071_persia_specs/`, root `chaosx.nr71.1`, Minor Fire-Once, Formables Medium, with the user brief and source receipt as provenance. Read `AGENTS.md`, the role's supplied definition, relevant skills, and all named task inputs. Preserve unrelated changes. Write working reports under `docs/plans/071_persia_plans/`. Report actual evidence, blockers, changed files, and tests. Do not claim another worker's work or mutate shared files outside the assigned scope.
 
@@ -52,7 +52,7 @@ Wholly fictional portraits use native ImageGen through the portrait worker. Retu
 
 ## 11. chaosx_3d_model_pipeline
 
-Read part 9, the full part 16 unit brief, the dedicated 3D skill, actual unit consumer, and allowed source references. Produce the required Immortals body and separate firearm through the current Meshy 7 and Blender pipeline. Follow [the current 3D pipeline](../../../.agents/skills/chaos-redux-3d-model-pipeline/SKILL.md) for route selection, attempt allowances, component completion and Blender fallbacks. Validate scale, rig, attachments, actions, textures, export, entity, counters, sound, and unit wiring. Return source tasks, intermediate files, final assets, and actual consumer evidence. A rendered model alone is incomplete.
+Read part 9, the full part 16 unit brief, the dedicated 3D skill, actual unit consumer, and allowed source references. Produce the required Immortals body and separate firearm through the current Meshy 7 and Blender pipeline. Follow [the current 3D pipeline](../../../.claude/skills/chaos-redux-3d-model-pipeline/SKILL.md) for route selection, attempt allowances, component completion and Blender fallbacks. Validate scale, rig, attachments, actions, textures, export, entity, counters, sound, and unit wiring. Return source tasks, intermediate files, final assets, and actual consumer evidence. A rendered model alone is incomplete.
 
 ## 12. chaosx_event_ui_worker
 

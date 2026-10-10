@@ -4,7 +4,7 @@
 
 This package expands the attached Persia brief into eighteen sequential specification parts. It is a planning handoff, not implemented mod content. New labels are working design labels. Final localisation, exact native focus coordinates, map IDs, and game assets are owned by the verified implementation workflow.
 
-Extract the top-level `071_persia_specs` folder into `docs/specs/` in the Chaos Redux repository. The resulting path is `docs/specs/071_persia_specs/`. Keep future working plans and specialist reports in `docs/plans/071_persia_plans/`.
+Keep future working plans and specialist reports in `docs/plans/071_persia_plans/`.
 
 For implementation, read this index and the full design, then use the [coding prompt](071_persia_coding_prompt.md). The [goal prompt](071_persia_goal_prompt.md) is the compact `/goal` entry point. It points back to the complete handoff and is not a replacement for reading it.
 
@@ -54,7 +54,7 @@ The full Persepolis project, territorial settlements, specialized satrapies, gua
 
 ## Diagrams
 
-Open [the diagram viewer](071_persia_diagrams.html) after extracting the folder. It displays the overview and three route sketches. Each also has an SVG for zooming, a PNG, and editable Graphviz DOT source.
+The overview and three route sketches are kept as editable Graphviz DOT sources with rendered SVGs.
 
 [Overview SVG](071_persia_focus_overview.svg) | [Achaemenid SVG](071_persia_achaemenid_route.svg) | [Sasanian SVG](071_persia_sasanian_route.svg) | [Modern SVG](071_persia_modern_route.svg)
 
@@ -64,13 +64,13 @@ The diagrams are branch sketches, not exact engine prerequisites or native game 
 
 [Country-package matrix](071_persia_country_package_matrix.md) defines identity and transition boundaries. [Research notes](071_persia_research_notes.md) separate historical support from authored game design. [Source-reading receipt](071_persia_source_reading_receipt.md) and [source manifest](071_persia_source_manifest.json) record all supplied texts and unavailable dependencies. The [original user brief](071_persia_original_user_brief.md) is preserved unchanged for comparison.
 
-[Subagent handoffs](071_persia_subagent_handoffs.md) cover all twenty supplied roles. These are future prompts, not agent reports. [Parent review](071_persia_parent_review.md) records the design checks, corrected issues, and outstanding evidence gates. [Package validation](071_persia_package_validation.json) records automated file-level checks. [Package manifest](071_persia_package_manifest.json) records delivered files and hashes.
+[Subagent handoffs](071_persia_subagent_handoffs.md) cover all twenty supplied roles. These are future prompts, not agent reports. [Parent review](071_persia_parent_review.md) records the design checks, corrected issues, and outstanding evidence gates. [Package validation](071_persia_package_validation.json) records automated file-level checks. [Package manifest](071_persia_package_manifest.json) records the current files and hashes.
 
 ## Original planning record
 
 Availability and passed-check claims in the source receipts, parent review and package validation describe the 2026-09-20 authoring run.
 They do not certify the current checkout.
-Use [AGENTS.md](../../../AGENTS.md) and [the subagent skill](../../../.agents/skills/chaos-redux-subagents/SKILL.md) for current workflow and capability discovery.
+Use [AGENTS.md](../../../AGENTS.md) and [the subagent skill](../../../.claude/skills/chaos-redux-subagents/SKILL.md) for current workflow and capability discovery.
 The original brief supplies user requirements, while expansion and tuning require attributable adoption before implementation.
 
 ## What was and was not done during authoring
@@ -78,3 +78,11 @@ The original brief supplies user requirements, while expansion and tuning requir
 All 42 supplied project texts and the attached brief were read. The archive did not include the actual script checkout, mandatory offline wiki, installed vanilla or DLC files, exact map, canonical asset references, or authoritative workbook. No actual subagent runner or HOI4 MCP validation was available in this session.
 
 The design, handoff prompts, source records, and planning diagrams are delivered. Exact state mapping, installed-tree carryover, final characters, engine support, final assets and localisation, independent subagent reviews, and runtime validation remain explicit implementation gates. The CSV snapshots and catalog status were not changed.
+
+## Changelog
+
+### 2026-10-10 spec audit
+
+- The four PNG renders and the HTML diagram viewer are removed; the DOT sources and SVG renders hold the same diagrams. The PNGs duplicated the SVGs as Git LFS objects, and LFS is reserved for assets visible in game.
+- The obsolete extraction instruction is removed. Subagent instructions use the Claude-first wording; the historical package-validation record is unchanged.
+- The design itself was already disciplined (one meter plus guard capacity, qualitative satrapy states, a shared completion rule for map, focuses, and achievements) and is otherwise unchanged.
