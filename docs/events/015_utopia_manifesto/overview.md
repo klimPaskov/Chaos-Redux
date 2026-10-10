@@ -154,7 +154,7 @@ Garden Settlement projects begin with a real selected state. The survey records 
 
 Every project must maintain housing, transport, and role-plan obligations. Terminal checks can produce completion, an incomplete district, or failure. A route-specific charter then applies the constitutional consequence. The Provision Ring remains the fifth district-role proof used by the Perfect Measure achievement. It is not duplicated as an ordinary district button.
 
-Penal Works is one Closed Island method attached to the existing district lifecycle. It pays manpower, infantry equipment, support equipment, and reserve for faster construction while increasing supply strain, garrison burden, resistance, Assignment, and durable coercive conduct.
+Penal Works is one Closed Island method attached to the existing district lifecycle. It pays political power, manpower, infantry equipment, and reserve for faster construction while increasing supply strain, garrison burden, resistance, Assignment, and durable coercive conduct.
 
 Civilian loss uses the shared state-scope helper `apply_exact_state_civilian_population_loss`. The helper records deaths through `chaos_meter_register_deaths` with `constant:chaos_meter_deaths_reason.gulag_repression`, localised as deaths from camps and forced labor. Event 15 does not substitute manpower payment for Deaths accounting and does not define a separate Deaths system.
 
