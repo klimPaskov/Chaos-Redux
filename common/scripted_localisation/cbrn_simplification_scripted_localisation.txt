@@ -128,3 +128,28 @@ defined_text = {
 		localization_key = cbrn_operational_status_supported
 	}
 }
+
+# Civil Defence category status: one named cleanup state instead of kit counts.
+defined_text = {
+	name = GetCBRNCivilCleanupStatus
+	text = {
+		trigger = {
+			OR = {
+				NOT = { has_variable = cbrn_civilian_decontamination_demand_kits }
+				check_variable = { cbrn_civilian_decontamination_demand_kits < constant:cbrn_math.one }
+			}
+		}
+		localization_key = cbrn_civil_cleanup_status_not_needed
+	}
+	text = {
+		trigger = { NOT = { has_tech = field_decontamination_kits } }
+		localization_key = cbrn_civil_cleanup_status_research
+	}
+	text = {
+		trigger = { check_variable = { cbrn_civilian_decontamination_shortage_kits > constant:cbrn_math.zero } }
+		localization_key = cbrn_civil_cleanup_status_short
+	}
+	text = {
+		localization_key = cbrn_civil_cleanup_status_covered
+	}
+}
