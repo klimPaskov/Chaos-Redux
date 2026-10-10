@@ -128,6 +128,7 @@ Variant family:
 
 ### Commonwealth Ledger panel
 
+The implemented panel is titled Common Provision.
 The panel should resemble a civic ledger, planning board, or public account system without using readable decorative text inside the art.
 
 Needed states:
@@ -700,7 +701,9 @@ The spreadsheet worker should update the actual workbook only after the in-game 
 
 ## Subagent and audit expectations
 
-Before implementation completion, the parent agent should run:
+These audits ran during the July implementation and the October release review; their reports are under `docs/plans/015_utopia_manifesto_plans/subagent_handoffs/`.
+Future audits use the routing in `.claude/skills/chaos-redux-subagents/SKILL.md` with prompts written for the current question.
+The original expectation was that, before implementation completion, the parent agent should run:
 
 - repo explorer for exact file and precedent map
 - scripted-system architect for helper and tuning plan
@@ -715,7 +718,7 @@ Before implementation completion, the parent agent should run:
 - improvement-loop planner for mandatory near-completion depth review
 - event completion auditor before any completion claim
 
-Ready-to-use prompts are provided in `prompts/subagents/`.
+The original per-role prompts in `prompts/subagents/` were retired on 2026-10-10 after their work was installed; git history keeps them.
 
 ## Specification acceptance criteria
 

@@ -1,6 +1,7 @@
 # Event 15 Implementation Sequence
 
-> Historical execution plan: the phases below were used to organize implementation. They are not an outstanding task list. Use the current implementation proof matrix and source-of-truth resume packet for present state and remaining closing gates.
+> Historical execution plan: the phases below were used to organize implementation. They are not an outstanding task list.
+> Use the package README for present state and the remaining release gates, and the implementation proof matrix for current counts.
 
 ## Phase 1: recover and classify
 

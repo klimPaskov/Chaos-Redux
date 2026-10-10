@@ -1,5 +1,8 @@
 # Coding Prompt: Implement Event 15 Utopia Manifesto
 
+> Historical build contract (spec audit 2026-10-10): Event 15 is implemented, so this prompt records what was commissioned and must not be rerun as a task.
+> Current status and open gates are listed in the package README; `AGENTS.md` below means the repository instruction file, which is `CLAUDE.md` for Claude.
+
 Implement Chaos Redux Event 15 from the complete source package in `docs/specs/015_utopia_manifesto_specs/`.
 
 ## Nonnegotiable event identity
@@ -18,7 +21,7 @@ Implement Chaos Redux Event 15 from the complete source package in `docs/specs/0
 
 Read `AGENTS.md`, all relevant repository skills, the full source-spec package, current Event 15 files and mappings, current event log, focus loading, decision, country, GUI, GFX, achievement, documentation, and catalog patterns.
 
-Consult the required offline Paradox wiki pages, vanilla documentation, and vanilla examples. Use `chaosx_repo_explorer` with `fork_turns="none"` only when exact files, precedents, or implementation order remain unclear, following [the routing owner skill](../../../../.agents/skills/chaos-redux-subagents/SKILL.md).
+Consult the required offline Paradox wiki pages, vanilla documentation, and vanilla examples. Use `chaosx_repo_explorer` with `fork_turns="none"` only when exact files, precedents, or implementation order remain unclear, following [the routing owner skill](../../../../.claude/skills/chaos-redux-subagents/SKILL.md).
 
 Do not use a shallow additive branch as a fallback for protected unique trees. Exclude unsafe targets instead.
 

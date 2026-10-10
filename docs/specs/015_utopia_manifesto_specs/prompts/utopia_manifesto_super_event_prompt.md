@@ -1,5 +1,8 @@
 # Super-Event Research Prompt: Event 15 Utopia Manifesto
 
+> Historical build contract (spec audit 2026-10-10): Event 15 is implemented, so this prompt records what was commissioned and must not be rerun as a task.
+> Current status and open gates are listed in the package README; `AGENTS.md` below means the repository instruction file, which is `CLAUDE.md` for Claude.
+
 Use the Chaos Redux super-events skill and the dedicated text, audio, and image subagents. This prompt defines one route-sensitive super-event package. Do not write final localisation from the working labels in the source specs.
 
 ## Event identity

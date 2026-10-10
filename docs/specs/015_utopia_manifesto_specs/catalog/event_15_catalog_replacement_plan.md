@@ -1,6 +1,8 @@
 # Event 15 Catalog Replacement Plan
 
-> Historical catalog migration plan: `World Tension Subsides`, `Reserved`, and `To Be Reworked` are the pre-implementation source row. The live workbook row is Event 15 `Utopia Manifesto`, classified `Minor Fire-Once` and audited `Fully Functional`. Current catalog proof is `docs/plans/015_utopia_manifesto_plans/subagent_handoffs/spreadsheet_catalog_completion_audit_2026_07_15.md`.
+> Historical catalog migration plan: `World Tension Subsides`, `Reserved`, and `To Be Reworked` are the pre-implementation source row. The live workbook row is Event 15 `Utopia Manifesto`, classified `Minor Fire-Once`, with status `Needs Testing` in the 2026-10-10 export.
+> The July `Fully Functional` audit in `docs/plans/015_utopia_manifesto_plans/subagent_handoffs/spreadsheet_catalog_completion_audit_2026_07_15.md` is historical.
+> Pending October wording is accepted and queued in `docs/plans/015_utopia_manifesto_plans/catalog_changes_pending.md`.
 
 ## Historical source row
 

@@ -1,5 +1,8 @@
 # Decision and Mission Implementation Prompt: Event 15 Utopia Manifesto
 
+> Historical build contract (spec audit 2026-10-10): Event 15 is implemented, so this prompt records what was commissioned and must not be rerun as a task.
+> Current status and open gates are listed in the package README; `AGENTS.md` below means the repository instruction file, which is `CLAUDE.md` for Claude.
+
 Implement the decision, mission, and scripted GUI systems mapped in the Event 15 source specs. Read `AGENTS.md`, `chaos-redux-events`, `chaos-redux-decisions-missions`, `chaos-redux-focus-trees`, `chaos-redux-frame-animation`, and the relevant offline wiki and vanilla documentation before editing.
 
 ## Required systems

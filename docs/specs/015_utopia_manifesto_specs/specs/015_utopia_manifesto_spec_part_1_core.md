@@ -24,7 +24,7 @@ Acceptance begins a country transformation campaign rather than granting a natio
 3. Can a doctrine of taking land only when needed remain restrained once the country gains power?
 4. Can a literary ideal survive administration, dissent, occupation, and foreign rivalry without becoming a coercive state?
 
-The answer is built through the Commonwealth Ledger mechanic, a comprehensive focus tree, evolving decisions, route events, local integration projects, and a final national identity.
+The answer is built through the Commonwealth Ledger mechanic (shown to the player as the Common Provision board), a comprehensive focus tree, evolving decisions, route events, local integration projects, and a final national identity.
 
 ## Recipient fantasy
 
@@ -132,7 +132,7 @@ The speaking voice is the government or head of state choosing to convene a publ
 Visible consequence direction:
 
 - the current replaceable focus tree will be replaced
-- the Commonwealth Ledger will open after the initial survey
+- the Common Provision board opens at acceptance with the paid founding survey as its first action (accepted 2026-10-05 in `agent_decisions_2026-10-05.md`; the earlier direction that it opens after the survey is superseded)
 - the country will begin an interpretive congress
 - existing military and map ownership remain intact
 
@@ -163,6 +163,7 @@ The preparation period produces three immediate tasks.
 3. Convene an interpretive congress that establishes how literally the text will be followed.
 
 The new focus tree loads immediately or at the safest supported transition point. Its opening focuses represent these tasks, so the player is never left without a route.
+The board and the paid founding survey are available from acceptance, so the founding phase never shows an empty decision surface.
 
 ### Stage 3: the first ledger
 
@@ -257,6 +258,9 @@ Persistent conduct flags or equivalent records should distinguish:
 These records support route events, achievements, AI reactions, and the final super-event variant.
 
 Optional soft connections can respond to nearby Chaos Redux concepts without becoming prerequisites.
+The list below is design direction and none of these soft connections has an implemented gameplay hook.
+The implemented cross-event behavior is limited to recipient exclusion of countries that hold another event's package (for example Independence Wave, Random Faction, Secret Alliance, and Event 018 field or cave actors) and the Event 017 and Event 018 boundaries recorded in Part 4.
+Shared-system connections with named owners and identifiers (Migration, Famine, Condemnation) are tracked as open questions in the package README.
 
 - Independence Wave can make local autonomy and associate status more attractive.
 - Tensions Rising can increase the cost of external Need cases.

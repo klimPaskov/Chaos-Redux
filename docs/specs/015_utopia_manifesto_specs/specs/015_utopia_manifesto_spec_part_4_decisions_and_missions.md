@@ -15,6 +15,7 @@ The system uses one main category and several phased subfamilies.
 ### Main category: Commonwealth Ledger
 
 Always visible after acceptance while the country exists and the system remains active.
+The implemented category is `utopia_manifesto_ledger_category`, shown as Common Provision, with the single attached `utopia_manifesto_ledger_scripted_gui`; acceptance sets the founding phase so the board and paid survey are usable immediately.
 
 Header content:
 
@@ -28,6 +29,7 @@ Header content:
 - current reserve band
 - current settlement project
 
+The header items above are candidates, not a required readout; the presentation budget in Part 2 limits what the player sees to bands, main causes, and next steps.
 The main category should present only urgent and current actions. Targeted foreign decisions should appear in a selected-target subcategory or filtered view.
 
 ### Phase visibility
@@ -802,6 +804,11 @@ The founder can remain short of resources after relinquishing an obsolete target
 AI uses the same continuing relevance and access tests and should revise a lost remedy rather than enforce a claim to an empty field.
 These rules also apply to an ordinary supply interruption when Event 018 is absent.
 
+Implementation note (spec audit 2026-10-10): no Event 018-specific listener exists, and none is needed.
+`utopia_manifesto_state_supports_essential_resource_case` reads the state's current `has_resources_amount`, so removed Event 018 additions lower it directly while original deposits still count.
+When `utopia_manifesto_case_state_is_relevant` or the live deficit fails before stewardship, the case enters `utopia_manifesto_begin_obsolete_case_review`, which clears any ultimatum and wargoal and offers renunciation or conversion rather than escalation.
+The recheck runs at the founder's next actor pulse, not at the instant of sealing.
+
 ### Decision: Offer Purchase or Long Supply Contract
 
 Costs:
@@ -1460,6 +1467,10 @@ District projects use state suitability, three obligation groups, partial and fa
 
 Closed Island can attach Penal Works to a valid active district. Starting the method consumes manpower, infantry equipment, support equipment, and reserve. It applies state construction and local-supply output together with garrison and resistance pressure. The method has completion, halt, project failure, revolt, ownership-loss, route-exit, and terminal cleanup paths.
 
-Penal Works uses the shared state-scope effect `apply_exact_state_civilian_population_loss`. That effect passes exact applied loss into `chaos_meter_register_deaths` with `constant:chaos_meter_deaths_reason.gulag_repression`, localised as “From camps and forced labor”. Activation requests 500 civilian population loss, and successful completion requests 1000. The shared helper clamps against the minimum surviving state population and records the applied amount.
+Penal Works uses the shared state-scope effect `apply_exact_state_civilian_population_loss`.
+That effect passes exact applied loss into `chaos_meter_register_deaths` with `constant:chaos_meter_deaths_reason.gulag_repression`, localised as “From camps and forced labor”.
+Activation requests `constant:utopia_manifesto_penal_method.start_civilian_loss` (500) civilian population loss, and successful completion requests `completion_civilian_loss` (1000), both in `common/script_constants/015_utopia_manifesto_settlement_constants.txt`.
+The shared helper clamps against `minimum_state_population_remaining` (10000) and records the applied amount.
+The Part 3 requirement that Penal Works also produces condemnation is not implemented; no Event 15 effect calls `condemnation_add_source`, and the README open questions record the proposed call.
 
-The current decision and mission gate passes in `decision_mission_completion_current_reaudit_2026_07_15.md` with no open P0 through P3 finding. It verifies target survival, exact country and state reverse registries, founder-specific wargoals, ordered `.163`, `.164`, and `.165` bridges, and no recurring repair scan. It also verifies exact founder attribution for charter-created diplomacy, one atomic auxiliary contract-and-formation affordability contract with failure refund, founder-local prefire district/contact state, and the intended single category-level Ledger `scripted_gui` attachment.
+The July decision and mission re-audit `decision_mission_completion_current_reaudit_2026_07_15.md` passed with no open P0 through P3 finding; the October payment and survey dispositions above supersede its fee details. It verifies target survival, exact country and state reverse registries, founder-specific wargoals, ordered `.163`, `.164`, and `.165` bridges, and no recurring repair scan. It also verifies exact founder attribution for charter-created diplomacy, one atomic auxiliary contract-and-formation affordability contract (the July failure refund of Political Power is superseded, because the 2026-10-05 contract charges no Political Power), founder-local prefire district/contact state, and the intended single category-level Ledger `scripted_gui` attachment.

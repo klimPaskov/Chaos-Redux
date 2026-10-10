@@ -1,6 +1,7 @@
 # Event 15 Utopia Manifesto, Part 2: The Commonwealth Ledger
 
 All names in this specification are working labels, not final localisation.
+Commonwealth Ledger is the design and script name; the player-facing board is Common Provision.
 
 ## Mechanic purpose
 
@@ -26,6 +27,22 @@ The overview presents:
 - active crises and active external cases
 
 Every value should have a concise breakdown. The player should be able to see which public actions changed it and which current conditions are pushing it up or down.
+The breakdown follows the Part 7 rule: public bands, not a list of exact numbers.
+
+#### Presentation budget, proposed (spec audit 2026-10-10)
+
+The installed tooltips print every rebuild term (base, policy, institutions, industry, transport, war, occupation, ground, capital, subject, pressure, and last change), and the Ground tab prints about fifteen counters, several of which no rule reads.
+The player can act on a band, its main cause, and the next threshold, not on a dozen signed sub-totals.
+Proposed budget:
+
+- Value tooltip: band name, the two largest current causes in plain words, and the next threshold that opens or closes an action.
+- Callings: per family, the uncovered shortage band and the active method; the structural, durable, and temporary terms stay internal.
+- Stores: reserve band and the one condition most limiting it; the raw reserve score and growth-batch count are removed.
+- Ground: case stage, method, integrity band, local support band, and the next permitted step; stewardship shows its deadline and the one failing obligation.
+- League: cohesion band and member count; the refusal, exit, aid, reserve, and defense counts leave the board, while the aid, reserve, and defense counts keep feeding the shared-action proof in script.
+
+The rebuild terms remain in script for rules and debugging.
+This is a proposal tracked in the package README open questions; it changes presentation only.
 
 ### Callings
 
@@ -56,7 +73,7 @@ Need can rise from:
 - blockade and lost ports
 - damaged railways, supply hubs, or infrastructure
 - shortage of a critical calling
-- refugee pressure from compatible events
+- refugee pressure from compatible events (implemented only as own wartime occupation and Event 15 refugee or emergency-housing district flags in `utopia_manifesto_has_live_migration_pressure`; reading the shared Migration reception load is an open proposal)
 - prolonged war and mobilization
 - occupation burden
 - loss of the capital region or an island project site

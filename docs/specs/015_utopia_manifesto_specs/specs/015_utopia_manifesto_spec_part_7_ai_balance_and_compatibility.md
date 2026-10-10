@@ -937,6 +937,7 @@ If the repository cannot support this cleanly, subjects should be excluded. That
 ### Immigrations
 
 - can create genuine housing Need and refugee district options
+- no hook is implemented; the concrete route is the shared Migration reception load proposed in the README open questions
 
 ### The Free World
 

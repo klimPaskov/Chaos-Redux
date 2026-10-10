@@ -4,7 +4,8 @@
 
 ## Status
 
-The custom subagent runtime was unavailable during this planning run. None of the subagents below were executed. The package provides explicit prompts so the implementation parent can spawn them with `fork_turns="none"` and reproducible inputs.
+The custom subagent runtime was unavailable during this planning run. None of the subagents below were executed by the planner.
+The per-role prompts this order referred to were used during implementation and retired from `prompts/subagents/` on 2026-10-10; the order below is historical, and current routing is `.claude/skills/chaos-redux-subagents/SKILL.md`.
 
 Repository root for implementation prompts:
 
@@ -22,7 +23,7 @@ Working plan and handoff folder:
 
 ### 1. Repository exploration
 
-Use `chaosx_repo_explorer` only when exact files, precedents, or implementation order remain unclear, following [the routing owner skill](../../../../.agents/skills/chaos-redux-subagents/SKILL.md).
+Use `chaosx_repo_explorer` only when exact files, precedents, or implementation order remain unclear, following [the routing owner skill](../../../../.claude/skills/chaos-redux-subagents/SKILL.md).
 
 Purpose:
 

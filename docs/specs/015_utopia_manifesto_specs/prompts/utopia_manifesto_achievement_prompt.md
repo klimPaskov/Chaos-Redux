@@ -1,5 +1,8 @@
 # Achievement Implementation and Asset Prompt: Event 15 Utopia Manifesto
 
+> Historical build contract (spec audit 2026-10-10): Event 15 is implemented, so this prompt records what was commissioned and must not be rerun as a task.
+> Current status and open gates are listed in the package README; `AGENTS.md` below means the repository instruction file, which is `CLAUDE.md` for Claude.
+
 Use the achievement matrix as the source design. Inspect the live Chaos Redux achievement registry, localisation pattern, icon GFX file, and tracking conventions before implementation.
 
 All working labels require final localisation writing.

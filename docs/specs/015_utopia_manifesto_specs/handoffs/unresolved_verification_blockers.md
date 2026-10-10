@@ -62,7 +62,8 @@ Historical blocked state, resolved: at the time of this planning snapshot, `inte
 - `gfx/super_events/015_utopia_manifesto/super_event_015_closed_island.dds`
 - `gfx/super_events/015_utopia_manifesto/super_event_015_joke_understood.dds`
 
-All five route-specific masters, processed PNGs, final DDS files, source records, checksums, sprite registrations, and route mappings now exist. The two legacy images are unregistered historical files and are not fallbacks. Current evidence is in `docs/assets/015_utopia_manifesto/manifest.md`, `docs/assets/015_utopia_manifesto/gfx_handoff.md`, and the completion coverage matrix.
+All five route-specific masters, processed PNGs, final DDS files, source records, checksums, sprite registrations, and route mappings now exist. The two legacy images are unregistered historical files and are not fallbacks.
+The `docs/assets/015_utopia_manifesto/` manifest and GFX handoff cited at the time were later removed; current evidence is the completion coverage matrix and the October country release audit.
 
 ## Super-event research package
 
@@ -94,7 +95,7 @@ No custom subagent was executable in this environment.
 
 Required resolution:
 
-- run every relevant prompt in the orchestration order with `fork_turns="none"`
+- run every relevant prompt in the orchestration order (done during implementation; the per-role prompts were retired on 2026-10-10)
 
 ## Completion status
 

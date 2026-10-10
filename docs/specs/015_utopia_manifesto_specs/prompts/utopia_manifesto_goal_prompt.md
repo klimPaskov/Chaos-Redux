@@ -1,5 +1,8 @@
 # Goal: Complete Chaos Redux Event 15 Utopia Manifesto
 
+> Historical build contract (spec audit 2026-10-10): Event 15 is implemented, so this prompt records what was commissioned and must not be rerun as a task.
+> Current status and open gates are listed in the package README; `AGENTS.md` below means the repository instruction file, which is `CLAUDE.md` for Claude.
+
 Implement the accepted package under `docs/specs/015_utopia_manifesto_specs/`. Event 15 becomes `utopia_manifesto`, a Minor Fire-Once event with no cluster. Replace World Tension Subsides and every stale ID 15 mapping.
 
 Select a safe weak-country recipient. AI always accepts. An eligible human can accept or reject. Acceptance warns of tree replacement. Rejection leaves it unchanged and clears temporary state. Exclude majors, industrial powers, protected or mature trees, active event packages, civil-war or near-capitulated states, special or terminal actors, dominant faction leaders, and subject empires. Prefer safe eligible humans, then AI minors. Use a reusable gate, dynamic weak-country score, and clear unavailability reasons.

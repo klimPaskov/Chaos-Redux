@@ -627,7 +627,7 @@ Mechanical rewards:
 
 - fast fortification, resource, and infrastructure projects
 - garrison and repression tools
-- condemnation and deaths integration
+- condemnation and deaths integration (deaths are implemented through the shared exact population-loss helper; condemnation is not yet implemented, see the README open questions)
 - persistent revolt risk
 
 ### Focus group: Zapolet Contracts

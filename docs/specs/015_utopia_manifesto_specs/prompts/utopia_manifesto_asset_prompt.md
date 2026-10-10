@@ -1,5 +1,8 @@
 # Asset Production Prompt: Event 15 Utopia Manifesto
 
+> Historical build contract (spec audit 2026-10-10): Event 15 is implemented, so this prompt records what was commissioned and must not be rerun as a task.
+> Current status and open gates are listed in the package README; `AGENTS.md` below means the repository instruction file, which is `CLAUDE.md` for Claude.
+
 Use the Chaos Redux event-assets skill and the frame-animation skill. Work from the accepted source specs in this package. Non-portrait workers do not edit gameplay, localisation, GUI, GFX, or spreadsheets unless the parent expands scope.
 The portrait owner retains its skill-defined narrow exception for portrait-specific GFX and existing character portrait references.
 
@@ -16,14 +19,14 @@ All route and asset labels below are working labels, not final localisation.
 
 Before producing each asset type, inspect the matching Chaos Redux reference folder.
 
-- report images: `.agents/skills/chaos-redux-event-assets/assets/gfx_references/event_art/report`
-- news images: `.agents/skills/chaos-redux-event-assets/assets/gfx_references/event_art/news`
-- super-event images: `.agents/skills/chaos-redux-event-assets/assets/gfx_references/event_art/super_event`
-- focus icons: `.agents/skills/chaos-redux-event-assets/assets/gfx_references/icons/national_focus`
-- idea icons: `.agents/skills/chaos-redux-event-assets/assets/gfx_references/icons/ideas`
-- decision icons: `.agents/skills/chaos-redux-event-assets/assets/gfx_references/icons/decisions`
-- achievement icons: `.agents/skills/chaos-redux-event-assets/assets/gfx_references/icons/achievements`
-- flags: `.agents/skills/chaos-redux-event-assets/assets/gfx_references/flags/normal`
+- report images: `.claude/skills/chaos-redux-event-assets/assets/gfx_references/event_art/report`
+- news images: `.claude/skills/chaos-redux-event-assets/assets/gfx_references/event_art/news`
+- super-event images: `.claude/skills/chaos-redux-event-assets/assets/gfx_references/event_art/super_event`
+- focus icons: `.claude/skills/chaos-redux-event-assets/assets/gfx_references/icons/national_focus`
+- idea icons: `.claude/skills/chaos-redux-event-assets/assets/gfx_references/icons/ideas`
+- decision icons: `.claude/skills/chaos-redux-event-assets/assets/gfx_references/icons/decisions`
+- achievement icons: `.claude/skills/chaos-redux-event-assets/assets/gfx_references/icons/achievements`
+- flags: `.claude/skills/chaos-redux-event-assets/assets/gfx_references/flags/normal`
 
 ## Working output package
 
@@ -36,6 +39,8 @@ Create:
 - contact sheets
 - animation briefs and frame plans
 - final DDS or TGA files in event-scoped gameplay folders
+
+The two `docs/assets/015_utopia_manifesto/` workspace files were produced and later removed in a documented cleanup; they are historical outputs, not current files.
 
 Do not leave final game assets under `docs/assets/`.
 
@@ -480,7 +485,7 @@ Every active flag must begin as a built-in ImageGen heraldic design. Flags are i
 
 ## Institutional leader tableaux
 
-Route these leader portraits to `chaosx_portrait_creator` under [the asset owner skill](../../../../.agents/skills/chaos-redux-event-assets/SKILL.md).
+Route these leader portraits to `chaosx_portrait_creator` under [the asset owner skill](../../../../.claude/skills/chaos-redux-event-assets/SKILL.md).
 
 Create only the bodies the implementation actually uses.
 
