@@ -16,23 +16,23 @@ The ordinary decision category contains a static picture and a concise explanati
 
 ## Main actions
 
-At most six primary actions are visible at once. Normally the player sees the three unfinished domain reforms, the current mission or consolidation action, and the hostile-exit action where permitted. Mutually exclusive variants replace a domain's entry rather than appearing as a long menu of parallel near-identical decisions.
+At most six primary actions are visible at once. Normally the player sees the unfinished domain reforms, the current mission or the final settlement, and the hostile-exit action where permitted. Mutually exclusive variants replace a domain's entry rather than appearing as a long menu of parallel near-identical decisions.
 
 | Action family | Main purpose | Ordinary duration before adjustment | Base Political Power cost |
 |---|---|---:|---:|
 | Industrial reform | Reduce industrial transfer and applicable production levies | 90 days | 150 |
 | Consumer assessment reform | Reduce extra consumer-goods occupation and tax-office control | 120 days | 125 |
 | External privileges reform | Reduce unequal trade and expanded external claims | 120 days | 150 |
-| Consolidate reform stage | Make three domain improvements a durable stage | 90 days | 100 |
+| Final settlement | Turn Nominal Taxation into Tax Independence after the last three domain projects | 90 days | 100 |
 | We Will Pay No More | End tax immediately through hostile cancellation | Immediate | No artificial exit fee |
 
 These are working action-family labels except for the user's explicit hostile-exit wording. Final decision names and descriptions must be authored later from the relevant action and stage.
 
-One core reform or consolidation mission can run at a time. A British response mission may temporarily exist alongside it. A second emergency mission can only appear when it represents a different unavoidable event and keeps the total at three. The category should not create a mission for every bill or every monthly assessment.
+One reform project or the final settlement can run at a time. A British response mission may temporarily exist alongside it. A second emergency mission can only appear when it represents a different unavoidable event and keeps the total at three. The category should not create a mission for every bill or every monthly assessment.
 
 ## Twelve meaningful domain projects
 
-Each transition has three distinct projects. The rows describe purpose and behaviour rather than final localisation.
+Each transition has three distinct projects. Completing the third project of a transition advances the stage at once; only the last transition also needs the final settlement. The rows describe purpose and behaviour rather than final localisation.
 
 | Transition | Industrial project | Consumer assessment project | External privileges project |
 |---|---|---|---|
@@ -45,9 +45,9 @@ A project completed under Evolution I or II also dismantles the new claims assig
 
 ## Costs that reflect the country
 
-Apply a stage multiplier of 1.00, 1.10, 1.20, and 1.30 to the four successive transitions. Apply an Evolution duration multiplier of 1.00, 1.40, or 1.80. A strong negotiating position can reduce the duration to 80% of that result, while a weak minor facing much stronger Britain can increase it to 115%. Round displayed days upward to a multiple of five, with a minimum of 90 days for an ordinary project or consolidation.
+Apply a stage multiplier of 1.00, 1.10, 1.20, and 1.30 to the four successive transitions. Apply an Evolution duration multiplier of 1.00, 1.40, or 1.80. Round displayed days upward to a multiple of five, with a minimum of 90 days for a project or the final settlement.
 
-Political Power costs scale by stage and by 1.00, 1.25, or 1.50 for the active Evolution. Diplomatic preparation can reduce the quoted amount by up to 20%. There is no compulsory Command Power cost for civilian paperwork. Ordinary political actions should not suddenly consume army command resources.
+Political Power costs scale by stage and by 1.00, 1.25, or 1.50 for the active Evolution. A partner project (below) is the only discount, so the quote depends on choices the player can see. There is no compulsory Command Power cost for civilian paperwork. Ordinary political actions should not suddenly consume army command resources.
 
 Industrial and consumer assessment projects reserve 5% of the country's remaining uncommitted civilian capacity, capped at five factories. The reservation lasts only while the project is active. It cannot use capacity already lost to taxation or booked by another exclusive cost. When fewer than one whole usable factory can be reserved, use the low-industry route instead: an additional 25% Political Power cost and 25% duration, without a factory reservation. A country with zero spare factories can therefore resist, but cannot do so cheaply.
 
@@ -57,15 +57,15 @@ The domestic-substitution variant replaces foreign participation when no suitabl
 
 At most three cost types appear on one action. Display the ordinary native icons with the quoted values. A time requirement is explained clearly, and repeated checks never debit the upfront Political Power again. Affordability uses inclusive comparisons, so having exactly the quoted amount is enough.
 
-## Immediate relief and consolidation
+## Immediate relief and stage progress
 
 Successful domain completion lowers that domain to the next stage's multiplier immediately. The three completion marks identify what remains. Britain loses the corresponding benefits at the same time. The completed project is not merely a hidden prerequisite for a later all-or-nothing reward.
 
-After all three projects, consolidation becomes available. This is a 90-day base political process that validates and implements the complete settlement. It has no additional factory reservation. At completion, the stage advances, completion marks reset for the next transition, and the country receives a role-appropriate report.
+When the third project of a transition completes, the stage advances immediately, the completion marks reset for the next transition, and the country receives a role-appropriate report. There is no separate waiting mission between ordinary stages; the relief already happened project by project.
 
-For the final transition, the temporary 5% assessment floor continues until consolidation finishes. On valid completion, it disappears, all Event 81 taxes and privileges end, the category closes, and a durable tax-exemption record remains. Peaceful completion adds no Event 81 embargo, hostile opinion modifier, or special war goal.
+At Nominal, the three final-transition projects are followed by the final settlement, a 90-day base political process with no factory reservation that ends the claim for good. The temporary 5% assessment floor continues until the final settlement finishes. On valid completion, it disappears, all Event 81 taxes and privileges end, the category closes, and a durable tax-exemption record remains. Peaceful completion adds no Event 81 embargo, hostile opinion modifier, or special war goal.
 
-An unmodified baseline route takes about five years, depending on rounding and the final mission mix. A strong, well-prepared major can finish sooner. Evolution II can push the ordinary route toward a decade, with the weakest low-industry route exceeding twelve years before exceptional delays. These deliberately long anchors should receive explicit pacing review during native balance work. Costs and delays remain bounded. The country is also recovering capacity throughout that period rather than remaining at Full Taxation until the final year.
+An unmodified baseline route takes about four and a half years of back-to-back projects. Evolution II pushes the ordinary route toward eight years, and the weakest low-industry route toward ten, before British delays. A partner project shortens the external reforms. These deliberately long anchors should receive explicit pacing review during native balance work. Costs and delays remain bounded. The country is also recovering capacity throughout that period rather than remaining at Full Taxation until the final year.
 
 ## British-led faction members
 

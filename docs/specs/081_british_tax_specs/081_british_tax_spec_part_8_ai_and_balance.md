@@ -14,7 +14,7 @@ A weak, isolated minor with essential British imports should usually accept init
 
 ## Reform priorities
 
-The AI chooses a domain based on recoverable utility. Industrial reform becomes more attractive when the country needs military output or construction capacity. Consumer assessment reform becomes urgent when extra consumer-goods occupation is blocking development. External reform becomes more valuable when fuel, convoys, essential resources, or British export premiums threaten its economy.
+The AI chooses a domain based on recoverable utility. Industrial reform becomes more attractive when the country needs military output or construction capacity. Consumer assessment reform becomes urgent when extra consumer-goods occupation is blocking development or a state is in famine. External reform becomes more valuable when fuel, convoys, essential resources, or British export premiums threaten its economy.
 
 A completed domain has no remaining selection weight for that stage. A British-led ally at Nominal should stop wasting Political Power on impossible final projects. A dependent should never attempt the category. A country with insufficient spare civilian capacity should consider the disclosed low-industry route rather than waiting forever for a factory it cannot retain under tax.
 
@@ -24,7 +24,7 @@ Political reserves matter. The AI should not start a 150-Political-Power reform 
 
 The AI may cancel when its tax burden has risen, British leverage has fallen, alternative trade is secure, or an enforcement war would be tolerable. It should not cancel merely because a project has one day left or because a temporary surcharge has just expired.
 
-A pending final consolidation strongly favours completion. Existing direct war, an already collapsed trade relationship, and severe British overextension favour cancellation. The choice remains sensitive to the AI-major exception and to a minor's special-goal exposure.
+A pending final settlement strongly favours completion. Existing direct war, an already collapsed trade relationship, and severe British overextension favour cancellation. The choice remains sensitive to the AI-major exception and to a minor's special-goal exposure.
 
 ## British petitions and pressure
 
@@ -53,7 +53,7 @@ A partner does not need to belong to the taxpayer's faction, and assistance must
 | British dependent with abundant Political Power | No independent decision route | Buying an exemption through a generic negotiation |
 | Independent British-led ally at Nominal | Maintain settlement and await valid relationship change | Repeated attempts to enter final projects |
 | One-civilian-factory minor | Low-industry reform remains selectable | Permanent affordability deadlock |
-| Taxpayer one day from final consolidation | Complete unless a genuinely exceptional change intervenes | Cancelling to save a trivial last instalment |
+| Taxpayer one day from the final settlement | Complete unless a genuinely exceptional change intervenes | Cancelling to save a trivial last instalment |
 | Britain in several losing wars | Concede selectively, avoid reckless enforcement | Declaring every available tax war |
 | Britain powerful, target valuable and reachable | Pressure and enforcement are credible | Automatically forgiving every refusal |
 | Direct war with Britain | No actual tax income and a strong rejection preference | Britain's enemies financing its armies |

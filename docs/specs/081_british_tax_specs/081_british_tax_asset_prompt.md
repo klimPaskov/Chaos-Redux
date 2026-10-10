@@ -1,6 +1,6 @@
 # Event 81 asset production prompt
 
-Use `chaos-redux-event-assets` and read AGENTS.md, the full Event 81 spec package, and the applicable report, news, idea, decision, category-picture, achievement, and super-event references before producing assets. All identifiers in the source specs are working labels, not final localisation. This prompt authorises the specified asset production when it is invoked in a capable implementation environment. It does not claim that production has already occurred.
+Use `chaos-redux-event-assets` and read `CLAUDE.md`, the full Event 81 spec package, and the applicable report, news, idea, decision, category-picture, achievement, and super-event references before producing assets. All identifiers in the source specs are working labels, not final localisation. This prompt authorises the specified asset production when it is invoked in a capable implementation environment. It does not claim that production has already occurred.
 
 ## Scope and source of truth
 
@@ -12,13 +12,9 @@ Before adding anything, inspect actual repository consumers, existing Event 81 a
 
 ## Required reference gate
 
-Canonical reference root in the supplied project instructions:
+Use the canonical reference root `.agents/skills/chaos-redux-event-assets/assets/gfx_references/` and read its README and CATALOG. Inspect the matching family's contact sheet and native examples. If a category-picture contact sheet is missing, build and label it from actual references, then update the reference README and CATALOG before producing category pictures. Do not infer approval from a plan or from an inaccessible reference path.
 
-`C:\Users\klimp\OneDrive\Documents\Paradox Interactive\Hearts of Iron IV\mod\chaos_redux\.agents\skills\chaos-redux-event-assets\assets\gfx_references`
-
-Resolve the corresponding checkout-relative `.agents/skills/chaos-redux-event-assets/assets/gfx_references/` path in the active environment. Read its README and CATALOG. Inspect the matching family's contact sheet and native examples. If a category-picture contact sheet is missing, build and label it from actual references, then update the reference README and CATALOG before producing category pictures. Do not infer approval from a plan or from an inaccessible reference path.
-
-The supplied planning archive lacked those visual references. Record an honest blocker if they remain unavailable. A description of the expected style is not evidence of visual comparison.
+A description of the expected style is not evidence of visual comparison.
 
 ## Family production
 
@@ -30,7 +26,7 @@ SE01 uses 457 x 328 and presents the mature international revenue order. Coordin
 
 Seven idea icons are separate original subjects: three taxpayer regime states, three British revenue regime states, and one temporary pressure or emergency state. Final size is 64 x 64. The persistent taxpayer idea changes effects and tier art without accumulating a national spirit per tax channel.
 
-Eleven decision subjects are industrial recovery, consumer assessment, external reform, consolidation, hostile exit, petition, pressure, emergency assessment, enforcement, settlement, and partner assistance. Final size is 32 x 32. Generate and compose for the decision family. Do not resize idea art into these consumers.
+Eleven decision subjects are industrial recovery, consumer assessment, external reform, final settlement, hostile exit, petition, pressure, emergency assessment, enforcement, bilateral settlement, and partner assistance. Final size is 32 x 32. Generate and compose for the decision family. Do not resize idea art into these consumers.
 
 Both category pictures are static. Confirm the exact native consumer and final dimensions from the matching reference family, using 114 x 101 only as the planning reference anchor. The resistance category depicts domestic economic authority being recovered. British administration depicts central collection. Do not create an interactive GUI or a GUI asset set under this prompt.
 

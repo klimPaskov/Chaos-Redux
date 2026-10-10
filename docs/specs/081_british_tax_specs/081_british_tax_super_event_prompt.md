@@ -1,10 +1,10 @@
 # Event 81 super-event research and production prompt
 
-Read `chaos-redux-super-events`, AGENTS.md, all Event 81 specs, Part 5's maturity conditions, Part 7's presentation direction, and the separate research notes. Follow the actual repository's web-research workflow. This is the mature Revenue Empire outcome, not the initial assessment or the instant Chaos-400 threshold.
+Read `chaos-redux-super-events`, `CLAUDE.md`, all Event 81 specs, Part 5's maturity conditions, Part 7's presentation direction, and the separate research notes. Follow the actual repository's web-research workflow. This is the mature Revenue Empire outcome, not the initial assessment or the instant Chaos-400 threshold.
 
 ## Scope
 
-Research and produce the final title, description where the current framework uses one, main quote, button or cultural remark, authentic audio excerpt, source notes, and image coordination for SE01, a working consumer label. Work through bounded `chaosx_super_event_text_researcher` and `chaosx_super_event_audio_researcher` tasks using fresh contexts when those tools are actually available. Do not invent subagent runs or pretend that a source summary is their handoff.
+Research and produce the final title, description where the current framework uses one, main quote, button or cultural remark, authentic audio excerpt, source notes, and image coordination for SE01, a working consumer label. Work through bounded `chaosx_super_event_text_researcher` and `chaosx_super_event_audio_researcher` tasks with self-contained prompts. A source summary is not their handoff.
 
 The source package intentionally contains no final localisation. New structural labels are not player-facing titles. The two short verified quotation candidates in the research note are starting points, not approved final text.
 

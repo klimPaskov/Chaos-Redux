@@ -30,17 +30,13 @@ Dependents use their relationship schedule instead of stacking a complete indepe
 
 An independent British-led ally receives a five-percentage-point increase to its civilian and military industrial rates and to its consumer-goods assessment. It does not also receive the British-dependent table. This makes forced allied participation consequential while leaving negotiated reduction valuable.
 
-Industrial scale changes the assessment within every schedule, including the British-dependent schedule. A country below 20 combined residual civilian and military factories receives five additional percentage points of industrial tax. A country with at least 100 receives a five-point reduction. The middle band has no adjustment. This is applied to industrial rates only, before other multipliers. Crossing a band changes the next normal assessment, not already quoted project costs.
+The schedule row and the ally adjustment are the whole assessment. Country size and leverage are already expressed by the major, minor, and dependent rows, so no further scale, relative-strength, or Chaos-step multiplier is applied; the player can read the rate straight from the schedule.
 
-British relative strength adjusts the resulting tax by a bounded multiplier. A country facing Britain at less than half its own effective strength receives a 0.80 multiplier, broadly comparable strength gives 1.00, and Britain at more than twice its strength gives 1.20. The comparison uses Britain's non-Event-81 economy, land capability, and naval capability against the target. Raw division count alone is insufficient. British revenue does not recursively make its own tax base stronger inside the same calculation.
-
-Within an active tier, each complete 100 Chaos above that tier's threshold adds 5% to the assessment, capped at 10%. The tier anchors are 0, 200, and 400. This bounded adjustment does not activate the next Evolution. Reassessment applies at the next collection review and cannot repeatedly charge a one-off amount for crossing a threshold.
-
-Country type remains meaningful even under extreme combinations. Civilian industrial rates cap at 35% for majors, 65% for independent minors, and 85% for British dependents. Military rates cap at 30%, 55%, and 75%. Extra consumer-goods assessments cap at 15, 35, and 45 percentage points respectively. Native capacity limits may reduce actual collection below these headline caps.
+Country type remains meaningful even under surcharges. Civilian industrial rates cap at 35% for majors, 65% for independent minors, and 85% for British dependents. Military rates cap at 30%, 55%, and 75%. Extra consumer-goods assessments cap at 15, 35, and 45 percentage points respectively. Native capacity limits may reduce actual collection below these headline caps.
 
 ## Reform multipliers
 
-| Consolidated stage | Share of the full assessment retained |
+| Stage | Share of the full assessment retained |
 |---|---:|
 | Full British Taxation | 100% |
 | Reduced Taxation | 70% |
@@ -48,9 +44,9 @@ Country type remains meaningful even under extreme combinations. Civilian indust
 | Nominal Taxation | 10% |
 | Tax Independence | 0% |
 
-Three reform domains cover industrial claims, consumer assessments, and external trade privileges. A completed project moves its own domain to the next stage's multiplier immediately. Other domains remain at the current stage until addressed. The formal stage advances after all three domains and the consolidation period are complete.
+Three reform domains cover industrial claims, consumer assessments, and external trade privileges. A completed project moves its own domain to the next stage's multiplier immediately. Other domains remain at the current stage until addressed. The formal stage advances as soon as all three domains of a transition are complete, except that Tax Independence also needs the final settlement in Part 3.
 
-During the final transition, completed domains retain a temporary floor of 5% of the full assessment until final consolidation succeeds. This prevents a country from obtaining a de facto tax-free settlement while abandoning the final step or entering a relationship that blocks Tax Independence. That floor disappears on a valid final completion or hostile exit.
+During the final transition, completed domains retain a temporary floor of 5% of the full assessment until the final settlement succeeds. This prevents a country from obtaining a de facto tax-free settlement while abandoning the final step or entering a relationship that blocks Tax Independence. That floor disappears on a valid final completion or hostile exit.
 
 A new Evolution increases the underlying full assessment but does not reset earned domain multipliers. A country at Limited remains at Limited and benefits from the same proportional reduction under the new schedule.
 
@@ -88,7 +84,7 @@ These entries describe intended price changes, not modifier signs.
 | Evolution II minor | 40% | 65% |
 | Evolution II British dependent | 50% | 80% |
 
-Apply the external-privileges reform multiplier and bounded strength adjustment. Discount caps at 75% and premium caps at 100%. The price must remain positive after interaction with all other systems. British faction membership increases trade leverage through the relationship and inability to leave, without requiring a second hidden global trade penalty.
+Apply the external-privileges reform multiplier. Discount caps at 75% and premium caps at 100%. The price must remain positive after interaction with all other systems. British faction membership increases trade leverage through the relationship and inability to leave, without requiring a second hidden global trade penalty.
 
 The two directions are separate. The exporter establishes what the importer pays. A trade-attraction or trade-influence effect is not proof that the price changed. A modifier affecting all British trade does not satisfy the requirement to remove privileges against an individual country that leaves the system.
 
@@ -96,22 +92,16 @@ Normal resource availability, ordinary embargoes, and war still matter. A privil
 
 ## Expanded schedules
 
-Evolution I activates additional claims and Evolution II strengthens them. All expanded schedules inherit the relevant domain's reform multiplier. A country should not remove its main taxes only to discover that an unrelated permanent Evolution tax has been left behind.
+Evolution I activates two additional claims on physical stocks and Evolution II strengthens them. Both inherit the external-privileges domain's reform multiplier, so a country never removes its main taxes only to discover an unrelated permanent Evolution tax left behind.
 
 | Expanded claim | Evolution I major / minor / dependent | Evolution II major / minor / dependent | Domain |
 |---|---|---|---|
-| Naval production levy | 5% / 10% / 15% of usable dockyard output | 10% / 20% / 30% | Industrial |
 | Fuel assessment every 90 days | 5% / 10% / 15% of taxable surplus | 10% / 20% / 30% | External privileges |
 | Idle-convoy assessment every 90 days | 5% / 10% / 15% of taxable surplus | 10% / 15% / 25% | External privileges |
-| Strategic-resource concession ceiling | 5% / 10% / 15% of eligible supply | 10% / 20% / 30% | External privileges |
 
-The stronger military-industry transfer is the military-production tax. Do not also remove finished weapons merely to charge the same military capacity twice. Emergency surcharges can raise an existing industrial claim, but do not invent a second copy of it.
-
-A naval production levy needs a corresponding British naval-production benefit, bounded by actual foreign output lost. It must not transfer ships already built or subsidise nonexistent British dockyards. If Britain cannot use naval output, that channel does not collect. Exact measurable output and a reversible recipient benefit must be proven before implementation, as set out in the coding handoff.
+These two claims move real stock the taxpayer can see leave and Britain can use. Military production is already taxed through the military-capacity transfer, and British access to strategic resources is already priced through the trade schedule, so no naval-production levy or resource concession is added on top; either would charge the same capacity or supply twice through a weaker engine channel. Emergency surcharges can raise an existing industrial claim, but do not invent a second copy of it.
 
 Fuel collection preserves the greater of 30 days of current fuel use and 20% of storage capacity. Britain receives exactly the amount removed, bounded by its available storage. No fuel is debited merely to overflow the recipient's store. Convoy collection uses idle, uncommitted convoys only and preserves the greater of ten convoys and 10% of owned convoys in reserve. Integer remnants stay within the current liability rather than generating a forced one-convoy tax from a zero surplus.
-
-Resource concessions provide actual access to available strategic resources and remove the corresponding portion from the taxpayer's control. Existing concessions, state ownership, and other claims have priority. A whole deposit cannot be granted when it exceeds the agreed ceiling. Where the engine only supports coarser rights, use a verified bounded representation or leave that channel blocked. Preferential purchase prices already implemented by the trade schedule are not a second free resource grant.
 
 ## Emergency charges
 

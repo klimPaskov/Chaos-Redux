@@ -4,11 +4,11 @@
 
 The universal taxation system is fictional alternate history. Historical sources below support presentation, period vocabulary, and quotation research. They do not establish that Britain historically imposed the worldwide mechanism described in these specs.
 
-The local project archive and pinned repository sources support project integration. Documentation excerpts identify candidate engine facilities, not proof that those facilities have the required current runtime behaviour. Installed-game documentation, native modifier behaviour, and the mandatory tool workflows remain separate checks.
+Pinned repository sources support project integration. Documentation excerpts identify candidate engine facilities, not proof that those facilities have the required current runtime behaviour. Installed-game documentation, native modifier behaviour, and the mandatory tool workflows remain separate checks.
 
 ## Project evidence
 
-**P01: supplied project archive.** `all-project-sources(20260922-060330).zip`, supplied for this task. All 22 top-level text files and all 20 subagent definitions extracted from the nested archive were read in full before the source specification was written. The companion reading ledger records each filename and SHA-256. Referenced files not contained in that archive are not covered by this claim.
+**P01: original planning sources.** The package was first authored from a supplied archive of project instructions and skills. That archive is not a current reference; implementation reads the current `CLAUDE.md`, skills, and checkout.
 
 **P02: existing Event 81 event script.** `events/081_england_tax.txt`, repository `klimPaskov/Chaos-Redux`, commit `879b3007d3b6bf75c726c11635473fccda45c569`. Full file inspected through the connected GitHub read. The old root sends a British event, excludes allies and enemies from its demand loop, applies a one-year tax idea on acceptance, gives immediate Political Power and stability-related outcomes, and gives Britain an optional annexation-goal response to refusal. This is the superseded implementation baseline, not the requested new design.
 
@@ -22,7 +22,7 @@ Source: `https://github.com/klimPaskov/Chaos-Redux/blob/879b3007d3b6bf75c726c116
 
 The legacy positive trade-cost entry on the taxpayer targeting ENG appears inconsistent with the intended cheap British purchase direction under that documented interpretation. Treat this as a supported diagnostic hypothesis pending installed-engine verification, not as a completed runtime fix.
 
-**P05: catalog snapshots.** The supplied events, clusters, and scenarios CSV files were read in full. Event 81's events row is older and the Negative Economy cluster snapshot does not yet include the user's High member assignment. The explicit current brief takes precedence. The canonical workbook was not supplied or edited. CSV exports must not be edited directly.
+**P05: catalog.** The catalog row for Event 81 predates this design, and the Negative Economy cluster must gain its High member assignment from the user's brief. Update the authoritative workbook and regenerate the CSV exports; never edit the exports directly.
 
 ## Historical and cultural research
 

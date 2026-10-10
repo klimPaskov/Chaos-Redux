@@ -1,8 +1,8 @@
 # Event 81 decision and mission implementation prompt
 
-Read `chaos-redux-decisions-missions`, AGENTS.md, the full Event 81 package, and the actual installed-game and repository examples relevant to dynamic costs, country targeting, active missions, and factory commitments. Parts 1, 3, and 4 own the permissions and player routes. Part 2 owns the economic accounting.
+Read `chaos-redux-decisions-missions`, `CLAUDE.md`, the full Event 81 package, and the actual installed-game and repository examples relevant to dynamic costs, country targeting, active missions, and factory commitments. Parts 1, 3, and 4 own the permissions and player routes. Part 2 owns the economic accounting.
 
-Use `chaosx_decision_mission_auditor` with a fresh, self-contained bounded task when actual subagent tools are available. The current planning session did not run this agent or the mandatory HOI4 decision tools. Do not convert this prompt into a false prior audit record.
+Use `chaosx_decision_mission_auditor` with a self-contained bounded task.
 
 ## Categories and action budget
 
@@ -18,9 +18,9 @@ Identity is ENG, not the current event ROOT, current player, cosmetic name, or w
 
 ## Full chain
 
-Implement all twelve domain projects and all four consolidations. Each domain completion immediately reduces its own taxes and Britain's corresponding benefit. Consolidation establishes the formal next stage. The final transition retains the defined 5% full-assessment floor until completion. No consolidated stage or completed domain is reset by an active Evolution.
+Implement all twelve domain projects and the final settlement. Each domain completion immediately reduces its own taxes and Britain's corresponding benefit, and the third completion of a transition advances the stage without a separate mission. The final transition retains the defined 5% full-assessment floor until completion. No consolidated stage or completed domain is reset by an active Evolution.
 
-Use the source's stage, Evolution, bargaining, partner, and low-industry adjustments. Quote and freeze upfront costs and duration at commitment. Exact affordability is inclusive. Charge the upfront cost once. Continuing factory commitments release on every completion, cancellation, suspension, abolition, or invalidation path.
+Use the source's stage, Evolution, partner, and low-industry adjustments. Quote and freeze upfront costs and duration at commitment. Exact affordability is inclusive. Charge the upfront cost once. Continuing factory commitments release on every completion, cancellation, suspension, abolition, or invalidation path.
 
 Never apply a universal cost discount twice. Inspect the project's cost surface and Event 26 integration. Inline costs use the required native icons and no more than three displayed cost types. Political Power is the normal political resource. Do not add an inappropriate Command Power fee.
 
@@ -32,7 +32,7 @@ A foreign assistance project requires an actual relevant partner, costs, target 
 
 ## British response
 
-Implement one pressure episode per country per stage, the 15-day response, the fixed surcharge and delay limits, and the taxpayer's meaningful responses. No British response defaults to allowing a lawful process, not a free tax waiver. A lack of 25 Political Power takes the disclosed fixed delay rather than becoming an infinite mission failure.
+Implement the famine remission review from Part 6 and one pressure episode per country per stage, the 15-day response, the fixed surcharge and delay limits, and the taxpayer's meaningful responses. No British response defaults to allowing a lawful process, not a free tax waiver. A lack of 25 Political Power takes the disclosed fixed delay rather than becoming an infinite mission failure.
 
 Refusing a British objection is not hostile cancellation of the tax itself. Only the exact refusal and cancellation routes create the special entitlement predicate. Emergency and pressure surcharges use the larger applicable rate, never an unbounded stack.
 

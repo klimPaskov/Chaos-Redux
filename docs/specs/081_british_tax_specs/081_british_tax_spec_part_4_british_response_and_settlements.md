@@ -12,7 +12,7 @@ At most five administration families are exposed. Selecting a target narrows the
 
 | Family | Purpose and cost | Restriction |
 |---|---|---|
-| Review a petition | Recognise a lawful reform or offer a bounded negotiated concession | Only an actual independent taxpayer with a live dispute |
+| Review a petition | Recognise a lawful reform, offer a bounded negotiated concession, or grant a famine remission (Part 6) | A live dispute from an independent taxpayer, or a famine state in any taxpayer |
 | Apply pressure | Spend 75 Political Power for the one-per-stage pressure package in Part 3 | No repeated surcharge against the same stage |
 | Issue an emergency assessment | Spend 150 Political Power for a 90-day wartime surcharge | Britain in a substantial war, cooldown and caps apply |
 | Prepare enforcement | Spend 100 Political Power and 90 days on a visible diplomatic and military preparation | Requires an existing qualifying refusal and usable goal or continuing enforcement war |
@@ -67,7 +67,7 @@ If Britain loses the enforcement war, a settlement can secure bilateral tax exem
 
 ## Bilateral negotiated recognition
 
-A sovereign taxpayer can receive explicit recognition of its earned settlement after final consolidation. A former refuser can negotiate restored trade after at least 180 days without direct hostilities and with Britain willing to resolve the dispute. Neither route imposes tax again by default.
+A sovereign taxpayer can receive explicit recognition of its earned settlement after the final settlement. A former refuser can negotiate restored trade after at least 180 days without direct hostilities and with Britain willing to resolve the dispute. Neither route imposes tax again by default.
 
 A taxpayer accepting an ordinary rate concession remains within the system at its current consolidated stage, with the concession limited to the named domain and a stated duration or durable reform result. Britain cannot use a misleading concession popup that appears to promise independence but leaves a hidden Evolution levy.
 

@@ -16,15 +16,15 @@ An already activated regime persists if Chaos later falls. Pending activation mu
 
 **Chaos requirement: 200+.**
 
-Britain expands the definition of taxable economic activity. The original industrial and consumer-goods claims grow, and the two directions of privileged British trade become more unequal. British officials begin treating military output, naval production, fuel reserves, shipping, and strategic supplies as ordinary revenue categories.
+Britain expands the definition of taxable economic activity. The original industrial and consumer-goods claims grow, and the two directions of privileged British trade become more unequal. British officials begin treating military output, fuel reserves, and idle shipping as ordinary revenue categories.
 
-The player receives an itemised change in obligations. The new burden is applied to the country's remaining British-controlled share, including partial domain reforms. A country that already reduced industrial taxation does not return to Full Taxation, and a completed trade reform also protects it proportionally from new fuel, convoy, and resource claims.
+The player receives an itemised change in obligations. The new burden is applied to the country's remaining British-controlled share, including partial domain reforms. A country that already reduced industrial taxation does not return to Full Taxation, and a completed trade reform also protects it proportionally from the new fuel and convoy claims.
 
 British dependents receive the expanded assessment automatically. They cannot open a separate exemption route for fuel or shipping that would bypass the broader subject lock. Independent British-led allies retain their reduction route and the Nominal ceiling. Other independent taxpayers can continue reform or choose the existing hostile cancellation.
 
 ### New play
 
-The industrial domain now includes naval production taxation and more costly wartime claims. The external-privileges domain protects both trade terms and actual surplus assets. Completing external reform before a major naval campaign can preserve convoys and fuel. Prioritising industrial reform can recover the capacity needed to fight or construct an alternative economy.
+The industrial domain carries higher rates and costlier wartime claims. The external-privileges domain protects both trade terms and actual fuel and convoy surpluses. Completing external reform before a major naval campaign can preserve convoys and fuel. Prioritising industrial reform can recover the capacity needed to fight or construct an alternative economy.
 
 A quarterly assessment report appears only when there is a meaningful new asset claim, a changed reserve situation, or a consequential dispute. Routine successful collection is represented through the economic state rather than a popup every 90 days.
 
@@ -40,7 +40,7 @@ The first material expanded collection is the outcome that can generate Evolutio
 
 **Chaos requirement: 400+.**
 
-Britain attempts to make its global revenue privileges a permanent economic order. Industrial assessments rise, consumer-goods claims can occupy much of a weak taxpayer's remaining civilian economy, and British purchases and exports become strongly asymmetrical. Expanded resource, fuel, convoy, and naval-production claims also intensify.
+Britain attempts to make its global revenue privileges a permanent economic order. Industrial assessments rise, consumer-goods claims can occupy much of a weak taxpayer's remaining civilian economy, and British purchases and exports become strongly asymmetrical. The fuel and convoy claims also intensify.
 
 The British player can fund a large military-industrial economy with the capacity of countries that have accepted, lack sovereignty, or consider the cost of refusal too dangerous. Britain can approach the native consumer-goods floor while maintaining construction and military production. The system never produces a negative requirement or unbounded free industry.
 

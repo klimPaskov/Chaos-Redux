@@ -16,7 +16,7 @@ The completed icon depicts a central British industrial insignia receiving disti
 
 **Proposed ID:** `chaosx_081_minor_settlement`. **Eligibility:** A human-controlled independent minor with at most 20 usable civilian-plus-military factories when its first resistance project begins. **Difficulty:** Very hard. **Visibility:** Visible.
 
-Complete all twelve domain projects and all four consolidations through the peaceful route. Evolution II must be active for the entire final transition. The country must never use the hostile-exit action during this occurrence and must remain free of a British dependency relationship during its uninterrupted final transition.
+Complete all twelve domain projects and the final settlement through the peaceful route. Evolution II must be active for the entire final transition. The country must never use the hostile-exit action during this occurrence and must remain free of a British dependency relationship during its uninterrupted final transition.
 
 Growing into a major through ordinary play does not invalidate the original small-country qualification. Starting as a major and temporarily deleting factories does not establish eligibility. Use the first legitimate tax assessment and project-start history together.
 
@@ -28,7 +28,7 @@ The completed icon depicts a small factory with a fully broken foreign collectio
 
 End genuine British dependency through ordinary political or military play, then complete peaceful Tax Independence. At least one full reform stage must be completed under Evolution I or II. The country must not regain exemption solely by inheriting an earlier settlement from another identity.
 
-The initial dependent record, the first genuine independence date, and distinct consolidated stages must be tracked. Repeated puppet-release cycles cannot award missing progress.
+The initial dependent record, the first genuine independence date, and each stage reached must be tracked. Repeated puppet-release cycles cannot award missing progress.
 
 The icon depicts a colonial collection seal broken apart beside a rising domestic industrial emblem. Avoid a generic national flag so the achievement remains appropriate to different campaigns.
 
@@ -56,7 +56,7 @@ The icon depicts an allied clasp opening beside a nearly cleared industrial ledg
 
 **Proposed ID:** `chaosx_081_external_recovery`. **Eligibility:** An independent taxpayer under Evolution II. **Difficulty:** Hard. **Visibility:** Hidden until Evolution I.
 
-Begin the external domain of a transition with actual British trade exposure and at least two distinct expanded external claims successfully collected in the preceding 180 days. Complete the external domain and later Tax Independence without hostile cancellation. The reform must remove real fuel, convoy, or resource obligations, not merely labels attached to zero amounts.
+Begin the external domain of a transition with actual British trade exposure and both expanded claims, fuel and convoys, successfully collected in the preceding 180 days. Complete the external domain and later Tax Independence without hostile cancellation. The reform must remove real fuel and convoy obligations, not merely labels attached to zero amounts.
 
 The icon combines a fuel drum, merchant convoy, and alternative trade route in a compact, newly controlled domestic arrangement. All three must remain readable without excessive detail.
 

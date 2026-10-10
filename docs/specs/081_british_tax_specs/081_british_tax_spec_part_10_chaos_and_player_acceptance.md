@@ -18,7 +18,7 @@ The map below uses initial outcome anchors. Final calibration must fit the share
 
 Starting directly under Evolution II uses a single initial substantive-collection award of +10 rather than adding the baseline, Evolution I, and Evolution II awards for one transaction. Later distinct active Evolution outcomes use their listed own-stage awards. A missing intermediate award is not backfilled retroactively.
 
-Reform projects and normal consolidation supply economic relief but do not each farm negative Chaos. Annual bills, returned convoys, a pressure timeout, country creation, renamed ministries, and ceremonial acknowledgement supply no separate Chaos. The Revenue Empire super-event presents the already achieved economic milestone and does not add a second reward merely for displaying it.
+Reform projects and stage advances supply economic relief but do not each farm negative Chaos. Annual bills, returned convoys, a pressure timeout, country creation, renamed ministries, and ceremonial acknowledgement supply no separate Chaos. The Revenue Empire super-event presents the already achieved economic milestone and does not add a second reward merely for displaying it.
 
 A hostile break without any prior or potential economic relationship may still have its user-requested diplomatic consequences, but does not automatically qualify as the major international Chaos event. A war already counted by the shared tension and casualty systems is not charged again under a generic Event 81 war-start amount.
 
@@ -50,7 +50,7 @@ A large taxpayer exits, loses usable industry, changes resource ownership, or di
 
 ### A long peaceful campaign
 
-The player completes twelve projects and four consolidations, seeing relief along the way. British objections can cost time and Political Power, but cannot prevent completion forever. Final consolidation removes the last tax and the temporary final floor without creating the hostile-exit embargo or goal.
+The player completes twelve projects and the final settlement, seeing relief along the way. British objections can cost time and Political Power, but cannot prevent completion forever. The final settlement removes the last tax and the temporary final floor without creating the hostile-exit embargo or goal.
 
 ### A military settlement
 

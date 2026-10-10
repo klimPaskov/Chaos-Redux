@@ -19,8 +19,8 @@ Country display names and titles should follow the active campaign. A non-monarc
 | R05 British pressure | Taxpayer facing a valid British objection | Surcharge, delay, costs, and what Britain has not conceded | Continue, bounded compromise, or cancel current work |
 | R06 British petition | ENG after a real reform request | Target's strength, relationship, and recoverable revenue | Recognise, negotiate, or use permitted pressure |
 | R07 hostile break | Refuser or cancelling country, plus ENG counterpart | Loss of trade and the exact special-goal treatment | No second tax-decision loop |
-| R08 stage settlement | Taxpayer after consolidation | Which claims remain and what the next stage changes | Proceed or maintain the current compromise |
-| R09 expanded assessment | Taxpayer on a meaningful Evolution change | New production, fuel, shipping, or resource obligations | Continue reform or use an already legal exit |
+| R08 stage reached | Taxpayer after completing a transition's three projects | Which claims remain and what the next stage changes | Proceed or maintain the current compromise |
+| R09 expanded assessment | Taxpayer on a meaningful Evolution change | Higher rates and the new fuel and convoy obligations | Continue reform or use an already legal exit |
 | R10 enforcement preparation | ENG and target | Concrete military-diplomatic preparation following an existing refusal | Britain chooses whether to use ordinary war mechanisms |
 | R11 final independence | Sovereign country completing the final stage | Economic sovereignty regained after a long process | Close the category, preserve the settlement |
 | R12 global abolition | ENG and representative former taxpayers | Which international claims and institutions have ended | Clean worldwide termination |
@@ -53,7 +53,7 @@ All IDs below are working filenames and consumer labels, not final localisation.
 | N01 to N04 | The four news roles above | 397 x 153 | Generated period news photography, monochrome, wide composition with clear focal action |
 | SE01 | Mature Revenue Empire | 457 x 328 | Generated alternate-history international economic tableau, serious scale with administrative irony |
 
-R01 shows a British official presenting a stack of foreign assessments to an ordinary government meeting. R02 shows a foreign cabinet confronting an unexpectedly large industrial assessment. R03 shows dependent officials receiving a document already approved in London. R04 shows domestic engineers and administrators recovering control of factory allocations. R05 centres a tense bilateral negotiation. R06 shows a British minister weighing a petition against production figures. R07 shows a refused document and visibly interrupted commercial movement. R08 shows a modest settlement meeting. R09 combines dockyard, fuel, and shipping administration in a coherent industrial scene. R10 shows diplomats and military officers preparing enforcement rather than battle already won. R11 shows a final domestic settlement with factories continuing in the background. R12 shows the dismantling of an international collection office.
+R01 shows a British official presenting a stack of foreign assessments to an ordinary government meeting. R02 shows a foreign cabinet confronting an unexpectedly large industrial assessment. R03 shows dependent officials receiving a document already approved in London. R04 shows domestic engineers and administrators recovering control of factory allocations. R05 centres a tense bilateral negotiation. R06 shows a British minister weighing a petition against production figures. R07 shows a refused document and visibly interrupted commercial movement. R08 shows a modest settlement meeting. R09 combines fuel depot and harbour shipping administration in a coherent industrial scene. R10 shows diplomats and military officers preparing enforcement rather than battle already won. R11 shows a final domestic settlement with factories continuing in the background. R12 shows the dismantling of an international collection office.
 
 N01 uses a formal British announcement and a visibly international press audience. N02 uses closed cargo facilities and a diplomatic departure. N03 shows expanding industrial and maritime assessment activity. N04 shows a multinational settlement meeting with a clear end to the earlier collection order. Do not ask generated images to render readable forms, signatures, numerical invoices, or reliable map labels.
 
@@ -64,7 +64,7 @@ N01 uses a formal British announcement and a visibly international press audienc
 | Taxpayer ideas | 3 | 64 x 64 | Industrial claim, expanded claim, entrenched imperial claim |
 | British revenue ideas | 3 | 64 x 64 | Incoming industrial support, expanded collection, mature international support |
 | Pressure or emergency overlay | 1 | 64 x 64 | Coercive surcharge, visually distinct from the persistent tax |
-| Decision icons | 11 | 32 x 32 | Industrial recovery, consumer assessment, external reform, consolidation, hostile exit, petition, pressure, emergency levy, enforcement, settlement, partner assistance |
+| Decision icons | 11 | 32 x 32 | Industrial recovery, consumer assessment, external reform, final settlement, hostile exit, petition, pressure, emergency levy, enforcement, bilateral settlement, partner assistance |
 | Category pictures | 2 | Match verified native family, reference anchor 114 x 101 | Domestic resistance and British administration |
 | Achievement states | 24 | 64 x 64 | Eight achievements, completed, grey, and not-eligible states |
 
@@ -72,7 +72,7 @@ This inventory totals 61 runtime image files if all listed consumers are impleme
 
 ### Reference and processing contract
 
-Each family requires inspection of its matching vanilla reference README, CATALOG, and contact sheet before generating sources. Those reference binaries were not included in the supplied archive and have not been visually inspected in this session.
+Each family requires inspection of its matching vanilla reference README, CATALOG, and contact sheet before generating sources.
 
 Symbolic icon sources use native transparent generation with a readable silhouette at their final size. Reports follow the report-card treatment rather than using icon alpha rules. News and super-event images retain their own native framing. DDS conversion, family-specific sharpening, and runtime alpha must be checked at final dimensions.
 

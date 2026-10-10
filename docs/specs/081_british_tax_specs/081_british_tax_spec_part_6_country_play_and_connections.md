@@ -59,7 +59,13 @@ A coup or change of ruling party does not automatically cancel taxation, reset c
 
 New strategic resources, a lost port, or diminished shipping can change what Britain can actually collect. Expanded fuel and convoy levies only access their defined surplus. Britain cannot take a submarine, troop transport already assigned to an invasion, or fuel that does not exist by relabelling it a tax.
 
-If a resource deposit changes owner, British rights tied to the previous owner end unless a valid new owner's liability supplies a new lawful Event 81 claim. Tax rights do not follow the map independently of the country relationship that created them.
+If a state changes owner, the British charges tied to the previous owner's capacity and stocks end unless the new owner's own liability supplies a new lawful Event 81 claim. Tax rights do not follow the map independently of the country relationship that created them.
+
+## Famine and consumer-goods remission
+
+When a taxpayer has a state at famine stage or worse in the [famine system](../../systems/famine_system.md), Britain's petition review offers a famine remission: the taxpayer's extra consumer-goods assessment, and Britain's matching relief, are suspended for 180 days or until no state of that taxpayer remains at famine stage, whichever is later. Britain gives up real relief to keep a valuable contributor working and friendly; refusing costs nothing immediately but makes hostile cancellation more attractive to that taxpayer's AI. A dependent cannot request remission, but Britain can grant it unasked.
+
+Remission does not touch industrial or trade claims, does not advance a reform domain, and adds no Chaos. Event 81 adds no famine pressure of its own and never obstructs relief; relief-obstruction condemnation stays with the famine owner. A taxpayer AI with a famine state prefers the consumer assessment reform first.
 
 ## Diplomacy outside Britain
 

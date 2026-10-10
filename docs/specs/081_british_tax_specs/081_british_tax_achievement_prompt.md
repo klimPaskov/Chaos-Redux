@@ -9,17 +9,17 @@ Implement all eight achievements exactly from Part 9. The source part contains e
 | Proposed ID | Route to prove | Distinct tracking |
 |---|---|---|
 | `chaosx_081_revenue_order` | ENG sustains the mature Evolution II network for an additional 180 days | Actual 360-day maturity, breadth, relief, successor identities |
-| `chaosx_081_minor_settlement` | A qualifying small independent human country completes the full peaceful chain | Original economy and status, twelve projects, four consolidations, final Evolution II transition |
+| `chaosx_081_minor_settlement` | A qualifying small independent human country completes the full peaceful chain | Original economy and status, twelve projects, the final settlement, final Evolution II transition |
 | `chaosx_081_former_subject_settlement` | An initially British-dependent country becomes independent and finishes peaceful reform | Initial dependency, genuine independence, at least one complete evolved stage |
 | `chaosx_081_enforcement_defeated` | A human major's refusal leads to a defeated British enforcement war and worldwide abolition | Refusal identity, correct special entitlement, linked war, victorious settlement actor |
 | `chaosx_081_allied_exit` | A British-led ally experiences the Nominal ceiling, then completes lawful final reform | Initial faction relationship, 180-day ceiling interval, valid later relationship change |
-| `chaosx_081_external_recovery` | Remove real expanded external claims before peaceful independence | Actual prior British trade and two distinct collected expanded claims |
+| `chaosx_081_external_recovery` | Remove real expanded external claims before peaceful independence | Actual prior British trade and both fuel and convoy claims collected |
 | `chaosx_081_partner_settlements` | Two sovereign countries complete an assistance project and both reach evolved peaceful independence | Both identities, paid assistance, both final transitions under Evolution II |
 | `chaosx_081_network_recovery` | ENG rebuilds a severely damaged Evolution II collection network | Initial breadth and real receipts, genuine exit-driven loss, legitimate 180-day recovery |
 
 Inspect `common/achievements/chaos_redux_achievements.txt` and all shared ID sources for collisions. Keep all tracking event-owned and avoid an additional global heartbeat for achievement checks. Subscribe to the same substantive outcomes and country review schedule that already maintain the mechanic.
 
-Track eligibility when the source says it begins. The current major flag cannot reconstruct whether a country was a small minor several years earlier. The current puppet flag cannot prove it was an initial British dependent. A current Tax Independence stage cannot prove that twelve projects were completed peacefully.
+Track eligibility when the source says it begins. The current major flag cannot reconstruct whether a country was a small minor several years earlier. The current puppet flag cannot prove it was an initial British dependent. A current Tax Independence stage cannot prove that twelve projects and the final settlement were completed peacefully.
 
 ## Required disqualifier tests
 
