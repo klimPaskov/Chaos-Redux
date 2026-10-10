@@ -6,6 +6,7 @@ Use one ordinary economic decision category with an eligible static picture.
 Its short description presents the signed pressure index, its named band and a qualitative trend.
 The selected credit stance and the still-effective stance appear as named policy states.
 Their signed fixed effects and the review sequence belong in tooltips.
+Current causes appear by name together with the lever that removes them (procurement, repair, trade or transport, stability), never as point contributions.
 The picture remains an economic scene without painted numbers, controls or a simulated meter.
 
 The conservative budget is four public quantities: the signed index, one capacity-project timer, one fiscal or currency commitment timer, and one current recovery or political objective timer.
@@ -41,8 +42,8 @@ The following inventory defines each required art family and its visual purpose.
 | Family and planned consumers | Size and source route | Composition and reference family |
 | --- | --- | --- |
 | Category picture, one | Reference canvas 114 by 101, runtime size from the exact consumer, generated documentary scene | A shop counter with goods, paper prices and a subdued counting desk. No readable generated text. Inspect icons/decision_categories/pictures. |
-| Category icon, one | 32 by 32, matched to the native consumer, original ImageGen subject with alpha | A price tag and balanced scale, distinct from individual policy icons. Inspect icons/decision_categories. |
-| Credit decisions, two | 32 by 32 each, original ImageGen subjects with alpha | Tighten Credit uses a closed credit register and clasp. Ease Credit uses an opened register with a released clasp. Inspect icons/decisions. |
+| Category icon, one | 32 by 32, matched to the native consumer, original generated subject with alpha | A price tag and balanced scale, distinct from individual policy icons. Inspect icons/decision_categories. |
+| Credit decisions, two | 32 by 32 each, original generated subjects with alpha | Tighten Credit uses a closed credit register and clasp. Ease Credit uses an opened register with a released clasp. Inspect icons/decisions. |
 | Fiscal restraint, three ordinary subjects | 32 by 32 each, independently composed alpha subjects | Spending Reductions uses closed requisition folders, Temporary Higher Taxation a tax stamp, Reduced Military Procurement a paused ammunition order. Inspect icons/decisions. |
 | Emergency Budget Consolidation, one severe D03 variant | 32 by 32, original alpha subject | A closed spending ledger beside a heavy emergency seal. Inspect icons/decisions. |
 | Fiscal expansion, two | 32 by 32 each, independently composed alpha subjects | Tax Relief uses a released tax seal. Public Investment uses a repair tool and public works plan. Inspect icons/decisions. |
@@ -50,7 +51,7 @@ The following inventory defines each required art family and its visual purpose.
 | Price Controls, one | 32 by 32, original alpha subject | A price tag held under an official seal. Inspect icons/decisions. |
 | Wage-Price Agreement, one | 32 by 32, original alpha subject | Two signed document corners meeting over a gear, without readable text. Inspect icons/decisions. |
 | Currency Settlement, one | 32 by 32, original alpha subject | Ordered banknotes under a currency seal, without a real national portrait. Inspect icons/decisions. |
-| Targeted Credit and Emergency Reversal, two | 32 by 32 each, original alpha subjects | A credit slip beside a working machine, and a released brake respectively. Inspect icons/decisions. |
+| Emergency Monetary Action, one | 32 by 32, original alpha subject | A released brake. Inspect icons/decisions. |
 | Recovery and political objective icons, two | 32 by 32 native mission family | Balanced price tags for continuous stabilization, a fractured government seal for the ultimatum. Inspect icons/missions. |
 | Current crisis spirit, six mutually exclusive band forms | 64 by 64 each, original alpha subjects | Shuttered trade, falling prices, balanced prices, rising prices, damaged currency and piled banknotes. Inspect icons/ideas. |
 | Adjustment spirit, three mutually exclusive forms | 64 by 64 each, original alpha subjects | Restrictive adjustment, expansion wind-down and inherited economic damage. Inspect icons/ideas. |
@@ -59,7 +60,7 @@ The following inventory defines each required art family and its visual purpose.
 
 Public works is the contextual productive use of Public Investment and shares its decision consumer.
 Ordinary Spending Reductions and Emergency Budget Consolidation use separate native variant consumers with mutually exclusive offers.
-The inventory contains fifteen decision art subjects.
+The inventory contains fourteen decision art subjects.
 No row is satisfied by resizing a spirit, report or achievement into another family.
 
 The ten report compositions should remain distinct.

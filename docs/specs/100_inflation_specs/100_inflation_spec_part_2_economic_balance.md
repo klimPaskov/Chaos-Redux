@@ -99,20 +99,25 @@ A supply project helps the government remove an actual shortage or repair the pr
 
 A successful productive project does not award an arbitrary permanent factory bonus. It verifies the material objective and removes the pressure that is no longer present. When the review already recognizes the repaired capacity or restored input, the project cannot claim a second recurring reduction for the same repair. Temporary project sacrifices end on their stated schedule.
 
-Demand support is useful in deflation even when inflation began the episode. Tax relief, public investment and targeted credit raise the same signed index. They can become inappropriate when the index rises back toward stability. Their expiry and any committed follow-through remain visible, allowing a government to withdraw support in time.
+Demand support is useful in deflation even when inflation began the episode. Tax relief and public investment raise the same signed index. They can become inappropriate when the index rises back toward stability. Their expiry and any committed follow-through remain visible, allowing a government to withdraw support in time.
 
 ## Severity has material consequences
 
-The current crisis spirit uses replacement stages. Inflation damages contracting, investment and industrial coordination. Deflation suppresses investment and productive activity. Stable recovery still carries a modest residual disruption until the episode resolves.
+The current crisis spirit uses replacement stages and works through levers the player already reads on the production and construction screens.
+Rising prices pull civilian factories into household consumption, so inflation raises consumer goods and leaves fewer factories for construction and trade.
+Deflation idles machinery and stops investment, so it cuts factory output and construction instead.
+Stable recovery still carries a modest residual disruption until the episode resolves.
 
-| Current economic state | Factory output | Construction throughput | Temporary stability modifier |
-| --- | --- | --- | --- |
-| Stable recovery | 0 | -5% | 0 |
-| Inflation | -5% | -5% | 0 |
-| Severe inflation | -15% | -10% | -5 percentage points |
-| Hyperinflation | -30% | -25% | -15 percentage points |
-| Deflation | -5% | -10% | 0 |
-| Severe deflation | -20% | -30% | -10 percentage points |
+| Current economic state | Consumer goods | Factory output | Construction throughput | Temporary stability modifier |
+| --- | --- | --- | --- | --- |
+| Stable recovery | 0 | 0 | -5% | 0 |
+| Inflation | +5% | 0 | -5% | 0 |
+| Severe inflation | +10% | -5% | -10% | -5 percentage points |
+| Hyperinflation | +20% | -10% | -25% | -15 percentage points |
+| Deflation | 0 | -5% | -10% | 0 |
+| Severe deflation | 0 | -20% | -30% | -10 percentage points |
+
+Consumer goods use the native consumer goods factor; verify its current modifier name and how it combines with economy laws before tuning.
 
 These effects are substantial enough that doing nothing has a strategic cost. They are initial balance targets. The implementation should use the appropriate inspected native modifiers and confirm their stacking behavior. The design does not translate a five-point price change into a false real-world output estimate.
 

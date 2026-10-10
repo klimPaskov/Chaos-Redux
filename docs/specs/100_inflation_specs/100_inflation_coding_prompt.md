@@ -1,6 +1,6 @@
 # Implement Event 100: Inflation
 
-Implement the complete accepted package in `docs/specs/100_inflation_specs/`. Read all nine sequential specification parts, this prompt, the asset prompt, achievement prompt, decision/mission prompt, MCP/subagent handoff, research companion and balance-scenario record. Follow current `AGENTS.md`, `chaos-redux-events`, event planning, decisions/missions, event assets, subagents, MTTH, dynamic helper and relevant political/country-source contracts. This is a full rework of the current placeholder, with no authority to claim that the planning artifacts already implement it.
+Implement the complete accepted package in `docs/specs/100_inflation_specs/`. Read all nine sequential specification parts, this prompt, the asset prompt, achievement prompt, decision/mission prompt, MCP/subagent handoff, research companion and balance-scenario record. Follow current `CLAUDE.md`, `chaos-redux-events`, event planning, decisions/missions, event assets, subagents, MTTH, dynamic helper and relevant political/country-source contracts. This is a full rework of the current placeholder, with no authority to claim that the planning artifacts already implement it.
 
 The user authorizes a repeatable inflation crisis centered on one signed balance, harmful deflation, sustained stabilization, real opposition succession and four cumulative evolutions. Parent-authored tuning and bounded edge outcomes in these files expand that instruction. All content labels are working labels. Write researched, accurate final localisation during implementation instead of pasting design headings into the game.
 
@@ -12,7 +12,7 @@ One firing selects one current major or player-controlled normal civilian econom
 
 The ten-day economic review uses current distinct causes, with the +5 baseline already inside the external -10..+20 cap. Apply the effective old stance, resolve due programmes and objectives, then promote selected policy for the next review. Ongoing stance cost follows effective policy. Forecast both immediate reviews and the whole known programme release, including cooldowns and the next unapplied review in the correct worker phase.
 
-Implement all fifteen native action consumers and all costs, physical project proofs, cooldowns, milestones, cancellation terms and AI intent from Part 3. Keep two support slots, at most six primary entries in each native list state, at most three missions and four public quantities including the index. Use one ordinary category with its eligible static picture. At most two Event 100 spirit slots exist, with staged replacement and the combined adjustment ceilings.
+Implement all fourteen native action consumers and all costs, physical project proofs, cooldowns, milestones, cancellation terms and AI intent from Part 3. Keep two support slots, at most six primary entries in each native list state, at most three missions and four public quantities including the index. Use one ordinary category with its eligible static picture. At most two Event 100 spirit slots exist, with staged replacement and the combined adjustment ceilings.
 
 Currency settlement and emergency budget consolidation provide distinct costly major routes. They share a ninety-day institutional commitment and 120-day family reuse lock. Their fixed corrections, maintained runaway pause, conditional material shock, final taper and original-cost cancellation terms must all survive succession and save/load. Preserve the always accessible emergency route, including the honest all-zero-throughput edge and prospective ninety-day burden.
 
@@ -73,7 +73,7 @@ Implement one direct +5 economic rupture award after thirty cumulative extreme d
 
 Implement all six achievements with causal eligibility, natural origin, exact dates, continuity, disqualifiers and campaign-owned once-only awards. Follow the achievement prompt. Achievements give recognition, not free economic resources or Chaos.
 
-Produce the complete asset manifest through the asset prompt. Source symbolic icons and fictional scenes through the prescribed ImageGen routes, preserve native transparency and use real historical sources when the actual subject requires them. Maintain source/processed/runtime separation, correct native dimensions, decoded DDS verification, unchanged achievement templates and all final consumer bindings. The parent owns ordinary GFX and runtime integration. Final localisation remains a production task under the localisation audit.
+Produce the complete asset manifest through the asset prompt. Generate symbolic icons and fictional scenes through the `gptimage` MCP route in `chaos-redux-event-assets`, preserve native transparency and use real historical sources when the actual subject requires them. Maintain source/processed/runtime separation, correct native dimensions, decoded DDS verification, unchanged achievement templates and all final consumer bindings. The parent owns ordinary GFX and runtime integration. Final localisation remains a production task under the localisation audit.
 
 ## Required completion work
 

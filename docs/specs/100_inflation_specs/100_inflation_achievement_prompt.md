@@ -99,7 +99,7 @@ The Out of the Furnace containment proof records actual paid or irrevocably incu
 Opening a selection list, clicking Return, receiving a free narrative report or selecting a programme that fails its final payment check is not containment.
 Use five containment families for this proof: credit restraint through D01 or an appropriate D14 action, fiscal restraint through D03, D03B, D04 or D05, actual supply repair through D07 or D08, household protection through D09 or D10, and currency settlement through D11.
 Repeated steps, ordinary and emergency variants, and equivalent narrative consumers remain one member of their family.
-D06, D12 and D13 expansion do not count as inflation containment.
+D06 and D13 expansion do not count as inflation containment.
 Record which two genuinely different families qualified and the actual sacrifice each incurred.
 An unconsumed quote does not prove payment.
 
@@ -196,7 +196,7 @@ An asset's existence does not prove its achievement is registered, and a registe
 ## Art assignment and exact state production
 
 Use a single shared manifest with the asset prompt so the same six subjects are not generated twice.
-The canonical icon artist owns the ImageGen subject and processing package.
+The canonical icon artist owns the generated subject, made through the `gptimage` MCP route, and its processing package.
 Root owns ordinary achievement GFX and registry wiring.
 All six motifs are distinct:
 

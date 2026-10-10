@@ -7,7 +7,7 @@ This is a future production assignment.
 Creating this prompt does not mean any art has been generated, converted, wired or approved.
 All action, incident, achievement and asset labels are working labels, not final localisation.
 
-Read the current project AGENTS.md, the complete chaos-redux-event-assets and chaos-redux-subagents skills, and the official image-generation skill before production.
+Read the current project CLAUDE.md and the complete chaos-redux-event-assets and chaos-redux-subagents skills before production.
 Read [Part 3](100_inflation_spec_part_3_decisions_missions.md), [Part 7](100_inflation_spec_part_7_presentation_assets.md) and [Part 9](100_inflation_spec_part_9_achievements.md) completely.
 Use Parts 1, 2, 4, 5 and 6 for the exact economic states, commitments, succession and reports named in an assignment.
 Read every specifically named file completely.
@@ -46,15 +46,15 @@ Use names already supplied by root exactly.
 If a native consumer has not yet been implemented, return that precise dependency to root.
 Do not invent evidence that a planned id already exists in the repository.
 
-The complete inventory contains 44 independently authored subjects and 56 final static textures when each inspected native consumer uses one texture.
+The complete inventory contains 43 independently authored subjects and 55 final static textures when each inspected native consumer uses one texture.
 The difference is the twelve additional derived achievement states.
 A consumer that requires a different frame layout must be recorded explicitly before production.
 No unrelated hover art or optional extra family is implied.
 
-## Fifteen action subjects
+## Fourteen action subjects
 
-All fifteen action subjects use the decision family at 32 by 32, subject to the exact inspected native consumer.
-Use original ImageGen artwork with genuine transparent unused canvas.
+All fourteen action subjects use the decision family at 32 by 32, subject to the exact inspected native consumer.
+Use original generated artwork with genuine transparent unused canvas.
 Each row has its own composition.
 The names in the last column are source and filename stems for the manifest, subject to root's exact frozen runtime naming.
 
@@ -72,13 +72,13 @@ The names in the last column are source and filename stems for the manifest, sub
 | D09 | Price Controls | A price tag held under an official seal | decision_100_price_controls |
 | D10 | Wage-Price Agreement | Document corners meeting above a gear | decision_100_wage_agreement |
 | D11 | Currency Settlement | Ordered banknotes beneath a currency seal | decision_100_currency_settlement |
-| D12 | Targeted Credit | A credit slip beside an operating machine | decision_100_targeted_credit |
 | D13 | Public Investment | Repair tool and a public works plan | decision_100_public_investment |
 | D14 | Emergency Monetary Action | An emergency brake deliberately released or redirected | decision_100_emergency_monetary_action |
 
 D14 is the accepted emergency monetary action, including justified immediate direction and cancellation of a dangerous stance.
-Do not substitute a fifteenth unrelated policy for it.
-Public works is D13's productive context and does not add a sixteenth subject.
+Do not substitute an unrelated policy for it.
+D12 is retired, and its identifier is not reused.
+Public works is D13's productive context and does not add another subject.
 D03B has its own native variant and art even though it belongs to the Spending Reductions family.
 D03B and D11 share the institutional slot and cannot stack.
 
@@ -140,7 +140,7 @@ Keep clothing, equipment, architecture, vehicles, photographic technology and co
 Avoid readable generated text, modern signage, cinematic color grading, watermarks and UI overlays.
 
 Use the report-card processor after generating or sourcing the plain documentary photograph.
-Do not ask ImageGen to paint the finished tilted card.
+Do not ask the image generator to paint the finished tilted card.
 The repository process applies cover crop, monochrome and sepia treatment, grain, paper border, deterministic tilt, transparent margins and a soft shadow.
 The processed PNG and final DDS are exactly 210 by 176.
 Check transparent corners, unclipped photo detail, subtle tilt, a soft shadow and legibility after conversion.
@@ -155,7 +155,7 @@ A generated reconstruction is not evidence of a historical photograph.
 
 ## Source modes and reference discipline
 
-Use the official ImageGen skill and built-in image generation for symbolic icons and the accepted fictional scenes.
+Generate symbolic icons and the accepted fictional scenes through the `gptimage` MCP route that `chaos-redux-event-assets` owns.
 Do not replace final art with primitive drawings, geometric placeholders, borrowed reference images, filtered existing icons or contact-sheet crops.
 A reference supplies its declared palette, texture, density or composition, not ownership of its original artwork or identity.
 
@@ -168,11 +168,7 @@ Each family has its own contact_sheet.png.
 Do not redirect work to a different project's references or an invented compatibility folder.
 Inspect the actual reference images and record what was visually reviewed.
 
-The source skill prefers the named Flare route for new static generation and Sunburst for edits when those selectors are actually exposed.
-The built-in tool does not expose model, size, quality or destination selectors.
-Describe the composition and intended consumer in the prompt, inspect returned dimensions, and report only the actual exposed execution path.
-Do not claim to have selected an unavailable backend.
-Use CLI or API generation only under an explicit applicable authorization and its verified contract.
+Pass an explicit `out` path for every call, describe the composition and intended consumer in the prompt, inspect returned dimensions, and report only the execution path that actually ran.
 
 For alpha-backed icons, request genuine transparency in the initial generation.
 Keep the returned native-alpha source PNG.
@@ -197,28 +193,8 @@ Reuse existing national identity, eligible political characters, portraits, flag
 This package does not invent a roster.
 Create a portrait row only when root identifies a genuinely missing portrait for an actual required historical character and gives the exact native role and consumer.
 
-That row belongs to chaosx_portrait_creator.
-Read the complete portrait-production reference and role instructions before any production.
-Search the installed game and project character, country history, leader art, interface and localisation ownership using name variants and transliterations.
-Do not clone a person already owned by a live roster.
-Any necessary transfer must have the root-approved guarded ownership change.
-
-A grounded identity uses an attributed unchanged archival source, preferably public domain or clearly licensed.
-Do not generate, reconstruct or substitute the person's face.
-If no defensible source exists, report the exact missing row as blocked.
-Country leaders use the role-appropriate 156 by 210 workflow.
-An actual advisor or high-command consumer has its separate native 65 by 67 contract and is not inferred from a leader request.
-
-The source-placeholder package retains the untouched original, exact lossless crop, deterministic processed PNG, JSON crop and decoded-pixel equality evidence, and co-located provenance contract.
-Store it together under docs/assets/portraits/100_inflation with the exact runtime basename.
-An independent reviewer must pass identity, framing and provenance before wiring.
-The source placeholder remains explicitly pending the styled replacement and is not a completed styled portrait.
-
-The user alone supplies a requested HOI4-style final through the established RunPod branch.
-Never open, operate, queue, configure or monitor RunPod.
-Use replacement_pending only when an explicit styled-final request is actually outstanding.
-Validate a supplied result against the unchanged source and role references before replacing the same runtime path.
-Do not ask for a portrait simply because a political transition exists.
+That row belongs to chaosx_portrait_creator, which follows its own role instructions and the portrait route in `chaos-redux-event-assets`: an attributed unchanged archival source for a grounded person, no generated or reconstructed face, a source placeholder explicitly pending the user's styled final, and no agent operation of RunPod.
+Do not clone a person already owned by a live roster, and do not ask for a portrait simply because a political transition exists.
 
 ## Six achievement triplets
 
@@ -268,10 +244,7 @@ The obsolete .tools/convert_to_dds.py is not the production route.
 Use the achievement processor for achievement states.
 Report converter failures with exact errors and keep the affected conversion pending until the route is verified.
 
-For each one-level legacy BGRA DDS, verify the 128-byte header, DDS magic, header size 124, pixel-format block at byte 76 with size 32, flags 65, fourCC zero, bit count 32 and the correct BGRA masks.
-Verify texture caps 0x1000 at byte 108, declared dimensions, intended alpha and exact byte length 128 plus width times height times four.
-The masks are 0x00FF0000, 0x0000FF00, 0x000000FF and 0xFF000000.
-Use no mipmaps unless the inspected consumer explicitly requires them.
+Verify every one-level legacy BGRA DDS header, dimensions, alpha and byte length with the checks that `chaos-redux-event-assets` and its converter define; use no mipmaps unless the inspected consumer requires them.
 A plausible image decoder result does not excuse a malformed header.
 
 Decode every final DDS back to native pixels and review the round trip beside its processed PNG.
@@ -287,7 +260,7 @@ Use completed status only after root's real consumer and source review.
 ## Role boundaries and final handoff
 
 Root supplies self-contained narrow prompts.
-Use the actual canonical chaosx_icon_artist for the 33 icon subjects, including the six achievement masters and their eighteen final states.
+Use the actual canonical chaosx_icon_artist for the 32 icon subjects, including the six achievement masters and their eighteen final states.
 Use chaosx_generated_event_art for the ten report photographs and the category scene.
 Use chaosx_asset_source_researcher only for a specifically required non-portrait archival row.
 Use chaosx_portrait_creator only for the conditional real portrait lifecycle described above.
@@ -298,7 +271,7 @@ Icon and generated-art workers produce assets and handoffs without editing ordin
 The portrait role retains its narrow portrait-specific wiring authority.
 Root owns ordinary sprite registration, native category consumers, report and spirit wiring, achievement registry integration and final review.
 
-The final package lists completed and blocked rows, all 56 expected runtime textures or justified consumer-layout adjustments, exact source and processed paths, the manifest, contact sheets, DDS evidence and GFX handoff.
+The final package lists completed and blocked rows, all 55 expected runtime textures or justified consumer-layout adjustments, exact source and processed paths, the manifest, contact sheets, DDS evidence and GFX handoff.
 Required native inspect/render evidence must come from the actually available matching service route and exact consumer.
 Discover the schema and service health. Record the actual inspection executed and its coverage.
 Unavailable required render evidence remains an explicit completion limit.

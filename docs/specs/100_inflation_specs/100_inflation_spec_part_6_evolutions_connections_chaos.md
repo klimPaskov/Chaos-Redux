@@ -302,6 +302,17 @@ Inflation reads the active burden and does not remove it during success, politic
 A later native expiry or owner-approved tax settlement removes the relevant pressure at the next review.
 The [pinned tax source and idea](100_inflation_research_and_bibliography.md#pinned-repository-evidence) record the source basis for this legacy route, while a later tax rework can replace it through its explicit owner adapter.
 
+## Systems this event leaves to their owners
+
+Inflation changes prices, production and governments, not the number of people who die or flee.
+It adds no deaths, refugees, contamination, camps or condemnation of its own, and it does not write famine or migration state.
+Hardship that becomes hunger or flight reaches those systems only through their own causes, such as shortages, blockade or war, which this event reads but does not duplicate.
+
+One market cause crosses into famine, because hyperinflation historically turned shortages into hunger when money stopped buying food.
+While a country is in the severe-inflation or hyperinflation band, the [famine system](../../systems/famine_system.md) reads that band through a read-only Event 100 trigger: Import Food costs more and Food Reserves refill more slowly, and an active price-control programme offsets part of both.
+Event 100 writes nothing into famine state, and the effect ends at the next review after the band falls.
+Disposition: accepted and queued (orchestrator acceptance, 10 October 2026); the famine owner adds the read and its tuning constants when Event 100 is implemented.
+
 ## Chaos consequences and gameplay acceptance
 
 Use a small lineage-owned economic award ledger.
