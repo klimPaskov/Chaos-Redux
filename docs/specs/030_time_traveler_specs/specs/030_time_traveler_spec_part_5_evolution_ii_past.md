@@ -1,10 +1,15 @@
 # Event 030 Time Traveler Specification Part 5: Evolution II, The Door to the Past
 
+Acceptance status: the nine named figures come from the user's Event 030 brief, and Napoleon also appears in the legacy catalog premise.
+The package structure, caps, and routes are proposed design, disposition `unresolved`.
+
 ## Evolution purpose
 
 Evolution II creates a limited set of historical arrivals whose reputations, claims, and methods collide with the modern state. Each arrival must create public consequences. A returned figure cannot enter silently as a free advisor.
 
-The normal gate is `400+` Chaos, Evolution I resolved or safely bypassed, and Timeline Divergence high enough to support stable portals. The base MTTH is about 135 days. A public traveler, an active traveler government, an unresolved temporal disappearance, and copied knowledge in several countries shorten the pacing.
+The normal gate is `400+` Chaos and Evolution I resolved or safely bypassed.
+The base MTTH is about 135 days, scaled by the Divergence band as Part 1 describes.
+A public traveler, an active traveler government, an unresolved disappearance, and Future Fragments in several countries shorten the pacing.
 
 ## Campaign limits
 
@@ -25,6 +30,9 @@ The initial pool contains nine flagship figures from the source brief:
 - Tokugawa Ieyasu
 
 Any later addition requires a researched package with host logic, political role, limitations, assets, AI, outcomes, and cleanup.
+
+All nine packages share one scaffold for the six stages below, so each figure adds only its host logic, movement, routes, traits, text, and AI weights.
+The [README open questions](../README.md#open-questions) record a proposed implementation order.
 
 ## Standard arrival sequence
 
@@ -281,7 +289,8 @@ Possible conflicts include republican versus imperial authority, national versus
 
 ## Historical figure assets and ownership
 
-Every real figure requires attributed sourced portrait material, subject ownership checks, and one character token that cannot exist in two active country rosters at once. The event may change that character's role through guarded transfer. It should not clone the same real person into separate leader and claimant characters.
+Every real figure requires attributed sourced portrait material, subject ownership checks, and one character token that cannot exist in two active country rosters at once.
+For figures without photographs, the source is an attributed painting, sculpture, or coin portrait selected under the portrait owner workflow. The event may change that character's role through guarded transfer. It should not clone the same real person into separate leader and claimant characters.
 
 A character who acts as leader, commander, or advisor may need distinct consumer-specific presentation, but those assets must preserve one identity and one active ownership path.
 

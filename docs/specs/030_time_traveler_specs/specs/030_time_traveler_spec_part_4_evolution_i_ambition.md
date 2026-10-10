@@ -1,5 +1,7 @@
 # Event 030 Time Traveler Specification Part 4: Evolution I, The Traveler's Ambition
 
+Acceptance status: proposed design, disposition `unresolved`.
+
 ## Evolution purpose
 
 Evolution I turns privileged advice into a domestic political struggle. The traveler has learned who will rise, who will fail, which institutions survive, and which officials will later regret their choices. That knowledge creates a political network even when the traveler claims to have no political plan.
@@ -10,30 +12,34 @@ This evolution requires the original traveler to be alive, missing with a valid 
 
 The normal gate is `200+` Chaos, successful verification, and enough time for a political network to form. The base MTTH is about 105 days after the gate. The following factors shorten it:
 
-- Credibility above `60`
-- full government or public access
+- Credibility in the Indispensable band
+- the Cabinet Advisor or Public Recognition arrangement
 - low host stability
 - a weak or unpopular head of government
 - repeated successful consultations
 - the traveler knowing the future careers or deaths of current officials
 - a foreign abduction or assassination attempt that convinces supporters that ordinary protection is inadequate
 
-Controlled confinement and low Credibility lengthen the MTTH. They do not make ambition impossible. Confinement can produce a more conspiratorial network.
+The Confinement arrangement and Doubted Credibility lengthen the MTTH.
+They do not make ambition impossible.
+Confinement can produce a more conspiratorial network.
 
-## Hidden support sectors
+## Hidden support blocs
 
-The evolution tracks support inside six sectors. These are internal scores, not public meters.
+The evolution tracks support inside three blocs.
+These are internal scores, not public meters.
 
-- executive officials
-- military officers
-- intelligence services
-- scientific institutions
-- industrial planners
-- political and ideological movements
+| Bloc | Who it represents | What its support enables |
+| --- | --- | --- |
+| Government | executive officials, parties, and political movements | appointment, charter, and open contest routes |
+| Security | officers and intelligence services | emergency authority, arrest, coup, and armed revolt |
+| Technocrats | scientists, engineers, and industrial planners | institution-building and consultation speed |
 
-The player sees the current coalition through event text, named supporters, decision availability, and warnings. The interface should not display six percentages.
-
-A peaceful route normally requires broad civilian and institutional support. An armed route requires meaningful military or security support. A full civil war requires a territorial base, active armed supporters, and a failed political settlement.
+The player sees the coalition through event text, named supporters, decision availability, and warnings, never as percentages.
+A peaceful route needs Government support and either of the other blocs.
+An armed route needs Security support.
+A full civil war additionally needs a territorial base and a failed political settlement.
+Each access arrangement seeds the blocs differently: Cabinet Advisor favors Government, Secret Program favors Security, Confinement starts every bloc low, and Public Recognition favors Government and Technocrats.
 
 ## Opening crisis
 
@@ -115,7 +121,12 @@ The government places a person, faction, or region under surveillance. This impr
 
 ### Restrict future offenders
 
-The government removes an official, commander, industrialist, or agitator before the remembered offense occurs. The immediate strategic risk falls. Stability, legitimacy, or condemnation may worsen depending on evidence and publicity.
+The government removes an official, commander, industrialist, or agitator before the remembered offense occurs.
+The immediate strategic risk falls.
+Stability, legitimacy, or condemnation may worsen depending on evidence and publicity.
+When the host already runs a political-custody camp network, detainees enter it through the camp package's existing custody intake and the camp owner handles conditions, mortality, discovery, and condemnation.
+Event 030 never creates a camp, applies camp mortality, or counts those deaths itself.
+A public preventive-detention program creates condemnation through the existing source model.
 
 ### Change the remembered war
 
@@ -139,7 +150,7 @@ Ministers resign, services compete for access, and parties demand an inquiry. Th
 
 ### Attempted removal
 
-The existing leadership or the traveler attempts a legal dismissal, arrest, or emergency maneuver. Support sectors choose sides.
+The existing leadership or the traveler attempts a legal dismissal, arrest, or emergency maneuver. Support blocs choose sides.
 
 ### Coup or regional revolt
 
@@ -147,7 +158,7 @@ Armed supporters move against key institutions or seize one valid regional base.
 
 ### Civil war
 
-A full civil war occurs only when the claimant has durable territorial support, enough formations to fight, and no negotiated route remains. Some army units join based on hidden sector support, current command loyalty, local politics, and the country's existing civil-war systems.
+A full civil war occurs only when the claimant has durable territorial support, enough formations to fight, and no negotiated route remains. Some army units join based on hidden bloc support, current command loyalty, local politics, and the country's existing civil-war systems.
 
 The event should prefer a coup, leadership change, or limited revolt over a full civil war when the country is too small or the support base is too weak.
 

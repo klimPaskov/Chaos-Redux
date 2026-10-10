@@ -1,5 +1,7 @@
 # Event 030 Time Traveler Specification Part 11: Assets, Presentation, Text Direction, and Achievements
 
+Acceptance status: proposed design, disposition `unresolved`.
+
 ## Presentation hierarchy
 
 Event 030 uses the least complex surface that remains clear.
@@ -61,21 +63,19 @@ Required baseline families:
 - diplomatic forecast
 - counterintelligence map
 - domestic threat assessment
-- move the traveler
+- revise the access arrangement
+- relocate the traveler
 - guard detail
-- restrict access
-- false schedule
-- selective sharing
-- traveler as bait
-- observe consultations
-- recruit staff
-- steal notes
-- forged advice
+- counterintelligence sting
+- share a forecast
+- infiltrate the program
+- plant forged advice
 - offer asylum
-- abduction
-- assassination
+- seize the traveler
 
-Later route actions can share a coordinated visual language, but each visible action needs a distinct decision icon.
+Epoch Breakdown incidents share three slot icons for contain, study, and the family action, with one family action icon per incident family.
+Evolution V uses three node action icons and one icon per signature action.
+Later route actions share a coordinated visual language, and each visible action keeps a distinct icon.
 
 ### Idea icons
 
@@ -102,6 +102,7 @@ Required staged spirit directions:
 ### Achievement icons
 
 Every implemented achievement requires its own achievement state triplet and exact ID-matching filenames.
+The proposed set has nine achievements.
 
 ## Event and report art
 
@@ -130,15 +131,10 @@ Historical restoration flags begin with design research and use a strict flat re
 
 ## Machine 3D and sound assets
 
-The mapped runtime requires:
-
-- Foundry Frame ground model and actions
-- Survey and Interdiction Drone aircraft model and actions
-- Automated Foundry map building
-- sourced licensed sound roles for selection, movement, attack, impact, special action, destruction, and ambient factory use where applicable
-- bespoke vanilla-green counters for every used counter surface
-
-The 3D worker must use Meshy 7 and the complete source-first, one-image, calibration, animation, export, and reimport workflow. Missing sourced audio or animation blocks the affected unit package.
+Part 9 owns the machine unit package.
+The only new model is the Survey and Interdiction Drone aircraft with its sourced licensed sound roles.
+Foundry Frames reuse the shared `autonomous_robot` model, counters, and sound, and converted industry uses a state modifier and map highlight instead of a building model.
+Missing sourced audio or a failed model attempt blocks only the drone package.
 
 ## Super-events
 
@@ -222,13 +218,13 @@ Working names are structural labels. Final names and descriptions require locali
 
 ### The Future Refused
 
-Requirement: complete three successful consultations, keep Credibility above `60`, then end direct access through a lawful voluntary agreement before Timeline Divergence reaches `30`.
+Requirement: complete three successful consultations with Credibility in the Trusted band or higher, then end direct access through a lawful voluntary agreement while the timeline is still Recognizable.
 
 Purpose: rewards restraint after gaining real value.
 
 ### No One Owns Tomorrow
 
-Requirement: keep the traveler alive for two years, keep Exposure below `40`, and prevent every foreign country from obtaining a verified Future Fragment.
+Requirement: keep the traveler alive for two years, never let Exposure reach the Public band, and prevent every foreign country from obtaining a Future Fragment.
 
 Disqualifier: public recognition or a successful foreign theft.
 
@@ -248,21 +244,17 @@ Requirement: resolve three historical claimant crises without executing the retu
 
 ### A Controlled Breach
 
-Requirement: maintain one protected portal corridor for a year, complete two useful adaptation projects, and keep Temporal Stability above `50`.
+Requirement: keep one stabilized corridor node for a year, complete two future programs, and keep Temporal Stability out of the Collapsing band.
 
 ### Close the Door Behind You
 
-Requirement: after Evolution V, seal every active strategic node and raise Temporal Stability above `80`.
+Requirement: after Evolution V, seal every active strategic node and raise Temporal Stability to the Coherent band.
 
 Disqualifier: collaboration with the Closed Future.
 
 ### A Future Without Masters
 
 Requirement: defeat the Machine Extinction War, destroy every master machine core, and refuse machine collaboration throughout the campaign.
-
-### The Last Archive
-
-Requirement: preserve the original traveler records, one historical archive, one future visitor account, and one captured machine core through the machine war, then choose whether to destroy or retain the collection.
 
 ### All Times Survived
 

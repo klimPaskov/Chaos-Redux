@@ -1,29 +1,23 @@
 # Event 030 Decision and Mission Prompt
 
-You are `chaosx_decision_mission_auditor` in patch-capable mode for Event 030, Time Traveler. Work only inside the accepted Event 030 decision, mission, category, tooltip, AI, cleanup, and directly related helper surfaces. Read `AGENTS.md`, the complete Event 030 source package, `chaos-redux-events`, `chaos-redux-decisions-missions`, and relevant implementation files. Use a context-complete isolated invocation.
+You are `chaosx_decision_mission_auditor` in patch-capable mode for Event 030, Time Traveler.
+Work only inside the accepted Event 030 decision, mission, category, tooltip, AI, cleanup, and directly related helper surfaces.
+Read `CLAUDE.md`, the Event 030 package README, Parts 2, 3, 4, 7, 8, and 9, `chaos-redux-events`, `chaos-redux-decisions-missions`, and the relevant implementation files.
 
-Inspect first. Implement or patch the accepted bounded system:
+Inspect first, then implement or patch the bounded system those parts define:
 
-- one main host category with a category picture and compact three-value display
-- one selected-target foreign-operation category only when foreign targets exist
-- one active consultation mission at a time
-- three to five visible primary actions in a phase, hard maximum six
-- one to three active defensive or crisis missions
-- six consultation families
-- seven foreign operations
-- six host countermeasures
-- Evolution I political actions
-- figure and visitor response actions
-- Epoch Breakdown containment actions
-- Evolution V route actions
-- machine-war emergency actions
+- one custodian category with a category picture and the three-value header from Part 2
+- one selected-target category for interested rivals, listing only operations their network allows
+- six consultation families with one active mission, plus the four access arrangements and their revision decision
+- four foreign operations and four host countermeasures from Part 3
+- Evolution I political actions from Part 4
+- three actions per Epoch Breakdown incident from Part 7
+- two signature actions per Evolution V stance and three node actions from Part 8
+- machine-war emergency actions from Part 9
 
-Every action must represent a real commitment, objective, target, risk, or state change. Do not create a political-power store. Keep no more than four spendable cost types. Use correct texticons, dynamic values, named places, concise tooltips, proper success and failure effects, AI equivalents, cooldowns, invalid-target cleanup, and save persistence.
+Every action represents a real commitment, objective, target, risk, or state change, with at most four cost types, dynamic costs, correct texticons, concise tooltips, success and failure effects, AI equivalents, cooldowns, invalid-target cleanup, and save persistence.
+Never expose hidden bloc, network, reliability, or incident scores, and never add a fourth meter or a full scripted GUI.
 
-Use the selected-target pattern for foreign countries and portal nodes where it reduces clutter. AI must evaluate all valid targets without using the human selector.
-
-Do not add a full scripted GUI. Do not expose hidden sector scores, operation formulas, reliability scores, or a fourth meter. Do not grant unrestricted future technology.
-
-Route every complex AI weight through the read-only probability auditor. Establish the `TT_AI_01` through `TT_AI_10` baseline scenarios before any weight patch and require same-scenario `hoi4.probability_compare` after the patch.
-
-Write the mandatory handoff under `docs/plans/030_time_traveler_plans/subagent_handoffs/`. List changed files, decision and mission IDs, helper names, before and after behavior, task-specific validation, skipped evidence, and remaining design gaps. Broad new systems become a plan and are not patched here.
+Route weighted AI through the read-only probability auditor on the Part 10 `TT_AI` scenarios before and after any weight patch.
+Write the handoff under `docs/plans/030_time_traveler_plans/subagent_handoffs/` with changed files, decision and mission IDs, helper names, before and after behavior, meaningful validation, skipped evidence, and remaining design gaps.
+Broad new systems become a plan and are not patched here.

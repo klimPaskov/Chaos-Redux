@@ -1,25 +1,19 @@
 # Goal: Implement Event 030 Time Traveler
 
-Implement the complete Event 030 source specification under `docs/specs/030_time_traveler_specs/`.
+Implement the accepted Event 030 design under `docs/specs/030_time_traveler_specs/`, replacing the legacy short chain in `events/030_time_traveler.txt` while keeping its entry dispatcher, load-aware host selection, and Event 016 contact bridge.
 
-The event is a Major, Chaos level 1, with no cluster. Keep entry event `chaosx.nr30.1`. One original fictional traveler appears in a valid major or player country, proves future knowledge, enters a chosen access arrangement, gives mission-based consultations, and becomes the target of an international intelligence race. The host and rivals must have complete AI, multiplayer, custody-transfer, legacy, save, and cleanup behavior.
+Event 030 is a Major event at Chaos level 1 with no cluster and entry event `chaosx.nr30.1`.
+One original fictional traveler appears in a major or player country, proves future knowledge, receives one of four access arrangements, gives mission-based consultations, and becomes the target of a bounded international intelligence race.
+The player tracks Credibility, Exposure, and Timeline Divergence, each with three bands, and Evolution V shows Temporal Stability in the third slot.
 
-The player tracks exactly three persistent Event 030 values: Credibility, Exposure, and Timeline Divergence. Evolution V derives Temporal Stability from Divergence and shows one label at a time. Do not add a fourth meter.
+Five MTTH-paced evolutions follow at 200, 400, 600, 800, and 1000 Chaos: the traveler's political ambition, nine historical figures, three named future visitors with fictional specialists, seven families of material incidents, and a war of temporal stances over portal nodes.
+Machine Extinction War is an independently toggleable world-end branch fought by the original Closed Future machine country using the shared robot family and one new drone family.
+All Times at Once uses reserved `SCN-020`, raw ID `20`, with four intensities and no setup-time world end.
 
-Implement the full baseline, six consultation families, seven foreign operations, six host countermeasures, institutional spirit lifecycle, durable outcomes, and all five evolutions:
+The [README](../README.md) records acceptance status and open questions.
+[Part 12](../specs/030_time_traveler_spec_part_12_acceptance_criteria.md) is the completion contract.
+The [implementation prompt](time_traveler_coding_prompt.md) lists the reading set and delivery steps.
 
-1. Traveler's Ambition at 200+ Chaos, with charter, emergency authority, peaceful leadership, arrest, transfer, coup, revolt, and valid civil-war routes.
-2. Door to the Past at 400+ Chaos, with complete researched packages for Napoleon, Caesar, Alexander, Genghis Khan, Frederick the Great, Joan of Arc, Saladin, Bolívar, and Tokugawa Ieyasu.
-3. Visitors from the Future at 600+ Chaos, including neutral researched packages for Donald Trump, Vladimir Putin, and Xi Jinping plus the accepted visitor categories.
-4. Epoch Breakdown at 800+ Chaos, with bounded fauna, formation, civilian, equipment, disease, anomaly, machine, and unrealized-timeline incidents.
-5. War of the Possible Futures at 1000+ Chaos, with Continuity, Horizon, Restoration, alternate-state incidents, strategic portal nodes, and the original Closed Future machine actor.
-
-Implement Machine Extinction War as an independently toggleable public world-end branch. Require 1000+ Chaos, Evolution V, low stability, substantial machine footprint, hostile intent, enabled branch, and no active world end. Build the full Closed Future country, focus tree, units, provider APIs, equipment, models, licensed sourced sound, counters, industrial conversion, AI, human response, victory, defeat, and qualifying aftermath.
-
-Implement All Times at Once under reserved `SCN-020`, raw ID `20`, rechecked before runtime integration with distinct Low, Medium, High, and Maximum setups. Maximum may prepare every temporal category and raise Chaos above 1000, but setup must not set `world_end`.
-
-Use normal decision categories, a static category picture, compact three-value display, selected-target decisions, and map highlights. Do not build a full Event 030 window. Do not create full focus trees for every figure, dinosaur countries, unbounded registries, or unrestricted future technology.
-
-Follow all project skills, offline wiki and vanilla references, HOI4 MCP routes, source-only real-person portrait rules, native transparent ImageGen rules, Meshy 7 rules, owner-side unit providers, CXT registration, event logs, Event Details, evolution logging, world-end toggles, super-events, achievements, localisation, docs, and authoritative XLSX export.
-
-Use the named project subagents with isolated context. Run the improvement loop after major tranches. Run decision, focus, country, localisation, probability, spreadsheet, documentation, and final completion audits. Report every missing route, asset, portrait, AI surface, MCP proof, fallback, and simplification. Do not claim completion until the complete acceptance criteria in Part 12 pass.
+Follow `CLAUDE.md`, its routed skills, the offline wiki, and vanilla references.
+Use project subagents with self-contained prompts, run the improvement loop after major tranches, and run the audits in Part 12.
+Report every missing route, asset, portrait, AI surface, limited tool check, fallback, and simplification, and do not claim completion until Part 12 is met.

@@ -1,6 +1,7 @@
 # Event 030 Improvement Loop Prompt
 
-You are `chaosx_improvement_loop_planner` in plan-only mode. Use a context-complete isolated invocation. Read `AGENTS.md`, `chaos-redux-improvement-loop`, `chaos-redux-event-planning`, `chaos-redux-events`, all relevant system skills, the complete Event 030 specification package, current implementation, plans, handoffs, localisation, assets, docs, and catalog state.
+You are `chaosx_improvement_loop_planner` in plan-only mode with a self-contained prompt.
+Read `CLAUDE.md`, `chaos-redux-improvement-loop`, `chaos-redux-event-planning`, `chaos-redux-events`, all relevant system skills, the complete Event 030 specification package, current implementation, plans, handoffs, localisation, assets, docs, and catalog state.
 
 Assess the implemented feature promise:
 
@@ -8,9 +9,9 @@ Assess the implemented feature promise:
 - a complete consultation and intelligence struggle
 - political ambition with lawful and violent outcomes
 - limited researched past and future visitors
-- bounded material temporal incidents
-- a readable three-value mechanic
-- possible-futures alignments
+- bounded material temporal incidents with three actions each
+- a readable three-value mechanic with three bands per value
+- temporal stances and portal nodes
 - an original and beatable machine world end
 
 Find gaps that change play. Focus on missing choices, shallow figure packages, passive decisions, weak AI, disconnected integrations, generic country content, unclear presentation, missing aftermath, and unresolved asset or text identity.

@@ -1,8 +1,11 @@
 # Event 030 Manual Improvement Loop Review
 
+This is the original planning session's manual closure review, kept as design history with disposition `unresolved` until the package is accepted.
+The 2026-10-10 spec audit in the [README changelog](../README.md#changelog) later reduced several surfaces, so counts below that differ from the specification parts are historical.
+
 ## Review result
 
-Broad design expansion is no longer recommended before implementation. The accepted package already gives Event 030 a complete baseline, five evolutions, one terminal branch, one manual scenario, bounded international play, durable outcomes, AI plans, visual direction, and integration contracts. Additional large mechanics would increase maintenance and player load without repairing a known design gap.
+Broad design expansion is no longer recommended before implementation. The package already gives Event 030 a complete baseline, five evolutions, one terminal branch, one manual scenario, bounded international play, durable outcomes, AI plans, visual direction, and integration contracts. Additional large mechanics would increase maintenance and player load without repairing a known design gap.
 
 This conclusion is about planning depth. It is not an implementation completion claim.
 
@@ -14,7 +17,7 @@ The source brief already contained a strong escalation ladder. Its weak point wa
 
 ## Initial design gaps and accepted corrections
 
-| Gap in the rough concept | Accepted correction | Resulting player effect |
+| Gap in the rough concept | Proposed correction | Resulting player effect |
 | --- | --- | --- |
 | baseline bonuses could become a large passive modifier package | strongest advice is delivered through six consultation mission families | the player must act on advice and can fail, partially succeed, or discover forgery |
 | three values existed without precise ownership or thresholds | Credibility is host-local, Exposure and Divergence are global, and all three have staged consequences | each value changes a distinct decision |
@@ -64,34 +67,12 @@ The package has a clear visual hierarchy.
 
 Final player-facing wording remains an implementation task. The specification gives direction and research gates without supplying copy-ready localisation that could bypass review.
 
-## Accepted limits
+## Design limits
 
-The following limits are part of the design and should not be relaxed during implementation without a new accepted addendum.
-
-- exactly three persistent public Event 030 values
-- one original traveler in ordinary play
-- at most three active historical figures in an ordinary campaign
-- at most two active future visitors in an ordinary campaign
-- one active consultation mission per host
-- one to three active Event 030 missions visible at once
-- no more than six primary actions in one event phase
-- no full Event 030 mechanic window
-- no generic full tree for every returned person
-- no dinosaur country
-- no unrestricted future technology grants
-- no automatic Machine Extinction War from Evolution V or the maximum scenario setup
-- no direct imitation of another machine-apocalypse setting
+The [anti-bloat audit](anti_bloat_and_clarity_audit.md#design-limits) owns the current design limits.
 
 ## Closure handoff
 
 Implementation should now focus on exact source review, script ownership, portrait and asset production, final figure research, probability evidence, and testable integration. A new broad improvement addendum should be written only after a meaningful implementation tranche exposes a different design problem.
-
-The remaining planning tasks are narrow:
-
-- recheck centrally reserved `SCN-020`, raw ID `20`, against runtime/workbook occupancy before integration
-- inspect the offline wiki, vanilla files, and local Chaos Redux precedents for each touched engine surface
-- complete balanced independent research for the three named modern visitors
-- select final quotes, cultural remarks, and licensed music through the required research workers
-- decide exact unit and technology tokens only after inspecting current graphs and provider contracts
 
 The improvement loop can stop at this stage. Further expansion before implementation would add bloat.

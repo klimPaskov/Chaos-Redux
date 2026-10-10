@@ -20,7 +20,7 @@
 | --- | --- | --- | --- | --- |
 | Causal Lock | secure portals and erase rival futures | node closure behind front, archive attacks, anti-portal defense | less access to alternate reinforcements | stable machine supply network |
 | Industrial Conversion | turn captured factories into machine production | foundry upgrades, equipment, repair, automated logistics | requires contiguous industry and creates sabotage targets | self-sustaining war economy |
-| Predictive War | identify human responses and coordinate attacks | target priorities, drone support, siege groups, deception | vulnerable to captured-core misinformation | coordinated attacks on strategic systems |
+| Predictive War | identify human responses and coordinate attacks | target priorities, drone support, robot assault refinements, deception | vulnerable to captured-core misinformation | coordinated attacks on strategic systems |
 | Archive Erasure | destroy visitors, claimants, research, and human memory | intelligence operations, collaborator purges, record deletion | raises resistance and human unity | removes rival future capabilities |
 | Controlled Preservation | rare alternate machine method | preserve useful populations, puppet collaborators, selective exemptions | slows extinction and creates internal logic conflict | more stable occupation with lower immediate resistance |
 | Final Convergence | capstone | master network, terminal victory checks | requires industry, nodes, and strategic control | Causal Monopoly end state |

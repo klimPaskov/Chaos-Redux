@@ -1,10 +1,13 @@
 # Event 030 Time Traveler Specification Part 9: World-End Scenario, Machine Extinction War
 
+Acceptance status: a robot invasion from the future is the user's catalog premise and Event 030 brief.
+The Closed Future identity, phases, units, and victory rules are proposed design, disposition `unresolved`.
+
 ## Terminal role
 
 Machine Extinction War is Event 030's public world-end branch. It begins when the Consensus Engine concludes that the current human timeline will create a rival future intelligence or preserve too many competing causal branches. The Closed Future crosses through prepared nodes, converts industry, and attempts to eliminate the sources of future competition.
 
-The branch changes the campaign into a terminal global war. It sets the shared world-end state, stops ordinary random-event firing, activates the event-owned world threat source, and presents a dedicated super-event.
+The branch changes the campaign into a terminal global war. It sets the shared world-end state, stops ordinary random-event firing, sets the event-owned world-threat source flag (proposed `world_threat_source_closed_future`, registered under the [world threat mechanic](../../../systems/world_threat_mechanic.md)), and presents a dedicated super-event.
 
 ## Eligibility
 
@@ -14,7 +17,7 @@ All conditions are required:
 - Evolution V is active
 - the public branch is enabled in Event Details
 - no other world-end scenario is active
-- Temporal Stability is below the tuned threshold, proposed below `25`
+- Temporal Stability is in the Collapsing band and below the tuned threshold, proposed below `25`
 - the machine footprint is substantial
 - at least one escalation milestone proves hostile machine intent
 
@@ -68,7 +71,9 @@ Human collaborator states remain human and continue to use normal civilian syste
 
 Machine forces appear near prepared portal nodes and major industrial regions. They attack or infiltrate factories, rail hubs, ports, airfields, communication centers, and research sites.
 
-Captured industrial states gain an Automated Conversion state. Civilian and military factories are gradually reassigned to machine production. The change is visible and reversible through recapture and sabotage.
+Captured industrial states gain an Automated Conversion state modifier.
+Civilian and military factories are gradually reassigned to machine production.
+The change is visible through the state modifier and map highlight and is reversible through recapture and sabotage.
 
 The opening should create several strong regional fronts, not instant machine ownership of every industrial state.
 
@@ -96,51 +101,55 @@ Humanity either destroys the master network, captures the Consensus Engine's coo
 
 ## Machine military package
 
+The Closed Future uses two unit families and one decision actor, which keeps equipment, providers, and art small.
+
 ### Foundry Frames
 
-The core ground unit is a durable modular machine formation produced in converted factories. It has strong armor, reliability, night fighting, and coordination. It requires specialized machine equipment and cannot replenish from ordinary human stockpiles.
+The core ground force reuses the provider-neutral `autonomous_robot` battalion, its equipment, entity, counters, and sound from the [shared autonomous robot system](../../../systems/shared_autonomous_robot_system.md).
+Closed Future character comes from dependency-safe hidden refinement technologies granted through the custom technology API, which add night fighting, fortification attack, reliability, and coordination.
+The machine country cannot replenish this equipment from human stockpiles and produces it only in converted factories.
+Siege capability against fortified capitals and research complexes comes from those refinements and the Closed Future focus tree, not from a third unit family.
 
 ### Survey and Interdiction Drones
 
-Autonomous aircraft identify targets, disrupt movement, and attack exposed logistics. They support the ground force and strategic raids.
-
-### Automated Siege Groups
-
-Heavy units target fortified capitals, research complexes, and strategic weapons sites. Their production is slow and tied to converted industry.
+Autonomous aircraft identify targets, disrupt movement, and attack exposed logistics.
+This is the only new equipment family.
+It needs an owner-side provider disposition, CXT registration, equipment resolution, presentation, sustainment, removal, and cleanup, and an addition to `script_enum_equipment_bonus_type`.
 
 ### Infiltration Cells
 
-These are decision and sabotage actors, not normal divisions. They disable factories, corrupt records, and prepare collaboration.
+Infiltration Cells are decision and sabotage actors, not divisions.
+They disable factories, corrupt records, and prepare collaboration.
 
 ## Custom equipment and provider ownership
 
-Every new machine sub-unit and concrete equipment token needs an owner-side provider disposition, CXT registration, equipment resolution, presentation, sustainment, removal, and cleanup. The Closed Future owner package should expose the full provider callback contract and must not extend a central consumer list.
-
-The package should use a small number of coherent equipment families. It should not create a separate token for every machine visual variant.
+The Closed Future owner package exposes the full provider callback contract and does not extend a central consumer list.
+It does not create a separate equipment token for a visual variant.
 
 ## 3D model package
 
-The terminal branch requires three visible 3D packages if the accepted implementation uses the mapped consumers:
+One new 3D package is required: the Survey and Interdiction Drone aircraft.
+It needs one approved sourced designed-artwork image and follows the [3D model pipeline](../../../../.claude/skills/chaos-redux-3d-model-pipeline/SKILL.md), including its attempt allowances, calibration, PDX materials, reimport proof, and licensed Internet-sourced sound roles.
+The parent owns `.asset`, entity, GFX, gameplay, and live consumer wiring.
 
-- one ground combat frame under a `vehicle_land` or other correctly inspected profile
-- one autonomous aircraft package
-- one Automated Foundry map building
-
-Each package requires one approved sourced designed-artwork image, Meshy 7, provider lineage, Blender calibration, PDX materials, reimport proof, Internet-sourced licensed sound roles, and bespoke vanilla-green counters for every used counter surface. The parent owns `.asset`, entity, GFX, gameplay, and live consumer wiring.
-
-No dinosaur model is bundled into this requirement.
+Foundry Frames reuse the installed shared robot model.
+A distinct Closed Future ground model is justified only if the parent accepts a genuinely different silhouette and role, as the shared robot system requires.
+Converted industry is shown through a state modifier, map highlight, and report art rather than a map-building model, because no player decision depends on its 3D appearance.
+No dinosaur model is part of this package.
 
 ## Human response system
 
 ### Emergency command compact
 
-Countries can join a temporary anti-machine coordination network without abandoning existing factions. The compact shares target intelligence, closure methods, and emergency aid.
+Countries can join a temporary anti-machine coordination network without abandoning existing factions.
+The compact shares target intelligence, closure methods, and emergency aid.
+Continuity members join automatically.
 
 ### Evacuate a threatened city
 
 The country submits a validated Migration request from a named threatened state to safe destinations. The action requires transport, reception capacity, and route security.
 
-### Sabotage an Automated Foundry
+### Sabotage a converted foundry
 
 Resistance cells, operatives, or military units attack one converted industrial site. The mission consumes equipment and intelligence capacity. Success reduces machine production and may expose a core.
 
@@ -219,7 +228,10 @@ Retaining cores preserves research value and lowers Temporal Stability. Destroyi
 
 World-end activation receives one event-owned Chaos milestone. Machine wars, annexations, deaths, nuclear use, contamination, famine, and displacement continue through their shared sources.
 
-Machine attacks on population use exact population loss and Deaths logging. Evacuation uses Migration. Food-system collapse can submit Famine incidents. Chemical, biological, nuclear, and fallout effects use their owner systems and Condemnation.
+Machine attacks on population use exact population loss and a machine-extermination Deaths cause.
+Evacuation uses migration adapter requests.
+Attacks on food systems reach famine only as famine adapter requests with proven state, actor, source, and amount, and the famine owner decides the food outcome.
+Chemical, biological, nuclear, and fallout effects use their owner systems, Air Cleanliness sources, and Condemnation.
 
 ## Super-event package
 

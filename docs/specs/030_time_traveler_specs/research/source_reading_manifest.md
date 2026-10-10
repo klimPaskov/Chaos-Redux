@@ -1,6 +1,14 @@
-# Supplied Source Reading Manifest
+# Planning-Session Source Reading and Evidence Receipt
 
-Every file listed below was read in full before the specification was written. The subagent ZIP was unpacked and all twenty TOML definitions were read in full.
+This file is the historical receipt of the original planning session.
+It replaces the former `quality/package_status.md`, `quality/package_validation.md`, `quality/tooling_limitations.md`, and `research/repo_inspection_notes.md`, which repeated the same limits.
+Current status lives in the [README](../README.md).
+
+## Supplied files
+
+Every file listed below was read in full before the specification was written.
+The subagent ZIP was unpacked and all twenty TOML definitions were read in full.
+`Pasted markdown(7).md` is the user's Event 030 brief, the basis cited for the user-brief requirements in the README.
 
 | File | Bytes | Lines | Status |
 | --- | ---: | ---: | --- |
@@ -48,10 +56,20 @@ Every file listed below was read in full before the specification was written. T
 | `chaosx_super_event_audio_researcher.toml` | 3339 | 65 | Fully read or unpacked and fully read |
 | `chaosx_super_event_text_researcher.toml` | 3921 | 62 | Fully read or unpacked and fully read |
 
-## Additional source access
+## Planning-session evidence limits
 
-The connected public GitHub repository was searched and its specification package layout was inspected. The live repository was not mounted locally. The offline Paradox wiki, installed vanilla game files, approved Workshop references, authoritative XLSX, HOI4 MCP, and custom subagent execution runtime were unavailable. Those missing sources and tools prevent repository-level validation and implementation claims.
+The original session had the supplied files, web access for historical research, and a read-only view of the public GitHub repository.
+It did not have a local checkout, the offline wiki, the installed game, Workshop references, the catalog workbook, the HOI4 MCP, the subagent runtime, or asset production tools.
+The package therefore made no claim of implementation, parsing, MCP evidence, asset production, workbook edits, or game testing.
+These limits describe that session only and are not current blockers.
 
-## Design consequence
+## Repository search receipt
 
-The package records those limits directly. It does not claim that a custom subagent was spawned, that a probability or GUI MCP pass ran, that an asset was produced, or that the game was tested.
+The public repository was searched for `time_traveler`, `Time Traveler`, `Event 30`, `chaosx.nr30`, `Napoleon returns`, `robot invasion`, and `SCN-015`, and the indexed search returned no match.
+The legacy Event 030 chain did exist in source at the time, so the negative result reflects the search index, not the repository.
+The `SCN-015` proposal from that session is superseded by the user-authorized `SCN-020` reservation in the [shared identifier registry](../../shared_identifier_registry.md).
+
+## Original planning checks
+
+The original pass reported no em dash or semicolon characters, a goal prompt under 4000 characters, twelve specification parts, five evolution parts, world-end and scenario specifications, paired code fences, and consistent classification, cluster, value, and threshold statements across 51 files.
+Those results are historical and are not a validation receipt for later edits.

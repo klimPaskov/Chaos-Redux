@@ -1,34 +1,31 @@
 # Foreign Operation and Countermeasure Matrix
 
+[Part 3](../specs/030_time_traveler_spec_part_3_consultations_and_intelligence_war.md) owns the operation rules.
+
 ## Foreign operations
 
 | Operation | Minimum condition | Reward | Main risks | AI preference |
 | --- | --- | --- | --- | --- |
-| Observe consultations | rumored Exposure and intelligence reach | schedules, staff data, later operation access | network discovery | broad default for cautious rivals |
-| Recruit staff | known staff circle and viable access | Future Fragment and internal contact | turned recruit, diplomatic exposure | high for patient intelligence states |
-| Steal notes | mature network and archive target | copied specialty or verified fragment | archive trap, captured operative | high for scientific or strategic rivals |
-| Spread forged advice | partial knowledge and hostility | host setback and credibility damage | forgery exposed and network lost | high for hostile rivals unable to steal |
-| Offer asylum | contact with traveler and plausible destination | voluntary custody transfer | public rejection and opinion loss | allies, ideological matches, or humane states |
-| Attempt abduction | confirmed traveler, mature network, route | direct custody | double, injury, exposure, retaliation | rare, high-capability rivals |
-| Attempt assassination | existential threat judgement and no acquisition route | original traveler removed | scandal, failure, martyr movement, war risk | very rare, hostile and threatened states only |
+| Infiltrate the program | interested country | network step: schedules, then a recruited staff member and Future Fragment, then a stolen specialty | network exposed by a sting or a turned recruit | default for rivals and curious allies |
+| Plant forged advice | Suspected band, hostile, established network | custodian setback and Credibility damage | forgery exposed and network collapses | hostile rivals that cannot steal |
+| Offer asylum | Suspected band | voluntary custody transfer | public rejection and opinion loss | allies, ideological matches, or humane states |
+| Seize the traveler | Public band, mature network, viable route | custody by abduction, or removal by assassination when the sponsor sees an existential threat | double, injury, exposure, retaliation, martyr movement | rare, high-capability rivals only |
 
 ## Host countermeasures
 
 | Countermeasure | Cost direction | Strength | Tradeoff |
 | --- | --- | --- | --- |
-| Move the traveler | transport, security, consultation interruption | breaks known targeting | temporary loss of access and possible leak |
-| Assign guard detail | command power, support equipment, manpower, units | protects against violence | more staff know the secret |
-| Restrict access | consultation speed and credibility | lowers leak and recruitment risk | traveler resentment and slower rewards |
-| Create false schedules | agency capacity and time | catches cells and enables double outcome | failure exposes real route |
-| Share selected information | verified fragment and alliance trust | reduces ally theft pressure | divergence and wider copying |
-| Use traveler as bait | high intelligence and security commitment | can expose several networks | abduction, injury, death, or public scandal |
+| Relocate the traveler | transport, security, consultation interruption | breaks known targeting and lowers Exposure | temporary loss of access and possible leak |
+| Assign a guard detail | command power, support equipment, manpower, units | protects against seizure | raises Exposure |
+| Run a counterintelligence sting | agency capacity and time | lowers one network, can capture a cell or lure a seizure onto a double, can escalate into bait | failure exposes the real route, and bait can wound or lose the traveler |
+| Share a forecast with an ally | one verified forecast or result | ally gains a Future Fragment and lower theft pressure | raises Timeline Divergence |
+
+Restricting access is done by revising the access arrangement, not by a separate countermeasure.
 
 ## Interest registry
 
-| Exposure stage | Ordinary cap | Typical membership |
+| Exposure band | Ordinary cap | Typical membership |
 | --- | ---: | --- |
-| Contained | `2` | one close rival and one intelligence-capable observer |
-| Rumored | `4` | majors, close allies, and nearby rivals |
-| Suspected | `4` | mature intelligence actors and strategic competitors |
-| Confirmed | `6` | broader majors and claimant-linked countries |
-| Public | `6` | highest-value global actors, still bounded |
+| Secret | `2` | one close rival and one intelligence-capable observer |
+| Suspected | `4` | majors, close allies, and strategic competitors |
+| Public | `6` | highest-value global actors and claimant-linked countries |

@@ -1,112 +1,122 @@
 # Event 030 Anti-Bloat and Clarity Audit
 
-## Verdict
-
-The design passes the planning-stage clarity gate. The event uses many hidden calculations and branch memories, yet asks the player to track only three persistent custom values. Actions and missions are phased, target lists are bounded, and actor creation is conditional.
+This file owns the design limits and the list of rejected surfaces.
+The limits are proposed design until the parent or user accepts the package, as the [README](../README.md#status-and-acceptance) records.
 
 ## Public information budget
 
 | Surface | Persistent information shown | Budget decision |
 | --- | --- | --- |
-| baseline category header | Credibility, Exposure, Timeline Divergence | three values, complete budget |
-| Evolution I | current traveler political status and one active crisis objective | status labels, no extra meter |
-| Evolution II | active figure cards and current claimant stage | bounded actor states, no global figure score |
-| Evolution III | active visitor cards and reliability warnings | bounded actor states, no future-influence meter |
-| Evolution IV | active local incidents and severity labels | temporary incident states, no portal-pressure counter |
-| Evolution V | Temporal Stability replaces the Divergence label | derived presentation, no fourth value |
+| baseline category header | Credibility, Exposure, Timeline Divergence, each with one of three band names | three values, complete budget |
+| Evolution I | the traveler's political status and one active crisis objective | status labels, no bloc percentages |
+| Evolution II | active figure and current claimant stage | bounded actor states, no global figure score |
+| Evolution III | active visitor and contradiction warnings | bounded actor states, no reliability score |
+| Evolution IV | active local incidents with three actions each | temporary incident states, no portal-pressure counter |
+| Evolution V | Temporal Stability replaces the Divergence slot | derived display, no fourth value |
 | terminal branch | war phase and named strategic nodes | objective state, no machine-progress currency |
 
-Sector support, operation access, visitor reliability, portal pressure, machine footprint, faction preference, strategic node strength, and AI scores remain hidden or appear as short qualitative reasons when the player can act on them.
+Support blocs, network levels, visitor reliability, portal pressure, machine footprint, stance preference, node strength, and AI scores stay hidden or appear as one short qualitative reason when the player can act on them.
 
-## Action count budget
+## Action budget
 
-Normal phases expose three to five primary actions. Six is the hard maximum.
+Normal phases expose three to five primary actions and never more than six.
 
-- baseline consultation phase shows the consultation launcher, custody policy, security action, sharing policy, and selected foreign target when relevant
-- intelligence phase shows only operations valid for the selected target and current maturity
-- ambition phase replaces ordinary access actions with charter, authority, removal, or contest actions that fit the current crisis
-- figure and visitor phases expose one actor at a time through selected-target presentation
-- anomaly phase shows only incidents active in the current country
-- Evolution V shows alignment, strategic node, and immediate defense or exploitation actions
+- The baseline shows the consultation launcher, the arrangement revision, the four countermeasures when relevant, and the active mission.
+- Rivals see only the operations their network level and the Exposure band allow, one interested target at a time.
+- The ambition phase replaces ordinary access actions with the routes that fit the current crisis.
+- Figure and visitor phases expose one actor at a time.
+- Each incident shows exactly three actions.
+- Evolution V shows two stance actions plus three node actions on controlled nodes.
 
 Obsolete actions close when custody changes, a figure resolves, a portal closes, a target becomes invalid, or the terminal branch begins.
+
+## Design limits
+
+- three persistent public values, each with three bands
+- one original traveler in ordinary play
+- four access arrangements, four foreign operations, and four host countermeasures
+- at most three active historical figures and two active future visitors in an ordinary campaign
+- one active consultation mission per custodian and at most two more Event 030 missions at once
+- no more than six primary actions in one phase
+- no full Event 030 mechanic window
+- no generic full tree for a returned person
+- no dinosaur country
+- no unrestricted future technology grants
+- no new ground unit model while the shared robot family fits
+- no automatic Machine Extinction War from Evolution V or scenario setup
+- no imitation of another machine-apocalypse setting
 
 ## Actor and country budget
 
 | Tempting expansion | Decision | Reason |
 | --- | --- | --- |
-| country for every historical claimant | rejected | most movements can use an existing country, civil-war side, cosmetic identity, or limited revolt |
-| country for every alternate delegation | rejected | delegations are diplomatic or event actors until they control durable territory |
-| dinosaur country | rejected | prehistoric fauna are state incidents and containment targets |
-| separate machine tag for each model line | rejected | one Closed Future country owns provider-backed unit families |
+| country for every historical claimant | rejected | most movements fit an existing country, civil-war side, cosmetic identity, or limited revolt |
+| country for every alternate delegation | rejected | delegations are fracture incidents until they hold durable territory |
+| dinosaur country | rejected | prehistoric fauna are state incidents |
+| separate machine tag per unit line | rejected | one Closed Future country owns both unit families |
 | permanent country for every lost army | rejected | displaced formations begin as cohorts or units under a host |
-| full country for a temporal duplicate | rejected | duplicates use event representations and memory conflict |
+| full country for a temporal duplicate | rejected | duplicates use event representations |
 
-The Closed Future qualifies for a full package because it can hold territory, convert industry, raise units, pursue a coherent war, and survive for a long campaign phase.
-
-## Focus tree budget
-
-Existing major-country trees are not replaced or copied. Traveler leadership and claimant routes use events, decisions, characters, ideas, and additive crisis content. The Closed Future receives one compact fixed-purpose tree with clear political-method, production, military, portal, and terminal branches.
-
-A restored historical state receives a bespoke tree only when it becomes a durable playable country. That later tree requires its own accepted country package and cannot be inferred from a figure's arrival.
+The Closed Future qualifies for a full package because it holds territory, converts industry, raises units, and fights a long campaign.
 
 ## Technology budget
 
-The event distinguishes forecast knowledge from production capability.
-
-- advice can give research bonuses, project direction, prototype access, doctrine insight, or a bounded known-technology grant after compatibility checks
-- exact technology still requires current laboratories, materials, tooling, and industrial capacity
-- future equipment can be salvaged as a limited stockpile or reverse-engineering project
-- branch-incompatible technologies remain protected
-- the event never grants every technology remembered by a visitor
-
-This protects the technology graph and keeps future knowledge from ending normal research play.
+Advice gives research bonuses, project direction, prototype access, a doctrine result, or a bounded grant after compatibility checks.
+Exact technology still needs laboratories, materials, tooling, and industry.
+Future equipment becomes a limited batch or a reverse-engineering project.
+No visitor ever grants every remembered technology.
 
 ## Asset budget
 
-A visible mechanic receives art when it needs identity or state communication.
+Report-only incidents use report art, temporary animal incidents get no unit models, and only units that appear on the map get models.
+Foundry Frames reuse the shared robot model and converted industry uses a state modifier, so the drone is the only new model.
+Icon families stay separate and are not satisfied by resized art from another family.
+Animation is reserved for value-state communication, major identity changes, and machine escalation, and it needs separate approval.
 
-- report-only incidents use report or news art
-- temporary animal incidents do not receive unit models
-- machine unit models exist only for units that appear on the map
-- returned figures receive portraits only when their packages are active or authorized for production
-- icon types remain separate and are not satisfied by resized versions of another family
-- animation is reserved for value-state communication, major identity changes, and machine escalation
+## Popup budget
 
-## Popup and event budget
+Routine changes use category text, missions, map highlights, or compact reports.
+Full popups are reserved for arrival, proof, custody crisis, evolution activation, major claimant escalation, a large incident, stance formation, terminal activation, and earned aftermath.
+No global news event fires for every consultation, stolen note, animal sighting, or portal fluctuation.
 
-Routine state changes use category text, missions, map highlights, or compact reports. Full popups are reserved for arrival, proof, custody crisis, evolution activation, major claimant escalation, a large anomaly, temporal alignment, terminal activation, and earned aftermath.
+## Rejected surfaces
 
-The event must not issue a global news event for every consultation, stolen note, animal sighting, or portal fluctuation.
-
-## Rejected extra systems
-
-The planning pass rejected these additions:
-
-- separate Trust, Portal Pressure, Historical Momentum, Future Influence, Machine Presence, and Temporal Stability meters
+- separate Trust, Portal Pressure, Historical Momentum, Future Influence, Machine Presence, and standalone Temporal Stability meters
+- five bands per value, which added labels without adding decisions
+- separate Military Access and Scientific Access arrangements, which duplicated the knowledge profile
+- a separate Restrict Access countermeasure, which duplicated arrangement revision
+- separate Observe, Recruit, and Steal operations, which became one infiltration ladder with a hidden network level
+- separate False Schedule and Bait countermeasures, which became one sting with a bait escalation
+- six hidden support sectors, which became three blocs
+- five consultation result classes, which became success, partial, and failed with a named cause
+- six generic future visitor categories with movement packages, which became four fictional specialist roles
+- a standalone unrealized-objects incident family, which merged into the timeline rift
+- six shared containment decisions on top of family routes, which became three actions per incident
+- six temporal stances with four route actions each, which became four stances with two signature actions and shared node actions
+- alternate-state delegations as a fifth alignment, which became a fracture incident
+- a new ground machine model, a separate siege unit family, and an Automated Foundry building model
+- an archive-preservation achievement that needed its own archive ledger
 - a full tabbed temporal command center
-- universal country-by-country future knowledge ledgers visible to the player
+- player-visible country-by-country knowledge ledgers
 - exhaustive rosters of historical and modern figures
 - focus trees for visitors before they control a country
-- direct control of every foreign intelligence operation through permanent world rows
-- a new generic migration or disease system owned by Event 030
-- a new cluster only to group thematic connections
-- a model package for every ancient unit, animal, drone, and vehicle mentioned in report text
-- several machine world-end variants that duplicate one terminal premise
+- a new migration, famine, or disease system owned by Event 030
+- a cluster that only groups thematic connections
+- several machine world-end variants of one terminal premise
 
-## Clarity acceptance questions
+## Clarity questions
 
 A player should be able to answer these without implementation knowledge.
 
-| Question | Planned answer surface |
+| Question | Answer surface |
 | --- | --- |
-| Why does the government trust the traveler | Credibility stage and recent proof tooltip |
-| Why are foreign countries intervening | Exposure stage and current known operations |
-| Why are predictions failing | Divergence or Temporal Stability stage |
-| What can I do now | current three to five visible actions and active mission |
-| Who controls the traveler | custody card and character location |
-| What survives if the traveler is lost | institutional knowledge spirit tooltip |
+| Why does the government trust the traveler | Credibility band and recent causes |
+| Why are foreign countries intervening | Exposure band and known operations |
+| Why are predictions failing | Divergence or Temporal Stability band and the consultation's precision line |
+| What can I do now | three to five visible actions and the active mission |
+| Who controls the traveler | the character's location and the custodian's category |
+| What survives if the traveler is lost | the institutional spirit tooltip |
 | Why did a figure gain support | concise movement causes and current host conditions |
-| Why is the machine world-end unavailable | public status text that names broad missing readiness without exposing hidden rolls |
+| Why is the machine world end unavailable | public status text naming the broad missing readiness without hidden rolls |
 
-Any implementation that cannot answer these questions should simplify the surface before adding text or another panel.
+An implementation that cannot answer these questions simplifies the surface before adding text or another panel.

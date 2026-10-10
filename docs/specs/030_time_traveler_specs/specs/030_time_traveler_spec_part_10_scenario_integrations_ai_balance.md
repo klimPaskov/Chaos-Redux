@@ -1,5 +1,8 @@
 # Event 030 Time Traveler Specification Part 10: Triggerable Scenario, Integrations, AI, Balance, and Cleanup
 
+Acceptance status: the `SCN-020` identifier is a user-authorized allocation.
+Everything else is proposed design, disposition `unresolved`.
+
 ## Triggerable scenario
 
 Reserved scenario ID: `SCN-020`
@@ -55,7 +58,7 @@ Low intensity demonstrates the system without opening a global temporal war.
 - four anomaly incidents across at least two regions
 - one machine foothold
 - one claimant or coup crisis where valid
-- Temporal Stability remains above the severe-fracture band
+- Temporal Stability stays out of the Collapsing band
 - proposed `+200` Chaos
 
 ### High
@@ -115,7 +118,14 @@ A traveler may warn of a proven disaster sequence only through the Event 013 pub
 
 ### Event 016 Brilliant Scientist
 
-A scientific consultation can identify a scientist, project, or valid custom technology route. Any custom grant uses the owner API. Event 030 does not copy the full Event 016 project system.
+The implemented bridge must survive the rework.
+When the traveler is observed by an active Kruger host, Event 030 calls `brilliant_scientist_try_schedule_time_traveler_contact`, which records `brilliant_scientist_time_traveler_contact` and presents `chaosx.nr16.16` once.
+That helper and the Temporal Theory gate `brilliant_scientist_can_begin_temporal_theory` both read `has_idea = time_traveler`.
+When the legacy idea is retired, the implementation either keeps `time_traveler` as the custodian's active-access spirit token or migrates both Event 016 readers and the individual-crisis provider to the new custody marker in the same change.
+
+A scientific consultation can identify a scientist, project, or valid custom technology route, and any custom grant uses the owner API.
+Kruger's temporal prototype and deployment stages raise Timeline Divergence through one Event 030 adapter call, so the two temporal stories share one disturbance.
+Event 030 does not copy the Event 016 project system.
 
 ### Event 019 Soldiers from Nowhere
 
@@ -138,11 +148,11 @@ It creates neither an Event 027 global firing nor a new Event 027 batch, queue e
 If the same country already has an open Event 027 selection page, its normal target rebuild recognizes the externally changed mastery before consuming its own choice.
 This connection never calls the global Event 027 entry to obtain a local reward.
 
-### Event 032 Missiles Giveaway and nuclear systems
+### Event 032 Missiles and nuclear systems
 
 Future visitors and machines can identify missile or strategic weapon sites. The owning missile and nuclear systems control technology, stockpiles, use, fallout, and condemnation.
 
-### Event 039 Murder Mystery and Assassin Network
+### Event 039 Murder Mystery
 
 A traveler assassination can connect to the existing investigation or assassin-network logic when that package is active. Event 030 still owns custody, traveler survival, and knowledge consequences.
 
@@ -162,15 +172,21 @@ A successful or failed teleportation project can shorten portal evolution pacing
 
 ### Deaths
 
-Every direct civilian loss uses exact state population transactions and the shared Deaths tracker. Event 030 defines distinct cause labels only where the shared taxonomy needs them, such as temporal incident or machine extermination.
+Every direct civilian loss uses exact state population transactions and the shared [Deaths ledger](../../../systems/chaos_meter/chaos_meter_deaths_mechanic.md).
+Event 030 adds two reasons to `chaos_meter_deaths_reason`: a temporal incident cause for fauna, rifts, and incident fighting, and a machine extermination cause for the world-end war.
+Disease, famine, camp, and weapon deaths keep their owners' causes.
 
 ### Migration
 
-Evacuation, displaced populations, returned settlements, unsafe forced return, and machine attacks use proof-carrying Migration requests. Movement is not a death. Route deaths remain part of the same origin debit.
+Evacuation, displaced populations, returned settlements, unsafe forced return, and machine attacks use [migration](../../../systems/migration_system.md) adapter requests that prove state, people, actor, cause, and route.
+Movement is not a death, and route deaths remain part of the same origin debit.
+Machine-held states run no civilian system, so the shared special-front capture adapter already sends neighbouring populations into flight when the Closed Future advances.
 
 ### Famine
 
-Machine attacks on food systems, isolated anomaly zones, temporal disease, and blocked refugee concentrations can submit proven famine incidents. Event 030 does not write directly into the famine primary ledger.
+Machine attacks on food systems, isolated rift zones, temporal disease, and blocked refugee concentrations reach the [famine system](../../../systems/famine_system.md) only as adapter requests that prove the state, actor, source, amount or normalized component, and generation.
+The famine owner decides whether a real food problem exists, applies any mortality, and records it under its own Deaths cause.
+Event 030 never writes into the famine ledger, creates a famine popup, or relies on the retired famine incident events.
 
 ### Air Cleanliness
 
@@ -178,7 +194,23 @@ Temporal activity does not raise contamination by itself. Chemical, biological, 
 
 ### Condemnation
 
-Public preventive repression, assassinations, concealed temporal disease, attacks on civilians, and machine collaboration can create public condemnation through the existing source model. Hidden evidence stays hidden until disclosed.
+Public preventive repression, assassinations, concealed temporal disease, attacks on civilians, and machine collaboration create condemnation through the existing [source model](../../../systems/cbrn_warfare/condemnation/README.md).
+Hidden evidence stays hidden until disclosed.
+
+### Camps
+
+Evolution I preventive detention feeds an existing political-custody camp network through the camp package's custody intake when the host already runs one.
+The camp owner handles conditions, mortality, discovery, and condemnation, and Event 030 never creates a camp.
+
+### Individual crisis targeting
+
+Event 030 occupies one [individual-crisis](../../../systems/event_system/individual_crisis_targeting.md) slot on the current custodian only.
+The provider changes from the legacy timed idea to the custody marker, a custody transfer moves the slot, and legacy or Future Fragment holders do not count.
+The provider table in that document must be updated in the same implementation change.
+
+### World threat
+
+The Machine Extinction War sets and clears its own world-threat source flag through the shared aggregate.
 
 ## Event-owned Chaos milestones
 
@@ -253,17 +285,19 @@ The probability auditor should use at least these named scenarios:
 | Scenario ID | Situation | Main question |
 | --- | --- | --- |
 | `TT_AI_01` | stable democracy at peace hosts the traveler | access arrangement and lawful ambition response |
-| `TT_AI_02` | authoritarian major at war hosts the traveler | military access, secrecy, and preventive policy |
+| `TT_AI_02` | authoritarian major at war hosts the traveler | Secret Program, guard detail, and preventive policy |
 | `TT_AI_03` | low-stability host with high Exposure | coup, arrest, asylum, and foreign intervention ordering |
 | `TT_AI_04` | rival major with strong intelligence | operation choice and target pressure |
 | `TT_AI_05` | historical claimant in weak connected host | integration, suppression, and civil-war threshold |
 | `TT_AI_06` | future political visitor in functioning state | advisory route versus movement route |
 | `TT_AI_07` | severe anomaly under wartime pressure | contain, exploit, evacuate, or request aid |
-| `TT_AI_08` | Evolution V with high research capacity | continuity, Horizon, and exploitation stance weights |
+| `TT_AI_08` | Evolution V with high research capacity | Continuity and Horizon stance weights and node exploitation |
 | `TT_AI_09` | machine-threatened industrial power | anti-machine response ordering |
 | `TT_AI_10` | desperate government offered collaboration | rarity and refusal logic |
 
-The first pass establishes baseline evidence. Any weighted patch requires the same-scenario `hoi4.probability_compare` pass.
+The first pass establishes baseline evidence.
+A later weight patch is compared on the same scenarios, preferably with `hoi4.probability_compare`.
+When the analyzer cannot handle the script, calculations from the actual weights on these scenarios are sufficient, with assumptions and the score-versus-probability limit stated.
 
 ## Cleanup and invalidation
 
@@ -289,7 +323,7 @@ Remove active missions, modifiers, targets, and node entries. Apply one closure 
 
 ### Machine node recaptured
 
-Remove or downgrade Automated Conversion, reconcile factories, close machine production, update the machine footprint, and make the state ineligible for duplicate node creation.
+Remove or downgrade the Automated Conversion modifier, reconcile factories, close machine production, update the machine footprint, and make the state ineligible for duplicate node creation.
 
 ### World end begins
 

@@ -1,6 +1,7 @@
 # Event 030 Subagent Orchestration Plan
 
-Every project subagent receives a fully explicit prompt with `fork_turns="none"` in Codex or the equivalent isolated context in Qoder and Cursor.
+Every project subagent is spawned through the Claude Code Agent tool with a fully self-contained prompt that carries every path, constraint, and prior decision it needs.
+`chaos-redux-subagents` owns spawning details and ownership boundaries.
 
 ## Planning and exploration
 
@@ -28,7 +29,7 @@ Every project subagent receives a fully explicit prompt with `fork_turns="none"`
 | archival non-portrait art and historical design research | `chaosx_asset_source_researcher` |
 | fictional event, category, faction, flag, and super-event art | `chaosx_generated_event_art` |
 | icons and counters | `chaosx_icon_artist` |
-| machine models, animations, sourced unit sound, and export handoff | `chaosx_3d_model_pipeline` |
+| the drone model, its actions, sourced unit sound, and export handoff | `chaosx_3d_model_pipeline` |
 | super-event wording and quotes | `chaosx_super_event_text_researcher` |
 | super-event audio | `chaosx_super_event_audio_researcher` |
 

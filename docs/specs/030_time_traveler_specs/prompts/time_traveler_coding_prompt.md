@@ -2,32 +2,34 @@
 
 Implement Event 030, Time Traveler, from `docs/specs/030_time_traveler_specs/` as a complete Chaos Redux major event.
 
-Read every file in the package, `AGENTS.md`, and the required event, decision, asset, focus, super-event, frame-animation, improvement-loop, 3D, portrait, and subagent skills. Before editing, read the required offline Paradox wiki pages, installed vanilla documentation, and relevant vanilla and Chaos Redux precedents. Use the mandatory HOI4 MCP event, probability, focus, technology, GUI, and map routes for every in-scope surface. Record exact blockers when a route is unavailable.
+## Before editing
 
-Core contract:
+- Confirm that the parent or user has accepted the design, or the part being implemented, as the package [README](../README.md#status-and-acceptance) requires.
+- Read the package README, the twelve specification parts, and the matrices for the surfaces in scope.
+- Read `CLAUDE.md` and the skills it routes for events, decisions, focus trees, super-events, assets, portraits, 3D models, the improvement loop, and subagents under `.claude/skills/`.
+- Read the current runtime: `events/030_time_traveler.txt`, `common/ideas/030_time_traveler_ideas.txt`, `common/scripted_effects/030_time_traveler_effects.txt`, the Event 016 bridge helpers, and the individual-crisis provider.
+- Read the relevant offline wiki and installed vanilla documentation sections and one vanilla or Chaos Redux precedent per touched surface.
 
-- Entry event remains `chaosx.nr30.1`.
-- Classification is Major with Chaos level `1` and no cluster.
-- Select one valid existing major or player-controlled country as host.
-- Create one original fictional traveler and prevent duplication through custody transfer, annexation, tag switching, save, or multiplayer.
-- Implement Credibility, Exposure, and Timeline Divergence as the only persistent Event 030 values the player tracks. Evolution V derives Temporal Stability from Divergence and shows only one of those two numbers at a time.
-- Implement the full baseline verification, access arrangement, consultation, intelligence-race, custody, legacy, and durable-outcome systems.
-- Implement all six consultation families, seven foreign operations, six host countermeasures, bounded active missions, dynamic costs, AI equivalents, and complete cleanup.
-- Implement Evolutions I through V with the mapped Chaos gates, MTTH pacing, active-event and pre-fire high-chaos paths, shared evolution logging, and zero Chaos on activation.
-- Implement the nine historical figure packages and the three named future political packages with sourced portraits, ownership checks, neutral writing, route-specific AI, and no silent advisor insertion.
-- Implement the eight Epoch Breakdown incident families with sparse registries and owner-system adapters.
-- Implement Continuity Directorate, Horizon Compact, Restoration Concord, alternate-state incidents, strategic portal nodes, and the original Closed Future machine actor.
-- Implement Machine Extinction War as an independently toggleable public world-end branch with `1000+` Chaos, Evolution V, machine footprint, low stability, no active world end, complete super-event, human response, machine country, military package, victory, defeat, and aftermath.
-- Implement the All Times at Once scenario under reserved `SCN-020`, raw ID `20`, rechecked against the central ledger and runtime/workbook occupancy before integration with four distinct intensities and no setup-time automatic world-end activation.
+## Contract
 
-Do not create a separate full Event 030 mechanic window. Use the normal decision category, static category picture, compact attached display, selected-target pattern, map highlights, and ordinary event surfaces. Do not add a fourth meter. Do not create full trees for every returned figure. Do not create dinosaur countries. Do not grant unrestricted future technology.
+The specification parts are the single source of requirements.
+[Part 12](../specs/030_time_traveler_spec_part_12_acceptance_criteria.md) owns completion criteria and the legacy migration checklist.
+Do not restate or reinterpret them here.
 
-Use existing owner APIs and shared helpers. Do not duplicate famine, migration, biological outbreak, nuclear, missile, disaster, doctrine, technology, Deaths, Condemnation, Air Cleanliness, or world-threat logic. No recurring whole-world iteration may be added without explicit user permission.
+The design boundaries that most often go wrong are:
 
-Keep values in script constants or documented tuning. Use one-shot Chaos milestones. Do not double count generic wars, annexations, deaths, contamination, or nuclear use.
+- three public values with three bands each, and Temporal Stability only as the Evolution V display of Divergence
+- no fourth meter, no full Event 030 window, no cluster, no dinosaur country, and no unrestricted future technology
+- one original traveler, one consultation mission at a time, and at most six visible actions per phase
+- owner APIs for Deaths, migration, famine, camps, biological outbreaks, missiles, nuclear use, doctrine, technology, condemnation, Air Cleanliness, world threat, and individual-crisis targeting
+- no recurring whole-world iteration without explicit user permission
+- tuning values in script constants, one-shot Chaos milestones, and no double counting of generic sources
 
-Route portraits, icons, art, flags, super-event text, audio, machine models, sounds, counters, and animations through the named project subagents with context-complete prompts and `fork_turns="none"`. Real-person portraits follow the portrait owner skill, with sourced placeholders and user-supplied styled finals documented separately. The original traveler and fictional machine identity may use native ImageGen.
+## Delivery
 
-Update event registration, default enable state, entry events, runtime hooks, decisions, ideas, characters, AI, scripted effects and triggers, classifications, CXT provider registration, event logs, evolutions, Event Details, world-end registry, scenario registry, super-events, assets, localisation, docs, achievements, and the authoritative catalog XLSX. Run the CSV exporter. Do not edit the CSVs directly.
+Route portraits, icons, art, flags, super-event text and audio, the drone model, and its sound through the project subagents listed in the [orchestration plan](subagent_orchestration_plan.md), each with a self-contained prompt.
+Update registration, default enable state, runtime hooks, decisions, ideas, characters, AI, scripted effects and triggers, classifications, CXT registration for the drone family and the Closed Future package, event logs, evolutions, Event Details, the world-end and scenario registries, super-events, assets, localisation, docs, achievements, and the authoritative catalog XLSX.
+Run `python .tools/export_event_catalog_csv.py` after the workbook update.
 
-After each major implementation tranche, use the improvement loop. Before completion, run the decision, localisation, country, focus, probability, spreadsheet, documentation, and event-completion audits. Report every simplification, missing asset, blocked portrait, missing route, absent MCP proof, and unimplemented package. Do not claim completion from source-only checks.
+After each major tranche, run the improvement loop.
+Before completion, run the audits listed in Part 12 and report every simplification and blocker.

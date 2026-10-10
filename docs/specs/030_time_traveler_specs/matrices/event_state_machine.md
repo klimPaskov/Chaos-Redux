@@ -7,7 +7,7 @@
 | Dormant | Event 030 has not fired | Event Details catalog only | valid major-event selection or manual scenario |
 | Arrival | host and state saved | opening event and super-event | first proof accepted, rejected, or contained |
 | Verification | at least one proof pending | proof reports and government options | two proofs accepted or claim rejected |
-| Access | traveler treated as genuine | access arrangement choice | one arrangement selected |
+| Access | traveler treated as genuine | choice of four access arrangements | one arrangement selected |
 | Consultation | direct access active | main decision category | baseline durable outcome or traveler loss |
 | Intelligence race | interested registry populated | foreign target and countermeasure actions | exposure reduced, public reveal, transfer, death, or baseline resolution |
 | Durable baseline | one stable custody outcome | national spirit, cooldown consultations, residual foreign actions | later evolution or final loss of direct access |
@@ -15,7 +15,7 @@
 | Evolution II | past portals open | historical figure packages | packages resolve while portal layer persists |
 | Evolution III | forward portals open | future visitor packages | packages resolve while incompatible-future memory persists |
 | Evolution IV | material portals unstable | anomaly state incidents | active incidents close, persist, or feed Evolution V |
-| Evolution V | global future alignments form | stance categories, portal nodes, temporal stability | stable settlement, fragmented peace, or world-end readiness |
+| Evolution V | global future alignments form | stance actions, node actions, Temporal Stability | stable settlement, fragmented peace, or world-end readiness |
 | Machine world end | terminal branch commits | machine war, emergency decisions, super-event | machine victory or qualifying human victory |
 | Aftermath | machine war defeated | reconstruction and closure package | durable postwar state |
 
@@ -64,6 +64,6 @@
 | Evolution | Evolution V recorded and enabled |
 | Toggle | branch persistent enabled state |
 | Exclusivity | no shared `world_end` flag |
-| Stability | Temporal Stability below threshold |
+| Stability | Temporal Stability in the Collapsing band and below the tuned threshold |
 | Footprint | three footholds in two regions, or durable machine country plus converted industry, or master portal plus support nodes |
 | Intent | hostile escalation milestone recorded |

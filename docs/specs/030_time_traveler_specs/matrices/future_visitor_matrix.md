@@ -8,16 +8,17 @@
 | Vladimir Putin | Russia or Soviet Union | security, state administration, Russian continuity, strategic industry | intelligence, central coordination, state restoration, strategic resources | no inevitable post-Soviet outcome | party, security, or successor-state route based on campaign |
 | Xi Jinping | valid Chinese government | party organization, state planning, discipline, national development | long-horizon coordination, industrial planning, political consolidation | no assumption that one Chinese claimant already owns all legitimacy | internal party or national-consolidation route |
 
-## Generic future visitor categories
+## Fictional specialist categories
 
-| Category | Normal frequency | Primary reward | Main danger |
+Only the three named visitors build movements.
+Specialists are fictional, arrive through one report event, and take one bounded role.
+
+| Category | Normal frequency | Role offered | Main danger |
 | --- | ---: | --- | --- |
-| political leader | rare | movement and institutional route | mass crisis, coup, civil war |
-| military officer | moderate | modern operational concepts | unsupported doctrine and officer conflict |
-| scientist or engineer | moderate | viable research and safety paths | unstable prototypes and technology divergence |
-| activist or organizer | moderate | civil organization and public movement | internal polarization and repression |
-| industrial or administrative figure | moderate | large-organization and supply reform | concentration of economic power |
-| intelligence specialist | rare | counterintelligence and information methods | surveillance state and forged futures |
+| military officer | moderate | army or theorist advisor with a later operational concept | unsupported doctrine and officer resentment |
+| technical specialist | moderate | scientist or industrial planner with a viable path | Divergence and special-project commitment |
+| intelligence specialist | rare | security advisor with later counterintelligence methods | civil-liberty and condemnation risk |
+| political organizer | moderate | propaganda, party, or mobilization advisor | strengthens one bloc and radicalizes opposition |
 
 ## Package gates
 

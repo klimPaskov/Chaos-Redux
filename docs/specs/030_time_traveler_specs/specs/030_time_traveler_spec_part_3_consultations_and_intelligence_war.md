@@ -1,220 +1,199 @@
 # Event 030 Time Traveler Specification Part 3: Consultations and the International Intelligence War
 
+Acceptance status: proposed design, disposition `unresolved`.
+
 ## Decision presentation
 
-The host receives one main decision category with a static category picture and a compact attached display for Credibility, Exposure, and Timeline Divergence. The category shows three to five relevant actions in its current phase. Six primary actions is the hard maximum. Only one consultation mission may be active at a time. One to three defensive or crisis missions may coexist when foreign pressure is high.
+The custodian receives one main decision category with a static category picture and the compact three-value header from Part 2.
+The category shows three to five actions in the current phase and never more than six.
+Only one consultation mission is active at a time.
+At most two defensive or crisis missions may coexist with it when foreign pressure is high.
 
-A full separate mechanic window is not required. The foreign target layer may use the selected-target decision pattern so the player inspects one interested country at a time.
+Rivals act through one selected-target category that lists only the interested countries and only the operations their network can attempt.
+No separate mechanic window is required.
 
 ## Consultation cycle
 
-A consultation is a government commitment. The player chooses a subject, pays costs that fit the action, receives a concrete forecast, and is given a timed objective. Completing the objective proves that the government acted on the advice and grants the main reward. Ignoring or failing the objective can lower Credibility or create a later consequence.
+A consultation is a government commitment.
+The player chooses a family, pays a cost, receives a concrete forecast, and gets a timed objective.
+Completing the objective proves the government acted on the advice and grants the main reward.
 
-Consultations use a shared cooldown, normally around 90 days before modifiers. The hidden knowledge profile can shorten one family and lengthen another. High Credibility unlocks stronger variants. High Timeline Divergence converts precise variants into broader strategic versions.
+Consultations share a cooldown of about 90 days.
+The profile shortens the cooldown for its strongest families.
+Indispensable Credibility unlocks the advanced variant of each family.
+The Divergence band sets the forecast's precision.
+
+A single action spends at most four cost types.
+Costs scale from country capacity through script constants and use texticons.
 
 ## Consultation families
 
 ### Military forecast
 
-The traveler identifies one real operational risk or opportunity. The target must be connected to a current enemy, border, front, naval route, air region, capital approach, or supply corridor.
-
-Possible objectives include:
-
-- hold named states or a capital approach for a defined period
-- place a required number of supplied divisions in named states
-- repair or protect a named railway and supply route
-- move a fleet to a threatened sea region
-- establish air superiority or radar coverage in a named region
-- avoid beginning a predicted losing offensive until conditions improve
-
-Costs may use army experience, command power, support equipment, fuel, trains, or tied-down divisions. A single action may spend at most four types. Success gives a meaningful operational advantage, doctrine progress, planning support, or a revealed enemy weakness. Failure should not delete armies or force a war.
+The traveler identifies one operational risk or opportunity tied to a current enemy, border, front, sea region, air region, capital approach, or supply corridor.
+Objectives include holding named states, placing supplied divisions in named states, protecting a named railway or supply hub, moving a fleet to a threatened sea region, gaining air superiority in a named region, or delaying a predicted losing offensive.
+Costs may use army experience, command power, support equipment, fuel, or tied-down divisions.
+Success gives a planning window, a revealed enemy weakness, or one doctrine result through Event 027 (Part 10).
+Failure never deletes armies or forces a war.
 
 ### Industrial bottleneck
 
-The traveler identifies a production, transport, resource, or construction failure that the remembered government handled badly.
-
-Possible objectives include:
-
-- repair a named rail connection
-- expand a supply hub, port, infrastructure line, or factory region
-- shift a production family before a predicted shortage
-- maintain a stockpile of trucks, trains, convoys, or fuel for a deadline
-- protect a named industrial state from bombing or sabotage
-
-Costs may use civilian factory burden, trains, trucks, convoys, fuel, or production efficiency. Success gives a visible map improvement, retained production efficiency, or an upgraded institutional spirit. It should not be a generic construction-speed purchase.
+The traveler identifies a production, transport, resource, or construction failure the remembered government handled badly.
+Objectives include repairing a named rail link, expanding a supply hub, port, or infrastructure line, shifting a production line before a predicted shortage, holding a stockpile of trucks, trains, convoys, or fuel to a deadline, or protecting a named industrial state.
+Success gives a visible map improvement, retained production efficiency, or a spirit upgrade, never a generic construction-speed purchase.
 
 ### Scientific shortcut
 
-The traveler explains which line of inquiry succeeds and which approach wastes years. The government still needs laboratories, engineers, material, and adaptation.
-
-Possible objectives include:
-
-- complete or begin a valid technology in a named category
-- dedicate an industrial facility or special project slot where supported
-- secure a research state against bombing and espionage
-- obtain a resource or component needed for adaptation
-- choose between a faster unstable prototype and a slower reliable program
-
-The baseline cannot grant an unrestricted ahead-of-time technology. Rewards should use valid research bonuses, doctrine mastery, special project progress, or the Event 016 custom technology API when an approved custom technology package exists.
+The traveler explains which line of inquiry succeeds and which wastes years.
+Objectives include starting or completing a valid technology in a named category, dedicating a special project slot, securing a research state, or choosing between a fast unstable prototype and a slow reliable program.
+Rewards use research bonuses, special project progress, or the Event 016 custom technology API when an approved package exists.
+No consultation grants an unrestricted ahead-of-time technology.
 
 ### Diplomatic forecast
 
-The traveler identifies a likely betrayal, coalition failure, negotiation opening, or guarantee problem. The advice must react to live relations and alliances.
+The traveler identifies a likely betrayal, coalition failure, negotiation opening, or guarantee problem in live relations.
+Objectives include reaching a relation threshold, negotiating access or a non-aggression arrangement, keeping a vulnerable ally in a faction, securing convoy access before a crisis, or exposing a rival offer.
+Success changes a real relationship or unlocks a follow-up decision, never only an opinion modifier.
 
-Possible objectives include:
+#### Remembered war variants
 
-- reach a relation threshold with a named country
-- negotiate access, a guarantee, or a non-aggression arrangement
-- prevent a vulnerable ally from leaving a faction
-- secure convoy or trade access before a crisis
-- expose a rival offer before a country accepts it
+The legacy event's premise, a traveler who warns a government away from a war history says it will lose, survives as country-specific diplomatic forecasts.
+They appear when the custodian is the named country or when the custodian shares that forecast with it.
 
-Success changes a real diplomatic relationship or unlocks a follow-up decision. It should not consist only of an opinion modifier.
+| Country | Remembered war | Forecast offer |
+| --- | --- | --- |
+| Germany | the war against the Soviet Union | propose a Berlin-Moscow pact, which the Soviet Union may accept or refuse, with the faction, threat, and opinion consequences of the legacy chain |
+| United States | the Pacific war against Japan | act on Japanese war plans, gaining intelligence on Japan and a Pacific defense objective |
+
+These variants reuse the implemented legacy behavior as reference content and replace its unconditional firing and its player-facing wording.
+Further countries can receive variants only through researched content.
 
 ### Counterintelligence map
 
-The traveler describes an infiltration method, future intelligence failure, or compromised official. The host receives a bounded investigation mission.
-
-Possible objectives include:
-
-- build or maintain counterintelligence capacity
-- protect the arrival site or records office
-- identify one interested foreign country
-- run a false consultation schedule
-- capture or turn a foreign operative through the existing agency systems
-
-Success can expose a foreign operation, grant a counter-operation, protect the institutional archive, or lower Exposure. Failure can leak notes or make a forged advice operation easier.
+The traveler describes an infiltration method, a future intelligence failure, or a compromised official.
+Objectives include protecting the arrival site or records office, identifying one interested country, or turning a foreign operative through the existing agency systems.
+Success exposes one foreign network, lowers Exposure, or makes the next counterintelligence sting cheaper.
 
 ### Domestic threat assessment
 
-The traveler identifies a coup network, extremist movement, secession risk, political assassination, or institutional fracture supported by the current country state.
+The traveler identifies a coup network, extremist movement, secession risk, assassination plot, or institutional fracture supported by current country state.
+The player chooses a lawful, political, or coercive response, with an objective such as securing named states, changing an advisor or law, holding stability to a deadline, or settling a faction dispute.
+Coercive success protects the government but can raise condemnation when abuses become public.
+The consultation is never a free purge.
 
-The player chooses a restrained, political, intelligence, or coercive response. The objective may require securing named states, changing an advisor or law, maintaining stability through a deadline, or resolving a faction dispute.
+## What a consultation proves
 
-Heavy-handed success can protect the government while lowering legitimacy or raising condemnation if abuses become public. The consultation must never provide a free universal purge button.
-
-## What a consultation actually proves
-
-Before payment, each offered consultation identifies the recipient government, the named objective, the deadline, the promised reward family, and whether its knowledge has been distributed beyond the traveler.
+Before payment, each offer names the recipient government, the objective, the deadline, the reward family, and whether its knowledge has already spread beyond the traveler.
 The objective must be observable through the relevant owner system.
-A forecast about a possible crisis cannot force that crisis to occur merely to prove the traveler right.
+A forecast cannot force its crisis to occur merely to prove the traveler right.
 
 The player's intervention can prevent the remembered result.
-For a military forecast, maintaining the named supplied corridor for the required period proves the defensive work even when the predicted offensive never happens.
-For an industrial forecast, meeting the named stockpile or restored-route requirement proves preparation even when the shortage is avoided.
-The deadline alone provides no success receipt, and a prediction's non-occurrence alone provides no failure receipt.
+Holding the named corridor proves the defensive work even when the predicted offensive never comes.
+The deadline alone provides no success, and a prediction's non-occurrence alone provides no failure.
+An actor or state that becomes invalid returns through the cancellation path without fabricating a new target or keeping the payment.
 
-Exact and strategic success are distinguished by the evidence the objective actually produced.
-A failed objective can be attributed to divergence only when a recorded change invalidated the premise, rather than when the player ignored an unchanged requirement.
-Forged advice requires evidence of the planted record or operation and must not become the default explanation for an ordinary setback.
-An actor or state that becomes invalid returns through the existing cancellation path rather than fabricating a new target and retaining the old price.
+If already distributed knowledge lets a mission continue after custody changes, the result belongs to the government that committed it.
+The new custodian cannot collect the same completed advice again.
 
-If already distributed knowledge allows a mission to continue after custody changes, its completed result belongs to the government that committed the consultation.
-The new custodian receives direct access for later consultations and cannot collect the same completed advice result again.
-These distinctions use the existing mission, custody, and result records without another player-facing value.
+## Consultation results
 
-## Advice result classes
-
-| Result | Meaning | Reward direction |
+| Result | Meaning | Effect |
 | --- | --- | --- |
-| Exact success | the campaign still resembles the remembered future | strongest credibility gain and precise reward |
-| Strategic success | the exact details changed, but the structural warning was correct | normal reward and smaller credibility gain |
-| Partial success | the player solved one part and accepted another cost | mixed reward and follow-up choice |
-| Failure through divergence | the advice was reasonable but the timeline changed | small credibility loss or none, stronger divergence warning |
-| Failure through forgery or deceit | false information entered the process | major investigation and credibility consequence |
+| Success | the objective was met | full reward and Credibility gain, with a precision bonus in a Recognizable timeline |
+| Partial | part of the objective was met | reduced reward and a follow-up choice |
+| Failed | the objective was missed | the tooltip names the cause: a recorded timeline change costs little Credibility, a planted forgery opens an investigation, and an ignored objective costs the most |
+
+Forgery is the cause only when a recorded forged-advice operation exists.
 
 ## Foreign interest registry
 
-The event creates a sparse bounded registry of interested countries. The ordinary cap is four. Public recognition or high Exposure can expand it to six. The registry should prefer:
-
-- existing majors
-- player-controlled countries
-- countries with strong intelligence capability
-- enemies and strategic rivals of the host
-- close allies who seek shared access
-- countries with relevant scientific or industrial capacity
-- countries connected to a returned figure or future visitor
-
-The registry must not use a recurring whole-world scan. It is rebuilt only after major changes, such as public revelation, custody transfer, a new evolution, or a country becoming invalid.
+The event keeps a sparse registry of interested countries, capped by the Exposure band in Part 2.
+It prefers existing majors, player countries, countries with strong intelligence agencies, enemies and strategic rivals of the custodian, close allies seeking access, and countries linked to a returned figure or visitor.
+The registry is rebuilt only after public revelation, custody transfer, a new evolution, or a country becoming invalid, never through a recurring world scan.
 
 ## Foreign operations
 
-### Observe consultations
+Each interested country holds a hidden network level against the program.
+Operations raise it, the host's countermeasures lower it, and it never appears as a number.
 
-A low-risk operation that gathers schedules, staff names, and broad subject matter. Success gives a small intelligence benefit and enables later operations. Failure may reveal the observer without proving the traveler exists.
+### Infiltrate the program
 
-### Recruit the staff
+The default operation for rivals and curious allies.
+Success advances the network one step.
+The first step yields schedules and staff names, the second recruits a staff member and grants a Future Fragment, and the third steals the archive and copies one completed consultation specialty.
+The custodian learns of a compromised staff member and can dismiss, turn, or watch them.
+Theft never recreates direct access.
 
-The foreign country targets guards, clerks, scientists, officers, translators, or industrial liaisons. Success grants a Future Fragment and increases Exposure. The host can dismiss, turn, or watch the compromised staff member.
+### Plant forged advice
 
-### Steal the notes
-
-A higher-risk operation against the institutional archive. Success grants a stronger fragment, copies one completed consultation specialty, or reveals a future objective. The theft never recreates full direct access.
-
-### Spread forged advice
-
-The foreign country plants a false prediction or altered consultation note. The forgery must name a plausible decision and create a testable consequence. If the host exposes it, the attacker loses network strength and Credibility may rise. If the host acts on it, the attacker gains a strategic benefit and the host may suffer a concrete setback.
+Available from the Suspected band to hostile countries with an established network.
+The forgery names a plausible decision and creates a testable consequence.
+If the custodian exposes it, the attacker's network collapses and Credibility rises.
+If the custodian acts on it, the attacker gains a strategic benefit and the custodian suffers a concrete setback.
 
 ### Offer asylum
 
-The foreign country privately offers safety, status, and controlled access. The traveler considers the current custody arrangement, mistreatment, ideological compatibility, host stability, foreign credibility, and chance of safe travel. A trusted traveler in a respectful arrangement should rarely defect.
+Available from the Suspected band.
+The traveler weighs the arrangement, their treatment, ideological fit, host stability, the offering country's credibility, and safe travel.
+A trusted traveler under a respectful arrangement rarely defects, while a confined one defects far more easily.
 
-### Attempt abduction
+### Seize the traveler
 
-Abduction requires confirmed knowledge, a mature network, a viable route, and a country willing to accept diplomatic risk. Outcomes include failure, capture of a double, a wounded traveler, successful transfer, an exposed sponsor, or disappearance before either side arrives.
-
-### Attempt assassination
-
-Assassination is reserved for countries that see the traveler as an immediate existential threat, cannot acquire access, and can plausibly reach the target. It is expensive, risky, and strongly affected by public status. A successful killing ends the original traveler but leaves copied knowledge and temporal disturbance.
+Available only in the Public band, with a mature network and a viable route.
+The sponsor chooses abduction or, only when it sees the traveler as an existential threat and has no acquisition route, assassination.
+Outcomes include failure, capture of a double, a wounded traveler, a successful transfer, an exposed sponsor, or disappearance before either side arrives.
+A successful assassination ends the original traveler but leaves copied knowledge and the temporal disturbance.
 
 ## Host countermeasures
 
-### Move the traveler
+### Relocate the traveler
 
-The host selects another valid secure state. Moving disrupts consultation access, costs transport and security capacity, and can lower Exposure if the route remains secret. It cannot be spammed while a consultation or attack is active.
+Moves the traveler to another valid secure state.
+It interrupts consultations, costs transport and security capacity, and lowers Exposure if the route stays secret.
+It cannot repeat while a consultation or operation is active.
 
 ### Assign a guard detail
 
-The host commits command power, support equipment, manpower, and possibly divisions near the site. Strong guards reduce abduction and assassination success but increase the number of people who know the traveler exists.
+Commits command power, support equipment, manpower, and optionally divisions near the site.
+It sharply reduces seizure success but raises Exposure because more people know the secret.
 
-### Restrict access
+### Run a counterintelligence sting
 
-The host reduces staff access and consultation speed. This lowers leak risk but can reduce Credibility and increase the chance that the traveler seeks another patron.
+Runs decoy meetings and false schedules against one interested country.
+Success lowers that country's network and can capture its cell or lure it into seizing a double.
+The sting event can escalate into using the traveler as bait, which exposes several networks on success and risks injury, abduction, or scandal on failure.
 
-### Create false schedules
+### Share a forecast with an ally
 
-The host runs decoy meetings and transport routes. This consumes intelligence capacity and may capture a foreign cell or cause an attacker to seize a double.
+Gives one ally one verified forecast or completed consultation result.
+The ally gains a Future Fragment and, where one exists, its remembered war variant.
+Sharing lowers that ally's theft pressure, improves coordination, and raises Timeline Divergence.
+The ally never gains custody.
 
-### Share selected information
+## The double
 
-The host gives an ally one verified fragment or consultation result. This improves alliance coordination, reduces pressure for theft, raises Timeline Divergence, and gives the ally a limited national spirit. The ally does not gain custody.
-
-### Use the traveler as bait
-
-A high-risk counterintelligence action that opens a false vulnerability. Success exposes one or more networks. Failure can cause injury, abduction, death, or a public scandal. AI should use it only with strong security and a meaningful threat.
-
-## The double outcome
-
-A captured double is a prepared official, operative, or decoy who knows enough to survive initial questioning. The double does not become a second traveler and cannot grant consultations.
-
-The captor receives a temporary investigation chain. It can expose the deception, trade the double, spread a false public claim, or mistakenly build policy around fabricated knowledge. The host gains a counterintelligence advantage if the operation remains secret.
+A captured double is a prepared decoy who survives initial questioning.
+The captor receives a short investigation chain to expose the deception, trade the double, publish a false claim, or mistakenly build policy around fabricated knowledge.
+The double never becomes a second traveler and never grants consultations.
 
 ## Custody transfer
 
-A successful transfer moves the character, direct consultation category, current access arrangement review, and relevant Exposure state to the new custodian. Credibility is recalculated from available evidence and the transfer method.
+A successful transfer moves the character, the main category, the arrangement review, the individual-crisis slot, and the Exposure state to the new custodian.
+Credibility is recalculated from available evidence and the transfer method.
+The old custodian keeps its legacy stage, completed records, and a grievance against the captor where appropriate.
+Missions that require the traveler close cleanly, and missions whose knowledge already spread may continue.
 
-The old host keeps its institutional legacy, completed consultation records, and grievance against the captor where appropriate. Active missions that require the traveler close cleanly. Missions whose knowledge is already distributed may continue.
+## Multiplayer
 
-## Multiplayer behavior
+Only one country holds the original traveler.
+Every valid player country can be an interested country and uses the same operations as AI rivals.
+The custodian does not see an operation's sponsor until evidence exposes it.
+A human custodian receives the category immediately, and a human former custodian keeps its legacy and recovery options.
+No player receives a ghost copy of the traveler.
 
-Only one country can hold the original traveler. Every player country can become an interested country if valid. Human rivals receive the same foreign-operation choices as AI rivals. The host should not see hidden operation ownership until evidence exposes it.
+## Baseline AI
 
-A human-controlled country that gains custody receives the host category immediately. A human-controlled former host keeps its legacy and counter-recovery options. No player receives a ghost copy of the traveler.
-
-## Baseline AI goals
-
-The host AI should decide whether it values secrecy, broad access, military use, scientific use, or public legitimacy. It should consider war state, stability, intelligence capacity, research capacity, current enemies, ideology, and leader security.
-
-Foreign AI should choose acquisition, sabotage, diplomacy, or restraint based on relations, intelligence capability, ideological alignment, proximity, threat, and whether it already holds useful fragments. It should not repeatedly attempt a low-chance assassination or abduction.
-
-All weighted choices require a probability audit with complete candidate pools and named scenarios before completion.
+The custodian AI chooses an arrangement from war state, stability, intelligence capacity, research capacity, ideology, and leader security.
+Foreign AI chooses infiltration, forgery, asylum, seizure, or restraint from relations, intelligence capacity, ideology, proximity, threat, and whether it already holds a Future Fragment.
+It never repeats a low-chance seizure attempt.
+Part 10 owns the probability scenarios.

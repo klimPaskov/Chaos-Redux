@@ -1,10 +1,15 @@
 # Event 030 Time Traveler Specification Part 6: Evolution III, Visitors from the Future
 
+Acceptance status: the three named political visitors come from the user's Event 030 brief.
+Categories, caps, and routes are proposed design, disposition `unresolved`.
+
 ## Evolution purpose
 
 Evolution III brings people from periods after the normal Hearts of Iron IV era into states that recognize their future political, military, scientific, social, or economic significance. These visitors remember later institutions and conflicts. They also bring partisan goals, personal ambitions, and incompatible accounts of history.
 
-The normal gate is `600+` Chaos, Evolution II active or resolved, and enough Timeline Divergence to open forward portals. The base MTTH is about 150 days. Future technology use, several copied knowledge fragments, and a returned historical ruler shorten the pacing.
+The normal gate is `600+` Chaos and Evolution II active or resolved.
+The base MTTH is about 150 days, scaled by the Divergence band as Part 1 describes.
+Future technology use, several Future Fragments, and a returned historical ruler shorten the pacing.
 
 ## Campaign limits
 
@@ -18,33 +23,25 @@ The named flagship political packages from the source brief are:
 
 These packages require neutral research, sourced portraits, subject ownership review, careful localisation, and route logic that reacts to the 1930s state. They should not become partisan jokes or automatic rulers.
 
-Additional visitors require separate researched packages. Implementation should prioritize people born after the campaign start or people whose younger self is not already an active character. A visitor whose younger self exists creates a duplicate-person crisis and belongs to the stricter Evolution V echo rules unless a safe one-owner representation is designed.
+Additional named real visitors require separate researched packages and user acceptance.
+Implementation should prioritize people born after the campaign start or people whose younger self is not already an active character.
+A visitor whose younger self exists creates a duplicate-person crisis and belongs to the stricter Evolution V echo rules unless a safe one-owner representation is designed.
 
 ## Future visitor categories
 
-### Political leader
+Only the three named political visitors receive full movement packages.
+Every other future visitor is a fictional specialist from one of four categories.
+A specialist arrives through one report event, offers a single bounded role, and carries one drawback.
+Specialists never build movements, claim power, or receive a decision family of their own.
 
-A later political leader can organize a movement, advise an existing government, seek office, bargain for protection, or make a claim to future legitimacy. Their methods may rely on media, party organization, security institutions, economic policy, identity politics, or coalition management that does not map cleanly onto the current state.
+| Category | Role offered | Drawback |
+| --- | --- | --- |
+| Military officer | army or theorist advisor with a later operational concept | the concept needs equipment and doctrine the host may lack, and senior officers resent the outsider |
+| Technical specialist | scientist or industrial planner who names a viable research or production path | the path raises Timeline Divergence and needs a special project or industrial commitment |
+| Intelligence specialist | security advisor with later counterintelligence methods | lowers Exposure growth but raises civil-liberty and condemnation risk when used coercively |
+| Political organizer | advisor who improves propaganda, party organization, or civil mobilization | strengthens one internal bloc and can radicalize opposition |
 
-### Military officer
-
-A later officer understands operational concepts, professional systems, intelligence integration, logistics, and weapons that may not exist. They must adapt their knowledge to current equipment and doctrine.
-
-### Scientist or engineer
-
-A later technical specialist can identify viable research paths, safety failures, material needs, and future applications. They cannot provide complete industrial supply chains or instantly create unavailable components.
-
-### Activist or social organizer
-
-A later organizer introduces methods of mass communication, civil organization, labor action, rights campaigns, resistance, or international advocacy. Their movement can transform politics without a direct claim to government.
-
-### Industrial or administrative figure
-
-A later manager or institutional planner understands large organizations, supply systems, public administration, finance, or industrial coordination. Their advice can improve state capacity while creating new concentrations of power.
-
-### Intelligence specialist
-
-A later intelligence figure understands surveillance, disinformation, counterintelligence, covert influence, and institutional failure. Their arrival intensifies the international race and creates serious civil-liberty risks.
+A specialist who learns of the original traveler or another visitor can expose an incompatible future, which feeds the contradiction rules below.
 
 ## Authenticity and incompatible futures
 

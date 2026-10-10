@@ -1,6 +1,6 @@
 # Event 030 Super-Event Prompt
 
-Create and wire the accepted Event 030 super-event packages. Read `AGENTS.md`, the complete Event 030 source package, `chaos-redux-events`, `chaos-redux-super-events`, `chaos-redux-event-assets`, and `chaos-redux-subagents`.
+Create and wire the accepted Event 030 super-event packages. Read `CLAUDE.md`, the Event 030 package README, Part 11, `matrices/super_event_matrix.md`, `chaos-redux-events`, `chaos-redux-super-events`, `chaos-redux-event-assets`, and `chaos-redux-subagents`.
 
 Required packages:
 

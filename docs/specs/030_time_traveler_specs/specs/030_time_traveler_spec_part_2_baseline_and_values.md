@@ -1,209 +1,168 @@
 # Event 030 Time Traveler Specification Part 2: Baseline Progression and Public Values
 
+Acceptance status: the three value names and the Evolution V Temporal Stability presentation come from the user's Event 030 brief.
+Bands, thresholds, arrangements, and spirit stages are proposed design, disposition `unresolved`.
+
 ## Public value budget
 
-The player actively tracks three persistent custom values. No other Event 030 number should be shown as a long-term counter.
+The player tracks three persistent values.
+No other Event 030 number is shown as a long-term counter.
+This section owns the value rules; other parts and matrices point here.
 
-| Value | Scope | Question answered | Main responses |
+| Value | Scope | Question it answers | Decision it drives |
 | --- | --- | --- | --- |
-| Credibility | Current custodian | How much does the government trust the traveler | verify claims, complete advice, expose forgery, revise access |
-| Exposure | Traveler and custody network | How widely is the traveler known | secrecy, relocation, public recognition, counterintelligence, selective sharing |
-| Timeline Divergence | Global | How far has the campaign moved from the remembered future | limit interventions, close portals, reconcile anomalies, accept degraded predictions |
+| Credibility | Current custodian | How much does the government trust the traveler | which consultation tier is offered and whether ambition can start |
+| Exposure | Traveler and custody network | How widely is the traveler known | which foreign operations rivals can attempt and how many rivals join |
+| Timeline Divergence | Global | How far has the campaign moved from the remembered future | how precise advice is and how fast later evolutions arrive |
 
-Hidden values may track sector support, operation strength, visitor reliability, portal severity, machine footprint, incident cooldowns, and AI scoring. They feed public states and consequences instead of becoming extra meters.
+Each value runs from `0` to `100` and has three bands.
+The category header shows the value, its band name, and one icon.
+The tooltip states only what the current band allows or threatens and the last three causes of change.
+Hidden scores for bloc support, operation networks, visitor reliability, portal severity, machine footprint, and AI weights stay internal and never appear as numbers.
 
 ## Credibility
 
-Credibility runs from `0` to `100` and belongs to the current custodian. A new custodian does not inherit the previous government's full trust. The new value begins from the strength of transferred evidence, the method of transfer, and the public record.
+Credibility belongs to the current custodian.
+A new custodian does not inherit the previous government's trust and starts from the transferred evidence, the transfer method, and the public record.
 
-### Stages
-
-| Range | Stage | Effect on play |
+| Range | Band | What it changes |
 | ---: | --- | --- |
-| `0-19` | Discredited | only containment, investigation, expulsion, and one final proof path remain |
-| `20-39` | Provisional | basic consultation families and controlled access become available |
-| `40-59` | Established | normal consultations, staff recruitment, and selective sharing become reliable |
-| `60-79` | Trusted | advanced country-specific advice and stronger institutional copying unlock |
-| `80-100` | Indispensable | the strongest consultation missions and most dangerous political influence become possible |
+| `0-34` | Doubted | only verification, containment, expulsion, and the basic consultation tier |
+| `35-69` | Trusted | every family allowed by the arrangement, staff copying, and selective sharing |
+| `70-100` | Indispensable | country-specific advanced variants, strongest spirit upgrade, and faster Evolution I |
 
-Credibility should move through evidence and outcomes. It should not rise from waiting.
-
-### Typical gains
-
-- a secret project or private fact is verified
-- a near-term prediction succeeds within its declared window
-- a consultation objective is completed under the conditions the traveler described
-- a forged document is exposed before the government acts on it
-- a foreign operation confirms that rival governments believe the traveler is genuine
-
-### Typical losses
-
-- a prediction fails after the timeline has not diverged enough to excuse it
-- the government acts on forged advice
-- the traveler conceals a material personal interest
-- two verified visitors expose a contradiction that the traveler cannot explain
-- the government publicly rejects a prediction that later fails
-
-Failure at high Timeline Divergence should reduce Credibility less than the same failure in a recognizable timeline. The interface should explain that exact dates are becoming unreliable.
+Credibility moves only through evidence and outcomes, never through waiting.
+It rises when a proof is verified, a consultation succeeds, a forged record is exposed before the government acts on it, or a rival operation proves foreign governments believe the traveler.
+It falls when a consultation fails for an unchanged reason, the government acts on forged advice, the traveler conceals a personal interest, or two verified visitors expose a contradiction.
+A failure caused by a recorded timeline change costs little or nothing, and the tooltip says that exact dates are becoming unreliable.
 
 ## Exposure
 
-Exposure runs from `0` to `100`. It follows the original traveler and the network of verified copies. Public knowledge creates a floor. Once the world has received confirmed images, speeches, or official recognition, complete secrecy cannot be restored.
+Exposure follows the traveler and the network of verified copies.
 
-### Stages
-
-| Range | Stage | Foreign behavior |
+| Range | Band | Foreign behavior |
 | ---: | --- | --- |
-| `0-19` | Contained | only countries with strong intelligence access can act |
-| `20-39` | Rumored | nearby majors and close allies begin observation and recruitment |
-| `40-59` | Suspected | several majors can steal notes, forge advice, or offer asylum |
-| `60-79` | Confirmed | abduction, assassination, public pressure, and diplomatic demands become plausible |
-| `80-100` | Public | global news, open political movements, and broad fragment proliferation become possible |
+| `0-29` | Secret | at most two interested countries, only infiltration is possible |
+| `30-64` | Suspected | up to four interested countries, forgery and asylum offers become possible |
+| `65-100` | Public | up to six interested countries, seizure attempts and open diplomatic pressure become possible |
 
-### Typical gains
-
-- unrestricted access creates a wide staff circle
-- a consultation leaks
-- a foreign operation fails publicly
-- the host uses the traveler in propaganda
-- the host grants public recognition
-- a returned figure confirms the temporal disturbance
-
-### Typical reductions
-
-- moving the traveler to a new secure site
-- replacing a broad staff circle with compartmentalized teams
-- exposing a forged story that was mistaken for real proof
-- feeding false schedules to hostile networks
-
-Exposure reduction should cost capacity and limit consultation speed. It is not a cheap meter purchase.
+Public Recognition or a confirmed public revelation sets a permanent floor at the Public band.
+Exposure rises from wide staff circles, leaked consultations, failed foreign operations that become public, propaganda use, and returned figures who confirm the temporal disturbance.
+It falls from relocating the traveler, a successful counterintelligence sting, or exposing a forged story.
+Every reduction costs capacity and slows consultations.
 
 ## Timeline Divergence
 
-Timeline Divergence runs from `0` to `100` and is global. It measures how much the remembered future has lost predictive value and how much temporal activity the campaign can sustain.
+Timeline Divergence is global.
+It measures how much the remembered future has lost predictive value and how much temporal activity the campaign can sustain.
 
-### Stages
-
-| Range | Stage | Forecast condition | Temporal condition |
+| Range | Band | Advice precision | Temporal pressure |
 | ---: | --- | --- | --- |
-| `0-19` | Recognizable | exact short-term forecasts remain possible | no persistent anomalies |
-| `20-39` | Altered | dates become ranges and some actors behave differently | small incidents may occur |
-| `40-59` | Unstable | advice describes patterns and critical choices | portal traces and contradictory records appear |
-| `60-79` | Fragmented | exact political outcomes are unreliable | returned figures and material incidents become easier |
-| `80-100` | Broken | only broad structural knowledge remains | strong anomalies, machine activity, and future faction conflict become likely |
+| `0-29` | Recognizable | dates and named actors | later evolutions arrive slowly |
+| `30-64` | Altered | date ranges and trigger conditions | normal evolution pacing, small incidents |
+| `65-100` | Broken | structural warnings only | later evolutions arrive quickly, machine activity becomes possible |
 
-### Concrete increases
+Divergence rises from acting on advice that changes a major diplomatic or military outcome, deploying adapted future technology, placing the traveler in government, letting a returned figure or visitor take power, restoring a historical state, keeping a portal open, and letting machines seize industry.
+It falls from closing a portal, destroying a machine node, resolving a claimant crisis without a new state, returning displaced people or formations safely, destroying dangerous future material after study, and completing coordinated closure projects.
+Reductions are harder than increases.
+The player can stabilize the world but cannot restore the original future after major changes.
 
-- acting on advice that changes a major diplomatic or military outcome
-- averting or starting a war the traveler remembers as historically important
-- deploying adapted future technology
-- placing the traveler in government
-- allowing a returned figure or future visitor to take power
-- restoring a historical state or dynasty
-- keeping a portal open for exploitation
-- allowing machines to seize industry
-
-### Concrete reductions
-
-- closing an active portal
-- dismantling a future machine node
-- resolving a claimant crisis without creating a new historical state
-- returning displaced formations or populations safely when a route exists
-- destroying dangerous future material after studying it
-- completing the Continuity Directorate's coordinated closure projects
-
-Reductions should be harder than increases. The player can stabilize the world, but cannot restore the exact original future after major changes.
+Divergence changes only through visible sources and never drifts automatically.
 
 ## Temporal Stability in Evolution V
 
-Evolution V activates a global Temporal Stability presentation. It uses the same underlying state as Timeline Divergence.
+Evolution V shows Temporal Stability in the third slot instead of Timeline Divergence, because the player is now managing collapse.
 
 `Temporal Stability = 100 - Timeline Divergence`
 
-Only one number is shown at a time. Earlier surfaces use Timeline Divergence. The Evolution V global surface uses Temporal Stability because the player is managing collapse. Tooltips explain the conversion. This satisfies the source idea without adding a fourth persistent value.
+The underlying variable stays the same and only one of the two numbers is shown at any time.
+Its bands are Coherent (`71-100`), Strained (`36-70`), and Collapsing (`0-35`), which mirror the Divergence bands.
+The [README open questions](../README.md#open-questions) record a proposal to keep the Divergence label throughout.
 
 ## Verification chain
 
-The opening verification chain selects two or three proofs that fit the host.
+The opening chain selects two or three proofs that fit the host.
 
 ### Secret project proof
 
-The traveler identifies a real hidden facility, project name, procurement route, diplomatic channel, code phrase, or research obstacle. The proof should use country-specific content where a researched and safe package exists. Generic fallback content reacts to the host's current technology, agency, military production, and active focuses.
-
-This proof should never reveal a secret route that the player has not unlocked through normal play. It confirms knowledge inside the government, not hidden developer information.
+The traveler names a real hidden facility, project, procurement route, diplomatic channel, or research obstacle.
+The proof uses country-specific content where a researched package exists and otherwise reacts to the host's current technology, agency, production, and active focus.
+It never reveals a route the player has not unlocked through normal play.
 
 ### Private conversation proof
 
-The traveler recounts a recent private exchange involving the head of government, a minister, a commander, or a diplomat. The event names the relevant in-world actor when a valid character exists. Generic prose describes a sealed meeting or order without inventing a false real historical quote.
+The traveler recounts a recent private exchange involving the head of government, a minister, a commander, or a diplomat.
+The event names the in-world character when one exists and otherwise describes a sealed meeting without inventing a real historical quotation.
 
 ### Near-term forecast proof
 
-The traveler predicts a bounded event within roughly 20 to 60 days. The candidate pool must be based on current state and must not promise something the engine cannot reasonably produce.
+The traveler predicts a bounded development within roughly 20 to 60 days, drawn only from current campaign state:
 
-Useful forecasts include:
-
-- a foreign diplomatic move already supported by campaign state
-- a production or supply bottleneck that can be measured
+- a foreign diplomatic move already supported by relations and alliances
+- a measurable production or supply bottleneck
 - an enemy buildup along a real border
-- a likely coup, strike, or faction split supported by current instability
-- a weather or disaster pattern only when the owning system can prove it
+- a coup, strike, or faction split supported by current instability
+- a disaster pattern only when the Event 013 gateway can prove it
 
-The forecast should be written as a range or condition, not a scripted certainty that forces unrelated AI behavior.
+The forecast is written as a range or condition and never forces unrelated AI behavior to make itself true.
 
 ## Access arrangements
 
-### Full government access
+The knowledge profile already decides which consultation families are strongest, so arrangements decide reach, secrecy, and the traveler's treatment rather than duplicating specialty.
 
-The traveler can consult ministries, military staffs, intelligence, and scientific institutions. Consultation variety is highest. Exposure rises faster, staff recruitment by foreign powers becomes easier, and the ambition route gains broad support.
+### Cabinet Advisor
 
-### Military access
+The traveler consults ministries, staffs, intelligence, and laboratories.
+Every consultation family allowed by Credibility is available.
+Exposure grows fastest of the private arrangements, rival staff recruitment is easier, and Evolution I gains broad support.
 
-Military and intelligence consultations are stronger. Scientific and domestic reform advice is slower. Officers become the strongest internal sector. Foreign countries prioritize abduction and staff recruitment.
+### Secret Program
 
-### Scientific access
+Only the profile's two strongest families and counterintelligence are available.
+Exposure growth is slowest and the security services gain influence.
+A breach produces a larger Exposure jump than any other arrangement, because rivals learn the government hid a strategic asset.
 
-Industry, science, logistics, and technology adaptation are stronger. The traveler has less direct political access. Exposure through scientists and industrial contractors remains significant.
+### Confinement
 
-### Controlled confinement
+Every family is available, but Credibility gains are halved because the traveler's evidence is filtered through guards.
+Exposure stays low and records are well protected.
+Asylum offers succeed more often and the traveler may build support among the few officials allowed to visit.
 
-Exposure growth is slow and the host can protect records. Credibility gains are slower because access to evidence is restricted. The traveler is more likely to seek asylum, mislead guards, or build support among the officials allowed to visit.
+### Public Recognition
 
-### Public recognition
+Exposure moves to the permanent Public floor.
+The host gains diplomatic prestige and rapid staff coordination, later arrivals start verified, and rivals can act openly.
 
-The host gains diplomatic prestige, rapid staff coordination, and public political effects. Exposure rises to a permanent high floor. Rival governments can act openly, and later arrivals gain immediate authenticity.
-
-### Complete secrecy
-
-The host receives the best early counterintelligence position. Consultation capacity is narrow, records are vulnerable to a single breach, and internal services gain disproportionate control. If secrecy fails, the Exposure increase is larger because foreign powers learn that the government hid a strategic asset.
+Revising the arrangement is one decision with a political-power cost and a cooldown, and it is the only way to restrict access.
 
 ## Institutional knowledge spirit
-
-The national spirit has four lifecycle forms.
 
 | Working label | Condition | Design role |
 | --- | --- | --- |
 | Unverified Forecasts | arrival before verification | small mixed benefit and administrative friction |
-| Directed Foreknowledge | verified traveler with direct access | modest permanent base plus consultation support |
-| Distributed Future Knowledge | several successful consultations | stronger but still bounded institutional benefit |
-| Scattered Forecasts | traveler lost | reduced legacy based on copied knowledge |
+| Directed Foreknowledge | verified traveler with direct access | modest base bonus shaped by the profile |
+| Distributed Future Knowledge | three successful consultations | stronger but bounded institutional bonus |
+| Scattered Forecasts | traveler lost | reduced legacy based on completed consultations and protected records |
 
-The spirit should combine a few coherent effects. It must not grant broad maximum bonuses to research, production, intelligence, diplomacy, doctrine, and planning at the same time. The consultation system carries the strongest specialty rewards.
+Each stage carries two or three coherent modifiers whose values live in script constants.
+The baseline stage must be far weaker than the legacy `time_traveler` idea, which grants `+20%` research speed, `+100%` planning speed, `+50%` offence, and `+20%` army experience gain at once.
+As a tuning anchor, Directed Foreknowledge should stay near the strength of an ordinary national-spirit advisor, and Distributed Future Knowledge near a mid-tree national focus reward.
+Consultations carry the strong specialty rewards.
+
+A Future Fragment is the single minor spirit that a foreign country gains from stolen or shared knowledge.
+It never stacks and is the only Event 030 spirit a non-custodian can hold apart from Scattered Forecasts.
 
 ## Rumor progression
 
-Rumors are consequence events, not flavor-only text.
+Rumors are consequence events, not flavor text.
+Each rumor names one group and one concrete effect: scientists demand wider access, officers alter plans around private forecasts, journalists notice unusual security, diplomats ask whether policy rests on impossible information, industrialists compete for predicted contracts, or the opposition accuses the government of hiding a prophet or a fraud.
+Rumors change Exposure, stability, foreign opinion, or support blocs.
+They read the current arrangement and Exposure band so the same rumor never repeats unchanged.
 
-- Scientists may demand wider access or leak a technical claim.
-- Officers may alter plans around private forecasts.
-- Journalists may find inconsistent schedules or witness unusual security.
-- Diplomats may ask whether the host is making decisions from impossible information.
-- Industrialists may compete for predicted contracts.
-- Opposition groups may accuse the government of hiding a prophet, fraud, or foreign asset.
+## Prediction precision
 
-Rumor events alter Exposure, stability, foreign opinion, internal sector support, and operation eligibility. They should use the current access arrangement and public stage so the same rumor does not repeat without change.
-
-## Prediction degradation
-
-At low divergence, the traveler may give dates and named actors. At medium divergence, the traveler gives date ranges, trigger conditions, and strategic warnings. At high divergence, the traveler can identify structural risks, such as an exposed supply network or unstable coalition, but cannot name the exact outcome.
-
-This degradation keeps the traveler useful without allowing permanent omniscience. The tooltip for every consultation should state the current confidence class.
+The Divergence band sets the precision of every forecast.
+A Recognizable timeline yields dates and named actors.
+An Altered timeline yields date ranges and trigger conditions.
+A Broken timeline yields structural warnings, such as an exposed supply network or an unstable coalition, without the exact outcome.
+Every consultation tooltip states the current precision in one line.
