@@ -165,15 +165,17 @@ country_event = { # Cure activated
 		effect_tooltip = {
 			if = {
 				limit = { is_in_tech_sharing_group = cure_sharing }
+				set_temp_variable = { zombie_timed_idea_days = constant:zombie_cure.shared_activation_days }
 				add_timed_idea = {
 					idea = cure_activated
-					days = constant:zombie_cure.shared_activation_days
+					days = zombie_timed_idea_days
 				}
 			}
 			else = {
+				set_temp_variable = { zombie_timed_idea_days = constant:zombie_cure.solo_activation_days }
 				add_timed_idea = {
 					idea = cure_activated
-					days = constant:zombie_cure.solo_activation_days
+					days = zombie_timed_idea_days
 				}
 			}
 		}

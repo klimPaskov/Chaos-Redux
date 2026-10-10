@@ -937,7 +937,10 @@ Controls:
 
 Controls the standard cure.
 Base research days per horde evolution tier (60, 90, 120 and 150) are the timed research idea lengths and the decision defaults for countries without a League bonus.
-Activation lengths (120 days when the cure is shared, 360 days when it is national) and the 120-day adaptation penalty on the horde are quoted by the cure-category text.
+Activation lengths (120 days when the cure is shared, 360 days when it is national) are published into `global.zombie_cure_shared_activation_days` and `global.zombie_cure_solo_activation_days` by `publish_zombie_cure_activation_days`, which the cure-category text reads.
+Each completed research adds (research slots + biowarfare facilities) times `progress_per_research_unit` percentage points to the cure, clamped between `min_progress_per_completion` and `max_progress_per_completion` (13 to 17), so a solo cure takes 6 to 8 completions.
+Cure-sharing members add to one global total, so a group finishes in a fraction of that.
+Timed idea durations are passed to `add_timed_idea` through the temporary variable `zombie_timed_idea_days`.
 
 Only the cure that matches the most evolved living standard horde is offered, through `standard_zombie_peak_tier_is_0` to `_3`.
 The research penalty idea is removed as soon as research resolves, so League bonuses that shorten the decision also shorten the penalty.

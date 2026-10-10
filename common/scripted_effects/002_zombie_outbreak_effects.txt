@@ -247,9 +247,10 @@ mark_first_zombie_cure_activation = {
 }
 
 activate_shared_zombie_cure_for_current_country = {
+	set_temp_variable = { zombie_timed_idea_days = constant:zombie_cure.shared_activation_days }
 	add_timed_idea = {
 		idea = cure_activated
-		days = constant:zombie_cure.shared_activation_days
+		days = zombie_timed_idea_days
 	}
 	country_event = { id = chaosx.nr2.2 }
 	set_variable = { zzz_cure = 0 }
@@ -258,9 +259,10 @@ activate_shared_zombie_cure_for_current_country = {
 activate_zombie_cure_for_current_country = {
 	mark_first_zombie_cure_activation = yes
 
+	set_temp_variable = { zombie_timed_idea_days = constant:zombie_cure.solo_activation_days }
 	add_timed_idea = {
 		idea = cure_activated
-		days = constant:zombie_cure.solo_activation_days
+		days = zombie_timed_idea_days
 	}
 	country_event = { id = chaosx.nr2.2 }
 	set_variable = { zzz_cure = 0 }
@@ -2496,12 +2498,28 @@ calculate_cure_research_value = {
 	# Add facilities to cure value
 	add_to_temp_variable = { cure_value = facility_count }
 
+	# One research slot or facility is worth progress_per_research_unit percentage points of the cure, kept
+	# within the completions-per-cure band so a solo cure takes about 6 to 8 completions.
+	multiply_temp_variable = { cure_value = constant:zombie_cure.progress_per_research_unit }
+	clamp_temp_variable = {
+		var = cure_value
+		min = constant:zombie_cure.min_progress_per_completion
+		max = constant:zombie_cure.max_progress_per_completion
+	}
+
 	# Store the result
 	set_variable = { cure_research_value = cure_value }
 }
 
+# Publishes the activation lengths the cure category quotes (read by zzz_cure_category_activation_*).
+publish_zombie_cure_activation_days = {
+	set_variable = { global.zombie_cure_shared_activation_days = constant:zombie_cure.shared_activation_days }
+	set_variable = { global.zombie_cure_solo_activation_days = constant:zombie_cure.solo_activation_days }
+}
+
 # Update all countries' cure research values
 update_all_cure_research_values = {
+	publish_zombie_cure_activation_days = yes
 	every_country = {
 		limit = {
 			NOT = { original_tag = ZZZ }
