@@ -464,6 +464,14 @@ Random Stuff has no fixed membership row in the supplied v2 matrix.
 
 The runtime ID 19 entry retains the separate whole-pool activation contract documented above.
 
+### Domestic Unrest: Communist Insurgency, Independence Wave and Random Terror
+
+Cluster ID `16` is the Domestic Unrest cluster, registered in the live runtime as a repeatable cluster with unlock tier 0 (Chaos level 1) and a 120-day cooldown.
+Its rows are Event 001 Communist Insurgency (row 16001, optional, Medium, primary trigger), Event 006 Independence Wave (row 16002, optional, High, primary trigger) and Event 031 Random Terror (row 16003, optional, Medium, primary trigger).
+The workbook membership is events 1, 6, 31 and 63, and Event 063 End Subject Status joins when its rework registers a member row.
+Event 006 keeps its three separate Liberations rows, and its availability is evaluated by the same pool candidate check in either cluster.
+The Event 001 id lives in `event_cluster_domestic_unrest.communism_spread_event_id` until that event gains a package identity constant.
+
 ### Negative Economy: Great Depression 2.0
 
 Cluster ID `10` is the Negative Economy cluster.

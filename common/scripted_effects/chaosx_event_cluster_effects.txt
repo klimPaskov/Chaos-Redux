@@ -130,6 +130,12 @@ initialize_event_cluster_system = {
 		add_to_array = { array = global.event_cluster_type_entries value = constant:event_cluster_type.repeatable }
 		add_to_array = { array = global.event_cluster_unlock_tier_entries value = constant:event_cluster_sudden_abundance.unlock_tier }
 	}
+	if = {
+		limit = { NOT = { is_in_array = { global.event_clusters = constant:event_cluster_id.domestic_unrest } } }
+		add_to_array = { global.event_clusters = constant:event_cluster_id.domestic_unrest }
+		add_to_array = { array = global.event_cluster_type_entries value = constant:event_cluster_type.repeatable }
+		add_to_array = { array = global.event_cluster_unlock_tier_entries value = constant:event_cluster_domestic_unrest.unlock_tier }
+	}
 	clr_country_flag = event_cluster_member_fire_context
 	clr_country_flag = event_cluster_initial_trigger_dispatch
 	clr_country_flag = event_cluster_initial_major_dispatched
@@ -308,6 +314,9 @@ initialize_event_cluster_definitions = {
 	add_to_array = { global.event_clusters = constant:event_cluster_id.sudden_abundance }
 	add_to_array = { array = global.event_cluster_type_entries value = constant:event_cluster_type.repeatable }
 	add_to_array = { array = global.event_cluster_unlock_tier_entries value = constant:event_cluster_sudden_abundance.unlock_tier }
+	add_to_array = { global.event_clusters = constant:event_cluster_id.domestic_unrest }
+	add_to_array = { array = global.event_cluster_type_entries value = constant:event_cluster_type.repeatable }
+	add_to_array = { array = global.event_cluster_unlock_tier_entries value = constant:event_cluster_domestic_unrest.unlock_tier }
 }
 
 get_current_chaos_tier_value = {
@@ -1484,6 +1493,35 @@ load_event_cluster_members = {
 		set_temp_variable = { event_cluster_member_primary_trigger = constant:event_cluster_member_primary_trigger.yes }
 		event_cluster_append_member_definition = yes
 	}
+	else_if = {
+		limit = { check_variable = { event_cluster_id = constant:event_cluster_id.domestic_unrest } }
+		# Every row is an optional trigger row: whichever of the three events the
+		# dispatcher selects opens the cluster, and the others join by the
+		# participation matrix. Event 063 joins when its rework registers a row.
+		set_temp_variable = { event_cluster_member_event_id = constant:event_cluster_domestic_unrest.communism_spread_event_id }
+		set_temp_variable = { event_cluster_member_role = constant:event_cluster_member_role.optional }
+		set_temp_variable = { event_cluster_member_min_tier = constant:chaos_meter_tier_id.tier_0 }
+		set_temp_variable = { event_cluster_member_severity = constant:event_cluster_member_danger.medium }
+		set_temp_variable = { event_cluster_member_row_id = constant:event_cluster_member_row_id.domestic_unrest_communist_insurgency }
+		set_temp_variable = { event_cluster_member_primary_trigger = constant:event_cluster_member_primary_trigger.yes }
+		event_cluster_append_member_definition = yes
+
+		set_temp_variable = { event_cluster_member_event_id = constant:independence_wave_event.id }
+		set_temp_variable = { event_cluster_member_role = constant:event_cluster_member_role.optional }
+		set_temp_variable = { event_cluster_member_min_tier = constant:chaos_meter_tier_id.tier_0 }
+		set_temp_variable = { event_cluster_member_severity = constant:event_cluster_member_danger.high }
+		set_temp_variable = { event_cluster_member_row_id = constant:event_cluster_member_row_id.domestic_unrest_independence_wave }
+		set_temp_variable = { event_cluster_member_primary_trigger = constant:event_cluster_member_primary_trigger.yes }
+		event_cluster_append_member_definition = yes
+
+		set_temp_variable = { event_cluster_member_event_id = constant:random_terror_identity.event_id }
+		set_temp_variable = { event_cluster_member_role = constant:event_cluster_member_role.optional }
+		set_temp_variable = { event_cluster_member_min_tier = constant:chaos_meter_tier_id.tier_0 }
+		set_temp_variable = { event_cluster_member_severity = constant:event_cluster_member_danger.medium }
+		set_temp_variable = { event_cluster_member_row_id = constant:event_cluster_member_row_id.domestic_unrest_random_terror }
+		set_temp_variable = { event_cluster_member_primary_trigger = constant:event_cluster_member_primary_trigger.yes }
+		event_cluster_append_member_definition = yes
+	}
 }
 
 event_cluster_resolve_trigger_member_row = {
@@ -1909,6 +1947,12 @@ event_cluster_check_cluster_gates = {
 						has_global_flag = event_cluster_sudden_abundance_cooldown
 					}
 				}
+				NOT = {
+					AND = {
+						check_variable = { event_cluster_id = constant:event_cluster_id.domestic_unrest }
+						has_global_flag = event_cluster_domestic_unrest_cooldown
+					}
+				}
 				NOT = { is_in_array = { global.disabled_event_clusters = event_cluster_id } }
 			}
 			set_temp_variable = { event_cluster_cluster_gates_passed = 1 }
@@ -2187,6 +2231,7 @@ evaluate_event_cluster_unavailability_reason = {
 						AND = { check_variable = { event_cluster_id = constant:event_cluster_id.national_breakthroughs } has_global_flag = event_cluster_national_breakthroughs_cooldown }
 						AND = { check_variable = { event_cluster_id = constant:event_cluster_id.random_stuff } has_global_flag = event_cluster_random_stuff_cooldown }
 						AND = { check_variable = { event_cluster_id = constant:event_cluster_id.sudden_abundance } has_global_flag = event_cluster_sudden_abundance_cooldown }
+						AND = { check_variable = { event_cluster_id = constant:event_cluster_id.domestic_unrest } has_global_flag = event_cluster_domestic_unrest_cooldown }
 					}
 				}
 				set_temp_variable = { event_cluster_unavailability_reason = constant:event_cluster_unavailability_reason.cooldown }
@@ -3445,6 +3490,11 @@ mark_event_cluster_fired_state = {
 		limit = { check_variable = { event_cluster_id = constant:event_cluster_id.sudden_abundance } }
 		set_temp_variable = { event_cluster_cooldown_days = constant:event_cluster_cooldown_days.sudden_abundance }
 		set_global_flag = { flag = event_cluster_sudden_abundance_cooldown days = event_cluster_cooldown_days }
+	}
+	else_if = {
+		limit = { check_variable = { event_cluster_id = constant:event_cluster_id.domestic_unrest } }
+		set_temp_variable = { event_cluster_cooldown_days = constant:event_cluster_cooldown_days.domestic_unrest }
+		set_global_flag = { flag = event_cluster_domestic_unrest_cooldown days = event_cluster_cooldown_days }
 	}
 	else_if = {
 		limit = { check_variable = { event_cluster_id = constant:event_cluster_id.random_stuff } }
