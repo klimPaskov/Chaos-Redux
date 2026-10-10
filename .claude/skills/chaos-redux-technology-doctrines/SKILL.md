@@ -60,8 +60,11 @@ The `CLAUDE.md` coding, constants, dynamic-effect, and localisation rules apply 
 
 **Folder geometry (chemical_warfare_folder, biowarfare_folder)**
 
-- Both folders use the vanilla grid: `format = "LEFT"`, `slotsize = { width = 70 height = 70 }`, one gridbox per branch row, branch gridboxes starting at x = 170 and the first row at y = 190 with rows 100 pixels apart, year columns 140 pixels apart (two slots), the label gutter 170 pixels wide with labels right-aligned, year headers at y = 50, and every card chain drawn by `path` instead of invisible dependencies. Card art is 64x64. Content fillers are sized to their content.
-- Reason: the engine draws connectors from one global 70x70 line item with 36-pixel segments, so a 90x50 slot left gaps in every link. Before and after geometry is in `docs/plans/chaos_warfare_system_plans/2026-10-10_technology_folder_layout_repair.md`.
+- Both folders use the vanilla grid: `format = "LEFT"`, `slotsize = { width = 70 height = 70 }`, one gridbox per branch row, branch gridboxes starting at x = 220 with rows 110 pixels apart, year columns three slots (210 pixels) apart, branch labels right-aligned in the left gutter, and every card chain drawn by `path` instead of invisible dependencies. Content fillers are sized to their content.
+- The engine draws connectors from one global 70x70 line item with 36-pixel segments, so a slot of any other size leaves gaps in every link. Keep the 70x70 slot and change the pitch instead.
+- Card size follows the vanilla rule, so do not set `force_use_small_tech_layout`: a technology that unlocks equipment draws the full-size named card (183x84 box), and every other technology draws the small 72x72 box without a name. Forcing the small box on every card hides the names.
+- Schedule research years so each branch advances one column per step. The longest link in either folder is two columns (420 pixels), the longest link vanilla draws in its support folder; a branch that jumps many columns draws a long unreadable link.
+- Before and after geometry for both layout passes is in `docs/plans/chaos_warfare_system_plans/2026-10-10_technology_folder_layout_repair.md`.
 - `hoi4.tech_render` with `view = folder` checks card overlap and unresolved sprites from source. It does not draw native cards, tooltips, or scroll reach, so report those as unverified.
 
 **Project-gated and hidden technologies**
