@@ -2,7 +2,8 @@
 
 ## Balance goals
 
-Fury must be strong enough for a tiny AI country to matter. It must also have brakes.
+Fury must be strong enough for a tiny AI country to matter.
+It must also have brakes.
 
 The balance target is:
 
@@ -16,21 +17,20 @@ The balance target is:
 
 ## Target scoring factors
 
-Target score should combine several factors.
+`fury_score_current_target_candidate` combines these factors, tuned in the `fury_target_score` constant block; the best score above `minimum_score` becomes the target.
 
 | Factor | Raises target priority | Lowers target priority |
 | --- | --- | --- |
-| Target divisions | few divisions | many divisions |
-| Target industry | low factories | strong factories |
-| Target manpower | low fielded manpower | large army reserve |
-| Target war state | already stretched | at peace and ready |
-| Target faction | alone | backed by major faction |
-| Player link | none | player, player subject, player faction |
-| Terrain | open and connected | mountains, jungle, supply gaps |
-| Supply | good Fury approach | poor Fury approach |
-| Fury momentum | high momentum allows harder target | low momentum restricts target |
-| Fury overextension | low strain | high strain blocks target |
-| Evolution | high evolution expands target set | baseline keeps target small |
+| Target size | one or two states | more states |
+| Target strength | few divisions, low manpower, weak industry, weaker than Fury | many divisions, large manpower, deep equipment stock, stronger than Fury |
+| Target war state | already at war elsewhere | at peace |
+| Target faction or status | alone | in a faction, or a major |
+| Terrain and supply | open ground, adequate supply nodes | rough terrain, weak supply |
+| Actor state | momentum above zero, target preparation, Evolution I or III | overextension above the high gate |
+| Rivalry | a legal target also pursued by a non-allied rival, or a rival actor when rivalry targeting is open | the previous target (churn penalty) |
+
+Player-controlled countries are scored like any other neighbour; the player link is not a score factor.
+Momentum, preparation, and evolution add the same amount to every candidate, so they only widen the minimum-score gate rather than change which neighbour wins; a proposal in the README makes preparation a spent, per-war resource.
 
 ## AI route matrix
 
@@ -56,17 +56,19 @@ Target score should combine several factors.
 | Expansion | target valid, momentum high | overextension high or no target |
 | Occupation | conquered land, resistance, overextension | no conquered land |
 | Cooperation | pact type and another Fury exists | hostile type or no Fury partner |
-| Rivalry | hostile type, rival Fury nearby | pact type with high cohesion |
+| Rivalry | hostile type, rival Fury nearby | cooperation route already chosen |
 | No-neighbor | no valid neighbors | target exists |
 | World-end | terminal eligible | chaos threshold not met or world-end disabled |
 
 ## Finite reinforcement reserve scaling
 
-Weekly loop units must draw from a hidden finite reinforcement reserve pool. When that pool reaches zero, free weekly spawning stops completely and the Fury actor must rely on normal recruitment, focus rewards, decision rewards, or later capped reserve setup. Scripted weekly reserve grants are capped at 100 total divisions per Fury actor.
+Weekly loop units must draw from a hidden finite reinforcement reserve pool.
+When that pool reaches zero, free weekly spawning stops completely and the Fury actor must rely on normal recruitment, focus rewards, decision rewards, or later capped reserve setup.
+Scripted weekly reserve grants are capped at 100 total divisions per Fury actor.
 
 Suggested inputs:
 
-- base reserve pool size and weekly draw amount by evolution.
+- base reserve pool size by evolution; the weekly draw itself is fixed at one column.
 - country size and industry.
 - active war count.
 - manpower and equipment reserve.
@@ -77,7 +79,9 @@ Suggested inputs:
 - pact aid bonus.
 - terminal branch bonus.
 
-Growth should be visible but controlled by script constants for pool sizes, draw amounts, evolution multipliers, scenario multipliers, direct reward sizing, decision cooldowns, and maximum reserve clamps. The current implementation draws one reserve division every weekly tick while the hidden reserve remains. Focuses and depot decisions keep their direct reinforcement-wave behavior and do not refill the weekly reserve pool.
+Growth should be visible but controlled by script constants for pool sizes, draw amounts, evolution multipliers, scenario multipliers, direct reward sizing, decision cooldowns, and maximum reserve clamps.
+The current implementation draws one reserve division every weekly tick while the hidden reserve remains.
+Focuses and depot decisions keep their direct reinforcement-wave behavior and do not refill the weekly reserve pool.
 
 Examples of scaling direction:
 
@@ -87,9 +91,9 @@ Examples of scaling direction:
 | Hardened Fury | stronger reserve-spawned columns and a larger capped pool |
 | Evolution II multi-actor opening | smaller per-actor pools because two Fury actors exist |
 | Evolution III multi-front | stronger openings and capped multi-front reserve draw |
-| High overextension | weaker units, reduced draw, or skipped high-quality spawns |
-| Equipment shortage | understrength units or no storm units |
-| Pact aid active | a limited extra unit, equipment package, or capped reserve transfer |
+| High overextension | smaller one-time direct waves; the weekly draw is unchanged |
+| Equipment shortage | columns spawn with the scaled stockpile the actor can field |
+| Pact sharing active | the actual paid manpower, rifle, and support vector moves to a partner |
 | Terminal branch | strong capped reserve pool with high overextension pressure |
 
 Exploit protection:
@@ -104,34 +108,31 @@ Exploit protection:
 
 Overextension prevents Fury from becoming a pure snowball.
 
-Overextension rises from:
+Current sources of strain (overextension and the derived occupation pressure):
 
-- each conquered non-core state.
-- multiple active wars.
-- high casualties.
-- low supply.
-- harsh coring.
-- Fury-on-Fury rivalry.
-- terminal spread.
+- each registered conquered non-core state and each non-core controlled state.
+- being at war, weekly.
+- resistance above the failure threshold in a controlled state.
+- harsh coring, rivalry, evolution, and terminal focus costs.
+- a successful anti-Fury Supply Denial.
 
-Overextension effects:
+Current effects:
 
-- slower target selection.
-- weaker reserve-spawned units or slower capped draw.
-- higher resistance.
-- lower stability.
-- AI shifts to occupation branch.
-- chance of stall report.
-- blocks world-end setup if the main Fury cannot administer its continent.
+- the `Fury Overextension` idea at high pressure.
+- smaller direct reinforcement waves.
+- a target-score penalty and, above the selection gate, no `Select the Next Target` decision.
+- at extreme pressure, no valid targets outside Evolution III or the world-end branch, and the occupation crisis mission.
+- AI shifts to occupation decisions and coring.
 
-Overextension falls from:
+Current relief:
 
-- coring.
-- compliance.
-- occupation branch focuses.
-- garrison missions.
-- rail and registry decisions.
-- winning a war quickly with low casualties.
+- peace, weekly.
+- registration, rail registry, and garrison capacity.
+- coring and occupation focuses.
+- garrison and crisis mission success.
+- terminal fronts coordination.
+
+High casualties, low supply, a stall report, and a world-end administration block were planned but are not implemented.
 
 ## Momentum limits
 
@@ -154,7 +155,11 @@ Momentum falls from:
 - capital threatened.
 - target survives border watch.
 
-Momentum should not be permanent. It should decay slowly when Fury is at peace and has valid targets but does not attack.
+Momentum should not be permanent.
+It should decay slowly when Fury is at peace and has valid targets but does not attack.
+
+Current implementation: momentum gains a fixed amount every week regardless of results and falls only through anti-Fury mission outcomes, so the falls listed above are design intent rather than current behavior.
+The README records a proposal that ties weekly momentum to territorial progress.
 
 ## Player exploit checks
 
@@ -163,7 +168,7 @@ Momentum should not be permanent. It should decay slowly when Fury is at peace a
 | Player becomes Fury | random and scenario setup exclude player |
 | Player farms Fury units by tag switching | achievements disqualify player-as-Fury, ordinary player path not supported |
 | Player uses Fury as free ally | Fury faction membership excludes player by default |
-| Fury attacks a protected player-linked puppet early | target rules exclude subjects, allies, and countries already at war with the Fury actor |
+| Fury attacks a protected player-linked puppet early | target rules exclude every subject, the actor's own faction members, and countries already at war with the Fury actor |
 | Player lets Fury conquer then steals settlement | settlement avoids player-controlled or player-occupied states |
 | Fury grants instant cores | coring requires decisions, compliance, control, and resources |
 | Weekly units become infinite | hidden reserve pool is finite; weekly spawns consume it; weekly reserve setup is capped by the 100-division per-actor reserve limit and cleanup clears reserve state |
@@ -181,7 +186,7 @@ AI neighbors should react if Fury becomes threatening.
 | Regional power | emergency aid to target and guarantees when the diplomatic state allows it |
 | Major power | staff talks after major-Fury threshold, aid if Fury near interests |
 | Fury target | capital defense and emergency mobilization |
-| Fury pact member | aid weaker partner if pact cohesion is high |
+| Fury pact member | share reserves with a weaker partner once sharing is open |
 | Hostile Fury actor | opportunistic rivalry after ordinary targets exhausted |
 
 AI should not take anti-Fury decisions when Fury is weak and far away.

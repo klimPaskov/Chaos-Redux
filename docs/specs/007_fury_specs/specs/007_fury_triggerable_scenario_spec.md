@@ -13,11 +13,15 @@
 | Intensity | Low, Medium, High, Maximum |
 | Type options | Fury Pact, Hostile Fury |
 
-The triggerable scenario is a direct setup. It does not require the Chaos Meter, prior Fury firing, a date gate, an evolution unlock, or a previous world state. It creates instant chaos from the selected intensity and type.
+The triggerable scenario is a direct setup.
+It does not require the Chaos Meter tier, prior Fury firing, a date gate, or a previous world state, and it creates instant chaos from the selected intensity and type.
+It does obey the evolution checkboxes: intensity can bypass the Chaos tier that normally unlocks an evolution, but a disabled evolution stays disabled for scenario actors.
 
 ## Scenario purpose
 
-The scenario lets the player create a world where several small AI countries begin the Fury loop at once. It is a challenge setup, not a reward path. The player cannot be selected as a Fury country.
+The scenario lets the player create a world where several small AI countries begin the Fury loop at once.
+It is a challenge setup, not a reward path.
+The player cannot be selected as a Fury country.
 
 ## Type options
 
@@ -27,8 +31,7 @@ All Fury countries are inclined to cooperate.
 
 Opening effects:
 
-- Fury actors join a shared Fury faction after setup or after first declaration.
-- Fury Pact Cohesion starts above neutral.
+- Fury actors become project-pact members through the cooperation route rather than a native faction at setup.
 - cooperation focus branch is unlocked.
 - Fury actors avoid attacking each other while valid non-Fury targets exist.
 - shared war table decisions are available.
@@ -36,21 +39,21 @@ Opening effects:
 
 AI behavior:
 
-- Fury countries send limited aid to weaker Fury partners.
-- target partition is preferred if two Fury countries approach the same region.
-- rivalry happens only if pact cohesion collapses.
+- Fury countries share physical reserves with weaker Fury partners once `Fury Pact Command` opens sharing.
+- Fury actors avoid attacking each other while ordinary legal targets exist.
+- rivalry is unavailable to an actor that committed to cooperation.
 
 ### Hostile Fury
 
-Every Fury actor treats every valid neighbor as prey. Fury actors can eventually target one another.
+Every Fury actor treats every valid neighbor as prey.
+Fury actors can eventually target one another.
 
 Opening effects:
 
 - no Fury faction at start.
-- Fury Pact Cohesion is not used or starts collapsed.
 - rivalry branch is unlocked.
 - Fury actors do not coordinate.
-- Fury-on-Fury targeting becomes valid once ordinary targets are exhausted, or earlier at Maximum intensity.
+- Fury-on-Fury targeting becomes valid for Hostile challenge actors without waiting for ordinary targets to run out; other actors wait until ordinary legal neighbours are exhausted.
 
 AI behavior:
 
@@ -69,9 +72,14 @@ The scenario uses the standard four-stop intensity slider.
 | High | 9 if eligible | Evolution II style package and smaller per-actor pools | Evolution II enabled | two or more Fury actors can coordinate or compete | strong dispersed scenario challenge |
 | Maximum | up to 16 if eligible | Evolution III style package and capped reserve pools | Evolution III enabled | all-neighbor declaration after short setup, or immediately if scenario setting says so | global dispersed pressure |
 
-If the world has fewer than sixteen safe eligible AI minors at Maximum, selection broadens through the candidate fallback order until sixteen are found. The player remains excluded. If sixteen still cannot be found, use every safe eligible candidate and record in scenario details that the world did not have enough safe candidates.
+Selection broadens from one-state to two-state to general safe minors, continent by continent, until the goal is reached.
+The player, player allies, and player subjects remain excluded.
+If the goal still cannot be reached, every safe eligible candidate is used, `fury_triggerable_scenario_used_every_safe_candidate` is set, and the opening news reports the actual count; the scenario advertises "up to" 2/5/9/16 actors.
+An empty safe pool rejects the launch before any existing challenge state changes.
 
-Intensity changes the number of actors, initial army size, and hidden finite reserve pool size. It must not create uncapped weekly spawning. Every Fury actor still consumes its own reserve pool, and weekly free spawning stops for that actor once the pool reaches zero.
+Intensity changes the number of actors, initial army size, and hidden finite reserve pool size.
+It must not create uncapped weekly spawning.
+Every Fury actor still consumes its own reserve pool, and weekly free spawning stops for that actor once the pool reaches zero.
 
 ## Candidate distribution
 
@@ -86,7 +94,8 @@ Priority:
 5. avoid selecting countries that are already in player faction or subjects.
 6. avoid special chaos tags and non-standard countries.
 
-The scenario can broaden from one-state minors to two or three-state minors to reach intensity goals. It should not select majors simply to hit a count.
+The scenario can broaden from one-state minors to two or three-state minors to reach intensity goals.
+It should not select majors simply to hit a count.
 
 ## Launch flow
 
@@ -100,7 +109,7 @@ The scenario launch should:
 6. set scenario-specific flags for scaling and type.
 7. grant appropriate ideas, decisions, focus tree, and units.
 8. start first target selection for each Fury actor.
-9. fire scenario setup event or report.
+9. broadcast one opening World News, `chaosx.news.7008`, for the whole batch with its actual actor count.
 10. clean temporary bypass flags.
 
 The scenario should not permanently bypass ordinary Fury rules outside setup.
@@ -109,11 +118,13 @@ The scenario should not permanently bypass ordinary Fury rules outside setup.
 
 Title direction: `The World in Fury`.
 
-Description direction: Small countries in several regions begin war preparations at the same time. The pattern is too similar to dismiss and too scattered to explain as one government plan.
+Description direction: Small countries in several regions begin war preparations at the same time.
+The pattern is too similar to dismiss and too scattered to explain as one government plan.
 
 Fury Pact type text direction: Reports show liaison officers, shared signals, and matching war-office forms among the Fury countries.
 
-Hostile Fury type text direction: Reports show similar methods without coordination. Each country appears to believe the whole map is its own front.
+Hostile Fury type text direction: Reports show similar methods without coordination.
+Each country appears to believe the whole map is its own front.
 
 Intensity text direction:
 
@@ -144,7 +155,8 @@ Scenario setup selection should also avoid:
 - player faction members.
 - countries in direct player wars when settlement could interfere.
 
-After scenario launch, ordinary Fury target selection can still choose player-controlled countries when normal target gates allow it. At Maximum intensity and world-end escalation, the player can also eventually face Fury through terminal warning logic, but never through setup selection as a Fury actor.
+After scenario launch, ordinary Fury target selection can still choose player-controlled countries when normal target gates allow it.
+At Maximum intensity and world-end escalation, the player can also eventually face Fury through terminal warning logic, but never through setup selection as a Fury actor.
 
 ## Balance by intensity
 

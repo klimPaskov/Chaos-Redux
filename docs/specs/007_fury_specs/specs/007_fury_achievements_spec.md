@@ -1,6 +1,11 @@
 # 007 Fury achievement specification
 
-Fury achievements should reward containment, difficult scenario survival, defeating a grown Fury state, and handling pact or hostile variants. Since the player is excluded from becoming Fury, achievements should not require the player to use the Fury package.
+Fury achievements reward containment, difficult scenario survival, defeating a grown Fury state, and handling pact or hostile variants.
+Since the player is excluded from becoming Fury, no achievement requires the Fury package.
+
+All ten are implemented in `common/achievements/chaos_redux_achievements.txt` under the source IDs `007_fury_<suffix>`, where the suffix is the working id below without `achievement_fury_` (for example `007_fury_fuse_cut`).
+Every achievement requires the player not to be a Fury actor and a recorded player contribution, either the shared containment-contributor flag or a route-specific path flag such as Border Watch completion.
+The designs below are the accepted intent; the source triggers are the authority for exact conditions.
 
 ## Achievement list
 
@@ -64,8 +69,8 @@ Unlock conditions:
 
 - player borders Fury.
 - player completes Border Watch mission.
-- Fury declares on player only through terminal warning route or player is drawn in through an allowed defensive war.
-- player holds capital and wins or survives until Fury is defeated.
+- player holds capital and wins or survives until every Fury actor is defeated.
+- the ordinary target loop may declare on the player when normal target gates allow it; that war still counts.
 
 Disqualifiers:
 

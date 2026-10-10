@@ -1,171 +1,38 @@
 # Asset prompt for Event 007 Fury
 
-Read the [accepted release corrections](../specs/007_fury_release_corrections_2026-10-05.md) first; they override conflicting older instructions within their recorded acceptance boundary.
+Read the [accepted release corrections](../specs/007_fury_release_corrections_2026-10-05.md) first; they set the presentation contract for reports and news.
+Use [chaos-redux-event-assets](../../../../.claude/skills/chaos-redux-event-assets/SKILL.md) for provenance, alpha, processing, manifest, durable-record, and parent-wiring requirements, and `chaos-redux-frame-animation` for any animated asset.
+Inspect the reference folders under `.claude/skills/chaos-redux-event-assets/assets/gfx_references/` that match the asset family before producing anything.
 
-Use `chaos-redux-event-assets` for this package. If any animated asset is requested later, use `chaos-redux-frame-animation` as well. Inspect the relevant reference folders before creating or processing assets.
+Event ID: `7`.
+Event slug: `fury`.
+Working asset folder: `docs/assets/007_fury/`.
 
-Event ID: `7`
-Event slug: `fury`
-Working asset folder: `docs/assets/007_fury/`
+## Source mode
 
-## Source mode summary
+Fury is a fictional dynamic war mechanic, so its visuals are generated or symbolic.
+Do not create portraits of real people for this package.
 
-Fury is a fictional dynamic war mechanic. Most visuals should be generated or symbolic, not sourced from real people.
+## Installed assets
 
-Use generated art for:
+These are wired in `interface/007_fury.gfx`, `interface/chaosx_super_events.gfx`, and `interface/chaosx_achievements.gfx`; do not regenerate them.
 
-- idea icons.
-- focus icons.
-- decision icons.
-- achievement icons.
-- faction emblem.
-- optional institutional leader portrait.
-- news image for first conquest.
-- report images.
-- super-event images.
-
-Use real sourced imagery only if the implementation later chooses a real historical quote source that requires an archival image. Do not create real leader portraits for actual people in this package.
-
-## Required reference folders
-
-Inspect these before work:
-
-- `C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/gfx_references/icons/ideas`
-- `C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/gfx_references/icons/national_focus`
-- `C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/gfx_references/icons/decisions`
-- `C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/gfx_references/event_art/news`
-- `C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/gfx_references/event_art/report`
-- `C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/gfx_references/event_art/super_event`
-- `C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/gfx_references/icons/achievements`
-- `C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/gfx_references/flags/normal`
-
-## Idea and national spirit icons, 64x64
-
-Create HOI4-style idea icons with strong silhouettes and no generated text.
-
-| Asset | Suggested file | Sprite | Direction |
-| --- | --- | --- | --- |
-| National Fury | `idea_fury_national_fury.dds` | `GFX_idea_fury_national_fury` | red map pin over a small border table, no text |
-| Hardened Fury | `idea_fury_hardened_fury.dds` | `GFX_idea_fury_hardened_fury` | reinforced marching column symbol |
-| Fury Overextension | `idea_fury_overextension.dds` | `GFX_idea_fury_overextension` | strained map with too many pins and snapped ruler |
-| Compliance Drive | `idea_fury_compliance_drive.dds` | `GFX_idea_fury_compliance_drive` | registry stamp, files, and guarded checkpoint |
-| Fury Pact Command | `idea_fury_pact_command.dds` | `GFX_idea_fury_pact_command` | two small flags tied by command wire |
-| Rival Fury Doctrine | `idea_fury_rival_doctrine.dds` | `GFX_idea_fury_rival_doctrine` | two arrows colliding over a border |
-| World Fury | `idea_fury_world_fury.dds` | `GFX_idea_fury_world_fury` | globe map with many small front arrows |
-
-## Decision category and decision icons
-
-Decision category icon target is 32x32 unless existing pattern requires another size.
-
-| Asset | Suggested file | Sprite | Direction |
-| --- | --- | --- | --- |
-| Fury War Office category | `decision_category_fury_war_office.dds` | `GFX_decision_category_fury_war_office` | war office desk, map, and stamp |
-| Find next weak neighbor | `decision_fury_next_neighbor.dds` | `GFX_decision_fury_next_neighbor` | magnifier over border |
-| Cut the border rail | `decision_fury_cut_border_rail.dds` | `GFX_decision_fury_cut_border_rail` | broken rail line |
-| Open the depots | `decision_fury_open_depots.dds` | `GFX_decision_fury_open_depots` | crate and rifles |
-| Core the first ring | `decision_fury_core_first_ring.dds` | `GFX_decision_fury_core_first_ring` | registry stamp over map |
-| Shared war tables | `decision_fury_shared_war_tables.dds` | `GFX_decision_fury_shared_war_tables` | two map tables joined |
-| Mark rival Fury | `decision_fury_mark_rival.dds` | `GFX_decision_fury_mark_rival` | crossed arrows |
-| Carry orders overseas | `decision_fury_orders_overseas.dds` | `GFX_decision_fury_orders_overseas` | dispatch envelope over globe |
-| Border Watch | `decision_fury_border_watch.dds` | `GFX_decision_fury_border_watch` | guard line on border |
-| Emergency aid to target | `decision_fury_emergency_aid.dds` | `GFX_decision_fury_emergency_aid` | crate and convoy route |
-
-## Focus icon families, 94x86
-
-The implementation can reuse a family icon across related focuses, but the asset pack should provide enough variety.
-
-| Family | Suggested file | Direction |
-| --- | --- | --- |
-| Opening trunk | `goal_fury_war_office.dds` | impersonal war office with maps |
-| Army branch | `goal_fury_columns.dds` | marching infantry columns |
-| Depot branch | `goal_fury_depots.dds` | captured depot and supply crates |
-| Expansion branch | `goal_fury_next_border.dds` | border markers and arrows |
-| Occupation branch | `goal_fury_registry.dds` | files, stamp, checkpoint |
-| Cooperation branch | `goal_fury_pact.dds` | two small war offices connected by radio wire |
-| Rivalry branch | `goal_fury_rivalry.dds` | two red arrows crossing |
-| Evolution I branch | `goal_fury_hardened_columns.dds` | reinforced columns and heavy boots |
-| Evolution III branch | `goal_fury_all_borders.dds` | arrows from all sides into a small map |
-| World-end branch | `goal_fury_world_in_fury.dds` | globe covered in front arrows |
-
-## News and report images
-
-### First conquest news image, 397x153, black and white
-
-Suggested file: `news_event_fury_first_conquest.dds`
-Sprite: `GFX_news_event_fury_first_conquest`
-
-Direction: 1936 to 1945 documentary-style black and white news image. A small capital building or border office with soldiers, files, and a map being carried inside. No readable generated text. No modern equipment.
-
-### Shared Fury report image, 210x176
-
-The accepted October release correction requires the event-owned war-office card, preserved mobilisation image for opening news, and existing battle scene for conquest news.
-Read the release corrections and parent asset handoffs for final paths and sprites before production.
-The older random-war report reuse direction is superseded for this presentation tranche.
-
-## Super-event images, 457x328
-
-### Fury major super-event
-
-Suggested file: `super_event_fury_major.dds`
-Sprite: `GFX_super_event_fury_major`
-
-Direction: strong central composition. A once-small capital war room filled with maps, dispatch clerks, officers, and border pins. Period documentary realism. No generated text.
-
-### World in Fury world-end super-event
-
-Suggested file: `super_event_world_in_fury.dds`
-Sprite: `GFX_super_event_world_in_fury`
-
-Direction: global map room with multiple continents marked, radio operators, dispatch tables, and repeated small flags. Period style, no modern screens, no readable text.
-
-### Fury defeat aftermath super-event
-
-Suggested file: `super_event_fury_aftermath.dds`
-Sprite: `GFX_super_event_fury_aftermath`
-
-Direction: quiet aftermath in a border archive or war office, maps sealed and guarded, tired soldiers and officials.
-
-## Faction emblem
-
-Suggested file: `faction_fury_pact.dds`
-Sprite: `GFX_faction_fury_pact`
-
-Direction: clean emblem of converging border arrows around a small central map. No readable text. Must remain readable at faction emblem size.
-
-## Optional institutional leader portrait, 156x210
-
-Suggested file: `leader_fury_war_directorate.dds`
-Sprite: `GFX_portrait_fury_war_directorate`
-
-Direction: fictional institutional council or impersonal war office leadership portrait. A table of officers partly in shadow with maps and files, no single real person, no generated text. Mark as fictional institutional leader. Do not use gendered personal-name pool.
-Route any authorized portrait, including an institutional portrait, to `chaosx_portrait_creator` under [chaos-redux-event-assets](../../../../.agents/skills/chaos-redux-event-assets/SKILL.md).
-
-## Achievement icons, 64x64
-
-Create completed icons first. Grey and not-eligible variants can be produced later if needed.
-
-| Achievement | Icon direction |
+| Family | Sprites |
 | --- | --- |
-| Fuse Cut Short | cut fuse over a border map |
-| No Minor Shall Be Major | small flag blocked by a large staff marker |
-| The Firebreak Holds | soldiers holding a marked border line |
-| Break the March Pact | cracked faction seal and split arrows |
-| Ten Fires, No Dawn | ten small flames over a world grid |
-| The Last Neighbor Stands | lone border marker against a moving map |
-| A World Without Fury | burned maps sealed in an archive |
-| Let the Fires Fight | two fire arrows colliding |
-| Alone Against the Major | lone shield before a large red map marker |
-| Paper Borders Hold | intact border papers with official stamp |
+| News and report | `GFX_news_event_fury_begins` (opening news, preserved mobilisation image), `GFX_news_event_fury_first_conquest` (battle scene), `GFX_report_event_fury_war_office` (event-owned report card) |
+| Ideas | the seven Fury ideas and four anti-Fury ideas, `GFX_idea_fury_*` and `GFX_idea_anti_fury_*` |
+| Decisions | `GFX_decision_category_fury_war_office`, `GFX_decision_category_anti_fury`, and the target, depots, settlement, coring, terminal reserves, terminal fronts, and anti-Fury response icons |
+| Focus families | war office, target files, depots, occupation registers, pact, rivalry, all borders, and world end, each with a shine variant |
+| Leader overlay | `GFX_fury_leader_flame_overlay_static` and `GFX_fury_leader_flame_overlay_animated` |
+| Super-events | slot `59` `fury_becomes_a_state.dds` and slot `60` `super_event_world_in_fury.dds` |
+| Achievements | ten `GFX_achievement_007_fury_*` triplets with grey and not-eligible variants |
 
-## Manifest and handoff
+The opening-news provenance is in `docs/assets/007_fury/opening_news_2026_10_05/manifest.md`.
 
-Create:
+## Open asset items
 
-- source PNGs.
-- processed PNG previews.
-- final DDS files.
-- `docs/assets/007_fury/manifest.md`.
-- `docs/assets/007_fury/gfx_handoff.md`.
-
-Use [chaos-redux-event-assets](../../../../.agents/skills/chaos-redux-event-assets/SKILL.md) for current provenance, alpha, processing, manifest, durable-record, and parent-wiring requirements.
-Retain the package destinations above and asset-specific sprite/consumer mappings.
+- Legacy provenance for the earlier report, news, idea, decision, focus, and super-event art is unresolved in the release review; record source and generation evidence rather than regenerating approved art.
+- The portrait-overlay composition remains visually unaccepted in the GUI audit.
+- No faction emblem sprite exists; the native faction uses the default emblem. A generated emblem of converging border arrows around a small central map, without readable text and legible at emblem size, is optional unless the README accepts it.
+- An institutional War Directorate portrait (156x210, a table of officers in shadow with maps and files, no single real person) is needed only if the Internal Fury route is accepted; route it to `chaosx_portrait_creator`.
+- An aftermath super-event image is needed only if the optional third super-event is accepted; see the super-event prompt.

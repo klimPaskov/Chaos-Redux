@@ -1,110 +1,31 @@
 # Coding prompt for Event 007 Fury
 
-Read the [accepted release corrections](../specs/007_fury_release_corrections_2026-10-05.md) first; they override conflicting older instructions within their recorded acceptance boundary.
+Event 007 Fury is implemented: actor selection, package, finite reserve, target loop, opening and territorial-gain news, the 52-focus tree, both decision categories, the triggerable scenario, both super-events, the world-end branch, and ten achievements.
+Do not rebuild any of it from the older planning text.
+Read the [README](../README.md), the [accepted release corrections](../specs/007_fury_release_corrections_2026-10-05.md), and `docs/plans/007_fury_plans/agent_decisions_2026-10-05.md` before changing source.
 
-Implement Event ID `7`, Fury, according to this planning package.
+Follow `CLAUDE.md` and the `chaos-redux-events`, `chaos-redux-decisions-missions`, and `chaos-redux-focus-trees` skills for any change.
 
-Source folder:
+## Remaining source work
 
-`docs/specs/007_fury_specs/`
+These items repair consistency with accepted design and need no new design decision:
 
-Primary files:
+- `fury_form_war_table_tt` and `fury_assign_terminal_fronts_tt` in `localisation/english/007_random_expansion_l_english.yml` still promise pact cohesion, which is retired; describe the real pact membership, idea, preparation, momentum, and overextension effects instead.
+- `fury_terminal.reserve_cohesion_gain` and `fury_terminal.fronts_cohesion_gain` have no reader and can be removed.
+- Literal tuning values remain in source: momentum additions of `1` and `3` in `common/decisions/007_fury_decisions.txt` and `common/scripted_effects/007_fury_effects.txt`, and overextension gates of `5` and `4` in the target and settlement decisions; move them into the `fury_balance` or `fury_decision_cost` constant blocks.
 
-- `specs/007_fury_spec_part_1_core.md`
-- `specs/007_fury_spec_part_2_evolutions_world_end.md`
-- `specs/007_fury_focus_tree_spec.md`
-- `specs/007_fury_decisions_missions_spec.md`
-- `specs/007_fury_triggerable_scenario_spec.md`
-- `specs/007_fury_achievements_spec.md`
-- `matrices/007_fury_country_package_matrix.md`
-- `matrices/007_fury_ai_balance_matrix.md`
-- `acceptance/007_fury_acceptance_criteria.md`
+## Work that needs a decision first
 
-Follow `AGENTS.md`, `chaos-redux-events`, `chaos-redux-event-assets`, `chaos-redux-super-events`, `chaos-redux-focus-trees`, `chaos-redux-decisions-missions`, and `chaos-redux-improvement-loop`.
+Implement these only after the README's open questions record an accepted disposition:
 
-## Core implementation requirements
+- the Internal Fury branch (War Directorate, Civil Mobilization, Compliance Administration) and its institutional portrait.
+- ordinary per-country defeat news.
+- the audit proposals for momentum, a single strain value, spent target preparation, anti-Fury mission map checks, harsh-coring migration pressure, Random War overlap, internal fracture, and actor-milestone evolution application.
 
-- Replace obsolete expansionism behavior with Fury.
-- Keep Event 007 as minor repeatable.
-- Put Fury in the Wars cluster.
-- Select a dynamic small mainland AI minor with few states.
-- Exclude player countries from Fury selection.
-- Allow ordinary Fury target selection to choose AI or player-controlled countries when they meet the normal target gates.
-- Give Fury a national spirit, shared focus tree, decisions, an initial army package, a finite hidden weekly reinforcement reserve capped at 100 scripted reserve divisions per actor, and dynamic target loop.
-- Fury attacks weaker eligible neighbors without warning.
-- Fury repeats after victory until no valid neighbor remains or Fury capitulates.
-- Fire a news event when Fury defeats its first neighbor.
-- Fire a super-event when the first Fury country becomes a major.
-- Add compliance on captured territory and coring decisions with concrete costs.
-- Add active cleanup for capitulation and invalid targets.
+Any accepted change to AI weights, target scores, or reserve values needs a before-and-after comparison through `chaosx_ai_probability_auditor`.
 
-## Evolutions
+## Validation still owed
 
-Implement:
-
-- Evolution I, Hardened Fury, with stronger starting units, better reserve-spawned unit quality, a larger capped reserve pool, better idea, and unlocked focus paths.
-- Evolution II, Two Fires, with two Fury actors and cooperation or rivalry mechanics.
-- Evolution III, All Borders at Once, with three Fury actors, stronger openings, capped reserve-spawned units, and all-neighbor declarations.
-
-Each evolution needs active-event behavior and pre-fire opening behavior.
-
-## Triggerable scenario
-
-Implement scenario `The World in Fury`.
-
-- four intensity stops.
-- type choices: Fury Pact and Hostile Fury.
-- player always excluded.
-- Low creates 2 when safe.
-- Medium creates 5 when safe.
-- High creates 9 when safe.
-- Maximum creates up to 16 when enough safe AI minors exist.
-- intensity controls initial army size, reserve pool size, and evolution setup. It must not create instant mass spawning or infinite spawning.
-- type controls pact or hostile behavior.
-- scenario has no normal chaos or prior-event prerequisite.
-
-## World-end
-
-Implement terminal Fury branch if world-end systems are in scope.
-
-- separate from triggerable scenario.
-- requires terminal eligibility.
-- main Fury faction.
-- Fury actors seeded in other continents.
-- seeded Fury actors join the main Fury faction.
-- world-end super-event.
-- Fury world threat source.
-- player warning before terminal rules can threaten player-linked countries.
-
-## Focus tree
-
-Implement shared Fury focus tree with the required branches:
-
-- opening trunk.
-- internal Fury.
-- Army of the March.
-- expansion.
-- occupation and integration.
-- cooperation.
-- rivalry.
-- Evolution I.
-- Evolution III.
-- world-end.
-
-Use varied rewards, real branch payoffs, AI weights, focus filters, icons, localisation, and decisions. Avoid a linear reward ladder.
-
-## Decisions and missions
-
-Implement Fury War Office and anti-Fury response. Use dynamic costs and map objectives. Avoid political power only designs.
-
-## Assets, super-events, achievements, docs
-
-Use the prompt files in `prompts/`.
-
-- create or wire assets.
-- research quote, button text, and audio before final super-event completion.
-- implement achievements or report queued items.
-- update docs and event catalog spreadsheet.
-- produce a completion report with files changed, validation scenarios, and simplifications.
-
-Do not claim completion while any requested route, evolution, scenario option, focus branch, decision family, super-event, achievement, asset, AI behavior, or documentation surface is missing without a clear blocker report.
+Release sign-off still lacks full event, focus, and probability coverage, the post-change focus render, a populated Event Details review, overlay composition, and legacy asset provenance; see `docs/plans/007_fury_plans/release_review_2026-10-05.md`.
+Catalog wording is queued in `docs/plans/007_fury_plans/catalog_changes_pending.md` for the spreadsheet owner.
+Report every remaining blocker or simplification; do not claim completion while any of the above stays open.

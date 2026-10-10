@@ -1,33 +1,18 @@
 /goal
-Implement Event 007 Fury from `docs/specs/007_fury_specs/`.
+Finish the remaining Event 007 Fury work in `docs/specs/007_fury_specs/`; the event itself is already implemented and must not be rebuilt.
 
 Read:
-- `specs/007_fury_release_corrections_2026-10-05.md`
-- `prompts/007_fury_coding_prompt.md`
-- `prompts/007_fury_asset_prompt.md`
-- `prompts/007_fury_super_event_prompt.md`
-- `prompts/007_fury_achievement_prompt.md`
-- `prompts/007_fury_decision_mission_prompt.md`
-- `acceptance/007_fury_acceptance_criteria.md`
+- `README.md`, including its open questions.
+- `specs/007_fury_release_corrections_2026-10-05.md`.
+- `prompts/007_fury_coding_prompt.md`.
+- `docs/plans/007_fury_plans/agent_decisions_2026-10-05.md` and `release_review_2026-10-05.md`.
 
-Follow AGENTS.md plus the Chaos Redux event, planning, asset, super-event, focus-tree, decision, and improvement-loop skills.
+Follow CLAUDE.md and the Chaos Redux event, decision, and focus-tree skills.
 
 Pass or fail requirements:
-- Event 007 replaces obsolete expansionism with Fury.
-- Type is minor repeatable and cluster is Wars.
-- Fury selects dynamic small mainland AI minors only. Player is never Fury.
-- Ordinary Fury targets can be AI or player-controlled countries when they meet the normal target gates.
-- Fury receives idea, shared focus tree, decisions, initial army, finite hidden reinforcement reserve, and dynamic target loop.
-- Weekly free unit spawning consumes the hidden reserve at one unit per weekly tick and stops completely at zero; the scripted weekly reserve cap is 100 total divisions per Fury actor. Focus and decision reinforcement waves are direct one-time rewards, not weekly reserve refills.
-- Fury attacks weaker eligible neighbors, repeats after victory, stops on capitulation or no valid neighbors.
-- First conquest news exists.
-- Fury-major super-event exists.
-- Compliance and coring decisions exist with concrete costs beyond political power.
-- Evolutions I, II, and III exist with active-event and pre-fire behavior.
-- Evolution II supports two Fury actors and cooperation.
-- Evolution III supports three Fury actors and all-neighbor declarations.
-- Triggerable scenario `The World in Fury` has Low, Medium, High, Maximum intensity and Fury Pact or Hostile Fury type.
-- Maximum creates up to sixteen dispersed Fury actors when enough safe AI minors exist.
-- World-end branch spreads Fury to other continents and joins them to the main Fury faction.
-- Assets, achievements, AI, docs, event log, event details, and spreadsheet row are aligned.
-- Keep iterating until the goal is implemented to the fullest extent. Do not claim completion while a requested requirement is incomplete; report every blocker clearly.
+- Retired Pact Cohesion no longer appears in player text or constants.
+- Remaining literal tuning values in Fury decisions and effects come from script constants.
+- No open question is implemented without a recorded accepted disposition.
+- Accepted AI or balance changes have a before-and-after probability comparison.
+- Player countries, their allies, and their subjects still never become Fury, and the per-actor reserve stays finite with a 100-division lifetime cap.
+- Every remaining validation gap and blocker is reported; completion is not claimed while one stays open.

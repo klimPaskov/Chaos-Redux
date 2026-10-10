@@ -1,6 +1,7 @@
 # 007 Fury dynamic country package matrix
 
-Fury transforms an existing AI minor. It does not require a new hardcoded country tag for the baseline.
+Fury transforms an existing AI minor.
+It does not require a new hardcoded country tag for the baseline.
 
 ## Package overview
 
@@ -12,8 +13,8 @@ Fury transforms an existing AI minor. It does not require a new hardcoded countr
 | Cosmetic identity | optional route names through ideas and event text, not required for every country |
 | Flag | base country flag remains by default |
 | Faction emblem | shared Fury faction emblem if cooperation or world-end branch forms |
-| Leader | current leader remains unless War Directorate route replaces them |
-| Optional leader replacement | `The War Directorate`, fictional institutional leader |
+| Leader | current leader remains |
+| Optional leader replacement | `The War Directorate`, only if the unresolved Internal Fury route is accepted |
 | Focus tree | shared Fury tree loaded for Fury actor |
 | Decisions | Fury War Office category |
 | Ideas | National Fury and route upgrades |
@@ -24,7 +25,8 @@ Fury transforms an existing AI minor. It does not require a new hardcoded countr
 
 ## Dynamic identity rules
 
-Fury is meant to work on many countries. Avoid country-specific hardcoding in the first implementation.
+Fury is meant to work on many countries.
+Avoid country-specific hardcoding in the first implementation.
 
 Visible identity should come from:
 
@@ -36,10 +38,13 @@ Visible identity should come from:
 - optional Fury faction name.
 - optional institutional leader if route chooses it.
 
-Do not create a unique flag for every possible Fury country. The event is dynamic. A generic faction emblem and shared idea icons are better than a large impossible flag set.
+Do not create a unique flag for every possible Fury country.
+The event is dynamic.
+A generic faction emblem and shared idea icons are better than a large impossible flag set.
 
 ## Optional leader package
 
+This package applies only if the unresolved Internal Fury branch is accepted (see the README's open questions); the current implementation keeps the original leader.
 If the War Directorate route replaces the leader, use a fictional institutional leader.
 
 | Field | Direction |
@@ -52,15 +57,16 @@ If the War Directorate route replaces the leader, use a fictional institutional 
 | Unlock | War Directorate focus route |
 | Cleanup | if Fury defeated, leader can remain only if aftermath says the state survives as a militarized government |
 
-The implementation may keep the original leader for simplicity if the route does not reach War Directorate. This is not a fallback. It is the baseline design.
+The implementation may keep the original leader for simplicity if the route does not reach War Directorate.
+This is not a fallback.
+It is the baseline design.
 
 ## Starting ideas
 
 | Idea | Applies | Role |
 | --- | --- | --- |
 | National Fury | all Fury actors | main package |
-| Improvised Command | weak candidates | compensates tiny army, creates planning weakness |
-| Fury Overextension | after conquest | administrative strain |
+| Fury Overextension | at high occupation pressure | administrative strain |
 | Compliance Drive | after occupation branch | captured land absorption |
 | Hardened Fury | Evolution I | stronger capped reserve quality and war planning |
 | Fury Pact Command | pact branch | cooperation with other Fury actors |
@@ -69,32 +75,31 @@ The implementation may keep the original leader for simplicity if the route does
 
 ## Starting army matrix
 
-| Situation | Divisions | Quality | Equipment | Notes |
-| --- | --- | --- | --- | --- |
-| Baseline ordinary | 5 to 8 | irregular infantry | rifles and limited support | enough to beat weak neighbor |
-| Weak candidate | 3 to 5 | irregular infantry | lower stockpile | target selection must choose weaker target |
-| Hardened opening | 8 to 12 | regularized columns | rifles, support, small artillery chance | Evolution I |
-| Two Fires opening | 8 to 12 each | regularized columns | better stockpile | Evolution II or Medium scenario |
-| All Borders opening | 12 or more each | storm columns | stronger stockpile | Evolution III or High and Maximum scenario |
-| World-end seed | scaled by continent and intensity | evolved columns | strong but not infinite | joins main Fury faction |
+Every opening uses `Fury Column` divisions with a scaled stockpile; counts come from the `fury_units` constant block.
+
+| Situation | Constant | Notes |
+| --- | --- | --- |
+| Candidate with fewer than two controlled states | `weak_start_units` | target selection must still choose a weaker target |
+| Baseline ordinary | `baseline_start_units` | enough to beat a weak neighbour |
+| Hardened opening | `hardened_start_units` | Evolution I, including Medium or higher challenges |
+| All Borders opening | `evolution_three_start_units` | Evolution III or Maximum challenge |
+| World-end seed | evolved package | strong but finite; joins the main Fury faction |
+
+Two Fires does not add its own opening size; it adds actors.
 
 ## Template families
 
-| Template | Use | Source |
-| --- | --- | --- |
-| Fury Column | baseline attack | starting package and finite reserve growth |
-| Capital Guard | capital defense | starting package |
-| Border Runner | low-supply fronts | terrain or supply branch |
-| Depot Cadre | garrison and occupation | occupation branch |
-| Storm Column | evolved assault | Evolution I and III |
-| Pact Cadre | shared aid | cooperation branch |
-| Rival Absorption Column | Fury-on-Fury winner | hostile branch reward |
-
-Templates should be small and dynamically improved by focus progress. Avoid giant perfect units early.
+The implementation uses one template, `Fury Column`, for openings, reserve columns, and direct waves.
+The other planned families (Capital Guard, Border Runner, Depot Cadre, Storm Column, Pact Cadre, Rival Absorption Column) were not adopted; their roles are carried by focus rewards, stockpiles, and reserve sharing.
+Avoid giant perfect units early.
 
 ## Reinforcement pathways
 
-Fury weekly reinforcement is finite. Every actor has a hidden reserve pool. Weekly spawns draw from that pool once per week and stop completely at zero. Fury can still recruit normally through the base game. Scripted weekly reserve grants are capped at 100 total divisions per Fury actor.
+Fury weekly reinforcement is finite.
+Every actor has a hidden reserve pool.
+Weekly spawns draw from that pool once per week and stop completely at zero.
+Fury can still recruit normally through the base game.
+Scripted weekly reserve grants are capped at 100 total divisions per Fury actor.
 
 Allowed reinforcement sources:
 
@@ -115,8 +120,7 @@ Fury gains units through:
 - focus rewards.
 - depot decisions.
 - normal base-game recruitment.
-- pact aid.
-- rival absorption.
+- pact reserve sharing.
 - terminal world-end seed support.
 
 Fury should not gain units only through political power decisions.
@@ -135,7 +139,8 @@ Fury should not gain units only through political power decisions.
 
 ## Country-local decisions
 
-Dynamic Fury does not need country-specific decisions. Decisions use dynamic target, state group, and continent logic.
+Dynamic Fury does not need country-specific decisions.
+Decisions use dynamic target, state group, and continent logic.
 
 Country-local flavor can appear later through scripted localisation:
 
@@ -155,7 +160,7 @@ If pact or world-end branch creates a faction:
 | Faction leader | strongest or first major Fury actor |
 | Members | active Fury actors in pact mode or world-end seed |
 | Emblem | generated faction emblem, no readable text |
-| Mechanics | Fury Pact Cohesion, shared aid, partition |
+| Mechanics | project-pact membership and physical reserve sharing; no cohesion value or partition |
 | AI | coordinate target choice and support weaker members |
 | Cleanup | dissolve if fewer than two Fury actors remain unless world-end says otherwise |
 

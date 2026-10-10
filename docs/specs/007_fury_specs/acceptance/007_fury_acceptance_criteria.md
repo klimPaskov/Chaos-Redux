@@ -32,7 +32,8 @@ Implementation passes only if:
 - focus and decision unit rewards are one-time direct spawns, not sources for the weekly reserve loop.
 - first target is selected dynamically.
 - Fury declares on a weaker eligible neighbor without warning.
-- first conquest news fires when the first neighbor is defeated.
+- one opening World News fires per successful preparation batch with the actual actor count.
+- the campaign-once territorial-gain news fires on real control growth or a completed annexation, never on a large starting footprint.
 - conquest settlement adds compliance and overextension.
 - coring requires decisions, compliance, control, and concrete costs.
 - Fury repeats target selection after victory.
@@ -67,9 +68,9 @@ Implementation passes only if:
 
 - Fury War Office decision category exists.
 - decisions use concrete costs beyond political power where appropriate.
-- target, settlement, reinforcement, coring, cooperation, rivalry, and no-neighbor families exist.
+- target, settlement, reinforcement, coring, cooperation, rivalry, and terminal families exist; the no-neighbour step is carried by the world-end focus branch.
 - anti-Fury response appears after major-Fury or world-end threshold.
-- missions require real map action where used.
+- missions require real map action where used; the anti-Fury missions' missing border-division and route checks remain an open finding.
 - stale target and state decisions clean up.
 
 ## Triggerable scenario
@@ -93,7 +94,7 @@ Implementation passes only if:
 
 Implementation passes only if:
 
-- first-conquest news event exists.
+- opening news and first territorial-gain news events exist.
 - Fury-major super-event exists.
 - World in Fury world-end super-event exists if terminal branch is implemented.
 - super-event image, text, quote, audio id, audio file, and docs align.
@@ -116,7 +117,7 @@ Implementation passes only if:
 
 Implementation passes only if:
 
-- idea, decision, focus, achievement, news, report, super-event, faction emblem, and optional leader portrait asset needs are tracked.
+- idea, decision, focus, achievement, news, report, super-event, and faction emblem asset needs are tracked; a leader portrait is needed only if the Internal Fury route is accepted.
 - generated or sourced assets follow source-mode rules.
 - final assets are processed, converted to DDS, moved, documented, and wired.
 - placeholder sprites are reported as placeholders if used.
@@ -142,4 +143,5 @@ Implementation passes only if:
 
 ## Simplification rule
 
-The implementation is incomplete if any requested surface is omitted without reporting it. This includes missing evolutions, missing scenario type, missing maximum-spread setup, missing finite reinforcement reserve caps, missing focus branches, missing coring decisions, missing super-event direction, missing AI, missing documentation, or missing asset handoff.
+The implementation is incomplete if any requested surface is omitted without reporting it.
+This includes missing evolutions, missing scenario type, missing maximum-spread setup, missing finite reinforcement reserve caps, missing focus branches, missing coring decisions, missing super-event direction, missing AI, missing documentation, or missing asset handoff.

@@ -4,9 +4,11 @@
 
 This spec uses the user-provided Event 007 concept and the uploaded Chaos Redux guidance files.
 
-The uploaded catalog row for Event 007 currently names the event `Fury`, leaves details as `tbd`, leaves the first evolution as `tbd`, marks type as `Minor Repeatable`, and status as `To Be Reworked`. The new spec replaces that empty design with a full dynamic event plan.
+The uploaded catalog row for Event 007 currently names the event `Fury`, leaves details as `tbd`, leaves the first evolution as `tbd`, marks type as `Minor Repeatable`, and status as `To Be Reworked`.
+The new spec replaces that empty design with a full dynamic event plan.
 
-No external factual claim is required for the core idea because Fury is a fictional Chaos Redux war mechanic. Future implementation can research real quotes and audio for super-events through the super-event prompt.
+No external factual claim is required for the core idea because Fury is a fictional Chaos Redux war mechanic.
+Future implementation can research real quotes and audio for super-events through the super-event prompt.
 
 ## Design constraints carried from the request
 
@@ -44,7 +46,11 @@ The spec follows the uploaded guidance for:
 - improvement loop depth checks.
 - AGENTS repository rules.
 
-## Open research tasks for later agents
+## Research tasks
+
+The major and world-end super-events are implemented: their quotes are the `chaosx_super_event.59.q` and `chaosx_super_event.60.q` localisation, and their audio sources and licenses are in `docs/super_events/super_event_audio_packages.md`.
+Only the optional aftermath super-event remains, and only if it is accepted.
+The original task list is retained below for that case.
 
 Super-event research should verify:
 
@@ -59,4 +65,5 @@ Asset work should inspect the Chaos Redux reference folders before creating icon
 
 ## No current external research performed
 
-This planning pass did not browse the web because the event is a fictional system and the required facts came from uploaded project files and the provided catalog workbook. Quote, cultural remark, and music research are intentionally left to the super-event research workflow so the implementation package does not contain unverified quotations or licensing claims.
+This planning pass did not browse the web because the event is a fictional system and the required facts came from uploaded project files and the provided catalog workbook.
+Quote, cultural remark, and music research are intentionally left to the super-event research workflow so the implementation package does not contain unverified quotations or licensing claims.

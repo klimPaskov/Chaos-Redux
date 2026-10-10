@@ -1,7 +1,8 @@
 # 007 Fury event flow map
 
 ```text
-Eligible AI minor found
+Eligible AI minor batch found
+  one opening World News for the batch
   apply Fury package
   load shared tree
   start finite reserve pulse
@@ -9,11 +10,12 @@ Eligible AI minor found
   declare war without warning
     if Fury loses
       cleanup and defeat log
+    first foreign ground taken
+      campaign-once territorial-gain news
+      register occupied states, add compliance and overextension
     if target falls
-      conquest settlement
-      first-conquest news if first victory
-      add compliance and overextension
-      unlock coring decisions
+      ordinary peace transfers territory
+      registers and coring decisions absorb it
       pick next target
         if target exists
           repeat war loop
@@ -39,8 +41,8 @@ Evolution I
 
 Evolution II
   up to two Fury actors
-  cooperation or rivalry branch
-  Fury Pact Cohesion if pact type
+  cooperation or rivalry branch, mutually exclusive
+  project-pact membership and reserve sharing if cooperative
 
 Evolution III
   up to three Fury actors
@@ -60,6 +62,8 @@ The World in Fury scenario
   Medium gives 5 Fury actors when safe
   High gives 9 Fury actors when safe
   Maximum gives up to 16 Fury actors when safe
+  one opening World News with the actual count
+  disabled evolution checkboxes stay disabled
   intensity changes initial armies and capped reserve pools
   Pact type enables cooperation
   Hostile type enables rivalry
