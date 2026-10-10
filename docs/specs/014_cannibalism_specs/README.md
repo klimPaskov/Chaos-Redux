@@ -81,20 +81,9 @@ No current full-package or in-game completion is inferred; the open evidence gat
 
 ## Open questions
 
-Each item below is proposed (spec audit 2026-10-10), not accepted design, and needs parent or user acceptance before implementation.
+P-014-A (Field Hunger reads the shared famine stage) and P-014-C (exposed feeding programs draw Condemnation) were accepted and implemented on 10 October 2026; Part 9 describes both.
+The item below is proposed, not accepted design, and needs parent or user acceptance before implementation.
 None adds a public value, a decision or a meter.
-
-### P-014-A. Field Hunger reads the shared famine stage
-
-- Problem: `cannibalism_state_has_famine_pressure` reads only the Event 013 and Soviet camp famine flags, so a real famine committed by the famine and migration system adds no Field Hunger, no logistics delay and no host-selection weight.
-  The Hunger Lines scenario therefore puts famine on the exact Event 014 node states without feeding the cannibal crisis it is named after.
-- Proposal: owner Event 014, consumer side only.
-  A state counts as shortage when `famine_food_stage_requires_mortality` holds (acute shortage or worse) and as severe shortage when `famine_food_stage` is at least `famine_food_stage.famine` or the state carries `famine_crisis_concealed`.
-  The existing constants then apply unchanged: `weekly_shortage_hunger` (4), `weekly_severe_shortage_hunger` (3), `logistics_shortage_add_days` (14), `host_shortage_score` (25) and `state_shortage_score` (16).
-- Consequences: the famine decisions (Release Food Stores, Import Food, Escort Relief, Airlift Relief) become real Event 014 counterplay because a lower stage removes the pressure, with no second relief payment.
-  The famine system's Conceal Hunger gains a second cost, since hidden hunger feeds predation.
-  Event 014 writes no famine value, so no feedback loop or double death count arises.
-- Acceptance case: launch The Hunger Lines at Low and at Medium; Field Hunger rises by 4 and by 7 per pulse respectively on a host with a famine node, and falls back to the war baseline once famine relief lowers the stage below acute shortage.
 
 ### P-014-B. Survivor spread follows real refugee flight
 
@@ -106,14 +95,6 @@ None adds a public value, a decision or a meter.
 - Consequences: one migration decision becomes Event 014 counterplay and border closure stays a weaker blunt tool, which matches Part 3.
   No new decision, value or periodic scan is added.
 
-### P-014-C. Exposed feeding programs draw real Condemnation
-
-- Problem: `cannibalism_expose_detention_exploitation_in_current_country` sets `cannibalism_feeding_program_exposed` and `cannibalism_feeding_program_exposed_abroad`, but no rule reads either flag, and Event 014 calls no Condemnation source although Parts 2 and 9 promise condemnation for exposed exploitation.
-- Proposal: owner Event 014 as caller, the Condemnation system as owner of scaling, history and sanctions.
-  The exposure transaction calls `condemnation_add_source` once per exposure with `condemnation_source.atrocity`, `condemnation_visibility.discovered`, `condemnation_severity.major` and the recorded prisoner-feeding civilian deaths, following the Event 031 caller pattern in `random_terror_add_condemnation_source`.
-  The two inert flags are then either consumed as the once-only guard or removed.
-- Consequences: the exploitation route keeps its battlefield value but now carries the sanctions and inspection pressure the rest of the mod uses for atrocities.
-
 ## Changelog
 
 - 2026-10-10 spec audit (Pass 1 and Pass 2).
@@ -124,4 +105,4 @@ None adds a public value, a decision or a meter.
   - Part 11 names `SCN-010` The Hunger Lines and records its famine hook; Part 12 adds the matching acceptance lines.
   - Part 2 defers the header contents to Part 6 and the implemented `cannibalism_early_header_window`, dropping three extra header values; Part 6 clarifies the static fallback wording and the famine relief boundary.
   - Prompts carry a historical build-contract banner, the asset prompt's skill link points to `.claude/skills/`, and the source-reading manifest records the resolved catalog conflict.
-  - Added proposals P-014-A to P-014-C under Open questions.
+  - Added proposals P-014-A to P-014-C under Open questions; A and C were implemented the same day.

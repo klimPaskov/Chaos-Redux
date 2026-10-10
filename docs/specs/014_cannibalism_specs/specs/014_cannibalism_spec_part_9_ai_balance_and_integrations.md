@@ -475,9 +475,9 @@ Famine alone creates no ritual cell or cult.
 The implemented classifier is `cannibalism_country_has_external_hunger_pressure` with its state and severe variants in `common/scripted_triggers/014_cannibalism_triggers.txt`.
 It reads the Event 013 disaster flags (`natural_disaster_famine_pressure`, `natural_disaster_supply_collapse`, `natural_disaster_disease_pressure` and the aftermath flags), the Soviet camp famine pressure (`genocide_soviet_famine_pressure_site`, `camp_rework_soviet_famine_pressure`, `sov_famine_pressure_state`, the owner's `famine_pressure` and `sov_famine_crisis_active`), biological contamination, and the locust ingress flags, which no current system sets.
 Under shortage an active host gains `cannibalism_integration.weekly_shortage_hunger` (4) Field Hunger per pulse and a further `weekly_severe_shortage_hunger` (3) under severe shortage, its primary-theater logistics objective must hold `logistics_shortage_add_days` (14) longer, and first-host and theater selection add `host_shortage_score` (25) and `state_shortage_score` (16).
-The classifier does not read the shared famine system's state stage (`famine_food_stage`, constants `famine_food_stage.*`).
-A famine committed by the famine and migration system, including the famine the Hunger Lines scenario commits on Event 014 node states, therefore adds no Field Hunger today.
-Proposal P-014-A in the package README closes this gap without a new value or a second relief payment.
+It also reads the shared famine system's state stage: `cannibalism_state_has_shared_famine_shortage` holds from acute shortage up (`famine_food_stage_requires_mortality`), and `cannibalism_state_has_shared_famine_severe` holds from `famine_food_stage.famine` up or while the state carries `famine_crisis_concealed`.
+The Hunger Lines famine on Event 014 node states therefore feeds the crisis it is named after, and the famine decisions (Release Food Stores, Import Food, Escort Relief, Airlift Relief) are real counterplay because a lower stage removes the pressure.
+Event 014 writes no famine value and pays no second relief, so the two systems form no feedback loop.
 
 ### Ownership boundary with the famine and migration system
 
@@ -521,9 +521,9 @@ Rules:
 - foreign discovery of feeding programs can increase condemnation and evidence pressure
 - ordinary containment protects prisoners and removes the connection
 
-Current source: `cannibalism_expose_detention_exploitation_in_current_country` raises evidence, disqualifies the clean route and sets `cannibalism_feeding_program_exposed` and the global `cannibalism_feeding_program_exposed_abroad`, but no rule reads those two flags and Event 014 calls no Condemnation source.
-The only shared Condemnation now attached to Event 014 countries comes from Event 031's cannibal clash (see Event 031 below).
-Proposal P-014-C turns the exposure into one real Condemnation source.
+Current source: `cannibalism_expose_detention_exploitation_in_current_country` raises evidence, disqualifies the clean route and calls `condemnation_add_source` once per program (atrocity, discovered, major, forensic disclosure context, base gain `camp_exposure_condemnation_gain`).
+The guard flag `cannibalism_feeding_program_condemned` clears when the program ends through `cannibalism_protect_detention_sites_from_current_policy`, so a renewed program can be condemned again.
+Event 031's cannibal clash adds its own atrocity Condemnation (see Event 031 below).
 
 ## Event 031 Random Terror interaction
 

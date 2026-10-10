@@ -71,7 +71,8 @@ Protected supplied Hannibal statics and both animated sheets are unchanged; thei
 - Upstream model provenance for the five `needs_user_review` manifests and the external lineage of the protected Hannibal art.
 - Catalog status: `Events!M15` and `Scenarios!F10` stay `Needs Testing` until these gates close.
 
-Design proposals from the 2026-10-10 spec audit (P-014-A to P-014-C, README Open questions) are unaccepted and are not part of the completion scope.
+P-014-A (shared famine stage feeds Field Hunger) and P-014-C (exposed feeding programs add one atrocity Condemnation source) were implemented on 10 October 2026 and are described in Part 9; they are source-reviewed only and not observed live.
+P-014-B (survivor spread follows refugee flight) stays an unaccepted proposal outside the completion scope.
 
 ## Audit disposition
 
