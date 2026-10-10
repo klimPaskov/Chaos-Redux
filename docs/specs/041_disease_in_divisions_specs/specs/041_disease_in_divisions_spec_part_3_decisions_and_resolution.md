@@ -2,8 +2,7 @@
 
 ## Temporary decision category
 
-Presentation conflict remains `unresolved`: this design combines a static category picture with a meter/staged bar, while the current [event presentation skill](../../../../.agents/skills/chaos-redux-events/SKILL.md#scripted-gui-and-animated-event-presentation) restricts category pictures to simple categories without meters or complex GUI controls.
-The parent must record an accepted presentation choice before implementing that combination; preserve Army Infection Pressure and the action/mission design.
+The presentation follows the event skill's rule that a category with a static picture carries no meter or complex GUI control: Army Infection Pressure appears as text in the category description.
 
 
 The affected country receives one temporary category for the duration of the episode. The category should appear only while the country has an active Event 41 outbreak or a short unresolved recovery tail that still requires player action.
@@ -11,8 +10,7 @@ The affected country receives one temporary category for the duration of the epi
 The category uses the least complex presentation that can communicate the crisis:
 
 - one static category picture
-- one Army Infection Pressure meter or staged bar
-- one trend indicator
+- one line with the Army Infection Pressure stage, its rough number, and a one-word trend
 - one current operational posture line
 - one short line naming the most important current driver
 - map highlighting for the active military disease nodes
@@ -40,9 +38,8 @@ The opening phase normally exposes:
 When pressure rises or several nodes become active, the category normally exposes:
 
 - the active rotation mission or a new rotation target
-- Assign Medical Evacuation Priority
+- Open the Medical Corridor
 - Expand Field Hospitals
-- Repair the Medical Corridor when needed
 - Set Operational Posture
 
 ### Army crisis phase
@@ -50,9 +47,9 @@ When pressure rises or several nodes become active, the category normally expose
 At very high pressure, the category normally exposes:
 
 - Isolate the Military District
-- Emergency Medical Mobilization
+- Expand Field Hospitals at emergency scale
 - Abandon the Contaminated Sector when valid
-- Repair or Secure the Medical Corridor
+- Open the Medical Corridor
 - Set Operational Posture
 
 Under Evolution I and Evolution II, international or civilian-protection actions can replace one of these slots when they become relevant. The category should never show every possible response at once.
@@ -189,6 +186,12 @@ It should not sharply reduce transmission by itself. The country still needs san
 
 The expansion should provide a temporary capacity state for several months. It can be renewed at higher cost if the episode persists. It should not become a permanent national bonus from repeated clicks.
 
+### Emergency scale
+
+At army-crisis pressure, severe medical overload, or several active nodes, the same action offers an emergency scale once per episode.
+It adds civilian factory capacity and a stability or war support loss to the normal package (at most four spendable burdens) and in return raises medical and evacuation capacity sharply, lowers fatality risk, shortens high-pressure recovery, and strengthens the next rotation or sanitation action.
+It is the national sacrifice of production or public confidence to keep the army alive, and it must never become a repeatable conversion of factories into manpower.
+
 ## Decision family: Sanitize Camps and Supply
 
 ### Purpose
@@ -222,107 +225,37 @@ Its effect should depend on profile and supply access. Enteric and camp-borne pr
 
 The action should show a clear blocked reason when the army cannot deliver clean supplies to the selected node. The player should be directed toward corridor repair, local quarantine, or rotation instead.
 
-## Decision family: Assign Medical Evacuation Priority
+## Decision family: Open the Medical Corridor
 
 ### Purpose
 
-The army diverts trains, trucks, fuel, and route capacity to move sick soldiers from the front to treatment areas.
+The army secures the route from the infected sector to the treatment area and gives it priority: it repairs or guards the damaged link where needed, then diverts trains, trucks, fuel, and route capacity to move sick soldiers back.
 
 ### Availability
 
-The action appears when active sick manpower, pressure, or medical overload reaches a meaningful level and a valid route exists.
-
-### Costs
-
-The action should use up to four spendable costs:
-
-- trains
-- motorized equipment
-- fuel
-- temporary logistics or supply penalty for military operations
-
-Convoys may replace one transport cost for an overseas theater. The action must not require trains, trucks, fuel, and convoys together unless the route genuinely uses all of them and one cost is converted into a condition or consequence to keep the hard cost limit.
-
-### Effects
-
-Evacuation should:
-
-- reduce the active sick population in the front node
-- increase the convalescent pool in safer areas
-- reduce mortality
-- improve the effect of field hospitals
-- reduce pressure after a short transport delay
-
-The action should create an immediate logistical sacrifice. The front receives less transport capacity while the evacuation priority remains active.
-
-### Failure conditions
-
-A cut railway, lost port, encircled sector, or severe enemy air pressure can interrupt the route. The action should pause, downgrade, or fail with a clear report. It should not silently consume transport while giving no effect.
-
-## Decision family: Repair the Medical Corridor
-
-### Purpose
-
-The country repairs or secures the specific route linking the infected sector to the treatment area.
-
-This action appears only when a route problem is materially limiting rotation or evacuation.
+The action appears when active sick manpower, pressure, or medical overload reaches a meaningful level, or when a route problem is materially limiting rotation or evacuation.
 
 ### Requirements and costs
 
-The action can require:
-
-- control of named states or route nodes
-- civilian factory commitment
-- trains or motorized equipment
-- temporary construction or repair capacity
-- sufficient military presence when the route is threatened
-
-State control and unit presence are requirements, not spendable costs.
+State control of the named route nodes and sufficient military presence on a threatened route are requirements, not spendable costs.
+The action uses up to four spendable costs drawn from trains, motorized equipment, fuel, and civilian factory commitment when repair work is needed; convoys replace one transport cost for an overseas theater.
+The route-repair share applies only while the named railway, infrastructure link, supply hub, or port is damaged.
 
 ### Effects
 
-Successful repair should:
+The corridor should:
 
-- restore evacuation and supply effectiveness
-- reduce pressure indirectly
-- improve sanitation delivery
+- restore evacuation and supply effectiveness on the named route, changing real route or building conditions where the engine and owning systems support it rather than applying a generic country modifier
+- reduce the active sick population in the front node and increase the convalescent pool in safer areas after a short transport delay
+- reduce mortality and improve the effect of field hospitals and sanitation delivery
 - unlock or strengthen the rotation mission
 
-The action should change real route or building conditions where the engine and owning systems support it. It should avoid a generic country modifier when a named damaged railway, infrastructure link, supply hub, or port can be used.
+It creates an immediate logistical sacrifice: the front receives less transport capacity while the priority remains active.
 
-## Decision family: Emergency Medical Mobilization
+### Failure conditions
 
-### Purpose
-
-This is a high-pressure measure that expands the response across the army and civilian economy for a limited period.
-
-### Availability
-
-It should appear only when pressure is very high, medical overload is severe, or several nodes are active.
-
-### Costs
-
-The action should combine up to four meaningful burdens:
-
-- civilian factory capacity
-- support equipment
-- manpower committed to medical service
-- stability or war support loss when the diversion is politically damaging
-
-### Effects
-
-Emergency mobilization should:
-
-- raise medical and evacuation capacity sharply
-- lower fatality risk
-- shorten high-pressure recovery
-- improve the next rotation or sanitation action
-
-It should also create a real temporary national cost. The country gives up production or public confidence to keep the army alive.
-
-### Limits
-
-The action should be usable once per episode or carry a long cooldown. It must not become a repeatable conversion of factories into free manpower.
+A cut railway, lost port, encircled sector, or severe enemy air pressure can interrupt the corridor.
+The action pauses, downgrades, or fails with a clear report and never silently consumes transport while giving no effect.
 
 ## Decision family: Isolate the Military District
 
@@ -339,6 +272,11 @@ The action should:
 - lower supply flexibility
 - weaken the front if the district is strategically important
 - create a strong pressure reduction after a delay when the isolation holds
+
+### War Plague scope
+
+Under Evolution II the same action also covers the district's military ports and the civilian rail, port, and urban hubs it shares: troop movement through them is closed or screened and military evacuation is separated from civilian traffic.
+This sharply reduces distant spread and civilian spillover, and in return weakens overseas supply, evacuation, and reinforcement and uses civilian capacity.
 
 ### Validity
 

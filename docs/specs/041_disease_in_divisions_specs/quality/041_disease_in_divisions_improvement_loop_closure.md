@@ -91,7 +91,7 @@ The probability scenarios define expected ordering and threshold reversals. The 
 The chosen presentation is proportional to the event:
 
 - one static category picture
-- one visible meter
+- one visible value, shown as stage text
 - map highlights
 - formation status
 - concise tooltips

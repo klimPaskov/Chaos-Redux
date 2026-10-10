@@ -4,9 +4,8 @@
 
 The current Event 41 export row is stale.
 
-It currently describes a mysterious shipment falling from the sky and leaves the cluster, severity, and evolution fields empty. That wording belongs to another idea and cannot remain after implementation.
-
-The current Diseases cluster export lists only Events 20 and 2. Its details describe severe state outbreaks and do not account for a low-severity military member.
+It still describes a mysterious shipment falling from the sky, which is Event 42's premise, and leaves the evolution fields empty.
+The cluster assignment is already correct: the workbook lists Event 41 in Diseases (ID 8) as the Low member beside Events 2 and 20.
 
 ## Authoritative update path
 

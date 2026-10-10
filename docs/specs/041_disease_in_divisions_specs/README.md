@@ -42,12 +42,9 @@ The event remains a Chaos level 1 Minor Repeatable event and a Low member of the
 
 ## Design summary and acceptance
 
-The picture-plus-meter conflict is recorded in [Part 3](specs/041_disease_in_divisions_spec_part_3_decisions_and_resolution.md#temporary-decision-category) and remains `unresolved`; current presentation rules do not permit that combination.
-
-
 The imported package preserves the disease design and historical source review.
-Its accepted labels do not cite independent approval for each expansion; missing claim-specific acceptance remains `unresolved` under the [repository acceptance rules](../../../AGENTS.md#specs-and-plans).
-Current [owner skills](../../../.agents/skills/chaos-redux-subagents/SKILL.md) govern implementation workflow over duplicated package instructions.
+Its accepted labels do not cite independent approval for each expansion; missing claim-specific acceptance remains `unresolved` under the [repository acceptance rules](../../../CLAUDE.md#specs-and-plans).
+Current [owner skills](../../../.claude/skills/chaos-redux-subagents/SKILL.md) govern implementation workflow over duplicated package instructions.
 
 The opening infects a bounded group of frontline formations. The event never deletes equipment because soldiers become sick. Affected formations lose effective manpower, organization, recovery, reinforcement capacity, and combat power. Recoverable sick soldiers enter a temporary convalescent ledger and return gradually. Fatal cases are registered once as military casualties in the shared Deaths system.
 
@@ -55,4 +52,23 @@ The hidden simulation uses three adaptable profiles. Camp-borne disease responds
 
 The baseline can be contained in one country. Evolution I allows rapid movement through military networks and sustained contact across fronts. Evolution II permits civilian spillover and distant theater transmission. Civilian cases enter the existing biological outbreak and humanitarian systems through a bounded adapter. Event 41 does not create a second civilian disease system.
 
-The presentation uses an ordinary temporary decision category with one strong static category picture, concise status text, map highlighting, division status, and decision tooltips. A dedicated scripted mechanic window would add little value to this low-severity event.
+The presentation uses an ordinary temporary decision category with one strong static category picture, the pressure stage and trend as status text, map highlighting, division status, and decision tooltips. A dedicated scripted mechanic window would add little value to this low-severity event.
+
+The runtime slot `events/041_disease_in_divisions.txt` still holds the legacy stub; no part of this package is implemented.
+
+## Open questions
+
+- The workbook row still carries Event 42's skyfall premise as its details; the catalog owner should apply `quality/041_disease_in_divisions_catalog_alignment.md` when the event is implemented.
+
+## Changelog
+
+### 2026-10-10 spec audit
+
+Pass 1, consistency and cleanup:
+- Resolved the unresolved picture-plus-meter conflict by design: the category keeps its static picture and shows Army Infection Pressure as stage text with a trend word, which the event skill permits (Parts 1, 3, 5 and the decision prompt).
+- Recorded that the workbook already lists Event 41 as the Low Diseases member, so only the wrong details text remains a catalog defect.
+- Replaced `AGENTS.md`, `.agents` links, and Codex `fork_turns` wording with the current Claude-first equivalents.
+
+Pass 2, design improvement:
+- Consolidated the response menu from 21 actions to 14 by merging true duplicates: Assign Medical Evacuation Priority and Repair the Medical Corridor became Open the Medical Corridor; Emergency Medical Mobilization became the once-per-episode emergency scale of Expand Field Hospitals; Inspect Allied Formations folded into Exchange Field Medical Reports; Separate Coalition Camps folded into Establish Quarantine Camps; Restrict Allied Access folded into Restrict Military Access; and Close Military Ports, Protect Civilian Transport Hubs, and the duplicate War Plague district isolation became the War Plague scope of Isolate the Military District.
+  Each merged pair repeated the same cost and the same effect under two names in different phases.

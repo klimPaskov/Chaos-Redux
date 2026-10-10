@@ -26,7 +26,8 @@ The player tracks one persistent event-specific value:
 
 Army Infection Pressure measures the operational burden created by active military disease. It summarizes infected formations, camp crowding, spread risk, medical overload, supply failure, prolonged combat exposure, and the current ability to isolate and recover sick troops.
 
-The value should be shown as a clear meter or staged bar in the temporary decision category. The category should also show a short trend indicator and a concise explanation of the largest current causes. Those causes remain qualitative or icon-based. They do not become separate persistent counters.
+The value is shown in the category description as its stage name, its rough number, and a one-word trend (rising, steady, falling), next to a short explanation of the largest current causes.
+The category keeps its static picture, so no GUI meter is drawn; the stage text carries the same information. The causes remain qualitative or icon-based and never become separate persistent counters.
 
 Examples of useful causes include:
 

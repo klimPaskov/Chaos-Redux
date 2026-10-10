@@ -1,6 +1,6 @@
 # Achievement implementation prompt for Event 41
 
-Read the full Event 41 specification, the asset prompt, `AGENTS.md`, `chaos-redux-events`, and `chaos-redux-event-assets` before implementation.
+Read the full Event 41 specification, the asset prompt, `CLAUDE.md`, `chaos-redux-events`, and `chaos-redux-event-assets` before implementation.
 
 Implement every achievement below with stable tracking, final localisation written from the direction, completed icon art, required variants, documentation, and cleanup. Inspect the repository's existing achievement definitions and runtime pattern first.
 

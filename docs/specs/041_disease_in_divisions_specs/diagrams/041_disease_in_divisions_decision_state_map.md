@@ -11,15 +11,14 @@ flowchart TD
     A --> F[Set Operational Posture]
 
     G[Operational epidemic] --> H[Active rotation mission or new sector rotation]
-    G --> I[Assign Medical Evacuation Priority]
+    G --> I[Open the Medical Corridor]
     G --> J[Expand Field Hospitals]
-    G --> K[Repair the Medical Corridor when blocked]
     G --> L[Set Operational Posture]
 
     M[Army crisis] --> N[Isolate the Military District]
-    M --> O[Emergency Medical Mobilization]
+    M --> O[Expand Field Hospitals at emergency scale]
     M --> P[Abandon the Contaminated Sector when valid]
-    M --> Q[Repair or Secure the Medical Corridor]
+    M --> Q[Open the Medical Corridor]
     M --> R[Set Operational Posture]
 ```
 
@@ -27,15 +26,12 @@ flowchart TD
 
 ```mermaid
 flowchart TD
-    A[Evolution I foreign military link] --> B[Inspect Allied Formations]
-    A --> C[Separate Coalition Camps]
-    A --> D[Exchange Field Medical Reports]
+    A[Evolution I foreign military link] --> D[Exchange Field Medical Reports]
     A --> E[Restrict Military Access when necessary]
+    A --> C[Quarantine camps also cover allied formations]
 
-    F[Evolution II civilian or distant-route risk] --> G[Close or Screen Military Ports]
+    F[Evolution II civilian or distant-route risk] --> G[Isolate the Military District gains ports and civilian hubs]
     F --> H[Controlled Demobilization]
-    F --> I[Protect Civilian Transport Hubs]
-    F --> J[Restrict Allied Access]
     F --> K[Request International Medical Coordination]
 ```
 

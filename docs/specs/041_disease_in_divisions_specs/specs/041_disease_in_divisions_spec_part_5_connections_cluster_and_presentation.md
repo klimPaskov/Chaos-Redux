@@ -114,13 +114,13 @@ Existing field-hospital companies and technology, logistics support, support equ
 
 An [Equipment from Heavens logistics package](../../042_equipment_from_heavens_specs/specs/042_equipment_from_heavens_spec_part_2_delivery_manifest.md#logistics-equipment-composition) can solve a transport-stock shortage once the actual stockpile grant is applied. Event 42 keeps its uniform recipient selection and deliberately unoptimized cargo. Disease never changes its draw or quantity. Delivered trains, trucks, support equipment, and convoys then behave like the same items obtained through production or ordinary aid.
 
-The affected army chooses the existing Assign Medical Evacuation Priority action, committing the route-appropriate stock, fuel, and front capacity, or keeps transport supporting combat operations. A surplus of trains cannot repair a cut railway; an overseas evacuation still needs the relevant port, convoys, and safe route. Repair the Medical Corridor remains the response to access failure. Even a successful evacuation moves sick soldiers into convalescence and sacrifices front capacity before recovery returns them to duty; the windfall does not cure them or replace lost manpower.
+The affected army chooses Open the Medical Corridor, committing the route-appropriate stock, fuel, and front capacity, or keeps transport supporting combat operations. A surplus of trains cannot repair a cut railway; an overseas evacuation still needs the relevant port, convoys, and safe route. The same action repairs or secures the route when access has failed. Even a successful evacuation moves sick soldiers into convalescence and sacrifices front capacity before recovery returns them to duty; the windfall does not cure them or replace lost manpower.
 
 Event 42 applies the grant and any disclosed recovery accident. Event 41 applies its medical commitment, recovery transitions, and fatalities. No provenance-specific transport pool or second grant is created. If transport has already been committed or transferred, subsequent actions and any recovery accident use the actual remaining stock under their existing contracts. AI evaluates the usable route and operational sacrifice after the windfall; stock abundance alone does not make evacuation effective. With no skyfall, the same choices and capacity rules apply to ordinary stock.
 
 ## Diseases cluster role
 
-Disease in Divisions belongs to Cluster 8, Diseases, as a Low member.
+Disease in Divisions is the Low member of the Diseases cluster (workbook ID 8, members 2, 20, and 41); the live registry row is listed in `docs/systems/event_system/event_clusters.md`.
 
 Its cluster identity is distinct from the larger outbreak events:
 
@@ -310,7 +310,7 @@ The episode generation and target proofs must prevent duplicate categories when 
 
 The system should use:
 
-- one visible meter
+- one visible value, shown as stage text
 - short cause tooltips
 - named sector targets
 - clear blocked reasons

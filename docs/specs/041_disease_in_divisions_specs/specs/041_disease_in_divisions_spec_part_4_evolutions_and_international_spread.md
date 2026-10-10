@@ -139,21 +139,19 @@ A foreign country already running Event 41 should absorb the new exposure into i
 
 ## Evolution I response additions
 
-### Inspect Allied Formations
-
-A country sharing a front with an infected ally can spend intelligence or command resources to gain early warning, reduce opening severity, and identify exposed expeditionary formations.
-
-### Separate Coalition Camps
-
-Faction members can divide camps, hospitals, and supply areas. This costs logistics flexibility and support equipment, but lowers allied transmission.
-
 ### Exchange Field Medical Reports
 
-Countries with sufficient relations, faction ties, or intelligence can share profile and exposure information. The action improves secondary warning and response efficiency. It should not reveal hidden raw profile variables to the player.
+A country sharing a front with an infected ally, or with sufficient relations, faction ties, or intelligence, shares profile and exposure information and inspects exposed expeditionary formations.
+It costs intelligence or command resources, gives early warning, reduces the opening severity of a secondary outbreak, and improves response efficiency.
+It never reveals hidden raw profile variables to the player.
 
 ### Restrict Military Access
 
-A country can temporarily restrict infected allied movement through its territory. This lowers transmission risk and damages coalition flexibility and relations.
+A country can temporarily deny infected allied formations movement, entry, or transit through its territory.
+This lowers transmission risk and damages coalition flexibility, relations, and military coordination.
+The same action serves Evolution II; there is no second access action.
+
+Coalition camp separation is not a separate action: Establish Quarantine Camps covers allied formations that share the infected sector once Evolution I is active, at the cost of logistics flexibility and support equipment.
 
 These actions should appear only when a real foreign military link exists. They should not clutter the category in an isolated national outbreak.
 
@@ -327,25 +325,12 @@ Distant transmission should be rarer than same-front spread. It becomes importan
 
 ## War Plague response additions
 
-### Close Military Ports
-
-The country can close one or more infected military ports to troop movement. This sharply reduces distant spread and weakens overseas supply, evacuation, and reinforcement.
-
-### Isolate a Military District
-
-The Evolution II version also reduces civilian spillover from the district. It creates larger local supply and movement costs than the baseline crisis action.
-
-### Restrict Allied Access
-
-The country can deny infected allied formations entry or transit. This lowers transmission and harms coalition relations and military coordination.
+Port closure, civilian hub protection, and district isolation are one action: Isolate the Military District gains its War Plague scope (Part 3).
+Restrict Military Access from Evolution I covers allied entry and transit.
 
 ### Controlled Demobilization
 
 When a war ends or formations return home, the country can stage their return through screening and quarantine. This costs transport, support equipment, and time while reducing civilian spillover.
-
-### Protect Civilian Transport Hubs
-
-The country separates military evacuation and troop movement from civilian rail, port, and urban traffic. This uses civilian capacity and transport flexibility. It reduces spillover probability.
 
 ### Request International Medical Coordination
 

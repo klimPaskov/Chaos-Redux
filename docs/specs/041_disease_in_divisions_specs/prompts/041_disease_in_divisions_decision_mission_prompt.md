@@ -2,21 +2,20 @@
 
 Implement the complete temporary decision and mission system for Disease in Divisions from the full Event 41 spec pack.
 
-Read `AGENTS.md`, `chaos-redux-events`, `chaos-redux-decisions-missions`, the offline HOI4 decision, trigger, effect, scope, modifier, localisation, and data-structure pages, current vanilla decision documentation, and a comparable Chaos Redux crisis category before editing.
+Read `CLAUDE.md`, `chaos-redux-events`, `chaos-redux-decisions-missions`, the offline HOI4 decision, trigger, effect, scope, modifier, localisation, and data-structure pages, current vanilla decision documentation, and a comparable Chaos Redux crisis category before editing.
 
 Use `common/decisions/041_disease_in_divisions_decisions.txt` and `common/decisions/categories/041_disease_in_divisions_categories.txt` unless a verified engine constraint requires another owner path.
 
 ## Presentation contract
 
-Resolve the picture-plus-meter conflict recorded in Part 3 under the current event presentation skill before implementing this category.
+The category keeps its static picture and shows Army Infection Pressure as stage text (Part 3), with no GUI meter.
 Do not infer approval from the imported spec.
 
 
 Use an ordinary temporary decision category with:
 
 - one static category picture
-- one Army Infection Pressure meter or staged bar
-- one trend indicator
+- one line with the Army Infection Pressure stage, rough number, and trend
 - one posture status
 - one short current-cause summary
 - named infected-sector map highlighting
@@ -33,9 +32,7 @@ Implement the action families exactly as designed in Part 3:
 - Establish Quarantine Camps
 - Expand Field Hospitals
 - Sanitize Camps and Supply
-- Assign Medical Evacuation Priority
-- Repair the Medical Corridor
-- Emergency Medical Mobilization
+- Open the Medical Corridor
 - Isolate the Military District
 - Abandon the Contaminated Sector
 - Restrict Offensive Operations
@@ -44,17 +41,13 @@ Implement the action families exactly as designed in Part 3:
 
 Implement the Evolution I actions:
 
-- Inspect Allied Formations
-- Separate Coalition Camps
 - Exchange Field Medical Reports
-- Restrict Military Access
+- Restrict Military Access (also serves Evolution II)
 
 Implement the Evolution II actions:
 
-- Close or Screen Military Ports
+- the War Plague scope of Isolate the Military District (ports and civilian hubs)
 - Controlled Demobilization
-- Protect Civilian Transport Hubs
-- Restrict Allied Access
 - Request International Medical Coordination
 
 Use phased visibility. Severe and evolved actions should replace lower-priority actions where necessary. Do not append every action into one list.
@@ -154,6 +147,6 @@ Do not show raw triggers, raw variables, future surprise branches, or hidden pro
 
 Remove decisions, missions, target flags, selected-sector state, posture commitments, and active category state after resolution, invalidation, annexation, transfer, or event disable handling.
 
-After implementation, spawn `chaosx_decision_mission_auditor` with a complete prompt and Codex `fork_turns="none"`.
+After implementation, spawn `chaosx_decision_mission_auditor` with a complete prompt.
 Resolve every local patch or plan finding.
 Run the event completion audit before claiming the event is complete.

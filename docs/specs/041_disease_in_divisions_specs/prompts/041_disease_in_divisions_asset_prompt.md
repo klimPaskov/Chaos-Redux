@@ -1,6 +1,6 @@
 # Asset production prompt for Event 41: Disease in Divisions
 
-Create the complete visual asset package for Event 41 under the Chaos Redux asset rules. Read `AGENTS.md`, `chaos-redux-event-assets`, and the full Event 41 specification pack before production.
+Create the complete visual asset package for Event 41 under the Chaos Redux asset rules. Read `CLAUDE.md`, `chaos-redux-event-assets`, and the full Event 41 specification pack before production.
 
 Use separate source art for each asset family. Do not satisfy decision, idea, category, report, status, or achievement art by resizing an image made for another surface.
 
@@ -18,7 +18,7 @@ Before final completion, promote durable provenance, prompt, review, and runtime
 
 Before producing each family, inspect the matching canonical references and contact sheet under:
 
-`.agents/skills/chaos-redux-event-assets/assets/gfx_references/`
+`.claude/skills/chaos-redux-event-assets/assets/gfx_references/`
 
 Required families include:
 

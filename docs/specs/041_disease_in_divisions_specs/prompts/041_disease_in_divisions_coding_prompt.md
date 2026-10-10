@@ -7,7 +7,7 @@ Implement Event 41 to the full specification under:
 
 `docs/specs/041_disease_in_divisions_specs/`
 
-Read every specification, quality file, diagram, research note, prompt, and handoff in that folder before editing. Follow `AGENTS.md`, `chaos-redux-events`, `chaos-redux-decisions-missions`, `chaos-redux-event-assets`, `chaos-redux-improvement-loop`, and `chaos-redux-subagents`.
+Read every specification, quality file, diagram, research note, prompt, and handoff in that folder before editing. Follow `CLAUDE.md`, `chaos-redux-events`, `chaos-redux-decisions-missions`, `chaos-redux-event-assets`, `chaos-redux-improvement-loop`, and `chaos-redux-subagents`.
 
 Consult the required offline Paradox wiki pages and installed vanilla documentation before choosing event, unit, manpower, decision, on-action, modifier, scope, array, event-target, and GUI syntax. Inspect current Chaos Redux precedents. Use the HOI4 MCP event-chain tools for the event chain and the probability tools for every weighted surface.
 
@@ -101,7 +101,7 @@ Use the full AI strategy and named scenario matrix. Spawn `chaosx_ai_probability
 
 ## Required subagents
 
-Use context-complete prompts with Codex `fork_turns="none"` for:
+Use context-complete prompts for:
 
 - `chaosx_scripted_system_architect`
 - `chaosx_decision_mission_auditor`
