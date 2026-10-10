@@ -1,7 +1,7 @@
 # Event 097 coding-agent prompt
 
-This handoff belongs to the imported ten-part variant.
-Read the [package authority and conflict table](README.md) and resolve conflicting requirements before using it for implementation.
+This handoff implements the flat ten-part design, which the orchestrator selected on 10 October 2026; the nested variant is superseded.
+Read the [package README](README.md) for authority and the ported rules in Parts 1, 5, 6 and 10.
 
 Implement the accepted Collaboration design from `docs/specs/097_collaboration_specs/`. Begin with the specification index and read all ten numbered parts, this prompt, the asset prompt, and the achievement prompt. Planning is complete as written design, but capability, independent review, production, and runtime gates remain open. Do not treat this package as a claim that those gates passed.
 
@@ -19,7 +19,7 @@ The normal grant is 10 percentage points, 20 with I, and 25 with II or IV. Honor
 
 Apply one global transaction before reports. Preserve the inspected `chaosx.nr97.1` and `.2` identities where current wiring permits. Separate a genuine firing identity from duplicate delivery. Never award collaboration from an acknowledgment option or multiply the global effect by player count.
 
-Evolution II uses the exact eligible homeland/controller relationship, C >= 50, and initial F = min(80, C + 20). Preserve higher native compliance. A spent offer cannot be paid on recapture. Only a later increase in F offers its newly earned difference. Do not repeat compliance maintenance across the world.
+Evolution II uses the exact eligible homeland/controller relationship, C >= 50, and initial F = min(80, C + 20). Preserve higher native compliance. A spent offer cannot be paid on recapture. Only a later increase in F offers its newly earned difference. Defer, without spending, an offer for a state held under a harsher-than-standard occupation rule as the famine system classifies it or holding an occupier-run camp, and pay it once that rule is relaxed while the state is still held; Part 5 applies the same deferral to readiness. Do not repeat compliance maintenance across the world.
 
 Evolution III uses actual current P/T proximity with the 25% absolute-progress floor, C >= 50, real enemy victory-point homeland control, and the 75%/90% bands. Add 10 then 15 native points with at least five actual days between stages. Snapshot same-incident eligibility, verify native commit ordering, revalidate delayed work, and resolve each stage only once per directed political identity. No forced capitulation or generic surrender spirit.
 
@@ -32,7 +32,7 @@ Use Intelligence cluster ID 20 and `constant:event_cluster_id.intelligence`, fol
 
 Implement the complete Chaos impact map in Part 7. One material manifestation adds 5, with the defined possible additional 5 for distinct-target breadth. No-op and duplicate transactions add zero. Shared capitulation, annexation, puppet creation, peace, restoration, liberation, and independence own their existing consequences and reversals. Do not double count them or fabricate deaths, contamination, or condemnation.
 
-Connect only to accepted Event 095 restoration and Event 093 treaty contracts. Do not copy the older revolt's broad transfer loop, merge Spanish and Portuguese networks, or invent treaty completion from the Galicia opening. Preserve native country identity, meaningful leaders, focus trees, armies, and subject relationships.
+Connect only to accepted Event 095 restoration, Event 093 treaty and Event 052 leak contracts (Part 6). Every Event 097 collaboration write checks the Fallout transition gate first and stops once that transition has begun. Do not copy the older revolt's broad transfer loop, merge Spanish and Portuguese networks, or invent treaty completion from the Galicia opening. Preserve native country identity, meaningful leaders, focus trees, armies, and subject relationships.
 
 Use the AI policy and complete probability scenario file. Legality precedes preference. Native score inputs must be real and observed. Do not make the global grant randomly optional or treat a score as a normalized probability.
 
@@ -55,7 +55,7 @@ Implement every achievement's original snapshots, positive outcomes, anti-farmin
 Discover the live HOI4 service and tool schemas before calls. Use required reference, source lookup, script validation, event inspection, probability inspection/evaluation/sweep/comparison and relevant render routes against the actual implemented surfaces. Treat omitted sources, unchecked arguments, unresolved values, score-only analyses, and sampled results as distinct limits.
 
 The imported prepared briefs live in `docs/plans/097_collaboration_plans/handoffs/` and are historical input prompts, not executed reviews.
-After resolving the design variant, the parent supplies current self-contained briefs with no inherited context and places actual role results in `docs/plans/097_collaboration_plans/subagent_handoffs/`.
+The parent supplies current self-contained briefs with no inherited context and places actual role results in `docs/plans/097_collaboration_plans/subagent_handoffs/`.
 The parent owns integration and final review.
 Apply the improvement-loop timing and disposition rules in the current `chaos-redux-subagents` skill, and report an unavailable execution route explicitly.
 

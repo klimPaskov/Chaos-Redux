@@ -90,9 +90,9 @@ When an Event 095 revolt breaks out in states seated by an Event 097 administrat
 
 ### The relationship
 
-A planned event in which Spain and Portugal pursue a restored partition of the world. Collaboration can make their conquests much easier to consolidate. Their expanding spheres can rely on local collaborator governments instead of direct occupation everywhere.
+[Event 093 Treaty of Tordesillas Restoration](../../093_treaty_of_tordesillas_restoration_specs/README.md), in which Spain and Portugal pursue a restored partition of the world from the Galicia crisis onward. Collaboration can make their conquests much easier to consolidate. Their expanding spheres can rely on local collaborator governments instead of direct occupation everywhere.
 
-The Tordesillas event has no catalog row or reserved id yet. Its owner will also have to respect the existing Iberian content of Event 093 Portugal Wants Land and the Event 006 Iberian independence package. Event 097 does not depend on any of them.
+Event 093 reworks the catalog row originally named Portugal Wants Land and must respect the Event 006 Iberian independence package. Its [subordinate-state rule](../../093_treaty_of_tordesillas_restoration_specs/093_treaty_of_tordesillas_restoration_spec_part_08_faction_and_empire.md#subordinate-states) decides whether an installed government counts in a crown's sphere. Event 097 does not depend on Event 093 existing, and the Event 093 package does not yet call this entry point.
 
 ### Contract
 

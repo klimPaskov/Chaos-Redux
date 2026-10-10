@@ -139,13 +139,13 @@ At the qualifying Event 095 uprising, snapshot at least five homeland core state
 
 **Eligible country:** The player occupying one of the actual Spanish or Portuguese partner roles in the accepted Event 093 treaty route. Resolve the route's real roles, including supported successor identities, rather than hard-coding a cosmetic country name.
 
-Both partners must have activated the accepted world-partition stage. Each must personally install and retain at least five distinct qualifying Event 097 native collaboration governments, each with at least five homeland states at creation. The two government cohorts must not overlap. Both partners must retain their agreed cooperative treaty relationship and their respective regimes for 180 days.
+Event 093 must have reached its Evolution II, The World Divided, with both partners in the treaty. Each must personally install and retain at least five distinct qualifying Event 097 native collaboration governments, each with at least five homeland states at creation and each counted in its patron's sphere under Event 093's subordinate-state rule. The two government cohorts must not overlap. Both partners must retain their agreed cooperative treaty relationship and their respective regimes for 180 days.
 
 **Disqualifiers:** A Galicia-only settlement, borrowing the other partner's installation credit, generic puppets, a broken treaty relationship, duplicate target identities, or an unsupported treaty hook assumed to exist.
 
 **Difficulty:** Exceptional. This is a coordinated late-campaign objective across two separate powers and ten substantial regimes.
 
-**Visibility:** Hidden until the accepted world-partition stage and Evolution IV are both actually available. Do not register an unachievable live challenge before the companion route exists.
+**Visibility:** Hidden until Event 093's The World Divided and Event 097's Evolution IV are both actually available. Do not register an unachievable live challenge before the companion route exists.
 
 **Tracking:** Authoritative treaty partners and stage, each sponsor's government-creation history, disjoint fixed cohorts, cooperation changes, and shared calendar interval. Event 097 must not create its own version of the treaty state.
 

@@ -108,3 +108,9 @@ No further loop pass is planned for this planning goal. The implementation goal 
 ## `097_collaboration_source_inventory.md`
 
 Disposition: implementation evidence of what the planning agent read. It does not establish design approval.
+
+## Variant selection, 10 October 2026
+
+Disposition: `superseded`. The orchestrator selected the flat variant (`COL-097-DESIGN-1`, root-level Parts 1 to 10 of `docs/specs/097_collaboration_specs/`) as the Event 097 design on 10 October 2026, within the user's planning-package brief.
+The nested variant (`specs/`, `matrices/`, `research/`, `handoffs/`, `quality/` and `prompts/`) and the parent choices recorded above are superseded by it and remain historical design.
+The named special-country incompatibilities, the bounded daily application pass, the two reports to a displaced government and the national Purge or Amnesty choice at restoration were ported into the flat parts; the Competing Orders super-event was not.

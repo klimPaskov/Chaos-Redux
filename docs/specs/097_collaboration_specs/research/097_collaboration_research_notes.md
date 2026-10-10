@@ -4,7 +4,7 @@ These notes collect the engine facts and historical anchors that shaped the Even
 
 ## Engine facts from the offline wiki snapshot
 
-The installed vanilla game and its `documentation/` folder are not available in the planning environment. The offline Paradox wiki snapshot under `paradox_wiki/` was read instead. The implementation agent must confirm every item below against the installed vanilla documentation and precedents before relying on it.
+These facts were taken from the offline Paradox wiki snapshot under `paradox_wiki/`. The installed `documentation/effects_documentation.md` confirms `add_collaboration` and `set_collaboration` with a 0 to 1 value; the implementation agent must confirm every other item below against the installed vanilla documentation and precedents before relying on it.
 
 | Topic | Source section | Fact used by the design |
 | --- | --- | --- |

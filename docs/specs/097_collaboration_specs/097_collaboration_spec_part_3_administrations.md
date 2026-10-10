@@ -41,6 +41,15 @@ At the first qualifying handover, raise actual compliance to F only when it is l
 
 This is a transfer of administrative continuity. It does not erase an existing resistance organization, remove garrison requirements by fiat, add cores, or grant a permanent state modifier on top of compliance. Native occupation laws and local conditions continue to matter after the handover.
 
+## Harsh rule withholds the handover
+
+Local officials serve an occupier who lets them govern, not one who is starving or interning the people they administer.
+While A holds S under an occupation rule that the [famine system](../../systems/famine_system.md) classifies as harsher than standard, or runs a camp in S, the handover is deferred rather than paid.
+A deferred offer is not spent: it becomes payable at the first evaluation after A relaxes the rule or closes the camp while still holding S, using the network value at that moment.
+This makes the occupation-law choice a real trade: extraction and collective punishment feed the famine, camp and condemnation systems that own those consequences and forgo the collaborator dividend, while standard rule collects it.
+The deferral adds no value to track; the existing occupation-law and camp interfaces already show the player what is blocking the offer, and the handover report names the reason once.
+A rule changed back to a harsh one after payment does not claw back compliance; native compliance decay and resistance handle that.
+
 ## Recapture must not manufacture compliance
 
 Once the administration has been offered, that offer is spent. Losing the state and taking it back does not restore the same compliance floor. Neither does transferring its control to a faction member and asking for it back.

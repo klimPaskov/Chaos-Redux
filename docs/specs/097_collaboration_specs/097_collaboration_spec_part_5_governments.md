@@ -31,6 +31,9 @@ This is stronger than Evolution II and has its own consequence: it prepares a na
 
 The intervention does not force a government to be created. A human victor can retain direct occupation.
 
+The harsh-rule deferral from Part 3 applies to the readiness intervention: states of the bundle held under a harsher-than-standard occupation rule or holding an occupier-run camp receive no readiness raise until that rule is relaxed or the camp closed, and the intervention stays unspent for them.
+A brutal victor can still install a government through the ordinary native route once its compliance gets there on its own.
+
 ## Native eligibility still matters
 
 Meeting a compliance value does not establish ownership of foreign-controlled states, erase another power's subject relationship, settle disputed borders, or make a nonexistent target identity valid.
@@ -90,5 +93,10 @@ A completed native government remains in place without receiving a second creati
 ## The aftermath
 
 A collaboration government can be attacked, lose territory, become independent, be annexed, or face national restoration through other systems. Its creation is not a permanent protection against politics.
+
+If the country displaced by a collaboration government still exists as a government in exile, it receives two short reports and nothing else.
+The first arrives when the government is installed over its cores and names, from the exiles' point of view, the officials and officers who formed it.
+The second arrives when that government loses its protector, because the sponsor is defeated, annexed or releases it.
+Both reuse the Collaboration Governments report image and carry no effect; they tell the exiles when restoration through Event 095 becomes plausible.
 
 Event 097 keeps only the minimal causal history needed to recognize what it helped create and to avoid paying again. The government itself belongs to the native political system. When the sponsor disappears, the event does not resurrect it or recreate the old relationship on the next firing.

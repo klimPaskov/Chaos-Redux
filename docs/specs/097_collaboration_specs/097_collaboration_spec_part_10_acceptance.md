@@ -9,6 +9,9 @@ The same scenario must work with a democracy, a subject, and a country without a
 
 All mechanical grants occur before reports are acknowledged. Leaving every human report open, acknowledging them in a different order, or loading a save must not change who received the grant.
 
+- A firing in a world of about one hundred countries finishes its pass in daily batches, each beneficiary once, and the opening report appears only after the pass completes.
+- Nonhuman countries and the named special Chaos families receive and grant nothing, and every other unusual human country participates.
+
 ## Repeat and cap acceptance
 
 A second legitimate firing adds a second layer to current native values. Replaying the first firing's delivery does not. Native operations performed between firings remain reflected in the final values.
@@ -61,9 +64,18 @@ Test two rival sponsors with separate lawful occupations and one contested ident
 
 ## Connected-event acceptance
 
+- A government in exile receives the installation report and the lost-protector report, and neither changes any value.
+- A restored country's Purge lowers only the former installer's network by one layer, never below zero; Amnesty leaves it and applies the 90-day modifier to the restored states.
+
 An Event 095 restoration must be able to remove a collaborator regime's control under its own accepted rules. Event 097 must neither erase the claimant nor reconstruct the old regime from pending work.
 
 A restored country receives only the native collaboration its actual identity preserves and subsequent normal grants. No retrospective universal catch-up is allowed.
+
+An Event 052 leak reduces only the exposed country's networks inside at most three named exploiters, by no more than one baseline layer each, never below zero, and grants nothing.
+
+After the Fallout transition begins, no Event 097 path writes collaboration: test a pending global grant, a delayed Fifth Column stage, a readiness offer and an Event 052 reduction across the transition.
+
+Test the harsh-rule deferral: a capture under a harsher-than-standard occupation rule pays nothing, keeps the offer unspent, and pays once when the rule is relaxed while the state is still held; switching back to the harsh rule afterward does not claw back compliance or reopen the offer.
 
 For the treaty connection, Spanish and Portuguese networks remain distinct. Government credit, state ownership, and collaboration cannot move merely because the treaty proposes a sphere. A Galicia-only route does not satisfy the world-partition achievement.
 

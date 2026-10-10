@@ -54,7 +54,16 @@ Exclude self-pairs, nonexistent dormant tags, and administrative helper scopes t
 
 If a particular special-country backend cannot support native collaboration, the implementation must identify the exact incompatibility. It must not quietly exclude all special countries with a broad classifier or replace their grants with generic surrender modifiers.
 
-A firing takes one snapshot of eligible countries. Both directions are evaluated from that same snapshot. A country released afterward joins the next firing. It receives no retrospective grant for every earlier occurrence. A dormant claimant that becomes a real country through Event 095 follows this same rule.
+The shared classifiers supply those named incompatibilities.
+Actual nonhuman countries never participate in either direction, because they have no human society that could collaborate or be collaborated with.
+Special Chaos countries whose identity, government and lifecycle another event owns also stay outside in both directions, because a native collaboration government or a handover would break that owner's scripted lifecycle; current examples are Death's realm, rat realms, outbreak actors and Fury hosts.
+Each excluded family is listed by name in the implementation's documentation, and every other unusual human country participates.
+
+A firing takes one snapshot of eligible countries. Both directions are evaluated from that same snapshot.
+
+The grant touches every ordered pair, close to ten thousand changes for a world of one hundred countries, so it runs as a bounded pass: each day the event processes a fixed batch of beneficiaries from the frozen snapshot and schedules the next batch a day later until the list is finished.
+Each beneficiary is processed once, a country that stops being valid before its batch is skipped, and the pass adds no periodic hook or shared daily pulse.
+The opening report appears when the pass completes, so it always describes a finished change, and a new firing cannot begin while a pass is still running. A country released afterward joins the next firing. It receives no retrospective grant for every earlier occurrence. A dormant claimant that becomes a real country through Event 095 follows this same rule.
 
 ## What collaboration changes
 

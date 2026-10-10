@@ -34,7 +34,7 @@ Rules and skills: `AGENTS.md`, `chaos-redux-events`, `chaos-redux-decisions-miss
 
 ## Step 1: settle the engine facts and user decisions
 
-The planning pass had no vanilla files, no vanilla documentation, and no HOI4 MCP connection. Before writing gameplay code, establish these facts from vanilla documentation, vanilla script, and MCP where available, and record each result in `docs/events/097_collaboration/`:
+These engine facts are unverified. Before writing gameplay code, establish them from vanilla documentation, vanilla script, and MCP where available, and record each result in `docs/events/097_collaboration/`:
 
 1. Whether `add_collaboration` accepts a negative value, and what happens below zero. A2 and the Purge option depend on it.
 2. Where the native collaboration value can be read: `has_collaboration` and `core_compliance` in occupation contexts, and whether a host-owned non-core state reads anything.

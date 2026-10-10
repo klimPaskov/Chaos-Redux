@@ -4,9 +4,8 @@ Version: COL-097-DESIGN-1. Date: 2026-10-05.
 
 ## Design authority
 
-This index navigates the imported ten-part variant, rather than a reconciled package-wide design.
-Read the [package authority and conflict table](README.md) first.
-Its unique requirements remain preserved, but conflicts with the nested variant are `unresolved` and must be resolved before dependent implementation or production.
+This index navigates the flat ten-part design, which the orchestrator selected on 10 October 2026; the nested variant in the same folder is superseded.
+Read the [package README](README.md) first for authority and the nested contributions ported into Parts 1, 5, 6 and 10.
 The [decision register](../../plans/097_collaboration_plans/097_collaboration_decision_register.md) records this variant's parent-authored acceptance basis without claiming separate user approval of every number.
 
 This is a full written design with open native-capability and execution gates. It is not an implemented event or a claim that independent agents, live-game tests, or asset production ran.
@@ -30,7 +29,7 @@ This is a full written design with open native-capability and execution gates. I
 
 [Implementation prompt](097_collaboration_coding_prompt.md) · [Asset-production prompt](097_collaboration_asset_prompt.md) · [Achievement prompt](097_collaboration_achievement_prompt.md) · [Goal prompt](097_collaboration_goal_prompt.md)
 
-These prompts belong only to the imported ten-part variant and do not authorize executing its conflicting requirements before reconciliation.
+These prompts implement the selected flat design.
 The goal prompt is bounded to 4,000 characters including its final newline.
 
 ## Evidence and working handoffs

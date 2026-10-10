@@ -23,6 +23,16 @@ Its future benefit requires lawful hostile occupation and the current unused opp
 Spent administration and government-readiness history survives release, recapture, cosmetic change and restoration of the same political identity.
 A genuinely different political identity needs the explicit native lifecycle handling already required by this variant, without replaying the predecessor's spent opportunities.
 
+A completed restoration gives the restored government one choice about the collaborators it inherits, once per restoration:
+
+| Option | Effect | Cost |
+| --- | --- | --- |
+| Purge | Subtracts one baseline layer of the former installer's collaboration inside the restored country, relative to the current value and never below zero; no other country's network changes | A 90-day stability penalty of 10 percent |
+| Amnesty | The former installer's network stays, and the restored states receive a 90-day modifier raising local factory output and recruitable population because experienced officials stay at their desks | None |
+
+The choice is an event option rather than a standing decision, never appears during or after the Fallout transition, and neither option may make light of reprisals against civilians.
+AI chooses Purge when the former installer is still at war with it and Amnesty otherwise.
+
 The displaced country uses Event 095's preparation and restoration choices.
 The sponsor decides how to defend its actual holdings through ordinary military and occupation tools.
 AI considers current homeland control, local organization and valid military access rather than assuming that a deep network either prevents a revolt or guarantees a successful counterattack.
@@ -31,7 +41,9 @@ The two owners retain their own transition and Chaos receipts.
 
 ## Treaty of Tordesillas Restoration
 
-The companion concept is the user's restored Iberian partition project, identified as Event 093 in the surrounding project brief. Its current catalog identity is the Galicia dispute. Integration must use its accepted rework rather than assuming an already implemented global partition hook.
+The companion is [Event 093 Treaty of Tordesillas Restoration](../093_treaty_of_tordesillas_restoration_specs/README.md), whose opening is the Galicia crisis and whose world partition begins at its Evolution II, [The World Divided](../093_treaty_of_tordesillas_restoration_specs/093_treaty_of_tordesillas_restoration_spec_part_05_evolutions.md).
+Integration uses that package's accepted contracts rather than assuming an already implemented global partition hook.
+A collaboration government counts toward a crown's sphere only through Event 093's [subordinate-state rule](../093_treaty_of_tordesillas_restoration_specs/093_treaty_of_tordesillas_restoration_spec_part_08_faction_and_empire.md#subordinate-states): a subject whose every state lies in its single patron's sphere.
 
 Spain and Portugal can benefit from their own networks in countries they actually conquer. Their respective administrations can consolidate territory through collaboration governments rather than requiring direct occupation everywhere.
 
@@ -42,6 +54,27 @@ Control and sponsor identity follow the agreed settlement that actually occurs. 
 A proposed partition line is not enough to grant a government. There must be lawful territory and a native route. Disputed states remain disputed rather than silently changing hands when a report is acknowledged.
 
 The resulting world can have a Spanish sphere and a Portuguese sphere of local collaborator regimes. Their international alignment follows the real sponsor and subject relationships. Event 097 does not create an additional treaty faction, worldwide truce, or separate partition map.
+
+## Intel Leaked
+
+[Event 052 Intel Leaked](../052_intel_leaked_specs/specs/052_intel_leaked_spec_part_5_evolutions_repeatability_and_connections.md#event-097-collaboration-connection) reserves the Intelligence cluster's one hook into this event.
+When a leak exposes the contact chains of country A, Event 052 may reduce A's native collaboration inside each named exploiter by at most one baseline layer, relative to the current value and never below zero, for at most three exploiters per leak.
+The exposed collaborators are arrested; nothing is granted to anyone, so the global symmetry of the grant is untouched.
+Event 097 owns the write and its Fallout check, and Event 052 owns the leak, its targets and its other consequences.
+The reduction is not a Chaos source of its own and does not refund a historical manifestation.
+
+## Fallout
+
+The Fallout transition snapshots every collaboration pair, resets it to zero and then fails its clean-world proof if any pair still holds collaboration.
+Once that transition has begun, Event 097 is unavailable for selection, a pending global grant stops before its next write, delayed Fifth Column stages and readiness offers lapse, and the Event 052 reduction does nothing.
+Event 097 never restores collaboration that Fallout removed.
+Its history, spent-offer receipts and achievement records stay in place.
+
+## Systems this event leaves to their owners
+
+Collaboration changes who administers conquered land, not how many people die there.
+Famine, displacement, camps, CBRN use and condemnation in occupied territory stay with their owning systems; the only coupling is the harsh-rule deferral in Parts 3 and 5, which makes brutal occupation forgo the collaborator dividend instead of adding a second penalty.
+Event 097 adds no deaths, refugees, contamination or condemnation of its own.
 
 ## Existing intelligence operations
 

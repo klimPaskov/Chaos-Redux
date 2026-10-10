@@ -12,10 +12,10 @@ Read the [package authority and conflict table](../README.md) before selecting t
 
 ## Global rules
 
-- Inspect the matching canonical reference family and contact sheet under `.agents/skills/chaos-redux-event-assets/assets/gfx_references/`, following the current owner skill.
+- Inspect the matching canonical reference family and contact sheet under `.claude/skills/chaos-redux-event-assets/assets/gfx_references/`, following the current owner skill.
 - All art is fictional, period-documentary in feel for 1936 to 1945, and shows no real person, no real collaborator, no readable text, and no identifiable real national insignia of a foreign occupying army. Local flags may appear only as unreadable shapes.
 - The subject is ordinary people changing sides: officials, police, clerks, managers, local politicians. Do not make paperwork, archives, maps, or staff tables the main subject. Do not depict violence against civilians.
-- Icons use native ImageGen transparency, keep the alpha through processing and DDS conversion, and are each designed for their own consumer. Never resize one icon type into another.
+- Icons are generated through the `gptimage` MCP route with a requested transparent background and a verified alpha channel, keep the alpha through processing and DDS conversion, and are each designed for their own consumer. Never resize one icon type into another.
 - Report images are generated as photographs and then processed locally with the report-event card processor into the `210x176` tilted card.
 - Every asset receives a manifest entry, a processed PNG preview, a final DDS, a contact sheet where several assets share a family, and a `gfx_handoff.md` entry. The temporary workspace is `docs/assets/097_collaboration/`.
 - All assets are static, because each surface communicates its state through text and a single image.
@@ -23,7 +23,7 @@ Read the [package authority and conflict table](../README.md) before selecting t
 
 ## Report event images
 
-Size `210x176`, generated, processed with `.agents/skills/chaos-redux-event-assets/tools/process_report_event_image.py`. Final folder `gfx/event_pictures/097_collaboration/`.
+Size `210x176`, generated, processed with `.claude/skills/chaos-redux-event-assets/tools/process_report_event_image.py`. Final folder `gfx/event_pictures/097_collaboration/`.
 
 | Asset | Sprite | Use | Direction |
 | --- | --- | --- | --- |
@@ -61,7 +61,7 @@ The super-event image is coordinated with `docs/specs/097_collaboration_specs/pr
 | --- | --- | --- | --- |
 | `decision_category_097_collaboration_divided_loyalties_picture` | Divided Loyalties category picture | `GFX_decision_category_097_collaboration_divided_loyalties_picture` | A ministry corridor at night. A few officials work by lamplight. At the end of the corridor one figure waits by a half-open door. No buttons, meters, or text. |
 
-Inspect `.agents/skills/chaos-redux-event-assets/assets/gfx_references/icons/decision_categories/pictures/` and its `contact_sheet.png` first.
+Inspect `.claude/skills/chaos-redux-event-assets/assets/gfx_references/icons/decision_categories/pictures/` and its `contact_sheet.png` first.
 Follow the current asset skill's preflight if references need hydration or repair, and report any unresolved reference gap rather than selecting a legacy library by assumption.
 The reference family uses `114x101`, but the final size follows the active category-picture consumer the implementation agent wires.
 
