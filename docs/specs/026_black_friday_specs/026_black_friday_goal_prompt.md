@@ -1,5 +1,8 @@
 # Event 26 goal prompt
 
+> Historical build contract: Event 26 is implemented at source level; the current state and remaining blockers live in `docs/plans/026_black_friday_plans/takeover_status_2026-10-06.md` and `agent_decisions_2026-10-05.md`.
+> Do not rerun this contract against the installed event; take new work from those owner records and the package README open questions.
+
 Implement Chaos Redux Event 26, Black Friday, from the complete specification package at `docs/specs/026_black_friday_specs/`. Replace the current desert-industry Event 26 while preserving `chaosx.nr26.1` as the canonical entry and keeping ID 26 classified as Minor Fire-Once. Remove every stale desert script, localisation key, news reference, sprite reference, event-name mapping, debug mapping, comment, document entry, and catalog row.
 
 Event 26 becomes available at Gathering Storm, 200 chaos. Automatic selection must reserve it globally, remove it from further selection, and resolve the current event timer without recording a fire. The reservation waits for the first in-game Friday at 200 chaos or higher. Selection on an eligible Friday may activate the event that day. Friday activation records one event, applies minor pacing and dynamic major gain once, broadcasts one report to each human player, and snapshots the sale rate. The baseline is 50 percent off. At 600 chaos or higher, Evolution I applies 75 percent off when enabled. Later chaos changes do not alter the snapshot. The sale expires on the next daily tick.

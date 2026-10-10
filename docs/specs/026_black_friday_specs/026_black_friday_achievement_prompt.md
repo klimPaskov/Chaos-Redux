@@ -1,5 +1,8 @@
 # Event 26 achievement implementation prompt
 
+> Historical build contract: Event 26 is implemented at source level; the current state and remaining blockers live in `docs/plans/026_black_friday_plans/takeover_status_2026-10-06.md` and `agent_decisions_2026-10-05.md`.
+> Do not rerun this contract against the installed event; take new work from those owner records and the package README open questions.
+
 Implement one Chaos Redux achievement for Event 26 using the working ID `026_black_friday_five_departments`. Read `AGENTS.md`, the Event 26 specs, the achievement rules in `chaos-redux-event-planning`, the event and decision skills, and the current Chaos Redux achievement registry before editing.
 
 ## Unlock contract

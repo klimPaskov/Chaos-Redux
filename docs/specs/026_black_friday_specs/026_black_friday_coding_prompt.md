@@ -1,5 +1,8 @@
 # Event 26 implementation prompt
 
+> Historical build contract: Event 26 is implemented at source level; the current state and remaining blockers live in `docs/plans/026_black_friday_plans/takeover_status_2026-10-06.md` and `agent_decisions_2026-10-05.md`.
+> Do not rerun this contract against the installed event; take new work from those owner records and the package README open questions.
+
 Implement the complete Chaos Redux Event 26 Black Friday specification at `docs/specs/026_black_friday_specs/`. Treat every mapped behavior, cost family, asset, log surface, evolution, achievement, audit, and documentation requirement as acceptance criteria.
 
 Read `AGENTS.md`, all Event 26 spec files, `chaos-redux-events`, `chaos-redux-decisions-missions`, `chaos-redux-event-assets`, `chaos-redux-improvement-loop`, `chaos-redux-subagents`, the relevant localisation and achievement rules, the required offline wiki pages, installed Vanilla documentation, and current Vanilla and Chaos Redux precedents. Use the mandatory HOI4 MCP event and probability workflows. If a required route is unavailable, record the exact blocker.

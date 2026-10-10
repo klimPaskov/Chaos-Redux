@@ -1,10 +1,9 @@
 # Event 26: Black Friday specification package
 
-Current workflow owners: [event integration](../../../.agents/skills/chaos-redux-events/SKILL.md), [subagent routing](../../../.agents/skills/chaos-redux-subagents/SKILL.md), and [asset production](../../../.agents/skills/chaos-redux-event-assets/SKILL.md).
+Current workflow owners: [event integration](../../../.claude/skills/chaos-redux-events/SKILL.md), [subagent routing](../../../.claude/skills/chaos-redux-subagents/SKILL.md), and [asset production](../../../.claude/skills/chaos-redux-event-assets/SKILL.md).
 The source parts preserve the proposed expanded design.
 Explicit user requirements retain their cited basis, while broader claims labelled accepted require an attributable user decision or parent acceptance before implementation.
 Package location and manual closure reports do not establish that acceptance.
-
 
 This folder is the source specification package for Event 26, **Black Friday**. Its repository location is `docs/specs/026_black_friday_specs/`.
 
@@ -28,7 +27,7 @@ The central implementation goal is a reusable cost quotation and payment framewo
 8. `026_black_friday_spec_part_8_acceptance_scenarios.md` defines implementation and live-test scenarios.
 9. `026_black_friday_spec_part_9_implementation_crosswalk.md` maps the specification to current repository surfaces and completion evidence.
 10. `026_black_friday_cost_surface_registry_template.md` provides the required coverage ledger structure.
-11. `026_black_friday_asset_prompt.md`, `026_black_friday_achievement_prompt.md`, `026_black_friday_coding_prompt.md`, and `026_black_friday_goal_prompt.md` provide bounded downstream prompts.
+11. `026_black_friday_asset_prompt.md`, `026_black_friday_achievement_prompt.md`, `026_black_friday_coding_prompt.md`, and `026_black_friday_goal_prompt.md` are historical build contracts for the installed implementation.
 12. `026_black_friday_catalog_update_brief.md` defines the authoritative workbook change.
 13. `026_black_friday_improvement_loop_closure.md` records the anti-bloat review and closure decision.
 14. `026_black_friday_source_reading_record.md` records the complete provided-source review.
@@ -41,8 +40,30 @@ The specification files in this folder are source design.
 Particular accepted amendments retain their recorded user decision, including the 2026-09-25 native-raid achievement rule.
 The remaining expanded design requires the acceptance basis described above. Working audits and implementation handoffs should go under `docs/plans/026_black_friday_plans/`.
 
-This package contains design and implementation requirements. It does not claim that Event 26 has been implemented, tested in game, or entered into the authoritative catalog workbook.
+This package contains design and implementation requirements.
+Event 26 is implemented at source level (`events/026_black_friday.txt`, overview in `docs/events/026_black_friday.md`), but the workstream is incomplete: the D36 stale-contribution defect, partial owner adoption, queued catalog wording and engine acceptance remain open in [the takeover status](../../plans/026_black_friday_plans/takeover_status_2026-10-06.md).
+The downstream prompts are historical build contracts.
 
 ## Completion rule
 
 Implementation is incomplete while any discovered Vanilla or Chaos Redux purchase surface lacks a recorded coverage disposition, any displayed price differs from the paid price, the Friday reservation can duplicate or stall event pacing, the one-day expiry leaves stale discounts, or the old desert-industry identity remains anywhere in active files or player-facing documentation.
+
+## Open questions
+
+1. Native sale as an ordinary cost modifier (proposed, spec audit 2026-10-10).
+   Part 1 asks every surface to charge exactly 50 or 75 percent of its current payable cost.
+   Native purchase surfaces (laws, advisors, military staff) compose their price inside the engine, so Event 26 stores a compensating contribution at activation, and D36 shows that contribution goes stale when ordinary factors change during the day, which can even reach a zero price.
+   Proposal: for native surfaces only, apply the sale as one temporary additive cost-factor modifier (`-0.50`, or `-0.75` at Chaos Tier) and describe it as "half price" or "a quarter of the price" before other modifiers, accepting that stacked native factors make the final price approximate.
+   The displayed native price still equals the paid price, the stored-contribution machinery and the D36 blocker disappear, and script-reachable Chaos Redux costs keep the exact quotation framework.
+   This changes the exact-ratio rule for native surfaces, so it needs user acceptance.
+2. No other design change is proposed.
+   The 8 October review retained reservation, one-day activation, live cost composition, paid-amount refunds and action validity, and rejected a sale store, extra currency or purchase cap; this audit agrees.
+
+## Changelog
+
+- 2026-10-10 spec audit, pass 1:
+  - Replaced the stale "not implemented" statement with the current source-level state and a pointer to the takeover status.
+  - Marked the coding, goal, asset and achievement prompts as historical build contracts.
+  - Repointed workflow-owner links from the ignored `.agents/skills/` mirror to `.claude/skills/` and refreshed the manifest hashes for the changed files.
+- 2026-10-10 spec audit, pass 2:
+  - Added the native-surface modifier proposal that would remove the D36 blocker.
