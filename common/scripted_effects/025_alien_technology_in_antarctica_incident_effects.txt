@@ -73,6 +73,7 @@ chaosx_nr25_answer_accusation_admit = {
 # for the answer window only, so a seizer that never answers cannot block a
 # later demand.
 chaosx_nr25_demand_seizure_return = {
+	set_variable = { chaosx_nr25_seizure_demand_seizer = FROM }
 	set_temp_variable = { chaosx_nr25_militarisation_days = constant:chaosx_nr25_militarisation.offer_days }
 	set_country_flag = { flag = chaosx_nr25_seizure_demand_pending days = chaosx_nr25_militarisation_days value = 1 }
 	FROM = { country_event = { id = chaosx.nr25.173 days = 1 } }
@@ -84,12 +85,30 @@ chaosx_nr25_demand_seizure_return = {
 # seizer's seizures (chaosx_nr25_take_seized_material) is what returns, so
 # material taken from another camp never goes to the wrong government.
 chaosx_nr25_accept_seizure_return = {
+	if = {
+		limit = { chaosx_nr25_seizure_return_matches_demand = yes }
+		# Consume the pending answer before any nested transaction can recur.
+		FROM = {
+			clr_country_flag = chaosx_nr25_seizure_demand_pending
+			clear_variable = chaosx_nr25_seizure_demand_seizer
+		}
+		chaosx_nr25_apply_seizure_return = yes
+	}
+}
+
+# Private matched-demand body. Repeated or misdirected answers cannot reach it.
+chaosx_nr25_apply_seizure_return = {
+	set_temp_variable = { chaosx_nr25_returned_crew = constant:chaosx_nr25_value.zero }
 	# Inside FROM's scope PREV is this seizer.
 	FROM = {
 		set_temp_variable = { chaosx_nr25_returned_evidence = chaosx_nr25_seized_evidence_by_@PREV }
-		set_temp_variable = { chaosx_alien_recovery_return_slot = chaosx_nr25_seized_slot_by_@PREV }
+		set_temp_variable = { chaosx_nr25_returned_crew = chaosx_nr25_detained_crew_by_@PREV }
 		set_variable = { chaosx_nr25_seized_evidence_by_@PREV = constant:chaosx_nr25_value.zero }
-		set_variable = { chaosx_nr25_seized_slot_by_@PREV = constant:chaosx_nr25_value.zero }
+		clear_variable = chaosx_nr25_detained_crew_by_@PREV
+	}
+	if = {
+		limit = { check_variable = { var = chaosx_nr25_returned_crew value = constant:chaosx_nr25_value.zero compare = less_than } }
+		set_temp_variable = { chaosx_nr25_returned_crew = constant:chaosx_nr25_value.zero }
 	}
 	if = {
 		limit = { check_variable = { var = chaosx_nr25_survey_evidence value = chaosx_nr25_returned_evidence compare = less_than } }
@@ -104,15 +123,18 @@ chaosx_nr25_accept_seizure_return = {
 	FROM = { save_event_target_as = chaosx_alien_recovery_return_recipient }
 	set_temp_variable = { chaosx_alien_recovery_fragment_returned = constant:chaosx_nr25_value.zero }
 	set_temp_variable = { chaosx_alien_recovery_fragment_assigned = constant:chaosx_nr25_value.zero }
-	chaosx_alien_recovery_ledger_return_fragment = yes
+	set_temp_variable = { chaosx_nr25_returned_fragment_count = constant:chaosx_nr25_value.zero }
+	chaosx_nr25_return_seized_fragments = yes
 	add_opinion_modifier = { target = FROM modifier = chaosx_nr25_seizure_settled }
 	chaosx_nr25_clamp_values = yes
 	FROM = {
-		add_to_variable = { chaosx_nr25_crew = constant:chaosx_nr25_incident.exchange_crew }
+		add_to_variable = { chaosx_nr25_crew = chaosx_nr25_returned_crew }
 		add_opinion_modifier = { target = PREV modifier = chaosx_nr25_seizure_settled }
 		clr_country_flag = chaosx_nr25_seizure_demand_pending
 		set_country_flag = chaosx_nr25_seizure_demand_accepted
 		set_variable = { chaosx_nr25_returned_evidence_record = chaosx_nr25_returned_evidence }
+		set_variable = { chaosx_nr25_returned_crew_record = chaosx_nr25_returned_crew }
+		set_variable = { chaosx_nr25_returned_fragment_count_record = chaosx_nr25_returned_fragment_count }
 		clr_country_flag = chaosx_nr25_seizure_fragment_returned
 		chaosx_nr25_clamp_values = yes
 	}
@@ -129,6 +151,18 @@ chaosx_nr25_accept_seizure_return = {
 # COUNTRY scope (the seizer; FROM is the victim). Refuse: the refusal is
 # public, the victim's grudge deepens and the ice grows more militarised.
 chaosx_nr25_refuse_seizure_return = {
+	if = {
+		limit = { chaosx_nr25_seizure_return_matches_demand = yes }
+		FROM = {
+			clr_country_flag = chaosx_nr25_seizure_demand_pending
+			clear_variable = chaosx_nr25_seizure_demand_seizer
+		}
+		chaosx_nr25_apply_seizure_refusal = yes
+	}
+}
+
+# Private matched-demand refusal body.
+chaosx_nr25_apply_seizure_refusal = {
 	add_named_threat = { threat = constant:chaosx_nr25_incident.public_threat name = chaosx_nr25_public_seizure_refusal }
 	FROM = {
 		add_opinion_modifier = { target = PREV modifier = chaosx_nr25_seizure_refused }

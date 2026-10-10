@@ -693,3 +693,17 @@ Decision:
 - The camp-damage (`.336`) and turned-trace (`.340`) reports show only the loss that applied (outpost security, or readiness without an outpost) instead of a line with a zero in it.
 - The lost-site report `.344` is titled "A Fragment Field Is Lost" so the destroyed variant is not called buried, and a buried field is described as permanently out of reach. The broadcast report `.327` says the sector is ruled out as the core's resting place instead of claiming nothing is buried there, since fragment fields remain possible.
 - The ledger API table names the real caller of `chaosx_alien_recovery_ledger_return_fragment`.
+
+## D45. Second round 2 review corrections
+
+Disposition: `implemented`; the agent cooldown's effect on AI pacing is `needs_live_game`, and the MCP probability baseline and compare stay blocked as recorded in D31.
+
+Basis: a second skeptical review of the round 2 commits (`8024eb5df` to `cda7e3cf8`) and of the D44 corrections (`56d527d53`), under the delegated design authority.
+
+Decision:
+
+- Jam the Signal (D36) and Turn It Toward a Rival (D37) act against one rival, but only the shared 12-day order cooldown limited them, so an AI could strike the leading camp every order and two turned traces could drop an outpost below the seizure threshold of D38. Both now require the rival-agent cooldown that the five rival operations use (`chaosx_nr25_rival_agents_ready`, split out of `chaosx_nr25_rival_action_available`), and Turn It Toward a Rival sets it as jamming already did. Their tooltips state the wait.
+- The injured-crew pulse report (`.323`), the missing-party report (`.333`) and the failed capture (`.339`) record deaths in the Antarctic expedition deaths reason but did not say how many; each now prints the field casualty line, as the hazard reports of D27 do.
+- A moved-fragments incident (`.335`) reported the full evidence loss even when the expedition held less; the loss is now capped at the evidence held.
+- The seizure report (`.168`) reads "the <adjective> camp", the seizure demand tooltip asks for any fragment carried off instead of claiming one was taken, and the contaminated-fragment report and cutting tooltip state the exposure they apply instead of an ongoing danger that no mechanic carries.
+- The earlier open edge, where a second seizure from the same victim overwrote the recorded fragment slot, is closed: the victim now keeps one targeted claim per fragment slot and the answer returns every claim the seizer still holds (`chaosx_nr25_return_seized_fragments`), together with recorded detained crews.

@@ -1,5 +1,7 @@
 # Reward arbitration matrix
 
+The Event 036 column names the Forerunner Craft recovery (`chaosx.nr25.261`), which keeps the `chaosx_alien_recovery_event036_*` receipt names.
+
 ## Winner reward state
 
 | Event 016 ownership | Event 036 state | Event 025 result |

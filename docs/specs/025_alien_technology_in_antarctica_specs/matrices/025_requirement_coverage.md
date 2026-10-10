@@ -1,5 +1,7 @@
 # Requirement coverage
 
+This matrix records design/specification coverage, not final acceptance. `Covered` means the requirement is represented by the accepted specification package; it does not waive implementation, MCP, probability, spreadsheet, or live-runtime evidence.
+
 | User or project requirement | Specification coverage | Status |
 | --- | --- | --- |
 | Alien craft crashes in Antarctica | Parts 001, 003, 010 | Covered |
@@ -37,3 +39,15 @@
 | Catalog alignment through XLSX only | Part 013, acceptance, spreadsheet prompt | Covered |
 | Relevant subagent prompts | `prompts/` package | Covered |
 | Honest process limitations | README and handoff | Covered |
+
+## Current implementation evidence
+
+The active Event 025 source, board assets, localised routes, five evolution families, shared Event 025/Event 036 ledger, and Event 016 owner-API bridge are present in the repository and are documented in docs/events/025_alien_technology_in_antarctica/overview.md and docs/assets/025_alien_technology_in_antarctica/visual_asset_audit.md.
+
+The corrected sector hitbox is wired and mirrored at 384x58 with four 96x58 frames, and the board GUI now uses one map-level selected overlay instead of six repeated full-map overlays.
+
+The following acceptance evidence is unresolved or blocked: the targeted hoi4.gui_inspect/render/compare route timed out after 180 seconds, the three targeted technology inspections timed out after 180 seconds, the latest event inspect was partial with deferred analysis, and baseline/post-patch probability auditor handoffs are pending.
+
+The evolution overlays are real frame sheets, recorded in the visual audit.
+
+The legacy UFO-race visual and decision aliases remain preserved for Event 016 compatibility and are excluded from the active Event 025 path.

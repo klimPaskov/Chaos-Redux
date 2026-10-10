@@ -117,7 +117,7 @@ chaosx_nr25_refuse_corridor_compact = {
 # survey evidence, at most what the target holds, and one fragment slot the
 # target holds. Results are kept for the seizure report, and the target keeps
 # what this seizer took from it (chaosx_nr25_seized_evidence_by_<seizer> and
-# chaosx_nr25_seized_slot_by_<seizer>), so a later demand returns exactly that
+# six targeted fragment claims), so a later demand returns exactly that
 # material even after the seizer has struck another camp.
 chaosx_nr25_take_seized_material = {
 	set_temp_variable = { chaosx_nr25_seized_evidence = constant:chaosx_nr25_militarisation.seize_evidence }
@@ -132,6 +132,16 @@ chaosx_nr25_take_seized_material = {
 	event_target:chaosx_nr25_rival_target_scope = { subtract_from_variable = { chaosx_nr25_survey_evidence = chaosx_nr25_seized_evidence } }
 	add_to_variable = { chaosx_nr25_survey_evidence = chaosx_nr25_seized_evidence }
 	set_variable = { chaosx_nr25_last_seized_evidence = chaosx_nr25_seized_evidence }
+	set_temp_variable = { chaosx_nr25_detained_crew = constant:chaosx_nr25_incident.seizure_crew_limit }
+	if = {
+		limit = { check_variable = { var = event_target:chaosx_nr25_rival_target_scope.chaosx_nr25_crew value = chaosx_nr25_detained_crew compare = less_than } }
+		set_temp_variable = { chaosx_nr25_detained_crew = event_target:chaosx_nr25_rival_target_scope.chaosx_nr25_crew }
+	}
+	if = {
+		limit = { check_variable = { var = chaosx_nr25_detained_crew value = constant:chaosx_nr25_value.zero compare = less_than } }
+		set_temp_variable = { chaosx_nr25_detained_crew = constant:chaosx_nr25_value.zero }
+	}
+	set_variable = { chaosx_nr25_last_detained_crew = chaosx_nr25_detained_crew }
 	set_temp_variable = { chaosx_alien_recovery_fragment_seized = constant:chaosx_nr25_value.zero }
 	set_temp_variable = { chaosx_alien_recovery_seized_slot = constant:chaosx_nr25_value.zero }
 	set_temp_variable = { chaosx_alien_recovery_fragment_assigned = constant:chaosx_nr25_value.zero }
@@ -149,9 +159,14 @@ chaosx_nr25_take_seized_material = {
 	# same seizer add up.
 	event_target:chaosx_nr25_rival_target_scope = {
 		add_to_variable = { chaosx_nr25_seized_evidence_by_@PREV = chaosx_nr25_seized_evidence }
+		subtract_from_variable = { chaosx_nr25_crew = chaosx_nr25_detained_crew }
+		add_to_variable = { chaosx_nr25_detained_crew_by_@PREV = chaosx_nr25_detained_crew }
 		if = {
 			limit = { check_variable = { var = chaosx_alien_recovery_fragment_seized value = constant:chaosx_nr25_value.one compare = equals } }
-			set_variable = { chaosx_nr25_seized_slot_by_@PREV = chaosx_alien_recovery_seized_slot }
+			meta_effect = {
+				text = { set_country_flag = chaosx_nr25_seized_fragment_[SLOT]_by_@PREV }
+				SLOT = "[?chaosx_alien_recovery_seized_slot|.0]"
+			}
 		}
 	}
 	chaosx_nr25_clamp_values = yes

@@ -7,6 +7,8 @@ import unittest
 ROOT = Path(__file__).resolve().parents[1]
 EVENTS = (ROOT / "events/025_alien_technology_in_antarctica.txt").read_text(encoding="utf-8-sig")
 GFX = (ROOT / "interface/025_alien_technology_in_antarctica.gfx").read_text(encoding="utf-8-sig")
+# The forerunner craft report and news pictures live with the shared event pictures.
+GFX += (ROOT / "interface/chaosx_pictures.gfx").read_text(encoding="utf-8-sig")
 SPRITES = dict(re.findall(r'name\s*=\s*"([^"]+)"\s+texturefile\s*=\s*"([^"]+)"', GFX))
 
 

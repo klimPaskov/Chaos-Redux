@@ -1,0 +1,74 @@
+# Event 025 persistent six-slot seizure claims. COUNTRY scope is the seizer.
+# Input: chain-local chaosx_alien_recovery_return_recipient is the victim.
+# Caller-owned temporary outputs: chaosx_nr25_returned_fragment_count and
+# chaosx_alien_recovery_fragment_returned, initialized to zero before this call.
+# Only successfully returned claims are consumed. No technology or core moves.
+chaosx_nr25_return_seized_fragments = {
+	set_temp_variable = { chaosx_nr25_returned_fragment_count = constant:chaosx_nr25_value.zero }
+	set_temp_variable = { chaosx_alien_recovery_fragment_returned = constant:chaosx_nr25_value.zero }
+	set_temp_variable = { chaosx_nr25_legacy_seized_slot = constant:chaosx_nr25_value.zero }
+	event_target:chaosx_alien_recovery_return_recipient = {
+		set_temp_variable = { chaosx_nr25_legacy_seized_slot = chaosx_nr25_seized_slot_by_@PREV }
+		clear_variable = chaosx_nr25_seized_slot_by_@PREV
+	}
+	# Preserve the one provable slot from the earlier receipt shape. Fractional
+	# or out-of-range values cannot round into a different fragment's claim.
+	if = {
+		limit = {
+			OR = {
+				check_variable = { var = chaosx_nr25_legacy_seized_slot value = constant:chaosx_nr25_value.one compare = equals }
+				check_variable = { var = chaosx_nr25_legacy_seized_slot value = constant:chaosx_nr25_value.two compare = equals }
+				check_variable = { var = chaosx_nr25_legacy_seized_slot value = constant:chaosx_nr25_value.three compare = equals }
+				check_variable = { var = chaosx_nr25_legacy_seized_slot value = constant:chaosx_nr25_value.four compare = equals }
+				check_variable = { var = chaosx_nr25_legacy_seized_slot value = constant:chaosx_nr25_value.five compare = equals }
+				check_variable = { var = chaosx_nr25_legacy_seized_slot value = constant:chaosx_nr25_value.six compare = equals }
+			}
+		}
+		event_target:chaosx_alien_recovery_return_recipient = {
+			meta_effect = {
+				text = { set_country_flag = chaosx_nr25_seized_fragment_[SLOT]_by_@PREV }
+				SLOT = "[?chaosx_nr25_legacy_seized_slot|.0]"
+			}
+		}
+	}
+	for_loop_effect = {
+		start = constant:chaosx_nr25_value.one
+		end = constant:chaosx_nr25_cost.fragments_total
+		compare = less_than_or_equals
+		value = chaosx_nr25_restitution_slot
+		set_temp_variable = { chaosx_nr25_restitution_claim_present = constant:chaosx_nr25_value.zero }
+		event_target:chaosx_alien_recovery_return_recipient = {
+			meta_effect = {
+				text = {
+					if = {
+						limit = { has_country_flag = chaosx_nr25_seized_fragment_[SLOT]_by_@PREV }
+						set_temp_variable = { chaosx_nr25_restitution_claim_present = constant:chaosx_nr25_value.one }
+					}
+				}
+				SLOT = "[?chaosx_nr25_restitution_slot|.0]"
+			}
+		}
+		if = {
+			limit = { check_variable = { var = chaosx_nr25_restitution_claim_present value = constant:chaosx_nr25_value.one compare = equals } }
+			set_temp_variable = { chaosx_alien_recovery_return_slot = chaosx_nr25_restitution_slot }
+			set_temp_variable = { chaosx_alien_recovery_fragment_returned = constant:chaosx_nr25_value.zero }
+			set_temp_variable = { chaosx_alien_recovery_fragment_assigned = constant:chaosx_nr25_value.zero }
+			chaosx_alien_recovery_ledger_return_fragment = yes
+			if = {
+				limit = { check_variable = { var = chaosx_alien_recovery_fragment_returned value = constant:chaosx_nr25_value.one compare = equals } }
+				add_to_temp_variable = { chaosx_nr25_returned_fragment_count = constant:chaosx_nr25_value.one }
+				event_target:chaosx_alien_recovery_return_recipient = {
+					meta_effect = {
+						text = { clr_country_flag = chaosx_nr25_seized_fragment_[SLOT]_by_@PREV }
+						SLOT = "[?chaosx_nr25_restitution_slot|.0]"
+					}
+				}
+			}
+		}
+	}
+	set_temp_variable = { chaosx_alien_recovery_fragment_returned = constant:chaosx_nr25_value.zero }
+	if = {
+		limit = { check_variable = { var = chaosx_nr25_returned_fragment_count value = constant:chaosx_nr25_value.zero compare = greater_than } }
+		set_temp_variable = { chaosx_alien_recovery_fragment_returned = constant:chaosx_nr25_value.one }
+	}
+}

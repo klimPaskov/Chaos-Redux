@@ -38,7 +38,7 @@ Evolution IV can also retire an unowned slot: the wreck effects set the same per
 | `chaosx_alien_recovery_ledger_assign_fragment` | Country; temporary `chaosx_alien_recovery_fragment_id` and `chaosx_alien_recovery_fragment_role`, each an integer 1–6 | Temporary `chaosx_alien_recovery_fragment_assigned`, zero on rejection; acquires only an unowned, non-destroyed slot for a valid independent country |
 | `chaosx_alien_recovery_ledger_transfer_physical_custody` | Sender country; normal `chaosx_alien_recovery_custody_recipient_id`, matching chain-local `chaosx_alien_recovery_custody_recipient` target, recipient's giver-specific consent flag | Temporary `chaosx_alien_recovery_custody_applied`, `chaosx_alien_recovery_core_moved`, `chaosx_alien_recovery_fragments_moved`, all zero by default; atomically moves the sender's core and fragments, preserves recipient material and roles, consumes consent, clears selected ID |
 | `chaosx_alien_recovery_ledger_seize_fragment` | Seizing country; chain-local `chaosx_nr25_rival_target_scope` naming the expedition whose outpost fell; caller-initialized temporary `chaosx_alien_recovery_fragment_seized` and `chaosx_alien_recovery_fragment_assigned` (both zero) | Temporary `chaosx_alien_recovery_fragment_seized`, one when a slot moved, and `chaosx_alien_recovery_seized_slot`, the slot (caller-initialized to zero); forcibly moves only the target's lowest owned fragment slot to the seizer with its role, never the core; refreshes both countries and the projected arrays. Called only by the Evolution III seizure (`chaosx_nr25_take_seized_material`), which owns the seizure preconditions |
-| `chaosx_alien_recovery_ledger_return_fragment` | Current holder; temporary `chaosx_alien_recovery_return_slot` (1–6), chain-local `chaosx_alien_recovery_return_recipient`; caller-initialized temporary `chaosx_alien_recovery_fragment_returned` and `chaosx_alien_recovery_fragment_assigned` (both zero) | Temporary `chaosx_alien_recovery_fragment_returned`, one when the slot moved; moves that slot with its role only while the caller holds it, refreshes both countries and the projected arrays. Called only when a seizure is settled (`chaosx_nr25_accept_seizure_return`), with the slot the victim recorded for that seizer |
+| `chaosx_alien_recovery_ledger_return_fragment` | Current holder; temporary `chaosx_alien_recovery_return_slot` (1–6), chain-local `chaosx_alien_recovery_return_recipient`; caller-initialized temporary `chaosx_alien_recovery_fragment_returned` and `chaosx_alien_recovery_fragment_assigned` (both zero) | Temporary `chaosx_alien_recovery_fragment_returned`, one when the slot moved. Moves that slot with its role only while the caller holds it and refreshes both countries and the projected arrays. The matched seizure settlement calls it once for each victim-specific claim through `chaosx_nr25_return_seized_fragments` |
 | `chaosx_alien_recovery_ledger_destroy_physical_custody` | Valid independent country holding consistent physical material; no selection input | Same temporary outputs; retires only that country's core and fragment slots permanently; preserves learned knowledge and historical reward records |
 | `chaosx_alien_recovery_ledger_cleanup_invalid_targets` | Any scope | Retires invalid physical targets, releases abandoned fragments, preserves the historical winner and claimed receipts; projects six rows without scanning countries |
 | `chaosx_alien_recovery_ledger_refresh_country_fragments` | Country | Rebuilds slot flags, roles, `chaosx_alien_recovery_ledger_fragment_count` and `chaosx_nr25_fragment_count` from persistent targets |
@@ -51,6 +51,12 @@ It must not publish a paid-success outcome without a positive transaction receip
 Before calling either custody transaction, the caller must initialize all temporary custody outputs it reads afterward to zero.
 Before public fragment acquisition, initialize `chaosx_alien_recovery_fragment_assigned` to zero in the calling effect frame.
 The helper's own default assignments do not establish caller-owned storage.
+
+`chaosx_nr25_return_seized_fragments` belongs to Event 025's restitution layer, not the shared reward bridge.
+Its caller initializes `chaosx_nr25_returned_fragment_count` and `chaosx_alien_recovery_fragment_returned` to zero and resolves the victim into `chaosx_alien_recovery_return_recipient`.
+It examines exactly six targeted claims and clears a claim only after a positive physical-ledger receipt.
+An integer legacy single-slot receipt can preserve its recorded slot, but previously overwritten slots cannot be reconstructed and are never inferred from unrelated ownership.
+Recorded crew detention is deducted at seizure and restored once at the matching settlement, separate from technology and physical fragment ownership.
 
 Example of the internal call after caller preflight and explicit recipient permission:
 
@@ -88,6 +94,9 @@ It is a limited source interpreter, not engine scheduling, rendering, multiplaye
 Destruction dispatch uses the physical ledger with support-equipment and stability costs, receipt-gated consequences, and a retired-material incident guard.
 Transfer is dispatched by `chaosx_nr25_complete_custody_transfer` in the Event 025 holder effects after the recipient accepts the offer event; it pays, moves Dependence, and records diplomacy only on a positive transaction receipt.
 The reward bridge is covered by source review only; physical-custody tests do not validate it.
+`.tools/test_event025_seizure_restitution.py` executes the production demand, seizure, matched acceptance/refusal and six-slot return helpers with conservative helper-local temporary cleanup.
+Its twelve cases cover all six slot roles, multiple claims, partial returns, distinct victims, valid refusal, repeated answers, invalid or expired demands, third-party ownership, exact legacy slot migration and crew conservation.
+Native flag duration, event delivery, opinions and threat effects remain observations in the harness, not engine execution.
 
 ## Future work
 

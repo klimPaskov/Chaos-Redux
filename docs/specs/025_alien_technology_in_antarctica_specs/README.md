@@ -33,7 +33,8 @@ The winner receives one random advanced technology from the existing Event 016 c
 | New combat units | None |
 | New character portraits | None |
 | Required 3D models | None |
-| Event 036 relationship | Shared reward arbitration and upgraded result when alien-aircraft content overlaps |
+| Forerunner Craft | A smaller craft is recovered by one country 45 days after the race opens (`chaosx.nr25.260` and `.261`). It was the Event 036 Alien Spacecraft recovery and keeps its `chaosx_alien_recovery_event036_*` receipts. Event 036 is now the Chemical and Biological Weapons Convention |
+| Reward arbitration | Shared with the Forerunner Craft: an upgraded result when the alien-aircraft content overlaps |
 
 ## Package map
 

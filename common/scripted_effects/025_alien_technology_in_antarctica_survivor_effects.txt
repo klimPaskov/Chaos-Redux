@@ -214,8 +214,15 @@ chaosx_nr25_apply_survivor_incident = {
 	}
 	else_if = {
 		limit = { check_variable = { var = chaosx_nr25_survivor_kind value = constant:chaosx_nr25_survivor_incident.fragments compare = equals } }
+		# The loss never exceeds the survey evidence held, so the report shows
+		# what was actually lost.
+		set_temp_variable = { chaosx_nr25_survivor_moved_evidence = constant:chaosx_nr25_survivor.fragments_evidence }
+		if = {
+			limit = { check_variable = { var = chaosx_nr25_survivor_moved_evidence value = chaosx_nr25_survey_evidence compare = greater_than } }
+			set_temp_variable = { chaosx_nr25_survivor_moved_evidence = chaosx_nr25_survey_evidence }
+		}
 		set_variable = { chaosx_nr25_survivor_evidence_change = constant:chaosx_nr25_value.zero }
-		subtract_from_variable = { chaosx_nr25_survivor_evidence_change = constant:chaosx_nr25_survivor.fragments_evidence }
+		subtract_from_variable = { chaosx_nr25_survivor_evidence_change = chaosx_nr25_survivor_moved_evidence }
 	}
 	else_if = {
 		limit = { check_variable = { var = chaosx_nr25_survivor_kind value = constant:chaosx_nr25_survivor_incident.outpost compare = equals } }

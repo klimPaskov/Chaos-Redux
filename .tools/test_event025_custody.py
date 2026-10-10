@@ -28,6 +28,8 @@ class CustodyRuntime(Runtime):
                          for name in re.findall(r"^(chaosx_alien_recovery_\w+)\s*=\s*\{", TRIGGERS, re.M)}
         self.prev = None
         self.root = None
+        self.from_country = None
+        self.native_observations = []
         self.wars = set()
 
     def scoped(self, country, actor, operation, nodes):
@@ -45,22 +47,29 @@ class CustodyRuntime(Runtime):
             return self.prev
         if token == "ROOT":
             return self.root
+        if token == "FROM":
+            return self.from_country
         return self.targets.get(token.removeprefix("event_target:"))
 
     def value(self, token, actor):
         if token.startswith("var:"):
             token = token[4:]
-        if token in ("THIS", "PREV", "ROOT") or token.startswith("event_target:"):
+        if token.startswith("event_target:") and "." in token:
+            pointer, variable = token.split(".", 1)
+            country = self.scope(pointer, actor)
+            return country.values.get(self.flag(variable, actor), 0) if country else 0
+        token = self.flag(token, actor)
+        if token in ("THIS", "PREV", "ROOT", "FROM") or token.startswith("event_target:"):
             country = self.scope(token, actor)
             return country.id if country else 0
-        for namespace in ("THIS", "PREV", "ROOT"):
+        for namespace in ("THIS", "PREV", "ROOT", "FROM"):
             if token.startswith(namespace + "."):
                 country = self.scope(namespace, actor)
                 return country.values.get(token.split(".", 1)[1], 0) if country else 0
         return super().value(token, actor)
 
     def flag(self, token, actor):
-        return re.sub(r"@(PREV|ROOT|THIS)", lambda m: str(self.scope(m[1], actor).id), token)
+        return re.sub(r"@(PREV|ROOT|THIS|FROM)", lambda m: str(self.scope(m[1], actor).id), token)
 
     def expand(self, data, actor):
         args = dict(data)
@@ -94,7 +103,7 @@ class CustodyRuntime(Runtime):
                 result = self.condition([(k, v) for k, v in data if k != "tooltip"], actor)
             elif key in self.triggers:
                 result = self.condition(self.triggers[key], actor) == (data == "yes")
-            elif key.startswith("event_target:"):
+            elif key == "FROM" or key.startswith("event_target:"):
                 target = self.scope(key, actor)
                 result = bool(target and self.scoped(target, actor, self.condition, data))
             elif key == "meta_trigger":
@@ -105,7 +114,10 @@ class CustodyRuntime(Runtime):
                 target = self.scope(data, actor)
                 result = frozenset((actor.id, target.id)) in self.wars
             elif key == "has_variable":
-                result = data in actor.values or data in self.temporary
+                if data.startswith("global."):
+                    result = data[7:] in self.global_values
+                else:
+                    result = self.flag(data, actor) in actor.values or data in self.temporary
             elif key == "has_country_flag":
                 result = self.flag(data, actor) in actor.flags
             else:
@@ -140,7 +152,7 @@ class CustodyRuntime(Runtime):
                     branch_taken = True
             elif key in self.effects:
                 self.call_helper(key, actor)
-            elif key.startswith("event_target:"):
+            elif key == "FROM" or key.startswith("event_target:"):
                 target = self.scope(key, actor)
                 if target:
                     self.scoped(target, actor, self.execute, data)
@@ -157,22 +169,40 @@ class CustodyRuntime(Runtime):
                 self.targets.pop(data, None)
             elif key in ("set_country_flag", "clr_country_flag", "set_global_flag", "clr_global_flag"):
                 target = self.global_flags if "global" in key else actor.flags
-                name = self.flag(data, actor)
+                if isinstance(data, list):
+                    args = dict(data)
+                    name = self.flag(args["flag"], actor)
+                    self.native_observations.append((actor.id, key, name, self.value(args["days"], actor) if "days" in args else None))
+                else:
+                    name = self.flag(data, actor)
                 (target.add if key.startswith("set_") else target.discard)(name)
-            elif key in ("set_variable", "set_temp_variable", "add_to_variable", "add_to_temp_variable", "subtract_from_variable", "multiply_temp_variable"):
+            elif key in ("set_variable", "set_temp_variable", "add_to_variable", "add_to_temp_variable", "subtract_from_variable", "subtract_from_temp_variable", "multiply_temp_variable"):
                 name, value = data[0]
+                name = self.flag(name, actor)
                 target = self.temporary if "temp" in key else actor.values
                 if name.startswith("global."):
                     target, name = self.global_values, name[7:]
                 amount = self.value(value, actor)
-                if key == "subtract_from_variable":
+                if key in ("subtract_from_variable", "subtract_from_temp_variable"):
                     target[name] = target.get(name, 0) - amount
                 elif key == "multiply_temp_variable":
                     target[name] = target.get(name, 0) * amount
                 else:
                     target[name] = amount + (target.get(name, 0) if key.startswith("add_") else 0)
             elif key == "clear_variable":
-                actor.values.pop(data, None)
+                actor.values.pop(self.flag(data, actor), None)
+            elif key == "clamp_variable":
+                args = dict(data)
+                variable = args["var"]
+                target = actor.values
+                if variable.startswith("global."):
+                    target, variable = self.global_values, variable[7:]
+                value = target.get(variable, 0)
+                if "min" in args: value = max(value, self.value(args["min"], actor))
+                if "max" in args: value = min(value, self.value(args["max"], actor))
+                target[variable] = value
+            elif key in ("add_opinion_modifier", "add_named_threat"):
+                self.native_observations.append((actor.id, key, data))
             elif key == "clear_array":
                 self.global_values[data.removeprefix("global.")] = []
             elif key == "country_event":
