@@ -25,6 +25,64 @@ A received result includes an immutable outcome identifier and its actual comple
 
 The task's deadline must fit the response route. If the owner has only ten days left and the smallest useful action needs thirty days, that candidate is ineligible. Higher Chaos never overrides this rule.
 
+## Two families of crisis cards
+
+L1 and L2 attach to the implemented Famine and Migration systems, so the crisis family has real content from the first playable build.
+Each still needs the versioned read-only task projection described in the shared contract, in the same style as the existing owner-to-owner projections between those two systems.
+C1 to C6 name owners that do not yet expose a usable lifecycle.
+They stay unavailable, with zero weight, until their owner supplies a verified adapter.
+Their reward and setback rows in Part 6 are fitted to the owner contract when it exists.
+
+## L1: Relieve a famine state
+
+**Live premise.** The recipient owns or controls a state that the Famine system has registered at acute shortage or worse, and the state is not concealed.
+A state at supply strain is too mild for a committed task.
+The task is offered only while the recipient has at least one legal relief route from the Famine category.
+
+**Possible task.** Lower the state's committed Food Security stage by two steps and hold that result for 14 days, so acute shortage falls to stable, famine to supply strain and catastrophic famine to acute shortage.
+The player uses the Famine category's own actions: Release Food Stores, Import Food, Restore Relief, Escort or Airlift Relief, Requisition Food or organized evacuation.
+Event 101 adds no relief action of its own.
+
+**Scaling.** The deadline follows the owner's published stage-step holds, because a stage falls one step at a time after its recovery window.
+Using those holds, the generator rejects a candidate whose shortest recovery path does not fit the owner's relief timing plus ordinary slack.
+The required fall never exceeds what the recipient's current relief access, reserves and legal routes can produce.
+
+**Completion.** The owner's committed stage reaches the target before the deadline and holds for the interval, and the owner records relief delivery, a restored route or reserve release in the window as the attributable cause.
+A fall produced by concealment, by emptying the state through evacuation or by the owner's own scenario ending does not count.
+Concealing hunger ends the task as an ordinary failure, because concealment is the opposite of relief.
+
+**Partial and failure.** One stage of recovery held for the full interval, declared at assignment, mitigates failure.
+Failure adds only the quoted relief-cost setback.
+It never touches reserves, mortality or stage, which the Famine owner alone changes.
+
+**Reward.** The relief-cost reward in Part 6 and at most one owner-approved secondary benefit.
+Deaths, population and condemnation stay with Famine, and the task adds none of them.
+
+**Integration requirement.** The Famine owner exposes a read-only projection of the state's committed stage, concealment flag, relief receipts and recovery holds.
+Event 101 never reads raw famine variables.
+
+## L2: Settle displaced people
+
+**Live premise.** The recipient hosts a Migration cohort with a real integration or resettlement backlog, and the host has reception capacity that the Migration system accepts as usable.
+
+**Possible task.** Integrate or resettle a committed number of hosted people through the Migration category's own actions.
+Forced return and deportation reduce the backlog but never count, and a task cannot be offered to a host whose policy is violent enforcement.
+
+**Scaling.** Use the host's Reception Capacity, the hosted load and the owner's integration pace, with a work window from the diplomacy and support band in Part 2.
+The required number never exceeds what the owner's published integration pace can deliver inside the deadline.
+
+**Completion.** The owner's integration and resettlement receipts after assignment reach the committed number.
+A receipt carries the host, cohort generation and time, so a cohort cannot be counted twice and returning people to their origin cannot be recycled as new work.
+
+**Partial and failure.** Whole-cohort integrations that reach 60 percent of the committed number mitigate failure.
+Failure adds only the quoted integration-speed setback and never changes cohorts, reception load or border policy.
+
+**Reward.** The integration reward in Part 6.
+Migration keeps its own accounting of people, deaths and reception load.
+
+**Integration requirement.** Migration exposes a read-only receipt projection for integration and resettlement.
+Famine-driven flights that arrive through the existing survivor-flight seam count as ordinary hosted cohorts.
+
 ## C1: Recover usable fuel
 
 **Live premise.** A Fuel Crisis or a verified fuel-related episode has reduced the recipient's ability to operate its existing forces or supply routes.
@@ -121,15 +179,17 @@ The task's deadline must fit the response route. If the owner has only ten days 
 
 **Integration requirement.** The supplied catalog associates Warlords with Event 127 and describes subject governments demanding greater autonomy. A generic armed-warlord interpretation must not replace that premise. A future accepted owner may support armed forms, but the adapter must inspect and name them explicitly.
 
-Event 014 Cannibalism contains an event-owned armed-warlord subtype. It can supply a separately registered C7 adapter for a suitable defense, route or actual hostile-force objective after its public outcome contract exists. It does not satisfy the missing Event 127 autonomy integration, and the task does not import unrelated owner actions merely because they share a warlord theme.
+Event 014 Cannibalism contains an event-owned armed-warlord subtype. It can supply a separately admitted adapter under the C7 rule for a suitable defense, route or actual hostile-force objective after its public outcome contract exists. It does not satisfy the missing Event 127 autonomy integration, and the task does not import unrelated owner actions merely because they share a warlord theme.
 
-## C7: A task from another major Chaos episode
+## C7: Admitting further owners
 
 Chaos Tasks can draw from further unusual crises after their owners register compatible adapters. Suitable examples are protecting an actual threatened safe area, securing a real recovery route, completing a documented containment stage or defeating an existing hostile actor through its intended weakness.
 
-Each new adapter must supply the same episode, authority, feasibility, progress, timestamp and result contracts as C1 to C6. It also needs its own task card, related reward and penalty, asset reuse decision, non-duplication proof and validation fixtures. Registration is an explicit content addition, not permission to sample every global flag.
+Each new adapter must supply the same episode, authority, feasibility, progress, timestamp and result contracts as L1, L2 and C1 to C6. It also needs its own task card, related reward and penalty, asset reuse decision, non-duplication proof and validation fixtures. Registration is an explicit content addition, not permission to sample every global flag.
 
 The task cannot create supernatural enemies, trigger terminal outcomes or demand that the player cause a disaster. High Chaos expands the kinds of existing challenges the event can recognize. It does not remove the country's capacity or consent constraints.
+
+Two further live systems are queued candidates and are not current requirements. A condemnation-compliance card would ask a condemned country to complete one of the condemnation owner's own compliance responses and keep decay running, and the owner would keep every decay and sanction effect. A fallout-recovery card would follow the air-cleanliness owner's recovery stages for a country with a fallout region. Each needs a read of its owner contract, a side-effect ledger and a Part 6 row before admission.
 
 ## Crisis pressure and the shared crisis limit
 

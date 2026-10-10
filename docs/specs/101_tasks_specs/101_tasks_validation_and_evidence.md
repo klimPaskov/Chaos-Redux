@@ -95,9 +95,9 @@ The following implementation matrix retains the required behavior cases for a fu
 | V12, industrial baseline | Baseline damage, repair, demolition, conquest, free grant and wrong state | Exact net-usable predicate, grant permitted only by declared ordinary outcome, no false authorship |
 | V13, preparation | Equipment category overlap, imports, captured stock, empty divisions, split units and returned loans | Only the promised production or qualified new strength counts |
 | V14, diplomacy | Action proof, acceptance, refusal, impossible native action, duplicate delivery and aid return | Legal practical route, actual delivered support, no forced foreign behavior |
-| V15, crisis ownership | Each C1 to C6 adapter, optional C7, stale owner flags and already-resolved stage | Exact live owner and contribution, one physical consequence, no duplicate crisis slot |
+| V15, crisis ownership | L1 and L2 on the live Famine and Migration owners, each C1 to C6 adapter as its owner arrives, optional C7, stale owner flags, concealment, forced return and already-resolved stage | Exact live owner and contribution, one physical consequence, no duplicate crisis slot |
 | V16, difficulty quote | Tiny, medium and major economy, war pressure, no capacity and rate uncertainty | Causal quantity and time at sustainable allocation, no impossible minimum |
-| V17, effect envelope | Strong-old and weak-new same capability, different family, severe prior penalty, no active task, control switch and duplicate expiry wakeups | Each original expiry preserved, independent settled-effect refresh, one capability per sign, meaningful quote, no additive durations |
+| V17, effect envelope | Strong-old and weak-new same capability, different family, severe prior penalty, no active task, control switch, duplicate expiry wakeups and a quote whose effect has no live consumer | Each original expiry preserved, independent settled-effect refresh, one capability per sign, meaningful quote with a live consumer, no additive durations |
 | V18, safety floors | Stability or support above, at and below floor, overlapping owner crisis | Task cannot cross the protected floor or repeat the owner's consequence |
 | V19, achievements | Every success, near miss, partial, Standard pause, rejected preflight, invalid committed record, forced origin and replay | Exact seven conditions and visibility, preflight changes no progress, natural provenance, once-only credit |
 | V20, evolution | All three thresholds, enable toggles, pre-first firing and active mission | Correct I, II and IV behavior, future assignments only, zero activation Chaos |
@@ -107,7 +107,7 @@ The following implementation matrix retains the required behavior cases for a fu
 | V24, assets | Every accepted consumer and all achievement state triplets | Exact dimensions, alpha, DDS and original-source evidence, correct parent wiring |
 | V25, docs and catalog | Accepted files, adapter coverage, workbook row and CSV export | Permanent documentation current, no stale accepted addendum or false completion status |
 
-The full weighted matrix W01 to W17 is in [the usage maps](101_tasks_usage_maps.md). Add later accepted scenarios without discarding the original checks.
+The full weighted matrix W01 to W19 is in [the usage maps](101_tasks_usage_maps.md). Add later accepted scenarios without discarding the original checks.
 
 ## Implementation dependencies and verification limits
 

@@ -30,7 +30,7 @@ Buildings that are dismantled and rebuilt merely restore the frozen baseline. Ne
 
 **Partial success.** At least 60 percent of required usable levels, rounded up to a whole level, mitigates failure. A one-factory task is binary. The player keeps the buildings in every outcome.
 
-**Payoff.** A strong temporary benefit to the matching construction or production activity. The ordinary reward does not grant another free factory. Failure applies a bounded programme setback and, where quoted, a limited confidence loss.
+**Payoff.** The I1 row in Part 6 applies. The reward never grants another free factory, and failure applies a bounded programme setback and, where quoted, a limited confidence loss.
 
 ### I2: Improve a regional bottleneck
 
@@ -42,7 +42,7 @@ Buildings that are dismantled and rebuilt merely restore the frozen baseline. Ne
 
 **Partial success.** A restored or improved independent useful section can mitigate failure if listed at assignment. Random completed levels outside that section do not count.
 
-**Payoff.** A meaningful temporary construction or supply-efficiency benefit tied to the region's role. Failure does not undo repaired infrastructure. Its temporary economic consequence follows the missed programme.
+**Payoff.** The I2 row in Part 6 applies. Failure does not undo repaired infrastructure.
 
 ### I3: Complete a supply improvement
 
@@ -54,7 +54,7 @@ Buildings that are dismantled and rebuilt merely restore the frozen baseline. Ne
 
 **Partial success.** Only a complete independently useful route section can mitigate failure. A finished hub without any functioning connection is not enough.
 
-**Payoff.** A strong temporary logistics benefit. The reward never fakes a supply connection or spawns unaccounted equipment. If a real equipment contribution is used by a crisis adapter, its owner measures delivery and owns the physical grant.
+**Payoff.** The I3 row in Part 6 applies. The reward never fakes a supply connection or spawns unaccounted equipment. If a crisis adapter uses a real equipment contribution, its owner measures delivery and owns the physical grant.
 
 ### I4: Strengthen a useful base
 
@@ -66,7 +66,7 @@ Buildings that are dismantled and rebuilt merely restore the frozen baseline. Ne
 
 **Partial success.** Whole usable levels may mitigate failure when the programme is multi-level and the required anchor is complete. A nonfunctional site remains failure.
 
-**Payoff.** Match the country's selected branch. Use a temporary repair, construction or operating preparation benefit that has a real supported consumer. Do not grant unrelated land bonuses to a naval project.
+**Payoff.** The I4 row in Part 6 applies to the selected branch. Do not grant unrelated land bonuses to a naval project.
 
 ## Diplomatic tasks create a practical relationship
 
@@ -102,7 +102,7 @@ Task-specific bonuses cannot be used to override native diplomatic restrictions.
 
 **Failure and cancellation.** Voluntary cancellation, empty convoys and a self-imposed policy reversal are ordinary risks. A partner's unexpected disappearance or a route permanently closed by an unrelated settlement can close neutrally after already-delivered full success is checked.
 
-**Payoff.** A strong temporary diplomatic support benefit and a useful relation result from the owning diplomatic system. It must not return all donated equipment plus a bonus, which would turn aid into a free-stockpile loop.
+**Payoff.** The P2 row in Part 6 applies, and the opinion change comes from the owning diplomatic system. It must not return all donated equipment plus a bonus, which would turn aid into a free-stockpile loop.
 
 ### P3: Protect a vulnerable partner
 
@@ -114,7 +114,7 @@ Task-specific bonuses cannot be used to override native diplomatic restrictions.
 
 **Failure and cancellation.** Voluntary cancellation or refusal of an available required response fails. A peaceful external settlement that removes the threat can close neutrally unless the recipient's verified diplomatic action produced the settlement and the initial task accepts that outcome. Guaranteeing and cancelling the same country repeatedly cannot farm success.
 
-**Payoff.** A diplomatic influence and confidence benefit with a bounded duration. The task does not create a faction or automatically alter the protected country's foreign policy.
+**Payoff.** The P3 row in Part 6 applies. The task does not create a faction or automatically alter the protected country's foreign policy.
 
 ### P4: Secure a cooperative arrangement
 
@@ -128,7 +128,7 @@ Task-specific bonuses cannot be used to override native diplomatic restrictions.
 
 **Failure and cancellation.** If an unexpected foreign action removes every declared route, close neutrally. If the recipient refuses an available route and lets the deadline expire, apply ordinary failure. When only another player's uncommitted acceptance could finish the task, this candidate must never be assigned.
 
-**Payoff.** Reward diplomatic preparation and the actual relationship. Do not automatically puppet, annex or change the ideology of the partner. The native agreement or crisis settlement already owns those consequences if they are part of its legitimate system.
+**Payoff.** The P4 row in Part 6 applies. Do not automatically puppet, annex or change the ideology of the partner. The native agreement or crisis settlement already owns those consequences if they are part of its legitimate system.
 
 ## Costs and proof stay with the action owner
 

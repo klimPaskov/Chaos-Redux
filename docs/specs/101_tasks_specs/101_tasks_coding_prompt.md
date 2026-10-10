@@ -12,7 +12,7 @@ Event 101 is Minor Repeatable, Chaos level 1, with no cluster. Every committed f
 
 The task asks for actual campaign work through existing military, construction, diplomacy and crisis interfaces. It has an automatically completing native mission, an objective frozen at assignment, a clear deadline, strong relevant reward and bounded meaningful failure. Variety comes from six families and their full accepted inventory.
 
-Build the full nineteen ordinary archetypes, six named crisis integration contracts and explicit C7 owner-admission contract. Implement every accepted variant's exact work, attribution, hold, partial result and closure behavior. A missing owner can block its adapter at runtime, but the completion report must identify that accepted content as blocked until the real contract exists. Do not silently remove a family or replace precise work with a loose proxy.
+Build the full nineteen ordinary archetypes, the two live-owner crisis cards L1 and L2, the six pending-owner crisis contracts C1 to C6 and the C7 admission rule. Implement every accepted variant's exact work, attribution, hold, partial result and closure behavior. A missing owner can block its adapter at runtime, but the completion report must identify that accepted content as blocked until the real contract exists. Do not silently remove a family or replace precise work with a loose proxy.
 
 ## Shared integration and recipient authority
 
@@ -48,13 +48,13 @@ Ordinary industry tests new usable capacity in exact original states and buildin
 
 Diplomacy requires actual lawful action, delivered aid or sustained useful commitment. Do not force another player to accept an agreement. A bilateral task needs an actionable invitation or a meaningful comparable unilateral route declared at assignment.
 
-Crisis tasks attach only to real versioned owners. They observe existing conditions and recipient contributions. Preserve the named Fuel Crisis, Inflation, IMRO, Occupation Revolt, partition and Warlords designs. Reconcile Event 100's current namespace mismatch, Event 006's separate inflation consequence and post-commit partition, Event 095's missing persistent outcome adapter, and catalog 127 versus Event 014.
+Crisis tasks attach only to real versioned owners. They observe existing conditions and recipient contributions. L1 (Famine relief) and L2 (Migration settlement) attach to the implemented owners through read-only task projections. Preserve the named Fuel Crisis, Inflation, IMRO, Occupation Revolt, partition and Warlords designs as pending-owner contracts. Reconcile Event 100's current namespace mismatch, Event 006's separate inflation consequence and post-commit partition, Event 095's missing persistent outcome adapter, and catalog 127 versus Event 014.
 
 Owners retain their territory, population, units, war, autonomy, native costs and crisis outcomes. The task does not occupy a second slot for the same crisis under the shared limit of three. Every adapter needs a side-effect ledger proving no duplicate payment, reward or harm.
 
 ## Rewards, failure and Chaos
 
-Implement the Standard, Demanding and Exceptional quotes from Part 6 using exact verified native keys, signs, units and caps. Use strong temporary family benefits and at most one relevant secondary material channel. Experience and political power are capacity-scaled within the stated ceilings.
+Implement the Standard, Demanding and Exceptional quotes from Part 6 using exact verified native keys, signs, units and caps. Each card uses its own signature reward and setback from the Part 6 table and at most one one-time grant, and a quote is accepted only when its effect has a live consumer at assignment. Experience and political power are capacity-scaled within the stated ceilings.
 
 Failure keeps completed world work and applies the quoted bounded setback. Clamp stability or war-support loss against the stated floor and higher actual owner threshold. Do not add direct destructive consequences to create drama. Partial useful work gives the exact reduced penalty and no full reward.
 
@@ -94,13 +94,13 @@ Update permanent event mechanics, tuning, mission, adapter, cost, effect, achiev
 
 ## Specialist and validation sequence
 
-Use the relevant registered roles and exact handoff boundaries in the usage map. Spawn `chaosx_ai_probability_auditor` for this weighted system. Begin with `hoi4.probability_inspect`, evaluate W01 to W17 and any accepted additions, sweep thresholds and mixed pools, then compare before and after changes. Use rendering when it aids review. Simulation requires explicit uncertainty. Sequence analysis requires the complete competing shared pool and cadence.
+Use the relevant registered roles and exact handoff boundaries in the usage map. Spawn `chaosx_ai_probability_auditor` for this weighted system. Begin with `hoi4.probability_inspect`, evaluate W01 to W19 and any accepted additions, sweep thresholds and mixed pools, then compare before and after changes. Use rendering when it aids review. Simulation requires explicit uncertainty. Sequence analysis requires the complete competing shared pool and cadence.
 
 Use available `hoi4.event_inspect`, `hoi4.event_render` and `hoi4.event_compare` for concrete Event 101 chain questions. Review the actual native mission and category through a route supporting those consumers when available. After the shared retry limit, use pertinent local references, source and useful local checks, retaining missing visual or native evidence as limits. An unrelated GUI render or source-only screenshot cannot prove production appearance.
 
 Address V01 to V25 with task-specific fixtures and the current bounded verification workflow. If later accepted work changes technologies, doctrines, unlocks or research, apply the relevant technology inspection and available render/comparison checks under the same limits. Do not add unrelated content merely to exercise a tool.
 
-Use `chaosx_improvement_loop_planner` after a substantial stage when a concrete depth or connection question remains, following current improvement cadence. Its imported seven-correction pass is recorded as promoted. Do not repeat unchanged review for a closure receipt. A justified new pass uses `fork_turns="none"` and exact current inputs. Record all dispositions with acceptance basis and evidence, promoting accepted source design or queuing it with a reason. Unaccepted proposals and separately queued work do not become current-task requirements.
+Use `chaosx_improvement_loop_planner` after a substantial stage when a concrete depth or connection question remains, following current improvement cadence. Its imported seven-correction pass is recorded as promoted. Do not repeat unchanged review for a closure receipt. A justified new pass uses a self-contained prompt with exact current inputs. Record all dispositions with acceptance basis and evidence, promoting accepted source design or queuing it with a reason. Unaccepted proposals and separately queued work do not become current-task requirements.
 
 The debug-playtest skill remains invocation-only. Do not automatically launch the game. Record actual unavailable routes, failed calls, source revisions and evidence limits directly.
 

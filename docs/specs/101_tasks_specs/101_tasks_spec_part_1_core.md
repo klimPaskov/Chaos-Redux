@@ -2,7 +2,7 @@
 
 ## A task drawn from the campaign
 
-A country receives an urgent assignment because something in its campaign deserves attention. A threatened capital can bring a defensive order. An exposed front can bring an offensive objective. An army preparing for war can be asked to field an equipped formation. A peaceful country can be asked to complete useful construction or support a vulnerable partner. When a Chaos Redux crisis is already active, the assignment can ask the player to achieve one of that crisis's real objectives.
+A country receives an urgent assignment because something in its campaign deserves attention. A threatened capital can bring a defensive order. An exposed front can bring an offensive objective. An army preparing for war can be asked to field an equipped formation. A peaceful country can be asked to complete useful construction or support a vulnerable partner. When a Chaos Redux system is already under strain, the assignment can ask the player to achieve one of its real objectives, such as lifting a starving state out of famine or settling the people a host country has taken in.
 
 The event gives one clear goal, a visible deadline, a worthwhile reward and a consequence for failure. The player pursues the goal through the military, construction, production, diplomatic and crisis systems already in use. The task is a short commitment inside the campaign. It does not become a separate economy or a sequence of administrative purchases.
 
@@ -64,9 +64,11 @@ The task's family and exact objective matter more than a generic difficulty numb
 | Military preparation | An existing capability gap that the country can fill | Train, equip, produce or construct defenses | Additional usable readiness rather than a nominal unit count |
 | Industrial | A useful project with capacity, access and room to grow | Commit construction or complete a real national programme | Additional usable capacity in the named location |
 | Diplomatic | A practical relationship or support opportunity | Spend political attention or supply real support | A sustained relationship or an attributable cooperative result |
-| Crisis | A live Chaos Redux episode involving the country | Use the owning crisis's existing response routes | A fresh qualifying outcome from that exact episode |
+| Crisis | A live Chaos Redux system or episode involving the country, such as famine, migration or a crisis owner's own episode | Use the owning system's existing response routes | A fresh qualifying outcome from that exact episode or state |
 
 The detailed archetypes in Parts 3 to 5 form the content inventory. They are alternative objectives, not simultaneous layers. A country receives one task from this inventory. A family with many possible targets does not gain extra lottery tickets merely because the country is large.
+
+Every card differs in what the player does, how success is judged and what the reward and setback touch. Part 6 names the signature reward and setback of each card, so two tasks of the same family still feel different and a reward always acts on the system the task was about.
 
 ## Success, incomplete work and failure
 

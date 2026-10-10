@@ -80,15 +80,30 @@ The final artifact check covers the completed specification package itself. It d
 - The goal prompt is between 3,500 and 4,000 characters, including its final newline.
 - Internal Markdown document links resolve inside the package.
 - Authored Markdown contains no em dashes or semicolons.
-- Six task families, nineteen ordinary archetypes, six named crisis integrations, all three supplied evolution labels and all seven achievements have matching handoff coverage.
+- Six task families, nineteen ordinary archetypes, the named crisis cards, all three supplied evolution labels and all seven achievements have matching handoff coverage.
 - The asset manifest includes A01 through A23 and the exact twenty-one achievement state outputs, totaling thirty-seven runtime DDS files.
 - The ZIP has one top-level `101_tasks_specs/` folder, contains every final Markdown file and has no temporary continuation prompt or source-reading chunks.
 - Extracted ZIP member bytes match the final authored files.
 
-The original completed check result and final file count are preserved in README.md. Current import checks are recorded in the [import review](../../plans/101_tasks_plans/subagent_handoffs/101_import_review_2026-10-10.md). Repeat affected checks when editing the checkout, and archive-integrity/member-byte checks only if actually replacing the ZIP.
+The original package contained 18 Markdown files and a 3,935-character goal prompt, and its checks passed for required files, internal links, prohibited punctuation, content crosswalks, asset counts, the single top-level directory, archive integrity and exact ZIP member bytes. These describe the imported original only. Current import checks are recorded in the [import review](../../plans/101_tasks_plans/subagent_handoffs/101_import_review_2026-10-10.md). Repeat affected checks when editing the checkout, and archive-integrity/member-byte checks only if actually replacing the ZIP.
 
 ## What remains for implementation
 
 The design is complete as a specification. The implementation must still produce and validate native source, every accepted adapter, final assets, localisation, achievements, shared registration and catalog changes.
 
 Missing supported commands, exact attribution adapters, owner lifecycle contracts and modifier consumers are implementation dependencies. Unavailable optional checks and unobserved live behavior limit verification under current AGENTS.md rather than automatically blocking finished delivery. The validation companion distinguishes these cases, and no historical check here establishes current gameplay completion.
+
+## 10 October 2026 spec audit
+
+The audit ran under the user's planning-package brief and covers consistency, cleanup and design improvement.
+Its design changes are accepted within that brief, with the basis "10 Oct 2026 spec audit under the user's planning-package brief".
+Earlier accepted corrections IR101-01 to IR101-07 and P01 to P07 are unchanged.
+
+| ID | Finding | Disposition |
+| --- | --- | --- |
+| SA101-01 | Rewards and setbacks were one percentage per family, so tasks of a family paid alike and several effects had no guaranteed consumer | Promoted: Part 6 names a signature reward and setback for every card and gates each quote on a live consumer |
+| SA101-02 | The crisis family depended on owners that do not exist, leaving Chaos Tasks and two achievements without content | Promoted: Part 5 adds L1 famine relief and L2 migration settlement on the implemented owners, and C1 to C6 stay pending with zero weight |
+| SA101-03 | The six-family and kept-commitments achievements needed more natural successes than the slow repeatable scheduler plausibly produces for one country | Promoted: Part 7 and the achievement prompt lower the two thresholds, and the planning budget is written into Part 7 |
+| SA101-04 | Condemnation compliance and fallout recovery could become crisis cards on live owners | Accepted and queued in Part 5, pending a read of each owner contract |
+| SA101-05 | O2 depends on province-level control proof that may not exist | Unresolved, listed in the README open questions |
+| SA101-06 | Stale instructions: ignored skill mirror paths, Codex spawn wording, planning-role narration in the usage map, outcome-stacking text repeated in the contract | Implemented as documentation cleanup |

@@ -22,7 +22,7 @@ The implementation must use verified control, war and contribution evidence. Whe
 
 **Changed war.** The recipient's own favorable settlement can satisfy the task only if its exact contribution and the stated final access or control result are established. An unrelated allied settlement that removes the opportunity closes it neutrally. Voluntarily withdrawing from the war without achieving the goal is failure.
 
-**Payoff.** The offensive reward package in Part 6 supports exploiting the gained position. The penalty affects planning and command preparation for a bounded duration. The event never transfers the target as a reward.
+**Payoff.** The O1 row in Part 6 applies. The event never transfers the target as a reward.
 
 ### O2: Capture a key position
 
@@ -48,7 +48,7 @@ The implementation must use verified control, war and contribution evidence. Whe
 
 **Failure and cancellation.** Hostile disruption restarts the connection hold. A voluntary access cancellation or withdrawal is the player's risk. An external settlement that removes the pocket or makes the route permanently irrelevant can produce neutral closure after earned success has been checked.
 
-**Payoff.** Use the logistics variant of the offensive reward. It grants a strong temporary reduction in supply pressure or a relevant preparation benefit, subject to exact supported modifiers. It does not create an invisible supply route.
+**Payoff.** The O3 row in Part 6 applies. It does not create an invisible supply route.
 
 ### O4: Defeat an active hostile force
 
@@ -84,7 +84,7 @@ The implementation must use verified control, war and contribution evidence. Whe
 
 **Completion.** Retain the protected location for the full window and keep the country able to act. A predeclared owner-backed evacuation variant may instead require a real evacuation and functioning replacement administration. That is a separate crisis-backed task with its own proof, not an automatic escape clause.
 
-**Failure.** Hostile capture of the protected position or the recipient's capitulation fails the ordinary defense task once. It does not apply a second penalty when a later occupation callback arrives. Ordinary failure uses the high-pressure political preparation penalty rather than a direct combat-strength collapse.
+**Failure.** Hostile capture of the protected position or the recipient's capitulation fails the ordinary defense task once. It does not apply a second penalty when a later occupation callback arrives. Ordinary failure uses the D2 setback in Part 6, a political coordination effect rather than a direct combat-strength collapse.
 
 **Achievement opportunity.** Part 7 includes a demanding capital-defense achievement with exact threat, duration, natural-fire and player-control requirements. Ordinary success does not automatically meet those stricter conditions.
 
@@ -136,7 +136,7 @@ The implementation must use verified control, war and contribution evidence. Whe
 
 **Incomplete work.** A complete useful defended anchor with at least 60 percent of the assigned work can mitigate failure. Scattered cheap levels outside the required positions do not count.
 
-**Payoff.** The preparation reward supports training or defensive organization. It does not automatically add another row of free forts. Failure creates a temporary preparation setback rather than destroying the defenses the player built.
+**Payoff.** The M3 row in Part 6 applies. It does not add another row of free forts, and failure never destroys the defenses the player built.
 
 ### M4: Make an existing air or naval branch ready
 
@@ -148,7 +148,7 @@ The implementation must use verified control, war and contribution evidence. Whe
 
 **Incomplete work.** A complete useful subgroup can mitigate failure only when it meets the same readiness standard. Half a ship or an unusable air wing is not partial success.
 
-**Proof and payoff.** The implementation must verify each selected readiness predicate. Reward the selected branch with relevant experience and a strong temporary preparation or repair benefit. If a high-value ship cannot be completed within a credible task window, choose a smaller existing-branch objective rather than lengthening a minor task into a multi-year naval programme.
+**Proof and payoff.** The implementation must verify each selected readiness predicate. The M4 row in Part 6 applies to the selected branch. If a high-value ship cannot be completed within a credible task window, choose a smaller existing-branch objective rather than lengthening a minor task into a multi-year naval programme.
 
 ## Shared military rules
 

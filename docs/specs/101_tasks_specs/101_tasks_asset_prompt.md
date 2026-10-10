@@ -4,11 +4,11 @@ Produce the complete accepted Event 101 visual package using `chaos-redux-event-
 
 Use `chaosx_icon_artist` for icons and `chaosx_generated_event_art` for the seven non-icon images. The parent owns all GFX, localisation, mission, modifier, event and achievement wiring. Keep workers within the named asset and evidence paths.
 
-This is a future production input under [current authority and workflow](README.md#current-authority-and-workflow). The import does not run it. Delegate exact assets and allowed paths with self-contained prompts and `fork_turns="none"`. Current asset-skill rules own generation, processing, independent review where required, workspace cleanup and parent integration.
+This is a future production input under [current authority and workflow](README.md#current-authority-and-workflow). The import does not run it. Delegate exact assets and allowed paths with self-contained prompts. Current asset-skill rules own generation, processing, independent review where required, workspace cleanup and parent integration.
 
 ## Reference and source lock
 
-Use the current skill's canonical root `.agents/skills/chaos-redux-event-assets/assets/gfx_references/`. Inspect each matching contact sheet, individual reference, catalog row and exact native consumer before choosing the final canvas, crop, alpha and frame behavior.
+Use the current skill's canonical root `.claude/skills/chaos-redux-event-assets/assets/gfx_references/`. Inspect each matching contact sheet, individual reference, catalog row and exact native consumer before choosing the final canvas, crop, alpha and frame behavior.
 
 The historical repository receipt inspected the older `assets/vanilla_reference/` directory. Its catalog recorded the generic crisis small category icon at 52 by 39 and category-picture references at 114 by 101. Those dated observations do not establish the current tree or a universal engine size. Use the current skill's canonical tree and inspect the actual consumer before generating category assets.
 
@@ -68,7 +68,7 @@ Each final report card is exactly 210 by 176 RGBA and DDS. Generate one neutral 
 | A15 | A practical aid exchange or period agreement setting | `gfx/event_pictures/101_tasks/report_event_101_tasks_diplomatic.dds` | `GFX_report_event_101_tasks_diplomatic` |
 | A16 | Grounded emergency supplies, repairs or recovery coordination | `gfx/event_pictures/101_tasks/report_event_101_tasks_crisis.dds` | `GFX_report_event_101_tasks_crisis` |
 
-Generate the photographic source first. Apply `.agents/skills/chaos-redux-event-assets/tools/process_report_event_image.py` for the consistent black-and-white and sepia card, grain, border, subtle tilt, transparent margins and soft shadow. Do not ask ImageGen to paint a tilted card or simulate the game frame.
+Generate the photographic source first. Apply `.claude/skills/chaos-redux-event-assets/tools/process_report_event_image.py` for the consistent black-and-white and sepia card, grain, border, subtle tilt, transparent margins and soft shadow. Do not ask ImageGen to paint a tilted card or simulate the game frame.
 
 ### Seven achievement subjects and twenty-one final states
 
@@ -82,7 +82,7 @@ Each ID has its own original transparent subject at 64 by 64. The exact goals, t
 | A20 | `chaosx_tasks_built_by_us` | Substantial completed work and a distinctive construction tool |
 | A21 | `chaosx_tasks_reliable_partner` | Delivered aid and a protective commitment in one clear composition |
 | A22 | `chaosx_tasks_three_crises` | Three resolved emergency elements around a recovery motif |
-| A23 | `chaosx_tasks_kept_commitments` | Five completed commitments expressed through a durable compact emblem |
+| A23 | `chaosx_tasks_kept_commitments` | Three completed commitments expressed through a durable compact emblem |
 
 For each exact achievement ID, create these three final root-level files:
 
@@ -94,7 +94,7 @@ Use the exact ID from the registry. Do not create an Event 101 subfolder under `
 
 ## Achievement processor contract
 
-For new art, retain the original color subject, derive the grey subject deterministically and create the not-eligible source with the unchanged overlay. Supply all three complete source layers to `.agents/skills/chaos-redux-event-assets/tools/process_achievement_icons.py`.
+For new art, retain the original color subject, derive the grey subject deterministically and create the not-eligible source with the unchanged overlay. Supply all three complete source layers to `.claude/skills/chaos-redux-event-assets/tools/process_achievement_icons.py`.
 
 Use the immutable completed template, grey template and overlay from the current canonical template directory. These are imported historical SHA-256 values. Compare them with the actual current owner inputs, recording any revision difference without altering the templates or inventing current verification:
 
@@ -108,7 +108,7 @@ Use separate source and processed output directories. Do not independently gener
 
 ## Conversion, review and delivery
 
-Use only the current converter at `.agents/skills/chaos-redux-event-assets/tools/convert_to_dds.py`. The obsolete `.tools/convert_to_dds.py` path must not be restored. Follow the skill's strict one-level legacy 32-bit BGRA header, channel, alpha and decoded-pixel contract for these 2D assets.
+Use only the current converter at `.claude/skills/chaos-redux-event-assets/tools/convert_to_dds.py`. The obsolete `.tools/convert_to_dds.py` path must not be restored. Follow the skill's strict one-level legacy 32-bit BGRA header, channel, alpha and decoded-pixel contract for these 2D assets.
 
 Retain native ImageGen source evidence, prompt, source mode, background mode, processed PNG, final DDS, current consumer reference, dimensions, visible bounds and selection history for every asset. Review icons on contrasting solid backgrounds and checkerboard evidence, and review report cards at native size. A checkerboard must never be baked into the texture.
 

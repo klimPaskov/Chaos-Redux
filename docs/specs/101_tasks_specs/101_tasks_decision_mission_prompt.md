@@ -39,6 +39,8 @@ The short names in this table are structural labels. Preserve every card's detai
 | P2 | Deliver actual useful aid to a real partner | Deduplicated delivered amount, 60 percent useful delivered partial, returned aid excluded |
 | P3 | Establish and maintain a real protective commitment for 30 to 60 days | Fulfill any available lawful response, declaration alone does not finish |
 | P4 | Complete an actionable cooperative agreement or an initially disclosed comparable unilateral route, then maintain usefulness for 15 to 30 days | Never depend solely on another human's uncommitted consent |
+| L1 | Lower a registered famine state's committed stage by two steps and hold it for 14 days through the Famine category's own actions | Attributable relief only, concealment and emptying the state do not count, one stage held is the declared partial |
+| L2 | Integrate or resettle a committed number of hosted people through the Migration category's own actions | Owner integration receipts only, forced return does not count, 60 percent of whole-cohort integrations is the partial |
 | C1 | Recover usable fuel or an actual owner-supported route | Frozen operating demand, no silo-percentage trick or duplicate fuel wipe |
 | C2 | Complete a real inflation owner's stabilization route and stable interval | Owner stages and costs, no invented second price index |
 | C3 | Complete a supported IMRO settlement, defense, route or actual hostile-force objective | Exact actor role and episode, no unrelated ethnic or territorial task |
@@ -77,13 +79,13 @@ Losing all human control closes the active contract without ordinary reward or p
 
 Event 101 adds no universal payment. Native actions own their real resource use. If an existing owner exposes a custom paid route, inspect one committed quote, inclusive affordability, exactly one debit and exact resource texticons. A single action charges at most four distinct spendable resources and no more than 60 Command Power. Distinguish consumed resources from retained readiness.
 
-Use the frozen family reward and penalty from Part 6. Failure is meaningful but bounded. No ordinary task creates a war, civil war, territory loss, unit deletion, fuel wipe or confiscation of completed work. Coordinate confidence floors and owner effects to avoid duplicate harm.
+Use the frozen card reward and penalty from the Part 6 table, with a live consumer for each effect. Failure is meaningful but bounded. No ordinary task creates a war, civil war, territory loss, unit deletion, fuel wipe or confiscation of completed work. Coordinate confidence floors and owner effects to avoid duplicate harm.
 
 Use one visible positive and one visible negative principal capability. Keep the private expiry-preserving envelope and disclosed replacement rules. A later weak benefit cannot extend an earlier strong benefit. A minor failure cannot hide an unexpired Exceptional setback. A quote needs a useful effect window.
 
 ## Required validation and report
 
-Run V01 through V25 where they cover the implemented surface, plus W01 through W17 through the probability specialist. For every card, provide at least one complete eligible fixture and a materially different rejection or failure fixture. Do not use a generic successful mission to certify all target and receipt types.
+Run V01 through V25 where they cover the implemented surface, plus W01 through W19 through the probability specialist. For every card, provide at least one complete eligible fixture and a materially different rejection or failure fixture. Do not use a generic successful mission to certify all target and receipt types.
 
 Presentation cases are assignment, no progress, intermediate work, ready completion, last day, full success, partial result, failure, neutral closure, missing owner, repaired timer and long names. Retain actual source revisions and available native renders. After the shared retry limit, review the same exact consumers, text, bounds, assets and state wiring from source and disclose missing visual evidence. Agents do not request or await user live testing.
 

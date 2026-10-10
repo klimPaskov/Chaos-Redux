@@ -24,11 +24,11 @@ Every label below is a working concept. Write a concise period-appropriate final
 - **Title direction:** Breadth of fulfilled national responsibilities.
 - **Description direction:** Explain completion across all six task families and the demanding-work condition.
 - **Eligibility:** Any continuing eligible human country.
-- **Unlock:** At least one natural full success in every family, with at least three distinct families having a Demanding or Exceptional success.
+- **Unlock:** At least one natural full success in every family, with at least two distinct families having a Demanding or Exceptional success.
 - **Tracking:** Six-bit success-family set, six-bit demanding-family set and distinct generation facts. Repeated family wins do not fill another family or demanding-family slot.
 - **Disqualifiers:** All common rules, unavailable families cannot be silently substituted.
 - **Difficulty and visibility:** Hard, visible locked goal when Event 101 is enabled.
-- **Why difficult:** Requires campaign variety, actual crisis opportunity and several substantial commitments.
+- **Why difficult:** Requires campaign variety, a real crisis opportunity and several substantial commitments.
 - **Icon:** Six distinct practical task elements in one legible original emblem.
 
 ### ACH101-02: Capital defense under pressure
@@ -102,12 +102,12 @@ Every label below is a working concept. Write a concise period-appropriate final
 - **Title direction:** Reliability across a sustained sequence of serious commitments.
 - **Description direction:** Explain the qualifying streak, family breadth and interruption rules.
 - **Eligibility:** Any continuing eligible human country.
-- **Unlock:** Five consecutive qualifying natural Demanding or Exceptional full successes spanning at least three families.
+- **Unlock:** Three consecutive natural full successes spanning at least three families, with at least two of them Demanding or Exceptional.
 - **Tracking:** Qualifying streak counter, family set within the current streak and exact generation facts.
-- **Disqualifiers:** Any ordinary failure, partial result, voluntary abandonment, human-authority loss or invalid already-committed record breaks the streak. This includes a Standard failure. A rejected preflight changes no achievement state. A natural Standard full success pauses without credit. A verified purely external world cancellation also pauses without credit. Forced assignments never advance it and any shared provenance disqualifier still applies.
+- **Disqualifiers:** Any ordinary failure, partial result, voluntary abandonment, human-authority loss or invalid already-committed record breaks the streak. This includes a Standard failure. A rejected preflight changes no achievement state. A natural Standard full success counts toward the three but not toward the two Demanding or Exceptional. A verified purely external world cancellation pauses the streak without credit. Forced assignments never advance it and any shared provenance disqualifier still applies.
 - **Difficulty and visibility:** Hard, visible locked goal when Event 101 is enabled.
-- **Why difficult:** Requires sustained performance across varied significant tasks.
-- **Icon:** Five fulfilled commitments expressed as one clear durable emblem.
+- **Why difficult:** Requires three successes in a row across varied tasks, with real stakes in at least two.
+- **Icon:** Three fulfilled commitments expressed as one clear durable emblem.
 
 ## Production and registry wiring
 
