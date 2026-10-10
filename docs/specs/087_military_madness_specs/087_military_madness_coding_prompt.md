@@ -5,7 +5,7 @@ Read the README (authority, gates, open question), Parts 1–6, the acceptance s
 The user-locked rules in the README are not negotiable; proposed tuning is recorded in the plans folder with its acceptance when it changes.
 This is not permission to ship a short whitelist or a fixed entrenchment substitute.
 
-Follow the repository rules (`CLAUDE.md`) and the `chaos-redux-events`, `chaos-redux-decisions-missions`, `chaos-redux-subagents`, `chaos-redux-event-assets`, `hoi4-ideas-modifiers`, `hoi4-ai-strategies` and `chaos-redux-improvement-loop` skills.
+Follow the repository rules (`CLAUDE.md`) and the `chaos-redux-events`, `chaos-redux-decisions-missions`, `chaos-redux-subagents`, `chaos-redux-event-assets`, `chaos-redux-ideas-modifiers`, `chaos-redux-ai-strategies` and `chaos-redux-improvement-loop` skills.
 
 ## Start from current source
 
