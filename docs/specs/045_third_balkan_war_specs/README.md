@@ -2,12 +2,6 @@
 
 This package is the source planning handoff for Chaos Redux Event 045, **Third Balkan War**.
 
-Extract the top-level folder to:
-
-```text
-docs/specs/045_third_balkan_war_specs/
-```
-
 The package defines the complete event design, the dynamic opening war builder, the single public escalation mechanic, regional claims, foreign intervention, settlements, three true evolutions, AI strategy, achievements, assets, super-events, testing scenarios, and implementation acceptance criteria.
 
 ## Package map
@@ -41,4 +35,24 @@ Their PASS labels and transport errors do not establish current package validati
 The package does not retain an attributable original user or parent acceptance record for all expanded requirements, so unsupported acceptance claims remain unresolved.
 The six parts under `specs/` and their linked supporting documents are the maintained reading set; the redundant combined copy was removed after proving all 26 included bodies matched their siblings.
 
-Every supplied project source file and every archived subagent definition was read in full before this package was written. The stored specialist contracts were applied during the design review. Actual specialist invocation through the outer Codex tunnel was attempted and failed with transport errors. The exact blocker is recorded in `quality/045_third_balkan_war_subagent_blocker.md`.
+The original planning session read every supplied source and applied the stored specialist contracts manually; its failed specialist invocation is recorded in `quality/045_third_balkan_war_subagent_blocker.md` as historical evidence only.
+The runtime slot `events/045_third_balkan_war.txt` still holds the legacy stub; no part of this package is implemented.
+
+## Open questions
+
+- Whether the decision consolidation in Part 3 (one shared Register a Claim, one support transaction with request and commit entry points, mediation as an event, one transit policy action) should also collapse Coordinate an Arms Suspension and Apply Coordinated Sanctions; they stay separate because one lowers and one raises escalation.
+
+## Changelog
+
+### 2026-10-10 spec audit
+
+Pass 1, consistency and cleanup:
+- Part 4 and the coding prompt now record that Event 045 is already a High member of the Wars cluster (ID 1) in the workbook and live registry; the old "member list becomes 4, 7, 45" note was stale.
+- Replaced `AGENTS.md` with `CLAUDE.md` and the `.agents` asset path with `.claude`, reduced the goal prompt to a pointer at the coding prompt it duplicated, and removed the obsolete extraction instructions.
+- Marked the Codex-tunnel blocker as historical and recorded that the runtime slot is still the legacy stub.
+
+Pass 2, design improvement:
+- Consolidated the decision menu from 24 actions to 19: one shared Register a Claim for belligerents and neutrals, one support transaction (Request Foreign Support and Commit Support, each covering arms and personnel), outside mediation as an event response, and one Set Transit Policy covering transit and neutral corridors.
+- The header shows the stage, the latest cause, and the missing proof for the next stage; the raw number is no longer a headline value.
+- Settled the two "candidate" Chaos rows: Event 045 owns no Chaos source, since violations and settlements already move the shared war and Deaths sources.
+- Made the famine and migration link concrete through the existing capture adapter, local war evidence, and port blockade proof, so the corridor and capital-rail missions carry humanitarian stakes.

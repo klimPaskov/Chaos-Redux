@@ -199,15 +199,17 @@ The event should not award Chaos merely for firing, starting a war, annexing ter
 
 Evolution activation adds zero Chaos.
 
-The only candidate Event 045 specific Chaos source is a deliberate violation of a formally accepted event-owned armistice after the line and signatories have been recorded. Implementation must audit whether generic war, tension, and peace sources already represent that outcome. If overlap exists, the event-owned Chaos award is omitted and the violation affects only Balkan War Escalation and diplomatic memory.
-
-A successful containment settlement may receive a bounded negative Chaos source only when it removes a distinct Event 045 escalation condition that generic peace does not already reverse. It must never refund deaths, destruction, annexations, or other lasting consequences.
+Event 045 owns no Chaos source.
+A deliberate armistice violation is answered inside the event, through Balkan War Escalation and diplomatic memory, and the renewed fighting it causes already reaches the Chaos Meter through the shared war and Deaths sources.
+A containment settlement refunds no Chaos; ending the war stops the shared sources from growing, which is the reward.
 
 ## Shared-system connections
 
 ### Wars cluster
 
-Event 045 joins the Wars cluster as a High severity member. The cluster member list becomes `4, 7, 45` after implementation. Event 045 retains its own valid-target gate. If it cannot build a valid opening, cluster firing skips it with a clear reason.
+Event 045 is already registered in the Wars cluster (ID 1) as a High member in both the workbook and the live registry, alongside Events 4, 7, 21, and 62.
+Implementation enables that existing row rather than adding a membership.
+Event 045 retains its own valid-target gate; if it cannot build a valid opening, cluster firing skips it with a clear reason.
 
 Cluster firing counts once for global pacing. Event 045 still records its own fire-once state and history when it participates.
 
@@ -248,7 +250,13 @@ When Event 048 is absent, Event 045 uses its ordinary claim registry and settlem
 
 ### Famine and Migration
 
-Sieges, blockades, destroyed routes, and civilian flight continue through shared famine and migration systems. Event 045 does not apply flat refugee population changes or duplicate famine deaths.
+Event 045 adds no refugee or famine transaction of its own, because the shared systems already react to its war:
+
+- every hostile capture sends war flight through the hostile-capture adapter (`common/scripted_effects/humanitarian_capture_effects.txt`) and queues a famine food-safety assessment;
+- the famine owner counts local war evidence (`famine_resolve_local_war_evidence`) for occupied, front-line, cut-off, or supply-lost states;
+- a lost Aegean or Adriatic corridor can satisfy the famine island and port blockade proof for a dependent region.
+
+This makes the corridor and capital-rail missions matter beyond the front: losing them can starve a region and send its people across a border, which in turn gives neighbours a reason to register an interest.
 
 ### Deaths, Condemnation, and Air Cleanliness
 

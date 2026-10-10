@@ -4,12 +4,12 @@ Implement Event 045, Third Balkan War, from the source design package under `doc
 
 ## Mandatory preparation
 
-Read `AGENTS.md`, all event-package files, `chaos-redux-events`, `chaos-redux-decisions-missions`, `chaos-redux-event-assets`, `chaos-redux-super-events`, `chaos-redux-improvement-loop`, `chaos-redux-subagents`, the relevant offline wiki pages, current vanilla documentation, and at least one current vanilla precedent for each engine surface touched. Use the HOI4 MCP event and probability tools for the supported event-chain and weighted surfaces. Record exact blockers when a mandatory route is unavailable.
+Read `CLAUDE.md`, all event-package files, `chaos-redux-events`, `chaos-redux-decisions-missions`, `chaos-redux-event-assets`, `chaos-redux-super-events`, `chaos-redux-improvement-loop`, `chaos-redux-subagents`, the relevant offline wiki pages, current vanilla documentation, and at least one current vanilla precedent for each engine surface touched. Use the HOI4 MCP event and probability tools for the supported event-chain and weighted surfaces. Record exact blockers when a mandatory route is unavailable.
 
 ## Required gameplay implementation
 
 - Keep Event ID `45`, type Minor Fire-Once, Chaos level `1`, and entry `chaosx.nr45.1`.
-- Register Event 045 in the Wars cluster with High member severity.
+- Enable the existing Wars cluster row for Event 045 (cluster 1, High member severity); do not add a second membership.
 - Keep it disabled by default until the complete rework is ready.
 - Add a reusable validity trigger that requires enough ordinary, viable regional governments to form a real multi-country war.
 - Dynamically assemble two opening camps, or a justified three-sided linked war graph, from current borders, claims, factions, guarantees, ideology, geography, and campaign state.
@@ -26,7 +26,7 @@ Read `AGENTS.md`, all event-package files, `chaos-redux-events`, `chaos-redux-de
 
 ## Chaos and origin rules
 
-Do not duplicate generic Chaos from wars, peace, deaths, annexations, puppeting, or faction changes. Add event-owned Chaos only for a separately defined Event 045 consequence that shared systems do not already represent. The final Another World War stage is not a world-end scenario. Set the origin memory only when Event 045 proves that its linked conflict created the first qualifying wider war. A pre-existing global war must not receive false Event 045 origin credit.
+Event 045 owns no Chaos source (Part 4, Chaos impact map); do not duplicate generic Chaos from wars, peace, deaths, annexations, puppeting, or faction changes. The final Another World War stage is not a world-end scenario. Set the origin memory only when Event 045 proves that its linked conflict created the first qualifying wider war. A pre-existing global war must not receive false Event 045 origin credit.
 
 ## Technical architecture
 

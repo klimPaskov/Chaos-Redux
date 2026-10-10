@@ -19,7 +19,7 @@ Before producing each asset family, inspect the matching skill-local vanilla ref
 For the decision category picture, inspect:
 
 ```text
-.agents/skills/chaos-redux-event-assets/assets/gfx_references/icons/decision_categories/pictures/
+.claude/skills/chaos-redux-event-assets/assets/gfx_references/icons/decision_categories/pictures/
 ```
 
 Create and document the contact sheet first if it is missing.

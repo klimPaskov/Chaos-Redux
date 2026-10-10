@@ -5,10 +5,10 @@
 ```text
 Current role and stage
         |
-        +-> Formalize one valid claim
-        +-> Request foreign arms
+        +-> Register a claim
+        +-> Request foreign support (arms or volunteers)
         +-> Secure one strategic corridor mission
-        +-> Offer or answer armistice terms
+        +-> Offer armistice terms (mediation arrives as an event)
         +-> Resolve allied occupation when relevant
 ```
 
@@ -17,10 +17,10 @@ Current role and stage
 ```text
 Registered regional interest
         |
+        +-> Register a claim
         +-> Mobilize named frontier
         +-> Offer arbitration
-        +-> Open or close named transit route
-        +-> Demand neutrality guarantees
+        +-> Set transit policy (open to a camp or declare a neutral corridor)
         +-> Join a compatible camp when proof exists
 ```
 
@@ -41,8 +41,7 @@ Reach and diplomatic access
 ```text
 Preferred camp and viable route
         |
-        +-> Send weapons shipment
-        +-> Dispatch volunteers
+        +-> Commit support (arms, volunteers, or a military mission)
         +-> Recognize one registered claim
         +-> Issue guarantee
         +-> Invite to faction

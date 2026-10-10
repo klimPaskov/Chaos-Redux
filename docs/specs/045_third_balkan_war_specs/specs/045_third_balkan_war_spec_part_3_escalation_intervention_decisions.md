@@ -97,131 +97,137 @@ The event uses normal decisions with a static category picture. It does not need
 
 The category header shows:
 
-- the escalation meter
-- current stage
-- latest material source or reversal
-- next threshold and its proof requirement
+- the escalation bar with the current stage name
+- the latest material cause or reversal, in one line
+- what the next stage still needs, stated as the missing world-state proof rather than a number
 - the country's current role
+
+The raw escalation number and the hidden ledgers stay in the tooltip at most; the player decides from the stage, the cause, and the missing proof.
 
 The category uses conditional replacement so one phase shows three to five primary actions. Six is the hard maximum. One to three missions may be active. Target-heavy families use the selected-target pattern rather than displaying every country at once.
 
+## Shared action: Register a Claim
+
+Working label.
+Any Balkan country, belligerent or neutral, selects one currently valid claim or security interest from the maintained registry.
+For a belligerent it records a settlement objective; for a neutral it records the interest that later allows mobilization, arbitration, or entry.
+It never grants a core, and it may raise neutral-country intervention interest when the claim touches their registered zones.
+
+Costs and requirements: political power, plus current control, border access, or a viable route to the target.
+A claim that conflicts with an ally's active claim carries a stability and relations cost and feeds the Evolution III incompatibility record.
+
+This single action replaces the separate belligerent "Formalize a Valid Regional Claim" and neutral "Register an Interest" actions, which recorded the same registry entry under two names.
+
 ## Regional belligerent actions
 
-### Formalize a Valid Regional Claim
+### Request Foreign Support
 
-Working label. The country selects one currently valid claim from the maintained registry. The action records a settlement objective and may affect neutral-country intervention interest. It does not grant an automatic core.
+The country selects an outside sponsor with access and compatible interests and asks for either arms or volunteers and a military mission.
+The request reaches the sponsor as an event with accept, reduce, and refuse options, so the sponsor's own "Commit Support" decision and this request are two entry points into one support transaction.
+A large accepted arms package crosses a support tier; accepted personnel create a visible foreign commitment; both raise escalation once per tier or commitment class.
 
-Possible costs and requirements:
-
-- political capacity
-- army experience or command power for military planning
-- current control, border access, or a viable route to the target
-- a stability or diplomatic consequence when the claim conflicts with an ally
-
-### Request Foreign Arms
-
-The country selects an outside sponsor with access and compatible interests. The request can be accepted, reduced, conditioned, or refused. A large accepted package crosses a support tier and raises escalation.
-
-Possible costs and risks:
-
-- political capacity
-- sponsor influence memory
-- convoy or rail route requirement
-- later diplomatic obligation
-
-### Invite Volunteers or a Military Mission
-
-The country invites a sponsor to commit personnel. This is stronger than arms support and creates a visible foreign commitment. It should require diplomatic access, available sponsor forces, and a valid theater route.
+Costs and risks: political power, sponsor relations memory, a convoy or rail route requirement, and a later diplomatic obligation.
 
 ### Secure a Strategic Corridor
 
-The country begins a goal mission around a selected port, railway, supply hub, or Straits approach. Success improves the campaign position and can strengthen the related settlement claim. Failure can expose the camp to foreign pressure or a lost capital route.
+The country begins a goal mission around a selected port, railway, supply hub, or Straits approach.
+Success improves the campaign position and can strengthen the related settlement claim.
+Failure can expose the camp to foreign pressure or a lost capital route.
 
 ### Offer Armistice Terms
 
-Available when the current military and diplomatic state supports a real offer. Terms depend on occupation, active claims, war contribution, escalation stage, and sponsor pressure. A country that is completely defeated should not demand maximal terms.
+Available when the current military and diplomatic state supports a real offer.
+Terms depend on occupation, active claims, war contribution, escalation stage, and sponsor pressure.
+A country that is completely defeated should not demand maximal terms.
 
-### Accept or Reject Outside Mediation
-
-The country responds to a specific conference or guarantor proposal. Acceptance can begin an armistice mission. Rejection preserves military freedom but may worsen sponsor relations and increase the chance of outside intervention.
+Outside mediation reaches belligerents as an event, not a decision: accepting can begin an armistice mission, while rejecting preserves military freedom but worsens sponsor relations and raises the chance of outside intervention.
 
 ### Demand an Allied Occupation Adjustment
 
-Available when an ally occupies a state covered by the country's active claim. The action opens negotiation or a timed withdrawal demand. It is a key baseline source of postwar tension and a major Evolution III precursor.
+Available when an ally occupies a state covered by the country's active claim.
+The action opens negotiation or a timed withdrawal demand.
+It is a key baseline source of postwar tension and a major Evolution III precursor.
 
 ## Neutral Balkan actions
 
-### Register an Interest
-
-The country identifies a valid disputed state group that affects its own security or claim. This does not force entry. It enables later mobilization, arbitration, or intervention choices.
-
 ### Mobilize the Disputed Frontier
 
-The country commits equipment, fuel, command capacity, and divisions to a named border group. This is preparation, not a free national modifier.
+The country commits equipment, fuel, command power, and divisions to a named border group.
+This is preparation, not a free national modifier.
 
 ### Join a Camp
 
-The country selects a camp whose objectives and diplomatic position are compatible. Entry requires a claim, guarantee, faction tie, security threat, or major strategic interest. It raises escalation once.
+The country selects a camp whose objectives and diplomatic position are compatible.
+Entry requires a claim, guarantee, faction tie, security threat, or major strategic interest.
+It raises escalation once.
 
 ### Offer Regional Arbitration
 
-A neutral regional government attempts a bounded settlement. Its chance improves when it has relations with both sides, no active claim on the target, and support from outside containment powers.
+A neutral regional government attempts a bounded settlement.
+Its chance improves when it has relations with both sides, no active claim on the target, and support from outside containment powers.
 
-### Demand Neutrality Guarantees
+### Set Transit Policy
 
-The country asks outside powers or neighboring camps to recognize a neutral corridor or frontier. Failure can move it toward intervention.
-
-### Open or Close Transit
-
-The country changes access through a relevant port, Straits passage, railway, or border corridor. The action affects supply and sponsor access. It should not become a generic whole-country trade toggle.
+The country decides access through a relevant port, Straits passage, railway, or border corridor: open it to one camp and its sponsors, or declare a neutral corridor and ask outside powers to recognize it.
+Opening transit improves that camp's supply and sponsor access and draws the other camp's hostility.
+A recognized neutral corridor keeps the country out of the war; an ignored one moves it toward intervention.
+It is never a generic whole-country trade toggle.
 
 ## Outside-power containment actions
 
 ### Convene a Containment Conference
 
-Requires a relationship with at least two belligerents or cooperation from another outside power. The conference creates a timed diplomatic objective rather than an instant peace button.
+Requires a relationship with at least two belligerents or cooperation from another outside power.
+The conference creates a timed diplomatic objective rather than an instant peace button.
 
 ### Coordinate an Arms Suspension
 
-Targets an opposing sponsor or coalition. It becomes effective only when material commitments are genuinely reduced.
+Targets an opposing sponsor or coalition.
+It becomes effective only when material commitments are genuinely reduced.
 
 ### Pressure a Guarantee Withdrawal
 
-Attempts to remove a guarantee before enforcement. The action can fail when the guarantor has strong ideology, faction, or rivalry reasons to remain.
+Attempts to remove a guarantee before enforcement.
+The action can fail when the guarantor has strong ideology, faction, or rivalry reasons to remain.
 
 ### Enforce a Ceasefire Line
 
-Available after armistice acceptance. It creates the armistice-line mission and requires observers, diplomatic access, and enough leverage.
+Available after armistice acceptance.
+It creates the armistice-line mission and requires observers, diplomatic access, and enough leverage.
 
 ### Apply Coordinated Sanctions
 
-Requires at least one cooperating outside power or a strong international position. Sanctions create economic and diplomatic pressure. They do not directly end a war.
+Requires at least one cooperating outside power or a strong international position.
+Sanctions create economic and diplomatic pressure but do not end a war, and they raise escalation once per coalition and stage, so containment through sanctions is a deliberate gamble.
 
 ## Outside-power exploitation actions
 
-### Send a Weapons Shipment
+### Commit Support
 
-Consumes a meaningful stockpile and transport route. Support scales from sponsor industry, recipient need, distance, and escalation stage. Repeated shipments cross bounded tiers.
-
-### Dispatch Volunteers
-
-Requires available forces, political willingness, and theater access. The commitment is public and raises escalation.
+The sponsor sends arms, volunteers, or a military mission to one camp, or answers a recipient's request.
+Arms consume a meaningful stockpile and transport route and scale from sponsor industry, recipient need, distance, and stage; personnel require available forces, political willingness, and theater access and are always public.
+Repeated shipments cross bounded tiers instead of raising escalation per click.
 
 ### Recognize a Claim
 
-Strengthens one settlement objective and damages relations with competing claimants. It can also make a neutral Balkan country more likely to intervene.
+Strengthens one settlement objective and damages relations with competing claimants.
+It can also make a neutral Balkan country more likely to intervene.
 
 ### Issue a Guarantee
 
-Creates a real future commitment. It should be unavailable when the sponsor cannot reach or defend the recipient.
+Creates a real future commitment.
+It is unavailable when the sponsor cannot reach or defend the recipient.
 
 ### Invite to Faction
 
-Available only when ordinary faction rules and event-specific safety checks permit it. Invitation can pull existing faction members toward the crisis and therefore carries a large escalation risk.
+Available only when ordinary faction rules and event-specific safety checks permit it.
+Invitation can pull existing faction members toward the crisis and therefore carries a large escalation risk.
 
 ### Prepare Direct Intervention
 
-This is a timed military commitment. It requires access, forces, supply, war support, and a defined camp. Completion can lead to direct entry and the largest single escalation source.
+This is a timed military commitment.
+It requires access, forces, supply, war support, and a defined camp.
+Completion can lead to direct entry and the largest single escalation source.
 
 ## Mission families
 
