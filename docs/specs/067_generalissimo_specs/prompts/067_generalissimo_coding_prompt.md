@@ -168,7 +168,7 @@ Use `067_generalissimo_focus_tree_prompt.md`, `chaosx_focus_tree_auditor`, and t
 
 Implement every political, military, economic, internal-rule, foreign-policy, integration, conditional service, and hidden world-end route. Include search filters, Focus Navigation, route AI, idea lifecycles, and the accepted focus inlay.
 
-Use `chaosx_event_ui_worker` only for the Event 067 inlay and compact display. Follow [the scripted GUI skill](../../../../.agents/skills/chaos-redux-scripted-gui/SKILL.md) for reference acceptance, inspect/render and matching before-and-after evidence over relevant states and resolutions.
+Use `chaosx_event_ui_worker` only for the Event 067 inlay and compact display. Follow [the scripted GUI skill](../../../../.claude/skills/chaos-redux-scripted-gui/SKILL.md) for reference acceptance, inspect/render and matching before-and-after evidence over relevant states and resolutions.
 GUI rewrite is optional.
 
 ### 7. AI and probability

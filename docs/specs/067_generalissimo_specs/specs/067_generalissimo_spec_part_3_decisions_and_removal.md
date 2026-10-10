@@ -136,7 +136,11 @@ A refusal raises Influence, exposes weak civilian control, and locks safe comman
 
 ## Concession decisions
 
-Concessions should be attractive because they grant military or political help, resolve an active demand, or avoid immediate disruption.
+Concessions should be attractive because they grant military or political help or avoid immediate disruption.
+
+Each concession below is a package that reaches the player only as the accept option of one of the Generalissimo's demands (Part 2, Demand generation); it is not also a standing button in the category.
+The demand pool already contains every package, and Influence is hidden before Evolution I, so a second voluntary entry point would double the category for no new decision.
+The Generalissimo pushes and the government answers; the government's own initiative lives in the command-use and counterweight decisions.
 
 ### Public Promotion
 
@@ -234,6 +238,8 @@ The Generalissimo receives exclusive authority over major offensives and defense
 - war missions credit him more heavily
 
 ## Evolution II concessions
+
+These packages join the demand pool when Evolution II is active and follow the same demand-only rule.
 
 ### Transfer the Armament Boards
 

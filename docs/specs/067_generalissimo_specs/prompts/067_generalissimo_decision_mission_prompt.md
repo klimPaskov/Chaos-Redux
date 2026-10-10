@@ -81,7 +81,7 @@ Each changes command authority, military effects, Influence, and future decision
 
 ## Concessions
 
-Implement the full concession pool:
+Implement the full concession pool as demand outcomes only: each package is applied by accepting the matching demand and has no separate category decision.
 
 - public promotion
 - authority over appointments

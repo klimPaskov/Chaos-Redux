@@ -112,19 +112,16 @@ The accepted source assigns Event 067 to Military Preparation as a High member. 
 The source-reading and parent-review records describe the original planning run.
 They record a supplied rough brief as accepted, but the package does not retain an independent acceptance record for every expansion.
 Preserve the design while keeping unattributed expansion claims unresolved until the parent records adoption within the authorized scope.
-Use [AGENTS.md](../../../AGENTS.md) and [the current subagent skill](../../../.agents/skills/chaos-redux-subagents/SKILL.md) for workflow, ownership and capability discovery.
+Use [AGENTS.md](../../../AGENTS.md) and [the current subagent skill](../../../.claude/skills/chaos-redux-subagents/SKILL.md) for workflow, ownership and capability discovery.
 Runtime event IDs use `chaosx.nr67.*` and filenames retain `067`.
 
 ## Original planning reading and process status
 
-Every supplied project source file, every extracted subagent definition, and all three supplied catalog CSV exports were read in full. The source reading manifest records their sizes, line counts, and hashes.
+The source reading manifest records the original inputs; no independent improvement-loop subagent ran during planning, and the parent-authored review in `quality/` stands in for it.
 
-The active environment did not expose a working custom-subagent invocation route. Two discovery attempts through the Codex Native connector failed with HTTP 429 and HTTP 404 responses. The specification therefore includes a parent-authored improvement review and complete prompts for the required subagents. It does not claim that an independent improvement-loop subagent completed a review.
+## Changelog
 
-## Extraction
+### 2026-10-10 spec audit
 
-Extract `067_generalissimo_specs.zip` into `docs/specs/`. The resulting repository path should be:
-
-```text
-docs/specs/067_generalissimo_specs/
-```
+- Concessions are demand outcomes only. The ten concession packages already formed the demand pool, so keeping them as standing decisions as well gave each concession two entry points and roughly doubled the category; the government's own initiative stays in command-use and counterweight decisions.
+- The README drops the obsolete zip-extraction instructions and the original environment's connector failures, which the quality records keep. Subagent instructions use the Claude-first wording.

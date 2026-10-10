@@ -125,7 +125,7 @@ The implementation must use the installed HOI4 MCP routes for event, probability
 - Success and failure use distinct effects.
 - Obsolete decisions hide and clean up.
 - AI has an equivalent path for every player action.
-- Concessions provide real value.
+- Concessions provide real value and are reachable only through demands, with no duplicate standing decision.
 - Counterweights impose real military or political cost.
 - No decision can be farmed through repeated authority cycling.
 
