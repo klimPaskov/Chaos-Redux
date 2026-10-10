@@ -1,49 +1,30 @@
-# Coding Prompt: Implement Event 008 Tensions Rising
+# Coding Prompt: Event 008 Tensions Rising remaining work
 
-Disposition: unresolved historical implementation brief.
-Read [the owner documentation state](../../../plans/008_tensions_rising_plans/documentation_state_2026-10-05.md) and select remaining accepted scope before reuse; finished prose, batching, and follow-ups must not be recreated from this prompt.
+Event 008 is implemented: hidden root and batch report, the accepted 2/3/5/8/12 ladder and 30-day cadence, Diplomatic Fever stages, the capped timer pulse, relation shocks, AI posture ideas, ten incidents, safe border clashes, event-log wiring, and five achievements.
+Do not rebuild any of it from older planning text.
+Read the [README](../README.md), [owner decisions](../../../plans/008_tensions_rising_plans/agent_decisions_2026-10-05.md), and [owner state map](../../../plans/008_tensions_rising_plans/documentation_state_2026-10-05.md) before changing source.
 
-Implement the Event 008 `Tensions Rising` rework according to the source spec package:
+Follow `CLAUDE.md` and the `chaos-redux-events` skill.
 
-- `docs/specs/008_tensions_rising_specs/specs/008_tensions_rising_spec.md`
-- `docs/specs/008_tensions_rising_specs/specs/008_tensions_rising_evolutions_and_hidden_effects.md`
-- `docs/specs/008_tensions_rising_specs/specs/008_tensions_rising_event_log_and_localisation.md`
-- `docs/specs/008_tensions_rising_specs/matrices/008_tensions_rising_constants_and_helpers.md`
-- `docs/specs/008_tensions_rising_specs/matrices/008_tensions_rising_ai_matrix.md`
-- `docs/specs/008_tensions_rising_specs/matrices/008_tensions_rising_cluster_and_achievements.md`
+## Remaining source work
 
-Follow `AGENTS.md`, `chaos-redux-events`, `chaos-redux-subagents`, `chaos-redux-event-assets`, and the relevant offline HOI4 wiki/vanilla docs for implementation syntax.
+This item repairs consistency with accepted design and needs no new decision:
 
-## Required behavior
+- Rescale `tensions_rising_incident_world_tension` in `common/script_constants/008_tensions_rising_constants.txt` so every incident packet stays below the root packet of the stage that scheduled it; the current 25-75 values exceed even the Stage IV root of 12 and undo the 6 October balance correction through follow-ups.
+  Record the change in the owner decisions and rerun the owner's source model for the distribution helper.
 
-- Event ID remains `8` and type remains Minor Repeatable.
-- Baseline Calm World firing: `+100` world tension and only fires while world tension is below `100%`.
-- Stage I at Gathering Storm: `+10 chaos`, `+100` world tension, can fire at `100%` WT, adds light hidden side effects.
-- Stage II: `+15 chaos`, `+200` world tension, stronger hidden side effects.
-- Stage III: `+25 chaos`, `+500` world tension, heavy hidden side effects.
-- Stage IV: `+50 chaos`, `+1000` world tension, severe hidden side effects.
-- No super-event or world-end scenario. Never set `world_end` from Event 8.
+## Work that needs a decision first
 
-## Hidden systems
+Implement these only after the README's open questions record an accepted disposition:
 
-Implement or cleanly plan:
+- the cluster record (cluster owner).
+- the audit proposals on follow-up pool order, relation-selector fallbacks, clash outcomes, and cluster severity.
 
-- capped temporary Tension Pulse integrated with existing event timer logic, no new global daily/weekly/monthly loop
-- relation-pair selection with timed opinion modifiers and cooldowns
-- delayed follow-up report/news events
-- cluster integration only after the owner resolves competing catalog/source records in `matrices/008_tensions_rising_cluster_and_achievements.md`; the single-member Low Diplomatic Panic catalog instruction is superseded
-- AI posture pressure via valid existing routes only, no direct forced normal war declarations
-- Stage III+ follow-up incidents may start rare safe non-transfer border wars only through strict adjacent-pair checks and cooldowns
+Any accepted change to follow-up weights, pool order, or selection needs a before-and-after comparison through `chaosx_ai_probability_auditor` using the owner's 24 declared scenarios.
 
-## Presentation
+## Validation still owed
 
-- Wire event log name, debug name, event detail, evolution detail, history, and evolution rows.
-- Add stage-aware popup/report text and delayed follow-up text.
-- Route assets through the asset prompt and wire final DDS files only after handoff.
-- Implement achievements from the achievement prompt if the achievement system is in scope, otherwise queue them explicitly.
-
-## Validation and completion
-
-Use task-specific validation, not boilerplate claims. Verify stage gating, WT=100 behavior, pulse replacement/cap, timed opinion cooldowns, delayed incident non-recursion, border-war safety gates, event log/evolution details, and absence of super-event, world-end, or direct war-goal behavior.
-
-Before a completion claim, use `chaosx_event_completion_auditor` and the weighted-surface `chaosx_ai_probability_auditor` workflow in [chaos-redux-subagents](../../../../.agents/skills/chaos-redux-subagents/SKILL.md). Report files changed, systems touched, implemented vs queued pieces, asset status, spreadsheet status, validation evidence, and every simplification or blocker. Do not claim completion with missing localisation, unwired assets, skipped achievements, unlogged evolutions, or unreported queued cluster work.
+Runtime lifecycle, Event Log and Details GUI evidence, numerical probability comparison, held-report refresh, and asset provenance remain open; see the owner state map.
+Catalog wording is queued in `docs/plans/008_tensions_rising_plans/catalog_changes_pending.md` for the spreadsheet owner.
+`docs/events/008_tensions_rising/overview.md` still lists the superseded `+100` to `+1000` world-tension values and needs the 2/3/5/8/12 ladder.
+Report every remaining blocker; do not claim completion while any of the above stays open.

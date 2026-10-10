@@ -1,89 +1,22 @@
 # Asset Prompt: Event 008 Tensions Rising
 
-Disposition: unresolved historical production brief.
-The [owner documentation state](../../../plans/008_tensions_rising_plans/documentation_state_2026-10-05.md) records retained unused news art and unresolved durable provenance.
-Recover existing evidence before generating replacements; news and accent rows below require an accepted consumer assignment.
+Use [chaos-redux-event-assets](../../../../.claude/skills/chaos-redux-event-assets/SKILL.md) for provenance, processing, manifest, durable-record, and parent-wiring requirements.
+Do not edit gameplay, localisation, GUI, GFX, event, scripted, or spreadsheet files.
 
-You are producing visual asset handoffs for Chaos Redux Event 008 `Tensions Rising`.
+## Installed assets
 
-Read and follow:
+| Asset | Sprite and file | Status |
+| --- | --- | --- |
+| Report image, 210x176 | `GFX_report_event_tensions_rising`, `gfx/event_pictures/008_tensions_rising/report_event_tensions_rising.dds` | wired on the root, batch report, and incidents |
+| News image, 397x153 black-and-white | `GFX_news_event_tensions_red_line`, `gfx/event_pictures/008_tensions_rising/news_event_tensions_red_line.dds` | registered and cropped on 6 October (`docs/plans/gfx_fix_2026-10/008_report.md`); no consumer |
+| Five achievement triplets, 64x64 | `GFX_achievement_008_tensions_rising_*` in `interface/chaosx_achievements.gfx` | wired |
 
-- `AGENTS.md`
-- `chaos-redux-event-assets`
-- `chaos-redux-frame-animation` for any animated sprite/state package
-- The Event 008 source specs under `docs/specs/008_tensions_rising_specs/`
+Do not regenerate these assets.
+The optional animated event-detail pulse is not needed because no accepted UI surface exists.
 
-Do not edit gameplay, localisation, GUI, GFX, event, focus, decision, scripted effect, scripted trigger, country, history, or spreadsheet files. Produce source files, processed PNG previews, DDS files, manifest entries, and `gfx_handoff.md` only.
+## Open item: provenance
 
-## Visual identity
+The historical source archive `docs/assets/008_tensions_rising/` was deleted without a replacement record; the overview cites deletion commit `87d441ac758d515e1abca34167fcd45b51acf028`, which is not present in the current repository history.
+Recover whatever durable source and generation evidence still exists into `docs/assets/008_tensions_rising/manifest.md`, keeping any unrecoverable fact explicitly unresolved rather than regenerating approved art.
 
-This event is not a battlefield and not a map-change event. The imagery should show diplomatic pressure before the break: embassy lights at night, telegraph rooms, sealed cables, press bundles, staff offices, blackout curtains, side entrances, guards, shipping ledgers, and tense clerks.
-
-Avoid generic war-room map tables as the main subject. Maps can appear as secondary props only.
-
-## Required assets
-
-### Report event image
-
-- Asset name: `report_event_tensions_rising`
-- Type: report event image
-- Target: 210x176
-- Source mode: generated staged-documentary preferred, sourced period diplomatic/press image acceptable only if license and era fit are clear
-- Direction: 1936–1945 documentary-style diplomatic office, night desk lamp, cable sheets, sealed dispatch bag, no readable text, no modern props
-- Final path direction: `gfx/event_pictures/008_tensions_rising/report_event_tensions_rising.dds` or current repo pattern
-- Suggested sprite: `GFX_report_event_tensions_rising`
-
-### News event image
-
-- Asset name: `news_event_tensions_red_line`
-- Type: news event image
-- Target: 397x153, black-and-white
-- Source mode: generated period press image preferred
-- Direction: bundled newspapers outside embassy gates, guarded entrance, dark city street, anxious crowd, no readable text
-- Suggested sprite: `GFX_news_event_tensions_red_line`
-
-### Achievement icons
-
-Create completed 64x64 achievement icons for:
-
-1. `achievement_tensions_thin_wire`  -  taut telegraph wire over dark map.
-2. `achievement_tensions_only_headlines`  -  stacked newspapers under silent clock, no readable text.
-3. `achievement_tensions_insurance_market`  -  marine insurance ledger and ship silhouette, no readable text.
-4. `achievement_tensions_one_denial`  -  denied stamp motif over sealed cable, no readable text.
-5. `achievement_tensions_blackout`  -  blacked-out embassy facade with ten lit windows.
-
-Target: 64x64 each. Produce grey and not-eligible variants if the current achievement pipeline requires them.
-
-### Optional animated event-detail accent
-
-Only produce this if the current Event Log UI has an accepted sprite surface for event-detail accents or warning frames.
-
-- Asset name: `tensions_rising_wire_pulse`
-- Type: small animated UI accent
-- Static fallback required: `tensions_rising_wire_pulse_static`
-- Direction: subtle telegraph-wire pulse, state-driven, not distracting
-- Must follow frame-animation rules: real source frames, processed frames, contact sheet, GIF preview for review only, final static fallback, frame sheet or sequence handoff, no transform-only animation
-- If no accepted UI surface exists, mark this asset `not_needed` rather than inventing a GUI surface.
-
-## Reference folders to inspect
-
-Inspect the matching Chaos Redux reference folders before generation or processing:
-
-- report event images: `.agents/skills/chaos-redux-event-assets/assets/gfx_references/event_art/report`
-- news event images: `.agents/skills/chaos-redux-event-assets/assets/gfx_references/event_art/news`
-- decisions: `.agents/skills/chaos-redux-event-assets/assets/gfx_references/icons/decisions`
-- achievements: `.agents/skills/chaos-redux-event-assets/assets/gfx_references/icons/achievements`
-
-## Manifest requirements
-
-Create or update:
-
-`docs/assets/008_tensions_rising/manifest.md`
-
-Use [chaos-redux-event-assets](../../../../.agents/skills/chaos-redux-event-assets/SKILL.md) for current provenance, alpha, processing, manifest, durable-record, and parent-wiring requirements.
-
-Create:
-
-`docs/assets/008_tensions_rising/gfx_handoff.md`
-
-The handoff must include final DDS paths and ready-to-wire sprite names. Do not edit `.gfx` files yourself.
+The visual identity for any future replacement is diplomatic pressure before the break: embassy lights at night, telegraph rooms, sealed cables, press bundles, staff offices, blackout curtains, side entrances, guards, and shipping ledgers, with maps only as secondary props and no readable generated text.

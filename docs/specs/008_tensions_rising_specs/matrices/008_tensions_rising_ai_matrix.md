@@ -1,60 +1,66 @@
 # Event 008: AI and System Behavior Matrix
 
-Event 008 should influence AI through temporary posture pressure and diplomatic state. It should not force normal war declarations, but high-stage follow-up incidents can rarely start safe non-transfer border wars.
+Disposition: the implemented posture layer is described as current; the wider action-family directions remain unresolved design, and numerical validation is blocked with the probability owner.
+
+Event 008 influences AI through timed posture ideas, timed relation damage, and incident consequences.
+It never forces a normal war declaration; Stage III+ incidents can rarely start safe non-transfer border clashes.
 
 ## AI principle
 
-AI behavior from this event should feel like governments reacting to an atmosphere. The event may raise willingness for already-valid systems, but it must not bypass target validity, route validity, alliance rules, or existing war logic.
+AI behavior should feel like governments reacting to an atmosphere.
+The event may raise willingness for already-valid systems, but it must not bypass target validity, route validity, alliance rules, or existing war logic.
+
+## Implemented posture layer
+
+Each evolved root gives one hidden timed idea to AI countries that are majors, faction leaders, or already at war and were not recently selected.
+
+| Stage | Idea | Countries | Days | Direction |
+| --- | --- | ---: | ---: | --- |
+| I | `tensions_rising_cautious_alignment` | 4 | 45 | cheaper guarantees, stronger alliance desire, small defensive-war stability |
+| II | `tensions_rising_alarmist_rearmament` | 6 | 75 | adds war support and arms production, small stability loss |
+| III | `tensions_rising_general_staff_fever` | 8 | 100 | stronger rearmament, planning speed, faster enemy justification against the country |
+| IV | `tensions_rising_permanent_alert` | 12 | 140 | the strongest version of the same pressure |
+
+Embassy Side Doors, Staff Cars After Midnight, Fleets Keep Radio Silence, and The Last Normal Briefing add extra posture applications.
+No player country receives a posture idea, and no idea grants war goals, units, cores, or claims.
 
 ## Actor groups
 
 | Actor group | Baseline | Stage I | Stage II | Stage III | Stage IV |
 | --- | --- | --- | --- | --- | --- |
-| Major powers | normal WT reaction | slight defensive posture | stronger guarantees/rearmament | heavy hostile preparation weights | permanent-alert pressure, still target-checked |
-| Faction leaders | normal | watch rivals | invite/guarantee more | pressure members and rivals | hostile bloc discipline, possible intra-faction distrust only if supported |
-| Border rivals | normal | small hostility | relation hit likely | near-miss or safe border-war candidates | repeated alarm possible with cooldown |
-| Naval powers | normal | no special change | insurance/shipping report possible | radio-silence follow-up possible | naval scare more likely |
-| Neutral countries | normal | cautious | shipping and press anxiety | seek guarantees or rearm | panic without automatic faction entry |
-| Minor countries | normal | mostly flavour | defensive alignment interest | higher guarantee request logic if supported | high fear, but no suicidal war |
-| Special chaos/nonhuman tags | excluded unless allowed by shared triggers | excluded | excluded | excluded or custom only | excluded or custom only |
+| Major powers | normal WT reaction | cautious posture | rearmament posture | staff-fever posture, possible clash actor | permanent-alert posture, still target-checked |
+| Faction leaders | normal | cautious posture | rearmament posture | staff-fever posture | permanent-alert posture |
+| Border rivals | normal | possible relation shock | relation shock likely | safe clash candidates | clash candidates with cooldowns |
+| Naval powers | normal | none | insurance incident possible | radio-silence incident possible | radio-silence incident more likely |
+| Minor and neutral countries | normal | mostly flavour | relation shocks only | relation shocks and clash candidates | relation shocks and clash candidates |
+| Special chaos and nonhuman tags | excluded | excluded | excluded | excluded | excluded |
 
-## AI strategy hooks
+## Design directions not yet expressed in source
 
-Potential temporary AI strategy names:
+These remain unresolved design and are not current requirements:
 
-- `tensions_rising_cautious_alignment`
-- `tensions_rising_alarmist_rearmament`
-- `tensions_rising_general_staff_fever`
-- `tensions_rising_permanent_alert`
+| Action family | Direction | Hard limits |
+| --- | --- | --- |
+| Faction invitations | rise with stage | ideology, geography, and faction rules respected |
+| Existing hostile decisions | rise with stage | valid targets only |
+| Secret-diplomacy systems | rise from Stage II where an approved hook exists | owning event requirements respected |
 
-The final implementation can use existing AI strategy files or direct decision weights if that is the established pattern.
-
-## AI action families
-
-| Action family | Stage I | Stage II | Stage III | Stage IV | Hard limits |
-| --- | --- | --- | --- | --- | --- |
-| Guarantees | small positive | medium positive | high positive | high positive | target must matter, no nonsensical guarantees |
-| Faction invitations | no direct change | small positive | medium positive | high positive | ideology/geography/faction rules respected |
-| Existing hostile decisions | no direct change | small positive | high positive | very high positive | valid targets only |
-| War declaration | no direct change | no direct forced war | no forced war declarations; rare safe border wars allowed | no forced war declarations; safer border wars more likely | war goals and normal AI checks still required for normal wars |
-| Rearmament / mobilization | no direct change | medium | high | very high | no free units from Event 8 |
-| Secret-diplomacy systems | no direct change | medium if an approved existing hook exists | high if valid | high if valid | must respect the owning event requirements |
-| War-adjacent systems | no direct change | low indirect | medium indirect | high indirect | through approved existing tension or AI posture hooks |
+Guarantees, rearmament, and planning are already covered by the posture ideas' modifiers.
 
 ## AI weights by world condition
 
-- If the country is already in a major war, Event 8 should mostly increase defensive and production posture rather than open new fronts.
-- If the country is at peace but bordered by safe rivals, relation damage and high-stage border follow-ups should carry more weight.
-- If the country is naval/trade-heavy, shipping panic follow-ups make more sense than border panic.
-- If the country is a subject, avoid independent global postures unless the parent/overlord relationship is part of a valid panic story.
-- If world-end is active, Event 8 should not add new non-terminal AI pressure unless the terminal scenario explicitly allows normal events.
+- A country already in a major war gains defensive and production posture rather than new fronts; clash actors must be at peace.
+- A peaceful country bordered by safe rivals is the natural clash and relation-shock candidate.
+- A subject is excluded from relation shocks and clashes.
+- After `world_end`, automatic Event 8 stops and queued incidents close.
 
 ## AI exploit prevention
 
-- Do not let AI use hidden Stage IV pressure to declare impossible or suicidal wars. Border wars must stay non-transfer, cooldown-gated, and target-checked.
-- Do not let temporary relation damage lock allies into permanent hostility after the timed modifier expires.
-- Do not create hidden permanent AI strategy flags without cleanup.
+- Hidden Stage IV pressure never produces impossible or suicidal wars; clashes stay non-transfer, cooldown-gated, and target-checked.
+- Temporary relation damage expires and never locks allies into permanent hostility.
+- No permanent AI strategy flag is created.
 
 ## Human-player visibility
 
-The player should not see a raw AI modifier list. They should infer the AI shift from follow-up incidents, relation changes, guarantees, alliances, border clashes, and event logs.
+The player never sees a raw AI modifier list.
+They infer the shift from incidents, relation changes, guarantees, alliances, border clashes, and the event log.

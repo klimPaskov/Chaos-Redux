@@ -3,35 +3,20 @@
 Disposition: unresolved design acceptance, with catalog facts and implementation evidence separated below.
 The [current source map](../../../plans/008_tensions_rising_plans/documentation_state_2026-10-05.md) and [release audit](../../../plans/008_tensions_rising_plans/subagent_handoffs/event_completion_audit_2026-10-05.md) govern current evidence and limits.
 
-## Cluster: Diplomacy catalog record
+## Cluster record
 
-The former single-member Low-severity `Diplomatic Panic` note is superseded as a current catalog statement by the parent's direct read-only workbook evidence.
-It remains historical source-design direction with unresolved acceptance, and no design promotion is made here.
+The cluster record is unresolved; two sources disagree and neither has a recorded acceptance basis.
 
-### Cluster identity
+| Field | Current source | Workbook catalog |
+| --- | --- | --- |
+| ID and name | 3, `Diplomatic Panic` (`event_cluster_constants.txt`) | 3, `Diplomacy` |
+| Type and status | repeatable, unlock tier 0, 120-day cooldown | repeatable, `Partially Available` |
+| Members | Event 8 required, Event 17 Random Faction optional | Events 8, 17, 36, 59 |
+| Severities | Low, Low | Medium, Medium, High, High |
 
-- **Cluster ID:** 3.
-- **Cluster name:** Diplomacy.
-- **Cluster type:** Repeatable.
-- **Catalog status:** Partially Available.
-- **Acceptance basis:** unresolved pending the cluster owner's source or explicit acceptance record.
-
-### Current catalog members and reported implementation
-
-| Event | Role | Member severity | Stage gate | Notes |
-| --- | --- | --- | --- | --- |
-| 8 Tensions Rising | required in retained overview | Medium | not established by this catalog audit | Event 008 root and follow-up implementation exists |
-| 17 | not established by this audit | Medium | not established by this catalog audit | retained parent/overview four-member implementation evidence |
-| 36 | not established by this audit | High | not established by this catalog audit | retained parent/overview four-member implementation evidence |
-| 59 | not established by this audit | High | not established by this catalog audit | retained parent/overview four-member implementation evidence |
-
-### Source contradiction and owner boundary
-
-The pre-reconciliation overview and parent prompt report four-member Diplomacy runtime wiring and retained Diplomatic Panic compatibility aliases.
-The reconciliation source read found only `diplomatic_panic = 3` in `common/script_constants/event_cluster_constants.txt:17` and an Event 8 required Low plus random-faction optional Low branch in `common/scripted_effects/chaosx_event_cluster_effects.txt:1327`.
-This branch does not verify the reported four-member implementation, and its contradiction with the catalog and overview remains open.
-The cluster owner must identify the authoritative definitions or supply a reviewed patch handoff and acceptance basis.
-No member wiring, severity, cooldown, unlock, or cluster design was changed by this documentation task.
+The earlier overview's four-member runtime claim is not verified by the source branch in `chaosx_event_cluster_effects.txt`, and the single-member Low note from planning is superseded by both records.
+The cluster owner must pick the authoritative definition and supply its acceptance basis; a severity proposal is in the README's open questions.
+This documentation changes no member wiring, severity, cooldown, unlock, or cluster design.
 
 ## Achievement matrix
 
@@ -104,11 +89,11 @@ These entries do not claim observed unlocks or final artwork acceptance.
 
 | Achievement | Implementation evidence | Remaining limitation |
 | --- | --- | --- |
-| Thin Wire | Stage III+ peace/full-WT start, player-war invalidation, and `.20` expiry check | Full WT is checked at the endpoints, without continuous full-WT tracking. |
-| Only Headlines | Stage II+ peaceful-world counter and unlock hook | Numerical reachability and live unlock behavior remain unverified. |
-| Insurance Market | `.5` peaceful-player convoy check and unlock hook | Earlier recent-relation selection can shadow its pool, with scenario evidence pending the probability owner. |
-| One Denial | Existing war-relation hook reads recent actor state and global recent-damage state | The 150-day actor selection flag and refreshed global 120-day window do not enforce that actor's own 120-day receipt. |
-| Diplomatic Blackout | Global application counter, `.21` delayed decrement, and unlock threshold | Distinct live modifiers, renewals, and stale-expiry receipts are not established. |
+| Thin Wire | Stage III+ peace and full-WT start, one `.20` callback chain with a 180-day date deadline, immediate war-hook cancellation | Daily sampling can miss a dip and recovery between checks; restart and ordering behavior are unobserved. |
+| Only Headlines | Counts once per report batch whose first effectful displayed stage is Stage II+ in a peaceful world | Numerical reachability and live unlock behavior remain unverified. |
+| Insurance Market | `.5` peaceful-player convoy check and unlock hook | The Stage II+ recent-damage branch usually shadows the only pool containing `.5`, so the achievement is rarely reachable; see the README proposal. |
+| One Denial | Every selected pair refreshes each actor's own 120-day eligibility flag, read by the war-relation hook | Actor expiry and unrelated-pair refresh scenarios are unobserved. |
+| Diplomatic Blackout | Unique directed stage-and-partner entries with per-direction `.21` expiry | Native expiry, duplicate delivery, and cross-stage behavior are unobserved. |
 
 Source evidence is in `common/achievements/chaos_redux_achievements.txt`, `common/scripted_effects/008_tensions_rising_effects.txt`, and `events/008_tensions_rising.txt`, with exact reviewed spans in the release audit.
 All fifteen achievement DDS headers parse at 64x64, but the deleted historical asset archive has no established replacement provenance/review package.

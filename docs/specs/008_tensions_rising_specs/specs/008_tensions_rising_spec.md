@@ -1,403 +1,273 @@
-# Event 008: Tensions Rising  -  Source Specification
+# Event 008: Tensions Rising - Source Specification
 
-Disposition: unresolved historical design direction.
-Single-member Low Diplomatic Panic claims below are superseded as catalog facts by [the cluster reconciliation](../matrices/008_tensions_rising_cluster_and_achievements.md); source intent still needs an owner decision.
-Use [the owner state map](../../../plans/008_tensions_rising_plans/documentation_state_2026-10-05.md) before treating any helper or follow-up proposal as remaining implementation work.
-
-> Documentation reconciliation, 2026-07-29: `docs/events/008_tensions_rising/overview.md` is the current implementation-facing record for Event 008. The planning-era `To Be Reworked` label and open implementation decisions below are retained as historical intake context; they are not an active rework queue unless the parent explicitly reopens Event 008.
+Disposition: unresolved source-design acceptance beyond the bounded corrections the parent accepted on 5 and 6 October 2026.
+Accepted corrections are recorded in [the owner decisions](../../../plans/008_tensions_rising_plans/agent_decisions_2026-10-05.md), the [balance decisions](../../../plans/008_tensions_rising_plans/balance_evidence_2026-10-06/owner_balance_decisions.md), and [the owner state map](../../../plans/008_tensions_rising_plans/documentation_state_2026-10-05.md); this spec describes them as current design.
+`docs/events/008_tensions_rising/overview.md` is the implementation-facing record; the catalog status is `Needs Testing`.
+Design not yet accepted lives only in the README's open questions.
 
 ## Event identity
 
-**Event ID:** `8`  
-**Event name:** `Tensions Rising`  
-**Type:** Minor Repeatable  
-**Status:** To Be Reworked  
-**Cluster handling:** `Diplomatic Panic` may be kept, with for now one member at low severity
-**World-end scenario:** None
+| Field | Value |
+| --- | --- |
+| Event ID | `8` |
+| Event name | `Tensions Rising` |
+| Type | Minor Repeatable |
+| Implementation | implemented in source; runtime, GUI, and probability validation incomplete |
+| Cluster | unresolved; see Cluster design |
+| World-end scenario | none |
 
-`Tensions Rising` is the small headline that makes the rest of the world feel less stable. It does not release a country, start a focus tree, create a formable, or end the world. It is a pressure event that makes the ordinary Chaos Redux timer and diplomatic memory feel alive: early it nudges world tension upward, later it becomes a ritual of public denials, secret cables, mobilization scares, poisoned relations, insurance spikes, propaganda opportunism, and exhausted general staffs.
+`Tensions Rising` is the small headline that makes the rest of the world feel less stable.
+It does not release a country, start a focus tree, create a formable, or end the world.
+It is a pressure event that makes the ordinary Chaos Redux timer and diplomatic memory feel alive: early it nudges world tension upward, and later it becomes a ritual of public denials, secret cables, mobilization scares, poisoned relations, insurance spikes, and exhausted general staffs.
 
-The reworked event keeps the user-provided core:
+The user's original brief set the core:
 
-- In Calm World, the event raises world tension by `+100` and should only fire while world tension is below `100%`.
-- Once the first evolution is active, the event can fire even when world tension is already `100%`.
-- Later evolutions add direct chaos, larger world tension packets, temporary timer pressure, relation damage, delayed follow-up incidents, and rare safe high-stage border wars.
+- In Calm World, the event raises world tension and fires only while world tension is below full.
+- Once the first evolution is active, the event can fire even when world tension is already full.
+- Later evolutions add direct chaos, larger world-tension packets, temporary timer pressure, relation damage, delayed follow-up incidents, and rare safe high-stage border clashes.
 - The event never has a world-end scenario.
+
+The brief's packet sizes (`+100` to `+1000` requested threat) were replaced on 6 October 2026 by the accepted 2/3/5/8/12 ladder under the user's G4/G6 balance direction, because the original baseline alone pushed a 1936 world to 99 percent tension; vanilla Rhineland adds 5.
 
 The emotional center is every government acting as if a map is about to change.
 
 ## Player-facing fantasy
 
-The player should see `Tensions Rising` as an apparently simple repeatable event that becomes increasingly uncomfortable. At first it is a straightforward tension bump. Later, the same headline starts leaving fingerprints: embassies close side doors, neutral shipping gets nervous, opposition newspapers claim secret mobilization, staff cars move after midnight, and old allies start filing formal complaints.
+The player should see `Tensions Rising` as an apparently simple repeatable event that becomes increasingly uncomfortable.
+At first it is a straightforward tension bump.
+Later, the same headline starts leaving fingerprints: embassies close side doors, neutral shipping gets nervous, opposition newspapers claim secret mobilization, staff cars move after midnight, and old allies start filing formal complaints.
 
-The event should feel different from direct war events. It is about the world preparing to make mistakes. It should push the campaign toward volatility without replacing the existing war, alliance, and major-event systems.
+The event is about the world preparing to make mistakes.
+It pushes the campaign toward volatility without replacing the existing war, alliance, and major-event systems.
+
+## Visible values
+
+The report shows only two numbers: the world tension and the overall Chaos actually changed by the shocks in its batch, with one decimal and a colour-free decrease branch when net Chaos falls.
+It does not show requested packets, pulse strength, pair counts, opinion values, posture ideas, or follow-up odds.
+Relation damage is visible in the diplomacy view through named opinion modifiers, and follow-ups are visible as their own reports.
+No other player-facing value or meter is part of this event.
 
 ## Baseline Calm World incident
 
-### Name direction
-
-Working popup title: **Tensions Rising**
-
-The baseline report follows a specific disturbance in ordinary life, such as patrols lingering along a disputed frontier, crews refusing a familiar route, or travellers repeating the same accusation in several ports. Name the affected place or relationship when that information is reliable. Keep the cause uncertain and let concrete behaviour carry the unease. Finished wording belongs to localisation implementation.
-
-### Baseline trigger and effect
-
-The baseline version fires only while the world remains below full tension.
+The baseline report follows a specific disturbance in ordinary life, such as patrols lingering along a disputed frontier, crews refusing a familiar route, or travellers repeating the same accusation in several ports.
+Keep the cause uncertain and let concrete behaviour carry the unease; finished wording lives in localisation.
 
 | Stage | World state | Fire condition | Direct effects | Hidden side effects |
 | --- | --- | --- | --- | --- |
-| Baseline | Calm World / no Event 8 evolution active | World tension below `100%` | `+100` world tension | None beyond normal Minor Repeatable event-system consequences |
+| Baseline | Calm World or the current stage's evolution disabled | world tension below full | requested `+2` world tension | none beyond normal Minor Repeatable consequences |
 
-The baseline version should be clean and readable. Do not add relation damage or direct chaos at this level. It is the first crack in the glass, not the first shard.
-
-### Baseline player text promise
-
-The player-facing text should mention the public uncertainty and the rise in tension. It should not mention hidden future systems, hidden event weights, future evolutions, or timer manipulation.
-
-Option direction: restrained acknowledgement from a government deciding how seriously to treat the disturbance. Mild irony can fit the baseline, while higher-stage incidents should show fatigue or practical concern.
+The baseline is the first crack in the glass: no relation damage and no direct chaos.
+Player text mentions public uncertainty and the rise in tension, never hidden systems, weights, evolutions, or timer manipulation.
 
 ## Evolved identity
 
 `Tensions Rising` has one evolution track: **Diplomatic Fever**.
+Each stage changes how future firings behave; it does not require the event to fire when the Chaos tier changes.
 
-This track is not an ordinary stage progression. It represents the world learning how to panic faster. Each evolution changes how future firings behave, it does not require the event to fire instantly when the chaos tier changes.
-
-The track has four stages, matching the user-provided progression:
-
-| Evolution stage | Working title | Minimum chaos tier | World tension effect | Chaos effect | Can fire at 100% world tension? | Hidden layer |
+| Stage | Title | Chaos tier | Requested world tension | Chaos | Fires at full tension | Hidden layer |
 | --- | --- | --- | --- | --- | --- | --- |
-| I | Cable Traffic Flood | Gathering Storm | `+100` | `+10` | Yes | light timer pulse, one or two diplomatic shocks, optional delayed incident |
-| II | The Accusation Market | Rising Chaos | `+200` | `+15` | Yes | stronger timer pulse, multiple opinion shocks, temporary pressure spirits |
-| III | General Staffs Stop Sleeping | Chaos Tier | `+500` | `+25` | Yes | heavy timer pulse, war-plan fever, near-miss follow-ups |
-| IV | The Permanent Alert | Totalen Chaos | `+1000` | `+50` | Yes | severe timer pulse, broad relation damage, delayed incidents, rare safe border clashes |
+| I | Cable Traffic Flood | Gathering Storm | `+3` | `+10` | yes | light pulse, one or two relation shocks, cautious AI posture, possible follow-up |
+| II | The Accusation Market | Rising Chaos | `+5` | `+15` | yes | stronger pulse, two or three shocks, rearmament posture ideas |
+| III | General Staffs Stop Sleeping | Chaos Tier | `+8` | `+25` | yes | heavy pulse, three to five shocks, near-miss follow-ups, rare border clashes |
+| IV | The Permanent Alert | Total Chaos and above | `+12` | `+50` | yes | severe capped pulse, five to eight shocks, strongest follow-ups and clash odds |
 
-The evolution should be recorded when the stage becomes active or first manifests. Event detail text should preview the evolved behavior in broad terms, but it should not reveal the full random headline list or exact pair-selection math.
+Stage titles are working design names; the in-game evolution titles are listed in the [log and localisation direction](008_tensions_rising_event_log_and_localisation.md).
+A stage applies only while the current Chaos tier reaches it and that stage's evolution checkbox is enabled; a disabled stage falls back to the baseline packet.
+The evolution is recorded the first time a stage's packet applies.
+Event details preview each stage in broad terms without the random headline list or pair-selection math.
 
-## Evolution stage I: Cable Traffic Flood
+Requested world tension is distributed as named threat across eligible existing countries: each receives an equal slice no smaller than `tensions_rising_world_tension_gain.minimum_country_slice`, so a packet reaches at most packet/0.1 sources.
+An automatic shock starts a 30-day global cadence (`tensions_rising_reporting.automatic_cooldown_days`); manual forces bypass it but still refresh it.
 
-At Gathering Storm, public fear becomes self-reinforcing. The same event now adds chaos directly and can fire even when ordinary world tension is already maxed out.
+### Stage tone
 
-### Direct effects
+- Stage I is wires, clerks, desk lamps, and official denials; no country has crossed the line yet.
+- Stage II is louder and more cynical: rumour becomes a commodity for newspapers, ministries, arms firms, and foreign sponsors.
+- Stage III reads like fatigue in the armed services; it tilts AI and events toward conflict without creating free wars.
+- Stage IV is quiet and sustained: every ministry keeps its lights on through the night, and the corrosion matters more than the tension bar.
 
-- `+100` world tension.
-- `+10` chaos.
-- Can fire at `100%` world tension.
+## Hidden Tension Pulse
 
-### Hidden effects
+The pulse temporarily raises automatic event pressure through the existing timer: `calculate_next_timer_value` calls `apply_tensions_rising_timer_pressure_to_next_timer`, with no new daily, weekly, or monthly loop.
 
-- Apply a small temporary **Tension Pulse** to the automatic event pacing logic.
-- Apply one or two timed negative opinion modifiers between plausible diplomatic rivals.
-- Small chance of a delayed incident event several days later.
+| Stage | Pulse strength | Duration band | Equal-stage extension | Cap |
+| --- | ---: | --- | --- | --- |
+| I | 1 | 45-75 days | 30 days | 105 days |
+| II | 2 | 75-120 days | 45 days | 165 days |
+| III | 4 | 120-180 days | 60 days | 240 days |
+| IV | 7 | 180-240 days | 75 days | 315 days |
 
-### Tone
+A stronger pulse replaces a weaker one; an equal-stage repeat converts the exact remaining time to days, extends it, and clamps to the cap; a weaker pulse never lowers an active one.
+Values live in `tensions_rising_timer_pulse`.
+Reports may convey an accelerating succession of disturbances, but no surface shows the timer formula or forecasts another event by name.
 
-Stage I should feel like wires, clerks, desk lamps, and official denials. No country has crossed the line yet. More capitals are drawing their own.
+## Relation damage
 
-### Follow-up incident candidates
+`Tensions Rising` damages plausible rivals rather than everyone equally.
+`select_tensions_rising_relation_pairs` prefers majors and faction leaders, and filters capitulated countries, subjects, special chaos countries, and direct war opponents; same-faction pairs are excluded at Stages I-II only.
+Primary selection avoids actors hit within the 150-day selector cooldown; the fallback passes that bypass it are a known limitation with a proposal in the README.
 
-- **The Telegram Nobody Signed**  -  a leaked diplomatic message is denied by every government named in it.
-- **Embassy Side Doors**  -  staff begin using side entrances and refusing public comment.
-- **The Calm Map Says Nothing**  -  if world tension is already `100%`, newspapers note that official statistics can no longer measure the mood.
+| Stage | Pairs | Opinion modifier | Value | Duration |
+| --- | ---: | --- | ---: | --- |
+| I | 1-2 | `tensions_rising_leaked_cables` | -15 | 120 days |
+| II | 2-3 | `tensions_rising_mobilization_suspicion` | -25 | 180 days |
+| III | 3-5 | `tensions_rising_border_alarm` | -40 | 240 days |
+| IV | 5-8 | `tensions_rising_permanent_alert` | -75 | 360 days |
 
-## Evolution stage II: The Accusation Market
-
-At Rising Chaos, fear becomes a market. Every rumor is valuable to somebody: opposition parties, arms manufacturers, intelligence offices, border commanders, nationalist newspapers, and foreign sponsors.
-
-### Direct effects
-
-- `+200` world tension.
-- `+15` chaos.
-
-### Hidden effects
-
-- Apply a stronger temporary Tension Pulse.
-- Apply two or three timed negative opinion modifiers between rival countries.
-- Select one or more eligible countries for a temporary national spirit or timed country modifier representing panic-driven policy: higher war support or mobilization willingness, lower stability or diplomatic trust.
-- Increase temporary selection pressure for nearby diplomatic and war-adjacent events without directly forcing those events.
-
-### Tone
-
-Stage II is louder and more cynical. Governments continue to deny war as ministries, newspapers, and markets behave as if war has become sellable.
-
-### Follow-up report candidates
-
-- **Insurance Rates Jump in Neutral Ports**  -  convoy operators price the panic before diplomats can describe it.
-- **One Denial Too Many**  -  a government’s third denial is treated as evidence by its enemies.
-- **The Rumour That Arrived Twice**  -  identical false reports arrive in two capitals from supposedly separate sources.
-
-## Evolution stage III: General Staffs Stop Sleeping
-
-At Chaos Tier, suspicion enters the armed services. The event should make the AI and event ecosystem more willing to tilt toward conflict, but it should not create free wars. Wars still belong to war events, focuses, decisions, claims, and AI strategy.
-
-### Direct effects
-
-- `+500` world tension.
-- `+25` chaos.
-
-### Hidden effects
-
-- Apply a heavy Tension Pulse.
-- Apply three to five timed relation shocks, weighted toward major powers, faction leaders, border rivals, ideology rivals, claim holders, and countries with recent hostile history.
-- Create a chance of a **near-miss** follow-up: fleets shadow each other, border guards exchange warning shots, staff maps are copied, or a mobilization order is drafted and recalled.
-- Temporarily increase AI willingness for hostile diplomatic posture, guarantees, faction invitations, military build-up, and existing war-adjacent decisions.
-
-### Tone
-
-Stage III should read like fatigue. The world is angry, tired, and jumpy, running on memoranda no one wants to sign.
-
-### Follow-up report candidates
-
-- **Staff Cars After Midnight**  -  capital witnesses report military vehicles outside offices after hours.
-- **Fleets Keep Radio Silence**  -  a naval incident almost becomes public.
-- **Border Lamps**  -  lights remain on along a frontier where no government admits anything is happening.
-
-## Evolution stage IV: The Permanent Alert
-
-At Totalen Chaos, tension is no longer a metric. It is the climate. This stage may fire while world tension is already maxed, because the actual effect is no longer the number on the tension bar, it is the diplomatic corrosion and event-pacing pressure that follow.
-
-### Direct effects
-
-- `+1000` world tension.
-- `+50` chaos.
-
-### Hidden effects
-
-- Apply a severe Tension Pulse with a hard cap and replacement logic so repeated firings do not create an infinite acceleration exploit.
-- Apply five to eight relation shocks, with some weighted toward globally meaningful pairs.
-- Strong chance of delayed news follow-up.
-- Temporary AI strategy should treat the world as “permanent alert”: more hostile posture, more sensitivity to guarantees and rival alliances, higher interest in existing war-preparation decisions, but no forced normal war declarations.
-
-### Tone
-
-Stage IV is quiet and sustained. Its frightening image is every ministry keeping its lights on through the night.
-
-## Hidden Tension Pulse system
-
-The Tension Pulse is the event’s most important hidden mechanic. It should temporarily boost automatic event firing pressure, but only by using existing event-timer logic or a small helper called from that logic. It should not add a new daily, weekly, or monthly world loop.
-
-### Design goals
-
-- Make evolved firings feel like they accelerate the campaign.
-- Keep the pulse temporary and capped.
-- Prevent repeated Stage IV firings from collapsing the timer into an uncontrollable loop.
-- Let stronger pulses replace weaker pulses.
-- Let equal-stage repeated pulses extend duration only within a capped extension.
-
-### Tension Pulse ladder
-
-| Stage | Working pulse strength | Duration band | Stack behavior |
-| --- | ---: | --- | --- |
-| I | `+1` pacing pressure | 45–75 days | replaces no pulse, extends weak active pulse modestly |
-| II | `+2` pacing pressure | 75–120 days | replaces Stage I, extends equal Stage II within cap |
-| III | `+4` pacing pressure | 120–180 days | replaces lower stages, capped extension |
-| IV | `+7` pacing pressure | 180–240 days | replaces all lower stages, capped extension, never stacks additively |
-
-The implementation may represent pulse strength as an added decrement, a next-timer compression adjustment, or another existing tuning-compatible pressure value. The spec does not require a new on-action loop. The coding agent must choose the least invasive integration point in the current event timer system.
-
-### Player visibility
-
-Later reports can convey an accelerating succession of disturbances through affected people, routes, and relationships. Tooltips explain the temporary consequence where useful. Event details should not present the hidden timer formula or forecast another event by name.
-
-## Relation damage system
-
-`Tensions Rising` should not randomly ruin every country’s diplomacy equally. It should choose plausible pairs.
-
-### Pair selection priorities
-
-High priority:
-
-- major powers
-- faction leaders
-- countries with claims against one another
-- countries that border one another
-- countries in opposing factions
-- ideology rivals
-- countries with recent hostile events, guarantees, or diplomatic failures
-- countries with large armies or high war support
-
-Low priority or excluded:
-
-- dead or invalid tags
-- subject-overlord pairs unless Stage III or IV specifically wants colonial panic
-- allies in the same faction at Stage I or II
-- special nonhuman or terminal actors unless they are explicitly meant to affect normal diplomacy
-- pairs already hit by the same event recently, unless Stage IV deliberately escalates the same rivalry
-
-### Opinion modifier ladder
-
-| Stage | Pairs | Suggested timed opinion hit | Duration direction |
-| --- | ---: | ---: | --- |
-| I | 1–2 | `-10` to `-15` | 60–120 days |
-| II | 2–3 | `-15` to `-25` | 90–180 days |
-| III | 3–5 | `-25` to `-40` | 120–240 days |
-| IV | 5–8 | `-40` to `-75` | 180–365 days |
-
-The final implementation should use named timed opinion modifiers with localisation that sounds diplomatic, such as:
-
-- `tensions_rising_leaked_cables`
-- `tensions_rising_embassy_dispute`
-- `tensions_rising_mobilization_suspicion`
-- `tensions_rising_border_alarm`
-- `tensions_rising_permanent_alert`
+Incidents also use `tensions_rising_embassy_dispute` (-20).
+Each directed stage-and-partner modifier is counted once through a partner-keyed timed flag, and `chaosx.nr8.21` removes the count when it expires.
+Every selected pair refreshes both actors' 120-day One Denial eligibility.
 
 ## Root reports and delayed incidents
 
-The [owner state map](../../../plans/008_tensions_rising_plans/documentation_state_2026-10-05.md) records the accepted report-batching tranche. Roots accumulate their actual world-tension and Chaos packets into one pending report for each recipient. The first effectful root supplies the batch's stage context, including when an earlier root contributed no effects. Acknowledgement describes the completed batch and never applies those packets again.
+The accepted report-batching tranche (6 October 2026) governs presentation.
+Hidden roots `chaosx.nr8.1` accumulate their actual world-tension and Chaos changes into one visible `chaosx.nr8.16` report per recipient.
+The first effectful root supplies the batch's stage context, including when an earlier root contributed no effects.
+Acknowledgement clears the batch and never applies its packets again.
 
-A batch can schedule at most one selected delayed incident from its first effectful evolved root. Further roots contributing to that same pending report add their effects without creating more follow-up invitations. A later independent batch has its own opportunity. This preserves a repeatable pressure event without multiplying popups while a player holds a report open.
+A batch can schedule at most one delayed incident from its first effectful evolved root; later roots in the same batch add effects without more follow-up invitations.
+A later independent batch has its own opportunity.
 
-The heavier incident bundles retain the unresolved acceptance boundary of the [follow-up addendum](../../../plans/008_tensions_rising_plans/008_followup_incident_improvement_addendum.md). The intended role is a smaller, distinct aftershock with an actual consequence. It must not advertise a new loss, reward, or border clash until the parent accepts that claim and its consumer is verified.
+### Aftershock scale
+
+An incident is a smaller, distinct aftershock with a real consequence, never a second root packet.
+Its world-tension packet must stay below the root packet of the stage that scheduled it, so the 6 October ladder cannot be bypassed through follow-ups.
+The current `tensions_rising_incident_world_tension` values (25 to 75) predate that ladder and exceed even the Stage IV root (12); they must be rescaled in source, which is listed as remaining work in the coding prompt.
+Incident Chaos (2 to 10) already stays below the root Chaos packets.
 
 ### Delivery and delay
 
-The retained delay bands are 5–15 days at Stage I, 4–12 at Stage II, 3–10 at Stage III, and 2–8 at Stage IV. Their selection and timing require the owner's named probability scenarios before tuning is accepted.
+Delay bands are 5-15 days at Stage I, 4-12 at Stage II, 3-10 at Stage III, and 2-8 at Stage IV, with follow-up chances of 30/50/75/90 percent.
+Their tuning still needs the owner's named probability scenarios before numerical acceptance.
 
-At delivery, use the currently enabled evolved stage. An evolution disabled during the delay cannot return through an internal Stage I fallback. If no evolved stage remains available, close the delayed effect without inventing an aftershock or repeating the root payment. A terminal campaign state closes the queued ordinary incident. Frozen root-report totals remain a record of what already happened.
+At delivery, an incident uses the currently enabled evolved stage.
+An evolution disabled during the delay cannot return through an internal Stage I fallback, and a terminal campaign state closes the queued incident.
+Frozen root-report totals remain a record of what already happened.
 
-For a proposed border clash, recheck both countries, adjacent owned-and-controlled states, peace, independence, faction separation, existing border conflict, and the global and actor cooldowns immediately before starting combat. A failed pair search leaves only the incident's accepted non-combat effects. It cannot turn into a war goal, territory transfer, a substitute normal declaration, or a new Event 008 firing.
+For a border clash, recheck both countries, adjacent owned-and-controlled states, peace, independence, faction separation, existing border conflict, and the global and actor cooldowns immediately before starting combat.
+A failed pair search leaves only the incident's other effects; it cannot become a war goal, territory transfer, substitute normal declaration, or new Event 008 firing.
 
 ### Incident families
 
-| Working incident family | Distinct consequence |
-| --- | --- |
-| Telegram Nobody Signed | a light tension and diplomatic aftershock |
-| Embassy Side Doors | diplomatic friction and a temporary posture response |
-| Unease Along the Frontier | continuing pressure when the tension bar is already full |
-| Insurance Rates Jump in Neutral Ports | shipping pressure and the peaceful convoy-owner achievement hook |
-| Rumour That Arrived Twice | two distinct diplomatic accusations rather than another root packet |
-| Staff Cars After Midnight | temporary preparation pressure around an eligible major |
-| Fleets Keep Radio Silence | maritime preparation and diplomatic friction |
-| One Denial Too Many | heavier diplomatic damage with a proposed late-stage clash |
-| Border Lamps | a proposed safe adjacent non-transfer clash and diplomatic consequences |
-| Last Normal Briefing | the strongest bounded aftershock on its earned Stage IV occasion |
+| Event | Incident | Distinct consequence |
+| --- | --- | --- |
+| `.2` | The Telegram Nobody Signed | light tension and diplomatic aftershock |
+| `.3` | Embassy Side Doors | diplomatic friction and a temporary AI posture response |
+| `.4` | Unease Along the Frontier | continuing pressure when the tension bar is already full |
+| `.5` | Insurance Rates Jump in Neutral Ports | shipping pressure and the Insurance Market achievement hook |
+| `.6` | The Rumour That Arrived Twice | two distinct diplomatic accusations |
+| `.7` | Staff Cars After Midnight | temporary preparation pressure around eligible AI majors |
+| `.8` | Fleets Keep Radio Silence | maritime preparation and diplomatic friction |
+| `.9` | Border Lamps | heavier diplomatic damage and a Stage III+ safe non-transfer clash attempt |
+| `.10` | One Denial Too Many | heavier diplomatic damage and a Stage III+ clash attempt |
+| `.12` | The Last Normal Briefing | the strongest bounded aftershock on its first Stage IV occasion |
 
-These labels identify design families and are not final popup wording. The historical Calm Map Says Nothing label maps to the current Unease Along the Frontier family without renaming its existing helper.
+`.11` is deliberately unused, `.13`-`.15` resolve clash outcomes, `.20` is the Thin Wire watch, and `.21` is the opinion expiry.
+There is no Event 008 news event; the retained red-line news image has no consumer.
+
+## Connections to other systems
+
+| System | Connection |
+| --- | --- |
+| Chaos Meter | Evolved roots and incidents add Chaos through `add_chaos_meter_value` under the Tensions Rising history reason; world tension also feeds the shared derived Chaos update. |
+| Event timer | The pulse compresses the next automatic timer roll. |
+| Event 011 Secret Alliance | See below. |
+| Event 017 Random Faction | Shares the current source cluster; see Cluster design. |
+
+Border clashes are not war relations and capture no states, so they add no war-declaration Chaos and no capture-driven migration pressure; this keeps them contained.
+Famine, migration, camps, CBRN, fallout, and condemnation have no natural Event 008 connection, and none should be invented.
 
 ### Connection to Secret Alliance
 
-When Event 011 is active, an Event 008 opinion shock involving its fixed target and a candidate or member can influence that country's ordinary diplomatic context. Event 008 owns the timed shock and its pressure receipt. Event 011 owns recruitment, motive evaluation, operation evidence, and reveal. A repeated rumour or global pulse alone supplies no pact clue, confirmed suspect, readiness grant, or extra Chaos packet. A non-transfer border clash remains outside the hostile normal-war reveal rule. If a later normal war involves an active member and the fixed target, Event 011 applies its existing immediate reveal contract.
+When Event 011 is active, an Event 008 opinion shock involving its fixed target and a candidate or member can influence that country's ordinary diplomatic context.
+Event 008 owns the timed shock and its pressure receipt.
+Event 011 owns recruitment, motive evaluation, operation evidence, and reveal.
+A repeated rumour or global pulse alone supplies no pact clue, confirmed suspect, readiness grant, or extra Chaos packet.
+A non-transfer border clash remains outside the hostile normal-war reveal rule.
+If a later normal war involves an active member and the fixed target, Event 011 applies its existing immediate reveal contract.
 
-Future checks must distinguish a shared rumour without an Event 011 dossier, an independently corroborated Event 011 operation during panic, a border clash, and a normal hostile war. Ordinary Event 008 play remains unchanged when the alliance is absent.
+Future checks must distinguish a shared rumour without an Event 011 dossier, an independently corroborated Event 011 operation during panic, a border clash, and a normal hostile war.
+Ordinary Event 008 play remains unchanged when the alliance is absent.
 
 ## Cluster design
 
-Event 8 does not require a cluster. If the `Diplomatic Panic` cluster is kept, treat it as a small catalogue wrapper for the diplomatic-panic identity of the event.
+Event 8 does not require a cluster, and its cluster record is unresolved.
 
-Current cluster: **Diplomatic Panic**
-
-### Current membership
-
-| Member | Role | Member severity | Notes |
+| Record | Identity | Members | Severity |
 | --- | --- | --- | --- |
-| Event 8: Tensions Rising | required | low | for now one member, applies normal Event 8 effects |
+| Current source (`event_cluster_constants.txt`, `chaosx_event_cluster_effects.txt`) | ID 3 `Diplomatic Panic`, repeatable, unlock tier 0, 120-day cooldown | Event 8 required, Event 17 optional | Low, Low |
+| Workbook catalog | ID 3 `Diplomacy`, `Partially Available` | Events 8, 17, 36, 59 | Medium, Medium, High, High |
 
-### Cluster unlock and chance
-
-- Recommended unlock: Calm World.
-- Stage I+ can use a conservative cluster roll if the existing cluster system needs one.
-- Cluster cooldown should be moderate to long so the Clusters tab does not become spammed by this event.
+The cluster owner must choose one record and supply its acceptance basis; this spec selects neither.
+A proposal on severity is in the README.
 
 ## Stage IV presentation
 
-Stage IV should stay within the normal event-log, evolution, option-tooltip, delayed-report, and achievement surfaces. It does not trigger a super-event.
+Stage IV stays within the normal report, event-log, evolution, option-tooltip, delayed-incident, and achievement surfaces.
+It does not trigger a super-event; the world is not over, only no longer calm enough to believe its own denials.
 
-### What it communicates
+## Achievements
 
-- The world is not over.
-- The world is no longer calm enough to believe its own denials.
-- The event remains non-terminal, it increases pressure rather than resolving the campaign.
-
-## Achievement design
-
-The event is a minor repeatable, but it can still support achievements because the evolved hidden mechanics create rare global states. Achievements should reward unusual survival, rare timing, or seeing deep-stage consequences without confusing them with a world-end scenario.
+Achievements reward unusual survival, rare timing, or deep-stage consequences, never seeing the popup once.
 
 | Achievement key | Title | Visibility | Difficulty | Core unlock idea |
 | --- | --- | --- | --- | --- |
-| `achievement_tensions_thin_wire` | The Thin Wire | visible | hard | survive 180 days at `100%` world tension after Stage III+ without entering a player war |
-| `achievement_tensions_only_headlines` | Only Headlines | hidden | very hard | see three Stage II+ Event 8 firings while the world has no active wars |
-| `achievement_tensions_insurance_market` | The Insurance Market Knows | visible | medium | trigger the neutral-port insurance follow-up while owning a convoy pool and staying out of war |
-| `achievement_tensions_one_denial` | One Denial Too Many | hidden | hard | have a recently affected Event 8 relation actor enter a war relation within 120 days after Event 8 relation damage |
-| `achievement_tensions_blackout` | Diplomatic Blackout | visible | hard | have ten distinct Event 8 timed opinion modifiers active globally at once |
+| `achievement_tensions_thin_wire` | The Thin Wire | visible | hard | stay at peace for 180 days at full world tension after Stage III+ |
+| `achievement_tensions_only_headlines` | Only Headlines | hidden | very hard | receive three report batches first shown at Stage II+ while the world has no active wars |
+| `achievement_tensions_insurance_market` | The Insurance Market Knows | visible | medium | receive the insurance follow-up while at peace with at least 30 convoys |
+| `achievement_tensions_one_denial` | One Denial Too Many | hidden | hard | a country with its own 120-day relation-damage eligibility enters a war relation |
+| `achievement_tensions_blackout` | Diplomatic Blackout | visible | hard | ten distinct Event 8 timed opinion modifiers active at once |
 
-Achievement implementation should be careful. The player should not unlock achievements just because Event 8 fires once.
+Details and tracking limits are in the [cluster and achievement matrix](../matrices/008_tensions_rising_cluster_and_achievements.md).
 
 ## AI behavior
 
-The event is global, but AI countries are affected by relation damage, temporary posture weights, and follow-up hooks.
+- AI never declares a normal war because Event 8 fired.
+- Every evolved root applies a short hidden posture idea, one per stage, to a stage-scaled number of AI majors, faction leaders, or countries at war: `tensions_rising_cautious_alignment`, `tensions_rising_alarmist_rearmament`, `tensions_rising_general_staff_fever`, and `tensions_rising_permanent_alert`.
+- Those ideas raise alliance desire, cheapen guarantees, and at higher stages add war support, arms production, and planning at a stability cost.
+- AI avoids impossible or nonsensical actions when a target is dead, allied, unreachable, or protected by a route rule.
 
-### AI principles
+The [AI matrix](../matrices/008_tensions_rising_ai_matrix.md) lists the stage behavior.
 
-- AI should not declare war solely because Event 8 fired.
-- AI can become more willing to use existing war-adjacent or diplomacy-adjacent systems.
-- AI should respond more strongly at Stage III and Stage IV.
-- AI should avoid impossible or nonsensical actions when the target is dead, allied, unreachable, or protected by a route rule.
+## Assets
 
-### AI stage behavior
-
-| Stage | AI behavior direction |
+| Asset | Status |
 | --- | --- |
-| Baseline | no special AI change beyond normal world tension consequences |
-| Stage I | slightly higher interest in guarantees, defensive alignment, and cautious posture |
-| Stage II | higher interest in rearmament, guarantees, hostile diplomatic options, and secret-alignment events |
-| Stage III | significant temporary war-plan fever, major powers and rivals become more likely to take existing hostile preparation decisions |
-| Stage IV | permanent-alert posture, strong but capped pressure toward existing crisis, alliance, and war systems |
+| `GFX_report_event_tensions_rising` (210x176) | wired on `.1`/`.16` and the incidents |
+| `GFX_news_event_tensions_red_line` (397x153 B&W) | registered, cropped on 6 October, no consumer |
+| fifteen achievement DDS files (64x64 triplets) | wired |
+| optional animated event-detail pulse | not needed; no accepted UI surface |
 
-## Asset plan summary
-
-The event needs a small but complete asset family.
-
-| Asset | Type | Size | Source mode | Direction |
-| --- | --- | --- | --- | --- |
-| `report_event_tensions_rising` | report event image | 210x176 | generated staged-documentary, or sourced generic period diplomatic material if available | desks, cables, newspapers, embassy lamps, no readable text |
-| `news_event_tensions_red_line` | news image | 397x153 B&W | generated period press image | crowds outside embassy gates, bundled newspapers, police line, no readable text |
-| achievement icons | achievements | 64x64 | generated icons | thin wire, blackout embassy, insurance ledger, denial stamp |
-| optional event-detail pulse | small animated UI/state accent | existing size/pattern | generated icon frames if UI supports it | subtle telegraph pulse, static fallback required |
-
-No country flags, leader portraits, focus icons, country portraits, or formable seals are required because this event does not create a country or focus tree.
+Source provenance for these assets is unresolved because the historical archive was deleted; see the asset prompt.
+No country flags, leader portraits, focus icons, or formable seals are required.
 
 ## No focus tree, no country package, no formable
 
-This event must not grow into a country-creation or focus-tree event. Its depth comes from global systems and hidden diplomatic consequences. Creating a new tag here would make the event worse by turning a general pressure mechanic into a specific actor.
-
-If a future design wants a country based on permanent mobilization, diplomatic panic, or world-government collapse, it should be a separate event or major-event branch, not Event 8.
+This event must not grow into a country-creation or focus-tree event.
+Its depth comes from global systems and hidden diplomatic consequences.
+A future design for permanent mobilization or world-government collapse belongs to a separate event, not Event 8.
 
 ## Event details and log surfaces
 
-Event 8 should appear in:
-
-- random-event history
-- event details catalogue
-- evolution detail previews
-- evolution history when each stage is recorded
-- delayed incident/news history if those subevents are logged
-- cluster history if `Diplomatic Panic` is implemented
-
-The event’s default actor is global. Evolution rows do not need a country actor unless a follow-up report intentionally names a pair. Avoid storing broad global event targets for relation pairs when regular event targets or generic reports are enough.
-
-## Event detail wording direction
-
-Recommended event detail summary:
-
-> “This repeatable pressure incident follows public accusations, leaks, and military communiqués as diplomatic distrust spreads. Later stages bring broader panic through embassies, markets, staff rooms, and border offices. Even when tension is already high, the same headline can return with new diplomatic aftershocks.”
-
-Recommended evolution detail summary:
-
-> “The Diplomatic Fever track turns public tension into a visible pressure cycle. Later stages spread rumours through embassies, markets, staff rooms, and border offices, and the final stage keeps the alert present without becoming a terminal branch.”
+Event 8 appears in random-event history, the event details catalogue, evolution previews, evolution history per recorded stage, and cluster history.
+Its default actor is global, and evolution rows need no country actor.
+Detail text describes the situation and premise, not timer values, penalties, or achievement routes; the final keys are listed in the [log and localisation direction](008_tensions_rising_event_log_and_localisation.md).
 
 ## Balance and exploit limits
 
-- Relation damage must be timed.
-- Timer pulse must be capped.
-- Same-strength pulse must not stack additively.
-- Stage IV must not trigger a super-event or world-end branch.
-- Delayed reports should not recursively schedule more Event 8 firings.
-- The event must not create direct war goals.
-- High-stage border incidents may start non-transfer border wars only through safe adjacent-pair checks and cooldowns.
-- Any temporary AI war-plan pressure must use existing valid route and target checks.
+- Relation damage is timed and counted once per directed stage-and-partner modifier.
+- The timer pulse is capped and never stacks additively.
+- Automatic shocks respect the 30-day cadence.
+- Incident packets stay below their stage's root packet.
+- Stage IV triggers no super-event or world-end branch.
+- Delayed reports never schedule further Event 8 firings.
+- The event creates no war goals, cores, claims, or free units.
+- High-stage incidents start non-transfer border clashes only through safe adjacent-pair checks and cooldowns.
+- Temporary AI pressure uses existing valid route and target checks.
 
-## Open implementation decisions
+## Resolved implementation decisions
 
-1. Whether to implement `Diplomatic Panic` immediately or leave it as a small queued note.
-2. Whether relation-pair follow-up incidents should name exact countries or remain generic. Generic is safer and easier to de-duplicate.
-3. Whether the timer pulse should modify daily decrement or next timer roll compression. The correct answer depends on the current event timer implementation.
-4. Whether the workbook should be updated in the same implementation pass or after localisation is final. The spreadsheet worker should use in-game localisation as source-of-truth.
+1. Follow-up incidents remain generic reports rather than naming exact pairs.
+2. The pulse compresses the next timer roll inside `calculate_next_timer_value`.
+3. Workbook wording follows final localisation and is queued in `docs/plans/008_tensions_rising_plans/catalog_changes_pending.md`.
+4. The cluster record remains unresolved with the cluster owner.

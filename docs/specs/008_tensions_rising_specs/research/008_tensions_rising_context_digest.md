@@ -2,6 +2,9 @@
 
 This package was built from the user-provided Event 008 rework brief and the uploaded Chaos Redux guidance files.
 
+This is historical intake context.
+Two of its records are superseded: the world-tension packets below were replaced on 6 October 2026 by the accepted 2/3/5/8/12 ladder (see the main spec), and the single-member Diplomatic Panic choice is superseded by the unresolved cluster record in the cluster matrix.
+
 ## User source of truth
 
 - Event ID: `8`
@@ -31,7 +34,9 @@ This package was built from the user-provided Event 008 rework brief and the upl
 
 ## Workbook note
 
-The uploaded catalog workbook still had Event 8 detail text equivalent to `Increase world tension by 5.` The user prompt supersedes that stale row for this source-spec package. The workbook itself was not modified. After implementation, the spreadsheet worker should update it from final in-game localisation and event-detail text.
+The uploaded catalog workbook still had Event 8 detail text equivalent to `Increase world tension by 5.` The user prompt supersedes that stale row for this source-spec package.
+The workbook itself was not modified.
+After implementation, the spreadsheet worker should update it from final in-game localisation and event-detail text.
 
 ## Design choices made
 
