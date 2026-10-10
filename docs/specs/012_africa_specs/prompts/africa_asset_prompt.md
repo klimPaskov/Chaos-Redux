@@ -29,11 +29,11 @@ Dated counts are not a current completion finding or approval to regenerate ever
 
 Split production by source mode.
 
-Follow [chaos-redux-event-assets](../../../../.agents/skills/chaos-redux-event-assets/SKILL.md) for current source modes and ownership.
+Follow [chaos-redux-event-assets](../../../../.claude/skills/chaos-redux-event-assets/SKILL.md) for current source modes and ownership.
 Every grounded, fictional, nonhuman, or institutional character portrait belongs to `chaosx_portrait_creator`.
 `chaosx_asset_source_researcher` owns non-portrait historical flags, symbols, architecture, and archival images.
 `chaosx_generated_event_art` owns fictional non-portrait scenes, flags, high-chaos art, panels, emblems, and decorative frames.
-Custom 3D packages belong to `chaosx_3d_model_pipeline` under [chaos-redux-3d-model-pipeline](../../../../.agents/skills/chaos-redux-3d-model-pipeline/SKILL.md), including sound and counter handoffs.
+Custom 3D packages belong to `chaosx_3d_model_pipeline` under [chaos-redux-3d-model-pipeline](../../../../.claude/skills/chaos-redux-3d-model-pipeline/SKILL.md), including sound and counter handoffs.
 
 Use the icon artist for focus, idea, national spirit, decision, achievement, technology, strange-unit, and small animated GUI icons.
 
@@ -41,7 +41,7 @@ Do not ask one worker to cover mixed sourced and generated packages without a cl
 
 ## Required deliverables
 
-Use [chaos-redux-event-assets](../../../../.agents/skills/chaos-redux-event-assets/SKILL.md) for the current production, provenance, native-alpha, processing, review, manifest, durable-record, and parent-wiring contract.
+Use [chaos-redux-event-assets](../../../../.claude/skills/chaos-redux-event-assets/SKILL.md) for the current production, provenance, native-alpha, processing, review, manifest, durable-record, and parent-wiring contract.
 For each selected matrix row, retain its exact asset key, source mode, dimensions, filename, sprite, consumer, final DDS or flag triplet, and explicit disposition.
 Return the row-to-file crosswalk and reviewable handoff; a prompt or source image alone does not finish an asset.
 
@@ -87,7 +87,7 @@ Focus, idea, decision, achievement, and technology icons are separate asset type
 
 The 78 route-payoff rows are focus roles, not necessarily 78 one-to-one focus icons. Assign icons to the final implemented focuses after the focus structure is fixed. The route capstone seals, route commitment values, and crisis icons remain separate UI and decision assets.
 
-Use native ImageGen transparency and preserve alpha under [chaos-redux-event-assets](../../../../.agents/skills/chaos-redux-event-assets/SKILL.md).
+Use native ImageGen transparency and preserve alpha under [chaos-redux-event-assets](../../../../.claude/skills/chaos-redux-event-assets/SKILL.md).
 Background removal is a recorded fallback, not the default production step.
 
 ## Animation rules

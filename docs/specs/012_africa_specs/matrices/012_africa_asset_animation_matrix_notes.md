@@ -2,11 +2,11 @@
 
 ## Production authority
 
-Use [chaos-redux-event-assets](../../../../.agents/skills/chaos-redux-event-assets/SKILL.md) for current portrait classification, source modes, subject ownership, native alpha, flag production, and manifest rules.
+Use [chaos-redux-event-assets](../../../../.claude/skills/chaos-redux-event-assets/SKILL.md) for current portrait classification, source modes, subject ownership, native alpha, flag production, and manifest rules.
 A matrix phrase such as fictional leader does not approve a generated face for a grounded or plausibly historical polity.
 Missing classification stays unresolved until the portrait owner supplies its acceptance basis.
 Advisor, commander, and high-command families below require an explicit accepted requirement; an exposed role or consumer alone does not authorize them.
-Custom models belong to [chaos-redux-3d-model-pipeline](../../../../.agents/skills/chaos-redux-3d-model-pipeline/SKILL.md).
+Custom models belong to [chaos-redux-3d-model-pipeline](../../../../.claude/skills/chaos-redux-3d-model-pipeline/SKILL.md).
 
 ## Purpose
 

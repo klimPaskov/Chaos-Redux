@@ -116,18 +116,36 @@ Confidence controls accession to deeper stages, departure risk, emergency suppor
 
 ## Supporting values
 
-The following values should exist where needed but should not clutter the main header:
+The following values support the five main values.
+They must stay out of the main header, and each one must be read by a real rule.
 
-- Regional Readiness for each geographic region
-- Diaspora Settlement Capacity
 - Diaspora Trust
 - Common Defence Stockpile
-- Member Representation Balance
 - Restoration Legitimacy for revived polities
 - Ecological Wrath for the high-chaos nature route
 - Continental War Readiness during external crises
+- Diaspora Settlement Capacity
+- Member Representation Balance
 
 The GUI can show selected-member breakdowns and selected-region details through tabs or cards.
+
+### Value economy rule
+
+A value earns its place by changing a decision, a requirement, a cost, an outcome, or an AI choice.
+The Charter header shows Authority, and the compact secondary block shows Colonial Pressure and Continental War Readiness, with Reach, Burden, and the member and regional details in tooltips.
+A tooltip must explain the few values that drive the player's next choice.
+It must not enumerate every tracked number, which the 10 October 2026 user brief rejects explicitly.
+A value that no trigger, cost, AI weight, or gate reads must either gain a consumer or stop being displayed.
+
+Audit finding, 2026-10-10: `africa_member_representation_balance` and `africa_diaspora_settlement_capacity` are initialised, clamped, raised by focuses, actions, and priority-member progress, staged across host transfer, and printed in the Charter tooltips, yet no trigger, cost, AI weight, or gate reads either one in current source.
+The repair proposal is recorded in the package README open questions and is not accepted design.
+
+### Regional readiness
+
+Readiness per region is expressed through one `africa_regional_equality` value plus the congress, corridor, overlay, and settlement receipts, not through nine separate per-region numbers.
+A congress, corridor, or settlement requirement should read those receipts.
+Replacing them with nine new displayed values is rejected as value clutter.
+A proposal to reword this requirement formally is in the README open questions.
 
 ## Member relationship states
 
@@ -427,6 +445,33 @@ A rival bloc may seek:
 ### Counterplay
 
 The host can offer reform, accept a competing congress, negotiate shared leadership, isolate the bloc, sponsor member defections, or prepare war. Bribing every member with the same resource should not be sufficient.
+
+Every counterplay action must leave a consequence that a later rule reads.
+An action that only prints a success line and writes a receipt nothing consumes is not counterplay.
+
+### Rival bloc lifecycle
+
+Audit finding, 2026-10-10: current source keeps `africa_rival_bloc_countries`, derives `africa_rival_bloc_count` from it, and raises a clamped `africa_rival_pressure` on failed actions, but only the existence of `africa_rival_pressure` is ever tested, never its magnitude.
+The counterplay receipts `africa_rival_bloc_dossier_complete`, `africa_rival_arbitration_accepted`, `africa_rival_defection_locally_accepted`, and `africa_rival_temporary_truce` are set and never read, so dossier work, arbitration, sponsored defection, and a truce currently change nothing after their immediate effect.
+Only `africa_rival_crisis_escalated` reaches the player, through the Charter warning.
+
+Proposed lifecycle (spec audit 2026-10-10, not accepted design). It adds no new value and uses only the state above:
+
+1. **Pressure.** Failed protection, broken clauses, coercive integration, and unequal extraction raise `africa_rival_pressure` on the affected member.
+   Its magnitude, not its existence, decides when that member moves to resistant and then to a bloc, so the number finally earns its place.
+   A member whose grievance is answered loses pressure.
+2. **Formation.** A bloc forms when enough resistant members share a region, a sponsor, or a constitutional objection.
+   `africa_rival_bloc_count` already gates route content and should also raise the AI weights for reform, arbitration, and emergency branches.
+3. **Contest.** The dossier receipt should reveal the bloc's goal and sponsor and open the targeted counterplay, instead of being written and forgotten.
+   Arbitration accepted should lower pressure across the bloc and raise Authority.
+   A locally accepted defection should remove one member from the bloc array and block an immediate re-entry.
+   A truce should suspend escalation for a stated term and prevent `africa_rival_crisis_escalated` during it.
+4. **Escalation or settlement.** Unanswered pressure sets the escalation flag, which should open war preparation, a competing congress, or a negotiated shared leadership.
+   A settled bloc dissolves by emptying the array, while the members keep their memory of how the host treated them.
+5. **Succession.** The existing rival-victory rule is unchanged: one inheritance of the continental project, with a reduced package and no repeated host switching.
+
+If the parent prefers not to give the magnitude a job, the honest alternative is to replace `africa_rival_pressure` with a flag, as the repository style rules require for state that is only ever true or false.
+Either choice is a decision for the owner, recorded in the package README open questions.
 
 ### Rival victory and succession
 
@@ -812,6 +857,7 @@ Actions 71–76 remain intentional controlled runtime gates and are not omission
 The Charter system is incomplete unless:
 
 - all five main values change through actual play
+- every supporting value is read by at least one trigger, cost, AI weight, or gate
 - each member has one relationship state
 - protection can exist without membership
 - membership can exist without integration

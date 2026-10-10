@@ -231,9 +231,13 @@ The user concept contains four post-baseline escalation layers. Project guidance
 
 This keeps the player-facing escalation intact and avoids violating the event log rule.
 
+Every evolution uses one weighted clock sampled only by the current host, with a 90-day base and a 45 to 180-day clamp in `constant:africa_evolution_clock`.
+War, a functioning region, high Authority, and high Colonial Pressure shorten it, while low member confidence and critical Burden lengthen it.
+Tuning belongs in those constants, not in individual evolution text.
+
 ### Evolution I: Regional consolidation
 
-Evolution I becomes available after the host has one functioning Charter region, has protected or integrated several states, and has shown that the project can survive a first crisis. Its delay should use a base around 90 days with factors for war, confidence, regional control, and colonial pressure.
+Evolution I becomes available after the host has one functioning Charter region, has protected or integrated several states, and has shown that the project can survive a first crisis. Its delay uses the shared evolution clock above.
 
 Active-event effects:
 
@@ -464,13 +468,23 @@ Fury actors are not ordinary League members. They can sign temporary anti-coloni
 
 Grounded routes gain relief and reconstruction missions. High-chaos nature routes can increase disaster-family pressure against enemies through abstract shared hooks. Player-facing text should describe impossible weather and recurring calamity without naming another event system.
 
+The implemented bridge is the Event 012-owned wrapper in `common/scripted_effects/012_africa_action_effects.txt`, which derives `africa_natural_disaster_strength` from promotion, constitutional, ecological, war-readiness, payment, target-size, and priority-member nature-authority receipts and then calls the unchanged public Event 013 entry with `natural_disaster_call_severity` and `natural_disaster_call_scale`.
+Event 013 calls back only for positive civilian deaths from the persisted Event 012 caller.
+Future weather or calamity content must extend this one bridge instead of adding a second disaster path.
+
 ### Event 20 Black Plague and biological warfare systems
 
 The League gains quarantine, medical corridor, and mutual aid responses. High-chaos routes can weaponise fictional or supernatural disease effects through the existing biological warfare framework. No event text or design note should provide real-world disease creation instructions.
 
-### Historical Event 46 Gods of Africa planning note (superseded 2026-09-05)
+The implemented route is the fictional interface over the native ordinary-pathogen lifecycle: Event 012 selects an agent slot, proves actor, victim, route, payload debit, and state eligibility, then calls `bio_lifecycle_dispatch_seed`.
+Containment uses the native countermeasure effects.
+Event 012 holds no private outbreak model and must not gain one.
 
-The event matrix listed Gods of Africa as a separate reserved event during the original planning pass. That planning boundary is superseded by the accepted Event 012-owned Gods of Africa subsystem documented in `docs/events/012_africa/gods_of_africa.md`; Event 012 now owns the fictional institution, its bounded relationship mechanics, and its Event 012 report and decision surfaces, while Event 070's unassigned catalog row remains available for another idea.
+### Historical Gods of Africa event reservation (superseded 2026-09-05)
+
+The event matrix reserved Gods of Africa as a separate event, Event 070, during the original planning pass.
+That planning boundary is superseded by the accepted Event 012-owned Gods of Africa subsystem documented in `docs/events/012_africa/gods_of_africa.md`; Event 012 owns the fictional institution, its bounded relationship mechanics, and its Event 012 report and decision surfaces, while Event 070's unassigned catalog row remains available for another idea.
+Event 046 is a different event in the current catalog and was never the Gods reservation.
 
 ### Event 98 New Ore
 
@@ -479,6 +493,31 @@ Resource discoveries can accelerate continental development, create concession c
 ### Zombie Outbreak and Death
 
 The League can coordinate quarantines, evacuation, coastal watches, and common defence. Nonhuman existential threats can temporarily raise member confidence and reduce integration resistance, while military failure can shatter the League.
+
+A permanently consumed Death state keeps its wasteland and population-loss history under any new African political identity.
+Part 4 holds the binding rule for restoring, recognising, or integrating such a state.
+
+### Shared-system connections
+
+Event 012 is a continental political system, so its links to shared Chaos Redux systems must name an owner and an existing entry point on both sides.
+Nothing below authorises a second copy of another system inside Event 012.
+
+Implemented connections:
+
+- Chaos Meter: `global.chaos_meter_value` gates the world-order layer through `constant:africa_world_order.sponsorship_chaos_gate`, `package_high_chaos_gate`, and `terminal_chaos_gate`, and the evolution tiers translate the six shared bands in `common/script_constants/012_africa_evolution_constants.txt`.
+- Migration: the Gods protection path installs and clears a reception service through `migration_install_gods_of_africa_reception_service` and `migration_clear_gods_of_africa_reception_service`, and records an Event 012 receipt only after a successful owner install result.
+- Natural disasters and the native pathogen lifecycle, as described above.
+
+Proposed connections (spec audit 2026-10-10, not accepted design):
+
+- Famine and relief: continental food-security and corridor projects should read the famine owner rather than inventing a hunger value.
+  The candidate entries are `famine_open_disaster_food_context` and `famine_adapt_natural_disaster_state` when Event 012 drives a disaster against an African state, `famine_relief_select_and_create_contract` and `famine_relief_record_war_corridor` for a League relief corridor, and `famine_condemn_relief_obstruction` or `famine_condemn_corridor_obstruction` when the host or a member blocks one.
+- Condemnation: coercive integration, forced annexation of a protected partner, and high-chaos retaliation against civilians should register through the shared helper `condemnation_add_source` with a supplied victim and context id, instead of a private Event 012 reputation penalty.
+  Colonial Pressure stays Event 012's own external-reaction value and must not be merged with condemnation.
+- Camps and repression: a coercive occupation settlement that detains or deports a member population should hand its cohorts to the camp and repression owner, with `camp_occ_register_cohort` and `famine_apply_occupation_repression_deaths_exact` as the candidate entries.
+  The camp owner must confirm its public entry point before implementation, and Event 012 must not write camp state directly.
+- Deliberately rejected: no air-cleanliness or fallout hook.
+  Covenant weather, drought, and flood retaliation already routes through the Event 013 bridge, and a second atmospheric model would duplicate an existing system for no new choice.
 
 ## Pacing principles
 

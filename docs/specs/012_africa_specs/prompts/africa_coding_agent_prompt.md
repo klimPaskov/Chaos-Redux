@@ -1,12 +1,14 @@
 # Event 12 Africa coding-agent prompt
 
-Implement the complete Event 12 Africa rework from this package. Treat `specs/` as source design, `matrices/` as coverage and acceptance material, `diagrams/` as architecture guidance, `research/` as historical and language evidence, and `handoffs/` as reconciliation and audit instructions.
+> Historical build contract: this prompt is the full original implementation brief for the Event 12 rework. Most of its surfaces are already installed, so do not execute it as a fresh build order. For current work, start from [the goal prompt](africa_goal_prompt.md) and [the Event 012 overview](../../../events/012_africa/overview.md), which carry the remaining items, then use the sections below as the standing quality contract for whichever surface you touch.
+
+Treat `specs/` as source design, `matrices/` as coverage and acceptance material, `diagrams/` as architecture guidance, `research/` as historical and language evidence, and `handoffs/` as reconciliation and audit instructions.
 
 > Current reconciliation boundary, 2026-09-25: Gods of Africa is owned by Event 012, the manual scenario is `SCN-011`, `chaosx_elephant` reuses vanilla `elephantry`, generated Gods art remains subject to parent/user visual review, and Event 070's unassigned catalog row is available for a future idea.
 
 ## Required reading
 
-Read `AGENTS.md` and applicable owner skills first.
+Read `CLAUDE.md` and applicable owner skills first.
 Then read the authority map, all nine spec parts, relevant matrices/notes and diagrams, research, prompt handoffs, and source-of-truth record.
 Read the required offline wiki and installed documentation for every engine-facing system touched.
 
@@ -16,7 +18,7 @@ Event ID 12 remains a severe Fire-Once event in the Formables cluster. Select a 
 
 Read the [authority and resume map](../README.md) and owner ledgers before selecting remaining work.
 September release counts are dated evidence, not instructions to regenerate installed assets or limit later findings.
-Grounded portraits keep explicit source-placeholder status under [chaos-redux-event-assets](../../../../.agents/skills/chaos-redux-event-assets/SKILL.md); completion and catalog status need their own acceptance basis.
+Grounded portraits keep explicit source-placeholder status under [chaos-redux-event-assets](../../../../.claude/skills/chaos-redux-event-assets/SKILL.md); completion and catalog status need their own acceptance basis.
 
 Do not begin with instant conquest or instant continent-wide cores. African states retain agency. They can accept protection, negotiate clauses, refuse integration, leave, form rival blocs, or fight.
 
@@ -52,7 +54,7 @@ Other candidates remain compact countries, autonomous regions, cultural bodies, 
 - dynamic starting forces and reinforcement paths for fighting countries
 - flag, leader, portrait, party, advisor, unit, AI, and localisation coverage
 - 44 achievements
-- 239 release-ledger rows with `84 installed_runtime`, `28 installed_dormant`, `10 deferred_runtime_gated`, and `117 deferred_controlled_pool` asset dispositions; model-required, unique-package-required, and pending-runtime-blocker counts are all zero
+- 239 asset rows, each with an explicit disposition; read the current counts from the asset matrix and the Event 012 overview rather than from this prompt
 - four super-event roles with dedicated quote, remark, image, audio, source, slot, and wiring records installed; any remaining playback or localisation review is a source/consumer audit boundary, not missing media
 - catalog, event doc, music doc, manifests, and spreadsheet alignment
 
@@ -68,8 +70,8 @@ Use direct map names. Administrative institutions can be mechanics, not public c
 
 Do not use fallback trees, placeholder assets, generic copied country packages, flat AI weights, instant annexation, reward dust, passive decision stores, or unreported simplifications.
 
-Use project subagents with explicit prompts and `fork_turns="none"` when available. The parent agent owns integration, review, validation, docs, spreadsheet updates, and completion claims.
+Spawn project subagents with fully explicit, self-contained prompts and no inherited parent-thread context, as [chaos-redux-subagents](../../../../.claude/skills/chaos-redux-subagents/SKILL.md) requires. The parent agent owns integration, review, validation, docs, spreadsheet updates, and completion claims.
 
-Accepted Event 012-owned Charter layout changes require `chaosx_event_ui_worker` with the exact identifiers, bounded scope, and inspect/render/comparison evidence defined by [chaos-redux-subagents](../../../../.agents/skills/chaos-redux-subagents/SKILL.md) and `chaos-redux-scripted-gui`.
+Accepted Event 012-owned Charter layout changes require `chaosx_event_ui_worker` with the exact identifiers, bounded scope, and inspect/render/comparison evidence defined by [chaos-redux-subagents](../../../../.claude/skills/chaos-redux-subagents/SKILL.md) and `chaos-redux-scripted-gui`.
 Shared Event Log, Details, Settings, and super-event framework surfaces remain parent-owned.
 Before completion, run focus, decision, country, localisation, documentation, event-completion, and scenario-specific `chaosx_ai_probability_auditor` audits. Run the mandatory improvement-loop pass after a meaningful implementation tranche and resolve every accepted addendum. Return route coverage, matrix dispositions, files changed, task-specific validation, assets completed, docs aligned, and a clear list of blockers or simplifications.

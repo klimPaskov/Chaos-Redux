@@ -7,7 +7,8 @@ Accepted September/October appendices in [Part 3](specs/012_africa_spec_part_3_f
 These acceptances take precedence within their scope; a package title or implementation receipt does not approve every historical row.
 The release summaries below preserve dated evidence.
 Resume from [the overview](../../events/012_africa/overview.md), [Gods documentation](../../events/012_africa/gods_of_africa.md), and linked owner handoffs instead of repeating full production prompts.
-Use [chaos-redux-subagents](../../../.agents/skills/chaos-redux-subagents/SKILL.md), [chaos-redux-event-assets](../../../.agents/skills/chaos-redux-event-assets/SKILL.md), and [chaos-redux-3d-model-pipeline](../../../.agents/skills/chaos-redux-3d-model-pipeline/SKILL.md) for current workflows.
+Use [chaos-redux-subagents](../../../.claude/skills/chaos-redux-subagents/SKILL.md), [chaos-redux-event-assets](../../../.claude/skills/chaos-redux-event-assets/SKILL.md), and [chaos-redux-3d-model-pipeline](../../../.claude/skills/chaos-redux-3d-model-pipeline/SKILL.md) for current workflows.
+`.claude/skills/` is the canonical skill location and `CLAUDE.md` is the canonical repository instruction file; `.agents/skills/` is an ignored generated mirror and must not be cited by live instructions.
 
 > The August/September reconciliation below is retained implementation history; current navigation and acceptance boundaries are above.
 
@@ -110,27 +111,19 @@ Bounded implementation, asset, achievement, decision and mission, super-event, a
 
 Source reading record, package revision review, catalog reconciliation, implementation acceptance, and improvement-loop closure review.
 
-## Current reconciliation boundary (2026-08-15; Gods reconciliation updated 2026-09-05)
+## Current reconciliation boundary
 
-The current source reconciliation records 44/44 achievement rows, 64/64 AI profiles, 102/102 action concepts with 96 ordinary implementations and six deliberate runtime gates, 16 implemented conditional priority packages, 16 matching implemented polity rows, 199 queued controlled-pool polity candidates, 22 full and 29 compact named host signatures, one capital-only compact package for every unmapped African-capital country, six promoted Tier A packages, eight custom model-package handoffs plus the non-promoted historical elephant package record, 18 installed animations, four super-event roles, W4/W5 source certification, RSA Allied rupture handling, the Charter GUI, and 239 explicit asset dispositions.
+The accepted counts in Package scale above are the acceptance criteria for this package.
+Current implementation status for every one of those surfaces, including the 239 asset-row dispositions and their evidence limits, lives in [the Event 012 overview](../../events/012_africa/overview.md) and the dated owner handoffs; this README does not restate that ledger.
 
-The 239 asset rows are `84 installed_runtime`, `28 installed_dormant`, `10 deferred_runtime_gated`, and `117 deferred_controlled_pool`, with zero `deferred_model_required`, zero `deferred_unique_package_required`, and no `pending_runtime_blocker` rows. These counts describe the current matrix and ledger; they do not replace the accepted design criteria.
+The boundaries that remain design-relevant here are:
 
-The accepted 2026-08-01 improvement-loop addendum and the 2026-07-30 non-model world-package addendum are folded into the current overview, normative spec parts 2 and 5, matrices, and owner handoffs. They remain retained historical plans with a resolved disposition for the accepted tranche; no additional improvement-loop addendum is open for this reconciliation, except for evidence-only MCP follow-up recorded in the final handoff.
+- Gods of Africa is an Event 012-owned subsystem reached from the Africa Is One Evolution I consolidation path, with no normal-event pool entry and no separate Event 070 namespace; Event 070's catalog row is free for another idea.
+- The manual scenario is the live `SCN-011` row with two types and four intensity stops, and its World Is One branch prepares the terminal campaign without asserting the terminal identity.
+- The accepted model inventory keeps nine historical package records, while `chaosx_elephant` deliberately reuses vanilla `elephantry` instead of a custom elephant model.
+- The accepted 2026-08-01 improvement-loop addendum and the 2026-07-30 non-model world-package addendum are folded into the current overview, normative spec parts 2 and 5, matrices, and owner handoffs; their historical plans are retained with a resolved disposition and no further addendum is open.
 
-## Current Event 012 and Gods of Africa reconciliation (2026-09-05)
-
-The accepted design is represented in current source as an Event 012-owned Gods of Africa subsystem after the Africa Is One Evolution I consolidation path, with no normal-event pool entry and no separate Event 070 namespace. Current source evidence is documented in `docs/events/012_africa/gods_of_africa.md` and the release-candidate overview; it does not turn implementation evidence into a new approval basis.
-
-The manual scenario is the live `SCN-011` row described by the accepted design, with two types and four intensity stops. The current scenario implementation and its World Is One terminal-preparation limitation are recorded in the dated scenario handoff and remain subject to parent/user live validation.
-
-The accepted model-package inventory retains nine historical package records, but the current elephant implementation intentionally binds `chaosx_elephant` to vanilla `elephantry` and retires the custom elephant model/entity/animation registrations. The 2026-08-27 vanilla-elephantry handoff is the current source-reuse record; it does not claim live visual validation.
-
-The 2026-09-05 generated Gods art handoffs are implemented asset-production records for eight report cards, one category picture, and 27 icons. Current source aliases and consumers are evidenced in the working tree, while visual review, runtime playback, and promotion remain open.
-
-The former Event 070 Gods source, decision, category, localisation, and picture files have deletion evidence in the current working tree. The user's explicit Event 012 ownership goal is the acceptance basis for removing the Event 070 catalog reservation. The catalog update changed only authoritative workbook `Events!M71` from `Unavailable` to blank, with `A71 = 70` and `B71` blank; the successful exporter returned `["70","","","","","","","","","","","",""]` for Event 070 and left Event 012 row 13 intact. This is workbook implementation evidence plus export validation, not a wider runtime or visual acceptance claim.
-
-Current source evidence also records one capped Event 012 candidate census, bounded Gods registry review, and host-transfer staging/restoration of the candidate array, count, census flag, and generation. The Gods demand path includes conduct-aware bands and deadline constants, hidden payment/substitute/partial capacity requirements with family floors, and separate punishment intent and capability helpers. These findings reconcile implementation evidence only and do not promote or alter the accepted design without a separate acceptance decision.
+Implementation evidence proves what exists; it never becomes a new acceptance basis for design.
 
 ## Key design decisions
 
@@ -163,8 +156,47 @@ The current source certification is complete for the counted surfaces; the follo
 
 ## Improvement-loop status
 
-The project-specific improvement-loop subagent was not exposed as an invokable tool during package creation. The required source files and subagent contract were read in full. The direct expansion and anti-bloat review is folded into the accepted source and the current implementation ledger, and the 2026-08-01 final addendum is resolved for the accepted tranche; its historical plan remains retained for provenance. Parent-owned semantic follow-ups remain separately tracked in the final reconciliation handoff and do not reopen broad expansion.
+The expansion and anti-bloat review is folded into the accepted source and the current implementation ledger, and the 2026-08-01 final addendum is resolved for its accepted tranche while its historical plan is retained for provenance.
+No improvement-loop addendum is open for this package.
+A further planner pass needs a new tranche or a distinct shallow, duplicated, or disconnected surface, routed through `chaosx_improvement_loop_planner` as described in [chaos-redux-subagents](../../../.claude/skills/chaos-redux-subagents/SKILL.md); it does not reopen resolved work.
+
+## Open questions
+
+These items are proposals from the 2026-10-10 specification audit.
+They are not accepted design and must not be implemented before a user or parent decision.
+
+- **Two Charter values are written but never read (proposed, spec audit 2026-10-10).**
+  `africa_member_representation_balance` and `africa_diaspora_settlement_capacity` are initialised, clamped, raised by focuses and actions, staged across host transfer, and printed in the Charter tooltips, but no trigger, cost, AI weight, or gate reads either variable in current source.
+  The proposal is to give each one real consumers or stop displaying it: representation balance should reduce `africa_integration_burden` growth and appear in the route-consent tests in `common/scripted_triggers/012_africa_focus_route_triggers.txt` beside `africa_regional_equality`, and settlement capacity should bound the diaspora return actions in `common/scripted_effects/012_africa_diaspora_effects.txt` that currently check only `africa_diaspora_trust` and `africa_diaspora_capacity_validation_result`.
+  A displayed value that no rule reads is the kind of busy-looking number the 10 October brief rejects.
+- **Rival-bloc counterplay writes receipts nothing reads (proposed, spec audit 2026-10-10).**
+  `africa_rival_bloc_dossier_complete`, `africa_rival_arbitration_accepted`, `africa_rival_defection_locally_accepted`, and `africa_rival_temporary_truce` are set in `common/scripted_effects/012_africa_action_effects.txt` and read nowhere, and `africa_rival_pressure` is only ever tested for existence rather than magnitude.
+  Part 2 now carries a proposed five-stage rival-bloc lifecycle that gives those receipts and that magnitude real consequences without adding a value, plus the alternative of demoting `africa_rival_pressure` to a flag.
+  The owner chooses between the lifecycle and the flag.
+- **Per-region readiness is unimplemented under that name (proposed, spec audit 2026-10-10).**
+  Part 2 asks for a Regional Readiness value for each of the nine regions; current source instead carries one `africa_regional_equality` value plus congress, corridor, and overlay receipts.
+  The proposal is to keep the single value and the receipts rather than add nine new per-region numbers, and to reword the Part 2 requirement accordingly once a decision exists.
+- **Shared-system connections named but not wired (proposed, spec audit 2026-10-10).**
+  Part 1 now separates the implemented bridges from proposed famine, condemnation, and camp connections, naming the owner entry on both sides of each proposal.
+  The implemented set is the Chaos Meter gates, the Gods migration reception service, the Event 013 disaster bridge, and the native pathogen lifecycle.
+  An air-cleanliness or fallout hook is deliberately rejected there rather than left as an open option.
+- **Gods global-credibility super-event audio remains blocked.**
+  Text, image, slot 118, and the emitter are implemented; the firing call and sound registration wait on one licensed unused track, which needs the user's download permission (see `docs/plans/012_africa_plans/agent_decisions_2026-10-04.md`, decisions L17, L31, and L37).
 
 ## Completion standard
 
 The Event 12 implementation is not complete until the source specs, accepted matrices, assets, AI, localisation, event logs, cluster data, docs, super-events, achievements, and event catalog agree. Every merge, omission, queue, rejection, blocker, and simplification must be reported.
+
+## Changelog
+
+- 2026-10-10, specification audit.
+  - Repointed every live skill link from the generated `.agents/skills/` mirror to canonical `.claude/skills/`, and replaced the `AGENTS.md` reading instruction in the coding prompt with `CLAUDE.md`; historical provenance read lists keep their original wording.
+  - Condensed the two overlapping reconciliation sections into one boundary section, because the implementation counts and evidence they restated are owned by the Event 012 overview; the accepted counts remain in Package scale and in the acceptance handoff.
+  - Condensed the stale improvement-loop tooling paragraph to its still-valid intent and the current planner route.
+  - Corrected the Part 1 heading that attributed the historical Gods event reservation to Event 046; the released reservation is Event 070, and Event 046 is a different catalog entry.
+  - Recorded the implemented evolution clock in Part 1 (90-day base, 45 to 180-day clamp, named modifiers) and the three implemented world-order Chaos gates in Part 5, so the specs no longer describe tuning that only exists in script constants.
+  - Documented the implemented shared-system bridges in Part 1 with their real identifiers, added proposed famine, condemnation, and camp connections naming the owner entry on both sides, and deliberately rejected an air-cleanliness or fallout hook as a duplicate of the existing disaster bridge.
+  - Added a value economy rule to Part 2 under the 10 October 2026 user brief, and pointed Part 6's dynamic-placeholder list at it so the list is not read as one tooltip template.
+  - Recorded two inert Charter values and the inert rival-bloc receipts as audit findings with repair proposals, and added a proposed rival-bloc lifecycle built only from existing state.
+  - Marked the coding-agent prompt as the historical full build contract and pointed current work at the goal prompt and the overview, so it no longer reads as an order to rebuild installed surfaces; removed its duplicated asset-disposition counts.
+  - Added this Open questions section and this changelog.

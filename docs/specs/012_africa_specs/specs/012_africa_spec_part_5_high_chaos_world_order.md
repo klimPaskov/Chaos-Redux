@@ -762,7 +762,10 @@ The World path is a terminal, rare, campaign-ending system.
 
 ### Required conditions
 
-- global chaos above 1000
+The world-order layer uses three ordered Chaos gates, read from `global.chaos_meter_value` and tuned in `constant:africa_world_order`: `sponsorship_chaos_gate` opens sponsorship, `package_high_chaos_gate` opens the external continent packages, and `terminal_chaos_gate` is the terminal threshold below.
+Tuning belongs in those constants.
+
+- global chaos above the terminal gate, currently 1000
 - `world_end` is not already set
 - Africa is one has fired
 - Africa has completed a post-unification world-order route

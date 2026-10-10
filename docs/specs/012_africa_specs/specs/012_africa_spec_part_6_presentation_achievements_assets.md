@@ -146,6 +146,10 @@ Required dynamic references include:
 
 Large lists should use named regions and concise tooltips rather than raw state numbers.
 
+This list says which references are available to a surface that needs them.
+It is not a template for one tooltip.
+The value economy rule in part 2 governs how many values any single header, card, or tooltip may show.
+
 ## Event Details direction
 
 The Event Details entry should describe the premise and public situation.
