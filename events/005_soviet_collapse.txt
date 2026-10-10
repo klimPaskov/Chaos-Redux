@@ -195,6 +195,14 @@ country_event = {
 		set_temp_variable = { soviet_collapse_opening_posture_old_movement_delta = constant:soviet_collapse_opening_posture.indivisible_old_movement_pressure }
 		soviet_collapse_apply_opening_posture_delta = yes
 		custom_effect_tooltip = soviet_collapse_declare_union_indivisible_tt
+		ai_chance = {
+			base = constant:soviet_collapse_opening_posture.ai_indivisible_weight
+			modifier = {
+				factor = constant:soviet_collapse_opening_posture.ai_priority_factor
+				check_variable = { var = soviet_collapse_moscow_authority value = constant:soviet_collapse_soviet_objective.contested_authority compare = greater_than_or_equals }
+				check_variable = { var = soviet_collapse_military_obedience value = constant:soviet_collapse_soviet_objective.contested_obedience compare = greater_than_or_equals }
+			}
+		}
 	}
 
 	option = {
@@ -210,6 +218,13 @@ country_event = {
 		set_temp_variable = { soviet_collapse_opening_posture_old_movement_delta = 0 }
 		soviet_collapse_apply_opening_posture_delta = yes
 		custom_effect_tooltip = soviet_collapse_offer_autonomy_tt
+		ai_chance = {
+			base = constant:soviet_collapse_opening_posture.ai_autonomy_weight
+			modifier = {
+				factor = constant:soviet_collapse_opening_posture.ai_priority_factor
+				check_variable = { var = soviet_collapse_moscow_authority value = constant:soviet_collapse_soviet_objective.contested_authority compare = less_than }
+			}
+		}
 	}
 
 	option = {
@@ -224,6 +239,13 @@ country_event = {
 		set_temp_variable = { soviet_collapse_opening_posture_old_movement_delta = 0 }
 		soviet_collapse_apply_opening_posture_delta = yes
 		custom_effect_tooltip = soviet_collapse_isolate_separatists_tt
+		ai_chance = {
+			base = constant:soviet_collapse_opening_posture.ai_isolate_weight
+			modifier = {
+				factor = constant:soviet_collapse_opening_posture.ai_priority_factor
+				check_variable = { var = soviet_collapse_depot_vulnerability value = constant:soviet_collapse_baseline.depot_vulnerability compare = greater_than }
+			}
+		}
 	}
 
 	option = {
@@ -245,6 +267,13 @@ country_event = {
 		set_temp_variable = { soviet_collapse_opening_posture_old_movement_delta = constant:soviet_collapse_opening_posture.discipline_old_movement_relief }
 		soviet_collapse_apply_opening_posture_delta = yes
 		custom_effect_tooltip = soviet_collapse_restore_party_discipline_tt
+		ai_chance = {
+			base = constant:soviet_collapse_opening_posture.ai_discipline_weight
+			modifier = {
+				factor = constant:soviet_collapse_opening_posture.ai_priority_factor
+				check_variable = { var = soviet_collapse_military_obedience value = constant:soviet_collapse_soviet_objective.contested_obedience compare = less_than }
+			}
+		}
 	}
 
 	after = {
@@ -628,17 +657,34 @@ news_event = {
 		add_to_variable = { soviet_collapse_regional_faction_cohesion = constant:soviet_collapse_regional_faction.coordinate_cohesion }
 		add_to_variable = { soviet_collapse_regional_faction_tension = constant:soviet_collapse_regional_faction.invite_tension }
 		custom_effect_tooltip = soviet_collapse_regional_charter_joint_staff_tt
+		ai_chance = {
+			base = constant:soviet_collapse_regional_faction.ai_charter_staff_weight
+			modifier = {
+				factor = constant:soviet_collapse_regional_faction.ai_charter_priority_factor
+				check_variable = { var = soviet_collapse_regional_faction_tension value = constant:soviet_collapse_regional_faction.goal_failure_tension_threshold compare = less_than }
+			}
+		}
 	}
 	option = {
 		name = chaosx.nr5.30.b
 		add_to_variable = { soviet_collapse_regional_faction_tension = constant:soviet_collapse_regional_faction.tension_reduction }
 		add_stability = constant:soviet_collapse_republic_focus.stability_small
 		custom_effect_tooltip = soviet_collapse_regional_charter_local_autonomy_tt
+		ai_chance = {
+			base = constant:soviet_collapse_regional_faction.ai_charter_autonomy_weight
+			modifier = {
+				factor = constant:soviet_collapse_regional_faction.ai_charter_priority_factor
+				check_variable = { var = soviet_collapse_regional_faction_tension value = constant:soviet_collapse_regional_faction.goal_failure_tension_threshold compare = greater_than_or_equals }
+			}
+		}
 	}
 	option = {
 		name = chaosx.nr5.30.c
 		soviet_collapse_apply_regional_charter_patron_channels = yes
 		custom_effect_tooltip = soviet_collapse_regional_charter_patron_channels_tt
+		ai_chance = {
+			base = constant:soviet_collapse_regional_faction.ai_charter_patron_weight
+		}
 	}
 }
 
@@ -657,17 +703,34 @@ news_event = {
 		add_to_variable = { soviet_collapse_regional_faction_cohesion = constant:soviet_collapse_regional_faction.coordinate_cohesion }
 		add_to_variable = { soviet_collapse_regional_faction_tension = constant:soviet_collapse_regional_faction.invite_tension }
 		custom_effect_tooltip = soviet_collapse_regional_charter_joint_staff_tt
+		ai_chance = {
+			base = constant:soviet_collapse_regional_faction.ai_charter_staff_weight
+			modifier = {
+				factor = constant:soviet_collapse_regional_faction.ai_charter_priority_factor
+				check_variable = { var = soviet_collapse_regional_faction_tension value = constant:soviet_collapse_regional_faction.goal_failure_tension_threshold compare = less_than }
+			}
+		}
 	}
 	option = {
 		name = chaosx.nr5.31.b
 		add_to_variable = { soviet_collapse_regional_faction_tension = constant:soviet_collapse_regional_faction.tension_reduction }
 		add_stability = constant:soviet_collapse_republic_focus.stability_small
 		custom_effect_tooltip = soviet_collapse_regional_charter_local_autonomy_tt
+		ai_chance = {
+			base = constant:soviet_collapse_regional_faction.ai_charter_autonomy_weight
+			modifier = {
+				factor = constant:soviet_collapse_regional_faction.ai_charter_priority_factor
+				check_variable = { var = soviet_collapse_regional_faction_tension value = constant:soviet_collapse_regional_faction.goal_failure_tension_threshold compare = greater_than_or_equals }
+			}
+		}
 	}
 	option = {
 		name = chaosx.nr5.31.c
 		soviet_collapse_apply_regional_charter_patron_channels = yes
 		custom_effect_tooltip = soviet_collapse_regional_charter_patron_channels_tt
+		ai_chance = {
+			base = constant:soviet_collapse_regional_faction.ai_charter_patron_weight
+		}
 	}
 }
 
@@ -686,17 +749,34 @@ news_event = {
 		add_to_variable = { soviet_collapse_regional_faction_cohesion = constant:soviet_collapse_regional_faction.coordinate_cohesion }
 		add_to_variable = { soviet_collapse_regional_faction_tension = constant:soviet_collapse_regional_faction.invite_tension }
 		custom_effect_tooltip = soviet_collapse_regional_charter_joint_staff_tt
+		ai_chance = {
+			base = constant:soviet_collapse_regional_faction.ai_charter_staff_weight
+			modifier = {
+				factor = constant:soviet_collapse_regional_faction.ai_charter_priority_factor
+				check_variable = { var = soviet_collapse_regional_faction_tension value = constant:soviet_collapse_regional_faction.goal_failure_tension_threshold compare = less_than }
+			}
+		}
 	}
 	option = {
 		name = chaosx.nr5.32.b
 		add_to_variable = { soviet_collapse_regional_faction_tension = constant:soviet_collapse_regional_faction.tension_reduction }
 		add_stability = constant:soviet_collapse_republic_focus.stability_small
 		custom_effect_tooltip = soviet_collapse_regional_charter_local_autonomy_tt
+		ai_chance = {
+			base = constant:soviet_collapse_regional_faction.ai_charter_autonomy_weight
+			modifier = {
+				factor = constant:soviet_collapse_regional_faction.ai_charter_priority_factor
+				check_variable = { var = soviet_collapse_regional_faction_tension value = constant:soviet_collapse_regional_faction.goal_failure_tension_threshold compare = greater_than_or_equals }
+			}
+		}
 	}
 	option = {
 		name = chaosx.nr5.32.c
 		soviet_collapse_apply_regional_charter_patron_channels = yes
 		custom_effect_tooltip = soviet_collapse_regional_charter_patron_channels_tt
+		ai_chance = {
+			base = constant:soviet_collapse_regional_faction.ai_charter_patron_weight
+		}
 	}
 }
 
@@ -715,17 +795,34 @@ news_event = {
 		add_to_variable = { soviet_collapse_regional_faction_cohesion = constant:soviet_collapse_regional_faction.coordinate_cohesion }
 		add_to_variable = { soviet_collapse_regional_faction_tension = constant:soviet_collapse_regional_faction.invite_tension }
 		custom_effect_tooltip = soviet_collapse_regional_charter_joint_staff_tt
+		ai_chance = {
+			base = constant:soviet_collapse_regional_faction.ai_charter_staff_weight
+			modifier = {
+				factor = constant:soviet_collapse_regional_faction.ai_charter_priority_factor
+				check_variable = { var = soviet_collapse_regional_faction_tension value = constant:soviet_collapse_regional_faction.goal_failure_tension_threshold compare = less_than }
+			}
+		}
 	}
 	option = {
 		name = chaosx.nr5.33.b
 		add_to_variable = { soviet_collapse_regional_faction_tension = constant:soviet_collapse_regional_faction.tension_reduction }
 		add_stability = constant:soviet_collapse_republic_focus.stability_small
 		custom_effect_tooltip = soviet_collapse_regional_charter_local_autonomy_tt
+		ai_chance = {
+			base = constant:soviet_collapse_regional_faction.ai_charter_autonomy_weight
+			modifier = {
+				factor = constant:soviet_collapse_regional_faction.ai_charter_priority_factor
+				check_variable = { var = soviet_collapse_regional_faction_tension value = constant:soviet_collapse_regional_faction.goal_failure_tension_threshold compare = greater_than_or_equals }
+			}
+		}
 	}
 	option = {
 		name = chaosx.nr5.33.c
 		soviet_collapse_apply_regional_charter_patron_channels = yes
 		custom_effect_tooltip = soviet_collapse_regional_charter_patron_channels_tt
+		ai_chance = {
+			base = constant:soviet_collapse_regional_faction.ai_charter_patron_weight
+		}
 	}
 }
 
@@ -744,17 +841,34 @@ news_event = {
 		add_to_variable = { soviet_collapse_regional_faction_cohesion = constant:soviet_collapse_regional_faction.coordinate_cohesion }
 		add_to_variable = { soviet_collapse_regional_faction_tension = constant:soviet_collapse_regional_faction.invite_tension }
 		custom_effect_tooltip = soviet_collapse_regional_charter_joint_staff_tt
+		ai_chance = {
+			base = constant:soviet_collapse_regional_faction.ai_charter_staff_weight
+			modifier = {
+				factor = constant:soviet_collapse_regional_faction.ai_charter_priority_factor
+				check_variable = { var = soviet_collapse_regional_faction_tension value = constant:soviet_collapse_regional_faction.goal_failure_tension_threshold compare = less_than }
+			}
+		}
 	}
 	option = {
 		name = chaosx.nr5.34.b
 		add_to_variable = { soviet_collapse_regional_faction_tension = constant:soviet_collapse_regional_faction.tension_reduction }
 		add_stability = constant:soviet_collapse_republic_focus.stability_small
 		custom_effect_tooltip = soviet_collapse_regional_charter_local_autonomy_tt
+		ai_chance = {
+			base = constant:soviet_collapse_regional_faction.ai_charter_autonomy_weight
+			modifier = {
+				factor = constant:soviet_collapse_regional_faction.ai_charter_priority_factor
+				check_variable = { var = soviet_collapse_regional_faction_tension value = constant:soviet_collapse_regional_faction.goal_failure_tension_threshold compare = greater_than_or_equals }
+			}
+		}
 	}
 	option = {
 		name = chaosx.nr5.34.c
 		soviet_collapse_apply_regional_charter_patron_channels = yes
 		custom_effect_tooltip = soviet_collapse_regional_charter_patron_channels_tt
+		ai_chance = {
+			base = constant:soviet_collapse_regional_faction.ai_charter_patron_weight
+		}
 	}
 }
 
@@ -773,17 +887,34 @@ news_event = {
 		add_to_variable = { soviet_collapse_regional_faction_cohesion = constant:soviet_collapse_regional_faction.coordinate_cohesion }
 		add_to_variable = { soviet_collapse_regional_faction_tension = constant:soviet_collapse_regional_faction.invite_tension }
 		custom_effect_tooltip = soviet_collapse_regional_charter_joint_staff_tt
+		ai_chance = {
+			base = constant:soviet_collapse_regional_faction.ai_charter_staff_weight
+			modifier = {
+				factor = constant:soviet_collapse_regional_faction.ai_charter_priority_factor
+				check_variable = { var = soviet_collapse_regional_faction_tension value = constant:soviet_collapse_regional_faction.goal_failure_tension_threshold compare = less_than }
+			}
+		}
 	}
 	option = {
 		name = chaosx.nr5.35.b
 		add_to_variable = { soviet_collapse_regional_faction_tension = constant:soviet_collapse_regional_faction.tension_reduction }
 		add_stability = constant:soviet_collapse_republic_focus.stability_small
 		custom_effect_tooltip = soviet_collapse_regional_charter_local_autonomy_tt
+		ai_chance = {
+			base = constant:soviet_collapse_regional_faction.ai_charter_autonomy_weight
+			modifier = {
+				factor = constant:soviet_collapse_regional_faction.ai_charter_priority_factor
+				check_variable = { var = soviet_collapse_regional_faction_tension value = constant:soviet_collapse_regional_faction.goal_failure_tension_threshold compare = greater_than_or_equals }
+			}
+		}
 	}
 	option = {
 		name = chaosx.nr5.35.c
 		soviet_collapse_apply_regional_charter_patron_channels = yes
 		custom_effect_tooltip = soviet_collapse_regional_charter_patron_channels_tt
+		ai_chance = {
+			base = constant:soviet_collapse_regional_faction.ai_charter_patron_weight
+		}
 	}
 }
 
@@ -817,17 +948,34 @@ news_event = {
 		add_to_variable = { soviet_collapse_regional_faction_cohesion = constant:soviet_collapse_regional_faction.coordinate_cohesion }
 		add_to_variable = { soviet_collapse_regional_faction_tension = constant:soviet_collapse_regional_faction.invite_tension }
 		custom_effect_tooltip = soviet_collapse_regional_charter_joint_staff_tt
+		ai_chance = {
+			base = constant:soviet_collapse_regional_faction.ai_charter_staff_weight
+			modifier = {
+				factor = constant:soviet_collapse_regional_faction.ai_charter_priority_factor
+				check_variable = { var = soviet_collapse_regional_faction_tension value = constant:soviet_collapse_regional_faction.goal_failure_tension_threshold compare = less_than }
+			}
+		}
 	}
 	option = {
 		name = chaosx.nr5.37.b
 		add_to_variable = { soviet_collapse_regional_faction_tension = constant:soviet_collapse_regional_faction.tension_reduction }
 		add_stability = constant:soviet_collapse_republic_focus.stability_small
 		custom_effect_tooltip = soviet_collapse_regional_charter_local_autonomy_tt
+		ai_chance = {
+			base = constant:soviet_collapse_regional_faction.ai_charter_autonomy_weight
+			modifier = {
+				factor = constant:soviet_collapse_regional_faction.ai_charter_priority_factor
+				check_variable = { var = soviet_collapse_regional_faction_tension value = constant:soviet_collapse_regional_faction.goal_failure_tension_threshold compare = greater_than_or_equals }
+			}
+		}
 	}
 	option = {
 		name = chaosx.nr5.37.c
 		soviet_collapse_apply_regional_charter_patron_channels = yes
 		custom_effect_tooltip = soviet_collapse_regional_charter_patron_channels_tt
+		ai_chance = {
+			base = constant:soviet_collapse_regional_faction.ai_charter_patron_weight
+		}
 	}
 }
 
