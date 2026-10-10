@@ -1,8 +1,8 @@
 # Event 062 asset production prompt
 
-The [asset skill](../../../../.agents/skills/chaos-redux-event-assets/SKILL.md) owns reference families, native ImageGen source evidence, consumer-dependent alpha, processing, and DDS validation.
+The [asset skill](../../../../.claude/skills/chaos-redux-event-assets/SKILL.md) owns reference families, native ImageGen source evidence, consumer-dependent alpha, processing, and DDS validation.
 For alpha-backed families request real transparency in the first ImageGen call and preserve it through processing; opaque scene sources follow the final consumer’s report or panel treatment.
-For achievements use the skill’s [single-subject, deterministic-state pipeline](../../../../.agents/skills/chaos-redux-event-assets/SKILL.md#achievement-icons), including the completed, grey, and not-eligible source layers and exact supplied templates.
+For achievements use the skill’s [single-subject, deterministic-state pipeline](../../../../.claude/skills/chaos-redux-event-assets/SKILL.md#achievement-icons), including the completed, grey, and not-eligible source layers and exact supplied templates.
 
 Work on Chaos Redux Event 62, Allies Backstab.
 
@@ -15,7 +15,7 @@ Read these source files first:
 - `chaos-redux-event-assets`
 - `chaos-redux-subagents`
 
-Use project subagents with no inherited parent context. In Codex, set `fork_turns="none"`.
+Use project subagents with no inherited parent context.
 
 ## Accepted asset boundary
 
@@ -44,8 +44,8 @@ Asset workers may create source files, processed PNG files, final DDS files, con
 
 Before production, inspect:
 
-- `.agents/skills/chaos-redux-event-assets/assets/gfx_references/README.md`
-- `.agents/skills/chaos-redux-event-assets/assets/gfx_references/CATALOG.md`
+- `.claude/skills/chaos-redux-event-assets/assets/gfx_references/README.md`
+- `.claude/skills/chaos-redux-event-assets/assets/gfx_references/CATALOG.md`
 - the matching contact sheet for every asset family
 - exact installed vanilla and current Chaos Redux sprite consumers
 

@@ -74,8 +74,7 @@ Expelled government:
 - emergency mobilization
 - secure the capital and supply spine
 - open the expelled-governments liaison
-- request a foreign lifeline
-- pool emergency reserves
+- request a foreign lifeline (co-victims share equipment through ordinary lend-lease)
 - seek recognized separation
 - form a successor compact
 

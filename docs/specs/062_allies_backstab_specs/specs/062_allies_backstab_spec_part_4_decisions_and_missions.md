@@ -16,14 +16,11 @@ The category changes its description and visible actions according to the countr
 The category header shows:
 
 - the current role
-- the current side leader
-- working value `Crisis Cohesion`
-- the current cohesion stage
-- the next threshold and its main consequence
+- the `Crisis Cohesion` stage, with the exact value and the next threshold's consequence in its tooltip
 - the principal active mission
 - the linked opponent or settlement partner
 
-The header should fit in a short block. Hidden formulas stay in tooltips or remain internal.
+The side leader appears in the role line when it is not the player. Hidden formulas stay internal.
 
 ## Visibility budget
 
@@ -259,7 +256,8 @@ Foreign aid, capital-defense coordination, and settlement remain available accor
 
 **Costs:** political power, command power, and a small equipment contribution scaled to capacity.
 
-**Effect direction:** establish temporary coalition rules, raise victim cohesion, and unlock joint missions.
+**Effect direction:** establish temporary coalition rules, grant mutual military access, raise victim cohesion, and unlock joint missions.
+Co-victims move equipment to each other through ordinary lend-lease; the liaison does not add a separate equipment-transfer decision.
 
 **Risk:** countries with poor relations may refuse, which weakens the initial coalition.
 
@@ -278,20 +276,6 @@ Foreign aid, capital-defense coordination, and settlement remain available accor
 **Risk:** rival sponsors can compete, and heavy support can shape later faction alignment.
 
 **AI:** favored when the loyalist side is much stronger or the victim lacks equipment.
-
-### Pool the Emergency Reserves
-
-**Availability:** multiple victims, liaison active, one country has a meaningful surplus and another has a proven shortage.
-
-**Purpose:** transfer paid equipment among co-victims.
-
-**Costs:** donor equipment and transport capacity.
-
-**Effect direction:** execute one bounded transfer with a receipt, raise cohesion, and improve the recipient's mission viability.
-
-**Risk:** repeated use is limited by cooldown and donor reserve floors.
-
-**AI:** donors act only when their own front remains sustainable.
 
 ### Seek Recognized Separation
 

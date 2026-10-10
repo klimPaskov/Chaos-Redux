@@ -46,7 +46,7 @@ Event 62 has no focus tree, country package, portrait, 3D model, or dedicated sc
 
 ## Context rule
 
-Every project subagent prompt must be self-contained and must not rely on inherited parent-thread context. In the Codex runtime, use `fork_turns="none"`.
+Every project subagent prompt must be self-contained and must not rely on inherited parent-thread context.
 
 Each prompt should include:
 

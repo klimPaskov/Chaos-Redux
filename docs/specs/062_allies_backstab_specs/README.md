@@ -5,7 +5,7 @@
 The original source review records supplied planning inputs and limitations.
 The seven numbered parts, quality matrices, and specialist prompts preserve the planner’s selection, war, crisis, evolution, super-event, and achievement proposals.
 Acceptance remains `unresolved` where the original user brief or attributable parent decision cannot be recovered; preserve those claims for review under [AGENTS.md](../../../AGENTS.md#specs-and-plans).
-The [design record](research/062_allies_backstab_source_review.md) and numbered specifications are the design map; [current event guidance](../../../.agents/skills/chaos-redux-events/SKILL.md) and [subagent routing](../../../.agents/skills/chaos-redux-subagents/SKILL.md) own implementation workflow.
+The [design record](research/062_allies_backstab_source_review.md) and numbered specifications are the design map; [current event guidance](../../../.claude/skills/chaos-redux-events/SKILL.md) and [subagent routing](../../../.claude/skills/chaos-redux-subagents/SKILL.md) own implementation workflow.
 Original source-reading, repository-baseline, tooling-failure, and manual-review reports are historical planning evidence, not current source verification, service-health findings, or completed independent audits.
 
 
@@ -72,8 +72,12 @@ Final localisation must be written during implementation. Working labels in this
 
 ## Source limitations
 
-Every file supplied with the planning request was read in full, including all records in the three CSV catalogs and all twenty subagent TOML files in the supplied archive. The mounted environment did not contain the Chaos Redux repository, the offline Paradox wiki snapshot, or the installed Hearts of Iron IV vanilla files and documentation. Repository paths, engine precedents, and exact Clausewitz effect availability therefore remain implementation verification gates.
+The original planning environment had no repository, wiki, vanilla files, MCP, or subagent runtime; [the source review](research/062_allies_backstab_source_review.md) records those limits. Repository paths, engine precedents, and exact Clausewitz effect availability remain implementation verification gates.
 
-The project subagent definitions were available and fully read. An actual subagent invocation route was not available in the current tool set. A tool registry probe also failed with an HTTP 429 response. The pack includes context-complete handoffs for the required future subagent passes and does not present any section as a subagent-produced result.
+## Changelog
 
-No design branch was shortened for speed. The missing repository, wiki, vanilla, MCP, and live subagent checks are recorded as verification blockers, not silently replaced by assumptions.
+### 2026-10-10 spec audit
+
+- Pool the Emergency Reserves is removed. It rebuilt ordinary lend-lease as a separate decision with its own cooldown and floors; the Expelled Governments Liaison now grants mutual military access and co-victims share equipment through lend-lease.
+- The category header shows four items (role, Crisis Cohesion stage, principal mission, linked opponent); the exact cohesion value, next threshold, and side leader move into the role line or tooltip.
+- The README's planning-environment limitations are shortened to a pointer to the source review. Subagent instructions use the Claude-first wording.
