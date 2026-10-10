@@ -5,6 +5,8 @@
 @CR_SC_RESOURCES_FOUND_BORDER_CONFLICT_CLAIMANT_MODIFIER = 0.05
 @CR_SC_RESOURCES_FOUND_BORDER_CONFLICT_PROVINCES = 4
 @CR_SC_RESOURCES_FOUND_BORDER_CONFLICT_OWNER_MODIFIER = 0.05
+@CR_SC_RESOURCES_FOUND_BORDER_CONFLICT_ESCALATED_COMBAT_WIDTH = 120
+@CR_SC_RESOURCES_FOUND_BORDER_CONFLICT_ESCALATED_OWNER_MODIFIER = 0.15
 @CR_SC_RESOURCES_FOUND_DECISION_FACTOR_STANDARD = 1.00
 @CR_SC_RESOURCES_FOUND_VALUE_ONE = 1
 @CR_SC_RESOURCES_FOUND_VALUE_ZERO = 0
@@ -2600,17 +2602,17 @@ resources_found_cancel_field_border_war = {
 	}
 }
 
-# COUNTRY scope for either escalation side. This expands the contest without
-# converting the limited clash into a normal war.
+# COUNTRY scope for the field owner. Widens the front and strengthens the
+# owner's side without converting the limited clash into a normal war.
 resources_found_escalate_field_border_war = {
 	if = {
 		limit = { resources_found_decision_active_border_pair_is_current = yes }
 		set_border_war_data = {
 			attacker = var:resources_found_border_owner_state
 			defender = var:resources_found_border_claimant_state
-			attacker_modifier = @CR_SC_RESOURCES_FOUND_BORDER_CONFLICT_OWNER_MODIFIER
+			attacker_modifier = @CR_SC_RESOURCES_FOUND_BORDER_CONFLICT_ESCALATED_OWNER_MODIFIER
 			defender_modifier = @CR_SC_RESOURCES_FOUND_BORDER_CONFLICT_CLAIMANT_MODIFIER
-			combat_width = @CR_SC_RESOURCES_FOUND_BORDER_CONFLICT_COMBAT_WIDTH
+			combat_width = @CR_SC_RESOURCES_FOUND_BORDER_CONFLICT_ESCALATED_COMBAT_WIDTH
 		}
 		set_country_flag = resources_found_border_war_escalated
 	}
