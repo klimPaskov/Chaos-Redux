@@ -1,5 +1,9 @@
 # Asset Production Prompt for Event 018 Resources Found
 
+> Historical build contract (spec audit 2026-10-10): Event 018 is implemented, so this prompt must not be re-executed as a build order.
+> Start new work from `docs/events/018_resources_found/overview.md`, the package README open questions and the current source.
+
+
 Produce the complete visual asset package for Chaos Redux Event 018, Resources Found. This is a generated fictional and alternate-history package. Use the narrow project asset workers by asset type. Use `chaosx_generated_event_art` for non-icon scenes, flags, emblems, and super-event images. Use `chaosx_icon_artist` for focus, idea, decision, decision-category, achievement, warning, and mechanic icons. Use `chaos-redux-frame-animation` for every animated element.
 
 All working labels in this prompt are internal design handles, not final localisation.
@@ -8,8 +12,8 @@ All working labels in this prompt are internal design handles, not final localis
 
 Read the relevant sections of:
 
-- `.agents/skills/chaos-redux-event-assets/SKILL.md`
-- `.agents/skills/chaos-redux-frame-animation/SKILL.md` for animated work
+- `.claude/skills/chaos-redux-event-assets/SKILL.md`
+- `.claude/skills/chaos-redux-frame-animation/SKILL.md` for animated work
 - this asset prompt
 - the Event 018 source specs
 - the named reference folders for each asset type
@@ -87,14 +91,14 @@ The cave species must have one coherent identity across leader portrait, flags, 
 Inspect before production:
 
 ```text
-.agents/skills/chaos-redux-event-assets/assets/gfx_references/event_art/report
-.agents/skills/chaos-redux-event-assets/assets/gfx_references/event_art/news
-.agents/skills/chaos-redux-event-assets/assets/gfx_references/event_art/super_event
-.agents/skills/chaos-redux-event-assets/assets/gfx_references/icons/ideas
-.agents/skills/chaos-redux-event-assets/assets/gfx_references/icons/national_focus
-.agents/skills/chaos-redux-event-assets/assets/gfx_references/icons/decisions
-.agents/skills/chaos-redux-event-assets/assets/gfx_references/icons/achievements
-.agents/skills/chaos-redux-event-assets/assets/gfx_references/flags/normal
+.claude/skills/chaos-redux-event-assets/assets/gfx_references/event_art/report
+.claude/skills/chaos-redux-event-assets/assets/gfx_references/event_art/news
+.claude/skills/chaos-redux-event-assets/assets/gfx_references/event_art/super_event
+.claude/skills/chaos-redux-event-assets/assets/gfx_references/icons/ideas
+.claude/skills/chaos-redux-event-assets/assets/gfx_references/icons/national_focus
+.claude/skills/chaos-redux-event-assets/assets/gfx_references/icons/decisions
+.claude/skills/chaos-redux-event-assets/assets/gfx_references/icons/achievements
+.claude/skills/chaos-redux-event-assets/assets/gfx_references/flags/normal
 ```
 
 Record which references were inspected in the manifest.
@@ -317,7 +321,7 @@ A final sealed chasm surrounded by damaged industrial ruins, multinational engin
 
 ## Cave leader portrait
 
-Route the cave sovereign, authorized route portraits, commanders, portrait animation, processing, and portrait-specific wiring to `chaosx_portrait_creator` under [the asset owner skill](../../../../.agents/skills/chaos-redux-event-assets/SKILL.md).
+Route the cave sovereign, authorized route portraits, commanders, portrait animation, processing, and portrait-specific wiring to `chaosx_portrait_creator` under [the asset owner skill](../../../../.claude/skills/chaos-redux-event-assets/SKILL.md).
 
 ### Static portrait
 

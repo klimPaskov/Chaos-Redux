@@ -1,5 +1,8 @@
 # Achievement Implementation and Asset Prompt for Event 018 Resources Found
 
+> Historical build contract (spec audit 2026-10-10): Event 018 is implemented, so this prompt must not be re-executed as a build order.
+> Start new work from `docs/events/018_resources_found/overview.md`, the package README open questions and the current source.
+
 Implement a difficult, route-diverse achievement set for Event 018. All titles below are working labels, not final localisation. Final titles and descriptions must be written from the direction in this prompt and must not expose hidden variables outside the achievement UI.
 
 Use the existing single Chaos Redux achievement registry, localisation pattern, GFX pattern, and root-only `gfx/achievements/` file convention. Every achievement needs tracking, disqualifiers, final localisation, a completed icon, a grey icon, a not-eligible icon, documentation, and validation.

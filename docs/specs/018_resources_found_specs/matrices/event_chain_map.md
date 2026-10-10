@@ -1,6 +1,11 @@
 # Event 018 Event Chain Map
 
-All titles are working labels, not final localisation. The canonical entry remains `chaosx.nr18.1`. Suggested ordinals below are planning handles. Implementation must inspect the existing namespace before assigning final subevent IDs.
+All titles are working labels, not final localisation.
+The canonical entry is `chaosx.nr18.1`.
+The working ordinals below were implemented as the event ids `chaosx.nr18.<ordinal>` in `events/018_random_resource.txt`, and every ordinal listed exists there.
+One id has no row: `chaosx.nr18.33` explains an unsuccessful manual survey preparation for a human player.
+News events `chaosx.news.84` to `chaosx.news.89` (in `events/_chaosx_news.txt`) cover the presentation routing rows for News event below.
+Trigger conditions in the rows are planning intent; the overview in `docs/events/018_resources_found/overview.md` is the implementation record.
 
 ## Core event families
 

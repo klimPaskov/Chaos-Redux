@@ -379,6 +379,7 @@ The strength of opinion changes should reflect actual material stakes. A distant
 ## Integration with normal trade
 
 Event 018 should enhance the normal resource economy rather than replace it with a separate currency.
+Priced actions pass their political power and command power charges through the Event 26 Black Friday price table (`black_friday_price_table_quote` in `018_resources_found_decision_effects.txt`) so that the quote, affordability check and payment agree.
 
 The field’s added resources enter the state and normal trade system. Contracts, concessions, and guarantees create modifiers, access expectations, or diplomatic behavior around that supply. They should not create a second invisible stockpile that bypasses trade.
 
@@ -449,18 +450,22 @@ Event 018 is a member of Positive Economy, cluster 7, at Medium severity. Cluste
 ### Tensions Rising, Event 8
 
 A high-value field and unresolved claimant can add to regional tension or receive altered foreign-pressure behavior when Event 8 is active. Event 018 should not duplicate Event 8’s broader tension system.
+Status 2026-10-10: unresolved suggestion; no Event 018 source reads Event 8 state.
 
 ### Great Embargo, Event 50
 
 Embargoed countries value covert access and alternative contracts more strongly. Event 50 remains the owner of embargo mechanics.
+Status 2026-10-10: unresolved suggestion; the foreign interest score in source has no embargo term.
 
 ### Border Conflict, Event 78
 
 If Event 78 provides shared border-conflict infrastructure, Event 018 should use it rather than create a parallel generic war system. Event 018 still owns the resource-field prerequisites, transfer consequences, and settlement.
+Status 2026-10-10: Event 78 has no reusable helper (`events/078_border_war.txt` calls `start_border_war` directly), so Event 018 calls the native `start_border_war` itself in `018_resources_found_decision_effects.txt`, with the combat width, province count and minimum duration from `resources_found_border_conflict`.
 
 ### Natural Disasters, Event 13
 
 A disaster in the field state can damage development, interrupt contracts, reveal new seams, or complicate closure. Event 018 should not take over the disaster chain.
+The accepted contract is in Part 7 (accepted by the parent on 8 October 2026); its implementation seam is unresolved because Event 018 has no disaster listener yet.
 
 ## Diplomatic completion standard
 

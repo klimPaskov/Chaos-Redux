@@ -4,6 +4,8 @@
 
 All names in this file are working labels for design structure. They are not final localisation.
 
+Implementation status, 2026-10-10: implemented as a 67-focus tree in `common/national_focus/018_resources_found_cave_focus_tree.txt`, above the 45 to 65 focus planning range; `docs/events/018_resources_found/cave_country.md` is the implementation record.
+
 ## Tree purpose
 
 The cave country needs a real focus tree because it can survive for years, fight several states, and become a world-ending threat. The tree must make the player choose how the brood hierarchy governs, how it converts resources into formations, how it fights on the surface, how it adapts without losing its core weaknesses, and how it completes continental consumption.

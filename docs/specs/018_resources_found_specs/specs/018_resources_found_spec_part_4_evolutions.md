@@ -19,6 +19,7 @@ Ordinary baseline stages must not be logged as evolutions. The shared Event Deta
 ## Evolution pacing
 
 Evolution checks should use dynamic mean time to happen rather than instant threshold jumps. A normal active-stage target is around 90 days, modified by field behavior and campaign state.
+The implemented base days and factors are in `resources_found_mtth` and `resources_found_mtth_factor` and are summarized in `matrices/tuning_and_balance_framework.md`.
 
 Factors that shorten evolution timing include:
 
@@ -418,6 +419,7 @@ Creatures reach a major settlement or city district in the state. Civilian death
 #### Regional flight
 
 Population movement and panic spread to adjacent states. This should not become a separate migration event system. Event 018 can use existing population movement or state modifiers where available.
+Status 2026-10-10: no regional flight hook exists in source; the package README open question 4 proposes submitting the flight through the Migration system's internal displacement request.
 
 #### Open public knowledge
 
@@ -537,6 +539,7 @@ The log should describe a resource field where attacks have left the excavation 
 Evolution IV ends the owner-managed field and creates a new playable nonhuman cave country in the site. The country is an aggressive resource-feeding army with unique deployment rules, slow armored units, no normal manpower or equipment economy, and an immediate war against every land neighbor.
 
 The working country label in the specification is **The Deep Host**. This is not final localisation. The species, country, leader, army, and ideology need original names during implementation.
+Implemented identity: tag `DHO`, the Oth-Kesh Host, as listed in the package README.
 
 ### Transition event
 

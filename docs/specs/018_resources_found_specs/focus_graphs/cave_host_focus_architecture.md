@@ -1,6 +1,9 @@
 # Cave-Country Focus Architecture
 
-This is a path-level design guide. All labels are working labels, not final localisation. The implementation agent owns exact focus count, coordinates, and connector layout while preserving the route logic.
+This is a path-level design guide.
+All labels are working labels, not final localisation.
+The implemented tree has 67 focuses in `common/national_focus/018_resources_found_cave_focus_tree.txt`; the focus route audits are `event018_focus_final_current_2026-08-09.md` and `final_focus_audit_2026-08-09.md` under `docs/plans/018_resources_found_plans/subagent_handoffs/`.
+The implementation owns exact focus count, coordinates and connector layout, and preserves the route logic below; merges and deviations are recorded in those audits.
 
 ## High-level lane map
 

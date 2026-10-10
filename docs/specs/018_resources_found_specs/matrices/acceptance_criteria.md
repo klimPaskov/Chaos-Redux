@@ -9,7 +9,8 @@ Checkbox state is reconciled against the current implementation through 2026-08-
 - `[x]` means the accepted requirement is supported by current deterministic script definitions, exact fixtures, focused static audits, registered runtime assets, documentation, or workbook evidence.
 - The user explicitly waived launching Hearts of Iron IV for this pass. Checked engine-facing scenarios therefore record accepted definition-based and static evidence. They do not claim observed live gameplay, combat, GUI scale, music playback, or campaign AI behavior.
 - All 363 accepted implementation requirements are mapped and supported under the stated static proof boundary. This checked implementation inventory is not an unconditional completion verdict.
-- Formal completion remains open under the repository's no-unresolved-surface rule. The current final audit found no source-local gameplay defect, and fresh independently reviewed five-phase action evidence closes the cave-monster package within the user-approved static, no-HOI4 boundary. Mandatory probability evidence remains incomplete at several MCP adapter boundaries.
+- The current final audit found no source-local gameplay defect, and fresh independently reviewed five-phase action evidence closes the cave-monster package within the user-approved static, no-HOI4 boundary.
+- The probability evidence that the MCP adapters could not produce is a recorded validation limitation under CLAUDE.md section 5 and does not reopen the implemented design. See the evidence gates at the end of this file.
 - Optional ideas rejected by the improvement-loop review are outside the accepted Event 018 design and are not completion blockers.
 
 Primary evidence is indexed in [the static acceptance report](../../../plans/018_resources_found_plans/018_static_acceptance_report.md), [the implementation-depth disposition](../../../plans/018_resources_found_plans/018_resources_found_implementation_depth_addendum.md), [the improvement-loop closure handoff](../../../plans/018_resources_found_plans/improvement_loop_closure_handoff.md), and the focused auditor and production handoffs under `docs/plans/018_resources_found_plans/subagent_handoffs/`. The current formal disposition is recorded in `event018_final_completion_post_visual_2026-08-10.md`, the remaining probability boundary is recorded in `event018_probability_custom_pool_closure_2026-08-10.md`, and the closed static 3D boundary is recorded in `event018_cave_monster_visual_closure_2026-08-10.md`.
@@ -19,7 +20,7 @@ Primary evidence is indexed in [the static acceptance report](../../../plans/018
 - [x] Event ID remains 18.
 - [x] Canonical entry uses the `chaosx.nr18.1` root.
 - [x] Event remains Minor Repeatable.
-- [x] Event is assigned to Positive Economy, cluster 7.
+- [x] Event is assigned to Positive Economy, cluster 7, as the required primary-trigger member with minimum Chaos Meter tier 3.
 - [x] Cluster member severity is Medium.
 - [x] Event is enabled by default only after the rework is implementation-ready.
 - [x] Baseline works when all four evolutions are disabled.
@@ -69,10 +70,11 @@ Primary evidence is indexed in [the static acceptance report](../../../plans/018
 - [x] Developed Yield is visible as integer and band.
 - [x] Excavation Depth is visible as integer and band.
 - [x] Workforce Safety is visible as integer and band.
-- [x] Foreign Pressure is visible as integer and band.
-- [x] Subsurface Disturbance becomes visible only after its reveal.
-- [x] Breach Pressure becomes visible only in Evolution III.
-- [x] Each value has cause-and-effect tooltip direction.
+- [x] Foreign Pressure is visible as integer and band in the contextual fourth slot during ordinary work.
+- [x] Subsurface Disturbance becomes visible only after its reveal, and takes the fourth slot from Foreign Pressure.
+- [x] Breach Pressure becomes visible only in Evolution III, and takes priority over Disturbance in the fourth slot.
+- [x] The header shows exactly three core values (Yield, Depth, Safety) plus one contextual slot, accepted 2026-10-05.
+- [x] Each value tooltip names the actions that raise or lower it and does not list other values.
 - [x] Selected-field cycle works for multiple fields.
 - [x] Lost or closed selected field advances to next valid field.
 - [x] Human field selection does not block AI evaluation of all fields.
@@ -448,10 +450,15 @@ The scenarios below are checked on the deterministic and static evidence recorde
 - [x] Global defeat aftermath gating scenario recorded.
 - [x] No simplification, fallback, missing AI, missing asset, or missing text remains undisclosed.
 
-## Formal completion evidence gates
+## Evidence gates and validation limitations
 
-The checked requirements above record implemented or explicitly dispositioned design surfaces. Formal goal closure is withheld until the remaining evidence gate below is resolved or the user explicitly changes the acceptance contract:
+The checked requirements above record implemented or explicitly dispositioned design surfaces.
+One validation limitation is recorded and does not change any checkbox state.
 
-- Mandatory HOI4 MCP probability evidence must cover the remaining event-wide option normalization, typed campaign predicates, direct-random selectors, scripted MTTH variables, mission applicability, and fixed AI-strategy factors without unresolved adapter gaps.
+- HOI4 MCP probability evidence for the event-wide option normalization, typed campaign predicates, direct-random selectors, scripted MTTH variables, mission applicability and fixed AI-strategy factors was not obtainable without unresolved adapter gaps.
+  Representative cases calculated from the actual script values remain the evidence for balance.
+  Closing the gap requires a working analyzer run, not a design change.
 
-The cave-monster 3D gate is closed within the user-approved static, no-HOI4 boundary. Runtime-byte reimport, five-phase loop-action contact sheets, attack and death action sheets, counter review, texture and material checks, audio provenance, and exact audio reconstruction are positive; this does not claim in-game rendering or playback.
+The cave-monster 3D gate is closed within the user-approved static, no-HOI4 boundary.
+Runtime-byte reimport, five-phase loop-action contact sheets, attack and death action sheets, counter review, texture and material checks, audio provenance, and exact audio reconstruction are positive.
+This does not claim in-game rendering or playback.

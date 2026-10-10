@@ -423,10 +423,12 @@ Event 29 remains abstract wealth. Event 018 uses real strategic resources, state
 ### Event 50, Great Embargo
 
 Embargoed countries have stronger interest in smuggling, concessions, and alternative supply. Event 50 owns embargo rules. Event 018 adjusts foreign interest and contract behavior.
+Status 2026-10-10: unresolved suggestion; no embargo term exists in the foreign interest score.
 
 ### Event 78, Border Conflict
 
 Event 018 should reuse valid border-conflict infrastructure if Event 78 provides it. The resource field supplies the claim, value, transfer, and settlement context.
+Status 2026-10-10: Event 78 provides no shared helper, so Event 018 uses the native `start_border_war` directly (see Part 3).
 
 ### Event 98, New Ore
 
@@ -447,6 +449,7 @@ Event 139 is a lone hunted creature. Event 018 is an underground labor crisis th
 ## Event cluster behavior
 
 Event 018 is assigned to Positive Economy, cluster 7, at Medium severity. Cluster entry may start the ordinary baseline discovery. Field creation, enrichment, history, and later evolutions remain owned by Event 018.
+Status 2026-10-10: Event 018 is currently the only registered member row of the cluster (required, primary trigger, minimum tier 3); see open question 6 in the package README.
 
 ## Terminal and aftermath completion standard
 

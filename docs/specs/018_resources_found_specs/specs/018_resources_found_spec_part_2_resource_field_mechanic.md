@@ -55,7 +55,7 @@ These values support closure, achievement tracking, international interest, and 
 
 ### Field values
 
-The field stores:
+The field stores six numeric values:
 
 - Developed Yield
 - Excavation Depth
@@ -63,15 +63,12 @@ The field stores:
 - Foreign Pressure
 - Subsurface Disturbance after the mechanic begins tracking it
 - Breach Pressure after the public monster phase begins
-- closure progress
-- transport capacity
-- security level
-- local labor strain
-- foreign ownership share or concession influence
-- smuggling pressure
-- active contract count
-- accumulated field deaths
-- accumulated exploitation score
+
+It also keeps two cumulative records that drive later consequences: accumulated field deaths (`resources_found_field_deaths`) and the exploitation score (`resources_found_exploitation_score`) that feeds cave opening strength.
+
+Transport, security, smuggling, contract, concession and closure conditions are discrete states, recorded as field flags, partner pointers and project missions (for example a completed corridor, organized guards, an active smuggling network, an active contract and its partner, or a running seal).
+They are not additional meters.
+The planning-era list of hidden numeric meters for labor strain, foreign ownership share, smuggling pressure, transport capacity, security level, contract count and closure progress was not implemented, and no such meter should be added unless a rule reads it and the player can act on it (spec audit 2026-10-10, consistency with the current source).
 
 Developed Yield, Excavation Depth and Workforce Safety remain visible as the three core values.
 The fourth slot shows Foreign Pressure, revealed Subsurface Disturbance, or revealed Breach Pressure.
@@ -117,9 +114,10 @@ Each value appears with:
 
 - an integer number
 - a named band
-- a short cause-and-effect tooltip
+- a short tooltip naming the actions that raise or lower it
 - a consistent color identity
-- a breakdown of recent or permanent contributors where practical
+
+Tooltips do not list contributor breakdowns, hidden records or other values; one value, its band and what the player can do about it is the whole tooltip.
 
 Suggested color direction:
 
@@ -313,6 +311,8 @@ This project relieves housing and labor strain, improves local administration, a
 The project should help distinguish regulated development from pure rush extraction.
 
 ## Labor and safety actions
+
+Several of these are implemented as repeatable purchases whose flags nothing reads; the package README open question 3 proposes making them staged one-time institutions or standing rules.
 
 ### Recruit regional labor
 

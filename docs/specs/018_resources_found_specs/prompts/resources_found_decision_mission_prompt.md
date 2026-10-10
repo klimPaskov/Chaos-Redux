@@ -1,6 +1,9 @@
 # Decision and Mission Implementation Prompt for Event 018 Resources Found
 
-Implement the complete Event 018 decision and mission systems from the source specs and `matrices/decision_mission_matrix.md`. Follow `AGENTS.md`, `chaos-redux-events`, and `chaos-redux-decisions-missions`. Use the scripted-system architect for repeated field, target, capacity, cost, and cleanup logic. Run the decision and mission auditor before completion.
+> Historical build contract (spec audit 2026-10-10): Event 018 is implemented, so this prompt must not be re-executed as a build order.
+> Start new work from `docs/events/018_resources_found/overview.md`, the package README open questions and the current source.
+
+Implement the complete Event 018 decision and mission systems from the source specs and `matrices/decision_mission_matrix.md`. Follow `CLAUDE.md`, `chaos-redux-events`, and `chaos-redux-decisions-missions`. Use the scripted-system architect for repeated field, target, capacity, cost, and cleanup logic. Run the decision and mission auditor before completion.
 
 All working labels are design handles, not final localisation. Write final player-facing text during implementation.
 

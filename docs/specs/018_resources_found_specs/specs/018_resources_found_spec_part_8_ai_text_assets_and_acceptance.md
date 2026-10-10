@@ -383,7 +383,7 @@ Do not satisfy one icon type by resizing another.
 
 Achievements are planned in full in `prompts/resources_found_achievement_prompt.md`. The set should cover ordinary economic mastery, dangerous greed, successful closure, cave-country play, anti-cave victory, and world-end completion.
 
-Working achievement concepts:
+Working achievement concepts (the implemented set has fifteen achievements and is documented in `docs/achievements/018_resources_found/achievements.md`):
 
 ### One Vein to Rule the Market
 

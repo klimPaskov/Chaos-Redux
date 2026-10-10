@@ -1,5 +1,8 @@
 # Coding-Agent Implementation Prompt for Event 018 Resources Found
 
+> Historical build contract (spec audit 2026-10-10): Event 018 is implemented, so this prompt must not be re-executed as a build order.
+> Start new work from `docs/events/018_resources_found/overview.md`, the package README open questions and the current source.
+
 Implement Chaos Redux Event 018, Resources Found, to the fullest extent of the source specification package. Treat every mapped mechanic, evolution, decision family, country surface, focus route, asset, achievement, super-event, AI behavior, log entry, documentation field, and validation scenario as acceptance criteria.
 
 Do not implement a smaller fallback version. Do not replace the resource-field system with one popup and one modifier. Do not replace the cave country with a temporary enemy spawn. Do not omit AI, assets, localisation, closure, ownership transfer, focus routes, deployment rules, or world-end behavior. Report every blocked or simplified item.
@@ -8,7 +11,7 @@ Do not implement a smaller fallback version. Do not replace the resource-field s
 
 Before editing, read:
 
-- `AGENTS.md`
+- `CLAUDE.md`
 - the full Event 018 spec pack
 - all matrices in this package
 - the focus architecture
@@ -231,7 +234,7 @@ Update:
 
 ## Specialist ownership and resolved planning
 
-Use [the routing owner skill](../../../../.agents/skills/chaos-redux-subagents/SKILL.md) for context-free briefs, patch boundaries, required audit cadence, and handoff paths.
+Use [the routing owner skill](../../../../.claude/skills/chaos-redux-subagents/SKILL.md) for context-free briefs, patch boundaries, required audit cadence, and handoff paths.
 Event 018 responsibilities remain the exact resource ledger and helper lifecycle, field and cave decisions, cave country and focus tree, localisation, portraits, non-portrait assets, super-event research, docs, catalog, and final completion review.
 The read-only `chaosx_ai_probability_auditor` owns scenario-specific weighted evidence.
 Use the recorded [improvement-loop closure](../../../plans/018_resources_found_plans/improvement_loop_closure_handoff.md) before scheduling any new depth pass.
@@ -239,7 +242,7 @@ Do not repeat its closed RF-018-01 through RF-018-08 work without a new scoped f
 
 ## Writing direction
 
-Follow [the event writing owner skill](../../../../.agents/skills/chaos-redux-events/SKILL.md) for final wording and Event Details boundaries.
+Follow [the event writing owner skill](../../../../.claude/skills/chaos-redux-events/SKILL.md) for final wording and Event Details boundaries.
 Keep ordinary discovery positive and practical, early horror uncertain, and cave-country language original and readable.
 Describe observed actors, work, fear, violence, and consequences without cheap humor around sickness and deaths.
 

@@ -4,6 +4,8 @@
 
 All names in this file are working labels for design structure. They are not final localisation.
 
+Implementation status, 2026-10-10: implemented as tag `DHO`, the Oth-Kesh Host; the package README lists the resolved working labels and `docs/events/018_resources_found/cave_country.md` is the implementation record.
+
 ## Country role
 
 Evolution IV creates one persistent, fully playable, actual nonhuman country. The working label is **The Deep Host**. Its public identity should be short, original, readable on the map, and clearly nonhuman. It must not borrow the name of a real ethnic, national, religious, or folklore group.

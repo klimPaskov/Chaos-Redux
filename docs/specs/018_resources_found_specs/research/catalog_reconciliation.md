@@ -10,7 +10,11 @@
 - Cluster: 7, Positive Economy
 - Required member severity: Medium
 
-The cluster catalog lists Positive Economy as a Chaos Level 1 cluster. Event 018 is its Medium-severity member. Cluster-facing text presents the positive economic discovery without revealing that later horror develops through the persistent field and evolution systems.
+The cluster catalog lists Positive Economy as a cluster with Chaos level 1 and members 18, 34, 55, 57 and 58.
+Event 018 is its Medium-severity member.
+In source (checked 2026-10-10) the cluster unlocks at Chaos Meter tier 3 (`constant:event_cluster_economy_positive.unlock_tier`), Event 018 is the only registered member row (required, primary trigger, minimum tier 3) in `chaosx_event_cluster_effects.txt`, and the catalog status is Partially Available.
+The catalog's level column and the source tier were not reconciled by this audit; the workbook owner decides which one is stale.
+Cluster-facing text presents the positive economic discovery without revealing that later horror develops through the persistent field and evolution systems.
 
 ## Nearby catalog ideas that must remain distinct
 

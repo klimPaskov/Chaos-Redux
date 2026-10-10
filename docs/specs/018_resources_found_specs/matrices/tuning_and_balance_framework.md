@@ -1,6 +1,10 @@
 # Event 018 Tuning and Balance Framework
 
-This file defines design ranges and relationships. It does not prescribe final Clausewitz syntax. Shared values should be centralized in script constants or documented tuning helpers during implementation.
+This file defines design ranges and relationships. It does not prescribe final Clausewitz syntax. Shared values are centralized in script constants.
+
+The tables below keep the planning ranges.
+The implemented values are in `common/script_constants/018_resources_found_constants.txt`, `018_resources_found_decision_constants.txt`, `018_resources_found_cave_constants.txt` and `018_resources_found_foreign_interest_constants.txt`, and win wherever they differ from a range.
+The section Implemented values at the end of this file lists the differences that matter for balance.
 
 ## Fixed design rules
 
@@ -402,3 +406,26 @@ The world-end route is allowed to be deliberately overpowered. It should still a
 - World end fires once.
 - Permanently closed fields never re-enter selection.
 - Successful Evolution III full closure always prevents Evolution IV for that field.
+
+## Implemented values
+
+Updated 2026-10-10 from the constants files named above.
+The planning ranges stay as design intent; these are the numbers in force.
+
+- Deposits and rolls match the planning table: baseline 80 to 120 centered on 100, Evolution I 80 to 120 with 2 to 4 pre-fire and 1 to 3 active rolls, Evolution II 90 to 140 with 3 to 5 and 1 to 3, Evolution III 120 to 200, and a 1,200-unit practical concentration cap per state.
+- Field values run 0 to 100 with bands every 20 points.
+  New fields start at Yield 10, Depth 5, Safety 60, Foreign Pressure 5, Disturbance 0 and Breach 0.
+- Project steps are single completion changes from `resources_found_decision_change`, not periodic pulses.
+  Appraisal gives Yield +10; deeper test Yield +15 and Depth +15; primary works Yield +25 and Depth +10; heavy machinery Yield +20 and Depth +15; processing Yield +15; worker settlement Safety +15; shorter shifts Safety +15 and Yield -10; reinforcement Safety +20; hospital Safety +10.
+  Maximum Shifts applies Yield +25, Safety -20, Depth +20 and Disturbance +15 once when it is set.
+  A successful hunt lowers Breach by 20, an access seal lowers Breach by 15 and Depth by 10, and partial closure lowers Yield by 20 and Depth, Disturbance and Breach by 30.
+- No periodic field-value pulse exists.
+  The monthly "pulse" rows in the Typical changes lists above are planning ranges that were realized as the one-time project effects listed here; the only periodic script is the tag-specific DHO daily pulse.
+- Evolution clocks are MTTH-based: Evolution I 150 pre-fire and 135 active days, II 135 and 100, III 120 and 90, IV 105 and 90, each multiplied by the `resources_found_mtth_factor` table (for example suspension 2.50, full seal in progress 2.50, high safety 1.40, maximum extraction 0.65, extreme excavation 0.60, failed seal 0.60).
+- Thresholds: Foreign Pressure bands start at 20, 40, 60 and 80; the border crisis needs a field total of at least 150 and two interested countries; the cave opening needs Breach 80 and exploitation score 40; the global-significance total is 300.
+- Cave capacity: 1 division per 10 resources, cap 10 per state, origin 0, 30 days of control to activate, 21 days of grace after loss, one spawn every 30 days and every 15 days after world end.
+- World end: chaos strictly above 1,000 and a 60-day verification.
+- Civilian loss uses the shared exact state loss helper (`resources_found_apply_incident_civilian_loss`).
+  The request is a fixed base per incident (missing shift 200, underground attack 1,500, settlement attack 6,000, city intrusion 30,000, failed hunt 5,000, failed evacuation 60,000) multiplied by a risk percentage of 100 minus Safety plus Disturbance plus Breach, clamped to 25 through 250 percent, plus a population component of thousands of residents times an incident factor.
+  The result is multiplied by 0.40 after a successful evacuation and 1.25 when casualties were concealed, and never leaves fewer than 1,000 residents.
+- Project costs come from the compact cost profiles in `resources_found_decision_cost` and the decision profiles, with at most four spendable resource types per project; `resources_found_project_cost` is an unused leftover (open question 7 in the README).

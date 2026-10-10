@@ -1,6 +1,9 @@
 # Event 018 Decision and Mission Matrix
 
-All names are working labels, not final localisation. Costs and durations are design bands. Final values must use centralized tuning and dynamic factors.
+All names are working labels, not final localisation.
+Costs and durations in this matrix are planning bands.
+The implemented decisions use eleven compact cost profiles of at most four spendable resource types with dynamic country, field and war scaling (`resources_found_decision_cost`, `resources_found_decision_duration`, `agent_decisions_2026-10-05.md`), and the selected-field list is split into five workboard pages with at most six actions each.
+Actions that the matrix describes as repeatable are limited as described in open question 3 of the package README.
 
 ## Field selection and administration
 

@@ -4,9 +4,13 @@
 
 All names in this file are working labels for design structure. They are not final localisation.
 
+Implementation status, 2026-10-10: implemented; the current record is `docs/events/018_resources_found/overview.md`.
+The management header shows Developed Yield, Excavation Depth and Workforce Safety permanently and one contextual fourth value (Foreign Pressure, revealed Disturbance or revealed Breach Pressure), accepted 2026-10-05; the "four visible values" below describe the baseline values before the supernatural layer, not four permanent header slots.
+The survey breakthrough result is event `chaosx.nr18.3`; see the package README open questions for its unread option flags.
+
 ## Event identity
 
-Event 018 remains a **Minor Repeatable** event and is assigned to Positive Economy, cluster 7, at Medium severity. The ordinary event is a major economic opportunity rather than a disguised punishment. A country discovers that one valid state contains far more of one normal strategic resource than existing surveys indicated. The first visible consequence is a large deposit, new investment demand, and foreign trade interest.
+Event 018 remains a **Minor Repeatable** event and is assigned to Positive Economy, cluster 7, at Medium severity, as its required primary-trigger member from Chaos Meter tier 3. The ordinary event is a major economic opportunity rather than a disguised punishment. A country discovers that one valid state contains far more of one normal strategic resource than existing surveys indicated. The first visible consequence is a large deposit, new investment demand, and foreign trade interest.
 
 The event can become dangerous through repeated development and its evolution tracks. The ordinary discovery should still feel desirable after the player knows that deeper branches exist. The event fails if the correct strategy is always to reject the deposit immediately. Safe exploitation, regulated growth, foreign partnership, national development, strategic militarisation, suspension, and closure must each be viable in different campaign situations.
 

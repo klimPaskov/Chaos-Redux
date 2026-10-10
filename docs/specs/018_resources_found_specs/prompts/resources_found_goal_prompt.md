@@ -1,6 +1,9 @@
 # Goal Prompt: Implement Event 018 Resources Found
 
-Implement Event 018 from the package under `docs/specs/018_resources_found_specs/`. Read the full package and follow `AGENTS.md`, all named Chaos Redux skills, required offline wiki pages and vanilla documentation.
+> Historical build contract (spec audit 2026-10-10): Event 018 is implemented, so this prompt must not be re-executed as a build order.
+> Start new work from `docs/events/018_resources_found/overview.md`, the package README open questions and the current source.
+
+Implement Event 018 from the package under `docs/specs/018_resources_found_specs/`. Read the full package and follow `CLAUDE.md`, all named Chaos Redux skills, required offline wiki pages and vanilla documentation.
 
 Keep Event 018 Minor Repeatable in Positive Economy with Medium severity. Select a valid owned state, choose one completely random standard strategic resource, and add a deposit centered around 100. Store Event 018 additions separately for all six resources. Repeated firings can enrich the same persistent field and duplicate rolls stack. Implement the complete field lifecycle, trade, foreign pressure, commission, border conflict, transfer, suspension, and exact closure. The baseline must work with evolutions disabled.
 
