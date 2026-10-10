@@ -877,10 +877,29 @@ chaos_meter_add_country_deaths_cause_total = {
 			}
 		else_if = {
 			limit = {
-				check_variable = {
-					var = chaos_deaths_country_cause_reason
-					value = constant:chaos_meter_deaths_reason.civilian_combat
-					compare = equals
+				OR = {
+					check_variable = {
+						var = chaos_deaths_country_cause_reason
+						value = constant:chaos_meter_deaths_reason.civilian_combat
+						compare = equals
+					}
+					# Event 031 attacks, counterterror casualties and movement atrocities
+					# share the civilian combat bin.
+					check_variable = {
+						var = chaos_deaths_country_cause_reason
+						value = constant:chaos_meter_deaths_reason.random_terror_attack
+						compare = equals
+					}
+					check_variable = {
+						var = chaos_deaths_country_cause_reason
+						value = constant:chaos_meter_deaths_reason.random_terror_counterterror
+						compare = equals
+					}
+					check_variable = {
+						var = chaos_deaths_country_cause_reason
+						value = constant:chaos_meter_deaths_reason.random_terror_atrocity
+						compare = equals
+					}
 				}
 			}
 			add_to_variable = { chaos_meter_deaths_country_cause_civilian_combat = chaos_deaths_country_cause_value }
