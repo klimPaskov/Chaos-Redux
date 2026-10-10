@@ -127,6 +127,13 @@ For event-specific assets, include the event id or slug where useful. For exampl
 
 Use `docs/assets/<event_id>_<event_slug>/` with `manifest.md`, `prompts/`, `source_png/`, `processed_png/`, `contact_sheets/`, `notes/`, and `gfx_handoff.md` as needed. Treat it as a temporary, event-scoped working and evidence folder, not as a shipped asset library. Keep original sources, processed previews, and runtime outputs separate. Use it during active implementation for source files, processed previews, contact sheets, prompts, provenance, manifests, animation plans and previews, source-audio downloads, and handoff notes. Keep it while the event is active, blocked, awaiting review, or undergoing acceptance scenarios.
 
+### Git LFS storage budget
+
+Git LFS holds only files Hearts of Iron IV loads: `.dds`, `.tga`, `.png`, `.mesh` and `.anim` under `gfx/`, `.wav` and `.ogg` under `sound/` and `music/`, map bitmaps under `map/`, and the root `thumbnail.png`. The `.gitattributes` patterns are scoped to those runtime paths, so a PNG, JPG, GIF, PSD, ZIP or XLSX anywhere else is an ordinary Git blob.
+Never commit evidence images, plan or spec screenshots, previews, contact sheets, renders, PSD or PNG sources beside a DDS, GIFs, videos, archives, Blender checkpoints, provider downloads or source audio. `.gitignore` rejects those outside the maintained paths (the event-assets skill reference, the mechanics guide media in `docs/images`, the offline wiki snapshot, the two workbooks and the vendored add-on zips); keep them in `docs/assets/<event_id>_<event_slug>/` or `.tmp/`, both ignored.
+A runtime file counts as unused only when no `.gfx`, `.gui`, `.asset`, script, history or localisation file names it and no engine convention loads it by name (flags by tag and ideology, achievement icons by id, loading screens, event pictures named by `.gfx`). Binaries removed from the repository because the game never loads them are kept byte for byte in `Documents/chaos_redux_lfs_archive/` at the same relative path, with the LFS OID recorded in its `README.md`; a plan or spec that links a removed file points there. Do not remove files other sessions changed in the last day or hold uncommitted edits for.
+Removing a file from HEAD does not free remote LFS storage: its objects stay on the server until history is rewritten and the server prunes them, which is a user decision.
+
 ### Durable portrait source archive
 
 Keep grounded portrait sources in the durable attributed archive, outside disposable event workspaces.
