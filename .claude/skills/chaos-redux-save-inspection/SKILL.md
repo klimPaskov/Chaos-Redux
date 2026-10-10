@@ -16,7 +16,7 @@ python .claude/skills/chaos-redux-save-inspection/scripts/save_inspect.py <comma
 ## 1. Boundaries
 
 - The inspector never modifies a save. Never copy saves into Git; they are large and personal.
-- Never edit the user's HOI4 `settings.txt` or launch the game. Live play, saving, and console commands belong to the user, or to `chaos-redux-debug-playtest` when the user explicitly invokes it.
+- Never edit the user's HOI4 `settings.txt` or launch the game. Live play, saving, and console commands belong to the user, or to `chaos-redux-debug-playtest` when the user explicitly invokes it; that skill plays through the HOI4 Live Tools MCP, and the `hoi4live_*` saves it writes (and `hoi4_save_query`'s quick diffs) are read here.
 - `AGENTS.md` forbids asking for logs. A save is different: when runtime state would decide a question that source reading cannot, you may offer one concrete save request (which moment, which save name) instead of guessing. Never make a save a precondition for fixing a clear source defect.
 - Save evidence proves the state of that save only. Record its file name, in-game date, game version, and the commands you ran. Do not generalise one save into coverage of other countries, dates, or branches.
 - Save evidence complements, and never replaces, the HOI4 MCP evidence and audits that `AGENTS.md` requires for the same surface.

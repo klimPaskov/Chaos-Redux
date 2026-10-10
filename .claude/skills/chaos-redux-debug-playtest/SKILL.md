@@ -1,47 +1,82 @@
 ---
 name: chaos-redux-debug-playtest
-description: Explicit-invocation-only Chaos Redux live QA workflow. Use only when the user names this skill or explicitly authorizes autonomous desktop control to launch the supplied debug shortcut, repair fresh Chaos Redux errors, relaunch until clean, play bounded test cases, exercise events and project UI, capture screenshots, fix confirmed defects, and verify the fixes in game. Never use as part of the normal Chaos Redux workflow unless explicitly invoked.
+description: Explicit-invocation-only Chaos Redux live QA workflow. Use only when the user names this skill or explicitly authorizes autonomous live testing, played through the HOI4 Live Tools MCP server (launch the debug game, load saves, run time, answer popups, read state and saves, diff saves), to repair fresh Chaos Redux errors, restart until clean, play bounded test cases, exercise events and project UI, capture screenshots, fix confirmed defects, and verify the fixes in game. Never use as part of the normal Chaos Redux workflow unless explicitly invoked.
 ---
 
 # Chaos Redux Autonomous Debug Playtest
 
-Use this skill only after the user explicitly invokes it or explicitly asks Codex to control the computer and perform autonomous Chaos Redux live testing.
+Use this skill only after the user explicitly invokes it or explicitly asks for autonomous Chaos Redux live testing. The run is played through the HOI4 Live Tools MCP server (`hoi4-live`); the agent does not script the desktop itself.
 
 Do not add this skill to `AGENTS.md`, `chaos-redux-subagents`, completion-audit routing, event implementation routing, or any default workflow unless the user separately requests that integration. Normal coding agents must not use this skill merely because a feature needs validation.
 
 ## Preconditions and scope
 
-### 1. Capability gate
+### 1. Capability gate and the HOI4 Live Tools route
 
-This skill does not itself grant Windows desktop control. Before starting, verify that the active Codex environment can:
+The HOI4 Live Tools MCP server is the route for every live step: launch, load, input inside the game window, the console, time, popups, screen reading, saves, save queries and logs. It is registered in this repository's `.mcp.json` (Claude Code) and `.codex/config.toml` as `hoi4-live`; its tools appear as `hoi4_status`, `hoi4_launch`, `hoi4_load`, and so on (Claude Code lists them as `mcp__hoi4-live__*`). Its source and docs are at `C:\Users\klimp\Documents\Projects\hoi4-live-tools` (`docs/tools.md` lists every argument); a machine without that checkout installs the release with HOI4 Mod Setup or `python install.py`.
 
-- see and control the Windows desktop
-- capture and save screenshots
-- launch the supplied shortcut
-- inspect and stop only the launched HOI4 process
-- read the active Hearts of Iron IV log directory
-- edit the Chaos Redux repository
+Before starting, verify:
 
-If any required capability is unavailable, stop with a blocked report. Do not claim that the skill has controlled the user's computer when it has not.
+- the `hoi4_*` tools are listed and `hoi4_status` answers (process, window, playset, mode, lock holder, recent saves, date)
+- the Chaos Redux repository is editable and the HOI4 logs are readable through `hoi4_logs`
+- the playset `hoi4_status` reports contains the Chaos Redux build under test; a frozen QA snapshot (`Chaos Redux QA`) does not show the repository's edits, so record which one is loaded and never edit `dlc_load.json` yourself (only `hoi4_telemetry` does, with a backup)
+
+If the server is not connected, stop with a blocked report that says how to connect it. Fall back to direct desktop control only when the user asks for it, and record the fallback. Do not claim the skill controlled the computer when it did not.
+
+Workflow steps map onto the tools like this:
+
+| Step | HOI4 Live Tools |
+| --- | --- |
+| Launch with the playset, wait for the main menu | `hoi4_launch debug=true`, then `hoi4_status` |
+| Close, restart after a content edit | `hoi4_shutdown confirm=true`, `hoi4_launch restart=true debug=true` |
+| Fresh-log delta, folded repeats, regex filter | `hoi4_logs log=error|exceptions|setup|text|game since=<mark>` with `set_mark` before the action |
+| Start or load the dedicated test game | `hoi4_new_game`, `hoi4_load save=<name>` |
+| Setup, trigger, answer | `hoi4_eval_effect`, `hoi4_console`, `hoi4_fire_event`, `hoi4_popups`, the campaign tools |
+| Bounded time | `hoi4_time action=step days=N popups=stop|choices`; `hoi4_advance` in campaign mode |
+| Screen, tooltips, evidence images | `hoi4_screen`, `hoi4_ocr`, `hoi4_hover`, `hoi4_screenshot` (the full image is kept under the server's `artifacts` folder; copy evidence into the run folder) |
+| Checkpoints, persistence, before and after | `hoi4_save name=<step>` (written as `hoi4live_<step>`), `hoi4_save_query`, then `chaos-redux-save-inspection` for deep reads |
+| Pure player-path tests without the console | `hoi4_lock action=set_mode mode=campaign`; the campaign tools act through the interface |
+
+Rules for every call:
+
+- Hold the desktop lock for the run (`hoi4_lock action=acquire purpose=<run_id>`) and release it at the end or on failure. Other sessions share the screen; never break a live holder's lock, never type outside the game window, never launch another window in front of the game.
+- On the user's PC the AMD Radeon overlay intercepts Ctrl+Shift chords. Open Chaos Redux windows with their top-bar buttons (`hoi4_click`) or with the plain keys that do not use the chord (Chaos Meter `M`, Event Logs `E`, Scenarios `S`); do not send Ctrl+Shift+C for Settings.
+- A slow call is not a failed call: the tools wait and re-read on a busy machine. Retry a failed call once, then change the plan.
+- The server writes only `hoi4live_*` saves and never edits `settings.txt`.
+
+#### Efficiency
+
+Loading a save costs one to three minutes, saving about one, a restart several. Spend them only when the question needs them.
+
+- Reuse the running game and the loaded dedicated save. Call `hoi4_status` first; launch only when no game runs or when content the game reads at launch (script, localisation, ideas, focus trees, GFX registrations) changed after it started. Interface and texture edits reload in place through `hoi4_console` (`reloadinterface`, `reload_textures`).
+- Collect every attributable error from one launch, fix them together, and restart once. Do not restart per fix.
+- Repeat only the step that failed. After a fix, retest the failed case on the running game (or after the one restart) plus one nearby regression check; do not rerun passed cases or rebuild the coverage ledger.
+- Save only when a file answers the question: an option's before and after diff, a persistence check, a deep inspector read. Read everything else from the screen and tool output. One save, load and diff per feature for persistence.
+- Independent cases share one clean checkpoint save; return to it only when a case contaminated the state (mutually exclusive branches, world-end paths, country creation).
+- Mark the logs before an action and read the delta once after it.
+- Delete your own `hoi4live_` saves when the run is done: each is large and every save pushes older ones down the load list.
 
 ### 2. Default Chaos Redux configuration
 
 Use these defaults:
 
 ```text
-logs:
+logs (read through hoi4_logs; the server resolves the active folder):
 C:\Users\klimp\OneDrive\Documents\Paradox Interactive\Hearts of Iron IV\logs
 
-launch_target:
+launch:
+hoi4_launch debug=true (hoi4.exe with -debug and the current playset)
+
+user's debug shortcut (manual route, never rewritten):
 C:\Users\klimp\OneDrive\Desktop\hoi4.exe - Shortcut.lnk
 
 artifact_root:
 <mod_root>\docs\testing\live_qa\<run_id>
 ```
 
-The supplied shortcut is declared by the user to launch HOI4 in debug mode. Preserve and launch that shortcut directly. Do not replace it, rewrite it, or route through the Paradox launcher unless the user requests that change.
+`hoi4_launch debug=true` starts `hoi4.exe` directly with `-debug`, as the user's shortcut does, and never goes through the Paradox launcher. Do not rewrite the shortcut. If a run depends on other shortcut arguments (inspect them once with `WScript.Shell` `TargetPath` and `Arguments`), say so in the run manifest instead of changing the shortcut.
 
-Confirm the active log directory by freshness after launch. Do not assume the OneDrive candidate is active merely because the mod is stored in OneDrive.
+Confirm the active log directory by freshness after launch: `hoi4_logs` reports the `launch` mark and the files that grew. Do not assume the OneDrive candidate is active merely because the mod is stored in OneDrive.
 
 ### 3. Invocation scope
 
@@ -68,8 +103,7 @@ For catalog coverage:
 At the start of each invocation, read:
 
 - `AGENTS.md`
-- `.claude/skills/hoi4-autonomous-debug-playtest/SKILL.md`, or the packaged generic copy
-- this skill
+- this skill (it is self-contained for the HOI4 Live Tools route; `docs/tools.md` of the server lists tool arguments)
 - the task brief, accepted spec, plan, handoff, issue report, and implementation files for the test scope
 - the relevant system skills for every surface that may be patched
 
@@ -116,21 +150,14 @@ Preserve unrelated uncommitted changes. Do not reset or clean the repository. Be
 Use this startup sequence:
 
 1. Record the current repository commit, branch, changed files, and test scope.
-2. Record timestamps for `error.log`, `game.log`, `setup.log`, `text.log`, and `exceptions.log` when present.
-3. Launch:
-
-```powershell
-Start-Process -FilePath 'C:\Users\klimp\OneDrive\Desktop\hoi4.exe - Shortcut.lnk'
-```
-
-4. Identify the new HOI4 process and retain its PID.
-5. Wait for the main menu to become visually stable.
-6. Capture a main-menu screenshot showing the visible game version and evidence that Chaos Redux loaded.
-7. Copy the fresh logs into the run artifact folder.
-8. Triage only the current-run delta.
-9. If a target-mod blocking error exists, close HOI4 and enter the repair loop before starting a campaign.
-10. If no target-mod blocking error exists, start or load the dedicated test game.
-11. Use save files for debugging as well; they can sometimes be useful.
+2. `hoi4_status`. A game that is already running with the right playset and was started after the last change to launch-read content is reused: its launch-time errors are `hoi4_logs since=launch`. Otherwise `hoi4_shutdown confirm=true` (when running) and continue.
+3. `hoi4_launch debug=true`. The tool waits for the main menu and records the `launch` log mark. Retain the process id from `hoi4_status`.
+4. `hoi4_screenshot` of the main menu showing the visible game version and evidence that Chaos Redux loaded; keep the image path.
+5. Read the current-run delta: `hoi4_logs log=error since=launch`, then `exceptions`, `setup` and `text`. Copy the raw files with their timestamps and hashes into the run artifact folder as well.
+6. Triage only the current-run delta.
+7. If a target-mod blocking error exists, enter the repair loop before starting a campaign.
+8. If no target-mod blocking error exists, start or load the dedicated test game (`hoi4_load`, or `hoi4_new_game` for a fresh 1936 start).
+9. Use save files for debugging as well; they can sometimes be useful.
 
 The clean-start gate passes when the current launch reaches the main menu and a country map without a new attributable blocking error. It does not require every harmless engine warning to disappear.
 
@@ -182,24 +209,23 @@ When an error appears after the agent's patch, treat it as caused by the current
 
 ### 8. Repair loop
 
-For each attributable error:
+For each batch of attributable errors from one launch:
 
-1. Save the full fresh line, repeated count, file path, line number when present, and screenshot state.
-2. Close HOI4 through the in-game exit flow.
-3. If the game is frozen, capture the screen and relevant logs, then stop only the recorded HOI4 PID.
+1. Save the full fresh lines, repeated counts, file paths, line numbers when present, and the screenshot state.
+2. Close HOI4 with `hoi4_shutdown confirm=true`.
+3. If the game is frozen, capture the screen and relevant logs, then stop only the recorded HOI4 process id.
 4. Read the owning skill and the relevant source-of-truth spec or documentation.
-5. Search the repository for the exact identifier and its call sites.
+5. Search the repository for each exact identifier and its call sites.
 6. Inspect a Chaos Redux precedent and a vanilla precedent when engine behavior is involved.
-7. Patch the smallest complete surface.
+7. Patch the smallest complete surface for every error in the batch.
 8. Keep localisation, GUI, GFX, docs, and catalog wording aligned when the behavioral fix changes those surfaces.
 9. Do not add a placeholder asset, default audio, fake localisation, generic focus branch, or other fallback.
-10. Run targeted checks for the exact failure.
-11. Relaunch through the same shortcut.
-12. Verify the original fresh error no longer appears.
-13. Verify no new attributable error was introduced.
-14. Repeat until clean or a hard stop is reached.
+10. Run targeted checks for the exact failures.
+11. `hoi4_launch restart=true debug=true` once for the whole batch.
+12. Verify the original fresh errors are gone and no new attributable error replaced them.
+13. Repeat until clean or a hard stop is reached.
 
-Default maximum repair cycles are `6`. The user may set a different limit. The loop should normally continue without requesting confirmation between cycles. Stop only for a hard blocker, ambiguous design decision, unsafe scope expansion, or exhausted cycle budget.
+Default maximum repair cycles are `6` (one cycle is one restart). The user may set a different limit. The loop should normally continue without requesting confirmation between cycles. Stop only for a hard blocker, ambiguous design decision, unsafe scope expansion, or exhausted cycle budget.
 
 ## Test setup and artifacts
 
@@ -229,7 +255,7 @@ Use the least invasive setup that preserves the behavior being tested:
 2. Chaos Redux settings and manual trigger UI
 3. triggerable scenario UI
 4. event or feature-specific debug control already provided by the mod
-5. recorded console setup only when the preceding methods cannot create the state efficiently
+5. recorded console setup (`hoi4_console`, `hoi4_eval_effect`, `hoi4_fire_event`; test mode only) when the preceding methods cannot create the state efficiently
 
 The settings UI's Force Trigger Mode may bypass ordinary event selection restrictions for a manual test. Do not use it when the test is specifically about normal eligibility, chaos thresholds, timing, enable and disable state, weight, or random selection.
 
@@ -265,7 +291,7 @@ Recommended screenshot names:
 
 Do not put ordinary save files in Git by default. Record the dedicated save name and save path in `run_manifest.md`.
 
-Before the run, confirm with the user that the game writes plain-text saves (`save_as_binary=no` in the HOI4 `settings.txt`); do not edit that file yourself. Plain-text saves let `chaos-redux-save-inspection` read the real runtime state at every checkpoint. Name checkpoint saves after the test step, such as `qa_<run_id>_020_event_006_pre` and `..._post`, and record in `setup_commands.md` which inspector commands produced each piece of evidence.
+Before the run, check that the game writes plain-text saves (`hoi4_status` and `hoi4_save_query query=info` report binary saves; the setting is `save_as_binary=no` in the HOI4 `settings.txt`); do not edit that file yourself, tell the user. Plain-text saves let `hoi4_save_query` and `chaos-redux-save-inspection` read the real runtime state at every checkpoint. Name checkpoint saves after the test step, such as `qa_<run_id>_020_event_006_pre` and `..._post` (the server stores them as `hoi4live_qa_...`), and record in `setup_commands.md` which query or inspector command produced each piece of evidence. `hoi4_save_query query=diff` is the quick in-session diff; the inspector's `footprint` and `flatten` answer the deeper questions.
 
 ## Smoke tests and catalog planning
 
@@ -588,7 +614,7 @@ Do not implement a new `on_daily`, `on_weekly`, `on_monthly`, or other all-count
 
 Fix a defect directly when it is narrow, reproducible, and inside the current feature.
 
-Use relevant project subagents only when they save time or provide a required specialty. They remain optional and must be spawned with `fork_turns="none"` through Codex `collaboration.spawn_agent` and a complete explicit prompt.
+Use relevant project subagents only when they save time or provide a required specialty. They remain optional and must be spawned with a complete explicit prompt that carries every path, constraint and prior decision, and no inherited parent context. A subagent never holds the desktop lock or drives the game; the parent owns the live loop.
 
 Examples:
 
@@ -612,7 +638,7 @@ A Chaos Redux fix passes only when:
 - the original issue reproduces before the fix or has direct fresh-log proof
 - the owning source-of-truth and relevant implementation rules were read
 - the patch is bounded and does not use an unapproved fallback
-- the game relaunches through the debug shortcut
+- the game restarts through `hoi4_launch debug=true` (or the user's debug shortcut)
 - the original fresh error is absent
 - the original visible sequence now passes
 - one nearby regression check passes
@@ -650,8 +676,9 @@ Never convert `not_implemented` or `not_covered_single_country` into `pass` to i
 
 A scoped Chaos Redux autonomous run is complete only when:
 
-- the exact supplied shortcut was used or an explicitly approved replacement was recorded
+- the game was launched through `hoi4_launch debug=true` or the exact supplied shortcut, and the playset and build loaded were recorded
 - the active log directory was verified by freshness
+- the desktop lock was released and the game was left paused on the map
 - Chaos Redux was visibly loaded
 - startup and country-map entry produced no new attributable blocking error
 - the primary country and test mode were recorded
