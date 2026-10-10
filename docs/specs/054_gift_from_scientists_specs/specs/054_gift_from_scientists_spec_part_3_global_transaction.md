@@ -75,19 +75,13 @@ All rejectable conditions must be resolved before mutation begins. Once an appro
 
 The event should keep bounded receipts long enough to build reports, test results, and achievement tracking.
 
-Each recipient receipt records:
+Each recipient receipt records only what a later consumer reads:
 
-- the intended grant count
-- the actual grant count
-- the list of granted technology identities
-- the player-facing names
-- the provider identity for registered technologies
-- whether the ordinary or expanded pool supplied each result
-- whether a package was applied
-- whether the pool was exhausted
-- how many candidates were rejected
-- the evolution stage used
 - the firing sequence identity
+- the list of granted technology identities, which also gives the actual count and the report names
+- the provider identity for each registered technology, used by owner callbacks, Event 60 reconciliation, and achievement tracking
+
+Rejection counts, pool sizes, and per-result pool origin are debug information; log them during development instead of storing them in save state.
 
 Receipts are not a permanent public ledger. Player-facing history needs the event firing and the player's own report. Detailed receipts can be retained only where later achievements or owner callbacks need them.
 
@@ -95,14 +89,9 @@ Receipts are not a permanent public ledger. Player-facing history needs the even
 
 Each human recipient receives one report after its grants are complete.
 
-The report should distinguish:
-
-- full delivery
-- partial delivery caused by pool exhaustion
-- no compatible breakthrough
-- one or more registered Chaos technologies
-
-It should never imply that a missing grant was lost through bad luck. A missing slot means no safe technology remained.
+The report lists the granted technologies.
+When fewer than the stage amount arrived, one plain line says the country's laboratories found nothing more; a country with no grant receives no report.
+The report does not mark registered Chaos technologies or explain pool exhaustion, because neither changes a player decision.
 
 The exact technology list should be available through scripted localization or a custom effect tooltip. Internal candidate IDs, provider IDs, rejection reasons, and safety profiles remain hidden.
 

@@ -30,7 +30,7 @@ Document any reusable public owner API in its authoritative event-owned document
 
 ## Reports, history, and persistence
 
-Commit every selected grant before opening human reports. Suppress the normal technology popup flood. Give each human recipient one consolidated country report with its complete grant list or a clear pool-exhaustion result. AI countries receive the same grants without a popup.
+Commit every selected grant before opening human reports. Suppress the normal technology popup flood. Give each human recipient one consolidated country report with its complete grant list, plus one plain line when fewer than the stage amount arrived; do not expose registry origin or pool size. AI countries receive the same grants without a popup.
 
 Create one normal Event 54 history entry for the global firing. Do not create one history or pacing transaction per country or per technology. Record actual evolution milestones through the shared evolution pipeline. Keep cluster history, normal event history, and evolution history distinct.
 

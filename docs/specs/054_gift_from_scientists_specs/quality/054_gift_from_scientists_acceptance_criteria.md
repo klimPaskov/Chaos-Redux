@@ -66,10 +66,9 @@
 - Normal grant popups are suppressed.
 - Every affected human country receives one consolidated report.
 - AI countries receive no report spam.
-- Reports show intended and actual grant counts.
 - Reports provide every granted technology's real localized name.
-- Partial and zero-grant reports explain safe pool exhaustion.
-- Registered grants are identifiable without exposing owner internals.
+- A partial report adds one plain line that nothing more was found; a zero-grant country receives no report.
+- Reports do not reveal registry origin, pool size, or the stage target.
 - Each firing creates one Event History row.
 - Human report events create no pacing or duplicate history.
 - Evolution history records only stages actually used.

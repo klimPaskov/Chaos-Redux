@@ -74,13 +74,13 @@ The event should not scale rewards according to fired count. Evolution stage con
 
 ## Player experience
 
-The active player should receive one consolidated report for the player's country. The report communicates:
+The active player should receive one consolidated report for the player's country. The report communicates only:
 
-- how many technologies were actually granted
-- whether the country received the full amount for the current stage
 - the exact names of the granted technologies
-- whether the safe pool was exhausted before all slots were filled
-- whether any result came from the registered Chaos technology pool
+- when fewer than the current stage amount arrived, one plain line that the country's laboratories found nothing more this time
+
+The report does not say whether a result came from the registered Chaos technology pool, how large the safe pool was, or what the stage target is.
+Those facts do not change any player decision, and naming the registry would explain the mystery the event keeps.
 
 Normal research-complete popups should be suppressed for these grants. The event report is the readable summary and prevents a ten-technology evolution from creating a wall of separate popups.
 

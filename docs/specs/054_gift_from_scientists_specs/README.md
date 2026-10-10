@@ -3,9 +3,8 @@
 ## Authority and current workflow
 
 The [source manifest](quality/054_gift_from_scientists_source_review_manifest.md) retains original planning evidence. It does not establish approval of every provider, cluster, or achievement elaboration.
-Use current [planning](../../../.agents/skills/chaos-redux-event-planning/SKILL.md), [events](../../../.agents/skills/chaos-redux-events/SKILL.md), [assets](../../../.agents/skills/chaos-redux-event-assets/SKILL.md), and [routing](../../../.agents/skills/chaos-redux-subagents/SKILL.md) guidance.
+Use current [planning](../../../.claude/skills/chaos-redux-event-planning/SKILL.md), [events](../../../.claude/skills/chaos-redux-events/SKILL.md), [assets](../../../.claude/skills/chaos-redux-event-assets/SKILL.md), and [routing](../../../.claude/skills/chaos-redux-subagents/SKILL.md) guidance.
 Unattributed design remains `unresolved`; rediscover current tools and source state before a separately authorized implementation task.
-
 
 This pack defines the source-design planning handoff for Event 54, Gift from Scientists.
 
@@ -76,3 +75,17 @@ The source package lives at `docs/specs/054_gift_from_scientists_specs/`.
 ## Status boundary
 
 This is a planning package. It contains no gameplay implementation, generated assets, workbook edit, MCP validation result, or live-playtest claim.
+
+## Open questions
+
+- `unresolved`: Event 54 and Event 60 selection rule. Recommendation: keep Event 54's equal random draw over the full safe missing pool, as the design decisions above already state, and let Event 60 reconcile a loss only when the random draw happens to return it. A lost-technology priority would add a second selection rule to a no-choice event for a small benefit.
+- `unresolved`: protection of gifted technologies from later Event 60 regression. Recommendation: no provenance protection. Gifted nodes become ordinary researched nodes and follow Event 60's normal safety policy, which avoids a permanent per-technology provenance record in every save.
+
+## Changelog
+
+### 2026-10-10 spec audit
+
+- The player report lists only the granted technologies and one plain line when fewer than the stage amount arrived. Registry origin, pool exhaustion, and stage targets were removed from player text because none of them changes a decision and naming the registry explains away the mystery.
+- Recipient receipts keep only the firing identity, granted technology identities, and registered provider identities, which are the fields later consumers read; rejection counts and pool data move to development logging.
+- Acceptance criteria and the coding prompt match the shorter report.
+- Subagent instructions use the Claude-first wording; the two Event 60 interaction choices are recorded above with a recommendation.

@@ -13,7 +13,7 @@ Create one generated period-documentary report image.
 - Final canvas: 210x176
 - Final path: `gfx/event_pictures/054_gift_from_scientists/report_event_054_gift_from_scientists.dds`
 - Proposed sprite: `GFX_report_event_054_gift_from_scientists`
-- Reference family: `.agents/skills/chaos-redux-event-assets/assets/gfx_references/event_art/report/`
+- Reference family: `.claude/skills/chaos-redux-event-assets/assets/gfx_references/event_art/report/`
 
 The scene should show a crowded late-1930s or early-1940s research room. Several scientists inspect unrelated working prototypes on one table. Suitable objects include period radio parts, optical instruments, electrical test equipment, drafting tools, engine pieces, and mechanical assemblies.
 
