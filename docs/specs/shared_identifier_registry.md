@@ -135,11 +135,12 @@ Event roots use their own namespace, separately from scenario and presentation n
 The user explicitly selected uploaded IDs 104 and 105 on 10 October 2026, establishing Rule 104 and Random Idea 105 as the planning identities.
 Tasks 101 retains its matching catalog identity.
 The import records the older catalog labels without migrating runtime or workbook entries.
-The source reviews found no event definitions in the 101, 103, 104, 105, 107 or 110 namespaces.
+The source reviews found no event definitions in the 101, 102, 103, 104, 105, 107 or 110 namespaces.
 
 | Planned event ID | Imported package | Current workbook label | Disposition |
 | --- | --- | --- | --- |
 | 101 | [Tasks](101_tasks_specs/README.md) | Tasks | Reserved imported proposal, current catalog Unavailable |
+| 102 | [Serial Killer](102_serial_killer_specs/102_serial_killer_spec_part_1_core.md) | Serial killer | Reserved imported proposal, current catalog Unavailable |
 | 103 | [Chaos Directorate](103_chaos_directorate_specs/00_package_guide.md) | Conscription | Imported replacement proposal explicitly stated in its source brief |
 | 104 | [Rule](104_rule_specs/104_rule_reading_guide.md) | Stability or War support | User-confirmed Rule identity, legacy catalog row 107 stays held |
 | 105 | [Random Idea](105_random_idea_specs/README.md) | Anti-player ideology | User-confirmed Random Idea identity, legacy catalog row 110 stays held |
@@ -149,6 +150,15 @@ Catalog migration remains queued for its authorized implementation scope, while 
 Do not reuse the held catalog IDs, silently overwrite the displaced concepts, or infer runtime registration from the imported folder names.
 The machine-readable entries preserve the exact catalog labels, proposed roots, evidence and holds.
 Achievement, helper, sprite, scenario and cluster names remain separate identifiers with their own ownership.
+
+## Deaths accounting reasons
+
+Event 102 reserves `chaos_meter_deaths_reason.serial_killer = 40`, accessed as `constant:chaos_meter_deaths_reason.serial_killer` after implementation.
+The current reason category in `common/script_constants/chaos_meter_constants.txt` occupies 0 through 39 plus 291 and 292.
+The 10 October import checked those constants and planning references before reserving 40, without changing runtime reason registration, selectors or localisation.
+Only independently caused Event 102 civilian losses use this reason. Crossovers retain the source owner's casualties and receipts.
+The reservation and dedicated overlap evidence are recorded in the machine-readable registry and Event 102 import evidence.
+The existing general identifier checker does not cover this additional namespace, so its dedicated constant/reservation comparison remains required.
 
 ## Event and country identities
 
