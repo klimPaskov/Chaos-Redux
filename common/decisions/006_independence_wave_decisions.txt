@@ -1056,10 +1056,13 @@ independence_wave_scenario_ledger_category = {
 			has_country_flag = independence_wave_scenario_ledger_visible
 		}
 		available = {
-			check_variable = {
-				var = global.independence_wave_scenario_blocked_package_ids^num
-				value = constant:independence_wave_scenario_registry.one
-				compare = greater_than
+			custom_trigger_tooltip = {
+				tooltip = independence_wave_scenario_ledger_navigation_tt
+				check_variable = {
+					var = global.independence_wave_scenario_blocked_package_ids^num
+					value = constant:independence_wave_scenario_registry.one
+					compare = greater_than
+				}
 			}
 		}
 		cost = 0
@@ -1093,10 +1096,13 @@ independence_wave_scenario_ledger_category = {
 			has_country_flag = independence_wave_scenario_ledger_visible
 		}
 		available = {
-			check_variable = {
-				var = global.independence_wave_scenario_blocked_package_ids^num
-				value = constant:independence_wave_scenario_registry.one
-				compare = greater_than
+			custom_trigger_tooltip = {
+				tooltip = independence_wave_scenario_ledger_navigation_tt
+				check_variable = {
+					var = global.independence_wave_scenario_blocked_package_ids^num
+					value = constant:independence_wave_scenario_registry.one
+					compare = greater_than
+				}
 			}
 		}
 		cost = 0
@@ -2114,12 +2120,15 @@ independence_wave_patron_category = {
 		selectable_mission = yes
 		available = {
 			can_pay_independence_wave_diplomatic_standard_cost = yes
-			OR = {
-				NOT = { has_variable = independence_wave_patron_balance_count }
-				check_variable = { independence_wave_patron_balance_count = constant:independence_wave_value.minimum }
-				AND = {
-					NOT = { command_power < constant:independence_wave_decision_cost.command_power_patron_balance_after_first }
-					NOT = { has_manpower < constant:independence_wave_decision_cost.manpower_light }
+			custom_trigger_tooltip = {
+				tooltip = independence_wave_balance_patrons_requirement_tt
+				OR = {
+					NOT = { has_variable = independence_wave_patron_balance_count }
+					check_variable = { independence_wave_patron_balance_count = constant:independence_wave_value.minimum }
+					AND = {
+						NOT = { command_power < constant:independence_wave_decision_cost.command_power_patron_balance_after_first }
+						NOT = { has_manpower < constant:independence_wave_decision_cost.manpower_light }
+					}
 				}
 			}
 		}
@@ -2276,7 +2285,7 @@ independence_wave_patron_category = {
 		}
 		available = {
 			can_pay_independence_wave_strategic_cost = yes
-			check_variable = { var = independence_wave_strongest_patron_influence value = constant:independence_wave_patron.dependency compare = greater_than_or_equals }
+			custom_trigger_tooltip = { tooltip = independence_wave_choose_client_future_requirement_tt check_variable = { var = independence_wave_strongest_patron_influence value = constant:independence_wave_patron.dependency compare = greater_than_or_equals } }
 		}
 		custom_cost_trigger = {
 			can_pay_independence_wave_strategic_cost = yes
@@ -2849,11 +2858,14 @@ independence_wave_league_category = {
 		selectable_mission = yes
 		available = {
 			can_pay_independence_wave_strategic_cost = yes
-			OR = {
-				check_variable = { global.independence_wave_league_phase = constant:independence_wave_league_phase.informal_network }
-				check_variable = { global.independence_wave_league_phase = constant:independence_wave_league_phase.regional_conferences }
-				check_variable = { global.independence_wave_league_phase = constant:independence_wave_league_phase.congress_preparation }
-				can_independence_wave_retry_congress = yes
+			custom_trigger_tooltip = {
+				tooltip = independence_wave_convene_founding_congress_requirement_tt
+				OR = {
+					check_variable = { global.independence_wave_league_phase = constant:independence_wave_league_phase.informal_network }
+					check_variable = { global.independence_wave_league_phase = constant:independence_wave_league_phase.regional_conferences }
+					check_variable = { global.independence_wave_league_phase = constant:independence_wave_league_phase.congress_preparation }
+					can_independence_wave_retry_congress = yes
+				}
 			}
 		}
 		custom_cost_trigger = { can_pay_independence_wave_strategic_cost = yes }
@@ -4124,7 +4136,7 @@ independence_wave_high_chaos_category = {
 		selectable_mission = yes
 		available = {
 			can_pay_independence_wave_coordinated_operation_cost = yes
-			check_variable = { var = global.independence_wave_league_shared_reserve value = constant:independence_wave_league.danger_shared_reserve compare = greater_than_or_equals }
+			custom_trigger_tooltip = { tooltip = independence_wave_coordinate_reclamation_fronts_requirement_tt check_variable = { var = global.independence_wave_league_shared_reserve value = constant:independence_wave_league.danger_shared_reserve compare = greater_than_or_equals } }
 		}
 		custom_cost_trigger = {
 			can_pay_independence_wave_coordinated_operation_cost = yes
@@ -4254,7 +4266,7 @@ independence_wave_high_chaos_category = {
 		selectable_mission = yes
 		available = {
 			can_pay_independence_wave_strategic_cost = yes
-			check_variable = { var = global.independence_wave_league_common_cause value = constant:independence_wave_league.danger_common_cause compare = greater_than_or_equals }
+			custom_trigger_tooltip = { tooltip = independence_wave_transform_league_charter_requirement_tt check_variable = { var = global.independence_wave_league_common_cause value = constant:independence_wave_league.danger_common_cause compare = greater_than_or_equals } }
 		}
 		custom_cost_trigger = { can_pay_independence_wave_strategic_cost = yes }
 		custom_cost_text = independence_wave_cost_strategic
