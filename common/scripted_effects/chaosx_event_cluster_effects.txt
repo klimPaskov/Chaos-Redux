@@ -299,15 +299,15 @@ initialize_event_cluster_definitions = {
 		value = constant:event_cluster_type.repeatable
 	}
 	add_to_array = {
-	add_to_array = { global.event_clusters = constant:event_cluster_id.sudden_abundance }
-	add_to_array = { array = global.event_cluster_type_entries value = constant:event_cluster_type.repeatable }
-	add_to_array = { array = global.event_cluster_unlock_tier_entries value = constant:event_cluster_sudden_abundance.unlock_tier }
 		array = global.event_cluster_unlock_tier_entries
 		value = constant:event_cluster_random_stuff.unlock_tier
 	}
 	add_to_array = { global.event_clusters = constant:event_cluster_id.intelligence }
 	add_to_array = { array = global.event_cluster_type_entries value = constant:event_cluster_type.one_time }
 	add_to_array = { array = global.event_cluster_unlock_tier_entries value = constant:event_cluster_intelligence.unlock_tier }
+	add_to_array = { global.event_clusters = constant:event_cluster_id.sudden_abundance }
+	add_to_array = { array = global.event_cluster_type_entries value = constant:event_cluster_type.repeatable }
+	add_to_array = { array = global.event_cluster_unlock_tier_entries value = constant:event_cluster_sudden_abundance.unlock_tier }
 }
 
 get_current_chaos_tier_value = {
@@ -1454,6 +1454,15 @@ load_event_cluster_members = {
 		set_temp_variable = { event_cluster_member_row_id = constant:event_cluster_member_row_id.intelligence_leak }
 		set_temp_variable = { event_cluster_member_primary_trigger = constant:event_cluster_member_primary_trigger.yes }
 		event_cluster_append_member_definition = yes
+
+		set_temp_variable = { event_cluster_member_event_id = constant:murder_mystery_identity.event_id }
+		set_temp_variable = { event_cluster_member_role = constant:event_cluster_member_role.optional }
+		set_temp_variable = { event_cluster_member_min_tier = constant:chaos_meter_tier_id.tier_0 }
+		set_temp_variable = { event_cluster_member_severity = constant:event_cluster_member_danger.medium }
+		set_temp_variable = { event_cluster_member_row_id = constant:event_cluster_member_row_id.intelligence_murder_mystery }
+		set_temp_variable = { event_cluster_member_primary_trigger = constant:event_cluster_member_primary_trigger.yes }
+		event_cluster_append_member_definition = yes
+	}
 	else_if = {
 		limit = { check_variable = { event_cluster_id = constant:event_cluster_id.sudden_abundance } }
 		# Event 037 is the Medium member. One activation runs its single world
@@ -1464,15 +1473,6 @@ load_event_cluster_members = {
 		set_temp_variable = { event_cluster_member_min_tier = constant:chaos_meter_tier_id.tier_0 }
 		set_temp_variable = { event_cluster_member_severity = constant:event_cluster_member_danger.medium }
 		set_temp_variable = { event_cluster_member_row_id = constant:event_cluster_member_row_id.sudden_abundance_mysterious_people }
-		set_temp_variable = { event_cluster_member_primary_trigger = constant:event_cluster_member_primary_trigger.yes }
-		event_cluster_append_member_definition = yes
-	}
-
-		set_temp_variable = { event_cluster_member_event_id = constant:murder_mystery_identity.event_id }
-		set_temp_variable = { event_cluster_member_role = constant:event_cluster_member_role.optional }
-		set_temp_variable = { event_cluster_member_min_tier = constant:chaos_meter_tier_id.tier_0 }
-		set_temp_variable = { event_cluster_member_severity = constant:event_cluster_member_danger.medium }
-		set_temp_variable = { event_cluster_member_row_id = constant:event_cluster_member_row_id.intelligence_murder_mystery }
 		set_temp_variable = { event_cluster_member_primary_trigger = constant:event_cluster_member_primary_trigger.yes }
 		event_cluster_append_member_definition = yes
 	}
@@ -1873,12 +1873,6 @@ event_cluster_check_cluster_gates = {
 				}
 				NOT = {
 					AND = {
-				NOT = {
-					AND = {
-						check_variable = { event_cluster_id = constant:event_cluster_id.sudden_abundance }
-						has_global_flag = event_cluster_sudden_abundance_cooldown
-					}
-				}
 						check_variable = { event_cluster_id = constant:event_cluster_id.formables }
 						has_global_flag = event_cluster_formables_cooldown
 					}
@@ -1899,6 +1893,12 @@ event_cluster_check_cluster_gates = {
 					AND = {
 						check_variable = { event_cluster_id = constant:event_cluster_id.national_breakthroughs }
 						has_global_flag = event_cluster_national_breakthroughs_cooldown
+					}
+				}
+				NOT = {
+					AND = {
+						check_variable = { event_cluster_id = constant:event_cluster_id.sudden_abundance }
+						has_global_flag = event_cluster_sudden_abundance_cooldown
 					}
 				}
 				NOT = { is_in_array = { global.disabled_event_clusters = event_cluster_id } }
@@ -2150,7 +2150,6 @@ evaluate_event_cluster_unavailability_reason = {
 			limit = { is_in_array = { global.disabled_event_clusters = event_cluster_id } }
 			set_temp_variable = { event_cluster_unavailability_reason = constant:event_cluster_unavailability_reason.disabled }
 		}
-						AND = { check_variable = { event_cluster_id = constant:event_cluster_id.sudden_abundance } has_global_flag = event_cluster_sudden_abundance_cooldown }
 		else = {
 			get_event_cluster_type = yes
 			get_event_cluster_unlock_tier = yes
@@ -2179,6 +2178,7 @@ evaluate_event_cluster_unavailability_reason = {
 						AND = { check_variable = { event_cluster_id = constant:event_cluster_id.diseases } has_global_flag = event_cluster_diseases_cooldown }
 						AND = { check_variable = { event_cluster_id = constant:event_cluster_id.national_breakthroughs } has_global_flag = event_cluster_national_breakthroughs_cooldown }
 						AND = { check_variable = { event_cluster_id = constant:event_cluster_id.random_stuff } has_global_flag = event_cluster_random_stuff_cooldown }
+						AND = { check_variable = { event_cluster_id = constant:event_cluster_id.sudden_abundance } has_global_flag = event_cluster_sudden_abundance_cooldown }
 					}
 				}
 				set_temp_variable = { event_cluster_unavailability_reason = constant:event_cluster_unavailability_reason.cooldown }
@@ -3404,11 +3404,6 @@ mark_event_cluster_fired_state = {
 			}
 		}
 		set_temp_variable = { event_cluster_cooldown_days = constant:event_cluster_cooldown_days.formables }
-	else_if = {
-		limit = { check_variable = { event_cluster_id = constant:event_cluster_id.sudden_abundance } }
-		set_temp_variable = { event_cluster_cooldown_days = constant:event_cluster_cooldown_days.sudden_abundance }
-		set_global_flag = { flag = event_cluster_sudden_abundance_cooldown days = event_cluster_cooldown_days }
-	}
 		set_global_flag = { flag = event_cluster_formables_cooldown days = event_cluster_cooldown_days }
 	}
 	else_if = {
@@ -3437,6 +3432,11 @@ mark_event_cluster_fired_state = {
 		limit = { check_variable = { event_cluster_id = constant:event_cluster_id.national_breakthroughs } }
 		set_temp_variable = { event_cluster_cooldown_days = constant:event_cluster_cooldown_days.national_breakthroughs }
 		set_global_flag = { flag = event_cluster_national_breakthroughs_cooldown days = event_cluster_cooldown_days }
+	}
+	else_if = {
+		limit = { check_variable = { event_cluster_id = constant:event_cluster_id.sudden_abundance } }
+		set_temp_variable = { event_cluster_cooldown_days = constant:event_cluster_cooldown_days.sudden_abundance }
+		set_global_flag = { flag = event_cluster_sudden_abundance_cooldown days = event_cluster_cooldown_days }
 	}
 	else_if = {
 		limit = { check_variable = { event_cluster_id = constant:event_cluster_id.random_stuff } }
