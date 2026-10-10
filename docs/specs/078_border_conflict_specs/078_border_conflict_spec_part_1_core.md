@@ -220,6 +220,11 @@ If a third party takes an endpoint, a participant disappears, the pair changes t
 The event never transfers land from an unrelated current owner merely because an old callback arrived.
 
 After a valid capture, ordinary ownership, supply, resistance, diplomacy, and other state-linked rules resume their normal roles.
+
+A captured state also sends civilians fleeing, as any hostile capture does.
+The shared hostile-capture adapter (`humanitarian_handle_hostile_capture`) only recognises captures between countries at war, and a border war is not a normal war, so the Event 078 settlement calls a migration-owned border-war entry that requests the same bounded war-flight pressure and food assessment for the transferred state.
+Migration and Famine keep ownership of the cohort, its route, reception, deaths, and the food check; Event 078 supplies only the settlement as proof of a hostile transfer.
+Losing a populated border state therefore costs the former owner people as well as land, and a long momentum chain leaves a refugee trail behind its advance.
 Event 078 does not force former owners to recognize the frontier, erase their claims, or stop their own later political actions.
 However, this event itself offers no path that starts a normal war.
 
@@ -230,16 +235,17 @@ Resolved records remain available for history and achievement evidence without r
 
 ## Chaos feedback
 
-The first successfully started native battle in a wave can add 5 Chaos for the event's outbreak of limited interstate fighting.
-A wave that reaches five distinct fighting pairs across at least five countries can add another 5 Chaos for its worldwide spread.
+The first successfully started native battle in a wave can add 2 Chaos for the event's outbreak of limited interstate fighting.
+A wave that reaches five distinct fighting pairs across at least five countries can add another 3 Chaos for its worldwide spread.
 A single chain that reaches five valid captures can add another 5 Chaos for its sustained advance.
-These sources have separate rolling guards and a maximum combined grant of 15 per wave.
+These sources have separate rolling guards and a maximum combined grant of 10 per wave.
+The outbreak sits below a major war declaration (5) because no normal war begins, while a five-capture chain is a real conquest and keeps the full 5.
 
 Starting an evolution, becoming eligible, logging a history row, resolving an ordinary transfer, or winning an arbitrary number of isolated skirmishes does not independently add Chaos.
 The shared systems retain ownership of generic deaths, war declarations, annexation, and world tension.
 The event-specific sources recognize the limited-war outbreak, simultaneous spread, and chain development only.
 
-A defender that stops an established five-capture chain and holds its defended target for 30 days can qualify for a 5 Chaos containment reduction.
+A defender that stops an established five-capture chain and holds its defended target for 30 days can qualify for a 5 Chaos containment reduction, which offsets exactly the chain's own grant.
 The affected opponent must have no active advancing chain against that defender at confirmation.
 The wave must have previously granted enough event-owned Chaos to cover the reduction.
 Only one containment reduction can be paid per wave.

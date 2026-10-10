@@ -108,13 +108,13 @@ A single occurrence must not be charged twice through an event-specific adapter 
 
 | Source | Qualifying occurrence | Change | Shared rolling guard |
 | --- | --- | --- | --- |
-| Outbreak | First confirmed native battle start in a wave | +5 | 30 days between Event 078 outbreak grants |
-| Broad spread | At least five distinct pairs involving at least five distinct countries are actively fighting in this wave at the same time | +5 | 90 days between Event 078 broad-spread grants |
+| Outbreak | First confirmed native battle start in a wave | +2 | 30 days between Event 078 outbreak grants |
+| Broad spread | At least five distinct pairs involving at least five distinct countries are actively fighting in this wave at the same time | +3 | 90 days between Event 078 broad-spread grants |
 | Sustained advance | One chain in the wave records five valid captures | +5 | 90 days between Event 078 sustained-advance grants |
 | Containment | A qualifying defender stops an established chain and meets the hold condition | −5 | Once per wave, against that wave's prior event-owned grant |
 
 Each positive source pays at most once per wave even when the rolling guard would expire during that wave.
-The combined positive ceiling is 15 per wave.
+The combined positive ceiling is 10 per wave.
 The three positive rolling guards are shared across countries and waves so simultaneous repeat firings cannot multiply the same packet through different country roots.
 A qualifying occurrence during a closed guard produces no grant and is not stored as a payment waiting for the guard to expire.
 It can still appear in the factual history of the wave.

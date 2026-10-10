@@ -16,5 +16,12 @@ Its design statements are requirements and capability gates, not evidence of cur
 
 [Planning entrypoint](../../plans/078_border_conflict_plans/README.md) contains coding, goal, asset, achievement and decision prompts, integration contracts, research receipts, probability scenarios and acceptance cases.
 Keep actual implementation plans and specialist reports under that event's plans directory.
-Apply current [event](../../../.agents/skills/chaos-redux-events/SKILL.md), [planning](../../../.agents/skills/chaos-redux-event-planning/SKILL.md) and [subagent](../../../.agents/skills/chaos-redux-subagents/SKILL.md) guidance before using those instructions.
+Apply current [event](../../../.claude/skills/chaos-redux-events/SKILL.md), [planning](../../../.claude/skills/chaos-redux-event-planning/SKILL.md) and [subagent](../../../.claude/skills/chaos-redux-subagents/SKILL.md) guidance before using those instructions.
 The parent owns final integration and evidence review; the user owns live-game validation.
+
+## Changelog
+
+### 2026-10-10 spec audit
+
+- A settled border-war capture now requests the same bounded war-flight pressure and food assessment as a hostile wartime capture, through a migration-owned border-war entry. The shared capture adapter requires a normal war, so without this a border state could change hands with no civilian consequence.
+- The outbreak and broad-spread Chaos grants fall from 5 to 2 and 3, and the per-wave ceiling from 15 to 10. A repeatable wave of limited fights with no normal war should not outweigh a major war declaration on its opening alone; the five-capture chain keeps its 5 because it is a real conquest.
