@@ -3,11 +3,19 @@
 
 ### Architecture and purpose
 
-Use an additive crisis branch for an existing country. Preserve its meaningful national tree, leader-specific content, and research progression. Event-created authorities need a compact complete governing tree, drawing on the shared foundation and one institutional route, with military, economic, and diplomatic essentials. Do not replace every country with one generic ideological tree.
+Use an additive crisis branch for an existing country.
+Preserve its meaningful national tree, leader-specific content, and research progression.
+Event-created authorities need a compact complete governing tree, drawing on the shared foundation and one institutional route, with military, economic, and diplomatic essentials.
+Do not replace every country with one generic ideological tree.
 
-Focuses establish institutions, training programs, production agreements, and diplomatic mandates. Decisions conduct timed negotiations, named projects, local cases, and urgent crises. A focus should not repeat a decision's button with the same cost and reward. A completed focus can authorize several later projects, but those projects must still meet their own material conditions.
+Focuses establish institutions, training programs, production agreements, and diplomatic mandates.
+Decisions conduct timed negotiations, named projects, local cases, and urgent crises.
+A focus should not repeat a decision's button with the same cost and reward.
+A completed focus can authorize several later projects, but those projects must still meet their own material conditions.
 
-The route uses a common foundation, three movement paths, three traditionalist paths, a negotiated settlement path, a shared defense branch, and a diplomacy branch. The world-order branch appears only when a valid terminal scenario has begun. It is not necessary to finish every earlier focus to survive an urgent invasion.
+The route uses a common foundation, three movement paths, three traditionalist paths, a negotiated settlement path, a shared defense branch, and a diplomacy branch.
+The world-order branch appears only when a valid terminal scenario has begun.
+It is not necessary to finish every earlier focus to survive an urgent invasion.
 
 ### Route diagram
 
@@ -33,17 +41,30 @@ Existing national tree or complete event-created government foundation
 
 ### Timing, mutual exclusions, and bypasses
 
-Short institutional preparation focuses last 35 days. Major constitutional, industrial, or diplomatic commitments last 70 days. No focus completes merely because the player already has a high Influence score. Material objectives can be prepared before a focus, but a committed institution must still be founded and maintained.
+Short institutional preparation focuses last 35 days.
+Major constitutional, industrial, or diplomatic commitments last 70 days.
+No focus completes merely because the player already has a high Influence score.
+Material objectives can be prepared before a focus, but a committed institution must still be founded and maintained.
 
-The three movement constitutions are mutually exclusive within one constitutional settlement. The three traditionalist constitutions are likewise alternative executive programs. Switching later requires a new lawful convention or a real political rupture, ends incompatible maintained bonuses, and cannot repay completed one-time rewards. A negotiated settlement may precede either government's later electoral victory, but its completed construction and spent resources are preserved.
+The three movement constitutions are mutually exclusive within one constitutional settlement.
+The three traditionalist constitutions are likewise alternative executive programs.
+Switching later requires a new lawful convention or a real political rupture, ends incompatible maintained bonuses, and cannot repay completed one-time rewards.
+A negotiated settlement may precede either government's later electoral victory, but its completed construction and spent resources are preserved.
 
-An existential defensive war permits an emergency defense mandate while the convention remains unfinished. The country receives access to training and equipment allocation, not the final constitutional bonuses. The unfinished convention returns after the emergency. A focus canceled by territorial loss does not refund completed equipment deliveries or create a duplicate research reward.
+An existential defensive war permits an emergency defense mandate while the convention remains unfinished.
+The country receives access to training and equipment allocation, not the final constitutional bonuses.
+The unfinished convention returns after the emergency.
+A focus canceled by territorial loss does not refund completed equipment deliveries or create a duplicate research reward.
 
-A prerequisite that becomes impossible through an unrelated annexation can use an equivalent successor or objective only when it preserves the original political meaning. Do not auto-complete the whole branch because one foreign participant disappeared.
+A prerequisite that becomes impossible through an unrelated annexation can use an equivalent successor or objective only when it preserves the original political meaning.
+Do not auto-complete the whole branch because one foreign participant disappeared.
 
 ### Node catalogue
 
-Labels below identify design nodes and art motifs. They are not final focus localisation. Each reward belongs to the existing three spirit families, an institution unlock, an actual project, or a researched technology relationship. A modifier already granted by a constitution is not granted again by its focus.
+Labels below identify design nodes and art motifs.
+They are not final focus localisation.
+Each reward belongs to the existing three spirit families, an institution unlock, an actual project, or a researched technology relationship.
+A modifier already granted by a constitution is not granted again by its focus.
 
 | ID | Working direction | Days | Prerequisite and meaningful effect |
 |---|---|---:|---|
@@ -80,7 +101,7 @@ Labels below identify design nodes and art motifs. They are not final focus loca
 | D01 | Emergency national command | 70 | Traditionalist authority, F05, and a concrete unresolved crisis. Choose the national-discipline route |
 | D02 | Control external political funding | 35 | D01. Authorize bounded, evidence-based funding restrictions and reciprocal diplomatic consequences |
 | D03 | Restore the production schedule | 70 | D01 and F06. Begin the 180-day discipline-and-production mission |
-| D04 | Reconstitute the service system | 35 | D01 and F03. Restore mobilization through actual service administration, with unresolved underground costs |
+| D04 | Reconstitute the service system | 35 | D01 and F03. Restore military service through actual service administration, with unresolved underground costs |
 | D05 | Sunset or entrench emergency rule | 70 | D03 and D04 completed. Choose constitutional normalization with reduced coercive benefits, or sustained emergency obligations and opposition |
 | N01 | Congress of national institutions | 70 | Traditionalist authority, F04, F07. Choose the religious-national compact or its researched secular institutional counterpart |
 | N02 | Charities and civic continuity | 35 | N01 and F02. Open a real charitable relief program and a family-policy negotiation |
@@ -116,19 +137,30 @@ Labels below identify design nodes and art motifs. They are not final focus loca
 | W04 | Protect the civilian rear | 35 | W01. Fund reconstruction, minority protection, and resistance against actual hostile occupation |
 | W05 | Integrate the international defense | 70 | W02 or W03 and real member contributions. Unlock the terminal recruitment ceilings and coordinated air, sea, and logistics mandates |
 | W06 | Draft a demobilization settlement | 70 | W04 and a credible route to victory. Plan postwar service, guarantees, autonomy, and religious freedom |
-| W07 | Ratify the world settlement | 70 | W02, W03, W06 and all nonfocus victory conditions. Begin the final 180-day settlement mission, not an immediate victory button |
+| W07 | Ratify the world settlement | 70 | W02, W03, and W06. Fixes the settlement terms; the final 180-day mission starts automatically once the remaining Part 10 victory conditions also hold. It is not a victory button |
 | W08 | Return authority to civilian life | 35 | Victory settlement completed. Remove emergency powers and complete the post-victory institutional transition |
 
 ### Nonlinearity and meaningful ordering
 
-The player can fund relief before resolving the constitution, prepare a service commission while negotiating with traditionalists, or prioritize air defense during a real invasion. The naval path requires actual maritime relevance. A landlocked country can complete the diplomatic passage route instead, but does not gain a navy or a port by bypass.
+The player can fund relief before resolving the constitution, prepare a service commission while negotiating with traditionalists, or prioritize air defense during a real invasion.
+The naval path requires actual maritime relevance.
+A landlocked country can complete the diplomatic passage route instead, but does not gain a navy or a port by bypass.
 
-Constitutional routes share the same military and diplomacy foundations, but change their costs and political limits. A commonwealth can field Liberation Brigades. A pluralist republic can host spiritual charities. A spiritual council can protect conventional families. These are not exclusive social identities. The exclusive choice concerns governing institutions and maintained route rewards.
+Constitutional routes share the same military and diplomacy foundations, but change their costs and political limits.
+A commonwealth can field Liberation Brigades.
+A pluralist republic can host spiritual charities.
+A spiritual council can protect conventional families.
+These are not exclusive social identities.
+The exclusive choice concerns governing institutions and maintained route rewards.
 
-Traditionalist routes have their own domestic payoff and can join the rival bloc. The constitutional route must not be a weaker version of the coercive route in every circumstance. It trades some immediate mobilization recovery for lower confrontation, stable civic production, and reliable diplomatic agreements.
+Traditionalist routes have their own domestic payoff and can join the rival bloc.
+The constitutional route must not be a weaker version of the coercive route in every circumstance.
+It trades some immediate mobilization recovery for lower confrontation, stable civic production, and reliable diplomatic agreements.
 
 ### AI and visual review
 
-The AI chooses the constitutional path from current authority, existing commitments, war threat, economic capacity, and unresolved grievances. It should not prefer a locked focus or abandon a nearly completed life-saving defense project for a cosmetic rename. Focus selection uses the engine's actual scoring and randomness, which the probability auditor must inspect rather than treating the listed preferences as a proportional lottery.
+The AI chooses the constitutional path from current authority, existing commitments, war threat, economic capacity, and unresolved grievances.
+It should not prefer a locked focus or abandon a nearly completed life-saving defense project for a cosmetic rename.
+Focus scores are weights, not a proportional lottery.
 
-The focus audit must render every route, including a new authority's complete starting tree, prerequisites, exclusions, icons, line crossings, and hidden branches. Use path-level comparisons after changes. A rendered tree with readable rows is a required implementation proof. A Markdown diagram is a design diagram only.
+The focus review follows the `chaos-redux-focus-trees` skill, including a readable layout for every route and a new authority's complete starting tree.

@@ -1,26 +1,48 @@
 # 84 · AI, probability, technology, and capability audit matrix
 
-## Evidence status
+## Status
 
-This is an intended-behavior specification and an implementation test plan. No HOI4 probability tools, technology graph tools, live game, or configured project subagent ran during this planning turn. Values below are proposed inputs and expected rankings. They are not empirical balance results, simulated victory rates, or validated cumulative timing curves.
+This is intended behavior and a review plan.
+Values are proposed inputs and expected rankings, not measured balance results.
 
 ## Government response priorities
 
-The AI must first exclude impossible, unaffordable, and institutionally invalid actions. It must reserve enough capacity for essential active missions instead of starting three expensive projects that all fail. It values survival and credible existing commitments over a cosmetic identity change. Religious affiliation and private sexual orientation never act as universal response-weight shortcuts.
+The AI must first exclude impossible, unaffordable, and institutionally invalid actions.
+It must reserve enough capacity for essential active missions instead of starting three expensive projects that all fail.
+It values survival and credible existing commitments over a cosmetic identity change.
+Religious affiliation and private sexual orientation never act as universal response-weight shortcuts.
 
-For a normal eligible five-option response event, provisional base weights are tolerate 30, negotiate 40, co-opt 15, suppress 10, and eradicate 5. Actual option probabilities require normalizing only the eligible options after contextual modifiers. Eradication receives AI weight zero without a serious actual armed or institutional threat, even if the player is legally permitted to choose a coercive campaign. An already delivered lawful settlement also zeroes gratuitous suppression and eradication choices absent a new distinct violation.
+For a normal eligible five-option response event, provisional base weights are tolerate 30, negotiate 40, co-opt 15, suppress 10, and eradicate 5.
+Actual option probabilities require normalizing only the eligible options after contextual modifiers.
+Eradication receives AI weight zero without a serious actual armed or institutional threat, even if the player is legally permitted to choose a coercive campaign.
+An already delivered lawful settlement also zeroes gratuitous suppression and eradication choices absent a new distinct violation.
 
-At peace with adequate civilian capacity, add 25 to negotiation and 15 to tolerance. During a genuine defensive war, add 25 to service negotiation and 15 to a valid accountable defense mandate. A government with a fulfilled co-optation project prefers maintaining it over reopening the same case. A high-Reaction government facing an actual armed seizure can add 25 to valid suppression and 15 to valid eradication. A documented failure of repression adds 25 to negotiation and zeroes repeating the identical failed campaign while its cooldown remains active.
+At peace with adequate civilian capacity, add 25 to negotiation and 15 to tolerance.
+During a genuine defensive war, add 25 to service negotiation and 15 to a valid accountable defense mandate.
+A government with a fulfilled co-optation project prefers maintaining it over reopening the same case.
+A high-Reaction government facing an actual armed seizure can add 25 to valid suppression and 15 to valid eradication.
+A documented failure of repression adds 25 to negotiation and zeroes repeating the identical failed campaign while its cooldown remains active.
 
-These are event-option weights. Decision `ai_will_do` values and focus scores do not inherit the same probability interpretation. Their actual adapters, availability checks, evaluation schedules, and competing actions must be inspected.
+These are event-option weights.
+Decision `ai_will_do` values and focus scores do not inherit the same probability interpretation.
+Their actual adapters, availability checks, evaluation schedules, and competing actions must be inspected.
 
 ## Evolution timing proposal
 
-The next eligible evolution has base MTTH 90 days. A network of at least three affected countries applies a factor of 0.75. A completed transnational congress applies 0.75. At least one legitimate movement-led government applies 0.75. A qualifying unresolved repression sequence applies 0.50 where relevant to The Reaction or Armed Peace. A completed international reconciliation with no unresolved qualifying rupture applies 1.50 to conflict-dependent evolution, but does not suppress Love and Liberation's peaceful civic development.
+The next eligible evolution has base MTTH 90 days.
+A network of at least three affected countries applies a factor of 0.75.
+A completed transnational congress applies 0.75.
+At least one legitimate movement-led government applies 0.75.
+A qualifying unresolved repression sequence applies 0.50 where relevant to The Reaction or Armed Peace.
+A completed international reconciliation with no unresolved qualifying rupture applies 1.50 to conflict-dependent evolution, but does not suppress Love and Liberation's peaceful civic development.
 
-Clamp the resulting intended interval to 30 through 180 days through the project's verified implementation pattern. Do not claim a clamped numeric variable is equivalent to a valid engine MTTH construct until the actual caller and adapter are inspected. A threshold or repression gate becoming false stops eligibility. Already completed stages remain completed.
+Clamp the resulting intended interval to 30 through 180 days through the project's verified implementation pattern.
+Do not claim a clamped numeric variable is equivalent to a valid engine MTTH construct until the actual caller and adapter are inspected.
+A threshold or repression gate becoming false stops eligibility.
+Already completed stages remain completed.
 
-Pre-fire high-Chaos initialization uses the explicit opening rules in Part 5 rather than retroactively running an MTTH timer before the event exists. Manual setup establishes the mature stages directly and logs that scenario history once.
+Pre-fire high-Chaos initialization uses the explicit opening rules in Part 5 rather than retroactively running an MTTH timer before the event exists.
+Manual setup establishes the mature stages directly and logs that scenario history once.
 
 ## Named probability scenarios
 
@@ -59,15 +81,18 @@ Pre-fire high-Chaos initialization uses the explicit opening rules in Part 5 rat
 | AI31 | Terminal underway, majority briefly lost | 90-day recovery crisis rather than immediate silent deletion of the scenario |
 | AI32 | Two players act on congress and terminal gates on the same date | One committed global outcome, separate sovereign local choices |
 
-## Required probability audit execution
+## Probability review
 
-The implementation parent must spawn `chaosx_ai_probability_auditor` with `fork_turns="none"` and a complete self-contained brief. Begin with `hoi4.probability_inspect` for the relevant event, decision, focus, MTTH, and helper sources. Use `hoi4.probability_evaluate` for named states, `hoi4.probability_sweep` for threshold and capacity boundaries, `hoi4.probability_simulate` only for declared uncertain inputs, and `hoi4.probability_compare` after a patch. Use `hoi4.probability_render` for probability, timing-survival, sensitivity, and unresolved evidence views when useful.
-
-Separate exact, bounded, sampled, and unresolved results. Report the game-version adapter, scenario inputs, horizon, scheduled state changes, seeds where applicable, and competing options. A Python toy simulation, handwritten normalization, or guessed MTTH distribution does not replace the required project tools. The auditor supplies evidence and does not silently choose new design priorities or write source.
+Route `chaosx_ai_probability_auditor` through `chaos-redux-subagents` with a self-contained prompt covering the event, decision, focus, MTTH, and helper sources.
+Use `hoi4.probability_*` where it supports the script and calculations from the actual script otherwise, separating exact, bounded, sampled, and unresolved results and stating the scenario inputs and horizon.
+The auditor supplies evidence and does not choose new design priorities or write source.
 
 ## Technology and doctrine contract
 
-The event introduces political and organizational unit unlocks, not a new universal arms race. Existing infantry equipment, support equipment, transport, aircraft, ships, and doctrines remain the technological basis. No country gets a research slot simply for becoming a movement government. A new authority inherits legitimate knowledge from its actual parent, with complete package validation.
+The event introduces political and organizational unit unlocks, not a new universal arms race.
+Existing infantry equipment, support equipment, transport, aircraft, ships, and doctrines remain the technological basis.
+No country gets a research slot simply for becoming a movement government.
+A new authority inherits legitimate knowledge from its actual parent, with complete package validation.
 
 | Surface | Required graph or consumer inspection | Intended result |
 |---|---|---|
@@ -80,10 +105,16 @@ The event introduces political and organizational unit unlocks, not a new univer
 | Civil-war knowledge inheritance | Parent technologies, doctrines, facilities, scientists, startup setup | Knowledge is inherited appropriately, material and research slots are not multiplied |
 | Manual setup | Declared scenario tech state versus current campaign | Preserve actual researched progression, no silent advanced technology grant |
 
-Run `hoi4.tech_inspect`, `hoi4.tech_render`, and `hoi4.tech_compare` before and after technology, unit-unlock, or doctrine-related changes. Inspect the installed and repository versions, not remembered vanilla identifiers. A full playable-country audit must cover research slots, techs, doctrines, facilities, any scientists, usable unit templates, and complete startup grants. The planning package does not claim these graph tools were run.
+Check technology, unit-unlock, and doctrine changes against the installed and repository sources, using `hoi4.tech_*` where it answers the question, never remembered vanilla identifiers.
+A full playable-country check covers research slots, technologies, doctrines, facilities, any scientists, usable unit templates, and complete startup grants.
 
 ## DLC and supported fallbacks
 
-Core political play must function without an intelligence DLC. Where native operatives or agency operations are unavailable, use an abstract political investigation case with the same bounded public consequence and no fabricated operative slot. Role-specific character effects require actual supported role consumers. Advanced aircraft or naval designer content uses the installed route rather than a hardcoded universal DLC assumption.
+Core political play must function without an intelligence DLC.
+Where native operatives or agency operations are unavailable, use an abstract political investigation case with the same bounded public consequence and no fabricated operative slot.
+Role-specific character effects require actual supported role consumers.
+Advanced aircraft or naval designer content uses the installed route rather than a hardcoded universal DLC assumption.
 
-A capability fallback must preserve the political objective and be visible in the coverage report. It may not silently substitute a global country modifier for a carefully limited elite unit ability. Unsupported model actions, tags, equipment categories, or character scopes are blockers until an equivalent is explicitly selected and documented.
+A capability fallback must preserve the political objective and be visible in the coverage report.
+It may not silently substitute a global country modifier for a carefully limited elite unit ability.
+Unsupported model actions, tags, equipment categories, or character scopes are blockers until an equivalent is explicitly selected and documented.

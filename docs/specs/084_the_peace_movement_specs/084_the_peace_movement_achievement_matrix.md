@@ -2,11 +2,18 @@
 
 ## Global rules
 
-The sixteen achievements below are proposed Event 84 achievement identities, not audited engine IDs or final player-facing titles. Their wording remains a localisation direction. None unlocks merely for receiving the opening, picking a posture, seeing a cinematic, adopting a cosmetic flag, or spawning a unit.
+The sixteen achievements below are design identities, not engine IDs or final titles.
+None unlocks merely for receiving the opening, picking a posture, seeing a cinematic, adopting a cosmetic flag, or spawning a unit.
 
-Use persistent episode and player-country lineage tracking so a valid civil-war continuation can retain progress without awarding it to both sides. Starting conditions and scenario grants are snapshots, not earned progress. Debug and scripted test setup are disqualifying where the shared achievement system supports the required distinction. Manual scenarios are eligible only where a row explicitly allows them, and then only for progress earned after launch.
+Use persistent episode and player-country lineage tracking so a valid civil-war continuation can retain progress without awarding it to both sides.
+Starting conditions and scenario grants are snapshots, not earned progress.
+Debug and scripted test setup are disqualifying where the shared achievement system supports the required distinction.
+Manual scenarios are eligible only where a row explicitly allows them, and then only for progress earned after launch.
 
-Every achievement requires a native 64×64 original-color icon, the project's exact gray locked state, and the exact required red-overlay disabled state. Use the supplied template and verify its hash. The overlay is not redrawn or recolored. Final output belongs in the existing achievement consumer paths, with actual registration and UI proof.
+Every achievement requires a native 64×64 original-color icon, the project's exact gray locked state, and the exact required red-overlay disabled state.
+Use the supplied template and verify its hash.
+The overlay is not redrawn or recolored.
+Final output belongs in the existing achievement consumer paths, with actual registration and UI proof.
 
 ## Domestic and political achievements
 
@@ -36,6 +43,11 @@ Every achievement requires a native 64×64 original-color icon, the project's ex
 
 ## Implementation evidence
 
-Inspect the existing achievement patterns before choosing final IDs, trigger ownership, completion storage, icon registration, and disabled-state behavior. Produce one trigger truth-table row for success, near miss, manual seeded state, debug setup, tag succession, and repeated completion for each achievement. The unit-related achievements require actual supported unit or cohort evidence. When the engine cannot prove the proposed service condition, report the limitation and obtain an equivalent measurable design rather than silently weakening the challenge to owning a unit.
+Inspect the existing achievement patterns before choosing final IDs, trigger ownership, completion storage, icon registration, and disabled-state behavior.
+Produce one trigger truth-table row for success, near miss, manual seeded state, debug setup, tag succession, and repeated completion for each achievement.
+The unit-related achievements require actual supported unit or cohort evidence.
+When the engine cannot prove the proposed service condition, report the limitation and obtain an equivalent measurable design rather than silently weakening the challenge to owning a unit.
 
-The icon register must contain all 48 final state images and the source template proof. A contact sheet should pair each achievement's three states at native size. The final localisation explains the real objective, while hidden status and difficulty follow this matrix. No achievement has been implemented or unlocked by this planning package.
+The icon register must contain all 48 final state images and the source template proof.
+A contact sheet should pair each achievement's three states at native size.
+The final localisation explains the real objective, while hidden status and difficulty follow this matrix.

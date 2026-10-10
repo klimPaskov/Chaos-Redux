@@ -2,9 +2,9 @@
 
 ## Status
 
-These are required future acceptance scenarios. They have not been run in HOI4. The planning turn performs only a parent-authored document consistency and packaging check, recorded separately in the package manifest. It is not an independent subagent review, a probability audit, a technology audit, or a live playtest.
-
-Each executed scenario must record game/repository revision, setup, observed behavior, expected behavior, relevant files, and evidence. Group related checks into scenario saves so they are practical to run. Do not mark a test passed because a comment says the feature exists.
+These are future acceptance scenarios for implementation and source review; none has been run.
+Live-game validation belongs to the user.
+Each reviewed scenario records the repository revision, setup, expected behavior, relevant files, and evidence; a comment saying a feature exists is not a pass.
 
 ## Opening, progression, and accounting
 
@@ -19,7 +19,7 @@ Each executed scenario must record game/repository revision, setup, observed beh
 | QA07 | Influence band boundaries | Continuous coverage at 19/20,39/40,59/60,79/80 and fractional internal values |
 | QA08 | Reaction band boundaries | Continuous coverage at 24/25,49/50,69/70,84/85 |
 | QA09 | Monthly review and urgent check | Proration prevents a 10-day callback from paying a full30-day contribution |
-| QA10 | Many war, cultural, and sponsor causes | Bucket and final caps work, current causes remain explainable |
+| QA10 | Many war, cultural, and sponsor causes | Bucket and final caps work; a CBRN strike and own condemnation at tier 3 together give one war-burden source; the tooltip shows the three largest causes |
 | QA11 | Multiple foreign sponsors | Only one recipient foreign-network contribution per review |
 | QA12 | Dormancy and reactivation | Dormant work stops, real new cause restarts it once, permanent laws remain |
 | QA13 | Government transfer during queued callbacks | One successor owns the state, no doubled timers or delayed dead-tag rewards |
@@ -75,7 +75,7 @@ Each executed scenario must record game/repository revision, setup, observed beh
 | QA53 | Postwar demobilization | Actual survivors and recoverable equipment only, no double return |
 | QA54 | Bloc founding | Three qualified consenting sovereign members and valid faction membership resolution |
 | QA55 | Congress obligations and human members | No spending another player's equipment or changing their laws without authority |
-| QA56 | Refuge and migration | Actual surviving arrivals counted once, reception capacity and route matter |
+| QA56 | Refuge and migration | Abusive suppression or eradication submits persecution pressure to migration; asylum runs through migration's passage and reception decisions; surviving arrivals counted once |
 | QA57 | Chaos1000 and majorityabove50% | Terminal does not fire |
 | QA58 | Chaos1001 and exactly50% majority | Terminal does not fire |
 | QA59 | Owner/controller/subject/travel overlap | Every resident state counted once under actual controller; live Airship custody remains in the world denominator once without a state-control numerator until actual settlement, including a strict-majority near miss |
@@ -112,18 +112,12 @@ Each executed scenario must record game/repository revision, setup, observed beh
 | QA85 | Super-event research and audio | Verified text and attribution, unique cleared tracks≤120 seconds, actual settings-aware playback |
 | QA86 | Cinematic sequencing | No stale back-to-back founding scenes after terminal activation, effects not delayed for art |
 | QA87 | Focus tree renders | All paths, exclusions, lines, icons, and new-country foundations readable and reachable |
-| QA88 | Probability audit | Inspect/evaluate/sweep/compare evidence, correct adapter distinctions, no toy simulation claim |
-| QA89 | Technology audit | Inspect/render/compare covers unit unlocks, equipment, research, inherited country setup |
 | QA90 | Sixteen achievements | True and near-miss states, manual/debug restrictions, tag lineage, all 48 icon states |
 | QA91 | Callback performance | No unauthorized global periodic loop and no duplicate callback registration |
 | QA92 | Catalog and shared displays | Workbook-led identity, two clusters, reserved SCN-031 / raw 31 scenario, evolutions, world-end toggle, history, details coherent |
 | QA93 | CXT and startup coverage | All four new subunits registered through the actual idempotent test-country pattern, no copied vanilla history for additive grants |
 | QA94 | Full save/reload cycle | Missions, cases, governments, formations, treaties, counters, and terminal ownership persist |
-| QA95 | Near-completion improvement loop | Actual configured planner and scoped follow-up review performed, accepted changes integrated throughout |
-| QA96 | Final completion audit | Independent completion evidence, no assets or runtime claims unsupported by produced files and tests |
 
-## Runtime audit order
+## Review order
 
-Inspect source ownership and supported consumers first. Validate the mathematical and scope contracts next. Run the decision, country, focus, AI/probability, and technology audits against implemented files before live acceptance. Produce assets and integrate them with their native consumers, then run the high-value peaceful, polarized, civil-war, manual, and terminal scenarios. Invoke the debug-playtest workflow only under its actual user-invocation and runtime rules.
-
-The near-completion improvement-loop planner must receive the complete current package and a self-contained question about unresolved creative and gameplay weaknesses. Its approved improvements must be incorporated into the main parts, matrices, asset register, and prompts. A missing planner invocation remains an explicit limitation. A parent writing its own checklist does not satisfy independent review.
+Inspect source ownership and supported consumers first, then the mathematical and scope contracts, then the decision, country, focus, AI-probability, and technology checks against implemented files, and finally assets and their native consumers.

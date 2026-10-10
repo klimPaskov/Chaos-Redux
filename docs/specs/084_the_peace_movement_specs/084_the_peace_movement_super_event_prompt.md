@@ -1,19 +1,33 @@
 # Research and produce Event 84's four super-events
 
-Read `docs/specs/084_the_peace_movement_specs/084_the_peace_movement_super_event_research.md`, Parts 5/9/10/11/13, the asset register, original brief, and source ledger. Fully read the current super-events and event-assets skills, required child references, and the text/audio researcher profiles. Use real self-contained `fork_turns="none"` subagent invocations, with exact sources, triggers, permitted writes, constraints, and output paths.
+Read the [super-event research register](084_the_peace_movement_super_event_research.md), Parts 5, 9, 10, 11, and 13, the asset register, and the original brief.
+Read `CLAUDE.md` and the current `chaos-redux-super-events`, `chaos-redux-event-assets`, and `chaos-redux-subagents` skills.
+Route `chaosx_super_event_text_researcher`, `chaosx_super_event_audio_researcher`, and the event-art worker through `chaos-redux-subagents` with self-contained prompts that carry sources, triggers, permitted writes, constraints, and output paths.
 
-Produce SE01 institutional division, SE02 armed defense of peace, SE03 The Gay World activation, and SE04 the completed world settlement. Their exact trigger/scale gates and queue rules are in the research register. SE03 is not victory. SE04 requires the actual final 180-day mission. A terminal reversal has news/report coverage rather than an unplanned fifth cinematic.
+Produce SE01 institutional division, SE02 armed defense of peace, SE03 The Gay World activation, and SE04 the completed world settlement; their trigger and queue rules are in the register.
+SE03 is not victory.
+SE04 requires the completed 180-day settlement.
+A terminal reversal gets news and report coverage, not a fifth cinematic.
 
-The user supplied The Gay World as the scenario identity. Other design labels are not final localisation. Research and author final title/description direction, exact quotation and attribution, button/cultural remark, and final audio/image presentation only after verification. Unresearched titles, button text, quotations, slogans, lyric fragments, cultural remarks, allusions, and audio choices are blockers. Never paste an internal asset name or achievement working label as final cultural text.
+## Text
 
-The register contains two checked quotation candidates, not selected final epigraphs. Verify the exact Dhammapada translation and its context, and the religious setting of the Quaker testimony. Neither establishes that actual Buddhist or Christian doctrine endorses the fictional order's armed or sexual politics. Do not fabricate a quote from a historical leader. Complete research for currently unselected SE01 and SE03 wording. Preserve short permitted quotations and document copyright/translation concerns.
+The user named The Gay World; every other label is a working label.
+Research and author final titles, descriptions, quotations with attribution, and button remarks only after verification.
+The register holds two checked quotation candidates, not selected epigraphs; neither establishes that Buddhist or Christian doctrine endorses the fictional order's armed or sexual politics.
+SE01 and SE03 still need researched wording.
+Never fabricate a quote from a historical figure.
 
-For each cinematic, research at least a strong leading audio candidate and a distinct legitimate alternative. Verify composition and recording rights separately, identify the creator/composer, performer or recording source, license/version, source URL, legitimate download, and edit permissions. The accessed Musopen Beethoven 9 catalogue was only a composition lead. It did not clear a specific recording. The planning turn downloaded, listened to, and produced no final audio.
+## Audio
 
-Listen to each candidate. Select a coherent emotional arc and excerpt, not an arbitrary clip. Produce a unique final game-ready WAV no longer than 120 seconds for each accepted super-event, with clear edit start/end, fade/level treatment, duration, format, and hash. Do not synthesize or generate music, use modern commercial tracks without rights, reuse another event's cue silently, or claim repository history is provenance. Check the canonical music catalogue for uniqueness. Any reuse needs explicit approval.
+For each cinematic, research a leading candidate and a distinct legitimate alternative, verify composition and recording rights separately, listen, and produce a unique game-ready WAV of at most 120 seconds with a coherent excerpt.
+No synthesized music, uncleared commercial tracks, or silent reuse; check the canonical music catalogue for uniqueness.
 
-Coordinate one 457×328 visual scene per cinematic with the appropriate sourced or generated event-art worker. Prefer generated art for this fictional alternate-history content. Scenes need actual people, architecture, space, and readable political circumstances. No baked text, abstract poster, unrelated collage, gratuitous violence, sexualized private gathering, or generic religion caricature. Final image review follows the asset skill.
+## Images
 
-After the parent accepts the presentation, provide exact unique event/audio IDs through an inspected registry handoff, source and rights documentation, final localisation, image asset, final WAV, and settings-aware integration requirements. The final implementation sets the correct visibility and `global.current_super_event_audio_id`, calls `play_current_super_event_sound = yes`, supplies existing volume wrappers, and updates `sound/chaosx_sound.asset`, the shared super-event image and scripted-localisation consumers, event docs, and `music/chaosx_music_track_list.html` with the actual source, rights, duration, and consuming ID.
+One 457×328 scene per cinematic, generated for this fictional content, with people, architecture, and readable political circumstances.
+No baked text, abstract poster, gratuitous violence, sexualized gathering, or religious caricature.
 
-Use permanent research documentation under `docs/super_events/084_the_peace_movement_super_event_research.md` after acceptance. Temporary evidence is retained until integration and live playback are accepted, then archived into permanent surfaces before event-scoped cleanup. Report the result for every text, rights, listening, image, playback, and settings gate. Do not mark all four super-events complete while any final cultural text, licensed recording, image, or actual playback proof is missing.
+## Integration
+
+After acceptance, register unique event and audio IDs, set `global.current_super_event_audio_id`, call `play_current_super_event_sound = yes` through the volume wrappers, and update `sound/chaosx_sound.asset`, the shared super-event image and scripted-localisation consumers, `music/chaosx_music_track_list.html`, and `docs/super_events/084_the_peace_movement_super_event_research.md`.
+A super-event is not complete while its final text, licensed recording, image, or playback wiring is missing.

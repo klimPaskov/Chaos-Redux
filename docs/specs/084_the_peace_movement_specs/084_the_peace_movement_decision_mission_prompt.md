@@ -1,21 +1,31 @@
 # Implement and audit Event 84 decisions and missions
 
-Use the complete source package under `docs/specs/084_the_peace_movement_specs/`, especially Parts 2/3/4/5/6/8/9/10/11/12, the modifier-precedence file, decision/mission matrix, AI/probability/technology matrix, and acceptance scenarios. Fully read AGENTS.md, the current decisions-missions, events, MTTH, focus-trees, scripted-GUI and subagent skills and their required references. Read the actual existing helpers and consumers before code.
+Use the source package under `docs/specs/084_the_peace_movement_specs/`, especially Parts 2, 3, 4, 5, 6, 8, 9, 10, 11, and 12, the modifier precedence, the [decision and mission matrix](084_the_peace_movement_decision_and_mission_matrix.md), the AI matrix, and the acceptance scenarios.
+Read `CLAUDE.md` and the current `chaos-redux-decisions-missions`, `chaos-redux-events`, `chaos-redux-mtth`, and `chaos-redux-subagents` skills, then the existing helpers and consumers before writing code.
 
-Event 84 has 40 designed action types and 17 mission types, presented through contextual native category pages. At most six primary actions and three visible active Event 84 missions exist for one country across all categories combined. There are only two new public values, Influence and Reaction. No third currency or cohesion meter. There are at most four spend types per action. The highest planned CP cost is 50. Preserve the 1/3/5 CIV and other capacity-scaled commitments, with a frozen cost band at acceptance and no negative stockpiles.
+## Contract
 
-Implement all five government responses and every listed civic, character, military, diplomatic, constitutional, civil-war, and terminal objective. DEC IDs and MISS IDs are design references, not presumed free engine namespace slots. The native pages and target pagination must honor the six-slot ceiling. Navigation does not mutate politics or spend resources. A selected reform and its parent negotiation are one mission, not two.
+- 33 actions and 17 mission types on contextual native category pages.
+  At most six primary actions and three active Event 84 missions per country across all categories.
+  Navigation spends nothing and changes nothing.
+- The retired choices listed in the matrix stay inside their owning events or start automatically; do not reintroduce them as buttons.
+- Two public values only, Influence and Reaction.
+  At most four spend types per action, CP at most 50, capacity-scaled commitments frozen at acceptance, and no negative stockpiles.
+- Missions complete when their objective is met, or after their stated maintenance period.
+  Full success, partial success, failure, and cancellation are distinct; partial success is a real delivered subset.
+  Use the matrix durations: 90-day local reform, 120-day convention, 150-day supply charter, 180-day major programs, 30-day command crisis.
+- Material is consumed or reserved once.
+  Cancellation releases only undelivered commitments and preserves spent PP, delivered equipment, losses, completed infrastructure, legal reforms, and population.
+  Posture cycling, appointments, conversions, case reopening, leadership rotation, and same-cause suppression cannot farm rewards.
+- The four special unit families stay behind Armed Peace except the explicit manual setup.
+- Character cases follow evidence and consent; no orientation-based penalty or unsupported real-person private identity.
+- Foreign projects share the mission budget and a bounded contact slot.
+  Asylum and relief use the migration and famine decisions named in Part 12 rather than parallel transactions.
+- Terminal checks keep the strict >1000 Chaos and >50% living population tests; manual previews and seeds pay no achievements or retrospective Chaos.
 
-Missions complete when their actual objective is fulfilled, unless they require a stated maintained duration. Distinguish full success, partial success, failure, and cancellation. Use the matrix's90-day local reform,120-day convention,150-day supply charter,180-day major programs, and 30-day command crisis correctly. Partial success is a real delivered subset, not a random consolation prize. Do not turn a fulfilled lawful agreement into an arbitrary massacre roll.
+## Checks
 
-Freeze targets and cost bands. Consume or reserve actual equipment once. Native unit training and a decision reservation cannot both charge the same material. Release only undelivered ongoing commitments on cancellation. Preserve spent PP, delivered equipment, actual losses, completed infrastructure, legal reforms, and population. Repeated posture changes, appointments, conversions, case reopening, congress leadership rotation, and same-cause suppression cannot farm rewards.
-
-Keep all four special unit families behind Armed Peace, except explicit mature manual initialization. Earlier emergency defense uses existing regular forces. Verify the actual supported equipment, manpower, recruitment, cohort, conversion, and demobilization consumers with the technology/unit audit. No duplicated soldiers, ships, aircraft, or living population during civil-war or succession objectives.
-
-Use evidence and consent in adult character cases. No unsupported real-person private identity or orientation-based penalty. Political takeover depends on real authority. High Influence and Reaction alone do not partition a country. Subjects and faction members retain their actual sovereignty limits. Every foreign project consumes the same shared mission budget and a bounded contact slot.
-
-Terminal decisions preserve strict>1000 Chaos and>50% living population activation checks and the separate final campaign and 180-day victory mission. Opening a cinematic is not a claim-reward button. Manual previews and scenario seeds do not pay ordinary achievements or retrospective Chaos rewards.
-
-Spawn `chaosx_decision_mission_auditor` with `fork_turns="none"` and a self-contained brief. Spawn the probability auditor for actual decision timing and competing-action behavior. Begin with `hoi4.probability_inspect`, then use evaluate/sweep/compare and other required evidence tools. Do not interpret ai_will_do as a simple click probability. State unavailable runtime tools honestly.
-
-Validate every page at maximum simultaneous eligibility, every cost band and shortage boundary, partial/failed/canceled outcomes, actual 30-day review proration, all three simultaneous mission slots, target loss, government transfer, save/reload, multiplayer commitments, and absence of unauthorized global periodic loops. Return a route coverage table, exact file changes, native UI and scenario evidence, probability findings, and remaining blockers. Do not call the decision system complete while any listed action family or mission result has only a placeholder path.
+Route `chaosx_decision_mission_auditor` and `chaosx_ai_probability_auditor` through `chaos-redux-subagents` with self-contained prompts.
+Use `hoi4.probability_*` where it supports the script and calculations from the actual script otherwise; `ai_will_do` is a score, not a click probability.
+Review every page at maximum simultaneous eligibility, every cost band and shortage boundary, partial, failed, and canceled outcomes, 30-day review proration, three simultaneous missions, target loss, government transfer, save and reload, and multiplayer commitments.
+Return a route coverage table, the changed files, and remaining blockers; a listed action or mission result with only a placeholder path is not complete.

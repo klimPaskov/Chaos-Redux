@@ -2,11 +2,34 @@
 
 ## Status and ownership
 
-This is a production register. No final images, portraits, flags, icons, 3D models, animation clips, counters, sounds, or super-event cues were produced in this planning turn. Asset IDs below are design IDs. The implementation parent owns final sprite and consumer wiring after the appropriate specialist's handoff. Every delivered file needs a source mode, provenance, native dimensions, processing path, hash, preview, and verified consumer.
+This is the canonical production register; no asset has been produced yet.
+Asset IDs below are design IDs.
+The implementation parent owns final sprite and consumer wiring after the appropriate specialist's handoff.
+Every delivered file needs a source mode, provenance, native dimensions, processing path, hash, preview, and verified consumer.
+
+| Asset family | Native target | Source and production rule |
+|---|---|---|
+| Report event image | 210×176 | BW or sepia documentary treatment inside the official tilted-paper frame and alpha template |
+| News image | 397×153 | BW scene, sourced for documented reality or generated for fictional campaign scenes |
+| Super-event image | 457×328 | Distinct scene, no text baked into the art |
+| Leader, commander, operative portrait | 156×210 | Grounded subjects through the portrait creator; fictional subjects through a clearly fictional generation brief |
+| Adviser portrait | 65×67 | Separate native role asset and crop, not a resized leader card |
+| National spirit icon | 64×64 | Separate symbolic icon for each family and visible state |
+| Focus icon | 94×86 | Purpose-designed motif per node, transparent native asset |
+| Decision icon | 32×32 | Legible action silhouette, independently authored |
+| Technology or unit consumer icon | Verified 64×64 or 132×52 consumer | The installed consumer decides dimensions and composition |
+| Flag sizes | 82×52, 41×26, 10×7 | All new flags through image generation; historical designs first grounded in a cited flat reference |
+| Achievement | 64×64, three template states | Exact project template and unchanged overlay |
+| Large unit counter | 152×42 sheet, two 76×42 frames | Independently designed colored and schematic frames following the actual template |
+| Unit template graphics | 76×42 and 30×12 | Separate native designs, not resized copies |
+| Category picture | Inspect the actual consumer | Static scene family, no guessed size and no animation |
+
+Numeric sizes are planning anchors; the current `chaos-redux-event-assets` skill and the inspected consumer decide templates, channels, alpha, and naming.
 
 ## Report scenes
 
-Each scene is a separate 210×176 report composition using the official tilted-paper processing template, BW or sepia content, and correct transparency. The alternate outcomes can reuse a scene only when its visual facts still fit.
+Each scene is a separate 210×176 report composition using the official tilted-paper processing template, BW or sepia content, and correct transparency.
+The alternate outcomes can reuse a scene only when its visual facts still fit.
 
 | ID | Scene direction | Required variants or factual limits |
 |---|---|---|
@@ -29,7 +52,8 @@ Each scene is a separate 210×176 report composition using the official tilted-p
 
 ## News scenes
 
-Produce separate 397×153 BW compositions. They are documentary-style depictions of fictional campaign events, not falsely attributed archival photographs.
+Produce separate 397×153 BW compositions.
+They are documentary-style depictions of fictional campaign events, not falsely attributed archival photographs.
 
 | ID | Scene direction | Consumer |
 |---|---|---|
@@ -46,11 +70,19 @@ Produce separate 397×153 BW compositions. They are documentary-style depictions
 
 ## Super-event scenes
 
-SE01 through SE04 correspond to the super-event research file. Each has a unique 457×328 scene and a distinct final audio cue. SE01 shows a world divided through opposing real congress spaces or a politically divided frontier. SE02 shows the contradiction of armed defense around a protected civilian institution. SE03 shows movement dominance in a major world city while organized opposition remains. SE04 shows a ratified world peace and demobilization with diverse civilian life. No abstract geometric poster, typography baked into the scene, or interchangeable rainbow wallpaper.
+SE01 through SE04 correspond to the super-event research file.
+Each has a unique 457×328 scene and a distinct final audio cue.
+SE01 shows a world divided through opposing real congress spaces or a politically divided frontier.
+SE02 shows the contradiction of armed defense around a protected civilian institution.
+SE03 shows movement dominance in a major world city while organized opposition remains.
+SE04 shows a ratified world peace and demobilization with diverse civilian life.
+No abstract geometric poster, typography baked into the scene, or interchangeable rainbow wallpaper.
 
 ## National-spirit icon families
 
-No more than three Event 84 national spirits are active simultaneously. Each family needs native 64×64 icons for its actually visible states. Five basic states per family are sufficient, with route-specific replacement art only when it communicates a genuinely different maintained institution.
+No more than three Event 84 national spirits are active simultaneously.
+Each family needs native 64×64 icons for its actually visible states.
+Five basic states per family are sufficient, with route-specific replacement art only when it communicates a genuinely different maintained institution.
 
 | Family | Five state motifs | Additional justified route state |
 |---|---|---|
@@ -58,15 +90,23 @@ No more than three Event 84 national spirits are active simultaneously. Each fam
 | Civilian economy | Workshop, communal kitchen, cooperative factory, strained civilian queue, reconstructed housing | Explicit anti-natalist policy uses a neutral policy-document motif, never a queer symbol as a penalty icon |
 | Service and command | Service ledger, empty recruitment desk, negotiated service charter, civilian defense shield, demobilized rifle | Lotus integration may use a restrained fictional order emblem, distinct from a real religion's universal symbol |
 
-Negative states communicate strain through composition and wear, not grotesque caricatures. Final state mapping follows the implementation's single three-spirit total table.
+Negative states communicate strain through composition and wear, not grotesque caricatures.
+Final state mapping follows the implementation's single three-spirit total table.
 
 ## Decision, focus, and technology icons
 
-Each DEC01 through DEC40 needs a native 32×32 action icon. Use distinct silhouettes where the action differs: assembly permit, negotiating hands, cabinet appointment, closed office, severed network, public inquiry, civilian service, legal charter, equal standing, demobilized equipment, communal meal, childcare home, policy ballot, cultural exchange, evidence folder, convention, command mediation, maintained agreement, each of the four unit identities, depot, order charter, returning unit, refuge, foreign civic aid, equipment crate, volunteer passport, congress, security case, frontier table, ultimatum, congress ballot, accession seal, integrated defense, protected rear, ratification, civil-war truce, and restored service.
+Each of the 33 actions in the decision matrix needs a native 32×32 icon, and the two automatic missions (MISS15 maintenance, MISS17 ratification) need one each, for 35 icons.
+Use distinct silhouettes where the action differs: assembly permit, negotiating hands, cabinet appointment, closed office, severed network, public inquiry, communal meal, childcare home, cultural exchange, evidence folder, convention, command mediation, each of the four unit identities, depot, order charter, returning unit, refuge, foreign civic aid, equipment crate, volunteer passport, congress, security case, frontier table, ultimatum, congress ballot, accession seal, integrated defense, protected rear, civil-war truce, restored service, maintained agreement, and ratification.
 
-Every focus node listed in Part 7 needs a 94×86 icon entry. The appendix below enumerates every node and its visual motif. A group-level artistic language is allowed. It does not authorize making one generic icon and resizing it for all nodes. Reuse must be an explicit native-consumer artistic decision and remain readable in the rendered tree.
+Every focus node listed in Part 7 needs a 94×86 icon entry.
+The appendix below enumerates every node and its visual motif.
+A group-level artistic language is allowed.
+It does not authorize making one generic icon and resizing it for all nodes.
+Reuse must be an explicit native-consumer artistic decision and remain readable in the rendered tree.
 
-The four subunit and training consumers need verified native 64×64 or 132×52 icons where those consumers actually exist. Air and naval research rewards reuse the correct established technology identities rather than creating fictitious technology art. Any new consumer introduced during implementation must be added to this register before production is claimed complete.
+The four subunit and training consumers need verified native 64×64 or 132×52 icons where those consumers actually exist.
+Air and naval research rewards reuse the correct established technology identities rather than creating fictitious technology art.
+Any new consumer introduced during implementation must be added to this register before production is claimed complete.
 
 ## Flag and cosmetic-identity matrix
 
@@ -84,11 +124,17 @@ The four subunit and training consumers need verified native 64×64 or 132×52 i
 | Civil-war claimant | A legible local claimant variant in all three sizes | Actual surviving claimant leader or explicitly fictional caretaker |
 | Reunified or independent successor | The settlement's chosen current identity, with complete variants | Correct surviving authority, no stale exile or defeated-cabinet portrait |
 
-All new flags use ImageGen. A historical reconstruction first requires a cited flat design reference. The final country list is dynamic, so the asset parent must expand this matrix into the actual country-by-identity consumer manifest. That manifest is a release gate. Unimplemented future country variants cannot be called complete simply because a generic rainbow flag exists.
+All new flags use ImageGen.
+A historical reconstruction first requires a cited flat design reference.
+The final country list is dynamic, so the asset parent must expand this matrix into the actual country-by-identity consumer manifest.
+That manifest is a release gate.
+Unimplemented future country variants cannot be called complete simply because a generic rainbow flag exists.
 
 ## Portrait role register
 
-Use existing correct portraits when the person and consumer do not change. New grounded roles go to the portrait creator with identity-preserving references. Adult fictional roles are clearly labelled fictional in production metadata.
+Use existing correct portraits when the person and consumer do not change.
+New grounded roles go to the portrait creator with identity-preserving references.
+Adult fictional roles are clearly labelled fictional in production metadata.
 
 | Role | Consumer | Conditional production rule |
 |---|---|---|
@@ -103,13 +149,21 @@ Use existing correct portraits when the person and consumer do not change. New g
 
 ## Counter and sound inventory
 
-Each of the four unit families needs a 152×42 large counter sheet containing two 76×42 frames, a 76×42 template asset, a 30×12 small template asset, and every additional verified map-counter consumer. The first large-counter frame uses the sampled vanilla muted-green treatment, the second its independently designed pale schematic treatment. It is not a white duplicate. Movement families should be distinguishable through shield/volunteer, locality/guard, fictional lotus discipline, and professional brigade motifs rather than tiny text.
+Each of the four unit families needs a 152×42 large counter sheet containing two 76×42 frames, a 76×42 template asset, a 30×12 small template asset, and every additional verified map-counter consumer.
+The first large-counter frame uses the sampled vanilla muted-green treatment, the second its independently designed pale schematic treatment.
+It is not a white duplicate.
+Movement families should be distinguishable through shield/volunteer, locality/guard, fictional lotus discipline, and professional brigade motifs rather than tiny text.
 
-Sound inventory covers model footsteps where overridden, rifle/weapon events where overridden, supported movement and combat action cues, and country voice routing. Every claimed custom sound needs a licensed source and actual consumer proof. Four unit definitions do not imply four independently routable country voicebanks.
+Sound inventory covers model footsteps where overridden, rifle/weapon events where overridden, supported movement and combat action cues, and country voice routing.
+Every claimed custom sound needs a licensed source and actual consumer proof.
+Four unit definitions do not imply four independently routable country voicebanks.
 
 ## Required evidence package
 
-The asset worker supplies a manifest mapping every design ID to source files, processing outputs, native previews, final consumer, and status. Build or inspect the required vanilla reference contact sheet before production. Retain temporary event-scoped evidence until accepted, then move durable provenance and handoffs into permanent docs before cleaning only the event's temporary workspace. Never remove shared templates or other events' evidence.
+The asset worker supplies a manifest mapping every design ID to source files, processing outputs, native previews, final consumer, and status.
+Build or inspect the required vanilla reference contact sheet before production.
+Retain temporary event-scoped evidence until accepted, then move durable provenance and handoffs into permanent docs before cleaning only the event's temporary workspace.
+Never remove shared templates or other events' evidence.
 
 ## Focus icon appendix
 
