@@ -21,6 +21,17 @@ A domestic project can skip most foreign negotiation. A multinational corridor c
 
 The project should not create one decision for every small construction action. Each stage should contain one main objective and only the interventions that change its outcome.
 
+The player sees four phases, not eight stages:
+
+| Player phase | Internal stages | What the player decides |
+| --- | --- | --- |
+| Charter | Authorization, survey and charter, right of way, partner agreement | Method, route, and partners; a domestic project passes straight through once authorized |
+| Construction | Procurement and mobilization, main construction | Responses to at most two incidents and any overrun |
+| Commissioning | Commissioning | Nothing unless a rushed or difficult project raises an issue |
+| Operation | Operation, maintenance, and any repair, rerouting, or closure | Repair or reroute only after real damage |
+
+The internal stages stay as script states so costs can still be divided and partner changes can still alter the commitment, but they never appear as separate decisions or separate mission timers.
+
 ## Authorization
 
 Authorization converts one stable proposal into an active project.
@@ -256,14 +267,9 @@ The implementation can model progress through mission duration changes, staged m
 
 A project can receive a limited number of incidents at meaningful construction milestones.
 
-The normal incident budget should be small:
-
-- one possible incident during survey
-- one possible incident during procurement
-- one or two possible incidents during main construction
-- one commissioning issue for difficult or rushed projects
-
-A long continental network can support more incidents, but repeated events should use cooldowns and avoid text spam.
+The incident budget is at most two incidents per project: one during Construction, and one Commissioning issue that only accelerated or extreme-terrain projects can draw.
+A long continental network does not receive more incidents; its length raises the stakes of the incident it does receive instead.
+A real Event 13 disaster or wartime damage on the route is handled by the damage and repair rules, not counted as an incident.
 
 Incident families include:
 

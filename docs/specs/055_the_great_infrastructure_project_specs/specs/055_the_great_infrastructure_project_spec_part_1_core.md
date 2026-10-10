@@ -242,7 +242,9 @@ Completed projects use qualitative states:
 | Under repair | A repair mission is active. |
 | Dormant | The project exists physically but has no current legal or diplomatic operating framework. |
 
-The player sees the current status and its cause. Internal segment integrity can remain hidden.
+The player sees at most four statuses: Operational, Strained, Disrupted, and Severed, each with its one main cause.
+Partially disrupted is shown as Disrupted, Dormant is shown as Severed with the cause "no operating agreement", and Under repair is not a separate label because the active repair mission already shows progress.
+The six internal states stay available to script for benefit scaling and cleanup; internal segment integrity remains hidden.
 
 ## Event scope and scale
 

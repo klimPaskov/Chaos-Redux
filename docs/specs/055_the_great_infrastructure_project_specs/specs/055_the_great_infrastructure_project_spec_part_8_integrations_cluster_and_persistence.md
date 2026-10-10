@@ -27,14 +27,13 @@ Event 55 can publish:
 
 Famine decides how those facts affect its own relief actions and Food Security.
 
-Possible gameplay effects include:
+The accepted effects are deliberately few so that building a route near hunger is a clear decision:
 
-- cheaper or faster emergency imports
-- stronger escorted relief convoys
-- safer route repair
-- improved relief access in connected states
-- reduced risk that food remains trapped at a port
-- a special relief-priority project method
+- an Operational route that reaches a state counts as the proven relief corridor that Famine's island and blockade tests already look for, so a connected state cannot fall into blockade famine while the route holds
+- connected states receive a fixed reduction to Famine's transport pressure, held in a famine-owned constant and applied by a famine-owned adapter that reads the published route facts
+- Import Food into a connected state pays trains instead of convoys, because the food arrives overland
+
+Disrupted routes give half of the transport reduction; Severed routes give none and lose the corridor proof.
 
 Event 55 must not:
 
@@ -61,13 +60,12 @@ Event 55 can publish:
 
 Migration decides movement size, destination validity, trapped populations, route deaths, reception capacity, and settlement.
 
-Possible gameplay effects include:
+The accepted effects:
 
-- greater organized evacuation capacity
-- lower transport burden
-- stronger reception access at a connected port or city
-- safer return when the route is operational
-- reduced pressure on convoy transport through a fixed link
+- Evacuate Civilians between two connected states treats the route as a safe path, and its transport cost falls by a migration-owned constant
+- return movement along an Operational route is treated as safe by the migration owner's existing return check
+
+Migration reads the published facts; Event 55 adds no reception capacity value of its own.
 
 Event 55 must not debit or credit population. It must not record migration deaths. It must not move cohorts without a valid Migration request.
 

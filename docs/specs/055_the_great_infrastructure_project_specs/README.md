@@ -5,7 +5,7 @@
 The package attributes its premise to the supplied user brief.
 The original user message and claim-level acceptance record are not reproduced here, so approval of expanded mechanics remains unresolved until the implementation owner records the supporting user decision or parent acceptance.
 Historical planning reviews, catalog snapshots, and package status labels do not establish approval or current implementation.
-Use current [AGENTS.md](../../../AGENTS.md), [event guidance](../../../.agents/skills/chaos-redux-events/SKILL.md), [asset guidance](../../../.agents/skills/chaos-redux-event-assets/SKILL.md), and [subagent guidance](../../../.agents/skills/chaos-redux-subagents/SKILL.md) for execution.
+Use current [AGENTS.md](../../../AGENTS.md), [event guidance](../../../.claude/skills/chaos-redux-events/SKILL.md), [asset guidance](../../../.claude/skills/chaos-redux-event-assets/SKILL.md), and [subagent guidance](../../../.claude/skills/chaos-redux-subagents/SKILL.md) for execution.
 The source design remains in the files listed below.
 
 ## The Great Infrastructure Project
@@ -44,3 +44,13 @@ The event uses one persistent public mechanic value. Project progress belongs to
 Fixed links across straits may appear only where a predeclared crossing has engine and map evidence. An unavailable crossing must be excluded before the player sees it. A decorative modifier must never be presented as a functioning land connection.
 
 The design stops at a complete national and multinational project system. Focus trees, new countries, portraits, 3D models, animated sprites, and super-events would add maintenance without improving this event's central play loop.
+
+## Changelog
+
+### 2026-10-10 spec audit
+
+- The project lifecycle keeps its eight internal stages but shows the player four phases (Charter, Construction, Commissioning, Operation); a domestic project passes through Charter once authorized. Eight visible stages were too much management for a Minor Repeatable event.
+- Milestone incidents are capped at two per project instead of up to five, and disasters or war damage are handled by repair rules instead of counting as incidents, to cut popup load on long projects.
+- Completed projects show four statuses (Operational, Strained, Disrupted, Severed) with one cause each; Dormant and Under repair stay internal because they duplicate Severed and the repair mission.
+- Famine and Migration integration now names concrete effects instead of a menu of possibilities: an Operational route is the proven relief corridor that Famine's blockade test looks for, lowers transport pressure in connected states, lets Import Food pay trains instead of convoys, and makes Evacuate Civilians treat the route as safe. This makes a relief railway a real answer to hunger.
+- Subagent instructions use the Claude-first wording.
