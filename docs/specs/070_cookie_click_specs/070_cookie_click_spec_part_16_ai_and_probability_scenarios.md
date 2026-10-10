@@ -123,7 +123,7 @@ Exact, bounded, sampled and unresolved results must remain distinct.
 
 | Scenario | Inputs | Expected design result |
 | --- | --- | --- |
-| P-01, first weak cookie | E0, Level 1, 300 target, zero prior hunger | No immediate bite or revolt during the first grace cycle |
+| P-01, first weak cookie | E0, Level 1, 60 target, zero prior hunger | No immediate bite or revolt during the first grace cycle |
 | P-02, uninterrupted weak starvation | E0, still below Level 10, ten complete zero-click cycles | Permanent death, bounded costs and no country creation |
 | P-03, evolved weak starvation | E1, Level below 5, five zero-click cycles | Earlier permanent death if maturity has not been crossed |
 | P-04, maturity boundary | E0 Levels 9 and 10, E1 Levels 4 and 5 | A single clear permanent-removal threshold without reversible re-entry |

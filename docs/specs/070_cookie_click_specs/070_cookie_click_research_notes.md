@@ -89,7 +89,7 @@ The archive remains the governing supplied snapshot for this planning package.
 The missing MTTH skill was read in full through the connector at:
 
 ```text
-https://github.com/klimPaskov/Chaos-Redux/blob/master/.agents/skills/chaos-redux-mtth/SKILL.md
+https://github.com/klimPaskov/Chaos-Redux/blob/master/.claude/skills/chaos-redux-mtth/SKILL.md
 ```
 
 Returned blob SHA: `7d86c0fe166a23264fcb2a9f512994977f372a80`.

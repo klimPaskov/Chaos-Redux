@@ -16,7 +16,7 @@ The exact MTTH probability depends on the verified game-version adapter.
 An opening selected in an already evolved world may initialize at the highest eligible evolution allowed by the framework.
 It has no invented past feeding history.
 Its initial target uses that evolution's multiplier, and its early-removal status follows that evolution.
-The 300-click promise describes the unevolved baseline.
+The 60-click opening target describes the unevolved baseline.
 
 An active instance evolves in order.
 Only one evolution transition is resolved in a cycle.

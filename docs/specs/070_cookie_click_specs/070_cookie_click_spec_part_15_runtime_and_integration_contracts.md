@@ -189,7 +189,7 @@ Retired targets are removed.
 A terminal campaign performs one confirmation pass and then stops unnecessary war-queue work.
 Cosmetic animation updates never invoke world-state scans.
 
-A stress test must include the 20,000-click target, rapid input, maximum visible particles, several concurrent missions, a large Empire, and multiplayer spectators.
+A stress test must include the 4,000-click target, rapid input, maximum visible particles, several concurrent missions, a large Empire, and multiplayer spectators.
 An unsupported visual feature cannot be approved solely because its still-image mockup looks plausible.
 
 ## Long-campaign numeric precision

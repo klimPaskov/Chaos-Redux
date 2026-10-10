@@ -27,7 +27,7 @@ Do not use an online Paradox wiki as a shortcut around the repository rule.
 
 The supplied config and some prose profiles disagree about models and firearm production.
 Confirm actual tool availability and model configuration.
-Use [the current 3D pipeline](../../../.agents/skills/chaos-redux-3d-model-pipeline/SKILL.md) for firearm route selection and fallback rules.
+Use [the current 3D pipeline](../../../.claude/skills/chaos-redux-3d-model-pipeline/SKILL.md) for firearm route selection and fallback rules.
 The supplied-profile disagreement is historical evidence, not an extra approval gate.
 No planning report represents those worker calls as completed.
 
@@ -44,7 +44,7 @@ An unsupported capability needs a precise blocker and reproducer, not a silent s
 
 ## Stage 2: build a complete pet vertical slice
 
-Implement acquisition, owner-aligned daily cycles, the 300-click initial target, frozen scaling, lifetime growth, milestone rewards, permanent maturity, hunger, early death and recovery.
+Implement acquisition, owner-aligned seven-day feeding cycles, the 60-click initial target, frozen scaling, lifetime growth, milestone rewards, permanent maturity, hunger, early death and recovery.
 Keep only Fullness and Level as persistent custom public values.
 Show current clicks and daily target by Fullness and lifetime clicks only in its intended tooltip.
 Do not grant unlimited rewards, automatic human feeding or extra full-day prizes after reload.

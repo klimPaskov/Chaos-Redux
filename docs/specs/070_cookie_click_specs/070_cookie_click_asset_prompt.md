@@ -36,7 +36,7 @@ The normal and reduced-motion modes both need readable state and exact click beh
 
 Use one clean approved image per geometry job.
 Follow the dedicated skill's Meshy-7 and separate-body/separate-firearm requirement.
-Use [the current 3D pipeline](../../../.agents/skills/chaos-redux-3d-model-pipeline/SKILL.md) for route selection, attempt allowances, component completion and Blender fallbacks.
+Use [the current 3D pipeline](../../../.claude/skills/chaos-redux-3d-model-pipeline/SKILL.md) for route selection, attempt allowances, component completion and Blender fallbacks.
 The source-profile conflict is retained as history and is not an extra production approval gate.
 Do not generate fused guns or send firearm characters through forbidden auto-animation.
 Record provider request, model, paid-job authorization, outputs and recovery.
@@ -76,4 +76,4 @@ Return a complete manifest, missing-capability report, consumer coverage, previe
 Do not report a static fallback as the completed ordinary animation.
 
 For consumers with transparent unused canvas, request native ImageGen transparency in the initial call and preserve alpha through processing and DDS conversion.
-Use [the current asset skill](../../../.agents/skills/chaos-redux-event-assets/SKILL.md) for alpha, source preservation, processing and fallback evidence.
+Use [the current asset skill](../../../.claude/skills/chaos-redux-event-assets/SKILL.md) for alpha, source preservation, processing and fallback evidence.

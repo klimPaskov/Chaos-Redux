@@ -46,14 +46,20 @@ The default opening shows a small, friendly cookie.
 The early warning is concrete: feeding makes it grow, developed cookies cannot always be starved safely, and missed feeding can cost national resources.
 Do not reveal the exact appearance of the final monster in the opening.
 
-## The first day
+## The feeding cycle
 
-The owner receives a complete 24-hour feeding cycle from the opening time.
-The system does not demand 300 clicks in the few minutes before an unrelated global midnight.
+A feeding cycle lasts seven in-game days, set by one Event 070 tuning constant.
+Throughout this package, "day", "daily", "today" and "tomorrow" in the pet rules mean one feeding cycle, not one calendar day.
+An in-game day passes in about a second at ordinary speed, so a 24-hour cycle would force the player to pause and click every day of the war; a weekly cycle keeps the clicker identity at a cadence a player can live with.
+
+## The first cycle
+
+The owner receives a complete feeding cycle from the opening time.
+The system does not demand a full target in the few hours before an unrelated global boundary.
 Subsequent cycles stay aligned to that owner-specific game-time boundary.
 Only simulation time advances the cycle.
 
-A baseline cookie begins at Level 1 with a target of 300 accepted clicks.
+A baseline cookie begins at Level 1 with a target of 60 accepted clicks.
 It starts with an empty feeding bar and no inherited hunger.
 The first cycle cannot cause a bite or a revolt.
 This opening grace does not award any feeding reward.
@@ -69,29 +75,30 @@ All their inputs are saved owner data.
 The implementation should expose their constants in one Event 070 tuning surface.
 
 Let `C` be lifetime accepted clicks, `D` completed full feeding cycles, `S` the consecutive full-cycle streak, `V` the total reward value actually paid, and `L` Cookie Level.
-Let `ceil25(x)` round upward to a multiple of 25.
+Let `ceil5(x)` round upward to a multiple of 5.
 
 ```text
 development = C + 500 × D
-L = 1 + floor(sqrt(development / 1000))
+L = 1 + floor(sqrt(development / 100))
 
 streak_step = min(10, floor(S / 5))
 reward_step = min(10, floor(V / 500))
-lifetime_step = floor(C / 10000)
+lifetime_step = floor(C / 2000)
 
 base_target =
-    300
-    + 25 × (L - 1)
-    + 25 × lifetime_step
-    + 25 × streak_step
-    + 25 × reward_step
+    60
+    + 5 × (L - 1)
+    + 5 × lifetime_step
+    + 5 × streak_step
+    + 5 × reward_step
 
 evolution_factor = 1.0, 1.5, 2.0, 3.0 for Evolution 0, I, II, III
-next_target = ceil25(base_target × evolution_factor)
+next_target = ceil5(base_target × evolution_factor)
 ```
 
-The target can therefore grow from hundreds into thousands without changing the meaning of one click.
-A 20,000-click safety ceiling protects the counter and presentation contract.
+The target can therefore grow from dozens into several hundred without changing the meaning of one click.
+A 4,000-click safety ceiling protects the counter and presentation contract.
+The level divisor of 100 keeps the original yearly Level pacing with weekly cycles, so maturity at Level 10 still arrives within the first campaign year of steady feeding.
 Reaching it must be reported as a saturated target, not wrapped to a smaller number.
 The ceiling is a deliberate extreme-campaign limit, not an excuse to cap ordinary progression at a few hundred clicks.
 Level and rewards continue to advance at that ceiling.
@@ -194,6 +201,6 @@ Choosing a side changes player control, not the army, territory or rewards used 
 ## Numeric rounding
 
 `round_to_5` and equivalent wording mean nearest multiple of five, with an exact halfway value rounded upward.
-`ceil25` rounds upward to the next multiple of 25.
+`ceil5` rounds upward to the next multiple of 5.
 Item packets round down when necessary to avoid spending or awarding more than the validated available quantity.
 Exact click counts and percentage thresholds do not have to be multiples of five.

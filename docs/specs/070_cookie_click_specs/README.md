@@ -3,8 +3,7 @@
 ## Package
 
 This is the source planning package for Event `070`, slug `cookie_click`.
-Extract `070_cookie_click_specs.zip` into `docs/specs/` so the resulting folder is `docs/specs/070_cookie_click_specs/`.
-The companion `070_cookie_click_plans.zip` belongs under `docs/plans/`.
+The companion plans package (`070_cookie_click_plans`) was not imported into `docs/plans/`; its execution records are unavailable in this repository.
 
 The design preserves the uploaded Cookie Click brief and expands its persistent pet, hunger, removal, revolt, Cookie Empire, seven-branch focus tree, world-end route and manual scenario.
 The exact formulas, action costs, route detail and presets are authored design proposals.
@@ -63,7 +62,7 @@ The opening requires a host with enough valid territory for a viable uprising, n
 The country-creation method does not pretend it can divide ownership within a single state.
 Manual presets bypass progression requirements but still require valid engine and map structure.
 
-The daily target begins at 300, grows through Level, lifetime clicks, feeding streak, rewards and evolution, and has an explicit 20,000-click safety ceiling.
+A feeding cycle lasts seven in-game days. The cycle target begins at 60, grows through Level, lifetime clicks, feeding streak, rewards and evolution, and has an explicit 4,000-click safety ceiling.
 Rewards stop when the daily target is full.
 The two public custom values remain Cookie Fullness and Cookie Level in both the pet and Empire phases.
 
@@ -80,7 +79,7 @@ This interpretation permits the requested subject route without changing its agg
 ## Original planning reading and execution status
 
 The environment and capability statements below describe the supplied planning run.
-Use [current AGENTS.md](../../../AGENTS.md) and [the subagent skill](../../../.agents/skills/chaos-redux-subagents/SKILL.md) for current capability discovery and ownership.
+Use [current AGENTS.md](../../../AGENTS.md) and [the subagent skill](../../../.claude/skills/chaos-redux-subagents/SKILL.md) for current capability discovery and ownership.
 
 All 43 supplied text sources were read in full, including the planning skill, the other supplied skills, project documents, catalog snapshots, config, twenty subagent profiles and the brief.
 One additional referenced MTTH skill was retrieved from the connected repository and read in full.
@@ -121,3 +120,11 @@ Do not use a static fallback, a generic replacement mechanic or an unrun test as
 Cookie Monster Uprising is reserved as `SCN-030`, raw integer `30`, in the [shared identifier registry](../shared_identifier_registry.md).
 Its four presets share that entry.
 The user-authorized reservation does not approve broader design, implement content or update the workbook.
+
+## Changelog
+
+### 2026-10-10 spec audit
+
+- The feeding cycle is seven in-game days instead of one, with the opening target at 60 clicks, a 4,000-click ceiling, and the Level divisor lowered so yearly Level pacing is unchanged. An in-game day passes in about a second, so the daily cycle forced the player to pause and click every day; the formulas, rewards, hunger, and bites now apply per cycle, and each payout is a meaningful weekly event instead of 365 small ones.
+- The Empire's humanitarian accounting now matches the runtime: every special Chaos country is outside Famine and Migration, so Empire states leave both systems and conquest sends front flight from neighbouring states. Converted administrations that keep human civilians stay outside the special classification so their famine and migration continue.
+- The README no longer tells the reader to extract ZIP files and records that the companion plans package was never imported.

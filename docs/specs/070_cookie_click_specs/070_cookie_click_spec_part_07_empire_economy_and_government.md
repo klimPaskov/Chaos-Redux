@@ -265,8 +265,8 @@ Failure can trigger direct occupation, loss of subject privileges or a revolt.
 It does not conjure the missing tribute from nowhere.
 
 Human-managed subjects use their ordinary civilian systems.
-Converted administrations use the appropriate special-country classification but still account for any remaining human population.
-Do not let the classification exemption erase famine or death tracking.
+Converted administrations that keep a human civilian population stay outside the special-country classification so their states remain in Famine and Migration; only fully converted cookie administrations take the special classification.
+Death tracking stays with the Deaths owner in both cases.
 
 Creating subjects is a long-term alternative to direct extraction.
 The Empire gives up direct factory control and must defend their borders.

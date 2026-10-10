@@ -148,7 +148,8 @@ Advisor traits and ordinary native laws remain distinct, but must not be used to
 ## Country classification
 
 The Cookie Empire is a special Chaos country with nonhuman armed forces.
-Its conquered human civilians still participate in civilian loss, famine, migration and occupation systems where those systems apply.
+The shared humanitarian validity (`humanitarian_country_is_valid`) excludes every special Chaos country, so states the Empire owns leave Famine and Migration, and its captures send front flight from the former owner's neighbouring states through `humanitarian_handle_special_front_capture`.
+Its conquered human civilians are therefore accounted through that front flight and the Deaths owner, not through famine inside Empire states, unless the shared classification owner adds an explicit exception.
 Do not classify every person inside its borders as nonhuman to bypass humanitarian accounting.
 
 Cookie forces use their own reinforcement and equipment rules.
