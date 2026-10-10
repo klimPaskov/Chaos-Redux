@@ -22,86 +22,57 @@ It must not duplicate:
 
 ### Exact population removal
 
-Every camp death must remove real state civilian population through `apply_exact_state_civilian_population_loss` or the current public replacement for that effect.
+Every camp death removes real state civilian population, and every Event 22 request goes through `camp_admin_record_deaths`, the shared camp owner's only physical debit.
+That helper calls `apply_exact_state_civilian_population_loss` (or its current public replacement) once, measures the accepted result, consumes the same number of people from the aligned living custody rows, and projects one receipt to the Deaths ledger with its physical-debit flag disabled so nobody is removed twice.
 
-The caller must supply:
+The caller supplies:
 
-- requested people to remove
-- protected minimum remaining population
-- Event 22 Deaths reason
-- target country for the ledger
-- valid-target proof
-- one-shot contract proof
+- the requested people (`camp_admin_death_requested_k`, in thousands)
+- the shared cause (`camp_admin_death_cause`: custody, labor, violence or institutional)
+- the one-shot contract proof (`camp_admin_death_contract = 1`)
+- an optional single custody row
 
-The implementation must use the actual applied amount returned by the helper. It must not register the requested amount when the protected floor or rounding reduced the loss.
+The registered state supplies the protected minimum, the responsible country and the valid-target proof.
+The implementation must use the actual applied amount (`camp_admin_death_actual_k`) and never register the requested amount when the protected floor, the cohort or rounding reduced the loss.
 
-The helper already reconciles recruitable-manpower credit. Event 22 must not add a second manual manpower debit after a successful public-helper call.
+The helper already reconciles recruitable-manpower credit. Event 22 must not add a second manual manpower debit after a successful call.
 
-### Event 22 Deaths reasons
+### Deaths reasons
 
-The Deaths reason registry should distinguish at least these causes:
+Event 22 reuses the four shared camp causes for all recurring harm.
+It registers a distinct Deaths reason only where those causes do not already describe the loss:
 
-- concentration-camp detention and deprivation
-- forced-labour overwork and accidents
-- camp famine and starvation
-- camp disease and medical neglect
-- extermination-camp killing
-- camp transport and deportation deaths
+- evolution shocks (one reason per evolution)
 - forced evacuation or death march
-- restricted chemical-site operation
-- experiment-linked camp deaths
+- restricted chemical-site operation (owned by the existing restricted-site effects)
 - evidence destruction and liquidation during retreat
-- abandonment before relief
-- post-liberation relief failure
+- abandonment before relief and post-liberation relief failure
 
-The player-facing Deaths category can group these under a broader camp or state-atrocity heading while retaining cause-specific detail in tooltips and records.
+Camp disease, famine, bombing and nuclear losses keep their owners' reasons so no person is counted twice.
+The player-facing Deaths category groups these under the existing camp or state-atrocity heading while retaining cause-specific detail in tooltips and records.
 
-### Dynamic detained population
+### Detained population
 
-Ongoing deaths should draw from an internal detained-population or workforce capacity, not directly remove a fixed percentage of the entire state every pulse.
+The detained population is the shared custody ledger (`camp_admin_detainees_k` and the aligned rows), not an Event 22 capacity.
+A cohort is created only by `camp_admin_admit_detainees`, which needs a proven source of people already present in the state, is clamped by free capacity, the civilian floor and the shared population-share ceiling, and returns the accepted amount.
+There is no automatic intake from a pressure score or from the entire state population.
 
-The internal capacity is an abstraction based on:
+Deaths reduce both the cohort and real state population. Release, escape, transfer and liberation reduce the cohort without a death (`camp_admin_release_detainees`, `camp_admin_close_site`).
+New intake or transfer raises a cohort only through a visible policy, incident or valid country adapter that supplies the source proof.
+The cohort is not an ethnicity census and must not be displayed as one.
 
-- state population
-- intake policy
-- valid target source
-- occupation and resistance
-- refugee or displaced-person markers
-- transfer decisions
-- prior release, escape, death, or liberation
-- network reach and transport capacity
+### Mortality
 
-It is not an ethnicity census. It must not be displayed as one.
+Recurring mortality is owned by the shared monthly processor and its constants (`camp_admin_value`: `custody_monthly_rate`, `labor_monthly_rate`, `violence_monthly_rate`, `shortage_mortality_factor`; institutional rates in `camp_admin_institution_mortality`; legacy `genocide_death_percent`).
+Event 22 contributes only:
 
-Deaths reduce both the detained capacity and real state population. Release, escape, transfer, and liberation reduce the capacity without causing a death. New intake or transfer raises the capacity only through a visible policy, incident, or valid country adapter.
+- the policy that sets the mandate and roles (review lowers harm, forced labour adds the labour cause, extermination adds the violence cause under the radical mandate)
+- the evolution shocks and the retreat spikes above
+- relief actions that raise the shared support ratio
 
-### Mortality pressure
-
-A site's mortality request should be derived from:
-
-- site type
-- policy intensity
-- local detained capacity
-- food and medical condition
-- forced-labour assignment
-- terrain and climate
-- famine and blockade
-- disease or contamination
-- bombing and infrastructure damage
-- guard violence
-- evacuation or retreat
-- relief actions
-
-Recommended design bands for a normal operation pulse:
-
-- restrictive review produces low but nonzero mortality until release and closure are complete
-- ordinary concentration-camp operation produces sustained moderate mortality
-- forced-labour operation produces higher mortality that rises with quota intensity
-- extermination operation produces severe mortality and rapid detained-capacity loss
-- restricted chemical operation adds a stockpile-backed severe pulse
-- retreat liquidation or a failed death march can create an exceptional one-time spike
-
-Exact values belong in centralized constants and must be tested across small, medium, and large states.
+The original design tabled its own monthly rates (about 1 to 2 percent of a private capacity for ordinary operation, 10 to 35 percent for extermination).
+Those tables are removed: they used a different base and different magnitudes from the shared constants (for example `violence_monthly_rate = 0.02` of the living cohort), and a second rate table would double the processor.
+Balance targets stay in the time-to-consequence section; the numbers live in the shared constants and are tested across small, medium and large states.
 
 ### Chaos Meter
 
@@ -160,14 +131,17 @@ Camp famine can originate from:
 Integration rules:
 
 - the famine system owns the state famine modifier and general famine deaths
-- Event 22 owns extra camp-specific mortality caused by restricted rations, confinement, and policy
-- the two systems must share a causal context so one person is not counted twice in the same pulse
+- Event 22 and the shared camp owner own extra camp-specific mortality caused by restricted rations, confinement, and policy
+- the two systems must share a causal context so one person is not counted twice in the same month
 - relief supplies can reduce both famine pressure and camp mortality when delivered to the state
 - guards, army, civilians, and detainees can become competing ration priorities
 - deliberate starvation against a qualifying protected group can contribute to destructive-intent classification
 - famine can create escape, revolt, epidemic, corruption, and discovery incidents
 
-A future famine API should expose state severity and the amount already removed during the current causal segment. Event 22 should then calculate only the additional confined-population loss.
+The famine system is implemented.
+Its `famine_adapt_camp_state` already turns a site's monthly camp deaths into famine pressure for the state, and `famine_food_stage_requires_mortality` and `famine_food_stage` expose the state's food stage.
+Event 22 reads that stage as an input of the epidemic and famine incident and of the camp-epidemic mission, and writes no famine value.
+The reverse direction (a worse food stage raising the shared camp support shortfall) is a proposal for the camp owner; until it lands, Event 22 adds only incident and mission weight and never a second mortality request for the same people.
 
 ## Migration and refugee integration
 
@@ -217,18 +191,10 @@ Terror can lower open resistance for a short time in one state. It should also i
 
 ### Garrison burden
 
-Every active site requires a guard burden. The burden scales with:
-
-- site type
-- detained capacity
-- Resistance Pressure
-- local terrain and infrastructure
-- proximity to the front
-- forced-labour intensity
-- extermination intensity
-- evidence or escape crisis
-
-The burden can consume manpower and support equipment, reduce the effectiveness of occupation garrisons, or tie down divisions through missions. It must not be represented only by a small political-power cost.
+Every active site already pays the shared monthly maintenance (support equipment per thousand detainees, `maintenance_support_per_k`, scaled by the budget tier) and loses output when the support ratio falls.
+Event 22 adds no second guard payment.
+The burden rises through the support shortfall, Resistance Pressure and front proximity, and can pull units or equipment away from the front through the escape and front-approach missions.
+It must not be represented only by a small political-power cost.
 
 ### Resistance outcomes
 
@@ -255,9 +221,9 @@ Overcrowding, malnutrition, poor sanitation, damaged infrastructure, and lack of
 
 ### Air cleanliness
 
-Low air cleanliness should raise respiratory illness, disease mortality, and recovery time in camp states. Camp smoke, industrial overwork, chemical accidents, burning records, bombardment, and nearby contamination can lower local air cleanliness where the shared system supports state contributions.
-
-Air cleanliness does not serve as a cosmetic modifier. It should affect the camp epidemic mission and post-liberation relief.
+The air contamination ledger tracks six global footprints and has no camp footprint or state-level cleanliness value, so Event 22 adds no air source and no state air value (proposal P-022-F).
+The camp epidemic incident may read the existing global air contamination level as one weight, and a chemical accident uses the existing contamination system.
+Air cleanliness is never a cosmetic modifier.
 
 ### Black Plague and Event 20
 
@@ -344,7 +310,7 @@ Nuclear, missile, or asteroid damage can destroy a site and create a liberation 
 
 ## Event 5 Soviet Collapse
 
-The Soviet adapter should bridge to Event 5:
+The Soviet adapter should bridge to Event 5 and extends the existing `camp_rework_soviet_apply_union_crisis_repression_bridge`:
 
 - republics and successor states inherit sites they control
 - original Soviet responsibility remains recorded
@@ -572,37 +538,24 @@ All important values should be centralized in script constants or one documented
 - Evolution III guarantees at least the roughly even split
 - the system never downgrades an existing extermination site automatically
 
-### Pulse timing
+### Timing
 
-Recommended starting bands:
-
-- operation pulse: about monthly, with event-owned jitter or batching
-- low-intensity review and closure check: slower than active exploitation
-- exposure and resistance incident check: event-driven plus a bounded registered pulse
+- recurring harm and output: the shared 28-day country timer and one calendar-month guard (`camp_admin_dispatch.period_days`); Event 22 adds no pulse
+- exposure and resistance incident check: event-driven plus the same monthly visit
 - same-country event refire protection: several months to more than one year depending on resolution
 - transparent closure protection: longer than concealment or dormant-network protection
 
-The implementation should avoid synchronizing every active country on the same day.
+### Output limits
 
-### Assignment strength
-
-Starting balance direction for a fully staffed and supplied state:
-
-- industrial assignment can provide a strong local factory-output increase
-- construction assignment can provide a strong local construction and repair increase
-- extraction assignment can provide a strong local resource-output increase
-- logistics assignment can improve a real rail, depot, port, repair, or supply role
-
-The bonus scales down with depleted workforce, low supplies, sabotage, disease, bombing, transport failure, and high Resistance Pressure.
-
-A network-wide cap should prevent a large country from multiplying local bonuses into an unlimited national economy. The cap should depend on staffed sites, administration, trains, guards, and policy.
+Forced-work output uses the shared priority, spending ceiling and caps (40 percent industrial contribution, 25 percent national factory modifier, 40 percent construction and extraction), scaled down by the shared support ratio.
+Event 22 sets no assignment bonus and no national cap of its own.
 
 ### Dismantlement burden
 
 Closure duration and cost scale with:
 
 - site count
-- detained capacity
+- living custody at the sites
 - extermination and chemical status
 - records and missing-person condition
 - contamination and disease
@@ -638,108 +591,38 @@ The player sees bands and the next threshold. Intermediate formula components re
 
 ## Recommended initial tuning values
 
-These are implementation starting values for testing. Keep them in centralized constants. The probability and live-balance passes can change them after evidence. The implementation should preserve the relationships even when an engine limitation requires another modifier form.
+Only the values Event 22 owns are listed here. Keep them in centralized constants; the probability and live-balance passes can change them after evidence.
+Recurring rates, caps, maintenance and workforce multipliers belong to the shared camp constants (`camp_administration_constants.txt`).
 
-### Detained-capacity initialization
+### Initial cohort
 
-| Site opening | Starting capacity direction |
+The opening seeds each site's cohort through `camp_admin_admit_detainees` from a proven source. Starting direction:
+
+| Site opening | Starting cohort direction |
 | --- | --- |
 | baseline concentration site | `0.5%` of current state population, minimum `2,000`, maximum `100,000` |
-| forced-labour mobilization | can raise the site's target capacity toward `1.0%`, maximum `200,000`, through valid intake or transfer |
-| security-expansion site | `0.75%` of current state population, subject to valid source capacity |
-| Evolution I conversion | preserve existing detained capacity, no automatic refill |
+| security-expansion site | `0.75%` of current state population |
+| Evolution I conversion | keeps the existing cohort, no automatic refill |
 | Evolution III new concentration site | `1.0%` of current state population, maximum `250,000` |
-| Evolution III new extermination site | `1.5%` of current state population, maximum `300,000`, subject to valid source capacity |
+| Evolution III new extermination site | `1.5%` of current state population, maximum `300,000` |
 
-No site can initialize more people than the active campaign source can supply. A minimum is ignored when the source, state population, or protected floor cannot support it.
+No site can admit more people than the campaign source supplies, and a minimum is ignored when the source, the state population, the shared population-share ceiling or the protected floor cannot support it.
 
-### Operation pulse
+Consistency check (proposal P-022-C): these cohorts are smaller than the 1 percent and 2 percent evolution shocks, and the shared death helper cannot remove more people than the cohort holds.
+Evolution entry therefore first admits an additional source-proved sweep cohort equal to the shock request, within the shared ceiling, and then applies the shock; if the source cannot supply it, the shock is clamped to the living cohort and the clamped amount is what is recorded.
+The parent chooses between that sweep and plain clamping.
 
-Recommended base interval: `30` days with distributed offsets.
+### Exceptional one-time losses
 
-Recommended mortality request as a share of current detained capacity per normal pulse:
-
-| State policy | Base request |
-| --- | --- |
-| restrictive review with adequate supplies | `0.25%` to `0.75%` |
-| ordinary concentration-camp operation | `1%` to `2%` |
-| standard forced labour | `2%` to `4%` |
-| high-intensity forced labour | `5%` to `8%` |
-| ordinary extermination operation | `10%` to `20%` |
-| intensified extermination | `20%` to `35%` |
-| restricted chemical-site additional pulse | `10%` to `20%`, only after successful stockpile debit |
-| unstable post-liberation site without relief | `1%` to `5%` |
-
-Pressure multipliers can raise or lower the request:
-
-- adequate food, medicine, sanitation, and closure progress reduce it
-- famine, plague, contamination, harsh climate, bombing, overcrowding, and high quotas raise it
-- the combined normal-pulse request should be capped before an exceptional retreat or liquidation event is added
-- all requests remain limited by detained capacity, current state population, and the protected population floor
-
-Recommended exceptional one-time ranges:
-
-| Incident | Loss direction from affected transferred or detained capacity |
+| Incident | Loss direction from the affected cohort |
 | --- | --- |
 | fully supplied transfer | `0%` to `3%` |
 | disrupted transfer | `3%` to `15%` |
 | forced march | `10%` to `30%` |
-| retreat liquidation | `50%` to `100%`, limited by exact available capacity and state floor |
+| retreat liquidation | `50%` to `100%`, limited by the exact living cohort and the state floor |
 | abandoned site before relief | `2%` to `10%` |
 
-Evolution II and Evolution III percentage shocks remain separate direct state-population effects and do not use these detained-capacity rates.
-
-### Workforce condition multipliers
-
-| Condition | Assignment output multiplier |
-| --- | --- |
-| full | `1.00` |
-| strained | `0.75` |
-| depleted | `0.35` |
-| exhausted | `0.00` |
-
-Additional recommended output multipliers:
-
-- low supply: `0.50`
-- active epidemic: `0.70`
-- coordinated sabotage: `0.60`
-- heavy bombing or broken transport: `0.50`
-- successful guard and logistics support: up to `1.10`, never above the national cap
-
-### Forced-labour assignment effects
-
-Starting state-effect equivalents at standard intensity:
-
-| Assignment | Standard effect direction | High-intensity ceiling before other multipliers |
-| --- | --- | --- |
-| industrial | about `+15%` effective output from factories assigned to the state | about `+30%` |
-| construction | about `+25%` state construction and repair speed | about `+50%` |
-| extraction | about `+20%` local resource output | about `+40%` |
-| logistics | about `+10%` local supply contribution and `+25%` rail or depot repair | about `+20%` supply and `+50%` repair |
-
-If the engine cannot provide one effect locally, implement a documented dynamic national equivalent scaled only by valid staffed assignment states. Do not silently turn every state assignment into a full national bonus.
-
-Recommended generic national caps from Event 22 assignments:
-
-- factory-output equivalent: `+20%`
-- construction-speed equivalent: `+25%`
-- resource-output equivalent: `+30%`
-- supply or logistics equivalent: `+15%`
-
-Country-specific systems can propose different caps through a separate accepted balance pass.
-
-### Guard and transport commitments
-
-Recommended per-site starting commitments:
-
-- guard manpower: maximum of `500` and `0.5%` of current detained capacity
-- support equipment: one per `1,000` detained people, minimum `25`, maximum `250`
-- trains for a rail-linked active assignment: base `2` plus one per `20,000` detained people
-- trucks for local assignment support: base `10` plus one per `2,000` detained people, capped through centralized constants
-- overseas operation: minimum `5` convoys plus capacity scaling
-- extermination, high resistance, or retreat emergency multiplies guard need by roughly `1.5`
-
-The exact debit can be represented as a timed equipment commitment or decision cost according to current repository precedent. It must be real and refundable only through a valid wind-down or closure path.
+Evolution II and Evolution III shocks are separate requests of 1 and 2 percent of current state population and do not use these rates.
 
 ### Visible value thresholds
 
@@ -750,7 +633,7 @@ Recommended `0` to `100` bands:
 | Exposure | controlled secrecy | persistent rumours | credible leaks | verified-site risk | publicly documented network |
 | Resistance Pressure | disorganized opposition | escape networks | coordinated sabotage | armed resistance | administrative breakdown |
 
-Recommended Network Reach bands:
+Fallback Network Reach bands, used only if the parent keeps Reach as a third meter (proposal P-022-A):
 
 - below `10%`: isolated sites
 - `10%` to `19%`: regional network
@@ -778,19 +661,19 @@ These are scenario targets, not guaranteed timers. War, famine, disease, state c
 
 ### No infinite workforce
 
-- detained capacity is finite
+- the custody cohort is finite and created only by `camp_admin_admit_detainees` with a proven source
 - deaths, release, escape, and liberation reduce it
 - intake requires a valid target source and visible action
 - broad domestic purge has severe national costs
-- site conversion does not refill capacity
+- site conversion does not refill the cohort
 
 ### No free state bonuses
 
-- assignments require a camp, workforce, supply, transport, and guard capacity
-- invalid state roles cannot select the matching assignment
-- bonuses decay when prerequisites fail
-- one state cannot run several assignments at once
-- extermination sites cannot keep forced-labour output bonuses
+- output requires a labour-role site with a living, supported cohort (the shared rule)
+- the shared caps bound every contribution
+- output decays when support fails
+- one site has one role at a time
+- extermination sites cannot keep forced-labour output
 
 ### No repeated evolution deaths
 
@@ -834,15 +717,14 @@ These are scenario targets, not guaranteed timers. War, famine, disease, state c
 
 ### Registered actors and states
 
-Use event-owned arrays, targets, flags, or the current registered-system pattern to track only:
+Register only through the shared registries (`global.camp_repression_active_countries` and the registered active-site states, via `camp_rework_register_country_for_monthly_pulse` and `camp_rework_register_active_site`) and event-owned flags or arrays for:
 
 - active Event 22 countries
-- active camp states
-- liberated or closing states that still need pulses
+- liberated or closing states that still need work
 - responsibility actors
 - discovery and relief jobs
 
-Do not scan every country or every state on daily or weekly on-actions.
+Do not scan every country or every state on daily or weekly on-actions, and do not add a new periodic hook.
 
 ### Delayed jobs
 
@@ -889,9 +771,9 @@ Use the normal decision category with a static archival picture.
 The header should present:
 
 - current policy
-- Network Reach band and percentage
 - Exposure band
 - Resistance Pressure band
+- Network Reach as one line (sites of eligible states)
 - one current priority state or crisis
 
 The header should not expose hidden evidence totals, target-census inventions, or a large formula ledger.
@@ -916,7 +798,7 @@ Colour must be paired with shape, icon, text, or frame changes.
 State-targeted decisions should highlight only valid states. Hover should show:
 
 - why the state qualifies
-- assignment or closure status
+- site role or closure status
 - cost summary
 - main consequence
 - blocked reason when invalid
@@ -928,7 +810,7 @@ Use existing state modifiers, building icons, target highlights, and the decisio
 A phase normally shows three to five primary actions and one to three missions. Use replacement rules:
 
 - opening options disappear after policy choice
-- basic assignment decisions are hidden until a state is selected or eligible
+- targeted decisions are hidden until a state is eligible
 - emergency retreat actions replace ordinary management in threatened states
 - liberated states use a relief category or relief section, not perpetrator actions
 - completed closure actions disappear

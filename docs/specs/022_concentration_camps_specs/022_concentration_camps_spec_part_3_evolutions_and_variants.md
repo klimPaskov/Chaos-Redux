@@ -21,7 +21,7 @@ The implementation must store a network generation and per-state evolution-shock
 
 Evolution I converts 50 percent of the selected network's existing concentration camps into extermination camps when the evolution first reaches that network.
 
-The conversion changes the purpose of those sites. Killing becomes the central operation. Forced labour can still occur before death, but extermination sites do not provide a stable industrial, construction, extraction, or logistics assignment bonus.
+The conversion changes the purpose of those sites. Killing becomes the central operation. Forced labour can still occur before death, but extermination sites do not provide a stable industrial, works, or extraction output: the conversion sets the shared killing role (`camp_admin_role` killing), which ends productive allocations, and it needs the shared radical mandate (`camp_admin_can_use_radical_mandate`).
 
 This evolution opens the most severe policy family, raises death pressure sharply, increases Resistance Pressure, creates much stronger hidden atrocity evidence, and makes public discovery far more damaging.
 
@@ -36,8 +36,8 @@ When Evolution I activates for a country with an existing Event 22 network:
 5. If only one valid concentration camp exists, convert it only when the responsible regime has chosen an extermination policy or meets an extreme AI profile. Otherwise, flag it as a conversion target and open an immediate crisis decision.
 6. Convert the selected sites through the shared camp-building and responsibility helpers.
 7. Preserve the original responsible actor, network generation, evidence, detained-workforce record, and state history.
-8. Replace incompatible forced-labour assignments with an extermination-site state status.
-9. Start the evolution-specific death and resistance pulses.
+8. End productive allocations and set the extermination-site state status.
+9. Let the shared processor apply the killing-role violence cause on its next monthly visit; Event 22 starts no pulse of its own.
 10. Log the conversion count and the responsible actor.
 
 The event should use a short delayed sequence for large networks so reports, building changes, and state updates do not all occur on one frame.
@@ -85,7 +85,12 @@ The selection logic must not infer ethnicity from ownership, cores, ideology, or
 
 The rough concept asks for killing directed at other ethnicities and later broadening into the regime's own population. HOI4 does not provide a reliable ethnicity-demography system, so the event must use a controlled target-purpose registry.
 
-Every extermination policy stores a target purpose. It describes who the regime is persecuting in campaign terms and why the network is operating. This affects event text, resistance, discovery classification, foreign reactions, and the legal label used by the documentation system.
+Every extermination network stores a target purpose. It describes who the regime is persecuting in campaign terms and why the network is operating. This affects event text, resistance, discovery classification, foreign reactions, and the legal label used by the documentation system.
+
+The purpose is derived from campaign facts by the hierarchy below and is never chosen by the player from a menu.
+This matches the shared camp package's rule that the player receives no target menu for a protected group.
+The player chooses whether the network kills at all (the radical mandate and the killing role) and nothing about whom.
+A country with no valid source has no valid purpose, so extermination is unavailable to the player and has zero AI probability.
 
 ### Target-source hierarchy
 
@@ -134,55 +139,41 @@ This distinction is documentation and reaction logic. It does not reduce the Dea
 
 ## Evolution I policy family
 
-### Convert a selected concentration camp
+### Later selected conversion
 
-Purpose: turn one active detention site into an extermination site after the automatic evolution conversion.
+After the automatic evolution conversion, a regime that wants more extermination sites uses the shared Ledger killing-role order (`camp_admin_set_selected_role`) on a selected camp.
+Event 22 adds no second conversion decision.
 
-Requirements:
+Requirements (enforced by the shared order plus Event 22 gates):
 
 - Evolution I active
 - selected state contains an active concentration camp attributed to the acting regime
 - state is not closing, liberated, or under binding inspection
-- valid target purpose remains
-- extermination share is below the route's current cap or an extreme route has explicitly removed that cap
-
-Costs and commitments:
-
-- trains or convoys where transport is required
-- support equipment and guard manpower
-- administrative or political commitment
-- transport and supply burden
+- a derived target purpose remains
+- the shared radical mandate is enacted
 
 Effects:
 
-- replaces the concentration camp with an extermination camp
-- removes the state's forced-labour assignment
+- replaces the concentration camp with an extermination camp through `genocide_convert_one_concentration_camp_level`
+- ends productive allocations
 - raises Exposure, Resistance Pressure, hidden atrocity evidence, and death pressure
 - increases the future discovery and tribunal severity of the site
 - records the conversion date and responsible actor
 
-### Establish a killing program
+### Killing intensity
 
-Purpose: choose the national target purpose and operational intensity of the extermination network.
+The player does not set a separate "killing program" or intensity tier.
+Killing intensity is the shared killing role's monthly violence rate, scaled by the shared support ratio and mandate.
+The emergency liquidation of a retreat is an option of the front-approach event (Part 4), not a standing intensity.
 
-The decision should offer only target purposes that are valid in the current campaign. A country with no valid registered group, occupied population, resistance population, refugee marker, or political purge context cannot invent one merely to use the decision.
-
-Intensity directions:
-
-- restricted lethal program
-- systematic extermination program
-- emergency liquidation during retreat
-
-The final labels must fit the actor and should not sanitize the conduct. Higher intensity causes more deaths and shortens the network's time before resistance, exposure, labour loss, or collapse becomes severe.
-
-### Halt extermination operations
+### Halt extermination operations (`chaosx_022_halt_extermination`)
 
 Purpose: stop the killing program without pretending that the site and its victims disappear.
 
 Effects:
 
-- ends the extermination pulse
-- converts the site into a secured detention and relief state pending closure, or leaves the extermination building inactive until a proper conversion helper is completed
+- ends the killing role at the selected sites, so the violence cause stops
+- sets the site back to a secured custody role pending closure; if the shared role order cannot reverse the building, the extermination building stays inactive until the camp owner adds the reverse conversion (open point for the camp owner)
 - preserves evidence
 - raises short-term hardliner conflict
 - opens food, medical, registration, and release missions
@@ -224,9 +215,9 @@ Historical Nazi killing centers used carbon monoxide and hydrogen-cyanide pestic
 
 A restricted chemical site:
 
-- consumes a real stockpile amount on every operation pulse
+- consumes a real stockpile amount on every monthly visit of the shared restricted-site effects
 - cannot operate when the stockpile debit fails
-- raises deaths sharply for that pulse
+- raises deaths sharply for that month
 - increases contamination and accident risk
 - creates source-specific hidden evidence
 - raises later discovery condemnation
@@ -254,7 +245,7 @@ The route may provide temporary internal benefits that explain why an extremist 
 - short-lived hardliner support
 - temporary security-apparatus obedience
 - temporary reduction of open opposition in heavily terrorized states
-- confiscated property or budget relief that decays into corruption
+- budget relief from seized property that decays into corruption (carried by the administrator corruption incident, not by a decision)
 - temporary control over occupied transport corridors
 
 It must also create larger and growing costs:
@@ -279,16 +270,17 @@ No extermination-site modifier should grant stable factory output, construction 
 
 Evolution II applies one exact population loss equal to 1 percent of current state population in every state containing an active Event 22 camp.
 
-The shock represents a synchronized escalation in deprivation, killing, disease, transport deaths, overwork, and administrative violence. It is not the only source of camp deaths. Continuing operation still uses the dynamic pulse system.
+The shock represents a synchronized escalation in deprivation, killing, disease, transport deaths, overwork, and administrative violence. It is not the only source of camp deaths. Continuing operation still uses the shared monthly processor.
 
 ### Active-network entry
 
 For each active camp state in the current network generation:
 
 1. Calculate 1 percent of the state's current civilian population at the moment of application.
-2. Clamp the request against the shared protected population floor.
-3. Apply the exact loss through `apply_exact_state_civilian_population_loss`.
-4. Register the actual amount removed in the Deaths ledger with an Event 22 evolution reason.
+2. Clamp the request against the shared protected population floor and against the living custody of the site.
+3. Request the loss through `camp_admin_record_deaths`, the shared camp owner's only physical debit, which calls `apply_exact_state_civilian_population_loss` once and consumes that many people from the aligned custody rows (proposal P-022-C).
+   A site with a small cohort therefore takes a smaller shock, and the same people are never removed twice.
+4. Register the actual amount removed in the Deaths ledger with an Event 22 evolution reason; the shared Deaths projection of that receipt runs once.
 5. Reconcile any recruitable-manpower credit through the shared helper.
 6. Mark the state as having received the Evolution II shock for this network generation.
 7. Add local evidence, Resistance Pressure, and relief burden in proportion to the actual loss.
@@ -302,7 +294,7 @@ When a country first receives Event 22 while Evolution II is active but Evolutio
 - create the applicable baseline or Evolution I opening network
 - finish responsibility and state registration
 - apply the 1 percent shock once to every new active camp state
-- mark every affected state before the normal pulse begins
+- mark every affected state before the shared processor's first monthly visit
 
 ### New sites after Evolution II
 
@@ -439,7 +431,7 @@ Conditions:
 
 Characteristics:
 
-- extraction assignment is strong at first
+- the extraction priority is strong at first
 - mortality, accident, disease, and infrastructure damage rise quickly
 - private concession holders or local administrators can steal output
 - depleted labour and damaged infrastructure can leave the resource state worse than before
@@ -463,7 +455,7 @@ Characteristics:
 
 Conditions:
 
-- state famine, blockade, crop failure, severe supply loss, or future famine-system marker
+- state famine (the famine system's `famine_food_stage_requires_mortality`), blockade, crop failure, or severe supply loss
 - camp population depends on restricted rations
 
 Characteristics:
@@ -493,7 +485,7 @@ Characteristics:
 
 Conditions:
 
-- state has a major industrial or extraction assignment
+- state has a major industrial, works or extraction role in the Ledger priority
 - private concession, collaboration government, colonial company, or corrupt administrator marker exists
 
 Characteristics:
@@ -586,7 +578,7 @@ Containment requires:
 - no active intake
 - no active extermination or restricted chemical operation
 - all sites closed, liberated, or under a verified relief process
-- ongoing death pulses stopped
+- the shared processor's recurring deaths stopped at every site
 - survivors registered and supplied
 - evidence transferred, preserved, or publicly accounted for
 - no covert local site still operating

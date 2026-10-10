@@ -30,7 +30,7 @@ One active profile is selected from campaign facts.
 | --- | --- | --- | --- |
 | Dismantler | humanitarian route, democratic legal constraint, successor disclosure, liberation | current government has no authority to close | freeze intake, relief, records, closure |
 | Restrictive Reviewer | moderate legal constraint, uncertain cabinet, low war pressure | active extermination policy not rescinded | inspection, ration reform, registration, gradual closure |
-| Exploitative Authoritarian | repressive institutions, high labour demand, war, occupied territory | no valid assignment state or no transport | forced labour, selected expansion, guards, access restriction |
+| Exploitative Authoritarian | repressive institutions, high labour demand, war, occupied territory | no labour-role site or no support equipment for maintenance | coercive mandate, selected expansion, access restriction |
 | Extermination Extremist | explicit radical route, historical package, Evolution I, valid target purpose | no valid target purpose, no evolution, closure lock | conversion, killing policy, concealment |
 | Cover-up Escalator | high Exposure, expected state loss, public reports, criminal leadership | transparent accountability route locked | falsify, destroy records, relocate, stage inspection |
 | Retreat and Collapse | enemy near sites, low supply, state loss, government collapse | no threatened sites | closure, transfer, abandonment, evacuation, liquidation according to ideology and prior policy |
@@ -78,6 +78,7 @@ Positive candidates:
 | `SEL_08_CIVIL_WAR` | two otherwise similar countries, one in Event 21 civil war | civil-war country preferred, but no automatic extermination profile follows from the war alone |
 | `SEL_09_NO_VALID_STATE` | country has states but every state excluded by protection, collapse floor, or control rule | zero chance and no fallback state substitution |
 | `SEL_10_HISTORICAL_ADAPTER` | Germany, Japan, or Soviet Union with a valid established package versus generic peers | adapter availability increases valid selection and routes into the package without duplicating category content |
+| `SEL_11_NO_CALENDAR_VALIDITY` | the same Germany, Japan or Soviet campaign state evaluated at two different dates | validity and zero conditions are identical; only the weight may differ with the date (user brief, 10 October 2026, section 3.3) |
 
 ## Surface B: repeat-incident selection
 
@@ -97,8 +98,8 @@ Incident families:
 | `REP_01_HIGH_EXPOSURE` | Exposure above verified-leak threshold, low disease, stable front | evidence leak dominates ordinary expansion and labour incidents |
 | `REP_02_EPIDEPTIC` | severe disease or famine in several sites | epidemic or famine incident dominates, with expansion near zero |
 | `REP_03_FRONT_NEAR` | enemy within retreat threshold of one or more sites | front-approach incident dominates all non-emergency incidents |
-| `REP_04_WORKFORCE_COLLAPSE` | several assignments have exhausted labour pools | labour quota crisis dominates expansion unless a valid new intake source exists |
-| `REP_05_SUCCESSOR` | government or tag changed since last pulse | inheritance incident has priority and ordinary incidents wait until policy is chosen |
+| `REP_04_WORKFORCE_COLLAPSE` | several labour-role sites have exhausted cohorts | the epidemic or escape incident (the remaining relevant families) dominates expansion unless a valid new intake source exists; no filler quota incident exists |
+| `REP_05_SUCCESSOR` | government or tag changed since the last monthly visit | inheritance incident has priority and ordinary incidents wait until policy is chosen |
 | `REP_06_PACKAGE_HANDOFF` | generic active network gains a valid country-specific package | package handoff must occur before another generic incident |
 | `REP_07_NO_INCIDENT` | active network stable, no threshold met, cooldown active | candidate receives zero repeat-event chance and no filler popup |
 
@@ -106,7 +107,7 @@ Incident families:
 
 ### Common hard blockers
 
-- forced labour has zero score without at least one useful assignment state
+- forced labour has zero score without at least one site that can hold a labour role in a state with a real economic base
 - expansion has zero score at reach cap or without uncovered valid states
 - extermination has zero score without Evolution I, valid target purpose, and explicit route support
 - immediate closure has zero score only when the government truly lacks authority and a regional alternative must be used
@@ -143,7 +144,7 @@ Positive:
 - registered target population or detainee source
 - rail, port, or convoy access
 - existing quiet site
-- meaningful labour assignment
+- a labour role with a real economic base
 - low foreign access for secret operation
 - strong regime control
 
@@ -166,7 +167,7 @@ Negative:
 | `STATE_03_CAPITAL_PROTECTION` | several valid states plus capital | capital has zero or near-zero score at baseline |
 | `STATE_04_NO_TRANSPORT` | resource-rich state without route versus moderate state with rail | transported state selected unless a local-only variant explicitly supports the isolated site |
 | `STATE_05_RELIEF_PROTECTION` | recently liberated state versus ordinary state | relief state zero |
-| `STATE_06_ASSIGNMENT_MATCH` | industrial policy with factory state, mine state, and empty rural state | factory state dominates |
+| `STATE_06_ROLE_MATCH` | industry priority with factory state, mine state, and empty rural state | factory state dominates |
 | `STATE_07_EXTERMINATION_CONVERSION` | valid target registry and several camp states | conversion selection favors target and transport conditions, not random core-state population |
 | `STATE_08_HALF_COUNTRY_COVERAGE` | Evolution III with mixed valid states | target count exactly reaches rounded 50 percent, no duplicates, no invalid substitutions |
 | `STATE_09_ODD_SPLIT` | final target count odd | concentration camps receive extra site unless explicit extermination-dominant route |
@@ -187,41 +188,42 @@ Negative:
 
 The audit must inspect both count mathematics and state choice probability.
 
-## Surface F: labour assignment choice
+## Surface F: economic priority choice
+
+Event 22 sets the coercive mandate; the Ledger economic priority (industry, works, extraction) and the budget tier are the shared AI's own choices.
+This surface checks that Event 22 does not fight them.
 
 | Scenario ID | Situation | Expected ordering |
 | --- | --- | --- |
-| `LAB_01_FACTORY_STATE` | many factories, no resources, strong rail | industrial dominates |
-| `LAB_02_RESOURCE_STATE` | major resource deposit, few factories | extraction dominates |
-| `LAB_03_RECONSTRUCTION` | heavy damaged buildings and active construction | construction dominates |
-| `LAB_04_FRONT_LOGISTICS` | supply bottleneck and active front nearby | logistics dominates if retreat risk remains acceptable |
-| `LAB_05_NO_ROLE` | state has no meaningful role | every assignment zero and state cannot be selected |
-| `LAB_06_WORKFORCE_LOW` | detained capacity near exhaustion | lower intensity or closure preferred over starting a new high-intensity assignment |
-| `LAB_07_SUPPLY_FAILURE` | trains and support equipment below reserve floor | assignment start zero |
-| `LAB_08_BOMBING` | high enemy bombing and damaged rail | construction or closure preferred, logistics and industrial score reduced |
-| `LAB_09_FAMINE` | severe famine in site | relief or reduced quota dominates high intensity |
-| `LAB_10_NETWORK_CAP` | national administration at assignment cap | no new assignment until capacity frees or administration improves |
+| `LAB_01_FACTORY_STATE` | many factories, no resources, strong rail | industry priority dominates |
+| `LAB_02_RESOURCE_STATE` | major resource deposit, few factories | extraction priority dominates |
+| `LAB_03_RECONSTRUCTION` | heavy damaged buildings and active construction | works priority dominates |
+| `LAB_05_NO_ROLE` | no state has a labour role | coercive mandate has zero score and the state cannot hold a labour role |
+| `LAB_06_WORKFORCE_LOW` | cohort near exhaustion | custody mandate or closure preferred over staying coercive |
+| `LAB_07_SUPPLY_FAILURE` | support equipment below the shared reserve | maintenance cannot be paid, so the opening forced-labour option scores zero |
+| `LAB_09_FAMINE` | severe famine in the site (`famine_food_stage_requires_mortality`) | relief or the custody mandate dominates the coercive mandate |
 
-## Surface G: intensity and continuation
+The original per-assignment scenarios (front logistics, bombing, network cap) are removed with the assignments; the shared caps and support ratio cover them.
+
+## Surface G: continuation of the coercive mandate
 
 ### Expected-horizon test
 
 AI should compare the expected benefit window with:
 
-- workforce depletion time
-- supply reserve
+- cohort depletion time
+- support reserve
 - front distance
-- exposure threshold
-- resistance threshold
-- assignment objective duration
+- Exposure threshold
+- Resistance threshold
 
 | Scenario ID | Situation | Expected result |
 | --- | --- | --- |
-| `INT_01_SHORT_WAR_WINDOW` | strong supply, full workforce, urgent 120-day war objective | exploitative AI can raise intensity |
-| `INT_02_LONG_PEACE` | no urgent objective, moderate workforce | lower or standard intensity preferred |
-| `INT_03_COLLAPSE_IN_60` | expected workforce collapse within 60 days | high intensity zero unless extremist liquidation logic applies |
-| `INT_04_EXPOSURE_NEAR_VERIFY` | one pulse from public verification | reviewer lowers intensity, cover-up profile may conceal, extremist can continue with bounded chance |
-| `INT_05_RESISTANCE_ARMED` | armed resistance threshold crossed | relief, guard response, or closure considered before increased quotas |
+| `INT_01_SHORT_WAR_WINDOW` | strong supply, full cohort, urgent 120-day war objective | exploitative AI keeps the coercive mandate and a higher budget tier |
+| `INT_02_LONG_PEACE` | no urgent objective, moderate cohort | custody mandate or lower budget preferred |
+| `INT_03_COLLAPSE_IN_60` | expected cohort collapse within 60 days | high budget tier zero unless extremist liquidation logic applies |
+| `INT_04_EXPOSURE_NEAR_VERIFY` | one monthly visit from public verification | reviewer moves to the custody mandate, cover-up profile may conceal, extremist can continue with bounded chance |
+| `INT_05_RESISTANCE_ARMED` | armed resistance threshold crossed | relief, guard response or closure considered before further output |
 
 ## Surface H: concealment, closure, and retreat
 
@@ -359,7 +361,7 @@ Run sweeps across:
 
 - eligible states: 1, 2, 3, 5, 10, 25, 50, 100
 - baseline site count and existing quiet sites
-- Network Reach: 0 to 50 percent
+- Network Reach: 0 to 50 percent (a line and a gate, not a band)
 - Exposure: 0 to 100
 - Resistance Pressure: 0 to 100
 - stability: very low to very high
@@ -382,7 +384,7 @@ Review for abrupt inversions, impossible actions, one-option dominance, and cand
 - Closure must remain possible for a player and a valid AI even after an extreme route, unless a specific accepted country route creates an internal conflict mission first.
 - Extermination must never receive nonzero probability without a valid target purpose.
 - Cover-up should not dominate before evidence or defeat makes it relevant.
-- High-intensity labour should not dominate when expected benefit duration is shorter than the setup cost or collapse time.
+- A high budget tier should not dominate when the expected benefit duration is shorter than the setup cost or collapse time.
 - One large country should not absorb most Event 22 firings through repeated incidents.
 - Country-specific historical adapters should be meaningfully favored under their own conditions without making alternate history impossible.
 

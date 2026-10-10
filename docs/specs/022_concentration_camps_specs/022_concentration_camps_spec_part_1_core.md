@@ -17,6 +17,14 @@
 
 The chaos tiers influence opening severity and evolution eligibility. They do not replace ordinary event progression.
 
+## No calendar gates
+
+Event 22 contains no historical date gate.
+Calendar dates may shift selection weights or AI preference, and they never decide whether a country, state, policy, evolution or adapter is valid.
+The conditions that decide are the ones the campaign creates: control of states, war and occupation, political decisions, camp construction, evidence, stability, and the chaos tier.
+This applies to the German, Japanese and Soviet adapters as well: Event 22 asks the country package whether its own conditions hold and adds no date test of its own.
+Auschwitz-type and other experiment routes therefore open earlier or later only through the package's replacement conditions, which the camp date-gate rework owns (user brief, 10 October 2026, section 3.3).
+
 ## Shared pacing and repeatable weight
 
 Event 22 uses the standard Minor Repeatable pacing contract.
@@ -64,6 +72,7 @@ Event 22 must reuse the following shared surfaces:
 - the `extermination_camp` state building
 - the `gulag_labor_camp_network` state building
 - `genocide_responsible_country` attribution or its current repository equivalent
+- the shared camp custody ledger and monthly processor (`camp_admin_*`), which own detainee cohorts, forced-work output and recurring deaths
 - the existing hidden camp evidence and cover-up evidence ledgers
 - the existing genocide escalation, visibility, deaths, resistance, foreign pressure, cover-up, and discovered-site variables where they remain current
 - the exact state civilian population loss contract
@@ -72,7 +81,7 @@ Event 22 must reuse the following shared surfaces:
 - the country-specific Germany, Japan, and Soviet camp categories
 - the restricted chemical site, sarin, soman, contamination, and discovery systems
 
-Event 22 may add event-owned state or country markers needed to distinguish one network generation, evolution shock, local assignment, labour depletion, closure, or relief status. It must not duplicate the shared evidence, responsibility, condemnation, or population transaction systems.
+Event 22 may add event-owned state or country markers needed to distinguish one network generation, evolution shock, closure, or relief status. It must not duplicate the shared evidence, responsibility, condemnation, or population transaction systems.
 
 ## Normal firing scope
 
@@ -129,7 +138,7 @@ Existing concentration camps, extermination camps, and gulag networks count towa
 State selection uses weighted pools. Preferred states include:
 
 - occupied or non-core states with resistance
-- states containing railways, ports, mines, industry, or construction projects that can support a forced-labour assignment
+- states containing railways, ports, mines, industry, or construction projects that can support a labour role under the Ledger economic priority
 - states near population centres but outside the capital when the network is still concealed
 - states with refugee, minority, political-detainee, resistance, or country-specific persecution markers
 - states connected to an existing camp network by rail or adjacency
@@ -141,7 +150,7 @@ The system should reduce weight for:
 - recently liberated states under active humanitarian relief
 - states already suffering extreme population collapse
 - states whose infrastructure has been destroyed so completely that a new site cannot operate
-- isolated islands without the transport capacity needed for the selected assignment
+- isolated islands without the transport capacity needed for a labour role
 
 The state pool must not infer ethnicity from state owner, core status, ideology, or cosmetic tag.
 
@@ -155,6 +164,9 @@ On the first ordinary firing for a country, the event brings active concentratio
 - A state cannot receive more than one primary camp type at the same time.
 - Very large networks may be established over a short delayed sequence so the event does not create all buildings and reports on one frame. The final coverage still reaches the required percentage.
 - Every created site stores the responsible country and the current network generation.
+- Each created or activated site is registered through the shared site helpers (`camp_rework_register_active_site`, `genocide_register_concentration_site_for_root`) and initialized with `camp_admin_initialize_site`.
+- The site's cohort is seeded through `camp_admin_admit_detainees` from a proven campaign source (occupied civilians, refugees, resistance detainees, political enemies) and is bounded by the shared population-share ceiling.
+  No source means no cohort, and a site without a cohort has no deaths.
 
 The initial event creates concentration camps only. Evolution I can convert part of the active network to extermination camps.
 
@@ -206,6 +218,7 @@ A country that transparently dismantles all sites and completes survivor relief 
 The opening report should state the visible facts without providing finished localisation. It should establish that detention sites now exist across several states, that local officials are already moving people and resources, and that the government must decide whether to stop, restrict, exploit, or expand the network.
 
 The first response sets the opening policy and starts the relevant phase. The event should not resolve the full crisis in one option.
+Each policy sets the shared national controls (`camp_admin_mandate`, the Ledger economic priority and the reform path), so Event 22 keeps no private policy engine.
 
 ### Opening policy: immediate closure
 
@@ -218,7 +231,7 @@ The first response sets the opening policy and starts the relevant phase. The ev
 
 ### Opening policy: restrictive review
 
-- pauses expansion and the harshest assignments
+- pauses expansion and forced work (custody mandate)
 - opens inspection, ration, registration, and release actions
 - costs less immediately than full closure
 - can drift toward closure or exploitation
@@ -226,7 +239,7 @@ The first response sets the opening policy and starts the relevant phase. The ev
 
 ### Opening policy: forced-labour administration
 
-- activates labour assignments and strong local output choices
+- sets the coercive mandate so labour-role sites produce, with the Ledger economic priority choosing the output
 - diverts trains, guards, equipment, and administration
 - increases death, resistance, disease, sabotage, and evidence pressure
 - consumes a finite local detained workforce
@@ -251,6 +264,7 @@ When the selected country has an established camp package, Event 22 should activ
 - The Soviet Union keeps its gulag, deportation, famine, forced-labour quota, administrator purge, evidence destruction, and Soviet Collapse connections.
 
 Event 22 still owns the world-level fire, coverage calculation, evolution entry, and event log. The country package owns country-specific decisions and localisation.
+The package's own gates decide whether the package accepts the call; Event 22 adds no date condition.
 
 If a country-specific package is missing a required Event 22 action, implementation should add an adapter to that package. It should not expose two overlapping categories.
 
@@ -279,11 +293,11 @@ All operational buildings are removed, but hidden evidence, missing-person press
 
 ### Dormant repression network
 
-Sites remain but intake and high-intensity assignments are suspended. The country keeps low-level repression and evidence risk. The event remains registered and can reactivate.
+Sites remain but intake and forced work are suspended. The country keeps low-level repression and evidence risk. The event remains registered and can reactivate.
 
 ### Entrenched exploitation network
 
-Forced labour remains active and the network has become part of the wartime economy. It continues to generate pulses, labour depletion, resistance, and evidence.
+Forced labour remains active and the network has become part of the wartime economy. It continues to generate monthly losses through the shared processor, labour depletion, resistance, and evidence.
 
 ### Extermination network
 
@@ -307,12 +321,15 @@ The event history should record:
 - chemical-site integration
 - responsibility transfer or deliberate reuse by a new regime
 
-Routine monthly or pulse deaths should use the Deaths log and should not spam the event history.
+Routine monthly deaths should use the Deaths log and should not spam the event history.
 
 ## Cluster role
 
 The user-defined cluster role is Random Chaos. Event 22 is a Severe member because it can create widespread state modifiers, deaths, internal resistance, and international consequences.
 
-The current cluster CSV export does not contain a registered Random Chaos row. Implementation must inspect the authoritative workbook and current repository registry, then create or recover the cluster with a collision-free ID. The spec does not assign a numeric ID from an incomplete snapshot.
+The current cluster export contains no Random Chaos row, and the catalog still places Event 22 in cluster 18 Military Preparation at severity High.
+Implementation must inspect the authoritative workbook and current repository registry, then create or recover the cluster with a collision-free ID.
+The spec does not assign a numeric ID from an incomplete snapshot.
+Proposal P-022-D in the index suggests joining Domestic Unrest instead of creating a one-member cluster.
 
 Event 22 must remain fully functional outside cluster firing. A cluster firing cannot bypass the event’s valid-country and valid-state checks.

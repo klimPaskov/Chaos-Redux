@@ -8,7 +8,7 @@ The baseline is a living crisis, not one event option followed by a permanent mo
 
 ### Stage 1: Network imposed
 
-The selected country reaches 20 percent camp coverage. The opening policy is chosen, the management category appears, responsibility is recorded, and the first operational pulse is scheduled.
+The selected country reaches 20 percent camp coverage. The opening policy is chosen, the management category appears, responsibility is recorded, and the country joins the shared camp processor.
 
 The player should immediately understand:
 
@@ -24,9 +24,9 @@ The opening does not expose every hidden consequence. It must still explain visi
 
 The initial response becomes a concrete program.
 
-- Closure starts state missions and relief commitments.
-- Review opens inspections, ration support, registration, and release actions.
-- Forced labour assigns sites to industrial, construction, resource, or logistical work.
+- Closure starts the regional closure mission and the shared reform path.
+- Review sets the custody mandate and opens inspections, ration support, registration, and release actions.
+- Forced labour sets the coercive mandate; the Ledger economic priority chooses industry, works or extraction.
 - Security expansion creates new state targets and transport demands.
 - Evolution I can add extermination conversion.
 
@@ -34,15 +34,12 @@ A country can change policy later, but changing direction costs time and creates
 
 ### Stage 3: Operational cycle
 
-Operational sites process periodic country-scoped pulses. Each pulse updates:
+Operational sites are processed by the shared camp processor: `camp_admin_monthly_country` visits each registered operational site once per calendar month and applies custody, labour and violence causes through `camp_admin_record_deaths`.
+Event 22 adds no pulse, no private death rate and no second scan.
+It reads the processor's results to update:
 
-- real state population loss
-- detained workforce condition
-- local output or repression effect
-- Network Reach
 - Exposure
 - Resistance Pressure
-- local disease, famine, contamination, and supply modifiers
 - hidden atrocity and cover-up evidence
 - foreign-observer pressure where witnesses or external access exist
 
@@ -79,35 +76,27 @@ The crisis ends in transparent closure, secret demolition, liberation, dormant r
 
 ## Player-facing values
 
-The decision category shows three event-owned values. The shared Condemnation value remains in the Chaos Meter.
+The Event 22 category shows two event-owned meters and one status line.
+The shared Condemnation value remains in the Chaos Meter.
+The original design showed three meters; the third, Network Reach, is reduced to a status line by proposal P-022-A (the band ladder below is the fallback if the parent keeps three values).
 
-### Network Reach
+### Network Reach (status line)
 
-Network Reach represents the share of eligible states containing an operational concentration camp, extermination camp, or compatible active gulag site attributed to the current network.
+Network Reach is the share of eligible states containing an operational concentration camp, extermination camp, or compatible active gulag site attributed to the current network.
 
 Player-facing information:
 
-- current operational site count
-- current eligible-state count
+- operational site count of eligible states
 - current coverage percentage
-- next meaningful threshold
-- whether coverage is rising, stable, being dismantled, or collapsing through liberation
+- the next target that matters (the generic ceiling or the Evolution III target)
 
-Network Reach rises through expansion, conversion of quiet sites, inherited operation, or Evolution III. It falls through closure, liberation, state loss, or destruction. Conversion from a concentration camp to an extermination camp does not change reach.
+Reach rises through expansion, conversion of quiet sites, inherited operation, or Evolution III. It falls through closure, liberation, state loss, or destruction. Conversion from a concentration camp to an extermination camp does not change reach.
 
-Recommended status bands:
-
-- Isolated sites
-- Regional network
-- National network
-- Entrenched network
-- Half-country network
-
-The labels are direction only. Final localisation should match country and political context.
+Fallback status bands, if three values are kept: isolated sites, regional network, national network, entrenched network, half-country network.
 
 ### Exposure
 
-Exposure represents the chance that the network’s purpose, deaths, records, and responsible officials become publicly verifiable.
+Exposure represents the chance that the network's purpose, deaths, records, and responsible officials become publicly verifiable.
 
 Exposure rises through:
 
@@ -127,7 +116,7 @@ Exposure rises through:
 
 Exposure falls slowly through genuine closure, transparent inspection, survivor registration, and orderly record transfer. Secret concealment can reduce immediate Exposure, but it creates cover-up evidence and a larger later discovery penalty.
 
-Recommended status bands:
+Status bands:
 
 - Controlled secrecy
 - Persistent rumours
@@ -164,7 +153,7 @@ It falls through:
 
 Violent suppression can reduce one local resistance incident temporarily, but it raises hidden pressure, deaths, and future rebellion risk. It cannot permanently solve the value.
 
-Recommended status bands:
+Status bands:
 
 - Disorganized opposition
 - Escape networks
@@ -174,42 +163,30 @@ Recommended status bands:
 
 ## State-level information
 
-Each camp state needs a concise state tooltip or modifier display showing:
+A camp-state tooltip shows at most:
 
-- site type
-- responsible actor
-- current controller
-- operational status
-- local assignment
-- detained workforce condition
-- local mortality direction
-- local resistance direction
-- evidence state
+- site role and responsible actor
+- operational status (operating, under inspection, closing, abandoned, liberated)
+- one local pressure direction (mortality, resistance or evidence, whichever is the highest)
 - closure or relief mission status
 
+The full state ledger (living custody, causes, records) stays in the Ledger Locations and Records views.
 The tooltip must not show a fictional racial census. It should use the actual campaign source of detainees when known, such as occupied civilians, refugees, political detainees, resistance suspects, or a country-specific persecuted group registry.
 
 ## Hidden state values
 
-The implementation may track internal values for:
+The implementation tracks internal values only where a rule reads them:
 
-- detained workforce capacity
-- intake pressure
-- local mortality pressure
-- local evidence
-- local resistance
-- guard capacity
-- transport dependency
-- supply and ration condition
-- disease pressure
-- closure progress
-- relief progress
+- living custody cohort, causes and release totals (owned by the shared custody ledger)
+- local evidence (owned by the shared evidence system)
 - network generation
 - Evolution II shock applied
 - Evolution III shock applied
+- closure progress and relief progress
 - chemical-site integration
 
-Only values that change an immediate player choice should appear directly. Internal components should be summarized into the three visible values and state status tiers.
+Intake pressure, guard capacity, transport dependency, ration condition, disease pressure and the other components of the original list are summarized into Exposure, Resistance Pressure and the shared support ratio, and are not tracked as separate Event 22 values.
+Only values that change an immediate player choice appear directly.
 
 ## Decision category presentation
 
@@ -218,14 +195,14 @@ Only values that change an immediate player choice should appear directly. Inter
 Use an ordinary decision category with:
 
 - one static archival category picture
-- a concise header showing the three value bands
+- a concise header showing Exposure, Resistance Pressure and the Reach line
 - one current policy line
 - one current priority state line
 - normal decision rows
 - state-targeted decisions when needed
 - no fake buttons or meters painted into the image
 
-A full scripted GUI would add maintenance without improving the choice structure. Animation is also unnecessary because the values can be read through status icons, bands, and replacement decisions.
+A full scripted GUI would add maintenance without improving the choice structure, and the shared Ledger already provides the management window. Animation is unnecessary because the values can be read through status icons, bands, and replacement decisions.
 
 ### Visible action budget
 
@@ -233,9 +210,9 @@ A phase should normally expose three to five primary actions. Six is the hard ma
 
 Actions are replaced when the policy or crisis stage changes. Earlier weak versions should disappear when stronger or more specific versions become available.
 
-## Opening decisions
+## Opening policies
 
-The opening event sets one of four baseline policy families. The final event options should be written from this direction and should not be copied from the working labels.
+The opening event sets one of four baseline policy families (a fifth, extermination, joins at Evolution I). The final event options should be written from this direction and should not be copied from the working labels.
 
 ### Policy A: Freeze intake and close the network
 
@@ -244,8 +221,8 @@ Immediate effects:
 - new detentions stop
 - operational deaths fall but do not end instantly
 - local food and medical access improve
-- closure missions become available
-- forced-labour bonuses begin to wind down
+- the regional closure mission becomes available
+- forced-labour output winds down
 - hardliners, security services, or wartime ministries may resist
 - evidence remains intact unless separately destroyed
 
@@ -256,7 +233,7 @@ This is the safest long-term route, but it has meaningful costs. The country mus
 Immediate effects:
 
 - expansion is frozen
-- the harshest assignments pause
+- forced work stops (custody mandate)
 - inspections and registration begin
 - low-level detention can continue while cases are reviewed
 - Exposure may rise because records and witnesses become visible
@@ -268,13 +245,13 @@ This route is useful for governments that cannot immediately dismantle every sit
 
 Immediate effects:
 
-- camp states can select one labour assignment
-- trains, guards, support equipment, construction capacity, and local supplies are committed
-- local output rises strongly
+- the coercive mandate starts forced-work output at the sites with a labour role
+- trains, guards, support equipment, and local supplies are committed through the shared maintenance cost
+- local output rises up to the shared caps
 - mortality, resistance, disease, sabotage, evidence, and labour depletion rise
-- national benefits scale with effective workforce, not raw building count
+- national benefits scale with the surviving supported workforce, not raw building count
 
-The route is designed as a wartime shortcut. It is powerful over a short period and destructive over a longer period.
+The route is a wartime shortcut. It is powerful over a short period and destructive over a longer period.
 
 ### Policy D: Expand the security network
 
@@ -291,122 +268,29 @@ This policy is unavailable or strongly blocked for governments whose current pol
 
 ## Dismantlement route
 
-Dismantlement is a staged program. It should not be a political-power purchase.
+Dismantlement is a staged program run as `chaosx_022_mission_regional_closure`. It should not be a political-power purchase.
 
-### Freeze new detentions
+Objectives, each completed by the mission and not by a separate click:
 
-Purpose: stop the network from receiving more people while closure work begins.
+- freeze new detentions (shared reform freezes admissions; local administrators in high-resistance or low-authority states can continue intake, which raises Exposure and domestic conflict)
+- supply and medical relief, scaled by site count, local supply, famine, disease and distance from the capital, lowering mortality, disease and Resistance Pressure
+- register detainees and missing persons (may raise immediate Exposure because it produces verifiable records; improves release safety, tracing and tribunal accuracy)
+- preserve or transfer records according to the evidence policy
+- release or relocate survivors safely
+- remove the camp building through the shared timed site closure, never as a free deletion
 
-Requirements:
+Mission duration rises with site type, population, damage, disease, front proximity and local resistance, and falls with infrastructure, relief preparation, government authority and foreign assistance.
 
-- at least one operational site
-- no active extermination-intensification order that the government has not first rescinded
+Outcomes:
 
-Costs and commitments:
+- success: operation stops, survivors leave custody safely, reach falls, records follow policy
+- partial success: operation stops but records are incomplete or survivors remain displaced, with a follow-up relief mission
+- failure: deaths continue, the site becomes chaotic or abandoned, Exposure and Resistance Pressure rise, a repeat mission is harder
 
-- administrative and political burden
-- temporary security-service conflict
+Replacing coerced output uses the shared civilian workforce replacement of the reform path.
+It costs more than keeping forced labour for one short cycle, but creates a stable replacement without deaths, sabotage or evidence growth, so dismantlement is strategically viable and not a moral button that accepts permanent economic defeat.
 
-Effects:
-
-- intake pressure drops sharply
-- deaths begin to fall
-- no new forced-labour assignment can be started
-- active expansion decisions close
-- current work assignments enter wind-down
-
-Failure or interruption:
-
-- local administrators can continue intake in high-resistance or low-authority states
-- failure raises Exposure and domestic political conflict
-
-### Supply and medical relief
-
-Purpose: keep people alive during closure and reduce post-liberation deaths.
-
-Dynamic costs may include up to four of:
-
-- support equipment
-- trains or convoys
-- fuel
-- temporary civilian-factory burden
-
-Strength scales with the number of sites, local supply, famine, disease, infrastructure, and distance from the capital.
-
-Effects:
-
-- lowers mortality
-- lowers disease pressure
-- lowers Resistance Pressure
-- reduces the chance that people die after release
-- creates a visible relief status on treated states
-
-### Register detainees and missing persons
-
-Purpose: turn anonymous detention into a documented release and tracing process.
-
-Costs:
-
-- administrative capacity
-- time
-- possible Exposure increase
-
-Effects:
-
-- improves release safety
-- reduces disappearance evidence uncertainty
-- helps future family reunification and migration handling
-- makes later evidence destruction harder
-- improves tribunal accuracy
-
-This action may increase immediate Exposure because it produces verifiable records. It reduces long-term condemnation when paired with transparency and closure.
-
-### Close a selected site
-
-Purpose: dismantle one operational camp through a timed state mission.
-
-Dynamic cost package:
-
-- civilian construction burden
-- support equipment
-- trains or convoys
-- security or administrative manpower commitment
-
-The mission duration increases with site type, population, damage, disease, front proximity, and local resistance. It decreases with infrastructure, relief preparation, government authority, and foreign assistance.
-
-Success:
-
-- stops operation
-- removes the camp building or converts it into a non-operational evidence or memorial marker when appropriate
-- releases or transfers survivors safely
-- reduces Network Reach
-- preserves or transfers records according to policy
-
-Partial success:
-
-- operation stops, but records are incomplete or survivors remain displaced
-- a follow-up relief mission remains
-
-Failure:
-
-- deaths continue
-- the site becomes chaotic or abandoned
-- Exposure and Resistance Pressure rise
-- a repeat mission becomes harder
-
-### Replace coerced output
-
-Purpose: prevent closure from causing a sudden industrial collapse.
-
-This decision redirects ordinary labour, imports, military engineers, or reconstruction capacity to replace the camp assignment. It should cost more than keeping forced labour for one short cycle, but it creates a stable replacement without deaths, sabotage, or evidence growth.
-
-The decision is important because dismantlement should be strategically viable, not a moral button that simply accepts permanent economic defeat.
-
-### Complete national closure
-
-This capstone appears when all sites have stopped intake and all state closure or relief missions are resolved.
-
-Outcomes depend on evidence policy:
+Complete national closure appears when every site has stopped intake and every closure or relief mission is resolved:
 
 - transparent closure grants the longest event protection and lowers future foreign pressure
 - quiet closure leaves hidden evidence and a weaker protection period
@@ -416,257 +300,69 @@ Outcomes depend on evidence policy:
 
 The review route is a middle path. It can buy time, reduce deaths, and expose illegal administration. It cannot turn Event 22 sites into lawful internment through a label change.
 
-### Impose minimum conditions
+- Minimum conditions (food, shelter, sanitation, medical commitments) lower mortality and disease, reduce the strongest forced-labour output, and raise administrator resistance in exploitative regimes.
+- Controlled inspections allow domestic judiciary, military, church, civil service, neutral commission, or foreign observer access depending on country; they lower hidden abuses when access is real, raise immediate Exposure, can reduce public condemnation if violations are corrected, and fail if officials stage the inspection.
+- Case review releases people who lack even the regime's stated grounds, reducing the cohort, resistance and future deaths, with political conflict from hardliners.
+- Conversion to ordinary prisons or lawful detention is available only when the country has functioning legal institutions and the site population can be individually reviewed. It removes the Event 22 camp building and ends the atrocity loop in that state without preserving forced labour or mass detention output.
 
-- requires food, shelter, sanitation, and medical commitments
-- lowers mortality and disease
-- reduces the strongest forced-labour bonuses
-- raises administrator resistance in exploitative regimes
-
-### Open controlled inspections
-
-- allows domestic judiciary, military, church, civil service, neutral commission, or foreign observer access depending on country
-- lowers hidden abuses when access is real
-- raises immediate Exposure
-- can reduce public condemnation if violations are corrected
-- can fail if local officials stage the inspection
-
-### Review detention cases
-
-- releases people who lack even the regime’s stated grounds
-- reduces workforce and repression capacity
-- lowers resistance and future deaths
-- creates political conflict with hardliners
-
-### Convert to ordinary prisons or lawful detention
-
-This is available only when the country has functioning legal institutions and the site population can be individually reviewed. It removes the Event 22 camp building and ends the atrocity loop in that state. It does not preserve forced labour or mass detention bonuses.
-
-### Drift outcomes
-
-A review can end in:
-
-- full closure
-- a smaller dormant repression network
-- failed reform and renewed exploitation
-- public scandal and forced resignation
-- military or civil-service refusal to continue
+A review can end in full closure, a smaller dormant repression network, failed reform and renewed exploitation, public scandal and forced resignation, or military or civil-service refusal to continue.
 
 ## Forced-labour route
 
-Forced labour is the main short-term economic temptation. It is state-targeted and assignment-based.
+Forced labour is the main short-term economic temptation, and it is owned by the shared administration.
 
-### Assignment: industrial production
+- The coercive mandate lets labour-role sites produce; the Ledger economic priority (industry, works or extraction) chooses what they produce, and the spending ceiling limits it.
+- Output follows the surviving, supported workforce. The shared caps hold: developed contributions reach at most 40 percent equivalent participating industrial output, capped at 25 percent nationally, 40 percent relevant state construction and 40 percent local extraction.
+- Extermination (killing-role) sites lose productive allocations.
+- The detained workforce is finite. It falls through deaths, release or escape, transfer, disease and incapacity, successful resistance and liberation. A depleted site loses its output before it loses its mortality and evidence consequences.
+- The regime can close the site, lower the priority, move detainees through a visible deportation (the shared exact-cohort transfer needs real transport and a proved cohort), or broaden persecution. It cannot generate workers from nothing.
+- Deportation and transport consume real trains or convoys, add congestion and Exposure, and can trigger escape, bombing, disease or disappearance incidents. The spec requires no detailed schedules or procedural depiction.
 
-Visible effect direction:
-
-- strong local military and civilian factory output increase
-- possible faster production-efficiency recovery in the state
-- increased accident and sabotage risk
-- high transport and guard demand
-- steady labour depletion and deaths
-
-Best targets are industrial states with rail access. Assigning a site in a state without meaningful factories should be invalid.
-
-### Assignment: construction projects
-
-Visible effect direction:
-
-- strong local construction and repair speed
-- faster rail, infrastructure, fortification, airbase, and factory work
-- higher injury and exhaustion deaths
-- project failure risk under bombing, famine, or resistance
-
-The decision should attach to real active construction or reconstruction needs, not provide a generic national building-speed button.
-
-### Assignment: resource extraction
-
-Visible effect direction:
-
-- strong local resource output or excavation gain
-- mining, forestry, quarry, or agricultural labour depending on state resources
-- very high mortality in harsh terrain or climate
-- infrastructure damage and corruption risk
-
-The decision is invalid when the state has no relevant resource or extraction role.
-
-### Assignment: military logistics
-
-Visible effect direction:
-
-- rail repair, depot handling, port labour, entrenchment, or supply throughput support
-- strong train, truck, and guard dependency
-- high exposure when close to the front
-- evacuation risk when the front moves
-
-This assignment is useful in war but creates the strongest retreat pressure.
-
-### Labour quota intensity
-
-Each active assignment has an intensity tier. Higher intensity:
-
-- raises immediate output
-- raises deaths, disease, resistance, sabotage, and evidence
-- depletes the workforce faster
-- increases the chance that the assignment collapses before its planned end
-
-The category should show the current state status and keep formula components hidden.
-
-### Workforce depletion
-
-The detained workforce is finite. It falls through:
-
-- deaths
-- release or escape
-- transfer to another site
-- disease and incapacity
-- successful resistance action
-- liberation
-
-A depleted site loses its output before it loses its mortality and evidence consequences. The responsible regime must choose to close the site, reduce intensity, import detainees through a visible deportation decision, or broaden persecution. It cannot generate new workers from nothing.
-
-### Deportation and transport
-
-Moving detainees between states requires real transport capacity. The action consumes trains or convoys, creates rail congestion, increases Exposure, and can trigger escape, bombing, disease, or disappearance incidents.
-
-The spec does not require detailed transport schedules or procedural depiction. The mechanic is an abstract strategic commitment.
+The original design had four per-state assignments (industrial, construction, extraction, logistics) with intensity tiers.
+They are replaced by the shared priority because the Ledger already offers that choice, and the logistics assignment had no rule that read it.
 
 ## Security expansion route
 
-### Expand into a selected state
+`chaosx_022_expand_network_into_state` is the only expansion action.
 
-Requirements:
+Requirements: the state passes eligibility, reach is below the applicable ceiling, policy permits expansion, and transport, guard and construction capacity exist.
 
-- state passes the eligibility rules
-- current Network Reach is below the applicable cap
-- government policy permits expansion
-- sufficient transport, guard, and construction capacity
+Dynamic costs: construction burden, support equipment, trains or convoys, manpower or garrison commitment.
 
-Dynamic costs:
+Effects: adds a concentration camp, raises reach, records responsibility, seeds an initial cohort from valid campaign markers through the shared admission helper, raises Exposure and Resistance Pressure.
 
-- construction burden
-- support equipment
-- trains or convoys
-- manpower or garrison commitment
-
-Effects:
-
-- adds a concentration camp
-- raises Network Reach
-- records responsibility
-- establishes an initial detainee pool from valid campaign markers
-- raises Exposure and Resistance Pressure
-
-### Reinforce the guard system
-
-Purpose: reduce immediate escapes and sabotage.
-
-Effects:
-
-- lowers short-term local resistance incidents
-- consumes manpower, support equipment, and possibly command capacity
-- raises long-term resentment and evidence if paired with violent policy
-- can pull units or equipment away from the front
-
-The action cannot erase Resistance Pressure. It changes the timing and form of incidents.
-
-### Centralize administration
-
-Purpose: coordinate records, transport, labour quotas, and site orders.
-
-Benefits:
-
-- reduces disorder and duplicate transport costs
-- makes policy changes apply more consistently
-- can improve output under forced labour
-
-Risks:
-
-- creates a stronger documentary trail
-- increases national responsibility
-- makes later discovery more damaging
-- creates an identifiable administrator faction for tribunal or purge content
-
-### Seize local property
-
-This optional exploitative action represents confiscation and administrative theft. It can give a temporary budget or supply offset, but it also creates corruption, black markets, evidence, local resistance, and long-term economic damage. It must not grant permanent factories or resources.
+Guard reinforcement is an option of the escape incident.
+Centralized administration and seizing local property are dropped; their consequences are carried by network verification (more linked sites make a verified network) and by the administrator corruption incident.
 
 ## Concealment and evidence actions
 
 Concealment is available to active perpetrators. It is not a clean way to lower consequences.
+It is offered as options of the leak, inspection and front-approach events, which reuse the shared evidence effects.
 
-### Restrict access
-
-- reduces immediate foreign-observer pressure
-- harms diplomacy and intelligence transparency
-- increases suspicion when leaks already exist
-- is weaker in occupied, coastal, border, or high-resistance states
-
-### Falsify records
-
-- lowers immediate Exposure if successful
-- creates cover-up evidence
-- risks contradictory transport, labour, and population records
-- makes later verified discovery more damaging
-
-### Destroy records
-
-- can reduce the amount of surviving documentation
-- cannot remove survivor testimony, physical evidence, demographic loss, or foreign intelligence
-- raises hidden cover-up evidence
-- harms the country’s ability to release, trace, or compensate survivors
-- can trigger administrator conflict or whistleblowing
-
-### Relocate detainees
-
-- requires transport
-- can move people away from an exposed state
-- raises death, escape, bombing, and discovery risk
-- can create a death-march variant when transport fails or the front is close
-
-### Abandon a site
-
-- stops organized operation without completing relief
-- leaves survivors, guards, records, and infrastructure in a dangerous state
-- raises Exposure sharply
-- can create post-liberation deaths from neglect
+- Restrict access reduces immediate foreign-observer pressure, harms diplomacy and intelligence transparency, increases suspicion when leaks already exist, and is weaker in occupied, coastal, border, or high-resistance states.
+- Falsify records lowers immediate Exposure if successful, creates cover-up evidence, risks contradictory transport, labour and population records, and makes later verified discovery more damaging.
+- Destroy records reduces surviving documentation but cannot remove survivor testimony, physical evidence, demographic loss or foreign intelligence. It raises cover-up evidence, harms the ability to release, trace or compensate survivors, and can trigger administrator conflict or whistleblowing.
+- Relocate detainees requires transport, can move people away from an exposed state, raises death, escape, bombing and discovery risk, and can become a death march when transport fails or the front is close.
+- Abandon a site stops organized operation without completing relief, leaves survivors, guards, records and infrastructure in a dangerous state, raises Exposure sharply, and can cause post-liberation deaths from neglect.
 
 ## Resistance and emergency missions
 
-The category may run one to three active missions.
+The category may run one to three active missions (`chaosx_022_mission_prevent_escape`, `chaosx_022_mission_contain_epidemic`, `chaosx_022_mission_underground_network` and the closure mission).
 
-### Prevent a coordinated escape
-
-A medium-duration mission appears when local Resistance Pressure crosses a threshold. The country can answer through relief and de-escalation, guard reinforcement, or violent suppression.
-
-- Relief can reduce the underlying pressure.
-- Reinforcement may prevent the immediate escape while raising long-term burden.
-- Violent suppression can stop the attempt but causes deaths and stronger evidence.
-
-### Contain a camp epidemic
-
-A medium or hard mission appears when overcrowding, famine, plague, low air cleanliness, biological contamination, or destroyed infrastructure raises disease pressure.
-
-Success requires medical supplies, food, transport, and time. Failure causes deaths, regional disease spread, escape, and discovery.
-
-### Keep the site from the enemy
-
-A short emergency mission appears when a hostile front approaches. The country chooses closure, evacuation, abandonment, or evidence destruction. This mission leads into the retreat system in Part 4.
-
-### Complete regional closure
-
-A long mission groups several nearby sites under one closure program. It reduces decision clutter in large countries and allows one regional objective instead of a wall of state rows.
+- Prevent a coordinated escape: relief and de-escalation can reduce the underlying pressure, reinforcement may prevent the immediate escape while raising long-term burden, and violent suppression can stop the attempt but causes deaths and stronger evidence.
+- Contain a camp epidemic: success requires medical supplies, food, transport and time; failure causes deaths, regional disease spread, escape and discovery. Inputs are overcrowding, the famine stage (`famine_food_stage_requires_mortality`), plague, biological contamination and destroyed infrastructure.
+- The front-approach emergency is an event with the retreat options of Part 4, not a mission.
+- Regional closure groups several nearby sites under one objective, which reduces decision clutter in large countries.
 
 ## National and state modifiers
 
-The event should prefer staged upgrades and replacements over many separate tiny ideas.
+The event prefers staged upgrades and replacements over many separate tiny ideas, and adds a modifier only when a rule reads it.
 
 ### Country-level idea families
 
-Possible idea families, with working labels only:
+Working labels only:
 
 - Camp Network Administrative Burden
-- Forced-Labour War Economy
 - Security Apparatus Ascendant
 - Network Under Review
 - National Dismantlement Program
@@ -674,20 +370,15 @@ Possible idea families, with working labels only:
 - Survivor Relief and Resettlement
 - Tribunal and Documentation Pressure
 
-Each family should change stage as policy and exposure change. Do not create one new idea for every decision.
+Each family changes stage as policy and exposure change. Do not create one new idea for every decision.
+The original eighth family, Forced-Labour War Economy, is dropped because the shared national output modifier already represents it.
 
-### State-level modifier families
+### State-level status families
 
-Possible state statuses:
+Possible state statuses (shared site role plus Event 22 status):
 
 - Active Detention Site
-- Forced-Labour Industrial Assignment
-- Forced-Labour Construction Assignment
-- Forced-Labour Extraction Assignment
-- Forced-Labour Logistics Assignment
 - Extermination Site
-- Overcrowded Site
-- Labour Pool Exhausted
 - Site Under Inspection
 - Site Closing
 - Abandoned Site
@@ -696,19 +387,20 @@ Possible state statuses:
 - Evidence Preserved
 - Evidence Destroyed
 
-The building shows physical presence. The modifier shows how the site is operating.
+The building shows physical presence. The status shows how the site is operating.
+Per-assignment and "Overcrowded" or "Labour Pool Exhausted" statuses of the original list are not modifiers; the Ledger shows exhaustion.
 
 ## Effect strength rule
 
 The economic route must be strong enough to tempt a wartime player. The penalties must be strong enough that the route changes strategy and cannot be treated as a free modifier.
 
-Recommended balance direction:
+Balance direction, all inside the shared constants:
 
-- one fully supplied, high-workforce site can materially improve one state’s assigned role
-- a national network can support a noticeable wartime output surge
-- the surge declines as workforce, supply, security, and transport deteriorate
-- high-intensity operation should begin creating serious strategic costs within several pulses
-- extermination sites should not improve industrial output
-- transparent closure should create a credible long-term recovery path
+- one fully supplied, high-workforce site can materially improve one state's role
+- a national network can support a noticeable wartime output surge, never above the shared 25 percent national cap
+- the surge declines as workforce, supply and support deteriorate (the shared support ratio)
+- high-intensity operation should begin creating serious strategic costs within several months
+- extermination sites do not improve industrial output
+- transparent closure creates a credible long-term recovery path
 
-Exact numbers belong in centralized tuning and the probability and balance pass. The implementation should test several country sizes and war situations before locking values.
+Exact numbers belong in the shared camp constants and the probability and balance pass. The implementation should test several country sizes and war situations before locking values.

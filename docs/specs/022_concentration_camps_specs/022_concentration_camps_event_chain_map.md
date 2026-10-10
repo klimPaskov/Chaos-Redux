@@ -4,30 +4,29 @@
 
 This file maps the Event 22 report, country, news, and hidden worker events. It gives implementation a complete chain without writing final localisation or locking numeric IDs before the repository collision audit.
 
+The consolidated chain has 44 events (11 hidden, 33 player-facing), down from 64 named events in the original map (proposal P-022-B).
+Variants of one situation are text and option variants of a single event, and silent transitions are history rows.
+
 ## Namespace and ID allocation
 
-Recommended namespace:
-
-```text
-chaosx_event_022
-```
+The namespace is the repository's existing `chaosx.nr22`, and the entry event is `chaosx.nr22.1`.
+The legacy Spain events in that namespace (`events/022_jews_massacre.txt`) are replaced, not kept beside the new chain.
 
 Recommended range ownership:
 
 | Range | Owner |
 | --- | --- |
 | `.1` to `.49` | global dispatch, opening, and package handoff |
-| `.50` to `.99` | policy transition and category initialization |
 | `.100` to `.199` | baseline incidents |
 | `.200` to `.299` | Evolution I |
 | `.300` to `.399` | Evolution II |
 | `.400` to `.499` | Evolution III |
-| `.500` to `.599` | evidence, inspection, and public discovery |
+| `.500` to `.599` | evidence, inspection, and public discovery, retreat |
 | `.600` to `.699` | liberation and relief |
 | `.700` to `.799` | succession, civil war, annexation, and reuse |
 | `.800` to `.899` | accountability, displacement, closure, and aftermath |
 | `.900` to `.949` | news events if the repository keeps them in the same namespace |
-| `.950` to `.999` | hidden worker and bounded debug events |
+| `.950` to `.999` | hidden workers and bounded debug events |
 
 The implementation must inspect current namespace usage and lock collision-free numeric IDs. Semantic working names below remain the design reference.
 
@@ -42,9 +41,9 @@ Shared random-event picker
           -> repeat incident dispatch, when active or dormant
 
 First opening
-  -> calculate and register network
-  -> player or AI selects policy
-  -> category and pulse registration
+  -> register sites and seed cohorts through the shared camp helpers
+  -> player or AI selects policy (sets shared mandate and reform path)
+  -> shared monthly processor owns recurring harm
   -> baseline incidents and missions
 
 Evolution activation
@@ -74,1091 +73,161 @@ Control-loss route
 - Large networks should not generate one popup per state.
 - State incidents can show a named priority state and apply bounded regional effects.
 - News events are reserved for a verified large network, major liberation, or major accountability threshold.
-- Routine operation pulses use the Deaths ledger, state status, and category values. They do not show monthly popups.
+- Routine monthly losses use the Deaths ledger, the Ledger and the category values. They do not show monthly popups.
 - Final text uses dynamic country, state, policy, site type, and target-purpose localisation.
 
-## Global and opening events
+## Global and opening events (4)
 
-### `chaosx_022_global_dispatch`
+### `chaosx_022_global_dispatch` (hidden)
 
-Type: hidden country or global dispatch event, according to shared random-event framework.
+Receives the Event 22 selection from the shared picker, builds the country candidate pool, selects one country, records the cluster source when applicable, and calls the first opening, the country-package handoff, or the repeat dispatch.
+No candidate means a logged skip. An invalid selected actor after a delay fails closed; no substitute actor is selected outside the original accepted job unless the shared picker reruns the whole event selection.
 
-Purpose:
+### `chaosx_022_package_handoff` (hidden)
 
-- receive Event 22 selection from the shared picker
-- build complete country candidate pool
-- select one country
-- record cluster source when applicable
-- call first opening, country-package handoff, or repeat dispatch
-
-Failure behavior:
-
-- no candidate means a logged skip
-- invalid selected actor after delay means fail closed
-- no substitute actor is selected outside the original accepted job unless the shared picker explicitly reruns the entire event selection
-
-### `chaosx_022_package_handoff`
-
-Type: hidden country event.
-
-Purpose:
-
-- detect established German, Japanese, or Soviet ownership
-- pass Event 22 opening stage, evolution stage, target coverage, and generation to the country package
-- hide generic category
-- preserve global Event 22 history
-
-Required outputs:
-
-- adapter success flag
-- created or activated site count
-- current policy
-- category owner
-- failure reason when package cannot accept the call
-
+Detects established German, Japanese, or Soviet ownership and passes the opening stage, evolution stage, target coverage and generation to the country package, which hides the generic category and preserves the global Event 22 history.
+Outputs: adapter success flag, created or activated site count, current policy, category owner, failure reason.
 A failed handoff returns to a reviewed generic adapter only when the country package explicitly supports that fallback.
+The handoff adds no date condition; the package's own gates decide.
 
-### `chaosx_022_network_opening`
+### `chaosx_022_network_opening` (country report)
 
-Type: player-facing country report.
+Recipient: the selected country.
+Pre-effect: register or schedule the initial sites and cohorts, calculate opening coverage and the evolution split, initialize Exposure, Resistance Pressure and the network generation, and join the shared camp registry.
+Text direction: several detention sites now operate across named or implied regions; trains, guards, factories, local authorities and families already feel the effect; the government must decide whether to close, review, exploit or expand; an evolved opening also says that some sites have a killing function.
+Options: immediate closure, restrictive review, forced-labour administration, security expansion, and the extermination opening only when valid.
+Follow-up: the policy effect (shared mandate, reform path), one event history row, and the category reveal.
 
-Recipients:
+### `chaosx_022_opening_setup_complete` (hidden worker)
 
-- selected country
+Confirms that delayed setup finished, compares the actual count with the target, applies the pre-fire Evolution II or III shock when required, clears temporary targets and reports skipped states with reasons.
+The category does not open before site registration is stable unless it can safely show setup in progress.
 
-Pre-effect:
+## Baseline incidents (10)
 
-- complete or schedule initial site registration
-- calculate opening coverage and evolution split
-- initialize Network Reach, Exposure, Resistance Pressure, and network generation
+### `chaosx_022_repeat_incident_dispatch` (hidden)
 
-Text direction:
+Evaluates the valid incident families, chooses one through audited weights, and fires nothing when no threshold exists.
 
-- several detention sites now operate across named or implied regions
-- trains, guards, factories, local authorities, and families already feel the effect
-- government must decide whether to close, review, exploit, or expand
-- evolved opening also identifies that some sites have a killing function
+### Incident events
 
-Options:
+| Event | Trigger direction | Options |
+| --- | --- | --- |
+| `chaosx_022_coordinated_escape` | Resistance Pressure threshold, escape network and guard weakness | improve conditions, reinforce guards, targeted security operation, violent suppression for valid perpetrator routes; starts the escape mission |
+| `chaosx_022_camp_epidemic` | overcrowding, famine stage, plague, global air contamination weight, contamination, destroyed infrastructure | deliver medical and food relief, isolate humanely with release conditions, abandon the site, conceal the outbreak, continue work despite disease; starts the epidemic mission |
+| `chaosx_022_administrator_corruption` | seized property, high output, weak oversight | investigate and preserve records, replace local administration, tolerate theft, purge officials with a possible inward-broadening consequence |
+| `chaosx_022_military_objection` | high deaths, extermination, forced evacuation or purge of core supporters; officer loyalty | halt or review orders, remove objectors, compromise, allow an independent inspection; possible coup pressure, underground network, Event 21 bridge |
+| `chaosx_022_foreign_leak` | escapee, railway records, family search, foreign intelligence or administrator defection | perpetrator: restrict access, falsify records, investigate the leak, begin transparent review; observer: investigate, protect witness, share with allies, demand access |
+| `chaosx_022_disaster_exposes_site` | Event 13 damage reveals records, remains, survivors or infrastructure | relief and secure evidence, conceal and repair, abandon, request foreign aid |
+| `chaosx_022_underground_network_revealed` | central closure order with local continued operation | prosecute operators, negotiate surrender, expose publicly, restore coercive control; starts the underground mission |
+| `chaosx_022_target_source_exhausted` | no valid intake for the current target source, regime refuses closure | close the network, reduce to dormant detention, seek another valid existing target source, broaden the purge for an extreme route; no option invents an ethnicity |
+| `chaosx_022_restricted_site_accident` | restricted chemical operation, stockpile handling, bombardment or contamination failure | stop and decontaminate, conceal and continue, evacuate nearby population, abandon the site |
 
-- immediate closure
-- restrictive review
-- forced-labour administration
-- security expansion
-- extermination opening only when valid
+The cause owner is respected in every incident: the disease system owns spread, the famine system owns famine, Event 13 owns physical damage, and Event 22 and the shared camp owner own confinement, neglect and additional camp mortality.
+The original quota-breakdown incident is dropped with the per-state assignments; labour exhaustion is visible in the Ledger.
 
-Follow-up:
+## Evolution I (3)
 
-- policy initialization event or effect
-- event history row
-- category reveal
+- `chaosx_022_evolution_1_global` (hidden): marks Evolution I available, registers active countries for conversion jobs, changes the future first-opening package.
+- `chaosx_022_evolution_1_country_report` (country report): counts valid concentration sites, calculates `floor(valid_count / 2)` conversions, selects states through the audited score and queues conversions.
+  Text direction: part of the existing network has received a different purpose and chain of command; killing orders replace ordinary detention or labour in selected sites.
+  Options: accept the national extermination route when valid, halt conversion and start the closure conflict, contain conversion through review, allow a country-specific response.
+  When exactly one valid concentration site exists and no explicit extermination policy is set, the same event shows the single-site branch: convert, refuse and close, place under review, or allow local underground conversion risk.
+- `chaosx_022_evolution_1_setup_complete` (hidden worker): verifies the exact conversion count, ends productive allocations, preserves markers and evidence, writes the evolution history.
 
-### `chaosx_022_opening_setup_complete`
+## Evolution II (3)
 
-Type: hidden country worker.
+- `chaosx_022_evolution_2_global` (hidden): marks Evolution II available, registers every active network for the 1 percent job, changes the future opening package.
+- `chaosx_022_evolution_2_country_report`: deaths and disappearances rise across every camp state during a synchronized escalation. Options: continue policy, reduce intensity (return to the custody mandate), begin closure, investigate unauthorized escalation. The options affect future operation and never undo the applied loss.
+- `chaosx_022_evolution_2_state_worker` (hidden, one per state, totals and the evolution history row written by the last worker): validates the active site and generation, skips a marked state, admits the sweep cohort when the parent keeps that rule (index P-022-C), requests 1 percent of current population through `camp_admin_record_deaths`, logs the actual loss, sets the marker even when the floor or cohort makes it zero, adds evidence and Resistance Pressure from the actual loss.
 
-Purpose:
+## Evolution III (3)
 
-- confirm delayed setup finished
-- compare actual count with target count
-- apply pre-fire Evolution II or III shock when required
-- initialize operation pulse
-- clear temporary setup targets
-- report skipped states and reasons
+- `chaosx_022_evolution_3_global` (hidden): marks Evolution III available, registers active networks for coverage and shock jobs, changes the future first opening to the late-stage package.
+- `chaosx_022_evolution_3_country_report`: calculates the 50 percent target and the minimum split, queues additions, conversions and the 2 percent shock.
+  Text direction: the camp system now reaches half of eligible state administration; trains, guards, labour, killings, resistance, disease and evidence have become a national crisis.
+  Options: attempt emergency national closure, keep a mixed network, intensify an explicit extremist route, allow a country-specific response.
+- `chaosx_022_evolution_3_state_worker` (hidden, one per state): adds or converts the site, preserves existing extermination sites, gives the odd extra to concentration unless the route overrides, registers responsibility and generation, then requests the 2 percent shock once; a new pre-fire late-stage site sets no Evolution II marker. The last worker verifies final reach and split, totals the actual loss, records skipped states, activates the late-stage category and writes the history.
 
-Do not open the category before required site registration is stable, unless the category can safely show setup in progress.
+## Evidence and inspection (5)
 
-### `chaosx_022_policy_initialized`
+| Event | Type and trigger | Options and effects |
+| --- | --- | --- |
+| `chaosx_022_first_credible_report` | observer report; first fragmentary evidence reaches a valid observer | investigate, protect witness, share evidence, dismiss, suppress for alliance or domestic reasons; a dismissal does not delete the evidence |
+| `chaosx_022_inspection_requested` | responsible-country report | grant real access, grant restricted access, stage the site, reject access, begin closure before inspection |
+| `chaosx_022_inspection_outcome` | responsible and inspector reports; inputs are access quality, evidence, witnesses, cover-up, foreign intelligence and state control | no verification, credible suspicion, verified state, failed cover-up with a linked-site lead |
+| `chaosx_022_site_verified` | discovering-country and responsible-country reports; variants for ordinary site, cover-up confirmed by an independent source, restricted chemical or experiment site, and liquidation discovered | marks the state discovered, exposes unique state sources, adds the public Condemnation source once, reveals the foreign reaction adapters, raises linked-site discovery, records history; the cover-up variant adds the cover-up source once, the restricted variant calls the Event 16 or chemical discovery adapter with the alternate-history wording boundary, the liquidation variant carries the strongest source and tribunal priority |
+| `chaosx_022_network_verified` | country reports plus a news event at the scale threshold | exposes one bounded national network source, updates the responsible country's crisis idea, activates shared sanction and tribunal gates, marks the network public, prevents a repeated network source |
 
-Type: hidden country event or effect.
+Discovery steps reuse the shared discovery effects (`genocide_try_discover_state_atrocity` and the Condemnation source helpers) and add the confidence states of Part 4.
 
-Purpose:
+## Retreat (2)
 
-- store national policy
-- add or update staged national idea
-- activate correct decision mode
-- set AI profile
-- schedule first bounded incident window
+- `chaosx_022_front_approaches_site` (responsible-country report with a selected state; trigger: enemy front, bombing, encirclement, supply collapse or projected control loss).
+  Options: close in place, supplied transfer, forced evacuation on foot, liquidation for an extreme route, destroy site and records, abandon.
+  Follow-up: one state mission outcome through `chaosx_022_retreat_outcome`.
+- `chaosx_022_retreat_outcome` (country and observer reports): inputs are transport debit, route safety, supply, bombing, disease, resistance and destination capacity.
+  Variants: supplied arrival, partial loss and escape, transport catastrophe, route discovery, forced march (severe deaths, mass escape, interruption by enemy or resistance, destination reached, witnesses and evidence), abandonment.
 
-## Repeat dispatch and baseline incidents
+## Liberation and relief (2)
 
-### `chaosx_022_repeat_incident_dispatch`
+### `chaosx_022_site_liberated` (liberating-country report)
 
-Type: hidden country event.
+Pre-effect: stop operation, remove productive allocations and operator benefits, identify the site status, calculate survivors, disease, contamination, records and recent evacuation, and preserve original responsibility.
+Variants of one event (the state status of Part 4): active site with survivors, abandoned site, emptied site after forced evacuation (opens route search and missing-person actions), destroyed site with evidence (opens the evidence mission), contaminated site (calls chemical or biological decontamination and blocks ordinary transfer until safe).
+Options: secure and deliver urgent relief, request allied or international assistance, prioritize evidence while maintaining minimum relief, withdraw and hand responsibility to another valid controller.
+No option permits silent reuse; reuse requires the separate successor event and creates responsibility.
 
-Purpose:
+### `chaosx_022_site_documented_and_closed` (country report)
 
-- evaluate valid incident families
-- choose one through audited weights
-- avoid filler when no threshold exists
+Removes the physical camp building through the shared closure, preserves evidence and history, changes the state to a recovery status, and updates network closure progress.
+Survivor registration and relief milestones complete silently or as a mission result; a large network may show one summary report.
 
-Candidate incident events follow.
+## Succession, civil war, and reuse (4)
 
-### `chaosx_022_labour_quota_breakdown`
+- `chaosx_022_successor_inherits_network`: government, ideology, tag, overlord or recognized successor changes while sites or evidence remain.
+  Options: open archives and close (the archive opening is an option here, not a separate event), restrictive review, continue detention or labour, continue extermination for a valid route, conceal predecessor evidence.
+  Original responsibility remains; new operation creates a new generation; the successor AI profile initializes.
+- `chaosx_022_civil_war_network_split` (hidden worker plus reports to each side): partitions active states by control, preserves the pre-split actor, creates a later operation generation only after each side chooses policy, preserves evolution markers.
+- `chaosx_022_new_controller_considers_reuse`: a new controller has an inactive usable site and a route that can continue operation.
+  Options: keep closed and provide relief, reuse for detention, reuse for forced labour, reuse for extermination only with complete target-source proof. Any reuse creates later responsibility and removes the liberator profile.
+- `chaosx_022_master_orders_continuation` (subject and overlord reports): an explicit puppet-master decision or country-package effect records contributing responsibility; the subject can comply, resist, disclose or request support. No passive overlord relation creates responsibility.
 
-Type: country report with selected state.
+## Accountability and aftermath (5)
 
-Trigger direction:
+- `chaosx_022_displaced_person_crisis` (controller and possible receiving-country reports): survivors cannot safely return or a receiving decision is needed.
+  Options: local accommodation, negotiated foreign reception, safe return when valid, delayed decision with added pressure, unsafe forced return as a negative route. Tracing, citizenship and missing-person choices (formerly a separate family-records event) are options of this event; movement uses the migration owner's proved cohorts (Part 5).
+- `chaosx_022_tribunal_proposed` (investigating, successor or victorious-country report): requires verified evidence, a valid responsibility actor or institution and a valid investigating authority.
+  Options: domestic public trial, international cooperation, limited operator prosecution, negotiated amnesty, obstruction.
+- `chaosx_022_accountability_outcome` (participating-country reports and possible news): inputs are evidence categories, cooperation, obstruction, actor availability and survivor participation. Outcomes: comprehensive accountability, partial trials, domestic purge, amnesty, unresolved process, cover-up and later rediscovery.
+- `chaosx_022_transparent_closure_complete` (affected-country report): no active operation or intake, all sites closed or in stable relief, survivors supplied and registered, records preserved or transferred, no underground site. Unregisters the network, starts the longest refire protection, updates the history and achievements, retains evidence.
+- `chaosx_022_relief_and_recovery_complete` (liberating or successor-country report): survivor safety, documentation handoff, stable destinations, no disease or contamination emergency, state recovery complete. Closes the relief category and updates achievements.
 
-- one or more forced-labour assignments near workforce, supply, disease, or sabotage collapse
+Secret demolition and a dormant network are silent transitions with history rows; they stop operation, keep discovery jobs and missing-person pressure, and grant no transparent-closure protection.
 
-Text direction:
+## News events (3)
 
-- output orders continue while work gangs, guards, and railway managers report that the system cannot meet another quota
+- `chaosx_022_news_verified_large_network`: a verified national network above the accepted reach, death, extermination, experiment or chemical threshold. No direct duplicate Condemnation; public context and an AI reaction signal.
+- `chaosx_022_news_major_liberation`: liberation of a large verified or previously hidden network; scale of site and relief need, evidence, survivors, continuing displacement and medical crisis.
+- `chaosx_022_news_accountability_process`: a comprehensive tribunal or major successor accountability; institutions and evidence under review, no triumphalist claim that all consequences are resolved.
 
-Options:
+## Hidden worker contract
 
-- reduce intensity and lose output
-- transfer or import detainees from a valid source
-- restore food and medicine
-- force the quota, causing deaths and collapse risk
-- close the assignment
+Required workers: initial site batch, Evolution I conversion batch, Evolution II and III state batches, liberation transition, responsibility-generation transition, regional closure completion, network unregister and cleanup.
+Evidence exposure and the other transitions are effects called from the events above and need no events of their own.
+There is no operation-pulse worker; the shared processor owns recurring harm.
 
-Follow-up:
-
-- state mission or immediate assignment transition
-
-### `chaosx_022_coordinated_escape`
-
-Type: country report with selected state.
-
-Trigger direction:
-
-- Resistance Pressure threshold
-- escape network and guard weakness
-
-Options:
-
-- improve conditions and negotiate surrender of the crisis
-- reinforce guards
-- conduct a targeted security operation
-- use violent suppression for valid perpetrator routes
-
-Outcomes:
-
-- release or escape population transfer
-- testimony and exposure
-- deaths and evidence
-- state resistance shift
-
-### `chaosx_022_camp_epidemic`
-
-Type: country report with selected state.
-
-Trigger direction:
-
-- overcrowding, famine, plague, low air cleanliness, contamination, or destroyed infrastructure
-
-Options:
-
-- deliver medical and food relief
-- isolate humanely with release conditions
-- abandon the site
-- conceal the outbreak
-- continue work despite disease
-
-Cause ownership:
-
-- disease system owns disease spread
-- Event 22 owns confinement, deliberate neglect, and additional camp mortality
-
-### `chaosx_022_administrator_corruption`
-
-Type: country report.
-
-Trigger direction:
-
-- confiscated property, centralized administration, high output, weak oversight
-
-Options:
-
-- investigate and preserve records
-- replace local administration
-- tolerate theft to keep output
-- purge officials, with possible inward-broadening consequence
-
-### `chaosx_022_military_objection`
-
-Type: country report.
-
-Trigger direction:
-
-- high deaths, extermination, forced evacuation, or purge of core supporters
-- officer loyalty or civil-service resistance
-
-Options:
-
-- halt or review orders
-- remove objectors
-- compromise on intensity
-- allow an independent inspection
-
-Possible follow-up:
-
-- hardliner coup pressure
-- underground network
-- Event 21 civil-war bridge
-
-### `chaosx_022_foreign_leak`
-
-Type: perpetrator-side report and observer-side report.
-
-Trigger direction:
-
-- escapee, railway records, family search, foreign intelligence, or administrator defection
-
-Perpetrator options:
-
-- restrict access
-- falsify records
-- investigate the leak
-- begin transparent review
-
-Observer options:
-
-- investigate
-- protect witness
-- share with allies
-- demand access
-
-### `chaosx_022_disaster_exposes_site`
-
-Type: affected controller report and observer report when access exists.
-
-Trigger direction:
-
-- Event 13 damage reveals records, remains, survivors, or site infrastructure
-
-Options:
-
-- relief and secure evidence
-- conceal and repair
-- abandon
-- request foreign aid
-
-### `chaosx_022_underground_network_revealed`
-
-Type: successor or closing-government report.
-
-Trigger direction:
-
-- central closure order and local continued operation
-
-Options:
-
-- prosecute operators
-- negotiate surrender
-- expose the network publicly
-- restore coercive central control
-
-Follow-up:
-
-- underground-network mission
-- responsibility for national and local actors
-
-### `chaosx_022_target_source_exhausted`
-
-Type: perpetrator-side country report.
-
-Trigger direction:
-
-- no valid intake remains for current target purpose
-- regime refuses automatic closure
-
-Options:
-
-- close the network
-- reduce to dormant detention
-- seek another valid existing campaign target source
-- broaden purge into core population for an extreme route
-
-No option can invent an ethnicity.
-
-### `chaosx_022_restricted_site_accident`
-
-Type: country and state report.
-
-Trigger direction:
-
-- restricted chemical operation, stockpile handling, bombardment, or contamination failure
-
-Options:
-
-- stop and decontaminate
-- conceal and continue
-- evacuate nearby population
-- abandon the site
-
-System calls:
-
-- stockpile
-- contamination
-- exact deaths
-- evidence
-- discovery
-
-## Evolution I events
-
-### `chaosx_022_evolution_1_global`
-
-Type: hidden global evolution event plus shared evolution log.
-
-Purpose:
-
-- mark Evolution I available
-- register active countries for conversion jobs
-- change future first-opening package
-
-### `chaosx_022_evolution_1_country_report`
-
-Type: player-facing affected-country report.
-
-Pre-effect:
-
-- count valid concentration sites
-- calculate `floor(valid_count / 2)` conversions
-- select states through audited score
-- queue conversions
-
-Text direction:
-
-- part of the existing network has received a different purpose and chain of command
-- transport and killing orders replace ordinary detention or labour policy in selected sites
-
-Options:
-
-- accept national extermination policy when valid
-- halt conversion and start closure conflict
-- contain conversion through review
-- allow country-specific response
-
-The event option does not change the required automatic conversion count for an explicit evolved opening unless the accepted one-site policy gate applies.
-
-### `chaosx_022_evolution_1_single_site_crisis`
-
-Type: country report.
-
-Trigger:
-
-- one valid concentration site
-- no explicit extermination policy
-
-Options:
-
-- convert
-- refuse and close
-- place under review
-- allow local underground conversion risk
-
-### `chaosx_022_evolution_1_setup_complete`
-
-Type: hidden worker.
-
-Purpose:
-
-- verify exact conversion count
-- remove incompatible assignments
-- preserve markers and evidence
-- start extermination pulses
-- write evolution history
-
-## Evolution II events
-
-### `chaosx_022_evolution_2_global`
-
-Type: hidden global evolution event plus shared evolution log.
-
-Purpose:
-
-- mark Evolution II available
-- register every active network for the 1 percent job
-- change future opening package
-
-### `chaosx_022_evolution_2_country_report`
-
-Type: player-facing country report after or during the batched effect.
-
-Text direction:
-
-- deaths and disappearances rise across every camp state during a synchronized escalation
-- state reports show a shared policy, supply collapse, or deprivation pattern
-
-Options:
-
-- continue policy
-- reduce intensity
-- begin closure
-- investigate unauthorized escalation
-
-The options affect future operation. They do not undo the exact applied loss.
-
-### `chaosx_022_evolution_2_state_worker`
-
-Type: hidden state worker.
-
-Contract:
-
-- validate active site and generation
-- skip marked state
-- request 1 percent current population
-- call exact helper
-- log actual loss
-- set marker even when protected floor produces zero
-- add evidence and resistance based on actual loss
-
-### `chaosx_022_evolution_2_complete`
-
-Type: hidden country worker.
-
-Purpose:
-
-- total actual loss
-- skipped-state ledger
-- clear batch state
-- write evolution history
-
-## Evolution III events
-
-### `chaosx_022_evolution_3_global`
-
-Type: hidden global evolution event plus shared evolution log.
-
-Purpose:
-
-- mark Evolution III available
-- register active networks for coverage and shock jobs
-- change future first opening to the late-stage package
-
-### `chaosx_022_evolution_3_country_report`
-
-Type: player-facing affected-country report.
-
-Pre-effect:
-
-- calculate 50 percent coverage target
-- calculate final concentration and extermination minimum split
-- queue additions and conversions
-- queue 2 percent shock
-
-Text direction:
-
-- the camp system now reaches half of eligible state administration
-- trains, guards, labour, killings, resistance, disease, and evidence have become a national crisis
-
-Options:
-
-- attempt emergency national closure
-- keep a mixed detention and extermination network
-- intensify an explicit extremist route
-- allow country-specific response
-
-### `chaosx_022_evolution_3_site_setup_worker`
-
-Type: hidden state worker.
-
-Purpose:
-
-- add or convert site
-- preserve existing extermination sites
-- use concentration extra for odd split unless route overrides
-- register responsibility and generation
-- set pre-fire Evolution III rule so no Evolution II shock follows
-
-### `chaosx_022_evolution_3_shock_worker`
-
-Type: hidden state worker.
-
-Contract:
-
-- request 2 percent current population
-- call exact helper
-- log actual loss
-- set Evolution III marker
-- do not set or apply Evolution II shock for a new pre-fire late-stage site
-
-### `chaosx_022_evolution_3_complete`
-
-Type: hidden country worker.
-
-Purpose:
-
-- verify final reach and split
-- total actual loss
-- record skipped states
-- activate late-stage category
-- write history
-
-## Evidence and inspection events
-
-### `chaosx_022_first_credible_report`
-
-Type: observer report.
-
-Trigger:
-
-- first fragmentary evidence source reaches a valid observer
-
-Options:
-
-- investigate
-- protect witness
-- share evidence
-- dismiss
-- suppress for alliance or domestic reasons
-
-A dismissal does not delete the evidence.
-
-### `chaosx_022_inspection_requested`
-
-Type: responsible-country report.
-
-Options:
-
-- grant real access
-- grant restricted access
-- stage the site
-- reject access
-- begin closure before inspection
-
-Follow-up:
-
-- inspection outcome event
-
-### `chaosx_022_inspection_outcome`
-
-Type: responsible and inspector reports.
-
-Outcome inputs:
-
-- access quality
-- evidence
-- witnesses
-- cover-up
-- foreign intelligence
-- state control
-
-Results:
-
-- no verification
-- credible suspicion
-- verified state
-- failed cover-up and linked-site lead
-
-### `chaosx_022_site_verified`
-
-Type: discovering-country report and responsible-country report.
-
-Effects:
-
-- mark state discovered
-- expose unique state sources
-- add public Condemnation source
-- reveal foreign reaction adapters
-- raise linked-site discovery chance
-- record history
-
-### `chaosx_022_network_verified`
-
-Type: country reports plus news event when scale threshold is met.
-
-Effects:
-
-- expose bounded national network source
-- update responsible-country crisis idea
-- activate shared sanction and tribunal gates
-- mark network public
-- prevent repeated network source
-
-### `chaosx_022_coverup_discovered`
-
-Type: observer and responsible-country reports.
-
-Trigger:
-
-- destroyed or falsified evidence confirmed by independent source
-
-Effects:
-
-- add cover-up source once
-- increase accountability severity
-- reveal administrator or institution link
-
-### `chaosx_022_restricted_or_experiment_site_verified`
-
-Type: observer report and possible news event.
-
-Effects:
-
-- add source-specific evidence
-- call Event 16 or chemical-system discovery adapter
-- preserve historical and alternate-history wording boundary
-
-## Retreat events
-
-### `chaosx_022_front_approaches_site`
-
-Type: responsible-country report with selected state.
-
-Trigger:
-
-- enemy front, bombing, encirclement, supply collapse, or projected control loss
-
-Options:
-
-- close in place
-- supplied transfer
-- forced evacuation on foot
-- liquidation for an extreme route
-- destroy site and records
-- abandon
-
-Follow-up:
-
-- one state mission and one outcome event
-
-### `chaosx_022_transfer_outcome`
-
-Type: country report.
-
-Inputs:
-
-- transport debit
-- route safety
-- supply
-- bombing
-- disease
-- resistance
-- destination capacity
-
-Results:
-
-- supplied arrival
-- partial loss and escape
-- transport catastrophe
-- route discovery
-- abandonment
-
-### `chaosx_022_forced_march_outcome`
-
-Type: country and observer reports when discovered.
-
-Results:
-
-- severe deaths
-- mass escape
-- route interrupted by enemy or resistance
-- destination reached
-- evidence and witness creation
-
-### `chaosx_022_liquidation_discovered`
-
-Type: liberator or observer report.
-
-Effects:
-
-- strongest state atrocity and cover-up source
-- exact responsible actor
-- possible military-objection evidence
-- tribunal priority
-
-## Liberation and relief events
-
-### `chaosx_022_site_liberated`
-
-Type: liberating-country report.
-
-Pre-effect:
-
-- stop operation
-- remove assignment and operator benefits
-- identify site status
-- calculate survivors, disease, contamination, records, and recent evacuation
-- preserve original responsibility
-
-Options:
-
-- secure and deliver urgent relief
-- request allied or international assistance
-- prioritize evidence while maintaining minimum relief
-- withdraw and hand responsibility to another valid controller
-
-No option permits silent reuse. Reuse requires a separate successor event and creates responsibility.
-
-### `chaosx_022_abandoned_site_found`
-
-Type: liberator report.
-
-Text direction:
-
-- guards and administrators are gone or scattered
-- survivors, records, disease, and supplies remain unresolved
-
-Options:
-
-- secure
-- emergency relief
-- pursue fleeing administrators
-- preserve evidence
-
-### `chaosx_022_emptied_site_found`
-
-Type: liberator report.
-
-Purpose:
-
-- reveal forced evacuation route
-- open route search, witness, and missing-person actions
-
-### `chaosx_022_destroyed_site_found`
-
-Type: liberator report.
-
-Purpose:
-
-- expose physical or documentary remnants
-- start evidence-preservation mission
-- assess survivors and contamination
-
-### `chaosx_022_contaminated_site_found`
-
-Type: liberator report.
-
-Purpose:
-
-- call chemical or biological decontamination
-- block ordinary transfer until safe
-- preserve source-specific evidence
-
-### `chaosx_022_relief_emergency_update`
-
-Type: bounded report used only at a major relief threshold.
-
-Possible directions:
-
-- mortality falling
-- epidemic worsening
-- housing exhausted
-- records and families identified
-- foreign aid arrives
-
-Routine progress remains in missions and category values.
-
-### `chaosx_022_survivors_registered`
-
-Type: country report or silent completion with optional report for large network.
-
-Effects:
-
-- unlock return and resettlement
-- improve evidence confidence
-- update achievement proof
-
-### `chaosx_022_site_documented_and_closed`
-
-Type: country report.
-
-Effects:
-
-- remove physical camp building through closure helper
-- preserve evidence and history
-- change state to recovery status
-- update network closure progress
-
-## Succession, civil war, and reuse events
-
-### `chaosx_022_successor_inherits_network`
-
-Type: successor-country report.
-
-Trigger:
-
-- government, ideology, tag, overlord, or recognized successor changes while sites or evidence remain
-
-Options:
-
-- open archives and close
-- restrictive review
-- continue detention or labour
-- continue extermination for a valid route
-- conceal predecessor evidence
-
-Effects:
-
-- original responsibility remains
-- new operation creates new generation
-- successor AI profile initializes
-
-### `chaosx_022_civil_war_network_split`
-
-Type: hidden worker plus reports to each relevant side.
-
-Purpose:
-
-- partition active states by control
-- preserve pre-split actor
-- create later operation generation only after each side chooses policy
-- preserve evolution markers
-
-### `chaosx_022_new_controller_considers_reuse`
-
-Type: controller report.
-
-Trigger:
-
-- new controller has an inactive but usable site and a route that can continue operation
-
-Options:
-
-- keep closed and provide relief
-- reuse for detention
-- reuse for forced labour
-- reuse for extermination only with complete target-purpose proof
-
-Any reuse creates later responsibility and removes liberator profile.
-
-### `chaosx_022_master_orders_continuation`
-
-Type: subject and overlord reports.
-
-Trigger:
-
-- explicit puppet-master decision or country-package effect
-
-Purpose:
-
-- record contributing responsibility
-- let subject comply, resist, disclose, or request support
-
-No passive overlord relation creates responsibility.
-
-### `chaosx_022_archives_opened`
-
-Type: successor and observer reports.
-
-Effects:
-
-- expose predecessor evidence
-- improve legitimacy or foreign support according to shared systems
-- create hardliner and collaborator conflict
-- support accountability achievements
-
-## Accountability and aftermath events
-
-### `chaosx_022_displaced_person_crisis`
-
-Type: controller and possible receiving-country reports.
-
-Trigger:
-
-- survivors cannot safely return
-- receiving capacity or border decision required
-
-Options:
-
-- local accommodation
-- negotiated foreign reception
-- safe return when valid
-- delayed decision with added pressure
-- unsafe forced return as a negative route
-
-### `chaosx_022_family_and_missing_records`
-
-Type: aftermath report.
-
-Purpose:
-
-- create tracing, citizenship, and missing-person choice
-- use preserved records and testimony
-
-### `chaosx_022_tribunal_proposed`
-
-Type: investigating, successor, or victorious-country report.
-
-Requirements:
-
-- verified evidence
-- valid responsibility actor or institution
-- valid investigating authority
-
-Options:
-
-- domestic public trial
-- international cooperation
-- limited operator prosecution
-- negotiated amnesty
-- obstruction
-
-### `chaosx_022_accountability_outcome`
-
-Type: participating-country reports and possible news event.
-
-Inputs:
-
-- evidence categories
-- cooperation
-- obstruction
-- actor availability
-- survivor participation
-
-Outcomes:
-
-- comprehensive accountability
-- partial trials
-- domestic purge
-- amnesty
-- unresolved process
-- cover-up and later rediscovery
-
-### `chaosx_022_transparent_closure_complete`
-
-Type: affected-country report.
-
-Requirements:
-
-- no active operation or intake
-- all sites closed or in stable relief
-- survivors supplied and registered
-- records preserved or transferred
-- no underground site
-
-Effects:
-
-- unregister active network
-- start longest refire protection
-- update event history and achievements
-- retain evidence and aftermath records
-
-### `chaosx_022_secret_demolition_complete`
-
-Type: responsible-country report.
-
-Requirements:
-
-- no active buildings
-- unresolved survivors, records, or cover-up evidence
-
-Effects:
-
-- stop operation pulse
-- keep discovery jobs and missing-person pressure
-- no transparent-closure protection
-
-### `chaosx_022_network_dormant`
-
-Type: country report or silent transition.
-
-Purpose:
-
-- mark suspended intake and assignment
-- retain low-level repression, evidence, and refire incident eligibility
-
-### `chaosx_022_relief_and_recovery_complete`
-
-Type: liberating or successor-country report.
-
-Requirements:
-
-- survivor safety
-- evidence and documentation handoff
-- stable destinations
-- no disease or contamination emergency
-- state recovery complete
-
-Effects:
-
-- close relief category
-- update achievements
-- retain historical state record
-
-## News events
-
-### `chaosx_022_news_verified_large_network`
-
-Trigger direction:
-
-- verified national network above accepted reach, death, extermination, experiment, or chemical severity threshold
-
-Recipients:
-
-- countries with normal news visibility
-
-Effects:
-
-- no direct duplicate Condemnation
-- public context and AI reaction signal
-
-### `chaosx_022_news_major_liberation`
-
-Trigger direction:
-
-- liberation of a large verified or previously hidden network
-
-Text direction:
-
-- scale of site and relief need
-- evidence and survivors
-- continuing displacement and medical crisis
-
-### `chaosx_022_news_accountability_process`
-
-Trigger direction:
-
-- comprehensive tribunal or major successor accountability
-
-Text direction:
-
-- institutions and evidence under review
-- no triumphalist claim that all consequences are resolved
-
-## Hidden worker events
-
-Required workers include:
-
-- initial site batch
-- Evolution I conversion batch
-- Evolution II shock batch
-- Evolution III site and shock batches
-- operation pulse
-- evidence exposure transaction
-- liberation transition
-- responsibility-generation transition
-- regional closure completion
-- network unregister and cleanup
-
-Every worker receives:
-
-- expected actor
-- expected state where relevant
-- network generation
-- action or cause
-- current evolution stage
-- one-shot proof
-
-Every worker:
-
-- revalidates before applying
-- fails closed
-- records skip reason
-- clears temporary targets
-- avoids player popup
-- remains idempotent over save and reload
+Every worker receives the expected actor, the expected state where relevant, the network generation, the action or cause, the current evolution stage, and a one-shot proof.
+Every worker revalidates before applying, fails closed, records the skip reason, clears temporary targets, avoids player popups and stays idempotent over save and reload.
 
 ## Event option and AI rules
 
-Every player-facing option needs:
-
-- visible direction and cost
-- exact availability
-- AI chance or deterministic profile rule
-- immediate effect
-- delayed follow-up
-- history effect when material
-- cleanup
+Every player-facing option needs visible direction and cost, exact availability, an AI chance or deterministic profile rule, the immediate effect, the delayed follow-up, a history effect when material, and cleanup.
 
 No option can:
 
 - invent a target group
-- apply population loss outside the exact helper
+- apply population loss outside `camp_admin_record_deaths` and the exact helper
 - clear evidence through building deletion
 - transfer people without source and destination accounting
 - activate chemical operation without stockpile
@@ -1178,21 +247,22 @@ No option can:
 
 ## Localisation handoff fields
 
-For every event record:
-
-- working semantic name
-- final numeric ID
-- title direction
-- description direction
-- viewpoint
-- dynamic actors and states
-- option directions
-- hidden information
-- image ID
-- sound pattern
-- trigger and fire path
-- follow-up IDs
-- AI profile
-- history or detail registration
+For every event record the working semantic name, final numeric ID, title direction, description direction, viewpoint, dynamic actors and states, option directions, hidden information, image ID, sound pattern, trigger and fire path, follow-up IDs, AI profile, and history or detail registration.
 
 Final localisation is written during implementation and audited separately.
+
+## Disposition of the original map
+
+| Original working event | Disposition |
+| --- | --- |
+| `policy_initialized` | merged into the option effects of `network_opening` |
+| `labour_quota_breakdown` | dropped with the per-state assignments |
+| `evolution_1_single_site_crisis` | branch of `evolution_1_country_report` |
+| `evolution_2_complete`, `evolution_3_site_setup_worker`, `evolution_3_shock_worker`, `evolution_3_complete` | merged into the last state worker of each evolution |
+| `coverup_discovered`, `restricted_or_experiment_site_verified`, `liquidation_discovered` | variants of `site_verified` |
+| `transfer_outcome`, `forced_march_outcome` | variants of `retreat_outcome` |
+| `abandoned_site_found`, `emptied_site_found`, `destroyed_site_found`, `contaminated_site_found` | variants of `site_liberated` |
+| `relief_emergency_update`, `survivors_registered` | mission results and history rows |
+| `archives_opened` | option of `successor_inherits_network` |
+| `family_and_missing_records` | options of `displaced_person_crisis` |
+| `secret_demolition_complete`, `network_dormant` | silent transitions with history rows |

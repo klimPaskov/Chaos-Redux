@@ -254,6 +254,7 @@ These actions should have real military, air, intelligence, or supply costs. The
 ## Liberation state transition
 
 When a non-continuing controller takes a camp state, organized camp operation stops immediately. The state enters a liberation transition.
+The transition extends the shared control-change path (`genocide_on_state_control_changed`, `genocide_liberate_discovered_camp`) and the terminal branch of `camp_admin_close_site`, which freezes the custody rows, releases no survivors by assumption and keeps the original authority.
 
 ### Immediate checks
 
@@ -273,7 +274,7 @@ The liberation effect determines:
 
 ### Immediate state status
 
-The active camp assignment is removed. The state receives one of these statuses:
+The productive allocation is removed. The state receives one of these statuses:
 
 - liberated site with survivors
 - abandoned site with survivors
@@ -403,7 +404,7 @@ Effects:
 
 ## Displaced persons and migration
 
-Liberation and closure can create a large displaced population. Event 22 should provide a bridge to the planned migration system instead of instantly returning everyone to a previous state.
+Liberation and closure can create a large displaced population. Event 22 provides a bridge to the implemented independent migration system (the Part 5 contract) instead of instantly returning everyone to a previous state.
 
 ### Population destinations
 
@@ -490,7 +491,7 @@ The mechanic remains strategic. It should not depict procedural killing methods.
 
 Available only to an active extermination or extreme cover-up route.
 
-- creates an immediate exact population loss
+- creates an immediate exact population loss requested through `camp_admin_record_deaths`, bounded by the living custody of the site
 - adds the strongest local atrocity and cover-up evidence
 - can delay survivor testimony but cannot erase physical or documentary evidence
 - raises military objection, administrator flight, and internal collapse risk
@@ -498,6 +499,7 @@ Available only to an active extermination or extreme cover-up route.
 
 ### Destroy infrastructure and records
 
+- reuses the shared evidence-destruction effect (`genocide_destroy_camp_evidence_in_action_state`)
 - can remove or damage the building
 - creates destroyed-site evidence
 - can kill people still present
@@ -687,7 +689,7 @@ Use working labels only. Final localisation should be written during implementat
 ### Domestic report families
 
 - network activation
-- camp assignment selected
+- policy and priority change
 - labour quota collapse
 - epidemic or famine in a site
 - escape and sabotage
@@ -794,9 +796,9 @@ Atrocity options can use cold official euphemism or grim self-damning irony. The
 A state leaves the active operation loop only after:
 
 - no active concentration, extermination, or participating gulag operation remains
-- no forced-labour assignment remains
+- no forced-work allocation remains
 - no active intake remains
-- residual population-loss pulse is stopped
+- recurring population loss is stopped at the shared processor
 - responsibility and evidence have been archived to persistent history
 - relief or abandonment status has been set
 
@@ -810,7 +812,7 @@ A country leaves the active Event 22 country loop only after:
 - no covert local continuation remains
 - no evacuation mission remains
 - no restricted chemical operation remains
-- country pulse and decision category are stopped
+- the country leaves the shared camp registry and the decision category is stopped
 - outstanding relief, tribunal, or discovery hooks are handed to their owning systems
 
 ### Tag and controller changes
