@@ -12,7 +12,7 @@ Do not simplify the complete trait-pool promise.
 
 ## Required prework
 
-Run the scripted-system architect prompt with `fork_turns="none"`.
+Run the scripted-system architect prompt with no inherited parent context.
 Use the repo explorer prompt only when trait roots, exact source locations, integration ownership, or precedents remain unclear.
 
 Resolve the exact country-leader trait source roots, load-order behavior, recipient ledger scope, weighted selection method, report storage, global actor pattern, and cluster ID before coding around them.
@@ -261,7 +261,7 @@ Run:
 2. localisation auditor
 3. documentation curator
 4. spreadsheet alignment worker
-5. mandatory improvement-loop planner with `fork_turns="none"`
+5. mandatory improvement-loop planner with no inherited parent context
 6. read-only completion auditor
 
 Integrate every accepted improvement addendum.

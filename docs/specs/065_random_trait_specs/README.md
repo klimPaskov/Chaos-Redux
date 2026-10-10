@@ -5,7 +5,7 @@
 The design-resolution ledger separates reported user rules from planner resolutions.
 Duplicate rejection, the grant ledger, persistence interpretation, exact weights and Chaos, and optional cluster participation remain planning resolutions.
 Acceptance remains `unresolved` where the original user brief or attributable parent decision cannot be recovered; preserve those claims for review under [AGENTS.md](../../../AGENTS.md#specs-and-plans).
-The [design record](research/065_random_trait_design_resolution_ledger.md) and numbered specifications are the design map; [current event guidance](../../../.agents/skills/chaos-redux-events/SKILL.md) and [subagent routing](../../../.agents/skills/chaos-redux-subagents/SKILL.md) own implementation workflow.
+The [design record](research/065_random_trait_design_resolution_ledger.md) and numbered specifications are the design map; [current event guidance](../../../.claude/skills/chaos-redux-events/SKILL.md) and [subagent routing](../../../.claude/skills/chaos-redux-subagents/SKILL.md) own implementation workflow.
 Original source-reading, repository-baseline, tooling-failure, and manual-review reports are historical planning evidence, not current source verification, service-health findings, or completed independent audits.
 The parent’s 2026-10-07 allocation sets Randomizations to cluster ID `14` after workbook/runtime occupancy verification; see the [shared identifier registry](../shared_identifier_registry.md).
 The user authorized unused identifier assignments; this numeric allocation does not approve the broader design.
@@ -128,3 +128,14 @@ The package does not claim that live subagent audits or HOI4 MCP validation have
 
 The [2026-09-03 subagent execution blocker](../../plans/065_random_trait_plans/blocked_reports/065_random_trait_subagent_execution_blocker.md) records the original failed launch attempt.
 Use current route discovery and the active prompts for any later authorized implementation.
+
+## Open questions
+
+- `unresolved`: a cap on stacked Event 65 traits per leader. Recommendation: once a leader carries six traits granted by Event 65, a new grant replaces that leader's oldest Event 65 trait instead of adding a seventh. Unlimited stacking makes long-lived leaders' tooltips unreadable after several repeat firings and lets extreme modifiers accumulate without a counterweight; the duplicate-redraw rule and the complete pool stay unchanged.
+
+## Changelog
+
+### 2026-10-10 spec audit
+
+- The player report shows the local leader, the traits that leader received, and one worldwide count. Pool size, worldwide trait totals, the Evolution label, and partial-saturation counters left the report and Event Details because they describe the generator rather than anything the player can act on.
+- Acceptance rows, the goal prompt, and the surface map follow the shorter report. Subagent instructions use the Claude-first wording.

@@ -2,7 +2,7 @@
 
 ## Role
 
-Run `chaosx_event_completion_auditor` with `fork_turns="none"` after implementation, asset work, probability audit, localisation audit, documentation, spreadsheet export, and the improvement loop are complete.
+Run `chaosx_event_completion_auditor` with no inherited parent context after implementation, asset work, probability audit, localisation audit, documentation, spreadsheet export, and the improvement loop are complete.
 
 Read `AGENTS.md`, every Event 65 specification and prompt file, every implementation handoff, the generated trait manifest, the probability audit, the asset manifest, and:
 

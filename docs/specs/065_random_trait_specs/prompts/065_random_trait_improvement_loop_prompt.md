@@ -2,7 +2,7 @@
 
 ## Invocation
 
-Run `chaosx_improvement_loop_planner` with `fork_turns="none"`.
+Run `chaosx_improvement_loop_planner` with no inherited parent context.
 
 ## Event context
 

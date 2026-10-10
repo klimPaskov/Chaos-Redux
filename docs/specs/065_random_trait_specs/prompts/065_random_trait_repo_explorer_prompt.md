@@ -2,7 +2,7 @@
 
 ## Role
 
-Run `chaosx_repo_explorer` with `fork_turns="none"`.
+Run `chaosx_repo_explorer` with no inherited parent context.
 
 Read `AGENTS.md`, all files under `docs/specs/065_random_trait_specs/`, and the relevant event, cluster, asset, debug, and documentation skills.
 

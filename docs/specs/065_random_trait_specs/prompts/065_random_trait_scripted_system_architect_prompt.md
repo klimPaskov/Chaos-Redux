@@ -2,7 +2,7 @@
 
 ## Role
 
-Run `chaosx_scripted_system_architect` with `fork_turns="none"`.
+Run `chaosx_scripted_system_architect` with no inherited parent context.
 
 Read `AGENTS.md`, the complete Event 65 specification package, the parent’s current source map or repo explorer handoff, the event skill, the dynamic trigger and effect references, the cluster contract, and the offline country-leader trait documentation.
 

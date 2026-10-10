@@ -142,14 +142,12 @@ It should avoid generic phrases about the world never being the same, the public
 
 The report should show:
 
-- active Evolution name or baseline state
-- number of traits assigned per eligible leader
-- total leaders changed
-- total traits added worldwide
-- current complete pool size
 - the local player's leader name
 - the local player's accepted trait names
-- a clear saturation note when the local leader received fewer than the stage target
+- one line with the number of leaders changed worldwide
+- when the local leader received no trait, one plain line saying the leader already carries every possible trait
+
+Evolution state belongs to the event log and Event Details. Pool size, worldwide trait totals, and a partial-saturation note are development data; they do not help the player read what happened to their own leader.
 
 The global report does not list every country's assigned traits.
 
@@ -253,8 +251,7 @@ It should show:
 - cumulative stacking
 - duplicate redraw rule
 - baseline grant count
-- each Evolution's grant count and weighting change
-- current generated pool size
+- each Evolution's grant count and, in plain words, how its weighting changes
 - cluster name and Medium severity after cluster registration is complete
 
 The panel should not display the whole registry.

@@ -69,7 +69,7 @@ Use optional membership, Medium danger, and named 60 percent participation.
 
 Wire event history, Event Details, Evolution settings, cluster settings, global actor handling, debug paths, permanent docs, and the authoritative workbook.
 
-The report shows the active form, global counts, pool size, local leader, local trait names, and saturation state.
+The report shows the local leader, local trait names, and one worldwide count; no pool size or saturation counters.
 
 Handle zero, singular, and plural results without raw IDs.
 
@@ -81,7 +81,7 @@ Use `hoi4.event_inspect`, `hoi4.event_render`, and `hoi4.event_compare` before a
 
 Provide route coverage for direct and cluster firing, all forms, human reports, AI mutation, debug paths, save and load, and multiplayer.
 
-Near completion, run the probability auditor, localisation auditor, documentation curator, spreadsheet worker, mandatory improvement-loop planner with `fork_turns="none"`, and read-only completion auditor.
+Near completion, run the probability auditor, localisation auditor, documentation curator, spreadsheet worker, mandatory improvement-loop planner with no inherited parent context, and read-only completion auditor.
 
 Move status to `Needs Testing` only after implementation validation.
 

@@ -22,7 +22,7 @@
 | Repeatable registration | `common/scripted_effects/chaosx_logic_effects.txt` | Preserve Event 65 repeatable membership | Main implementation agent | Pool initialization inspection |
 | Event dispatch | Shared event ID dispatch | Verify Event 65 root remains the single entry point | Main implementation agent | Event compare |
 | Event history | Shared event-log effects and selectors | One global row, result status, actor handling | Main implementation agent | Event Log render and source audit |
-| Event Details | Shared details effects and localisation | Premise, counts, Evolutions, pool size, cluster | Main implementation agent | Details render |
+| Event Details | Shared details effects and localisation | Premise, counts, Evolutions, cluster | Main implementation agent | Details render |
 | Evolution settings | Shared Evolution constants, effects, triggers, UI selectors | Event 65 enabled state, thresholds, history, persistence | Main implementation agent | Boundary tests |
 | Randomizations cluster constants | `common/script_constants/event_cluster_constants.txt` | Reserve final ID, tuning, participation | Main implementation agent | Collision scan |
 | Randomizations cluster logic | Shared cluster effects and triggers | Cluster registration, member loading, availability, outcome | Main implementation agent | Direct and cluster compare |

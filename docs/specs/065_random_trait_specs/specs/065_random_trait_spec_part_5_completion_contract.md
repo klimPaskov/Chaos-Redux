@@ -109,7 +109,7 @@ Export the CSV snapshots from the workbook.
 
 ### 9. Improvement loop
 
-Run the mandatory Event 65 improvement-loop prompt with `fork_turns="none"`.
+Run the mandatory Event 65 improvement-loop prompt with no inherited parent context.
 
 The loop should test whether the event is still shallow, disconnected, bloated, or missing a meaningful consequence.
 

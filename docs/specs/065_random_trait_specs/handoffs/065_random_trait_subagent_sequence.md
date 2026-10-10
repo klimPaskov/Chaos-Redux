@@ -4,7 +4,7 @@
 
 This sequence keeps read-only review, gameplay ownership, asset work, probability validation, text work, documentation, and final acceptance separate.
 
-Every prompt is self-contained because project subagents should run with `fork_turns="none"` when required.
+Every prompt is self-contained because project subagents should run with no inherited parent context when required.
 
 ## Sequence
 
