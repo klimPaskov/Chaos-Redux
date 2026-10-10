@@ -47,3 +47,6 @@ Every file listed below was read and processed before the specification was draf
 ## Catalog conflict recorded
 
 The event catalog CSV records Event 14 as Minor Repeatable. The current brief records Minor Fire-Once. The current brief is newer and more specific, so the final design uses Minor Fire-Once and requires the implementation pass to update the catalog and registration surfaces.
+
+Resolved: the current catalog export records Event 14 as `Minor Fire-Once` with no cluster (checked in the spec audit of 2026-10-10).
+The source table above is a historical reading record; its `AGENTS.md`, skill and TOML entries name the files read at the time, and the current equivalents are `CLAUDE.md`, `.claude/skills/` and `.claude/agents/`.

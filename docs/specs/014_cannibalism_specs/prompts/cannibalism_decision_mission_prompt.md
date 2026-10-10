@@ -1,5 +1,9 @@
 # Event 014 Cannibalism Decision and Mission Implementation Prompt
 
+> Historical build contract (spec audit 2026-10-10): this prompt drove the implemented Event 014 build and is kept as provenance.
+> Do not re-run it; current status and open work are in `../quality/package_status.md` and the package README.
+> Its `AGENTS.md`, `.agents/skills/` and `fork_turns="none"` references map to the current `CLAUDE.md`, `.claude/skills/<name>/SKILL.md` and the routing in `chaos-redux-subagents`.
+
 Read:
 
 - `AGENTS.md`

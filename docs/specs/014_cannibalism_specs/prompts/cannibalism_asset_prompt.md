@@ -1,5 +1,9 @@
 # Event 014 Cannibalism Asset Production Prompt
 
+> Historical build contract (spec audit 2026-10-10): this prompt drove the implemented Event 014 build and is kept as provenance.
+> Do not re-run it; current status and open work are in `../quality/package_status.md` and the package README.
+> Its `AGENTS.md`, `.agents/skills/` and `fork_turns="none"` references map to the current `CLAUDE.md`, `.claude/skills/<name>/SKILL.md` and the routing in `chaos-redux-subagents`.
+
 Use this prompt after extracting the full package to `docs/specs/014_cannibalism_specs/`.
 
 Read:
@@ -15,7 +19,7 @@ All custom subagents must be spawned with `fork_turns="none"`. Pass this prompt,
 
 ## Routing
 
-Use [the asset owner skill](../../../../.agents/skills/chaos-redux-event-assets/SKILL.md) for current production and transparency requirements.
+Use [the asset owner skill](../../../../.claude/skills/chaos-redux-event-assets/SKILL.md) for current production and transparency requirements.
 Route all warlord, Hannibal, and Wendigo Hannibal portrait packages, including genuine-frame animation and portrait wiring, to `chaosx_portrait_creator`.
 Preserve the accepted supplied Hannibal statics and existing 56-final regional package.
 The inventory below defines design coverage and does not authorize repeating completed production.

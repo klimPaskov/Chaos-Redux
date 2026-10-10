@@ -396,14 +396,19 @@ Stable catalog ID: `SCN-010`.
 
 Current catalog status: `Needs Testing` while parent live-consumer and the other documented evidence gates remain open.
 
-Working public direction:
-
-- a neutral scenario name about a wartime hunger network
-- no Hannibal name
-- no Wendigo name
-- no terminal-branch spoiler
+Public name: **The Hunger Lines** (`chaosx.scenarios.cannibalism.name`).
+It names no Hannibal, no Wendigo and no terminal branch.
 
 The scenario remains Event 14 and uses the shared four-stop intensity slider.
+
+### Famine on the seized regions
+
+After `trigger_cannibalism_scenario` reports success, the shared launcher calls the famine-owned `famine_apply_hunger_lines_scenario_pressure` (famine and migration rework, 10 October 2026).
+For every node state in `global.cannibalism_node_states` that still has `cannibalism_active_node` and an ordinary owner and controller, it seizes the local food stores and commits acute shortage at Low and famine at Medium, High and Maximum, keyed by `global.cannibalism_scenario_last_intensity`.
+The impact text for each intensity (`chaosx.scenarios.cannibalism.impact.*`) tells the player that the seized regions lose their stores.
+The famine system owns those stages, their relief, their deaths and the survivor flight they trigger; Event 014 owns its nodes, meters and actors and keeps the three identifiers above stable.
+A failed preflight never reaches the famine hook.
+Until proposal P-014-A is implemented, the committed famine does not raise Event 014 Field Hunger (Part 9).
 
 ## Scenario types
 

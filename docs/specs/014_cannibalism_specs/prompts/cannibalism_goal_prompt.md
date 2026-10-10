@@ -1,3 +1,7 @@
+> Historical build contract (spec audit 2026-10-10): this prompt drove the implemented Event 014 build and is kept as provenance.
+> Do not re-run it; current status and open work are in `../quality/package_status.md` and the package README.
+> Its `AGENTS.md`, `.agents/skills/` and `fork_turns="none"` references map to the current `CLAUDE.md`, `.claude/skills/<name>/SKILL.md` and the routing in `chaos-redux-subagents`.
+
 Implement Event 014 Cannibalism from `docs/specs/014_cannibalism_specs/`. Read the package. Follow `AGENTS.md` and the owner skills.
 
 Register Event 14 as Minor Fire-Once and keep it outside every cluster. Select a country at war through dynamic war duration, supply, casualties, stability, isolation, convoy, and occupation factors. Implement Field Hunger, Command Integrity, Cult Cohesion, Network Reach, Larder Stores, Frenzy, and Network Alignment. Build serious penalties, concrete containment, timed logistics and unit objectives, humane responses, concealment, terror exploitation, country spread, local victory, external reinfection, worldwide victory, and cleanup.

@@ -464,11 +464,28 @@ Do not create a parallel one-off cooperation flag.
 - Event 14 does not join the Random War or Fury cluster
 - cannibal expansion uses its own state and country system
 
-## Famine, locust, plague, and disaster interactions
+## Famine, migration, locust, plague, and disaster interactions
 
 Actual shortages and isolation can raise Field Hunger and make containment logistics harder.
 A disaster family appearing elsewhere, or a disaster warning without local consequences, supplies no shortage evidence.
 Famine alone creates no ritual cell or cult.
+
+### Current shortage inputs
+
+The implemented classifier is `cannibalism_country_has_external_hunger_pressure` with its state and severe variants in `common/scripted_triggers/014_cannibalism_triggers.txt`.
+It reads the Event 013 disaster flags (`natural_disaster_famine_pressure`, `natural_disaster_supply_collapse`, `natural_disaster_disease_pressure` and the aftermath flags), the Soviet camp famine pressure (`genocide_soviet_famine_pressure_site`, `camp_rework_soviet_famine_pressure`, `sov_famine_pressure_state`, the owner's `famine_pressure` and `sov_famine_crisis_active`), biological contamination, and the locust ingress flags, which no current system sets.
+Under shortage an active host gains `cannibalism_integration.weekly_shortage_hunger` (4) Field Hunger per pulse and a further `weekly_severe_shortage_hunger` (3) under severe shortage, its primary-theater logistics objective must hold `logistics_shortage_add_days` (14) longer, and first-host and theater selection add `host_shortage_score` (25) and `state_shortage_score` (16).
+The classifier does not read the shared famine system's state stage (`famine_food_stage`, constants `famine_food_stage.*`).
+A famine committed by the famine and migration system, including the famine the Hunger Lines scenario commits on Event 014 node states, therefore adds no Field Hunger today.
+Proposal P-014-A in the package README closes this gap without a new value or a second relief payment.
+
+### Ownership boundary with the famine and migration system
+
+The famine and migration system (`docs/systems/famine_system.md`, `docs/systems/migration_system.md`, package `docs/specs/famine_and_migration_system_specs/`) owns food stages, food reserves, relief, refugee cohorts and their deaths.
+Event 014 owns cells, nodes, Field Hunger, consumption and the Larder.
+Event 014 countries are special Chaos countries, so `humanitarian_country_is_valid` fails for them and a state they own or control leaves both humanitarian mechanics; consumption there is recorded only through the Event 014 Deaths transaction.
+Since the 10 October 2026 famine and migration rework, a capture by any Event 014 country at war with the owner sends front flight from the owner's neighbouring states through `humanitarian_handle_special_front_capture` (`humanitarian_capture_pressure.special_front_fraction`, 0.02, or `nonhuman_front_fraction`, 0.04, for transformed Wendigo Hannibal).
+Event 014 adds no refugee request of its own, and its survivor spread route (`cannibalism_spread_route.survivor`) still picks a neighbouring state independently of those cohorts; proposal P-014-B links the two.
 
 When an Event 014 relief action reaches a state with active Event 013 aftermath, the existing shared-relief bridge credits that state's current rescue, stabilization, or reconstruction phase.
 The Event 014 action owns its payment and containment result, and Event 013 owns recovery completion, later disaster losses, and its history.
@@ -482,6 +499,17 @@ A closed aftermath card receives no delayed credit, and loss of access leaves th
 Without Event 013 aftermath, ordinary Event 014 relief retains its containment result.
 AI should judge relief against the local shortage and its remaining containment work, with the same destination, affordability, and completion checks as a human.
 
+The implemented bridge is `cannibalism_apply_shared_relief_to_current_state`, called once by `cannibalism_complete_logistics_mission` at the primary theater state.
+It credits the current Event 013 phase score (`shared_relief_score`, 2), clears that state's disaster famine and supply-collapse flags, lowers a Soviet camp-famine owner's `famine_pressure` by `shared_relief_famine_reduction` (12), and marks the state as relieved for `shared_relief_days` (90).
+It does not deliver food to the shared famine system: food relief in a state with an active `famine_food_stage` belongs to the famine decisions (Release Food Stores, Import Food, Escort Relief, Airlift Relief), which own their payment and delivery.
+
+### Hunger Lines scenario link
+
+On a successful `SCN-010` launch the triggerable-scenario dispatcher calls the famine-owned `famine_apply_hunger_lines_scenario_pressure` after `trigger_cannibalism_scenario` reports success.
+That hook reads `global.cannibalism_node_states`, the `cannibalism_active_node` state flag and `global.cannibalism_scenario_last_intensity`, seizes the food stores of each valid node state and commits acute shortage at Low and famine at Medium and above.
+Event 014 must keep those three identifiers stable; it never writes famine stages itself.
+Part 11 records the scenario side of this contract.
+
 ## Camps and genocide-system interaction
 
 The exploitation route can connect to prison, detention, evidence, condemnation, and Deaths systems.
@@ -492,6 +520,17 @@ Rules:
 - only active Event 14 policy and cell conditions create the connection
 - foreign discovery of feeding programs can increase condemnation and evidence pressure
 - ordinary containment protects prisoners and removes the connection
+
+Current source: `cannibalism_expose_detention_exploitation_in_current_country` raises evidence, disqualifies the clean route and sets `cannibalism_feeding_program_exposed` and the global `cannibalism_feeding_program_exposed_abroad`, but no rule reads those two flags and Event 014 calls no Condemnation source.
+The only shared Condemnation now attached to Event 014 countries comes from Event 031's cannibal clash (see Event 031 below).
+Proposal P-014-C turns the exposure into one real Condemnation source.
+
+## Event 031 Random Terror interaction
+
+Event 031 owns an implemented rivalry with Event 014 countries.
+Its incident draw includes a cannibal clash only when a terror state borders a state controlled by an Event 014 country (`is_cannibalism_country`), and `random_terror_resolve_cannibal_clash` applies the clash deaths and building damage there and adds public major atrocity Condemnation to that cannibal controller through `random_terror_add_cannibal_clash_condemnation`.
+Event 031 actors and Event 014 countries both count as special Chaos countries; neither event recruits from or merges with the other.
+Event 014 keeps `is_cannibalism_country` stable for this consumer.
 
 ## Chemical and biological warfare interaction
 

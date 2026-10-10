@@ -1,5 +1,9 @@
 # Event 014 Cannibalism Super-Event Research Prompt
 
+> Historical build contract (spec audit 2026-10-10): this prompt drove the implemented Event 014 build and is kept as provenance.
+> Do not re-run it; current status and open work are in `../quality/package_status.md` and the package README.
+> Its `AGENTS.md`, `.agents/skills/` and `fork_turns="none"` references map to the current `CLAUDE.md`, `.claude/skills/<name>/SKILL.md` and the routing in `chaos-redux-subagents`.
+
 Read the full Event 014 spec pack, the super-event matrix, `AGENTS.md`, and the super-event skill. Spawn text and audio research subagents with `fork_turns="none"` and pass every needed path explicitly.
 
 Use `chaosx_super_event_text_researcher` for verified title, quote, button remark, attribution, source, and copyright-risk research. Use `chaosx_super_event_audio_researcher` for licensed music research, download, editing, conversion, and documentation. Use `chaosx_generated_event_art` for all four fictional super-event images.

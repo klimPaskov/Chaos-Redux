@@ -222,6 +222,8 @@ Actions:
 
 These actions should matter mechanically. They lower recruitment and rumor pressure, improve testimony, and speed state recovery.
 
+Food relief for civilians in a state with an active shared famine stage belongs to the famine decisions; the Event 014 logistics completion only applies the Event 013 and camp-famine relief bridge described in Part 9.
+
 ### Exploitation
 
 Actions:
@@ -730,7 +732,9 @@ GUI buttons must use the same balance logic as decisions. They cannot bypass cos
 
 ## Static fallback policy
 
-Every animated element has a static fallback. The fallback is final art, not a placeholder. The static fallback appears when animation is disabled, unsupported, hidden by route state, or not currently active.
+Every animated element has a static fallback.
+The fallback is final art, not a placeholder.
+The static fallback appears when animation is unsupported, hidden by route state, or not currently active; Event 014 has no player animation toggle or preference.
 
 ## Decision clutter control
 

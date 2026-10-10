@@ -157,15 +157,9 @@ Role:
 
 ## Baseline decision category
 
-The category should open immediately and remain readable. It should show:
-
-- Field Hunger
-- Command Integrity
-- current compromised state or theater
-- active emergency mission
-- number of suspected cells
-- whether foreign spread is currently possible
-- current policy stance
+The category should open immediately and remain readable.
+Part 6, Early attached header, owns its contents: the Field Hunger and Command Integrity meters, the Cult Cohesion slot after Evolution I, the primary compromised state card, the active mission summary and the danger warning seal, as implemented in `cannibalism_early_header_window`.
+Suspected cell count, foreign spread risk and policy stance stay in decision tooltips and reports rather than becoming further header values.
 
 The early category should use normal decisions with a compact attached scripted GUI header. A large separate window becomes justified only after Evolution II creates multiple states and foreign nodes.
 

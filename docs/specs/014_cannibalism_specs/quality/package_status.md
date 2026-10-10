@@ -1,8 +1,11 @@
 # Package Status
 
-Status date: 2026-10-03 native fictional portrait reconciliation; Event 014 remains incomplete.
+Status date: 2026-10-10 spec audit; Event 014 remains incomplete only through the open evidence gates listed below.
 
-Acceptance basis is the current parent instruction within the user-authorized full implementation scope and the fictional native-ImageGen acceptance recorded in the [continuation report](../../../plans/014_cannibalism_plans/2026-10-03_continuation_report.md) and [receipt reconciliation](../../../plans/014_cannibalism_plans/subagent_handoffs/2026-10-03_spec_receipt_reconciliation.md). All 56 fictional finals are produced, regionally parent-approved and installed; independent global visual distinctness is accepted and live acceptance remains open. Seven bespoke models, nine gameplay families, approved cavalry/infantry visual reuse, vanilla `elephantry` and no animation toggle remain unchanged. July zero-finding audits remain historical frozen-tranche evidence.
+This file is the single current status record for the package.
+The README links here instead of repeating status, and the matrices and `package_validation.md` keep only design and definition-level evidence.
+Acceptance basis is the parent instruction within the user-authorized full implementation scope, the fictional native-ImageGen acceptance recorded in the [continuation report](../../../plans/014_cannibalism_plans/2026-10-03_continuation_report.md) and [receipt reconciliation](../../../plans/014_cannibalism_plans/subagent_handoffs/2026-10-03_spec_receipt_reconciliation.md), and the agent decisions taken under the user's full design authority for the takeover in [agent_decisions_2026-10-04.md](../../../plans/014_cannibalism_plans/agent_decisions_2026-10-04.md).
+July zero-finding audits remain historical frozen-tranche evidence.
 
 ## Recorded source implementation scope
 
@@ -14,56 +17,84 @@ Acceptance basis is the current parent instruction within the user-authorized fu
 - The Wendigo closure includes bounded enemy-death receipts, shared mixed-batch Pack capacity checks, non-retroactive enemy epochs, paid-only Pack recruitment, three Pack stages, three inherited origin-template stages, two commander stages, inherited winter cells, and four terminal-hunt surfaces.
 - Exactly eight maintained mission families and seven added paid action families are implemented.
 - Eighteen real achievements and an eighteen-entry staged read-only tracker are implemented.
-- Scenario `SCN-010` implements five launch types.
+- Scenario `SCN-010`, The Hunger Lines, implements five launch types; a successful launch also triggers the famine-owned Hunger Lines famine on valid node states (Part 11).
 - Event Details contains two independent post-reveal terminal rows and persistent toggles.
 - Four action super-events use unique images and audio IDs 49, 50, 52, and 53.
-- The super-event audio package contains eight unique 44.1 kHz source/runtime binaries: four preserved source recordings and four runtime WAV files. The separate unit-audio amendment now covers 61 source-derived/runtime unit WAV files across nine families, with playback gates recorded below.
-- The recorded asset inventory contains 56 regional warlord DDS files, 204 focus icons, 62 idea/modifier textures, 135 decision/category textures, 38 distinct unified decision icons, 18 achievement triplets, the 21-surface closure package and two protected leader portrait sheets. Current 64 warlord aliases resolve to the 56 parent-approved native fictional finals; every installed regional file equals its selected candidate bytes. The 16 HATE original/crop/candidate packages are preserved historical archives only, with no current source-placeholder runtime path. The live Hannibal sprites retain the exact canonical `hannibal.dds` and `hannibal_wendigo.dds` files directly. July frame-production and 195-flag provenance counts remain scoped historical evidence.
-- The dedicated Event 014 script, GUI, and localisation loader count is consolidated from 93 to 23. The 23-file result is the practical minimum of one dedicated file per incompatible HOI4 loader schema. Per-tag country/history files, engine-required flag ladders, binaries, and shared global registries remain structurally separate and are outside this merge count.
-- Event 014 defines nine inactive custom irregular-infantry/cavalry subunits with stable gameplay identities and locked template mappings. It reuses ordinary infantry, support, artillery, and motorized equipment without adding an archetype. The locked Scavenged Elephant Column uses installed vanilla `elephantry` after Event 014 technology access. Seven families have installed bespoke model/entity/action/material/audio runtime packages, while Bone Riders intentionally uses vanilla `sprite = cavalry` and Network Cadre intentionally uses vanilla `sprite = infantry` with no Event 014 custom model/action/entity/provider package. The 27 counter DDS/registry consumers remain present, with live consumer review parent-owned.
+- The super-event audio package contains eight unique 44.1 kHz source/runtime binaries: four preserved source recordings and four runtime WAV files.
+  The separate unit-audio amendment covers 61 source-derived/runtime unit WAV files across nine families.
+- The recorded asset inventory contains 56 regional warlord DDS files behind 64 stable aliases, 204 focus icons, 62 idea/modifier textures, 138 decision/category textures including 41 distinct unified decision and mission icons, 18 achievement triplets, the 21-surface closure package and two protected leader portrait sheets.
+  The live Hannibal sprites register the exact canonical `hannibal.dds` and `hannibal_wendigo.dds` files directly.
+  July frame-production and 195-flag provenance counts remain scoped historical evidence.
+- The dedicated Event 014 script, GUI, and localisation loader count is consolidated from 93 to 23, the practical minimum of one dedicated file per incompatible HOI4 loader schema.
+  Per-tag country/history files, engine-required flag ladders, binaries, and shared global registries remain structurally separate and are outside this merge count.
+- Event 014 defines nine inactive custom irregular-infantry/cavalry subunits with stable gameplay identities and locked template mappings.
+  It reuses ordinary infantry, support, artillery, and motorized equipment without adding an archetype.
+  The locked Scavenged Elephant Column uses installed vanilla `elephantry` after Event 014 technology access.
 
-## 2026-08-26 downstream amendment
+### 2026-10-04 and 2026-10-05 implementation
 
-The nine gameplay consumers and CXT registration are definition-level current. The nine counter triplets are represented by 27 DDS files and matching registry consumers, with live consumer review still parent-owned. Seven families now have parent-installed mesh, eight-action, entity/GFX, material-map, and runtime sound packages: Feast Guard, Feast Cohort, Bone Guard, Siege Eaters, March Predation Column, Island Reavers, and Scavenger Warband. Island Reavers uses the accepted v11 remesh/rig lineage and two provider in-place recovery clips after the adapter rejected the first root-heavy move and retreat candidates; the exact receipts are in `docs/plans/014_cannibalism_plans/subagent_handoffs/event014_island_reavers_v11_runtime_handoff.md`. Scavenger Warband uses the source-approved v2 Meshy 7 package and its runtime handoff is `docs/plans/014_cannibalism_plans/subagent_handoffs/event014_scavenger_warband_v2_runtime_handoff.md`. Bone Riders intentionally resolves to vanilla `sprite = cavalry`, and Network Cadre intentionally resolves to vanilla `sprite = infantry`; neither requires a custom model, action, entity, or provider lease. Their retained 3D source, provider, and audio records are historical lineage only. The four super-event audio packages are now registered with unique base sounds, six settings-scaled wrappers per id, catalog rows, and guarded settings-aware dispatch; the wiring audit is `docs/plans/014_cannibalism_plans/subagent_handoffs/event014_super_event_audio_wiring_audit_2026-08-25.md`.
+These items close the 2026-10-03 completion-audit findings E014-FINAL-02 to E014-FINAL-04 and are recorded with their bases in [agent_decisions_2026-10-04.md](../../../plans/014_cannibalism_plans/agent_decisions_2026-10-04.md).
 
-The 2026-07-15 P0/P1/P2/P3 closure statements remain valid only for their then-frozen scope. They are not completion evidence for this 2026-08-26 downstream model, counter, audio, and parent-review amendment, and the approved vanilla-visual reuse decision removes Bone Riders and Network Cadre custom-model work from the current scope.
+- Larder logistics (D1, D2): unified capacity 1200 plus 100 per controlled state plus 50 per administrative contract point, ceiling 5000, ordinary cap 2000, and route losses up to 60 percent with capital distance (`cannibalism_larder_logistics`); see `docs/events/014_cannibalism/larder_logistics.md`.
+- Hidden hoards (D10, R2-4): hoarder and autonomy-bargain caches, the `chaosx.nr14.82` confront, tolerate or bargain review, the CBL investigation and the seizure mission; see `docs/events/014_cannibalism/hidden_hoards.md`.
+- Network dossier and command-window pages (D5, D7, D8, D9): shared subject records with derived certainty, the Host Overview and States pages, the revealed Overview, Loyalty and Targets pages, and the Wendigo Anchors page; see `docs/events/014_cannibalism/gui_data_contract.md`.
+- The targeted March depot raid keeps a Host-wide cooldown and checks hub count and a recent-strike flag (D6, R2-1); land forts and naval bases are placed through a province filter (R2-2).
+- Every consumed helper output is caller-owned (R2-3, extending the `a0a6825e7` inheritance and migration storage repair); the source trace in the 10 October famine and migration plan reaches a successful Hunger Lines preflight on the current chain.
+- Tooltips use plain current wording and the division designer names the irregular battalions (R3-1, R3-2).
 
-Feast Cohort's selected `11014` mesh and eight actions are byte-identical to installed runtime copies in [the current receipt](../../../plans/014_cannibalism_plans/evidence/2026-10-03_feast_cohort_runtime_source_receipt.json); the older mismatch is superseded. The current parent records five existing model-manifest links repaired in `911149f` and Feast Guard's selected F4 export recovered exactly. All five remain `needs_user_review` for their recorded upstream input/source/rights/task/copy/live gaps. Seven-bespoke-model production remains CLOSED; no source-only amendment or Feast Guard C67 source is changed by portrait production.
+## Unit, model and audio packages
 
-The historical [portrait-worker receipt](../../../plans/014_cannibalism_plans/subagent_handoffs/2026-10-03_event014_portrait_receipt_repair.md), [archive recovery](../../../plans/014_cannibalism_plans/subagent_handoffs/2026-10-03_portrait_source_archive_recovery.md) and [parent archive review](../../../plans/014_cannibalism_plans/evidence/2026-10-03_portrait_archive_parent_review.json) remain scoped evidence for exact H01-H16 originals/crops/candidates, 121 archive file hashes, 62 then-protected runtime/definition hashes and reproducible co-located source commands in `f440c5329`. Their candidate/installed-DDS identity describes the archive checkpoint before native replacements. They establish archive preservation, not current runtime source-placeholder status or IP redistribution rights.
+The nine gameplay consumers and CXT registration are definition-level current.
+The nine counter triplets are represented by 27 DDS files and matching registry consumers.
+Seven families have parent-installed mesh, eight-action, entity/GFX, material-map, and runtime sound packages: Feast Guard, Feast Cohort, Bone Guard, Siege Eaters, March Predation Column, Island Reavers (accepted v11 remesh and rig lineage, `event014_island_reavers_v11_runtime_handoff.md`), and Scavenger Warband (source-approved v2 Meshy 7 package, `event014_scavenger_warband_v2_runtime_handoff.md`).
+Bone Riders intentionally resolves to vanilla `sprite = cavalry`, and Network Cadre intentionally resolves to vanilla `sprite = infantry`; neither requires a custom model, action, entity, or provider package, and their retained 3D records are historical lineage only.
+Model production is CLOSED at seven bespoke packages.
+Model inputs must begin from actual Internet-sourced or user-supplied modern artwork with only faithful ImageGen enhancement; Feast Guard's approved source is `docs/assets/014_cannibalism/models_3d/cannibal_feast_guard/refs/source/untouched.png` with faithful input SHA-256 `C67AF852A27E1379590BD84C5175C378D449AE226F895A2D326B45099040D8C9`.
+Feast Cohort's selected `11014` mesh and eight actions are byte-identical to installed runtime copies ([receipt](../../../plans/014_cannibalism_plans/evidence/2026-10-03_feast_cohort_runtime_source_receipt.json)); Feast Guard's selected F4 export is recovered exactly, and five model-manifest links are repaired in `911149f`.
+All five manifests remain `needs_user_review` for their recorded upstream input, source, rights, task, copy and live gaps.
+The four super-event audio packages are registered with unique base sounds, six settings-scaled wrappers per ID, catalog rows, and guarded settings-aware dispatch (`event014_super_event_audio_wiring_audit_2026-08-25.md`).
 
-All 56 selected native fictional final candidates have bounded regional parent art/framing/DDS acceptance and current installation evidence. The production-route advisory is superseded by the explicit parent native-ImageGen acceptance; no direct user record establishes a universal fictional-portrait RunPod ban. The reference-only HATE/Diablo/Elden rights labels belong to historical source lineage, not the current generated finals; no prior IP redistribution right is inferred. H06's white background and D02/D03/D15/D16's reported subject defects are no longer active final-art defects. Protected supplied Hannibal statics and both animated sheets are unchanged, with external lineage still open. Independent global face/composition distinctness is accepted; user-owned live review remains pending.
+## Portraits
+
+All 56 selected native fictional finals have parent source-art, framing, global face/composition and PNG/DDS/runtime acceptance, supported by the complete selected-art inventory (`docs/plans/014_cannibalism_plans/evidence/2026-10-03_global_portrait_review/candidate_inventory.json`) and the independent visual audit.
+`interface/014_cannibalism.gfx` keeps 64 stable warlord aliases referencing 56 regional runtime DDS paths, and a read-only byte comparison verifies every installed file equals its selected candidate, including South America CBD v02 and the Asia CBD paper-only revision; see the [current portrait reconciliation](../../../plans/014_cannibalism_plans/subagent_handoffs/2026-10-03_spec_native_portrait_reconciliation.md).
+The native packages are `docs/assets/014_cannibalism/portrait_finals_2026-10-03/<region>/manifest.md`.
+The historical [portrait-worker receipt](../../../plans/014_cannibalism_plans/subagent_handoffs/2026-10-03_event014_portrait_receipt_repair.md), [archive recovery](../../../plans/014_cannibalism_plans/subagent_handoffs/2026-10-03_portrait_source_archive_recovery.md) and [parent archive review](../../../plans/014_cannibalism_plans/evidence/2026-10-03_portrait_archive_parent_review.json) preserve the sixteen H01-H16 source archives in `f440c5329` as archive-only lineage; their reference-only labels are not IP redistribution rights or the provenance of current finals, and H06's white field and D02/D03/D15/D16's subject defects are superseded by the native finals.
+Protected supplied Hannibal statics and both animated sheets are unchanged; their external lineage remains open.
+
+## Open evidence gates
+
+- User-owned live acceptance: portraits and secrecy, the seven bespoke model packages, counters, unit and super-event audio, super-event images, GUI pages, and the in-game designer names.
+- Engine behaviour still to observe live: the native capital-distance read for Larder transfers, the hidden-hoard seizure force check and autonomy changes, broader destination-generation and inheritance transactions, and a native launch of The Hunger Lines (its helper-filled temporary arrays are traced in source only).
+- Weighted logic: scenario-specific and incomplete under the [probability specialist's handoff](../../../plans/014_cannibalism_plans/subagent_handoffs/2026-10-03_event014_decision_probability_audit.md); source inventories are not normalized AI conclusions.
+- Event/helper comparison and attributable GUI state, resolution, hierarchy and click-region comparison remain incomplete, including the parent's narrower 600-second retry gaps; earlier unavailable-route responses do not establish service health or standalone viewer availability.
+- Upstream model provenance for the five `needs_user_review` manifests and the external lineage of the protected Hannibal art.
+- Catalog status: `Events!M15` and `Scenarios!F10` stay `Needs Testing` until these gates close.
+
+Design proposals from the 2026-10-10 spec audit (P-014-A to P-014-C, README Open questions) are unaccepted and are not part of the completion scope.
 
 ## Audit disposition
 
-Every July zero-finding result below applies only to its frozen tranche. None certifies the current full Event 014 package or closes later portrait, model-provenance, GUI, probability or live gates.
+Every July zero-finding result below applies only to its frozen tranche.
+None certifies the current full Event 014 package or closes later portrait, model-provenance, GUI, probability or live gates.
 
 - Country package: P0/P1/P2/P3 all zero in `docs/plans/014_cannibalism_plans/audits/event014_country_package_consolidation_reaudit_2026-07-15.md`.
 - Focus gameplay and assets: P0/P1/P2/P3 all zero in `docs/plans/014_cannibalism_plans/audits/event014_focus_tree_consolidation_reaudit_2026-07-15.md`.
 - Decision, mission, achievement, exact-balance, reset, and scenario integration: P0/P1/P2/P3 all zero in `docs/plans/014_cannibalism_plans/audits/event014_decision_mission_consolidation_reaudit_2026-07-15.md`.
-- Localisation, secrecy, assets, and audio: P0/P1/P2/P3 all zero in `docs/plans/014_cannibalism_plans/audits/event014_localisation_asset_consolidation_reaudit_2026-07-15.md`. The audit records zero pre-reveal identity leaks, one dedicated plus two shared Event 014 GFX registries, 812 texture references, 598 unique existing paths and hashes, 65 built-in ImageGen flag masters, 195 unique live flags, 56 unique regional portraits, 14 semantic animation packages with 142 source and 142 processed frames, four super-events, 18 achievement triplets, and eight unique 44.1 kHz audio binaries. The ninth gameplay consumer has no additional audio requirement in this tranche.
+- Localisation, secrecy, assets, and audio: P0/P1/P2/P3 all zero in `docs/plans/014_cannibalism_plans/audits/event014_localisation_asset_consolidation_reaudit_2026-07-15.md`.
+  The audit records zero pre-reveal identity leaks, one dedicated plus two shared Event 014 GFX registries, 812 texture references, 598 unique existing paths and hashes, 65 built-in ImageGen flag masters, 195 unique live flags, 56 unique regional portraits, 14 semantic animation packages with 142 source and 142 processed frames, four super-events, 18 achievement triplets, and eight unique 44.1 kHz audio binaries.
 - Spreadsheet: P0/P1/P2/P3 all zero in `docs/plans/014_cannibalism_plans/audits/event014_spreadsheet_consolidation_reaudit_2026-07-15.md`.
 - Accepted improvement depth: P0/P1/P2/P3 all zero in `docs/plans/014_cannibalism_plans/audits/event014_improvement_loop_consolidation_reaudit_2026-07-15.md`.
-- Documentation: P0/P1/P2/P3 all zero in `docs/plans/014_cannibalism_plans/audits/event014_documentation_consolidation_reaudit_2026-07-15.md`. The older same-day audits and the 2026-07-13 final audit are retained as superseded checkpoints.
-- Catalog status: `Events!M15` and `Scenarios!F10` are `Needs Testing` while parent live-consumer validation and the other documented evidence gates remain open. The spreadsheet source and export must retain that status until those gates close.
+- Documentation: P0/P1/P2/P3 all zero in `docs/plans/014_cannibalism_plans/audits/event014_documentation_consolidation_reaudit_2026-07-15.md`.
+  The older same-day audits and the 2026-07-13 final audit are retained as superseded checkpoints.
 
-The eight-audio count in the historical localisation/asset audit refers to the frozen super-event source/runtime package only. The current 2026-08-26 downstream amendment separately records 61 source-derived/runtime unit WAV files and the remaining action, entity, synchronization, and live-playback gates for the seven bespoke model packages.
+The eight-audio count in the historical localisation/asset audit refers to the frozen super-event package only; the 2026-08-26 amendment separately records the 61 unit WAV files.
 
 ## Completion disposition
 
-- The frozen 2026-07-15 mechanics and presentation scope had no unresolved P0/P1/P2/P3 finding within its recorded bounds; current full-package completion remains open. Bone Riders and Network Cadre retain the explicitly approved vanilla cavalry/infantry visual reuse and do not add custom-unit model/action production blockers. No new simplification was introduced by this documentation patch.
-- The pre-lock target package deliberately assigns one first score band per valid target and does not attempt unsupported removal or re-banding. Post-lock targeting is a separate one-time package. This is resolved intentional design, not an open audit finding.
-- In-game runtime behavior has not been claimed or documented as tested by this reconciliation. The recorded control-flow walkthroughs are definition-level evidence.
-
-No country-package, focus-gameplay, decision-asset, Event Details terminal-row, or staged-achievement-tracker fallback remains open in the frozen scope. The seven bespoke model packages remain subject to parent live review and provenance evidence, while Bone Riders and Network Cadre use their approved vanilla sprites and do not add custom model/entity/action/audio blockers.
-
-Current event/helper comparison, attributable GUI state/resolution/hierarchy/click-region comparison and probability inspect/evaluate/sweep evidence remain incomplete, including the parent's narrower 600-second retry gaps. Keep the named scenarios and coverage limits in [the current probability specialist handoff](../../../plans/014_cannibalism_plans/subagent_handoffs/2026-10-03_event014_decision_probability_audit.md); source inventories are not normalized AI conclusions. Prior curator unavailable-route responses remain historical evidence; exposure does not verify service health or standalone viewer availability. No live model/GUI/audio/counter/event evidence, clean live `error.log` or full sign-off is supplied. Catalog status remains `Needs Testing`.
-
-The current `interface/014_cannibalism.gfx` mapping remains 64 stable warlord aliases referencing 56 regional runtime DDS paths. A fresh read-only SHA-256 and byte comparison verifies all 56 installed files equal the selected native fictional candidates, eight per region, including selected South America CBD v02. All seven regional parent reviews approve source art, framing and DDS within their bounded eight-portrait sets; see [current portrait reconciliation](../../../plans/014_cannibalism_plans/subagent_handoffs/2026-10-03_spec_native_portrait_reconciliation.md) for receipts and the current-byte check. No registered regional portrait remains a historical source placeholder. Distinct file/pixel hashes establish byte/pixel uniqueness only; independent global face/composition distinctness is accepted; full secrecy and live acceptance remain pending.
-
-## Parent global portrait acceptance checkpoint
-
-All 56 selected native fictional finals have parent source-art, framing, global face/composition and PNG/DDS/runtime acceptance, supported by the complete selected-art inventory and independent visual audit.
-The Asia CBD paper-only revision resolves the sole writing-like-marks concern without changing its character, pose or page-tearing action.
-The complete receipt is `docs/plans/014_cannibalism_plans/evidence/2026-10-03_global_portrait_review/candidate_inventory.json`; live acceptance remains open.
-The caller-owned inheritance/migration storage repair is committed as `a0a6825e7`; missing GUI information, Larder scaling, destination-generation validation and required engine/provenance evidence remain separate Event 014 work.
+- The frozen 2026-07-15 mechanics and presentation scope had no unresolved P0/P1/P2/P3 finding within its recorded bounds, and the 2026-10-03 implementation findings E014-FINAL-01 to E014-FINAL-04 are implemented; current full-package completion remains open only through the evidence gates above.
+- The pre-lock target package deliberately assigns one first score band per valid target and does not attempt unsupported removal or re-banding; Part 9 is its authoritative description.
+- In-game runtime behaviour has not been claimed or documented as tested by this package.
+  The recorded control-flow walkthroughs are definition-level evidence.
+- No country-package, focus-gameplay, decision-asset, Event Details terminal-row, or staged-achievement-tracker fallback remains open.
+  Bone Riders and Network Cadre retain the approved vanilla cavalry and infantry visual reuse and add no custom model blockers.

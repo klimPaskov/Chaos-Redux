@@ -1,8 +1,9 @@
 # Package Validation
 
-Status date: 2026-10-03 native fictional portrait reconciliation; no full-package validation claim.
+Status date: 2026-10-10 spec audit; no full-package validation claim.
 
-The [continuation report](../../../plans/014_cannibalism_plans/2026-10-03_continuation_report.md), native-production acceptance note in [the prior receipt reconciliation](../../../plans/014_cannibalism_plans/subagent_handoffs/2026-10-03_spec_receipt_reconciliation.md), seven regional parent reviews and fresh candidate/runtime byte check in [the current handoff](../../../plans/014_cannibalism_plans/subagent_handoffs/2026-10-03_spec_native_portrait_reconciliation.md) distinguish authority from current implementation. The full 56 distinct fictional-final requirement is preserved without simplification. Seven bespoke models across nine families, approved cavalry/infantry visual reuse, vanilla `elephantry` and no animation toggle remain unchanged. All July zero audits and aggregate inventory/structural results below remain historical frozen-tranche evidence.
+Authority, current implementation scope, provenance and open gates are recorded once in [package status](package_status.md).
+This file lists definition-level, filesystem and secrecy evidence; all July zero audits and aggregate inventory or structural results below remain historical frozen-tranche evidence.
 
 ## Structural and gameplay-definition evidence
 
@@ -23,7 +24,7 @@ The [continuation report](../../../plans/014_cannibalism_plans/2026-10-03_contin
 
 - Runtime focus icons: 204 of 204.
 - Runtime idea/modifier textures: 62 of 62.
-- Runtime decision/category textures: 135 of 135, including 38 distinct unified decision icons.
+- Runtime decision/category textures: 138, including the 41 unified decision and mission icons (the three hidden-hoard icons were added on 2026-10-04).
 - Live idea pictures: 37 of 37 registered. The eight repaired icons are unique 68x68 DDS files with independent image-generated sources.
 - Regional warlord portraits: all 56 native fictional candidates are produced, regionally parent-approved and installed, eight per region. Every runtime DDS equals its selected candidate bytes, including South America CBD v02, and the unchanged 64 aliases resolve to the same 56 paths. Parent regional receipts record 156x210 opaque BGRA32 single-level DDS and exact PNG/DDS pixels. Distinct file/pixel hashes do not prove global face/composition distinctness; the independent visual audit is accepted and live acceptance remains pending.
 - Achievement assets: 18 triplets, 54 DDS files.
@@ -34,16 +35,6 @@ The [continuation report](../../../plans/014_cannibalism_plans/2026-10-03_contin
 - Super-event audio IDs 49, 50, 52, and 53 have unique 44.1 kHz WAV files and a rights/source record. ID 51 is not used by Event 014.
 - The frozen super-event runtime audio inventory is eight unique source/runtime files: four runtime WAVs plus four preserved source recordings. The downstream unit-audio amendment separately records 61 source-derived/runtime unit WAV files and its unresolved playback gates.
 - Nine inactive custom irregular-infantry/cavalry subunits now have stable sprite-token consumers, locked Event 014 template mappings, localisation, and additive CXT registration. `cannibal_bone_riders` is horse-mounted and consumes real infantry equipment. The locked Scavenged Elephant Column uses installed vanilla `elephantry` with its real infantry- and artillery-equipment need. No equipment archetype was added. The 27 counter DDS/registry consumers are present. Feast Guard, Feast Cohort, Bone Guard, Siege Eaters, March Predation Column, Island Reavers, and Scavenger Warband also have parent-installed mesh, eight-action, entity/GFX, material-map, and runtime sound packages.
-
-## Current downstream amendment
-
-Historical archive evidence remains in the [portrait receipt](../../../plans/014_cannibalism_plans/subagent_handoffs/2026-10-03_event014_portrait_receipt_repair.md), [exact archive recovery](../../../plans/014_cannibalism_plans/subagent_handoffs/2026-10-03_portrait_source_archive_recovery.md) and [parent archive review](../../../plans/014_cannibalism_plans/evidence/2026-10-03_portrait_archive_parent_review.json). Commit `f440c5329` accepts exact H01-H16 originals/crops/candidates, source/crop and then-installed-DDS pixels, 121 archive hashes and 62 protected runtime/definition hashes only at that historical checkpoint. The archives remain preserved while all 56 registered regional runtime files now contain reviewed native fictional finals; no old source-placeholder package is promoted into a final.
-
-Historical HATE/Diablo/Elden source rights remain reference-only/user-authorized; they are not approved IP redistribution rights or the provenance of current native fictional finals. The parent accepts the fictional native-ImageGen production default within the authorized 56-final scope; the earlier route advisory is superseded. Native original outputs and processing evidence are retained in the seven regional packages. H06's white field and D02/D03/D15/D16's reported subject defects are historical and superseded by reviewed native replacements. Protected supplied Hannibal art is unchanged, with external lineage and live acceptance still open.
-
-Feast Cohort's selected `11014` mesh and eight actions match installed bytes in [its current receipt](../../../plans/014_cannibalism_plans/evidence/2026-10-03_feast_cohort_runtime_source_receipt.json). The current parent records five existing model-manifest links repaired in `911149f` and Feast Guard's exact selected F4 export recovered; all five manifests remain `needs_user_review` with upstream input/source/rights/task/copy/live gaps. This is link/export recovery, not fully restored provenance. Seven bespoke model production jobs remain CLOSED, and the source-only/faithful-enhancement 3D amendment and Feast Guard C67 source are preserved.
-
-The current evidence records nine gameplay consumers, 27 counter DDS files with matching registry consumers, and seven parent-installed bespoke model/action/entity/audio packages. Bone Riders intentionally uses vanilla `sprite = cavalry`, and Network Cadre intentionally uses vanilla `sprite = infantry`; neither requires a custom model/action/entity/provider package, and their retained 3D records are historical lineage only. Island Reavers and Scavenger Warband now have source-approved Meshy/Blender export, reimport, runtime entity/GFX, material, and audio evidence in their v11 and v2 handoffs. Parent live consumer review remains open for the seven bespoke packages and the counter/audio surfaces. The four super-event audio packages are source-checked and fully registered with unique base sounds, settings-scaled wrappers, catalog rows, and guarded settings-aware dispatch; see `event014_super_event_audio_wiring_audit_2026-08-25.md`. The 2026-07-15 closure audit is historical evidence for the frozen scope and does not close these downstream items.
 
 ## Secrecy evidence
 
@@ -63,13 +54,4 @@ The post-remediation asset recheck found 18 exact not-eligible overlay composite
 
 ## Resolved first-band strategy design
 
-The pre-lock Wendigo target-priority package is intentionally idempotent. Later calls can add newly valid targets, while an already recorded target keeps its first assigned band because the effects database provides `add_ai_strategy` without a scripted removal counterpart. The post-lock target profile is a separate one-time escalation and is not represented as a dynamic update of the pre-lock package. This fixed-assignment contract is resolved intentional design, not an open audit finding.
-
-The current `interface/014_cannibalism.gfx` mapping remains 64 stable warlord aliases referencing 56 regional runtime DDS paths. A fresh read-only SHA-256 and byte comparison verifies all 56 installed files equal the selected native fictional candidates, eight per region, including selected South America CBD v02. All seven regional parent reviews approve source art, framing and DDS within their bounded eight-portrait sets; see [current portrait reconciliation](../../../plans/014_cannibalism_plans/subagent_handoffs/2026-10-03_spec_native_portrait_reconciliation.md) for receipts and the current-byte check. No registered regional portrait remains a historical source placeholder. Distinct file/pixel hashes establish byte/pixel uniqueness only; independent global face/composition distinctness is accepted; full secrecy and live acceptance remain pending.
-
-## Parent global portrait acceptance checkpoint
-
-All 56 selected native fictional finals have parent source-art, framing, global face/composition and PNG/DDS/runtime acceptance, supported by the complete selected-art inventory and independent visual audit.
-The Asia CBD paper-only revision resolves the sole writing-like-marks concern without changing its character, pose or page-tearing action.
-The complete receipt is `docs/plans/014_cannibalism_plans/evidence/2026-10-03_global_portrait_review/candidate_inventory.json`; live acceptance remains open.
-The caller-owned inheritance/migration storage repair is committed as `a0a6825e7`; missing GUI information, Larder scaling, destination-generation validation and required engine/provenance evidence remain separate Event 014 work.
+The fixed first-assignment pre-lock Wendigo target package is resolved intentional design; Part 9, Resolved pre-lock first-band strategy behavior, is its authoritative description.

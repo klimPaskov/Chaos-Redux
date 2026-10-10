@@ -171,6 +171,8 @@
 - Threat source activates only at meaningful military scale.
 - Deaths and Chaos Meter integrate through milestones.
 - Event 10, zombies, Fury, famine, plague, camps, chemical warfare, biological warfare, nuclear effects, and air cleanliness interactions are coherent and limited to natural links.
+- A successful The Hunger Lines launch reaches the famine-owned `famine_apply_hunger_lines_scenario_pressure` hook through stable Event 014 node identifiers, and Event 014 never writes famine stages.
+- States owned or controlled by Event 014 countries stay outside the famine and migration mechanics, so consumption deaths are recorded once through the Event 014 Deaths transaction.
 - Special and actual-nonhuman exclusions use shared classifiers.
 
 ## Super-events
