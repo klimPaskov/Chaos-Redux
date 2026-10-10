@@ -43,11 +43,11 @@ The latest completion verdict is "partial", with the open findings C01 to C14 li
 | 5 Country packages | Eight carriers, leaders, flags, research slots, technology inheritance, real formations | Resource-grounded forces and safe capitals (C07), merger and takeover reconciliation (C08), leadership contest defect (C05) |
 | 6 Focus tree | 114 focuses with routes, filters, navigation and idea slots | Forge the Seal core rule, specialist route review |
 | 7 Global Jihad | Five types, four intensities, preflight and cleanup | Type geography and Random Pattern mixture (C06) |
-| 8 False Revelation | Gate, entity, five slots, objective-based strengths, uprising wave, both super-events | Terminal category access (C01), dominant-player choice (C02), commit revalidation (C03), victory and unity meaning (C04), aftermath (C10) |
+| 8 False Revelation | Gate, entity, five slots, objective-based strengths, uprising wave, both super-events | Dominant-player choice before promotion (C02), unity meaning (C04), aftermath (C10). Terminal government access (C01), commit revalidation (C03) and the takeover victory count (C04) were repaired on 2026-10-10 |
 | 9 AI and balance | Weights authored and reviewed in source | Named scenario evidence, Chaos feedback balance (audit revision) |
-| 10 Cross-event | Event 14 rivalry, Event 21 guard, special-country classifier, world-threat source | Chaos impact map (audit revision replacing per-incident Chaos), famine, migration and camp bridges (audit revision) |
+| 10 Cross-event | Event 14 rivalry, Event 21 guard, special-country classifier, world-threat source | Famine, migration and camp bridges and three Chaos reversal rows (audit revision). The Chaos impact map replaced per-incident Chaos on 2026-10-10 |
 | 11 Assets | 444 inventoried runtime files plus map buttons | Entity animation state binding, 36 stale achievement hashes, flag cycle disposition |
-| 12 Achievements | Twelve IDs, trackers, localisation and icon triplets | Cut Every Route network proof and safe-haven receipt (C12), full valid and invalid cases |
+| 12 Achievements | Twelve IDs, trackers, localisation and icon triplets | Cut Every Route network proof (C12) and full valid and invalid cases. The safe-haven acceptance receipt was added on 2026-10-10 |
 | 13 Documentation and catalog | Selectors, Event Details, SCN-016 row | Evolution IV workbook wording and status change queued in [catalog_changes_pending.md](../../plans/031_random_terror_plans/catalog_changes_pending.md) |
 
 ## Core design decision
@@ -141,15 +141,23 @@ The response uses ordinary decision categories, static category pictures, dynami
 
 The entity of The False Revelation may use one animated portrait because it is an impossible subject and the animation marks a world-end identity change.
 
-## Open questions
+## Decisions on the audit proposals
 
-These proposals came from the 2026-10-10 audit but touch accepted decisions, so they wait for a user or parent decision.
+Decided on 2026-10-10 under the user's autonomous-design instruction.
 
-1. Response Capacity in the category header (R37). The value grows automatically with every response, so the number itself rarely drives a choice. Proposal: drop it from the header and keep it only in the Targeted Raid and Intelligence Sweep tooltips, where it explains the better odds. The header would then show Terror Pressure, Response Legitimacy and the crisis-state count.
-2. Terminal Counteroffensive as the only coalition action (D12, amended by R38). Proposal: after C01 restores government access at world end, keep it as the single terminal action and express the other counterplay through existing decisions (Prepare Retake on a command capital, Isolate the Enclave on a corridor state, Stop the Coordinated Uprising) rather than adding new terminal decisions.
-3. Global firing scale at Evolutions IV and V (15 and up to 20 newly affected countries per firing, Part 1). With recurring pulses and spread, this may produce more simultaneous crises than the AI and the Chaos Meter can absorb. Proposal: cap newly affected countries at 10 per firing and let higher evolutions intensify existing crises instead. This changes implemented tuning (`random_terror_tuning.jihadist_targets`, `final_targets`).
+1. Response Capacity (R37) leaves the category header, which now shows Terror Pressure, Response Legitimacy and the crisis-state count. The value is stated in the Targeted Raid and Intelligence Sweep tooltips, where it changes the odds.
+2. Terminal Counteroffensive stays the single terminal government action (D12, R38). The government category and its missions now stay open while The False Revelation is the world end.
+3. Newly affected countries per firing are capped at `10` from Evolution III on (Part 1). Higher evolutions intensify existing crises through pulses, spread and actors.
 
 ## Changelog
+
+### 2026-10-10 release pass
+
+- Repaired the leadership contest (the challenger was compared with itself), the takeover victory count (a rejected target still counted), terminal government access (category and missions were closed by the world-end flag the revelation itself sets) and the delayed commit (it now repeats the opening gate and postpones on low Chaos).
+- Replaced per-incident Chaos with the Chaos impact map milestones in Part 10.
+- Added the safe-haven acceptance receipt for its achievement and the guard-absorbed attack report.
+- Recorded the decisions on the three audit proposals above.
+- Still open: dominant-player choice before promotion (C02), geography of Global Jihad types (C06), starting forces and capitals (C07), merger transaction (C08), scaled response costs (C09), full terminal phases and aftermath (C10), per-reason Deaths (C11), famine, migration and camp bridges, Domestic Unrest cluster registration (no runtime cluster 16 exists and its other members belong to other events).
 
 ### 2026-10-10 spec audit
 

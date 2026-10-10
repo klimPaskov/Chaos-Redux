@@ -17,6 +17,7 @@ random_terror_incident_report_corridor: "Couriers are moving weapons, money and 
 random_terror_incident_report_defection: "Soldiers and militants in [?random_terror_last_report_state.GetName] are changing sides. Weapons have vanished from barracks, and the network now recruits men who know how the security forces work."
 random_terror_incident_report_rivals: "Rival armed groups have clashed in [?random_terror_last_report_state.GetName]. Their fighting has emptied whole streets, and neither side shows any concern for the civilians caught between them."
 random_terror_incident_report_public_building: "Gunmen have stormed a public building in [?random_terror_last_report_state.GetName]. Officials, guards and visitors were caught inside, and armed police now surround the district."
+random_terror_incident_report_foiled: "Gunmen have opened fire on the guards posted at a station in [?random_terror_last_report_state.GetName]. The guards held their ground while the crowds were led away, and armed police now search the district for the attackers."
 random_terror_incident_report_claim: "Leaflets, broadcasts and armed patrols across [?random_terror_last_report_state.GetName] proclaim that a terrorist network now rules the district. Residents keep their doors shut as the movement's men question passers-by."
 random_terror_advanced_research_slot_tt: "Our command rises to §Y[?constant:random_terror_tuning.actor_research_slots_advanced|0]§! research slots."
 random_terror_seal_final_command_strength_tt: "Presence of the Entity gains §G[?constant:random_terror_terminal_strength.sealed_command_points|0]§! points."
@@ -38,7 +39,7 @@ random_terror_spread_status_window: "Spread: no new crisis state is expected bef
 random_terror_spread_status_survivors: "Spread: §RSurvivors of a broken cell are looking for a new base next to their old one.§!"
 random_terror_spread_status_open: "Spread: §RA cell can move into a neighbouring state§! along damaged routes, smuggling routes, copycat attacks, training camps or a nearby armed movement."
 random_terror_spread_status_none: "Spread: no cell has a reason to move."
-random_terror_emphasis_protection_tt: "For §Y[?constant:random_terror_emphasis.days|0]§! days, guards stand at stations, markets and roads across the country, and some attacks on crowds and routes strike them instead. Local pressure in §Y[?random_terror_last_report_state.GetName]§! falls by §Y[?constant:random_terror_tuning.protected_pressure_reduction|0]§!.\nGain §YProtective Cordons§! for §Y[?constant:random_terror_emphasis.days|0]§! days: war support §G+[?constant:random_terror_emphasis.protection_war_support|%0]§!, conscription §R[?constant:random_terror_emphasis.protection_conscription|%0]§!."
+random_terror_emphasis_protection_tt: "For §Y[?constant:random_terror_emphasis.days|0]§! days, guards stand at stations, markets and roads across the country, and some attacks on crowds and routes strike them instead, sparing the civilians. Local pressure in §Y[?random_terror_last_report_state.GetName]§! falls by §Y[?constant:random_terror_tuning.protected_pressure_reduction|0]§!.\nGain §YProtective Cordons§! for §Y[?constant:random_terror_emphasis.days|0]§! days: war support §G+[?constant:random_terror_emphasis.protection_war_support|%0]§!, conscription §R[?constant:random_terror_emphasis.protection_conscription|%0]§!."
 random_terror_emphasis_intelligence_tt: "For §Y[?constant:random_terror_emphasis.days|0]§! days, Intelligence Sweep is open without a response cell, and the first Targeted Raid of this period draws on better information.\nGain §YIntelligence Priority§! for §Y[?constant:random_terror_emphasis.days|0]§! days: civilian intelligence §G+[?constant:random_terror_emphasis.intelligence_civilian_intel|%0]§!, political power gain §R[?constant:random_terror_emphasis.intelligence_political_power|%0]§!."
 random_terror_emphasis_victims_tt: "Response Legitimacy rises by §G[?constant:random_terror_tuning.response_legitimacy_gain|0]§!. For §Y[?constant:random_terror_emphasis.days|0]§! days, Support Victims stays open beside a response cell and also weakens active cells where it lands.\nGain §YRelief First§! for §Y[?constant:random_terror_emphasis.days|0]§! days: stability §G+[?constant:random_terror_emphasis.victims_stability|%0]§!, construction speed §R[?constant:random_terror_emphasis.victims_construction|%0]§!."
 random_terror_emphasis_coercion_tt: "Troops pour into §Y[?random_terror_last_report_state.GetName]§!: its terrorist activity falls by §G[?constant:random_terror_tuning.state_activity_loss|0]§!, but Response Legitimacy drops by §R[?constant:random_terror_emphasis.coercion_legitimacy_loss|0]§!. For §Y[?constant:random_terror_emphasis.days|0]§! days, each Security Surge hits the cell harder.\nGain §YRapid Crackdown§! for §Y[?constant:random_terror_emphasis.days|0]§! days: war support §G+[?constant:random_terror_emphasis.coercion_war_support|%0]§!, stability §R[?constant:random_terror_emphasis.coercion_stability|%0]§!."
@@ -275,7 +276,7 @@ random_terror_world_end_desc: "A final territorial command gathers around an une
 
 # Decision categories and actions
 random_terror_government_response_category: "National Terror Response"
-random_terror_government_response_category_desc: "Protect civilians, break active networks, and restore lawful authority.\n\nTerror pressure: §Y[?random_terror_pressure|0]§! ([GetRandomTerrorPressureBand])  Legitimacy: §Y[?random_terror_response_legitimacy|0]§!  Capacity: §Y[?random_terror_response_capacity|0]§!  Crisis states: §Y[?random_terror_active_state_count|0]§!"
+random_terror_government_response_category_desc: "Protect civilians, break active networks, and restore lawful authority.\n\nTerror pressure: §Y[?random_terror_pressure|0]§! ([GetRandomTerrorPressureBand])  Legitimacy: §Y[?random_terror_response_legitimacy|0]§!  Crisis states: §Y[?random_terror_active_state_count|0]§!"
 random_terror_pressure_band_cleared: "§GCleared§!"
 random_terror_pressure_band_traces: "§GTraces§!"
 random_terror_pressure_band_local: "§YLocal Cells§!"
@@ -343,7 +344,7 @@ random_terror_intelligence_sweep_requirements_tt: "[FROM.GetName] must be an Act
 random_terror_intelligence_sweep_cost: "£command_power §Y[?constant:random_terror_cost.intelligence_command_power|0]§!  £support_equipment_text_icon §Y[?constant:random_terror_cost.intelligence_support_equipment|0]§!"
 random_terror_intelligence_sweep_cost_blocked: "£command_power §R[?constant:random_terror_cost.intelligence_command_power|0]§!  £support_equipment_text_icon §R[?constant:random_terror_cost.intelligence_support_equipment|0]§!"
 random_terror_intelligence_sweep_cost_tooltip: "Spends £command_power §Y[?constant:random_terror_cost.intelligence_command_power|0]§!, £support_equipment_text_icon §Y[?constant:random_terror_cost.intelligence_support_equipment|0]§!."
-random_terror_intelligence_sweep_effect_tt: "Reveals network activity and can weaken active cells without a public crackdown. Each point of Response Capacity, up to §Y[?constant:random_terror_capacity.effective_cap|0]§!, removes §Y[?constant:random_terror_capacity.sweep_activity_per_point|0]§! more activity in [FROM.GetName]."
+random_terror_intelligence_sweep_effect_tt: "Reveals network activity and can weaken active cells without a public crackdown. Each point of Response Capacity (we hold §Y[?random_terror_response_capacity|0]§!, counted up to §Y[?constant:random_terror_capacity.effective_cap|0]§!) removes §Y[?constant:random_terror_capacity.sweep_activity_per_point|0]§! more activity in [FROM.GetName]."
 
 random_terror_security_surge: "Deploy a Security Surge"
 random_terror_security_surge_desc: "Send mobile security teams to reinforce the most exposed crisis area."
@@ -356,11 +357,11 @@ random_terror_security_surge_emergency_effect_tt: "Storms the hostage site or th
 
 random_terror_targeted_raid: "Raid the Cell in [FROM.GetName]"
 random_terror_targeted_raid_desc: "Strike a verified site in [FROM.GetName] with trained personnel and prepared detention teams."
-random_terror_targeted_raid_requirements_tt: "[FROM.GetName] must be controlled and contain an active or entrenched organization."
+random_terror_targeted_raid_requirements_tt: "Our forces must control [FROM.GetName], where an active or entrenched organization is identified or our hostage or uprising response is underway."
 random_terror_targeted_raid_cost: "£command_power §Y[?constant:random_terror_cost.targeted_raid_command_power|0]§!  £army_experience §Y[?constant:random_terror_cost.targeted_raid_army_experience|0]§!  £support_equipment_text_icon §Y[?constant:random_terror_cost.targeted_raid_support_equipment|0]§!"
 random_terror_targeted_raid_cost_blocked: "£command_power §R[?constant:random_terror_cost.targeted_raid_command_power|0]§!  £army_experience §R[?constant:random_terror_cost.targeted_raid_army_experience|0]§!  £support_equipment_text_icon §R[?constant:random_terror_cost.targeted_raid_support_equipment|0]§!"
 random_terror_targeted_raid_cost_tooltip: "Spends £command_power §Y[?constant:random_terror_cost.targeted_raid_command_power|0]§!, £army_experience §Y[?constant:random_terror_cost.targeted_raid_army_experience|0]§!, £support_equipment_text_icon §Y[?constant:random_terror_cost.targeted_raid_support_equipment|0]§!."
-random_terror_targeted_raid_effect_tt: "Attempts to reduce local activity and can free captives or break an uprising. Poor preparation can raise pressure, harm civilians, and damage legitimacy. Each point of Response Capacity, up to §Y[?constant:random_terror_capacity.effective_cap|0]§!, makes a clean raid more likely. A partial or costly raid scatters the survivors, who can open a new crisis in a neighbouring state unless a defection channel or allied intelligence keeps track of them."
+random_terror_targeted_raid_effect_tt: "Attempts to reduce local activity and can free captives or break an uprising. Poor preparation can raise pressure, harm civilians, and damage legitimacy. Each point of Response Capacity (we hold §Y[?random_terror_response_capacity|0]§!, counted up to §Y[?constant:random_terror_capacity.effective_cap|0]§!) makes a clean raid more likely. A partial or costly raid scatters the survivors, who can open a new crisis in a neighbouring state unless a defection channel or allied intelligence keeps track of them."
 
 random_terror_disrupt_support: "Disrupt Corridor Through [FROM.GetName]"
 random_terror_disrupt_support_desc: "Interdict couriers, cargo, and communications moving through [FROM.GetName]."
@@ -1242,3 +1243,9 @@ random_terror_accelerate_the_revelation_reward_tt: "The command stakes its autho
 random_terror_ambiguous_light_reward_tt: "One veteran formation gathers around the final command, within its division limit."
 random_terror_seize_the_command_capitals_reward_tt: "The final command forms its own faction, every command that submitted to it joins, and the last struggle for the world begins."
 random_terror_sky_fracture_shock: "Sky Fracture Shock"
+chaos_meter.history.reason.special.random_terror_campaign: "Terror attacks cross borders and strike in concert"
+chaos_meter.history.reason.special.random_terror_actor: "An armed movement begins to govern territory"
+chaos_meter.history.reason.special.random_terror_government: "A government or capital falls to a terror movement"
+chaos_meter.history.reason.special.random_terror_civil_war: "Terror splits a country into open war"
+chaos_meter.history.reason.special.random_terror_international: "Armed movements pledge themselves to one international command"
+chaos_meter.history.reason.special.random_terror_broken: "A terror network is broken"

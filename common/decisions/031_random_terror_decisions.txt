@@ -421,25 +421,9 @@ random_terror_government_response_category = {
 			}
 		}
 		available = {
-			hidden_trigger = { random_terror_can_afford_security_surge = yes }
 			custom_trigger_tooltip = {
 				tooltip = random_terror_security_surge_requirements_tt
-				random_terror_can_government_response = yes
-				OR = {
-					AND = {
-						NOT = { has_country_flag = random_terror_response_cell_active }
-						NOT = { has_country_flag = random_terror_mission_slot_1 }
-						FROM = {
-							is_controlled_by = ROOT
-							random_terror_state_is_active_crisis = yes
-							NOT = { has_state_flag = random_terror_security_surge_target }
-						}
-					}
-					FROM = {
-						is_controlled_by = ROOT
-						random_terror_state_is_emergency_subject = yes
-					}
-				}
+				random_terror_can_execute_security_surge = yes
 			}
 		}
 		target_root_trigger = {
@@ -471,31 +455,34 @@ random_terror_government_response_category = {
 		days_re_enable = constant:random_terror_tuning.decision_action_cooldown_days
 		complete_effect = {
 			if = {
-				limit = { FROM = { random_terror_state_is_emergency_subject = yes } }
-				custom_effect_tooltip = random_terror_security_surge_emergency_effect_tt
-				add_command_power = constant:random_terror_cost.security_command_power_spend
-				add_fuel = constant:random_terror_cost.security_fuel_spend
-				add_equipment_to_stockpile = { type = support_equipment amount = constant:random_terror_cost.security_support_equipment_spend }
-				FROM = {
-					save_event_target_as = random_terror_action_state
-					set_state_flag = random_terror_security_surge_target
+				limit = { random_terror_can_execute_security_surge = yes }
+				if = {
+					limit = { FROM = { random_terror_state_is_emergency_subject = yes } }
+					custom_effect_tooltip = random_terror_security_surge_emergency_effect_tt
+					add_command_power = constant:random_terror_cost.security_command_power_spend
+					add_fuel = constant:random_terror_cost.security_fuel_spend
+					add_equipment_to_stockpile = { type = support_equipment amount = constant:random_terror_cost.security_support_equipment_spend }
+					FROM = {
+						save_event_target_as = random_terror_action_state
+						set_state_flag = random_terror_security_surge_target
+					}
+					random_terror_decision_security_surge = yes
+					random_terror_emergency_surge_outcome = yes
 				}
-				random_terror_decision_security_surge = yes
-				random_terror_emergency_surge_outcome = yes
-			}
-			else_if = {
-				limit = { NOT = { has_country_flag = random_terror_mission_slot_1 } }
-				custom_effect_tooltip = random_terror_security_surge_effect_tt
-				add_command_power = constant:random_terror_cost.security_command_power_spend
-				add_fuel = constant:random_terror_cost.security_fuel_spend
-				add_equipment_to_stockpile = { type = support_equipment amount = constant:random_terror_cost.security_support_equipment_spend }
-				FROM = {
-					save_event_target_as = random_terror_action_state
-					save_event_target_as = random_terror_mission_subject
-					set_state_flag = random_terror_security_surge_target
+				else_if = {
+					limit = { NOT = { has_country_flag = random_terror_mission_slot_1 } }
+					custom_effect_tooltip = random_terror_security_surge_effect_tt
+					add_command_power = constant:random_terror_cost.security_command_power_spend
+					add_fuel = constant:random_terror_cost.security_fuel_spend
+					add_equipment_to_stockpile = { type = support_equipment amount = constant:random_terror_cost.security_support_equipment_spend }
+					FROM = {
+						save_event_target_as = random_terror_action_state
+						save_event_target_as = random_terror_mission_subject
+						set_state_flag = random_terror_security_surge_target
+					}
+					random_terror_decision_security_surge = yes
+					random_terror_begin_containment_mission = yes
 				}
-				random_terror_decision_security_surge = yes
-				random_terror_begin_containment_mission = yes
 			}
 		}
 		ai_will_do = {
@@ -541,30 +528,9 @@ random_terror_government_response_category = {
 			}
 		}
 		available = {
-			hidden_trigger = { random_terror_can_afford_targeted_raid = yes }
 			custom_trigger_tooltip = {
 				tooltip = random_terror_targeted_raid_requirements_tt
-				random_terror_can_government_response = yes
-				FROM = {
-					is_controlled_by = ROOT
-					NOT = { has_state_flag = random_terror_raid_target }
-				}
-				OR = {
-					AND = {
-						has_country_flag = random_terror_response_cell_active
-						OR = {
-							has_country_flag = random_terror_intelligence_breakthrough
-							check_variable = { random_terror_response_legitimacy > constant:random_terror_value.high }
-						}
-						FROM = {
-							OR = {
-								has_state_flag = random_terror_state_active
-								has_state_flag = random_terror_state_entrenched
-							}
-						}
-					}
-					FROM = { random_terror_state_is_emergency_subject = yes }
-				}
+				random_terror_can_execute_targeted_raid = yes
 			}
 		}
 		target_root_trigger = {
@@ -596,20 +562,23 @@ random_terror_government_response_category = {
 		custom_cost_text = random_terror_targeted_raid_cost
 		days_re_enable = constant:random_terror_tuning.decision_action_cooldown_days
 		complete_effect = {
-			custom_effect_tooltip = random_terror_targeted_raid_effect_tt
-			add_command_power = constant:random_terror_cost.targeted_raid_command_power_spend
-			set_temp_variable = { random_terror_army_experience_payment = constant:random_terror_cost.targeted_raid_army_experience }
-			multiply_temp_variable = { random_terror_army_experience_payment = constant:universal_cost_framework.negative_one }
-			army_experience = random_terror_army_experience_payment
-			add_equipment_to_stockpile = { type = support_equipment amount = constant:random_terror_cost.targeted_raid_support_equipment_spend }
-			FROM = {
-				save_event_target_as = random_terror_action_state
-				set_state_flag = random_terror_raid_target
+			if = {
+				limit = { random_terror_can_execute_targeted_raid = yes }
+				custom_effect_tooltip = random_terror_targeted_raid_effect_tt
+				add_command_power = constant:random_terror_cost.targeted_raid_command_power_spend
+				set_temp_variable = { random_terror_army_experience_payment = constant:random_terror_cost.targeted_raid_army_experience }
+				multiply_temp_variable = { random_terror_army_experience_payment = constant:universal_cost_framework.negative_one }
+				army_experience = random_terror_army_experience_payment
+				add_equipment_to_stockpile = { type = support_equipment amount = constant:random_terror_cost.targeted_raid_support_equipment_spend }
+				FROM = {
+					save_event_target_as = random_terror_action_state
+					set_state_flag = random_terror_raid_target
+				}
+				random_terror_decision_targeted_raid = yes
+				# Parent-owned outcome resolver: clean, costly, partial, failed, and
+				# abusive failure outcomes remain hidden behind the public risk band.
+				random_terror_resolve_targeted_raid_outcome = yes
 			}
-			random_terror_decision_targeted_raid = yes
-			# Parent-owned outcome resolver: clean, costly, partial, failed, and
-			# abusive failure outcomes remain hidden behind the public risk band.
-			random_terror_resolve_targeted_raid_outcome = yes
 		}
 		ai_will_do = {
 			base = @rt_ai_medium

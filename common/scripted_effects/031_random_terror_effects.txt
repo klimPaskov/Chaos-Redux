@@ -275,6 +275,12 @@ random_terror_clamp_country_values = {
 		min = constant:random_terror_value.minimum
 		max = constant:random_terror_value.maximum
 	}
+	# Remembers that this crisis reached State Challenge pressure, which is
+	# what makes its containment a Chaos milestone.
+	if = {
+		limit = { check_variable = { random_terror_pressure > constant:random_terror_pressure_band.sustained } }
+		set_country_flag = random_terror_cycle_reached_challenge
+	}
 }
 
 # COUNTRY scope.  Input: caller-owned temp random_terror_pending_pressure_delta,
@@ -560,11 +566,99 @@ random_terror_mark_state_cooldown = {
 	add_to_variable = { random_terror_state_cooldown_until = chaosx_date_offset }
 }
 
-random_terror_record_chaos = {
-	set_temp_variable = { chaos_change = constant:random_terror_tuning.minor_pressure_gain }
-	set_temp_variable = { chaos_history_reason = constant:chaos_meter_history_reason.generic.increase }
-	set_temp_variable = { chaos_history_reason_custom = 1 }
-	add_chaos_meter_value = yes
+# Any scope.  Event 31 feeds the Chaos Meter only through strategic
+# milestones (Part 10 Chaos impact map); ordinary incidents add none, because
+# their deaths already reach the meter through the shared Deaths conversion.
+# Every caller guards its own milestone so it is paid once.
+# Input: temp random_terror_chaos_amount (positive), temp
+# random_terror_chaos_reason (a chaos_meter_history_reason id), temp
+# random_terror_chaos_uncapped (one skips the rolling cap).
+# Rises are limited to random_terror_chaos.window_cap per
+# random_terror_chaos.window_days; the Final Jihad wave and every relief sit
+# outside that cap.
+random_terror_chaos_rise = {
+	if = {
+		limit = { check_variable = { random_terror_chaos_amount > constant:random_terror_value.zero } }
+		if = {
+			limit = { NOT = { check_variable = { random_terror_chaos_uncapped = constant:random_terror_value.one } } }
+			if = {
+				limit = {
+					OR = {
+						NOT = { has_variable = global.random_terror_chaos_window_end }
+						check_variable = { var = global.random_terror_chaos_window_end value = global.date compare = less_than_or_equals }
+					}
+				}
+				set_variable = { global.random_terror_chaos_window_total = constant:random_terror_value.zero }
+				set_temp_variable = { chaosx_date_days = constant:random_terror_chaos.window_days }
+				set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
+				chaosx_convert_days_to_date_offset = yes
+				set_variable = { global.random_terror_chaos_window_end = global.date }
+				add_to_variable = { global.random_terror_chaos_window_end = chaosx_date_offset }
+			}
+			set_temp_variable = { random_terror_chaos_room = constant:random_terror_chaos.window_cap }
+			subtract_from_temp_variable = { random_terror_chaos_room = global.random_terror_chaos_window_total }
+			if = {
+				limit = { check_variable = { random_terror_chaos_amount > random_terror_chaos_room } }
+				set_temp_variable = { random_terror_chaos_amount = random_terror_chaos_room }
+			}
+			if = {
+				limit = { check_variable = { random_terror_chaos_amount > constant:random_terror_value.zero } }
+				add_to_variable = { global.random_terror_chaos_window_total = random_terror_chaos_amount }
+			}
+		}
+		if = {
+			limit = { check_variable = { random_terror_chaos_amount > constant:random_terror_value.zero } }
+			set_temp_variable = { chaos_change = random_terror_chaos_amount }
+			set_temp_variable = { chaos_history_reason = random_terror_chaos_reason }
+			set_temp_variable = { chaos_history_reason_custom = 1 }
+			add_chaos_meter_value = yes
+		}
+	}
+	set_temp_variable = { random_terror_chaos_amount = constant:random_terror_value.zero }
+	set_temp_variable = { random_terror_chaos_uncapped = constant:random_terror_value.zero }
+}
+
+# Any scope.  A reversal: the same inputs as random_terror_chaos_rise, the
+# amount removed from the meter.
+random_terror_chaos_relief = {
+	if = {
+		limit = { check_variable = { random_terror_chaos_amount > constant:random_terror_value.zero } }
+		set_temp_variable = { chaos_change = random_terror_chaos_amount }
+		multiply_temp_variable = { chaos_change = constant:random_terror_value.negative_one }
+		set_temp_variable = { chaos_history_reason = random_terror_chaos_reason }
+		set_temp_variable = { chaos_history_reason_custom = 1 }
+		add_chaos_meter_value = yes
+	}
+	set_temp_variable = { random_terror_chaos_amount = constant:random_terror_value.zero }
+}
+
+# Any scope.  The first cross-border spread or distant attack of a campaign.
+random_terror_chaos_first_spread = {
+	if = {
+		limit = { NOT = { has_global_flag = random_terror_chaos_first_spread_paid } }
+		set_global_flag = random_terror_chaos_first_spread_paid
+		set_temp_variable = { random_terror_chaos_amount = constant:random_terror_chaos.first_spread }
+		set_temp_variable = { random_terror_chaos_reason = constant:chaos_meter_history_reason.special.random_terror_campaign }
+		random_terror_chaos_rise = yes
+	}
+}
+
+# Any scope.  The Jihadist International counts as founded once two commands
+# belong to it.
+random_terror_check_international_chaos = {
+	if = {
+		limit = {
+			NOT = { has_global_flag = random_terror_chaos_international_paid }
+			any_country = {
+				count = 2
+				has_country_flag = random_terror_jihadist_international_member
+			}
+		}
+		set_global_flag = random_terror_chaos_international_paid
+		set_temp_variable = { random_terror_chaos_amount = constant:random_terror_chaos.international_founded }
+		set_temp_variable = { random_terror_chaos_reason = constant:chaos_meter_history_reason.special.random_terror_international }
+		random_terror_chaos_rise = yes
+	}
 }
 
 # -----------------------------------------------------------------------------
@@ -604,6 +698,10 @@ random_terror_apply_incident = {
 	set_temp_variable = { random_terror_report_loss = constant:random_terror_value.zero }
 	# Caller-owned storage for the loss the exact state-loss helpers return.
 	set_temp_variable = { state_civilian_population_loss_applied = constant:random_terror_value.zero }
+	# Guards who absorb the attack (a protected transport state or Protective
+	# Cordons) set this: the attack strikes them, not the civilians, so it
+	# keeps the minor pressure gain and requests no civilian deaths.
+	set_temp_variable = { random_terror_incident_foiled = constant:random_terror_value.zero }
 	if = {
 		limit = { has_global_flag = random_terror_evolution_2_unlocked }
 		set_state_flag = random_terror_transnational_link_active
@@ -721,7 +819,10 @@ random_terror_apply_incident = {
 		set_temp_variable = { random_terror_draw_transport_foiled = constant:random_terror_runtime_weight.transport_protection_foiled }
 		set_temp_variable = { random_terror_draw_transport_breached = constant:random_terror_runtime_weight.transport_protection_breached }
 		random_list = {
-			random_terror_draw_transport_foiled = { set_temp_variable = { random_terror_incident_type = constant:random_terror_incident.security_site_attack } }
+			random_terror_draw_transport_foiled = {
+				set_temp_variable = { random_terror_incident_type = constant:random_terror_incident.security_site_attack }
+				set_temp_variable = { random_terror_incident_foiled = constant:random_terror_value.one }
+			}
 			random_terror_draw_transport_breached = { }
 		}
 	}
@@ -740,7 +841,10 @@ random_terror_apply_incident = {
 		set_temp_variable = { random_terror_draw_cordon_foiled = constant:random_terror_runtime_weight.transport_protection_foiled }
 		set_temp_variable = { random_terror_draw_cordon_breached = constant:random_terror_runtime_weight.transport_protection_breached }
 		random_list = {
-			random_terror_draw_cordon_foiled = { set_temp_variable = { random_terror_incident_type = constant:random_terror_incident.security_site_attack } }
+			random_terror_draw_cordon_foiled = {
+				set_temp_variable = { random_terror_incident_type = constant:random_terror_incident.security_site_attack }
+				set_temp_variable = { random_terror_incident_foiled = constant:random_terror_value.one }
+			}
 			random_terror_draw_cordon_breached = { }
 		}
 	}
@@ -751,6 +855,7 @@ random_terror_apply_incident = {
 				check_variable = { random_terror_incident_type = constant:random_terror_incident.hostage_crisis }
 				check_variable = { random_terror_incident_type = constant:random_terror_incident.security_site_attack }
 			}
+			NOT = { check_variable = { random_terror_incident_foiled = constant:random_terror_value.one } }
 		}
 		set_temp_variable = { random_terror_incident_pressure_delta = constant:random_terror_tuning.major_pressure_gain }
 		set_temp_variable = { random_terror_civilian_death_request = constant:random_terror_tuning.civilian_deaths_major }
@@ -900,6 +1005,7 @@ random_terror_apply_incident = {
 				check_variable = { random_terror_incident_type = constant:random_terror_incident.hostage_crisis }
 				check_variable = { random_terror_incident_type = constant:random_terror_incident.security_site_attack }
 			}
+			NOT = { check_variable = { random_terror_incident_foiled = constant:random_terror_value.one } }
 		}
 		random_terror_apply_exact_state_loss = yes
 		set_temp_variable = { random_terror_report_loss = state_civilian_population_loss_applied }
@@ -939,6 +1045,7 @@ random_terror_apply_incident = {
 		set_variable = { random_terror_last_report_incident_type = random_terror_incident_type }
 		set_variable = { random_terror_last_report_state = random_terror_report_state_id }
 		set_variable = { random_terror_last_report_loss = random_terror_report_loss }
+		set_variable = { random_terror_last_report_foiled = random_terror_incident_foiled }
 		# A spread or distant attack records its origin after this returns.
 		set_variable = { random_terror_last_report_spread_reason = constant:random_terror_spread_reason.none }
 		clear_variable = random_terror_last_report_origin
@@ -989,7 +1096,6 @@ random_terror_apply_incident = {
 	}
 	add_to_variable = { global.random_terror_network_reach = constant:random_terror_tuning.network_reach_gain }
 	clamp_variable = { var = global.random_terror_network_reach min = constant:random_terror_value.minimum max = constant:random_terror_value.maximum }
-	random_terror_record_chaos = yes
 	random_terror_update_state_stage = yes
 	if = {
 		limit = {
@@ -1265,6 +1371,7 @@ random_terror_open_spread_hotspot = {
 		limit = { NOT = { is_controlled_by = ROOT } }
 		ROOT = { random_terror_mark_safe_haven = yes }
 		CONTROLLER = { set_country_flag = random_terror_haven_link_@ROOT }
+		random_terror_chaos_first_spread = yes
 	}
 }
 
@@ -1295,6 +1402,7 @@ random_terror_launch_distant_attack = {
 	}
 	if = {
 		limit = { check_variable = { random_terror_distant_applied = constant:random_terror_value.one } }
+		random_terror_chaos_first_spread = yes
 		subtract_from_variable = { global.random_terror_network_reach = constant:random_terror_spread.distant_reach_cost }
 		clamp_variable = { var = global.random_terror_network_reach min = constant:random_terror_value.minimum max = constant:random_terror_value.maximum }
 		set_temp_variable = { chaosx_date_days = constant:random_terror_spread.distant_window_days }
@@ -1880,6 +1988,13 @@ random_terror_run_global_wave = {
 		limit = { has_global_flag = random_terror_evolution_4_unlocked }
 		add_to_variable = { global.random_terror_international_unity = constant:random_terror_tuning.unity_gain }
 		clamp_variable = { var = global.random_terror_international_unity min = constant:random_terror_value.minimum max = constant:random_terror_value.maximum }
+	}
+	if = {
+		limit = { NOT = { has_global_flag = random_terror_chaos_first_firing_paid } }
+		set_global_flag = random_terror_chaos_first_firing_paid
+		set_temp_variable = { random_terror_chaos_amount = constant:random_terror_chaos.first_firing }
+		set_temp_variable = { random_terror_chaos_reason = constant:chaos_meter_history_reason.special.random_terror_campaign }
+		random_terror_chaos_rise = yes
 	}
 }
 
@@ -2519,6 +2634,7 @@ random_terror_launch_global_jihad = {
 
 random_terror_initialize_actor = {
 	clr_country_flag = random_terror_cleanup_complete
+	clr_country_flag = random_terror_chaos_broken_paid
 	clr_country_flag = random_terror_player_actor_defeat_resolved
 	set_country_flag = random_terror_actor
 	set_country_flag = random_terror_active_actor
@@ -3697,6 +3813,19 @@ random_terror_try_spawn_actor = {
 				add_to_variable = { random_terror_states_lost_count = constant:random_terror_value.one }
 				random_terror_achievement_record_actor_formation = yes
 				random_terror_achievement_record_state_loss = yes
+				set_country_flag = random_terror_cycle_lost_state
+			}
+			if = {
+				limit = { NOT = { has_global_flag = random_terror_chaos_first_actor_paid } }
+				set_global_flag = random_terror_chaos_first_actor_paid
+				set_temp_variable = { random_terror_chaos_amount = constant:random_terror_chaos.first_actor_formed }
+				set_temp_variable = { random_terror_chaos_reason = constant:chaos_meter_history_reason.special.random_terror_actor }
+				random_terror_chaos_rise = yes
+			}
+			else = {
+				set_temp_variable = { random_terror_chaos_amount = constant:random_terror_chaos.actor_formed }
+				set_temp_variable = { random_terror_chaos_reason = constant:chaos_meter_history_reason.special.random_terror_actor }
+				random_terror_chaos_rise = yes
 			}
 			add_to_variable = { global.random_terror_territorial_state_count = 1 }
 			add_to_variable = { global.random_terror_territorial_control = constant:random_terror_tuning.actor_control_start }
@@ -3770,6 +3899,9 @@ random_terror_start_pressure_civil_war = {
 			limit = { has_civil_war = yes }
 			set_country_flag = random_terror_civil_war_started
 			set_temp_variable = { random_terror_civil_war_begun = constant:random_terror_value.one }
+			set_temp_variable = { random_terror_chaos_amount = constant:random_terror_chaos.civil_war }
+			set_temp_variable = { random_terror_chaos_reason = constant:chaos_meter_history_reason.special.random_terror_civil_war }
+			random_terror_chaos_rise = yes
 		}
 	}
 	set_temp_variable = { random_terror_civil_war_size = constant:random_terror_value.zero }
@@ -4875,6 +5007,7 @@ random_terror_focus_reward_lead_coordination = {
 			set_country_flag = random_terror_jihadist_international_member
 			set_country_flag = random_terror_later_religious_opposition_registry
 		}
+		random_terror_check_international_chaos = yes
 	}
 	else = {
 		add_equipment_to_stockpile = { type = support_equipment amount = constant:random_terror_cost.actor_depot_support_equipment }
@@ -5233,6 +5366,7 @@ random_terror_try_takeover_state = {
 			check_variable = { random_terror_territorial_control > constant:random_terror_value.territorial_gate }
 			has_event_target = random_terror_action_state
 		}
+		set_temp_variable = { random_terror_takeover_succeeded = constant:random_terror_value.zero }
 		event_target:random_terror_action_state = {
 			CONTROLLER = { save_event_target_as = random_terror_takeover_previous_controller }
 			if = {
@@ -5242,6 +5376,19 @@ random_terror_try_takeover_state = {
 					NOT = { is_controlled_by = ROOT }
 					NOT = { is_owned_by = ROOT }
 				}
+				set_temp_variable = { random_terror_takeover_succeeded = constant:random_terror_value.one }
+				# Read before the transfer: the capital and the power of the
+				# government that loses the state.
+				set_temp_variable = { random_terror_takeover_capital = constant:random_terror_value.zero }
+				set_temp_variable = { random_terror_takeover_major = constant:random_terror_value.zero }
+				if = {
+					limit = { is_capital = yes }
+					set_temp_variable = { random_terror_takeover_capital = constant:random_terror_value.one }
+				}
+				if = {
+					limit = { OWNER = { is_major = yes } }
+					set_temp_variable = { random_terror_takeover_major = constant:random_terror_value.one }
+				}
 				set_state_flag = random_terror_achievement_state_lost_to_actor
 				save_event_target_as = random_terror_achievement_lost_state
 				transfer_state_to = ROOT
@@ -5249,8 +5396,27 @@ random_terror_try_takeover_state = {
 				set_state_flag = random_terror_state_lost_local_control
 				set_state_flag = random_terror_territorial_takeover_recorded
 				if = {
+					limit = {
+						check_variable = { random_terror_takeover_capital = constant:random_terror_value.one }
+						NOT = { has_state_flag = random_terror_capital_chaos_paid }
+					}
+					set_state_flag = random_terror_capital_chaos_paid
+					if = {
+						limit = { check_variable = { random_terror_takeover_major = constant:random_terror_value.one } }
+						set_temp_variable = { random_terror_chaos_amount = constant:random_terror_chaos.major_capital_captured }
+						set_temp_variable = { random_terror_chaos_reason = constant:chaos_meter_history_reason.special.random_terror_government }
+						random_terror_chaos_rise = yes
+					}
+					else = {
+						set_temp_variable = { random_terror_chaos_amount = constant:random_terror_chaos.capital_captured }
+						set_temp_variable = { random_terror_chaos_reason = constant:chaos_meter_history_reason.special.random_terror_government }
+						random_terror_chaos_rise = yes
+					}
+				}
+				if = {
 					limit = { has_event_target = random_terror_takeover_previous_controller }
 					event_target:random_terror_takeover_previous_controller = {
+						set_country_flag = random_terror_cycle_lost_state
 						random_terror_refresh_priority_state = yes
 						add_to_variable = { random_terror_states_lost_count = constant:random_terror_value.one }
 						random_terror_achievement_record_actor_formation = yes
@@ -5270,6 +5436,16 @@ random_terror_try_takeover_state = {
 						has_event_target = random_terror_takeover_previous_controller
 						event_target:random_terror_takeover_previous_controller = { num_of_controlled_states < constant:random_terror_value.one }
 					}
+					if = {
+						limit = { event_target:random_terror_takeover_previous_controller = { NOT = { has_country_flag = random_terror_government_takeover_recorded } } }
+						set_temp_variable = { random_terror_chaos_amount = constant:random_terror_chaos.government_falls }
+						if = {
+							limit = { check_variable = { random_terror_takeover_major = constant:random_terror_value.one } }
+							add_to_temp_variable = { random_terror_chaos_amount = constant:random_terror_chaos.major_power_premium }
+						}
+						set_temp_variable = { random_terror_chaos_reason = constant:chaos_meter_history_reason.special.random_terror_government }
+						random_terror_chaos_rise = yes
+					}
 					event_target:random_terror_takeover_previous_controller = {
 						set_country_flag = random_terror_government_takeover_recorded
 						set_country_flag = random_terror_achievement_war_without_capital_disqualified
@@ -5277,9 +5453,13 @@ random_terror_try_takeover_state = {
 				}
 			}
 		}
-		add_to_variable = { global.random_terror_territorial_control = constant:random_terror_tuning.actor_control_start }
-		add_to_variable = { global.random_terror_strategic_victories = constant:random_terror_value.one }
-		set_country_flag = random_terror_state_takeover_recorded
+		# A rejected or already-lost target leaves the victory count alone.
+		if = {
+			limit = { check_variable = { random_terror_takeover_succeeded = constant:random_terror_value.one } }
+			add_to_variable = { global.random_terror_territorial_control = constant:random_terror_tuning.actor_control_start }
+			add_to_variable = { global.random_terror_strategic_victories = constant:random_terror_value.one }
+			set_country_flag = random_terror_state_takeover_recorded
+		}
 		random_terror_clamp_actor_values = yes
 		random_terror_refresh_global_values = yes
 		random_terror_schedule_false_revelation = yes
@@ -6030,11 +6210,12 @@ random_terror_resolve_network_leadership_contest = {
 					has_country_flag = random_terror_network_leader
 					NOT = { has_country_flag = random_terror_final_actor }
 				}
+				# Read the leader's own authority in the leader's scope; a check
+				# made inside ROOT would compare the challenger with itself.
+				set_temp_variable = { random_terror_leader_authority = random_terror_network_authority }
 				if = {
 					limit = {
-						ROOT = {
-							check_variable = { random_terror_contesting_authority > random_terror_network_authority }
-						}
+						check_variable = { random_terror_contesting_authority > random_terror_leader_authority }
 						is_ai = yes
 					}
 					clr_country_flag = random_terror_network_leader
@@ -6163,6 +6344,7 @@ random_terror_accept_jihad_membership = {
 	clamp_variable = { var = global.random_terror_international_unity min = constant:random_terror_value.minimum max = constant:random_terror_value.maximum }
 	clamp_variable = { var = global.random_terror_apocalyptic_readiness min = constant:random_terror_value.minimum max = constant:random_terror_value.maximum }
 	random_terror_achievement_record_jihad_membership = yes
+	random_terror_check_international_chaos = yes
 }
 
 # Applicant scope, ROOT = the rejecting leader (chaosx.nr31.44).
@@ -6197,6 +6379,17 @@ random_terror_commit_coordinated_uprising = {
 # Uprising focus share it; callers pay their price first.
 random_terror_launch_coordinated_uprising = {
 	random_terror_actor_action_common = yes
+	if = {
+		limit = {
+			has_global_flag = random_terror_evolution_5_unlocked
+			NOT = { has_global_flag = random_terror_chaos_uprising_wave_paid }
+		}
+		set_global_flag = random_terror_chaos_uprising_wave_paid
+		set_temp_variable = { random_terror_chaos_amount = constant:random_terror_chaos.uprising_wave }
+		set_temp_variable = { random_terror_chaos_reason = constant:chaos_meter_history_reason.special.random_terror_campaign }
+		set_temp_variable = { random_terror_chaos_uncapped = constant:random_terror_value.one }
+		random_terror_chaos_rise = yes
+	}
 	# Bind the defender before the uprising can change state control.
 	event_target:random_terror_uprising_state = {
 		save_event_target_as = random_terror_mission_subject
@@ -6766,6 +6959,13 @@ random_terror_trigger_coup_attempt = {
 			limit = { check_variable = { random_terror_civil_war_begun = constant:random_terror_value.one } }
 			set_country_flag = random_terror_coup_successful
 			set_country_flag = random_terror_government_paralysis_recorded
+			set_temp_variable = { random_terror_chaos_amount = constant:random_terror_chaos.government_falls }
+			if = {
+				limit = { is_major = yes }
+				add_to_temp_variable = { random_terror_chaos_amount = constant:random_terror_chaos.major_power_premium }
+			}
+			set_temp_variable = { random_terror_chaos_reason = constant:chaos_meter_history_reason.special.random_terror_government }
+			random_terror_chaos_rise = yes
 			random_terror_achievement_record_coup = yes
 		}
 	}
@@ -7238,7 +7438,57 @@ random_terror_begin_false_revelation = {
 	}
 }
 
+# The delayed commit repeats the gate that opened the revelation.  A branch
+# that was disabled, a world that ended another way or a final command that
+# no longer exists withdraws the revelation without any world-end change.
+# Chaos that slipped below the threshold only postpones the commit.
 random_terror_finalize_false_revelation = {
+	if = {
+		limit = {
+			has_global_flag = random_terror_terminal_active
+			has_global_flag = random_terror_false_revelation_pending
+		}
+		if = {
+			limit = {
+				random_terror_false_revelation_commit_possible = yes
+				has_event_target = random_terror_final_actor
+				event_target:random_terror_final_actor = { exists = yes }
+			}
+			if = {
+				limit = { NOT = { random_terror_false_revelation_chaos_held = yes } }
+				set_temp_variable = { random_terror_world_end_delay = constant:random_terror_tuning.world_end_recheck_days }
+				event_target:random_terror_final_actor = { country_event = { id = chaosx.nr31.95 days = random_terror_world_end_delay } }
+			}
+			else = {
+				random_terror_commit_false_revelation = yes
+			}
+		}
+		else = {
+			random_terror_withdraw_false_revelation = yes
+		}
+	}
+}
+
+# A revelation that can no longer commit: the final command is dissolved and
+# the crisis resolves through the ordinary defeat path.
+random_terror_withdraw_false_revelation = {
+	set_global_flag = random_terror_false_revelation_denied
+	clr_global_flag = random_terror_false_revelation_pending
+	clr_global_flag = random_terror_terminal_active
+	if = {
+		limit = {
+			has_event_target = random_terror_final_actor
+			event_target:random_terror_final_actor = { exists = yes }
+		}
+		event_target:random_terror_final_actor = {
+			set_country_flag = random_terror_cleanup_requested
+			random_terror_cleanup_actor = yes
+		}
+	}
+	random_terror_check_for_defeat = yes
+}
+
+random_terror_commit_false_revelation = {
 	if = {
 		limit = {
 			has_global_flag = random_terror_terminal_active
@@ -7799,6 +8049,7 @@ random_terror_accept_haven_demand = {
 		set_temp_variable = { random_terror_pending_legitimacy_delta = constant:random_terror_tuning.response_legitimacy_gain }
 		random_terror_apply_legitimacy = yes
 		add_opinion_modifier = { target = PREV modifier = random_terror_safe_haven_cooperation }
+		random_terror_achievement_record_safe_haven_eliminated = yes
 	}
 }
 
@@ -7964,6 +8215,17 @@ random_terror_close_country_recovery = {
 		set_variable = { random_terror_last_cycle_legitimacy = random_terror_response_legitimacy }
 		set_country_flag = random_terror_recovery_report_pending
 		country_event = { id = chaosx.nr31.9 }
+		# A crisis that reached State Challenge pressure and was closed without
+		# losing a state to an armed command pushes the world back a little.
+		if = {
+			limit = {
+				has_country_flag = random_terror_cycle_reached_challenge
+				NOT = { has_country_flag = random_terror_cycle_lost_state }
+			}
+			set_temp_variable = { random_terror_chaos_amount = constant:random_terror_chaos.severe_crisis_contained_relief }
+			set_temp_variable = { random_terror_chaos_reason = constant:chaos_meter_history_reason.special.random_terror_broken }
+			random_terror_chaos_relief = yes
+		}
 		random_terror_reset_crisis_cycle = yes
 		random_terror_refresh_priority_state = yes
 	}
@@ -7995,6 +8257,8 @@ random_terror_reset_crisis_cycle = {
 	clr_country_flag = random_terror_coup_successful
 	clr_country_flag = random_terror_failed_raid_memory
 	clr_country_flag = random_terror_sponsor_exposed
+	clr_country_flag = random_terror_cycle_reached_challenge
+	clr_country_flag = random_terror_cycle_lost_state
 	# The pending recovery check is kept: a check already scheduled either
 	# finds the country at rest and stops, or carries on a crisis that
 	# reopened before it fired, so two chains never run at once.
@@ -8059,6 +8323,11 @@ random_terror_reset_repeatable_cycle = {
 		clr_global_flag = random_terror_scenario_news_sent
 		clr_global_flag = random_terror_global_jihad_active
 		clr_global_flag = random_terror_world_end_ready
+		clr_global_flag = random_terror_chaos_first_firing_paid
+		clr_global_flag = random_terror_chaos_first_spread_paid
+		clr_global_flag = random_terror_chaos_first_actor_paid
+		clr_global_flag = random_terror_chaos_international_paid
+		clr_global_flag = random_terror_chaos_uprising_wave_paid
 		clr_global_flag = random_terror_false_revelation_candidate_pending
 		clr_global_flag = random_terror_false_revelation_candidate_accelerated
 		clr_global_flag = random_terror_false_revelation_candidate_lapsed
@@ -8095,6 +8364,9 @@ random_terror_resolve_defeat = {
 			every_country = {
 				random_terror_achievement_record_terminal_cleanup = yes
 			}
+			set_temp_variable = { random_terror_chaos_amount = constant:random_terror_chaos.revelation_defeated_relief }
+			set_temp_variable = { random_terror_chaos_reason = constant:chaos_meter_history_reason.special.random_terror_broken }
+			random_terror_chaos_relief = yes
 		}
 		set_global_flag = random_terror_defeat_resolved
 		clr_global_flag = random_terror_terminal_active
@@ -8463,6 +8735,18 @@ random_terror_return_actor_states = {
 
 random_terror_cleanup_actor = {
 	random_terror_clear_country_commitments = yes
+	# Every command that dissolves eases the world once; the final command's
+	# defeat is paid by the revelation relief instead.
+	if = {
+		limit = {
+			NOT = { has_country_flag = random_terror_final_actor }
+			NOT = { has_country_flag = random_terror_chaos_broken_paid }
+		}
+		set_country_flag = random_terror_chaos_broken_paid
+		set_temp_variable = { random_terror_chaos_amount = constant:random_terror_chaos.actor_broken_relief }
+		set_temp_variable = { random_terror_chaos_reason = constant:chaos_meter_history_reason.special.random_terror_broken }
+		random_terror_chaos_relief = yes
+	}
 	if = {
 		limit = { has_country_flag = random_terror_final_actor }
 		if = {
@@ -8618,14 +8902,7 @@ random_terror_terminal_counteroffensive = {
 					random_terror_has_terminal_losses = yes
 				}
 			}
-			set_global_flag = random_terror_false_revelation_denied
-			clr_global_flag = random_terror_false_revelation_pending
-			clr_global_flag = random_terror_terminal_active
-			event_target:random_terror_final_actor = {
-				set_country_flag = random_terror_cleanup_requested
-				random_terror_cleanup_actor = yes
-			}
-			random_terror_check_for_defeat = yes
+			random_terror_withdraw_false_revelation = yes
 		}
 		# The blow shows at once in the final strengths.
 		random_terror_refresh_terminal_strength = yes

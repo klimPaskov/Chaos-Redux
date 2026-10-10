@@ -167,6 +167,73 @@ random_terror_can_hold_response_mission = {
 	NOT = { has_country_flag = random_terror_actor }
 }
 
+# Any scope.  The government response stays open until another world end
+# closes the game.  The False Revelation's own terminal state keeps its
+# missions and Terminal Counteroffensive running after the world-end commit.
+random_terror_response_world_open = {
+	OR = {
+		NOT = { has_global_flag = world_end }
+		has_global_flag = random_terror_terminal_active
+	}
+}
+
+# COUNTRY scope, ROOT = payer, FROM = exact selected STATE.  Availability and
+# the cost-bearing callback share this read-only transaction preflight.
+# Emergency custody retains its existing occupied-slot exception.
+random_terror_can_execute_security_surge = {
+	random_terror_can_government_response = yes
+	random_terror_can_afford_security_surge = yes
+	NOT = { has_global_flag = world_end }
+	NOT = { random_terror_government_phase_terminal = yes }
+	FROM = {
+		is_controlled_by = ROOT
+		random_terror_state_is_response_target = yes
+	}
+	OR = {
+		FROM = { random_terror_state_is_emergency_subject = yes }
+		AND = {
+			random_terror_government_phase_initial = yes
+			NOT = { has_country_flag = random_terror_response_cell_active }
+			NOT = { has_country_flag = random_terror_mission_slot_1 }
+			FROM = {
+				random_terror_state_is_active_crisis = yes
+				NOT = { has_state_flag = random_terror_security_surge_target }
+			}
+		}
+	}
+}
+
+# COUNTRY scope, ROOT = payer, FROM = exact selected STATE.  Reject a stale
+# target, phase, response window or reserve before any raid debit or receipt.
+random_terror_can_execute_targeted_raid = {
+	random_terror_can_government_response = yes
+	random_terror_can_afford_targeted_raid = yes
+	NOT = { has_global_flag = world_end }
+	NOT = { random_terror_government_phase_terminal = yes }
+	FROM = {
+		is_controlled_by = ROOT
+		random_terror_state_is_response_target = yes
+		NOT = { has_state_flag = random_terror_raid_target }
+	}
+	OR = {
+		FROM = { random_terror_state_is_emergency_subject = yes }
+		AND = {
+			random_terror_government_phase_initial = yes
+			has_country_flag = random_terror_response_cell_active
+			OR = {
+				has_country_flag = random_terror_intelligence_breakthrough
+				check_variable = { random_terror_response_legitimacy > constant:random_terror_value.high }
+			}
+			FROM = {
+				OR = {
+					has_state_flag = random_terror_state_active
+					has_state_flag = random_terror_state_entrenched
+				}
+			}
+		}
+	}
+}
+
 # STATE scope, ROOT = the responding government.  The state is the subject of
 # ROOT's running Hostage Deadline or Stop the Coordinated Uprising mission, so
 # the emergency response actions stay usable on it whatever the phase and
@@ -801,6 +868,26 @@ random_terror_can_begin_false_revelation = {
 		random_terror_is_viable_actor = yes
 		random_terror_is_jihadist_actor = yes
 	}
+}
+
+# Any scope.  The delayed commit rechecks everything that can change during
+# the delay except the Chaos Meter: another world end, a disabled branch or
+# evolution, a denied revelation or a final command that no longer exists.
+random_terror_false_revelation_commit_possible = {
+	NOT = { has_global_flag = world_end }
+	NOT = { has_global_flag = random_terror_false_revelation_denied }
+	NOT = { has_global_flag = random_terror_false_revelation_resolved }
+	has_global_flag = random_terror_terminal_active
+	has_global_flag = random_terror_false_revelation_pending
+	has_global_flag = random_terror_evolution_5_unlocked
+	has_global_flag = random_terror_false_revelation_enabled
+	world_end_random_terror_global_jihad_scenario_enabled = yes
+	NOT = { has_global_flag = random_terror_defeat_resolved }
+}
+
+# Any scope.  The world still carries enough Chaos for the commit.
+random_terror_false_revelation_chaos_held = {
+	check_variable = { var = global.chaos_meter_value value = constant:random_terror_value.chaos_world_end compare = greater_than_or_equals }
 }
 
 # Country-scope losses used both before and after the denial objective commits.

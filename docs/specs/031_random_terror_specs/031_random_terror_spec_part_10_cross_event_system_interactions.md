@@ -9,7 +9,7 @@ Implemented: the Event 14 rivalry with a real cannibal-border clash, hostile AI 
 Open:
 
 - Deaths reasons (C11): all Event 31 losses use the shared `civilian_combat` reason. The reason map below is required.
-- Chaos: every incident currently adds `+5` direct Chaos with a generic reason. The Chaos impact map below replaces it.
+- Chaos: implemented as the Chaos impact map below, except the reversal rows for a restored parent government, a retaken capital and a dissolved International, which stay open. The rolling cap is a fixed 180-day window opened by the first grant.
 - Famine, migration and camps: the bridges below are 2026-10-10 audit revisions and are not implemented.
 - The Event 32 seizure connection stays queued until Event 32's custody interface is verified.
 - The cooperation strategies still befriend an independent command, which contradicts the independent-command role. Independent commands should be neither befriended nor supported by the other carriers.

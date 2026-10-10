@@ -210,9 +210,10 @@ The following values are tuning anchors, not unconditional promises.
 | Evolution I | `5` countries |
 | Evolution II | `7` countries |
 | Evolution III | `10` countries |
-| Evolution IV | `15` countries |
-| Evolution V | up to `20` countries |
+| Evolution IV | `10` countries |
+| Evolution V | `10` countries |
 
+From Evolution III the first wave stops widening, because recurring pulses, spread and actors keep the existing crises growing and a wider wave would flood the session with simultaneous crises.
 The actual count is clamped by valid targets, cooldowns, geographic diversity, performance, and the need to avoid flooding one multiplayer session with popups.
 
 One country normally receives one opening hotspot at baseline.

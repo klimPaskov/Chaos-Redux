@@ -175,6 +175,20 @@ The system uses the compact government-response, actor-command, and False Revela
 
 Government and actor actions use standard state-targeted decision presentation, concrete variable-backed costs, exact state flags, target locks, outcome helpers, AI weights, and cleanup hooks.
 
+Event 31 adds Chaos only for strategic milestones through `random_terror_chaos_rise` and `random_terror_chaos_relief`, never for an ordinary incident.
+The milestones are the first firing of a campaign, the first cross-border spread or distant attack, a territorial actor forming (more for the first of the campaign), a coup or the loss of a parent's last state, a captured national capital (more for a major power), an Event 31 civil war, the Jihadist International reaching two members, and the first coordinated uprising of the Final Jihad.
+A crisis that reached State Challenge pressure and closes without losing a state, a dissolved actor and the defeat of The False Revelation lower the meter.
+Each milestone is guarded by a flag, rises are limited to `random_terror_chaos.window_cap` per `window_days`, the Final Jihad uprising and every relief sit outside that cap, and each row records its own Chaos history reason.
+
+The government response and its missions stay open while The False Revelation is the world end (`random_terror_response_world_open`), so Terminal Counteroffensive and the uprising missions keep working after the commit.
+The delayed commit repeats the opening gate: a disabled branch, another world end or a lost final command withdraws the revelation without any world-end change, and Chaos that fell below the threshold postpones the commit by `world_end_recheck_days`.
+
+Security Surge and Targeted Raid share read-only execution checks between availability and their cost-bearing callbacks.
+Each checks the current payer, reserves, response phase, exact selected state and its current controller before any debit or receipt.
+The government's own hostage or uprising subject retains emergency access during its occupied mission slot, including foreign-owned states under the government's control.
+A stale target, closed response window, expired emergency, changed control or insufficient reserves produces no scripted debit or dispatch.
+The native decision re-enable timer on a rejected stale click remains an engine-validation limit.
+
 No Event 31-specific scripted GUI exists.
 
 Each government keeps a priority crisis state, its most severe crisis among the states it controls and its own cores held by others (higher stage first, then higher activity), refreshed after each incident, on every stage change and when a state is lost (`random_terror_refresh_priority_state`, state flag `random_terror_priority_state_<tag>`).
