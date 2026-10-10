@@ -1,6 +1,6 @@
 # 068 ZIN: bounded subagent briefs
 
-These are handoff briefs for a future environment with the actual project runtime. No worker listed here was executed during this planning run. Discover real callable tools and read the current subagent skill before using them. Every worker is started with `fork_turns="none"`, receives the shared contract below and a concrete role block, and reports actual evidence without inheriting unstated conversation context.
+These are handoff briefs for a future environment with the actual project runtime. No worker listed here was executed during this planning run. Discover real callable tools and read the current subagent skill before using them. Every worker is started with no inherited parent context, receives the shared contract below and a concrete role block, and reports actual evidence without inheriting unstated conversation context.
 
 ## Shared worker contract
 

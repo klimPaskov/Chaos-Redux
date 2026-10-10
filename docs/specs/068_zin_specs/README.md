@@ -65,3 +65,15 @@ The accompanying reading and validation report is supplied separately from this 
 
 The [shared identifier registry](../shared_identifier_registry.md) reserves First Colonies `SCN-025` / raw `25`, The Empty Throne `SCN-026` / raw `26`, Open Crossings `SCN-027` / raw `27`, and The Reckoning of ZIN `SCN-028` / raw `28`.
 These are user-authorized identifier reservations, not broader design approval or runtime registration.
+
+## Open questions
+
+- `unresolved`: humanitarian status of human ZIN societies. The shared runtime excludes every special Chaos country from Famine and Migration, so states held by a Noris colony, Dondor, or a human cult lose famine, evacuation, and reception exactly like states taken by monsters. Recommendation: register only the human ZIN societies that run ordinary civilian life as `uses_normal_civilian_systems` exceptions through the shared country-classification owner, and keep nonhuman and dark societies outside both systems with front flight from the neighbouring states.
+
+## Changelog
+
+### 2026-10-10 spec audit
+
+- The Migration and Famine rows in the shared-system boundary table now describe the current runtime: every special Chaos country, including every ZIN arrival, takes its states out of both systems, and captures send front flight from the former owner's neighbouring states. The old rows promised evacuation and settlement demand inside ZIN states, which the runtime cannot deliver without a deliberate exception, now an open question.
+- The generated `068_zin_reader.html`, a 75,000-word combined copy of the eighteen numbered documents, is removed. It duplicated every source document and could only drift from them; the numbered Markdown files are the source.
+- Subagent instructions use the Claude-first wording.

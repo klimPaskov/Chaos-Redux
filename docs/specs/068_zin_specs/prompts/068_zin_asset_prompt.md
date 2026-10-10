@@ -24,4 +24,4 @@ Use native ImageGen for original 2D art and approved faithful preparation. Mecha
 Keep active production evidence under the event-owned temporary workspace and permanent source maps under the spec sources. Deliver original and processed outputs, DDS or model files, previews, manifests, native-size and round-trip evidence, exact proposed consumers and a list of unresolved roles. The parent owns final runtime wiring and game validation. Promote durable provenance before cleaning a completed temporary workspace, and never remove the supplied maps.
 
 For consumers with transparent unused canvas, request native ImageGen transparency in the initial call and preserve alpha through processing and DDS conversion.
-Use [the current asset skill](../../../../.agents/skills/chaos-redux-event-assets/SKILL.md) for alpha, source preservation, processing and fallback evidence.
+Use [the current asset skill](../../../../.claude/skills/chaos-redux-event-assets/SKILL.md) for alpha, source preservation, processing and fallback evidence.
