@@ -255,16 +255,19 @@ class SupplierQuoteTests(unittest.TestCase):
 
 class LateBoomSupplierEntryTests(unittest.TestCase):
     def activation_slice(self):
-        from test_event035_center_projects import ROOT, lex, uncomment, parse_nodes
-        path = ROOT / "events/034_industrial_boom.txt"
-        nodes, _ = parse_nodes(lex(uncomment(path.read_text(encoding="utf-8-sig"))), 0, str(path))
-        event = next(n.value for n in nodes if isinstance(n.value, list) and first(n.value, "id") == "chaosx.nr34.1")
-        selected_country = next(n.value for n in first(event, "immediate") if n.key == "random_country")
-        active_index = next(i for i, n in enumerate(selected_country) if n.key == "set_country_flag" and n.value == "industrial_boom_active")
-        guard = selected_country[active_index + 1]
-        self.assertEqual(guard.key, "if")
+        # Event 34 opens a boom through industrial_boom_open on the selected
+        # country (chaosx.nr34.1). The supplier adapter guard sits near the
+        # end of that body, after the flag, so take the two nodes by content.
+        body = read_definitions("common/scripted_effects/034_industrial_boom_effects.txt")["industrial_boom_open"].body
+        active_index = next(i for i, n in enumerate(body) if n.key == "set_country_flag" and n.value == "industrial_boom_active")
+        guard_index = next(
+            i for i, n in enumerate(body)
+            if n.key == "if" and first(n.value, "limit") is not None
+            and any(c.key == "great_depression_event34_supplier_adapter" for c in n.value)
+        )
+        guard = body[guard_index]
         self.assertEqual(first(first(guard.value, "limit"), "has_global_flag"), "great_depression_worldwide_episode_active")
-        return selected_country[active_index:active_index + 2]
+        return [body[active_index], guard]
 
     def run_activation(self, runtime, supplier, host):
         runtime.root = host

@@ -69,6 +69,11 @@ Baseline maps to Event 35 baseline, Evolution I maps to Financial Contagion, Evo
 
 If Event 35 is already active, the inherited collapse deepens the existing episode and does not add another depression modifier.
 
+Event 34 fills each snapshot field from the live boom, recording it as unavailable when the boom has not set it, and delivers its highest-ranked owned Industrial Region as the primary region inside the national call.
+After an accepted national call, and while the Event 35 crisis is coherent, it registers every further Industrial Region (role primary) and every Evolution III spread state (role corridor) through `great_depression_register_inherited_region`, each under its own Event 34 region receipt with authentic profile, stage, protection, fragility, control and damage values.
+
+Event 34 suppliers set their state with the order-books decisions. When Event 35 makes Offer Boom Supply Contract, open order books accept the contract (more Overheating, export orders and one rough landing upgraded to controlled), closed books refuse it, and from 70 Overheating upward every contract is refused automatically, so `industrial_boom_supplier_adapter_target_is_valid` fails and the offer row is hidden.
+
 Event 34 retains the inherited-crash achievement `chaos_redux_034_the_long_fall`.
 
 The public Event 35 report selects source-aware opening prose for the inherited hard landing, financial contagion, social collapse, worldwide contraction, relapse, and ordinary national paths while retaining the same Severity state readout.
