@@ -197,8 +197,9 @@ These are recorded so they are not mistaken for mod bugs:
 ### B039 Riches Found resource field record: overlapping labels — open (Event 029 GUI)
 - qa_fo_apr, Events and Decisions > Selected Resource Field: in the Resource Field Record box "Rebuild Outlook" is drawn over another label and a status line under the image overlaps "Operating"; the field reads "Wake Island, Active field 0/0" with every value 0.
 
-### B040 The Hunger Lines (#010) never starts a famine — routed (famine and migration)
+### B040 The Hunger Lines (#010) never starts a famine — fixed in source, live recheck pending
 - Launched from a fresh 1936 save and run to 25 April 1936: 57 states carry the famine variables but all stay at their zero initial values (no reserve initialisation, no score, no stage), the Famine map mode shows no colour and no famine decisions appear. Save: qa_scn010c.
+- Cause: all three QA launches failed inside Event 014's setup (`cannibalism_manual_scenario_setup_failed`, no node states) because of the helper temp-output defect fixed in `abacbd845`, so the famine hook never ran. `839850b0d` makes a successful launch seize the node states' stores and commit acute shortage (Low) or famine (Medium and above) on launch day. Recheck: launch #010 Broken Ranks at Low and Maximum from a fresh 1936 save.
 
 ### B041 Network Cadre listed as "NCD" in the division designer — routed (Event 014)
 - Division Designer > Infantry Battalions shows the Network Cadre battalion by its abbreviation "NCD" instead of its name, although the name key exists.
