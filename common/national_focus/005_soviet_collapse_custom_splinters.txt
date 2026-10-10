@@ -2,6 +2,14 @@
 @soviet_collapse_focus_medium = 6
 @soviet_collapse_focus_long = 8
 @soviet_collapse_republic_signature_tech_bonus = 0.5
+# Strategy value ladder for add_ai_strategy. Routes that share a rank share one number, and the same
+# ranks are mirrored in each Soviet Collapse file that grants strategies because @ constants do not cross files.
+@soviet_collapse_ai_desire_minor = 50
+@soviet_collapse_ai_desire_low = 75
+@soviet_collapse_ai_desire_standard = 100
+@soviet_collapse_ai_desire_raised = 125
+@soviet_collapse_ai_desire_severe = 200
+@soviet_collapse_ai_desire_total = 250
 
 # ============================================================================
 # CHAOS REDUX - EVENT 005 CUSTOM SPLINTER FOCUS TREES
@@ -2665,8 +2673,8 @@ focus_tree = {
 					}
 					if = {
 					limit = { SOV = { exists = yes } }
-						add_ai_strategy = { type = conquer id = SOV value = 200 }
-						add_ai_strategy = { type = antagonize id = SOV value = 200 }
+						add_ai_strategy = { type = conquer id = SOV value = @soviet_collapse_ai_desire_severe }
+						add_ai_strategy = { type = antagonize id = SOV value = @soviet_collapse_ai_desire_severe }
 					}
 					soviet_collapse_apply_focus_high_chaos_identity = yes
 				}
@@ -3198,8 +3206,8 @@ focus_tree = {
 			hidden_effect = {
 				if = {
 					limit = { SOV = { exists = yes } }
-					add_ai_strategy = { type = conquer id = SOV value = 200 }
-					add_ai_strategy = { type = antagonize id = SOV value = 200 }
+					add_ai_strategy = { type = conquer id = SOV value = @soviet_collapse_ai_desire_severe }
+					add_ai_strategy = { type = antagonize id = SOV value = @soviet_collapse_ai_desire_severe }
 				}
 				soviet_collapse_apply_custom_splinter_expansion_claims = yes
 				soviet_collapse_spawn_custom_splinter_assault_columns = yes
@@ -3697,8 +3705,8 @@ focus_tree = {
 				soviet_collapse_apply_focus_chaos_assault_plan = yes
 				if = {
 					limit = { SOV = { exists = yes } }
-					add_ai_strategy = { type = conquer id = SOV value = 200 }
-					add_ai_strategy = { type = antagonize id = SOV value = 200 }
+					add_ai_strategy = { type = conquer id = SOV value = @soviet_collapse_ai_desire_severe }
+					add_ai_strategy = { type = antagonize id = SOV value = @soviet_collapse_ai_desire_severe }
 				}
 				soviet_collapse_apply_custom_splinter_expansion_claims = yes
 				soviet_collapse_spawn_custom_splinter_assault_columns = yes
@@ -4053,8 +4061,8 @@ focus_tree = {
 			soviet_collapse_apply_focus_military_consolidation = yes
 			hidden_effect = {
 				soviet_collapse_apply_high_chaos_neighbor_expansion_plan = yes
-				add_ai_strategy = { type = prepare_for_war id = SOV value = 100 }
-				add_ai_strategy = { type = antagonize id = SOV value = 75 }
+				add_ai_strategy = { type = prepare_for_war id = SOV value = @soviet_collapse_ai_desire_standard }
+				add_ai_strategy = { type = antagonize id = SOV value = @soviet_collapse_ai_desire_low }
 			}
 		}
 		ai_will_do = {
@@ -4206,8 +4214,8 @@ focus_tree = {
 				hidden_effect = {
 					if = {
 						limit = { SOV = { exists = yes } }
-						add_ai_strategy = { type = conquer id = SOV value = 250 }
-						add_ai_strategy = { type = antagonize id = SOV value = 250 }
+						add_ai_strategy = { type = conquer id = SOV value = @soviet_collapse_ai_desire_total }
+						add_ai_strategy = { type = antagonize id = SOV value = @soviet_collapse_ai_desire_total }
 					}
 				}
 				soviet_collapse_dsc_unleash_dead_army_campaign = yes
@@ -4246,8 +4254,8 @@ focus_tree = {
 			hidden_effect = {
 				if = {
 					limit = { SOV = { exists = yes } }
-					add_ai_strategy = { type = prepare_for_war id = SOV value = 75 }
-					add_ai_strategy = { type = antagonize id = SOV value = 50 }
+					add_ai_strategy = { type = prepare_for_war id = SOV value = @soviet_collapse_ai_desire_low }
+					add_ai_strategy = { type = antagonize id = SOV value = @soviet_collapse_ai_desire_minor }
 				}
 			}
 		}
@@ -4411,8 +4419,8 @@ focus_tree = {
 			add_equipment_to_stockpile = { type = convoy_1 amount = constant:soviet_collapse_republic_focus.small_convoy_reward }
 			navy_experience = constant:soviet_collapse_republic_focus.navy_xp_medium
 			hidden_effect = {
-				add_ai_strategy = { type = conquer id = SOV value = 100 }
-				add_ai_strategy = { type = antagonize id = SOV value = 125 }
+				add_ai_strategy = { type = conquer id = SOV value = @soviet_collapse_ai_desire_standard }
+				add_ai_strategy = { type = antagonize id = SOV value = @soviet_collapse_ai_desire_raised }
 			}
 			if = {
 				limit = { SOV = { exists = yes is_soviet_collapse_active = yes } }
@@ -4562,8 +4570,8 @@ focus_tree = {
 				add_building_construction = { type = dockyard level = 1 instant_build = yes }
 			}
 			hidden_effect = {
-				add_ai_strategy = { type = prepare_for_war id = SOV value = 75 }
-				add_ai_strategy = { type = antagonize id = SOV value = 75 }
+				add_ai_strategy = { type = prepare_for_war id = SOV value = @soviet_collapse_ai_desire_low }
+				add_ai_strategy = { type = antagonize id = SOV value = @soviet_collapse_ai_desire_low }
 			}
 		}
 		ai_will_do = {
@@ -4724,8 +4732,8 @@ focus_tree = {
 			hidden_effect = {
 				if = {
 					limit = { SOV = { exists = yes } }
-					add_ai_strategy = { type = conquer id = SOV value = 200 }
-					add_ai_strategy = { type = antagonize id = SOV value = 200 }
+					add_ai_strategy = { type = conquer id = SOV value = @soviet_collapse_ai_desire_severe }
+					add_ai_strategy = { type = antagonize id = SOV value = @soviet_collapse_ai_desire_severe }
 				}
 				soviet_collapse_apply_custom_splinter_expansion_claims = yes
 				soviet_collapse_spawn_custom_splinter_assault_columns = yes
@@ -5187,8 +5195,8 @@ focus_tree = {
 			hidden_effect = {
 				if = {
 					limit = { SOV = { exists = yes } }
-					add_ai_strategy = { type = conquer id = SOV value = 200 }
-					add_ai_strategy = { type = antagonize id = SOV value = 200 }
+					add_ai_strategy = { type = conquer id = SOV value = @soviet_collapse_ai_desire_severe }
+					add_ai_strategy = { type = antagonize id = SOV value = @soviet_collapse_ai_desire_severe }
 				}
 				soviet_collapse_apply_custom_splinter_expansion_claims = yes
 				soviet_collapse_spawn_custom_splinter_assault_columns = yes
@@ -18300,10 +18308,10 @@ focus_tree = {
 					target = JAP
 					amount = constant:soviet_collapse_factory_ancient.archive_decryption_gain
 				}
-				add_ai_strategy = { type = support id = JAP value = 75 }
+				add_ai_strategy = { type = support id = JAP value = @soviet_collapse_ai_desire_low }
 				JAP = {
 					add_opinion_modifier = { target = FEV modifier = soviet_collapse_pacific_observer_missions }
-					add_ai_strategy = { type = support id = FEV value = 100 }
+					add_ai_strategy = { type = support id = FEV value = @soviet_collapse_ai_desire_standard }
 				}
 			}
 		}

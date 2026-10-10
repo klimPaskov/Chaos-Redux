@@ -3,6 +3,17 @@
 @soviet_collapse_focus_long = 8
 @soviet_collapse_republic_signature_tech_bonus = 0.5
 @soviet_collapse_chaos_expansion_neighbor_ai_strategy = 220
+# Strategy value ladder for add_ai_strategy. Routes that share a rank share one number, and the same
+# ranks are mirrored in each Soviet Collapse file that grants strategies because @ constants do not cross files.
+@soviet_collapse_ai_desire_low = 75
+@soviet_collapse_ai_desire_standard = 100
+@soviet_collapse_ai_desire_raised = 125
+@soviet_collapse_ai_desire_severe = 200
+@soviet_collapse_ai_desire_total = 250
+@soviet_collapse_ai_build_arms_factory = 150
+@soviet_collapse_ai_build_arms_factory_heavy = 200
+@soviet_collapse_ai_build_arms_factory_total = 300
+@soviet_collapse_ai_template_priority_infantry = 1000
 
 # ============================================================================
 # CHAOS REDUX - EVENT 005 HIGH-CHAOS FACTORY SUCCESSOR FOCUS TREES
@@ -1497,8 +1508,8 @@ focus_tree = {
 			hidden_effect = {
 				if = {
 					limit = { IUL = { exists = yes } }
-					add_ai_strategy = { type = alliance id = IUL value = 100 }
-					add_ai_strategy = { type = support id = IUL value = 75 }
+					add_ai_strategy = { type = alliance id = IUL value = @soviet_collapse_ai_desire_standard }
+					add_ai_strategy = { type = support id = IUL value = @soviet_collapse_ai_desire_low }
 				}
 			}
 		}
@@ -1802,8 +1813,8 @@ focus_tree = {
 			hidden_effect = {
 				if = {
 					limit = { SOV = { exists = yes } }
-					add_ai_strategy = { type = conquer id = SOV value = 200 }
-					add_ai_strategy = { type = antagonize id = SOV value = 200 }
+					add_ai_strategy = { type = conquer id = SOV value = @soviet_collapse_ai_desire_severe }
+					add_ai_strategy = { type = antagonize id = SOV value = @soviet_collapse_ai_desire_severe }
 				}
 				soviet_collapse_apply_custom_splinter_expansion_claims = yes
 			}
@@ -2670,7 +2681,7 @@ focus_tree = {
 				add_building_construction = { type = arms_factory level = 1 instant_build = yes }
 				add_building_construction = { type = infrastructure level = 1 instant_build = yes }
 			}
-			add_ai_strategy = { type = building_target id = arms_factory value = 150 }
+			add_ai_strategy = { type = building_target id = arms_factory value = @soviet_collapse_ai_build_arms_factory }
 		}
 		ai_will_do = {
 			base = 7
@@ -2921,9 +2932,9 @@ focus_tree = {
 				add_building_construction = { type = arms_factory level = 1 instant_build = yes }
 			}
 			hidden_effect = {
-				add_ai_strategy = { type = building_target id = arms_factory value = 150 }
-				add_ai_strategy = { type = conquer id = SOV value = 125 }
-				add_ai_strategy = { type = antagonize id = SOV value = 125 }
+				add_ai_strategy = { type = building_target id = arms_factory value = @soviet_collapse_ai_build_arms_factory }
+				add_ai_strategy = { type = conquer id = SOV value = @soviet_collapse_ai_desire_raised }
+				add_ai_strategy = { type = antagonize id = SOV value = @soviet_collapse_ai_desire_raised }
 			}
 		}
 		ai_will_do = {
@@ -3170,9 +3181,9 @@ focus_tree = {
 			set_country_flag = mfr_focus_every_order_a_rifle
 			soviet_collapse_apply_mfr_focus_every_order_rifle = yes
 			hidden_effect = {
-				add_ai_strategy = { type = conquer id = SOV value = 100 }
-				add_ai_strategy = { type = antagonize id = SOV value = 100 }
-				add_ai_strategy = { type = building_target id = arms_factory value = 200 }
+				add_ai_strategy = { type = conquer id = SOV value = @soviet_collapse_ai_desire_standard }
+				add_ai_strategy = { type = antagonize id = SOV value = @soviet_collapse_ai_desire_standard }
+				add_ai_strategy = { type = building_target id = arms_factory value = @soviet_collapse_ai_build_arms_factory_heavy }
 			}
 		}
 		ai_will_do = {
@@ -3204,10 +3215,10 @@ focus_tree = {
 				create_wargoal = { type = annex_everything target = SOV expire = 0 }
 			}
 			hidden_effect = {
-				add_ai_strategy = { type = conquer id = SOV value = 250 }
-				add_ai_strategy = { type = antagonize id = SOV value = 250 }
-				add_ai_strategy = { type = building_target id = arms_factory value = 300 }
-				add_ai_strategy = { type = template_prio id = infantry value = 1000 }
+				add_ai_strategy = { type = conquer id = SOV value = @soviet_collapse_ai_desire_total }
+				add_ai_strategy = { type = antagonize id = SOV value = @soviet_collapse_ai_desire_total }
+				add_ai_strategy = { type = building_target id = arms_factory value = @soviet_collapse_ai_build_arms_factory_total }
+				add_ai_strategy = { type = template_prio id = infantry value = @soviet_collapse_ai_template_priority_infantry }
 			}
 		}
 		ai_will_do = {

@@ -49,6 +49,20 @@
 @soviet_collapse_mfr_foundry_line_anti_air_level = 1
 @soviet_collapse_chaos_expansion_soviet_ai_strategy = 250
 @soviet_collapse_chaos_expansion_neighbor_ai_strategy = 220
+# Strategy value ladder for add_ai_strategy. Routes that share a rank share one number, and the same
+# ranks are mirrored in each Soviet Collapse file that grants strategies because @ constants do not cross files.
+@soviet_collapse_ai_desire_minor = 50
+@soviet_collapse_ai_desire_low = 75
+@soviet_collapse_ai_desire_standard = 100
+@soviet_collapse_ai_desire_raised = 125
+@soviet_collapse_ai_desire_high = 150
+@soviet_collapse_ai_desire_heavy = 175
+@soviet_collapse_ai_desire_severe = 200
+@soviet_collapse_ai_build_industry = 250
+@soviet_collapse_ai_build_industry_heavy = 350
+@soviet_collapse_ai_build_infrastructure = 100
+@soviet_collapse_ai_build_infrastructure_heavy = 150
+@soviet_collapse_regional_faction_departure_days = 180
 @soviet_collapse_high_chaos_identity_major_building_level = 2
 @soviet_collapse_high_chaos_identity_minor_building_level = 1
 @soviet_collapse_high_chaos_identity_factory_slots = 2
@@ -3127,7 +3141,7 @@ soviet_collapse_apply_failed_authority_objective_pressure = {
 	soviet_collapse_apply_foreign_pressure_delta = yes
 	soviet_collapse_apply_objective_source_pressure_delta = yes
 	soviet_collapse_record_chain_of_command_failure_pressure = yes
-	country_event = { id = chaosx.nr5.10 days = 1 }
+	country_event = { id = chaosx.nr5.10 days = constant:soviet_collapse_event_timing.followup_days }
 }
 
 soviet_collapse_apply_successful_legal_objective_pressure = {
@@ -3146,7 +3160,7 @@ soviet_collapse_apply_failed_legal_objective_pressure = {
 	set_temp_variable = { soviet_collapse_objective_old_movement_delta = constant:soviet_collapse_objective_pressure.legal_failure_old_movement }
 	soviet_collapse_apply_objective_source_pressure_delta = yes
 	soviet_collapse_record_republic_settlement_failure_pressure = yes
-	country_event = { id = chaosx.nr5.10 days = 1 }
+	country_event = { id = chaosx.nr5.10 days = constant:soviet_collapse_event_timing.followup_days }
 }
 
 soviet_collapse_record_chain_of_command_failure_pressure = {
@@ -3209,7 +3223,7 @@ soviet_collapse_apply_chain_of_command_failure_outcome = {
 	set_temp_variable = { soviet_collapse_objective_republic_delta = constant:soviet_collapse_objective_pressure.command_failure_confidence }
 	soviet_collapse_apply_objective_source_pressure_delta = yes
 	soviet_collapse_record_chain_of_command_failure_pressure = yes
-	country_event = { id = chaosx.nr5.11 days = 1 }
+	country_event = { id = chaosx.nr5.11 days = constant:soviet_collapse_event_timing.followup_days }
 }
 
 soviet_collapse_apply_successful_command_objective_pressure = {
@@ -3237,7 +3251,7 @@ soviet_collapse_apply_failed_rail_objective_pressure = {
 	soviet_collapse_apply_foreign_pressure_delta = yes
 	soviet_collapse_apply_objective_source_pressure_delta = yes
 	soviet_collapse_record_corridors_and_depots_failure_pressure = yes
-	country_event = { id = chaosx.nr5.12 days = 1 }
+	country_event = { id = chaosx.nr5.12 days = constant:soviet_collapse_event_timing.followup_days }
 }
 
 soviet_collapse_apply_corridors_and_depots_decisive_outcome = {
@@ -3265,7 +3279,7 @@ soviet_collapse_apply_corridors_and_depots_failure_outcome = {
 	set_temp_variable = { soviet_collapse_objective_old_movement_delta = constant:soviet_collapse_objective_pressure.depot_failure_old_movement }
 	soviet_collapse_apply_objective_source_pressure_delta = yes
 	soviet_collapse_record_corridors_and_depots_failure_pressure = yes
-	country_event = { id = chaosx.nr5.13 days = 1 }
+	country_event = { id = chaosx.nr5.13 days = constant:soviet_collapse_event_timing.followup_days }
 }
 
 soviet_collapse_apply_successful_depot_objective_pressure = {
@@ -3291,7 +3305,7 @@ soviet_collapse_apply_failed_old_movement_objective_pressure = {
 	set_temp_variable = { soviet_collapse_objective_depot_delta = constant:soviet_collapse_objective_pressure.old_movement_failure_depot }
 	set_temp_variable = { soviet_collapse_objective_old_movement_delta = constant:soviet_collapse_objective_pressure.old_movement_failure_pressure }
 	soviet_collapse_apply_objective_source_pressure_delta = yes
-	country_event = { id = chaosx.nr5.15 days = 1 }
+	country_event = { id = chaosx.nr5.15 days = constant:soviet_collapse_event_timing.followup_days }
 }
 
 soviet_collapse_apply_successful_foreign_objective_pressure = {
@@ -3312,7 +3326,7 @@ soviet_collapse_apply_failed_foreign_objective_pressure = {
 	soviet_collapse_apply_foreign_pressure_delta = yes
 	soviet_collapse_apply_objective_source_pressure_delta = yes
 	soviet_collapse_record_foreign_league_failure_pressure = yes
-	country_event = { id = chaosx.nr5.14 days = 1 }
+	country_event = { id = chaosx.nr5.14 days = constant:soviet_collapse_event_timing.followup_days }
 }
 
 soviet_collapse_apply_successful_cleanup_objective_pressure = {
@@ -3332,7 +3346,7 @@ soviet_collapse_apply_failed_cleanup_objective_pressure = {
 	set_temp_variable = { soviet_collapse_objective_depot_delta = constant:soviet_collapse_objective_pressure.cleanup_failure_depot }
 	soviet_collapse_apply_objective_source_pressure_delta = yes
 	soviet_collapse_record_chain_of_command_failure_pressure = yes
-	country_event = { id = chaosx.nr5.15 days = 1 }
+	country_event = { id = chaosx.nr5.15 days = constant:soviet_collapse_event_timing.followup_days }
 }
 
 soviet_collapse_apply_republic_settlement_decisive_outcome = {
@@ -3365,7 +3379,7 @@ soviet_collapse_apply_republic_settlement_failure_outcome = {
 	set_temp_variable = { soviet_collapse_objective_league_delta = constant:soviet_collapse_objective_pressure.settlement_failure_league }
 	soviet_collapse_apply_objective_source_pressure_delta = yes
 	soviet_collapse_record_republic_settlement_failure_pressure = yes
-	country_event = { id = chaosx.nr5.16 days = 1 }
+	country_event = { id = chaosx.nr5.16 days = constant:soviet_collapse_event_timing.followup_days }
 }
 
 soviet_collapse_apply_successful_settlement_objective_pressure = {
@@ -3394,7 +3408,7 @@ soviet_collapse_apply_failed_league_objective_pressure = {
 	set_temp_variable = { soviet_collapse_objective_league_delta = constant:soviet_collapse_objective_pressure.league_failure_league }
 	soviet_collapse_apply_objective_source_pressure_delta = yes
 	soviet_collapse_record_foreign_league_failure_pressure = yes
-	country_event = { id = chaosx.nr5.15 days = 1 }
+	country_event = { id = chaosx.nr5.15 days = constant:soviet_collapse_event_timing.followup_days }
 }
 
 soviet_collapse_ensure_emergency_equipment_variants = {
@@ -3956,15 +3970,17 @@ soviet_collapse_deploy_league_motor_columns = {
 }
 
 soviet_collapse_emit_super_event = {
+	set_temp_variable = { soviet_collapse_super_event_visible_days = constant:soviet_collapse_super_event.visible_days }
 	meta_effect = {
 		text = {
 			set_global_flag = {
 				flag = super_event_visible
-				days = 30
+				days = [SUPER_EVENT_VISIBLE_DAYS]
 				value = [SUPER_EVENT_ID]
 			}
 		}
 		SUPER_EVENT_ID = "[?soviet_collapse_super_event_id|.0]"
+		SUPER_EVENT_VISIBLE_DAYS = "[?soviet_collapse_super_event_visible_days|.0]"
 	}
 	set_variable = { global.current_super_event_audio_id = soviet_collapse_super_event_id }
 	every_country = {
@@ -6225,7 +6241,7 @@ soviet_collapse_apply_breakaway_setup_package = {
 			NOT = { has_global_flag = soviet_collapse_dynamic_unit_report_seen }
 		}
 		set_global_flag = soviet_collapse_dynamic_unit_report_seen
-		SOV = { country_event = { id = chaosx.nr5.47 days = 1 } }
+		SOV = { country_event = { id = chaosx.nr5.47 days = constant:soviet_collapse_event_timing.followup_days } }
 	}
 }
 
@@ -6444,61 +6460,61 @@ soviet_collapse_register_patron_channel = {
 		limit = { ROOT = { tag = GER } NOT = { has_country_flag = soviet_collapse_patron_channel_ger } }
 		set_country_flag = soviet_collapse_patron_channel_ger
 		add_to_variable = { soviet_collapse_patron_channel_count = constant:soviet_collapse_patron_rivalry.channel_count_step }
-		country_event = { id = chaosx.nr5.50 days = 1 }
+		country_event = { id = chaosx.nr5.50 days = constant:soviet_collapse_event_timing.followup_days }
 	}
 	if = {
 		limit = { ROOT = { tag = ENG } NOT = { has_country_flag = soviet_collapse_patron_channel_eng } }
 		set_country_flag = soviet_collapse_patron_channel_eng
 		add_to_variable = { soviet_collapse_patron_channel_count = constant:soviet_collapse_patron_rivalry.channel_count_step }
-		country_event = { id = chaosx.nr5.51 days = 1 }
+		country_event = { id = chaosx.nr5.51 days = constant:soviet_collapse_event_timing.followup_days }
 	}
 	if = {
 		limit = { ROOT = { tag = JAP } NOT = { has_country_flag = soviet_collapse_patron_channel_jap } }
 		set_country_flag = soviet_collapse_patron_channel_jap
 		add_to_variable = { soviet_collapse_patron_channel_count = constant:soviet_collapse_patron_rivalry.channel_count_step }
-		country_event = { id = chaosx.nr5.52 days = 1 }
+		country_event = { id = chaosx.nr5.52 days = constant:soviet_collapse_event_timing.followup_days }
 	}
 	if = {
 		limit = { ROOT = { tag = FRA } NOT = { has_country_flag = soviet_collapse_patron_channel_fra } }
 		set_country_flag = soviet_collapse_patron_channel_fra
 		add_to_variable = { soviet_collapse_patron_channel_count = constant:soviet_collapse_patron_rivalry.channel_count_step }
-		country_event = { id = chaosx.nr5.53 days = 1 }
+		country_event = { id = chaosx.nr5.53 days = constant:soviet_collapse_event_timing.followup_days }
 	}
 	if = {
 		limit = { ROOT = { tag = USA } NOT = { has_country_flag = soviet_collapse_patron_channel_usa } }
 		set_country_flag = soviet_collapse_patron_channel_usa
 		add_to_variable = { soviet_collapse_patron_channel_count = constant:soviet_collapse_patron_rivalry.channel_count_step }
-		country_event = { id = chaosx.nr5.54 days = 1 }
+		country_event = { id = chaosx.nr5.54 days = constant:soviet_collapse_event_timing.followup_days }
 	}
 	if = {
 		limit = { ROOT = { tag = TUR } NOT = { has_country_flag = soviet_collapse_patron_channel_tur } }
 		set_country_flag = soviet_collapse_patron_channel_tur
 		add_to_variable = { soviet_collapse_patron_channel_count = constant:soviet_collapse_patron_rivalry.channel_count_step }
-		country_event = { id = chaosx.nr5.55 days = 1 }
+		country_event = { id = chaosx.nr5.55 days = constant:soviet_collapse_event_timing.followup_days }
 	}
 	if = {
 		limit = { ROOT = { tag = PER } NOT = { has_country_flag = soviet_collapse_patron_channel_per } }
 		set_country_flag = soviet_collapse_patron_channel_per
 		add_to_variable = { soviet_collapse_patron_channel_count = constant:soviet_collapse_patron_rivalry.channel_count_step }
-		country_event = { id = chaosx.nr5.56 days = 1 }
+		country_event = { id = chaosx.nr5.56 days = constant:soviet_collapse_event_timing.followup_days }
 	}
 	if = {
 		limit = { ROOT = { tag = POL } NOT = { has_country_flag = soviet_collapse_patron_channel_pol } }
 		set_country_flag = soviet_collapse_patron_channel_pol
 		add_to_variable = { soviet_collapse_patron_channel_count = constant:soviet_collapse_patron_rivalry.channel_count_step }
-		country_event = { id = chaosx.nr5.57 days = 1 }
+		country_event = { id = chaosx.nr5.57 days = constant:soviet_collapse_event_timing.followup_days }
 	}
 	if = {
 		limit = { ROOT = { tag = ROM } NOT = { has_country_flag = soviet_collapse_patron_channel_rom } }
 		set_country_flag = soviet_collapse_patron_channel_rom
 		add_to_variable = { soviet_collapse_patron_channel_count = constant:soviet_collapse_patron_rivalry.channel_count_step }
-		country_event = { id = chaosx.nr5.58 days = 1 }
+		country_event = { id = chaosx.nr5.58 days = constant:soviet_collapse_event_timing.followup_days }
 	}
 	if = {
 		limit = { ROOT = { tag = FIN } NOT = { has_country_flag = soviet_collapse_patron_channel_fin } }
 		set_country_flag = soviet_collapse_patron_channel_fin
 		add_to_variable = { soviet_collapse_patron_channel_count = constant:soviet_collapse_patron_rivalry.channel_count_step }
-		country_event = { id = chaosx.nr5.59 days = 1 }
+		country_event = { id = chaosx.nr5.59 days = constant:soviet_collapse_event_timing.followup_days }
 	}
 	if = {
 		limit = {
@@ -6506,32 +6522,32 @@ soviet_collapse_register_patron_channel = {
 			NOT = { has_country_flag = soviet_collapse_patron_collision_reported }
 		}
 		set_country_flag = soviet_collapse_patron_collision_reported
-		country_event = { id = chaosx.nr5.60 days = 1 }
+		country_event = { id = chaosx.nr5.60 days = constant:soviet_collapse_event_timing.followup_days }
 	}
 	if = {
 		limit = { has_country_flag = soviet_collapse_patron_channel_ger has_country_flag = soviet_collapse_patron_channel_eng NOT = { has_country_flag = soviet_collapse_patron_pair_ger_eng_reported } }
 		set_country_flag = soviet_collapse_patron_pair_ger_eng_reported
-		country_event = { id = chaosx.nr5.61 days = 1 }
+		country_event = { id = chaosx.nr5.61 days = constant:soviet_collapse_event_timing.followup_days }
 	}
 	if = {
 		limit = { has_country_flag = soviet_collapse_patron_channel_usa has_country_flag = soviet_collapse_patron_channel_jap NOT = { has_country_flag = soviet_collapse_patron_pair_usa_jap_reported } }
 		set_country_flag = soviet_collapse_patron_pair_usa_jap_reported
-		country_event = { id = chaosx.nr5.62 days = 1 }
+		country_event = { id = chaosx.nr5.62 days = constant:soviet_collapse_event_timing.followup_days }
 	}
 	if = {
 		limit = { has_country_flag = soviet_collapse_patron_channel_tur has_country_flag = soviet_collapse_patron_channel_per NOT = { has_country_flag = soviet_collapse_patron_pair_tur_per_reported } }
 		set_country_flag = soviet_collapse_patron_pair_tur_per_reported
-		country_event = { id = chaosx.nr5.63 days = 1 }
+		country_event = { id = chaosx.nr5.63 days = constant:soviet_collapse_event_timing.followup_days }
 	}
 	if = {
 		limit = { has_country_flag = soviet_collapse_patron_channel_pol has_country_flag = soviet_collapse_patron_channel_rom NOT = { has_country_flag = soviet_collapse_patron_pair_pol_rom_reported } }
 		set_country_flag = soviet_collapse_patron_pair_pol_rom_reported
-		country_event = { id = chaosx.nr5.64 days = 1 }
+		country_event = { id = chaosx.nr5.64 days = constant:soviet_collapse_event_timing.followup_days }
 	}
 	if = {
 		limit = { has_country_flag = soviet_collapse_patron_channel_fra has_country_flag = soviet_collapse_patron_channel_usa NOT = { has_country_flag = soviet_collapse_patron_pair_fra_usa_reported } }
 		set_country_flag = soviet_collapse_patron_pair_fra_usa_reported
-		country_event = { id = chaosx.nr5.65 days = 1 }
+		country_event = { id = chaosx.nr5.65 days = constant:soviet_collapse_event_timing.followup_days }
 	}
 }
 
@@ -6548,27 +6564,27 @@ soviet_collapse_register_patron_volunteer_channel = {
 	if = {
 		limit = { has_country_flag = soviet_collapse_patron_volunteers_ger has_country_flag = soviet_collapse_patron_volunteers_pol NOT = { has_country_flag = soviet_collapse_patron_volunteer_pair_ger_pol_reported } }
 		set_country_flag = soviet_collapse_patron_volunteer_pair_ger_pol_reported
-		country_event = { id = chaosx.nr5.66 days = 1 }
+		country_event = { id = chaosx.nr5.66 days = constant:soviet_collapse_event_timing.followup_days }
 	}
 	if = {
 		limit = { has_country_flag = soviet_collapse_patron_volunteers_eng has_country_flag = soviet_collapse_patron_volunteers_fra NOT = { has_country_flag = soviet_collapse_patron_volunteer_pair_eng_fra_reported } }
 		set_country_flag = soviet_collapse_patron_volunteer_pair_eng_fra_reported
-		country_event = { id = chaosx.nr5.67 days = 1 }
+		country_event = { id = chaosx.nr5.67 days = constant:soviet_collapse_event_timing.followup_days }
 	}
 	if = {
 		limit = { has_country_flag = soviet_collapse_patron_volunteers_usa has_country_flag = soviet_collapse_patron_volunteers_jap NOT = { has_country_flag = soviet_collapse_patron_volunteer_pair_usa_jap_reported } }
 		set_country_flag = soviet_collapse_patron_volunteer_pair_usa_jap_reported
-		country_event = { id = chaosx.nr5.68 days = 1 }
+		country_event = { id = chaosx.nr5.68 days = constant:soviet_collapse_event_timing.followup_days }
 	}
 	if = {
 		limit = { has_country_flag = soviet_collapse_patron_volunteers_tur has_country_flag = soviet_collapse_patron_volunteers_per NOT = { has_country_flag = soviet_collapse_patron_volunteer_pair_tur_per_reported } }
 		set_country_flag = soviet_collapse_patron_volunteer_pair_tur_per_reported
-		country_event = { id = chaosx.nr5.69 days = 1 }
+		country_event = { id = chaosx.nr5.69 days = constant:soviet_collapse_event_timing.followup_days }
 	}
 	if = {
 		limit = { has_country_flag = soviet_collapse_patron_volunteers_pol has_country_flag = soviet_collapse_patron_volunteers_rom NOT = { has_country_flag = soviet_collapse_patron_volunteer_pair_pol_rom_reported } }
 		set_country_flag = soviet_collapse_patron_volunteer_pair_pol_rom_reported
-		country_event = { id = chaosx.nr5.70 days = 1 }
+		country_event = { id = chaosx.nr5.70 days = constant:soviet_collapse_event_timing.followup_days }
 	}
 }
 
@@ -10415,8 +10431,8 @@ ukr_soviet_collapse_apply_directory_state_package = {
 	soviet_collapse_unlock_league_unit_deployment_decisions = yes
 	if = {
 		limit = { SOV = { exists = yes } }
-		add_ai_strategy = { type = prepare_for_war id = SOV value = 100 }
-		add_ai_strategy = { type = antagonize id = SOV value = 100 }
+		add_ai_strategy = { type = prepare_for_war id = SOV value = @soviet_collapse_ai_desire_standard }
+		add_ai_strategy = { type = antagonize id = SOV value = @soviet_collapse_ai_desire_standard }
 	}
 }
 
@@ -12287,10 +12303,10 @@ soviet_collapse_apply_fev_pacific_japanese_liaison = {
 				target = JAP
 				amount = constant:soviet_collapse_factory_ancient.archive_decryption_gain
 			}
-			add_ai_strategy = { type = support id = JAP value = 50 }
+			add_ai_strategy = { type = support id = JAP value = @soviet_collapse_ai_desire_minor }
 			JAP = {
 				add_opinion_modifier = { target = FEV modifier = soviet_collapse_pacific_observer_missions }
-				add_ai_strategy = { type = support id = FEV value = 75 }
+				add_ai_strategy = { type = support id = FEV value = @soviet_collapse_ai_desire_low }
 			}
 		}
 		if = {
@@ -12320,7 +12336,7 @@ soviet_collapse_apply_internal_far_eastern_japanese_contact = {
 				target = JAP
 				amount = constant:soviet_collapse_factory_ancient.archive_decryption_gain
 			}
-			add_ai_strategy = { type = support id = JAP value = 50 }
+			add_ai_strategy = { type = support id = JAP value = @soviet_collapse_ai_desire_minor }
 		}
 		if = {
 			limit = { SOV = { exists = yes is_soviet_collapse_active = yes } }
@@ -14118,7 +14134,7 @@ soviet_collapse_reduce_regional_faction_tension = {
 }
 
 soviet_collapse_withdraw_from_regional_faction = {
-	set_country_flag = { flag = soviet_collapse_regional_faction_recently_left days = 180 }
+	set_country_flag = { flag = soviet_collapse_regional_faction_recently_left days = @soviet_collapse_regional_faction_departure_days }
 	clr_country_flag = soviet_collapse_regional_faction_member
 	clr_country_flag = soviet_collapse_baltic_league_member
 	clr_country_flag = soviet_collapse_caucasus_league_member
@@ -14230,7 +14246,7 @@ soviet_collapse_form_free_republics_league_from_ukraine = {
 	if = {
 		limit = { NOT = { has_global_flag = soviet_collapse_free_republics_league_announced } }
 		set_global_flag = soviet_collapse_free_republics_league_announced
-		news_event = { id = chaosx.news.5002 days = 1 }
+		news_event = { id = chaosx.news.5002 days = constant:soviet_collapse_event_timing.followup_days }
 	}
 }
 
@@ -15126,8 +15142,8 @@ soviet_collapse_apply_cfr_seize_idle_construction_queues = {
 		}
 	}
 	hidden_effect = {
-		add_ai_strategy = { type = building_target id = industrial_complex value = 250 }
-		add_ai_strategy = { type = building_target id = infrastructure value = 100 }
+		add_ai_strategy = { type = building_target id = industrial_complex value = @soviet_collapse_ai_build_industry }
+		add_ai_strategy = { type = building_target id = infrastructure value = @soviet_collapse_ai_build_infrastructure }
 	}
 }
 
@@ -15155,8 +15171,8 @@ soviet_collapse_apply_cfr_raise_factory_city_belt = {
 		}
 	}
 	hidden_effect = {
-		add_ai_strategy = { type = building_target id = industrial_complex value = 350 }
-		add_ai_strategy = { type = building_target id = infrastructure value = 150 }
+		add_ai_strategy = { type = building_target id = industrial_complex value = @soviet_collapse_ai_build_industry_heavy }
+		add_ai_strategy = { type = building_target id = infrastructure value = @soviet_collapse_ai_build_infrastructure_heavy }
 	}
 }
 
@@ -16490,8 +16506,8 @@ soviet_collapse_apply_ijx_volga_compact_letters = {
 	if = {
 		limit = { IUL = { exists = yes } }
 		add_opinion_modifier = { target = IUL modifier = soviet_collapse_volga_compact }
-		add_ai_strategy = { type = support id = IUL value = 100 }
-		add_ai_strategy = { type = alliance id = IUL value = 75 }
+		add_ai_strategy = { type = support id = IUL value = @soviet_collapse_ai_desire_standard }
+		add_ai_strategy = { type = alliance id = IUL value = @soviet_collapse_ai_desire_low }
 	}
 	if = {
 		limit = { SOV = { exists = yes is_soviet_collapse_active = yes } }
@@ -20826,8 +20842,8 @@ soviet_collapse_complete_old_great_bulgaria_endgame = {
 			can_declare_war_on = SOV
 		}
 		create_wargoal = { type = annex_everything target = SOV expire = 0 }
-		add_ai_strategy = { type = conquer id = SOV value = 200 }
-		add_ai_strategy = { type = antagonize id = SOV value = 200 }
+		add_ai_strategy = { type = conquer id = SOV value = @soviet_collapse_ai_desire_severe }
+		add_ai_strategy = { type = antagonize id = SOV value = @soviet_collapse_ai_desire_severe }
 	}
 	if = {
 		limit = {
@@ -20838,8 +20854,8 @@ soviet_collapse_complete_old_great_bulgaria_endgame = {
 			can_declare_war_on = IUL
 		}
 		create_wargoal = { type = annex_everything target = IUL expire = 0 }
-		add_ai_strategy = { type = conquer id = IUL value = 175 }
-		add_ai_strategy = { type = antagonize id = IUL value = 175 }
+		add_ai_strategy = { type = conquer id = IUL value = @soviet_collapse_ai_desire_heavy }
+		add_ai_strategy = { type = antagonize id = IUL value = @soviet_collapse_ai_desire_heavy }
 	}
 	soviet_collapse_apply_high_chaos_neighbor_expansion_plan = yes
 }
@@ -20864,13 +20880,13 @@ soviet_collapse_apply_ijx_future_bulgaria_file = {
 			if = {
 				limit = { has_country_flag = ijx_route_idel_ural_compact }
 				add_opinion_modifier = { target = IUL modifier = soviet_collapse_volga_compact }
-				add_ai_strategy = { type = support id = IUL value = 75 }
+				add_ai_strategy = { type = support id = IUL value = @soviet_collapse_ai_desire_low }
 			}
 			if = {
 				limit = { has_country_flag = ijx_route_rival_volga_seal }
 				add_opinion_modifier = { target = IUL modifier = soviet_collapse_volga_rival_seals }
-				add_ai_strategy = { type = antagonize id = IUL value = 150 }
-				add_ai_strategy = { type = conquer id = IUL value = 125 }
+				add_ai_strategy = { type = antagonize id = IUL value = @soviet_collapse_ai_desire_high }
+				add_ai_strategy = { type = conquer id = IUL value = @soviet_collapse_ai_desire_raised }
 			}
 		}
 		if = {
@@ -20930,8 +20946,8 @@ soviet_collapse_apply_ijx_volga_trade_city_claims = {
 		}
 		if = {
 			limit = { IUL = { exists = yes } }
-			add_ai_strategy = { type = conquer id = IUL value = 200 }
-			add_ai_strategy = { type = antagonize id = IUL value = 200 }
+			add_ai_strategy = { type = conquer id = IUL value = @soviet_collapse_ai_desire_severe }
+			add_ai_strategy = { type = antagonize id = IUL value = @soviet_collapse_ai_desire_severe }
 		}
 		if = {
 			limit = { SOV = { exists = yes is_soviet_collapse_active = yes } }
@@ -27476,7 +27492,7 @@ soviet_collapse_propagate_reconsolidation_outcome = {
 				set_country_flag = soviet_collapse_aftermath_guarded_frontier
 				add_ideas = soviet_collapse_legal_restoration_claim
 			}
-			country_event = { id = chaosx.nr5.97 days = 1 }
+			country_event = { id = chaosx.nr5.97 days = constant:soviet_collapse_event_timing.followup_days }
 		}
 	}
 }
