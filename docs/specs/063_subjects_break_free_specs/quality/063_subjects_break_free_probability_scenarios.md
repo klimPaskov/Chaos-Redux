@@ -445,14 +445,14 @@ Expected result:
 
 - partner status is favored
 - forced faction departure has zero weight
-- observer status is a valid fallback
+- partner status is a valid fallback
 
 ## PI-03: Major core conflict with a member
 
 Expected result:
 
 - full membership is blocked or near zero
-- mediation or observer status can appear
+- mediation or partner status can appear
 - shared origin does not override the conflict
 
 ## PI-04: Aggressive resubjugator

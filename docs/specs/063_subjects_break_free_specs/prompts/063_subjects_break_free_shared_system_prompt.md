@@ -74,7 +74,7 @@ Provide neutral queries for:
 - valid liberation origin
 - currently active independent network state
 - compatibility for recognition or support
-- eligibility for Event 063 Pact member, partner, or observer review
+- eligibility for Event 063 Pact member or partner review
 - whether a one-time cross-event opportunity has already been consumed
 
 Compatibility queries can use live wars, claims, subject status, faction state, and special-country classification. Keep event-specific thresholds and decision rules with their owner.

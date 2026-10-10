@@ -91,7 +91,7 @@ Implement phased actions for:
 
 - founding congress
 - full-member invitation
-- partner and observer offers
+- partner offers
 - membership objection
 - leadership transfer
 - coordinated defense

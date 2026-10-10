@@ -1,8 +1,8 @@
 # Asset prompt: Event 063 Subjects Break Free
 
-The [asset skill](../../../../.agents/skills/chaos-redux-event-assets/SKILL.md) owns reference families, native ImageGen source evidence, consumer-dependent alpha, processing, and DDS validation.
+The [asset skill](../../../../.claude/skills/chaos-redux-event-assets/SKILL.md) owns reference families, native ImageGen source evidence, consumer-dependent alpha, processing, and DDS validation.
 For alpha-backed families request real transparency in the first ImageGen call and preserve it through processing; opaque scene sources follow the final consumer’s report or panel treatment.
-For achievements use the skill’s [single-subject, deterministic-state pipeline](../../../../.agents/skills/chaos-redux-event-assets/SKILL.md#achievement-icons), including the completed, grey, and not-eligible source layers and exact supplied templates.
+For achievements use the skill’s [single-subject, deterministic-state pipeline](../../../../.claude/skills/chaos-redux-event-assets/SKILL.md#achievement-icons), including the completed, grey, and not-eligible source layers and exact supplied templates.
 
 Use `chaos-redux-event-assets` for the complete Event 063 visual package. Use `chaosx_generated_event_art` for fictional period documentary scenes and `chaosx_icon_artist` for icons. Follow `AGENTS.md`, the event specs in this folder, and the permanent asset coverage rules.
 
@@ -150,7 +150,7 @@ Record the SHA-256 of the three workflow inputs used.
 - Do not use scripts to create the central artwork from primitive shapes.
 - Request genuine transparency for alpha-backed icon families in the initial generation.
 - Reject fake checkerboards, matte edges, clipped silhouettes, generated letters, and opaque backgrounds where alpha is required.
-- Convert through `.agents/skills/chaos-redux-event-assets/tools/convert_to_dds.py`.
+- Convert through `.claude/skills/chaos-redux-event-assets/tools/convert_to_dds.py`.
 - Validate final DDS dimensions, alpha behavior, header layout, and live registration.
 
 ## Required working evidence

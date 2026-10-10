@@ -90,7 +90,7 @@ Unlock conditions:
 
 Disqualifiers:
 
-- partners or observers counted as full members
+- partners counted as full members
 - force-run, debug, or ineligible scenario setup
 - timer interrupted by cohesion falling below 75
 - Pact dissolves

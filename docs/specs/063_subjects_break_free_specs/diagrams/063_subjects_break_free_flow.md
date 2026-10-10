@@ -96,7 +96,7 @@ flowchart TD
     B -->|No| C[Informal network continues]
     B -->|Yes| D[Founder prepares congress]
     D --> E[Freeze invitation pool]
-    E --> F[Invite full members, partners, and observers]
+    E --> F[Invite full members and partners]
     F --> G{Minimum full membership accepted?}
     G -->|No| H[Congress fails and receives cooldown]
     H --> C

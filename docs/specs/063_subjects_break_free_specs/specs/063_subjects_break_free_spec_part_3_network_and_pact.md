@@ -238,7 +238,7 @@ The normal threshold is:
 - four compatible active states when at least two liberation origins are represented
 - five compatible active states when all candidates share one origin
 
-These totals include the founder and count only countries that accept full membership. Partners and observers do not satisfy the threshold.
+These totals include the founder and count only countries that accept full membership. Partners do not satisfy the threshold.
 
 A six-state threshold may be used when the candidates are distant, politically divided, or face no current threat. The event should not form the Pact from a handful of disconnected countries that have no reason to coordinate.
 
@@ -309,16 +309,14 @@ A partner:
 
 - has valid liberation provenance
 - supports the Pact's goals
-- remains in another faction or cannot accept full membership
+- remains in another faction, cannot accept full membership, or is newly independent and still politically uncertain
 - can recognize states, send aid, mediate, and answer bounded support requests
 - does not receive automatic Pact war obligations
 - does not count as a full member for dissolution checks
 
 Partner status prevents the event from stealing countries from existing alliances. A partner can become a full member later if it leaves its other faction through ordinary valid rules.
 
-### Observer
-
-A newly independent or politically uncertain state can attend as an observer. Observer status is temporary and grants no defense rights. It provides a route to recognition, compatibility growth, and later invitation.
+There is no separate observer tier; a newly independent or uncertain state starts as a partner, which already carries no automatic war obligation.
 
 ## Liberation Cohesion
 
@@ -375,7 +373,7 @@ The Pact should not automatically treat every ordinary offensive war by a member
 
 ### Goal 2: Support new breakaways
 
-The Pact can recognize newly independent countries, offer emergency aid, invite observers, and issue guarantees. Full membership requires the ordinary invitation process.
+The Pact can recognize newly independent countries, offer emergency aid, invite partners, and issue guarantees. Full membership requires the ordinary invitation process.
 
 ### Goal 3: Coordinate independence wars
 
@@ -398,7 +396,6 @@ The Pact category should normally show three to five actions at once.
 - call the founding congress
 - invite a full member
 - offer partner status
-- admit an observer
 - resolve a membership objection
 - transfer Pact leadership
 
@@ -497,7 +494,7 @@ The Soviet Collapse Free Republics' League remains under Event 005 ownership.
 Compatible successors can:
 
 - join the informal network
-- attend a Pact congress as observers or partners
+- attend a Pact congress as partners
 - provide aid to an independence war
 - join the Liberation Pact when they are not bound to the League and pass ordinary membership rules
 

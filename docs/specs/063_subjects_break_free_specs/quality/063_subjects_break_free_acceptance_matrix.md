@@ -108,7 +108,7 @@ Each row needs a verdict and evidence path. A passing count alone is insufficien
 | F04 | Same-origin threshold | Five compatible states from one origin | Congress can become available. |
 | F05 | Failed congress | Too few full-member acceptances | Pact does not form. Network remains and founder receives cooldown. |
 | F06 | Successful congress | Minimum full membership accepts | Pact, founder, roster, charter, and initial cohesion are created. Cohesion begins from 35 to 65 and never begins in the Fractured or United band. |
-| F07 | Factioned candidate | Compatible liberated state is already in another faction | Partner or observer status is offered. No forced exit. |
+| F07 | Factioned candidate | Compatible liberated state is already in another faction | Partner status is offered. No forced exit. |
 | F08 | Cohesion display | Pact exists | Numeric Liberation Cohesion and correct band are visible. |
 | F09 | Cohesion icon family | Cohesion crosses each band | Charter spirit changes to the matching state. |
 | F10 | Fulfilled commitment | Member completes relevant aid or defense promise | Cohesion rises once. |
@@ -134,7 +134,7 @@ Each row needs a verdict and evidence path. A passing count alone is insufficien
 | G07 | Candidate ordering | Run CS-01 through CS-07 | Results match the expected rankings and limits. |
 | G08 | Settlement ordering | Run ST-01 through ST-07 | Results match the expected rankings and topology gates. |
 | G09 | Intervention ordering | Run IV-01 through IV-05 | Material support exceeds direct entry across ordinary supporters. |
-| G10 | Pact invitation ordering | Run PI-01 through PI-05 | Full membership, partner, observer, and rejection outcomes follow validity. |
+| G10 | Pact invitation ordering | Run PI-01 through PI-05 | Full membership, partner, and rejection outcomes follow validity. |
 | G11 | Evolution timing | Run ET-01 through ET-07 | Timing falls inside intended bands and responds to pressure. |
 | G12 | AI impossible route | Missing target, faction, border, access, or war path | Invalid action receives zero practical weight. |
 

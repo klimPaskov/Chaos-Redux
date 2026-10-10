@@ -81,7 +81,7 @@ Implement all three evolutions with shared toggles, dynamic pacing, active-event
 - allow a viable founder to call a Liberation Congress
 - require enough compatible full-member candidates
 - form the Event 063 Liberation Pact only after sufficient acceptances
-- use full members, partners, and observers
+- use full members and partners
 - never force countries from unrelated factions
 - implement leadership transfer, admission, exit, censure, suspension, expulsion, and dissolution
 - preserve the informal network after Pact dissolution
@@ -187,6 +187,6 @@ Create permanent documentation for the event, shared origin contract, decisions,
 
 Run the complete acceptance matrix with repository checks, HOI4 MCP evidence, parser validation, event and probability comparisons, asset review, and documented test cases for save and reload, multiplayer human-human settlement, cluster firing, owner collision, war topology, achievements, cleanup, and repeated firings. Invoke the autonomous `chaos-redux-debug-playtest` workflow only after the user explicitly authorizes desktop control. Until then, prepare the live test matrix and leave actual in-game execution to the user.
 
-Before claiming near completion, spawn `chaosx_improvement_loop_planner` with `fork_turns="none"`. Resolve its expansion addendum or closure handoff. Then run `chaosx_event_completion_auditor`, `chaosx_localisation_auditor`, `chaosx_decision_mission_auditor`, `chaosx_scripted_system_architect`, `chaosx_documentation_curator`, and the relevant asset workers.
+Before claiming near completion, spawn `chaosx_improvement_loop_planner` with no inherited parent context. Resolve its expansion addendum or closure handoff. Then run `chaosx_event_completion_auditor`, `chaosx_localisation_auditor`, `chaosx_decision_mission_auditor`, `chaosx_scripted_system_architect`, `chaosx_documentation_curator`, and the relevant asset workers.
 
 Do not use fallbacks, silent simplifications, temporary content, placeholder art, unbounded scans, or good-enough approximations. Report every design point that cannot be implemented cleanly. Do not claim completion until the repository, runtime behavior, assets, localisation, docs, audits, and acceptance evidence satisfy the full package.

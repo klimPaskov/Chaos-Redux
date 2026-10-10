@@ -251,7 +251,7 @@ The asset worker must inspect the canonical decision-category icon and picture r
 | 063-DEC-09 | `decision_063_mediation` | Mediation and ceasefire | Balanced documents, table, or neutral seal |
 | 063-DEC-10 | `decision_063_independence_support` | Support a remaining subject | Open chain link with a small rising banner shape, without a real flag |
 | 063-DEC-11 | `decision_063_congress` | Call the Pact congress | Circular table, charter folder, or grouped seals |
-| 063-DEC-12 | `decision_063_membership` | Invite member, partner, or observer | Linked emblems with one open place |
+| 063-DEC-12 | `decision_063_membership` | Invite member or partner | Linked emblems with one open place |
 | 063-DEC-13 | `decision_063_collective_defense` | Coordinate Pact defense | Several shields around one central shield |
 | 063-DEC-14 | `decision_063_ultimatum` | Restoration ultimatum | Sealed demand beside a mobilization order |
 

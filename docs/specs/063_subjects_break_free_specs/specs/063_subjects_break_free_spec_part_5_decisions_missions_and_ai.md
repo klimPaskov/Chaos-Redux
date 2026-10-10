@@ -115,7 +115,7 @@ The Pact phase is described in Part 3. It should use the same category and repla
 - call a founding congress
 - invite one full member
 - offer partner status
-- admit or advance an observer
+- advance a partner to full membership
 - resolve a membership objection
 - transfer leadership when needed
 
@@ -322,10 +322,10 @@ The spirit is removed when a country leaves, is expelled, becomes a subject, or 
 | Strong pragmatic former overlord | association or recognition | contest strategic access | annexation as default | narrow claim or guarantee settlement |
 | Strong coercive former overlord | contest, then restoration when safe | compound war under Evolution II | war that breaks protected topology or exposes capital to collapse | ultimatum, sanctions, delayed war |
 | Same-overlord liberated cohort | mutual recognition and joint defense | common war planning when one is threatened | fighting each other during opening settlement without a real dispute | mediation and separate guarantees |
-| Independent liberated state | recognition and material aid | volunteers or guarantees when access exists | direct intervention in distant unwinnable war | aid, mediation, or observer role |
+| Independent liberated state | recognition and material aid | volunteers or guarantees when access exists | direct intervention in distant unwinnable war | aid, mediation, or partner role |
 | Pact member | fulfill relevant commitments | direct defense at high cohesion and viable access | abandoning a reachable member solely to conserve small stockpiles | smaller aid package or mediation |
-| Pact leader | maintain cohesion and viable membership | coordinated response to restoration wars | inviting incompatible states to inflate membership | partner or observer offer |
-| Factioned liberated state | partner status | full Pact membership only after ordinary faction exit | forced departure from current faction | recognition, aid, observer, partner |
+| Pact leader | maintain cohesion and viable membership | coordinated response to restoration wars | inviting incompatible states to inflate membership | partner offer |
+| Factioned liberated state | partner status | full Pact membership only after ordinary faction exit | forced departure from current faction | recognition, aid, partner |
 | Neighboring major | recognition, mediation, or influence | guarantee or intervene for strategic reasons | automatic support based only on liberation origin | ordinary diplomatic relation |
 | Former enemy of released state | cautious recognition | support only against a greater common threat | free guarantee despite active claims or war | neutrality |
 
@@ -359,7 +359,7 @@ The spirit is removed when a country leaves, is expelled, becomes a subject, or 
 
 - invitation value should come from trust, threat, and usefulness
 - factioned states choose partner status
-- a candidate with a major core conflict against a member should be rejected or held as an observer
+- a candidate with a major core conflict against a member should be rejected or held as a partner
 - the founder should prioritize cohesion over member count
 - AI should call a congress only when formation has a real chance to reach the minimum
 
@@ -402,7 +402,7 @@ The event does not create broad claims. Temporary restoration claims are cleaned
 
 ### Faction theft
 
-Pact invitations cannot pull a country out of another faction. Such a country receives partner or observer status.
+Pact invitations cannot pull a country out of another faction. Such a country receives partner status.
 
 ### Decision clutter
 
