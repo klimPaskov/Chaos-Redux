@@ -69,3 +69,30 @@ The parent owns package-manifest/handoff integration and final acceptance report
 - `docs/plans/unit_fix_2026-10/audio_evidence/recovery_batch.json` - SHA-256 `148ffb5a39ce96a1ee6cd532b72dc5426ff5d3abbeccb4afe5a7eba734e533d8`.
 - Per-model metrics `docs/plans/unit_fix_2026-10/per_model_delivery_metrics.json` - SHA-256 `89c6d0d0954719a09a8f9dd66eafbd5f3f42e3d2a28b4c29ff29b6f067b9e365`.
 - Package held-source report `docs/plans/unit_fix_2026-10/wp2_cannibal_rebuilds_audio_needs.md` - SHA-256 `8032f44639ecc508f383253389c004bcb20b1cec7842793f57b7f9030a4e3a5d`.
+
+## WP2 rebuild results (10 Oct 2026)
+
+### cannibal_island_reavers
+
+Fixed: the one-frame full-body glitch poses that flipped the torso, thighs, arms, toes and head up to 180 degrees in seven of eight actions (attack frames 67 and 79, idle 63 and 91, defend 59 and 67, move 7, retreat 27 and 43, training eight frames including the 3.06 u Hips jump at frame 87, death thirteen) are removed from the live F-curves; the remaining exporter-level quaternion sign flips (33 attack, 13 training, 46 death) are normalised so every exported action has 0 negative-dot samples; horizontal Hips travel is held at the first-frame value (death keeps only its vertical fall and its forward Z travel is 0); the move and training loop seams were closed (1.2 and 0.8 degrees); the 0.79 s support_attack stub is replaced by an authored 2.0 s harpoon jab (ready, coil, thrust at 0.79 s, hold, recover, final pose equal to the first); the 49 pinholes are filled (0 boundary, 0 non-manifold, one component); eight vertices at the polearm point that were weighted to the Head are weighted to LeftHand; the mesh is reduced from 30,042 to 20,500 triangles (28,892 export vertices, 0 open edges) so it clears the 65,535 triangle-index export ceiling; diffuse black islands are inpainted and glossiness/metalness are regraded from the staged texture tranche (`wp2_evidence/textures`); entity events are re-timed to the measured strikes (impacts 1.25 s and 2.21 s, support 0.79 s) and the death vocal moved to the start of the collapse.
+
+| action | length | sign flips fixed | worst per-frame rotation | gate violations (declared windows / none) | loop seam deg, u | root | declared strike windows |
+|---|---|---|---|---|---|---|---|
+| idle | 5.92 s | 0 | 1.9 | 4/4 | pass [0.0, 0.0] | pass | - |
+| move | 1.17 s | 0 | 18.8 | 47/47 | pass [1.2, 0.006] | pass | - |
+| attack | 5.08 s | 33 | 0 | 0/44 | not_applicable [0.0, 0.0] | pass | [[7, 16], [25, 38], [50, 58], [98, 101], [103, 105]] |
+| defend | 5.08 s | 0 | 0 | 0/0 | pass [0.0, 0.0] | pass | - |
+| support_attack | 2.0 s | 0 | 0 | 0/23 | not_applicable [0.0, 0.0] | pass | [[18, 23]] |
+| retreat | 1.83 s | 0 | 12.1 | 21/21 | pass [0.0, 0.0] | pass | - |
+| training | 5.25 s | 13 | 9.7 | 7/7 | pass [0.8, 0.002] | pass | - |
+| death | 2.29 s | 46 | 0 | 0/325 | not_applicable [129.1, 2.428] | pass | [[1, 53]] |
+
+Evidence: `docs/assets/014_cannibalism/models_3d/cannibal_island_reavers/` (checkpoints `wp2_01f_pinholes_smooth` -> `wp2_03_actions_fixed` -> `wp2_04_decimated` -> `wp2_05b_spear_weights` -> `wp2_06_support_v4`; exports and `gate_summary.json` in `export/wp2`; `validation/wp2_reimport_summary.json` holds the eight native reimport proofs of the exact installed bytes; before and after stills in `blender/previews`).
+
+Remaining defects and limits for this model:
+- The repository animation gate still flags the idle (4 transitions at 0.25-0.27 u per frame), move (47), retreat (21) and training (7) actions on world joint translation speed above 0.25 u per frame; no rotation, root, sign or loop gate fails except the move worst rotation of 18.8 degrees per frame against the 15 degree locomotion limit. The same gate marks the vanilla GER_infantry_moving_rifle walk blocked (peak 0.31 u per frame at 30.75 fps), so the 0.25 u threshold reads as miscalibrated for this scale rather than as a defect of these provider walk and idle clips. Nothing was waived: those actions are shipped with the flags recorded.
+- The death gate passes only through a declared window covering the whole collapse (frames 1-53); without it 325 transitions exceed the limits during the fall.
+- The move cycle has one measured sole plant (right foot at 0.0 s) and no left plant; the second footstep event at 0.583 s is an estimate. The provider walk is not re-authored.
+- The polearm is still part of the body mesh (skinned to LeftHand, not a separate rigid prop), so the item-fit requirement of the skill is not met for this model. A separate welded polearm needs the original provider geometry, which is no longer in the job folder.
+- Normal map: the packed G/A maps were kept; baking from a provider high-poly is blocked because the provider downloads were removed after the original export (re-downloading the completed Meshy tasks is free but needs download permission).
+- The showcase re-film with the locked crop is capture work and was not done.
