@@ -46,16 +46,16 @@ Ordinary automatic pressure is evaluated through the actor-owned schedule and is
 
 This produces one automatic point at low Momentum without special access, up to five at high Momentum with substantial institutional dependence. These are initial balance values that require native scenario evaluation. Defeat and compromised leadership affect the real exposure and institutional situation rather than applying an additional unspecified automatic increase. Explicit accepted programs use the following disclosed amounts and their own consumed receipts.
 
-| Accepted concession | Influence on actual completion | Repeat guard |
+| Accepted concession | Influence on actual completion | Receipt that must really exist |
 | --- | --- | --- |
-| Establish a foreign commissar office | +10 | Once per actual office agreement, minimum 180 days before a genuinely new agreement |
-| Accept a binding party directive | +15 | Once per distinct accepted directive, maximum one directive per 90 days |
-| Accept emergency material aid with the disclosed dependence condition | +10 | Only on actual delivery, maximum one dependence-bearing batch per 90 days. Ordinary unconditional allied transfers are outside this action |
-| Complete a foreign-supervised formation conversion | +15 | One receipt per real personnel cohort, maximum one such program per 120 days |
-| Grant industrial or intelligence access | +10 | One shared access-family receipt, minimum 180 days between genuinely new grants |
-| Install an embedded foreign command | +10 | Only on real placement and command agreement, minimum 180 days between new installations |
+| Establish a foreign commissar office | +10 | One per actual office agreement |
+| Accept a binding party directive | +15 | One per distinct accepted directive |
+| Accept emergency material aid with the disclosed dependence condition | +10 | Only on actual delivery. Ordinary unconditional allied transfers are outside this action |
+| Complete a foreign-supervised formation conversion | +15 | One per real personnel cohort |
+| Grant industrial or intelligence access | +10 | One shared access-family receipt |
+| Install an embedded foreign command | +10 | Only on real placement and command agreement |
 
-Removing and immediately restoring the same office or agreement cannot create another benefit, payment or Influence receipt. A normal concession reaching 100 still does not count as explicit early submission. Resistance reductions and their actual costs are specified with the corresponding actions in Part 8, so the implementation must not add a second discretionary reduction in a popup or focus reward.
+One pacing rule governs all six rows instead of six separate cooldowns. A country completes at most one concession in any 30 days, so the most Influence it can take on in 30 days is 15 from a concession plus the automatic 5. Reaching the critical stage from zero therefore takes at least four months, and the warning stages are always seen. The same office, access or command family can be granted again only 180 days after its earlier agreement ended. Removing and immediately restoring an agreement cannot create another benefit, payment or Influence receipt. A normal concession reaching 100 still does not count as explicit early submission. Resistance reductions and their actual costs are specified with the corresponding actions in Part 8, so the implementation must not add a second discretionary reduction in a popup or focus reward.
 
 No same-day cascade can skip the critical warning and mandatory resistance opportunity through several duplicate callbacks. A player may explicitly choose voluntary submission earlier, but silence, a canceled popup, or accepting unrelated aid is not consent to immediate annexation.
 
@@ -78,7 +78,18 @@ Crossing 80 starts a 180-day sovereignty mission once for the current crisis epi
 
 The mission presents two practical objectives alongside the Influence requirement: protect an independent military command and secure the governing party or its equivalent sovereign institution. A country can complete these through its own programs, useful outside support, or actual victories. Successful defense of sovereignty lowers Influence below the high-dependence state and closes the current coercion episode with the real institutional changes preserved.
 
-The initial success target is Influence below 60 plus both institutional objectives. This makes a sovereignty victory more substantial than temporarily slipping from 80 to 79. If the mission expires while Influence has reached 100 and the real binding gate is valid, Lenin can complete puppeting. At 80 to below 100, expiry causes a specified institutional setback and continuing crisis, with the independence route still available. It does not leap straight to annexation.
+The initial success target is Influence below 60 plus both institutional objectives. This makes a sovereignty victory more substantial than temporarily slipping from 80 to 79. Completing a real recovery below 60 with both institutions secured closes the episode and keeps every action cooldown. A new episode needs a new rise to 80 after that recovery.
+
+This table is the single home for the exact expiry results. Part 8 and the prompts refer to it.
+
+| State when the 180 days end | Result |
+| --- | --- |
+| Below 60 with both institutions secured | Success, already closed above |
+| 100 and the real binding gate valid | Lenin can complete puppeting, with no fresh 180-day clock |
+| 80 to 99, or 100 with the binding gate invalid | Institutional setback. The party's recognized independent authority is compromised first, or the independent command's authority when no valid party proof exists. No divisions are destroyed, no casualties occur, no territory is annexed and no unlisted Influence is added |
+| 60 to 79, or below 60 with either institution unsecured | An unresolved coercion episode with no new institutional penalty and no puppet transaction |
+
+The original deadline stays expired in every unsuccessful case. A later rise to 80 cannot mint another grace period, and if Influence later reaches 100 with the binding gate valid, binding can proceed without a fresh clock. Expiry never leaps straight to annexation, and free independence stays available throughout.
 
 Influence can reach 100 before the 180-day deadline. That produces full personal transformation and binding pressure while the country retains the remaining sovereignty struggle. Automatic binding waits for the critical deadline. Only a separate explicit voluntary-submission choice can bind earlier. Accepting an ordinary concession that raises the value to 100 is not itself consent to early submission. The interface shows the remaining deadline and current political status alongside the value.
 
@@ -111,6 +122,8 @@ Trotsky's country can support joint commands, defend independent communist gover
 Momentum ranges from 0 to 100 and uses broad stages at 20, 40, 60, and 80. It reflects current inhabited rule, actual victories and losses, effective allied or bound institutions, functioning regional commands, real host development, and completed campaign objectives. The technical handoff defines the bounded contribution model and anti-farming receipts.
 
 Territorial credit uses one current physical controller per state and the frozen inhabited-world weights. A state selected by two countries does not give double Momentum. An independent ally can contribute through actual cooperation, but its territory is not relabeled as Lenin's direct rule. A captured command, liberated region, breakaway, lost ritual site, destroyed elite force, or collapse of organizing can reduce power.
+
+Momentum is a thermometer that no action raises directly. It earns its place because both sides read their next move from it: the World Revolution sees which power or manifestation the next stage opens, and defenders see which of their operations is pulling it down. The category and tooltip show the current stage, the next threshold and one plain sentence naming the component that is holding the value back, for example "Territory: under a quarter of the world is under Lenin's rule". They never list the six components as numbers. The component sentence is the only breakdown the player sees, and it exists so that the value points at a decision.
 
 The ordinary stage thresholds have no hidden hysteresis. The displayed value must not round upward across a threshold the engine has not reached. One-time manifestations, Chaos premiums, and achievements have separate consumed receipts, so losing and regaining a stage changes current capability without farming another reward.
 

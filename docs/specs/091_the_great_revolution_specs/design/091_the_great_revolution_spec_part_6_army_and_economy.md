@@ -100,7 +100,7 @@ The economic spine is captured industry connected by repair and transport. Facto
 
 The new country does not inherit the legacy fixed 1,000 convoys, five research slots, maximum stability, maximum war support, and arbitrary naval setup as a default opening reward. Its starting research capacity is proposed at three slots, with a fourth and fifth earned through a functioning industrial and international research program. This is a design tuning choice. Actual inherited country and donor technology must be reconciled through the supplied compatible-technology union helper.
 
-Starting laws reflect immediate war and mobilization, while civilian administration reflects the origin and political route. The three focus-created spirit families are Scattered Commands, Captured Industrial Network, and Revolutionary Government. They explain disconnected war organization, inherited industrial incompatibility, and the political settlement between human institutions and the host. Focus rewards evolve or replace those slots instead of accumulating many simultaneous spirits.
+Starting laws reflect immediate war and mobilization, while civilian administration reflects the origin and political route. The three focus-created spirit families, Scattered Commands, Captured Industrial Network and Revolutionary Government, are defined in Part 4 and are the only permanent spirit slots. Their stages here carry the logistical and production consequences of the inherited army and economy.
 
 ## Conditional air and naval development
 

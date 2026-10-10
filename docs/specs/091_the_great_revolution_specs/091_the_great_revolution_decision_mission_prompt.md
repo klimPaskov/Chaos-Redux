@@ -24,25 +24,22 @@ The actual independence declaration is always free and available to an existing 
 
 ## Exact timing and political responses
 
-Ordinary opening communist responses use thirteen days with refusal as the non-consenting default. Current Stalin in SOV immediately refuses. Current Trotsky in SOV immediately joins as autonomous cofounder. Revalidate the actual leader, country authority and request before every late option. A canceled popup does not become assent, and a newly communist government does not replay the global opening.
+The timing and political rules have one home each, and the action code implements them as written there.
+Ordinary opening replies, the immediate Stalin and Trotsky routes, and revalidation of leader, authority and request before every late option follow Part 3 and `implementation_handoffs/architecture.md`.
+Automatic Influence, the six concession amounts with their single 30-day pacing rule and 180-day re-grant rule, the 180-day critical mission with its expiry table, binding, the 120-day annex mission and free independence follow Part 5, and the resistance actions follow Part 8.
+Reaching 100 never binds before the original deadline, an ordinary concession is never early submission, a genuine recovery closes the episode with every cooldown preserved, and an unsuccessful case never mints a new grace period.
+Red World entry, the one-time pause of an ordinary annex timer, the thirteen-day final response, explicit stay, timeout war and Trotsky's concord or break follow Part 9, and no menu, focus, leader change, callback or reload refreshes those dates.
+Trotsky's protection survives leadership change and terminal entry, and his independent territory never enters Lenin's rule numerator.
 
-Automatic Influence follows the exact Part 5 rate, exposure and rolling-cap model. Every explicit concession has its listed ten- or fifteen-point amount and receipt/cooldown. At eighty, open the 180-day critical episode. Success requires below sixty plus an actually secured party and independent command. Reaching one hundred shows full transformation but does not automatically bind before that deadline. Only the separate explicit voluntary-submission action can bind early, and an ordinary concession reaching one hundred does not count as that consent.
-
-At critical expiry, apply Part 8's exact result for each value range and missing-institution case. An unsuccessful low-value case keeps the original deadline expired. Re-crossing eighty cannot mint another grace period. A genuine recovery closes that episode, with all action cooldowns preserved. Real binding starts a separate 120-day ordinary annex mission. The country does not cease to exist merely because a displayed number reached one hundred.
-
-At Red World entry, pause an existing ordinary annex timer once and save its remaining days for the thirteen-day final response. Explicit stay by an ordinary joiner immediately creates valid binding and a ninety-day timer. An existing subject that stays resumes the lesser of its saved remaining time and ninety days, measured from that response. Refusal or non-consenting timeout produces independence and war. No menu, focus, leader change, callback or reload refreshes those dates.
-
-Trotsky's crisis-specific protection survives leadership change and terminal entry. There is no Influence field, disguised dependence meter, forced puppet path, surrender option or annex timer. His final choice is autonomous concord or a political break with war. Actual independent territory never contributes to Lenin's rule numerator.
-
-Use the shared encoded-date helpers, native mission lifecycle and current-authority cancellation contract. Do not add raw day counts to encoded dates, assume a UI timer is authoritative, or run success or ordinary timeout effects on an authority-loss cancellation.
+Use the shared encoded-date helpers, the native mission lifecycle and the current-authority cancellation contract.
+Do not add raw day counts to encoded dates, assume a UI timer is authoritative, or run success or ordinary timeout effects on an authority-loss cancellation.
 
 ## Army, power and terminal operations
 
-Use actual unit, equipment and cohort owners. The finite supernatural allowance is one 10,000-person-equivalent opening seed and one 10,000 allowance at each first earned crossing of forty, sixty and eighty Momentum. A terminal power override does not award skipped grants. Repeated captures, thresholds, countries, targets or callbacks cannot create new allowances. All other recruitment and conversion uses real sources, with living conversion separate from deaths and no double debit or credit.
-
-Command establishment requires the actual regional mission, site, institution and logistics. One origin and at most six regional slots form the entire survival network. Permanent destruction cannot be undone by relabeling a new command. A body reconstitution takes 180 days, uses a real pre-existing eligible anchor and paid living transformed cohort, and completes at most once per campaign. Trotsky, an independent ally or a new phantom anchor cannot fund it.
-
-The actual world-end owner checks Chaos strictly above 1000 and actual ruled share strictly above one half of the frozen positive opening population-weighted inhabited denominator, plus current country, Lenin, settings and no-terminal-conflict gates. Independent allies and Trotsky contribute zero rule. All six commands are not a terminal requirement. Body capture alone does not prove defeat while the actual survival network remains.
+Use actual unit, equipment and cohort owners.
+The finite supernatural allowance, its first-crossing grants and the rule that repeated captures, thresholds, countries, targets or callbacks create no new allowance follow Part 6, and all other recruitment and conversion uses real sources with living conversion kept separate from deaths and no double debit or credit.
+Command establishment requires the actual regional mission, site, institution and logistics, and the finite network and the single paid body reconstitution follow Part 9.
+The world-end owner checks the Part 9 Red World gate, and body capture alone does not prove defeat while the survival network remains.
 
 ## AI, incidents and evidence
 

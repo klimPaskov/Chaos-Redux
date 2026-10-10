@@ -181,7 +181,7 @@ An additive focus can unlock or prioritize an already defined operation, improve
 
 ## Rewards, AI and visual acceptance
 
-The three simultaneous focus-created national spirits remain Scattered Commands, Captured Industrial Network and Revolutionary Government. Their stages consolidate command, economy and political institutions. The tree does not accumulate extra permanent spirits for each command, unit, eye stage or council. Actual local institutions and time-limited operational effects use the appropriate owners without circumventing this ceiling.
+The three simultaneous focus-created spirit families defined in Part 4 are the whole permanent ceiling. Focus rewards advance their stages. The tree does not accumulate extra permanent spirits for each command, unit, eye stage or council, and local institutions and time-limited operational effects use the appropriate owners without circumventing the ceiling.
 
 Focus filters cover opening and government, Third-Eye powers, cells and liberation, army, industry and research, diplomacy, regional commands, and endings. Commonly searched unit families, regions and role branches receive useful search labels. Review filters and search wiring against the native consumer, with targeted tool evidence when available. Record unavailable observation separately from missing implementation. Icons follow the family grammar in Part 12, with clearly distinct politics, tools, transport, foundries, councils, bindings and terminal imagery.
 

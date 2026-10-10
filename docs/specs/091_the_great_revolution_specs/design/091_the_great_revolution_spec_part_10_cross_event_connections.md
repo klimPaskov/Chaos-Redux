@@ -81,7 +81,21 @@ Independence Wave and subject revolts use their own release and ownership transa
 
 ## Food, movement, death, and unconventional warfare
 
-Broken railways, ports, farms, industry, and borders can create proven famine or migration pressure. The shared owners decide actual civilian movement and loss. Event 091 adds context and response objectives such as reopening a food corridor, escorting an evacuation, protecting reception capacity, or repairing an essential plant.
+Hunger and displacement reach the shared owners through the owners' own evidence, never through a 091 hunger or refugee rule.
+When the revolution's war cuts an ordinary country's rail, port or farmland, or captures its states, the famine and migration owners read the local-war and hostile-capture facts they already read.
+The World Revolution is a special Chaos country and sits outside those owners' country validity, so the same exclusion applies to its own administered states.
+091 contributes military objectives whose completion changes the facts those owners read, and each one makes an existing owner decision possible or effective.
+It adds no relief currency and no second set of buttons.
+
+| 091 objective | Existing owner decision it supports | Who plays it |
+| --- | --- | --- |
+| Reopen a rail hub or port that feeds a starving state | Restore Relief, Escort Relief, Airlift Relief | Defenders, refusers and joiners |
+| Hold a threatened district until its evacuation completes | Evacuate Civilians, Request Passage, Open Emergency Reception | Defenders, with Wu clinics as an optional destination |
+| Keep a safe region open for arrivals | Open Emergency Reception, Distribute Arrivals | Sanctuary partners such as the Holy Realm |
+| Return families to a liberated state | Help Families Return, Local Integration | Aftermath governments |
+
+The point of each row is that a front-line choice, such as which hub to retake first, becomes a food or refugee choice with a visible downstream result.
+A country that never sits in the owners' registries sees none of these rows, and the ordinary campaign stays complete without them.
 
 Living transformation is not death. Battle casualties, repression, failed conversion, famine, route deaths, and attacks are counted through the owner that actually applies the loss. A survivor cannot become a casualty again because an aftermath report describes the same incident. A liberated or cured person does not create a new population grant.
 

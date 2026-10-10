@@ -118,7 +118,8 @@ Communist governments choose joining or refusal. Stalin as current Soviet leader
 | Enemy owner, joined controller | World Revolution receives the hostile ownership claim, joined government retains local control where native semantics support it |
 | Two joined governments hold different rights | Preserve the existing owner and controller relationship and register one allied base |
 | Two hostile governments hold different rights | One World Revolution state transaction, with both displacement histories recorded |
-| Either communist response is still pending | Keep a guarded provisional state of the unresolved rights and revalidate at resolution |
+| Either communist response is still pending | Apply only the rights already authorized when native semantics permit, otherwise keep a guarded provisional state of the unresolved rights, and revalidate at resolution |
+| A valid special actor already controls the state | Preserve the special-actor exclusion and record an unresolved contested claim unless the exact cross-event capture contract permits mutation |
 | Sovereign origin | World Revolution receives ownership and control once |
 
 Split ownership and control is a required technical feasibility check. Two sequential whole-state transfers are not proof that the intended rights survive. If the native contract cannot support a listed disposition, the implementation must show the limitation and propose a specific preserving solution before claiming the opening complete.

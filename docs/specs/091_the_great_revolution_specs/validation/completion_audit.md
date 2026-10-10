@@ -4,9 +4,7 @@
 
 **Planning content passes. No substantive design finding remains open.** The assembled specification covers the complete supplied brief with coherent routes, transactions, presentation requirements and future proof gates. This conclusion concerns planning content. Gameplay implementation and native acceptance remain future work, and the catalog status remains To Be Reworked.
 
-The auditor read its complete canonical definition, current AGENTS.md, the complete event-planning, improvement-loop, events, subagents, event-assets and 3D-pipeline workflows, and the complete 2357-line user brief. The review covered all fourteen design chapters, six technical handoffs, six research chapters, six implementation prompts, README, requirement coverage, acceptance scenarios, the current review disposition and the completed fresh improvement review. Part numbers below resolve to the final filenames in README.
-
-The parent's completed Project Sources gate was accepted without repeating it. Its recorded coverage is 526 completed blocks, 91 distinct contents and 133 instances, independently checked by the architect. Targeted repository evidence is explicitly bounded to commit `a3ef485c5da7e2337122eca04ac65c175050f251` and the inspected paths and ranges. No installed-game audit is claimed.
+The audit covered all fourteen design chapters, the technical handoffs, the research chapters, the six implementation prompts, the requirement coverage, the acceptance scenarios and the review disposition against the complete user brief. Part numbers below resolve to the final filenames in the README. Targeted repository evidence is bounded to commit `a3ef485c5da7e2337122eca04ac65c175050f251`, and no installed-game audit is claimed.
 
 ## Findings and disposition
 
@@ -49,12 +47,8 @@ Physical proof must conserve actual people, equipment, formations and civilian l
 
 Presentation proof includes full focus and technology views, all five current-leader stages in Politics and Diplomacy, category animation and static fallback, every flag size, original vanilla-calibrated counters, all eight model families and their separate held items, genuine skeletal actions, export and reimport, and sourced sound bound to actual actions. Historical portrait styling retains the user-only workflow. Three super-events require final researched copy, separate unused registered audio, actual audition and recording-rights resolution.
 
-## Fresh review closure and final assembly
+## Fresh review closure
 
-The mandatory fresh near-completion planner completed `final_improvement_review.md` and recommended closing broad expansion. Its three findings are resolved. This auditor independently confirmed the political-settlement boundary, R6's surviving-government and full-defeat predicate, the accepted-operation-start condition for The Eye Closes, and the corrected README paths. No design amendment or unresolved initial planner addendum remains.
+The fresh near-completion review in `final_improvement_review.md` recommended closing broad expansion, and its three findings are resolved. This audit independently confirmed the political-settlement boundary, R6's surviving-government and full-defeat predicate, the accepted-operation-start condition for The Eye Closes, and the corrected README paths. No design amendment or unresolved initial planner addendum remains.
 
-The parent was still assembling the final `review_disposition.md` and `package_validation.md` from the actual returned reviews. Record their conclusions accurately and verify the final ZIP before delivery. These are known assembly steps, not missing runtime production.
-
-The read-only package check confirmed all six prompts, a 3968-character goal, and no em dashes or semicolons in current authored Markdown. All current local Markdown links resolved except README's link to the still-pending `validation/package_validation.md`. Recheck that link after the record is written and confirm one top-level `091_the_great_revolution_specs/` folder intended for `docs/specs/`.
-
-The source design is complete enough for the authorized planning deliverable. Native feasibility, asset production and live-game acceptance must retain their explicit gates during subsequent implementation. They do not invalidate this content pass.
+The source design is complete enough for the authorized planning deliverable. Native feasibility, asset production and live-game acceptance retain their explicit gates during implementation and do not invalidate this content pass.

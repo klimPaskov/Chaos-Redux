@@ -45,7 +45,7 @@ The origin country's human player receives an explicit opportunity to play the W
 
 ## Public information contract
 
-Revolutionary Momentum is the single event-owned global public value. Lenin's Influence is the single event-owned country public value for an ordinary joiner. The player sees their current stage, the next important threshold, and the actions that can change the situation. Trotsky's autonomous route has no Influence value.
+Revolutionary Momentum is the single event-owned global public value. Lenin's Influence is the single event-owned country public value for an ordinary joiner. The player sees their current stage, the next important threshold, and the actions that can change the situation. Momentum adds one plain sentence naming the component holding it back, and never a list of component numbers (Part 5). Trotsky's autonomous route has no Influence value.
 
 Territorial facts, unit counts, mission objectives, dates, costs, and a one-time opening summary remain ordinary information. They must not grow into additional permanent event currencies or public dashboards. The inhabited-world share appears as a specific capstone condition and milestone report, not a competing always-visible management meter. Hidden accounting exists to make actions reliable, not to ask the player to manage implementation fields.
 

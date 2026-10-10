@@ -37,6 +37,7 @@ Each future result must identify the exact source revision, installed game and D
 | O23 | Rejected proposal in one month, actual successful firing in the next | Use the actual successful firing month | Rejection history, commit date and all recipient titles |
 | O24 | A single selected origin and no viable remote base | O1 domestic supply route remains valid and O2 is inapplicable | Actual depot, production and defense proof, no free second state |
 | O25 | Highest origin candidate fails feasibility | Remove that candidate and use the next independently saved draw with the same stable interval procedure | Attempted candidate sequence, reasons, class precedence and retry replay |
+| O26 | One eligible state at 0 percent, one state at 17 percent, twenty states at 17 percent | Target zero with no minimum, target zero or one with an exact 17 percent chance, and three guaranteed states plus a 40 percent chance of a fourth | Stored fractional draw and nomination record per country |
 
 ## Country, role, and sovereignty matrix
 
@@ -65,6 +66,8 @@ Each future result must identify the exact source revision, installed game and D
 | C21 | Critical deadline expires at sixty through seventy-nine | Unresolved episode, no new penalty or binding, original deadline remains expired | Later recrossing cannot issue another grace period |
 | C22 | Critical deadline expires below sixty with an unsecured required institution | No success until both real institutions qualify, no renewed timer | Recovery proof and retained action cooldowns |
 | C23 | No eligible foreign research partner exists | Qualified domestic institution can complete the protected exchange and earned fourth-slot path | Actual contribution and technology compatibility, no fake partner country |
+| C24 | Two concessions accepted inside 30 days, or the same office granted again inside 180 days of the earlier agreement ending | The second concession is refused until the pacing window passes, and a re-grant mints no second benefit, payment or Influence | Concession day, agreement end day and receipt trace |
+| C25 | A concession raises Influence to 100, and a separate binding transaction has not occurred | No early binding without the explicit voluntary-submission receipt, and no ruled-territory credit until the real subject transaction | Binding receipt and ruled-share trace |
 
 ## Army, economy, and physical accounting
 
@@ -82,6 +85,8 @@ Each future result must identify the exact source revision, installed game and D
 | A10 | Donors have mutually incompatible technology | Compatible union only, no deletion or invalid design grant | tech_inspect, tech_render and tech_compare evidence |
 | A11 | All country provinces occupied by a rival special actor | No ordinary-selector confiscation through a hidden path | Cross-event ownership adapter |
 | A12 | Migration, famine, infection and contamination occur together | Each shared owner receives its own actual facts once | Zero residual population and no duplicate outcomes |
+| A13 | Two concurrent aid or conversion operations, and nested helper calls between quote and payment | Separate receipts and equipment vectors, no shared pending scalar overwrite, outputs survive only when the caller preinitialized them | Operation identities and frozen frame evidence |
+| A14 | A paid action loses authority before completion | Refund only its own undelivered debit, with no reward, cooldown or unrelated receipt rollback | Reservation, refund and receipt trace |
 
 ## Powers, commands, and endgame
 
@@ -110,6 +115,8 @@ Each future result must identify the exact source revision, installed game and D
 | E21 | A new command forms after the final body operation is accepted | First Among None also requires that command permanently destroyed before body resolution | Acceptance snapshot, later formation and final complete inventory |
 | E22 | Three leaders qualify when the defeat operation starts and one is cured during it | The Eye Closes preserves the accepted qualifying set and rewards the constructive operation | Current operation identity, initial transformations and actual cure receipt |
 | E23 | The plural international reaches R2 political settlement while Lenin remains an active threat | Real political terms and local restoration, with global war and threat still owned and active | No premature full aftermath or cleanup |
+| E24 | An existing subject with fewer than 90 days left explicitly stays, and another with more than 90 days left explicitly stays | The first resumes its shorter saved interval with no extension, and the second resumes 90 days from the response | Saved snapshot, response date and resumed due date |
+| E25 | Red World terminal entry with the terminal power changes | The 90-day power cooldown is waived and the 45-day emergency muster is available, with the 40,000 person-equivalent ceiling and every real source cost unchanged | Cooldown trace and manifestation receipts |
 
 ## Focus, decisions, AI, presentation, and catalogs
 

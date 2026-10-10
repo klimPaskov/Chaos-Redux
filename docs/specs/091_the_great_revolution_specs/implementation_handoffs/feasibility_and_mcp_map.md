@@ -1,11 +1,10 @@
 # Event 091 feasibility and future validation map
 
-## Original planning evidence boundary
+## Evidence boundary
 
-The parent discovered no exposed HOI4 tools in this Linux ChatGPT environment.
-The Windows installed-game paths in supplied sources are future implementation locators.
-This package does not claim access to a local HOI4 installation, a connected MCP service, native script execution, live rendering, or a complete installed-mod collision scan.
-The read-only remote repository snapshot supports the specific source findings in `integration_contracts.md`.
+This package claims no native script execution, live rendering, connected MCP result or complete installed-mod collision scan.
+The Windows installed-game paths in supplied sources are implementation locators.
+The read-only repository snapshot supports the specific source findings in `integration_contracts.md`.
 Planning arithmetic and pseudocode are design reasoning rather than engine validation.
 
 ## Material choices and limitations
@@ -28,7 +27,7 @@ Planning arithmetic and pseudocode are design reasoning rather than engine valid
 
 Apply the [current verification policy](../README.md#verification-and-remaining-implementation-work) and current AGENTS.md. Use proportionate checks, share the underlying failure retry allowance, perform permitted source/scenario review after unavailable optional checks, and keep missing observations separate from missing implementation.
 
-The imported probability audit retains its original lack of native results. Future source-derived calculations are permitted by the current AI auditor contract and do not rewrite that historical result. A missing immediate-before baseline limits historical delta claims. It does not require recreating an entire workspace or block review of current behavior.
+The probability review contract in `validation/ai_probability_planning_audit.md` records no native results. Source-derived calculations are permitted by the current AI auditor contract. A missing immediate-before baseline limits historical delta claims. It does not require recreating an entire workspace or block review of current behavior.
 
 ## Required engine-reference work
 
@@ -46,8 +45,8 @@ If the needed operation is unsupported, keep the affected matrix cases blocked a
 
 ## MCP usage map
 
-All routes below are future implementation requirements, conditional on actual connected exposure and live schemas.
-The named tools are supplied-documentation route families and are not claims that this session ran them.
+All routes below are implementation requirements, conditional on actual connected exposure and live schemas.
+The named tools are route families from the supplied documentation, and none has been run for this package.
 
 | Family | Exact Event 091 surface | Required scenarios and evidence | Completion blocker | Owner |
 | --- | --- | --- | --- | --- |
@@ -71,56 +70,14 @@ For event lifecycle evidence, use the installed `state_flow`, `impact`, or selec
 
 For probability inspect and evaluate, pass the live-schema source object with a mod-relative `path`, not a string or a `relativePath` property. Compare actual nonempty `before.path` and `after.path` under the identical saved `scenarioSet`. Keep source revisions and hashes in the evidence record rather than adding unsupported `sourceRevision` or `sourceHash` fields to those source objects. A cached analysis identifier is only a render reference, not a before source. Custom manifests must contain their actual pool identifier, selection, candidates and transitions, including cadence, caps, cooldowns, recovery, removals, resets, timer changes and terminal states before sequence analysis is meaningful. Unsupported scenario controls or external modifiers remain unresolved inputs instead of invented native state proof.
 
-Check standalone Technology Tree Viewer availability separately only when the task needs that viewer. Its absence does not block source implementation or establish a missing technology inspector. This Linux planning environment does not establish whether that separate application exists in the user's Windows installation. Record each of those three availability questions independently during implementation.
+Check standalone Technology Tree Viewer availability separately only when the task needs that viewer. Its absence does not block source implementation or establish a missing technology inspector. Record the availability of the probability service, the installed documentation and the standalone viewer independently during implementation.
 
 ## Scenario acceptance matrix
 
-| Scenario | Required result |
-| --- | --- |
-| One eligible state at zero communist popularity | Zero popularity nomination and no per-country minimum |
-| One state at seventeen percent | Stored target zero or one with exact seventeen-percent fractional chance, no forced origin |
-| Twenty states at seventeen percent | Three guaranteed popularity slots and forty-percent chance of a fourth |
-| Three established bases with target one | Preserve all three and nominate no additional state |
-| One established base with target four | Preserve it and nominate exactly three additional unique states |
-| Owned and controlled memberships coincide | One local pool member, one state claim, one force source |
-| Two-country occupation overlap | Exact independent quotas, one union state, explicit owner and controller excess receipts |
-| Joined owner with hostile controller | Retained owner title and one World Revolution occupation-control result, if native split semantics verified |
-| Hostile owner with joined controller | One World Revolution ownership result and retained local controller administration |
-| Two joiners share ownership/control | Preserved rights with one allied base and no duplicate formation grant |
-| Union contains no viable origin | Reject before fired history and Chaos, retain weight and proposal draws |
-| Reopened settings, callback or reload after rejection | Same retained proposal result without a fresh random attempt |
-| Soviet current leader Stalin | Immediate forced refusal regardless of general willingness score |
-| Soviet current leader Trotsky | Immediate protected join, no Influence field or forced-equivalent adapter |
-| Ordinary modal becomes stale | Revalidate current country, authority, leader and request, no double effect |
-| Thirteen-day ordinary timeout | Refusal without consent, no unintended joining, no duplicated war declaration |
-| Duplicate temporary helper or nested call | Outputs survive only if caller preinitialized, frozen actor and state frame remains exact |
-| Two concurrent aid or conversion operations | Separate receipts and actual equipment vectors, no shared pending scalar overwrite |
-| Unit transfer followed by muster | Actual inherited formation counts toward available strength, no duplicate manpower or equipment |
-| Successful living conversion | No Deaths entry merely for transformation and no duplicated recruitable people |
-| Failed transformation causes civilian loss | One measured population reduction and one matching Deaths record |
-| Paid action loses authority | Refund only its own undelivered debit, no reward, cooldown or unrelated receipt rollback |
-| Influence falls from critical | Correct operation cancellation or retained severe consequence, no stale subject creation |
-| Influence reaches one hundred before critical deadline | Full value and portrait display, automatic binding blocked until deadline, no hidden cap |
-| Concession raises Influence to one hundred | No early binding without separate explicit voluntary-submission receipt |
-| Subject binding reaches one hundred | Count ruled territory only after real accepted binding result |
-| Independence on annex completion day | Exact receipt arbitration, always available before annex commit, no late timer undo |
-| Momentum is 79.9 | Display and gate agree that eighty has not been reached |
-| Momentum threshold is regained | Current powers restore, finite manifestation and Chaos grants do not repeat |
-| Regional command permanently destroyed | One slot loss and one minus-five premium, no replacement command under a new identity |
-| Body and origin held, Momentum below forty for ninety days | Full defeat only if all surviving anchors individually destroyed or severed |
-| Body reconstruction attempt | Existing anchor, 180 days, real paid cohort, once per campaign, no Trotsky or independent-ally debit |
-| Exactly fifty percent rule or exactly one thousand Chaos | Red World rejected |
-| Fifty percent plus positive amount and Chaos above one thousand | Terminal may commit only if country, Lenin, settings and no-terminal gates also pass |
-| Mass deaths or migration change current census | Fixed rule denominator unchanged, killing cannot reduce the threshold |
-| Red World ordinary final stay choice | Explicit binding consent, new ninety-day terminal integration maximum, no silent accelerated annexation |
-| Existing subject enters final response | Snapshot remaining days and pause old annex deadline exactly once for thirteen-day response, no absorption before choice |
-| Existing subject has less than ninety days left and explicitly stays | Resume its shorter snapshotted remaining interval from response, no extra ninety-day extension |
-| Existing subject has longer countdown and explicitly stays | Resume ninety days from explicit response, no silent accelerated annexation |
-| Final response refused or times out | Independence and war, no silent binding or resumption into absorption |
-| Full defeat with unrelated world threat | Clear only Event 091's source, shared aggregate remains active for unrelated threat |
-| More than one thousand pending rows | Bounded iteration preserves unvisited suffix and unacknowledged receipts across repeated service |
+The acceptance scenarios are defined once, in [acceptance_scenarios.md](../validation/acceptance_scenarios.md).
+That file carries the selection, opening, country, sovereignty, physical-accounting, endgame and presentation cases with their expected results and required evidence.
 
-Numerical examples above are independent mathematical cases and not simulation results.
+Numerical examples in the scenarios are independent mathematical cases and not simulation results.
 Source fixtures must execute production helpers while mocking only native primitives and explicitly out-of-scope consumers.
 They must model conservative temporary call-frame cleanup, native loop limits, pointer types and current-authority changes.
 Passing unrestricted Python arithmetic does not prove engine fixed-point safety.

@@ -2,11 +2,11 @@
 
 ## Delegation contract
 
-Use the current repository canonical agent definitions through [chaos-redux-subagents](../../../../.agents/skills/chaos-redux-subagents/SKILL.md). The supplied definitions are historical evidence. Spawn each bounded task with `collaboration.spawn_agent` and `fork_turns="none"`. The parent passes the event ID and slug, accepted spec paths, current source revision, exact question, permitted input files, exact output ownership, forbidden areas, dependencies, required evidence, and known blockers. Do not rely on inherited conversation history or replace a canonical role with an invented general-purpose agent.
+Use the project subagents defined in `.claude/agents/` and routed by the [chaos-redux-subagents](../../../../.claude/skills/chaos-redux-subagents/SKILL.md) skill. Give each bounded task a fully self-contained prompt with no inherited parent-thread context. The parent passes the event ID and slug, accepted spec paths, current source revision, exact question, permitted input files, exact output ownership, forbidden areas, dependencies, required evidence, and known blockers. Do not replace a canonical role with an invented general-purpose agent.
 
-Model and reasoning settings follow the current canonical definition in the implementation environment. The parent reviews every returned file and claim before integration. An agent's status label is not proof of scope acceptance, engine validation, or user approval.
+Model tiers come from the agent definitions. The parent reviews every returned file and claim before integration. An agent's status label is not proof of scope acceptance, engine validation, or user approval.
 
-The table below maps every supplied role to a concrete use or an explicit conditional use. Asset production and runtime roles are future implementation work. The completion report separately records which agents actually ran in this planning pass.
+The table below maps every role to a concrete use or an explicit conditional use. Asset production and runtime roles are future implementation work.
 
 ## Design, systems, and verification roles
 

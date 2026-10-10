@@ -25,24 +25,22 @@ Later revolutionary growth comes from targeted 001 cells, propaganda, party infi
 
 Directly occupied territory retains resistance, damage, supply needs, civilian systems, and legitimate claims. Lenin can restore a human council, build a mixed administration, impose transformed institutions, or establish a subordinate communist government. Each choice has a different production, manpower, legitimacy, and military consequence.
 
+The World Revolution is a special Chaos country and sits outside the famine and migration owners' country validity, so civilians in states it administers are not tracked by those systems and the surge carries no hunger rule of its own. The cost of a coerced surge is carried by 091's own consequences: regional resistance, harm through the shared exact-loss helper only when it actually occurs, and allied opposition. Hunger and refugee pressure reach the owners' registries wherever the revolution's war touches an ordinary country's states, through the owners' existing hostile-capture and local-war evidence, and Part 10 states which 091 objectives respond to it. Whether civilians in revolution-administered states should enter the famine owner is an open question for the user.
+
 A human council can stabilize an industrial region and provide reliable repair while resisting later coerced conversion. A mixed administration can coordinate transformed labor and human officials but needs a genuine settlement over authority. A central conversion institution can provide strong supernatural output and recruits at the cost of resistance and the risk of actual harm. A subject government reduces direct administrative burden but creates a country with a real independence route.
 
 No route grants free stable cores across the world. Integrating a major region requires actual occupation, collaboration, institutions, reconstruction, or transformation under the appropriate contract. A national focus can unlock that work or fund a significant part of it. It cannot turn every claimed state into a fully compliant core as an incidental reward.
 
 ## Six regional campaigns
 
-Every command requires a valid regional base, a functioning institution, and a completed objective that demonstrates its logistical and political purpose. The focus chapter develops the command lanes in detail. These are different campaigns, not six identical percentage bonuses.
+Every command requires a valid regional base, a functioning institution, and a completed objective that demonstrates its logistical and political purpose.
+The six campaigns, with their starting problem, first operation, development choice, capstone and failure, are defined once in the command table of [Part 4](091_the_great_revolution_spec_part_4_countries_and_political_routes.md#six-commands-with-different-campaigns), and their focus lanes are in Part 7.
+They are different campaigns, not six identical percentage bonuses.
 
-| Region | Strategic identity | First functioning-command proof | Continuing operation |
-| --- | --- | --- | --- |
-| Europe | Dense industrial corridors, symbolic revolutionary centers, strong organized opposition | Connect an industrial base to a viable rail and supply spine while securing its council or command | Coordinated factory and rail operations, heavy assault preparation, institutional competition |
-| Asia | Long distances, population centers, mixed infrastructure, and large regional armies | Sustain a long regional corridor between a base and a meaningful operational population center | Distributed musters, protected transport, regional cooperation and force standardization |
-| Africa | Colonial organizing, resource and port links, uneven infrastructure, local political legitimacy | Establish a locally supported inland-to-port or equivalent viable supply arrangement | Support councils and anti-colonial cells, protect extraction and civilian supply, avoid an imported generic European government |
-| North America | Strong industry, large distances, major transport and production networks | Secure a durable industrial base and actual access to its distribution network | Disrupt or capture high-value production and logistics, assemble mechanized strength against a powerful defender |
-| South America | Terrain barriers, coastal links, rail chokepoints, and regional political networks | Sustain a mountain, inland, or coastal connection appropriate to the actual base | Regional cavalry or infiltration operations, cross-border organizing, targeted supply protection |
-| Oceania | Maritime separation, islands, ports, convoy vulnerability, and limited local mass | Operate a real protected port and transport route between viable bases or a base and allied support | Maritime uprisings, convoy defense, port repair, evacuation, and selective amphibious support |
-
-At most one registered survival anchor belongs to each regional-command slot. A command can use a transformed leader or site as its custodian, but that does not add a new anchor for every ruler or every Level 3 state. A lost region has a real strategic consequence. Its identity cannot be recreated endlessly in another location to avoid defeat or farm Chaos.
+At most one registered survival anchor belongs to each regional-command slot.
+A command can use a transformed leader or site as its custodian, but that does not add a new anchor for every ruler or every Level 3 state.
+A lost region has a real strategic consequence.
+Its identity cannot be recreated endlessly in another location to avoid defeat or farm Chaos.
 
 ## The inhabited-world rule measure
 
@@ -71,6 +69,16 @@ Every unannexed ordinary supporter receives a final explicit choice. Remaining w
 Terminal pressure accelerates integration through the final explicit choice. An ordinary supporter that chooses to remain accepts an immediate real subject transition and then a 90-day annex window. This explicit submission can resolve its unfinished critical struggle, but it does not waive the remaining independence opportunity. An existing subject resumes with the smaller of its previously remaining annex interval and 90 days after explicitly choosing to remain. A longer interval is shortened only through that explained choice. No retroactive expiry occurs on the activation day.
 
 The final native confirmation follows the project's default-cancel and 13-day timeout rules. Snapshot and pause any annex deadline during this one final response window so an old timeout cannot absorb a country before its final choice. Explicit refusal or the non-consenting timeout executes independence and war. Explicit acceptance resumes the recorded remaining interval under the rule above. This one-time response pause cannot be renewed by reopening a menu or changing leaders. Longer integration missions use stored due dates and do not rely on the popup remaining open.
+
+### What changes in play at terminal entry
+
+The Red World earns its place by changing decisions, not only by ending the random-event world.
+Three things change, each tied to an owner that already exists.
+Every ordinary supporter faces the final stay-or-break choice above, which is the single largest political decision of the late campaign.
+Third-Eye operations lose their 90-day cooldown and keep only their 45-day preparation, so the strongest powers repeat as fast as they can be prepared, while each still needs its network, target and real cost.
+The 45-day emergency muster variant becomes available to every functioning command, still spending the same finite sources, so reinforcement speed rises while the 40,000 person-equivalent manifestation ceiling stays fixed.
+Defenders and refusers see their objective list replaced by the final-resistance missions: the body, the origin and each registered anchor.
+These two timing changes are initial tuning for the native review.
 
 ## Trotsky's terminal choice
 
@@ -105,8 +113,8 @@ Full defeat closes every active supernatural command and survival receipt, stops
 | Aftermath route | Continuing objective | Consequence |
 | --- | --- | --- |
 | Liberation and restoration | Return actual states and institutions under legitimate claims and settlements | Rebuilt governments and a documented restoration outcome, with no duplicate state grants |
-| Reconstruction | Repair factories, railways, ports, and civilian supply over 180 to 360 days | Productive regions and reduced hardship through real repair and shared relief systems |
-| Trials or amnesty | Identify responsible officials and distinguish coercion from collaboration | Political accountability, reconciliation, or renewed unrest tied to actual choices |
+| Reconstruction | Repair factories, railways, ports, and civilian supply over 180 to 360 days | Productive regions. Liberated states that sit in the famine or migration registries receive those owners' normal relief and reception decisions once the repaired rail or port reconnects them, and the mission adds no relief currency of its own |
+| Trials or amnesty | Identify responsible officials and distinguish coercion from collaboration | Political accountability, reconciliation, or renewed unrest tied to actual choices. A general amnesty returns collaborating regions to productive use sooner at the price of unrest in the regions that were coerced. Prosecution does the reverse, so each choice is felt in a specific region's recovery speed |
 | Treatment and recovery | Support qualified cure or suppression programs for surviving transformed people | Bounded recovery, persistent hard cases, no instant national cure |
 | Human communist international | Protect surviving independent communist governments and councils | A political alternative that can coexist with noncommunist victors |
 | Body and relic custody | Destroy, imprison, research, transfer, or conceal the captured object through a single custody owner | Bounded later incidents and research, never a second 091 Major firing |

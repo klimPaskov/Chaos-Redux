@@ -11,18 +11,11 @@ This closes the design-depth loop for the planning goal only.
 It does not certify gameplay implementation, native feasibility, numerical balance, art, audio, models, animation or live-game acceptance.
 The package must retain its explicit implementation gates and To Be Reworked catalog status.
 
-## Review authority and reading
+## Review scope
 
-This is the mandatory fresh near-completion review, separate from the closed initial planner pass.
-The acceptance record confirms that the earlier country and role proposal was incorporated and its stale rules were reconciled.
-No earlier accepted planner addendum remains unresolved in the reviewed package.
-
-I read the canonical chaosx_improvement_loop_planner definition, current supplied AGENTS.md, and relevant sections of the improvement-loop, event-planning, events, focus-trees, decisions-missions, event-assets, super-events and subagents skills.
-I read README.md and validation/review_disposition.md before reviewing the assembled design.
-All fourteen design chapters were read, including the complete country, focus, action, ending and achievement chapters.
-The architecture, state and transaction, integration, country and technology, feasibility, and acceptance-scenario handoffs were inspected in full.
-The historical, super-event text, super-event music, portrait and unit-sound research handoffs were inspected for design support and truthful production status.
-Selected relevant sections of the user brief were checked without repeating the parent's completed intake or source archive audit.
+This was the mandatory fresh near-completion review, separate from the closed initial planner pass.
+It covered all fourteen design chapters, the technical handoffs and the research handoffs, and confirmed that the earlier country and role proposal was incorporated with its stale rules reconciled.
+No earlier accepted planner addendum remains unresolved.
 
 ## Why this design is deep enough
 
@@ -68,14 +61,7 @@ Do not accidentally require an already active command to begin the same command'
 Likewise, a single-base origin, absent foreign partner, landlocked origin or missing historical leader must keep the explicitly defined domestic and conditional routes available.
 These are checks against the current accepted design, not requests for extra mechanics.
 
-## Parent's remaining completion work
-
-Record this fresh closure and the resolved findings in validation/review_disposition.md.
-Finish the existing prompt and package checks against the final accepted chapter bytes, including local references, the six prompts and the goal character limit.
-Carry the other independent auditors' final dispositions into that record and the ZIP.
-Deliver the planning package once those tasks are complete, without treating future native or asset gates as implementation completion.
+## Outcome
 
 This review introduces no design amendment that needs promotion into another specification layer.
-Its outcome belongs in the package's final review disposition and may remain as a temporary review handoff.
-Only this authorized review file was written by this reviewer.
-No accepted specification, gameplay file, repository, asset, media or external message was modified.
+Its outcome is carried in `review_disposition.md`.

@@ -118,3 +118,4 @@ Follow current AGENTS.md for proportionate verification and the shared retry lim
 [SHA256SUMS.txt](SHA256SUMS.txt) records the original imported payload bytes. Current edited-file hashes belong to the current import evidence linked above.
 
 The current catalog status remains To Be Reworked. Later status classification follows the current event skill and explicit user approval rules rather than an unavailable optional check or pending user testing.
+- 2026-10-10 spec audit: pass 2 incomplete. Design, handoff and validation files were reconciled; the research files were not re-read.

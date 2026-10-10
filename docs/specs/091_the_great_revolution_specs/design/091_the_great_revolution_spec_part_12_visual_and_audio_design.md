@@ -12,7 +12,7 @@ Historical symbols are researched before the fictional emblem is generated. The 
 
 The portrait owner finds an identifiable historical Lenin source with a documented rights basis, highest usable resolution, and an explicit record of the actual person. The source is the identity master. The requested third-eye result is either the user's styled final based on that master or an approved transparent overlay. A newly generated substitute face is not an acceptable Lenin portrait.
 
-The latest portrait production reference governs the future production route. The assistant prepares sources, masks, placement guidance, crops, and a reviewable handoff where permitted. Any user-operated external portrait workflow remains a future production step under that skill. This planning package does not claim that a sourced master, a user-approved styled portrait, or the final animated consumer already exists.
+The `chaosx_portrait_creator` route in `chaos-redux-event-assets` governs production. It archives the sourced master, prepares masks, placement guidance and crops, and wires the source placeholder, while the user alone runs the grounded HOI4-style styling step. The wired source portrait stays an explicit pending placeholder until the user supplies the styled replacement. No sourced master, styled portrait or animated consumer exists yet.
 
 The same identity record governs the central super-event figure and staged event portraits. Separate compositions can use the same historical identity without turning every asset into a crop of one picture.
 
@@ -53,9 +53,9 @@ The category animation can show the eye opening, workers gathering, factory acti
 
 Leader animation is narrow and deliberate. Eye movement, lid motion, tissue movement, and a restrained supernatural change can communicate life without making the entire portrait distracting. The static fallback should preserve the same stage and meaning. Animation must stop or change appropriately when the event is defeated or the leader is no longer eligible.
 
-For alpha-backed consumers, every generated source and animation frame requests native transparency at the initial ImageGen call and preserves alpha through processing. Record background removal only as a validated fallback.
+For alpha-backed consumers, every generated source and animation frame requests native transparency at the initial image-generation call (the `gptimage` MCP route in `chaos-redux-event-assets`) and preserves alpha through processing. Record background removal only as a validated fallback.
 
-The production owner checks actual sprite-sheet dimensions, frame order, alpha, timing, native registration, and the supported backend. Sunburst is required for animation when model selection is available. When the active tool has no selector, record its actual execution path without claiming an unreported backend model. The plan does not invent a backend selector or claim a generation was performed.
+The production owner checks actual sprite-sheet dimensions, frame order, alpha, timing and native registration, and records the generation route actually used for each frame set.
 
 ## Model and held-item production
 

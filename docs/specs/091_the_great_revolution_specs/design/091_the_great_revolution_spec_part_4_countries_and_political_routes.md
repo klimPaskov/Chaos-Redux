@@ -20,7 +20,7 @@ The opening never waits for a focus before creating the sovereign country, wars,
 | Population classification | Special Chaos actor immediately, with ordinary civilians, human defectors, and nonhuman workers living under one state | Actual nonhuman classification requires the later institution transformation and proof that ordinary civilian society has been replaced. Momentum alone does not prove this |
 | Capital | Select the sovereign origin through the connected Event 001 priority chain and then a valid controlled city in that state | Loss or isolation starts a command evacuation action with a valid surviving city. Moving the administrative capital does not recreate or move the finite origin anchor |
 | Political leadership | Lenin leads a communist revolutionary government with a third-eye identity that preserves the real person's likeness | Collective, personal-apotheosis, and distributed-party institutions produce different command relationships and diplomatic consequences |
-| Research | Three starting research slots, with technologies inherited coherently from the origin and proven equipment donors | A fourth slot requires a working protected research exchange with a real foreign partner or qualified domestic research institution and a protected industrial center. A fifth requires the late foundry research network and sustained regional participation |
+| Research | Three starting research slots, with technologies inherited coherently from the origin and proven equipment donors | A fourth and fifth slot are earned through the protected exchange and the late foundry network defined in Part 6 |
 | Economy | Inherit the actual transferred industrial and resource map, relevant captured production, and documented defecting stocks | Repair, standardization, regional foundries, allied contracts, salvage, and transport work build a durable economy |
 | Laws | Emergency revolutionary mobilization and trade rules suited to the actual manpower, factory, resource, and occupation position | Collective institutions can preserve civilian autonomy. Apotheosis can impose compulsory conversion. Distributed institutions can delegate local production while becoming vulnerable to anchor disruption |
 | Land army | Preserve existing Event 001 forces and add dynamically funded transformed and defecting formations | Recruitment draws from local populations, converted formations, captured pools, available equipment, or finite supernatural milestones |
@@ -197,35 +197,13 @@ It must nevertheless offer a complete long-term path instead of acting as a puni
 
 An ordinary supporter keeps its identity and selected states under local administration, apart from Lenin's sovereign origin.
 Its immediate aid scales to what the country lacks and can sustain.
-Military aid can save an exposed front.
-Industrial conversion can restore production.
-Intelligence liaison can reveal a priority enemy.
+Military aid can save an exposed front, industrial conversion can restore production, and intelligence liaison can reveal a priority enemy.
 Each large benefit asks for a real choice about institutional access.
 
-Influence uses the proposed 0 to 100 bands at 20, 40, 60, 80, and 100.
-At 20, liaison access creates a doubtful visual sign and new invitations.
-At 40, repeated access creates formal advisers and a clearer third eye.
-At 60, commands and appointments become disputed, with strong but conditional military benefits.
-At 80, a 180-day sovereignty mission begins while the portrait and institutions show critical transformation.
-At 100, full personal transformation and binding pressure are visible. Automatic subject status still waits for expiry of the original 180-day critical deadline and a valid binding transaction. Only a separate explicit voluntary-submission choice can bind earlier. An actual verified subject transaction then begins the separate 120-day annexation window.
-Normal automatic pressure adds no more than 5 Influence in 30 days.
-Explicit concessions add the exact ten or fifteen Influence specified with their real action, receipt and cooldown in Parts 5 and 8. An ordinary concession reaching one hundred is not consent to early submission.
-Expiry has the exact institutional and unresolved-episode consequences in Part 8, with no extra unspecified pressure increment.
-It never jumps directly from critical status to annexation.
-
-Every ordinary supporter and subject can declare independence throughout this sequence.
-The declaration has no political-power cost, no Influence eligibility limit, and no required prerequisite mission.
-It leaves the revolutionary alignment, cancels future Influence growth and annexation, and declares war on Lenin.
-The country retains existing compromised institutions, transformed units, economic dependence, and recovery obligations.
-Those are consequences of prior choices and cannot become permission checks that block independence.
-A preparation route makes the war more survivable, but an unprepared country can still choose it.
-Immediate emergency control is needed when another subject system would otherwise prevent the declaration.
-
-The 180-day mission gives a supporter optional sovereignty protection through actual named objectives.
-Success requires Influence below sixty, an actually secured governing party, and an actually independent command.
-The concrete preparatory actions in Part 8 supply their own reductions and maintain real institutions, so mission completion does not pay a duplicate twenty-point reduction.
-Completing recovery closes the current coercion episode, preserves existing action cooldowns, and does not grant permanent immunity to later explicit access choices.
-Mission failure leaves the free declaration available.
+The Influence stages, concessions, resistance actions, the 180-day critical mission, binding and the 120-day annexation window are specified once, in [Part 5](091_the_great_revolution_spec_part_5_influence_momentum_and_powers.md) and the sovereignty actions of [Part 8](091_the_great_revolution_spec_part_8_decisions_missions_and_ai.md).
+Two commitments shape this role and are not repeated elsewhere in this chapter.
+Every supporter and subject can declare independence at any stage with no political-power cost, no Influence limit and no prerequisite mission, and an unprepared country can still choose it.
+Compromised institutions, transformed units and economic dependence are consequences of earlier choices and never become permission checks on that declaration.
 
 ## Trotsky as autonomous cofounder
 
@@ -248,23 +226,14 @@ A leader change, timeout or high Momentum cannot revoke the accepted crisis-spec
 
 ## Terminal transformation and defeat
 
-The Red World requires Chaos above 1000, the surviving World Revolution and Lenin, more than half of the meaningful inhabited world under Lenin's rule, and no competing active terminal scenario.
-The inhabited-world denominator follows the accepted frozen opening-population rule so later deaths or depopulation cannot reduce the denominator to manufacture victory.
-Actual controller attribution prevents overlap.
-Only direct World Revolution control, actual subjects, and fully bound supporters whose completed sovereignty transaction proves Lenin's rule qualify.
-Independent allies, aid recipients, critical Influence without the transaction, and autonomous Trotsky give no ruled-world credit.
-
-The terminal order strengthens earned supernatural powers and accelerates remaining integration, while each unannexed supporter receives its final sovereign choice.
-The final choice remains available before irreversible absorption.
-An event confirmation must never treat silence as acceptance.
-No preparation cost or overdue mission removes the declaration route.
-Terminal entry pauses an existing ordinary annex timer once and snapshots its remaining time while the thirteen-day final response runs. An explicit stay by an ordinary joiner immediately creates real binding and a ninety-day annex timer. An existing subject that stays receives the lesser of its saved remaining time and ninety days from its response. Refusal or non-consenting timeout produces independence and war. No menu, leader change or reload refreshes these deadlines.
-
-Defeat must account for the finite network.
+The Red World gate, the frozen inhabited-world measure, the final supporter choice and the finite-network defeat contract are specified once, in [Part 9](091_the_great_revolution_spec_part_9_war_expansion_and_endings.md).
+For the roles in this chapter the consequences are these.
+The terminal order strengthens earned supernatural powers and accelerates remaining integration, while each unannexed supporter keeps a final sovereign choice and silence is never acceptance.
+Independent allies, aid recipients, critical Influence without a completed binding transaction and autonomous Trotsky give no ruled-world credit.
 At low Momentum, destruction of the body and sovereign country can end the crisis when no valid survival capability remains.
-At high Momentum, the surviving origin and formed command anchors must be removed or deprived of the actual conditions that sustain them.
+At high Momentum, the surviving origin and formed command anchors must be removed or deprived of the conditions that sustain them.
 An early body capture creates a captivity branch and meaningful prisoner choices while active commands remain.
-Defeat then clears only this event's world-threat source and wartime institutions, preserving earned history, normal communist politics, real liberation, and other events' threats.
+Defeat clears only this event's world-threat source and wartime institutions, preserving earned history, normal communist politics, real liberation and other events' threats.
 
 Aftermath plays differently for each role.
 Defenders reconstruct and negotiate restoration.

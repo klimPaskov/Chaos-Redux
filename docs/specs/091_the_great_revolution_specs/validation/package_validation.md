@@ -37,7 +37,7 @@ The source inventory is a compact proof record. It does not redistribute all sup
 
 ## Review disposition
 
-The parent incorporated the accepted initial country and role design and completed the focus and action chapters. The fresh improvement planner then reviewed the assembled package with a self-contained task and `fork_turns="none"`. It recommended stopping broad expansion and returned no unresolved design addendum.
+The parent incorporated the accepted initial country and role design and completed the focus and action chapters. The fresh improvement planner then reviewed the assembled package with a self-contained task. It recommended stopping broad expansion and returned no unresolved design addendum.
 
 The completion auditor passed planning content with no substantive design finding open. Its eight findings were resolved. The AI and probability auditor found the formulas, candidate definitions and scenarios sufficiently concrete for the future native review, while retaining all missing native results as unresolved. The parent fully read the final reports and recorded their acceptance and narrow fixes in review_disposition.md.
 

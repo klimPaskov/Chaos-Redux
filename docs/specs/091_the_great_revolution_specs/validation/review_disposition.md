@@ -41,7 +41,7 @@ All four existing later-whisper event identities remain in the explicit pool and
 
 ## Fresh near-completion review
 
-The fresh canonical improvement planner was spawned with a self-contained prompt and `fork_turns="none"` after the initial pass was resolved and all fourteen chapters were assembled. It reviewed all fourteen chapters, the core technical contracts and relevant research, then recommended stopping broad expansion. The parent fully read its completed closure handoff and accepted that recommendation. No unresolved planner design addendum remains.
+The fresh canonical improvement planner was spawned with a self-contained prompt after the initial pass was resolved and all fourteen chapters were assembled. It reviewed all fourteen chapters, the core technical contracts and relevant research, then recommended stopping broad expansion. The parent fully read its completed closure handoff and accepted that recommendation. No unresolved planner design addendum remains.
 
 Its three findings were fixed and independently read back: the plural international settlement remains inside the continuing central war and threat, full aftermath requires the established defeat or terminal-resolution contract, The Eye Closes freezes its qualifying leaders at the accepted operation start with cure protection, and malformed duplicate filename prefixes were repaired. These were narrow consistency changes and did not add another gameplay layer.
 

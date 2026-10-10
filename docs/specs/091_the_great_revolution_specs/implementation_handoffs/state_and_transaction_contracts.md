@@ -46,7 +46,7 @@ Store actual accepted selections and fractional outcomes in addition to reservat
 | Country opening row | Participant country or aligned global rows | Country pointer, frozen ideology and leader proof, popularity fraction, pool membership, target, inherited count, nomination count, overlap count, alignment request identity | Retain minimal outcome history, retire working arrays after all dispositions settle |
 | Physical state row | State plus sparse global identity index | Exact state pointer, frozen owner/controller, nominations, Event 001 lineage, inherited level, final rights, unit-source contribution, transaction phase | Preserve origin and historical claimant provenance, clear active projections on retirement |
 | Event 001 rebel lineage | Event 001 owner | Exact original host, original episode, originating states and levels, rebel identity, observed asset receipts | Preserve through transfer, absorption, refusal, and aftermath |
-| Influence participant | Joined country | Episode pointer, affiliation status, Influence, critical due day, subject receipt, annex due day, active operation identities, transformed leader identity | Independence closes future pressure and annex work, durable history survives |
+| Influence participant | Joined country | Episode pointer, affiliation status, Influence, critical due day, subject receipt, annex due day, active operation identities, transformed leader identity, last accepted concession day, end day of each concession family's latest agreement | Independence closes future pressure and annex work, durable history survives |
 | Autonomous partner | Protected country | Permanent crisis-specific Trotsky protection receipt and partnership identity | Never remove through ordinary Influence cleanup or leader replacement |
 | Regional command and anchor | Event 091 sparse slot registry and anchor state | Fixed continental slot, site pointer, custodian, generation, activation, loss, destruction or severance receipts | Permanent destruction closes slot, no relabelled replacement command |
 | Muster | Event 091 owner plus donor receipt | Operation identity, donor and cohort, actual reserved manpower, actual equipment vector, selected templates, actual delivery, source kind | Consume on actual delivery, refund only its own undelivered reservation |
@@ -218,23 +218,14 @@ Milestone manifestation and Chaos receipts use attained thresholds once per epis
 
 ## Influence, dates, and native missions
 
-Use Influence thresholds twenty, forty, sixty, eighty and one hundred.
-The eighty threshold opens a 180-day sovereignty struggle.
-Actual subject binding at one hundred opens a 120-day annex interval.
-Automatic growth can reach one hundred during the 180-day critical mission and display its full portrait stage, but automatic binding remains blocked until that mission's deadline.
-Only a separate explicit voluntary-submission receipt permits earlier binding.
-An ordinary institutional concession is not submission consent, even if its Influence outcome reaches one hundred.
-There is no hidden ninety-five cap.
-Ordinary alignment uses the native thirteen-day response window and refusal as the default, with no consent inferred from silence.
+The Influence stages, the 180-day critical mission and its expiry table, the binding gate, the 120-day annex interval and the Red World final-response timing are defined once, in Parts 5, 8 and 9.
+This section adds only the technical requirements for those rules.
+There is no hidden ninety-five cap, and automatic growth can reach one hundred inside the critical mission while automatic binding stays blocked until its deadline.
+Only a separate explicit voluntary-submission receipt permits earlier binding, and an ordinary institutional concession is never that receipt.
+Ordinary alignment uses the native thirteen-day response window with refusal as the default and no consent inferred from silence.
 Stalin and Trotsky Soviet routes resolve immediately from the current active leader when alignment commits.
-
-At Red World activation, pause each existing subject's annex deadline once and snapshot its exact remaining days while the one thirteen-day final response is pending.
-The pause belongs to that terminal request generation and cannot refresh through UI, a leader change, a callback, or reload.
-An ordinary joiner's explicit stay choice commits actual binding immediately and opens a ninety-day terminal annex interval.
-An existing subject's explicit stay choice resumes its deadline from that response with `min(snapshot remaining days, 90)`.
-Explicit refusal or nonconsenting timeout resolves independence and war, with no automatic absorption during the final response.
-The free independence action remains valid throughout every resumed or newly created annex interval, including its completion day until the exact annex transaction consumes authority.
-Trotsky receives protected autonomy concord or explicit political break only, with no surrender or terminal annex route.
+The terminal pause and snapshot belong to one terminal request generation and cannot refresh through UI, a leader change, a callback or reload.
+The free independence action remains valid throughout every resumed or newly created annex interval, including its completion day, until the exact annex transaction consumes authority.
 
 Use one documented day-count clock for business deadlines and separately store encoded calendar dates for historical display.
 Do not add raw days to `global.date`.

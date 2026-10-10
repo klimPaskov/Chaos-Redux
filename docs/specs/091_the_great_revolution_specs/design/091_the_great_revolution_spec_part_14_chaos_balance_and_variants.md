@@ -29,6 +29,8 @@ All values are planning targets based on the user's scale. They require full-poo
 
 Momentum threshold crossings, finite reinforcement delivery, a focus completion and failed containment have no additional Event 091 premium unless they actually produce a distinct listed outcome above. Their real wars, casualties, territorial incorporation and other generic consequences continue through the appropriate shared owners. This explicit zero-extra-premium rule prevents broad implementation labels from inventing another growth award.
 
+Scale check against the shared Chaos Meter: the positive premiums total at most 160 over a campaign (20 manifestation, 25 for five continents, 10 and 5 for the alignment shocks, 5 transformation, 10 and 15 for subject and annexation, 70 for the three rule milestones). Shared sources are a major war declaration at 5 and a first nuclear detonation at 10, and this event reaches Total Chaos 800 to 1000 on a meter that deaths and wars also feed. The table keeps the user's scale because this is the event that ends the world. Whether the 160 total should be lowered, as other event packages were lowered to the meter, is an open question for the user.
+
 The proposed choices within the user's ranges are -5 per permanently destroyed command and -50 for final defeat. This uses clear multiples of five. A minor command disable, an ordinary battle victory, or a temporary retreat does not receive those final-resolution premiums.
 
 ## Cascading thresholds
