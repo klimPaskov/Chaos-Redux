@@ -1,7 +1,7 @@
 # Event 033 Acid Rain, Part 7, evolutions and cluster integration
 
 Status: `implemented` in source for the three evolutions, per-stage enable controls, cluster slot 6, tier participation and mixed Major pacing (see `docs/systems/event_system/event_clusters.md`).
-The Event 13 overlap exclusion below was never implemented and is replaced by a proposal; the Severe participation floor needs cluster-owner confirmation (README open questions 4 and 5).
+The Event 13 overlap exclusion was dropped (README open question 5), and the Gathering Storm entry stands as an accepted exception to the Severe floor (README open question 4).
 
 ## Evolution thresholds
 
@@ -230,7 +230,7 @@ Event 33 is available to the cluster only when:
 
 If Event 33 was the normal event that caused the cluster roll, it becomes required after validity passes. Other optional members keep their own rolls.
 
-The general cluster contract records a Severe-member floor of Chaos Tier, while this table starts Acid Rain at Gathering Storm; the cluster owner must confirm this exception (README open question 4).
+The general cluster contract records a Severe-member floor of Chaos Tier. Acid Rain is the accepted exception: its Natural Disasters row declares Gathering Storm and `event_cluster_get_member_effective_min_tier` uses that declared minimum instead of the floor (README open question 4).
 
 ### Cluster danger and current danger
 
@@ -275,8 +275,7 @@ Event 13 and Event 33 can coexist. These rules are implemented:
 - Event 13 natural aerosol additions and Event 33 contamination use separate Air source accounting.
 - A Natural Disasters cluster history row lists both members and their separate outcomes.
 
-The original planning rule that Event 13 may not place a weather-family impact in a state under an Acid Rain severe cell or superstorm is not implemented and would require an Event 13 change.
-Proposal (README open question 5): drop it, because two disasters striking one state are legitimate chaos and the classifier point already makes the combination matter.
+The original planning rule that Event 13 may not place a weather-family impact in a state under an Acid Rain severe cell or superstorm is dropped: two disasters striking one state are legitimate chaos and the classifier point already makes the combination matter.
 
 ## Settings and disable behavior
 

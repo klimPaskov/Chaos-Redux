@@ -1,7 +1,7 @@
 # Event 033 Acid Rain decision cost matrix
 
 Status: `implemented`; every value matches `acid_rain_project_cost`, `acid_rain_urgent_cost` and `acid_rain_recovery_cost` in `common/script_constants/033_acid_rain_constants.txt`.
-This matrix owns costs and durations; README open question 2 proposes shorter urgent durations or partial early protection and changes nothing until accepted.
+This matrix owns costs and durations; the national urgent durations resolve inside the seven-day front warning (README open question 2, accepted and implemented).
 
 ## Cost rules
 
@@ -134,11 +134,11 @@ Urgent costs also use the final country-band multiplier, then round up. They do 
 
 | Action | Duration | Base costs before band | Effect window | Resource count |
 | --- | --- | --- | --- | --- |
-| Activate shelter protocols | 14 days | 25 political power, 60 support equipment, 500 manpower reserved | 21 days or until exposure ends | 3 |
-| Secure emergency water and food, land | 21 days | 80 support equipment, 2 trains, 500 manpower reserved | 30 days | 3 |
-| Secure emergency water and food, island | 21 days | 80 support equipment, 10 convoys, 500 manpower reserved | 30 days | 3 |
-| Emergency medical surge | 14 days | 140 support equipment, 1,000 manpower reserved, 500 fuel | 21 days plus fatigue cooldown | 3 |
-| Reroute transport and repair crews | 14 days | 2 trains, 40 motorized equipment, 750 fuel | 21 days | 3 |
+| Activate shelter protocols | 4 days | 25 political power, 60 support equipment, 500 manpower reserved | 21 days or until exposure ends | 3 |
+| Secure emergency water and food, land | 6 days | 80 support equipment, 2 trains, 500 manpower reserved | 30 days | 3 |
+| Secure emergency water and food, island | 6 days | 80 support equipment, 10 convoys, 500 manpower reserved | 30 days | 3 |
+| Emergency medical surge | 5 days | 140 support equipment, 1,000 manpower reserved, 500 fuel | 21 days plus fatigue cooldown | 3 |
+| Reroute transport and repair crews | 5 days | 2 trains, 40 motorized equipment, 750 fuel | 21 days | 3 |
 | Evacuate severe zone, land | 7 days | 1,000 manpower reserved, 50 motorized equipment, 2 trains, 750 fuel | Severe episode | 4 |
 | Evacuate severe zone, island | 7 days | 1,000 manpower reserved, 20 convoys, 50 motorized equipment, 750 fuel | Severe episode | 4 |
 

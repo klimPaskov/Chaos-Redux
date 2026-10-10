@@ -226,7 +226,7 @@ Urgent decisions appear when the country has a warning, active exposure, or a se
 
 ### Activate shelter protocols
 
-- country action, 14 days
+- country action, 4 days
 - costs political power, support equipment, and a small manpower reserve
 - reduces opening and sustained mortality in currently exposed states
 - stronger with shelter tier
@@ -234,7 +234,7 @@ Urgent decisions appear when the country has a warning, active exposure, or a se
 
 ### Secure emergency water and food
 
-- country action, 21 days
+- country action, 6 days
 - land route uses support equipment and trains
 - island or overseas route uses support equipment and convoys
 - lowers sustained mortality and aftermath growth
@@ -242,14 +242,14 @@ Urgent decisions appear when the country has a warning, active exposure, or a se
 
 ### Emergency medical surge
 
-- country action, 14 days
+- country action, 5 days
 - uses support equipment, manpower reserve, and fuel
 - lowers sustained mortality and severe-cell casualty pressure
 - creates a post-action medical fatigue cooldown
 
 ### Reroute transport and repair crews
 
-- country action, 14 days
+- country action, 5 days
 - uses trains, motorized equipment, and fuel
 - lowers acute supply penalties and building-damage pressure
 - cannot run if the country has no valid transport stock

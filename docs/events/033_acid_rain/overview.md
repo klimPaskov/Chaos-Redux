@@ -24,6 +24,8 @@ Projects stay open and payable during warnings and exposure; a tier helps only a
 Five urgent actions answer warnings, exposure and storm forecasts: Activate Shelter Protocols, Secure Emergency Water and Food, Open an Emergency Medical Surge, Reroute Transport and Repair Crews, and a state-targeted evacuation.
 Four recovery decisions repair the aftermath once no warning, exposure or forecast covers the country: Restore Transport, Decontaminate, Repair Industry, and Demobilize the Emergency Apparatus.
 Every decision shows its real cost, duration and blocked state from the same quote that the start transaction charges.
+The national urgent actions finish inside a front's seven-day warning, so an order given when a warning arrives protects the country before the opening shock: Shelter Protocols take four days, Medical Surge and Reroute Transport five, and Water and Food six.
+The durations are `acid_rain_urgent_cost.*_days`; each stays below `acid_rain_runtime.warning_days`.
 
 ## Response operations
 
@@ -53,7 +55,7 @@ Acid Rain registers humanitarian pressure through `famine_adapt_acid_rain_state`
 Evacuation counts as disaster pressure, not as a migration cohort.
 A tier's submission is marked registered only after the famine owner accepts it, so a rejected or rounded-zero request cannot suppress a later valid retry.
 This addition path reaches the famine owner's aggregate disaster-pressure channel.
-A source-33 reversible pressure ledger and supported recovery-retirement call are not established, so source-specific Humanitarian removal remains unresolved under the consequence repair acceptance.
+The pressure is a self-decaying food shock that renews a 60-day disaster food context, does not stack, and expires on its own, so Acid Rain keeps no source-specific ledger and its recovery decisions do not retire it.
 
 The dedicated Acid Rain Air source records actual lifetime contamination additions.
 Formation requests 75 bp, and from one week after formation, every seven days of the regional and global phases the rain requests Air from the weather on the map: 4, 8, 12 or 16 bp for an active world share below 2, 5 and 10 percent or above, 4 to 16 bp for the average intensity band of the open fronts (Standard under the global layer), 4 bp for two or more fronts, 10 bp for the global layer, and 3 bp per active severe cell or superstorm up to 9 bp, clamped to 8 to 45 bp; a week without acute rain requests nothing.
@@ -112,7 +114,9 @@ When Acid Rain forms, it also opens once for every player whose territory is alr
 While a map is open, the host's three-day worker refreshes the shared world view and each viewer's own national strip.
 It shows the base map with seven region overlays, visited, ordinary and warning veils, three front markers with warning and severe variants, one severe-storm marker per listed superstorm at the region of its seed state, and the global rain layer.
 Every animated marker and the global layer have a still partner that the motion toggle selects.
-Hovering a region row shows the states reached, not yet reached and in the rain's path there, and the weather over it: the front over the region with its states under rain now, the states first reached on this visit out of the visit's quota and the states in its severe cells, a front on its way with the days until it arrives, or the global layer.
+Hovering a region row shows the states reached, not yet reached and in the rain's path there, and the weather over it: the front over the region with the states in its severe cells, a front on its way with the days until it arrives, or the global layer.
+The map shows only values that answer whether the rain is coming, what to order and what it has cost: the world ledger holds worldwide deaths and the Air Contamination the rain has added, a front card holds its region, intensity, days to its next move and severe-state count, and the global card names when the layer can begin to break up, then that it may break up at any time.
+The national Air line, the remaining Air allowance, the current global Air, visit quotas and progress, front active-state counts and the separate global-phase clocks stay in stored runtime state and are not shown.
 The Preparedness tooltip lists each component's tier and its points toward the total, and the category status line names exposure, a storm forecast or a warning with the country's counts.
 The footer holds Refresh, Back (returning to the decision category or Event Details, whichever opened the map), Details (opening the Event 33 page in Event Details), and the motion toggle.
 Opening or refreshing the map runs a read-only projection that cannot advance fronts, add contamination, apply losses, spend resources, or complete work.
@@ -171,7 +175,7 @@ Earlier GUI renders recorded in D16/D17 were refused at 1920x1080 by the aggrega
 That historical limit does not establish current route health, resolution support or final UI acceptance.
 The 2026-10-04 decision-AI `hoi4.probability_inspect` attempts recorded in D13/D15 returned `INTERNAL_ERROR` and yielded no baseline or comparison.
 The current probability and UI audits retain their own scenario-specific handoffs for parent review, and their results are not inferred here.
-Humanitarian source-specific retirement remains unresolved even though the addition adapter exists in source.
+Humanitarian pressure needs no retirement call: the famine owner's disaster context expires on its own.
 See [the current documentation reconciliation](../../plans/033_acid_rain_plans/subagent_handoffs/documentation_current_reconciliation_2026_10_07.md) for claim dispositions and evidence limits.
 
 ## Future extensions

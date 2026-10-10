@@ -770,6 +770,13 @@ event_cluster_get_member_effective_min_tier = {
 		}
 		set_temp_variable = { event_cluster_member_effective_min_tier = constant:chaos_meter_tier_id.tier_0 }
 	}
+	# Event 033 is a Severe member that joins Natural Disasters from Gathering
+	# Storm; its declared row minimum replaces the Severe floor, and its own
+	# participation curve (acid_rain_cluster) starts at 20 percent there.
+	if = {
+		limit = { check_variable = { event_cluster_member_event_id = constant:acid_rain_event.id } }
+		set_temp_variable = { event_cluster_member_effective_min_tier = event_cluster_member_min_tier }
+	}
 }
 
 # Resolve the accepted six-tier by four-severity participation matrix. The

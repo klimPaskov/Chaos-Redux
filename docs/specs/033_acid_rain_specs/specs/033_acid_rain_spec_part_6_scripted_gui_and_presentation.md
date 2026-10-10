@@ -2,7 +2,7 @@
 
 Status: `implemented` in source as `acid_rain_world_window` and `acid_rain_category_inlay` (`interface/033_acid_rain.gui`, `common/scripted_guis/033_acid_rain_scripted_guis.txt`, `common/scripted_localisation/033_acid_rain_scripted_localisation.txt`).
 The D37 regional state strips are `accepted and queued`.
-The player-facing value budget below is a 2026-10-10 audit proposal made under the user's brief to remove values that do not drive a decision; it needs parent acceptance before the implemented surfaces it trims change.
+The player-facing value budget below was accepted by the parent on 2026-10-10 under the user's brief to remove values that do not drive a decision, and is `implemented` in source.
 Layout, hover and animation playback are user live checks.
 
 ## Interface goal
@@ -13,7 +13,7 @@ Use a dedicated scripted GUI opened from the Acid Rain decision category and fro
 
 ## Player-facing value budget
 
-Disposition: `unresolved` proposal (README open question 3).
+Disposition: `implemented` (README open question 3, accepted 2026-10-10).
 
 Every value on the map, inlay or tooltips must answer one of three player questions: is the rain coming for me and when, what should I buy or repair now, and what has it cost.
 Values that only describe the weather engine stay internal and appear in the debug overlay.
@@ -27,7 +27,7 @@ Values that only describe the weather engine stay internal and appear in the deb
 | Global card | One line saying when the layer can begin to break up, then "may break up at any time"; the superstorm list with region and days to impact or active | Days since the transition and the separate minimum-period and next-check clocks |
 | Region tooltip | States reached out of the states in the rain's path there; the weather over the region (front, intensity, severe cell) or approaching it with days until arrival; the global layer | The visit quota, the states first reached on this visit and the states under rain now |
 
-The removed facts stay in stored state and in the debug overlay, so balance and acceptance checks keep their evidence.
+The removed facts stay in stored runtime state, so balance and acceptance checks keep their evidence. No debug overlay exists yet, and the GUI projection of the removed values was dropped rather than kept for one.
 
 ## Layout target
 

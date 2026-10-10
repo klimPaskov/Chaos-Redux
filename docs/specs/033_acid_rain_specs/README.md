@@ -41,12 +41,12 @@ Live-game behavior (actual population removal, save and reload, multiplayer, per
 | Air source 5 with 1,500 bp lifetime and 5,000 bp ceiling caps | `implemented` | Part 11 |
 | Three cumulative evolutions with per-stage enable controls | `implemented` | Part 7 |
 | Reports, world notices, super-event 117 with verified quote and audio | `implemented` | Part 9 |
-| World map and category inlay | `implemented`; D37 regional state strips `accepted and queued`; the player-facing value budget is a 2026-10-10 audit proposal | Part 6 |
+| World map and category inlay | `implemented`; D37 regional state strips `accepted and queued`; the player-facing value budget is `implemented` | Part 6 |
 | Visual assets and animations | delivered; D37 regional overlays in production | Part 10 |
 | Ten achievements and Event Details status | `implemented` | Part 10 |
 | Humanitarian (famine) pressure addition | `implemented` | Parts 4 and 11 |
-| Source-specific Humanitarian retirement | `unresolved` | Consequence repair acceptance, Open questions |
-| Event 13 overlap exclusion | not implemented; replacement proposed | Part 7, Open questions |
+| Source-specific Humanitarian retirement | dropped (accepted); the famine owner's disaster context expires on its own | Consequence repair acceptance, Open questions |
+| Event 13 overlap exclusion | dropped (accepted); never implemented | Part 7, Open questions |
 | Prototype save migration | `implemented` | Part 11 |
 | Legacy severe-report receipt migration (F7) | `unresolved` | [Runtime resume](../../plans/033_acid_rain_plans/runtime_resume_2026_10_08.md) |
 
@@ -128,6 +128,7 @@ Each invariant has one owning section; other files point to it rather than resta
 Parent acceptance, 2026-10-10 (release orchestrator, under the user's 2026-10-10 brief section 2.2 authority, recorded in the release ledger): items 1 to 5 are accepted as proposed, with urgent actions resolving inside the 7-day warning, and are `accepted and queued` for the Event 033 implementation owner.
 They supersede the conflicting parts of the 2026-10-03 consequence acceptance and agent decision D33 named below.
 Still `unresolved`: the F7 receipt migration, the probability comparison, and the D37 regional art.
+Implemented 2026-10-10 by the Event 033 owner: the player-facing value budget (item 3), national urgent actions of 4, 5, 5 and 6 days (Shelter, Medical, Transport, Water and Food; item 2), the Gathering Storm exception in `event_cluster_get_member_effective_min_tier` (item 4), and removal of the Humanitarian retirement and Event 13 exclusion requirements from code and documents (items 1 and 5).
 
 1. **Humanitarian retirement (accepted).** The 2026-10-03 consequence acceptance keeps source-specific retirement of Acid Rain famine pressure as a required dependency.
    Since the 2026-10-10 famine rework, an accepted request adds a self-decaying food shock and renews a 60-day disaster food context that expires on its own and does not stack.

@@ -473,6 +473,17 @@ defined_text = {
 	text = { localization_key = acid_rain_gui_motion_on_tt }
 }
 
+# The global card names when the layer can begin to break up, then that it may
+# break up at any time. The phase clocks behind it stay in stored state.
+defined_text = {
+	name = GetAcidRainGuiGlobalBreakup
+	text = {
+		trigger = { check_variable = { global.acid_rain_gui_global_minimum_remaining_days > constant:acid_rain_runtime.zero } }
+		localization_key = acid_rain_global_card_breakup_later
+	}
+	text = { localization_key = acid_rain_global_card_breakup_open }
+}
+
 # The world map can be opened from the decision category or Event Details;
 # Back names the view the player returns to.
 defined_text = {
@@ -483,39 +494,134 @@ defined_text = {
 
 # World map region tooltips. Each region element sets its region id, loads the
 # facts the read-only refresh stored for it, and shares one text.
+# Loader output envelope: declare eligible, touched, untouched, status, front,
+# severe and days (acid_rain_gui_tt_* temporaries) to
+# constant:acid_rain_runtime.zero in this consuming trigger before the loader.
+# The region id remains the input, not a loader output or saved gameplay field.
 defined_text = {
 	name = GetAcidRainRegion1Tooltip
-	text = { trigger = { set_temp_variable = { acid_rain_gui_tt_region = constant:acid_rain_region.europe } acid_rain_gui_load_region_tooltip = yes } localization_key = acid_rain_gui_region_tt }
+	text = {
+		trigger = {
+			set_temp_variable = { acid_rain_gui_tt_region = constant:acid_rain_region.europe }
+			set_temp_variable = { acid_rain_gui_tt_eligible = constant:acid_rain_runtime.zero }
+			set_temp_variable = { acid_rain_gui_tt_touched = constant:acid_rain_runtime.zero }
+			set_temp_variable = { acid_rain_gui_tt_untouched = constant:acid_rain_runtime.zero }
+			set_temp_variable = { acid_rain_gui_tt_status = constant:acid_rain_runtime.zero }
+			set_temp_variable = { acid_rain_gui_tt_front = constant:acid_rain_runtime.zero }
+			set_temp_variable = { acid_rain_gui_tt_severe = constant:acid_rain_runtime.zero }
+			set_temp_variable = { acid_rain_gui_tt_days = constant:acid_rain_runtime.zero }
+			acid_rain_gui_load_region_tooltip = yes
+		}
+		localization_key = acid_rain_gui_region_tt
+	}
 }
 
 defined_text = {
 	name = GetAcidRainRegion2Tooltip
-	text = { trigger = { set_temp_variable = { acid_rain_gui_tt_region = constant:acid_rain_region.middle_east } acid_rain_gui_load_region_tooltip = yes } localization_key = acid_rain_gui_region_tt }
+	text = {
+		trigger = {
+			set_temp_variable = { acid_rain_gui_tt_region = constant:acid_rain_region.middle_east }
+			set_temp_variable = { acid_rain_gui_tt_eligible = constant:acid_rain_runtime.zero }
+			set_temp_variable = { acid_rain_gui_tt_touched = constant:acid_rain_runtime.zero }
+			set_temp_variable = { acid_rain_gui_tt_untouched = constant:acid_rain_runtime.zero }
+			set_temp_variable = { acid_rain_gui_tt_status = constant:acid_rain_runtime.zero }
+			set_temp_variable = { acid_rain_gui_tt_front = constant:acid_rain_runtime.zero }
+			set_temp_variable = { acid_rain_gui_tt_severe = constant:acid_rain_runtime.zero }
+			set_temp_variable = { acid_rain_gui_tt_days = constant:acid_rain_runtime.zero }
+			acid_rain_gui_load_region_tooltip = yes
+		}
+		localization_key = acid_rain_gui_region_tt
+	}
 }
 
 defined_text = {
 	name = GetAcidRainRegion3Tooltip
-	text = { trigger = { set_temp_variable = { acid_rain_gui_tt_region = constant:acid_rain_region.asia } acid_rain_gui_load_region_tooltip = yes } localization_key = acid_rain_gui_region_tt }
+	text = {
+		trigger = {
+			set_temp_variable = { acid_rain_gui_tt_region = constant:acid_rain_region.asia }
+			set_temp_variable = { acid_rain_gui_tt_eligible = constant:acid_rain_runtime.zero }
+			set_temp_variable = { acid_rain_gui_tt_touched = constant:acid_rain_runtime.zero }
+			set_temp_variable = { acid_rain_gui_tt_untouched = constant:acid_rain_runtime.zero }
+			set_temp_variable = { acid_rain_gui_tt_status = constant:acid_rain_runtime.zero }
+			set_temp_variable = { acid_rain_gui_tt_front = constant:acid_rain_runtime.zero }
+			set_temp_variable = { acid_rain_gui_tt_severe = constant:acid_rain_runtime.zero }
+			set_temp_variable = { acid_rain_gui_tt_days = constant:acid_rain_runtime.zero }
+			acid_rain_gui_load_region_tooltip = yes
+		}
+		localization_key = acid_rain_gui_region_tt
+	}
 }
 
 defined_text = {
 	name = GetAcidRainRegion4Tooltip
-	text = { trigger = { set_temp_variable = { acid_rain_gui_tt_region = constant:acid_rain_region.africa } acid_rain_gui_load_region_tooltip = yes } localization_key = acid_rain_gui_region_tt }
+	text = {
+		trigger = {
+			set_temp_variable = { acid_rain_gui_tt_region = constant:acid_rain_region.africa }
+			set_temp_variable = { acid_rain_gui_tt_eligible = constant:acid_rain_runtime.zero }
+			set_temp_variable = { acid_rain_gui_tt_touched = constant:acid_rain_runtime.zero }
+			set_temp_variable = { acid_rain_gui_tt_untouched = constant:acid_rain_runtime.zero }
+			set_temp_variable = { acid_rain_gui_tt_status = constant:acid_rain_runtime.zero }
+			set_temp_variable = { acid_rain_gui_tt_front = constant:acid_rain_runtime.zero }
+			set_temp_variable = { acid_rain_gui_tt_severe = constant:acid_rain_runtime.zero }
+			set_temp_variable = { acid_rain_gui_tt_days = constant:acid_rain_runtime.zero }
+			acid_rain_gui_load_region_tooltip = yes
+		}
+		localization_key = acid_rain_gui_region_tt
+	}
 }
 
 defined_text = {
 	name = GetAcidRainRegion5Tooltip
-	text = { trigger = { set_temp_variable = { acid_rain_gui_tt_region = constant:acid_rain_region.australia_pacific } acid_rain_gui_load_region_tooltip = yes } localization_key = acid_rain_gui_region_tt }
+	text = {
+		trigger = {
+			set_temp_variable = { acid_rain_gui_tt_region = constant:acid_rain_region.australia_pacific }
+			set_temp_variable = { acid_rain_gui_tt_eligible = constant:acid_rain_runtime.zero }
+			set_temp_variable = { acid_rain_gui_tt_touched = constant:acid_rain_runtime.zero }
+			set_temp_variable = { acid_rain_gui_tt_untouched = constant:acid_rain_runtime.zero }
+			set_temp_variable = { acid_rain_gui_tt_status = constant:acid_rain_runtime.zero }
+			set_temp_variable = { acid_rain_gui_tt_front = constant:acid_rain_runtime.zero }
+			set_temp_variable = { acid_rain_gui_tt_severe = constant:acid_rain_runtime.zero }
+			set_temp_variable = { acid_rain_gui_tt_days = constant:acid_rain_runtime.zero }
+			acid_rain_gui_load_region_tooltip = yes
+		}
+		localization_key = acid_rain_gui_region_tt
+	}
 }
 
 defined_text = {
 	name = GetAcidRainRegion6Tooltip
-	text = { trigger = { set_temp_variable = { acid_rain_gui_tt_region = constant:acid_rain_region.north_america } acid_rain_gui_load_region_tooltip = yes } localization_key = acid_rain_gui_region_tt }
+	text = {
+		trigger = {
+			set_temp_variable = { acid_rain_gui_tt_region = constant:acid_rain_region.north_america }
+			set_temp_variable = { acid_rain_gui_tt_eligible = constant:acid_rain_runtime.zero }
+			set_temp_variable = { acid_rain_gui_tt_touched = constant:acid_rain_runtime.zero }
+			set_temp_variable = { acid_rain_gui_tt_untouched = constant:acid_rain_runtime.zero }
+			set_temp_variable = { acid_rain_gui_tt_status = constant:acid_rain_runtime.zero }
+			set_temp_variable = { acid_rain_gui_tt_front = constant:acid_rain_runtime.zero }
+			set_temp_variable = { acid_rain_gui_tt_severe = constant:acid_rain_runtime.zero }
+			set_temp_variable = { acid_rain_gui_tt_days = constant:acid_rain_runtime.zero }
+			acid_rain_gui_load_region_tooltip = yes
+		}
+		localization_key = acid_rain_gui_region_tt
+	}
 }
 
 defined_text = {
 	name = GetAcidRainRegion7Tooltip
-	text = { trigger = { set_temp_variable = { acid_rain_gui_tt_region = constant:acid_rain_region.south_america } acid_rain_gui_load_region_tooltip = yes } localization_key = acid_rain_gui_region_tt }
+	text = {
+		trigger = {
+			set_temp_variable = { acid_rain_gui_tt_region = constant:acid_rain_region.south_america }
+			set_temp_variable = { acid_rain_gui_tt_eligible = constant:acid_rain_runtime.zero }
+			set_temp_variable = { acid_rain_gui_tt_touched = constant:acid_rain_runtime.zero }
+			set_temp_variable = { acid_rain_gui_tt_untouched = constant:acid_rain_runtime.zero }
+			set_temp_variable = { acid_rain_gui_tt_status = constant:acid_rain_runtime.zero }
+			set_temp_variable = { acid_rain_gui_tt_front = constant:acid_rain_runtime.zero }
+			set_temp_variable = { acid_rain_gui_tt_severe = constant:acid_rain_runtime.zero }
+			set_temp_variable = { acid_rain_gui_tt_days = constant:acid_rain_runtime.zero }
+			acid_rain_gui_load_region_tooltip = yes
+		}
+		localization_key = acid_rain_gui_region_tt
+	}
 }
 
 defined_text = {
@@ -539,9 +645,31 @@ defined_text = {
 }
 
 # Preparedness tooltip: each component's tier and points toward the total.
+# Loader output envelope: declare each component's tier, points and max plus
+# max_tier and preparedness_max (acid_rain_gui_tt_* temporaries) to
+# constant:acid_rain_runtime.zero in this consuming trigger before the loader.
 defined_text = {
 	name = GetAcidRainPreparednessTooltip
-	text = { trigger = { acid_rain_gui_load_preparedness_tooltip = yes } localization_key = acid_rain_gui_preparedness_breakdown }
+	text = {
+		trigger = {
+			set_temp_variable = { acid_rain_gui_tt_shelter_tier = constant:acid_rain_runtime.zero }
+			set_temp_variable = { acid_rain_gui_tt_water_tier = constant:acid_rain_runtime.zero }
+			set_temp_variable = { acid_rain_gui_tt_medical_tier = constant:acid_rain_runtime.zero }
+			set_temp_variable = { acid_rain_gui_tt_transport_tier = constant:acid_rain_runtime.zero }
+			set_temp_variable = { acid_rain_gui_tt_shelter_points = constant:acid_rain_runtime.zero }
+			set_temp_variable = { acid_rain_gui_tt_water_points = constant:acid_rain_runtime.zero }
+			set_temp_variable = { acid_rain_gui_tt_medical_points = constant:acid_rain_runtime.zero }
+			set_temp_variable = { acid_rain_gui_tt_transport_points = constant:acid_rain_runtime.zero }
+			set_temp_variable = { acid_rain_gui_tt_shelter_max = constant:acid_rain_runtime.zero }
+			set_temp_variable = { acid_rain_gui_tt_water_max = constant:acid_rain_runtime.zero }
+			set_temp_variable = { acid_rain_gui_tt_medical_max = constant:acid_rain_runtime.zero }
+			set_temp_variable = { acid_rain_gui_tt_transport_max = constant:acid_rain_runtime.zero }
+			set_temp_variable = { acid_rain_gui_tt_max_tier = constant:acid_rain_runtime.zero }
+			set_temp_variable = { acid_rain_gui_tt_preparedness_max = constant:acid_rain_runtime.zero }
+			acid_rain_gui_load_preparedness_tooltip = yes
+		}
+		localization_key = acid_rain_gui_preparedness_breakdown
+	}
 }
 
 # Category status line: the most urgent national state first, with counts.

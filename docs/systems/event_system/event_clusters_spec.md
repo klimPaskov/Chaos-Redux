@@ -6,8 +6,7 @@ The source contract remains subject to the acceptance boundary below.
 Its completed checklist items are retained source-implementation claims, not independently verified completion or acceptance of every design detail.
 
 - In the captured working-tree documents, this file's catalogue gives Negative Economy Chaos level 2, while the catalogue in [event_clusters.md](event_clusters.md) gives level 1.
-- The common Severe-member floor is T3, while the runtime reference describes Acid Rain participation from Gathering Storm, T1, onward.
-The documents do not explain the acceptance basis and scope of that exception together.
+- The common Severe-member floor is T3. Acid Rain is an accepted exception that joins Natural Disasters from Gathering Storm, T1, onward (Event 033 README open question 4, parent acceptance 2026-10-10); `event_cluster_get_member_effective_min_tier` uses its declared row minimum instead of the floor.
 - The 2026-09-26 user decision requires major-event weights to reset when a Major member actually fires in any cluster. Runtime pacing follows that decision. The other unresolved inputs below remain separate.
 - The worked small-cluster example starts with two eligible logical rows but subsequently describes a trigger, a required row, and optional rows.
 The optional-decay example continues that setup with another optional row.
