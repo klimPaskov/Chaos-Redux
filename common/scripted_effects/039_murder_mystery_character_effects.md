@@ -1,5 +1,37 @@
 # Event 039 character helpers
 
+## `murder_mystery_retire_selected_leader`
+
+Purpose: consume one authorized national-leadership registry row and retire its exact character after a verified successor takes office.
+Scope: COUNTRY, either the victim's government or the investigator capturing the First Knife.
+Inputs: the selected target ID and expected generation, an owner callback, and the owner's installed-successor receipt from the existing succession helper.
+Defaults: missing, protected, used, stale-generation, owner-managed or non-national-leadership targets fail without retirement.
+The helper revalidates the selected row, captures the victim and owner as private regular event targets, resolves the current ruler, and requires that ruler to differ from the victim.
+It records ID, generation, disposition and protection in caller-owned variables, then consumes the exact unused row before the native character effect.
+Only the fresh `murder_mystery_target_consumption_committed` receipt authorizes retirement and rollback.
+Validation's existing-tombstone flag cannot authorize either operation.
+The consume helper matches ID, generation, role, owner, subject, disposition, protection and unused state, checking character and generic-country subjects in separate typed branches.
+The character must leave the owner's recruited roster, and the verified successor must remain recruited, before the helper reports success.
+If retirement leaves the victim recruited, rollback restores only the row matching the saved ID, generation, owner, character, used marker and consumed disposition.
+A missing victim retains its consumed row even when another postcondition fails, so that failure cannot authorize a second removal.
+The synchronous global `murder_mystery_named_removal_active` guard rejects recursive entry and prevents another removal call from replacing the private event targets.
+No delayed work is queued while that guard is held, and normal exit clears it and all private rollback variables.
+The regular event targets expire with their effect chain.
+Outputs: `murder_mystery_named_removal_committed` or `murder_mystery_named_removal_failed`, plus the committed ID and generation in `murder_mystery_named_removal_target_id` and `murder_mystery_named_removal_generation` on success.
+The next call and `murder_mystery_clear_selected_target_context` clear these result fields.
+Callers publish opening, foreign-murder or capture consequences only after the committed receipt.
+They must not revalidate the retired character as a living target.
+The helper does not establish the separate design authorization for registering a historical character, curate a successor, award Chaos or record a death.
+Those remain obligations of the caller and owning character package.
+
+```text
+murder_mystery_retire_selected_leader = yes
+if = {
+	limit = { has_country_flag = murder_mystery_named_removal_committed }
+	set_country_flag = murder_mystery_foreign_leader_removed
+}
+```
+
 ## `murder_mystery_capture_current_ruling_character`
 
 Purpose: resolve the sitting leader without selecting an opposition party leader.

@@ -31,6 +31,13 @@ The replacement takes office before the victim is retired, through `murder_myste
    It carries a marker trait (`murder_mystery_emergency_council` or `murder_mystery_acting_cabinet`) with a small stability penalty and uses `GFX_portrait_039_emergency_council` (`gfx/leaders/039_murder_mystery/leader_039_emergency_council.dds`), a people-free institutional emblem of an empty council chair and a sealed folder.
 
 The transaction verifies through the anchor helper that the replacement, not the victim, is the sitting ruler before it retires the victim.
+Opening murders, foreign ruler murders and founder capture use `murder_mystery_retire_selected_leader` for registry consumption and retirement.
+It freezes the victim's identity and generation, verifies a different sitting successor, consumes the exact unused row, and confirms that the victim leaves the owner's roster.
+If the native retirement leaves the victim recruited, the helper restores only that transaction's consumed row.
+The caller receives the committed identity and generation directly, so later selection changes cannot change the capture record.
+Removed characters keep their consumed rows and are never revalidated as living targets to complete the transaction.
+Fresh consumption has a separate receipt from an existing tombstone, and generic captures and office casualties also require that receipt before recording an outcome.
+The opening's mapped Chaos consequence is applied only after the retirement commits, so a refused opening adds no Chaos.
 No invented individual is created for a real government; the generated individual portrait previously used for every host is no longer referenced.
 The opening host gate excludes countries in a civil war and countries carrying a stale anchor trait.
 
@@ -405,7 +412,8 @@ A derivative counts as viable when its registry row is active, its starting forc
 Event 39 is the optional Medium member of the Intelligence cluster (`event_cluster_id.intelligence`, runtime ID 20), whose required Low baseline is Event 52.
 The cluster is one-time and unlocks at Chaos level 1.
 Members fire through the normal event dispatcher, so Event 39 keeps its weighted host selection and its pool unavailability reasons, and a refused Event 39 is recorded as a skipped member.
-The workbook still lists the cluster as ID 8; the correction is queued in `docs/plans/039_murder_mystery_plans/catalog_changes_pending.md`.
+The authoritative workbook and both member-event cross-links use Intelligence ID 20.
+The catalog reconciliation and the earlier reservation-order deviation are recorded in `docs/plans/039_murder_mystery_plans/catalog_changes_pending.md`.
 
 ## Default event queue
 

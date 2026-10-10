@@ -4,8 +4,134 @@
 # Overview:
 # - Installs one existing route successor package for the Assassin State.
 # - Verifies the ruling leader before the registered founder is captured.
-# - Does not retire characters or create countries. Character disposition and
-#   capture receipts remain owned by the integration transaction.
+# - Retires a registered national leader only after a different sitting ruler
+#   and the exact unused registry row have been verified and consumed.
+# - Restores the consumed row if native retirement leaves the victim recruited.
+# - Does not create countries. Outcomes remain owned by integration callers.
+
+# COUNTRY investigator or victim government. The selected national-leadership
+# row and its owner callback are inputs. The owner must have installed a
+# successor. A synchronous global guard protects the private chain targets from
+# recursive retirement calls. No event is queued while this guard is held.
+# Output: named_removal_committed only after the victim leaves the owner roster.
+murder_mystery_retire_selected_leader = {
+	clr_country_flag = murder_mystery_named_removal_committed
+	set_country_flag = murder_mystery_named_removal_failed
+	clear_variable = murder_mystery_named_removal_target_id
+	clear_variable = murder_mystery_named_removal_generation
+	if = {
+		limit = { NOT = { has_global_flag = murder_mystery_named_removal_active } }
+		set_global_flag = murder_mystery_named_removal_active
+		clr_country_flag = murder_mystery_target_consumption_committed
+		murder_mystery_prepare_safe_target_action = yes
+		if = {
+			limit = {
+				murder_mystery_selected_target_allows_named_action = yes
+				check_variable = { var = murder_mystery_selected_target_role value = constant:murder_mystery_target_role.national_leadership compare = equals }
+				event_target:murder_mystery_selected_target_owner = {
+					OR = {
+						has_country_flag = murder_mystery_emergency_successor_installed
+						has_country_flag = murder_mystery_capture_successor_verified
+					}
+				}
+			}
+			# Freeze caller inputs before entering another helper or country.
+			set_variable = { murder_mystery_removal_target_id = murder_mystery_selected_target_id }
+			set_variable = { murder_mystery_removal_generation = murder_mystery_selected_target_generation }
+			set_variable = { murder_mystery_removal_disposition = murder_mystery_selected_target_disposition }
+			set_variable = { murder_mystery_removal_protection = murder_mystery_selected_target_protection }
+			event_target:murder_mystery_selected_target_character = { save_event_target_as = murder_mystery_removal_character }
+			event_target:murder_mystery_selected_target_owner = {
+				save_event_target_as = murder_mystery_removal_owner
+				set_country_flag = murder_mystery_ruling_selection_authorized
+				murder_mystery_capture_current_ruling_character = yes
+			}
+			if = {
+				limit = { event_target:murder_mystery_removal_owner = { has_country_flag = murder_mystery_ruling_character_resolved } }
+				event_target:murder_mystery_current_ruling_character = { save_event_target_as = murder_mystery_removal_successor }
+			}
+			if = {
+				limit = {
+					event_target:murder_mystery_removal_owner = { has_country_flag = murder_mystery_ruling_character_resolved }
+					has_event_target = murder_mystery_removal_successor
+					NOT = { event_target:murder_mystery_removal_successor = { is_character = event_target:murder_mystery_removal_character } }
+				}
+				# Restore the frozen selection and revalidate it after ruler
+				# resolution. A changed row or overwritten public selector
+				# cannot redirect this transaction to another character.
+				set_variable = { murder_mystery_selected_target_id = murder_mystery_removal_target_id }
+				set_variable = { murder_mystery_selected_target_expected_generation = murder_mystery_removal_generation }
+				murder_mystery_prepare_safe_target_action = yes
+				# Tombstone detection during validation is not proof that this
+				# invocation consumed the row. Require its fresh receipt.
+				clr_country_flag = murder_mystery_target_consumption_committed
+				if = {
+					limit = {
+						murder_mystery_selected_target_allows_named_action = yes
+						check_variable = { var = murder_mystery_selected_target_role value = constant:murder_mystery_target_role.national_leadership compare = equals }
+						check_variable = { var = murder_mystery_selected_target_disposition value = murder_mystery_removal_disposition compare = equals }
+						check_variable = { var = murder_mystery_selected_target_protection value = murder_mystery_removal_protection compare = equals }
+						event_target:murder_mystery_selected_target_owner = { tag = event_target:murder_mystery_removal_owner }
+						event_target:murder_mystery_selected_target_character = { is_character = event_target:murder_mystery_removal_character }
+					}
+					murder_mystery_mark_selected_target_removed = yes
+				}
+				if = {
+					limit = { has_country_flag = murder_mystery_target_consumption_committed }
+					event_target:murder_mystery_removal_character = { retire = yes }
+					if = {
+						limit = {
+							event_target:murder_mystery_removal_owner = {
+								exists = yes
+								NOT = { any_character = { is_character = event_target:murder_mystery_removal_character } }
+								any_character = { is_character = event_target:murder_mystery_removal_successor }
+							}
+						}
+						set_country_flag = murder_mystery_named_removal_committed
+						clr_country_flag = murder_mystery_named_removal_failed
+						set_variable = { murder_mystery_named_removal_target_id = murder_mystery_removal_target_id }
+						set_variable = { murder_mystery_named_removal_generation = murder_mystery_removal_generation }
+					}
+					else_if = {
+						limit = {
+							murder_mystery_target_registry_is_aligned = yes
+							event_target:murder_mystery_removal_owner = { any_character = { is_character = event_target:murder_mystery_removal_character } }
+						}
+						# Restore only this transaction's still-present victim. A
+						# missing victim keeps its tombstone even if another
+						# postcondition failed, preventing a second removal.
+						set_temp_variable = { murder_mystery_removal_row = constant:murder_mystery_identity.first_array_index }
+						while_loop_effect = {
+							limit = { check_variable = { var = murder_mystery_removal_row value = global.murder_mystery_target_id_entries^num compare = less_than } }
+							if = {
+								limit = {
+									check_variable = { var = global.murder_mystery_target_id_entries^murder_mystery_removal_row value = murder_mystery_removal_target_id compare = equals }
+									check_variable = { var = global.murder_mystery_target_generation_entries^murder_mystery_removal_row value = murder_mystery_removal_generation compare = equals }
+									check_variable = { var = global.murder_mystery_target_disposition_entries^murder_mystery_removal_row value = constant:murder_mystery_target_disposition.already_removed compare = equals }
+									check_variable = { var = global.murder_mystery_target_protection_entries^murder_mystery_removal_row value = constant:murder_mystery_target_protection.hardened compare = equals }
+									check_variable = { var = global.murder_mystery_target_used_entries^murder_mystery_removal_row value = constant:murder_mystery_value.one compare = equals }
+									var:global.murder_mystery_target_owner_entries^murder_mystery_removal_row = { tag = event_target:murder_mystery_removal_owner }
+									var:global.murder_mystery_target_subject_entries^murder_mystery_removal_row = { is_character = event_target:murder_mystery_removal_character }
+								}
+								set_variable = { global.murder_mystery_target_disposition_entries^murder_mystery_removal_row = murder_mystery_removal_disposition }
+								set_variable = { global.murder_mystery_target_protection_entries^murder_mystery_removal_row = murder_mystery_removal_protection }
+								set_variable = { global.murder_mystery_target_used_entries^murder_mystery_removal_row = constant:murder_mystery_value.zero }
+								clr_country_flag = murder_mystery_selected_target_retired
+								clr_country_flag = murder_mystery_target_consumption_committed
+							}
+							add_to_temp_variable = { murder_mystery_removal_row = constant:murder_mystery_identity.loop_increment }
+						}
+					}
+				}
+			}
+		}
+		clear_variable = murder_mystery_removal_target_id
+		clear_variable = murder_mystery_removal_generation
+		clear_variable = murder_mystery_removal_disposition
+		clear_variable = murder_mystery_removal_protection
+		clr_global_flag = murder_mystery_named_removal_active
+	}
+}
 
 # COUNTRY scope. Resolve the actual ruler without selecting another party's
 # leader. The native COUNTRY trait operation addresses the sitting leader.
