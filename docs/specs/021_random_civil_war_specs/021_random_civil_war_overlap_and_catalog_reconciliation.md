@@ -119,7 +119,7 @@ Every normal human country must manage its own fracture risk. Newly independent 
 
 ### Cluster
 
-Wars should list members `4, 7, 21` after implementation.
+The workbook lists Event 021 as a Medium member of Wars; the live member list is `4, 7, 21, 45, 62`.
 
 ### Scenario
 

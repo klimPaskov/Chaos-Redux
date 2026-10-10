@@ -2,7 +2,7 @@
 
 Resume from [the package implementation boundary](README.md#implementation-boundary) and current event docs and plan evidence before assigning work.
 This full-design prompt does not authorize restarting completed tranches or reverting the recorded test release.
-Record each requested change's acceptance basis under the [event skill](../../../.agents/skills/chaos-redux-events/SKILL.md#spec-and-plan-locations).
+Record each requested change's acceptance basis under the [event skill](../../../.claude/skills/chaos-redux-events/SKILL.md#spec-and-plan-locations).
 
 Implement the complete source specification under `docs/specs/021_random_civil_war_specs/`.
 
@@ -12,7 +12,7 @@ This is a large event framework. Do not reduce it to one `start_civil_war` call,
 
 Before editing:
 
-1. Read repository `AGENTS.md`.
+1. Read repository `CLAUDE.md`.
 2. Read the full Event 021 package in its documented order.
 3. Read `chaos-redux-events`, `chaos-redux-decisions-missions`, `chaos-redux-focus-trees`, `chaos-redux-event-assets`, `chaos-redux-improvement-loop`, and `chaos-redux-subagents`.
 4. Read the required offline Paradox wiki pages and installed vanilla documentation.

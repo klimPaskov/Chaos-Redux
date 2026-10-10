@@ -1,11 +1,11 @@
 # Subagent Prompt: Event 021 Repository Explorer
 
-Use this prompt only when paths, live APIs, precedents, or dependency order remain unclear under the [repo-explorer gate](../../../../.agents/skills/chaos-redux-subagents/SKILL.md#repo-explorer-use-gate).
+Use this prompt only when paths, live APIs, precedents, or dependency order remain unclear under the [repo-explorer gate](../../../../.claude/skills/chaos-redux-subagents/SKILL.md#repo-explorer-use-gate).
 For Codex, spawn `chaosx_repo_explorer` with `fork_turns="none"` and bounded parent questions.
 
 Read:
 
-- repository `AGENTS.md`
+- repository `CLAUDE.md`
 - `docs/specs/021_random_civil_war_specs/`
 - Event 006 specs and implementation
 - Event 004 and Event 007

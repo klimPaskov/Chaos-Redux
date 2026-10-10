@@ -6,7 +6,7 @@
 - Working name: `Random Civil War`
 - Canonical entry event: `chaosx.nr21.1`
 - Type: `Minor Repeatable`
-- Status before implementation: `Unavailable`
+- Catalog status at planning start: `Unavailable` (the live catalog status is `Needs Testing`, see the README)
 - Event chaos level: `1`, Calm World
 - Cluster: `1`, Wars
 - Cluster severity: `Medium`
@@ -51,7 +51,7 @@ It must remain distinct from:
 - Event 134 Duchies
 - Event 142 Partisans
 - Event 144 Freedom or Death
-- Event 019 Soldiers from Nowhere and its formation revolts
+- Event 019 Soldiers from Nowhere (planning package `docs/specs/019_infantry_spawn_specs/`) and its formation revolts
 
 Those events keep their own triggers, actors, presentation, progression, and outcomes. Shared helpers are allowed only after an explicit integration pass.
 
@@ -87,7 +87,7 @@ A normal automatic firing requires at least one valid target and at least one va
 - normal manual triggering explains that no valid country can currently fracture
 - force-trigger testing may bypass ordinary target preference but may not create an invalid actor, broken map, duplicate country, or unsafe terminal conflict
 
-The event remains disabled by default while its catalog status is unreworked or unavailable. Once the complete rework is implemented for test entry, it enters the reworked-event default allowlist while retaining `Needs Testing` until acceptance certification is complete.
+The event is disabled by default while its catalog status is unreworked or unavailable. The rework is implemented for test entry, so Event 021 is in the reworked-event default allowlist (`event_log_event_is_reworked_default_enabled` in `common/scripted_triggers/chaosx_settings_triggers.txt`) while the catalog keeps `Needs Testing` until acceptance certification is complete.
 
 ## Universal exclusions
 

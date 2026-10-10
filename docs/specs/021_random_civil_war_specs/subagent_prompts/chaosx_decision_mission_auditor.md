@@ -4,7 +4,7 @@ Spawn `chaosx_decision_mission_auditor` with `fork_turns="none"` after the Event
 
 Read:
 
-- repository `AGENTS.md`
+- repository `CLAUDE.md`
 - `chaos-redux-decisions-missions`
 - full Event 021 source-spec folder
 - `021_random_civil_war_decision_mission_prompt.md`

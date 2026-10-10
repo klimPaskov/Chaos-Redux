@@ -315,6 +315,7 @@ Range:
 - `0-14`: Collapse
 
 These are working stage labels.
+Live values (spec audit 2026-10-10): the band edges, the opening losses (8, 20, 32, and 42 for Limited, Serious, Severe, and Critical), the claimant start of 50, the Event 006 front start of 60, and the hidden Fracture Pressure thresholds for Exposed, Fractured, and Critical (25, 50, and 75) are `random_civil_war_authority` and `random_civil_war_pressure` in `common/script_constants/021_random_civil_war_constants.txt`.
 
 State Authority represents:
 

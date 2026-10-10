@@ -1,5 +1,7 @@
 # Decision and Mission Prompt: Event 021 Random Civil War
 
+> **Historical build contract (spec audit 2026-10-10):** The work this prompt requests is implemented for test entry and the catalog status is `Needs Testing`. Resume from the [package implementation boundary](README.md#implementation-boundary) and the event documents, and do not restart completed tranches.
+
 Implement the Event 021 decision and mission system from:
 
 - `021_random_civil_war_spec_part_3_decisions_missions_and_outcomes.md`
@@ -8,7 +10,7 @@ Implement the Event 021 decision and mission system from:
 - `021_random_civil_war_spec_part_6_evolution_iii.md`
 - `021_random_civil_war_spec_part_8_cluster_scenario_ai_balance.md`
 
-Read `AGENTS.md`, `chaos-redux-events`, `chaos-redux-decisions-missions`, `chaos-redux-event-assets`, and current Chaos Redux decision precedents.
+Read `CLAUDE.md`, `chaos-redux-events`, `chaos-redux-decisions-missions`, `chaos-redux-event-assets`, and current Chaos Redux decision precedents.
 
 Use `chaosx_decision_mission_auditor` after implementation. Spawn it with `fork_turns="none"`.
 

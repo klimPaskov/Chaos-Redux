@@ -4,7 +4,7 @@ Spawn `chaosx_generated_event_art` with `fork_turns="none"` after final runtime 
 
 Read:
 
-- repository `AGENTS.md`
+- repository `CLAUDE.md`
 - `chaos-redux-event-assets`
 - `docs/specs/021_random_civil_war_specs/021_random_civil_war_asset_prompt.md`
 - Part 9 of the Event 021 spec

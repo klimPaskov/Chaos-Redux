@@ -4,7 +4,7 @@ Spawn `chaosx_localisation_auditor` with `fork_turns="none"` after broad Event 0
 
 Read:
 
-- repository `AGENTS.md`
+- repository `CLAUDE.md`
 - full Event 021 source-spec folder
 - implemented Event 021 event, news, report, decision, mission, idea, Event Details, evolution, scenario, cluster, achievement, and scripted-localisation text
 

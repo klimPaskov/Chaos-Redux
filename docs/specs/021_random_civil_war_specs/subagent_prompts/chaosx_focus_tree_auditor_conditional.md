@@ -6,7 +6,7 @@ Spawn `chaosx_focus_tree_auditor` with `fork_turns="none"`.
 
 Read:
 
-- repository `AGENTS.md`
+- repository `CLAUDE.md`
 - `chaos-redux-focus-trees`
 - full Event 021 source-spec folder
 - affected focus files

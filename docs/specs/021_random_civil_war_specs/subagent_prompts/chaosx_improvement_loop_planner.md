@@ -6,7 +6,7 @@ Do not spawn it while an earlier Event 021 improvement addendum remains unresolv
 
 Read:
 
-- repository `AGENTS.md`
+- repository `CLAUDE.md`
 - `chaos-redux-improvement-loop`
 - `chaos-redux-event-planning`
 - full Event 021 source-spec folder

@@ -3,14 +3,14 @@
 ## Source-of-truth order
 
 This order concerns design conflicts, subject to each claim's recorded acceptance basis.
-Current AGENTS.md and owner skills govern workflow and tool contracts independently of package wording.
+Current `CLAUDE.md` and owner skills govern workflow and tool contracts independently of package wording.
 Unattributed or conflicting acceptance remains unresolved.
 
 Implementation should use this order when two design sources differ:
 
 1. User corrections in the current accepted task
 2. This revised Event 021 specification package
-3. Current repository `AGENTS.md`
+3. Current repository `CLAUDE.md`
 4. Current relevant Chaos Redux skills
 5. Current live Chaos Redux implementation and shared contracts
 6. Installed vanilla documentation and vanilla precedents
@@ -24,7 +24,7 @@ The authoritative event catalog workbook remains the only editable catalog sourc
 
 Before editing:
 
-- read repository `AGENTS.md`
+- read repository `CLAUDE.md`
 - read this complete Event 021 package
 - read the current Event 021 files if any
 - inspect Event 006 specs, registry, carriers, package initializers, focus assignment, forces, reinforcement, formables, AI, assets, and docs
@@ -44,6 +44,9 @@ Before editing:
 The implementation must not invent unavailable tool names or treat source review as equivalent to required MCP evidence.
 
 ## Recommended implementation tranches
+
+Historical build plan (spec audit 2026-10-10): tranches 1 to 10 are implemented for test entry and the catalog status is `Needs Testing`.
+The open work is tranche 11 (probability comparison, audits, acceptance scenarios) and the user-owned live validation recorded in `docs/events/021_random_civil_war/overview.md`; do not restart completed tranches.
 
 ### Tranche 1: Repository and contract map
 

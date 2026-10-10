@@ -1,13 +1,15 @@
 # Asset Prompt: Event 021 Random Civil War
 
-Use the current [asset contract](../../../.agents/skills/chaos-redux-event-assets/SKILL.md) for source modes, native ImageGen transparency, alpha preservation, exact consumer dimensions, achievement states, and ownership.
+> **Historical build contract (spec audit 2026-10-10):** The work this prompt requests is implemented for test entry and the catalog status is `Needs Testing`. Resume from the [package implementation boundary](README.md#implementation-boundary) and the event documents, and do not restart completed tranches.
+
+Use the current [asset contract](../../../.claude/skills/chaos-redux-event-assets/SKILL.md) for source modes, native ImageGen transparency, alpha preservation, exact consumer dimensions, achievement states, and ownership.
 Reconcile this design inventory with current manifests and runtime consumers before producing another asset.
 
 Create the complete authorized visual asset package for Event 021 under `docs/specs/021_random_civil_war_specs/`.
 
 Read:
 
-- `AGENTS.md`
+- `CLAUDE.md`
 - `chaos-redux-event-assets`
 - `chaos-redux-frame-animation`
 - `chaos-redux-subagents`
@@ -103,7 +105,7 @@ Use a strange-incident report only if the implemented event family uses it enoug
 
 Create one static category picture after inspecting:
 
-`.agents/skills/chaos-redux-event-assets/assets/gfx_references/icons/decision_categories/pictures`
+`.claude/skills/chaos-redux-event-assets/assets/gfx_references/icons/decision_categories/pictures`
 
 Use the verified runtime canvas. The current reference-family canvas is `114x101`, not a universal assumption.
 

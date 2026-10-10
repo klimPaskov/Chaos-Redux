@@ -115,6 +115,11 @@ The action should name the route or region. It must not target civilians as a co
 
 ### Register and support displaced civilians
 
+Ownership (spec audit 2026-10-10): displacement itself belongs to the shared Migration system, not to Event 021.
+Migration already requests war flight pressure from every hostile capture, civil wars included, through `common/scripted_effects/humanitarian_capture_effects.txt`, and it owns corridors, reception capacity, and return (`docs/systems/migration_system.md`).
+The installed Event 021 relief action `event021_open_relief_corridor` is a political and transport response that lowers pressure and raises authority and stability; it moves, hosts, or counts no civilians.
+The role below describes what the action stands for, and the proposed link to Migration is listed under Open questions in the package README.
+
 Role:
 
 - create transport, housing, food, medical, and administrative capacity

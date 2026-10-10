@@ -6,7 +6,7 @@ This is read-only.
 
 Read:
 
-- repository `AGENTS.md`
+- repository `CLAUDE.md`
 - full Event 021 source-spec folder
 - every accepted Event 021 plan and handoff
 - all Event 021 gameplay, localisation, AI, asset, GFX, event-log, cluster, scenario, achievement, and documentation files

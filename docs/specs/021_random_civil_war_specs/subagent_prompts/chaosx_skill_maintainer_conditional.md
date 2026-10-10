@@ -6,7 +6,7 @@ Spawn `chaosx_skill_maintainer` with `fork_turns="none"`.
 
 Read:
 
-- repository `AGENTS.md`
+- repository `CLAUDE.md`
 - the owning existing skill
 - the Event 021 implementation evidence that revealed the reusable rule
 - related helper documentation and audit findings

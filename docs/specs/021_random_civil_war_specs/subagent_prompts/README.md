@@ -1,9 +1,9 @@
 # Event 021 Subagent Prompts
 
-These prompts are implementation handoffs for the project custom Codex subagents.
+These prompts are implementation handoffs for the project custom subagents.
 
-For Codex, spawn every project subagent with `fork_turns="none"` and a complete, self-contained prompt.
-Use the current [subagent skill](../../../../.agents/skills/chaos-redux-subagents/SKILL.md) for other runtimes and ownership boundaries.
+Spawn every project subagent with a complete, self-contained prompt and no inherited parent context; the `fork_turns="none"` wording in these templates means exactly that.
+Use the current [subagent skill](../../../../.claude/skills/chaos-redux-subagents/SKILL.md) for ownership boundaries.
 Before dispatch, add exact allowed files, current source and handoff paths, accepted decisions, and unresolved blockers to each template.
 These templates need bounded parent context and are not standalone authorizations.
 

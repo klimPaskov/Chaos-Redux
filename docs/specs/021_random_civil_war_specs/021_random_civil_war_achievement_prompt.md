@@ -1,8 +1,10 @@
 # Achievement Prompt: Event 021 Random Civil War
 
+> **Historical build contract (spec audit 2026-10-10):** The work this prompt requests is implemented for test entry and the catalog status is `Needs Testing`. Resume from the [package implementation boundary](README.md#implementation-boundary) and the event documents, and do not restart completed tranches.
+
 Implement the complete Event 021 achievement set defined in `021_random_civil_war_spec_part_9_presentation_assets_achievements.md`.
 
-Read the current achievement registry, existing Chaos Redux achievement patterns, `AGENTS.md`, `chaos-redux-events`, `chaos-redux-event-assets`, and the Event 021 specification.
+Read the current achievement registry, existing Chaos Redux achievement patterns, `CLAUDE.md`, `chaos-redux-events`, `chaos-redux-event-assets`, and the Event 021 specification.
 
 Keep all Event 021 achievements inside the existing root achievement registry. Do not create a second achievement `unique_id`.
 

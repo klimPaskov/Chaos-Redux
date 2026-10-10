@@ -6,7 +6,7 @@ Spawn `chaosx_asset_source_researcher` with `fork_turns="none"`.
 
 Read:
 
-- repository `AGENTS.md`
+- repository `CLAUDE.md`
 - `chaos-redux-event-assets`
 - Event 021 asset prompt
 - exact authorized asset row and consumer

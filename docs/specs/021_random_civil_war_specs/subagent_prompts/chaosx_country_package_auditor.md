@@ -4,7 +4,7 @@ Spawn `chaosx_country_package_auditor` with `fork_turns="none"` after ordinary c
 
 Read:
 
-- repository `AGENTS.md`
+- repository `CLAUDE.md`
 - full Event 021 source-spec folder
 - Event 006 specs and current implementation
 - Event 006 country collections and registry

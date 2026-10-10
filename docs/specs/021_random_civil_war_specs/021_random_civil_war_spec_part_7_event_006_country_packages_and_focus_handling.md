@@ -487,6 +487,16 @@ Event 021 must not:
 
 Ordinary human formations can defect through normal force allocation when compatible.
 
+Accepted precedence contract (the 8 October 2026 parent disposition, recorded in Part 8 of the Event 019 package, `docs/specs/019_infantry_spawn_specs/specs/019_infantry_spawn_spec_part_8_scenario_interactions_acceptance.md`):
+
+- a pending Event 019 claimant or family release has priority over its frozen region and recorded formations, and Event 021 selects another viable opening or leaves that opening uncommitted
+- Event 021 never creates a second actor from the same district and never treats the same loyal formations as ordinary defections
+- managed Event 019 lots alone give the host no blanket immunity from Event 021, and a distinct political opening may proceed only through an accepted transfer that preserves formation identity, equipment obligations, and generation ownership
+- the AI applies the same ownership and viability checks and rechecks political eligibility under Event 021's normal cooldown, grace, and viability rules after the specialized transaction resolves
+
+Implementation status (spec audit 2026-10-10): neither side reads the other in source today, since no Event 021 trigger or effect references `infantry_spawn_*` and no Event 019 trigger or effect references Event 021 state.
+The contract is therefore accepted design with the implementation queued; the proposed hook is listed under Open questions in the package README.
+
 ### Event 095 Occupation Revolt
 
 Event 095 owns exile and occupation uprisings.

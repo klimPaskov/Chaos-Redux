@@ -4,7 +4,7 @@
 
 Event 021 joins Cluster ID `1`, Wars.
 
-Proposed membership:
+Membership at planning time (Event 021 is now a live member):
 
 - Event 004 Random War
 - Event 007 Fury
@@ -12,7 +12,8 @@ Proposed membership:
 
 Event 021 member severity is `Medium`.
 
-The current catalog export lists Event 004 and Event 007 only. Cluster membership and wording should be changed in the authoritative workbook after implementation wording is final. The CSV exports remain generated snapshots.
+The authoritative workbook records Event 021 in Cluster `1` as a Medium member; the cluster later gained Events 45 and 62 from other packages, so the live member list is `4, 7, 21, 45, 62`.
+The CSV exports remain generated snapshots of that workbook.
 
 ## Cluster identity
 

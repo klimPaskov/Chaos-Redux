@@ -4,7 +4,7 @@ Spawn `chaosx_scripted_system_architect` with `fork_turns="none"` after the pare
 
 Read:
 
-- repository `AGENTS.md`
+- repository `CLAUDE.md`
 - full Event 021 source-spec folder
 - current parent source map and any applicable explorer handoff
 - Event 006 package and country-collection implementation

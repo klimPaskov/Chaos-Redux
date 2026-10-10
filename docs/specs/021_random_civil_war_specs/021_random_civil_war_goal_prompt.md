@@ -1,8 +1,10 @@
 # Goal Prompt: Event 021 Random Civil War
 
+> **Historical build contract (spec audit 2026-10-10):** The work this prompt requests is implemented for test entry and the catalog status is `Needs Testing`. Resume from the [package implementation boundary](README.md#implementation-boundary) and the event documents, and do not restart completed tranches.
+
 Implement `docs/specs/021_random_civil_war_specs/` in full.
 
-Read `AGENTS.md`, every Event 021 spec and prompt, Event 006 specs and implementation, relevant skills, the offline Paradox wiki, installed vanilla documentation, and current civil-war, cluster, scenario, AI, decision, and asset precedents. Use live MCP schemas and context-free project subagents under the current owner skill.
+Read `CLAUDE.md`, every Event 021 spec and prompt, Event 006 specs and implementation, relevant skills, the offline Paradox wiki, installed vanilla documentation, and current civil-war, cluster, scenario, AI, decision, and asset precedents. Use live MCP schemas and context-free project subagents under the current owner skill.
 
 Event 021 is Minor Repeatable, chaos level 1, with entry `chaosx.nr21.1`. Add it to Cluster 1, Wars, at Medium severity. Use the README release boundary. When no valid target exists, show `N/A` and remove live weight.
 
