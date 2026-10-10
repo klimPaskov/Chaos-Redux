@@ -579,36 +579,33 @@ get_event_cap = {
 # Resolve the first dynamic reason an event cannot enter the automatic pool.
 # Input: temp variables event_id, event_required_chaos_level, and
 # event_required_chaos_level_is_met_value. The caller resolves the event
-# metadata first.
+# metadata first and creates the storage for those two values before calling
+# the helpers that fill them, because a temporary variable first created inside
+# a nested scripted effect may not survive its return.
+# Input (optional): event_cluster_liberations_member_availability_context > 0
+# with event_cluster_id and event_cluster_member_event_id marks the Liberations
+# cluster member probe, which also asks whether the Event 006 allocator has
+# enough ready packages for a joint release.
 # Output: event_pool_candidate_unavailability_reason and
 # event_required_chaos_level_is_met_value.
 # Disabled and already-fired unique events are resolved by the shared pool
 # wrapper because the Events tab represents them as numeric zero states while
 # cluster history needs their canonical rejection reason.
+# Event 006 stays selectable in the plain pool and in every other cluster
+# whatever its candidate pool holds, because its allocator reports an empty
+# pool itself. Only an earlier liberation release that is still unresolved, or
+# the Liberations member probe finding no capacity, makes it unavailable.
 evaluate_event_pool_candidate_unavailability = {
 	set_temp_variable = { event_pool_candidate_unavailability_reason = constant:event_system_event_unavailability_reason.none }
-	set_temp_variable = { event_pool_candidate_independence_context_injected = 0 }
 	set_temp_variable = { event_pool_candidate_independence_capacity_registry_prepared = 0 }
+	# The Liberations member probe asks the Event 006 capacity trigger before
+	# the allocator opens its plan. Seed the durable absent-country-safe
+	# registry here so the package readiness wrappers can resolve both live tags
+	# and not-yet-created carriers during that probe.
 	if = {
 		limit = {
 			check_variable = { event_id = constant:independence_wave_event.id }
-			NOT = { check_variable = { event_cluster_liberations_member_availability_context > 0 } }
-		}
-		set_temp_variable = { event_pool_candidate_saved_cluster_id = event_cluster_id }
-		set_temp_variable = { event_pool_candidate_saved_member_id = event_cluster_member_event_id }
-		set_temp_variable = { event_cluster_id = constant:event_cluster_id.liberations }
-		set_temp_variable = { event_cluster_member_event_id = constant:independence_wave_event.id }
-		set_temp_variable = { event_cluster_liberations_member_availability_context = 1 }
-		set_temp_variable = { event_pool_candidate_independence_context_injected = 1 }
-	}
-	# The automatic pool asks the Liberations capacity trigger before the Event
-	# 006 allocator opens its plan. Seed the durable absent-country-safe registry
-	# here so the same package readiness wrappers can resolve both live tags and
-	# not-yet-created carriers during that pre-selection probe and the later live
-	# allocation pass.
-	if = {
-		limit = {
-			check_variable = { event_id = constant:independence_wave_event.id }
+			check_variable = { event_cluster_liberations_member_availability_context > 0 }
 			check_variable = { event_required_chaos_level_is_met_value > 0 }
 			can_liberation_release_reset_plan = yes
 		}
@@ -775,7 +772,13 @@ evaluate_event_pool_candidate_unavailability = {
 	else_if = {
 		limit = {
 			check_variable = { event_id = constant:independence_wave_event.id }
-			NOT = { is_independence_wave_liberations_cluster_member_capacity_available = yes }
+			OR = {
+				NOT = { can_liberation_release_reset_plan = yes }
+				AND = {
+					check_variable = { event_cluster_liberations_member_availability_context > 0 }
+					NOT = { is_independence_wave_liberations_cluster_member_capacity_available = yes }
+				}
+			}
 		}
 		set_temp_variable = { event_pool_candidate_unavailability_reason = constant:event_system_event_unavailability_reason.independence_wave_capacity }
 	}
@@ -874,13 +877,6 @@ evaluate_event_pool_candidate_unavailability = {
 		clear_array = global.independence_wave_plan_possible_countries
 		clear_temp_array = independence_wave_runtime_possible_countries
 	}
-
-	if = {
-		limit = { check_variable = { event_pool_candidate_independence_context_injected > 0 } }
-		set_temp_variable = { event_cluster_id = event_pool_candidate_saved_cluster_id }
-		set_temp_variable = { event_cluster_member_event_id = event_pool_candidate_saved_member_id }
-		set_temp_variable = { event_cluster_liberations_member_availability_context = 0 }
-	}
 }
 
 # Check whether event_id is part of the current automatic random-event pool.
@@ -892,6 +888,8 @@ evaluate_random_event_active_pool_candidate = {
 	set_temp_variable = { event_pool_candidate_unavailability_reason = constant:event_system_event_unavailability_reason.none }
 	set_temp_variable = { event_type = constant:event_system_event_type.unknown }
 	get_event_type = yes
+	set_temp_variable = { event_required_chaos_level = constant:chaos_meter_tier_id.tier_0 }
+	set_temp_variable = { event_required_chaos_level_is_met_value = 0 }
 	get_event_required_chaos_level = yes
 	evaluate_event_required_chaos_level = yes
 	if = {
@@ -1065,6 +1063,8 @@ update_repeatable_event_weights = {
 		value = i
 
 		set_temp_variable = { event_id = global.repeatable_events^i }
+		set_temp_variable = { event_required_chaos_level = constant:chaos_meter_tier_id.tier_0 }
+		set_temp_variable = { event_required_chaos_level_is_met_value = 0 }
 		get_event_required_chaos_level = yes
 		evaluate_event_required_chaos_level = yes
 		set_temp_variable = { event_weight = 0 }

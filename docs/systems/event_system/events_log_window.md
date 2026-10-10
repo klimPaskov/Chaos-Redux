@@ -95,7 +95,7 @@ The current catalogue assigns Fury separate Medium and High rows, Tensions Risin
 
 The shared evaluate_event_pool_candidate_unavailability resolver owns the ordered automatic-pool reason contract used by both normal selection and the Events tab.
 
-Its reasons cover Event Chaos Level, active or disabled Zombie Outbreak state, World Revolution unlock, Holy Realm refuge host, Fury target, Tensions Rising world tension, White Peace pair, Utopia host, Brilliant Scientist lifecycle and host gates, Secret Alliance target and lifecycle gates, Cannibalism lifecycle and origin gates, Random Faction dispatch context, Resources Found discovery fields, Independence Wave liberation capacity, Africa Is One lifecycle and host gates, and Black Plague lifecycle and origin gates.
+Its reasons cover Event Chaos Level, active or disabled Zombie Outbreak state, World Revolution unlock, Holy Realm refuge host, Fury target, Tensions Rising world tension, White Peace pair, Utopia host, Brilliant Scientist lifecycle and host gates, Secret Alliance target and lifecycle gates, Cannibalism lifecycle and origin gates, Random Faction dispatch context, Resources Found discovery fields, Independence Wave release state (an earlier liberation release still being resolved, or no capacity for a joint release in the Liberations cluster probe only), Africa Is One lifecycle and host gates, and Black Plague lifecycle and origin gates.
 
 Disabled events and already-fired unique events remain zero without an N/A reason because they are state-controlled rather than dynamically unavailable.
 

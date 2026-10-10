@@ -5069,8 +5069,17 @@ is_independence_wave_liberations_cluster_member_capacity_available = {
 	check_variable = { event_cluster_member_event_id = constant:independence_wave_event.id }
 	check_variable = { event_id = constant:independence_wave_event.id }
 	can_liberation_release_reset_plan = yes
+	# This trigger creates all storage that the capture helper and the try
+	# helpers below fill: a temporary variable or array first created inside a
+	# nested scripted trigger may not survive its return.
+	set_temp_variable = { independence_wave_capacity_chaos_band = constant:independence_wave_chaos_band.calm_world }
+	set_temp_variable = { independence_wave_capacity_target_count = constant:independence_wave_count.calm_world }
 	independence_wave_liberations_capacity_capture_band = yes
 	set_temp_variable = { independence_wave_capacity_selected_count = constant:independence_wave_planner.no_candidates }
+	add_to_temp_array = { array = independence_wave_capacity_selected_packages value = constant:independence_wave_planner.no_candidates }
+	add_to_temp_array = { array = independence_wave_capacity_selected_countries value = constant:independence_wave_planner.no_candidates }
+	add_to_temp_array = { array = independence_wave_capacity_selected_anchors value = constant:independence_wave_planner.no_candidates }
+	add_to_temp_array = { array = independence_wave_capacity_selected_groups value = constant:independence_wave_planner.no_candidates }
 	clear_temp_array = independence_wave_capacity_selected_packages
 	clear_temp_array = independence_wave_capacity_selected_countries
 	clear_temp_array = independence_wave_capacity_selected_anchors
