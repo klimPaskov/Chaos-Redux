@@ -8,8 +8,8 @@ Generated on 2026-09-03.
 ## Package totals
 
 - Files listed excluding this manifest: 22
-- Total bytes excluding this manifest: 339181
-- Total words excluding this manifest: 52843
+- Total bytes excluding this manifest: 343669
+- Total words excluding this manifest: 53419
 - Goal prompt length: 3964 characters
 - Acceptance criteria: 606
 - Required repository roots present: `docs/specs/064_border_fortifications_specs/` and `docs/plans/064_border_fortifications_plans/`
