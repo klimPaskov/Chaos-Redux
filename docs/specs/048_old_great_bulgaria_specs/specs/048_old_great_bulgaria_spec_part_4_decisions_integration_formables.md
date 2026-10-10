@@ -52,6 +52,16 @@ The common price of overexpansion is that new fronts compete with projects that 
 Bulgaria can choose the next conquest instead of reconstruction, but Administration and the real garrison/supply position constrain what it can retain.
 AI should consolidate a controlled high-value group when another campaign would exhaust the same transport and equipment; a federation AI should preserve an eligible partner instead of buying the direct-incorporation path under another name.
 
+## Consequences in shared systems
+
+The integration choice is felt through systems Event 048 does not own, so it adds no new value.
+
+- Conquest creates refugees through the ordinary hostile-capture adapter in `common/scripted_effects/humanitarian_capture_effects.txt`; Event 048 adds no flight request of its own.
+- Military-first pacification runs the occupied region under a harsher occupation law.
+  The famine owner reads that law through `famine_resolve_occupation_profile`, so an extractive pacification can push a poor region toward shortage, and the resulting Famine category actions compete with the next campaign for the same transport and factories.
+- Civil administration and negotiated autonomy keep the standard or a milder law, so they avoid that pressure at the cost of time.
+- Camps, deportation, and other repression in conquered regions belong to the shared camp and migration systems; Event 048 neither offers nor rewards them.
+
 ## Integration missions
 
 Important regions use timed objectives rather than passive stockpile gates.

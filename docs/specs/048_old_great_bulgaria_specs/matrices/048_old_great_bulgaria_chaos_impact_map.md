@@ -9,8 +9,9 @@
 | Bulgaria creates a subject | 0 event-owned | shared puppeting source handles it |
 | Bulgaria joins or forms a faction | 0 event-owned | shared faction source handles it where applicable |
 | Deaths from warfare | 0 event-owned | shared deaths tracker and resulting Chaos handle it |
-| Greater Bulgaria forms | normally 0 | formation itself is regional identity change |
-| Bulgarian Empire forms | candidate one-shot only if implementation proves unique world-order impact | must not duplicate annexation/faction sources |
-| Old Great Bulgaria forms | candidate one-shot world-order shock | final amount must be separately justified and centralized |
+| Greater Bulgaria forms | 0 | the annexations and wars behind it are already counted |
+| Bulgarian Empire forms | 0 | the annexations, subjects, and faction changes behind it are already counted |
+| Old Great Bulgaria forms | 0 | the conquests behind it are already counted; the super-event carries the moment |
 
-The default is no extra event-owned Chaos when shared systems already record the consequence.
+Event 048 owns no Chaos source.
+A flat formation award would count the same conquests twice.

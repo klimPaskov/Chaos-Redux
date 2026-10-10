@@ -2,19 +2,20 @@
 
 ## Event classification
 
-Event 048 remains Minor Fire-Once at Chaos level 1. It belongs to the Formables cluster and should use Medium member severity once the authoritative workbook is aligned.
-
-The current exported event catalog has the event row without cluster and severity values. The package includes a workbook handoff patch row, but the CSV export itself must not be edited directly in the repository.
+Event 048 remains Minor Fire-Once at Chaos level 1.
+The authoritative workbook already lists it in the Formables cluster (ID 6) as the Medium member, and the live cluster registry carries the same row.
+The workbook row still has the one-line legacy details and empty evolution columns; `quality/048_event_catalog_patch.csv` holds the replacement details and the three evolution names for the implementation to apply to the workbook, never to the CSV exports.
 
 ## Chaos handling
 
-The event does not receive arbitrary Chaos for becoming stronger. Normal shared sources already account for wars, annexations, puppeting, faction changes, deaths, and other world consequences.
-
-Event-owned Chaos changes should be rare and tied to unique outcomes not already counted by shared systems, such as a major forced regional settlement or the final Black Sea imperial proclamation if the implementation decides it represents a distinct world-order shock.
+Event 048 adds no event-owned Chaos.
+Shared sources already account for wars, annexations, puppeting, faction changes, deaths, and other world consequences, and every formation is the sum of those consequences rather than a separate shock.
+The final proclamation's weight is carried by its super-event and the real territory behind it.
+`matrices/048_old_great_bulgaria_chaos_impact_map.md` lists each outcome and the shared source that counts it.
 
 ## Formables cluster
 
-The current cluster export identifies Formables as cluster ID 6, Minor Repeatable, unlock tier 3. Event 048 itself has Chaos level 1, so ordinary event eligibility and cluster participation remain separate gates under the shared cluster rules.
+Formables is cluster ID 6, Minor Repeatable, unlock tier 3, in both the workbook and the live registry. Event 048 itself has Chaos level 1, so ordinary event eligibility and cluster participation remain separate gates under the shared cluster rules.
 
 The event must remain fully playable when it fires independently before the cluster tier is available.
 

@@ -24,7 +24,6 @@ The pack preserves the supplied event promise summarized in `source/048_user_bri
 The original brief is not retained here, and that normalized summary does not establish acceptance of every planner expansion.
 Claims lacking an attributable original user or parent decision remain unresolved.
 Package-generation source reports, the independent structural audit, and improvement closure are historical evidence, not current implementation, tool health, or final approval.
-`quality/package_file_manifest.csv` describes current local package files; its bytes and hashes are refreshed after documentation cleanup.
 
 Use the sources in this order:
 
@@ -136,3 +135,22 @@ These are evidence gates, not permission to reduce the design.
 This package is a specification. It does not claim gameplay implementation, in-game validation, final art, final audio, exact state-ID locking, or catalog workbook updates.
 
 The coding agent must report any missing route, state group, AI behavior, decision family, asset, achievement, super-event, evolution, or formable requirement as an omission. Silent fallback content is forbidden.
+
+## Open questions
+
+- The Event 045 settlement link (Part 2 and Part 4) depends on the Third Balkan War package keeping its claim and settlement owner; recheck it when Event 045 is implemented.
+- Regional reactions (Part 5) name a "regional containment alignment" without a defined mechanic; the implementation should either express it through ordinary guarantees and faction invitations or drop it.
+
+## Changelog
+
+### 2026-10-10 spec audit
+
+Pass 1, consistency and cleanup:
+- Part 7 no longer claims the workbook lacks the cluster: cluster 6 and Medium severity are already in the workbook and the live registry; only the details and evolution columns remain to apply.
+- Replaced `AGENTS.md` with `CLAUDE.md`, removed the Codex `fork_turns` lines, and reduced the goal prompt to a pointer at the coding prompt.
+- Deleted `quality/package_file_manifest.csv` and `quality/package_metadata.json`, a hash inventory and a metadata copy that went stale with every edit and repeated the README.
+
+Pass 2, design improvement:
+- Settled the open "candidate one-shot Chaos" rows: Event 048 owns no Chaos source, because a formation award would count the same conquests twice.
+- Gave the integration choice a real cost in shared systems: military-first pacification uses a harsher occupation law that the famine owner already reads, while civil administration and autonomy avoid it; conquest refugees come from the existing capture adapter.
+- Recorded two loose ends (Event 045 dependency, undefined containment alignment) as open questions.
