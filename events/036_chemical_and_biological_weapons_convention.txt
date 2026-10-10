@@ -1,0 +1,526 @@
+add_namespace = chaosx.nr36
+
+# ============================================================================
+# CHAOS REDUX - EVENT 036 CHEMICAL AND BIOLOGICAL WEAPONS CONVENTION
+# ============================================================================
+# Minor Fire-Once diplomatic event. The entry runs the one bounded opening
+# pass; every later event is an Event 036 follow-up and never enters the
+# random-event pool. Logic lives in
+# common/scripted_effects/036_cbrn_convention_effects.txt.
+#
+# .1 entry          .2 opening response    .3 opening news
+# .10-.13 agendas   .20 evolution report   .40-.44 program reports
+# .50-.53 exposure, breach, suspension, expulsion
+# .55 covert family choice  .60 accession  .61 withdrawal  .62 revision
+# .71-.78 news       .80 coordinator pulse
+# ============================================================================
+
+country_event = {
+	id = chaosx.nr36.1
+	title = chaosx.nr36.1.t
+	hidden = yes
+	is_triggered_only = yes
+
+	immediate = {
+		cbrn_convention_open = yes
+	}
+}
+
+# Opening response. The first option is the timeout answer.
+country_event = {
+	id = chaosx.nr36.2
+	title = chaosx.nr36.2.t
+	desc = chaosx.nr36.2.desc
+	picture = GFX_report_event_cbrn_convention
+	is_triggered_only = yes
+	timeout_days = 30
+
+	trigger = {
+		has_country_flag = cbrn_convention_opening_pending
+		NOT = { has_country_flag = cbrn_convention_opening_resolved }
+	}
+
+	immediate = {
+		hidden_effect = { cbrn_convention_store_projected_totals = yes }
+	}
+
+	option = {
+		name = chaosx.nr36.2.c
+		custom_effect_tooltip = cbrn_convention_opening_reservation_tt
+		custom_effect_tooltip = cbrn_convention_opening_reservation_tier_tt
+		hidden_effect = {
+			set_temp_variable = { cbrn_convention_new_posture = constant:cbrn_convention_posture.reservation }
+			set_temp_variable = { cbrn_convention_new_covert = constant:cbrn_convention.zero }
+			cbrn_convention_resolve_opening_posture = yes
+		}
+	}
+	option = {
+		name = chaosx.nr36.2.a
+		custom_effect_tooltip = cbrn_convention_opening_full_tt
+		custom_effect_tooltip = cbrn_convention_opening_full_tier_tt
+		hidden_effect = {
+			set_temp_variable = { cbrn_convention_new_posture = constant:cbrn_convention_posture.full }
+			set_temp_variable = { cbrn_convention_new_covert = constant:cbrn_convention.zero }
+			cbrn_convention_resolve_opening_posture = yes
+		}
+	}
+	option = {
+		name = chaosx.nr36.2.b
+		custom_effect_tooltip = cbrn_convention_opening_chemical_tt
+		custom_effect_tooltip = cbrn_convention_opening_chemical_tier_tt
+		hidden_effect = {
+			set_temp_variable = { cbrn_convention_new_posture = constant:cbrn_convention_posture.chemical }
+			set_temp_variable = { cbrn_convention_new_covert = constant:cbrn_convention.zero }
+			cbrn_convention_resolve_opening_posture = yes
+		}
+	}
+	option = {
+		name = chaosx.nr36.2.d
+		custom_effect_tooltip = cbrn_convention_opening_rejection_tt
+		hidden_effect = {
+			set_temp_variable = { cbrn_convention_new_posture = constant:cbrn_convention_posture.rejection }
+			set_temp_variable = { cbrn_convention_new_covert = constant:cbrn_convention.zero }
+			cbrn_convention_resolve_opening_posture = yes
+		}
+	}
+	option = {
+		name = chaosx.nr36.2.e
+		custom_effect_tooltip = cbrn_convention_opening_covert_tt
+		hidden_effect = {
+			set_temp_variable = { cbrn_convention_new_posture = constant:cbrn_convention_posture.rejection }
+			set_temp_variable = { cbrn_convention_new_covert = constant:cbrn_convention.one }
+			cbrn_convention_resolve_opening_posture = yes
+		}
+	}
+}
+
+news_event = {
+	id = chaosx.nr36.3
+	title = chaosx.nr36.3.t
+	desc = chaosx.nr36.3.d
+	picture = GFX_news_event_generic_sign_treaty1
+	major = yes
+	is_triggered_only = yes
+	option = { name = chaosx.nr36.3.a }
+}
+
+# Agenda announcement for human members and opponents.
+country_event = {
+	id = chaosx.nr36.10
+	title = chaosx.nr36.10.t
+	desc = chaosx.nr36.10.d
+	picture = GFX_report_event_cbrn_convention
+	is_triggered_only = yes
+	trigger = { cbrn_convention_agenda_is_open = yes }
+	option = { name = chaosx.nr36.10.a }
+}
+
+# National response at the deadline. Silence declines, so Decline is first.
+country_event = {
+	id = chaosx.nr36.11
+	title = chaosx.nr36.11.t
+	desc = chaosx.nr36.11.d
+	picture = GFX_report_event_cbrn_convention
+	is_triggered_only = yes
+	timeout_days = 14
+
+	trigger = {
+		cbrn_convention_agenda_is_open = yes
+		NOT = { has_global_flag = cbrn_convention_agenda_negotiating }
+		NOT = { is_in_array = { array = global.cbrn_convention_agenda_ratifiers value = THIS } }
+	}
+
+	immediate = {
+		hidden_effect = { set_temp_variable = { cbrn_convention_family_id = global.cbrn_convention_agenda_family } }
+	}
+
+	option = {
+		name = chaosx.nr36.11.c
+		custom_effect_tooltip = cbrn_convention_response_decline_tt
+	}
+	option = {
+		name = chaosx.nr36.11.a
+		trigger = {
+			set_temp_variable = { cbrn_convention_family_id = global.cbrn_convention_agenda_family }
+			NOT = { cbrn_convention_posture_forces_reservation_clause = yes }
+		}
+		custom_effect_tooltip = cbrn_convention_response_ratify_tt
+		hidden_effect = {
+			if = {
+				limit = { cbrn_convention_can_respond_to_agenda = yes }
+				set_temp_variable = { cbrn_convention_response_reserved = constant:cbrn_convention.zero }
+				cbrn_convention_record_agenda_ratification = yes
+			}
+		}
+	}
+	option = {
+		name = chaosx.nr36.11.b
+		trigger = {
+			set_temp_variable = { cbrn_convention_family_id = global.cbrn_convention_agenda_family }
+			cbrn_convention_family_has_reservation_clause = yes
+		}
+		custom_effect_tooltip = cbrn_convention_response_reserve_tt
+		hidden_effect = {
+			if = {
+				limit = { cbrn_convention_can_respond_to_agenda = yes }
+				set_temp_variable = { cbrn_convention_response_reserved = constant:cbrn_convention.one }
+				cbrn_convention_record_agenda_ratification = yes
+			}
+		}
+	}
+}
+
+# Resolution report for human members and opponents.
+country_event = {
+	id = chaosx.nr36.12
+	title = chaosx.nr36.12.t
+	desc = {
+		text = chaosx.nr36.12.d_ok
+		trigger = { check_variable = { global.cbrn_convention_last_result > constant:cbrn_convention.zero } }
+	}
+	desc = {
+		text = chaosx.nr36.12.d_failed
+		trigger = { NOT = { check_variable = { global.cbrn_convention_last_result > constant:cbrn_convention.zero } } }
+	}
+	picture = GFX_report_event_cbrn_convention
+	is_triggered_only = yes
+	option = { name = chaosx.nr36.12.a }
+}
+
+# Resolution at the end of the response window (coordinator).
+country_event = {
+	id = chaosx.nr36.13
+	title = chaosx.nr36.13.t
+	hidden = yes
+	is_triggered_only = yes
+	immediate = { cbrn_convention_resolve_agenda = yes }
+}
+
+# Evolution report. global.cbrn_convention_evolution_report_stage selects the
+# title, the text and the option.
+country_event = {
+	id = chaosx.nr36.20
+	title = {
+		text = chaosx.nr36.20.t1
+		trigger = { check_variable = { global.cbrn_convention_evolution_report_stage = constant:cbrn_convention.evolution_i_stage } }
+	}
+	title = {
+		text = chaosx.nr36.20.t2
+		trigger = { check_variable = { global.cbrn_convention_evolution_report_stage = constant:cbrn_convention.evolution_ii_stage } }
+	}
+	title = {
+		text = chaosx.nr36.20.t3
+		trigger = { check_variable = { global.cbrn_convention_evolution_report_stage = constant:cbrn_convention.evolution_iii_stage } }
+	}
+	desc = {
+		text = chaosx.nr36.20.d1
+		trigger = { check_variable = { global.cbrn_convention_evolution_report_stage = constant:cbrn_convention.evolution_i_stage } }
+	}
+	desc = {
+		text = chaosx.nr36.20.d2
+		trigger = { check_variable = { global.cbrn_convention_evolution_report_stage = constant:cbrn_convention.evolution_ii_stage } }
+	}
+	desc = {
+		text = chaosx.nr36.20.d3
+		trigger = { check_variable = { global.cbrn_convention_evolution_report_stage = constant:cbrn_convention.evolution_iii_stage } }
+	}
+	picture = GFX_report_event_cbrn_convention
+	is_triggered_only = yes
+	option = {
+		name = chaosx.nr36.20.a
+		trigger = { check_variable = { global.cbrn_convention_evolution_report_stage = constant:cbrn_convention.evolution_i_stage } }
+	}
+	option = {
+		name = chaosx.nr36.20.b
+		trigger = { check_variable = { global.cbrn_convention_evolution_report_stage = constant:cbrn_convention.evolution_ii_stage } }
+	}
+	option = {
+		name = chaosx.nr36.20.c
+		trigger = { check_variable = { global.cbrn_convention_evolution_report_stage = constant:cbrn_convention.evolution_iii_stage } }
+	}
+}
+
+country_event = {
+	id = chaosx.nr36.40
+	title = chaosx.nr36.40.t
+	desc = chaosx.nr36.40.d
+	picture = GFX_report_event_generic_research_lab
+	is_triggered_only = yes
+	option = { name = chaosx.nr36.40.a }
+}
+
+country_event = {
+	id = chaosx.nr36.41
+	title = chaosx.nr36.41.t
+	desc = chaosx.nr36.41.d
+	picture = GFX_report_event_generic_research_lab
+	is_triggered_only = yes
+	option = { name = chaosx.nr36.41.a }
+}
+
+country_event = {
+	id = chaosx.nr36.42
+	title = chaosx.nr36.42.t
+	desc = chaosx.nr36.42.d
+	picture = GFX_report_event_generic_research_lab
+	is_triggered_only = yes
+	option = { name = chaosx.nr36.42.a }
+}
+
+country_event = {
+	id = chaosx.nr36.43
+	title = chaosx.nr36.43.t
+	desc = chaosx.nr36.43.d
+	picture = GFX_report_event_generic_research_lab
+	is_triggered_only = yes
+	option = { name = chaosx.nr36.43.a }
+}
+
+country_event = {
+	id = chaosx.nr36.44
+	title = chaosx.nr36.44.t
+	desc = chaosx.nr36.44.d
+	picture = GFX_report_event_generic_research_lab
+	is_triggered_only = yes
+	option = { name = chaosx.nr36.44.a }
+}
+
+# Covert program exposed (to the exposed government).
+country_event = {
+	id = chaosx.nr36.50
+	title = chaosx.nr36.50.t
+	desc = chaosx.nr36.50.d
+	picture = GFX_report_event_cbrn_convention
+	is_triggered_only = yes
+	option = { name = chaosx.nr36.50.a }
+}
+
+country_event = {
+	id = chaosx.nr36.51
+	title = chaosx.nr36.51.t
+	desc = chaosx.nr36.51.d
+	picture = GFX_report_event_cbrn_convention
+	is_triggered_only = yes
+	option = { name = chaosx.nr36.51.a }
+}
+
+country_event = {
+	id = chaosx.nr36.52
+	title = chaosx.nr36.52.t
+	desc = chaosx.nr36.52.d
+	picture = GFX_report_event_cbrn_convention
+	is_triggered_only = yes
+	option = { name = chaosx.nr36.52.a }
+}
+
+country_event = {
+	id = chaosx.nr36.53
+	title = chaosx.nr36.53.t
+	desc = chaosx.nr36.53.d
+	picture = GFX_report_event_cbrn_convention
+	is_triggered_only = yes
+	option = { name = chaosx.nr36.53.a }
+}
+
+# Covert program family for a human government.
+country_event = {
+	id = chaosx.nr36.55
+	title = chaosx.nr36.55.t
+	desc = chaosx.nr36.55.d
+	picture = GFX_report_event_generic_research_lab
+	is_triggered_only = yes
+	option = {
+		name = chaosx.nr36.55.a
+		trigger = { cbrn_convention_has_chemical_capability = yes }
+		custom_effect_tooltip = cbrn_convention_covert_chemical_tt
+		hidden_effect = {
+			set_temp_variable = { cbrn_convention_covert_family_input = constant:cbrn_convention.one }
+			cbrn_convention_begin_covert_program = yes
+		}
+	}
+	option = {
+		name = chaosx.nr36.55.b
+		trigger = { cbrn_convention_has_biological_capability = yes }
+		custom_effect_tooltip = cbrn_convention_covert_biological_tt
+		hidden_effect = {
+			set_temp_variable = { cbrn_convention_covert_family_input = constant:cbrn_convention.two }
+			cbrn_convention_begin_covert_program = yes
+		}
+	}
+}
+
+# Accession Review completes: choose the member posture.
+country_event = {
+	id = chaosx.nr36.60
+	title = chaosx.nr36.60.t
+	desc = chaosx.nr36.60.d
+	picture = GFX_report_event_cbrn_convention
+	is_triggered_only = yes
+	option = {
+		name = chaosx.nr36.60.c
+		custom_effect_tooltip = cbrn_convention_posture_reservation_tt
+		hidden_effect = {
+			set_temp_variable = { cbrn_convention_new_posture = constant:cbrn_convention_posture.reservation }
+			cbrn_convention_complete_accession = yes
+		}
+	}
+	option = {
+		name = chaosx.nr36.60.a
+		custom_effect_tooltip = cbrn_convention_posture_full_tt
+		hidden_effect = {
+			set_temp_variable = { cbrn_convention_new_posture = constant:cbrn_convention_posture.full }
+			cbrn_convention_complete_accession = yes
+		}
+	}
+	option = {
+		name = chaosx.nr36.60.b
+		custom_effect_tooltip = cbrn_convention_posture_chemical_tt
+		hidden_effect = {
+			set_temp_variable = { cbrn_convention_new_posture = constant:cbrn_convention_posture.chemical }
+			cbrn_convention_complete_accession = yes
+		}
+	}
+}
+
+country_event = {
+	id = chaosx.nr36.61
+	title = chaosx.nr36.61.t
+	desc = chaosx.nr36.61.d
+	picture = GFX_report_event_cbrn_convention
+	is_triggered_only = yes
+	option = { name = chaosx.nr36.61.a }
+}
+
+# Revise Posture: only the allowed revisions. Keeping the posture is first.
+country_event = {
+	id = chaosx.nr36.62
+	title = chaosx.nr36.62.t
+	desc = chaosx.nr36.62.desc
+	picture = GFX_report_event_cbrn_convention
+	is_triggered_only = yes
+	option = {
+		name = chaosx.nr36.62.d
+	}
+	option = {
+		name = chaosx.nr36.62.a
+		trigger = {
+			NOT = { cbrn_convention_is_full = yes }
+			OR = {
+				cbrn_convention_is_chemical_accession = yes
+				has_global_flag = cbrn_convention_evolution_1_recorded
+			}
+		}
+		custom_effect_tooltip = cbrn_convention_posture_full_tt
+		hidden_effect = {
+			set_temp_variable = { cbrn_convention_new_posture = constant:cbrn_convention_posture.full }
+			cbrn_convention_revise_posture = yes
+		}
+	}
+	option = {
+		name = chaosx.nr36.62.b
+		trigger = {
+			NOT = { cbrn_convention_is_chemical_accession = yes }
+			OR = {
+				cbrn_convention_is_full = yes
+				has_global_flag = cbrn_convention_evolution_1_recorded
+			}
+		}
+		custom_effect_tooltip = cbrn_convention_posture_chemical_tt
+		hidden_effect = {
+			set_temp_variable = { cbrn_convention_new_posture = constant:cbrn_convention_posture.chemical }
+			cbrn_convention_revise_posture = yes
+		}
+	}
+	option = {
+		name = chaosx.nr36.62.c
+		trigger = { NOT = { cbrn_convention_is_reservation = yes } }
+		custom_effect_tooltip = cbrn_convention_posture_reservation_tt
+		hidden_effect = {
+			set_temp_variable = { cbrn_convention_new_posture = constant:cbrn_convention_posture.reservation }
+			cbrn_convention_revise_posture = yes
+		}
+	}
+}
+
+# News.
+news_event = {
+	id = chaosx.nr36.71
+	title = chaosx.nr36.71.t
+	desc = chaosx.nr36.71.d
+	picture = GFX_news_event_generic_sign_treaty2
+	major = yes
+	is_triggered_only = yes
+	option = { name = chaosx.nr36.71.a }
+}
+news_event = {
+	id = chaosx.nr36.72
+	title = chaosx.nr36.72.t
+	desc = chaosx.nr36.72.d
+	picture = GFX_news_event_generic_sign_treaty2
+	major = yes
+	is_triggered_only = yes
+	option = { name = chaosx.nr36.72.a }
+}
+news_event = {
+	id = chaosx.nr36.73
+	title = chaosx.nr36.73.t
+	desc = chaosx.nr36.73.d
+	picture = GFX_news_event_generic_sign_treaty3
+	major = yes
+	is_triggered_only = yes
+	option = { name = chaosx.nr36.73.a }
+}
+news_event = {
+	id = chaosx.nr36.74
+	title = chaosx.nr36.74.t
+	desc = chaosx.nr36.74.d
+	picture = GFX_news_event_generic_sign_treaty3
+	major = yes
+	is_triggered_only = yes
+	option = { name = chaosx.nr36.74.a }
+}
+news_event = {
+	id = chaosx.nr36.75
+	title = chaosx.nr36.75.t
+	desc = chaosx.nr36.75.d
+	picture = GFX_news_event_generic_research_lab
+	major = yes
+	is_triggered_only = yes
+	option = { name = chaosx.nr36.75.a }
+}
+news_event = {
+	id = chaosx.nr36.76
+	title = chaosx.nr36.76.t
+	desc = chaosx.nr36.76.d
+	picture = GFX_news_event_generic_sign_treaty1
+	major = yes
+	is_triggered_only = yes
+	option = { name = chaosx.nr36.76.a }
+}
+news_event = {
+	id = chaosx.nr36.77
+	title = chaosx.nr36.77.t
+	desc = chaosx.nr36.77.d
+	picture = GFX_news_event_generic_research_lab
+	major = yes
+	is_triggered_only = yes
+	option = { name = chaosx.nr36.77.a }
+}
+news_event = {
+	id = chaosx.nr36.78
+	title = chaosx.nr36.78.t
+	desc = chaosx.nr36.78.d
+	picture = GFX_news_event_generic_research_lab
+	major = yes
+	is_triggered_only = yes
+	option = { name = chaosx.nr36.78.a }
+}
+
+# Coordinator pulse.
+country_event = {
+	id = chaosx.nr36.80
+	title = chaosx.nr36.80.t
+	hidden = yes
+	is_triggered_only = yes
+	immediate = { cbrn_convention_pulse = yes }
+}

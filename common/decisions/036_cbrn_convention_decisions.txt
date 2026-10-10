@@ -1,0 +1,670 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 036 CHEMICAL AND BIOLOGICAL WEAPONS CONVENTION DECISIONS
+# ============================================================================
+# Posture actions, conference actions, treaty obligations (missions), and the
+# four project contributions. Evidence, inspections, decontamination aid and
+# use policy stay in their existing CBRN decisions; Event 036 only extends
+# their eligibility. Phases keep the visible list short: conference actions
+# show only while an agenda is negotiated, contributions only while a project
+# accepts them, and covert actions only to their government.
+# ============================================================================
+
+# Modifier values and add_tech_bonus fields reject script constants. The
+# costs, durations and balance values live in 036_cbrn_convention_constants.txt.
+@ONE_FACTORY = 1
+@TWO_FACTORIES = 2
+@RESEARCH_PENALTY = -0.05
+
+cbrn_convention_category = {
+
+	# ------------------------------------------------------------------
+	# Posture actions
+	# ------------------------------------------------------------------
+
+	cbrn_convention_seek_accession = {
+		icon = GFX_decision_cbrn_convention_seek_accession
+		cost = constant:cbrn_convention_cost.accession_pp
+		visible = {
+			cbrn_convention_is_opponent = yes
+			NOT = { has_country_flag = cbrn_convention_accession_review }
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = cbrn_convention_accession_cooling_tt
+				check_variable = { cbrn_convention_cooling_until < global.num_days }
+			}
+			custom_trigger_tooltip = {
+				tooltip = cbrn_convention_no_covert_tt
+				NOT = { has_country_flag = cbrn_convention_covert_program }
+			}
+		}
+		complete_effect = {
+			custom_effect_tooltip = cbrn_convention_seek_accession_tt
+			hidden_effect = { set_country_flag = cbrn_convention_accession_review }
+		}
+		ai_will_do = {
+			base = constant:cbrn_convention_ai.decision_low
+			modifier = { add = constant:cbrn_convention_ai.decision_high check_variable = { global.cbrn_convention_standing = constant:cbrn_convention_standing.dominant } }
+			modifier = { add = constant:cbrn_convention_ai.decision_base has_country_flag = cbrn_convention_recent_cbrn_victim }
+		}
+	}
+
+	cbrn_convention_accession_review_mission = {
+		icon = GFX_decision_cbrn_convention_seek_accession
+		is_good = yes
+		days_mission_timeout = constant:cbrn_convention_timing.accession_review_days
+		activation = { has_country_flag = cbrn_convention_accession_review }
+		available = { always = no }
+		timeout_effect = {
+			custom_effect_tooltip = cbrn_convention_accession_review_timeout_tt
+			hidden_effect = {
+				if = {
+					limit = { cbrn_convention_country_is_eligible = yes cbrn_convention_is_opponent = yes }
+					if = {
+						limit = { is_ai = no }
+						country_event = { id = chaosx.nr36.60 days = 1 }
+					}
+					else = {
+						set_temp_variable = { cbrn_convention_new_posture = constant:cbrn_convention_posture.reservation }
+						if = {
+							limit = { cbrn_convention_has_chemical_capability = yes }
+							set_temp_variable = { cbrn_convention_new_posture = constant:cbrn_convention_posture.chemical }
+						}
+						if = {
+							limit = { cbrn_convention_has_chemical_capability = yes cbrn_convention_has_biological_capability = yes }
+							set_temp_variable = { cbrn_convention_new_posture = constant:cbrn_convention_posture.full }
+						}
+						cbrn_convention_complete_accession = yes
+					}
+				}
+				else = {
+					clr_country_flag = cbrn_convention_accession_review
+				}
+			}
+		}
+	}
+
+	cbrn_convention_revise_posture_decision = {
+		icon = GFX_decision_cbrn_convention_revise_posture
+		cost = constant:cbrn_convention_cost.revision_pp
+		visible = {
+			cbrn_convention_is_member = yes
+			NOT = { has_country_flag = cbrn_convention_withdrawal_notice }
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = cbrn_convention_revision_lock_tt
+				check_variable = { cbrn_convention_revision_until < global.num_days }
+			}
+			custom_trigger_tooltip = {
+				tooltip = cbrn_convention_not_suspended_tt
+				NOT = { has_country_flag = cbrn_convention_suspended }
+			}
+		}
+		complete_effect = {
+			add_stability = constant:cbrn_convention_cost.revision_stability
+			custom_effect_tooltip = cbrn_convention_revise_posture_tt
+			hidden_effect = {
+				if = {
+					limit = { is_ai = no }
+					country_event = { id = chaosx.nr36.62 days = 1 }
+				}
+				else_if = {
+					limit = { cbrn_convention_is_reservation = yes has_global_flag = cbrn_convention_evolution_1_recorded }
+					set_temp_variable = { cbrn_convention_new_posture = constant:cbrn_convention_posture.full }
+					cbrn_convention_revise_posture = yes
+				}
+				else = {
+					set_temp_variable = { cbrn_convention_new_posture = constant:cbrn_convention_posture.reservation }
+					cbrn_convention_revise_posture = yes
+				}
+			}
+		}
+		ai_will_do = {
+			base = 0
+			modifier = {
+				add = constant:cbrn_convention_ai.decision_base
+				cbrn_convention_is_reservation = yes
+				has_global_flag = cbrn_convention_evolution_1_recorded
+				has_war = yes
+				cbrn_convention_has_chemical_capability = yes
+				cbrn_convention_has_biological_capability = yes
+			}
+			modifier = {
+				add = constant:cbrn_convention_ai.decision_low
+				cbrn_convention_is_full = yes
+				has_government = democratic
+				has_war = no
+			}
+		}
+	}
+
+	cbrn_convention_begin_withdrawal = {
+		icon = GFX_decision_cbrn_convention_begin_withdrawal
+		cost = constant:cbrn_convention_cost.withdrawal_pp
+		visible = {
+			cbrn_convention_is_member = yes
+			NOT = { has_country_flag = cbrn_convention_withdrawal_notice }
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = cbrn_convention_revision_lock_tt
+				check_variable = { cbrn_convention_revision_until < global.num_days }
+			}
+			custom_trigger_tooltip = {
+				tooltip = cbrn_convention_no_open_guarantee_tt
+				NOT = { has_country_flag = cbrn_convention_assistance_owed }
+			}
+		}
+		complete_effect = {
+			custom_effect_tooltip = cbrn_convention_begin_withdrawal_tt
+			hidden_effect = { set_country_flag = cbrn_convention_withdrawal_notice }
+		}
+		ai_will_do = {
+			base = 0
+			modifier = {
+				add = constant:cbrn_convention_ai.decision_low
+				cbrn_convention_is_reservation = yes
+				has_global_flag = cbrn_convention_evolution_3_recorded
+				has_government = democratic
+			}
+		}
+	}
+
+	cbrn_convention_withdrawal_notice_mission = {
+		icon = GFX_decision_cbrn_convention_begin_withdrawal
+		is_good = no
+		days_mission_timeout = constant:cbrn_convention_timing.withdrawal_notice_days
+		activation = { has_country_flag = cbrn_convention_withdrawal_notice }
+		available = { always = no }
+		timeout_effect = {
+			custom_effect_tooltip = cbrn_convention_withdrawal_timeout_tt
+			hidden_effect = {
+				if = {
+					limit = { cbrn_convention_is_member = yes }
+					cbrn_convention_complete_withdrawal = yes
+					if = { limit = { is_ai = no } country_event = { id = chaosx.nr36.61 days = 1 } }
+				}
+				else = {
+					clr_country_flag = cbrn_convention_withdrawal_notice
+				}
+			}
+		}
+	}
+
+	cbrn_convention_begin_covert_program_decision = {
+		icon = GFX_decision_cbrn_convention_covert_program
+		cost = constant:cbrn_convention_cost.covert_pp
+		days_remove = constant:cbrn_convention_timing.covert_setup_days
+		modifier = { civilian_factory_use = @ONE_FACTORY }
+		visible = {
+			cbrn_convention_is_opponent = yes
+			NOT = { has_country_flag = cbrn_convention_covert_program }
+			OR = {
+				cbrn_convention_has_chemical_capability = yes
+				cbrn_convention_has_biological_capability = yes
+			}
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = cbrn_convention_not_exposed_tt
+				NOT = { has_country_flag = cbrn_convention_covert_exposed }
+			}
+		}
+		complete_effect = {
+			custom_effect_tooltip = cbrn_convention_begin_covert_tt
+			hidden_effect = {
+				if = {
+					limit = { is_ai = no }
+					country_event = { id = chaosx.nr36.55 days = 1 }
+				}
+				else = {
+					set_temp_variable = { cbrn_convention_covert_family_input = constant:cbrn_convention.one }
+					if = {
+						limit = { cbrn_convention_has_biological_capability = yes }
+						set_temp_variable = { cbrn_convention_covert_family_input = constant:cbrn_convention.two }
+					}
+					cbrn_convention_begin_covert_program = yes
+				}
+			}
+		}
+		ai_will_do = {
+			base = 0
+			modifier = {
+				add = constant:cbrn_convention_ai.decision_low
+				NOT = { has_government = democratic }
+				num_of_factories > constant:cbrn_convention_ai.covert_research_factories
+				has_war = yes
+			}
+		}
+	}
+
+	cbrn_convention_expand_covert_program = {
+		icon = GFX_decision_cbrn_convention_covert_program
+		days_remove = constant:cbrn_convention_timing.covert_expansion_days
+		modifier = { civilian_factory_use = @ONE_FACTORY }
+		visible = { has_country_flag = cbrn_convention_covert_program }
+		available = { has_country_flag = cbrn_convention_covert_program }
+		complete_effect = {
+			custom_effect_tooltip = cbrn_convention_expand_covert_tt
+			hidden_effect = { cbrn_convention_record_covert_evidence = yes }
+		}
+		remove_effect = {
+			hidden_effect = { cbrn_convention_apply_covert_tech_bonus = yes }
+		}
+		ai_will_do = {
+			base = constant:cbrn_convention_ai.decision_base
+			modifier = { factor = 0 has_country_flag = cbrn_inspection_demand_active }
+			modifier = { factor = 0 check_variable = { condemnation_hidden_coverup > constant:condemnation_threshold.formal_censure } }
+		}
+	}
+
+	cbrn_convention_end_covert_program_decision = {
+		icon = GFX_decision_cbrn_convention_covert_program
+		visible = { has_country_flag = cbrn_convention_covert_program }
+		complete_effect = {
+			custom_effect_tooltip = cbrn_convention_end_covert_tt
+			hidden_effect = { cbrn_convention_end_covert_program = yes }
+		}
+		ai_will_do = {
+			base = 0
+			modifier = { add = constant:cbrn_convention_ai.decision_high has_country_flag = cbrn_inspection_demand_active }
+		}
+	}
+
+	# ------------------------------------------------------------------
+	# Conference actions
+	# ------------------------------------------------------------------
+
+	cbrn_convention_sponsor_agenda = {
+		icon = GFX_decision_cbrn_convention_sponsor_agenda
+		cost = constant:cbrn_convention_cost.sponsor_pp
+		days_remove = constant:cbrn_convention_timing.sponsor_work_days
+		modifier = { civilian_factory_use = @ONE_FACTORY }
+		visible = {
+			has_global_flag = cbrn_convention_agenda_negotiating
+			cbrn_convention_can_respond_to_agenda = yes
+			NOT = { has_country_flag = cbrn_convention_current_sponsor }
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = cbrn_convention_sponsor_cooldown_tt
+				NOT = { has_country_flag = cbrn_convention_sponsor_cooldown }
+			}
+			custom_trigger_tooltip = {
+				tooltip = cbrn_convention_sponsor_taken_tt
+				OR = {
+					NOT = { has_global_flag = cbrn_convention_has_sponsor }
+					event_target:cbrn_convention_sponsor = { is_ai = yes }
+				}
+			}
+		}
+		complete_effect = {
+			custom_effect_tooltip = cbrn_convention_sponsor_tt
+			hidden_effect = {
+				if = {
+					limit = { has_global_flag = cbrn_convention_has_sponsor }
+					event_target:cbrn_convention_sponsor = { clr_country_flag = cbrn_convention_current_sponsor }
+				}
+				cbrn_convention_become_sponsor = yes
+			}
+		}
+		ai_will_do = { base = 0 }
+	}
+
+	cbrn_convention_lobby_ratification = {
+		icon = GFX_decision_cbrn_convention_lobby_ratification
+		cost = constant:cbrn_convention_cost.lobby_pp
+		visible = {
+			has_global_flag = cbrn_convention_agenda_negotiating
+			OR = {
+				cbrn_convention_can_respond_to_agenda = yes
+				has_country_flag = cbrn_convention_current_sponsor
+			}
+			NOT = { has_country_flag = cbrn_convention_lobbied }
+		}
+		complete_effect = {
+			custom_effect_tooltip = cbrn_convention_lobby_tt
+			hidden_effect = { cbrn_convention_lobby = yes }
+		}
+		ai_will_do = {
+			base = 0
+			modifier = {
+				add = constant:cbrn_convention_ai.decision_high
+				has_country_flag = cbrn_convention_current_sponsor
+			}
+			modifier = {
+				add = constant:cbrn_convention_ai.decision_base
+				cbrn_convention_is_full = yes
+				has_war = yes
+			}
+		}
+	}
+
+	cbrn_convention_organize_opposition_decision = {
+		icon = GFX_decision_cbrn_convention_organize_opposition
+		cost = constant:cbrn_convention_cost.opposition_pp
+		visible = {
+			has_global_flag = cbrn_convention_agenda_negotiating
+			OR = {
+				cbrn_convention_is_opponent = yes
+				AND = {
+					cbrn_convention_is_member = yes
+					NOT = { is_in_array = { array = global.cbrn_convention_agenda_ratifiers value = THIS } }
+				}
+			}
+			NOT = { has_country_flag = cbrn_convention_opposed }
+		}
+		complete_effect = {
+			custom_effect_tooltip = cbrn_convention_opposition_tt
+			hidden_effect = { cbrn_convention_organize_opposition = yes }
+		}
+		ai_will_do = {
+			base = 0
+			modifier = {
+				add = constant:cbrn_convention_ai.decision_high
+				has_global_flag = cbrn_convention_has_opposition_leader
+				event_target:cbrn_convention_opposition_leader = { tag = ROOT }
+				OR = {
+					check_variable = { global.cbrn_convention_agenda_family = constant:cbrn_convention_family.first_use }
+					check_variable = { global.cbrn_convention_agenda_family = constant:cbrn_convention_family.arsenal }
+				}
+			}
+			modifier = {
+				add = constant:cbrn_convention_ai.decision_base
+				cbrn_convention_is_reservation = yes
+				check_variable = { global.cbrn_convention_agenda_family = constant:cbrn_convention_family.first_use }
+			}
+		}
+	}
+
+	# ------------------------------------------------------------------
+	# Treaty obligations
+	# ------------------------------------------------------------------
+
+	cbrn_convention_file_declarations = {
+		icon = GFX_decision_cbrn_convention_treaty_obligation
+		cost = constant:cbrn_convention_cost.declaration_pp
+		visible = {
+			has_country_flag = cbrn_convention_declaration_due
+			NOT = { has_country_flag = cbrn_convention_declaration_filed }
+		}
+		complete_effect = {
+			custom_effect_tooltip = cbrn_convention_file_declarations_tt
+			hidden_effect = { set_country_flag = cbrn_convention_declaration_filed }
+		}
+		ai_will_do = { base = constant:cbrn_convention_ai.decision_high }
+	}
+
+	cbrn_convention_declaration_mission = {
+		icon = GFX_decision_cbrn_convention_treaty_obligation
+		is_good = no
+		days_mission_timeout = constant:cbrn_convention_timing.declaration_mission_days
+		activation = { has_country_flag = cbrn_convention_declaration_due }
+		available = { has_country_flag = cbrn_convention_declaration_filed }
+		complete_effect = {
+			custom_effect_tooltip = cbrn_convention_declaration_kept_tt
+			hidden_effect = {
+				clr_country_flag = cbrn_convention_declaration_due
+				clr_country_flag = cbrn_convention_declaration_filed
+				set_variable = { cbrn_convention_next_declaration_day = global.num_days }
+				add_to_variable = { cbrn_convention_next_declaration_day = constant:cbrn_convention_timing.declaration_interval_days }
+			}
+		}
+		timeout_effect = {
+			custom_effect_tooltip = cbrn_convention_suspension_tt
+			hidden_effect = {
+				clr_country_flag = cbrn_convention_declaration_due
+				set_variable = { cbrn_convention_next_declaration_day = global.num_days }
+				add_to_variable = { cbrn_convention_next_declaration_day = constant:cbrn_convention_timing.declaration_interval_days }
+				cbrn_convention_suspend = yes
+			}
+		}
+	}
+
+	cbrn_convention_deliver_assistance_decision = {
+		icon = GFX_decision_cbrn_convention_treaty_obligation
+		visible = {
+			has_country_flag = cbrn_convention_assistance_owed
+			NOT = { has_country_flag = cbrn_convention_assistance_delivered }
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = cbrn_convention_assistance_masks_tt
+				NOT = { has_equipment = { gas_mask_equipment < constant:cbrn_convention_cost.assistance_masks } }
+			}
+		}
+		complete_effect = {
+			custom_effect_tooltip = cbrn_convention_deliver_assistance_tt
+			hidden_effect = { cbrn_convention_deliver_assistance = yes }
+		}
+		ai_will_do = { base = constant:cbrn_convention_ai.decision_high }
+	}
+
+	cbrn_convention_assistance_mission = {
+		icon = GFX_decision_cbrn_convention_treaty_obligation
+		is_good = no
+		days_mission_timeout = constant:cbrn_convention_timing.assistance_days
+		activation = { has_country_flag = cbrn_convention_assistance_owed }
+		available = { has_country_flag = cbrn_convention_assistance_delivered }
+		complete_effect = {
+			custom_effect_tooltip = cbrn_convention_guarantee_kept_tt
+			hidden_effect = {
+				clr_country_flag = cbrn_convention_assistance_owed
+				clr_country_flag = cbrn_convention_assistance_delivered
+				clear_variable = cbrn_convention_assistance_target
+			}
+		}
+		timeout_effect = {
+			custom_effect_tooltip = cbrn_convention_suspension_tt
+			hidden_effect = {
+				clr_country_flag = cbrn_convention_assistance_owed
+				clear_variable = cbrn_convention_assistance_target
+				cbrn_convention_suspend = yes
+			}
+		}
+	}
+
+	cbrn_convention_begin_doctrine_integration = {
+		icon = GFX_decision_cbrn_convention_treaty_obligation
+		cost = constant:cbrn_convention_cost.doctrine_pp
+		visible = {
+			has_country_flag = cbrn_convention_ratified_7
+			NOT = { has_country_flag = cbrn_convention_reserved_7 }
+			NOT = { has_country_flag = cbrn_convention_integrated_doctrine }
+			NOT = { has_country_flag = cbrn_convention_doctrine_running }
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = cbrn_convention_doctrine_requirements_tt
+				cbrn_convention_doctrine_requirements = yes
+			}
+			custom_trigger_tooltip = {
+				tooltip = cbrn_convention_doctrine_retry_tt
+				NOT = { has_country_flag = cbrn_convention_doctrine_retry_lock }
+			}
+		}
+		complete_effect = {
+			custom_effect_tooltip = cbrn_convention_begin_doctrine_tt
+			hidden_effect = { set_country_flag = cbrn_convention_doctrine_running }
+		}
+		ai_will_do = {
+			base = constant:cbrn_convention_ai.decision_base
+			modifier = { add = constant:cbrn_convention_ai.decision_high has_war = yes }
+		}
+	}
+
+	cbrn_convention_doctrine_integration_mission = {
+		icon = GFX_decision_cbrn_convention_treaty_obligation
+		is_good = yes
+		days_mission_timeout = constant:cbrn_convention_timing.doctrine_days
+		activation = { has_country_flag = cbrn_convention_doctrine_running }
+		available = { always = no }
+		timeout_effect = {
+			custom_effect_tooltip = cbrn_convention_doctrine_timeout_tt
+			hidden_effect = { cbrn_convention_finish_doctrine_integration = yes }
+		}
+	}
+
+	# ------------------------------------------------------------------
+	# Project contributions
+	# ------------------------------------------------------------------
+
+	cbrn_convention_contribute_industry = {
+		icon = GFX_decision_cbrn_convention_industrial_contribution
+		days_remove = constant:cbrn_convention_timing.contribution_days
+		modifier = { civilian_factory_use = @TWO_FACTORIES }
+		visible = { cbrn_convention_can_contribute = yes }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = cbrn_convention_family_cooldown_tt
+				NOT = { has_country_flag = cbrn_convention_cooldown_industry }
+			}
+		}
+		complete_effect = {
+			custom_effect_tooltip = cbrn_convention_contribute_industry_tt
+			hidden_effect = {
+				set_country_flag = cbrn_convention_contribution_running
+				set_variable = { cbrn_convention_contribution_seq_running = global.cbrn_convention_project_sequence }
+			}
+		}
+		cancel_trigger = {
+			OR = {
+				NOT = { check_variable = { global.cbrn_convention_program_state = constant:cbrn_convention_program_state.active } }
+				NOT = { check_variable = { global.cbrn_convention_project_sequence = cbrn_convention_contribution_seq_running } }
+			}
+		}
+		cancel_effect = { clr_country_flag = cbrn_convention_contribution_running }
+		remove_effect = {
+			set_temp_variable = { cbrn_convention_contribution_family = constant:cbrn_convention_contribution.industry }
+			set_temp_variable = { cbrn_convention_contribution_seq = cbrn_convention_contribution_seq_running }
+			cbrn_convention_apply_contribution = yes
+			set_temp_variable = { cbrn_convention_cooldown_days = constant:cbrn_convention_timing.contribution_cooldown }
+			set_country_flag = { flag = cbrn_convention_cooldown_industry days = cbrn_convention_cooldown_days }
+		}
+		ai_will_do = {
+			base = constant:cbrn_convention_ai.decision_base
+			modifier = { add = constant:cbrn_convention_ai.decision_high num_of_civilian_factories > constant:cbrn_convention_ai.contribution_industry_factories }
+			modifier = { add = constant:cbrn_convention_ai.decision_base check_variable = { global.cbrn_convention_percent > constant:cbrn_convention_ai.contribution_near_completion_percent } }
+			modifier = { factor = 0 has_country_flag = cbrn_convention_withdrawal_notice }
+		}
+	}
+
+	cbrn_convention_contribute_research = {
+		icon = GFX_decision_cbrn_convention_research_contribution
+		cost = constant:cbrn_convention_cost.research_pp
+		days_remove = constant:cbrn_convention_timing.contribution_days
+		modifier = { research_speed_factor = @RESEARCH_PENALTY }
+		visible = { cbrn_convention_can_contribute = yes }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = cbrn_convention_family_cooldown_tt
+				NOT = { has_country_flag = cbrn_convention_cooldown_research }
+			}
+		}
+		complete_effect = {
+			custom_effect_tooltip = cbrn_convention_contribute_research_tt
+			hidden_effect = {
+				set_country_flag = cbrn_convention_contribution_running
+				set_variable = { cbrn_convention_contribution_seq_running = global.cbrn_convention_project_sequence }
+			}
+		}
+		cancel_trigger = {
+			OR = {
+				NOT = { check_variable = { global.cbrn_convention_program_state = constant:cbrn_convention_program_state.active } }
+				NOT = { check_variable = { global.cbrn_convention_project_sequence = cbrn_convention_contribution_seq_running } }
+			}
+		}
+		cancel_effect = { clr_country_flag = cbrn_convention_contribution_running }
+		remove_effect = {
+			set_temp_variable = { cbrn_convention_contribution_family = constant:cbrn_convention_contribution.research }
+			set_temp_variable = { cbrn_convention_contribution_seq = cbrn_convention_contribution_seq_running }
+			cbrn_convention_apply_contribution = yes
+			set_temp_variable = { cbrn_convention_cooldown_days = constant:cbrn_convention_timing.contribution_cooldown }
+			set_country_flag = { flag = cbrn_convention_cooldown_research days = cbrn_convention_cooldown_days }
+		}
+		ai_will_do = {
+			base = constant:cbrn_convention_ai.decision_base
+			modifier = { add = constant:cbrn_convention_ai.decision_base is_major = yes }
+			modifier = { factor = 0 has_country_flag = cbrn_convention_withdrawal_notice }
+		}
+	}
+
+	cbrn_convention_contribute_equipment = {
+		icon = GFX_decision_cbrn_convention_equipment_contribution
+		visible = { cbrn_convention_can_contribute = yes }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = cbrn_convention_family_cooldown_tt
+				NOT = { has_country_flag = cbrn_convention_cooldown_equipment }
+			}
+			custom_trigger_tooltip = {
+				tooltip = cbrn_convention_equipment_cost_tt
+				NOT = { has_equipment = { gas_mask_equipment < constant:cbrn_convention_cost.equipment_masks } }
+				NOT = { has_equipment = { cbrn_instrument_equipment < constant:cbrn_convention_cost.equipment_instruments } }
+			}
+		}
+		complete_effect = {
+			custom_effect_tooltip = cbrn_convention_contribute_equipment_tt
+			hidden_effect = {
+				set_temp_variable = { cbrn_convention_debit = constant:cbrn_convention_cost.equipment_masks }
+				multiply_temp_variable = { cbrn_convention_debit = -1 }
+				add_equipment_to_stockpile = { type = gas_mask_equipment amount = cbrn_convention_debit }
+				set_temp_variable = { cbrn_convention_debit = constant:cbrn_convention_cost.equipment_instruments }
+				multiply_temp_variable = { cbrn_convention_debit = -1 }
+				add_equipment_to_stockpile = { type = cbrn_instrument_equipment amount = cbrn_convention_debit }
+				set_temp_variable = { cbrn_convention_contribution_family = constant:cbrn_convention_contribution.equipment }
+				set_temp_variable = { cbrn_convention_contribution_seq = global.cbrn_convention_project_sequence }
+				cbrn_convention_apply_contribution = yes
+				set_temp_variable = { cbrn_convention_cooldown_days = constant:cbrn_convention_timing.contribution_cooldown }
+				set_country_flag = { flag = cbrn_convention_cooldown_equipment days = cbrn_convention_cooldown_days }
+			}
+		}
+		ai_will_do = {
+			base = constant:cbrn_convention_ai.decision_low
+			modifier = { add = constant:cbrn_convention_ai.decision_base is_major = no }
+		}
+	}
+
+	cbrn_convention_contribute_facility = {
+		icon = GFX_decision_cbrn_convention_facility_contribution
+		days_remove = constant:cbrn_convention_timing.facility_days
+		modifier = { civilian_factory_use = @TWO_FACTORIES }
+		visible = { cbrn_convention_can_contribute = yes }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = cbrn_convention_family_cooldown_tt
+				NOT = { has_country_flag = cbrn_convention_cooldown_facility }
+			}
+			has_manpower > constant:cbrn_convention_cost.facility_manpower
+		}
+		complete_effect = {
+			set_temp_variable = { cbrn_convention_debit = constant:cbrn_convention_cost.facility_manpower }
+			multiply_temp_variable = { cbrn_convention_debit = -1 }
+			add_manpower = cbrn_convention_debit
+			custom_effect_tooltip = cbrn_convention_contribute_facility_tt
+			hidden_effect = {
+				set_country_flag = cbrn_convention_contribution_running
+				set_variable = { cbrn_convention_contribution_seq_running = global.cbrn_convention_project_sequence }
+			}
+		}
+		cancel_trigger = {
+			OR = {
+				NOT = { check_variable = { global.cbrn_convention_program_state = constant:cbrn_convention_program_state.active } }
+				NOT = { check_variable = { global.cbrn_convention_project_sequence = cbrn_convention_contribution_seq_running } }
+			}
+		}
+		cancel_effect = { clr_country_flag = cbrn_convention_contribution_running }
+		remove_effect = {
+			set_temp_variable = { cbrn_convention_contribution_family = constant:cbrn_convention_contribution.facility }
+			set_temp_variable = { cbrn_convention_contribution_seq = cbrn_convention_contribution_seq_running }
+			cbrn_convention_apply_contribution = yes
+			set_temp_variable = { cbrn_convention_cooldown_days = constant:cbrn_convention_timing.contribution_cooldown }
+			set_country_flag = { flag = cbrn_convention_cooldown_facility days = cbrn_convention_cooldown_days }
+		}
+		ai_will_do = {
+			base = constant:cbrn_convention_ai.decision_low
+			modifier = { add = constant:cbrn_convention_ai.decision_base is_major = no num_of_civilian_factories > constant:cbrn_convention_program.small_state_factories }
+		}
+	}
+}

@@ -1,0 +1,452 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 036 CHEMICAL AND BIOLOGICAL WEAPONS CONVENTION CONSTANTS
+# ============================================================================
+# Every Event 036 tuning value lives here: identity, postures, treaty family
+# ids, Standing bands, quorums, timing, Condemnation relief, program values,
+# costs, and event-owned Chaos. Fields that reject constants (add_tech_bonus,
+# idea modifiers, mission days) use file-scoped @ values in their own files.
+# ============================================================================
+
+cbrn_convention = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	event_id = 36
+	evolution_type = 36
+	evolution_i_stage = 1
+	evolution_ii_stage = 2
+	evolution_iii_stage = 3
+	zero = 0
+	one = 1
+	two = 2
+	three = 3
+	ten = 10
+	hundred = 100
+}
+
+cbrn_convention_posture = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	none = 0
+	full = 1
+	chemical = 2
+	reservation = 3
+	rejection = 4
+}
+
+# Treaty family ids. The order is the agenda pool order.
+cbrn_convention_family = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	none = 0
+	compact = 1
+	chemical_articles = 2
+	bio_registry = 3
+	protocol = 4
+	first_use = 5
+	delivery = 6
+	charter = 7
+	nuclear = 8
+	arsenal = 9
+	program_charter = 10
+	count = 10
+}
+
+cbrn_convention_quorum_class = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	ordinary = 1
+	strategic = 2
+	arsenal = 3
+}
+
+cbrn_convention_standing = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	none = 0
+	provisional = 1
+	divided = 2
+	established = 3
+	dominant = 4
+}
+
+cbrn_convention_program_state = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	inactive = 0
+	active = 1
+	paused = 2
+	dormant = 3
+}
+
+# Registered program providers. Each id owns an access flag, a global
+# normal-route proof and a cancellation call in its source system.
+cbrn_convention_provider = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	none = 0
+	black_plague = 1
+	weaponized_zombies = 2
+	count = 2
+}
+
+# Contribution families of the program.
+cbrn_convention_contribution = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	industry = 1
+	research = 2
+	equipment = 3
+	facility = 4
+}
+
+cbrn_convention_use_class = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	none = 0
+	compatible = 1
+	first_use = 2
+	breach = 3
+}
+
+cbrn_convention_weight = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	major = 3
+	minor = 1
+	chemical_accession_share = 0.5
+	divided_share = 0.40
+	established_share = 0.60
+	dominant_share = 0.80
+	provisional_member_minimum = 3
+	opposition_leader_multiplier = 2
+	sponsor_lobby_multiplier = 2
+}
+
+cbrn_convention_quorum = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	ordinary_minimum = 3
+	ordinary_share = 0.35
+	strategic_minimum = 4
+	strategic_share = 0.45
+	arsenal_minimum = 5
+	arsenal_share = 0.50
+	arsenal_large_factories = 40
+	narrow_failure_share = 0.667
+}
+
+cbrn_convention_timing = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	pulse_days = 30
+	first_agenda_min = 90
+	first_agenda_max = 180
+	agenda_min = 180
+	agenda_max = 360
+	agenda_floor = 120
+	emergency_min = 30
+	emergency_max = 90
+	shorten_days = 45
+	lengthen_days = 60
+	negotiation_min = 60
+	negotiation_max = 120
+	reconstruction_days = 90
+	narrow_failure_cooldown = 180
+	failure_cooldown = 365
+	sponsor_cooldown = 365
+	opposition_bonus_days = 90
+	operational_treaty_days = 365
+	accession_cooling_days = 180
+	revision_lock_days = 365
+	suspension_days = 180
+	suspension_memory_days = 730
+	declaration_interval_days = 365
+	selection_min = 7
+	selection_max = 30
+	dormancy_recheck_days = 90
+	pause_lapse_days = 365
+	contribution_cooldown = 60
+	recent_use_days = 365
+	opening_response_days = 30
+	accession_review_days = 90
+	withdrawal_notice_days = 90
+	declaration_mission_days = 120
+	assistance_days = 90
+	doctrine_days = 150
+	sponsor_work_days = 60
+	covert_setup_days = 180
+	covert_expansion_days = 90
+	contribution_days = 90
+	facility_days = 120
+}
+
+# Mean time to happen for the evolutions, read by the MTTH entries.
+cbrn_convention_evolution_mtth = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	evolution_i_base = 90
+	evolution_ii_base = 120
+	evolution_iii_base = 150
+	shorten_factor = 0.8
+	lengthen_factor = 1.25
+	pulse_share_percent = 3000
+	chance_cap = 60
+}
+
+# Condemnation relief on the weapon base. 1.00 is ordinary Condemnation.
+cbrn_convention_relief = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	none = 1
+	full_chemical_0 = 0.55
+	full_chemical_1 = 0.35
+	full_chemical_2 = 0.18
+	full_chemical_3 = 0.08
+	full_biological_0 = 0.75
+	full_biological_1 = 0.60
+	full_biological_2 = 0.40
+	full_biological_3 = 0.22
+	full_nuclear_0 = 0.90
+	full_nuclear_1 = 0.82
+	full_nuclear_2 = 0.65
+	full_nuclear_3 = 0.50
+	chemical_chemical_0 = 0.60
+	chemical_chemical_1 = 0.40
+	chemical_chemical_2 = 0.22
+	chemical_chemical_3 = 0.12
+	chemical_nuclear_0 = 0.95
+	chemical_nuclear_1 = 0.90
+	chemical_nuclear_2 = 0.75
+	chemical_nuclear_3 = 0.60
+	reservation_chemical_0 = 0.70
+	reservation_chemical_2 = 0.30
+	reservation_chemical_3 = 0.18
+	reservation_biological_0 = 0.85
+	reservation_biological_2 = 0.50
+	reservation_biological_3 = 0.35
+	reservation_nuclear_0 = 0.95
+	reservation_nuclear_2 = 0.78
+	reservation_nuclear_3 = 0.65
+	# Combined floors for doctrine mitigation times convention relief.
+	chemical_combined_floor = 0.10
+	biological_combined_floor = 0.20
+	nuclear_combined_floor = 0.50
+	outbreak_floor = 0.70
+	nuclear_capital_floor = 0.80
+}
+
+# Participant-score term added to condemnation_calculate_pair_score.
+cbrn_convention_participant_score = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	member_compatible = -25
+	reservation_against_first_use = 18
+	opponent_against_member_use = 15
+	breach_reservation_peer = 25
+}
+
+# One-time Condemnation normalization on entry, as kept fractions.
+cbrn_convention_normalization = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	full_chemical = 0.65
+	full_biological = 0.75
+	chemical_chemical = 0.70
+	reservation_chemical = 0.85
+	reservation_biological = 0.90
+}
+
+cbrn_convention_program = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	target_units = 1000
+	black_plague_factor = 1.25
+	weaponized_zombies_factor = 1.00
+	stage_two_percent = 25
+	stage_three_percent = 50
+	stage_four_percent = 75
+	minimum_contribution = 20
+	maximum_contribution = 60
+	country_window_share = 0.12
+	country_window_days = 90
+	industrial_base = 25
+	industrial_per_factory = 10
+	research_base = 20
+	research_per_ten_research = 7
+	equipment_base = 20
+	equipment_major_bonus = 30
+	facility_base = 35
+	facility_per_factory = 8
+	small_state_share = 0.08
+	small_state_factories = 15
+	small_state_families = 3
+}
+
+cbrn_convention_cost = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	accession_pp = 35
+	revision_pp = 50
+	revision_stability = -0.05
+	withdrawal_pp = 40
+	covert_pp = 30
+	sponsor_pp = 35
+	lobby_pp = 20
+	opposition_pp = 25
+	declaration_pp = 15
+	doctrine_pp = 50
+	research_pp = 40
+	failure_pp = 25
+	assistance_masks = 100
+	equipment_masks = 150
+	equipment_instruments = 20
+	facility_manpower = 5000
+}
+
+# Agenda pool weights. Equal-probability selection applies only to projects.
+cbrn_convention_agenda_weight = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	base = 10
+	newest_unlocked = 25
+	protection_after_attack = 40
+	inspection_after_dispute = 30
+	delivery_gap = 20
+	nuclear_members = 20
+}
+
+# AI response pressure moved by lobbying and opposition during negotiation.
+cbrn_convention_ai_pressure = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	lobby = 12
+	opposition = 12
+	ratify_threshold = 50
+}
+
+cbrn_convention_chaos = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	entry_weak = 3
+	entry_strong = 5
+	first_use_chemical = 5
+	first_use_biological = 5
+	charter = 7
+	nuclear = 5
+	arsenal = 10
+	program_charter = 5
+	project_completed = 10
+	collapse = -5
+}
+
+# AI weights read by common/mtth/036_cbrn_convention_mtth.txt and decisions.
+cbrn_convention_ai = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	opening_base = 10
+	capability_add = 20
+	strong_industry_add = 10
+	strong_industry_factories = 60
+	war_add = 15
+	condemned_add = 15
+	condemned_bucket = 25
+	no_capability_factor = 0.4
+	low_threat = 0.3
+	low_threat_factor = 0.6
+	chemical_only_add = 25
+	biological_program_factor = 0.5
+	threat_add = 15
+	victim_add = 25
+	minor_add = 10
+	democracy_add = 15
+	planned_offense_factor = 0.5
+	rejection_peace_add = 20
+	protection_need_factor = 0.6
+	covert_base = 3
+	covert_research_add = 6
+	covert_research_factories = 40
+	covert_non_democracy_add = 4
+	covert_weak_factor = 0.3
+	covert_weak_factories = 20
+	ratify_base = 45
+	ratify_capability_add = 20
+	ratify_war_add = 15
+	ratify_victim_add = 20
+	ratify_minor_protect_add = 15
+	ratify_reservation_offense_factor = 0.3
+	ratify_democracy_first_use_factor = 0.5
+	priority_family_factor = 100
+	delivery_gap_members = 2
+	nuclear_research_members = 2
+	decision_base = 10
+	decision_low = 2
+	decision_high = 40
+	contribution_near_completion_percent = 75
+	contribution_industry_factories = 50
+}

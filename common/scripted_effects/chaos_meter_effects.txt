@@ -3325,6 +3325,8 @@ chaos_meter_register_nuclear_condemnation = {
 		set_temp_variable = { chaos_nuke_condemnation_add = constant:condemnation_source_default_gain.nuclear_low_population }
 		set_temp_variable = { chaos_nuke_condemnation_pop_millions = 0 }
 		set_temp_variable = { chaos_nuke_condemnation_density_mult = 1 }
+		# Read by the Event 036 relief floor for capitals and the largest population band.
+		set_temp_variable = { cbrn_convention_nuclear_protected_target = 0 }
 
 		var:chaos_meter_nuclear_target_state = {
 			set_temp_variable = { chaos_nuke_condemnation_pop_millions = state_population_k }
@@ -3344,6 +3346,15 @@ chaos_meter_register_nuclear_condemnation = {
 			else_if = {
 				limit = { check_variable = { state_population_k > constant:condemnation_source_default_gain.nuclear_populous_5m_threshold } }
 				multiply_temp_variable = { chaos_nuke_condemnation_density_mult = constant:condemnation_source_default_gain.nuclear_populous_5m_multiplier }
+			}
+			if = {
+				limit = {
+					OR = {
+						is_capital = yes
+						check_variable = { state_population_k > constant:condemnation_source_default_gain.nuclear_populous_20m_threshold }
+					}
+				}
+				set_temp_variable = { cbrn_convention_nuclear_protected_target = 1 }
 			}
 			if = {
 				limit = { is_capital = yes }

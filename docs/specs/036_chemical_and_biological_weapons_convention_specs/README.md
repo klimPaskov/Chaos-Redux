@@ -6,15 +6,17 @@ Workflow owners: [event integration](../../../.claude/skills/chaos-redux-events/
 
 ## Status
 
-Not implemented.
-Slot 36 holds the Alien Spacecraft stub (`events/036_alien_spacecraft.txt`), whose receipts feed Event 016 and Event 025, and [01](01_event_identity_and_playable_promise.md#legacy-alien-spacecraft-relocation) owns moving its alien jet recovery into Event 025.
-No plans folder exists for this event.
+Implemented 2026-10-10 under the release milestone (Events 1 to 40).
+Implementation evidence is in [the event documentation](../../events/036_chemical_and_biological_weapons_convention.md).
+The Alien Spacecraft stub is removed from slot 36 and its jet recovery now runs as the Forerunner Craft in Event 025 (`chaosx.nr25.260` and `.261`) with unchanged receipt names.
+Disposition of the accepted package: `implemented`, with the differences listed below.
 
-The workbook lists Event 036 as a High-severity member of cluster 3, Diplomacy, while its event row still describes Alien Spacecraft as Minor Repeatable.
-The runtime cluster registry has no Event 036 member row yet.
-[The spreadsheet prompt](prompts/spreadsheet_alignment_prompt.md) records the exact catalog state.
+Differences from the accepted design:
 
-[The coding prompt](prompts/coding_prompt.md) is the implementation entry point.
+- Three achievements are implemented (The Reservation Holds, A Convention Against the Convention, Small State Large Ledger), the ones whose proofs the game records. The other four stay `accepted and queued`.
+- The category header has no per-line hover tooltip, because an ordinary decision category description cannot carry one. Each line states what it shows in plain words instead.
+- The Event 076 link is not implemented.
+- No separate plans folder was created.
 
 ## Acceptance basis
 

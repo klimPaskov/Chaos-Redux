@@ -1,0 +1,188 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 036 CHEMICAL AND BIOLOGICAL WEAPONS CONVENTION MTTH
+# ============================================================================
+# Opening posture weights, treaty response chances, the agenda pool, and the
+# evolution MTTH in days. Every value is a cbrn_convention_ai,
+# cbrn_convention_agenda_weight or cbrn_convention_evolution_mtth constant.
+# Consumed with mtth:<entry> in 036_cbrn_convention_effects.txt.
+# ============================================================================
+
+cbrn_convention_ai_opening_full = {
+	base = constant:cbrn_convention_ai.opening_base
+	modifier = { add = constant:cbrn_convention_ai.capability_add cbrn_convention_has_chemical_capability = yes }
+	modifier = { add = constant:cbrn_convention_ai.capability_add cbrn_convention_has_biological_capability = yes }
+	modifier = { add = constant:cbrn_convention_ai.strong_industry_add num_of_factories > constant:cbrn_convention_ai.strong_industry_factories }
+	modifier = { add = constant:cbrn_convention_ai.war_add has_war = yes }
+	modifier = { add = constant:cbrn_convention_ai.condemned_add has_variable = condemnation_chemical check_variable = { condemnation_chemical > constant:cbrn_convention_ai.condemned_bucket } }
+	modifier = { factor = constant:cbrn_convention_ai.no_capability_factor NOT = { cbrn_convention_has_chemical_capability = yes } NOT = { cbrn_convention_has_biological_capability = yes } }
+	modifier = { factor = constant:cbrn_convention_ai.low_threat_factor has_war = no threat < constant:cbrn_convention_ai.low_threat }
+}
+
+cbrn_convention_ai_opening_chemical = {
+	base = constant:cbrn_convention_ai.opening_base
+	modifier = { add = constant:cbrn_convention_ai.chemical_only_add cbrn_convention_has_chemical_capability = yes NOT = { cbrn_convention_has_biological_capability = yes } }
+	modifier = { add = constant:cbrn_convention_ai.condemned_add has_variable = condemnation_chemical check_variable = { condemnation_chemical > constant:cbrn_convention_ai.condemned_bucket } }
+	modifier = { factor = constant:cbrn_convention_ai.biological_program_factor cbrn_convention_has_usable_biological = yes }
+	modifier = { factor = constant:cbrn_convention_ai.no_capability_factor NOT = { cbrn_convention_has_chemical_capability = yes } NOT = { cbrn_convention_has_biological_capability = yes } }
+}
+
+cbrn_convention_ai_opening_reservation = {
+	base = constant:cbrn_convention_ai.opening_base
+	modifier = { add = constant:cbrn_convention_ai.threat_add threat > constant:cbrn_convention_ai.low_threat NOT = { cbrn_convention_has_chemical_capability = yes } }
+	modifier = { add = constant:cbrn_convention_ai.victim_add has_country_flag = cbrn_confirmed_cbrn_attack_victim_history }
+	modifier = { add = constant:cbrn_convention_ai.minor_add is_major = no }
+	modifier = { add = constant:cbrn_convention_ai.minor_add is_subject = yes }
+	modifier = { add = constant:cbrn_convention_ai.democracy_add has_government = democratic }
+	modifier = { factor = constant:cbrn_convention_ai.planned_offense_factor has_country_flag = cbrn_confirmed_cbrn_first_user_history }
+}
+
+cbrn_convention_ai_opening_rejection = {
+	base = constant:cbrn_convention_ai.opening_base
+	modifier = { add = constant:cbrn_convention_ai.rejection_peace_add has_war = no NOT = { cbrn_convention_has_chemical_capability = yes } }
+	modifier = { add = constant:cbrn_convention_ai.democracy_add has_government = democratic is_major = yes }
+	modifier = { factor = constant:cbrn_convention_ai.protection_need_factor has_war = yes }
+}
+
+cbrn_convention_ai_opening_covert = {
+	base = constant:cbrn_convention_ai.covert_base
+	modifier = { add = constant:cbrn_convention_ai.covert_research_add num_of_factories > constant:cbrn_convention_ai.covert_research_factories }
+	modifier = { add = constant:cbrn_convention_ai.covert_non_democracy_add NOT = { has_government = democratic } }
+	modifier = { factor = constant:cbrn_convention_ai.covert_weak_factor num_of_factories < constant:cbrn_convention_ai.covert_weak_factories }
+	modifier = { factor = constant:cbrn_convention_ai.covert_weak_factor has_war = no threat < constant:cbrn_convention_ai.low_threat }
+	modifier = { factor = 0 NOT = { cbrn_convention_has_chemical_capability = yes } NOT = { cbrn_convention_has_biological_capability = yes } }
+}
+
+# Ratify chance in percent before negotiation pressure.
+# Input: temp cbrn_convention_family_id.
+cbrn_convention_ai_ratify = {
+	base = constant:cbrn_convention_ai.ratify_base
+	modifier = { add = constant:cbrn_convention_ai.ratify_war_add has_war = yes }
+	modifier = { add = constant:cbrn_convention_ai.ratify_victim_add has_country_flag = cbrn_convention_recent_cbrn_victim }
+	modifier = {
+		add = constant:cbrn_convention_ai.ratify_minor_protect_add
+		is_major = no
+		OR = {
+			check_variable = { cbrn_convention_family_id = constant:cbrn_convention_family.compact }
+			check_variable = { cbrn_convention_family_id = constant:cbrn_convention_family.protocol }
+		}
+	}
+	modifier = {
+		add = constant:cbrn_convention_ai.ratify_capability_add
+		OR = {
+			AND = {
+				OR = {
+					check_variable = { cbrn_convention_family_id = constant:cbrn_convention_family.chemical_articles }
+					check_variable = { cbrn_convention_family_id = constant:cbrn_convention_family.first_use }
+				}
+				cbrn_convention_has_chemical_capability = yes
+			}
+			AND = {
+				check_variable = { cbrn_convention_family_id = constant:cbrn_convention_family.bio_registry }
+				cbrn_convention_has_biological_capability = yes
+			}
+			AND = {
+				check_variable = { cbrn_convention_family_id = constant:cbrn_convention_family.nuclear }
+				cbrn_convention_has_nuclear_research = yes
+			}
+			AND = {
+				check_variable = { cbrn_convention_family_id = constant:cbrn_convention_family.delivery }
+				cbrn_convention_has_delivery_capability = yes
+			}
+			AND = {
+				check_variable = { cbrn_convention_family_id = constant:cbrn_convention_family.charter }
+				cbrn_convention_has_two_usable_families = yes
+			}
+			AND = {
+				check_variable = { cbrn_convention_family_id = constant:cbrn_convention_family.program_charter }
+				cbrn_convention_participant_allows_biological = yes
+				cbrn_convention_has_biological_capability = yes
+			}
+		}
+	}
+	modifier = {
+		factor = constant:cbrn_convention_ai.ratify_democracy_first_use_factor
+		has_government = democratic
+		OR = {
+			check_variable = { cbrn_convention_family_id = constant:cbrn_convention_family.first_use }
+			check_variable = { cbrn_convention_family_id = constant:cbrn_convention_family.arsenal }
+		}
+	}
+	modifier = {
+		factor = constant:cbrn_convention_ai.ratify_reservation_offense_factor
+		cbrn_convention_is_reservation = yes
+		OR = {
+			check_variable = { cbrn_convention_family_id = constant:cbrn_convention_family.arsenal }
+			check_variable = { cbrn_convention_family_id = constant:cbrn_convention_family.nuclear }
+		}
+	}
+}
+
+# Agenda pool weight. Global; input temp cbrn_convention_family_id and the
+# gate counts from cbrn_convention_evaluate_family_gate.
+cbrn_convention_agenda_family_weight = {
+	base = constant:cbrn_convention_agenda_weight.base
+	modifier = {
+		add = constant:cbrn_convention_agenda_weight.protection_after_attack
+		has_global_flag = cbrn_convention_recent_member_attack
+		check_variable = { cbrn_convention_family_id = constant:cbrn_convention_family.compact }
+	}
+	modifier = {
+		add = constant:cbrn_convention_agenda_weight.inspection_after_dispute
+		has_global_flag = cbrn_convention_inspection_dispute
+		check_variable = { cbrn_convention_family_id = constant:cbrn_convention_family.protocol }
+	}
+	modifier = {
+		add = constant:cbrn_convention_agenda_weight.newest_unlocked
+		has_global_flag = cbrn_convention_newest_family_pending
+		OR = {
+			AND = {
+				has_global_flag = cbrn_convention_evolution_2_recorded
+				NOT = { has_global_flag = cbrn_convention_evolution_3_recorded }
+				check_variable = { cbrn_convention_family_id = constant:cbrn_convention_family.charter }
+			}
+			AND = {
+				has_global_flag = cbrn_convention_evolution_3_recorded
+				check_variable = { cbrn_convention_family_id = constant:cbrn_convention_family.arsenal }
+			}
+		}
+	}
+	# The first agenda after Evolution I is the First-Use Revision.
+	modifier = {
+		factor = constant:cbrn_convention_ai.priority_family_factor
+		has_global_flag = cbrn_convention_priority_first_use
+		check_variable = { cbrn_convention_family_id = constant:cbrn_convention_family.first_use }
+	}
+	modifier = {
+		add = constant:cbrn_convention_agenda_weight.delivery_gap
+		check_variable = { cbrn_convention_family_id = constant:cbrn_convention_family.delivery }
+		check_variable = { cbrn_convention_c_delivery < constant:cbrn_convention_ai.delivery_gap_members }
+	}
+	modifier = {
+		add = constant:cbrn_convention_agenda_weight.nuclear_members
+		check_variable = { cbrn_convention_family_id = constant:cbrn_convention_family.nuclear }
+		NOT = { check_variable = { cbrn_convention_c_nuke_research < constant:cbrn_convention_ai.nuclear_research_members } }
+	}
+}
+
+cbrn_convention_evolution_i_days = {
+	base = constant:cbrn_convention_evolution_mtth.evolution_i_base
+	modifier = { factor = constant:cbrn_convention_evolution_mtth.shorten_factor has_global_flag = cbrn_convention_recent_member_attack }
+	modifier = { factor = constant:cbrn_convention_evolution_mtth.shorten_factor check_variable = { global.cbrn_convention_standing > constant:cbrn_convention_standing.divided } }
+	modifier = { factor = constant:cbrn_convention_evolution_mtth.lengthen_factor check_variable = { global.cbrn_convention_standing = constant:cbrn_convention_standing.provisional } }
+}
+
+cbrn_convention_evolution_ii_days = {
+	base = constant:cbrn_convention_evolution_mtth.evolution_ii_base
+	modifier = { factor = constant:cbrn_convention_evolution_mtth.shorten_factor has_global_flag = cbrn_convention_treaty_5_in_force }
+	modifier = { factor = constant:cbrn_convention_evolution_mtth.shorten_factor has_global_flag = cbrn_convention_recent_member_attack }
+	modifier = { factor = constant:cbrn_convention_evolution_mtth.lengthen_factor has_global_flag = cbrn_convention_treaty_5_cooldown }
+	modifier = { factor = constant:cbrn_convention_evolution_mtth.lengthen_factor check_variable = { global.cbrn_convention_standing = constant:cbrn_convention_standing.provisional } }
+}
+
+cbrn_convention_evolution_iii_days = {
+	base = constant:cbrn_convention_evolution_mtth.evolution_iii_base
+	modifier = { factor = constant:cbrn_convention_evolution_mtth.shorten_factor has_global_flag = cbrn_convention_treaty_7_in_force }
+	modifier = { factor = constant:cbrn_convention_evolution_mtth.shorten_factor check_variable = { global.cbrn_convention_standing = constant:cbrn_convention_standing.dominant } }
+	modifier = { factor = constant:cbrn_convention_evolution_mtth.lengthen_factor check_variable = { global.cbrn_convention_standing = constant:cbrn_convention_standing.divided } }
+	modifier = { factor = constant:cbrn_convention_evolution_mtth.lengthen_factor has_global_flag = cbrn_convention_opposition_bonus }
+}

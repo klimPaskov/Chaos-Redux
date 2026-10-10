@@ -418,6 +418,20 @@ condemnation_pay_fuel_fraction = {
 	set_fuel_ratio = condemnation_fuel_ratio_after_cost
 }
 
+# COUNTRY scope. The shared pledge-breach consequence: broken-pledge memory
+# with its cover-up and repeat-use gain. Called by condemnation_add_source when
+# a non-use pledge is broken and by Event 036 when a Retaliation Reservation is
+# broken. Outputs: temporary condemnation_compliance_breach_applied and
+# condemnation_context_type.
+condemnation_apply_pledge_breach_consequence = {
+	set_temp_variable = { condemnation_pledge_break_days = constant:condemnation_duration_days.pledge_break_memory }
+	set_country_flag = { flag = condemnation_pledge_broken days = var:condemnation_pledge_break_days }
+	add_to_variable = { condemnation_coverup = constant:condemnation_gain.pledge_break_coverup }
+	add_to_variable = { condemnation_repeat_use = constant:condemnation_gain.pledge_break_repeat }
+	set_temp_variable = { condemnation_context_type = constant:condemnation_context.pledge_breach }
+	set_temp_variable = { condemnation_compliance_breach_applied = constant:condemnation_tier.concern }
+}
+
 condemnation_add_source = {
 	condemnation_initialize_country = yes
 	if = { limit = { NOT = { has_variable = condemnation_source_type } } set_temp_variable = { condemnation_source_type = constant:condemnation_source.mixed } }
@@ -455,6 +469,9 @@ condemnation_add_source = {
 		}
 		set_temp_variable = { condemnation_source_is_weapon_use = constant:condemnation_tier.concern }
 	}
+
+	# Event 036 relieves the weapon base before the death and contamination terms.
+	cbrn_convention_apply_condemnation_relief = yes
 
 	set_temp_variable = { condemnation_scaled_base_gain = condemnation_base_gain }
 	set_temp_variable = { condemnation_death_gain = condemnation_civilian_deaths }
@@ -606,12 +623,7 @@ condemnation_add_source = {
 				check_variable = { condemnation_source_is_weapon_use > constant:condemnation_tier.normal }
 			}
 			clr_country_flag = condemnation_non_use_pledge
-			set_temp_variable = { condemnation_pledge_break_days = constant:condemnation_duration_days.pledge_break_memory }
-			set_country_flag = { flag = condemnation_pledge_broken days = var:condemnation_pledge_break_days }
-			add_to_variable = { condemnation_coverup = constant:condemnation_gain.pledge_break_coverup }
-			add_to_variable = { condemnation_repeat_use = constant:condemnation_gain.pledge_break_repeat }
-			set_temp_variable = { condemnation_context_type = constant:condemnation_context.pledge_breach }
-			set_temp_variable = { condemnation_compliance_breach_applied = constant:condemnation_tier.concern }
+			condemnation_apply_pledge_breach_consequence = yes
 		}
 		if = {
 			limit = {
@@ -1253,6 +1265,7 @@ condemnation_calculate_pair_score = {
 			}
 		}
 
+		cbrn_convention_add_participant_score_term = yes
 		if = { limit = { is_major = yes } add_to_temp_variable = { condemnation_pair_score = constant:condemnation_participant_score.target_major } }
 		if = { limit = { check_variable = { var = condemnation_participant_factories value = condemnation_target_factories compare = greater_than } } add_to_temp_variable = { condemnation_pair_score = constant:condemnation_participant_score.participant_stronger } }
 		else_if = { limit = { check_variable = { var = condemnation_participant_factories value = condemnation_target_factories compare = less_than } } add_to_temp_variable = { condemnation_pair_score = constant:condemnation_participant_score.target_stronger } }

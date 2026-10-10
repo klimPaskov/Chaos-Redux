@@ -1,0 +1,373 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 036 CHEMICAL AND BIOLOGICAL WEAPONS CONVENTION TRIGGERS
+# ============================================================================
+# Overview:
+# - Posture, membership, treaty, capability, conference, program, and
+#   achievement predicates for Event 036.
+# - Treaty ratification is a country flag per family id
+#   (cbrn_convention_ratified_<id>, cbrn_convention_reserved_<id> for the
+#   family's reservation clause). Family ids are cbrn_convention_family.
+# - Nothing here scans the world. Country triggers read the scoped country,
+#   global triggers read the registries and the active agenda.
+# ============================================================================
+
+# COUNTRY scope. Can take part in the convention at all.
+cbrn_convention_country_is_eligible = {
+	exists = yes
+	capital_scope = { is_capital = yes }
+	uses_normal_civilian_systems = yes
+	is_special_chaos_country = no
+}
+
+cbrn_convention_is_active = {
+	has_global_flag = cbrn_convention_active
+}
+
+# COUNTRY scope. Public posture checks.
+cbrn_convention_is_member = {
+	has_variable = cbrn_convention_posture
+	check_variable = { cbrn_convention_posture > constant:cbrn_convention_posture.none }
+	check_variable = { cbrn_convention_posture < constant:cbrn_convention_posture.rejection }
+}
+cbrn_convention_is_full = {
+	has_variable = cbrn_convention_posture
+	check_variable = { cbrn_convention_posture = constant:cbrn_convention_posture.full }
+}
+cbrn_convention_is_chemical_accession = {
+	has_variable = cbrn_convention_posture
+	check_variable = { cbrn_convention_posture = constant:cbrn_convention_posture.chemical }
+}
+cbrn_convention_is_reservation = {
+	has_variable = cbrn_convention_posture
+	check_variable = { cbrn_convention_posture = constant:cbrn_convention_posture.reservation }
+}
+cbrn_convention_is_opponent = {
+	has_variable = cbrn_convention_posture
+	check_variable = { cbrn_convention_posture = constant:cbrn_convention_posture.rejection }
+}
+cbrn_convention_has_posture = {
+	has_variable = cbrn_convention_posture
+	check_variable = { cbrn_convention_posture > constant:cbrn_convention_posture.none }
+}
+cbrn_convention_is_suspended = {
+	has_country_flag = cbrn_convention_suspended
+}
+# Member with voting rights.
+cbrn_convention_is_voting_member = {
+	cbrn_convention_is_member = yes
+	NOT = { has_country_flag = cbrn_convention_suspended }
+}
+
+# COUNTRY scope. Treaty ratification. Input: temp cbrn_convention_family_id.
+cbrn_convention_has_ratified_family = {
+	meta_trigger = {
+		text = { has_country_flag = cbrn_convention_ratified_[FAMILY] }
+		FAMILY = "[?cbrn_convention_family_id|0]"
+	}
+}
+
+# COUNTRY scope. Posture permits ratifying the family (or its reservation
+# clause) and the country can vote. Input: temp cbrn_convention_family_id.
+cbrn_convention_posture_allows_family = {
+	NOT = { has_country_flag = cbrn_convention_suspended }
+	cbrn_convention_posture_holds_family = yes
+}
+
+# COUNTRY scope. The posture may hold the family, voting rights aside.
+cbrn_convention_posture_holds_family = {
+	cbrn_convention_is_member = yes
+	OR = {
+		cbrn_convention_is_full = yes
+		AND = {
+			cbrn_convention_is_chemical_accession = yes
+			NOT = { check_variable = { cbrn_convention_family_id = constant:cbrn_convention_family.bio_registry } }
+		}
+		AND = {
+			cbrn_convention_is_reservation = yes
+			NOT = { check_variable = { cbrn_convention_family_id = constant:cbrn_convention_family.chemical_articles } }
+			NOT = { check_variable = { cbrn_convention_family_id = constant:cbrn_convention_family.first_use } }
+		}
+	}
+}
+
+# COUNTRY scope. Only the restricted part of the family is open: chemical
+# Accession takes the chemical clause, Reservation takes defensive sections
+# or containment only. Input: temp cbrn_convention_family_id.
+cbrn_convention_posture_forces_reservation_clause = {
+	OR = {
+		AND = {
+			cbrn_convention_is_chemical_accession = yes
+			OR = {
+				check_variable = { cbrn_convention_family_id = constant:cbrn_convention_family.first_use }
+				check_variable = { cbrn_convention_family_id = constant:cbrn_convention_family.charter }
+				check_variable = { cbrn_convention_family_id = constant:cbrn_convention_family.arsenal }
+			}
+		}
+		AND = {
+			cbrn_convention_is_reservation = yes
+			OR = {
+				check_variable = { cbrn_convention_family_id = constant:cbrn_convention_family.bio_registry }
+				check_variable = { cbrn_convention_family_id = constant:cbrn_convention_family.charter }
+				check_variable = { cbrn_convention_family_id = constant:cbrn_convention_family.nuclear }
+				check_variable = { cbrn_convention_family_id = constant:cbrn_convention_family.arsenal }
+			}
+		}
+	}
+}
+
+# Global. The family has a reservation clause. Input: temp cbrn_convention_family_id.
+cbrn_convention_family_has_reservation_clause = {
+	OR = {
+		check_variable = { cbrn_convention_family_id = constant:cbrn_convention_family.chemical_articles }
+		check_variable = { cbrn_convention_family_id = constant:cbrn_convention_family.bio_registry }
+		check_variable = { cbrn_convention_family_id = constant:cbrn_convention_family.protocol }
+		check_variable = { cbrn_convention_family_id = constant:cbrn_convention_family.first_use }
+		check_variable = { cbrn_convention_family_id = constant:cbrn_convention_family.charter }
+		check_variable = { cbrn_convention_family_id = constant:cbrn_convention_family.nuclear }
+		check_variable = { cbrn_convention_family_id = constant:cbrn_convention_family.arsenal }
+	}
+}
+
+# Global. Treaty in force. Input: temp cbrn_convention_family_id.
+cbrn_convention_family_in_force = {
+	meta_trigger = {
+		text = { has_global_flag = cbrn_convention_treaty_[FAMILY]_in_force }
+		FAMILY = "[?cbrn_convention_family_id|0]"
+	}
+}
+
+# Global. The family's evolution is recorded and enabled.
+# Input: temp cbrn_convention_family_id.
+cbrn_convention_family_stage_is_open = {
+	OR = {
+		check_variable = { cbrn_convention_family_id < constant:cbrn_convention_family.first_use }
+		AND = {
+			check_variable = { cbrn_convention_family_id < constant:cbrn_convention_family.charter }
+			has_global_flag = cbrn_convention_evolution_1_recorded
+		}
+		AND = {
+			check_variable = { cbrn_convention_family_id < constant:cbrn_convention_family.arsenal }
+			has_global_flag = cbrn_convention_evolution_2_recorded
+		}
+		has_global_flag = cbrn_convention_evolution_3_recorded
+	}
+}
+
+# Global. The family is not on cooldown after a failed agenda.
+cbrn_convention_family_off_cooldown = {
+	meta_trigger = {
+		text = { NOT = { has_global_flag = cbrn_convention_treaty_[FAMILY]_cooldown } }
+		FAMILY = "[?cbrn_convention_family_id|0]"
+	}
+}
+
+# COUNTRY scope. Capabilities read from technology and completed projects.
+cbrn_convention_has_chemical_capability = {
+	OR = {
+		has_tech = chlorine_gas
+		has_tech = livens_projector_tech
+	}
+}
+cbrn_convention_has_biological_capability = {
+	OR = {
+		has_tech = pathogen_handling_protocols
+		bio_battlefield_country_has_any_agent_project = yes
+	}
+}
+cbrn_convention_has_usable_biological = {
+	bio_battlefield_country_has_any_agent_project = yes
+}
+cbrn_convention_has_nuclear_capability = {
+	has_tech = nukes
+}
+cbrn_convention_has_nuclear_research = {
+	OR = {
+		has_tech = atomic_research
+		has_tech = nukes
+	}
+}
+cbrn_convention_has_delivery_capability = {
+	OR = {
+		has_tech = rocket_engines
+		has_tech = strategic_bomber1
+	}
+}
+cbrn_convention_has_protective_stock = {
+	NOT = { has_equipment = { gas_mask_equipment < 1 } }
+}
+
+# COUNTRY scope. Usable capability families for integrated doctrine:
+# chemical, biological, nuclear, and missile delivery.
+cbrn_convention_has_two_usable_families = {
+	OR = {
+		AND = { cbrn_convention_has_chemical_capability = yes cbrn_convention_has_usable_biological = yes }
+		AND = { cbrn_convention_has_chemical_capability = yes cbrn_convention_has_nuclear_capability = yes }
+		AND = { cbrn_convention_has_chemical_capability = yes has_tech = rocket_engines }
+		AND = { cbrn_convention_has_usable_biological = yes cbrn_convention_has_nuclear_capability = yes }
+		AND = { cbrn_convention_has_usable_biological = yes has_tech = rocket_engines }
+		AND = { cbrn_convention_has_nuclear_capability = yes has_tech = rocket_engines }
+	}
+}
+
+# Global. The family capability gate holds among current members. The
+# member counts are gathered by cbrn_convention_evaluate_family_gate, which
+# sets temp cbrn_convention_gate_ok for temp cbrn_convention_family_id.
+cbrn_convention_family_capability_gate = {
+	check_variable = { cbrn_convention_gate_ok > constant:cbrn_convention.zero }
+}
+
+# Global. The current agenda family can still resolve.
+cbrn_convention_agenda_is_open = {
+	has_global_flag = cbrn_convention_agenda_open
+}
+
+# COUNTRY scope. Can respond to the current agenda.
+cbrn_convention_can_respond_to_agenda = {
+	cbrn_convention_is_active = yes
+	cbrn_convention_agenda_is_open = yes
+	set_temp_variable = { cbrn_convention_family_id = global.cbrn_convention_agenda_family }
+	cbrn_convention_posture_allows_family = yes
+	NOT = { cbrn_convention_has_ratified_family = yes }
+}
+
+# COUNTRY scope. The relief stage the country holds for a weapon family.
+# Stage is computed into temp cbrn_convention_stage by the effect helper; this
+# trigger guards the integrated doctrine requirement.
+cbrn_convention_doctrine_requirements = {
+	has_country_flag = cbrn_convention_ratified_7
+	NOT = { has_country_flag = cbrn_convention_reserved_7 }
+	cbrn_convention_has_two_usable_families = yes
+	cbrn_convention_has_protective_stock = yes
+	has_doctrine = chaos_warfare
+}
+
+# COUNTRY scope. Retaliation proof from the Retaliation Authority ledger
+# against the current Condemnation victim. Input: temp
+# cbrn_convention_victim_id, saved event target cbrn_convention_victim.
+cbrn_convention_action_is_retaliation = {
+	has_event_target = cbrn_convention_victim
+	event_target:cbrn_convention_victim = { exists = yes }
+	has_war_with = event_target:cbrn_convention_victim
+	meta_trigger = {
+		text = {
+			has_variable = cbrn_retaliation_[TARGET_ID]_expiry_day
+			check_variable = {
+				var = global.num_days
+				value = cbrn_retaliation_[TARGET_ID]_expiry_day
+				compare = less_than_or_equals
+			}
+		}
+		TARGET_ID = "[?cbrn_convention_victim_id|.0]"
+	}
+}
+
+# COUNTRY scope (target), ROOT is the demanding country. Inspection and
+# Verification Protocol basis for cbrn_demand_inspections.
+cbrn_convention_target_is_protocol_inspectable_by_root = {
+	has_country_flag = cbrn_convention_ratified_4
+	NOT = { has_country_flag = cbrn_convention_suspended }
+	ROOT = {
+		has_country_flag = cbrn_convention_ratified_4
+		NOT = { has_country_flag = cbrn_convention_suspended }
+	}
+}
+
+# COUNTRY scope (recipient), ROOT is the provider. Protection and Assistance
+# Compact basis for cbrn_sponsor_decontamination_mission.
+cbrn_convention_compact_partner_of_root = {
+	has_country_flag = cbrn_convention_ratified_1
+	ROOT = { has_country_flag = cbrn_convention_ratified_1 }
+}
+
+# Global. Program provider proofs and access.
+cbrn_convention_provider_black_plague_normally_available = {
+	has_global_flag = black_plague_system_active
+}
+cbrn_convention_provider_zombies_normally_available = {
+	has_global_flag = has_zombie_outbreak
+}
+
+# Global. Provider eligibility. Input: temp cbrn_convention_provider_id.
+cbrn_convention_provider_is_eligible = {
+	OR = {
+		AND = {
+			check_variable = { cbrn_convention_provider_id = constant:cbrn_convention_provider.black_plague }
+			NOT = { cbrn_convention_provider_black_plague_normally_available = yes }
+			NOT = { has_global_flag = cbrn_convention_provider_1_closed }
+			any_of_scopes = {
+				array = global.cbrn_convention_members
+				cbrn_convention_participant_allows_biological = yes
+			}
+		}
+		AND = {
+			check_variable = { cbrn_convention_provider_id = constant:cbrn_convention_provider.weaponized_zombies }
+			NOT = { cbrn_convention_provider_zombies_normally_available = yes }
+			NOT = { has_global_flag = cbrn_convention_provider_2_closed }
+			any_of_scopes = {
+				array = global.cbrn_convention_members
+				cbrn_convention_participant_allows_biological = yes
+			}
+		}
+	}
+}
+
+# Global. At least one registered provider is eligible.
+cbrn_convention_program_has_candidate = {
+	OR = {
+		AND = {
+			NOT = { cbrn_convention_provider_black_plague_normally_available = yes }
+			NOT = { has_global_flag = cbrn_convention_provider_1_closed }
+		}
+		AND = {
+			NOT = { cbrn_convention_provider_zombies_normally_available = yes }
+			NOT = { has_global_flag = cbrn_convention_provider_2_closed }
+		}
+	}
+	any_of_scopes = {
+		array = global.cbrn_convention_members
+		cbrn_convention_participant_allows_biological = yes
+	}
+}
+
+# COUNTRY scope. Both registered providers are biological weapons, so the
+# participant trigger excludes Chemical Accession members.
+cbrn_convention_participant_allows_biological = {
+	cbrn_convention_is_voting_member = yes
+	NOT = { cbrn_convention_is_chemical_accession = yes }
+}
+
+# COUNTRY scope. Can contribute to the active project now.
+cbrn_convention_can_contribute = {
+	check_variable = { global.cbrn_convention_program_state = constant:cbrn_convention_program_state.active }
+	cbrn_convention_participant_allows_biological = yes
+	NOT = { has_country_flag = cbrn_convention_contribution_running }
+	NOT = { has_country_flag = cbrn_convention_withdrawal_notice }
+	NOT = { cbrn_convention_has_selected_project_access = yes }
+}
+
+# COUNTRY scope. Already has access to the selected project.
+cbrn_convention_has_selected_project_access = {
+	OR = {
+		AND = {
+			check_variable = { global.cbrn_convention_project = constant:cbrn_convention_provider.black_plague }
+			OR = {
+				has_country_flag = cbrn_convention_access_black_plague
+				black_plague_weaponization_directorate_has_access = yes
+			}
+		}
+		AND = {
+			check_variable = { global.cbrn_convention_project = constant:cbrn_convention_provider.weaponized_zombies }
+			OR = {
+				has_country_flag = cbrn_convention_access_weaponized_zombies
+				has_country_flag = directorate_special_project_weaponized_zombies_available
+				has_country_flag = directorate_special_projects_all_available
+				has_country_flag = mengele_clone_army_zombie_project_authorized
+			}
+		}
+	}
+}
+
+# COUNTRY scope. Covert program state.
+cbrn_convention_has_covert_program = {
+	has_country_flag = cbrn_convention_covert_program
+}

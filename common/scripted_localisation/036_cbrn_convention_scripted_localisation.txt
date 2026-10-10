@@ -1,0 +1,345 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 036 CHEMICAL AND BIOLOGICAL WEAPONS CONVENTION
+# SCRIPTED LOCALISATION
+# ============================================================================
+# Overview:
+# - Category header: posture with its permission line, Standing, and the
+#   agenda or program line.
+# - Family, project, stage, sponsor and ratification wording for the agenda,
+#   resolution and program reports.
+# - Projected Condemnation tiers for the opening option tooltips.
+# Report text drawn on parchment never uses colour codes. Names that appear in
+# the dark category header and in tooltips are coloured by their yml wrappers.
+# Numeric output goes through real yml keys, because an inline formatted key in
+# localization_key is tokenised as a dynamic key.
+# ============================================================================
+
+# COUNTRY scope. The public posture name.
+defined_text = {
+	name = GetCbrnConventionPostureName
+	text = {
+		trigger = { cbrn_convention_is_full = yes }
+		localization_key = cbrn_convention.posture.full
+	}
+	text = {
+		trigger = { cbrn_convention_is_chemical_accession = yes }
+		localization_key = cbrn_convention.posture.chemical
+	}
+	text = {
+		trigger = { cbrn_convention_is_reservation = yes }
+		localization_key = cbrn_convention.posture.reservation
+	}
+	text = { localization_key = cbrn_convention.posture.rejection }
+}
+
+# COUNTRY scope. What the country's ratified clauses permit.
+defined_text = {
+	name = GetCbrnConventionPermissionLine
+	text = {
+		trigger = { cbrn_convention_is_opponent = yes }
+		localization_key = cbrn_convention.permission.none
+	}
+	text = {
+		trigger = {
+			has_country_flag = cbrn_convention_ratified_9
+			NOT = { has_country_flag = cbrn_convention_reserved_9 }
+		}
+		localization_key = cbrn_convention.permission.unrestricted
+	}
+	text = {
+		trigger = {
+			has_country_flag = cbrn_convention_clause_chemical
+			has_country_flag = cbrn_convention_clause_biological
+		}
+		localization_key = cbrn_convention.permission.chemical_biological
+	}
+	text = {
+		trigger = { has_country_flag = cbrn_convention_clause_chemical }
+		localization_key = cbrn_convention.permission.chemical
+	}
+	text = { localization_key = cbrn_convention.permission.retaliation }
+}
+
+# COUNTRY scope. Suspension note appended to the posture line.
+defined_text = {
+	name = GetCbrnConventionSuspensionNote
+	text = {
+		trigger = { has_country_flag = cbrn_convention_suspended }
+		localization_key = cbrn_convention.suspension_note
+	}
+	text = { localization_key = cbrn_convention.empty }
+}
+
+defined_text = {
+	name = GetCbrnConventionStandingName
+	text = {
+		trigger = { check_variable = { global.cbrn_convention_standing = constant:cbrn_convention_standing.dominant } }
+		localization_key = cbrn_convention.standing.dominant
+	}
+	text = {
+		trigger = { check_variable = { global.cbrn_convention_standing = constant:cbrn_convention_standing.established } }
+		localization_key = cbrn_convention.standing.established
+	}
+	text = {
+		trigger = { check_variable = { global.cbrn_convention_standing = constant:cbrn_convention_standing.divided } }
+		localization_key = cbrn_convention.standing.divided
+	}
+	text = { localization_key = cbrn_convention.standing.provisional }
+}
+
+# The treaty family under negotiation or last resolved.
+defined_text = {
+	name = GetCbrnConventionFamilyName
+	text = { trigger = { check_variable = { global.cbrn_convention_agenda_family = constant:cbrn_convention_family.compact } } localization_key = cbrn_convention.family.1.name }
+	text = { trigger = { check_variable = { global.cbrn_convention_agenda_family = constant:cbrn_convention_family.chemical_articles } } localization_key = cbrn_convention.family.2.name }
+	text = { trigger = { check_variable = { global.cbrn_convention_agenda_family = constant:cbrn_convention_family.bio_registry } } localization_key = cbrn_convention.family.3.name }
+	text = { trigger = { check_variable = { global.cbrn_convention_agenda_family = constant:cbrn_convention_family.protocol } } localization_key = cbrn_convention.family.4.name }
+	text = { trigger = { check_variable = { global.cbrn_convention_agenda_family = constant:cbrn_convention_family.first_use } } localization_key = cbrn_convention.family.5.name }
+	text = { trigger = { check_variable = { global.cbrn_convention_agenda_family = constant:cbrn_convention_family.delivery } } localization_key = cbrn_convention.family.6.name }
+	text = { trigger = { check_variable = { global.cbrn_convention_agenda_family = constant:cbrn_convention_family.charter } } localization_key = cbrn_convention.family.7.name }
+	text = { trigger = { check_variable = { global.cbrn_convention_agenda_family = constant:cbrn_convention_family.nuclear } } localization_key = cbrn_convention.family.8.name }
+	text = { trigger = { check_variable = { global.cbrn_convention_agenda_family = constant:cbrn_convention_family.arsenal } } localization_key = cbrn_convention.family.9.name }
+	text = { trigger = { check_variable = { global.cbrn_convention_agenda_family = constant:cbrn_convention_family.program_charter } } localization_key = cbrn_convention.family.10.name }
+	text = { localization_key = cbrn_convention.family.none }
+}
+
+# The material dispute of the family under negotiation.
+defined_text = {
+	name = GetCbrnConventionFamilyDispute
+	text = { trigger = { check_variable = { global.cbrn_convention_agenda_family = constant:cbrn_convention_family.compact } } localization_key = cbrn_convention.family.1.dispute }
+	text = { trigger = { check_variable = { global.cbrn_convention_agenda_family = constant:cbrn_convention_family.chemical_articles } } localization_key = cbrn_convention.family.2.dispute }
+	text = { trigger = { check_variable = { global.cbrn_convention_agenda_family = constant:cbrn_convention_family.bio_registry } } localization_key = cbrn_convention.family.3.dispute }
+	text = { trigger = { check_variable = { global.cbrn_convention_agenda_family = constant:cbrn_convention_family.protocol } } localization_key = cbrn_convention.family.4.dispute }
+	text = { trigger = { check_variable = { global.cbrn_convention_agenda_family = constant:cbrn_convention_family.first_use } } localization_key = cbrn_convention.family.5.dispute }
+	text = { trigger = { check_variable = { global.cbrn_convention_agenda_family = constant:cbrn_convention_family.delivery } } localization_key = cbrn_convention.family.6.dispute }
+	text = { trigger = { check_variable = { global.cbrn_convention_agenda_family = constant:cbrn_convention_family.charter } } localization_key = cbrn_convention.family.7.dispute }
+	text = { trigger = { check_variable = { global.cbrn_convention_agenda_family = constant:cbrn_convention_family.nuclear } } localization_key = cbrn_convention.family.8.dispute }
+	text = { trigger = { check_variable = { global.cbrn_convention_agenda_family = constant:cbrn_convention_family.arsenal } } localization_key = cbrn_convention.family.9.dispute }
+	text = { trigger = { check_variable = { global.cbrn_convention_agenda_family = constant:cbrn_convention_family.program_charter } } localization_key = cbrn_convention.family.10.dispute }
+	text = { localization_key = cbrn_convention.empty }
+}
+
+# The sponsor named in the agenda announcement.
+defined_text = {
+	name = GetCbrnConventionSponsorLine
+	text = {
+		trigger = {
+			has_global_flag = cbrn_convention_has_sponsor
+			has_event_target = cbrn_convention_sponsor
+		}
+		localization_key = cbrn_convention.sponsor_line
+	}
+	text = { localization_key = cbrn_convention.sponsor_line_open }
+}
+
+# COUNTRY scope. Whether the reading country stands inside the resolved treaty.
+defined_text = {
+	name = GetCbrnConventionOurRatificationLine
+	text = {
+		trigger = {
+			set_temp_variable = { cbrn_convention_family_id = global.cbrn_convention_agenda_family }
+			cbrn_convention_has_ratified_family = yes
+		}
+		localization_key = cbrn_convention.resolution.ours_ratified
+	}
+	text = {
+		trigger = { cbrn_convention_is_opponent = yes }
+		localization_key = cbrn_convention.resolution.ours_opponent
+	}
+	text = { localization_key = cbrn_convention.resolution.ours_outside }
+}
+
+# Project names reuse the project localisation of the provider's own system.
+defined_text = {
+	name = GetCbrnConventionProjectName
+	text = {
+		trigger = { check_variable = { global.cbrn_convention_project = constant:cbrn_convention_provider.black_plague } }
+		localization_key = black_plague_weaponization_program
+	}
+	text = {
+		trigger = { check_variable = { global.cbrn_convention_project = constant:cbrn_convention_provider.weaponized_zombies } }
+		localization_key = weaponize_the_zombies
+	}
+	text = { localization_key = cbrn_convention.project.none }
+}
+
+defined_text = {
+	name = GetCbrnConventionCompletedProjectName
+	text = {
+		trigger = { check_variable = { global.cbrn_convention_completed_project = constant:cbrn_convention_provider.black_plague } }
+		localization_key = black_plague_weaponization_program
+	}
+	text = {
+		trigger = { check_variable = { global.cbrn_convention_completed_project = constant:cbrn_convention_provider.weaponized_zombies } }
+		localization_key = weaponize_the_zombies
+	}
+	text = { localization_key = cbrn_convention.project.none }
+}
+
+defined_text = {
+	name = GetCbrnConventionCancelledProjectName
+	text = {
+		trigger = { check_variable = { global.cbrn_convention_cancelled_project = constant:cbrn_convention_provider.black_plague } }
+		localization_key = black_plague_weaponization_program
+	}
+	text = {
+		trigger = { check_variable = { global.cbrn_convention_cancelled_project = constant:cbrn_convention_provider.weaponized_zombies } }
+		localization_key = weaponize_the_zombies
+	}
+	text = { localization_key = cbrn_convention.project.none }
+}
+
+# Stage of the active project: Organization, Experimental Work, Prototype
+# Access, Final Validation.
+defined_text = {
+	name = GetCbrnConventionProjectStageName
+	text = {
+		trigger = { check_variable = { global.cbrn_convention_stage = constant:cbrn_convention.three } }
+		localization_key = cbrn_convention.stage.4
+	}
+	text = {
+		trigger = { check_variable = { global.cbrn_convention_stage = constant:cbrn_convention.two } }
+		localization_key = cbrn_convention.stage.3
+	}
+	text = {
+		trigger = { check_variable = { global.cbrn_convention_stage = constant:cbrn_convention.one } }
+		localization_key = cbrn_convention.stage.2
+	}
+	text = { localization_key = cbrn_convention.stage.1 }
+}
+
+# Progress report text of the stage that was just reached.
+defined_text = {
+	name = GetCbrnConventionStageReport
+	text = {
+		trigger = { check_variable = { global.cbrn_convention_stage = constant:cbrn_convention.three } }
+		localization_key = cbrn_convention.stage_report.4
+	}
+	text = {
+		trigger = { check_variable = { global.cbrn_convention_stage = constant:cbrn_convention.two } }
+		localization_key = cbrn_convention.stage_report.3
+	}
+	text = { localization_key = cbrn_convention.stage_report.2 }
+}
+
+# COUNTRY scope. Whether the reading country has paid into the active project.
+defined_text = {
+	name = GetCbrnConventionContributionLine
+	text = {
+		trigger = {
+			has_variable = cbrn_convention_share_seq
+			check_variable = { cbrn_convention_share_seq = global.cbrn_convention_project_sequence }
+			check_variable = { cbrn_convention_share > constant:cbrn_convention.zero }
+		}
+		localization_key = cbrn_convention.header.contributed
+	}
+	text = {
+		trigger = { cbrn_convention_has_selected_project_access = yes }
+		localization_key = cbrn_convention.header.has_access
+	}
+	text = { localization_key = cbrn_convention.header.not_contributed }
+}
+
+# Percent of the active project, as a whole number.
+defined_text = {
+	name = GetCbrnConventionProjectPercent
+	text = {
+		trigger = {
+			set_temp_variable = { cbrn_convention_percent_display = global.cbrn_convention_percent }
+		}
+		localization_key = cbrn_convention.header.percent_value
+	}
+}
+
+# Days left on the agenda under negotiation.
+defined_text = {
+	name = GetCbrnConventionDaysLeft
+	text = {
+		trigger = {
+			set_temp_variable = { cbrn_convention_days_left_display = global.cbrn_convention_agenda_deadline }
+			subtract_from_temp_variable = { cbrn_convention_days_left_display = global.num_days }
+			clamp_temp_variable = { var = cbrn_convention_days_left_display min = constant:cbrn_convention.zero }
+		}
+		localization_key = cbrn_convention.header.days_left_value
+	}
+}
+
+# Ratifications recorded for the agenda under negotiation.
+defined_text = {
+	name = GetCbrnConventionRatificationCount
+	text = {
+		trigger = {
+			set_temp_variable = { cbrn_convention_count_display = global.cbrn_convention_agenda_ratifiers^num }
+		}
+		localization_key = cbrn_convention.header.count_value
+	}
+}
+
+# Third header line: the active project, the agenda under negotiation, or the
+# state of the conference.
+defined_text = {
+	name = GetCbrnConventionAgendaLine
+	text = {
+		trigger = { check_variable = { global.cbrn_convention_program_state = constant:cbrn_convention_program_state.active } }
+		localization_key = cbrn_convention.header.project
+	}
+	text = {
+		trigger = { check_variable = { global.cbrn_convention_program_state = constant:cbrn_convention_program_state.paused } }
+		localization_key = cbrn_convention.header.project_paused
+	}
+	text = {
+		trigger = {
+			cbrn_convention_agenda_is_open = yes
+			has_global_flag = cbrn_convention_agenda_negotiating
+		}
+		localization_key = cbrn_convention.header.agenda
+	}
+	text = {
+		trigger = { cbrn_convention_agenda_is_open = yes }
+		localization_key = cbrn_convention.header.agenda_responses
+	}
+	text = {
+		trigger = { check_variable = { global.cbrn_convention_program_state = constant:cbrn_convention_program_state.dormant } }
+		localization_key = cbrn_convention.header.program_dormant
+	}
+	text = {
+		trigger = { check_variable = { global.cbrn_convention_standing = constant:cbrn_convention_standing.provisional } }
+		localization_key = cbrn_convention.header.paused
+	}
+	text = { localization_key = cbrn_convention.header.none }
+}
+
+# COUNTRY scope. Projected public Condemnation tier after each opening answer.
+# The projections are stored by the opening response event.
+defined_text = {
+	name = GetCbrnConventionProjectedTierFull
+	text = { trigger = { has_variable = cbrn_convention_projected_full NOT = { check_variable = { cbrn_convention_projected_full < constant:condemnation_threshold.pariah_state } } } localization_key = condemnation.tier.pariah_state }
+	text = { trigger = { has_variable = cbrn_convention_projected_full NOT = { check_variable = { cbrn_convention_projected_full < constant:condemnation_threshold.total_embargo } } } localization_key = condemnation.tier.total_embargo }
+	text = { trigger = { has_variable = cbrn_convention_projected_full NOT = { check_variable = { cbrn_convention_projected_full < constant:condemnation_threshold.strategic_embargo } } } localization_key = condemnation.tier.strategic_embargo }
+	text = { trigger = { has_variable = cbrn_convention_projected_full NOT = { check_variable = { cbrn_convention_projected_full < constant:condemnation_threshold.arms_embargo } } } localization_key = condemnation.tier.arms_embargo }
+	text = { trigger = { has_variable = cbrn_convention_projected_full NOT = { check_variable = { cbrn_convention_projected_full < constant:condemnation_threshold.formal_censure } } } localization_key = condemnation.tier.formal_censure }
+	text = { trigger = { has_variable = cbrn_convention_projected_full NOT = { check_variable = { cbrn_convention_projected_full < constant:condemnation_threshold.concern } } } localization_key = condemnation.tier.concern }
+	text = { localization_key = condemnation.tier.normal }
+}
+
+defined_text = {
+	name = GetCbrnConventionProjectedTierChemical
+	text = { trigger = { has_variable = cbrn_convention_projected_chemical NOT = { check_variable = { cbrn_convention_projected_chemical < constant:condemnation_threshold.pariah_state } } } localization_key = condemnation.tier.pariah_state }
+	text = { trigger = { has_variable = cbrn_convention_projected_chemical NOT = { check_variable = { cbrn_convention_projected_chemical < constant:condemnation_threshold.total_embargo } } } localization_key = condemnation.tier.total_embargo }
+	text = { trigger = { has_variable = cbrn_convention_projected_chemical NOT = { check_variable = { cbrn_convention_projected_chemical < constant:condemnation_threshold.strategic_embargo } } } localization_key = condemnation.tier.strategic_embargo }
+	text = { trigger = { has_variable = cbrn_convention_projected_chemical NOT = { check_variable = { cbrn_convention_projected_chemical < constant:condemnation_threshold.arms_embargo } } } localization_key = condemnation.tier.arms_embargo }
+	text = { trigger = { has_variable = cbrn_convention_projected_chemical NOT = { check_variable = { cbrn_convention_projected_chemical < constant:condemnation_threshold.formal_censure } } } localization_key = condemnation.tier.formal_censure }
+	text = { trigger = { has_variable = cbrn_convention_projected_chemical NOT = { check_variable = { cbrn_convention_projected_chemical < constant:condemnation_threshold.concern } } } localization_key = condemnation.tier.concern }
+	text = { localization_key = condemnation.tier.normal }
+}
+
+defined_text = {
+	name = GetCbrnConventionProjectedTierReservation
+	text = { trigger = { has_variable = cbrn_convention_projected_reservation NOT = { check_variable = { cbrn_convention_projected_reservation < constant:condemnation_threshold.pariah_state } } } localization_key = condemnation.tier.pariah_state }
+	text = { trigger = { has_variable = cbrn_convention_projected_reservation NOT = { check_variable = { cbrn_convention_projected_reservation < constant:condemnation_threshold.total_embargo } } } localization_key = condemnation.tier.total_embargo }
+	text = { trigger = { has_variable = cbrn_convention_projected_reservation NOT = { check_variable = { cbrn_convention_projected_reservation < constant:condemnation_threshold.strategic_embargo } } } localization_key = condemnation.tier.strategic_embargo }
+	text = { trigger = { has_variable = cbrn_convention_projected_reservation NOT = { check_variable = { cbrn_convention_projected_reservation < constant:condemnation_threshold.arms_embargo } } } localization_key = condemnation.tier.arms_embargo }
+	text = { trigger = { has_variable = cbrn_convention_projected_reservation NOT = { check_variable = { cbrn_convention_projected_reservation < constant:condemnation_threshold.formal_censure } } } localization_key = condemnation.tier.formal_censure }
+	text = { trigger = { has_variable = cbrn_convention_projected_reservation NOT = { check_variable = { cbrn_convention_projected_reservation < constant:condemnation_threshold.concern } } } localization_key = condemnation.tier.concern }
+	text = { localization_key = condemnation.tier.normal }
+}
