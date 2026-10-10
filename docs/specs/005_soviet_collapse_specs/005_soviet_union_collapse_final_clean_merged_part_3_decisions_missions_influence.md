@@ -5,20 +5,9 @@
 
 Soviet Collapse must have special mechanics. They should not exist only as hidden variables. The player should see them through decision category headers, scripted localisation, event detail windows, national spirits, event logs, or scripted GUI when appropriate.
 
-Important values must be dynamic and coloured consistently. Values can include:
-
-- Moscow Authority
-- Union Collapse Threat
-- Command Obedience
-- Armed Breakaway Momentum
-- Foreign Penetration
-- Old Movement Resurgence
-- League Cohesion
-- Local Support
-- Sponsor Influence
-- Patronage Risk
-- Independence Resilience
-- Balance of Power values for internal struggles
+The crisis values, their source variables and the visible-value budget are defined once in Part 2.
+Use those names and that budget here; do not introduce a parallel list or a new global meter for a decision family.
+Per-republic influence work uses the existing sponsor influence, patronage risk and independence resilience values.
 
 If a mechanic uses a scripted GUI, consider progress meters, fill variants, status icons, selected or locked variants, warning frames, and frame animation where useful. Visual motion should clarify the mechanic, not clutter it.
 
@@ -277,6 +266,30 @@ Also check exploits:
 - decisions with no meaningful cost or risk
 
 Fix exploits with flags, cooldowns, dynamic costs, escalating costs, target limits, route locks, AI limits, cleanup effects, one-time completion flags, or scripted triggers.
+
+## Shared Chaos Redux system connections
+
+The crisis runs inside the mod's shared systems, so it must use them instead of restating their work.
+
+Already connected in current source:
+
+- Camps and repression read the crisis directly.
+  `is_soviet_collapse_active`, `soviet_collapse_total_collapse_threat` and `soviet_collapse_terminal_collapse` drive the Soviet gulag and repression surface, and `soviet_collapse_apply_genocide_gulag_repression_memory` calls `camp_rework_soviet_apply_union_crisis_repression_bridge` in the other direction.
+  UWR blacksite intake registers real camp sites through the camp system rather than a private ledger.
+- Front movement feeds the humanitarian systems automatically.
+  `on_state_control_changed` calls the hostile-capture adapter, which adds bounded war flight pressure and queues one famine food assessment for the captured state, so every reclamation offensive, league war and terminal rupture already produces refugees and food strain.
+  Event 005 must not add a second famine or migration request for the same fighting.
+- Combat casualties and civilian deaths reach the Chaos Meter deaths ledger through the daily casualty update, so the crisis needs no private casualty accounting.
+- CBRN use by UWR or any other successor is owned by the CBRN and condemnation systems, which apply their own condemnation sources and sanctions.
+
+Proposed (spec audit 2026-10-10):
+
+- The crisis contributes nothing to the Chaos Meter value itself, although it is one of the mod's largest political ruptures.
+  Add one bounded `add_chaos_meter_value` contribution at the terminal moment, sized from the realized rupture rather than from a timer, matching how other world-end branches report themselves.
+  Ordinary stage progress should stay silent so a contained crisis cannot farm chaos.
+- Gulag geography should push back on the crisis it already reads.
+  A republic whose states carry live camp sites should start with higher Armed Breakaway Momentum, and an accepted dismantlement route should reduce it, using the existing camp site count and dismantlement markers instead of a new value.
+- A republic released into a state already under famine stage pressure should inherit that pressure as a visible opening problem rather than a clean slate, using the famine system's existing state values.
 
 ## Implemented Command and Corridors addendum (2026-07-11)
 

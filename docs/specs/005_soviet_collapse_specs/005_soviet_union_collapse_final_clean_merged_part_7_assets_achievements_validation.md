@@ -12,7 +12,7 @@ Reuse existing assets only when they are valid, correctly placed, correctly size
 Create or source new assets when existing assets are missing, broken, generic, duplicated, wrongly oriented, wrong size, unwired, undocumented, or unsuitable.
 
 Historical flags and real leader portraits require attributed sources.
-Use [chaos-redux-event-assets](../../../.agents/skills/chaos-redux-event-assets/SKILL.md) for current source classification, historical-flag reconstruction, native transparency, portrait production, conversion, and manifests.
+Use [chaos-redux-event-assets](../../../.claude/skills/chaos-redux-event-assets/SKILL.md) for current source classification, historical-flag reconstruction, native transparency, portrait production, conversion, and manifests.
 Every character portrait belongs to `chaosx_portrait_creator`.
 A council, factory, cult, or high-chaos label does not by itself make a grounded person or institution fictional.
 
@@ -45,7 +45,10 @@ Fix upside-down flags. Check normal, medium, small, ideology variant, route, pup
 
 Update:
 
-`docs/assets/005_soviet_union_collapse/manifest.md`
+`docs/assets/005_soviet_collapse/manifest.md`
+
+This is the package's asset manifest path, matching the existing `docs/assets/005_soviet_collapse/` directory that already holds the audio sources; the older `005_soviet_union_collapse` spelling is an alias and must not create a second asset folder.
+The manifest is absent in the current checkout, so asset provenance is `unresolved` and no asset coverage claim can be made from the older dated handoffs alone.
 
 The manifest must list source mode, source path, processed PNG, final DDS, target size, sprite name, use, status, and blocker if any.
 
@@ -163,7 +166,10 @@ Achievement icons require 64x64 completed icon direction.
 
 ## Validation scenarios
 
-The implementation must run or document these scenarios:
+These scenarios are documented from source review and the available offline checks; the agent does not launch the game, and live confirmation belongs to the user.
+An unavailable tool limits the affected scenario's claim and does not block the surrounding work.
+
+Cover these scenarios:
 
 1. Calm World, strong USSR, event fired manually.
 2. Calm World, strong USSR, first month.
@@ -198,60 +204,21 @@ For every scenario, document observed result, expected result, status, and block
 
 ## Required completion report
 
-The final completion report must include:
+The repository's completion and simplification rules define the general report shape, and the single implementation audit named in Part 1 carries it.
+Beyond those rules, this event's report must cover the coverage items that are specific to it:
 
-1. Source files read
-2. Files changed
-3. Implementation ledger path
-4. Country package coverage
-5. Republic and internal republic coverage
-6. High-chaos splinter coverage
-7. Focus tree rewrite summary
-8. Route coverage table for every major focus tree
-9. Unique focus icon coverage
-10. Remove-idea tooltip cleanup
-11. Mission cleanup summary
-12. Mission clarity fixes
-13. Threat and balance summary
-14. Exploit check summary
-15. MTTH release summary
-16. Influence system summary
-17. League and faction implementation summary
-18. Union Unmade release and war logic
-19. Puppet release aftermath
-20. Super-event cleanup
-21. News and report events
-22. Asset coverage
-23. Achievement implementation
-24. AI behavior
-25. Validation scenario results
-26. Simplifications and deviations
-27. Blockers
-28. Remaining work
-
-If any section is missing, the goal is incomplete.
+1. Country package coverage, including every republic, internal republic and high-chaos splinter
+2. A route coverage table for every major focus tree, with unique focus icon coverage
+3. Remove-idea tooltip cleanup and mission clarity and duplication cleanup
+4. Threat balance and exploit results, including the calm strong-USSR scenarios
+5. MTTH release behaviour, influence, leagues and factions
+6. Union Unmade release and war logic, puppet aftermath and super-event scope
+7. Asset coverage against the manifest, achievements and AI behaviour
+8. Validation scenario results with their evidence limits
 
 ## Final acceptance
 
-The implementation is complete only when:
-
-- every required source spec is represented in the clean implementation
-- every required country has a package row
-- every high-chaos splinter has a package row
-- every focus tree has required branch families
-- every focus has a unique icon assignment
-- focus names, descriptions, rewards, and icons match
-- repeated remove-idea tooltip spam is gone
-- missions are clear and non-duplicate
-- threat balance passes calm strong USSR scenarios
-- Union Unmade releases all required republics and subjects
-- all released republics get dynamic units
-- local leagues obey member requirements
-- factions have goals and rules
-- super-event scope is corrected
-- assets are wired and documented
-- achievements exist
-- AI behavior is updated
-- docs and ledgers prove the work
+The Part 1 completion gate is the single acceptance list; this part adds no second one.
+It is satisfied only when every required country and splinter has a package row, every focus tree has its required branch families with matching names, descriptions, rewards and unique icons, remove-idea tooltip spam is gone, missions are clear and non-duplicate, threat balance holds in the calm strong-USSR scenarios, Union Unmade releases every required republic and subject with dynamic units, local leagues obey their member requirements, factions have goals and rules, super-event scope is correct, assets are wired and documented, achievements exist, AI behaviour is updated, and the implementation audit and manifest prove the work.
 
 If any of these are missing, the agent must say the goal is not complete.

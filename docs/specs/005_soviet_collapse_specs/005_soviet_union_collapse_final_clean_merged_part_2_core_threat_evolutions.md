@@ -49,18 +49,15 @@ Evolution logs must extend beyond early chaos. They should not stop at Gathering
 
 Soviet Collapse must have proper event-log window details.
 
-The event detail window should explain:
+The event detail window reads as short in-world prose, not a status dump.
+It covers four things:
 
-- current broad crisis state
-- first-wave state
-- whether major republics are active
-- whether local leagues exist
-- whether the Free Republics' League exists
-- which true evolution tracks have appeared
-- whether Moscow Authority is intact, shaken, failing, or broken
-- whether Union Crisis Threat is contained, rising, severe, or terminal
-- whether foreign intervention is limited, organized, dominant, or contested
-- whether old movements, high-chaos splinters, factory states, ancient restorations, or dead-state actors have appeared
+- how far obedience has failed, with Moscow Authority described as intact, shaken, failing or broken and the crisis as contained, rising, severe or terminal
+- who is already out: the first wave, the major republics now independent, and whether local leagues or the Free Republics' League exist
+- who else is involved: foreign intervention described as limited, organized, dominant or contested
+- what has mutated: the evolution tracks that have appeared, including old movements, high-chaos splinters, factory states, ancient restorations and dead-state actors
+
+State each only while it is true; an untouched condition stays out of the window rather than appearing as a negative line.
 
 Use in-world language, not debug language.
 
@@ -72,21 +69,32 @@ Example tone:
 
 Union Collapse Threat must be dynamic, readable, dampened, and resistant to runaway in calm conditions.
 
-The crisis should track or represent these main values:
+This table is the package's canonical crisis-value list.
+Part 3 and the companion documents refer to it instead of repeating their own variants, and every player-facing name must match the column below.
 
-| Value | Role | Typical colour direction |
-| --- | --- | --- |
-| Moscow Authority | central orders still believed | blue or steel |
-| Armed Breakaway Momentum | republics believe independence can be defended | red or crimson |
-| Command Obedience | army, security, navy, and rail obedience | grey or white |
-| Foreign Penetration | sponsors, recognition, aid, advisers, intelligence | purple |
-| Old Movement Resurgence | older and strange movements returning | orange |
-| League Cohesion | republic coordination and bloc trust | yellow |
-| Local Support | civilians and local institutions support a side | green |
+| Value | Source variable | Role | Colour |
+| --- | --- | --- | --- |
+| Overall Union Crisis Threat | `soviet_collapse_total_collapse_threat` | the single headline severity value | orange |
+| Moscow Authority | `soviet_collapse_moscow_authority` | central orders still believed | blue or steel |
+| Command Obedience | `soviet_collapse_military_obedience` | army, security, navy and rail obedience | yellow |
+| Armed Breakaway Momentum | `soviet_collapse_republic_confidence` | republics believe independence can be defended | red |
+| Depot Vulnerability | `soviet_collapse_depot_vulnerability` | depots, rail hubs and corridors at risk | grey |
+| Foreign Penetration | `soviet_collapse_foreign_appetite` | sponsors, recognition, aid, advisers, intelligence | purple |
+| League Cohesion | `soviet_collapse_league_cohesion` | republic coordination and bloc trust | blue |
+| Old Movement Resurgence | `soviet_collapse_old_movement_pressure` | older and strange movements returning | orange |
 
-Use project-appropriate colours, but keep them consistent. If a total threat value is built from several components, tooltips must show a readable coloured breakdown.
+Per-republic influence work uses its own existing values rather than new global meters: sponsor influence, `soviet_collapse_influence_patronage_risk` and `soviet_collapse_independence_resilience`.
 
-The player should understand why a visible value rose or fell. Future surprises can stay hidden, but visible cause and effect should not be hidden.
+### Visible-value budget, proposed (spec audit 2026-10-10)
+
+The canonical list is the internal model, not a dashboard.
+A decision-category header or crisis tooltip shows at most three of these values, chosen because they change the decision in front of the player, and the current Soviet, republic, patron and faction headers already follow that shape.
+Everything else belongs in the effect tooltip of the action that moves it, where cause and effect read together.
+No further crisis meter may be added to a player-facing surface unless it decides something the eight values above cannot already express; a ninth number on a panel is a design cost, not depth.
+An earlier design value called Local Support has no implementation and is dropped from the canonical list; local civilian and institutional backing is expressed through Armed Breakaway Momentum and the republic's own resilience instead of a separate meter.
+
+If the headline threat is built from several components, its tooltip shows a readable coloured breakdown of the components that actually moved.
+The player should understand why a visible value rose or fell; future surprises can stay hidden, but visible cause and effect may not.
 
 ## Initial threat target
 

@@ -84,7 +84,7 @@ When Union Unmade fires, all ordinary and internal Soviet republics must be rele
 Older asset notes allowed reuse when assets survived prior implementation. The final rule is reuse only if suitable. Reuse existing assets when they are valid, correctly sized, correctly wired, documented, and visually appropriate for the exact route identity. Every focus must have a unique icon assignment. Do not reuse one generic icon across many focuses unless the icon is intentionally part of a staged visual family and the variants are distinct enough to read as separate focuses.
 
 Historical flags, real historical symbols, and real leader portraits require attributed source evidence.
-Current production follows [chaos-redux-event-assets](../../../.agents/skills/chaos-redux-event-assets/SKILL.md) and the specialist ownership in Part 7.
+Current production follows [chaos-redux-event-assets](../../../.claude/skills/chaos-redux-event-assets/SKILL.md) and the specialist ownership in Part 7.
 A symbolic, high-chaos, council, factory, or cult label does not independently authorize a generated portrait for a grounded person or institution.
 
 ### Remove-idea tooltip spam
@@ -100,19 +100,17 @@ Focuses may replace or upgrade ideas, but the tooltip should show clean player-f
 
 Do not put exposed remove-ideas on every focus hover.
 
-## Required audits and ledgers
+## Required ledger and reporting
 
-The implementation must create or update these files:
+The separate full-ledger, focus-tree, balance, mission and validation report files that earlier drafts required are superseded: the repository keeps one current report per event instead of a family of parallel status files.
 
-- `docs/events/005_soviet_collapse_full_implementation_ledger.md`
-- `docs/events/005_soviet_collapse_implementation_audit.md`
-- `docs/events/005_soviet_collapse_focus_tree_audit.md`
-- `docs/events/005_soviet_collapse_balance_audit.md`
-- `docs/events/005_soviet_collapse_mission_audit.md`
-- `docs/events/005_soviet_collapse_validation_report.md`
-- `docs/assets/005_soviet_union_collapse/manifest.md`
+Two documents carry the coverage obligation:
 
-The full implementation ledger must use this table:
+- `docs/events/005_soviet_collapse_implementation_audit.md` is the single current implementation, coverage and validation-status report.
+- `docs/assets/005_soviet_collapse/manifest.md` is the asset manifest.
+  It is absent in the current checkout, so asset provenance remains `unresolved`.
+
+The coverage table inside the implementation audit uses these columns:
 
 | Requirement | Source section | Required implementation | Implemented files | Evidence | Status | Deviation or blocker |
 | --- | --- | --- | --- | --- | --- | --- |
@@ -126,22 +124,19 @@ Allowed statuses:
 - `not_started`
 - `not_applicable_by_source_rule`
 
-A missing feature with no ledger row is a failed goal.
+A missing feature with no coverage row is a failed goal.
+The focus-tree, mission, balance and validation findings are sections of that one report, not separate files.
 
 ## Required source reading
 
-Before editing, the agent must read:
+The repository rules in `CLAUDE.md` already define the reference, wiki, vanilla, skill and documentation reading duties; they apply here without restatement.
 
-- this package, all parts
-- `AGENTS.md`
-- `chaos-redux-events`
-- `chaos-redux-event-assets`
-- `chaos-redux-super-events`
-- `chaos-redux-focus-trees`
-- `chaos-redux-decisions-missions`
-- the relevant offline Paradox wiki pages
-- vanilla examples for focus trees, decisions, events, flags, subjects, and release logic
-- existing Chaos Redux event, evolution, event log, decision, focus, and asset patterns
+Read in addition, because they are specific to this event:
+
+- every part of this package, plus the UWR and KMB companion documents
+- the current implementation audit and the working ledgers in `docs/plans/005_soviet_collapse_plans/`
+- the existing Event 005 event, decision, focus, idea, AI, localisation and asset sources before changing any of them
+- the Event 006 IW-039 contract referenced in Part 6, before touching the Don foothold
 
 If a named file is missing, report the blocker with exact path evidence.
 
@@ -149,19 +144,12 @@ If a named file is missing, report the blocker with exact path evidence.
 
 The goal is incomplete unless all of these are true:
 
-- every required source was read
-- every required actor has a coverage row
-- every high-chaos splinter has a country package row
-- every republic and internal republic has a coverage row
-- focus tree audits exist
-- mission audit exists
-- balance audit exists
-- validation report exists
-- asset manifest exists
+- every required actor, republic, internal republic and high-chaos splinter has a coverage row
+- the focus-tree, mission, balance and validation sections of the implementation audit are current
+- the asset manifest exists and records every visible element
 - repeated remove-idea tooltip spam is removed
 - every focus has a unique icon assignment
-- every simplification is reported
-- every blocker is reproducible
-- completion report includes all required sections
+- every simplification is reported and every blocker is reproducible
 
 A short completion note is not acceptable.
+Live-game confirmation is the user's, so a documented source-derived check is the agent's completion evidence and an unavailable tool limits a claim instead of blocking the work.

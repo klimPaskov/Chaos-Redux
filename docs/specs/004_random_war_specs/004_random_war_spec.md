@@ -14,7 +14,17 @@ The event is available from campaign start. The **Wars** cluster becomes visible
 
 ## Selection rule
 
-Selection is random within the eligible country pool, using weights and cooldowns. Player-controlled countries are included in the same pool as other eligible countries.
+Selection draws from the eligible country pool under cooldowns, and player-controlled countries sit in the same pool as every other eligible country.
+
+The implemented ladder stops at the first pair that passes every hard exclusion, in this order:
+
+1. a compatible special-country pair, only when the stage's special chance passes its roll
+2. a major or faction-member aggressor from the Chaos Tier stage upward
+3. a bordering pair
+4. any legal pair worldwide
+
+Candidates inside one rung are drawn with equal chance.
+The factor lists under Country eligibility describe weighted selection, which is a proposal rather than current behaviour.
 
 ## Core flow
 
@@ -62,93 +72,68 @@ Aggressor options:
 
 - **The order stands**
   - war continues
-  - small temporary war support gain
-  - small political power or command power cost
+  - small war support gain
+  - command power cost
 
 - **Blame the general staff**
   - war continues
   - small stability loss
-  - temporary reduction to future aggressor selection weight
+  - the country is barred from aggressor selection for the dismissal cooldown
 
 Target options:
 
 - **Hold the line**
-  - small temporary defensive bonus on owned core states or national territory
+  - political power cost
   - small war support gain
+  - a timed idea with a short defensive package on core territory
 
 - **Mobilize the reserves**
-  - temporary mobilization or recruitable population bonus
   - small stability cost
+  - a timed idea that speeds mobilization and training and widens the recruitment share
+
+Each response package stays at three modifiers or fewer so its tooltip reads at a glance, and reserve mobilization draws on the country's own population instead of granting flat manpower.
+The current costs, durations and cooldown lengths live in `common/script_constants/004_random_war_constants.txt`, with the static idea modifiers tuned through file-local constants in the event's ideas file because those fields reject `constant:` tokens.
 
 ## Country eligibility
 
-### Aggressor pool
+### Hard requirements
 
-Aggressor candidates should be:
+An aggressor must exist, control at least one state, be sovereign, not be capitulated, and be outside the recent-aggressor and dismissal cooldowns.
 
-- existing countries
-- active on the map
-- independent enough for normal war
-- able to declare war cleanly
-- outside incompatible scripted crisis states
-- outside recent aggressor cooldown
-- not already at war with the selected target
+A target must exist, control at least one state, be sovereign, not be capitulated, and be outside the recent-target cooldown.
 
-Increase aggressor weight for:
+A pair is legal only when the two countries are not already at war with each other, are not allies through faction or subject relations, and the aggressor passes the engine declaration check against that target.
+In Calm World a major may not be paired against a non-major, so the first stage stays scale-matched; that restriction lifts once the chaos tier advances.
 
-- high war support
-- militarist or aggressive ideology
-- claims, cores, bad relations, or border friction
-- local strength advantage
-- current instability, especially at higher chaos
+### Weighted selection, proposed (spec audit 2026-10-10)
 
-Decrease aggressor weight for:
+Current selection is equal-chance inside each ladder rung, so a border incident between two tense rivals is no more likely than one between two quiet neighbours.
+A bounded scoring pass would make the chosen pair read as a plausible quarrel without adding a visible meter.
 
-- very low stability at baseline
-- severe active war losses
-- too many active wars
-- very small countries at baseline
-- faction leaders at baseline
-- countries recently selected by this event
+Keep the score small and legible, built from factors the player can already see:
 
-### Target pool
+- aggressor side: high war support, an aggressive ruling ideology, a claim or core on the target, local strength advantage
+- target side: shared border, poor relations, a contested core or claim, few active wars
+- reductions: an aggressor already fighting several wars, a target already overwhelmed, a faction leader at the baseline stage
 
-Target candidates should be:
-
-- existing countries
-- valid war targets
-- active on the map
-- outside recent target cooldown
-- not already at war with the aggressor
-- not allied with the aggressor through same-faction or subject relationships
-- legally declarable by the aggressor under current game rules
-- outside protected scripted states
-
-Hard exclusions cover same-country, same-faction, master or subject, already-at-war, and other pairs that fail the engine declaration check.
-
-Increase target weight for:
-
-- neighboring or nearby regional rivals
-- low relations with the aggressor
-- contested cores or claims
-- military weakness at baseline
-- symbolic or irrational value at higher chaos
-
-Decrease target weight for:
-
-- countries already overwhelmed by wars
-- distant countries at baseline
+Use the Event 009 weighted-pool pattern (`score_white_peace_pair`, `add_current_white_peace_primary_to_weighted_pool`, `select_weighted_white_peace_primary_candidate`) rather than a new mechanism, keep every factor in the event's constants file, and keep the ladder as the fallback when no scored candidate qualifies.
+This proposal does not change the stage table, declaration counts or special-country chances.
 
 ## Pairing model
 
-Use staged target selection:
+The implemented rungs are the special-country pair, the major or faction pair from the Chaos Tier stage upward, the bordering pair, and the global pair.
+Later stages therefore loosen pairing by reaching the wider rungs more often, not by relaxing a distance test.
+Hard exclusions always apply, in every rung and at every stage.
 
-1. Try a bordering target.
-2. Try a nearby regional target.
-3. Try a rival, claim, core, or low-relation target.
-4. Use wider global selection if no cleaner pairing exists.
-5. Loosen distance and rationality checks at higher evolution stages.
-6. Add compatible special chaos countries from Evolution II onward.
+### Known spec-to-source mismatches
+
+These are recorded for the implementation owner; this audit changes documents only.
+
+- The ordinary bordering and global rungs do not exclude compatible special Chaos Redux countries, so a special actor can be drawn as an ordinary participant below its stage gate.
+  The intended gate is the stage's special chance, and `uses_normal_civilian_systems` is the existing trigger for an ordinary civilian participant.
+- Protected scripted actors are not excluded beyond the sovereignty, capitulation and declaration checks, so a country held inside another event's scripted crisis can be pulled into an unrelated war.
+- Aggressor and target cooldowns are single flat values, so the stated loosening of cooldown limits at higher evolutions does not happen.
+  A per-stage cooldown entry in the existing constants group would deliver it without new runtime state.
 
 ## Evolution track: War Contagion
 
@@ -158,12 +143,14 @@ War Contagion increases declaration count and widens the country pool.
 | --- | --- | --- | --- | --- | --- |
 | Baseline | campaign start | Border Incident Becomes War | 1 | 0% | one aggressor declares on one target |
 | I | Gathering Storm, 200+ | Triangular Incident | 3 | 0% | three countries form a linked dispute |
-| II | Rising Chaos, 400+ | Four Fronts | 4 | 15% to 25% | four declarations form a conflict web |
-| III | Chaos Tier, 600+ | Contagious Ultimatums | 5 | 30% to 40% | majors and faction members become more likely |
-| IV | Totalen Chaos, 800+ | The War Week | 6 | 50% to 60% | several wars fire in one chain |
+| II | Rising Chaos, 400+ | Four Fronts | 4 | 20% | four declarations form a conflict web |
+| III | Chaos Tier, 600+ | Contagious Ultimatums | 5 | 35% | majors and faction members become more likely |
+| IV | Totalen Chaos, 800+ | The War Week | 6 | 55% | several wars fire in one chain |
 | V | World Collapse, 1000+ | Open Season | 7 to 8 | 70% | late-game war wave while normal random events still run |
 
-Use constants for thresholds, declaration counts, special-country chances, and cooldowns.
+Thresholds, declaration counts, special-country chances and cooldowns live in the event's constants file.
+Only the highest enabled stage available at the current chaos tier is used; a disabled evolution falls back to the next enabled lower stage or the baseline profile.
+Random draws use half-open integer ranges, so the d100 roll and the final-stage declaration draw carry exclusive upper bounds.
 
 ### Evolution I: Triangular Incident
 
@@ -226,10 +213,8 @@ Changes:
 
 Later evolutions can include special Chaos Redux countries that are safe for normal diplomacy and war.
 
-Use a compatibility marker or scripted trigger, for example:
-
-- `chaosx_can_join_random_war`
-- `is_special_chaos_country = yes`
+Compatibility uses the shared `is_special_chaos_country` trigger, which already covers the zombie hordes, Holy Realm, the Mengele civil-war and post-coup actors, and the other live special actors.
+The complementary `uses_normal_civilian_systems` trigger identifies an ordinary civilian participant and is the gate the ordinary rungs should use.
 
 Use three simple roles:
 
@@ -246,15 +231,21 @@ The event uses existing compatible tags. It does not create new special countrie
 
 ## Pacing and safeguards
 
-Add temporary cooldowns after a country is selected as aggressor or target.
+A selected aggressor and a selected target each receive a temporary cooldown flag, and dismissing the general staff adds a longer aggressor exclusion.
+Chain members carry a one-day flag so a single invocation cannot reuse a country inside its own chain.
+The cooldowns are the only pacing brake, so they must stay long enough that the same quarrel does not reappear in consecutive firings and short enough that the late stages can still assemble seven or eight declarations.
 
-Recommended behavior:
+## Shared system connections
 
-- baseline cooldowns keep repeated targeting rare
-- higher evolutions loosen cooldown limits
-- countries already losing major wars receive reduced weight
-- baseline pairings should usually be close enough to matter
-- higher stages can use less rational pairings while keeping hard exclusions
+Random War creates ordinary wars, so it inherits the shared consequences instead of scripting its own.
+
+- Front movement feeds the humanitarian systems automatically: `on_state_control_changed` calls the hostile-capture adapter, which adds bounded war flight pressure through `migration_request_war_pressure` and queues one famine food assessment for the captured state.
+  Random War must not add a second famine or migration request for the same war, or the same displacement is paid for twice.
+- Casualties feed the Chaos Meter and the deaths ledger through the daily casualty update, so no event-specific chaos or deaths call is needed for the war itself.
+- A war created here is an ordinary Event 009 White Peace candidate, so a stalled Random War quarrel can end through that event rather than a bespoke settlement branch.
+- Cluster participation is owned by the Wars cluster rows; the event still fires normally when the cluster roll does not.
+
+Condemnation is not involved: a declaration of war is not a condemnation source, and only the weapons a participant later uses can create one through its owning system.
 
 ## Event log and settings
 
@@ -275,43 +266,14 @@ The event enable setting controls all Random War firings. Evolution settings sho
 
 ## Presentation and assets
 
-### Report event image
+No new final art is required.
 
-Use a suitable vanilla HOI4 report event image if possible. Existing Chaos Redux imagery is the second choice.
+- Report events use the registered `GFX_report_event_random_war` sprite.
+- The observer news event uses the vanilla `GFX_news_event_generic_chaco_war` image.
+- The two target response ideas use the existing `generic_wall_line` and `generic_infantry_bonus` images.
 
-Good subjects:
-
-- military mobilization
-- border troops
-- troop movement
-- diplomatic crisis
-- government war announcement
-
-If a new copied or processed asset is needed:
-
-- target size: 210x176
-- suggested file: `report_event_random_war.dds`
-- suggested sprite: `GFX_report_event_random_war`
-
-### Optional news event image
-
-Use only for wider observer popups tied to majors, faction leaders, special chaos countries, or late evolutions.
-
-Prefer a suitable vanilla HOI4 news event image. Existing Chaos Redux news imagery is the second choice.
-
-Good subjects:
-
-- black-and-white mobilization
-- troop columns
-- foreign ministry scenes
-- crowds reading notices
-- troop trains
-
-If a new copied or processed asset is needed:
-
-- target size: 397x153
-- suggested file: `news_event_random_war.dds`
-- suggested sprite: `GFX_news_event_random_war`
+If a dedicated image is ever added, keep the registered sprite names and use `gfx/event_pictures/004_random_war/report_event_random_war.dds` at 210x176 and `gfx/event_pictures/news_event_random_war.dds` at 397x153, both declared in `interface/chaosx_pictures.gfx`.
+Suitable subjects are mobilization, border troops, troop columns, a diplomatic crisis, or a government war announcement.
 
 ## Localisation direction
 
@@ -364,15 +326,19 @@ Wars. Secondary connection: Minor events.
 
 ## Implementation checklist
 
-- Keep event root as `chaosx.nr4.1`.
-- Register ID 4 as a repeatable event.
-- Keep availability from campaign start.
-- Make Wars cluster visibility or active status begin around chaos tier 2.
-- Use event targets for selected countries.
-- Use scripted effects for country selection, declaration logic, and shared logging.
-- Use script constants for thresholds, declaration counts, special-country chances, and cooldown lengths.
-- Add aggressor and target cooldowns.
-- Add explicit special chaos country compatibility checks.
-- Update event registration, event type lookup, event log names, debug names, detail text, localisation, docs, and spreadsheet row together.
-- Reuse suitable vanilla or Chaos Redux event images where possible.
+- Keep event root as `chaosx.nr4.1`, registered as repeatable ID 4 and available from campaign start.
+- Keep Wars cluster visibility or active status beginning around chaos tier 2.
+- Keep the prepared pair on the dispatching country and consume it after firing, so a later invocation prepares fresh participants.
+- Keep one participant response per country with defender priority, and one observer summary per invocation.
+- Keep every threshold, declaration count, special-country chance and cooldown length in the event's constants file.
+- Exclude special Chaos Redux countries from the ordinary rungs and keep them behind the stage's special chance.
+- Update event registration, event type lookup, event log names, debug names, detail text, localisation, docs and the spreadsheet row together.
 - Keep evolved variants readable in the event log and evolution view.
+
+## Open questions
+
+These proposals are not accepted design and are not implementation requirements until the user or a parent accepts them.
+
+- Weighted pair selection, proposed (spec audit 2026-10-10): score candidate pairs from war support, ideology, claims, borders, relations and existing war load instead of drawing each rung with equal chance.
+- Per-stage cooldown lengths, proposed (spec audit 2026-10-10): replace the single flat aggressor and target cooldowns with one entry per War Contagion stage so the late stages can genuinely reuse a crowded world.
+- Protected-actor exclusion, proposed (spec audit 2026-10-10): exclude a country currently held inside another event's scripted crisis from ordinary selection, using that event's own live-actor trigger rather than a new marker.

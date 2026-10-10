@@ -10,6 +10,24 @@ The second project is a long and complex offensive project called **Weaponize th
 
 This whole system should feel dynamic, dangerous, and replayable. It should not be a linear research path with one fixed result.
 
+## 1.1 Current implementation anchor
+
+Both projects exist in source, so this document is a design contract to maintain rather than an unbuilt plan.
+Read it against these owners before changing anything.
+
+| Surface | Owner |
+| --- | --- |
+| Containment project and payload | `zombie_cure_bomb` in `common/special_projects/projects/biowarfare_main_projects.txt`, `zombie_cure_bomb_1` in `common/units/equipment/zombie_special_bombs.txt` |
+| Containment raid | `common/raids/biological_zombie_cure_raid.txt` |
+| Offensive project and its prototype choices | `weaponize_the_zombies` in `common/special_projects/projects/zombie_weaponized_projects.txt` |
+| Offensive raids | `common/raids/zombie_weaponized_raids.txt`, `common/raids/zombie_weaponized_friendly_raids.txt` |
+| Profile, archetype, cure and accident logic | `common/scripted_effects/zombie_special_project_effects.txt`, documented in the matching `.md` |
+| Raid consequences and bridge events | `common/scripted_effects/zombie_native_raid_effects.txt`, `events/zombie_weaponized_special_projects.txt`, `events/zombie_native_raid_bridge_events.txt` |
+| Tuning | the `anti_zombie_bomb`, `weaponized_zombies` and `weaponized_zombie_cxt_fixture` groups in `common/script_constants/zombie_special_project_constants.txt` |
+
+Every number in this document is a description of those constant groups.
+Tune the constants; do not reintroduce literals into script.
+
 ---
 
 ## 2. Special project A: Anti-Zombie Bombs
@@ -32,44 +50,27 @@ If the cure is inactive, this project should still exist as completed content, b
 
 This special project should be short and easy to complete.
 
-### 2.4 Deployment
+### 2.4 Deployment and state effect
 
-The bombs are deployed through strikes.
+The bombs are deployed through the containment raid, which reserves one produced cure payload per prepared raid and requires command power, preparation days and a bomber formation as recorded in the payload correction.
 
-A successful strike applies a **state decontamination modifier**.
+A successful strike applies the `zombie_decontaminated_state` dynamic modifier to the target state.
+The modifier is deliberately controller-facing rather than a generic debuff: it strips most local manpower, cuts the controller's local supplies and movement speed, raises attrition against the controller, raises the enemy's local supplies, and blocks strategic redeployment for the controller.
+Because it enables only while the state is zombie-controlled, it punishes the horde holding the state and goes dormant the moment a human government takes it back.
 
-This modifier should do two things at minimum:
+The manpower reduction is the point of the weapon: a decontaminated state is a poor source of zombie manpower.
 
-1. Apply strong anti-zombie effects in that state.
-2. Reduce recruitable manpower from that state so zombies cannot meaningfully draw manpower from it.
+### 2.5 Duration logic
 
-### 2.5 State modifier behavior
+The modifier uses no timer.
+Its `remove_trigger` drops it as soon as the state no longer has an active zombie cure, so every decontaminated state loses the effect together when the cure lapses.
 
-The decontamination modifier should be strong, but specific.
+### 2.6 Stacking rules
 
-It should weaken zombies in that state through a combination of effects such as lower combat effectiveness, lower spread efficiency, lower reinforcement efficiency, or anything else that makes sense for the zombie system.
+The bombs do not stack.
+A state that already carries the modifier fails `is_anti_zombie_bomb_target_state`, so it cannot be selected for another containment raid, and the apply effect is also guarded against a second copy.
 
-It should not be a generic anti-human debuff. It should target zombies specifically.
-
-The manpower reduction should be significant enough that the state becomes a poor source of zombie manpower.
-
-### 2.6 Duration logic
-
-These state modifiers do not use a normal fixed timer.
-
-Instead, they remain active for as long as the cure is active.
-
-The moment the cure becomes inactive, all anti-zombie decontamination modifiers created by these bombs must be removed from every state.
-
-### 2.7 Stacking rules
-
-These bombs must not stack.
-
-If a state already has the anti-zombie decontamination modifier, dropping another bomb there should not make the modifier stronger.
-
-So simply make the state where there already is decontamination modifier, unraidable with the anti zombie bomb.
-
-### 2.8 AI and balance intention
+### 2.7 AI and balance intention
 
 This project should be a containment tool.
 
@@ -125,6 +126,10 @@ These variables should later determine the final zombie outbreak type, cure diff
 
 ## 4. Research flow for Weaponize the Zombies
 
+Each prototype choice is gated on the previous one, so the chain is fixed even though the outcome is not.
+The implemented order is: acquisition, nature of the disease, state of the infected, live testing, resource allocation, then the six tuning choices in the order strength, infectiousness, speed, durability, cure resistance and obedience, then field testing, then refinement or the forbidden branch, then deployment.
+The stage headings below follow that order; a choice that is still locked shows only the step that has to come first.
+
 ## 4.1 Stage 1: Initial acquisition
 
 The first step is to study the zombies.
@@ -164,31 +169,9 @@ Possible options:
 
 This choice should heavily influence later outcome pools.
 
-### 4.4 Stage 4: Basic sacrifice for testing
+### 4.4 Stage 4: Are the infected truly dead
 
-A later iteration requires live testing and consumes **1000 manpower**.
-
-This represents staffing, disposable test groups, or condemned subjects.
-
-This step is important because it marks the project moving from theory into human experimentation.
-
-### 4.5 Stage 5: Resource allocation choice
-
-Add an iteration where the player decides how many extra resources to commit.
-
-This should directly speed up the project, but also increase hidden accident risk.
-
-Three levels make the most sense:
-
-1. Minimal allocation
-2. Expanded funding
-3. Maximum priority
-
-Higher levels should speed up progress more, but also increase the chance of a containment failure later.
-
-### 4.6 Stage 6: Are the infected truly dead
-
-Add another major hypothesis event:
+The second hypothesis choice follows the nature of the disease:
 
 1. They are biologically dead and only the infection is animating the body.
 2. They are alive, but mentally overridden.
@@ -202,6 +185,22 @@ If minds remain active in fragments, that should make intelligent or selectively
 If they are fully mindless, then friendly and selective-control outcomes should become much less likely.
 
 If they are undead in a true sense, that should support the demonic or catastrophic paths.
+
+### 4.5 Stage 5: Live testing
+
+The next step requires live testing and consumes the manpower sacrifice held in the `weaponized_zombies` constants.
+
+This represents staffing, disposable test groups, or condemned subjects, and it marks the project moving from theory into human experimentation.
+
+### 4.6 Stage 6: Resource allocation choice
+
+The player then decides how much extra capacity to commit, which directly changes project progress and the hidden accident risk.
+
+1. Minimal allocation: the project loses a little progress and adds the smallest risk
+2. Expanded funding: moderate progress and moderate risk
+3. Maximum priority: the largest progress gain and the largest risk
+
+The tradeoff must stay legible: a rushed project is measurably more likely to fail containment later.
 
 ### 4.7 Stage 7: Strain tuning iterations
 
@@ -228,20 +227,20 @@ So there should be separate iteration events for each of those parameters throug
 
 ### 4.8 Stage 8: Field testing
 
-At some point the player should test the weapon outside the lab.
+After the tuning choices the player decides whether to test the weapon outside the lab.
 
-If there is an enemy country, the player should be allowed to test it against that enemy.
+A test against an enemy country is preferred when one exists; otherwise the project allows a domestic test under supposedly safe conditions.
 
-If there is no enemy country, the project must allow a domestic test under supposedly safe conditions.
+Both carry a real outbreak chance, scaled by the test site's population band, and the domestic variant is the more dangerous of the two.
+Conducting a test advances the project because the researchers gain practical data, while skipping it costs progress and leaves the strain less understood.
 
-Domestic testing should always carry a real outbreak chance.
+### 4.9 Stage 9: Refinement, the forbidden branch, and deployment
 
-Conducting tests should grant a research speed bonus because the researchers now have practical data.
+After field testing the chain offers routine refinement or the forbidden branch, and the forbidden option becomes far more attractive to the AI when the profile is already extreme.
 
-The domestic test is supposed to feel useful but dangerous.
+Deployment is the last prototype step and requires refinement to have resolved first, so the player always sees one deliberate finalisation before the weapon exists.
 
-
-### 4.9 Stage 9: Final conclusions event
+### 4.10 Final conclusions event
 
 When the project is completed, fire a conclusions event that explains what kind of zombie weapon was actually created.
 
@@ -515,17 +514,24 @@ At the start of the project, the chance should be very low.
 
 It should rise as the player becomes more reckless.
 
-The hidden accident chance should grow from factors such as:
+The risk is an MTTH whose base is a long interval and whose factors shorten it, so a cautious project effectively never fails and a reckless one eventually does.
+
+Factors that shorten the interval:
 
 1. More test subjects
 2. Higher resource allocation
-3. Field testing
-4. Stronger mutation choices
+3. Field testing, and more strongly a domestic test
+4. Stronger mutation choices and a high accumulated risk score
 5. Demonic or unstable branches
-6. Domestic testing
-7. High infectiousness
+6. High infectiousness
 
-The increase should be meaningful, but not so high that the accident becomes routine.
+Factors that lengthen it, so biosecurity research is a real answer to the risk:
+
+1. Fail-safe containment facilities
+2. Sealed containment laboratories
+
+The accumulated risk score is hidden, and the factors live in the `weaponized_zombies` constants as the base interval plus one multiplier per cause.
+The result must stay meaningful without making the accident routine: recklessness is a bet, not a scheduled event.
 
 ## 9.3 One-time rule
 
@@ -553,27 +559,17 @@ When Weaponize the Zombies is completed, unlock a new equipment type:
 
 ## 10.2 Stockpile reward
 
-Project completion should automatically grant a small initial stockpile of zombie bombs.
+Project completion grants the prototype stockpile held in the `weaponized_zombies` constants, which covers roughly two prepared strikes at the current per-raid payload.
 
-This is enough to show that the project produced usable prototypes.
-
-It should not be enough for long sustained bombing without production.
-
-The player must still produce more bombs to use the weapon seriously.
+That proves the project produced usable prototypes and nothing more: sustained use requires production.
 
 ## 10.3 Production cost
 
-These bombs should be extremely expensive by default.
+The bomb is deliberately expensive even in its weakest viable form, and its cost is built from the profile rather than a fixed price.
 
-Even the weakest viable zombie bomb should be costly.
-
-The cost should scale upward based on the choices made during research.
-
-High values in strength, infectiousness, speed, durability, and cure resistance should all make the bomb more expensive.
-
-Selective-control strains and rare friendly strains can also justify extra cost because they are harder to engineer.
-
-The strongest and most exotic outcomes should be brutally expensive.
+The base price comes from the profile cost tier, and each extreme choice in strength, infectiousness, speed, durability or cure resistance adds a further bonus, with the highest tier reserved for the most exotic outcomes.
+Selective-control and rare friendly strains stay costly because they are harder to engineer.
+All of those values live in the `weaponized_zombies` constants, so the price curve is tuned in one place.
 
 ---
 
@@ -604,6 +600,10 @@ Purifier and anti-zombie-friendly strains use the controller-and-profile contrac
 Selective or semi-friendly targeting must remain consistent with the retained cognition and social-behavior result.
 A special-country marker, a change of country name or a supernatural leader does not by itself turn a civilian target into a non-human target.
 The declared payload profile must govern both permission and the resulting outbreak, so an allowed Purifier strike cannot silently resolve as a human-hunting strain.
+
+The implemented gate (`is_weaponized_zombie_raid_target_state`) is narrower than Section 6.4: a friendly strain may only strike a zombie-controlled state, so the broader non-human-threat permission is not available.
+That narrower gate is the safe current behaviour and must not be widened without the other threat's own live-actor contract, because a general "non-human" test would let the classification alone authorise a strike.
+A canonical-convergence strain is excluded from that friendly route entirely.
 
 ## 11.4 Interaction with existing zombie factions
 
@@ -645,9 +645,11 @@ High infectiousness, demonic logic, and extreme durability can also support high
 
 ## 12.4 Creator advantage
 
-The creator country should effectively already understand the strain because it made it. So, in the beginning the creator should have a cure for a year (time depends on how strong the outbreak is, so not always a year for all types, for some demonic or undead there might not even get a starting cure), until needing to develop a new one after it expires.
+The creator already understands the strain, so it starts with a working cure that expires.
+The window shortens as the strain gets worse, through the four steps held in the `weaponized_zombies` constants, and the harshest profiles get the shortest grace before the creator must develop a cure like everyone else.
 
-Other countries are the ones who need the new cure path right away. But, the player can choose to share the cure if they see fit, but it will reduce the cure to being available to everyone and thus the zombies can adapt to the cure quicker.
+Other countries need the new cure path immediately.
+The creator may choose to share its cure, which makes it available to everyone and lets the strain adapt to it sooner.
 
 ---
 
@@ -677,31 +679,17 @@ It should not regularly drift into the rare semi-friendly branch unless specific
 
 ## 14. Achievements
 
-Add achievements where they actually support gameplay identity.
+Seven achievements carry this system's identity, each awarded by its own country flag so the condition is the actual play, not the project's existence:
 
-Useful examples:
+1. **Weaponize the End**, `002_zombie_outbreak_21_weaponize_the_end`: complete Weaponize the Zombies.
+2. **Fight Fire With Fire**, `002_zombie_outbreak_22_fight_fire_with_fire`: use a zombie disease bomb against a zombie-held state.
+3. **We Made a Cure, Then Made It Worse**, `002_zombie_outbreak_23_we_made_a_cure_then_made_it_worse`: deploy both the containment bomb and a custom strain in one campaign.
+4. **Containment Was Temporary**, `002_zombie_outbreak_24_containment_was_temporary`: suffer the laboratory accident outbreak.
+5. **Only Obeys Us**, `002_zombie_outbreak_25_only_obeys_us`: create a creator-loyal strain.
+6. **A Friend to Mankind**, `002_zombie_outbreak_26_a_friend_to_mankind`: create the branch that hunts only non-human enemies.
+7. **The Wendigo Rises**, `002_zombie_outbreak_27_the_wendigo_rises`: trigger the catastrophic branch.
 
-1. **Weaponize the End**  
-   Complete Weaponize the Zombies.
 
-2. **Fight Fire With Fire**  
-   Use a zombie disease bomb against a zombie-held state.
-
-3. **We Made a Cure, Then Made It Worse**  
-   Deploy Anti-Zombie Bombs and Deploy custom Zombies in the same campaign.
-
-4. **Containment Was Temporary**  
-   Trigger the secret lab accident outbreak.
-
-5. **Only Obeys Us**  
-   Create a creator-loyal strain.
-
-6. **A Friend to Mankind**  
-   Create the rare branch where zombies attack only non-human entities.
-
-7. **The Wendigo Rises**  
-   Trigger the demonic catastrophic branch.
-   
 ## 15. GFX requirements
 
 Special GFX portraits should be based primarily on the final **creature type**.
@@ -731,6 +719,9 @@ At minimum, the system should support distinct portrait or equivalent special GF
 
 The **Canonical Zombie Convergence** result does not need its own special portrait set because it is supposed to collapse back into the normal canonical zombie identity already used by the mod.
 
+Installed coverage is eight weaponized portraits registered in `interface/chaosx_characters.gfx` as `GFX_portrait_ZZZ_weaponized_infected`, `_rabid`, `_parasitic`, `_mutant`, `_undead`, `_necrotic`, `_demonic` and `_wendigo`, with matching creator-category pictures cropped from the same sources.
+Keep that mapping when an archetype is added or renamed: a new creature category needs its own portrait, while a new behaviour inside an existing category reuses the category's portrait.
+
 ---
 
 ## 16. Final design intent
@@ -748,3 +739,32 @@ The safe branches should still be dangerous.
 The strongest branches should be expensive, unstable, and difficult to cure.
 
 The demonic branch should feel like the point where the research stopped being science and became a disaster.
+
+---
+
+## 17. Shared Chaos Redux system connections
+
+Already connected in current source:
+
+- A hostile strike's political and diplomatic consequences are applied by `apply_weaponized_zombie_strike_consequences`, which uses the CBRN doctrine multiplier and the condemnation system, preserves the Purifier exemption for a valid zombie-controlled target, and keeps treaty and Kruger consequences.
+  Condemnation is not re-implemented here.
+- Zombie-held states lose civilians monthly through the shared deaths ledger with the zombie-outbreak cause, so the Chaos Meter receives those losses without an event-specific accumulator.
+- The Anti-Zombie League formation and the event's world-end branches are the event's deliberate Chaos Meter contributions, through `add_chaos_meter_value` with a history reason.
+- Front movement around any resulting war feeds displacement and a food assessment through the shared hostile-capture adapter, so no strike effect should add its own refugee call.
+- The containment payload's production, raid reservation and cancellation behaviour are owned by the native raid system as recorded in the payload correction.
+
+Proposed (spec audit 2026-10-10):
+
+- A zombie-outbreak famine adapter.
+  The famine system defines an outbreak pressure source and adapters already exist for camps, chemical aftermath, Black Plague, natural disasters, acid rain and air winter, but not for the zombie outbreak, even though zombie-held states already apply an exact proven civilian loss each month.
+  Add `famine_adapt_zombie_outbreak_state` following the Black Plague adapter's contract: state scope, the exact applied loss as the request amount, one food-context open on acceptance, and no second request for fighting the capture adapter already covered.
+  This gives a large outbreak the food consequence it currently lacks without a new meter.
+- Cure sharing as a visible choice with a cost.
+  Sharing the creator's cure already helps everyone and shortens the strain's adaptation; the decision should also read in the condemnation and League surfaces, so a creator that releases a weapon and then shares the cure is treated differently from one that hoards it.
+
+## 18. Open questions
+
+These are proposals from the 2026-10-10 spec audit, not accepted design.
+
+- The zombie-outbreak famine adapter and the cure-sharing consequence above.
+- Whether the friendly-strain target gate should ever widen past zombie-controlled states; it stays narrow until another threat supplies a live-actor contract of its own.
