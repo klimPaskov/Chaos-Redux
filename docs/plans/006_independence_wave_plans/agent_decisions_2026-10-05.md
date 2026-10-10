@@ -157,3 +157,63 @@ The widget uses the existing three-state warning strip at frame three, preservin
 The matching before/after render changes only the badge's 35-by-44-pixel area; 1,203 pixels change and the rest of the screen is identical.
 The parent reviewed the corrected red badge and the five tabs at both resolutions.
 The [GUI handoff](subagent_handoffs/gui_takeover_20261006.md) retains the reference mapping, fixtures, click regions, current source hashes, validation findings and native playback limits.
+
+## D46. Give each admitted regional package its own focus path
+
+Disposition: `implemented` at source, with imported-focus renderer coverage unresolved.
+Basis: the finishing task and accepted country projects; parent review of all 136 existing paid-project mappings and both bounded 22-country handoffs.
+
+Forty-four Level 2 packages receive five country-specific focuses each, rather than a generic reward copied across regions.
+Each ordinary project focus takes thirty-five days of national focus time and applies the same result as its existing paid project.
+The four-project groups retain their actual project and policy forks; forty three-project groups add a seventy-day former-host support program and a seventy-day congress capstone.
+The support program costs the existing diplomatic-standard command power and convoy or train payment and reinforces the selected former-host outcome; a collapsed host receives the documented domestic settlement instead.
+The congress capstone opens regional integration without a second generic congress reward.
+All 136 matching decisions reject their equivalent focus while it is underway or complete, and project focuses reject their matching active paid decision.
+Oman's treaty/coast-road and Lebanon's Great Offices/Civic Charter choices also reject the opposing paid project and preserve the actual mutually exclusive settlement.
+The Manipur road and Mon schools references were corrected to their actual decision ids.
+Project tooltips reuse their canonical paid-project outcome text, and forty-three visible completion flags have meaningful labels.
+Support markers are cleared by the existing focus-runtime cleanup before an origin generation ends.
+The probability auditor compared the same named fixtures, but unresolved scope and availability inputs prevent a numeric campaign scoring claim.
+The MCP owning-tree inspector rendered only its direct nodes and omitted imported shared focuses; the native validator and source crosswalk cover the additions without establishing rendered layout acceptance.
+
+The final focus audit also prompted explicit invalid-focus cancellation and completion-time paid-decision checks across every matched project.
+The offline National focus modding reference at line 424 already documents cancel-if-invalid as true by default, so omission alone did not prove a duplicate-reward defect.
+The explicit guards remove that ambiguity and protect the reward boundary if both actions are requested at zero progress in one paused frame.
+The orchestrator should exercise that boundary and a cancelled paid project; no duplicate reward or stranded project result should follow.
+
+## D47. Keep the Punjab alternatives distinct in the state puzzle
+
+Disposition: `implemented` at source; production visual acceptance remains subject to the GUI handoff.
+Basis: the accepted FORM-32 package loader, G5, and parent/GUI-worker review of the generated state controls.
+
+The active FDX package's stored anchor selects West Punjab or East Punjab independently of whether it currently qualifies for the compact.
+A lost-control state remains the selected grey piece rather than disappearing or switching to the other anchor.
+The qualification and visibility helpers therefore have different purposes.
+The generator's grouped presentation ignored visibility helpers on required pieces; its two presentation filters now honor every declared visibility helper.
+The four-member denominator remains four even though five candidate silhouettes exist in the asset manifest.
+
+## D48. Form sovereign compacts from the four ready member sets
+
+Disposition: `implemented` at source; native formation and current puzzle visual acceptance remain open.
+Basis: the user's finishing task, the accepted two-stage sovereignty contract in Part 6, and D30/D31/D33's queued ready member sets.
+
+North Caucasian, Indus, Maritime and Mainland Southeast Asian members use exact current package identities, capitals and anchors rather than static dormant templates.
+NCX, IDX, MRX and MSX are cosmetic identities on a consenting existing carrier.
+Members retain their sovereignty, territories, armies and focus content.
+A human member receives one proposal-specific invitation with refusal first and a thirteen-day timeout; AI consent uses the same live invitation and family conditions.
+The carrier pays the existing generic formation cost, then two family-specific 180-day integration projects: mountain defence/autonomy, water and rail/language and army, shipping/customs and island autonomy, or transport/joint command and member autonomy.
+Evolving charters replace the appropriate existing institution, so the compact cannot add a fourth package spirit.
+Missing institutions do not receive a substitute bonus.
+Parent review corrected the withdrawal category, wrong-family project visibility and payments, twelve state-owner puzzle scopes, and withdrawal readiness cleanup.
+All stage starts and callbacks are bound to their exact family and government generation, and invalid callbacks grant no benefit.
+Shared reservation groups are preserved; the Maritime and Mainland rosters may require distinct waves.
+The old 444/445 Balochistan research range is superseded by the current Kalat loader anchor 1012 for this contract.
+The full source and acceptance limits are in the ready-formable and GUI handoffs.
+
+Parent reference resolution also corrected the four post-formation state-puzzle member calls to the defined `is_independence_wave_ready_formable_current_contract_member` predicate.
+The new invitation's variable namespace uses the required question mark, so its text names the inviting government rather than an unresolved event target.
+Its short report and the withdrawal requirements describe sovereign governments and congress choices without internal profile or receipt terminology.
+
+The final native cosmetic review moved the four map palettes into the loaded `common/countries/cosmetic.txt` while retaining the original draft table as evidence.
+Explicit ideology flag variants prevent installed ATJ, BLI or DAG flags from overriding the federation's generic flag.
+All variants use the same accepted fictional identity art; no country tag is created and no existing ideology-specific artwork is overwritten.
