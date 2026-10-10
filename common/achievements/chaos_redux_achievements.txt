@@ -168,7 +168,11 @@ unique_id = chaos_redux_achievements
 			tag = UKR
 			is_subject = no
 			has_country_flag = soviet_collapse_ukraine_outside_the_old_map
-			has_country_flag = soviet_collapse_ukraine_no_foreign_master
+			OR = {
+				has_country_flag = soviet_collapse_ukraine_anti_client_charter
+				has_country_flag = soviet_collapse_ukraine_advisers_without_flags
+				has_country_flag = soviet_collapse_ukraine_black_sea_port_ledgers
+			}
 		}
 	}
 }
@@ -197,7 +201,11 @@ unique_id = chaos_redux_achievements
 			tag = BLR
 			is_subject = no
 			has_country_flag = soviet_collapse_belarus_forest_can_govern
-			has_country_flag = soviet_collapse_belarus_forest_republic_rumor_law
+			OR = {
+				has_country_flag = soviet_collapse_belarus_forest_ammunition_hides
+				has_country_flag = soviet_collapse_belarus_regular_forest_brigades
+				has_country_flag = soviet_collapse_belarus_forest_council_integrated
+			}
 		}
 	}
 }
@@ -372,8 +380,11 @@ unique_id = chaos_redux_achievements
 		custom_override_tooltip = {
 			tooltip = chaosx_ach_proxy_without_master_tooltip
 			is_subject = no
-			has_country_flag = soviet_collapse_route_foreign_liaison
-			has_country_flag = soviet_collapse_no_puppet_settlement
+			OR = {
+				has_country_flag = soviet_collapse_patron_volunteer_rolls_nationalized
+				has_country_flag = soviet_collapse_patron_joint_board
+			}
+			NOT = { any_subject_country = { has_country_flag = soviet_collapse_breakaway } }
 		}
 	}
 }
@@ -598,7 +609,7 @@ unique_id = chaos_redux_achievements
 				is_subject = no
 				has_country_flag = soviet_collapse_breakaway
 				capital_scope = { is_controlled_by = ROOT }
-				has_country_flag = soviet_collapse_local_depots_audited
+				check_variable = { var = soviet_collapse_depot_control value = constant:soviet_collapse_achievement.telegram_depot_control compare = greater_than_or_equals }
 				check_variable = { var = soviet_collapse_recognition_progress value = constant:soviet_collapse_republic_focus.large_recognition_gain compare = greater_than }
 			}
 	}
