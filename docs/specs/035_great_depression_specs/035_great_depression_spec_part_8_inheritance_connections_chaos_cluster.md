@@ -1,10 +1,19 @@
 # Great Depression 2.0 specification, part 8: Event 34 inheritance, connections, Chaos, and cluster behavior
 
+Status: the Event 34 handoff, evolution floor, deepening, inherited-liability pressure, the famine, migration and Event 21 adapters, the Chaos receipts, cluster registration and the Event Log rows are `implemented` in source.
+The remaining connection adapters, the Chaos value proposals and the inherited hidden-row work are listed as pending or `unresolved` below.
+
 ## Event 34 relationship
 
-Event 35 is the direct failure state of Event 34 Industrial Boom. The relationship is a consequence contract between two separate events. Event 34 owns the boom until the collapse transaction begins. Event 35 owns the depression from the moment the handoff commits.
+Event 35 is the direct failure state of Event 34 Industrial Boom.
+The relationship is a consequence contract between two separate events.
+Event 34 owns the boom until the collapse transaction begins.
+Event 35 owns the depression from the moment the handoff commits.
 
-The handoff must preserve enough history to make a failed boom feel different from an independent depression. It must also remain bounded. Event 35 receives a frozen collapse snapshot once, converts it into depression state, and then continues from its own ledger. It must not keep reading mutable Event 34 working variables after Event 34 cleanup.
+The handoff must preserve enough history to make a failed boom feel different from an independent depression.
+It must also remain bounded.
+Event 35 receives a frozen collapse snapshot once, converts it into depression state, and then continues from its own ledger.
+It must not keep reading mutable Event 34 working variables after Event 34 cleanup.
 
 ## Required Event 34 collapse snapshot
 
@@ -34,7 +43,13 @@ The accepted Event 34 specification requires the collapse handoff to preserve th
 - Repeat crash history.
 - Inherited state exhaustion.
 
-Event 35 should consume only fields that were supplied and validated. Missing optional fields use safe neutral defaults. Missing required target, source, episode, evolution, final Overheating, or one-shot proof rejects the handoff.
+Event 35 should consume only fields that were supplied and validated.
+Missing optional fields use safe neutral defaults.
+Missing required target, source, episode, evolution, final Overheating, or one-shot proof rejects the handoff.
+
+The current Event 34 freezer supplies the national fields and one legacy primary region, plus optional per-region fields when they exist.
+Event 34 has no producer for authentic per-region project facts, corridor membership or secured-value amounts, so Event 35 cannot honestly consume them yet and must not manufacture them.
+Event 35 adopts inherited regions as ongoing hidden national pressure (implemented inherited-liability consumer, decision D4).
 
 ## Evolution inheritance
 
@@ -47,7 +62,9 @@ The inheritance floor is direct.
 | Evolution II The Industrial Miracle | Evolutions I and II | Deep contraction with fragile miracle regions and immediate social pressure |
 | Evolution III Runaway Industrialization | Evolutions I, II, and III | Very high Severity with worldwide depression active from the opening |
 
-The inherited level is a floor. Event 35 may later evolve further when campaign conditions allow. It may not downgrade the inherited state because the global tier fell after the collapse.
+The inherited level is a floor.
+Event 35 may later evolve further when campaign conditions allow.
+It may not downgrade the inherited state because the global tier fell after the collapse.
 
 ## Inherited starting Severity
 
@@ -71,7 +88,8 @@ Working opening bands:
 | Evolution II | `80-93` |
 | Evolution III | `90-98` |
 
-An Event 34 collapse can reach Severity `100` only through an additional proven catastrophic condition, such as extreme final Overheating, exhausted reserves, failed emergency landing, and major regional damage. Evolution III alone should not force the exact maximum because the player still needs room to see the worsening trend and respond.
+An Event 34 collapse can reach Severity `100` only through an additional proven catastrophic condition, such as extreme final Overheating, exhausted reserves, failed emergency landing, and major regional damage.
+Evolution III alone should not force the exact maximum because the player still needs room to see the worsening trend and respond.
 
 ## Conversion of Industrial Regions
 
@@ -79,11 +97,15 @@ Event 34 regions become priority Depression Center candidates.
 
 ### Protected and completed regions
 
-A protected region with completed or nearly completed work begins with lower local depression pressure. It may retain infrastructure, railway, resource, or production knowledge that can be salvaged through recovery. It does not automatically receive a permanent reward.
+A protected region with completed or nearly completed work begins with lower local depression pressure.
+It may retain infrastructure, railway, resource, or production knowledge that can be salvaged through recovery.
+It does not automatically receive a permanent reward.
 
 ### Fragile miracle regions
 
-A high-output region with weak logistics, heavy credit exposure, or labor exhaustion begins as a deep Depression Center. Temporary shutdowns and unemployment should replace the boom bonuses immediately. Physical building loss remains a later consequence.
+A high-output region with weak logistics, heavy credit exposure, or labor exhaustion begins as a deep Depression Center.
+Temporary shutdowns and unemployment should replace the boom bonuses immediately.
+Physical building loss remains a later consequence.
 
 ### Unfinished projects
 
@@ -95,11 +117,17 @@ An unfinished project becomes one of:
 - A partially usable transport project.
 - A salvageable public works foundation.
 
-The project can be completed, restructured, liquidated, or abandoned through Event 35. Failed Event 34 work never becomes free factories or building slots.
+The project can be completed, restructured, liquidated, or abandoned through Event 35.
+Failed Event 34 work never becomes free factories or building slots.
 
 ### Evolution III spread corridors
 
-Runaway Industrialization states remain linked by a corridor receipt. Event 35 can select a small number of the most important states as visible Depression Centers and keep the rest as hidden corridor liabilities. Recovery can restore the corridor, break it into regional networks, or leave permanent disconnected scars.
+Runaway Industrialization states remain linked by a corridor receipt.
+Event 35 can select a small number of the most important states as visible Depression Centers and keep the rest as hidden corridor liabilities.
+Recovery can restore the corridor, break it into regional networks, or leave permanent disconnected scars.
+
+Disposition `unresolved`: U1 requires paid actions on hidden rows, corridor restoration and breakup, secured-value salvage and multi-region priority, while decision D4 and lead decision L8 closed them for lack of Event 34 producers.
+The audit proposal is to keep hidden corridor states as national pressure only and let corridor recovery run through the visible centers, with no paid hidden-row actions and no salvage (README Open questions 6).
 
 ## Reserve conversion
 
@@ -112,7 +140,8 @@ At collapse:
 - Depleted reserves provide no opening protection.
 - Reserve abuse or duplicate consumption is blocked by one-shot receipts.
 
-After conversion, the reserve state becomes Event 35 history. Event 35 recovery uses its own action costs and commitments.
+After conversion, the reserve state becomes Event 35 history.
+Event 35 recovery uses its own action costs and commitments.
 
 ## Existing Event 35 crisis
 
@@ -131,29 +160,53 @@ An Event 34 collapse into an active depression should:
 9. Recalculate missions and costs from the new state.
 10. Commit once and clear the call inputs.
 
-The collapse does not create a second global pacing event. The original Event 34 firing remains the pacing event. Event 35 deepening is a consequence.
+The collapse does not create a second global pacing event.
+The original Event 34 firing remains the pacing event.
+Event 35 deepening is a consequence.
 
 ## Reusable crisis entry contract
 
-Event 35 should expose one public country-scope entry point with a working identifier such as `great_depression_start_or_deepen`.
-
-The final implementation name may follow repository naming conventions, but the contract must remain recognizable and documented in the reusable-effects registry.
+Event 35 exposes one public country-scope entry point, `great_depression_start_or_deepen` in `common/scripted_effects/035_great_depression_effects.txt`, documented in `035_great_depression_effects.md`.
 
 The entry point supports:
 
-- Independent Event 35 selection.
+- Independent Event 35 selection (through the private `chaosx.nr35.9` receiver, which keeps the chosen country).
 - Event 34 collapse.
 - Evolution I full-crisis conversion.
 - Evolution III national conversion.
+- Relapse after a completed episode.
 - A future approved external economic-shock caller.
 
 It must not become a generic route for unrelated events to apply arbitrary penalties without supplying a valid source, target, severity profile, and one-shot receipt.
 
 The complete proposed input and output surface appears in `035_great_depression_reusable_crisis_api.md`.
 
-## Cross-event adapters
+## Connections
 
-### Event 34 Industrial Boom
+A connection belongs here only when it changes a player decision or a consequence another system owns.
+Event 35 never writes another system's internal state; it submits a validated request to the owner's public adapter or reads the owner's public trigger.
+
+| Connection | Direction | What it does | Status |
+| --- | --- | --- | --- |
+| Event 34 Industrial Boom | Both | Collapse starts or deepens Event 35; surviving booms quote and join reconstruction as suppliers; supplier collapse is a global shock | `implemented`; supplier choices pending (part 7) |
+| Famine | Event 35 to famine | A hollowed or abandoned center at Systemic Breakdown or worse submits one bounded food-pressure request per state and crisis (`great_depression_submit_humanitarian_center_pressure`); the famine owner decides whether a food problem exists and owns every death | `implemented` |
+| Migration | Event 35 to migration | The same center failure submits one bounded flight request per state and crisis; migration owns cohorts and transfers | `implemented` |
+| Famine | Famine to Event 35 | A Depression Center where the famine owner reports a visible food problem (`famine_state_has_visible_food_problem`) adds hidden demand and social stress, blocks reopening certification while it lasts, and gates the hunger-riot incident | pending |
+| Event 21 Random Civil War | Event 35 to Event 21 | National Breakdown and Social Collapse hand a proven outcome to the Event 21 opening adapter, which owns route, forces, war and Deaths; a rejected admission becomes a non-war outcome | `implemented` |
+| Occupation and state loss | Shared to Event 35 | A native control change records a major industrial state loss for targeting and pauses or transfers center work; the occupation profile is read through the famine owner | `implemented` |
+| Event 50 The Great Embargo and condemnation | Shared to Event 35 | An active embargo or condemnation sanction against a depressed country adds hidden trade stress and makes Finance and Trade costlier; Event 50 adds isolation pressure without a second depression penalty (Event 50 part 8) | pending |
+| Natural disasters and Acid Rain | Shared to Event 35 | A confirmed disaster loss in a center gives one economic shock per incident and can interrupt project proof; disaster damage is never an Event 35 factory-loss receipt and reopening never repairs it | pending |
+| Air contamination, CBRN and fallout | Shared to Event 35 | A center inside a contaminated or fallout-graded state cannot certify reopening until the owner clears it; no extra pressure number is added | pending |
+| Black Friday cost discounts | Shared to Event 35 | A shared discount may lower purchase-style inputs only; tied civilian factories, mission time, output sacrifice and risk stay | guard only |
+| Readers of Event 35 | Event 35 to others | The public read is `great_depression_has_active_crisis`; Event 39 currently reads the `great_depression_active` flag directly, and the Event 44 and Event 50 specs plan to read the active crisis; Event 35 publishes no other cross-event value | `implemented` for Event 39 |
+
+Rejected as decoration:
+
+- Random Riches and resource booms: no owner adapter exists, and an export-opportunity modifier would not change a depression decision.
+- Camps and forced labor: Event 35 creates no detention, labor or camp route, and the camp rework owns those systems.
+- Event 35 casualties from security responses: see part 6, Deploy Security Forces.
+
+### Event 34 interaction rules
 
 Event 34 can interact with Event 35 in three directions:
 
@@ -161,65 +214,23 @@ Event 34 can interact with Event 35 in three directions:
 - A surviving boom can sell into depressed markets during Financial Contagion or Evolution III.
 - Extraordinary global demand raises Event 34 Overheating through a public adapter owned by Event 34.
 
-Event 35 should never write Event 34 internal Overheating directly. It submits a validated pressure request and reads the returned result.
+Event 35 never writes Event 34 internal Overheating directly.
+It submits a validated pressure request and reads the returned result.
 
-### Random Riches and resource booms
+### Disaster rules
 
-A country with a strong resource or riches effect may gain export opportunity while other economies contract. The opportunity can improve foreign-exchange pressure or employment in resource states. It can also increase corruption, dependency, and regional inequality when those systems exist.
+The player chooses whether to preserve an existing recovery project through disruption or redirect the center toward its permitted restructuring or liquidation route.
+Completion must still prove the project's current requirements.
+A reopened economic center may retain [Acid Rain](../033_acid_rain_specs/specs/033_acid_rain_spec_part_4_mortality_damage_and_environment.md) aftermath, and clearing rain aftermath alone does not certify economic recovery; [its recovery rules](../033_acid_rain_specs/specs/033_acid_rain_spec_part_5_preparedness_decisions_and_recovery.md) remain authoritative.
+If an incident was already included in an Event 34 collapse snapshot, it is inherited condition rather than a second arrival shock.
+Acceptance case: corrosion hits a center during certification after a boom collapse; the inherited old damage is not charged again, new damage can interrupt proof, and reopening grants neither a replacement factory nor clearance of Acid Rain aftermath.
 
-Event 35 should read public ideas, flags, or adapters. It should not duplicate the source event's mine, riches, or corruption logic.
+### War and peace
 
-### Black Friday cost discounts
-
-A global cost-discount event must not turn depression recovery into nearly free permanent relief. Event 35 material commitments may use the shared discount system only when that system is intended to affect them. Minimum real costs, project duration, opportunity cost, and state requirements remain.
-
-A discount may reduce purchase-style inputs. It cannot erase tied civilian factories, mission time, production sacrifice, political consequence, or risk.
-
-### Famine and migration
-
-Severe depression can raise humanitarian pressure through unemployment, transport breakdown, food access failure, and state abandonment. Event 35 should submit bounded pressure requests to the famine and migration system when its causal conditions are real.
-
-It must not create famine or migration through an unproven shortcut. The humanitarian system owns food pressure, blockade proof, migration routes, cohorts, population transfer, deaths, and cleanup.
-
-Public Works, transport recovery, foreign aid, and restored trade can reduce Event 35 contributions to humanitarian pressure. Event 35 cannot clear pressure caused by war, blockade, contamination, or another owner.
-
-### Natural disasters
-
-A confirmed disaster loss in an active Depression Center can raise local unemployment, logistics pressure, and Severity. A forecast identifies a vulnerable center without applying a damage shock. [Acid Rain](../033_acid_rain_specs/specs/033_acid_rain_spec_part_4_mortality_damage_and_environment.md) provides state-local damage and retained burden, with [its recovery rules](../033_acid_rain_specs/specs/033_acid_rain_spec_part_5_preparedness_decisions_and_recovery.md) remaining authoritative.
-
-The player chooses whether to preserve an existing recovery project through disruption or redirect the center toward its permitted restructuring or liquidation route. Completion must still prove the project's current requirements. A reopened economic center may retain Acid Rain aftermath, and clearing rain aftermath alone does not certify economic recovery.
-
-Event 35 receives one immediate economic shock per proven incident, through either the observation or adapter route. Persistent damage can sustain pressure afterward. If the incident was already included in an Event 34 collapse snapshot, it is inherited condition rather than a second arrival shock. Later independent damage remains a new condition.
-
-Disaster building damage is not an Event 35 factory-loss receipt. Event 35 can restore only its own proved losses or separately accepted project capacity. Disaster repair remains with the damage owner and cannot become free industry through Rebuild or repeated center reopening. Depression relief also leaves disaster deaths, Air contributions, and Humanitarian obligations under their owners.
-
-AI prioritizes the threatened viable center and keeps paid project progress unless its existing interruption or failure rules invalidate the work. These connections do not start another event or an independent depression when that system is absent.
-
-Acceptance case: corrosion hits a center during certification after a boom collapse. The inherited old damage is not charged again, new damage can interrupt proof, and reopening grants neither a replacement factory for the disaster loss nor clearance of Acid Rain aftermath.
-
-### Air contamination and CBRN systems
-
-Air contamination, chemical damage, biological outbreaks, and nuclear fallout can damage trade, population, infrastructure, and productive capacity. Event 35 may convert those visible conditions into hidden economic pressure.
-
-It does not duplicate contamination, deaths, condemnation, sanctions, or outbreak processing. The source systems remain authoritative.
-
-### Condemnation and sanctions
-
-A condemned country with embargoes or bilateral restrictions faces higher trade and finance pressure. A severe depression can make compliance or diplomatic repair more valuable, but Event 35 does not remove condemnation.
-
-A country that uses recovery aid for prohibited military production may trigger existing condemnation or diplomatic consequences only through the owning systems.
-
-### War, occupation, bombing, and state loss
-
-War can support military demand while damaging civilian recovery. Occupation, bombing, rail damage, port loss, and industrial-state loss raise pressure through proven state and country conditions.
-
-Event 35 must not count generic war, annexation, deaths, bombing, or state damage as separate Event 35 Chaos when the shared systems already record them.
-
-### Peace and reconstruction
-
-Peace can remove military demand and expose hidden unemployment. It can also restore trade access, allow demobilized labor to enter public works, and reduce transport damage. The net result depends on current doctrine, centers, supply, and external links.
-
-No universal peace bonus should ignore these conditions.
+War can support military demand while damaging civilian recovery.
+Occupation, bombing, rail damage, port loss and industrial-state loss raise pressure through proven state and country conditions.
+Peace can remove military demand and expose hidden unemployment, and can also restore trade access and reduce transport damage.
+No universal war or peace modifier ignores these conditions.
 
 ## Conflict precedence
 
@@ -229,42 +240,52 @@ When several economic effects are active, ownership must remain clear.
 | --- | --- |
 | Event 34 active, Event 35 inactive | Event 34 owns the boom and Overheating |
 | Event 34 crashes | Event 34 freezes and transfers, Event 35 owns the resulting crisis |
-| Event 35 active, Event 34 selected independently | Target is normally invalid for a new boom unless a later approved coexistence design exists |
+| Event 35 active, Event 34 selected independently | Target is invalid for a new boom |
 | Event 35 active, new Event 34 collapse occurs | Event 35 deepens in place |
 | Several contagion sources reach one country | Event 35 merges exposure by source receipts and converts once |
 | Evolution III reaches a country already depressed | Global pressure modifies the existing crisis without a duplicate national package |
-| Humanitarian crisis overlaps | Humanitarian system owns food, cohorts, population, and deaths |
-| Sanctions overlap | Condemnation system owns sanctions and bilateral enforcement |
-| Disaster overlaps | Event 013 owns disaster damage and aftermath |
+| Humanitarian crisis overlaps | Famine and migration own food, cohorts, population and deaths |
+| Sanctions overlap | Condemnation and Event 50 own sanctions and enforcement |
+| Disaster overlaps | Event 13 and Event 33 own disaster damage and aftermath |
+| Civil war | Event 21 owns route, forces, war and deaths; Event 35 owns the one civil-conflict Chaos receipt while no shared counter records civil wars |
 
 ## Chaos accounting
 
-Evolution unlocks and activations add zero Chaos by themselves. Event 35 adds Chaos only for concrete outcomes that exceed generic economic decline.
+Event 35 changes global Chaos only for a concrete abnormal outcome that no shared counter already records.
+Eligibility, evolution availability and activation, phase movement, Severity drift, decision clicks, modifier refreshes and threshold display add zero.
+Every non-zero entry goes through the shared Chaos Meter and Chaos History path with the event, episode, country, cause and a one-shot receipt, and respects the Chaos-meter-disabled setting.
 
-Provisional Event 35 Chaos map:
+For scale, the shared meter uses tiers of 200 points with a monthly decay of 1, a major war declaration adds 5, a major coup 3, a major annexation 10 and the first nuclear use 10.
 
-| Outcome | Working change | Guard |
-| --- | ---: | --- |
-| Independent opening | `0` | Event selection already represents the incident |
-| Event 34 inherited opening | `0` | Avoid a second consequence charge |
-| Evolution activation | `0` | Evolution state alone never changes Chaos |
-| First prolonged Economic Paralysis in one crisis | `+1` to `+2` provisional | One receipt per episode |
-| Full depression created in another country by contagion | `+2` | Global and source caps |
-| Durable national social-collapse outcome that changes government policy or control | `+2` to `+3` provisional | Only when the outcome is not already counted elsewhere |
-| Coup, separatist rupture, or civil conflict caused by the crisis | `+3` to `+5` | Do not duplicate generic war or ideology changes |
-| First worldwide Evolution III wave | `+20` working target | One global receipt |
-| Coordinated international recovery | Up to `-10` | Cannot remove more Event 35 Chaos than Event 35 recorded |
-| National strong recovery after Event 35-owned paralysis | Up to `-2` | One receipt per episode and bounded by recorded Event 35 Chaos |
+| Outcome | Implemented change | Receipt | Audit finding |
+| --- | ---: | --- | --- |
+| Independent or inherited opening | `0` | None | Correct |
+| Evolution activation | `0` | None | Correct |
+| Sustained Economic Paralysis consequence | `+1` | One per episode | Below notice; keep only as a history marker or raise to `+2` |
+| Contagion conversion into a full depression | `+2` per attributable conversion | Per conversion | Proposal: `+2` once per spreading chain and one `+3` milestone at the third conversion (README Open questions 4) |
+| Social Collapse outcome (coup success, rejected autonomy, non-war breakdown, failed response) | `+2` | One per episode | Correct: the Event 35 coup changes the government through `set_politics` and does not fire the shared coup or ideology counters |
+| Civil conflict caused by the crisis | `+3` | One per episode | Correct today: the shared civil-war counter is commented out and Event 21 adds no Chaos of its own; re-check if either starts counting civil wars |
+| First worldwide wave of Evolution III | `+20` | One per global episode | Proposal: `+10`, the scale of the first nuclear use (README Open questions 4) |
+| Supplier boom collapse | `+2` | One per global episode | Correct |
+| Recovery conference failure | `+2` | One per global episode | Correct |
+| International recovery ends the worldwide episode | up to `-10` | One per global episode, capped by recorded Event 35 global Chaos | Correct; scale with the wave if the wave changes |
+| Strong national recovery after Event 35-owned paralysis | up to `-2` | One per episode, capped by recorded episode Chaos | Proposal: drop as too small to notice |
 
-Every amount is provisional and requires implementation-stage balance review against the shared Chaos Meter and named probability scenarios. Event 35 should never add Chaos for routine Severity drift, ordinary decisions, state modifier refreshes, failed mission ticks, or the same repeated strike.
+The proposals change implemented values and stay `unresolved` until accepted.
+The civil-conflict receipt is the only Chaos record of a crisis-caused civil war, so it must become `0` in the same change that enables a shared civil-war counter or an Event 21 Chaos payment.
 
-All changes use the shared Chaos Meter and Chaos History path with event, country, cause, and receipt context.
+Exploit rules:
+
+- Crossing a threshold repeatedly, reloading, or transferring a center cannot replay a receipt.
+- Several contagion sources converting one country produce one conversion amount.
+- Recovery never removes generic war, death, contamination, condemnation or another event's Chaos, and never more than Event 35 recorded.
 
 ## Negative Economy cluster
 
 The accepted catalog assignment places Event 35 in the `Negative Economy` cluster as a `Low` member.
 
-The current export snapshot does not yet provide a complete usable cluster definition. The authoritative workbook must be reconciled during implementation.
+Implemented: Negative Economy is cluster ID 10, a one-time cluster at Chaos level 1, with Event 35 as its required Low trigger row and Event 50 The Great Embargo as its optional Medium row.
+A cluster pick chooses one weighted country that is not already in a depression and keeps the cluster's pacing lane, and the cluster is unavailable with the same reason as the event when no valid country exists.
 
 Cluster behavior should follow these rules:
 
@@ -277,7 +298,8 @@ Cluster behavior should follow these rules:
 - Evolution III worldwide spread does not replay the cluster.
 - Member severity `Low` describes the baseline cluster role. It does not cap evolved consequences.
 
-The cluster should not become a simultaneous pile of full national economic crises without country separation, actor validity, or recovery capacity. Member ordering and compatibility require an implementation-stage cluster audit.
+The cluster should not become a simultaneous pile of full national economic crises without country separation, actor validity, or recovery capacity.
+Member ordering and compatibility require an implementation-stage cluster audit.
 
 ## Event log and Event Details
 

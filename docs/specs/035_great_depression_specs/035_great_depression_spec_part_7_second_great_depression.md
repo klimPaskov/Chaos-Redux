@@ -1,14 +1,20 @@
 # Great Depression 2.0 specification, part 7: Evolution III, The Second Great Depression
 
+Status: the global episode, worldwide pressure registry, conversion, Global Recovery Conference, devaluation, withdrawal from international commitments, clearing and protectionist blocs, world news `chaosx.nr35.16` to `.21` and the super-event are `implemented` in source.
+Event 34 supplier choices are pending with an `unresolved` scope (README Open questions 5).
+World stage labels match the implemented localisation; other action labels are working labels unless the implemented name is given.
+
 ## Evolution role
 
-The action, mission, incident, and stage labels in this file are structural working labels unless they come directly from the accepted brief. Final player-facing wording belongs to implementation.
+The Second Great Depression turns Event 35 into a worldwide economic condition.
+International trade contracts, industrial orders weaken, construction slows, expensive policy becomes harder to maintain, and countries with existing Event 35 crises face stronger pressure.
 
-The Second Great Depression turns Event 35 into a worldwide economic condition. International trade contracts, industrial orders weaken, construction slows, expensive policy becomes harder to maintain, and countries with existing Event 35 crises face stronger pressure.
+The evolution creates one global episode and many local pressure states.
+It does not open the full national Event 35 category for every country on the same day.
+A country converts into the full crisis only when local vulnerability and world pressure justify it.
 
-The evolution creates one global episode and many local pressure states. It does not open the full national Event 35 category for every country on the same day. A country converts into the full crisis only when local vulnerability and world pressure justify it.
-
-This evolution creates a recoverable global economic crisis while ordinary event play continues. Countries can recover, cooperate, exploit the crisis, or fragment into separate economic blocs.
+This evolution creates a recoverable global economic crisis while ordinary event play continues.
+Countries can recover, cooperate, exploit the crisis, or fragment into separate economic blocs.
 
 ## Availability and activation
 
@@ -23,7 +29,7 @@ Normal activation should require:
 - No global Event 35 episode is already active.
 - The dynamic evolution delay has elapsed.
 
-A base timing target near `120` days is appropriate after the conditions are met.
+The implemented MTTH base is `180` days (`great_depression_evolution_mtth.second_great_depression_days`), shortened when three or more crises are active.
 
 Activation accelerators:
 
@@ -42,9 +48,11 @@ Activation reducers:
 - World trade and convoy conditions are secure.
 - The source country is recovering rapidly.
 
-An Event 34 Evolution III collapse activates the enabled worldwide module immediately. It starts the global episode at a high opening condition, but it still uses the normal one-time registry and global-news contract.
+An Event 34 Evolution III collapse activates the enabled worldwide module immediately.
+It starts the global episode at a high opening condition, but it still uses the normal one-time registry and global-news contract.
 
-Evolution logging adds zero Chaos. The first actual worldwide pressure application is a separate concrete outcome.
+Evolution logging adds zero Chaos.
+The first actual worldwide pressure application is a separate concrete outcome.
 
 ## Global episode identity
 
@@ -65,11 +73,13 @@ The global ledger records:
 - Guarded Chaos receipts.
 - Global announcement receipt.
 
-A later Event 35 Evolution III activation joins the active global episode and deepens it when valid. It does not create a second global category or worldwide announcement.
+A later Event 35 Evolution III activation joins the active global episode and deepens it when valid.
+It does not create a second global category or worldwide announcement.
 
 ## Public global state
 
-The player does not track a second raw global number. The system uses one qualitative world stage supported by hidden global pressure.
+The player does not track a second raw global number.
+The system uses one qualitative world stage supported by hidden global pressure.
 
 | World stage | Working label | Meaning |
 | ---: | --- | --- |
@@ -79,7 +89,8 @@ The player does not track a second raw global number. The system uses one qualit
 | `4` | Fragmented Recovery | Some blocs and countries recover while others remain deeply depressed |
 | `5` | International Reconstruction | World pressure is declining and final recovery proof has begun |
 
-The stage appears in Event Details, relevant categories, and the global episode report. It is a category, not another player-managed meter.
+The stage appears in Event Details, relevant categories, and the global episode report.
+It is a category, not another player-managed meter.
 
 ## Hidden world pressure
 
@@ -97,11 +108,13 @@ The global system may calculate a hidden pressure score from:
 - World tension and war disruption only where they materially affect the economy.
 - Major disaster, famine, or contamination pressure through registered shared sources.
 
-The hidden score moves the qualitative stage and local pressure. It must not be shown as a raw global total.
+The hidden score moves the qualitative stage and local pressure.
+It must not be shown as a raw global total.
 
 ## Initial world registration
 
-On activation, Event 35 performs one bounded initialization over valid normal civilian countries. It classifies each country into:
+On activation, Event 35 performs one bounded initialization over valid normal civilian countries.
+It classifies each country into:
 
 - Protected or lightly exposed.
 - Global Contraction pressure.
@@ -110,7 +123,8 @@ On activation, Event 35 performs one bounded initialization over valid normal ci
 - Active Industrial Boom supplier.
 - Invalid special actor.
 
-After initialization, only registered countries are processed through sparse schedules. The event must not add a recurring daily or weekly scan over the whole world.
+After initialization, only registered countries are processed through sparse schedules.
+The event must not add a recurring daily or weekly scan over the whole world.
 
 A later country can enter the registry through exact relationship, country-creation, Event 34, or Event 35 adapters.
 
@@ -127,7 +141,8 @@ It can affect:
 - Trade and convoy resilience.
 - Stability pressure.
 
-The condition should remain lighter than full Event 35 at the same time. It cannot become a substitute full crisis with no decisions.
+The condition should remain lighter than full Event 35 at the same time.
+It cannot become a substitute full crisis with no decisions.
 
 Local pressure rises through:
 
@@ -165,13 +180,16 @@ A country converts when:
 
 The consequence call records entry source The Second Great Depression, global episode ID, starting world stage, local exposure, supplier dependence, and starting Severity.
 
-Conversion remains country-specific. Some countries can pass through the entire global episode under lighter pressure without opening the full category.
+Conversion remains country-specific.
+Some countries can pass through the entire global episode under lighter pressure without opening the full category.
 
 ## International action families
 
 ### Regional Clearing Agreement
 
-A group of valid countries keeps essential trade and payments working. Members commit convoys, fuel, civilian capacity, or reciprocal access. The agreement lowers exposure and can form an economic bloc.
+A group of valid countries keeps essential trade and payments working.
+Members commit convoys, fuel, civilian capacity, or reciprocal access.
+The agreement lowers exposure and can form an economic bloc.
 
 Membership rules:
 
@@ -183,27 +201,51 @@ Membership rules:
 
 ### Coordinated Public Works and Reconstruction
 
-Countries contribute to shared transport, ports, or industrial rebuilding. Projects target exact states or routes. Contributors receive trade, influence, or recovery benefits. Failed projects create a registered international shock.
+Countries contribute to shared transport, ports, or industrial rebuilding.
+Projects target exact states or routes.
+Contributors receive trade, influence, or recovery benefits.
+Failed projects create a registered international shock.
 
 ### International Debt Conference
 
-Countries negotiate standstills, restructuring, relief, or creditor guarantees. It can lower global finance pressure. It may create concessions, delayed payments, or blocs. It never grants a free global reduction.
+Countries negotiate standstills, restructuring, relief, or creditor guarantees.
+It can lower global finance pressure.
+It may create concessions, delayed payments, or blocs.
+It never grants a free global reduction.
 
 ### Protectionist Bloc
 
-Members restrict outside trade and support internal supply. It can protect members from some external pressure while weakening global recovery, relations, and nonmember trade.
+Members restrict outside trade and support internal supply.
+It can protect members from some external pressure while weakening global recovery, relations, and nonmember trade.
 
 ### Competitive Devaluation or Currency Break
 
-A country seeks export or fiscal relief through currency action represented by event effects and trade policy. It can help locally while raising pressure on partners. The design should avoid claiming engine-level exchange rates that do not exist.
+A country seeks export or fiscal relief through currency action represented by event effects and trade policy.
+It can help locally while raising pressure on partners.
+The design should avoid claiming engine-level exchange rates that do not exist.
 
 ### Reconstruction Supplier Compact
 
-Stable industrial countries commit orders and material to depressed partners. It creates demand for suppliers and relief for recipients. It also concentrates risk.
+Stable industrial countries commit orders and material to depressed partners.
+It creates demand for suppliers and relief for recipients.
+It also concentrates risk.
 
 ### Global Recovery Conference
 
-Available during Fragmented Recovery or International Reconstruction. It requires several major participants, declining national Severity, and material contributions. Success advances the global proof. Failure can delay recovery or strengthen rival blocs.
+Available during Fragmented Recovery or International Reconstruction.
+It requires several major participants, declining national Severity, and material contributions.
+Success advances the global proof.
+Failure can delay recovery or strengthen rival blocs.
+
+Implemented form (lead decision L3): a country in its own improving depression convenes one conference per global episode, and depressed, exposed, supplier and contributing countries join by paying their share.
+After `60` days it succeeds with at least four viable participants, two majors and enough industrial weight; success moves the global proof `30` days forward and relieves participants, while failure sets the world back a stage, applies one guarded Chaos change and sends one world news.
+
+### Economic blocs
+
+Implemented form (lead decision L4): Establish a Clearing Bloc and Regional Clearing Agreement put both countries into one global clearing bloc for a year of trade relief, and Protectionist Bloc puts both into a protectionist bloc that shields members from worldwide pressure for the rest of the global episode while slowing the world's recovery proof.
+Each bloc holds at most twelve members and sends one formation news when it reaches three members including a major.
+Competitive Devaluation gives local relief once per global episode while pressing up to a capped number of partners and lengthening the world's recovery proof.
+Withdraw from International Commitments gives light relief and gives up the country's contribution, conference seat and reconstruction mission.
 
 ## Industrial Boom supplier role
 
@@ -235,7 +277,10 @@ The boom also receives:
 - Build a Supplier Bloc.
 - Refuse Further Exposure.
 
-These actions belong to Event 34's category through a reusable Event 35 adapter. Event 35 must not duplicate the full boom mechanic.
+These actions belong to Event 34's category through a reusable Event 35 adapter.
+Event 35 must not duplicate the full boom mechanic.
+Current source provides the supplier quote adapter, conference seats for suppliers and Event 34's late-entry hook, but none of these six choices; lead decision L8 excluded them while U1 still requires them.
+Six choices inside another event's category would be micromanagement, so the proposal is two choices, Accept World Orders and Refuse Further Exposure (README Open questions 5).
 
 ### Supplier collapse
 
@@ -250,7 +295,9 @@ When a supplier boom collapses:
 
 ## Stable non-boom suppliers
 
-A country without Event 34 can still provide ordinary aid or reconstruction supply. It receives smaller benefits and costs. It does not gain Event 34's extreme output or Overheating system.
+A country without Event 34 can still provide ordinary aid or reconstruction supply.
+It receives smaller benefits and costs.
+It does not gain Event 34's extreme output or Overheating system.
 
 ## Global stage progression
 
@@ -312,7 +359,8 @@ Negative factors:
 - Severe global trade disruption.
 - Major war or disaster shocks with real economic effect.
 
-The final recovery proof should last at least `120` days under stable conditions. A major supplier collapse or new major-country depression can pause or reset it.
+The final recovery proof should last at least `120` days under stable conditions.
+A major supplier collapse or new major-country depression can pause or reset it.
 
 ## End of global episode
 
@@ -334,54 +382,51 @@ Resolution:
 
 ## Global announcement role
 
-The first actual worldwide pressure application uses one global news event and one dedicated super-event. They fire when several countries receive the worldwide condition, not when the evolution variable is logged.
+The first actual worldwide pressure application uses one global news event and one dedicated super-event.
+They fire when several countries receive the worldwide condition, not when the evolution variable is logged.
 
-The news event identifies the contraction as an international economic state, shows several kinds of public evidence, and names the origin country only when that origin is known. It must not imply that every country has the full national Event 35 crisis.
+The news event identifies the contraction as an international economic state, shows several kinds of public evidence, and names the origin country only when that origin is known.
+It must not imply that every country has the full national Event 35 crisis.
 
-The super-event marks the first worldwide economic consequence of Evolution III. It receives one stable slot, one generated period scene, one verified quote, one unique licensed musical cue, and one guarded receipt. It must present a worldwide contraction that remains recoverable and must not fire again when later origins join the same global episode.
+The super-event marks the first worldwide economic consequence of Evolution III. It receives one stable slot, one generated period scene, one verified quote, one unique licensed musical cue, and one guarded receipt.
+It must present a worldwide contraction that remains recoverable and must not fire again when later origins join the same global episode.
 
 ## News and reports
 
-World news should cover:
+World news covers, once per global episode each:
 
-- First application of worldwide pressure.
-- Formation of a major clearing or protectionist bloc.
-- Collapse of a critical supplier boom.
-- Failure of a major recovery conference.
-- Entry into International Reconstruction.
-- End of the global episode.
+- First application of worldwide pressure, with the super-event.
+- Formation of a clearing bloc (`chaosx.nr35.20`) or a protectionist bloc (`chaosx.nr35.21`).
+- The first supplier collapse (`chaosx.nr35.18`).
+- Failure of the recovery conference (`chaosx.nr35.19`).
+- Entry into International Reconstruction (`chaosx.nr35.16`).
+- End of the global episode (`chaosx.nr35.17`).
 
+None fires while the evolution is switched off, and the reconstruction and end news name the origin only when it is known.
 Routine national conversions use country reports and Event 35 history.
 
 ## Chaos impact
 
 Evolution III activation adds zero Chaos.
-
-The first concrete worldwide pressure application may add one guarded major Event 35 Chaos change because it imposes real contraction across several countries. An initial working target around `+20` is proportionate to a worldwide economic outcome, subject to the shared Chaos balance review.
-
-Additional guarded outcomes may include:
-
-- Collapse of a critical supplier network.
-- Several major-country conversions.
-- Failure of a world recovery conference that deepens the stage.
-
-Generic Chaos from war, deaths, annexation, ideology change, contamination, and world tension is not duplicated.
-
-Ending the global episode may remove only the matching Event 35 global pressure that was previously added. The reversal should be capped by the recorded Event 35 contribution.
+The worldwide-wave, supplier-collapse, conference-failure and international-recovery amounts are owned by part 8, Chaos accounting.
 
 ## Interaction with event clusters
 
-A Negative Economy cluster firing cannot activate The Second Great Depression merely because several economic events fire together. The global evolution still requires Totalen Chaos, enabled evolution state, Event 35 source conditions, and its own dynamic progression or inherited Event 34 Evolution III collapse.
+A Negative Economy cluster firing cannot activate The Second Great Depression merely because several economic events fire together.
+The global evolution still requires Totalen Chaos, enabled evolution state, Event 35 source conditions, and its own dynamic progression or inherited Event 34 Evolution III collapse.
 
 Cluster members can create economic shocks that later affect the hidden world pressure through exact adapters.
 
 ## Multiplayer
 
-Every player sees the same global stage and world episode. Each country manages its own national Severity and decisions.
+Every player sees the same global stage and world episode.
+Each country manages its own national Severity and decisions.
 
-Foreign aid, supplier, bloc, and conference actions require clear source and target ownership. One player cannot pay another player's costs through a local-only UI without an accepted transaction.
+Foreign aid, supplier, bloc, and conference actions require clear source and target ownership.
+One player cannot pay another player's costs through a local-only UI without an accepted transaction.
 
-The worldwide news event fires once globally. Country reports remain targeted.
+The worldwide news event fires once globally.
+Country reports remain targeted.
 
 ## AI behavior
 
@@ -400,7 +445,9 @@ AI evaluates:
 - Rival influence.
 - Global recovery stage.
 
-AI should form or join blocs that match its actual relationships and needs. It should avoid accepting supplier orders that would push an Event 34 boom near collapse without a strong strategic reason. It should contribute to global recovery when the cost is affordable and the agreement protects vital partners.
+AI should form or join blocs that match its actual relationships and needs.
+It should avoid accepting supplier orders that would push an Event 34 boom near collapse without a strong strategic reason.
+It should contribute to global recovery when the cost is affordable and the agreement protects vital partners.
 
 ## Disabled evolution behavior
 

@@ -1,8 +1,10 @@
 # Event 35 Great Depression 2.0 AI and probability matrix
 
+Status: the named scenarios below are the design targets; the current evidence for each surface, including timed-out and partial MCP runs, is recorded in `docs/plans/035_great_depression_plans/current_requirement_state_2026-10-07.md`.
+
 ## Audit contract
 
-Use the same scenario IDs before and after tuning. Start every weighted-surface review with `hoi4.probability_inspect`. Record whether the candidate pool and external factors are complete.
+Use the same scenario IDs before and after tuning. Start every weighted-surface review with `hoi4.probability_inspect` and follow the CLAUDE.md retry limit; when the analyzer cannot evaluate a surface, calculate representative cases from the actual script. Record whether the candidate pool and external factors are complete.
 
 Classify every result as:
 
@@ -75,7 +77,7 @@ Confirm that:
 
 Use probability sequence analysis only when the complete Event 35 cadence is declared, including:
 
-- Phase-scaled national evaluation cadence and elapsed-day normalization.
+- Weekly national pulse with elapsed-day normalization, and the 21-day (14-day with an evolution) incident clock.
 - Incident cooldowns.
 - Mission durations.
 - Evolution timing.

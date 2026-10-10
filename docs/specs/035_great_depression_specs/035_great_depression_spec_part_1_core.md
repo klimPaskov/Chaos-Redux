@@ -1,24 +1,38 @@
 # Great Depression 2.0 specification, part 1: Core event and baseline lifecycle
 
+Status: the core lifecycle in this part is `implemented` in source; see the [package README](035_great_depression_spec_index.md#implementation-status) for remaining work.
+
 ## Catalog entry
 
 - Event ID: `35`
 - Event name: Great Depression 2.0
 - Type: Minor Repeatable
-- Status: To Be Reworked
+- Catalog status: To Be Reworked until the README's pending rows close
 - Chaos level: 1
-- Cluster: Negative Economy
+- Cluster: Negative Economy (cluster ID 10)
 - Cluster member severity: Low
 
 ## Event premise
 
-A major country or player-controlled country enters a severe economic depression. Factories remain standing while orders disappear, production lines lose efficiency, construction sites close, freight movement falls, firms fail, and households lose work. The opening shock is immediate enough to force a production and construction review. The crisis then becomes a long management problem instead of a fixed timed penalty.
+A major country or player-controlled country enters a severe economic depression.
+Factories remain standing while orders disappear, production lines lose efficiency, construction sites close, freight movement falls, firms fail, and households lose work.
+The opening shock is immediate enough to force a production and construction review.
+The crisis then becomes a long management problem instead of a fixed timed penalty.
 
-The country manages one public value, `Depression Severity`. It summarizes contraction, unemployment, credit failure, falling demand, business closures, public confidence, trade disruption, and state financial stress. The simulation may track several hidden contributors, but the player sees one total, its trend, the next threshold, and the strongest causes that can be acted upon.
+The country manages one public value, `Depression Severity`.
+It summarizes contraction, unemployment, credit failure, falling demand, business closures, public confidence, trade disruption, and state financial stress.
+The simulation may track several hidden contributors, but the player sees one total, its trend, the next threshold, and the strongest causes that can be acted upon.
 
-Event 35 has two valid entry paths. An independent firing selects a valid country and creates a severe but recoverable national crisis. An inherited firing begins when Event 34 Industrial Boom collapses. The inherited path targets the same boom country, reads one frozen collapse snapshot, raises the depression to the corresponding evolution floor, and converts the boom's projects and industrial regions into depression conditions.
+Event 35 has two valid entry paths.
+An independent firing selects a valid country and creates a severe but recoverable national crisis.
+An inherited firing begins when Event 34 Industrial Boom collapses.
+The inherited path targets the same boom country, reads one frozen collapse snapshot, raises the depression to the corresponding evolution floor, and converts the boom's projects and industrial regions into depression conditions.
 
-The event is dangerous without being automatically terminal. Maximum Severity represents national economic paralysis. It can cause closures, unrest, political crises, and long recovery. It does not instantly remove every factory, delete the country, or force a civil war. Those outcomes require sustained conditions and their own visible chains.
+The event is dangerous without being automatically terminal.
+Maximum Severity represents national economic paralysis.
+It can cause closures, unrest, political crises, and long recovery.
+It does not instantly remove every factory, delete the country, or force a civil war.
+Those outcomes require sustained conditions and their own visible chains.
 
 ## Core player experience
 
@@ -71,19 +85,25 @@ A country is eligible for an independent Event 35 firing when all of the followi
 - It is not inside the unresolved Event 34 to Event 35 transition.
 - It does not have another economic state whose ownership contract makes a simultaneous depression incoherent.
 
-A human-controlled non-major remains eligible. All costs, Depression Center counts, state effects, and recovery requirements scale from its actual economy.
+A human-controlled non-major remains eligible.
+All costs, Depression Center counts, state effects, and recovery requirements scale from its actual economy.
 
 ### Ordinary civilian economy gate
 
-Special Chaos actors and actual nonhuman countries should not receive the event through normal selection because the event assumes ordinary employment, consumption, trade, credit, political legitimacy, and household hardship. The implementation should use the existing shared civilian-system classifiers. An owning system may later provide a specific adapter for a special actor, but Event 35 should not infer one.
+Special Chaos actors and actual nonhuman countries should not receive the event through normal selection because the event assumes ordinary employment, consumption, trade, credit, political legitimacy, and household hardship.
+The implementation should use the existing shared civilian-system classifiers.
+An owning system may later provide a specific adapter for a special actor, but Event 35 should not infer one.
 
 ### Active depression exclusion
 
-A country with an active Event 35 crisis is excluded from another independent target roll. A new consequence that reaches the same country uses the deepen path. It may increase Severity, raise the evolution floor, add state records, or extend relapse risk, but it does not create a second decision category, second crisis idea, second state registry, or duplicate event-history row.
+A country with an active Event 35 crisis is excluded from another independent target roll.
+A new consequence that reaches the same country uses the deepen path.
+It may increase Severity, raise the evolution floor, add state records, or extend relapse risk, but it does not create a second decision category, second crisis idea, second state registry, or duplicate event-history row.
 
 ### Target weighting
 
-Every valid country needs a nonzero selection path. Weighting may rise with:
+Every valid country needs a nonzero selection path.
+Weighting may rise with:
 
 - A large civilian and military industrial base.
 - High dependence on trade, convoys, ports, or imported resources.
@@ -104,11 +124,15 @@ Weighting may fall with:
 - A conflicting event-owned crisis whose source contract blocks simultaneous activation.
 - Repeated selection of the same largest major while other valid countries have not been targeted.
 
-The weights create variety and plausible vulnerability. They do not guarantee that the weakest or largest country is selected.
+The weights create variety and plausible vulnerability.
+They do not guarantee that the weakest or largest country is selected.
 
 ### No valid target
 
-When no valid country exists, Event 35 contributes no live candidate to automatic selection. The event list should display it as unavailable. The system should not queue a random country call that can resolve to nothing or a special actor.
+When no valid country exists, Event 35 contributes no live candidate to automatic selection.
+The shared event-pool evaluator marks it unavailable with the reason `great_depression_target`, so neither the random pool nor the Negative Economy cluster draws it, and the Events and cluster tabs show why.
+A manual firing that still finds no valid country sends the human player one short report (`chaosx.nr35.22`) explaining that no industrial country can begin a fresh depression, and records nothing else.
+The system never queues a random country call that can resolve to nothing or a special actor.
 
 ## Entry modes
 
@@ -125,11 +149,14 @@ The ordinary entry performs these steps:
 7. Schedule the opening report and public news according to existing news settings.
 8. Begin the sparse country and state evaluation schedule.
 
-An independent firing normally starts in a severe but recoverable band. A weak country may begin higher because of blockade, collapsing stability, lost industry, or broken supply. A stable country may begin lower, but the opening must still matter.
+An independent firing normally starts in a severe but recoverable band.
+A weak country may begin higher because of blockade, collapsing stability, lost industry, or broken supply.
+A stable country may begin lower, but the opening must still matter.
 
 ### Industrial Boom collapse
 
-The inherited entry is a consequence call owned by Event 34 and consumed by Event 35. It performs these steps:
+The inherited entry is a consequence call owned by Event 34 and consumed by Event 35.
+It performs these steps:
 
 1. Receive the exact target country and one frozen Event 34 snapshot.
 2. Remove boom-only bonuses before applying depression penalties.
@@ -140,15 +167,20 @@ The inherited entry is a consequence call owned by Event 34 and consumed by Even
 7. Record the source as Industrial Boom collapse.
 8. Avoid a second global pacing transaction.
 
-The inherited opening needs separate player-facing direction. It should show the reversal in orders, investment, transport, wages, and plant operation. It should not print raw Overheating values or describe the handoff implementation.
+The inherited opening needs separate player-facing direction.
+It should show the reversal in orders, investment, transport, wages, and plant operation.
+It should not print raw Overheating values or describe the handoff implementation.
 
 ### Financial Contagion conversion
 
-When Evolution I creates enough exposure in another country, that country may convert from a lighter Economic Contagion condition into a full Event 35 crisis. This entry records its origin country and contagion chain, starts at a lower or moderate crisis band unless local conditions are already severe, and does not consume another normal random-pool selection.
+When Evolution I creates enough exposure in another country, that country may convert from a lighter Economic Contagion condition into a full Event 35 crisis.
+This entry records its origin country and contagion chain, starts at a lower or moderate crisis band unless local conditions are already severe, and does not consume another normal random-pool selection.
 
 ### Worldwide depression conversion
 
-Evolution III can place countries under a lighter worldwide pressure state. A country crosses into the full national crisis only when its local pressure and vulnerability meet the conversion threshold. This prevents the worldwide evolution from opening a large decision category for every country on the same day.
+Evolution III can place countries under a lighter worldwide pressure state.
+A country crosses into the full national crisis only when its local pressure and vulnerability meet the conversion threshold.
+This prevents the worldwide evolution from opening a large decision category for every country on the same day.
 
 ## Immediate economic shock
 
@@ -164,21 +196,29 @@ It should affect:
 - Stability or political confidence.
 - Selected industrial states through local idle-plant and unemployment conditions.
 
-The opening shock should be stronger than the sustained penalty at the same Severity. It represents cancelled orders, frozen credit, runs on institutions, emergency closures, abrupt layoffs, inventory liquidation, and projects halted before contracts can be reorganized.
+The opening shock should be stronger than the sustained penalty at the same Severity.
+It represents cancelled orders, frozen credit, runs on institutions, emergency closures, abrupt layoffs, inventory liquidation, and projects halted before contracts can be reorganized.
 
-The opening should not delete factories. Physical building loss belongs to prolonged high Severity, deliberate liquidation, failed state recovery, combat damage, or abandonment after repeated closures.
+The opening should not delete factories.
+Physical building loss belongs to prolonged high Severity, deliberate liquidation, failed state recovery, combat damage, or abandonment after repeated closures.
 
 ### Production-line treatment
 
-The player must feel that existing production plans have become harder to sustain. The implementation may use a strong temporary production-efficiency penalty, lower efficiency growth, or staged industrial output penalties. It should avoid arbitrary destruction of all existing production efficiency when engine behavior would make the result disproportionate or difficult to explain.
+The player must feel that existing production plans have become harder to sustain.
+The implementation may use a strong temporary production-efficiency penalty, lower efficiency growth, or staged industrial output penalties.
+It should avoid arbitrary destruction of all existing production efficiency when engine behavior would make the result disproportionate or difficult to explain.
 
 ### Economic law pressure
 
-The crisis may make the most demanding economic laws harder to maintain through visible missions, temporary modifiers, or policy consequences. It should not silently force a law change on the opening day. A country that keeps an expensive law during deep depression should pay a larger civilian, stability, or recovery cost.
+The crisis may make the most demanding economic laws harder to maintain through visible missions, temporary modifiers, or policy consequences.
+It should not silently force a law change on the opening day.
+A country that keeps an expensive law during deep depression should pay a larger civilian, stability, or recovery cost.
+This is optional direction, not a pending requirement: the implemented fiscal stress already rises with unsupported emergency programs, and a separate law check is worth adding only if playtests show expensive laws carry no depression cost.
 
 ## Depression Centers
 
-The opening marks a small number of important industrial states as Depression Centers. These states carry the local face of the crisis and give state-targeted decisions a clear purpose.
+The opening marks a small number of important industrial states as Depression Centers.
+These states carry the local face of the crisis and give state-targeted decisions a clear purpose.
 
 Selection should favor:
 
@@ -196,15 +236,22 @@ Selection should avoid:
 - Duplicate entries.
 - A long list that turns the category into state-management clutter.
 
-A small player country normally receives one center. A medium economy receives one or two. A large major receives two or three. Evolution III may create a fourth only when the country has a large inherited corridor or several distinct industrial regions. Three should remain the normal visible cap.
+A small player country normally receives one center.
+A medium economy receives one or two.
+A large major receives two or three.
+Evolution III may create a fourth only when the country has a large inherited corridor or several distinct industrial regions.
+Three should remain the normal visible cap.
 
 ## Baseline lifecycle
 
-The baseline lifecycle has four ordinary phases. These are not evolutions and should not create evolution-log entries.
+The baseline lifecycle has four ordinary phases.
+These are not evolutions and should not create evolution-log entries.
 
 ### Phase 1: Panic and Contraction
 
-The crisis has opened and the immediate shock is active. Severity is volatile. Institutions close, firms cancel investment, workers lose jobs, and production lines struggle to retain efficiency.
+The crisis has opened and the immediate shock is active.
+Severity is volatile.
+Institutions close, firms cancel investment, workers lose jobs, and production lines struggle to retain efficiency.
 
 Player priorities:
 
@@ -222,11 +269,14 @@ Available content:
 - One emergency mission to halt the panic.
 - Austerity, planning, or market-clear actions when their visible conditions are met.
 
-The phase has a minimum duration so a country cannot end the opening through one large decision. It ends when the immediate shock expires and the crisis has established its sustained Severity state.
+The phase has a minimum duration so a country cannot end the opening through one large decision.
+It ends when the immediate shock expires and the crisis has established its sustained Severity state.
 
 ### Phase 2: Depression
 
-The opening panic has become persistent low output and unemployment. Government policy becomes the main play layer. Depression Centers may become distressed, idled, shuttered, protected, or placed under public works.
+The opening panic has become persistent low output and unemployment.
+Government policy becomes the main play layer.
+Depression Centers may become distressed, idled, shuttered, protected, or placed under public works.
 
 Player priorities:
 
@@ -244,11 +294,15 @@ Available content:
 - Medium-duration recovery missions.
 - Incidents tied to Severity, state status, policy history, and current war state.
 
-The crisis should be capable of lasting for years when mismanaged. A strong player should still need sustained recovery work. One cheap meter reset cannot end it.
+The crisis should be capable of lasting for years when mismanaged.
+A strong player should still need sustained recovery work.
+One cheap meter reset cannot end it.
 
 ### Phase 3: Stabilization
 
-Severity has remained below the dangerous range for a sustained period and the strongest causes of deterioration are controlled. The harshest national penalties begin to weaken. State reopening becomes more effective, but the economy remains vulnerable to shocks.
+Severity has remained below the dangerous range for a sustained period and the strongest causes of deterioration are controlled.
+The harshest national penalties begin to weaken.
+State reopening becomes more effective, but the economy remains vulnerable to shocks.
 
 Player priorities:
 
@@ -266,7 +320,8 @@ Available content:
 - Policy consolidation choices.
 - Relapse prevention mission.
 
-A bad shock or policy reversal can return the country to the Depression phase. The player should see the relapse risk through a visible fragile-stabilization status, not through unexplained random punishment.
+A bad shock or policy reversal can return the country to the Depression phase.
+The player should see the relapse risk through a visible fragile-stabilization status, not through unexplained random punishment.
 
 ### Phase 4: Recovery
 
@@ -283,29 +338,39 @@ The crisis closes in this order:
 7. Record the recovery outcome in event history and documentation-facing state.
 8. Preserve repeat-history memory without retaining active arrays.
 
-The country may retain a small number of meaningful long-duration or permanent effects. They should represent infrastructure rebuilt, institutions created, industrial consolidation, labor settlement, state planning, or hollowed regions. They should not form a stack of minor generic spirits.
+The country may retain a small number of meaningful long-duration or permanent effects.
+They should represent infrastructure rebuilt, institutions created, industrial consolidation, labor settlement, state planning, or hollowed regions.
+They should not form a stack of minor generic spirits.
+The implemented closing transaction (`great_depression_try_complete_recovery`) resolves the result, freezes the episode summary, evaluates achievements, records refire memory, applies at most one legacy, one country scar, one political aftermath and two district outcomes, clears active state and queues the recovery report one day later (part 4, Recovery outcomes).
 
 ## Baseline outcome bands
 
 ### Strong recovery
 
-The country reaches the recovery floor with low relapse risk, all Depression Centers reopened or converted successfully, and no severe unresolved political crisis. It retains the best bounded recovery legacy and the fewest scars.
+The country reaches the recovery floor with low relapse risk, all Depression Centers reopened or converted successfully, and no severe unresolved political crisis.
+It retains the best bounded recovery legacy and the fewest scars.
 
 ### Uneven recovery
 
-The national crisis ends, but one center remains structurally weak, one emergency institution persists, or the country used a costly path that solved output while leaving political or social damage. It receives a useful but mixed legacy.
+The national crisis ends, but one center remains structurally weak, one emergency institution persists, or the country used a costly path that solved output while leaving political or social damage.
+It receives a useful but mixed legacy.
 
 ### Hollow recovery
 
-Severity falls enough to close the crisis after deliberate liquidation, abandonment, or prolonged closure. The country has lower immediate depression pressure, but loses some industrial capacity, state potential, population stability, or long-term flexibility. This is a valid route with real cost, not a cheap exploit.
+Severity falls enough to close the crisis after deliberate liquidation, abandonment, or prolonged closure.
+The country has lower immediate depression pressure, but loses some industrial capacity, state potential, population stability, or long-term flexibility.
+This is a valid route with real cost, not a cheap exploit.
 
 ### Continued depression
 
-Severity remains above the recovery floor or rises again during stabilization. The event stays active and may deepen. There is no arbitrary maximum duration that removes the crisis while the underlying conditions remain severe.
+Severity remains above the recovery floor or rises again during stabilization.
+The event stays active and may deepen.
+There is no arbitrary maximum duration that removes the crisis while the underlying conditions remain severe.
 
 ## Maximum Severity
 
-Depression Severity is capped at its maximum range. Reaching the cap creates the deepest baseline condition and starts an emergency stabilization state.
+Depression Severity is capped at its maximum range.
+Reaching the cap creates the deepest baseline condition and starts an emergency stabilization state.
 
 At maximum Severity:
 
@@ -317,13 +382,17 @@ At maximum Severity:
 - Strikes, protests, radical movements, and government crises become more likely.
 - Evolution-specific spread and political effects receive their strongest valid weights.
 
-The cap does not repeat damage every evaluation. One-shot thresholds, cooldowns, per-state damage limits, and recorded incidents prevent the country from losing the same factory or stability change again every pulse.
+The cap does not repeat damage every evaluation.
+One-shot thresholds, cooldowns, per-state damage limits, and recorded incidents prevent the country from losing the same factory or stability change again every pulse.
 
 ## Baseline political breakdown
 
-Baseline Event 35 can produce unrest before Social Collapse activates. Deep Depression and Systemic Breakdown may create ordinary strikes, demonstrations, radicalization, cabinet crises, and emergency-government pressure. These incidents remain tied to Depression Severity, unemployment, failed policy, stability, and the condition of Depression Centers.
+Baseline Event 35 can produce unrest before Social Collapse activates.
+Deep Depression and Systemic Breakdown may create ordinary strikes, demonstrations, radicalization, cabinet crises, and emergency-government pressure.
+These incidents remain tied to Depression Severity, unemployment, failed policy, stability, and the condition of Depression Centers.
 
-A rare baseline National Breakdown chain can end in civil conflict. It is available only after a visible warning and all of the following broad conditions:
+A rare baseline National Breakdown chain can end in civil conflict.
+It is available only after a visible warning and all of the following broad conditions:
 
 - Severity has remained near Economic Paralysis for a sustained period.
 - Stability and government legitimacy are critically weak.
@@ -332,9 +401,12 @@ A rare baseline National Breakdown chain can end in civil conflict. It is availa
 - Valid territory, forces, equipment, leadership, and postwar handling exist.
 - No recent civil war, protected aftermath, or conflicting country-creation system blocks the outcome.
 
-High Severity by itself is insufficient. The player receives a Prevent National Breakdown objective and a final chance to lower Severity, restore one center, settle the immediate political crisis, or form a viable emergency government. Failure calls a strict validator and can still resolve as a government fall, policy reversal, or prolonged unrest when a coherent civil conflict cannot be created.
+High Severity by itself is insufficient.
+The player receives a Prevent National Breakdown objective and a final chance to lower Severity, restore one center, settle the immediate political crisis, or form a viable emergency government.
+Failure calls a strict validator and can still resolve as a government fall, policy reversal, or prolonged unrest when a coherent civil conflict cannot be created.
 
-The baseline chain stays compact. It does not create the organized-movement registry, factory-occupation system, coup route, separatist package, ideology-specific transformation set, or extended political aftermath owned by Evolution II. When Social Collapse is active, its richer ladder absorbs the baseline checks and prevents duplicate strikes, crises, or wars.
+The baseline chain stays compact.
+It does not create the organized-movement registry, factory-occupation system, coup route, separatist package, ideology-specific transformation set, or extended political aftermath owned by Evolution II. When Social Collapse is active, its richer ladder absorbs the baseline checks and prevents duplicate strikes, crises, or wars.
 
 ## War and depression
 
@@ -356,35 +428,50 @@ War can also:
 - Make public works and finance stabilization more expensive.
 - Create dependence on emergency law and state control.
 
-The simulation should evaluate the country's real material position. A well-supplied major with secure territory may receive employment relief from war demand. A blockaded country losing industrial states should deteriorate faster.
+The simulation should evaluate the country's real material position.
+A well-supplied major with secure territory may receive employment relief from war demand.
+A blockaded country losing industrial states should deteriorate faster.
 
 ## Peace and depression
 
-Peace helps when it restores ports, trade, infrastructure, and civilian construction. It does not automatically end the crisis. Demobilization, cancelled military orders, and a sudden demand shift may create a temporary postwar shock in a country whose recovery depended entirely on armament demand.
+Peace helps when it restores ports, trade, infrastructure, and civilian construction.
+It does not automatically end the crisis.
+Demobilization, cancelled military orders, and a sudden demand shift may create a temporary postwar shock in a country whose recovery depended entirely on armament demand.
 
 ## Active crisis and country changes
 
 ### Annexation or country deletion
 
-If the country ceases to exist, Event 35 removes its active registry entries, state pointers, foreign exposure links, and missions safely. It does not search for a replacement owner and continue the same national crisis under a random tag.
+If the country ceases to exist, Event 35 removes its active registry entries, state pointers, foreign exposure links, and missions safely.
+It does not search for a replacement owner and continue the same national crisis under a random tag.
 
 ### Civil war
 
-A civil war does not create a full copy of the crisis for every participant by default. The original crisis owner and the economically relevant successor retain or divide state records through a bounded transfer contract. New sides can receive a temporary crisis condition based on the industrial states they control. Duplicate Severity values and state records are forbidden.
+A civil war does not create a full copy of the crisis for every participant by default.
+The original crisis owner and the economically relevant successor retain or divide state records through a bounded transfer contract.
+New sides can receive a temporary crisis condition based on the industrial states they control.
+Duplicate Severity values and state records are forbidden.
 
 ### State transfer
 
-A Depression Center keeps its physical state condition when control changes. The national ledger records whether the center remains economically connected to the crisis owner. A new controller may receive a temporary local burden or a later claim to the center's recovery project. The previous country cannot continue paying for a project in a state it no longer controls.
+A Depression Center keeps its physical state condition when control changes.
+The national ledger records whether the center remains economically connected to the crisis owner.
+A new controller may receive a temporary local burden or a later claim to the center's recovery project.
+The previous country cannot continue paying for a project in a state it no longer controls.
 
 ### Faction or subject change
 
-Faction and subject relationships alter contagion exposure and foreign aid possibilities. They do not end the national crisis. An overlord may support, exploit, or abandon a subject's recovery through Evolution I content.
+Faction and subject relationships alter contagion exposure and foreign aid possibilities.
+They do not end the national crisis.
+An overlord may support, exploit, or abandon a subject's recovery through Evolution I content.
 
 ## Repeatable identity
 
-Event 35 remains Minor Repeatable in the global event system. Repeatability operates at the event pool level and at the country-history level.
+Event 35 remains Minor Repeatable in the global event system.
+Repeatability operates at the event pool level and at the country-history level.
 
-A recovered country can receive Event 35 again after a meaningful safeguard period. A new episode remembers:
+A recovered country can receive Event 35 again after a meaningful safeguard period.
+A new episode remembers:
 
 - Previous depression count.
 - Earlier entry source.
@@ -395,7 +482,10 @@ A recovered country can receive Event 35 again after a meaningful safeguard peri
 - Earlier Event 34 crashes.
 - Recovery philosophy and relapse history.
 
-Repeat history should change vulnerability, starting conditions, and available text. It should not guarantee a harder crisis every time. Strong reforms can reduce future starting Severity or improve stabilization. Hollowed regions and repeated crashes can increase vulnerability.
+Repeat history should change vulnerability, starting conditions, and available text.
+It should not guarantee a harder crisis every time.
+Strong reforms can reduce future starting Severity or improve stabilization.
+Hollowed regions and repeated crashes can increase vulnerability.
 
 ## Baseline event flow
 
@@ -415,4 +505,6 @@ Independent selection or consequence call
     -> close active crisis and preserve history
 ```
 
-Evolutions attach to this flow. They do not replace the baseline lifecycle. Financial Contagion adds international exposure, Social Collapse adds organized political consequences, and The Second Great Depression adds a worldwide pressure lifecycle.
+Evolutions attach to this flow.
+They do not replace the baseline lifecycle.
+Financial Contagion adds international exposure, Social Collapse adds organized political consequences, and The Second Great Depression adds a worldwide pressure lifecycle.

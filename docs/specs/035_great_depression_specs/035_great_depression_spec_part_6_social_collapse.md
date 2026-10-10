@@ -1,14 +1,23 @@
 # Great Depression 2.0 specification, part 6: Evolution II, Social Collapse
 
+Status: the incident ladder, the primary movement selector with its activation report `chaosx.nr35.13`, the response decisions, the coup and regional-autonomy branches (`chaosx.nr35.4`, `chaosx.nr35.5`), the Event 21 civil-conflict handoff, the Emergency Government spirit and six political aftermaths are `implemented` in source.
+Post-civil-war reconstruction as a seventh aftermath and the hunger-riot gate on the famine owner's food stage are pending.
+Action and stage labels below are working labels unless the implemented name is given.
+
 ## Evolution role
 
-The action, mission, incident, and stage labels in this file are structural working labels unless they come directly from the accepted brief. Final player-facing wording belongs to implementation.
+Baseline Event 35 already permits ordinary strikes, radicalization, government crises, and a rare generic civil conflict after the National Breakdown gate.
+Social Collapse expands that compact failure route into a direct political and social struggle.
+It adds organized strikes, factory occupations, riots, defined radical movements, mutinies, emergency governments, coups, separatist pressure, and a richer civil-conflict path.
 
-Baseline Event 35 already permits ordinary strikes, radicalization, government crises, and a rare generic civil conflict after the National Breakdown gate. Social Collapse expands that compact failure route into a direct political and social struggle. It adds organized strikes, factory occupations, riots, defined radical movements, mutinies, emergency governments, coups, separatist pressure, and a richer civil-conflict path.
+The evolution does not make civil war inevitable.
+Severe outcomes require long economic failure, weak institutions, an organized movement, and failed response.
+A country can recover economically while changing government, labor institutions, ownership, or regional relations.
+When this module is active, it owns the political incident ladder and suspends the simpler baseline breakdown chain so outcomes cannot duplicate.
 
-The evolution does not make civil war inevitable. Severe outcomes require long economic failure, weak institutions, an organized movement, and failed response. A country can recover economically while changing government, labor institutions, ownership, or regional relations. When this module is active, it owns the political incident ladder and suspends the simpler baseline breakdown chain so outcomes cannot duplicate.
-
-Evolution II normally includes Financial Contagion when Evolution I is enabled. The project settings remain authoritative. A disabled lower evolution stays disabled and is not silently activated by Evolution II.
+Evolution II normally includes Financial Contagion when Evolution I is enabled.
+The project settings remain authoritative.
+A disabled lower evolution stays disabled and is not silently activated by Evolution II.
 
 ## Availability and activation
 
@@ -23,7 +32,7 @@ Normal active-event activation should require:
 - The evolution has not already been recorded for the episode.
 - The dynamic evolution delay has elapsed.
 
-A base timing target near `120` days is appropriate under strong conditions.
+The implemented MTTH base is `140` days (`great_depression_evolution_mtth.social_collapse_days`).
 
 Activation accelerators:
 
@@ -48,13 +57,16 @@ Activation reducers:
 - Low Severity and improving trend.
 - A government with strong institutional legitimacy.
 
-An inherited Event 34 Evolution II collapse activates enabled Evolutions I and II immediately. Disabled lower modules remain off.
+An inherited Event 34 Evolution II collapse activates enabled Evolutions I and II immediately.
+Disabled lower modules remain off.
 
 Evolution activation adds zero Chaos.
 
 ## Hidden social-strain model
 
-The event may track `Social Strain` internally. It is not a second public number. The category shows a qualitative social condition and the strongest cause.
+The event may track `Social Strain` internally.
+It is not a second public number.
+The category shows a qualitative social condition and the strongest cause.
 
 Suggested conditions:
 
@@ -90,11 +102,13 @@ It falls through:
 - A successful emergency government with a defined mandate.
 - Recovery progress.
 
-The implementation should rebuild the qualitative state from hidden pressure and current incidents. It should not show a raw social score.
+The implementation should rebuild the qualitative state from hidden pressure and current incidents.
+It should not show a raw social score.
 
 ## Movement formation
 
-Social Collapse can create one primary organized movement and, in a large or fragmented country, one secondary rival. It should not generate many interchangeable factions.
+Social Collapse can create one primary organized movement and, in a large or fragmented country, one secondary rival.
+It should not generate many interchangeable factions.
 
 Movement type depends on:
 
@@ -119,7 +133,9 @@ Possible movement families:
 - Business and creditor emergency coalition.
 - Rural protest movement when agricultural and famine pressure is valid.
 
-The event should use existing parties, leaders, characters, and regional identities when they exist. It must not invent a historical person or grounded portrait merely to fill a movement role. A council or institution can represent a movement when no valid person exists.
+The event should use existing parties, leaders, characters, and regional identities when they exist.
+It must not invent a historical person or grounded portrait merely to fill a movement role.
+A council or institution can represent a movement when no valid person exists.
 
 ## Incident ladder
 
@@ -163,7 +179,7 @@ Possible incidents:
 
 - General strike.
 - Nationwide factory occupations.
-- Hunger riots tied to a valid food crisis.
+- Hunger riots tied to a valid food crisis: the incident should require a center state where the famine owner reports a visible food problem (`famine_state_has_visible_food_problem`); the implemented gate reads Event 35's own humanitarian receipt or a hollowed or abandoned center instead, so the change is pending.
 - Mutiny or refusal of orders.
 - Emergency cabinet collapse.
 - Rival movements fighting for control of relief or workplaces.
@@ -203,7 +219,8 @@ Possible outcomes:
 - Emergency dictatorship.
 - Revolutionary coalition government.
 
-This stage requires the full extreme-outcome gate. It is never selected from one high Severity check.
+This stage requires the full extreme-outcome gate.
+It is never selected from one high Severity check.
 
 ## Response families
 
@@ -211,39 +228,55 @@ The category shows only responses relevant to the current incident and governmen
 
 ### Negotiate with Strike Committees
 
-Commits political authority, relief, and policy concessions. It can end strikes and reduce social pressure. It may strengthen labor institutions, reduce owner confidence, or change the recovery doctrine.
+Commits political authority, relief, and policy concessions.
+It can end strikes and reduce social pressure.
+It may strengthen labor institutions, reduce owner confidence, or change the recovery doctrine.
 
 ### National Employment Compact
 
-Combines public works, wage support, and industrial reopening into one national settlement. It has high civilian and fiscal costs and can create a durable social institution.
+Combines public works, wage support, and industrial reopening into one national settlement.
+It has high civilian and fiscal costs and can create a durable social institution.
 
 ### Deploy Security Forces
 
-Uses command power, equipment, manpower, and stability risk. Command power remains conservative and never exceeds the project limit. The action can restore control quickly, but may create deaths, radicalization, condemnation from another valid system, and longer social scars.
+Uses command power, equipment, manpower, and stability risk.
+Command power remains conservative and never exceeds the project limit.
+The action can restore control quickly, but deepens radicalization and leaves the Labor Bitterness scar or the Labor Scar aftermath.
 
-Any civilian loss must use the shared exact population and Deaths contracts. Event 35 must not subtract population through a duplicate path.
+Event 35 records no deaths of its own for this response.
+A depression-scale casualty count would add nothing to the Deaths ledger's Chaos (one point per million deaths) and would only be a number on a tooltip, so the consequence lives in the scar and the movement's growth.
+Deaths caused by the crisis reach the Deaths ledger through their owners: famine mortality through the famine system and war casualties through the Event 21 civil conflict.
 
 ### Break the Occupations
 
-Targets occupied factories or a center. It may use negotiation, legal action, police, military units, or owner concessions according to government type. A forceful solution can damage the state or production.
+Targets occupied factories or a center.
+It may use negotiation, legal action, police, military units, or owner concessions according to government type.
+A forceful solution can damage the state or production.
 
 ### Recognize Workplace or Regional Councils
 
-Shares authority with organized local bodies. It reduces immediate strain and can move the country toward a new political settlement. It may weaken central control or alter ideology support.
+Shares authority with organized local bodies.
+It reduces immediate strain and can move the country toward a new political settlement.
+It may weaken central control or alter ideology support.
 
 ### Form an Emergency Government
 
-Creates a coalition, military cabinet, royal ministry, planning council, or other government form supported by current institutions. It grants temporary crisis authority and starts a mandate mission.
+Creates a coalition, military cabinet, royal ministry, planning council, or other government form supported by current institutions.
+It grants temporary crisis authority and starts a mandate mission.
 
-The emergency government must have a clear end condition. It can return power, become permanent through a visible route, fail, or trigger opposition.
+The emergency government must have a clear end condition.
+It can return power, become permanent through a visible route, fail, or trigger opposition.
 
 ### Nationalize or Socialize Occupied Industry
 
-Available where politics and doctrine support it. It can resolve occupations and protect production. It changes ownership, foreign relations, and long-term institutions.
+Available where politics and doctrine support it.
+It can resolve occupations and protect production.
+It changes ownership, foreign relations, and long-term institutions.
 
 ### Guarantee Property and Credit
 
-Available to governments seeking business support. It can end lockouts and restore finance while increasing public rescue costs and labor opposition.
+Available to governments seeking business support.
+It can end lockouts and restore finance while increasing public rescue costs and labor opposition.
 
 ## Government and ideology variants
 
@@ -317,7 +350,8 @@ Main risks:
 - Weak party legitimacy.
 - Dependence on one institution.
 
-These are design tendencies. AI and player options must remain sensitive to the actual country, party support, characters, laws, and campaign state.
+These are design tendencies.
+AI and player options must remain sensitive to the actual country, party support, characters, laws, and campaign state.
 
 ## Political transformation
 
@@ -335,7 +369,8 @@ Supported outcomes include:
 - Regional autonomy settlement.
 - Fragmented or civil-war aftermath.
 
-A transformation needs visible steps, valid leaders or institutional identities, localisation, portraits when a real character changes, AI strategy, and cleanup. The event must not perform a silent ideology swap from one incident.
+A transformation needs visible steps, valid leaders or institutional identities, localisation, portraits when a real character changes, AI strategy, and cleanup.
+The event must not perform a silent ideology swap from one incident.
 
 ## Extreme-outcome gate
 
@@ -351,7 +386,8 @@ A coup, separatist conflict, or civil war requires all relevant conditions:
 - Valid states and actors exist.
 - The movement can receive a coherent territory and force package.
 
-A starting target near Severity `90` for at least `90` to `120` days is reasonable. Exact values need tuning.
+A starting target near Severity `90` for at least `90` to `120` days is reasonable.
+Exact values need tuning.
 
 ## Coup design
 
@@ -376,7 +412,10 @@ Separatism requires:
 - Long abandonment, unequal rescue, or repression.
 - Enough state control and organization to create a viable actor.
 
-The event must use existing country-carrier and tag rules. It does not invent a new tag in the planning stage. A separatist route needs territory, capital, forces, equipment, leader or council, flag, localisation, AI, claims, diplomacy, and later settlement. If those cannot be supplied, use autonomy or regional crisis instead of a fake country.
+The event must use existing country-carrier and tag rules.
+It does not invent a new tag in the planning stage.
+A separatist route needs territory, capital, forces, equipment, leader or council, flag, localisation, AI, claims, diplomacy, and later settlement.
+If those cannot be supplied, use autonomy or regional crisis instead of a fake country.
 
 ## Civil-war design
 
@@ -389,7 +428,8 @@ Rules:
 - Starting forces and equipment scale from the states and movement.
 - The original Event 35 crisis is divided through the state-transfer contract.
 - Both sides receive only the economic burden they actually control.
-- The war uses the shared generic Chaos and deaths systems. Event 35 does not duplicate those changes.
+- The war uses the shared deaths system. Event 35 records one civil-conflict Chaos receipt only while no shared counter records civil wars (part 8).
+- Implemented route: Event 35 proves the abnormal outcome and hands the country to the Event 21 opening adapter (`great_depression_start_shared_civil_conflict`), which owns route selection, force sizing, war start and Deaths; a rejected admission resolves as a non-war emergency outcome.
 - Victory does not automatically end depression.
 - Postwar recovery and reconciliation remain necessary.
 
@@ -403,7 +443,8 @@ Goal:
 - Keep basic supply and transport working.
 - Choose negotiation or force.
 
-Success restores part of local output. Failure raises social condition and can widen the action.
+Success restores part of local output.
+Failure raises social condition and can widen the action.
 
 ### Prevent a General Strike
 
@@ -436,24 +477,15 @@ Use shared adapters when:
 - A state already has food pressure.
 - Long unemployment and blockade create a valid famine context.
 - A center's closure creates a registered migration or exodus pressure.
-- Repression or riot resolution creates an exact civilian loss.
 
-Event 35 supplies source, state, actor, and pressure proof. The humanitarian system owns food stages, migration cohorts, exact transfers, deaths, and cleanup.
+Event 35 supplies source, state, actor, and pressure proof.
+The humanitarian system owns food stages, migration cohorts, exact transfers, deaths, and cleanup.
+The adapters are listed in part 8, Connections.
 
 ## Chaos impact
 
 Social Collapse activation adds zero Chaos.
-
-Concrete event-owned outcomes may add guarded Chaos when generic systems do not already cover them:
-
-- First nationwide general strike that paralyzes several centers.
-- A government falls through the Event 35 crisis.
-- A parallel administration takes durable control.
-- A rare non-war political breakdown spreads to another country.
-
-Civil war, ideology change, deaths, annexation, and state transfer already use shared generic sources. Event 35 does not add a second change for those outcomes.
-
-A negotiated settlement can remove only the matching Event 35 one-shot pressure that its earlier outcome added. Ordinary repression or recovery does not subtract generic Chaos.
+Social outcome and civil-conflict Chaos is owned by part 8, Chaos accounting.
 
 ## Resolution and aftermath
 
@@ -474,7 +506,11 @@ The country keeps one coherent political aftermath where earned:
 - Regional autonomy.
 - Post-civil-war reconstruction.
 
-The aftermath must interact with future Event 35 episodes and current government. It should not remain as an unexplained permanent modifier.
+The aftermath must interact with future Event 35 episodes and current government.
+It should not remain as an unexplained permanent modifier.
+Implemented selection order: Emergency Rule for an emergency government that settled, Planning Settlement for socialized occupied industry, Corporate Rescue Order for guaranteed property and credit, Regional Autonomy for recognized councils or autonomy, Labor Scar for force, broken occupations or rejected autonomy, and Social Compact for a negotiated settlement or employment compact.
+In later episodes Corporate Rescue Order and Labor Scar raise hidden social stress and the other four lower it.
+Post-civil-war reconstruction is not yet an aftermath; after an Event 21 war the Labor Scar or Emergency Rule result applies.
 
 ## AI behavior
 
@@ -492,7 +528,9 @@ AI response considers:
 - Probability of settlement.
 - Territory and civil-war validity.
 
-AI should negotiate when a settlement is affordable and movement support is broad. It may use force when the state is strong, the movement is small, and vital wartime production is threatened. It should avoid a doctrine or response that predictably triggers civil war when a safer route exists.
+AI should negotiate when a settlement is affordable and movement support is broad.
+It may use force when the state is strong, the movement is small, and vital wartime production is threatened.
+It should avoid a doctrine or response that predictably triggers civil war when a safer route exists.
 
 ## Disabled evolution behavior
 

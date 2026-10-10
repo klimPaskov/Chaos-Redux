@@ -1,12 +1,16 @@
 # Great Depression 2.0 specification, part 5: Evolution I, Financial Contagion
 
+Status: the exposure network, partner actions, market exits, conversion, evolution report `chaosx.nr35.12`, exposed-partner report `chaosx.nr35.14` and first-spread news `chaosx.nr35.15` are `implemented` in source.
+Stage labels below match the implemented localisation; other action labels are working labels unless the implemented name is given.
+
 ## Evolution role
 
-The action, mission, incident, and stage labels in this file are structural working labels unless they come directly from the accepted brief. Final player-facing wording belongs to implementation.
+Financial Contagion turns one national depression into an international economic risk.
+It adds a sparse relationship network, lighter secondary-country pressure, foreign intervention, supplier opportunities, and the possibility that another country develops a full Event 35 crisis.
 
-Financial Contagion turns one national depression into an international economic risk. It adds a sparse relationship network, lighter secondary-country pressure, foreign intervention, supplier opportunities, and the possibility that another country develops a full Event 35 crisis.
-
-The evolution does not give every related country the full decision category. Most secondary countries receive a compact Economic Contagion condition and a small action set. Full Event 35 activation requires sustained exposure plus local vulnerability.
+The evolution does not give every related country the full decision category.
+Most secondary countries receive a compact Economic Contagion condition and a small action set.
+Full Event 35 activation requires sustained exposure plus local vulnerability.
 
 ## Availability and activation
 
@@ -21,11 +25,16 @@ Normal active-event activation should require:
 - The evolution has not already been recorded for this episode.
 - The dynamic evolution delay has elapsed.
 
-A base timing target near `90` days is appropriate under strong conditions. Lower Severity, secure trade, successful finance policy, weak international links, and coordinated aid should slow activation. Deep Depression, failed finance missions, large external exposure, and an Event 34 speculative collapse should accelerate it.
+The implemented MTTH base is `120` days (`great_depression_evolution_mtth.financial_contagion_days`), shortened by high Severity and strong links and lengthened by an improving trend and weak links.
+Lower Severity, secure trade, successful finance policy, weak international links, and coordinated aid should slow activation.
+Deep Depression, failed finance missions, large external exposure, and an Event 34 speculative collapse should accelerate it.
 
-An Event 34 Evolution I collapse activates the enabled Financial Contagion module immediately when Event 35 begins. It still records the Event 35 evolution context once. The Event 34 evolution log is not reused as the Event 35 log.
+An Event 34 Evolution I collapse activates the enabled Financial Contagion module immediately when Event 35 begins.
+It still records the Event 35 evolution context once.
+The Event 34 evolution log is not reused as the Event 35 log.
 
-Evolution activation itself adds zero Chaos. Chaos changes belong to concrete spread outcomes described later.
+Evolution activation itself adds zero Chaos.
+Chaos changes belong to concrete spread outcomes described later.
 
 ## Evolution logging
 
@@ -38,11 +47,13 @@ The evolution record uses:
 - Origin country as actor.
 - Current crisis episode ID in the Event 35 ledger.
 
-The event-detail preview explains international financial exposure, aid, market retreat, and possible spread. It must not state that a specific country will be infected before a valid relationship and pressure exist.
+The event-detail preview explains international financial exposure, aid, market retreat, and possible spread.
+It must not state that a specific country will be infected before a valid relationship and pressure exist.
 
 ## Exposure network
 
-The network is built from relationships the game can prove. It must not claim exact bilateral trade volume when script cannot observe it.
+The network is built from relationships the game can prove.
+It must not claim exact bilateral trade volume when script cannot observe it.
 
 ### Strong exposure links
 
@@ -68,7 +79,8 @@ The network is built from relationships the game can prove. It must not claim ex
 - Common dependence on an explicit distressed supplier.
 - A one-time distressed-asset transaction.
 
-A light link alone should rarely cause a full crisis. It can add a minor condition, open a decision, or combine with other links.
+A light link alone should rarely cause a full crisis.
+It can add a minor condition, open a decision, or combine with other links.
 
 ## Sparse registry
 
@@ -88,11 +100,13 @@ Each row records:
 - Propagation depth.
 - Cooldown and cleanup state.
 
-The registry should be built from bounded candidate scopes when the evolution activates and when an event-owned relationship changes. It must not create a new recurring whole-world scan.
+The registry should be built from bounded candidate scopes when the evolution activates and when an event-owned relationship changes.
+It must not create a new recurring whole-world scan.
 
 ## Economic Contagion condition
 
-Secondary countries see one qualitative condition. It is not a new public numerical meter.
+Secondary countries see one qualitative condition.
+It is not a new public numerical meter.
 
 | Exposure stage | Working condition | Effect direction | Available response |
 | ---: | --- | --- | --- |
@@ -101,7 +115,8 @@ Secondary countries see one qualitative condition. It is not a new public numeri
 | `3` | Contracting Economy | Output, construction, and stability pressure become material | Strong intervention, retreat, or aid |
 | `4` | Near Depression | Local conditions can convert into full Event 35 | Emergency containment mission |
 
-The exact effects scale with the exposed country's vulnerability. A small subject tied to one market may suffer more than a diversified major at the same qualitative stage.
+The exact effects scale with the exposed country's vulnerability.
+A small subject tied to one market may suffer more than a diversified major at the same qualitative stage.
 
 ## Exposure pressure
 
@@ -134,55 +149,90 @@ The exposed country receives a compact decision category or a small section in a
 
 ### Ring-Fence Domestic Finance
 
-Restricts the transmission of credit and banking stress. It costs administrative and civilian capacity, may reduce foreign flexibility, and lowers exposure drift.
+Restricts the transmission of credit and banking stress.
+It costs administrative and civilian capacity, may reduce foreign flexibility, and lowers exposure drift.
 
-It is strongest for countries with stable institutions. It is weaker after the country reaches Near Depression.
+It is strongest for countries with stable institutions.
+It is weaker after the country reaches Near Depression.
 
 ### Extend Emergency Credit
 
-Supports the origin through a real resource or industrial commitment. It can lower origin Severity and the provider's future exposure. It risks larger losses if the origin continues to deteriorate.
+Supports the origin through a real resource or industrial commitment.
+It can lower origin Severity and the provider's future exposure.
+It risks larger losses if the origin continues to deteriorate.
 
-The provider chooses the scale. Costs may include civilian factories, political authority, convoys, fuel, or another exact transfer. No more than four spendable costs are shown.
+The provider chooses the scale.
+Costs may include civilian factories, political authority, convoys, fuel, or another exact transfer.
+No more than four spendable costs are shown.
 
 ### Shift Import and Contract Dependence
 
-Reduces exposure to the origin by finding another supplier or market. It requires a valid alternative, time, convoys, and possible output disruption. It can raise relations or dependence with the new partner.
+Reduces exposure to the origin by finding another supplier or market.
+It requires a valid alternative, time, convoys, and possible output disruption.
+It can raise relations or dependence with the new partner.
 
 ### Abandon the Distressed Market
 
-Cuts the strongest relationship quickly. It reduces future exposure while causing an immediate shock to the origin, diplomatic damage, and possible loss of investment or supply.
+Cuts the strongest relationship quickly.
+It reduces future exposure while causing an immediate shock to the origin, diplomatic damage, and possible loss of investment or supply.
 
-The action should be attractive when the origin is near Economic Paralysis and the exposed country has little ability to help. It should not be a free universal solution.
+The action should be attractive when the origin is near Economic Paralysis and the exposed country has little ability to help.
+It should not be a free universal solution.
+
+Implemented under lead decision L2: Abandon Distressed Market, Withdraw from Distressed Market and Exploit Supply Gap never raise the actor's own Severity.
+Each gives the actor a bounded current-episode relief window and moves the cost to the partner: a Severity shock if the partner is in its own depression, otherwise a raised or new exposure link, plus an opinion penalty for abandonment and exploitation.
+The AI never abandons or exploits a faction member, ally, overlord, subject or major partner.
+Withdraw is the milder form of Abandon; merging the two is `unresolved` (README Open questions 2).
 
 ### Acquire Distressed Assets
 
-Uses spare capital, industrial capacity, or a current Industrial Boom to purchase failed assets, contracts, or concessions. It gives the origin short-term relief and the buyer a bounded advantage. It can create dependency, resentment, or later political action.
+Uses spare capital, industrial capacity, or a current Industrial Boom to purchase failed assets, contracts, or concessions.
+It gives the origin short-term relief and the buyer a bounded advantage.
+It can create dependency, resentment, or later political action.
 
 ### Coordinate an International Rescue
 
-Available to a major, overlord, faction leader, or coalition of valid providers. It requires several material contributions and a timed mission. Success reduces exposure across the registered network. Failure can accelerate several countries at once.
+Available to a major, overlord, faction leader, or coalition of valid providers.
+It requires several material contributions and a timed mission.
+Success reduces exposure across the registered network.
+Failure can accelerate several countries at once.
 
 ## Origin-country actions
 
 ### Request Emergency Credit
 
-Seeks a valid provider. The origin accepts dependency, concessions, or oversight. The provider must be able and willing to pay.
+Seeks a valid provider.
+The origin accepts dependency, concessions, or oversight.
+The provider must be able and willing to pay.
 
 ### Offer a Debt Standstill
 
-Temporarily suspends or restructures event-created obligations. It lowers immediate credit pressure and can reduce contagion. It harms confidence, relations, or future access according to the relationship.
+Temporarily suspends or restructures event-created obligations.
+It lowers immediate credit pressure and can reduce contagion.
+It harms confidence, relations, or future access according to the relationship.
 
 ### Sell Distressed Assets
 
-Raises immediate support by transferring a bounded economic interest to another country. It cannot sell the same asset twice. A state, concession, or industrial receipt must have one owner.
+Raises immediate support by transferring a bounded economic interest to another country.
+It cannot sell the same asset twice.
+A state, concession, or industrial receipt must have one owner.
 
 ### Establish a Clearing Bloc
 
-Creates a limited group of countries that keep essential exchange working through reciprocal commitments. It lowers trade pressure while reducing flexibility outside the bloc.
+Creates a limited group of countries that keep essential exchange working through reciprocal commitments.
+It lowers trade pressure while reducing flexibility outside the bloc.
+It puts both countries into the shared clearing bloc described in part 7, Economic blocs.
+
+### Other implemented partner actions
+
+Restrict Capital Outflows, Prioritize Domestic Recovery, Offer Boom Supply Contract, Support Contagion Source and Coordinate an International Rescue (with its mission) complete the Evolution I set.
+Provider support counts once per globally unique source episode, so one partner cannot farm a source.
 
 ### Accept External Supervision
 
-A desperate country accepts stronger foreign control over finance, trade, or reconstruction. It provides relief and can create subject pressure, influence, or an event-specific dependency. It cannot silently change autonomy without a visible consequence chain.
+A desperate country accepts stronger foreign control over finance, trade, or reconstruction.
+It provides relief and can create subject pressure, influence, or an event-specific dependency.
+It cannot silently change autonomy without a visible consequence chain.
 
 ## Full-crisis conversion
 
@@ -216,11 +266,13 @@ The new crisis records:
 - Foreign actions already taken.
 - Starting Severity based on exposure and local vulnerability.
 
-The conversion is a consequence call. It does not consume another normal random-event pacing transaction.
+The conversion is a consequence call.
+It does not consume another normal random-event pacing transaction.
 
 ## Propagation depth and anti-loop rules
 
-A country converted through contagion can become a new source only after its own Financial Contagion evolution is valid and active. The new propagation link records its depth from the original episode.
+A country converted through contagion can become a new source only after its own Financial Contagion evolution is valid and active.
+The new propagation link records its depth from the original episode.
 
 Initial rules:
 
@@ -241,21 +293,29 @@ A country with an active Event 34 Industrial Boom becomes a special potential su
 
 ### Supply Depressed Markets
 
-The boom country accepts large foreign orders. It gains stronger output demand and project opportunity. Its Overheating rises through added order, freight, labor, and credit pressure.
+The boom country accepts large foreign orders.
+It gains stronger output demand and project opportunity.
+Its Overheating rises through added order, freight, labor, and credit pressure.
 
-The depressed recipient receives lower trade, demand, or logistics stress. The transaction uses a real relationship receipt and cooldown.
+The depressed recipient receives lower trade, demand, or logistics stress.
+The transaction uses a real relationship receipt and cooldown.
 
 ### Finance Reconstruction
 
-The boom country commits civilian capacity, convoys, fuel, equipment, or credit to a recovery project. It can create a lasting trade relationship or foreign influence. It raises Overheating more slowly than unrestricted supplier demand.
+The boom country commits civilian capacity, convoys, fuel, equipment, or credit to a recovery project.
+It can create a lasting trade relationship or foreign influence.
+It raises Overheating more slowly than unrestricted supplier demand.
 
 ### Acquire Distressed Industry
 
-The boom country buys assets or concessions. It receives a bounded benefit and stronger long-term exposure to the recipient. The recipient gains immediate relief but can incur dependency and Social Collapse pressure.
+The boom country buys assets or concessions.
+It receives a bounded benefit and stronger long-term exposure to the recipient.
+The recipient gains immediate relief but can incur dependency and Social Collapse pressure.
 
 ### Refuse the Orders
 
-The boom country protects its Overheating and gives up the foreign opportunity. The recipient receives no new arbitrary penalty unless it had already committed to the supplier relationship.
+The boom country protects its Overheating and gives up the foreign opportunity.
+The recipient receives no new arbitrary penalty unless it had already committed to the supplier relationship.
 
 ### Boom collapse during rescue
 
@@ -269,7 +329,8 @@ If the supplier boom collapses:
 
 ## Foreign aid and exploitation balance
 
-Aid and exploitation are both supported. Neither is a free optimal path.
+Aid and exploitation are both supported.
+Neither is a free optimal path.
 
 Aid risks:
 
@@ -308,35 +369,24 @@ Incident families include:
 - A coordinated rescue succeeds.
 - A country abandons an exposed partner.
 
-Every incident names the relevant countries and relationship. It should not use generic global text when only two countries are involved.
+Every incident names the relevant countries and relationship.
+It should not use generic global text when only two countries are involved.
 
 ## Event and news presentation
 
-The origin receives a report when the evolution activates and when a major foreign action changes the network. Exposed countries receive local reports only when their own pressure becomes material.
+Implemented pacing:
 
-World news is reserved for:
-
-- A major international rescue.
-- The first full secondary depression from one origin.
-- Collapse of a major clearing or credit network.
-- A large market bloc abandoning the origin.
+- The origin receives one report when the evolution activates on a crisis already under way, naming the most exposed partner and how many partners are tied to it, never conversion odds.
+- An exposed country receives one report per spreading chain when it first joins the origin's material exposure set, with simultaneous origins summarized together.
+- One world news announces the first full secondary depression of a chain, naming the newly struck country and the origin.
+- Later conversions in the same chain use country reports and history only.
 
 Routine exposure changes remain in the category and event history.
 
 ## Chaos impact
 
 Financial Contagion activation adds zero Chaos.
-
-Concrete one-shot outcomes may add Event 35 Chaos:
-
-- First secondary country enters full Event 35 from one origin episode.
-- A third or later country enters the same contagion chain.
-- A major international rescue fails and causes several new severe exposures.
-- A large clearing or credit network breaks apart.
-
-The values should be small and guarded, for example `+1` for first spread and a larger one-time milestone for a genuine multi-country chain. Generic Chaos from war, annexation, ideology change, deaths, or world tension is not repeated.
-
-Recovery can remove only the matching Event 35 spread pressure that was previously added. It cannot subtract Chaos for ordinary aid or one country's recovery when the wider chain remains active.
+Conversion Chaos is owned by part 8, Chaos accounting.
 
 ## Resolution
 
@@ -373,7 +423,9 @@ AI evaluates exposure according to:
 - Expected contagion risk.
 - Event 34 Overheating when the provider has an active boom.
 
-An AI should aid a vital subject or ally when it can afford the cost. It should ring-fence or abandon an origin that is unlikely to recover and threatens its own survival. A boom AI should not accept every distressed order when Overheating is already dangerous.
+An AI should aid a vital subject or ally when it can afford the cost.
+It should ring-fence or abandon an origin that is unlikely to recover and threatens its own survival.
+A boom AI should not accept every distressed order when Overheating is already dangerous.
 
 Named scenarios are defined in part 9.
 

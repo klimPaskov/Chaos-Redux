@@ -1,5 +1,9 @@
 # Great Depression 2.0 specification, part 10: Presentation, assets, and writing direction
 
+Status: every asset family below is `implemented` as 80 runtime DDS files registered in `interface/035_great_depression.gfx`, `interface/chaosx_pictures.gfx` and `interface/chaosx_super_events.gfx`, with the per-file audit in the ignored workspace `docs/assets/035_great_depression/audit/asset_audit.md` and the durable facts in the event doc.
+The super-event uses slot `105`, audio ID `106`, a researched Roosevelt quote, a Keynes reaction and a CC0 recording of Chopin's Funeral March in C minor, Op. posth. 72 no. 2.
+The asset workspace cleanup is pending.
+
 ## Presentation hierarchy
 
 The event should be readable from the normal decision interface.
@@ -27,19 +31,8 @@ The category header should answer five questions quickly:
 - Which recovery doctrine is active?
 - What can the player do now?
 
-Recommended order:
-
-```text
-Category picture
-Depression Severity meter or compact progress display
-Severity band and trend
-Current phase and recovery doctrine
-Next threshold
-Top material causes
-Selected Depression Center and local condition
-Active objective
-Current primary decisions
-```
+The settled layout is the static picture plus a three-line header (Severity with band and trend, phase and doctrine, selected center), with causes and the next threshold on the national-spirit hover (part 3 Presentation, part 2 Player-facing value budget).
+There is no meter.
 
 Do not place a paragraph above the actions. Use a concise summary and tooltips.
 
@@ -50,9 +43,8 @@ The display needs:
 - Value from `0` to `100`.
 - Named band.
 - Qualitative trend.
-- Threshold marker.
 - Distinct Economic Paralysis state.
-- Label and icon support in addition to color.
+- Label and arrow support in addition to color.
 
 Suggested color direction:
 
@@ -253,17 +245,11 @@ There are no character portraits, flags, faction emblems, 3D models, unit counte
 
 Social Collapse can create a leader or country identity only when a valid existing political route supports it. Any resulting portrait, flag, country, or unit asset becomes a separate accepted requirement and follows the full source, tag, portrait, flag, country, and force-package workflow.
 
-## Temporary asset workspace
+## Asset workspace
 
-During implementation, use:
-
-```text
-docs/assets/035_great_depression/
-```
-
-for sources, prompts, previews, provenance, contact sheets, and handoffs.
-
-Final runtime assets belong in engine-facing event folders. Before completion, promote durable evidence into permanent Event 35 documentation, verify that no runtime reference points into `docs/assets/`, and delete the temporary event workspace.
+Sources, prompts, previews, provenance, contact sheets and handoffs live in the git-ignored workspace `docs/assets/035_great_depression/`.
+Final runtime assets belong in engine-facing event folders.
+Pending: confirm that the durable facts in the event doc are complete, verify that no runtime reference points into `docs/assets/`, and delete the workspace before completion, as the `chaos-redux-event-assets` skill requires.
 
 ## Asset QA
 

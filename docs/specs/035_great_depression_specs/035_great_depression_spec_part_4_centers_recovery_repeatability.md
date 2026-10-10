@@ -1,10 +1,15 @@
 # Great Depression 2.0 specification, part 4: Depression Centers, recovery outcomes, and repeatability
 
+Status: center selection, local stages, projects with condition-scaled duration, transfer, factory-loss receipts, recovery outcomes, legacies, scars and district outcomes are `implemented` in source.
+Multi-region inherited priority and hidden inherited rows are `unresolved` (part 8 and README Open questions 6).
+
 ## State-level purpose
 
-Event 35 needs visible local consequences without turning the player into the manager of every state. A small sparse set of `Depression Centers` represents the industrial regions where closures, unemployment, abandoned projects, freight failure, and recovery work are concentrated.
+Event 35 needs visible local consequences without turning the player into the manager of every state.
+A small sparse set of `Depression Centers` represents the industrial regions where closures, unemployment, abandoned projects, freight failure, and recovery work are concentrated.
 
-The national Severity value remains the main mechanic. Centers provide concrete state targets, explain important causes, and preserve history after the national category closes.
+The national Severity value remains the main mechanic.
+Centers provide concrete state targets, explain important causes, and preserve history after the national category closes.
 
 ## Center count
 
@@ -15,7 +20,8 @@ Initial count targets:
 - Large major: two or three centers.
 - Evolution III inherited corridor: a fourth center only when several distinct high-value regions must be represented.
 
-Three is the normal visible cap. The implementation can keep additional inherited state receipts internally when needed, but it should summarize them instead of exposing a long state list.
+Three is the normal visible cap.
+The implementation can keep additional inherited state receipts internally when needed, but it should summarize them instead of exposing a long state list.
 
 ## Center selection score
 
@@ -39,7 +45,8 @@ A state receives lower or zero weight when it is:
 - Under a stronger owner system that forbids conversion.
 - Temporarily controlled without a valid recovery claim.
 
-The selector should avoid choosing only the capital when another state carries more industrial weight. It should also avoid choosing three adjacent states that represent one economic region unless an inherited Event 34 corridor makes that concentration meaningful.
+The selector should avoid choosing only the capital when another state carries more industrial weight.
+It should also avoid choosing three adjacent states that represent one economic region unless an inherited Event 34 corridor makes that concentration meaningful.
 
 ## Event 34 conversion priority
 
@@ -54,10 +61,12 @@ Priority order:
 5. Other high-value industrial states when the inherited registry does not fill the normal center count.
 
 Each inherited state carries its boom history into the local opening condition.
+The current Event 34 handoff freezes one primary region and optional supplied fields, so this priority order works for the visible centers it can name; ordering several authentic regions waits on Event 34 per-region producers (part 8).
 
 ## Local depression stage
 
-Every center has one local depression stage. The exact numeric implementation may remain hidden, but the player sees a named state condition.
+Every center has one local depression stage.
+The exact numeric implementation may remain hidden, but the player sees a named state condition.
 
 | Local stage | Working condition | Meaning |
 | ---: | --- | --- |
@@ -67,15 +76,21 @@ Every center has one local depression stage. The exact numeric implementation ma
 | `3` | Shuttered | Most supported activity has stopped and reopening requires a major project |
 | `4` | Abandoned or Liquidated | Capacity has been deliberately or physically lost and the state needs long reconstruction |
 
-A center can also carry one temporary treatment or protection state, such as protected, under public works, under trusteeship, guaranteed orders, audited finance, or asset liquidation. Treatment is distinct from local stage.
+The implemented stage set also records the resolved outcomes Restructured, Liquidated and Scarred, which the recovery summary reads.
+A center written off by Abandon Depression Center or Auction or Reorganize Failed Assets carries the liquidated mark and adds only a small demand weight to national pressure, while a center lost to sustained failure keeps the full abandoned and hollowed weight.
 
-The design should prefer one local dynamic modifier whose strength reads the stage, plus limited treatment modifiers. It should avoid a stack of unrelated state modifiers.
+A center can also carry one temporary treatment or protection state, such as protected, under public works, under trusteeship, guaranteed orders, audited finance, or asset liquidation.
+Treatment is distinct from local stage.
+
+The design should prefer one local dynamic modifier whose strength reads the stage, plus limited treatment modifiers.
+It should avoid a stack of unrelated state modifiers.
 
 ## Opening local conditions
 
 ### Independent firing
 
-An independent center normally begins Distressed or Idled. The opening may begin one center at Shuttered only when the target already has severe industrial damage, blockade, or a registered economic shock.
+An independent center normally begins Distressed or Idled.
+The opening may begin one center at Shuttered only when the target already has severe industrial damage, blockade, or a registered economic shock.
 
 ### Event 34 inherited firing
 
@@ -86,11 +101,13 @@ An independent center normally begins Distressed or Idled. The opening may begin
 - Lost or heavily damaged Industrial Region: Shuttered and disconnected.
 - Evolution III corridor state: stage depends on network fragility, protection, and current control.
 
-The inherited path should create a recognizable reversal of the boom. It must not delete the Event 34 state history before Event 35 records the conversion.
+The inherited path should create a recognizable reversal of the boom.
+It must not delete the Event 34 state history before Event 35 records the conversion.
 
 ## Local progression
 
-A center worsens through sustained national and local pressure. It does not advance one stage every pulse.
+A center worsens through sustained national and local pressure.
+It does not advance one stage every pulse.
 
 Progression factors include:
 
@@ -102,15 +119,17 @@ Progression factors include:
 - Active treatment.
 - Doctrine.
 - War demand and bombing.
-- Local famine or migration pressure from a valid shared context.
+- A visible food problem in the state as reported by the famine owner (pending feedback adapter, part 8).
 - Failed missions.
 - Evolution II unrest.
 
-A stage change requires a progress threshold, warning state, or failed objective. The player should see that a center is at risk before normal drift causes a serious closure.
+A stage change requires a progress threshold, warning state, or failed objective.
+The player should see that a center is at risk before normal drift causes a serious closure.
 
 ## Physical factory and building loss
 
-The event's baseline identity is economic paralysis. Physical loss is a later consequence.
+The event's baseline identity is economic paralysis.
+Physical loss is a later consequence.
 
 Rules:
 
@@ -123,7 +142,8 @@ Rules:
 - Existing building damage from bombing or disaster is not counted again as Event 35 deletion.
 - Building slots are never removed through an unsupported substitute.
 
-A bounded loss may affect one civilian factory, one military factory, infrastructure, or another fitting building based on the state's actual economy and the cause. The implementation should prefer temporary shutdown and damage before permanent level removal.
+A bounded loss may affect one civilian factory, one military factory, infrastructure, or another fitting building based on the state's actual economy and the cause.
+The implementation should prefer temporary shutdown and damage before permanent level removal.
 
 ## Center treatment by doctrine
 
@@ -182,7 +202,9 @@ A center normally needs:
 - National Severity below a route-appropriate threshold.
 - A successful reopening mission.
 
-A center can be resolved without returning to its exact starting structure. Reopened, restructured, liquidated, or converted outcomes are all valid. The final recovery result distinguishes them.
+A center can be resolved without returning to its exact starting structure.
+Reopened, restructured, liquidated, or converted outcomes are all valid.
+The final recovery result distinguishes them.
 
 ## Local incidents
 
@@ -201,7 +223,9 @@ Baseline incident families:
 - A regional authority requesting national aid.
 - War orders temporarily reviving one center.
 
-Evolution II adds organized social and political incidents. Incidents should mention the exact state and current treatment. They must not fire for a center that no longer exists or is no longer relevant.
+Evolution II adds organized social and political incidents.
+Incidents should mention the exact state and current treatment.
+They must not fire for a center that no longer exists or is no longer relevant.
 
 ## State control changes
 
@@ -222,11 +246,14 @@ Evolution II adds organized social and political incidents. Incidents should men
 
 ### Permanent transfer
 
-The original country retains historical loss and national shock records, but stops owning the live center. The new owner can adopt the center into its own Event 35 crisis or manage the local burden through a limited state action. One state cannot be registered as an active center for two countries at once.
+The original country retains historical loss and national shock records, but stops owning the live center.
+The new owner can adopt the center into its own Event 35 crisis or manage the local burden through a limited state action.
+One state cannot be registered as an active center for two countries at once.
 
 ## Civil war transfer
 
-A civil war can split Depression Centers between participants. The transfer follows state control and economic continuity.
+A civil war can split Depression Centers between participants.
+The transfer follows state control and economic continuity.
 
 Rules:
 
@@ -239,7 +266,8 @@ Rules:
 
 ## Recovery proof and center requirement
 
-The national crisis cannot close while a required center is Shuttered without a deliberate resolution. The player must reopen, restructure, liquidate, abandon, or permanently lose it under the state contract.
+The national crisis cannot close while a required center is Shuttered without a deliberate resolution.
+The player must reopen, restructure, liquidate, abandon, or permanently lose it under the state contract.
 
 Strong recovery normally requires every center Reopened or successfully restructured.
 
@@ -247,111 +275,55 @@ Uneven recovery may allow one mixed or scarred center.
 
 Hollow recovery may allow deliberate liquidation or abandonment, with the corresponding permanent cost.
 
-## Recovery legacy budget
+## Recovery outcomes
 
-A completed episode may leave:
+A completed episode leaves at most:
 
-- One main country recovery institution or legacy.
-- Up to two meaningful state recovery or scar modifiers under normal conditions.
-- Temporary post-recovery safeguard and rebuilding effects.
+- One doctrine legacy, chosen from the final doctrine.
+- One country scar, earned only from receipts the episode recorded.
+- One political aftermath when the episode went through Social Collapse (part 6).
+- Two lasting district outcomes on registered centers.
+- The temporary post-recovery safeguard.
 
-It should not leave a large stack of small national spirits.
+It never leaves a stack of small national spirits, and a newly earned legacy, scar or aftermath replaces the previous one.
+The recovery report names the result, the reopened, restructured, liquidated and abandoned center counts, the institution left behind with its weakness, and the lasting cost.
 
-### Public Works legacy
+### Doctrine legacies
 
-Possible direction:
+Each legacy pairs a benefit with a cost, and in every later episode it eases one hidden pressure and adds a weakness only under the condition that exposes it, so no route grants immunity.
+The implemented pairs are listed in the event doc's Recovery legacies table.
 
-- Stronger infrastructure maintenance.
-- Better construction mobilization during future crises.
-- Reduced starting demand stress in a later Event 35 episode.
+| Legacy | Later-episode relief | Later-episode weakness |
+| --- | --- | --- |
+| Public Works | Demand stress | Fiscal stress at Deep Depression or worse |
+| Strategic Industry | Industrial stress | Demand stress in peacetime |
+| Finance and Trade | Credit stress | Trade stress while contagion, foreign exposure or worldwide pressure is active |
+| Austerity | Fiscal stress | Social stress while a center is Idled, Shuttered or Abandoned |
+| Direct State Planning | Trade stress | Fiscal stress in Stabilization and Recovery |
+| Market-Clear | Industrial stress while stability holds | Demand stress while a center is Idled, Shuttered or Abandoned |
 
-Cost or limitation:
+### Country scars
 
-- A temporary fiscal or consumer burden.
-- Maintenance needs for the new works.
+A scar needs a real source receipt from the closing episode and a later way to clear it.
+It cannot be added because the event simply lasted a long time.
 
-### Strategic Industry legacy
+| Scar | Earned when | Cleared by a later strong recovery |
+| --- | --- | --- |
+| Debt Overhang | Emergency credit with no restructuring or international debt conference | Under Austerity or Finance and Trade |
+| Foreign Credit Dependence | External supervision or foreign support | Under Finance and Trade or Direct State Planning |
+| Emergency Controls | Emergency controls never removed | Under Let the Market Clear, or one that removed the controls |
+| Labor Bitterness | Security forces or broken occupations that did not become the Labor Scar aftermath | Under Emergency Public Works, or one that left a Social Compact |
+| Policy Fatigue | Repeated doctrine switches | A recovery with no switch |
 
-Possible direction:
+A hollow recovery also marks the country as more exposed to contagion conversion and worldwide pressure until a later recovery that is not hollow.
 
-- Better protection of key production regions.
-- Faster recovery of production efficiency after an industrial shock.
+### District outcomes
 
-Cost or limitation:
-
-- Regional inequality.
-- Rescue dependence or civilian-sector weakness.
-
-### Finance and Trade legacy
-
-Possible direction:
-
-- Lower future banking-panic risk.
-- Better resistance to Evolution I exposure.
-- Stronger clearing or trade support actions.
-
-Cost or limitation:
-
-- Foreign dependency or regulatory burden.
-
-### Austerity legacy
-
-Possible direction:
-
-- Lower fiscal stress in a later episode.
-- Cheaper maintenance of ordinary government programs.
-
-Cost or limitation:
-
-- Higher social strain after unemployment shocks.
-- Weaker relief capacity.
-
-### Direct Planning legacy
-
-Possible direction:
-
-- Better coordination of essential production and logistics.
-- Stronger emergency allocation.
-
-Cost or limitation:
-
-- Lower ordinary flexibility.
-- Political or administrative burden.
-
-### Market-Clear legacy
-
-Possible direction:
-
-- Lower future rescue dependence.
-- Faster reopening of viable private capacity under stable conditions.
-
-Cost or limitation:
-
-- Concentrated ownership.
-- Reduced regional capacity or stronger unemployment scars.
-
-## Recovery scars
-
-Scars are used only when the episode created lasting damage.
-
-Possible state scars:
-
-- Hollowed Industrial District.
-- Long-Term Unemployment.
-- Abandoned Works.
-- Rescue-Dependent Industry.
-- Concentrated Ownership.
-- Broken Freight Connection.
-
-Possible country scars:
-
-- Debt Overhang.
-- Policy Fatigue.
-- Emergency Controls.
-- Labor Bitterness.
-- Foreign Credit Dependence.
-
-A scar needs a real source receipt and a future mitigation path where appropriate. It cannot be added because the event simply lasted a long time without a specific consequence.
+The local memory of an episode is limited to two lasting state modifiers.
+Recovered Industrial District goes to the owned, reopened or restructured center with the most valuable completed structural project.
+Scarred Industrial District goes to another owned center with the largest unrepaired Event 35 factory loss, or to an abandoned or liquidated center.
+A state never holds both, and a later episode's outcome for the same state replaces the earlier one, which is how a scar is repaired.
+The earlier list of six separate state scars (unemployment, abandoned works, rescue dependence, ownership concentration, broken freight, hollowed district) is folded into these two outcomes because separate modifiers would show the same consequence six ways.
 
 ## Repeat episode memory
 
@@ -375,7 +347,9 @@ The event does not need to preserve every weekly calculation after recovery.
 
 ## Repeat target suppression
 
-After recovery, the country receives a safeguard period. Independent target weight remains low during this period. It rises gradually after the safeguard ends.
+After recovery, the country receives a safeguard period.
+Independent target weight remains low during this period.
+It rises gradually after the safeguard ends.
 
 A consequence path can bypass the safeguard when:
 
@@ -383,26 +357,20 @@ A consequence path can bypass the safeguard when:
 - A valid contagion source converts the country.
 - Evolution III pressure crosses the local conversion threshold.
 
-Bypassing independent target suppression does not erase the prior episode. It starts or deepens a new consequence episode with its source recorded.
+Bypassing independent target suppression does not erase the prior episode.
+It starts or deepens a new consequence episode with its source recorded.
 
 ## Strong reforms and future resistance
 
-A successful recovery can make a later episode easier.
-
-Examples:
-
-- Finance reform lowers initial credit stress.
-- Public works improve infrastructure and project speed.
-- Strategic rescue protects one center automatically at the next opening.
-- Planning improves emergency allocation.
-- Austerity reduces initial fiscal stress.
-- Market restructuring reduces rescue dependence.
-
-Each reform has a countervailing weakness or limited scope. No route grants permanent immunity.
+A successful recovery can make a later episode easier through the doctrine legacy's relief, and harder under the condition its weakness names.
+A strong recovery under the right doctrine also clears a matching country scar.
+No route grants permanent immunity.
 
 ## Repeated failures
 
-Repeated hollow recovery, Event 34 collapse, or center abandonment can make a later opening worse. The increase is bounded. A country should never become permanently unable to recover because it experienced the event several times.
+Repeated hollow recovery, Event 34 collapse, or center abandonment can make a later opening worse.
+The increase is bounded.
+A country should never become permanently unable to recover because it experienced the event several times.
 
 Anti-death-spiral rules:
 
@@ -417,27 +385,35 @@ Anti-death-spiral rules:
 
 ### Factory-loss farming
 
-A player cannot deliberately lose one cheap factory to gain a stronger permanent legacy. Recovery legacy is based on completed policy and state work. Liquidation reduces the legacy budget and adds scars.
+A player cannot deliberately lose one cheap factory to gain a stronger permanent legacy.
+Recovery legacy is based on completed policy and state work.
+Liquidation reduces the legacy budget and adds scars.
 
 ### Building-slot farming
 
-Event 35 does not create free building slots. Public works can add or repair real buildings under a strict project budget. Repeat episodes use diminishing state returns.
+Event 35 does not create free building slots.
+Public works can add or repair real buildings under a strict project budget.
+Repeat episodes use diminishing state returns.
 
 ### Transfer farming
 
-Transferring a center cannot reset its project, recreate costs, or duplicate its recovery reward. State receipts move with the state and retain the episode ID.
+Transferring a center cannot reset its project, recreate costs, or duplicate its recovery reward.
+State receipts move with the state and retain the episode ID.
 
 ### Aid farming
 
-Foreign aid consumes real provider resources and uses source-target cooldowns. The same package cannot be claimed twice through faction, subject, and bilateral paths.
+Foreign aid consumes real provider resources and uses source-target cooldowns.
+The same package cannot be claimed twice through faction, subject, and bilateral paths.
 
 ### Doctrine-switch farming
 
-Switching has a cooldown and policy-whiplash cost. Completed doctrine actions cannot be repeated merely by leaving and returning to the doctrine.
+Switching has a cooldown and policy-whiplash cost.
+Completed doctrine actions cannot be repeated merely by leaving and returning to the doctrine.
 
 ### Maximum-Severity farming
 
-Reaching `100` cannot repeatedly grant emergency aid or trigger the same factory loss. The maximum emergency uses one-shot receipts and cooldowns.
+Reaching `100` cannot repeatedly grant emergency aid or trigger the same factory loss.
+The maximum emergency uses one-shot receipts and cooldowns.
 
 ## Cleanup after recovery
 

@@ -1,5 +1,9 @@
 # Great Depression 2.0 specification, part 9: AI, probability, balance, exploits, and performance
 
+Status: the six AI profiles (`great_depression_ai_profile`), centralized AI weights, incident-pool weights and event option weights are `implemented` in source.
+Probability evidence is partial: candidate inspections succeeded for several surfaces, while most named-scenario evaluations and comparisons timed out or returned partial results (see `current_requirement_state_2026-10-07.md` in the plans folder).
+Under the CLAUDE.md retry limit, the remaining surfaces need source-derived calculations from the actual script rather than further repeated MCP runs.
+
 ## AI design goals
 
 AI countries must understand Event 35 as a long economic crisis. They should select a recovery doctrine that fits their material position, protect valuable Depression Centers, pay real costs, respond to evolutions, and stop using actions that have become invalid.
@@ -294,7 +298,7 @@ AI response to strikes, occupations, government crisis, and civil-conflict risk 
 - War urgency.
 - Ideology and government.
 - Expected negotiation cost.
-- Expected repression deaths and radicalization.
+- Expected radicalization and labor scars from force.
 - Valid political transformation.
 - Civil-war viability.
 
@@ -332,9 +336,10 @@ Use `chaosx_ai_probability_auditor` with the HOI4 MCP probability workflow for:
 - Social Collapse outcome selection.
 - Evolution III bloc and conference choices.
 
-The auditor begins with `hoi4.probability_inspect`.
+The auditor begins with `hoi4.probability_inspect` and follows the CLAUDE.md retry limit; when the analyzer fails or times out, calculate representative cases from the actual script and state the assumptions.
 
 Use exact probability only when the complete pool and all external factors are supplied. Otherwise report score ordering, bounded probability, sampled result, or unresolved dependency.
+Decision AI willingness scores are not click probabilities.
 
 ## Named target scenarios
 
@@ -769,6 +774,7 @@ Every major decision uses cooldowns, project state, or one-shot receipts. A play
 ### Refund symmetry
 
 Committed stockpiles are refunded only when the action proves they were reserved and not consumed. Failure, state loss, or country deletion cannot duplicate the resources.
+The only refundable commitment is the paid Public Works budget, returned to its original payer in proportion to unworked days once (part 3); every other payment is spent at authorization or completion.
 
 ### Doctrine cycling
 
@@ -806,7 +812,7 @@ Achievements use episode start, peak Severity, doctrine, center, and disqualifie
 - One global episode registry.
 - No unauthorized recurring whole-world scan.
 - No per-state daily evaluation.
-- Phase-scaled national evaluation that averages about weekly and accelerates only for bounded emergencies.
+- Weekly national evaluation of registered countries through the shared global-host hook, with elapsed-day normalization (part 2).
 - State progression checked through registered centers only.
 - Dynamic localisation reads cached public values.
 - Cleanup removes invalid rows promptly.
@@ -830,7 +836,7 @@ A fallback cannot invent exact bilateral trade data. It may use proven faction, 
 
 ## Required implementation evidence
 
-The completion report must include:
+The completion report in the plans folder must include:
 
 - Baseline and comparison revision for every named probability surface.
 - Scenario IDs and complete inputs.

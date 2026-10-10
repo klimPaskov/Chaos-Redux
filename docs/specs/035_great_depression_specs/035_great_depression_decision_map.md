@@ -1,5 +1,8 @@
 # Event 35 Great Depression 2.0 decision and mission map
 
+Status: every row below has implemented decisions or missions in source; the visible count per phase has not yet been measured (part 3, Decision-surface budget).
+Implemented names and durations are in part 3.
+
 ## Phase visibility matrix
 
 | Action or objective | Panic and Contraction | Depression | Stabilization | Recovery proof | Economic Paralysis |
@@ -225,14 +228,15 @@ Evolution III activates
 | Direct planning | Political authority, civilian commitment, stability, administrative burden | Lower flexibility and resistance | 4 |
 | Market clearing | Stability, factory or project risk, time | Short-term Severity and permanent scar risk | 3 |
 | Foreign aid | Provider factories, convoys, fuel, equipment | Influence and exposure | 4 |
-| Security response | Command power, manpower, equipment, stability | Deaths and radicalization risk | 4 |
+| Security response | Command power, manpower, equipment, stability | Radicalization and a labor scar | 4 |
 | International reconstruction | Factories, convoys, fuel, equipment or trains | Supplier strain and foreign commitments | 4 |
 
 ## Visibility rules
 
 - Show no more than five ordinary primary actions.
 - Show six only during the one-time doctrine selection or a justified emergency.
-- Show no more than three active missions.
+- Show no more than three active missions (implemented: `maximum_active_missions`).
+- Show inline costs with at most three quoted values and every payment in the hover, with insufficient resources in red.
 - Display one selected Depression Center at a time.
 - Hide invalid foreign targets.
 - Replace normal actions with emergency forms at Economic Paralysis.

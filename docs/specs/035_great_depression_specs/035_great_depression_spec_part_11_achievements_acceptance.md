@@ -6,7 +6,9 @@ Event 35 achievements should reward national recovery, center reopening, prevent
 
 Event 34 owns the cross-event Evolution III crash-and-recovery achievement through its accepted `The Long Fall` contract. Event 35 supplies the recovery receipts that contract needs and does not create a duplicate inherited-crash achievement.
 
-The labels below are working labels. Final names and descriptions need implementation writing and icon review.
+Status: all six contracts are `implemented` in `common/achievements/chaos_redux_achievements.txt` as `035_great_depression_back_to_work`, `035_great_depression_every_center_reopened`, `035_great_depression_containment_line`, `035_great_depression_social_peace`, `035_great_depression_lean_but_standing` and `035_great_depression_recovery_of_nations`, with eligible, grey and not-eligible textures.
+Their positive, near-miss, exploit, save and disqualifier cases (group L) are not yet proven.
+Tuned thresholds live in `great_depression_achievement`: a severe start is Severity `50` or higher and The Social Peace needs a peak of `90`.
 
 ## Achievement 1: Back to Work
 
@@ -79,7 +81,7 @@ Contain material Financial Contagion without allowing any foreign country materi
 
 - Financial Contagion is active in the player's source episode.
 - Source Severity reaches the final deep-contraction threshold.
-- At least the required number of valid foreign countries reaches Observed Exposure or a stronger stage, scaled for the valid pool.
+- At least the required number of valid foreign countries (one to three, scaled for the valid pool) reaches Contracting Economy or a stronger exposure stage.
 - At least one aid, ring-fence, clearing, diversification, or coordinated-rescue action completes.
 - No attributable foreign full-crisis conversion occurs.
 - All outgoing source links resolve as Contained or through source recovery.
@@ -215,7 +217,8 @@ Do not implement achievements as a final-event option that fires automatically w
 
 ## Acceptance scenario groups
 
-The implementation is complete only after every applicable scenario below is tested through source inspection, HOI4 MCP evidence where supported, and the project's final user-run in-game validation path. This planning package does not claim that live testing has occurred.
+The implementation is complete only after every applicable scenario below is covered by source review, the `.tools/test_event035_*.py` source suites where they apply, HOI4 MCP evidence where it works, and the user's own in-game validation.
+The current coverage of each group is tracked in the plans folder's requirement ledger; source tests model the production script and do not prove native scheduling, rendering or balance.
 
 ## A. Targeting and entry
 
@@ -273,9 +276,9 @@ The implementation is complete only after every applicable scenario below is tes
 - The cause list names material problems.
 - Emergency actions remain payable.
 
-### `B-03`: Dynamic drift cadence
+### `B-03`: Drift cadence
 
-- Panic and Economic Paralysis use a shorter bounded interval than Stabilization.
+- The weekly pulse normalizes pressure by elapsed days (part 2; a phase-scaled cadence is `unresolved`).
 - Several normalized pulses under worsening conditions increase Severity gradually.
 - Several normalized pulses under strong recovery lower it gradually.
 - One ordinary pulse cannot resolve the entire crisis.
@@ -373,11 +376,12 @@ Run separate checkpoints for every doctrine.
 - Completed action receipts persist.
 - Repeated switching cannot farm rewards.
 
-### `C-08`: Objective capacity
+### `C-08`: Objective capacity and visible-action budget
 
 - No more than one main objective and two supporting missions appear.
 - Economic Paralysis replaces ordinary missions.
 - Obsolete actions hide.
+- A recorded count of visible decisions for each phase, with and without each evolution, stays within the part 3 decision-surface budget.
 
 ## D. Depression Centers
 
@@ -547,8 +551,8 @@ Run separate checkpoints for every doctrine.
 
 - Command power remains within project limit.
 - Equipment and manpower costs apply.
-- Exact deaths use shared API.
-- Repression can worsen later strain.
+- No Event 35 population loss is applied.
+- Repression worsens later strain and can leave Labor Bitterness or the Labor Scar aftermath.
 
 ### `G-04`: Emergency government
 
@@ -573,7 +577,7 @@ Run separate checkpoints for every doctrine.
 - All extreme conditions are satisfied.
 - Territory follows support and centers.
 - Full national crisis is not cloned onto every participant.
-- Shared war and death Chaos is not duplicated.
+- Shared war and death Chaos is not duplicated: the one Event 35 civil-conflict receipt stands only while no shared counter records civil wars (part 8 Chaos accounting).
 
 ### `G-08`: Recent civil war block
 
@@ -710,7 +714,7 @@ Run separate checkpoints for every doctrine.
 
 ### `J-06`: Assets
 
-- Every required asset has source, processed PNG, final DDS, sprite, consumer, manifest, and handoff.
+- Every required asset has a final DDS, sprite, consumer and recorded provenance in the event doc.
 - No placeholder, white halo, opaque icon square, modern prop, or wrong-era scene remains.
 
 ### `J-07`: Super-event
@@ -802,16 +806,8 @@ Before Event 35 is called implemented, the final report must include:
 - Task-specific validation findings.
 - Every blocker, simplification, omission, fallback, substitution, or unimplemented requirement.
 
-## Improvement-loop conclusion
+## Improvement-loop disposition
 
-The project custom-subagent runtime was unavailable, so `chaosx_improvement_loop_planner` could not be executed. Its supplied role definition was applied manually to the assembled package as a final depth and anti-bloat review.
-
-The manual result is closure. The six recovery philosophies, Depression Centers, guarded baseline National Breakdown, Financial Contagion, Social Collapse, The Second Great Depression, the Event 34 handoff, AI scenarios, assets, achievements, and acceptance cases form a complete implementation target. Another broad planning expansion before implementation would add bloat.
-
-The next executable improvement-loop pass belongs after a meaningful implementation tranche, when actual decisions, state logic, and evolutions can be compared with the design. That pass should either produce a bounded addendum for a concrete implemented weakness or recommend closure when the event is connected, readable, replayable, and complete.
-
+Planning-time closure was a manual review because the subagent runtime was unavailable then; it is superseded by the implementation rounds recorded in the plans folder and by the 2026-10-10 audit in the package README.
+The next improvement-loop pass belongs after the README's pending rows close, and should either produce a bounded addendum for a concrete implemented weakness or recommend closure.
 It should not add another public meter, a full focus tree, automatic custom countries, 3D models, a permanent scripted GUI, or extra global systems without a new accepted gameplay need.
-
-## Planning completion statement
-
-The planning package is complete when all files in the manifest exist, cross-references resolve, the consolidated specification includes every part, and the package passes the content audits. Planning completion does not claim gameplay implementation, final assets, subagent execution, HOI4 MCP evidence, workbook changes, or live game validation.

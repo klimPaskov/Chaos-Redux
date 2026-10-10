@@ -1,5 +1,9 @@
 # Event 35 reusable crisis API contract
 
+Status: `implemented` as `great_depression_start_or_deepen` in `common/scripted_effects/035_great_depression_effects.txt`.
+This file is the accepted field contract; the implemented inputs, result storage and receivers (`chaosx.nr35.8`, `chaosx.nr35.9`) are documented in `common/scripted_effects/035_great_depression_effects.md` and the event doc's Reusable crisis API section, which win where names differ.
+Callers implemented today: independent firing, Event 34 collapse, financial-contagion conversion, worldwide conversion and relapse.
+
 ## Purpose
 
 Event 35 needs one public country-scope entry point that starts a new Great Depression 2.0 crisis or deepens an existing crisis. This prevents Event 34, contagion, Evolution III, and future approved callers from copying Event 35 internals.

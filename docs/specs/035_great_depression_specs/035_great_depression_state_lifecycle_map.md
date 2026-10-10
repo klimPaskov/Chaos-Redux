@@ -58,6 +58,9 @@ Distressed
               -> Scarred Resolution
 ```
 
+Implemented center stages: Distressed, Idled, Shuttered, Abandoned, Reopened, Liquidated, Restructured and Scarred (`great_depression_center_stage`).
+At recovery the frozen stages feed the recovery report and the two district outcomes (part 4, Recovery outcomes).
+
 ## Local stage transitions
 
 | Current state | Improvement path | Deterioration path | Physical loss eligibility |
@@ -130,9 +133,9 @@ Original country enters civil war
 
 | Result | Center condition | National condition | Persistent outcome |
 | --- | --- | --- | --- |
-| Strong Recovery | All centers Reopened or successfully restructured | Low Severity, no unresolved emergency | Best bounded doctrine legacy, fewest scars |
-| Uneven Recovery | One mixed or scarred center allowed | Crisis resolved with institutional or regional cost | Mixed legacy and one or two scars |
-| Hollow Recovery | Liquidation, abandonment, or major capacity loss | Severity controlled through contraction | Weaker legacy and clear permanent cost |
+| Strong Recovery | All centers Reopened or successfully restructured | Low Severity, no unresolved emergency | Doctrine legacy, can clear a matching country scar |
+| Uneven Recovery | One mixed or scarred center allowed | Crisis resolved with institutional or regional cost | Doctrine legacy and at most one country scar |
+| Hollow Recovery | Liquidation, abandonment, or major capacity loss | Severity controlled through contraction | Doctrine legacy, a country scar where earned, and higher later exposure to contagion and worldwide pressure |
 | Continued Depression | One or more required centers unresolved or Severity too high | Active category remains | No premature closure |
 
 ## Cleanup map
