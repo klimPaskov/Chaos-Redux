@@ -81,8 +81,8 @@ The foundation source suite compares the mirror with the production quote at ful
 Fixed order stock uses the same table.
 The manpower, command power and fuel keys of `camp_rework_cost` and the five stock keys of `camp_rework_equipment_cost` are registered in the price table, and `camp_rework_can_pay_<key>` (country scope) checks one of them inclusively, so holding exactly the shown amount is enough.
 Each check wraps its comparison in a `custom_trigger_tooltip` (`camp_rework_can_pay_<key>_tt`) that names the current amount in requirement lists.
-`camp_rework_can_start_<key>` (trucks, trains, support equipment, convoys) adds `camp_rework_mission_equipment_reserve.<key>` to the sale price for a timed logistics order that keeps a reserve in service.
-Every `camp_rework_consume_*` effect pays those prices and marks the order through `camp_rework_mark_sale_stock_equipment` or `camp_rework_mark_sale_stock_convoys`.
+`camp_rework_can_start_<key>` (trucks, trains, support equipment) adds `camp_rework_mission_equipment_reserve.<key>` to the sale price for a timed logistics order that keeps a reserve in service.
+Every `camp_rework_consume_*` effect pays those prices and marks the order through `camp_rework_mark_sale_stock_equipment`.
 The AI capacity heuristic `camp_rework_apply_ai_cap` keeps the ordinary amounts as planning thresholds; it charges nothing.
 
 `camp_rework_credit_sale_order` (country scope) credits one Event 026 sale purchase for an order that kept its payment: an order that spent stock counts in that stock's family (equipment wins over convoys) with a non-political payment, and an order that paid only political power counts as a Political Power purchase.
@@ -97,7 +97,7 @@ Manpower gates use `manpower_k` to avoid the deprecated full-manpower variable's
 Each predicate compares with the sale-priced quote above.
 The restricted predicate checks administrative PP only; its existing separate stock and route predicates remain required.
 
-`camp_rework_pay_site_labor`, `camp_rework_pay_site_inspect`, `camp_rework_pay_site_dismantle`, `camp_rework_pay_site_evidence`, and `camp_rework_pay_site_restricted` are scripted effects in the matching TXT file.
+`camp_rework_pay_site_inspect`, `camp_rework_pay_site_dismantle`, `camp_rework_pay_site_evidence`, and `camp_rework_pay_site_restricted` are scripted effects in the matching TXT file.
 They consume `camp_site_cost_state_id`, initialize retained temporary outputs, recompute the same quote, negate separate scratch amounts, and debit each quoted resource once.
 Their required precondition is successful action/target validation plus the corresponding affordability predicate in the enclosing execution guard.
 They do not supply an alternative target or independently decide whether the requested action is legal.
@@ -111,19 +111,6 @@ The custom-cost decisions keep fixed engine saving hints at their former nominal
 These hints inform AI saving and do not determine the actual debit; each charge still comes from the explicit-state quote.
 No `ai_will_do` weight was retuned.
 The parent/auditor comparison evidence is in the plan folder's `ai_hint_evidence` and `site_cost_ai_audit.md`.
-
-## Labor lifecycle and legacy boundary
-
-`camp_rework_pay_site_labor` stores the retained reserve as country variables `generic_labor_project_motorized_reserve`, `generic_labor_project_trains_reserve`, and `generic_labor_project_support_reserve`.
-The caller then starts `camp_rework_start_generic_labor_project_payload_in_action_state`, which records the existing mission target and type and performs the existing payload without another equipment payment.
-Selection changes do not alter these reserve snapshots.
-The mission checks these saved values inclusively while present.
-
-`camp_rework_clear_site_labor_reserve` clears those three country variables.
-It is called from normal labor success/failure/cancellation cleanup and forced expansion-project cancellation.
-The legacy `camp_rework_start_generic_labor_project_in_action_state` retains its old fixed debit, clears any stale selected reserve, and invokes the same payload-only helper.
-Legacy missions without a selected reserve keep their existing fixed reserve predicate.
-No global event target, global on-action, or external-core cleanup was introduced.
 
 ## Validation and future work
 

@@ -22,7 +22,6 @@ camp_admin_integration_initialize_country = {
 	camp_admin_initialize_country = yes
 	camp_admin_country_initialize = yes
 	camp_occ_initialize_country = yes
-	camp_admin_integration_cancel_routine_projects = yes
 }
 
 # The calendar guard covers every callback, including legacy state entry points.
@@ -48,7 +47,6 @@ camp_admin_integration_monthly_country_recipient = {
 			}
 		}
 		set_variable = { camp_admin_integration_month = camp_admin_month_key }
-		camp_admin_integration_cancel_routine_projects = yes
 		camp_admin_integration_seed_japan_labor_host = yes
 		camp_admin_country_prepare_monthly = yes
 		camp_admin_monthly_country = yes
@@ -91,36 +89,11 @@ camp_admin_integration_seed_japan_labor_host = {
 	}
 }
 
-# remove_mission has no timeout/complete payout. Clear the old reserve and target
-# explicitly; do not call completion helpers when retiring a routine project.
-camp_admin_integration_cancel_routine_projects = {
-	if = {
-		limit = { has_variable = generic_labor_project_state_id }
-		var:generic_labor_project_state_id = {
-			set_variable = { migration_persecution_pending_owner = constant:migration_persecution_owner_class.labor_project }
-			if = {
-				limit = { has_variable = migration_persecution_labor_project_generation }
-				set_variable = { migration_persecution_pending_clear_generation = migration_persecution_labor_project_generation }
-			}
-			clr_state_flag = camp_rework_labor_project_active
-			migration_persecution_clear_owner_state = yes
-		}
-	}
-	clr_country_flag = generic_labor_project_active
-	clear_variable = generic_labor_project_state_id
-	clear_variable = generic_labor_project_type
-	camp_rework_clear_site_labor_reserve = yes
-	if = { limit = { has_active_mission = generic_labor_project_cycle } remove_mission = generic_labor_project_cycle }
-	if = { limit = { has_active_mission = generic_reform_and_dismantlement } remove_mission = generic_reform_and_dismantlement }
-}
-
 # Terminal country cleanup runs before legacy arrays are cleared.
 # Cohorts release in their existing state; cumulative evidence is immutable.
 camp_admin_integration_close_country = {
 	# A terminal country cannot complete an outstanding USA review or closure timer.
-	if = { limit = { has_active_mission = usa_court_review_period } remove_mission = usa_court_review_period }
 	camp_rework_usa_cancel_security_sunset = yes
-	if = { limit = { has_active_mission = usa_redress_commission_work } remove_mission = usa_redress_commission_work }
 	for_each_scope_loop = {
 		array = camp_active_site_states
 		set_temp_variable = { camp_origin_terminal_close_contract = constant:camp_admin_value.one }
@@ -130,7 +103,6 @@ camp_admin_integration_close_country = {
 	camp_admin_country_clear_engineer_pending_receipt = yes
 	camp_administration_civil_cleanup = yes
 	camp_occ_close_country = yes
-	camp_admin_integration_cancel_routine_projects = yes
 	# A pending dispatch event may never arrive for an annexed country. A
 	# re-released country must be able to start a fresh timer chain.
 	clr_country_flag = camp_admin_dispatch_timer_active
@@ -292,7 +264,6 @@ camp_admin_generic_reform = {
 		# expansion unlock or delayed site teardown.
 		set_country_flag = camp_rework_reformed_legacy
 		clr_country_flag = camp_rework_dismantlement_in_progress
-		camp_admin_integration_cancel_routine_projects = yes
 		camp_rework_refresh_country_specific_ideas = yes
 		camp_rework_rebuild_display_values = yes
 	}

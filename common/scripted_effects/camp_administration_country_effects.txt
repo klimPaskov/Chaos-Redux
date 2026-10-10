@@ -66,7 +66,6 @@ camp_admin_country_ai_krakow_killing_role = {
 
 camp_admin_country_initialize = {
 	if = { limit = { camp_administration_civil_country_supported = yes } camp_administration_civil_initialize = yes camp_admin_country_refresh_civil_institution_display = yes }
-	if = { limit = { camp_admin_country_is_major_kit = yes } camp_admin_country_cancel_routine_missions = yes }
 	if = {
 		limit = { camp_admin_country_is_major_kit = yes NOT = { has_country_flag = camp_admin_country_initialized } }
 		set_country_flag = camp_admin_country_initialized
@@ -671,7 +670,6 @@ camp_admin_country_tick_aftermath = {
 
 camp_admin_country_prepare_monthly = {
 	if = { limit = { camp_administration_civil_country_supported = yes } camp_administration_civil_prepare_monthly = yes }
-	if = { limit = { camp_admin_country_is_major_kit = yes } camp_admin_country_cancel_routine_missions = yes }
 	if = { limit = { camp_admin_country_is_major_kit = yes has_active_camp_network = yes } set_country_flag = camp_admin_country_legacy_active }
 	if = {
 		limit = { camp_admin_country_is_major_kit = yes NOT = { camp_admin_country_regime_valid = yes } NOT = { has_country_flag = camp_admin_country_reformed } has_country_flag = camp_admin_country_legacy_active }
@@ -742,33 +740,6 @@ camp_admin_country_action_2 = {
 		else_if = { limit = { OR = { has_country_flag = camp_admin_country_programs_authorized has_country_flag = camp_admin_country_oversight_active } } camp_admin_country_halt = yes }
 		else = { camp_admin_country_reform = yes }
 	}
-}
-
-# Annual/monthly quota administration has moved into the paid finite-cohort pulse.
-# Crisis, review, construction and evacuation missions remain distinct choices.
-camp_admin_country_cancel_routine_missions = {
-	camp_admin_initialize_country = yes
-	if = {
-		limit = { OR = { has_active_mission = germany_occupied_poland_camp_expansion_mission has_active_mission = germany_eastern_fortifications_labor_mission has_active_mission = germany_ss_laboratory_annex_mission has_active_mission = japan_pingfang_research_bureau_mission has_active_mission = sov_gulag_quota_cycle has_active_mission = sov_famine_pressure_cycle } }
-		if = {
-			limit = { has_active_mission = germany_occupied_poland_camp_expansion_mission }
-			if = { limit = { has_variable = camp_rework_germany_poland_expansion_state_id } var:camp_rework_germany_poland_expansion_state_id = { clr_state_flag = camp_rework_germany_poland_expansion_project } }
-			clear_variable = camp_rework_germany_poland_expansion_state_id
-			remove_mission = germany_occupied_poland_camp_expansion_mission
-		}
-		if = {
-			limit = { has_active_mission = germany_eastern_fortifications_labor_mission }
-			for_each_scope_loop = { array = camp_evidence_states if = { limit = { has_state_flag = camp_rework_germany_eastern_fortification_project } clr_state_flag = camp_rework_germany_eastern_fortification_project } }
-			remove_mission = germany_eastern_fortifications_labor_mission
-		}
-		if = { limit = { has_active_mission = germany_ss_laboratory_annex_mission } remove_mission = germany_ss_laboratory_annex_mission }
-		if = { limit = { has_active_mission = japan_pingfang_research_bureau_mission } clr_country_flag = camp_rework_japan_pingfang_bureau_active remove_mission = japan_pingfang_research_bureau_mission }
-		if = { limit = { has_active_mission = sov_gulag_quota_cycle } remove_mission = sov_gulag_quota_cycle }
-		if = { limit = { has_active_mission = sov_famine_pressure_cycle } remove_mission = sov_famine_pressure_cycle }
-		camp_rework_recalculate_country_values = yes
-	}
-	clr_country_flag = camp_rework_soviet_gulag_quota_cycle_active
-	clr_country_flag = camp_rework_soviet_famine_pressure_cycle_active
 }
 
 camp_admin_country_start_archives = {

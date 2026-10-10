@@ -24,19 +24,6 @@ camp_admin_integration_is_records_only = {
 	NOT = { camp_admin_integration_has_continuing_work = yes }
 }
 
-# Country action bus. Guard/quota/role purchases have no equivalent automatic
-# control command; reject them before any legacy equipment or PP debit.
-camp_admin_legacy_generic_action_is_retired = {
-	OR = {
-		check_variable = { camp_rework_action_id = constant:camp_rework_action.generic_expand_labor_quotas }
-		check_variable = { camp_rework_action_id = constant:camp_rework_action.generic_redirect_labor_to_construction }
-		check_variable = { camp_rework_action_id = constant:camp_rework_action.generic_redirect_labor_to_resource_extraction }
-		check_variable = { camp_rework_action_id = constant:camp_rework_action.generic_allocate_additional_guards }
-		check_variable = { camp_rework_action_id = constant:camp_rework_action.generic_reduce_labor_quotas }
-		check_variable = { camp_rework_action_id = constant:camp_rework_action.generic_upgrade_existing_site_to_radicalized_atrocity_site }
-	}
-}
-
 # COUNTRY. True for the current chain's dispatch event. A save without the
 # stored earliest date treats its outstanding timer as current.
 camp_admin_dispatch_timer_is_due = {

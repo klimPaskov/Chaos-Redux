@@ -66,9 +66,9 @@ The window is a fixed 900×540 container centered with `orientation = center` an
 - Japan's two army reviews have distinct names: "Submit Ishii's Unit to Army Review" (Ishii program) and "Put Kwantung Camps under Central Army Review" (institutional review).
 - Descriptions over 200 characters on live camp decisions were tightened to state the trade-off.
 
-Remaining bloat, not removed in this pass: about ninety legacy decisions hidden behind `NOT = { has_country_flag = camp_admin_initialized }` (all countries initialize at startup), and four Free French and Belgian crisis choices that need missions only the retired monthly bridge starts.
+The legacy decisions hidden behind the initialization flags and the four French and Belgian crisis choices were removed in [the labor and legacy cleanup](labor_and_legacy_cleanup_2026-10-10.md).
 
 ## Verification
 
 `hoi4.script_validate` returned no findings (partial coverage, argument blocks unchecked) for the edited occupation, partner and country triggers, occupation effects, and generic and colonial decisions.
-The occupation and partner source suites under `administration_redesign_2026-09-06/occupation/` still drive the removed calendar dates and were not rerun.
+The occupation and partner source suites were realigned to these gates in the labor and legacy cleanup note.

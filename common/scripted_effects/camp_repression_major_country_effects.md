@@ -44,7 +44,6 @@ A decision whose order can still be refused after the engine has charged it reco
 A refusal refunds exactly that amount and sets the temp to zero, never the ordinary constant, so a purchase made during a sale returns the sale price.
 After routing, the decision credits one Political Power sale purchase (`black_friday_credit_political_power_purchase`) only when the temp is still positive, so a refunded order earns no achievement credit.
 This covers the Soviet service release (`camp_rework_soviet_release_prisoners_for_military_service` refunds when nobody is released), Soviet famine relief (the dispatcher refunds a rejected order), and the USA supervised release (its decision refunds a refused order itself).
-The Italian security battalions keep their own `camp_rework_italy_security_pp_paid` record, check it against the same sale price, and credit the purchase inside `camp_rework_italy_raise_security_battalions` when the deployment is kept.
 Every other paid camp decision credits once at the end of its `complete_effect`.
 
 ## Explicit material shortfall

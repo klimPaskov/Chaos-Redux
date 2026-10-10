@@ -135,17 +135,6 @@ camp_administration_civil_classify_host = {
 	else_if = { limit = { ROOT = { OR = { original_tag = BEL original_tag = COG } } } set_state_flag = camp_admin_civil_congo_concession set_variable = { camp_admin_role = constant:camp_admin_civil.role_labor } }
 }
 
-camp_administration_civil_record_legacy_violence = {
-	if = {
-		limit = { camp_admin_site_is_operational = yes ROOT = { camp_administration_civil_custody_authority = yes } }
-		set_temp_variable = { camp_admin_death_requested_k = camp_admin_detainees_k }
-		multiply_temp_variable = { camp_admin_death_requested_k = constant:camp_admin_civil.violence_fraction }
-		set_temp_variable = { camp_admin_death_cause = constant:camp_admin_cause.violence }
-		set_temp_variable = { camp_admin_death_contract = constant:camp_admin_civil.one }
-		camp_admin_record_deaths = yes
-	}
-}
-
 camp_administration_civil_action_two = {
 	camp_administration_civil_initialize = yes
 	if = {
@@ -165,7 +154,6 @@ camp_administration_civil_action_two = {
 		else = {
 			set_country_flag = camp_admin_civil_review_active
 			set_variable = { camp_admin_civil_review_progress = constant:camp_admin_civil.zero }
-			camp_administration_civil_cancel_routine_projects = yes
 			camp_occ_close_country = yes
 			camp_admin_begin_reform = yes
 			set_country_flag = camp_admin_institution_slot_active
@@ -215,7 +203,6 @@ camp_administration_civil_prepare_monthly = {
 		set_variable = { camp_admin_civil_prepared_month = camp_admin_month_key }
 		if = {
 			limit = { has_country_flag = camp_admin_civil_policy_authorized NOT = { camp_administration_civil_custody_authority = yes } NOT = { has_country_flag = camp_admin_civil_review_complete } NOT = { has_country_flag = camp_admin_civil_review_active } camp_admin_country_sites_ready_for_reform = yes }
-			camp_administration_civil_cancel_routine_projects = yes
 			camp_occ_close_country = yes
 			camp_admin_begin_reform = yes
 			set_country_flag = camp_admin_civil_review_active
@@ -407,7 +394,6 @@ camp_administration_civil_migrate_projects = {
 		}
 		else = { clear_variable = camp_admin_economy_state_id }
 	}
-	camp_administration_civil_cancel_routine_projects = yes
 }
 
 # At most one additional host per funded month, using the country's controlled pool.
@@ -446,29 +432,7 @@ camp_administration_civil_open_next_host = {
 	}
 }
 
-# Cancellation must not invoke success/failure mission outcomes on lost targets.
-camp_administration_civil_cancel_routine_projects = {
-	camp_rework_italy_clear_security_sweep_state = yes
-	remove_mission = uk_hold_raj_security_line
-	remove_mission = uk_complete_raj_military_works
-	remove_mission = fr_north_africa_rail_labor_project
-	remove_mission = ita_desert_road_labor_project
-	remove_mission = ita_colonial_security_sweep
-	remove_mission = bel_congo_resource_quota_cycle
-	remove_mission = bel_congo_transport_corridor_project
-	clear_variable = uk_raj_security_line_state_id
-	clear_variable = uk_raj_military_works_state_id
-	clear_variable = fr_north_africa_project_state_id
-	clear_variable = ita_desert_road_project_state_id
-	clear_variable = ita_security_sweep_state_id
-	clear_variable = bel_congo_quota_state_id
-	clear_variable = bel_congo_corridor_state_id
-	clr_country_flag = camp_rework_uk_military_works_active
-	clr_country_flag = camp_rework_italy_security_battalions_active
-}
-
 camp_administration_civil_cleanup = {
-	camp_administration_civil_cancel_routine_projects = yes
 	clr_country_flag = camp_admin_civil_policy_authorized
 	clr_country_flag = camp_admin_civil_policy_funded
 	if = { limit = { OR = { has_country_flag = camp_admin_civil_review_active has_country_flag = camp_admin_civil_claims_active } } clr_country_flag = camp_admin_institution_slot_active }

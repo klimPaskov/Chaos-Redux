@@ -4,36 +4,6 @@
 # The quote carries the Event 026 sale price, so each payment charges what the
 # check required and the cost text showed, and credits one sale purchase.
 
-camp_rework_pay_site_labor = {
-	set_temp_variable = { camp_site_quote_labor_pp = 0 }
-	set_temp_variable = { camp_site_quote_labor_motorized = 0 }
-	set_temp_variable = { camp_site_quote_labor_trains = 0 }
-	set_temp_variable = { camp_site_quote_labor_support = 0 }
-	set_temp_variable = { camp_site_quote_labor_motorized_reserve = 0 }
-	set_temp_variable = { camp_site_quote_labor_trains_reserve = 0 }
-	set_temp_variable = { camp_site_quote_labor_support_reserve = 0 }
-	if = {
-		limit = { camp_rework_prepare_site_cost_quote = yes }
-		set_temp_variable = { camp_site_payment_remove = camp_site_quote_labor_pp }
-		multiply_temp_variable = { camp_site_payment_remove = -1 }
-		add_political_power = camp_site_payment_remove
-		set_temp_variable = { camp_site_payment_remove = camp_site_quote_labor_motorized }
-		multiply_temp_variable = { camp_site_payment_remove = -1 }
-		add_equipment_to_stockpile = { type = motorized_equipment_1 amount = camp_site_payment_remove }
-		set_temp_variable = { camp_site_payment_remove = camp_site_quote_labor_trains }
-		multiply_temp_variable = { camp_site_payment_remove = -1 }
-		add_equipment_to_stockpile = { type = train_equipment_1 amount = camp_site_payment_remove }
-		set_temp_variable = { camp_site_payment_remove = camp_site_quote_labor_support }
-		multiply_temp_variable = { camp_site_payment_remove = -1 }
-		add_equipment_to_stockpile = { type = support_equipment_1 amount = camp_site_payment_remove }
-		set_variable = { generic_labor_project_motorized_reserve = camp_site_quote_labor_motorized_reserve }
-		set_variable = { generic_labor_project_trains_reserve = camp_site_quote_labor_trains_reserve }
-		set_variable = { generic_labor_project_support_reserve = camp_site_quote_labor_support_reserve }
-		camp_rework_mark_sale_stock_equipment = yes
-		hidden_effect = { camp_rework_credit_sale_order = yes }
-	}
-}
-
 camp_rework_pay_site_inspect = {
 	set_temp_variable = { camp_site_quote_inspect_pp = 0 }
 	if = {
@@ -98,10 +68,4 @@ camp_rework_pay_site_restricted = {
 		add_political_power = camp_site_payment_remove
 		hidden_effect = { camp_rework_credit_sale_order = yes }
 	}
-}
-
-camp_rework_clear_site_labor_reserve = {
-	clear_variable = generic_labor_project_motorized_reserve
-	clear_variable = generic_labor_project_trains_reserve
-	clear_variable = generic_labor_project_support_reserve
 }
