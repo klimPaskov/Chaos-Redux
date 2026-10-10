@@ -1,5 +1,8 @@
 # Event 033 Acid Rain, Part 5, preparedness, decisions, and recovery
 
+Status: `implemented` in source in `common/decisions/033_acid_rain_decisions.txt` and `common/scripted_effects/033_acid_rain_preparedness_effects.txt`; exact costs and durations are owned by the decision cost matrix and match the constants file.
+The urgent-action timing proposal in the README open questions would change this part only after acceptance.
+
 ## Decision-category purpose
 
 Every existing country receives the Acid Rain category at formation, including countries outside the current front region. The category supports three practical stages:
@@ -10,7 +13,9 @@ Every existing country receives the Acid Rain category at formation, including c
 
 Only actions relevant to the country's current stage appear. The category should not become a long list of inactive buttons.
 
-All project, action, mission, and category names in this part are working labels. Final player-facing wording belongs in implementation and localisation review.
+The category is Acid Rain Response.
+Its decisions are Expand the Shelter Network, Protect Water and Food, Expand Medical Protection Capacity and Harden Transport and Infrastructure; Activate Shelter Protocols, Secure Emergency Water and Food, Open an Emergency Medical Surge, Reroute Transport and Repair Crews and the state-targeted Evacuate decision; and the state-targeted Restore Transport, Decontaminate and Repair Industry decisions with Demobilize the Emergency Apparatus.
+The section headings below keep the design names.
 
 ## Preparedness components
 
@@ -285,7 +290,7 @@ Urgent action behavior:
 
 ## Recovery stage
 
-A country with aftermath states receives a compact state list. Selecting a state exposes the relevant recovery actions.
+Recovery decisions are state-targeted decisions that list only states with the matching recorded damage or burden (D11, D13), so the decision list itself is the recovery state list.
 
 ### Restore transport network
 

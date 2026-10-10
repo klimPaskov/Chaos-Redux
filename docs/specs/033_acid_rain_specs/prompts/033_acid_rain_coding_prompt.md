@@ -1,57 +1,28 @@
-# `hoi4.probability_inspect` first
+# Event 033 Acid Rain implementation resume prompt
 
-## Event 033 Acid Rain full implementation prompt
+Event 033 is implemented in source.
+This prompt is a resume handoff for the remaining work; the requirements it relies on live in their owning parts and are not restated here.
 
-Read the package README's current authority order and accepted addenda first, then reconcile the present implementation and handoffs before scheduling any prototype migration or repeated production work.
+## Before editing
 
-Use `hoi4.probability_inspect` as the first weighted-system tool call, before changing Event 33 weights. Rework the current prototype into the accepted Major hyperacid-weather system. Read every file in `033_acid_rain_specs/`, all repository must-read rules, and the current Event 33, event-system, cluster, Deaths, Air Cleanliness, humanitarian, CBRN, scripted GUI, super-event, achievement, asset, and debug files.
+1. Read the package README: implementation status, reading authority, invariants and open questions.
+2. Read [the runtime resume](../../../plans/033_acid_rain_plans/runtime_resume_2026_10_08.md), [the agent decision log](../../../plans/033_acid_rain_plans/agent_decisions_2026-10-04.md) and the newest handoffs under `docs/plans/033_acid_rain_plans/subagent_handoffs/`.
+3. Read the current source listed in `implementation_readiness/033_acid_rain_file_map_and_migration.md`, including other sessions' uncommitted edits.
+4. Use [the events skill](../../../../.claude/skills/chaos-redux-events/SKILL.md), [the decisions skill](../../../../.claude/skills/chaos-redux-decisions-missions/SKILL.md), [the scripted GUI skill](../../../../.claude/skills/chaos-redux-scripted-gui/SKILL.md) and [the subagent skill](../../../../.claude/skills/chaos-redux-subagents/SKILL.md) for their surfaces, and the HOI4 reference workflow in `CLAUDE.md` for syntax.
 
-Use the supplied specialist roles at their defined stages. Required reviews are `chaosx_repo_explorer`, `chaosx_scripted_system_architect`, `chaosx_decision_mission_auditor`, `chaosx_ai_probability_auditor`, `chaosx_event_ui_worker`, `chaosx_localisation_auditor`, `chaosx_super_event_text_researcher`, `chaosx_super_event_audio_researcher`, `chaosx_asset_source_researcher`, `chaosx_generated_event_art`, `chaosx_icon_artist`, `chaosx_spreadsheet_doc_worker`, `chaosx_documentation_curator`, and `chaosx_event_completion_auditor`. Near completion run `chaosx_improvement_loop_planner` with `fork_turns="none"`, resolve its accepted findings, and rerun affected checks.
+## Ownership
 
-## Architecture
+- The parent owns gameplay, wiring, shared registries, Event Details, the event log, settings and the super-event framework.
+- `chaosx_event_ui_worker` owns only the dedicated `acid_rain_world_window` and `acid_rain_category_inlay` layout, under the scripted GUI skill.
+- `chaosx_ai_probability_auditor` runs the Part 8 probability workflow read-only; preserve the before source of any weighted change for its comparison.
+- Asset production follows [the asset prompt](033_acid_rain_asset_prompt.md).
 
-Register Event 33 as Major at Chaos level 2 and remove repeatable registration. Build an atomic formation transaction that freezes valid states, initializes seven region totals, exact coverage, the first front and footprint, every country's category, one event generation, and the once-only super-event receipt. Roll back cleanly if formation cannot complete.
+## Remaining work
 
-Remove the daily all-country and all-owned-state scan. Use event-owned registries and bounded three-day exposure, drift, movement, contamination, and dissipation pulses. GUI refresh reads stored values and performs no gameplay mutation.
+The goal prompt lists the remaining items in order.
+Changes that come from an accepted open question update the owning spec part, the event overview and, for catalog-visible wording, the workbook before its exports.
 
-Implement the accepted first-visit quota, second-visit completion rule, exact first-touch receipts, stable front IDs, independent warnings, disconnected-state fallback, untouched-state weighting, final coverage correction, and guaranteed endpoint. Evolution III satisfies coverage on transition and uses its own global duration and dissipation ladder.
+## Completion blockers
 
-## Consequences, choices, and shared systems
-
-Implement the mortality formula, pulse caps, severe and global shocks, building pressure, state conditions, aftermath tiers, and recovery in Parts 4 and 5. For every positive mortality request, call `apply_exact_state_civilian_population_loss`. Record pre-pulse and post-pulse state population and prove that their difference equals `state_civilian_population_loss_applied`, subject to the protected floor. Use that applied value once for the Deaths system and every Event 33 counter, report, and achievement. `local_manpower`, recruitable-population modifiers, generic manpower debits, unit attrition, and counter-only changes do not satisfy mortality. Environmental unit penalties cannot create military death records.
-
-Add the dedicated Acid Rain Air source. Track lifetime actual additions in basis points. Clamp each request against requested change, remaining 1500 bp lifetime allowance, and distance to 5000 bp global contamination. Increment the lifetime ledger only by the central effect's actual applied delta. Existing contamination remains after dissipation. Do not duplicate Chaos generated by Deaths or Air Cleanliness.
-
-Implement four Preparedness projects, five urgent actions, four recovery actions, country bands, temporary commitments, consumed costs, exact refunds, action receipts, AI reserve floors, and cases A1 through A20. AI uses player effects and costs.
-
-## Evolutions, cluster, and presentation
-
-Implement Severe Storm Cells at Rising Chaos, Multiple Weather Fronts at Chaos Tier, and Global Acid Rain at Totalen Chaos. They are cumulative and can activate during a live event. Unlocking them adds no Chaos. Only the concrete outcomes in Part 7 may add direct Event 33 Chaos, with repeat guards and no overlap with generic sources.
-
-Preserve Event 13's five logical Natural Disasters slots. Add Event 33 as the sixth optional Severe member. Implement its tier participation, validity, queue order, history, reservation, and mixed Major pacing so cluster pacing and Major pacing are committed once. Independent firing remains valid.
-
-Implement the full GUI, reports, final direction-based localisation, researched super-event package, static and animated assets, static fallbacks, and ten achievements. Treat every unverified title, quote, cultural remark, allusion, and audio choice as blocked until the super-event researchers provide source and rights proof. Do not convert working labels into final text.
-
-## Probability workflow
-
-Route the final review through `chaosx_ai_probability_auditor`.
-
-- Use `hoi4.probability_evaluate` for A1 through A20, one-front and multi-front region selection, severe-cell targeting, third-front creation, dissipation checks, and cluster participation.
-- Use `hoi4.probability_sweep` for Chaos thresholds, intensity thresholds, preparation target weighting, dissipation escalation, and any rank reversal.
-- Use `hoi4.probability_sequence` for the complete declared movement and coverage pool, including cadence and state transitions.
-- Use `hoi4.probability_simulate` only where an input is explicitly uncertain and record that uncertainty.
-- Use `hoi4.probability_render` for the AI matrix, coverage timing, dissipation timing, and sensitivity views.
-- Preserve the baseline source before any weighted patch and have `chaosx_ai_probability_auditor` run `hoi4.probability_compare` against the final source with the same named scenarios and candidate pools.
-- Treat planning distributions as design targets, independently of the source comparison, and report missing baseline inputs as unresolved.
-
-A final probability report must show raw and effective weights, candidate eligibility, starvation cases, dominance, timing bands, deterministic tie rules, and anti-farming guards. Sample anecdotes are not proof.
-
-## Completion
-
-The dedicated Acid Rain window belongs to `chaosx_event_ui_worker` under [the scripted-GUI owner skill](../../../../.agents/skills/chaos-redux-scripted-gui/SKILL.md).
-Supply exact event-owned files, GUI identifiers, entry points, states, resolutions, and the acceptance basis in the context-free assignment.
-Create or review the intended reference image before construction, then retain baseline and final `hoi4.gui_inspect` and `hoi4.gui_render` evidence for matching scenarios and source revisions.
-Shared Event Details, event logs, settings, and super-event frameworks remain parent-owned.
-Visible render defects block visual acceptance; unavailable routes require exact blocker records.
-
-Run every Part 12 gate, including independent and cluster launches, active evolution transitions, old-save migration, reload, multiplayer determinism, disabled settings, terminal interruption, GUI resolutions, assets, audio, achievements, and a second generation. Update the source workbook before regenerated CSV exports. Keep iterating until every accepted requirement is implemented to its fullest extent. Do not claim completion while any coverage softlock, broad daily scan, death counter without matching state-population removal, modifier-only mortality, duplicate Deaths receipt, Air cap leak, free AI action, missing sprite, unverified audio right, stale catalog row, unresolved migration, or specialist review failure remains.
+Completion is blocked by any violated README invariant, any accepted requirement left unimplemented, any Part 12 gate without agent evidence, a free or stale AI action, a missing or unregistered sprite, an unverified audio or quote right, stale catalog data, or an unreviewed specialist finding.
+User live checks are listed as pending verification and never reported as passed.

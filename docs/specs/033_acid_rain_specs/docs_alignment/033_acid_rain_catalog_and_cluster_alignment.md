@@ -1,131 +1,53 @@
 # Event 033 Acid Rain catalog and cluster alignment
 
-## Authority
+Status: `implemented`.
+The workbook row, cluster row and generated exports were updated in parent commit `02cf2601e` under agent decision D21; the cell-level record is [the catalog change record](../../../plans/033_acid_rain_plans/catalog_changes_pending.md).
+`docs/spreadsheets/chaos_redux_events_catalog.xlsx` stays the only editable source, and `python .tools/export_event_catalog_csv.py` regenerates the CSV exports after every workbook change.
 
-The accepted Event 33 brief and this package supersede the current CSV export, which still lists Acid Rain as Minor Repeatable, Chaos level 1, without cluster membership or evolutions.
+## Event-catalog row
 
-The workbook source remains authoritative for actual catalog editing. Update the workbook first, then regenerate CSV exports. Do not hand-edit the exported CSV as the only change.
-
-## Accepted event-catalog row
-
-| Column | Accepted value |
+| Column | Current value |
 | --- | --- |
 | ID | `33` |
 | Event Name | Acid Rain |
-| Details | Direction only: summarize the moving lethal acid-rain system, worldwide preparation, direct state-population deaths, damage, exact state coverage, and ordinary dissipation gate. Final spreadsheet wording belongs in implementation. |
-| Evo I | Working label `Severe Storm Cells`. Direction only: summarize localized high-intensity cells and their stronger human, infrastructure, supply, and military effects. |
-| Evo II | Working label `Multiple Weather Fronts`. Direction only: summarize two independent fronts, the conditional third front, separate warnings, timers, intensity, and severe cells. |
-| Evo III | Working label `Global Acid Rain`. Direction only: summarize simultaneous worldwide exposure, regional superstorms, and the guaranteed later dissipation path. |
+| Details | The in-game `acid_rain.event_details.description` text |
+| Evo I | Severe Storm Cells, from `acid_rain.evolution.stage_1.title` and `.body` |
+| Evo II | Multiple Weather Fronts, from `acid_rain.evolution.stage_2.title` and `.body` |
+| Evo III | Global Acid Rain, from `acid_rain.evolution.stage_3.title` and `.body` |
 | Type | Major |
 | Chaos level | `2` |
 | Cluster ID | `5` |
-| Status | To Be Reworked until implementation acceptance |
+| Status | Needs Testing |
 
-The Events sheet does not store member severity. Acid Rain's Severe value belongs to its logical row in Cluster Memberships and the aggregate Natural Disasters row in Clusters.
+Catalog Details and evolution cells must keep matching the in-game localisation wording.
+The Events sheet does not store member severity; Acid Rain's Severe value belongs to its Cluster Memberships row and the Natural Disasters cluster row.
 
-## Cluster-catalog row
+## Cluster row
 
-Keep Cluster ID 5 and its existing root identity. Update members from:
-
-`13, 13, 13, 13, 13`
-
-to:
-
-`13, 13, 13, 13, 13, 33, 51`
-
-Cluster Details direction:
-
-- identify five logical Event 13 season slots, one optional Severe Acid Rain member, and one optional High Heat Wave member
-- explain that Event 33 and Event 51 are separate logical rows after the Event 13 sequence
-- explain mixed Major pacing without exposing internal queue jargon in final player-facing text
-- write final spreadsheet wording during implementation and localisation review
-
-Other cluster fields:
-
-| Column | Accepted value |
-| --- | --- |
-| Cluster ID | `5` |
-| Cluster Name | Natural Disasters |
-| Members | `13, 13, 13, 13, 13, 33, 51` |
-| Type | Minor Repeatable root with documented mixed Major pacing |
-| Chaos level | `1` |
-| Status | Partially Available until Event 33 and mixed pacing are implemented |
-
-If the workbook Type column only accepts existing simple enums, retain `Minor Repeatable` and document mixed effective pacing in Details and system docs. Do not invent an unsupported enum only for the export.
+Cluster 5, Natural Disasters, lists members `13, 13, 13, 13, 13, 33, 51`: five logical Event 13 season slots, the optional Severe Acid Rain member and the optional High Heat Wave member.
+Its root type stays Minor Repeatable, and its Details describe the mixed Major pacing in player terms.
+The five Event 13 entries are logical slots with their own tier and chance behavior, not placeholders.
 
 ## Member registry
-
-Add one Event 33 member row or equivalent structured record:
 
 | Field | Value |
 | --- | --- |
 | Event ID | `33` |
 | Danger | Severe |
-| Base order | After all five Event 13 slots |
-| Required when trigger | Yes |
-| Optional participation | Tier table from Part 7 |
-| Earliest tier | Gathering Storm |
+| Order | After all five Event 13 slots |
+| Required when it is the trigger | Yes |
+| Optional participation | Part 7 tier table (see README open question 4 on the Severe floor) |
 | One-time validity | Not fired, not active, not reserved |
-| Pacing contribution | Major when queued |
-| History owner | Event 33 owns its event row, cluster owns sequence row |
+| Pacing contribution | Major when queued, committed once at launch |
+| History owner | Event 33 owns its event row; the cluster owns the sequence row |
 
-Do not relabel the five Event 13 entries as placeholders. They are logical season slots with separate tier and chance behavior.
+## Event Details and evolution registry
 
-## Event Details alignment
+Event Details shows the Major type, Chaos level 2, the Natural Disasters cluster, the live status block, the stored outcome after closure and the viewing country's achievements (D34).
+The three evolutions are cumulative, global, persist after Chaos falls and add no Chaos on activation.
 
-Event 33 Event Details should show:
+## Re-check after any change
 
-- Major event
-- Chaos level 2
-- Natural Disasters cluster
-- Severe member
-- ordinary independent and cluster firing sources
-- formation date
-- current phase
-- world coverage
-- national Preparedness link
-- lifetime actual state population removed by Event 33 and contamination contribution
-- enabled evolution records
-- achievements
-- final outcome and duration after closure
-
-## Evolution registry alignment
-
-Add cumulative records. The names below are working labels until localisation review:
-
-| Evolution | Threshold | Scope | Persists after Chaos falls | Adds Chaos on activation |
-| --- | --- | --- | --- | --- |
-| Severe Storm Cells | Rising Chaos | Global Event 33 runtime | Yes | No |
-| Multiple Weather Fronts | Chaos Tier | Global Event 33 runtime | Yes | No |
-| Global Acid Rain | Totalen Chaos | Global Event 33 runtime | Yes | No |
-
-## Major-event registry alignment
-
-- remove Event 33 from repeatable list
-- add Event 33 to Major list
-- start ordinary Major weight at the framework default of zero
-- include validity gate for Chaos 200 or higher
-- preserve one-time fired state
-- add Natural Disasters cluster reservation gate
-
-## Documentation alignment
-
-Update repository statements that currently describe:
-
-- Event 33 as repeatable
-- Event 33 as Chaos level 1
-- continent completion as the event endpoint
-- Acid Rain as one prototype map image per continent
-- Event 13 as the only possible Natural Disasters cluster event
-
-Archive old prototype notes only when useful for migration history. Current system docs should describe the accepted runtime.
-
-## Export validation
-
-After workbook update:
-
-1. regenerate events and clusters CSV files
-2. parse them with the repository spreadsheet validation workflow
-3. verify exactly one Event 33 row
-4. verify Event 33 Type, Chaos, Cluster ID, Severity, and Status
-5. verify the first five Cluster 5 slots remain Event 13 and slot 6 is optional Severe Event 33, preserving the accepted optional High Event 51 slot 7 and aligned severity lists
+1. Regenerate the CSV exports from the workbook.
+2. Verify exactly one Event 33 row with Type, Chaos level, Cluster ID and Status as above.
+3. Verify that cluster 5 keeps Event 13 in slots 1 to 5, Acid Rain in slot 6 and Heat Wave in slot 7 with aligned severity lists.

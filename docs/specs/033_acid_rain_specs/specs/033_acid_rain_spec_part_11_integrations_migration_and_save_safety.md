@@ -1,34 +1,28 @@
 # Event 033 Acid Rain, Part 11, integrations, migration, and save safety
 
+Status: `implemented` in source for registration, the Air source, Deaths, CBRN civilian protection, the Humanitarian addition path, control transfer, prototype migration and terminal interruption.
+Source-specific Humanitarian retirement is `unresolved` (README open question 1).
+Save and reload, multiplayer determinism and migration of real old saves are user live checks.
+This part owns the Air cap invariant.
+
 ## Event-system registration
 
-The existing repository registers Event 33 as repeatable. The rework must:
+Event 33 is registered as:
 
-- remove `33` from `global.repeatable_events`
-- add `33` to `global.major_events`
-- register Chaos level 2 in the event availability surface
-- keep one-time fired state after accepted formation
-- use the normal Major weight and reset path for independent firing
-- use mixed Major cluster pacing when queued through Natural Disasters
-- update Event Details type, status, cluster, severity, and evolution rows
-
-Do not leave Event 33 in both type arrays during migration.
+- a member of `global.major_events` and of no repeatable or fire-once list
+- a Chaos level 2 event in the availability surface
+- one-time fired after accepted formation
+- an ordinary Major for independent firing, with the normal weight and reset path
+- a mixed-pacing member when queued through Natural Disasters
+- a Major, level 2, Natural Disasters, Severe entry with three evolution rows in Event Details
 
 ## Air Cleanliness integration
 
 ### Dedicated source
 
-Add a stable Acid Rain source to the Air Contamination source ledger. Reusing the broad natural aerosol row would hide the user-required Event 33 lifetime contribution and make the 15-point cap hard to audit.
-
-The source records:
-
-- current Event 33 atmospheric pressure estimate
-- lifetime actual additions
-- last actual addition
-- first and latest activity dates
-- post-event pressure decay
-
-The Event 33 GUI displays lifetime actual additions. The Air Cleanliness source details display the source ledger values.
+Acid Rain owns Air source id `5` (`acid_rain_air.source_id`) in the shared source ledger, separate from the natural aerosol row, so its lifetime contribution and 15-point cap stay auditable.
+The shared ledger stores the source's lifetime accepted additions and its current share of global contamination, and the Air Cleanliness system owns how that share recovers.
+The Event 33 interface shows only the lifetime addition; the Air Cleanliness source details show the ledger row.
 
 ### Hard-cap formula
 
@@ -67,11 +61,11 @@ Formation requests `75 bp`, then the weekly pulse builds a request from stored s
 
 Clamp an active weekly request between `8 bp` and `45 bp` before the two hard caps. A week with no active acute weather requests zero.
 
-### Current source pressure
+### Current source share
 
-Increase the source pressure estimate by actual Event 33 additions. While active, allow a small monthly pressure decay only if the event is in a weak regional state. After acute dissipation, decay the pressure estimate by a constant monthly amount until zero. This pressure decay does not directly subtract global Air Contamination. Global recovery remains owned by the normal Air Cleanliness system.
-
-Clamp displayed current Event 33 pressure to the current global contamination value when required by the source-ledger presentation contract.
+Event 33 keeps no pressure estimate of its own.
+It mirrors the shared ledger's current Acid Rain share into `global.acid_rain_air_current_bp`, and the global-phase dissipation penalty reads that mirror.
+Global recovery, and with it the shrinking current share, belongs to the Air Cleanliness system; Event 33 never subtracts contamination.
 
 ### Chaos ownership
 
@@ -102,23 +96,18 @@ Event 33 can reuse compatible national protection facts from the existing CBRN c
 - warning systems
 - shelters
 
-The integration should read a shared protection score or documented component API. It must not count the same stockpile twice or create a second competing mask inventory.
-
-Event 33 permanent projects represent broad civilian infrastructure and organization. Existing CBRN assets can improve their effectiveness or reduce urgent-action costs. They do not automatically grant four Event 33 project tiers.
+The implemented integration reads `cbrn_civilian_mask_effective_coverage` to lower the mortality protection multiplier (Part 4), and the AI reads the strong-protection CBRN triggers to lower, never zero, the Medical project priority.
+It never counts the same stockpile twice or creates a second mask inventory.
+Event 33 projects represent broad civilian infrastructure and organization; CBRN assets do not grant project tiers.
 
 ## Humanitarian integration
 
-Use existing source-owned registration for:
-
-- disaster pressure from tier-2 or tier-3 aftermath
-- infrastructure and supply pressure
-- contaminated-water pressure when qualified
-- displacement pressure from major evacuation
-- famine or disease risk when shared systems accept the state conditions
-
-Event 33 owns only its source registration and removal. The Humanitarian system owns aid, refugee, famine, disease, and secondary crisis behavior.
-
-Source IDs must distinguish Event 33 from Event 13 and Air Winter pressure so one cleanup cannot remove another event's burden.
+Event 33 registers three kinds of proven consequence with the famine owner through `famine_adapt_acid_rain_state`: each exact positive pulse loss, a state's first tier-2 or tier-3 aftermath, and a finished evacuation of a state of at least 500,000 people (amounts in Part 4).
+Each request carries source id 33, the Acid Rain death reason, the current generation and a per-transaction revision, so it stays distinct from Event 013 and Air Winter requests.
+Under the famine owner's current contract an accepted request adds a daily-decaying food shock and renews the 60-day disaster food context, which does not stack and expires on its own.
+A tier is marked registered only after the famine owner accepts it, so a rejected request can retry.
+The famine system owns food security, relief, famine mortality and any later famine survivor flight; Event 33 owns only its requests.
+Whether recovery must additionally retire Acid Rain's share is README open question 1.
 
 ## Natural Disasters integration
 
@@ -146,47 +135,24 @@ When an active or aftermath state changes controller:
 
 Use the narrow state-control on-action. Do not scan all active states after every control change.
 
-## Famine, disease, and migration hooks
+## Famine, migration and other system links
 
-Event 33 can increase conditions that the shared systems already evaluate:
+- Famine: through the Humanitarian requests above; damaged transport and poisoned water reach the player as Food Security changes on the famine surface.
+- Migration: Event 33 creates no migration cohort, because evacuation protects people in place and is recorded as disaster pressure; displacement reaches migration only when famine itself proves survivor flight through `migration_accept_famine_survivor_request`.
+- Condemnation: none, because the rain has no responsible actor.
+- Camps, CBRN warfare and fallout: no direct link beyond the shared Deaths ledger, the Air ledger and CBRN civilian protection above.
 
-- contaminated food and water
-- isolated supply routes
-- damaged infrastructure
-- displacement from severe evacuation
-- prolonged global exposure
+Event 33 never hard-codes a second famine, disease or migration engine.
 
-The implementation should register those pressures and let their owners resolve outcomes. Do not hard-code a second famine, disease, or migration engine inside Event 33.
+## Prototype retirement
 
-## Current prototype removal
-
-The existing prototype contains:
-
-- `events/033_acid_rain.txt`
-- `common/scripted_effects/033_acid_rain_effects.txt`
-- `common/decisions/033_acid_rain_decisions.txt`
-- `common/decisions/categories/033_acid_rain_categories.txt`
-- `common/dynamic_modifiers/033_acid_rain_dynamic_modifiers.txt`
-- `common/on_actions/033_acid_rain_on_actions.txt`
-- `common/scripted_guis/033_acid_rain_scripted_guis.txt`
-- `localisation/english/033_acid_rain_l_english.yml`
-- prototype bindings in `interface/chaosx_decisions.gui`
-
-Replace the runtime. Do not extend the daily nested country and owned-state scan.
-
-Remove or migrate:
-
-- old `acid_rain` global flag
-- old continent variable and continent array
-- old acid-cloud timer values
-- old `chaosx_acid_rain_timeout` mission
-- old `chaosx_acid_clouds_timeout` mission
-- old `acid_clouds_state` and `acid_rain_state` prototype modifiers
-- old one-image-per-continent GUI state
-- prototype localisation that claims deaths without any real state-population removal
-- any interpretation of `local_manpower` or recruitable-population penalties as civilian deaths
+Status: `implemented`.
+The continent prototype's daily all-country and all-owned-state scan, timeout missions, continent completion array, one-image-per-continent GUI swap, repeatable registration and modifier-only death claims are gone from the active runtime.
+The two old missions `chaosx_acid_rain_timeout` and `chaosx_acid_clouds_timeout` remain only as inert shells that cancel themselves, so old saves can unload them; `acid_rain_migrate_legacy_runtime` removes their records.
 
 ## Old-save migration
+
+Status: `implemented` through `acid_rain_migrate_legacy_runtime` and the `acid_rain_migration` constants; migration of real old saves is a user live check.
 
 ### Save where the prototype never fired
 
@@ -264,19 +230,8 @@ Event 33 cannot block a terminal transition by waiting for complete state covera
 
 ## Documentation updates
 
-Implementation completion updates:
-
-- event catalog workbook source
-- cluster catalog workbook source
-- Event 33 system documentation
-- event-system type documentation
-- event-cluster documentation
-- Air Contamination source-ledger documentation
-- Deaths cause documentation if a new cause is added
-- super-event and audio catalogue
-- asset manifest
-- achievement registry documentation
-- generated API documentation if new public helpers are introduced
+The catalog workbook and exports, the event overview, the event-cluster documentation, the Air source-ledger documentation, the Deaths reason table and the audio catalogue already describe the implemented event.
+Any later behavior change updates the overview and, for catalog-visible wording, the workbook before its exports.
 
 ## Accepted implementation decisions, 2026-10-04
 

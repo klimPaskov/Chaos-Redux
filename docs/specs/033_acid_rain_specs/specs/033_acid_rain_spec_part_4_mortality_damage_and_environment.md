@@ -1,5 +1,9 @@
 # Event 033 Acid Rain, Part 4, mortality, damage, and environment
 
+Status: `implemented` in source, with every rate, cap and band in `acid_rain_mortality`, `acid_rain_air_damage`, `acid_rain_modifier` and `acid_rain_aftermath`.
+Observed population removal in a running game is a user live check.
+This part owns the mortality invariant; the population-loss contract matrix gives its transaction steps and failure cases.
+
 ## Fictional hazard premise
 
 Event 33 is an anomalous and potentially supernatural weather system. Its rain and aerosol are directly lethal. The event does not need a real-world chemical explanation or a measured pH. Research on acid deposition and corrosive exposure informs water damage, soil damage, respiratory harm, corrosion, shelters, protective equipment, and visual presentation. It does not limit how dangerous the anomaly can become.
@@ -103,7 +107,7 @@ Then apply component-specific and local adjustments:
 - protected water and food lowers sustained mortality after twelve days of exposure
 - transport resilience improves evacuation and severe-cell response
 - active local evacuation lowers severe-cell and superstorm mortality
-- compatible CBRN civilian protection can lower both stages through the shared protection interface
+- CBRN civilian mask coverage lowers both stages: the protection multiplier falls by `cbrn_civilian_mask_effective_coverage` times `acid_rain_mortality.cbrn_protection_coefficient` (0.20), read from the CBRN system without a second inventory
 
 Final protection floors:
 
@@ -161,7 +165,7 @@ Every actual civilian loss:
 
 Do not add separate Chaos for the same casualties. The shared Deaths system handles its normal one-Chaos-per-million progression.
 
-A dedicated Acid Rain cause is preferable if the Deaths UI can accept one more cause without breaking its fixed layout. Otherwise use the existing natural-disaster cause and add Event 33 attribution in the event history. This choice must be made during implementation inspection, not guessed in localization.
+Event 33 uses its own Deaths reason, `34` (`acid_rain`), as recorded in `docs/systems/chaos_meter/chaos_meter_deaths_mechanic.md`.
 
 ## Casualty report thresholds
 
@@ -252,7 +256,8 @@ All values live in constants. The modifier descriptions should show broad effect
 
 Event 33 is a civilian and infrastructure disaster. It should affect military operations through attrition, movement, organization regain, supply, air operations, and repair. It should not directly delete divisions through an opaque event effect.
 
-Units in severe or superstorm states can take higher attrition. Protective equipment or CBRN-trained formations can reduce that penalty if the existing system exposes a safe division-level modifier. Implementation must use a documented shared interface and avoid per-unit scripted loops.
+Units in severe or superstorm states take higher attrition through the controller attrition and truck attrition terms of the acute state band.
+No shared division-level CBRN interface exists, so formations receive no separate protection, and per-unit scripted loops are forbidden.
 
 ## Environmental aftermath
 
@@ -277,11 +282,16 @@ Aftermath never causes the acute opening shock again. It can create a much small
 
 ## Humanitarian pressure
 
-A state at aftermath tier 2 or 3 registers disaster and infrastructure pressure through the existing Humanitarian system interface. Tier 3 can also register contaminated-water or displacement pressure when its actual local conditions qualify. Event 33 does not copy the Humanitarian system's refugee, famine, or aid logic.
+Acid Rain registers its proven consequences with the famine owner through `famine_adapt_acid_rain_state`; the amounts are in the accepted decisions at the end of this part.
+Under the famine owner's current contract, an accepted request adds a food shock that decays daily and renews a 60-day disaster food context (crop loss, damaged transport, unmet need) that does not stack and expires on its own.
+The player sees the result only through the famine surface's Food Security, Food Reserves and Relief Access; Event 33 adds no humanitarian value of its own.
+Event 33 does not copy the famine, migration, refugee or aid logic.
 
 ## Recovery effects
 
-National recovery decisions lower aftermath one tier at a time, repair or speed repair of the relevant building class, and reduce the state's Humanitarian pressure. Vanilla repair continues normally. Event decisions accelerate recovery and prevent secondary consequences. They do not recreate buildings above pre-event maximum levels.
+National recovery decisions lower aftermath one tier at a time and repair the building damage the rain recorded.
+Vanilla repair continues normally, and recovery never recreates buildings above their pre-event levels.
+Whether recovery must also retire the rain's famine pressure is an open question in the README; until it is settled, recovery does not touch famine accounting.
 
 ## Synthetic mortality check
 

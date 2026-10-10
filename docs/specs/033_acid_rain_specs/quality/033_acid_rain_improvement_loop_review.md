@@ -1,5 +1,8 @@
 # Event 033 Acid Rain improvement-loop review
 
+Status: historical planning review.
+Its findings are implemented in source; the current resolution of each open finding is in the last section, and the README holds the live status.
+
 ## Review scope
 
 This review applies the project improvement-loop questions to the accepted planning package. It checks premise, player control, performance, probability, costs, edge cases, presentation, shared-system ownership, and completion proof.
@@ -245,3 +248,12 @@ The design now has:
 - complete presentation, asset, achievement, AI, and validation handoffs
 
 The remaining open items require engine access, live probability tools, GUI inspection, audio audition, asset generation, implementation, and playtesting. They do not require another conceptual rewrite unless those tests expose a failed engine assumption.
+
+## Current resolution notes, 2026-10-10
+
+- Finding 5: Acid Rain owns Air source id 5 in the shared ledger.
+- Finding 7: mixed Major pacing is implemented and documented in `docs/systems/event_system/event_clusters.md`.
+- Finding 8: a further 2026-10-10 audit proposal trims the interface to values that drive a decision (Part 6 value budget).
+- Finding 14: the audio is selected, auditioned and registered as playback ID 117 (Part 9).
+- Finding 15: Deaths uses reason 34 `acid_rain`, Air uses source 5, the super-event is 117 and the ten achievements are registered.
+- The remaining open items are the README open questions, the D37 regional strips, the F7 legacy report-receipt policy, the pending probability comparison and the user live checks of Part 12.

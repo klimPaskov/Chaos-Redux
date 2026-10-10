@@ -1,5 +1,8 @@
 # Event 033 Acid Rain, Part 7, evolutions and cluster integration
 
+Status: `implemented` in source for the three evolutions, per-stage enable controls, cluster slot 6, tier participation and mixed Major pacing (see `docs/systems/event_system/event_clusters.md`).
+The Event 13 overlap exclusion below was never implemented and is replaced by a proposal; the Severe participation floor needs cluster-owner confirmation (README open questions 4 and 5).
+
 ## Evolution thresholds
 
 | Stage | Player-facing name | Earliest Chaos tier | Minimum Chaos value |
@@ -25,6 +28,9 @@ If Chaos rises while the event is active:
 - do not add Chaos merely because the stage became available or active
 
 A manually changed Chaos value should follow the same safe transition rule. It must not mutate front arrays in the middle of an exposure pulse.
+
+Each stage also has a shared enable control that is read at formation, notice admission and queued activation.
+An unchecked stage, or loss of its admission tier, cancels its uncommitted notice; already activated fronts, the global layer and reserved storm forecasts keep their history and finish through ordinary maintenance and dissipation.
 
 ## Baseline behavior
 
@@ -224,6 +230,8 @@ Event 33 is available to the cluster only when:
 
 If Event 33 was the normal event that caused the cluster roll, it becomes required after validity passes. Other optional members keep their own rolls.
 
+The general cluster contract records a Severe-member floor of Chaos Tier, while this table starts Acid Rain at Gathering Storm; the cluster owner must confirm this exception (README open question 4).
+
 ### Cluster danger and current danger
 
 Event 33 remains Severe. Cluster danger can add a small participation modifier only through a documented constant. Suggested maximum is `+10` percentage points. Final chance remains capped at 95 percent for an optional member.
@@ -260,16 +268,18 @@ Manual debug triggering should use the repository's no-cluster path and still es
 
 ## Event 13 overlap
 
-Event 13 and Event 33 can coexist. Use these conflict rules:
+Event 13 and Event 33 can coexist. These rules are implemented:
 
-- Event 13 cannot place an ordinary weather-family impact in a state currently under an Acid Rain severe cell or superstorm unless a specific compatibility test accepts it.
-- Geological Event 13 families can still occur under Acid Rain.
-- Event 13 aftermath and Acid Rain aftermath remain separate records, then feed shared Humanitarian pressure through deduplicated source IDs.
+- Event 13 aftermath and Acid Rain aftermath remain separate records; an open Event 13 card in a state adds one point to the Acid Rain aftermath classifier.
+- Both events request famine pressure through their own adapters; the famine owner's non-stacking disaster window keeps them from doubling the same food context.
 - Event 13 natural aerosol additions and Event 33 contamination use separate Air source accounting.
 - A Natural Disasters cluster history row lists both members and their separate outcomes.
 
+The original planning rule that Event 13 may not place a weather-family impact in a state under an Acid Rain severe cell or superstorm is not implemented and would require an Event 13 change.
+Proposal (README open question 5): drop it, because two disasters striking one state are legitimate chaos and the classifier point already makes the combination matter.
+
 ## Settings and disable behavior
 
-Disabling Event 33 before firing removes it from ordinary and cluster availability. Disabling it while active stops future evolution transitions and new severe cells only if the shared settings contract allows active-event shutdown. It must not delete active state records or skip cleanup.
-
-The preferred active disable behavior is a controlled early dissipation request that still clears acute state safely, records the administrative end, and preserves deaths and contamination. Implementation must match the repository's accepted settings behavior for active Major events.
+Disabling Event 33 before firing removes it from ordinary and cluster availability.
+While it is active, the per-stage evolution controls described above stop new severe cells, splits and superstorm forecasts without deleting active records or skipping cleanup.
+A committed world end interrupts the runtime through `acid_rain_interrupt_for_world_end`, which closes it administratively and preserves deaths, contamination, coverage and unresolved aftermath without natural-dissipation Chaos credit.

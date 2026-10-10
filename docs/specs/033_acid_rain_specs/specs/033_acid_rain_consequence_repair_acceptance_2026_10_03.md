@@ -23,6 +23,9 @@ An `implemented` disposition describes source implementation with the stated ver
 | Source-specific Humanitarian retirement on recovery or cleanup | `unresolved` supported-owner dependency retained from the original acceptance. D5/D14 do not resolve it. | No supported source-33 reversible ledger or retirement call is established by the inspected addition and recovery paths. The proof bundle in `033_acid_rain_aftermath_effects.txt:612-644` starts with `proof_floor = 1` plus readiness/tier values. Independently sufficient food/environment/transport proof and recovery removal remain under owner/completion review. Part 11's accepted-decision wording that cleanup touches only Acid Rain sources cannot establish implementation of retirement. |
 | Named scenarios, probability comparisons, GUI/art approval, audio listening and live population/save/multiplayer/performance evidence | `unresolved` acceptance gates. The original acceptance and scenario contract remain required. | The parent reports current-source helper replay and synthetic movement/Air/lifecycle passes. These are source-model evidence, including native fixtures, and do not execute HOI4. Current completion, probability and UI roles review their own gates. No result or approval is inferred for them here. |
 
+2026-10-10 audit note: the famine rework of that day makes an accepted Acid Rain request add a daily-decaying food shock and renew a 60-day disaster food context that expires on its own.
+The retirement row above keeps its `unresolved` disposition; a proposal to retire that requirement is README open question 1 and is not accepted here.
+
 Detailed source references, route limitations and read-only document dispositions are recorded in [the reconciliation handoff](../../../plans/033_acid_rain_plans/subagent_handoffs/documentation_current_reconciliation_2026_10_07.md).
 
 ## Historical acceptance and implementation queue, 2026-10-03

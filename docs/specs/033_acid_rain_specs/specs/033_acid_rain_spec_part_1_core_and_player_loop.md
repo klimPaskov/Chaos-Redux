@@ -1,5 +1,8 @@
 # Event 033 Acid Rain, Part 1, core and player loop
 
+Status: `implemented` in source; live-game behavior is a user check.
+The player-facing value rule in this part is owned in detail by Part 6.
+
 ## Catalog contract
 
 | Field | Value |
@@ -7,7 +10,7 @@
 | Event ID | `33` |
 | Name | Acid Rain |
 | Type | Major |
-| Status | To Be Reworked |
+| Catalog status | Needs Testing |
 | Chaos level | 2 |
 | Earliest ordinary eligibility | Gathering Storm |
 | Cluster | Natural Disasters |
@@ -55,7 +58,8 @@ The rain directly kills exposed civilians, poisons water and food, and destroys 
 
 ### Observe
 
-The player opens the Acid Rain category and its map window to see current front footprints, warning regions, movement windows, severe cells, world coverage, Event 33 casualties, Event 33 contamination additions, and national Preparedness.
+The player opens the Acid Rain category and its world map to see where the rain is, where it goes next and when, whether a severe storm is forecast over their territory, how far the rain has crossed the world, what it has cost them, and their own Preparedness.
+Part 6 lists exactly which values appear.
 
 ### Prepare
 
@@ -94,13 +98,11 @@ When rain leaves a state, acute exposure ends and environmental aftermath remain
 
 Formation and regional movement exist in every ordinary firing. Later phases depend on enabled evolutions and Chaos progression.
 
-## Two active player values
+## One managed value and one progress readout
 
-### World Coverage
+### Preparedness, the managed value
 
-World Coverage is the number of frozen valid states touched at least once divided by the frozen eligible-state count. It is global, exact, persistent, and cannot decrease.
-
-### Preparedness
+Preparedness is the only value the player manages.
 
 Preparedness is a national value from 0 to 100. It is calculated from the four component tiers:
 
@@ -111,7 +113,15 @@ Preparedness is a national value from 0 to 100. It is calculated from the four c
 
 Each component tier contributes one quarter of its component weight. The display rounds only after the exact component result is calculated.
 
-Casualties and Event 33 contamination are read-only counters. Front intensity is qualitative on each front card. These do not become extra managed values.
+### World Coverage, the progress readout
+
+World Coverage is the number of frozen valid states touched at least once divided by the frozen eligible-state count.
+It is global, exact, persistent and cannot decrease.
+The player cannot change it; it tells them how far the rain is from being able to disperse.
+
+Casualties and the rain's Air Contamination are read-only history.
+Front intensity is a qualitative band.
+None of them becomes an extra managed value.
 
 ## Ordinary success and failure
 

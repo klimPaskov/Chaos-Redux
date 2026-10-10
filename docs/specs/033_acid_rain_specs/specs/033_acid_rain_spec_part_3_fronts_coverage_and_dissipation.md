@@ -1,5 +1,8 @@
 # Event 033 Acid Rain, Part 3, fronts, coverage, and dissipation
 
+Status: `implemented` in source with the values below in `acid_rain_coverage`, `acid_rain_front_timing`, `acid_rain_region_weight` and `acid_rain_dissipation`.
+Whole-campaign coverage on the real map is a user live check.
+
 ## Front meaning
 
 An ordinary front has two scales:
@@ -147,7 +150,7 @@ Evolution III closes ordinary front slots and warnings, then begins a short tran
 - existing severe cells end as ordinary cells
 - on transition day, every frozen eligible state becomes active and touched
 - the global opening-shock receipt is set only when the next exposure pulse resolves
-- two initial superstorm regions are selected after the transition shock
+- two initial superstorm forecasts are created after the transition shock, each with the nine-day lead of Part 7
 
 The global phase uses the frozen eligible registry directly. It does not duplicate every state into three front arrays.
 
@@ -235,3 +238,10 @@ A 10,000-run abstract movement test used seven region sizes totaling 1,050 valid
 | 3 | 248 days | 288 days | 342 days |
 
 No run retained an untouched state after the movement safety limit. These results are planning evidence, not an engine benchmark. Runtime testing must repeat the check against the real map registry and scripted selection weights.
+
+## Implementation notes
+
+- First footprint (2026-10-08 formation-opening repair, recorded in [the runtime resume](../../../plans/033_acid_rain_plans/runtime_resume_2026_10_08.md)): a regional front has its footprint on the day it forms, including a split front once its seven-day notice has elapsed, and no mortality pulse runs at birth.
+- Only later destinations receive the seven-day warning; a front never announces the region it is born in.
+- Connected growth exhausts every reachable untouched neighbour before it seeds one disconnected island state per real stall.
+- Region-bounded traversal uses the frozen region index of Part 2 (D19), so front work reads only the front's own region.

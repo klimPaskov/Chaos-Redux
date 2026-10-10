@@ -1,5 +1,8 @@
 # Event 033 Acid Rain state population loss contract
 
+Status: `implemented` through one gateway with Deaths reason 34; Part 4 owns the invariant and this matrix owns its transaction steps and failure cases.
+Observing the population change in a running game is a user live check.
+
 ## Hard result
 
 Every positive Event 33 mortality pulse must remove real civilian population from the affected state. The population transaction and the death record are one operation. A mortality implementation fails when it changes only a modifier, a manpower pool, an attrition value, a counter, or localisation.

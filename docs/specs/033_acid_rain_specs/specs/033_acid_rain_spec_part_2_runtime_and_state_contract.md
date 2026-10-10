@@ -1,24 +1,22 @@
 # Event 033 Acid Rain, Part 2, runtime and state contract
 
+Status: `implemented` in source.
+The fact lists below are the contract; exact variable names live in `common/scripted_effects/033_acid_rain_effects.txt` and the event overview.
+Native scheduling, save and reload, multiplayer determinism and performance are user live checks.
+
 ## Ownership model
 
 Event 33 owns one global runtime, up to three ordinary fronts, one global-layer state, national preparedness records, state exposure records, and permanent event history. No country owns the world scheduler. The host-authoritative global scope advances fronts and state pulses.
 
-## Runtime schema
+## Runtime identity
 
-Use a versioned schema from the first implementation. Suggested identity:
-
-- `global.acid_rain_schema_version`
-- accepted first complete schema value `1`
-- `acid_rain_active`
-- `acid_rain_dissipating`
-- `acid_rain_recovery_tail_active`
-
-Every initialization, load reconciliation, migration, and cleanup path checks the schema before mutating arrays.
+The implemented runtime is identified by `global.acid_rain_generation_id`, which separates consecutive generations, and by the global flags `acid_rain_runtime_active`, `acid_rain_registry_frozen` and `acid_rain_runtime_resolved`.
+The registry schema version is `acid_rain_event.registry_schema_version = 1`.
+Every initialization, load reconciliation, migration and cleanup path checks the current generation before mutating arrays.
 
 ## Global variables
 
-The final names can follow repository naming standards, but the runtime must hold these facts:
+The runtime holds these facts:
 
 | Fact | Persistence | Purpose |
 | --- | --- | --- |
@@ -305,4 +303,5 @@ Acceptance basis: agent decisions recorded in `docs/plans/033_acid_rain_plans/ag
 - Registry arrays (D9): every indexed registry is cleared and resized to its bound when it is initialised, because an indexed `set_variable` only changes an existing element; severe-cell and superstorm slots start retired so allocation treats them as free.
 - Region index (D19): formation builds `global.acid_rain_region_ordered_states`, the frozen states grouped by region in registry order, with half-open bounds per region; `acid_rain_prepare_region_cursor` rebuilds it for another generation or an older save. Front warnings, arrivals, departures, footprint growth and retirement, front completion and severe-cell pools read only the front's region slice, which meets the active-footprint budget above while visiting the same states in the same order as a full scan.
 - Superstorm map regions (D16): each superstorm slot records the region of its seed state in `global.acid_rain_superstorm_region_entries` at creation and clears it on retirement.
+- Region chunks (2026-10-09 traversal repair, recorded in [the runtime resume](../../../plans/033_acid_rain_plans/runtime_resume_2026_10_08.md)): the region index also stores numeric chunk starts so every regional traversal runs in batches of at most 1,000 indices, the installed `MAX_EFFECT_ITERATION`, and a large region never loses its suffix; a same-generation index without chunk metadata is rebuilt once.
 - Concurrent operations (D6, D10): national families hold one row each in `acid_rain_op_*_entries` and complete through their own events (`chaosx.nr33.42` to `chaosx.nr33.46`); evacuations and recovery work are state operations completed by the state event `chaosx.nr33.47`.

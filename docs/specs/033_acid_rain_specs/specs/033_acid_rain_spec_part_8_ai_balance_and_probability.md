@@ -1,5 +1,8 @@
 # Event 033 Acid Rain, Part 8, AI, balance, and probability
 
+Status: decision AI `implemented` in source, including the 2026-10-09 useful-window guard; the named-scenario probability comparison at the current source pins is pending with the probability auditor.
+This part owns the probability workflow; prompts point here instead of restating it.
+
 ## AI objective
 
 The AI should prepare before exposure, respond to warnings, protect high-value and high-population states, preserve enough resources for war, and finish recovery. It should not spend every train or support-equipment item because a front exists on another continent.
@@ -250,20 +253,7 @@ Do not hide balance numbers in event options or GUI scripts.
 
 ## AI acceptance cases
 
-At minimum, prove:
-
-- fragile peaceful minor before distant front
-- fragile minor under active invasion
-- island country with convoy shortage
-- landlocked country with no convoys
-- established country with two simultaneous warnings
-- major at war with low support equipment
-- major in global layer with several severe forecasts
-- occupied state whose controller changes during evacuation
-- country with strong CBRN civilian protection
-- country with no aftermath but unfinished preparation project at dissipation
-
-The full case matrix is in `matrices/033_acid_rain_ai_acceptance_matrix.md`.
+The twenty cases A1 to A20 are owned by `matrices/033_acid_rain_ai_acceptance_matrix.md`.
 
 ## Accepted implementation decisions, 2026-10-04
 
@@ -271,4 +261,6 @@ Acceptance basis: agent decisions recorded in `docs/plans/033_acid_rain_plans/ag
 
 - Decision AI (D15): a project two tiers above the country's weakest component scores x0.40; Medical Surge scores x1.75 once rain deaths pass 0.02 percent of the starting population; evacuation scores x1.40 for states of at least one million people, x1.25 for infrastructure below 3, and x0.35 when an evacuation started today would finish after impact (each forecast stores the latest useful start day); recovery follows the state's main burden (transport when transport points are the larger structural burden, industry when factory points are larger, decontamination when no structural damage remains); protections in force cannot be bought again; the AI does not demobilize mid-crisis while projects run.
 - Urgent actions that cannot affect any remaining pulse are kept out by visibility: they disappear when no warning, exposure or forecast remains and when dissipation is pending.
-- Probability evidence: `hoi4.probability_inspect` with adapter `decision_ai_will_do` on the Event 033 decision file returned `INTERNAL_ERROR` on 2026-10-04, so no probability-route baseline or comparison exists; this route error is the recorded blocker.
+- Probability evidence history: `hoi4.probability_inspect` with adapter `decision_ai_will_do` returned `INTERNAL_ERROR` on 2026-10-04; later inspections selected the mission adapter for the thirteen timed response rows and produced partial baselines with unresolved model inputs, recorded under `validation/probability/` in the plans folder.
+- Useful windows (2026-10-09, [handoff](../../../plans/033_acid_rain_plans/subagent_handoffs/useful_windows_probability_2026_10_09.md)): AI urgent scoring and the start transaction's pre-debit check share the same usefulness predicates, reading frozen controlled states, current-generation sources and actual pulse clocks; known expired sources and mortality protection that cannot lower a whole-person request are rejected, water's aftermath benefit and transport's structural protection stay useful at zero mortality, and human choices, quotes and reserves are unchanged.
+- The independent same-named comparison at the current pins is pending and is recorded in that handoff when it lands.

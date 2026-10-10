@@ -1,5 +1,8 @@
 # Event 033 Acid Rain decision cost matrix
 
+Status: `implemented`; every value matches `acid_rain_project_cost`, `acid_rain_urgent_cost` and `acid_rain_recovery_cost` in `common/script_constants/033_acid_rain_constants.txt`.
+This matrix owns costs and durations; README open question 2 proposes shorter urgent durations or partial early protection and changes nothing until accepted.
+
 ## Cost rules
 
 Permanent projects use `band multiplier × next-tier multiplier` for physical costs. Duration uses the next-tier duration factor and does not use the country band. Civilian factories are temporary commitments. Manpower is temporarily reserved and returned once. Other listed physical resources are consumed.
@@ -159,4 +162,4 @@ Urgent costs also use the final country-band multiplier, then round up. They do 
 - Civilian factory commitments release once.
 - A land and island variant are mutually exclusive.
 - No action uses more than four spendable resource types.
-- Final constants can change after in-engine balance tests, but the resource families and hard limits remain.
+- Constants can change after balance review, but the resource families and hard limits remain.

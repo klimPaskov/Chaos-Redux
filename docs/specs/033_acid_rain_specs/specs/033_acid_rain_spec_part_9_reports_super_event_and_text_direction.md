@@ -2,25 +2,28 @@
 
 ## Event graph
 
-The final numeric event IDs require a repository collision audit. Keep the existing `chaosx.nr33` namespace unless that audit finds a conflict. The preferred logical graph is:
+Status: `implemented` in `events/033_acid_rain.txt` under the `chaosx.nr33` namespace.
+The report facts listed below are implemented through D25 to D27, D32 and D35.
 
-| Logical event | Scope | Purpose |
+| Event | Scope | Purpose |
 | --- | --- | --- |
-| Formation dispatcher | Hidden country or global-safe dispatcher | Starts the runtime and super-event |
-| National first arrival | Country report | First controlled state enters an ordinary or global footprint |
-| Advance region warning | Country report | A revealed destination contains controlled states |
-| Severe-cell forecast | Country report | One or more controlled states are forecast targets |
-| Severe-cell impact | Country report | Reports actual severe outcome and preparation effect |
-| Casualty threshold | Country report | Reports cumulative national Event 33 losses |
-| Preparation success | Country report | Reports a material prevented-loss estimate |
-| Front departure | Country report | Final acute state leaves current country responsibility |
-| Multiple-front split | Global report or news | Evolution II transition |
-| Global-layer warning | Global report or news | Evolution III three-day transition |
-| Global layer begins | Global report or news | Every valid state becomes active |
-| Dissipation | Global report or news | Acute atmospheric system closes |
-| Recovery completion | Country report | Final national aftermath and commitment closes |
+| `chaosx.nr33.1` | Root recipient | Formation dispatcher; starts the runtime and latches the launch origin |
+| `.20` to `.23`, `.30` to `.33`, `.41` | Hidden | Host worker and lifecycle steps |
+| `.42` to `.46` | Hidden country | National operation completions (Shelter Protocols, water, medical, transport, demobilization) |
+| `.47` | Hidden state | Evacuation and state recovery completion |
+| `.101` | Country report | First arrival over the country's territory |
+| `.102` | Country report | Advance warning, once per front visit |
+| `.103` | Country report | Severe cell or superstorm forecast, once per episode, with the forecast cue |
+| `.104` | Country report | Severe impact, once per episode |
+| `.105` | Country report | Casualty threshold |
+| `.106` | Country report | Preparation success |
+| `.107` | Country report | Departure, or a temporary respite while a warning remains |
+| `.108`, `.111` to `.114` | World notice to every player | Severe Storm Cells, A Global Acid Layer Forms, Global Acid Rain, The Front Divides, The Rain Concentrates |
+| `.109` | Country report to participants | Dissipation summary |
+| `.110` | Country report | Recovery work completed in a state |
+| `.201` to `.205` | News | Formation, second front, third front, global layer, final dispersal |
 
-Routine drift pulses, state entries, and state exits remain scripted effects. They do not each require visible events.
+Routine drift pulses, state entries and state exits remain scripted effects and never raise popups.
 
 ## Report ownership
 
@@ -30,6 +33,7 @@ The original owner can receive a separate strategic summary only when the shared
 
 ## Formation super-event
 
+Status: `implemented` as super-event `117` with its audio, image, title, quote and allusion.
 Event 33 receives one mandatory super-event at atmospheric formation.
 
 ### Trigger
@@ -47,45 +51,26 @@ Do not show it during a failed initialization or old-save repair.
 
 A wide 457 by 328 scene of a 1930s or 1940s capital under dark corrosive rain. Use damaged stone, stained metal, flooded streets, civilians moving toward shelters, civil-defense workers in period protective equipment, and a low cloud ceiling. The scene should communicate world-scale danger without modern hazmat suits, neon green rain, or science-fiction machinery.
 
-### Title direction
+### Text
 
-Use a short atmospheric title that names the global phenomenon. Avoid a comic disaster pun. Keep the phrase readable at super-event scale.
+Title: "Acid Rain".
+Quote: Robert Angus Smith, *Air and Rain* (1872), p. 444, verified and recorded in `research/033_acid_rain_science_and_source_research.md`.
+Allusion: "For the rain it raineth every day," Shakespeare, *Twelfth Night*.
+Keys: `chaosx_super_event.117.t`, `.q`, `.a` and `.d` in `localisation/english/033_acid_rain_l_english.yml`.
 
-### Quote research candidate
+### Audio
 
-A verified public-domain source candidate from Robert Angus Smith's 1872 *Air and Rain* is:
+The cue is an 80-second excerpt (61.5 to 141.5 seconds) of the Wikimedia Commons public-domain recording of Mussorgsky's *Night on Bald Mountain*, confirmed public domain worldwide by Wikimedia VRT ticket 2008012110017088.
+It ships as `sound/033_acid_rain/super_event_033_acid_rain_formation.wav` and `.ogg`, playback ID 117 is exclusive to Event 033, and the conversion, loudness, uniqueness and audition record is in `music/chaosx_music_track_list.html`.
+Hearing it in game is a user live check.
 
-> “I was led to attribute this effect to the slow, but constant, action of the acid rain.”
+### Change rule
 
-This is research evidence, not locked localization. The super-event text researcher must recheck the scan, punctuation, attribution, length, and visual fit before final use.
-
-### Audio direction
-
-The cue should be one to two minutes, orchestral or documentary in tone, with an immediate threatening opening and enough space for the quote and image. It must use a real recording with verified rights and a unique event-specific sound path.
-
-A rights-verified candidate is the Musopen recording of Mussorgsky's *Night on Bald Mountain* hosted by Wikimedia Commons. The full recording is 12 minutes 13 seconds and is marked public domain for the composition and recording. No excerpt is locked because this planning pass did not audition the audio. The audio specialist must listen, select a coherent excerpt of two minutes or less, document timestamps, and verify that the recording is not already used by another Chaos Redux super-event.
-
-### Super-event completion data
-
-The final handoff records:
-
-- super-event registry ID
-- root trigger effect
-- title key
-- quote key
-- image sprite ID and texture path
-- sound effect ID
-- audio wrapper event ID if the framework requires one
-- source page
-- license or public-domain proof
-- selected excerpt start and end
-- converted WAV and OGG paths
-- entry in `music/chaosx_music_track_list.html`
-- multiplayer presentation behavior
+Any replacement quote, allusion or recording must carry the same source, rights, uniqueness and audition record before it replaces the current one.
 
 ## Advance warning report
 
-Send one warning per front and destination country. It states:
+Send one warning per front visit and destination country, so a return to the same region warns again (D25). It states:
 
 - destination region
 - estimated arrival window
@@ -115,16 +100,10 @@ Send once per country per severe episode when at least one forecast state is und
 
 ### Impact
 
-Send after the first severe exposure pulse. It reports:
+Send after the first positive severe or superstorm pulse of each episode in the country's territory. It names the state, says whether its evacuation finished, is under way with partial protection or is absent, gives the country's deaths so far with the estimated deaths prevented, and gives the days left in the episode (D26, D27).
 
-- applied deaths so far
-- estimated prevented deaths
-- building damage points
-- evacuation status
-- shelter and medical contribution
-- severe-cell end window
-
-A later end summary can be folded into the departure report instead of creating a third popup.
+The report shows no building damage points or per-component contribution figures, because neither changes what the player can do while the cell lasts; the damage reaches the player through the aftermath tier and the recovery decisions.
+A later end summary is folded into the departure report instead of creating a third popup.
 
 ## Casualty-threshold report
 
@@ -208,7 +187,7 @@ Most reports need one acknowledgment option and a category link. Add a policy ch
 
 ### Localization boundary
 
-This package supplies purpose, facts, tone, and source candidates. Final pasteable localization belongs in implementation and must pass the localisation auditor.
+This package supplies purpose, facts, and tone. Final localisation lives in `localisation/english/033_acid_rain_l_english.yml` and must pass the localisation auditor.
 
 ## Report cooldown ledger
 

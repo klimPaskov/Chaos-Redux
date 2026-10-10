@@ -128,17 +128,12 @@ Verified source excerpt:
 
 > “I was led to attribute this effect to the slow, but constant, action of the acid rain.”
 
-Use direction:
+Status: adopted as the super-event 117 quote with the attribution "Robert Angus Smith, Air and Rain (1872), p.444" after the text researcher's scan check.
+It fits corrosion and slow damage, belongs to early acid-rain research and is short enough for the super-event window.
 
-- strong thematic fit for corrosion and slow damage
-- historically tied to early acid-rain research
-- short enough for a super-event quote
-- the final text researcher must verify punctuation and scan context again
-- this research file does not lock the quote as final localization
+## Audio source research
 
-## Audio candidate research
-
-### Candidate
+### Recording
 
 Modest Mussorgsky, *Night on Bald Mountain*, Musopen recording hosted by Wikimedia Commons.
 
@@ -162,16 +157,8 @@ Fit:
 - can support a severe atmospheric image
 - period-neutral classical recording
 
-Unresolved work:
-
-- listen to the full recording
-- select a coherent excerpt no longer than two minutes
-- verify final start and end do not cut a phrase badly
-- verify it is unused by another Chaos Redux super-event
-- verify final conversion volume and loop behavior
-- preserve source and rights evidence in the audio catalogue
-
-This remains a candidate. It is not a final audio selection without audition.
+Status: adopted after audition as an 80-second excerpt from 61.5 to 141.5 seconds, exclusive to Event 033 as playback ID 117.
+The rights record (Wikimedia VRT ticket 2008012110017088), hashes, gain, fades and audition evidence are in `music/chaosx_music_track_list.html`.
 
 ## Research-to-design map
 
@@ -183,7 +170,7 @@ This remains a candidate. It is not a final audio selection without audition.
 | Fine particles and acid mist harm respiratory systems | Medical and protective capacity, shelter protocols, sustained mortality |
 | Aluminum and nutrient loss harm ecosystems | Resource and environmental aftermath penalties |
 | Corrosion is cumulative | Fractional damage-pressure accumulator instead of one massive daily roll |
-| Early acid-rain quote is public domain | Candidate super-event source with full attribution |
+| Early acid-rain quote is public domain | Adopted super-event quote with full attribution |
 
 ## Source handling rules
 

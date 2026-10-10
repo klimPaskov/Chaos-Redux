@@ -1,5 +1,7 @@
 # Event 033 Acid Rain requirement traceability
 
+Each gate in the last column has agent evidence and, where it needs the running game, a user live check (Part 12).
+
 | Accepted requirement | Primary specification | Supporting artifact | Acceptance proof |
 | --- | --- | --- | --- |
 | Event ID 33, Major, Chaos level 2 | Part 1 | Catalog alignment | Gate 1 |

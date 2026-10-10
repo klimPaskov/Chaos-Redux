@@ -1,5 +1,7 @@
 # Event 033 Acid Rain AI acceptance matrix
 
+Status: decision AI `implemented`; the named-scenario probability comparison for these cases is pending under Part 8.
+
 | Case | Starting conditions | Expected permanent behavior | Expected urgent behavior | Expected recovery behavior | Failure condition |
 | --- | --- | --- | --- | --- | --- |
 | A1 | Fragile peaceful minor, distant front | Start one payable Shelter or Water tier, keep two free civilian factories when possible | None until threat rises | None | Spends all trains or cannot start any project |

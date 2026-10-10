@@ -1,10 +1,33 @@
 # Event 033 Acid Rain, Part 6, scripted GUI and presentation
 
+Status: `implemented` in source as `acid_rain_world_window` and `acid_rain_category_inlay` (`interface/033_acid_rain.gui`, `common/scripted_guis/033_acid_rain_scripted_guis.txt`, `common/scripted_localisation/033_acid_rain_scripted_localisation.txt`).
+The D37 regional state strips are `accepted and queued`.
+The player-facing value budget below is a 2026-10-10 audit proposal made under the user's brief to remove values that do not drive a decision; it needs parent acceptance before the implemented surfaces it trims change.
+Layout, hover and animation playback are user live checks.
+
 ## Interface goal
 
 The Acid Rain interface gives one readable global map and one national preparedness summary. It does not replace the strategic map or ask the player to manage hundreds of state buttons.
 
 Use a dedicated scripted GUI opened from the Acid Rain decision category and from the Event 33 Event Details page. The category itself uses a full background and a compact inlay summary so the player can see critical information without opening the larger window.
+
+## Player-facing value budget
+
+Disposition: `unresolved` proposal (README open question 3).
+
+Every value on the map, inlay or tooltips must answer one of three player questions: is the rain coming for me and when, what should I buy or repair now, and what has it cost.
+Values that only describe the weather engine stay internal and appear in the debug overlay.
+
+| Surface | Keeps | Removes from player view |
+| --- | --- | --- |
+| Category inlay | Phase, World Coverage, Preparedness, one status line naming exposure, a storm forecast or a warning with the country's state counts | Nothing |
+| National strip | Preparedness with four component pips; exposed, warned and forecast state counts; aftermath state count; national deaths; estimated deaths prevented | The national Air Contamination line, which repeats a world value the country cannot change |
+| World ledger | Worldwide deaths and the Air Contamination the rain has added | Current global Air Contamination, which belongs to the Air Cleanliness interface, and the rain's remaining Air allowance, which is an internal cap |
+| Front card | Front number, region, intensity band, days until it moves, destination once announced, severe-cell alert | The front's active-state count |
+| Global card | One line saying when the layer can begin to break up, then "may break up at any time"; the superstorm list with region and days to impact or active | Days since the transition and the separate minimum-period and next-check clocks |
+| Region tooltip | States reached out of the states in the rain's path there; the weather over the region (front, intensity, severe cell) or approaching it with days until arrival; the global layer | The visit quota, the states first reached on this visit and the states under rain now |
+
+The removed facts stay in stored state and in the debug overlay, so balance and acceptance checks keep their evidence.
 
 ## Layout target
 
@@ -73,18 +96,10 @@ Each ordinary front receives:
 
 Marker location can use a reviewed region anchor or one of several anchor points per region. It should not imply exact state-level placement when the map cannot render state geometry.
 
-### State footprint summary
+### Region summary
 
-Hovering a current region shows:
-
-- active states in this front
-- unique states touched during current visit
-- untouched states remaining in the region
-- region total eligible states
-- current visit quota
-- severe-cell state count
-
-The GUI reads stored counters. It does not scan states on hover.
+Hovering a region shows the facts the value budget keeps for the region tooltip.
+The GUI reads stored counters and does not scan states on hover.
 
 ## Coverage display
 
@@ -97,42 +112,18 @@ The coverage bar uses exact touched and eligible counts. Display:
 
 Below the bar, seven compact rows show each region's touched and total counts. A completed region receives a clear icon, but completion does not imply the front cannot revisit it.
 
-## National strip
+## National strip and world ledger
 
-The selected player country sees:
-
-- Preparedness from 0 to 100
-- four component tier pips
-- exposed state count
-- severe-warning state count
-- unresolved aftermath state count
-- Event 33 national deaths
-- estimated deaths prevented
-
-Only Preparedness is an active national value. The other entries are status or history.
-
-## Global counters
-
-Show these read-only values:
-
-- Event 33 global deaths
-- Event 33 lifetime Air Contamination added
-- remaining Event 33 lifetime Air allowance
-- current global Air Contamination
-
-The lifetime addition line is the authoritative answer to how much contamination Event 33 contributed. Current event source pressure can remain in the Air Cleanliness source details instead of crowding this window.
+The selected player country sees the national strip and world ledger values listed in the value budget.
+Only Preparedness is a managed national value; the counts are status and the deaths are history.
+The estimated deaths prevented stays because it is the feedback that shows whether Preparedness is worth its cost; it is always labelled as an estimate.
+The Air Contamination the rain has added is the answer to how much contamination Event 33 contributed.
 
 ## Front cards
 
 ### Ordinary front card
 
-- front ID
-- current region
-- intensity band
-- active-state count
-- movement-window countdown
-- next region when revealed
-- severe-cell status
+The card shows the front-card values in the value budget.
 
 ### Multiple-front phase
 
@@ -140,15 +131,7 @@ Show two cards by default. If the third front exists, reduce card height without
 
 ### Global-layer card
 
-Replace ordinary cards with:
-
-- global layer active status
-- days since global transition
-- minimum duration remaining
-- next dissipation check window when eligible
-- active superstorm count
-- strongest superstorm band
-
+Replace ordinary cards with one global card that shows the global-card values in the value budget.
 Superstorms use a small bounded list below the global card.
 
 ## Severe-cell presentation
@@ -202,7 +185,7 @@ Examples:
 
 - Coverage tooltip explains first-touch tracking and the dissipation gate.
 - Preparedness tooltip shows four component contributions.
-- Contamination tooltip explains the 1500 bp lifetime cap and 5000 bp event ceiling.
+- Contamination tooltip says in words that the rain adds at most 15 points of Air Contamination and never pushes the world above 50 percent.
 - Front timer tooltip distinguishes estimated movement window from fixed warning destination.
 - Severe-cell tooltip explains forecast, active duration, and local evacuation.
 
@@ -223,7 +206,7 @@ Icons must remain readable in grayscale and at the 32 by 32 decision scale.
 2. Super-event opens for all players through the standard framework.
 3. The Acid Rain category becomes visible.
 4. The first affected countries receive arrival reports on the next safe report day.
-5. The GUI opens automatically only for the player whose selected country has an active or warned state, unless the global settings request major-event windows for all players.
+5. The GUI opens automatically once per generation for each player whose country has an exposed or warned state (D28); the mod has no setting that opens major-event windows for every player.
 
 ## Multiplayer behavior
 
@@ -258,10 +241,12 @@ A debug-only overlay can show:
 - stable front IDs
 - exact region IDs
 - active-state counts
-- visit quotas
+- visit quotas and visit progress
 - untouched counts
 - next pulse dates
-- schema version
+- global minimum-period and next-check clocks
+- remaining Air allowance
+- generation ID
 
 It is hidden from normal players and reads existing state only.
 
@@ -273,4 +258,7 @@ Acceptance basis: agent decisions recorded in `docs/plans/033_acid_rain_plans/ag
 - Front markers (D24): each ordinary front's markers sit at the same region anchors, on the region the front covers or is about to reach, and move with the front.
 - Global layer and veil (D17): the global layer is an eight-frame sheet of three separated cloud banks that leaves the map readable; the warning veil uses defringed art at the original mean opacity of about 46.
 - Footer navigation (D18): HOI4 script cannot open the decisions panel, so category return is a Back button that closes the map and reveals the view that opened it, the decision category or Event Details, with a tooltip naming that view. Details closes the map and opens the Event 33 page in Event Details through the shared Event Log entry points, and is hidden when the map was opened from Event Details.
-- Render route limit: `hoi4.gui_render` refuses 1920x1080 for this window under its fixed aggregate pixel budget, so matched renders use 1366x768 at UI scale 1.
+- Render route history: on 2026-10-04 `hoi4.gui_render` refused 1920x1080 for this window under its aggregate pixel budget, so the D16 to D18 renders used 1366x768; later reviews retain 1920x1080 renders (for example `validation/gui_current_2026_10_07/regional_one_1920_v3/` in the plans folder), so that limit is not a current route claim.
+- Region tooltips and status line (D33) and Event Details status (D34) are implemented; the value budget above proposes trimming parts of D33.
+- Severe forecast cue (D29): each forecast over a player's territory plays one thunder cue at the super-event audio volume setting.
+- Regional state strips (D37, `accepted and queued`): the seven region overlays become four-frame static strips (inactive, visited, approaching, active) at the same sprite names, replacing the broad ordinary, warning and visited veils.

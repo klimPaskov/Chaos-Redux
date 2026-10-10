@@ -2,7 +2,19 @@
 
 ## Acceptance principle
 
-Event 33 is complete only when independent Major firing, cluster firing, all three evolutions, decisions, GUI, audio, assets, save migration, AI, and cleanup pass together. A working formation popup with placeholder movement is not a completed rework.
+Event 33 is complete only when independent Major firing, cluster firing, all three evolutions, decisions, GUI, audio, assets, save migration, AI and cleanup work together.
+A working formation popup with placeholder movement is not a completed rework.
+
+## Evidence ownership
+
+Agents never launch Hearts of Iron IV.
+Each gate below is proved in two layers:
+
+- Agent evidence: source review, offline source replays and fixtures, `.tools/validation/validate_033_acid_rain.py`, HOI4 MCP inspections and renders, probability comparisons, and asset file checks.
+- User live checks: anything that needs the running game, including observed population removal, long campaigns, save and reload, real old saves, multiplayer, performance, hover and tooltip display, animation playback and listening to audio.
+
+An agent completion claim needs every gate's agent evidence and no known defect; it lists the user live checks as pending verification and never reports them as passed.
+Current agent evidence and its limits are recorded in the plans folder, chiefly [the runtime resume](../../../plans/033_acid_rain_plans/runtime_resume_2026_10_08.md).
 
 ## Gate 1, registration and availability
 
@@ -82,7 +94,7 @@ Pass when:
 - successful dissipation blocks new cells, fronts, and contamination requests in the same transaction
 - recovery tail can remain after acute closure
 
-Run at least 10,000 synthetic movement trials per front count and one long in-engine observer campaign per evolution stage.
+Agents run at least 10,000 synthetic movement trials per front count; one long campaign per evolution stage is a user live check.
 
 ## Gate 6, mortality and Deaths
 
@@ -103,7 +115,8 @@ For every exposure type verify:
 - changing only `local_manpower`, recruitable population, generic manpower, unit attrition, or counters fails the gate
 - no duplicate direct Chaos for deaths
 
-Test a tiny state, a protected-floor state, a very dense state, an occupied state, an active-combat state, full preparation, no preparation, repeated visits, Deaths logging disabled, and a deliberate duplicate scheduler call. Capture before and after state population for every case.
+Agent evidence replays the gateway for a tiny state, a protected-floor state, a very dense state, an occupied state, an active-combat state, full preparation, no preparation, repeated visits, Deaths logging disabled and a deliberate duplicate scheduler call.
+Observing the before and after state population in a running game is a user live check.
 
 A build that reports civilian deaths without reducing real state population is rejected even if every other Event 33 surface works.
 
@@ -120,7 +133,7 @@ Pass when:
 - severe cell overrides ordinary band without losing parent-front history
 - leaving acute exposure calculates one aftermath tier
 - recovery lowers tiers and cannot overrepair
-- Humanitarian source registration and removal are balanced
+- Humanitarian requests register once per accepted transaction and a rejected request can retry; source removal follows the outcome of README open question 1
 
 ## Gate 8, Preparedness and decisions
 
@@ -144,7 +157,7 @@ For urgent and recovery actions verify target validity, duration, cooldown, part
 Pass when:
 
 - formation uses actual applied delta
-- weekly requests use stored coverage and intensity
+- weekly requests use the active world share and the open fronts' average intensity (D30)
 - lifetime counter equals sum of actual Event 33 additions
 - lifetime counter never exceeds 1500 bp
 - Event 33 never raises global total above 5000 bp
@@ -273,7 +286,7 @@ For audio verify:
 - WAV and OGG conversion
 - sound registration
 - audio catalogue entry
-- in-game volume and stop behavior
+- in-game volume and stop behavior (user live check)
 
 ## Gate 16, achievements
 
@@ -291,7 +304,7 @@ For all ten achievements verify:
 
 ## Gate 17, old-save migration
 
-Test four saves:
+Agent evidence replays the migration helper for four save states; loading real saves of each kind is a user live check:
 
 - prototype never fired
 - prototype active with valid current region and acute states
@@ -311,7 +324,8 @@ Pass when:
 
 ## Gate 18, multiplayer and determinism
 
-Test two-player and four-player games with different countries.
+Agent evidence covers host-authoritative scheduling, read-only GUI actions and stable ordering in source.
+Two-player and four-player games with different countries are user live checks.
 
 Pass when:
 
@@ -324,6 +338,8 @@ Pass when:
 - cluster sequence and Major pacing remain identical for all players
 
 ## Gate 19, documentation and catalog alignment
+
+Status: met for the catalog row, cluster row, exports, cluster and Air documentation and the audio catalogue; repeat it after any catalog-visible change.
 
 Pass when:
 
@@ -339,9 +355,8 @@ Pass when:
 
 ## Required specialist review
 
-Before acceptance, route final work through:
+Before acceptance, route final work through the roles below; the repository explorer is used only when file locations or patterns are unclear:
 
-- repository explorer
 - scripted-system architect
 - decision and mission auditor
 - AI probability auditor
@@ -358,4 +373,5 @@ Each reviewer works from the completed implementation and returns concrete findi
 
 ## Completion definition
 
-Event 33 is accepted when every gate above passes, all required assets and audio exist, no critical validation issue remains, the catalog source is aligned, and the old daily prototype path is absent from active runtime.
+Event 33 is accepted when every gate's agent evidence passes, all required assets and audio exist, no critical validation issue remains, the catalog source is aligned and the old daily prototype path is absent from active runtime.
+User live checks are tracked as pending verification until the user reports them.

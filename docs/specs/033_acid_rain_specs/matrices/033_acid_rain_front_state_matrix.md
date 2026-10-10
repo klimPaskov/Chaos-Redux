@@ -1,5 +1,7 @@
 # Event 033 Acid Rain front and phase state matrix
 
+Status: `implemented` in source; the runtime phase constants are `acid_rain_phase` (formation, regional, global warning, global, aftermath, dissipation, closed).
+
 ## Global phase machine
 
 | State | Entry trigger | Required entry work | Scheduled work | Allowed exits | Invalid-state response |

@@ -1,5 +1,10 @@
 # Event 033 Acid Rain, Part 10, assets, animation, and achievements
 
+Status: assets delivered and registered in `interface/033_acid_rain.gfx`; the inventory with sprite names is in the event overview.
+The ten achievements are `implemented` in `common/achievements/chaos_redux_achievements.txt` with dedicated effects and triggers.
+The D37 regional state strips are `accepted and queued`, and final art approval, animation playback and in-game icon readability are user checks.
+This part owns the achievement requirements; the achievement prompt points here.
+
 ## Asset direction
 
 The visual language should fit Hearts of Iron IV and Chaos Redux:
@@ -15,18 +20,19 @@ Generated art is appropriate for event scenes, decision icons, state icons, map 
 
 ## Event and report art
 
-| Asset | Size | Suggested file direction | Use |
+| Asset | Size | Delivered file | Use |
 | --- | --- | --- | --- |
 | Formation super-event | 457 by 328 | `gfx/event_pictures/super_events/033_acid_rain.dds` | Mandatory formation super-event |
-| National arrival report | 210 by 176 | `gfx/event_pictures/033_acid_rain_arrival.dds` | First national exposure |
-| Shelter response report | 210 by 176 | `gfx/event_pictures/033_acid_rain_shelter.dds` | Preparation success |
-| Severe-cell report | 210 by 176 | `gfx/event_pictures/033_acid_rain_severe.dds` | Forecast or impact |
-| Corroded transport report | 210 by 176 | `gfx/event_pictures/033_acid_rain_transport.dds` | Damage and recovery |
-| Dissipation report | 210 by 176 | `gfx/event_pictures/033_acid_rain_dissipation.dds` | Event end |
+| National arrival report | 210 by 176 | `gfx/event_pictures/033_acid_rain/033_acid_rain_arrival.dds` | First national exposure |
+| Shelter response report | 210 by 176 | `gfx/event_pictures/033_acid_rain/033_acid_rain_shelter.dds` | Preparation success |
+| Severe-cell report | 210 by 176 | `gfx/event_pictures/033_acid_rain/033_acid_rain_severe.dds` | Forecast or impact |
+| Corroded transport report | 210 by 176 | `gfx/event_pictures/033_acid_rain/033_acid_rain_transport.dds` | Damage and recovery |
+| Dissipation report | 210 by 176 | `gfx/event_pictures/033_acid_rain/033_acid_rain_dissipation.dds` | Event end |
 | Global formation news | 397 by 153 grayscale | `gfx/event_pictures/news/033_acid_rain_news.dds` | Optional news surface |
 | Global-layer news | 397 by 153 grayscale | `gfx/event_pictures/news/033_acid_rain_global_news.dds` | Evolution III milestone |
 
-One report image can serve several closely related reports when the composition remains accurate. Do not create near-duplicate files without a clear presentation need.
+One report image can serve several closely related reports when the composition remains accurate; the warning and global event sprites reuse delivered pictures.
+Do not create near-duplicate files without a clear presentation need.
 
 ## Decision icons
 
@@ -91,14 +97,8 @@ Use separate masks where changing opacity or triggered visibility is enough. Use
 
 ## Frame package
 
-Suggested naming:
-
-- `acid_rain_front_00.dds` through `acid_rain_front_11.dds`
-- `acid_rain_warning_00.dds` through `acid_rain_warning_07.dds`
-- `acid_rain_severe_00.dds` through `acid_rain_severe_07.dds`
-- `acid_rain_global_00.dds` through `acid_rain_global_11.dds`
-
-Final frame count must match sprite registration. Use zero-padded numbering and one manifest row per sequence.
+The runtime uses one frame sheet and one still partner per sequence in `gfx/interface/033_acid_rain/animation/`: `acid_rain_front_sheet.dds`, `acid_rain_warning_sheet.dds`, `acid_rain_severe_sheet.dds` and `acid_rain_global_sheet.dds`, each with its `_static.dds` partner, registered as `GFX_acid_rain_*_animated` and `GFX_acid_rain_*_static`.
+Each sheet's frame count must match its sprite registration.
 
 Animation rates require in-game visual review. The ordinary front should move slowly, while the severe warning can pulse faster without strobing.
 
@@ -254,7 +254,9 @@ Event 33 requires difficult action-based achievements. The names below are ident
 
 ## Achievement interface
 
-Event Details should list all Event 33 achievements with locked, available, completed, and disqualified status. Hidden achievements remain hidden until their reveal condition. Tooltips explain measurable requirements without exposing hidden random seeds.
+Event Details lists the viewing country's Event 33 achievements as earned, open or no longer possible (D34).
+Hidden achievements stay hidden until their reveal condition: Under One Sky once Global Acid Rain begins, No Severe Ruins once the country records a tier-3 aftermath state, and Five States, Few Dead only once earned.
+Tooltips explain measurable requirements without exposing hidden random draws.
 
 ## Accepted implementation decisions, 2026-10-04
 
