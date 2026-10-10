@@ -8,8 +8,7 @@ AI occupiers need information that their occupation administration could actuall
 Sponsors need real resources and routes.
 All actors must be able to choose a viable modest objective instead of repeatedly attempting an unaffordable grand restoration.
 
-The following rules are proposed design priorities.
-They are not measured probabilities, tested engine AI or reports from an executed probability-auditor subagent.
+The following rules are proposed design priorities, not measured probabilities.
 The exact adapter, source context and evaluation method must be established before converting a priority into a probability claim.
 A weight of 100 is a relative input, not a 100% chance.
 A nominal MTTH of 90 days is not a promise that the event fires on day 90.
@@ -73,7 +72,8 @@ A minor can fight firmly for a critical defended position when it has the means.
 Containment is favored when real local forces and supply can isolate the claimant without unacceptable diversion.
 Political settlement is favored when the claimant holds a viable national base, continued occupation consumes disproportionate resources, or the occupier faces a more dangerous war elsewhere.
 Targeted network disruption is useful only against known exposed networks.
-Civilian-service restoration is favored when a proven local grievance can actually be addressed.
+Relief through the famine actions is favored in a grievance state whose breakaway would threaten a valuable position, while requisition from a threatened home state is avoided unless the occupier's own core states are in famine.
+The AI weighs the food and political cost of relief against the military cost of containing the breakaway it prevents.
 
 The AI must not enter a costly security operation while also withdrawing the forces needed to complete it.
 It must not offer contradictory territories to two claimants or agree to a sovereignty transfer it cannot legally perform.
@@ -83,6 +83,7 @@ Shared crisis limits and operation reservations prevent overcommitment.
 ## Sponsor strategy
 
 A sponsor weighs diplomatic motive, practical access, claimant viability, equipment surplus and the consequences of the proposed agreement.
+Active participation in condemnation sanctions against the occupier counts as a motive of the same weight as being its enemy.
 An enemy of the occupier can rationally aid a nonaligned claimant.
 A former ally can prioritize returning its national forces over issuing another equipment shipment.
 A nearby neutral can prefer a political settlement or humanitarian corridor over open intervention.

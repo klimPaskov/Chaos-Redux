@@ -169,7 +169,7 @@ Alignment can improve access to reliable material and defense commitments while 
 The diversified path preserves room to negotiate but requires more work to keep supply and guarantees credible.
 
 The restoration-frontier branch concerns remaining authentic home states.
-It can prepare regional liaison, negotiate restoration, coordinate with allies or pursue supported war goals when diplomacy fails.
+It can organize remaining regions, negotiate restoration, coordinate with allies or pursue supported war goals when diplomacy fails.
 A war goal is not a promise of a safely isolated war.
 The implementation must account for guarantees, factions, subjects and current wars before presenting the consequences.
 The tree does not automatically escalate national restoration into annexing the occupier's entire homeland.

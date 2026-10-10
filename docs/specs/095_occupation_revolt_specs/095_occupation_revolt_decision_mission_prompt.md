@@ -1,7 +1,7 @@
 # Event 095 decision and mission implementation prompt
 
 Implement the complete operation map in Part 10 and its associated military, government, foreign-support, evolution and recovery behavior in Parts 03–09 and 14.
-Read current AGENTS.md, chaos-redux-decisions-missions, chaos-redux-events, chaos-redux-focus-trees, chaos-redux-state-ledgers, chaos-redux-mtth and the current universal-cost and shared-price contracts.
+Follow CLAUDE.md and read chaos-redux-decisions-missions, chaos-redux-events, chaos-redux-focus-trees, chaos-redux-state-ledgers, chaos-redux-mtth and the current universal-cost and shared-price contracts.
 Read the applicable offline wiki pages and installed native documentation before using an engine construct.
 Do not convert the design into a collection of fixed political-power buttons with nominal effects.
 
@@ -12,9 +12,10 @@ No more than three event missions are concurrent for the claimant and two for an
 Do not evade the budget through additional tabs or several duplicate variants of the same operation.
 Dormant claimants do not click decisions or spend nonexistent national resources before activation.
 
-Implement claimant preparation, military organization, regional liaison, governing settlement, national programs, foreign talks, emergency withdrawal, recovery, temporary-force settlement and verified civilian return.
-Implement occupier containment, exposed-network response, real civilian-service restoration, negotiation and withdrawal.
-Implement sponsor liaison, exact military delivery, actual personnel return or training, political agreements and justified humanitarian access.
+Implement claimant preparation, one Organize Region action used before and after the opening, military organization, governing settlement, national programs, foreign talks, emergency withdrawal, recovery and temporary-force settlement.
+Implement occupier containment, exposed-network response, negotiation and withdrawal.
+Implement sponsor liaison, exact military delivery, actual personnel return or training, and political agreements.
+Relief, evacuation, reception and civilian return are the famine and migration owners' actions; Event 095 adds no copies and reads grievance states from those owners (Part 11).
 Every operation requires an explicit owner, claimant, target, source variant, quote, commitment, deadline, success, failure, cancellation and cleanup path.
 
 Use one shared operation contract for decision, focus and event-choice access to the same program.
@@ -50,11 +51,10 @@ Use bounded tracked-state callbacks and the existing active scheduler rather tha
 
 Implement AI target selection independently from human selectors.
 Use the priority matrix and scenario plan in Part 12.
-Run the mandatory probability inspector and `chaosx_ai_probability_auditor` for the actual weighted action and timing surfaces.
-Retain immutable baseline/candidate and scenario inputs.
-A manual weight calculation is not tool-evaluated evidence.
+Use `chaosx_ai_probability_auditor`, with the probability tools where they support the adapter, for the actual weighted action and timing surfaces.
+Retain baseline/candidate and scenario inputs, and label calculations from the script as such rather than as tool evaluation.
 
 Write final decision, mission, report and tooltip copy from the concrete effects after implementation.
-Produce actual native-interface render evidence for blocked, affordable, exact-equality, in-progress, completed, failed, expired, cancelled and multi-actor states.
+Use the available interface tools, or source review where they are unavailable, for blocked, affordable, exact-equality, in-progress, completed, failed, expired, cancelled and multi-actor states; the user runs live tests.
 Report changed paths, operation IDs, exact cost and refund proof, mission and AI evidence, reference reads and unresolved blockers.
 Do not mark the system complete while a promised transfer, settlement, cost path or recovery action remains a placeholder.

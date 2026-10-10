@@ -12,7 +12,7 @@ The outcomes must remove at least 50% of the major's initially tracked occupied 
 Each qualifying restoration must remain viable for 90 days.
 Country spawns, client restorations, repeated releases and duplicate receipts do not count.
 Fire at most once per campaign.
-Verify actual registry capacity, current ownership and collision rules before choosing IDs.
+The [shared identifier registry](../shared_identifier_registry.md) reserves no super-event presentation slot for this event yet; obtain one from the registry owner before choosing IDs.
 
 The presentation should convey a consequential regional change produced by several national struggles.
 It should not suggest that every nation shares one ideology, government, flag or preferred patron.
@@ -20,7 +20,7 @@ Avoid a generic victory crowd, abstract world map or ungrounded speech as an aut
 Use the actual region and national situations to determine the final composition and text register.
 The historical research notes are inspiration, not ready-made super-event copy.
 
-Assign quote and cultural-remark research to `chaosx_super_event_text_researcher` with an isolated, narrow, self-contained prompt.
+Assign quote and cultural-remark research to `chaosx_super_event_text_researcher` through `chaos-redux-subagents` with a narrow, self-contained prompt.
 Require several genuine candidates, exact wording, attribution, source work and date, source URL, confidence, copyright assessment, fit and rejected alternatives.
 Do not invent a quotation or use an unsourced quotation site as final evidence.
 Keep actual verified quotations unchanged even where their punctuation differs from normal project prose rules.

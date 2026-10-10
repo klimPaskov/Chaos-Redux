@@ -1,7 +1,7 @@
 # Event 095 achievement implementation and asset prompt
 
 Implement the six achievements specified in Part 13 with exact tracking from Parts 04, 08 and 14.
-Read current AGENTS.md, chaos-redux-events, chaos-redux-event-assets and the relevant achievement patterns in the existing registry before assigning IDs or writing triggers.
+Follow CLAUDE.md and read chaos-redux-events, chaos-redux-event-assets and the relevant achievement patterns in the existing registry before assigning IDs or writing triggers.
 These are difficult multi-stage achievements, not rewards for merely firing the event.
 The identifiers below are proposed and require collision checks.
 Final titles and descriptions must be authored from their direction after the implementation facts are fixed.
@@ -30,8 +30,7 @@ Ordinary losses, lawful political disagreements and use of real foreign aid are 
 Implement through the existing root-only achievement registry and current native trigger/localisation conventions.
 Create only the necessary persistent flags or ledger fields with documented lifecycle and cleanup.
 Produce legitimate-unlock, principal-disqualifier, save/load and anti-replay scenarios for every achievement.
-Use required event/probability inspection where those surfaces affect achievement progress.
-Do not substitute a source grep for an executed trigger or runtime test.
+Use event and probability inspection where those surfaces affect achievement progress, and specify the cases the user runs live; a source grep is not a runtime test.
 
 For each achievement, generate one original transparent subject and retain its native source and processed centered 64×64 color layer.
 Derive the grey subject deterministically while preserving canvas and alpha.

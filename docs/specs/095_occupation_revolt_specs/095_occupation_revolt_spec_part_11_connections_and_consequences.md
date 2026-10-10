@@ -104,10 +104,27 @@ The physical population debit belongs to that owner once.
 Route deaths are recorded separately from the survivors arriving.
 Native manpower recruitment is not a civilian death or a migration cohort.
 
-Humanitarian access can reduce a proven grievance contribution when the assistance actually reaches the relevant state.
-It does not make national independence demands disappear automatically.
 A claimant can cooperate with an enemy on civilian evacuation while continuing to fight over sovereignty.
 The two transactions remain separately recorded.
+
+### Grievance states
+
+A home state is a grievance state while any of these owner facts holds: its famine Food Security is famine or catastrophic famine; the controlling occupier took Requisition Food from it, chose Continue Requisitions there or concealed hunger there within the last 180 days; it holds an active camp run by the occupier; or migration records violent border enforcement or forced repatriation by the occupier from that state within the last 180 days.
+A grievance state counts one display band higher for breakaway and opening assessment (organizing reads as prepared), and only one band however many facts apply.
+The band returns to its evidence value on the next assessment after the facts lapse, for example when the occupier's relief brings Food Security back to acute shortage or better, or the camp closes.
+Event 095 reads these facts through the owners' published state triggers and never writes their ledgers.
+
+This gives the occupier a real choice with felt costs: spend food, transport and political power through the famine actions to keep a region quiet, or squeeze it and accept that the region will be the first to rise.
+It is the only humanitarian input to revolt pressure; there is no separate Event 095 relief or grievance meter.
+
+### Liberation, flight and return
+
+When the claimant captures one of its own authentic home states from the occupier, Event 095 asks the migration owner, through an owner-approved predicate, to treat the capture as a liberation by the owner: no war flight is requested.
+The occupier's recapture of a revolt state is an ordinary hostile capture and produces ordinary war flight through the shared hostile-capture adapter.
+People fleeing the fighting therefore leave when the occupier returns, not when their own country does.
+
+A restoration settlement's term for the return of displaced civilians is carried out through migration's Help Families Return for cohorts whose origin is a restored state, with the restored country choosing its own Border Policy.
+Neither the claimant nor the settlement moves people directly.
 
 ## Deaths, responsibility and condemnation
 
@@ -118,7 +135,8 @@ When another system records actual deaths, custody, abuse or forced movement, ke
 Do not charge the liberator for an occupier's earlier actions merely because the liberator now owns the state.
 
 Liberation may uncover evidence relevant to Condemnation.
-Only the existing evidence and discovery processes decide what becomes public.
+Only the existing evidence and discovery processes decide what becomes public; liberating a camp state uses the camp owner's liberation and discovery path.
+A condemned occupier is easier to oppose: countries enforcing the condemnation system's sanctions against it treat supporting the claimant as a natural motive (Part 12), while the occupier's own Tier 3 arms embargo already limits the equipment it can import to contain the revolt.
 There is no automatic worldwide condemnation bonus or penalty attached to every revolt.
 Supporters are not cleared of their own conduct because they assisted a national liberation.
 Local civilian protection is an actual policy and delivery outcome, not a decorative moral alignment.
@@ -152,6 +170,4 @@ Where the shared engine distinguishes the root's catalog contribution from nativ
 ## What this event does not add
 
 Event 095 does not add a new world-end scenario, a universal separatism engine, a second famine system, a new migration ledger, a generic ethnic map, a global patron-influence meter, or a new supernatural army.
-It does not need a bespoke 3D unit, a native raid, a large custom GUI or an animated portrait merely to demonstrate that the corresponding supplied skill was read.
-Those skills govern any later justified use of their surfaces.
-Their conditional applicability is recorded separately from missing mandatory review or tool execution.
+It needs no bespoke 3D unit, native raid, large custom GUI or animated portrait; those skills govern any later justified use of their surfaces.

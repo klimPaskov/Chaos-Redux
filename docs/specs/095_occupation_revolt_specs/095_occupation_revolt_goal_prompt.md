@@ -1,19 +1,48 @@
 # Occupation revolt implementation goal
 
-Implement Chaos Redux Event 095 from docs/specs/095_occupation_revolt_specs/. Read README, original brief, all 14 parts, six prompts and every supporting matrix, source record, validation case and specialist assignment listed in the index. Resolve accepted corrections in the canonical specs.
+Implement Chaos Redux Event 095 from docs/specs/095_occupation_revolt_specs/.
+Read README, the original brief, all 14 parts, the six prompts and the supporting matrices, registers and validation scenarios listed in the index.
+Follow CLAUDE.md and the skills in .claude/skills/, reading the relevant offline wiki and installed documentation before relying on engine behavior.
 
-Before coding, fully read every current supplied Project Source and applicable must-read skill. Follow CHAOS_REDUX_PROJECT_SOURCE_PROTOCOL.md when available. Read current sources and role definitions. The removed ZIP is not required. The planning task read all 46 supplied text files but did not complete external/native reference reads, isolated agents, HOI4 MCP validation or implementation. Resolve those gaps. Do not substitute hashes, excerpts or historical reports for current reading and execution.
+Preserve 095, Occupation revolt, Minor Repeatable, Chaos 1, Liberations/Medium and the existing root identity.
+Restore the actual displaced country: exile government, survivor elsewhere or annexed national identity.
+Use a real dormant claimant only when no suitable primary exists.
+Never invent a replacement nation.
+Derive authentic homeland, coherent territory and forces from actual geography, population, local support, resources and occupation weakness.
 
-Preserve 095, Occupation revolt, Minor Repeatable, Chaos 1, Liberations/Medium and the existing root identity. Restore the actual displaced country: exile government, survivor elsewhere or annexed national identity. Use a real dormant claimant only when no suitable primary exists. Never invent a replacement nation. Derive authentic homeland, coherent territory and forces from actual geography, population, local support, resources and occupation weakness.
+Implement the complete underground, warning, opening, survival, spread, government, foreign-support, settlement, recovery, defeat and later-return lifecycle.
+The dormant route needs working finite preparation milestones without a nonexistent country menu.
+Preserve real leaders, politics, surviving armies, technology and meaningful focus trees.
+Supply the complete country package.
+Generic-tree claimants receive adapted restoration paths, while preserved trees retain every essential payoff through shared national programs.
 
-Implement the complete underground, warning, opening, survival, spread, government, foreign-support, settlement, recovery, defeat and later-return lifecycle. The dormant route needs working finite preparation milestones without a nonexistent country menu. Preserve real leaders, politics, surviving armies, technology and meaningful focus trees. Supply the complete country package. Generic-tree claimants receive adapted restoration paths, while preserved trees retain every essential payoff through shared national programs.
+Keep Readiness and Cohesion as the only two new public values, each tooltip limited to its value, next threshold and three largest causes.
+Enforce phase action and mission budgets, with one Organize Region action before and after the opening.
+Use concrete objectives, durable deadlines, exact target binding and one price/affordability/debit/outcome/refund contract.
+Never duplicate material, manpower, aircraft, ships or experienced units.
+Local caches are explicit finite abstractions.
+Foreign aid must actually arrive, and defection must conserve a proven eligible source through verified native operations.
+Do not replace an unsupported transfer with cloned units.
 
-Keep Readiness and Cohesion as the only two new public values. Enforce phase action and mission budgets. Use concrete objectives, durable deadlines, exact target binding and one price/affordability/debit/outcome/refund contract. Never duplicate material, manpower, aircraft, ships or experienced units. Local caches are explicit finite abstractions. Foreign aid must actually arrive, and defection must conserve a proven eligible source through verified native operations. Do not replace an unsupported transfer with cloned units.
+Implement all four enabled-gated evolutions at 200/400/600/800, each with prefire and active paths.
+Baseline gameplay must work with every enabled/disabled combination.
+Multi-center revolts share one national budget.
+Cascade claimants use their own identity and resources, bounded ancestry and shared crisis limits.
+Avoid global daily scans.
 
-Implement all four enabled-gated evolutions at 200/400/600/800, each with prefire and active paths. Baseline gameplay must work with every enabled/disabled combination. Multi-center revolts share one national budget. Cascade claimants use their own identity and resources, bounded ancestry and shared crisis limits. Avoid global daily scans. Native Chaos, humanitarian, population, Deaths and Condemnation effects require exact owner contracts and cannot follow automatically from a map transfer.
+Relief, evacuation, reception and return use the famine and migration actions, never event copies.
+Read grievance states from the famine, camp and migration owners; liberating one's own home state requests no war flight; settlement returns run through Help Families Return.
+Native Chaos, population, Deaths and Condemnation effects require exact owner contracts and never follow automatically from a map transfer.
 
-Use the provided isolated specialists through an actually available execution route. Obtain real probability, country, decisions, focus, localisation and completion evidence for implemented surfaces, then run the mandatory isolated improvement-loop planner and resolve its findings. Prepared prompts are not agent runs. Produce complete source-checked art, six achievement triplets and the justified conditional super-event through their separate prompts. Preserve the real-person portrait workflow. No unnecessary custom GUI, raid, animation or 3D unit is required.
+Route specialists through chaos-redux-subagents with self-contained prompts, using the roles and checks in the specialist execution map.
+Obtain probability, country, decisions, focus, localisation and completion audits for implemented surfaces, then run the improvement-loop planner and resolve its findings.
+Produce complete source-checked art, six achievement triplets and the conditional super-event through their prompts, after the registry owner reserves a super-event slot.
+Preserve the real-person portrait workflow.
+No custom GUI, raid, animation or 3D unit is required.
 
-Execute and report the complete validation matrix. Do not launch HOI4 without the required explicit request or edit saves. Keep source checks, actual MCP results and live tests separate. Update the authoritative workbook only after verified implementation and final copy, then regenerate CSV exports. Never edit the archived snapshots.
+Specify the validation matrix for the user's live tests and keep source checks, MCP results and live tests separate.
+Update the authoritative workbook only after verified implementation and final copy, then regenerate CSV exports.
 
-Keep iterating until the goal is accomplished to its fullest extent. Do not claim completion while required sources, capabilities, assets or reviews remain unresolved. Report exact remaining blockers and every unrun check honestly.
+Keep iterating until the goal is accomplished to its fullest extent.
+Do not claim completion while required sources, capabilities, assets or reviews remain unresolved.
+Report exact remaining blockers and every unrun check.

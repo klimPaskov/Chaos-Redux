@@ -18,7 +18,8 @@ A favorable opinion value is not a receipt for rifles, transport or military pro
 
 ## A small support menu
 
-The active sponsor view has up to five principal actions: establish liaison, deliver military stores, arrange returning personnel, offer a political agreement, and organize humanitarian access where real civilian need exists.
+The active sponsor view has four principal actions: establish liaison, deliver military stores, arrange returning personnel, and offer a political agreement.
+Humanitarian help goes through the owners: a sponsor can serve as the land donor for the claimant's Import Food action, and receive evacuees through migration's passage and reception decisions.
 Only applicable actions are shown.
 One action can target several eligible claimant incidents through a contextual selector, but the sponsor must commit to an exact recipient and route before spending anything.
 

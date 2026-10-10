@@ -31,17 +31,17 @@ The draft opportunity assessment is refreshed through meaningful incident change
 Only tracked states and claimant records participate.
 Do not scan every country and every state on a daily pulse.
 
-## Regional liaison as an operation
+## Organizing the next region
 
-A claimant can prepare the next eligible home region through a regional liaison operation.
+After the opening, the claimant prepares the next eligible home region with the same Organize Region action it used for its first base ([Part 10](095_occupation_revolt_spec_part_10_decisions_and_missions.md#claimant-preparation-actions)).
 It requires a surviving local network and a usable command link.
 It costs 25 political power for a living claimant and takes 35 days under normal conditions.
 The operation improves the target's organization by 15 and can make a local breakaway eligible.
 It does not guarantee transfer or create a free army there.
-Only one ordinary spread liaison is active at baseline.
+Only one ordinary organization operation is active at baseline.
 Evolution II can coordinate several centers through a shared operation once their material budgets are separated.
 
-If the target is captured normally while liaison is underway, complete its political integration objective without issuing a second territory or unit reward.
+If the target is captured normally while the operation is underway, complete its political integration objective without issuing a second territory or unit reward.
 If the network is exposed and destroyed, close the operation with its actual losses and no automatic full refund.
 If a third party restores the region peacefully, re-evaluate the command objective rather than declaring war to preserve the mission.
 If the region becomes unrelated to the claimant through a valid identity transformation, invalidate the target and release any unspent reservation.
@@ -63,10 +63,9 @@ Terms can include a recognized provisional administration, protected local gover
 A settlement that changes subject status must use a supported subject relationship and has the diplomatic consequences of that status.
 A promise of a future concession has a dated obligation and a breach condition.
 
-Restoring civilian services addresses actual administrative damage, relief access or supply disruption.
-Its effect on revolt pressure depends on delivered results and local reception.
-It cannot erase national identity or universally convert political opposition into loyalty.
-When existing famine or migration systems own the underlying facts, this action consumes their exact receipts instead of creating a second food or displacement meter.
+Feeding and protecting the population is the occupier's cheapest counterinsurgency, and it uses the famine and migration categories rather than an Event 095 button.
+A home state the occupier starves, requisitions from, conceals hunger in or holds a camp in is a grievance state, as defined in [Part 11](095_occupation_revolt_spec_part_11_connections_and_consequences.md#grievance-states); relieving it removes that local advantage.
+Relief cannot erase national identity or convert political opposition into loyalty, but it does take away the easiest breakaways.
 
 Strategic withdrawal permits an occupier to abandon an unsustainable possession under stated terms.
 It remains available when political power is low.

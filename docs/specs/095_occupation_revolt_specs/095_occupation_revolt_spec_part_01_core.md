@@ -39,6 +39,7 @@ Readiness measures how effectively the active movement can coordinate preparatio
 Cohesion measures whether the national government, local resistance commands and participating communities can act under an agreed political settlement.
 Neither is a spendable currency.
 An action can change either value as a consequence, but cannot debit points as though they were money.
+Each tooltip shows the current value, the next threshold that changes play (for Cohesion 25, 50 and 75; for Readiness the formation bands at 40 and 70 and, for a dormant movement, the opening gate at 50) and at most three largest current causes.
 
 State-level support, exposure, supply access and occupation weakness remain local evidence and qualitative assessments.
 Army strength, manpower, equipment stocks, buildings, stability, war support, resistance and compliance continue to use their ordinary game systems.

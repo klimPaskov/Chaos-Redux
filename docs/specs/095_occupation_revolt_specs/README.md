@@ -2,36 +2,15 @@
 
 Event 095 | Minor Repeatable | Chaos 1 | Liberations | Medium
 
-**Status: detailed full-concept gameplay draft and implementation handoff. External source and execution gates remain incomplete.**
+**Status: detailed gameplay specification and implementation handoff, planned 5 October 2026 and audited 10 October 2026. Not implemented.**
 
-The package expands the supplied Occupation revolt concept into 14 specification parts with 23,972 words of gameplay, lifecycle, presentation and implementation-facing requirements.
+The package expands the user's Occupation revolt brief into 14 specification parts.
 It preserves the real displaced country, a dynamic authentic homeland, resource-based armed restoration, surviving government and leaders, dormant claimant fallback, spread, support, defeat and later return.
 All four user-supplied evolutions have both new-opening and active-revolt paths.
 The original brief is retained unchanged as a separate source.
 
-## Reading and execution status
-
-All 46 supplied text files were fully read before drafting, including all 17 skills and all 20 subagent definitions.
-The original archive contained 26 top-level text files and a nested archive containing 20 agent definitions.
-These reading and execution counts describe the 5 October 2026 planning pass, not the current checkout or tool availability.
-External transitive references were not all read, and the external MTTH file was read only through line 170.
-The named source protocol was not located in the supplied archive or the scoped searches, so its unknown requirements are not claimed as fulfilled.
-Actual isolated agents executed: **0**.
-Actual HOI4 MCP, native game inspection, live tests and implementation runs: **0**.
-Actual final art, localisation, quote/audio production and catalog edits: **0**.
-
-Read the [source reading and execution report](095_occupation_revolt_source_reading_report.md) before treating any requirement as verified engine behavior.
-The [parent consistency review](095_occupation_revolt_parent_consistency_review.md) records real author-side corrections, not an independent specialist pass.
-The [package-integrity report](095_occupation_revolt_package_integrity_report.md) checks artifact structure only.
-
-## Where this folder belongs
-
-The ZIP has one top-level folder, `095_occupation_revolt_specs/`.
-Extract that folder under `docs/specs/` in the intended repository.
-This is documentation, not runtime mod code.
-The bundled source snapshot was removed at the user's request in commit `6a2ebc838`.
-Read current named repository sources and skills rather than restoring or requiring that archive.
-Future actual specialist results belong under `docs/plans/095_occupation_revolt_plans/subagent_handoffs/`, as specified in each assignment.
+The 5 October 2026 planning pass read the 46 supplied text files but not every transitive installed reference, and launched no specialists; the [source reading report](095_occupation_revolt_source_reading_report.md) lists the gaps.
+Implementation plans and specialist handoffs belong under `docs/plans/095_occupation_revolt_plans/`.
 
 ## Specification index
 
@@ -54,8 +33,6 @@ Future actual specialist results belong under `docs/plans/095_occupation_revolt_
 
 ## Production and implementation prompts
 
-These six prompts are complete handoffs, not evidence of production or execution.
-
 | Prompt | Role |
 |---|---|
 | [Goal](095_occupation_revolt_goal_prompt.md) | Compact implementation goal, bounded to 4,000 characters including heading and final newline |
@@ -72,32 +49,40 @@ These six prompts are complete handoffs, not evidence of production or execution
 | [Source Decision Register](095_occupation_revolt_source_decision_register.md) | Separates original user requirements, authored expansions and historical source observations |
 | [Implementation Architecture](095_occupation_revolt_implementation_architecture.md) | Proposed current-source ownership, logical contracts and native proof gates |
 | [Country Package Matrix](095_occupation_revolt_country_package_matrix.md) | Country activation fields and 11 claimant archetypes |
-| [National Program Registry](095_occupation_revolt_national_program_registry.md) | 23 meaningful program variants and complete focus/decision payoff parity |
+| [National Program Registry](095_occupation_revolt_national_program_registry.md) | 23 program variants and focus/decision payoff parity |
 | [Requirement Coverage](095_occupation_revolt_requirement_coverage.md) | 36 original gameplay requirements mapped to specification files |
-| [Validation Scenarios](095_occupation_revolt_validation_scenarios.md) | 97 planned runtime scenarios, all explicitly NOT_RUN |
+| [Validation Scenarios](095_occupation_revolt_validation_scenarios.md) | 101 acceptance scenarios for implementation review and the user's live tests |
 | [Asset Coverage Matrix](095_occupation_revolt_asset_coverage_matrix.md) | 49 asset families and consumer-specific production requirements |
-| [Skills Application Matrix](095_occupation_revolt_skills_application_matrix.md) | All 17 read skills and their direct or conditional application |
-| [Specialist Execution Map](095_occupation_revolt_specialist_execution_map.md) | 20 prepared assignments, role boundaries and required review sequence |
+| [Specialist Execution Map](095_occupation_revolt_specialist_execution_map.md) | Which specialist roles apply, when, and their Event 095 checks |
 | [Research Notes](095_occupation_revolt_research_notes.md) | Bounded primary-source historical inspiration with evidence limits |
-| [Parent Consistency Review](095_occupation_revolt_parent_consistency_review.md) | Concrete design fixes and unresolved validation requirements |
-| [Source Reading Report](095_occupation_revolt_source_reading_report.md) | Full supplied-source inventory, recovered reads, external gaps and actual execution status |
+| [Source Reading Report](095_occupation_revolt_source_reading_report.md) | Historical supplied-source inventory, external gaps and execution status of the planning pass |
 
-Machine-readable counterparts are included for requirement coverage, validation scenarios, asset coverage, specialist status and source inventory.
-[Package manifest](095_occupation_revolt_package_manifest.json) records current local documentation membership and hashes.
-`validate_package.py` is retained as the historical archive-dependent validator.
-It requires the user-removed ZIP, so it cannot certify this checkout and must not be run as a current completion gate.
-The original integrity JSON remains a dated receipt, and no native validation is implied by a manifest.
+Machine-readable counterparts are included for requirement coverage, validation scenarios, asset coverage and the source inventory.
+The [package manifest](095_occupation_revolt_package_manifest.json) records current local documentation membership and hashes.
 
 ## Preserved inputs
 
 [Original user brief](095_occupation_revolt_original_user_brief.md) is the current design authority.
-The supplied outer archive is absent from this checkout by explicit user request.
-Its historical SHA-256 is `0f13352a0bbf4c657fcb82ac6ec549a1ac208f2624b23489c25dc9bd85105d3e`.
+The supplied outer archive was removed at the user's request in commit `6a2ebc838`; its historical SHA-256 is `0f13352a0bbf4c657fcb82ac6ec549a1ac208f2624b23489c25dc9bd85105d3e`.
 The archived catalog CSVs remain untouched snapshots and do not override the current Liberations/Medium assignment.
 
-## Completion boundary
+## Open questions
 
-The intended gameplay is specified rather than reduced to a short rough idea.
-Exact native country activation, unit transfer, selective peace, focus preservation, shared API wiring and resource transactions still require current source and engine evidence.
-Do not mark the event implemented or independently reviewed from the existence of these documents.
-Resolve the external reading gaps, execute the actual specialist workflow and produce the missing runtime content before making that claim.
+- **Super-event presentation slot.** The [shared identifier registry](../shared_identifier_registry.md) reserves no `super_event_visible` slot for the regional occupation-collapse presentation in Part 13; orchestrator decision, 10 October 2026: reserve it when Event 095 is implemented.
+- **Owner predicates.** The grievance-state reads and the liberation predicate for migration's hostile-capture adapter (Part 11) were accepted as owner seams by the orchestrator on 10 October 2026; the famine, migration and camp owners publish the triggers when Event 095 is implemented, and until then the connections stay specified but unwired.
+- **Catalog row.** The catalog still carries the older exile-only description and a blank cluster; the Liberations Medium membership and four evolution names wait for the workbook workflow.
+
+## Revision log
+
+### 2026-10-10 spec audit
+
+Basis: 10 Oct 2026 spec audit under the user's planning-package brief.
+
+- Merged Organize Base and Prepare Region into one Organize Region action used before and after the opening (Parts 03, 06, 09, 10).
+- Removed the event's own Restore Services, Humanitarian Access and Civilian Return decisions; relief, evacuation, reception and return use the famine and migration actions, so Event 095 has 21 operations instead of 25 and no humanitarian duplicates (Parts 07, 10).
+- Defined grievance states from famine, requisition, concealment, camp and violent-border facts: one band of breakaway assessment, removed by real relief, giving the occupier a feed-or-squeeze choice (Parts 06, 11, 12).
+- A claimant's capture of its own home state requests no war flight, the occupier's recapture does, and settlement returns use Help Families Return; sanction participants against a condemned occupier are natural sponsors (Parts 11, 12, 14).
+- Readiness and Cohesion tooltips show the value, next threshold and at most three causes (Part 01).
+- Added validation scenarios V098-V101 and renamed the recovery decision icon to reconstruction.
+- Replaced the twenty per-role assignment files and their status JSON with a single specialist execution map table that keeps each role's Event 095 checks; deleted the skills application matrix, parent consistency review, package-integrity report and results, and the archive-dependent `validate_package.py`, which were historical process evidence with no remaining consumer; regenerated the package manifest.
+- Replaced `AGENTS.md`, `collaboration.spawn_agent` and `fork_turns` instructions in the prompts with `CLAUDE.md`, `.claude/skills/` and `chaos-redux-subagents` routing; agents no longer run live tests, and mandatory-tool gates follow the repository retry rules; the goal prompt is 3,868 characters.

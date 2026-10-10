@@ -27,7 +27,7 @@ Nominal dimensions come from the fully read supplied asset skill and still requi
 | `OR095-I-INT` | Decision icon: Force integration | 32×32 | PLANNED_NOT_PRODUCED |
 | `OR095-I-CON` | Decision icon: Military containment | 32×32 | PLANNED_NOT_PRODUCED |
 | `OR095-I-DIS` | Decision icon: Disruption of a known network | 32×32 | PLANNED_NOT_PRODUCED |
-| `OR095-I-REC` | Decision icon: Civilian recovery | 32×32 | PLANNED_NOT_PRODUCED |
+| `OR095-I-REC` | Decision icon: Reconstruction | 32×32 | PLANNED_NOT_PRODUCED |
 | `OR095-I-NEG` | Decision icon: Negotiation | 32×32 | PLANNED_NOT_PRODUCED |
 | `OR095-I-EVA` | Decision icon: Emergency withdrawal | 32×32 | PLANNED_NOT_PRODUCED |
 | `OR095-I-OBL` | Decision icon: Government and diplomatic obligations | 32×32 | PLANNED_NOT_PRODUCED |

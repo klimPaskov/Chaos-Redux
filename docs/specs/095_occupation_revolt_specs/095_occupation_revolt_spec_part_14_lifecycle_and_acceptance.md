@@ -134,11 +134,12 @@ A country can achieve a viable partial restoration and continue normal play.
 A major occupier can negotiate a bounded settlement without ending unrelated wars.
 Disabled evolutions, absent optional DLC, save/load and multiplayer targeting preserve the baseline restoration promise.
 
-## What remains unproven in this package
+A grievance state rises one band and returns to its evidence value once the occupier's relief ends the famine or the camp closes.
+A claimant's capture of its own home state requests no war flight, while the occupier's recapture does.
+A settlement's civilian-return term runs through migration's Help Families Return and moves nobody directly.
 
-This document defines required behavior and proposed tuning.
-It is not engine code and does not establish that a particular uninspected native effect supports every transition.
+## What remains unproven
+
+This document defines required behavior and proposed tuning, not engine code.
 Country activation, exact unit transfer, local-force assessment, war isolation, optional focus integration, native payment semantics and shared hook ownership require implementation evidence.
-The supplied source files were fully read, but several transitive installed references were not supplied or read.
-No isolated subagent, HOI4 MCP inspection, live playtest, final art production or runtime implementation is claimed.
-The accompanying reading report, verification matrix and specialist assignment files preserve those distinctions.
+The migration liberation predicate and the owners' grievance triggers need the famine, migration and camp owners' approval.

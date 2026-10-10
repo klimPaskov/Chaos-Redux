@@ -81,7 +81,7 @@ The surprise comes from pre-existing preparation and occupation weakness, not fr
 ## Organizing a base
 
 The claimant can concentrate on one eligible local base at a time during the initial phase.
-A regional organization operation requires an authentic local network and a realistic communication link.
+The Organize Region action from Part 10 requires an authentic local network and a realistic communication link.
 For an existing country, the draft political cost is 25 political power and the work takes 35 days.
 Successful completion raises the target network's organization by 15 and national Readiness by 5, subject to the local organization ceiling.
 The operation may be repeated only while it adds real missing organization, and cannot farm Cohesion or permanent national rewards.

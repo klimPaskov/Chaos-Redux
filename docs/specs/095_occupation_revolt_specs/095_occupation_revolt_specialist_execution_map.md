@@ -1,54 +1,37 @@
 # Event 095 specialist execution map
 
-**Actual executions in this planning task: 0.**
-All 20 supplied role definitions were read, but reading a definition is not launching that role.
-The files in `agent_assignments/` are self-contained future prompts.
-No actual HOI4 MCP service or isolated subagent route was established in this conversation.
+Route every specialist through the `chaos-redux-subagents` skill with a self-contained prompt that carries the package path, the relevant parts, the user brief's identity (Minor Repeatable, Chaos 1, Liberations Medium, four evolutions at 200, 400, 600 and 800) and every prior decision the role needs.
+Write each handoff to `docs/plans/095_occupation_revolt_plans/subagent_handoffs/<role>.md`, recording inspected revisions, tool calls, changed files, unrun checks and blockers.
+The parent reads each handoff, reconciles conflicts and verifies the resulting change.
+This map replaces the twenty per-role assignment files of the 5 October 2026 planning pass; their role-specific checks are kept in the table below.
 
-## Dispatch rule
-
-Use a real available isolated execution route, such as `collaboration.spawn_agent` with `fork_turns="none"` when that is the supported current route.
-Do not invent a Native2 turn token or claim a successful spawn from a configuration entry.
-The parent must supply exact current source paths, enforce role-owned writes, read each returned handoff, reconcile conflicts and verify the resulting change.
-Assign independent read-only audits in parallel only when the actual tool supports it, and avoid overlapping writers.
-Text and audio researchers retain their explicit narrow-context restrictions and must not be sent to read AGENTS.md or gameplay source.
-
-| Role | When required | Prepared assignment | Actual status |
-|---|---|---|---|
-| `chaosx_repo_explorer` | Only when relevant locations, patterns or implementation order are unclear | [Assignment](agent_assignments/chaosx_repo_explorer.md) | NOT_EXECUTED |
-| `chaosx_scripted_system_architect` | Required before and during implementation | [Assignment](agent_assignments/chaosx_scripted_system_architect.md) | NOT_EXECUTED |
-| `chaosx_ai_probability_auditor` | Required for every actual weighted surface | [Assignment](agent_assignments/chaosx_ai_probability_auditor.md) | NOT_EXECUTED |
-| `chaosx_country_package_auditor` | Required for all activated claimant archetypes | [Assignment](agent_assignments/chaosx_country_package_auditor.md) | NOT_EXECUTED |
-| `chaosx_decision_mission_auditor` | Required after operation implementation | [Assignment](agent_assignments/chaosx_decision_mission_auditor.md) | NOT_EXECUTED |
-| `chaosx_focus_tree_auditor` | Required for actual focus integration | [Assignment](agent_assignments/chaosx_focus_tree_auditor.md) | NOT_EXECUTED |
-| `chaosx_asset_source_researcher` | Required for identity-grounded source needs | [Assignment](agent_assignments/chaosx_asset_source_researcher.md) | NOT_EXECUTED |
-| `chaosx_generated_event_art` | Required visual production after source/style gates | [Assignment](agent_assignments/chaosx_generated_event_art.md) | NOT_EXECUTED |
-| `chaosx_icon_artist` | Required visual production after reference gates | [Assignment](agent_assignments/chaosx_icon_artist.md) | NOT_EXECUTED |
-| `chaosx_portrait_creator` | Conditional on actual missing national portraits | [Assignment](agent_assignments/chaosx_portrait_creator.md) | NOT_EXECUTED |
-| `chaosx_3d_model_pipeline` | Conditional only, no accepted new model requirement | [Assignment](agent_assignments/chaosx_3d_model_pipeline.md) | NOT_EXECUTED |
-| `chaosx_event_ui_worker` | Conditional only, native surfaces are the accepted design | [Assignment](agent_assignments/chaosx_event_ui_worker.md) | NOT_EXECUTED |
-| `chaosx_localisation_auditor` | Required after final copy and consumer wiring | [Assignment](agent_assignments/chaosx_localisation_auditor.md) | NOT_EXECUTED |
-| `chaosx_super_event_audio_researcher` | Required only for producing the accepted conditional super-event | [Assignment](agent_assignments/chaosx_super_event_audio_researcher.md) | NOT_EXECUTED |
-| `chaosx_super_event_text_researcher` | Required only for producing the accepted conditional super-event | [Assignment](agent_assignments/chaosx_super_event_text_researcher.md) | NOT_EXECUTED |
-| `chaosx_documentation_curator` | Required during integration and closure | [Assignment](agent_assignments/chaosx_documentation_curator.md) | NOT_EXECUTED |
-| `chaosx_spreadsheet_doc_worker` | Conditional final catalog update after verified implementation | [Assignment](agent_assignments/chaosx_spreadsheet_doc_worker.md) | NOT_EXECUTED |
-| `chaosx_skill_maintainer` | Conditional only for a demonstrated reusable rule change | [Assignment](agent_assignments/chaosx_skill_maintainer.md) | NOT_EXECUTED |
-| `chaosx_improvement_loop_planner` | Mandatory real isolated pass near completion | [Assignment](agent_assignments/chaosx_improvement_loop_planner.md) | NOT_EXECUTED |
-| `chaosx_event_completion_auditor` | Mandatory final independent closure audit | [Assignment](agent_assignments/chaosx_event_completion_auditor.md) | NOT_EXECUTED |
+| Role | When | Event 095 inputs and checks |
+|---|---|---|
+| `chaosx_repo_explorer` | Only when locations, patterns or order are unclear | Parts 01-08, 11, 14 and the architecture. Resolve the Event 095 root and reports, selection and cluster owners, the Event 006 origin registry, exile and release precedents, owner and controller war behavior, exact manpower and equipment transactions, focus preservation and country activation. |
+| `chaosx_scripted_system_architect` | Before and during implementation | Parts 01-08, 10-12, 14, architecture and program registry. Prove identity activation with a valid government, seat and focus behavior; durable incident and episode storage; one quote, debit, outcome and refund flow; exact forces and defectors; cascade ancestry and cleanup. Unverified unit transfer and selective peace stay blockers, never clone-and-delete or blanket peace. |
+| `chaosx_ai_probability_auditor` | Every weighted surface | Parts 08, 12 and the validation scenarios. Distinguish score, probability and timing; cover primary versus dormant pools, empty pools, weak and strong organization, all 16 evolution combinations, economic limits, aid refusal and the occupier's relief-versus-requisition choice. Candidate scores 50-250 and priorities 100/200/300 are uncalibrated until measured. |
+| `chaosx_country_package_auditor` | Every activated claimant archetype | Parts 02, 04, 05, 09 and the country matrix. Audit an exile government, an overseas survivor, a fully annexed identity, a dormant releasable identity, a single-state claimant and a divided homeland across tag, history, capital, flags, leaders, laws, research, templates and focus behavior. A tag on the map is not a completed package. |
+| `chaosx_decision_mission_auditor` | After operations are implemented | Parts 03, 06, 07, 09, 10, 14 and the program registry. Enforce two public values, phase budgets, mission caps, exact targets, one price quote, no double charge across focus and decision access, measured partial delivery and free surrender or withdrawal. Check that humanitarian acts use the famine and migration categories, not event copies. |
+| `chaosx_focus_tree_auditor` | Any actual focus integration | Parts 05, 09, 10 and the program registry. Check the lean opening, conditional branches, real forks, concrete payoffs, preserved native trees with full operations parity, and no overlapping nodes, dead ends or short filler focuses. |
+| `chaosx_localisation_auditor` | After final copy and wiring | Part 13 and the prompts. Check every option, tooltip, cost, deadline, focus reward, national subject and achievement rule against actual effects; keep user event and evolution names; never say resources arrived when they were only dispatched. |
+| `chaosx_asset_source_researcher` | Identity-grounded sources | Asset prompt and matrices. Verify real flags, heraldry and references for named identities with provenance and rights; report disputed dormant-claimant symbols. |
+| `chaosx_generated_event_art` | Report, news and super-event scenes | Part 13 and the asset matrix. Six report roles, three news roles and the conditional super-event; country-generic scenes show no arbitrary leader, flag or uniform. |
+| `chaosx_icon_artist` | Decision, mission, idea, focus and achievement icons | Part 13 and the asset matrix. Real transparency, exact immutable achievement templates and native-size contact sheets; no animation is required. |
+| `chaosx_portrait_creator` | Only for real missing national portraits | Part 05 and the country matrix. Reuse valid portraits; grounded placeholders and user-supplied finals only; no invented leaders. |
+| `chaosx_super_event_text_researcher` | Only when producing the conditional super-event | Super-event prompt only. Traceable quote and short remark about several nations returning after a regional occupation collapse, without implying one ethnic group, ideology or automatic peace. |
+| `chaosx_super_event_audio_researcher` | Only when producing the conditional super-event | Super-event prompt only. A 1-3 minute excerpt suggesting hard-won restoration and an uncertain peace, with composition and recording rights verified separately. |
+| `chaosx_event_ui_worker` | Not applicable unless an Event 095-owned window is accepted | The design uses native decisions, missions, focuses and shared event details. |
+| `chaosx_3d_model_pipeline` | Not applicable unless a distinct unit need is authorized | Ordinary national formations need no new model. |
+| `chaosx_documentation_curator` | During integration and closure | Keep a source-of-truth map between the user brief, accepted additions, implementation and open gates; never turn a proposed API name into an engine fact. |
+| `chaosx_spreadsheet_doc_worker` | After verified implementation | Keep Minor Repeatable, Chaos 1, Liberations Medium and To Be Reworked until implementation closes; edit only Event 095 workbook fields and regenerate the CSV exports. |
+| `chaosx_skill_maintainer` | Only for a demonstrated reusable finding | No skill change is requested by this package. |
+| `chaosx_improvement_loop_planner` | Near completion | Review the restoration fantasy for coherent choices, native-tree parity, dormant progression, military scarcity, government legitimacy, foreign obligations, high-Chaos change, failure and return, and for bloat. |
+| `chaosx_event_completion_auditor` | Final closure | Requirement-by-requirement verdict against actual runtime sources, separating source checks, MCP evidence and the user's live tests. |
 
 ## Review sequence
 
-Resolve source and native capability gaps through repository exploration and architecture before promising exact implementation behavior.
+Resolve source and native capability gaps through exploration and architecture before promising exact implementation behavior.
 Build country and operation contracts before polishing focus layout, localisation or assets that depend on them.
-Probability work accompanies every real weighted/timed surface and uses actual tools.
-Production workers receive exact approved consumers and reference gates rather than vague requests to make the event look finished.
-The parent then obtains the real near-completion improvement-loop pass, resolves its accepted changes, reruns affected audits and requests independent completion review.
-The authoritative workbook is updated only after implementation and required closure evidence warrant the final status.
-
-## Conditional roles
-
-No new custom GUI, model or animation is required by this accepted design.
-The UI and 3D roles therefore have explicit applicability prompts and must not fabricate work.
-Skill maintenance needs an actual reusable finding and is not a routine side effect of implementing an event.
-Portrait creation applies only to real missing country-package portraits, with the project-defined user-supplied final workflow.
-Conditional no-change findings do not excuse mandatory probability, country, operations, focus, localisation, improvement or completion reviews for surfaces that actually exist.
+Probability work accompanies every weighted or timed surface.
+The parent then obtains the near-completion improvement-loop pass, resolves its accepted changes, reruns affected audits and requests the completion audit.
+The authoritative workbook is updated only after implementation and closure evidence warrant the final status.

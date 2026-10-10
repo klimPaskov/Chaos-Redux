@@ -1,8 +1,7 @@
 # Event 095 validation scenario matrix
 
 **Every game, MCP and probability scenario below is NOT RUN.**
-This is an executable-work handoff, not a report of passing tests.
-Package-integrity checks are recorded separately and do not prove engine behavior.
+This is an executable-work handoff, not a report of passing tests; live-game scenarios belong to the user.
 
 | ID | Area | Fixture | Expected result |
 |---|---|---|---|
@@ -103,7 +102,11 @@ Package-integrity checks are recorded separately and do not prove engine behavio
 | V095 | Evolution configuration | Evolution settings I–IV = 1011 | Baseline stays playable, only enabled eligible capabilities execute through both entry routes |
 | V096 | Evolution configuration | Evolution settings I–IV = 0111 | Baseline stays playable, only enabled eligible capabilities execute through both entry routes |
 | V097 | Evolution configuration | Evolution settings I–IV = 1111 | Baseline stays playable, only enabled eligible capabilities execute through both entry routes |
+| V098 | Shared | Occupier keeps requisitioning from a famine home state | State reads one band higher for breakaway; returns to evidence value after relief ends the famine |
+| V099 | Shared | Claimant captures its own annexed home state, occupier later recaptures it | No war flight on liberation; ordinary war flight on recapture |
+| V100 | Shared | Settlement includes return of displaced civilians | Return runs through migration's Help Families Return; no direct population move |
+| V101 | Operations | Organize Region used before and after the opening on different regions | One action, one quote; Readiness gain only before the opening |
 
 For each actual execution retain revision, installed game/DLC context, input fixture, tool/service status, baseline/candidate, artifact paths, observed result and unresolved limitations.
 Run legitimate and negative fixtures for each achievement, not a single combined all-achievements state.
-Do not manually normalize focus weights or substitute a local mock simulation for the mandatory supported probability adapter.
+Use the probability tools where they support the adapter; otherwise calculate representative cases from the actual script with stated assumptions, and never present a normalized weight as a probability.

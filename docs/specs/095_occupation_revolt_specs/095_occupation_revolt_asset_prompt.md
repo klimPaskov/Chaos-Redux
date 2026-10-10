@@ -5,9 +5,7 @@ This is a production handoff, not evidence that any images have already been mad
 Preserve the actual national identities, existing valid flags and living character portraits.
 Do not create new countries, characters, battalions or visual systems simply to fill an asset checklist.
 
-Read the current AGENTS.md, chaos-redux-event-assets, the applicable portrait-production reference, the supplied source/decision register, and the matching canonical reference families before producing an asset.
-The archived skill versions were fully read during planning, but the installed reference images and transitive portrait-production file were not supplied or inspected here.
-Resolve those reference gates in the implementation workspace.
+Follow CLAUDE.md and read chaos-redux-event-assets, its portrait-production reference, the source/decision register and the matching canonical reference families under `.claude/skills/chaos-redux-event-assets/` before producing an asset.
 Inspect the actual consumer dimensions and sprite behavior before treating a nominal size as final.
 
 Assign real-person portrait research, placeholders, final validation, conversion and portrait-specific wiring to `chaosx_portrait_creator`.
@@ -19,15 +17,14 @@ A source placeholder remains a placeholder until the grounded final is supplied 
 Assign fictional documentary-staged report/news/super-event imagery to `chaosx_generated_event_art`.
 Assign icons and any justified small animation to `chaosx_icon_artist`.
 Assign historical visual source research to `chaosx_asset_source_researcher` where an exact real identity or attested symbol is required.
-Spawn the provided project roles through an actually available isolated execution route, using `collaboration.spawn_agent` with `fork_turns="none"` when that is the installed route.
-The planning package's assignment files are prompts and not completed agent runs.
+Route these roles through `chaos-redux-subagents` with self-contained prompts; the specialist execution map lists their Event 095 checks.
 
 Required report roles are underground organization, armed home opening, returning government, fragile regional base, negotiated settlement and failed revolt returning to exile.
 Required news roles are armed restoration, major settlement and regional occupation collapse.
 Keep country-specific flags, persons and uniforms out of generic assets unless the selection logic guarantees the correct identity.
 Do not use the same composition resized indiscriminately across report, news and super-event families.
 
-Required icons cover the native category, organization, stores and delivery, command settlement, network protection, regional spread, force integration, containment, targeted disruption, civilian recovery, negotiations, evacuation, obligations and relevant missions.
+Required icons cover the native category, organization, stores and delivery, command settlement, network protection, regional spread, force integration, containment, targeted disruption, reconstruction, negotiations, evacuation, obligations and relevant missions.
 Focus icon coverage follows every authored branch root, meaningful fork, substantial program and capstone in Part 09.
 The consolidated emergency-administration burden needs its own idea icon.
 A restoration-force template emblem is produced only when its actual consumer needs an original emblem.
@@ -50,7 +47,7 @@ Other DDS outputs must use the repository converter and pass strict decode, alph
 Do not label an unmade asset, unverified portrait, unclear historical flag or missing source license as complete.
 
 No new 3D model, skeletal animation or animated portrait is required by the accepted design in this package.
-If a later separately justified design change introduces one, use the exact 3D or animation skill, proper isolated production role and required reference/approval gates.
+If a later separately justified design change introduces one, use the exact 3D or animation skill, its production role and required reference/approval gates.
 Do not add it proactively as scope expansion.
 
 Write production working files to the actual repository's event asset-work area and runtime files to the consumer-owned event asset families.

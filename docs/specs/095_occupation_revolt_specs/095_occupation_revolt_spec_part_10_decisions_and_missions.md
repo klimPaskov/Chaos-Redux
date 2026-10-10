@@ -24,12 +24,12 @@ The deadline starts when the mission commits and survives save/load and UI visib
 
 | View and phase | Primary actions | Maximum concurrent event missions |
 |---|---|---:|
-| Existing claimant preparing underground | Organize base, coordinate stores, settle command, protect exposed network, open support talks | 2 |
-| Claimant in initial war | Equip and organize, prepare next region, establish government, negotiate support, emergency withdrawal | 3 |
-| Claimant in sustained restoration | Develop next region, integrate forces, execute national program, negotiate settlement, emergency withdrawal | 3 |
-| Claimant in settled recovery | Fulfill settlement, rebuild, settle temporary forces, assist verified civilian return, close external obligations | 3 |
-| Occupier | Contain front, act on exposed network, restore services, negotiate, withdraw | 2 |
-| Foreign supporter | Establish liaison, deliver stores, return personnel, offer agreement, organize justified humanitarian access | 2 |
+| Existing claimant preparing underground | Organize region, coordinate stores, settle command, protect exposed network, open support talks | 2 |
+| Claimant in initial war | Equip and organize, organize region, establish government, negotiate support, emergency withdrawal | 3 |
+| Claimant in sustained restoration | Organize region, integrate forces, execute national program, negotiate settlement, emergency withdrawal | 3 |
+| Claimant in settled recovery | Fulfill settlement, rebuild, settle temporary forces, close external obligations | 3 |
+| Occupier | Contain front, act on exposed network, negotiate, withdraw | 2 |
+| Foreign supporter | Establish liaison, deliver stores, return personnel, offer agreement | 2 |
 
 Only applicable actions appear.
 The dormant claimant has no playable national action view before country activation.
@@ -37,12 +37,18 @@ Its initial local preparation is a finite incident process and a sponsor can per
 Political route choices are resolved through a finite event choice opened by the relevant action, rather than adding three permanent duplicate decision rows.
 All views together still expose only Readiness and Cohesion as custom numeric public values.
 
+Relief, evacuation, reception and civilian return are not Event 095 decisions.
+Every actor uses the famine and migration categories for them (Release Food Stores, Import Food, Restore Relief, Evacuate Civilians, Open Emergency Reception, Help Families Return and the rest), and Event 095 reads their results as described in [Part 11](095_occupation_revolt_spec_part_11_connections_and_consequences.md#famine-relief-and-displacement).
+This keeps one button for each humanitarian act instead of an event copy beside the owner's.
+
 ## Claimant preparation actions
 
-`or095_organize_base` selects one authentic home region with a surviving network and useful remaining organization capacity.
-It costs 25 political power for a living claimant, takes 35 days, raises local organization by 15 and Readiness by 5 on success, and cannot exceed the evidence-based local ceiling.
+`or095_organize_region` is the single local organization action, before and after the armed opening.
+It selects one authentic home region with a surviving network and useful remaining organization capacity, costs 25 political power for a living claimant, takes 35 days, raises local organization by 15 on success and cannot exceed the evidence-based local ceiling.
+Before the opening it also raises Readiness by 5 and builds the first base; afterwards it prepares the next connected breakaway opportunity from Part 06.
+Only one runs at a time at baseline; Evolution II permits a supported additional-center operation with a 70-day coordination period and its own finite material allocation.
 A target lost to a genuine hostile disruption can fail with its actual committed cost consumed.
-A stale or already satisfied target fails preflight without charge.
+A stale or already satisfied target fails preflight without charge, and a target liberated by ordinary combat satisfies only the political integration portion without a second state transfer or opening army.
 The AI prefers its most viable initial base rather than the largest population state regardless of geography.
 
 `or095_coordinate_stores` allocates real compatible equipment to a verified cache or local formation.
@@ -80,13 +86,6 @@ The quote includes the exact incremental equipment bill rather than the full bil
 Returning existing forces is a separate receipt and does not pass through a new-unit grant routine.
 Prepared Underground can provide the single incident reorganization improvement without repeating its opening grant.
 
-`or095_prepare_region` is the 35-day, 25-political-power regional liaison from Part 06.
-Its target must be a genuine currently relevant home region.
-At baseline it prepares the next connected opportunity.
-Evolution II permits a supported additional-center operation with a 70-day coordination period and its own finite material allocation.
-The target becoming liberated by ordinary combat satisfies only the political integration portion.
-It never triggers a second state transfer or opening army.
-
 `or095_national_program` is the decision counterpart of a substantial focus-tree program from Part 09.
 It commits to one named political, production, military, diplomatic or recovery objective.
 The normal political-organization cost is 50 political power for a 70-day substantial institutional program.
@@ -120,13 +119,6 @@ It costs 25 political power and 25 command power, takes 35 days and affects the 
 On success it reduces local organization by 15 and resolves any verified exposed stores.
 It has no generic casualty award or universal compliance reset.
 The AI cannot target unknown networks or use a human's currently selected state as its own selector.
-
-`or095_restore_services` commits to a real local repair, administration or relief objective.
-The administrative setup may cost 25 political power.
-Buildings require native repair or construction and relief requires the existing system's actual supplies and transport.
-The ordinary mission deadline is 100–150 days.
-Successful delivery can reduce a proven local grievance contribution and improve the terms of a negotiated settlement.
-It cannot cancel national claims or manufacture a blanket reduction where no grievance receipt existed.
 
 `or095_open_negotiations` uses the common settlement contract and is free to propose.
 The AI weighs military overextension, strategic value, domestic costs and attainable terms.
@@ -165,11 +157,6 @@ Terms require explicit acceptance by the affected country or valid provisional a
 The action cannot make a claimant a subject merely because it accepted rifles.
 Recognition and guarantee use their actual native costs and consequences where present, with no double charging by a custom political-power effect.
 
-`or095_humanitarian_access` appears only for an actual recorded civilian need and a supported relief or movement route.
-It uses the separate famine, migration and humanitarian owners for their actual operations.
-It does not automatically transfer population or reduce military resistance because a sponsor clicked a humanitarian button.
-A failed route releases only unused reservations, and completed assistance retains its true delivered amount and responsible actors.
-
 ## Recovery actions
 
 `or095_fulfill_settlement` selects a dated political or administrative obligation already accepted by the country.
@@ -189,11 +176,6 @@ Its institutional work normally takes 70 days and costs 25 political power.
 Equipment and personnel are accounted for through supported native conversion or disbanding behavior.
 The action cannot destroy regular units outside its exact scope.
 A threatened country may retain a supported reserve arrangement where its settlement permits it.
-
-`or095_civilian_return` requires a real displaced cohort, consent or the explicitly supported legal movement basis, a valid origin, a safe route and verified destination reception capacity.
-It delegates the exact physical movement to the shared owner.
-Its mission records survivors arriving rather than treating a territorial liberation as population movement.
-No claimant must perform this action when no relevant displacement exists.
 
 `or095_close_obligations` resolves completed foreign support terms and unused reservations.
 It does not reimburse equipment already delivered or remove a patron's native guarantee without the proper diplomatic action.

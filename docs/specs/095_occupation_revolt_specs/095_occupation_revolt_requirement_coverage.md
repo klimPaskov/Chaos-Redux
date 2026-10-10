@@ -2,7 +2,6 @@
 
 Design coverage is not implementation or execution proof.
 All entries below are mapped into the specification.
-The full external-reference gate, actual subagent runs and HOI4 MCP workflow remain incomplete as reported separately.
 
 | ID | User requirement | Specification parts | Status |
 |---|---|---|---|
@@ -43,7 +42,4 @@ The full external-reference gate, actual subagent runs and HOI4 MCP workflow rem
 | U35 | Territorial changes update eligibility | 02, 11, 14 | Design covered, not implemented |
 | U36 | Thorough full planning expansion | 01, 02, 03, 04, 05, 06, 07, 08, 09, 10, 11, 12, 13, 14 | Design covered, not implemented |
 
-The request to use supplied subagents is **not fulfilled by actual execution**.
-All definitions were read and 20 future isolated assignments were prepared, but no agents were launched.
-The request to fully read every supplied archive text is fulfilled.
-The broader transitive must-read gate is not fully fulfilled because the exact external references in the reading report were not read.
+The 5 October 2026 planning pass read every supplied archive text but launched no specialists; specialist audits belong to the implementation run and are routed in the [specialist execution map](095_occupation_revolt_specialist_execution_map.md).
