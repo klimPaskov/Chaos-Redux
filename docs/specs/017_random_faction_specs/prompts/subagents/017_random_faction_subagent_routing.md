@@ -1,7 +1,7 @@
 # Subagent routing plan for Event 17
 
 The original planning environment lacked custom subagent execution.
-Use [the routing owner skill](../../../../../.agents/skills/chaos-redux-subagents/SKILL.md) for current roles and runtime discovery.
+Use [the routing owner skill](../../../../../.claude/skills/chaos-redux-subagents/SKILL.md) for current roles and runtime discovery.
 The table preserves Event 17 task boundaries and does not authorize repeating completed tranches.
 Codex bounded passes use `fork_turns="none"` with explicit inputs.
 

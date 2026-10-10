@@ -6,10 +6,10 @@ Create the visual asset package for Event 17 `Random faction` using `chaos-redux
 
 Inspect these reference folders before creating assets:
 
-- `.agents/skills/chaos-redux-event-assets/assets/gfx_references/icons/decisions`
-- `.agents/skills/chaos-redux-event-assets/assets/gfx_references/icons/ideas`
-- `.agents/skills/chaos-redux-event-assets/assets/gfx_references/event_art/report`
-- `.agents/skills/chaos-redux-event-assets/assets/gfx_references/icons/achievements`
+- `.claude/skills/chaos-redux-event-assets/assets/gfx_references/icons/decisions`
+- `.claude/skills/chaos-redux-event-assets/assets/gfx_references/icons/ideas`
+- `.claude/skills/chaos-redux-event-assets/assets/gfx_references/event_art/report`
+- `.claude/skills/chaos-redux-event-assets/assets/gfx_references/icons/achievements`
 
 ## Asset list
 

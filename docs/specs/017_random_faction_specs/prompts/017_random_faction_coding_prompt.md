@@ -1,5 +1,8 @@
 # Coding prompt for Event 17: Random faction
 
+> Historical build contract: Event 017 is implemented (see `docs/events/017_random_faction/overview.md`).
+> Do not rerun this contract; schedule new work from the package README open questions and the owner plans.
+
 Implement Event 17 from the full spec package under `docs/specs/017_random_faction_specs/`.
 
 Read and follow:

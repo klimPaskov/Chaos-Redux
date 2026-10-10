@@ -1,3 +1,6 @@
+> Historical build contract: Event 017 is implemented (see `docs/events/017_random_faction/overview.md`).
+> Do not rerun this contract; schedule new work from the package README open questions and the owner plans.
+
 /goal Implement Event 17 `Random faction` from `docs/specs/017_random_faction_specs/`. Use the spec files in `specs/`, matrices in `matrices/`, and prompts in `prompts/`.
 
 Required skills and docs: `AGENTS.md`, `chaos-redux-events`, `chaos-redux-event-planning`, `chaos-redux-subagents`, `chaos-redux-decisions-missions`, `chaos-redux-event-assets`, and `chaos-redux-frame-animation`. Read relevant offline HOI4 wiki and vanilla documentation before editing script.
