@@ -17,7 +17,7 @@ Mild irony can come from service rivalry, duplicated manuals, or officers claimi
 | Establish a Grand Doctrine | Government and high command accept a broad military philosophy. | Formal commitment that names the cost of one choice and no mastery step. |
 | Advance a track | The relevant school turns recent experience into the next level. | Practical and specific to the unit family. |
 | Navigation | The staff reopens the agenda. | Neutral. |
-| General staff (R5) | The national command leaves the remaining choices to the staff. | Plain and confident. |
+| General staff | The national command leaves the remaining choices to the staff. | Plain and confident. |
 | Nothing left to study | The staff confirms that no eligible doctrine work remains. | Matter-of-fact, without false compensation. |
 | Summary | The institutions record what was adopted. | Reflective and brief. |
 
@@ -31,22 +31,17 @@ Internal state, such as receipts, queues, scores, and stage numbers, stays inter
 
 | Surface | Implemented values | Target values |
 | --- | --- | --- |
-| Domain option | Grand Doctrine or unselected state, next action, tracks ready | Grand Doctrine or "no Grand Doctrine", and a marker when a track is one step from its Milestone (R7) |
-| Track option | Held subdoctrine, current level, maximum, next level; tooltip adds completion state and Milestone state | Held subdoctrine and "Mastery 2 -> 3", plus a completion line only when this step completes the track and its Milestone (R7) |
+| Domain option | Grand Doctrine or "No Grand Doctrine"; the tooltip states the next action | Unchanged |
+| Track option | Held subdoctrine and "Mastery 2 -> 3"; the tooltip adds a line only when this step completes the branch and its Milestone | Unchanged |
 | Result | Subdoctrine and level reached, or doctrine established, and choices remaining | Unchanged |
-| Summary | Stage, choices offered, adoptions, mastery levels, domains developed, tracks developed, concentration, Milestone reached | One line per action taken and the Milestones reached (R6) |
+| Summary | Grand Doctrines established and mastery levels advanced when nonzero, and a line when a Milestone was reached | Unchanged |
 
-### R6. The summary lists outcomes instead of statistics (pending)
+### Summary and option labels
 
-The implemented summary shows eight counters, and none of them changes what the player does next, because the curriculum is already over.
-The revised summary lists each action in order, such as "Established Fleet in Being" or "Mobile Infantry reached Mastery 4", and names any Grand Doctrine Milestone reached.
-Distinct-domain counts, distinct-track counts, and the concentrated or distributed label are removed; the achievement checks that read them stay internal.
-
-### R7. Option labels show only what decides the click (pending)
-
-The track count and the "next action" label on domain options repeat what the next page shows.
-The decision-relevant fact on the domain menu is whether a track there is one step from completing, so that marker replaces them.
-On track options the completion and Milestone states matter only when this step finishes the track, so they appear only then, as one line.
+The summary no longer shows distinct-domain counts, distinct-track counts, or the concentrated or distributed label, because none of them changes what the player does next.
+The result page shows it after the last choice, and the page after a general staff run shows the same text.
+The track count and next-action label were removed from domain options; the domain tooltip states the next action in one sentence.
+A Milestone marker for a track one step from completion on the domain menu is not implemented, because the track menu already shows it where the player decides.
 
 ## Event Details and History (implemented)
 
@@ -79,7 +74,7 @@ Shared rules:
 - native mastery, faction sharing, focuses, decisions, other events, and debug grants never count
 - debug, console, cluster-forced, and test-country setups make a campaign ineligible
 - annexation before completion leaves the achievement locked
-- delegated choices (R5, pending) count as the country's own receipts
+- delegated general staff choices count as the country's own receipts
 
 | Achievement ID | Title | Requirement |
 | --- | --- | --- |

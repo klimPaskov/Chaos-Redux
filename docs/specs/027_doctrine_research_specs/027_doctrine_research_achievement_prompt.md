@@ -5,7 +5,7 @@
 The three achievements are implemented in `common/scripted_effects/027_doctrine_research_achievement_effects.txt`, registered in the root Chaos Redux achievement registry, localised, and given final icon triplets.
 Part 4 owns their requirements, shared rules, and disqualifiers; this prompt keeps only what a change to them must re-check.
 
-Use this prompt when revisions R1 to R7 change the flow, when a new doctrine domain is registered, or when achievement tracking is touched.
+Use this prompt when the human flow changes, when a new doctrine domain is registered, or when achievement tracking is touched.
 Do not create a second registry or a new `unique_id` file.
 
 ## Validation cases
@@ -40,9 +40,9 @@ Do not create a second registry or a new `unique_id` file.
 
 ## Revision checks
 
-- R2 and R3 change how a step is triggered, not what a receipt records; every case above must still pass with the one-click step and the "advance again" option.
-- R5 delegated steps count as the country's own receipts, so a fully delegated Evolution IV curriculum can still satisfy any achievement whose route the AI happens to take.
-- R6 removes the summary counters from the page; the achievement checks keep reading the receipts directly.
+- The direct advance and the repeat option change how a step is triggered, not what a receipt records; every case above must still pass with the one-click step and the "advance again" option.
+- General staff steps count as the country's own receipts, so a fully delegated Evolution IV curriculum can still satisfy any achievement whose route the AI happens to take.
+- The revised summary removes the summary counters from the page; the achievement checks keep reading the receipts directly.
 
 ## Text
 

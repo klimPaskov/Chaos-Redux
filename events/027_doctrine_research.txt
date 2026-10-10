@@ -30,27 +30,15 @@ country_event = {
 }
 
 country_event = {
-	id = chaosx.nr27.2
-	title = chaosx.nr27.2.t
-	desc = chaosx.nr27.2.d
-	picture = GFX_report_event_027_doctrine_research
-	is_triggered_only = yes
-	trigger = {
-		has_country_flag = doctrine_research_active_batch
-		is_ai = no
-		doctrine_research_country_is_live = yes
-	}
-	option = {
-		name = chaosx.nr27.2.a
-		custom_effect_tooltip = chaosx.nr27.2.a.tt
-		country_event = { id = chaosx.nr27.3 }
-	}
-}
-
-country_event = {
 	id = chaosx.nr27.3
 	title = chaosx.nr27.3.t
-	desc = chaosx.nr27.3.d
+	desc = {
+		text = {
+			trigger = { check_variable = { doctrine_research_current_choice_number = 1 } }
+			localization_key = chaosx.nr27.3.d.opening
+		}
+		text = { localization_key = chaosx.nr27.3.d }
+	}
 	picture = GFX_report_event_027_doctrine_research
 	is_triggered_only = yes
 	trigger = {
@@ -59,6 +47,15 @@ country_event = {
 		doctrine_research_country_is_live = yes
 	}
 	immediate = { doctrine_research_prepare_domain_menu_display = yes }
+	option = {
+		name = chaosx.nr27.general_staff
+		trigger = { doctrine_research_country_has_valid_action = yes }
+		custom_effect_tooltip = chaosx.nr27.general_staff.tt
+		hidden_effect = {
+			doctrine_research_clear_selection = yes
+			doctrine_research_delegate_active_batch = yes
+		}
+	}
 	option = {
 		name = chaosx.nr27.3.army
 		custom_effect_tooltip = chaosx.nr27.3.army.tt
@@ -142,13 +139,6 @@ country_event = {
 				doctrine_research_capture_selected_domain_grand_doctrine = yes
 				country_event = { id = chaosx.nr27.5 }
 			}
-		}
-	}
-	option = {
-		name = chaosx.nr27.3.back
-		hidden_effect = {
-			doctrine_research_clear_selection = yes
-			country_event = { id = chaosx.nr27.2 }
 		}
 	}
 	option = {
@@ -645,139 +635,149 @@ country_event = {
 	immediate = {
 		set_variable = { doctrine_research_subdoctrine_page = 0 }
 		doctrine_research_prepare_track_display = yes
+		# An assigned track advances from the track menu: the held subdoctrine is
+		# the only target, so the subdoctrine page and confirmation are skipped.
+		# The transaction revalidates the target and spends nothing on failure.
 		if = {
-			limit = {
-				check_variable = { var = doctrine_research_selected_domain value = constant:doctrine_research_domain.army compare = equals }
-				check_variable = { var = doctrine_research_selected_track value = constant:doctrine_research_track.infantry compare = equals }
-			}
-			country_event = { id = chaosx.nr27.60 }
+			limit = { doctrine_research_selected_track_advances_directly = yes }
+			set_variable = { doctrine_research_selected_action = constant:doctrine_research_action.mastery }
+			doctrine_research_confirm_selection = yes
+			doctrine_research_route_transaction_result = yes
 		}
-		if = {
-			limit = {
-				check_variable = { var = doctrine_research_selected_domain value = constant:doctrine_research_domain.army compare = equals }
-				check_variable = { var = doctrine_research_selected_track value = constant:doctrine_research_track.combat_support compare = equals }
+		else = {
+			if = {
+				limit = {
+					check_variable = { var = doctrine_research_selected_domain value = constant:doctrine_research_domain.army compare = equals }
+					check_variable = { var = doctrine_research_selected_track value = constant:doctrine_research_track.infantry compare = equals }
+				}
+				country_event = { id = chaosx.nr27.60 }
 			}
-			country_event = { id = chaosx.nr27.61 }
-		}
-		if = {
-			limit = {
-				check_variable = { var = doctrine_research_selected_domain value = constant:doctrine_research_domain.army compare = equals }
-				check_variable = { var = doctrine_research_selected_track value = constant:doctrine_research_track.armor compare = equals }
+			if = {
+				limit = {
+					check_variable = { var = doctrine_research_selected_domain value = constant:doctrine_research_domain.army compare = equals }
+					check_variable = { var = doctrine_research_selected_track value = constant:doctrine_research_track.combat_support compare = equals }
+				}
+				country_event = { id = chaosx.nr27.61 }
 			}
-			country_event = { id = chaosx.nr27.62 }
-		}
-		if = {
-			limit = {
-				check_variable = { var = doctrine_research_selected_domain value = constant:doctrine_research_domain.army compare = equals }
-				check_variable = { var = doctrine_research_selected_track value = constant:doctrine_research_track.operations compare = equals }
+			if = {
+				limit = {
+					check_variable = { var = doctrine_research_selected_domain value = constant:doctrine_research_domain.army compare = equals }
+					check_variable = { var = doctrine_research_selected_track value = constant:doctrine_research_track.armor compare = equals }
+				}
+				country_event = { id = chaosx.nr27.62 }
 			}
-			country_event = { id = chaosx.nr27.63 }
-		}
-		if = {
-			limit = {
-				check_variable = { var = doctrine_research_selected_domain value = constant:doctrine_research_domain.navy compare = equals }
-				check_variable = { var = doctrine_research_selected_track value = constant:doctrine_research_track.submarines compare = equals }
+			if = {
+				limit = {
+					check_variable = { var = doctrine_research_selected_domain value = constant:doctrine_research_domain.army compare = equals }
+					check_variable = { var = doctrine_research_selected_track value = constant:doctrine_research_track.operations compare = equals }
+				}
+				country_event = { id = chaosx.nr27.63 }
 			}
-			country_event = { id = chaosx.nr27.64 }
-		}
-		if = {
-			limit = {
-				check_variable = { var = doctrine_research_selected_domain value = constant:doctrine_research_domain.navy compare = equals }
-				check_variable = { var = doctrine_research_selected_track value = constant:doctrine_research_track.screens compare = equals }
+			if = {
+				limit = {
+					check_variable = { var = doctrine_research_selected_domain value = constant:doctrine_research_domain.navy compare = equals }
+					check_variable = { var = doctrine_research_selected_track value = constant:doctrine_research_track.submarines compare = equals }
+				}
+				country_event = { id = chaosx.nr27.64 }
 			}
-			country_event = { id = chaosx.nr27.65 }
-		}
-		if = {
-			limit = {
-				check_variable = { var = doctrine_research_selected_domain value = constant:doctrine_research_domain.navy compare = equals }
-				check_variable = { var = doctrine_research_selected_track value = constant:doctrine_research_track.carriers compare = equals }
+			if = {
+				limit = {
+					check_variable = { var = doctrine_research_selected_domain value = constant:doctrine_research_domain.navy compare = equals }
+					check_variable = { var = doctrine_research_selected_track value = constant:doctrine_research_track.screens compare = equals }
+				}
+				country_event = { id = chaosx.nr27.65 }
 			}
-			country_event = { id = chaosx.nr27.66 }
-		}
-		if = {
-			limit = {
-				check_variable = { var = doctrine_research_selected_domain value = constant:doctrine_research_domain.navy compare = equals }
-				check_variable = { var = doctrine_research_selected_track value = constant:doctrine_research_track.capital_ships compare = equals }
+			if = {
+				limit = {
+					check_variable = { var = doctrine_research_selected_domain value = constant:doctrine_research_domain.navy compare = equals }
+					check_variable = { var = doctrine_research_selected_track value = constant:doctrine_research_track.carriers compare = equals }
+				}
+				country_event = { id = chaosx.nr27.66 }
 			}
-			country_event = { id = chaosx.nr27.67 }
-		}
-		if = {
-			limit = {
-				check_variable = { var = doctrine_research_selected_domain value = constant:doctrine_research_domain.air compare = equals }
-				check_variable = { var = doctrine_research_selected_track value = constant:doctrine_research_track.fighter_aircraft compare = equals }
+			if = {
+				limit = {
+					check_variable = { var = doctrine_research_selected_domain value = constant:doctrine_research_domain.navy compare = equals }
+					check_variable = { var = doctrine_research_selected_track value = constant:doctrine_research_track.capital_ships compare = equals }
+				}
+				country_event = { id = chaosx.nr27.67 }
 			}
-			country_event = { id = chaosx.nr27.68 }
-		}
-		if = {
-			limit = {
-				check_variable = { var = doctrine_research_selected_domain value = constant:doctrine_research_domain.air compare = equals }
-				check_variable = { var = doctrine_research_selected_track value = constant:doctrine_research_track.strike_aircraft compare = equals }
+			if = {
+				limit = {
+					check_variable = { var = doctrine_research_selected_domain value = constant:doctrine_research_domain.air compare = equals }
+					check_variable = { var = doctrine_research_selected_track value = constant:doctrine_research_track.fighter_aircraft compare = equals }
+				}
+				country_event = { id = chaosx.nr27.68 }
 			}
-			country_event = { id = chaosx.nr27.69 }
-		}
-		if = {
-			limit = {
-				check_variable = { var = doctrine_research_selected_domain value = constant:doctrine_research_domain.air compare = equals }
-				check_variable = { var = doctrine_research_selected_track value = constant:doctrine_research_track.medium_aircraft compare = equals }
+			if = {
+				limit = {
+					check_variable = { var = doctrine_research_selected_domain value = constant:doctrine_research_domain.air compare = equals }
+					check_variable = { var = doctrine_research_selected_track value = constant:doctrine_research_track.strike_aircraft compare = equals }
+				}
+				country_event = { id = chaosx.nr27.69 }
 			}
-			country_event = { id = chaosx.nr27.70 }
-		}
-		if = {
-			limit = {
-				check_variable = { var = doctrine_research_selected_domain value = constant:doctrine_research_domain.air compare = equals }
-				check_variable = { var = doctrine_research_selected_track value = constant:doctrine_research_track.heavy_aircraft compare = equals }
+			if = {
+				limit = {
+					check_variable = { var = doctrine_research_selected_domain value = constant:doctrine_research_domain.air compare = equals }
+					check_variable = { var = doctrine_research_selected_track value = constant:doctrine_research_track.medium_aircraft compare = equals }
+				}
+				country_event = { id = chaosx.nr27.70 }
 			}
-			country_event = { id = chaosx.nr27.71 }
-		}
-		if = {
-			limit = {
-				check_variable = { var = doctrine_research_selected_domain value = constant:doctrine_research_domain.special_forces compare = equals }
-				check_variable = { var = doctrine_research_selected_track value = constant:doctrine_research_track.special_forces_first compare = equals }
+			if = {
+				limit = {
+					check_variable = { var = doctrine_research_selected_domain value = constant:doctrine_research_domain.air compare = equals }
+					check_variable = { var = doctrine_research_selected_track value = constant:doctrine_research_track.heavy_aircraft compare = equals }
+				}
+				country_event = { id = chaosx.nr27.71 }
 			}
-			country_event = { id = chaosx.nr27.72 }
-		}
-		if = {
-			limit = {
-				check_variable = { var = doctrine_research_selected_domain value = constant:doctrine_research_domain.special_forces compare = equals }
-				check_variable = { var = doctrine_research_selected_track value = constant:doctrine_research_track.special_forces_second compare = equals }
+			if = {
+				limit = {
+					check_variable = { var = doctrine_research_selected_domain value = constant:doctrine_research_domain.special_forces compare = equals }
+					check_variable = { var = doctrine_research_selected_track value = constant:doctrine_research_track.special_forces_first compare = equals }
+				}
+				country_event = { id = chaosx.nr27.72 }
 			}
-			country_event = { id = chaosx.nr27.73 }
-		}
-		if = {
-			limit = {
-				check_variable = { var = doctrine_research_selected_domain value = constant:doctrine_research_domain.chaos_warfare compare = equals }
-				check_variable = { var = doctrine_research_selected_track value = constant:doctrine_research_track.infantry compare = equals }
+			if = {
+				limit = {
+					check_variable = { var = doctrine_research_selected_domain value = constant:doctrine_research_domain.special_forces compare = equals }
+					check_variable = { var = doctrine_research_selected_track value = constant:doctrine_research_track.special_forces_second compare = equals }
+				}
+				country_event = { id = chaosx.nr27.73 }
 			}
-			country_event = { id = chaosx.nr27.74 }
-		}
-		if = {
-			limit = {
-				check_variable = { var = doctrine_research_selected_domain value = constant:doctrine_research_domain.chaos_warfare compare = equals }
-				check_variable = { var = doctrine_research_selected_track value = constant:doctrine_research_track.combat_support compare = equals }
+			if = {
+				limit = {
+					check_variable = { var = doctrine_research_selected_domain value = constant:doctrine_research_domain.chaos_warfare compare = equals }
+					check_variable = { var = doctrine_research_selected_track value = constant:doctrine_research_track.infantry compare = equals }
+				}
+				country_event = { id = chaosx.nr27.74 }
 			}
-			country_event = { id = chaosx.nr27.75 }
-		}
-		if = {
-			limit = {
-				check_variable = { var = doctrine_research_selected_domain value = constant:doctrine_research_domain.chaos_warfare compare = equals }
-				check_variable = { var = doctrine_research_selected_track value = constant:doctrine_research_track.armor compare = equals }
+			if = {
+				limit = {
+					check_variable = { var = doctrine_research_selected_domain value = constant:doctrine_research_domain.chaos_warfare compare = equals }
+					check_variable = { var = doctrine_research_selected_track value = constant:doctrine_research_track.combat_support compare = equals }
+				}
+				country_event = { id = chaosx.nr27.75 }
 			}
-			country_event = { id = chaosx.nr27.76 }
-		}
-		if = {
-			limit = {
-				check_variable = { var = doctrine_research_selected_domain value = constant:doctrine_research_domain.chaos_warfare compare = equals }
-				check_variable = { var = doctrine_research_selected_track value = constant:doctrine_research_track.operations compare = equals }
+			if = {
+				limit = {
+					check_variable = { var = doctrine_research_selected_domain value = constant:doctrine_research_domain.chaos_warfare compare = equals }
+					check_variable = { var = doctrine_research_selected_track value = constant:doctrine_research_track.armor compare = equals }
+				}
+				country_event = { id = chaosx.nr27.76 }
 			}
-			country_event = { id = chaosx.nr27.77 }
-		}
-		if = {
-			limit = { NOT = { doctrine_research_selected_track_has_valid_action = yes } }
-			country_event = { id = chaosx.nr27.11 }
+			if = {
+				limit = {
+					check_variable = { var = doctrine_research_selected_domain value = constant:doctrine_research_domain.chaos_warfare compare = equals }
+					check_variable = { var = doctrine_research_selected_track value = constant:doctrine_research_track.operations compare = equals }
+				}
+				country_event = { id = chaosx.nr27.77 }
+			}
+			if = {
+				limit = { NOT = { doctrine_research_selected_track_has_valid_action = yes } }
+				country_event = { id = chaosx.nr27.11 }
+			}
 		}
 	}
 }
-
 country_event = {
 	id = chaosx.nr27.60
 	title = chaosx.nr27.60.t
@@ -4798,19 +4798,7 @@ country_event = {
 		}
 		hidden_effect = {
 			doctrine_research_confirm_selection = yes
-			if = {
-				limit = { check_variable = { var = doctrine_research_last_transaction_result value = constant:doctrine_research_transaction_result.success compare = equals } }
-				country_event = { id = chaosx.nr27.8 }
-			}
-			else_if = {
-				limit = { check_variable = { var = doctrine_research_last_transaction_result value = constant:doctrine_research_transaction_result.ambiguous compare = equals } }
-				country_event = { id = chaosx.nr27.12 }
-			}
-			else_if = {
-				limit = { check_variable = { var = doctrine_research_last_transaction_result value = constant:doctrine_research_transaction_result.adoption_only compare = equals } }
-				country_event = { id = chaosx.nr27.13 }
-			}
-			else = { country_event = { id = chaosx.nr27.11 } }
+			doctrine_research_route_transaction_result = yes
 		}
 	}
 	option = {
@@ -4845,35 +4833,77 @@ country_event = {
 		doctrine_research_country_is_live = yes
 		check_variable = { var = doctrine_research_last_transaction_result value = constant:doctrine_research_transaction_result.success compare = equals }
 	}
-	option = {
-		name = chaosx.nr27.8.a
-		hidden_effect = {
-			if = {
-				limit = { check_variable = { var = doctrine_research_batch_remaining_choices^doctrine_research_active_batch_index value = 0 compare = greater_than } }
-				country_event = { id = chaosx.nr27.9 }
-			}
-			else = { country_event = { id = chaosx.nr27.10 } }
+	immediate = {
+		if = {
+			limit = { check_variable = { var = doctrine_research_selected_action value = constant:doctrine_research_action.mastery compare = equals } }
+			set_variable = { doctrine_research_display_subdoctrine = doctrine_research_selected_subdoctrine }
+			doctrine_research_prepare_display_levels = yes
 		}
 	}
-}
-
-country_event = {
-	id = chaosx.nr27.9
-	title = chaosx.nr27.9.t
-	desc = chaosx.nr27.9.d
-	picture = GFX_report_event_027_doctrine_research
-	is_triggered_only = yes
-	trigger = {
-		has_country_flag = doctrine_research_active_batch
-		is_ai = no
-		doctrine_research_country_is_live = yes
-		check_variable = { var = doctrine_research_last_transaction_result value = constant:doctrine_research_transaction_result.success compare = equals }
-		check_variable = { var = doctrine_research_batch_remaining_choices^doctrine_research_active_batch_index value = 0 compare = greater_than }
+	option = {
+		name = chaosx.nr27.general_staff
+		trigger = {
+			check_variable = { var = doctrine_research_batch_remaining_choices^doctrine_research_active_batch_index value = 0 compare = greater_than }
+			doctrine_research_country_has_valid_action = yes
+		}
+		custom_effect_tooltip = chaosx.nr27.general_staff.tt
+		hidden_effect = {
+			doctrine_research_clear_selection = yes
+			doctrine_research_delegate_active_batch = yes
+		}
 	}
 	option = {
-		name = chaosx.nr27.9.a
-		custom_effect_tooltip = chaosx.nr27.9.a.tt
+		name = chaosx.nr27.8.repeat
+		trigger = {
+			check_variable = { var = doctrine_research_batch_remaining_choices^doctrine_research_active_batch_index value = 0 compare = greater_than }
+			check_variable = { var = doctrine_research_selected_action value = constant:doctrine_research_action.mastery compare = equals }
+			doctrine_research_selected_choice_is_valid = yes
+		}
+		custom_effect_tooltip = chaosx.nr27.8.repeat.tt
+		hidden_effect = {
+			doctrine_research_confirm_selection = yes
+			doctrine_research_route_transaction_result = yes
+		}
+	}
+	option = {
+		name = chaosx.nr27.8.same_domain
+		trigger = {
+			check_variable = { var = doctrine_research_batch_remaining_choices^doctrine_research_active_batch_index value = 0 compare = greater_than }
+			NOT = { doctrine_research_selected_domain_adoption_available = yes }
+			doctrine_research_selected_domain_has_valid_action = yes
+		}
+		custom_effect_tooltip = chaosx.nr27.8.same_domain.tt
+		hidden_effect = {
+			set_variable = { doctrine_research_selected_track = constant:doctrine_research_track.invalid }
+			set_variable = { doctrine_research_selected_subdoctrine = constant:doctrine_research_subdoctrine.invalid }
+			set_variable = { doctrine_research_selected_action = constant:doctrine_research_action.none }
+			doctrine_research_capture_selected_domain_grand_doctrine = yes
+			country_event = { id = chaosx.nr27.5 }
+		}
+	}
+	option = {
+		name = chaosx.nr27.8.other_domain
+		trigger = {
+			check_variable = { var = doctrine_research_batch_remaining_choices^doctrine_research_active_batch_index value = 0 compare = greater_than }
+			doctrine_research_country_has_valid_action = yes
+		}
+		custom_effect_tooltip = chaosx.nr27.8.other_domain.tt
 		hidden_effect = { doctrine_research_continue_after_success = yes }
+	}
+	option = {
+		name = chaosx.nr27.8.exhausted
+		trigger = {
+			check_variable = { var = doctrine_research_batch_remaining_choices^doctrine_research_active_batch_index value = 0 compare = greater_than }
+			NOT = { doctrine_research_country_has_valid_action = yes }
+		}
+		custom_effect_tooltip = chaosx.nr27.11.a.tt
+		hidden_effect = { country_event = { id = chaosx.nr27.11 } }
+	}
+	option = {
+		name = chaosx.nr27.10.a
+		trigger = { check_variable = { var = doctrine_research_batch_remaining_choices^doctrine_research_active_batch_index value = 0 compare = equals } }
+		custom_effect_tooltip = chaosx.nr27.10.a.tt
+		hidden_effect = { doctrine_research_complete_active_batch = yes }
 	}
 }
 
@@ -4889,7 +4919,6 @@ country_event = {
 		doctrine_research_country_is_live = yes
 		check_variable = { var = doctrine_research_batch_remaining_choices^doctrine_research_active_batch_index value = 0 compare = equals }
 	}
-	immediate = { doctrine_research_prepare_batch_summary = yes }
 	option = {
 		name = chaosx.nr27.10.a
 		custom_effect_tooltip = chaosx.nr27.10.a.tt
@@ -4950,7 +4979,8 @@ country_event = {
 			else_if = {
 				limit = { NOT = { has_country_flag = doctrine_research_active_batch_prompted_human } }
 				set_country_flag = doctrine_research_active_batch_prompted_human
-				country_event = { id = chaosx.nr27.2 }
+				doctrine_research_clear_selection = yes
+				country_event = { id = chaosx.nr27.3 }
 			}
 		}
 	}

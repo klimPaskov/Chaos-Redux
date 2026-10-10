@@ -10,20 +10,18 @@ A custom window would duplicate the native doctrine screen and break whenever va
 At every step the player must be able to see which country owns the curriculum, how many choices remain, which domain is being considered, and whether the next click establishes a Grand Doctrine or advances a mastery level.
 Pages never show adapter IDs, variables, track indexes, DLC checks, mastery points, or AI scores.
 
-## Implemented page flow
+## Page flow
 
 | Page | Purpose |
 | --- | --- |
-| `.2` | Opening report with the curriculum size and one continue option. |
-| `.3` | Domain menu: Army, Navy, Air, Special Forces, Chaos Warfare in that order, showing only domains with a valid action. |
+| `.3` | Domain menu: the general staff option first, then Army, Navy, Air, Special Forces, Chaos Warfare in that order, showing only domains with a valid action. The first choice of a curriculum opens here with the premise and size. |
 | `.4` | Grand Doctrine menu for a domain whose folder is empty. |
 | `.5` | Track menu for a domain with an active Grand Doctrine, showing only tracks that can advance. |
-| `.6` | Hidden router to the track's subdoctrine page. |
+| `.6` | Hidden router: advances an assigned track directly, otherwise opens the track's subdoctrine page. |
 | `.60` to `.77` | One page per track listing the held subdoctrine, or every eligible subdoctrine for an empty track in native graph order, with two-page navigation for the longest lists. |
-| `.7` | Confirmation with its own text for adoption, an assigned-track step, and an empty-track assignment. |
-| `.8` | Result of the action. |
-| `.9` | Continue to the next choice. |
-| `.10` | Curriculum summary. |
+| `.7` | Confirmation for adoption and empty-track assignment. |
+| `.8` | Result of the action with the next step: general staff, the same branch again, another track of the domain, another domain, or the closing outcome after the last choice. |
+| `.10` | Curriculum summary after the general staff finished a curriculum. |
 | `.11` | No valid action remains, or the target became invalid. |
 | `.12` | An interrupted transaction was recovered. |
 | `.13` | Stored mastery completed the branch as it was assigned, so no choice was spent. |
@@ -32,59 +30,30 @@ Every page shows the remaining choices.
 Back, previous, and next options are worded as navigation and never spend a choice.
 The domain menu, the selected-domain check, and the confirmation all re-read validity, so a page left open while the country's state changed cannot confirm an invalid action.
 
-### Click cost of the implemented flow
+### Click cost
 
-One mastery step on a track that already holds a subdoctrine takes six clicks: domain, track, the one-option subdoctrine page, confirmation, result, and continue.
-A five-choice Evolution IV curriculum therefore needs about thirty clicks, and a country with a queued second curriculum doubles that.
-The subdoctrine page and the confirmation repeat information the track option already shows, and the result and continue pages carry no decision.
-Revisions R1 to R5 below remove those clicks without removing any decision.
+One mastery step on an assigned track takes two clicks: domain and track.
+Stacking the same branch costs one click per further choice through the result page, and the general staff option spends every remaining choice with one click.
+Adoption and empty-track assignment keep their confirmation because both are permanent commitments the event cannot undo.
 
-## Proposed flow revisions (2026-10-10 audit, pending)
-
-These revisions are proposals from the 2026-10-10 audit.
-They change accepted implemented behaviour, so they stay unresolved until the user accepts them (README open questions).
-None of them changes what a choice can do, the validity rules, or the transaction receipts.
-
-### R1. The opening report becomes the first domain menu
-
-The `.2` page carries the curriculum premise and size and lists the domain options directly, so the first choice starts on the page that announces the curriculum.
-Later choices use the plain domain menu.
-
-### R2. An assigned track advances from the track menu
+### Direct advance and result page
 
 A track whose subdoctrine is already selected advances when the player clicks it in the track menu.
-The option's own trigger and the transaction revalidate the target, and a failed step returns to the rebuilt track menu without spending the choice.
-The one-option subdoctrine page and the confirmation are skipped for this case.
-The combined Special Forces entry that covers two held subdoctrines keeps its subdoctrine page, because the player still has to pick one.
-Adoption and empty-track assignment keep their confirmation, because both are permanent commitments the event cannot undo.
+The transaction revalidates the target, and a failed step goes to the no-action page without spending the choice.
+Special Forces entries keep their subdoctrine page, because one entry can show a token from either native track.
 
-### R3. The result page continues the curriculum
+The result page offers the next action directly and closes the curriculum after the last choice with its outcome (Grand Doctrines established, mastery levels advanced, any Milestone reached).
 
-The result page offers the next action directly instead of a separate continue page:
+### Chaos Warfare adoption
 
-- advance the same branch again, when it can still advance, labelled with its next level
-- choose another domain
-- let the general staff assign the remaining choices (R5)
+The confirmation for establishing Chaos Warfare states that civilian deaths rise in every war the country fights while it follows Chaos Warfare, and that chemical release still needs the CBRN programme's policy, payloads, and prepared operations.
+This is the doctrine's real downstream cost through the Chaos Meter combat collateral model and the Deaths ledger.
 
-After the last choice, the result page shows the summary (part 4, R6) and closes the curriculum, so `.9` and `.10` merge into it.
-Stacking one branch through a five-choice curriculum then costs one click per choice after the first.
-
-### R4. Chaos Warfare adoption states its cost
-
-The confirmation for establishing Chaos Warfare adds one sentence that civilian deaths rise in every war the country fights while it follows Chaos Warfare, and that chemical release still needs the CBRN programme's policy, payloads, and prepared operations.
-This is the doctrine's real downstream cost through the Chaos Meter combat collateral model and the Deaths ledger, and the free adoption should not hide it.
-The native Grand Doctrine description already covers the programme gates, so the confirmation can reuse it.
-
-### R5. The general staff can take the remaining choices
+### General staff
 
 The domain menu and the result page offer "let the general staff assign the remaining choices" as their first option.
 It runs the AI resolver for the remaining choices of the current curriculum only, using the same validity pool and scoring as an AI country, then shows the summary.
-Queued curricula still open normally afterwards.
-
-Placing it first also fixes unattended pages.
-The engine resolves an unanswered event after `EVENT_TIMEOUT_DEFAULT` (13 days in vanilla `00_defines.lua`) by picking an option, which for a human is expected to be the first one (live check).
-In the implemented flow that cascades through the first listed domain, track, and confirmation and spends choices on whatever happens to be listed first, normally Army Infantry.
-With R5 first, an unanswered curriculum is spent the way an AI country would spend it.
+Queued curricula open normally afterwards.
 Delegated steps are the country's own receipts and count for achievements like any other step.
 
 ## Grand Doctrine page
@@ -150,14 +119,14 @@ Part 3 owns the scoring model.
 ```text
 Event 027 firing
   -> one curriculum appended for every participant
-  -> human: domain menu (opening text on the first choice, R1) | AI: silent resolution
-      -> general staff option (R5) -> AI resolver for the remaining choices -> summary
+  -> human: domain menu (opening text on the first choice) | AI: silent resolution
+      -> general staff option -> AI resolver for the remaining choices -> summary
       -> domain without a Grand Doctrine -> Grand Doctrine page -> confirm -> adopt, spend one choice
       -> domain with a Grand Doctrine -> track page
-          -> assigned track -> advance one level, spend one choice (R2)
+          -> assigned track -> advance one level, spend one choice
           -> empty track -> subdoctrine page -> confirm -> assign and advance, spend one choice
               -> bank completes the branch -> assignment stands, no choice spent
-      -> result page (R3)
+      -> result page
           -> choices remain -> same branch again | another domain | general staff
           -> no choices remain -> summary, next queued curriculum starts
 ```

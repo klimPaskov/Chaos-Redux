@@ -545,7 +545,7 @@ For a fixed country state, inspect the human-visible valid pool and the AI candi
 **Expected result**
 
 Every AI candidate is a valid human action, and every valid human action can enter AI scoring.
-Human navigation pages create no hidden extra doctrine options, and the general staff option (R5, pending) uses the AI pool unchanged.
+Human navigation pages create no hidden extra doctrine options, and the general staff option uses the AI pool unchanged.
 
 ### DR-G02: DLC matrix
 

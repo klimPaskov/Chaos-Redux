@@ -8,7 +8,7 @@ The source design package is `docs/specs/027_doctrine_research_specs/`. Agent de
 
 | Surface | Path |
 | --- | --- |
-| Events (`chaosx.nr27.1` to `.14`, track pages `.60` to `.77`) | `events/027_doctrine_research.txt` |
+| Events (`chaosx.nr27.1`, `.3` to `.8`, `.10` to `.14`, track pages `.60` to `.77`) | `events/027_doctrine_research.txt` |
 | Firing, queue, transaction, lifecycle, and AI domain scoring | `common/scripted_effects/027_doctrine_research_effects.txt` |
 | AI Grand Doctrine, track, and subdoctrine scoring | `common/scripted_effects/027_doctrine_research_ai_effects.txt` |
 | Native mastery adapter (level readback, one-point steps, empty-track assignment) | `common/scripted_effects/027_doctrine_research_exact_mastery_effects.txt` |
@@ -41,15 +41,22 @@ Batch stage and size never change after creation. Later firings append new rows 
 
 The wake starts the oldest queued batch when no batch is active. A per-country queued-row count lets lifecycle callbacks skip countries with nothing to resume. Before a new batch opens, closed batches are compacted: every completed or quarantined row except the most recent closed one is removed together with its receipts, so ledger scans stay bounded by the queue.
 
+After an AI closes or quarantines a batch, its next queued batch resumes through one country-owned hidden wake an hour later.
+This breaks recursive resolver chains across large backlogs without merging batches or changing any choice count.
+Repeated requests coalesce behind the scheduling flag, and the receiver reads the current controller and saved queue when delivered.
+A human's next batch opens immediately, and a later controller callback can resume pending work before a scheduled wake without receiving a duplicate active batch.
+
 ## Choices
 
 Human countries move through these pages:
 
-- `.2` opens the batch and `.3` chooses a domain.
+- `.3` is the domain menu. On the first choice of a curriculum its text also announces the curriculum and its size. Its first option hands the remaining choices to the general staff.
 - `.4` chooses a Grand Doctrine for a domain without one.
-- `.5` chooses a track. `.6` routes to the track's page among `.60` to `.77`, which lists eligible subdoctrines in native graph order with two-page navigation for the longest lists. Page changes spend nothing.
-- `.7` confirms. Adoption, mastery on an assigned track, and assignment of an empty track each have their own confirmation text.
-- `.8` reports the result, `.9` continues the batch, `.10` summarises a finished batch, `.11` covers states with no remaining action, `.12` reports an interrupted transaction, and `.13` reports that stored mastery completed a branch as it was assigned.
+- `.5` chooses a track. A track that already holds one incomplete subdoctrine advances at once: the hidden router `.6` sets the held subdoctrine and runs the confirmation transaction without a subdoctrine page or confirmation page (`doctrine_research_selected_track_advances_directly`). An empty track, and every Special Forces track, goes on to its page among `.60` to `.77`, which lists eligible subdoctrines in native graph order with two-page navigation for the longest lists. Page changes spend nothing.
+- `.7` confirms adoption and empty-track assignment, the two permanent commitments. Adoption of Chaos Warfare states its civilian-death cost.
+- `.8` reports the result and carries the next step: let the general staff finish, advance the same branch again (with its next level), develop another track of the same domain, choose another domain, or, after the last choice, the curriculum outcome and a closing option. `.10` shows the same outcome after the general staff finished a curriculum. `.11` covers states with no remaining action, `.12` reports an interrupted transaction, and `.13` reports that stored mastery completed a branch as it was assigned.
+
+The general staff option runs the AI resolver (`doctrine_research_delegate_active_batch`) for the remaining choices of the current curriculum only, with the same pool, scoring, and transaction as an AI country, and its steps are the country's own receipts for achievements. A chain of five choices on one branch costs one domain click, one track click, and four repeat clicks.
 
 Every page shows the remaining choices. AI countries use the same validity triggers and resolve their whole batch in script.
 
@@ -99,7 +106,7 @@ Grand Doctrine, track, and subdoctrine scores read only terms that differ betwee
 Grand Doctrine and subdoctrine scores also follow the native doctrine preferences of vanilla `ai_will_do`, mirrored in the `doctrine_research_ai_native_grand`, `_base`, `_country`, `_minor`, and `_major` constant categories:
 
 - Grand Battleplan starts from base 2, and Convoy Raiding and Battlefield Support score ten times higher for a country that is not a major. A minor skips Mobile Warfare and Superior Firepower unless it fields armour or motorised templates or they are its only valid Army Grand Doctrines.
-- `doctrine_research_ai_score_selected_subdoctrine_fit` gives each naval, air, and Special Forces subdoctrine the forces term only for its own ship, plane, or battalion type (Marines also read a coast and Mountaineers mountains), then applies the native base, original-tag, minor, and major factors to the squared score. A candidate that vanilla would never pick keeps the base weight, so every valid choice stays possible.
+- `doctrine_research_ai_score_selected_subdoctrine_fit` gives each naval, air, and Special Forces subdoctrine the forces term only for its own ship, plane, or battalion type (Marines also read a coast and Mountaineers mountains), then applies the native base, original-tag, minor, and major factors to the squared score. Only a product of zero, a candidate that vanilla would never pick, is reset to the base weight, so every valid choice stays possible; a fractional factor keeps its effect, so a major's Mounted Infantry or a minor's Mobile Infantry without other evidence weighs half of a neutral candidate.
 
 Evidence: `docs/plans/027_doctrine_research_plans/probability_native_preferences_2026-10-05.md`, `probability_track_round2_2026-10-05.md`, and `probability_subdoctrine_round3_2026-10-05.md`.
 

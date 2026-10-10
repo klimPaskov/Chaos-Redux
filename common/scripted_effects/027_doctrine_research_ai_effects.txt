@@ -485,8 +485,9 @@ doctrine_research_ai_choose_scored_track = {
 #   candidate clearly leads while equal candidates stay equal.
 # - The vanilla ai_will_do factors (base, original tag, minor, major) are
 #   mirrored from the doctrine_research_ai_native_* constants and multiply the
-#   square. A candidate that vanilla would never pick keeps the base weight, so
-#   every valid choice stays possible.
+#   square. Only a product of zero, a candidate that vanilla would never pick,
+#   is reset to the base weight, so every valid choice stays possible; a
+#   fractional factor such as 0.5 keeps its weight below the base weight.
 # - Army subdoctrines have no own fit term: their track's force fit is scored
 #   when the track is chosen. Chaos Warfare tracks hold one subdoctrine each
 #   and need no preference.
@@ -959,8 +960,10 @@ doctrine_research_ai_score_selected_subdoctrine_fit = {
 	set_temp_variable = { doctrine_research_ai_subdoc_linear_score = doctrine_research_ai_candidate_score }
 	multiply_temp_variable = { doctrine_research_ai_candidate_score = doctrine_research_ai_subdoc_linear_score }
 	multiply_temp_variable = { doctrine_research_ai_candidate_score = doctrine_research_ai_native_factor }
+	# Reset only a zero product; a positive product below the base weight keeps
+	# its native downweight.
 	if = {
-		limit = { check_variable = { doctrine_research_ai_candidate_score < constant:doctrine_research_ai_weight.base } }
+		limit = { NOT = { check_variable = { doctrine_research_ai_candidate_score > 0 } } }
 		set_temp_variable = { doctrine_research_ai_candidate_score = constant:doctrine_research_ai_weight.base }
 	}
 }

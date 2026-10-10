@@ -12,7 +12,7 @@ One change is queued: Status moves from To Be Reworked to Needs Testing.
 The exact cells are listed in `docs/plans/027_doctrine_research_plans/catalog_changes_pending.md`, which is the single source for pending workbook edits.
 Status moves to the project's playable value only after the user's live validation.
 
-If revisions R1 to R7 change Event Details or evolution wording, the workbook row follows the new localisation rather than any text in this package.
+Event Details and evolution wording are unchanged by the flow revisions; if they change, the workbook row follows the new localisation rather than any text in this package.
 
 ## Event 027 cluster member
 

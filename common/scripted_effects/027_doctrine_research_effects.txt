@@ -8,6 +8,10 @@
 # exact one-point/readback transaction in the mastery adapter file.
 # ============================================================================
 
+# Delayed native event fields do not document script-constant support. Keep
+# this file-local literal synchronized with doctrine_research_event.ai_queue_wake_hours.
+@DOCTRINE_RESEARCH_AI_QUEUE_WAKE_HOURS = 1
+
 doctrine_research_add_adapter_row = {
 	add_to_array = { array = global.doctrine_research_registry_domain_ids value = doctrine_research_registry_domain }
 	add_to_array = { array = global.doctrine_research_registry_dispatch_ids value = doctrine_research_registry_dispatch }
@@ -303,9 +307,6 @@ doctrine_research_initialize_country_state = {
 		set_variable = { doctrine_research_last_transaction_post_level = 0 }
 		set_variable = { doctrine_research_active_batch_successful_adoptions = 0 }
 		set_variable = { doctrine_research_active_batch_successful_mastery = 0 }
-		set_variable = { doctrine_research_summary_distinct_domains = 0 }
-		set_variable = { doctrine_research_summary_distinct_tracks = 0 }
-		set_variable = { doctrine_research_summary_concentrated = 0 }
 		set_variable = { doctrine_research_summary_milestone_reached = 0 }
 		set_variable = { doctrine_research_display_subdoctrine = constant:doctrine_research_subdoctrine.invalid }
 		set_variable = { doctrine_research_display_current_level = 0 }
@@ -332,9 +333,6 @@ doctrine_research_initialize_country_state = {
 	if = { limit = { NOT = { has_variable = doctrine_research_last_transaction_post_level } } set_variable = { doctrine_research_last_transaction_post_level = 0 } }
 	if = { limit = { NOT = { has_variable = doctrine_research_active_batch_successful_adoptions } } set_variable = { doctrine_research_active_batch_successful_adoptions = 0 } }
 	if = { limit = { NOT = { has_variable = doctrine_research_active_batch_successful_mastery } } set_variable = { doctrine_research_active_batch_successful_mastery = 0 } }
-	if = { limit = { NOT = { has_variable = doctrine_research_summary_distinct_domains } } set_variable = { doctrine_research_summary_distinct_domains = 0 } }
-	if = { limit = { NOT = { has_variable = doctrine_research_summary_distinct_tracks } } set_variable = { doctrine_research_summary_distinct_tracks = 0 } }
-	if = { limit = { NOT = { has_variable = doctrine_research_summary_concentrated } } set_variable = { doctrine_research_summary_concentrated = 0 } }
 	if = { limit = { NOT = { has_variable = doctrine_research_summary_milestone_reached } } set_variable = { doctrine_research_summary_milestone_reached = 0 } }
 	if = { limit = { NOT = { has_variable = doctrine_research_display_subdoctrine } } set_variable = { doctrine_research_display_subdoctrine = constant:doctrine_research_subdoctrine.invalid } }
 	if = { limit = { NOT = { has_variable = doctrine_research_display_current_level } } set_variable = { doctrine_research_display_current_level = 0 } }
@@ -413,6 +411,7 @@ doctrine_research_validate_receipt_parent_links = {
 				start = constant:doctrine_research_event.first_index
 				end = doctrine_research_batch_ids^num
 				value = doctrine_research_receipt_parent_batch_index
+				break = doctrine_research_receipt_parent_found
 				if = {
 					limit = {
 						check_variable = { doctrine_research_receipt_parent_found < 1 }
@@ -2242,6 +2241,38 @@ doctrine_research_wake_country_batches = {
 	}
 }
 
+# Country scope. A closed human batch opens its next page immediately. AI
+# continuation is one coalesced delayed delivery, never a recursive resolver
+# call. The receiver reads the country's current controller and saved FIFO
+# rows, so no temporary selection, batch profile, or receipt crosses the delay.
+doctrine_research_schedule_country_batch_wake = {
+	if = {
+		limit = {
+			doctrine_research_country_is_live = yes
+			NOT = { has_country_flag = doctrine_research_active_batch }
+			NOT = { has_country_flag = doctrine_research_batch_wake_scheduled }
+			check_variable = { doctrine_research_queued_batches > 0 }
+		}
+		set_country_flag = doctrine_research_batch_wake_scheduled
+		country_event = { id = chaosx.nr27.14 hours = @DOCTRINE_RESEARCH_AI_QUEUE_WAKE_HOURS }
+	}
+}
+
+doctrine_research_resume_queued_batches = {
+	if = {
+		limit = {
+			doctrine_research_country_is_live = yes
+			NOT = { has_country_flag = doctrine_research_active_batch }
+			check_variable = { doctrine_research_queued_batches > 0 }
+		}
+		if = {
+			limit = { is_ai = yes }
+			doctrine_research_schedule_country_batch_wake = yes
+		}
+		else = { doctrine_research_start_next_batch = yes }
+	}
+}
+
 # Country scope, called only for a recipient whose ledger was initialized and
 # checked by the firing scan in the same effect.
 doctrine_research_append_country_batch = {
@@ -2292,10 +2323,12 @@ doctrine_research_append_country_batch = {
 # so lower indices stay valid, which keeps every scan bounded by the queue.
 doctrine_research_compact_closed_batches = {
 	set_temp_variable = { doctrine_research_compact_keep_index = constant:doctrine_research_event.invalid_index }
+	set_temp_variable = { doctrine_research_compact_scan_break = 0 }
 	for_loop_effect = {
 		start = constant:doctrine_research_event.first_index
 		end = doctrine_research_batch_ids^num
 		value = doctrine_research_compact_scan_index
+		break = doctrine_research_compact_scan_break
 		if = {
 			limit = {
 				OR = {
@@ -2304,6 +2337,12 @@ doctrine_research_compact_closed_batches = {
 				}
 			}
 			set_temp_variable = { doctrine_research_compact_keep_index = doctrine_research_compact_scan_index }
+		}
+		# FIFO closure forms a closed prefix followed by queued rows. Keep the
+		# unvisited suffix untouched rather than repeatedly scanning its rows.
+		else_if = {
+			limit = { check_variable = { var = doctrine_research_batch_statuses^doctrine_research_compact_scan_index value = constant:doctrine_research_batch_status.queued compare = equals } }
+			set_temp_variable = { doctrine_research_compact_scan_break = 1 }
 		}
 	}
 	set_temp_variable = { doctrine_research_compact_batch_start = doctrine_research_compact_keep_index }
@@ -2396,9 +2435,6 @@ doctrine_research_start_next_batch = {
 			set_variable = { doctrine_research_current_choice_number = 1 }
 			set_variable = { doctrine_research_active_batch_successful_adoptions = 0 }
 			set_variable = { doctrine_research_active_batch_successful_mastery = 0 }
-			set_variable = { doctrine_research_summary_distinct_domains = 0 }
-			set_variable = { doctrine_research_summary_distinct_tracks = 0 }
-			set_variable = { doctrine_research_summary_concentrated = 0 }
 			set_variable = { doctrine_research_summary_milestone_reached = 0 }
 			set_country_flag = doctrine_research_active_batch
 			doctrine_research_clear_selection = yes
@@ -2409,11 +2445,16 @@ doctrine_research_start_next_batch = {
 			}
 			else = {
 				set_country_flag = doctrine_research_active_batch_prompted_human
-				if = { limit = { doctrine_research_country_has_valid_action = yes } country_event = { id = chaosx.nr27.2 } }
+				if = { limit = { doctrine_research_country_has_valid_action = yes } country_event = { id = chaosx.nr27.3 } }
 				else = { country_event = { id = chaosx.nr27.11 } }
 			}
 		}
-		else = { set_variable = { doctrine_research_queued_batches = 0 } }
+		else = {
+			# A bounded scan can stop before a long retained closed prefix ends.
+			# Compaction made progress, but that does not prove the queue empty.
+			# Preserve the saved count and every untouched row for the next pass.
+			doctrine_research_schedule_country_batch_wake = yes
+		}
 	}
 }
 
@@ -2622,7 +2663,7 @@ doctrine_research_close_active_batch = {
 
 doctrine_research_close_active_batch_and_start_next = {
 	doctrine_research_close_active_batch = yes
-	if = { limit = { doctrine_research_country_is_live = yes } doctrine_research_start_next_batch = yes }
+	doctrine_research_resume_queued_batches = yes
 }
 
 doctrine_research_quarantine_active_batch = {
@@ -2633,7 +2674,7 @@ doctrine_research_quarantine_active_batch = {
 
 doctrine_research_quarantine_active_batch_and_start_next = {
 	doctrine_research_quarantine_active_batch = yes
-	if = { limit = { doctrine_research_country_is_live = yes } doctrine_research_start_next_batch = yes }
+	doctrine_research_resume_queued_batches = yes
 }
 
 doctrine_research_confirm_selection = {
@@ -2830,6 +2871,25 @@ doctrine_research_confirm_selection = {
 	}
 }
 
+# Country scope. Routes the page that follows a confirmed transaction. The
+# confirmation page, the direct track advance, and the repeat option on the
+# result page share it.
+doctrine_research_route_transaction_result = {
+	if = {
+		limit = { check_variable = { var = doctrine_research_last_transaction_result value = constant:doctrine_research_transaction_result.success compare = equals } }
+		country_event = { id = chaosx.nr27.8 }
+	}
+	else_if = {
+		limit = { check_variable = { var = doctrine_research_last_transaction_result value = constant:doctrine_research_transaction_result.ambiguous compare = equals } }
+		country_event = { id = chaosx.nr27.12 }
+	}
+	else_if = {
+		limit = { check_variable = { var = doctrine_research_last_transaction_result value = constant:doctrine_research_transaction_result.adoption_only compare = equals } }
+		country_event = { id = chaosx.nr27.13 }
+	}
+	else = { country_event = { id = chaosx.nr27.11 } }
+}
+
 doctrine_research_continue_after_success = {
 	if = { limit = { check_variable = { var = doctrine_research_batch_remaining_choices^doctrine_research_active_batch_index value = 0 compare = greater_than } }
 		doctrine_research_clear_selection = yes
@@ -2837,112 +2897,6 @@ doctrine_research_continue_after_success = {
 		else = { country_event = { id = chaosx.nr27.11 } }
 	}
 	else = { country_event = { id = chaosx.nr27.10 } }
-}
-
-doctrine_research_prepare_batch_summary = {
-	set_variable = { doctrine_research_summary_distinct_domains = 0 }
-	set_variable = { doctrine_research_summary_distinct_tracks = 0 }
-	set_temp_variable = { doctrine_research_summary_receipt_count = doctrine_research_receipt_ids^num }
-	set_temp_variable = { doctrine_research_summary_domain_army_seen = 0 }
-	set_temp_variable = { doctrine_research_summary_domain_navy_seen = 0 }
-	set_temp_variable = { doctrine_research_summary_domain_air_seen = 0 }
-	set_temp_variable = { doctrine_research_summary_domain_special_forces_seen = 0 }
-	set_temp_variable = { doctrine_research_summary_domain_chaos_warfare_seen = 0 }
-	set_temp_variable = { doctrine_research_summary_track_army_infantry_seen = 0 }
-	set_temp_variable = { doctrine_research_summary_track_army_combat_support_seen = 0 }
-	set_temp_variable = { doctrine_research_summary_track_army_armor_seen = 0 }
-	set_temp_variable = { doctrine_research_summary_track_army_operations_seen = 0 }
-	set_temp_variable = { doctrine_research_summary_track_navy_submarines_seen = 0 }
-	set_temp_variable = { doctrine_research_summary_track_navy_screens_seen = 0 }
-	set_temp_variable = { doctrine_research_summary_track_navy_carriers_seen = 0 }
-	set_temp_variable = { doctrine_research_summary_track_navy_capital_ships_seen = 0 }
-	set_temp_variable = { doctrine_research_summary_track_air_fighter_aircraft_seen = 0 }
-	set_temp_variable = { doctrine_research_summary_track_air_strike_aircraft_seen = 0 }
-	set_temp_variable = { doctrine_research_summary_track_air_medium_aircraft_seen = 0 }
-	set_temp_variable = { doctrine_research_summary_track_air_heavy_aircraft_seen = 0 }
-	set_temp_variable = { doctrine_research_summary_track_special_forces_mountaineers_1_seen = 0 }
-	set_temp_variable = { doctrine_research_summary_track_special_forces_mountaineers_2_seen = 0 }
-	set_temp_variable = { doctrine_research_summary_track_special_forces_marines_1_seen = 0 }
-	set_temp_variable = { doctrine_research_summary_track_special_forces_marines_2_seen = 0 }
-	set_temp_variable = { doctrine_research_summary_track_special_forces_paratroopers_1_seen = 0 }
-	set_temp_variable = { doctrine_research_summary_track_special_forces_paratroopers_2_seen = 0 }
-	set_temp_variable = { doctrine_research_summary_track_special_forces_rangers_1_seen = 0 }
-	set_temp_variable = { doctrine_research_summary_track_special_forces_rangers_2_seen = 0 }
-	set_temp_variable = { doctrine_research_summary_track_chaos_warfare_infantry_seen = 0 }
-	set_temp_variable = { doctrine_research_summary_track_chaos_warfare_combat_support_seen = 0 }
-	set_temp_variable = { doctrine_research_summary_track_chaos_warfare_armor_seen = 0 }
-	set_temp_variable = { doctrine_research_summary_track_chaos_warfare_operations_seen = 0 }
-	for_loop_effect = {
-		start = constant:doctrine_research_event.first_index
-		end = doctrine_research_summary_receipt_count
-		value = doctrine_research_summary_receipt_index
-		if = {
-			limit = {
-				check_variable = { var = doctrine_research_receipt_batch_ids^doctrine_research_summary_receipt_index value = doctrine_research_active_batch_id compare = equals }
-				check_variable = { var = doctrine_research_receipt_states^doctrine_research_summary_receipt_index value = constant:doctrine_research_receipt_state.choice_consumed compare = equals }
-			}
-			if = { limit = { check_variable = { var = doctrine_research_receipt_domains^doctrine_research_summary_receipt_index value = constant:doctrine_research_domain.army compare = equals } check_variable = { doctrine_research_summary_domain_army_seen < 1 } } set_temp_variable = { doctrine_research_summary_domain_army_seen = 1 } }
-			if = { limit = { check_variable = { var = doctrine_research_receipt_domains^doctrine_research_summary_receipt_index value = constant:doctrine_research_domain.navy compare = equals } check_variable = { doctrine_research_summary_domain_navy_seen < 1 } } set_temp_variable = { doctrine_research_summary_domain_navy_seen = 1 } }
-			if = { limit = { check_variable = { var = doctrine_research_receipt_domains^doctrine_research_summary_receipt_index value = constant:doctrine_research_domain.air compare = equals } check_variable = { doctrine_research_summary_domain_air_seen < 1 } } set_temp_variable = { doctrine_research_summary_domain_air_seen = 1 } }
-			if = { limit = { check_variable = { var = doctrine_research_receipt_domains^doctrine_research_summary_receipt_index value = constant:doctrine_research_domain.special_forces compare = equals } check_variable = { doctrine_research_summary_domain_special_forces_seen < 1 } } set_temp_variable = { doctrine_research_summary_domain_special_forces_seen = 1 } }
-			if = { limit = { check_variable = { var = doctrine_research_receipt_domains^doctrine_research_summary_receipt_index value = constant:doctrine_research_domain.chaos_warfare compare = equals } check_variable = { doctrine_research_summary_domain_chaos_warfare_seen < 1 } } set_temp_variable = { doctrine_research_summary_domain_chaos_warfare_seen = 1 } }
-			if = { limit = { check_variable = { var = doctrine_research_receipt_domains^doctrine_research_summary_receipt_index value = constant:doctrine_research_domain.army compare = equals } check_variable = { var = doctrine_research_receipt_tracks^doctrine_research_summary_receipt_index value = constant:doctrine_research_track.infantry compare = equals } check_variable = { doctrine_research_summary_track_army_infantry_seen < 1 } } set_temp_variable = { doctrine_research_summary_track_army_infantry_seen = 1 } }
-			if = { limit = { check_variable = { var = doctrine_research_receipt_domains^doctrine_research_summary_receipt_index value = constant:doctrine_research_domain.army compare = equals } check_variable = { var = doctrine_research_receipt_tracks^doctrine_research_summary_receipt_index value = constant:doctrine_research_track.combat_support compare = equals } check_variable = { doctrine_research_summary_track_army_combat_support_seen < 1 } } set_temp_variable = { doctrine_research_summary_track_army_combat_support_seen = 1 } }
-			if = { limit = { check_variable = { var = doctrine_research_receipt_domains^doctrine_research_summary_receipt_index value = constant:doctrine_research_domain.army compare = equals } check_variable = { var = doctrine_research_receipt_tracks^doctrine_research_summary_receipt_index value = constant:doctrine_research_track.armor compare = equals } check_variable = { doctrine_research_summary_track_army_armor_seen < 1 } } set_temp_variable = { doctrine_research_summary_track_army_armor_seen = 1 } }
-			if = { limit = { check_variable = { var = doctrine_research_receipt_domains^doctrine_research_summary_receipt_index value = constant:doctrine_research_domain.army compare = equals } check_variable = { var = doctrine_research_receipt_tracks^doctrine_research_summary_receipt_index value = constant:doctrine_research_track.operations compare = equals } check_variable = { doctrine_research_summary_track_army_operations_seen < 1 } } set_temp_variable = { doctrine_research_summary_track_army_operations_seen = 1 } }
-			if = { limit = { check_variable = { var = doctrine_research_receipt_domains^doctrine_research_summary_receipt_index value = constant:doctrine_research_domain.navy compare = equals } check_variable = { var = doctrine_research_receipt_tracks^doctrine_research_summary_receipt_index value = constant:doctrine_research_track.submarines compare = equals } check_variable = { doctrine_research_summary_track_navy_submarines_seen < 1 } } set_temp_variable = { doctrine_research_summary_track_navy_submarines_seen = 1 } }
-			if = { limit = { check_variable = { var = doctrine_research_receipt_domains^doctrine_research_summary_receipt_index value = constant:doctrine_research_domain.navy compare = equals } check_variable = { var = doctrine_research_receipt_tracks^doctrine_research_summary_receipt_index value = constant:doctrine_research_track.screens compare = equals } check_variable = { doctrine_research_summary_track_navy_screens_seen < 1 } } set_temp_variable = { doctrine_research_summary_track_navy_screens_seen = 1 } }
-			if = { limit = { check_variable = { var = doctrine_research_receipt_domains^doctrine_research_summary_receipt_index value = constant:doctrine_research_domain.navy compare = equals } check_variable = { var = doctrine_research_receipt_tracks^doctrine_research_summary_receipt_index value = constant:doctrine_research_track.carriers compare = equals } check_variable = { doctrine_research_summary_track_navy_carriers_seen < 1 } } set_temp_variable = { doctrine_research_summary_track_navy_carriers_seen = 1 } }
-			if = { limit = { check_variable = { var = doctrine_research_receipt_domains^doctrine_research_summary_receipt_index value = constant:doctrine_research_domain.navy compare = equals } check_variable = { var = doctrine_research_receipt_tracks^doctrine_research_summary_receipt_index value = constant:doctrine_research_track.capital_ships compare = equals } check_variable = { doctrine_research_summary_track_navy_capital_ships_seen < 1 } } set_temp_variable = { doctrine_research_summary_track_navy_capital_ships_seen = 1 } }
-			if = { limit = { check_variable = { var = doctrine_research_receipt_domains^doctrine_research_summary_receipt_index value = constant:doctrine_research_domain.air compare = equals } check_variable = { var = doctrine_research_receipt_tracks^doctrine_research_summary_receipt_index value = constant:doctrine_research_track.fighter_aircraft compare = equals } check_variable = { doctrine_research_summary_track_air_fighter_aircraft_seen < 1 } } set_temp_variable = { doctrine_research_summary_track_air_fighter_aircraft_seen = 1 } }
-			if = { limit = { check_variable = { var = doctrine_research_receipt_domains^doctrine_research_summary_receipt_index value = constant:doctrine_research_domain.air compare = equals } check_variable = { var = doctrine_research_receipt_tracks^doctrine_research_summary_receipt_index value = constant:doctrine_research_track.strike_aircraft compare = equals } check_variable = { doctrine_research_summary_track_air_strike_aircraft_seen < 1 } } set_temp_variable = { doctrine_research_summary_track_air_strike_aircraft_seen = 1 } }
-			if = { limit = { check_variable = { var = doctrine_research_receipt_domains^doctrine_research_summary_receipt_index value = constant:doctrine_research_domain.air compare = equals } check_variable = { var = doctrine_research_receipt_tracks^doctrine_research_summary_receipt_index value = constant:doctrine_research_track.medium_aircraft compare = equals } check_variable = { doctrine_research_summary_track_air_medium_aircraft_seen < 1 } } set_temp_variable = { doctrine_research_summary_track_air_medium_aircraft_seen = 1 } }
-			if = { limit = { check_variable = { var = doctrine_research_receipt_domains^doctrine_research_summary_receipt_index value = constant:doctrine_research_domain.air compare = equals } check_variable = { var = doctrine_research_receipt_tracks^doctrine_research_summary_receipt_index value = constant:doctrine_research_track.heavy_aircraft compare = equals } check_variable = { doctrine_research_summary_track_air_heavy_aircraft_seen < 1 } } set_temp_variable = { doctrine_research_summary_track_air_heavy_aircraft_seen = 1 } }
-			if = { limit = { check_variable = { var = doctrine_research_receipt_domains^doctrine_research_summary_receipt_index value = constant:doctrine_research_domain.special_forces compare = equals } check_variable = { var = doctrine_research_receipt_subdoctrines^doctrine_research_summary_receipt_index value = constant:doctrine_research_subdoctrine.mountaineers_1 compare = equals } check_variable = { doctrine_research_summary_track_special_forces_mountaineers_1_seen < 1 } } set_temp_variable = { doctrine_research_summary_track_special_forces_mountaineers_1_seen = 1 } }
-			if = { limit = { check_variable = { var = doctrine_research_receipt_domains^doctrine_research_summary_receipt_index value = constant:doctrine_research_domain.special_forces compare = equals } check_variable = { var = doctrine_research_receipt_subdoctrines^doctrine_research_summary_receipt_index value = constant:doctrine_research_subdoctrine.mountaineers_2 compare = equals } check_variable = { doctrine_research_summary_track_special_forces_mountaineers_2_seen < 1 } } set_temp_variable = { doctrine_research_summary_track_special_forces_mountaineers_2_seen = 1 } }
-			if = { limit = { check_variable = { var = doctrine_research_receipt_domains^doctrine_research_summary_receipt_index value = constant:doctrine_research_domain.special_forces compare = equals } check_variable = { var = doctrine_research_receipt_subdoctrines^doctrine_research_summary_receipt_index value = constant:doctrine_research_subdoctrine.marines_1 compare = equals } check_variable = { doctrine_research_summary_track_special_forces_marines_1_seen < 1 } } set_temp_variable = { doctrine_research_summary_track_special_forces_marines_1_seen = 1 } }
-			if = { limit = { check_variable = { var = doctrine_research_receipt_domains^doctrine_research_summary_receipt_index value = constant:doctrine_research_domain.special_forces compare = equals } check_variable = { var = doctrine_research_receipt_subdoctrines^doctrine_research_summary_receipt_index value = constant:doctrine_research_subdoctrine.marines_2 compare = equals } check_variable = { doctrine_research_summary_track_special_forces_marines_2_seen < 1 } } set_temp_variable = { doctrine_research_summary_track_special_forces_marines_2_seen = 1 } }
-			if = { limit = { check_variable = { var = doctrine_research_receipt_domains^doctrine_research_summary_receipt_index value = constant:doctrine_research_domain.special_forces compare = equals } check_variable = { var = doctrine_research_receipt_subdoctrines^doctrine_research_summary_receipt_index value = constant:doctrine_research_subdoctrine.paratroopers_1 compare = equals } check_variable = { doctrine_research_summary_track_special_forces_paratroopers_1_seen < 1 } } set_temp_variable = { doctrine_research_summary_track_special_forces_paratroopers_1_seen = 1 } }
-			if = { limit = { check_variable = { var = doctrine_research_receipt_domains^doctrine_research_summary_receipt_index value = constant:doctrine_research_domain.special_forces compare = equals } check_variable = { var = doctrine_research_receipt_subdoctrines^doctrine_research_summary_receipt_index value = constant:doctrine_research_subdoctrine.paratroopers_2 compare = equals } check_variable = { doctrine_research_summary_track_special_forces_paratroopers_2_seen < 1 } } set_temp_variable = { doctrine_research_summary_track_special_forces_paratroopers_2_seen = 1 } }
-			if = { limit = { check_variable = { var = doctrine_research_receipt_domains^doctrine_research_summary_receipt_index value = constant:doctrine_research_domain.special_forces compare = equals } check_variable = { var = doctrine_research_receipt_subdoctrines^doctrine_research_summary_receipt_index value = constant:doctrine_research_subdoctrine.rangers_1 compare = equals } check_variable = { doctrine_research_summary_track_special_forces_rangers_1_seen < 1 } } set_temp_variable = { doctrine_research_summary_track_special_forces_rangers_1_seen = 1 } }
-			if = { limit = { check_variable = { var = doctrine_research_receipt_domains^doctrine_research_summary_receipt_index value = constant:doctrine_research_domain.special_forces compare = equals } check_variable = { var = doctrine_research_receipt_subdoctrines^doctrine_research_summary_receipt_index value = constant:doctrine_research_subdoctrine.rangers_2 compare = equals } check_variable = { doctrine_research_summary_track_special_forces_rangers_2_seen < 1 } } set_temp_variable = { doctrine_research_summary_track_special_forces_rangers_2_seen = 1 } }
-			if = { limit = { check_variable = { var = doctrine_research_receipt_domains^doctrine_research_summary_receipt_index value = constant:doctrine_research_domain.chaos_warfare compare = equals } check_variable = { var = doctrine_research_receipt_tracks^doctrine_research_summary_receipt_index value = constant:doctrine_research_track.infantry compare = equals } check_variable = { doctrine_research_summary_track_chaos_warfare_infantry_seen < 1 } } set_temp_variable = { doctrine_research_summary_track_chaos_warfare_infantry_seen = 1 } }
-			if = { limit = { check_variable = { var = doctrine_research_receipt_domains^doctrine_research_summary_receipt_index value = constant:doctrine_research_domain.chaos_warfare compare = equals } check_variable = { var = doctrine_research_receipt_tracks^doctrine_research_summary_receipt_index value = constant:doctrine_research_track.combat_support compare = equals } check_variable = { doctrine_research_summary_track_chaos_warfare_combat_support_seen < 1 } } set_temp_variable = { doctrine_research_summary_track_chaos_warfare_combat_support_seen = 1 } }
-			if = { limit = { check_variable = { var = doctrine_research_receipt_domains^doctrine_research_summary_receipt_index value = constant:doctrine_research_domain.chaos_warfare compare = equals } check_variable = { var = doctrine_research_receipt_tracks^doctrine_research_summary_receipt_index value = constant:doctrine_research_track.armor compare = equals } check_variable = { doctrine_research_summary_track_chaos_warfare_armor_seen < 1 } } set_temp_variable = { doctrine_research_summary_track_chaos_warfare_armor_seen = 1 } }
-			if = { limit = { check_variable = { var = doctrine_research_receipt_domains^doctrine_research_summary_receipt_index value = constant:doctrine_research_domain.chaos_warfare compare = equals } check_variable = { var = doctrine_research_receipt_tracks^doctrine_research_summary_receipt_index value = constant:doctrine_research_track.operations compare = equals } check_variable = { doctrine_research_summary_track_chaos_warfare_operations_seen < 1 } } set_temp_variable = { doctrine_research_summary_track_chaos_warfare_operations_seen = 1 } }
-		}
-	}
-	if = { limit = { check_variable = { doctrine_research_summary_domain_army_seen > 0 } } add_to_variable = { doctrine_research_summary_distinct_domains = 1 } }
-	if = { limit = { check_variable = { doctrine_research_summary_domain_navy_seen > 0 } } add_to_variable = { doctrine_research_summary_distinct_domains = 1 } }
-	if = { limit = { check_variable = { doctrine_research_summary_domain_air_seen > 0 } } add_to_variable = { doctrine_research_summary_distinct_domains = 1 } }
-	if = { limit = { check_variable = { doctrine_research_summary_domain_special_forces_seen > 0 } } add_to_variable = { doctrine_research_summary_distinct_domains = 1 } }
-	if = { limit = { check_variable = { doctrine_research_summary_domain_chaos_warfare_seen > 0 } } add_to_variable = { doctrine_research_summary_distinct_domains = 1 } }
-	if = { limit = { check_variable = { doctrine_research_summary_track_army_infantry_seen > 0 } } add_to_variable = { doctrine_research_summary_distinct_tracks = 1 } }
-	if = { limit = { check_variable = { doctrine_research_summary_track_army_combat_support_seen > 0 } } add_to_variable = { doctrine_research_summary_distinct_tracks = 1 } }
-	if = { limit = { check_variable = { doctrine_research_summary_track_army_armor_seen > 0 } } add_to_variable = { doctrine_research_summary_distinct_tracks = 1 } }
-	if = { limit = { check_variable = { doctrine_research_summary_track_army_operations_seen > 0 } } add_to_variable = { doctrine_research_summary_distinct_tracks = 1 } }
-	if = { limit = { check_variable = { doctrine_research_summary_track_navy_submarines_seen > 0 } } add_to_variable = { doctrine_research_summary_distinct_tracks = 1 } }
-	if = { limit = { check_variable = { doctrine_research_summary_track_navy_screens_seen > 0 } } add_to_variable = { doctrine_research_summary_distinct_tracks = 1 } }
-	if = { limit = { check_variable = { doctrine_research_summary_track_navy_carriers_seen > 0 } } add_to_variable = { doctrine_research_summary_distinct_tracks = 1 } }
-	if = { limit = { check_variable = { doctrine_research_summary_track_navy_capital_ships_seen > 0 } } add_to_variable = { doctrine_research_summary_distinct_tracks = 1 } }
-	if = { limit = { check_variable = { doctrine_research_summary_track_air_fighter_aircraft_seen > 0 } } add_to_variable = { doctrine_research_summary_distinct_tracks = 1 } }
-	if = { limit = { check_variable = { doctrine_research_summary_track_air_strike_aircraft_seen > 0 } } add_to_variable = { doctrine_research_summary_distinct_tracks = 1 } }
-	if = { limit = { check_variable = { doctrine_research_summary_track_air_medium_aircraft_seen > 0 } } add_to_variable = { doctrine_research_summary_distinct_tracks = 1 } }
-	if = { limit = { check_variable = { doctrine_research_summary_track_air_heavy_aircraft_seen > 0 } } add_to_variable = { doctrine_research_summary_distinct_tracks = 1 } }
-	if = { limit = { check_variable = { doctrine_research_summary_track_special_forces_mountaineers_1_seen > 0 } } add_to_variable = { doctrine_research_summary_distinct_tracks = 1 } }
-	if = { limit = { check_variable = { doctrine_research_summary_track_special_forces_mountaineers_2_seen > 0 } } add_to_variable = { doctrine_research_summary_distinct_tracks = 1 } }
-	if = { limit = { check_variable = { doctrine_research_summary_track_special_forces_marines_1_seen > 0 } } add_to_variable = { doctrine_research_summary_distinct_tracks = 1 } }
-	if = { limit = { check_variable = { doctrine_research_summary_track_special_forces_marines_2_seen > 0 } } add_to_variable = { doctrine_research_summary_distinct_tracks = 1 } }
-	if = { limit = { check_variable = { doctrine_research_summary_track_special_forces_paratroopers_1_seen > 0 } } add_to_variable = { doctrine_research_summary_distinct_tracks = 1 } }
-	if = { limit = { check_variable = { doctrine_research_summary_track_special_forces_paratroopers_2_seen > 0 } } add_to_variable = { doctrine_research_summary_distinct_tracks = 1 } }
-	if = { limit = { check_variable = { doctrine_research_summary_track_special_forces_rangers_1_seen > 0 } } add_to_variable = { doctrine_research_summary_distinct_tracks = 1 } }
-	if = { limit = { check_variable = { doctrine_research_summary_track_special_forces_rangers_2_seen > 0 } } add_to_variable = { doctrine_research_summary_distinct_tracks = 1 } }
-	if = { limit = { check_variable = { doctrine_research_summary_track_chaos_warfare_infantry_seen > 0 } } add_to_variable = { doctrine_research_summary_distinct_tracks = 1 } }
-	if = { limit = { check_variable = { doctrine_research_summary_track_chaos_warfare_combat_support_seen > 0 } } add_to_variable = { doctrine_research_summary_distinct_tracks = 1 } }
-	if = { limit = { check_variable = { doctrine_research_summary_track_chaos_warfare_armor_seen > 0 } } add_to_variable = { doctrine_research_summary_distinct_tracks = 1 } }
-	if = { limit = { check_variable = { doctrine_research_summary_track_chaos_warfare_operations_seen > 0 } } add_to_variable = { doctrine_research_summary_distinct_tracks = 1 } }
-	set_variable = { doctrine_research_summary_concentrated = 0 }
-	if = { limit = { check_variable = { var = doctrine_research_summary_distinct_tracks value = 1 compare = less_than_or_equals } check_variable = { var = doctrine_research_active_batch_successful_adoptions value = 0 compare = greater_than } check_variable = { var = doctrine_research_active_batch_successful_mastery value = 0 compare = greater_than } } set_variable = { doctrine_research_summary_concentrated = 1 } }
 }
 
 doctrine_research_complete_active_batch = { if = { limit = { has_country_flag = doctrine_research_active_batch } doctrine_research_close_active_batch_and_start_next = yes } }
@@ -2986,7 +2940,7 @@ doctrine_research_reconcile_country_lifecycle = {
 						limit = { check_variable = { var = doctrine_research_last_transaction_result value = constant:doctrine_research_transaction_result.adoption_only compare = equals } }
 						country_event = { id = chaosx.nr27.13 }
 					}
-					else_if = { limit = { doctrine_research_country_has_valid_action = yes } country_event = { id = chaosx.nr27.2 } }
+					else_if = { limit = { doctrine_research_country_has_valid_action = yes } doctrine_research_clear_selection = yes country_event = { id = chaosx.nr27.3 } }
 					else = { country_event = { id = chaosx.nr27.11 } }
 				}
 			}
@@ -3197,10 +3151,29 @@ doctrine_research_ai_resolve_active_batch = {
 					NOT = { doctrine_research_country_has_valid_action = yes }
 				}
 			}
-			doctrine_research_complete_active_batch = yes
+			if = {
+				limit = { check_variable = { doctrine_research_ai_summary_page > 0 } }
+				# The summary page needs a finished curriculum; unspendable
+				# choices go to the no-action page, which closes it.
+				if = {
+					limit = { check_variable = { var = doctrine_research_batch_remaining_choices^doctrine_research_active_batch_index value = 0 compare = equals } }
+					country_event = { id = chaosx.nr27.10 }
+				}
+				else = { country_event = { id = chaosx.nr27.11 } }
+			}
+			else = { doctrine_research_complete_active_batch = yes }
 		}
 		else = { doctrine_research_quarantine_active_batch_and_start_next = yes }
 	}
+}
+
+# Country scope, human-controlled. The general staff resolves the remaining
+# choices of the active curriculum with the same pool, scoring, and
+# transaction as an AI country, then shows the curriculum summary instead of
+# closing silently. Queued curricula open normally after the summary.
+doctrine_research_delegate_active_batch = {
+	set_temp_variable = { doctrine_research_ai_summary_page = 1 }
+	doctrine_research_ai_resolve_active_batch = yes
 }
 
 doctrine_research_discard_annexed_country_state = {

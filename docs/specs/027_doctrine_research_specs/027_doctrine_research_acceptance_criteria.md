@@ -55,13 +55,13 @@ General completion, reporting, localisation, and catalog-export rules come from 
 - [x] Every page shows the remaining choices, every consuming option states its result, and navigation reads as navigation.
 - [x] Every valid option is reachable through native-order pagination.
 - [x] Confirmation revalidates, and an open page cannot confirm for a country that lost its doctrine system.
-- [ ] R1: the opening report carries the first domain menu.
-- [ ] R2: an assigned track advances from the track menu without the subdoctrine page and confirmation.
-- [ ] R3: the result page continues the curriculum, offers "advance the same branch again", and shows the summary after the last choice.
-- [ ] R4: the Chaos Warfare adoption confirmation states its civilian-death cost.
-- [ ] R5: the general staff option resolves the remaining choices with the AI resolver and is the first option, so an unanswered page delegates instead of cascading. *(live: which option the engine picks on timeout)*
-- [ ] R6: the summary lists outcomes and Milestones instead of counters.
-- [ ] R7: domain and track options show only the values in part 4's Visible values table.
+- [x] R1: the first domain menu carries the curriculum premise and size.
+- [x] R2: an assigned track advances from the track menu without the subdoctrine page and confirmation; Special Forces entries keep their page.
+- [x] R3: the result page continues the curriculum, offers "advance the same branch again", and shows the summary after the last choice.
+- [x] R4: the Chaos Warfare adoption confirmation states its civilian-death cost.
+- [x] R5: the general staff option resolves the remaining choices with the AI resolver and is the first option, so an unanswered page delegates instead of cascading. *(live: which option the engine picks on timeout)*
+- [x] R6: the summary lists outcomes and Milestones instead of counters.
+- [x] R7: domain options show the Grand Doctrine, and track options the held subdoctrine and level change; the Milestone marker on domain options is not implemented.
 
 ## AI
 
@@ -92,4 +92,4 @@ General completion, reporting, localisation, and catalog-export rules come from 
 - [x] Event Details, History payloads, and evolution previews state the correct choice counts without raw state.
 - [x] `docs/events/027_doctrine_research/overview.md` describes the implemented behaviour.
 - [ ] The queued workbook status change in `catalog_changes_pending.md` is applied and the CSVs re-exported.
-- [ ] After R1 to R7, the overview, localisation, and catalog wording follow the new flow.
+- [x] After R1 to R7, the overview and localisation follow the new flow; Event Details and evolution wording did not change.

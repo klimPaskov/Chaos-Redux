@@ -4513,6 +4513,18 @@ doctrine_research_selected_choice_is_valid = {
 	}
 }
 
+# True when the track menu click can advance the held subdoctrine directly:
+# the track already holds one incomplete subdoctrine, so the subdoctrine page
+# and the confirmation would only repeat the track option. Empty tracks keep
+# their subdoctrine page because assignment is a permanent commitment. The
+# Special Forces entry can show a token from either native track, so it keeps
+# its page.
+doctrine_research_selected_track_advances_directly = {
+	NOT = { check_variable = { var = doctrine_research_selected_domain value = constant:doctrine_research_domain.special_forces compare = equals } }
+	NOT = { check_variable = { var = doctrine_research_selected_subdoctrine value = constant:doctrine_research_subdoctrine.invalid compare = equals } }
+	NOT = { doctrine_research_selected_track_is_empty = yes }
+}
+
 # Native mastery is available only for the five statically declared built-in
 # adapters. Each built-in mutation calls native add_mastery in one-point
 # increments and re-reads has_mastery_level after every increment; no dynamic

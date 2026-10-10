@@ -82,9 +82,9 @@ Chaos Warfare track fit reads each track's own fielded CBRN battalions: the batt
 
 Because the AI rescores after every successful choice, a strong lead produces stacking, a completed branch drops out and forces a fresh target, an adoption immediately opens the new doctrine's tracks, and the fifth choice of Evolution IV receives its own score pass.
 
-### Delegated human choices (pending R5)
+### Delegated human choices
 
-Revision R5 in part 2 lets a human hand the remaining choices to the same resolver.
+The general staff option in part 2 lets a human hand the remaining choices to the same resolver.
 It needs no new weights and must not change the AI pool.
 
 ## Balance intent
@@ -148,4 +148,4 @@ When Event 027 and Event 085 fire in one cluster, Event 027 grants doctrine acti
 
 The doctrine curriculum, its stacking choices, adapters, AI, evolutions, achievements, and cluster role fully serve the event's promise.
 A pressure meter, doctrine currency, decision category, focus branch, faction mechanic, custom window, or crisis chain would duplicate the native doctrine system and turn a small positive breakthrough into a burden.
-Further work belongs to usability (revisions R1 to R7), live engine evidence, the recurrence audit, and new National Breakthroughs members.
+Further work belongs to live engine evidence, the recurrence audit, and new National Breakthroughs members.

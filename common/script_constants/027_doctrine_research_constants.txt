@@ -52,6 +52,8 @@ doctrine_research_event = {
 	mastery_point_guard_cap_multiple = 2
 	mastery_level_scan_limit = 20
 	max_batch_choices = 5
+	# Literal mirror in the runtime effect file for native event scheduling.
+	ai_queue_wake_hours = 1
 	unknown_firing_id = 0
 }
 
@@ -422,8 +424,9 @@ doctrine_research_ai_native_grand = {
 # common/doctrines/subdoctrines/**/*.txt ai_will_do. Each subdoctrine score is
 # multiplied by its base factor, its country factor when the country's
 # original tag is one that vanilla lists for it, and its minor or major factor.
-# A product below the base weight leaves the candidate at the base weight
-# instead, so every valid choice keeps a positive weight. Subdoctrines without
+# Only a product of zero is reset to the base weight, so every valid choice
+# keeps a positive weight; a fractional factor such as 0.5 keeps the candidate
+# below the base weight. Subdoctrines without
 # an entry keep the neutral factor. Air keys drop the air_subdoctrine_ prefix,
 # and the Special Forces keys and the _no_lar variants share the entry of their
 # branch.

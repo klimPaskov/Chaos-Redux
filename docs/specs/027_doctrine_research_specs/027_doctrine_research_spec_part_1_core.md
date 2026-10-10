@@ -173,7 +173,7 @@ Native mastery runs the reward effects in the Chaos Warfare subdoctrine files, s
 Event 027 never grants a downstream CBRN unit, equipment type, policy, operation, idea, or readiness value directly, and a mastery level can be earned while a separate downstream gate stays unmet.
 
 Adopting Chaos Warfare has a real cost beyond the CBRN programme: the Chaos Meter's combat collateral model adds a civilian-death rate for countries with `chaos_warfare` at war, which feeds the Deaths ledger.
-Revision R4 in part 2 makes that consequence visible on the adoption choice.
+The adoption confirmation in part 2 states that consequence.
 
 ### Event 016 Brilliant Scientist
 

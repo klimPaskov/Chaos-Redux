@@ -20,9 +20,9 @@ The event records one actorless History row per firing, belongs to the National 
 | File | Owns |
 | --- | --- |
 | `027_doctrine_research_spec_part_1_core.md` | Identity, terminology, choice rules, costs, banked mastery, participation, queue, persistence, and connections with other systems. |
-| `027_doctrine_research_spec_part_2_choice_flow.md` | Implemented page flow, proposed flow revisions R1 to R5, Special Forces handling, AI resolution steps, and edge cases. |
+| `027_doctrine_research_spec_part_2_choice_flow.md` | Page flow, direct advance, the result page, the general staff option, Special Forces handling, AI resolution steps, and edge cases. |
 | `027_doctrine_research_spec_part_3_evolutions_balance_ai.md` | Evolutions, AI scoring model, balance intent, exploit controls, and the cluster role. |
-| `027_doctrine_research_spec_part_4_presentation_assets_achievements.md` | Writing direction, the visible-value budget with revisions R6 and R7, Event Details, assets, and achievements. |
+| `027_doctrine_research_spec_part_4_presentation_assets_achievements.md` | Writing direction, the visible-value budget, Event Details, assets, and achievements. |
 | `027_doctrine_research_doctrine_registry_matrix.md` | The doctrine-domain adapter contract and the registration path for future domains. |
 | `027_doctrine_research_research_notes.md` | Official doctrine-system findings, design inferences, and the engine questions the implementation answered. |
 | `027_doctrine_research_probability_scenarios.md` | Named AI and selection scenarios with their evidence status. |
@@ -30,8 +30,7 @@ The event records one actorless History row per firing, belongs to the National 
 | `027_doctrine_research_acceptance_criteria.md` | Completion checklist with implemented, pending, and live-check status. |
 | `027_doctrine_research_asset_prompt.md` | Replacement brief for the report image and achievement icons. |
 | `027_doctrine_research_achievement_prompt.md` | Achievement validation cases to re-run after changes. |
-| `027_doctrine_research_coding_prompt.md` | Continuation prompt for the accepted revisions and open evidence. |
-| `027_doctrine_research_goal_prompt.md` | Compact goal prompt for the same continuation. |
+| `027_doctrine_research_coding_prompt.md` | Continuation prompt for the open evidence. |
 
 ## Status and acceptance basis
 
@@ -40,18 +39,13 @@ The event records one actorless History row per firing, belongs to the National 
 | Global Minor Repeatable event, curriculum sizes 1 to 5, adoption spending a choice without mastery, National Breakthroughs membership | Implemented | The user's original Event 027 brief. |
 | Domain scoping, empty-track assignment, free actions, no compensation, queues, adapters, AI model, evolutions, exploit controls, achievements, assets | Implemented | Accepted under the full-authority mandate the user granted for the Event 027 takeover, recorded as D1 to D25 in `docs/plans/027_doctrine_research_plans/agent_decisions_2026-10-04.md`. |
 | Engine behaviour listed under *(live)* in the acceptance criteria | Implemented, live check | Source evidence only; the user validates in a live session. |
-| Revisions R1 to R7 | Unresolved | Proposed by the 2026-10-10 spec audit; they change accepted implemented behaviour and need the user's acceptance. |
+| Flow revisions: first-choice premise on the domain menu, direct advance of an assigned track, the result page with the next step, the Chaos Warfare cost line, the outcome summary, trimmed option labels, and the general staff option | Implemented | Accepted under the 2026-10-10 full-authority release brief, which directs removing busywork, repetitive decisions, and bloated player-facing values. Special Forces entries keep their subdoctrine page, and the Milestone marker on domain options is not implemented. |
 | Group E timeline, zero-reset subdoctrine comparison, group F recurrence | Accepted and queued | Required by the probability scenarios; queued because the automatic-selection pool and a second cluster member are not yet bound. |
 | Workbook status change | Accepted and queued | `docs/plans/027_doctrine_research_plans/catalog_changes_pending.md`; queued for the workbook owner. |
 
 ## Open questions
 
-1. **Accept the flow revisions R1 to R3 and R5?** Together they cut a five-choice curriculum from about thirty clicks to about ten without removing a decision, and R5 also stops an unanswered page from spending choices on whatever is listed first.
-   They change the accepted page flow (D13 and D15 shaped the current pages).
-2. **Accept R4?** The free Chaos Warfare adoption carries a real civilian-death cost through the Chaos Meter collateral model and the Deaths ledger, and the confirmation would state it in one sentence.
-3. **Accept R6 and R7?** The summary drops eight counters for a list of outcomes and Milestones, and the domain and track options keep only the values that decide the click.
-4. **Should delegated choices (R5) count for achievements?** The proposal counts them as the country's own receipts, which is consistent with the current rule for AI-resolved choices after a controller change.
-   The alternative is to exclude a curriculum from achievements once it is delegated.
+None. The flow revisions proposed by the 2026-10-10 audit were accepted and implemented (see the changelog), including counting general staff choices for achievements.
 
 ## Provenance
 
@@ -81,3 +75,10 @@ Pass 2, design improvement:
 - Proposed R4 to connect the free Chaos Warfare adoption with its real Deaths-ledger cost through the Chaos Meter combat collateral model.
 - Proposed R6 and R7 to bring the summary and option labels within the planning skill's visible-value budget; the summary's eight counters drove no decision.
 - Considered and rejected connections to famine, migration, camps, air cleanliness, and Condemnation, because Doctrine Research changes no state those systems read beyond the native Chaos Warfare consequences that R4 surfaces, and a link would be decoration.
+
+### 2026-10-10 release pass
+
+- Implemented the audit's flow revisions: the first domain menu carries the curriculum premise and size, an assigned track advances from the track menu, the result page carries the next step and closes the curriculum with its outcome, the general staff option runs the AI resolver for the remaining choices and shows the summary, and the Chaos Warfare adoption confirmation states its civilian-death cost.
+- Replaced the eight summary counters with the outcomes that apply, and trimmed domain and track options and tooltips.
+- Removed the opening page, the continue page, and the unused summary tallies.
+- Kept Special Forces entries on their subdoctrine page and left out the domain-menu Milestone marker.
