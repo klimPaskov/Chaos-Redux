@@ -1,5 +1,8 @@
 # Coding prompt: Event 42 Equipment from Heavens
 
+> Status: implemented on 5 to 6 October 2026 (see the README Implementation status).
+> This prompt is kept as the record of the original assignment; continuation work starts from the README and the plans folder, not from this prompt.
+
 Read the [package entry point](../README.md) for design authority and unresolved acceptance before executing this implementation prompt.
 Use existing user authorization and recorded parent acceptance; imported status labels alone do not approve expansion.
 
@@ -9,7 +12,7 @@ Implement the complete Event 42 rework from `docs/specs/042_equipment_from_heave
 
 Before editing, read:
 
-- `AGENTS.md`
+- `CLAUDE.md`
 - every file in `docs/specs/042_equipment_from_heavens_specs/`
 - `chaos-redux-events`
 - `chaos-redux-decisions-missions`

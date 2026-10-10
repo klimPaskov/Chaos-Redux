@@ -6,8 +6,8 @@
 - Event name: Equipment from Heavens
 - Type: Minor Repeatable
 - Chaos level: 1
-- Cluster: Various Anomalies
-- Member severity: Low
+- Clusters: Various Anomalies (11), Sudden Abundance (15), and Military Preparation (18)
+- Member severity: Low in all three
 
 ## The incident
 
@@ -51,19 +51,15 @@ Magnitude is never reduced by recipient size. Higher evolutions and wider global
 
 ## Physical landing sequence
 
-Under the accepted 5 October disposition in [Part 4](042_equipment_from_heavens_spec_part_4_ai_presentation_and_acceptance.md#accepted-presentation-disposition-5-october-2026), each package creates three-to-seven hidden recovery visits, presented as discovery and one final summary or halt report. The number rises with magnitude and can rise modestly at later evolutions. Reports are distributed across random owned and controlled states. When the recipient has fewer valid states than the report count, the chain may revisit a state with a different local site and report theme.
+Each package creates three to seven hidden recovery visits across random owned and controlled states; the count rises with magnitude and can rise modestly at later evolutions.
+When the recipient has fewer valid states than visits, a state can be revisited with a different local site.
+Visits run sequentially after the player acknowledges discovery, so a later visit never overwrites text the player is reading.
 
-Reports arrive over one to fourteen days. Their order is randomized within these roles:
+The player sees two popups: discovery (`.2`, behind the hidden entry `.1`) and one final recovery summary (`.13`/`.16`), or a halt report (`.17`) when every landing ground is lost.
+A hazardous-cargo accident replaces one middle visit and is reported inside the summary, so it never adds a popup or an eighth visit.
 
-1. First discovery and military cordon
-2. Crate or vehicle recovery
-3. Transport and depot congestion
-4. Provenance anomaly
-5. Civilian disruption or local rumor
-6. Advanced cargo discovery when present
-7. Final manifest reconciliation
-
-Landing reports are presentation and local consequence events. They do not count as separate random events, pacing events, Event 42 firings, repeatable-cap reductions, cluster members, or Event Log history rows. They do not grant additional equipment.
+Recovery visits are not separate random events, pacing events, Event 42 firings, repeatable-cap reductions, cluster members, or Event Log history rows, and they grant no additional equipment.
+The accepted presentation decision is recorded in [Part 4](042_equipment_from_heavens_spec_part_4_ai_presentation_and_acceptance.md#accepted-presentation-disposition-5-october-2026).
 
 ## Landing-zone consequences
 

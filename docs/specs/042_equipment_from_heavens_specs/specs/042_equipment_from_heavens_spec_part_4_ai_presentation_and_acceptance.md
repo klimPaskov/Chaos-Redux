@@ -235,7 +235,7 @@ The event reuses ordinary equipment icons and existing special-family icons. It 
 
 ## Cluster behavior acceptance
 
-When the final Various Anomalies cluster registry is available:
+The live registry lists Event 42 in clusters 11, 15, and 18; in each of them:
 
 - Event 42 appears as a Low member
 - Event 42 can remain independently eligible at Chaos level 1

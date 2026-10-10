@@ -307,11 +307,12 @@ Event 42 is beneficial, but its physical impossibility and proliferation effects
 | Ordinary repeat delivery | The event is already known and repeatability alone should not farm Chaos | No direct change | 0 | None | Every ordinary repeat | Military buildup remains handled by shared systems | Not applicable |
 | Nuclear, chemical, biological, or special weapon use | The delivered weapon produces a concrete consequence | Shared systems | Shared values | Existing target, deaths, contamination, repeat-use, and condemnation factors | Existing shared guards | Event 42 adds nothing for the same consequence | Existing containment and cleanup systems |
 
-Direct Event 42 Chaos contribution should remain bounded. The first manifestation, first nuclear proliferation, and first fieldable Chaos Arsenal escape are the meaningful authored milestones. The event must not add Chaos for every crate, landing report, family, or repeat firing.
+Direct Event 42 Chaos contribution stays bounded to the three first-time milestones above, each guarded by a global flag.
+The values are implemented in `equipment_from_heavens_chaos` (`common/script_constants/042_equipment_from_heavens_constants.txt`); no Chaos is added for crates, visits, families, or repeat firings.
 
 ## Cluster integration
 
-Equipment from Heavens belongs to Various Anomalies as a Low member. The cluster assignment follows the accepted design even though the current export has no numeric cluster ID or member list.
+Equipment from Heavens is a Low member of Various Anomalies (cluster 11, row 11001), Sudden Abundance (15), and Military Preparation (18) in both the workbook and the live registry.
 
 The event can be selected normally at Chaos level 1. Cluster eligibility remains independent and follows the final Various Anomalies cluster unlock and participation rules.
 

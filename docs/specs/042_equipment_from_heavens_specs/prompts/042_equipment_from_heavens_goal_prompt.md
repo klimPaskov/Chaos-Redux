@@ -1,4 +1,7 @@
-Implement the complete Chaos Redux Event 42 rework, Equipment from Heavens, from `docs/specs/042_equipment_from_heavens_specs/`. Read the package, `AGENTS.md`, relevant project skills, the offline Paradox wiki, installed vanilla files, and local documentation before editing. Use the HOI4 MCP event and probability workflows for every supported event-chain and weighted surface.
+> Status: implemented on 5 to 6 October 2026 (see the README Implementation status).
+> This prompt is kept as the record of the original assignment; continuation work starts from the README and the plans folder, not from this prompt.
+
+Implement the complete Chaos Redux Event 42 rework, Equipment from Heavens, from `docs/specs/042_equipment_from_heavens_specs/`. Read the package, `CLAUDE.md`, relevant project skills, the offline Paradox wiki, installed vanilla files, and local documentation before editing. Use the HOI4 MCP event and probability workflows for every supported event-chain and weighted surface.
 
 Keep `chaosx.nr42.1` as the entry event. Register Event 42 as Chaos level 1 Minor Repeatable and add it to the reworked default-enabled set only when ready. Select one uniformly random eligible ordinary country. Player status, major status, industry, manpower, army, fuel, supply, geography, ideology, war state, and need must never change recipient weight or package scale. Use shared special-country and nonhuman classifiers. If no valid owned and controlled landing state exists, expose `N/A` and queue nothing.
 

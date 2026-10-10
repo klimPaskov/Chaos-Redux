@@ -5,25 +5,22 @@
 - Event ID: `42`
 - Event slug: `equipment_from_heavens`
 - Event name: Equipment from Heavens
-- Intended extraction folder: `docs/specs/042_equipment_from_heavens_specs/`
-- Package filename: `042_equipment_from_heavens_specs.zip`
 - Event type: Minor Repeatable
 - Event Chaos level: 1
-- Cluster assignment: Various Anomalies
-- Cluster member severity: Low
+- Clusters: Various Anomalies (11), Sudden Abundance (15), Military Preparation (18), Low member in each
+- Catalog status: Needs Testing
 
 ## Design authority
 
 Recorded accepted amendments are in [the 5–6 October owner decisions](../../plans/042_equipment_from_heavens_plans/agent_decisions_2026-10-05.md).
 The 5 October presentation decision cites parent G6 authority; the 6 October Borrowed Nightmare follow-up cites the director’s explicit approval.
 Those amendments supersede original popup allocation and combat-loss criteria; current source corroboration and validation limits are recorded in the [audit handoff](../../plans/repo_cleanup/specification_package_audit_2026-10-07/handoffs/037_042.md).
-Catalog edits remain `accepted and queued` under the [catalog owner handoff](../../plans/042_equipment_from_heavens_plans/catalog_changes_pending.md), which records the earlier spreadsheet prohibition.
-This documentation audit does not execute workbook updates.
+The catalog wording queued in the [catalog owner handoff](../../plans/042_equipment_from_heavens_plans/catalog_changes_pending.md) is now in the workbook: details, three evolution texts, clusters 11, 15, and 18, and status Needs Testing.
 
 
 The imported package preserves its premise, proposed expansions and source-reading provenance.
 Claim-specific acceptance remains `unresolved` when an explicit user decision or parent acceptance within existing authorization is not cited.
-Use the [repository acceptance rules](../../../AGENTS.md#specs-and-plans) and current [event workflow](../../../.agents/skills/chaos-redux-events/SKILL.md) rather than treating the imported accepted labels as approval.
+Use the [repository acceptance rules](../../../CLAUDE.md#specs-and-plans) and current [event workflow](../../../.claude/skills/chaos-redux-events/SKILL.md) rather than treating the imported accepted labels as approval.
 
 ## Design summary
 
@@ -63,20 +60,33 @@ It preserves Event Log integration, three evolution records, three achievement r
 - `quality/042_equipment_from_heavens_parent_improvement_review.md`
 - `quality/042_equipment_from_heavens_process_blockers.md`
 
-## Planning-era catalog reconciliation
+## Implementation status
 
-The current exported event catalog row identifies Event 42 as a Chaos level 1 Minor Repeatable event with status To Be Reworked, but it has no cluster assignment. The current cluster export contains an unavailable, unnumbered Various Anomalies row at Chaos level 4 with no members. The accepted design places Event 42 in Various Anomalies as a Low member.
+Implemented (5 to 6 October 2026, `events/042_equipment_from_heavens.txt` and the `042_equipment_from_heavens_*` files under `common/`, `interface/`, and `localisation/`): uniform recipient draw, one persisted manifest and stockpile transaction, magnitude and family tables, the three ordered evolutions, nuclear caches, the seven-family special allowlist, landing burdens, the two-popup presentation with hidden visits, guarded Chaos milestones, AI assessment, Event Log and Event Details, six report cards, and the three achievements including the approved Borrowed Nightmare victory rule.
 
-Implementation must reconcile the live cluster registry and the authoritative workbook before assigning any numeric cluster ID. The CSV files are export snapshots and must not be edited directly. Once implementation wording is final, update `docs/spreadsheets/chaos_redux_events_catalog.xlsx` and run `python .tools/export_event_catalog_csv.py`.
-
-The `MANIFEST.sha256` ledger describes current local package bytes and excludes itself.
-Original source-reading receipts retain their historical scope.
+Open: live acceptance of the recovery chain, nuclear launch from a received cache, and Event Details at 1920x1080; the MCP probability comparison; and the plans folder's release review items.
+The source review evidence is in `docs/plans/042_equipment_from_heavens_plans/release_review_2026-10-05.md`.
 
 ## Historical source status
 
-Every supplied top-level Markdown file, TOML file, CSV row, and every subagent TOML inside `subagents(4).zip` was fully read before this package was written. Targeted current repository inspection was also completed through the connected GitHub repository for the existing special-equipment tokens and their owner contracts.
+The original package was written in a planning interface without the local repository, wiki, game files, or MCP; its source-reading ledger and process-blocker notes under `research/` and `quality/` are historical evidence of that session only.
 
-Literal project subagents could not be launched in this interface because the only exposed tool-registry request failed with an MCP 429 response and no spawn function became available. The package therefore includes a parent-performed provisional improvement review and preserves the real `chaosx_improvement_loop_planner` pass as a required implementation-stage closure gate. No supplied source file was skipped.
+## Open questions
 
-The local Windows repository, offline Paradox wiki snapshot, installed vanilla game files, and HOI4 MCP server were not mounted in this interface. Their required checks are assigned to implementation and are not represented as completed evidence here.
-These statements describe the original planning environment; discover current tool and source availability before reporting a present blocker.
+- Discovery currently offers acknowledgment only, and the recipient's real choices happen afterwards through ordinary systems (Part 1).
+  A proposal for the user: when a nuclear cache arrives, let the recipient choose between declaring it (the world learns of a new nuclear power, which can drive guarantees and tension) and keeping it secret (no announcement, but a later use is treated as a hidden-stockpile breach by the condemnation owner).
+  It is not adopted because it changes accepted, implemented presentation and needs a condemnation-owner hook.
+
+## Changelog
+
+### 2026-10-10 spec audit
+
+Pass 1, consistency and cleanup:
+- Replaced the planning-era catalog reconciliation with the current state: the workbook row is aligned and Event 42 is a Low member of clusters 11, 15, and 18 in the workbook and live registry (README, Parts 1, 3, 4).
+- Rewrote Part 1's landing sequence, which still described seven randomized per-visit report roles, to match the accepted two-popup presentation with hidden visits.
+- Recorded that the Chaos milestones are implemented in script constants, added an implementation status section, marked the coding and goal prompts as historical, and fixed `AGENTS.md` and `.agents` links.
+- Deleted `MANIFEST.sha256`, a byte-hash ledger that every documentation edit made stale.
+
+Pass 2, design improvement:
+- Reviewed the implemented event against the value and decision budget: it has no meter, no decision category, and one combined landing burden per state, so nothing was removed.
+- Recorded one proposal (declare or conceal a nuclear cache) in Open questions instead of changing accepted presentation.

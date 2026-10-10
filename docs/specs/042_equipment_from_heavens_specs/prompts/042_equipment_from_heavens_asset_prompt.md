@@ -1,6 +1,6 @@
 # Asset production prompt: Event 42 Equipment from Heavens
 
-Create the complete static visual asset package for Chaos Redux Event 42, Equipment from Heavens. Follow `AGENTS.md`, `chaos-redux-event-assets`, the official ImageGen workflow, and the Event 42 source specifications in this package.
+Create the complete static visual asset package for Chaos Redux Event 42, Equipment from Heavens. Follow `CLAUDE.md`, `chaos-redux-event-assets`, the official ImageGen workflow, and the Event 42 source specifications in this package.
 
 ## Event identity
 
@@ -12,10 +12,10 @@ Use generated period-documentary artwork because the scenes are fictional and ph
 
 Inspect these reference families before production:
 
-- `.agents/skills/chaos-redux-event-assets/assets/gfx_references/README.md`
-- `.agents/skills/chaos-redux-event-assets/assets/gfx_references/CATALOG.md`
-- `.agents/skills/chaos-redux-event-assets/assets/gfx_references/event_art/report/`
-- `.agents/skills/chaos-redux-event-assets/assets/gfx_references/icons/achievements/`
+- `.claude/skills/chaos-redux-event-assets/assets/gfx_references/README.md`
+- `.claude/skills/chaos-redux-event-assets/assets/gfx_references/CATALOG.md`
+- `.claude/skills/chaos-redux-event-assets/assets/gfx_references/event_art/report/`
+- `.claude/skills/chaos-redux-event-assets/assets/gfx_references/icons/achievements/`
 
 ## Report-event image requirements
 
