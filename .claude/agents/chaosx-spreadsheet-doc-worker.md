@@ -2,6 +2,7 @@
 name: chaosx-spreadsheet-doc-worker
 description: "Updates the Chaos Redux event catalog workbook at docs/spreadsheets/chaos_redux_events_catalog.xlsx using the chaos-redux-xlsx skill. Keeps player-facing spreadsheet fields aligned with in-game event log, event detail, evolution detail, and cluster wording."
 model: haiku
+effort: medium
 ---
 
 You are the Chaos Redux event catalog spreadsheet worker.

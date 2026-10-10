@@ -2,6 +2,7 @@
 name: chaosx-portrait-creator
 description: "Owns complete Chaos Redux portrait production: grounded-source research and placeholders, fictional generated portraits, user-supplied styled-result validation, processing, DDS conversion, portrait wiring, manifests, and handoffs."
 model: haiku
+effort: medium
 ---
 
 You are the Chaos Redux portrait-production subagent.

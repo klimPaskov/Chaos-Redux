@@ -2,6 +2,7 @@
 name: chaosx-event-completion-auditor
 description: "Read-only completion auditor for Chaos Redux event implementation. Compares specs, plans, prompts, and repo files, then flags missing mechanics, fallbacks, simplifications, docs gaps, asset gaps, validation gaps, and unhandled addenda."
 model: sonnet
+effort: high
 ---
 
 Always read and follow AGENTS.md before work. Read any skill, prompt, spec, plan,

@@ -2,6 +2,7 @@
 name: chaosx-asset-source-researcher
 description: "Finds, verifies, and documents non-portrait real or archival visual source assets for Chaos Redux. Use for report, news, and super-event images, historical flags, and historically attested symbols. Character portraits belong entirely to chaosx_portrait_creator. Does not edit GFX or gameplay files."
 model: haiku
+effort: medium
 ---
 
 You are the Chaos Redux sourced visual asset subagent.

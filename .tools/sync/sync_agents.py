@@ -22,8 +22,9 @@ Run it after changing a canonical definition or adding a skill:
 
 Canonical agent format
 ----------------------
-Markdown with YAML frontmatter `name` (hyphen-case), `description`, and
-`model` (`haiku`, `sonnet`, or `opus`), then the prompt body. The body is the
+Markdown with YAML frontmatter `name` (hyphen-case), `description`,
+`model` (`haiku`, `sonnet`, or `opus`), and `effort` (`low`, `medium`, `high`,
+`xhigh`, or `max`), then the prompt body. The body is the
 scope contract for every runtime, so it stays runtime-neutral. Facts that only
 one runtime needs live in `.tools/sync/agent_profiles.json`: the authority
 class (used for Qoder tool lists and the maps), the tier-to-model mapping for
@@ -35,8 +36,11 @@ Conversion rules
    snake_case identifier (`chaosx-repo-explorer` -> `chaosx_repo_explorer`).
 2. `description` and the prompt body are copied verbatim.
 3. The model tier maps through `agent_profiles.json`: Codex receives a pinned
-   model and reasoning effort, Cursor receives `fast` or `inherit`, opencode
-   receives `inherit`, and Qoder has no model field.
+   model, Cursor receives `fast` or `inherit`, opencode receives `inherit`, and
+   Qoder has no model field. `effort` is a Claude Code frontmatter field that
+   overrides the session effort for the subagent; Codex receives it as
+   `model_reasoning_effort`, and Cursor, Qoder and opencode have no verified
+   equivalent in this setup, so it is dropped there.
 4. Qoder tools derive from the authority class; no other runtime has a
    verified tool allowlist, so the prompt body is the scope contract there.
 5. Only agent files are written into the agent folders, because Cursor,
@@ -82,6 +86,7 @@ SHARED_SKILLS = MOD_ROOT / ".agents" / "skills"
 
 TARGETS = ("claude-map", "codex", "qoder", "cursor", "opencode", "skills")
 VALID_TIERS = ("haiku", "sonnet", "opus")
+VALID_EFFORTS = ("low", "medium", "high", "xhigh", "max")
 
 TOOLS_READONLY = "Read, Grep, Glob, Bash, Write"
 TOOLS_PATCH = "Read, Grep, Glob, Bash, Edit, Write"
@@ -124,11 +129,13 @@ def parse_agent(path):
         if not sep or line.startswith((" ", "\t")):
             sys.exit("ERROR: {}: unsupported frontmatter line: {!r}".format(path, line))
         fields[key.strip()] = parse_scalar(value)
-    for key in ("name", "description", "model"):
+    for key in ("name", "description", "model", "effort"):
         if not fields.get(key):
             sys.exit("ERROR: {} is missing frontmatter `{}`".format(path, key))
     if fields["model"] not in VALID_TIERS:
         sys.exit("ERROR: {}: model `{}` is not one of {}".format(path, fields["model"], VALID_TIERS))
+    if fields["effort"] not in VALID_EFFORTS:
+        sys.exit("ERROR: {}: effort `{}` is not one of {}".format(path, fields["effort"], VALID_EFFORTS))
     if fields["name"] != path.stem:
         sys.exit("ERROR: {}: name `{}` must equal the file name".format(path, fields["name"]))
     body = match.group(2).strip()
@@ -140,6 +147,7 @@ def parse_agent(path):
         "snake": snake,
         "description": fields["description"].strip(),
         "tier": fields["model"],
+        "effort": fields["effort"],
         "body": body + "\n",
         "source": path.name,
     }
@@ -158,6 +166,14 @@ def load_agents(profiles):
         agent["authority"] = meta["authority"]
         agent["nicknames"] = meta.get("codex_nickname_candidates", [])
     return agents
+
+
+def policy_effort(profiles, snake):
+    policy = profiles["effort_policy"]
+    for level in VALID_EFFORTS:
+        if snake in policy.get(level, []):
+            return level
+    return policy["default"]
 
 
 def policy_tier(profiles, snake):
@@ -208,12 +224,13 @@ def label(agent):
 
 def render_codex(agent, profiles):
     tier = profiles["tiers"][agent["tier"]]["codex"]
+    effort = profiles["codex_effort"][agent["effort"]]
     lines = [
         "# " + banner_comment(agent),
         "name = {}".format(toml_quote(agent["snake"])),
         "description = {}".format(toml_quote(agent["description"])),
         "model = {}".format(toml_quote(tier["model"])),
-        "model_reasoning_effort = {}".format(toml_quote(tier["model_reasoning_effort"])),
+        "model_reasoning_effort = {}".format(toml_quote(effort)),
         "sandbox_mode = {}".format(toml_quote(profiles["codex_sandbox_mode"])),
         "nickname_candidates = [{}]".format(", ".join(toml_quote(n) for n in agent["nicknames"])),
         "",
@@ -293,18 +310,18 @@ def map_rows(agents, name_key, extra=None):
 
 
 def render_claude_map(agents, profiles):
-    rows = map_rows(agents, "kebab", extra=lambda a: a["tier"])
+    rows = map_rows(agents, "kebab", extra=lambda a: "{} / {}".format(a["tier"], a["effort"]))
     return (
         "<!-- Derived from the .claude/agents frontmatter and .tools/sync/agent_profiles.json by "
         "python .tools/sync/sync_agents.py claude-map. -->\n"
         "# Claude Code Subagent Map\n\n"
         "Every file in `.claude/agents/` is a canonical Claude Code project subagent: Markdown with `name`, "
-        "`description` and `model` YAML frontmatter plus a prompt body. Edit those files directly. "
+        "`description`, `model` and `effort` YAML frontmatter plus a prompt body. Edit those files directly. "
         "Do not put README or other non-agent Markdown in that folder, because Claude Code loads every `*.md` there.\n\n"
         "Other runtimes are generated from these definitions with `python .tools/sync/sync_agents.py`. "
         "Claude Code subagents run in an isolated context window, so the parent prompt must be fully explicit. "
-        "Each subagent runs on the fixed model tier in the table and the parent may override it for one spawn.\n\n"
-        "| Identifier | Claude Code | Model | Authority |\n| --- | --- | --- | --- |\n"
+        "Each subagent runs on the fixed model tier and reasoning effort in the table; the parent may override the model for one spawn.\n\n"
+        "| Identifier | Claude Code | Model / effort | Authority |\n| --- | --- | --- | --- |\n"
         + "\n".join(rows)
         + "\n\n"
         + MAP_NOTE.format(runtime="Claude Code")
@@ -559,37 +576,43 @@ def run_verify(agents, profiles):
                 problems.append("{}: {} output missing".format(agent["kebab"], runtime))
             elif value != want[runtime]:
                 problems.append("{}: {} has model {} but expected {}".format(agent["kebab"], runtime, value, want[runtime]))
+        want_effort = policy_effort(profiles, agent["snake"])
+        if agent["effort"] != want_effort:
+            problems.append("{}: canonical effort {} but effort policy says {}".format(agent["kebab"], agent["effort"], want_effort))
         if codex_path.exists():
             effort = field_of(codex_path, r'^model_reasoning_effort = "([^"]+)"')
-            if effort != tiers["codex"]["model_reasoning_effort"]:
-                problems.append("{}: codex effort {} differs from the tier mapping".format(agent["kebab"], effort))
+            if effort != profiles["codex_effort"][agent["effort"]]:
+                problems.append("{}: codex effort {} differs from the effort mapping".format(agent["kebab"], effort))
         if qoder_path.exists() and re.search(r"^model:", qoder_path.read_text(encoding="utf-8"), re.M):
             problems.append("{}: qoder definition unexpectedly carries a model field".format(agent["kebab"]))
-        rows.append((agent["kebab"], seen["claude"], seen["codex"], seen["cursor"], seen["opencode"]))
+        rows.append((agent["kebab"], seen["claude"], agent["effort"], seen["codex"], seen["cursor"], seen["opencode"]))
     for folder in (CLAUDE_AGENTS, CODEX_AGENTS, QODER_AGENTS, CURSOR_AGENTS, OPENCODE_AGENTS):
         for path in folder.glob("*"):
             if path.is_file() and re.search(r"fable", path.read_text(encoding="utf-8", errors="ignore"), re.I):
                 problems.append("{}: mentions a forbidden model name".format(path.relative_to(MOD_ROOT)))
-    print("{:<40} {:<8} {:<14} {:<8} {}".format("agent", "claude", "codex", "cursor", "opencode"))
+    print("{:<40} {:<8} {:<8} {:<14} {:<8} {}".format("agent", "claude", "effort", "codex", "cursor", "opencode"))
     for row in rows:
-        print("{:<40} {:<8} {:<14} {:<8} {}".format(*[str(c) for c in row]))
+        print("{:<40} {:<8} {:<8} {:<14} {:<8} {}".format(*[str(c) for c in row]))
     if problems:
         print("VERIFY FAILED:")
         for problem in problems:
             print("  " + problem)
         return 1
-    print("VERIFY OK: {} agents match the routing policy in every generated runtime.".format(len(rows)))
+    print("VERIFY OK: {} agents match the routing and effort policy in every generated runtime.".format(len(rows)))
     return 0
 
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    parser.add_argument("targets", nargs="*", choices=list(TARGETS), help="Targets to generate (default: all).")
+    parser.add_argument("targets", nargs="*", metavar="target", help="Targets to generate (default: all): " + ", ".join(TARGETS) + ".")
     parser.add_argument("--mode", choices=("junction", "copy"), default="junction",
                         help="How to mirror skills into .agents/skills (default: junction, copy fallback).")
     parser.add_argument("--verify", action="store_true",
                         help="Read the generated outputs back and compare them with the routing policy.")
     args = parser.parse_args()
+    unknown = [name for name in args.targets if name not in TARGETS]
+    if unknown:
+        parser.error("unknown target(s): {} (choose from {})".format(", ".join(unknown), ", ".join(TARGETS)))
 
     profiles = load_profiles()
     agents = load_agents(profiles)

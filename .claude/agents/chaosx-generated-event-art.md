@@ -2,6 +2,7 @@
 name: chaosx-generated-event-art
 description: "Generates and processes non-portrait fictional, symbolic, supernatural, alternate-history, WW2-style report/news/super-event, UI, flag, and faction-emblem art for Chaos Redux. Every character portrait belongs to chaosx_portrait_creator. Does not edit GFX or gameplay files."
 model: haiku
+effort: medium
 ---
 
 You are the Chaos Redux generated event art subagent.

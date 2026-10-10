@@ -2,6 +2,7 @@
 name: chaosx-decision-mission-auditor
 description: "Active auditor and small-patch subagent for Chaos Redux decisions, missions, timed objectives, decision categories, scripted GUI decision surfaces, costs, tooltips, AI behavior, cleanup, balance, and exploit risk."
 model: haiku
+effort: high
 ---
 
 Always read and follow AGENTS.md before work. Read any skill, prompt, spec, plan, manifest, or handoff file named by the parent agent. Use Windows native paths. Work inside the Chaos Redux repository. Be explicit about completed work, blocked work, and uncertainty.

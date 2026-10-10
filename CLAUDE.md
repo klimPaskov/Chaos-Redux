@@ -84,15 +84,15 @@ Skills are authored in `.claude/skills/<name>/SKILL.md`, which is canonical. `.a
 - Use `chaos-redux-xlsx` for Chaos Redux spreadsheet work, including the event catalog, doctrine workbook, formatting, formulas, and catalog exports.
 - Use `chaos-redux-improvement-loop` when an implemented or planned mechanic needs recursive depth expansion, spec addenda, improvement handoffs, or checks for shallow, duplicated, generic, disconnected, or low-impact content.
 - Use `chaos-redux-save-inspection` whenever the user supplies a save, and when runtime state would settle a question that source reading cannot: why a decision or focus is unavailable, what an action changed, whether state survives save and reload, what the AI did, whether script state leaks, or how an engine rule behaves.
-- Use the generic HOI4 system skills when a task touches that engine system. Each is written from the installed documentation, the offline wiki, and vanilla files, and holds syntax skeletons, decision procedures, pitfalls, and validation guidance:
-  - `hoi4-equipment` for equipment archetypes and variants, stockpiles and production, equipment modules and designers, and equipment bonuses.
-  - `hoi4-technology-doctrines` for technologies, doctrines, research bonuses, tech unlocks, and technology AI weights.
-  - `hoi4-ai-strategies` for country AI strategies, AI areas, templates and equipment AI, `ai_will_do` and `ai_chance` weighting, and AI debugging.
-  - `hoi4-diplomacy-war` for diplomacy, factions, subjects and autonomy, wargoals, and war and peace.
-  - `hoi4-units-divisions` for sub-units, division templates, orders of battle, and unit effects and triggers.
-  - `hoi4-characters-leaders` for characters, country leaders, advisors, and unit leader traits.
-  - `hoi4-map-states` for map and state data, victory points, supply and railways, and state-scope iteration.
-  - `hoi4-ideas-modifiers` for ideas, national spirits, dynamic modifiers, and the modifier system.
+- Use the Chaos Redux system skills when a task touches that engine system. Each combines engine guidance written from the installed documentation, the offline wiki, and vanilla files (syntax skeletons, decision procedures, pitfalls, validation) with the Chaos Redux files, shared systems, and registrations for that system. The generic `hoi4-*` versions of these skills belong to the Agentic HOI4 Modding package, not to this repository:
+  - `chaos-redux-equipment` for equipment archetypes and variants, CBRN payload lots, stockpiles and production, modules and designers, equipment bonuses, and `script_enum_equipment_bonus_type`.
+  - `chaos-redux-technology-doctrines` for technologies, the chemical and biological folders and their 70x70 grid, project-gated cards, doctrines, research bonuses, and tech unlocks.
+  - `chaos-redux-ai-strategies` for country AI strategies, CBRN country profiles, AI plans, templates and equipment AI, `ai_will_do` and `ai_chance` weighting, and AI debugging.
+  - `chaos-redux-diplomacy-war` for diplomacy, factions, subjects, wargoals, peace, condemnation and sanctions, the Chaos Meter war hook, and the liberation release coordinator.
+  - `chaos-redux-units-divisions` for sub-units, division templates, package formations, counters, orders of battle, and the test-country and Event 19 unit obligations.
+  - `chaos-redux-characters-leaders` for characters, country leaders, advisors, the historical CBRN scientist roster, and unit leader traits.
+  - `chaos-redux-map-states` for map and state data, startup history grants, the buildings override, victory points, supply and railways, state-scope iteration, and the state ledgers (exact civilian transfers, cohort registries, reception, and state map modes).
+  - `chaos-redux-ideas-modifiers` for ideas, national spirits, test-country carrier ideas, dynamic modifiers, the cost-modifier framework, and Chaos Meter tier scaling.
 
 ### HOI4 MCP
 
@@ -136,7 +136,7 @@ Source review and local checks can support completion when a tool is unavailable
 
 Use project custom subagents when a task needs bounded research, asset production, audit, recursive expansion, or documentation work that can be separated from main implementation.
 
-Subagent definitions are authored in `.claude/agents/<name>.md`, which is canonical, with the model tier (`haiku`, `sonnet`, or `opus`) in the frontmatter. `python .tools/sync/sync_agents.py` generates the other runtimes' definitions from them and `python .tools/sync/sync_agents.py --verify` reads the models back against the routing table in `.tools/sync/agent_profiles.json`.
+Subagent definitions are authored in `.claude/agents/<name>.md`, which is canonical, with the model tier (`haiku`, `sonnet`, or `opus`) and the reasoning `effort` (`low` to `max`) in the frontmatter. `python .tools/sync/sync_agents.py` generates the other runtimes' definitions from them and `python .tools/sync/sync_agents.py --verify` reads the models and efforts back against the routing and effort tables in `.tools/sync/agent_profiles.json`.
 
 `chaos-redux-subagents` is the detailed source of truth for subagent routing, ownership boundaries, handoff quality, audit cadence, asset routing, super-event routing, and the recursive mechanic expansion loop.
 
@@ -163,6 +163,7 @@ Use these high-level routing rules:
   A missing old baseline limits historical delta claims; it does not require reconstructing an entire old workspace or block validating the current behavior.
   The auditor remains read-only and does not choose balance targets.
 - Use `chaosx_scripted_system_architect` for reusable scripted effects, triggers, script constants, event targets, meta effects, variable patterns, and dynamic helper design.
+- Use `chaosx_equipment_units_worker`, `chaosx_technology_tree_worker`, and `chaosx_map_states_worker` for bounded implementation or repair of equipment and units, technology folders and trees, and map, state, and civilian-ledger work. Each reads its `chaos-redux-*` system skill, patches inside the task scope, and hands art, weighted-AI audits, and final integration back to the parent.
 - Use `chaosx_documentation_curator` during long implementation when specs, plans, docs, manifests, prompts, reports, or subagent handoffs may be stale, duplicated, contradictory, or too numerous. It patches documentation surfaces only, writes source-of-truth maps and resume packets, and does not edit gameplay files or spreadsheets.
 - Use `chaosx_spreadsheet_doc_worker` only after implementation facts are available. Spreadsheet event-detail, evolution-detail, and cluster-detail fields must match the in-game localisation wording.
 - Use `chaosx_skill_maintainer` for non-trivial skill creation, cleanup, routing updates, or multi-skill consistency work.

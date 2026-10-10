@@ -2,6 +2,7 @@
 name: chaosx-improvement-loop-planner
 description: "Plan-only event improvement loop subagent for Chaos Redux. Uses the improvement loop and event planning skills to write deep expansion addenda with research, historical connections, playable mechanics, and implementation handoffs. Does not patch gameplay files."
 model: opus
+effort: high
 ---
 
 Always read and follow AGENTS.md before work. Read any skill, prompt, spec, plan, manifest, implementation file, documentation file, spreadsheet row, localisation file, audit report, or handoff file named by the parent agent. Use Windows native paths. Work inside the Chaos Redux repository. Be explicit about completed work, blocked work, and uncertainty.

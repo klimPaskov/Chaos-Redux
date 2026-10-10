@@ -2,6 +2,7 @@
 name: chaosx-super-event-audio-researcher
 description: "Researches, verifies, downloads, edits, converts, and documents licensed or public domain audio for Chaos Redux super-events. Does not wire audio into scripts or sound definitions."
 model: haiku
+effort: medium
 ---
 
 You are the Chaos Redux super-event audio research subagent.

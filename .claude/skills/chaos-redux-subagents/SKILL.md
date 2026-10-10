@@ -44,7 +44,16 @@ DSH composes subagents at runtime through its delegation tool and loads no agent
 
 Every DSH child runs on `deepseek-official/deepseek-flash` and nothing else, so specify no model. Naming `provider` and `model` together is allowed only as that pair; naming one alone is rejected, and effort may be named alone because the configured default already fixes the route. If a task looks like it needs a stronger model, split it into narrower bounded subagents instead. `subagent_fork` cannot select a child model, so use the ordinary delegation tool when the route matters. Model selection is sampled when a session is composed, so a session without those fields predates the opt-in rather than being misconfigured. DSH layout, skill roots, model selection, and MCP registration are documented in `docs/runtimes.md`.
 
-Claude Code subagents run on the fixed model tier in their `model:` frontmatter, listed in the generated `.claude/agent-map.md` and governed by the routing table in `.tools/sync/agent_profiles.json`: `opus` for `chaosx_improvement_loop_planner`, `sonnet` for `chaosx_3d_model_pipeline`, `chaosx_event_completion_auditor`, `chaosx_localisation_auditor`, `chaosx_scripted_system_architect`, and `chaosx_skill_maintainer`, and `haiku` for every other specialist. The sync maps each tier to the other runtimes (Codex pins a model and reasoning effort, Cursor uses `fast` or `inherit`, opencode and Qoder inherit), and `python .tools/sync/sync_agents.py --verify` reads the generated files back against the table. A new role needs its `.claude/agents` definition and an `agents` entry in the profile before the sync accepts it. Change a tier in the definition and the table together, rerun the sync, and override the model for a single spawn only when the task clearly exceeds or falls below the role's usual work.
+Claude Code subagents run on the fixed model tier in their `model:` frontmatter, listed in the generated `.claude/agent-map.md` and governed by the routing table in `.tools/sync/agent_profiles.json`: `opus` for `chaosx_improvement_loop_planner`, `sonnet` for `chaosx_3d_model_pipeline`, `chaosx_event_completion_auditor`, `chaosx_localisation_auditor`, `chaosx_scripted_system_architect`, and `chaosx_skill_maintainer`, and `haiku` for every other specialist. The sync maps each tier to the other runtimes (Codex pins a model, Cursor uses `fast` or `inherit`, opencode and Qoder inherit), and `python .tools/sync/sync_agents.py --verify` reads the generated files back against the table. A new role needs its `.claude/agents` definition and an `agents` entry in the profile before the sync accepts it. Change a tier in the definition and the table together, rerun the sync, and override the model for a single spawn only when the task clearly exceeds or falls below the role's usual work.
+
+Each definition also carries the Claude Code `effort:` frontmatter field. It overrides the session reasoning effort for that subagent (`CLAUDE_CODE_EFFORT_LEVEL` still takes precedence, the available levels depend on the model, and the parent may pass an `effort` for a single spawn). The table lives in `effort_policy` of `.tools/sync/agent_profiles.json`, `--verify` reads it back, and Codex receives it as `model_reasoning_effort` while Cursor, Qoder, and opencode drop it.
+
+| Effort | Roles |
+| --- | --- |
+| `high` | The auditors that judge correctness (`chaosx_ai_probability_auditor`, `chaosx_country_package_auditor`, `chaosx_decision_mission_auditor`, `chaosx_event_completion_auditor`, `chaosx_focus_tree_auditor`, `chaosx_localisation_auditor`), plus `chaosx_3d_model_pipeline`, `chaosx_scripted_system_architect`, and `chaosx_improvement_loop_planner` |
+| `medium` | Researchers (`chaosx_asset_source_researcher`, `chaosx_super_event_audio_researcher`, `chaosx_super_event_text_researcher`), art, icon, and portrait workers (`chaosx_generated_event_art`, `chaosx_icon_artist`, `chaosx_portrait_creator`), `chaosx_repo_explorer`, `chaosx_spreadsheet_doc_worker`, `chaosx_documentation_curator`, `chaosx_skill_maintainer`, `chaosx_event_ui_worker`, and the system workers `chaosx_equipment_units_worker`, `chaosx_technology_tree_worker`, and `chaosx_map_states_worker` |
+
+Raise the effort for one spawn when a normally routine task carries a correctness risk; do not lower an auditor below `high`.
 
 Use `chaosx_repo_explorer` only for read-only repo exploration when touched-file mapping, pattern search, vanilla reference mapping, missing-file recovery, dependency mapping, or edit-order planning is actually unclear. It is not a default preflight agent.
 
@@ -88,6 +97,14 @@ Prefer targeted probability tools, then use real source/helpers and named repres
 State exactly what the evidence establishes; recheck only owner-applied fixes, without repeated classification or audit-of-audit loops.
 
 Use `chaosx_spreadsheet_doc_worker` only for the event catalog workbook at `docs/spreadsheets/chaos_redux_events_catalog.xlsx`. It uses the `chaos-redux-xlsx` skill, keeps the workbook player-facing, and matches event log, event detail, evolution detail, and cluster detail fields to the in-game wording.
+
+Use `chaosx_equipment_units_worker` for bounded implementation and repair of equipment archetypes, variants, modules, CBRN payload lots, sub-units, support companies, package formations, AI templates, `script_enum_equipment_bonus_type` entries, and the test-country and Event 19 registrations a new equipment type or land sub-unit needs. It reads `chaos-redux-equipment` and `chaos-redux-units-divisions`, and hands models, counters, and art back through the parent.
+
+Use `chaosx_technology_tree_worker` for bounded implementation and repair of technologies, technology folders and cards, project-gated and hidden technologies, grant helpers, doctrines, and the 70x70 folder grid, checked with `hoi4.tech_inspect` and `hoi4.tech_render`. It reads `chaos-redux-technology-doctrines` and hands card art to `chaosx_icon_artist` through the parent.
+
+Use `chaosx_map_states_worker` for bounded implementation and repair of startup history grants, the generated `map/buildings.txt` override and spawn buildings, state-scope effects and iteration, exact civilian transfers, cohort registries, reception ledgers, and state map modes, checked with `hoi4.map_inspect` before any rewrite. It reads `chaos-redux-map-states`.
+
+There is no separate worker for characters, ideas and modifiers, diplomacy, or AI: those surfaces stay with the parent, `chaosx_country_package_auditor`, `chaosx_scripted_system_architect`, `chaosx_decision_mission_auditor`, and `chaosx_ai_probability_auditor`, which load the matching `chaos-redux-*` system skill.
 
 Use `chaosx_skill_maintainer` for skill creation, skill cleanup, routing updates, and multi-skill consistency work when a task reveals a reusable workflow, repeated mistake, repo-specific convention, validation pattern, asset or prompt pattern, or implementation rule that belongs in a repo skill. The role is runtime-neutral: it owns the skill files themselves, so it behaves the same in every runtime and is spawned by the same canonical snake_case identifier that the Qoder, Cursor, opencode, and Claude Code runtimes map to their hyphen-case equivalents.
 
@@ -210,6 +227,7 @@ Inspectors/viewers stay read-only. The user performs in-game validation; provide
 These agents are patch-capable by default inside the current task scope:
 
 - `chaosx_scripted_system_architect`
+- `chaosx_equipment_units_worker`, `chaosx_technology_tree_worker`, and `chaosx_map_states_worker` for their own system surfaces only
 - `chaosx_decision_mission_auditor`
 - `chaosx_focus_tree_auditor`
 - `chaosx_country_package_auditor`
@@ -317,19 +335,20 @@ Read the complete requirements in [MCP evidence in handoffs](../../../docs/syste
 
 ## Specialist routing
 
-### HOI4 system skill routing
+### System skill routing
 
-The generic `hoi4-*` skills hold engine-level guidance written from the installed documentation and vanilla files. A subagent cannot load a skill the parent does not name, so the parent prompt lists the matching skill files by path (`.claude/skills/<name>/SKILL.md`) alongside the Chaos Redux surface skill:
+The `chaos-redux-*` system skills (`chaos-redux-equipment`, `-technology-doctrines`, `-ai-strategies`, `-diplomacy-war`, `-units-divisions`, `-characters-leaders`, `-map-states`, `-ideas-modifiers`) combine engine guidance written from the installed documentation and vanilla files with the repository's own files, shared systems, and registrations. A subagent cannot load a skill the parent does not name, so the parent prompt lists the matching skill files by path (`.claude/skills/<name>/SKILL.md`) alongside the Chaos Redux surface skill:
 
-- `hoi4-ai-strategies` for `chaosx_ai_probability_auditor` and for any auditor or architect that reviews `ai_strategy`, `ai_will_do`, `ai_chance`, AI templates, or AI equipment behaviour.
-- `hoi4-equipment` and `hoi4-technology-doctrines` for `chaosx_country_package_auditor`, `chaosx_scripted_system_architect`, and `chaosx_3d_model_pipeline` when the work touches equipment archetypes, variants, modules, stockpiles, technologies, doctrines, or their unlocks.
-- `hoi4-units-divisions` for `chaosx_country_package_auditor` and `chaosx_3d_model_pipeline` when the work touches sub-units, division templates, orders of battle, or unit entities.
-- `hoi4-characters-leaders` for `chaosx_country_package_auditor` and `chaosx_portrait_creator` when portraits are wired to characters, leaders, advisors, or unit leaders.
-- `hoi4-map-states` for `chaosx_country_package_auditor` and `chaosx_repo_explorer` when the work touches state history, map files, victory points, supply, railways, or state iteration.
-- `hoi4-ideas-modifiers` for `chaosx_focus_tree_auditor`, `chaosx_decision_mission_auditor`, and `chaosx_scripted_system_architect` when ideas, national spirits, dynamic modifiers, or modifier names are involved.
-- `hoi4-diplomacy-war` for `chaosx_focus_tree_auditor`, `chaosx_decision_mission_auditor`, and `chaosx_country_package_auditor` when focuses, decisions, or events change diplomacy, factions, subjects, wargoals, or peace.
+- `chaos-redux-ai-strategies` for `chaosx_ai_probability_auditor` and for any auditor or architect that reviews `ai_strategy`, `ai_will_do`, `ai_chance`, AI templates, or AI equipment behaviour.
+- `chaos-redux-equipment` for `chaosx_equipment_units_worker`, and for `chaosx_country_package_auditor`, `chaosx_scripted_system_architect`, and `chaosx_3d_model_pipeline` when the work touches equipment archetypes, variants, modules, stockpiles, or payload lots.
+- `chaos-redux-technology-doctrines` for `chaosx_technology_tree_worker`, and for `chaosx_country_package_auditor` and `chaosx_scripted_system_architect` when the work touches technologies, doctrines, or their unlocks.
+- `chaos-redux-units-divisions` for `chaosx_equipment_units_worker`, `chaosx_country_package_auditor`, and `chaosx_3d_model_pipeline` when the work touches sub-units, division templates, orders of battle, counters, or unit entities.
+- `chaos-redux-characters-leaders` for `chaosx_country_package_auditor` and `chaosx_portrait_creator` when portraits are wired to characters, leaders, advisors, or unit leaders.
+- `chaos-redux-map-states` (including its `references/state-ledgers.md`) for `chaosx_map_states_worker`, and for `chaosx_country_package_auditor`, `chaosx_scripted_system_architect`, and `chaosx_repo_explorer` when the work touches state history, startup grants, map files, victory points, supply, railways, state iteration, or civilian transfers and ledgers.
+- `chaos-redux-ideas-modifiers` for `chaosx_focus_tree_auditor`, `chaosx_decision_mission_auditor`, and `chaosx_scripted_system_architect` when ideas, national spirits, dynamic modifiers, or modifier names are involved.
+- `chaos-redux-diplomacy-war` for `chaosx_focus_tree_auditor`, `chaosx_decision_mission_auditor`, and `chaosx_country_package_auditor` when focuses, decisions, or events change diplomacy, factions, subjects, wargoals, peace, or condemnation.
 
-The skills describe the engine, so project conventions in `CLAUDE.md`, the surface skill, and the dynamic effects library still win where they differ.
+Where a system skill and `CLAUDE.md` differ, `CLAUDE.md` wins.
 
 ### Asset routing
 
