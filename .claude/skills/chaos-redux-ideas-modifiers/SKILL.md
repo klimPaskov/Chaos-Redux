@@ -1,12 +1,12 @@
 ---
-name: hoi4-ideas-modifiers
-description: Use when creating, editing, auditing, or scripting Hearts of Iron IV ideas, national spirits, hidden ideas, laws, advisor or designer ideas, dynamic modifiers, static or custom modifiers, timed ideas, or modifier tooltips and localisation.
+name: chaos-redux-ideas-modifiers
+description: Use when creating, editing, auditing, or scripting Chaos Redux ideas, national spirits, hidden ideas and test-country carriers, laws, advisor or designer ideas, dynamic modifiers, static or custom modifiers, timed ideas, the cost-modifier framework, Chaos Meter tier scaling, or modifier tooltips and localisation.
 ---
 
-# HOI4 Ideas and Modifiers
+# Chaos Redux Ideas and Modifiers
 
-Generic guidance for applying lasting numeric effects in Hearts of Iron IV: choosing between an idea, a dynamic modifier, a static modifier, or a custom modifier definition, writing each with verified syntax, and avoiding the silent failures.
-Use `hoi4-map-states` for state-scoped effects that are not modifiers (ownership, buildings, categories), `hoi4-ai-strategies` for `ai_will_do` weights inside ideas, `chaos-redux-mtth` for MTTH variables that feed dynamic modifiers, and `chaos-redux-decisions-missions` for decisions that add or swap ideas.
+Guidance for applying lasting numeric effects in Hearts of Iron IV as used in Chaos Redux: choosing between an idea, a dynamic modifier, a static modifier, or a custom modifier definition, writing each with verified syntax, and avoiding the silent failures.
+Use `chaos-redux-map-states` for state-scoped effects that are not modifiers (ownership, buildings, categories), `chaos-redux-ai-strategies` for `ai_will_do` weights inside ideas, `chaos-redux-mtth` for MTTH variables that feed dynamic modifiers, and `chaos-redux-decisions-missions` for decisions that add or swap ideas.
 
 ## Contents
 
@@ -22,7 +22,7 @@ Use `hoi4-map-states` for state-scoped effects that are not modifiers (ownership
 - Localisation, GFX, and tooltips
 - Idea and modifier triggers
 - Validation procedure
-- Repository conventions
+- Chaos Redux specifics
 - Common mistakes and silent failures
 - Unverified or conflicting points
 
@@ -126,7 +126,7 @@ ideas = {
 - `traits = { ... }` references traits defined in `common/country_leader/*.txt` (for example `heavy_tank_manufacturer`); the trait supplies the modifier and icon.
 - `ledger = army|air|navy|military|civilian|all|hidden`: which intelligence ledger shows it; `hidden` suppresses it. Resolution order is idea, then slot, then category.
 - `default = yes` marks the law a country starts with when none is assigned (5 vanilla uses). `cancel_if_invalid = no` is used on vanilla laws (31 uses) and is not described in the wiki or installed documentation; copy it only from a vanilla precedent such as `_manpower.txt`.
-- `ai_will_do` on a selectable idea steers the AI; on event-granted spirits vanilla uses `factor = 0`. Weight design belongs to `hoi4-ai-strategies`.
+- `ai_will_do` on a selectable idea steers the AI; on event-granted spirits vanilla uses `factor = 0`. Weight design belongs to `chaos-redux-ai-strategies`.
 
 ## Spirits, hidden ideas, laws, designers, advisors
 
@@ -212,7 +212,7 @@ has_dynamic_modifier = my_dynamic_modifier                                      
 - Province modifiers: `add_province_modifier = { static_modifiers = { m1 m2 } province = N days = N }` and `remove_province_modifier`, state scope; `province = { id = N all_provinces = yes limit_to_coastal = yes ... }` selects several. Vanilla: `flooded` in `01_event_modifiers.txt`. Many state modifiers work in province scope. A visible icon needs a sprite `GFX_modifiers_<name>_icon` and an `iconType` in `countrystateview.gui`.
 - Relation modifiers: a block with `valid_relation_trigger = { FROM = { ... } }` plus targeted modifiers; `add_relation_modifier = { target = TAG modifier = name }` in country scope; `ROOT` is the holder and `FROM` the target.
 - Custom modifier definitions (`common/modifier_definitions/*.txt`): `name = { color_type = good|bad|neutral value_type = number|percentage|percentage_in_hundred|yes_no precision = 0..3 postfix = none|days|hours|daily category = <scope categories> }`. They have no engine effect; they exist so ideas, traits, buildings, and dynamic modifiers can add to a value that script reads with `modifier@name`. Header comments are in `GAME/common/modifier_definitions/modifier_definitions.txt`.
-- Opinion modifiers (`common/opinion_modifiers`, fields `value`, `trade`, `decay`, `days|months|years`, `min_trust`, `max_trust`) are a separate system added with `add_opinion_modifier` and cannot be placed in a modifier block; to simulate one, pair it with the idea's `on_add`/`on_remove` and a `custom_modifier_tooltip`. Diplomatic use belongs to `hoi4-diplomacy-war`.
+- Opinion modifiers (`common/opinion_modifiers`, fields `value`, `trade`, `decay`, `days|months|years`, `min_trust`, `max_trust`) are a separate system added with `add_opinion_modifier` and cannot be placed in a modifier block; to simulate one, pair it with the idea's `on_add`/`on_remove` and a `custom_modifier_tooltip`. Diplomatic use belongs to `chaos-redux-diplomacy-war`.
 
 ## Localisation, GFX, and tooltips
 
@@ -242,15 +242,22 @@ has_dynamic_modifier = my_dynamic_modifier                                      
 9. Use `hoi4_script_validate` on `on_add`, `on_remove`, and effect bodies under their explicit scope when exposed; it checks only its listed `checksPerformed`.
 10. Live behaviour (daily refresh timing, tooltip rendering, civil-war survival) is a game-side check; do not report it as verified from source reading.
 
-## Repository conventions
+## Chaos Redux specifics
+The `CLAUDE.md` coding, constants, dynamic-effect, and localisation rules apply and are not repeated here, and no world-iterating hook may refresh ideas or modifiers; refresh from the effect that changes the underlying variable.
 
-- Tabs for indentation, lowercase snake_case, no `<=` or `>=` (use `check_variable` with `compare = ...` or `<`, `>`), localisation UTF-8 with BOM, localisation keys written without `:0`.
-- No magic numbers: put tuning in `common/script_constants/` and read it as `constant:category.key` where the field supports it. Idea `modifier` blocks accept literal numbers only (not variables), so a tunable value either uses a dynamic modifier fed by a variable set from a constant, or repeats a literal that is documented once in the idea file header. Timed `days =` fields may need a variable assigned from a constant first.
-- Reuse `common/scripted_effects/chaosx_dynamic_effects.txt` before writing new helpers; document new dynamic effects in `chaosx_dynamic_effects.md`.
-- Hidden-idea carriers for the CXT package registration (`CLAUDE.md` section 4 item 11; `docs/testing/chaosx_test_country.md`) are modifier-free `hidden_ideas` entries whose id equals the setup effect name before `_apply`. They are tokens, not spirits: no modifiers, localisation, or icon, and never added to a country.
-- On-action fan-out (`on_daily`, `on_weekly`, `on_monthly`) over all countries to refresh ideas or dynamic modifiers needs explicit permission; refresh from the effect that changes the underlying variable instead.
-- Player-facing idea text describes the world and the player's options, not tuning history or "newly added" wording.
-- Use `chaos-redux-mtth` for MTTH-fed variables and `chaos-redux-decisions-missions` when a decision grants or swaps the idea.
+**Where Chaos Redux ideas and modifiers live**
+
+- `common/ideas/<owner>_ideas.txt` and `common/dynamic_modifiers/<owner>_*modifiers.txt` hold one file per event or system. Timed response ideas such as the condemnation responses (`common/ideas/condemnation_sanctions_ideas.txt`) pair with scalable dynamic modifiers (`common/dynamic_modifiers/condemnation_sanctions_dynamic_modifiers.txt`).
+- Chaos dynamic modifiers read their tuning with `constant:category.key` in the modifier fields (see `famine_state_modifiers.txt`), carry an `icon = GFX_...` sprite registered in an `interface/*.gfx` file, and switch on a flag through `enable` with a matching `remove_trigger`. Idea `modifier` blocks accept literals, so a tunable idea value either becomes a dynamic modifier fed from a constant or repeats a literal documented once in the file header.
+- State modifier families (`famine_state_*`, `migration_state_*`) are removed together and re-added by the refresh effect, so a stage change or cleanup never leaves a stale family.
+
+**Rules that recur**
+
+1. Hidden-idea carriers for test-country registration are modifier-free `hidden_ideas` entries whose id equals the package setup effect name before `_apply` (`common/ideas/012_africa_gods_cxt_extension_ideas.txt` is the pattern). They are tokens, never added to a country, and need no modifiers, localisation, or icon. Registration is in `docs/testing/chaosx_test_country.md`.
+2. Chaos scaling reads the Chaos Meter tier constants (`constant:chaos_meter_tier_range.tier_0` through `tier_final`, ids in `chaos_meter_tier_id`) from `common/script_constants/chaos_meter_constants.txt`; do not hardcode a tier boundary. Grants go through `add_chaos_meter_value` with the temporary `chaos_change` and a history reason from `chaos_meter_history_reason`.
+3. A price change on an ordinary payable cost goes through the universal discounted-cost framework (`universal_cost_quote_exact` and the register, pay, record, refund, settle helpers) so the displayed price, paid price, and refund agree; do not approximate it with a cost modifier idea (`docs/systems/universal_cost_modifier.md`).
+4. Equipment bonuses carried by ideas name ids that must exist in `script_enum_equipment_bonus_type` (`chaos-redux-equipment`).
+5. MTTH values that feed a modifier come from `chaos-redux-mtth`; a decision that grants or swaps an idea follows `chaos-redux-decisions-missions`.
 
 ## Common mistakes and silent failures
 

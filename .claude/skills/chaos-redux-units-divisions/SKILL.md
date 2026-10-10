@@ -1,13 +1,13 @@
 ---
-name: hoi4-units-divisions
-description: Use when creating or changing Hearts of Iron IV sub-units, division templates, orders of battle (land, naval, air), division names, unit-spawning or unit-removal effects, manpower handling, or sub-unit stats and modifiers. Covers the definition files, the loading rules, the runtime effects and triggers, and the silent failures.
+name: chaos-redux-units-divisions
+description: Use when creating, changing, or auditing Chaos Redux sub-units, support companies, division templates, package formations, orders of battle, division names, unit-spawning or unit-removal effects, manpower handling, unit counters and texticons, or sub-unit stats and modifiers. Covers the definition files, the loading rules, the runtime effects and triggers, the Event 19 and test-country obligations, and the silent failures.
 ---
 
-# HOI4 Units, Divisions and Orders of Battle
+# Chaos Redux Units, Divisions and Orders of Battle
 
-Generic HOI4 modding guidance for land, naval and air units.
-Characters, unit leaders and their traits belong to `hoi4-characters-leaders`.
-Equipment types, variants, modules and production belong to `hoi4-equipment`; technologies that unlock sub-units belong to `hoi4-technology-doctrines`; ideas and modifier definitions belong to `hoi4-ideas-modifiers`; wider AI weighting belongs to `hoi4-ai-strategies`; state, province and supply data belong to `hoi4-map-states`. This skill only covers how a unit consumes equipment and how units are defined, loaded and scripted.
+Guidance for land, naval and air units in Chaos Redux.
+Characters, unit leaders and their traits belong to `chaos-redux-characters-leaders`.
+Equipment types, variants, modules and production belong to `chaos-redux-equipment`; technologies that unlock sub-units belong to `chaos-redux-technology-doctrines`; ideas and modifier definitions belong to `chaos-redux-ideas-modifiers`; wider AI weighting belongs to `chaos-redux-ai-strategies`; state, province and supply data belong to `chaos-redux-map-states`. This skill only covers how a unit consumes equipment and how units are defined, loaded and scripted.
 Custom 3D unit models, animations, counters and sounds belong to `chaos-redux-3d-model-pipeline`; counter and flag art belongs to `chaos-redux-event-assets`; frame-sheet animation belongs to `chaos-redux-frame-animation`.
 Reference files, read when the task needs them: `references/naval-air-oob.md` (fleets, ships, air wings, carrier wings, aces, ship name lists, DLC splits), `references/runtime-effects-triggers.md` (exact signatures of runtime unit, template, manpower effects and triggers, division scope), `references/names-stats-visuals.md` (division name group skeleton, stat and modifier lists, sprite and counter wiring).
 
@@ -27,7 +27,7 @@ Reference files, read when the task needs them: `references/naval-air-oob.md` (f
 - Unit leaders, battle plans and AI
 - Visuals and counters (overview)
 - Localisation
-- Repository conventions
+- Chaos Redux specifics
 - Common mistakes and silent failures
 - Validation checklist
 
@@ -258,7 +258,7 @@ units = {
 - `location` is a province id, not a state id. Vanilla places divisions only in provinces of the owning country; assume other placements are unsafe unless a precedent shows otherwise.
 - `start_experience_factor` is 0 to 1 (experience levels at 0.1, 0.3, 0.75, 0.9 per `UNIT_EXP_LEVELS`). `start_equipment_factor` defaults to 1 and does not subtract from the stockpile (wiki). `start_manpower_factor` unset means manpower is subtracted from the pool as far as it goes.
 - `force_equipment_variants`: key is the concrete equipment type; subkeys `owner`, `creator`, `amount`, `version_name`. Versions are mandatory for variant-based equipment (modern tanks, ships, airframes). The owner or creator must have the technology and the variant must exist in its history.
-- `officer = { ... }` defines a division commander character; keep it consistent with `hoi4-characters-leaders` (large portrait for the commander, small for the officer corps; the engine falls back to `<large>_small`).
+- `officer = { ... }` defines a division commander character; keep it consistent with `chaos-redux-characters-leaders` (large portrait for the commander, small for the officer corps; the engine falls back to `<large>_small`).
 
 Equipment production lines go in the OOB `instant_effect` block (any effect is valid there):
 
@@ -329,10 +329,10 @@ Sub-unit stats (`max_strength`, `max_organisation`, `manpower`, `supply_consumpt
 
 ## Unit leaders, battle plans and AI
 
-- Unit leaders (corps commanders, field marshals, admirals) are characters; all definition, trait, recruiting and effect guidance is in `hoi4-characters-leaders`. A division's own commander appears as `officer = {}` in an OOB or through promotion from the division.
+- Unit leaders (corps commanders, field marshals, admirals) are characters; all definition, trait, recruiting and effect guidance is in `chaos-redux-characters-leaders`. A division's own commander appears as `officer = {}` in an OOB or through promotion from the division.
 - Battle plans (planned attacks, army group orders) are runtime AI and player state. There is no effect to create, issue or cancel a battle plan. The script surface around them is planning bonuses: `add_planning`, `boost_planning` (character scope), `has_max_planning` and `min_planning` (combatant triggers), `planning_skill_level`, and planning modifiers. Do not promise battle-plan automation from script.
 - AI composition: `common/ai_templates/*.txt` target templates by `role`; `ai_strategy` types `role_ratio`, `template_prio` and `unit_ratio` set how many divisions per role (`common/ai_strategy/_documentation.md`). Debug with the console commands `imgui show ai_templates` and `imgui show ai_division_production` (`common/ai_templates/_documentation.md`). Use `ai_has_role_template` and `ai_has_role_division` as triggers.
-- New sub-units are unknown to AI templates until a target template lists them and `ai_priority` is non-zero. For wider AI weighting and strategy work use the `hoi4-ai-strategies` skill.
+- New sub-units are unknown to AI templates until a target template lists them and `ai_priority` is non-zero. For wider AI weighting and strategy work use the `chaos-redux-ai-strategies` skill.
 
 ## Visuals and counters (overview)
 
@@ -346,17 +346,23 @@ A sub-unit's `sprite` resolves the entity `<sprite>_entity`; counters are `GFX_u
 - Modifier names for new sub-unit modifiers need keys; tooltip text uses `$modifier_...$` references.
 - Files: UTF-8 with BOM, `l_english:` header, keys without the `:0` suffix in this repository.
 
-## Repository conventions
+## Chaos Redux specifics
+The `CLAUDE.md` coding, constants, dynamic-effect, and localisation rules apply and are not repeated here. Loops over divisions use `every_country_division` inside a bounded country scope; world-wide hooks need permission.
 
-These apply when the work is inside Chaos Redux (`CLAUDE.md` is the authority):
+**Where Chaos Redux units live**
 
-- Tabs for indentation, lowercase snake_case, no `<=` or `>=` (use `check_variable` with `compare`), no magic numbers: tuning values (division caps, manpower amounts, equipment amounts, experience factors) go in `common/script_constants/` and are read as `constant:category.key`; where a field rejects constants (some duration and amount fields), copy the constant to a variable and pass the variable.
-- Reuse `common/scripted_effects/chaosx_dynamic_effects.txt` before writing bespoke logic; document new dynamic effects in `common/scripted_effects/chaosx_dynamic_effects.md` in the same change. Use `meta_effect` where an effect rejects variables (equipment type names, template names).
-- Loops over all divisions use `every_country_division` in a bounded country scope; do not add world-wide `on_daily`, `on_weekly` or `on_monthly` iteration without explicit permission.
-- A new equipment type, archetype or category also needs `common/script_enums.txt` (`script_enum_equipment_bonus_type`).
-- A new Chaos Redux land sub-unit, concrete equipment type or similar package registers a package-owned idempotent test-country setup effect per `docs/testing/chaosx_test_country.md` in the same change.
-- Document each new script file with an overview comment at the top, a docs file for the mechanic, and keep localisation, sprites and `.gfx` registration in the same change.
-- Never launch the game for testing; the user performs live validation.
+- `common/units/` has one file per family or owning event: CBRN support (`cbrn_hq_support.txt`, `cbrn_regimental_support.txt`, `livens_projector_support.txt`), `chaos_battalion.txt`, `zombies.txt`, `clone_infantry.txt`, `coal_golems.txt`, and numbered event files (`010_*`, `012_*`, `014_*`, `016_*`, `018_*`, `020_*`, `039_*`). `common/units/unit_modifiers/chaosx_unit_modifiers.txt` holds shared stat modifiers and `common/units/names_divisions/` the division name groups.
+- Division templates for AI use are in `common/ai_templates/` per family (`cbrn_hq_support.txt`, `cbrn_regimental_support.txt`, event files); see `chaos-redux-ai-strategies`.
+- Counters and texticons: event counter sprites in `interface/*_counters.gfx`, texticons in `interface/*texticons*.gfx` with art in `gfx/texticons/`. A CBRN texticon is a native-alpha `60x12` strip of two `30x12` frames (`noOfFrames = 2`), copied from the vanilla support texticon family (`docs/systems/cbrn_warfare/cbrn_unit_texticon_assets.md`). Entities are `gfx/entities/<owner>.asset` plus `.gfx`; the runtime contract is `docs/systems/3d_model_pipeline/chaosx_3d_runtime_contract.md`.
+
+**Rules that recur**
+
+1. A new Chaos Redux land sub-unit carries three obligations in the same change. (a) Test-country registration through the dynamic extension contract (`docs/testing/chaosx_test_country.md`): a frontline token through `chaosx_test_country_register_frontline_subunit`, or a support token through `chaosx_test_country_register_support_subunit` with a combat anchor that is already processed (a support-only division is never created). Prefer a package-owned grouped formation when several related units arrive together. (b) An Event 19 disposition: a combat unit extends an existing unit-family provider or gets a full provider registration; a support unit is documented as an inseparable provider attachment, a parent-owned support consumer, or a rejected standalone lot with the engine reason. Update `docs/events/019_infantry_spawn/systems/unit_family_coverage.md` and `docs/systems/cbrn_warfare/chaos_unit_family_registry.md`. (c) Counter, texticon, and entity wiring.
+2. CBRN formations use `chaos_battalion` as the combat anchor; armored delivery formations use `autonomous_robot` as the armor-group anchor. The shared `same_support_type` exclusion `cbrn_offensive_delivery` stops the armored delivery roles and the Livens variants sharing one roster, so each needs its own formation.
+3. A custom 3D model, animation, sound, or counter follows `chaos-redux-3d-model-pipeline`. The worker hands off the bespoke vanilla-green counter requirement; final counter art is `chaosx_icon_artist` under `chaos-redux-event-assets`; the parent wires the runtime. Never ship a unit with a stand-in counter or a static pose passed off as an animation.
+4. A unit family is not available merely because its definition exists: package readiness flags (for example the Africa strange-force manifest) gate runtime use until every family model, entity, counter, and audio item is promoted together.
+5. Read manpower through `manpower_k`. Population loss that must not create recruitable manpower uses the exact state-loss helpers in `common/scripted_effects/chaosx_dynamic_effects.md` (`chaos-redux-map-states`).
+6. Equipment the unit consumes follows `chaos-redux-equipment`, including the `script_enum_equipment_bonus_type` entry.
 
 ## Common mistakes and silent failures
 

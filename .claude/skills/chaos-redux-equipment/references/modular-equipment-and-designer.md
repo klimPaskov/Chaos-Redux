@@ -143,7 +143,7 @@ MY_design_group = {
 - A module not listed in `allowed_modules` is never added to a remaining slot; earlier entries are favoured.
 - The wiki additionally lists `upgrades` inside `target_variant` and `allowed_types`; those are not in the installed documentation, so check a vanilla file before relying on them.
 - Whether the AI designs a custom chassis that has no group is not documented; if AI use matters, write a group and state the result as unobserved.
-- For role ratio, production strategy, and `ai_will_do`, use `hoi4-ai-strategies` and its `references/other-ai-systems.md`.
+- For role ratio, production strategy, and `ai_will_do`, use `chaos-redux-ai-strategies` and its `references/other-ai-systems.md`.
 
 ## Checks for this surface
 

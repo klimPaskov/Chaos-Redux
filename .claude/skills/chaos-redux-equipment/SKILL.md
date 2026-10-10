@@ -1,15 +1,15 @@
 ---
-name: hoi4-equipment
-description: Use when creating, changing, or scripting Hearts of Iron IV equipment, including equipment archetypes and variants, equipment groups and categories, modular tank, ship, and aircraft designs, stockpile and production effects, lend-lease and licences, equipment bonuses, and the equipment designer and AI design files. Also use when an equipment type, module, or bonus silently does nothing.
+name: chaos-redux-equipment
+description: Use when creating, changing, scripting, or auditing Chaos Redux equipment: archetypes and variants, CBRN chemical and biological payload lots, modular tank, ship, and aircraft designs, stockpile, reservation, and production effects, equipment bonuses and military industrial organizations, script_enum_equipment_bonus_type, or test-country equipment registration. Also use when an equipment type, module, or bonus silently does nothing.
 ---
 
-# Hearts of Iron IV Equipment
+# Chaos Redux Equipment
 
 Use this skill for anything under `common/units/equipment/`, `common/equipment_groups/`, `common/ai_equipment/`, the equipment designer interface, and every effect, trigger, or modifier that creates, moves, produces, or boosts equipment.
-Sub-unit (battalion) definitions, division templates, and orders of battle belong to `hoi4-units-divisions`.
-Technology that unlocks equipment, and doctrine rewards, belong to `hoi4-technology-doctrines`.
-The idea or national spirit that carries an `equipment_bonus` belongs to `hoi4-ideas-modifiers`.
-AI strategy tokens, `ai_will_do`, and role ratios belong to `hoi4-ai-strategies`.
+Sub-unit (battalion) definitions, division templates, and orders of battle belong to `chaos-redux-units-divisions`.
+Technology that unlocks equipment, and doctrine rewards, belong to `chaos-redux-technology-doctrines`.
+The idea or national spirit that carries an `equipment_bonus` belongs to `chaos-redux-ideas-modifiers`.
+AI strategy tokens, `ai_will_do`, and role ratios belong to `chaos-redux-ai-strategies`.
 
 In this skill `GAME` means `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV` and `WIKI` means the repository folder `paradox_wiki`.
 Installed documentation is more authoritative than the wiki.
@@ -55,17 +55,27 @@ The full effect, trigger, and dynamic variable catalogue is in `references/produ
 | Let a country build another country's design | `create_production_license` |
 | Move equipment between countries | `send_equipment`, `send_equipment_fraction`, or a purchase contract |
 | Check how much equipment a country has | `has_equipment`, `stockpile_ratio`, or the `num_equipment@type` dynamic variable |
-| Steer how the AI designs or builds | `common/ai_equipment` for designs; `hoi4-ai-strategies` for production strategies |
+| Steer how the AI designs or builds | `common/ai_equipment` for designs; `chaos-redux-ai-strategies` for production strategies |
 
-## Repository conventions that apply
+## Chaos Redux specifics
+The `CLAUDE.md` coding, constants, dynamic-effect, and localisation rules apply and are not repeated here.
 
-- Indent with tabs, never use `<=` or `>=`, put tuning numbers in `common/script_constants/`, and reuse `common/scripted_effects/chaosx_dynamic_effects.txt` before writing new dynamic helpers.
-- Localisation is UTF-8 with BOM, keys have no `:0`, and player-facing text describes the current world, not history.
-- Every new equipment type, archetype, or category that can be named in `equipment_bonus` or a military industrial organization must be added to `script_enum_equipment_bonus_type` in `common/script_enums.txt` in the same change.
-  The repository file replaces the vanilla file of the same path, so it carries the vanilla list plus additions; after a game update, re-merge any new vanilla entries.
-- A new concrete equipment type, sub-unit, special project, or doctrine must also follow the test-country registration rule in `CLAUDE.md` (package-owned idempotent setup effect and hidden-idea carrier).
-- When a new mechanic is added, document it in a `docs/` markdown file with its icons and the `.gfx` file that references them.
-- Read manpower through `manpower_k`, never the plain `manpower` variable, which overflows.
+**Where Chaos Redux equipment lives**
+
+- `common/units/equipment/` holds one file per family, named by owning event number or system: `cbrn_payload_equipment.txt` (strategic agent lots, filled shell lots, class-specific air payload lots), `cylinders.txt`, `livens_projectors.txt` (modular chassis with a mandatory `projectile_slot`), `chemical_airframes.txt`, `chemical_special_bombs.txt`, `bioweapons.txt`, `zombie_special_bombs.txt`, `cbrn_protective_equipment.txt`, `clone_equipment.txt`, `coal_golems.txt`, and the event files (`012_*`, `016_*`, `039_*`). Module definitions are in `common/units/equipment/modules/`. Per-file tuning uses file-scoped `@` constants with the file overview at the top.
+- A `zz_` prefix makes a file load after the vanilla file that defines the archetype it extends (`zz_cbrn_project_armored_vehicle.txt` extends the vanilla `armored_support_vehicle`, which has no module slots, with a separate producible decontamination type).
+- Sprites are registered in `interface/chaosx_equipment.gfx`, `interface/cbrn_project_equipment.gfx`, and `interface/042_equipment_from_heavens.gfx`; MIO badges follow `GFX_military_industrial_organization_<archetype>` in `interface/cbrn_mio_industry.gfx`. Equipment art follows `chaos-redux-event-assets`; 3D equipment models follow `chaos-redux-3d-model-pipeline`.
+
+**Rules that recur**
+
+1. Payload lots are exact. Every strategic agent has its own archetype so a native raid can reserve that agent without drawing another agent's stock. Never substitute a generic payload or another agent. Native raids carry their own equipment payment (`chaos-redux-native-raids`); scripted operations reserve exact lots through `cbrn_reserve_action_payload` (`docs/systems/cbrn_warfare/chemical_payload_reservations.md`) and must not add a second debit.
+2. Measure real debits. Stockpile removal can differ from the request, so compare before and after, or use the helpers in `common/scripted_effects/chaosx_dynamic_effects.md` (`stockpile_debit_helpers`, `cbrn_debit_motorized_stockpile_oldest_first`, input `equipment_stockpile_removal_amount`).
+3. `script_enum_equipment_bonus_type` in `common/script_enums.txt` lists category names plus both archetype and numbered type ids (`chemical_chlorine_payload_cylinder` and `chemical_chlorine_payload_cylinder_1`). Add every new id in the same change, in the owning group. The file is a full copy of the vanilla enum, so re-merge new vanilla entries after a game update; the startup log error is the reminder.
+4. A military industrial organization filter cannot require a particular aircraft module, so an airframe bonus would also boost conventional designs. The CBRN delivery organization therefore grants exact module access through hidden grant-only technologies (`docs/systems/cbrn_warfare/cbrn_designers.md`). Organizations live in `common/military_industrial_organization/organizations/cbrn_*.txt`.
+5. Chemical carrier variants use the No Step Back flame-tank chassis types (`light_tank_flame_chassis_3` and its medium and heavy equivalents). Create the named domestic variant before stockpile grants and unit creation, and name both the concrete type and the variant in stockpile calls.
+6. Test-country registration: a new concrete equipment type registers through `chaosx_test_country_register_equipment` from the package setup effect (`docs/testing/chaosx_test_country.md`, "Dynamic extension contract"). The test country grants 1,000,000 of each type only from the **Refill Equipment Stockpile** decision and initial setup, never periodically.
+7. A new land sub-unit that consumes the equipment also needs the unit obligations in `chaos-redux-units-divisions` (test-country formation, Event 19 disposition, counters).
+8. Document the mechanic in `docs/` with its icons and the `.gfx` file that references them.
 
 ## Equipment definitions
 
@@ -281,7 +291,7 @@ The rules that cause most mistakes:
 
 A sub-unit lists the equipment it consumes in `need = { archetype_or_type = amount }` and `essential = { ... }` (`GAME/common/units/light_armor.txt`: `need = { light_tank_chassis = 60 }`).
 A new equipment family is useless until a sub-unit names its archetype in `need`, and a sub-unit that is not `active = yes` must be unlocked by `enable_subunits` on a technology or `unlock_subunit`.
-Design the sub-unit with `hoi4-units-divisions`.
+Design the sub-unit with `chaos-redux-units-divisions`.
 
 ## Localisation and graphics
 
@@ -303,12 +313,12 @@ Work through these in one change; each item is a separate failure point.
 
 1. Definition: archetype, numbered types with `archetype`, `parent`, `year`, `priority`, `visual_level`, and an unlock path (`active = yes` or a technology).
 2. Enum: archetype and types added to `script_enum_equipment_bonus_type` (and `script_enum_equipment_category` only if a new category word is introduced).
-3. Unlock: a technology with `enable_equipments`, and for modular lines `enable_equipment_modules` (see `hoi4-technology-doctrines`).
-4. Consumer: a sub-unit whose `need` names the archetype, unlocked with `enable_subunits` or `active = yes` (see `hoi4-units-divisions`).
+3. Unlock: a technology with `enable_equipments`, and for modular lines `enable_equipment_modules` (see `chaos-redux-technology-doctrines`).
+4. Consumer: a sub-unit whose `need` names the archetype, unlocked with `enable_subunits` or `active = yes` (see `chaos-redux-units-divisions`).
 5. Modular only: modules, slot and category titles, designer windows, filters, and a default variant check.
 6. Text and art: `<type>`, `_short`, `_desc` keys, archetype picture sprite, type sprites, and module sprites registered in `.gfx`.
 7. Stock and production entry points: a scripted way to grant or build it, using the effects above, with `variant_name` or `version_name` for modular lines.
-8. AI: a design group for modular lines and, where relevant, production strategy tokens (see `hoi4-ai-strategies`).
+8. AI: a design group for modular lines and, where relevant, production strategy tokens (see `chaos-redux-ai-strategies`).
 9. Docs and tests: the mechanic document, the repository test-country registration, and the Chaos Redux dynamic-effects documentation if a helper was added.
 
 ## Common mistakes and silent failures
@@ -329,7 +339,7 @@ Work through these in one change; each item is a separate failure point.
 ## Validation
 
 - Read back the definition through `hoi4.source_lookup` and confirm archetype, parent chain, `year`, unlock, and enum registration.
-- For a technology that unlocks the equipment, run `hoi4.tech_inspect` in `unlocks` mode with the technology id and confirm the equipment appears; see `hoi4-technology-doctrines`.
+- For a technology that unlocks the equipment, run `hoi4.tech_inspect` in `unlocks` mode with the technology id and confirm the equipment appears; see `chaos-redux-technology-doctrines`.
 - Run `hoi4.script_validate` on the effect or trigger bodies that touch equipment, with `kind` and `scope = country`.
   A passing result covers only the listed checks; argument semantics and engine behaviour stay unverified.
 - Check that every key in a new localisation set exists for the type, `_short`, and `_desc`, and that every sprite name resolves.

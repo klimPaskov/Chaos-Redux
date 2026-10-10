@@ -1,13 +1,13 @@
 ---
-name: hoi4-characters-leaders
-description: Use when defining, recruiting, promoting, retiring or scripting Hearts of Iron IV characters and their roles (country leaders, advisors, field marshals, corps commanders, admirals, scientists), leader traits, ideologies and parties, or character portraits and localisation. Covers the character database, the effects and triggers, and the silent failures.
+name: chaos-redux-characters-leaders
+description: Use when defining, recruiting, promoting, retiring, scripting, or auditing Chaos Redux characters and roles (country leaders, advisors, field marshals, corps commanders, admirals, scientists), the historical CBRN scientist roster, leader and scientist traits, ideologies and parties, or character portrait references and localisation. Covers the character database, the effects and triggers, and the silent failures.
 ---
 
-# HOI4 Characters, Leaders and Traits
+# Chaos Redux Characters, Leaders and Traits
 
-Generic HOI4 modding guidance for the character system introduced in patch 1.11.
-Divisions, templates, orders of battle and manpower belong to `hoi4-units-divisions`.
-Weighted AI choices (`ai_will_do`, `new_commander_weight` tuning) belong to `hoi4-ai-strategies`.
+Guidance for the Hearts of Iron IV character system (patch 1.11 onwards) as used in Chaos Redux.
+Divisions, templates, orders of battle and manpower belong to `chaos-redux-units-divisions`.
+Weighted AI choices (`ai_will_do`, `new_commander_weight` tuning) belong to `chaos-redux-ai-strategies`.
 Portrait production (research, placeholders, ImageGen, DDS, wiring, manifests) belongs entirely to `chaos-redux-event-assets` and the `chaosx_portrait_creator` subagent; this skill only covers how a portrait is referenced from a character.
 Unit-leader trait schema, selection trees, experience rules and abilities are in `references/unit-leader-traits.md`.
 Exact signatures and scope notes of the character effects and triggers are in `references/effects-triggers.md`.
@@ -28,7 +28,7 @@ Exact signatures and scope notes of the character effects and triggers are in `r
 - Generated characters
 - Triggers and scopes
 - Localisation
-- Repository conventions
+- Chaos Redux specifics
 - Common mistakes and silent failures
 - Validation checklist
 
@@ -214,7 +214,7 @@ Advisors are ideas placed in character slots; most idea rules apply (`Idea moddi
 - `promote_leader = yes` (character scope) promotes a general to field marshal; `demote_leader = yes` demotes. This is separate from the `promote_leader = yes` key inside `add_country_leader_role`.
 - Legacy creators `create_corps_commander`, `create_field_marshal`, `create_navy_leader` still exist in the documentation but the wiki marks them deprecated: leaders created that way have no portrait for the officer corps and cause errors. Create a character and add the role instead.
 - Growth: `gain_xp = N` (character scope, grants experience and promotes at thresholds), `add_skill_level`, `add_attack`, `add_defense`, `add_planning`, `add_logistics`, `add_maneuver`, `add_coordination`, `add_max_trait`, trait effects `add_unit_leader_trait`, `remove_unit_leader_trait`, `replace_unit_leader_trait`, `add_timed_unit_leader_trait`, `add_random_trait`.
-- Division officers: an OOB `division = { officer = { name = KEY portraits = { army = { large = GFX_x small = GFX_y } } } }` defines a commander who can be promoted to general; see `hoi4-units-divisions`.
+- Division officers: an OOB `division = { officer = { name = KEY portraits = { army = { large = GFX_x small = GFX_y } } } }` defines a commander who can be promoted to general; see `chaos-redux-units-divisions`.
 - Command assignment is runtime engine state (armies, army groups); the script surface is limited to reading it (`is_assigned`, `is_leading_army`, `is_leading_army_group`, `num_units`, `is_leading_army_in_province`) and the planning effects.
 - Supply: `supply_units = N` (character scope) gives hours of supply to the leader's units.
 - Iteration and counting: `every_unit_leader`, `every_army_leader`, `every_navy_leader`, `random_*` variants, `any_unit_leader` and friends (country scope). They skip leaders whose role is not visible unless you add `include_invisible = yes`.
@@ -295,20 +295,26 @@ Typical sequences (installed effects documentation plus wiki `Character modding`
 - Advisor idea token: `<idea_token>: "Name"` and optional `<idea_token>_desc`.
 - Trait: `<trait>` and `<trait>_desc`; unit leader trait icon `GFX_trait_<trait>`.
 - Ideology and party names: `parties_l_english.yml` pattern.
-- Advisor ideas are ideas: for generic idea, spirit and modifier mechanics use `hoi4-ideas-modifiers`.
+- Advisor ideas are ideas: for generic idea, spirit and modifier mechanics use `chaos-redux-ideas-modifiers`.
 - A flag trigger such as `has_country_flag` placed in a player-visible `available` block uses the flag name as the tooltip key. Localise it or wrap it: `hidden_trigger` plus `custom_trigger_tooltip`.
 - Localisation files: UTF-8 with BOM, `l_english:` header, keys without `:0` in this repository.
 
-## Repository conventions
+## Chaos Redux specifics
+The `CLAUDE.md` coding, constants, dynamic-effect, and localisation rules apply and are not repeated here. Scope iterations to one country; a character hook that runs for every country needs permission.
 
-These apply when the work is inside Chaos Redux (`CLAUDE.md` is the authority):
+**Where Chaos Redux characters live**
 
-- Tabs, lowercase snake_case, no `<=` or `>=` (use `check_variable` with `compare`), no magic numbers: costs, skill levels used in formulas, thresholds and durations go in `common/script_constants/` (`constant:category.key`); copy to a variable where a field rejects constants.
-- Reuse `common/scripted_effects/chaosx_dynamic_effects.txt` before writing bespoke logic and document new dynamic effects in `chaosx_dynamic_effects.md` in the same change. Use `meta_effect` for fields that reject variables.
-- Do not add world-wide `on_daily`, `on_weekly` or `on_monthly` hooks for characters without explicit permission; scope iterations to one country.
-- Document each new script file with an overview comment at the top, keep a docs file for the mechanic, and list icons, `.gfx` files and portrait sprite names in it.
-- Use the portrait route above for every character portrait; placeholders stay documented as pending until the final art exists.
-- Never launch the game to test; the user validates live.
+- `common/characters/` has one file per owner (`<event>_characters.txt`, `cbrn_historical_scientists.txt`, `cbrn_historical_specialists.txt`, `chaosx_test_country_characters.txt`, plus country files such as `DTH.txt`). Character ids are unique across all files.
+- Traits: scientist traits in `common/scientist_traits/`, unit leader traits in `common/unit_leader/` (`cbrn_hq_traits.txt`, `chaosx_traits.txt`, event files). Portrait sprites live in `interface/*.gfx` with art under `gfx/leaders/<owner>/`.
+- Startup recruitment: the 67-person historical CBRN roster (15 dual-role specialists, 52 scientist-only) is recruited by `history/general/chaosx_startup_character_recruitment.txt`; country grants only apply the persistent `chaosx_scientist_*` identity flags and dated setup. Date-gated identities start on the stateless holder `CSH` and move to their home tag through country-scoped `set_nationality` from bounded country callbacks, never runtime recruitment (`docs/systems/cbrn_warfare/cbrn_dated_scientist_transfers.md`).
+
+**Rules that recur**
+
+1. Every portrait goes through `chaosx_portrait_creator` and `chaos-redux-event-assets`, for grounded and fictional subjects alike. A sourced placeholder is documented as pending until the user supplies the HOI4-style final, and agents never operate RunPod. This skill only covers how a character references a portrait.
+2. Historical scientist skill uses the installed 1 to 4 scale (inexperienced, skilled, experienced, expert) and never 5. Skill 4 is for field authorities who established a method; administration alone does not earn it. Traits use the vanilla scientist vocabulary plus `scientist_trait_inhumane` and `scientist_trait_inhumane_cw`, which describe conduct, not stature (`docs/systems/cbrn_warfare/cbrn_historical_scientists.md`).
+3. Earned commander traits are appended rows that leave vanilla rows unchanged, and are credited once per completed order (`docs/systems/cbrn_warfare/cbrn_commander_progression.md`).
+4. Advisor cards, scientist cards, and leader cards that the CBRN systems use are listed in `docs/systems/cbrn_warfare/cbrn_historical_advisors.md` and `cbrn_defensive_advisor_cards_manifest_2026-09-27.md`.
+5. Keep a docs file for the mechanic with its portrait sprite names, `.gfx` file, and icons.
 
 ## Common mistakes and silent failures
 
@@ -338,6 +344,6 @@ These apply when the work is inside Chaos Redux (`CLAUDE.md` is the authority):
 2. For each character: unique id, `name` key exists, every referenced trait exists in the correct database, every portrait sprite exists in a `.gfx` file with an existing texture, recruited in history of the right tag, `idea_token` unique and localised for advisors.
 3. For country leaders: ideology type valid, `expire` after the start date, recruited before `set_politics`, party leader resolves as expected for the start date.
 4. For runtime scripts: right scope (country versus character), guards (`has_character`, `is_*` role triggers, flags) to keep effects idempotent, hidden effects with visible tooltips, no unbounded all-country iteration.
-5. For traits: sprite frame exists, modifiers exist for the scope, `ai_will_do` and `new_commander_weight` reviewed (see `hoi4-ai-strategies`), localisation present.
+5. For traits: sprite frame exists, modifiers exist for the scope, `ai_will_do` and `new_commander_weight` reviewed (see `chaos-redux-ai-strategies`), localisation present.
 6. Use `hoi4.script_validate` for effect and trigger bodies under their explicit scope when exposed; its true result covers only the listed checks.
 7. In the report, separate what is source-verified from what is wiki-only or untested in game.

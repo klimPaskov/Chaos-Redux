@@ -1,13 +1,13 @@
 ---
-name: hoi4-diplomacy-war
-description: Use when scripting Hearts of Iron IV diplomacy, factions, subjects and autonomy states, wargoals, declarations of war, white peace or peace conferences, guarantees, military access, embargoes, opinion modifiers, annexation, release, or state transfer between countries.
+name: chaos-redux-diplomacy-war
+description: Use when scripting or auditing Chaos Redux diplomacy, factions, subjects and autonomy, wargoals, declarations of war, white peace or peace conferences, embargoes, opinion modifiers, condemnation and sanctions, Chaos Meter war hooks, annexation, release, or state transfer between countries.
 ---
 
-# HOI4 Diplomacy and War
+# Chaos Redux Diplomacy and War
 
-Generic guidance for scripting relations between countries: factions, subjects, wargoals, war, peace, and territory transfer.
+Guidance for scripting relations between countries in Chaos Redux: factions, subjects, wargoals, war, peace, condemnation, and territory transfer.
 Use it to choose the right mechanism, write it with verified syntax and scopes, and avoid the silent failures.
-Use `hoi4-ai-strategies` for steering how the AI uses these systems (`conquer`, `befriend`, `diplo_action_*`, peace desires), `chaos-redux-decisions-missions` for decision and mission structure, and `chaos-redux-events` for event wiring when working in this repository.
+Use `chaos-redux-ai-strategies` for steering how the AI uses these systems (`conquer`, `befriend`, `diplo_action_*`, peace desires), `chaos-redux-decisions-missions` for decision and mission structure, and `chaos-redux-events` for event wiring when working in this repository.
 
 ## Contents
 
@@ -25,7 +25,7 @@ Use `hoi4-ai-strategies` for steering how the AI uses these systems (`conquer`, 
 - AI hooks
 - Localisation and tooltips
 - Validation
-- Repository conventions
+- Chaos Redux specifics
 - Common mistakes
 - Unverified or conflicting points
 
@@ -137,7 +137,7 @@ faction_template_my_pact = {
 - A rule does not appear unless it belongs to at least one rule group (`rules/groups/*.txt`: `group_id = { default_rule = ... rules = { ... } }`). A template's `default_rules` overrides group defaults.
 - `available` does not block `set_faction_rule`, and `can_remove` does not block removal by effect.
 - Goals (`goals/*.txt`) and manifests: ROOT is the faction leader and FROM the viewing member in `visible`, `available`, and `ai_will_do`; FROM is unsupported in effect blocks, `completed`, and `cancel`. Details, continuous `ratio_progress`, and slot rules are in `references/syntax-reference.md`.
-- Faction initiative spending priorities for AI come from strategies (`spent_faction_initiative_priority`) and rule `ai_will_do`; see `hoi4-ai-strategies`.
+- Faction initiative spending priorities for AI come from strategies (`spent_faction_initiative_priority`) and rule `ai_will_do`; see `chaos-redux-ai-strategies`.
 
 ## Subjects and autonomous states
 
@@ -284,7 +284,7 @@ wargoal_types = {
 - Conference triggers: `is_in_peace_conference`, `pc_is_winner`, `pc_is_loser`, `pc_is_on_winning_side`, `pc_is_puppeted`, `pc_is_puppeted_by`, `pc_is_liberated`, `pc_is_forced_government`, `pc_is_state_claimed`, `pc_is_state_claimed_by`, `pc_is_state_claimed_and_taken_by`, `pc_current_score`, `pc_total_score`, `pc_turn`, and others in `triggers_documentation.md`. Relations and ownership are not updated until the conference finishes, so inside `enable` blocks of peace modifiers use `pc_*` checks.
 - Peace cost modifiers: `common/peace_conference/cost_modifiers/*.txt` (`peace_action_modifiers`, `peace_action_type`, `enable`, `cost_multiplier` greater than 0, `category`). Faction peace rules attach them with `peace_action_modifiers`. Action types: `take_states`, `puppet`, `force_government`, `liberate`.
 - Peace action scopes inside those blocks: `ROOT` negotiator, `FROM` taker, `FROM.FROM` giver, `FROM.FROM.FROM` state.
-- AI desire for those actions lives in `peace_conference/ai_peace`; see `hoi4-ai-strategies`.
+- AI desire for those actions lives in `peace_conference/ai_peace`; see `chaos-redux-ai-strategies`.
 - Peace conference hooks: `on_before_peace_conference_start`, `on_peaceconference_started`, `on_peaceconference_ended` (ROOT winner, FROM loser, called for every winner against every loser), `on_puppet`, `on_liberate`, `on_force_government`, `on_annex`.
 - To remember a pending peace outcome, set a country flag in the effect that starts the conference and consume it in `on_peaceconference_ended` (ROOT winner, FROM loser), clearing it afterwards. This is a repository pattern, not an engine feature. Because the on action fires for every winner-loser pair, make the handler idempotent.
 
@@ -311,7 +311,7 @@ The only installed file is a commented template, so the skeleton in `references/
 
 ## AI hooks
 
-- The AI uses `befriend`, `antagonize`, `ignore`, `conquer`, `alliance`, `protect`, `contain`, `support`, `declare_war`, `prepare_for_war`, `consider_weak`, and `diplo_action_*` strategies; see `hoi4-ai-strategies` and its token catalog.
+- The AI uses `befriend`, `antagonize`, `ignore`, `conquer`, `alliance`, `protect`, `contain`, `support`, `declare_war`, `prepare_for_war`, `consider_weak`, and `diplo_action_*` strategies; see `chaos-redux-ai-strategies` and its token catalog.
 - Autonomous states carry `ai_subject_wants_higher`, `ai_overlord_wants_lower`, `ai_overlord_wants_garrison`, `use_for_peace_conference_weight`. A factor of 0 makes the AI never move that way through the autonomy system.
 - Faction rules and goals carry `ai_will_do`; a rule with a total of 0 or less is not used.
 - Country modifiers `ai_get_ally_desire_factor`, `ai_join_ally_desire_factor`, `ai_call_ally_desire_factor`, and `ai_license_acceptance` change AI willingness without strategies.
@@ -335,15 +335,22 @@ The only installed file is a commented template, so the skeleton in `references/
 6. Use `hoi4_script_validate` for an effect or trigger body under its explicit scope. A true result covers only the listed checks; parameter semantics and engine behaviour remain separate evidence.
 7. Source review and tools do not prove live behaviour. The user performs in-game validation; do not launch the game.
 
-## Repository conventions
+## Chaos Redux specifics
+The `CLAUDE.md` coding, constants, and localisation rules apply and are not repeated here. Never add a world-iterating `on_daily`, `on_weekly`, or `on_monthly` diplomacy hook without permission; use the event-style on actions above or `on_daily_TAG`.
 
-These apply inside the Chaos Redux repository (`CLAUDE.md`).
+**Shared systems that own diplomacy outcomes**
 
-- Tabs, lowercase snake_case, no `<=` or `>=`, no magic numbers (use `common/script_constants` via `constant:category.key` where the field parses it, else variables or `@` constants).
-- Reuse `common/scripted_effects/chaosx_dynamic_effects.txt` and document any new dynamic effect in `chaosx_dynamic_effects.md`.
-- Never use `on_daily`, `on_weekly`, or `on_monthly` world-iterating hooks without explicit permission; prefer the event-style on actions above or `on_daily_TAG` for a named country.
-- Do not write markers about update history in localisation or player text.
-- Keep event-, route-, or country-specific content out of reusable skill files.
+- **Condemnation and sanctions** (`docs/systems/cbrn_warfare/condemnation/condemnation_sanctions.md` is the source-of-truth map). Publicly known unconventional warfare and exposed atrocities register a condemnation source through the adapters named in that map, never through a new opinion or embargo script. The system converts the total into seven tiers, scores participants, creates native embargo relations, applies scalable penalties, and offers response decisions. Tuning is in `common/script_constants/condemnation_sanctions_constants.txt`, effects in `common/scripted_effects/condemnation_*.txt`, hooks in `common/on_actions/condemnation_sanctions_on_actions.txt`, and the targeted monthly pulse in `events/condemnation_sanctions_events.txt`. `common/scripted_triggers/zz_condemnation_diplomacy_overrides.txt` overrides vanilla lend-lease gates by load order; a new gate on lend-lease or similar diplomacy actions must respect it.
+- **Chaos Meter war hook.** New war relations are counted from `on_war_relation_added` (`ROOT` attacker, `FROM` defender) by `chaos_meter_on_war_relation_added`, wired in `common/on_actions/chaosx_on_actions_chaos_meter.txt`. Faction follow-up relations against a defender an ally already fights are ignored, and minor declarations are capped per attacker per day by constants. Do not count wars in a second hook; change the shared handler (`docs/systems/chaos_meter/chaos_meter_war_declaration_counting.md`).
+- **Liberation release coordinator.** Any release that creates or frees several countries at once (Events 5 and 6) plans, validates, and commits through `chaosx_liberation_release_*` (`docs/systems/liberation_release_coordinator.md`): reserve a protected state per host, freeze the allocation, revalidate it against the live map, and change ownership only after the whole plan passes. Ownership changes for those events go through it.
+- Opinion modifiers are defined per owner in `common/opinion_modifiers/<owner>_opinion_modifiers.txt` (CBRN diplomacy, protection, biowarfare, air contamination, condemnation, camp partners). Wargoals, autonomy states, and peace conference modifiers exist only for the events that need them (`common/wargoals/`, `common/autonomous_states/`, `common/peace_conference/`).
+
+**Rules that recur**
+
+1. Validate every country you act on with an existence check; scope existence alone does not prove a dormant or annexed country is a legal actor, owner, or destination (`common/scripted_triggers/humanitarian_validation_triggers.md`).
+2. Special Chaos countries are excluded from the humanitarian systems (`humanitarian_country_is_valid`); test that exclusion before treating one as a refugee host, aid donor, or sanction participant.
+3. A diplomatic outcome that moves population or states fixes the physical transfer first; see `chaos-redux-map-states` for the transfer contract.
+4. AI behaviour around these systems follows `chaos-redux-ai-strategies`.
 
 ## Common mistakes
 

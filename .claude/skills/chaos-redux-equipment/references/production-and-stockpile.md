@@ -57,8 +57,8 @@ create_equipment_variant = {
 | `create_railway_gun` | Any scope; `equipment`, `name`, `location` (province; default capital) |
 | `unlock_subunit` | A sub-unit key; also available through `enable_subunits` on a technology |
 | `delete_unit` / `delete_units` | Filter by `division_template`, `id`, `state`; `disband = yes` refunds equipment and manpower |
-| `create_unit` | Any scope; used for spawning divisions, covered by `hoi4-units-divisions` |
-| `load_oob` | Loads an order of battle file; covered by `hoi4-units-divisions` |
+| `create_unit` | Any scope; used for spawning divisions, covered by `chaos-redux-units-divisions` |
+| `load_oob` | Loads an order of battle file; covered by `chaos-redux-units-divisions` |
 
 Starting production in an order of battle uses the same syntax inside an `instant_effect = { add_equipment_production = { ... } }` block (`WIKI/Division modding - Hearts of Iron 4 Wiki.md`, Equipment production).
 Division entries accept `force_equipment_variants`, `start_equipment_factor`, and `start_manpower_factor` as documented in the same page.
@@ -76,7 +76,7 @@ Meta effects can make the type name dynamic (`type = [EQ_TYPE]_[EQ_LEVEL]`); use
 | `has_license = { from = <TAG> archetype = <a> }` or `equipment = { type version }` | Archetype and equipment are mutually exclusive |
 | `is_licensing_to = { target = <TAG> archetype = <a> }` | Same shape as `has_license` |
 | `has_any_license`, `is_licensing_any_to`, `is_lend_leasing` | Existence checks |
-| `has_tech`, `can_research`, `is_researching_technology` | Unlock checks that gate equipment (see `hoi4-technology-doctrines`) |
+| `has_tech`, `can_research`, `is_researching_technology` | Unlock checks that gate equipment (see `chaos-redux-technology-doctrines`) |
 | `contract_contains_equipment = <category, archetype, or type>` | `PURCHASE_CONTRACT` scope |
 | `buyer`, `seller`, `deal_completion` | `PURCHASE_CONTRACT` scope; the installed example spells the last one `deal_completition`, but the trigger name is `deal_completion` |
 | `has_mio_equipment_type` | `INDUSTRIAL_ORG` scope; accepts values from `script_enum_equipment_bonus_type` and `common/equipment_groups` |

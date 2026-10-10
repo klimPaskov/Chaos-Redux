@@ -26,7 +26,7 @@ MY_INF_01 = {
 - `for_countries` empty or missing means all countries; `can_use` is a country-scope trigger; `division_types` is only a hint for automatic choice (the template needs at least one of the listed types).
 - Redefining the same group id and number in a later file overrides the earlier name.
 - A template without `division_names_group` gets one chosen from its sub-units (wiki). The reaction to a group id that does not exist is undocumented; verify every referenced id exists.
-- Character names for generated leaders live in `common/names/` and portraits in `portraits/`; see `hoi4-characters-leaders`.
+- Character names for generated leaders live in `common/names/` and portraits in `portraits/`; see `chaos-redux-characters-leaders`.
 
 
 ## Stats and modifiers

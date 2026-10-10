@@ -1,13 +1,14 @@
 ---
-name: hoi4-map-states
-description: Use when creating, editing, auditing, or scripting Hearts of Iron IV map and state data, including map/ files, history/states, strategic regions, state categories, buildings, victory points, supply and railways, state-scope effects and triggers, state iteration, and the MCP map tools.
+name: chaos-redux-map-states
+description: Use when creating, editing, auditing, or scripting Chaos Redux map and state work: startup history grants, the generated map/buildings.txt override, custom spawn buildings, state-scope effects, triggers and iteration, victory points, supply and railways, famine and migration state data, exact state-to-state civilian transfers, cohort registries, reception ledgers, state map modes, or the MCP map tools.
 ---
 
-# HOI4 Map and States
+# Chaos Redux Map and States
 
-Generic guidance for the Hearts of Iron IV map and state system: what each map file does, how a state is defined, how script changes states at runtime, and which engine mistakes fail silently.
-Use `chaos-redux-state-ledgers` for exact state-to-state civilian transfers and transaction-time state mapmodes, `chaos-redux-decisions-missions` for decisions that target states, and `chaos-redux-events` for event chains that mutate states.
-Dynamic modifiers on states are covered in `hoi4-ideas-modifiers`, state transfers as diplomacy (peace deals, release, annexation) in `hoi4-diplomacy-war`, and `load_oob`, `create_unit`, and division spawning in `hoi4-units-divisions`.
+Guidance for the Hearts of Iron IV map and state system as used in Chaos Redux: what each map file does, how a state is defined, how script changes states at runtime, how population moves between states, and which engine mistakes fail silently.
+This skill also owns the exact civilian transfer, cohort registry, reception ledger, and state map mode contracts in [references/state-ledgers.md](references/state-ledgers.md).
+Use `chaos-redux-decisions-missions` for decisions that target states, and `chaos-redux-events` for event chains that mutate states.
+Dynamic modifiers on states are covered in `chaos-redux-ideas-modifiers`, state transfers as diplomacy (peace deals, release, annexation) in `chaos-redux-diplomacy-war`, and `load_oob`, `create_unit`, and division spawning in `chaos-redux-units-divisions`.
 
 ## Contents
 
@@ -25,7 +26,7 @@ Dynamic modifiers on states are covered in `hoi4-ideas-modifiers`, state transfe
 - Map modes and map GFX
 - MCP map tools
 - Validation procedure
-- Repository conventions
+- Chaos Redux specifics, including state ledgers (references/state-ledgers.md)
 - Common mistakes and silent failures
 - Unverified or conflicting points
 
@@ -61,7 +62,7 @@ If a route fails once, retry once with narrower input, then read the local file 
 3. Give or remove buildings during play: `add_building_construction` (queues construction, `instant_build = yes` skips it), `set_building_level` (sets an exact level), `remove_building`, `damage_building`. Railways and supply hubs use `build_railway` and its own checks, never these (see Buildings).
 4. Make a building type that does not exist: `common/buildings`, plus an icon frame, localisation, and (for model-bearing buildings) an entity and `map/buildings.txt` rows.
 5. Change the map geometry (new province, state split, new strategic region): use the Agent Nudger MCP routes (`hoi4_map_inspect`, `hoi4_map_render`, `hoi4_map_rewrite`) rather than hand-editing BMPs and CSVs. See MCP map tools.
-6. Apply a lasting effect to a state without editing its file: a state dynamic modifier (`add_dynamic_modifier` in state scope; see `hoi4-ideas-modifiers`), a state category change (`set_state_category`), or `add_extra_state_shared_building_slots`. Ideas are country-only and cannot carry a state modifier.
+6. Apply a lasting effect to a state without editing its file: a state dynamic modifier (`add_dynamic_modifier` in state scope; see `chaos-redux-ideas-modifiers`), a state category change (`set_state_category`), or `add_extra_state_shared_building_slots`. Ideas are country-only and cannot carry a state modifier.
 7. Track per-state progress or memory: state flags for presence and small integers, state variables for numbers (see Flags, variables).
 8. Visualise per-state data on the map: a scripted map mode (see Map modes).
 9. Sweep many states: a scope iterator (`every_owned_state` and siblings), never a numeric loop over state ids (see Iterating states).
@@ -269,7 +270,7 @@ Whole-world iteration (`every_state`, `every_country`, and any `on_daily`, `on_w
 - A flag name can carry a targeted suffix (`my_flag_@PREV` appends the scope's tag); only `@ROOT`, `@PREV`, `@FROM`, `@THIS` are supported, one per name.
 - State variables: `set_variable`, `add_to_variable`, and friends executed in state scope write that state's variable. Read another state's variable with a numeric prefix (`123.my_var`), a stored scope (`var:target_state.my_var`), or a chain (`province_controllers^1234:capital:my_var`) per `WIKI/Data structures`. Temporary variables have no scope.
 - Persist a state pointer across blocks and events with a regular event target (`save_event_target_as`) or a global event target that you clear.
-- A state dynamic modifier reads its variables from the state it is attached to, not from the owner. Details, daily refresh, and `scope =` are in `hoi4-ideas-modifiers`; the vanilla state precedent is `ETH_state_development_dynamic_modifier` in `GAME/common/dynamic_modifiers/bba_dynamic_modifiers.txt`.
+- A state dynamic modifier reads its variables from the state it is attached to, not from the owner. Details, daily refresh, and `scope =` are in `chaos-redux-ideas-modifiers`; the vanilla state precedent is `ETH_state_development_dynamic_modifier` in `GAME/common/dynamic_modifiers/bba_dynamic_modifiers.txt`.
 - Read the total of a modifier on a state with `set_variable = { v = modifier@local_manpower }` in state scope, or `123.modifier@local_manpower` from elsewhere (`dynamic_variables_documentation.md`).
 
 ## Victory points, resources, supply, railways at runtime
@@ -306,14 +307,23 @@ The Agent Nudger exposes three tools; inspect and render never write source, rew
 7. For script, check each effect's scope against the effects documentation, use `hoi4_script_validate` on the body under its explicit scope when exposed, and treat a `valid` result as covering only its listed checks.
 8. Runtime behaviour (ownership after transfer, production-menu visibility, VP markers) is a live-game question; do not report it as verified from source reading alone.
 
-## Repository conventions
+## Chaos Redux specifics
+The `CLAUDE.md` coding, constants, dynamic-effect, and localisation rules apply and are not repeated here, including the 1,000-iteration loop cap (use a scope iterator or bounded batches over larger sets) and the whole-world iteration permission rule.
 
-- Tabs for indentation, lowercase snake_case, no `<=` or `>=`, UTF-8 with BOM for localisation.
-- No magic numbers: put shared tuning (caps, batch sizes, building levels) in `common/script_constants/` and read them with `constant:category.key` where the field supports it; fields that reject constants take a variable or an `@` constant. Duration fields such as `days =` in timed flags may need a variable assigned from the constant first.
-- Reuse and extend `common/scripted_effects/chaosx_dynamic_effects.txt` (documented in `chaosx_dynamic_effects.md`) before writing new state helpers, such as the existing state building damage and random-state helpers.
-- The 1,000-iteration cap and the whole-world iteration permission rule above come from `CLAUDE.md` sections 1 and 4.
-- A hidden-idea carrier is a modifier-free idea whose id is a token for a package-owned setup effect (`CLAUDE.md` section 4 item 11); it is unrelated to states.
-- Do not write player-facing text about tuning history; state names and VP names describe the world only.
+**What the mod does and does not ship**
+
+- Chaos Redux does not copy vanilla `history/states`, `map/` geometry, or vanilla country and OOB history, because a copy overrides other mods and freezes older vanilla data. Additive setup runs from `on_startup` through `chaosx_apply_startup_history_grants` (`common/scripted_effects/chaosx_startup_history_effects.txt`, tuning in `startup_history_constants.txt`, one global idempotence flag), which dispatches tag-specific facilities, technologies, stockpiles, characters, and projects by explicit country scope (`docs/systems/startup_history_compatibility.md`). New starting content goes there.
+- The one map file is `map/buildings.txt`, a generated override that preserves the complete installed vanilla table and adds coordinates for the custom `chaosx_*_spawn` buildings (`common/buildings/chaosx_buildings.txt`, `chaosx_3d_model_spawns.txt`, `chaosx_3d_model_pilots.txt`). Regenerate it instead of hand-editing, and again after a game update. A dynamic custom spawn pool without complete coordinate coverage must keep automatic nudging on (`docs/systems/3d_model_pipeline/chaosx_3d_runtime_contract.md`).
+
+**State-scoped systems**
+
+- Famine and migration drive state flags, dynamic modifier families (`common/dynamic_modifiers/famine_state_modifiers.txt`, `migration_state_modifiers.txt`) that a refresh effect removes and re-adds on every stage change, and two of the five scripted state map modes in `common/map_modes/chaosx_state_map_modes.txt` (`docs/systems/state_map_modes.md`). Read the owner documents (`docs/systems/famine_system.md`, `migration_system.md`) before touching their state data.
+- Formable state puzzles use exact state-control proof with a state registry: `docs/formables/` and the `templates/formable_state_puzzle/` folder of `chaos-redux-decisions-missions`.
+- Reuse the state helpers in `common/scripted_effects/chaosx_dynamic_effects.md` before writing new ones: `damage_state_building_dynamic`, `damage_buildings_in_random_states`, `get_random_sea_region`, and the population helpers `apply_exact_state_civilian_population_loss`, `apply_state_population_loss_without_recruitable_manpower_gain`, and `apply_state_population_gain_without_recruitable_manpower_gain`. Population arithmetic uses `state_population_k`.
+
+**Moving people between states**
+
+Exact civilian transfers, cohort registries, reception ledgers, custody receipts, and transaction-time map projections follow [references/state-ledgers.md](references/state-ledgers.md). Read it before adding any code that debits or credits state population, keeps a cohort across effect chains, or feeds a state map mode. One transfer owner (`civilian_transfer_*`) holds the only physical debit and credit path; owners submit proof and never move population themselves.
 
 ## Common mistakes and silent failures
 

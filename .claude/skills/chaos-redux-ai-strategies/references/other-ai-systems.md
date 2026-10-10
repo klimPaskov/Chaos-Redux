@@ -198,7 +198,7 @@ peace_ai_desires = {
 | --- | --- | --- |
 | Faction goal (`common/factions/goals`) | `ai_will_do` | Scope is the faction member country; chance to fill an empty goal slot. |
 | Faction rule (`common/factions/rules`) | `ai_will_do` | Scope is the faction leader; `<= 0` means the AI will not use the rule. Rule initiative spending priority lives here. |
-| Autonomous state | `ai_subject_wants_higher`, `ai_overlord_wants_lower`, `ai_overlord_wants_garrison`, `use_for_peace_conference_weight` | Weights or triggers; 0 means never gain or lower a level through the autonomy system. See `hoi4-diplomacy-war`. |
+| Autonomous state | `ai_subject_wants_higher`, `ai_overlord_wants_lower`, `ai_overlord_wants_garrison`, `use_for_peace_conference_weight` | Weights or triggers; 0 means never gain or lower a level through the autonomy system. See `chaos-redux-diplomacy-war`. |
 | Scripted diplomatic action | `ai_acceptance` (named conditions), `ai_desire` | ROOT sender, THIS receiver. Used to decide whether the AI sends or accepts. |
 | Character trait / idea | `ai_will_do` | Weight for choosing an advisor or leader trait; 0 never picks it. |
 | MIO policy | `ai_will_do` | Likelihood the AI spends PP on the policy. |

@@ -1,12 +1,12 @@
 ---
-name: hoi4-technology-doctrines
-description: Use when creating, changing, or scripting Hearts of Iron IV technologies, technology folders and categories, sub-technologies, technology unlocks, research bonuses, technology sharing, grand doctrines, doctrine tracks, sub-doctrines, mastery, or the technology tree viewer and inspector tools. Also use when a technology or doctrine is invisible, unresearchable, unlocks nothing, or grants no bonus.
+name: chaos-redux-technology-doctrines
+description: Use when creating, changing, scripting, or auditing Chaos Redux technologies, technology folders and cards (chemical and biological), project-gated technologies, grant helpers, technology sharing, the Chaos Warfare grand doctrine and sub-doctrines, or the technology tree inspector and renderer. Also use when a technology or doctrine is invisible, unresearchable, unlocks nothing, or grants no bonus.
 ---
 
-# Hearts of Iron IV Technologies and Doctrines
+# Chaos Redux Technologies and Doctrines
 
 Use this skill for `common/technologies/`, `common/technology_tags/`, `common/technology_sharing/`, `common/doctrines/`, the technology tree and doctrine interface files, and the effects, triggers, and modifiers that grant, test, or speed up research and doctrines.
-Equipment definitions that a technology unlocks belong to `hoi4-equipment`, sub-units and templates to `hoi4-units-divisions`, ideas that carry `research_bonus` to `hoi4-ideas-modifiers`, and AI weighting strategies to `hoi4-ai-strategies`.
+Equipment definitions that a technology unlocks belong to `chaos-redux-equipment`, sub-units and templates to `chaos-redux-units-divisions`, ideas that carry `research_bonus` to `chaos-redux-ideas-modifiers`, and AI weighting strategies to `chaos-redux-ai-strategies`.
 
 In this skill `GAME` means `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV` and `WIKI` means the repository folder `paradox_wiki`.
 Installed documentation is more authoritative than the wiki; where they disagree this skill says so.
@@ -25,7 +25,7 @@ If a route fails once, retry once with narrower input, then read the local files
 | Triggers (`has_tech`, `has_doctrine`, `has_mastery`, and the rest) | `GAME/documentation/triggers_documentation.md` |
 | Modifiers (`research_speed_factor`, `<folder>_doctrine_cost_factor`, mastery gain factors) | `GAME/documentation/modifiers_documentation.md` |
 | Defines (`NTechnology`, `NDoctrines`) | `GAME/common/defines/00_defines.lua` |
-| Research weighting for the AI | `WIKI/Technology modding - Hearts of Iron 4 Wiki.md` (AI weighting), `WIKI/AI focuses - Hearts of Iron 4 Wiki.md`, `hoi4-ai-strategies` |
+| Research weighting for the AI | `WIKI/Technology modding - Hearts of Iron 4 Wiki.md` (AI weighting), `WIKI/AI focuses - Hearts of Iron 4 Wiki.md`, `chaos-redux-ai-strategies` |
 
 The tree and folder interface authoring detail is in `references/technology-tree-gui.md`.
 Doctrine authoring skeletons, loc keys, and GUI notes are in `references/doctrine-authoring.md`.
@@ -49,14 +49,35 @@ Doctrine authoring skeletons, loc keys, and GUI notes are in `references/doctrin
 | A new doctrine system | Folder, grand doctrines, tracks, sub-doctrines in `common/doctrines/` |
 | Understand or verify an existing tree | The `hoi4.tech_inspect`, `hoi4.tech_render`, and `hoi4.tech_compare` tools |
 
-## Repository conventions that apply
+## Chaos Redux specifics
+The `CLAUDE.md` coding, constants, dynamic-effect, and localisation rules apply and are not repeated here.
 
-- Indent with tabs, never use `<=` or `>=`, put tuning values in `common/script_constants/`, and reuse the dynamic helpers in `common/scripted_effects/chaosx_dynamic_effects.txt` before adding new ones.
-- Localisation is UTF-8 with BOM and keys carry no `:0`; player-facing text describes the current world state.
-- Technology folders and categories added by this repository live in `common/technology_tags/chaosx_tech_tags.txt`, a separate file of the same two top-level blocks the vanilla `00_technology.txt` uses.
-- The repository holds a full copy of `interface/countrytechtreeview.gui` and `.gfx`; GUI additions for new folders go into that copy, and a game update needs a re-merge of the vanilla changes.
-- A new concrete equipment type, sub-unit, special project, doctrine, or general system must be registered with the test-country setup effect described in `CLAUDE.md`.
-- Document each new mechanic in `docs/` with the icons it needs, the `.gfx` file that references them, and the names used in code and localisation.
+**Where Chaos Redux research lives**
+
+- `common/technologies/` has one file per owner. `chaosx_technologies.txt` owns the shared chemical and biological research nodes; `cbrn_project_equipment_technologies.txt` holds the project-gated equipment unlocks; `cbrn_hq_technologies.txt` and `cbrn_regimental_support_technologies.txt` own unit certifications that have no visible card; event files (`012_*`, `014_*`, `016_*`, `039_*`, `042_*`, `clone_*`, `zombie_*`) own their own technologies.
+- `common/technology_tags/chaosx_tech_tags.txt` defines the folders and categories. `interface/countrytechtreeview.gui` and `.gfx` are full copies of the vanilla files with the Chaos folders added (re-merge vanilla changes after a game update). Local card tiles are in `interface/chaosx_techtree.gfx`.
+- Research costs in the CBRN folders use a 0.5 (basic utility), 0.75 (ordinary equipment and service), and 1 (advanced equipment and containment) scale of the 100-day baseline (`docs/systems/cbrn_warfare/cbrn_technology_progression.md`).
+
+**Folder geometry (chemical_warfare_folder, biowarfare_folder)**
+
+- Both folders use the vanilla grid: `format = "LEFT"`, `slotsize = { width = 70 height = 70 }`, one gridbox per branch row, branch gridboxes starting at x = 170 and the first row at y = 190 with rows 100 pixels apart, year columns 140 pixels apart (two slots), the label gutter 170 pixels wide with labels right-aligned, year headers at y = 50, and every card chain drawn by `path` instead of invisible dependencies. Card art is 64x64. Content fillers are sized to their content.
+- Reason: the engine draws connectors from one global 70x70 line item with 36-pixel segments, so a 90x50 slot left gaps in every link. Before and after geometry is in `docs/plans/chaos_warfare_system_plans/2026-10-10_technology_folder_layout_repair.md`.
+- `hoi4.tech_render` with `view = folder` checks card overlap and unresolved sprites from source. It does not draw native cards, tooltips, or scroll reach, so report those as unverified.
+
+**Project-gated and hidden technologies**
+
+- A technology granted by a special project is a visible locked card: `allow = { ROOT = { is_special_project_completed = sp:<project> } }`, `is_special_project_tech = yes`, zero research weight (vanilla `jet_fighter1` pattern). Project completion grants it; the player never researches it, and it has a folder entry so the branch is continuous.
+- Capability technologies with no card are hidden and granted only by helpers: `chaosx_grant_conventional_technology_package`, `chaosx_grant_custom_operational_technology` (idempotent clone, paleogenetics, and xenobiology selectors), and `cbrn_grant_available_doctrine_technologies` (doctrine and certification grants). Call the helper instead of pasting `set_technology`, so repeated paths grant a package once.
+- `union_compatible_researched_technologies_from_donor` in `chaosx_dynamic_effects.md` copies compatible researched technologies between countries.
+
+**Doctrine**
+
+- The Chaos Warfare grand doctrine is `common/doctrines/grand_doctrines/chaos_warfare_grand_doctrine.txt` with land sub-doctrines in `common/doctrines/subdoctrines/land/`; behaviour is in `docs/systems/cbrn_warfare/chaos_warfare_doctrine.md`, and the doctrine workbook is edited through `chaos-redux-xlsx`.
+- Doctrine, country, and technology bonus layers stack on the same unit. Budget a reward against the combined bound, not against one source (`docs/testing/2026-10-07_doctrine_reward_budget_source_tests.js` shows the method). Subunit bonus fields are fractions, not flat points.
+
+**Test-country registration**
+
+The test country scans `global.technology` dynamically (the only documented runtime database array), so a plain technology needs no registration. A special project, equipment type, sub-unit, or doctrine does: see `docs/testing/chaosx_test_country.md`.
 
 ## Technology definitions
 
@@ -282,7 +303,7 @@ Details for writing a new folder, grand doctrine, track, and sub-doctrine, their
 
 - The AI picks research by a weight: base 1 (or `ai_will_do`), adjusted by cost, bonuses, and ahead-of-time modifiers; the choice is re-rolled every 7 days (`RESEARCH_DAYS_BETWEEN_WEIGHT_UPDATE` in the defines).
 - The wiki states a technology needs at least one of its categories listed in a `common/ai_focuses/*.txt` file for the AI to research it; the installed documentation does not repeat this, so add a category to an AI focus when AI research of a new category matters and report the result as unobserved.
-- Per-country overrides use the `research_weight_factor` and `research_tech` AI strategy types and the `research = { category = factor }` block of an AI strategy plan; both are documented by `hoi4-ai-strategies`.
+- Per-country overrides use the `research_weight_factor` and `research_tech` AI strategy types and the `research = { category = factor }` block of an AI strategy plan; both are documented by `chaos-redux-ai-strategies`.
 - AI doctrine choice uses `ai_will_do` in the grand doctrine and sub-doctrine blocks (see the vanilla blocks with `original_tag` and `is_major` modifiers).
 - Mark hidden techs with `allow = { always = no }` so the AI does not research them.
 

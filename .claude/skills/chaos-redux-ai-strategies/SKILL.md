@@ -1,13 +1,13 @@
 ---
-name: hoi4-ai-strategies
-description: Use when designing, implementing, tuning, or debugging Hearts of Iron IV country AI behaviour, including common/ai_strategy blocks, add_ai_strategy, AI strategy plans, AI focuses and areas, ai_will_do and ai_chance weights, AI templates, equipment and navy AI, AI peace desires, and AI research or diplomacy weighting.
+name: chaos-redux-ai-strategies
+description: Use when designing, implementing, tuning, auditing, or debugging Chaos Redux country AI behaviour: common/ai_strategy blocks and CBRN country profiles, add_ai_strategy, AI strategy plans, AI focuses and scorers, ai_will_do and ai_chance weights, AI templates, equipment production AI, AI peace desires, and AI research or diplomacy weighting.
 ---
 
-# HOI4 AI Strategies
+# Chaos Redux AI Strategies
 
-Generic guidance for steering the Hearts of Iron IV country AI from mod script.
+Guidance for steering the Hearts of Iron IV country AI from Chaos Redux script.
 Use it to choose the right AI mechanism, write it with verified syntax, tune weights without misreading score as probability, and debug the result.
-Use `chaos-redux-mtth` for MTTH variables and centralised weight logic, `chaos-redux-decisions-missions` for decision and mission `ai_will_do`, `chaos-redux-focus-trees` for focus `ai_will_do`, and `hoi4-diplomacy-war` for the diplomacy, faction, subject, wargoal, and peace mechanics that AI strategies steer.
+Use `chaos-redux-mtth` for MTTH variables and centralised weight logic, `chaos-redux-decisions-missions` for decision and mission `ai_will_do`, `chaos-redux-focus-trees` for focus `ai_will_do`, and `chaos-redux-diplomacy-war` for the diplomacy, faction, subject, wargoal, and peace mechanics that AI strategies steer.
 
 ## Contents
 
@@ -21,7 +21,7 @@ Use `chaos-redux-mtth` for MTTH variables and centralised weight logic, `chaos-r
 - AI focuses, research weights, and AI areas
 - Other AI systems (templates, equipment, navy, theaters, peace) in the reference file
 - Debugging and verification
-- Repository conventions
+- Chaos Redux specifics
 - Common mistakes
 - Unverified or conflicting points
 
@@ -106,7 +106,7 @@ Within the FRA modifier the wiki computes `factor` before `add` (`(10.5 + 1) * 3
 - If no focus has a value above 0, the AI takes none and falls to continuous focuses or idles.
 - Technology selection: every 7 days (`NAI.RESEARCH_DAYS_BETWEEN_WEIGHT_UPDATE`) a random draw between 0 and the weight is made per tech, with cost, bonus, and ahead-of-time modifiers on top. `NAI.RESEARCH_WEIGHT_TRUNCATION_THRESHOLD` picks randomly among scores within a fraction of the top score.
 - Event options: weight divided by the sum of weights, rolled as a d100, so a weight share below 1 percent behaves like 0 and the share is rounded to whole percents. If every weight is 0 the first option is chosen. The result is deterministic for a given seed, time, and country across reloads (Event modding wiki).
-- Decisions: the AI only considers decisions with an `ai_will_do`, compares them with a priority system, and may pick a lower-priority decision early within `NAI.DECISION_PRIORITY_RANDOMIZER` (0.1). Idea scores are scaled into `MIN/MAX_SCALED_IDEA_WEIGHT_TO_COMPARE_WITH_DECISIONS` (100 to 200). `CRITICAL_DECISION_PRIORITY` (200) lets a high-priority decision fire early. A decision that leads to war should declare it with `war_with_on_remove`, `war_with_on_complete`, or `war_with_on_timeout` so the AI prepares (see `hoi4-diplomacy-war`).
+- Decisions: the AI only considers decisions with an `ai_will_do`, compares them with a priority system, and may pick a lower-priority decision early within `NAI.DECISION_PRIORITY_RANDOMIZER` (0.1). Idea scores are scaled into `MIN/MAX_SCALED_IDEA_WEIGHT_TO_COMPARE_WITH_DECISIONS` (100 to 200). `CRITICAL_DECISION_PRIORITY` (200) lets a high-priority decision fire early. A decision that leads to war should declare it with `war_with_on_remove`, `war_with_on_complete`, or `war_with_on_timeout` so the AI prepares (see `chaos-redux-diplomacy-war`).
 - Strategy `value`: not a probability. Each type defines its own meaning (additive weight, percent factor, absolute count, binary, threshold). Always read the token entry before choosing a number. Typical vanilla magnitudes: diplomacy weights 100 to 800, hard blocks at -800 to -1000, production percent factors 10 to 100, `role_ratio` small integers.
 - A strategy with the wrong magnitude can be invisible or dominant, because several active strategies of the same type and target add together.
 
@@ -343,17 +343,23 @@ Repository verification without launching the game:
 5. Remember the analyzer models source, not observed game behaviour; the AI's runtime inputs (threat, factories, borders) are not simulated.
 6. If a probability route fails on invalid inputs, retry once with corrected inputs, then calculate from the source and say so.
 
-## Repository conventions
+## Chaos Redux specifics
+The `CLAUDE.md` coding, constants, and localisation rules apply and are not repeated here. Two AI-specific consequences: world-iterating hooks (`on_daily`, `on_weekly`, `on_monthly`) are not a way to implement AI behaviour, so gate behaviour in the `enable` block of an `ai_strategy` (the engine already evaluates it) or use `on_daily_TAG` for a named country; and a flag trigger in a player-visible block shows its raw identifier unless localised, so AI-only gating belongs in `ai_will_do` or `enable`.
 
-These apply when working inside the Chaos Redux repository and its `CLAUDE.md`.
+**Where Chaos Redux AI lives**
 
-- Tabs for indentation, lowercase snake_case, no `<=` or `>=` (use `check_variable` with `compare = ...` where a comparison is needed and the short `<` and `>` elsewhere).
-- No magic numbers: put shared tuning values in `common/script_constants/` and read them with `constant:category.key` where the field supports it. Several AI strategy fields may not parse `constant:`; then use an `@` file constant or compute a variable first. Verify per field.
-- Reuse the dynamic helpers in `common/scripted_effects/chaosx_dynamic_effects.txt`; document any new dynamic effect in `chaosx_dynamic_effects.md` in the same change.
-- Use `chaos-redux-mtth` for MTTH variables and to keep `ai_will_do` readable.
-- `on_daily`, `on_weekly`, and `on_monthly` iterate over every country; do not add them to implement AI behaviour without explicit permission. Gate behaviour in `common/ai_strategy` `enable` blocks instead, which the engine already evaluates.
-- A flag trigger inside a player-visible requirement block shows its raw identifier unless localised; AI-only gating belongs in `ai_will_do` or `enable`, which are not player-visible.
-- Do not write player-facing text describing AI tuning history.
+- `common/ai_strategy/` has one file per owner, named by event number or system. The CBRN set is `cbrn_country_profiles.txt` (differentiated research, medical, delivery, and biological-response priorities per major and secondary country), `chemical_warfare_research.txt`, `chemical_warfare_cylinders.txt`, `chemical_warfare_livens.txt`, `chemical_warfare_tank_shells.txt`, `cbrn_protection_production.txt`, `cbrn_regimental_support.txt`, and `biological_warfare_production.txt` (native `equipment_production_surplus_management` with exact equipment models).
+- Companion folders: `common/ai_strategy_plans/` (focus plans per event), `common/ai_templates/` (division templates per unit family), `common/ai_focuses/chaosx_ai_focuses.txt`, `common/scorers/country/` (outbreak and target scorers), and `common/mtth/` (weights shared through `chaos-redux-mtth`).
+- Special-project selection is weighted inside the project definitions (`common/special_projects/projects/biowarfare_main_projects.txt` enforces the Tularemia, Anthrax, Plague, Smallpox ladder), not in a strategy file.
+
+**Rules that recur**
+
+1. Constants: the CBRN profile file keeps its values as file-scoped `@` constants because `ai_strategy` values do not parse shared `script_constants`. Verify the field before using `constant:category.key` in a new strategy file.
+2. Gate on real posture, never on a country tag. CBRN AI conditions go through `common/scripted_triggers/cbrn_ai_posture_triggers.txt` (authorization, designated-arsenal risk, protection, containment technology, supply). The AI never receives free equipment, never researches a locked project-output technology directly, and never treats missing data as safe (`docs/systems/cbrn_warfare/cbrn_biological_ai.md`).
+3. Special Chaos countries are excluded from the humanitarian systems (`humanitarian_country_is_valid`) and nonhuman outbreak countries from the military industrial organizations; check that a target country exists (`exists = yes`, `country_exists`) before steering at it.
+4. Strategy values stack across every active block of the same type and target, so a Chaos override of a vanilla strategy must exclude the vanilla block's countries or add a compensating value.
+5. Every changed weighted surface (`ai_will_do`, `ai_chance`, MTTH-backed scores, random lists, strategy factors, special-project weights) goes through `chaosx_ai_probability_auditor`. Keep the before-state: audits store theirs under `docs/testing/<date>_<topic>_before/`. Report score separately from probability, and state any assumption the analyzer could not model.
+6. Event firing weights (the dynamic major-event pool) are documented in `docs/systems/event_system/dynamic_major_event_weights.md`; they are not AI strategy.
 
 ## Common mistakes
 

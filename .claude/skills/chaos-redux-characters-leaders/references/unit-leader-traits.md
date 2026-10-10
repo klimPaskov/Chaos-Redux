@@ -87,7 +87,7 @@ Additional keys seen in vanilla `00_traits.txt` and the wiki: `slot`, `specialis
 - `modifier = { ... }` applies to the leader's units; terrain scopes nest inside (`urban = { movement = 0.1 }`, `fort = { attack = 0.15 }`).
 - `non_shared_modifier` is for stats of the leader itself (for example `experience_gain_factor`, `promote_cost_factor`).
 - `corps_commander_modifier` and `field_marshal_modifier` apply by role (for example `max_commander_army_size`, `supply_consumption_factor`, `org_loss_when_moving`). The wiki note: a field marshal who leads divisions directly gets the corps modifier, not the field marshal one.
-- `sub_unit_modifiers = { artillery_brigade = { max_strength = 0.1 } }` applies multiplicative sub-unit modifiers (sub-unit ids come from `common/units/`, see `hoi4-units-divisions`).
+- `sub_unit_modifiers = { artillery_brigade = { max_strength = 0.1 } }` applies multiplicative sub-unit modifiers (sub-unit ids come from `common/units/`, see `chaos-redux-units-divisions`).
 - Valid modifier names for these blocks come from `documentation/modifiers_documentation.md` under `unit_leader`, `army`, `naval`, `air`; terrain and combat names are listed in the same file.
 - Tooltip replacement: `override_effect_tooltip` hides the generated list; `custom_effect_tooltip` appends text.
 

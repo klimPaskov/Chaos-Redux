@@ -1,6 +1,6 @@
 # Map Geometry Reference
 
-Reference for `hoi4-map-states`.
+Reference for `chaos-redux-map-states`.
 Read it when you edit or audit the files under `map/`: provinces, definitions, strategic regions, adjacencies, supply nodes, railways, and bitmaps.
 Paths, `GAME`, and `WIKI` mean the same as in the main skill.
 
