@@ -16,7 +16,7 @@ Read these handoffs as part of the task: `088_mines_everywhere_asset_prompt.md`,
 
 Use the actually exposed HOI4 MCP tool schemas for in-scope event, map, probability and shared presentation inspection. Tool names in a supplied profile are not proof of an invokable service. If required access is unavailable, record the exact blocked requirement and continue independent work without pretending a source-only review passed the tool gate.
 
-When available, use the supplied custom profiles through bounded, self-contained jobs with `fork_turns="none"`. Start from the briefs in the companion plans, grant only the required files and mode, and retain their real outputs. The main agent owns integration and final claims. Do not fabricate subagent transcripts or call a parent-authored checklist an independent review.
+Route specialist work through the `chaos-redux-subagents` skill with fully self-contained prompts. Start from the briefs in the companion plans, grant only the required files, and retain their real outputs. The main agent owns integration and final claims. Do not fabricate subagent transcripts or call a parent-authored checklist an independent review.
 
 ## Locked event behavior
 

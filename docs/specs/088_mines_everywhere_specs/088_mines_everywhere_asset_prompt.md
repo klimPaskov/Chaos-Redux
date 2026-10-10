@@ -6,7 +6,7 @@ Read `AGENTS.md`, `chaos-redux-event-assets`, `chaos-redux-subagents`, the relev
 
 ## Ownership and workspace
 
-The parent owns final runtime wiring and acceptance. Route the fictional report image to `chaosx_generated_event_art` and achievement subjects to `chaosx_icon_artist` when those custom routes are actually invokable. Use self-contained briefs with `fork_turns="none"`, exact output roots and a handoff path. Do not invent an executed artist if the spawn route is absent.
+The parent owns final runtime wiring and acceptance. Route the fictional report image to `chaosx_generated_event_art` and achievement subjects to `chaosx_icon_artist` when those custom routes are actually invokable. Use self-contained briefs with exact output roots and a handoff path. Do not invent an executed artist if the spawn route is absent.
 
 Use the event-scoped temporary workspace `docs/assets/088_mines_everywhere/` for source images, prompts, derivatives, contact sheets, DDS evidence and manifests. Preserve original sources unchanged. Do not leave runtime references to this workspace. Keep it while blocked or awaiting review. On genuine completion, promote durable evidence and remove only this event's temporary asset workspace.
 

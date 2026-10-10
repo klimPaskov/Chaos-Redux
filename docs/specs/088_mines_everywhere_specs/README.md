@@ -1,18 +1,30 @@
 # Event 088: Mines everywhere
 
-This is the source specification package for the once-only global mine incident at `docs/specs/088_mines_everywhere_specs/`.
-The [companion plans](../../plans/088_mines_everywhere_plans/) hold the working evidence.
+This is the source specification for the once-only global mine incident.
+The [companion plans](../../plans/088_mines_everywhere_plans/) hold source receipts, engine questions, staged handoffs, acceptance tests and subagent briefs.
 
-Read the five numbered specification parts in order. Parts 1 and 2 establish the world change, ownership, additive cap behavior, and current-map coverage. Part 3 defines naval play, cluster integration, and the proposed Chaos impact map. Part 4 gives direction-only presentation and a seven-image asset plan. Part 5 defines two difficult naval achievements and their observation requirements.
+## Reading order
 
-The four separate prompt files are implementation handoffs. Their existence does not establish that coding, art production, or achievement integration has occurred. The goal prompt is intended for the Codex goal field and is below 4,000 characters.
+1. [Part 1](088_mines_everywhere_spec_part_1_core.md): the world change and the player's experience.
+2. [Part 2](088_mines_everywhere_spec_part_2_ownership_and_coverage.md): ownership, the additive cap rule and current-map coverage.
+3. [Part 3](088_mines_everywhere_spec_part_3_play_and_integration.md): naval play, AI, cluster membership and the Chaos impact map.
+4. [Part 4](088_mines_everywhere_spec_part_4_presentation_and_assets.md): writing direction and the seven-image asset plan.
+5. [Part 5](088_mines_everywhere_spec_part_5_achievements.md): two naval achievements and their observation requirements.
 
-The companion plans contain source reading evidence, repository findings, unresolved engine questions, staged implementation handoffs, acceptance tests, subagent briefs, and a clearly labeled Python behavior model. Technical details and administrative evidence belong there rather than inside the creative specifications.
+The goal, coding, asset and achievement prompts are implementation handoffs; none of their work has been done.
+[`package_metadata/`](package_metadata/README_PACKAGE.md) keeps the original archive receipt as provenance only.
 
-## Authority and delivery status
+## Authority
 
-The user's Event 088 brief overrides the stale catalog description and the old random-region event. The fixed amount, global coverage, owner separation, fire-once type, normal cap, and ordinary clearance remain intact. New authored decisions are the +20 material-manifestation Chaos proposal, the achievement routes, the presentation approach, and the exact compatibility and duplicate-dispatch boundaries.
+The user's Event 088 brief overrides the stale catalog description and the old random-region event.
+User decisions: the fixed 1,000-mine addition, global coverage, separate ownership, fire-once type, the normal cap, ordinary clearance, and Sudden Abundance membership at Medium severity.
+Authored proposals awaiting acceptance: the +20 once-only Chaos award, the two achievement routes, the presentation approach, and the compatibility and duplicate-dispatch boundaries.
+Event status remains To Be Reworked; no gameplay, art, workbook or in-game validation exists.
 
-All 42 plaintext files supplied in the archive, including all 20 custom subagent profiles, were read in full before these specs were drafted. Not every external reference named by those files was available or fully read. Installed-game documentation, skill-local visual references, complete offline wiki coverage, runtime tools, and actual custom-subagent execution remain explicitly incomplete. See the companion source ledger and blocker register.
+## Revision log
 
-This delivery is a substantial planning package, not a claim that the project's full mandatory workflow has passed. No gameplay implementation, generated runtime art, workbook edit, in-game validation, independent subagent audit, or custom improvement-planner run is represented as complete. Event status remains To Be Reworked.
+### 2026-10-10 spec audit
+
+- Rewrote this README as a reading order and authority summary, removing repeated delivery and reading-coverage narration that the companion plans already record.
+- Replaced Codex-specific subagent instructions (`fork_turns`, goal field) in the goal, coding and asset prompts with the repository's current subagent routing.
+- Pass 2 review retained the design: the event's identity is one clear physical change resolved through native naval play, and adding response decisions or an event currency would be busywork on top of ordinary minesweeping.
