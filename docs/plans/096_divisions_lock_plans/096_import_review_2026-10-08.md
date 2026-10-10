@@ -134,6 +134,7 @@ External scratch is `C:/Users/klimp/AppData/Local/Temp/chaos-redux-import-096-sn
 ## Validation, frozen files and resume notes
 
 The current inventory records 21 spec files, 14 repaired files and 7 byte-identical original receipts.
+That inventory is an 8 October snapshot: the 10 October 2026 spec audit changed fourteen of the documents, so its hashes, sizes and the goal-prompt length below no longer describe the current files.
 All original numeric table rows in Parts 1–6 and 8 and all checked displayed force/allowance/batch/AI formula lines remain byte-identical.
 Part 7's only new table requirement is the evidenced Cannibalism caller; its historical 089 row is explicitly qualified.
 The goal prompt is 3,993 characters and retains the original completion behavior.

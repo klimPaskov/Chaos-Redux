@@ -4,7 +4,8 @@ Proposed design: [README](README.md#authority-and-current-workflow) records curr
 
 ## 1. What this package can prove
 
-The planning work can establish source coverage, an internally explicit design, arithmetic properties of the chosen formulas, complete handoff coverage, and reviewed dispositions. It cannot establish native engine behavior without the installed references and execution tools.
+The planning work can establish source coverage, an internally explicit design, arithmetic properties of the chosen formulas, complete handoff coverage, and reviewed dispositions.
+It cannot establish native engine behavior without the installed references and execution tools.
 
 Use these evidence classes throughout implementation:
 
@@ -16,7 +17,9 @@ Use these evidence classes throughout implementation:
 | Native tool evidence | Installed-version inspection, schema validation, evaluation, render, or comparison produced a retained artifact |
 | Live evidence | The user observed the behavior in the running game or supplied a relevant native save |
 
-One class does not substitute for another. The reference-model results generated for this package are not HOI4 tests. No current probability, GUI, native refund, or runtime result may be inferred from them.
+One class does not substitute for another.
+The reference-model results generated for this package are not HOI4 tests.
+No current probability, GUI, native refund, or runtime result may be inferred from them.
 
 ## 2. User-brief traceability
 
@@ -28,7 +31,7 @@ One class does not substitute for another. The reference-model results generated
 | Template size matters, no giant-division bypass | Part 2 Sections 1 and 2 | Additive structural count including support and special formations |
 | Existing units unchanged at firing | Part 1 Section 1 | No entry mutation of units, orders, fronts, or organization |
 | Roughly one-week minimum | Parts 1 and 7 | Verified seven elapsed game days, including repeats and midday entry |
-| Dynamic extension and release | Part 1 Section 2 | Condition-based persistence, explicit unchanged-excess interpretation |
+| Dynamic extension and release | Part 1 Section 2 | Compliance release after the floor, and the proportional cap `7 + ceiling(60 × e)` days releasing an unchanged excess (13 days at 10 percent, 67 days at 100 percent) |
 | Optional random single and stronger actions | Part 3 | Exact current eligible pool, human confirmation, bounded batch |
 | Capacity growth can end the lock | Part 2 | Conquest before peace, population and industry gains alter the same live A |
 | Repeats use current world state | Parts 1 and 4 | Recompute, renew floor, coalesce jobs and credits without duplicate effects |
@@ -41,7 +44,8 @@ One class does not substitute for another. The reference-model results generated
 
 ## 3. Measurement and capacity fixtures
 
-All fixtures in this and the following sections require native evidence before implementation completion. Their presence in this document means they are specified, not executed.
+All fixtures in this and the following sections require native evidence before implementation completion.
+Their presence in this document means they are specified, not executed.
 
 | ID | Fixture | Required result |
 | --- | --- | --- |
@@ -96,10 +100,10 @@ All fixtures in this and the following sections require native evidence before i
 | E01 | Pre-fire openings below 200 and at 200, 400, 600, 800, with closed historical stages or a still-active stricter grant | Current-Chaos opening, retained stricter active regime on coalescing repeat, no closed-grant threshold bypass or compounded multipliers |
 | E02 | Active next-stage eligibility, Chaos drop, and a large Chaos jump | Actual MTTH route, no invented guaranteed date or same-callback stage cascade |
 | E03 | Active evolution when some participants are held and others already released | Refresh held countries, give released countries a real new watch when applicable |
-| E04 | Evolution II growth above both thresholds, only one threshold, and capacity loss without force growth | Reacquire only when both selected conditions pass |
+| E04 | Evolution II review with F just above and just below 1.25A, from growth and from capacity loss | Reacquire only when F is greater than 1.25A |
 | E05 | Evolution III or IV capacity loss after release | Current relative threshold governs reacquisition |
 | E06 | Equality at each relock threshold and equality at A while held | Strict reacquisition inequality, inclusive held-state release, no confused tolerance |
-| E07 | Passed and failed reviews, new peak, upgrade, repeat, held or watched split, and merger of different grants | Once-only consumed receipts, bounded targets, inherited spent history, maximum rather than additive obligation, one resulting chain |
+| E07 | Passed and failed reviews, regime upgrade, repeat, held or watched split, and merger of different grants | Once-only consumed receipts, fixed regime counts and intervals, inherited spent history, maximum rather than additive obligation, one resulting chain |
 | E08 | Watch due day after many daily refreshes | Appointment stays anchored to watch start rather than sliding forward |
 | A01 | Peaceful small and large countries at identical e | Same ratio-based preference structure, different live capacities and possible batch bounds |
 | A02 | War, threat, capitulation, another owner, and growth hold at, above, and below the thirty-day projection boundary | Both actions vetoed exactly when required, eight valid observations, reset or missing history cannot fabricate G |
@@ -108,15 +112,18 @@ All fixtures in this and the following sections require native evidence before i
 | A05 | Successful action, failed action, no-op, and a pending human request | Exactly one bounded attempt per choice, correct next review or sticky retain |
 | A06 | e near 0.5, 0.75, 2 and every k step for several N_owned values | Score rankings, severe gate, capped E, raw-e batch quantization, and action bound all distinguish their roles |
 | A07 | Complete eligible unit pool with protected and unprotected records | Native uniform selection and removal without replacement, fresh membership each step |
-| Q01 | Initial actual global deprivation at several entry-force shares | Correct quartile consequence and one dispatch receipt |
-| Q02 | Repeated relocks, broader first relapses, and credited or uncredited lineage splits and mergers | No duplicate contribution, conserved active plus retired weight, inherited credited bit, correct ten- and twenty-five-percent thresholds |
+| Q01 | Initial firing when no, some, or all participants were already locked by another owner | +20 only when at least one country newly loses access, one dispatch receipt |
+| Q02 | Repeated relocks of one country, relapses reaching a quarter of participants, and splits or mergers of a relapse-counted country | One first-relapse and one quarter-threshold award per firing, no duplicate contribution from split branches |
 | Q03 | Rapid refirings and settings toggles | Family positive budget survives, no farming or negative clear reward |
 | Q04 | Normal construction, wars, deaths, and evolution status alone | No duplicated generic or status-only Chaos |
-| Q05 | Compliance versus disappearance, manual clear, repeat supersession, zero-force succession, overdue transfer, or incomplete transfer snapshot | Only legitimate attributable restoration earns the once-only negative consequence, retired and superseded grants cannot cash later rewards |
+| Q05 | Compliance versus disappearance, manual clear, repeat supersession, overdue transfer, or incomplete transfer snapshot | Only legitimate attributable restoration earns the once-only negative consequence, superseded grants cannot cash later rewards |
 
-The probability owner begins with the actual implemented surface and `hoi4.probability_inspect`. It must then evaluate complete named pools, sweep relevant thresholds, and compare the changed implementation with an immutable real baseline using the same fixtures. A seeded simulation or sequence analysis is additional evidence only when its pool, transitions, and horizon are explicitly defined.
+The probability owner begins with the actual implemented surface and `hoi4.probability_inspect`.
+It must then evaluate complete named pools, sweep relevant thresholds, and compare the changed implementation with an immutable real baseline using the same fixtures.
+A seeded simulation or sequence analysis is additional evidence only when its pool, transitions, and horizon are explicitly defined.
 
-Do not normalize the abstract scores by hand and call the result a native probability audit. Record source revision, scenario identity, candidate completeness, unresolved external inputs, tool artifact, and evidence class for each result.
+Do not normalize the abstract scores by hand and call the result a native probability audit.
+Record source revision, scenario identity, candidate completeness, unresolved external inputs, tool artifact, and evidence class for each result.
 
 ## 6. Ownership, assets, and achievement fixtures
 
@@ -137,8 +144,16 @@ Do not normalize the abstract scores by hand and call the result a native probab
 
 ## 7. Performance and final acceptance
 
-Profile a normal early campaign, a late large-army campaign, and a supported maximum controlled-state footprint, including the ordinary category held open during a local refresh. Confirm that frame-driven predicates use complete snapshots, the force measure uses aggregates, inactive countries have no needless callback chain, and active capacity calculation completes within one game day. Stress duplicate firing, bounded succession partitioning, and maximum ten-removal transactions. Preserve every unvisited state or participant when batching is necessary.
+Profile a normal early campaign, a late large-army campaign, and a supported maximum controlled-state footprint, including the ordinary category held open during a local refresh.
+Confirm that frame-driven predicates use complete snapshots, the force measure uses aggregates, inactive countries have no needless callback chain, and active capacity calculation completes within one game day.
+Stress duplicate firing, bounded succession partitioning, and maximum ten-removal transactions.
+Preserve every unvisited state or participant when batching is necessary.
 
-Use installed vanilla documentation as syntax authority. Inspect and render the relevant event chain, evaluate its weighted surfaces, and compare actual changed source. The user performs live-game validation. Do not launch the game, invent screenshots, or request logs as a substitute for the required workflow in this planning task.
+Use installed vanilla documentation as syntax authority.
+Inspect and render the relevant event chain, evaluate its weighted surfaces, and compare actual changed source.
+The user performs live-game validation.
+Do not launch the game, invent screenshots, or request logs as a substitute for the required workflow in this planning task.
 
-Implementation completion requires the three native gates in Part 7, all material rows above, matching localisation and asset coverage, catalog alignment, accepted review dispositions, and no undisclosed design reductions. If a gate fails, identify the exact failed capability and its effect on the design. The planning package can be complete while implementation remains gated, but the event cannot be called implemented or Playable on that basis.
+Implementation completion requires the three native gates in Part 7, all material rows above, matching localisation and asset coverage, catalog alignment, accepted review dispositions, and no undisclosed design reductions.
+If a gate fails, identify the exact failed capability and its effect on the design.
+The planning package can be complete while implementation remains gated, but the event cannot be called implemented or Playable on that basis.
