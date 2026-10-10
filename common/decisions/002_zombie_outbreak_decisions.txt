@@ -59,7 +59,7 @@ chaosx_weaponized_zombie_cure_category = {
 						}
 						OR = {
 							NOT = { owner = { is_single_weaponized_zombie_profile_type = yes } }
-						ROOT = { weaponized_zombie_counterstrain_progress_open_for_state_target = yes }
+							ROOT = { weaponized_zombie_counterstrain_progress_open_for_state_target = yes }
 						}
 					}
 				}
@@ -345,13 +345,13 @@ chaosx_zzz_cure_category = {
 	}
 
 	find_cure_tier_1 = {
-	    visible = {
-	        has_global_flag = has_zombie_outbreak
-	        any_country = {
-	            is_live_standard_zombie_outbreak_country = yes
-	            has_country_flag = { flag = zombie_current_tier value = 1 }
-	        }
-	    }
+		visible = {
+			has_global_flag = has_zombie_outbreak
+			any_country = {
+				is_live_standard_zombie_outbreak_country = yes
+				has_country_flag = { flag = zombie_current_tier value = 1 }
+			}
+		}
 
 		available = {
 			NOT = { has_idea = cure_activated }
@@ -488,122 +488,167 @@ chaosx_zzz_cure_category = {
 					tooltip = zzz_cure_global_tt
 				}
 				if = { limit = { check_variable = { global.zzz_cure > 99 } }
-				mark_first_zombie_cure_activation = yes
+					mark_first_zombie_cure_activation = yes
 
-				every_country = {
-					limit = { is_in_tech_sharing_group = cure_sharing }
-					activate_shared_zombie_cure_for_current_country = yes
-				}
-				every_country = {
-					limit = { original_tag = ZZZ }
-					add_timed_idea = {
-						idea = cure_sharing_bonus
-						days = 120
+					every_country = {
+						limit = { is_in_tech_sharing_group = cure_sharing }
+						activate_shared_zombie_cure_for_current_country = yes
 					}
+					every_country = {
+						limit = { original_tag = ZZZ }
+						add_timed_idea = {
+							idea = cure_sharing_bonus
+							days = 120
+						}
+					}
+					set_variable = { global.zzz_cure = 0 }
 				}
-				set_variable = { global.zzz_cure = 0 }
+			} else = {
+				add_to_variable = {
+					var = zzz_cure
+					value = cure_research_value
+					tooltip = zzz_cure_tt
+				}
 			}
-		} else = {
-			add_to_variable = {
-				var = zzz_cure
-				value = cure_research_value
-				tooltip = zzz_cure_tt
+		}
+		cancel_trigger = {
+			OR = {
+				has_idea = cure_activated
+				NOT = { has_global_flag = has_zombie_outbreak }
+			}
+		}
+		cancel_effect = {
+			hidden_effect = {
+				remove_ideas = searching_for_cure_tier_1
+				add_political_power = zombie_cure_tier_1_paid_pp
+				clear_variable = zombie_cure_tier_1_paid_pp
+				set_temp_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.zero }
+				set_temp_variable = { black_friday_political_power_receipt_sale_sequence = find_cure_tier_1_sale_sequence }
+				if = {
+					limit = { has_country_flag = find_cure_tier_1_sale_credit }
+					set_temp_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.one }
+				}
+				black_friday_withdraw_political_power_purchase_with_receipt = yes
+				clr_country_flag = find_cure_tier_1_sale_credit
+				clear_variable = find_cure_tier_1_sale_sequence
 			}
 		}
 	}
-	cancel_trigger = {
-		OR = {
-			has_idea = cure_activated
-			NOT = { has_global_flag = has_zombie_outbreak }
-		}
-	}
-	cancel_effect = {
-		hidden_effect = {
-			remove_ideas = searching_for_cure_tier_1
-			add_political_power = zombie_cure_tier_1_paid_pp
-			clear_variable = zombie_cure_tier_1_paid_pp
-			set_temp_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.zero }
-			set_temp_variable = { black_friday_political_power_receipt_sale_sequence = find_cure_tier_1_sale_sequence }
-			if = {
-				limit = { has_country_flag = find_cure_tier_1_sale_credit }
-				set_temp_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.one }
-			}
-			black_friday_withdraw_political_power_purchase_with_receipt = yes
-			clr_country_flag = find_cure_tier_1_sale_credit
-			clear_variable = find_cure_tier_1_sale_sequence
-		}
-	}
-}
 
-find_cure_tier_2 = {
-	visible = {
-		has_global_flag = has_zombie_outbreak
-		any_country = {
-			is_live_standard_zombie_outbreak_country = yes
-			has_country_flag = { flag = zombie_current_tier value = 2 }
-		}
-	}
-
-	available = {
-		NOT = { has_idea = cure_activated }
-		check_variable = { zzz_cure < 100 }
-	}
-
-	cost = global.black_friday_price_pp_40
-	days_remove = var:cure_research_days_2?120
-	icon = GFX_decision_generic_research
-
-	ai_will_do = {
-		factor = 1
-		modifier = {
-			add = 4
-			has_war_with = ZZZ
-		}
-		modifier = {
-			add = 2
-			is_in_tech_sharing_group = cure_sharing
-		}
-		# Chaos tier modifiers - higher chaos = more urgent research
-		modifier = {
-			add = 2
-			has_global_flag = { flag = chaos_tier value = 1 }
-		}
-		modifier = {
-			add = 3
-			has_global_flag = { flag = chaos_tier value = 2 }
-		}
-		modifier = {
-			add = 4
-			has_global_flag = { flag = chaos_tier value = 3 }
-		}
-		modifier = {
-			add = 5
-			has_global_flag = { flag = chaos_tier value = 4 }
-		}
-		modifier = {
-			add = 6
-			has_global_flag = { flag = chaos_tier value = 5 }
-		}
-		# Tier 2 zombies are very dangerous
-		modifier = {
-			add = 4
+	find_cure_tier_2 = {
+		visible = {
+			has_global_flag = has_zombie_outbreak
 			any_country = {
-				original_tag = ZZZ
+				is_live_standard_zombie_outbreak_country = yes
 				has_country_flag = { flag = zombie_current_tier value = 2 }
 			}
 		}
-		modifier = {
-			add = 5
-			any_country = {
-				original_tag = ZZZ
-				has_country_flag = { flag = zombie_current_tier value = 3 }
-			}
+
+		available = {
+			NOT = { has_idea = cure_activated }
+			check_variable = { zzz_cure < 100 }
 		}
-		# Multiple zombie outbreaks increase urgency dramatically
-		modifier = {
-			add = 4
-			any_country = {
-				has_country_flag = zombie_outbreak_dynamic_country
+
+		cost = global.black_friday_price_pp_40
+		days_remove = var:cure_research_days_2?120
+		icon = GFX_decision_generic_research
+
+		ai_will_do = {
+			factor = 1
+			modifier = {
+				add = 4
+				has_war_with = ZZZ
+			}
+			modifier = {
+				add = 2
+				is_in_tech_sharing_group = cure_sharing
+			}
+			# Chaos tier modifiers - higher chaos = more urgent research
+			modifier = {
+				add = 2
+				has_global_flag = { flag = chaos_tier value = 1 }
+			}
+			modifier = {
+				add = 3
+				has_global_flag = { flag = chaos_tier value = 2 }
+			}
+			modifier = {
+				add = 4
+				has_global_flag = { flag = chaos_tier value = 3 }
+			}
+			modifier = {
+				add = 5
+				has_global_flag = { flag = chaos_tier value = 4 }
+			}
+			modifier = {
+				add = 6
+				has_global_flag = { flag = chaos_tier value = 5 }
+			}
+			# Tier 2 zombies are very dangerous
+			modifier = {
+				add = 4
+				any_country = {
+					original_tag = ZZZ
+					has_country_flag = { flag = zombie_current_tier value = 2 }
+				}
+			}
+			modifier = {
+				add = 5
+				any_country = {
+					original_tag = ZZZ
+					has_country_flag = { flag = zombie_current_tier value = 3 }
+				}
+			}
+			# Multiple zombie outbreaks increase urgency dramatically
+			modifier = {
+				add = 4
+				any_country = {
+					has_country_flag = zombie_outbreak_dynamic_country
+					any_owned_state = {
+						any_neighbor_state = {
+							is_controlled_by = ZZZ
+						}
+					}
+				}
+			}
+			# Stability and war situation modifiers
+			modifier = {
+				add = 4
+				has_stability < 0.5
+			}
+			modifier = {
+				add = 3
+				has_war = yes
+				NOT = { has_war_with = ZZZ }
+			}
+			# Major powers prioritize research more
+			modifier = {
+				add = 4
+				is_major = yes
+			}
+			# Democratic countries are more cooperative
+			modifier = {
+				add = 3
+				has_government = democratic
+			}
+			# Resource availability modifiers - tier 2 research is expensive
+
+			modifier = {
+				add = 3
+				num_of_civilian_factories > 40
+			}
+			# Advanced research requirements
+			modifier = {
+				add = 3
+				has_tech = computing_machine
+			}
+			modifier = {
+				add = 2
+				has_tech = radio
+			}
+			# Desperation modifiers
+			modifier = {
+				add = 5
 				any_owned_state = {
 					any_neighbor_state = {
 						is_controlled_by = ZZZ
@@ -611,784 +656,739 @@ find_cure_tier_2 = {
 				}
 			}
 		}
-		# Stability and war situation modifiers
-		modifier = {
-			add = 4
-			has_stability < 0.5
-		}
-		modifier = {
-			add = 3
-			has_war = yes
-			NOT = { has_war_with = ZZZ }
-		}
-		# Major powers prioritize research more
-		modifier = {
-			add = 4
-			is_major = yes
-		}
-		# Democratic countries are more cooperative
-		modifier = {
-			add = 3
-			has_government = democratic
-		}
-		# Resource availability modifiers - tier 2 research is expensive
 
-		modifier = {
-			add = 3
-			num_of_civilian_factories > 40
-		}
-		# Advanced research requirements
-		modifier = {
-			add = 3
-			has_tech = computing_machine
-		}
-		modifier = {
-			add = 2
-			has_tech = radio
-		}
-		# Desperation modifiers
-		modifier = {
-			add = 5
-			any_owned_state = {
-				any_neighbor_state = {
-					is_controlled_by = ZZZ
+		complete_effect = {
+			hidden_effect = {
+				clr_country_flag = find_cure_tier_2_sale_credit
+				clear_variable = find_cure_tier_2_sale_sequence
+				set_temp_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.zero }
+				set_temp_variable = { black_friday_political_power_receipt_sale_sequence = constant:universal_cost_framework.zero }
+				black_friday_credit_political_power_purchase_with_receipt = yes
+				if = {
+					limit = { check_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.one } }
+					set_country_flag = find_cure_tier_2_sale_credit
+					set_variable = { find_cure_tier_2_sale_sequence = black_friday_political_power_receipt_sale_sequence }
 				}
 			}
+			set_variable = { zombie_cure_tier_2_paid_pp = global.black_friday_price_pp_40 }
+			add_timed_idea = {
+				idea = searching_for_cure_tier_2
+				days = 120
+			}
 		}
-	}
-
-	complete_effect = {
-		hidden_effect = {
+		remove_effect = {
+			clear_variable = zombie_cure_tier_2_paid_pp
 			clr_country_flag = find_cure_tier_2_sale_credit
 			clear_variable = find_cure_tier_2_sale_sequence
-			set_temp_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.zero }
-			set_temp_variable = { black_friday_political_power_receipt_sale_sequence = constant:universal_cost_framework.zero }
-			black_friday_credit_political_power_purchase_with_receipt = yes
+			# Calculate dynamic cure research value before applying
+			calculate_cure_research_value = yes
+
 			if = {
-				limit = { check_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.one } }
-				set_country_flag = find_cure_tier_2_sale_credit
-				set_variable = { find_cure_tier_2_sale_sequence = black_friday_political_power_receipt_sale_sequence }
-			}
-		}
-		set_variable = { zombie_cure_tier_2_paid_pp = global.black_friday_price_pp_40 }
-		add_timed_idea = {
-			idea = searching_for_cure_tier_2
-			days = 120
-		}
-	}
-	remove_effect = {
-		clear_variable = zombie_cure_tier_2_paid_pp
-		clr_country_flag = find_cure_tier_2_sale_credit
-		clear_variable = find_cure_tier_2_sale_sequence
-		# Calculate dynamic cure research value before applying
-		calculate_cure_research_value = yes
-
-		if = {
-			limit = { is_in_tech_sharing_group = cure_sharing }
-			add_to_variable = {
-				var = global.zzz_cure
-				value = cure_research_value
-				tooltip = zzz_cure_global_tt
-			}
-			if = { limit = { check_variable = { global.zzz_cure > 99 } }
-			mark_first_zombie_cure_activation = yes
-
-			every_country = {
 				limit = { is_in_tech_sharing_group = cure_sharing }
-				activate_shared_zombie_cure_for_current_country = yes
-			}
-			every_country = {
-				limit = { original_tag = ZZZ }
-				add_timed_idea = {
-					idea = cure_sharing_bonus
-					days = 120
+				add_to_variable = {
+					var = global.zzz_cure
+					value = cure_research_value
+					tooltip = zzz_cure_global_tt
+				}
+				if = { limit = { check_variable = { global.zzz_cure > 99 } }
+					mark_first_zombie_cure_activation = yes
+
+					every_country = {
+						limit = { is_in_tech_sharing_group = cure_sharing }
+						activate_shared_zombie_cure_for_current_country = yes
+					}
+					every_country = {
+						limit = { original_tag = ZZZ }
+						add_timed_idea = {
+							idea = cure_sharing_bonus
+							days = 120
+						}
+					}
+					set_variable = { global.zzz_cure = 0 }
+				}
+			} else = {
+				add_to_variable = {
+					var = zzz_cure
+					value = cure_research_value
+					tooltip = zzz_cure_tt
 				}
 			}
-			set_variable = { global.zzz_cure = 0 }
 		}
-	} else = {
-		add_to_variable = {
-			var = zzz_cure
-			value = cure_research_value
-			tooltip = zzz_cure_tt
+		cancel_trigger = {
+			OR = {
+				has_idea = cure_activated
+				NOT = { has_global_flag = has_zombie_outbreak }
+			}
 		}
-	}
-}
-cancel_trigger = {
-	OR = {
-		has_idea = cure_activated
-		NOT = { has_global_flag = has_zombie_outbreak }
-	}
-}
-cancel_effect = {
-	hidden_effect = {
-		remove_ideas = searching_for_cure_tier_2
-		add_political_power = zombie_cure_tier_2_paid_pp
-		clear_variable = zombie_cure_tier_2_paid_pp
-		set_temp_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.zero }
-		set_temp_variable = { black_friday_political_power_receipt_sale_sequence = find_cure_tier_2_sale_sequence }
-		if = {
-			limit = { has_country_flag = find_cure_tier_2_sale_credit }
-			set_temp_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.one }
-		}
-		black_friday_withdraw_political_power_purchase_with_receipt = yes
-		clr_country_flag = find_cure_tier_2_sale_credit
-		clear_variable = find_cure_tier_2_sale_sequence
-	}
-}
-}
-
-find_cure_tier_3 = {
-	visible = {
-		has_global_flag = has_zombie_outbreak
-		any_country = {
-			is_live_standard_zombie_outbreak_country = yes
-			has_country_flag = { flag = zombie_current_tier value = 3 }
+		cancel_effect = {
+			hidden_effect = {
+				remove_ideas = searching_for_cure_tier_2
+				add_political_power = zombie_cure_tier_2_paid_pp
+				clear_variable = zombie_cure_tier_2_paid_pp
+				set_temp_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.zero }
+				set_temp_variable = { black_friday_political_power_receipt_sale_sequence = find_cure_tier_2_sale_sequence }
+				if = {
+					limit = { has_country_flag = find_cure_tier_2_sale_credit }
+					set_temp_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.one }
+				}
+				black_friday_withdraw_political_power_purchase_with_receipt = yes
+				clr_country_flag = find_cure_tier_2_sale_credit
+				clear_variable = find_cure_tier_2_sale_sequence
+			}
 		}
 	}
 
-	available = {
-		NOT = { has_idea = cure_activated }
-		check_variable = { zzz_cure < 100 }
-	}
-
-	cost = global.black_friday_price_pp_50
-	days_remove = var:cure_research_days_3?150
-	icon = GFX_decision_generic_research
-
-	ai_will_do = {
-		factor = 2  # Base factor higher for ultimate tier
-		modifier = {
-			add = 6
-			has_war_with = ZZZ
-		}
-		modifier = {
-			add = 4
-			is_in_tech_sharing_group = cure_sharing
-		}
-		# Chaos tier modifiers - at tier 3 zombies, all chaos is critical
-		modifier = {
-			add = 3
-			has_global_flag = { flag = chaos_tier value = 1 }
-		}
-		modifier = {
-			add = 5
-			has_global_flag = { flag = chaos_tier value = 2 }
-		}
-		modifier = {
-			add = 7
-			has_global_flag = { flag = chaos_tier value = 3 }
-		}
-		modifier = {
-			add = 9
-			has_global_flag = { flag = chaos_tier value = 4 }
-		}
-		modifier = {
-			add = 12
-			has_global_flag = { flag = chaos_tier value = 5 }
-		}
-		# Tier 3 zombies are apocalyptic
-		modifier = {
-			add = 8
+	find_cure_tier_3 = {
+		visible = {
+			has_global_flag = has_zombie_outbreak
 			any_country = {
-				original_tag = ZZZ
+				is_live_standard_zombie_outbreak_country = yes
 				has_country_flag = { flag = zombie_current_tier value = 3 }
 			}
 		}
-		# Multiple zombie outbreaks at tier 3 = world ending
-		modifier = {
-			add = 10
-			any_country = {
-				has_country_flag = zombie_outbreak_dynamic_country
+
+		available = {
+			NOT = { has_idea = cure_activated }
+			check_variable = { zzz_cure < 100 }
+		}
+
+		cost = global.black_friday_price_pp_50
+		days_remove = var:cure_research_days_3?150
+		icon = GFX_decision_generic_research
+
+		ai_will_do = {
+			factor = 2  # Base factor higher for ultimate tier
+			modifier = {
+				add = 6
+				has_war_with = ZZZ
+			}
+			modifier = {
+				add = 4
+				is_in_tech_sharing_group = cure_sharing
+			}
+			# Chaos tier modifiers - at tier 3 zombies, all chaos is critical
+			modifier = {
+				add = 3
+				has_global_flag = { flag = chaos_tier value = 1 }
+			}
+			modifier = {
+				add = 5
+				has_global_flag = { flag = chaos_tier value = 2 }
+			}
+			modifier = {
+				add = 7
+				has_global_flag = { flag = chaos_tier value = 3 }
+			}
+			modifier = {
+				add = 9
+				has_global_flag = { flag = chaos_tier value = 4 }
+			}
+			modifier = {
+				add = 12
+				has_global_flag = { flag = chaos_tier value = 5 }
+			}
+			# Tier 3 zombies are apocalyptic
+			modifier = {
+				add = 8
+				any_country = {
+					original_tag = ZZZ
+					has_country_flag = { flag = zombie_current_tier value = 3 }
+				}
+			}
+			# Multiple zombie outbreaks at tier 3 = world ending
+			modifier = {
+				add = 10
+				any_country = {
+					has_country_flag = zombie_outbreak_dynamic_country
+					any_owned_state = {
+						any_neighbor_state = {
+							is_controlled_by = ZZZ
+						}
+					}
+				}
+			}
+			# Stability and war situation modifiers - desperation level
+			modifier = {
+				add = 8
+				has_stability < 0.5
+			}
+			modifier = {
+				add = 6
+				has_stability < 0.3
+			}
+			modifier = {
+				add = 5
+				has_war = yes
+				NOT = { has_war_with = ZZZ }
+			}
+			# Major powers absolutely must prioritize this
+			modifier = {
+				add = 8
+				is_major = yes
+			}
+			# All governments cooperate at this level
+			modifier = {
+				add = 4
+				has_government = democratic
+			}
+			modifier = {
+				add = 2
+				has_government = communism
+			}
+			modifier = {
+				add = 2
+				has_government = fascism
+			}
+			# Resource availability modifiers - tier 3 research is extremely expensive
+
+			modifier = {
+				add = 5
+				num_of_civilian_factories > 50
+			}
+			modifier = {
+				add = 3
+				num_of_military_factories > 30
+			}
+			# Advanced research requirements - need cutting edge tech
+			modifier = {
+				add = 5
+				has_tech = computing_machine
+			}
+			modifier = {
+				add = 4
+				has_tech = basic_machine_tools
+			}
+			modifier = {
+				add = 3
+				has_tech = radio
+			}
+			# Existential threat modifiers
+			modifier = {
+				add = 15
 				any_owned_state = {
 					any_neighbor_state = {
 						is_controlled_by = ZZZ
 					}
 				}
 			}
-		}
-		# Stability and war situation modifiers - desperation level
-		modifier = {
-			add = 8
-			has_stability < 0.5
-		}
-		modifier = {
-			add = 6
-			has_stability < 0.3
-		}
-		modifier = {
-			add = 5
-			has_war = yes
-			NOT = { has_war_with = ZZZ }
-		}
-		# Major powers absolutely must prioritize this
-		modifier = {
-			add = 8
-			is_major = yes
-		}
-		# All governments cooperate at this level
-		modifier = {
-			add = 4
-			has_government = democratic
-		}
-		modifier = {
-			add = 2
-			has_government = communism
-		}
-		modifier = {
-			add = 2
-			has_government = fascism
-		}
-		# Resource availability modifiers - tier 3 research is extremely expensive
-
-		modifier = {
-			add = 5
-			num_of_civilian_factories > 50
-		}
-		modifier = {
-			add = 3
-			num_of_military_factories > 30
-		}
-		# Advanced research requirements - need cutting edge tech
-		modifier = {
-			add = 5
-			has_tech = computing_machine
-		}
-		modifier = {
-			add = 4
-			has_tech = basic_machine_tools
-		}
-		modifier = {
-			add = 3
-			has_tech = radio
-		}
-		# Existential threat modifiers
-		modifier = {
-			add = 15
-			any_owned_state = {
-				any_neighbor_state = {
-					is_controlled_by = ZZZ
-				}
-			}
-		}
-		modifier = {
-			add = 10
-			capital_scope = {
-				any_neighbor_state = {
+			modifier = {
+				add = 10
+				capital_scope = {
 					any_neighbor_state = {
-						is_controlled_by = ZZZ
+						any_neighbor_state = {
+							is_controlled_by = ZZZ
+						}
 					}
 				}
 			}
+			# Manpower considerations - desperate times
+			modifier = {
+				add = 3
+				has_manpower < 100000
+			}
 		}
-		# Manpower considerations - desperate times
-		modifier = {
-			add = 3
-			has_manpower < 100000
-		}
-	}
 
-	complete_effect = {
-		hidden_effect = {
+		complete_effect = {
+			hidden_effect = {
+				clr_country_flag = find_cure_tier_3_sale_credit
+				clear_variable = find_cure_tier_3_sale_sequence
+				set_temp_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.zero }
+				set_temp_variable = { black_friday_political_power_receipt_sale_sequence = constant:universal_cost_framework.zero }
+				black_friday_credit_political_power_purchase_with_receipt = yes
+				if = {
+					limit = { check_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.one } }
+					set_country_flag = find_cure_tier_3_sale_credit
+					set_variable = { find_cure_tier_3_sale_sequence = black_friday_political_power_receipt_sale_sequence }
+				}
+			}
+			set_variable = { zombie_cure_tier_3_paid_pp = global.black_friday_price_pp_50 }
+			add_timed_idea = {
+				idea = searching_for_cure_tier_3
+				days = 150
+			}
+		}
+		remove_effect = {
+			clear_variable = zombie_cure_tier_3_paid_pp
 			clr_country_flag = find_cure_tier_3_sale_credit
 			clear_variable = find_cure_tier_3_sale_sequence
-			set_temp_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.zero }
-			set_temp_variable = { black_friday_political_power_receipt_sale_sequence = constant:universal_cost_framework.zero }
-			black_friday_credit_political_power_purchase_with_receipt = yes
+			# Calculate dynamic cure research value before applying
+			calculate_cure_research_value = yes
+
 			if = {
-				limit = { check_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.one } }
-				set_country_flag = find_cure_tier_3_sale_credit
-				set_variable = { find_cure_tier_3_sale_sequence = black_friday_political_power_receipt_sale_sequence }
-			}
-		}
-		set_variable = { zombie_cure_tier_3_paid_pp = global.black_friday_price_pp_50 }
-		add_timed_idea = {
-			idea = searching_for_cure_tier_3
-			days = 150
-		}
-	}
-	remove_effect = {
-		clear_variable = zombie_cure_tier_3_paid_pp
-		clr_country_flag = find_cure_tier_3_sale_credit
-		clear_variable = find_cure_tier_3_sale_sequence
-		# Calculate dynamic cure research value before applying
-		calculate_cure_research_value = yes
-
-		if = {
-			limit = { is_in_tech_sharing_group = cure_sharing }
-			add_to_variable = {
-				var = global.zzz_cure
-				value = cure_research_value
-				tooltip = zzz_cure_global_tt
-			}
-			if = { limit = { check_variable = { global.zzz_cure > 99 } }
-			mark_first_zombie_cure_activation = yes
-
-			every_country = {
 				limit = { is_in_tech_sharing_group = cure_sharing }
-				activate_shared_zombie_cure_for_current_country = yes
-			}
-			every_country = {
-				limit = { original_tag = ZZZ }
-				add_timed_idea = {
-					idea = cure_sharing_bonus
-					days = 120
+				add_to_variable = {
+					var = global.zzz_cure
+					value = cure_research_value
+					tooltip = zzz_cure_global_tt
+				}
+				if = { limit = { check_variable = { global.zzz_cure > 99 } }
+					mark_first_zombie_cure_activation = yes
+
+					every_country = {
+						limit = { is_in_tech_sharing_group = cure_sharing }
+						activate_shared_zombie_cure_for_current_country = yes
+					}
+					every_country = {
+						limit = { original_tag = ZZZ }
+						add_timed_idea = {
+							idea = cure_sharing_bonus
+							days = 120
+						}
+					}
+					set_variable = { global.zzz_cure = 0 }
+				}
+			} else = {
+				add_to_variable = {
+					var = zzz_cure
+					value = cure_research_value
+					tooltip = zzz_cure_tt
 				}
 			}
-			set_variable = { global.zzz_cure = 0 }
 		}
-	} else = {
-		add_to_variable = {
-			var = zzz_cure
-			value = cure_research_value
-			tooltip = zzz_cure_tt
-		}
-	}
-}
-cancel_trigger = {
-	OR = {
-		has_idea = cure_activated
-		NOT = { has_global_flag = has_zombie_outbreak }
-	}
-}
-cancel_effect = {
-	hidden_effect = {
-		remove_ideas = searching_for_cure_tier_3
-		add_political_power = zombie_cure_tier_3_paid_pp
-		clear_variable = zombie_cure_tier_3_paid_pp
-		set_temp_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.zero }
-		set_temp_variable = { black_friday_political_power_receipt_sale_sequence = find_cure_tier_3_sale_sequence }
-		if = {
-			limit = { has_country_flag = find_cure_tier_3_sale_credit }
-			set_temp_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.one }
-		}
-		black_friday_withdraw_political_power_purchase_with_receipt = yes
-		clr_country_flag = find_cure_tier_3_sale_credit
-		clear_variable = find_cure_tier_3_sale_sequence
-	}
-}
-}
-
-join_cure_sharing = {
-	visible = {
-		NOT = { is_in_tech_sharing_group = cure_sharing }
-	}
-
-	cost = global.black_friday_price_pp_10
-	icon = GFX_decision_eng_trade_unions_support
-
-	ai_will_do = {
-		factor = 1
-		modifier = {
-			factor = 3
-			has_war_with = ZZZ
-		}
-		modifier = {
-			add = 1
-			any_country = { is_in_tech_sharing_group = cure_sharing NOT = { has_war_with = ROOT } }
-		}
-		modifier = {
-			factor = 0.1
+		cancel_trigger = {
 			OR = {
-				has_government = fascism
-				has_government = communism
+				has_idea = cure_activated
+				NOT = { has_global_flag = has_zombie_outbreak }
 			}
 		}
-		modifier = {
-			factor = 2
-			OR = {
-				has_government = democratic
+		cancel_effect = {
+			hidden_effect = {
+				remove_ideas = searching_for_cure_tier_3
+				add_political_power = zombie_cure_tier_3_paid_pp
+				clear_variable = zombie_cure_tier_3_paid_pp
+				set_temp_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.zero }
+				set_temp_variable = { black_friday_political_power_receipt_sale_sequence = find_cure_tier_3_sale_sequence }
+				if = {
+					limit = { has_country_flag = find_cure_tier_3_sale_credit }
+					set_temp_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.one }
+				}
+				black_friday_withdraw_political_power_purchase_with_receipt = yes
+				clr_country_flag = find_cure_tier_3_sale_credit
+				clear_variable = find_cure_tier_3_sale_sequence
 			}
 		}
-		# Chaos tier modifiers - higher chaos = more cooperation
-		modifier = {
-			add = 1
-			has_global_flag = { flag = chaos_tier value = 1 }
+	}
+
+	join_cure_sharing = {
+		visible = {
+			NOT = { is_in_tech_sharing_group = cure_sharing }
 		}
-		modifier = {
-			add = 2
-			has_global_flag = { flag = chaos_tier value = 2 }
-		}
-		modifier = {
-			add = 4
-			has_global_flag = { flag = chaos_tier value = 3 }
-		}
-		modifier = {
-			add = 6
-			has_global_flag = { flag = chaos_tier value = 4 }
-		}
-		modifier = {
-			add = 8
-			has_global_flag = { flag = chaos_tier value = 5 }
-		}
-		# Zombie tier modifiers - higher threat = more cooperation
-		modifier = {
-			add = 2
-			any_country = {
-				original_tag = ZZZ
-				has_country_flag = { flag = zombie_current_tier value > 0 }
+
+		cost = global.black_friday_price_pp_10
+		icon = GFX_decision_eng_trade_unions_support
+
+		ai_will_do = {
+			factor = 1
+			modifier = {
+				factor = 3
+				has_war_with = ZZZ
 			}
-		}
-		modifier = {
-			add = 3
-			any_country = {
-				original_tag = ZZZ
-				has_country_flag = { flag = zombie_current_tier value > 1 }
+			modifier = {
+				add = 1
+				any_country = { is_in_tech_sharing_group = cure_sharing NOT = { has_war_with = ROOT } }
 			}
-		}
-		modifier = {
-			add = 5
-			any_country = {
-				original_tag = ZZZ
-				has_country_flag = { flag = zombie_current_tier value = 3 }
+			modifier = {
+				factor = 0.1
+				OR = {
+					has_government = fascism
+					has_government = communism
+				}
 			}
-		}
-		# Multiple zombie outbreaks = urgent cooperation
-		modifier = {
-			add = 4
-			any_country = {
-				has_country_flag = zombie_outbreak_dynamic_country
+			modifier = {
+				factor = 2
+				OR = {
+					has_government = democratic
+				}
+			}
+			# Chaos tier modifiers - higher chaos = more cooperation
+			modifier = {
+				add = 1
+				has_global_flag = { flag = chaos_tier value = 1 }
+			}
+			modifier = {
+				add = 2
+				has_global_flag = { flag = chaos_tier value = 2 }
+			}
+			modifier = {
+				add = 4
+				has_global_flag = { flag = chaos_tier value = 3 }
+			}
+			modifier = {
+				add = 6
+				has_global_flag = { flag = chaos_tier value = 4 }
+			}
+			modifier = {
+				add = 8
+				has_global_flag = { flag = chaos_tier value = 5 }
+			}
+			# Zombie tier modifiers - higher threat = more cooperation
+			modifier = {
+				add = 2
+				any_country = {
+					original_tag = ZZZ
+					has_country_flag = { flag = zombie_current_tier value > 0 }
+				}
+			}
+			modifier = {
+				add = 3
+				any_country = {
+					original_tag = ZZZ
+					has_country_flag = { flag = zombie_current_tier value > 1 }
+				}
+			}
+			modifier = {
+				add = 5
+				any_country = {
+					original_tag = ZZZ
+					has_country_flag = { flag = zombie_current_tier value = 3 }
+				}
+			}
+			# Multiple zombie outbreaks = urgent cooperation
+			modifier = {
+				add = 4
+				any_country = {
+					has_country_flag = zombie_outbreak_dynamic_country
+					any_owned_state = {
+						any_neighbor_state = {
+							is_controlled_by = ZZZ
+						}
+					}
+				}
+			}
+			# Proximity to threat increases cooperation
+			modifier = {
+				add = 5
 				any_owned_state = {
 					any_neighbor_state = {
 						is_controlled_by = ZZZ
 					}
 				}
 			}
-		}
-		# Proximity to threat increases cooperation
-		modifier = {
-			add = 5
-			any_owned_state = {
-				any_neighbor_state = {
-					is_controlled_by = ZZZ
-				}
+			# Stability considerations
+			modifier = {
+				add = 2
+				has_stability < 0.5
 			}
-		}
-		# Stability considerations
-		modifier = {
-			add = 2
-			has_stability < 0.5
-		}
-		# Faction considerations
-		modifier = {
-			factor = 10
-			any_country = {
-				is_in_tech_sharing_group = cure_sharing
-				is_in_faction_with = ROOT
-			}
-		}
-		# Major powers more likely to lead cooperation
-		modifier = {
-			factor = 2
-			is_major = yes
-		}
-		# Democratic tradition of cooperation
-		modifier = {
-			add = 3
-			has_government = democratic
-			any_country = {
-				is_in_tech_sharing_group = cure_sharing
-				has_government = democratic
-			}
-		}
-		# Research capability modifiers
-		modifier = {
-			add = 1
-			num_of_civilian_factories > 15
-		}
-		modifier = {
-			add = 2
-			num_of_civilian_factories > 30
-		}
-
-	}
-
-	complete_effect = {
-		hidden_effect = { black_friday_credit_political_power_purchase = yes }
-		every_other_country = {
-			limit = { is_in_tech_sharing_group = cure_sharing }
-			add_opinion_modifier = {
-				target = ROOT
-				modifier = small_increase
-			}
-		}
-		add_to_variable = {
-			var = global.zzz_cure
-			value = zzz_cure
-			tooltip = join_cure_sharing_tt
-		}
-		add_to_tech_sharing_group = cure_sharing
-		set_variable = { zzz_cure = 0 }
-	}
-}
-leave_cure_sharing = {
-	visible = {
-		is_in_tech_sharing_group = cure_sharing
-	}
-
-	cost = global.black_friday_price_pp_20
-	icon = GFX_decision_oppression
-
-	ai_will_do = {
-		factor = 0
-		modifier = {
-			add = 2
-			any_country = { is_in_tech_sharing_group = cure_sharing has_war_with = ROOT }
-		}
-		modifier = {
-			add = 1
-			NOT = { has_war_with = ZZZ }
-		}
-		modifier = {
-			add = 1
-			is_major = yes
-		}
-		modifier = {
-			factor = 1.5
-			OR = {
-				has_government = fascism
-				has_government = communism
-			}
-		}
-		modifier = {
-			factor = 0
-			OR = {
-				has_government = democratic
-			}
-		}
-		# Chaos tier modifiers - higher chaos = less likely to leave
-		modifier = {
-			factor = 0.8
-			has_global_flag = { flag = chaos_tier value = 1 }
-		}
-		modifier = {
-			factor = 0.6
-			has_global_flag = { flag = chaos_tier value = 2 }
-		}
-		modifier = {
-			factor = 0.4
-			has_global_flag = { flag = chaos_tier value = 3 }
-		}
-		modifier = {
-			factor = 0.2
-			has_global_flag = { flag = chaos_tier value = 4 }
-		}
-		modifier = {
-			factor = 0.1
-			has_global_flag = { flag = chaos_tier value = 5 }
-		}
-		# Zombie tier modifiers - higher threat = less likely to leave
-		modifier = {
-			factor = 0.7
-			any_country = {
-				original_tag = ZZZ
-				has_country_flag = { flag = zombie_current_tier value > 0 }
-			}
-		}
-		modifier = {
-			factor = 0.5
-			any_country = {
-				original_tag = ZZZ
-				has_country_flag = { flag = zombie_current_tier value > 1 }
-			}
-		}
-		modifier = {
-			factor = 0.2
-			any_country = {
-				original_tag = ZZZ
-				has_country_flag = { flag = zombie_current_tier value = 3 }
-			}
-		}
-		# Multiple zombie outbreaks
-		modifier = {
-			factor = 0.5
-			any_country = {
-				has_country_flag = zombie_outbreak_dynamic_country
-				any_owned_state = {
-					any_neighbor_state = {
-						is_controlled_by = ZZZ
-					}
-				}
-			}
-		}
-		# Proximity to threat discourages leaving
-		modifier = {
-			factor = 0.1
-			any_owned_state = {
-				any_neighbor_state = {
-					is_controlled_by = ZZZ
-				}
-			}
-		}
-		# Stability considerations - desperate countries stay
-		modifier = {
-			factor = 0.3
-			has_stability < 0.5
-		}
-		# Major powers might go solo if they have resources
-		modifier = {
-			add = 2
-			is_major = yes
-			num_of_civilian_factories > 50
-			check_variable = { zzz_cure > 50 }
-		}
-		# Autocratic regimes more likely to leave
-		modifier = {
-			factor = 2
-			OR = {
-				has_government = fascism
-				has_government = communism
-			}
-			NOT = {
+			# Faction considerations
+			modifier = {
+				factor = 10
 				any_country = {
 					is_in_tech_sharing_group = cure_sharing
-					has_same_ideology = yes
+					is_in_faction_with = ROOT
 				}
 			}
+			# Major powers more likely to lead cooperation
+			modifier = {
+				factor = 2
+				is_major = yes
+			}
+			# Democratic tradition of cooperation
+			modifier = {
+				add = 3
+				has_government = democratic
+				any_country = {
+					is_in_tech_sharing_group = cure_sharing
+					has_government = democratic
+				}
+			}
+			# Research capability modifiers
+			modifier = {
+				add = 1
+				num_of_civilian_factories > 15
+			}
+			modifier = {
+				add = 2
+				num_of_civilian_factories > 30
+			}
+
+		}
+
+		complete_effect = {
+			hidden_effect = { black_friday_credit_political_power_purchase = yes }
+			every_other_country = {
+				limit = { is_in_tech_sharing_group = cure_sharing }
+				add_opinion_modifier = {
+					target = ROOT
+					modifier = small_increase
+				}
+			}
+			add_to_variable = {
+				var = global.zzz_cure
+				value = zzz_cure
+				tooltip = join_cure_sharing_tt
+			}
+			add_to_tech_sharing_group = cure_sharing
+			set_variable = { zzz_cure = 0 }
 		}
 	}
+	leave_cure_sharing = {
+		visible = {
+			is_in_tech_sharing_group = cure_sharing
+		}
 
-	complete_effect = {
-		hidden_effect = { black_friday_credit_political_power_purchase = yes }
-		every_other_country = {
-			limit = { is_in_tech_sharing_group = cure_sharing }
-			add_opinion_modifier = {
-				target = ROOT
-				modifier = medium_decrease
-			}
-		}
-		remove_from_tech_sharing_group = cure_sharing
-		set_variable = { zzz_cure = 0 }
-	}
-}
+		cost = global.black_friday_price_pp_20
+		icon = GFX_decision_oppression
 
-activate_the_cure = {
-	available = {
-		check_variable = { zzz_cure > 99 }
-		NOT = { has_idea = cure_activated }
-	}
-	visible = {
-		NOT = { is_in_tech_sharing_group = cure_sharing }
-	}
-
-	cost = global.black_friday_price_pp_10
-	fire_only_once = yes
-	icon = GFX_decision_generic_research
-
-	ai_will_do = {
-		base = 5
-		modifier = {
-			factor = 2
-			has_war_with = ZZZ
-		}
-		modifier = {
-			factor = 0.2
-			OR = {
-				has_government = fascism
-				has_government = communism
+		ai_will_do = {
+			factor = 0
+			modifier = {
+				add = 2
+				any_country = { is_in_tech_sharing_group = cure_sharing has_war_with = ROOT }
 			}
-		}
-		# Chaos tier modifiers - all tiers urgently activate
-		modifier = {
-			add = 5
-			has_global_flag = { flag = chaos_tier value = 1 }
-		}
-		modifier = {
-			add = 8
-			has_global_flag = { flag = chaos_tier value = 2 }
-		}
-		modifier = {
-			add = 12
-			has_global_flag = { flag = chaos_tier value = 3 }
-		}
-		modifier = {
-			add = 15
-			has_global_flag = { flag = chaos_tier value = 4 }
-		}
-		modifier = {
-			add = 20
-			has_global_flag = { flag = chaos_tier value = 5 }
-		}
-		# Zombie tier modifiers - higher threat = immediate activation
-		modifier = {
-			add = 8
-			any_country = {
-				original_tag = ZZZ
-				has_country_flag = { flag = zombie_current_tier value > 0 }
+			modifier = {
+				add = 1
+				NOT = { has_war_with = ZZZ }
 			}
-		}
-		modifier = {
-			add = 12
-			any_country = {
-				original_tag = ZZZ
-				has_country_flag = { flag = zombie_current_tier value > 1 }
+			modifier = {
+				add = 1
+				is_major = yes
 			}
-		}
-		modifier = {
-			add = 20
-			any_country = {
-				original_tag = ZZZ
-				has_country_flag = { flag = zombie_current_tier value = 3 }
+			modifier = {
+				factor = 1.5
+				OR = {
+					has_government = fascism
+					has_government = communism
+				}
 			}
-		}
-		# Multiple zombie outbreaks = activate immediately
-		modifier = {
-			add = 15
-			any_country = {
-				has_country_flag = zombie_outbreak_dynamic_country
+			modifier = {
+				factor = 0
+				OR = {
+					has_government = democratic
+				}
+			}
+			# Chaos tier modifiers - higher chaos = less likely to leave
+			modifier = {
+				factor = 0.8
+				has_global_flag = { flag = chaos_tier value = 1 }
+			}
+			modifier = {
+				factor = 0.6
+				has_global_flag = { flag = chaos_tier value = 2 }
+			}
+			modifier = {
+				factor = 0.4
+				has_global_flag = { flag = chaos_tier value = 3 }
+			}
+			modifier = {
+				factor = 0.2
+				has_global_flag = { flag = chaos_tier value = 4 }
+			}
+			modifier = {
+				factor = 0.1
+				has_global_flag = { flag = chaos_tier value = 5 }
+			}
+			# Zombie tier modifiers - higher threat = less likely to leave
+			modifier = {
+				factor = 0.7
+				any_country = {
+					original_tag = ZZZ
+					has_country_flag = { flag = zombie_current_tier value > 0 }
+				}
+			}
+			modifier = {
+				factor = 0.5
+				any_country = {
+					original_tag = ZZZ
+					has_country_flag = { flag = zombie_current_tier value > 1 }
+				}
+			}
+			modifier = {
+				factor = 0.2
+				any_country = {
+					original_tag = ZZZ
+					has_country_flag = { flag = zombie_current_tier value = 3 }
+				}
+			}
+			# Multiple zombie outbreaks
+			modifier = {
+				factor = 0.5
+				any_country = {
+					has_country_flag = zombie_outbreak_dynamic_country
+					any_owned_state = {
+						any_neighbor_state = {
+							is_controlled_by = ZZZ
+						}
+					}
+				}
+			}
+			# Proximity to threat discourages leaving
+			modifier = {
+				factor = 0.1
 				any_owned_state = {
 					any_neighbor_state = {
 						is_controlled_by = ZZZ
 					}
 				}
 			}
-		}
-		# Proximity = urgent activation
-		modifier = {
-			add = 25
-			any_owned_state = {
-				any_neighbor_state = {
-					is_controlled_by = ZZZ
+			# Stability considerations - desperate countries stay
+			modifier = {
+				factor = 0.3
+				has_stability < 0.5
+			}
+			# Major powers might go solo if they have resources
+			modifier = {
+				add = 2
+				is_major = yes
+				num_of_civilian_factories > 50
+				check_variable = { zzz_cure > 50 }
+			}
+			# Autocratic regimes more likely to leave
+			modifier = {
+				factor = 2
+				OR = {
+					has_government = fascism
+					has_government = communism
+				}
+				NOT = {
+					any_country = {
+						is_in_tech_sharing_group = cure_sharing
+						has_same_ideology = yes
+					}
 				}
 			}
 		}
-		# Stability considerations
-		modifier = {
-			add = 10
-			has_stability < 0.5
-		}
-		# Major powers activate faster
-		modifier = {
-			add = 5
-			is_major = yes
-		}
-		# Democratic countries prioritize saving the world
-		modifier = {
-			add = 8
-			has_government = democratic
-		}
-		# Authoritarian regimes might hoard the cure initially
-		modifier = {
-			factor = 0.3
-			OR = {
-				has_government = fascism
-				has_government = communism
+
+		complete_effect = {
+			hidden_effect = { black_friday_credit_political_power_purchase = yes }
+			every_other_country = {
+				limit = { is_in_tech_sharing_group = cure_sharing }
+				add_opinion_modifier = {
+					target = ROOT
+					modifier = medium_decrease
+				}
 			}
-			NOT = {
+			remove_from_tech_sharing_group = cure_sharing
+			set_variable = { zzz_cure = 0 }
+		}
+	}
+
+	activate_the_cure = {
+		available = {
+			check_variable = { zzz_cure > 99 }
+			NOT = { has_idea = cure_activated }
+		}
+		visible = {
+			NOT = { is_in_tech_sharing_group = cure_sharing }
+		}
+
+		cost = global.black_friday_price_pp_10
+		fire_only_once = yes
+		icon = GFX_decision_generic_research
+
+		ai_will_do = {
+			base = 5
+			modifier = {
+				factor = 2
+				has_war_with = ZZZ
+			}
+			modifier = {
+				factor = 0.2
+				OR = {
+					has_government = fascism
+					has_government = communism
+				}
+			}
+			# Chaos tier modifiers - all tiers urgently activate
+			modifier = {
+				add = 5
+				has_global_flag = { flag = chaos_tier value = 1 }
+			}
+			modifier = {
+				add = 8
+				has_global_flag = { flag = chaos_tier value = 2 }
+			}
+			modifier = {
+				add = 12
+				has_global_flag = { flag = chaos_tier value = 3 }
+			}
+			modifier = {
+				add = 15
+				has_global_flag = { flag = chaos_tier value = 4 }
+			}
+			modifier = {
+				add = 20
+				has_global_flag = { flag = chaos_tier value = 5 }
+			}
+			# Zombie tier modifiers - higher threat = immediate activation
+			modifier = {
+				add = 8
+				any_country = {
+					original_tag = ZZZ
+					has_country_flag = { flag = zombie_current_tier value > 0 }
+				}
+			}
+			modifier = {
+				add = 12
+				any_country = {
+					original_tag = ZZZ
+					has_country_flag = { flag = zombie_current_tier value > 1 }
+				}
+			}
+			modifier = {
+				add = 20
+				any_country = {
+					original_tag = ZZZ
+					has_country_flag = { flag = zombie_current_tier value = 3 }
+				}
+			}
+			# Multiple zombie outbreaks = activate immediately
+			modifier = {
+				add = 15
+				any_country = {
+					has_country_flag = zombie_outbreak_dynamic_country
+					any_owned_state = {
+						any_neighbor_state = {
+							is_controlled_by = ZZZ
+						}
+					}
+				}
+			}
+			# Proximity = urgent activation
+			modifier = {
+				add = 25
 				any_owned_state = {
 					any_neighbor_state = {
 						is_controlled_by = ZZZ
 					}
 				}
 			}
+			# Stability considerations
+			modifier = {
+				add = 10
+				has_stability < 0.5
+			}
+			# Major powers activate faster
+			modifier = {
+				add = 5
+				is_major = yes
+			}
+			# Democratic countries prioritize saving the world
+			modifier = {
+				add = 8
+				has_government = democratic
+			}
+			# Authoritarian regimes might hoard the cure initially
+			modifier = {
+				factor = 0.3
+				OR = {
+					has_government = fascism
+					has_government = communism
+				}
+				NOT = {
+					any_owned_state = {
+						any_neighbor_state = {
+							is_controlled_by = ZZZ
+						}
+					}
+				}
+			}
+		}
+
+		complete_effect = {
+			hidden_effect = { black_friday_credit_political_power_purchase = yes }
+			activate_zombie_cure_for_current_country = yes
 		}
 	}
-
-	complete_effect = {
-		hidden_effect = { black_friday_credit_political_power_purchase = yes }
-		activate_zombie_cure_for_current_country = yes
-	}
-}
 }
 
 

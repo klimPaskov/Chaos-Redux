@@ -2267,8 +2267,8 @@ fire_weighted_dynamic_zombie_outbreak_candidate = {
 }
 
 spawn_selected_dynamic_zombie_outbreak = {
-	    if = {
-	        limit = { has_event_target = outbreak_state }
+	if = {
+		limit = { has_event_target = outbreak_state }
 		if = {
 			limit = {
 				ZZZ = { num_of_controlled_states < 1 }
@@ -2400,86 +2400,86 @@ spawn_selected_dynamic_zombie_outbreak = {
 				}
 			}
 
-	            event_target:outbreak_state = {
-	                var:dynamic_zombie_new_country = {
-	                    transfer_state = PREV
-	                    add_state_core = PREV
-	                    set_capital = {
-	                        state = PREV
-	                        remember_old_capital = no
-	                    }
-	                }
-	                if = {
-	                    limit = { var:dynamic_zombie_new_country = { has_country_flag = weaponized_zombie_special_dynamic_outbreak } }
-	                    var:dynamic_zombie_new_country = {
-	                        if = {
-	                            limit = { has_country_flag = weaponized_zombie_profile_hardened }
-	                            load_oob = "ZZZ_weaponized_hardened_1936"
-	                        }
-	                        else = {
-	                            load_oob = "ZZZ_weaponized_1936"
-	                        }
-		                        weaponized_zombie_unlock_profiled_template = yes
-		                    }
-		                    set_temp_variable = { weaponized_zombie_new_country = dynamic_zombie_new_country }
-		                    var:weaponized_zombie_new_country = {
-		                        save_event_target_as = weaponized_zombie_new_country
-		                    }
-		                    set_temp_variable = { weaponized_zombie_spawn_count = constant:zombie_outbreak.dynamic_outbreak_tier_0_divisions }
-		                    if = {
-	                        limit = { ZZZ = { has_country_flag = { flag = zombie_current_tier value = 1 } } }
-	                        set_temp_variable = { weaponized_zombie_spawn_count = constant:zombie_outbreak.dynamic_outbreak_tier_1_divisions }
-	                    }
-	                    else_if = {
-	                        limit = { ZZZ = { has_country_flag = { flag = zombie_current_tier value = 2 } } }
-	                        set_temp_variable = { weaponized_zombie_spawn_count = constant:zombie_outbreak.dynamic_outbreak_tier_2_divisions }
-	                    }
-	                    else_if = {
-	                        limit = { ZZZ = { has_country_flag = { flag = zombie_current_tier value = 3 } } }
-	                        set_temp_variable = { weaponized_zombie_spawn_count = constant:zombie_outbreak.dynamic_outbreak_tier_3_divisions }
-	                    }
-	                    weaponized_zombie_create_profiled_units = yes
-	                }
-	                else = {
-	                    var:dynamic_zombie_new_country = {
-	                        load_oob = "ZZZ_1936"
-	                        apply_standard_zombie_recruitment_profile = yes
-	                    }
-	                    if = {
-	                        limit = { ZZZ = { has_country_flag = { flag = zombie_current_tier value = 0 } } }
-	                        create_unit = {
-	                            division = "name = \"Brainzz Horde\" division_template = \"Brainzz Horde\" start_experience_factor = 0.1"
-	                            owner = var:dynamic_zombie_new_country
-	                            count = constant:zombie_outbreak.dynamic_outbreak_tier_0_divisions
-	                        }
-	                    }
-	                    else_if = {
-	                        limit = { ZZZ = { has_country_flag = { flag = zombie_current_tier value = 1 } } }
-	                        create_unit = {
-	                            division = "name = \"Brainzz Horde\" division_template = \"Brainzz Horde\" start_experience_factor = 0.2"
-	                            owner = var:dynamic_zombie_new_country
-	                            count = constant:zombie_outbreak.dynamic_outbreak_tier_1_divisions
-	                        }
-	                    }
-	                    else_if = {
-	                        limit = { ZZZ = { has_country_flag = { flag = zombie_current_tier value = 2 } } }
-	                        create_unit = {
-	                            division = "name = \"Brainzz Horde\" division_template = \"Brainzz Horde\" start_experience_factor = 0.3"
-	                            owner = var:dynamic_zombie_new_country
-	                            count = constant:zombie_outbreak.dynamic_outbreak_tier_2_divisions
-	                        }
-	                    }
-	                    else_if = {
-	                        limit = { ZZZ = { has_country_flag = { flag = zombie_current_tier value = 3 } } }
-	                        create_unit = {
-	                            division = "name = \"Brainzz Horde\" division_template = \"Brainzz Horde\" start_experience_factor = 0.5"
-	                            owner = var:dynamic_zombie_new_country
-	                            count = constant:zombie_outbreak.dynamic_outbreak_tier_3_divisions
-	                        }
-	                    }
-	                }
-	            }
-	        }
+			event_target:outbreak_state = {
+				var:dynamic_zombie_new_country = {
+					transfer_state = PREV
+					add_state_core = PREV
+					set_capital = {
+						state = PREV
+						remember_old_capital = no
+					}
+				}
+				if = {
+					limit = { var:dynamic_zombie_new_country = { has_country_flag = weaponized_zombie_special_dynamic_outbreak } }
+					var:dynamic_zombie_new_country = {
+						if = {
+							limit = { has_country_flag = weaponized_zombie_profile_hardened }
+							load_oob = "ZZZ_weaponized_hardened_1936"
+						}
+						else = {
+							load_oob = "ZZZ_weaponized_1936"
+						}
+						weaponized_zombie_unlock_profiled_template = yes
+					}
+					set_temp_variable = { weaponized_zombie_new_country = dynamic_zombie_new_country }
+					var:weaponized_zombie_new_country = {
+						save_event_target_as = weaponized_zombie_new_country
+					}
+					set_temp_variable = { weaponized_zombie_spawn_count = constant:zombie_outbreak.dynamic_outbreak_tier_0_divisions }
+					if = {
+						limit = { ZZZ = { has_country_flag = { flag = zombie_current_tier value = 1 } } }
+						set_temp_variable = { weaponized_zombie_spawn_count = constant:zombie_outbreak.dynamic_outbreak_tier_1_divisions }
+					}
+					else_if = {
+						limit = { ZZZ = { has_country_flag = { flag = zombie_current_tier value = 2 } } }
+						set_temp_variable = { weaponized_zombie_spawn_count = constant:zombie_outbreak.dynamic_outbreak_tier_2_divisions }
+					}
+					else_if = {
+						limit = { ZZZ = { has_country_flag = { flag = zombie_current_tier value = 3 } } }
+						set_temp_variable = { weaponized_zombie_spawn_count = constant:zombie_outbreak.dynamic_outbreak_tier_3_divisions }
+					}
+					weaponized_zombie_create_profiled_units = yes
+				}
+				else = {
+					var:dynamic_zombie_new_country = {
+						load_oob = "ZZZ_1936"
+						apply_standard_zombie_recruitment_profile = yes
+					}
+					if = {
+						limit = { ZZZ = { has_country_flag = { flag = zombie_current_tier value = 0 } } }
+						create_unit = {
+							division = "name = \"Brainzz Horde\" division_template = \"Brainzz Horde\" start_experience_factor = 0.1"
+							owner = var:dynamic_zombie_new_country
+							count = constant:zombie_outbreak.dynamic_outbreak_tier_0_divisions
+						}
+					}
+					else_if = {
+						limit = { ZZZ = { has_country_flag = { flag = zombie_current_tier value = 1 } } }
+						create_unit = {
+							division = "name = \"Brainzz Horde\" division_template = \"Brainzz Horde\" start_experience_factor = 0.2"
+							owner = var:dynamic_zombie_new_country
+							count = constant:zombie_outbreak.dynamic_outbreak_tier_1_divisions
+						}
+					}
+					else_if = {
+						limit = { ZZZ = { has_country_flag = { flag = zombie_current_tier value = 2 } } }
+						create_unit = {
+							division = "name = \"Brainzz Horde\" division_template = \"Brainzz Horde\" start_experience_factor = 0.3"
+							owner = var:dynamic_zombie_new_country
+							count = constant:zombie_outbreak.dynamic_outbreak_tier_2_divisions
+						}
+					}
+					else_if = {
+						limit = { ZZZ = { has_country_flag = { flag = zombie_current_tier value = 3 } } }
+						create_unit = {
+							division = "name = \"Brainzz Horde\" division_template = \"Brainzz Horde\" start_experience_factor = 0.5"
+							owner = var:dynamic_zombie_new_country
+							count = constant:zombie_outbreak.dynamic_outbreak_tier_3_divisions
+						}
+					}
+				}
+			}
+		}
 	}
 }
 
@@ -2660,7 +2660,7 @@ update_all_cure_research_values = {
 		calculate_cure_research_value = yes
 	}
 }
- 
+
 # ============================================================================
 # CHAOS REDUX - EVENT 002 EVENT 019 PROVIDER ADAPTER
 # ============================================================================
