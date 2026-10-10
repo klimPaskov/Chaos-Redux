@@ -195,12 +195,15 @@ The following always give zero direct Chaos:
 
 | Milestone | Starting Chaos | Proof and guard |
 | --- | ---: | --- |
-| First completed interregional route and delivery | `+5` | One-time global receipt, requires two previously disconnected regional cells and a settled delivery |
-| First successful transaction between countries actively at war with each other | `+5` | One-time global receipt, requires hostile scopes at dispatch and settlement through a neutral or masked route |
-| First successful major embargo-circumvention delivery | `+5` | One-time global receipt, requires an active Event 50 or shared strategic embargo proof and meaningful cargo |
-| First approved experimental package delivered | `+10` | One-time global receipt, provider marks the package experimental and delivery settles |
-| First exceptional stockpile delivered | `+5` | One-time global receipt, requires Evolution III and the exceptional-lot provider class |
-| First network connection across four regions | `+10` | One-time global reach milestone, requires active route-backed cells in four regions |
+| First completed interregional route and delivery | `+2` | One-time global receipt, requires two previously disconnected regional cells and a settled delivery |
+| First successful transaction between countries actively at war with each other | `+2` | One-time global receipt, requires hostile scopes at dispatch and settlement through a neutral or masked route |
+| First successful major embargo-circumvention delivery | `+3` | One-time global receipt, requires an active Event 50 or shared strategic embargo proof and meaningful cargo |
+| First approved experimental package delivered | `+4` | One-time global receipt, provider marks the package experimental and delivery settles |
+| First exceptional stockpile delivered | `+2` | One-time global receipt, requires Evolution III and the exceptional-lot provider class |
+| First network connection across four regions | `+3` | One-time global reach milestone, requires active route-backed cells in four regions |
+
+The positive lifetime total is 16, matched by reversals of at most 8.
+A hidden trade network moves goods that already exist and kills no one directly, so each milestone stays below a major war declaration (5) and the total stays near the scale of a first nuclear detonation (10).
 
 Values are tuning anchors. A provider can request a different bounded amount when its package has clearly greater or lower abnormal significance.
 
@@ -208,9 +211,9 @@ Values are tuning anchors. A provider can request a different bounded amount whe
 
 | Reversal | Starting Chaos | Proof and guard |
 | --- | ---: | --- |
-| Mature regional cell dismantled | `-5` | Once per cell, requires active routes and meaningful prior trade history |
-| Whole network reduced to verified dormancy after International Network or later | `-5` | One-time per dormancy episode with cooldown, no active routes or deliveries |
-| Full network dismantled | `-10` | One-time campaign receipt, requires final dismantling proof |
+| Mature regional cell dismantled | `-2` | Once per cell, requires active routes and meaningful prior trade history |
+| Whole network reduced to verified dormancy after International Network or later | `-2` | One-time per dormancy episode with cooldown, no active routes or deliveries |
+| Full network dismantled | `-4` | One-time campaign receipt, requires final dismantling proof |
 
 A reconstruction after dormancy does not repay the same Chaos milestone automatically. It must reach a genuinely new milestone to generate another event-owned source.
 
