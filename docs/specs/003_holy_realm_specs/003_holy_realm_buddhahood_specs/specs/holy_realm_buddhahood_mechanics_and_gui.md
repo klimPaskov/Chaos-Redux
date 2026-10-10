@@ -20,10 +20,10 @@ Suggested layout:
 | Area | Content | Visual state |
 | --- | --- | --- |
 | Center | Animated mandala sprite | Changes from closed lotus to radiant wheel to quiet empty ring |
-| Outer ring | World Suffering and active chaos threats | Flame or smoke intensity grows with chaos |
+| Outer ring | Chaos tier and active chaos threats | Flame or smoke intensity grows with chaos |
 | Left pillar | Bodhi Progress and teaching successes | Scroll or prayer-wheel markers |
 | Right pillar | Dhyana Depth and Meditation Charge | Lotus tiers and concentration bar |
-| Lower left | Compassion and Sangha Cohesion | Refugee lamps and compact seal |
+| Lower left | Compassion Drift and Sangha Cohesion | Refugee lamps and compact seal |
 | Lower right | Detachment and Defilements | Mirror cracks when corrupted |
 | Bottom row | Buttons for Teaching, Meditation, Powers, Final Silence | Locked, available, active, warning, complete states |
 | Top corner | Current leader portrait stage | Static or animated portrait depending on stage |
@@ -86,12 +86,12 @@ Mission families:
 
 | Mission family | Story action | Main requirements | Success rewards | Failure outcome |
 | --- | --- | --- | --- | --- |
-| Send Dhamma Envoys | Dispatch teachers and translators | Relations, safe route, support equipment or convoys | Bodhi, Compassion, target stability | Envoys detained, Defilements rise |
+| Send Dhamma Envoys | Dispatch teachers and translators | Relations, safe route, support equipment or convoys | Bodhi, easier Compassion Drift, target stability | Envoys detained, Defilements rise |
 | Guard the Pilgrimage Route | Protect monks and refugees | Supplied divisions in named states or borders | Bodhi, Sangha Cohesion, route access | Refugee panic, mission cooldown |
 | Rebuild the Stupa Network | Repair sacred and public sites | Civilian factories, building slots, local control | Bodhi, Detachment, local support | Construction strain, lower stability |
 | Debate the Worldly Ministers | Resist turning the realm into a war state | Political faction conditions, high Detachment | Defilements down, unlock focus | Schism pressure rises |
 | Teach Under Bombardment | Complete teaching during a chaos war | Target at war with chaos, support convoy or air route | Large Bodhi and World Suffering insight | High casualty report |
-| Shelter the Dispossessed | Accept refugees from chaos zones | Manpower capacity, supply, stability cost | Compassion, Sangha Cohesion, recruitable support | Supply strain and unrest |
+| Shelter the Dispossessed | Accept refugees from chaos zones | Manpower capacity, supply, stability cost | Easier Compassion Drift, Sangha Cohesion, recruitable support | Supply strain and unrest |
 | Translate the Wheel | Radio and print doctrine | Civilian factories, command staff, maybe radio tech | Teaching success factor, target reach | Propaganda backlash |
 | Heal the Terrified | Field hospitals and relief | Support equipment, manpower, safe corridor | Lowers chaos pressure effects in target | Disease or panic event |
 
@@ -102,7 +102,7 @@ Teaching success should scale with:
 - Whether the Holy Realm has route access.
 - Whether the target is hostile, neutral, friendly, or a compact member.
 - Dhyana Depth.
-- Compassion and Detachment.
+- Compassion Drift and Detachment.
 - Defilements.
 - Previous success in the region.
 - Active evolutions.

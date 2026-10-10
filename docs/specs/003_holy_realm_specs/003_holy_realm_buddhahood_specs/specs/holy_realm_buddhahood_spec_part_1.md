@@ -28,18 +28,15 @@ The Holy Realm should not become a universal conquest tag. It may intervene agai
 | --- | --- | --- | --- | --- |
 | Bodhi Progress | 0 to 108 | How close the Bodhisattva is to Buddhahood | Mandala ring, leader tooltip, event details | Teaching missions, compassion choices, focus rewards, major sacrifices |
 | Dhyana Depth | 0 to 4 | Depth of meditative absorption | Mandala lotus, meditation decision tooltip | Meditation vows, focus path, no-war retreats, completed sanctuary work |
-| Compassion | 0 to 100 | Public and spiritual legitimacy of the path | Mandala lower left value, spirit tooltip | Refuge missions, mercy choices, avoiding normal conquest, healing chaos damage |
 | Detachment | 0 to 100 | Ability to use power without worldly corruption | Mandala upper right value | Renunciation focuses, refusing territorial rewards, accepting political costs |
 | Defilements | 0 to 100 | Remaining worldly corruption and spiritual risk | Mandala cracked mirror, warning pulse | Failures, using powers for ordinary war, conquest of normal countries, schism events |
 | Meditation Charge | 0 to 100 | Stored concentration for Buddha powers | Central mandala glow and power buttons | Channeling ritual, jhana focus completions, retreat missions |
-| World Suffering | dynamic | How much chaos pressure the Holy Realm can perceive | Mandala outer flame and event details | Active world threats, deaths, chaos value, chaos countries at war, fallen capitals |
 | Sangha Cohesion | 0 to 100 | Strength of the humanitarian compact | Faction panel, decisions, event details | Members aided, members ignored, war state, foreign pressure, failed votes |
 
 Current implementation (source review, 2026-10-10): the original Holy Realm values Spiritual Legitimacy, Compassion Drift, Mandala Reach and Final Silence Pressure, plus the Vow and Final Silence balance of power, run beside this table.
 Bodhi Progress, Dhyana Depth, Defilements, Meditation Charge, Sangha Cohesion and teaching successes gate real choices.
-Detachment is read only by two `> 20` gates.
-`compassion` and `world_suffering` are written but never read by any trigger, decision, GUI row or localisation, so they currently change nothing.
-The consolidation proposal for these values is recorded under Open questions in the [package README](../README.md).
+Detachment is read only by three `> 20` gates.
+The two values that nothing read are retired (2026-10-11): the virtue meter `compassion` is folded into Compassion Drift, so every teaching success, governance choice and Schism resolution that used to raise it now eases (or, for suppression, exile and absorption, deepens) Compassion Drift, and `world_suffering` is gone because the Chaos Meter tier and the active world-threat sources already say how much chaos the Realm perceives.
 
 Bodhi Progress by itself is not enough. Buddhahood requires:
 

@@ -16,11 +16,9 @@ The Buddhahood layer adds:
 
 - `bodhi_progress`, capped at 108.
 - `dhyana_depth`, capped at 4.
-- `compassion`, capped at 100.
 - `detachment`, capped at 100.
 - `defilements`, capped at 100.
 - `meditation_charge`, capped at 100.
-- `world_suffering`, initialized from the Chaos Meter.
 - `sangha_cohesion`, initialized from Spiritual Legitimacy.
 - `teaching_successes`.
 - `crisis_teaching_successes`.
@@ -30,7 +28,7 @@ Tuning is centralized in `common/script_constants/003_holy_realm_constants.txt` 
 ## Flow
 
 1. Holy Realm formation initializes the older Mandala counters and the Buddhahood counters.
-2. Existing Bodhisattva bhumi advancements also record teaching success, add Bodhi, improve Compassion, and reduce Defilements. The Political Power, Command Power, and Stability rewards at Bhumi 4, 7, and 9 are one-time milestones, not repeatable bonuses for each teaching action.
+2. Existing Bodhisattva bhumi advancements also record teaching success, add Bodhi, ease Compassion Drift, and reduce Defilements. The Political Power, Command Power, and Stability rewards at Bhumi 4, 7, and 9 are one-time milestones, not repeatable bonuses for each teaching action.
 3. Teaching success during major chaos pressure records `crisis_teaching_successes`.
 4. The focus tree exposes the main gates before `THR_buddha_mandate`:
    - Teaching route: `THR_send_first_envoys`, `THR_translation_houses`, `THR_teach_under_bombardment`, and `THR_many_lamps_one_flame`. `Many Lamps, One Flame` requires `teaching_successes >= 12` and `crisis_teaching_successes >= 1`.

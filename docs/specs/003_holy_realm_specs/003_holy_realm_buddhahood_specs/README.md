@@ -35,7 +35,11 @@ None is a current implementation requirement until the user or parent accepts it
 
 ### 1. Fewer values that drive decisions
 
-Current source tracks Spiritual Legitimacy, Compassion Drift, Mandala Reach, Final Silence Pressure, Bodhi Progress, Dhyana Depth, Compassion, Detachment, Defilements, Meditation Charge, World Suffering and Sangha Cohesion, plus teaching counts, the bhumi ladder and the Vow and Final Silence balance of power.
+Disposition: partly implemented on 2026-10-11 under the user's authority to remove needless values, relayed by the orchestrator.
+The two values nothing read are gone: `compassion` (never shown in any UI) is folded into Compassion Drift and `world_suffering` is retired.
+The Detachment fold, the single visible balance meter and the per-tab value filter stay proposed, and the 2026-10-08 conflict below applies only to them.
+
+Before that change, source tracked Spiritual Legitimacy, Compassion Drift, Mandala Reach, Final Silence Pressure, Bodhi Progress, Dhyana Depth, Compassion, Detachment, Defilements, Meditation Charge, World Suffering and Sangha Cohesion, plus teaching counts, the bhumi ladder and the Vow and Final Silence balance of power.
 That is more than a player can weigh, and several values change nothing:
 
 - `compassion` is written by about sixteen effects but read nowhere; fold its gains into Compassion Drift, which already carries mercy versus coercion.
@@ -49,9 +53,21 @@ This conflicts with the parent's 2026-10-08 decision to preserve the accepted Ev
 
 ### 2. Doctrine actions with consequences
 
-The doctrine category has seventeen Political Power actions that mostly buy a small balance shift plus counter changes.
-Keep the actions with a unique consequence, such as a bhumi advance, a Chaos change, nuclear preparation or the Last-Pass Watch, and merge the rest into them or into focuses.
-The balance should move because of what the Realm does in the world, not because the player keeps buying the same shift.
+Disposition: implemented on 2026-10-11 under the user's authority to remove repetitive decisions, relayed by the orchestrator.
+The doctrine category held twenty-one Political Power actions that mostly bought a small balance shift plus counter changes.
+Six remain, three for each side, and the Bodhisattva council mission keeps its unique bhumi advance.
+Each merged action applies the strongest balance shift its unlocked tiers allow and adds the side effects of every tier whose original gate holds when it is taken, so no distinct effect was dropped.
+
+| Action | Replaces |
+| --- | --- |
+| `THR_bop_mercy_council` | Public Vow of Non-Annihilation, Mercy Council, Lamp Processions |
+| `THR_bop_send_bodhisattva_to_council` | unchanged |
+| `THR_bop_open_lotus_audit` | Lotus Audit, Reconcile Outer Monasteries, Release Sealed Names, White Mandala Oath, Last-Pass Watch |
+| `THR_bop_last_resort_clause` | Guarded Silence Clause, Last-Resort Clause, Arhat Inquiries, Border Silence Offices, Forceful Mercy Precedent |
+| `THR_bop_final_command_drills` | Final Command Drills, Silent Transit Codes, Nuclear Sutra Committee, Expand Silence Cells |
+| `THR_bop_seal_the_ledger` | Argue for the Last Weapon, Authorize the Launch Crews, Empty Mandala Session |
+
+The summed shift of the old twenty actions per cycle fell from about 1.3 to about 0.5, because one purchase now stands for a whole tier ladder.
 
 ### 3. Date gates become conditions
 
@@ -64,6 +80,12 @@ Disposition: implemented on 2026-10-11 under the user's 2026-10-10 decision that
 
 ### 4. Refugees through the migration owner
 
+Disposition: implemented on 2026-10-11 under the user's authority to connect systems, relayed by the orchestrator.
+The formation event's three refuge choices, `THR_open_refuge_roads` and `THR_close_refuge_roads` set the Realm's reception policy through `migration_decision_set_policy`, and both decisions read `migration_reception_policy_is_humanitarian_open`.
+The daily doctrine pulse pays the refuge credit from the migration owner's `migration_integrated_population`, one block of people at a time, instead of through a hook in the migration owner.
+`humanitarian_country_is_valid` now admits the Holy Realm, which the special-country registry had excluded from the famine, migration and transfer systems.
+Sangha Cohesion for compact-member refugees and per-cohort manpower stay proposed: the integration settlement exposes no cohort origin to a consumer.
+
 The five flat manpower grants were removed because they created recruits from nothing.
 Instead, `THR_open_refuge_roads` and `THR_close_refuge_roads` should set the Realm's reception policy through the migration owner (`migration_open_reception`, `migration_close_border`), and Holy Realm checks should read `migration_reception_policy_is_humanitarian_open` rather than private refuge flags.
 Refuge credit (Compassion Drift toward mercy, Sangha Cohesion when the people come from a compact member, and any manpower) is paid once for each cohort that actually integrates in a Realm state through `migration_local_integration`.
@@ -71,16 +93,29 @@ Holy Realm never writes migration ledgers, and no new meter is added.
 
 ### 5. Relief through the famine owner
 
+Disposition: blocked on the famine owner.
+The famine package has no external-donor relief entry: donors are the sparse registry its own recovered-state path fills, and recipients pull from it through their own decisions.
+Admitting the Holy Realm to the humanitarian systems lets its states register through that path like any other donor, and the Realm's open reception counts in the donor weighting.
+The push entry below belongs to the famine package and is not written here.
+
 `THR_mandala_open_granaries` and `THR_white_scarf_relief_caravans` should help a compact member or neighbour that has a state at acute shortage or worse, delivering through a famine-owned relief adapter.
 The kindness-act credit then depends on relief that actually arrives.
 If the famine owner has no external-donor relief entry yet, that entry belongs to the famine package; Holy Realm must not write famine variables.
 
 ### 6. Condemnation for coercion
 
+Disposition: implemented on 2026-10-11 under the user's authority to connect systems, relayed by the orchestrator, for the two coercion decisions.
+`THR_prepare_forced_integration` (victim named) and `THR_mandate_kneeling_province` submit an atrocity-bucket public source through `holy_realm_condemn_coercion`.
+A harmful power on a special actor without a hostile front cannot happen, because a harmful power already needs a defensive hostile front.
+
 Wars from `THR_prepare_forced_integration`, `THR_mandate_kneeling_province` and harmful powers used on a special actor without a hostile front should submit `condemnation_add_source` with the victim country, so the world answers through the shared sanctions system.
 The clean-route disqualifier stays Holy Realm-owned, and the condemnation owner supplies the source and context constants.
 
 ### 7. A peaceful compact that excludes atrocity
+
+Disposition: implemented on 2026-10-11 for entry and eviction.
+`holy_realm_sangha_compact_candidate_valid` and `holy_realm_sangha_compact_member_hard_valid` fail for a country with discovered camp sites, so the joining rule refuses it and the anti-puppet clauses remove it through the existing exit path.
+A member whose camps are discovered later leaves at the next enforcement, not at the moment of discovery.
 
 The Mandala of Nations should reject an entrant for which `genocide_country_has_discovered_sites` is true, and a member whose camps are discovered should leave through the existing `chaosx.nr3.130` exit path with its Cohesion loss.
 This reuses the existing refusal and exit notices and adds no value.
@@ -93,6 +128,14 @@ This adds no polling.
 
 ### 9. Two endings with their own gates
 
+Disposition: implemented on 2026-10-11 under the user's authority to connect systems, relayed by the orchestrator.
+`holy_realm_final_rite_ready` holds the shared Buddhahood rite: a Buddha power shown against chaos, the Extinction of Defilements, a secured capital sanctuary and no Schism.
+`holy_realm_can_begin_final_silence_ritual` adds the doctrinal gates of the terminal branch, and `holy_realm_can_enter_empty_seat` needs only the rite and Defilements below the Final Silence gate.
+`THR_enter_empty_seat` completes the non-terminal ending without the armed doctrine, so the Vow route reaches it, and the Final Silence focus is bypassed once the Empty Seat is taken.
+The old ritual gate also required the Final Silence stage flag to be both set (through `holy_realm_final_path_unlocked`) and absent, so it could never hold; the new gate drops that contradiction.
+The Buddha powers fall silent once the Empty Seat is taken, as the mechanics specification describes.
+
+Before the change, the gate read as follows.
 Current `holy_realm_can_begin_final_silence_ritual` makes both endings require the armed final doctrine, Final Silence dominance of the doctrine balance, the Ministry of Silence memory and a nuclear strike capability, and renouncing the doctrine blocks Final Silence altogether.
 A clean Buddha who keeps the Vow against Annihilation therefore cannot reach the non-terminal Empty Seat ending that Part 1 and the mechanics spec describe as spiritual victory.
 Split the gates: the Empty Seat ending needs only the Buddhahood ritual (Extinction of Defilements, the Last Wheel, a controlled capital, no Schism) and stays open after renunciation, while the armed doctrine, balance dominance, Ministry and nuclear capability gate only the terminal branch above Chaos 1000.

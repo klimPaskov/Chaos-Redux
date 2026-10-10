@@ -52,7 +52,7 @@ Anchor focuses:
 | Protect the Monastery Roads | Early defense | Forts or infrastructure in core mountain states, guard mission unlock |
 | Open the Mandala Chamber | GUI unlock | Opens mandala panel and Bodhi display |
 | The Bodhisattva's Vow | Route lock into spiritual progression | Adds Bodhi mechanics, unlocks first teaching missions |
-| Shelter the First Refugees | Humanitarian branch opener | Refugee mission and Compassion gain |
+| Shelter the First Refugees | Humanitarian branch opener | Refugee mission and eased Compassion Drift |
 | Survey the Sacred Valleys | Industry and state-target setup | Identifies named state groups for later construction |
 | The World Sends Questions | Diplomacy opener | Unlocks foreign teaching and compact preparation |
 
@@ -76,7 +76,7 @@ Focus groups:
 | Send the First Envoys | Unlock `Send Dhamma Envoys` | Cost should include support equipment or convoys |
 | The Translation Houses | Improve mission reach | Adds civilian or radio infrastructure, not only a modifier |
 | Teach Under Bombardment | Target countries at war with chaos | Strong Bodhi reward, high risk |
-| The Refuge Vows | Shelter refugees | Adds manpower or stability tradeoff and Compassion |
+| The Refuge Vows | Shelter refugees | Adds manpower or stability tradeoff and eased Compassion Drift |
 | The Four Directions | Unlock more mission slots | Requires success in multiple regions |
 | The Wheel in Foreign Courts | Diplomatic recognition of teaching | Improves relations and compact eligibility |
 | The Teacher Does Not Conquer | Penalizes ordinary conquest | Gives Detachment and clean-route tracking |

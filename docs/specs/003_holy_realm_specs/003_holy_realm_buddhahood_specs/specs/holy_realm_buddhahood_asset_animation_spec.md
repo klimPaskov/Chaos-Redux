@@ -129,7 +129,7 @@ The active loop should show a pulse drawn in source frames. Do not create the fi
 | Asset | Size direction | Use |
 | --- | --- | --- |
 | Mandala panel background | Match GUI window | Main scripted GUI plate |
-| Value icons | 32x32 or 40x40 | Bodhi, Dhyana, Compassion, Detachment, Defilements, World Suffering |
+| Value icons | 32x32 or 40x40 | Bodhi, Dhyana, Detachment, Defilements, Sangha Cohesion |
 | Progress bar frames | GUI dependent | Meditation Charge and Bodhi Progress |
 | Warning overlays | GUI dependent | High Defilements and Wrathful Protection |
 | Locked overlays | GUI dependent | Unmet power or Final Silence requirements |

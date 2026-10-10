@@ -45,7 +45,7 @@ Costs and requirements:
 Success:
 
 - Bodhi Progress up.
-- Compassion up.
+- Compassion Drift eases.
 - Target gets a small stability or panic-reduction effect.
 - Teaching history flag on target.
 
@@ -144,7 +144,7 @@ Costs:
 
 Success:
 
-- Compassion up.
+- Compassion Drift eases.
 - Manpower only from people who actually arrive and integrate; no refuge action creates recruits from nothing.
 - Compact Cohesion up if refugees come from a compact member.
 
@@ -235,7 +235,7 @@ Decision families:
 | Decision family | Action | Costs | Result |
 | --- | --- | --- | --- |
 | Recognize a Suffering Government | Bring threatened country closer | Relations, stability, diplomatic capacity | Compact eligibility and influence |
-| Open a Refuge Corridor | Move refugees or aid | Convoys, trains, support equipment | Compassion and cohesion |
+| Open a Refuge Corridor | Move refugees or aid | Convoys, trains, support equipment | Compassion Drift and cohesion |
 | Send Relief Columns | Support a member at war | Equipment and tied-down divisions | Member defense and trust |
 | Convene the Compact Vote | Admit a member or set shared goal | Cohesion threshold | Membership or refusal event |
 | Demand Anti-Puppet Clauses | Keep major powers from dominating members | Diplomatic risk | Independence resilience |

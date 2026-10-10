@@ -3,7 +3,7 @@
 ## Release QA evidence, 2026-10-06
 
 The bounded source changes, current asset status and remaining release gates are recorded in the [release reconciliation](../../plans/003_holy_realm_plans/release_qa_completion_20261006.md).
-The 12 active portrait DDS files are parent-reviewed and installed; 47 main-category actions use the five existing tab filters, five unfunded manpower grants are removed and Open Roads is one-time.
+The 12 active portrait DDS files are parent-reviewed and installed; 48 main-category actions use the five existing tab filters, five unfunded manpower grants are removed and Open Roads is one-time.
 Seven native shortcuts, the above 600 Secure High Passes authorization, twelve reviewed filter icons and parent-accepted 6+3 arrow-to-visible-requirement simplifications are applied without removing gameplay gates or route content.
 Default Refuge1920/UI1 and the final D584 native focus layout are visually reviewed; the other tab/risk/sprite matrix, full AI race and native gameplay remain pending.
 
@@ -16,6 +16,18 @@ A harmful Buddha power needs a special actor that is fighting a defensive war ag
 A country that refuses a peace letter is not asked again for a year.
 The late Vow crusade reads Totalen Chaos instead of a calendar date, and no Holy Realm decision or focus weight reads a date.
 Flat Political Power, Command Power, army experience, compliance and resistance values in decisions read `holy_realm_reward` script constants.
+
+## Release design pass, 2026-10-11
+
+The doctrine category holds six actions instead of twenty-one.
+Each merged action applies the strongest balance shift its unlocked tiers allow and the side effects of every tier whose gate holds; the replaced actions are listed in the [specification README](../../specs/003_holy_realm_specs/003_holy_realm_buddhahood_specs/README.md).
+The Empty Seat has its own gate.
+A Buddha who completed the Extinction of Defilements can take the Empty Seat with `THR_enter_empty_seat` whether or not the Realm kept its Vow, and only the armed doctrine with the Ministry of Silence, a strike capability and a dominant balance leads to the terminal branch.
+The terminal ritual gate no longer requires the Final Silence stage to be both set and absent.
+The virtue meter `compassion` and the never-read `world_suffering` are gone: teaching successes, governance choices and Schism resolutions now move Compassion Drift directly.
+The Realm's refuge roads set its reception policy through the migration owner, the daily doctrine pulse pays refuge credit for people the migration owner reports as integrated, and `humanitarian_country_is_valid` admits the Holy Realm so the famine and migration systems treat it as an ordinary country.
+Forced integration and the kneeling-province mandate submit a public Condemnation source, and a country with discovered camp sites cannot join or stay in the Mandala of Nations.
+The three options of `chaosx.nr3.76` are a containment that hardens the Realm, a final envoy that moves the Realm's balance toward the Vow, and an evacuation that sends a share of the largest cities through the migration owner's flight request.
 
 ## Overview
 
@@ -30,7 +42,7 @@ The current player-facing surface is the Holy Realm focus tree, decision categor
 - Mandala Reach
 - Final Silence Pressure
 
-The Buddhahood layer adds Bodhi Progress, Dhyana Depth, Compassion, Detachment, Defilements, Meditation Charge, World Suffering, Sangha Cohesion, teaching successes, and crisis teaching successes. These values drive Buddhahood eligibility, Buddha powers, clean-route achievements, the False Buddha Schism, and Final Silence ritual access.
+The Buddhahood layer adds Bodhi Progress, Dhyana Depth, Detachment, Defilements, Meditation Charge, Sangha Cohesion, teaching successes, and crisis teaching successes. These values drive Buddhahood eligibility, Buddha powers, clean-route achievements, the False Buddha Schism, and Final Silence ritual access.
 
 ## Flow
 
@@ -50,7 +62,7 @@ The Buddhahood layer adds Bodhi Progress, Dhyana Depth, Compassion, Detachment, 
    - `THR_debate_the_pretender_focus`, `THR_exile_the_echo`, `THR_break_false_mandala`, and `THR_absorb_the_shadow` are hidden until the False Buddha Schism evolution has triggered. They resolve the Schism through teaching, exile, suppression, or high-chaos absorption. If the echo is exiled, `THR_answer_false_buddha_echo_abroad` can turn it into a foreign incident: a contacted or unstable host may contain the echo and clear the route stain, or shelter it and keep the crisis alive.
    - `THR_throne_without_body` and `THR_doctrine_last_war`, localised as the Last Wheel, open Divine Sovereignty and the locked final doctrine path after the powers have been shown.
    - `THR_witnesses_gather`, `THR_extinction_of_defilements_focus`, and `THR_final_silence` expose the final ritual gates, while Final Silence completion remains handled by the ritual decision gate.
-   - `THR_empty_seat` is the non-terminal aftermath focus when Final Silence completes without setting a world-end. `THR_witnesses_keep_the_record` follows it by turning taught countries, Mandala mission hosts, observer hosts, development hosts, and valid compact members into public Empty Seat witnesses.
+   - `THR_empty_seat` is the non-terminal aftermath focus when Final Silence completes without setting a world-end or the Buddha takes the Empty Seat directly, and the Final Silence focus is bypassed in that case. `THR_witnesses_keep_the_record` follows it by turning taught countries, Mandala mission hosts, observer hosts, development hosts, and valid compact members into public Empty Seat witnesses.
 7. Chaos thresholds shape the route and are shown with exact values in focus tooltips. Low-chaos focuses require the Chaos Meter below `250`, `400`, or `600` depending on route tone. Interventionist, coercive, and final doctrine preparation focuses require the Chaos Meter above `400`, `600`, or `800`. Only the actual Final Silence launch requires `1000`.
 8. The borderland tree starts separately with `THR_complete_himalayan_mandala` and `THR_guardians_outer_passes`, then opens the pilgrimage-protection route through `THR_letters_beyond_passes` without excluding the peaceful or Final Silence main branch. `THR_mandala_receives_borderlands`, `THR_high_pass_states_enter_mandala`, `THR_roads_must_be_quiet`, `THR_outer_valleys_register`, `THR_mandala_borders`, `THR_peace_by_submission`, `THR_northern_indian_register`, `THR_northern_indian_state_registers`, `THR_eastern_mandala`, `THR_western_chinese_registers`, `THR_eastern_chinese_registers`, and the high-chaos `THR_world_is_a_border` unlock protection letters, refusal war goals, Arhat administration, and direct progressive regional cores rather than generic bonuses. The lower branch is framed as pilgrimage corridors, petitions, and protection ledgers. The high-chaos capstone remains explicitly coercive.
 9. Arhat events cover empowered administration, constrained ledgers, village silence, false attainment, inquiries, removals, and expanded methods.
@@ -65,7 +77,7 @@ The Holy Realm extends existing Chaos Redux systems rather than creating paralle
 - Chaos Meter: early refuge, mercy, mediation, restrained Arhat, and renunciation content can reduce chaos modestly through `add_chaos_meter_value`. Administrative control, coercive pacification, Divine Sovereignty, final warnings, Mandala Break, and Final Silence raise chaos. Stage unlock effects do not add chaos by themselves.
 - Evolutions: four special tracks record to the shared event-log evolution pipeline as evolution type `3`: Pattern of Suffering, Relic Mandala, False Buddha Schism, and Wrathful Protection. Normal stage advancement is handled by country flags and focus prerequisites, not event-log evolution rows. False Buddha Schism also refreshes the focus-tree layout so its conditional branch appears after the evolution is recorded.
 - Focus tags: every Holy Realm focus has a `# THR FOCUS TAGS:` comment with area, tone, chaos requirement, system, and path-role metadata for audits. The focus tree exposes custom sorting filters for Holy Realm Peace, Final Silence Pressure, Mandala Integration, Bodhi, Teaching, Meditation, Governance, Sanctuary, Compact, Anti-Chaos, Nirvana, and Hidden content. The custom filters follow gameplay role rather than raw tag presence. Peaceful refuge, restraint, diplomacy, and defensive preparation appear under Holy Realm Peace. Focuses that alter or gate the Final Silence pressure system appear under Final Silence Pressure. Territorial register, conquest, and coring focuses appear under Mandala Integration. The Buddhahood route filters identify the visible teaching, Dhyana, and governance gates.
-- Mandala tabs: the existing Refuge, Arhats, Diplomacy, Doctrine, and Warnings tabs filter the main category's action list using its existing tab flags. Refuge is the default when a human has no other tab selected. AI sees the unchanged source-visible decision set regardless of tab state. The 47 action definitions are mapped by their actual effects and route identity in the dated tab-filter handoff.
+- Mandala tabs: the existing Refuge, Arhats, Diplomacy, Doctrine, and Warnings tabs filter the main category's action list using its existing tab flags. Refuge is the default when a human has no other tab selected. AI sees the unchanged source-visible decision set regardless of tab state. The 47 action definitions of the dated tab-filter handoff are mapped by their actual effects and route identity there, and `THR_enter_empty_seat` joins them in Doctrine.
 - Event logs: event ID 3 has a dedicated event-detail description and four Holy Realm evolution preview entries covering the Pattern of Suffering, Relic Mandala, False Buddha Schism, and Wrathful Protection. The evolution list row shows the short evolution name and chaos tier. The detailed panes keep the evolution stage. Final Silence remains a stable cause-memory label, while the public world-end aftermath row belongs to Fallout.
 - Country package: Tibet remains the primary host. Bhutan or Nepal can host only if Tibet is gone. Formation sets `holy_realm_origin_tibet`, `holy_realm_origin_bhutan`, or `holy_realm_origin_nepal` and uses the shared `THR` cosmetic tag instead of origin-specific country names or a separate released country.
 - Super events: values `7`, `8`, `10`, `11`, `51`, and `61` display The Awakened One, non-terminal Final Silence, Mandala Breaks, Divine Sovereignty, Mandala of Nations, and Powers of the Awakened. The stable terminal Final Silence art and audio registration remains compatibility material. The current terminal transition is presented by Fallout.
@@ -133,7 +145,7 @@ After formation, the same decision category opens active Mandala work:
 - `THR_mandala_development_mission` targets poor, rural, underdeveloped, or war-affected African, South American, and Asian countries and repairs one eligible controlled state with infrastructure, possible civilian industry, and resistance/compliance recovery.
 - `THR_stand_between_armies` sends one limited Mandala Peacekeeping Brigade to eligible minor democratic defenders, with yearly target cooldowns and manpower/equipment costs. After `Shelter the Exiles`, faction members can also receive this support.
 
-The Vow and Final Silence balance of power adds a second late-game management surface. It includes Political Power decisions for public vows, mercy councils, Bodhisattva council missions, lamp processions, lotus audits, outer-monastery reconciliation, sealed-name releases, sealed ledger readings, launch ledger sealing, silence-cell expansion, black ledger drills, silent transit codes, the Nuclear Sutra Committee, Last-Pass Watch, the White Mandala Oath, and the Empty Mandala Session. These decisions move the doctrine balance, alter Final Silence Pressure, alter Compassion Drift or Spiritual Legitimacy, and in some cases reduce or increase Chaos. The daily pulse is intentionally small so the balance creates pressure over time without replacing focus and decision choices.
+The Vow and Final Silence balance of power adds a second late-game management surface with six Political Power actions. The Vow side holds `THR_bop_mercy_council`, the one-time Bodhisattva council mission and `THR_bop_open_lotus_audit`, which grows from an audit into reconciliation of the outer monasteries, the release of sealed names, the White Mandala Oath and the Last-Pass Watch as pressure, reach and legitimacy rise. The Final Silence side holds `THR_bop_last_resort_clause`, which grows from the guarded clause into Arhat inquiries, border silence offices and the Forceful Mercy Precedent, `THR_bop_final_command_drills` (command drills, silent transit codes, the Nuclear Sutra Committee, silence cells) and `THR_bop_seal_the_ledger` (the sealed ledger, the launch crews, the Empty Mandala Session). These actions move the doctrine balance, alter Final Silence Pressure, alter Compassion Drift, Mandala Reach or Spiritual Legitimacy, and in some cases reduce or increase Chaos. The Final Silence side closes once Final Silence is renounced. The daily pulse is intentionally small so the balance creates pressure over time without replacing focus and decision choices.
 
 Expansion coring is progressive and direct:
 
@@ -170,19 +182,27 @@ Expansion decisions live in `holy_realm_expansion_category` after `THR_letters_b
 
 ## Final Silence Conditions
 
-Final Silence uses a ritual gate and an outcome gate.
+The Realm has two endings with their own gates.
 
-- the Holy Realm exists and is the acting country
-- the Holy Realm is sovereign
+Both need the Buddhahood rite, `holy_realm_final_rite_ready`:
+
+- the Holy Realm exists, is the acting country and is sovereign
 - Buddhahood has been realized
+- an anti-chaos Buddha power has been demonstrated
+- Extinction of Defilements has been completed
+- the capital is controlled and the sanctuary has not recently fallen
+- no active False Buddha Schism remains
+- neither ending has been completed and `world_end` is not already active
+
+The Empty Seat (`holy_realm_can_enter_empty_seat`, taken with `THR_enter_empty_seat`) adds only Defilements below 10.
+It stays open after the Vow against Annihilation and after renunciation, and it never ends the world.
+
+The doctrinal ending (`holy_realm_can_begin_final_silence_ritual`) adds:
+
 - the Final Silence focus path is unlocked
 - the final doctrine is armed and not renounced
 - Final Silence dominates the Vow and Final Silence balance of power
-- an anti-chaos Buddha power has been demonstrated
-- Extinction of Defilements has been completed
-- the capital sanctuary is controlled
-- no active False Buddha Schism remains
-- `world_end` is not already active
+- the Ministry of Silence has been established and the Realm has a strike capability
 
 If global Chaos is above `1000`, `world_end_disabled` is not set, and no other world-end is active, the terminal branch records Final Silence cause memory and requests the maximum-intensity Fallout aftermath. The current terminal route queues no Event003 country popup or world-wide witness popup; Fallout owns the single terminal presentation. Otherwise completion uses the non-terminal Empty Seat branch, leaves `world_end` unset, disables the armed doctrine, and shows Holy Realm super-event slot `8`. After `THR_empty_seat`, `THR_witnesses_keep_the_record` sends the aftermath back through prior teaching and compact contact: valid witnesses gain opinion, stability, and, for compact members, war support, while the Realm gains Sangha Cohesion if at least three witnesses answer.
 
@@ -198,6 +218,11 @@ The three preparation focuses before the Ministry of Silence use short costs. Th
 4. `chaosx.nr3.77` - The Sky Is Entered into the Register.
 5. `chaosx.nr3.78` - The Last Debate Is Cancelled.
 6. `chaosx.nr3.79` - The World Is Marked as a Wound.
+
+Foreign responders to the warning chain receive `chaosx.nr3.76`, which offers three answers.
+Prepare containment raises War Support, costs a little stability, leans the Realm's balance toward Final Silence and raises its pressure, and makes a later disruption of the network lower pressure further.
+Send one final envoy costs a little stability, moves the Realm's balance toward the Vow, lowers its pressure and improves its opinion of the sender.
+Evacuate the largest cities raises War Support, costs stability and sends a share of the capital and the largest cities through the migration owner's flight request.
 
 Foreign responders can disrupt the final network before or during the world-end branch. During the active branch this fires the Mandala Break super event, records the interruption, clears the active Final Silence flag, and leaves the wider danger as campaign memory. Once Divine Sovereignty is embraced, the player stays on that doctrine path. The former refusal option is not presented in the sovereignty event.
 
@@ -458,7 +483,7 @@ Holy Mandala and Final Silence Ledger gameplay values remain in the country, eve
 
 The Holy Mandala decision category includes routine actions for high-pass storehouses, relief caravans, civil-register scribes, snow-line signal posts, second refuge registration, Arhat road audits, Mandala border courts, foreign target audits, global final warnings, and internal non-return shelters. These decisions unlock from the existing focus and stage flags, and they move Spiritual Legitimacy, Compassion Drift, Mandala Reach, Final Silence Pressure, local infrastructure, manpower, command resources, or foreign opinion instead of acting as simple flavour buttons.
 
-The Vow and Final Silence Balance of Power includes both Vow-leaning and Final-Silence-leaning choices before the final path is fully open. Guarded Silence Clause and Last-Resort Register provide small early pressure toward Final Silence without arming the final path. Peace decisions move the balance more slowly than before, so repeated doctrine work is needed to dominate the balance instead of one or two routine decisions ending the struggle.
+The Vow and Final Silence Balance of Power includes both Vow-leaning and Final-Silence-leaning choices before the final path is fully open. The Last-Resort Clause provides small early pressure toward Final Silence without arming the final path, and its later tiers need the Buddha Mandate. Repeated doctrine work is needed to dominate the balance instead of one or two routine decisions ending the struggle.
 
 A larger full-screen Mandala panel remains future presentation work. The replacement UI pass should expand the current decision-category GUI under stable sprite and scripted-GUI names rather than disabling it or moving gameplay validation out of the existing decisions.
 
