@@ -152,10 +152,7 @@ chaosx_zzz_cure_category = {
 	find_cure_tier_0 = {
 		visible = {
 			has_global_flag = has_zombie_outbreak
-			any_country = {
-				is_live_standard_zombie_outbreak_country = yes
-				has_country_flag = { flag = zombie_current_tier value = 0 }
-			}
+			standard_zombie_peak_tier_is_0 = yes
 		}
 
 		available = {
@@ -277,11 +274,12 @@ chaosx_zzz_cure_category = {
 			set_variable = { zombie_cure_tier_0_paid_pp = global.black_friday_price_pp_20 }
 			add_timed_idea = {
 				idea = searching_for_cure
-				days = 60
+				days = constant:zombie_cure.stage_0_base_days
 			}
 		}
 
 		remove_effect = {
+			remove_ideas = searching_for_cure
 			clear_variable = zombie_cure_tier_0_paid_pp
 			clr_country_flag = find_cure_tier_0_sale_credit
 			clear_variable = find_cure_tier_0_sale_sequence
@@ -306,7 +304,7 @@ chaosx_zzz_cure_category = {
 						limit = { original_tag = ZZZ }
 						add_timed_idea = {
 							idea = cure_sharing_bonus
-							days = 120
+							days = constant:zombie_cure.shared_bonus_days
 						}
 					}
 					set_variable = { global.zzz_cure = 0 }
@@ -347,10 +345,7 @@ chaosx_zzz_cure_category = {
 	find_cure_tier_1 = {
 		visible = {
 			has_global_flag = has_zombie_outbreak
-			any_country = {
-				is_live_standard_zombie_outbreak_country = yes
-				has_country_flag = { flag = zombie_current_tier value = 1 }
-			}
+			standard_zombie_peak_tier_is_1 = yes
 		}
 
 		available = {
@@ -469,11 +464,12 @@ chaosx_zzz_cure_category = {
 			set_variable = { zombie_cure_tier_1_paid_pp = global.black_friday_price_pp_30 }
 			add_timed_idea = {
 				idea = searching_for_cure_tier_1
-				days = 90
+				days = constant:zombie_cure.stage_1_base_days
 			}
 		}
 
 		remove_effect = {
+			remove_ideas = searching_for_cure_tier_1
 			clear_variable = zombie_cure_tier_1_paid_pp
 			clr_country_flag = find_cure_tier_1_sale_credit
 			clear_variable = find_cure_tier_1_sale_sequence
@@ -498,7 +494,7 @@ chaosx_zzz_cure_category = {
 						limit = { original_tag = ZZZ }
 						add_timed_idea = {
 							idea = cure_sharing_bonus
-							days = 120
+							days = constant:zombie_cure.shared_bonus_days
 						}
 					}
 					set_variable = { global.zzz_cure = 0 }
@@ -538,10 +534,7 @@ chaosx_zzz_cure_category = {
 	find_cure_tier_2 = {
 		visible = {
 			has_global_flag = has_zombie_outbreak
-			any_country = {
-				is_live_standard_zombie_outbreak_country = yes
-				has_country_flag = { flag = zombie_current_tier value = 2 }
-			}
+			standard_zombie_peak_tier_is_2 = yes
 		}
 
 		available = {
@@ -673,10 +666,11 @@ chaosx_zzz_cure_category = {
 			set_variable = { zombie_cure_tier_2_paid_pp = global.black_friday_price_pp_40 }
 			add_timed_idea = {
 				idea = searching_for_cure_tier_2
-				days = 120
+				days = constant:zombie_cure.stage_2_base_days
 			}
 		}
 		remove_effect = {
+			remove_ideas = searching_for_cure_tier_2
 			clear_variable = zombie_cure_tier_2_paid_pp
 			clr_country_flag = find_cure_tier_2_sale_credit
 			clear_variable = find_cure_tier_2_sale_sequence
@@ -701,7 +695,7 @@ chaosx_zzz_cure_category = {
 						limit = { original_tag = ZZZ }
 						add_timed_idea = {
 							idea = cure_sharing_bonus
-							days = 120
+							days = constant:zombie_cure.shared_bonus_days
 						}
 					}
 					set_variable = { global.zzz_cure = 0 }
@@ -741,10 +735,7 @@ chaosx_zzz_cure_category = {
 	find_cure_tier_3 = {
 		visible = {
 			has_global_flag = has_zombie_outbreak
-			any_country = {
-				is_live_standard_zombie_outbreak_country = yes
-				has_country_flag = { flag = zombie_current_tier value = 3 }
-			}
+			standard_zombie_peak_tier_is_3 = yes
 		}
 
 		available = {
@@ -904,10 +895,11 @@ chaosx_zzz_cure_category = {
 			set_variable = { zombie_cure_tier_3_paid_pp = global.black_friday_price_pp_50 }
 			add_timed_idea = {
 				idea = searching_for_cure_tier_3
-				days = 150
+				days = constant:zombie_cure.stage_3_base_days
 			}
 		}
 		remove_effect = {
+			remove_ideas = searching_for_cure_tier_3
 			clear_variable = zombie_cure_tier_3_paid_pp
 			clr_country_flag = find_cure_tier_3_sale_credit
 			clear_variable = find_cure_tier_3_sale_sequence
@@ -932,7 +924,7 @@ chaosx_zzz_cure_category = {
 						limit = { original_tag = ZZZ }
 						add_timed_idea = {
 							idea = cure_sharing_bonus
-							days = 120
+							days = constant:zombie_cure.shared_bonus_days
 						}
 					}
 					set_variable = { global.zzz_cure = 0 }
@@ -1272,7 +1264,6 @@ chaosx_zzz_cure_category = {
 		}
 
 		cost = global.black_friday_price_pp_10
-		fire_only_once = yes
 		icon = GFX_decision_generic_research
 
 		ai_will_do = {
@@ -1426,7 +1417,7 @@ chaosx_outbreak_prevention_category = {
 				set_variable = { zombie_prevention_hygiene_paid_pp = global.black_friday_price_zombie_prevention_hygiene_pp_cost }
 			}
 		}
-		days_remove = 30
+		days_remove = constant:zombie_prevention.hygiene_days
 		cancel_trigger = { NOT = { has_global_flag = has_zombie_outbreak } }
 		cancel_effect = {
 			hidden_effect = {
@@ -1608,7 +1599,7 @@ chaosx_outbreak_prevention_category = {
 				set_variable = { zombie_prevention_migration_paid_pp = global.black_friday_price_zombie_prevention_migration_pp_cost }
 			}
 		}
-		days_remove = 45
+		days_remove = constant:zombie_prevention.migration_days
 		cancel_trigger = { NOT = { has_global_flag = has_zombie_outbreak } }
 		cancel_effect = {
 			hidden_effect = {
@@ -1798,7 +1789,7 @@ chaosx_outbreak_prevention_category = {
 				set_variable = { zombie_prevention_quarantine_paid_pp = global.black_friday_price_zombie_prevention_quarantine_pp_cost }
 			}
 		}
-		days_remove = 60
+		days_remove = constant:zombie_prevention.quarantine_days
 		cancel_trigger = { NOT = { has_global_flag = has_zombie_outbreak } }
 		cancel_effect = {
 			hidden_effect = {
@@ -2003,7 +1994,7 @@ chaosx_outbreak_prevention_category = {
 				set_variable = { zombie_prevention_borders_paid_pp = global.black_friday_price_zombie_prevention_border_closure_pp_cost }
 			}
 		}
-		days_remove = 90
+		days_remove = constant:zombie_prevention.border_closure_days
 		cancel_trigger = { NOT = { has_global_flag = has_zombie_outbreak } }
 		cancel_effect = {
 			hidden_effect = {
@@ -2222,7 +2213,7 @@ chaosx_outbreak_prevention_category = {
 				set_variable = { zombie_prevention_martial_law_paid_pp = global.black_friday_price_zombie_prevention_martial_law_pp_cost }
 			}
 		}
-		days_remove = 120
+		days_remove = constant:zombie_prevention.martial_law_days
 		cancel_trigger = { NOT = { has_global_flag = has_zombie_outbreak } }
 		cancel_effect = {
 			hidden_effect = {
@@ -2434,7 +2425,7 @@ chaosx_outbreak_prevention_category = {
 				set_variable = { zombie_prevention_revoke_hygiene_paid_pp = global.black_friday_price_pp_10 }
 			}
 		}
-		days_remove = 15
+		days_remove = constant:zombie_prevention.revoke_hygiene_days
 		cancel_trigger = { NOT = { has_global_flag = has_zombie_outbreak } }
 		cancel_effect = {
 			hidden_effect = {
@@ -2559,7 +2550,7 @@ chaosx_outbreak_prevention_category = {
 				set_variable = { zombie_prevention_revoke_migration_paid_pp = global.black_friday_price_pp_10 }
 			}
 		}
-		days_remove = 20
+		days_remove = constant:zombie_prevention.revoke_migration_days
 		cancel_trigger = { NOT = { has_global_flag = has_zombie_outbreak } }
 		cancel_effect = {
 			hidden_effect = {
@@ -2634,7 +2625,7 @@ chaosx_outbreak_prevention_category = {
 				set_variable = { zombie_prevention_revoke_quarantine_paid_pp = global.black_friday_price_pp_10 }
 			}
 		}
-		days_remove = 30
+		days_remove = constant:zombie_prevention.revoke_quarantine_days
 		cancel_trigger = { NOT = { has_global_flag = has_zombie_outbreak } }
 		cancel_effect = {
 			hidden_effect = {
@@ -2709,7 +2700,7 @@ chaosx_outbreak_prevention_category = {
 				set_variable = { zombie_prevention_revoke_borders_paid_pp = global.black_friday_price_pp_10 }
 			}
 		}
-		days_remove = 45
+		days_remove = constant:zombie_prevention.reopen_borders_days
 		cancel_trigger = { NOT = { has_global_flag = has_zombie_outbreak } }
 		cancel_effect = {
 			hidden_effect = {
@@ -2788,7 +2779,7 @@ chaosx_outbreak_prevention_category = {
 				set_variable = { zombie_prevention_revoke_martial_law_paid_pp = global.black_friday_price_pp_20 }
 			}
 		}
-		days_remove = 60
+		days_remove = constant:zombie_prevention.revoke_martial_law_days
 		cancel_trigger = { NOT = { has_global_flag = has_zombie_outbreak } }
 		cancel_effect = {
 			hidden_effect = {
@@ -2846,7 +2837,6 @@ chaosx_anti_zombie_league_category = {
 		visible = {
 			NOT = { has_global_flag = anti_zombie_league_formed }
 			has_global_flag = has_zombie_outbreak
-			date > 1936.7.1
 			can_lead_anti_zombie_league = yes
 			NOT = {
 				any_country = {
@@ -2866,7 +2856,7 @@ chaosx_anti_zombie_league_category = {
 		}
 
 		cost = global.black_friday_price_anti_zombie_league_formation_pp_cost
-		days_remove = 10
+		days_remove = constant:anti_zombie_league.formation_days
 		fire_only_once = yes
 		cancel_trigger = {
 			OR = {
@@ -3182,12 +3172,11 @@ chaosx_anti_zombie_league_category = {
 		available = {
 			hidden_trigger = { is_anti_zombie_league_member = yes }
 			anti_zombie_league_investment_can_fit = yes
-			hidden_trigger = { has_political_power > 49 }
 			NOT = { has_idea = azl_investment_penalty }
 		}
 
 		cost = global.black_friday_price_pp_15
-		days_remove = 30
+		days_remove = constant:anti_zombie_league.investment_days
 
 		ai_will_do = {
 			factor = 5
@@ -3233,7 +3222,7 @@ chaosx_anti_zombie_league_category = {
 			}
 			add_timed_idea = {
 				idea = azl_investment_penalty
-				days = 30
+				days = constant:anti_zombie_league.investment_days
 			}
 			set_variable = { anti_zombie_league_investment_paid_pp = global.black_friday_price_pp_15 }
 		}
@@ -3330,13 +3319,14 @@ chaosx_anti_zombie_league_category = {
 			hidden_trigger = { has_country_flag = azl_leader }
 			is_faction_leader = yes
 			zombie_threat_ready_for_anti_zombie_league_disband = yes
-			NOT = {
-				has_global_flag = { flag = chaos_tier value > 1 }
+			custom_trigger_tooltip = {
+				tooltip = zombie_league_disband_chaos_tt
+				NOT = { has_global_flag = { flag = chaos_tier value > 1 } }
 			}
 		}
 
 		cost = global.black_friday_price_pp_10
-		days_remove = 7
+		days_remove = constant:anti_zombie_league.disband_days
 		fire_only_once = yes
 
 		ai_will_do = {

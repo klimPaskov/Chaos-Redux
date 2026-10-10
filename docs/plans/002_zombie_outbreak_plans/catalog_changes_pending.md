@@ -15,3 +15,9 @@ Copy current in-game Event Details and evolution/scenario wording; super-event q
 Any catalog field that actually mirrors cure timing or martial-law scope must follow the corrected current source: League membership/investment can shorten research, and martial law prevents new rear-area outbreaks rather than halting established fronts.
 The six shared description corrections are implemented in `978c7b5d5745cc00058e136a88b8c068ebe00b94`; this queued workbook alignment does not reopen that source wording issue or establish mechanical/GUI validation.
 Any eventual workbook save requires `python .tools/export_event_catalog_csv.py`; export-only CSV files remain unedited directly.
+
+## Release pass 2026-10-11
+The world-report text of `chaosx.news.3` changed: its description now reads "The horde now holds [one state name, or N new states, among them the first]. Infected travelers can carry the disease farther along roads and through ports."
+The title "Zombie Outbreak Spreads" is unchanged.
+The Anti-Zombie League invitation `chaosx.nr2.7` now names the League leader's adjective, and the `chaosx.nr2.14` and `chaosx.nr2.15` descriptions are shorter.
+None of these are Event Details text, so no workbook field depends on them unless the catalog mirrors the news surface.

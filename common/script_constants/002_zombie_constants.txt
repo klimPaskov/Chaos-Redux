@@ -114,6 +114,14 @@ zombie_outbreak = {
 	dynamic_outbreak_tier_1_divisions = 10
 	dynamic_outbreak_tier_2_divisions = 12
 	dynamic_outbreak_tier_3_divisions = 12
+	dynamic_outbreak_infantry_equipment = 2000
+
+	initial_divisions = 20
+	initial_infantry_equipment = 10000
+	restore_tier_0_divisions = 10
+	restore_tier_1_divisions = 10
+	restore_tier_2_divisions = 12
+	restore_tier_3_divisions = 15
 
 	first_main_collapse_factor = 2.50
 	second_main_collapse_factor = 2.00
@@ -139,6 +147,7 @@ zombie_threat = {
 	defeat_chaos_reduction = 25
 	world_end_breakout_state_count = 3
 	world_end_breakout_divisions = 24
+	world_end_min_divisions = 300
 }
 
 zombie_postwar = {
@@ -187,6 +196,36 @@ zombie_prevention = {
 	quarantine_pp_cost = 50
 	border_closure_pp_cost = 75
 	martial_law_pp_cost = 150
+
+	hygiene_days = 30
+	migration_days = 45
+	quarantine_days = 60
+	border_closure_days = 90
+	martial_law_days = 120
+	revoke_hygiene_days = 15
+	revoke_migration_days = 20
+	revoke_quarantine_days = 30
+	reopen_borders_days = 45
+	revoke_martial_law_days = 60
+}
+
+# Standard cure research and activation. Base days match the decision defaults used when a country
+# has no League research bonus; the stage_N_cure_research_days values in zombie_evolution are the
+# League baselines. Activation lengths are quoted in zzz_cure_category_activation_shared and
+# zzz_cure_category_activation_local (chaosx_decisions_l_english.yml).
+zombie_cure = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	stage_0_base_days = 60
+	stage_1_base_days = 90
+	stage_2_base_days = 120
+	stage_3_base_days = 150
+	shared_activation_days = 120
+	solo_activation_days = 360
+	shared_bonus_days = 120
 }
 
 zombie_evolution = {
@@ -277,7 +316,13 @@ anti_zombie_league = {
 	investment_minor = 1
 	max_target_level = 17
 	max_investment = 170
+	investment_per_level = 10
 	formation_pp_cost = 20
+	formation_days = 10
+	disband_days = 7
+	investment_days = 30
+	invitation_defer_pp = 25
+	invitation_refuse_pp = 50
 	cure_days_factor_member = 0.85
 	cure_days_factor_mid_investment = 0.90
 	cure_days_factor_high_investment = 0.90

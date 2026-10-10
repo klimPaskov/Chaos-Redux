@@ -20,6 +20,28 @@ queue_zombie_outbreak_world_news = {
 	}
 }
 
+# Plants the main outbreak in the state in scope and raises its first horde.
+# Scope: state (the chosen host state). Used by chaosx.nr2.1 for the Settings-forced and the random start.
+# Output: saves the state as the global event target `outbreak_state`.
+# Side effects: transfers and cores the state for ZZZ, loads its 1936 order of battle, applies the zombie recruitment
+# profile and creates constant:zombie_outbreak.initial_divisions starting divisions.
+spawn_main_zombie_outbreak_in_state = {
+	save_global_event_target_as = outbreak_state
+	transfer_state_to = ZZZ
+	add_core_of = ZZZ
+	ZZZ = {
+		set_country_flag = chaos_unit_family_parent_actor
+		set_major = yes
+		load_oob = "ZZZ_1936"
+		apply_standard_zombie_recruitment_profile = yes
+	}
+	create_unit = {
+		division = "name = \"Brainzz Horde\" division_template = \"Brainzz Horde\" start_experience_factor = 0.1"
+		count = constant:zombie_outbreak.initial_divisions
+		owner = ZZZ
+	}
+}
+
 # Prepares a Settings-forced initial outbreak on a valid populated state.
 # Scope: the player country that requested the event; the state and host persist through the event chain.
 # Outputs: zombie_initial_outbreak_host, zombie_initial_outbreak_state, zombie_outbreak_prefire_ready, and a readable failure reason.
@@ -227,7 +249,7 @@ mark_first_zombie_cure_activation = {
 activate_shared_zombie_cure_for_current_country = {
 	add_timed_idea = {
 		idea = cure_activated
-		days = 120
+		days = constant:zombie_cure.shared_activation_days
 	}
 	country_event = { id = chaosx.nr2.2 }
 	set_variable = { zzz_cure = 0 }
@@ -238,7 +260,7 @@ activate_zombie_cure_for_current_country = {
 
 	add_timed_idea = {
 		idea = cure_activated
-		days = 360
+		days = constant:zombie_cure.solo_activation_days
 	}
 	country_event = { id = chaosx.nr2.2 }
 	set_variable = { zzz_cure = 0 }
@@ -431,151 +453,44 @@ zombie_process_controlled_state_decay = {
 	}
 }
 
+# League combat level from the pooled investment: one level per constant:anti_zombie_league.investment_per_level
+# points, capped at constant:anti_zombie_league.max_target_level (0 to 17).
+# Input: global.azl_global_investment. Output: global.target_level, which names the member idea level.
 calculate_azl_target_level = {
-	set_variable = { global.target_level = 0 }
-
-	if = {
-		limit = { check_variable = { global.azl_global_investment > 169 } }
-		set_variable = { global.target_level = 17 }
+	set_temp_variable = { azl_level_points = global.azl_global_investment }
+	set_temp_variable = { azl_level_remainder = global.azl_global_investment }
+	modulo_temp_variable = {
+		var = azl_level_remainder
+		value = constant:anti_zombie_league.investment_per_level
 	}
-	else_if = {
-		limit = { check_variable = { global.azl_global_investment > 159 } }
-		set_variable = { global.target_level = 16 }
+	subtract_from_temp_variable = { azl_level_points = azl_level_remainder }
+	divide_temp_variable = {
+		var = azl_level_points
+		value = constant:anti_zombie_league.investment_per_level
 	}
-	else_if = {
-		limit = { check_variable = { global.azl_global_investment > 149 } }
-		set_variable = { global.target_level = 15 }
+	clamp_temp_variable = {
+		var = azl_level_points
+		min = 0
+		max = constant:anti_zombie_league.max_target_level
 	}
-	else_if = {
-		limit = { check_variable = { global.azl_global_investment > 139 } }
-		set_variable = { global.target_level = 14 }
-	}
-	else_if = {
-		limit = { check_variable = { global.azl_global_investment > 129 } }
-		set_variable = { global.target_level = 13 }
-	}
-	else_if = {
-		limit = { check_variable = { global.azl_global_investment > 119 } }
-		set_variable = { global.target_level = 12 }
-	}
-	else_if = {
-		limit = { check_variable = { global.azl_global_investment > 109 } }
-		set_variable = { global.target_level = 11 }
-	}
-	else_if = {
-		limit = { check_variable = { global.azl_global_investment > 99 } }
-		set_variable = { global.target_level = 10 }
-	}
-	else_if = {
-		limit = { check_variable = { global.azl_global_investment > 89 } }
-		set_variable = { global.target_level = 9 }
-	}
-	else_if = {
-		limit = { check_variable = { global.azl_global_investment > 79 } }
-		set_variable = { global.target_level = 8 }
-	}
-	else_if = {
-		limit = { check_variable = { global.azl_global_investment > 69 } }
-		set_variable = { global.target_level = 7 }
-	}
-	else_if = {
-		limit = { check_variable = { global.azl_global_investment > 59 } }
-		set_variable = { global.target_level = 6 }
-	}
-	else_if = {
-		limit = { check_variable = { global.azl_global_investment > 49 } }
-		set_variable = { global.target_level = 5 }
-	}
-	else_if = {
-		limit = { check_variable = { global.azl_global_investment > 39 } }
-		set_variable = { global.target_level = 4 }
-	}
-	else_if = {
-		limit = { check_variable = { global.azl_global_investment > 29 } }
-		set_variable = { global.target_level = 3 }
-	}
-	else_if = {
-		limit = { check_variable = { global.azl_global_investment > 19 } }
-		set_variable = { global.target_level = 2 }
-	}
-	else_if = {
-		limit = { check_variable = { global.azl_global_investment > 9 } }
-		set_variable = { global.target_level = 1 }
-	}
+	set_variable = { global.target_level = azl_level_points }
 }
 
 remove_anti_zombie_league_membership_idea = {
-	if = {
-		limit = { has_idea = anti_zombie_league_member_level_17 }
-		remove_ideas = anti_zombie_league_member_level_17
-	}
-	else_if = {
-		limit = { has_idea = anti_zombie_league_member_level_16 }
-		remove_ideas = anti_zombie_league_member_level_16
-	}
-	else_if = {
-		limit = { has_idea = anti_zombie_league_member_level_15 }
-		remove_ideas = anti_zombie_league_member_level_15
-	}
-	else_if = {
-		limit = { has_idea = anti_zombie_league_member_level_14 }
-		remove_ideas = anti_zombie_league_member_level_14
-	}
-	else_if = {
-		limit = { has_idea = anti_zombie_league_member_level_13 }
-		remove_ideas = anti_zombie_league_member_level_13
-	}
-	else_if = {
-		limit = { has_idea = anti_zombie_league_member_level_12 }
-		remove_ideas = anti_zombie_league_member_level_12
-	}
-	else_if = {
-		limit = { has_idea = anti_zombie_league_member_level_11 }
-		remove_ideas = anti_zombie_league_member_level_11
-	}
-	else_if = {
-		limit = { has_idea = anti_zombie_league_member_level_10 }
-		remove_ideas = anti_zombie_league_member_level_10
-	}
-	else_if = {
-		limit = { has_idea = anti_zombie_league_member_level_9 }
-		remove_ideas = anti_zombie_league_member_level_9
-	}
-	else_if = {
-		limit = { has_idea = anti_zombie_league_member_level_8 }
-		remove_ideas = anti_zombie_league_member_level_8
-	}
-	else_if = {
-		limit = { has_idea = anti_zombie_league_member_level_7 }
-		remove_ideas = anti_zombie_league_member_level_7
-	}
-	else_if = {
-		limit = { has_idea = anti_zombie_league_member_level_6 }
-		remove_ideas = anti_zombie_league_member_level_6
-	}
-	else_if = {
-		limit = { has_idea = anti_zombie_league_member_level_5 }
-		remove_ideas = anti_zombie_league_member_level_5
-	}
-	else_if = {
-		limit = { has_idea = anti_zombie_league_member_level_4 }
-		remove_ideas = anti_zombie_league_member_level_4
-	}
-	else_if = {
-		limit = { has_idea = anti_zombie_league_member_level_3 }
-		remove_ideas = anti_zombie_league_member_level_3
-	}
-	else_if = {
-		limit = { has_idea = anti_zombie_league_member_level_2 }
-		remove_ideas = anti_zombie_league_member_level_2
-	}
-	else_if = {
-		limit = { has_idea = anti_zombie_league_member_level_1 }
-		remove_ideas = anti_zombie_league_member_level_1
-	}
-	else_if = {
-		limit = { has_idea = anti_zombie_league_member_level_0 }
-		remove_ideas = anti_zombie_league_member_level_0
+	for_loop_effect = {
+		start = 0
+		end = constant:anti_zombie_league.max_target_level
+		compare = less_than_or_equals
+		value = azl_member_level_index
+		meta_effect = {
+			text = {
+				if = {
+					limit = { has_idea = anti_zombie_league_member_level_[LEVEL] }
+					remove_ideas = anti_zombie_league_member_level_[LEVEL]
+				}
+			}
+			LEVEL = "[?azl_member_level_index|.0]"
+		}
 	}
 }
 
@@ -649,76 +564,11 @@ grant_anti_zombie_league_membership_benefits = {
 			add_ideas = anti_zombie_league_operational_doctrine
 		}
 
-		if = {
-			limit = { check_variable = { global.target_level > 16 } }
-			add_ideas = anti_zombie_league_member_level_17
-		}
-		else_if = {
-			limit = { check_variable = { global.target_level > 15 } }
-			add_ideas = anti_zombie_league_member_level_16
-		}
-		else_if = {
-			limit = { check_variable = { global.target_level > 14 } }
-			add_ideas = anti_zombie_league_member_level_15
-		}
-		else_if = {
-			limit = { check_variable = { global.target_level > 13 } }
-			add_ideas = anti_zombie_league_member_level_14
-		}
-		else_if = {
-			limit = { check_variable = { global.target_level > 12 } }
-			add_ideas = anti_zombie_league_member_level_13
-		}
-		else_if = {
-			limit = { check_variable = { global.target_level > 11 } }
-			add_ideas = anti_zombie_league_member_level_12
-		}
-		else_if = {
-			limit = { check_variable = { global.target_level > 10 } }
-			add_ideas = anti_zombie_league_member_level_11
-		}
-		else_if = {
-			limit = { check_variable = { global.target_level > 9 } }
-			add_ideas = anti_zombie_league_member_level_10
-		}
-		else_if = {
-			limit = { check_variable = { global.target_level > 8 } }
-			add_ideas = anti_zombie_league_member_level_9
-		}
-		else_if = {
-			limit = { check_variable = { global.target_level > 7 } }
-			add_ideas = anti_zombie_league_member_level_8
-		}
-		else_if = {
-			limit = { check_variable = { global.target_level > 6 } }
-			add_ideas = anti_zombie_league_member_level_7
-		}
-		else_if = {
-			limit = { check_variable = { global.target_level > 5 } }
-			add_ideas = anti_zombie_league_member_level_6
-		}
-		else_if = {
-			limit = { check_variable = { global.target_level > 4 } }
-			add_ideas = anti_zombie_league_member_level_5
-		}
-		else_if = {
-			limit = { check_variable = { global.target_level > 3 } }
-			add_ideas = anti_zombie_league_member_level_4
-		}
-		else_if = {
-			limit = { check_variable = { global.target_level > 2 } }
-			add_ideas = anti_zombie_league_member_level_3
-		}
-		else_if = {
-			limit = { check_variable = { global.target_level > 1 } }
-			add_ideas = anti_zombie_league_member_level_2
-		}
-		else_if = {
-			limit = { check_variable = { global.target_level > 0 } }
-			add_ideas = anti_zombie_league_member_level_1
-		}
-		else = {
-			add_ideas = anti_zombie_league_member_level_0
+		meta_effect = {
+			text = {
+				add_ideas = anti_zombie_league_member_level_[LEVEL]
+			}
+			LEVEL = "[?global.target_level|.0]"
 		}
 
 		apply_azl_cure_research_bonus = yes
@@ -1982,7 +1832,7 @@ restore_dormant_zombie_main_outbreak = {
 				create_unit = {
 					division = "name = \"Brainzz Horde\" division_template = \"Brainzz Horde\" start_experience_factor = 0.1"
 					owner = ZZZ
-					count = 10
+					count = constant:zombie_outbreak.restore_tier_0_divisions
 				}
 			}
 			else_if = {
@@ -1990,7 +1840,7 @@ restore_dormant_zombie_main_outbreak = {
 				create_unit = {
 					division = "name = \"Brainzz Horde\" division_template = \"Brainzz Horde\" start_experience_factor = 0.2"
 					owner = ZZZ
-					count = 10
+					count = constant:zombie_outbreak.restore_tier_1_divisions
 				}
 			}
 			else_if = {
@@ -1998,7 +1848,7 @@ restore_dormant_zombie_main_outbreak = {
 				create_unit = {
 					division = "name = \"Brainzz Horde\" division_template = \"Brainzz Horde\" start_experience_factor = 0.3"
 					owner = ZZZ
-					count = 12
+					count = constant:zombie_outbreak.restore_tier_2_divisions
 				}
 			}
 			else_if = {
@@ -2006,7 +1856,7 @@ restore_dormant_zombie_main_outbreak = {
 				create_unit = {
 					division = "name = \"Brainzz Horde\" division_template = \"Brainzz Horde\" start_experience_factor = 0.5"
 					owner = ZZZ
-					count = 15
+					count = constant:zombie_outbreak.restore_tier_3_divisions
 				}
 			}
 		}
@@ -2308,7 +2158,7 @@ spawn_selected_dynamic_zombie_outbreak = {
 
 				add_equipment_to_stockpile = {
 					type = infantry_equipment
-					amount = 2000
+					amount = constant:zombie_outbreak.dynamic_outbreak_infantry_equipment
 					producer = CHI
 				}
 

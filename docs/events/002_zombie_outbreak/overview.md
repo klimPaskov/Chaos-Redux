@@ -903,6 +903,7 @@ Shared tuning lives in `common/script_constants/002_zombie_constants.txt`.
 
 Controls:
 
+- main-outbreak starting divisions and infantry equipment, and the divisions raised when the dormant main horde is restored
 - base outbreak MTTH
 - prevention-decision multipliers
 - population thresholds
@@ -922,6 +923,7 @@ Controls:
 - very-high zombie controlled-state threshold
 - main-collapse shutdown count
 - final zombie-defeat chaos reduction
+- the division count that the world-end Zombie Apocalypse requires of the main horde
 
 ### `zombie_postwar`
 
@@ -931,11 +933,27 @@ Controls:
 - first-anniversary memorial timing and one-time political-power reward
 - the permanent outbreak-risk slowdown from the survivor-vigilance idea
 
+### `zombie_cure`
+
+Controls the standard cure.
+Base research days per horde evolution tier (60, 90, 120 and 150) are the timed research idea lengths and the decision defaults for countries without a League bonus.
+Activation lengths (120 days when the cure is shared, 360 days when it is national) and the 120-day adaptation penalty on the horde are quoted by the cure-category text.
+
+Only the cure that matches the most evolved living standard horde is offered, through `standard_zombie_peak_tier_is_0` to `_3`.
+The research penalty idea is removed as soon as research resolves, so League bonuses that shorten the decision also shorten the penalty.
+The national cure can be activated again once its progress returns to 100.
+
+### `zombie_prevention`
+
+Costs and durations of the five prevention measures and their reversals.
+
 ### `anti_zombie_league`
 
 Controls:
 
 - formation thresholds
+- formation, disband and investment durations and the Political Power gained by deferring or refusing the invitation
+- investment points per League level (the pooled investment sets `global.target_level`, which names the member idea)
 - emergency auto-formation thresholds
 - continent-pressure thresholds
 - leave and disband pressure limits

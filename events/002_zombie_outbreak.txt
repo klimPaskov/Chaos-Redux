@@ -51,23 +51,7 @@ country_event = {
 				clr_global_flag = zombie_outbreak_world_news_queued
 				if = {
 					limit = { zombie_initial_outbreak_selection_is_current = yes }
-					event_target:zombie_initial_outbreak_state = {
-						save_event_target_as = zombie_state
-						save_global_event_target_as = outbreak_state
-						transfer_state_to = ZZZ
-						add_core_of = ZZZ
-						ZZZ = {
-							set_country_flag = chaos_unit_family_parent_actor
-							set_major = yes
-							load_oob = "ZZZ_1936"
-							apply_standard_zombie_recruitment_profile = yes
-						}
-						create_unit = {
-							division = "name = \"Brainzz Horde\" division_template = \"Brainzz Horde\" start_experience_factor = 0.1"
-							count = 20
-							owner = ZZZ
-						}
-					}
+					event_target:zombie_initial_outbreak_state = { spawn_main_zombie_outbreak_in_state = yes }
 				}
 				else = {
 					random_state = {
@@ -76,21 +60,7 @@ country_event = {
 							state_population_k > constant:zombie_outbreak.initial_state_population_threshold_k
 							NOT = { is_controlled_by = ZZZ }
 						}
-						save_event_target_as = zombie_state
-						save_global_event_target_as = outbreak_state
-						transfer_state_to = ZZZ
-						add_core_of = ZZZ
-						ZZZ = {
-							set_country_flag = chaos_unit_family_parent_actor
-							set_major = yes
-							load_oob = "ZZZ_1936"
-							apply_standard_zombie_recruitment_profile = yes
-						}
-						create_unit = {
-							division = "name = \"Brainzz Horde\" division_template = \"Brainzz Horde\" start_experience_factor = 0.1"
-							count = 20
-							owner = ZZZ
-						}
+						spawn_main_zombie_outbreak_in_state = yes
 					}
 				}
 
@@ -98,7 +68,7 @@ country_event = {
 					refresh_dynamic_zombie_country_leader = yes
 					add_equipment_to_stockpile = {
 						type = infantry_equipment
-						amount = 10000 # Since Zombies require 1 piece of equipment to deploy a division
+						amount = constant:zombie_outbreak.initial_infantry_equipment # Zombies need one piece of equipment per division
 						producer = CHI
 					}
 
@@ -197,13 +167,13 @@ country_event = { # Cure activated
 				limit = { is_in_tech_sharing_group = cure_sharing }
 				add_timed_idea = {
 					idea = cure_activated
-					days = 120
+					days = constant:zombie_cure.shared_activation_days
 				}
 			}
 			else = {
 				add_timed_idea = {
 					idea = cure_activated
-					days = 360
+					days = constant:zombie_cure.solo_activation_days
 				}
 			}
 		}
@@ -752,7 +722,7 @@ country_event = {
 			}
 		}
 
-		add_political_power = 25
+		add_political_power = constant:anti_zombie_league.invitation_defer_pp
 		set_country_flag = azl_can_join_later
 		clr_country_flag = zombie_overwhelming_force
 		custom_effect_tooltip = azl_can_join_later_tt
@@ -853,7 +823,7 @@ country_event = {
 			}
 		}
 
-		add_political_power = 50
+		add_political_power = constant:anti_zombie_league.invitation_refuse_pp
 		clr_country_flag = azl_can_join_later
 		set_country_flag = azl_refused_to_join
 		clr_country_flag = zombie_overwhelming_force
@@ -875,7 +845,7 @@ country_event = {
 		NOT = { has_global_flag = world_end_disabled }
 		NOT = { has_global_flag = zombie_system_disabled }
 		world_end_zombie_apocalypse_scenario_enabled = yes
-		ZZZ = { num_divisions > 300 }
+		ZZZ = { num_divisions > constant:zombie_threat.world_end_min_divisions }
 	}
 
 	mean_time_to_happen = {

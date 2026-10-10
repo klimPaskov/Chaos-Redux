@@ -31,6 +31,51 @@ is_live_standard_zombie_outbreak_country = {
 	NOT = { has_country_flag = weaponized_zombie_outbreak_country }
 }
 
+# Any scope. The most evolved live standard outbreak country is at exactly the checked evolution tier.
+# The standard cure decisions use these so that only the cure matching the strongest living horde is offered.
+standard_zombie_peak_tier_is_0 = {
+	any_country = { is_live_standard_zombie_outbreak_country = yes }
+	NOT = {
+		any_country = {
+			is_live_standard_zombie_outbreak_country = yes
+			has_country_flag = { flag = zombie_current_tier value > 0 }
+		}
+	}
+}
+
+standard_zombie_peak_tier_is_1 = {
+	any_country = {
+		is_live_standard_zombie_outbreak_country = yes
+		has_country_flag = { flag = zombie_current_tier value = 1 }
+	}
+	NOT = {
+		any_country = {
+			is_live_standard_zombie_outbreak_country = yes
+			has_country_flag = { flag = zombie_current_tier value > 1 }
+		}
+	}
+}
+
+standard_zombie_peak_tier_is_2 = {
+	any_country = {
+		is_live_standard_zombie_outbreak_country = yes
+		has_country_flag = { flag = zombie_current_tier value = 2 }
+	}
+	NOT = {
+		any_country = {
+			is_live_standard_zombie_outbreak_country = yes
+			has_country_flag = { flag = zombie_current_tier value > 2 }
+		}
+	}
+}
+
+standard_zombie_peak_tier_is_3 = {
+	any_country = {
+		is_live_standard_zombie_outbreak_country = yes
+		has_country_flag = { flag = zombie_current_tier value = 3 }
+	}
+}
+
 is_reviewable_weaponized_zombie_profile_country = {
 	is_live_weaponized_zombie_profile_country = yes
 	is_weaponized_zombie_profile_visible_to_root = yes
