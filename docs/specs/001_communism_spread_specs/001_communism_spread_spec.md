@@ -1,5 +1,30 @@
 # Spec: Rework the Communism Spread Event into a State-Based Insurgency System
 
+## Document status (spec audit 2026-10-10)
+
+Event 001 is implemented.
+The current implementation record is [`docs/events/001_communism_spread/overview.md`](../../events/001_communism_spread/overview.md) and the release reconciliation is [`release_qa_completion_20261006.md`](../../plans/001_communism_spread_plans/release_qa_completion_20261006.md).
+This document keeps the original rework brief as the design source and for traceability.
+Its imperative wording, such as "Completely rework" and "Remove", describes work that is done: the weekly stability and weekly war-support effects, the generic industry event and the generic military decisions were retired, and a coding agent must not redo that work.
+The World Revolution sections near the end were revised on 10 October 2026 and are accepted and queued for gameplay implementation under the Event 091 package.
+Chaos Meter tiers gate the evolutions, and no historical date gate exists in this event.
+
+### Differences between this brief and the source
+
+Each row names a point where the source does not follow the brief.
+No row has a recorded user or parent acceptance, so each stays unresolved; the proposals are in Open questions at the end of this file.
+
+| Brief | Source (checked 2026-10-10) | Disposition |
+| --- | --- | --- |
+| Each controlled state adds +0.01 daily, with no cap | `communism_spread_drift` in `001_communism_spread_constants.txt`: base 0.005, 0.01 per state, state contribution capped at 0.90 | Unresolved. The cap binds only above 90 controlled states, so it changes no realistic game. See open question 2. |
+| Conversion chance 40% (Level 1), 80% (Level 2), 100% (Level 3), and Level 3 states always join the rebels | `mark_communist_uprising_conversion_states` selects states from a budget, Level 3 first, then Level 2, then Level 1, never the capital. The budget starts at 1 and gains 1 for each threat step above 49.9, 64.9 and 84.9, 1 each for support above `high_support` and `very_high_support`, and 1 each for one and for more than two Level 3 states, with a ceiling of 8 and never more than controlled states minus one | Unresolved. A country with more Level 3 states than the budget keeps the surplus. See open question 1. |
+| Revolutionary war warning when half the states are controlled or two Level 3 states exist | `maybe_fire_revolutionary_war_warning` also requires the Revolutionary Threat Meter above 49.9 | Unresolved. Three Level 1 states in a six-state country at 20% communist support meet the brief (half the states) but score only 35 on the meter. See open question 3. |
+| Emergency decision available at 50% controlled or one Level 3 state | `can_launch_communist_emergency_intervention` | Implemented. |
+| Rebel strength by state level, industry, population, country strength | `communism_spread_rebels` unit table and `calculate_communist_rebel_state_unit_count` | Implemented. |
+| Spread ceiling of about 90% of states at 100% communist support | `can_communism_spread_take_new_state`: communist popularity times `soft_ceiling_ratio` 0.90 times controlled states | Implemented. |
+| Locked World Revolution weight shown as red N/A, and +200 per foreshadowing incident | Event log and GUI localisation, `communism_spread_evolution.world_revolution_weight_nudge` | Implemented. |
+| Highlighted controlled states | State-targeted decision outlines and a passive state map icon; there is no custom map mode | Implemented as map icons; a custom map mode was not built. |
+
 ## Goal
 
 Completely rework the current communism spread event into a dynamic, state-based communist insurgency system.
@@ -321,7 +346,7 @@ Instead, if the uprising happens:
 
 The conversion chance should depend on each state’s control level.
 
-State conversion chance:
+State conversion chance (the source uses a budget instead, see Document status):
 - Level 1: 40%
 - Level 2: 80%
 - Level 3: 100%
@@ -490,6 +515,9 @@ Event Details describes the present territorial crisis and the pressure on indus
 Keep the implementation changes and retired behavior in development documentation.
 
 ## Cleanup Requirements
+
+These requirements are completed (see Document status).
+They remain as the record of what the rework retired.
 
 Remove or disable obsolete old behavior.
 
@@ -830,7 +858,8 @@ The movement is no longer only about local revolutionary cells. Rumors spread th
 
 This should feel strange, ideological, and threatening.
 
-This evolution strengthens the existing World Revolution connection through rare whispers and the specified foreshadowing contribution. Its actual entry, through active-event progression or a pre-fire evolved opening, unlocks normal major-event eligibility under World Revolution Major Event Hook. Reaching Chaos Tier or firing the baseline does not substitute for that entry, and the unlock does not itself launch World Revolution or its super-event.
+Entry, eligibility and the +200 contribution are governed by World Revolution Major Event Hook.
+This section keeps the theme and the incident ideas.
 
 New possible behavior:
 - News events mention whispers of World Revolution
@@ -935,3 +964,33 @@ After the opening, Event 001 continues as the local cell and organizing provider
 The adapter distinguishes ordinary defenders, independent refusers, allied local bases and directly administered revolutionary territory.
 Retire only incompatible local containment effects after their history and assets have been preserved, without globally disabling insurgency or erasing its historical unlock.
 Later organizing, country creation, government changes and state transfers use bounded targeted updates and never rerun the worldwide opening lottery.
+
+## Open questions
+
+Everything in this section is proposed (spec audit 2026-10-10) and unaccepted until a user decision says otherwise.
+Items 1 to 3 reconcile the differences in Document status.
+Items 4 and 5 connect Event 001 to existing systems.
+
+1. Conversion model.
+   The brief gives each state a conversion chance by level, while the source converts a fixed set chosen from a budget.
+   Proposal: keep the budget as the ceiling that protects small countries, and inside it roll each candidate at the brief's chance (Level 1 40%, Level 2 80%, Level 3 100%), taking Level 3 states first.
+   This restores the "scattered cells" feel of a Level 1 conversion, makes Level 3 states join whenever the budget allows, and keeps a weak country from being flooded.
+   The alternative is to amend the acceptance criterion to the budget model and state that surplus Level 3 states stay loyal.
+   Either way the decision belongs to the user, and the change lives in `mark_communist_uprising_conversion_states` with the chances in `communism_spread_emergency`.
+2. Drift cap.
+   Proposal: accept the 0.90 cap as a safety limit and say so in the brief, since it cannot bind below 90 controlled states.
+   Removing the constant is the alternative.
+3. Warning gate.
+   The source requires the Revolutionary Threat Meter above 49.9 in addition to the brief's two conditions.
+   Proposal: amend the brief to say that the warning also needs the meter above half, because the meter already weighs support, state levels, evolutions and an open rebel war, and the emergency decision keeps the brief's 50% and Level 3 gates.
+   The alternative is to let either brief condition fire the warning on its own.
+4. Famine as an escalation factor.
+   Event 001 lists low stability and war as escalation factors but ignores hunger, while the Famine specification expects revolutionary cells to recruit among hungry people without creating a movement from nothing (`famine_and_migration_system_spec_part_2_famine_food_security.md`, Political escalation from famine).
+   Proposal: in `try_communism_state_escalation` and `is_communist_spread_priority_state`, treat a controlled communist state where the Famine trigger `famine_food_stage_requires_mortality` holds (`common/scripted_triggers/famine_core_triggers.txt`, acute shortage or worse) as a priority escalation candidate with one bounded chance term in `communism_spread_state_control`.
+   Event 001 only reads the trigger.
+   A state with no communist control gains none from famine, as the Famine specification requires.
+5. Deaths from the emergency crackdown.
+   The emergency decision is described as martial law, mass arrests and army raids, but it registers no civilian deaths, so its largest consequence never reaches the Deaths tab.
+   Event 091's incident design already sends the casualties of violent worker incidents once to the shared Deaths owner.
+   Proposal: when the emergency decision resolves, apply a bounded exact civilian loss to each state it clears through `apply_exact_state_civilian_population_loss`, scaled by control level, under a Deaths reason that the Deaths owner adds to `chaos_meter_deaths_reason` (none of the existing reasons describes domestic suppression).
+   Local interventions stay free of civilian deaths because they are military operations against militias.
