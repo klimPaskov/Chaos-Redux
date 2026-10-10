@@ -48,220 +48,179 @@ random_terror_actor_parent_war = {
 	}
 }
 
-# JHX supports every other cooperating Event 31 command.  A command kept
-# independent by Global Jihad setup or locked in a leadership contest stays
-# outside this cooperation.
-random_terror_jhx_actor_cooperation = {
-	allowed = { original_tag = JHX }
-	enable = {
-		random_terror_is_actor = yes
-		NOT = { has_country_flag = random_terror_independent_command }
-		NOT = { has_country_flag = random_terror_network_leadership_contested }
-	}
-	abort_when_not_enabled = yes
-	ai_strategy = { type = befriend id = JIX value = 50 }
-	ai_strategy = { type = support id = JIX value = 50 }
-	ai_strategy = { type = befriend id = JKX value = 50 }
-	ai_strategy = { type = support id = JKX value = 50 }
-	ai_strategy = { type = befriend id = JLX value = 50 }
-	ai_strategy = { type = support id = JLX value = 50 }
-	ai_strategy = { type = befriend id = JMX value = 50 }
-	ai_strategy = { type = support id = JMX value = 50 }
-	ai_strategy = { type = befriend id = JNX value = 50 }
-	ai_strategy = { type = support id = JNX value = 50 }
-	ai_strategy = { type = befriend id = JOX value = 50 }
-	ai_strategy = { type = support id = JOX value = 50 }
-	ai_strategy = { type = befriend id = JPX value = 50 }
-	ai_strategy = { type = support id = JPX value = 50 }
-}
+# Cooperation between Event 31 commands.  One strategy per target tag: every
+# other cooperating command befriends and supports the target.  A command kept
+# independent by Global Jihad setup or locked in a leadership contest neither
+# cooperates nor receives cooperation, so other carriers are neutral toward it
+# and it stays outside the network until the setup flag or the contest clears.
+# The shared trigger random_terror_is_cooperating_actor holds for both sides.
 
-# JIX supports every other cooperating Event 31 command.  A command kept
-# independent by Global Jihad setup or locked in a leadership contest stays
-# outside this cooperation.
-random_terror_jix_actor_cooperation = {
-	allowed = { original_tag = JIX }
+random_terror_actor_cooperation_jhx = {
+	allowed = {
+		OR = {
+			original_tag = JIX
+			original_tag = JKX
+			original_tag = JLX
+			original_tag = JMX
+			original_tag = JNX
+			original_tag = JOX
+			original_tag = JPX
+		}
+	}
 	enable = {
-		random_terror_is_actor = yes
-		NOT = { has_country_flag = random_terror_independent_command }
-		NOT = { has_country_flag = random_terror_network_leadership_contested }
+		random_terror_is_cooperating_actor = yes
+		JHX = { random_terror_is_cooperating_actor = yes }
 	}
 	abort_when_not_enabled = yes
 	ai_strategy = { type = befriend id = JHX value = 50 }
 	ai_strategy = { type = support id = JHX value = 50 }
-	ai_strategy = { type = befriend id = JKX value = 50 }
-	ai_strategy = { type = support id = JKX value = 50 }
-	ai_strategy = { type = befriend id = JLX value = 50 }
-	ai_strategy = { type = support id = JLX value = 50 }
-	ai_strategy = { type = befriend id = JMX value = 50 }
-	ai_strategy = { type = support id = JMX value = 50 }
-	ai_strategy = { type = befriend id = JNX value = 50 }
-	ai_strategy = { type = support id = JNX value = 50 }
-	ai_strategy = { type = befriend id = JOX value = 50 }
-	ai_strategy = { type = support id = JOX value = 50 }
-	ai_strategy = { type = befriend id = JPX value = 50 }
-	ai_strategy = { type = support id = JPX value = 50 }
 }
 
-# JKX supports every other cooperating Event 31 command.  A command kept
-# independent by Global Jihad setup or locked in a leadership contest stays
-# outside this cooperation.
-random_terror_jkx_actor_cooperation = {
-	allowed = { original_tag = JKX }
+random_terror_actor_cooperation_jix = {
+	allowed = {
+		OR = {
+			original_tag = JHX
+			original_tag = JKX
+			original_tag = JLX
+			original_tag = JMX
+			original_tag = JNX
+			original_tag = JOX
+			original_tag = JPX
+		}
+	}
 	enable = {
-		random_terror_is_actor = yes
-		NOT = { has_country_flag = random_terror_independent_command }
-		NOT = { has_country_flag = random_terror_network_leadership_contested }
+		random_terror_is_cooperating_actor = yes
+		JIX = { random_terror_is_cooperating_actor = yes }
 	}
 	abort_when_not_enabled = yes
-	ai_strategy = { type = befriend id = JHX value = 50 }
-	ai_strategy = { type = support id = JHX value = 50 }
 	ai_strategy = { type = befriend id = JIX value = 50 }
 	ai_strategy = { type = support id = JIX value = 50 }
-	ai_strategy = { type = befriend id = JLX value = 50 }
-	ai_strategy = { type = support id = JLX value = 50 }
-	ai_strategy = { type = befriend id = JMX value = 50 }
-	ai_strategy = { type = support id = JMX value = 50 }
-	ai_strategy = { type = befriend id = JNX value = 50 }
-	ai_strategy = { type = support id = JNX value = 50 }
-	ai_strategy = { type = befriend id = JOX value = 50 }
-	ai_strategy = { type = support id = JOX value = 50 }
-	ai_strategy = { type = befriend id = JPX value = 50 }
-	ai_strategy = { type = support id = JPX value = 50 }
 }
 
-# JLX supports every other cooperating Event 31 command.  A command kept
-# independent by Global Jihad setup or locked in a leadership contest stays
-# outside this cooperation.
-random_terror_jlx_actor_cooperation = {
-	allowed = { original_tag = JLX }
+random_terror_actor_cooperation_jkx = {
+	allowed = {
+		OR = {
+			original_tag = JHX
+			original_tag = JIX
+			original_tag = JLX
+			original_tag = JMX
+			original_tag = JNX
+			original_tag = JOX
+			original_tag = JPX
+		}
+	}
 	enable = {
-		random_terror_is_actor = yes
-		NOT = { has_country_flag = random_terror_independent_command }
-		NOT = { has_country_flag = random_terror_network_leadership_contested }
+		random_terror_is_cooperating_actor = yes
+		JKX = { random_terror_is_cooperating_actor = yes }
 	}
 	abort_when_not_enabled = yes
-	ai_strategy = { type = befriend id = JHX value = 50 }
-	ai_strategy = { type = support id = JHX value = 50 }
-	ai_strategy = { type = befriend id = JIX value = 50 }
-	ai_strategy = { type = support id = JIX value = 50 }
 	ai_strategy = { type = befriend id = JKX value = 50 }
 	ai_strategy = { type = support id = JKX value = 50 }
-	ai_strategy = { type = befriend id = JMX value = 50 }
-	ai_strategy = { type = support id = JMX value = 50 }
-	ai_strategy = { type = befriend id = JNX value = 50 }
-	ai_strategy = { type = support id = JNX value = 50 }
-	ai_strategy = { type = befriend id = JOX value = 50 }
-	ai_strategy = { type = support id = JOX value = 50 }
-	ai_strategy = { type = befriend id = JPX value = 50 }
-	ai_strategy = { type = support id = JPX value = 50 }
 }
 
-# JMX supports every other cooperating Event 31 command.  A command kept
-# independent by Global Jihad setup or locked in a leadership contest stays
-# outside this cooperation.
-random_terror_jmx_actor_cooperation = {
-	allowed = { original_tag = JMX }
+random_terror_actor_cooperation_jlx = {
+	allowed = {
+		OR = {
+			original_tag = JHX
+			original_tag = JIX
+			original_tag = JKX
+			original_tag = JMX
+			original_tag = JNX
+			original_tag = JOX
+			original_tag = JPX
+		}
+	}
 	enable = {
-		random_terror_is_actor = yes
-		NOT = { has_country_flag = random_terror_independent_command }
-		NOT = { has_country_flag = random_terror_network_leadership_contested }
+		random_terror_is_cooperating_actor = yes
+		JLX = { random_terror_is_cooperating_actor = yes }
 	}
 	abort_when_not_enabled = yes
-	ai_strategy = { type = befriend id = JHX value = 50 }
-	ai_strategy = { type = support id = JHX value = 50 }
-	ai_strategy = { type = befriend id = JIX value = 50 }
-	ai_strategy = { type = support id = JIX value = 50 }
-	ai_strategy = { type = befriend id = JKX value = 50 }
-	ai_strategy = { type = support id = JKX value = 50 }
 	ai_strategy = { type = befriend id = JLX value = 50 }
 	ai_strategy = { type = support id = JLX value = 50 }
-	ai_strategy = { type = befriend id = JNX value = 50 }
-	ai_strategy = { type = support id = JNX value = 50 }
-	ai_strategy = { type = befriend id = JOX value = 50 }
-	ai_strategy = { type = support id = JOX value = 50 }
-	ai_strategy = { type = befriend id = JPX value = 50 }
-	ai_strategy = { type = support id = JPX value = 50 }
 }
 
-# JNX supports every other cooperating Event 31 command.  A command kept
-# independent by Global Jihad setup or locked in a leadership contest stays
-# outside this cooperation.
-random_terror_jnx_actor_cooperation = {
-	allowed = { original_tag = JNX }
+random_terror_actor_cooperation_jmx = {
+	allowed = {
+		OR = {
+			original_tag = JHX
+			original_tag = JIX
+			original_tag = JKX
+			original_tag = JLX
+			original_tag = JNX
+			original_tag = JOX
+			original_tag = JPX
+		}
+	}
 	enable = {
-		random_terror_is_actor = yes
-		NOT = { has_country_flag = random_terror_independent_command }
-		NOT = { has_country_flag = random_terror_network_leadership_contested }
+		random_terror_is_cooperating_actor = yes
+		JMX = { random_terror_is_cooperating_actor = yes }
 	}
 	abort_when_not_enabled = yes
-	ai_strategy = { type = befriend id = JHX value = 50 }
-	ai_strategy = { type = support id = JHX value = 50 }
-	ai_strategy = { type = befriend id = JIX value = 50 }
-	ai_strategy = { type = support id = JIX value = 50 }
-	ai_strategy = { type = befriend id = JKX value = 50 }
-	ai_strategy = { type = support id = JKX value = 50 }
-	ai_strategy = { type = befriend id = JLX value = 50 }
-	ai_strategy = { type = support id = JLX value = 50 }
 	ai_strategy = { type = befriend id = JMX value = 50 }
 	ai_strategy = { type = support id = JMX value = 50 }
-	ai_strategy = { type = befriend id = JOX value = 50 }
-	ai_strategy = { type = support id = JOX value = 50 }
-	ai_strategy = { type = befriend id = JPX value = 50 }
-	ai_strategy = { type = support id = JPX value = 50 }
 }
 
-# JOX supports every other cooperating Event 31 command.  A command kept
-# independent by Global Jihad setup or locked in a leadership contest stays
-# outside this cooperation.
-random_terror_jox_actor_cooperation = {
-	allowed = { original_tag = JOX }
+random_terror_actor_cooperation_jnx = {
+	allowed = {
+		OR = {
+			original_tag = JHX
+			original_tag = JIX
+			original_tag = JKX
+			original_tag = JLX
+			original_tag = JMX
+			original_tag = JOX
+			original_tag = JPX
+		}
+	}
 	enable = {
-		random_terror_is_actor = yes
-		NOT = { has_country_flag = random_terror_independent_command }
-		NOT = { has_country_flag = random_terror_network_leadership_contested }
+		random_terror_is_cooperating_actor = yes
+		JNX = { random_terror_is_cooperating_actor = yes }
 	}
 	abort_when_not_enabled = yes
-	ai_strategy = { type = befriend id = JHX value = 50 }
-	ai_strategy = { type = support id = JHX value = 50 }
-	ai_strategy = { type = befriend id = JIX value = 50 }
-	ai_strategy = { type = support id = JIX value = 50 }
-	ai_strategy = { type = befriend id = JKX value = 50 }
-	ai_strategy = { type = support id = JKX value = 50 }
-	ai_strategy = { type = befriend id = JLX value = 50 }
-	ai_strategy = { type = support id = JLX value = 50 }
-	ai_strategy = { type = befriend id = JMX value = 50 }
-	ai_strategy = { type = support id = JMX value = 50 }
 	ai_strategy = { type = befriend id = JNX value = 50 }
 	ai_strategy = { type = support id = JNX value = 50 }
-	ai_strategy = { type = befriend id = JPX value = 50 }
-	ai_strategy = { type = support id = JPX value = 50 }
 }
 
-# JPX supports every other cooperating Event 31 command.  A command kept
-# independent by Global Jihad setup or locked in a leadership contest stays
-# outside this cooperation.
-random_terror_jpx_actor_cooperation = {
-	allowed = { original_tag = JPX }
+random_terror_actor_cooperation_jox = {
+	allowed = {
+		OR = {
+			original_tag = JHX
+			original_tag = JIX
+			original_tag = JKX
+			original_tag = JLX
+			original_tag = JMX
+			original_tag = JNX
+			original_tag = JPX
+		}
+	}
 	enable = {
-		random_terror_is_actor = yes
-		NOT = { has_country_flag = random_terror_independent_command }
-		NOT = { has_country_flag = random_terror_network_leadership_contested }
+		random_terror_is_cooperating_actor = yes
+		JOX = { random_terror_is_cooperating_actor = yes }
 	}
 	abort_when_not_enabled = yes
-	ai_strategy = { type = befriend id = JHX value = 50 }
-	ai_strategy = { type = support id = JHX value = 50 }
-	ai_strategy = { type = befriend id = JIX value = 50 }
-	ai_strategy = { type = support id = JIX value = 50 }
-	ai_strategy = { type = befriend id = JKX value = 50 }
-	ai_strategy = { type = support id = JKX value = 50 }
-	ai_strategy = { type = befriend id = JLX value = 50 }
-	ai_strategy = { type = support id = JLX value = 50 }
-	ai_strategy = { type = befriend id = JMX value = 50 }
-	ai_strategy = { type = support id = JMX value = 50 }
-	ai_strategy = { type = befriend id = JNX value = 50 }
-	ai_strategy = { type = support id = JNX value = 50 }
 	ai_strategy = { type = befriend id = JOX value = 50 }
 	ai_strategy = { type = support id = JOX value = 50 }
+}
+
+random_terror_actor_cooperation_jpx = {
+	allowed = {
+		OR = {
+			original_tag = JHX
+			original_tag = JIX
+			original_tag = JKX
+			original_tag = JLX
+			original_tag = JMX
+			original_tag = JNX
+			original_tag = JOX
+		}
+	}
+	enable = {
+		random_terror_is_cooperating_actor = yes
+		JPX = { random_terror_is_cooperating_actor = yes }
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = befriend id = JPX value = 50 }
+	ai_strategy = { type = support id = JPX value = 50 }
 }
 
 # ----------------------------------------------------------------------------
