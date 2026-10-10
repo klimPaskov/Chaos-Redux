@@ -9,6 +9,18 @@ Use this skill to design or expand events for the Hearts of Iron IV mod Chaos Re
 
 This skill creates event specifications. It does not implement code. Implementation belongs to `chaos-redux-events`. Visual asset generation and processing belongs to `chaos-redux-event-assets`. Animated sprite planning, frame-sheet requirements, animated portrait packages, and animation handoff details belong to `chaos-redux-frame-animation` when motion is needed. Super-event quote, remark, music, and presentation research belongs to `chaos-redux-super-events`.
 
+## Reference map
+
+The root keeps every section heading with its guarantee. Read the complete reference file below before the matching work.
+
+- [Advanced event system design](references/advanced-system-design.md): index of the three advanced standards below, read first when unsure which part applies.
+- [Focus tree, mechanic, and decision design standards](references/advanced-focus-tree-design.md): read when specifying a major focus tree, its reward and idea design, special mechanics and faction systems, or decision categories.
+- [Country package, starting forces, and model planning standards](references/advanced-country-and-forces-design.md): read when specifying a country package, naming, a formable nation, starting or reinforcing forces, a new unit type, or a 3D model.
+- [Chaos generation and feedback standards](references/advanced-chaos-generation-design.md): read when an event adds, scales, repeats, or reduces global Chaos.
+- [Player-facing text direction](references/player-facing-text-direction.md): read when writing tone, option, humour, writing-style, or localisation-handoff direction.
+- [Event presentation and asset planning](references/presentation-and-assets.md): read when specifying custom UI, super-events, asset planning, asset prompts, sizes, style, or the super-event research handoff.
+- [Specification delivery, prompts, and review](references/specification-delivery.md): read when shaping, splitting, delivering, prompting, and reviewing the finished specification.
+
 ## 1. Required reading
 
 Before writing the event specification, use the following as the design baseline:
@@ -110,51 +122,13 @@ Do not create negative capability notes for absent event surfaces. If an event d
 
 #### Tone and presentation direction standard
 
-For every player-facing text surface, the planning spec should define the writing direction and leave finished wording to implementation. This includes event titles, event descriptions, report text, news text, focus text, decision text, option text, achievement text, super-event setup, GUI labels, route flavour, event-detail text, and spreadsheet-facing summaries.
-
-Give the coding agent clear direction for:
-
-- actor or viewpoint
-- force driving the event
-- information visible to the player
-- information that should remain uncertain
-- tone, severity, and humour mode
-- references that need research
-- words, frames, or clichés to avoid
-- dynamic actors, states, countries, values, or routes that final text should mention
-
-Do not provide pasteable localisation. Do not include `sample line`, `possible line`, `placeholder text`, `temporary title`, or exact draft wording that could be copied into localisation. When a structural label is needed for a file, row, route, branch, asset, or prompt, mark it as a working label, not final localisation.
-
-Text direction should avoid bland map-summary framing and generic communications clichés. Do not make the emotional center of an event a changed map, a line of advance, a staff-table scene, a failed broadcast, or another stock image of crisis administration.
-
-When planning player-facing warning, threat, suspicious-report, and escalation text, do not instruct the coding agent to say that something is a warning, that something is not a warning, that a threat is coming, or that a danger signal has appeared. The text should show the pattern through partial information: fearful witnesses, rumours, anomalies, mysterious powers seen, and similar signs.
-
-A report can make the player uneasy without naming the unease. Use mystery, information gaps, fear, rumours, and similar techniques. The player should infer that something may be wrong from the content and consequences, not from a label.
-
-When a concept benefits from mystery, fantasy, surrealism, myth, occult signs, prophecy, impossible resolve, strange energy, or unclear public rumours, state that direction clearly without drafting the final prose.
+Every player-facing text surface in the spec gets writing direction (actor or viewpoint, visible and uncertain information, tone and humour mode, research needs, words to avoid, dynamic placeholders), never pasteable localisation or draft wording. Warning, threat, and escalation text is planned as a pattern shown through partial information, never as a label.
+Read the complete requirements in [Tone and presentation direction standard](references/player-facing-text-direction.md#tone-and-presentation-direction-standard) before this work.
 
 #### Event option humour, irony, and cultural remark direction
 
-The planning spec may define what an option should feel like, what stance it represents, and how it should vary by route or actor. It must not write final option text.
-
-Do not let the implementation agent default to bland buttons unless plainness is intentional. Describe the intended option style, such as official denial, sarcastic acceptance, bitter understatement, cultural allusion direction, period propaganda tone, frightened understatement, arrogant boast, administrative absurdity, local proverb direction, or grim irony that condemns the speaker.
-
-For each important option or option family, define:
-
-- who is speaking or reacting
-- what the option means mechanically and narratively
-- whether the tone should be serious, ironic, sarcastic, cruel, frightened, resigned, bureaucratic, or absurd
-- what kinds of cultural references may fit
-- which references need research before wording is written
-- how route, ideology, chaos tier, campaign state, or country culture should change the reaction
-
-Humour should fit the stakes. Minor chaotic events can use sharper jokes and visible sarcasm. Major disasters, massacres, atrocities, mass death, and real-world suffering should use severity, official euphemism, cynical propaganda, hypocrisy, or self-damning grim irony. Cheap comedy is forbidden there.
-
-Cultural remarks should be treated as research directions unless already sourced. The spec may say that a line should draw from a period slogan, military idiom, folk saying, religious register, old newspaper style, literary echo, propaganda formula, or local public habit. It must not invent the exact remark.
-
-Do not list example option lines. Do not write sample buttons. Do not write placeholder localisation for options. Coding agents may paste those into the game.
-
-Some events need one cutting reaction direction and one plain practical reaction direction. Some need several route-specific reaction directions. The spec should state the intended option tone and purpose, then leave the final wording to the coding agent.
+Important options and option families get a defined stance, speaker, tone, and research-gated cultural direction that varies by route and actor, without any final option text or sample buttons. Humour must fit the stakes, and atrocities and mass suffering take grim irony or euphemism, never cheap comedy.
+Read the complete requirements in [Event option humour, irony, and cultural remark direction](references/player-facing-text-direction.md#event-option-humour-irony-and-cultural-remark-direction) before this work.
 
 ### 3.2 Depth standard
 
@@ -267,7 +241,7 @@ For branch trees or outcome webs, show the structure. Use headings, named routes
 ### 3.5 Focus tree path design standard
 
 For a specification with focus paths, design country-specific routes with connected decisions, AI, rewards, and full route coverage.
-Read the complete requirements in [Focus tree path design standard](references/advanced-system-design.md#focus-tree-path-design-standard) before this work.
+Read the complete requirements in [Focus tree path design standard](references/advanced-focus-tree-design.md#focus-tree-path-design-standard) before this work.
 
 ### 3.6 Focus tree visual planning standard
 
@@ -386,7 +360,7 @@ Each evolution should define:
 #### 3.8.1 Chaos generation and feedback standard
 
 Destabilizing events need a full Chaos impact map, calibrated gains and containment reductions, overlap checks, and repeat guards. Evolution status alone never awards Chaos.
-Read the complete requirements in [Chaos generation and feedback standard](references/advanced-system-design.md#chaos-generation-and-feedback-standard) before this work.
+Read the complete requirements in [Chaos generation and feedback standard](references/advanced-chaos-generation-design.md#chaos-generation-and-feedback-standard) before this work.
 
 ### 3.9 Dynamic mechanics standard
 
@@ -475,12 +449,12 @@ A good AI section should make the implementation agent unable to create generic 
 ### 3.12 Country package and dynamic identity standard
 
 For every new or transformed country, specify its complete playable package and identity transitions.
-Read the complete requirements in [Country package and dynamic identity standard](references/advanced-system-design.md#country-package-and-dynamic-identity-standard) before this work.
+Read the complete requirements in [Country package and dynamic identity standard](references/advanced-country-and-forces-design.md#country-package-and-dynamic-identity-standard) before this work.
 
 ### 3.13 Starting forces and reinforcement pathway standard
 
 For event actors with forces or custom units, specify their opening strength, reinforcement path, ownership, and model consumers.
-Read the complete requirements in [Starting forces and reinforcement pathway standard](references/advanced-system-design.md#starting-forces-and-reinforcement-pathway-standard) before this work.
+Read the complete requirements in [Starting forces and reinforcement pathway standard](references/advanced-country-and-forces-design.md#starting-forces-and-reinforcement-pathway-standard) before this work.
 
 ### 3.14 Mandatory asset coverage and source-mode standard
 
@@ -492,9 +466,9 @@ Every decision, decision category, idea, national spirit, achievement, faction e
 
 Every country package must include flags. Required flag coverage includes normal, medium, and small sizes for each implemented flag state. If the country has ideology-specific names, focus-tree transformations, puppet identities, restored historical forms, radical routes, or high-chaos mutations, the spec must identify whether those states need separate flags.
 
-Every new flag uses `$imagegen`. For a real or historically attested country, movement, party, military authority, or restoration path, the asset prompt must first require reliable design research and a cited reference. Imagegen then reconstructs that exact design as a flat flag under the reference constraint. It must not produce waving fabric, painterly flag artwork, scenery, gradients, perspective, fake lettering, or invented heraldry. The asset prompt must require a manual geometry, colour, orientation, and symbol comparison before HOI4 flag resizing. Fictional and alternate flags also use imagegen, while remaining flat flag designs rather than illustrations.
+Every new flag uses image generation (see the Image-generation route section of chaos-redux-event-assets). For a real or historically attested country, movement, party, military authority, or restoration path, the asset prompt must first require reliable design research and a cited reference. Image generation then reconstructs that exact design as a flat flag under the reference constraint. It must not produce waving fabric, painterly flag artwork, scenery, gradients, perspective, fake lettering, or invented heraldry. The asset prompt must require a manual geometry, colour, orientation, and symbol comparison before HOI4 flag resizing. Fictional and alternate flags also use image generation, while remaining flat flag designs rather than illustrations.
 
-Historical or real leaders must not be generated, and grounded polities must not receive invented substitute people. Treat a polity as grounded when it existed in whole or in part, represents a real community, or claims continuity from a real institution. The spec must identify its real portrait or institutional-material needs and instruct `chaosx_portrait_creator` to source attributed material, document source and license status, choose an explicit head-and-shoulders crop for a person, prepare the placeholder, and review the user-supplied HOI4-style final against the canonical reference root `C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/gfx_references` plus its role-specific contact sheet. Generated one-person portraits are reserved for wholly fictional leaders of wholly fictional, deliberately high-chaos polities and must be created and processed by the portrait worker. Fictional councils and symbolic bodies should use people-free institutional compositions.
+Historical or real leaders must not be generated, and grounded polities must not receive invented substitute people. Treat a polity as grounded when it existed in whole or in part, represents a real community, or claims continuity from a real institution. The spec must identify its real portrait or institutional-material needs and instruct `chaosx_portrait_creator` to source attributed material, document source and license status, choose an explicit head-and-shoulders crop for a person, prepare the placeholder, and review the user-supplied HOI4-style final against the canonical reference root `C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.claude/skills/chaos-redux-event-assets/assets/gfx_references` plus its role-specific contact sheet. Generated one-person portraits are reserved for wholly fictional leaders of wholly fictional, deliberately high-chaos polities and must be created and processed by the portrait worker. Fictional councils and symbolic bodies should use people-free institutional compositions.
 
 When an asset source is historically sensitive, disputed, or politically loaded, the asset prompt must require source notes and a clear distinction between sourced historical use and fictional alternate-history invention.
 
@@ -633,91 +607,8 @@ Read the complete requirements in [Super-event planning](references/presentation
 
 ## 10. Writing style
 
-For player-facing text, define the same style as direction only. Event description direction can stay grounded while option direction can use irony, sarcasm, cultural remarks, and humour that fit the actor and stakes.
-
-Avoid:
-
-- generic disaster wording
-- empty dramatic language
-- making every event apocalyptic
-- random chaos without purpose
-- implementation code
-- excessive technical detail
-- filler text that repeats obvious system behavior
-- displaying event effects in event details
-- long sentences without actually saying anything
-- short staccato sentences that are dramatic and just make comprehension more confusing
-- option direction that would lead to bland placeholder buttons
-- absence notes for systems that are not present, such as saying an event has no world-end scenario or no manual triggerable scenario
-
-Mention implementation only where it matters for the design, such as super-event treatment, custom UI, AI behavior, documentation, assets, dynamic factors, focus tree structure, custom tags, or important system connections.
-
-This planning skill defines direction for player-facing text. It must not write final player-facing localisation. This includes event titles, event option text, event descriptions, news and report prose, decision names, decision descriptions, focus names, focus descriptions, achievement titles, achievement descriptions, GUI labels, event-detail text, spreadsheet-facing wording, super-event titles, super-event button text, super-event quotes, cultural remarks, source-like allusions, and final audio selections.
-
-The planning spec may define tone, actor viewpoint, structure, visible information, route variation, dynamic placeholders that final text should use, and research needs. If a working label is needed for a row, filename, prompt, branch, route, asset, diagram, or internal handoff, mark it clearly as `working label, not final localisation`.
-
-Important super-event boundary: this planning skill may define super-event role, trigger, tone, image direction, quote direction, cultural-remark direction, and audio mood. Any source-dependent wording belongs to `chaos-redux-super-events` and must stay blocked until researched and documented.
-
-### General text writing style
-
-1. Never use the em dash or semicolons in sentences.
-2. Absolutely avoid dialectical hedging. Do not frame sentences as thesis, antithesis, synthesis.
-    - Dialectical hedging examples:
-      - `The invasion is not merely a border crisis, but a crisis of identity.`
-      - `The regime is not only losing the war, it is losing itself.`
-      - `This is not just a strike. This is a warning.`
-      - `The cult is not fighting for land, but for meaning.`
-      - `The disaster is both a local tragedy and a global sign.`
-      - `The government is neither dead nor alive, but something worse.`
-      - `The army did not collapse. It transformed.`
-      - `This is less a rebellion than a confession.`
-      - `The question is not whether order can return, but what kind of order will survive.`
-      - `What looks like defeat is actually a new form of power.`
-    - Thesis, antithesis, synthesis examples:
-      - `The army claims the province is secure. Refugees say it is already lost. The truth lies between them.`
-      - `Some call the new state liberation. Others call it occupation. In reality, it is both.`
-      - `The priests call it a miracle. The generals call it a weapon. History will call it both.`
-      - `The committee promises order. The opposition sees tyranny. The new system contains both impulses.`
-      - `The papers call it a victory. The hospitals call it a defeat. The country has become both at once.`
-      - `The rebels ask for justice. The regime asks for peace. The settlement gives neither and both.`
-3. Avoid AI-style explanatory templates. Do not write lines that sound prebuilt or reusable across any event.
-4. Absolutely avoid staccato sentences. Do not split one simple thought into a chain of tiny lines for artificial weight or dramatic effect. Use complete, readable sentences with enough context to be clear.
-    - Staccato examples:
-      - `The radios died. The roads emptied. The city listened.`
-      - `No orders. No mercy. No dawn.`
-      - `The border fell. Then the capital. Then the government.`
-      - `They marched. They burned. They vanished.`
-      - `A knock at the door. A list on the table. A train in the dark.`
-      - `The guns stopped. The screaming did not.`
-      - `First hunger. Then anger. Then flags.`
-      - `No king. No cabinet. No law.`
-      - `Ash in the streets. Smoke over the port. Silence at noon.`
-      - `One order. One shot. One missing officer.`
-      - `The gate opened. The crowd moved. The guards ran.`
-5. Avoid staged contrast formulas. Do not write sentences or paired clauses built as `claim X while officials Y`, `reports say X while authorities Y`, `people do X before governments Y`, `X happens before Y admits it`, or similar. Do not manufacture tension by contrasting unofficial fear with official denial, silence, delay, admission, or reaction. Write the observed fear, behaviour, rumours, anomalies, and consequences directly.
-6. Absolutely avoid empty dramatic filler. Do not lean on vague intensity words when concrete detail would do the work.
-7. Do not paste instruction text, task labels, prompt fragments, or process notes into in-game text, specs, docs, localisation, spreadsheet fields, or reports.
-    - For example, when I say: `Do not reveal the hidden mechanics here.`, don't write `This path purposely doesn't reveal the hidden mechanics`.
-
-### General localisation handoff
-
-When a spec includes text-bearing content, give a localisation handoff, not final copy.
-
-The handoff should list each needed text surface and describe its direction:
-
-- event title direction
-- event description direction
-- option reaction direction
-- news or report direction
-- decision name and description direction
-- focus name and description direction
-- achievement title and description direction
-- GUI label direction
-- event-detail and event-log wording direction
-- dynamic placeholders the coding agent should use
-- research gates for quotes, slogans, songs, films, books, speeches, scriptures, proverbs, or other source-dependent references
-
-The coding agent writes the final in-game text during implementation. The planning spec should not provide final prose for the coding agent to paste.
+Player-facing text is specified as direction only and never as final localisation. The general text writing style rules (no em dash or semicolons, no dialectical hedging, no staccato, no staged contrast formulas) and the localisation handoff format apply to every spec, and source-dependent super-event wording stays blocked for `chaos-redux-super-events`.
+Read the complete requirements in [Writing style](references/player-facing-text-direction.md#writing-style) before this work.
 
 ## 11. Specification shape
 
@@ -782,7 +673,7 @@ The final response should include:
 - formable state-puzzle requirements mapped with exact state shapes, dynamic qualification, static alternative, reusable templates, and eligibility agreement where relevant
 - animated sprite and portrait needs mapped with static fallbacks, state logic, and `chaos-redux-frame-animation` handoff expectations only when motion is useful
 - historical flags, symbols, and real leader portraits assigned the correct source workflow
-- every flag assigned the flat reference-constrained imagegen workflow
+- every flag assigned the flat reference-constrained image-generation workflow
 - tag collision audit requirements mapped for new or reused country identities
 - super-event direction and research gates defined when needed
 - direction-only localisation handoff for event titles, options, descriptions, decisions, focuses, achievements, GUI labels, event details, and spreadsheet wording

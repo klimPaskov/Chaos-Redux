@@ -212,7 +212,7 @@ The prompt must tell the coding agent to:
 - use `hoi4.tech_inspect`, `hoi4.tech_render`, and `hoi4.tech_compare` when technologies, doctrines, folders, prerequisites, unlocks, grants, or research bonuses are involved
 - route weighted behavior through one bounded `chaosx_ai_probability_auditor` pass with named representative scenarios and before/after source comparison; prefer targeted MCP tools and use source/helper evaluation when unsupported
 - route required 3D model and skeletal animation production through `chaosx_3d_model_pipeline` with Codex `collaboration.spawn_agent` using `fork_turns="none"`, then implement and validate the final `.asset`, entity, `.gfx`, unit or building consumer, placement, and animation, and review available user-supplied live in-game evidence
-- follow the flat reference-constrained imagegen rule for every flag and the sourced identity-preserving portrait rule for every grounded polity and real person
+- follow the flat reference-constrained image-generation rule for every flag and the sourced identity-preserving portrait rule for every grounded polity and real person
 - follow `AGENTS.md`
 - follow `chaos-redux-events`
 - use `chaos-redux-event-assets` if visual assets are required

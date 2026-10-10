@@ -126,7 +126,7 @@ Asset generation, sourcing, cropping, resizing, DDS conversion, file placement, 
 
 This skill should define what assets are needed, what they should represent, what source mode they require, and which visible states, if any, benefit from animation. Static presentation is valid whenever it communicates the mechanic more clearly. Do not require animation only because a mechanic is important.
 
-Historical or real-world assets need special care. Historical flags and symbols require reliable cited design references, and every final flag still uses imagegen as a reference-constrained flat reconstruction. `chaosx_portrait_creator` owns sourced photographs, explicit head-and-shoulders crops, placeholders, and user-supplied HOI4-style finals for real leaders. Grounded polities must use sourced real subjects or authentic institutional material even when their route is alternate history. The portrait worker generates one-person portraits only for wholly fictional leaders of wholly fictional high-chaos polities. Generated non-portrait art remains appropriate for people-free symbolic councils, invented high-chaos identities, idea icons, focus icons, decision icons, achievements, faction emblems, UI art, and fictional or alternate-history report, news, and super-event images unless the user says otherwise.
+Historical or real-world assets need special care. Historical flags and symbols require reliable cited design references, and every final flag still uses image generation as a reference-constrained flat reconstruction. `chaosx_portrait_creator` owns sourced photographs, explicit head-and-shoulders crops, placeholders, and user-supplied HOI4-style finals for real leaders. Grounded polities must use sourced real subjects or authentic institutional material even when their route is alternate history. The portrait worker generates one-person portraits only for wholly fictional leaders of wholly fictional high-chaos polities. Generated non-portrait art remains appropriate for people-free symbolic councils, invented high-chaos identities, idea icons, focus icons, decision icons, achievements, faction emblems, UI art, and fictional or alternate-history report, news, and super-event images unless the user says otherwise.
 
 ### Reference examples for asset planning
 
@@ -134,7 +134,7 @@ When a spec or asset prompt asks for generated or sourced assets, tell the asset
 
 Use this single canonical reference root:
 
-`C:\Users\klimp\OneDrive\Documents\Paradox Interactive\Hearts of Iron IV\mod\chaos_redux\.agents\skills\chaos-redux-event-assets\assets\gfx_references`
+`C:\Users\klimp\OneDrive\Documents\Paradox Interactive\Hearts of Iron IV\mod\chaos_redux\.claude\skills\chaos-redux-event-assets\assets\gfx_references`
 
 The catalog and every category below are relative to that exact folder:
 
@@ -170,7 +170,7 @@ Reference mapping:
 
 The decision category picture family is a separate reference surface. Its exact path is:
 
-`C:\Users\klimp\OneDrive\Documents\Paradox Interactive\Hearts of Iron IV\mod\chaos_redux\.agents\skills\chaos-redux-event-assets\assets\gfx_references\icons\decision_categories\pictures`
+`C:\Users\klimp\OneDrive\Documents\Paradox Interactive\Hearts of Iron IV\mod\chaos_redux\.claude\skills\chaos-redux-event-assets\assets\gfx_references\icons\decision_categories\pictures`
 
 The implementation or asset prompt must require `contact_sheet.png` in that folder. If it is missing, the asset agent should build it from the references, label filenames and native dimensions, and update `assets/gfx_references/README.md` and `assets/gfx_references/CATALOG.md` before producing new category pictures.
 
@@ -195,7 +195,7 @@ The asset prompt should include:
 - animation brief needs for every animated asset, including state logic, frame count target, target frame size, expected sheet size, frames per second, loop behavior, `play_on_show` expectation, static fallback, source mode, and target `.gfx` or `.gui` surface when known
 - achievement icon list with completed icon directions for every achievement
 - manifest requirements
-- source mode, including historically sourced design references for flags followed by imagegen reconstruction, and whether a symbol or portrait must be sourced historically instead of generated
+- source mode, including historically sourced design references for flags followed by image-generation reconstruction, and whether a symbol or portrait must be sourced historically instead of generated
 - reference example folder that must be inspected before asset work
 - decision category picture list, eligibility, source mode, presentation role, static or animated state, and exact reference folder when category pictures are planned
 - formable state-puzzle manifest needs, exact state geometry source, grey and green qualification states, projection, sprite ownership, and static category-picture alternative when formables are planned
@@ -205,7 +205,7 @@ The asset prompt must state the correct source mode where relevant.
 
 It must also state the relevant reference folder from the list above when a matching folder exists.
 
-Use `chaos-redux-event-assets` rules for source selection. Symbolic icons usually use `$imagegen`. News event images, report event images, and super-event images may be sourced or generated. Prefer generated assets for fictional, alternate-history, symbolic, high-chaos, or unique scenes, and sourced assets for photographed events and archival artifacts. Every flag uses `$imagegen`. Historical flags first require a cited design reference and must remain flat, faithful reconstructions. Route all portrait prompts to `chaosx_portrait_creator`. Name the leader and advisor reference folders, require an explicit head-and-shoulders crop and identity preservation for grounded subjects, and request separate `156x210` leader and `65x67` advisor outputs when both uses exist.
+Use `chaos-redux-event-assets` rules for source selection. Symbolic icons usually use image generation (see the Image-generation route section of chaos-redux-event-assets). News event images, report event images, and super-event images may be sourced or generated. Prefer generated assets for fictional, alternate-history, symbolic, high-chaos, or unique scenes, and sourced assets for photographed events and archival artifacts. Every flag uses image generation. Historical flags first require a cited design reference and must remain flat, faithful reconstructions. Route all portrait prompts to `chaosx_portrait_creator`. Name the leader and advisor reference folders, require an explicit head-and-shoulders crop and identity preservation for grounded subjects, and request separate `156x210` leader and `65x67` advisor outputs when both uses exist.
 
 Do not make the asset prompt vague. If a country has multiple cosmetic identities, ideology names, focus-route transformations, or leader changes, the asset prompt must list the required assets for each visible identity state. Use animation only when the state change benefits from motion. A completed formable or living mechanic may use an eligible static or animated category picture, a compact state-puzzle display, or a full window according to the presentation-choice pass. Do not request category pictures alongside an interactive state-puzzle GUI or other excluded presentation.
 
