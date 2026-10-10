@@ -2,7 +2,8 @@
 
 All titles are working labels, not final localisation.
 The canonical entry is `chaosx.nr18.1`.
-The working ordinals below were implemented as the event ids `chaosx.nr18.<ordinal>` in `events/018_random_resource.txt`, and every ordinal listed exists there.
+The working ordinals below were implemented as the event ids `chaosx.nr18.<ordinal>` in `events/018_random_resource.txt`, except ordinals 4, 13, 14, 21, 22, 29 and 43.
+Those seven rows are planning intent only: their choices are made through the field decisions (foreign interest and bids, occupation handling, mature identity, border and commission projects) and no popup is fired for them.
 One id has no row: `chaosx.nr18.33` explains an unsuccessful manual survey preparation for a human player.
 News events `chaosx.news.84` to `chaosx.news.89` (in `events/_chaosx_news.txt`) cover the presentation routing rows for News event below.
 Trigger conditions in the rows are planning intent; the overview in `docs/events/018_resources_found/overview.md` is the implementation record.
