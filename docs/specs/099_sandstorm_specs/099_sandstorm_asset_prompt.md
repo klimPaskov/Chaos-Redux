@@ -8,7 +8,7 @@ The current package is a planning proposal, and no final visual or audio asset h
 
 ## Required inputs and ownership
 
-Inspect the matching reference families under .agents/skills/chaos-redux-event-assets/assets/gfx_references/, including report, news, super-event, decision, idea and achievement references.
+Inspect the matching reference families under .claude/skills/chaos-redux-event-assets/assets/gfx_references/, including report, news, super-event, decision, idea and achievement references.
 Read the reference README and catalog and inspect native dimensions, alpha and templates.
 References remain review material.
 Use any approved visual_components only in their explicitly permitted background-template role for the matching consumer.
@@ -66,7 +66,7 @@ Produce the completed 64×64 source subject for each achievement.
 | ACH099_07 | Two protected communities linked by actual supply crates |
 | ACH099_08 | Compass and intact formation emerging from trailing dust |
 
-Follow the current [achievement creation and processing contract](../../../.agents/skills/chaos-redux-event-assets/SKILL.md#achievement-icons).
+Follow the current [achievement creation and processing contract](../../../.claude/skills/chaos-redux-event-assets/SKILL.md#achievement-icons).
 Create one original transparent subject per new achievement, derive its aligned grey and not-eligible source layers deterministically, and supply the complete three-state source triplet to the current owner processor.
 Preserve the immutable completed and grey templates and exact unchanged not-eligible overlay alignment.
 The runtime triplets remain at the root of gfx/achievements/ as <achievement_id>.dds, <achievement_id>_grey.dds and <achievement_id>_not_eligible.dds.
@@ -88,7 +88,7 @@ The rich attached response surface does not receive a decorative category pictur
 
 ## Source mode, processing and quality
 
-Follow the current [event-assets generation and editing contract](../../../.agents/skills/chaos-redux-event-assets/SKILL.md#generation-and-editing) and [frame-animation source contract](../../../.agents/skills/chaos-redux-frame-animation/SKILL.md#2-relationship-with-other-skills) for model preferences, exposed controls, real frames and alpha processing.
+Follow the current [event-assets generation and editing contract](../../../.claude/skills/chaos-redux-event-assets/SKILL.md#generation-and-editing) and [frame-animation source contract](../../../.claude/skills/chaos-redux-frame-animation/SKILL.md#2-relationship-with-other-skills) for model preferences, exposed controls, real frames and alpha processing.
 Request native transparency in the initial call for every alpha-backed source and preserve it through processing, frame assembly and DDS conversion.
 Background removal is fallback-only after failed native alpha or an inherited opaque source, with untouched source preservation and edge evidence.
 A missing required generation route remains a blocker.

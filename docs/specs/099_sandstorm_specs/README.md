@@ -64,7 +64,7 @@ The design does not add parallel shared ledgers merely to make Event 099 self-co
 | File | Purpose |
 | --- | --- |
 | [099_sandstorm_source_authority.md](099_sandstorm_source_authority.md) | User authority, current-source conflicts, catalog reconciliation, complete reading method and precise evidence limits |
-| [099_sandstorm_source_reading_ledger.json](099_sandstorm_source_reading_ledger.json) | Embedded original gate, archive and source identities, four named reader ledgers, 78 requirements and targeted repository provenance |
+| [099_sandstorm_source_reading_ledger.json](099_sandstorm_source_reading_ledger.json) | Historical 2026-10-07 provenance: archive and source identities, reader ledgers, the 78-requirement register and pinned repository observations. Not required reading for implementation; the requirement coverage file carries the register that matters |
 | [099_sandstorm_requirement_coverage.md](099_sandstorm_requirement_coverage.md) | Every user requirement linked to an exact design heading and meaningful future acceptance proof |
 | [099_sandstorm_implementation_contracts.md](099_sandstorm_implementation_contracts.md) | Existing versus proposed APIs, geometry and interval authority, measured population, payment, repair, owner boundaries, persistence and aftermath retention |
 | [099_sandstorm_research_and_evidence.md](099_sandstorm_research_and_evidence.md) | Primary WMO, WHO and NASA grounding, pinned repository observations and ten explicit release gates |
@@ -72,7 +72,7 @@ The design does not add parallel shared ledgers merely to make Event 099 self-co
 | [099_sandstorm_balance_calculations.json](099_sandstorm_balance_calculations.json) | Machine-readable inputs and results for the illustrative planning calculations |
 | [099_sandstorm_execution_maps.md](099_sandstorm_execution_maps.md) | Applied skill map, Subagent Usage Map, MCP Usage Map, immutable comparison evidence and implementation order |
 | [099_sandstorm_review_dispositions.md](099_sandstorm_review_dispositions.md) | Accepted source, architecture, documentation and final improvement findings with closure status and remaining proof |
-| [099_sandstorm_package_verification.json](099_sandstorm_package_verification.json) | Historical original-archive file identities and verification at 2026-10-07 15:35:37 UTC, retained unchanged |
+| [099_sandstorm_package_verification.json](099_sandstorm_package_verification.json) | Historical original-archive file identities and verification at 2026-10-07 15:35:37 UTC. It describes the archive, not this checkout, and needs no refresh |
 
 ## Six separate execution prompts
 
@@ -90,17 +90,15 @@ Their future implementation instructions are not a claim that gameplay code, ass
 
 ## Reading completeness and limitations
 
-The following source-reading statements describe the original 2026-10-07 planning record and have not been repeated during import review.
-The supplied-source gate completed before substantive design and repository research.
-It covers **88 distinct supplied text versions**, **131 supplied text paths**, **2,549,725 unique bytes**, and **five archives**.
-Every distinct version was fully displayed and processed by at least one named team reader.
-Every duplicate was reopened and compared in full as raw bytes with a fully read canonical version.
-Duplicate copies were not all independently displayed, and no single-reader all-source claim is made.
-Initial clipped source output was recovered through bounded complete rereads.
-No required supplied source remains unread or unrecovered.
+The source-reading statements in [source authority](099_sandstorm_source_authority.md) describe the original 2026-10-07 planning record: 88 distinct supplied text versions across five archives, fully read by at least one named reader, with repository work pinned to `a3ef485c5da7e2337122eca04ac65c175050f251`.
+The package does not claim exhaustive repository reading, installed vanilla geometry inspection, workbook inspection or HOI4 execution.
+The current 099 bridge, the measured-population helper discrepancy and the missing local military, air, geometry and owner evidence are recorded as implementation gates.
+Population geography, casualty coefficients and several physical behaviours are modelling proposals whose engine feasibility is still a dependency.
 
-Additional repository work was targeted and pinned to `a3ef485c5da7e2337122eca04ac65c175050f251`.
-The package does not claim exhaustive repository reading, installed vanilla geometry inspection, editable-workbook inspection or HOI4 execution.
-The current 099 bridge, the measured-population helper discrepancy and missing local military, air, geometry and owner evidence are explicitly recorded.
-No required mechanic was dropped to accelerate this planning work.
-Population geography, casualty coefficients and several physical behaviors are documented modeling proposals, and engine feasibility remains a concrete implementation dependency.
+## Revision log
+
+### 2026-10-10 spec audit
+
+- Marked the source-reading ledger and package-verification JSON as historical provenance that implementation does not need to read, and folded the long reading-completeness narration into four lines pointing at the source-authority file.
+- Replaced the Codex-specific `fork_turns` instruction in the execution maps with the repository's self-contained-prompt rule, and pointed every skill link at the tracked `.claude/skills/` location instead of the ignored `.agents/skills/` copy.
+- Pass 2 review retained the design: two public values (local intensity and estimated exposed civilians), five response families, three missions, and hidden material, dose and turn weights. The storm's consequences run through the existing mask, migration, famine, Air Cleanliness, cost and repair owners rather than new ledgers.

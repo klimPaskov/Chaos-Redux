@@ -45,7 +45,7 @@ Leave honest blocked status for unimplemented native observations instead of sub
 ## Art, localisation and registry
 
 Produce all eight original 64×64 completed source subjects using their native achievement references.
-Follow the current [achievement creation and processing contract](../../../.agents/skills/chaos-redux-event-assets/SKILL.md#achievement-icons) for deterministic aligned grey and not-eligible source derivation, immutable templates and overlay, the required complete three-state processor input and exact decoded-pixel validation.
+Follow the current [achievement creation and processing contract](../../../.claude/skills/chaos-redux-event-assets/SKILL.md#achievement-icons) for deterministic aligned grey and not-eligible source derivation, immutable templates and overlay, the required complete three-state processor input and exact decoded-pixel validation.
 Keep runtime files at the root of gfx/achievements/ with the audited achievement ID and its two suffixes.
 Inspect the existing registry's unique_id constraint and preserve the required shared root file rather than making a duplicate isolated registry.
 Record each logical key, final ID, icon paths, conditions, reveal state and actual consumers.

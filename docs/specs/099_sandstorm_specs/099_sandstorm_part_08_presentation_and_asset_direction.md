@@ -127,10 +127,10 @@ This fallback does not permit replacing a moving geographic wall with a fixed ic
 
 ## Asset production and evidence
 
-The asset owner reads the current matching references under .agents/skills/chaos-redux-event-assets/assets/gfx_references/ before production.
+The asset owner reads the current matching references under .claude/skills/chaos-redux-event-assets/assets/gfx_references/ before production.
 References are review material and are not copied into runtime as final art.
 All generated finals require actual image-generation evidence.
-Generation and editing follow the current [event-assets owner skill](../../../.agents/skills/chaos-redux-event-assets/SKILL.md#generation-and-editing), including native transparency and truthful reporting of the exposed execution path.
+Generation and editing follow the current [event-assets owner skill](../../../.claude/skills/chaos-redux-event-assets/SKILL.md#generation-and-editing), including native transparency and truthful reporting of the exposed execution path.
 
 Every logical slot maps to its runtime path, sprite, consumer and conditional state in a manifest.
 The manifest distinguishes source art, accepted final pixels, file hashes, decoded-pixel hashes and actual consumer revisions.

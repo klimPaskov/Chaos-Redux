@@ -39,8 +39,8 @@ Reading a skill does not itself introduce an unrelated mechanic or asset obligat
 ## Subagent Usage Map
 
 Every future task begins with exact event ID, slug, goal, current user decisions, source paths, relevant prior handoffs, permitted files, forbidden edits, expected evidence and an output path.
-For Codex project custom agents, use `fork_turns="none"` and a fully explicit prompt for every role.
-Follow the current [chaos-redux-subagents](../../../.agents/skills/chaos-redux-subagents/SKILL.md) routing and runtime contract rather than historical model assignments.
+Give every role a fully explicit, self-contained prompt with no inherited context.
+Follow the current [chaos-redux-subagents](../../../.claude/skills/chaos-redux-subagents/SKILL.md) routing and runtime contract rather than historical model assignments.
 The parent remains responsible for shared wiring, design decisions, cross-owner integration and final completion claims.
 
 | Role | Owned task and dependencies | Required inputs and output | Boundaries and parent review |
@@ -95,7 +95,7 @@ Any expansion during implementation must receive its corresponding skill, role a
 
 Before editing a probability-bearing source, save its exact immutable bytes to a real path and record its SHA-256 with the complete scenario fixture.
 The same scenario set must be passed to the final comparison.
-Follow the current [chaos-redux-subagents MCP evidence contract](../../../.agents/skills/chaos-redux-subagents/SKILL.md#mcp-evidence-in-handoffs) and inspect each connected live schema for argument shapes and immutable snapshot support.
+Follow the current [chaos-redux-subagents MCP evidence contract](../../../.claude/skills/chaos-redux-subagents/SKILL.md#mcp-evidence-in-handoffs) and inspect each connected live schema for argument shapes and immutable snapshot support.
 The 2026-10-07 source-object examples are historical guidance, and live schema remains authoritative.
 An analysis URI, current-file self-comparison or after-only hash does not replace the before file.
 
