@@ -9,7 +9,7 @@ Apply `chaos-redux-debug-playtest` only if the user explicitly invokes it. Read 
 
 The planning package read all 42 supplied text files but did not have complete external references or a game installation. Its pinned repository observations are evidence from one commit, not proof about your present working tree. Resolve the readiness report before implementing speculative syntax.
 
-Use real subagent tools when exposed, with self-contained, bounded briefs and disjoint write ownership. The planning package did not run independent subagents. Delegate the probability audit to `chaosx_ai_probability_auditor` and the near-completion improvement pass to `chaosx_improvement_loop_planner`, using `fork_turns="none"` with the actual Codex collaboration tool where that is the supported interface.
+Use real subagent tools when exposed, with self-contained, bounded briefs and disjoint write ownership. The planning package did not run independent subagents. Delegate the probability audit to `chaosx_ai_probability_auditor` and the near-completion improvement pass to `chaosx_improvement_loop_planner` through the `chaos-redux-subagents` skill.
 
 ## Preserve the reward contract
 
@@ -19,7 +19,7 @@ Deliver rewards before acknowledgment. Five immediately recruitable operatives m
 
 Represent the complete valid upgrade pool, including purchase levels and effective definitions. Inspect `gain_random_agency_upgrade` rather than assuming it reflects over the database. Prefer a verified complete native solution. If it is hard-coded or incomplete, use an exhaustive generated registry with explicit source coverage and per-roll runtime eligibility. Never silently claim compatibility with arbitrary extra upgrades that were not incorporated into that registry. An incomplete registry is a blocker, not tree exhaustion.
 
-Implement one conversion per exhausted roll at every package size, the exact family weights and availability rules, and the separately specified Evolution II specialty. Apply the fixed Evolution III suite exactly. Confirm that counter-intelligence percentages, agency-era encryption, and operation preparation speed affect the intended quantities. A flat substitute or a different speed field is unacceptable.
+Convert each exhausted roll at every package size to one permanent operative slot, and implement the separately specified Evolution II specialty. Apply the fixed Evolution III suite exactly. Confirm that counter-intelligence percentages, agency-era encryption, and operation preparation speed affect the intended quantities. A flat substitute or a different speed field is unacceptable.
 
 Permanent slots and unused recruit entitlements accumulate. Temporary grants add and expire independently. Preserve unrelated modifier owners, ordinary native upgrade milestones, ongoing agency work, and native operation costs. Keep one consolidated Event 83 presentation tile and the existing agency interface as the player's work surface.
 

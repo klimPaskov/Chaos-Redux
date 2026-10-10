@@ -12,7 +12,7 @@ Use at most one Event 83 national-spirit or dynamic-modifier tile at a time. Kee
 
 The recipient's receipt distinguishes an agency created during this firing, upgrade increments actually granted, permanent slots actually added, additional recruits immediately available, converted rolls, and temporary benefits with their durations.
 
-Show completed upgrades by their real native names and levels. Group repeated conversion results by benefit, giving both the total added magnitude and the number of contributing grants where helpful. The receipt should remain readable when all five rolls convert. Longer details can use an expanded tooltip or the existing history detail surface rather than five separate popups.
+Show completed upgrades by their real native names and levels. Show converted rolls as one line of added slots. The receipt should remain readable when all five rolls convert. Longer details can use an expanded tooltip or the existing history detail surface rather than five separate popups.
 
 The acknowledgment option has no reward choice, refusal route, hidden penalty, or AI preference. Its writing may react sharply to the situation, but its mechanical purpose is to close an already resolved report.
 
@@ -24,7 +24,7 @@ The acknowledgment option has no reward choice, refusal route, hidden penalty, o
 | Expanded Agencies report | A service head or cabinet sees enough new capacity to make broader commitments | Competitive confidence, with restrained irony about other governments reaching similar conclusions | Agency identity, the package's scale, current war context when relevant |
 | Intelligence Boom report | The institution is developing a particular specialty rapidly | Excitement about the visible specialty, uncertainty about why foreign services appear equally active | Actual specialty and its duration, avoiding promises about successful operations |
 | Intelligence States report | Governments depend on a much larger apparatus while foreign services do the same | Grand institutional confidence undercut by the universality of the expansion | Recipient's regime and agency, current temporary suite, no assertion that all secrets are known |
-| Exhausted-tree detail | An experienced service has more resources than remaining departments to develop | Dry professional satisfaction or understated absurdity | Actual converted benefits, without presenting a completed tree as a failure |
+| Exhausted-tree detail | An experienced service has more resources than remaining departments to develop | Dry professional satisfaction or understated absurdity | The extra slots from converted rolls, without presenting a completed tree as a failure |
 | New-agency detail | A government gains a functioning service where none existed | Sudden institutional ambition, adapted to the country's real circumstances | Native agency name and the complete award |
 
 The human work should remain visible through technical specialists, language skills, recruitment, and field commitments. Do not reduce the event to a staff desk, a stamped memorandum, a map changing color, or a generic message arriving by radio.

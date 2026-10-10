@@ -54,35 +54,27 @@ Intelligence States describes the reach of intelligence institutions. It does no
 
 ## Converting exhausted upgrade rolls
 
-The no-wasted-upgrade rule applies at every package level. For each upgrade roll, first attempt to select from the complete current valid unowned pool. Only a genuinely empty pool produces a conversion. An unresolved upgrade identifier, stale registry, or failed grant does not count as exhaustion.
+The no-wasted-upgrade rule applies at every package level.
+Each upgrade roll first selects from the complete current valid unowned pool; only a genuinely empty pool produces a conversion.
+An unresolved upgrade identifier, stale registry or failed grant is a bug, not exhaustion.
 
-When the pool empties partway through a package, the remaining rolls each produce one benefit. A country with two eligible increments remaining during Intelligence States receives those two increments and three converted benefits. It still receives the guaranteed five slots, five recruits, and fixed temporary suite.
+Each exhausted roll converts to one additional permanent operative slot.
+The slot is capacity only and does not add an immediate recruit.
+A country with two eligible increments left during Intelligence States receives those two increments and three extra slots, on top of the guaranteed five slots, five recruits and the fixed suite.
+If capacity cannot actually be delivered, the event has a compatibility failure and must not pretend the roll converted.
 
-Use the following five benefit families. Family selection is independent for every missing roll.
-
-| Benefit family | Reward | Duration | Family probability when all are usable |
-| --- | --- | ---: | ---: |
-| Additional staffing capacity | +1 operative slot | Permanent | 20% |
-| Network development | +25% Intelligence Network Gain | 90 days | 20% |
-| Operational preparation | +25% Operation Preparation Speed | 90 days | 20% |
-| Domestic protection | +15% Counter-Intelligence | 90 days | 20% |
-| Cryptology | +15% Decryption Speed or +15% Encryption | 90 days | 20% |
-
-Within the cryptology family, choose decryption or encryption with equal probability when both are usable. This gives each a 10% overall probability in the fully eligible case. If only one is usable, it receives the entire cryptology-family probability. Do not give both for one conversion.
-
-An unavailable family is excluded and the remaining families share equal probability. A percentage conversion that has no usable native base and no applicable activity is excluded. Additional staffing capacity remains the final usable family. If that capacity cannot actually be delivered, the event has a compatibility failure and must not pretend that the upgrade roll was successfully converted.
-
-Duplicate conversion outcomes are allowed and fully valuable. Two network-development conversions add two separate +25% contributions. Two additional-capacity conversions grant two permanent slots. Duplicate outcomes are not merged into a single reward or rerolled to hide the result.
+A mature service therefore keeps growing in the one resource that always matters, the number of people it can field.
+Temporary conversion families with their own probabilities and 90-day clocks were removed in the 10 Oct 2026 spec audit: they added five more timers and a probability table for an edge case without creating a different decision.
 
 ## Temporary benefit lifetime
 
-Each grant has a start time, an expiration time, and a recorded magnitude. Benefits apply during the interval from their award until their own expiration. At the expiration boundary, remove exactly the expiring contribution. Time advancement, save and reload, and a same-day repeat must preserve that result.
+Each temporary grant (the Evolution II specialty and the Evolution III suite) lasts 180 days from its own firing and is removed exactly at its own expiry.
+Grants from different firings add together and expire independently: a repeat on day 60 does not refresh the first suite, which still ends on day 180, while the second ends on day 240.
+Permanent slots and recruits are unaffected by any expiry.
 
-Contributions to the same percentage are additive within Event 83. An Intelligence States network bonus and two network conversions awarded on the same day produce +100% Event 83 Intelligence Network Gain for the first 90 days, followed by +50% for the remaining 90 days. The guaranteed slots and recruits are unaffected by either expiration.
-
-A repeat on day 60 creates a second independent set of clocks. The first firing's 90-day conversions still expire on day 90, its 180-day suite on day 180, and the second firing's suite on day 240. The repeat does not refresh everything to day 240.
-
-Bonuses from other events remain under their own owners. Expiring Agency Upgrade must not remove an Intel Leaked modifier, a national focus reward, an advisor bonus, or a country-specific agency trait. Existing native caps still apply where the game itself enforces them. Do not add a new hidden cap on Event 83 contributions to compensate for implementation inconvenience.
+Bonuses from other events remain under their own owners.
+Expiring Agency Upgrade must not remove an Intel Leaked modifier, a national focus reward, an advisor bonus or a country-specific agency trait.
+Native caps still apply where the game enforces them; Event 83 adds no hidden cap of its own.
 
 ## Meaning of the percentages
 

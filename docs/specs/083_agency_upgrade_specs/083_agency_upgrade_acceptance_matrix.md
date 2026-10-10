@@ -26,8 +26,8 @@ These are implementation acceptance conditions. The accompanying model report st
 | R05 | Other capacity owners | Removing or adding another owner's capacity does not overwrite Event 83's contribution |
 | R06 | AI recipient | Receives and can claim the same personnel package |
 | B01 | Evolution II specialty | One usable family, correct value and 180-day clock |
-| B02 | Overflow probabilities | Five equally weighted eligible families, cryptology split internally, exclusions renormalized |
-| B03 | Duplicate conversions | Each duplicate contributes fully and is disclosed accurately |
+| B02 | Exhausted roll | Each exhausted roll adds exactly one permanent slot and no recruit |
+| B03 | Repeat stacking | A second firing's 180-day grants add to the first and expire on their own clock |
 | B04 | Intelligence States suite | +50/+50/+25/+25/+25 percentages applied to the intended five native quantities |
 | B05 | Preparation speed | Changes preparation rate, not construction time, cost, or operation execution duration |
 | B06 | Counter-intelligence | True percentage behavior, including a changed native base, with no self-amplifying feedback |

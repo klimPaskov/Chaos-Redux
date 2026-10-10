@@ -6,7 +6,7 @@ A new agency has the sharpest change in capability. Its first operative can crea
 
 An established agency has a broader allocation problem. More personnel allow more simultaneous commitments, but foreign countries receive the same expansion. The player's best use of the reward depends on current wars, the strength of opposing services, existing networks, and the resources required by proposed operations.
 
-A fully developed agency receives conversions rather than empty results. Its replay value comes from accumulating capacity and exploiting distinct temporary windows. A decryption window rewards a different set of immediate assignments from a network window. The guaranteed high-tier suite supports several lines of work at once without removing their ordinary opportunity costs.
+A fully developed agency receives extra operative slots rather than empty results. Its replay value comes from accumulating capacity and from the evolved packages' temporary windows; an Evolution II decryption specialty rewards different immediate assignments from a network specialty. The guaranteed high-tier suite supports several lines of work at once without removing their ordinary opportunity costs.
 
 ## Allocation patterns
 
