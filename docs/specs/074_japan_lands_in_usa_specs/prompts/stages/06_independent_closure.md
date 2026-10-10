@@ -9,7 +9,7 @@ This card is a pending instruction, not evidence that the stage has run.
 
 ## Stage task
 
-Before claiming the goal is near complete, spawn chaosx_improvement_loop_planner with fork_turns="none" and the exact context from the specialist task card.
+Before claiming the goal is near complete, spawn chaosx_improvement_loop_planner with no inherited parent context and the exact context from the specialist task card.
 Give it the implemented files, all spec paths, evidence, constraints and unresolved questions.
 Resolve its accepted addendum or closure handoff across the real implementation and all affected specs, prompts, tests, assets and docs.
 Then obtain chaosx_event_completion_auditor review and resolve every acceptance finding.

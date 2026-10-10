@@ -106,14 +106,14 @@ Source: https://github.com/klimPaskov/Chaos-Redux/blob/879b3007d3b6bf75c726c1163
 
 ### R03. MTTH skill
 
-Path: `.agents/skills/chaos-redux-mtth/SKILL.md`.
+Path: `.claude/skills/chaos-redux-mtth/SKILL.md`.
 Pinned blob SHA: `7d86c0fe166a23264fcb2a9f512994977f372a80`.
 Read in full at the search-referenced commit.
 
 This skill defines MTTH-backed values and requires the probability auditor's inspection, scenario evaluation, sweep, simulation and comparison workflow.
 Its referenced `common/mtth/chaosx_mtth_variables.txt` was not read in full in this session.
 
-Source: https://github.com/klimPaskov/Chaos-Redux/blob/879b3007d3b6bf75c726c11635473fccda45c569/.agents/skills/chaos-redux-mtth/SKILL.md
+Source: https://github.com/klimPaskov/Chaos-Redux/blob/879b3007d3b6bf75c726c11635473fccda45c569/.claude/skills/chaos-redux-mtth/SKILL.md
 
 ## Partial repository inspection
 

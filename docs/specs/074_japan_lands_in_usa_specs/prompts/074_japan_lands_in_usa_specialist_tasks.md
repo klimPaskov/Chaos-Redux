@@ -2,7 +2,7 @@
 
 No role below was executed during planning.
 These are pending instructions for the implementation environment.
-Use `collaboration.spawn_agent` with `fork_turns="none"` only when that interface is actually available.
+Spawn each specialist with a self-contained prompt and no inherited parent context.
 A role definition alone does not constitute an executed audit.
 
 ## Required envelope for every invocation

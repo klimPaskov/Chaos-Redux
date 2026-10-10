@@ -9,7 +9,7 @@ The plan contains no completed images and no permission to call a future manifes
 
 ## Reference gate
 
-Read `.agents/skills/chaos-redux-event-assets/assets/gfx_references/README.md`, `CATALOG.md`, the matching family contact sheets, and the exact vanilla or accepted repository consumer for every requested family.
+Read `.claude/skills/chaos-redux-event-assets/assets/gfx_references/README.md`, `CATALOG.md`, the matching family contact sheets, and the exact vanilla or accepted repository consumer for every requested family.
 The absolute Windows reference path in the supplied source identifies the original library location and may need resolution in the active checkout.
 Read report, news, ideas, decisions, category icons, category pictures and achievement references.
 For category pictures, inspect `icons/decision_categories/pictures/contact_sheet.png`.
@@ -46,7 +46,7 @@ The invasion is alternate-history content, so never label its generated scene as
 Archival photographs can serve as sourced uniform, shipyard, transport and geography references after provenance and rights checks.
 The source register's limited NPS research does not constitute a completed reference pack for every scene.
 Use `chaosx_asset_source_researcher` for missing grounded references and `chaosx_generated_event_art` and `chaosx_icon_artist` for production within their allowed scopes.
-Spawn specialists with `fork_turns="none"` and pass complete task context.
+Spawn specialists with no inherited parent context and pass complete task context.
 
 At native size, use a few clear subjects and avoid dense collages, embedded captions, tiny maps or generic modern equipment.
 Reports follow the prescribed sepia and alpha/card treatment.

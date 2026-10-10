@@ -105,16 +105,17 @@ All numbers below are tuning anchors that require a review alongside the existin
 
 | Material consequence | Proposed Chaos change | Receipt and reversal |
 | --- | ---: | --- |
-| A real new Japanese mainland front is established at baseline, I, II, or III | +10, +15, +20, or +30 | Once at successful initial commitment, proportional to the starting tier only |
-| A new major Pacific access point outside the initial footprint is captured and held for 15 continuous days | +5 | Once for the episode, not once per port |
-| A Pacific state containing territory outside the initial footprint is secured through subsequent combat and held for 30 continuous days | +5 | Once for the episode, only after a real territorial gain |
-| Two useful inland victory-point objectives outside the initial footprint are held with a coastal connection for 30 continuous days | +10 | Once for the episode |
+| A real new Japanese mainland front is established at baseline, I, II, or III | +5, +8, +10, or +15 | Once at successful initial commitment, proportional to the starting tier only |
+| A new major Pacific access point outside the initial footprint is captured and held for 15 continuous days | +2 | Once for the episode, not once per port |
+| A Pacific state containing territory outside the initial footprint is secured through subsequent combat and held for 30 continuous days | +2 | Once for the episode, only after a real territorial gain |
+| Two useful inland victory-point objectives outside the initial footprint are held with a coastal connection for 30 continuous days | +5 | Once for the episode |
 | An active evolution becomes enabled or is selected | 0 | A stage flag is not itself a world consequence |
 | A decision is clicked, an army is paid for, or a report is acknowledged | 0 | No repeated administrative Chaos income |
 | A credited territorial milestone is durably reversed by American or allied recovery | Reverse its outstanding event-specific credit | One reversal per credited milestone, no payment without a matching prior credit |
 | The initial front is contained and the original territory is restored to the United States or its legitimate wartime allies for 30 days | Reverse the outstanding initial-front credit | Do not also reverse the same credit through another terminal callback |
 
-Maximum distinct positive event-specific credit is 30 at baseline and 50 at an initial tier III opening.
+Maximum distinct positive event-specific credit is 14 at baseline and 24 at an initial tier III opening.
+The scale follows the Chaos Meter, where a major war declaration is worth 5 and a first nuclear detonation 10: a new front on an existing war is a shock, and the shared war, occupation, and Deaths sources already count everything it then causes.
 Active upgrades do not pay the difference between those initial-shock values.
 The larger army can enable real territorial milestones, but no second landing shock is credited.
 This prevents a stage upgrade and the same territorial change from being counted as separate new invasions.
@@ -140,6 +141,8 @@ The shared war and occupation systems own ordinary combat and territorial conseq
 The deaths system owns actual losses through its established providers.
 Event flavor about evacuation, abandoned factories, or damaged housing does not itself remove population, add recorded deaths, or justify a second casualty counter.
 No additional famine, migration, contamination, condemnation, or global-threat subsystem is introduced here.
+The landing is a control change between countries at war, so the shared hostile-capture adapter already sends war flight from each captured coastal state and runs its food assessment.
+The American answer to that flight is the ordinary Evacuate Civilians decision, not an Event 074 evacuation action.
 
 If a different event already affects the selected territory, retain its state data and combine effects through the existing APIs.
 A Japanese landing must not cure a famine, erase chemical contamination, remove fortifications from Event 064, or reset another event's state modifier merely because it prepares a port.

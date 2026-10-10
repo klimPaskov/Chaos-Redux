@@ -39,7 +39,7 @@ Show exact project allowance and blocked reasons contextually in tooltips.
 Keep final writing concise, geographical and accurate without using the planning labels as finished copy.
 Read the native category picture and icon references before wiring them.
 
-Spawn `chaosx_decision_mission_auditor` with `fork_turns="none"`, passing this prompt, all named paths, user constraints, allowed write scope and the exact cost, timing and target questions.
+Spawn `chaosx_decision_mission_auditor` with no inherited parent context, passing this prompt, all named paths, user constraints, allowed write scope and the exact cost, timing and target questions.
 Spawn the probability auditor for the action-weight and timing scenarios in the capability file.
 Neither role may report an unexecuted test as passed or substitute manual weight estimates for the required tools.
 

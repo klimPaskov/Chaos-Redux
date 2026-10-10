@@ -20,7 +20,7 @@ The fictional invasion must not be presented as a real photographed historical e
 
 ## Research responsibilities
 
-Spawn `chaosx_super_event_text_researcher` and `chaosx_super_event_audio_researcher` with `fork_turns="none"` where the tool exists.
+Spawn `chaosx_super_event_text_researcher` and `chaosx_super_event_audio_researcher` with no inherited parent context where the tool exists.
 Pass the spec root, this prompt, the exact gate above, current world-text constraints, relevant sources, output paths and the question independently to each role.
 The text researcher owns final title direction, sourced quotation candidates and context, cultural-reference checks, final button wording and approved localisation handoff.
 The audio researcher owns relevant recordings, original source, exact excerpt, duration, composition and recording rights, attribution and usable local delivery.

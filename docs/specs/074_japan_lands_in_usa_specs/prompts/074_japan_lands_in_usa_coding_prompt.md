@@ -9,7 +9,7 @@ Record user or authorized parent acceptance for added design choices before trea
 
 ## Read and inspect first
 
-Read current `AGENTS.md`, `README.md`, `CHAOS_REDUX_MECHANICS.md` and the applicable [event](../../../../.agents/skills/chaos-redux-events/SKILL.md), [planning](../../../../.agents/skills/chaos-redux-event-planning/SKILL.md), [subagent](../../../../.agents/skills/chaos-redux-subagents/SKILL.md), decision, asset, super-event, improvement-loop and MTTH owner skills.
+Read current `AGENTS.md`, `README.md`, `CHAOS_REDUX_MECHANICS.md` and the applicable [event](../../../../.claude/skills/chaos-redux-events/SKILL.md), [planning](../../../../.claude/skills/chaos-redux-event-planning/SKILL.md), [subagent](../../../../.claude/skills/chaos-redux-subagents/SKILL.md), decision, asset, super-event, improvement-loop and MTTH owner skills.
 Use relevant offline-wiki and installed-documentation sections through the reference workflow in `AGENTS.md`, and read applicable required local contracts.
 The source register says exactly which references were not completed during planning.
 Resolve those gaps rather than treating its full supplied-file read as a complete vanilla or repository audit.
@@ -95,7 +95,7 @@ Do not mark To Be Reworked complete merely because code was written.
 
 ## Specialist work and closure
 
-Use `collaboration.spawn_agent` with `fork_turns="none"` where available.
+Spawn subagents with self-contained prompts and no inherited parent context.
 Give each specialist the event identity, goal, user constraints, exact spec paths, relevant plan paths, source gaps, assigned question, allowed write scope and required output.
 Use the context-complete task cards in `074_japan_lands_in_usa_specialist_tasks.md`.
 Do not imply that the planning session already executed those agents.

@@ -124,7 +124,7 @@ A different reuse must be documented against the actual consumer.
 
 Use `docs/assets/074_japan_lands_in_usa/` as the event workspace.
 Read the supplied asset skill and the reference root's `README.md`, `CATALOG.md`, matching family contact sheets, and the exact consumer examples before creating art.
-The referenced root is under the repository's `.agents/skills/chaos-redux-event-assets/assets/gfx_references/` directory.
+The referenced root is under the repository's `.claude/skills/chaos-redux-event-assets/assets/gfx_references/` directory.
 The source pack's absolute Windows path identifies its original location, not a mounted folder in this session.
 
 For category pictures, inspect `icons/decision_categories/pictures/` and its `contact_sheet.png`.

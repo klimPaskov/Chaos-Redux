@@ -105,3 +105,11 @@ This is the complete authored planning handoff, with technical and research bloc
 It is not an implemented mod or a claim that the mandatory independent planning review has already passed.
 Follow the stage cards, resolve the capability gates, obtain the required specialist findings and run the acceptance cases before calling the event complete.
 The package intentionally excludes the supplied source archive, private configuration contents, temporary reading helpers and chat continuation prompts.
+
+## Changelog
+
+### 2026-10-10 spec audit
+
+- Event-specific Chaos is rescaled: the new front gives +5, +8, +10, or +15 by tier (was +10 to +30) and the territorial milestones +2, +2, and +5, for a maximum of 14 at baseline and 24 at tier III (was 30 and 50). The old values made a landing on an existing war worth up to three first nuclear detonations, while the shared war, occupation, and Deaths sources already count its consequences.
+- The shared-systems section states that the landing is a wartime hostile capture, so war flight and food assessment happen through the existing adapter and the American response is the ordinary Evacuate Civilians decision.
+- Subagent instructions use the Claude-first wording.
