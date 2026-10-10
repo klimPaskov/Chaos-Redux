@@ -416,3 +416,23 @@ No weighted surface changed.
 
 Evidence: `common/scripted_effects/016_brilliant_scientist_foreign_effects.txt`, `common/scripted_triggers/016_brilliant_scientist_foreign_triggers.txt`, `common/dynamic_modifiers/016_brilliant_scientist_project_modifiers.txt`, `common/scripted_effects/016_brilliant_scientist_project_effects.txt`, `events/016_brilliant_scientist_foreign_events.txt`, `localisation/english/016_brilliant_scientist_foreign_l_english.yml`, `localisation/english/016_brilliant_scientist_directorate_outcomes_l_english.yml`, `docs/events/016_brilliant_scientist/systems/foreign_operations.md`, `docs/events/016_brilliant_scientist/systems/projects.md`.
 Needs live game: the Theory modifier tooltip inside the report option and the modifier staying on the actor after a host transfer.
+
+## D32. Cloning and Temporal Weaponization give Kruger continuity
+
+Disposition: implemented under the full-authority mandate as the round 3 lead's second item.
+
+Defect: the continuity refresh, the assassination survivability branch, and the Profile condition line read clone and temporal continuity, and nothing wrote either character flag, so spec part 3's Cloning payoff ("Kruger duplicate bodies and continuity protection") and Temporal payoff ("Kruger continuity through earlier or later versions", "escape from apparent death") did not exist and every successful assassination outside the machine and extraterrestrial identities killed Kruger.
+
+Decision:
+
+- `brilliant_scientist_record_project_stage_on_kruger` writes `brilliant_scientist_continuity_clone` with Cloning Weaponization and `brilliant_scientist_continuity_temporal` with Temporal Weaponization on `KRG_warren_kruger`. It is the one personal-history writer behind `brilliant_scientist_advance_project_to_requested_stage`, so host, post-transfer, and Kruger State settlements share it, and the flags travel with the single character.
+- Both Weaponization outputs refresh the country mirror at once; the assassination result refreshes the host's mirror before it decides between injury and death, so a stale mirror cannot kill a protected Kruger.
+- The refresh keeps the documented precedence temporal, machine, clone, human. When the machine succession has retired the character, the country's `brilliant_scientist_continuity_machine` record now keeps the machine mirror instead of dropping to human.
+- The protection is permanent rather than consumed by one attempt, matching the machine identity; assassination stays a rare, heavily gated operation.
+- The Fallout snapshot already copies the machine mirror into its Machine Protocol claim. Fallout has no clone or temporal consumer, so no write-only Fallout flag was added and the Fallout file is unchanged.
+- The Cloning and Temporal Weaponization order tooltips state the payoff.
+
+No weighted surface changed.
+
+Evidence: `common/scripted_effects/016_brilliant_scientist_effects.txt`, `common/scripted_effects/016_brilliant_scientist_project_effects.txt`, `common/scripted_effects/016_brilliant_scientist_foreign_effects.txt`, `localisation/english/016_brilliant_scientist_projects_l_english.yml`, `docs/events/016_brilliant_scientist/systems/projects.md`.
+Needs live game: the Profile condition line and the continuity report after an assassination against a Cloning or Temporal Weaponization host.

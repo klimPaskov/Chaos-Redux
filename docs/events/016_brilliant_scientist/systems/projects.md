@@ -218,16 +218,29 @@ Each family stage applies a cumulative persistent modifier while the country rem
 | High Energy | Extreme reactor output, fuel production, special-project speed, nuclear production, industrial power, command capacity, and the paid Field Projector grid. |
 | Biomedical | Extreme reinforcement, casualty recovery, experience preservation, recruitable population, logistics, emergency regeneration, epidemic control, and up to one hundred added points in the shared outbreak-response calculation. |
 | Teleportation | Extreme planning and strategic movement, low supply and isolation penalties, generic Portal Raiders, raid beachheads, factory theft, facility extraction, and improved weaponized reliability. |
-| Cloning | The exact physical-stockpile manpower farm, growth infrastructure, fast high-organization base clones, and a separate elite weaponized refinement; Mengele retains his independent clone branches. |
+| Cloning | The exact physical-stockpile manpower farm, growth infrastructure, fast high-organization base clones, a separate elite weaponized refinement, and Kruger clone continuity (see [Kruger continuity from Weaponization](#kruger-continuity-from-weaponization)); Mengele retains his independent clone branches. |
 | Robotics | Extreme industrial automation and a zero-human-manpower armored-infantry package constrained by robot equipment, fuel, power infrastructure, and production. |
 | Paleogenetics | A fast reconnaissance and intimidation shock package with high breakthrough and terrain utility, plus real feed, handler, transport, air-defense, and containment burdens. |
 | Xenobiological Synthesis | A fort-breaking adaptive assault package whose chemical, neural, machine, and researched control doctrines are mutually exclusive and mechanically distinct. |
 | Biological Weapons | Every mapped native pathogen project and raid, production and defensive integration, and the eighteen native biological raids documented by the biological-warfare closure contract. |
 | Alien Arms | Alien laser production, the envoy craft, D'Rhondan contact, predictive tactics, exact paid UFO landings, zero-human-manpower Alien Infantry, and the DHR consequence chain. |
-| Temporal | A resilient Temporal Guard package plus bounded recovery, continuity, synchronization, temporal-debt, anchor-control, and stabilization actions. |
+| Temporal | A resilient Temporal Guard package plus bounded recovery, continuity, synchronization, temporal-debt, anchor-control, and stabilization actions, and Kruger temporal continuity. |
 | Strategic Singularity | Six causal components, command nodes, power links, certification, guarded arming, threshold-forcing detonation, and exclusive transition into the shared Fallout pipeline. |
 
 The mapped vanilla technologies remain unchanged. The powerful identity comes from the Event 016 persistent project modifiers and the hidden reusable operational technologies, so other events can grant the custom API rewards without globally rewriting vanilla research.
+
+## Kruger continuity from Weaponization
+
+Cloning and Temporal Weaponization protect Kruger himself.
+`brilliant_scientist_record_project_stage_on_kruger`, the single personal-history writer called by `brilliant_scientist_advance_project_to_requested_stage`, sets the character flag `brilliant_scientist_continuity_clone` with Cloning Weaponization and `brilliant_scientist_continuity_temporal` with Temporal Weaponization on the canonical `KRG_warren_kruger`.
+The same path runs for a host stage, a stage settled after a transfer, and a Kruger State stage, and character flags travel with the one character, so no second Kruger token exists.
+Machine continuity keeps its separate writer, the KRG machine succession (`brilliant_scientist_krg_install_machine_continuity_network`).
+
+`brilliant_scientist_refresh_kruger_continuity_state` mirrors one identity to the country with the precedence temporal, machine, clone, human; it runs after both Weaponization outputs, at transfer, at Kruger State formation, after injuries, and immediately before an assassination is judged.
+When the character has been retired by the machine succession, the country's `brilliant_scientist_continuity_machine` record keeps the machine mirror instead of falling back to human.
+
+Consumers: the Directorate profile condition line (`GetBrilliantScientistDirectorateProfileCondition`) names the identity, the severe portrait route already scores the same personal Weaponization flags, a successful assassination against a protected Kruger becomes an injury plus the continuity crisis (`chaosx.nr16.180` continuity text) instead of `brilliant_scientist_foreign_commit_confirmed_death`, and the Fallout snapshot copies the machine mirror into `fallout_pretransition_machine_continuity`.
+Fallout has no clone or temporal consumer, so the snapshot does not mirror those identities; a write-only Fallout flag would add dead state.
 
 ## Reusable force-package access
 

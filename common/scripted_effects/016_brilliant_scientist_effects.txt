@@ -1559,7 +1559,10 @@ brilliant_scientist_reconcile_old_host_after_transfer = {
 }
 
 # COUNTRY scope. Inputs: family and requested stage. Personal project history is
-# stored only as flags on the single KRG_warren_kruger character.
+# stored only as flags on the single KRG_warren_kruger character. Cloning and
+# Temporal Weaponization also write his clone and temporal continuity marks;
+# brilliant_scientist_refresh_kruger_continuity_state mirrors them to the
+# country with the precedence temporal, machine, clone, human.
 brilliant_scientist_record_project_stage_on_kruger = {
 	if = {
 		limit = { check_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.computation } }
@@ -1726,6 +1729,8 @@ brilliant_scientist_record_project_stage_on_kruger = {
 			else_if = {
 				limit = { check_variable = { brilliant_scientist_requested_project_stage = constant:brilliant_scientist_project_stage.weaponization } }
 				set_character_flag = brilliant_scientist_personal_cloning_weaponization
+				# Duplicate bodies: the canonical character gains clone continuity.
+				set_character_flag = brilliant_scientist_continuity_clone
 			}
 		}
 	}
@@ -1852,6 +1857,9 @@ brilliant_scientist_record_project_stage_on_kruger = {
 			else_if = {
 				limit = { check_variable = { brilliant_scientist_requested_project_stage = constant:brilliant_scientist_project_stage.weaponization } }
 				set_character_flag = brilliant_scientist_personal_temporal_weaponization
+				# Earlier and later versions: the canonical character gains
+				# temporal continuity and can escape an apparent death.
+				set_character_flag = brilliant_scientist_continuity_temporal
 			}
 		}
 	}
@@ -3315,6 +3323,12 @@ brilliant_scientist_refresh_kruger_continuity_state = {
 			limit = { KRG_warren_kruger = { has_character_flag = brilliant_scientist_personal_confined } }
 			set_country_flag = brilliant_scientist_kruger_confined
 		}
+	}
+	# The machine succession retires the character after writing its mark, so
+	# its country record keeps the machine identity.
+	else_if = {
+		limit = { has_country_flag = brilliant_scientist_continuity_machine }
+		set_country_flag = brilliant_scientist_kruger_continuity_machine
 	}
 	else = {
 		set_country_flag = brilliant_scientist_kruger_continuity_human
