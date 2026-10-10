@@ -9,6 +9,8 @@
 # FORM-39's civil-service project shows and checks the standard two-factory
 # commitment in its cost row; keep the decision reservation on the same tier.
 @CR_SC_INDEPENDENCE_WAVE_FORM39_CIVILIAN_FACTORY_USE = 2
+# FORM-11 council and stanitsa projects show the standard two-factory tier.
+@CR_SC_INDEPENDENCE_WAVE_DECISION_COST_CIVILIAN_FACTORY_STANDARD = 2
 # The FORM-11 Grand Host Circle political-power cost and cooldown; decision
 # cost and re-enable fields do not read script constants.
 @CR_SC_INDEPENDENCE_WAVE_FORM11_CIRCLE_POLITICAL_POWER = 50
@@ -118,6 +120,7 @@ independence_wave_form11_host_category = {
 		}
 		custom_cost_trigger = { can_pay_independence_wave_administration_standard_cost = yes }
 		custom_cost_text = independence_wave_cost_administration_standard
+		modifier = { civilian_factory_use = @CR_SC_INDEPENDENCE_WAVE_DECISION_COST_CIVILIAN_FACTORY_STANDARD }
 		days_remove = constant:independence_wave_form11_duration.council_days
 		complete_effect = {
 			independence_wave_decision_pay_administration_standard = yes
@@ -182,6 +185,7 @@ independence_wave_form11_host_category = {
 		}
 		custom_cost_trigger = { can_pay_independence_wave_strategic_cost = yes }
 		custom_cost_text = independence_wave_cost_strategic
+		modifier = { civilian_factory_use = @CR_SC_INDEPENDENCE_WAVE_DECISION_COST_CIVILIAN_FACTORY_STANDARD }
 		days_remove = constant:independence_wave_form11_duration.land_days
 		complete_effect = {
 			independence_wave_decision_pay_strategic = yes
@@ -406,7 +410,13 @@ independence_wave_form39_federal_compact_category = {
 			}
 		}
 		cancel_effect = { clr_country_flag = independence_wave_form39_shipping_project_active }
-		ai_will_do = { base = constant:independence_wave_decision_ai.high }
+		ai_will_do = {
+			base = constant:independence_wave_decision_ai.high
+			modifier = {
+				factor = 0
+				check_variable = { var = independence_wave_form39_maritime_logistics value = constant:independence_wave_form39.ledger_maximum compare = greater_than_or_equals }
+			}
+		}
 	}
 
 	independence_wave_form39_open_regional_civil_service = {
@@ -438,7 +448,13 @@ independence_wave_form39_federal_compact_category = {
 			}
 		}
 		cancel_effect = { clr_country_flag = independence_wave_form39_civil_service_project_active }
-		ai_will_do = { base = constant:independence_wave_decision_ai.high }
+		ai_will_do = {
+			base = constant:independence_wave_decision_ai.high
+			modifier = {
+				factor = 0
+				check_variable = { var = independence_wave_form39_cultural_autonomy value = constant:independence_wave_form39.ledger_maximum compare = greater_than_or_equals }
+			}
+		}
 	}
 
 	independence_wave_form39_stage_member_plebiscites = {
@@ -469,7 +485,13 @@ independence_wave_form39_federal_compact_category = {
 			}
 		}
 		cancel_effect = { clr_country_flag = independence_wave_form39_plebiscite_project_active }
-		ai_will_do = { base = constant:independence_wave_decision_ai.high }
+		ai_will_do = {
+			base = constant:independence_wave_decision_ai.high
+			modifier = {
+				factor = 0
+				check_variable = { var = independence_wave_form39_member_consent value = constant:independence_wave_form39.ledger_maximum compare = greater_than_or_equals }
+			}
+		}
 	}
 
 	independence_wave_form39_dissolve_federation = {

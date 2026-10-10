@@ -1315,11 +1315,11 @@ independence_wave_security_category = {
 		visible = { is_independence_wave_provisional_or_later = yes }
 		available = {
 			can_pay_independence_wave_diplomatic_standard_cost = yes
-			has_fuel > constant:independence_wave_decision_cost.fuel_light
+			NOT = { has_fuel < constant:independence_wave_decision_cost.fuel_light }
 		}
 		custom_cost_trigger = {
 			can_pay_independence_wave_diplomatic_standard_cost = yes
-			has_fuel > constant:independence_wave_decision_cost.fuel_light
+			NOT = { has_fuel < constant:independence_wave_decision_cost.fuel_light }
 		}
 		custom_cost_text = independence_wave_cost_corridor
 		days_remove = constant:independence_wave_decision_duration.standard
@@ -1840,8 +1840,8 @@ independence_wave_patron_category = {
 				is_capital = yes
 				owner = {
 					is_valid_independence_wave_patron_target = yes
-					has_equipment = { infantry_equipment > constant:independence_wave_decision_cost.infantry_major }
-					has_equipment = { support_equipment > constant:independence_wave_decision_cost.support_standard }
+					NOT = { has_equipment = { infantry_equipment < constant:independence_wave_decision_cost.infantry_major } }
+					NOT = { has_equipment = { support_equipment < constant:independence_wave_decision_cost.support_standard } }
 				}
 			}
 		}
@@ -2118,8 +2118,8 @@ independence_wave_patron_category = {
 				NOT = { has_variable = independence_wave_patron_balance_count }
 				check_variable = { independence_wave_patron_balance_count = constant:independence_wave_value.minimum }
 				AND = {
-					command_power > constant:independence_wave_decision_cost.command_power_patron_balance_after_first
-					has_manpower > constant:independence_wave_decision_cost.manpower_light
+					NOT = { command_power < constant:independence_wave_decision_cost.command_power_patron_balance_after_first }
+					NOT = { has_manpower < constant:independence_wave_decision_cost.manpower_light }
 				}
 			}
 		}
@@ -2129,8 +2129,8 @@ independence_wave_patron_category = {
 				NOT = { has_variable = independence_wave_patron_balance_count }
 				check_variable = { independence_wave_patron_balance_count = constant:independence_wave_value.minimum }
 				AND = {
-					command_power > constant:independence_wave_decision_cost.command_power_patron_balance_after_first
-					has_manpower > constant:independence_wave_decision_cost.manpower_light
+					NOT = { command_power < constant:independence_wave_decision_cost.command_power_patron_balance_after_first }
+					NOT = { has_manpower < constant:independence_wave_decision_cost.manpower_light }
 				}
 			}
 		}
@@ -2550,7 +2550,7 @@ independence_wave_network_category = {
 					is_independence_wave_charter_compliant_member = yes
 					OR = {
 						any_owned_state = { is_claimed_by = ROOT }
-						ROOT = { any_owned_state = { is_claimed_by = PREV } }
+						ROOT = { any_owned_state = { is_claimed_by = PREV.PREV } }
 					}
 				}
 			}
@@ -2677,13 +2677,13 @@ independence_wave_network_category = {
 		visible = { is_independence_wave_charter_compliant_member = yes }
 		available = {
 			can_pay_independence_wave_diplomatic_light_cost = yes
-			has_equipment = { infantry_equipment > constant:independence_wave_decision_cost.infantry_standard }
-			has_equipment = { support_equipment > constant:independence_wave_decision_cost.support_standard }
+			NOT = { has_equipment = { infantry_equipment < constant:independence_wave_decision_cost.infantry_standard } }
+			NOT = { has_equipment = { support_equipment < constant:independence_wave_decision_cost.support_standard } }
 		}
 		custom_cost_trigger = {
 			can_pay_independence_wave_diplomatic_light_cost = yes
-			has_equipment = { infantry_equipment > constant:independence_wave_decision_cost.infantry_standard }
-			has_equipment = { support_equipment > constant:independence_wave_decision_cost.support_standard }
+			NOT = { has_equipment = { infantry_equipment < constant:independence_wave_decision_cost.infantry_standard } }
+			NOT = { has_equipment = { support_equipment < constant:independence_wave_decision_cost.support_standard } }
 		}
 		custom_cost_text = independence_wave_cost_rescue_aid
 		days_remove = constant:independence_wave_decision_duration.short
@@ -3216,9 +3216,15 @@ independence_wave_league_category = {
 		desc = independence_wave_normalize_reformed_league_desc
 		icon = GFX_decision_independence_wave_league_votes
 		activation = { can_independence_wave_normalize_reformed_league = yes }
-		available = { can_pay_independence_wave_diplomatic_standard_cost = yes }
-		custom_cost_trigger = { can_pay_independence_wave_diplomatic_standard_cost = yes }
-		custom_cost_text = independence_wave_cost_diplomatic_standard
+		available = {
+			can_pay_independence_wave_diplomatic_standard_cost = yes
+			NOT = { num_of_civilian_factories_available_for_projects < constant:independence_wave_decision_cost.civilian_factory_standard }
+		}
+		custom_cost_trigger = {
+			can_pay_independence_wave_diplomatic_standard_cost = yes
+			NOT = { num_of_civilian_factories_available_for_projects < constant:independence_wave_decision_cost.civilian_factory_standard }
+		}
+		custom_cost_text = independence_wave_cost_diplomatic_standard_factory_standard
 		modifier = { civilian_factory_use = @CR_SC_INDEPENDENCE_WAVE_DECISION_COST_CIVILIAN_FACTORY_STANDARD }
 		days_remove = constant:independence_wave_decision_duration.long
 		complete_effect = {
@@ -3285,9 +3291,15 @@ independence_wave_league_category = {
 		desc = independence_wave_restart_informal_network_desc
 		icon = GFX_decision_independence_wave_league_votes
 		activation = { can_independence_wave_restart_informal_network = yes }
-		available = { can_pay_independence_wave_diplomatic_light_cost = yes }
-		custom_cost_trigger = { can_pay_independence_wave_diplomatic_light_cost = yes }
-		custom_cost_text = independence_wave_cost_diplomatic_light
+		available = {
+			can_pay_independence_wave_diplomatic_light_cost = yes
+			NOT = { num_of_civilian_factories_available_for_projects < constant:independence_wave_decision_cost.civilian_factory_light }
+		}
+		custom_cost_trigger = {
+			can_pay_independence_wave_diplomatic_light_cost = yes
+			NOT = { num_of_civilian_factories_available_for_projects < constant:independence_wave_decision_cost.civilian_factory_light }
+		}
+		custom_cost_text = independence_wave_cost_diplomatic_light_factory_light
 		modifier = { civilian_factory_use = @CR_SC_INDEPENDENCE_WAVE_DECISION_COST_CIVILIAN_FACTORY_LIGHT }
 		days_remove = constant:independence_wave_decision_duration.long
 		complete_effect = {
