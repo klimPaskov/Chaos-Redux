@@ -597,3 +597,279 @@ bio_countermeasure_spread_pair_has_closed_border = {
 		}
 	}
 }
+
+# ----------------------------------------------------------------------------
+# Antibiotic programmes: one research, one production and one stand-down
+# decision cover the three ordinary pathogens. Research and production take
+# the most urgent pathogen first (detected domestic outbreak, then confirmed
+# use elsewhere; plague, anthrax, tularemia on a tie).
+# ----------------------------------------------------------------------------
+
+bio_countermeasure_plague_antibiotic_research_needed = {
+	bio_countermeasure_plague_threat_exists = yes
+	NOT = { has_country_flag = plague_antibiotics_research_started }
+	NOT = { has_country_flag = developing_plague_antibiotics_retroactively }
+}
+
+bio_countermeasure_anthrax_antibiotic_research_needed = {
+	bio_countermeasure_anthrax_threat_exists = yes
+	NOT = { has_country_flag = anthrax_antibiotics_research_started }
+	NOT = { has_country_flag = developing_anthrax_antibiotics_retroactively }
+}
+
+bio_countermeasure_tularemia_antibiotic_research_needed = {
+	bio_countermeasure_tularemia_threat_exists = yes
+	NOT = { has_country_flag = tularemia_antibiotics_research_started }
+	NOT = { has_country_flag = developing_tularemia_antibiotics_retroactively }
+}
+
+bio_countermeasure_plague_antibiotic_production_needed = {
+	bio_countermeasure_plague_threat_exists = yes
+	has_country_flag = plague_antibiotics_research_started
+	NOT = { has_idea = plague_antibiotics_mass_production_idea }
+	NOT = { has_country_flag = plague_antibiotics_production_in_progress }
+}
+
+bio_countermeasure_anthrax_antibiotic_production_needed = {
+	bio_countermeasure_anthrax_threat_exists = yes
+	has_country_flag = anthrax_antibiotics_research_started
+	NOT = { has_idea = anthrax_antibiotics_mass_production_idea }
+	NOT = { has_country_flag = anthrax_antibiotics_production_in_progress }
+}
+
+bio_countermeasure_tularemia_antibiotic_production_needed = {
+	bio_countermeasure_tularemia_threat_exists = yes
+	has_country_flag = tularemia_antibiotics_research_started
+	NOT = { has_idea = tularemia_antibiotics_mass_production_idea }
+	NOT = { has_country_flag = tularemia_antibiotics_production_in_progress }
+}
+
+bio_countermeasure_antibiotic_research_idle = {
+	NOT = {
+		OR = {
+			has_country_flag = developing_anthrax_antibiotics_retroactively
+			has_country_flag = developing_plague_antibiotics_retroactively
+			has_country_flag = developing_tularemia_antibiotics_retroactively
+		}
+	}
+}
+
+bio_countermeasure_antibiotic_production_idle = {
+	NOT = {
+		OR = {
+			has_country_flag = anthrax_antibiotics_production_in_progress
+			has_country_flag = plague_antibiotics_production_in_progress
+			has_country_flag = tularemia_antibiotics_production_in_progress
+		}
+	}
+}
+
+bio_countermeasure_antibiotic_research_pick_plague = {
+	OR = {
+		has_country_flag = developing_plague_antibiotics_retroactively
+		AND = {
+			bio_countermeasure_antibiotic_research_idle = yes
+			bio_countermeasure_plague_antibiotic_research_needed = yes
+			OR = {
+				bio_countermeasure_country_has_detected_plague = yes
+				AND = {
+					NOT = {
+						AND = {
+							bio_countermeasure_anthrax_antibiotic_research_needed = yes
+							bio_countermeasure_country_has_detected_anthrax = yes
+						}
+					}
+					NOT = {
+						AND = {
+							bio_countermeasure_tularemia_antibiotic_research_needed = yes
+							bio_countermeasure_country_has_detected_tularemia = yes
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+bio_countermeasure_antibiotic_research_pick_anthrax = {
+	OR = {
+		has_country_flag = developing_anthrax_antibiotics_retroactively
+		AND = {
+			bio_countermeasure_antibiotic_research_idle = yes
+			bio_countermeasure_anthrax_antibiotic_research_needed = yes
+			NOT = { bio_countermeasure_antibiotic_research_pick_plague = yes }
+			OR = {
+				bio_countermeasure_country_has_detected_anthrax = yes
+				NOT = {
+					AND = {
+						bio_countermeasure_tularemia_antibiotic_research_needed = yes
+						bio_countermeasure_country_has_detected_tularemia = yes
+					}
+				}
+			}
+		}
+	}
+}
+
+bio_countermeasure_antibiotic_research_pick_tularemia = {
+	OR = {
+		has_country_flag = developing_tularemia_antibiotics_retroactively
+		AND = {
+			bio_countermeasure_antibiotic_research_idle = yes
+			bio_countermeasure_tularemia_antibiotic_research_needed = yes
+			NOT = { bio_countermeasure_antibiotic_research_pick_plague = yes }
+			NOT = { bio_countermeasure_antibiotic_research_pick_anthrax = yes }
+		}
+	}
+}
+
+bio_countermeasure_antibiotic_production_pick_plague = {
+	OR = {
+		has_country_flag = plague_antibiotics_production_in_progress
+		AND = {
+			bio_countermeasure_antibiotic_production_idle = yes
+			bio_countermeasure_plague_antibiotic_production_needed = yes
+			OR = {
+				bio_countermeasure_country_has_detected_plague = yes
+				AND = {
+					NOT = {
+						AND = {
+							bio_countermeasure_anthrax_antibiotic_production_needed = yes
+							bio_countermeasure_country_has_detected_anthrax = yes
+						}
+					}
+					NOT = {
+						AND = {
+							bio_countermeasure_tularemia_antibiotic_production_needed = yes
+							bio_countermeasure_country_has_detected_tularemia = yes
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+bio_countermeasure_antibiotic_production_pick_anthrax = {
+	OR = {
+		has_country_flag = anthrax_antibiotics_production_in_progress
+		AND = {
+			bio_countermeasure_antibiotic_production_idle = yes
+			bio_countermeasure_anthrax_antibiotic_production_needed = yes
+			NOT = { bio_countermeasure_antibiotic_production_pick_plague = yes }
+			OR = {
+				bio_countermeasure_country_has_detected_anthrax = yes
+				NOT = {
+					AND = {
+						bio_countermeasure_tularemia_antibiotic_production_needed = yes
+						bio_countermeasure_country_has_detected_tularemia = yes
+					}
+				}
+			}
+		}
+	}
+}
+
+bio_countermeasure_antibiotic_production_pick_tularemia = {
+	OR = {
+		has_country_flag = tularemia_antibiotics_production_in_progress
+		AND = {
+			bio_countermeasure_antibiotic_production_idle = yes
+			bio_countermeasure_tularemia_antibiotic_production_needed = yes
+			NOT = { bio_countermeasure_antibiotic_production_pick_plague = yes }
+			NOT = { bio_countermeasure_antibiotic_production_pick_anthrax = yes }
+		}
+	}
+}
+
+bio_countermeasure_antibiotic_research_available = {
+	OR = {
+		bio_countermeasure_plague_antibiotic_research_needed = yes
+		bio_countermeasure_anthrax_antibiotic_research_needed = yes
+		bio_countermeasure_tularemia_antibiotic_research_needed = yes
+	}
+}
+
+bio_countermeasure_antibiotic_production_available = {
+	OR = {
+		bio_countermeasure_plague_antibiotic_production_needed = yes
+		bio_countermeasure_anthrax_antibiotic_production_needed = yes
+		bio_countermeasure_tularemia_antibiotic_production_needed = yes
+	}
+}
+
+bio_countermeasure_has_antibiotic_line = {
+	OR = {
+		has_idea = anthrax_antibiotics_mass_production_idea
+		has_idea = plague_antibiotics_mass_production_idea
+		has_idea = tularemia_antibiotics_mass_production_idea
+	}
+}
+
+bio_countermeasure_antibiotic_line_can_stand_down = {
+	OR = {
+		AND = {
+			has_idea = anthrax_antibiotics_mass_production_idea
+			NOT = { bio_countermeasure_country_has_detected_anthrax = yes }
+		}
+		AND = {
+			has_idea = plague_antibiotics_mass_production_idea
+			NOT = { bio_countermeasure_country_has_detected_plague = yes }
+		}
+		AND = {
+			has_idea = tularemia_antibiotics_mass_production_idea
+			NOT = { bio_countermeasure_country_has_detected_tularemia = yes }
+		}
+	}
+}
+
+bio_countermeasure_antibiotic_line_unthreatened = {
+	OR = {
+		AND = {
+			has_idea = anthrax_antibiotics_mass_production_idea
+			NOT = { bio_countermeasure_anthrax_threat_exists = yes }
+		}
+		AND = {
+			has_idea = plague_antibiotics_mass_production_idea
+			NOT = { bio_countermeasure_plague_threat_exists = yes }
+		}
+		AND = {
+			has_idea = tularemia_antibiotics_mass_production_idea
+			NOT = { bio_countermeasure_tularemia_threat_exists = yes }
+		}
+	}
+}
+
+bio_countermeasure_can_dispatch_antibiotics = {
+	OR = {
+		AND = {
+			has_idea = anthrax_antibiotics_mass_production_idea
+			bio_countermeasure_country_has_detected_anthrax = yes
+		}
+		AND = {
+			has_idea = plague_antibiotics_mass_production_idea
+			bio_countermeasure_country_has_detected_plague = yes
+		}
+		AND = {
+			has_idea = tularemia_antibiotics_mass_production_idea
+			bio_countermeasure_country_has_detected_tularemia = yes
+		}
+	}
+}
+
+bio_countermeasure_state_can_receive_antibiotics = {
+	OR = {
+		AND = {
+			ROOT = { has_idea = anthrax_antibiotics_mass_production_idea }
+			bio_countermeasure_state_can_receive_anthrax_antibiotics = yes
+		}
+		AND = {
+			ROOT = { has_idea = plague_antibiotics_mass_production_idea }
+			bio_countermeasure_state_can_receive_plague_antibiotics = yes
+		}
+		AND = {
+			ROOT = { has_idea = tularemia_antibiotics_mass_production_idea }
+			bio_countermeasure_state_can_receive_tularemia_antibiotics = yes
+		}
+	}
+}

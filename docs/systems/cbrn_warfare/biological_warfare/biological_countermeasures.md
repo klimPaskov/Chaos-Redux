@@ -121,7 +121,12 @@ No all-country daily, weekly, or monthly pulse is used.
 
 ## Agent-specific antibiotics
 
-Anthrax, Plague, and Tularemia each have a separate emergency-development program, continuing production idea, and exact-state distribution decision.
+Anthrax, Plague, and Tularemia each keep a separate research penalty, production idea, and treatment-course record, but one decision per phase covers all three.
+
+Emergency Antibiotics, Antibiotics Production, and End Antibiotics Production take the most urgent pathogen first: a detected domestic outbreak before confirmed use elsewhere, and Plague, Anthrax, Tularemia on a tie.
+The decision title names the pathogen it will start, or the one already under way, and further threats follow one at a time at the same per-pathogen cost.
+End Antibiotics Production closes every line whose pathogen has no detected outbreak.
+Antibiotics for a state is one targeted decision that treats every detected outbreak in the state that has a production line, under one payment and one medical-team commitment.
 
 Emergency development does not require an offensive biological program.
 
@@ -131,15 +136,17 @@ Confirmed attribution sets an agent-specific world-history flag, so threat avail
 
 The doomsday batch writes the same agent-specific public flag only for agents whose stockpile was actually consumed.
 
-| Agent | Development | Research penalty | Production preparation | Consumer Goods |
-| --- | --- | --- | --- | --- |
-| Tularemia | 60 days | -15% | 60 days | 8% |
-| Anthrax | 75 days | -20% | 75 days | 10% |
-| Plague | 90 days | -25% | 90 days | 15% |
+| Agent | Research penalty | Consumer Goods |
+| --- | --- | --- |
+| Tularemia | -15% | 8% |
+| Anthrax | -20% | 10% |
+| Plague | -25% | 15% |
+
+Development and production preparation each take 75 days for every pathogen.
 
 Mass production creates national stores but does not protect every contaminated state automatically.
 
-A treatment course must be dispatched to one controlled state with a detected matching outbreak.
+A treatment course must be dispatched to one controlled state with a detected outbreak that has a production line.
 
 Each course consumes 10 Political Power, 50 Support Equipment, and 20 Trucks.
 
