@@ -89,6 +89,18 @@ AI weighs the forecast's certainty, actual route usefulness, source exposure and
 Only an actual terminating event, such as source capture, changes contractual entitlement under part 3.
 Dust clearance supplies neither an ore reliability award nor a new Chaos receipt.
 
+## Occupation Revolt, Event 095
+
+A conquered deposit state is the most valuable occupied territory on the map, so holding it is a political problem and not only a military one.
+The [Occupation Revolt owner](../095_occupation_revolt_specs/README.md) decides whether a revolt starts, what it demands and how it resolves; New Ore contributes only the fact that the state carries a deposit, which that owner may read as added unrest pressure.
+
+While a revolt controls the deposit state, the occupier loses the direct access that state supplied, exactly as any other loss of control does, and its agreements sourced from that state end under the ordinary rules.
+Regaining control restores direct access without a second discovery, a new Chaos receipt or a refunded agreement.
+Suppressing a revolt in a deposit state uses the occupier's ordinary repression and condemnation consequences; the ore grants no exemption and creates no separate atrocity path.
+
+This gives the ore a defensive cost that scales with how it was acquired: a controller that bought or inherited its deposit faces no revolt pressure from Event 098, while a conqueror must garrison the prize it took.
+Basis: 10 Oct 2026 spec audit under the user's planning-package brief, recorded as accepted and queued for whichever owner implements first.
+
 ## Positive Economy cluster behavior
 
 New Ore is a High member of Positive Economy because its discovery creates an exceptional material advantage and can make one state a source of economic and diplomatic opportunity. The later possibility of conflict does not change its assigned cluster identity.

@@ -27,7 +27,7 @@ Recheck presentation occupancy before wiring, and allocate any audio ID independ
 | `098_new_ore_spec_part_2_evolutions.md` | Four independent evolution tracks, dynamic later deposits, exact scarcity/cadence and diminishing Super-Alloy |
 | `098_new_ore_spec_part_3_foreign_access.md` | Three finite agreement families, real compensation, protected paid periods, renewal, buyback, transfer and source choice |
 | `098_new_ore_spec_part_4_ore_wars_and_ai.md` | Ordinary diplomacy, credible demands and preparation, real state objectives and a defense commitment |
-| `098_new_ore_spec_part_5_connections_and_chaos.md` | Riches Found, Greenland Sale, World Claims, separate Asteroid composition, and the complete concrete Chaos map |
+| `098_new_ore_spec_part_5_connections_and_chaos.md` | Riches Found, Greenland Sale, World Claims, separate Asteroid composition, Sandstorm, Occupation Revolt, and the complete concrete Chaos map |
 | `098_new_ore_spec_part_6_presentation_and_assets.md` | Ordinary category and information placement, direction-only writing, asset matrix and direct operational Super-Alloy reveal |
 | `098_new_ore_spec_part_7_achievements.md` | Eight demanding achievement routes with exact history, eligibility, disqualifiers and visual direction |
 | `098_new_ore_spec_part_8_campaign_lifecycle.md` | Occupation, political transformations, old/new equipment, expansion support, save continuity and migration |
@@ -51,3 +51,11 @@ Later deposits remain globally random, with map-sized scarcity and bounded evolv
 All supplied source text was fully read collectively before substantive work. Some later supporting repository references were intentionally read only in relevant sections, and several installed or referenced resources were unavailable. These limits are listed explicitly in the research notes.
 
 The package is a full planning handoff. Its numerical examples, source consistency, artifact completeness and agent reviews can be checked here. Native armor behavior, callbacks, exact costs, strategic AI, final assets/audio, save persistence and actual implementation still require the specified evidence. The planning review does not certify those future results.
+
+## Revision log
+
+### 2026-10-10 spec audit
+
+- Added an Occupation Revolt connection to Part 5: a conquered deposit state can carry added unrest pressure for its revolt owner, a revolt that takes the state suspends direct access like any other loss of control, and suppression uses the occupier's ordinary repression and condemnation consequences. Accepted and queued.
+- Prompts now use the repository's self-contained-prompt rule instead of Codex spawning syntax, and skill links point at the tracked `.claude/skills/` location.
+- Pass 2 review otherwise retained the design: two public values, an armor promise measured as an effective outcome, three finite agreement families and a bounded Chaos map.
