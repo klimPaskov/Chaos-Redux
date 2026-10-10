@@ -2,7 +2,7 @@
 
 Perform a read-only specification-versus-implementation audit for Event 050.
 
-Read every file under `docs/specs/050_the_great_embargo_specs/`, every Event 50 plan and subagent handoff, `AGENTS.md`, all relevant project skills, current implementation files, final localisation, assets, docs, Event Logs wiring, achievements, cluster registry, authoritative workbook, and generated CSV snapshots.
+Read every file under `docs/specs/050_the_great_embargo_specs/`, every Event 50 plan and subagent handoff, `CLAUDE.md`, all relevant project skills, current implementation files, final localisation, assets, docs, Event Logs wiring, achievements, cluster registry, authoritative workbook, and generated CSV snapshots.
 
 Use the HOI4 MCP event inspection, render, and comparison surfaces where supported. Review the final probability-audit comparisons. Do not treat source-only reasoning as equivalent when required tool evidence is missing.
 

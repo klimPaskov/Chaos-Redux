@@ -2,7 +2,7 @@
 
 Implement and audit the five Event 50 achievements defined in the achievement matrix and Part 8 of the source spec.
 
-Read `AGENTS.md`, `chaos-redux-events`, `chaos-redux-event-assets`, current achievement precedents, and every Event 50 crisis and cleanup contract.
+Read `CLAUDE.md`, `chaos-redux-events`, `chaos-redux-event-assets`, current achievement precedents, and every Event 50 crisis and cleanup contract.
 
 The listed achievement names are working labels. Write final titles and descriptions during localisation work without revealing hidden evolution behavior in ordinary event text.
 

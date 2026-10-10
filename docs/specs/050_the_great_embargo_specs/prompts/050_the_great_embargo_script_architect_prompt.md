@@ -2,7 +2,7 @@
 
 Design and, when parent scope permits, implement the reusable scripted foundation for Event 050.
 
-Read `AGENTS.md`, `chaos-redux-events`, `chaos-redux-decisions-missions`, the Event 50 specs and runtime ledger matrix, the shared dynamic trigger and effect registries, relevant offline wiki pages, current vanilla documentation, and existing Chaos Redux active-ledger patterns.
+Read `CLAUDE.md`, `chaos-redux-events`, `chaos-redux-decisions-missions`, the Event 50 specs and runtime ledger matrix, the shared dynamic trigger and effect registries, relevant offline wiki pages, current vanilla documentation, and existing Chaos Redux active-ledger patterns.
 
 ## Required architecture
 

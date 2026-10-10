@@ -4,7 +4,7 @@ Implement the complete Event 050 source package under `docs/specs/050_the_great_
 
 ## Required source order
 
-1. `AGENTS.md`
+1. `CLAUDE.md`
 2. `chaos-redux-events`
 3. `chaos-redux-decisions-missions`
 4. `chaos-redux-event-assets`

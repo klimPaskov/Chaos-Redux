@@ -2,7 +2,7 @@
 
 Audit and patch Event 50 localisation after gameplay behavior is final.
 
-Read `AGENTS.md`, `chaos-redux-events`, the Event 50 presentation spec, every implemented event, decision, mission, idea, scripted localisation, Event Details entry, history entry, evolution entry, achievement, and asset consumer.
+Read `CLAUDE.md`, `chaos-redux-events`, the Event 50 presentation spec, every implemented event, decision, mission, idea, scripted localisation, Event Details entry, history entry, evolution entry, achievement, and asset consumer.
 
 ## Required coverage
 

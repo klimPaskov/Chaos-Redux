@@ -2,7 +2,7 @@
 
 Audit and implement the decision surface for Event 050, The Great Embargo.
 
-Read the complete Event 50 source package, `AGENTS.md`, `chaos-redux-events`, `chaos-redux-decisions-missions`, current vanilla decision documentation, the offline wiki pages required by the decision skill, and existing Chaos Redux selected-target precedents.
+Read the complete Event 50 source package, `CLAUDE.md`, `chaos-redux-events`, `chaos-redux-decisions-missions`, current vanilla decision documentation, the offline wiki pages required by the decision skill, and existing Chaos Redux selected-target precedents.
 
 ## Accepted presentation
 

@@ -198,39 +198,33 @@ Public Condemnation can strengthen the opening justification, coalition recruitm
 
 Event 50 is not a substitute for Condemnation's tiered sanctions. Condemnation sanctions arise from public unconventional warfare, exposed atrocities, cover-ups, and related sources. The Great Embargo can arise from broader diplomatic and economic causes.
 
+Native embargoes are already shared through the condemnation system's native embargo ownership helper (`docs/systems/cbrn_warfare/condemnation/condemnation_sanctions.md`, Native embargo ownership), which keeps a separate claim per source (Condemnation, the Air Cleanliness Treaty, and Event 50) and breaks the native relation only when no claim remains.
+The reworked Event 50 registers one claim per coalition member against the target through that helper and releases each claim when the member defects or the crisis closes.
+The legacy Event 50 registers claims from every country with no release; the rework must replace that behavior, not add to it.
+
 When the same target is affected by both systems:
 
-- shared native embargo behavior must not be duplicated
 - event-owned Pressure remains temporary and crisis-specific
 - Condemnation remains source-accounted and persistent according to its own rules
-- participant penalties should use the stronger applicable state or a clearly combined bounded effect
-- removing Event 50 cannot erase Condemnation sanctions
+- participant penalties use the stronger applicable state, never the sum
+- closing Event 50 releases only its own claims and cannot erase Condemnation sanctions
 
 ## Famine system
 
-An embargo does not automatically create famine.
-Food risk requires real import dependence, route disruption, reserve failure, inadequate local supply, or an existing Famine incident validated by its owner.
-Famine retains Food Security, Food Reserves, Relief Access, mortality, and relief decisions.
+An embargo does not create famine by itself; Famine owns Food Security, Food Reserves, Relief Access, mortality, and its own decisions.
 
-When the target has a validated food need and a usable named port or land corridor, its existing Diplomatic Concessions or Neutral Intermediaries response can seek a food-and-relief exemption.
-The offer names the route, the relief scope, and any inspection or monitoring commitment before acceptance.
-The target and intermediary commit the transport, fuel, and civilian capacity required by the existing delivery; the coalition decides through its existing relevant-actor choice or review whether that route is exempt, restricted, or refused.
-A new humanitarian meter or parallel permanent agreement system is unnecessary.
+The embargo reaches food through Famine's Import Food action, which arranges a foreign land donor.
+While the target's Pressure is at Coordinated restrictions (40) or higher, coalition members are not eligible donors, so a food-dependent target must turn to neutral donors, its reserves, or a negotiated food exemption.
+That exemption is one term of the existing Diplomatic Concessions or Neutral Intermediaries response: it names the route and any inspection, and the coalition accepts, restricts, or refuses it through its existing review.
+An exemption lets coalition donors supply food again without lifting the rest of the embargo, completing Secure Replacement Supply, or lowering Pressure.
+A refusal while the target's state is in famine satisfies Famine's relief-obstruction proof, and Famine registers its Condemnation consequence once.
 
-An exemption changes that delivery's enforcement conditions rather than lifting the whole embargo.
-Food-only access does not complete Secure Replacement Supply or count as an industrial replacement route.
-It does not reduce Embargo Pressure unless a separate real coalition defection or settlement already satisfies the ordinary Pressure rules.
-Core enforcers can allow monitored relief while maintaining strategic restrictions; hardliners can deny it at the existing diplomatic cost and crisis consequences.
-If refusal or later obstruction satisfies [Famine's existing relief-obstruction proof](../../../systems/famine_system.md#adapters), Famine registers its Condemnation consequence once; a rejected negotiation without that proof supplies none.
+Only Famine credits deliveries to reserves or relief access.
+Event 050 and [Heat Wave's Emergency Food Imports](../../051_heat_wave_specs/09_decisions_and_missions.md#emergency-food-imports) must not pay, credit, or reward the same shipment twice.
+The donor exclusion is a hook in Famine's donor search, so it is a shared-owner change (README, Open questions).
+Without it, ordinary embargo responses remain available and no famine is manufactured.
 
-Only Famine credits the actual accepted delivery to reserves or relief access.
-Event 050 and [Heat Wave's Emergency Food Imports](../../051_heat_wave_specs/09_decisions_and_missions.md#emergency-food-imports) may both describe the same route, but must not pay, credit, or reward that shipment twice.
-Destroyed transport, closed ports, revoked access, or a refused owner request produce the existing partial or failed delivery outcome, with no reserve credit and no Event 050 population debit.
-Closing the embargo removes its own restriction and exemption proof; it does not undo relief already delivered or close the Famine incident.
-
-AI food-vulnerable targets should compare a monitored relief offer with preserving scarce transport for domestic supply.
-Outside AI should assess a usable route and the actual relief scope rather than treat permission as coalition defection.
-When Famine or the optional Heat Wave connection is unavailable, ordinary embargo responses remain available and do not manufacture a famine.
+AI food-vulnerable targets weigh a food exemption against the concession it costs; outside AI judges the route and relief scope rather than treating permission as defection.
 
 ## Migration system
 
@@ -263,7 +257,7 @@ When the cluster fires:
 - a country already suffering Great Depression 2.0 should not automatically receive The Great Embargo unless the cluster's high-chaos concentration rules deliberately allow it
 - skip reasons should identify active crisis, invalid target pool, conflict with another member, or missing required economic systems
 
-The supplied cluster export is incomplete. The implementation must inspect the authoritative workbook and live cluster registry before assigning an ID, unlock tier, cluster type, participation weight, or member ordering.
+Negative Economy is cluster 10 in the workbook, and Event 50 already holds its Medium membership there; implementation uses the live registry row and invents no new ID.
 
 ## Chaos Meter interaction
 

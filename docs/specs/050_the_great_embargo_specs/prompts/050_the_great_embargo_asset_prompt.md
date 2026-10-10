@@ -2,7 +2,7 @@
 
 Create the complete static visual package for Event 050, The Great Embargo.
 
-Read `AGENTS.md`, `chaos-redux-event-assets`, `chaos-redux-frame-animation` for the static-versus-animation boundary, the Event 50 presentation spec, asset matrix, achievement matrix, and relevant vanilla reference catalog.
+Read `CLAUDE.md`, `chaos-redux-event-assets`, `chaos-redux-frame-animation` for the static-versus-animation boundary, the Event 50 presentation spec, asset matrix, achievement matrix, and relevant vanilla reference catalog.
 
 Create exactly the static asset inventory below. Any additional asset family requires an accepted source-spec change.
 

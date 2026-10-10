@@ -2,7 +2,7 @@
 
 Perform a read-only audit of every Event 050 weighted surface.
 
-Read `AGENTS.md`, `chaos-redux-events`, `chaos-redux-decisions-missions`, `chaos-redux-subagents`, the Event 50 AI spec, the probability scenario matrix, current source files, and the complete external state used by each pool.
+Read `CLAUDE.md`, `chaos-redux-events`, `chaos-redux-decisions-missions`, `chaos-redux-subagents`, the Event 50 AI spec, the probability scenario matrix, current source files, and the complete external state used by each pool.
 
 Start every surface with `hoi4.probability_inspect`. Name the scenario IDs exactly as listed in `matrices/050_probability_scenario_matrix.md`. State whether the candidate pool and external factors are complete.
 

@@ -3,7 +3,7 @@
 ## Authority and current workflow
 
 The [source conflict ledger](matrices/050_source_conflict_ledger.md) records user-design constraints and unresolved cluster data. Supplied-export observations are historical snapshots.
-Use current [planning](../../../.agents/skills/chaos-redux-event-planning/SKILL.md), [events](../../../.agents/skills/chaos-redux-events/SKILL.md), [assets](../../../.agents/skills/chaos-redux-event-assets/SKILL.md), and [routing](../../../.agents/skills/chaos-redux-subagents/SKILL.md) guidance.
+Use current [planning](../../../.claude/skills/chaos-redux-event-planning/SKILL.md), [events](../../../.claude/skills/chaos-redux-events/SKILL.md), [assets](../../../.claude/skills/chaos-redux-event-assets/SKILL.md), and [routing](../../../.claude/skills/chaos-redux-subagents/SKILL.md) guidance.
 Unattributed design remains `unresolved`; rediscover current tools and source state before a separately authorized implementation task.
 
 
@@ -24,7 +24,8 @@ Related working reviews belong under `docs/plans/050_the_great_embargo_plans/`.
 - Member severity: Medium
 - Public event value: Embargo Pressure
 
-The supplied event catalog export still lacks the cluster assignment and member severity. The supplied cluster export also contains an incomplete Negative Economy row whose event type, Chaos level, identifier, membership, and availability are not ready to act as an implementation source. The user-provided Event 50 identity is preserved here. The authoritative workbook must be reconciled after final implementation wording exists.
+The workbook already places Event 50 in Negative Economy (cluster 10); its details row is still the one-line legacy text and is updated with the implementation wording.
+The runtime slot `events/050_the_great_embargo.txt` holds the legacy stub, which registers native embargo claims from every country with no release (see Part 8).
 
 ## Source specifications
 
@@ -94,3 +95,21 @@ The event uses ordinary decision presentation with a static category picture. It
 Evolution I adds secondary sanctions and direct pressure on countries that keep trading with the target. Evolution II permits several embargo systems to overlap and enables temporary cooperation between embargoed countries without creating a formal faction.
 
 Broad expansion stops at the point where the event has a complete crisis loop, meaningful choices, AI behavior, replay value, presentation, achievements, cross-system integration, and clean termination.
+
+## Open questions
+
+- Shared-owner hook: the Famine owner must accept a donor exclusion in Import Food's donor search for coalition members of an active embargo at Pressure 40 or higher (Part 8).
+  Until it exists, the embargo has no food consequence, which is safe but weaker.
+
+## Changelog
+
+### 2026-10-10 spec audit
+
+Pass 1, consistency and cleanup:
+- Recorded that Negative Economy is cluster 10 with Event 50 already a member, replacing the "incomplete cluster export" instructions (README, Part 8).
+- Tied the Condemnation section to the implemented native embargo ownership helper and recorded that the legacy stub's unreleased all-country claims must be replaced.
+- Replaced `AGENTS.md` and `.agents` skill links with `CLAUDE.md` and `.claude`.
+
+Pass 2, design improvement:
+- Replaced the long food-exemption negotiation with one concrete link: coalition members stop being eligible donors for Famine's Import Food at Pressure 40, a food exemption is one concession term, and refusing it during famine counts as relief obstruction.
+- Cut the target header from seven items to four (Pressure with stage and direction, the most urgent exposure, the coalition member that matters most, the active route or mission); response effects stay in their own tooltips.

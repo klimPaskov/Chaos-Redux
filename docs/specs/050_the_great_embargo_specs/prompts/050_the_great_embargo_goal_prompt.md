@@ -2,7 +2,7 @@
 
 Implement Chaos Redux Event 050, The Great Embargo, from every file under `docs/specs/050_the_great_embargo_specs/`.
 
-Read the complete package, `AGENTS.md`, relevant project skills, required offline wiki and vanilla references. Use the installed HOI4 MCP event and probability tools for every supported surface. Record missing routes as blockers.
+Read the complete package, `CLAUDE.md`, relevant project skills, required offline wiki and vanilla references. Use the installed HOI4 MCP event and probability tools for every supported surface. Record missing routes as blockers.
 
 Preserve the accepted identity: Event ID `50`, entry root `chaosx.nr50.1`, Minor Repeatable, Chaos level 1, Negative Economy cluster, Medium member severity. CSV files are export snapshots and must not be edited. Reconcile the authoritative XLSX after final wording exists, then run the catalog exporter. Do not invent the missing cluster ID or copy the incomplete cluster export's conflicting fields.
 

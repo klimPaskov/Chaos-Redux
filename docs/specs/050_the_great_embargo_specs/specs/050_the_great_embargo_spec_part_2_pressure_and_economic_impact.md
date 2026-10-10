@@ -283,17 +283,15 @@ The player sees fatigue through stage movement, member reports, and a concise tr
 
 ## Feedback and clarity
 
-The target category must answer:
+The target category header carries four lines:
 
-- current Embargo Pressure and stage
-- recent direction
-- next threshold that matters
-- the most urgent visible economic exposure
-- the leading coalition members
-- the current replacement route or active mission
-- the likely effect of each available response
+- Embargo Pressure with its stage and direction (rising, steady, falling)
+- the most urgent economic exposure, such as "fuel imports" or "chromium for tank production"
+- the coalition member whose defection would weaken the embargo most
+- the active replacement route or mission, when one exists
 
-The tooltip can list a small number of material causes. It should not show a full internal ledger of every country and coefficient.
+Each response states its likely effect in its own tooltip, so the header does not repeat it.
+The tooltip can list a small number of material causes and never shows a ledger of every country and coefficient.
 
 Outside participants should see their own role, the target, the coalition's current stage, the cost of staying, and the consequence of leaving or trading. They do not need access to the target's complete hidden dependence model.
 
