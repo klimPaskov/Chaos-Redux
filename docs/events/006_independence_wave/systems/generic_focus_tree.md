@@ -1,13 +1,17 @@
 # Event 006 generic focus tree
 
-The imported `common/national_focus/006_independence_wave*.txt` sources define the one shared Event 006 focus tree, `independence_wave_focus_tree` (318 unique focus definitions: 184 direct `focus = {}` nodes, 134 full `shared_focus = {}` definitions, and 27 main-tree `shared_focus = <id>` import roots; 345 raw source entries when imports are counted). The Pacific package blocks are source-marked inside the main focus registry so the parser loads one fewer file without changing the shared tree. The shared definitions and import roots are one reusable tree surface, not additional country trees. Every admitted Event 006 release must publish either the full tree or a reviewed additive carrier overlay before package validation can succeed.
+The imported `common/national_focus/006_independence_wave*.txt` sources define the one shared Event 006 focus tree, `independence_wave_focus_tree` (634 unique authored focus definitions: 184 direct `focus = {}` nodes in the main declaration and 450 top-level `shared_focus = {}` definitions across seven files; the main tree also lists 343 `shared_focus = <id>` import roots, so the raw source entries exceed the definition count). Definitions describe authorship; which nodes a country can reach is decided by each focus's visibility and availability triggers. The Pacific package blocks are source-marked inside the main focus registry so the parser loads one fewer file without changing the shared tree. The shared definitions and import roots are one reusable tree surface, not additional country trees. Every admitted Event 006 release must publish either the full tree or a reviewed additive carrier overlay before package validation can succeed.
 
-| Source surface | Direct `focus` blocks | `shared_focus` blocks | Role |
+| Source surface | Direct `focus` blocks | `shared_focus` definitions | Role |
 | --- | ---: | ---: | --- |
-| `006_independence_wave_focus.txt` | 184 | 43 | Main tree declaration, shared roots, and Pacific package modules |
+| `006_independence_wave_focus.txt` | 184 | 103 | Main tree declaration, shared roots, 343 import roots, and Pacific package modules |
+| `006_independence_wave_iw039_don_focus.txt` | 0 | 5 | Don Host package module |
 | `006_independence_wave_iw043_iw058_focus.txt` | 0 | 48 | Volga/Assyria package modules |
 | `006_independence_wave_iw093_iw098_focus.txt` | 0 | 43 | Asante/Sokoto package modules |
-| **Resolved total** | **184 direct** | **134 full + 27 imports** | **One `independence_wave_focus_tree`** |
+| `006_independence_wave_regional_focus_a.txt` | 0 | 110 | Regional package groups, first half |
+| `006_independence_wave_regional_focus_b.txt` | 0 | 110 | Regional package groups, second half |
+| `006_independence_wave_signature_modules_focus.txt` | 0 | 31 | Signature modules |
+| **Resolved total** | **184 direct** | **450 shared** | **One `independence_wave_focus_tree`** |
 
 ## Assignment contract
 
