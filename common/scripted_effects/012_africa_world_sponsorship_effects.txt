@@ -129,7 +129,7 @@ africa_world_sponsorship_accept_offer = {
 				limit = { check_variable = { africa_world_sponsorship_mode = constant:africa_world_sponsorship_mode.military } }
 				set_country_flag = africa_world_sponsorship_military_duty_active
 				event_target:africa_host = {
-					diplomatic_relation = { country = ROOT relation = guarantee active = yes }
+					diplomatic_relation = { country = PREV relation = guarantee active = yes }
 				}
 				set_country_flag = africa_world_sponsorship_guarantee_active
 			}
@@ -141,7 +141,7 @@ africa_world_sponsorship_accept_offer = {
 						clr_country_flag = africa_world_sponsorship_offer_pending
 						clr_country_flag = africa_world_sponsorship_counterterms_opened
 						set_country_flag = africa_world_sponsorship_accepted
-					set_variable = { var = africa_world_sponsorship_mode value = ROOT.africa_world_sponsorship_mode }
+					set_variable = { var = africa_world_sponsorship_mode value = PREV.africa_world_sponsorship_mode }
 					country_event = { id = africa_world_package.21 }
 				}
 		}
@@ -305,7 +305,7 @@ africa_world_sponsorship_fulfil_current_mode = {
 				if = {
 					limit = { has_country_flag = africa_world_sponsorship_guarantee_active }
 					event_target:africa_host = {
-						diplomatic_relation = { country = ROOT relation = guarantee active = no }
+						diplomatic_relation = { country = PREV relation = guarantee active = no }
 					}
 					clr_country_flag = africa_world_sponsorship_guarantee_active
 				}
@@ -376,7 +376,7 @@ africa_world_sponsorship_default_current_mode = {
 				if = {
 					limit = { has_country_flag = africa_world_sponsorship_guarantee_active }
 					event_target:africa_host = {
-						diplomatic_relation = { country = ROOT relation = guarantee active = no }
+						diplomatic_relation = { country = PREV relation = guarantee active = no }
 					}
 					clr_country_flag = africa_world_sponsorship_guarantee_active
 				}
@@ -408,7 +408,11 @@ africa_world_sponsorship_default_current_mode = {
 # has identified the registered package and the military duty is still due.
 africa_world_sponsorship_call_military_defence = {
 	if = {
-		limit = { africa_world_sponsorship_military_obligation_is_due = yes has_war = yes }
+		limit = {
+			africa_world_sponsorship_military_obligation_is_due = yes
+			has_war = yes
+			NOT = { has_country_flag = africa_world_sponsorship_military_defence_call_pending }
+		}
 		set_country_flag = africa_world_sponsorship_military_defence_call_pending
 		save_event_target_as = africa_world_sponsorship_candidate
 		event_target:africa_host = { country_event = { id = africa_world_package.29 } }
@@ -468,7 +472,7 @@ africa_world_sponsorship_cleanup_active_state = {
 		if = {
 			limit = { has_country_flag = africa_world_sponsorship_guarantee_active }
 			event_target:africa_host = {
-				diplomatic_relation = { country = ROOT relation = guarantee active = no }
+				diplomatic_relation = { country = PREV relation = guarantee active = no }
 			}
 			clr_country_flag = africa_world_sponsorship_guarantee_active
 		}

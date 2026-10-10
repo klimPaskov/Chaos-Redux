@@ -2709,7 +2709,10 @@ africa_world_default_current_sponsorship_obligation = {
 		set_country_flag = africa_world_package_rival
 		set_country_flag = africa_world_order_rivalry_intensified
 		set_variable = { africa_world_package_status = constant:africa_world_package_status.rival }
-		add_to_variable = { africa_world_package_legitimacy = constant:africa_world_order.package_major_gain }
+		set_temp_variable = { africa_world_sponsorship_default_loss = constant:africa_world_order.package_major_loss }
+		multiply_temp_variable = { africa_world_sponsorship_default_loss = constant:africa_world_order.negative_one }
+		add_to_variable = { africa_world_package_legitimacy = africa_world_sponsorship_default_loss }
+		clamp_variable = { var = africa_world_package_legitimacy min = constant:africa_world_order.package_minimum max = constant:africa_world_order.package_maximum }
 		event_target:africa_host = {
 			if = { limit = { is_in_array = { array = africa_world_sponsorship_targets value = PREV } } remove_from_array = { array = africa_world_sponsorship_targets value = PREV } }
 			add_to_variable = { africa_global_rivalry = constant:africa_focus_tuning.medium_delta }
