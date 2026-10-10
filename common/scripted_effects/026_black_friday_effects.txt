@@ -1364,43 +1364,6 @@ black_friday_fury_pay_settlement_cost = {
 	}
 }
 
-black_friday_fury_pay_core_cost = {
-	set_temp_variable = { black_friday_fury_payment_success = constant:universal_cost_framework.zero }
-	if = {
-		limit = { black_friday_is_active = yes }
-		# Caller-owned cost API outputs.
-		resize_temp_array = { array = black_friday_fury_component_ids size = constant:universal_cost_framework.one }
-		resize_temp_array = { array = black_friday_fury_component_resource_kinds size = constant:universal_cost_framework.one }
-		resize_temp_array = { array = black_friday_fury_component_family_masks size = constant:universal_cost_framework.one }
-		resize_temp_array = { array = black_friday_fury_component_ordinary_costs size = constant:universal_cost_framework.one }
-		black_friday_fury_begin_component_list = yes
-		set_temp_variable = { black_friday_fury_next_component_id = constant:universal_cost_resource_kind.command_power }
-		set_temp_variable = { black_friday_fury_next_resource_kind = constant:universal_cost_resource_kind.command_power }
-		set_temp_variable = { black_friday_fury_next_family_mask = constant:universal_cost_family.command_power }
-		set_temp_variable = { black_friday_fury_next_ordinary_cost = constant:fury_decision_cost.core_cp }
-		black_friday_fury_append_component = yes
-		set_temp_variable = { black_friday_fury_next_component_id = constant:universal_cost_resource_kind.infantry_equipment }
-		set_temp_variable = { black_friday_fury_next_resource_kind = constant:universal_cost_resource_kind.infantry_equipment }
-		set_temp_variable = { black_friday_fury_next_family_mask = constant:universal_cost_family.equipment }
-		set_temp_variable = { black_friday_fury_next_spend = constant:fury_decision_cost.core_equipment }
-		black_friday_fury_append_spend_component = yes
-		set_temp_variable = { black_friday_fury_next_component_id = constant:universal_cost_resource_kind.support_equipment }
-		set_temp_variable = { black_friday_fury_next_resource_kind = constant:universal_cost_resource_kind.support_equipment }
-		set_temp_variable = { black_friday_fury_next_family_mask = constant:universal_cost_family.equipment }
-		set_temp_variable = { black_friday_fury_next_spend = constant:fury_decision_cost.core_support }
-		black_friday_fury_append_spend_component = yes
-		set_temp_variable = { black_friday_fury_primary_component_id = constant:universal_cost_resource_kind.infantry_equipment }
-		set_temp_variable = { black_friday_fury_primary_family_id = constant:universal_cost_family.state_project }
-		black_friday_fury_pay_prepared_bundle_active = yes
-	}
-	else = {
-		add_command_power = constant:fury_decision_cost.core_cp_spend
-		add_equipment_to_stockpile = { type = infantry_equipment amount = constant:fury_decision_cost.core_equipment }
-		add_equipment_to_stockpile = { type = support_equipment_1 amount = constant:fury_decision_cost.core_support }
-		set_temp_variable = { black_friday_fury_payment_success = constant:universal_cost_framework.one }
-	}
-}
-
 black_friday_fury_pay_registers_cost = {
 	set_temp_variable = { black_friday_fury_payment_success = constant:universal_cost_framework.zero }
 	if = {
@@ -1605,23 +1568,6 @@ black_friday_fury_pay_rivalry_cost = {
 	}
 	else = {
 		add_command_power = constant:fury_decision_cost.rivalry_cp_spend
-		set_temp_variable = { black_friday_fury_payment_success = constant:universal_cost_framework.one }
-	}
-}
-
-black_friday_fury_pay_survey_cost = {
-	set_temp_variable = { black_friday_fury_payment_success = constant:universal_cost_framework.zero }
-	if = {
-		limit = { black_friday_is_active = yes }
-		set_temp_variable = { black_friday_fury_single_component_id = constant:universal_cost_resource_kind.command_power }
-		set_temp_variable = { black_friday_fury_single_resource_kind = constant:universal_cost_resource_kind.command_power }
-		set_temp_variable = { black_friday_fury_single_family_mask = constant:universal_cost_family.command_power }
-		set_temp_variable = { black_friday_fury_single_primary_family_id = constant:universal_cost_family.intelligence }
-		set_temp_variable = { black_friday_fury_single_ordinary_cost = constant:fury_decision_cost.survey_cp }
-		black_friday_fury_pay_single_active = yes
-	}
-	else = {
-		add_command_power = constant:fury_decision_cost.survey_cp_spend
 		set_temp_variable = { black_friday_fury_payment_success = constant:universal_cost_framework.one }
 	}
 }
@@ -1834,23 +1780,6 @@ black_friday_fury_pay_anti_supply_denial_cost = {
 	else = {
 		add_command_power = constant:fury_decision_cost.anti_fury_denial_cp_spend
 		add_equipment_to_stockpile = { type = infantry_equipment amount = constant:fury_decision_cost.anti_fury_denial_equipment }
-		set_temp_variable = { black_friday_fury_payment_success = constant:universal_cost_framework.one }
-	}
-}
-
-black_friday_fury_pay_anti_recognition_denial_cost = {
-	set_temp_variable = { black_friday_fury_payment_success = constant:universal_cost_framework.zero }
-	if = {
-		limit = { black_friday_is_active = yes }
-		set_temp_variable = { black_friday_fury_single_component_id = constant:universal_cost_resource_kind.command_power }
-		set_temp_variable = { black_friday_fury_single_resource_kind = constant:universal_cost_resource_kind.command_power }
-		set_temp_variable = { black_friday_fury_single_family_mask = constant:universal_cost_family.command_power }
-		set_temp_variable = { black_friday_fury_single_primary_family_id = constant:universal_cost_family.diplomatic }
-		set_temp_variable = { black_friday_fury_single_ordinary_cost = constant:fury_decision_cost.anti_fury_recognition_cp }
-		black_friday_fury_pay_single_active = yes
-	}
-	else = {
-		add_command_power = constant:fury_decision_cost.anti_fury_recognition_cp_spend
 		set_temp_variable = { black_friday_fury_payment_success = constant:universal_cost_framework.one }
 	}
 }
