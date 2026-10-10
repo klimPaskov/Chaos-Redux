@@ -263,3 +263,17 @@ gods_of_africa_clear_strength_input_sample = {
 	clear_variable = gods_of_africa_strength_territory_generation
 	clear_variable = gods_of_africa_strength_territory_origin_host_id
 }
+
+# COUNTRY scope. Recalculate only a live, authorized Gods host using cached
+# foreign armies. This helper never discovers or samples the world roster.
+gods_of_africa_refresh_active_strength = {
+	if = {
+		limit = {
+			gods_of_africa_strength_host_is_current = yes
+			gods_of_africa_epoch_permission_is_current = yes
+			has_country_flag = gods_of_africa_active
+			NOT = { has_country_flag = gods_of_africa_final_settlement_committed }
+		}
+		gods_of_africa_refresh_strength = yes
+	}
+}

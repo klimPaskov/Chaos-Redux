@@ -491,7 +491,7 @@ function runSuite() {
 		effectBoundaries: [...effectBoundaries], triggerBoundaries: Object.keys(triggerBoundaries),
 		limits: ['5 decimal truncation, no native range or rounding proof', 'typed allocated-country/state/getter/technology/global-flag/ROOT/FROM.FROM fixtures are external inputs', 'only named census and scalar/array transfer subtrees execute, surrounding World routes and transfer commit are outside scope', 'no probability MCP or AI audit', 'native clocks and super-event audiovisual dispatch are boundaries', 'New Strength remains incomplete: capital anchors, port, rail, resource and base families queued']};
 }
-module.exports = { IntegrationVM, runSuite, worldCensus, stageScalars, stageArrays, decorate, invoke, sample, executeRetained, assertPrivateReset, withoutPrivateForeachState };
+module.exports = { IntegrationVM, runSuite, worldCensus, stageScalars, stageArrays, decorate, invoke, sample, executeRetained, assertPrivateReset, withoutPrivateForeachState, fixture, activate, assertPublished, snapshotPublic, callCount };
 if (require.main === module) {
 	const report = runSuite(); fs.mkdirSync(evidenceDir, {recursive: true});
 	fs.writeFileSync(path.join(evidenceDir, 'integration_results.json'), JSON.stringify(report, null, 2) + '\n');

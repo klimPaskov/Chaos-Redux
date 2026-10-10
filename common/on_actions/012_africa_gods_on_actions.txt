@@ -40,6 +40,20 @@ on_actions = {
 		}
 	}
 
+	# Only the named host's war state changes its live Strength inputs.
+	on_war_relation_added = {
+		effect = {
+			if = {
+				limit = { has_event_target = africa_host OR = { ROOT = { tag = event_target:africa_host } FROM = { tag = event_target:africa_host } } }
+				event_target:africa_host = { gods_of_africa_refresh_active_strength = yes }
+			}
+		}
+	}
+
+	on_peace = {
+		effect = { gods_of_africa_refresh_active_strength = yes }
+	}
+
 	on_capitulation = {
 		effect = {
 			ROOT = {

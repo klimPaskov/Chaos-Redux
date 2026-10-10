@@ -330,6 +330,9 @@ test('AST_owner_trigger_effect_and_tuning_preservation', () => {
 				}
 			}
 			if (n.key === P + 'clear_response_view') return [];
+			if (n.key === P + 'refresh_active_strength' && ['choose_reciprocal_covenant', 'choose_sovereign_exaction', 'choose_strategic_ambiguity'].map(x => P + x).includes(owner)) {
+				assert.equal(n.op, '='); assert.equal(n.value, 'yes'); return [];
+			}
 			if (presentationNames.has(n.key) && !Array.isArray(n.value)) {
 				assert.equal(path, effectPath, 'presentation hook file');
 				assert.ok(presentationHooks.get(owner)?.includes(n.key), owner + ' hook ' + n.key);
