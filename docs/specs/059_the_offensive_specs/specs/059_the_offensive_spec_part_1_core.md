@@ -197,7 +197,8 @@ The cluster must count as one global pacing event. Event 059 keeps its own histo
 
 The first worldwide adoption of the offensive posture is a concrete global destabilisation and should add a small one-time amount of Chaos.
 
-The starting band is 15 to 25 Chaos. The final amount should scale within that band using the number of living ordinary AI countries and AI-controlled major powers affected at activation. It is applied once and guarded permanently.
+The starting band is 5 to 10 Chaos. The final amount should scale within that band using the number of living ordinary AI countries and AI-controlled major powers affected at activation. It is applied once and guarded permanently.
+The band sits at the level of one major war declaration (`chaos_meter_delta.war.major` is 5) and below a first nuclear detonation (10), because the posture change itself kills no one and every war it encourages is already counted by the shared war, annexation, and Deaths sources.
 
 Evolution eligibility and activation add no Chaos. Later wars, annexations, casualties, faction changes, and world tension use the shared Chaos systems. Event 059 should not add another premium merely because its AI preferences contributed to those ordinary outcomes.
 

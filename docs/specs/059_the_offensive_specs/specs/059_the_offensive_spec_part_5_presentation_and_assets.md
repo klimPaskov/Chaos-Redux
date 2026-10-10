@@ -91,9 +91,7 @@ Event Details should explain the public premise and persistent campaign role.
 
 The details should cover:
 
-- the worldwide adoption of aggressive AI strategy
-- the distinction between AI behavior and direct country bonuses
-- current-control behavior for human takeover and AI handback
+- the worldwide adoption of aggressive strategy by governments not under player control
 - the broad themes of front activity, force concentration, offensive production, air support, naval invasion, and strategic opportunity
 - the three evolution directions
 

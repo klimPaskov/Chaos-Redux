@@ -7,7 +7,7 @@ This folder is the source-of-truth planning package for the rework of Event 059.
 The package attributes its premise to the supplied user brief.
 The original user message and claim-level acceptance record are not reproduced here, so approval of expanded mechanics remains unresolved until the implementation owner records the supporting user decision or parent acceptance.
 Historical planning reviews, catalog snapshots, and package status labels do not establish approval or current implementation.
-Use current [AGENTS.md](../../../AGENTS.md), [event guidance](../../../.agents/skills/chaos-redux-events/SKILL.md), [asset guidance](../../../.agents/skills/chaos-redux-event-assets/SKILL.md), and [subagent guidance](../../../.agents/skills/chaos-redux-subagents/SKILL.md) for execution.
+Use current [AGENTS.md](../../../AGENTS.md), [event guidance](../../../.claude/skills/chaos-redux-events/SKILL.md), [asset guidance](../../../.claude/skills/chaos-redux-event-assets/SKILL.md), and [subagent guidance](../../../.claude/skills/chaos-redux-subagents/SKILL.md) for execution.
 The source design remains in the files listed below.
 
 ## Accepted catalog identity
@@ -45,3 +45,11 @@ The Offensive is a permanent global change to AI strategic behavior. It does not
 ## Package boundary
 
 This package defines design, balance intent, AI scenarios, evolution pacing, presentation direction, asset requirements, achievement requirements, Chaos feedback, and acceptance criteria. It does not contain gameplay code, final localisation, final art, workbook edits, or live-game validation.
+
+## Changelog
+
+### 2026-10-10 spec audit
+
+- The one-time activation Chaos gain falls from 15 to 25 to 5 to 10. The old band exceeded a first nuclear detonation (10) for a posture change that kills no one, while every war it encourages is already counted by the shared war, annexation, and Deaths sources. The `docs/plans/059_the_offensive_plans/` handoff still quotes the old band and should follow this spec.
+- Event Details no longer explains takeover and handback mechanics or the absence of direct bonuses; it states that the change affects governments not under player control.
+- Subagent instructions use the Claude-first wording.

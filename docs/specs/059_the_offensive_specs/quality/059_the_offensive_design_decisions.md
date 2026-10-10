@@ -21,7 +21,7 @@ Acceptance of expanded design remains unresolved where the original user decisio
 | Can a higher evolution substitute for a disabled lower stage? | No | Shared evolution controls must remain meaningful |
 | How do high-Chaos first firings work? | Pre-fire catch-up activates each enabled eligible layer with one report and ordered logs | A late Fire-Once event should reflect current world state without popup spam |
 | Do evolution activations add Chaos? | No | Evolution state changes capability, not a concrete consequence |
-| Does initial activation add Chaos? | Yes, one bounded 15 to 25 gain | A simultaneous worldwide strategic shift is a concrete destabilising manifestation |
+| Does initial activation add Chaos? | Yes, one bounded gain; the original 15 to 25 band was lowered to 5 to 10 on 2026-10-10 to sit at one major war declaration and below a first nuclear detonation | A simultaneous worldwide strategic shift is a concrete destabilising manifestation |
 | Do later wars receive Event 059 Chaos premiums? | No | Shared war, death, annexation, faction, and tension systems already measure those outcomes |
 | Which cluster owns the event? | Diplomacy | The accepted cluster update explicitly assigns Event 059 to Diplomacy with High severity and merges the old Diplomatic Panic identity into that cluster |
 | How severe is cluster membership? | High | The global permanent effect materially changes the campaign |

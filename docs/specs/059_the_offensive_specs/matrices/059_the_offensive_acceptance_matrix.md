@@ -34,7 +34,7 @@ Each row must end as `pass`, `blocked`, `needs_user_review`, or `not_applicable`
 | Evolution independence | Disabling one stage removes only its own future channel | AI scenarios 40, 41, 42, 44 |
 | Pre-fire opening | First firing above thresholds activates each enabled eligible layer with one popup and ordered logs | AI scenarios 43 and 44 |
 | Evolution Chaos | Evolution eligibility, activation, and logging add zero Chaos | Before and after Chaos evidence |
-| Initial Chaos | Activation adds one bounded 15 to 25 gain and never repeats | Low and high coverage tests, reload and cluster tests |
+| Initial Chaos | Activation adds one bounded 5 to 10 gain and never repeats | Low and high coverage tests, reload and cluster tests |
 | Shared-source overlap | Wars, deaths, annexations, faction changes, and tension receive no Event 059 duplicate | Chaos history comparison |
 | Cluster assignment | Event appears in Diplomacy with High severity, and Diplomatic Panic is not retained as a separate alias cluster | Cluster catalog, membership export, and UI evidence |
 | Cluster metadata | Required or optional role, participation chance when relevant, and minimum tier match the authoritative Diplomacy defaults | Registry inspection, probability audit for any weighted value, and manual cluster tests |

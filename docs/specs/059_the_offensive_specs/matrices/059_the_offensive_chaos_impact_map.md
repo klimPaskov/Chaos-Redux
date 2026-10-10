@@ -6,7 +6,7 @@ The event is an active source of Chaos at its first material manifestation. Late
 
 | Milestone or outcome | Why global Chaos changes | Direction | Starting magnitude or band | Dynamic factors | Repeat guard | Shared-source overlap | Reversal or containment counterpart |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| Worldwide offensive doctrine becomes active | AI-controlled states across the world change strategic behavior at once, increasing the chance and intensity of armed conflict | Increase | 15 to 25 | Number of living ordinary AI countries and AI-controlled major powers affected, capped inside the band | One permanent activation flag | Distinct from later wars, deaths, annexations, faction changes, and world tension | No direct refund. Later peace and de-escalation systems apply their own reductions where designed |
+| Worldwide offensive doctrine becomes active | AI-controlled states across the world change strategic behavior at once, increasing the chance and intensity of armed conflict | Increase | 5 to 10 | Number of living ordinary AI countries and AI-controlled major powers affected, capped inside the band | One permanent activation flag | Distinct from later wars, deaths, annexations, faction changes, and world tension | No direct refund. Later peace and de-escalation systems apply their own reductions where designed |
 | Evolution I becomes active | The layer changes future behavior but does not itself create a material consequence | None | 0 | Not applicable | Evolution recorded once | No overlap | Not applicable |
 | Evolution II becomes active | The layer changes future opportunity use but creates no war by activation alone | None | 0 | Not applicable | Evolution recorded once | No overlap | Not applicable |
 | Evolution III becomes active | The layer changes future scale and risk but creates no immediate material consequence | None | 0 | Not applicable | Evolution recorded once | No overlap | Not applicable |
@@ -24,7 +24,7 @@ The final implementation should use one simple bounded calculation.
 - start near the bottom of the band when few ordinary AI countries remain
 - rise with the number of affected AI countries
 - give additional weight to affected AI major powers
-- cap at 25
+- cap at 10
 - apply once even when Event 059 enters through a cluster
 - apply no extra amount for human countries, disabled evolutions, or pre-fire stage count
 

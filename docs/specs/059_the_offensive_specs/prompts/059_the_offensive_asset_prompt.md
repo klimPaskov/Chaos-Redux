@@ -12,7 +12,7 @@ A single report image for the activation of The Offensive. The same image may be
 
 ### Source mode
 
-Generated fictional documentary scene through `chaosx_generated_event_art` with `fork_turns="none"` in Codex.
+Generated fictional documentary scene through `chaosx_generated_event_art` with a self-contained prompt and no inherited parent context.
 
 ### Visual direction
 
@@ -55,7 +55,7 @@ Artwork for the planned Event 059 achievement defined in `059_the_offensive_achi
 
 ### Source mode
 
-Original generated icon art through `chaosx_icon_artist` with `fork_turns="none"` in Codex.
+Original generated icon art through `chaosx_icon_artist` with a self-contained prompt and no inherited parent context.
 
 ### Visual direction
 

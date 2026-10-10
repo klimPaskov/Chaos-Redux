@@ -78,7 +78,7 @@ Avoid hidden formula detail in the short description. Put precise blocked condit
 
 ## Icon direction
 
-Route the achievement icon through `chaos-redux-event-assets` and `chaosx_icon_artist` with `fork_turns="none"` in Codex.
+Route the achievement icon through `chaos-redux-event-assets` and `chaosx_icon_artist` with a self-contained prompt and no inherited parent context.
 
 Create original 64 by 64 achievement artwork showing a small fortified shield or defensive line snapping and turning back a large offensive arrow. Keep the silhouette readable at native size. Do not reuse the event report image. Follow the inspected current achievement consumer for completed, grey, and not-eligible states.
 

@@ -14,9 +14,9 @@ Do not implement a new unbounded daily, weekly, or monthly whole-world scan. Pre
 
 ## Required specialist routing
 
-- Spawn `chaosx_repo_explorer` with `fork_turns="none"` in Codex before editing if locations or existing AI architecture are uncertain.
-- Spawn `chaosx_scripted_system_architect` with `fork_turns="none"` in Codex using `prompts/059_the_offensive_ai_architecture_prompt.md` before creating new AI plumbing.
-- Spawn `chaosx_ai_probability_auditor` with `fork_turns="none"` in Codex using `prompts/059_the_offensive_probability_audit_prompt.md` for every weighted AI surface and any weighted Diplomacy cluster member metadata.
+- Spawn `chaosx_repo_explorer` with a self-contained prompt and no inherited parent context before editing if locations or existing AI architecture are uncertain.
+- Spawn `chaosx_scripted_system_architect` with a self-contained prompt and no inherited parent context using `prompts/059_the_offensive_ai_architecture_prompt.md` before creating new AI plumbing.
+- Spawn `chaosx_ai_probability_auditor` with a self-contained prompt and no inherited parent context using `prompts/059_the_offensive_probability_audit_prompt.md` for every weighted AI surface and any weighted Diplomacy cluster member metadata.
 - Route the report image through `chaos-redux-event-assets` and `chaosx_generated_event_art`.
 - Route the achievement icon through `chaos-redux-event-assets` and `chaosx_icon_artist`.
 - Spawn `chaosx_localisation_auditor` after broad visible text is written.
@@ -55,7 +55,7 @@ Evolution activation adds zero Chaos.
 
 ## Chaos
 
-Implement the complete Chaos impact map. The first global manifestation adds one bounded 15 to 25 Chaos gain, scaled by living ordinary AI countries and AI major powers, then permanently guarded. Wars, casualties, annexations, faction changes, and tension use shared systems with no Event 059 duplicate. Cluster entry, control changes, save reload, new countries, and evolution activation must not repeat the gain.
+Implement the complete Chaos impact map. The first global manifestation adds one bounded 5 to 10 Chaos gain, scaled by living ordinary AI countries and AI major powers, then permanently guarded. Wars, casualties, annexations, faction changes, and tension use shared systems with no Event 059 duplicate. Cluster entry, control changes, save reload, new countries, and evolution activation must not repeat the gain.
 
 ## Cluster
 
