@@ -26,6 +26,9 @@
 | B-22 | Air Cleanliness isolation | Observe value and source ledger | No BOOM source and no direct change | Atmospheric source added |
 | B-23 | Nuclear achievement isolation | Prepare near-complete nuclear achievement | BOOM does not satisfy strike condition | Achievement progresses |
 | B-24 | Soundwave presentation | Normal countries across world | One acknowledgment each and no universal modifier | Popup spam or gameplay penalty |
+| B-25 | Survivor flight handoff | Epicenter owned by a country with ordinary civilian systems | One `migration_request_event_pressure` request above the protected origin share; no second population debit or death record | Missing request, duplicate request, or flight debited as deaths |
+| B-26 | Disaster food window | Epicenter and first-ring states with low and high stores | One accepted `famine_request_disaster_pressure` per state; the low-store state can reach shortage, the high-store state rides it out | Missing request, stacked pressure on repeat, or BOOM-owned famine value |
+| B-27 | Aftermath exclusions | Second-ring state and a nonhuman-owned ring state | No food request for the second ring and no adapter request for the nonhuman owner | Request sent to an excluded state |
 | E1-01 | Pre-fire Bigger BOOM | Event never fired, Chaos at least 400, evolution enabled | Evolution records before first incident and evolved profile applies | Baseline profile or duplicate evolution log |
 | E1-02 | Active-history Bigger BOOM | Prior baseline firing, Chaos at least 400 | MTTH pacing occurs and later firing uses evolved profile after activation | Instant repeated activation or retroactive damage |
 | E1-03 | Bigger BOOM disabled | Evolution recorded but currently disabled | Future firing uses baseline strength and no second ring | Disabled content still active |
@@ -54,8 +57,8 @@
 | R-03 | Save and reload delayed incident | Save during bounded secondary sequence when supported | Generation resumes once or fails closed without duplicate effects | Duplicate blast or stale target |
 | R-04 | Cleanup | Complete and rejected incidents | Temporary targets, receipts, and generation data clear | Stale state affects later firing |
 | C-01 | Standalone registration | Event enabled outside cluster | Normal Chaos level 1 selection works | Cluster dependency blocks event |
-| C-02 | Cluster pending ID | Various Anomalies still lacks stable ID | No guessed cluster wiring | Invented or unstable ID |
-| C-03 | Cluster member firing | Stable cluster added later | One member incident, one pacing transaction, ordinary Event 47 state updates | Member bypasses cap or double-paces |
+| C-02 | Existing cluster row | Various Anomalies cluster 11, row 11002 | The existing row is enabled and no second membership is created | Duplicate membership or row still reporting disabled |
+| C-03 | Cluster member firing | Cluster 11 calls Event 47 | One member incident, one pacing transaction, ordinary Event 47 state updates | Member bypasses cap or double-paces |
 | A-01 | Report image | Final asset wired | Correct period scene, no attacker clue, no modern object, no generated text | Placeholder, unrelated nuke art, or missing sprite |
 | L-01 | Cause remains unresolved | Review all event and detail text | No confirmed explanation anywhere | Any text confirms cause or future reveal |
-| L-02 | Catalog alignment | Compare workbook and in-game wording | State-based description, two evolutions, Severe role, correct type and level | Stale province wording or Low severity |
+| L-02 | Catalog alignment | Compare workbook and in-game wording | State-based description, two evolutions, the severity settled by the README open question, correct type and level | Stale province wording or severity that contradicts the settled decision |

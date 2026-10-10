@@ -7,8 +7,8 @@
 - Type: Minor Repeatable
 - Status: To Be Reworked
 - Chaos level: 1
-- Cluster: Various Anomalies, pending a stable cluster ID
-- Member severity: Severe
+- Cluster: Various Anomalies (live cluster ID 11, member row 11002)
+- Member severity: Low in the live registry; Severe proposed (see the README open questions)
 
 ## Event promise
 
@@ -34,8 +34,9 @@ Each Event 47 firing follows one bounded sequence:
 10. Resolve later epicenters under Evolution II without moving the camera again.
 11. Send bounded location reports for later epicenters.
 12. Send one global soundwave report to each normal country for the incident as a whole.
-13. Commit one Event History entry and one repeatable-event pacing transaction for the Event 47 firing.
-14. Clear every temporary target, ring, overlap, report, and receipt value owned by the incident.
+13. Submit the aftermath requests: survivor flight from each epicenter and the disaster food window for each epicenter and first-ring state (see "Aftermath handoff" in part 3).
+14. Commit one Event History entry and one repeatable-event pacing transaction for the Event 47 firing.
+15. Clear every temporary target, ring, overlap, report, and receipt value owned by the incident.
 
 The sequence is atomic from the event system's point of view. Two or three explosions under Evolution II still count as one Event 47 firing.
 
@@ -187,6 +188,9 @@ After the last report, Event 47 leaves only ordinary world consequences:
 - disrupted or weakened local formations
 - Deaths records
 - Event History
-- any later famine, migration, occupation, supply, or war effects that naturally follow from the changed world
+- survivors in flight, owned and resolved by the migration system
+- a bounded disaster food window in the blasted states, owned and resolved by the famine system
+- any later occupation, supply, or war effects that follow from the changed world
 
-There is no BOOM meter, investigation value, recurring modifier, reconstruction category, source hunt, or hidden cause progression. The repeatable event can return through its normal weight and cap rules.
+There is no BOOM meter, investigation value, recurring modifier, reconstruction category, source hunt, or hidden cause progression.
+The repeatable event can return through its normal weight and cap rules.

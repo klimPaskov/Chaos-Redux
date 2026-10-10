@@ -92,7 +92,7 @@ The active-history delay becomes shorter when:
 
 - Chaos is at least 900
 - an evolved Bigger BOOM incident has already occurred
-- Event 47 has fired several times without a multi-strike incident
+- Event 47 has fired at least three times since Evolution I activated
 
 Evolution II can activate before Event 47's first firing when both evolution thresholds and enable states are already satisfied. In that case, the first firing can begin as a multi-strike incident.
 

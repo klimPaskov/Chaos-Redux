@@ -45,23 +45,33 @@ The implementation must prove that an Event 47 firing leaves these values unchan
 
 The map effect should be isolated through presentation code. No nuclear gameplay callback is allowed as a convenience.
 
-## Famine, migration, and supply consequences
+## Aftermath handoff: migration and famine
 
-BOOM does not call a special famine or migration transaction during the blast. The event has already removed the dead through one exact population transaction.
+The blast has already removed the dead through one exact population transaction.
+The aftermath is handed to the systems that own it through their existing adapters, so the player meets the consequences in the ordinary Famine and Migration categories.
+Neither request debits population again, records deaths, or adds a BOOM-owned value.
 
-The ordinary famine and migration systems may react later to:
+### Survivor flight
 
-- destroyed railways and supply links
-- damaged ports
-- destroyed civilian industry
-- loss of local population
-- active war or occupation
-- blocked relief routes
-- displaced survivors
+After its damage package, each epicenter state whose owner uses ordinary civilian systems submits one flight request through `migration_request_event_pressure`.
+The request is a centralized share of the surviving population, kept above the migration protected-origin share and skipped below the migration minimum request, following the Great Depression and special-front capture adapters (`common/scripted_effects/035_great_depression_external_adapters.txt`, `common/scripted_effects/humanitarian_capture_effects.txt`).
+Bigger BOOM extends the request to first-ring states at a smaller share.
+Migration then chooses destinations through its internal-first search, so most survivors stay inside their own country unless no internal route exists.
+One state receives at most one BOOM flight request per incident, guarded by the incident receipt.
 
-Those systems retain their own proof, timing, destination, route, and mortality rules. They must not debit the blast victims again.
+### Disaster food window
 
-No universal refugee event is forced. A heavily damaged state can produce displacement only when the shared migration system's normal evidence supports it.
+Each epicenter and first-ring state whose owner uses ordinary civilian systems submits one accepted disaster food request through `famine_request_disaster_pressure`.
+The famine owner treats it like a Natural Disaster or Acid Rain request: crop loss, damaged transport, and unmet need for its standard window, buffered by the state's stores.
+A well-stocked state rides the window out, while a poor or already strained state can slide toward shortage, which the owner answers with reserve release, imports, or evacuation.
+Repeated BOOM requests extend the window without stacking pressure, as the famine adapter already guarantees.
+Second-ring states submit no food request; their damage is light enough that ordinary supply recovers.
+
+### Boundaries
+
+No universal refugee event or famine popup is forced by BOOM.
+The adapters create only the requests above; reception, routes, food stages, relief, and any later famine mortality remain under their owners' proof, timing, and Deaths rules.
+The epicenter share and the first-ring share are tuning values in the BOOM script constants.
 
 ## Building and infrastructure integration
 
@@ -94,7 +104,7 @@ AI behavior is limited to ordinary reactions after the blast:
 
 - repair damaged infrastructure and supply links according to normal strategic need
 - replace or reorganize weakened divisions
-- respond to famine or migration through the shared systems when those systems activate
+- answer the survivor flight and the disaster food window through the shared Famine and Migration AI, which already weighs reserves, imports, reception, and evacuation
 - rebuild damaged airbases, ports, industry, and defenses according to current war needs
 
 Event 47 should not add a special permanent AI strategy. The event ends before such a strategy would have a clear lifecycle.
@@ -103,9 +113,11 @@ Event 47 should not add a special permanent AI strategy. The event ends before s
 
 Event 47 fits Various Anomalies because the blast has no known actor, cause, or ordinary weapon path.
 
-Its proposed cluster role is optional Severe member.
+Various Anomalies is live at cluster ID 11, a one-time cluster with unlock tier 3, and Event 47 holds member row 11002 as an optional member with primary-trigger eligibility.
+The row records its disabled reason until this rework is implemented; implementation enables that row and adds no second membership.
+The row is Low in the live registry; the Severe proposal is an open question in the README.
 
-When the cluster later receives a stable identity and runtime contract:
+When the row is enabled:
 
 - independent Event 47 eligibility remains Chaos level 1
 - the cluster's own unlock tier remains separate
@@ -115,8 +127,6 @@ When the cluster later receives a stable identity and runtime contract:
 - Event 47 updates its own repeatable cap, fired count, Event History, deaths, and evolution behavior
 - global event pacing advances once for the whole cluster incident
 - no extra cluster Chaos is added for Event 47 deaths
-
-Cluster wiring must not be guessed while the catalog row has no stable ID. The accepted Event 47 spec can be implemented independently first.
 
 ## Repeatable-event balance
 
@@ -201,36 +211,10 @@ On completion or safe rejection, it clears every incident target and temporary v
 
 ## Required acceptance scenarios
 
-The full acceptance matrix is in `047_boom_acceptance_matrix.md`. The minimum pass set includes:
-
-- peacetime baseline strike
-- wartime baseline strike
-- isolated island strike
-- cross-border first ring
-- actual nonhuman primary exclusion
-- human special-country eligibility
-- exact population and Deaths conservation
-- population-floor clamp
-- duplicate adjacency removal
-- all installed building families classified
-- state-local force damage
-- no invented military casualties
-- complete nuclear isolation
-- complete condemnation and atmosphere isolation
-- pre-fire Evolution I opening
-- active-history Evolution I pacing
-- Evolution II two and three blast probabilities
-- broad separation and every fallback tier
-- overlap strongest-zone behavior
-- one camera move
-- bounded multiplayer reports
-- one history row and one pacing transaction
-- later repeat strike on an earlier valid state
-- save and reload persistence
-- clean rejection when no valid state exists
+`047_boom_acceptance_matrix.md` owns every acceptance scenario.
 
 ## Completion boundary
 
-The event is complete when its direct incident loop, exact population accounting, building coverage, force disruption, evolutions, reports, event-log surfaces, repeatable registration, asset, documentation, catalog row, AI recovery behavior, probability evidence, and acceptance tests agree.
+The event is complete when its direct incident loop, exact population accounting, building coverage, force disruption, aftermath requests, evolutions, reports, event-log surfaces, repeatable registration, cluster row, asset, documentation, catalog row, AI recovery behavior, probability evidence, and acceptance tests agree.
 
 A working mushroom cloud with approximate damage is not enough. A correct damage package with nuclear side effects is also not enough. Both the physical result and the isolation contract are required.

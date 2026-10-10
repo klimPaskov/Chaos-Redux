@@ -2,7 +2,7 @@
 
 Implement Event 47 from the complete source package under `docs/specs/047_boom_specs/`. Read every specification, handoff, acceptance scenario, and accepted plan before editing.
 
-Follow `AGENTS.md`, `chaos-redux-events`, `chaos-redux-event-assets`, `chaos-redux-subagents`, and the relevant local wiki and installed vanilla documentation. Inspect a vanilla or existing Chaos Redux precedent for state damage, adjacency, map effects, event presentation, and exact population transactions. Use the HOI4 MCP event tools before and after the event-chain change. Route every weighted surface through the probability audit workflow.
+Follow `CLAUDE.md`, `chaos-redux-events`, `chaos-redux-event-assets`, `chaos-redux-subagents`, and the relevant local wiki and installed vanilla documentation. Inspect a vanilla or existing Chaos Redux precedent for state damage, adjacency, map effects, event presentation, and exact population transactions. Use the HOI4 MCP event tools before and after the event-chain change. Route every weighted surface through the probability audit workflow.
 
 Preserve these nonnegotiable results:
 
@@ -15,6 +15,7 @@ Preserve these nonnegotiable results:
 - Apply force disruption only to units inside affected states. Record military deaths only when exact observed personnel loss is available.
 - Use a standalone mushroom-cloud visual. Never call a nuclear launch or strike path.
 - Leave nuclear stockpile, nuclear history, fallout, condemnation, Air Cleanliness, retaliation, and nuclear achievement state unchanged.
+- Hand the aftermath to the shared owners exactly as part 3 "Aftermath handoff" defines: one survivor-flight request per epicenter (and first ring under Bigger BOOM) and one disaster food request per epicenter and first-ring state, with no second population debit.
 - Add no direct Event 47 Chaos for deaths. Let the shared Deaths conversion handle the result.
 - Implement Bigger BOOM and BOOM BOOM BOOM through the accepted pre-fire and active-history paths, independent enable state, actorless evolution logs, and zero Chaos on activation.
 - Implement two and three epicenter probabilities, bounded separation selection, safe count degradation, and strongest-zone overlap.
@@ -25,7 +26,7 @@ Preserve these nonnegotiable results:
 
 Update the full event-system contract, including category registration, default enable state, event names, debug names, Event History, Event Details, evolution previews, Deaths cause, localisation, docs, and the authoritative event catalog workbook. Regenerate all CSV exports through the repository exporter. Do not edit export CSV files directly.
 
-Do not assign a guessed Various Anomalies cluster ID. Implement standalone Event 47 first and report cluster wiring as blocked if the cluster still lacks a stable registry identity.
+Enable the existing Various Anomalies member row 11002 (cluster 11) instead of creating a new membership. Leave its severity as registered unless the README open question has been decided.
 
 Use the dedicated asset handoff for the report image. Do not substitute a placeholder or reuse an unrelated nuclear image.
 
