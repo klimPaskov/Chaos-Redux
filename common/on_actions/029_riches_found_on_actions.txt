@@ -3,7 +3,8 @@
 # ============================================================================
 # Event-driven lifecycle hooks for the bounded registered-mine array. Startup
 # only initializes the registry through one existing country; control, annex,
-# peace-conference, and capitulation hooks touch registered states only. No
+# peace-conference, and capitulation hooks touch registered states only (a
+# control change also refreshes registered mines beside the changed state). No
 # daily, weekly, monthly, or whole-world recurring mine scan is introduced.
 # ============================================================================
 
@@ -29,6 +30,20 @@ on_actions = {
 				FROM.FROM = {
 					rf_seal_note_control_change = yes
 					riches_found_handle_state_control_change = yes
+				}
+			}
+			# The front moved beside a registered mine: that mine re-reads its
+			# front line and hold at once rather than at its next controller
+			# pulse, so an owner sees it about to fall (and can deny it) before
+			# it falls, and the security overlay lifts as soon as the enemy is
+			# pushed back. Only the changed state's own neighbours are read.
+			FROM.FROM = {
+				every_neighbor_state = {
+					limit = {
+						riches_found_mine_is_registered = yes
+						NOT = { riches_found_mine_is_terminal = yes }
+					}
+					riches_found_refresh_mine_presentation = yes
 				}
 			}
 		}

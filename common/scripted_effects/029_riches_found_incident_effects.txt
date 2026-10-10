@@ -302,7 +302,8 @@ riches_found_run_corruption_incident_pool = {
 
 # COUNTRY scope. Inputs: regular event targets riches_found_interest_mine and
 # riches_found_interest_controller. Output: unscoped candidate score used by
-# the on-demand contract-target pass.
+# the on-demand contract-target pass. The caller allocates the output before
+# calling this helper so it survives the scripted-effect boundary.
 riches_found_calculate_foreign_interest_score = {
 	set_temp_variable = { riches_found_foreign_candidate_score = constant:riches_found_foreign_interest.base }
 	if = { limit = { is_major = yes } add_to_temp_variable = { riches_found_foreign_candidate_score = constant:riches_found_foreign_interest.major } }
@@ -388,6 +389,7 @@ riches_found_prepare_scored_foreign_partner = {
 				}
 			}
 		}
+		set_temp_variable = { riches_found_foreign_candidate_score = constant:riches_found_value.zero }
 		riches_found_calculate_foreign_interest_score = yes
 		if = {
 			limit = { check_variable = { riches_found_foreign_candidate_score > constant:riches_found_value.zero } }

@@ -1,0 +1,305 @@
+# Event 029 exact transport quotes and payer-country receipt checks.
+# COUNTRY THIS = ROOT, FROM = mine STATE. No named argument blocks.
+# Caller-owned temps and callback identity requirements: transport_cost_contract.md.
+
+rf_transport_cost_quote_context_valid = {
+	set_temp_variable = { rf_transport_cost_identity = THIS }
+	set_temp_variable = { rf_transport_cost_fraction = rf_transport_cost_mine_seq }
+	modulo_temp_variable = { var = rf_transport_cost_fraction value = constant:rf_transport_cost_model.one }
+	exists = yes
+	check_variable = { rf_transport_cost_identity = ROOT }
+	FROM = {
+		has_state_flag = riches_found_mine_state
+		has_variable = riches_found_mine_sequence
+		is_controlled_by = ROOT
+	}
+	check_variable = { rf_transport_cost_mine_seq > constant:rf_transport_cost_model.none }
+	check_variable = { rf_transport_cost_fraction = constant:rf_transport_cost_model.none }
+	OR = {
+		check_variable = { rf_transport_cost_family = constant:rf_transport_cost_model.specialist }
+		check_variable = { rf_transport_cost_family = constant:rf_transport_cost_model.workforce }
+		check_variable = { rf_transport_cost_family = constant:rf_transport_cost_model.evacuation }
+	}
+}
+
+rf_transport_cost_quote = {
+	set_temp_variable = { rf_transport_cost_route = constant:rf_transport_cost_model.none }
+	set_temp_variable = { rf_transport_cost_civilian = constant:rf_transport_cost_model.none }
+	set_temp_variable = { rf_transport_cost_pp = constant:rf_transport_cost_model.none }
+	set_temp_variable = { rf_transport_cost_manpower = constant:rf_transport_cost_model.none }
+	set_temp_variable = { rf_transport_cost_motorized = constant:rf_transport_cost_model.none }
+	set_temp_variable = { rf_transport_cost_transport = constant:rf_transport_cost_model.none }
+	set_temp_variable = { rf_transport_cost_mine_seq = FROM.riches_found_mine_sequence }
+	if = {
+		limit = { rf_transport_cost_quote_context_valid = yes }
+		if = {
+			limit = {
+				check_variable = { rf_transport_cost_route_request = constant:rf_transport_cost_model.land }
+				FROM = { has_state_flag = riches_found_rail_route has_state_flag = riches_found_rail_route_valid }
+			}
+			set_temp_variable = { rf_transport_cost_route = constant:rf_transport_cost_model.land }
+		}
+		else_if = {
+			limit = {
+				check_variable = { rf_transport_cost_route_request = constant:rf_transport_cost_model.sea }
+				FROM = { has_state_flag = riches_found_port_route has_state_flag = riches_found_port_route_valid }
+			}
+			set_temp_variable = { rf_transport_cost_route = constant:rf_transport_cost_model.sea }
+		}
+	}
+	if = {
+		limit = { check_variable = { rf_transport_cost_route > constant:rf_transport_cost_model.none } }
+		set_temp_variable = { rf_transport_cost_civilian = constant:riches_found_decision_cost.civ_standard }
+		if = {
+			limit = { check_variable = { rf_transport_cost_family = constant:rf_transport_cost_model.specialist } }
+			set_temp_variable = { rf_transport_cost_pp = constant:riches_found_decision_cost.pp_standard }
+			if = {
+				limit = { check_variable = { rf_transport_cost_route = constant:rf_transport_cost_model.land } }
+				set_temp_variable = { rf_transport_cost_transport = constant:riches_found_decision_cost.train_light }
+			}
+			else = { set_temp_variable = { rf_transport_cost_transport = constant:riches_found_decision_cost.convoy_light } }
+		}
+		else_if = {
+			limit = { check_variable = { rf_transport_cost_family = constant:rf_transport_cost_model.workforce } }
+			set_temp_variable = { rf_transport_cost_manpower = constant:riches_found_decision_cost.manpower_emergency }
+			if = {
+				limit = { check_variable = { rf_transport_cost_route = constant:rf_transport_cost_model.land } }
+				set_temp_variable = { rf_transport_cost_transport = constant:riches_found_decision_cost.train_standard }
+			}
+			else = { set_temp_variable = { rf_transport_cost_transport = constant:riches_found_decision_cost.convoy_standard } }
+		}
+		else_if = {
+			limit = { check_variable = { rf_transport_cost_family = constant:rf_transport_cost_model.evacuation } }
+			set_temp_variable = { rf_transport_cost_manpower = constant:riches_found_decision_cost.manpower_emergency }
+			set_temp_variable = { rf_transport_cost_motorized = constant:riches_found_decision_cost.motorized_standard }
+			if = {
+				limit = { check_variable = { rf_transport_cost_route = constant:rf_transport_cost_model.land } }
+				set_temp_variable = { rf_transport_cost_transport = constant:riches_found_decision_cost.train_standard }
+			}
+			else = { set_temp_variable = { rf_transport_cost_transport = constant:riches_found_decision_cost.convoy_heavy } }
+		}
+	}
+	check_variable = { rf_transport_cost_route > constant:rf_transport_cost_model.none }
+}
+
+rf_transport_cost_receipt_absent = {
+	if = {
+		limit = { check_variable = { rf_transport_cost_family = constant:rf_transport_cost_model.specialist } }
+		NOT = {
+			OR = {
+				has_variable = rf_specialist_transport_route_@var:rf_transport_cost_mine_seq
+				has_variable = rf_specialist_transport_civilian_@var:rf_transport_cost_mine_seq
+				has_variable = rf_specialist_transport_pp_@var:rf_transport_cost_mine_seq
+				has_variable = rf_specialist_transport_manpower_@var:rf_transport_cost_mine_seq
+				has_variable = rf_specialist_transport_motorized_@var:rf_transport_cost_mine_seq
+				has_variable = rf_specialist_transport_transport_@var:rf_transport_cost_mine_seq
+				has_variable = rf_specialist_transport_payer_@var:rf_transport_cost_mine_seq
+				has_variable = rf_specialist_transport_state_@var:rf_transport_cost_mine_seq
+			}
+		}
+	}
+	if = {
+		limit = { check_variable = { rf_transport_cost_family = constant:rf_transport_cost_model.workforce } }
+		NOT = {
+			OR = {
+				has_variable = rf_workforce_transport_route_@var:rf_transport_cost_mine_seq
+				has_variable = rf_workforce_transport_civilian_@var:rf_transport_cost_mine_seq
+				has_variable = rf_workforce_transport_pp_@var:rf_transport_cost_mine_seq
+				has_variable = rf_workforce_transport_manpower_@var:rf_transport_cost_mine_seq
+				has_variable = rf_workforce_transport_motorized_@var:rf_transport_cost_mine_seq
+				has_variable = rf_workforce_transport_transport_@var:rf_transport_cost_mine_seq
+				has_variable = rf_workforce_transport_payer_@var:rf_transport_cost_mine_seq
+				has_variable = rf_workforce_transport_state_@var:rf_transport_cost_mine_seq
+			}
+		}
+	}
+	if = {
+		limit = { check_variable = { rf_transport_cost_family = constant:rf_transport_cost_model.evacuation } }
+		NOT = {
+			OR = {
+				has_variable = rf_evacuation_transport_route_@var:rf_transport_cost_mine_seq
+				has_variable = rf_evacuation_transport_civilian_@var:rf_transport_cost_mine_seq
+				has_variable = rf_evacuation_transport_pp_@var:rf_transport_cost_mine_seq
+				has_variable = rf_evacuation_transport_manpower_@var:rf_transport_cost_mine_seq
+				has_variable = rf_evacuation_transport_motorized_@var:rf_transport_cost_mine_seq
+				has_variable = rf_evacuation_transport_transport_@var:rf_transport_cost_mine_seq
+				has_variable = rf_evacuation_transport_payer_@var:rf_transport_cost_mine_seq
+				has_variable = rf_evacuation_transport_state_@var:rf_transport_cost_mine_seq
+			}
+		}
+	}
+}
+
+rf_transport_cost_can_pay = {
+	rf_transport_cost_quote = yes
+	rf_transport_cost_receipt_absent = yes
+	check_variable = { var = num_of_available_civilian_factories value = rf_transport_cost_civilian compare = greater_than_or_equals }
+	if = {
+		limit = { check_variable = { rf_transport_cost_pp > constant:rf_transport_cost_model.none } }
+		check_variable = { var = political_power value = rf_transport_cost_pp compare = greater_than_or_equals }
+	}
+	if = {
+		limit = { check_variable = { rf_transport_cost_manpower > constant:rf_transport_cost_model.none } }
+		set_temp_variable = { rf_transport_cost_manpower_k = rf_transport_cost_manpower }
+		divide_temp_variable = { rf_transport_cost_manpower_k = constant:rf_transport_cost_model.manpower_per_thousand }
+		check_variable = { var = manpower_k value = rf_transport_cost_manpower_k compare = greater_than_or_equals }
+	}
+	if = {
+		limit = { check_variable = { rf_transport_cost_motorized > constant:rf_transport_cost_model.none } }
+		check_variable = { var = num_equipment@motorized_equipment_1 value = rf_transport_cost_motorized compare = greater_than_or_equals }
+	}
+	if = {
+		limit = { check_variable = { rf_transport_cost_route = constant:rf_transport_cost_model.land } }
+		check_variable = { var = num_equipment@train_equipment_1 value = rf_transport_cost_transport compare = greater_than_or_equals }
+	}
+	else = {
+		check_variable = { var = num_equipment@convoy_1 value = rf_transport_cost_transport compare = greater_than_or_equals }
+	}
+}
+
+# Receipt reads do not inspect current route, control, or current prices.
+# Exact original mine sequence is a caller input at resolution.
+rf_transport_cost_load_receipt = {
+	exists = yes
+	set_temp_variable = { rf_transport_cost_identity = THIS }
+	check_variable = { rf_transport_cost_identity = ROOT }
+	check_variable = { rf_transport_cost_mine_seq > constant:rf_transport_cost_model.none }
+	set_temp_variable = { rf_transport_cost_fraction = rf_transport_cost_mine_seq }
+	modulo_temp_variable = { var = rf_transport_cost_fraction value = constant:rf_transport_cost_model.one }
+	check_variable = { rf_transport_cost_fraction = constant:rf_transport_cost_model.none }
+	OR = {
+		check_variable = { rf_transport_cost_family = constant:rf_transport_cost_model.specialist }
+		check_variable = { rf_transport_cost_family = constant:rf_transport_cost_model.workforce }
+		check_variable = { rf_transport_cost_family = constant:rf_transport_cost_model.evacuation }
+	}
+	if = {
+		limit = { check_variable = { rf_transport_cost_family = constant:rf_transport_cost_model.specialist } }
+		has_variable = rf_specialist_transport_route_@var:rf_transport_cost_mine_seq
+		set_temp_variable = { rf_transport_cost_route = rf_specialist_transport_route_@var:rf_transport_cost_mine_seq }
+		has_variable = rf_specialist_transport_civilian_@var:rf_transport_cost_mine_seq
+		set_temp_variable = { rf_transport_cost_civilian = rf_specialist_transport_civilian_@var:rf_transport_cost_mine_seq }
+		has_variable = rf_specialist_transport_pp_@var:rf_transport_cost_mine_seq
+		set_temp_variable = { rf_transport_cost_pp = rf_specialist_transport_pp_@var:rf_transport_cost_mine_seq }
+		has_variable = rf_specialist_transport_manpower_@var:rf_transport_cost_mine_seq
+		set_temp_variable = { rf_transport_cost_manpower = rf_specialist_transport_manpower_@var:rf_transport_cost_mine_seq }
+		has_variable = rf_specialist_transport_motorized_@var:rf_transport_cost_mine_seq
+		set_temp_variable = { rf_transport_cost_motorized = rf_specialist_transport_motorized_@var:rf_transport_cost_mine_seq }
+		has_variable = rf_specialist_transport_transport_@var:rf_transport_cost_mine_seq
+		set_temp_variable = { rf_transport_cost_transport = rf_specialist_transport_transport_@var:rf_transport_cost_mine_seq }
+		has_variable = rf_specialist_transport_payer_@var:rf_transport_cost_mine_seq
+		set_temp_variable = { rf_transport_cost_receipt_payer = rf_specialist_transport_payer_@var:rf_transport_cost_mine_seq }
+		has_variable = rf_specialist_transport_state_@var:rf_transport_cost_mine_seq
+		set_temp_variable = { rf_transport_cost_receipt_state = rf_specialist_transport_state_@var:rf_transport_cost_mine_seq }
+	}
+	if = {
+		limit = { check_variable = { rf_transport_cost_family = constant:rf_transport_cost_model.workforce } }
+		has_variable = rf_workforce_transport_route_@var:rf_transport_cost_mine_seq
+		set_temp_variable = { rf_transport_cost_route = rf_workforce_transport_route_@var:rf_transport_cost_mine_seq }
+		has_variable = rf_workforce_transport_civilian_@var:rf_transport_cost_mine_seq
+		set_temp_variable = { rf_transport_cost_civilian = rf_workforce_transport_civilian_@var:rf_transport_cost_mine_seq }
+		has_variable = rf_workforce_transport_pp_@var:rf_transport_cost_mine_seq
+		set_temp_variable = { rf_transport_cost_pp = rf_workforce_transport_pp_@var:rf_transport_cost_mine_seq }
+		has_variable = rf_workforce_transport_manpower_@var:rf_transport_cost_mine_seq
+		set_temp_variable = { rf_transport_cost_manpower = rf_workforce_transport_manpower_@var:rf_transport_cost_mine_seq }
+		has_variable = rf_workforce_transport_motorized_@var:rf_transport_cost_mine_seq
+		set_temp_variable = { rf_transport_cost_motorized = rf_workforce_transport_motorized_@var:rf_transport_cost_mine_seq }
+		has_variable = rf_workforce_transport_transport_@var:rf_transport_cost_mine_seq
+		set_temp_variable = { rf_transport_cost_transport = rf_workforce_transport_transport_@var:rf_transport_cost_mine_seq }
+		has_variable = rf_workforce_transport_payer_@var:rf_transport_cost_mine_seq
+		set_temp_variable = { rf_transport_cost_receipt_payer = rf_workforce_transport_payer_@var:rf_transport_cost_mine_seq }
+		has_variable = rf_workforce_transport_state_@var:rf_transport_cost_mine_seq
+		set_temp_variable = { rf_transport_cost_receipt_state = rf_workforce_transport_state_@var:rf_transport_cost_mine_seq }
+	}
+	if = {
+		limit = { check_variable = { rf_transport_cost_family = constant:rf_transport_cost_model.evacuation } }
+		has_variable = rf_evacuation_transport_route_@var:rf_transport_cost_mine_seq
+		set_temp_variable = { rf_transport_cost_route = rf_evacuation_transport_route_@var:rf_transport_cost_mine_seq }
+		has_variable = rf_evacuation_transport_civilian_@var:rf_transport_cost_mine_seq
+		set_temp_variable = { rf_transport_cost_civilian = rf_evacuation_transport_civilian_@var:rf_transport_cost_mine_seq }
+		has_variable = rf_evacuation_transport_pp_@var:rf_transport_cost_mine_seq
+		set_temp_variable = { rf_transport_cost_pp = rf_evacuation_transport_pp_@var:rf_transport_cost_mine_seq }
+		has_variable = rf_evacuation_transport_manpower_@var:rf_transport_cost_mine_seq
+		set_temp_variable = { rf_transport_cost_manpower = rf_evacuation_transport_manpower_@var:rf_transport_cost_mine_seq }
+		has_variable = rf_evacuation_transport_motorized_@var:rf_transport_cost_mine_seq
+		set_temp_variable = { rf_transport_cost_motorized = rf_evacuation_transport_motorized_@var:rf_transport_cost_mine_seq }
+		has_variable = rf_evacuation_transport_transport_@var:rf_transport_cost_mine_seq
+		set_temp_variable = { rf_transport_cost_transport = rf_evacuation_transport_transport_@var:rf_transport_cost_mine_seq }
+		has_variable = rf_evacuation_transport_payer_@var:rf_transport_cost_mine_seq
+		set_temp_variable = { rf_transport_cost_receipt_payer = rf_evacuation_transport_payer_@var:rf_transport_cost_mine_seq }
+		has_variable = rf_evacuation_transport_state_@var:rf_transport_cost_mine_seq
+		set_temp_variable = { rf_transport_cost_receipt_state = rf_evacuation_transport_state_@var:rf_transport_cost_mine_seq }
+	}
+	check_variable = { rf_transport_cost_receipt_payer = ROOT }
+	check_variable = { rf_transport_cost_receipt_state = FROM }
+	OR = {
+		check_variable = { rf_transport_cost_route = constant:rf_transport_cost_model.land }
+		check_variable = { rf_transport_cost_route = constant:rf_transport_cost_model.sea }
+	}
+	check_variable = { rf_transport_cost_transport > constant:rf_transport_cost_model.none }
+	check_variable = { var = rf_transport_cost_civilian value = constant:rf_transport_cost_model.none compare = greater_than_or_equals }
+	set_temp_variable = { rf_transport_cost_fraction = rf_transport_cost_civilian }
+	modulo_temp_variable = { var = rf_transport_cost_fraction value = constant:rf_transport_cost_model.one }
+	check_variable = { rf_transport_cost_fraction = constant:rf_transport_cost_model.none }
+	check_variable = { var = rf_transport_cost_pp value = constant:rf_transport_cost_model.none compare = greater_than_or_equals }
+	set_temp_variable = { rf_transport_cost_fraction = rf_transport_cost_pp }
+	modulo_temp_variable = { var = rf_transport_cost_fraction value = constant:rf_transport_cost_model.one }
+	check_variable = { rf_transport_cost_fraction = constant:rf_transport_cost_model.none }
+	check_variable = { var = rf_transport_cost_manpower value = constant:rf_transport_cost_model.none compare = greater_than_or_equals }
+	set_temp_variable = { rf_transport_cost_fraction = rf_transport_cost_manpower }
+	modulo_temp_variable = { var = rf_transport_cost_fraction value = constant:rf_transport_cost_model.one }
+	check_variable = { rf_transport_cost_fraction = constant:rf_transport_cost_model.none }
+	check_variable = { var = rf_transport_cost_motorized value = constant:rf_transport_cost_model.none compare = greater_than_or_equals }
+	set_temp_variable = { rf_transport_cost_fraction = rf_transport_cost_motorized }
+	modulo_temp_variable = { var = rf_transport_cost_fraction value = constant:rf_transport_cost_model.one }
+	check_variable = { rf_transport_cost_fraction = constant:rf_transport_cost_model.none }
+	check_variable = { var = rf_transport_cost_transport value = constant:rf_transport_cost_model.none compare = greater_than_or_equals }
+	set_temp_variable = { rf_transport_cost_fraction = rf_transport_cost_transport }
+	modulo_temp_variable = { var = rf_transport_cost_fraction value = constant:rf_transport_cost_model.one }
+	check_variable = { rf_transport_cost_fraction = constant:rf_transport_cost_model.none }
+}
+
+rf_specialist_transport_quote = {
+	set_temp_variable = { rf_transport_cost_family = constant:rf_transport_cost_model.specialist }
+	rf_transport_cost_quote = yes
+}
+
+rf_specialist_transport_can_pay = {
+	set_temp_variable = { rf_transport_cost_family = constant:rf_transport_cost_model.specialist }
+	rf_transport_cost_can_pay = yes
+}
+
+rf_specialist_transport_has_receipt = {
+	set_temp_variable = { rf_transport_cost_family = constant:rf_transport_cost_model.specialist }
+	rf_transport_cost_load_receipt = yes
+}
+
+rf_workforce_transport_quote = {
+	set_temp_variable = { rf_transport_cost_family = constant:rf_transport_cost_model.workforce }
+	rf_transport_cost_quote = yes
+}
+
+rf_workforce_transport_can_pay = {
+	set_temp_variable = { rf_transport_cost_family = constant:rf_transport_cost_model.workforce }
+	rf_transport_cost_can_pay = yes
+}
+
+rf_workforce_transport_has_receipt = {
+	set_temp_variable = { rf_transport_cost_family = constant:rf_transport_cost_model.workforce }
+	rf_transport_cost_load_receipt = yes
+}
+
+rf_evacuation_transport_quote = {
+	set_temp_variable = { rf_transport_cost_family = constant:rf_transport_cost_model.evacuation }
+	rf_transport_cost_quote = yes
+}
+
+rf_evacuation_transport_can_pay = {
+	set_temp_variable = { rf_transport_cost_family = constant:rf_transport_cost_model.evacuation }
+	rf_transport_cost_can_pay = yes
+}
+
+rf_evacuation_transport_has_receipt = {
+	set_temp_variable = { rf_transport_cost_family = constant:rf_transport_cost_model.evacuation }
+	rf_transport_cost_load_receipt = yes
+}
+

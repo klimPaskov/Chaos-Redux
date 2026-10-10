@@ -33,7 +33,7 @@ Other sessions may have uncommitted edits in Event 029 files; read the working t
 Accepted design that is not yet in source:
 
 1. Header and tooltip trim: the Part 1 header (Development as a band, one conditional line), the shorter aggregate tooltip, and the two-value opening option tooltips in Part 6; reconcile with the uncommitted header edit already in the working tree.
-2. Cost scaling by geography, damage, and repetition (Part 3 cost rules), including wiring the specialist-labour and workforce-replacement transport helpers.
+2. Cost scaling by geography, damage, and repetition (Part 3 cost rules), including the specialist-labour, workforce-replacement and evacuation transport helpers, which are parked unloaded in `docs/plans/029_riches_found_plans/deferred_transport_cost/` with their contract until a decision consumes them (no decision calls them, and an unused helper module must not ship in `common/`).
 3. Event 028 crater handling during the ordinary refresh (Part 1).
 4. Live consumers for the three evolution icons (Part 6).
 5. Individual review or repair of the 37 unreviewed decision icons (Part 6).

@@ -197,9 +197,11 @@ defined_text = {
 	text = { localization_key = riches_found.value.na }
 }
 
-# The selected mine's standing revenue route, most consequential first.
+# The selected mine's standing revenue route, most consequential first. An
+# occupier does not inherit the owner's settlement.
 defined_text = {
 	name = GetRichesFoundSelectedMineRevenueRoute
+	text = { trigger = { has_variable = riches_found_selected_mine var:riches_found_selected_mine = { riches_found_mine_is_registered = yes is_controlled_by = ROOT riches_found_mine_is_occupied = yes } } localization_key = riches_found.revenue_route.occupied }
 	text = { trigger = { has_variable = riches_found_selected_mine var:riches_found_selected_mine = { riches_found_mine_is_registered = yes is_controlled_by = ROOT has_state_flag = riches_found_patronage_tolerated } } localization_key = riches_found.revenue_route.patronage }
 	text = { trigger = { has_variable = riches_found_selected_mine var:riches_found_selected_mine = { riches_found_mine_is_registered = yes is_controlled_by = ROOT has_state_flag = riches_found_central_receipts NOT = { riches_found_revenue_has_oversight = yes } } } localization_key = riches_found.revenue_route.central_unwatched }
 	text = { trigger = { has_variable = riches_found_selected_mine var:riches_found_selected_mine = { riches_found_mine_is_registered = yes is_controlled_by = ROOT has_state_flag = riches_found_central_receipts } } localization_key = riches_found.revenue_route.central }
