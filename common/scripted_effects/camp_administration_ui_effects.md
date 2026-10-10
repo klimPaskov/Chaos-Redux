@@ -28,6 +28,9 @@ The extermination building cannot be reversed by changing the primary role; clos
 It performs no world scan or gameplay simulation.
 `camp_admin_view` and `camp_admin_location_filter` are enum values, while suspended/closed states remain flags.
 The GUI cache also exposes separate custody, workforce, maintenance, current deaths and capacity values for the selected location, plus countrywide cause-separated monthly and cumulative death totals.
+The window shows at most four values per view: people held, output, maintenance and deaths this month; workforce, capacity and cumulative site deaths live in their tooltips, and Records lists cumulative deaths by cause only.
+Monthly deaths display in people through `camp_admin_gui_month_deaths_people` and `camp_admin_gui_site_month_deaths_people` (thousands times `camp_admin_value.people_per_k`).
+`camp_admin_gui_economy_frame` and `camp_admin_gui_institution_frame` drive the eleven-frame `GFX_camp_admin_meter` (frame 1 empty, frame 11 full, `camp_admin_meter` constants); the meters show only while an economic project slot is active or an institutional target exists.
 
 `camp_admin_project_institution_progress` reads the actual civilian claims, civilian review, major-country archive and oversight counters before falling back to an active or saved suspended major-country program.
 It writes only `camp_admin_gui_institution_progress` and `camp_admin_gui_institution_target`, divides by the matching configured duration, and clamps the displayed fraction from zero to one.

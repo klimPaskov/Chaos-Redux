@@ -405,8 +405,19 @@ camp_admin_refresh_interface = {
 	else = { set_variable = { camp_admin_gui_economy_progress = 0 } }
 	clamp_variable = { var = camp_admin_gui_economy_progress min = 0 max = 1 }
 	camp_admin_project_institution_progress = yes
+	# Meter frames: frame 1 is empty, frame 11 is full.
+	set_variable = { camp_admin_gui_economy_frame = camp_admin_gui_economy_progress }
+	multiply_variable = { camp_admin_gui_economy_frame = constant:camp_admin_meter.steps }
+	round_variable = camp_admin_gui_economy_frame
+	add_to_variable = { camp_admin_gui_economy_frame = constant:camp_admin_meter.first_frame }
+	set_variable = { camp_admin_gui_institution_frame = camp_admin_gui_institution_progress }
+	multiply_variable = { camp_admin_gui_institution_frame = constant:camp_admin_meter.steps }
+	round_variable = camp_admin_gui_institution_frame
+	add_to_variable = { camp_admin_gui_institution_frame = constant:camp_admin_meter.first_frame }
 	set_variable = { camp_admin_gui_month_deaths_k = camp_admin_month_deaths_k }
 	add_to_variable = { camp_admin_gui_month_deaths_k = camp_occ_month_deaths_k }
+	set_variable = { camp_admin_gui_month_deaths_people = camp_admin_gui_month_deaths_k }
+	multiply_variable = { camp_admin_gui_month_deaths_people = constant:camp_admin_value.people_per_k }
 	set_variable = { camp_admin_gui_country_support_pct = camp_admin_country_support_ratio }
 	multiply_variable = { camp_admin_gui_country_support_pct = constant:camp_admin_value.display_percent_multiplier }
 	set_variable = { camp_admin_gui_total_deaths_k = camp_admin_total_deaths_k }
@@ -449,6 +460,8 @@ camp_admin_cache_selected_site = {
 		set_variable = { camp_admin_gui_site_capacity_k = camp_admin_display_capacity }
 		set_variable = { camp_admin_gui_site_workforce_k = camp_admin_display_workers }
 		set_variable = { camp_admin_gui_site_month_deaths_k = camp_admin_display_month_deaths }
+		set_variable = { camp_admin_gui_site_month_deaths_people = camp_admin_display_month_deaths }
+		multiply_variable = { camp_admin_gui_site_month_deaths_people = constant:camp_admin_value.people_per_k }
 		set_variable = { camp_admin_gui_site_total_deaths_k = camp_admin_display_total_deaths }
 		set_variable = { camp_admin_gui_site_support = camp_admin_display_support }
 		set_variable = { camp_admin_gui_site_support_pct = camp_admin_display_support_pct }

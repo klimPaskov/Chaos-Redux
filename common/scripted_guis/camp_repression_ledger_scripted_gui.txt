@@ -85,6 +85,8 @@ scripted_gui = {
 			camp_admin_economy_panel_visible = { ROOT = { NOT = { has_country_flag = camp_admin_maintenance_shortage } } }
 			camp_admin_institution_panel_visible = { ROOT = { NOT = { has_country_flag = camp_admin_maintenance_shortage } } }
 			camp_admin_crisis_panel_visible = { ROOT = { check_variable = { camp_admin_view = constant:camp_admin_view.administration } has_country_flag = camp_admin_maintenance_shortage NOT = { camp_admin_has_open_picker = yes } } }
+			camp_admin_economy_meter_visible = { ROOT = { has_country_flag = camp_admin_economy_slot_active } }
+			camp_admin_institution_meter_visible = { ROOT = { check_variable = { camp_admin_gui_institution_target > constant:camp_admin_value.zero } } }
 			camp_admin_crisis_pause_visible = { ROOT = { NOT = { has_country_flag = camp_admin_development_paused } } }
 			camp_admin_crisis_pause_click_enabled = { ROOT = { NOT = { has_country_flag = camp_admin_development_paused } } }
 			camp_admin_crisis_pause_locked_visible = { ROOT = { has_country_flag = camp_admin_development_paused } }
@@ -170,6 +172,10 @@ scripted_gui = {
 			camp_admin_option_role_killing_other_locked_visible = { ROOT = { camp_admin_killing_role_offer_visible = yes camp_admin_killing_role_mandate_ready = yes camp_admin_has_selected_operating_site = yes NOT = { camp_admin_killing_role_existing = yes } camp_admin_killing_role_level_ready = yes camp_admin_killing_role_funds_ready = yes set_temp_variable = { camp_admin_control_requested = constant:camp_admin_role.killing } NOT = { camp_admin_can_change_selected_role = yes } } }
 			camp_admin_option_role_killing_other_locked_click_enabled = { ROOT = { always = no } }
 			camp_admin_picker_filter_visible = { ROOT = { has_country_flag = camp_admin_picker_filter } }
+		}
+		properties = {
+			camp_admin_economy_meter = { frame = ROOT.camp_admin_gui_economy_frame }
+			camp_admin_institution_meter = { frame = ROOT.camp_admin_gui_institution_frame }
 		}
 		dynamic_lists = {
 			camp_admin_location_list = { array = camp_admin_gui_states value = camp_admin_location_state index = camp_admin_location_index change_scope = yes entry_container = "camp_admin_location_row" }

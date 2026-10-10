@@ -1,5 +1,7 @@
 # Camps takeover status, 6 October 2026
 
+Superseded in part on 10 October 2026: the calendar gates described below (Western, Greek and Italian origin dates, the dated partner windows, the Kraków and Mengele dates) now open on gameplay conditions, and the window was redesigned; see [gameplay_gates_ui_decisions_2026-10-10.md](gameplay_gates_ui_decisions_2026-10-10.md). The QA steps that set calendar dates need campaign, domination or front conditions instead.
+
 Disposition: the latest audit's source changes are implemented and reviewed, with the explicit modeling limits below.
 The workstream is not approved as fully complete because current GUI evidence, complete weighted eligibility and live-engine acceptance remain open.
 No game or desktop window was launched.
