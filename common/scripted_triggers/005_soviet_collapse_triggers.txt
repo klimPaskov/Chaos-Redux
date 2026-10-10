@@ -1,6 +1,7 @@
 # Some fields in this file reject script-constant tokens.
 # These file-scoped values mirror the authoritative shared constants.
 @CR_SC_SOVIET_COLLAPSE_KMB_AI_SUPERIORITY_RATIO = 1.25
+@soviet_collapse_missing_trains_rail_belt_divisions = 3
 # ============================================================================
 # CHAOS REDUX - EVENT 005 SOVIET COLLAPSE TRIGGERS
 # ============================================================================
@@ -94,6 +95,12 @@ must_soviet_collapse_exit_calm_strong_center_state = {
 
 can_soviet_collapse_complete_objective_now = {
 	NOT = { has_country_flag = soviet_collapse_objective_activation_grace }
+}
+
+# Moscow has a standing crisis order on hand. Crisis responses add orders and every completed
+# Soviet objective spends one, so no objective can be finished by waiting.
+has_soviet_collapse_moscow_order = {
+	check_variable = { var = soviet_collapse_moscow_orders value = constant:soviet_collapse_soviet_objective.order_cost compare = greater_than_or_equals }
 }
 
 can_soviet_collapse_activate_opening_followup_objectives = {
@@ -5762,6 +5769,15 @@ can_establish_soviet_collapse_crisis_desk = {
 can_count_soviet_collapse_missing_trains = {
 	has_equipment = { train_equipment > constant:soviet_collapse_soviet_objective.train_req }
 	has_fuel > constant:soviet_collapse_soviet_objective.fuel_req
+	custom_trigger_tooltip = {
+		tooltip = soviet_collapse_hold_missing_trains_rail_belt_tt
+		hidden_trigger = {
+			num_divisions_in_states = {
+				count > @soviet_collapse_missing_trains_rail_belt_divisions
+				states = { 219 242 206 }
+			}
+		}
+	}
 	OR = {
 		219 = { is_owned_by = ROOT is_controlled_by = ROOT }
 		242 = { is_owned_by = ROOT is_controlled_by = ROOT }
