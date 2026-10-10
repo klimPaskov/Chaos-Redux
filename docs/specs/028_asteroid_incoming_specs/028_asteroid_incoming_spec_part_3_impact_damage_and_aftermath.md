@@ -1,267 +1,163 @@
 # Asteroid Incoming, Part 3: Impact Damage and Local Aftermath
 
+Status: implemented, except complete network demolition (blocked) and the Event 029, camp and famine reconciliations (not implemented).
+Implemented values live in the constants file; the [tuning matrix](028_asteroid_incoming_tuning_matrix.md) lists them beside their design ranges.
+
 ## Resolution contract
 
-The impact resolves as one guarded transaction. It determines every affected state, applies the strongest applicable profile once, records actual civilian losses, updates country totals, creates crater states, starts dust, and only then sends reports and presentation events.
+The impact resolves as one guarded transaction in `chaosx.nr28.4`.
+It plans every main and fragment footprint before changing any state, merges overlaps by strongest profile, processes each state once, measures population before and after, registers only actual deaths, registers craters, damages units, computes dust, and only then sends reports and presentation.
+Re-entry guards make a duplicate resolver call a no-op, and a miss or fail-closed course never reaches any damage step.
 
-The map effect can reuse the existing thermonuclear or nuclear explosion presentation. The gameplay transaction must use asteroid-specific source identity from beginning to end.
+## Damage profiles
 
-## Main impact profiles
+Profiles are ordered by severity (`asteroid_incoming_profile`), so a state reached by several footprints keeps the strongest one.
 
-### Ring 0: Main crater
+| Profile | Civilian loss | Local state modifier | Character |
+| --- | ---: | --- | --- |
+| Main centre (Ring 0) | 100% | Permanent main crater | Complete destruction |
+| Catastrophic ring (Ring 1) | 50% | Catastrophic Impact Zone, long | Strongest survivable damage, first in emergency work |
+| Major ring (Ring 2) | 25% | Major Impact Zone, medium | Repairable regional disaster |
+| Outer ring (Ring 3) | 5% | Outer Shock Zone, short | Visible transport and building damage |
+| Fragment centre | 50% | Persistent fragment crater plus Fragment Centre Recovery | Survivable crater site |
+| Fragment ring 1 | 25% | Heavy Fragment Damage, timed | Heavy local damage |
+| Fragment ring 2 | 5% | Light Fragment Damage, short | Light local damage |
 
-The locked center is destroyed.
+A Ring 1 state must stay usable after major investment and never quietly becomes a second wasteland.
 
-- Remove all civilian population.
-- Remove all state buildings and building levels.
-- Destroy infrastructure, railways, supply hubs, ports, air bases, radar, anti-air, forts, factories, dockyards, reactors, rocket sites, refineries, fuel storage, and any other building surface present in the state.
-- Clear or invalidate active state projects that cannot exist in a permanent crater.
-- Apply the permanent asteroid crater state profile.
-- Mark the state as the unique main crater for Event 028.
-- Preserve state ownership and control unless another game system changes them.
-- Prevent ordinary reconstruction from restoring the state to a normal populated industrial area.
+## Buildings
 
-The main crater should remain traversable only under the project's established wasteland rules. It should impose severe supply and movement problems and should never become a free empty construction site.
+Building loss uses three category shares per profile (industry, logistics, strategic), centralized in `asteroid_incoming_building_loss`.
+Logistics and exposed strategic buildings take heavier proportional damage than distant industry, because shock and debris hit the transport network first.
 
-### Ring 1: Catastrophic zone
+- State buildings lose the rounded share of their current levels.
+- Ordinary provincial buildings (forts, ports, facilities, camps, dams, canals, landmarks and the other ordinary types registered in `028_asteroid_incoming_province_triggers.txt`) lose the rounded share per province, processed in ascending original-level cohorts so no province is damaged twice.
+  This is per-province rounding by accepted decision (G6): four level-one forts under a 22.5 percent profile each keep their level, while a level-four fort loses one.
+- Full-loss profiles zero every matching province.
+- Losses clamp to existing levels and never add levels through rounding.
+- Railways and supply nodes are network objects that ordinary building operations do not safely cover; the ring profiles damage them through native network damage only.
 
-Direct land neighbors receive the strongest survivable damage profile.
+### Main crater network (blocked)
 
-- Remove about 50 percent of civilian population.
-- Cause severe damage to factories, infrastructure, railways, supply hubs, ports, air bases, radar, anti-air, forts, and strategic installations.
-- Apply a long-lived catastrophic impact-zone modifier.
-- Create the highest local recovery burden outside the crater.
-- Place these states first in emergency rescue and transport missions.
+The brief requires the main centre to lose all buildings.
+State buildings and ordinary provincial buildings are removed, and the crater's railways and supply nodes are wrecked with no repair and suppressed by the crater modifier (no building slots, minus 100 percent construction speed) and the wasteland category.
+Complete railway and supply-node demolition and cancellation of queued construction or special projects are not proven.
+README Open question 1 proposes how to settle this.
 
-A Ring 1 state should remain usable after major investment. The profile must not quietly become another complete wasteland.
+## Permanent crater profiles
 
-### Ring 2: Major damage zone
+The main crater is a distinct permanent identity, not radioactive fallout, and borrows no radiation text or icon.
+It moves to the wasteland category, carries the permanent `asteroid_incoming_main_crater` modifier and flag, keeps its owner and controller, cannot be rebuilt, and supports no ordinary construction.
+Units can still cross it under the wasteland rules, without supply or infrastructure.
 
-The next shortest adjacency ring receives a major regional disaster profile.
+A fragment centre keeps its surviving half of population and buildings.
+It carries the persistent `asteroid_incoming_fragment_crater` marker and a timed Fragment Centre Recovery burden, and becomes a mineral site under Extraordinary Minerals.
 
-- Remove about 25 percent of civilian population.
-- Cause major damage to industry, infrastructure, railway, supply, and military installations.
-- Apply a medium recovery burden.
-- Make repair and medical actions useful without requiring years of mandatory cleanup.
+Each crater site carries one persistent material profile (Part 5).
 
-### Ring 3: Outer shock zone
+## Civilian population and Deaths
 
-The third ring receives a lighter but visible profile.
+For each affected state, the transaction reads the population, applies the profile share once through the exact state population-loss helper, and records the actual applied value under the matching asteroid Deaths reason.
+The main crater targets zero remaining population; other profiles round consistently and never report more deaths than the state held.
+Removed population leaves no recruitable-manpower credit.
 
-- Remove about 5 percent of civilian population.
-- Damage vulnerable infrastructure, railways, supply routes, and some buildings.
-- Apply a short recovery burden.
-- Use reports and state modifiers that distinguish the outer shock zone from ordinary natural-disaster damage.
-
-## Building-damage principles
-
-The population percentages are fixed design anchors. Building losses can use category-specific ranges so that the result feels physical and avoids identical state outcomes.
-
-- Infrastructure, railways, supply hubs, air bases, radar, forts, and anti-air should usually take heavier proportional damage than distant civilian industry because shock and debris attack the transport and exposed network first.
-- Civilian factories, military factories, dockyards, refineries, reactors, and rocket sites should take severity-scaled damage with clear floors.
-- A state with only one level of a critical building should still have a meaningful chance to lose or disable it in Ring 1 and Ring 2.
-- Building damage should never add levels through rounding.
-- Damage should clamp to existing levels and should not create negative values.
-- The transaction must include buildings introduced by supported DLC or the mod when they exist.
-
-The exact category ranges belong in the tuning matrix. The implementation should centralize them and avoid scattering separate values through every event branch.
-
-## Permanent asteroid crater profile
-
-The main crater is a distinct permanent state identity. It is not radioactive fallout and should not borrow radioactive text or icons.
-
-The profile should communicate:
-
-- The state has no surviving civilian population.
-- Ordinary buildings cannot be restored.
-- Infrastructure and supply remain effectively absent.
-- Movement and operations through the state are difficult.
-- The controller still owns a geographic and strategic position.
-- Extraordinary mineral control, when active, comes from this state.
-
-The profile should use a permanent state modifier and the shared wasteland or unusable-state framework where compatible. Any borrowed framework must preserve the asteroid source and must not add radiation, nuclear contamination, nuclear winter, or nuclear-use records.
-
-Fragment centers use a separate persistent fragment-crater profile. They keep surviving population and buildings after their 50 percent loss. They remain difficult recovery zones and mineral sites, but they are not complete wastelands.
-
-## Civilian population transactions
-
-Every population change must remove real state population without leaving an unintended recruitable-manpower credit.
-
-For each affected state, the event should:
-
-1. Read the population before the impact.
-2. Calculate the requested loss from the strongest applicable profile.
-3. Preserve any project-wide minimum population rule only outside the main crater.
-4. Apply the exact loss once.
-5. Record the actual applied value in the Deaths system.
-6. Add the actual value to the affected-country incident total.
-
-The main crater uses a zero remaining-population target. Ring and fragment profiles use proportional loss rounded consistently. A state with extremely low population should not report more deaths than it contained.
+Deaths reasons distinguish the main impact, the three main rings, the fragment centre, the two fragment rings and rescue failure.
+Every entry is civilian; military losses come only from unit damage.
 
 ## Continuing rescue-period deaths
 
-The initial percentages represent the immediate impact. Ring 1, Ring 2, and fragment-center states can suffer a smaller continuing loss during the emergency period from burns, collapse, water failure, debris, and medical overload.
+Immediate losses are followed by a small monthly loss while a state's rescue burden lasts: catastrophic ring and fragment centre for up to six months, major ring for four, fragment ring 1 for three.
+The monthly share is a few hundredths of a percent of the surviving population, capped per month and above a protected population floor.
+The medical preparedness stance halves it, and medical and debris work end it early.
+It stays far below the immediate losses; its purpose is to make the first emergency actions matter.
 
-This continuing loss must be bounded.
+## Units in the footprint
 
-- It applies only while the state's recovery burden remains unresolved.
-- It uses a protected population floor.
-- It is highest in Ring 1 and fragment centers.
-- It is reduced by the target country's shelter and hospital preparation.
-- It can be shortened by medical and debris-clearing actions.
-- It stops when the emergency phase closes or the state reaches its recovery threshold.
+Accepted decision (basis: user-granted design authority, 2026-10-05 round 3): every army standing in a processed state is struck where it stands, whoever owns it, through one native `damage_units` call with ratio strength and organisation damage chosen by the state's profile (`asteroid_incoming_unit_damage`).
+Damage falls from the main centre (75 percent strength, 95 percent organisation) through the rings, fragment profiles are lighter, and ships are struck only in the main centre and catastrophic ring.
+No value deletes a unit, so an army caught in the crater survives broken rather than vanishing.
 
-Continuing deaths should make response choices matter. They should remain much smaller than the fixed immediate losses.
+## Country reports
 
-## Deaths system reasons
+After all state transactions, the event builds one receipt per affected country: civilian deaths, damaged states, worst profile, whether it held the main centre, fragment centres suffered, destroyed industry and logistics levels, capital outcome and current burden.
+A country counts as affected when it owned or controlled a processed state at impact.
 
-The Deaths log should distinguish at least these source families.
+Each affected country receives one short plain-text report: `chaosx.nr28.5` when it holds or owns a main-footprint state, otherwise `chaosx.nr28.7`.
+The report names the worst-hit state by its profile, gives deaths and the number of damaged states, lists destroyed transport and industrial levels only when there are any, adds the capital sentence only when the government moved or could not move, adds transport losses only for the original target, and ends with the current recovery phase and the most useful recovery order open now.
+No zero count prints, and parchment text carries no colour codes.
 
-- Asteroid main impact
-- Asteroid main impact, first ring
-- Asteroid main impact, second ring
-- Asteroid main impact, third ring
-- Asteroid fragment center
-- Asteroid fragment, first ring
-- Asteroid fragment, second ring
-- Asteroid rescue failure
+## Control and ownership edge cases
 
-Every entry is civilian. Military casualties from divisions in the states can use the project's established military-loss or unit-damage systems if supported, but they must not be estimated from civilian population.
+- When owner and controller differ, losses apply to the state once; the controller receives the operational report and recovery work.
+- Deaths attribution follows the shared Deaths contract for the state's civilian country.
+- A country that ceases to exist before its report receives none; its totals remain in global history.
+- An annexed original target gains no original-target achievement identity for the annexer.
 
-## Country aggregation
+## Local state modifiers and emergencies
 
-After all main and fragment state transactions, the event builds one incident summary per affected country. A country counts as affected when it owned or controlled at least one damaged state at impact time or lost population through the transaction.
+| Modifier | Profile | Lifecycle |
+| --- | --- | --- |
+| Main asteroid crater | Main centre | Permanent |
+| Catastrophic Impact Zone | Ring 1 | Long timed |
+| Major Impact Zone | Ring 2 | Medium timed |
+| Outer Shock Zone | Ring 3 | Short timed |
+| Fragment crater marker | Fragment centre | Persistent |
+| Fragment Centre Recovery | Fragment centre | Timed |
+| Heavy Fragment Damage | Fragment ring 1 | Timed |
+| Light Fragment Damage | Fragment ring 2 | Short timed |
 
-The summary should retain:
+A state with an active rescue burden or a catastrophic, major, fragment-centre or heavy-fragment modifier has a live local emergency and joins the emergency list.
+A state with only outer-shock or light-fragment damage starts with its emergency resolved.
+The monthly recovery pass resolves each listed emergency once its burdens end, so reconstruction opens even where no emergency project was taken.
+Recovery decisions shorten these modifiers; the crater markers persist.
 
-- Total civilian deaths
-- Number of affected states
-- Worst damage profile suffered
-- Whether the country held the main center
-- Number of fragment centers suffered
-- Industry and logistical levels destroyed
-- Whether its capital was relocated
-- Current emergency burden
+## Nuclear separation
 
-The country receives one report. The report can name the worst affected state and list totals through dynamic localisation. It should not open separate popups for each state or fragment.
+The map visual is the only nuclear-adjacent surface, and it is graphics only: two vanilla-cloned explosion entities created by script, with no `launch_nuke`, raid, bomb or nuclear callback ([map presentation](../../events/028_asteroid_incoming/map_presentation.md)).
+The transaction creates no nuclear strike record, condemnation, retaliation, fallout, nuclear Chaos ladder entry, nuclear achievement progress, nuclear diplomacy or nuclear Deaths reason.
+Dust and Air Cleanliness changes remain an asteroid source in every ledger and tooltip.
 
-A global news summary can report the total number of affected countries and fragments. It should not repeat every country report.
+## Prior damage
 
-## Country and government continuity
+Losses use current population and building levels, so reports state actual losses, and the main crater removes whatever remains.
+A compatible natural-disaster modifier already on a state stays; duplicate generic penalties should be consolidated where they overlap.
 
-### Target country survives
+## Riches Found mine in the footprint
 
-Main target construction ensures that the selected country has a valid surviving state. The event should not silently delete the country because one state became a crater.
+Status: unresolved cross-owner design shared with the [Riches Found package](../029_riches_found_specs/029_riches_found_spec_part_1_core_loop.md); no attributable acceptance found and not implemented on either side.
 
-### Capital destruction
+A registered Event 029 mine can be struck like any other location and never causes a reroll.
+Event 029 owns the mine ledger, controller aggregate, concessions, paid projects and evolution aftermath.
 
-The capital moves before the center is erased. The target receives a temporary government-dislocation state whose severity depends on the emergency stance and whether the capital was hit.
+- When the main centre becomes a crater, the mine is physically destroyed: Event 029 retires its output and site work and rebuilds the controller's remaining-mine aggregate under its existing diminishing returns and cap.
+- The discoverer keeps the original windfall; later capture or release grants no replacement, and no later repair can reopen the mine.
+- Destruction is not an evacuation, sealing, reform or completed bargain, gives no Event 029 achievement credit, and cannot pay a Bottomless Account obligation with impact deaths; obligations, settlements and cancellations follow Event 029's terminal policies, refunding only recorded payments.
+- Mine casualty effects do not run again for people Event 028 already removed, and already distributed Gold Disease material or national aftermath is not erased.
+- Mines in surviving rings and fragment centres keep their identity; Event 029 rechecks works, route and controller before allowing output, and a broken requirement can suspend operation.
+  A fragment-crater marker alone does not destroy a mine.
+- Neither owner restores shared buildings above their repair baseline or charges the same damage twice.
 
-### Leaders and advisors
+When Event 029 is absent or disabled, the impact finishes normally, and a later Event 029 refresh must recognize a main crater before restoring mine benefits.
 
-The event should not randomly kill named leaders, advisors, commanders, scientists, or characters unless a later accepted design adds a dedicated character-survival system. The civilian death total already represents mass loss. Untracked character deletion would create broken country packages and weak feedback.
+## Camp sites in the footprint (proposed)
 
-### Units in affected states
+Status: proposed by the 2026-10-10 audit, not implemented, needs the camp owner.
 
-Divisions, aircraft, and ships should suffer through established map, strength, organization, equipment, supply, or base-loss mechanics when supported. The event should avoid deleting all units by script without regard to location or evacuation. The main crater must not leave units operating normally inside a state with no supply or infrastructure.
+The impact already removes concentration camp, extermination camp and gulag buildings in its footprint, but the camp administration ledger is never told.
+A registered camp site would then keep detainees who died in the impact, or keep a site that no longer exists.
 
-## Local state modifiers
+- Event 028 supplies the state, its profile and the measured civilian loss after the state transaction; it makes no second population change.
+- In the main crater, the camp owner retires the site and records its detainees as dead in the impact rather than releasing them.
+- In a ring or fragment state, the camp owner reconciles its detainee count against the measured loss, and closes the site through its own terminal seam (`camp_admin_integration_close_site`) only when the building is gone.
+- No condemnation or discovery evidence is created by the impact itself.
 
-The state aftermath should use a small readable family.
+## Famine request point (proposed)
 
-### Main asteroid crater
-
-Permanent. Communicates complete physical destruction and any mineral control.
-
-### Catastrophic impact zone
-
-Long duration. Used by Ring 1. Carries the highest recovery burden and strongest transport, construction, and local output penalties.
-
-### Major impact zone
-
-Medium duration. Used by Ring 2.
-
-### Outer shock zone
-
-Short duration. Used by Ring 3.
-
-### Fragment crater
-
-Persistent. Used by each fragment center. Carries the mineral site under Extraordinary Minerals.
-
-### Fragment damage zone
-
-Timed. Used by fragment rings at heavy or light severity.
-
-Each family should have a visible lifecycle. Recovery decisions shorten, replace, or remove timed modifiers. The main crater and fragment crater persist.
-
-## Nuclear-system separation
-
-The map visual is the only nuclear-adjacent surface.
-
-The asteroid transaction must not:
-
-- Count as a nuclear or thermonuclear strike
-- Add nuclear condemnation
-- Trigger nuclear retaliation
-- Add radioactive fallout
-- Add a nuclear-use Chaos ladder entry
-- Fulfil nuclear achievements or decisions
-- Trigger nuclear diplomatic reactions
-- Record a nuclear attacker or victim
-- Use a nuclear Deaths reason
-- Start Fallout through a nuclear-use path
-
-Dust and Air Cleanliness changes are asteroid-derived environmental pressure. They should remain distinguishable in history and tooltips.
-
-## Interaction with prior damage
-
-The event can strike states already damaged by war or disaster.
-
-- Population loss uses current population.
-- Building loss uses current building levels.
-- Reports state actual losses, not theoretical undamaged values.
-- The main crater still removes whatever remains.
-- Recovery burden starts from the event profile and can account for pre-existing infrastructure weakness.
-- A state already carrying a temporary natural-disaster modifier may keep it when compatible. Duplicate generic penalties should be consolidated where possible.
-
-## An existing Riches Found mine in the impact footprint
-
-A registered Event 029 mine can be struck like any other eligible location.
-Its persistent identity does not exempt it from the selected impact profile or invite a target reroll.
-[Riches Found](../029_riches_found_specs/029_riches_found_spec_part_1_core_loop.md) owns the mine ledger, controller aggregate, concessions, paid projects, and surviving evolution aftermath.
-
-When the main center becomes a permanent crater, the mine is physically destroyed.
-Event 029 retires that mine's operating contribution and active site work, then rebuilds the controller's remaining-mine aggregate using its existing diminishing returns and cap.
-The original 1,000 political-power windfall stays with the discoverer, and later capture or release grants no replacement windfall.
-The historical mine identity remains, but reconstruction, a new controller, or repair of a neighboring route cannot reopen it.
-
-Destruction is not a successful evacuation, sealing project, reform, or completed bargain.
-It gives no corresponding Event 029 achievement credit and cannot use impact deaths to pay a Bottomless Account obligation.
-Existing obligations, contractual settlement, paid-project cancellation, and national aftermath follow their Event 029 terminal policies, with only actual recorded payments available for any valid refund.
-Mine-specific casualty effects must not run again for people already removed by Event 028.
-Previously distributed Gold Disease material or already established national aftermath is not erased by destroying its original source.
-
-Surviving ring states and fragment centers retain their mine identity.
-Event 029 rechecks the damaged works, route, and current controller before allowing output or further development.
-A broken physical requirement can suspend operation and make the existing repair or temporary-closure actions useful.
-A fragment-crater marker alone is insufficient to declare the mine destroyed, because fragment centers retain surviving population and buildings.
-Neither owner restores shared buildings above their allowed repair baseline or charges the same physical damage twice.
-
-Only mines already registered in the footprint require this reconciliation.
-When Event 029 is absent or disabled, the ordinary asteroid transaction still finishes without enabling or firing it.
-A later Event 029 refresh must recognize a permanent main crater before restoring mine benefits or actions.
-
-## Control and report edge cases
-
-- When owner and controller differ, population and building losses apply to the state once.
-- The controller receives the immediate operational report and recovery actions.
-- The owner receives a territorial-loss report when it remains a distinct country and the project report framework supports it.
-- Deaths attribution should identify the civilian country associated with the state under the shared Deaths contract.
-- A country that ceases to exist during report dispatch should not receive a broken popup. Its totals remain in global history.
+The famine adapter proposed in Part 1 runs per state inside the transaction, after the measured population loss, for catastrophic-ring, major-ring and fragment-centre states.
+It passes the measured deaths as the proven amount and lets the famine owner decide the result.
 
 ## Recovery closeout
 
-A country's emergency phase closes when all of its timed impact-zone burdens have expired or been resolved. The category should record the recovery date and remove obsolete emergency actions.
-
-The closeout does not restore the main crater, remove fragment sites, clear dust globally, or cancel extraordinary mineral control. Those are separate persistent or global states.
+A country's local recovery ends when all its timed impact-zone burdens have expired or been resolved and no failure window is running.
+It then receives one closeout report (`chaosx.nr28.6`), its obsolete emergency actions close, and its national burden or temporary legacy ends; the lasting Regional Economy legacy stays (Part 6).
+Closeout never restores the main crater, removes fragment sites, clears global dust or changes crater control.

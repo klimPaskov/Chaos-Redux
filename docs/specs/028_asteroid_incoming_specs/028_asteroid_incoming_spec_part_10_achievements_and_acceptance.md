@@ -1,260 +1,75 @@
 # Asteroid Incoming, Part 10: Achievements and Acceptance
 
-## Achievement design
-
-Event 028 is a major event and needs a small set of difficult achievements. Achievements should reward distinct play patterns. They should not unlock because the event merely fired.
-
-Every label below is a working label. Final names and descriptions require normal localisation work.
-
-## Achievement 1: Preserve the Near Miss
-
-### Play pattern
-
-Choose the close-passage option while the event has reached its most dangerous evolved form.
-
-### Conditions
-
-- Event 028 fires at 800 Chaos or above.
-- Global Fragmentation is enabled and eligible.
-- Extraordinary Minerals is enabled and eligible.
-- The chooser selects the miss.
-- No impact transaction, fragment, dust, or crater is created.
-
-### Disqualifiers
-
-- Force-trigger or debug bypass when the achievement framework excludes them
-- Any Event 028 impact already resolved in the campaign
-- Evolution disabled before selection
-
-### Difficulty purpose
-
-The player refuses a powerful destructive option and all possible crater material at high Chaos.
-
-### Icon direction
-
-A bright object passing above Earth, a telescope silhouette, and a narrow gap. The completed icon should communicate avoided contact without treating destruction as victory.
-
-## Achievement 2: Government Beyond the Crater
-
-### Play pattern
-
-Remain as the original target country after the capital state is destroyed, relocate government, and complete national recovery.
-
-### Conditions
-
-- The player's country is the locked main target.
-- The main impact destroys its capital state.
-- The country survives without changing to another tag through annexation or release.
-- It completes the national network and outer-ring recovery objectives within a defined deadline.
-- It still controls its replacement capital at completion.
-
-### Disqualifiers
-
-- The country was not the original intended target.
-- The capital moved before trajectory lock.
-- Another country completed the recovery after annexation.
-
-### Difficulty purpose
-
-The achievement tests survival, logistics, and reconstruction after the most disruptive target profile.
-
-### Icon direction
-
-A government building or flagless civic structure standing beyond a crater horizon, with rail and communication lines restored.
-
-## Achievement 3: Collector of Fallen Stars
-
-### Play pattern
-
-Control the main crater and several fragment sites at the same time.
-
-### Conditions
-
-- Extraordinary Minerals is active.
-- The player directly controls the main crater.
-- The player directly controls at least three fragment crater states.
-- Subject control does not count.
-- All sites remain controlled for a continuous verification period, such as 180 days.
-
-### Disqualifiers
-
-- Temporary occupation without sustained control
-- Counting the same site more than once
-- Controller switching that breaks the continuous period
-
-### Difficulty purpose
-
-The player must fight or negotiate across several regions to assemble a large uncapped armour advantage.
-
-### Icon direction
-
-One large meteoric fragment surrounded by three smaller fragments above an armored plate or shield. Avoid fantasy gemstones.
-
-## Achievement 4: Piercing the Impossible
-
-### Play pattern
-
-Defeat a country benefiting from the main crater's plus 100 percent armour modifier and take the crater state.
-
-### Conditions
-
-- Extraordinary Minerals is active.
-- An enemy country controls the main crater and has the main-crater armour modifier.
-- The player is at war with that controller.
-- The player takes control of the main crater.
-- The player holds it for a defined period.
-- The enemy loses the main-crater modifier through the same control change.
-
-### Disqualifiers
-
-- Peaceful transfer, console transfer, or subject integration when the achievement requires conquest
-- Capturing a fragment site instead of the main crater
-- The enemy did not have the active modifier
-
-### Difficulty purpose
-
-The player overcomes the strongest mineral advantage and proves that crater control can change hands through war.
-
-### Icon direction
-
-A fractured armored plate struck by a narrow spear or shell, with crater texture behind it.
-
-## Achievement 5: A World Reconnected
-
-### Play pattern
-
-Lead a high-dust recovery without owning the original target.
-
-### Conditions
-
-- The player is not the original main target.
-- Opening Dust Load reaches Impact Winter or Severe Impact Winter.
-- The player reaches the highest national protection state.
-- The player completes the atmospheric observation contribution and transport-protection actions.
-- Global dust later reaches zero while the player remains active and has not abandoned the protection program.
-
-### Difficulty purpose
-
-The player responds to a global environmental crisis and does not exploit the impact directly.
-
-### Icon direction
-
-A globe crossed by restored rail, shipping, and observation lines under a clearing sky. Keep the design compact and period appropriate.
-
-## Achievement tracking rules
-
-- Tracking must use stable event, target, crater, controller, and recovery records.
-- The achievement system should distinguish intended target from current crater controller.
-- Direct control and subject control must use the stated rule for each achievement.
-- Continuous-hold achievements need a reset when control is lost.
-- Save and reload must preserve progress.
-- Debug and force-trigger disqualifiers should follow the current project achievement policy.
-- Achievement conditions must not depend on a transient event target that disappears after the chain.
-- Every achievement needs completed, grey, and not-eligible icons and matching localisation.
-
-## End-to-end acceptance criteria
-
-### Event identity and selection
-
-- Event 028 is registered as a major fire-once event.
-- Baseline availability begins at Calm World.
-- The event remains unavailable and shows `N/A` when three valid target pairs cannot be built.
-- The chooser sees exactly three distinct country and state targets plus miss.
-- Canceling confirmation does not reroll.
-- Impact and miss both consume the major event and reset shared major pacing.
-
-### Target and trajectory
-
-- Each target option shows the locked country, state, and region.
-- The selected state remains fixed through ownership and control changes.
-- Impact resolves after two game days.
-- A capital hit relocates the capital to a valid backup.
-- The target receives one preparedness choice.
-- Multiplayer produces one chooser and no duplicate global transactions.
-
-### Damage and Deaths
-
-- Main center loses all population and all buildings.
-- Main Ring 1, Ring 2, and Ring 3 apply the required population percentages.
-- Damage follows shortest land adjacency across borders.
-- Each state receives one strongest profile.
-- Civilian losses equal the actual state population removed.
-- Deaths reasons identify main, ring, fragment, and rescue sources.
-- Country reports are consolidated.
-- Main crater remains permanent and nonradioactive.
-
-### Dust
-
-- Every main impact creates Dust Load.
-- Miss creates no dust.
-- Opening load uses actual destruction and fragment outcomes.
-- Dust produces visible stages and global production, supply, weather, and Air Cleanliness effects.
-- Dust decays and closes cleanly.
-- National mitigation works without instantly clearing the global state.
-- Event 013 links are bounded, supported, and do not duplicate the main event.
-
-### Evolutions
-
-- Global Fragmentation applies at 600 Chaos when enabled.
-- Actual fragment count follows valid geography and reports the real count.
-- Fragment damage uses 50, 25, and 5 percent population profiles.
-- Extraordinary Minerals applies at 800 Chaos when both evolutions are active.
-- Main crater grants plus 100 percent existing land armour to its controller.
-- Each fragment site grants plus 20 percent existing land armour.
-- Bonuses transfer and stack without stale duplicates.
-- Miss records no evolution.
-
-### Nuclear separation
-
-- Visual effects play correctly.
-- No nuclear or thermonuclear history is recorded.
-- No nuclear condemnation, retaliation, radioactive fallout, or nuclear-use Chaos entry occurs.
-- Dust appears as an asteroid environmental source.
-
-### Decisions and AI
-
-- Decision phases expose no more than the planned visible action cap.
-- Costs use no more than four spendable types and use correct icons.
-- Decisions target exact states and show blocked reasons.
-- AI can use every important response path.
-- Probability scenarios preserve protected relationships and strong miss preference for ordinary peaceful AI.
-- Crater AI values sites without abandoning normal survival logic.
-
-### Presentation
-
-- Entry, target emergency, reports, news, Event Details, evolution views, and super-event use finished localisation.
-- Dynamic names and flags survive target annexation or cosmetic changes.
-- Main super-event image, unique licensed music, quote, and button remark are aligned.
-- All required DDS files and sprite wiring are complete.
-- No placeholder art, default audio, raw localisation key, or temporary working label appears in game.
-
-### Documentation and catalog
-
-- Event docs describe the final implementation.
-- The authoritative workbook row replaces the stale Event 28 entry.
-- Evolution detail fields match Event Details wording.
-- CSV exports are regenerated from the workbook.
-- Event status remains disabled by default until implementation, assets, AI, docs, and audits are complete.
-
-## Required validation scenarios
-
-1. Baseline main impact at low Chaos.
-2. Miss at low Chaos.
+Status: five achievements implemented with final localisation and icon triplets; acceptance scenarios mostly await native verification by the user.
+
+## Achievements
+
+Achievements reward distinct play patterns, never the event merely firing.
+Thresholds and holds are read from `asteroid_incoming_runtime`, and the native `_NAME`, `_DESC` and `_tooltip` text reads the same constants.
+
+| Achievement | Play pattern | Conditions | Disqualifiers |
+| --- | --- | --- | --- |
+| Preserve the Near Miss (`asteroid_incoming_preserve_the_near_miss`) | Refuse the most dangerous form of the event | Choose the near miss when the opening reached 800 Chaos with both evolutions enabled | Manual or forced opening; an evolution disabled before the choice |
+| Government Beyond the Crater (`asteroid_incoming_government_beyond_the_crater`) | Survive the loss of the capital and rebuild | Be the original target whose capital was the locked centre, relocate the government, and complete Reconnect the National Network and Restore the Outer Ring within 1,095 days of the impact while still holding the new capital | Not the original target; no relocation; annexed and recovered by another country |
+| Collector of Fallen Stars (`asteroid_incoming_collector_of_fallen_stars`) | Assemble the largest armour advantage | Under Extraordinary Minerals, directly control the main crater and at least three fragment sites for 180 continuous days | Sites held by subjects do not count; any loss resets the hold |
+| Piercing the Impossible (`asteroid_incoming_piercing_the_impossible`) | Break the strongest mineral advantage in war | Take the main crater from an enemy that held the main-crater armour bonus, while at war with it, and hold it for 30 days | Peaceful transfer or subject integration; a fragment site instead of the main crater |
+| A World Reconnected (`asteroid_incoming_world_reconnected`) | Lead the world through severe dust without being the target | Not the original target; the opening stage was Impact Winter or worse; reach the Hardened tier, join the Observation Network and protect transport reserves while dust lasts; still hold that programme when the dust clears | A protection project that lapsed after the sky cleared |
+
+Tracking rules:
+
+- Progress uses persistent flags and start-day variables that survive save and reload, never a transient event target.
+- The intended target stays distinct from the current crater controller, and an annexer never inherits original-target identity.
+- Continuous holds reset on lost control or annexation.
+- Monthly tracking runs from an `on_monthly` global-host block that is not gated by the Chaos Meter setting, starts only after a recorded strike, and visits only human-controlled countries.
+- Recovery achievements depend on real mission success, and the conquest achievement on a hostile control change.
+
+## Acceptance criteria
+
+Each criterion points to the part that defines it; the status column reflects source state, not native observation.
+
+| Area | Criterion | Part | Source status |
+| --- | --- | --- | --- |
+| Identity | Major, fire-once, Calm World baseline, default queue, `N/A` without a valid board | 1, 8 | Implemented |
+| Board | Exactly three distinct pairs plus the near miss; no reroll on cancel or reload | 2 | Implemented |
+| Lock | Fixed coordinate for two days; resolves without its chooser | 2 | Implemented |
+| Capital | Relocation with fallback tiers and an honest no-relocation outcome | 2 | Implemented |
+| Damage | 100/50/25/5 percent rings and 50/25/5 percent fragments, strongest profile once, across borders | 3, 5 | Implemented |
+| Buildings | All buildings removed at the main centre | 3 | Blocked for the railway and supply network (README Open question 1) |
+| Deaths | Actual losses recorded once under asteroid reasons | 3 | Implemented |
+| Units | Location-based damage, no deletion | 3 | Implemented |
+| Reports | One consolidated report per affected country | 3 | Implemented |
+| Nuclear separation | No nuclear record, condemnation, retaliation, fallout, Chaos entry or Deaths reason | 3, 9 | Implemented in source |
+| Dust | Destruction-based load, stages, Air Cleanliness slot, protection, capped mitigation, decay, clean closure | 4 | Implemented |
+| Evolutions | Thresholds, toggles, honest fragment count, armour values, transfer without stale copies | 5 | Implemented |
+| Decisions | Phase caps, at most four cost types, exact targets, blocked reasons, reserve floors, cleanup | 6 | Implemented |
+| AI | Protected targets at zero, strong near-miss preference for ordinary peaceful AI, crater AI without abandoning survival | 7 | Implemented; scenarios partly evaluated |
+| Presentation | Finished localisation, no raw keys or working labels, aligned super-event package, every DDS wired | 8, 9 | Implemented |
+| Catalog | Row matches Event Details wording; CSVs regenerated | 8 | Implemented |
+
+## Validation scenarios
+
+The user runs native validation; agents never launch the game.
+Results recorded so far are in the [named-save observations](../../plans/028_asteroid_incoming_plans/native_save_observations_20261007.md).
+
+1. Baseline strike at low Chaos (one episode observed: population receipts reconciled exactly and ring membership matched the map).
+2. Near miss at low Chaos.
 3. Fragmentation at 600 to 699 Chaos.
 4. Fragmentation plus minerals at 800 to 899 Chaos.
-5. Six-fragment plan at 900 to 999 Chaos with reduced valid pool.
-6. Capital impact and backup relocation.
-7. Cross-border ring affecting at least three countries.
-8. Target annexed during the two-day delay.
-9. Main and fragment outer-ring overlap.
-10. Main crater changes controller through war.
-11. Fragment state changes controller through peace.
-12. Save and reload during target lock.
-13. Save and reload during severe dust.
-14. Event shows `N/A` in an invalid late-game world.
-15. Nuclear systems remain unchanged after every impact visual.
-16. Achievement tracking survives reload and resets continuous control correctly.
+5. Six-fragment plan at 900 or more Chaos with a reduced valid pool.
+6. Capital strike, including the no-relocation fallback.
+7. Rings crossing into at least three countries.
+8. Target annexed during the lock, and chooser annexed before confirmation.
+9. Main and fragment ring overlap.
+10. Main crater changing controller through war, and a fragment site through peace.
+11. Save and reload during the lock, with a pending board, and during severe dust.
+12. `N/A` in an invalid late-game world.
+13. Nuclear systems unchanged after every visual, and map visuals retiring after 30 days.
+14. Achievement holds surviving reload and resetting on lost control.
+15. Main-crater railways, supply nodes and queued construction after impact (decides Open question 1).
+16. News delivery order and no repeated forecast (L1), after which the temporary delivery counter is removed.
 
 ## Completion standard
 
-The event is incomplete when any required target path, damage ring, report, dust stage, evolution, decision phase, AI behavior, asset, super-event component, achievement, log surface, document, or catalog field is missing. A smaller fallback must be reported and approved before it can replace the accepted design.
+The event is incomplete while any required path, profile, report, stage, evolution, decision phase, AI behaviour, asset, super-event component, achievement, log surface, document or catalog field is missing.
+A smaller fallback must be reported and approved by the user before it can replace accepted design.
+Proposed additions in this package are not completion requirements until accepted.

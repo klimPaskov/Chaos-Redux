@@ -1,197 +1,124 @@
 # Asteroid Incoming, Part 4: Dust and Global Recovery
 
+Status: implemented, except the global-mitigation revision marked as proposed.
+Values are in `asteroid_incoming_dust` and `asteroid_incoming_dust_protection`; the [tuning matrix](028_asteroid_incoming_tuning_matrix.md) lists them.
+
 ## Purpose
 
-Atmospheric dust is the normal aftermath of every main impact. It gives the event a world-scale consequence even when the damage footprint is regional. It should alter production, supply, weather, and Air Cleanliness for a meaningful period, then recover through visible stages.
+Dust gives every strike a world-scale consequence even when the footprint is regional.
+It weighs on production, supply, air operations, weather and Air Cleanliness for a meaningful period, then fades through visible stages.
+It is a global environmental state, not radiation, chemical or biological contamination, and not a world-end route.
 
-Dust is a global environmental state. It is not radiation, chemical contamination, biological contamination, or a separate world-end route.
+## What the player sees
 
-## Atmospheric Dust Load
+The player-facing dust surface is deliberately small:
 
-`Atmospheric Dust Load` is a working label for one global visible value. The final text can use a period scientific register, but the mechanic should remain easy to read.
+- one global **dust stage** (Residual Haze, Global Dust Veil, Impact Winter, Severe Impact Winter), shown as a national idea and in the Asteroid Recovery header;
+- one national **protection tier** (unprepared, basic, organized, hardened), shown as an idea and in the header;
+- the asteroid row in the Air Cleanliness source history.
 
-The opening load should be calculated from the impact that actually occurred.
+The numeric Dust Load (0 to 100) is a record value: Event Details shows it beside the stage, but no decision reads it from the player.
+Raw contributors, mitigation points and compensation variables stay internal.
 
-Contributors should include:
+## Dust Load
 
-- A fixed main-crater contribution
-- Civilian population removed
-- Civilian and military industry destroyed
-- Infrastructure, railway, supply, port, and air-base destruction
-- Number of states affected by each main ring
-- Number and severity of fragment centers and rings
-- Supported secondary fires or debris events
+The opening load is computed once, after all fragments resolve, from the impact that actually happened.
 
-The formula should use bounded contribution bands. One highly industrial state can raise the load. It should not create an unlimited value that breaks the global economy. A sparse continental impact still creates a minimum dust aftermath because the main crater is always immense.
+| Contributor | Basis |
+| --- | --- |
+| Main crater base | Fixed; even a sparse continental strike creates real dust |
+| Civilian deaths | Measured impact deaths, banded and capped |
+| Industry levels destroyed | Factories and dockyards actually removed, banded and capped |
+| Logistics and strategic levels destroyed | Infrastructure, railway, supply, port, air base, radar and similar levels actually removed, banded and capped |
+| Footprint size | Processed states weighted by profile, capped |
+| Fragments | A fixed amount per applied fragment centre plus their measured destruction, capped |
+| Event 013 secondaries | A small fixed amount per accepted secondary disaster, capped |
 
-The visible value should be normalized to a clear 0 to 100 scale after calculation. Internal raw destruction totals can remain hidden.
+Each contributor has its own cap so one industrial state cannot break the world economy, and no death or building is counted under two contributors.
+The result is clamped to 1 through 100 for a strike; a near miss stays at zero.
 
-## Dust stages
+## Stages
 
-The global value maps to four visible stages. Working labels are shown below.
-
-| Load | Working stage | Campaign meaning |
+| Load | Stage | Campaign meaning |
 | --- | --- | --- |
-| 1 to 24 | Residual Haze | Noticeable global air and transport disruption with limited economic pressure |
-| 25 to 49 | Global Dust Veil | Broad production and supply problems with frequent poor-weather periods |
-| 50 to 74 | Impact Winter | Strong worldwide output, logistics, and Air Cleanliness pressure |
-| 75 to 100 | Severe Impact Winter | The strongest nonterminal aftermath, with long recovery and heavy mitigation demand |
+| 1 to 24 | Residual Haze | Noticeable air and transport disruption, limited economic pressure |
+| 25 to 49 | Global Dust Veil | Broad production and supply problems, poor flying weather |
+| 50 to 74 | Impact Winter | Strong worldwide output, logistics and Air Cleanliness pressure |
+| 75 to 100 | Severe Impact Winter | The strongest non-terminal aftermath, with long recovery |
 
-The opening stage is set after all fragments resolve. The stage can fall over time. It should not rise from its own passive monthly reservoir. Supported secondary fires or disasters may add a small bounded increase.
+Every country receives the current stage idea.
+Its effects stay within production (factory output, construction speed, production-efficiency growth), supply, air missions and weather; there is no bundle of unrelated army, navy, political or research penalties.
+Weather quality uses supported modifiers only; the event claims no meteorological simulation.
 
-## Opening injection
+The load never rises from its own reservoir.
+After the strike, it changes only by decay and mitigation.
 
-The impact creates an immediate Air Cleanliness change and starts a short injection phase.
+## Air Cleanliness
 
-- The initial basis-point increase scales with Dust Load.
-- The source is recorded as asteroid dust and atmospheric debris.
-- The injection is applied once.
-- Global Fragmentation adds to the same transaction and creates no separate Air Cleanliness popup per fragment.
-- The miss outcome applies no injection.
+Dust writes the shared ledger's asteroid source slot.
 
-The initial increase should be large enough to matter beside a thermonuclear strike while respecting the Air Cleanliness scale. Exact values belong in the tuning matrix and must be reviewed against current contamination thresholds.
+- The opening injection scales with the opening stage and is applied once, guarded by a persistent receipt; fragments add to the same transaction, never a separate popup.
+- While dust lasts, the current stage adds a small monthly reservoir, reduced by global mitigation and applied at most once per date.
+- Falling stages and zero dust remove current pressure without refunding the historical injection.
+- Removing contamination stays the shared recovery system's job, and Fallout eligibility stays under the shared contamination rules; Event 028 never requests Fallout.
 
-## Monthly dust reservoir
+## Decay
 
-While dust remains active, the current stage contributes a small monthly Air Cleanliness pressure. This represents suspended particles, renewed ground dust, and continuing fires.
+The opening stage holds for 30 days.
+After that the load falls monthly by a stage-based amount (faster in raw points at higher stages) plus global mitigation.
+Severe Impact Winter normally lasts well over a year; Residual Haze clears within a few months.
+Fragmentation lengthens recovery only because it starts from a higher load.
 
-- Residual Haze contributes the smallest reservoir.
-- Severe Impact Winter contributes the largest reservoir.
-- The reservoir ends at zero load.
-- Mitigation can reduce the reservoir but cannot erase the opening injection.
-- The normal Air Cleanliness recovery system continues to operate.
+## National protection
 
-The dust reservoir should not make Air Cleanliness permanently rise by itself at low stages. The recovery curve should eventually overcome it when no new disasters add pressure.
+The global stage is shared; protection reduces part of a country's own penalty.
+Each protection tier offsets a fixed share of the current stage's penalties through a hidden country dynamic modifier beneath the visible protection idea, so protection can never turn fading dust into a bonus.
 
-## Global gameplay effects
+| Source | Effect |
+| --- | --- |
+| Distribute Emergency Filters (emergency action, damaged countries) | Basic tier (15 percent) if the country has no higher tier |
+| Protect Transport Reserves | Organized tier (30 percent) if the country has no higher tier |
+| Harden Factories Against Dust | Hardened tier (45 percent) |
+| Join the Observation Network | Adds 15 percent to the air-mission and weather offset, with or without a tier |
 
-Every country receives a dust-stage modifier. The modifier should use a small set of legible effects tied to the user's requested surfaces.
+A higher tier replaces a lower one; ideas never stack.
+Protection ends at zero dust, and a project that finishes after the sky has cleared lapses, as its tooltip says.
 
-### Production
+## Global mitigation
 
-- Factory output falls as dust deepens.
-- Production-efficiency growth can fall at the upper stages.
-- Construction speed can fall moderately because transport, visibility, and material delivery are disrupted.
-- The modifier should avoid a large bundle of unrelated army, navy, air, political, and research penalties.
+Global mitigation adds extra monthly decay, capped at `maximum_mitigation_decay`.
 
-### Supply
+The implemented source adds one mitigation point for every completed protection or observation action anywhere in the world, clamped at the cap.
+In practice the first three completed actions saturate it, so most countries' contributions change nothing globally, and national protection is conflated with global help.
 
-- Supply consumption rises or supply throughput falls.
-- Railway and convoy pressure increases at higher stages.
-- Countries with damaged impact zones face their local recovery burden in addition to the global dust modifier.
+**Proposed revision (2026-10-10 audit, not implemented):** only the Observation Network contributes to global decay.
+Each member adds a fixed half point, capped at the existing maximum, so six members saturate it and the action keeps a real global meaning for later joiners.
+Filters, transport and factory hardening stay national protection only.
+This needs parent acceptance; it changes no visible value and no AI weight.
 
-### Weather quality
+## Event 013 secondary disasters
 
-- Poor-weather frequency or severity rises through the existing weather or disaster support that the project can verify.
-- Visibility and air operations can suffer through supported modifiers.
-- The event should not claim exact meteorological simulation.
+Inside the impact transaction, catastrophic-ring states and fragment centres in disaster-prone zones may request one supported Event 013 family each, up to four per impact, in state-id order.
+Event 013 validates geography and family, skips unsupported families without substitution, and owns the secondary disaster's effects, deaths, food consequences and reports, with Event 028 recorded as the caller.
+Only accepted requests add their small dust amount; rejected ones add nothing.
+No secondary disaster is requested after the transaction, so dust never rises later.
 
-### Air Cleanliness
+## Coexistence with other atmospheric sources
 
-- The current dust source and monthly contribution appear in the Air Cleanliness tab.
-- Threshold behavior remains owned by the shared system.
-- Event 028 does not create a private duplicate air-quality meter.
+Dust can coexist with smoke, volcanic ash, nuclear winter, chemical contamination and outbreaks.
+The Air Cleanliness ledger combines sources normally, Event 028 never replaces another source's modifier, and overlapping production penalties from several systems should be reviewed for runaway stacking.
 
-## Dust duration and decay
+## Milestone bulletins
 
-Dust should last long enough to shape the campaign without freezing it for years at maximum strength.
+The world receives the opening stage inside the impact bulletin, then at most one bulletin when the stage falls below Impact Winter (`chaosx.news.92`), one when only Residual Haze remains (`chaosx.news.93`) and one when the dust clears (`chaosx.news.94`).
+Rapid stage changes are coalesced so a single sharp fall does not stack near-identical bulletins.
+Bulletins describe conditions and recovery, never the formula.
 
-The system uses an injection period followed by monthly decay.
+## Near miss
 
-### Injection period
+The near miss creates no Dust Load, Air Cleanliness change, protection decisions, secondary disasters or bulletins beyond the close-passage news.
 
-The first 30 days hold the opening stage unless strong global mitigation reaches a defined threshold. This gives the impact a stable initial consequence.
+## Performance
 
-### Natural decay
-
-After the injection period, Dust Load falls monthly. The base decay should depend on the current stage.
-
-- High loads can decay faster in raw points while still remaining severe for longer.
-- Low loads should reach zero cleanly and should not linger for many years.
-- Fragmentation lengthens the expected recovery because it starts from a higher load.
-- Severe Impact Winter should normally last many months and can persist beyond a year.
-- Residual Haze should close within a reasonable final period.
-
-### Mitigation decay
-
-Country actions contribute to a bounded global mitigation total. Mitigation should improve decay or lower national exposure. A single rich major should not remove the world's dust instantly.
-
-The global contribution can come from:
-
-- Atmospheric observation and forecasting
-- Filtration and industrial protection
-- International transport coordination
-- Fire control and debris containment
-- Completed Event 013 aftermath work when the linked disaster supports it
-
-Mitigation has diminishing returns and a monthly cap.
-
-## National exposure
-
-The global stage is shared. Countries can reduce part of their own penalty through a national protection level.
-
-National protection should be simple.
-
-- Unprepared
-- Basic protection
-- Organized protection
-- Hardened systems
-
-These are working labels. Protection comes from the dust decision family and ends when dust clears. It can reduce national production or supply penalties. It does not lower global Dust Load by itself unless the action also contributes to the global mitigation total.
-
-This split prevents every country from depending on another country's choices and keeps the global state visible.
-
-## Event 013 connections
-
-Event 028 can call Event 013 for physical aftermath that Event 013 already supports. These calls should be selective and geographically grounded.
-
-Suitable examples include:
-
-- Wildfire in a heavily damaged forested Ring 1 or Ring 2 area
-- Landslide in a mountainous damaged area
-- Flooding or debris runoff where local damage and terrain support it
-- Ashfall-like or dust-storm behavior when an existing Event 013 family accurately represents it
-
-The call should preserve these boundaries.
-
-- Event 028 remains the caller and supplies the exact state or region.
-- Event 013 validates the requested family.
-- An unsupported family is skipped without substitution.
-- The secondary disaster receives its own physical effects and reports under Event 013.
-- It does not create a second main asteroid history row.
-- Its deaths remain attributable to its real disaster family, with causal context linking it to Event 028 where the shared system supports that record.
-
-## Interaction with other global air events
-
-Dust can coexist with smoke, volcanic ash, nuclear winter, chemical contamination, and outbreaks.
-
-- The Air Cleanliness system combines sources through its normal ledger.
-- Event 028 should not replace another source's modifier.
-- Global production penalties from several systems should be reviewed for runaway stacking.
-- When two systems use similar weather penalties, the implementation should prefer one shared stage calculation or controlled stacking instead of duplicate copies of the same effect.
-- Fallout eligibility remains controlled by the existing contamination rules. Event 028 does not directly request Fallout.
-
-## Global reports during recovery
-
-The world should receive only a few milestone reports.
-
-- Opening dust-stage report after the impact
-- One report when the stage falls below Impact Winter
-- One report when only Residual Haze remains
-- One closeout report when Dust Load reaches zero
-
-These reports should describe visible conditions and recovery. They should not expose the raw formula.
-
-## Miss outcome
-
-The close-passage choice creates no Dust Load, no Air Cleanliness change, no national protection decisions, no secondary disaster calls, and no recovery reports.
-
-## Balance and readability rules
-
-- Dust uses one global visible value and one national protection state.
-- The player should not manage several hidden dust components.
-- The opening load is based on actual destruction, not the target country's ideology or diplomatic status.
-- Mitigation improves recovery but does not reverse the impact.
-- Dust effects should remain significant at high stages and modest at low stages.
-- The global modifier should focus on production, supply, weather, and Air Cleanliness.
-- The system should avoid a recurring daily scan across every country. Global stage changes and bounded decision completions should refresh the relevant modifiers.
+Dust changes only at the impact, at the existing monthly global-host pulse and at bounded decision completions.
+There is no daily scan of every country.

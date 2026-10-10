@@ -1,172 +1,167 @@
 # Asteroid Incoming: Tuning Matrix
 
-## Purpose
+The constants file `common/script_constants/028_asteroid_incoming_constants.txt` owns every value; idea modifiers mirror theirs as `@` constants in `common/ideas/028_asteroid_incoming_ideas.txt` because idea fields reject script constants.
+This matrix records the implemented value beside the design range it must stay within.
+If this file and the constants disagree, the constants are current and this file is stale.
 
-This file gives balance anchors for implementation and probability review. Values are design targets. The implementation should centralize them and verify the exact supported modifiers and rounding behavior before final tuning.
+## Change control
 
-The user-defined population losses and armour bonuses are fixed. Other values can move within the listed ranges when evidence shows that the accepted campaign behavior is not reached.
+These values are explicit user requirements and change only with user approval:
 
-## Main impact damage
+- main centre 100 percent, Ring 1 about 50, Ring 2 about 25, Ring 3 about 5 percent civilian loss;
+- fragment centre about 50 percent population and building loss, fragment rings about 25 and 5 percent;
+- plus 100 percent main-crater armour, plus 20 percent per fragment site, uncapped stacking;
+- 600 and 800 Chaos evolution thresholds.
 
-| Profile | Civilian population loss | Industry and production buildings | Infrastructure, rail, and supply | Exposed military and strategic buildings | Local modifier duration |
-| --- | ---: | ---: | ---: | ---: | --- |
-| Main crater | 100% | 100% | 100% | 100% | Permanent |
-| Ring 1 | 50% | 60% to 80% | 70% to 90% | 65% to 85% | 540 to 900 days before full local recovery |
-| Ring 2 | 25% | 35% to 55% | 45% to 65% | 40% to 60% | 270 to 540 days |
-| Ring 3 | 5% | 10% to 20% | 15% to 30% | 15% to 30% | 90 to 270 days |
+Every other value can move inside its design range after probability, modifier and scenario review.
 
-Building percentages describe the share of existing levels damaged or removed by the impact profile. Critical one-level buildings need severity-aware handling so Ring 1 and Ring 2 can still disable them.
+## Damage
 
-## Fragment damage
+| Profile | Civilian loss | Industry / logistics / strategic building loss | Range | Local modifier days | Range |
+| --- | ---: | --- | --- | ---: | --- |
+| Main centre | 100% | 100 / 100 / 100% | Fixed | Permanent | Fixed |
+| Ring 1 | 50% | 70 / 80 / 75% | 60-80 / 70-90 / 65-85 | 720 | 540-900 |
+| Ring 2 | 25% | 45 / 55 / 50% | 35-55 / 45-65 / 40-60 | 405 | 270-540 |
+| Ring 3 | 5% | 15 / 22.5 / 22.5% | 10-20 / 15-30 / 15-30 | 180 | 90-270 |
+| Fragment centre | 50% | 50 / 62.5 / 60% | about 50 / 55-70 / 50-70 | Crater persistent, recovery 540 | 360-720 |
+| Fragment ring 1 | 25% | 32.5 / 42.5 / 40% | 25-40 / 35-50 / 30-50 | 270 | 180-360 |
+| Fragment ring 2 | 5% | 10 / 15 / 15% | 5-15 / 10-20 / 10-20 | 120 | 60-180 |
 
-| Profile | Civilian population loss | Industry and production buildings | Infrastructure, rail, and supply | Exposed military and strategic buildings | Local modifier duration |
-| --- | ---: | ---: | ---: | ---: | --- |
-| Fragment center | 50% | About 50% | 55% to 70% | 50% to 70% | Persistent crater plus 360 to 720 day recovery burden |
-| Fragment Ring 1 | 25% | 25% to 40% | 35% to 50% | 30% to 50% | 180 to 360 days |
-| Fragment Ring 2 | 5% | 5% to 15% | 10% to 20% | 10% to 20% | 60 to 180 days |
+Building shares round per province for ordinary provincial buildings (Part 3).
 
 ## Continuing rescue deaths
 
-Continuing deaths are a small follow-up pressure. They never replace the immediate percentages.
-
-| Profile | Suggested monthly loss from current surviving population | Maximum normal duration | Preparation and response effect |
+| Profile | Monthly share of survivors | Months | Range |
 | --- | ---: | ---: | --- |
-| Main Ring 1 | 0.03% to 0.05% | 6 months | Hospitals and shelter stance can reduce by up to half and shorten duration |
-| Main Ring 2 | 0.01% to 0.03% | 4 months | Medical response and debris clearing shorten duration |
-| Fragment center | 0.02% to 0.04% | 6 months | Same medical and debris actions apply |
-| Fragment Ring 1 | 0.01% to 0.02% | 3 months | Local response can end it early |
-| Other profiles | None by default | None | Add only if evidence shows a missing recovery consequence |
+| Ring 1 | 0.04% | 6 | 0.03-0.05%, up to 6 |
+| Ring 2 | 0.02% | 4 | 0.01-0.03%, up to 4 |
+| Fragment centre | 0.03% | 6 | 0.02-0.04%, up to 6 |
+| Fragment ring 1 | 0.015% | 3 | 0.01-0.02%, up to 3 |
 
-Every transaction uses a protected population floor and actual Deaths registration.
+The medical stance multiplies these by 0.5; each month is capped at 25,000 people and never takes a state below 1,000.
 
-## Fragment count
+## Unit damage
 
-| Chaos | Planned centers | Minimum for evolution to count as applied | Geographic cap behavior |
-| --- | ---: | ---: | --- |
-| 600 to 699 | 3 | 2 | Reduce cleanly when fewer separated sites exist |
-| 700 to 799 | 4 | 2 | Reduce cleanly |
-| 800 to 899 | 5 | 2 | Reduce cleanly |
-| 900 to 999 | 6 | 2 | Reduce cleanly |
+| Profile | Strength / organisation | Ships struck |
+| --- | --- | --- |
+| Main centre | 75 / 95% | Yes |
+| Ring 1 | 45 / 75% | Yes |
+| Ring 2 | 25 / 50% | No |
+| Ring 3 | 8 / 25% | No |
+| Fragment centre | 35 / 65% | No |
+| Fragment ring 1 | 20 / 40% | No |
+| Fragment ring 2 | 5 / 20% | No |
 
-A center cannot appear in the main footprint or another center's first ring. Outer overlaps use the strongest profile once.
+Each value must fall ring by ring, each fragment profile must stay lighter than its main counterpart, and none may delete a unit.
 
-## Atmospheric Dust Load calculation
+## Fragments
 
-The design uses a hidden raw incident score converted to a visible 0 to 100 load.
-
-| Contributor | Suggested contribution | Cap |
-| --- | ---: | ---: |
-| Main crater base | 25 points | 25 |
-| Actual civilian deaths | 1 point per 500,000 deaths | 25 |
-| Destroyed civilian, military, and dockyard levels | 1 point per 4 levels | 20 |
-| Destroyed infrastructure, rail, supply, port, air, radar, and other strategic levels | 1 point per 6 levels | 15 |
-| Main affected-state footprint | Weighted 0.5 to 2 points per state by ring | 10 |
-| Fragment centers and footprints | 3 points per center plus actual destruction contributions | 20 |
-| Linked major fires or debris disasters | 1 to 3 points per accepted secondary disaster | 10 |
-
-The final visible load is clamped to 1 through 100 for an impact. A miss remains zero.
-
-The formula should avoid double counting the same building or death through several categories. Fragment destruction contributes through actual losses and its center term.
-
-## Dust stages and global effects
-
-| Stage | Load | Factory output | Construction speed | Production efficiency growth | Supply consumption | Air mission efficiency | Opening Air Cleanliness injection | Monthly dust reservoir |
-| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
-| Residual Haze | 1 to 24 | -3% | -2% | 0% | +2% | 0% to -2% | +50 bp | +1 bp |
-| Global Dust Veil | 25 to 49 | -7% | -5% | -3% | +5% | -3% | +100 bp | +2 bp |
-| Impact Winter | 50 to 74 | -12% | -10% | -8% | +10% | -5% | +200 bp | +4 bp |
-| Severe Impact Winter | 75 to 100 | -20% | -15% | -12% | +15% | -10% | +350 bp | +6 bp |
-
-Weather-quality effects should use supported project modifiers or linked disaster behavior. Do not invent an unsupported dynamic weather control to match the table literally.
-
-## Dust duration
-
-- Opening stage hold: 30 days
-- Base monthly Dust Load decay at 75 to 100: 6 points
-- Base monthly decay at 50 to 74: 5 points
-- Base monthly decay at 25 to 49: 4 points
-- Base monthly decay at 1 to 24: 3 points
-- Maximum extra global mitigation decay: 3 points per month
-- Secondary-disaster increase: capped at 3 points per accepted event and 10 total after the opening transaction
-
-A load of 75 to 100 should normally take about 16 to 24 months to clear without further disasters. A load below 25 should clear within several months.
-
-## National dust protection
-
-| Protection state | Suggested reduction to the country's dust-stage economic and supply penalties | Global decay contribution |
-| --- | ---: | ---: |
-| Unprepared | 0% | 0 |
-| Basic protection | 15% | 0 |
-| Organized protection | 30% | Small if observation contribution completed |
-| Hardened systems | 45% | Small and capped |
-
-Protection never reduces the initial Air Cleanliness injection or local impact damage.
-
-## Target suitability weighting
-
-The target-state score should roughly reflect the following priorities.
-
-| Factor | Share of positive score |
+| Chaos | Planned centres |
 | --- | ---: |
-| Unique land states within three rings | 35% |
-| Civilian population | 25% |
-| Industry and logistics | 25% |
-| Victory points and national significance | 15% |
+| 600-699 | 3 |
+| 700-799 | 4 |
+| 800-899 | 5 |
+| 900+ | 6 |
 
-Isolation penalties can remove up to 40 percent of the score. An island or empty appendage should win only when the country has no better valid state.
+At least two applied centres are needed for the evolution to apply; the planner reduces the count cleanly when the world lacks separated centres.
 
-## Target-option diversity
+## Dust Load
 
-- At least two continents when enough valid pairs exist
-- No country appears twice
-- No state appears twice
-- Avoid three countries from one strategic region when broader pairs are within 75 percent of the selected suitability score
-- Do not lower state validity to satisfy diversity
+| Contributor | Implemented | Cap |
+| --- | --- | ---: |
+| Main crater base | 25 | 25 |
+| Civilian deaths | 1 per 500,000 | 25 |
+| Industry levels destroyed | 1 per 4 | 20 |
+| Logistics and strategic levels destroyed | 1 per 6 | 15 |
+| Footprint states | 2 / 1.5 / 1 / 0.5 per main profile, 1.5 / 1 / 0.5 per fragment profile | 10 |
+| Fragment centres | 3 each, plus their destruction above | 20 |
+| Accepted Event 013 secondaries | 2 each, at most 4 | 10 |
 
-## Preparedness effects
+The visible load is clamped to 1-100 for a strike and 0 for a near miss.
 
-| Stance | Primary effect | Secondary effect | Fixed limit |
-| --- | --- | --- | --- |
-| Preserve command continuity | Reduce government-dislocation duration by 35% to 50% | Improve backup-capital transition | No population reduction |
-| Disperse transport and stockpiles | Preserve a bounded share of mobile trains, trucks, fuel, aircraft, or equipment that would otherwise be disrupted | Reduce first rail-corridor cost by 20% to 30% | No building survival in center |
-| Prepare hospitals and shelters | Reduce continuing rescue deaths by 35% to 50% | Lower opening local recovery burden | No reduction to immediate ring percentages |
+## Dust stages
+
+| Stage | Load | Factory output | Construction | Efficiency growth | Supply consumption | Air missions | Air weather penalty | Opening Air Cleanliness | Monthly reservoir |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| Residual Haze | 1-24 | -3% | -2% | 0% | +2% | -1% | 0 | +50 bp | +1 bp |
+| Global Dust Veil | 25-49 | -7% | -5% | -3% | +5% | -3% | 3% | +100 bp | +2 bp |
+| Impact Winter | 50-74 | -12% | -10% | -8% | +10% | -5% | 5% | +200 bp | +4 bp |
+| Severe Impact Winter | 75-100 | -20% | -15% | -12% | +15% | -10% | 10% | +350 bp | +6 bp |
+
+## Dust decay
+
+- Opening hold: 30 days.
+- Monthly decay: 6 (severe), 5 (impact winter), 4 (veil), 3 (residual) points.
+- Global mitigation: at most 3 extra points per month (Part 4 proposes earning it only through the Observation Network, half a point per member).
+- A severe opening should clear in roughly 16 to 24 months without mitigation; a residual opening within a few months.
+
+## National protection
+
+| Tier | Share of the stage penalty offset | Source |
+| --- | ---: | --- |
+| Unprepared | 0% | |
+| Basic | 15% | Emergency filters |
+| Organized | 30% | Transport protection |
+| Hardened | 45% | Factory hardening |
+| Observation Network | +15% to air and weather only | Joining the network |
+
+The combined offset never exceeds 100 percent of the stage penalty, so protection can never become a bonus.
+
+## Target score
+
+The board's state score uses fixed points (`target_score_*`): base 100, capital 40, victory point 25, large population 30, medium population 15, industry 15, supply 15, railway 10, infrastructure 10, air base 12, naval base 12, per direct land neighbour 10, per reachable state 8, frontline penalty -30, and a 0.6 multiplier below six reachable states.
+Design intent: footprint size, population and industry should together outweigh national prestige, and an island should win only when nothing better exists.
+
+## Preparedness
+
+| Stance | Implemented |
+| --- | --- |
+| Command continuity | Dislocation 100 days instead of 180 after a capital strike, 50 instead of 90 otherwise, with milder penalties |
+| Transport dispersal | Keeps 60% of the transport loss (2% of trains, trucks and fuel per main-footprint state held, at most 20%); the first transport response restores 30% |
+| Medical command | Local burden durations times 0.75, rescue deaths times 0.5, first mobile hospitals restore 30% |
+
+## Recovery
+
+| Item | Value |
+| --- | --- |
+| Restore shares | Emergency 20%, reconstruction 35%, industry 25%, network 40%, rehousing 15% |
+| Mission durations | Rescue route 150, stabilize 120, network 180, outer ring 270, regional economy 365 days |
+| Mission grace window | 45 days |
+| Mission repair targets | 60% of pre-impact levels |
+| Regional economy target | 75% of pre-impact totals |
+| Active mission limit | 2 |
+| Failure rescue deaths | 1% (2% in Ring 1 or a fragment centre), at most 25,000 |
+| Failure windows | Returned damage 90 days, national burden 90 days, repair surcharge 25% for 180 days |
+
+## Prices
+
+- State quote multiplier: 1.00 plus 0.01 per profile point plus 0.0005 per thousand people lost (at most 0.50), times 1.25 under a surcharge, clamped to 1.00-2.50.
+- Dust project multiplier by stage: 1.00, 1.25, 1.50, 1.75.
+- Reserve floors: 1,000 manpower, 100 support equipment, 100 trucks, 2 trains, 500 fuel, 20 convoys, 10 command power.
+
+## Crater actions
+
+| Item | Value |
+| --- | --- |
+| Perimeter security | +10% defence, -10% attrition at the site |
+| Survey | One research bonus of 20% in the profile's field |
+| Access fortification | Up to 2 states, +1 infrastructure (cap 5) and +1 fort per province (cap 10) |
+| Reconnaissance | +5 army intelligence |
+| Route disruption | -20% local supplies for the enemy controller, 90 days |
+| Offensive plan | +10% attack into the crater state, 90 days |
 
 ## Mineral stacking
 
-| Controlled sites | Total armour factor from Event 028 |
+| Controlled sites | Armour factor |
 | --- | ---: |
 | One fragment | +20% |
 | Three fragments | +60% |
 | Main crater | +100% |
 | Main plus three fragments | +160% |
-| Main plus five fragments | +200% |
 | Main plus six fragments | +220% |
 
-The modifier applies to existing land-division armour. The accepted design has no cap.
+## Opening AI headline weights
 
-## Decision cost bands
-
-Exact amounts should scale with country capacity and incident burden. The following ratios guide the design.
-
-- Emergency medical action should consume about 5% to 15% of a medium country's available support equipment and trucks, with minimum and maximum bounds.
-- Emergency rail work should consume a meaningful train and fuel reserve without taking the final national supply reserve.
-- Reconstruction should commit civilian factories for months instead of paying one small political-power cost.
-- Global dust hardening should cost more at higher dust stages and for larger industrial bases.
-- Crater security should require actual supplied divisions and equipment around the site.
-
-Every AI action needs reserve floors so it does not spend the last critical stockpile.
-
-## Tuning change control
-
-The implementation can tune values inside these ranges after probability, modifier, and scenario review. The following values require explicit user approval to change.
-
-- Main population loss of 100 percent
-- Main Ring 1 population loss of about 50 percent
-- Main Ring 2 population loss of about 25 percent
-- Main Ring 3 population loss of about 5 percent
-- Fragment center population and building loss of about 50 percent
-- Fragment Ring 1 population loss of about 25 percent
-- Fragment Ring 2 population loss of about 5 percent
-- Main crater armour bonus of plus 100 percent
-- Fragment-site armour bonus of plus 20 percent
-- Uncapped fragment-site stacking
+Near miss base 1,000 (+500 democratic, +250 at peace, +250 stable, +400 fragmentation, +300 crater holder; ×0.35 desperate, ×0.65 fascist at war, ×0.75 high Chaos).
+Strike base 1 (+400 enemy, +150 major, +200 faction leader, +200 capital, +75 logistics; ×2 fascist, ×3 desperate, ×1.25 high Chaos, ×0.25 democratic, ×0.75 fragmentation, ×0.5 crater holder, ×0.25 target near capitulation, ×0.25 friendly ground, ×0 protected).
+The full set is in `asteroid_incoming_ai`; any change needs the probability comparison in the AI prompt.

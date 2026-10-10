@@ -1,216 +1,141 @@
 # Asteroid Incoming, Part 2: Targeting and Trajectory
 
-## Chooser ownership
+Status: implemented, except the suitability-weighted country draw marked as proposed.
+Exact helper names and constants are in the [Event 028 overview](../../events/028_asteroid_incoming/overview.md).
 
-Event 028 is one global transaction. The player country whose event system selected the major event becomes the chooser. The chooser remains fixed until the outcome finishes, even if the human changes country during the two-day delay.
+## Chooser
 
-In multiplayer, the first valid Event 028 transaction blocks another copy from opening. The chooser receives the full target event. Other human players receive an observer notice after a trajectory is locked or a close passage is selected. Ghost-copy behavior must not create independent target rolls or several impacts.
+The country whose event pool selects Event 028 becomes the chooser and stays the chooser until the outcome finishes, even if a human switches tag.
+One global transaction blocks every other copy, so multiplayer never produces several boards or several impacts.
+The history row names the chooser as the actor; the outcome separately records the chosen target.
+At the lock the chooser is saved permanently (`asteroid_incoming_impact_chooser`), so Event Details can say who chose the trajectory after the transaction ends.
 
-The event history row should identify the chooser because that actor exists before the option is selected. The impact outcome must separately record the chosen target country and state.
+## Building the board
 
-## Building three target pairs
-
-The event constructs exactly three distinct country and state pairs. A country appears at most once. A state appears at most once. The pairs are locked before the option event opens.
+The board holds exactly three distinct country and state pairs: no country and no state appears twice.
 
 ### Valid target country
 
-A target country must meet all of the following conditions at pair construction.
+A country can take a slot only when all of the following hold:
 
-- It exists and controls at least one owned land state.
-- It has a viable backup state outside the proposed center so the event does not leave an active country with no possible capital or functioning territory.
-- It is not the chooser.
-- It is not an actually nonhuman country under the shared classifier.
-- It is not an empty carrier, temporary system tag, observer tag, wasteland polity, or country whose only territory is already unusable.
-- It has at least one state that can satisfy the impact-state rules.
+- it exists, is not the chooser, is not an actually nonhuman country and is not the CXT test country;
+- it owns and controls at least two usable states (`asteroid_incoming_runtime.target_country_minimum_usable_states`);
+- at least one usable state is fully controlled, so a surviving government seat exists after the centre is destroyed.
 
-Special Chaos countries that still represent ordinary human societies may remain eligible when they have normal territory and civilian population. The exclusion should target impossible or system-only actors, not every country with an unusual event origin.
-
-The candidate pool should not filter out enemies, allies, faction partners, subjects, guarantees, or neutral countries for the human chooser. Those relationships create part of the choice. AI option logic handles protected relationships separately.
+Special Chaos countries that represent ordinary human societies stay eligible.
+Relationships with the chooser do not filter the human board; enemies, allies, subjects and strangers all create part of the choice, and the AI handles protected relationships through its weights (Part 7).
 
 ### Valid impact state
 
-A state is eligible as a main center when it meets all of the following conditions.
+A state can be a centre when it is land, passable, not wasteland, not an existing crater or fragment site, owned and controlled by the candidate, and has a meaningful settlement: a city category, any factory, dockyard, infrastructure, railway, supply node, air base, naval base or strategic value.
+The candidate must keep another usable owned, controlled state.
+A capital can be chosen.
 
-- It is land and has real state adjacency data.
-- It is owned and controlled by the candidate country when the pair is built.
-- It is not already a permanent wasteland, asteroid crater, or invalid map space.
-- It contains civilian population.
-- It contains at least one meaningful settlement, building, industrial level, logistical asset, or victory point.
-- A main impact there leaves the target country with at least one valid surviving state for capital relocation and continuing country scope.
+### State suitability
 
-A capital can be selected. Capital impacts need the relocation contract defined below.
+Within each drawn country the board picks its best state by a point score in `asteroid_incoming_runtime` (`target_score_*`).
+The score rewards capital status, victory points, population bands, industry, supply, railway, infrastructure, air and naval bases, direct land neighbours and states reachable within three rings, and penalizes frontline states and isolated states below the reachable-state threshold.
+An island or empty appendage wins only when the country has nothing better.
 
-### State suitability score
+### Country draw and diversity
 
-Eligibility creates the pool. A suitability score chooses the state inside each candidate country. The score should reward the following qualities.
+The implemented board draws each country uniformly at random from the valid pool, then picks that country's best state.
+The second draw prefers a country with a valid centre on a different continent from the first; the third draw is unrestricted.
 
-- More unique land states within three adjacency steps
-- At least two direct land neighbors
-- Higher civilian population
-- Greater industrial and logistical importance
-- A victory point, supply hub, railway junction, air base, naval base, or major infrastructure concentration
-- A central continental position that lets the rings cross meaningful borders
+**Proposed (2026-10-10 audit, not implemented): suitability-weighted draw.**
+Because most countries are small, a uniform draw often produces three minor targets whose rings barely matter, which weakens the choice the brief asks for.
+The draw should prefer countries whose best state reaches a preferred suitability score (a new `asteroid_incoming_runtime` threshold), falling back to the full valid pool when fewer than three such countries exist.
+The board stays random and relation-blind; only the chance of a meaningful footprint rises.
+This needs parent acceptance and a probability check of how often majors and minors appear.
 
-The score should penalize the following qualities.
+## What the options show
 
-- Isolated islands
-- A state with only one narrow neighbor when better options exist
-- Very low population and no buildings
-- An already devastated or mostly empty state
-- A remote appendage that creates almost no outer ring
+Each strike option shows the target flag, state name, country name, continent and a capital marker.
+The board description states that each strike erases its centre and damages three surrounding land rings, and adds the fragmentation or minerals warning when those evolutions are eligible.
+The near-miss option says plainly that there will be no impact or dust.
 
-The system should still allow unusual geography when a country has no better state. The suitability score is a preference model, not a reason to silently replace a selected country with another country.
+Example of the implemented option text: "Strike [flag] Ile de France, France (Europe), current capital".
+The near miss reads: "Choose the near miss: no impact or dust".
 
-## Country diversity across the three options
+Options never show hidden scores, fragment locations, random rolls or AI logic.
 
-After choosing one best state per candidate country, the event selects three pairs from the global pool. It should use a broad regional diversity preference.
+## Board validity
 
-- Prefer at least two continents when enough valid pairs exist.
-- Avoid three countries in the same immediate strategic region when broader choices remain.
-- Do not force a continent quota that produces weak island targets.
-- Do not always favor majors. Population and adjacency matter, but small continental countries can appear.
-- Do not use diplomatic relations with the chooser to decide the human target pool.
+The board's validity is stored once in the global flag `asteroid_incoming_board_ready`, which the description and every option read, so a popup restored from a save cannot describe one board and offer another.
+The dispatcher sets it on success, the opening event re-validates once, the reopened board re-validates without rerolling, and every reset, lock, miss, fail-closed and cleanup path clears it.
+Forced firing while a course is locked or after the passage explains that state and preserves the original opening date and outcome.
 
-The result should feel random and globally varied while remaining suitable for the event's damage geometry.
+## Confirmation and lock
 
-## Information shown on target options
+A strike option opens a confirmation that repeats the target and the global consequences.
+Cancelling returns to the same board through `chaosx.nr28.8`, keeping the pairs, chooser, opening date and evolution snapshot.
 
-Each impact option should expose enough information for a meaningful choice.
+Confirmation stores the locked country and state, the original state id, its capital status, the chooser, the lock day and the expected impact date (`lock_duration_days` after the lock).
+The resolver is queued on both the chooser and the target with the same constant delay; whichever fires first resolves the impact and the other is a no-op.
+If both callbacks are lost, a monthly watchdog finds the overdue lock and resolves it on the global host.
+A board or confirmation whose chooser is annexed closes through the fail-closed outcome without picking a new chooser or coordinate.
 
-- Target country flag and current name
-- Locked state name
-- Broad region or continent
-- Whether the state is the current capital
-- A compact severity summary that states the center will be destroyed and three neighboring rings will be damaged
-- When Global Fragmentation is active, a visible statement that unrelated fragments will also strike worldwide
-- When Extraordinary Minerals is active, a visible statement that crater control will carry a military resource advantage
+### Target identity
 
-The option should not expose hidden scores, exact fragment locations, random damage rolls, AI logic, or future diplomatic reactions.
+Accepted decision F06 (basis: user-granted design authority, 2026-10-04 agent decisions): history, Event Details, news and the super-event name the target through the persistent country and state pointers saved at the lock.
+No separate name or flag snapshot is stored, because no supported effect stores a name string; an annexed target still resolves to its former name and flag, while a cosmetic rename during the two days shows the new name.
+Open question 6 in the README asks the parent to confirm this as final.
 
-The miss option should state that the asteroid will pass close to Earth and that no impact or dust will occur. It should not imply a later surprise strike.
+## Two-day lock
 
-## Confirmation
+The locked state is a geographic coordinate.
+Peace deals, annexation, civil war, state transfers and tag changes during the lock never move the impact.
+The current owner and controller at impact receive the losses and reports for the territory they actually hold; the original target stays named as the intended target.
 
-Selecting a country opens a confirmation step that repeats the target country, state, and expected global consequences. Confirmation prevents an accidental campaign-changing click.
+A course whose state became invalid through another permanent map transformation fails closed: a global bulletin reports that the trajectory broke apart (`chaosx.news.97`), with no dust, fragments, craters or deaths, and the impact is never redirected.
 
-After confirmation, the transaction stores the following outcome context.
+## Target preparedness
 
-- Chooser country
-- Locked target country
-- Locked impact state
-- Locked broad region
-- Lock date
-- Expected impact date
-- Whether fragmentation is active
-- Whether extraordinary minerals are active
-- A snapshot of the target's current display name and flag context for later presentation if the tag changes
+The locked target chooses one stance in `chaosx.nr28.3`, whose description says whether the locked state is its capital.
+No stance saves the centre or changes the fixed ring population losses.
 
-Canceling the confirmation returns to the same four choices. It must not reroll targets.
+| Stance | Implemented effect |
+| --- | --- |
+| Preserve command continuity | A shorter, milder government dislocation after the impact |
+| Disperse transport and reserves | At impact the target loses `transport_loss_per_state` of its trains, trucks and fuel for each main-footprint state it holds (capped at `transport_loss_cap`); this stance keeps `transport_dispersion_preserved_share` of that loss |
+| Mobilize medical command | Shorter local damage in its states, fewer rescue-period deaths and a cheaper first mobile-hospital deployment |
 
-## Two-day trajectory lock
-
-The impact resolves two game days after confirmation. The delay is long enough to present a target response and build anticipation. It is too short for a full construction mechanic.
-
-The locked state is a geographic coordinate. During the delay:
-
-- A peace conference does not move the impact.
-- Annexation does not move the impact.
-- A civil war does not move the impact.
-- A state transfer does not move the impact.
-- A cosmetic tag or country-name change does not move the impact.
-- The target snapshot remains available for the super-event and global news.
-
-The current owner and controller at the moment of impact receive state losses and grouped reports for the territory they actually hold. The original selected country remains named as the intended target.
-
-If the state becomes invalid through another permanent map transformation during the two-day delay, the transaction must fail closed. It should produce a rare global near-miss or atmospheric break-up report and must never redirect to an unchosen state. This contingency should not grant dust, fragments, crater material, or impact deaths.
-
-## Target-country emergency response
-
-The locked target country receives one emergency event. The event offers three preparedness stances. These are working route labels and are not final option text.
-
-### Preserve command continuity
-
-The government moves archives, senior officials, communications staff, and military command elements away from the center.
-
-- Best when the impact state is the capital or contains major command infrastructure
-- Reduces the duration and severity of the post-impact coordination penalty
-- Improves capital-relocation readiness
-- Does not reduce the fixed center or ring population losses
-
-### Disperse transport and stockpiles
-
-Rail yards, fuel, trains, trucks, aircraft, and movable stockpiles are pushed toward safer states.
-
-- Preserves part of the country's mobile logistical reserve
-- Improves the first emergency rail and debris-clearing actions
-- May temporarily disrupt national supply before the impact
-- Does not preserve buildings inside the center
-
-### Prepare hospitals and shelters
-
-Medical staff, shelters, water stores, and local rescue units prepare for mass casualties outside the center.
-
-- Reduces the opening recovery burden in outer rings
-- Reduces continuing rescue-period deaths after the initial impact
-- Improves the first medical response action
-- Does not change the required immediate population percentages
-
-The target AI should choose the stance that addresses the largest expected problem. Capital impact, low stability, weak transport reserves, population density, and medical readiness should matter.
+The impact report lists destroyed and preserved transport only for the original target.
+The target AI weighs capital status, stability, transport exposure and outer-ring population rather than ideology (Part 7).
 
 ## Capital relocation
 
-When the locked center is the current capital, the impact transaction relocates the capital before destroying the state.
+When the locked centre is the current capital, the transaction moves the capital before destroying the state.
+Backup selection prefers controlled cores and safer, populated, connected states outside the first ring, then surviving ring states when nothing safer exists.
 
-The backup-capital score should favor:
+Accepted decision F02 (basis: user-granted design authority): when no settled, fully controlled backup exists, relocation tries any controlled owned state, then any owned state even if occupied, then any controlled state.
+If none qualifies, the impact still proceeds, the capital stays at the crater, the country takes the full government dislocation, Government Beyond the Crater stays closed, and the report and Event Details say the government could not move.
 
-- Owned and controlled core territory
-- A populated state outside the main center and first ring
-- Useful infrastructure and supply
-- A victory point or established city
-- Distance from an active frontline
-- Connection to the country's remaining territory
+Relocation keeps the same government, leader, flag and focus tree.
 
-The score should avoid:
+## Ring construction
 
-- Another asteroid crater or wasteland
-- An occupied or contested state
-- A state inside the first damage ring when safer options exist
-- An isolated empty region
+The footprint uses shortest land-state adjacency from the locked centre.
 
-If no controlled core state is valid, use the best controlled owned state. If none remains valid, the original target country was not a valid target and should have been excluded during pair construction.
+- Ring 0 is the centre.
+- Ring 1 is every eligible land state directly adjacent to Ring 0.
+- Ring 2 and Ring 3 continue outward, each excluding states already in an earlier ring.
 
-The relocation should preserve government continuity. It should not create a new country identity, leader, flag, or focus tree.
+A state reachable by several paths belongs to its smallest ring and is processed once.
+Rings cross national borders; sea zones do not create links.
+Impassable states can carry the ring outward but receive no population or building transaction when they hold nothing to damage.
 
-## Land-adjacency ring construction
+## Fragment separation
 
-The damage footprint uses shortest land-state adjacency from the locked center.
+Fragments use the same shortest-path rings, with two rings each.
 
-- Ring 0 is the locked center.
-- Ring 1 contains every eligible land state directly adjacent to Ring 0.
-- Ring 2 contains every eligible land state adjacent to Ring 1 that is not already in Ring 0 or Ring 1.
-- Ring 3 contains every eligible land state adjacent to Ring 2 that is not already in an earlier ring.
+- A fragment centre is never inside the main three-ring footprint or another fragment's first ring.
+- The planner prefers one centre per country, several continents and a centre with at least one land neighbour, with a bounded fallback for genuinely isolated candidates.
+- Overlapping fragment rings, and fragment rings overlapping main rings, apply only the strongest profile once.
 
-A state that can be reached through several paths belongs to the smallest ring number. It is processed once.
+The planner reduces the fragment count when the world cannot provide enough separated centres; it never forces an overlap or an invalid state.
 
-The ring builder should follow actual state adjacency across national borders. Sea-zone proximity does not count. A purely maritime gap does not create a damage link. A verified strait connection may count only when the engine state-adjacency data treats the states as connected for the chosen helper.
+## Unavailable board
 
-Impassable land states can carry the physical ring outward when their adjacency is real, but they should not receive normal population or building transactions when they contain no valid civilian or building surface.
-
-## Fragment footprint separation
-
-Global Fragmentation uses the same shortest-path approach for its two rings. Fragment centers must be distributed to avoid repeated damage in one region.
-
-- A fragment center cannot be inside the main three-ring footprint.
-- A fragment center cannot be another fragment center's first ring.
-- Prefer one fragment center per country until the pool is exhausted.
-- Prefer several continents when valid states exist.
-- If outer fragment rings overlap, a state receives only the strongest fragment damage level.
-- If a fragment ring overlaps a main ring, the state receives only the stronger of the main and fragment profiles.
-
-The system should reduce the fragment count when the world cannot provide enough separated valid centers. It must not force overlapping centers, invalid states, empty islands, or repeated damage transactions to meet a numeric target.
-
-## Target generation failure states
-
-The event should show `N/A` in Event Details and remain outside automatic selection when fewer than three valid target pairs exist.
-
-Manual force-trigger behavior may bypass normal timing. It should not bypass the requirement to build three real options. A forced event with an invalid world state should return a clear blocked result instead of opening broken options.
+With fewer than three valid pairs, Event Details shows `N/A` with the reason and automatic selection skips the event.
+A forced firing in such a world shows the explicit `N/A` option instead of broken choices.

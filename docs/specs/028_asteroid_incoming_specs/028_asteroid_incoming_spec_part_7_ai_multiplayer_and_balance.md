@@ -1,240 +1,104 @@
-# Asteroid Incoming, Part 7: AI, Multiplayer, and Balance
+# Asteroid Incoming, Part 7: AI, Multiplayer and Balance
 
-## AI role
+Status: implemented in source; numeric probability evidence is partial (see the [current resume](../../plans/028_asteroid_incoming_plans/resume_20261007.md)).
+AI weights live in `asteroid_incoming_ai` and `asteroid_incoming_recovery` (`ai_*` keys).
 
-AI behavior should preserve the moral and strategic meaning of the opening choice. Most governments should prefer the miss. A hostile strike becomes plausible when the chooser faces an active enemy, an existential threat, extreme ideology, severe desperation, or very high Chaos.
+## Opening AI
 
-The AI must never choose a target by random option position alone.
+AI choices must preserve the moral and strategic meaning of the board.
+Most governments take the near miss; a strike becomes plausible under war, desperation, destructive identity or very high Chaos.
+The AI never chooses by option position, and the opening board and the reopened board carry identical `ai_chance` blocks.
 
-## Opening option model
+### Near-miss weight
 
-The option pool is always the three locked targets plus miss. AI scoring should compare all four options under one complete pool.
+The near miss starts from a strong base and grows for democratic choosers, choosers at peace, stable choosers, active fragmentation and choosers that already hold crater sites.
+It shrinks for desperate choosers (high surrender progress, low stability or war support), fascist choosers at war and very high Chaos.
 
-### Miss preference
+### Strike weight
 
-The miss receives a strong base preference. It becomes stronger when:
+A strike starts near zero and grows when the target is an enemy, a major, a faction leader, when the locked state is its capital, or when it carries major logistics.
+It is multiplied up for fascist and desperate choosers and high Chaos, and down for democratic choosers, active fragmentation, choosers already holding crater sites and targets already near capitulation.
 
-- The chooser is democratic or politically moderate
-- The chooser has high stability and is not losing a war
-- All three target countries are neutral, allied, guaranteed, subject, or faction-connected
-- Global dust would seriously harm the chooser's own economy or supply
-- Global Fragmentation is active
-- The chooser is vulnerable to fragment damage
-- The chooser controls extraordinary mineral sites that could be threatened by new fragment competition
+Two modifiers come last, so no later addition can lift them:
 
-The miss preference becomes weaker when:
+- **Friendly ground (0.25):** the target state, a neighbour or a state two land steps away is owned or controlled by the chooser, a faction partner not at war with it, or a co-belligerent; these are the states the catastrophic and major rings would devastate.
+- **Protected target (0):** the target is the chooser, a subject or overlord, a faction partner not at war with it, a co-belligerent, a non-aggression partner or a guarantee in either direction.
 
-- The chooser is near capitulation
-- One target is an active major enemy
-- One target is the main source of an existential world threat
-- The chooser has extreme militarist or destructive strategy
-- Chaos is high enough that normal restraint has already broken down
-- The target's defeat would materially improve the chooser's survival
+README Open question 5 asks whether guaranteed and non-aggression partners' states should also count as friendly ground.
 
-### Protected targets
+A betrayal route that relaxes protection exists only if an existing AI strategy explicitly supports it; Event 028 invents none.
 
-AI should assign zero or near-zero strike weight to:
+### Ideology
 
-- Itself
-- Subjects and overlords
-- Faction members
-- Active allies in the same war
-- Countries it guarantees when the guarantee still represents a real commitment
-- Countries under a nonaggression or special protected relationship that the project treats as binding
+Ideology sets base willingness without replacing the world-state logic.
+Democracies almost always take the near miss unless facing defeat by an existential enemy.
+Non-aligned and ordinary authoritarian governments prefer it but can strike a major enemy under severe pressure.
+Fascist and extreme militarist governments strike more readily during war.
+Destructive special actors can treat the strike as a weapon only when their existing identity supports it.
 
-A rare high-Chaos betrayal route can relax some protection only when an existing AI strategy explicitly supports betrayal. The event should not invent that strategy on its own.
+## Target preparedness AI
 
-### Hostile target value
+The target weighs command continuity when its capital is hit or stability is low, transport dispersal when its trains, fuel and supply are exposed, and medical command when outer-ring population and rescue risk are high.
+Ideology is not the main factor.
 
-An AI target becomes more attractive when:
+## Crater AI
 
-- The country is an active enemy
-- The locked state is a capital, major industrial center, supply hub, or critical front network
-- The enemy is stronger and difficult to defeat conventionally
-- The enemy leads a hostile faction
-- The enemy is an existential threat actor
-- The enemy is heavily condemned or diplomatically isolated
-- The chooser is already accepting severe global damage through its current strategy
+Under Extraordinary Minerals:
 
-The score should fall when:
+- the six crater decisions carry their own `ai_will_do` weights, with the main crater valued above a fragment site;
+- the AI strategy plan `asteroid_incoming_crater_fronts` adds front unit requests to fronts crossing the main crater (60) or a fragment site (25) while the country is at war and its surrender progress is at most 0.25, following the vanilla state-flag front pattern; it adds no forced offensive, so a collapsing country keeps its divisions at home;
+- peace desires add `take_states` weight for the negotiator's own bid on the main crater (75) and each fragment site (30), below the vanilla core desire of 100, so cores, claims, influence, faction leadership and subject bids still decide the settlement.
 
-- The impact rings would devastate friendly or allied neighboring states
-- The chooser owns states inside the expected outer rings
-- The target is about to capitulate without the strike
-- The target is a weak minor whose destruction offers little strategic value
-- Fragmentation makes self-harm likely and the chooser is already fragile
-
-### Ideology and route character
-
-Ideology should influence the base willingness without replacing world-state logic.
-
-- Democratic AI should almost always miss unless the target is an existential active enemy and the chooser faces defeat.
-- Nonaligned and ordinary authoritarian AI should prefer the miss but can strike a major enemy under severe pressure.
-- Fascist and extreme militarist AI can strike more readily during war.
-- Communist AI should depend on route strategy and war context, not a universal aggressive bias.
-- Special destructive or apocalyptic AI can treat the strike as a normal weapon when its existing identity supports that behavior.
-
-## Target-country emergency AI
-
-The locked target selects one preparedness stance.
-
-- Preserve command continuity when the capital is hit, stability is low, or government-dislocation risk is high.
-- Disperse transport and stockpiles when trains, fuel, aircraft, or supply hubs are concentrated in the center.
-- Prepare hospitals and shelters when outer-ring population and continuing casualty risk are high.
-
-The AI should compare expected benefit. It should not use ideology as the main factor.
-
-## Fragment and crater AI
-
-### Fragment risk
-
-The chooser cannot select fragment sites. AI willingness to cause fragmentation should account for its own exposed territory and global strategic position.
-
-### Crater control
-
-Under Extraordinary Minerals, AI should:
-
-- Defend controlled crater access routes
-- Repair supply to controlled sites
-- Avoid abandoning a site in a routine state transfer
-- Prefer taking a nearby enemy site when military strength and supply support the offensive
-- Recognize that a main crater is more valuable than one fragment site
-- Count several fragment sites when comparing strategic value
-- Avoid suicidal offensives for a distant site during a losing home-front war
-
-### Peace behavior
-
-Crater states should carry increased strategic value in peace and transfer logic. The system should still respect normal cores, claims, occupation, faction leadership, and subject rules. A crater should not automatically override every political settlement.
+Because each front gets one request regardless of how many sites it crosses, a later revision could scale the request with the number of sites; this is a future idea, not a requirement.
 
 ## Recovery AI
 
-AI recovery follows the priority order from Part 6. It must preserve reserve floors.
+Recovery follows the priority order in Part 6 and keeps reserve floors: it does not spend the last trains needed for supply, commit all support equipment during a major war, start long industrial work in a state about to be lost, or contribute to global observation before urgent national needs have a reserve.
+AI countries receive no recovery missions (Part 6).
 
-- Do not spend the last trains needed for national supply.
-- Do not commit all support equipment during an active major war.
-- Do not begin a long industrial restoration project when the state is about to be lost.
-- Prefer medical response when continuing civilian losses remain high.
-- Prefer rail and supply repair when the capital or front is disconnected.
-- Prefer dust hardening when global penalties are materially reducing output.
-- Contribute to global dust mitigation only after urgent national needs have a reserve.
+## Multiplayer
 
-## Multiplayer behavior
-
-### One chooser
-
-Only one human country receives the targeting event. The chooser is fixed when Event 028 enters the global transaction.
-
-### Observer information
-
-Other human players receive:
-
-- A trajectory-locked notice after an impact is confirmed
-- The impact super-event and global news
-- Their own consolidated country report when damaged
-- The close-passage news when the miss is selected
-
-The locked notice should reveal the main target and impact date. Fragment locations remain unknown.
-
-### Tag switching
-
-Tag switching during the event does not transfer chooser authority. A player who switches into the target can still receive the target-country emergency event if the game's scope and current human control support it.
-
-### Simultaneous timers
-
-A global Event 028 transaction blocks another player's timer from starting another copy. The blocked timer should resume through the shared event-system behavior after the transaction finishes.
-
-### Pausing and confirmation
-
-The event should use the project's normal multiplayer pause and confirmation behavior. Confirmation should not create several days of mandatory blocking for every player.
+- One chooser per transaction; tag switching does not transfer chooser authority, and a player who switches into the target receives the preparedness event if the game routes it to them.
+- Other humans receive the locked-course bulletin, the impact bulletin and super-event, their own report when affected, and the close-passage bulletin after a near miss.
+  The locked-course bulletin names the target and impact date but never fragment sites.
+- A global transaction blocks another player's timer from starting a second copy; it resumes through the shared event system afterwards.
+- The confirmation never forces several days of blocking on every player.
 
 ## Balance anchors
 
-### Main impact
+- The population losses and armour values are fixed user requirements; balance moves through building shares, recovery durations, target suitability, dust scaling and costs.
+- The near miss has no direct reward; its value is avoided destruction, avoided dust and fragment risk, and preserved diplomacy.
+- Fragments scale from three to six and report honest reductions.
+- Dust must hurt the world without stopping every country from fighting; protection softens part of the penalty and nothing reverses the impact.
 
-The user-defined population percentages are fixed. Balance should use building ranges, recovery duration, target suitability, and dust scaling. The core losses remain unchanged.
+## Probability scenarios
 
-### Miss
+The audit must evaluate the complete four-option pool in each named case, separating option score from normalized probability.
 
-The miss should have no direct reward. Its value is avoided destruction, avoided dust, and preserved diplomacy. It also forgoes the chance to remove a rival and create extraordinary mineral sites.
-
-### Fragmentation
-
-Fragment count scales from three to six. Geographic validity can reduce the count. The event should report the reduction honestly.
-
-### Minerals
-
-The plus 100 and plus 20 armour values are fixed. Stacking remains uncapped. Balance review should inspect piercing thresholds, AI strategic value, and state-control churn.
-
-### Dust
-
-Dust should create a meaningful global cost without making every country unable to fight. National protection actions should reduce part of the penalty. The opening impact remains irreversible.
-
-## Required probability scenarios
-
-The AI probability audit must evaluate a complete four-option pool in named scenarios.
-
-| Scenario ID | Chooser situation | Target mix | Expected ordering |
+| ID | Chooser | Targets | Expected ordering |
 | --- | --- | --- | --- |
-| `AST_AI_01` | Stable democratic major at peace | Three neutral or friendly targets | Miss dominates every strike option |
-| `AST_AI_02` | Democratic major losing an existential war | One hostile major, two neutrals | Miss remains strong, hostile major is the only plausible strike |
-| `AST_AI_03` | Fascist major in total war | One enemy faction leader, one weak enemy, one neutral | Enemy faction leader ranks first or close to miss, neutral remains near zero |
-| `AST_AI_04` | Nonaligned minor at peace | Three unrelated majors | Miss strongly dominates |
-| `AST_AI_05` | Destructive special actor | Three enemies | Best strategic enemy dominates miss when route identity supports use |
-| `AST_AI_06` | Any ordinary country | One subject, one faction ally, one enemy | Subject and ally score zero, enemy competes with miss |
-| `AST_AI_07` | Fragile chooser at 700 Chaos with fragmentation | One strong enemy | Fragmentation risk raises miss weight relative to the same 500-Chaos case |
-| `AST_AI_08` | Near-capitulation chooser at 700 Chaos | One existential enemy | Enemy strike becomes materially more likely than in a stable case |
-| `AST_AI_09` | Chooser controls several mineral sites | One distant enemy | Miss gains weight because new fragments can threaten the existing advantage |
-| `AST_AI_10` | All three targets protected | Ally, guarantee, subject | Miss is effectively certain |
+| `AST_AI_01` | Stable democratic major at peace | Three neutral or friendly | Near miss dominates |
+| `AST_AI_02` | Democratic major losing an existential war | One hostile major, two neutrals | Near miss stays strong; only the hostile major is plausible |
+| `AST_AI_03` | Fascist major in total war | Enemy faction leader, weak enemy, neutral | Faction leader first or close to the near miss; neutral near zero |
+| `AST_AI_04` | Non-aligned minor at peace | Three unrelated majors | Near miss strongly dominates |
+| `AST_AI_05` | Destructive special actor | Three enemies | Best enemy can dominate when identity supports it |
+| `AST_AI_06` | Ordinary country at war | Subject, faction ally, enemy | Subject and ally exactly zero; enemy competes with the near miss |
+| `AST_AI_07` | Fragile chooser at 700 Chaos with fragmentation | One strong enemy | Near miss weight above the same case at 500 Chaos |
+| `AST_AI_08` | Near-capitulation chooser at 700 Chaos | One existential enemy | Strike materially more likely than in a stable case |
+| `AST_AI_09` | Chooser holding several crater sites | One distant enemy | Near miss gains weight |
+| `AST_AI_10` | Any chooser | Ally, guarantee, subject | Near miss effectively certain |
 
-The audit should distinguish option score from normalized probability and should test sensitivity to ideology, war state, capitulation progress, target relations, and fragmentation.
-
-## Recovery decision scenarios
-
-Weighted recovery surfaces also need named tests.
-
-- High preventable deaths and adequate equipment should prioritize mobile hospitals.
-- Capital supply disconnection should prioritize the rail corridor.
-- Active frontline collapse and low train reserve should block expensive reconstruction.
-- Severe dust and strong industry should prioritize factory hardening.
-- A controlled main crater under threat should prioritize perimeter security.
-- A distant enemy fragment site should not override homeland defense.
+Recovery scenarios: high preventable deaths favour mobile hospitals; a disconnected capital favours the rail corridor; a collapsing front with few trains suppresses expensive work; severe dust with strong industry favours factory hardening; a threatened main crater favours perimeter security; a distant enemy fragment site never overrides homeland defence.
 
 ## Anti-exploit rules
 
-- The human cannot reopen the event to reroll targets.
-- Canceling confirmation does not reroll.
-- Save and reload does not reroll locked targets or fragments.
-- State transfers during the two-day delay do not move the impact.
-- A state receives one strongest damage profile.
-- Deaths are recorded once per actual population transaction.
-- Mineral modifiers are derived from current site control and cannot duplicate.
-- Rapid controller switching does not repeat survey or security rewards.
-- Recovery decisions cannot restore more buildings than the event destroyed.
-- Global mitigation cannot be spammed by one country beyond its cap.
-- A country cannot farm an achievement by giving a crater back and retaking it repeatedly.
+- Reopening the board, cancelling confirmation, or reloading never rerolls targets or fragments.
+- State transfers during the lock never move the impact.
+- Each state receives one profile and each death is recorded once.
+- Mineral bonuses are rebuilt from current control and cannot duplicate.
+- Control switching cannot repeat security or survey rewards, and achievement holds reset on lost control.
+- Repairs never exceed what the impact destroyed.
 
-## Performance rules
+## Performance
 
-- Build target and ring lists only for the active Event 028 transaction.
-- Do not add a recurring daily all-country scan.
-- Dust stage changes should use monthly or event-driven updates.
-- Crater bonuses should refresh from bounded control-change and lifecycle hooks.
-- Country reports should be assembled after the transaction. The event must not create one report event per state.
-- Fragment target selection should lock the full set before applying any state destruction.
-
-## Manual and force-trigger validation
-
-Force triggering can bypass normal major-event timing. It must keep target validity, transaction locking, and three-option construction.
-
-Manual tests should include:
-
-- Impact against a continental major
-- Impact against a small multi-state country
-- Capital impact
-- Cross-border rings
-- Target annexed during the delay
-- Fragmentation with reduced valid fragment pool
-- Overlapping outer fragment rings
-- Miss at each Chaos tier
-- Mineral control transferred through war and peace
-- Save and reload during the two-day lock and during dust recovery
+Target and ring lists exist only for the active transaction, all fragment centres lock before damage, dust uses the monthly host and event-driven updates, crater bonuses refresh from control-change hooks, and there is no new daily scan of every country.

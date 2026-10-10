@@ -1,227 +1,138 @@
 # Asteroid Incoming, Part 5: Evolutions
 
-## Evolution structure
+Status: implemented, except the fragment-marker cleanup marked as proposed.
+The evolution thresholds and armour values are explicit user requirements ([README](028_asteroid_incoming_spec_index.md#explicit-user-requirements)).
 
-Event 028 has two sequential evolutions. They change the impact opening. They do not create separate repeatable events.
+## Structure
 
-- Global Fragmentation becomes available at 600 Chaos.
-- Extraordinary Minerals becomes available at 800 Chaos and requires Global Fragmentation.
+Event 028 has two sequential evolutions that change the strike; neither creates a separate event.
 
-Both evolutions must respect their individual enable state. A disabled Global Fragmentation evolution also blocks Extraordinary Minerals because fragment craters are part of the second evolution's design.
+| Evolution | Shared toggle id | Tier | Threshold | Requires |
+| --- | --- | --- | --- | --- |
+| Global Fragmentation | event 28, type 2801, stage 1 | Chaos Tier | 600 Chaos | A strike |
+| Extraordinary Minerals | event 28, type 2802, stage 1 | Totalen Chaos | 800 Chaos | Global Fragmentation applied in the same strike |
 
-The evolutions are recorded only when the player chooses an impact and the evolved behavior actually resolves. Choosing the miss avoids both evolutions and creates no evolution history row.
+Accepted decision F04 (basis: user-granted design authority): the Chaos thresholds are read once in the opening snapshot, because they are part of what the board announced, while the Events Log toggles are read again at impact.
+Disabling Global Fragmentation after the opening gives a clean main-only strike; disabling Extraordinary Minerals keeps the fragments without armour bonuses.
+The snapshot records Extraordinary Minerals as eligible only when Global Fragmentation was eligible in the same snapshot, so the board never announces minerals without fragmentation.
 
-## Evolution I: Global Fragmentation
+An evolution is logged only when it actually applies.
+The near miss records no evolution.
 
-### Campaign role
+## Global Fragmentation
 
-The altered trajectory destabilizes the asteroid. The main body still reaches the selected country. Several smaller fragments separate and strike unrelated states around the world.
+### Role
 
-The evolution turns one directed regional disaster into a global risk. The chooser controls the main target and accepts uncertainty about the rest of the planet. Fragment sites can include the chooser's territory.
-
-### Availability
-
-- Minimum Chaos: 600
-- Global Fragmentation evolution enabled
-- Event 028 impact option selected
-- Enough valid separated fragment centers exist for at least two fragments
-
-When fewer than two valid fragment centers exist, the evolution should remain unavailable for that firing and should not be logged as applied. The main impact still resolves.
+The altered course destabilizes the asteroid.
+The main body still strikes the chosen state while smaller fragments strike unrelated states worldwide, including possibly the chooser's own territory.
+The chooser controls the main target and accepts uncertainty for the rest of the planet.
 
 ### Fragment count
 
-The intended fragment count scales with Chaos and is capped by valid geographic space.
+The planned count rises with Chaos: 3 at 600, 4 at 700, 5 at 800 and 6 at 900.
+The actual count can be lower when the world lacks separated valid centres, and fewer than two applied centres means the evolution does not apply for that strike (the main impact still resolves).
+Reports and the history row state the actual count.
 
-- 600 to 699 Chaos: 3 planned fragments
-- 700 to 799 Chaos: 4 planned fragments
-- 800 to 899 Chaos: 5 planned fragments
-- 900 to 999 Chaos: 6 planned fragments
+### Centre selection
 
-The actual count can be lower when the world lacks separated valid states. The system reports the actual count. It never overlaps centers or inserts weak invalid targets to meet the plan.
-
-### Fragment center selection
-
-A fragment center must:
-
-- Be a valid populated land state
-- Not be inside the main three-ring footprint
-- Not be a permanent crater or wasteland
-- Not be inside another fragment center's first ring
-- Have at least one valid land neighbor when the global pool allows it
-
-Distribution preferences should:
-
-- Use several continents
-- Avoid several fragments in one country
-- Avoid clustering around the main target
-- Include majors and minors through suitability scoring
-- Allow the chooser's country to be struck
-- Avoid actual nonhuman and system-only countries
-
-Fragment positions are not shown before impact.
+A fragment centre is a valid populated land state outside the main footprint and outside other fragments' first rings, never an existing crater or wasteland, and never an actually nonhuman or system country's state.
+The planner prefers several continents, one centre per country and centres with a land neighbour, includes majors and minors alike, and can strike the chooser.
+All centres lock before any damage, so the selection cannot change mid-transaction.
+Locations are never shown before impact.
 
 ### Fragment damage
 
-Each fragment uses a smaller two-ring profile.
-
-#### Fragment center
-
-- Remove about 50 percent of civilian population.
-- Remove about 50 percent of existing building levels, with heavy damage to exposed logistics.
-- Apply a persistent fragment-crater state modifier.
-- Record asteroid-fragment deaths.
-- Under Extraordinary Minerals, mark the state as a mineral site.
-
-#### Fragment Ring 1
-
-- Remove about 25 percent of civilian population.
-- Cause heavy building, infrastructure, railway, and supply damage.
-- Apply a timed heavy fragment-damage modifier.
-
-#### Fragment Ring 2
-
-- Remove about 5 percent of civilian population.
-- Cause lighter building and logistical damage.
-- Apply a short fragment-damage modifier.
-
-The normal nuclear explosion effect can present each fragment. The transaction remains classified as asteroid fragmentation.
+Each fragment uses the centre and two-ring profiles in Part 3 (50, 25 and 5 percent civilian loss).
+The centre becomes a persistent fragment crater and, under Extraordinary Minerals, a mineral site.
 
 ### Resolution order
 
-1. Lock every fragment center before applying damage.
-2. Build every fragment footprint.
-3. Merge overlaps by strongest profile.
-4. Resolve the main impact center and rings.
-5. Resolve fragment profiles that are stronger than any main profile already applied.
-6. Create fragment craters.
-7. Add fragment destruction to Dust Load.
-8. Aggregate country reports.
-9. Broadcast one fragment summary after the main impact presentation.
+1. Lock every fragment centre.
+2. Build every footprint and merge overlaps by strongest profile.
+3. Apply each state once, main and fragment alike.
+4. Register craters, assign material profiles and record each struck continent once.
+5. Add fragment destruction to the Dust Load.
+6. Aggregate country reports.
+7. Present the main strike, then the fragment visuals one at a time, four hours apart.
 
-This order prevents random selection from changing after the first state is destroyed.
+### Reports and log
 
-### Reports
+Countries hit only by fragments receive the same single consolidated report.
+The impact bulletin and super-event state the fragment count and name each struck continent once.
+The evolution writes one global log row (type fragmentation, stage 1, Chaos Tier, no actor).
 
-Countries affected only by fragments receive the same consolidated report system as countries affected by the main impact. A country hit by several fragments still receives one report.
+## Extraordinary Minerals
 
-The global news summary should state the actual fragment count and broad affected regions. It should not open a separate global popup for each fragment.
+### Role
 
-### Evolution logging
+Crater material with unusual structural properties strengthens the armour of whoever controls the site.
+The disaster leaves permanent military objectives that change front lines and peace terms.
+Public text keeps the science uncertain: dense meteoric alloys, fused impact material, unfamiliar crystals.
 
-Global Fragmentation uses one evolution log entry tied to Event 028.
+### Armour benefits
 
-- Type: fragmentation
-- Stage: 1
-- Display tier: Chaos Tier
-- Actor: none
+- The current controller of the main crater gains plus 100 percent land-division armour (`armor_factor`) through the main-crater material idea.
+- Each directly controlled fragment site adds plus 20 percent through one country dynamic modifier whose value is rebuilt from the controlled-site count.
+- Bonuses stack without a cap.
 
-The log entry describes a global mutation. The chooser and target remain available through the Event 028 history and detail views.
+`armor_factor` multiplies existing armour, so divisions with zero armour gain nothing, and piercing, hardness, naval and air values are unchanged.
+Ownership, cores, compliance and ideology do not matter; only current control does.
 
-## Evolution II: Extraordinary Minerals
+### Transfer and refresh
 
-### Campaign role
+Every crater control change, annexation, civil-war control change, peace transfer, release and controller disappearance refreshes the affected countries.
+The refresh rebuilds each country's main-crater flag and fragment count from the registered site array and replaces stale modifiers instead of stacking copies.
+A site with no valid controller grants nothing.
 
-The main crater and fragment craters contain material with unusual structural properties. Control of a site improves the armour of a country's land forces. The disaster creates permanent strategic objectives that can change front lines and peace settlements.
+### Strategic objectives
 
-The scientific explanation should remain uncertain in public text. Reports can refer to dense meteoric alloys, fused impact material, or unfamiliar crystalline structures. The gameplay effect remains consistent across flavor variants.
+Crater states are objectives through existing mechanisms, not free claims or war goals.
 
-### Availability
+- Crater actions for controllers and rivals (Part 6).
+- A war-time AI front strategy and peace desire (Part 7).
+- Event Details names the current main-crater controller and each fragment site's controller.
 
-- Minimum Chaos: 800
-- Global Fragmentation evolution enabled and applied
-- Extraordinary Minerals evolution enabled
-- Event 028 impact option selected
+The original design also asked for intelligence reports to countries at war with a crater controller explaining the armour advantage; that is removed as redundant, because the modifier tooltip, Event Details and the reconnaissance action already carry the information.
 
-The second evolution is not available for an ordinary nonfragmented impact.
+### Material profiles
 
-### Main crater benefit
+Each crater site rolls one persistent material profile when it is registered: dense metallic material, fused silicate composite, or shock-formed crystal and glass, with equal weights.
+A stored profile never re-rolls.
+Surveying a site reveals it through a named state marker with its own icon and description, and gives a one-use research bonus in a matching field (industry, synthetic resources or electronics).
+Once any country has surveyed a site, reconnaissance of that site names its material.
+Profiles never change armour or any AI weight; they add a small, replayable research choice without creating separate balance tracks.
 
-The current controller of the original main crater receives plus 100 percent to existing land-division armour.
+### Fragment marker cleanup (proposed)
 
-This means:
+Status: proposed by the 2026-10-10 audit, not implemented.
 
-- Existing positive armour values are doubled.
-- A division with zero base armour does not gain a flat armour value from multiplication alone.
-- The effect applies to land-division armour.
-- It does not increase piercing, hardness, naval armour, aircraft defense, or unrelated equipment statistics.
-- The benefit does not depend on state ownership, cores, compliance, or ideology.
+A fragment controller currently sees two national surfaces for one bonus: a modifier-free "fragment material" idea and the dynamic modifier that carries the armour.
+The idea exists only as a marker for older AI reads, and five further numbered identities are kept only to be removed.
+The dynamic modifier should be the single visible fragment surface; AI checks should read the controlled-fragment count or the modifier, and the marker ideas should be retired.
+This changes no armour value.
 
-### Fragment-site benefit
+### Log
 
-The current controller receives plus 20 percent to existing land-division armour for each fragment crater controlled.
+The evolution writes one global log row (type extraordinary minerals, stage 1, Totalen Chaos, no actor).
 
-Fragment bonuses stack. The accepted design has no cap. The implementation must expose the controlled-site count in the modifier tooltip and must test high-stack outcomes.
+## Disable behaviour
 
-### Transfer and recalculation
+- Disabling Global Fragmentation removes fragments from a future strike and makes Extraordinary Minerals unavailable.
+- Disabling Extraordinary Minerals keeps fragment damage and dust but grants no armour or mineral-site actions.
+- Rebuilding Event Details preserves both toggles.
+- Disabling an evolution after it applied follows the shared evolution-toggle policy and does not silently erase a campaign outcome.
 
-Benefits follow current control.
+## Balance review
 
-The system should refresh when:
+The armour values are deliberately large and can only change with user approval.
+Review their campaign consequences in these cases:
 
-- A crater state changes controller
-- A crater state changes owner
-- A country is annexed
-- A civil war changes control
-- A peace conference transfers the state
-- A state is released to a subject
-- A controller ceases to exist
+- one country holds only the main crater;
+- one country holds one fragment site;
+- one country holds the main crater and three fragment sites;
+- one country holds every site at 900 Chaos (plus 220 percent);
+- several rivals hold one or two sites each;
+- infantry-only armies with zero base armour;
+- armoured armies near common piercing thresholds.
 
-The refresh should derive each country's current main-crater control and fragment count from the registered sites. It should replace stale modifiers instead of adding another copy on every control change.
-
-A site with no valid controller grants nothing. A country that loses every site loses the full benefit immediately or at the next bounded control-change refresh.
-
-### Strategic objective behavior
-
-Crater states become high-priority objectives.
-
-- AI defense and front planning should value controlled sites.
-- AI offensives should value nearby enemy sites when the military situation allows it.
-- Peace and state-transfer logic should treat sites as strategic territory.
-- Crater controllers gain decisions to survey, secure, and fortify the perimeter.
-- Countries at war with a crater controller can receive intelligence or strategic reports that explain the armour advantage.
-
-The event should not grant free claims, cores, or war goals to the whole world. Expansion comes through normal war, existing claims, or bounded high-Chaos crater-conflict actions.
-
-### Site flavor profiles
-
-Each crater can receive one scientific flavor profile for reports and icons. These profiles do not change the armour value.
-
-- Dense metallic material
-- Fused silicate composite
-- Shock-formed crystal and glass
-
-The profile should be assigned once and persist. It adds replay value without creating several balance tracks.
-
-### Evolution logging
-
-Extraordinary Minerals uses one evolution log entry tied to Event 028.
-
-- Type: extraordinary minerals
-- Stage: 1
-- Display tier: Totalen Chaos
-- Actor: none
-
-The event detail view should show the current main-crater controller, total fragment sites, and each country's controlled fragment count after the evolution exists.
-
-## Disable behavior
-
-- Disabling Global Fragmentation removes fragment strikes from future Event 028 resolution and makes Extraordinary Minerals unavailable.
-- Disabling Extraordinary Minerals leaves fragmentation damage and dust intact but creates no armour benefits or mineral-site decisions.
-- Rebuilding Event Details must preserve each evolution toggle.
-- Disabling an evolution after it has already applied should follow the project's normal evolution-toggle policy. It must not silently erase a campaign outcome unless the existing UI explicitly defines retroactive disabling.
-
-## Balance requirements
-
-The user-defined armour values are intentionally large. Balance review should focus on their campaign consequences. The values cannot be reduced without approval.
-
-Required scenarios include:
-
-- One country controls only the main crater.
-- One country controls one fragment site.
-- One country controls the main crater and three fragment sites.
-- One country controls all planned fragment sites at 900 Chaos.
-- Several rival countries each control one or two sites.
-- Infantry-only armies with zero base armour.
-- Armoured armies near common piercing thresholds.
-
-The implementation must report whether the modifier creates unexpected negative, multiplicative, or non-land effects. A balance concern is evidence for review, not permission to change plus 100 or plus 20 values silently.
+A balance concern is evidence for the user, not permission to change the values.

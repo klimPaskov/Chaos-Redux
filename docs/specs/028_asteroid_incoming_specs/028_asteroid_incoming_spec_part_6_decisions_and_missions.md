@@ -1,298 +1,168 @@
 # Asteroid Incoming, Part 6: Decisions and Missions
 
-## Presentation choice
+Status: implemented, with the mission-failure simplification (README Open question 2) and the global-mitigation revision (Part 4) proposed.
+Decision and mission identifiers are in `common/decisions/028_asteroid_incoming_decisions.txt`; the [overview](../../events/028_asteroid_incoming/overview.md) documents their helpers.
 
-Event 028 should use one ordinary decision category with a strong static category picture and dynamic category text. Normal decisions present the required state clearly, so the event does not need a separate mechanic window. The player manages one global dust state, one national recovery burden, and local crater objectives through normal decisions and missions.
+## Presentation
 
-The category should change its visible content by phase. It must never show the entire recovery system at once.
+Event 028 uses one ordinary decision category, `asteroid_incoming_recovery_category` ("Asteroid Recovery"), with a static category picture and no dedicated scripted GUI.
+The category shows only what drives the next choice.
 
-The category header should show only the values that affect immediate choices.
+The header carries at most four values:
 
-- Current global dust stage
-- Current national protection state
-- Current national impact-recovery burden when the country has damaged states
-- Controlled crater-site count when Extraordinary Minerals is active
+- **Dust**: the current global stage.
+- **Protection**: the country's protection tier.
+- **Recovery**: the national recovery phase (active recovery, recovery burden, burden extended after a failed mission, recovery legacy, lasting recovery legacy, recovery complete, or none required).
+- **Craters**: under Extraordinary Minerals only, whether the country controls the main crater and how many fragment sites it controls.
 
-The raw Dust Load formula, every damaged state value, and every global contribution should remain in tooltips or internal ledgers.
+Raw formulas, per-state ledgers, price multipliers and mitigation points stay internal or in concise tooltips.
+The category is hidden for countries with no local damage, no active dust and no crater interest.
 
-## Phase structure
+## Phases
 
-### Phase 0: Target emergency
+| Phase | Who sees it | Actions |
+| --- | --- | --- |
+| Emergency | Countries with a live local emergency (Part 3) | Deploy Mobile Hospitals, Open an Emergency Rail Corridor, Clear Unstable Debris, Distribute Emergency Filters |
+| Reconstruction | States whose local emergency is resolved | Rebuild the Supply Spine, Restore Outer-Ring Industry, Rehouse Displaced Workers |
+| Dust protection | Every ordinary country while dust is active | Harden Factories Against Dust, Protect Transport Reserves, Join the Observation Network |
+| Crater competition | Under Extraordinary Minerals, once the country's own emergency and reconstruction work is closed | One owned-site step and one rival-site step |
 
-This is the one pre-impact event described in Part 2. It is an event choice, not a decision category. The choice establishes one preparedness stance and then closes.
+Accepted decision (basis: user-granted design authority, 2026-10-04 Crater actions): crater competition does not wait for dust to clear, because dust can outlast most wars.
 
-### Phase 1: Emergency response
+Each state-targeted action lists only its highest-ranked affordable state, so a phase shows at most one card per action and the late surface stays within five primary actions.
+Emergency ranking is live rescue burden, then profile, then population; reconstruction ranking is profile, then the infrastructure and railway gap against the pre-impact snapshot; ties fall to the lower state id.
+An unaffordable high-priority state cannot hide a cheaper valid one.
 
-Visible for countries with Ring 1, Ring 2, fragment-center, or heavy fragment damage. This phase normally lasts 90 days and can end earlier when the country resolves its urgent burdens.
+A country runs one pending paid state project at a time; other countries keep independent targets.
+Finish callbacks recheck the reserved state and current control, apply the work and always release the slot.
 
-The phase should show three or four primary actions and no more than two active missions.
+## Emergency actions
 
-### Phase 2: Reconstruction
+The first three actions each resolve the target state's local emergency: its impact-zone damage ends, its rescue-period deaths stop and reconstruction opens there.
+They differ in what they rebuild and which mission they can start.
 
-Begins after the immediate emergency or when no severe rescue burden remains. It focuses on rail, supply, industry, and local recovery. It should show three primary actions and one to three named objectives.
+| Action | Effect |
+| --- | --- |
+| Deploy Mobile Hospitals | Restores part of the state's infrastructure and supply capacity; can start Keep the Rescue Route Open |
+| Open an Emergency Rail Corridor | Restores emergency transport through the state and protects national transport reserves; can start Keep the Rescue Route Open |
+| Clear Unstable Debris | Restores part of the state's infrastructure and industry; can start Stabilize the Damaged Zone in the two worst-hit states |
+| Distribute Emergency Filters | Basic dust protection; hidden while no dust is active |
 
-### Phase 3: Dust protection
-
-Visible to all ordinary countries while global dust remains. It should show up to three actions. Countries with no local impact damage should see only this part of the category.
-
-### Phase 4: Crater competition
-
-Visible only when Extraordinary Minerals is active and the country controls, borders, or is at war over a crater site. It should show up to three relevant actions for the selected current situation.
-
-Obsolete phases and actions must hide cleanly.
-
-## Emergency response actions
-
-All labels below are working labels. Final localisation should use concise period language and dynamic state names.
-
-### Deploy mobile hospitals
-
-**Who sees it:** Countries with unresolved Ring 1, Ring 2, or fragment-center medical burden.
-
-**Public purpose:** Move medical staff, field hospitals, water equipment, and transport into the worst surviving state.
-
-**Requirements:** At least one valid affected state, enough support equipment and trucks, and a route to the target state.
-
-**Costs:** Support equipment, trucks, manpower, and a short civilian-factory commitment.
-
-**Effect:** Reduces continuing rescue-period deaths, lowers the target state's recovery burden, and shortens the catastrophic or heavy impact modifier. The action cannot restore immediate population losses.
-
-**Targeting:** Prioritize the state with the largest expected preventable loss. The player should see the exact state before paying.
-
-**AI:** High priority when preventable deaths are large and the route is supplied.
-
-### Open an emergency rail corridor
-
-**Who sees it:** Countries with damaged railways, infrastructure, or supply hubs in affected states.
-
-**Public purpose:** Concentrate trains, fuel, engineers, and guarded work crews on one route from the backup capital or a safe supply hub to the disaster zone.
-
-**Requirements:** A valid damaged route, train stock, fuel, and control of the route endpoints.
-
-**Costs:** Trains, fuel, support equipment, and a civilian-factory commitment.
-
-**Effect:** Repairs part of one named railway and infrastructure corridor, improves supply to rescue states, and advances the emergency-transport mission.
-
-**AI:** Prioritize when the capital, main front, or largest population center is disconnected.
-
-### Clear unstable debris
-
-**Who sees it:** Countries with severe building and infrastructure damage.
-
-**Public purpose:** Remove collapsed structures, extinguish local fires, and reopen one critical facility area.
-
-**Requirements:** Control of the target state and no active enemy occupation at the work site.
-
-**Costs:** Trucks, support equipment, manpower, and construction capacity.
-
-**Effect:** Restores a bounded share of damaged infrastructure or a critical nonpermanent building, lowers continuing casualty risk, and prevents a linked secondary disaster when the work finishes in time.
-
-**AI:** Prioritize supply hubs, rail junctions, ports, and high-population Ring 1 states.
-
-### Distribute emergency water and filters
-
-**Who sees it:** Countries with affected populated states or high dust exposure.
-
-**Public purpose:** Protect drinking water, shelters, hospitals, and work sites from debris and dust.
-
-**Requirements:** Support equipment or a project-defined civilian protection stockpile, plus a valid affected population.
-
-**Costs:** Support equipment, convoys or trucks depending on route, and a short civilian-factory commitment.
-
-**Effect:** Reduces local dust exposure, rescue-period deaths, and the country's national dust penalty for the emergency phase.
-
-**AI:** Higher priority at Impact Winter and Severe Impact Winter stages.
-
-## Emergency missions
-
-### Keep the rescue route open
-
-A timed mission asks the country to keep the backup capital or safe supply hub connected to the worst impact state for 120 to 180 days.
-
-Success should:
-
-- Remove part of the national recovery burden
-- Upgrade the state's recovery modifier
-- Reduce future emergency-action costs for that state
-
-Failure should:
-
-- Extend the state recovery modifier
-- Cause a bounded rescue-period death entry
-- Increase supply pressure temporarily
-
-The mission should auto-complete when the route and supply conditions are met for the required period.
-
-### Stabilize the damaged zone
-
-A timed mission asks the country to repair named infrastructure, railway, or supply thresholds in its two worst affected states.
-
-Success should move the country into reconstruction earlier. Failure should keep the emergency phase open and worsen one local burden. The mission must name the states and exact public thresholds.
+No action restores the dead.
+The medical stance makes the first mobile-hospital deployment cheaper; the transport stance makes the first rail corridor cheaper.
 
 ## Reconstruction actions
 
-### Rebuild a supply spine
+| Action | Effect |
+| --- | --- |
+| Rebuild the Supply Spine | Restores network capacity in the state; can start Reconnect the National Network |
+| Restore Outer-Ring Industry | Restores factories and dockyards in the state; can start Restore the Outer Ring |
+| Rehouse Displaced Workers | Restores housing capacity; for the original target, can start Rebuild the Regional Economy |
 
-**Who sees it:** Countries with several damaged states connected by one repairable route.
+Each action restores only a share of what the impact destroyed, never above the pre-impact level, and never in the main crater.
 
-**Costs:** Trains, civilian-factory commitment, steel or support equipment when supported, and time.
+## Dust protection actions
 
-**Effect:** Opens a staged project across named rail and infrastructure states. Completion restores a meaningful route and replaces local emergency modifiers with recovery modifiers.
+Protection tiers and their effects are defined in Part 4.
+Each action is one-time per country, is priced by the current dust stage, and lapses without refund if it finishes after the sky has cleared.
 
-This action should do map work. It should not be a generic national supply bonus.
+## Crater actions
 
-### Restore outer-ring industry
+Owned sites advance through three steps, rival sites through three, and the category offers the highest-profile ready owned site and one ready rival site.
 
-**Who sees it:** Countries with surviving factories in Ring 2, Ring 3, or fragment outer rings.
+| Step | Effect |
+| --- | --- |
+| Secure the Crater Perimeter | Defence and attrition benefits at the site while the securing country controls it; unlocks the survey |
+| Survey Extraordinary Material | Reveals the site's material profile and grants one research bonus in the matching field |
+| Fortify Crater Access | One infrastructure level and one fort level in up to two controlled access states; each access state once across all sites |
+| Reconnoitre a Crater Site | Army intelligence on the site's controller; names the material once someone has surveyed it |
+| Disrupt Extraction Routes | A timed local-supply penalty for the enemy controller in up to two hostile-held access states |
+| Prepare a Crater Offensive | A timed attack bonus for the actor's attacks into the crater state |
 
-**Costs:** Civilian-factory commitment, construction time, equipment or resource input, and temporary consumer-goods pressure where supported.
+Rival actions target only the persistent crater-site array, never the whole map.
+The two timed rival operations can be bought again after their effects expire.
+None of these actions adds armour.
 
-**Effect:** Restores part of damaged industrial levels in named states and advances a national recovery objective. Main crater buildings are never eligible.
+Accepted decisions (basis: user-granted design authority):
 
-The action should target a bounded state pool so it cannot become a cheap factory-construction loop.
+- A "supplied garrison" is at least one of the actor's divisions in the crater state, or in a neighbouring ordinary state it controls that has a rail connection to its capital, because no trigger reads a division's supply status.
+  This proxy differs from a real supply reading; the difference is disclosed, not hidden.
+- A secured perimeter belongs to the securing country and lapses when control changes; the survey and its research use stay on the state, so control switching cannot farm them.
 
-### Rehouse displaced workers
+## Missions
 
-**Who sees it:** Countries with large surviving populations in affected states and unresolved recovery burden.
+Missions give a player government concrete, named construction goals after a project.
+Accepted decision: AI countries receive every project effect but no mission contract, because the AI cannot plan construction toward a mission target.
 
-**Costs:** Civilian-factory commitment, manpower, trains or trucks, and stability pressure.
+| Mission | Started by | Duration | Objective |
+| --- | --- | ---: | --- |
+| Keep the Rescue Route Open | Mobile hospitals or rail corridor | 150 days | The named state meets its infrastructure, railway and supply-hub targets and, if it was rail-linked before the impact, is linked to the current capital |
+| Stabilize the Damaged Zone | Debris clearing | 120 days | The two worst-hit damaged states captured at activation both meet their targets; success resolves their local emergencies |
+| Reconnect the National Network | Supply spine | 180 days | Every damaged state that was rail-linked before the impact is linked again, every damaged state meets its infrastructure target, and the saved industrial hub is linked; success closes emergency work everywhere |
+| Restore the Outer Ring | Outer-ring industry | 270 days | No held state keeps Outer Shock Zone or Light Fragment Damage, and every held major-ring state meets its infrastructure and factory targets |
+| Rebuild the Regional Economy | Rehousing, original target only | 365 days | Factory, infrastructure and railway totals across surviving damaged states reach 75 percent of their pre-impact totals |
 
-**Effect:** Improves local construction and production recovery, shortens the impact-zone modifier, and reduces continuing national disruption.
+Repair targets are 60 percent of each state's pre-impact levels, so a state is never asked for a building it never had, and rail objectives ask only for links that existed before the impact.
+These scopes are accepted G6 dispositions: they restore the network the impact broke and keep recovery possible during territorial change, instead of demanding a railway in every damaged state.
 
-This action does not restore dead population.
+Rules:
 
-## Reconstruction missions
+- At most two missions run at once, and running missions do not block projects.
+- Each objective can be met from 45 days before the timeout, and the mission completes as soon as its conditions hold after that day.
+- A mission whose named state leaves the country's control ends without penalty.
+- Network, outer-ring and regional-economy contracts are one-time per country; later repair work cannot reopen them.
 
-### Reconnect the national network
+### Success
 
-A 180 to 365 day objective asks the country to restore defined infrastructure and railway links between the capital, major industry, and damaged states.
+Every success grants the recovery legacy in place of the national burden.
+The legacy of Rebuild the Regional Economy is lasting and survives closeout; the others end with the burden they replaced.
+Network and outer-ring successes feed Government Beyond the Crater.
 
-Success replaces the national recovery idea with a lighter form and closes obsolete emergency decisions. Failure extends the recovery idea and raises future repair costs for a limited period.
+### Failure
 
-### Restore the outer ring
+An expired mission currently applies, once per named state:
 
-A long objective asks the country to remove all timed Ring 3 and light fragment modifiers and to reduce Ring 2 burden below a defined threshold.
+1. a rescue-failure Deaths entry of 1 percent of the state's population (2 percent in the catastrophic ring or at a fragment centre), capped at 25,000;
+2. the return of the state's ended impact damage for 90 days, reopening its local emergency when the damage is emergency-class;
+3. a state failure-pressure modifier;
+4. the full national recovery burden for 90 days, setting aside any legacy;
+5. a 25 percent repair-price surcharge for 180 days.
 
-This objective supports the survival achievement. It must use actual state conditions and cannot auto-complete from pre-impact values.
+README Open question 2 proposes dropping the surcharge, keeping the first four consequences.
 
-### Rebuild the regional economy
+## Prices and costs
 
-A difficult objective for the original target country asks it to restore a meaningful share of surviving pre-impact industrial and logistical capacity outside the permanent crater. The pre-impact snapshot supplies the comparison baseline.
+- Every affected non-crater state carries one stored price quote that the cost text, cost check, reserve check and payment all read, so the displayed price always equals the debit.
+  The multiplier rises with the state's profile and its population loss, stays between 1.00 and 2.50, and refreshes at impact, monthly, on control change and when a surcharge starts or ends.
+- Dust projects read one global quote scaled by the dust stage; crater operations have flat prices.
+- No action has more than four spendable cost types, and native custom costs show at most three inline values with the full cost in the tooltip.
+- Costs favour equipment, trains, trucks, fuel, manpower, convoys and civilian-factory time; command power stays small.
+- A control, route, division or threshold condition is a requirement, never a hidden fifth cost.
+- Every action keeps reserve floors (manpower, support equipment, trucks, trains, fuel, convoys, command power) for players and AI alike; strict equality with the floor is ineligible.
+- Blocked actions show a reason-specific tooltip and the exact target state.
 
-Success grants a lasting but measured recovery legacy, such as improved disaster repair speed or national resilience. It should not refund the destroyed state.
+## AI
 
-## Global dust-protection actions
+Every action has an `ai_will_do` path with reserve floors.
+The normal priority order is:
 
-### Harden factories against dust
+1. prevent continuing deaths;
+2. restore supply to the capital and fronts;
+3. reconnect populated damaged states;
+4. protect national production from dust;
+5. restore surviving industry;
+6. secure and defend crater sites;
+7. contribute to global observation once national needs are covered.
 
-**Who sees it:** Every ordinary country while dust is active.
-
-**Costs:** Civilian-factory commitment, support equipment, and time.
-
-**Effect:** Raises the national protection state and reduces the country's factory-output and production-efficiency penalties from dust.
-
-The action can have staged versions. A later stage replaces the earlier protection state instead of stacking several ideas.
-
-### Protect transport and reserves
-
-**Who sees it:** Countries with low trains, convoys, fuel, or supply resilience during dust.
-
-**Costs:** Trains or convoys, fuel, civilian-factory commitment, and temporary stability or consumer pressure.
-
-**Effect:** Reduces the national supply penalty and improves resilience to dust-linked Event 013 disasters.
-
-The exact transport cost should reflect whether the country relies more on land or maritime routes.
-
-### Join the atmospheric observation network
-
-**Who sees it:** Countries with research, radar, aircraft, or industrial capacity to contribute.
-
-**Costs:** Civilian factories, fuel, convoys or aircraft commitment where appropriate, and time.
-
-**Effect:** Improves weather warning, contributes a bounded amount to global dust decay, and reduces the country's warning delay for linked disasters.
-
-A country can contribute once per stage or through a capped repeatable action. The global contribution needs diminishing returns.
-
-## Crater-control actions
-
-### Secure the crater perimeter
-
-**Who sees it:** Current controller of a crater state.
-
-**Requirements:** Supplied divisions in or adjacent to the crater, control of nearby access states, and no unresolved local occupation failure.
-
-**Costs:** Support equipment, manpower, fuel, and command power within the project limit.
-
-**Effect:** Reduces local attrition and sabotage pressure, improves defense weight, and enables the survey action. It does not increase the armour bonus.
-
-### Survey extraordinary material
-
-**Who sees it:** A controller that has secured the site and has research capacity.
-
-**Costs:** Civilian factories, research opportunity cost or project capacity, support equipment, and time.
-
-**Effect:** Reveals the site's flavor profile, improves the modifier tooltip, and grants a bounded research or intelligence benefit related to material science. It does not create another armour stack.
-
-### Fortify the access routes
-
-**Who sees it:** A controller of a site with valid neighboring states.
-
-**Costs:** Construction capacity, support equipment, trains, and manpower.
-
-**Effect:** Builds or repairs defenses and supply in neighboring normal states. The crater itself remains unusable. The action should prepare the site for war without creating buildings inside the main crater.
-
-## Rival crater actions
-
-Countries that border an enemy crater or are already at war with its controller can receive a small targeted family.
-
-- Reconnoiter the site
-- Disrupt extraction routes
-- Prepare an offensive objective
-
-These actions should gather intelligence, affect local supply, or guide AI strategy. They should not grant universal free war goals or direct ownership transfers.
-
-## Costs and requirement rules
-
-- No action may have more than four spendable cost types.
-- Costs must use matching texticons.
-- Military and logistical actions should rely on equipment, trains, trucks, fuel, manpower, divisions, and construction capacity more often than political power.
-- Command power costs must remain conservative and never exceed the project limit.
-- A state-control, route, division, supply, or threshold condition is a requirement, not a hidden fifth cost.
-- Dynamic costs should scale with affected population, state count, distance, national industry, or current dust stage where that changes the real effort.
-- The UI should show the exact target state and blocked reason.
-
-## AI behavior
-
-The AI needs an equivalent path for every useful action.
-
-Priority order should normally be:
-
-1. Prevent continuing deaths.
-2. Restore supply to the capital and active fronts.
-3. Reconnect high-population damaged states.
-4. Protect national production from dust.
-5. Restore outer-ring industry.
-6. Secure and defend extraordinary mineral sites.
-7. Contribute to global mitigation when national needs and resources allow it.
-
-AI should refuse actions that would consume its last trains, support equipment, fuel, or construction capacity during an active existential war.
-
-## Category cleanup
-
-- Emergency actions hide when no severe local burden remains.
-- Reconstruction actions hide when their target state is restored, lost, annexed, or invalid.
-- Dust actions hide at zero Dust Load.
-- Crater-controller actions refresh when control changes.
-- Selected-state targets clear when the state changes controller or becomes invalid.
-- Missions cancel or transfer cleanly when the country ceases to control the required route.
-- The category closes entirely for countries with no local impact, no global dust, and no crater interest.
-
-## Exploit controls
-
-- A repaired building cannot be restored above its pre-impact or current allowed level through Event 028 actions.
-- Main crater buildings cannot be rebuilt.
-- A country cannot repeat a one-time emergency action on the same state.
-- Repeated global mitigation has a country cap and diminishing global effect.
-- Crater security actions cannot be farmed through rapid controller switching.
-- Mission success records should be one-time for each incident and state group.
-- Annexing a damaged state does not reset its recovery burden or reopen completed rewards.
+The AI never spends its last trains, support equipment, fuel or construction capacity during a war it is losing.
+Probability scenarios are in Part 7.
+
+## Cleanup and exploit controls
+
+- Obsolete phases and actions hide when their conditions end; dust actions hide at zero dust.
+- A state target clears when the state changes controller or becomes invalid, and cancellation, lost control and annexation release only that country's receipts.
+- A one-time action cannot repeat on the same state, and no repair exceeds the pre-impact or allowed level.
+- Main-crater buildings can never be rebuilt.
+- Annexing a damaged state keeps its recovery burden and does not reopen completed rewards; annexation clears the lasting legacy flag so a released country does not regain it.
+- Crater security and survey cannot be farmed through control switching.
+- Global mitigation is capped (Part 4).

@@ -1,114 +1,27 @@
-# Decision and mission implementation prompt for Event 028: Asteroid Incoming
+# Decision and mission audit prompt for Event 028: Asteroid Incoming
 
-Read `AGENTS.md`, `chaos-redux-events`, `chaos-redux-decisions-missions`, the Event 028 specification pack, the tuning matrix, and the current vanilla and Chaos Redux decision precedents. Implement one event-owned recovery category with phased visibility. Do not create a dedicated scripted GUI. Use the static category picture from the asset package.
+Role: `chaosx_decision_mission_auditor`, or the parent acting under the same checklist.
+The design is in [Part 6](028_asteroid_incoming_spec_part_6_decisions_and_missions.md), values in the [tuning matrix](028_asteroid_incoming_tuning_matrix.md), source in `common/decisions/028_asteroid_incoming_decisions.txt` and the Event 028 recovery effects and triggers.
+Follow `CLAUDE.md` and the `chaos-redux-decisions-missions` skill.
 
-## Visible category state
+## When to run
 
-Show only:
+Run after any change to the recovery category, including an accepted proposal from README Open question 2 or the Part 4 mitigation revision.
+Do not re-audit unchanged source.
 
-- Current global dust stage
-- Current national dust-protection state
-- National recovery burden when local impact damage exists
-- Controlled crater count when Extraordinary Minerals is active
+## Checks
 
-Keep raw formulas and per-state ledgers internal or in concise tooltips. A phase should show three to five primary actions and one to three active missions. Six visible primary actions is the hard ceiling.
+- The header shows at most the four values in Part 6, and each phase stays within its visible action cap.
+- Each state action lists one highest-ranked affordable target, and blocked reasons are specific.
+- No action has more than four spendable cost types; displayed cost equals the debit; reserve floors hold for players and AI.
+- Every action has an `ai_will_do` path consistent with the Part 6 priority order.
+- Missions start only for player governments, respect the two-mission limit and grace window, and fail or cancel exactly as Part 6 states.
+- Cleanup and exploit rules in Part 6 hold after control change, annexation and dust clearing.
+- Crater actions keep the garrison proxy, perimeter lapse and survey permanence.
 
-## Pre-impact response
+Weighted changes go to the [AI prompt](028_asteroid_incoming_ai_probability_prompt.md).
 
-Implement the target-country emergency event with three stances.
+## Handoff
 
-- Preserve command continuity
-- Disperse transport and stockpiles
-- Prepare hospitals and shelters
-
-The stances may change command disruption, mobile reserve survival, opening recovery burden, and continuing rescue deaths. They must not change the required immediate center or ring population percentages.
-
-## Emergency actions
-
-Implement exact-state versions of:
-
-- Deploy mobile hospitals
-- Open an emergency rail corridor
-- Clear unstable debris
-- Distribute emergency water and filters
-
-Use real costs such as support equipment, trucks, trains, fuel, manpower, and civilian-factory commitment. Each action has at most four spendable cost types. Show matching texticons, exact target state, route requirements, and blocked reason.
-
-## Emergency missions
-
-Implement:
-
-- Keep the rescue route open
-- Stabilize the damaged zone
-
-Use 120 to 180 day timing based on objective difficulty. The missions should auto-complete from actual supply, route, infrastructure, and state conditions. Success and failure need distinct effects and Deaths-safe handling.
-
-## Reconstruction actions and missions
-
-Implement:
-
-- Rebuild a supply spine
-- Restore outer-ring industry
-- Rehouse displaced workers
-- Reconnect the national network
-- Restore the outer ring
-- Rebuild the regional economy for the original target
-
-These actions must perform real state and network work. Main crater buildings remain permanently ineligible. Restore only capacity lost through the Event 028 incident, within current engine limits. Avoid free factory, railway, and infrastructure farming.
-
-## Dust actions
-
-Implement:
-
-- Harden factories against dust
-- Protect transport and reserves
-- Join the atmospheric observation network
-
-Use staged national protection that replaces earlier forms. Global mitigation has diminishing returns and a monthly cap. One country cannot remove global dust instantly. Dust actions hide at zero load.
-
-## Crater actions
-
-Under Extraordinary Minerals, implement:
-
-- Secure the crater perimeter
-- Survey extraordinary material
-- Fortify access routes
-- Bounded rival reconnaissance and disruption where the country borders or fights the controller
-
-Security requires actual supplied divisions and equipment. Survey reveals persistent site flavor and may give a bounded research or intelligence benefit. It must not create another armour stack. Fortification builds or repairs access states, not the permanent main crater.
-
-## AI
-
-Create an AI path for every meaningful action. Use reserve floors and validity gates.
-
-Priority order:
-
-1. Prevent continuing deaths.
-2. Restore capital and frontline supply.
-3. Reconnect high-population states.
-4. Protect national production from dust.
-5. Restore surviving industry.
-6. Secure and defend crater sites.
-7. Contribute to global mitigation when resources allow.
-
-AI must not spend its last trains, support equipment, fuel, manpower, or construction capacity during an active existential war.
-
-Any probability-bearing AI change requires the audit, patch, and comparison cycle through `chaosx_ai_probability_auditor` and the named scenarios in `028_asteroid_incoming_ai_probability_prompt.md`.
-
-## Cleanup and exploits
-
-- Hide obsolete phases and invalid targets.
-- Clear selected state records when control changes or the state becomes invalid.
-- Cancel or fail missions cleanly when required routes are lost.
-- Prevent repeat rewards on one state.
-- Prevent rebuilding above incident loss or current valid levels.
-- Prevent main-crater reconstruction.
-- Preserve recovery burden through annexation.
-- Prevent crater security and survey farming through rapid control changes.
-- Keep global mitigation inside country and world caps.
-
-## Presentation and audit
-
-Use the static Event 028 category picture and separate 32x32 icons from the asset prompt. Do not paint controls or dynamic values into the picture.
-
-After implementation, spawn `chaosx_decision_mission_auditor` with `fork_turns="none"`. Require a handoff listing every decision and mission ID, target model, cost types, dynamic cost source, AI behavior, success and failure, cleanup, exploit protection, localisation keys, and meaningful validation. Broad design changes return as a plan instead of an unreviewed patch.
+List each decision and mission touched, the finding, any small patch made inside scope, meaningful validation and remaining risk.
+Broad design changes return as a plan under `docs/plans/028_asteroid_incoming_plans/`, not as a patch.

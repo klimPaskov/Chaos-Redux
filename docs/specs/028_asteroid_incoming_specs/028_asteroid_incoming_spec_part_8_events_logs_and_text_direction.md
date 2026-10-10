@@ -1,219 +1,102 @@
-# Asteroid Incoming, Part 8: Events, Logs, and Text Direction
-
-## Event family
-
-The implementation can choose exact subevent IDs. The player-facing and hidden roles should remain distinct.
-
-### Entry and target event
-
-The chooser receives the four-option event after all target pairs are valid and locked. This event explains the temporary redirection capability, the certainty of the center and ring damage, and the miss path.
-
-### Confirmation event
-
-A short confirmation repeats the selected target country and state. It contains no new roll and no hidden alternative.
-
-### Target emergency event
-
-The locked target country chooses one preparedness stance during the two-day delay.
-
-### Observer trajectory notice
-
-Other human players receive a compact notice after confirmation. The notice names the intended target and impact date. It does not reveal fragment sites.
-
-### Hidden impact resolver
-
-One hidden transaction applies the main impact, fragments, Deaths, crater states, dust, and incident aggregation.
-
-### Affected-country report
-
-Each affected country receives one dynamic report. It names its worst affected state, total deaths, number of damaged states, capital relocation when relevant, and the opening recovery problem.
-
-### Global fragment summary
-
-When fragmentation applies, one global news event reports the actual fragment count and broad world regions struck.
-
-### Impact super-event
-
-The super-event follows the completed impact transaction. It identifies the locked main target and region and uses one dynamic impact package.
-
-### Dust milestone reports
-
-A small set of global reports marks major recovery thresholds.
-
-### National recovery closeout
-
-A country receives a final local report when its timed impact-zone burdens are resolved.
-
-### Close-passage news
-
-The miss option produces one global news event. It identifies the object as a narrowly avoided impact and describes observatory follow-up. It creates no super-event and no recovery chain.
-
-## Player-facing text direction
-
-All labels in this package are working labels. Final wording belongs to implementation and research.
-
-### Entry event
-
-**Viewpoint:** Scientists and the chooser's government confronting a short-lived ability to alter the trajectory.
-
-**Visible information:** Three target countries and states, two-day lock, center destruction, adjacency-ring damage, dust, active evolutions, and miss outcome.
-
-**Uncertain information:** Exact fragment sites, exact death totals, exact dust severity, and later political consequences.
-
-**Tone:** Controlled, technical, and morally severe. The event should avoid heroic planetary-defense framing because the player can direct the object toward a country.
-
-**Avoid:** Generic final-crisis language, long scientific exposition, jokes about mass death, invented equations, and language that calls the options warnings or threats.
-
-### Impact options
-
-Each option represents a deliberate target selection. The option tone can use cold administrative brevity or grim scientific understatement. It should not celebrate civilian destruction.
-
-The country and state names must be dynamic. A capital marker can be included when relevant.
-
-The miss option should sound like preserving the natural close-passage path. It should be clear and practical.
-
-### Target emergency event
-
-**Viewpoint:** The targeted government with forty-eight hours to protect what can survive outside the center.
-
-**Visible information:** Locked state, whether it is the capital, the three preparedness stances, and the limits of each stance.
-
-**Tone:** Urgent and practical. The choices should focus on command, transport, hospitals, shelters, and water.
-
-**Avoid:** False hope that the center can be saved, melodramatic speeches, and cheap humor.
-
-### Country reports
-
-**Viewpoint:** The affected country's first consolidated assessment.
-
-**Visible information:** Total deaths, worst affected state, number of damaged states, local phase, and available recovery response.
-
-**Tone:** Specific and restrained. State names, rail loss, hospital pressure, fires, and displaced populations carry the weight.
-
-**Avoid:** One generic paragraph reused for every country, one line per state, map-table framing, and raw hidden variables.
-
-### Fragment summary
-
-**Viewpoint:** Global news after the main strike.
-
-**Visible information:** Actual fragment count and broad regions.
-
-**Uncertain information:** Full material composition and long-term mineral value before Evolution II reports reveal it.
-
-**Tone:** Global factual coverage. It should not compete with the main super-event.
-
-### Dust reports
-
-**Viewpoint:** Weather services, transport networks, factories, and civilians living under changing sky and air conditions.
-
-**Visible information:** Current stage, production and supply consequences, and broad recovery direction.
-
-**Tone:** Period scientific reporting with concrete observations.
-
-**Avoid:** Repeating the same global-collapse wording at every stage.
-
-### Close-passage news
-
-**Viewpoint:** Astronomers and the public observing a near miss.
-
-**Visible information:** The object passed close to Earth, the danger ended, and observatories continue tracking it.
-
-**Tone:** Relief mixed with scientific interest. It can use restrained irony or period newspaper style in the option response after research.
-
-**Avoid:** A hidden implication that the asteroid will return during this event chain.
-
-## Event History
-
-Event 028 receives one major-event history row when it fires.
-
-The row should include:
-
-- Event ID and major type
-- Date
-- Chooser as actor
-- Outcome status: impact or close passage
-- Chosen target country and state after selection
-- Main impact date when applicable
-- Total civilian deaths after resolution
-- Actual fragment count
-- Opening dust stage
-
-The normal major-event history row must not be duplicated by the target emergency event, country reports, fragment summary, dust milestones, or super-event.
+# Asteroid Incoming, Part 8: Events, Logs and Text Direction
+
+Status: implemented; native delivery order of the news queue (L1) is a live check.
+Final text is in `localisation/english/028_asteroid_impact_l_english.yml` and `028_asteroid_incoming_news_plain_l_english.yml`.
+
+## Event chain
+
+| Role | Identifier | Notes |
+| --- | --- | --- |
+| Opening board | `chaosx.nr28.1` | Three strike options, the near miss, or the `N/A` option |
+| Confirmation | `chaosx.nr28.2` | Repeats the target; no new roll |
+| Target preparedness | `chaosx.nr28.3` | One stance; says whether the locked state is the capital |
+| Hidden resolver | `chaosx.nr28.4` | The whole impact transaction |
+| Main-footprint country report | `chaosx.nr28.5` | One per affected country |
+| National recovery closeout | `chaosx.nr28.6` | One per country when local recovery ends |
+| Fragment-only country report | `chaosx.nr28.7` | One per affected country |
+| Reopened board | `chaosx.nr28.8` | Same pairs after cancelling |
+| Fragment visual callback | `chaosx.nr28.9` | Hidden, one fragment every four hours |
+| News queue callback | `chaosx.nr28.10` | Hidden |
+| Impact presentation start | `chaosx.nr28.11` | Hidden, waits for the forecast to close |
+| Price re-quote after surcharge | `chaosx.nr28.12` | Hidden; retired if Open question 2 is accepted |
+| Opening warning | `chaosx.news.29` | "Asteroid Incoming" |
+| Locked course | `chaosx.news.30` | Names state, country, continent and date |
+| Close passage | `chaosx.news.96` | Near-miss outcome |
+| Failed course | `chaosx.news.97` | Fail-closed outcome |
+| Impact bulletin | `chaosx.news.32` | Fragment count and struck continents |
+| Dust milestones | `chaosx.news.92`, `93`, `94` | Below Impact Winter, Residual Haze, clear sky |
+| Impact super-event | Shared slot 116 | Names the target and region |
+
+Presentation order: open asteroid news and pending human reports come before the super-event, and queued asteroid news waits while any super-event is visible.
+Each bulletin is accepted once and each recipient consumes its own receipt, so a bulletin cannot repeat; an unprinted opening warning is replaced by the locked course or the outcome, and the latest dust bulletin replaces older unprinted ones.
+A quick-confirmed strike gives an unaffected player two bulletins and one super-event.
+
+## Writing direction
+
+Player-facing text follows the `chaos-redux-events` writing rules: concrete, short, period-appropriate, and free of implementation or update-history wording.
+
+- **Board.** Scientists and a government holding a short-lived power to steer the object. Controlled, technical and morally severe; no heroic planetary-defence framing, no invented equations, no jokes about mass death. Options are cold and brief and never celebrate destruction.
+- **Preparedness.** The targeted government with forty-eight hours to save what lies outside the centre. Urgent and practical: command, transport, hospitals, shelters, water. No false hope for the centre.
+- **Country reports.** The first consolidated assessment: worst-hit state, deaths, damaged states, lost transport and industry, the capital outcome when relevant, and the next useful order. Specific and restrained; never a stat sheet, one line per state, or raw variables.
+- **Impact bulletin.** Global factual coverage that does not compete with the super-event.
+- **Dust bulletins.** Weather services, rail networks, factories and civilians under a changed sky; a different concrete observation at each stage, never the formula.
+- **Close passage.** Relief mixed with scientific interest; observatories keep tracking; no hint that the object will return.
+
+Target sample for the locked-course bulletin opening: "Observatories have locked the asteroid's course on Silesia in Germany, in Europe. Impact is expected on 9 March 1938."
+The current `chaosx.news.30.d` and `chaosx.nr28.2.d` strings read "on [continent]", which should become "in [continent]".
+
+## Event history
+
+Event 028 writes one Major history row when it fires, later updated in place with the outcome; preparedness, reports, fragments, dust bulletins and the super-event never add rows.
+Rows use the shared two-line form (header plus one summary line, 41 pixels high).
+The flags show the chooser and, after a strike, the target country.
+The summary line gives the outcome: the offered board, "Impact on [state]: [deaths] dead, [n] fragments", the near-miss date, or the closed trajectory.
+Every other record field lives in Event Details.
 
 ## Event Details
 
-Before firing, Event Details should describe the premise without listing hidden target scores or exact formulas.
+Before firing, Event Details describes the premise without target scores or formulas, and shows `N/A` with the reason when no valid board exists.
 
-After firing, it should show outcome-specific information.
+After a near miss it shows the outcome and the date of closest passage.
+After a fail-closed course it shows that outcome.
 
-### Close passage
+After a strike it shows:
 
-- Miss outcome
-- Date of closest passage
-- No impact and no dust
+- who chose the trajectory;
+- the original target state, its continent and capital status;
+- the impact date, deaths, affected states and countries;
+- whether the government could move, when the capital was struck;
+- the fragment-site count;
+- the opening and current dust stage, with the current Dust Load as a record value;
+- the current main-crater and fragment-site controllers under Extraordinary Minerals.
 
-### Main impact
-
-- Chooser
-- Intended target country
-- Locked state and region
-- Impact date
-- Total deaths
-- Number of affected countries and states
-- Actual fragment count
-- Current Dust Load and stage
-- Main crater controller
-- Fragment-site controllers under Extraordinary Minerals
-
-The detail view should update current controller information without rewriting historical target information.
+Current controllers update live; historical target information never changes.
 
 ## Evolution views
 
-### Global Fragmentation preview
+The Global Fragmentation preview describes worldwide fragment strikes with smaller rings and more dust, without locations.
+The Extraordinary Minerals preview states the plus 100 and plus 20 percent armour values, because they are visible mechanics.
+Each applied evolution writes one global row with no actor; the Evolutions tab and the related-evolution view show source event, tier, stage and date.
 
-The catalog preview describes worldwide fragment strikes, two-ring fragment damage, country reports, and added dust. It should not show future random locations.
+## Target names
 
-### Extraordinary Minerals preview
+Accepted decision F06 (Part 2): text names the target through the persistent pointers saved at the lock.
+An annexed target still shows its former name and flag; region text uses the locked state's continent; current reports use the country that holds the damaged territory.
+No text may show a missing scope or raw key.
 
-The catalog preview describes transferable main and fragment armour benefits and strategic crater control. It can state the plus 100 and plus 20 values because they are visible mechanics.
+## Super-event
 
-### Logged rows
+The super-event is the first global reveal of a completed strike.
+It names where the main body struck, says the surrounding regions were damaged, mentions fragments by count and continent when they applied, and notes the developing atmospheric effects.
+The quote, button remark and music were chosen through sourced research in `docs/super_events/028_asteroid_incoming_super_event_research.md`; the music is a public-domain Brahms recording played through the shared settings-aware audio path.
 
-Global Fragmentation and Extraordinary Minerals each produce one global evolution row when applied. They use no actor flag. The main Evolutions tab and selected-history related-evolution view show their source event, tier, stage, and date. Event Details remains a preview and current-state surface, not a fake history log.
+## Availability and default queue
 
-## Event list availability
+Event 028 is in the default event queue under the user's instruction that every event from 1 to 40 is playable.
+It shows `N/A` instead of a misleading zero weight when no valid board can be built.
 
-Event 028 should show `N/A` weight when fewer than three valid target pairs can be constructed. It should not show a misleading zero weight that looks like ordinary major-event accumulation.
+## Spreadsheet
 
-The event remains disabled by default until the rework is complete. The same implementation change that completes registration, logs, assets, AI, docs, and catalog alignment can add it to the normal enabled allowlist.
-
-## Dynamic names and snapshots
-
-The impact super-event and reports need both historical and current context.
-
-- Historical target uses the country name and flag context saved at trajectory lock.
-- Current affected-country reports use the country that holds the damaged territory at impact time.
-- Current crater-controller displays use live controller context.
-- Region text uses the locked state's broad geographic context.
-
-If the intended target no longer exists at impact time, the super-event can identify the former target and region through the saved snapshot. It should not display a missing scope or raw key.
-
-## Super-event text direction
-
-The final super-event package requires sourced quote and cultural-remark research.
-
-**Role:** First global reveal of the completed main impact.
-
-**Title direction:** Short, specific, and tied to the target or impact. Avoid generic apocalypse titles.
-
-**Description direction:** State where the main body struck, that surrounding regions were damaged, and that atmospheric consequences are developing. Mention fragments when active without listing every site.
-
-**Button direction:** A brief reaction suitable for a mass-casualty scientific disaster. Use restrained cultural reference, scientific understatement, or grim administrative response only after source research.
-
-**Quote direction:** Use a verified historical, literary, religious, philosophical, or scientific source about falling bodies, human control, catastrophe, dust, or consequences. Do not invent or misattribute a quote.
-
-## Spreadsheet-facing direction
-
-The catalog detail should present the event premise and visible choices. It should not expose internal target scoring, hidden AI weights, raw formulas, implementation history, or random-location pools.
-
-Evolution detail fields should match the Event Details localisation in meaning. The authoritative workbook is edited first. CSV exports are regenerated after the workbook update.
+The catalog row (Events row 29) is Major with status Needs Testing.
+Its Details, Evo I and Evo II cells match `asteroid_incoming.event_details.description` and the two evolution bodies in meaning, with colour codes removed and constants rendered.
+Any later wording change edits the authoritative workbook first and regenerates the CSV exports with `python .tools/export_event_catalog_csv.py`; the catalog never lists target scores, AI weights, formulas or implementation history.
