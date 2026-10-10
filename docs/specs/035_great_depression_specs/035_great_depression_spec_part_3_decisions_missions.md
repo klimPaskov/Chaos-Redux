@@ -1,6 +1,6 @@
 # Great Depression 2.0 specification, part 3: Decisions, recovery doctrines, and missions
 
-Status: the category, six doctrines, their actions and closers, the bank program and all missions are `implemented` in source; the per-phase visible-action count and the Public Works return and lasting-capacity closure are pending (see the [package README](035_great_depression_spec_index.md#implementation-status)).
+Status: the category, six doctrines, their actions and closers, the bank program, all missions, the merged action families, the phase-gated visible-action budget and the Public Works return are `implemented` in source; the physical legacy of Convert Works into Lasting Capacity is pending (see the [package README](035_great_depression_spec_index.md#implementation-status)).
 Names below are the implemented player-facing names unless marked as working labels.
 
 ## Presentation
@@ -21,17 +21,38 @@ Such a change requires a documented design exception, exact GUI ownership, and t
 
 ## Decision-surface budget
 
-The category holds 79 decisions and 17 missions in source, almost all hidden at any moment.
+The category holds 68 ordinary decisions and 17 missions in source, almost all hidden at any moment.
+Every action shows only in the phases where it can still change the outcome, and an active evolution replaces the lower-priority actions of the other surfaces.
 The visible budget is the rule that matters:
 
-- Three to five primary actions in one phase, six only during the one-time doctrine choice or a justified emergency.
+- National actions (no target): at most five; six while the doctrine is chosen and during an emergency (Economic Paralysis, an open social incident, the worldwide depression).
+- Partner actions (aimed at one country): at most five; six during the worldwide depression.
+- Selected-center operations (aimed at the one selected Depression Center): at most six, stage-gated so that Reopen Idled Plants and Rebuild Shuttered Center never show together.
 - At most three active missions: one main objective and two supporting objectives.
-- One selected Depression Center at a time.
-- Evolution actions replace lower-priority baseline actions instead of adding to them.
+- One selected Depression Center at a time; the center selector and the missions are not counted.
 
-The visible count per phase and evolution state has not been measured against source.
-Acceptance requires a count of visible decisions for each phase, with and without each evolution, for a player with a selected center and one without (part 11, `C-08` and `J-05`).
-Merging the actions that repeat one idea under different names (four clearing actions, three protectionist actions, two market exits, three partner-aid actions, four reconstruction actions) is `unresolved` (README Open questions 2).
+Phase rules that produce the budget:
+
+- While the doctrine is unassigned only the six doctrine choices show.
+- Emergency Relief shows in Panic and Contraction, Economic Paralysis and, without Financial Contagion, Depression; Request Foreign Support shows before Recovery; Cabinet Review shows in Depression and Stabilization outside a social incident and the worldwide depression; Emergency Policy Review shows in Economic Paralysis.
+- Doctrine openers show in Panic and Contraction and Depression, working actions in Depression and Stabilization, and closers in Stabilization and Recovery.
+- Protection shows before Recovery; Reopen, Rebuild, Restructure and Abandon show in Depression and Stabilization only.
+- Financial Contagion shows its containment actions early (Ring-Fence, Restrict Capital Outflows, Emergency Credit, Clearing Agreement, Debt Standstill, Boom Supply Contract), its repositioning actions in Depression and Stabilization (Shift Imports, Abandon, Acquire Assets, External Supervision, Exploit Supply Gap), and Protect the Home Market in Stabilization.
+- Social Collapse actions show only while a social incident is open: the early ladder offers Negotiate, Employment Compact and Guarantee Property and Credit, the late ladder offers Security Forces, Councils and Emergency Government.
+- The Second Great Depression actions follow the world stage: Devaluation in Shock and Contraction, Debt Conference in Contraction and Coordination, Coordinated Reconstruction in Coordination and Recovery, Recovery Conference in Recovery, and Withdrawal only once the country has contributed.
+
+Measured peaks from source (`.tools/test_event035_visible_actions.py`, national / partner / center, over every doctrine and center stage, assuming one valid partner):
+
+| Phase | Baseline | Financial Contagion | Social Collapse | The Second Great Depression |
+| --- | --- | --- | --- | --- |
+| Panic and Contraction | 2 / 1 / 2 | 4 / 5 / 2 | 5 / 5 / 2 | 4 / 6 / 2 |
+| Depression | 4 / 1 / 5 | 4 / 5 / 6 | 5 / 5 / 6 | 4 / 6 / 6 |
+| Stabilization | 4 / 1 / 4 | 5 / 5 / 5 | 6 / 5 / 5 | 5 / 6 / 5 |
+| Recovery | 2 / 0 / 0 | 2 / 0 / 0 | 5 / 0 / 0 | 4 / 1 / 0 |
+| Economic Paralysis | 2 / 1 / 1 | 3 / 5 / 1 | 5 / 5 / 1 | 4 / 6 / 1 |
+
+Acceptance is the passing test and the recorded counts above (part 11, `C-08` and `J-05`).
+The actions that repeated one idea under different names are merged: Clearing Agreement (four clearing actions), Protect the Home Market (three protectionist actions), Abandon the Distressed Market with a quiet form for allies (two market exits), Emergency Credit (three partner-aid actions) and Coordinated Public Works and Reconstruction (four reconstruction actions).
 
 ## Recovery doctrine
 
@@ -197,7 +218,8 @@ Failure or interruption:
 
 - Leaves an unfinished works burden and adds Severity once through the shared failure path.
 - Can be resumed only through a new paid authorization.
-- Unused paid materials return to the original payer in proportion to the work not done; the parent accepted this policy and the return helpers exist, but integration is pending (README Open questions 7).
+- Unused paid materials return to the original payer in proportion to the work not done.
+  The player sees one line on the program tooltip ("If the work stops early, the unused materials return to our stockpile") and no running balance.
 
 #### National Employment Guarantee
 
@@ -324,9 +346,9 @@ Each funded bank program holds one of the two supporting mission slots.
 
 The route's state project: after a completed audit, it restores a selected Distressed, Idled or Shuttered center through the finance restoration project, and the center reopens as Restructured.
 
-#### Negotiate Clearing and Import Agreements
+#### Clearing Agreement
 
-Targets a valid partner or group of partners.
+Targets a valid partner; the one clearing action of the category.
 It uses convoys, fuel, civilian factories, diplomatic conditions, or reciprocal commitments.
 It reduces trade stress and can open an aid or supplier relationship.
 

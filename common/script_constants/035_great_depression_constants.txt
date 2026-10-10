@@ -109,13 +109,14 @@ great_depression_event = {
 	worldwide_severity_maximum = 18
 	paralysis_consequence_chaos = 1
 	contagion_conversion_chaos = 2
+	contagion_chain_milestone_conversions = 3
+	contagion_chain_milestone_chaos = 3
+	contagion_chain_ledger_cap = 16
 	social_outcome_chaos = 2
 	civil_conflict_chaos = 3
-	worldwide_wave_chaos = 20
-	worldwide_conversion_chaos = 2
+	worldwide_wave_chaos = 10
 	supplier_collapse_chaos = 2
 	international_recovery_chaos_relief = 10
-	strong_recovery_chaos_relief = 2
 }
 
 great_depression_thresholds = {
@@ -255,6 +256,19 @@ great_depression_hidden_component = {
 	aftermath_labor_scar = 1
 }
 
+# Pressure that shared owners put on a depression through their own public
+# state. Event 35 reads the owner's state and never writes it back.
+great_depression_connection = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	famine_demand_pressure = 1
+	famine_social_pressure = 1
+	sanction_trade_pressure = 2
+}
+
 great_depression_evolution_mtth = {
 	schema = {
 		any_key = yes
@@ -316,11 +330,6 @@ great_depression_pacing = {
 	consequence_no_pacing = 2
 	conversion_no_pacing = 3
 	debug_no_pacing = 4
-	panic_interval_days = 4
-	depression_interval_days = 7
-	stabilization_interval_days = 12
-	recovery_interval_days = 8
-	paralysis_interval_days = 4
 }
 
 great_depression_history_mode = {
@@ -643,7 +652,7 @@ great_depression_action = {
 	center_restructure_relief = -2
 	center_liquidation_pressure = 4
 	global_recovery_relief = -8
-	panic_pulse_delta = 2
+	panic_pulse_delta = 3
 	public_works_pulse_delta = -2
 	strategic_pulse_delta = -1
 	finance_pulse_delta = -2
@@ -1379,6 +1388,7 @@ great_depression_scaling = {
 	small_cost_factor = 0.50
 	medium_cost_factor = 1.00
 	large_cost_factor = 1.50
+	sanction_cost_factor = 1.25
 	opening_stability_weight = 12
 	opening_trade_weight = 8
 	opening_logistics_weight = 8

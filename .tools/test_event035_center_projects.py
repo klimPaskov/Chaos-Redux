@@ -22,6 +22,7 @@ EFFECT_FILES = (
     r"common\scripted_effects\035_great_depression_bank_effects.txt",
     r"common\scripted_effects\035_great_depression_project_duration_effects.txt",
     r"common\scripted_effects\035_great_depression_public_works_effects.txt",
+    r"common\scripted_effects\035_great_depression_works_escrow_effects.txt",
 )
 TRIGGER_FILES = (
     r"common\scripted_triggers\035_great_depression_triggers.txt",
@@ -30,6 +31,7 @@ TRIGGER_FILES = (
     r"common\scripted_triggers\035_great_depression_bank_triggers.txt",
     r"common\scripted_triggers\035_great_depression_project_duration_triggers.txt",
     r"common\scripted_triggers\035_great_depression_public_works_triggers.txt",
+    r"common\scripted_triggers\035_great_depression_works_escrow_triggers.txt",
 )
 CONSTANTS_FILE = r"common\script_constants\035_great_depression_constants.txt"
 REGION_CONSTANTS_FILE = r"common\script_constants\035_great_depression_region_constants.txt"
@@ -166,6 +168,10 @@ class Event35Runtime:
     """Only the source commands reached by the center-project call paths run."""
 
     EXTERNAL_FIXTURES = {"great_depression_submit_humanitarian_center_pressure"}
+    FAMINE_FOOD_PROBLEM_FLAGS = {
+        "famine_food_stage_supply_strain", "famine_food_stage_acute_shortage",
+        "famine_food_stage_famine", "famine_food_stage_catastrophic",
+    }
     NATIVE_PRIMITIVES = {
         "add_building_construction", "remove_building", "add_dynamic_modifier",
         "remove_dynamic_modifier", "add_ideas", "remove_ideas", "country_event",
@@ -185,6 +191,8 @@ class Event35Runtime:
         for path in TRIGGER_FILES:
             self.trigger_defs.update(read_definitions(path))
         self.constants = self._read_constants()
+        # Shared contamination owner threshold read by the certification hold.
+        self.constants["constant:cbrn_contamination_threshold.severe"] = 50.0
         self.file_constants = {}
         for path in EFFECT_FILES:
             raw = uncomment((ROOT / path).read_text(encoding="utf-8-sig"))
@@ -582,6 +590,13 @@ class Event35Runtime:
             return self._compare(self._numeric_builtin(key, scope), "=", self._value(value))
         if key == "owner_exists":
             return scope.kind == "state" and scope.owner is not None and scope.owner.exists == (value == "yes")
+        if key == "has_dynamic_modifier":
+            return {n.key: n.value for n in value}["modifier"] in scope.modifiers
+        # Shared owner reads are declared fixture state, not emulated owner logic.
+        if key == "famine_state_has_visible_food_problem":
+            return bool(scope.flags & self.FAMINE_FOOD_PROBLEM_FLAGS) == (value == "yes")
+        if key == "condemnation_has_active_sanctions":
+            return (scope.values.get("condemnation_active_sanctions", 0) > 0) == (value == "yes")
         raise SourceContractError(f"unsupported trigger command {key} at line {node.line}")
 
     def run_effect(self, name, scope, root=None):
@@ -658,6 +673,13 @@ class Event35Runtime:
                 elif key == "subtract_from_variable": result = current - rhs
                 else: result = current * rhs
                 self._write_path(name, result)
+            elif key in ("divide_variable", "modulo_variable"):
+                args = {n.key: n.value for n in value}
+                name, rhs = args["var"], self._value(args["value"])
+                if rhs == 0:
+                    raise SourceContractError("Native variable division by zero")
+                current = self._variable(name)
+                self._write_path(name, current / rhs if key == "divide_variable" else current % rhs)
             elif key == "clear_variable":
                 self._write_path(value, 0, clear=True)
             elif key == "set_temp_variable":
@@ -1397,9 +1419,10 @@ class DoctrineProjectProducerTests(unittest.TestCase):
                 owner.values["great_depression_doctrine"] = 2
                 owner.flags.add("great_depression_strategic_network_designated")
                 site.flags.add("great_depression_center_strategic")
-                self.assertTrue(runtime.test_trigger("great_depression_should_show_strategic_rescue_closer", owner, root=owner))
+                self.assertFalse(runtime.test_trigger("great_depression_should_show_strategic_rescue_closer", owner, root=owner))
                 self.assertFalse(runtime.test_trigger("great_depression_strategic_closer_phase_is_open", owner, root=owner))
                 owner.values["great_depression_phase"] = runtime.constants["constant:great_depression_phase.stabilization"]
+                self.assertTrue(runtime.test_trigger("great_depression_should_show_strategic_rescue_closer", owner, root=owner))
                 self.assertTrue(runtime.test_trigger("great_depression_strategic_closer_phase_is_open", owner, root=owner))
                 runtime.run_effect(closer, owner, root=owner)
                 self.assertIn(flag, owner.flags)

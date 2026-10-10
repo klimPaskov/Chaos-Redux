@@ -32,7 +32,8 @@ The player sees one number and a few labels:
 
 Everything else stays internal: hidden components, shock memory, social strain, exposure scores, world pressure, industrial weights, project work days beyond the mission timer, receipts, cooldowns, contribution ledgers and bloc drag.
 A new display line must replace an existing one or prove that the player makes a different choice because of it.
-Decision tooltips state the effect of an action on Severity and how long it lasts in plain words; whether they should also print hidden component points is `unresolved` (README Open questions 3).
+Decision tooltips state the effect of an action on Severity and how long it lasts in plain words ("eases faster", "rises faster") and print no hidden component points.
+The only numbers in a tooltip are durations, a project length, a failure cost in Severity and a cooldown, because the player acts on them.
 
 ## Initial tuning scale
 
@@ -233,7 +234,7 @@ The event must not introduce an unauthorized recurring scan across every country
 
 The implemented national pulse runs every `7` days (`great_depression_event.pulse_days`) for each registered country through the shared global-host hook, and the drift calculation normalizes pressure by the elapsed days since the last pulse.
 Immediate decisions, state loss, registered attacks, inherited Event 34 collapse, and other exact shocks update Severity between pulses.
-The original design asked for a phase-scaled cadence of `3` to `14` days; accepting the fixed weekly pulse instead is `unresolved` (README Open questions 1).
+The pulse is fixed rather than phase-scaled: decisions, state loss and registered shocks already update Severity between pulses, and a variable cadence added timer complexity without a visible player benefit.
 Ordinary incidents use their own clock: a review every `21` days, `14` days while an evolution is active, with a `42`-day family cooldown.
 
 Only one pulse schedule may exist for one country and episode, and timers never stack.

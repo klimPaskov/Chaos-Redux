@@ -700,3 +700,43 @@ great_depression_currency_pressure_is_active = {
 	check_variable = { var = great_depression_currency_pressure_global_episode_id value = global.great_depression_global_episode_id compare = equals }
 	check_variable = { var = global.num_days value = great_depression_currency_pressure_due_day compare = less_than }
 }
+
+# ============================================================================
+# SHARED OWNER READS
+# ============================================================================
+# Event 35 reads the public state of the famine, contamination and sanction
+# owners. It never writes their state back and adds no value of its own.
+# ============================================================================
+
+# STATE scope. Severe chemical contamination or fallout in the state. The
+# contamination owner clears it; reopening cannot be certified until then.
+great_depression_center_state_is_contaminated = {
+	OR = {
+		has_dynamic_modifier = { modifier = nuclear_fallout_state }
+		AND = {
+			has_variable = cbrn_chemical_contamination
+			check_variable = { var = cbrn_chemical_contamination value = constant:cbrn_contamination_threshold.severe compare = greater_than_or_equals }
+		}
+	}
+}
+
+# STATE scope. A reopening that has reached its certification work is held
+# while the famine owner reports a visible food problem in the state or the
+# contamination owner reports severe contamination. Protection projects are
+# never held.
+great_depression_center_certification_is_blocked = {
+	NOT = { check_variable = { var = great_depression_center_project_type value = constant:great_depression_center_project.protection compare = equals } }
+	has_variable = great_depression_center_project_work_days
+	has_variable = great_depression_center_project_certification_start_work_days
+	check_variable = { var = great_depression_center_project_work_days value = great_depression_center_project_certification_start_work_days compare = greater_than_or_equals }
+	OR = {
+		famine_state_has_visible_food_problem = yes
+		great_depression_center_state_is_contaminated = yes
+	}
+}
+
+# COUNTRY scope. Sanctions or an embargo against this country. The sanction
+# owner records the participants; Event 50 will join this read when it ships.
+great_depression_trade_isolation_is_active = {
+	condemnation_has_active_sanctions = yes
+}

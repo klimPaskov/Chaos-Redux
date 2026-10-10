@@ -11,8 +11,8 @@ Use the `chaos-redux-decisions-missions` skill.
 
 ## Questions to answer
 
-1. How many decisions are visible in each phase, with and without each evolution, for a player with and without a selected center, and does that stay within the part 3 budget?
-2. Which visible actions repeat one idea under different names, and does README Open questions 2 cover them?
+1. Do the counts from `.tools/test_event035_visible_actions.py` still stay within the part 3 budget after the change?
+2. Which visible actions repeat one idea under different names after the merges recorded in the README decisions?
 3. Does every paid action use one affordability predicate for availability and display, spend at most four resource types and charge exactly once?
 4. Do missions respect one main and two supporting slots, and do cancellation and timeout avoid a second charge or a stale reward?
 5. Does every tooltip describe the player's outcome in plain words without printing internal component values beyond what the value budget allows?

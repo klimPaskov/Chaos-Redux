@@ -204,40 +204,45 @@ great_depression_apply_global_chaos_receipt = {
 	}
 }
 
-# COUNTRY scope. Positive recovery can repay only Event 35's own applied
-# increase and never more than the live meter contains.
-great_depression_apply_strong_recovery_chaos_relief = {
+# COUNTRY scope, the economy that has just converted through contagion.
+# Input: great_depression_contagion_chain_root, the episode that started the
+# spreading chain. The first conversion of a chain and the conversion that
+# makes it reach the milestone count pay Chaos; every other conversion of the
+# same chain pays nothing. The global chain ledger keeps a bounded number of
+# recent chains.
+great_depression_pay_contagion_chain_chaos = {
+	set_temp_variable = { great_depression_chain_conversions = constant:great_depression_api.one }
 	if = {
-		limit = {
-			check_variable = { var = great_depression_recovery_outcome value = constant:great_depression_recovery_outcome.strong compare = equals }
-			NOT = { has_country_flag = great_depression_strong_recovery_chaos_receipt }
-			has_variable = great_depression_event35_chaos_increase_total
-			check_variable = { var = great_depression_event35_chaos_increase_total value = constant:great_depression_api.zero compare = greater_than }
-			NOT = { has_global_flag = settings_chaos_meter_disabled }
+		limit = { is_in_array = { array = global.great_depression_contagion_chain_roots value = great_depression_contagion_chain_root } }
+		for_loop_effect = {
+			start = 0
+			end = global.great_depression_contagion_chain_roots^num
+			value = great_depression_chain_index
+			if = {
+				limit = { check_variable = { var = global.great_depression_contagion_chain_roots^great_depression_chain_index value = great_depression_contagion_chain_root compare = equals } }
+				add_to_variable = { global.great_depression_contagion_chain_counts^great_depression_chain_index = constant:great_depression_api.one }
+				set_temp_variable = { great_depression_chain_conversions = global.great_depression_contagion_chain_counts^great_depression_chain_index }
+			}
 		}
-		set_temp_variable = { great_depression_recovery_chaos_relief = constant:great_depression_event.strong_recovery_chaos_relief }
-		if = {
-			limit = { check_variable = { var = great_depression_event35_chaos_increase_total value = great_depression_recovery_chaos_relief compare = less_than } }
-			set_temp_variable = { great_depression_recovery_chaos_relief = great_depression_event35_chaos_increase_total }
-		}
+	}
+	else = {
 		if = {
 			limit = {
-				has_variable = global.chaos_meter_value
-				check_variable = { var = global.chaos_meter_value value = great_depression_recovery_chaos_relief compare = less_than }
+				has_variable = global.great_depression_contagion_chain_roots^num
+				check_variable = { var = global.great_depression_contagion_chain_roots^num value = constant:great_depression_event.contagion_chain_ledger_cap compare = greater_than_or_equals }
 			}
-			set_temp_variable = { great_depression_recovery_chaos_relief = global.chaos_meter_value }
+			remove_from_array = { array = global.great_depression_contagion_chain_roots index = 0 }
+			remove_from_array = { array = global.great_depression_contagion_chain_counts index = 0 }
 		}
-		if = {
-			limit = { check_variable = { var = great_depression_recovery_chaos_relief value = constant:great_depression_api.zero compare = greater_than } }
-			set_temp_variable = { chaos_change = great_depression_recovery_chaos_relief }
-			multiply_temp_variable = { chaos_change = -1 }
-			set_temp_variable = { chaos_history_reason = constant:chaos_meter_history_reason.generic.decrease }
-			set_temp_variable = { chaos_history_reason_custom = constant:great_depression_api.one }
-			add_chaos_meter_value = yes
-			subtract_from_variable = { great_depression_event35_chaos_increase_total = great_depression_recovery_chaos_relief }
-			set_variable = { great_depression_event35_chaos_relief_total = great_depression_recovery_chaos_relief }
-			set_country_flag = great_depression_strong_recovery_chaos_receipt
-		}
+		add_to_array = { array = global.great_depression_contagion_chain_roots value = great_depression_contagion_chain_root }
+		add_to_array = { array = global.great_depression_contagion_chain_counts value = constant:great_depression_api.one }
+		set_temp_variable = { chaos_change = constant:great_depression_event.contagion_conversion_chaos }
+		great_depression_apply_local_chaos_receipt = yes
+	}
+	if = {
+		limit = { check_variable = { var = great_depression_chain_conversions value = constant:great_depression_event.contagion_chain_milestone_conversions compare = equals } }
+		set_temp_variable = { chaos_change = constant:great_depression_event.contagion_chain_milestone_chaos }
+		great_depression_apply_local_chaos_receipt = yes
 	}
 }
 
@@ -459,6 +464,18 @@ great_depression_refresh_costs = {
 	set_variable = { great_depression_cost_support_equipment = constant:great_depression_cost.standard_support_equipment }
 	multiply_variable = { great_depression_cost_support_equipment = great_depression_cost_factor }
 	round_variable = great_depression_cost_support_equipment
+	# Sanctions make the Finance and Trade doctrine pay more for convoys and
+	# political authority; other doctrines keep the ordinary quote.
+	if = {
+		limit = {
+			great_depression_trade_isolation_is_active = yes
+			check_variable = { var = great_depression_doctrine value = constant:great_depression_doctrine.stabilize_finance_and_trade compare = equals }
+		}
+		multiply_variable = { great_depression_cost_convoys = constant:great_depression_scaling.sanction_cost_factor }
+		round_variable = great_depression_cost_convoys
+		multiply_variable = { great_depression_cost_political_power = constant:great_depression_scaling.sanction_cost_factor }
+		round_variable = great_depression_cost_political_power
+	}
 	set_variable = { great_depression_cost_stability = constant:great_depression_cost.standard_stability }
 	multiply_variable = { great_depression_cost_stability = great_depression_cost_factor }
 	set_variable = { great_depression_cost_war_support = constant:great_depression_cost.standard_war_support }
@@ -841,6 +858,7 @@ great_depression_fail_center_project = {
 		set_variable = { great_depression_center_project_stage = constant:great_depression_center_project_stage.failed }
 		set_variable = { great_depression_center_project_stage_day = global.num_days }
 		great_depression_write_center_project_ledger = yes
+		great_depression_works_escrow_retire_and_settle = yes
 		great_depression_retire_public_works_mission = yes
 		great_depression_clear_public_works_plan = yes
 		clr_state_flag = great_depression_center_project_authorized
@@ -899,6 +917,7 @@ great_depression_complete_center_project = {
 		}
 		set_state_flag = great_depression_center_project_completed_receipt
 		set_variable = { great_depression_center_project_completed_authorization_id = great_depression_center_project_authorization_id }
+		great_depression_works_escrow_retire_and_settle = yes
 		set_variable = { great_depression_center_project_state = great_depression_center_project_type }
 		if = {
 			limit = {
@@ -1097,6 +1116,8 @@ great_depression_process_center_project = {
 					NOT = { is_owned_by = ROOT }
 					NOT = { is_controlled_by = ROOT }
 					ROOT = { NOT = { uses_normal_civilian_systems = yes } }
+					# Food shortage or severe contamination holds the certification work.
+					great_depression_center_certification_is_blocked = yes
 				}
 			}
 			if = {
@@ -1131,6 +1152,8 @@ great_depression_process_center_project = {
 				add_to_variable = { great_depression_center_project_work_days = great_depression_project_work_elapsed }
 			}
 			set_variable = { great_depression_center_project_last_process_day = global.num_days }
+			great_depression_works_escrow_prepare_request = yes
+			great_depression_works_escrow_measure_unused = yes
 			if = {
 				limit = { ROOT = { check_variable = { var = great_depression_depression_severity value = constant:great_depression_event.paralysis_threshold compare = greater_than_or_equals } } }
 				add_to_variable = { great_depression_center_project_paralysis_days = great_depression_project_work_elapsed }
@@ -1459,6 +1482,7 @@ great_depression_adopt_transferred_center = {
 		great_depression_write_center_project_ledger = yes
 		great_depression_update_public_works_repair_term = yes
 		set_state_flag = great_depression_center_transfer_adopted_receipt
+		great_depression_works_escrow_adopt_live_context = yes
 		clr_state_flag = great_depression_center_transfer_contract_open
 		clear_variable = great_depression_transfer_adopted_stage
 		clear_variable = great_depression_transfer_adopted_project
@@ -3243,6 +3267,9 @@ great_depression_clear_registered_center_runtime = {
 							}
 						}
 					}
+				set_state_flag = great_depression_works_escrow_cleanup_authorized
+				great_depression_works_escrow_retire_and_settle = yes
+				clr_state_flag = great_depression_works_escrow_cleanup_authorized
 				great_depression_clear_center_state_flags = yes
 				great_depression_clear_public_works_plan = yes
 				clear_variable = great_depression_center_episode_id
@@ -3287,6 +3314,7 @@ great_depression_clear_registered_center_runtime = {
 # and proven achievement flags, while these controls belong only to the active
 # crisis and must not make a Minor Repeatable episode permanently inert.
 great_depression_reset_episode_policy_state = {
+	great_depression_works_escrow_process_retired_sites = yes
 	great_depression_incident_clear_episode_state = yes
 	great_depression_clear_market_exit_state = yes
 	great_depression_clear_episode_action_flags = yes
@@ -3308,7 +3336,6 @@ great_depression_reset_episode_policy_state = {
 	clr_country_flag = great_depression_policy_whiplash_active
 	remove_dynamic_modifier = { modifier = great_depression_policy_whiplash }
 	clr_country_flag = great_depression_relief_allocation_receipt
-	clr_country_flag = great_depression_strong_recovery_chaos_receipt
 	clr_country_flag = great_depression_reserves_reserved
 	clr_country_flag = great_depression_employment_guarantee_active
 	clr_country_flag = great_depression_employment_guarantee_complete
@@ -3352,16 +3379,12 @@ great_depression_reset_episode_policy_state = {
 	clr_country_flag = great_depression_global_public_works_complete
 	clr_country_flag = great_depression_international_debt_conference_complete
 	clr_country_flag = great_depression_global_recovery_conference_complete
-	clr_country_flag = great_depression_emergency_trade_clearing_complete
 	clr_country_flag = great_depression_reconstruction_employment_fund
-	clr_country_flag = great_depression_domestic_market_protected
-	clr_country_flag = great_depression_industrial_demand_coordinated
 	clr_country_flag = great_depression_global_contribution_made
 	clr_country_flag = great_depression_global_recipient_action_made
 	clr_country_flag = great_depression_global_recipient_improved
 	clr_country_flag = great_depression_global_major_recipient_improved
 	clr_country_flag = great_depression_regional_clearing_contribution
-	clr_country_flag = great_depression_supplier_compact_contribution
 	clear_variable = great_depression_global_contribution_count
 	clear_array = great_depression_global_contribution_receipt_ids
 	clr_country_flag = great_depression_panic_halted
@@ -4619,6 +4642,7 @@ great_depression_rebuild_hidden_components = {
 		add_to_variable = { great_depression_hidden_demand_stress = constant:great_depression_hidden_component.demand_public_works_relief }
 	}
 
+	set_temp_variable = { great_depression_center_food_problem_seen = constant:great_depression_api.zero }
 	if = {
 		limit = {
 			has_variable = great_depression_center_state_ids^num
@@ -4678,8 +4702,21 @@ great_depression_rebuild_hidden_components = {
 						add_to_variable = { great_depression_hidden_industrial_stress = constant:great_depression_hidden_component.industrial_recovery_relief }
 					}
 				}
+				# The famine owner's visible food problem feeds back into demand and unrest once per update.
+				if = {
+					limit = {
+						famine_state_has_visible_food_problem = yes
+						NOT = { has_state_flag = great_depression_center_liquidated }
+					}
+					set_temp_variable = { great_depression_center_food_problem_seen = constant:great_depression_api.one }
+				}
 			}
 		}
+	}
+	if = {
+		limit = { check_variable = { var = great_depression_center_food_problem_seen value = constant:great_depression_api.one compare = equals } }
+		add_to_variable = { great_depression_hidden_demand_stress = constant:great_depression_connection.famine_demand_pressure }
+		add_to_variable = { great_depression_hidden_social_stress = constant:great_depression_connection.famine_social_pressure }
 	}
 
 	if = {
@@ -4699,6 +4736,11 @@ great_depression_rebuild_hidden_components = {
 	if = {
 		limit = { has_country_flag = great_depression_worldwide_pressure_active }
 		add_to_variable = { great_depression_hidden_trade_stress = constant:great_depression_hidden_component.trade_global_contraction }
+	}
+	# Sanctions or an embargo against this economy cut its trade, whatever the cause.
+	if = {
+		limit = { great_depression_trade_isolation_is_active = yes }
+		add_to_variable = { great_depression_hidden_trade_stress = constant:great_depression_connection.sanction_trade_pressure }
 	}
 	if = {
 		limit = {
@@ -4922,40 +4964,12 @@ great_depression_rebuild_hidden_components = {
 	set_variable = { great_depression_hidden_net_pressure = great_depression_hidden_net_value }
 }
 
-# COUNTRY scope. Resolve the current crisis phase to its existing pacing constant.
-# Input: great_depression_phase; output: great_depression_pulse_interval in days.
-# Default: the event pulse cadence for an unrecognized phase; no other side effects.
-great_depression_set_pulse_interval = {
-	set_variable = { great_depression_pulse_interval = constant:great_depression_event.pulse_days }
-	if = {
-		limit = { check_variable = { var = great_depression_phase value = constant:great_depression_phase.panic_and_contraction compare = equals } }
-		set_variable = { great_depression_pulse_interval = constant:great_depression_pacing.panic_interval_days }
-	}
-	if = {
-		limit = { check_variable = { var = great_depression_phase value = constant:great_depression_phase.depression compare = equals } }
-		set_variable = { great_depression_pulse_interval = constant:great_depression_pacing.depression_interval_days }
-	}
-	if = {
-		limit = { check_variable = { var = great_depression_phase value = constant:great_depression_phase.stabilization compare = equals } }
-		set_variable = { great_depression_pulse_interval = constant:great_depression_pacing.stabilization_interval_days }
-	}
-	if = {
-		limit = { check_variable = { var = great_depression_phase value = constant:great_depression_phase.recovery compare = equals } }
-		set_variable = { great_depression_pulse_interval = constant:great_depression_pacing.recovery_interval_days }
-	}
-	if = {
-		limit = { check_variable = { var = great_depression_phase value = constant:great_depression_phase.economic_paralysis compare = equals } }
-		set_variable = { great_depression_pulse_interval = constant:great_depression_pacing.paralysis_interval_days }
-	}
-}
-
 great_depression_weekly_pulse = {
 	if = {
 		limit = { great_depression_active_crisis_is_coherent = yes }
 		great_depression_process_bank_program = yes
 		great_depression_process_center_mission = yes
 		great_depression_refresh_public_thresholds = yes
-		great_depression_set_pulse_interval = yes
 		if = {
 			limit = { NOT = { has_variable = great_depression_last_pulse_day } }
 			set_variable = { great_depression_last_pulse_day = global.num_days }
@@ -4963,7 +4977,7 @@ great_depression_weekly_pulse = {
 		set_temp_variable = { great_depression_pulse_elapsed = global.num_days }
 		subtract_from_temp_variable = { great_depression_pulse_elapsed = great_depression_last_pulse_day }
 		if = {
-			limit = { check_variable = { var = great_depression_pulse_elapsed value = great_depression_pulse_interval compare = greater_than_or_equals } }
+			limit = { check_variable = { var = great_depression_pulse_elapsed value = constant:great_depression_event.pulse_days compare = greater_than_or_equals } }
 			set_variable = { great_depression_last_pulse_day = global.num_days }
 			set_temp_variable = { great_depression_pulse_days_applied = great_depression_pulse_elapsed }
 			great_depression_rebuild_hidden_components = yes
@@ -6221,7 +6235,6 @@ great_depression_try_complete_recovery = {
 			}
 		}
 		great_depression_resolve_recovery_outcome = yes
-		great_depression_apply_strong_recovery_chaos_relief = yes
 		if = {
 			limit = { has_global_flag = great_depression_worldwide_episode_active }
 			set_country_flag = great_depression_global_national_recovery_proven
@@ -7578,8 +7591,21 @@ great_depression_apply_exposure = {
 								}
 							}
 						}
-						set_temp_variable = { chaos_change = constant:great_depression_event.contagion_conversion_chaos }
-						great_depression_apply_local_chaos_receipt = yes
+						# One spreading chain pays Chaos once, with one milestone when
+						# the same chain converts its third economy.
+						set_variable = { great_depression_contagion_chain_root = PREV.great_depression_active_episode_id }
+						if = {
+							limit = {
+								PREV = {
+									has_variable = great_depression_contagion_chain_root
+									has_variable = great_depression_contagion_chain_episode_id
+									check_variable = { var = great_depression_contagion_chain_episode_id value = great_depression_active_episode_id compare = equals }
+								}
+							}
+							set_variable = { great_depression_contagion_chain_root = PREV.great_depression_contagion_chain_root }
+						}
+						set_variable = { great_depression_contagion_chain_episode_id = great_depression_active_episode_id }
+						great_depression_pay_contagion_chain_chaos = yes
 					}
 					clear_array = great_depression_pending_material_contagion_sources
 					clear_array = great_depression_pending_material_contagion_episode_entries

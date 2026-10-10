@@ -346,10 +346,10 @@ class TooltipLifetimeTests(unittest.TestCase):
         actor.resources["civilian_factories_available"] = 12
         r.run_effect("great_depression_refresh_costs", actor, root=sender)
         fields = {k: v for k, v in actor.values.items() if k.startswith("great_depression_tt_")}
-        self.assertEqual(len(fields), 40)
+        self.assertEqual(len(fields), 17)
         self.assertTrue(all(isinstance(value, (int, float)) for value in fields.values()))
-        self.assertEqual(fields["great_depression_tt_freight_relief"], 3)
-        self.assertEqual(fields["great_depression_tt_whiplash_pressure"], 3)
+        self.assertEqual(fields["great_depression_tt_strong_relief"], 5)
+        self.assertEqual(fields["great_depression_tt_whiplash_days"], 42)
         self.assertEqual(fields["great_depression_tt_bank_audit_days"], 21)
         self.assertEqual(fields["great_depression_tt_bank_recapitalization_days"], 42)
         self.assertEqual(fields["great_depression_tt_bank_holiday_output"], 0.03)
@@ -358,8 +358,8 @@ class TooltipLifetimeTests(unittest.TestCase):
         site = state(1, actor)
         r.root = actor
         r.scope_stack = [actor, site]
-        self.assertEqual(r._value("ROOT.great_depression_tt_freight_relief"), 3)
-        self.assertNotIn("great_depression_tt_freight_relief", site.values)
+        self.assertEqual(r._value("ROOT.great_depression_tt_strong_relief"), 5)
+        self.assertNotIn("great_depression_tt_strong_relief", site.values)
 
 
 if __name__ == "__main__":

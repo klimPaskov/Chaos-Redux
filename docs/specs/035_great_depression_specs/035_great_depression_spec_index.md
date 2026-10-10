@@ -39,22 +39,24 @@ Implementation evidence proves what exists in source; it does not prove live eng
 | --- | --- | --- |
 | Targeting, event-pool availability, rejected-firing report `chaosx.nr35.22` | `implemented` in source | Event doc, Overview and Report and news pacing |
 | Start-or-deepen API, five callers, private receivers `.8` and `.9` | `implemented` in source | [Reusable crisis API](035_great_depression_reusable_crisis_api.md), event doc Reusable crisis API |
-| Severity, bands, trend, phases, relapse, maximum emergency, National Breakdown | `implemented` in source | Part 2; the national pulse is a fixed weekly pulse, see Open questions 1 |
-| Six doctrines, 79 decisions and 17 missions, custom costs, tooltips | `implemented` in source | Part 3, decision map; visible-action budget not yet measured per phase, see Open questions 2 |
+| Severity, bands, trend, phases, relapse, maximum emergency, National Breakdown | `implemented` in source | Part 2; the national pulse is a fixed weekly pulse |
+| Six doctrines, 68 ordinary decisions and 17 missions, merged action families, phase-gated visible-action budget, custom costs, tooltips without hidden points | `implemented` in source | Part 3, decision map; counts from `.tools/test_event035_visible_actions.py` |
 | Bank holiday, 21-day audit and 42-day recapitalization | `implemented` in source | Part 3 Doctrine 3 |
 | Depression Centers, condition-scaled project duration, transfer and cleanup | `implemented` in source | Part 4 |
 | Regional Works Program physical results (nine needs) | `implemented` in source | Part 3 Doctrine 1 |
-| Public Works unused-budget return and lasting-capacity closure | pending | Escrow helpers exist but are not integrated; physical legacy of Convert Works into Lasting Capacity is not built |
+| Public Works unused-budget return | `implemented` in source | Part 3 Doctrine 1; escrow helpers are wired into payment, completion, failure, transfer and cleanup |
+| Lasting-capacity closure | pending | The physical legacy of Convert Works into Lasting Capacity is not built |
 | Recovery outcome, legacies, five country scars, two district outcomes, recovery report | `implemented` in source | Part 4 Recovery outcomes |
 | Financial Contagion network, partner actions, conversion, reports and news | `implemented` in source | Part 5 |
 | Social Collapse ladder, movements, coup, autonomy, Event 21 civil-conflict handoff, political aftermath | `implemented` in source | Part 6 |
 | The Second Great Depression, conference, devaluation, withdrawal, blocs, world news, super-event | `implemented` in source | Part 7 |
-| Event 34 supplier choices inside Event 34's category | pending, `unresolved` scope | Part 7 Supplier choices; excluded by lead decision L8, required by U1 |
+| Event 34 supplier choices inside Event 34's category | two choices (accept, refuse) on the Event 34 side; the Event 35 quote adapter is `implemented` | Part 7 Supplier choices |
 | Event 34 inheritance: snapshot, evolution floor, inherited-liability pressure | `implemented` in source | Part 8 |
-| Inherited hidden-row paid paths, corridor outcomes, salvage, multi-region priority | `unresolved` | Part 8; Event 34 lacks per-region producers, see Open questions 6 |
+| Inherited hidden-row paid paths, corridor outcomes, salvage, multi-region priority | `rejected` | Part 8; hidden corridor states stay national inheritance pressure and recovery runs through the visible centers |
 | Famine and migration center adapters, Event 21 civil-conflict adapter | `implemented` in source | Part 8 Connections |
-| Famine-to-depression feedback, disaster, contamination and embargo adapters | pending | Part 8 Connections |
-| Event 35 Chaos receipts | `implemented` in source | Part 8 Chaos accounting; value changes are `unresolved` (Open questions 4) |
+| Famine-to-depression feedback and hunger-riot gate, contamination hold on reopening certification, sanction trade stress and Finance and Trade cost | `implemented` in source | Part 8 Connections; `.tools/test_event035_connections.py` |
+| Disaster adapter | pending | Part 8 Connections |
+| Event 35 Chaos receipts | `implemented` in source | Part 8 Chaos accounting; the worldwide wave is 10, contagion pays once per chain, national recovery relief is removed |
 | Six achievements, Event 34 Long Fall assets, 80 runtime DDS files, super-event slot 105 and audio 106 | `implemented` in source | Part 10, Part 11 |
 | Asset workspace `docs/assets/035_great_depression/` cleanup | pending | Part 10 Asset workspace |
 | Probability evidence for named scenarios | partial | Part 9 and the matrix; several `hoi4.probability_*` runs timed out or returned partial results, so source-derived calculations remain owed for most surfaces |
@@ -66,9 +68,9 @@ Implementation evidence proves what exists in source; it does not prove live eng
 U1, the user's explicit instruction recorded in `current_requirement_state_2026-10-07.md`, accepts this package as the full implementation target without simplifications.
 The user also granted the implementing agent full design authority for the Event 35 takeover (G6).
 Decisions taken under that grant are recorded with their basis in `agent_decisions_2026-10-04.md` (D1-D30 and lead decisions L1-L8) and `agent_decisions_2026-10-05.md` (D31-D44), and they count as parent acceptance within the user-authorized scope.
-Where a recorded decision narrows a U1 requirement (D4 and L8 on inherited hidden rows and Event 34 supplier choices), the conflict stays `unresolved` and is listed under Open questions rather than settled here.
+Where a recorded decision narrowed a U1 requirement (D4 and L8 on inherited hidden rows and Event 34 supplier choices), the 2026-10-10 parent acceptance settles it: hidden-row work is `rejected` and the supplier choices are two choices on the Event 34 side (Decisions below).
 The presentation choice is settled by the October 6 takeover decision under G6: one ordinary category with its static picture and a three-line formatted header, no meter and no dedicated scripted GUI (part 3 Presentation).
-Proposals added by the 2026-10-10 audit are marked `unresolved` where they appear and are listed under Open questions.
+The proposals of the 2026-10-10 audit were accepted and implemented on the same day (Decisions below).
 
 ## Central design decisions
 
@@ -108,27 +110,25 @@ Proposals added by the 2026-10-10 audit are marked `unresolved` where they appea
 | `035_great_depression_achievement_prompt.md` | Achievement audit brief (contracts implemented) |
 | `035_great_depression_super_event_prompt.md` | Super-event repair brief (super-event delivered) |
 
-## Open questions
+## Decisions
 
-Parent acceptance, 2026-10-10 (release orchestrator, under the user's 2026-10-10 brief section 2.2 authority, recorded in the release ledger): all seven proposals below are accepted as written, including the merges that supersede lead decision L2, and are `accepted and queued` for the Event 035 implementation owner.
-Item 5 (two Event 34 supplier choices) is passed to the Event 034 owner.
-Remaining work for the 035 owner also includes the asset workspace cleanup.
+Parent acceptance, 2026-10-10 (release orchestrator, under the user's 2026-10-10 brief section 2.2 authority, recorded in the release ledger): the seven audit proposals were accepted and are `implemented` by the Event 035 owner on 2026-10-10, except where noted.
 
-1. Weekly pulse (part 2): the source evaluates every crisis on a fixed 7-day pulse with elapsed-day normalization, while the original design asked for a 3 to 14 day phase-scaled cadence.
-   Proposal: accept the weekly pulse, because decisions, state loss and registered shocks already update Severity between pulses, and the variable cadence adds timer complexity without a visible player benefit.
-2. Decision surface (part 3): the category holds 79 decisions and 17 missions, and several actions repeat one idea under different names.
-   Proposal: merge the four clearing actions (Negotiate Clearing and Imports, Establish Clearing Bloc, Regional Clearing Agreement, Emergency Trade Clearing) into one clearing action whose scope follows the active evolution; merge Protect Domestic Market and Prioritize Domestic Recovery into Protectionist Bloc's unilateral form; merge Withdraw from Distressed Market into Abandon Distressed Market as its milder option; merge Support Contagion Source into Extend Emergency Credit; merge Coordinate Industrial Demand and Reconstruction and Employment Fund into Coordinated Public Works and Reconstruction.
-   Lead decision L2 kept the six former trap actions as separate identities, so this needs a user or parent decision.
-3. Tooltip detail (part 3): decision tooltips print hidden pressure points per Severity update (D26, D27), which exposes internal components the design keeps hidden.
-   Proposal: state the expected Severity effect and its duration in plain words, and keep component points internal.
-4. Chaos values (part 8): the worldwide wave adds 20 Chaos, twice the first nuclear use (10) and four times a major war declaration (5), while strong national recovery removes 2.
-   Proposal: set the worldwide wave to 10, pay contagion conversion once per spreading chain (2) plus one milestone at the third conversion (3) instead of 2 per conversion, and drop the 2-point national recovery relief, which is too small to notice.
-5. Event 34 supplier choices (part 7): the six named choices would sit inside Event 34's category, which L8 excluded and U1 still requires.
-   Proposal: reduce them to two, Accept World Orders and Refuse Further Exposure, both through the existing supplier quote adapter.
-6. Inherited hidden rows (part 8): hidden-row paid paths, corridor restoration and breakup, secured-value salvage and multi-region priority are required by U1 and closed by D4 and L8, and authentic delivery needs Event 34 per-region producers that do not exist.
-   Proposal: drop paid actions on hidden rows and salvage, keep hidden corridor states as national inheritance pressure only (already implemented), and let corridor recovery happen through the visible centers.
-7. Public Works unused-budget return (part 3): the parent accepted an exact full-unused return for paid Public Works, and the escrow helpers exist unintegrated.
-   Proposal: keep the return, and present it to the player as one line on interruption ("Unused materials return to the stockpile") with no running balance.
+1. Weekly pulse (part 2): `implemented`.
+   The national pulse is a fixed 7-day pulse with elapsed-day normalization; the phase intervals are removed.
+2. Decision surface (part 3): `implemented`.
+   Clearing Agreement replaces the four clearing actions, Protect the Home Market the three protectionist actions, Abandon the Distressed Market (with a quiet form for allies) the two market exits, Emergency Credit the three partner-aid actions and Coordinated Public Works and Reconstruction the four reconstruction actions.
+   Lead decision L2 is superseded by this merge.
+   Every action shows only in its phases, and part 3 records the measured visible counts.
+3. Tooltip detail (part 3): `implemented`.
+   Tooltips state the effect in plain words and print no hidden component points.
+4. Chaos values (part 8): `implemented`.
+   The worldwide wave adds 10, a contagion chain pays 2 once plus one 3 milestone at its third conversion, and the 2-point national recovery relief is removed.
+5. Event 34 supplier choices (part 7): `implemented` on the Event 34 side as two choices, Accept World Orders and Refuse Further Exposure, through the Event 35 quote adapter.
+6. Inherited hidden rows (part 8): `rejected`.
+   Paid actions on hidden rows and salvage are dropped; hidden corridor states stay national inheritance pressure and corridor recovery runs through the visible centers.
+7. Public Works unused-budget return (part 3): `implemented`.
+   The return is shown as one line on interruption with no running balance.
 
 ## Changelog
 
@@ -156,3 +156,10 @@ Pass 2, design improvement:
 - Reworked cross-system connections in part 8: kept famine, migration and Event 21 adapters, added a famine-to-depression feedback and a hunger-riot gate on the famine owner's food stage, made contamination and fallout block center reopening rather than add another number, routed sanctions through Event 50 and condemnation, and dropped the Random Riches link and any camp link as decoration.
 - Removed the claim that security responses create Event 35 deaths; deaths reach the Deaths ledger only through famine and Event 21.
 - Replaced the six-item state scar list with the two implemented district outcomes, and replaced the old reform examples with the implemented legacy relief and weakness pairs.
+
+### 2026-10-10 implementation
+
+- Fixed the weekly pulse, merged the duplicated actions, removed hidden pressure points from tooltips, rescaled the Chaos receipts and wired the Public Works return.
+- Added the phase-gated visible-action budget and its measured counts to part 3 and the decision map, with a regression test.
+- Implemented the famine, contamination and sanction connections of part 8 and removed the Random Riches and camp links from the plan.
+- Recorded the two Event 34 supplier choices as an Event 34 surface and dropped the inherited hidden-row work.

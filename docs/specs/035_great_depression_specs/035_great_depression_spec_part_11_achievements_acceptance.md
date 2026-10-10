@@ -278,7 +278,7 @@ The current coverage of each group is tracked in the plans folder's requirement 
 
 ### `B-03`: Drift cadence
 
-- The weekly pulse normalizes pressure by elapsed days (part 2; a phase-scaled cadence is `unresolved`).
+- The weekly pulse normalizes pressure by elapsed days (part 2).
 - Several normalized pulses under worsening conditions increase Severity gradually.
 - Several normalized pulses under strong recovery lower it gradually.
 - One ordinary pulse cannot resolve the entire crisis.

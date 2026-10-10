@@ -182,7 +182,7 @@ It should not be a free universal solution.
 Implemented under lead decision L2: Abandon Distressed Market, Withdraw from Distressed Market and Exploit Supply Gap never raise the actor's own Severity.
 Each gives the actor a bounded current-episode relief window and moves the cost to the partner: a Severity shock if the partner is in its own depression, otherwise a raised or new exposure link, plus an opinion penalty for abandonment and exploitation.
 The AI never abandons or exploits a faction member, ally, overlord, subject or major partner.
-Withdraw is the milder form of Abandon; merging the two is `unresolved` (README Open questions 2).
+Abandon the Distressed Market is one action with two forms: a partner that is an ally, faction member, subject or overlord receives the milder, quiet withdrawal with a smaller shock and no resentment, and any other partner receives the full abandonment.
 
 ### Acquire Distressed Assets
 
@@ -225,7 +225,9 @@ It puts both countries into the shared clearing bloc described in part 7, Econom
 
 ### Other implemented partner actions
 
-Restrict Capital Outflows, Prioritize Domestic Recovery, Offer Boom Supply Contract, Support Contagion Source and Coordinate an International Rescue (with its mission) complete the Evolution I set.
+Restrict Capital Outflows, Protect the Home Market, Offer Boom Supply Contract and Coordinate an International Rescue (with its mission) complete the Evolution I set.
+Emergency Credit is one action: toward a contagion source in its own depression the actor lends, and toward any other partner the actor's own crisis borrows and carries the debt.
+Clearing Agreement is one action that settles trade with one partner through the shared clearing bloc.
 Provider support counts once per globally unique source episode, so one partner cannot farm a source.
 
 ### Accept External Supervision

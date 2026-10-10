@@ -1,19 +1,19 @@
 # Event 35 Great Depression 2.0 decision and mission map
 
-Status: every row below has implemented decisions or missions in source; the visible count per phase has not yet been measured (part 3, Decision-surface budget).
+Status: every row below has implemented decisions or missions in source, and the visible counts per phase are measured and tested (part 3, Decision-surface budget).
 Implemented names and durations are in part 3.
 
 ## Phase visibility matrix
 
 | Action or objective | Panic and Contraction | Depression | Stabilization | Recovery proof | Economic Paralysis |
 | --- | --- | --- | --- | --- | --- |
-| Choose Recovery Doctrine | Available once | Hidden | Hidden | Hidden | Hidden |
-| Cabinet Review | Hidden until cooldown | Available | Conditional | Hidden | Emergency route only |
-| Emergency Relief Allocation | Available | Conditional | Reduced or hidden | Hidden | Emergency form |
+| Choose Recovery Doctrine | Available once; hides every other action until chosen | Hidden | Hidden | Hidden | Hidden |
+| Cabinet Review | Hidden | Available | Available | Hidden | Emergency Policy Review instead |
+| Emergency Relief Allocation | Available | Available without Financial Contagion | Hidden | Hidden | Emergency form |
 | Select Depression Center | Available | Available | Available | Complete existing work | Available for emergency target |
-| Protect a Depression Center | Available | Available | Complete or repair | Hidden | Emergency protection |
+| Protect a Depression Center | Available | Available | Available | Hidden | Emergency protection |
 | Reopen or Restructure Center | Hidden | Available after prerequisites | Available | Complete existing work | Hidden |
-| Request Foreign Support | Conditional | Conditional | Conditional | Hidden | Emergency form |
+| Request Foreign Support | Available | Available | Available | Hidden | Emergency form |
 | Halt the Panic | Active main mission | Hidden | Hidden | Hidden | Hidden |
 | Keep Essential Freight Moving | Conditional | Conditional | Conditional | Hidden | Emergency form |
 | Prevent a Relapse | Hidden | Hidden | Active main mission | Can continue | Hidden |
@@ -70,7 +70,7 @@ Opening shock with credit and trade pressure
   -> temporary bank holiday and audit
   -> reopen viable institutions
   -> recapitalize or restructure
-  -> negotiate valid clearing and import agreements
+  -> settle trade through a Clearing Agreement
   -> protect exposed Depression Centers
   -> establish durable guarantee
   -> final recovery proof
@@ -233,8 +233,8 @@ Evolution III activates
 
 ## Visibility rules
 
-- Show no more than five ordinary primary actions.
-- Show six only during the one-time doctrine selection or a justified emergency.
+- Show no more than five national actions, five partner actions and six selected-center operations in an ordinary phase.
+- Show six national actions only during the one-time doctrine selection or an emergency (Economic Paralysis, an open social incident, the worldwide depression), and six partner actions during the worldwide depression.
 - Show no more than three active missions (implemented: `maximum_active_missions`).
 - Show inline costs with at most three quoted values and every payment in the hover, with insufficient resources in red.
 - Display one selected Depression Center at a time.

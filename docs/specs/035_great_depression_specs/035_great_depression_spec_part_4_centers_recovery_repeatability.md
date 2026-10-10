@@ -1,7 +1,7 @@
 # Great Depression 2.0 specification, part 4: Depression Centers, recovery outcomes, and repeatability
 
 Status: center selection, local stages, projects with condition-scaled duration, transfer, factory-loss receipts, recovery outcomes, legacies, scars and district outcomes are `implemented` in source.
-Multi-region inherited priority and hidden inherited rows are `unresolved` (part 8 and README Open questions 6).
+Multi-region inherited priority and hidden inherited rows are `rejected` (part 8 and README Decisions 6).
 
 ## State-level purpose
 

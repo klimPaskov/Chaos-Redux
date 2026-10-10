@@ -1,7 +1,7 @@
 # Great Depression 2.0 specification, part 7: Evolution III, The Second Great Depression
 
 Status: the global episode, worldwide pressure registry, conversion, Global Recovery Conference, devaluation, withdrawal from international commitments, clearing and protectionist blocs, world news `chaosx.nr35.16` to `.21` and the super-event are `implemented` in source.
-Event 34 supplier choices are pending with an `unresolved` scope (README Open questions 5).
+The two Event 34 supplier choices are implemented on the Event 34 side; Event 35 keeps the supplier quote adapter.
 World stage labels match the implemented localisation; other action labels are working labels unless the implemented name is given.
 
 ## Evolution role
@@ -185,11 +185,12 @@ Some countries can pass through the entire global episode under lighter pressure
 
 ## International action families
 
-### Regional Clearing Agreement
+### Clearing Agreement
 
-A group of valid countries keeps essential trade and payments working.
+A country keeps essential trade and payments working with one valid partner.
 Members commit convoys, fuel, civilian capacity, or reciprocal access.
-The agreement lowers exposure and can form an economic bloc.
+The agreement lowers exposure, can form an economic bloc, and during the worldwide depression counts once per global episode toward the worldwide recovery.
+This one action replaces the separate national, regional and emergency clearing actions; its scope follows the active evolution.
 
 Membership rules:
 
@@ -205,6 +206,8 @@ Countries contribute to shared transport, ports, or industrial rebuilding.
 Projects target exact states or routes.
 Contributors receive trade, influence, or recovery benefits.
 Failed projects create a registered international shock.
+Every form pays into the common reconstruction and employment fund: a depressed economy also starts reconstruction work at one of its centers, and a supplier outside its own depression sends orders to the hardest-hit major partner it trades with.
+This one action replaces the separate fund, industrial-demand and supplier-compact actions.
 
 ### International Debt Conference
 
@@ -213,10 +216,12 @@ It can lower global finance pressure.
 It may create concessions, delayed payments, or blocs.
 It never grants a free global reduction.
 
-### Protectionist Bloc
+### Protect the Home Market
 
-Members restrict outside trade and support internal supply.
-It can protect members from some external pressure while weakening global recovery, relations, and nonmember trade.
+The country puts domestic recovery ahead of foreign commitments behind tariffs and quotas.
+During Financial Contagion, or for an exposed economy, it closes the exposure.
+During the worldwide depression it also joins the protectionist bloc, which shields members from some external pressure while weakening global recovery, relations, and nonmember trade.
+This one action replaces the separate home-market, domestic-recovery and bloc actions.
 
 ### Competitive Devaluation or Currency Break
 
@@ -224,9 +229,9 @@ A country seeks export or fiscal relief through currency action represented by e
 It can help locally while raising pressure on partners.
 The design should avoid claiming engine-level exchange rates that do not exist.
 
-### Reconstruction Supplier Compact
+### Supplier orders
 
-Stable industrial countries commit orders and material to depressed partners.
+Stable industrial countries commit orders and material to depressed partners through Coordinated Public Works and Reconstruction.
 It creates demand for suppliers and relief for recipients.
 It also concentrates risk.
 
@@ -242,7 +247,7 @@ After `60` days it succeeds with at least four viable participants, two majors a
 
 ### Economic blocs
 
-Implemented form (lead decision L4): Establish a Clearing Bloc and Regional Clearing Agreement put both countries into one global clearing bloc for a year of trade relief, and Protectionist Bloc puts both into a protectionist bloc that shields members from worldwide pressure for the rest of the global episode while slowing the world's recovery proof.
+Implemented form (lead decision L4): the Clearing Agreement puts both countries into one global clearing bloc for a year of trade relief and counts once per global episode toward the worldwide recovery, and Protect the Home Market puts the acting country into the protectionist bloc, which shields members from worldwide pressure for the rest of the global episode while slowing the world's recovery proof.
 Each bloc holds at most twelve members and sends one formation news when it reaches three members including a major.
 Competitive Devaluation gives local relief once per global episode while pressing up to a capped number of partners and lengthening the world's recovery proof.
 Withdraw from International Commitments gives light relief and gives up the country's contribution, conference seat and reconstruction mission.
@@ -271,16 +276,13 @@ The boom also receives:
 ### Supplier choices
 
 - Accept World Orders.
-- Ration Foreign Contracts.
-- Finance Reconstruction.
-- Demand Concessions.
-- Build a Supplier Bloc.
 - Refuse Further Exposure.
 
-These actions belong to Event 34's category through a reusable Event 35 adapter.
-Event 35 must not duplicate the full boom mechanic.
-Current source provides the supplier quote adapter, conference seats for suppliers and Event 34's late-entry hook, but none of these six choices; lead decision L8 excluded them while U1 still requires them.
-Six choices inside another event's category would be micromanagement, so the proposal is two choices, Accept World Orders and Refuse Further Exposure (README Open questions 5).
+These two choices belong to Event 34's category and answer the Event 35 supply-contract request through the supplier quote adapter.
+With open order books the contract is accepted: more Overheating, export orders and one rough landing upgraded to controlled.
+With closed books it is refused, and from 70 Overheating upward every contract is refused automatically.
+Event 35 supplies the quote adapter and the conference seats for suppliers, pays nothing for a refused contract, and does not duplicate the boom mechanic.
+Six choices inside another event's category would be micromanagement, so the earlier set of six (rationing, financing, concessions and a supplier bloc as well) was reduced to these two.
 
 ### Supplier collapse
 

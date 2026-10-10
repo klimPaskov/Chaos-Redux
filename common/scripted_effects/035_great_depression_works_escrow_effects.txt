@@ -1,0 +1,354 @@
+# Event 035 state-owned Public Works material escrow scaffold.
+# Prepare before the existing debit, bind after its fresh paid PW authorization.
+# These helpers NEVER debit payment or change CIV modifiers, buildings or policy.
+# Public outputs and immutable inputs are normal STATE variables/flags.
+# Nonzero native returns require explicit parent-reviewed policy authorization.
+# See 035_great_depression_works_escrow_effects.md before integrating.
+
+great_depression_works_escrow_prepare = {
+	if = {
+		limit = { great_depression_works_escrow_can_prepare = yes }
+		set_variable = { great_depression_works_escrow_prepared_site = THIS }
+		set_variable = { great_depression_works_escrow_prepared_payer = ROOT }
+		set_variable = { great_depression_works_escrow_prepared_episode = ROOT.great_depression_active_episode_id }
+		set_variable = { great_depression_works_escrow_prepared_day = global.num_days }
+		set_variable = { great_depression_works_escrow_prepared_expected_action_count = constant:great_depression_api.zero }
+		if = {
+			limit = { ROOT = { has_variable = great_depression_successful_action_count } }
+			set_variable = { great_depression_works_escrow_prepared_expected_action_count = ROOT.great_depression_successful_action_count }
+		}
+		set_variable = { great_depression_works_escrow_prepared_previous_auth = great_depression_public_works_previous_authorization_id }
+		add_to_variable = { great_depression_works_escrow_prepared_expected_action_count = constant:great_depression_api.one }
+		set_variable = { great_depression_works_escrow_prepared_manpower = ROOT.great_depression_cost_manpower }
+		set_variable = { great_depression_works_escrow_prepared_fuel = ROOT.great_depression_cost_fuel }
+		set_variable = { great_depression_works_escrow_prepared_trains = ROOT.great_depression_cost_trains }
+		set_variable = { great_depression_works_escrow_prepared_civilian = ROOT.great_depression_cost_civilian }
+		set_state_flag = great_depression_works_escrow_prepared
+	}
+}
+
+great_depression_works_escrow_bind = {
+	if = {
+		limit = { great_depression_works_escrow_can_bind = yes }
+		set_variable = { great_depression_works_escrow_site = great_depression_works_escrow_prepared_site }
+		set_variable = { great_depression_works_escrow_payer = great_depression_works_escrow_prepared_payer }
+		set_variable = { great_depression_works_escrow_funded_episode = great_depression_works_escrow_prepared_episode }
+		set_variable = { great_depression_works_escrow_live_episode = great_depression_works_escrow_prepared_episode }
+		set_variable = { great_depression_works_escrow_live_owner = ROOT }
+		set_variable = { great_depression_works_escrow_funded_auth = great_depression_center_project_authorization_id }
+		set_variable = { great_depression_works_escrow_funded_action_count = great_depression_public_works_paid_action_count }
+		set_variable = { great_depression_works_escrow_funded_day = great_depression_works_escrow_prepared_day }
+		set_variable = { great_depression_works_escrow_funded_type = constant:great_depression_center_project.public_works }
+		set_variable = { great_depression_works_escrow_required_work = great_depression_center_project_required_work_days }
+		set_variable = { great_depression_works_escrow_used_work = constant:great_depression_api.zero }
+		set_variable = { great_depression_works_escrow_gross_manpower = great_depression_works_escrow_prepared_manpower }
+		set_variable = { great_depression_works_escrow_gross_fuel = great_depression_works_escrow_prepared_fuel }
+		set_variable = { great_depression_works_escrow_gross_trains = great_depression_works_escrow_prepared_trains }
+		set_variable = { great_depression_works_escrow_gross_civilian = great_depression_works_escrow_prepared_civilian }
+		clr_state_flag = great_depression_works_escrow_settled
+		clr_state_flag = great_depression_works_escrow_fresh_settlement
+		clr_state_flag = great_depression_works_escrow_pending_return
+		clr_state_flag = great_depression_works_escrow_prepared
+		# An earlier transaction's policy permission never carries into new funding.
+		clr_state_flag = great_depression_works_escrow_full_unused_return_authorized
+		clr_state_flag = great_depression_works_escrow_retirement_requested
+		clr_state_flag = great_depression_works_escrow_retired
+		set_state_flag = great_depression_works_escrow_open
+		ROOT = {
+			if = {
+				limit = { NOT = { is_in_array = { array = great_depression_works_escrow_sites value = PREV } } }
+				add_to_array = { array = great_depression_works_escrow_sites value = PREV }
+			}
+		}
+	}
+}
+
+# Mirror ONLY an actual existing adoption. Material funding stays immutable.
+great_depression_works_escrow_adopt_live_context = {
+	if = {
+		limit = {
+			great_depression_works_escrow_funding_is_coherent = yes
+			has_state_flag = great_depression_center_transfer_adopted_receipt
+			has_variable = great_depression_center_transfer_episode_id
+			check_variable = { var = great_depression_works_escrow_live_episode value = great_depression_center_transfer_episode_id compare = equals }
+			great_depression_public_works_plan_is_current = yes
+			set_temp_variable = { great_depression_works_escrow_integer_input = ROOT.great_depression_active_episode_id }
+			great_depression_works_escrow_integer_input_is_whole = yes
+			check_variable = { var = great_depression_center_project_authorization_id value = great_depression_works_escrow_funded_auth compare = equals }
+			check_variable = { var = great_depression_center_project_required_work_days value = great_depression_works_escrow_required_work compare = equals }
+			check_variable = { var = great_depression_public_works_plan_payer value = great_depression_works_escrow_payer compare = equals }
+			check_variable = { var = great_depression_public_works_paid_action_count value = great_depression_works_escrow_funded_action_count compare = equals }
+			state = var:great_depression_works_escrow_site
+		}
+		set_variable = { great_depression_works_escrow_live_owner = ROOT }
+		set_variable = { great_depression_works_escrow_live_episode = ROOT.great_depression_active_episode_id }
+	}
+}
+
+# Parent U1 accepts full unused material returns only for this exact funded PW.
+# Parent supplies the complete frozen request after successful funding capture.
+great_depression_works_escrow_authorize_full_unused_return = {
+	if = {
+		limit = {
+			great_depression_works_escrow_project_matches_funding = yes
+			great_depression_public_works_plan_is_current = yes
+			check_variable = { var = great_depression_public_works_plan_payer value = great_depression_works_escrow_payer compare = equals }
+			check_variable = { var = great_depression_public_works_paid_action_count value = great_depression_works_escrow_funded_action_count compare = equals }
+		}
+		set_state_flag = great_depression_works_escrow_full_unused_return_authorized
+	}
+}
+
+# High-water accepted work is monotone and bounded by the immutable requirement.
+great_depression_works_escrow_measure_unused = {
+	clr_state_flag = great_depression_works_escrow_quote_ready
+	if = {
+		limit = { OR = { great_depression_works_escrow_project_matches_funding = yes great_depression_works_escrow_retired_matches_funding = yes } }
+		if = {
+			limit = { has_state_flag = great_depression_works_escrow_retired }
+			set_variable = { great_depression_works_escrow_observed_work = great_depression_works_escrow_retired_work }
+		}
+		else = { set_variable = { great_depression_works_escrow_observed_work = great_depression_center_project_work_days } }
+		if = {
+			limit = { check_variable = { var = great_depression_works_escrow_observed_work value = great_depression_works_escrow_required_work compare = greater_than } }
+			set_variable = { great_depression_works_escrow_observed_work = great_depression_works_escrow_required_work }
+		}
+		if = {
+			limit = { check_variable = { var = great_depression_works_escrow_observed_work value = great_depression_works_escrow_used_work compare = greater_than } }
+			set_variable = { great_depression_works_escrow_used_work = great_depression_works_escrow_observed_work }
+		}
+		set_variable = { great_depression_works_escrow_remaining_work = great_depression_works_escrow_required_work }
+		subtract_from_variable = { great_depression_works_escrow_remaining_work = great_depression_works_escrow_used_work }
+		# floor(G * remaining / required), without forming G * remaining.
+		set_variable = { great_depression_works_escrow_scratch_remainder = great_depression_works_escrow_gross_manpower }
+		modulo_variable = { var = great_depression_works_escrow_scratch_remainder value = great_depression_works_escrow_required_work }
+		set_variable = { great_depression_works_escrow_scratch_base = great_depression_works_escrow_gross_manpower }
+		subtract_from_variable = { great_depression_works_escrow_scratch_base = great_depression_works_escrow_scratch_remainder }
+		divide_variable = { var = great_depression_works_escrow_scratch_base value = great_depression_works_escrow_required_work }
+		multiply_variable = { great_depression_works_escrow_scratch_base = great_depression_works_escrow_remaining_work }
+		set_variable = { great_depression_works_escrow_scratch_tail = great_depression_works_escrow_scratch_remainder }
+		multiply_variable = { great_depression_works_escrow_scratch_tail = great_depression_works_escrow_remaining_work }
+		set_variable = { great_depression_works_escrow_scratch_mod = great_depression_works_escrow_scratch_tail }
+		modulo_variable = { var = great_depression_works_escrow_scratch_mod value = great_depression_works_escrow_required_work }
+		subtract_from_variable = { great_depression_works_escrow_scratch_tail = great_depression_works_escrow_scratch_mod }
+		divide_variable = { var = great_depression_works_escrow_scratch_tail value = great_depression_works_escrow_required_work }
+		set_variable = { great_depression_works_escrow_unused_manpower = great_depression_works_escrow_scratch_base }
+		add_to_variable = { great_depression_works_escrow_unused_manpower = great_depression_works_escrow_scratch_tail }
+		set_variable = { great_depression_works_escrow_used_manpower = great_depression_works_escrow_gross_manpower }
+		subtract_from_variable = { great_depression_works_escrow_used_manpower = great_depression_works_escrow_unused_manpower }
+		# floor(G * remaining / required), without forming G * remaining.
+		set_variable = { great_depression_works_escrow_scratch_remainder = great_depression_works_escrow_gross_fuel }
+		modulo_variable = { var = great_depression_works_escrow_scratch_remainder value = great_depression_works_escrow_required_work }
+		set_variable = { great_depression_works_escrow_scratch_base = great_depression_works_escrow_gross_fuel }
+		subtract_from_variable = { great_depression_works_escrow_scratch_base = great_depression_works_escrow_scratch_remainder }
+		divide_variable = { var = great_depression_works_escrow_scratch_base value = great_depression_works_escrow_required_work }
+		multiply_variable = { great_depression_works_escrow_scratch_base = great_depression_works_escrow_remaining_work }
+		set_variable = { great_depression_works_escrow_scratch_tail = great_depression_works_escrow_scratch_remainder }
+		multiply_variable = { great_depression_works_escrow_scratch_tail = great_depression_works_escrow_remaining_work }
+		set_variable = { great_depression_works_escrow_scratch_mod = great_depression_works_escrow_scratch_tail }
+		modulo_variable = { var = great_depression_works_escrow_scratch_mod value = great_depression_works_escrow_required_work }
+		subtract_from_variable = { great_depression_works_escrow_scratch_tail = great_depression_works_escrow_scratch_mod }
+		divide_variable = { var = great_depression_works_escrow_scratch_tail value = great_depression_works_escrow_required_work }
+		set_variable = { great_depression_works_escrow_unused_fuel = great_depression_works_escrow_scratch_base }
+		add_to_variable = { great_depression_works_escrow_unused_fuel = great_depression_works_escrow_scratch_tail }
+		set_variable = { great_depression_works_escrow_used_fuel = great_depression_works_escrow_gross_fuel }
+		subtract_from_variable = { great_depression_works_escrow_used_fuel = great_depression_works_escrow_unused_fuel }
+		# floor(G * remaining / required), without forming G * remaining.
+		set_variable = { great_depression_works_escrow_scratch_remainder = great_depression_works_escrow_gross_trains }
+		modulo_variable = { var = great_depression_works_escrow_scratch_remainder value = great_depression_works_escrow_required_work }
+		set_variable = { great_depression_works_escrow_scratch_base = great_depression_works_escrow_gross_trains }
+		subtract_from_variable = { great_depression_works_escrow_scratch_base = great_depression_works_escrow_scratch_remainder }
+		divide_variable = { var = great_depression_works_escrow_scratch_base value = great_depression_works_escrow_required_work }
+		multiply_variable = { great_depression_works_escrow_scratch_base = great_depression_works_escrow_remaining_work }
+		set_variable = { great_depression_works_escrow_scratch_tail = great_depression_works_escrow_scratch_remainder }
+		multiply_variable = { great_depression_works_escrow_scratch_tail = great_depression_works_escrow_remaining_work }
+		set_variable = { great_depression_works_escrow_scratch_mod = great_depression_works_escrow_scratch_tail }
+		modulo_variable = { var = great_depression_works_escrow_scratch_mod value = great_depression_works_escrow_required_work }
+		subtract_from_variable = { great_depression_works_escrow_scratch_tail = great_depression_works_escrow_scratch_mod }
+		divide_variable = { var = great_depression_works_escrow_scratch_tail value = great_depression_works_escrow_required_work }
+		set_variable = { great_depression_works_escrow_unused_trains = great_depression_works_escrow_scratch_base }
+		add_to_variable = { great_depression_works_escrow_unused_trains = great_depression_works_escrow_scratch_tail }
+		set_variable = { great_depression_works_escrow_used_trains = great_depression_works_escrow_gross_trains }
+		subtract_from_variable = { great_depression_works_escrow_used_trains = great_depression_works_escrow_unused_trains }
+		clear_variable = great_depression_works_escrow_scratch_remainder
+		clear_variable = great_depression_works_escrow_scratch_base
+		clear_variable = great_depression_works_escrow_scratch_tail
+		clear_variable = great_depression_works_escrow_scratch_mod
+		clear_variable = great_depression_works_escrow_observed_work
+		set_state_flag = great_depression_works_escrow_quote_ready
+	}
+}
+
+# Returns are a separate, opt-in policy boundary. Default is a pending receipt.
+# Original funding and outputs remain intact when payer/policy is unavailable.
+great_depression_works_escrow_settle = {
+	clr_state_flag = great_depression_works_escrow_fresh_settlement
+	great_depression_works_escrow_measure_unused = yes
+	if = {
+		limit = { has_state_flag = great_depression_works_escrow_quote_ready great_depression_works_escrow_can_settle = yes }
+		if = {
+			limit = {
+				OR = {
+					great_depression_works_escrow_no_material_return_due = yes
+					AND = {
+						has_state_flag = great_depression_works_escrow_full_unused_return_authorized
+						great_depression_works_escrow_payer_can_receive = yes
+					}
+				}
+			}
+			# Freeze all identity/output fields BEFORE entering the payer scope.
+			set_variable = { great_depression_works_escrow_settlement_site = great_depression_works_escrow_site }
+			set_variable = { great_depression_works_escrow_settlement_payer = great_depression_works_escrow_payer }
+			set_variable = { great_depression_works_escrow_settlement_episode = great_depression_works_escrow_funded_episode }
+			set_variable = { great_depression_works_escrow_settlement_auth = great_depression_works_escrow_funded_auth }
+			set_variable = { great_depression_works_escrow_settlement_action_count = great_depression_works_escrow_funded_action_count }
+			set_variable = { great_depression_works_escrow_settlement_work = great_depression_works_escrow_used_work }
+			set_variable = { great_depression_works_escrow_settlement_unused_manpower = great_depression_works_escrow_unused_manpower }
+			set_variable = { great_depression_works_escrow_settlement_unused_fuel = great_depression_works_escrow_unused_fuel }
+			set_variable = { great_depression_works_escrow_settlement_unused_trains = great_depression_works_escrow_unused_trains }
+			set_variable = { great_depression_works_escrow_settlement_day = global.num_days }
+			# Consume only this validated open receipt, before any native credit.
+			clr_state_flag = great_depression_works_escrow_open
+			set_state_flag = great_depression_works_escrow_settled
+			clr_state_flag = great_depression_works_escrow_pending_return
+			if = {
+				limit = { NOT = { great_depression_works_escrow_no_material_return_due = yes } }
+				var:great_depression_works_escrow_settlement_payer = {
+					# PREV is the frozen funding STATE. ROOT remains the caller.
+					if = { limit = { check_variable = { PREV.great_depression_works_escrow_settlement_unused_manpower > constant:great_depression_api.zero } } add_manpower = PREV.great_depression_works_escrow_settlement_unused_manpower }
+					if = { limit = { check_variable = { PREV.great_depression_works_escrow_settlement_unused_fuel > constant:great_depression_api.zero } } add_fuel = PREV.great_depression_works_escrow_settlement_unused_fuel }
+					if = { limit = { check_variable = { PREV.great_depression_works_escrow_settlement_unused_trains > constant:great_depression_api.zero } } add_equipment_to_stockpile = { type = train_equipment amount = PREV.great_depression_works_escrow_settlement_unused_trains } }
+				}
+			}
+			set_state_flag = great_depression_works_escrow_fresh_settlement
+		}
+		else = { set_state_flag = great_depression_works_escrow_pending_return }
+	}
+}
+
+# Discard an unpaid preparation only. A payment witness or open funding blocks it.
+great_depression_works_escrow_discard_preparation = {
+	if = {
+		limit = {
+			has_state_flag = great_depression_works_escrow_prepared
+			NOT = { has_state_flag = great_depression_works_escrow_open }
+			state = var:great_depression_works_escrow_prepared_site
+			check_variable = { var = great_depression_works_escrow_prepared_payer value = ROOT compare = equals }
+			ROOT = { check_variable = { var = great_depression_successful_action_count value = PREV.great_depression_works_escrow_prepared_expected_action_count compare = less_than } }
+		}
+		clr_state_flag = great_depression_works_escrow_prepared
+		clear_variable = great_depression_works_escrow_prepared_site
+		clear_variable = great_depression_works_escrow_prepared_payer
+		clear_variable = great_depression_works_escrow_prepared_episode
+		clear_variable = great_depression_works_escrow_prepared_day
+		clear_variable = great_depression_works_escrow_prepared_expected_action_count
+		clear_variable = great_depression_works_escrow_prepared_previous_auth
+		clear_variable = great_depression_works_escrow_prepared_manpower
+		clear_variable = great_depression_works_escrow_prepared_fuel
+		clear_variable = great_depression_works_escrow_prepared_trains
+		clear_variable = great_depression_works_escrow_prepared_civilian
+	}
+}
+
+# Trusted owner callbacks use exact live proof before freezing retirement.
+# A successful or failed authorization must already be terminal. Cancellation
+# is accepted only from its matching registered owner cleanup transaction.
+great_depression_works_escrow_capture_retirement = {
+	if = {
+		limit = {
+			great_depression_works_escrow_project_matches_funding = yes
+			NOT = { has_state_flag = great_depression_works_escrow_retired }
+			OR = {
+				AND = {
+					has_state_flag = great_depression_center_project_failed_receipt
+					check_variable = { var = great_depression_center_project_failed_authorization_id value = great_depression_works_escrow_funded_auth compare = equals }
+				}
+				AND = {
+					has_state_flag = great_depression_center_project_completed_receipt
+					check_variable = { var = great_depression_center_project_completed_authorization_id value = great_depression_works_escrow_funded_auth compare = equals }
+					check_variable = { var = great_depression_center_project_work_days value = great_depression_works_escrow_required_work compare = greater_than_or_equals }
+				}
+				AND = {
+					has_state_flag = great_depression_works_escrow_cleanup_authorized
+					check_variable = { var = great_depression_center_episode_id value = ROOT.great_depression_active_episode_id compare = equals }
+					check_variable = { var = great_depression_works_escrow_live_owner value = ROOT compare = equals }
+				}
+			}
+		}
+		great_depression_works_escrow_measure_unused = yes
+		if = {
+			limit = { has_state_flag = great_depression_works_escrow_quote_ready }
+			set_variable = { great_depression_works_escrow_retired_site = great_depression_works_escrow_site }
+			set_variable = { great_depression_works_escrow_retired_payer = great_depression_works_escrow_payer }
+			set_variable = { great_depression_works_escrow_retired_episode = great_depression_works_escrow_funded_episode }
+			set_variable = { great_depression_works_escrow_retired_auth = great_depression_works_escrow_funded_auth }
+			set_variable = { great_depression_works_escrow_retired_action_count = great_depression_works_escrow_funded_action_count }
+			set_variable = { great_depression_works_escrow_retired_owner = great_depression_works_escrow_live_owner }
+			set_variable = { great_depression_works_escrow_retired_work = great_depression_works_escrow_used_work }
+			set_state_flag = great_depression_works_escrow_retired
+			set_state_flag = great_depression_works_escrow_retirement_requested
+		}
+	}
+}
+
+# Recreate no funding. This is the only trusted callback request constructor.
+# Foreign ROOT lacks an identity match and therefore cannot alter the request.
+great_depression_works_escrow_prepare_request = {
+	if = {
+		limit = {
+			great_depression_works_escrow_funding_is_coherent = yes
+			OR = {
+				check_variable = { var = great_depression_works_escrow_payer value = ROOT compare = equals }
+				AND = { check_variable = { var = great_depression_works_escrow_live_owner value = ROOT compare = equals } is_owned_by = ROOT }
+			}
+		}
+		set_variable = { great_depression_works_escrow_request_site = great_depression_works_escrow_site }
+		set_variable = { great_depression_works_escrow_request_payer = great_depression_works_escrow_payer }
+		set_variable = { great_depression_works_escrow_request_episode = great_depression_works_escrow_funded_episode }
+		set_variable = { great_depression_works_escrow_request_auth = great_depression_works_escrow_funded_auth }
+		set_variable = { great_depression_works_escrow_request_action_count = great_depression_works_escrow_funded_action_count }
+	}
+}
+
+great_depression_works_escrow_retire_and_settle = {
+	great_depression_works_escrow_prepare_request = yes
+	great_depression_works_escrow_capture_retirement = yes
+	great_depression_works_escrow_settle = yes
+}
+
+# COUNTRY recovery visits its funded sites only, not every map state.
+# Keep unacknowledged/active rows. A pointer whose payer changed is not ours.
+great_depression_works_escrow_process_retired_sites = {
+	clear_array = great_depression_works_escrow_kept_sites
+	if = {
+		limit = { has_variable = great_depression_works_escrow_sites^num }
+		set_temp_variable = { great_depression_works_escrow_sites_break = constant:great_depression_api.zero }
+		for_each_scope_loop = {
+			array = great_depression_works_escrow_sites
+			break = great_depression_works_escrow_sites_break
+			if = {
+				limit = {
+					has_state_flag = great_depression_works_escrow_open
+					check_variable = { var = great_depression_works_escrow_payer value = PREV compare = equals }
+				}
+				if = {
+					limit = { has_state_flag = great_depression_works_escrow_retired }
+					great_depression_works_escrow_retire_and_settle = yes
+				}
+				if = {
+					limit = { has_state_flag = great_depression_works_escrow_open }
+					PREV = { add_to_array = { array = great_depression_works_escrow_kept_sites value = PREV } }
+				}
+			}
+		}
+	}
+	clear_array = great_depression_works_escrow_sites
+	set_temp_variable = { great_depression_works_escrow_kept_break = constant:great_depression_api.zero }
+	for_each_scope_loop = {
+		array = great_depression_works_escrow_kept_sites
+		break = great_depression_works_escrow_kept_break
+		PREV = { add_to_array = { array = great_depression_works_escrow_sites value = PREV } }
+	}
+	clear_array = great_depression_works_escrow_kept_sites
+}
+

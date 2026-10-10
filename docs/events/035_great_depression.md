@@ -79,7 +79,10 @@ The six recovery doctrines are Emergency Public Works, Rescue Strategic Industry
 
 Each doctrine has its own mapped actions, AI preference profile, crisis legacy, and recovery tradeoffs.
 
-The decision category contains 79 decisions and 17 missions.
+The decision category contains 68 ordinary decisions and 17 missions.
+Each action shows only in the phases where it can still change the outcome (doctrine choices while the doctrine is unassigned, openers early, working actions in Depression and Stabilization, closers in Stabilization and Recovery), evolution actions replace the general ones, and `.tools/test_event035_visible_actions.py` holds the visible counts to five national, five partner and six selected-center actions in an ordinary phase (six national actions in an emergency, six partner actions in the worldwide depression).
+The merged families are Clearing Agreement, Protect the Home Market, Abandon the Distressed Market, Emergency Credit and Coordinated Public Works and Reconstruction.
+Tooltips state effects as "eases faster" or "rises faster" and never print hidden component points.
 
 Every doctrine has a state project and a Stabilization closer.
 Stabilize Finance and Trade restores a selected Distressed, Idled, or Shuttered center through Restore Local Credit and Trade Connection, which needs a completed bank audit and runs the finance restoration project; the center reopens as restructured.
@@ -219,8 +222,7 @@ A successful Keep Essential Freight Moving mission restores basic transport and 
 Coordinated Public Works and Reconstruction starts international reconstruction on the selected closed center, including an abandoned one that was not liquidated, when no other center project is running.
 The AI, which does not keep a selected center, uses one valid center of its own for both producers.
 The inherited-liability consumer adds ongoing hidden pressure for inherited regions.
-Hidden-row paid paths, corridor outcomes, secured-value salvage and multi-region inherited priority remain required consumer work under the full specification.
-Authentic Event 34 delivery depends on its absent per-region producer facts; supplied-field Event 35 consumer and acceptance work remains queued separately, without manufacturing missing source history.
+Hidden inherited rows stay national pressure: there are no paid actions on hidden rows, no secured-value salvage and no multi-region priority, and corridor recovery runs through the visible centers.
 
 Factory loss is delayed until sustained severe failure or a deliberate liquidation action.
 A center written off by Abandon Depression Center or Auction or Reorganize Failed Assets carries the `great_depression_center_liquidated` flag and adds only `demand_liquidated_center` (1) to hidden demand pressure on each update, instead of the full abandoned and hollowed weight that a center lost to sustained failure keeps.
@@ -279,7 +281,7 @@ The offsets are the `legacy_*` keys of `great_depression_hidden_component`, so n
 ### Country recovery scars
 
 Besides the hollow-recovery scar, `great_depression_apply_country_scar` gives at most one country scar per recovery, earned only from receipts the closing episode recorded.
-The actions that can leave a scar write an episode receipt when they are taken: Request Emergency Credit writes `great_depression_scar_debt_episode_id`, Accept External Supervision and Request Foreign Support write `great_depression_scar_foreign_episode_id`, and Establish Emergency Production Board, Ration Strategic Inputs and Restrict Capital Outflows write `great_depression_scar_controls_episode_id`.
+The actions that can leave a scar write an episode receipt when they are taken: Emergency Credit taken from a partner writes `great_depression_scar_debt_episode_id`, Accept External Supervision and Request Foreign Support write `great_depression_scar_foreign_episode_id`, and Establish Emergency Production Board, Ration Strategic Inputs and Restrict Capital Outflows write `great_depression_scar_controls_episode_id`.
 
 | Scar | Earned when | Cleared by a later strong recovery |
 | --- | --- | --- |
@@ -367,12 +369,12 @@ Event 34 suppliers enter through the supplier adapter and retain their own Overh
 
 ### Market exits and supply-gap purchases
 
-Abandon the Distressed Market, Withdraw from Distressed Market, and Exploit Supply Gap trade a bounded, current-episode benefit for the acting country against a cost carried by the partner. None of them raises the actor's own Severity.
+Abandon the Distressed Market (with its quiet form) and Exploit Supply Gap trade a bounded, current-episode benefit for the acting country against a cost carried by the partner. None of them raises the actor's own Severity.
 
 | Action | Actor benefit (current episode) | Partner cost |
 | --- | --- | --- |
 | Abandon | credit and trade relief for `abandon_relief_days`, and the link stops carrying the actor's weekly pressure to the partner | Severity shock if the partner is in its own depression; otherwise an existing exposure link rises one stage or a new link opens at Dependent; `great_depression_market_abandoned` opinion of the actor |
-| Withdraw | smaller trade relief for `withdraw_relief_days`, no diplomatic cost | smaller Severity shock if the partner is in its own depression; a new link opens only at Pressured |
+| Withdraw (the quiet form of Abandon, used when the partner is an ally, faction member, subject or overlord) | smaller trade relief for `withdraw_relief_days`, no diplomatic cost | smaller Severity shock if the partner is in its own depression; a new link opens only at Pressured |
 | Exploit | industrial relief for `exploit_relief_days`; while Social Collapse is active, hidden social stress takes part of it back | Severity pressure on the partner and `great_depression_supply_gap_exploited` opinion of the actor |
 
 All values live in `great_depression_market_exit`. The relief windows are `great_depression_market_abandon_relief_*`, `great_depression_market_withdraw_relief_*`, and `great_depression_supply_gap_relief_*` (due day plus episode id), read by `great_depression_rebuild_hidden_components` through the `*_relief_is_active` triggers. An abandoned partner joins the bounded `great_depression_severed_partner_countries` array, which `great_depression_process_contagion_network` skips. `great_depression_clear_market_exit_state` clears every window and the severed list at episode start, abort, retirement, and recovery cleanup.
@@ -449,12 +451,12 @@ Neither action raises the actor's Severity. Values live in `great_depression_cur
 ### Economic blocs
 
 Two bounded global member sets record the blocs: `global.great_depression_clearing_bloc_members` and `global.great_depression_protectionist_bloc_members`, each capped at `great_depression_bloc.member_cap` (12).
-Establish a Clearing Bloc (Financial Contagion) and Regional Clearing Agreement (The Second Great Depression) put both the actor and the partner into the clearing bloc, and the clearing-bloc incident puts the crisis country and its incident partner there.
+The Clearing Agreement (Financial Contagion, and a supplier in The Second Great Depression) puts both the actor and the partner into the clearing bloc, counts once per global episode toward the worldwide recovery during the worldwide depression, and the clearing-bloc incident puts the crisis country and its incident partner there.
 `great_depression_join_clearing_bloc` records `great_depression_clearing_bloc_due_day` for `clearing_term_days` (365) and adds the timed `great_depression_clearing_bloc_membership` modifier (trade opinion +10%); a member that joins again renews its term.
 While a member is in its own depression, `great_depression_rebuild_hidden_components` gives it the clearing trade relief, and a member under worldwide pressure subtracts `clearing_exposure_relief` from its worldwide exposure score.
 The daily global pulse (`great_depression_process_economic_blocs`) removes clearing members whose term has run out or which no longer exist.
 
-Protectionist Bloc puts both countries into the protectionist bloc for the rest of the global episode and no longer raises the actor's Severity.
+Protect the Home Market closes the actor's foreign exposure, and during the worldwide depression it also puts the actor into the protectionist bloc for the rest of the global episode without raising the actor's Severity.
 Members carry `great_depression_protectionist_bloc_membership` (trade opinion -20%, consumer goods +2%, factory output growth +2%), which stands for the trade outsiders take elsewhere.
 A member under worldwide pressure subtracts `protectionist_exposure_shield` from its worldwide exposure score, which can drop it into a lighter contraction tier, and a member in its own depression adds `protectionist_global_pressure_factor` (0.15) instead of the ordinary worldwide pressure factor (0.35) to each Severity update during the early worldwide stages.
 Each member lengthens the international-reconstruction proof by `protectionist_drag_days_per_member` (10) days, at most `protectionist_drag_maximum_days` (40), computed from the current member count so the drag falls when members leave.
@@ -464,7 +466,8 @@ A new national episode removes the country from both blocs in `great_depression_
 Clearing membership is not ended by global retirement or by recovery, because the payments arrangement keeps a post-crisis purpose until its term runs out.
 
 `great_depression_check_bloc_formation` counts living members and majors after every join; at `formation_member_minimum` (3) members with at least `formation_major_minimum` (1) major, `great_depression_queue_global_news` sends `chaosx.nr35.20` (A Clearing Bloc Forms) or `chaosx.nr35.21` (A Protectionist Bloc Forms) once per global episode, naming the country whose action formed the bloc and the member count, never outside a worldwide episode or while the evolution is switched off.
-Bloc decisions need a new member and room for every newcomer (`great_depression_protectionist_bloc_can_take_member`, `great_depression_clearing_bloc_can_take_pair`): a bloc below `pair_room_limit` (11) members takes two newcomers, and a bloc below `member_cap` takes one when the other country already belongs, so a decision never leaves one of the two countries outside.
+The Clearing Agreement needs room for every newcomer (`great_depression_clearing_bloc_can_take_pair`): a bloc below `pair_room_limit` (11) members takes two newcomers, and a bloc below `member_cap` takes one when the other country already belongs, so a decision never leaves one of the two countries outside.
+The protectionist bloc joins one country at a time and refuses a member beyond `member_cap`.
 The AI prefers blocs with close allies, does not spend an action renewing a clearing pair that is already in the bloc, and does not raise a protectionist wall during Fragmented Recovery or International Reconstruction.
 
 ## Shared-system adapters and Chaos accounting
@@ -473,7 +476,16 @@ Event 35 uses owner adapters for humanitarian pressure, occupation, Deaths, Cond
 
 Evolution activation and lifecycle bookkeeping do not add Chaos.
 
-Guarded Event 35 Chaos receipts are reserved for concrete abnormal outcomes such as maximum national failure, national breakdown, extreme social outcomes, civil conflict, worldwide pressure, supplier collapse, or corresponding recovery relief.
+Guarded Event 35 Chaos receipts are reserved for concrete abnormal outcomes such as maximum national failure, national breakdown, extreme social outcomes, civil conflict, worldwide pressure, supplier collapse, or the end of the worldwide depression.
+The first worldwide wave adds `worldwide_wave_chaos` (10).
+A spreading chain of Financial Contagion pays `contagion_conversion_chaos` (2) once and `contagion_chain_milestone_chaos` (3) when the same chain converts its `contagion_chain_milestone_conversions`-th (3) economy; the global chain ledger keeps the `contagion_chain_ledger_cap` (16) most recent chains.
+National recovery adds or removes no Chaos, and security responses create no Event 35 deaths: deaths reach the Deaths ledger only through famine and Event 21.
+
+Shared owners put pressure on a depression through their own public state and Event 35 writes nothing back:
+
+- A Depression Center where the famine owner reports a visible food problem adds `famine_demand_pressure` and `famine_social_pressure` (1 each) to the hidden update, holds reopening certification (the project pauses and fails after `center_project_pause_fail_days` of continuous hold), and is the only place the hunger-riot incident can occur.
+- A center in a state with severe chemical contamination or the nuclear fallout modifier cannot certify reopening until the owner clears it.
+- Condemnation sanctions against the country (`great_depression_trade_isolation_is_active`, the read Event 50 will join) add `sanction_trade_pressure` to hidden trade stress and make the Finance and Trade doctrine pay `sanction_cost_factor` (1.25) times the convoys and political authority.
 
 Global and local receipt totals are kept separately so that the event cannot duplicate shared sources or replay the same outcome.
 

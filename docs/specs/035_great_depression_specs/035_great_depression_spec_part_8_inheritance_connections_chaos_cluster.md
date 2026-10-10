@@ -1,7 +1,7 @@
 # Great Depression 2.0 specification, part 8: Event 34 inheritance, connections, Chaos, and cluster behavior
 
-Status: the Event 34 handoff, evolution floor, deepening, inherited-liability pressure, the famine, migration and Event 21 adapters, the Chaos receipts, cluster registration and the Event Log rows are `implemented` in source.
-The remaining connection adapters, the Chaos value proposals and the inherited hidden-row work are listed as pending or `unresolved` below.
+Status: the Event 34 handoff, evolution floor, deepening, inherited-liability pressure, the famine, migration, contamination, sanction and Event 21 connections, the Chaos receipts, cluster registration and the Event Log rows are `implemented` in source.
+The disaster adapter is pending and the inherited hidden-row work is `rejected`.
 
 ## Event 34 relationship
 
@@ -126,8 +126,9 @@ Runaway Industrialization states remain linked by a corridor receipt.
 Event 35 can select a small number of the most important states as visible Depression Centers and keep the rest as hidden corridor liabilities.
 Recovery can restore the corridor, break it into regional networks, or leave permanent disconnected scars.
 
-Disposition `unresolved`: U1 requires paid actions on hidden rows, corridor restoration and breakup, secured-value salvage and multi-region priority, while decision D4 and lead decision L8 closed them for lack of Event 34 producers.
-The audit proposal is to keep hidden corridor states as national pressure only and let corridor recovery run through the visible centers, with no paid hidden-row actions and no salvage (README Open questions 6).
+Disposition `rejected` (2026-10-10 parent acceptance): paid actions on hidden rows, corridor restoration and breakup, secured-value salvage and multi-region priority are not built.
+Hidden corridor states stay national inheritance pressure, and corridor recovery runs through the visible centers.
+Event 34 delivers its Industrial Regions and spread states as authentic registered rows (role primary or corridor) through `great_depression_register_inherited_region`.
 
 ## Reserve conversion
 
@@ -191,12 +192,12 @@ Event 35 never writes another system's internal state; it submits a validated re
 | Event 34 Industrial Boom | Both | Collapse starts or deepens Event 35; surviving booms quote and join reconstruction as suppliers; supplier collapse is a global shock | `implemented`; supplier choices pending (part 7) |
 | Famine | Event 35 to famine | A hollowed or abandoned center at Systemic Breakdown or worse submits one bounded food-pressure request per state and crisis (`great_depression_submit_humanitarian_center_pressure`); the famine owner decides whether a food problem exists and owns every death | `implemented` |
 | Migration | Event 35 to migration | The same center failure submits one bounded flight request per state and crisis; migration owns cohorts and transfers | `implemented` |
-| Famine | Famine to Event 35 | A Depression Center where the famine owner reports a visible food problem (`famine_state_has_visible_food_problem`) adds hidden demand and social stress, blocks reopening certification while it lasts, and gates the hunger-riot incident | pending |
+| Famine | Famine to Event 35 | A Depression Center where the famine owner reports a visible food problem (`famine_state_has_visible_food_problem`) adds one point of hidden demand and one of social stress per update, holds reopening certification while it lasts (the project pauses and fails after `28` days of continuous hold), and is the only place the hunger-riot incident can occur | `implemented` |
 | Event 21 Random Civil War | Event 35 to Event 21 | National Breakdown and Social Collapse hand a proven outcome to the Event 21 opening adapter, which owns route, forces, war and Deaths; a rejected admission becomes a non-war outcome | `implemented` |
 | Occupation and state loss | Shared to Event 35 | A native control change records a major industrial state loss for targeting and pauses or transfers center work; the occupation profile is read through the famine owner | `implemented` |
-| Event 50 The Great Embargo and condemnation | Shared to Event 35 | An active embargo or condemnation sanction against a depressed country adds hidden trade stress and makes Finance and Trade costlier; Event 50 adds isolation pressure without a second depression penalty (Event 50 part 8) | pending |
+| Event 50 The Great Embargo and condemnation | Shared to Event 35 | An active condemnation sanction against a depressed country (`great_depression_trade_isolation_is_active`, which Event 50 will join when it ships) adds hidden trade stress and makes the Finance and Trade doctrine pay 25% more convoys and political authority; Event 50 adds isolation pressure without a second depression penalty (Event 50 part 8) | `implemented` for condemnation sanctions |
 | Natural disasters and Acid Rain | Shared to Event 35 | A confirmed disaster loss in a center gives one economic shock per incident and can interrupt project proof; disaster damage is never an Event 35 factory-loss receipt and reopening never repairs it | pending |
-| Air contamination, CBRN and fallout | Shared to Event 35 | A center inside a contaminated or fallout-graded state cannot certify reopening until the owner clears it; no extra pressure number is added | pending |
+| Air contamination, CBRN and fallout | Shared to Event 35 | A center inside a state with severe chemical contamination or the fallout modifier cannot certify reopening until the owner clears it; no extra pressure number is added | `implemented` |
 | Black Friday cost discounts | Shared to Event 35 | A shared discount may lower purchase-style inputs only; tied civilian factories, mission time, output sacrifice and risk stay | guard only |
 | Readers of Event 35 | Event 35 to others | The public read is `great_depression_has_active_crisis`; Event 39 currently reads the `great_depression_active` flag directly, and the Event 44 and Event 50 specs plan to read the active crisis; Event 35 publishes no other cross-event value | `implemented` for Event 39 |
 
@@ -262,16 +263,15 @@ For scale, the shared meter uses tiers of 200 points with a monthly decay of 1, 
 | Independent or inherited opening | `0` | None | Correct |
 | Evolution activation | `0` | None | Correct |
 | Sustained Economic Paralysis consequence | `+1` | One per episode | Below notice; keep only as a history marker or raise to `+2` |
-| Contagion conversion into a full depression | `+2` per attributable conversion | Per conversion | Proposal: `+2` once per spreading chain and one `+3` milestone at the third conversion (README Open questions 4) |
+| Contagion conversion into a full depression | `+2` once per spreading chain and one `+3` milestone at the chain's third conversion | One per chain (the global chain ledger keeps the 16 most recent chains) | Several conversions of one chain no longer pay again |
 | Social Collapse outcome (coup success, rejected autonomy, non-war breakdown, failed response) | `+2` | One per episode | Correct: the Event 35 coup changes the government through `set_politics` and does not fire the shared coup or ideology counters |
 | Civil conflict caused by the crisis | `+3` | One per episode | Correct today: the shared civil-war counter is commented out and Event 21 adds no Chaos of its own; re-check if either starts counting civil wars |
-| First worldwide wave of Evolution III | `+20` | One per global episode | Proposal: `+10`, the scale of the first nuclear use (README Open questions 4) |
+| First worldwide wave of Evolution III | `+10` | One per global episode | The scale of the first nuclear use |
 | Supplier boom collapse | `+2` | One per global episode | Correct |
 | Recovery conference failure | `+2` | One per global episode | Correct |
 | International recovery ends the worldwide episode | up to `-10` | One per global episode, capped by recorded Event 35 global Chaos | Correct; scale with the wave if the wave changes |
-| Strong national recovery after Event 35-owned paralysis | up to `-2` | One per episode, capped by recorded episode Chaos | Proposal: drop as too small to notice |
+| Strong national recovery after Event 35-owned paralysis | `0` | None | The earlier 2-point relief was too small to notice and is removed |
 
-The proposals change implemented values and stay `unresolved` until accepted.
 The civil-conflict receipt is the only Chaos record of a crisis-caused civil war, so it must become `0` in the same change that enables a shared civil-war counter or an Event 21 Chaos payment.
 
 Exploit rules:
