@@ -99,3 +99,10 @@ All 42 supplied text files were read fully. Required external material was not a
 No subagents were executed. The supplied role definitions were read, but the session did not expose a usable spawning runtime. No HOI4 MCP operation, native GUI render, asset or audio production, gameplay implementation, live playtest, or workbook edit is claimed.
 
 The 22 standalone reference tests passed. They check only a small planning abstraction. They cannot certify actual game scripting, balance, character behavior, probabilities, or multiplayer execution. The source coverage and package QA distinguish those limits explicitly.
+
+## Changelog
+
+### 2026-10-10 spec audit
+
+- Reviewed against the current shared systems. The three readouts each drive a decision (Paranoia sets incident pressure, governing support decides the 51-seat majority, filled seats is the 80-seat recovery target), the Chaos ledger is bounded with matching containment reversals, and incidents are gated by a pressure-sensitive hazard and case limit, so no design change was needed.
+- Subagent instructions use the Claude-first wording.

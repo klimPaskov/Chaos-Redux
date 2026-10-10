@@ -1,6 +1,6 @@
 # Produce the Event 077 visual assets
 
-Read all presentation and relevant gameplay parts in `docs/specs/077_parliament_of_fear_specs/`, especially Parts 2, 6, 7, 9, 10, and 12. Read the current [asset](../../../.agents/skills/chaos-redux-event-assets/SKILL.md), frame-animation and scripted-GUI owner skills.
+Read all presentation and relevant gameplay parts in `docs/specs/077_parliament_of_fear_specs/`, especially Parts 2, 6, 7, 9, 10, and 12. Read the current [asset](../../../.claude/skills/chaos-redux-event-assets/SKILL.md), frame-animation and scripted-GUI owner skills.
 Route every authorized character portrait to `chaosx_portrait_creator`; its standing narrow portrait-wiring exception follows the asset skill. Follow `supporting_material/077_asset_manifest.csv` and its notes.
 
 The manifest has 48 production records covering ten report compositions, two news compositions, four action icons, three idea icons, chamber state and overlay art, warning animation and static state, the severe-outcome super-event image, eight achievement triplets, and conditional real-portrait and successor-flag roles. Conditional roles are not a request to invent people or countries.

@@ -57,7 +57,7 @@ Spawn `chaosx_ai_probability_auditor`. Inspect the complete real pools before ev
 Run the complete event-flow and scope audit, applicable offline checks from the 93 implementation scenarios, localisation checks, native asset reviews and achievement checks.
 Live-game cases belong to the user; review supplied evidence without launching HOI4. The included 22 Python reference tests are planning-invariant checks and cannot replace those gates.
 
-Near completion, spawn `chaosx_improvement_loop_planner` with `fork_turns="none"`. Resolve its actual addendum or closure handoff, then complete the read-only event completion audit. The parent's design review is not an independent review.
+Near completion, spawn `chaosx_improvement_loop_planner` with no inherited parent context. Resolve its actual addendum or closure handoff, then complete the read-only event completion audit. The parent's design review is not an independent review.
 
 Edit the source workbook through the bounded catalog request, preserve its formatting, save it, and run the official exporter. Do not hand-edit the supplied CSV exports. Keep status To Be Reworked until the actual project status criteria are met.
 

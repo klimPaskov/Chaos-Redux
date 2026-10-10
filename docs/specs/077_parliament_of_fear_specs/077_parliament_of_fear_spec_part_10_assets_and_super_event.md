@@ -83,7 +83,7 @@ The research must confirm that the music is not already assigned to another Chao
 ### Asset acceptance
 
 Every asset has an actual consumer, correct native family, source or generation record, final filename, and review evidence.
-Reports follow the current [asset skill](../../../.agents/skills/chaos-redux-event-assets/SKILL.md) report-card treatment, including its corner alpha.
+Reports follow the current [asset skill](../../../.claude/skills/chaos-redux-event-assets/SKILL.md) report-card treatment, including its corner alpha.
 Icons use native transparent source generation and preserve the required alpha through processing.
 Runtime files do not point into documentation folders.
 

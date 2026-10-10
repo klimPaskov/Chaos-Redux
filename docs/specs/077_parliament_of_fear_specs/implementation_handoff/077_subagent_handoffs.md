@@ -2,14 +2,14 @@
 
 All 20 supplied role definitions were read. None was spawned or executed. These are future bounded work packets, not subagent reports.
 
-Use the actual collaboration runtime with `fork_turns="none"` where required by the supplied skill. Each packet must include its task, paths, relevant source parts, allowed writes, constraints, and expected evidence because the agent does not inherit the parent conversation.
+Spawn subagents with no inherited parent context where required by the supplied skill. Each packet must include its task, paths, relevant source parts, allowed writes, constraints, and expected evidence because the agent does not inherit the parent conversation.
 
 The parent retains design decisions, shared integration ownership, and final acceptance.
 Specialist findings do not silently authorize a broader task.
 
 ## Common invocation envelope
 
-Use the current [subagent skill](../../../../.agents/skills/chaos-redux-subagents/SKILL.md) for role boundaries and runtime selection, rather than the original supplied TOML snapshots.
+Use the current [subagent skill](../../../../.claude/skills/chaos-redux-subagents/SKILL.md) for role boundaries and runtime selection, rather than the original supplied TOML snapshots.
 Copy this common envelope and the selected role card into each self-contained invocation.
 The parent supplies Event 077, Parliament of Fear, the current implementation state and acceptance basis, exact relevant numbered parts, applicable owner skills, current source paths and revisions, allowed writes, prior findings, and an output path under `docs/plans/077_parliament_of_fear_plans/subagent_handoffs/`.
 Each return must identify files and scopes, evidence, authorized changes, and unresolved blockers.
