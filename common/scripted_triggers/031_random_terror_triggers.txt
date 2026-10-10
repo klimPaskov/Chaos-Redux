@@ -834,6 +834,75 @@ random_terror_scenario_extra_state = {
 	owner = { has_country_flag = random_terror_scenario_target }
 }
 
+# STATE scope.  Reads temp random_terror_scenario_local_type.  The states a
+# Global Jihad type prefers for the seed of one new territorial actor
+# (Part 7, Scenario type selector).  A launch falls back to any valid actor
+# state when the map offers none, so the preflight allocation always holds.
+random_terror_scenario_type_seed_state = {
+	OR = {
+		# Dispersed Networks: populous or well connected states that lie
+		# apart from every earlier seed, so cells spread over several regions.
+		AND = {
+			check_variable = { random_terror_scenario_local_type = constant:random_terror_jihad_type.dispersed_networks }
+			OR = {
+				state_population_k > constant:random_terror_scenario_geo.urban_population_k
+				infrastructure > constant:random_terror_scenario_geo.connected_infrastructure
+			}
+			NOT = { has_state_flag = random_terror_scenario_actor_state_reserved }
+			NOT = { any_neighbor_state = { has_state_flag = random_terror_scenario_actor_state_reserved } }
+			NOT = { any_neighbor_state = { any_neighbor_state = { has_state_flag = random_terror_scenario_actor_state_reserved } } }
+		}
+		# Border Corridors: a border state with a port or good roads next to a
+		# weaker neighbour, linked to the corridor the earlier seeds started.
+		AND = {
+			check_variable = { random_terror_scenario_local_type = constant:random_terror_jihad_type.border_corridors }
+			OR = {
+				is_coastal = yes
+				infrastructure > constant:random_terror_scenario_geo.connected_infrastructure
+			}
+			any_neighbor_state = {
+				NOT = { is_owned_by = PREV.OWNER }
+				OWNER = { NOT = { is_major = yes } }
+			}
+			OR = {
+				check_variable = { global.random_terror_scenario_seeds_placed = constant:random_terror_value.zero }
+				any_neighbor_state = { has_state_flag = random_terror_scenario_actor_state_reserved }
+				any_neighbor_state = { any_neighbor_state = { has_state_flag = random_terror_scenario_actor_state_reserved } }
+			}
+		}
+		# Capital Uprisings: a state beside the parent's capital, with little
+		# remote territory and more takeover potential.
+		AND = {
+			check_variable = { random_terror_scenario_local_type = constant:random_terror_jihad_type.capital_uprisings }
+			any_neighbor_state = { is_capital = yes }
+		}
+		# Territorial Fronts: a state with populated neighbours of the same
+		# parent, room for a larger contiguous actor.
+		AND = {
+			check_variable = { random_terror_scenario_local_type = constant:random_terror_jihad_type.territorial_fronts }
+			any_neighbor_state = {
+				is_owned_by = PREV.OWNER
+				state_population_k > constant:random_terror_value.zero
+				NOT = { is_capital = yes }
+			}
+		}
+	}
+}
+
+# STATE scope.  Reads event targets random_terror_front_actor and
+# random_terror_actor_parent.  A neighbouring state of the parent that borders
+# the new Territorial Fronts actor's territory and leaves the parent its
+# capital and enough states to survive.
+random_terror_scenario_front_state = {
+	is_owned_by = event_target:random_terror_actor_parent
+	is_controlled_by = event_target:random_terror_actor_parent
+	state_population_k > constant:random_terror_value.zero
+	NOT = { is_capital = yes }
+	NOT = { has_state_flag = random_terror_scenario_actor_state_reserved }
+	any_neighbor_state = { is_owned_by = event_target:random_terror_front_actor }
+	OWNER = { num_of_controlled_states > constant:random_terror_scenario_geo.front_parent_minimum_states }
+}
+
 random_terror_scenario_has_free_carrier = {
 	OR = {
 		JHX = { random_terror_carrier_is_free = yes }

@@ -2384,16 +2384,15 @@ random_terror_resolve_scenario_profile = {
 	}
 	set_variable = { global.random_terror_global_jihad_type = random_terror_scenario_input_type }
 	set_variable = { global.random_terror_global_jihad_scenario_intensity = random_terror_scenario_input_intensity }
+	# Random Pattern is not rolled once: every seeded country, extra state and
+	# territorial actor takes the next of the four types from a rotating cursor,
+	# so the launch always mixes the patterns.
 	set_variable = { global.random_terror_scenario_effective_type = random_terror_scenario_input_type }
-	if = {
-		limit = { check_variable = { random_terror_scenario_input_type = constant:random_terror_jihad_type.random_pattern } }
-		set_temp_variable = { random_terror_draw_runtime_scenario_pattern = constant:random_terror_runtime_weight.scenario_pattern }
-		random_list = {
-			random_terror_draw_runtime_scenario_pattern = { set_variable = { global.random_terror_scenario_effective_type = constant:random_terror_jihad_type.dispersed_networks } }
-			random_terror_draw_runtime_scenario_pattern = { set_variable = { global.random_terror_scenario_effective_type = constant:random_terror_jihad_type.border_corridors } }
-			random_terror_draw_runtime_scenario_pattern = { set_variable = { global.random_terror_scenario_effective_type = constant:random_terror_jihad_type.capital_uprisings } }
-			random_terror_draw_runtime_scenario_pattern = { set_variable = { global.random_terror_scenario_effective_type = constant:random_terror_jihad_type.territorial_fronts } }
-		}
+	set_variable_to_random = {
+		var = global.random_terror_scenario_pattern_cursor
+		min = constant:random_terror_value.zero
+		max = constant:random_terror_scenario_geo.pattern_count
+		integer = yes
 	}
 	if = {
 		limit = { check_variable = { random_terror_scenario_input_intensity = constant:random_terror_intensity.low } }
@@ -2450,6 +2449,29 @@ random_terror_resolve_scenario_profile = {
 		set_variable = { global.random_terror_scenario_response_capacity = constant:random_terror_tuning.scenario_medium_response_capacity }
 		set_variable = { global.random_terror_scenario_civil_war_target = constant:random_terror_tuning.scenario_medium_civil_war_target }
 	}
+	# Dispersed Networks reaches more countries with fewer territorial actors.
+	if = {
+		limit = { check_variable = { random_terror_scenario_input_type = constant:random_terror_jihad_type.dispersed_networks } }
+		add_to_variable = { global.random_terror_scenario_country_target = constant:random_terror_scenario_geo.dispersed_extra_countries }
+		if = {
+			limit = { check_variable = { global.random_terror_scenario_actor_target > constant:random_terror_scenario_geo.dispersed_fewer_actors } }
+			subtract_from_variable = { global.random_terror_scenario_actor_target = constant:random_terror_scenario_geo.dispersed_fewer_actors }
+		}
+	}
+	# Territorial Fronts extend each actor over this many neighbouring states.
+	set_variable = { global.random_terror_scenario_front_states = constant:random_terror_scenario_geo.front_states_medium }
+	if = {
+		limit = { check_variable = { random_terror_scenario_input_intensity = constant:random_terror_intensity.low } }
+		set_variable = { global.random_terror_scenario_front_states = constant:random_terror_scenario_geo.front_states_low }
+	}
+	else_if = {
+		limit = { check_variable = { random_terror_scenario_input_intensity = constant:random_terror_intensity.high } }
+		set_variable = { global.random_terror_scenario_front_states = constant:random_terror_scenario_geo.front_states_high }
+	}
+	else_if = {
+		limit = { check_variable = { random_terror_scenario_input_intensity = constant:random_terror_intensity.maximum } }
+		set_variable = { global.random_terror_scenario_front_states = constant:random_terror_scenario_geo.front_states_maximum }
+	}
 	# The evolution stage this launch will open.  The preflight counts only the
 	# carriers whose evolution gate this stage unlocks.
 	set_variable = { global.random_terror_scenario_target_stage = constant:random_terror_evolution.jihadist_international }
@@ -2501,6 +2523,8 @@ random_terror_clear_scenario_profile = {
 	clear_variable = global.random_terror_scenario_legitimacy
 	clear_variable = global.random_terror_scenario_response_capacity
 	clear_variable = global.random_terror_scenario_civil_war_target
+	clear_variable = global.random_terror_scenario_pattern_cursor
+	clear_variable = global.random_terror_scenario_front_states
 	clear_variable = global.random_terror_scenario_new_actor_target
 	clear_variable = global.random_terror_scenario_existing_actor_count
 }
@@ -2738,6 +2762,22 @@ random_terror_scenario_form_coordination = {
 	}
 }
 
+# Any scope.  Sets temp random_terror_scenario_local_type: the launch's type,
+# or for Random Pattern the next of the four types from the rotating cursor.
+random_terror_scenario_draw_local_type = {
+	set_temp_variable = { random_terror_scenario_local_type = global.random_terror_global_jihad_type }
+	if = {
+		limit = { check_variable = { global.random_terror_global_jihad_type = constant:random_terror_jihad_type.random_pattern } }
+		set_temp_variable = { random_terror_scenario_local_type = global.random_terror_scenario_pattern_cursor }
+		add_to_temp_variable = { random_terror_scenario_local_type = constant:random_terror_jihad_type.dispersed_networks }
+		add_to_variable = { global.random_terror_scenario_pattern_cursor = constant:random_terror_value.one }
+		if = {
+			limit = { check_variable = { var = global.random_terror_scenario_pattern_cursor value = constant:random_terror_scenario_geo.pattern_count compare = greater_than_or_equals } }
+			set_variable = { global.random_terror_scenario_pattern_cursor = constant:random_terror_value.zero }
+		}
+	}
+}
+
 random_terror_scenario_seed_state = {
 	random_terror_initialize_state_state = yes
 	set_variable = { random_terror_state_activity = global.random_terror_scenario_activity }
@@ -2745,23 +2785,23 @@ random_terror_scenario_seed_state = {
 	set_state_flag = random_terror_scenario_state_seeded
 	add_to_variable = { global.random_terror_scenario_states_seeded = constant:random_terror_value.one }
 	if = {
-		limit = { check_variable = { global.random_terror_scenario_effective_type = constant:random_terror_jihad_type.dispersed_networks } }
+		limit = { check_variable = { random_terror_scenario_local_type = constant:random_terror_jihad_type.dispersed_networks } }
 		set_state_flag = random_terror_dispersed_cell_seeded
 	}
 	if = {
-		limit = { check_variable = { global.random_terror_scenario_effective_type = constant:random_terror_jihad_type.border_corridors } }
+		limit = { check_variable = { random_terror_scenario_local_type = constant:random_terror_jihad_type.border_corridors } }
 		set_state_flag = random_terror_border_corridor_seeded
 		add_to_variable = { random_terror_state_pressure = constant:random_terror_tuning.minor_pressure_gain }
 		add_to_variable = { global.random_terror_network_reach = constant:random_terror_tuning.network_reach_gain }
 	}
 	if = {
-		limit = { check_variable = { global.random_terror_scenario_effective_type = constant:random_terror_jihad_type.capital_uprisings } }
+		limit = { check_variable = { random_terror_scenario_local_type = constant:random_terror_jihad_type.capital_uprisings } }
 		set_state_flag = random_terror_capital_pressure_seeded
 		add_to_variable = { random_terror_state_pressure = constant:random_terror_tuning.major_pressure_gain }
 		add_to_variable = { random_terror_state_activity = constant:random_terror_tuning.state_activity_gain }
 	}
 	if = {
-		limit = { check_variable = { global.random_terror_scenario_effective_type = constant:random_terror_jihad_type.territorial_fronts } }
+		limit = { check_variable = { random_terror_scenario_local_type = constant:random_terror_jihad_type.territorial_fronts } }
 		set_state_flag = random_terror_territorial_front_seeded
 		add_to_variable = { random_terror_state_pressure = constant:random_terror_tuning.major_pressure_gain }
 		add_to_variable = { random_terror_state_activity = constant:random_terror_tuning.state_activity_gain }
@@ -2772,6 +2812,7 @@ random_terror_scenario_seed_state = {
 }
 
 random_terror_scenario_seed_country = {
+	random_terror_scenario_draw_local_type = yes
 	random_terror_initialize_country_state = yes
 	random_terror_achievement_register_reaction_country = yes
 	set_country_flag = random_terror_achievement_manual_scenario_disqualified
@@ -2801,7 +2842,7 @@ random_terror_scenario_seed_country = {
 	set_variable = { random_terror_response_legitimacy = global.random_terror_scenario_legitimacy }
 	set_variable = { random_terror_response_capacity = global.random_terror_scenario_response_capacity }
 	if = {
-		limit = { check_variable = { global.random_terror_scenario_effective_type = constant:random_terror_jihad_type.capital_uprisings } }
+		limit = { check_variable = { random_terror_scenario_local_type = constant:random_terror_jihad_type.capital_uprisings } }
 		# Capital Uprisings open the seizure mission at once.
 		capital_scope = {
 			random_terror_scenario_seed_state = yes
@@ -2820,11 +2861,11 @@ random_terror_scenario_seed_country = {
 		}
 	}
 	if = {
-		limit = { check_variable = { global.random_terror_scenario_effective_type = constant:random_terror_jihad_type.border_corridors } }
+		limit = { check_variable = { random_terror_scenario_local_type = constant:random_terror_jihad_type.border_corridors } }
 		set_country_flag = random_terror_smuggling_corridor_recorded
 	}
 	if = {
-		limit = { check_variable = { global.random_terror_scenario_effective_type = constant:random_terror_jihad_type.territorial_fronts } }
+		limit = { check_variable = { random_terror_scenario_local_type = constant:random_terror_jihad_type.territorial_fronts } }
 		set_country_flag = random_terror_retake_prepared
 	}
 	if = {
@@ -2884,6 +2925,7 @@ random_terror_scenario_seed_extra_states = {
 			start = 0
 			end = random_terror_scenario_extra_state_target
 			value = random_terror_scenario_extra_state_index
+			random_terror_scenario_draw_local_type = yes
 			random_state = {
 				limit = { random_terror_scenario_extra_state = yes }
 				random_terror_scenario_seed_state = yes
@@ -2893,17 +2935,77 @@ random_terror_scenario_seed_extra_states = {
 }
 
 random_terror_scenario_seed_actors = {
+	set_variable = { global.random_terror_scenario_seeds_placed = constant:random_terror_value.zero }
 	for_loop_effect = {
 		start = 0
 		end = global.random_terror_scenario_new_actor_target
 		value = random_terror_scenario_actor_index
+		random_terror_scenario_draw_local_type = yes
+		set_temp_variable = { random_terror_scenario_seed_done = constant:random_terror_value.zero }
+		# The type's own geography first, then any valid actor state when the
+		# map offers none, so the allocation the preflight counted always holds.
 		random_state = {
-			limit = { random_terror_scenario_actor_state = yes }
-			set_state_flag = random_terror_scenario_actor_state_reserved
-			save_event_target_as = random_terror_current_state
-			random_terror_try_spawn_actor = yes
+			limit = {
+				random_terror_scenario_actor_state = yes
+				random_terror_scenario_type_seed_state = yes
+			}
+			random_terror_scenario_place_actor = yes
+		}
+		if = {
+			limit = { check_variable = { random_terror_scenario_seed_done = constant:random_terror_value.zero } }
+			random_state = {
+				limit = { random_terror_scenario_actor_state = yes }
+				random_terror_scenario_place_actor = yes
+			}
 		}
 	}
+}
+
+# STATE scope.  Reserves the seed state, spawns the actor in it and, when the
+# spawn succeeded, shapes the new actor for the drawn type.
+random_terror_scenario_place_actor = {
+	set_state_flag = random_terror_scenario_actor_state_reserved
+	save_event_target_as = random_terror_current_state
+	random_terror_try_spawn_actor = yes
+	if = {
+		limit = { check_variable = { random_terror_actor_created = constant:random_terror_value.one } }
+		set_temp_variable = { random_terror_scenario_seed_done = constant:random_terror_value.one }
+		add_to_variable = { global.random_terror_scenario_seeds_placed = constant:random_terror_value.one }
+		OWNER = { random_terror_scenario_shape_actor = yes }
+	}
+}
+
+# COUNTRY scope: a new territorial actor.  Reads temp
+# random_terror_scenario_local_type.  Border Corridors actors stay small but
+# start with stronger External Supply, Capital Uprisings actors with more
+# takeover potential, and Territorial Fronts actors extend over contiguous
+# neighbouring states of their parent.
+random_terror_scenario_shape_actor = {
+	if = {
+		limit = { check_variable = { random_terror_scenario_local_type = constant:random_terror_jihad_type.border_corridors } }
+		add_to_variable = { random_terror_external_supply = constant:random_terror_scenario_geo.corridor_supply_bonus }
+		set_country_flag = random_terror_scenario_corridor_actor
+	}
+	else_if = {
+		limit = { check_variable = { random_terror_scenario_local_type = constant:random_terror_jihad_type.capital_uprisings } }
+		add_to_variable = { random_terror_territorial_control = constant:random_terror_scenario_geo.takeover_control_bonus }
+		set_country_flag = random_terror_scenario_takeover_actor
+	}
+	else_if = {
+		limit = { check_variable = { random_terror_scenario_local_type = constant:random_terror_jihad_type.territorial_fronts } }
+		save_event_target_as = random_terror_front_actor
+		for_loop_effect = {
+			start = 0
+			end = global.random_terror_scenario_front_states
+			value = random_terror_scenario_front_index
+			random_state = {
+				limit = { random_terror_scenario_front_state = yes }
+				transfer_state_to = event_target:random_terror_front_actor
+				add_core_of = event_target:random_terror_front_actor
+			}
+		}
+	}
+	random_terror_clamp_actor_values = yes
 }
 
 random_terror_scenario_record_history = {
