@@ -149,6 +149,10 @@ random_terror_initialize_country_state = {
 		set_variable = { random_terror_movement_restrictions_uses = constant:random_terror_value.zero }
 		random_terror_update_movement_restrictions_cost = yes
 	}
+	if = {
+		limit = { NOT = { has_variable = random_terror_cost_scale_value } }
+		random_terror_update_response_costs = yes
+	}
 	random_terror_achievement_initialize_country = yes
 }
 
@@ -281,6 +285,7 @@ random_terror_clamp_country_values = {
 		limit = { check_variable = { random_terror_pressure > constant:random_terror_pressure_band.sustained } }
 		set_country_flag = random_terror_cycle_reached_challenge
 	}
+	random_terror_update_response_costs = yes
 }
 
 # COUNTRY scope.  Input: caller-owned temp random_terror_pending_pressure_delta,
@@ -400,6 +405,147 @@ random_terror_update_state_stage = {
 	random_terror_achievement_record_state_stage = yes
 }
 
+# COUNTRY scope: a government.  Prices the stockpile costs of the response
+# actions for this government (random_terror_cost_scale): the size factor of the
+# states it controls, plus surcharges for the active crisis states beyond the
+# first, Terror Pressure above the high and severe bands, an ongoing war and a
+# remote priority state.  Stores the factor in random_terror_cost_scale_value
+# and every scaled price in random_terror_scaled_<price> (with the matching
+# _spend variable, the negative amount the decision debits).  Called whenever
+# the inputs can change: crisis initialization, pressure and legitimacy
+# changes and the priority state refresh.
+random_terror_update_response_costs = {
+	set_temp_variable = { random_terror_cost_factor = constant:random_terror_cost_scale.size_major }
+	if = {
+		limit = { num_of_controlled_states < constant:random_terror_cost_scale.small_states }
+		set_temp_variable = { random_terror_cost_factor = constant:random_terror_cost_scale.size_small }
+	}
+	else_if = {
+		limit = { num_of_controlled_states < constant:random_terror_cost_scale.medium_states }
+		set_temp_variable = { random_terror_cost_factor = constant:random_terror_cost_scale.size_medium }
+	}
+	else_if = {
+		limit = { num_of_controlled_states < constant:random_terror_cost_scale.large_states }
+		set_temp_variable = { random_terror_cost_factor = constant:random_terror_cost_scale.size_large }
+	}
+	set_temp_variable = { random_terror_cost_surcharge = constant:random_terror_value.zero }
+	if = {
+		limit = { has_variable = random_terror_active_state_count }
+		set_temp_variable = { random_terror_cost_extra_states = random_terror_active_state_count }
+		subtract_from_temp_variable = { random_terror_cost_extra_states = constant:random_terror_value.one }
+		clamp_temp_variable = { var = random_terror_cost_extra_states min = constant:random_terror_value.zero max = constant:random_terror_cost_scale.extra_active_state_cap }
+		multiply_temp_variable = { random_terror_cost_extra_states = constant:random_terror_cost_scale.per_extra_active_state }
+		add_to_temp_variable = { random_terror_cost_surcharge = random_terror_cost_extra_states }
+	}
+	if = {
+		limit = { has_variable = random_terror_pressure }
+		if = {
+			limit = { check_variable = { random_terror_pressure > constant:random_terror_value.high } }
+			add_to_temp_variable = { random_terror_cost_surcharge = constant:random_terror_cost_scale.pressure_high_surcharge }
+		}
+		if = {
+			limit = { check_variable = { random_terror_pressure > constant:random_terror_value.severe } }
+			add_to_temp_variable = { random_terror_cost_surcharge = constant:random_terror_cost_scale.pressure_severe_surcharge }
+		}
+	}
+	if = {
+		limit = { has_war = yes }
+		add_to_temp_variable = { random_terror_cost_surcharge = constant:random_terror_cost_scale.war_surcharge }
+	}
+	if = {
+		limit = {
+			has_variable = random_terror_priority_state
+			var:random_terror_priority_state = { infrastructure < constant:random_terror_cost_scale.remote_infrastructure_below }
+		}
+		add_to_temp_variable = { random_terror_cost_surcharge = constant:random_terror_cost_scale.remote_state_surcharge }
+	}
+	add_to_temp_variable = { random_terror_cost_surcharge = constant:random_terror_value.one }
+	multiply_temp_variable = { random_terror_cost_factor = random_terror_cost_surcharge }
+	clamp_temp_variable = { var = random_terror_cost_factor min = constant:random_terror_cost_scale.minimum max = constant:random_terror_cost_scale.maximum }
+	set_variable = { random_terror_cost_scale_value = random_terror_cost_factor }
+	set_variable = { random_terror_scaled_response_cell_support_equipment = constant:random_terror_cost.response_cell_support_equipment }
+	multiply_variable = { random_terror_scaled_response_cell_support_equipment = random_terror_cost_factor }
+	round_variable = random_terror_scaled_response_cell_support_equipment
+	set_variable = { random_terror_scaled_response_cell_support_equipment_spend = random_terror_scaled_response_cell_support_equipment }
+	multiply_variable = { random_terror_scaled_response_cell_support_equipment_spend = constant:random_terror_value.negative_one }
+	set_variable = { random_terror_scaled_victim_support_equipment = constant:random_terror_cost.victim_support_equipment }
+	multiply_variable = { random_terror_scaled_victim_support_equipment = random_terror_cost_factor }
+	round_variable = random_terror_scaled_victim_support_equipment
+	set_variable = { random_terror_scaled_victim_support_equipment_spend = random_terror_scaled_victim_support_equipment }
+	multiply_variable = { random_terror_scaled_victim_support_equipment_spend = constant:random_terror_value.negative_one }
+	set_variable = { random_terror_scaled_intelligence_support_equipment = constant:random_terror_cost.intelligence_support_equipment }
+	multiply_variable = { random_terror_scaled_intelligence_support_equipment = random_terror_cost_factor }
+	round_variable = random_terror_scaled_intelligence_support_equipment
+	set_variable = { random_terror_scaled_intelligence_support_equipment_spend = random_terror_scaled_intelligence_support_equipment }
+	multiply_variable = { random_terror_scaled_intelligence_support_equipment_spend = constant:random_terror_value.negative_one }
+	set_variable = { random_terror_scaled_security_support_equipment = constant:random_terror_cost.security_support_equipment }
+	multiply_variable = { random_terror_scaled_security_support_equipment = random_terror_cost_factor }
+	round_variable = random_terror_scaled_security_support_equipment
+	set_variable = { random_terror_scaled_security_support_equipment_spend = random_terror_scaled_security_support_equipment }
+	multiply_variable = { random_terror_scaled_security_support_equipment_spend = constant:random_terror_value.negative_one }
+	set_variable = { random_terror_scaled_targeted_raid_support_equipment = constant:random_terror_cost.targeted_raid_support_equipment }
+	multiply_variable = { random_terror_scaled_targeted_raid_support_equipment = random_terror_cost_factor }
+	round_variable = random_terror_scaled_targeted_raid_support_equipment
+	set_variable = { random_terror_scaled_targeted_raid_support_equipment_spend = random_terror_scaled_targeted_raid_support_equipment }
+	multiply_variable = { random_terror_scaled_targeted_raid_support_equipment_spend = constant:random_terror_value.negative_one }
+	set_variable = { random_terror_scaled_community_support_equipment = constant:random_terror_cost.community_support_equipment }
+	multiply_variable = { random_terror_scaled_community_support_equipment = random_terror_cost_factor }
+	round_variable = random_terror_scaled_community_support_equipment
+	set_variable = { random_terror_scaled_community_support_equipment_spend = random_terror_scaled_community_support_equipment }
+	multiply_variable = { random_terror_scaled_community_support_equipment_spend = constant:random_terror_value.negative_one }
+	set_variable = { random_terror_scaled_relief_support_equipment = constant:random_terror_cost.relief_support_equipment }
+	multiply_variable = { random_terror_scaled_relief_support_equipment = random_terror_cost_factor }
+	round_variable = random_terror_scaled_relief_support_equipment
+	set_variable = { random_terror_scaled_relief_support_equipment_spend = random_terror_scaled_relief_support_equipment }
+	multiply_variable = { random_terror_scaled_relief_support_equipment_spend = constant:random_terror_value.negative_one }
+	set_variable = { random_terror_scaled_restore_support_equipment = constant:random_terror_cost.restore_support_equipment }
+	multiply_variable = { random_terror_scaled_restore_support_equipment = random_terror_cost_factor }
+	round_variable = random_terror_scaled_restore_support_equipment
+	set_variable = { random_terror_scaled_restore_support_equipment_spend = random_terror_scaled_restore_support_equipment }
+	multiply_variable = { random_terror_scaled_restore_support_equipment_spend = constant:random_terror_value.negative_one }
+	set_variable = { random_terror_scaled_transport_fuel = constant:random_terror_cost.transport_fuel }
+	multiply_variable = { random_terror_scaled_transport_fuel = random_terror_cost_factor }
+	round_variable = random_terror_scaled_transport_fuel
+	set_variable = { random_terror_scaled_transport_fuel_spend = random_terror_scaled_transport_fuel }
+	multiply_variable = { random_terror_scaled_transport_fuel_spend = constant:random_terror_value.negative_one }
+	set_variable = { random_terror_scaled_security_fuel = constant:random_terror_cost.security_fuel }
+	multiply_variable = { random_terror_scaled_security_fuel = random_terror_cost_factor }
+	round_variable = random_terror_scaled_security_fuel
+	set_variable = { random_terror_scaled_security_fuel_spend = random_terror_scaled_security_fuel }
+	multiply_variable = { random_terror_scaled_security_fuel_spend = constant:random_terror_value.negative_one }
+	set_variable = { random_terror_scaled_military_reinforcement_fuel = constant:random_terror_cost.military_reinforcement_fuel }
+	multiply_variable = { random_terror_scaled_military_reinforcement_fuel = random_terror_cost_factor }
+	round_variable = random_terror_scaled_military_reinforcement_fuel
+	set_variable = { random_terror_scaled_military_reinforcement_fuel_spend = random_terror_scaled_military_reinforcement_fuel }
+	multiply_variable = { random_terror_scaled_military_reinforcement_fuel_spend = constant:random_terror_value.negative_one }
+	set_variable = { random_terror_scaled_isolate_fuel = constant:random_terror_cost.isolate_fuel }
+	multiply_variable = { random_terror_scaled_isolate_fuel = random_terror_cost_factor }
+	round_variable = random_terror_scaled_isolate_fuel
+	set_variable = { random_terror_scaled_isolate_fuel_spend = random_terror_scaled_isolate_fuel }
+	multiply_variable = { random_terror_scaled_isolate_fuel_spend = constant:random_terror_value.negative_one }
+	set_variable = { random_terror_scaled_retake_fuel = constant:random_terror_cost.retake_fuel }
+	multiply_variable = { random_terror_scaled_retake_fuel = random_terror_cost_factor }
+	round_variable = random_terror_scaled_retake_fuel
+	set_variable = { random_terror_scaled_retake_fuel_spend = random_terror_scaled_retake_fuel }
+	multiply_variable = { random_terror_scaled_retake_fuel_spend = constant:random_terror_value.negative_one }
+	set_variable = { random_terror_scaled_transport_trains = constant:random_terror_cost.transport_trains }
+	multiply_variable = { random_terror_scaled_transport_trains = random_terror_cost_factor }
+	round_variable = random_terror_scaled_transport_trains
+	set_variable = { random_terror_scaled_transport_trains_spend = random_terror_scaled_transport_trains }
+	multiply_variable = { random_terror_scaled_transport_trains_spend = constant:random_terror_value.negative_one }
+	set_variable = { random_terror_scaled_disrupt_convoys = constant:random_terror_cost.disrupt_convoys }
+	multiply_variable = { random_terror_scaled_disrupt_convoys = random_terror_cost_factor }
+	round_variable = random_terror_scaled_disrupt_convoys
+	set_variable = { random_terror_scaled_disrupt_convoys_spend = random_terror_scaled_disrupt_convoys }
+	multiply_variable = { random_terror_scaled_disrupt_convoys_spend = constant:random_terror_value.negative_one }
+	set_variable = { random_terror_scaled_relief_convoys = constant:random_terror_cost.relief_convoys }
+	multiply_variable = { random_terror_scaled_relief_convoys = random_terror_cost_factor }
+	round_variable = random_terror_scaled_relief_convoys
+	set_variable = { random_terror_scaled_relief_convoys_spend = random_terror_scaled_relief_convoys }
+	multiply_variable = { random_terror_scaled_relief_convoys_spend = constant:random_terror_value.negative_one }
+	random_terror_update_movement_restrictions_cost = yes
+}
+
 # COUNTRY scope: a government.  Marks its most severe crisis state, among the
 # states it controls and its own cores held by others, as its priority crisis
 # state (random_terror_priority_state, state flag
@@ -449,6 +595,7 @@ random_terror_refresh_priority_state = {
 		set_variable = { random_terror_priority_state = random_terror_priority_candidate }
 		var:random_terror_priority_state = { set_state_flag = random_terror_priority_state_@PREV }
 	}
+	random_terror_update_response_costs = yes
 }
 
 # STATE scope: one candidate for random_terror_refresh_priority_state.
@@ -4227,6 +4374,11 @@ random_terror_update_movement_restrictions_cost = {
 	set_variable = { random_terror_movement_equipment_cost = random_terror_movement_repeat_steps }
 	multiply_variable = { random_terror_movement_equipment_cost = constant:random_terror_cost.movement_support_equipment_repeat_step }
 	add_to_variable = { random_terror_movement_equipment_cost = constant:random_terror_cost.movement_support_equipment }
+	if = {
+		limit = { has_variable = random_terror_cost_scale_value }
+		multiply_variable = { random_terror_movement_equipment_cost = random_terror_cost_scale_value }
+		round_variable = random_terror_movement_equipment_cost
+	}
 }
 
 random_terror_decision_protect_community_sites = {

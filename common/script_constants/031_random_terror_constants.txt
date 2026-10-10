@@ -559,6 +559,36 @@ random_terror_incident_weight = {
 	cannibal_clash = 2
 }
 
+# Government response prices that spend stockpiles (support equipment, fuel,
+# trains and convoys) scale with the government: a size factor from the states
+# it controls, plus surcharges for the width of the crisis, current Terror
+# Pressure, an ongoing war and a remote priority state.  Command power, army
+# experience, manpower and stability are not scaled.  The base amounts stay in
+# random_terror_cost and describe a medium government in a quiet crisis.
+random_terror_cost_scale = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	small_states = 8
+	medium_states = 25
+	large_states = 50
+	size_small = 0.5
+	size_medium = 1
+	size_large = 1.5
+	size_major = 2.25
+	per_extra_active_state = 0.08
+	extra_active_state_cap = 5
+	pressure_high_surcharge = 0.2
+	pressure_severe_surcharge = 0.2
+	war_surcharge = 0.15
+	remote_state_surcharge = 0.15
+	remote_infrastructure_below = 3
+	minimum = 0.4
+	maximum = 3
+}
+
 random_terror_cost = {
 	schema = {
 		any_key = yes

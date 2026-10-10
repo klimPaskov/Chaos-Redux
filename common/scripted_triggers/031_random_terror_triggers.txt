@@ -1075,42 +1075,42 @@ random_terror_is_later_religious_opposition_context = {
 
 random_terror_can_afford_establish_response_cell = {
 	NOT = { command_power < constant:random_terror_cost.response_cell_command_power }
-	NOT = { has_equipment = { support_equipment < constant:random_terror_cost.response_cell_support_equipment } }
+	NOT = { check_variable = { var = num_equipment@support_equipment value = random_terror_scaled_response_cell_support_equipment compare = less_than } }
 }
 
 random_terror_can_afford_protect_transport = {
-	NOT = { has_equipment = { train_equipment < constant:random_terror_cost.transport_trains } }
-	NOT = { has_fuel < constant:random_terror_cost.transport_fuel }
-	NOT = { has_equipment = { support_equipment < constant:random_terror_cost.response_cell_support_equipment } }
+	NOT = { check_variable = { var = num_equipment@train_equipment value = random_terror_scaled_transport_trains compare = less_than } }
+	NOT = { has_fuel < random_terror_scaled_transport_fuel }
+	NOT = { check_variable = { var = num_equipment@support_equipment value = random_terror_scaled_response_cell_support_equipment compare = less_than } }
 }
 
 random_terror_can_afford_support_victims = {
-	NOT = { has_equipment = { support_equipment < constant:random_terror_cost.victim_support_equipment } }
-	NOT = { has_equipment = { train_equipment < constant:random_terror_cost.transport_trains } }
+	NOT = { check_variable = { var = num_equipment@support_equipment value = random_terror_scaled_victim_support_equipment compare = less_than } }
+	NOT = { check_variable = { var = num_equipment@train_equipment value = random_terror_scaled_transport_trains compare = less_than } }
 	NOT = { has_manpower < constant:random_terror_tuning.government_military_manpower }
 }
 
 random_terror_can_afford_intelligence_sweep = {
 	NOT = { command_power < constant:random_terror_cost.intelligence_command_power }
-	NOT = { has_equipment = { support_equipment < constant:random_terror_cost.intelligence_support_equipment } }
+	NOT = { check_variable = { var = num_equipment@support_equipment value = random_terror_scaled_intelligence_support_equipment compare = less_than } }
 }
 
 random_terror_can_afford_security_surge = {
 	NOT = { command_power < constant:random_terror_cost.security_command_power }
-	NOT = { has_fuel < constant:random_terror_cost.security_fuel }
-	NOT = { has_equipment = { support_equipment < constant:random_terror_cost.security_support_equipment } }
+	NOT = { has_fuel < random_terror_scaled_security_fuel }
+	NOT = { check_variable = { var = num_equipment@support_equipment value = random_terror_scaled_security_support_equipment compare = less_than } }
 }
 
 random_terror_can_afford_targeted_raid = {
 	NOT = { command_power < constant:random_terror_cost.targeted_raid_command_power }
 	NOT = { has_army_experience < constant:random_terror_cost.targeted_raid_army_experience }
-	NOT = { has_equipment = { support_equipment < constant:random_terror_cost.targeted_raid_support_equipment } }
+	NOT = { check_variable = { var = num_equipment@support_equipment value = random_terror_scaled_targeted_raid_support_equipment compare = less_than } }
 }
 
 random_terror_can_afford_disrupt_support = {
-	NOT = { has_equipment = { convoy_1 < constant:random_terror_cost.disrupt_convoys } }
+	NOT = { check_variable = { var = num_equipment@convoy_1 value = random_terror_scaled_disrupt_convoys compare = less_than } }
 	NOT = { command_power < constant:random_terror_cost.disrupt_command_power }
-	NOT = { has_equipment = { support_equipment < constant:random_terror_cost.intelligence_support_equipment } }
+	NOT = { check_variable = { var = num_equipment@support_equipment value = random_terror_scaled_intelligence_support_equipment compare = less_than } }
 }
 
 random_terror_can_afford_press_safe_haven = {
@@ -1119,76 +1119,75 @@ random_terror_can_afford_press_safe_haven = {
 
 random_terror_can_afford_request_allied_intelligence = {
 	NOT = { command_power < constant:random_terror_cost.allied_command_power }
-	NOT = { has_equipment = { support_equipment < constant:random_terror_cost.intelligence_support_equipment } }
+	NOT = { check_variable = { var = num_equipment@support_equipment value = random_terror_scaled_intelligence_support_equipment compare = less_than } }
 }
 
 random_terror_can_afford_offer_defection_channel = {
 	NOT = { command_power < constant:random_terror_cost.defection_command_power }
 	NOT = { has_manpower < constant:random_terror_tuning.government_military_manpower }
-	NOT = { has_equipment = { support_equipment < constant:random_terror_cost.intelligence_support_equipment } }
+	NOT = { check_variable = { var = num_equipment@support_equipment value = random_terror_scaled_intelligence_support_equipment compare = less_than } }
 }
 
 # The base price always applies; a government that has used the restrictions
 # before also needs the raised price in random_terror_movement_*_cost.
 random_terror_can_afford_movement_restrictions = {
 	NOT = { has_stability < constant:random_terror_cost.movement_stability }
-	NOT = { has_equipment = { support_equipment < constant:random_terror_cost.movement_support_equipment } }
 	NOT = { check_variable = { var = has_stability value = random_terror_movement_stability_cost compare = less_than } }
 	NOT = { check_variable = { var = num_equipment@support_equipment value = random_terror_movement_equipment_cost compare = less_than } }
 	NOT = { has_manpower < constant:random_terror_tuning.government_military_manpower }
 }
 
 random_terror_can_afford_protect_community_sites = {
-	NOT = { has_equipment = { support_equipment < constant:random_terror_cost.community_support_equipment } }
+	NOT = { check_variable = { var = num_equipment@support_equipment value = random_terror_scaled_community_support_equipment compare = less_than } }
 	NOT = { has_manpower < constant:random_terror_tuning.government_military_manpower }
 }
 
 random_terror_can_afford_expose_sponsor = {
 	NOT = { command_power < constant:random_terror_cost.sponsor_exposure_command_power }
-	NOT = { has_equipment = { support_equipment < constant:random_terror_cost.intelligence_support_equipment } }
+	NOT = { check_variable = { var = num_equipment@support_equipment value = random_terror_scaled_intelligence_support_equipment compare = less_than } }
 }
 
 random_terror_can_afford_quiet_sponsor_leverage = {
 	NOT = { command_power < constant:random_terror_cost.sponsor_exposure_command_power }
-	NOT = { has_equipment = { support_equipment < constant:random_terror_cost.intelligence_support_equipment } }
+	NOT = { check_variable = { var = num_equipment@support_equipment value = random_terror_scaled_intelligence_support_equipment compare = less_than } }
 }
 
 random_terror_can_afford_military_reinforcement = {
 	NOT = { command_power < constant:random_terror_cost.security_command_power }
-	NOT = { has_fuel < constant:random_terror_cost.military_reinforcement_fuel }
+	NOT = { has_fuel < random_terror_scaled_military_reinforcement_fuel }
 	NOT = { has_equipment = { infantry_equipment < constant:random_terror_tuning.government_military_equipment } }
 	NOT = { has_manpower < constant:random_terror_tuning.government_military_manpower }
 }
 
 random_terror_can_afford_capital_security = {
 	NOT = { command_power < constant:random_terror_cost.security_command_power }
-	NOT = { has_fuel < constant:random_terror_cost.military_reinforcement_fuel }
-	NOT = { has_equipment = { support_equipment < constant:random_terror_cost.security_support_equipment } }
+	NOT = { has_fuel < random_terror_scaled_military_reinforcement_fuel }
+	NOT = { check_variable = { var = num_equipment@support_equipment value = random_terror_scaled_security_support_equipment compare = less_than } }
 }
 
 random_terror_can_afford_isolate_enclave = {
-	NOT = { has_equipment = { train_equipment < constant:random_terror_cost.transport_trains } }
-	NOT = { has_fuel < constant:random_terror_cost.isolate_fuel }
-	NOT = { has_equipment = { convoy_1 < constant:random_terror_cost.relief_convoys } }
-	NOT = { has_equipment = { support_equipment < constant:random_terror_cost.security_support_equipment } }
+	NOT = { check_variable = { var = num_equipment@train_equipment value = random_terror_scaled_transport_trains compare = less_than } }
+	NOT = { has_fuel < random_terror_scaled_isolate_fuel }
+	NOT = { check_variable = { var = num_equipment@convoy_1 value = random_terror_scaled_relief_convoys compare = less_than } }
+	NOT = { check_variable = { var = num_equipment@support_equipment value = random_terror_scaled_security_support_equipment compare = less_than } }
 }
 
 random_terror_can_afford_relief_corridor = {
-	NOT = { has_equipment = { convoy_1 < constant:random_terror_cost.relief_convoys } }
-	NOT = { has_equipment = { support_equipment < constant:random_terror_cost.relief_support_equipment } }
+	NOT = { check_variable = { var = num_equipment@convoy_1 value = random_terror_scaled_relief_convoys compare = less_than } }
+	NOT = { check_variable = { var = num_equipment@support_equipment value = random_terror_scaled_relief_support_equipment compare = less_than } }
 	NOT = { has_manpower < constant:random_terror_tuning.government_military_manpower }
 }
 
 random_terror_can_afford_prepare_retake = {
 	NOT = { has_army_experience < constant:random_terror_cost.retake_army_experience }
-	NOT = { has_fuel < constant:random_terror_cost.retake_fuel }
+	NOT = { has_fuel < random_terror_scaled_retake_fuel }
 	NOT = { has_equipment = { infantry_equipment < constant:random_terror_tuning.government_military_equipment } }
 }
 
 random_terror_can_afford_negotiate_surrender = {
 	NOT = { command_power < constant:random_terror_cost.surrender_command_power }
 	NOT = { has_manpower < constant:random_terror_tuning.government_military_manpower }
-	NOT = { has_equipment = { support_equipment < constant:random_terror_cost.intelligence_support_equipment } }
+	NOT = { check_variable = { var = num_equipment@support_equipment value = random_terror_scaled_intelligence_support_equipment compare = less_than } }
 }
 
 # COUNTRY scope: a territorial command.  Part 3 Negotiate Local Surrender:
@@ -1217,30 +1216,30 @@ random_terror_actor_can_receive_surrender_offer = {
 
 random_terror_can_afford_request_intervention = {
 	NOT = { command_power < constant:random_terror_cost.intervention_command_power }
-	NOT = { has_equipment = { convoy_1 < constant:random_terror_cost.relief_convoys } }
-	NOT = { has_equipment = { support_equipment < constant:random_terror_cost.intelligence_support_equipment } }
+	NOT = { check_variable = { var = num_equipment@convoy_1 value = random_terror_scaled_relief_convoys compare = less_than } }
+	NOT = { check_variable = { var = num_equipment@support_equipment value = random_terror_scaled_intelligence_support_equipment compare = less_than } }
 }
 
 random_terror_can_afford_restore_services = {
-	NOT = { has_equipment = { support_equipment < constant:random_terror_cost.restore_support_equipment } }
-	NOT = { has_equipment = { train_equipment < constant:random_terror_cost.transport_trains } }
+	NOT = { check_variable = { var = num_equipment@support_equipment value = random_terror_scaled_restore_support_equipment compare = less_than } }
+	NOT = { check_variable = { var = num_equipment@train_equipment value = random_terror_scaled_transport_trains compare = less_than } }
 	NOT = { has_manpower < constant:random_terror_tuning.government_military_manpower }
 }
 
 random_terror_can_afford_public_accounting = {
 	NOT = { command_power < constant:random_terror_cost.accounting_command_power }
-	NOT = { has_equipment = { support_equipment < constant:random_terror_cost.intelligence_support_equipment } }
+	NOT = { check_variable = { var = num_equipment@support_equipment value = random_terror_scaled_intelligence_support_equipment compare = less_than } }
 }
 
 random_terror_can_afford_security_reform = {
 	NOT = { has_army_experience < constant:random_terror_cost.reform_army_experience }
-	NOT = { has_equipment = { support_equipment < constant:random_terror_cost.restore_support_equipment } }
+	NOT = { check_variable = { var = num_equipment@support_equipment value = random_terror_scaled_restore_support_equipment compare = less_than } }
 	NOT = { has_manpower < constant:random_terror_tuning.government_military_manpower }
 }
 
 random_terror_can_afford_terminal_counteroffensive = {
 	NOT = { command_power < constant:random_terror_cost.security_command_power }
-	NOT = { has_equipment = { support_equipment < constant:random_terror_cost.security_support_equipment } }
+	NOT = { check_variable = { var = num_equipment@support_equipment value = random_terror_scaled_security_support_equipment compare = less_than } }
 }
 
 random_terror_can_afford_raise_local_militia = {
