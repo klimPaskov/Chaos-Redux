@@ -66,8 +66,9 @@ Meshy credits spent on this source tranche: 0.
 The four laser events retain their authored times and use finite particle lifecycles.
 Idle and guard start one source-bound electrical loop with `trigger_once`, `loop = yes` and `max_audible = 1`.
 The one-second archived-source derivative measures -20 LUFS and a 2.58 dB inner head/tail RMS difference; source and installed hashes are recorded in `sound/portal_raider/WP4_ATTRIBUTION.md`.
-The ray uses the verified existing source stretched to 0.6 seconds with pitch fixed and a 60 ms terminal fade, played at the requested volume of 0.75.
-The rejected early-decay candidate is not installed; the selected waveform retains its body through the extended clip and fits the 0.916667-second minimum interval between support shots.
+The ray attack keeps its authored event times and uses the three-choice licensed pool at volume 0.75, with immediate repetition prevented.
+The original 0.600000-second ray remains; two Kenney laserLarge members retain their full tails at 0.676644 and 0.720998 seconds and preserve the original ray as the dominant component.
+Both variants fit the 0.916667-second minimum interval between support shots; their longer full tails, recipes, source hashes and numeric/waveform evidence are documented in the Portal job's `evidence/wp4_audio_takeover/ray_variants/`.
 Six original footstep takes have source-derived edge fades at -6 dBFS, and death combines the existing power-down sound with a licensed human grunt.
 The six-take footstep pool prevents immediate random repetition, retaining its existing volume and event times.
 All six boot-step derivatives form one explicitly shared Portal/Alien family; the retained Alien first-step file is a byte-identical copy of Portal step 01, and steps 02-06 are referenced directly.
