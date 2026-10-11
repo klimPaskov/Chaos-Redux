@@ -3,7 +3,87 @@
 The pinned server is installed and project configuration is present but disabled.
 **Live gameplay verification is incomplete:** the reviewed upstream offsets target HOI4 1.19.2, while the installed Linux executable is a different build.
 The adapter deliberately refuses memory reads, native calls, and event execution on that binary.
-Do not remove this check, substitute the installed build ID for the expected one, downgrade the shared game, or interpret upstream `doctor` reporting `ready` as build compatibility.
+Do not remove this check, substitute the installed build ID for the expected one, change the shared game without explicit authorization and its exclusive lease, or interpret upstream `doctor` reporting `ready` as build compatibility.
+
+## In-place downgrade availability check (2026-10-11)
+
+The user authorized replacing the existing `/home/klim/games/hoi4` installation with 1.19.2, superseding the earlier side-by-side request.
+**The downgrade is incomplete because Steam does not expose the requested branch to the cached account.**
+The metadata-only command below logged in successfully without a password or Steam Guard prompt and exited successfully:
+
+```bash
+/usr/games/steamcmd +@sSteamCmdForcePlatformType linux +login klimpaskov +app_info_update 1 +app_info_print 394360 +quit
+```
+
+Standard input was closed, and a monitor would terminate only this SteamCMD process group if an authentication prompt appeared.
+The complete response is `C:/Users/klimp/Videos/chaos_redux_trailer/records/cx/clausewitz_1192_appinfo.txt`; its `depots.branches` section begins at line 10002.
+Neither `1.19.2` nor `1.19.2.0` appears among the 32 advertised branches or their depot manifests.
+Steam indicates private branches exist, but this response does not expose an accessible 1.19.2 branch; no password, hidden branch, historical depot, or replacement offset was guessed.
+
+| Available branch | Steam build ID |
+| --- | --- |
+| public | 25205862 |
+| open_beta | 25826175 |
+| 1.19.1.0 | 23764500 |
+| 1.18.3.0 | 23541986 |
+| 1.17.5.2 | 22500574 |
+| 1.17.3.0 | 21119377 |
+| 1.16.10 | 20110105 |
+| 1.16.9 | 18823923 |
+| 1.16.8 | 18550822 |
+| 1.16.7 | 18518426 |
+| 1.16.6 | 18460246 |
+| 1.16.5 | 18239579 |
+| 1.16.4 | 17895991 |
+| 1.16.3 | 17868586 |
+| 1.16.2 | 17781108 |
+| 1.16.1 | 17692163 |
+| 1.16.0 | 17590860 |
+| 1.15.4 | 17075581 |
+| 1.15.3 | 16721020 |
+| 1.14.10 | 16033080 |
+| 1.14.5 | 14111852 |
+| 1.14.3 | 13788539 |
+| 1.13.7 | 13209680 |
+| 1.12.14 | 12405907 |
+| 1.11.13 | 9324400 |
+| 1.10.8 | 7337794 |
+| 1.10.5 | 6513881 |
+| 1.9.x | 5841295 |
+| 1.8.2 | 4649066 |
+| 1.7.1 | 3948182 |
+| 1.6.2 | 3698640 |
+| 1.5.4 | 2895913 |
+
+These are Steam build IDs, not verified ELF IDs for uninstalled branches.
+`readelf -n /home/klim/games/hoi4/hoi4` still returns `a4971c9e8ac9a6f2487dea109e01f9839ee59db7`, which differs from the required `2a79e51358b8b71c09cfb5ddefa0c03649067a4b`.
+The descriptor declares `supported_version="1.19.*"`, and the user confirms 1.19.2 compatibility, but no 1.19.2 smoke test or fresh launch-log review was possible.
+No game state, custom variable, Chaos Meter, event, screenshot, clip, detach, or register/thread recovery test was performed during this attempt.
+The existing launcher already routes both plain `start` and opt-in `clausewitz-start` to the single installation, and the adapter already gates that path; both remain unchanged and project MCP entries remain disabled.
+
+The board was notified before any proposed game change.
+The observed lease remained `astra_live_cr`, with Linux HOI4 PID 35812; this job never acquired or released another job's lock and never signalled its game.
+No `app_update` ran, no side-by-side directory was created, and Linux profile settings, mod symlinks, Windows HOI4, and Windows Steam were untouched.
+No profile backup was needed because execution stopped before the mutation stage.
+Game-download disk use was zero; the retained Steam response is 188,037 bytes, excluding Steam's own metadata/log cache changes.
+C: had 56.652 GiB free before the metadata request and 30.579 GiB at the post-query check; concurrent shared-disk activity means that difference is not attributable to this metadata-only task.
+The existing app manifest reports 6,816,192,348 bytes installed.
+
+To resume, an accessible Steam branch delivering the required ELF must first be available.
+Then coordinate the board, wait for a free lease and no `hoi4` process, acquire the lease exclusively, back up the Linux settings and mod symlinks without following them, and recheck disk headroom before an in-place `app_update 394360 -beta <verified-branch> validate`.
+Preserve the selected beta in the Steam app manifest and explicitly include the same `-beta` on future SteamCMD maintenance commands; do not claim a pin before checking the saved branch.
+Retain at least 15 GiB free and verify the executable's ELF ID before any attach-mode launch.
+
+No return to 1.19.3 is necessary: it is still installed.
+For a future rollback after a successful downgrade, use the same exclusive-lease, no-running-game, backup, disk, and cached-login checks with:
+
+```bash
+/usr/games/steamcmd +@sSteamCmdForcePlatformType linux +force_install_dir /home/klim/games/hoi4 +login klimpaskov +app_update 394360 -beta public validate +quit
+```
+
+This selects the current public release, which was Steam build 25205862 at this check; it does not guarantee 1.19.3 after the public branch changes.
+Re-query branch metadata and verify the installed build before calling that a 1.19.3 rollback.
+There were no substitutions or gameplay simplifications; installation, branch pinning, and all requested live verification remain unperformed because the requested branch is unavailable.
 
 ## Installation and ownership
 

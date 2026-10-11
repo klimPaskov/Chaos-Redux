@@ -9,6 +9,8 @@ Use this skill only after the user explicitly invokes it or explicitly asks for 
 
 For an explicitly requested isolated Linux/WSL run, follow [Clausewitz-MCP Linux testing](../../../docs/testing/clausewitz_mcp_linux.md) before using the disabled-by-default `clausewitz_linux` server or its opt-in launcher.
 That route requires the matching WSL game lease and a verified compatible ELF build; an exposed tool list or successful installation does not establish memory-layout compatibility.
+For an explicitly authorized Linux version change, first check Steam's advertised branches; a version named in native offsets does not establish that a matching beta is available.
+Before changing the shared install, notify the capture board, wait for a free lease and no running Linux game, then hold the lease through backup, installation, build verification, and testing; follow the Linux guide for branch evidence and rollback limits.
 Keep Windows HOI4 and the Windows desktop untouched, never take another job's game lease, and report refused or unavailable capabilities separately from observed game results.
 Use the ordinary `hoi4-live` route below for Windows; this Linux routing note does not authorize autonomous testing outside the user's requested scope.
 
