@@ -142,8 +142,10 @@ Meshy credits spent on this source tranche: 0.
 
 The plan's explicitly permitted single-burst path is retained: one timed barrel flash/report at 0.7667 seconds in attack, 0.9667 in support attack and 0.2333 in defend.
 Attack/support reference the five installed vanilla MG takes; defend references the four takes that fit its 50-frame cycle, without random onset delay.
-The dedicated destruction cue plays at 0.1 seconds and retains the archived source's complete 1.36-second decay, with no fabricated extension to the ticket's approximate two seconds.
-Its licensed source, exact derivative hash and processing are in `sound/039_murder_mystery/units/mechanized_assassin/ATTRIBUTION.md`; definitions reside in `sound/039_murder_mystery_mechanized_sound.asset`.
+The destruction cue plays once at 0.1 seconds with three source-distinct licensed choices and immediate repetition prevented.
+The original archived Mechanical Explosion retains its complete 1.36-second decay, without extending it to match the ticket's approximate two seconds; the added Kenney explosionCrunch_000 and _001 choices last 0.777460 and 1.356780 seconds.
+All three choices retain the existing 0.5 volume, four-source limit, Effects category and nonlooping behavior; the source hashes, licenses, mastering recipes and installed derivative hashes are in `sound/039_murder_mystery/units/mechanized_assassin/ATTRIBUTION.md` and the model job's `evidence/wp4_audio_takeover/destruction_variants/`.
+The entity still starts this pool at 0.1 seconds; model action timing and state length are unchanged.
 Definition and Effects-category membership are unchanged by the sound-file partition.
 
 The source choice does not repair the two existing chassis recoil troughs at attack frames 24/48 and support frames 30/60.
