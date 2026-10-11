@@ -1,6 +1,6 @@
 # Event 021 catalog changes pending
 
-Disposition: accepted and queued.
+Disposition: implemented in catalog commit `bddbd9f8f` on 2026-10-11 (workbook plus regenerated export); the rows below are retained as the instruction that was applied. Details, Evo I and Evo II follow the current in-game text.
 Acceptance basis: agent decisions D5, D6, D11, and D24 in `agent_decisions_2026-10-04.md`, taken under the user's full-authority takeover grant.
 Queue reason: implementation agents may not edit `docs/spreadsheets/chaos_redux_events_catalog.xlsx` or its CSV exports; the spreadsheet owner applies these rows and then runs `python .tools/export_event_catalog_csv.py`.
 No spreadsheet or CSV file was edited.

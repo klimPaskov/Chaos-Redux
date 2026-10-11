@@ -1,6 +1,6 @@
 # Event 23 catalog changes pending
 
-Disposition: accepted and queued.
+Disposition: implemented in catalog commit `bddbd9f8f` on 2026-10-11 (workbook plus regenerated export); the rows below are retained as the instruction that was applied.
 The acceptance basis is the lead's Round 1 decision D9 for Event 23 (2026-10-04), recorded in [agent_decisions_2026-10-04.md](agent_decisions_2026-10-04.md), applied after the priority 1 and 2 gameplay commits.
 Implementation stays queued because the Event 23 engineer does not edit `docs/spreadsheets/chaos_redux_events_catalog.xlsx` or its CSV exports in the shared tree; the workbook owner applies this row and then runs `python .tools/export_event_catalog_csv.py` from the mod root.
 

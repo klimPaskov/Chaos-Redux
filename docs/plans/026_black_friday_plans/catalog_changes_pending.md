@@ -1,6 +1,6 @@
 # Event 26 catalog changes pending
 
-Disposition: accepted and queued.
+Disposition: implemented in catalog commit `bddbd9f8f` on 2026-10-11 (workbook plus regenerated export); the rows below are retained as the instruction that was applied. Evo I carries the rendered values 600 and 75.
 The acceptance basis is the lead's Round 1 agent decisions for Event 26 (2026-10-04), recorded in [agent_decisions_2026-10-04.md](agent_decisions_2026-10-04.md).
 Implementation stays queued because the Event 26 engineer does not edit `docs/spreadsheets/chaos_redux_events_catalog.xlsx` or its CSV exports in the shared tree; the workbook owner applies these rows and then runs `python .tools/export_event_catalog_csv.py` from the mod root.
 

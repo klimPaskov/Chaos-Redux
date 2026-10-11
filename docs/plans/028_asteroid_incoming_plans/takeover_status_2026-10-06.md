@@ -166,3 +166,8 @@ After L1 is settled, remove the temporary delivery counter and bind any follow-u
 Skills used: `chaos-redux-events`, `chaos-redux-decisions-missions`, `chaos-redux-event-assets`, `chaos-redux-super-events`, `chaos-redux-scripted-gui`, `chaos-redux-save-inspection`, `chaos-redux-subagents`, `chaos-redux-shared-git-commit`, and native `imagegen` through the icon artist.
 The documentation curator and completion auditor also used their applicable planning/audit guidance.
 No skills were created or updated; no focus-tree, MTTH, portrait, or 3D-production surface was changed.
+
+## Update, 2026-10-11
+
+Omission 2 is closed in source: commit `94fc4b0ab` adds the asteroid visual-strike guards to the Event 042 nuclear drop hook.
+A genuine enemy nuclear strike during a marked state still needs the native check in the Nuclear systems row.
