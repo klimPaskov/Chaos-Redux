@@ -284,3 +284,67 @@ The exported bytes of all seven units pass the delivery gates for all eight role
 - The forest giant axe head and haft were not enlarged, the oracle staff point and light event were not added, the plague carriers' normal map and joint weights were not rebuilt.
 - Specular regrades use the existing metal channel as the metal mask because no class masks exist for these maps; they were applied to the delivered BC3 maps and re-encoded with ten mips.
 - The installed-mesh audit over the delivered files reports 7 of 8 roles passing and the move role as needs-review (foot contacts unmeasured) for gorilla, pan sappers, stone cohorts, riverborn, forest giants and oracle recon; the audit has no in-place declaration, and the per-action exported-byte gates with the declaration passed. The plague carriers pass all eight roles. The four WP2 cannibal units and the five WP3 zombie units pass all eight roles.
+
+## WP1 takeover intake and provider preparation (11 Oct 2026)
+
+The bounded intake and donkey provider stage are delivered; model production and runtime completion remain incomplete.
+The parent explicitly authorized this report update, accepted reuse of the six archived item-free bodies and four hash-bound manifold-passing replacement exports, and authorized one fresh donkey-body task plus one task for each separately reviewed cargo item within the user's WP1 replacement scope.
+This section supersedes earlier work-status conclusions where the recovered replacement candidates below exist; previous measurements remain historical evidence of their named installed or earlier source bytes.
+The six `body_v3.glb`, `meshy_input_v3.png`, and `blender/working/v3/intake_manifest.json` packages originate on 27 September; the `wp1d` geometry/action and `wp1f` grip checkpoints originate on 11 October.
+Their body-generation task IDs and consumed-credit totals were not recovered and remain unknown; the surviving rig/action IDs and source hashes are retained in the intake crosswalk.
+
+Paths in the following table are relative to `docs/assets/012_africa/models_3d/<model>/`.
+The four exported mesh delivery receipts match the actual mesh SHA-256 and report zero boundary, non-manifold, duplicate and degenerate faces at positional tolerances 0.0005, 0.001 and 0.002.
+These topology results do not establish materials, deformation, contacts, semantic action acceptance or runtime installation.
+
+| Model | Preserved working candidate | Current replacement geometry/items | Current action/export status |
+|---|---|---|---|
+| gorilla_heavy_infantry | `blender/checkpoints/wp1f_04_keyed.blend` | `export/wp1d/chaosx_gorilla_heavy_infantry.mesh`, SHA prefix `76cce8286fa178e7`; closed body 31,138 triangles plus separate hammer 4,140 | Eight exported roles and reimport receipts; raw previews are magenta, foot contacts mostly unmeasured, support phase visibly floats and death support needs review. |
+| pan_sappers | `blender/checkpoints/wp1d_02_actions.blend` | Archived item-free body plus separate cleaver, shovel and sabotage-flask GLBs, including their remesh candidates | No `wp1d` assembly mesh/export set; attachment, visible release, carry slots, material/contact review and exports remain. |
+| stone_cohorts | `blender/checkpoints/wp1f_04_keyed.blend` | `export/wp1d/chaosx_stone_cohorts.mesh`, SHA prefix `6b23e6691aad3106`; closed body 31,298 plus halberd 4,106 | Five roles exported/proven; retreat, training and death remain; attack reimport minimum reaches -0.006307 units and requires contact correction. |
+| riverborn | `blender/checkpoints/wp1f_04_keyed.blend` | `export/wp1d/chaosx_riverborn.mesh`, SHA prefix `d9c6d4a745af896a`; closed body 31,024 plus spear 4,102 and shield 4,022 | Seven role files, six current reimport receipts; death export and remaining proofs plus shaft/chest/grip review remain. |
+| forest_giants | `blender/checkpoints/wp1f_04_keyed.blend` | Archived item-free body and separately generated stone axe; working assembly exists | No `wp1d` mesh/export set; actual geometry, axe/haft, required log/component, materials and all role contacts/proofs remain. |
+| oracle_recon | `blender/checkpoints/wp1f_04_keyed.blend` | `export/wp1d/chaosx_oracle_recon.mesh`, SHA prefix `92c2778854bef547`; closed body 30,826 plus skull staff 4,096 | Five role files, four current proofs; remaining role exports/proofs, grip and staff-tip locator/material review remain. |
+| plague_carriers | `blender/checkpoints/wp1c_02_doctor.blend` as retained rig/motion repair source | Fresh item-free body and seven independent cargo candidates archived below | New body anatomy, scale, dedicated quadruped rig/weights, equipped performance, materials and export/reimport remain. |
+
+The parent reviewed working silhouettes but did not accept final materials or contacts.
+Gorilla actual-byte preview `blender/previews/reimport_wp1d_support_attack_e_frame_112_left.png` visibly shows airborne feet; its reimport whole-mesh minima span 0.014697 to 1.398603 units in support attack and reach 0.239358 in death.
+Numerical motion-gate passes with unmeasured sole contacts are retained as limited evidence.
+Inherited procedural finger/weight/key runners are not approved production authoring or a substitute for the required deliberate live Blender corrections.
+Today's valid role motion must be preserved through that review and repair.
+
+### Fresh donkey provider lineage
+
+The parent accepted item-free body input SHA `97d09c3548e15e17d9540d6515378e26ed8470e97e6ced842a17c3cc5d3dc13b` at `refs/derived/wp1_takeover_item_free_body_v1.png` and the seven original item-only inputs under `refs/equipment/<item>/meshy_input_takeover_v1.png`.
+Source-informed identity comes from the approved Jishnu Kunnoth pack-donkey reference; source records, exact native ImageGen prompts, comparison decisions and full input hashes remain in the job.
+Grey/piebald coat, ears, face, mane, tail, hooves and simple bridle are preserved; all cargo was excluded from the body and retained in the separate inventory.
+Actual matte review accepted the original native-alpha inputs; later alpha edits and local derivatives are preserved unselected and are not the selected input route.
+
+| Geometry input | Meshy task ID | Recorded estimate / observed batch attribution |
+|---|---|---|
+| Item-free donkey body | `01a129af-e59c-765f-8a52-94e629a69f0a` | 30 credits; balance 835 to 805 |
+| Saddle/frame | `01a129b4-4d4a-70b9-bfde-e436e0e97db9` | 30 credits |
+| Pannier box | `01a129b4-72ba-733e-9a69-b0c96d3ba6ca` | 30 credits |
+| Wooden barrel | `01a129b4-968c-75a8-b1ff-7cf258b14ea2` | 30 credits |
+| Rear pole | `01a129b4-b271-7052-9c7d-3549597b5de7` | 30 credits; these four form the 805 to 685 batch |
+| Cloth pack/blanket | `01a129bb-93ee-7355-a13c-dcd05629a65f` | 30 credits |
+| Glass bottle | `01a129bb-b082-73c9-85e4-db8bc8a83343` | 30 credits |
+| Wicker basket | `01a129bb-c989-71be-b02e-3827f273eb37` | 30 credits; these three form the 685 to 595 batch |
+
+All eight tasks succeeded and were immediately archived with GLB, FBX, four original PBR PNG maps and pre-remesh GLB copies.
+Current recorded spending is 240 credits across the body and seven item tasks, with the matching observed balance change from 835 to 595; shared-account deltas are retained separately from each request/response estimate and are not independent historic attribution.
+There were no paid retries, rig calls or action calls.
+Archive files and full SHA-256 values are in `docs/assets/012_africa/models_3d/plague_carriers/provider/downloads/wp1_takeover_archive_inventory.json`; task records are under `provider/tasks/wp1_takeover_*_generation_1.json`, and request/submission/credit receipts remain in their owning provider folders.
+The free pinned-wrapper preflight used two consecutive schema probes and a concurrent pair, verified explicit `meshy-7`, stable compatibility hashes and no surviving probe-owned processes, and observed the initial balance of 835.
+Its exact schemas, versions and lifecycle receipts are `provider/credits/wp1_takeover_route_preflight.json`.
+
+The fresh body contains one mesh/material, no skin and 25,784 triangles; generation was source-scale neutral.
+The predecessor assembled height of 8.268483 is not accepted as the bare-body calibration target because cargo may set those bounds.
+Native body/ear/withers landmarks must be measured with collision and cargo excluded before normalization, retaining entity scale 0.75 applied exactly once; the explicit caution is `provider/credits/wp1_takeover_body_calibration_caution.json`.
+Two panniers and three duplicated baskets give a projected assembly total of 65,157 triangles before controlled reduction; the current eight source material sets also need consolidation within the profile budget while preserving every required component and its rigid controls.
+These are projected inventory facts, not geometry/material acceptance.
+
+The recovery crosswalk with exact candidate/checkpoint/input hashes, surviving provider action IDs, proof paths, audio/counter handoffs and local reference citations is `.tmp/unit_takeover_wp1/intake.json`.
+No Blender operation, runtime copy, entity/GFX/sound-definition change, audio download or game launch was performed in this takeover stage.
+Existing sourced-audio gaps and counter review obligations remain; final packages require live Blender authoring, actual-byte material/contact/action review, export/reimport and parent-owned integration.
+The parent will resume production after the queued exclusive Blender lease; no model or runtime completion is claimed here.
