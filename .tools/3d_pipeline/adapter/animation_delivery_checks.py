@@ -8,6 +8,7 @@ from __future__ import annotations
 
 import ast
 import math
+import re
 from collections import defaultdict
 
 
@@ -281,6 +282,9 @@ ROLE_MOTION_LIMITS = {
     "action": (30.0, 0.41),
 }
 LOCOMOTION_ROLES = {"move", "retreat"}
+# Finger bones are leaf joints carried by the hand: their world head moves with the wrist and the lever of the finger length, so the per-frame world translation
+# limit (calibrated on vanilla joints that stop at the wrist) is not applied to them. Their angular and local-channel limits still apply in full.
+FINGER_BONE_PATTERN = re.compile(r"Hand(Thumb|Index|Middle|Ring|Pinky)\d+$")
 
 
 def role_motion_limits(role_key):
@@ -349,7 +353,7 @@ def _world_motion_report(decoded, skeleton_tree, frame_start, fps, strike_window
             if not _inside_window(frame, strike_windows):
                 if angle > angular_limit:
                     violations.append({**row, "kind": "world_joint_rotation_exceeds_limit", "limit": angular_limit})
-                if step > translation_limit:
+                if step > translation_limit and not FINGER_BONE_PATTERN.search(name):
                     violations.append({**row, "kind": "world_joint_translation_exceeds_limit", "limit": translation_limit})
 
     peak_table = []

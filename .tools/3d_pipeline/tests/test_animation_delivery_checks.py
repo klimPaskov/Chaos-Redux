@@ -40,16 +40,16 @@ def animation_tree(translations, rotations, *, fps=30.0, channels="tq", initial_
     return root
 
 
-def parent_rotation_tree():
+def parent_rotation_tree(child="Hand"):
     root = ET.Element("File", {"pdxasset": "[1, 0]"})
     info = ET.SubElement(root, "info", {"fps": "[30.0]", "sa": "[2]", "j": "[2]"})
     ET.SubElement(info, "Hips", {"sa": "['q']", "t": "[0., 0., 0.]", "q": repr(list(quaternion_z(0))), "s": "[1.0]"})
-    ET.SubElement(info, "Hand", {"sa": "['']", "t": "[1., 0., 0.]", "q": "[0., 0., 0., 1.]", "s": "[1.0]"})
+    ET.SubElement(info, child, {"sa": "['']", "t": "[1., 0., 0.]", "q": "[0., 0., 0., 1.]", "s": "[1.0]"})
     samples = ET.SubElement(root, "samples", {"q": repr(list(quaternion_z(0) + quaternion_z(90)))})
     model = ET.SubElement(ET.SubElement(root, "object"), "Model")
     skeleton = ET.SubElement(model, "skeleton")
     ET.SubElement(skeleton, "Hips", {"ix": "[0]", "tx": "[1.,0.,0.,0.,1.,0.,0.,0.,1.,0.,0.,0.]"})
-    ET.SubElement(skeleton, "Hand", {"ix": "[1]", "pa": "[0]", "tx": "[1.,0.,0.,0.,1.,0.,0.,0.,1.,0.,0.,0.]"})
+    ET.SubElement(skeleton, child, {"ix": "[1]", "pa": "[0]", "tx": "[1.,0.,0.,0.,1.,0.,0.,0.,1.,0.,0.,0.]"})
     return root
 
 
@@ -226,6 +226,14 @@ class AnimationDelivery(unittest.TestCase):
         self.assertEqual(len(rows), 1)
         self.assertGreater(rows[0]["translation_step"], delivery.role_motion_limits("move")[1])
         self.assertEqual(result["world_motion"]["measurement_space"], "PDX Y-up local TRS composed through decoded mesh parent indices")
+
+    def test_finger_leaf_bones_are_exempt_from_the_world_translation_limit_only(self):
+        tree = parent_rotation_tree(child="LeftHandIndex1")
+        result = delivery.inspect_animation_delivery(tree, role="move", action_name="move", looped=False,
+                                                     root_bone="Hips", humanoid=False)
+        kinds = [row["kind"] for row in result["world_motion"]["violations"] if row["bone"] == "LeftHandIndex1"]
+        self.assertNotIn("world_joint_translation_exceeds_limit", kinds)
+        self.assertIn("world_joint_rotation_exceeds_limit", kinds)
 
 
 if __name__ == "__main__":
