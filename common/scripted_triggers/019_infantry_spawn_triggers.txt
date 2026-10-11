@@ -733,33 +733,45 @@ infantry_spawn_congestion_is_severe = {
 # ---------------------------------------------------------------------------
 
 infantry_spawn_selected_lot_index_is_valid = {
-	has_variable = infantry_spawn_selected_lot_index
-	check_variable = { infantry_spawn_selected_lot_index > constant:infantry_spawn_event.invalid_index }
-	check_variable = { var = infantry_spawn_selected_lot_index value = infantry_spawn_lot_uid_entries^num compare = less_than }
-	check_variable = {
-		var = infantry_spawn_lot_status_entries^infantry_spawn_selected_lot_index
-		value = constant:infantry_spawn_lot_state.demobilized
-		compare = less_than
+	custom_trigger_tooltip = {
+		tooltip = infantry_spawn_selected_lot_chosen_tt
+		has_variable = infantry_spawn_selected_lot_index
+		check_variable = { infantry_spawn_selected_lot_index > constant:infantry_spawn_event.invalid_index }
+		check_variable = { var = infantry_spawn_selected_lot_index value = infantry_spawn_lot_uid_entries^num compare = less_than }
+		check_variable = {
+			var = infantry_spawn_lot_status_entries^infantry_spawn_selected_lot_index
+			value = constant:infantry_spawn_lot_state.demobilized
+			compare = less_than
+		}
 	}
 }
 
 infantry_spawn_selected_lot_is_unresolved = {
 	infantry_spawn_selected_lot_index_is_valid = yes
-	check_variable = {
-		var = infantry_spawn_lot_status_entries^infantry_spawn_selected_lot_index
-		value = constant:infantry_spawn_lot_state.integrated
-		compare = less_than
+	custom_trigger_tooltip = {
+		tooltip = infantry_spawn_selected_lot_unresolved_tt
+		check_variable = {
+			var = infantry_spawn_lot_status_entries^infantry_spawn_selected_lot_index
+			value = constant:infantry_spawn_lot_state.integrated
+			compare = less_than
+		}
 	}
 }
 
 infantry_spawn_selected_lot_is_anomalous = {
-	infantry_spawn_selected_lot_index_is_valid = yes
-	check_variable = { infantry_spawn_lot_family_id_entries^infantry_spawn_selected_lot_index > 0 }
+	custom_trigger_tooltip = {
+		tooltip = infantry_spawn_selected_lot_anomalous_tt
+		infantry_spawn_selected_lot_index_is_valid = yes
+		check_variable = { infantry_spawn_lot_family_id_entries^infantry_spawn_selected_lot_index > 0 }
+	}
 }
 
 infantry_spawn_selected_lot_has_claimant = {
-	infantry_spawn_selected_lot_index_is_valid = yes
-	check_variable = { infantry_spawn_lot_claimant_uid_entries^infantry_spawn_selected_lot_index > 0 }
+	custom_trigger_tooltip = {
+		tooltip = infantry_spawn_selected_lot_claimed_tt
+		infantry_spawn_selected_lot_index_is_valid = yes
+		check_variable = { infantry_spawn_lot_claimant_uid_entries^infantry_spawn_selected_lot_index > 0 }
+	}
 }
 
 infantry_spawn_incident_lot_index_is_valid = {
@@ -785,7 +797,7 @@ infantry_spawn_can_roll_lot_incident = {
 infantry_spawn_management_is_available = {
 	infantry_spawn_scenario_transaction_is_idle = yes
 	infantry_spawn_country_is_active = yes
-	infantry_spawn_ordinary_management_category_is_relevant = yes
+	hidden_trigger = { infantry_spawn_ordinary_management_category_is_relevant = yes }
 	infantry_spawn_all_ledgers_are_aligned = yes
 	NOT = { has_country_flag = division_template_lock_event_active }
 	NOT = { has_country_flag = infantry_spawn_management_temporarily_locked }
@@ -813,9 +825,12 @@ infantry_spawn_can_standardize_selected_lot = {
 }
 
 infantry_spawn_selected_lot_has_zero_exact_obligations = {
-	infantry_spawn_selected_lot_index_is_valid = yes
-	check_variable = { infantry_spawn_lot_outstanding_debt_entries^infantry_spawn_selected_lot_index < 1 }
-	check_variable = { infantry_spawn_lot_outstanding_manpower_entries^infantry_spawn_selected_lot_index < 1 }
+	custom_trigger_tooltip = {
+		tooltip = infantry_spawn_selected_lot_no_obligations_tt
+		infantry_spawn_selected_lot_index_is_valid = yes
+		check_variable = { infantry_spawn_lot_outstanding_debt_entries^infantry_spawn_selected_lot_index < 1 }
+		check_variable = { infantry_spawn_lot_outstanding_manpower_entries^infantry_spawn_selected_lot_index < 1 }
+	}
 }
 
 infantry_spawn_can_demobilize_selected_lot = {
@@ -836,26 +851,35 @@ infantry_spawn_can_emergency_integrate_selected_lot = {
 # its own aligned disposition entry. Status and claimant gates prevent a trial
 # from racing another lot operation or consuming a claimant-controlled cohort.
 infantry_spawn_selected_lot_is_active_prototype = {
-	infantry_spawn_selected_lot_index_is_valid = yes
 	infantry_spawn_has_evolution_ii = yes
-	check_variable = { infantry_spawn_lot_family_id_entries^infantry_spawn_selected_lot_index = constant:infantry_spawn_lot_family.none }
-	check_variable = { var = infantry_spawn_lot_profile_entries^infantry_spawn_selected_lot_index value = constant:infantry_spawn_lot_family.armored_reserve_group compare = greater_than_or_equals }
-	check_variable = { var = infantry_spawn_lot_profile_entries^infantry_spawn_selected_lot_index value = constant:infantry_spawn_lot_family.fully_random compare = less_than }
-	check_variable = { infantry_spawn_lot_status_entries^infantry_spawn_selected_lot_index = constant:infantry_spawn_lot_state.revealed }
-	check_variable = { infantry_spawn_lot_claimant_uid_entries^infantry_spawn_selected_lot_index = 0 }
-	check_variable = { infantry_spawn_lot_unit_count_entries^infantry_spawn_selected_lot_index > 0 }
+	custom_trigger_tooltip = {
+		tooltip = infantry_spawn_selected_lot_prototype_tt
+		infantry_spawn_selected_lot_index_is_valid = yes
+		check_variable = { infantry_spawn_lot_family_id_entries^infantry_spawn_selected_lot_index = constant:infantry_spawn_lot_family.none }
+		check_variable = { var = infantry_spawn_lot_profile_entries^infantry_spawn_selected_lot_index value = constant:infantry_spawn_lot_family.armored_reserve_group compare = greater_than_or_equals }
+		check_variable = { var = infantry_spawn_lot_profile_entries^infantry_spawn_selected_lot_index value = constant:infantry_spawn_lot_family.fully_random compare = less_than }
+		check_variable = { infantry_spawn_lot_status_entries^infantry_spawn_selected_lot_index = constant:infantry_spawn_lot_state.revealed }
+		check_variable = { infantry_spawn_lot_claimant_uid_entries^infantry_spawn_selected_lot_index = 0 }
+		check_variable = { infantry_spawn_lot_unit_count_entries^infantry_spawn_selected_lot_index > 0 }
+	}
 }
 
 infantry_spawn_selected_lot_is_unmanaged_prototype = {
 	infantry_spawn_selected_lot_is_active_prototype = yes
-	check_variable = { infantry_spawn_lot_prototype_disposition_entries^infantry_spawn_selected_lot_index = constant:infantry_spawn_prototype_disposition.unmanaged }
+	custom_trigger_tooltip = {
+		tooltip = infantry_spawn_selected_lot_prototype_unmanaged_tt
+		check_variable = { infantry_spawn_lot_prototype_disposition_entries^infantry_spawn_selected_lot_index = constant:infantry_spawn_prototype_disposition.unmanaged }
+	}
 }
 
 infantry_spawn_selected_lot_is_cannibalizable_prototype = {
 	infantry_spawn_selected_lot_is_active_prototype = yes
-	OR = {
-		check_variable = { infantry_spawn_lot_prototype_disposition_entries^infantry_spawn_selected_lot_index = constant:infantry_spawn_prototype_disposition.unmanaged }
-		check_variable = { infantry_spawn_lot_prototype_disposition_entries^infantry_spawn_selected_lot_index = constant:infantry_spawn_prototype_disposition.preserved }
+	custom_trigger_tooltip = {
+		tooltip = infantry_spawn_selected_lot_prototype_salvageable_tt
+		OR = {
+			check_variable = { infantry_spawn_lot_prototype_disposition_entries^infantry_spawn_selected_lot_index = constant:infantry_spawn_prototype_disposition.unmanaged }
+			check_variable = { infantry_spawn_lot_prototype_disposition_entries^infantry_spawn_selected_lot_index = constant:infantry_spawn_prototype_disposition.preserved }
+		}
 	}
 }
 
@@ -866,25 +890,35 @@ infantry_spawn_selected_lot_exact_obligations_are_affordable = {
 	infantry_spawn_selected_lot_index_is_valid = yes
 	has_country_flag = infantry_spawn_settlement_requisition_active
 	NOT = { has_country_flag = infantry_spawn_ledger_invariant_failure }
-	check_variable = { var = infantry_spawn_settlement_requisition_lot_uid value = infantry_spawn_lot_uid_entries^infantry_spawn_selected_lot_index compare = equals }
-	check_variable = { infantry_spawn_settlement_tranche_count > 0 }
-	check_variable = { infantry_spawn_settlement_tranche_affordable > 0 }
+	hidden_trigger = {
+		check_variable = { var = infantry_spawn_settlement_requisition_lot_uid value = infantry_spawn_lot_uid_entries^infantry_spawn_selected_lot_index compare = equals }
+		check_variable = { infantry_spawn_settlement_tranche_count > 0 }
+		check_variable = { infantry_spawn_settlement_tranche_affordable > 0 }
+	}
 }
 
 infantry_spawn_can_request_formation = {
 	infantry_spawn_management_is_available = yes
 	infantry_spawn_has_evolution_ii = yes
 	NOT = { has_country_flag = infantry_spawn_request_cooldown }
-	check_variable = { var = infantry_spawn_army_congestion value = constant:infantry_spawn_congestion.critical compare = less_than }
+	custom_trigger_tooltip = {
+		tooltip = infantry_spawn_army_congestion_room_tt
+		check_variable = { var = infantry_spawn_army_congestion value = constant:infantry_spawn_congestion.critical compare = less_than }
+	}
 }
 
 infantry_spawn_can_request_anomalous_formation = {
 	infantry_spawn_can_request_formation = yes
 	infantry_spawn_has_evolution_iv = yes
 	has_country_flag = infantry_spawn_anomalous_registry_active
-	chaos_unit_family_registry_is_aligned = yes
-	check_variable = { global.chaos_unit_family_id_entries^num > 0 }
-	check_variable = { var = infantry_spawn_anomalous_saturation value = constant:infantry_spawn_saturation.breach compare = less_than }
+	hidden_trigger = {
+		chaos_unit_family_registry_is_aligned = yes
+		check_variable = { global.chaos_unit_family_id_entries^num > 0 }
+	}
+	custom_trigger_tooltip = {
+		tooltip = infantry_spawn_anomalous_saturation_room_tt
+		check_variable = { var = infantry_spawn_anomalous_saturation value = constant:infantry_spawn_saturation.breach compare = less_than }
+	}
 }
 
 # ---------------------------------------------------------------------------
@@ -913,21 +947,23 @@ infantry_spawn_country_is_microstate = {
 
 is_infantry_spawn_derivative_country = {
 	has_country_flag = infantry_spawn_derivative_country
-	OR = {
-		AND = {
-			has_country_flag = infantry_spawn_claimant_breakaway
-			NOT = { has_country_flag = infantry_spawn_nonhuman_derivative }
-			has_variable = infantry_spawn_derivative_claimant_uid
-			has_variable = infantry_spawn_derivative_family_id
-			check_variable = { var = infantry_spawn_derivative_family_id value = constant:infantry_spawn_lot_family.none compare = equals }
-		}
-		AND = {
-			NOT = { has_country_flag = infantry_spawn_claimant_breakaway }
-			has_country_flag = infantry_spawn_nonhuman_derivative
-			has_country_flag = infantry_spawn_derivative_provider_parent_isolation_proved
-			has_country_flag = infantry_spawn_derivative_provider_public_package_proved
-			has_variable = infantry_spawn_derivative_family_id
-			check_variable = { infantry_spawn_derivative_family_id > constant:infantry_spawn_lot_family.none }
+	hidden_trigger = {
+		OR = {
+			AND = {
+				has_country_flag = infantry_spawn_claimant_breakaway
+				NOT = { has_country_flag = infantry_spawn_nonhuman_derivative }
+				has_variable = infantry_spawn_derivative_claimant_uid
+				has_variable = infantry_spawn_derivative_family_id
+				check_variable = { var = infantry_spawn_derivative_family_id value = constant:infantry_spawn_lot_family.none compare = equals }
+			}
+			AND = {
+				NOT = { has_country_flag = infantry_spawn_claimant_breakaway }
+				has_country_flag = infantry_spawn_nonhuman_derivative
+				has_country_flag = infantry_spawn_derivative_provider_parent_isolation_proved
+				has_country_flag = infantry_spawn_derivative_provider_public_package_proved
+				has_variable = infantry_spawn_derivative_family_id
+				check_variable = { infantry_spawn_derivative_family_id > constant:infantry_spawn_lot_family.none }
+			}
 		}
 	}
 }

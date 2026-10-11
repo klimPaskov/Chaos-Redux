@@ -110,13 +110,16 @@ infantry_spawn_current_claimant_profile_is_regionally_compatible = {
 }
 
 infantry_spawn_selected_claimant_index_is_valid = {
-	has_variable = infantry_spawn_selected_claimant_index
-	check_variable = { infantry_spawn_selected_claimant_index > constant:infantry_spawn_event.invalid_index }
-	check_variable = { var = infantry_spawn_selected_claimant_index value = infantry_spawn_claimant_uid_entries^num compare = less_than }
-	check_variable = {
-		var = infantry_spawn_claimant_status_entries^infantry_spawn_selected_claimant_index
-		value = constant:infantry_spawn_claimant_status.retired
-		compare = less_than
+	custom_trigger_tooltip = {
+		tooltip = infantry_spawn_selected_claimant_chosen_tt
+		has_variable = infantry_spawn_selected_claimant_index
+		check_variable = { infantry_spawn_selected_claimant_index > constant:infantry_spawn_event.invalid_index }
+		check_variable = { var = infantry_spawn_selected_claimant_index value = infantry_spawn_claimant_uid_entries^num compare = less_than }
+		check_variable = {
+			var = infantry_spawn_claimant_status_entries^infantry_spawn_selected_claimant_index
+			value = constant:infantry_spawn_claimant_status.retired
+			compare = less_than
+		}
 	}
 }
 
@@ -125,17 +128,20 @@ infantry_spawn_selected_claimant_index_is_valid = {
 # UI cursor and is never accepted as demand ownership by itself.
 infantry_spawn_selected_claimant_owns_pending_demand = {
 	has_country_flag = infantry_spawn_claimant_demand_pending
-	has_variable = infantry_spawn_claimant_demand_owner_uid
-	infantry_spawn_selected_claimant_index_is_valid = yes
-	check_variable = {
-		var = infantry_spawn_claimant_uid_entries^infantry_spawn_selected_claimant_index
-		value = infantry_spawn_claimant_demand_owner_uid
-		compare = equals
-	}
-	check_variable = {
-		var = infantry_spawn_claimant_demand_entries^infantry_spawn_selected_claimant_index
-		value = constant:infantry_spawn_claimant_demand.none
-		compare = greater_than
+	custom_trigger_tooltip = {
+		tooltip = infantry_spawn_selected_claimant_pending_demand_tt
+		has_variable = infantry_spawn_claimant_demand_owner_uid
+		infantry_spawn_selected_claimant_index_is_valid = yes
+		check_variable = {
+			var = infantry_spawn_claimant_uid_entries^infantry_spawn_selected_claimant_index
+			value = infantry_spawn_claimant_demand_owner_uid
+			compare = equals
+		}
+		check_variable = {
+			var = infantry_spawn_claimant_demand_entries^infantry_spawn_selected_claimant_index
+			value = constant:infantry_spawn_claimant_demand.none
+			compare = greater_than
+		}
 	}
 }
 
