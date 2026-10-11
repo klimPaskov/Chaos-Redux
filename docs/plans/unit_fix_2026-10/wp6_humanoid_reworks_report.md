@@ -1,5 +1,56 @@
 # WP6 Humanoid rig reworks - Delivery Report
 
+## Current repair work, 11 October 2026
+
+Package status: incomplete; all five model repairs are queued for exclusive Blender windows.
+Ghost has priority because its original-body material sources are recovered; a competing WP3 reservation acquired the released session before WP6, and that reservation is respected.
+The explicit user assignment includes the WP6 tickets, their raw defects and section 3, permits Meshy credits/downloads, forbids sound downloads/synthesis and prohibits launching HOI4.
+Source inventories, active bindings, all 40 action diagnostics and exact blockers are recorded in `wp6_models_handoff.md` and `.tmp/wp6_models/`.
+Eleven unaccepted source `.anim` derivatives remove 49 quaternion-sign discontinuities with decoded equivalent-motion proof; no runtime mesh or action was installed.
+The battalion's support-terminal to defend-first comparison has angular gaps above 50 degrees, so a state-name change alone is not an accepted transition repair.
+The parent installed a finite 0.61-second, 100-particle-per-second support emitter with 0.35-second particle life, a four-unit jet velocity and 1.5-second cloud life, and delayed the attack cloud to the ongoing discharge at 2.0 seconds.
+The scoped particle lint has zero overlapping-spawn findings; nozzle direction, repaired action timing and rendered stream acceptance remain open.
+The actual current nozzle is `lance_nozzle` on `RightHand`; the historical proposed `assault_projector_muzzle` is not a current locator.
+WP2 owns and has delivered the three cannibal cue sets in `wp2_to_wp6_audio.md`; their final event placement awaits the repaired contact frames.
+The parent installed eleven selected PCM16, 44.1 kHz mono battalion WAVs with source/destination SHA parity and shipping attribution.
+Commit `2ebe91641` contains the recorded audio and finite particle/event repair; it does not claim completed native action or nozzle-direction acceptance.
+The respirator loop has a -12 dBFS peak and 1.66 dB edge-RMS difference; spray, support bursts, footsteps, death voices and body impact peak at -6 dBFS.
+One onset-clean 3.1-second recorded spray follows the continuous attack event, distinct 0.61-second samples follow the two support bursts, and the death landing uses the recorded body fall.
+The close retreat plants use the two short boot recordings, avoiding overlap from the longer movement takes.
+An additional 0.400-second CC0 metal-handling contact replaces the defend reservoir-seating footstep in commit `e5ba66fbc`; its source and installed hashes are in the separate `chaos_battalion_chaos_assault_battalion_reservoir_seat.json` receipt.
+The parent has installed twelve Battalion WAVs in total; the reservoir seating marker still awaits native action proof.
+The scoped 32-state audio check reports no sample or particle overlap; the non-firing reservoir-handling defend state remains distinct from discharge states, and final authored contact markers are pending.
+Selected sources, preserved inputs and exact copy hashes are in `.tmp/wp5wp6/audio_install/chaos_battalion.json` and `death_hollow_ghost_host.json`.
+The parent installed nine Ghost replacements from verified CC0 original members, replacing the inherited death voice and long movement bed with distinct recorded voices and three 0.42-second airy swishes.
+Commit `76c0691af` contains the Ghost audio/source/event stage, with no runtime geometry or action acceptance.
+Ghost idle measures -30 dBFS RMS; death and attack peak at -6 dBFS, and the death tail finishes before the current collapse landing.
+Ghost defend uses an independent short air swish with entry-only breath; the old unreferenced movement bed is archived in its job and removed from runtime.
+Original Ghost body UV and geometry correspondence is complete; Battalion body UV correspondence is complete with six explicitly recorded position exceptions, making their original PBR maps eligible inputs for the pending material/normal review.
+Material prerequisite `17d0c080c` supplies strict bone and worn-steel classes for the accepted Ghost ranges, with preserved old defaults, full source/mask coverage and decoded BC3 gates.
+The native Ghost normal transfer still needs tangent-basis proof; original-map UV correspondence alone does not authorize a sign flip.
+The forty-state source check finds no cue or particle overlap, while authored contact markers and perceptual audition remain unverified.
+Ghost selection is registered without an identified per-unit selection consumer; source replacement does not prove that routing.
+The shared-delivery sections below remain historical baseline evidence, superseded for current preparation by this section and the linked handoff.
+Meshy credits spent in this WP6 repair work: 20, from two successful original-UV retexture tasks: Bone Guard `01a12a8d-6f8e-76f6-ad7f-ddca5579f584` and March `01a12a90-1648-77f0-b996-47c7656dca83`.
+Both exact-input conversions passed written-GLB position/normal/UV/triangle parity; all returned models and four-map sets were immediately archived.
+Each provider result also matches all 30,000 original oriented triangle/UV identities with no missing/extra/unmatched/ambiguous records; restored position error is at most 0.00000024317 units for Bone Guard and 0.00000026766 units for March.
+Their roughness/metallic maps are eligible for original-UV transfer after physical mask review; provider normal differences of 128.3296 and 179.8018 degrees keep geometry/normals/normal PNGs unselected.
+Provider bodies/normals/diffuse remain unselected until exact output correspondence and native material review; no new body, rig or action provider attempt was used.
+
+## Current per-model work
+
+| Model | Delivered source/audio work | Remaining repair and blocker | Current evidence |
+|---|---|---|---|
+| cannibal_bone_guard | Current mesh/action diagnostics and sign-only candidates retained; WP2's recorded cues are available. | Short two-hand poleaxe performance, full grip, cloth/root/loop repair, source-backed materials and native contact events remain; raw v6 PBR absent; replacement roughness/metallic inputs have exact output correspondence; native masks/normal transfer remain and high-poly bake eligibility is unreviewed. | `wp6_models_handoff.md`, baseline audit, exact archived-DDS receipt and `wp2_to_wp6_audio.md`. |
+| cannibal_siege_eaters | Current diagnostics and sign-only candidates retained; WP2's recorded cues are available. | Real two-hand swing, root/collapse/stride/topology/material repair and final cue markers remain; literal strike-speed criteria conflict, approved generation source unresolved. | WP6 handoff's explicit acceptance contradiction, baseline reports and WP2 cue table. |
+| cannibal_march_predation_column | Current source/UV/action inventory and WP2 cue availability recorded. | Coat silhouette/weights/colour, separate rigid bow and grip, real draw/release roles, topology and markers remain; original provider PBR unavailable; replacement roughness/metallic inputs have exact output correspondence; native masks/normal transfer remain. | WP6 source/UV intake and WP2 cue table. |
+| death_hollow_ghost_host | Nine source-verified CC0 replacements installed; all original-body triangles/UVs correspond, canonical PBR extracted; strict bone/worn-steel packing support available. | Native fixed-root hierarchy, claws/cloth/topology, all eight performances, masks/tangent/visual/export proofs and contact timing remain; per-unit selection consumer unidentified. | Commit `76c0691af`, source-map/correspondence/tangent/helper-bone receipts and WP6 handoff. |
+| chaos_battalion | Twelve recorded WAVs installed, finite support spray/continuous attack timing and reservoir contact wired; original body PBR correspondence recovered with six position exceptions. | Coat/hose, separate lance/grip/UV/material work, kneel return/loop repairs, nozzle orientation, native role/contact/export proofs remain. | Commits `2ebe91641` and `e5ba66fbc`, audio receipts, source correspondence and WP6 handoff. |
+
+No runtime mesh or action repair has been installed in this task stage.
+The exclusive native session remains the immediate production dependency; source review is not substituted for missing authored models or actions.
+No requested design reduction has been substituted; every unmet model requirement remains open.
+
 Disposition: `implemented` for this documentation handoff; package mesh/action reconstruction, visual acceptance, final entity wiring, and audio install remain open where the measurements below show gaps. The authorized package scope comes from the user-authored unit-fix plan, SHA-256 `1939b400cba160c6d4903e37952e8e55efdb1bfeacf0b4ab061e89c8792c79b2`.
 
 Package models: cannibal_bone_guard, cannibal_siege_eaters, cannibal_march_predation_column, death_hollow_ghost_host, chaos_battalion. The full per-model map, DDS, mesh, action, topology, reimport, and entity-lint evidence is in `docs/plans/unit_fix_2026-10/per_model_delivery_metrics.json`.
