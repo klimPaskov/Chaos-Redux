@@ -58,7 +58,12 @@ Meshy credits spent on this source tranche: 0.
 The four laser events retain their authored times and use finite particle lifecycles.
 Idle and guard start one source-bound electrical loop with `trigger_once`, `loop = yes` and `max_audible = 1`.
 The one-second archived-source derivative measures -20 LUFS and a 2.58 dB inner head/tail RMS difference; source and installed hashes are recorded in `sound/portal_raider/WP4_ATTRIBUTION.md`.
-This source lifecycle repair is separate from live state-exit playback verification and the remaining ray, step and death-cue work.
+The ray uses the verified existing source stretched to 0.6 seconds with pitch fixed and a 60 ms terminal fade, played at the requested volume of 0.75.
+The rejected early-decay candidate is not installed; the selected waveform retains its body through the extended clip and fits the 0.916667-second minimum interval between support shots.
+Six original footstep takes have source-derived edge fades at -6 dBFS, and death combines the existing power-down sound with a licensed human grunt.
+The first boot-step derivative is an explicitly shared Portal/Alien pool member, not an independent new take.
+Per-file provenance, exact transformations, waveforms, copies and cue-rate checks are retained in `docs/assets/shared_portal_raider_system/models_3d/portal_raider/evidence/wp4_audio_takeover/`.
+Live state-exit playback and perceived timbre remain unverified.
 
 The selected September 6 weapon-free provider body/maps and `wf_export2.blend` are missing from the current job, local scratch, archive and exact-hash LFS checks.
 The runtime 45-bone mesh and matching native installed-byte reimport remain available.
@@ -120,7 +125,7 @@ The implemented firing/audio tranche is documented in `wp4_firing_audio_tranche.
 | Silent Guard | 6/6/3 flashes; no cartridge locator; low-contrast diffuse and coat deformation | 2/2/1 finite flashes with smoke and sourced burst/death audio | UV/body/SMG rebake, holes/winding, wool/leather/steel masks, deliberate skirt weights, low-ready idle and recoil |
 | Mechanized Assassin | Two reports per state against one continuous emitter; defend shorter than one vanilla take | One timed barrel flash/report per cycle; four shorter vanilla takes in defend; 1.36 s recorded destruction cue at 0.1 s | Hull/turret/wheel UV/material rebake, holes, scan/settle and traverse actions; optional engine loop |
 | Clone Infantry | No particles; silent defend; obsolete firing times; inherited simulated rifle cue | Timed shots/casings and defend chaining; recorded rifle report, full source shout, level-preserving voice fades and frame-37 landing cue | Aim/grip/shoulder pocket, entry/recovery and idle, rifle UV/normal/materials, sleeve values and physical-contact review |
-| Portal Raider | Dark diffuse, weak normal detail, stale rejected-candidate docs and one-shot idle | Finite laser particles; exact-original electrical idle/guard loop with one audible source | Source-to-current-UV proof before grade/normal repack; recoil and second attack; low-ready idle; rifle normals; remaining ray/death edits |
+| Portal Raider | Dark diffuse, weak normal detail, stale rejected-candidate docs and one-shot idle | Finite laser effects, electrical idle/guard loop, 0.6-second ray, faded six-take footsteps and human-layered death | Missing selected provider maps; source-to-current-UV proof, recoil/second attack, low-ready idle and rifle normals |
 | Alien Infantry | Frozen idle, weak normals/flat pistol maps, one-shot vehicle hum and overlapping 1.2 s laser | Finite laser particles; the ticket's permitted removal of the one-shot hum | Body grade/normal and proper pistol UV/materials; breathing/scan/recoil; recorded laser/impact fixes |
 | Autonomous Robot | 22 flash/smoke/report emissions in attack/support, 8 in defend; 28 non-manifold edges; faceting/flat gun maps and long audio tails | Two finite gun emissions/cues per burst cycle; 2.6 s sustained and 0.6 s braced recorded bursts at volume 0.36/max two; 2 s wreck blast | Winding/topology/smooth normals and weapon material rebake; sensor/servo idle; short footfall and casing fades/tail fixes |
 
