@@ -87,58 +87,58 @@ The sound asset gained the numbered variant samples listed below; soundeffect na
 
 | Runtime file | Soundeffect | Composition | Before SHA-256 | After SHA-256 | Length s | Peak dBFS | LUFS |
 |---|---|---|---|---|---:|---:|---:|
-| `chaosx_gorilla_heavy_infantry_attack.wav` | chaosx_gorilla_heavy_infantry_attack_sfx | thud_metal 0.000-0.500 s, @0.010 s, pitch -4st; bodyfall_dirt 0.400-1.000 s, @0.000 s, lowpass 450 Hz, -3 dB | `new` | `f9320d941edd44fabf5dd803b7d7bdf95c7107d2d6d9b0071a06a18a9c61a361` | 0.62 | -3.0 | -23.3 |
+| `chaosx_gorilla_heavy_infantry_attack.wav` | chaosx_gorilla_heavy_infantry_attack_sfx | thud_metal 0.000-0.500 s, @0.010 s, pitch -4st; bodyfall_dirt 0.400-1.000 s, @0.000 s, lowpass 450 Hz, -3 dB | `8680b07b4846a4f12379339fcbe2e65d535283bc519571a2ec87b3bba97c5cd7` | `f9320d941edd44fabf5dd803b7d7bdf95c7107d2d6d9b0071a06a18a9c61a361` | 0.62 | -3.0 | -23.3 |
 | `chaosx_gorilla_heavy_infantry_attack_02.wav` | chaosx_gorilla_heavy_infantry_attack_sfx | metal_drop 0.340-1.040 s, @0.000 s, lowpass 900 Hz; thud_metal 0.000-0.500 s, @0.030 s, pitch -7st, lowpass 3000 Hz, -4 dB | `new` | `0061fab51dad90c2b527fc80f9625abef047fd34cff0f2274d9f838bb509cef0` | 0.66 | -3.0 | -20.7 |
 | `chaosx_gorilla_heavy_infantry_attack_03.wav` | chaosx_gorilla_heavy_infantry_attack_sfx | bodyfall_bsb 0.160-0.760 s, @0.000 s, lowpass 700 Hz, -2 dB; thud_metal 0.000-0.500 s, @0.030 s, pitch -2st, -2 dB | `new` | `7e6b7beaef9d4425937f1cbd4bc7c7ddcf04e2bd32e0ada71e87a3d442a0f7ab` | 0.6 | -3.0 | -22.8 |
-| `chaosx_gorilla_heavy_infantry_recovery.wav` | chaosx_gorilla_heavy_infantry_recovery_sfx | bodyfall_dirt 0.520-0.880 s, @0.000 s, lowpass 380 Hz | `new` | `2d00224fd7d57e149d246c899d8f899b6562e043a981f06fda0bd9fcc50f0b27` | 0.36 | -3.0 | -70.0 |
+| `chaosx_gorilla_heavy_infantry_recovery.wav` | chaosx_gorilla_heavy_infantry_recovery_sfx | bodyfall_dirt 0.520-0.880 s, @0.000 s, lowpass 380 Hz | `5d1766c861562d487c80586784d29b2ed42ef84194dabe1e292245bb2e9da929` | `2d00224fd7d57e149d246c899d8f899b6562e043a981f06fda0bd9fcc50f0b27` | 0.36 | -3.0 | -70.0 |
 | `chaosx_gorilla_heavy_infantry_recovery_02.wav` | chaosx_gorilla_heavy_infantry_recovery_sfx | bodyfall_bsb 0.800-1.200 s, @0.000 s, lowpass 500 Hz | `new` | `567386c3e45a435434fa9ff84b109ac905f1db54a7f3f659076cc5450d9b141f` | 0.4 | -3.0 | -22.4 |
 | `chaosx_gorilla_heavy_infantry_recovery_03.wav` | chaosx_gorilla_heavy_infantry_recovery_sfx | bodyfall_dirt 1.100-1.500 s, @0.000 s, lowpass 420 Hz | `new` | `824a26d0a20ddb70f980e1e8fea679f5cc9919359ce3787a64185f388fa7de2c` | 0.4 | -3.0 | -23.0 |
-| `chaosx_gorilla_heavy_infantry_move.wav` | chaosx_gorilla_heavy_infantry_move_sfx | gbox_step4 0.000-0.260 s, @0.000 s, pitch -6st-rate; bodyfall_dirt 1.100-1.450 s, @0.000 s, lowpass 300 Hz, -4 dB | `new` | `c2d3228c21564037ef14f5a86304f718b33e78d62e1b9820bd5f21b4c56ca0bc` | 0.38 | -6.0 | -70.0 |
+| `chaosx_gorilla_heavy_infantry_move.wav` | chaosx_gorilla_heavy_infantry_move_sfx | gbox_step4 0.000-0.260 s, @0.000 s, pitch -6st-rate; bodyfall_dirt 1.100-1.450 s, @0.000 s, lowpass 300 Hz, -4 dB | `560ee95a4e1746972cd2c2b8662a90afb866631ae775fa655a3da60cc407d26e` | `c2d3228c21564037ef14f5a86304f718b33e78d62e1b9820bd5f21b4c56ca0bc` | 0.38 | -6.0 | -70.0 |
 | `chaosx_gorilla_heavy_infantry_move_02.wav` | chaosx_gorilla_heavy_infantry_move_sfx | gbox_step3 0.000-0.240 s, @0.000 s, pitch -7st-rate; metal_drop 0.360-0.760 s, @0.000 s, lowpass 250 Hz, -3 dB | `new` | `6a3ec3508406b691a8adb68e2035d13ad831194c43ae29672684f825343618ef` | 0.38 | -6.0 | -70.0 |
 | `chaosx_gorilla_heavy_infantry_move_03.wav` | chaosx_gorilla_heavy_infantry_move_sfx | gbox_step6 0.000-0.220 s, @0.000 s, pitch -5st-rate; bodyfall_bsb 0.800-1.150 s, @0.000 s, lowpass 350 Hz, -4 dB | `new` | `6248fe66fcd83a7ba7c19374221697afc1b531757c8091369c3192b751884aef` | 0.38 | -6.0 | -70.0 |
-| `chaosx_gorilla_heavy_infantry_death.wav` | chaosx_gorilla_heavy_infantry_death_sfx | bodyfall_bsb 0.100-1.100 s, @0.000 s, pitch -3st, lowpass 3000 Hz | `new` | `fc70e43bfdf3c7366ed143ae2cd2b939737698b77a54e9cd212b68cacf6eda61` | 1.0 | -3.0 | -23.8 |
+| `chaosx_gorilla_heavy_infantry_death.wav` | chaosx_gorilla_heavy_infantry_death_sfx | bodyfall_bsb 0.100-1.100 s, @0.000 s, pitch -3st, lowpass 3000 Hz | `44008b58d83f26c3632299d501a3a801295573acc375bf7015d615529ae885c5` | `fc70e43bfdf3c7366ed143ae2cd2b939737698b77a54e9cd212b68cacf6eda61` | 1.0 | -3.0 | -23.8 |
 | `chaosx_gorilla_heavy_infantry_death_02.wav` | chaosx_gorilla_heavy_infantry_death_sfx | bodyfall_dirt 0.300-1.600 s, @0.000 s, pitch -3st, lowpass 1800 Hz | `new` | `fe6a54a3254e22214d5a6910ce6b431b2daffec77b2f2344903cfce9a7029a12` | 1.3 | -3.01 | -22.4 |
 
 #### pan_sappers
 
 | Runtime file | Soundeffect | Composition | Before SHA-256 | After SHA-256 | Length s | Peak dBFS | LUFS |
 |---|---|---|---|---|---:|---:|---:|
-| `chaosx_pan_sappers_sabotage.wav` | chaosx_pan_sappers_sabotage_sfx | spray 1.200-1.370 s, @0.000 s, lowpass 7000 Hz, +9 dB; dynamite 0.030-1.080 s, @0.150 s | `new` | `0c070ed2af43e93b694e595465f56b54b4b9282046634bae6b4bb70feb76df02` | 1.2 | -3.0 | -19.7 |
+| `chaosx_pan_sappers_sabotage.wav` | chaosx_pan_sappers_sabotage_sfx | spray 1.200-1.370 s, @0.000 s, lowpass 7000 Hz, +9 dB; dynamite 0.030-1.080 s, @0.150 s | `fa3dbe874bbccf33999071d479697eab4ceb8997562af230a8633f750c5cec2b` | `0c070ed2af43e93b694e595465f56b54b4b9282046634bae6b4bb70feb76df02` | 1.2 | -3.0 | -19.7 |
 | `chaosx_pan_sappers_sabotage_02.wav` | chaosx_pan_sappers_sabotage_sfx | spray 2.000-2.170 s, @0.000 s, lowpass 7000 Hz, +9 dB; explosion10 0.060-1.060 s, @0.150 s | `new` | `e31c9ffd796496042a408c32ad10dea8f50b35e6663c2bf57f453c1edeef6ac9` | 1.15 | -3.0 | -15.1 |
 | `chaosx_pan_sappers_sabotage_03.wav` | chaosx_pan_sappers_sabotage_sfx | spray 3.200-3.370 s, @0.000 s, lowpass 7000 Hz, +9 dB; mech_explosion 0.000-0.950 s, @0.150 s, pitch -2st, lowpass 7000 Hz | `new` | `4a9f949da02fec4cb75ec8dc00ed737534449618bf55bddcd728f5ac8607fb79` | 1.1 | -3.0 | -18.9 |
-| `chaosx_pan_sappers_construction.wav` | chaosx_pan_sappers_construction_sfx | shovel 0.000-0.450 s, @0.000 s | `new` | `fcabe9bc89f44b13954b5dd78a09777d1ddac3db1d571e661d57ec8449bc6243` | 0.45 | -3.0 | -18.2 |
+| `chaosx_pan_sappers_construction.wav` | chaosx_pan_sappers_construction_sfx | shovel 0.000-0.450 s, @0.000 s | `f44a0121d14af7a6ef28cc3caa538fd12c93e3518ea699ad3c78e35671c53b8a` | `fcabe9bc89f44b13954b5dd78a09777d1ddac3db1d571e661d57ec8449bc6243` | 0.45 | -3.0 | -18.2 |
 | `chaosx_pan_sappers_construction_02.wav` | chaosx_pan_sappers_construction_sfx | shovel 0.000-0.420 s, @0.000 s, pitch -3st | `new` | `e394789f015f498d0f8b3512467bedbbd996fbad9ac0373ca6cfc5bd1faae545` | 0.42 | -3.0 | -18.6 |
 | `chaosx_pan_sappers_construction_03.wav` | chaosx_pan_sappers_construction_sfx | shovel 0.000-0.400 s, @0.000 s, pitch +1.5st; door_knock 0.280-0.480 s, @0.140 s, pitch +2st, -9 dB | `new` | `f9ad1c636af6810242c27c651944dc9af211079094a54b49ea03daf1e33464d9` | 0.5 | -3.0 | -19.4 |
-| `chaosx_pan_sappers_move.wav` | chaosx_pan_sappers_move_sfx | hoof_muffled 0.000-0.160 s, @0.000 s, pitch +4st | `new` | `99adfa095e45697b4a34d303667920bbd94ab93e3b933a6518ea2681f14fda26` | 0.16 | -6.0 | -70.0 |
+| `chaosx_pan_sappers_move.wav` | chaosx_pan_sappers_move_sfx | hoof_muffled 0.000-0.160 s, @0.000 s, pitch +4st | `4a4f7fe38ef2bf21d1aa480bc7a5682834b780054b42c5acb9be50c940148e8d` | `99adfa095e45697b4a34d303667920bbd94ab93e3b933a6518ea2681f14fda26` | 0.16 | -6.0 | -70.0 |
 | `chaosx_pan_sappers_move_02.wav` | chaosx_pan_sappers_move_sfx | hoof_muffled 0.200-0.360 s, @0.000 s, pitch +3st | `new` | `d5a528ef57c399d602da2578676cbf8cecb0eddf50dc593b4fb58bb025b05246` | 0.16 | -6.0 | -70.0 |
 | `chaosx_pan_sappers_move_03.wav` | chaosx_pan_sappers_move_sfx | hoof_grass 0.000-0.130 s, @0.000 s, pitch +4st, lowpass 7000 Hz | `new` | `0f2ec94d08a0df76d731b2b59947de8ec791fbc6755fc4bb4dc233ad3017aa64` | 0.13 | -6.0 | -70.0 |
-| `chaosx_pan_sappers_idle.wav` | chaosx_pan_sappers_idle_sfx | goat 6.850-7.550 s, @0.000 s | `new` | `e0401f57dfda5a2e1b514ff9436adbf18280c64a509f760bd388a27b40d4a965` | 0.7 | -3.0 | -19.1 |
+| `chaosx_pan_sappers_idle.wav` | chaosx_pan_sappers_idle_sfx | goat 6.850-7.550 s, @0.000 s | `78deabbc26b553fcc9b5d15ec0a61427908bafd3a5bed9c02edd3b831cbfd697` | `e0401f57dfda5a2e1b514ff9436adbf18280c64a509f760bd388a27b40d4a965` | 0.7 | -3.0 | -19.1 |
 | `chaosx_pan_sappers_idle_02.wav` | chaosx_pan_sappers_idle_sfx | goat 1.400-2.100 s, @0.000 s | `new` | `a513ec123b73d3200221db861bc4c6f2a9eea67a9bf45ef29dd67e7c1afbc271` | 0.7 | -3.0 | -19.6 |
-| `chaosx_pan_sappers_select.wav` | chaosx_pan_sappers_select_sfx | goat 13.450-14.550 s, @0.000 s | `new` | `0718cec581e3aeadeb40970b44ca26cd291e39b4bbbf2eba15677d72b151b56e` | 1.1 | -3.0 | -18.1 |
+| `chaosx_pan_sappers_select.wav` | chaosx_pan_sappers_select_sfx | goat 13.450-14.550 s, @0.000 s | `ff66173a723b36b8e6e80550c040f4841bef491d8e49662c597485f0ccac1a19` | `0718cec581e3aeadeb40970b44ca26cd291e39b4bbbf2eba15677d72b151b56e` | 1.1 | -3.0 | -18.1 |
 | `chaosx_pan_sappers_select_02.wav` | chaosx_pan_sappers_select_sfx | goat 38.950-40.250 s, @0.000 s | `new` | `9a55145516e309976ec2b7c7f98a46903bd4b0be1b9dc7606c589240b54dab80` | 1.3 | -3.0 | -14.7 |
 
 #### stone_cohorts
 
 | Runtime file | Soundeffect | Composition | Before SHA-256 | After SHA-256 | Length s | Peak dBFS | LUFS |
 |---|---|---|---|---|---:|---:|---:|
-| `chaosx_stone_cohorts_attack.wav` | chaosx_stone_cohorts_attack_sfx | debris_crash 0.140-0.400 s, @0.000 s; thud_metal 0.000-0.340 s, @0.060 s | `new` | `ad6d986d9f97470da4bccc5acb0e0efeb98119568c28f8d9214a95c018225c10` | 0.4 | -3.0 | -17.5 |
+| `chaosx_stone_cohorts_attack.wav` | chaosx_stone_cohorts_attack_sfx | debris_crash 0.140-0.400 s, @0.000 s; thud_metal 0.000-0.340 s, @0.060 s | `fa3dbe874bbccf33999071d479697eab4ceb8997562af230a8633f750c5cec2b` | `ad6d986d9f97470da4bccc5acb0e0efeb98119568c28f8d9214a95c018225c10` | 0.4 | -3.0 | -17.5 |
 | `chaosx_stone_cohorts_attack_02.wav` | chaosx_stone_cohorts_attack_sfx | debris_crash 0.320-0.580 s, @0.000 s; thud_metal 0.000-0.340 s, @0.060 s, pitch -4st | `new` | `f3b4b132762a081936d7cc6c1109aca21cd6b0ebfcfe3118cbdcc6dafb2174f7` | 0.4 | -3.0 | -18.6 |
 | `chaosx_stone_cohorts_attack_03.wav` | chaosx_stone_cohorts_attack_sfx | debris_crash 0.480-0.740 s, @0.000 s; thud_metal 0.000-0.340 s, @0.060 s, pitch -2st, lowpass 3000 Hz; metal_drop 0.340-0.740 s, @0.050 s, lowpass 800 Hz, -8 dB | `new` | `31798c9799a83ac83497c0a74e52d53ed61c4896ea210b4b8ec2bdce73b6f2a3` | 0.42 | -3.0 | -17.9 |
-| `chaosx_stone_cohorts_death.wav` | chaosx_stone_cohorts_death_sfx | debris_crash 0.000-2.400 s, @0.000 s, pitch -2st; quern 12.000-13.900 s, @0.500 s, highpass 80 Hz, -3 dB | `new` | `77dd76f2f93b65d496ad88a4e06a48eda91d2a5f3e9d71c7ace6952e78b8ce1e` | 2.4 | -3.0 | -21.4 |
+| `chaosx_stone_cohorts_death.wav` | chaosx_stone_cohorts_death_sfx | debris_crash 0.000-2.400 s, @0.000 s, pitch -2st; quern 12.000-13.900 s, @0.500 s, highpass 80 Hz, -3 dB | `7ffbe2820f00621a1db3743edc6518b7f71f65da8b2e19906ea5e7f504c1d842` | `77dd76f2f93b65d496ad88a4e06a48eda91d2a5f3e9d71c7ace6952e78b8ce1e` | 2.4 | -3.0 | -21.4 |
 | `chaosx_stone_cohorts_death_02.wav` | chaosx_stone_cohorts_death_sfx | debris_crash 0.600-2.400 s, @0.000 s; dynamite 1.700-3.700 s, @0.200 s, lowpass 2500 Hz, -5 dB | `new` | `3c58304aada1fe860b7d005d339bdcd9e835d5ad4f46ed7faada97e07d8d8269` | 2.2 | -3.0 | -21.2 |
-| `chaosx_stone_cohorts_move.wav` | chaosx_stone_cohorts_move_sfx | quern 8.620-8.980 s, @0.000 s | `new` | `3f03fd6691196c5aa669e2a777675f065ab352fc92099d670ba430bd6674f65b` | 0.36 | -6.0 | -70.0 |
+| `chaosx_stone_cohorts_move.wav` | chaosx_stone_cohorts_move_sfx | quern 8.620-8.980 s, @0.000 s | `9ecc737021ea144c452786879909f98ab422d62d6312468a8c8ab7401b810743` | `3f03fd6691196c5aa669e2a777675f065ab352fc92099d670ba430bd6674f65b` | 0.36 | -6.0 | -70.0 |
 | `chaosx_stone_cohorts_move_02.wav` | chaosx_stone_cohorts_move_sfx | quern 20.380-20.740 s, @0.000 s | `new` | `2dd0fe0f31fa3fdab1f83ca18d363734b84033178d29f57a6c04d9c9a952109a` | 0.36 | -6.0 | -70.0 |
 | `chaosx_stone_cohorts_move_03.wav` | chaosx_stone_cohorts_move_sfx | quern 40.820-41.180 s, @0.000 s | `new` | `aec7178d74ad7690770a0d58ed45dc3235e445549aa977c5b8e03f6a11cc196a` | 0.36 | -6.0 | -70.0 |
-| `chaosx_stone_cohorts_idle.wav` | chaosx_stone_cohorts_idle_sfx | quern 12.000-14.200 s, @0.000 s | `new` | `9220b9d264d769f22d6ba90c4dccb3d83758c97044caf4e9f6f065410219eafb` | 2.2 | -3.0 | -19.4 |
+| `chaosx_stone_cohorts_idle.wav` | chaosx_stone_cohorts_idle_sfx | quern 12.000-14.200 s, @0.000 s | `729f14dede6b178678544bbd880a5c71498393f034c1c6684ef3c778cb5d4e49` | `9220b9d264d769f22d6ba90c4dccb3d83758c97044caf4e9f6f065410219eafb` | 2.2 | -3.0 | -19.4 |
 | `chaosx_stone_cohorts_idle_02.wav` | chaosx_stone_cohorts_idle_sfx | quern 33.000-35.200 s, @0.000 s | `new` | `cf698a3785660572992d37263374bb6aa4eb49a577521f25e89f7d561e23e001` | 2.2 | -3.0 | -19.1 |
-| `chaosx_stone_cohorts_select.wav` | chaosx_stone_cohorts_select_sfx | quern 20.300-21.700 s, @0.000 s | `new` | `77e7a66062cbca10b1b60f115d5dec10871a54b6c44e274585f4198ae64230b2` | 1.4 | -3.0 | -17.7 |
+| `chaosx_stone_cohorts_select.wav` | chaosx_stone_cohorts_select_sfx | quern 20.300-21.700 s, @0.000 s | `9e57db53e3f6b73f099d72c54f2d461207765941ccfc76b840d85668023251eb` | `77e7a66062cbca10b1b60f115d5dec10871a54b6c44e274585f4198ae64230b2` | 1.4 | -3.0 | -17.7 |
 | `chaosx_stone_cohorts_select_02.wav` | chaosx_stone_cohorts_select_sfx | quern 40.700-42.100 s, @0.000 s | `new` | `e52210257afa83ec6924f95bd4fc8d26d22f1bf81909356bbf19808e84177975` | 1.4 | -3.0 | -18.1 |
 
 #### riverborn
 
 | Runtime file | Soundeffect | Composition | Before SHA-256 | After SHA-256 | Length s | Peak dBFS | LUFS |
 |---|---|---|---|---|---:|---:|---:|
-| `chaosx_riverborn_attack.wav` | chaosx_riverborn_attack_sfx | swosh22 0.000-0.320 s, @0.250 s; bodyfall_dirt 0.400-0.950 s, @0.360 s, pitch +2st, lowpass 900 Hz, -2 dB | `new` | `c887027575df4a5d0cbd763c57b947f510fe554f1465783b7814941db4fa28af` | 0.605578 | -3.01 | -23.5 |
+| `chaosx_riverborn_attack.wav` | chaosx_riverborn_attack_sfx | swosh22 0.000-0.320 s, @0.250 s; bodyfall_dirt 0.400-0.950 s, @0.360 s, pitch +2st, lowpass 900 Hz, -2 dB | `26ffe43934ac355da6df6887968b061ad54bef41a80bbe7d2bc69f506351d994` | `c887027575df4a5d0cbd763c57b947f510fe554f1465783b7814941db4fa28af` | 0.605578 | -3.01 | -23.5 |
 | `chaosx_riverborn_attack_02.wav` | chaosx_riverborn_attack_sfx | swosh16 0.000-0.440 s, @0.230 s; bodyfall_bsb 0.160-0.710 s, @0.340 s, pitch +1st, lowpass 1100 Hz, -2 dB | `new` | `f218558eb9fa7e7532511fe12f643ba6e844bb5c8dae1f870283d08627e17ad5` | 0.630522 | -3.0 | -23.3 |
 | `chaosx_riverborn_attack_03.wav` | chaosx_riverborn_attack_sfx | swosh20 0.000-0.450 s, @0.220 s; bodyfall_dirt 0.520-1.070 s, @0.360 s, pitch +3st, lowpass 800 Hz, -2 dB | `new` | `37ed6818b350943199f2bdd4cba4f8ac2f1fca1532e4cfb73ad7e1be18966759` | 0.640499 | -3.02 | -23.1 |
 
@@ -146,17 +146,17 @@ The sound asset gained the numbered variant samples listed below; soundeffect na
 
 | Runtime file | Soundeffect | Composition | Before SHA-256 | After SHA-256 | Length s | Peak dBFS | LUFS |
 |---|---|---|---|---|---:|---:|---:|
-| `chaosx_forest_giants_attack.wav` | chaosx_forest_giants_attack_sfx | swosh29 0.083-0.683 s, @0.000 s, pitch -6st-rate; axe 1.790-2.190 s, @0.440 s, pitch -5st; bodyfall_dirt 0.400-1.000 s, @0.460 s, lowpass 420 Hz, -3 dB | `new` | `fd36c0632fccd05075d4f9a4f179fdcc9dabd2185886ab981eabfc9f9a493bfe` | 1.1 | -3.0 | -19.6 |
+| `chaosx_forest_giants_attack.wav` | chaosx_forest_giants_attack_sfx | swosh29 0.083-0.683 s, @0.000 s, pitch -6st-rate; axe 1.790-2.190 s, @0.440 s, pitch -5st; bodyfall_dirt 0.400-1.000 s, @0.460 s, lowpass 420 Hz, -3 dB | `3c2248e6583eb5d0aacf392c8cf300f38b7914f3ffa0a01a3fe16169993771fb` | `fd36c0632fccd05075d4f9a4f179fdcc9dabd2185886ab981eabfc9f9a493bfe` | 1.1 | -3.0 | -19.6 |
 | `chaosx_forest_giants_attack_02.wav` | chaosx_forest_giants_attack_sfx | swosh30 0.025-0.575 s, @0.000 s, pitch -5st-rate; axe 3.370-3.770 s, @0.440 s, pitch -6st; bodyfall_bsb 0.160-0.760 s, @0.440 s, lowpass 500 Hz, -3 dB | `new` | `f7133418605ad471bf71555357fdaffbf5c905b8ca78de538eb8da2f78a5c0b4` | 1.05 | -3.0 | -20.6 |
 | `chaosx_forest_giants_attack_03.wav` | chaosx_forest_giants_attack_sfx | swosh35 0.286-0.836 s, @0.000 s, pitch -4st-rate; axe 4.390-4.790 s, @0.440 s, pitch -4st; bodyfall_dirt 0.400-1.000 s, @0.460 s, pitch -2st, lowpass 600 Hz, -4 dB | `new` | `65733d0ac82016723badb07d2bed70f0aea9f523719461f37ea30f318f866b91` | 1.1 | -3.0 | -20.2 |
-| `chaosx_forest_giants_concealment_emergence.wav` | chaosx_forest_giants_concealment_emergence_sfx | wood_creak 12.250-13.350 s, @0.000 s, highpass 60 Hz, +18 dB; forest_amb 66.600-68.300 s, @0.000 s, -2 dB | `new` | `bd4fc83f6917733f512fbb35d6400729cc11b75d3c375ae1b06969f418587563` | 1.7 | -3.0 | -14.8 |
+| `chaosx_forest_giants_concealment_emergence.wav` | chaosx_forest_giants_concealment_emergence_sfx | wood_creak 12.250-13.350 s, @0.000 s, highpass 60 Hz, +18 dB; forest_amb 66.600-68.300 s, @0.000 s, -2 dB | `e9ff401c221333d7e1263105706e612caf0410500a5ae47535d9c27654fd98d8` | `bd4fc83f6917733f512fbb35d6400729cc11b75d3c375ae1b06969f418587563` | 1.7 | -3.0 | -14.8 |
 | `chaosx_forest_giants_concealment_emergence_02.wav` | chaosx_forest_giants_concealment_emergence_sfx | wood_creak 10.800-11.900 s, @0.100 s, highpass 60 Hz, +18 dB; forest_amb 59.300-60.900 s, @0.000 s, -2 dB | `new` | `3fbaf1b191ce4652db6eefed58a2eb60f1546207029fce1cd99e4477d97bbd99` | 1.6 | -3.0 | -16.7 |
 
 #### oracle_recon
 
 | Runtime file | Soundeffect | Composition | Before SHA-256 | After SHA-256 | Length s | Peak dBFS | LUFS |
 |---|---|---|---|---|---:|---:|---:|
-| `chaosx_oracle_recon_death.wav` | chaosx_oracle_recon_death_sfx | exewin6 0.000-1.200 s, @0.000 s; bodyfall_bsb 0.100-1.100 s, @0.620 s, lowpass 3500 Hz, -4 dB | `new` | `639885dd4eb62ab07f5ebbb4442678df6c5cc3c42b3064125dc2795c6fcdfa4a` | 1.535057 | -3.0 | -21.9 |
+| `chaosx_oracle_recon_death.wav` | chaosx_oracle_recon_death_sfx | exewin6 0.000-1.200 s, @0.000 s; bodyfall_bsb 0.100-1.100 s, @0.620 s, lowpass 3500 Hz, -4 dB | `184cb87973ec4933bdb6e4341b13a4f9823c8193c8a08bb32a904692537e2256` | `639885dd4eb62ab07f5ebbb4442678df6c5cc3c42b3064125dc2795c6fcdfa4a` | 1.535057 | -3.0 | -21.9 |
 | `chaosx_oracle_recon_death_02.wav` | chaosx_oracle_recon_death_sfx | exewin11 0.000-0.940 s, @0.000 s; bodyfall_dirt 0.300-1.300 s, @0.550 s, pitch -1st, lowpass 2500 Hz, -4 dB | `new` | `b4fa9d1f53c2890e10400d88f04863b718f4ac518e3f9415198ec2517b8ade13` | 1.575079 | -3.0 | -20.8 |
 | `chaosx_oracle_recon_death_03.wav` | chaosx_oracle_recon_death_sfx | exewin4 0.000-0.820 s, @0.000 s; bodyfall_bsb 0.100-1.100 s, @0.500 s, pitch -2st, lowpass 3000 Hz, -4 dB | `new` | `a85b07492422d794dbec48f38f7ed944c602abc3f33142dd9e78fa05f678920c` | 1.5 | -3.01 | -22.3 |
 
@@ -164,10 +164,10 @@ The sound asset gained the numbered variant samples listed below; soundeffect na
 
 | Runtime file | Soundeffect | Composition | Before SHA-256 | After SHA-256 | Length s | Peak dBFS | LUFS |
 |---|---|---|---|---|---:|---:|---:|
-| `chaosx_plague_carriers_idle.wav` | chaosx_plague_carriers_idle_sfx | plague_idle_pre 0.410-0.770 s, @0.000 s | `new` | `6b0ee2fb8ef22ccdbe917337ae53615b44899e477f2232f45fe673e01e35cdbc` | 0.36 | -3.0 | -70.0 |
+| `chaosx_plague_carriers_idle.wav` | chaosx_plague_carriers_idle_sfx | plague_idle_pre 0.410-0.770 s, @0.000 s | `2da96b2e1e550ba11f68a48f3b81277ce99c03201092de513bcbf85773cf6a76` | `6b0ee2fb8ef22ccdbe917337ae53615b44899e477f2232f45fe673e01e35cdbc` | 0.36 | -3.0 | -70.0 |
 | `chaosx_plague_carriers_idle_02.wav` | chaosx_plague_carriers_idle_sfx | plague_idle_pre 0.410-0.770 s, @0.000 s, pitch -2st | `new` | `be0dda5531ca893098c6a702a38fcf6bd4fe5409685db4c485d1f649cb691986` | 0.36 | -3.0 | -70.0 |
 | `chaosx_plague_carriers_idle_03.wav` | chaosx_plague_carriers_idle_sfx | plague_idle_pre 0.410-0.770 s, @0.000 s, pitch +2st | `new` | `c79f36f344247ee6b15c44eb4f4f6af45d74f327a84e2cc260484beeae84a7ab` | 0.36 | -3.0 | -70.0 |
-| `chaosx_plague_carriers_death.wav` | chaosx_plague_carriers_death_sfx | plague_death_pre 0.000-1.120 s, @0.000 s | `new` | `281733bcc6ed29f07c9e5a4b3ca41c14fa71f40d4c56be43982dd769fe0956cc` | 1.12 | -3.0 | -21.3 |
+| `chaosx_plague_carriers_death.wav` | chaosx_plague_carriers_death_sfx | plague_death_pre 0.000-1.120 s, @0.000 s | `0ff9c42a208e9cd4f536e935c2d9b4268fe6d2811f22bd85bd76388b85df65f4` | `281733bcc6ed29f07c9e5a4b3ca41c14fa71f40d4c56be43982dd769fe0956cc` | 1.12 | -3.0 | -21.3 |
 | `chaosx_plague_carriers_death_02.wav` | chaosx_plague_carriers_death_sfx | plague_death_pre 0.000-1.120 s, @0.000 s, pitch -2st | `new` | `03dd401df3820f610ef5a7a507311f6b93d944240d5bb4f1eb8c5da300addacb` | 1.12 | -3.0 | -21.2 |
 | `chaosx_plague_carriers_death_03.wav` | chaosx_plague_carriers_death_sfx | plague_death_pre 0.000-1.120 s, @0.000 s, pitch +1.5st | `new` | `14795a95e164e012aae64cd52e4e149462a2aea9e3cfa2f5e95b978afb5584a2` | 1.12 | -3.0 | -21.2 |
 
