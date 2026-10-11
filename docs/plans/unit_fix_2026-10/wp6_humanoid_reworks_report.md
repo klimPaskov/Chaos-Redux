@@ -12,6 +12,9 @@ The parent installed a finite 0.61-second, 100-particle-per-second support emitt
 The scoped particle lint has zero overlapping-spawn findings; nozzle direction, repaired action timing and rendered stream acceptance remain open.
 The actual current nozzle is `lance_nozzle` on `RightHand`; the historical proposed `assault_projector_muzzle` is not a current locator.
 WP2 owns and has delivered the three cannibal cue sets in `wp2_to_wp6_audio.md`; their final event placement awaits the repaired contact frames.
+The separate current 24-state cannibal check finds four movement/retreat sample overlaps at duplicate end/start footstep events: Bone Guard move has a 0.333-second sample across a 0.258-second wrap gap, March move/retreat have 0.333-second samples across 0.100/0.133-second gaps, and Siege move has a 0.317-second sample across a 0.083-second gap.
+March support also has a 0.813-second attack cue on the current 0.733-second action; final authored plants and support recovery must resolve these timings before entity acceptance.
+The exact current bindings, action hashes, cue durations and findings are retained in `.tmp/wp5wp6/cannibal_audio_inventory.json` and `cannibal_audio_lint.json`; no WP2 sound bytes or inferred contact offsets were changed.
 The parent installed eleven selected PCM16, 44.1 kHz mono battalion WAVs with source/destination SHA parity and shipping attribution.
 Commit `2ebe91641` contains the recorded audio and finite particle/event repair; it does not claim completed native action or nozzle-direction acceptance.
 The respirator loop has a -12 dBFS peak and 1.66 dB edge-RMS difference; spray, support bursts, footsteps, death voices and body impact peak at -6 dBFS.
