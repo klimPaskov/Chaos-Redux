@@ -348,3 +348,64 @@ The recovery crosswalk with exact candidate/checkpoint/input hashes, surviving p
 No Blender operation, runtime copy, entity/GFX/sound-definition change, audio download or game launch was performed in this takeover stage.
 Existing sourced-audio gaps and counter review obligations remain; final packages require live Blender authoring, actual-byte material/contact/action review, export/reimport and parent-owned integration.
 The parent will resume production after the queued exclusive Blender lease; no model or runtime completion is claimed here.
+
+### Current fresh-body selection and complete provider stage
+
+Final body source selection follows the user's explicit requirement to regenerate all seven WP1 bodies.
+The earlier parent-approved reuse disposition is superseded for final body selection; the six September bodies, four manifold-passing exports, separate equipment and today's fixed actions remain immutable motion/equipment/repair references.
+Fresh generation is an output requirement and does not establish manifold, anatomy, material, rig, weight, action or runtime acceptance.
+All seven fresh bodies are archived; the six additional body tasks use the exact per-job stage `fresh_takeover_body_generation_1`, while the donkey retains its already completed `wp1_takeover_body_generation_1` stage.
+
+The parent compared every proposed body input with its preserved approved identity reference before paid work.
+Stone, Forest and Oracle use their accepted `refs/original/meshy_input_v3.png` hashes; Gorilla and River use `meshy_input_fresh_takeover_v1.png`, and Pan uses flask-free `meshy_input_fresh_takeover_v2.png`.
+Gorilla's original headband was restored; River's original full feather cloak replaced the erroneous water ribbons; Pan's original human-faced, multi-horned, bare scarred/warty satyr identity replaced the rejected goat-faced redcoat redesign, with its two carried glass flasks removed for separate geometry.
+Exact prompts, predecessor/input hashes, source comparisons and parent acceptance are retained in each owning `refs/derived/fresh_takeover_input_review.json` and the correction records where applicable.
+No source-free or alternate-design fallback was used.
+
+| Model | Fresh body task ID | Accepted body input SHA prefix | Total takeover credits for this model |
+|---|---|---|---:|
+| gorilla_heavy_infantry | `01a12a05-4f1b-746d-abe4-16fdc2968451` | `0b398e1997df7482` | 30 |
+| pan_sappers | `01a12a13-47df-757a-a901-f9b55225653e` | `91f1562bdb1daad9` | 60: body plus blue belt-flask item |
+| stone_cohorts | `01a129f9-5082-7187-8532-cf24d3ad1223` | `f028dc5e373533f4` | 30 |
+| riverborn | `01a12a05-6c5f-7702-8160-e66a1cdb9f38` | `325d08955aab8f04` | 30 |
+| forest_giants | `01a129f9-61a0-7027-bc3c-5c697df8bfdd` | `be16c42cd6f59381` | 60: body plus bound-log item |
+| oracle_recon | `01a129f9-7451-750e-98c1-692df1562a7f` | `7ca25663f4b116fb` | 30 |
+| plague_carriers | `01a129af-e59c-765f-8a52-94e629a69f0a` | `97d09c3548e15e17` | 240: body plus seven cargo items |
+
+All sixteen takeover geometry tasks succeeded and were immediately archived with GLB, FBX, four original PBR PNG maps and pre-remesh GLB copies, with hash-bound task/download receipts.
+Recorded estimates total 480 credits, matching the observed account balance change from 835 to 355: the donkey package 240, six further bodies 180, Forest log 30 and Pan blue flask 30.
+The later batch balances are 595 to 505, 505 to 445, 445 to 415, 415 to 385 and 385 to 355; individual requests/responses remain separate attribution evidence, and unknown September credit history remains unknown.
+There were no paid retries, rig calls or action calls, and no further provider calls are planned in this stage.
+Body archives are under each owning `provider/downloads/fresh_takeover_body_generation_1/`, with the donkey's earlier archive path retained; each stage's `archive_receipt.json` and `provider/credits/*_postflight.json` bind the exact downloads and credit evidence.
+The donkey-body archive receipt is explicitly reconstructed from its retained task/postflight hashes and original archive inventory; it is not a recovered provider-side receipt.
+Each stage also carries `archive_inventory.json` with all archived file hashes; the sixteen inventories cover 112 GLB/FBX/PNG files checked for hash integrity and their format containers, without recomputing the parent's topology diagnostics or accepting native model quality.
+
+Forest's missing independent log is task `01a12a18-b42f-750c-9fcc-cf134890e509`, archived under `forest_giants/provider/downloads/fresh_takeover_bound_log_generation_1/` from approved input SHA `5d6484709d305b58225e9f5c5c87748fc6e2f01aa56702411dd32ac17e39f23a`.
+Its ochre split timber and slate-grey bindings match the original left-arm item; the separately generated axe remains preserved.
+Pan's blue belt flask is task `01a12a23-27a4-7411-824b-8863d9fdcb4d`, archived under `pan_sappers/provider/downloads/fresh_takeover_blue_belt_flask_generation_1/` from approved input SHA `c8f70e49012766747cecf96c7a1d445167a609711b423de452cb01b5f8d21a13`.
+One source item must become two fitted instances with separate rigid controls; baked-looking glass highlights still require normal/specular review.
+The blue carried accessories are distinct from the retained amber caged, fuse-equipped sabotage flask.
+Pan's accepted final equipment remains the held/thrown sabotage flask, back-slot shovel and hip cleaver plus those blue accessories; the source-art held mushroom is identity/provenance only and is not another requested final prop or paid task, as recorded in `pan_sappers/refs/equipment/fresh_takeover_equipment_inventory.json`.
+
+The parent's read-only exact-position checker reports the following on unmodified fresh GLBs; all seven have zero duplicate and degenerate faces.
+These measurements use tolerance zero without Blender, transforms or runtime calibration, and are candidate diagnostics rather than a delivery gate or repair.
+Source SHA-256, checker SHA-256, original source indices and complete findings are retained in each job's `evidence/wp1_takeover/fresh_source_exact_topology.json`.
+
+| Fresh body | Boundary edges | Non-manifold edges | Same-direction manifold edges |
+|---|---:|---:|---:|
+| gorilla_heavy_infantry | 156 | 118 | 4 |
+| pan_sappers | 188 | 182 | 8 |
+| stone_cohorts | 61 | 63 | 2 |
+| riverborn | 265 | 365 | 15 |
+| forest_giants | 168 | 156 | 4 |
+| oracle_recon | 100 | 112 | 4 |
+| plague_carriers | 263 | 206 | 6 |
+
+River and Plague already exceed the 200-boundary intake ceiling in this exact-position source diagnostic.
+All seven need native anatomy/scale inspection and an explicit repair-before-reduction plan, followed by calibrated topology checks at 0.0005, 0.001 and 0.002; this finding does not authorize another paid generation.
+Preserve pre-remesh originals and source-index lineage for reviewed patches.
+Normal preparation must follow the actual installed shader and verified packer: G stores tangent X and A stores negated tangent Y; the plan's X-in-A/Y-in-G sentence is a conflicting historical instruction and must not be reproduced.
+Today's fixed actions and finger/grip rigs remain repair sources whose equipped performance, contacts, deformation and exported bytes must be reviewed on the fresh bodies.
+No Blender operation, lock acquisition, runtime edit or model-byte replacement was performed during provider preparation.
+The first queued WP1 native lease is Gorilla-only after WP3's bounded work and parent review, with release after its repair/material/scale/rig/action/export/reimport stage; the other six remain queued.
+No simplifications or requested component omissions were accepted, and no finished model package or runtime completion is claimed.
