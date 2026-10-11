@@ -5,6 +5,34 @@ The pinned server is installed and project configuration is present but disabled
 The adapter deliberately refuses memory reads, native calls, and event execution on that binary.
 Do not remove this check, substitute the installed build ID for the expected one, change the shared game without explicit authorization and its exclusive lease, or interpret upstream `doctor` reporting `ready` as build compatibility.
 
+## 1.19.3 table-port attempt (2026-10-11)
+
+Upstream has no 1.19.3 support: `origin/main` still points to `97c85437081904d5ad07bae1623ec58d1c0a5b9e`, the only advertised branch is `main`, and the public issues endpoint returned an empty list.
+The installed Linux executable is ELF build `a4971c9e8ac9a6f2487dea109e01f9839ee59db7` with SHA-256 `56fc2945cdbf2475a316db3285eb3458ae5d577db149db6dfdba6f004de3a88a`.
+The required 1.19.2 Linux ELF (build `2a79e51358b8b71c09cfb5ddefa0c03649067a4b`) was not present in the installed game or the inspected Clausewitz research dump locations, so its instruction signatures cannot be reproduced and searched in the 1.19.3 target.
+[SteamDB's Linux depot history](https://steamdb.info/depot/394363/manifests/) lists a historical `open_beta` manifest `8705347054517643253` from 28 August 2026; the [1.19.2 beta update notes](https://steamdb.info/patchnotes/24468645/) identify that beta period, but neither source establishes that the manifest contains the required ELF.
+Two isolated SteamCMD downloads of that manifest, including one after refreshing app metadata, failed with `Failed downloading 1 manifests (No connection)`; no file was obtained and the installed game was not changed.
+The upstream research process was reviewed in `research/README.md`, `research/FINDINGS.md`, `research/dis.sh`, `research/funcs.py`, `research/leascan.py`, `research/callscan.py`, `research/cmdscan.py`, `research/cmdfields.py`, `research/diploscan.py`, `calling/rtti.py`, `calling/fieldmap.py`, `calling/offsets.py`, and `calling/api.py`.
+No 1.19.3 offsets, function addresses, command constructors, vtables, or calling conventions were generated; the existing 1.19.2 build gate remains unchanged and refuses the installed ELF before memory access.
+Evidence and the exact inspected paths are recorded in `/home/klim/tools/Clausewitz-MCP-ports/1.19.3/PORT_STATUS.md` and appended to `records/cx/clausewitz_mcp_review.md`.
+
+| Surface | 1.19.3 result |
+| --- | --- |
+| Upstream branch/issue review | No 1.19.3 branch or issue found; latest remote main is the pinned commit |
+| Build identification | Verified by `readelf -n` and SHA-256 of the installed ELF |
+| Stdio initialization and tool discovery | Previously verified: 107 upstream tools plus the adapter preflight; this does not validate native calls |
+| Build preflight and refusal | Verified: the adapter reports the mismatched build and refuses before memory access |
+| `hoi4_status` native state read | Unverified as a working read; the prior mismatched-build call was refused before memory access |
+| Script-variable reads and event dispatch | Unverified; no native call was made |
+| Console dispatch | Unverified; no native call was made |
+| Screenshot capture | Unverified against the game; the prior call was refused because another job owned the lease |
+| Order construction/posting | Unverified; no command was posted |
+| Ptrace attach, thread recovery, and register restoration | Unverified; no attach was attempted |
+
+Clausewitz-MCP is the preferred live interface on Linux only after the exact ELF build has a reviewed table and the job owns the matching WSL lease.
+HOI4 Live Tools is the fallback when it is connected to the intended game; results from another OS installation do not validate the Linux process.
+For the current 1.19.3 ELF, Clausewitz remains blocked and no state reads or captures should be attributed to it.
+
 ## In-place downgrade availability check (2026-10-11)
 
 The user authorized replacing the existing `/home/klim/games/hoi4` installation with 1.19.2, superseding the earlier side-by-side request.
@@ -226,9 +254,9 @@ Continuous micro/order loops and arbitrary native function calls have not been a
 | Compatibility | Exact executable layout and embedded offsets | Its own documented capabilities; Clausewitz tests do not validate it |
 | Lock | `/tmp/hoi4_wsl.lock` and capture board | `hoi4_lock` |
 | Screenshot | Private X11 game window only via this adapter | `hoi4_screenshot` through that server's capture route |
-| Current acceptance | Transport verified; live use blocked | Remains the default skill route for authorized Windows testing |
+| Current acceptance | Blocked on 1.19.3; no native capabilities verified | Windows default and fallback only when it reaches the intended process |
 
-Do not call the Windows server as a fallback for this Linux-only task.
+Use HOI4 Live Tools as fallback only if it controls the intended game process; a Windows game result does not validate the Linux game.
 
 ## Maintenance and uninstall
 

@@ -1,36 +1,38 @@
 ---
 name: chaos-redux-debug-playtest
-description: Explicit-invocation-only Chaos Redux live QA workflow. Use only when the user names this skill or explicitly authorizes autonomous live testing, played through the HOI4 Live Tools MCP server (launch the debug game, load saves, run time, answer popups, read state and saves, diff saves), to repair fresh Chaos Redux errors, restart until clean, play bounded test cases, exercise events and project UI, capture screenshots, fix confirmed defects, and verify the fixes in game. Never use as part of the normal Chaos Redux workflow unless explicitly invoked.
+description: Explicit-invocation-only Chaos Redux live QA workflow. Use only when the user names this skill or explicitly authorizes autonomous live testing, through HOI4 Live Tools or the verified Clausewitz-MCP Linux route, to repair fresh Chaos Redux errors, restart until clean, play bounded test cases, exercise events and project UI, capture screenshots, fix confirmed defects, and verify the fixes in game. Never use as part of the normal Chaos Redux workflow unless explicitly invoked.
 ---
 
 # Chaos Redux Autonomous Debug Playtest
 
-Use this skill only after the user explicitly invokes it or explicitly asks for autonomous Chaos Redux live testing. The default run is played through the HOI4 Live Tools MCP server (`hoi4-live`); the agent does not script the desktop itself.
+Use this skill only after the user explicitly invokes it or explicitly asks for autonomous Chaos Redux live testing. Windows runs use the HOI4 Live Tools MCP server (`hoi4-live`). Linux runs prefer Clausewitz-MCP for the Linux game when its exact ELF build is covered by a reviewed table and the matching WSL lease is owned.
 
 For an explicitly requested isolated Linux/WSL run, follow [Clausewitz-MCP Linux testing](../../../docs/testing/clausewitz_mcp_linux.md) before using the disabled-by-default `clausewitz_linux` server or its opt-in launcher.
 That route requires the matching WSL game lease and a verified compatible ELF build; an exposed tool list or successful installation does not establish memory-layout compatibility.
+If Clausewitz-MCP is unavailable or fails its build gate, HOI4 Live Tools is the fallback only when it can reach the intended game process; a Windows installation result does not validate Linux gameplay.
 For an explicitly authorized Linux version change, first check Steam's advertised branches; a version named in native offsets does not establish that a matching beta is available.
 Before changing the shared install, notify the capture board, wait for a free lease and no running Linux game, then hold the lease through backup, installation, build verification, and testing; follow the Linux guide for branch evidence and rollback limits.
-Keep Windows HOI4 and the Windows desktop untouched, never take another job's game lease, and report refused or unavailable capabilities separately from observed game results.
-Use the ordinary `hoi4-live` route below for Windows; this Linux routing note does not authorize autonomous testing outside the user's requested scope.
+Keep Windows HOI4 and the Windows desktop untouched during Linux runs, never take another job's game lease, and report refused or unavailable capabilities separately from observed game results.
+The Linux routing preference does not authorize autonomous testing outside the user's requested scope.
 
 Do not add this skill to `AGENTS.md`, `chaos-redux-subagents`, completion-audit routing, event implementation routing, or any default workflow unless the user separately requests that integration. Normal coding agents must not use this skill merely because a feature needs validation.
 
 ## Preconditions and scope
 
-### 1. Capability gate and the HOI4 Live Tools route
+### 1. Capability gate and live-tool routing
 
-The HOI4 Live Tools MCP server is the route for every live step: launch, load, input inside the game window, the console, time, popups, screen reading, saves, save queries and logs. It is registered in this repository's `.mcp.json` (Claude Code) and `.codex/config.toml` as `hoi4-live`; its tools appear as `hoi4_status`, `hoi4_launch`, `hoi4_load`, and so on (Claude Code lists them as `mcp__hoi4-live__*`). Its source and docs are at `C:\Users\klimp\Documents\Projects\hoi4-live-tools` (`docs/tools.md` lists every argument); a machine without that checkout installs the release with HOI4 Mod Setup or `python install.py`.
+Route live work by the intended game process. On Linux, use Clausewitz-MCP when the exact ELF build is covered by a reviewed table and the matching lease is held; its scope includes direct state reads, guarded console dispatch, supported command-queue actions, and adapter-restricted game-window captures. On Windows, HOI4 Live Tools remains the default. It is also the Linux fallback only when its connected route actually reaches the intended Linux process; otherwise report that live access is unavailable.
+HOI4 Live Tools is registered in this repository's `.mcp.json` (Claude Code) and `.codex/config.toml` as `hoi4-live`; its tools appear as `hoi4_status`, `hoi4_launch`, `hoi4_load`, and so on (Claude Code lists them as `mcp__hoi4-live__*`). Its source and docs are at `C:\Users\klimp\Documents\Projects\hoi4-live-tools` (`docs/tools.md` lists every argument); a machine without that checkout installs the release with HOI4 Mod Setup or `python install.py`.
 
-Before starting, verify:
+Before starting, verify the chosen route:
 
-- the `hoi4_*` tools are listed and `hoi4_status` answers (process, window, playset, mode, lock holder, recent saves, date)
-- the Chaos Redux repository is editable and the HOI4 logs are readable through `hoi4_logs`
-- the playset `hoi4_status` reports contains the Chaos Redux build under test; a frozen QA snapshot (`Chaos Redux QA`) does not show the repository's edits, so record which one is loaded and never edit `dlc_load.json` yourself (only `hoi4_telemetry` does, with a backup)
+- For HOI4 Live Tools, confirm its tools are listed and `hoi4_status` answers with the intended process, window, playset, mode, lock holder, recent saves, and date; confirm the repository is editable and logs are readable through `hoi4_logs`.
+- For Clausewitz-MCP, confirm `clausewitz_linux_preflight` reports the exact ELF build as supported, the matching WSL lease belongs to this job, and the planned operations are within the reviewed call surface.
+- For either route, confirm the loaded playset contains the Chaos Redux build under test; a frozen QA snapshot (`Chaos Redux QA`) does not show the repository's edits, so record which one is loaded and never edit `dlc_load.json` yourself (only `hoi4_telemetry` does, with a backup).
 
-If the server is not connected, stop with a blocked report that says how to connect it. Fall back to direct desktop control only when the user asks for it, and record the fallback. Do not claim the skill controlled the computer when it did not.
+If the preferred route is unavailable, try the fallback only if it reaches the same intended game process and has the needed capability. If neither route is connected to that process, stop with a blocked report that says which route is unavailable. Fall back to direct desktop control only when the user asks for it, and record the fallback. Do not claim the skill controlled the computer when it did not.
 
-Workflow steps map onto the tools like this:
+The following tool map covers HOI4 Live Tools on Windows and any explicitly selected fallback session:
 
 | Step | HOI4 Live Tools |
 | --- | --- |
@@ -112,7 +114,7 @@ For catalog coverage:
 At the start of each invocation, read:
 
 - `AGENTS.md`
-- this skill (it is self-contained for the HOI4 Live Tools route; `docs/tools.md` of the server lists tool arguments)
+- this skill (the HOI4 Live Tools map is below; the Linux Clausewitz procedure is in `docs/testing/clausewitz_mcp_linux.md`; `docs/tools.md` lists Live Tools arguments)
 - the task brief, accepted spec, plan, handoff, issue report, and implementation files for the test scope
 - the relevant system skills for every surface that may be patched
 
@@ -215,7 +217,7 @@ The reusable implementation and reference citations belong to [exact-cost trigge
 Retain before/after source behavior checks and a controlled native startup retest separately.
 Reaching the main menu establishes parser/startup recovery, not native indexed filling, scope retention, arithmetic correctness, or consumer performance.
 Source-VM parity supports the modeled behavior only; report which native semantic checks remain unobserved.
-Debugger or isolated-platform investigation requires explicit authorization and does not replace the ordinary `hoi4-live` route.
+Debugger or isolated-platform investigation requires explicit authorization and does not replace the OS-appropriate live-tool route above.
 
 #### Variable comparisons
 
