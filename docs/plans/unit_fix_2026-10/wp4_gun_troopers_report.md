@@ -74,11 +74,16 @@ Meshy credits spent on this source tranche: 0.
 ### Alien Infantry
 
 The ticket-permitted idle-hum removal and finite laser effects are retained.
-The existing CC0 bart laser sound is shortened from 1.2 to 0.9 seconds with a tapered tail; its original archive, source-bound preimage and installed derivative are verified in the takeover audio receipts and `sound/shared_alien_system/alien_infantry/WP4_ATTRIBUTION.md`.
+The existing CC0 bart laser sound is shortened from 1.2 to 0.9 seconds and layered with the archived CC0 Kenney `laserSmall_000` tonal cue.
+Both originals, the source-bound preimage and installed derivative are verified in the takeover audio receipts and `sound/shared_alien_system/alien_infantry/WP4_ATTRIBUTION.md`.
 At the slowest configured playback rate of 0.97, its 0.92784-second duration fits the 1.066667-second interval between support shots.
-The first 0.78 seconds retain a waveform correlation of 0.988637 with the previous core.
-This resolves overlap and preserves the existing sound identity; it does not satisfy the separate tonal-zap requirement.
-Body/pistol materials, scan/idle/recoil, impact and movement-source work remain open.
+The original shortened-only candidate retained a 0.988637 correlation over its first 0.78 seconds; the selected layered follow-up supersedes that candidate, so this is not a correlation claim about the final mix.
+Movement uses the licensed Gbox boot-step source at -6 dBFS, explicitly shared with Portal Raider's first take; impact has source-derived edge fades at -6 dBFS.
+Exact transformations, source licenses, waveforms, installed hashes and cue-rate checks are retained in `docs/assets/016_brilliant_scientist/models_3d/alien_infantry/evidence/wp4_audio_takeover/`.
+The existing recordings were edited and mixed without sound downloads or agent synthesis; their original creators' production methods are not established by this review.
+Body/pistol materials and scan/idle/recoil remain open.
+The selected provider normal itself has masked X/Y standard deviations of only 2.90/3.07; an unamplified 512-pixel repack measures 1.95/2.03 and cannot satisfy the 15-35 detail gate.
+The source-to-current UV triangle comparison matches 49,784 of 52,098 triangles; modified regions and a meaningful detail-bake source still require native review.
 No auditory or live-game acceptance is claimed; the parent audio input route reported that this model cannot consume audio.
 Meshy credits spent on this source tranche: 0.
 
@@ -126,7 +131,7 @@ The implemented firing/audio tranche is documented in `wp4_firing_audio_tranche.
 | Mechanized Assassin | Two reports per state against one continuous emitter; defend shorter than one vanilla take | One timed barrel flash/report per cycle; four shorter vanilla takes in defend; 1.36 s recorded destruction cue at 0.1 s | Hull/turret/wheel UV/material rebake, holes, scan/settle and traverse actions; optional engine loop |
 | Clone Infantry | No particles; silent defend; obsolete firing times; inherited simulated rifle cue | Timed shots/casings and defend chaining; recorded rifle report, full source shout, level-preserving voice fades and frame-37 landing cue | Aim/grip/shoulder pocket, entry/recovery and idle, rifle UV/normal/materials, sleeve values and physical-contact review |
 | Portal Raider | Dark diffuse, weak normal detail, stale rejected-candidate docs and one-shot idle | Finite laser effects, electrical idle/guard loop, 0.6-second ray, faded six-take footsteps and human-layered death | Missing selected provider maps; source-to-current-UV proof, recoil/second attack, low-ready idle and rifle normals |
-| Alien Infantry | Frozen idle, weak normals/flat pistol maps, one-shot vehicle hum and overlapping 1.2 s laser | Finite laser particles; the ticket's permitted removal of the one-shot hum | Body grade/normal and proper pistol UV/materials; breathing/scan/recoil; recorded laser/impact fixes |
+| Alien Infantry | Frozen idle, weak normals/flat pistol maps, one-shot vehicle hum and overlapping 1.2 s laser | Finite laser particles; permitted hum removal; 0.9 s source-layered tonal laser, licensed boot step and faded impact | Body grade/normal and proper pistol UV/materials; breathing/scan/recoil; modified UV/tangent review |
 | Autonomous Robot | 22 flash/smoke/report emissions in attack/support, 8 in defend; 28 non-manifold edges; faceting/flat gun maps and long audio tails | Two finite gun emissions/cues per burst cycle; 2.6 s sustained and 0.6 s braced recorded bursts at volume 0.36/max two; 2 s wreck blast | Winding/topology/smooth normals and weapon material rebake; sensor/servo idle; short footfall and casing fades/tail fixes |
 
 The four 039 infantry consumers share a declared recorded burst/death pool.
