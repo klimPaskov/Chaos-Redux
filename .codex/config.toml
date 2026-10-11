@@ -29,6 +29,16 @@ startup_timeout_sec = 30
 tool_timeout_sec = 1800
 default_tools_approval_mode = "auto"
 
+# Opt-in isolated Linux game integration; see docs/testing/clausewitz_mcp_linux.md.
+# The bridge refuses unsupported ELF builds and another job's WSL game lease.
+[mcp_servers.clausewitz_linux]
+enabled = false
+required = false
+command = "wsl.exe"
+args = ["-d", "Ubuntu-24.04", "-u", "klim", "--exec", "/home/klim/tools/Clausewitz-MCP/.venv/bin/python", "-B", "/home/klim/tools/Clausewitz-MCP/chaosx_bridge.py", "--job", "clausewitz_linux", "serve"]
+startup_timeout_sec = 60
+tool_timeout_sec = 180
+
 # Production Meshy route. The wrapper enforces the MESHY_API_KEY gate and
 # reads the exact package and SDK versions from the dependency lock.
 [mcp_servers.meshy]
