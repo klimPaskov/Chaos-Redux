@@ -56,3 +56,12 @@ The four biological bomb cards are independent project unlocks and retain their 
 Long equipment names use vanilla title ellipsis; branch labels are not truncated.
 Evidence: `C:/Users/klimp/Videos/chaos_redux_trailer/records/gfx_review/after/live_2026-10-11/chemical_folder_live2.png` and `biological_folder_live.png`.
 Project tooltips were not part of these two clean layout captures.
+
+## Restoration of the pre-rebuild folders (11 Oct 2026)
+
+Disposition: implemented; supersedes the geometry and card-size sections above. The user asked for both folders to look as they did before the 6 October placeholder-art pass, so the layout, card size and research icons of revision 38ae4996e6^ are restored while the gameplay changes since then are kept (research costs and days, effects, doctrine and budget rewards, start years, special-project `allow` gates, tabun to sarin to soman `path` links).
+
+- Gridboxes are `format = "UP"` with 90x50 slots at x = 110, y = 160 again, with the original branch labels, year headers and 1300x800 and 1050x1000 content fillers. Every technology in both folders carries `force_use_small_tech_layout = yes`, so no ordinary or equipment technology draws a full-size card. The custom full-size item containers keep the `Name` title binding.
+- Six biological service icons and the dimercaprol icon are the baseline DDS blobs.
+- Technologies the baseline left hidden are placed by the baseline rule (column = year column, row = branch): anthrax, plague, tularemia and smallpox bomb delivery on the new munitions row (y = 0) at columns 2, 4, 6 and 7 with a gutter label and one gridbox each; sarin at column 5 and soman at column 7 on the nerve row. All are small cards.
+- Source overlap count is zero across the 33 cards. The technology renderer failed with `JOB_WORKER_EXIT`, so native drawing was not rendered.
