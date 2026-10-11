@@ -579,7 +579,7 @@ branch = next(b for k, _, b in immediate if k == 'if' and (prefix + 'choose_frag
 order = [k for k, _, _ in branch]
 assert order.index(prefix + 'plan_main_footprint') < order.index(prefix + 'choose_fragment_sites') < order.index(prefix + 'process_footprint')
 process_order = [k for k, _, _ in runtime[prefix + 'process_footprint']]
-assert process_order.index(prefix + 'relocate_destroyed_capital') < process_order.index('while_loop_effect')
+assert process_order.index(prefix + 'relocate_destroyed_capital') < process_order.index('every_state')
 assert runtime[prefix + 'select_backup_capital'] == [(prefix + 'select_surviving_capital', '=', 'yes')]
 assert runtime[prefix + 'relocate_destroyed_capital'] == [(prefix + 'relocate_current_capital', '=', 'yes')]
 def blocks(rows):
@@ -594,7 +594,7 @@ assert fragment_order.index('set_state_flag') < fragment_order.index(prefix + 'p
 assert ('set_variable', '=', [(prefix + 'state_transaction_id', '=', 'global.' + prefix + 'transaction_id')]) in fragment_loop
 assert (prefix + 'record_footprint_profile', '=', 'yes') in effects[prefix + 'plan_fragment_footprint'][0][2]
 record_branch = next(b for k, _, b in effects[prefix + 'record_footprint_profile'] if k == 'if')
-assert ('set_state_flag', '=', prefix + 'state_planned') in record_branch
+assert any(('set_state_flag', '=', prefix + 'state_planned') in b for _, b in blocks(record_branch))
 for body in (fragment_loop, effects[prefix + 'plan_fragment_footprint'], effects[prefix + 'record_footprint_profile']):
     assert (prefix + 'state_transaction_applied') not in [v for k, b in blocks(body) for x, _, v in b if x == 'set_state_flag']
 print('AST_CAP_FRAGMENT_SEQUENCE: actual planner metadata precedes relocation and physical transactions. Parent wrappers are integrated.')
