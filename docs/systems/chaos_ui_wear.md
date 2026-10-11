@@ -1,23 +1,24 @@
 # Chaos UI Wear
 
-The vanilla interface cracks as global Chaos rises. Hairline fractures appear on the top bar, the left-hand country panels and the minimap frame at Chaos tier 1, spread with every tier, and turn purple once a world-end scenario has begun. The player can turn the effect off in Settings > Miscellaneous or in the All Settings window.
+The vanilla interface wears as global Chaos rises. Fine surface fractures and small chips along panel edges appear on the top bar, the left-hand country panels and the minimap frame from Chaos tier 1, spread with every tier (none at Calm World), and turn purple once a world-end scenario has begun. The player can turn the effect off in Settings > Miscellaneous or in the All Settings window.
 
 ## How it works
 
-1. `update_chaos_meter_tier` (`common/scripted_effects/chaos_meter_effects.txt`) owns the `chaos_tier` global flag, whose value is the Chaos tier from `chaos_meter_tier_id` (0 to 5). Its last step calls `update_chaos_ui_wear`.
-2. `update_chaos_ui_wear` (`common/scripted_effects/chaos_ui_wear_effects.txt`) copies that tier into `global.chaos_ui_wear_frame`. Tier 0 leaves the frame at 0.
-3. `chaos_ui_wear_visible` (`common/scripted_triggers/chaos_ui_wear_triggers.txt`) is true while the frame is above tier 0 and the `chaos_ui_wear_disabled` global flag is unset. Every overlay scripted GUI uses it as its `visible` trigger.
-4. Each crack decal in `interface/chaos_ui_wear.gui` is a five-frame sheet; the scripted GUI `properties` block sets `frame = global.chaos_ui_wear_frame`, so frame N is the decal for tier N.
-5. Every decal has a dark twin and a purple twin at the same position. The element triggers show the dark one while `world_end` is unset and the purple one once it is set, so the colour switch follows any of the world-end scenarios without hooks in their effects.
-6. All decals are `iconType` elements with `alwaystransparent = yes`, inside containers without backgrounds, so they never take clicks or tooltips from the vanilla controls underneath.
+1. Wear starts at Chaos tier 1 (Gathering Storm) and grows with every tier through tier 5 (World Collapse). Calm World (tier 0, meter 0 to 199) shows nothing.
+2. `update_chaos_meter_tier` (`common/scripted_effects/chaos_meter_effects.txt`) owns the `chaos_tier` global flag (value 0 to 5). It runs on every meter change, the Settings and debug tier controls and the load-time recalculation; the overlay needs no hook of its own.
+3. Every decal exists once per tier and colour in `interface/chaos_ui_wear.gui` (`<decal>_t<N>` and `<decal>_t<N>_purple`). Each icon displays one fixed sheet frame (`frame = N`).
+4. The scripted GUIs show exactly one of those icons per decal through element `_visible` triggers that call `chaos_ui_wear_dark_tier_N` or `chaos_ui_wear_purple_tier_N` (`common/scripted_triggers/chaos_ui_wear_triggers.txt`). Those read the live `chaos_tier`, `world_end` and `chaos_ui_wear_disabled` global flags, so the tier is never copied into a stored variable that could be stale, and nothing depends on a `properties` frame refresh. Purple replaces dark while `world_end` is set.
+5. All decals are `iconType` elements with `alwaystransparent = yes`, inside containers without backgrounds, so they never take clicks or tooltips from the vanilla controls underneath.
 
-The overlay GUIs have no `dirty` variable because the world-end colour is read live; each refresh is one flag check and one variable read per element, which costs nothing measurable. AI never evaluates them (`ai_enabled = { always = no }`).
+Root cause of the earlier "no change with the tier" report: the visible frame came from `global.chaos_ui_wear_frame`, a copy of the tier written by a hook and read through a `properties` `frame` binding, and the hook compared the flag with `constant:` tokens inside `has_global_flag`. A stale or unset copy (a save loaded before the hook ran, or an unresolved comparison) left the GUI on its fallback frame whatever the tier. The variable, the hook and the `properties` bindings are removed.
+
+The GUIs set no `dirty` variable, so they refresh every tick and the live flag reads take effect immediately; each refresh is a few flag lookups per element. AI never evaluates them (`ai_enabled = { always = no }`).
 
 ## Surfaces
 
 | Scripted GUI | Parent | Decals (position in the parent) |
 | --- | --- | --- |
-| `chaos_ui_wear_topbar_gui` | `parent_window_token = top_bar` | flag frame corner (`corner_tl`, 0,0, scale 0.6); lower lip of the resource and menu block (`strip_h`, 96,56); lower lip of the war-status block (`strip_short`, 780,16); top border of the date and speed widget (`strip_short`, UPPER_RIGHT -330,-14) |
+| `chaos_ui_wear_topbar_gui` | `parent_window_token = top_bar` | flag frame corner (`corner_tl`, 0,0, scale 0.6); lower lip of the resource and menu block (`strip_h`, 96,48); lower lip of the war-status block (`strip_short`, 780,16); top border of the date and speed widget (`strip_short`, UPPER_RIGHT -330,-14) |
 | `chaos_ui_wear_minimap_gui` | `parent_window_name = mini_map_interface` | upper-left corner of the minimap frame (`corner_tl`, -6,-6, scale 0.7) |
 | `chaos_ui_wear_<panel>_gui` | `politics_tab`, `decision_tab`, `production_tab`, `construction_tab`, `trade_tab`, `deployment_tab`, `logistics_tab` | header plate seam between the title and the close button (`strip_short`, width-184,26); right frame column (`strip_v`, width-34,60) |
 | `chaos_ui_wear_research_gui` | `technology_tab` | right frame column only; the Research and Facilities tabs sit on the header seam |
@@ -43,6 +44,8 @@ No decal is placed over text, values, portraits or list rows. The decals cover f
 
 ## Assets
 
+Look: damage to the metal surface itself, following the bevels of the vanilla dark brushed-steel plates (reference crops under `docs/assets/chaos_ui_wear/ref/`, from `gfx/interface/topbar/background.dds` and `gfx/interface/minimap.dds`): hairline fractures with a near-black core and a faint pale edge, tiny chips at corners, low contrast, vanilla grey-black palette, fading out with distance from the corner. Purple twins (world end) recolour the same pixels.
+
 | Sprite (`interface/chaos_ui_wear.gfx`) | DDS (`gfx/interface/chaos_ui_wear/`) | Sheet | Frame |
 | --- | --- | --- | --- |
 | `GFX_chaos_ui_wear_corner_tl` / `_purple` | `chaos_ui_wear_corner_tl.dds` / `_purple.dds` | 640x128 | 128x128 |
@@ -50,17 +53,12 @@ No decal is placed over text, values, portraits or list rows. The decals cover f
 | `GFX_chaos_ui_wear_strip_v` / `_purple` | `chaos_ui_wear_strip_v.dds` / `_purple.dds` | 200x512 | 40x512 |
 | `GFX_chaos_ui_wear_strip_short` / `_purple` | `chaos_ui_wear_strip_short.dds` / `_purple.dds` | 640x32 | 128x32 |
 
-All sheets have `noOfFrames = 5` and are uncompressed BGRA DDS written with the event-assets converter's `write_bgra_dds`.
-
-Sources (kept locally under the git-ignored `docs/assets/chaos_ui_wear/source/`): `crack_corner_source.png` (corner fracture network) and `crack_strip_source.png` (long fracture), both generated through the gptimage MCP with native alpha (about 96% fully transparent pixels). Processing: the source alpha is dilated so hairlines stay at least one pixel wide after downscaling, then redrawn as a near-black core (12,11,10) with a pale chipped edge (205,198,182) offset one pixel down-right so the crack reads on HOI4's dark metal. The strip is the source's central band; `strip_v` is that strip rotated; `strip_short` is a quarter-width segment from 55% along it. Tier frames reveal 34, 50, 66, 83 and 100% of the crack (radially from the corner, inward from both ends for strips) at 55, 66, 77, 88 and 96% opacity. Purple frames recolour the same pixels from (88,24,150) to (214,150,255) by luminance and add a 2.2px violet glow at 55%.
+Sheets have `noOfFrames = 5` (frame N = tier N) and are uncompressed BGRA DDS written with the event-assets converter's `write_bgra_dds`. Sources (git-ignored, `docs/assets/chaos_ui_wear/source/`): `v2_corner_source.png` and `v2_edge_source.png`, generated with the gptimage MCP with native alpha (about 97% zero-alpha pixels, verified). `docs/assets/chaos_ui_wear/process_v2.py` crops, downsamples with premultiplied alpha, darkens to the steel palette, fades the corner network radially, and reveals more fractures per tier (corner radially, strips by whole fracture clusters in a fixed order, cumulative) at 45 to 92% opacity. `docs/assets/chaos_ui_wear/gen_gui.py` regenerates the `.gui`, scripted GUI and trigger files.
 
 ## Validation
 
-- `hoi4.gui_render` of `chaos_ui_wear_topbar_window` at 1920x1080 and 2560x1440 (UI scale 1) with scenarios `wear_tier5_dark`, `wear_tier1_dark` and `wear_tier5_purple` (source revision `c4bbb87f…`): frames resolve from `global.chaos_ui_wear_frame`, the purple twins replace the dark ones only with `world_end`, the right-anchored date decal follows the screen edge, and no click regions are reported for the overlay.
-- Tier 1, 3, 5 and purple composites of the decals over the MCP baseline renders of the vanilla `topbar` and `countrydecisionview` confirmed that no decal covers text or values.
-- DDS round trip: every sheet decodes back to its processed PNG with zero pixel difference.
-- `hoi4.gui_render` of `chaos_ui_wear_decisions_window` (purple tier 5) at 1920x1080 and 2560x1440 rendered without blockers; the only findings are the dark/purple twin overlaps, which the `world_end` triggers make mutually exclusive in game, and expected edge-anchored drift.
-- Not checked: the minimap and the other left-panel attachments were reviewed from source geometry and the decision panel render, not rendered in their parents; the trade, construction and production header plates were not rendered. In-game confirmation belongs to the user.
+- `hoi4.gui_render` was attempted for the top bar window twice and both calls ended with `JOB_WORKER_EXIT` (worker stopped without an outcome), so no MCP render exists; the retry limit is spent. A source-geometry composite of the decals on the vanilla top bar texture for tiers 1 to 5 is kept at `docs/assets/chaos_ui_wear/check_topbar_tiers_1_5.png`; the lower-lip decal was moved up to sit on the plate lip rather than hang over the map. The render tool also only accepts boolean scenario flags, so the valued `chaos_tier` flag cannot be set in a scenario.
+- Decals contain only borders and empty plate by position; the other surfaces were reviewed from geometry only. In-game confirmation belongs to the user.
 
 ## Future extensions
 

@@ -1,12 +1,75 @@
 # ============================================================================
 # CHAOS REDUX - CHAOS UI WEAR TRIGGERS
 # ============================================================================
-# chaos_ui_wear_visible: true while the Chaos UI wear overlays should draw.
-# Scope: any (reads global state only). False at Chaos tier 0 and while the
-# player has turned the effect off in Settings > Miscellaneous.
+# chaos_ui_wear_enabled: true unless the player turned the effect off in
+# Settings > Miscellaneous (chaos_ui_wear_disabled global flag).
+# chaos_ui_wear_dark_tier_N / chaos_ui_wear_purple_tier_N (N = 1-5): true while
+# the live chaos_tier global flag equals N (literal values, as update_chaos_meter_tier sets them), the effect is enabled, and the
+# world_end global flag is unset (dark) or set (purple). Calm World (tier 0)
+# has no trigger, so it never shows wear. Scope: any (global state only).
+# Used as decal visibility by common/scripted_guis/chaos_ui_wear_scripted_gui.txt.
 # ============================================================================
 
-chaos_ui_wear_visible = {
+chaos_ui_wear_enabled = {
 	NOT = { has_global_flag = chaos_ui_wear_disabled }
-	check_variable = { global.chaos_ui_wear_frame > constant:chaos_meter_tier_id.tier_0 }
+}
+
+chaos_ui_wear_dark_tier_1 = {
+	chaos_ui_wear_enabled = yes
+	NOT = { has_global_flag = world_end }
+	has_global_flag = { flag = chaos_tier value = 1 }
+}
+
+chaos_ui_wear_purple_tier_1 = {
+	chaos_ui_wear_enabled = yes
+	has_global_flag = world_end
+	has_global_flag = { flag = chaos_tier value = 1 }
+}
+
+chaos_ui_wear_dark_tier_2 = {
+	chaos_ui_wear_enabled = yes
+	NOT = { has_global_flag = world_end }
+	has_global_flag = { flag = chaos_tier value = 2 }
+}
+
+chaos_ui_wear_purple_tier_2 = {
+	chaos_ui_wear_enabled = yes
+	has_global_flag = world_end
+	has_global_flag = { flag = chaos_tier value = 2 }
+}
+
+chaos_ui_wear_dark_tier_3 = {
+	chaos_ui_wear_enabled = yes
+	NOT = { has_global_flag = world_end }
+	has_global_flag = { flag = chaos_tier value = 3 }
+}
+
+chaos_ui_wear_purple_tier_3 = {
+	chaos_ui_wear_enabled = yes
+	has_global_flag = world_end
+	has_global_flag = { flag = chaos_tier value = 3 }
+}
+
+chaos_ui_wear_dark_tier_4 = {
+	chaos_ui_wear_enabled = yes
+	NOT = { has_global_flag = world_end }
+	has_global_flag = { flag = chaos_tier value = 4 }
+}
+
+chaos_ui_wear_purple_tier_4 = {
+	chaos_ui_wear_enabled = yes
+	has_global_flag = world_end
+	has_global_flag = { flag = chaos_tier value = 4 }
+}
+
+chaos_ui_wear_dark_tier_5 = {
+	chaos_ui_wear_enabled = yes
+	NOT = { has_global_flag = world_end }
+	has_global_flag = { flag = chaos_tier value = 5 }
+}
+
+chaos_ui_wear_purple_tier_5 = {
+	chaos_ui_wear_enabled = yes
+	has_global_flag = world_end
+	has_global_flag = { flag = chaos_tier value = 5 }
 }
