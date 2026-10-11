@@ -26,3 +26,20 @@ The producer retained exact prompts, source PNGs, processed PNGs, DDS candidates
 
 The decision sprite format was checked against the offline Graphical asset modding wiki’s `spriteType` section (lines 28–81) and installed `interface/decisions.gfx` (lines 1–36). The HOI4 MCP reference routes were unavailable; this source check does not claim a live-game render or consumer test.
 No existing art, gameplay definitions or localisation were overwritten.
+
+## Report and news pictures installed
+
+The five accepted report photographs and two accepted news scenes are installed under `gfx/event_pictures/113_the_partition/` and registered in `interface/chaosx_pictures.gfx`. The independent R1 and N1 samples passed; every other DDS in both reviewed families passed automatic native-size, alpha, strict-header and exact-pixel QA.
+
+No live Event 113 report or news event consumers were found during this asset pass; the sprite paths are ready for their accepted event definitions, and this handoff does not claim live use. Existing N2 artwork and receipt were reused unchanged.
+
+| Row | Sprite | Runtime DDS | SHA-256 |
+| --- | --- | --- | --- |
+| R-opening | `GFX_report_event_113_partition_opening` | `gfx/event_pictures/113_the_partition/report_event_113_partition_opening.dds` | `6b80c406199975b72e0ff881acb11ed94ea056e3590fca2e0194b6a9b8a0e76d` |
+| R-protection | `GFX_report_event_113_partition_protection` | `gfx/event_pictures/113_the_partition/report_event_113_partition_protection.dds` | `fb34edf74172fb6b3efd78907f344bbe77403a7770ebfbd04e4e85770cd5d4fa` |
+| R-defense | `GFX_report_event_113_partition_defense` | `gfx/event_pictures/113_the_partition/report_event_113_partition_defense.dds` | `a62fba741d0a33a63bce5729d2baf12c437df20ba3f37d40b616b3915f5b00c9` |
+| R-settlement | `GFX_report_event_113_partition_settlement` | `gfx/event_pictures/113_the_partition/report_event_113_partition_settlement.dds` | `7df31b1f14a6cec17da350280642aa6f6196a0414da16c98ede603987484bb9d` |
+| R-interrupted | `GFX_report_event_113_partition_interrupted` | `gfx/event_pictures/113_the_partition/report_event_113_partition_interrupted.dds` | `6e83518a25f633d9330556bc96e513c6f6fef8cdb72ffe55da6458d58b9b37bb` |
+| N-wave | `GFX_news_event_113_partition_wave` | `gfx/event_pictures/113_the_partition/news_event_113_partition_wave.dds` | `287fb2b3c99b98d33fb2faee5a2d3b296d608621b7b8966b436bf8018a4daee6` |
+| N-outcome | `GFX_news_event_113_partition_outcome` | `gfx/event_pictures/113_the_partition/news_event_113_partition_outcome.dds` | `758fa509a1b7c1d0dd4aa815687104801ea480a05ed17cbb01a303a85df0ae2f` |
+
