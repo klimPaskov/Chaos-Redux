@@ -34,6 +34,25 @@ Record the exact verified server package, version, git head, route or wrapper, s
 
 Inspect the live `meshy_image_to_3d` declaration through `.tools/3d_pipeline/wrappers/run_meshy_mcp.cmd` and `run_meshy_mcp.ps1` before geometry work. Require `ai_model = meshy-7`, confirm the dependency lock's `verified_image_models` contains only `meshy-7`, record the compatibility revision and exact model in task evidence, and use only the identifiers returned by the live locked route. When Meshy's official API changes before the published MCP package catches up, update and verify the repository-owned compatibility wrapper against the official API documentation and require a `tools/list` proof that `meshy-7` is exposed. Keep base-body generation inside that Meshy 7 route; missing required components, equipment, and held props may be modeled in Blender under the component-completion contract in `Route selection and component completion`. Do not use a model alias, direct REST fallback, or unverified generation route. Tie credit preflight to Meshy 7.
 
+For existing-model retexturing, `meshy_retexture` is available only when its declaration is observed through the live locked wrapper, even if the connected client's exposed subset omits it.
+Verify that schema's model input, style-input exclusivity, `ai_model = meshy-7`, `enable_original_uv = true`, `enable_pbr = true`, and selected-resolution cost before using them; this operation textures existing geometry and does not replace the separate image-to-3D geometry route.
+
+### Stdio payload preflight and uncertain delivery
+
+Before sending an inline model through the locked wrapper, measure the UTF-8 bytes of the complete serialized JSON-RPC request, including base64 expansion, the data-URI prefix, arguments, envelope, and framing; source-file size alone does not establish transport fit.
+Read the pinned SDK's `dist/esm/shared/stdio.js` and active server transport configuration for the actual read-buffer bound, and retain version, source span, hash, bound, and request size in the job evidence.
+SDK `1.30.1` defaults to a `10 * 1024 * 1024` byte read buffer; this is version-specific evidence, not a universal MCP or provider upload limit.
+An oversized message can close the transport before dispatch without a JSON-RPC response, so wrapper exit code zero or startup output alone does not prove task acceptance or absence.
+
+When the payload cannot fit, use a schema-supported URL under the existing source and authorization rules, or a compact supported representation of the exact approved model, such as GLB instead of text OBJ.
+For conversion, preserve the source and record hashes, independently decoded position, normal, UV, and triangle/index parity with any explicit coordinate or packing inverse, plus other source streams required by the operation; file existence or equal counts alone is insufficient.
+Re-measure the complete encoded request before delivery; reducing topology, changing geometry, or dropping required streams is not transport-only conversion.
+
+For a response-free or otherwise uncertain mutation, reconcile the official task inventory (including pagination), available task records, and live balance before considering another delivery; unchanged balance alone does not prove no task was accepted.
+Follow [Provider generation and lineage](../SKILL.md#provider-generation-and-lineage) for authorization and attempt limits, and do not repair the external server or blindly resend the request.
+Only when reconciliation and the concrete transport diagnosis establish no provider dispatch, and correction remains authorized, append the corrected delivery to the same upfront submission journal with distinct transport-delivery and provider-attempt numbers, preserved failed-request evidence, and automatic retry disabled.
+If acceptance remains uncertain, stop that submission and retain the unresolved state rather than create a duplicate paid task.
+
 ### Compatibility-wrapper integrity and probe cleanup
 
 Treat the compatibility wrapper as deterministic production code. Lock the official `@meshy-ai/meshy-mcp-server` and its transitive `@modelcontextprotocol/sdk` by exact version, package integrity, and git head in `dependencies.lock.json`. Fail closed on any mismatch. Keep a versioned compatibility runtime keyed by those locked versions, verify both `dist/esm/server/index.js` and `dist/esm/server/streamableHttp.js` before patching or startup, and serialize install and patch work with a named interprocess mutex. Apply the schema patch exactly once per runtime file, preserve UTF-8 without re-encoding growth, and enforce a maximum patched-file size.
