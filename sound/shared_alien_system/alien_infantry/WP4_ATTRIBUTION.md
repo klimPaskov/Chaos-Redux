@@ -35,4 +35,8 @@ Installed derivative SHA-256: `0bae4e766a4c6b729d7e9462e6d101180a6c7fdfb314eeb36
 Original sources, selected candidates, exact transformations and measured receipts are retained in `docs/assets/016_brilliant_scientist/models_3d/alien_infantry/evidence/wp4_audio_takeover/receipt.json` while the model repair remains active.
 
 Portal Raider step 01 and Alien Infantry movement intentionally share the same archived GboxMikeFozzy boot-footfall member and derivative pool (SHA-256 `00b592be8b23ce43f50491474610d8c983e94d8bec1ac11ae1d221f9bd1c2b20`); they are not separate recorded takes.
+Alien Infantry's movement pool also references the existing `portal_raider_step_02` through `_06` sound sources without copying or modifying their WAVs.
+Together these form one declared six-take CC0 boot-footfall family with immediate repetition prevented.
+Their per-file source and derivative hashes, transformations and license are retained in [Portal Raider attribution](../../portal_raider/WP4_ATTRIBUTION.md).
+At the minimum configured playback rate of 0.94, the longest take lasts 0.354273 seconds, below the 0.533333-second minimum movement interval and 0.6-second retreat interval, including loop boundaries.
 No audio was downloaded, synthesized or recorded by the agent; no auditory, spoken-word or live playback acceptance is asserted.

@@ -63,5 +63,6 @@ Installed derivative SHA-256: `37a5c2b3a96b6019bc7560b9513c6f756a75e3a170ec908da
 Original sources, selected candidates, exact transformations and measured receipts are retained in `docs/assets/shared_portal_raider_system/models_3d/portal_raider/evidence/wp4_audio_takeover/receipt.json` while the model repair remains active.
 
 Portal Raider step 01 and Alien Infantry movement intentionally share the same archived GboxMikeFozzy boot-footfall member and derivative pool (SHA-256 `00b592be8b23ce43f50491474610d8c983e94d8bec1ac11ae1d221f9bd1c2b20`); they are not separate recorded takes.
+Alien Infantry's movement pool also references the existing Portal Raider step 02-06 sound definitions, forming one declared six-take licensed boot-footfall family without additional audio copies or edits.
 No audio was downloaded, synthesized or recorded by the agent; no auditory, spoken-word or live playback acceptance is asserted.
 CC BY 3.0 sources retain attribution and adaptation notices: https://creativecommons.org/licenses/by/3.0/.
