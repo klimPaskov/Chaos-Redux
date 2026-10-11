@@ -11,6 +11,8 @@ guiTypes = {
 	@chaosx_menu_panel_fade_time = 900
 	@chaosx_menu_logo_margin_top = 26
 	@chaosx_menu_logo_margin_bottom = 389
+	@chaosx_menu_logo_reserve_height = 741 # 669 + twice the 36 px inset
+	@chaosx_menu_logo_inset_y = 36
 	@chaosx_menu_logo_start_y = 120
 	@chaosx_menu_column_width = 300
 	@chaosx_menu_about_x = 30
@@ -288,9 +290,10 @@ guiTypes = {
 
 	### MAIN MENU PANEL (upperleft)
 	# The container covers the free area above the lower panel: the whole screen minus a top
-	# margin and minus the panel height, its bottom margin and a gap. The logo is the
-	# 592x669 painting at its own size, clamped to that area, so it never grows past the
-	# painting and shrinks with the same margins on smaller screens.
+	# margin and minus the panel height, its bottom margin and a gap.
+	# A centred 741 px reserve balances the 36 px logo inset at full size.
+	# When the reserve clamps to the free height, the inset lowers the hand behind
+	# the lower panel without reducing the logo's existing 592x669 size constraint.
 	containerWindowType = {
 		name  ="mainmenu_panel_upperleft"
 		position = { x = 0 y = @chaosx_menu_logo_start_y }
@@ -306,22 +309,35 @@ guiTypes = {
 		clipping = no
 
 		containerWindowType = {
-			name = "logo_art"
+			name = "logo_reserve"
 			position = { x = 0 y = 0 }
 			size = {
-				width = 592
-				height = 669
+				width = 100%
+				height = @chaosx_menu_logo_reserve_height
 				max = { width = 100% height = 100% }
-				preserve_aspect_ratio = yes
 			}
 			Orientation = center
 			Origo = center
 			clipping = no
 
-			background = {
-				name = "Background"
-				quadTextureSprite = "GFX_chaos_redux_logo_scaled"
-				alwaystransparent = yes
+			containerWindowType = {
+				name = "logo_art"
+				position = { x = 0 y = @chaosx_menu_logo_inset_y }
+				size = {
+					width = 592
+					height = 669
+					max = { width = 100% height = 100% }
+					preserve_aspect_ratio = yes
+				}
+				Orientation = center_up
+				Origo = center_up
+				clipping = no
+
+				background = {
+					name = "Background"
+					quadTextureSprite = "GFX_chaos_redux_logo_scaled"
+					alwaystransparent = yes
+				}
 			}
 		}
 
