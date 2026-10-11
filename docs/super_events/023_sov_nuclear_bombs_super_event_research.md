@@ -30,6 +30,10 @@ Final quote: `chaosx_super_event.108.q`, “The first blow or series of first bl
 
 The quote is a twelve-word excerpt from Major General Leslie R. Groves’s written memorandum “Our Army of the Future—As Influenced by Atomic Weapons,” dated 2 January 1946 in *Foreign Relations of the United States, 1946, General; The United Nations, Volume I*, Document 600, item 10: <https://history.state.gov/historicaldocuments/frus1946v01/d600>.
 
+The player-facing quote carries the attribution line `§Y-Leslie R. Groves, Our Army of the Future—As Influenced by Atomic Weapons (1946)-§!`, in the same style as the other sourced super-event quotes.
+
+Re-verified on 2026-10-11 against the live State Department page: the sentence is the second of two "first blow" sentences in item 10 of the memorandum, which the page presents as a confidential memorandum by the Commanding General, Manhattan Engineer District (Groves), dated 2 January 1946 and printed on p. 1201.
+
 Attribution confidence is high for the wording, document, date, and Groves attribution because the official U.S. Department of State transcription supplies the sentence under the memorandum heading.
 
 The underlying memorandum is a United States Government work, and the U.S. Copyright Office identifies 17 U.S.C. §105 as excluding United States Government works from copyright protection: <https://www.copyright.gov/title17/92chap1.html#105>.
