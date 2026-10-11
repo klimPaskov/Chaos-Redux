@@ -210,20 +210,28 @@ chaosx_cxt_extension_event016_alien_infantry_apply = {
 	set_temp_variable = { var = chaosx_test_country_registration_equipment value = token:temporal_guard_equipment_1 }
 	chaosx_test_country_register_equipment = yes
 
+	set_temp_variable = { var = chaosx_test_country_current_unit_family value = token:portal_raider }
 	set_temp_variable = { var = chaosx_test_country_registration_frontline_subunit value = token:portal_raider }
 	chaosx_test_country_register_frontline_subunit = yes
+	set_temp_variable = { var = chaosx_test_country_current_unit_family value = token:clone_infantry }
 	set_temp_variable = { var = chaosx_test_country_registration_frontline_subunit value = token:clone_infantry }
 	chaosx_test_country_register_frontline_subunit = yes
+	set_temp_variable = { var = chaosx_test_country_current_unit_family value = token:clone_infantry }
 	set_temp_variable = { var = chaosx_test_country_registration_frontline_subunit value = token:aryan_clone_infantry }
 	chaosx_test_country_register_frontline_subunit = yes
+	set_temp_variable = { var = chaosx_test_country_current_unit_family value = token:autonomous_robot }
 	set_temp_variable = { var = chaosx_test_country_registration_frontline_subunit value = token:autonomous_robot }
 	chaosx_test_country_register_frontline_subunit = yes
+	set_temp_variable = { var = chaosx_test_country_current_unit_family value = token:paleogenetic_creature }
 	set_temp_variable = { var = chaosx_test_country_registration_frontline_subunit value = token:paleogenetic_creature }
 	chaosx_test_country_register_frontline_subunit = yes
+	set_temp_variable = { var = chaosx_test_country_current_unit_family value = token:xenobiological_assault_organism }
 	set_temp_variable = { var = chaosx_test_country_registration_frontline_subunit value = token:xenobiological_assault_organism }
 	chaosx_test_country_register_frontline_subunit = yes
+	set_temp_variable = { var = chaosx_test_country_current_unit_family value = token:alien_infantry }
 	set_temp_variable = { var = chaosx_test_country_registration_frontline_subunit value = token:alien_infantry }
 	chaosx_test_country_register_frontline_subunit = yes
+	set_temp_variable = { var = chaosx_test_country_current_unit_family value = token:temporal_guard }
 	set_temp_variable = { var = chaosx_test_country_registration_frontline_subunit value = token:temporal_guard }
 	chaosx_test_country_register_frontline_subunit = yes
 	set_global_flag = alien_infantry_cxt_content_registered
@@ -231,16 +239,9 @@ chaosx_cxt_extension_event016_alien_infantry_apply = {
 	# The public API creates alien formations only from a valid landing source.
 	# CXT's isolated test copy is recruitable so its unit, equipment, counter,
 	# designer, and Event 019 provider surfaces can all be inspected.
+	unlock_subunit = alien_infantry
 	if = {
-		limit = {
-			NOT = {
-				is_in_array = {
-					array = chaosx_test_country_processed_frontline_subunits
-					value = token:alien_infantry
-				}
-			}
-		}
-		unlock_subunit = alien_infantry
+		limit = { NOT = { has_template = "CXT Test - Alien Landing Cohort" } }
 		division_template = {
 			name = "CXT Test - Alien Landing Cohort"
 			is_locked = no
@@ -260,10 +261,22 @@ chaosx_cxt_extension_event016_alien_infantry_apply = {
 				alien_infantry = { x = 4 y = 1 }
 			}
 		}
-		chaosx_cxt_event016_spawn_alien_cohort = yes
-		add_to_array = {
-			array = chaosx_test_country_processed_frontline_subunits
-			value = token:alien_infantry
+	}
+	chaosx_cxt_event016_spawn_alien_cohort_initial = yes
+
+}
+
+chaosx_cxt_event016_spawn_alien_cohort_initial = {
+	if = {
+		limit = { NOT = { is_in_array = { array = global.chaosx_test_country_spawned_owner_formations value = token:alien_infantry } } }
+		set_temp_variable = { var = chaosx_test_country_family_spawn_succeeded value = 0 }
+		set_temp_variable = { var = chaosx_test_country_current_support_subunit value = 0 }
+		set_temp_variable = { var = chaosx_test_country_current_family value = token:alien_infantry }
+		set_variable = { global.chaosx_test_country_spawn_template = token:cxt_template_test_alien_landing_cohort }
+		chaosx_test_country_spawn_family_template = yes
+		if = {
+			limit = { check_variable = { chaosx_test_country_family_spawn_succeeded > 0 } }
+			add_to_array = { array = global.chaosx_test_country_spawned_owner_formations value = token:alien_infantry }
 		}
 	}
 }
@@ -271,16 +284,10 @@ chaosx_cxt_extension_event016_alien_infantry_apply = {
 chaosx_cxt_event016_spawn_alien_cohort = {
 	if = {
 		limit = { has_template = "CXT Test - Alien Landing Cohort" }
-		for_loop_effect = {
-			end = constant:chaosx_test_country_count.divisions_per_template
-			value = chaosx_test_country_spawn_index
-			random_owned_controlled_state = {
-				create_unit = {
-					division = "name = \"CXT Test - Alien Landing Cohort\" division_template = \"CXT Test - Alien Landing Cohort\" start_experience_factor = 1 start_equipment_factor = 1 start_manpower_factor = 1"
-					owner = PREV
-					count = constant:chaosx_test_country_count.divisions_per_state_pick
-				}
-			}
-		}
+		set_temp_variable = { var = chaosx_test_country_family_spawn_succeeded value = 0 }
+		set_temp_variable = { var = chaosx_test_country_current_support_subunit value = 0 }
+		set_temp_variable = { var = chaosx_test_country_current_family value = token:alien_infantry }
+		set_variable = { global.chaosx_test_country_spawn_template = token:cxt_template_test_alien_landing_cohort }
+		chaosx_test_country_spawn_family_template = yes
 	}
 }

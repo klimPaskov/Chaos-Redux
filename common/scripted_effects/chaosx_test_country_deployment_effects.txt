@@ -1,0 +1,518 @@
+# ============================================================================
+# CXT FAMILY DEPLOYMENT
+# ============================================================================
+# COUNTRY scope, THIS=CXT. ROOT/FROM may belong to the originating event.
+# Public API: set caller-owned temporary current_family to a real token, then
+# set_variable = { global.chaosx_test_country_spawn_template = token:cxt_template_package_formation } chaosx_test_country_spawn_family_template = yes.
+# TEMPLATE is a scripted-effect string parameter, not a variable value.
+# Initialize caller-owned temporary chaosx_test_country_family_spawn_succeeded
+# before calling if the caller needs the zero/one guarded-creation result.
+# Every template in a family shares one persistent province/state receipt.
+# Allocation prefers unused states, then hubs, railways, and connectable land.
+# It never acquires territory, shares another family's province, or silently
+# substitutes the capital when the inherited territory has too few sites.
+# Numeric map IDs and typed state pointers are stored separately.
+# Documentation owner: docs/testing/chaosx_test_country.md.
+# ============================================================================
+
+# Refresh the capital supply source. Its exact province comes from the pure
+# catalogue and a native provincial supply_node predicate. A capital state
+# with one province has an unambiguous capital supply source without a hub.
+# Several hubs in one capital state use a checked centrally defined preferred
+# capital anchor where available, then the lowest-ID controlled native hub.
+chaosx_test_country_prepare_family_deployment = {
+	set_variable = { chaosx_test_country_deployment_source_province = constant:chaosx_test_country_deployment.zero }
+	clear_variable = chaosx_test_country_deployment_source_state
+	set_variable = { chaosx_test_country_deployment_source_state_id = constant:chaosx_test_country_deployment.zero }
+	clr_country_flag = chaosx_test_country_deployment_source_missing
+	set_temp_variable = { chaosx_test_country_deployment_source_count = constant:chaosx_test_country_deployment.zero }
+	set_temp_variable = { transit_catalog_state_id = constant:chaosx_test_country_deployment.zero }
+	set_temp_variable = { transit_catalog_loaded = constant:chaosx_test_country_deployment.zero }
+	clear_temp_array = transit_state_province_ids
+	set_temp_variable = { chaosx_test_country_deployment_source_loop_break = constant:chaosx_test_country_deployment.zero }
+	set_temp_variable = { chaosx_test_country_deployment_preferred_source = constant:chaosx_test_country_deployment.zero }
+	if = {
+		limit = { tag = CXT exists = yes }
+		capital_scope = {
+			if = {
+				limit = {
+					is_owned_and_controlled_by = CXT
+					impassable = no
+					is_demilitarized_zone = no
+					brilliant_scientist_transit_load_state_province_catalog = yes
+					check_variable = { transit_catalog_loaded = constant:chaosx_test_country_deployment.one }
+				}
+				CXT = {
+					set_variable = { chaosx_test_country_deployment_source_state = PREV }
+					set_variable = { chaosx_test_country_deployment_source_state_id = transit_catalog_state_id }
+				}
+				for_each_loop = {
+					array = transit_state_province_ids
+					value = chaosx_test_country_deployment_candidate_province
+					break = chaosx_test_country_deployment_source_loop_break
+					if = {
+						limit = {
+							meta_trigger = {
+								text = {
+									CXT = { controls_province = [PROVINCE] }
+									any_province_building_level = { province = { id = [PROVINCE] } building = supply_node level > 0 }
+								}
+								PROVINCE = "[?chaosx_test_country_deployment_candidate_province|.0]"
+							}
+						}
+						add_to_temp_variable = { chaosx_test_country_deployment_source_count = constant:chaosx_test_country_deployment.one }
+						CXT = {
+							if = {
+								limit = {
+									OR = {
+										check_variable = { chaosx_test_country_deployment_source_province = constant:chaosx_test_country_deployment.zero }
+										check_variable = { chaosx_test_country_deployment_candidate_province < chaosx_test_country_deployment_source_province }
+									}
+								}
+								set_variable = { chaosx_test_country_deployment_source_province = chaosx_test_country_deployment_candidate_province }
+							}
+						}
+					}
+				}
+				if = {
+					limit = { check_variable = { chaosx_test_country_deployment_source_count > constant:chaosx_test_country_deployment.zero } }
+					set_temp_variable = { chaosx_test_country_deployment_source_count = constant:chaosx_test_country_deployment.one }
+				}
+				if = {
+					limit = { check_variable = { transit_catalog_state_id = constant:chaosx_test_country_deployment.german_capital_state } }
+					set_temp_variable = { chaosx_test_country_deployment_preferred_source = constant:chaosx_test_country_deployment.german_capital_source }
+				}
+				else_if = {
+					limit = { check_variable = { transit_catalog_state_id = constant:chaosx_test_country_deployment.french_capital_state } }
+					set_temp_variable = { chaosx_test_country_deployment_preferred_source = constant:chaosx_test_country_deployment.french_capital_source }
+				}
+				if = {
+					limit = {
+						check_variable = { chaosx_test_country_deployment_preferred_source > constant:chaosx_test_country_deployment.zero }
+						is_in_array = { array = transit_state_province_ids value = chaosx_test_country_deployment_preferred_source }
+						meta_trigger = {
+							text = {
+								CXT = { controls_province = [PROVINCE] }
+								any_province_building_level = { province = { id = [PROVINCE] } building = supply_node level > 0 }
+							}
+							PROVINCE = "[?chaosx_test_country_deployment_preferred_source|.0]"
+						}
+					}
+					CXT = { set_variable = { chaosx_test_country_deployment_source_province = chaosx_test_country_deployment_preferred_source } }
+					set_temp_variable = { chaosx_test_country_deployment_source_count = constant:chaosx_test_country_deployment.one }
+				}
+				if = {
+					limit = { check_variable = { transit_state_province_ids^num = constant:chaosx_test_country_deployment.one } }
+					CXT = {
+						set_variable = { chaosx_test_country_deployment_source_province = transit_state_province_ids^0 }
+					}
+					set_temp_variable = { chaosx_test_country_deployment_source_count = constant:chaosx_test_country_deployment.one }
+				}
+			}
+		}
+	}
+	if = {
+		limit = { NOT = { check_variable = { chaosx_test_country_deployment_source_count = constant:chaosx_test_country_deployment.one } } }
+		set_variable = { chaosx_test_country_deployment_source_province = constant:chaosx_test_country_deployment.zero }
+		set_country_flag = chaosx_test_country_deployment_source_missing
+	}
+	clear_temp_array = transit_state_province_ids
+}
+
+# COUNTRY scope. Inputs: candidate state pointer + numeric province, with the
+# pure catalogue for that state loaded. Output: caller-owned candidate_valid.
+# Existing rails and potential paths must stay under CXT control throughout.
+chaosx_test_country_validate_deployment_candidate = {
+	set_temp_variable = { chaosx_test_country_deployment_candidate_valid = constant:chaosx_test_country_deployment.zero }
+	if = {
+		limit = {
+			check_variable = { chaosx_test_country_deployment_source_province > constant:chaosx_test_country_deployment.zero }
+			var:chaosx_test_country_deployment_candidate_state = {
+				is_owned_and_controlled_by = CXT
+				impassable = no
+				is_demilitarized_zone = no
+			}
+			is_in_array = { array = transit_state_province_ids value = chaosx_test_country_deployment_candidate_province }
+			meta_trigger = {
+				text = {
+					controls_province = [PROVINCE]
+					OR = {
+						check_variable = { chaosx_test_country_deployment_candidate_province = chaosx_test_country_deployment_source_province }
+						has_railway_connection = {
+							start_province = [SOURCE]
+							target_province = [PROVINCE]
+							build_only_on_allied = yes
+							controller_priority = { base = [FOREIGN_COST] modifier = { tag = CXT add = [OWNED_ADD] } }
+						}
+						can_build_railway = {
+							start_province = [SOURCE]
+							target_province = [PROVINCE]
+							build_only_on_allied = yes
+							controller_priority = { base = [FOREIGN_COST] modifier = { tag = CXT add = [OWNED_ADD] } }
+						}
+					}
+				}
+				PROVINCE = "[?chaosx_test_country_deployment_candidate_province|.0]"
+				SOURCE = "[?chaosx_test_country_deployment_source_province|.0]"
+				FOREIGN_COST = "[?constant:chaosx_test_country_deployment.foreign_path_cost|.0]"
+				OWNED_ADD = "[?constant:chaosx_test_country_deployment.owned_path_cost_add|.0]"
+			}
+		}
+		set_temp_variable = { chaosx_test_country_deployment_candidate_valid = constant:chaosx_test_country_deployment.one }
+	}
+}
+
+# COUNTRY scope. Release an invalid family receipt and its province reservation.
+# The targeted state count keeps unused-state preference correct when multiple
+# families were necessarily allocated to distinct provinces of one state.
+chaosx_test_country_release_family_deployment = {
+	set_temp_variable = { chaosx_test_country_deployment_old_province = chaosx_test_country_family_province_@var:chaosx_test_country_current_family }
+	set_temp_variable = { chaosx_test_country_deployment_old_state = chaosx_test_country_family_state_@var:chaosx_test_country_current_family }
+	remove_from_array = { array = chaosx_test_country_reserved_family_provinces value = chaosx_test_country_deployment_old_province }
+	if = {
+		limit = { has_variable = chaosx_test_country_family_state_@var:chaosx_test_country_current_family }
+		subtract_from_variable = { chaosx_test_country_state_family_count_@var:chaosx_test_country_deployment_old_state = constant:chaosx_test_country_deployment.one }
+	}
+	clear_variable = chaosx_test_country_family_province_@var:chaosx_test_country_current_family
+	clear_variable = chaosx_test_country_family_state_@var:chaosx_test_country_current_family
+	clear_variable = chaosx_test_country_family_state_id_@var:chaosx_test_country_current_family
+}
+
+# COUNTRY scope. Pure candidate scan, then choose the smallest rank, numeric
+# state ID, and province ID. No dependency on the engine's owned-state order.
+# State scope exists only while loading/classifying catalogue membership.
+# Native checks return to explicit CXT scope, so caller ROOT/PREV are irrelevant.
+chaosx_test_country_allocate_family_deployment = {
+	set_temp_variable = { chaosx_test_country_deployment_best_rank = constant:chaosx_test_country_deployment.unassigned_rank }
+	set_temp_variable = { chaosx_test_country_deployment_best_state_id = constant:chaosx_test_country_deployment.zero }
+	set_temp_variable = { chaosx_test_country_deployment_best_province = constant:chaosx_test_country_deployment.zero }
+	set_temp_variable = { chaosx_test_country_deployment_best_state = constant:chaosx_test_country_deployment.zero }
+	set_temp_variable = { chaosx_test_country_deployment_candidate_valid = constant:chaosx_test_country_deployment.zero }
+	set_temp_variable = { chaosx_test_country_deployment_candidate_state = constant:chaosx_test_country_deployment.zero }
+	set_temp_variable = { chaosx_test_country_deployment_candidate_state_id = constant:chaosx_test_country_deployment.zero }
+	set_temp_variable = { chaosx_test_country_deployment_candidate_rank = constant:chaosx_test_country_deployment.zero }
+	set_temp_variable = { chaosx_test_country_deployment_scan_loop_break = constant:chaosx_test_country_deployment.zero }
+	set_temp_variable = { transit_catalog_state_id = constant:chaosx_test_country_deployment.zero }
+	set_temp_variable = { transit_catalog_loaded = constant:chaosx_test_country_deployment.zero }
+	clear_temp_array = transit_state_province_ids
+	every_owned_state = {
+		limit = { is_owned_and_controlled_by = CXT impassable = no is_demilitarized_zone = no }
+		if = {
+			limit = {
+				brilliant_scientist_transit_load_state_province_catalog = yes
+				check_variable = { transit_catalog_loaded = constant:chaosx_test_country_deployment.one }
+			}
+			set_temp_variable = { chaosx_test_country_deployment_candidate_state = THIS }
+			set_temp_variable = { chaosx_test_country_deployment_candidate_state_id = transit_catalog_state_id }
+			for_each_loop = {
+				array = transit_state_province_ids
+				value = chaosx_test_country_deployment_candidate_province
+				break = chaosx_test_country_deployment_scan_loop_break
+				CXT = {
+					if = {
+						limit = { NOT = { is_in_array = { array = chaosx_test_country_reserved_family_provinces value = chaosx_test_country_deployment_candidate_province } } }
+						set_temp_variable = { chaosx_test_country_deployment_candidate_rank = constant:chaosx_test_country_deployment.land_tier }
+						var:chaosx_test_country_deployment_candidate_state = {
+							if = {
+								limit = {
+									meta_trigger = { text = { any_province_building_level = { province = { id = [PROVINCE] } building = supply_node level > 0 } } PROVINCE = "[?chaosx_test_country_deployment_candidate_province|.0]" }
+								}
+								set_temp_variable = { chaosx_test_country_deployment_candidate_rank = constant:chaosx_test_country_deployment.supply_node_tier }
+							}
+							else_if = {
+								limit = {
+									meta_trigger = { text = { any_province_building_level = { province = { id = [PROVINCE] } building = rail_way level > 0 } } PROVINCE = "[?chaosx_test_country_deployment_candidate_province|.0]" }
+								}
+								set_temp_variable = { chaosx_test_country_deployment_candidate_rank = constant:chaosx_test_country_deployment.railway_tier }
+							}
+						}
+						if = {
+							limit = { check_variable = { chaosx_test_country_state_family_count_@var:chaosx_test_country_deployment_candidate_state > constant:chaosx_test_country_deployment.zero } }
+							add_to_temp_variable = { chaosx_test_country_deployment_candidate_rank = constant:chaosx_test_country_deployment.occupied_state_penalty }
+						}
+						if = {
+							limit = {
+								OR = {
+									check_variable = { chaosx_test_country_deployment_candidate_rank < chaosx_test_country_deployment_best_rank }
+									AND = {
+										check_variable = { chaosx_test_country_deployment_candidate_rank = chaosx_test_country_deployment_best_rank }
+										OR = {
+											check_variable = { chaosx_test_country_deployment_candidate_state_id < chaosx_test_country_deployment_best_state_id }
+											AND = {
+												check_variable = { chaosx_test_country_deployment_candidate_state_id = chaosx_test_country_deployment_best_state_id }
+												check_variable = { chaosx_test_country_deployment_candidate_province < chaosx_test_country_deployment_best_province }
+											}
+										}
+									}
+								}
+							}
+							chaosx_test_country_validate_deployment_candidate = yes
+							if = {
+								limit = { check_variable = { chaosx_test_country_deployment_candidate_valid = constant:chaosx_test_country_deployment.one } }
+								set_temp_variable = { chaosx_test_country_deployment_best_rank = chaosx_test_country_deployment_candidate_rank }
+								set_temp_variable = { chaosx_test_country_deployment_best_state_id = chaosx_test_country_deployment_candidate_state_id }
+								set_temp_variable = { chaosx_test_country_deployment_best_province = chaosx_test_country_deployment_candidate_province }
+								set_temp_variable = { chaosx_test_country_deployment_best_state = chaosx_test_country_deployment_candidate_state }
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+	if = {
+		limit = { check_variable = { chaosx_test_country_deployment_best_province > constant:chaosx_test_country_deployment.zero } }
+		set_variable = { chaosx_test_country_family_province_@var:chaosx_test_country_current_family = chaosx_test_country_deployment_best_province }
+		set_variable = { chaosx_test_country_family_state_@var:chaosx_test_country_current_family = chaosx_test_country_deployment_best_state }
+		set_variable = { chaosx_test_country_family_state_id_@var:chaosx_test_country_current_family = chaosx_test_country_deployment_best_state_id }
+		add_to_variable = { chaosx_test_country_state_family_count_@var:chaosx_test_country_deployment_best_state = constant:chaosx_test_country_deployment.one }
+		add_to_array = { array = chaosx_test_country_reserved_family_provinces value = chaosx_test_country_deployment_best_province }
+	}
+	clear_temp_array = transit_state_province_ids
+}
+
+# COUNTRY scope, private allocation-only gateway. The source must already be
+# prepared by its caller. Existing receipts are retained without modification.
+# The public spawn gateway separately revalidates retained receipt membership,
+# control and supply before using this helper. No unit or spawn receipt grant.
+chaosx_test_country_ensure_family_site = {
+	if = {
+		limit = {
+			NOT = { has_variable = chaosx_test_country_family_province_@var:chaosx_test_country_current_family }
+			NOT = { has_country_flag = chaosx_test_country_deployment_source_missing }
+		}
+		chaosx_test_country_allocate_family_deployment = yes
+	}
+}
+
+# COUNTRY scope, THIS=CXT. This is the central core-family allocation order.
+# Move rows here to tune the initial family-to-province mapping. All province
+# choices still come from the owned supply-ranked catalogue, not fixed grants.
+# Call after the initial resources fixture and before any roster spawner, or
+# before a manual deployment to fill missing core sites without redefining them.
+# Future unlisted package families continue to allocate lazily through spawn.
+chaosx_test_country_assign_core_family_sites = {
+	if = {
+		limit = { tag = CXT exists = yes }
+		chaosx_test_country_prepare_family_deployment = yes
+		set_temp_variable = { chaosx_test_country_current_family = constant:chaosx_test_country_deployment.zero }
+		set_temp_variable = { chaosx_test_country_core_family_site_loop_break = constant:chaosx_test_country_deployment.zero }
+		clear_temp_array = chaosx_test_country_core_family_site_order
+		add_to_temp_array = { array = chaosx_test_country_core_family_site_order value = token:chaosx_cxt_extension_zombies_showcases }
+		add_to_temp_array = { array = chaosx_test_country_core_family_site_order value = token:chaosx_cxt_extension_event014_cannibalism }
+		add_to_temp_array = { array = chaosx_test_country_core_family_site_order value = token:chaosx_cxt_extension_event012_africa_gods }
+		add_to_temp_array = { array = chaosx_test_country_core_family_site_order value = token:chaosx_cxt_extension_rat_broods_showcases }
+		add_to_temp_array = { array = chaosx_test_country_core_family_site_order value = token:clone_infantry }
+		add_to_temp_array = { array = chaosx_test_country_core_family_site_order value = token:autonomous_robot }
+		add_to_temp_array = { array = chaosx_test_country_core_family_site_order value = token:portal_raider }
+		add_to_temp_array = { array = chaosx_test_country_core_family_site_order value = token:temporal_guard }
+		add_to_temp_array = { array = chaosx_test_country_core_family_site_order value = token:xenobiological_assault_organism }
+		add_to_temp_array = { array = chaosx_test_country_core_family_site_order value = token:paleogenetic_creature }
+		add_to_temp_array = { array = chaosx_test_country_core_family_site_order value = token:chaosx_cxt_extension_cave_broods_showcases }
+		add_to_temp_array = { array = chaosx_test_country_core_family_site_order value = token:alien_infantry }
+		add_to_temp_array = { array = chaosx_test_country_core_family_site_order value = token:chaosx_cxt_extension_event039_assassin_forces }
+		add_to_temp_array = { array = chaosx_test_country_core_family_site_order value = token:chaosx_cxt_extension_death_hosts_showcases }
+		add_to_temp_array = { array = chaosx_test_country_core_family_site_order value = token:chaos_battalion }
+		add_to_temp_array = { array = chaosx_test_country_core_family_site_order value = token:chaosx_cxt_extension_cbrn_unit_family_showcases }
+		add_to_temp_array = { array = chaosx_test_country_core_family_site_order value = token:chaosx_cxt_extension_livens_projectors_showcases }
+		add_to_temp_array = { array = chaosx_test_country_core_family_site_order value = token:chaosx_cxt_extension_coal_golems_showcases }
+		for_each_loop = {
+			array = chaosx_test_country_core_family_site_order
+			value = chaosx_test_country_current_family
+			break = chaosx_test_country_core_family_site_loop_break
+			chaosx_test_country_ensure_family_site = yes
+		}
+		clear_temp_array = chaosx_test_country_core_family_site_order
+	}
+}
+
+# Private STATE creators, entered only after the public gateway proves the
+# saved province is owned, controlled and connected. They read the template from
+# global.chaosx_test_country_spawn_template. The forced creator also reads
+# global.chaosx_test_country_force_variants, a token resolved by
+# GetChaosxTestCountryForceVariants to the contents of one native OOB
+# force_equipment_variants block.
+# Plain creation omits the optional block rather than assuming an empty block
+# has documented engine semantics. Each route dispatches one native creation.
+chaosx_test_country_create_plain_family_division = {
+	meta_effect = {
+		text = {
+			create_unit = {
+				division = "name = \"[TEMPLATE_NAME]\" division_template = \"[TEMPLATE_NAME]\" start_experience_factor = [EXPERIENCE] start_equipment_factor = [EQUIPMENT] start_manpower_factor = [MANPOWER]"
+				owner = CXT
+				prioritize_location = [PROVINCE]
+				allow_spawning_on_enemy_provs = no
+				count = [COUNT]
+			}
+			set_temp_variable = { chaosx_test_country_family_spawn_succeeded = constant:chaosx_test_country_deployment.one }
+		}
+		PROVINCE = "[?chaosx_test_country_deployment_candidate_province|.0]"
+		COUNT = "[?constant:chaosx_test_country_count.divisions_per_template|.0]"
+		EXPERIENCE = "[?constant:chaosx_test_country_deployment.full_experience]"
+		EQUIPMENT = "[?constant:chaosx_test_country_deployment.full_equipment]"
+		MANPOWER = "[?constant:chaosx_test_country_deployment.full_manpower]"
+		TEMPLATE_NAME = "[This.GetChaosxTestCountryTemplateName]"
+	}
+}
+
+chaosx_test_country_create_forced_family_division = {
+	meta_effect = {
+		text = {
+			create_unit = {
+				division = "name = \"[TEMPLATE_NAME]\" division_template = \"[TEMPLATE_NAME]\" start_experience_factor = [EXPERIENCE] start_equipment_factor = [EQUIPMENT] start_manpower_factor = [MANPOWER] force_equipment_variants = { [FORCE_VARIANTS] }"
+				owner = CXT
+				prioritize_location = [PROVINCE]
+				allow_spawning_on_enemy_provs = no
+				count = [COUNT]
+			}
+			set_temp_variable = { chaosx_test_country_family_spawn_succeeded = constant:chaosx_test_country_deployment.one }
+		}
+		PROVINCE = "[?chaosx_test_country_deployment_candidate_province|.0]"
+		COUNT = "[?constant:chaosx_test_country_count.divisions_per_template|.0]"
+		EXPERIENCE = "[?constant:chaosx_test_country_deployment.full_experience]"
+		EQUIPMENT = "[?constant:chaosx_test_country_deployment.full_equipment]"
+		MANPOWER = "[?constant:chaosx_test_country_deployment.full_manpower]"
+		TEMPLATE_NAME = "[This.GetChaosxTestCountryTemplateName]"
+		FORCE_VARIANTS = "[This.GetChaosxTestCountryForceVariants]"
+	}
+}
+
+# Private STATE dispatcher. Livens support-specific fixtures use their named
+# domestic module variant, including the generic support's chlorine fixture.
+# A non-support caller carrying the Livens family also gets that valid fixture.
+chaosx_test_country_create_family_division_with_profile = {
+	if = {
+		limit = { check_variable = { chaosx_test_country_current_family = token:chaosx_cxt_extension_livens_projectors_showcases } }
+		if = {
+			limit = { check_variable = { chaosx_test_country_current_support_subunit = token:livens_projector_support_phosgene } }
+			set_variable = { global.chaosx_test_country_force_variants = token:cxt_force_livens_phosgene }
+			chaosx_test_country_create_forced_family_division = yes
+		}
+		else_if = {
+			limit = { check_variable = { chaosx_test_country_current_support_subunit = token:livens_projector_support_mustard } }
+			set_variable = { global.chaosx_test_country_force_variants = token:cxt_force_livens_mustard }
+			chaosx_test_country_create_forced_family_division = yes
+		}
+		else_if = {
+			limit = { check_variable = { chaosx_test_country_current_support_subunit = token:livens_projector_support_lewisite } }
+			set_variable = { global.chaosx_test_country_force_variants = token:cxt_force_livens_lewisite }
+			chaosx_test_country_create_forced_family_division = yes
+		}
+		else_if = {
+			limit = { check_variable = { chaosx_test_country_current_support_subunit = token:livens_projector_support_sarin } }
+			set_variable = { global.chaosx_test_country_force_variants = token:cxt_force_livens_sarin }
+			chaosx_test_country_create_forced_family_division = yes
+		}
+		else_if = {
+			limit = { check_variable = { chaosx_test_country_current_support_subunit = token:livens_projector_support_soman } }
+			set_variable = { global.chaosx_test_country_force_variants = token:cxt_force_livens_soman }
+			chaosx_test_country_create_forced_family_division = yes
+		}
+		else = {
+			set_variable = { global.chaosx_test_country_force_variants = token:cxt_force_livens_chlorine }
+			chaosx_test_country_create_forced_family_division = yes
+		}
+	}
+	else = {
+		chaosx_test_country_create_plain_family_division = yes
+	}
+}
+
+# COUNTRY scope. Reads global.chaosx_test_country_spawn_template. current_family must be caller-owned.
+# Allocation receipts remain stable across manual deployment and registered
+# package calls. A missing route/site records the family in a visible summary
+# array for the parent-owned debug decision rather than spawning elsewhere.
+chaosx_test_country_spawn_family_template = {
+	set_temp_variable = { chaosx_test_country_family_spawn_succeeded = constant:chaosx_test_country_deployment.zero }
+	set_temp_variable = { chaosx_test_country_deployment_candidate_valid = constant:chaosx_test_country_deployment.zero }
+	set_temp_variable = { chaosx_test_country_deployment_candidate_state = constant:chaosx_test_country_deployment.zero }
+	set_temp_variable = { chaosx_test_country_deployment_candidate_province = constant:chaosx_test_country_deployment.zero }
+	set_temp_variable = { transit_catalog_state_id = constant:chaosx_test_country_deployment.zero }
+	set_temp_variable = { transit_catalog_loaded = constant:chaosx_test_country_deployment.zero }
+	clear_temp_array = transit_state_province_ids
+	if = {
+		limit = {
+			tag = CXT
+			exists = yes
+			meta_trigger = {
+				text = { has_template = "[TEMPLATE_NAME]" }
+				TEMPLATE_NAME = "[This.GetChaosxTestCountryTemplateName]"
+			}
+		}
+		chaosx_test_country_prepare_family_deployment = yes
+		if = {
+			limit = { has_variable = chaosx_test_country_family_province_@var:chaosx_test_country_current_family }
+			set_temp_variable = { chaosx_test_country_deployment_candidate_state = chaosx_test_country_family_state_@var:chaosx_test_country_current_family }
+			set_temp_variable = { chaosx_test_country_deployment_candidate_province = chaosx_test_country_family_province_@var:chaosx_test_country_current_family }
+			var:chaosx_test_country_deployment_candidate_state = {
+				if = { limit = { brilliant_scientist_transit_load_state_province_catalog = yes } }
+			}
+			chaosx_test_country_validate_deployment_candidate = yes
+			if = {
+				limit = { check_variable = { chaosx_test_country_deployment_candidate_valid = constant:chaosx_test_country_deployment.zero } }
+				chaosx_test_country_release_family_deployment = yes
+			}
+		}
+		chaosx_test_country_ensure_family_site = yes
+		if = {
+			limit = { has_variable = chaosx_test_country_family_province_@var:chaosx_test_country_current_family }
+			set_temp_variable = { chaosx_test_country_deployment_candidate_province = chaosx_test_country_family_province_@var:chaosx_test_country_current_family }
+			meta_effect = {
+				text = {
+					if = {
+						limit = {
+							NOT = { check_variable = { chaosx_test_country_deployment_candidate_province = chaosx_test_country_deployment_source_province } }
+							NOT = { has_railway_connection = { start_province = [SOURCE] target_province = [PROVINCE] build_only_on_allied = yes controller_priority = { base = [FOREIGN_COST] modifier = { tag = CXT add = [OWNED_ADD] } } } }
+						}
+						build_railway = {
+							level = [LEVEL]
+							start_province = [SOURCE]
+							target_province = [PROVINCE]
+							build_only_on_allied = yes
+							controller_priority = { base = [FOREIGN_COST] modifier = { tag = CXT add = [OWNED_ADD] } }
+						}
+					}
+					if = {
+						limit = {
+							OR = {
+								check_variable = { chaosx_test_country_deployment_candidate_province = chaosx_test_country_deployment_source_province }
+								has_railway_connection = { start_province = [SOURCE] target_province = [PROVINCE] build_only_on_allied = yes controller_priority = { base = [FOREIGN_COST] modifier = { tag = CXT add = [OWNED_ADD] } } }
+							}
+						}
+						var:chaosx_test_country_family_state_@var:chaosx_test_country_current_family = {
+							if = {
+								limit = { is_owned_and_controlled_by = CXT impassable = no is_demilitarized_zone = no CXT = { controls_province = [PROVINCE] } }
+								chaosx_test_country_create_family_division_with_profile = yes
+							}
+						}
+					}
+				}
+				PROVINCE = "[?chaosx_test_country_deployment_candidate_province|.0]"
+				SOURCE = "[?chaosx_test_country_deployment_source_province|.0]"
+				FOREIGN_COST = "[?constant:chaosx_test_country_deployment.foreign_path_cost|.0]"
+				OWNED_ADD = "[?constant:chaosx_test_country_deployment.owned_path_cost_add|.0]"
+				LEVEL = "[?constant:chaosx_test_country_deployment.railway_level|.0]"
+			}
+		}
+		if = {
+			limit = { check_variable = { chaosx_test_country_family_spawn_succeeded = constant:chaosx_test_country_deployment.one } }
+			remove_from_array = { array = chaosx_test_country_unplaced_families value = chaosx_test_country_current_family }
+		}
+		else = {
+			if = {
+				limit = { has_variable = chaosx_test_country_family_province_@var:chaosx_test_country_current_family }
+				chaosx_test_country_release_family_deployment = yes
+			}
+			if = {
+				limit = { NOT = { is_in_array = { array = chaosx_test_country_unplaced_families value = chaosx_test_country_current_family } } }
+				add_to_array = { array = chaosx_test_country_unplaced_families value = chaosx_test_country_current_family }
+			}
+		}
+		clr_country_flag = chaosx_test_country_family_deployment_shortage
+		if = {
+			limit = { check_variable = { chaosx_test_country_unplaced_families^num > constant:chaosx_test_country_deployment.zero } }
+			set_country_flag = chaosx_test_country_family_deployment_shortage
+		}
+	}
+	clear_temp_array = transit_state_province_ids
+}

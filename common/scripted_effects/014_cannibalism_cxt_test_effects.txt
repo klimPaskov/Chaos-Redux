@@ -23,6 +23,7 @@ chaosx_cxt_extension_event014_cannibalism_apply = {
 	if = {
 		limit = { NOT = { has_global_flag = cannibalism_cxt_irregular_units_registered } }
 
+		set_temp_variable = { var = chaosx_test_country_current_unit_family value = token:chaosx_cxt_extension_event014_cannibalism }
 		set_temp_variable = { var = chaosx_test_country_registration_frontline_subunit value = token:cannibal_scavenger_warband }
 		chaosx_test_country_register_frontline_subunit = yes
 		set_temp_variable = { var = chaosx_test_country_registration_frontline_subunit value = token:cannibal_feast_guard }
@@ -58,17 +59,25 @@ chaosx_cxt_extension_event014_cannibalism_apply = {
 	if = {
 		limit = { NOT = { has_country_flag = chaosx_cxt_cannibal_formations_ready } }
 		chaosx_cxt_event014_define_formations = yes
-		add_to_array = { array = chaosx_test_country_processed_frontline_subunits value = token:cannibal_scavenger_warband }
-		add_to_array = { array = chaosx_test_country_processed_frontline_subunits value = token:cannibal_feast_guard }
-		add_to_array = { array = chaosx_test_country_processed_frontline_subunits value = token:cannibal_feast_cohort }
-		add_to_array = { array = chaosx_test_country_processed_frontline_subunits value = token:cannibal_bone_guard }
-		add_to_array = { array = chaosx_test_country_processed_frontline_subunits value = token:cannibal_bone_riders }
-		add_to_array = { array = chaosx_test_country_processed_frontline_subunits value = token:cannibal_island_reavers }
-		add_to_array = { array = chaosx_test_country_processed_frontline_subunits value = token:cannibal_siege_eaters }
-		add_to_array = { array = chaosx_test_country_processed_frontline_subunits value = token:cannibal_march_predation_column }
-		add_to_array = { array = chaosx_test_country_processed_frontline_subunits value = token:cannibal_network_cadre }
-		chaosx_cxt_event014_spawn_formations = yes
-		set_country_flag = chaosx_cxt_cannibal_formations_ready
+		if = { limit = { NOT = { is_in_array = { array = chaosx_test_country_processed_frontline_subunits value = token:cannibal_scavenger_warband } } } add_to_array = { array = chaosx_test_country_processed_frontline_subunits value = token:cannibal_scavenger_warband } }
+		if = { limit = { NOT = { is_in_array = { array = chaosx_test_country_processed_frontline_subunits value = token:cannibal_feast_guard } } } add_to_array = { array = chaosx_test_country_processed_frontline_subunits value = token:cannibal_feast_guard } }
+		if = { limit = { NOT = { is_in_array = { array = chaosx_test_country_processed_frontline_subunits value = token:cannibal_feast_cohort } } } add_to_array = { array = chaosx_test_country_processed_frontline_subunits value = token:cannibal_feast_cohort } }
+		if = { limit = { NOT = { is_in_array = { array = chaosx_test_country_processed_frontline_subunits value = token:cannibal_bone_guard } } } add_to_array = { array = chaosx_test_country_processed_frontline_subunits value = token:cannibal_bone_guard } }
+		if = { limit = { NOT = { is_in_array = { array = chaosx_test_country_processed_frontline_subunits value = token:cannibal_bone_riders } } } add_to_array = { array = chaosx_test_country_processed_frontline_subunits value = token:cannibal_bone_riders } }
+		if = { limit = { NOT = { is_in_array = { array = chaosx_test_country_processed_frontline_subunits value = token:cannibal_island_reavers } } } add_to_array = { array = chaosx_test_country_processed_frontline_subunits value = token:cannibal_island_reavers } }
+		if = { limit = { NOT = { is_in_array = { array = chaosx_test_country_processed_frontline_subunits value = token:cannibal_siege_eaters } } } add_to_array = { array = chaosx_test_country_processed_frontline_subunits value = token:cannibal_siege_eaters } }
+		if = { limit = { NOT = { is_in_array = { array = chaosx_test_country_processed_frontline_subunits value = token:cannibal_march_predation_column } } } add_to_array = { array = chaosx_test_country_processed_frontline_subunits value = token:cannibal_march_predation_column } }
+		if = { limit = { NOT = { is_in_array = { array = chaosx_test_country_processed_frontline_subunits value = token:cannibal_network_cadre } } } add_to_array = { array = chaosx_test_country_processed_frontline_subunits value = token:cannibal_network_cadre } }
+		chaosx_cxt_event014_spawn_formations_initial = yes
+		if = {
+			limit = {
+				AND = {
+					is_in_array = { array = global.chaosx_test_country_spawned_owner_formations value = token:cannibal_scavenger_warband }
+					is_in_array = { array = global.chaosx_test_country_spawned_owner_formations value = token:cannibal_bone_riders }
+				}
+			}
+			set_country_flag = chaosx_cxt_cannibal_formations_ready
+		}
 	}
 }
 
@@ -121,30 +130,53 @@ chaosx_cxt_event014_define_formations = {
 chaosx_cxt_event014_spawn_formations = {
 	if = {
 		limit = { has_template = "CXT - Cannibal Irregular Muster" }
-		for_loop_effect = {
-			end = constant:chaosx_test_country_count.divisions_per_template
-			value = chaosx_test_country_spawn_index
-			random_owned_controlled_state = {
-				create_unit = {
-					division = "name = \"CXT - Cannibal Irregular Muster\" division_template = \"CXT - Cannibal Irregular Muster\" start_experience_factor = 1 start_equipment_factor = 1 start_manpower_factor = 1"
-					owner = PREV
-					count = constant:chaosx_test_country_count.divisions_per_state_pick
-				}
-			}
+		set_temp_variable = { var = chaosx_test_country_current_support_subunit value = 0 }
+		set_temp_variable = { var = chaosx_test_country_current_family value = token:chaosx_cxt_extension_event014_cannibalism }
+		set_temp_variable = { var = chaosx_test_country_family_spawn_succeeded value = 0 }
+		set_variable = { global.chaosx_test_country_spawn_template = token:cxt_template_cannibal_irregular_muster }
+		chaosx_test_country_spawn_family_template = yes
+		if = {
+			limit = { check_variable = { chaosx_test_country_family_spawn_succeeded > 0 } }
+			if = { limit = { NOT = { is_in_array = { array = global.chaosx_test_country_spawned_owner_formations value = token:cannibal_scavenger_warband } } } add_to_array = { array = global.chaosx_test_country_spawned_owner_formations value = token:cannibal_scavenger_warband } }
 		}
 	}
 	if = {
 		limit = { has_template = "CXT - Cannibal Bone Riders" }
-		for_loop_effect = {
-			end = constant:chaosx_test_country_count.divisions_per_template
-			value = chaosx_test_country_spawn_index
-			random_owned_controlled_state = {
-				create_unit = {
-					division = "name = \"CXT - Cannibal Bone Riders\" division_template = \"CXT - Cannibal Bone Riders\" start_experience_factor = 1 start_equipment_factor = 1 start_manpower_factor = 1"
-					owner = PREV
-					count = constant:chaosx_test_country_count.divisions_per_state_pick
-				}
-			}
+		set_temp_variable = { var = chaosx_test_country_current_support_subunit value = 0 }
+		set_temp_variable = { var = chaosx_test_country_current_family value = token:chaosx_cxt_extension_event014_cannibalism }
+		set_temp_variable = { var = chaosx_test_country_family_spawn_succeeded value = 0 }
+		set_variable = { global.chaosx_test_country_spawn_template = token:cxt_template_cannibal_bone_riders }
+		chaosx_test_country_spawn_family_template = yes
+		if = {
+			limit = { check_variable = { chaosx_test_country_family_spawn_succeeded > 0 } }
+			if = { limit = { NOT = { is_in_array = { array = global.chaosx_test_country_spawned_owner_formations value = token:cannibal_bone_riders } } } add_to_array = { array = global.chaosx_test_country_spawned_owner_formations value = token:cannibal_bone_riders } }
+		}
+	}
+}
+
+chaosx_cxt_event014_spawn_formations_initial = {
+	if = {
+		limit = { has_template = "CXT - Cannibal Irregular Muster" NOT = { is_in_array = { array = global.chaosx_test_country_spawned_owner_formations value = token:cannibal_scavenger_warband } } }
+		set_temp_variable = { var = chaosx_test_country_current_support_subunit value = 0 }
+		set_temp_variable = { var = chaosx_test_country_current_family value = token:chaosx_cxt_extension_event014_cannibalism }
+		set_temp_variable = { var = chaosx_test_country_family_spawn_succeeded value = 0 }
+		set_variable = { global.chaosx_test_country_spawn_template = token:cxt_template_cannibal_irregular_muster }
+		chaosx_test_country_spawn_family_template = yes
+		if = {
+			limit = { check_variable = { chaosx_test_country_family_spawn_succeeded > 0 } }
+			add_to_array = { array = global.chaosx_test_country_spawned_owner_formations value = token:cannibal_scavenger_warband }
+		}
+	}
+	if = {
+		limit = { has_template = "CXT - Cannibal Bone Riders" NOT = { is_in_array = { array = global.chaosx_test_country_spawned_owner_formations value = token:cannibal_bone_riders } } }
+		set_temp_variable = { var = chaosx_test_country_current_support_subunit value = 0 }
+		set_temp_variable = { var = chaosx_test_country_current_family value = token:chaosx_cxt_extension_event014_cannibalism }
+		set_temp_variable = { var = chaosx_test_country_family_spawn_succeeded value = 0 }
+		set_variable = { global.chaosx_test_country_spawn_template = token:cxt_template_cannibal_bone_riders }
+		chaosx_test_country_spawn_family_template = yes
+		if = {
+			limit = { check_variable = { chaosx_test_country_family_spawn_succeeded > 0 } }
+			add_to_array = { array = global.chaosx_test_country_spawned_owner_formations value = token:cannibal_bone_riders }
 		}
 	}
 }

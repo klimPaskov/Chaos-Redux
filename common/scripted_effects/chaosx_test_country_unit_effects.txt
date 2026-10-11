@@ -4,11 +4,12 @@
 # Overview:
 # - Unlocks only Chaos Redux sub-units and builds grouped, usable test divisions.
 # - Family layouts mirror installed country/runtime formations where possible.
-# - CBRN debug templates use the consolidated field companies. Legacy
-#   agent-specific chemical tank and Livens IDs stay outside playable grants.
-# - Deploys three full divisions per template across owned, controlled states
-#   only on initial setup or through a CXT debug decision.
-# - Package-owned additions enter through the registration helpers below.
+# - CBRN templates use compatible regimental-support rows and dedicated Army HQ
+#   templates for HQ-only support companies.
+# - Initial setup creates one division per template through persistent family
+#   placement; the manual test deployment can reinforce these formations.
+# - Package-owned sub-unit and authored-formation showcases use token registries
+#   with separate success receipts from the processed-unit arrays.
 # ============================================================================
 
 chaosx_test_country_create_unit_roster = {
@@ -475,10 +476,10 @@ chaosx_test_country_define_unit_templates = {
 			regiments = {
 				chaos_battalion = { x = 0 y = 0 }
 				chaos_battalion = { x = 0 y = 1 }
-				chaos_battalion = { x = 0 y = 2 }
-				chaos_battalion = { x = 0 y = 3 }
-				chaos_battalion = { x = 0 y = 4 }
 				chaos_battalion = { x = 1 y = 0 }
+				chaos_battalion = { x = 1 y = 1 }
+				chaos_battalion = { x = 2 y = 0 }
+				chaos_battalion = { x = 3 y = 0 }
 			}
 		}
 	}
@@ -493,16 +494,16 @@ chaosx_test_country_define_unit_templates = {
 			regiments = {
 				chaos_battalion = { x = 0 y = 0 }
 				chaos_battalion = { x = 0 y = 1 }
-				chaos_battalion = { x = 0 y = 2 }
-				chaos_battalion = { x = 0 y = 3 }
-				chaos_battalion = { x = 0 y = 4 }
 				chaos_battalion = { x = 1 y = 0 }
+				chaos_battalion = { x = 1 y = 1 }
+				chaos_battalion = { x = 2 y = 0 }
+				chaos_battalion = { x = 3 y = 0 }
 			}
-			support = {
+			regimental_support = {
 				cbrn_gas_mask_decon_detachment = { x = 0 y = 0 }
-				cbrn_chemical_recon_detachment = { x = 0 y = 1 }
-				cbrn_chemical_ammunition_train = { x = 0 y = 2 }
-				cbrn_medical_countermeasure_detachment = { x = 0 y = 3 }
+				cbrn_chemical_recon_detachment = { x = 1 y = 0 }
+				cbrn_chemical_ammunition_train = { x = 2 y = 0 }
+				cbrn_medical_countermeasure_detachment = { x = 3 y = 0 }
 			}
 		}
 	}
@@ -517,16 +518,16 @@ chaosx_test_country_define_unit_templates = {
 			regiments = {
 				chaos_battalion = { x = 0 y = 0 }
 				chaos_battalion = { x = 0 y = 1 }
-				chaos_battalion = { x = 0 y = 2 }
-				chaos_battalion = { x = 0 y = 3 }
-				chaos_battalion = { x = 0 y = 4 }
 				chaos_battalion = { x = 1 y = 0 }
+				chaos_battalion = { x = 1 y = 1 }
+				chaos_battalion = { x = 2 y = 0 }
+				chaos_battalion = { x = 3 y = 0 }
 			}
-			support = {
+			regimental_support = {
 				cbrn_gas_mask_decon_detachment = { x = 0 y = 0 }
-				cbrn_chemical_recon_detachment = { x = 0 y = 1 }
-				cbrn_medical_countermeasure_detachment = { x = 0 y = 2 }
-				cbrn_biosecurity_assault_detachment = { x = 0 y = 3 }
+				cbrn_chemical_recon_detachment = { x = 1 y = 0 }
+				cbrn_medical_countermeasure_detachment = { x = 2 y = 0 }
+				cbrn_biosecurity_assault_detachment = { x = 3 y = 0 }
 			}
 		}
 	}
@@ -541,15 +542,15 @@ chaosx_test_country_define_unit_templates = {
 			regiments = {
 				chaos_battalion = { x = 0 y = 0 }
 				chaos_battalion = { x = 0 y = 1 }
-				chaos_battalion = { x = 0 y = 2 }
-				chaos_battalion = { x = 0 y = 3 }
-				chaos_battalion = { x = 0 y = 4 }
 				chaos_battalion = { x = 1 y = 0 }
+				chaos_battalion = { x = 1 y = 1 }
+				chaos_battalion = { x = 2 y = 0 }
+				chaos_battalion = { x = 2 y = 1 }
 			}
-			support = {
+			regimental_support = {
 				cbrn_gas_mask_decon_detachment = { x = 0 y = 0 }
-				cbrn_chemical_recon_detachment = { x = 0 y = 1 }
-				cbrn_chemical_projector_battery = { x = 0 y = 2 }
+				cbrn_chemical_recon_detachment = { x = 1 y = 0 }
+				cbrn_chemical_projector_battery = { x = 2 y = 0 }
 			}
 		}
 	}
@@ -568,7 +569,7 @@ chaosx_test_country_define_unit_templates = {
 				autonomous_robot = { x = 0 y = 3 }
 				autonomous_robot = { x = 0 y = 4 }
 			}
-			support = {
+			regimental_support = {
 				cbrn_light_armored_delivery_detachment = { x = 0 y = 0 }
 			}
 		}
@@ -588,7 +589,7 @@ chaosx_test_country_define_unit_templates = {
 				autonomous_robot = { x = 0 y = 3 }
 				autonomous_robot = { x = 0 y = 4 }
 			}
-			support = {
+			regimental_support = {
 				cbrn_medium_armored_delivery_detachment = { x = 0 y = 0 }
 			}
 		}
@@ -608,350 +609,183 @@ chaosx_test_country_define_unit_templates = {
 				autonomous_robot = { x = 0 y = 3 }
 				autonomous_robot = { x = 0 y = 4 }
 			}
-			support = {
+			regimental_support = {
 				cbrn_heavy_armored_delivery_detachment = { x = 0 y = 0 }
 			}
 		}
 	}
 }
 
-# Each division picks a bounded random state independently across CXT territory.
+# Each static package formation uses the bounded persistent family province allocator.
+# Static designed formations use their family-owned persistent province.
 chaosx_test_country_spawn_unit_roster = {
 	if = {
 		limit = { has_template = "CXT - Brainzz Horde" }
-		for_loop_effect = {
-			end = constant:chaosx_test_country_count.divisions_per_template
-			value = chaosx_test_country_spawn_index
-			random_owned_controlled_state = {
-				create_unit = {
-					division = "name = \"CXT - Brainzz Horde\" division_template = \"CXT - Brainzz Horde\" start_experience_factor = 1 start_equipment_factor = 1 start_manpower_factor = 1"
-					owner = PREV
-					count = constant:chaosx_test_country_count.divisions_per_state_pick
-				}
-			}
-		}
+		set_temp_variable = { var = chaosx_test_country_current_support_subunit value = 0 }
+		set_temp_variable = { var = chaosx_test_country_current_family value = token:chaosx_cxt_extension_zombies_showcases }
+		set_variable = { global.chaosx_test_country_spawn_template = token:cxt_template_brainzz_horde }
+		chaosx_test_country_spawn_family_template = yes
 	}
 	if = {
 		limit = { has_template = "CXT - Mutated Zombie Muster" }
-		for_loop_effect = {
-			end = constant:chaosx_test_country_count.divisions_per_template
-			value = chaosx_test_country_spawn_index
-			random_owned_controlled_state = {
-				create_unit = {
-					division = "name = \"CXT - Mutated Zombie Muster\" division_template = \"CXT - Mutated Zombie Muster\" start_experience_factor = 1 start_equipment_factor = 1 start_manpower_factor = 1"
-					owner = PREV
-					count = constant:chaosx_test_country_count.divisions_per_state_pick
-				}
-			}
-		}
+		set_temp_variable = { var = chaosx_test_country_current_support_subunit value = 0 }
+		set_temp_variable = { var = chaosx_test_country_current_family value = token:chaosx_cxt_extension_zombies_showcases }
+		set_variable = { global.chaosx_test_country_spawn_template = token:cxt_template_mutated_zombie_muster }
+		chaosx_test_country_spawn_family_template = yes
 	}
 	if = {
 		limit = { has_template = "CXT - Cave Brood Muster" }
-		for_loop_effect = {
-			end = constant:chaosx_test_country_count.divisions_per_template
-			value = chaosx_test_country_spawn_index
-			random_owned_controlled_state = {
-				create_unit = {
-					division = "name = \"CXT - Cave Brood Muster\" division_template = \"CXT - Cave Brood Muster\" start_experience_factor = 1 start_equipment_factor = 1 start_manpower_factor = 1"
-					owner = PREV
-					count = constant:chaosx_test_country_count.divisions_per_state_pick
-				}
-			}
-		}
+		set_temp_variable = { var = chaosx_test_country_current_support_subunit value = 0 }
+		set_temp_variable = { var = chaosx_test_country_current_family value = token:chaosx_cxt_extension_cave_broods_showcases }
+		set_variable = { global.chaosx_test_country_spawn_template = token:cxt_template_cave_brood_muster }
+		chaosx_test_country_spawn_family_template = yes
 	}
 	if = {
 		limit = { has_template = "CXT - Rat Brood Muster" }
-		for_loop_effect = {
-			end = constant:chaosx_test_country_count.divisions_per_template
-			value = chaosx_test_country_spawn_index
-			random_owned_controlled_state = {
-				create_unit = {
-					division = "name = \"CXT - Rat Brood Muster\" division_template = \"CXT - Rat Brood Muster\" start_experience_factor = 1 start_equipment_factor = 1 start_manpower_factor = 1"
-					owner = PREV
-					count = constant:chaosx_test_country_count.divisions_per_state_pick
-				}
-			}
-		}
+		set_temp_variable = { var = chaosx_test_country_current_support_subunit value = 0 }
+		set_temp_variable = { var = chaosx_test_country_current_family value = token:chaosx_cxt_extension_rat_broods_showcases }
+		set_variable = { global.chaosx_test_country_spawn_template = token:cxt_template_rat_brood_muster }
+		chaosx_test_country_spawn_family_template = yes
 	}
 	if = {
 		limit = { has_template = "CXT - Africa Strange Formation" }
-		for_loop_effect = {
-			end = constant:chaosx_test_country_count.divisions_per_template
-			value = chaosx_test_country_spawn_index
-			random_owned_controlled_state = {
-				create_unit = {
-					division = "name = \"CXT - Africa Strange Formation\" division_template = \"CXT - Africa Strange Formation\" start_experience_factor = 1 start_equipment_factor = 1 start_manpower_factor = 1"
-					owner = PREV
-					count = constant:chaosx_test_country_count.divisions_per_state_pick
-				}
-			}
-		}
+		set_temp_variable = { var = chaosx_test_country_current_support_subunit value = 0 }
+		set_temp_variable = { var = chaosx_test_country_current_family value = token:chaosx_cxt_extension_event012_africa_gods }
+		set_variable = { global.chaosx_test_country_spawn_template = token:cxt_template_africa_strange_formation }
+		chaosx_test_country_spawn_family_template = yes
 	}
 	if = {
 		limit = { has_template = "CXT - Africa Elephant Guard" }
-		for_loop_effect = {
-			end = constant:chaosx_test_country_count.divisions_per_template
-			value = chaosx_test_country_spawn_index
-			random_owned_controlled_state = {
-				create_unit = {
-					division = "name = \"CXT - Africa Elephant Guard\" division_template = \"CXT - Africa Elephant Guard\" start_experience_factor = 1 start_equipment_factor = 1 start_manpower_factor = 1"
-					owner = PREV
-					count = constant:chaosx_test_country_count.divisions_per_state_pick
-				}
-			}
-		}
+		set_temp_variable = { var = chaosx_test_country_current_support_subunit value = 0 }
+		set_temp_variable = { var = chaosx_test_country_current_family value = token:chaosx_cxt_extension_event012_africa_gods }
+		set_variable = { global.chaosx_test_country_spawn_template = token:cxt_template_africa_elephant_guard }
+		chaosx_test_country_spawn_family_template = yes
 	}
 	if = {
 		limit = { has_template = "CXT - Coal Golem Column" }
-		for_loop_effect = {
-			end = constant:chaosx_test_country_count.divisions_per_template
-			value = chaosx_test_country_spawn_index
-			random_owned_controlled_state = {
-				create_unit = {
-					division = "name = \"CXT - Coal Golem Column\" division_template = \"CXT - Coal Golem Column\" start_experience_factor = 1 start_equipment_factor = 1 start_manpower_factor = 1"
-					owner = PREV
-					count = constant:chaosx_test_country_count.divisions_per_state_pick
-				}
-			}
-		}
+		set_temp_variable = { var = chaosx_test_country_current_support_subunit value = 0 }
+		set_temp_variable = { var = chaosx_test_country_current_family value = token:chaosx_cxt_extension_coal_golems_showcases }
+		set_variable = { global.chaosx_test_country_spawn_template = token:cxt_template_coal_golem_column }
+		chaosx_test_country_spawn_family_template = yes
 	}
 	if = {
 		limit = { has_template = "CXT - Death Passive Host" }
-		for_loop_effect = {
-			end = constant:chaosx_test_country_count.divisions_per_template
-			value = chaosx_test_country_spawn_index
-			random_owned_controlled_state = {
-				create_unit = {
-					division = "name = \"CXT - Death Passive Host\" division_template = \"CXT - Death Passive Host\" start_experience_factor = 1 start_equipment_factor = 1 start_manpower_factor = 1"
-					owner = PREV
-					count = constant:chaosx_test_country_count.divisions_per_state_pick
-				}
-			}
-		}
+		set_temp_variable = { var = chaosx_test_country_current_support_subunit value = 0 }
+		set_temp_variable = { var = chaosx_test_country_current_family value = token:chaosx_cxt_extension_death_hosts_showcases }
+		set_variable = { global.chaosx_test_country_spawn_template = token:cxt_template_death_passive_host }
+		chaosx_test_country_spawn_family_template = yes
 	}
 	if = {
 		limit = { has_template = "CXT - Death Hollow Host" }
-		for_loop_effect = {
-			end = constant:chaosx_test_country_count.divisions_per_template
-			value = chaosx_test_country_spawn_index
-			random_owned_controlled_state = {
-				create_unit = {
-					division = "name = \"CXT - Death Hollow Host\" division_template = \"CXT - Death Hollow Host\" start_experience_factor = 1 start_equipment_factor = 1 start_manpower_factor = 1"
-					owner = PREV
-					count = constant:chaosx_test_country_count.divisions_per_state_pick
-				}
-			}
-		}
+		set_temp_variable = { var = chaosx_test_country_current_support_subunit value = 0 }
+		set_temp_variable = { var = chaosx_test_country_current_family value = token:chaosx_cxt_extension_death_hosts_showcases }
+		set_variable = { global.chaosx_test_country_spawn_template = token:cxt_template_death_hollow_host }
+		chaosx_test_country_spawn_family_template = yes
 	}
 	if = {
 		limit = { has_template = "CXT - Death Last Shore Host" }
-		for_loop_effect = {
-			end = constant:chaosx_test_country_count.divisions_per_template
-			value = chaosx_test_country_spawn_index
-			random_owned_controlled_state = {
-				create_unit = {
-					division = "name = \"CXT - Death Last Shore Host\" division_template = \"CXT - Death Last Shore Host\" start_experience_factor = 1 start_equipment_factor = 1 start_manpower_factor = 1"
-					owner = PREV
-					count = constant:chaosx_test_country_count.divisions_per_state_pick
-				}
-			}
-		}
+		set_temp_variable = { var = chaosx_test_country_current_support_subunit value = 0 }
+		set_temp_variable = { var = chaosx_test_country_current_family value = token:chaosx_cxt_extension_death_hosts_showcases }
+		set_variable = { global.chaosx_test_country_spawn_template = token:cxt_template_death_last_shore_host }
+		chaosx_test_country_spawn_family_template = yes
 	}
 	if = {
 		limit = { has_template = "CXT - Quantum Transit Raiders" }
-		for_loop_effect = {
-			end = constant:chaosx_test_country_count.divisions_per_template
-			value = chaosx_test_country_spawn_index
-			random_owned_controlled_state = {
-				create_unit = {
-					division = "name = \"CXT - Quantum Transit Raiders\" division_template = \"CXT - Quantum Transit Raiders\" start_experience_factor = 1 start_equipment_factor = 1 start_manpower_factor = 1"
-					owner = PREV
-					count = constant:chaosx_test_country_count.divisions_per_state_pick
-				}
-			}
-		}
+		set_temp_variable = { var = chaosx_test_country_current_support_subunit value = 0 }
+		set_temp_variable = { var = chaosx_test_country_current_family value = token:portal_raider }
+		set_variable = { global.chaosx_test_country_spawn_template = token:cxt_template_quantum_transit_raiders }
+		chaosx_test_country_spawn_family_template = yes
 	}
 	if = {
 		limit = { has_template = "CXT - Replicated Guard Cadre" }
-		for_loop_effect = {
-			end = constant:chaosx_test_country_count.divisions_per_template
-			value = chaosx_test_country_spawn_index
-			random_owned_controlled_state = {
-				create_unit = {
-					division = "name = \"CXT - Replicated Guard Cadre\" division_template = \"CXT - Replicated Guard Cadre\" start_experience_factor = 1 start_equipment_factor = 1 start_manpower_factor = 1"
-					owner = PREV
-					count = constant:chaosx_test_country_count.divisions_per_state_pick
-				}
-			}
-		}
+		set_temp_variable = { var = chaosx_test_country_current_support_subunit value = 0 }
+		set_temp_variable = { var = chaosx_test_country_current_family value = token:clone_infantry }
+		set_variable = { global.chaosx_test_country_spawn_template = token:cxt_template_replicated_guard_cadre }
+		chaosx_test_country_spawn_family_template = yes
 	}
 	if = {
 		limit = { has_template = "CXT - Aryan Clone Formation" }
-		for_loop_effect = {
-			end = constant:chaosx_test_country_count.divisions_per_template
-			value = chaosx_test_country_spawn_index
-			random_owned_controlled_state = {
-				create_unit = {
-					division = "name = \"CXT - Aryan Clone Formation\" division_template = \"CXT - Aryan Clone Formation\" start_experience_factor = 1 start_equipment_factor = 1 start_manpower_factor = 1"
-					owner = PREV
-					count = constant:chaosx_test_country_count.divisions_per_state_pick
-				}
-			}
-		}
+		set_temp_variable = { var = chaosx_test_country_current_support_subunit value = 0 }
+		set_temp_variable = { var = chaosx_test_country_current_family value = token:clone_infantry }
+		set_variable = { global.chaosx_test_country_spawn_template = token:cxt_template_aryan_clone_formation }
+		chaosx_test_country_spawn_family_template = yes
 	}
 	if = {
 		limit = { has_template = "CXT - Autonomous Robot Cohort" }
-		for_loop_effect = {
-			end = constant:chaosx_test_country_count.divisions_per_template
-			value = chaosx_test_country_spawn_index
-			random_owned_controlled_state = {
-				create_unit = {
-					division = "name = \"CXT - Autonomous Robot Cohort\" division_template = \"CXT - Autonomous Robot Cohort\" start_experience_factor = 1 start_equipment_factor = 1 start_manpower_factor = 1"
-					owner = PREV
-					count = constant:chaosx_test_country_count.divisions_per_state_pick
-				}
-			}
-		}
+		set_temp_variable = { var = chaosx_test_country_current_support_subunit value = 0 }
+		set_temp_variable = { var = chaosx_test_country_current_family value = token:autonomous_robot }
+		set_variable = { global.chaosx_test_country_spawn_template = token:cxt_template_autonomous_robot_cohort }
+		chaosx_test_country_spawn_family_template = yes
 	}
 	if = {
 		limit = { has_template = "CXT - Paleogenetic Shock Pack" }
-		for_loop_effect = {
-			end = constant:chaosx_test_country_count.divisions_per_template
-			value = chaosx_test_country_spawn_index
-			random_owned_controlled_state = {
-				create_unit = {
-					division = "name = \"CXT - Paleogenetic Shock Pack\" division_template = \"CXT - Paleogenetic Shock Pack\" start_experience_factor = 1 start_equipment_factor = 1 start_manpower_factor = 1"
-					owner = PREV
-					count = constant:chaosx_test_country_count.divisions_per_state_pick
-				}
-			}
-		}
+		set_temp_variable = { var = chaosx_test_country_current_support_subunit value = 0 }
+		set_temp_variable = { var = chaosx_test_country_current_family value = token:paleogenetic_creature }
+		set_variable = { global.chaosx_test_country_spawn_template = token:cxt_template_paleogenetic_shock_pack }
+		chaosx_test_country_spawn_family_template = yes
 	}
 	if = {
 		limit = { has_template = "CXT - Xenobiological Assault Organisms" }
-		for_loop_effect = {
-			end = constant:chaosx_test_country_count.divisions_per_template
-			value = chaosx_test_country_spawn_index
-			random_owned_controlled_state = {
-				create_unit = {
-					division = "name = \"CXT - Xenobiological Assault Organisms\" division_template = \"CXT - Xenobiological Assault Organisms\" start_experience_factor = 1 start_equipment_factor = 1 start_manpower_factor = 1"
-					owner = PREV
-					count = constant:chaosx_test_country_count.divisions_per_state_pick
-				}
-			}
-		}
+		set_temp_variable = { var = chaosx_test_country_current_support_subunit value = 0 }
+		set_temp_variable = { var = chaosx_test_country_current_family value = token:xenobiological_assault_organism }
+		set_variable = { global.chaosx_test_country_spawn_template = token:cxt_template_xenobiological_assault_organisms }
+		chaosx_test_country_spawn_family_template = yes
 	}
 	if = {
 		limit = { has_template = "CXT - Temporal Continuity Guard" }
-		for_loop_effect = {
-			end = constant:chaosx_test_country_count.divisions_per_template
-			value = chaosx_test_country_spawn_index
-			random_owned_controlled_state = {
-				create_unit = {
-					division = "name = \"CXT - Temporal Continuity Guard\" division_template = \"CXT - Temporal Continuity Guard\" start_experience_factor = 1 start_equipment_factor = 1 start_manpower_factor = 1"
-					owner = PREV
-					count = constant:chaosx_test_country_count.divisions_per_state_pick
-				}
-			}
-		}
+		set_temp_variable = { var = chaosx_test_country_current_support_subunit value = 0 }
+		set_temp_variable = { var = chaosx_test_country_current_family value = token:temporal_guard }
+		set_variable = { global.chaosx_test_country_spawn_template = token:cxt_template_temporal_continuity_guard }
+		chaosx_test_country_spawn_family_template = yes
 	}
 	if = {
 		limit = { has_template = "CXT - Chaos Warfare Battalion" }
-		for_loop_effect = {
-			end = constant:chaosx_test_country_count.divisions_per_template
-			value = chaosx_test_country_spawn_index
-			random_owned_controlled_state = {
-				create_unit = {
-					division = "name = \"CXT - Chaos Warfare Battalion\" division_template = \"CXT - Chaos Warfare Battalion\" start_experience_factor = 1 start_equipment_factor = 1 start_manpower_factor = 1"
-					owner = PREV
-					count = constant:chaosx_test_country_count.divisions_per_state_pick
-				}
-			}
-		}
+		set_temp_variable = { var = chaosx_test_country_current_support_subunit value = 0 }
+		set_temp_variable = { var = chaosx_test_country_current_family value = token:chaos_battalion }
+		set_variable = { global.chaosx_test_country_spawn_template = token:cxt_template_chaos_warfare_battalion }
+		chaosx_test_country_spawn_family_template = yes
 	}
 	if = {
 		limit = { has_template = "CXT - CBRN Protection Column" }
-		for_loop_effect = {
-			end = constant:chaosx_test_country_count.divisions_per_template
-			value = chaosx_test_country_spawn_index
-			random_owned_controlled_state = {
-				create_unit = {
-					division = "name = \"CXT - CBRN Protection Column\" division_template = \"CXT - CBRN Protection Column\" start_experience_factor = 1 start_equipment_factor = 1 start_manpower_factor = 1"
-					owner = PREV
-					count = constant:chaosx_test_country_count.divisions_per_state_pick
-				}
-			}
-		}
+		set_temp_variable = { var = chaosx_test_country_current_support_subunit value = 0 }
+		set_temp_variable = { var = chaosx_test_country_current_family value = token:chaosx_cxt_extension_cbrn_unit_family_showcases }
+		set_variable = { global.chaosx_test_country_spawn_template = token:cxt_template_cbrn_protection_column }
+		chaosx_test_country_spawn_family_template = yes
 	}
 	if = {
 		limit = { has_template = "CXT - CBRN Biosecurity Column" }
-		for_loop_effect = {
-			end = constant:chaosx_test_country_count.divisions_per_template
-			value = chaosx_test_country_spawn_index
-			random_owned_controlled_state = {
-				create_unit = {
-					division = "name = \"CXT - CBRN Biosecurity Column\" division_template = \"CXT - CBRN Biosecurity Column\" start_experience_factor = 1 start_equipment_factor = 1 start_manpower_factor = 1"
-					owner = PREV
-					count = constant:chaosx_test_country_count.divisions_per_state_pick
-				}
-			}
-		}
+		set_temp_variable = { var = chaosx_test_country_current_support_subunit value = 0 }
+		set_temp_variable = { var = chaosx_test_country_current_family value = token:chaosx_cxt_extension_cbrn_unit_family_showcases }
+		set_variable = { global.chaosx_test_country_spawn_template = token:cxt_template_cbrn_biosecurity_column }
+		chaosx_test_country_spawn_family_template = yes
 	}
 	if = {
 		limit = { has_template = "CXT - CBRN Nerve Column" }
-		for_loop_effect = {
-			end = constant:chaosx_test_country_count.divisions_per_template
-			value = chaosx_test_country_spawn_index
-			random_owned_controlled_state = {
-				create_unit = {
-					division = "name = \"CXT - CBRN Nerve Column\" division_template = \"CXT - CBRN Nerve Column\" start_experience_factor = 1 start_equipment_factor = 1 start_manpower_factor = 1"
-					owner = PREV
-					count = constant:chaosx_test_country_count.divisions_per_state_pick
-				}
-			}
-		}
+		set_temp_variable = { var = chaosx_test_country_current_support_subunit value = 0 }
+		set_temp_variable = { var = chaosx_test_country_current_family value = token:chaosx_cxt_extension_cbrn_unit_family_showcases }
+		set_variable = { global.chaosx_test_country_spawn_template = token:cxt_template_cbrn_nerve_column }
+		chaosx_test_country_spawn_family_template = yes
 	}
 	if = {
 		limit = { has_template = "CXT - CBRN Light Armor" }
-		for_loop_effect = {
-			end = constant:chaosx_test_country_count.divisions_per_template
-			value = chaosx_test_country_spawn_index
-			random_owned_controlled_state = {
-				create_unit = {
-					division = "name = \"CXT - CBRN Light Armor\" division_template = \"CXT - CBRN Light Armor\" start_experience_factor = 1 start_equipment_factor = 1 start_manpower_factor = 1"
-					owner = PREV
-					count = constant:chaosx_test_country_count.divisions_per_state_pick
-				}
-			}
-		}
+		set_temp_variable = { var = chaosx_test_country_current_support_subunit value = 0 }
+		set_temp_variable = { var = chaosx_test_country_current_family value = token:chaosx_cxt_extension_cbrn_unit_family_showcases }
+		set_variable = { global.chaosx_test_country_spawn_template = token:cxt_template_cbrn_light_armor }
+		chaosx_test_country_spawn_family_template = yes
 	}
 	if = {
 		limit = { has_template = "CXT - CBRN Medium Armor" }
-		for_loop_effect = {
-			end = constant:chaosx_test_country_count.divisions_per_template
-			value = chaosx_test_country_spawn_index
-			random_owned_controlled_state = {
-				create_unit = {
-					division = "name = \"CXT - CBRN Medium Armor\" division_template = \"CXT - CBRN Medium Armor\" start_experience_factor = 1 start_equipment_factor = 1 start_manpower_factor = 1"
-					owner = PREV
-					count = constant:chaosx_test_country_count.divisions_per_state_pick
-				}
-			}
-		}
+		set_temp_variable = { var = chaosx_test_country_current_support_subunit value = 0 }
+		set_temp_variable = { var = chaosx_test_country_current_family value = token:chaosx_cxt_extension_cbrn_unit_family_showcases }
+		set_variable = { global.chaosx_test_country_spawn_template = token:cxt_template_cbrn_medium_armor }
+		chaosx_test_country_spawn_family_template = yes
 	}
 	if = {
 		limit = { has_template = "CXT - CBRN Heavy Armor" }
-		for_loop_effect = {
-			end = constant:chaosx_test_country_count.divisions_per_template
-			value = chaosx_test_country_spawn_index
-			random_owned_controlled_state = {
-				create_unit = {
-					division = "name = \"CXT - CBRN Heavy Armor\" division_template = \"CXT - CBRN Heavy Armor\" start_experience_factor = 1 start_equipment_factor = 1 start_manpower_factor = 1"
-					owner = PREV
-					count = constant:chaosx_test_country_count.divisions_per_state_pick
-				}
-			}
-		}
+		set_temp_variable = { var = chaosx_test_country_current_support_subunit value = 0 }
+		set_temp_variable = { var = chaosx_test_country_current_family value = token:chaosx_cxt_extension_cbrn_unit_family_showcases }
+		set_variable = { global.chaosx_test_country_spawn_template = token:cxt_template_cbrn_heavy_armor }
+		chaosx_test_country_spawn_family_template = yes
 	}
 }
 
@@ -960,18 +794,13 @@ chaosx_test_country_register_frontline_subunit = {
 	if = {
 		limit = { has_variable = chaosx_test_country_registration_frontline_subunit }
 		if = {
-			limit = {
-				NOT = {
-					is_in_array = {
-						array = global.chaosx_test_country_registered_frontline_subunits
-						value = chaosx_test_country_registration_frontline_subunit
-					}
-				}
+			limit = { NOT = { is_in_array = { array = global.chaosx_test_country_registered_frontline_subunits value = chaosx_test_country_registration_frontline_subunit } } }
+			add_to_array = { array = global.chaosx_test_country_registered_frontline_subunits value = chaosx_test_country_registration_frontline_subunit }
+			if = {
+				limit = { NOT = { check_variable = { var = chaosx_test_country_current_unit_family value = constant:chaosx_test_country.unit_family_unset compare = equals } } }
+				add_to_array = { array = global.chaosx_test_country_registered_frontline_families value = chaosx_test_country_current_unit_family }
 			}
-			add_to_array = {
-				array = global.chaosx_test_country_registered_frontline_subunits
-				value = chaosx_test_country_registration_frontline_subunit
-			}
+			else = { add_to_array = { array = global.chaosx_test_country_registered_frontline_families value = chaosx_test_country_registration_frontline_subunit } }
 		}
 	}
 }
@@ -980,213 +809,474 @@ chaosx_test_country_register_frontline_subunit = {
 # must choose an anchor compatible with the support's battalion-group rules.
 chaosx_test_country_register_support_subunit = {
 	if = {
-		limit = {
-			has_variable = chaosx_test_country_registration_support_subunit
-			has_variable = chaosx_test_country_registration_support_anchor
-		}
+		limit = { has_variable = chaosx_test_country_registration_support_subunit has_variable = chaosx_test_country_registration_support_anchor }
 		if = {
-			limit = {
-				NOT = {
-					is_in_array = {
-						array = global.chaosx_test_country_registered_support_subunits
-						value = chaosx_test_country_registration_support_subunit
-					}
-				}
+			limit = { NOT = { is_in_array = { array = global.chaosx_test_country_registered_support_subunits value = chaosx_test_country_registration_support_subunit } } }
+			add_to_array = { array = global.chaosx_test_country_registered_support_subunits value = chaosx_test_country_registration_support_subunit }
+			add_to_array = { array = global.chaosx_test_country_registered_support_anchors value = chaosx_test_country_registration_support_anchor }
+			if = {
+				limit = { NOT = { check_variable = { var = chaosx_test_country_current_unit_family value = constant:chaosx_test_country.unit_family_unset compare = equals } } }
+				add_to_array = { array = global.chaosx_test_country_registered_support_families value = chaosx_test_country_current_unit_family }
 			}
-			add_to_array = {
-				array = global.chaosx_test_country_registered_support_subunits
-				value = chaosx_test_country_registration_support_subunit
-			}
-			add_to_array = {
-				array = global.chaosx_test_country_registered_support_anchors
-				value = chaosx_test_country_registration_support_anchor
-			}
+			else = { add_to_array = { array = global.chaosx_test_country_registered_support_families value = chaosx_test_country_registration_support_subunit } }
 		}
 	}
 }
 
-# Future package frontline fallback: a six-battalion formation.
+
+# Inputs: a unique real token for the authored template and its owner family token.
+chaosx_test_country_register_package_formation = {
+	if = {
+		limit = { has_variable = chaosx_test_country_registration_package_formation has_variable = chaosx_test_country_registration_package_family }
+		if = {
+			limit = { NOT = { is_in_array = { array = global.chaosx_test_country_registered_package_formations value = chaosx_test_country_registration_package_formation } } }
+			add_to_array = { array = global.chaosx_test_country_registered_package_formations value = chaosx_test_country_registration_package_formation }
+			add_to_array = { array = global.chaosx_test_country_registered_package_families value = chaosx_test_country_registration_package_family }
+		}
+	}
+}
+
+# Future and static frontline showcase: four identical battalions in one valid regiment column.
 chaosx_test_country_create_registered_frontline_subunit = {
+	set_variable = { global.chaosx_test_country_spawn_subunit = chaosx_test_country_current_frontline_subunit }
 	meta_effect = {
 		text = {
 			unlock_subunit = [UNIT]
-			division_template = {
-				name = "CXT Registered - [UNIT]"
-				is_locked = no
-				force_allow_recruiting = yes
-				regiments = {
-					[UNIT] = { x = 0 y = 0 }
-					[UNIT] = { x = 0 y = 1 }
-					[UNIT] = { x = 0 y = 2 }
-					[UNIT] = { x = 1 y = 0 }
-					[UNIT] = { x = 1 y = 1 }
-					[UNIT] = { x = 1 y = 2 }
+			if = {
+				limit = { NOT = { has_template = "CXT Registered - [UNIT]" } }
+				division_template = {
+					name = "CXT Registered - [UNIT]"
+					is_locked = no
+					force_allow_recruiting = yes
+					regiments = {
+						[UNIT] = { x = 0 y = 0 }
+						[UNIT] = { x = 0 y = 1 }
+						[UNIT] = { x = 0 y = 2 }
+						[UNIT] = { x = 0 y = 3 }
+					}
 				}
 			}
 		}
 		UNIT = "[?chaosx_test_country_current_frontline_subunit.GetTokenKey]"
 	}
-	for_loop_effect = {
-		end = constant:chaosx_test_country_count.divisions_per_template
-		value = chaosx_test_country_spawn_index
-		random_owned_controlled_state = {
-			meta_effect = {
-				text = {
-					create_unit = {
-						division = "name = \"CXT Registered - [UNIT]\" division_template = \"CXT Registered - [UNIT]\" start_experience_factor = 1 start_equipment_factor = 1 start_manpower_factor = 1"
-						owner = PREV
-						count = constant:chaosx_test_country_count.divisions_per_state_pick
-					}
-				}
-				UNIT = "[?chaosx_test_country_current_frontline_subunit.GetTokenKey]"
-			}
+	if = {
+		limit = { NOT = { is_in_array = { array = global.chaosx_test_country_spawned_showcase_subunits value = chaosx_test_country_current_frontline_subunit } } }
+		set_temp_variable = { var = chaosx_test_country_family_spawn_succeeded value = 0 }
+		set_temp_variable = { var = chaosx_test_country_current_support_subunit value = 0 }
+		meta_effect = {
+			text = { set_variable = { global.chaosx_test_country_spawn_template = token:cxt_template_registered_unit } chaosx_test_country_spawn_family_template = yes }
+			UNIT = "[?chaosx_test_country_current_frontline_subunit.GetTokenKey]"
+		}
+		if = {
+			limit = { check_variable = { chaosx_test_country_family_spawn_succeeded > 0 } }
+			add_to_array = { array = global.chaosx_test_country_spawned_showcase_subunits value = chaosx_test_country_current_frontline_subunit }
 		}
 	}
 }
 
-# Future package support fallback: six combat battalions and one support.
+# Builds a dedicated, homogeneous support showcase with the correct template
+# region for each support role. CBRN regimental companies use their permitted
+# battalion group anchor, and Army-HQ sections use an Army HQ template.
 chaosx_test_country_create_registered_support_subunit = {
+	set_variable = { global.chaosx_test_country_spawn_subunit = chaosx_test_country_current_support_subunit }
 	meta_effect = {
 		text = {
 			unlock_subunit = [UNIT]
-			division_template = {
-				name = "CXT Registered - [UNIT]"
-				is_locked = no
-				force_allow_recruiting = yes
-				regiments = {
-					[ANCHOR] = { x = 0 y = 0 }
-					[ANCHOR] = { x = 0 y = 1 }
-					[ANCHOR] = { x = 0 y = 2 }
-					[ANCHOR] = { x = 1 y = 0 }
-					[ANCHOR] = { x = 1 y = 1 }
-					[ANCHOR] = { x = 1 y = 2 }
+			if = {
+				limit = { NOT = { has_template = "CXT Registered - [UNIT]" } is_in_array = { array = global.chaosx_test_country_army_hq_showcase_subunits value = token:[UNIT] } }
+				unlock_subunit = hq_infantry
+				division_template = {
+					name = "CXT Registered - [UNIT]"
+					is_locked = no
+					force_allow_recruiting = yes
+					is_army_hq = yes
+					regiments = {
+						hq_infantry = { x = 0 y = 0 }
+						hq_infantry = { x = 0 y = 1 }
+						hq_infantry = { x = 0 y = 2 }
+						hq_infantry = { x = 0 y = 3 }
+					}
+					support = { [UNIT] = { x = 0 y = 0 } }
 				}
-				support = {
-					[UNIT] = { x = 0 y = 0 }
+			}
+			if = {
+				limit = { NOT = { has_template = "CXT Registered - [UNIT]" } is_in_array = { array = global.chaosx_test_country_regimental_support_showcase_subunits value = token:[UNIT] } }
+				division_template = {
+					name = "CXT Registered - [UNIT]"
+					is_locked = no
+					force_allow_recruiting = yes
+					regiments = {
+						[ANCHOR] = { x = 0 y = 0 }
+						[ANCHOR] = { x = 0 y = 1 }
+						[ANCHOR] = { x = 0 y = 2 }
+						[ANCHOR] = { x = 0 y = 3 }
+					}
+					regimental_support = { [UNIT] = { x = 0 y = 0 } }
+				}
+			}
+			if = {
+				limit = { NOT = { has_template = "CXT Registered - [UNIT]" } NOT = { is_in_array = { array = global.chaosx_test_country_army_hq_showcase_subunits value = token:[UNIT] } } NOT = { is_in_array = { array = global.chaosx_test_country_regimental_support_showcase_subunits value = token:[UNIT] } } }
+				division_template = {
+					name = "CXT Registered - [UNIT]"
+					is_locked = no
+					force_allow_recruiting = yes
+					regiments = {
+						[ANCHOR] = { x = 0 y = 0 }
+						[ANCHOR] = { x = 0 y = 1 }
+						[ANCHOR] = { x = 0 y = 2 }
+						[ANCHOR] = { x = 0 y = 3 }
+					}
+					support = { [UNIT] = { x = 0 y = 0 } }
 				}
 			}
 		}
 		UNIT = "[?chaosx_test_country_current_support_subunit.GetTokenKey]"
 		ANCHOR = "[?chaosx_test_country_current_support_anchor.GetTokenKey]"
 	}
-	for_loop_effect = {
-		end = constant:chaosx_test_country_count.divisions_per_template
-		value = chaosx_test_country_spawn_index
-		random_owned_controlled_state = {
-			meta_effect = {
-				text = {
-					create_unit = {
-						division = "name = \"CXT Registered - [UNIT]\" division_template = \"CXT Registered - [UNIT]\" start_experience_factor = 1 start_equipment_factor = 1 start_manpower_factor = 1"
-						owner = PREV
-						count = constant:chaosx_test_country_count.divisions_per_state_pick
-					}
-				}
-				UNIT = "[?chaosx_test_country_current_support_subunit.GetTokenKey]"
-			}
+	if = {
+		limit = { NOT = { is_in_array = { array = global.chaosx_test_country_spawned_showcase_subunits value = chaosx_test_country_current_support_subunit } } }
+		set_temp_variable = { var = chaosx_test_country_family_spawn_succeeded value = 0 }
+		meta_effect = {
+			text = { set_variable = { global.chaosx_test_country_spawn_template = token:cxt_template_registered_unit } chaosx_test_country_spawn_family_template = yes }
+			UNIT = "[?chaosx_test_country_current_support_subunit.GetTokenKey]"
+		}
+		if = {
+			limit = { check_variable = { chaosx_test_country_family_spawn_succeeded > 0 } }
+			add_to_array = { array = global.chaosx_test_country_spawned_showcase_subunits value = chaosx_test_country_current_support_subunit }
 		}
 	}
 }
 
 # The processed arrays keep package application idempotent.
 chaosx_test_country_create_registered_unit_roster = {
+	set_temp_variable = { var = chaosx_test_country_registry_create_registered_unit_roster_break_1 value = constant:chaosx_test_country_deployment.zero }
 	for_each_loop = {
+		break = chaosx_test_country_registry_create_registered_unit_roster_break_1
 		array = global.chaosx_test_country_registered_frontline_subunits
 		value = chaosx_test_country_current_frontline_subunit
+		index = chaosx_test_country_current_frontline_index
+		set_variable = { global.chaosx_test_country_spawn_subunit = chaosx_test_country_current_frontline_subunit }
+		set_temp_variable = { var = chaosx_test_country_current_family value = constant:chaosx_test_country.unit_family_unset }
+		set_temp_variable = { var = chaosx_test_country_current_family value = global.chaosx_test_country_registered_frontline_families^chaosx_test_country_current_frontline_index }
+		if = { limit = { check_variable = { var = chaosx_test_country_current_family value = constant:chaosx_test_country.unit_family_unset compare = equals } } set_temp_variable = { var = chaosx_test_country_current_family value = chaosx_test_country_current_frontline_subunit } }
+		chaosx_test_country_create_registered_frontline_subunit = yes
 		if = {
-			limit = {
-				NOT = {
-					is_in_array = {
-						array = chaosx_test_country_processed_frontline_subunits
-						value = chaosx_test_country_current_frontline_subunit
-					}
-				}
-			}
-			chaosx_test_country_create_registered_frontline_subunit = yes
-			add_to_array = {
-				array = chaosx_test_country_processed_frontline_subunits
-				value = chaosx_test_country_current_frontline_subunit
-			}
+			limit = { NOT = { is_in_array = { array = chaosx_test_country_processed_frontline_subunits value = chaosx_test_country_current_frontline_subunit } } }
+			add_to_array = { array = chaosx_test_country_processed_frontline_subunits value = chaosx_test_country_current_frontline_subunit }
 		}
 	}
+	set_temp_variable = { var = chaosx_test_country_registry_create_registered_unit_roster_break_2 value = constant:chaosx_test_country_deployment.zero }
 	for_each_loop = {
+		break = chaosx_test_country_registry_create_registered_unit_roster_break_2
 		array = global.chaosx_test_country_registered_support_subunits
 		value = chaosx_test_country_current_support_subunit
 		index = chaosx_test_country_current_support_index
+		set_variable = { global.chaosx_test_country_spawn_subunit = chaosx_test_country_current_support_subunit }
+		set_temp_variable = { var = chaosx_test_country_current_support_anchor value = global.chaosx_test_country_registered_support_anchors^chaosx_test_country_current_support_index }
+		set_temp_variable = { var = chaosx_test_country_current_family value = constant:chaosx_test_country.unit_family_unset }
+		set_temp_variable = { var = chaosx_test_country_current_family value = global.chaosx_test_country_registered_support_families^chaosx_test_country_current_support_index }
+		if = { limit = { check_variable = { var = chaosx_test_country_current_family value = constant:chaosx_test_country.unit_family_unset compare = equals } } set_temp_variable = { var = chaosx_test_country_current_family value = chaosx_test_country_current_support_subunit } }
 		if = {
-			limit = {
-				NOT = {
-					is_in_array = {
-						array = chaosx_test_country_processed_support_subunits
-						value = chaosx_test_country_current_support_subunit
+			limit = { is_in_array = { array = chaosx_test_country_processed_frontline_subunits value = chaosx_test_country_current_support_anchor } }
+			chaosx_test_country_create_registered_support_subunit = yes
+			if = { limit = { NOT = { is_in_array = { array = chaosx_test_country_processed_support_subunits value = chaosx_test_country_current_support_subunit } } } add_to_array = { array = chaosx_test_country_processed_support_subunits value = chaosx_test_country_current_support_subunit } }
+		}
+	}
+	chaosx_test_country_spawn_package_formations = yes
+}
+
+# Package-owned carriers register every omitted or static custom unit family.
+chaosx_test_country_register_zombies_showcases = {
+	set_temp_variable = { var = chaosx_test_country_registration_extension_effect value = token:chaosx_cxt_extension_zombies_showcases }
+	chaosx_test_country_register_extension_effect = yes
+}
+
+chaosx_cxt_extension_zombies_showcases_apply = {
+	if = { limit = { NOT = { has_country_flag = chaosx_cxt_zombies_showcases_registered } }
+		set_temp_variable = { var = chaosx_test_country_current_unit_family value = token:chaosx_cxt_extension_zombies_showcases }
+		set_temp_variable = { var = chaosx_test_country_registration_frontline_subunit value = token:zombies }
+		chaosx_test_country_register_frontline_subunit = yes
+		set_temp_variable = { var = chaosx_test_country_registration_frontline_subunit value = token:infected_zombies }
+		chaosx_test_country_register_frontline_subunit = yes
+		set_temp_variable = { var = chaosx_test_country_registration_frontline_subunit value = token:rabid_zombies }
+		chaosx_test_country_register_frontline_subunit = yes
+		set_temp_variable = { var = chaosx_test_country_registration_frontline_subunit value = token:parasitic_zombies }
+		chaosx_test_country_register_frontline_subunit = yes
+		set_temp_variable = { var = chaosx_test_country_registration_frontline_subunit value = token:mutant_zombies }
+		chaosx_test_country_register_frontline_subunit = yes
+		set_temp_variable = { var = chaosx_test_country_registration_frontline_subunit value = token:undead_zombies }
+		chaosx_test_country_register_frontline_subunit = yes
+		set_temp_variable = { var = chaosx_test_country_registration_frontline_subunit value = token:necrotic_zombies }
+		chaosx_test_country_register_frontline_subunit = yes
+		set_temp_variable = { var = chaosx_test_country_registration_frontline_subunit value = token:demonic_zombies }
+		chaosx_test_country_register_frontline_subunit = yes
+		set_temp_variable = { var = chaosx_test_country_registration_frontline_subunit value = token:wendigo_zombies }
+		chaosx_test_country_register_frontline_subunit = yes
+		set_temp_variable = { var = chaosx_test_country_registration_frontline_subunit value = token:armored_undead_zombies }
+		chaosx_test_country_register_frontline_subunit = yes
+		set_temp_variable = { var = chaosx_test_country_registration_frontline_subunit value = token:armored_necrotic_zombies }
+		chaosx_test_country_register_frontline_subunit = yes
+		set_temp_variable = { var = chaosx_test_country_registration_frontline_subunit value = token:armored_demonic_zombies }
+		chaosx_test_country_register_frontline_subunit = yes
+		set_country_flag = chaosx_cxt_zombies_showcases_registered
+	}
+}
+
+chaosx_test_country_register_death_hosts_showcases = {
+	set_temp_variable = { var = chaosx_test_country_registration_extension_effect value = token:chaosx_cxt_extension_death_hosts_showcases }
+	chaosx_test_country_register_extension_effect = yes
+}
+
+chaosx_cxt_extension_death_hosts_showcases_apply = {
+	if = { limit = { NOT = { has_country_flag = chaosx_cxt_death_hosts_showcases_registered } }
+		set_temp_variable = { var = chaosx_test_country_current_unit_family value = token:chaosx_cxt_extension_death_hosts_showcases }
+		set_temp_variable = { var = chaosx_test_country_registration_frontline_subunit value = token:death_weak_ghost_host }
+		chaosx_test_country_register_frontline_subunit = yes
+		set_temp_variable = { var = chaosx_test_country_registration_frontline_subunit value = token:death_hollow_ghost_host }
+		chaosx_test_country_register_frontline_subunit = yes
+		set_temp_variable = { var = chaosx_test_country_registration_frontline_subunit value = token:death_last_shore_ghost_host }
+		chaosx_test_country_register_frontline_subunit = yes
+		set_country_flag = chaosx_cxt_death_hosts_showcases_registered
+	}
+}
+
+chaosx_test_country_register_cave_broods_showcases = {
+	set_temp_variable = { var = chaosx_test_country_registration_extension_effect value = token:chaosx_cxt_extension_cave_broods_showcases }
+	chaosx_test_country_register_extension_effect = yes
+}
+
+chaosx_cxt_extension_cave_broods_showcases_apply = {
+	if = { limit = { NOT = { has_country_flag = chaosx_cxt_cave_broods_showcases_registered } }
+		set_temp_variable = { var = chaosx_test_country_current_unit_family value = token:chaosx_cxt_extension_cave_broods_showcases }
+		set_temp_variable = { var = chaosx_test_country_registration_frontline_subunit value = token:cave_monster_brood }
+		chaosx_test_country_register_frontline_subunit = yes
+		set_temp_variable = { var = chaosx_test_country_registration_frontline_subunit value = token:cave_stone_phalanx_brood }
+		chaosx_test_country_register_frontline_subunit = yes
+		set_temp_variable = { var = chaosx_test_country_registration_frontline_subunit value = token:cave_burrow_war_brood }
+		chaosx_test_country_register_frontline_subunit = yes
+		set_temp_variable = { var = chaosx_test_country_registration_frontline_subunit value = token:cave_scree_tide_brood }
+		chaosx_test_country_register_frontline_subunit = yes
+		set_temp_variable = { var = chaosx_test_country_registration_frontline_subunit value = token:cave_anchor_guard_brood }
+		chaosx_test_country_register_frontline_subunit = yes
+		set_country_flag = chaosx_cxt_cave_broods_showcases_registered
+	}
+}
+
+chaosx_test_country_register_rat_broods_showcases = {
+	set_temp_variable = { var = chaosx_test_country_registration_extension_effect value = token:chaosx_cxt_extension_rat_broods_showcases }
+	chaosx_test_country_register_extension_effect = yes
+}
+
+chaosx_cxt_extension_rat_broods_showcases_apply = {
+	if = { limit = { NOT = { has_country_flag = chaosx_cxt_rat_broods_showcases_registered } }
+		set_temp_variable = { var = chaosx_test_country_current_unit_family value = token:chaosx_cxt_extension_rat_broods_showcases }
+		set_temp_variable = { var = chaosx_test_country_registration_frontline_subunit value = token:rat_swarm }
+		chaosx_test_country_register_frontline_subunit = yes
+		set_temp_variable = { var = chaosx_test_country_registration_frontline_subunit value = token:rat_brutes }
+		chaosx_test_country_register_frontline_subunit = yes
+		set_temp_variable = { var = chaosx_test_country_registration_frontline_subunit value = token:rat_burrowers }
+		chaosx_test_country_register_frontline_subunit = yes
+		set_temp_variable = { var = chaosx_test_country_registration_frontline_subunit value = token:rat_carrion_guard }
+		chaosx_test_country_register_frontline_subunit = yes
+		set_temp_variable = { var = chaosx_test_country_registration_frontline_subunit value = token:rat_dock_stowaways }
+		chaosx_test_country_register_frontline_subunit = yes
+		set_temp_variable = { var = chaosx_test_country_registration_support_subunit value = token:rat_tunnelers }
+		set_temp_variable = { var = chaosx_test_country_registration_support_anchor value = token:rat_swarm }
+		chaosx_test_country_register_support_subunit = yes
+		set_country_flag = chaosx_cxt_rat_broods_showcases_registered
+	}
+}
+
+chaosx_test_country_register_coal_golems_showcases = {
+	set_temp_variable = { var = chaosx_test_country_registration_extension_effect value = token:chaosx_cxt_extension_coal_golems_showcases }
+	chaosx_test_country_register_extension_effect = yes
+}
+
+chaosx_cxt_extension_coal_golems_showcases_apply = {
+	if = { limit = { NOT = { has_country_flag = chaosx_cxt_coal_golems_showcases_registered } }
+		set_temp_variable = { var = chaosx_test_country_current_unit_family value = token:chaosx_cxt_extension_coal_golems_showcases }
+		set_temp_variable = { var = chaosx_test_country_registration_frontline_subunit value = token:coal_golem }
+		chaosx_test_country_register_frontline_subunit = yes
+		set_country_flag = chaosx_cxt_coal_golems_showcases_registered
+	}
+}
+
+chaosx_test_country_register_cbrn_unit_family_showcases = {
+	set_temp_variable = { var = chaosx_test_country_registration_extension_effect value = token:chaosx_cxt_extension_cbrn_unit_family_showcases }
+	chaosx_test_country_register_extension_effect = yes
+}
+
+chaosx_cxt_extension_cbrn_unit_family_showcases_apply = {
+	if = { limit = { NOT = { has_country_flag = chaosx_cxt_cbrn_unit_family_showcases_registered } }
+		set_temp_variable = { var = chaosx_test_country_current_unit_family value = token:chaos_battalion }
+		set_temp_variable = { var = chaosx_test_country_registration_frontline_subunit value = token:chaos_battalion }
+		chaosx_test_country_register_frontline_subunit = yes
+		set_temp_variable = { var = chaosx_test_country_current_unit_family value = token:chaosx_cxt_extension_cbrn_unit_family_showcases }
+		unlock_subunit = hq_infantry
+		if = { limit = { NOT = { is_in_array = { array = chaosx_test_country_processed_frontline_subunits value = token:hq_infantry } } } add_to_array = { array = chaosx_test_country_processed_frontline_subunits value = token:hq_infantry } }
+		add_to_array = { array = global.chaosx_test_country_regimental_support_showcase_subunits value = token:cbrn_gas_mask_decon_detachment }
+		add_to_array = { array = global.chaosx_test_country_regimental_support_showcase_subunits value = token:cbrn_chemical_recon_detachment }
+		add_to_array = { array = global.chaosx_test_country_regimental_support_showcase_subunits value = token:cbrn_chemical_projector_battery }
+		add_to_array = { array = global.chaosx_test_country_regimental_support_showcase_subunits value = token:cbrn_chemical_ammunition_train }
+		add_to_array = { array = global.chaosx_test_country_regimental_support_showcase_subunits value = token:cbrn_light_armored_delivery_detachment }
+		add_to_array = { array = global.chaosx_test_country_regimental_support_showcase_subunits value = token:cbrn_medium_armored_delivery_detachment }
+		add_to_array = { array = global.chaosx_test_country_regimental_support_showcase_subunits value = token:cbrn_heavy_armored_delivery_detachment }
+		add_to_array = { array = global.chaosx_test_country_regimental_support_showcase_subunits value = token:cbrn_medical_countermeasure_detachment }
+		add_to_array = { array = global.chaosx_test_country_regimental_support_showcase_subunits value = token:cbrn_biosecurity_assault_detachment }
+		add_to_array = { array = global.chaosx_test_country_army_hq_showcase_subunits value = token:cbrn_hq_operations_section }
+		add_to_array = { array = global.chaosx_test_country_army_hq_showcase_subunits value = token:cbrn_hq_protective_logistics_section }
+		add_to_array = { array = global.chaosx_test_country_army_hq_showcase_subunits value = token:cbrn_hq_medical_countermeasure_directorate }
+		set_temp_variable = { var = chaosx_test_country_registration_support_subunit value = token:cbrn_gas_mask_decon_detachment }
+		set_temp_variable = { var = chaosx_test_country_registration_support_anchor value = token:chaos_battalion }
+		chaosx_test_country_register_support_subunit = yes
+		set_temp_variable = { var = chaosx_test_country_registration_support_subunit value = token:cbrn_chemical_recon_detachment }
+		set_temp_variable = { var = chaosx_test_country_registration_support_anchor value = token:chaos_battalion }
+		chaosx_test_country_register_support_subunit = yes
+		set_temp_variable = { var = chaosx_test_country_registration_support_subunit value = token:cbrn_chemical_projector_battery }
+		set_temp_variable = { var = chaosx_test_country_registration_support_anchor value = token:chaos_battalion }
+		chaosx_test_country_register_support_subunit = yes
+		set_temp_variable = { var = chaosx_test_country_registration_support_subunit value = token:cbrn_chemical_ammunition_train }
+		set_temp_variable = { var = chaosx_test_country_registration_support_anchor value = token:chaos_battalion }
+		chaosx_test_country_register_support_subunit = yes
+		set_temp_variable = { var = chaosx_test_country_registration_support_subunit value = token:cbrn_light_armored_delivery_detachment }
+		set_temp_variable = { var = chaosx_test_country_registration_support_anchor value = token:autonomous_robot }
+		chaosx_test_country_register_support_subunit = yes
+		set_temp_variable = { var = chaosx_test_country_registration_support_subunit value = token:cbrn_medium_armored_delivery_detachment }
+		set_temp_variable = { var = chaosx_test_country_registration_support_anchor value = token:autonomous_robot }
+		chaosx_test_country_register_support_subunit = yes
+		set_temp_variable = { var = chaosx_test_country_registration_support_subunit value = token:cbrn_heavy_armored_delivery_detachment }
+		set_temp_variable = { var = chaosx_test_country_registration_support_anchor value = token:autonomous_robot }
+		chaosx_test_country_register_support_subunit = yes
+		set_temp_variable = { var = chaosx_test_country_registration_support_subunit value = token:cbrn_medical_countermeasure_detachment }
+		set_temp_variable = { var = chaosx_test_country_registration_support_anchor value = token:chaos_battalion }
+		chaosx_test_country_register_support_subunit = yes
+		set_temp_variable = { var = chaosx_test_country_registration_support_subunit value = token:cbrn_biosecurity_assault_detachment }
+		set_temp_variable = { var = chaosx_test_country_registration_support_anchor value = token:chaos_battalion }
+		chaosx_test_country_register_support_subunit = yes
+		set_temp_variable = { var = chaosx_test_country_registration_support_subunit value = token:cbrn_hq_operations_section }
+		set_temp_variable = { var = chaosx_test_country_registration_support_anchor value = token:hq_infantry }
+		chaosx_test_country_register_support_subunit = yes
+		set_temp_variable = { var = chaosx_test_country_registration_support_subunit value = token:cbrn_hq_protective_logistics_section }
+		set_temp_variable = { var = chaosx_test_country_registration_support_anchor value = token:hq_infantry }
+		chaosx_test_country_register_support_subunit = yes
+		set_temp_variable = { var = chaosx_test_country_registration_support_subunit value = token:cbrn_hq_medical_countermeasure_directorate }
+		set_temp_variable = { var = chaosx_test_country_registration_support_anchor value = token:hq_infantry }
+		chaosx_test_country_register_support_subunit = yes
+		set_country_flag = chaosx_cxt_cbrn_unit_family_showcases_registered
+	}
+}
+
+chaosx_test_country_register_livens_projectors_showcases = {
+	set_temp_variable = { var = chaosx_test_country_registration_extension_effect value = token:chaosx_cxt_extension_livens_projectors_showcases }
+	chaosx_test_country_register_extension_effect = yes
+}
+
+chaosx_cxt_extension_livens_projectors_showcases_apply = {
+	if = { limit = { NOT = { has_country_flag = chaosx_cxt_livens_projectors_showcases_registered } }
+		set_temp_variable = { var = chaosx_test_country_current_unit_family value = token:chaosx_cxt_extension_livens_projectors_showcases }
+		set_temp_variable = { var = chaosx_test_country_registration_support_subunit value = token:livens_projector_support }
+		set_temp_variable = { var = chaosx_test_country_registration_support_anchor value = token:chaos_battalion }
+		chaosx_test_country_register_support_subunit = yes
+		set_temp_variable = { var = chaosx_test_country_registration_support_subunit value = token:livens_projector_support_chlorine }
+		set_temp_variable = { var = chaosx_test_country_registration_support_anchor value = token:chaos_battalion }
+		chaosx_test_country_register_support_subunit = yes
+		set_temp_variable = { var = chaosx_test_country_registration_support_subunit value = token:livens_projector_support_phosgene }
+		set_temp_variable = { var = chaosx_test_country_registration_support_anchor value = token:chaos_battalion }
+		chaosx_test_country_register_support_subunit = yes
+		set_temp_variable = { var = chaosx_test_country_registration_support_subunit value = token:livens_projector_support_mustard }
+		set_temp_variable = { var = chaosx_test_country_registration_support_anchor value = token:chaos_battalion }
+		chaosx_test_country_register_support_subunit = yes
+		set_temp_variable = { var = chaosx_test_country_registration_support_subunit value = token:livens_projector_support_lewisite }
+		set_temp_variable = { var = chaosx_test_country_registration_support_anchor value = token:chaos_battalion }
+		chaosx_test_country_register_support_subunit = yes
+		set_temp_variable = { var = chaosx_test_country_registration_support_subunit value = token:livens_projector_support_sarin }
+		set_temp_variable = { var = chaosx_test_country_registration_support_anchor value = token:chaos_battalion }
+		chaosx_test_country_register_support_subunit = yes
+		set_temp_variable = { var = chaosx_test_country_registration_support_subunit value = token:livens_projector_support_soman }
+		set_temp_variable = { var = chaosx_test_country_registration_support_anchor value = token:chaos_battalion }
+		chaosx_test_country_register_support_subunit = yes
+		set_country_flag = chaosx_cxt_livens_projectors_showcases_registered
+	}
+	chaosx_test_country_register_livens_projector_variants = yes
+}
+
+chaosx_test_country_spawn_package_formations = {
+	set_temp_variable = { var = chaosx_test_country_registry_spawn_package_formations_break_1 value = constant:chaosx_test_country_deployment.zero }
+	for_each_loop = {
+		break = chaosx_test_country_registry_spawn_package_formations_break_1
+		array = global.chaosx_test_country_registered_package_formations
+		value = chaosx_test_country_current_package_formation
+		index = chaosx_test_country_current_package_formation_index
+		set_variable = { global.chaosx_test_country_spawn_formation = chaosx_test_country_current_package_formation }
+		set_temp_variable = { var = chaosx_test_country_current_family value = global.chaosx_test_country_registered_package_families^chaosx_test_country_current_package_formation_index }
+		set_temp_variable = { var = chaosx_test_country_current_support_subunit value = 0 }
+		meta_effect = {
+			text = {
+				if = {
+					limit = { NOT = { is_in_array = { array = global.chaosx_test_country_spawned_registered_package_formations value = token:[FORMATION] } } }
+					set_temp_variable = { var = chaosx_test_country_family_spawn_succeeded value = 0 }
+					set_variable = { global.chaosx_test_country_spawn_template = token:cxt_template_package_formation }
+					chaosx_test_country_spawn_family_template = yes
+					if = {
+						limit = { check_variable = { chaosx_test_country_family_spawn_succeeded > 0 } }
+						add_to_array = { array = global.chaosx_test_country_spawned_registered_package_formations value = token:[FORMATION] }
 					}
 				}
 			}
-			set_temp_variable = {
-				var = chaosx_test_country_current_support_anchor
-				value = global.chaosx_test_country_registered_support_anchors^chaosx_test_country_current_support_index
-			}
-			if = {
-				limit = {
-					is_in_array = {
-						array = chaosx_test_country_processed_frontline_subunits
-						value = chaosx_test_country_current_support_anchor
-					}
-				}
-				chaosx_test_country_create_registered_support_subunit = yes
-				add_to_array = {
-					array = chaosx_test_country_processed_support_subunits
-					value = chaosx_test_country_current_support_subunit
-				}
-			}
+			FORMATION = "[?chaosx_test_country_current_package_formation.GetTokenKey]"
 		}
 	}
 }
 
-# Manual reinforcement of dynamically registered templates. Package-owned
-# grouped formations have their own spawn effects and lack these fallback names.
-chaosx_test_country_spawn_registered_unit_roster = {
+chaosx_test_country_reinforce_package_formations = {
+	set_temp_variable = { var = chaosx_test_country_registry_reinforce_package_formations_break_1 value = constant:chaosx_test_country_deployment.zero }
 	for_each_loop = {
+		break = chaosx_test_country_registry_reinforce_package_formations_break_1
+		array = global.chaosx_test_country_registered_package_formations
+		value = chaosx_test_country_current_package_formation
+		index = chaosx_test_country_current_package_formation_index
+		set_variable = { global.chaosx_test_country_spawn_formation = chaosx_test_country_current_package_formation }
+		set_temp_variable = { var = chaosx_test_country_current_family value = global.chaosx_test_country_registered_package_families^chaosx_test_country_current_package_formation_index }
+		set_temp_variable = { var = chaosx_test_country_current_support_subunit value = 0 }
+		meta_effect = {
+			text = { set_variable = { global.chaosx_test_country_spawn_template = token:cxt_template_package_formation } chaosx_test_country_spawn_family_template = yes }
+			FORMATION = "[?chaosx_test_country_current_package_formation.GetTokenKey]"
+		}
+	}
+}
+
+chaosx_test_country_spawn_registered_unit_roster = {
+	set_temp_variable = { var = chaosx_test_country_registry_spawn_registered_unit_roster_break_1 value = constant:chaosx_test_country_deployment.zero }
+	for_each_loop = {
+		break = chaosx_test_country_registry_spawn_registered_unit_roster_break_1
 		array = global.chaosx_test_country_registered_frontline_subunits
 		value = chaosx_test_country_current_frontline_subunit
+		index = chaosx_test_country_current_frontline_index
+		set_variable = { global.chaosx_test_country_spawn_subunit = chaosx_test_country_current_frontline_subunit }
+		set_temp_variable = { var = chaosx_test_country_current_family value = constant:chaosx_test_country.unit_family_unset }
+		set_temp_variable = { var = chaosx_test_country_current_family value = global.chaosx_test_country_registered_frontline_families^chaosx_test_country_current_frontline_index }
+		if = { limit = { check_variable = { var = chaosx_test_country_current_family value = constant:chaosx_test_country.unit_family_unset compare = equals } } set_temp_variable = { var = chaosx_test_country_current_family value = chaosx_test_country_current_frontline_subunit } }
+		set_temp_variable = { var = chaosx_test_country_current_support_subunit value = 0 }
 		meta_effect = {
 			text = {
-				if = {
-					limit = { has_template = "CXT Registered - [UNIT]" }
-					for_loop_effect = {
-						end = constant:chaosx_test_country_count.divisions_per_template
-						value = chaosx_test_country_spawn_index
-						random_owned_controlled_state = {
-							create_unit = {
-								division = "name = \"CXT Registered - [UNIT]\" division_template = \"CXT Registered - [UNIT]\" start_experience_factor = 1 start_equipment_factor = 1 start_manpower_factor = 1"
-								owner = PREV
-								count = constant:chaosx_test_country_count.divisions_per_state_pick
-							}
-						}
-					}
-				}
+				if = { limit = { has_template = "CXT Registered - [UNIT]" } set_variable = { global.chaosx_test_country_spawn_template = token:cxt_template_registered_unit } chaosx_test_country_spawn_family_template = yes }
 			}
 			UNIT = "[?chaosx_test_country_current_frontline_subunit.GetTokenKey]"
 		}
 	}
+	set_temp_variable = { var = chaosx_test_country_registry_spawn_registered_unit_roster_break_2 value = constant:chaosx_test_country_deployment.zero }
 	for_each_loop = {
+		break = chaosx_test_country_registry_spawn_registered_unit_roster_break_2
 		array = global.chaosx_test_country_registered_support_subunits
 		value = chaosx_test_country_current_support_subunit
+		index = chaosx_test_country_current_support_index
+		set_variable = { global.chaosx_test_country_spawn_subunit = chaosx_test_country_current_support_subunit }
+		set_temp_variable = { var = chaosx_test_country_current_family value = constant:chaosx_test_country.unit_family_unset }
+		set_temp_variable = { var = chaosx_test_country_current_family value = global.chaosx_test_country_registered_support_families^chaosx_test_country_current_support_index }
+		if = { limit = { check_variable = { var = chaosx_test_country_current_family value = constant:chaosx_test_country.unit_family_unset compare = equals } } set_temp_variable = { var = chaosx_test_country_current_family value = chaosx_test_country_current_support_subunit } }
 		meta_effect = {
 			text = {
-				if = {
-					limit = { has_template = "CXT Registered - [UNIT]" }
-					for_loop_effect = {
-						end = constant:chaosx_test_country_count.divisions_per_template
-						value = chaosx_test_country_spawn_index
-						random_owned_controlled_state = {
-							create_unit = {
-								division = "name = \"CXT Registered - [UNIT]\" division_template = \"CXT Registered - [UNIT]\" start_experience_factor = 1 start_equipment_factor = 1 start_manpower_factor = 1"
-								owner = PREV
-								count = constant:chaosx_test_country_count.divisions_per_state_pick
-							}
-						}
-					}
-				}
+				if = { limit = { has_template = "CXT Registered - [UNIT]" } set_variable = { global.chaosx_test_country_spawn_template = token:cxt_template_registered_unit } chaosx_test_country_spawn_family_template = yes }
 			}
 			UNIT = "[?chaosx_test_country_current_support_subunit.GetTokenKey]"
 		}
@@ -1196,6 +1286,7 @@ chaosx_test_country_spawn_registered_unit_roster = {
 chaosx_test_country_deploy_all_formations = {
 	chaosx_test_country_create_unit_roster = yes
 	chaosx_test_country_spawn_registered_unit_roster = yes
+	chaosx_test_country_reinforce_package_formations = yes
 	chaosx_cxt_event014_spawn_formations = yes
 	chaosx_cxt_event039_spawn_formations = yes
 	chaosx_cxt_event016_spawn_alien_cohort = yes

@@ -22,7 +22,14 @@ chaosx_test_country_refill_resources = {
 	army_experience = constant:chaosx_test_country.army_experience_refill
 	navy_experience = constant:chaosx_test_country.navy_experience_refill
 	air_experience = constant:chaosx_test_country.air_experience_refill
-	add_manpower = constant:chaosx_test_country.manpower_refill
+	# Keep each grant below the fixed-point value ceiling.
+	set_temp_variable = { chaosx_test_country_manpower_refill_break = constant:chaosx_test_country.unit_family_unset }
+	for_loop_effect = {
+		end = constant:chaosx_test_country_count.manpower_refill_batches
+		value = chaosx_test_country_manpower_refill_batch
+		break = chaosx_test_country_manpower_refill_break
+		add_manpower = constant:chaosx_test_country.manpower_refill
+	}
 	add_nuclear_bombs = constant:chaosx_test_country.nuclear_bombs_refill
 	set_fuel_ratio = 1
 	add_stability = 1
@@ -418,9 +425,13 @@ chaosx_test_country_register_extension_effect = {
 }
 
 chaosx_test_country_apply_registered_extension_effects = {
+	set_temp_variable = { chaosx_test_country_extension_dispatch_break = constant:chaosx_test_country.unit_family_unset }
 	for_each_loop = {
 		array = global.chaosx_test_country_registered_extension_effects
 		value = chaosx_test_country_current_extension_effect
+		break = chaosx_test_country_extension_dispatch_break
+		# A package without family metadata must not inherit the prior carrier's input.
+		set_temp_variable = { var = chaosx_test_country_current_unit_family value = constant:chaosx_test_country.unit_family_unset }
 		if = {
 			limit = { has_country_flag = chaosx_test_country_setup_trace_active }
 			log = "CXT_SETUP_TRACE extension_begin carrier=[?chaosx_test_country_current_extension_effect.GetTokenKey] date=[?global.date|.3]"
@@ -465,6 +476,7 @@ chaosx_test_country_initial_setup = {
 	chaosx_test_country_register_unique_bio_arsenal = yes
 	log = "CXT_SETUP_TRACE phase=resources date=[?global.date|.3]"
 	chaosx_test_country_refill_resources = yes
+	chaosx_test_country_assign_core_family_sites = yes
 	log = "CXT_SETUP_TRACE phase=static_roster date=[?global.date|.3]"
 	chaosx_test_country_create_unit_roster = yes
 	chaosx_test_country_sync_registered_content_apply = yes

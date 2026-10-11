@@ -2,7 +2,7 @@
 # CHAOS REDUX - TEST COUNTRY STOCKPILE
 # ============================================================================
 # Overview:
-# - Registers dedicated flame-tank variants for custom chemical support units.
+# - Registers named flame-tank and Livens projectile variants for custom support formations.
 # - Adds a million units of every concrete Chaos Redux equipment type and its vanilla dependencies.
 # - Adds registered future equipment through a token-aware meta-effect loop.
 # ============================================================================
@@ -49,8 +49,52 @@ chaosx_test_country_register_flame_tank_variants = {
 		set_country_flag = chaosx_test_flame_tank_variants_registered
 	}
 }
+chaosx_test_country_register_livens_projector_variants = {
+	if = {
+		limit = { NOT = { has_country_flag = chaosx_test_livens_variants_registered } }
+		create_equipment_variant = {
+			name = "CXT_Livens_Chlorine"
+			type = livens_projector_equipment_1
+			allow_without_tech = yes
+			modules = { projectile_slot = livens_chlorine_projectile }
+		}
+		create_equipment_variant = {
+			name = "CXT_Livens_Phosgene"
+			type = livens_projector_equipment_2
+			allow_without_tech = yes
+			modules = { projectile_slot = livens_phosgene_projectile }
+		}
+		create_equipment_variant = {
+			name = "CXT_Livens_Mustard"
+			type = livens_projector_equipment_3
+			allow_without_tech = yes
+			modules = { projectile_slot = livens_mustard_projectile }
+		}
+		create_equipment_variant = {
+			name = "CXT_Livens_Lewisite"
+			type = livens_projector_equipment_3
+			allow_without_tech = yes
+			modules = { projectile_slot = livens_lewisite_projectile }
+		}
+		create_equipment_variant = {
+			name = "CXT_Livens_Sarin"
+			type = livens_projector_equipment_3
+			allow_without_tech = yes
+			modules = { projectile_slot = livens_sarin_projectile }
+		}
+		create_equipment_variant = {
+			name = "CXT_Livens_Soman"
+			type = livens_projector_equipment_3
+			allow_without_tech = yes
+			modules = { projectile_slot = livens_soman_projectile }
+		}
+		set_country_flag = chaosx_test_livens_variants_registered
+	}
+}
+
 chaosx_test_country_fill_stockpile = {
 	chaosx_test_country_register_flame_tank_variants = yes
+	chaosx_test_country_register_livens_projector_variants = yes
 	add_equipment_to_stockpile = {
 		type = africa_disaster_wardens_equipment_1
 		amount = constant:chaosx_test_country.stockpile_amount
@@ -245,14 +289,32 @@ chaosx_test_country_fill_stockpile = {
 	}
 	add_equipment_to_stockpile = {
 		type = livens_projector_equipment_1
+		variant_name = "CXT_Livens_Chlorine"
 		amount = constant:chaosx_test_country.stockpile_amount
 	}
 	add_equipment_to_stockpile = {
 		type = livens_projector_equipment_2
+		variant_name = "CXT_Livens_Phosgene"
 		amount = constant:chaosx_test_country.stockpile_amount
 	}
 	add_equipment_to_stockpile = {
 		type = livens_projector_equipment_3
+		variant_name = "CXT_Livens_Mustard"
+		amount = constant:chaosx_test_country.stockpile_amount
+	}
+	add_equipment_to_stockpile = {
+		type = livens_projector_equipment_3
+		variant_name = "CXT_Livens_Lewisite"
+		amount = constant:chaosx_test_country.stockpile_amount
+	}
+	add_equipment_to_stockpile = {
+		type = livens_projector_equipment_3
+		variant_name = "CXT_Livens_Sarin"
+		amount = constant:chaosx_test_country.stockpile_amount
+	}
+	add_equipment_to_stockpile = {
+		type = livens_projector_equipment_3
+		variant_name = "CXT_Livens_Soman"
 		amount = constant:chaosx_test_country.stockpile_amount
 	}
 	add_equipment_to_stockpile = {

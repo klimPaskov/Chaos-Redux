@@ -20,6 +20,7 @@ murder_mystery_register_cxt_test_content = {
 chaosx_cxt_extension_event039_assassin_forces_apply = {
 	if = {
 		limit = { NOT = { has_global_flag = chaosx_cxt_extension_event039_assassin_forces_registered } }
+		set_temp_variable = { var = chaosx_test_country_current_unit_family value = token:chaosx_cxt_extension_event039_assassin_forces }
 		set_temp_variable = { var = chaosx_test_country_registration_frontline_subunit value = token:assassin_cadre }
 		chaosx_test_country_register_frontline_subunit = yes
 		set_temp_variable = { var = chaosx_test_country_registration_frontline_subunit value = token:shadow_company }
@@ -45,17 +46,27 @@ chaosx_cxt_extension_event039_assassin_forces_apply = {
 		chaosx_test_country_register_equipment = yes
 		set_global_flag = chaosx_cxt_extension_event039_assassin_forces_registered
 	}
+	chaosx_cxt_event039_define_formations = yes
+	chaosx_cxt_event039_spawn_assassin_cadres_initial = yes
 	if = {
 		limit = { NOT = { has_country_flag = chaosx_cxt_assassin_formations_ready } }
-		chaosx_cxt_event039_define_formations = yes
-		add_to_array = { array = chaosx_test_country_processed_frontline_subunits value = token:assassin_cadre }
-		add_to_array = { array = chaosx_test_country_processed_frontline_subunits value = token:shadow_company }
-		add_to_array = { array = chaosx_test_country_processed_frontline_subunits value = token:silent_guard }
-		add_to_array = { array = chaosx_test_country_processed_frontline_subunits value = token:master_assassin }
-		add_to_array = { array = chaosx_test_country_processed_frontline_subunits value = token:mechanized_assassin }
-		add_to_array = { array = chaosx_test_country_processed_support_subunits value = token:saboteur_cell }
-		chaosx_cxt_event039_spawn_formations = yes
-		set_country_flag = chaosx_cxt_assassin_formations_ready
+		if = { limit = { NOT = { is_in_array = { array = chaosx_test_country_processed_frontline_subunits value = token:assassin_cadre } } } add_to_array = { array = chaosx_test_country_processed_frontline_subunits value = token:assassin_cadre } }
+		if = { limit = { NOT = { is_in_array = { array = chaosx_test_country_processed_frontline_subunits value = token:shadow_company } } } add_to_array = { array = chaosx_test_country_processed_frontline_subunits value = token:shadow_company } }
+		if = { limit = { NOT = { is_in_array = { array = chaosx_test_country_processed_frontline_subunits value = token:silent_guard } } } add_to_array = { array = chaosx_test_country_processed_frontline_subunits value = token:silent_guard } }
+		if = { limit = { NOT = { is_in_array = { array = chaosx_test_country_processed_frontline_subunits value = token:master_assassin } } } add_to_array = { array = chaosx_test_country_processed_frontline_subunits value = token:master_assassin } }
+		if = { limit = { NOT = { is_in_array = { array = chaosx_test_country_processed_frontline_subunits value = token:mechanized_assassin } } } add_to_array = { array = chaosx_test_country_processed_frontline_subunits value = token:mechanized_assassin } }
+		if = { limit = { NOT = { is_in_array = { array = chaosx_test_country_processed_support_subunits value = token:saboteur_cell } } } add_to_array = { array = chaosx_test_country_processed_support_subunits value = token:saboteur_cell } }
+		chaosx_cxt_event039_spawn_formations_initial = yes
+		if = {
+			limit = {
+				AND = {
+					is_in_array = { array = global.chaosx_test_country_spawned_owner_formations value = token:saboteur_cell }
+					is_in_array = { array = global.chaosx_test_country_spawned_owner_formations value = token:assassin_cadre }
+					is_in_array = { array = global.chaosx_test_country_spawned_owner_formations value = token:mechanized_assassin }
+				}
+			}
+			set_country_flag = chaosx_cxt_assassin_formations_ready
+		}
 	}
 }
 
@@ -87,6 +98,21 @@ chaosx_cxt_event039_define_formations = {
 		}
 	}
 	if = {
+		limit = { NOT = { has_template = "CXT - Assassin Cadres" } }
+		division_template = {
+			name = "CXT - Assassin Cadres"
+			is_locked = no
+			force_allow_recruiting = yes
+			regiments = {
+				assassin_cadre = { x = 0 y = 0 }
+				assassin_cadre = { x = 0 y = 1 }
+				assassin_cadre = { x = 0 y = 2 }
+				assassin_cadre = { x = 0 y = 3 }
+			}
+			support = { saboteur_cell = { x = 0 y = 0 } }
+		}
+	}
+	if = {
 		limit = { NOT = { has_template = "CXT - Mechanized Assassins" } }
 		division_template = {
 			name = "CXT - Mechanized Assassins"
@@ -104,33 +130,96 @@ chaosx_cxt_event039_define_formations = {
 	}
 }
 
+
+chaosx_cxt_event039_spawn_assassin_cadres_initial = {
+	if = {
+		limit = { has_template = "CXT - Assassin Cadres" NOT = { is_in_array = { array = global.chaosx_test_country_spawned_owner_formations value = token:saboteur_cell } } }
+		set_temp_variable = { var = chaosx_test_country_current_support_subunit value = 0 }
+		set_temp_variable = { var = chaosx_test_country_current_family value = token:chaosx_cxt_extension_event039_assassin_forces }
+		set_temp_variable = { var = chaosx_test_country_family_spawn_succeeded value = 0 }
+		set_variable = { global.chaosx_test_country_spawn_template = token:cxt_template_assassin_cadres }
+		chaosx_test_country_spawn_family_template = yes
+		if = {
+			limit = { check_variable = { chaosx_test_country_family_spawn_succeeded > 0 } }
+			add_to_array = { array = global.chaosx_test_country_spawned_owner_formations value = token:saboteur_cell }
+		}
+	}
+}
+
 chaosx_cxt_event039_spawn_formations = {
 	if = {
+		limit = { has_template = "CXT - Assassin Cadres" }
+		set_temp_variable = { var = chaosx_test_country_current_support_subunit value = 0 }
+		set_temp_variable = { var = chaosx_test_country_current_family value = token:chaosx_cxt_extension_event039_assassin_forces }
+		set_temp_variable = { var = chaosx_test_country_family_spawn_succeeded value = 0 }
+		set_variable = { global.chaosx_test_country_spawn_template = token:cxt_template_assassin_cadres }
+		chaosx_test_country_spawn_family_template = yes
+		if = {
+			limit = { check_variable = { chaosx_test_country_family_spawn_succeeded > 0 } }
+			if = { limit = { NOT = { is_in_array = { array = global.chaosx_test_country_spawned_owner_formations value = token:saboteur_cell } } } add_to_array = { array = global.chaosx_test_country_spawned_owner_formations value = token:saboteur_cell } }
+		}
+	}
+	if = {
 		limit = { has_template = "CXT - Assassin Forces Muster" }
-		for_loop_effect = {
-			end = constant:chaosx_test_country_count.divisions_per_template
-			value = chaosx_test_country_spawn_index
-			random_owned_controlled_state = {
-				create_unit = {
-					division = "name = \"CXT - Assassin Forces Muster\" division_template = \"CXT - Assassin Forces Muster\" start_experience_factor = 1 start_equipment_factor = 1 start_manpower_factor = 1"
-					owner = PREV
-					count = constant:chaosx_test_country_count.divisions_per_state_pick
-				}
-			}
+		set_temp_variable = { var = chaosx_test_country_current_support_subunit value = 0 }
+		set_temp_variable = { var = chaosx_test_country_current_family value = token:chaosx_cxt_extension_event039_assassin_forces }
+		set_temp_variable = { var = chaosx_test_country_family_spawn_succeeded value = 0 }
+		set_variable = { global.chaosx_test_country_spawn_template = token:cxt_template_assassin_forces_muster }
+		chaosx_test_country_spawn_family_template = yes
+		if = {
+			limit = { check_variable = { chaosx_test_country_family_spawn_succeeded > 0 } }
+			if = { limit = { NOT = { is_in_array = { array = global.chaosx_test_country_spawned_owner_formations value = token:assassin_cadre } } } add_to_array = { array = global.chaosx_test_country_spawned_owner_formations value = token:assassin_cadre } }
 		}
 	}
 	if = {
 		limit = { has_template = "CXT - Mechanized Assassins" }
-		for_loop_effect = {
-			end = constant:chaosx_test_country_count.divisions_per_template
-			value = chaosx_test_country_spawn_index
-			random_owned_controlled_state = {
-				create_unit = {
-					division = "name = \"CXT - Mechanized Assassins\" division_template = \"CXT - Mechanized Assassins\" start_experience_factor = 1 start_equipment_factor = 1 start_manpower_factor = 1"
-					owner = PREV
-					count = constant:chaosx_test_country_count.divisions_per_state_pick
-				}
-			}
+		set_temp_variable = { var = chaosx_test_country_current_support_subunit value = 0 }
+		set_temp_variable = { var = chaosx_test_country_current_family value = token:chaosx_cxt_extension_event039_assassin_forces }
+		set_temp_variable = { var = chaosx_test_country_family_spawn_succeeded value = 0 }
+		set_variable = { global.chaosx_test_country_spawn_template = token:cxt_template_mechanized_assassins }
+		chaosx_test_country_spawn_family_template = yes
+		if = {
+			limit = { check_variable = { chaosx_test_country_family_spawn_succeeded > 0 } }
+			if = { limit = { NOT = { is_in_array = { array = global.chaosx_test_country_spawned_owner_formations value = token:mechanized_assassin } } } add_to_array = { array = global.chaosx_test_country_spawned_owner_formations value = token:mechanized_assassin } }
+		}
+	}
+}
+
+chaosx_cxt_event039_spawn_formations_initial = {
+	if = {
+		limit = { has_template = "CXT - Assassin Cadres" NOT = { is_in_array = { array = global.chaosx_test_country_spawned_owner_formations value = token:saboteur_cell } } }
+		set_temp_variable = { var = chaosx_test_country_current_support_subunit value = 0 }
+		set_temp_variable = { var = chaosx_test_country_current_family value = token:chaosx_cxt_extension_event039_assassin_forces }
+		set_temp_variable = { var = chaosx_test_country_family_spawn_succeeded value = 0 }
+		set_variable = { global.chaosx_test_country_spawn_template = token:cxt_template_assassin_cadres }
+		chaosx_test_country_spawn_family_template = yes
+		if = {
+			limit = { check_variable = { chaosx_test_country_family_spawn_succeeded > 0 } }
+			add_to_array = { array = global.chaosx_test_country_spawned_owner_formations value = token:saboteur_cell }
+		}
+	}
+	if = {
+		limit = { has_template = "CXT - Assassin Forces Muster" NOT = { is_in_array = { array = global.chaosx_test_country_spawned_owner_formations value = token:assassin_cadre } } }
+		set_temp_variable = { var = chaosx_test_country_current_support_subunit value = 0 }
+		set_temp_variable = { var = chaosx_test_country_current_family value = token:chaosx_cxt_extension_event039_assassin_forces }
+		set_temp_variable = { var = chaosx_test_country_family_spawn_succeeded value = 0 }
+		set_variable = { global.chaosx_test_country_spawn_template = token:cxt_template_assassin_forces_muster }
+		chaosx_test_country_spawn_family_template = yes
+		if = {
+			limit = { check_variable = { chaosx_test_country_family_spawn_succeeded > 0 } }
+			add_to_array = { array = global.chaosx_test_country_spawned_owner_formations value = token:assassin_cadre }
+		}
+	}
+	if = {
+		limit = { has_template = "CXT - Mechanized Assassins" NOT = { is_in_array = { array = global.chaosx_test_country_spawned_owner_formations value = token:mechanized_assassin } } }
+		set_temp_variable = { var = chaosx_test_country_current_support_subunit value = 0 }
+		set_temp_variable = { var = chaosx_test_country_current_family value = token:chaosx_cxt_extension_event039_assassin_forces }
+		set_temp_variable = { var = chaosx_test_country_family_spawn_succeeded value = 0 }
+		set_variable = { global.chaosx_test_country_spawn_template = token:cxt_template_mechanized_assassins }
+		chaosx_test_country_spawn_family_template = yes
+		if = {
+			limit = { check_variable = { chaosx_test_country_family_spawn_succeeded > 0 } }
+			add_to_array = { array = global.chaosx_test_country_spawned_owner_formations value = token:mechanized_assassin }
 		}
 	}
 }

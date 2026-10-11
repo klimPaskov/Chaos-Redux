@@ -1,0 +1,45 @@
+# ============================================================================
+# CHAOS REDUX - CXT UNIT FAMILY EXTENSION REGISTRATION
+# ============================================================================
+# Overview:
+# - Publishes package carriers from one bounded existing-country scope.
+# - The CXT-only daily fallback registers unseen carriers and marks pending
+#   work; the player applies them through the debug decision.
+# ============================================================================
+
+on_actions = {
+	on_startup = {
+		effect = {
+			random_country = {
+				limit = { exists = yes }
+				chaosx_test_country_register_zombies_showcases = yes
+				chaosx_test_country_register_death_hosts_showcases = yes
+				chaosx_test_country_register_cave_broods_showcases = yes
+				chaosx_test_country_register_rat_broods_showcases = yes
+				chaosx_test_country_register_coal_golems_showcases = yes
+				chaosx_test_country_register_cbrn_unit_family_showcases = yes
+				chaosx_test_country_register_livens_projectors_showcases = yes
+			}
+		}
+	}
+	on_daily_CXT = {
+		effect = {
+			if = {
+				limit = { has_country_flag = chaosx_test_country_initialized }
+				set_temp_variable = { var = chaosx_test_country_extension_count_before value = global.chaosx_test_country_registered_extension_effects^num }
+				chaosx_test_country_register_zombies_showcases = yes
+				chaosx_test_country_register_death_hosts_showcases = yes
+				chaosx_test_country_register_cave_broods_showcases = yes
+				chaosx_test_country_register_rat_broods_showcases = yes
+				chaosx_test_country_register_coal_golems_showcases = yes
+				chaosx_test_country_register_cbrn_unit_family_showcases = yes
+				chaosx_test_country_register_livens_projectors_showcases = yes
+				set_temp_variable = { var = chaosx_test_country_extension_count_after value = global.chaosx_test_country_registered_extension_effects^num }
+				if = {
+					limit = { check_variable = { var = chaosx_test_country_extension_count_after compare = greater_than value = chaosx_test_country_extension_count_before } }
+					chaosx_test_country_sync_registered_content = yes
+				}
+			}
+		}
+	}
+}

@@ -1,0 +1,31 @@
+# ============================================================================
+# CHAOS REDUX - CXT SOURCE PACKAGE FORMATION REGISTRATION
+# ============================================================================
+# Overview: bounded startup registration and a CXT-only pending marker. The
+# daily fallback never defines templates, grants content or deploys divisions.
+# ============================================================================
+
+on_actions = {
+	on_startup = {
+		effect = {
+			random_country = {
+				limit = { exists = yes }
+				chaosx_cxt_register_source_package_formations = yes
+			}
+		}
+	}
+	on_daily_CXT = {
+		effect = {
+			if = {
+				limit = { has_country_flag = chaosx_test_country_initialized }
+				set_temp_variable = { var = chaosx_test_country_extension_count_before value = global.chaosx_test_country_registered_extension_effects^num }
+				chaosx_cxt_register_source_package_formations = yes
+				set_temp_variable = { var = chaosx_test_country_extension_count_after value = global.chaosx_test_country_registered_extension_effects^num }
+				if = {
+					limit = { check_variable = { var = chaosx_test_country_extension_count_after compare = greater_than value = chaosx_test_country_extension_count_before } }
+					set_country_flag = chaosx_test_country_registered_sync_pending
+				}
+			}
+		}
+	}
+}

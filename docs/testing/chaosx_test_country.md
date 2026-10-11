@@ -29,13 +29,111 @@ If CXT is already initialized, the console effect does not grant additional cont
 
 ## Unit inventory
 
-The installed Chaos Redux roster contains 79 land sub-units: 55 combat battalions and 24 support companies. Static setup and registered packages cover this roster together. Setup installs recruitable, multi-battalion templates for the static and registered unit families and spawns three fully equipped, fully manned, fully experienced divisions per template. The shared count is `chaosx_test_country_count.divisions_per_template` in `common/script_constants/chaosx_test_country_constants.txt`.
+The roster covers every installed Chaos Redux land sub-unit: 55 combat battalions and 24 support companies.
+Initial setup fields one full division per unit type and retains the distinct package formations, for 199 templates in total: 79 individual showcases, 24 core CXT formations, six Event 014/016/039 formations, and 90 source-package fixtures.
+The complete custom-unit source inventory has 112 distinct regiment/support grid compositions, and every one has an exact CXT counterpart.
+Parameterized runtime formations are represented by their distinct resolved unit compositions rather than duplicate names for the same grid.
+The source-package definitions and registrations live in [chaosx_test_country_package_formation_effects.txt](../../common/scripted_effects/chaosx_test_country_package_formation_effects.txt).
 
-The main family compositions follow installed Chaos country or runtime formations: Brainzz Horde, Mutated Zombie Muster, Cave Brood Muster, Rat Brood Muster, Africa Strange Formation, Africa Elephant Guard, Coal Golem Column, Death hosts, and the Event 016 project forces. The test copies omit vanilla support companies so that every unit in their line and support slots belongs to Chaos Redux. CBRN command/protection formations use six `chaos_battalion` combat battalions with compatible custom support companies; armored-delivery variants use `autonomous_robot` as an armor-group anchor. The three armored delivery roles and seven Livens support variants have separate formations because their shared `cbrn_offensive_delivery` exclusion prevents them from coexisting in one support roster.
+Each combat showcase contains four identical battalions, so its model and counter are visible instead of being hidden by a higher-priority battalion in a mixed formation.
+Each support showcase has a compatible combat anchor and exactly one tested support company.
+The nine CBRN regimental companies occupy `regimental_support`; armored delivery uses an armor-group robot anchor.
+The three HQ sections use an `is_army_hq` template with the native `hq_infantry` anchor, whose installed definition requires Thunder at Our Gates.
+The seven Livens companies have separate templates because their `cbrn_offensive_delivery` exclusion prevents stacking them together.
+All support-only roles retain their ordinary attached-company presentation; no standalone support division is created.
 
-Event 014 contributes two valid formations covering its nine irregular infantry sub-units, with the mobile Bone Riders on a separate line. Event 039 contributes two formations covering its five assassin combat units and Saboteur Cell support company, with mechanized assassins on a separate line. Their package-owned setup effects mark every covered token as processed, so the dynamic fallback does not create duplicate templates. Event 016's `alien_infantry` uses a recruitable CXT-only ten-battalion landing cohort matching its normal API formation; ordinary Event 016 recruitment rules remain unchanged.
+### Full land-unit list and previous coverage
 
-Each division independently selects a random owned, controlled CXT state, so the roster is dispersed across the Directorate's territory instead of concentrated in the capital. Random selections may coincide, and a country with only one owned, controlled state necessarily places every division there. The debug deployment decision can add another batch without creating duplicate template definitions.
+The before-state is the source captured for this request on 11 October 2026, before the roster edits.
+It registered 72 of 79 IDs, put 69 in templates, and used compatible template placement for 60.
+Seven Livens definitions were unregistered, three HQ-only definitions had no HQ formation, and nine regimental companies were placed in divisional support slots.
+The other families were present, often inside mixed formations that could not display every combat type separately.
+
+| Family | Complete unit IDs | Before-state |
+| --- | --- | --- |
+| Zombies | `zombies`, `infected_zombies`, `rabid_zombies`, `parasitic_zombies`, `mutant_zombies`, `undead_zombies`, `necrotic_zombies`, `demonic_zombies`, `wendigo_zombies`, `armored_undead_zombies`, `armored_necrotic_zombies`, `armored_demonic_zombies` | Present; individual combat showcases added. |
+| Cannibals | `cannibal_scavenger_warband`, `cannibal_feast_guard`, `cannibal_feast_cohort`, `cannibal_bone_guard`, `cannibal_bone_riders`, `cannibal_island_reavers`, `cannibal_siege_eaters`, `cannibal_march_predation_column`, `cannibal_network_cadre` | Present; individual combat showcases added. |
+| Africa | `gorilla_heavy_infantry`, `stone_cohorts`, `riverborn`, `forest_giants`, `plague_carriers`, `pan_sappers`, `oracle_recon`, `disaster_wardens`, `chaosx_elephant` | Present; individual combat showcases added. |
+| Plague rats | `rat_swarm`, `rat_brutes`, `rat_burrowers`, `rat_carrion_guard`, `rat_dock_stowaways`, `rat_tunnelers` | Present; individual combat showcases added. |
+| Clones | `clone_infantry`, `aryan_clone_infantry` | Present; individual combat showcases added. |
+| Robots | `autonomous_robot` | Present; individual combat showcases added. |
+| Portal raiders | `portal_raider` | Present; individual combat showcases added. |
+| Temporal guards | `temporal_guard` | Present; individual combat showcases added. |
+| Xenobiological organisms | `xenobiological_assault_organism` | Present; individual combat showcases added. |
+| Paleogenetic creatures | `paleogenetic_creature` | Present; individual combat showcases added. |
+| Cave broods | `cave_monster_brood`, `cave_stone_phalanx_brood`, `cave_burrow_war_brood`, `cave_scree_tide_brood`, `cave_anchor_guard_brood` | Present; individual combat showcases added. |
+| Alien infantry | `alien_infantry` | Present; individual combat showcases added. |
+| Assassins | `assassin_cadre`, `shadow_company`, `silent_guard`, `master_assassin`, `mechanized_assassin`, `saboteur_cell` | Present; individual combat showcases added. |
+| Death ghost hosts | `death_weak_ghost_host`, `death_hollow_ghost_host`, `death_last_shore_ghost_host` | Present; individual combat showcases added. |
+| Chaos assault battalion | `chaos_battalion` | Present; individual combat showcases added. |
+| CBRN command and field support | `cbrn_hq_operations_section`, `cbrn_hq_protective_logistics_section`, `cbrn_hq_medical_countermeasure_directorate`, `cbrn_gas_mask_decon_detachment`, `cbrn_chemical_recon_detachment`, `cbrn_chemical_projector_battery`, `cbrn_chemical_ammunition_train`, `cbrn_light_armored_delivery_detachment`, `cbrn_medium_armored_delivery_detachment`, `cbrn_heavy_armored_delivery_detachment`, `cbrn_medical_countermeasure_detachment`, `cbrn_biosecurity_assault_detachment` | Three HQ formations absent; nine regimental companies in incompatible slots. |
+| Livens support | `livens_projector_support`, `livens_projector_support_chlorine`, `livens_projector_support_phosgene`, `livens_projector_support_mustard`, `livens_projector_support_lewisite`, `livens_projector_support_sarin`, `livens_projector_support_soman` | All seven absent from the CXT registrations. |
+| Coal golems | `coal_golem` | Present; individual combat showcases added. |
+
+### Models, counters, naval and air inventory
+
+The scan covers every custom `sub_units` definition, the custom-unit-containing history and scripted templates, and all 31 package directories under `gfx/models/units`.
+Thirty directories have active mesh consumers; `012_africa_strange_forces` is a shared package directory without another standalone consumer.
+Custom meshes resolve for 49 combat types and three attached support types.
+The remaining six combat types use their existing intended entities: elephant, Bone Riders, Network Cadre, Aryan clones, coal golems, and Wendigo zombies.
+Armored zombie types share their corresponding zombie models; the rat and cave variants share their family models; all have individual unit showcases and retain their existing counters.
+`chaos_battalion` consumes the custom Chaos Assault Battalion model; the empty compatibility file of that name is not another unit definition.
+No custom naval or air sub-unit/model consumer exists in the installed mod, including the Event 043 and Event 080 surfaces, so there is no custom fleet or air wing to add to this roster.
+Existing equipment and event art are not treated as native ships or air wings.
+No models, counters, textures, sound definitions, or ordinary unit stats are changed by this fixture.
+
+### Family-to-province map
+
+CXT starts landless: `history/countries/CXT - Chaos Redux Test Country.txt` assigns no states, and the console receiver inherits the invoking country's land.
+Family sites therefore come from territory CXT actually owns and controls after activation, not from fixed foreign provinces.
+The one central core-family order is `chaosx_test_country_assign_core_family_sites` in [the deployment effects](../../common/scripted_effects/chaosx_test_country_deployment_effects.txt).
+It allocates the 18 families below before the first division is created, independently of package registration order.
+Future package families absent from that list allocate through the same gateway without an event-list edit.
+Each family's individual showcases, attached-support fixtures, and designed package formations reuse its stored province.
+
+The allocator prefers an unused state, then an existing supply hub, then an owned railway province, then owned land that can receive an owned railway connection.
+Numeric state and province IDs break ties deterministically.
+The allocation policy and checked Paris/Berlin source anchors are centralized in [the deployment constants](../../common/script_constants/chaosx_test_country_deployment_constants.txt).
+Other capitals choose the lowest controlled native capital-state hub, or their sole province when the capital state has only one province.
+The existing pure state/province catalogue supplies membership; no duplicate map table is maintained here.
+Creation runs inside the recorded state and passes the chosen province to native `prioritize_location` after ownership, control, passability and route checks.
+Foreign-controlled provinces are excluded from the railway route; the fixture does not annex land for unit placement.
+
+The table is the source-model result for ordinary 1936 French or German territory inherited by CXT, with the installed map and existing railways.
+Each example gives 18 different owned states at existing connected hubs and needs no railway construction.
+Actual runtime ownership or another origin changes the selected sites, while the family order and collision checks remain the same.
+
+| Family | Real family token | France province (state) | Germany province (state) |
+| --- | --- | --- | --- |
+| Zombies | `chaosx_cxt_extension_zombies_showcases` | 3552 (14) | 11531 (42) |
+| Cannibals | `chaosx_cxt_extension_event014_cannibalism` | 485 (15) | 9517 (50) |
+| Africa | `chaosx_cxt_extension_event012_africa_gods` | 11506 (16) | 587 (51) |
+| Plague rats | `chaosx_cxt_extension_rat_broods_showcases` | 9490 (18) | 692 (52) |
+| Clones | `clone_infantry` | 9737 (19) | 9515 (53) |
+| Robots | `autonomous_robot` | 6613 (20) | 11544 (54) |
+| Portal raiders | `portal_raider` | 11834 (21) | 6488 (55) |
+| Temporal guards | `temporal_guard` | 6960 (22) | 241 (56) |
+| Xenobiological organisms | `xenobiological_assault_organism` | 6657 (23) | 495 (57) |
+| Paleogenetic creatures | `paleogenetic_creature` | 512 (24) | 6389 (58) |
+| Cave broods | `chaosx_cxt_extension_cave_broods_showcases` | 620 (25) | 3326 (59) |
+| Alien infantry | `alien_infantry` | 3594 (26) | 3561 (60) |
+| Assassins | `chaosx_cxt_extension_event039_assassin_forces` | 3652 (27) | 321 (61) |
+| Death ghost hosts | `chaosx_cxt_extension_death_hosts_showcases` | 678 (28) | 6282 (63) |
+| Chaos assault battalion | `chaos_battalion` | 11548 (29) | 3522 (64) |
+| CBRN command and field support | `chaosx_cxt_extension_cbrn_unit_family_showcases` | 11465 (30) | 514 (65) |
+| Livens support | `chaosx_cxt_extension_livens_projectors_showcases` | 6766 (31) | 9570 (66) |
+| Coal golems | `chaosx_cxt_extension_coal_golems_showcases` | 9909 (735) | 11467 (67) |
+
+The country keeps `chaosx_test_country_family_province_@var:<family>`, a separate typed family-state pointer, its numeric state ID, and a reserved-province array.
+It revalidates a retained site before spawning; an invalid site releases its reservation and remains eligible for reallocation.
+Repeated setup or package application keeps successful initial-spawn receipts, while **Deploy Test Formations** intentionally adds one more division per installed template at the same family sites.
+The shared count is centralized in `chaosx_test_country_count.divisions_per_template` and is one.
+
+Distinct sites require at least as many eligible owned land provinces as families.
+Malta state 116 has only province 12003 and can host at most one distinct family site; the fixture neither overlaps other families there nor acquires another country's land.
+Families without an eligible site remain in `chaosx_test_country_unplaced_families`, and the Test Directorate category displays the count and a source/placement explanation.
+A multi-province capital without a resolvable native supply source, unavailable catalogue geometry, or insufficient owned route capacity can leave families waiting.
+Railway connectivity is checked; actual supply throughput, conversion timing and later player movement are not claimed by the source model.
 
 ## Technology, projects, and doctrine
 
@@ -79,7 +177,10 @@ The test fixture records a confirmed chemical-attack history and a national resp
 
 ## Stockpile and resources
 
-The initial stockpile receives 1,000,000 units of every concrete Chaos Redux equipment type plus the vanilla equipment dependencies used by Chaos Redux divisions.
+The initial stockpile receives the configured 1,000,000 units per concrete equipment type, including the vanilla dependencies used by Chaos Redux divisions.
+The full 199-template roster requires 2,663,475 manpower; initial resource setup grants 3,000,000 through two 1,500,000 grants, keeping each fixed-point argument representable.
+Its largest aggregate equipment demand is 53,567 infantry equipment, below the standard stockpile grant.
+Six named CXT Livens variants have the required projectile module, matching stockpile calls, and forced showcase-equipment profiles; chlorine and the basic company use type 1, phosgene type 2, and mustard, lewisite, sarin and soman type 3.
 
 Dedicated light, medium, and heavy chemical-carrier variants use the concrete `light_tank_flame_chassis_3`, `medium_tank_flame_chassis_3`, and `heavy_tank_flame_chassis_3` types in the No Step Back designer system.
 Their named domestic variants are created before stockpile grants and unit creation, and stockpile calls identify both the concrete type and variant name.
@@ -92,7 +193,7 @@ The player-only **Test Directorate** decision category provides repeatable, zero
 - **Refill Equipment Stockpile** runs the static and registered-equipment stockpile grants.
 - **Complete Research and Projects** reruns the dynamic technology scan and core and registered special-project completion helpers.
 - **Apply Registered Systems** consumes package carriers, registered projects, and newly registered unit formations only when selected. It registers new equipment tokens, but stockpile quantities are granted by **Refill Equipment Stockpile**.
-- **Deploy Test Formations** adds three more divisions of every installed static and package-owned template without redefining existing templates.
+- **Deploy Test Formations** adds one more division of every installed static, individual-unit, and package-owned template at its family site without redefining existing templates.
 
 These decisions use the installed vanilla `GFX_decision_category_generic_crisis` and `GFX_decision_generic_research` sprites; no new bitmap assets are required. The category is visible only to a human CXT with `chaosx_test_country_initialized`. The decision scripts are `common/decisions/categories/chaosx_test_country_debug_categories.txt` and `common/decisions/chaosx_test_country_debug_decisions.txt`, and their text is in `localisation/english/chaosx_test_country_l_english.yml`.
 
@@ -125,7 +226,61 @@ chaosx_test_country_register_support_subunit = yes
 
 The `sp:<id>` value is an installed special-project scope, not a custom token. The hidden idea is never applied to a country and needs no modifiers, localisation, or icon. It exists because ideas are a documented tokenizable database type; the dispatcher uses its token key to call the matching package `_apply` effect.
 
-For future frontline registrations without a package-owned grouped builder, the generic fallback creates one six-battalion recruitable formation and three divisions with independent random owned, controlled state selections. For support registrations, it creates six battalions of the supplied combat anchor and one support company. The anchor must already be processed as a combat sub-unit; invalid or missing anchors are not consumed and cannot create a support-only division. Package authors must verify battalion-group compatibility and `same_support_type` exclusions, and should provide a grouped owner-authored formation when several related units arrive together. The processed arrays prevent duplicate templates and initial spawns. The manual deployment decision can reinforce both generic registered formations and the Event 014, 016, and 039 package-owned formations.
+For frontline registrations the shared builder creates a four-battalion homogeneous recruitable showcase and one initial division.
+For support registrations it uses an explicit registered combat anchor and the appropriate divisional, regimental, or HQ grid.
+An anchor must be processed before the support builder runs.
+The processed-unit arrays track coverage, while separate successful-dispatch arrays track initial showcase deployment; template existence never suppresses a still-missing initial spawn.
+The player-triggered deployment pass bypasses initial-spawn receipts deliberately.
+All registry loops have private initialized break variables and stay below the native 1,000-entry loop limit.
+
+Before registering related units, the package supplies a real family token:
+
+```text
+set_temp_variable = { var = chaosx_test_country_current_unit_family value = token:my_hidden_idea_carrier }
+```
+
+The carrier dispatcher resets that optional input between packages, so a future package that omits it uses the individual unit token instead of inheriting another package's family.
+Frontline and support family arrays are appended exactly once beside their unit arrays; support anchors form a third aligned array.
+Regimental and HQ-only supports also publish their token to the corresponding `global.chaosx_test_country_regimental_support_showcase_subunits` or `global.chaosx_test_country_army_hq_showcase_subunits` classification array.
+Those classification arrays affect the test template region, not the ordinary sub-unit definition.
+
+A package-owned formation defines `CXT Package - <real_token_key>` once and registers its real token plus its family:
+
+```text
+set_temp_variable = { var = chaosx_test_country_registration_package_formation value = token:my_formation_marker }
+set_temp_variable = { var = chaosx_test_country_registration_package_family value = token:my_hidden_idea_carrier }
+chaosx_test_country_register_package_formation = yes
+```
+
+`my_formation_marker` is a modifier-free hidden idea used only as a token key; it is not registered as another extension-effect carrier.
+The source-package fixture has one actual carrier, `chaosx_cxt_extension_source_package_formations`, and 90 such template markers.
+Its initial and manual passes use the same registry and paired family metadata.
+The seven unit-family carriers are zombies, death hosts, cave broods, plague rats, coal golems, CBRN support, and Livens; Event 012, 014, 016 and 039 retain their existing package carriers for their own unit families.
+The unit carrier declarations and bounded hooks are [unit extension ideas](../../common/ideas/chaosx_test_country_unit_extension_ideas.txt) and [unit extension on-actions](../../common/on_actions/chaosx_test_country_unit_extension_on_actions.txt).
+
+For a reviewed registered package template, the country-scoped deployment gateway is:
+
+```text
+set_temp_variable = { var = chaosx_test_country_current_family value = token:my_hidden_idea_carrier }
+set_temp_variable = { chaosx_test_country_family_spawn_succeeded = constant:chaosx_test_country_deployment.zero }
+set_variable = { global.chaosx_test_country_spawn_template = token:cxt_template_package_formation }
+set_variable = { global.chaosx_test_country_spawn_formation = token:my_formation_marker }
+chaosx_test_country_spawn_family_template = yes
+```
+
+Custom scripted effects do not accept named parameter blocks or expand `$PARAMETER$` in HOI4.
+The gateway is called with `= yes` and reads a real token selector from `global.chaosx_test_country_spawn_template`.
+Fixed template selectors and equipment-profile selectors are modifier-free hidden idea markers in `common/ideas/chaosx_test_country_template_selector_ideas.txt`.
+The native creation meta block obtains its literal template name from `GetChaosxTestCountryTemplateName`, defined in `common/scripted_localisation/chaosx_test_country_template_names.txt`.
+For individual showcases, callers also publish `global.chaosx_test_country_spawn_subunit`; package callers publish `global.chaosx_test_country_spawn_formation`.
+Their name strings use those payloads' `GetTokenKey` getters, not unresolved `[UNIT]` or `[FORMATION]` placeholders.
+The exact names and forced variant blocks are in `localisation/english/chaosx_test_country_template_names_l_english.yml`, preserving English template identity in the native OOB string.
+The caller initializes any output it needs before invoking the nested helper and does not scope temporary variables.
+`chaosx_test_country_family_spawn_succeeded` indicates guarded native creation dispatch, not an observed engine result, because `create_unit` has no documented success return.
+Only a successful dispatch consumes the initial-spawn receipt; an unavailable placement remains retryable through **Apply Registered Systems**.
+Livens support callers also supply their current support token so the internal native creator forces the matching named equipment variant.
+All other callers clear that selector, preventing a previous support profile from leaking into another formation.
+
 
 A new land sub-unit also needs an explicit Event 19 disposition in the same owner change. A combat unit extends an existing Chaos unit-family provider or receives a complete owner-side provider registration; a support unit is documented as an inseparable provider attachment, a parent-owned support consumer, or a rejected standalone lot with the engine reason. The owner updates `docs/events/019_infantry_spawn/systems/unit_family_coverage.md` and `docs/systems/cbrn_warfare/chaos_unit_family_registry.md`.
 
@@ -179,7 +334,7 @@ The debug category uses the installed vanilla `GFX_decision_category_generic_cri
 
 ## Maintenance
 
-When Chaos Redux adds a technology definition, no CXT inventory edit is required because the runtime technology array is scanned during setup and the manual research decision. Every package that adds a special project, concrete equipment type, land sub-unit, special facility, doctrine, or general system must add its hidden-idea carrier, idempotent `_apply` setup effect, startup registration, and tag-specific registration-only daily fallback in the same change. A new land sub-unit must also complete the Event 19 disposition and provider obligations described above. The explicit 83-project, 71-equipment, and 79-static-sub-unit baselines are reviewable snapshots; package registrations extend them additively when the player applies pending systems. A package with several related units should author one or more valid grouped formations and mark those tokens processed before the generic fallback runs.
+When Chaos Redux adds a technology definition, no CXT inventory edit is required because the runtime technology array is scanned during setup and the manual research decision. Every package that adds a special project, concrete equipment type, land sub-unit, special facility, doctrine, or general system must add its hidden-idea carrier, idempotent `_apply` setup effect, startup registration, and tag-specific registration-only daily fallback in the same change. A new land sub-unit must also complete the Event 19 disposition and provider obligations described above. The explicit project/equipment inventory and 79-sub-unit source inventory are reviewable snapshots; package registrations extend them additively when the player applies pending systems. A package with several related units keeps individually fielded showcases as well as its valid owner-authored formations and assigns both to one real family token.
 
 The one-time initialization flag is `chaosx_test_country_initialized`.
 
@@ -239,6 +394,75 @@ Event 039's package-owned carrier is `chaosx_cxt_extension_event039_assassin_for
 Event 024's package-owned carrier is `chaosx_cxt_extension_event024_video_game_in_sweden`, and its idempotent setup effect is `chaosx_cxt_extension_event024_video_game_in_sweden_apply`. The carrier is modifier-free and is registered by `common/on_actions/024_video_game_in_sweden_cxt_on_actions.txt`; the setup effect is implemented in `common/scripted_effects/024_video_game_in_sweden_cxt_effects.txt`. The fixture exposes only `video_game_in_sweden_cxt_fixture_ready` and the documented event and Reliance bounds after CXT initialization; it never fires Event24, selects a Swedish host, grants the staged ideas, creates a commander trait, opens the decision category, or spends country resources.
 
 The public scripted effect name `chaosx_test` and country tag `CXT` are stable interfaces.
+
+## Unit roster verification — 11 October 2026
+
+Acceptance basis: the user requested complete CXT unit and package-formation coverage, family co-location, retained idempotence and package-owned registration, without changes to ordinary units.
+Implementation evidence is the unit registry, seven unit-family carriers, the existing four event carriers, the source-package carrier and its 90 fixture definitions, the central 18-family allocation list, and the Livens variant/stockpile profiles.
+An independent country-package review checked registration, template placement, family keys, receipt handling, supply-site policy and equipment profiles; the parent applied the identified source and formatting fixes.
+An independent localisation review checked the category status, integer count, branch priority, and deployment descriptions.
+A final independent deployment review confirmed the supported token selectors, 30 fixed names, 169 dynamic names and six Livens profiles, with no concrete defect found.
+
+The final source checks cover all 79 definitions, 120 concrete templates plus the 79 resolved individual templates, every referenced custom/vanilla sub-unit and equipment dependency, support/HQ compatibility, and all 112 distinct source formation grids.
+The model scan covers the named requested unit families and every custom unit-model directory; existing art and counter wiring are reused.
+The France/Germany source scenarios check land membership, inherited ownership, existing rail reachability, stable family order and 18 distinct hub-state reservations.
+The one-time 3,000,000 manpower fixture exceeds the calculated 2,663,475 roster requirement, and aggregate equipment demands remain below the configured grants.
+There is no AI-weight or ordinary-unit balance change.
+
+`hoi4.script_validate` was run through the configured 4.0.0 coding MCP.
+File-mode validation was inconclusive: the deployment files returned partial root-scope coverage, while whole harness, unit, stockpile and constants requests timed out after 180 seconds.
+The failed file-mode capability was retired rather than retried for every remaining file.
+Corrected scoped requests covered the native harness dispatch and resource grant, unit registry and template bodies, four existing event-package effects, stockpiles, family allocation and STATE creators, 90 package fixtures, bounded on-action effects, and status/template-selector triggers.
+They returned partial checks with unchecked native argument blocks and unresolved custom-helper calls; no error-severity finding was returned by those retained scoped requests.
+These results do not certify meta-effect expansion, full file schemas, equipment-module semantics or observed engine spawning.
+The final local review parses all 18 changed script files, resolves all 199 concrete templates, checks the 38 template/profile selector markers and their exact names, and verifies both affected English localisation files.
+Ideas, script-constants tables, on-action wrappers and scripted-localisation wrappers are source-reviewed against their installed schemas; a successful MCP validation of every whole changed file is not claimed.
+The independent map inspection timed out, so the retained map catalogue and installed map files support the placement check.
+The request receipts and one-off checks are retained under ignored `.tmp/cxt_all_units/`; no tooling was added to maintained paths.
+
+The requested isolated Linux run was not performed by this job because `sonnet_log_gate` holds `/tmp/hoi4_wsl.lock` and the active Linux game slot.
+The shared capture board records that ownership and the queued menu-logo job; this job acquired no lease and did not disturb either job.
+The earlier Clausewitz preflight rejected ELF `a4971c9e8ac9a6f2487dea109e01f9839ee59db7`, while reviewed offsets require `2a79e51358b8b71c09cfb5ddefa0c03649067a4b`.
+That refusal blocks native attachment only: the ordinary isolated launcher can run the game, so it is not evidence that the Linux game itself is unavailable.
+The connected HOI4 Live Tools route targets Windows and cannot verify that Linux process.
+No console command, fresh `error.log`, observed division placement, equipped-variant result or live supply-flow result is claimed by this job.
+
+### Changed files
+
+The existing harness and fixtures were updated in `common/scripted_effects/chaosx_test_country_effects.txt`, `chaosx_test_country_unit_effects.txt`, `chaosx_test_country_stockpile_effects.txt`, `012_africa_gods_cxt_test_effects.txt`, `014_cannibalism_cxt_test_effects.txt`, `016_alien_infantry_cxt_test_effects.txt`, and `039_murder_mystery_cxt_test_effects.txt`.
+The central tuning files are `common/script_constants/chaosx_test_country_constants.txt` and `chaosx_test_country_deployment_constants.txt`; allocation and creation live in `common/scripted_effects/chaosx_test_country_deployment_effects.txt`.
+Package fixtures live in `common/scripted_effects/chaosx_test_country_package_formation_effects.txt`.
+Modifier-free unit, source-formation and template-selector tokens live in `common/ideas/chaosx_test_country_unit_extension_ideas.txt`, `chaosx_test_country_package_formation_ideas.txt`, and `chaosx_test_country_template_selector_ideas.txt`.
+Bounded registration is in `common/on_actions/chaosx_test_country_unit_extension_on_actions.txt` and `chaosx_test_country_package_formation_on_actions.txt`.
+Status and meta-effect strings use `common/scripted_localisation/chaosx_test_country.txt`, `chaosx_test_country_template_names.txt`, `localisation/english/chaosx_test_country_l_english.yml`, and `chaosx_test_country_template_names_l_english.yml`.
+This guide and the canonical `.claude/skills/chaos-redux-units-divisions/SKILL.md` hold the inventory, maps, extension contract and reusable placement rules.
+These 22 task paths reuse the existing model and counter assets without changing unit definitions, art or ordinary gameplay balance.
+
+### Simplifications, omissions, and blockers
+
+No unit type, source-package grid, existing model or counter was omitted, and no gameplay simplification or substitute unit was used.
+No custom naval/air model unit exists to spawn.
+Live Linux verification is unavailable to this job while another job holds the game lease; it is a validation limitation rather than a reduced roster.
+Finite territory and a missing capital supply source are explicit placement constraints: waiting families remain registered, visible in the category status, and eligible for later player-triggered application.
+The HQ-only unit dependency on Thunder at Our Gates remains the installed engine dependency, and no ordinary sub-unit definition is weakened to bypass it.
+
+### Reference evidence
+
+Installed game root: `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/`.
+The coding MCP was discovered through the configured local stdio connection and reported version 4.0.0.
+The wiki citations are the repository's offline snapshot.
+
+- Installed `documentation/effects_documentation.md`, create_unit 3278–3310, stockpile 1252–1266, railway 2535–2571, and numeric loop 4312–4330; revision `2cdc93d26775990468eed167442f7a416b13059fb8fe07d139b54250b79209af`.
+- Installed `documentation/triggers_documentation.md`, province building queries 1621–1642, railway construction 1884–1919, control 2320–2328, and railway connection 4603–4627; revision `7d27ed77dadaf3a213a4b3e2c624bf9c02dae495317abe8eee833b27c2d1de29`.
+- Installed `documentation/script_concept_documentation.md` 216–222, revision `884bfe9f9207ea4b25b36b5129d0f77d11d4b2f7eb0592587767ec58d24930c7`, and `common/script_constants/documentation.md` 1–34, revision `e2812efbddc7961038e1f1f2b6dd6b059bdc70704ec87d1fe530835d9141be1c`.
+- Offline `paradox_wiki/Effects - Hearts of Iron 4 Wiki.md`, create_unit 3366 and stockpile 2253, revision `997ddb09bfd63efb41a425149c46bd812d5f8953217a403386b2f6c85196aa0c`.
+- Offline `paradox_wiki/Data structures - Hearts of Iron 4 Wiki.md`, typed values 425–434 and targeted variable names 547–554, revision `62273f37ed30e5479acb331a8973f48dadc1867c4913c8a940e3e790e7af32d4`.
+- Offline `paradox_wiki/Localisation - Hearts of Iron 4 Wiki.md`, scripted text 656–705, revision `1a8f72362a34b4bb653186746b9fae0b98e463205cb02f12ccf2c3d9ccd3a064`; native precedent `common/scripted_localisation/AAT_Denmark_scripted_loc.txt` uses `localization_key`.
+- Native template/spawn precedents: `common/decisions/AUS.txt` 542–567, `history/general/taog_hq_template.txt`, `common/units/hq_support.txt`, and `history/units/AFG_1936_nsb.txt` for OOB variant forcing.
+- The reused state catalogue retains map revision `34b40fa7ff00cf49602d57615f525b0ec820972e86e8c1676f6779eef2a99f6f`; current installed state/definition/supply/rail files were checked for the modeled French and German sites.
+
+Skills used: units/divisions, equipment, map/states, subagents, shared Git commit, and the explicitly requested debug-playtest availability check.
+The canonical units/divisions skill was extended with the reusable CXT family, showcase, support-placement, receipt and supported helper-input requirements; its generated mirror is the existing junction to that source.
 
 ## Future plans
 
