@@ -90,6 +90,19 @@ No model, skeleton, weights, actions or maps changed in this source tranche; top
 Rendered smoke size, orange-pixel area and in-game playback are unmeasured.
 Meshy credits spent on this source tranche: 0.
 
+### Mechanized Assassin
+
+The plan's explicitly permitted single-burst path is retained: one timed barrel flash/report at 0.7667 seconds in attack, 0.9667 in support attack and 0.2333 in defend.
+Attack/support reference the five installed vanilla MG takes; defend references the four takes that fit its 50-frame cycle, without random onset delay.
+The dedicated destruction cue plays at 0.1 seconds and retains the archived source's complete 1.36-second decay, with no fabricated extension to the ticket's approximate two seconds.
+Its licensed source, exact derivative hash and processing are in `sound/039_murder_mystery/units/mechanized_assassin/ATTRIBUTION.md`; definitions reside in `sound/039_murder_mystery_mechanized_sound.asset`.
+Definition and Effects-category membership are unchanged by the sound-file partition.
+
+The source choice does not repair the two existing chassis recoil troughs at attack frames 24/48 and support frames 30/60.
+That motion still needs deliberate reconciliation with the accepted one-burst path, alongside hull/turret/wheel UVs, materials, topology and visible scan/traverse work.
+No final recoil synchronization or model completion is claimed.
+Meshy credits spent on this source tranche: 0.
+
 Acceptance basis: the user's assignment of all nine WP4 models and every ticket in `C:/Users/klimp/Videos/chaos_redux_trailer/records/showcase/unit_fix_plan.md`.
 The implemented firing/audio tranche is documented in `wp4_firing_audio_tranche.md`; geometry, materials, rig/actions and filmed acceptance remain required.
 
