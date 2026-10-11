@@ -268,6 +268,11 @@ If the list is dynamic, scripted localisation must print the current targets or 
 
 Every named region should have a tooltip or documentation entry explaining which states belong to it.
 
+A scripted trigger called inside `available`, `allow` or `bypass` expands into the requirement tooltip, and every `check_variable` or `has_variable` in it prints its raw variable name.
+Wrap bookkeeping checks (selection pointers, ledger and array validity, cost previews, counters that only keep the engine consistent, payments the cost line already shows) in `hidden_trigger`, either inside the shared trigger or at the call site (precedent: commit 14c80e72e).
+Show a real requirement as one line with `custom_trigger_tooltip = { tooltip = KEY hidden_trigger = { ... } }`, or define a localisation key named exactly like the scripted trigger so the line replaces its expansion.
+To find leaks, walk each decision's requirement blocks through the scripted triggers they call, skip `hidden_trigger` and `custom_trigger_tooltip`, and list variable names that have no localisation key.
+
 ### Trigger evaluation cost
 
 The installed vanilla `common/decisions/_documentation.md` defines how often each block runs. `allowed` runs once at game start or save load, so permanent filters such as `original_tag` belong there. `visible` and `available` run every frame while the decision interface refreshes, so keep them cheap and move expensive or world-scanning checks elsewhere. For targeted decisions, put acting-country prechecks in `target_root_trigger` and per-target selection in `target_trigger`, which run once per day, and narrow the candidates with `targets`, `target_array` (vanilla `AST.txt` uses `target_array = AST.core_states`), or a `state_trigger` value such as `any_owned_state` instead of checking every state or country.
