@@ -150,6 +150,10 @@ Run the read-only delivered-animation gates in `animation_delivery_checks.py` ag
 
 The per-frame limits come from `role_motion_limits` in `animation_delivery_checks.py`, calibrated from the installed vanilla `GER_infantry_*` clips measured in source-mesh units with the exact `GER_infantry.mesh` skeleton: idle 10 deg and 0.10 u per frame (vanilla idle peaks 6.0 deg, 0.052 u), move and retreat 25 deg and 0.36 u per frame (vanilla walk peaks 21.9 deg, 0.314 u at the toes), every other role outside declared strike windows 30 deg and 0.41 u per frame (vanilla strikes peak 21.3 deg, 0.353 u). Re-derive them from vanilla if the reference set or the measurement space changes; do not waive a flag or widen a window instead.
 
+The finger-leaf exemption applies only to world-translation checks: derive child counts from the final matching exported `.mesh` skeleton's decoded parent indices and require both finger identity and zero children before exempting a bone.
+If an analyzer filters fingers by name alone, independently supplement its result with hierarchy-derived checks of every excluded nonleaf joint; a name match does not prove leaf status.
+Keep angular and local checks for every bone and world-translation checks for every nonleaf finger and other bone; toe, tail, tentacle, and head leaves receive no exemption.
+
 Global minimum-Z clearance alone does not prove anatomical support: a rigid prop, finger, or coat hem can touch the ground while the torso visibly floats. Inspect actual intended support/contact groups across intermediate collapse, impact, and settle frames as well as the terminal death pose, and each limb's stance/swing contacts through gait phases. Reject floating body groups that should be supported and interpolation that raises a settled body back toward standing. Correct articulation and prop contacts in the authored motion rather than relying only on whole-body Z translation.
 
 ## PDX export and reimport evidence
