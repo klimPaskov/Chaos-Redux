@@ -1,0 +1,39 @@
+# ============================================================================
+# CHAOS REDUX - HISTORICAL CBRN SCIENTIST EARLY-ARRIVAL TRIGGERS
+# ============================================================================
+# Overview:
+# - Dated scientists arrive on their documented career date at the latest.
+#   These triggers let a country receive a held identity earlier when it is
+#   already running the matching programme, so dates influence arrivals and
+#   gameplay conditions decide them.
+# - Both triggers read only the scoped country. The arrival helpers in
+#   chaosx_startup_history_effects.txt combine them with has_war and the
+#   historical date; nothing here scans the world.
+# - Basic gas, anemometer and pathogen-handling technologies are granted at
+#   the historical bookmarks and are not a programme signal. Only nerve
+#   agents, the antidote line, sealed laboratories and completed weaponisation
+#   projects are, so a starting stockpile alone never opens the roster.
+# ============================================================================
+
+# COUNTRY scope. A chemical-warfare programme beyond the historical starting
+# kit: a nerve agent or antidote line researched, or a completed chemical
+# weaponisation project.
+cbrn_scientist_chemical_programme_running = {
+	OR = {
+		has_tech = tabun
+		has_tech = sarin
+		has_tech = soman
+		has_tech = dimercaprol
+		cbrn_chaos_warfare_has_completed_chemical_project = yes
+	}
+}
+
+# COUNTRY scope. A biological-warfare programme beyond the historical starting
+# kit: sealed laboratories researched, or any completed agent weaponisation
+# project (anthrax, plague, tularemia or smallpox).
+cbrn_scientist_biological_programme_running = {
+	OR = {
+		has_tech = sealed_containment_laboratories
+		bio_battlefield_country_has_any_agent_project = yes
+	}
+}
