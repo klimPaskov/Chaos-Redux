@@ -49,3 +49,10 @@ The specification, research synthesis, model, and reviews in this package were a
 The event-planning and events skills control the design, owned integration, and handoff. Event-assets controls report, modifier, and achievement outputs. Subagents and improvement-loop control honest delegation records and the required near-completion review. Debug-playtest controls the separation between static evidence and user-owned live testing.
 
 The decisions/missions, focus-tree, scripted-GUI, frame-animation, super-event, ComfyUI, and 3D-model skills were read completely and evaluated for real applicability. Their existence does not justify adding a new management system, tree, animation, audio package, generation service, or 3D object to this event. The external MTTH skill was read for probability discipline, without adding an unnecessary event-specific MTTH timer.
+
+
+## Event 083 report asset disposition (2026-10-11)
+
+The current asset specification requests the 210x176 agency-development report image, and the accepted source/processed/DDS package is recorded in `docs/assets/083_agency_upgrade/manifest.md`.
+The active `GFX_report_event_intel` registration and its Event 83 consumer remain stable; `interface/chaosx_pictures.gfx` now resolves that sprite to `gfx/event_pictures/083_agency_upgrade/report_event_agency_upgrade.dds`.
+The independent report sample review confirmed the period scene, transparent card corners, DDS dimensions, and exact decoded-pixel match; its receipt and SHA-256 are in `.tmp/assets_shard_6/reviews/083_report_review.md`.
