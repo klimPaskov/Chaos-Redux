@@ -62,6 +62,17 @@ The older shared-job Meshy 6 maps belong to a rejected predecessor and must not 
 The requested original-provider normal repack is therefore blocked by those missing source maps; current-geometry action and material review can proceed independently.
 Meshy credits spent on this source tranche: 0.
 
+### Alien Infantry
+
+The ticket-permitted idle-hum removal and finite laser effects are retained.
+The existing CC0 bart laser sound is shortened from 1.2 to 0.9 seconds with a tapered tail; its original archive, source-bound preimage and installed derivative are verified in the takeover audio receipts and `sound/shared_alien_system/alien_infantry/WP4_ATTRIBUTION.md`.
+At the slowest configured playback rate of 0.97, its 0.92784-second duration fits the 1.066667-second interval between support shots.
+The first 0.78 seconds retain a waveform correlation of 0.988637 with the previous core.
+This resolves overlap and preserves the existing sound identity; it does not satisfy the separate tonal-zap requirement.
+Body/pistol materials, scan/idle/recoil, impact and movement-source work remain open.
+No auditory or live-game acceptance is claimed; the parent audio input route reported that this model cannot consume audio.
+Meshy credits spent on this source tranche: 0.
+
 Acceptance basis: the user's assignment of all nine WP4 models and every ticket in `C:/Users/klimp/Videos/chaos_redux_trailer/records/showcase/unit_fix_plan.md`.
 The implemented firing/audio tranche is documented in `wp4_firing_audio_tranche.md`; geometry, materials, rig/actions and filmed acceptance remain required.
 
