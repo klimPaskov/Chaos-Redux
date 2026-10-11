@@ -66,3 +66,15 @@ Portal Raider step 01 and Alien Infantry movement intentionally share the same a
 Alien Infantry's movement pool also references the existing Portal Raider step 02-06 sound definitions, forming one declared six-take licensed boot-footfall family without additional audio copies or edits.
 No audio was downloaded, synthesized or recorded by the agent; no auditory, spoken-word or live playback acceptance is asserted.
 CC BY 3.0 sources retain attribution and adaptation notices: https://creativecommons.org/licenses/by/3.0/.
+
+## Shared licensed metal-impact family
+
+Portal Raider retains its original impact and directly references the two accepted Alien Infantry metal-impact definitions, forming a declared shared armor-impact family without copying or changing audio bytes.
+The added members are Kenney Sci-Fi Sounds `impactMetal_003` and `impactMetal_004`, CC0 1.0, https://kenney.nl/assets/sci-fi-sounds.
+`sound/shared_alien_system/alien_infantry/alien_infantry_impact_02.wav`: source SHA-256 `ef29c3943ee701616f65e3d596c13eb3ff6b11ca5b3ac01e7bc923366a5c6f76`, derivative SHA-256 `55f7c8e7fb2c62f5e3a6dd8bca1e5ef77a559ebea4d8962250ae7bcaa83a9925`.
+`sound/shared_alien_system/alien_infantry/alien_infantry_impact_03.wav`: source SHA-256 `0032710d1fc88c217946cd54492f275eb4363bb8025a4bc1b7ce08df7b3c60de`, derivative SHA-256 `3cf35f3da295051f4945164a3530171e1a4d0039ca03d93307b210469dd1746b`.
+These full-duration library members receive 5 ms entry and 40 ms release fades, 30 Hz high-pass filtering, -6 dBFS peak normalization and mono PCM16/44.1 kHz conversion, as recorded in the Alien job `evidence/wp4_audio_takeover/library_variants/review_packet.json`.
+Distinct library members do not establish separate acoustic recordings.
+The three-member Portal pool prevents immediate repetition and preserves volume 0.6, its three-source audible limit and its existing nonlooping wounded/death events.
+No playback-rate offset is configured: the added durations are 0.776780 and 0.389524 seconds.
+No sound download, synthesis, auditory acceptance or live playback claim is made.

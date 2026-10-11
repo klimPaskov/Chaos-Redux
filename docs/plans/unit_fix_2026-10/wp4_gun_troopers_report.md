@@ -68,10 +68,16 @@ The rejected early-decay candidate is not installed; the selected waveform retai
 Six original footstep takes have source-derived edge fades at -6 dBFS, and death combines the existing power-down sound with a licensed human grunt.
 The six-take footstep pool prevents immediate random repetition, retaining its existing volume and event times.
 All six boot-step derivatives form one explicitly shared Portal/Alien family; the retained Alien first-step file is a byte-identical copy of Portal step 01, and steps 02-06 are referenced directly.
+The impact pool retains its original take and references the two accepted Kenney metal-impact members in the Alien package, forming a declared shared armor-impact family with immediate repetition prevented.
+The 0.776780- and 0.389524-second members play at their original rate; the nonlooping wounded/death events and volume 0.6 remain unchanged, and no audio bytes were copied or edited.
+Source hashes, attribution and cross-file resolution evidence are retained in `sound/portal_raider/WP4_ATTRIBUTION.md` and the Portal job's `evidence/wp4_audio_takeover/shared_impact_pool.json`.
 Per-file provenance, exact transformations, waveforms, copies and cue-rate checks are retained in `docs/assets/shared_portal_raider_system/models_3d/portal_raider/evidence/wp4_audio_takeover/`.
 Live state-exit playback and perceived timbre remain unverified.
 
 The selected September 6 weapon-free provider body/maps and `wf_export2.blend` are missing from the current job, local scratch, archive and exact-hash LFS checks.
+One exact-object recovery attempt for the selected GLB returned HTTP 404 from the configured Git LFS remote; the returned pointer remains failed-attempt evidence and was not treated as model data.
+The checkpoint's exact pointer size remains unavailable after a bounded two-path history lookup exceeded 180 seconds, so no checkpoint download was attempted.
+The owning job's `evidence/wp4_model_takeover/recovered_sources/lfs_recovery_result.json` records those limits; no broad fetch, alternate-remote search or retry was used.
 The runtime 45-bone mesh and matching native installed-byte reimport remain available.
 The older shared-job Meshy 6 maps belong to a rejected predecessor and must not be applied to this body's UVs.
 The requested original-provider normal repack is therefore blocked by those missing source maps; current-geometry action and material review can proceed independently.
