@@ -54,7 +54,35 @@ Every loss is requested through `camp_admin_record_deaths` and clamped to the pe
 ## Selection
 
 A country is a valid target only when it has no bespoke camp package (`camp_rework_country_uses_generic_kit`), has not capitulated, is not protected or on cooldown, and has a controlled state with a campaign source: non-core territory, resistance above the floor, or a regime that names political enemies (fascist, communist, civil war, or emergency rule at war with low stability). Ethnicity is never read.
+Germany, Japan, the Soviet Union, Britain, the United States, France, Italy and Belgium are excluded because their national camp kits expose no registration or expansion contract that another event may call, see "Excluded countries" below.
 Weights rise with occupied and resisting states, war, civil war, authoritarian government, low stability and existing shared camp networks. They fall for democracies and stable countries. A country with a live network is drawn at a fraction of a fresh candidate's weight and only when an incident threshold is met.
+
+## Opening balance
+
+The shared site registration lowers stability by 0.015 for every site (`genocide_political_effect.hardliner_stability`), and it also adds one timed hardliner idea, a point of popularity for fascism or communism and a point lost by democratic and neutral politics per site.
+The opening registers `ceil(20 percent)` of the eligible states, and an evolved opening registers 50 percent.
+
+| Eligible states | Baseline sites | Stability lost | Evolution III sites | Stability lost |
+| --- | --- | --- | --- | --- |
+| 12 | 3 | 4.5 percent | 6 | 9 percent |
+| 30 | 6 | 9 percent | 15 | 22.5 percent |
+| 60 | 12 | 18 percent | 30 | 45 percent |
+
+A country at 40 percent stability that opens 12 sites would end at 22 percent, below the 35 percent band where the opening report's collapse weights and the civil war pressure start, with no way to answer before the loss lands.
+`concentration_camps_soften_opening` therefore returns the part of the measured loss above `concentration_camps_opening.stability_loss_cap` (0.12, eight sites) at the end of the opening, so the same country ends at 28 percent and a country with 60 states at Evolution III ends 12 points down instead of 45.
+The measure uses the real stability before and after, so a country already near zero is never given more than it lost.
+Expansion by decree (one site) keeps the full shared cost.
+The popularity shifts stay with the shared owner: a 30 site opening moves democratic and neutral support by 30 points each.
+
+## Excluded countries
+
+`camp_rework_country_uses_generic_kit` is false for Germany, Japan, the Soviet Union, Britain, the United States, France (and Vichy), Italy and Belgium, and `concentration_camps_target_basics` requires it.
+The kits were read against the major and colonial kit implementation maps and their effect files.
+They expose decisions routed through `camp_rework_route_country_specific_action`, not a registration or expansion API.
+Their state pools are ordered and strict (Germany takes occupied Poland before other occupied Europe and the core fallback only when both are empty, Japan takes the China and Manchuria pool first, the Soviet Union uses the remote gulag pool), their active and radicalized site caps live in `camp_ai_*` triggers, their cohorts come from country-owned sources and exact transfers, and their ideas, country values and monthly bridges are refreshed by the kit.
+`genocide_register_concentration_site_for_root` bypasses every one of those, and `camp_rework_colonial_register_current_state` is a primitive of the colonial decision actions with its own subject-authority authorization.
+Calling either from Event 22 would create sites the kit does not know about, with none of its caps, ideas or source rules, which is a second framework beside the kit and not an entry through it.
+Those countries reach the same crisis through their own kit and the shared Ledger.
 
 ## Shared values
 

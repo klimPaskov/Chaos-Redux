@@ -339,6 +339,7 @@ concentration_camps_seed_cohort = {
 # evolution row for the country, and an opening below Evolution III never takes
 # the Evolution III shock.
 concentration_camps_open = {
+	set_temp_variable = { concentration_camps_stability_before = stability }
 	camp_rework_initialize_country_variables = yes
 	concentration_camps_initialize_country = yes
 	add_to_variable = { concentration_camps_generation = constant:concentration_camps_value.one }
@@ -388,9 +389,28 @@ concentration_camps_open = {
 		set_temp_variable = { concentration_camps_log_stage = concentration_camps_open_stage }
 		concentration_camps_record_evolution = yes
 	}
+	concentration_camps_soften_opening = yes
 	concentration_camps_refresh_network = yes
 	concentration_camps_set_cooldown = yes
 	concentration_camps_start_monitor = yes
+}
+
+# COUNTRY. Input: temp concentration_camps_stability_before, the stability at
+# the start of the opening. The shared registration lowers stability by 0.015
+# for every site (genocide_political_effect.hardliner_stability), which a large
+# or evolved opening multiplies: 60 eligible states give 12 sites and 0.18 at
+# the baseline, 30 sites and 0.45 at Evolution III. The opening returns the part
+# of the actual loss above the cap, so the first report cannot push a country
+# past the civil unrest band on its own. Later expansion by decree keeps the
+# full shared cost.
+concentration_camps_soften_opening = {
+	set_temp_variable = { concentration_camps_stability_lost = concentration_camps_stability_before }
+	subtract_from_temp_variable = { concentration_camps_stability_lost = stability }
+	if = {
+		limit = { check_variable = { concentration_camps_stability_lost > constant:concentration_camps_opening.stability_loss_cap } }
+		subtract_from_temp_variable = { concentration_camps_stability_lost = constant:concentration_camps_opening.stability_loss_cap }
+		add_stability = concentration_camps_stability_lost
+	}
 }
 
 # COUNTRY. Inputs: temp concentration_camps_target_share (share of eligible

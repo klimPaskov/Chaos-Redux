@@ -74,7 +74,9 @@ concentration_camps_state_is_candidate_for_root = {
 	check_variable = { state_population_k > constant:concentration_camps_state.minimum_population_k }
 	NOT = { has_state_flag = camp_rework_liberated_evidence }
 	NOT = { has_state_flag = camp_rework_site_dismantled }
-	NOT = { has_state_flag = concentration_camps_relief_protected }
+	# Implementation marker of a liberated site. The decision states the real
+	# requirement through custom_trigger_tooltip, so the flag stays hidden.
+	hidden_trigger = { NOT = { has_state_flag = concentration_camps_relief_protected } }
 	NOT = { has_state_flag = camp_rework_site_active }
 	OR = {
 		NOT = { is_core_of = ROOT }
