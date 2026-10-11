@@ -207,7 +207,7 @@ verified balance -> image-to-3D -> status -> immediate download
                  -> deformation/visual QA -> PDX export/reimport
 ```
 
-Each provider stage keeps its own task id, credit preflight, reconciliation, and download record, and a paid rig or animation attempt is not repeated. Provider results are ingested into the job through the ingestion operations listed under `Adapter publication`.
+Each provider stage keeps its own task id, credit preflight, reconciliation, and download record, and a paid rig or animation attempt is not repeated. Meshy keeps task outputs only three days (signed URLs expire after three days and later status calls return not found), so download every GLB, FBX, texture and motion file the moment its task succeeds and record its SHA-256; an unrecorded or undownloaded task cannot be recovered. Provider results are ingested into the job through the ingestion operations listed under `Adapter publication`.
 
 Failed geometry generation, remesh, retexture, or conversion retains the authorized provider-recovery path while balance and verified capability permit it. A rig result or an action result that the provider cannot deliver to this standard is repaired in the live Blender session or reported as the exact blocker, under the generation policy in `Skeleton, skinning, and action policy`. Inspect the live schema and balance before paid calls, preserve estimates and task/response IDs, and never expose the API key. Do not promise a general geometry prompt when Image-to-3D exposes only texture-direction text.
 

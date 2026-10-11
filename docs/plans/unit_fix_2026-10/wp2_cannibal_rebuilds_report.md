@@ -4,6 +4,41 @@ Disposition: `implemented` for this documentation handoff; package mesh/action r
 
 Package models: cannibal_scavenger_warband, cannibal_feast_guard, cannibal_feast_cohort, cannibal_island_reavers. The full per-model map, DDS, mesh, action, topology, reimport, and entity-lint evidence is in `docs/plans/unit_fix_2026-10/per_model_delivery_metrics.json`.
 
+## WP2 regeneration from fresh Meshy 7 (11 Oct 2026)
+
+This section supersedes the 10 Oct per-model sections below for the meshes, textures, actions, weapons and entity timings; those sections remain as the history of the repair of the damaged exports.
+
+**Why a regeneration.** The first redo tried to re-download the original Meshy tasks (reavers remesh `01a03967` and rig `01a0396c`, scavenger `01a034b1`, cohort `01a033c5`/`01a033d0`/`01a033ee`, guard `01a0334e`/`01a03355`/`01a03360`, and their animation tasks). Every status call returned not found on every endpoint through the official MCP and the repository wrapper, and `list_tasks` and `list_models` returned nothing: Meshy keeps task outputs for three days (the signed URLs carry a three-day expiry), so the August downloads cannot be recovered. All four units were therefore regenerated from item-free body inputs with the authorized credits (1,326 before, 940 after: 386 credits for four body generations, five item generations, four rigs and 32 preset animations, no retries).
+
+**What every unit now has**
+
+- Inputs: one item-free body image per unit (empty open hands, A-pose, plain grey) made from the archived source art with the gptimage route (the Feast Guard source image no longer exists, so its input was prepared from a lit render of the old model plus the written design), and one item-only image per weapon, each sent to its own Meshy 7 task. Provider lineage, hashes and the original-task lookup record are in `docs/plans/unit_fix_2026-10/wp2b_tools/evidence/<job>_provider_lineage.json`.
+- Geometry: the provider body arrives as unwelded triangle soup and is welded into one closed shell (boundary 0, non-manifold 0 at 0.0005, 0.001 and 0.002), 30,830 to 31,208 triangles, 99 to 111 planar UV islands; the provider's own topology is kept, with no remesh or voxel step. The installed-byte audit (`installed_audit.py`) reads geometry pass for all four meshes, against 0 of 4 before.
+- Textures: the provider base colour, roughness, metallic and normal are re-projected into the planar atlas and delivered as 512 BC1/BC3 maps with ten mips; the normal maps are the provider's real tangent detail (G/A standard deviation 17 to 21), not the old noise or flat maps. Each weapon has its own 512 map set. Specular uses the vanilla-calibrated classes (cloth, dry skin, steel, bone).
+- Weapons are separate rigid items on their own nodes and materials, parented to the hand bone with a single weight, registered with one `meshsettings` block per exported stream: harpoon (Island Reavers, 8,308 triangles), bone polearm (Scavenger Warband, 8,080), spear (5,968) and chain hook (8,342) for the Feast Cohort, and one cleaver mirrored into a right and a left item for the Feast Guard (6,086 each).
+- Actions: eight provider presets per unit (one Meshy animate task each, no retries) ingested through the receipt route, then sign-continuous, smoothed inside the recalibrated limits (idle 0.10, move/retreat 0.36, other 0.41 u per frame), loop seams closed, grounded, and re-gated on the exported bytes. All 32 exported actions pass the delivery gate with the move roles declared as in-place cycles (the in-place provider walk slides its planted foot at ground speed, so the sole plant cannot be measured; the installed audit reads those four as needs_review). Reimport proofs for every role are under each job's `blender/previews`.
+- Entity timings: attack and support-attack events follow measured item-tip speed peaks, move and retreat footsteps sit at half cycles, and the Feast Guard and Feast Cohort training cues were moved inside their new 2.2 s and 4.5 s cycles; the 10 Oct audio files and sound definitions are unchanged.
+
+| Unit | Body + items (triangles) | Two-hand or one-hand hold | Action frames at 30 fps (idle, move, attack, defend, support, retreat, training, death) | Notes |
+|---|---|---|---|---|
+| `cannibal_island_reavers` | 31,208 + harpoon 8,308 | Two hands on the harpoon; off-hand-to-shaft distance at most 0.15 units in every frame (0.05 in the strikes) | 51, 34, 91, 41, 106, 52, 156, 106 | Support attack is the provider Weapon Combo (leaping spin with a kick) kept at its natural speed, with a declared kick window of frames 54 to 78 |
+| `cannibal_scavenger_warband` | 30,830 + polearm 8,080 | Two hands on the polearm; at most 0.11 units except defend and support attack (0.25 and 0.29) | 339, 34, 87, 184, 231, 52, 111, 66 | Mane is the provider's own ash-grey crest, not the old shell |
+| `cannibal_feast_cohort` | 31,008 + spear 5,968 + chain hook 8,342 | Spear in the right hand, hook in the left, both rigid in the fist; no item below the floor in any frame | 51, 34, 91, 41, 96, 52, 136, 106 | Hook and chain are one rigid item |
+| `cannibal_feast_guard` | 30,948 + cleaver 6,086 x 2 | One cleaver in each hand; every item within 1 mm of the floor or above it in every frame | 51, 52, 131, 56, 171, 41, 67, 67 | Two items share one set of textures |
+
+**Contact evidence.** `wp2b_tools/evidence/<job>_contact_evidence.json` holds, for every role and frame, the off-hand distance to the shaft and the lowest item point against the floor; `<job>_export_gate.json` holds the exported-byte gate result, the quaternion-sign repair counts and the reimport ground range per role.
+
+**Remaining defects and limits**
+
+- Scavenger defend and support attack: the presets hold the 2.3 m polearm low (a short axe in the source motion), so the polearm end still dips below the floor in those two actions (lowest point 0.9 and 0.8 units, about 24 and 21 cm, in 77 and 89 frames); the hold was kept instead of letting the off hand leave the shaft. A shorter polearm or a re-authored low guard would remove it.
+- The reavers support attack and the guard support attack are provider combos with fast kicks or spins; the reavers kick is declared as a strike window, the guard's passes without one.
+- The move cycles have no measured sole plant (in-place provider walk), so the move footstep events are half-cycle estimates.
+- The Scavenger idle is 11.3 s, its support attack 7.7 s and the Guard support attack 5.7 s, because the presets are that long; the entity states loop or chain as before.
+- The provider hands are open hands, so a shaft passes through the palm rather than being gripped by fingers.
+- The Meshy action choices are weapon presets for sword, spear and axe, not authored harpoon jabs; the WP2 authored jab and trimmed clips from the earlier damaged rigs were not carried over because the new rigs have their own provider motion.
+- Capture work (stationary re-film with the crop locked to the entity position) was not done; live validation belongs to the user.
+- The three-day Meshy retention means any future rebuild must download every task output immediately; the skill note was updated.
+
 ## Shared delivery facts
 
 Across the shared pipeline, 119 unique active DDS targets are installed (41 diffuse, 39 normal, 39 specular), all 512x512 BC1/BC3 with ten mips. This package references 12 unique DDS paths (4 diffuse, 4 normal, 4 specular). Eighty targets used compression-only conversion and 39 normals received `packed_normal_cleanup` (R=existing G, G/A preserved, B=0). The reviewed T062 mip-7 repair replayed the same QA gates. Unique archived input bytes total 470,825,856; installed bytes total 34,446,104. The item-level JSON records each target's exact before/after dimensions, fourCC, mip count, bytes, SHA-256, decoder QA, and semantic gate results. Runtime cleanup archived nine genuinely unreferenced DDS files (37,749,888 bytes); active shared-variant maps were retained. The global tranche changed no runtime `.mesh` or `.anim` bytes and rewrote no model geometry or actions; native imports created proof checkpoints from the installed mesh bytes.
