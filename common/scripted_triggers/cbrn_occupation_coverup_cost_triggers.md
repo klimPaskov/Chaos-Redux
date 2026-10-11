@@ -32,3 +32,6 @@ The original four public quote outputs remain unchanged.
 
 The [effect contract](../scripted_effects/cbrn_occupation_coverup_cost_effects.md) documents normal payer storage, actual-payment receipt roles, recovery phases and the owner integration boundary.
 The [handoff](../../docs/plans/026_black_friday_plans/subagent_handoffs/2026-10-07_cbrn_coverup_cost_adapter.md) records validation and native evidence limits.
+
+`cbrn_occupation_coverup_has_pending_receipt` is a payer-scope trigger with no FROM requirement.
+It is true while the payer's pending cover-up receipt queue is non-empty and drives the visibility of the `cbrn_recover_coverup_payment` decision, which calls `cbrn_occupation_recover_paid_coverups` so an outstanding refund stays reachable when no state can start another cover-up.

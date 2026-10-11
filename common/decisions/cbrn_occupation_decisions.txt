@@ -318,6 +318,24 @@ cbrn_occupation_measures_category = {
 		}
 	}
 
+	# Payer-level retry for an outstanding cover-up refund. The targeted purchases
+	# recover receipts on their own click, but they disappear once no state can
+	# start a cover-up; this entry keeps the refund reachable without a purchase.
+	cbrn_recover_coverup_payment = {
+		icon = GFX_decision_cbrn_destroy_contaminated_records
+
+		visible = { cbrn_occupation_coverup_has_pending_receipt = yes }
+
+		complete_effect = {
+			custom_effect_tooltip = cbrn_recover_coverup_payment_effect_tt
+			hidden_effect = { cbrn_occupation_recover_paid_coverups = yes }
+		}
+
+		ai_will_do = {
+			base = constant:cbrn_occupation_decision_ai.recover_payment
+		}
+	}
+
 	cbrn_admit_accidental_release = {
 		icon = GFX_decision_cbrn_admit_accidental_release
 		state_target = any

@@ -16,3 +16,11 @@ cbrn_occupation_coverup_can_retry_refund = {
 		check_variable = { cbrn_occupation_coverup_receipt_phase_@var:cbrn_occupation_coverup_receipt_id = constant:cbrn_occupation_coverup_receipt_phase.recorded_refund }
 	}
 }
+
+# CBRN occupation coverup payment recovery. COUNTRY payer, no FROM required.
+# True while any paid cover-up receipt still waits for its refund or settlement.
+# The recovery decision uses it so a payer whose every cover-up target is blocked
+# can still retry the refund without a new purchase.
+cbrn_occupation_coverup_has_pending_receipt = {
+	check_variable = { cbrn_occupation_coverup_pending_receipts^num > constant:universal_cost_framework.zero }
+}

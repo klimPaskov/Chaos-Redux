@@ -354,6 +354,16 @@ for(const defect of ['zero-ID','unknown-ID','missing-paid','zero-paid','wrong-ta
   const debits=writes(v,'add_political_power').filter(x=>BigInt(x.delta)<0n).length;click(v);assert.equal(writes(v,'add_political_power').filter(x=>BigInt(x.delta)<0n).length,debits);
   assert.equal(writes(v,'set_state_flag').length,0);assert.equal((v.country.arrays.get('black_friday_achievement_transaction_ids')??[]).length,0);
 });
+test('failed-refund-stays-recoverable-after-every-target-is-blocked',()=>{
+  const v=fresh(0,[sale()]);v.target.vars.set('cbrn_occupation_last_record_uid',ticks(999));
+  assert.equal(v.run('cbrn_occupation_coverup_has_pending_receipt'),false);
+  v.fault='refund';click(v);assert.equal(v.country.pp,ticks(980));
+  // The state is now blocked for any further cover-up; only the payer-level entry remains.
+  assert.equal(v.run('cbrn_occupation_coverup_has_pending_receipt'),true);
+  v.country.vars.set('universal_cost_transaction_row_plus_one_@1',S);v.run('cbrn_occupation_recover_paid_coverups');
+  assert.equal(v.country.pp,ticks(1000));assert.equal(pending(v).length,0);
+  assert.equal(v.run('cbrn_occupation_coverup_has_pending_receipt'),false);
+});
 test('valid-private-refund-preflight-does-not-guess-broken-core-row',()=>{
   const v=fresh(0,[sale()]);v.target.vars.set('cbrn_occupation_last_record_uid',ticks(999));v.fault='refund';click(v);v.country.pp=0n;
   v.set('cbrn_occupation_coverup_target',0).set('cbrn_occupation_coverup_receipt_id',0);assert(v.run('cbrn_occupation_coverup_can_retry_refund'));assert.equal(v.value('cbrn_occupation_coverup_receipt_id'),S);
