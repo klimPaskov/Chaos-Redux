@@ -178,7 +178,8 @@ Those earlier deliveries are baseline facts, not newly produced WP4 repairs.
 `pipeline_report.md`, `per_model_delivery_metrics.json` and their install manifests retain those facts.
 The requested `unit_s3_report.md` is absent and is recorded as an input-path gap.
 Material-class provenance, weak normal detail and fragmented atlases remain unresolved; compression does not establish material acceptance.
-The model worker's source/UV comparisons and independently prepared candidates belong in `wp4_models_handoff.md`.
+The model worker's current source selections and UV comparisons are retained in `.tmp/unit_takeover_wp4_models/intake_inventory.json`, `source_uv_audit.json` and `materials/source_metrics.json`.
+No Robot or Alien texture candidate is promoted: the source-normal detail and modified UV/tangent gaps remain unresolved.
 
 ## Evidence and validation limits
 
