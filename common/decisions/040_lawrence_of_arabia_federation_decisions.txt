@@ -1,0 +1,188 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 040 LAWRENCE OF ARABIA FEDERATION DECISIONS
+# ============================================================================
+# Evolution III. One category, two audiences:
+#   before a federation exists - the three congress calls (Britain, the
+#   counter-bloc and the personal congress of the country that hosts
+#   Lawrence), each visible only while its conditions hold;
+#   after formation - the five federal decisions of the core (council,
+#   revenue, staff reform, regional offices, inviting a member).
+# AI scores live in 040_lawrence_of_arabia_federation_mtth.txt.
+# ============================================================================
+
+lawrence_federation_category = {
+
+	# ------------------------------------------------------------------------
+	# Congress calls
+	# ------------------------------------------------------------------------
+
+	lawrence_call_the_british_arabian_congress = {
+		icon = GFX_decision_generic_political_discourse
+		priority = 120
+		visible = { lawrence_shows_call_british_congress = yes }
+		available = { hidden_trigger = { lawrence_can_pay_congress = yes } }
+		custom_cost_trigger = { lawrence_can_pay_congress = yes }
+		custom_cost_text = lawrence_cost_congress
+		complete_effect = {
+			custom_effect_tooltip = lawrence_call_british_congress_tt
+			hidden_effect = { lawrence_call_british_congress = yes }
+		}
+		ai_will_do = {
+			factor = 0
+			modifier = {
+				set_temp_variable = { lawrence_ai_weight = mtth:lawrence_ai_call_british_congress }
+				add = lawrence_ai_weight
+			}
+		}
+	}
+
+	lawrence_call_the_arab_congress = {
+		icon = GFX_decision_generic_form_nation
+		priority = 119
+		visible = { lawrence_shows_call_arab_congress = yes }
+		available = { hidden_trigger = { lawrence_can_pay_congress = yes } }
+		custom_cost_trigger = { lawrence_can_pay_congress = yes }
+		custom_cost_text = lawrence_cost_congress
+		complete_effect = {
+			custom_effect_tooltip = lawrence_call_arab_congress_tt
+			hidden_effect = { lawrence_call_arab_congress = yes }
+		}
+		ai_will_do = {
+			factor = 0
+			modifier = {
+				set_temp_variable = { lawrence_ai_weight = mtth:lawrence_ai_call_arab_congress }
+				add = lawrence_ai_weight
+			}
+		}
+	}
+
+	lawrence_call_the_personal_congress = {
+		icon = GFX_decision_generic_monarchy
+		priority = 118
+		visible = { lawrence_shows_call_personal_congress = yes }
+		available = { hidden_trigger = { lawrence_can_pay_congress = yes } }
+		custom_cost_trigger = { lawrence_can_pay_congress = yes }
+		custom_cost_text = lawrence_cost_congress
+		complete_effect = {
+			custom_effect_tooltip = lawrence_call_personal_congress_tt
+			hidden_effect = { lawrence_call_personal_congress = yes }
+		}
+		ai_will_do = {
+			factor = 0
+			modifier = {
+				set_temp_variable = { lawrence_ai_weight = mtth:lawrence_ai_call_personal_congress }
+				add = lawrence_ai_weight
+			}
+		}
+	}
+
+	# ------------------------------------------------------------------------
+	# Federal decisions (the core)
+	# ------------------------------------------------------------------------
+
+	lawrence_convene_the_federal_council = {
+		icon = GFX_decision_generic_political_rally
+		priority = 110
+		visible = { lawrence_shows_fed_council = yes }
+		available = { hidden_trigger = { lawrence_can_pay_fed_council = yes } }
+		custom_cost_trigger = { lawrence_can_pay_fed_council = yes }
+		custom_cost_text = lawrence_cost_fed_council
+		complete_effect = {
+			custom_effect_tooltip = lawrence_fed_council_tt
+			hidden_effect = { lawrence_fed_convene_council = yes }
+		}
+		ai_will_do = {
+			factor = 0
+			modifier = {
+				set_temp_variable = { lawrence_ai_weight = mtth:lawrence_ai_fed_council }
+				add = lawrence_ai_weight
+			}
+		}
+	}
+
+	lawrence_collect_federal_revenue = {
+		icon = GFX_decision_generic_fundraising
+		priority = 109
+		visible = { lawrence_shows_fed_revenue = yes }
+		available = {
+			hidden_trigger = { lawrence_can_pay_fed_revenue = yes }
+			custom_trigger_tooltip = {
+				tooltip = lawrence_fed_revenue_stability_tt
+				hidden_trigger = { has_stability > constant:lawrence_cost_federation.revenue_stability_floor }
+			}
+		}
+		custom_cost_trigger = { lawrence_can_pay_fed_revenue = yes }
+		custom_cost_text = lawrence_cost_fed_revenue
+		complete_effect = {
+			custom_effect_tooltip = lawrence_fed_revenue_tt
+			hidden_effect = { lawrence_fed_collect_revenue = yes }
+		}
+		ai_will_do = {
+			factor = 0
+			modifier = {
+				set_temp_variable = { lawrence_ai_weight = mtth:lawrence_ai_fed_revenue }
+				add = lawrence_ai_weight
+			}
+		}
+	}
+
+	lawrence_reform_the_federal_staff = {
+		icon = GFX_decision_generic_military
+		priority = 108
+		visible = { lawrence_shows_fed_staff = yes }
+		available = { hidden_trigger = { lawrence_can_pay_fed_staff = yes } }
+		custom_cost_trigger = { lawrence_can_pay_fed_staff = yes }
+		custom_cost_text = lawrence_cost_fed_staff
+		complete_effect = {
+			custom_effect_tooltip = lawrence_fed_staff_tt
+			hidden_effect = { lawrence_fed_staff_reform = yes }
+		}
+		ai_will_do = {
+			factor = 0
+			modifier = {
+				set_temp_variable = { lawrence_ai_weight = mtth:lawrence_ai_fed_staff }
+				add = lawrence_ai_weight
+			}
+		}
+	}
+
+	lawrence_open_regional_offices = {
+		icon = GFX_decision_generic_construction
+		priority = 107
+		visible = { lawrence_shows_fed_offices = yes }
+		available = { hidden_trigger = { lawrence_can_pay_fed_offices = yes } }
+		custom_cost_trigger = { lawrence_can_pay_fed_offices = yes }
+		custom_cost_text = lawrence_cost_fed_offices
+		complete_effect = {
+			custom_effect_tooltip = lawrence_fed_offices_tt
+			hidden_effect = { lawrence_fed_regional_offices = yes }
+		}
+		ai_will_do = {
+			factor = 0
+			modifier = {
+				set_temp_variable = { lawrence_ai_weight = mtth:lawrence_ai_fed_offices }
+				add = lawrence_ai_weight
+			}
+		}
+	}
+
+	lawrence_invite_a_member_government = {
+		icon = GFX_decision_generic_political_address
+		priority = 106
+		visible = { lawrence_shows_fed_invite = yes }
+		available = { hidden_trigger = { lawrence_can_pay_fed_invite = yes } }
+		custom_cost_trigger = { lawrence_can_pay_fed_invite = yes }
+		custom_cost_text = lawrence_cost_fed_invite
+		complete_effect = {
+			custom_effect_tooltip = lawrence_fed_invite_tt
+			hidden_effect = { lawrence_fed_invite_member = yes }
+		}
+		ai_will_do = {
+			factor = 0
+			modifier = {
+				set_temp_variable = { lawrence_ai_weight = mtth:lawrence_ai_fed_invite }
+				add = lawrence_ai_weight
+			}
+		}
+	}
+}

@@ -1,0 +1,1563 @@
+@lawrence_fed_focus_short = 5
+@lawrence_fed_focus_medium = 10
+
+# ============================================================================
+# CHAOS REDUX - EVENT 040 LAWRENCE OF ARABIA FEDERATION FOCUS TREE
+# ============================================================================
+# Loaded onto the federation core when Evolution III forms a federation (a
+# transformed member, no new country tag). Opening group: one provisional
+# government, then four lanes of choice: the political settlement of the
+# route, the federal centre, the army and the economy. The remaining lanes
+# open behind them.
+#
+#   Lane              Root (x)             Filters
+#   Economy, oil      customs line (2)     industry, stability, research
+#   Army              member armies (8)    army, manpower
+#   Air, coast        airfields (14)       air, navy
+#   British compact   imperial compact (18) political (British Arabia)
+#   Sovereign         congress (22)        political (Independent Federation)
+#   Personal union    oath (26)            political (Lawrence's Kingdom)
+#   Federal centre    census (31)          internal affairs, industry
+#   Diplomacy         recognition (39)     trade, political
+#   Integration       accession (43)       annexation, internal affairs
+#
+# The three political lanes are mutually hidden by route flags
+# (allow_branch). The starting spirits, Uneven Administration, Rival
+# Commands and Promise Debt, Federal Mistrust or Personal Settlement, have a
+# lifecycle through these focuses and the federal decisions. Authority gains
+# use the lawrence_fed_authority_* effects and the values are in
+# lawrence_focus (common/script_constants/040_lawrence_of_arabia_federation_
+# constants.txt).
+# ============================================================================
+
+focus_tree = {
+	id = lawrence_federation_focus_tree
+
+	country = {
+		factor = 0
+		modifier = {
+			add = 10
+			has_country_flag = lawrence_federation_core
+		}
+	}
+
+	default = no
+	continuous_focus_position = { x = 1800 y = 1000 }
+	initial_show_position = { x = 22 y = 0 }
+
+	shortcut = {
+		name = lawrence_fed_navigation_charter
+		target = lawrence_fed_provisional_government
+	}
+
+	shortcut = {
+		name = lawrence_fed_navigation_economy
+		target = lawrence_fed_customs_line
+	}
+
+	shortcut = {
+		name = lawrence_fed_navigation_army
+		target = lawrence_fed_register_member_armies
+	}
+
+	shortcut = {
+		name = lawrence_fed_navigation_air_coast
+		target = lawrence_fed_desert_airfields
+	}
+
+	shortcut = {
+		name = lawrence_fed_navigation_centre
+		target = lawrence_fed_federal_census_and_revenue
+	}
+
+	shortcut = {
+		name = lawrence_fed_navigation_diplomacy
+		target = lawrence_fed_recognition_missions
+	}
+
+	shortcut = {
+		name = lawrence_fed_navigation_integration
+		target = lawrence_fed_voluntary_accession
+	}
+
+
+	focus = {
+		id = lawrence_fed_provisional_government
+		icon = GFX_goal_generic_national_unity
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 22
+		y = 0
+		cost = @lawrence_fed_focus_short
+		completion_reward = {
+			custom_effect_tooltip = lawrence_fed_provisional_government_tt
+			hidden_effect = {
+				set_country_flag = lawrence_fed_provisional_government
+				lawrence_fed_authority_medium = yes
+				lawrence_fed_reward_political_power = yes
+				lawrence_fed_reward_command_power = yes
+			}
+		}
+		ai_will_do = {
+			base = 100
+		}
+	}
+
+	focus = {
+		id = lawrence_fed_customs_line
+		icon = GFX_goal_generic_trade
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_STABILITY }
+		x = 2
+		y = 1
+		cost = @lawrence_fed_focus_short
+		prerequisite = { focus = lawrence_fed_provisional_government }
+		completion_reward = {
+			custom_effect_tooltip = lawrence_fed_customs_line_tt
+			hidden_effect = {
+				lawrence_fed_admin_step = yes
+				lawrence_fed_reward_political_power = yes
+				lawrence_fed_authority_small = yes
+			}
+		}
+		ai_will_do = {
+			base = 25
+		}
+	}
+
+	focus = {
+		id = lawrence_fed_member_railways
+		icon = GFX_goal_generic_construct_infrastructure
+		search_filters = { FOCUS_FILTER_INDUSTRY }
+		x = 0
+		y = 2
+		cost = @lawrence_fed_focus_short
+		prerequisite = { focus = lawrence_fed_customs_line }
+		completion_reward = {
+			custom_effect_tooltip = lawrence_fed_member_railways_tt
+			hidden_effect = {
+				lawrence_fed_state_program = { TYPE = infrastructure }
+			}
+		}
+		ai_will_do = {
+			base = 20
+		}
+	}
+
+	focus = {
+		id = lawrence_fed_port_plan
+		icon = GFX_goal_generic_construct_naval_dockyard
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_NAVY_XP }
+		x = 4
+		y = 2
+		cost = @lawrence_fed_focus_short
+		prerequisite = { focus = lawrence_fed_customs_line }
+		completion_reward = {
+			custom_effect_tooltip = lawrence_fed_port_plan_tt
+			hidden_effect = {
+				lawrence_fed_coastal_program = { TYPE = dockyard }
+				lawrence_fed_reward_convoys = yes
+			}
+		}
+		ai_will_do = {
+			base = 20
+		}
+	}
+
+	focus = {
+		id = lawrence_fed_oil_settlement
+		icon = GFX_goal_generic_oil_refinery
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_STABILITY }
+		x = 2
+		y = 3
+		cost = @lawrence_fed_focus_medium
+		prerequisite = { focus = lawrence_fed_member_railways }
+		prerequisite = { focus = lawrence_fed_port_plan }
+		completion_reward = {
+			custom_effect_tooltip = lawrence_fed_oil_settlement_tt
+			hidden_effect = {
+				lawrence_fed_reward_fuel = yes
+				lawrence_fed_add_baseline = yes
+				lawrence_fed_authority_medium = yes
+			}
+		}
+		ai_will_do = {
+			base = 25
+		}
+	}
+
+	focus = {
+		id = lawrence_fed_federal_depots
+		icon = GFX_goal_generic_construct_military
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_ARMY_XP }
+		x = 0
+		y = 4
+		cost = @lawrence_fed_focus_short
+		prerequisite = { focus = lawrence_fed_oil_settlement }
+		completion_reward = {
+			custom_effect_tooltip = lawrence_fed_federal_depots_tt
+			hidden_effect = {
+				lawrence_fed_state_program = { TYPE = supply_node }
+			}
+		}
+		ai_will_do = {
+			base = 20
+		}
+	}
+
+	focus = {
+		id = lawrence_fed_industrial_projects
+		icon = GFX_goal_generic_construct_civ_factory
+		search_filters = { FOCUS_FILTER_INDUSTRY }
+		x = 4
+		y = 4
+		cost = @lawrence_fed_focus_short
+		prerequisite = { focus = lawrence_fed_oil_settlement }
+		completion_reward = {
+			custom_effect_tooltip = lawrence_fed_industrial_projects_tt
+			hidden_effect = {
+				lawrence_fed_state_program = { TYPE = industrial_complex }
+			}
+		}
+		ai_will_do = {
+			base = 20
+		}
+	}
+
+	focus = {
+		id = lawrence_fed_repair_standards
+		icon = GFX_goal_generic_production
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_ARMY_XP }
+		x = 2
+		y = 5
+		cost = @lawrence_fed_focus_medium
+		prerequisite = { focus = lawrence_fed_federal_depots }
+		prerequisite = { focus = lawrence_fed_industrial_projects }
+		completion_reward = {
+			custom_effect_tooltip = lawrence_fed_repair_standards_tt
+			hidden_effect = {
+				lawrence_fed_command_step = yes
+				lawrence_fed_reward_motorized = yes
+				lawrence_fed_reward_infantry_pool = yes
+			}
+		}
+		ai_will_do = {
+			base = 20
+		}
+	}
+
+	focus = {
+		id = lawrence_fed_register_member_armies
+		icon = GFX_goal_generic_position_armies
+		search_filters = { FOCUS_FILTER_ARMY_XP }
+		x = 8
+		y = 1
+		cost = @lawrence_fed_focus_short
+		prerequisite = { focus = lawrence_fed_provisional_government }
+		completion_reward = {
+			custom_effect_tooltip = lawrence_fed_register_member_armies_tt
+			hidden_effect = {
+				lawrence_fed_reward_infantry_pool = yes
+				lawrence_fed_reward_army_experience = yes
+			}
+		}
+		ai_will_do = {
+			base = 25
+		}
+	}
+
+	focus = {
+		id = lawrence_fed_officer_seniority
+		icon = GFX_goal_generic_army_doctrines
+		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_STABILITY }
+		x = 6
+		y = 2
+		cost = @lawrence_fed_focus_short
+		prerequisite = { focus = lawrence_fed_register_member_armies }
+		completion_reward = {
+			custom_effect_tooltip = lawrence_fed_officer_seniority_tt
+			hidden_effect = {
+				lawrence_fed_command_step = yes
+				lawrence_fed_reward_command_power = yes
+			}
+		}
+		ai_will_do = {
+			base = 20
+		}
+	}
+
+	focus = {
+		id = lawrence_fed_integrate_irregulars
+		icon = GFX_goal_generic_cavalry
+		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_MANPOWER }
+		x = 10
+		y = 2
+		cost = @lawrence_fed_focus_short
+		prerequisite = { focus = lawrence_fed_register_member_armies }
+		completion_reward = {
+			custom_effect_tooltip = lawrence_fed_integrate_irregulars_tt
+			hidden_effect = {
+				division_template = {
+					name = "Arab Irregular Division"
+					regiments = {
+						infantry = { x = 0 y = 0 }
+						infantry = { x = 0 y = 1 }
+						infantry = { x = 0 y = 2 }
+						infantry = { x = 1 y = 0 }
+						infantry = { x = 1 y = 1 }
+						cavalry = { x = 2 y = 0 }
+						cavalry = { x = 2 y = 1 }
+					}
+					support = {
+						recon = { x = 0 y = 0 }
+					}
+				}
+				lawrence_fed_reward_army_experience = yes
+			}
+		}
+		ai_will_do = {
+			base = 20
+		}
+	}
+
+	focus = {
+		id = lawrence_fed_reconnaissance_schools
+		icon = GFX_goal_generic_special_forces
+		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_RESEARCH }
+		x = 6
+		y = 3
+		cost = @lawrence_fed_focus_short
+		prerequisite = { focus = lawrence_fed_officer_seniority }
+		completion_reward = {
+			custom_effect_tooltip = lawrence_fed_reconnaissance_schools_tt
+			hidden_effect = {
+				add_tech_bonus = {
+					name = lawrence_fed_desert_schools
+					bonus = 1.0
+					uses = 1
+					technology = tech_recon
+				}
+			}
+		}
+		ai_will_do = {
+			base = 15
+		}
+	}
+
+	focus = {
+		id = lawrence_fed_artillery_standards
+		icon = GFX_goal_generic_army_artillery
+		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_RESEARCH }
+		x = 10
+		y = 3
+		cost = @lawrence_fed_focus_short
+		prerequisite = { focus = lawrence_fed_integrate_irregulars }
+		completion_reward = {
+			custom_effect_tooltip = lawrence_fed_artillery_standards_tt
+			hidden_effect = {
+				add_tech_bonus = {
+					name = lawrence_fed_common_artillery
+					bonus = 1.0
+					uses = 1
+					technology = gw_artillery
+				}
+			}
+		}
+		ai_will_do = {
+			base = 15
+		}
+	}
+
+	focus = {
+		id = lawrence_fed_federal_general_staff
+		icon = GFX_goal_generic_military_sphere
+		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_POLITICAL }
+		x = 6
+		y = 4
+		cost = @lawrence_fed_focus_short
+		prerequisite = { focus = lawrence_fed_reconnaissance_schools }
+		mutually_exclusive = { focus = lawrence_fed_member_war_council }
+		completion_reward = {
+			custom_effect_tooltip = lawrence_fed_federal_general_staff_tt
+			hidden_effect = {
+				set_country_flag = lawrence_fed_general_staff
+				lawrence_fed_command_step = yes
+				lawrence_fed_reward_command_power = yes
+			}
+		}
+		ai_will_do = {
+			base = 20
+		}
+	}
+
+	focus = {
+		id = lawrence_fed_member_war_council
+		icon = GFX_goal_generic_major_alliance
+		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_POLITICAL }
+		x = 10
+		y = 4
+		cost = @lawrence_fed_focus_short
+		prerequisite = { focus = lawrence_fed_artillery_standards }
+		mutually_exclusive = { focus = lawrence_fed_federal_general_staff }
+		completion_reward = {
+			custom_effect_tooltip = lawrence_fed_member_war_council_tt
+			hidden_effect = {
+				set_country_flag = lawrence_fed_war_council
+				lawrence_fed_command_step = yes
+				lawrence_fed_reward_army_experience = yes
+			}
+		}
+		ai_will_do = {
+			base = 15
+			modifier = {
+				add = 10
+				lawrence_fed_route_is_sovereign = yes
+			}
+		}
+	}
+
+	focus = {
+		id = lawrence_fed_mobile_supply_columns
+		icon = GFX_goal_generic_army_motorized
+		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_INDUSTRY }
+		x = 8
+		y = 5
+		cost = @lawrence_fed_focus_short
+		prerequisite = { focus = lawrence_fed_federal_general_staff focus = lawrence_fed_member_war_council }
+		completion_reward = {
+			custom_effect_tooltip = lawrence_fed_mobile_supply_columns_tt
+			hidden_effect = {
+				lawrence_fed_command_step = yes
+				lawrence_fed_reward_motorized = yes
+			}
+		}
+		ai_will_do = {
+			base = 20
+		}
+	}
+
+	focus = {
+		id = lawrence_fed_defend_the_long_frontier
+		icon = GFX_goal_generic_fortify_city
+		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_MANPOWER }
+		x = 8
+		y = 6
+		cost = @lawrence_fed_focus_medium
+		prerequisite = { focus = lawrence_fed_mobile_supply_columns }
+		completion_reward = {
+			custom_effect_tooltip = lawrence_fed_defend_the_long_frontier_tt
+			hidden_effect = {
+				lawrence_fed_state_program = { TYPE = radar_station }
+				lawrence_fed_reward_manpower = yes
+			}
+		}
+		ai_will_do = {
+			base = 15
+		}
+	}
+
+	focus = {
+		id = lawrence_fed_desert_airfields
+		icon = GFX_goal_generic_build_airforce
+		search_filters = { FOCUS_FILTER_AIR_XP FOCUS_FILTER_INDUSTRY }
+		x = 14
+		y = 2
+		cost = @lawrence_fed_focus_short
+		prerequisite = { focus = lawrence_fed_register_member_armies }
+		completion_reward = {
+			custom_effect_tooltip = lawrence_fed_desert_airfields_tt
+			hidden_effect = {
+				lawrence_fed_state_program = { TYPE = air_base }
+				lawrence_fed_reward_air_experience = yes
+			}
+		}
+		ai_will_do = {
+			base = 15
+		}
+	}
+
+	focus = {
+		id = lawrence_fed_coastal_observation
+		icon = GFX_goal_generic_radar
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_NAVY_XP }
+		x = 13
+		y = 3
+		cost = @lawrence_fed_focus_short
+		prerequisite = { focus = lawrence_fed_desert_airfields }
+		completion_reward = {
+			custom_effect_tooltip = lawrence_fed_coastal_observation_tt
+			hidden_effect = {
+				lawrence_fed_coastal_program = { TYPE = radar_station }
+			}
+		}
+		ai_will_do = {
+			base = 15
+		}
+	}
+
+	focus = {
+		id = lawrence_fed_federal_transport_command
+		icon = GFX_goal_generic_construction
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_ARMY_XP }
+		x = 15
+		y = 3
+		cost = @lawrence_fed_focus_short
+		prerequisite = { focus = lawrence_fed_desert_airfields }
+		completion_reward = {
+			custom_effect_tooltip = lawrence_fed_federal_transport_command_tt
+			hidden_effect = {
+				lawrence_fed_reward_trains = yes
+				lawrence_fed_reward_motorized = yes
+			}
+		}
+		ai_will_do = {
+			base = 15
+		}
+	}
+
+	focus = {
+		id = lawrence_fed_convoy_and_port_defence
+		icon = GFX_goal_generic_navy_cruiser
+		search_filters = { FOCUS_FILTER_NAVY_XP FOCUS_FILTER_INDUSTRY }
+		x = 13
+		y = 4
+		cost = @lawrence_fed_focus_short
+		prerequisite = { focus = lawrence_fed_coastal_observation }
+		completion_reward = {
+			custom_effect_tooltip = lawrence_fed_convoy_and_port_defence_tt
+			hidden_effect = {
+				lawrence_fed_coastal_program = { TYPE = anti_air_building }
+				lawrence_fed_reward_convoys = yes
+			}
+		}
+		ai_will_do = {
+			base = 15
+		}
+	}
+
+	focus = {
+		id = lawrence_fed_long_range_communications
+		icon = GFX_goal_generic_intelligence_exchange
+		search_filters = { FOCUS_FILTER_RESEARCH FOCUS_FILTER_STABILITY }
+		x = 15
+		y = 4
+		cost = @lawrence_fed_focus_short
+		prerequisite = { focus = lawrence_fed_federal_transport_command }
+		completion_reward = {
+			custom_effect_tooltip = lawrence_fed_long_range_communications_tt
+			hidden_effect = {
+				add_tech_bonus = {
+					name = lawrence_fed_long_range_communications
+					bonus = 1.0
+					uses = 1
+					technology = radio
+				}
+			}
+		}
+		ai_will_do = {
+			base = 15
+		}
+	}
+
+	focus = {
+		id = lawrence_fed_air_liaison_schools
+		icon = GFX_goal_generic_air_doctrine
+		search_filters = { FOCUS_FILTER_AIR_XP FOCUS_FILTER_RESEARCH }
+		x = 14
+		y = 5
+		cost = @lawrence_fed_focus_medium
+		prerequisite = { focus = lawrence_fed_convoy_and_port_defence focus = lawrence_fed_long_range_communications }
+		completion_reward = {
+			custom_effect_tooltip = lawrence_fed_air_liaison_schools_tt
+			hidden_effect = {
+				lawrence_fed_reward_air_experience = yes
+				add_tech_bonus = {
+					name = lawrence_fed_air_liaison
+					bonus = 1.0
+					uses = 1
+					technology = early_fighter
+				}
+			}
+		}
+		ai_will_do = {
+			base = 10
+		}
+	}
+
+	focus = {
+		id = lawrence_fed_ratify_the_imperial_compact
+		icon = GFX_goal_generic_military_deal
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_ARMY_XP }
+		x = 18
+		y = 1
+		cost = @lawrence_fed_focus_short
+		prerequisite = { focus = lawrence_fed_provisional_government }
+		allow_branch = {
+			has_country_flag = lawrence_fed_route_british
+		}
+		completion_reward = {
+			custom_effect_tooltip = lawrence_fed_ratify_the_imperial_compact_tt
+			hidden_effect = {
+				lawrence_fed_reward_british_pool = yes
+				lawrence_fed_authority_medium = yes
+			}
+		}
+		ai_will_do = {
+			base = 30
+		}
+	}
+
+	focus = {
+		id = lawrence_fed_dominion_status
+		icon = GFX_goal_generic_improve_relations
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INTERNAL_AFFAIRS }
+		x = 17
+		y = 2
+		cost = @lawrence_fed_focus_short
+		prerequisite = { focus = lawrence_fed_ratify_the_imperial_compact }
+		mutually_exclusive = { focus = lawrence_fed_protectorate_status }
+		allow_branch = {
+			has_country_flag = lawrence_fed_route_british
+		}
+		completion_reward = {
+			custom_effect_tooltip = lawrence_fed_dominion_status_tt
+			hidden_effect = {
+				set_country_flag = lawrence_fed_dominion
+				set_temp_variable = { lawrence_autonomy_delta = constant:lawrence_focus.autonomy_step }
+				lawrence_fed_shift_member_autonomy = yes
+				lawrence_fed_authority_small = yes
+			}
+		}
+		ai_will_do = {
+			base = 15
+		}
+	}
+
+	focus = {
+		id = lawrence_fed_protectorate_status
+		icon = GFX_goal_generic_forceful_treaty
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INTERNAL_AFFAIRS }
+		x = 19
+		y = 2
+		cost = @lawrence_fed_focus_short
+		prerequisite = { focus = lawrence_fed_ratify_the_imperial_compact }
+		mutually_exclusive = { focus = lawrence_fed_dominion_status }
+		allow_branch = {
+			has_country_flag = lawrence_fed_route_british
+		}
+		completion_reward = {
+			custom_effect_tooltip = lawrence_fed_protectorate_status_tt
+			hidden_effect = {
+				set_country_flag = lawrence_fed_protectorate
+				set_temp_variable = { lawrence_autonomy_delta = constant:lawrence_focus.autonomy_step }
+				multiply_temp_variable = { lawrence_autonomy_delta = -1 }
+				lawrence_fed_shift_member_autonomy = yes
+				lawrence_fed_authority_large = yes
+				lawrence_fed_reward_army_experience = yes
+			}
+		}
+		ai_will_do = {
+			base = 15
+		}
+	}
+
+	focus = {
+		id = lawrence_fed_british_military_mission
+		icon = GFX_goal_generic_small_arms
+		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_RESEARCH }
+		x = 18
+		y = 3
+		cost = @lawrence_fed_focus_short
+		prerequisite = { focus = lawrence_fed_dominion_status focus = lawrence_fed_protectorate_status }
+		allow_branch = {
+			has_country_flag = lawrence_fed_route_british
+		}
+		completion_reward = {
+			custom_effect_tooltip = lawrence_fed_british_military_mission_tt
+			hidden_effect = {
+				lawrence_fed_command_step = yes
+				add_tech_bonus = {
+					name = lawrence_british_military_mission
+					bonus = 1.0
+					uses = 1
+					category = infantry_weapons
+				}
+			}
+		}
+		ai_will_do = {
+			base = 20
+		}
+	}
+
+	focus = {
+		id = lawrence_fed_oil_and_transport_convention
+		icon = GFX_goal_generic_positive_trade_relations
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_INTERNATIONAL_TRADE }
+		x = 18
+		y = 4
+		cost = @lawrence_fed_focus_short
+		prerequisite = { focus = lawrence_fed_british_military_mission }
+		allow_branch = {
+			has_country_flag = lawrence_fed_route_british
+		}
+		completion_reward = {
+			custom_effect_tooltip = lawrence_fed_oil_and_transport_convention_tt
+			hidden_effect = {
+				lawrence_fed_reward_fuel = yes
+				lawrence_fed_reward_trains = yes
+			}
+		}
+		ai_will_do = {
+			base = 20
+		}
+	}
+
+	focus = {
+		id = lawrence_fed_federal_voice_in_the_empire
+		icon = GFX_goal_generic_major_alliance
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 17
+		y = 5
+		cost = @lawrence_fed_focus_medium
+		prerequisite = { focus = lawrence_fed_oil_and_transport_convention }
+		mutually_exclusive = { focus = lawrence_fed_demand_equal_partnership }
+		allow_branch = {
+			has_country_flag = lawrence_fed_route_british
+		}
+		completion_reward = {
+			custom_effect_tooltip = lawrence_fed_federal_voice_in_the_empire_tt
+			hidden_effect = {
+				lawrence_fed_settle_political = yes
+				lawrence_fed_authority_large = yes
+			}
+		}
+		ai_will_do = {
+			base = 20
+		}
+	}
+
+	focus = {
+		id = lawrence_fed_demand_equal_partnership
+		icon = GFX_goal_generic_dangerous_deal
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INTERNATIONAL_TRADE }
+		x = 19
+		y = 5
+		cost = @lawrence_fed_focus_medium
+		prerequisite = { focus = lawrence_fed_oil_and_transport_convention }
+		mutually_exclusive = { focus = lawrence_fed_federal_voice_in_the_empire }
+		allow_branch = {
+			has_country_flag = lawrence_fed_route_british
+		}
+		completion_reward = {
+			custom_effect_tooltip = lawrence_fed_demand_equal_partnership_tt
+			hidden_effect = {
+				swap_ideas = { remove_idea = lawrence_promise_debt add_idea = lawrence_equal_partnership }
+				set_temp_variable = { lawrence_autonomy_delta = constant:lawrence_focus.autonomy_large_step }
+				lawrence_fed_shift_member_autonomy = yes
+				ENG = { add_opinion_modifier = { target = PREV modifier = lawrence_british_retaliation } }
+			}
+		}
+		ai_will_do = {
+			base = 10
+		}
+	}
+
+	focus = {
+		id = lawrence_fed_pillar_of_british_strategy
+		icon = GFX_goal_generic_alliance
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_WAR_SUPPORT }
+		x = 17
+		y = 6
+		cost = @lawrence_fed_focus_medium
+		prerequisite = { focus = lawrence_fed_federal_voice_in_the_empire }
+		allow_branch = {
+			has_country_flag = lawrence_fed_route_british
+		}
+		completion_reward = {
+			custom_effect_tooltip = lawrence_fed_pillar_of_british_strategy_tt
+			hidden_effect = {
+				lawrence_fed_end_political = { IDEA = lawrence_pillar_of_british_strategy }
+				lawrence_fed_authority_large = yes
+			}
+		}
+		ai_will_do = {
+			base = 20
+		}
+	}
+
+	focus = {
+		id = lawrence_fed_break_with_london
+		icon = GFX_goal_generic_territory_or_war
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_ANNEXATION }
+		x = 19
+		y = 6
+		cost = @lawrence_fed_focus_medium
+		prerequisite = { focus = lawrence_fed_demand_equal_partnership }
+		allow_branch = {
+			has_country_flag = lawrence_fed_route_british
+		}
+		available = {
+			custom_trigger_tooltip = {
+			tooltip = lawrence_fed_working_authority_tt
+			hidden_trigger = {
+				OR = {
+					lawrence_fed_band_is_working = yes
+					lawrence_fed_band_is_strong = yes
+				}
+			}
+		}
+		}
+		completion_reward = {
+			custom_effect_tooltip = lawrence_fed_break_with_london_tt
+			hidden_effect = {
+				lawrence_fed_break_with_britain = yes
+				lawrence_fed_end_political = { IDEA = lawrence_sovereign_arab_order }
+				lawrence_fed_authority_medium = yes
+			}
+		}
+		ai_will_do = {
+			base = 5
+		}
+	}
+
+	focus = {
+		id = lawrence_fed_convene_the_constituent_congress
+		icon = GFX_goal_generic_political_pressure
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 22
+		y = 1
+		cost = @lawrence_fed_focus_short
+		prerequisite = { focus = lawrence_fed_provisional_government }
+		allow_branch = {
+			has_country_flag = lawrence_fed_route_sovereign
+		}
+		completion_reward = {
+			custom_effect_tooltip = lawrence_fed_convene_the_constituent_congress_tt
+			hidden_effect = {
+				lawrence_fed_admin_step = yes
+				lawrence_fed_authority_medium = yes
+			}
+		}
+		ai_will_do = {
+			base = 30
+		}
+	}
+
+	focus = {
+		id = lawrence_fed_ratify_member_guarantees
+		icon = GFX_goal_generic_improve_relations
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INTERNAL_AFFAIRS }
+		x = 21
+		y = 2
+		cost = @lawrence_fed_focus_short
+		prerequisite = { focus = lawrence_fed_convene_the_constituent_congress }
+		allow_branch = {
+			has_country_flag = lawrence_fed_route_sovereign
+		}
+		completion_reward = {
+			custom_effect_tooltip = lawrence_fed_ratify_member_guarantees_tt
+			hidden_effect = {
+				lawrence_fed_admin_step = yes
+				set_temp_variable = { lawrence_autonomy_delta = constant:lawrence_focus.autonomy_step }
+				lawrence_fed_shift_member_autonomy = yes
+				lawrence_fed_authority_small = yes
+			}
+		}
+		ai_will_do = {
+			base = 20
+		}
+	}
+
+	focus = {
+		id = lawrence_fed_a_federal_cabinet
+		icon = GFX_goal_generic_neutrality_focus
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 23
+		y = 2
+		cost = @lawrence_fed_focus_short
+		prerequisite = { focus = lawrence_fed_convene_the_constituent_congress }
+		allow_branch = {
+			has_country_flag = lawrence_fed_route_sovereign
+		}
+		completion_reward = {
+			custom_effect_tooltip = lawrence_fed_a_federal_cabinet_tt
+			hidden_effect = {
+				lawrence_fed_add_baseline = yes
+				lawrence_fed_authority_medium = yes
+			}
+		}
+		ai_will_do = {
+			base = 20
+		}
+	}
+
+	focus = {
+		id = lawrence_fed_independent_foreign_service
+		icon = GFX_goal_generic_positive_trade_relations
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INTERNATIONAL_TRADE }
+		x = 21
+		y = 3
+		cost = @lawrence_fed_focus_short
+		prerequisite = { focus = lawrence_fed_ratify_member_guarantees }
+		allow_branch = {
+			has_country_flag = lawrence_fed_route_sovereign
+		}
+		completion_reward = {
+			custom_effect_tooltip = lawrence_fed_independent_foreign_service_tt
+			hidden_effect = {
+				lawrence_fed_embassy_registry = yes
+			}
+		}
+		ai_will_do = {
+			base = 15
+		}
+	}
+
+	focus = {
+		id = lawrence_fed_the_common_defence_charter
+		icon = GFX_goal_generic_defence
+		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_POLITICAL }
+		x = 23
+		y = 3
+		cost = @lawrence_fed_focus_short
+		prerequisite = { focus = lawrence_fed_a_federal_cabinet }
+		allow_branch = {
+			has_country_flag = lawrence_fed_route_sovereign
+		}
+		completion_reward = {
+			custom_effect_tooltip = lawrence_fed_the_common_defence_charter_tt
+			hidden_effect = {
+				lawrence_fed_command_step = yes
+				lawrence_fed_authority_medium = yes
+				lawrence_fed_reward_army_experience = yes
+			}
+		}
+		ai_will_do = {
+			base = 20
+		}
+	}
+
+	focus = {
+		id = lawrence_fed_recognition_beyond_the_region
+		icon = GFX_goal_generic_scientific_exchange
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INTERNATIONAL_TRADE }
+		x = 22
+		y = 4
+		cost = @lawrence_fed_focus_medium
+		prerequisite = { focus = lawrence_fed_independent_foreign_service }
+		prerequisite = { focus = lawrence_fed_the_common_defence_charter }
+		allow_branch = {
+			has_country_flag = lawrence_fed_route_sovereign
+		}
+		completion_reward = {
+			custom_effect_tooltip = lawrence_fed_recognition_beyond_the_region_tt
+			hidden_effect = {
+				lawrence_fed_settle_political = yes
+				lawrence_fed_authority_large = yes
+				lawrence_fed_embassy_majors = yes
+			}
+		}
+		ai_will_do = {
+			base = 20
+		}
+	}
+
+	focus = {
+		id = lawrence_fed_the_sovereign_arab_order
+		icon = GFX_goal_generic_major_alliance
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_WAR_SUPPORT }
+		x = 22
+		y = 5
+		cost = @lawrence_fed_focus_medium
+		prerequisite = { focus = lawrence_fed_recognition_beyond_the_region }
+		allow_branch = {
+			OR = {
+			has_country_flag = lawrence_fed_route_sovereign
+			has_country_flag = lawrence_fed_breakaway
+		}
+		}
+		completion_reward = {
+			custom_effect_tooltip = lawrence_fed_the_sovereign_arab_order_tt
+			hidden_effect = {
+				lawrence_fed_end_political = { IDEA = lawrence_sovereign_arab_order }
+				lawrence_fed_authority_large = yes
+			}
+		}
+		ai_will_do = {
+			base = 20
+		}
+	}
+
+	focus = {
+		id = lawrence_fed_the_personal_oath
+		icon = GFX_goal_generic_national_unity
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_POLITICAL_CHARACTER }
+		x = 26
+		y = 1
+		cost = @lawrence_fed_focus_short
+		prerequisite = { focus = lawrence_fed_provisional_government }
+		allow_branch = {
+			has_country_flag = lawrence_fed_route_kingdom
+		}
+		completion_reward = {
+			custom_effect_tooltip = lawrence_fed_the_personal_oath_tt
+			hidden_effect = {
+				lawrence_fed_authority_medium = yes
+				lawrence_fed_reward_political_power = yes
+			}
+		}
+		ai_will_do = {
+			base = 30
+		}
+	}
+
+	focus = {
+		id = lawrence_fed_council_of_the_founding_houses
+		icon = GFX_goal_generic_political_pressure
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 25
+		y = 2
+		cost = @lawrence_fed_focus_short
+		prerequisite = { focus = lawrence_fed_the_personal_oath }
+		allow_branch = {
+			has_country_flag = lawrence_fed_route_kingdom
+		}
+		completion_reward = {
+			custom_effect_tooltip = lawrence_fed_council_of_the_founding_houses_tt
+			hidden_effect = {
+				lawrence_fed_admin_step = yes
+				lawrence_fed_add_baseline = yes
+			}
+		}
+		ai_will_do = {
+			base = 20
+		}
+	}
+
+	focus = {
+		id = lawrence_fed_lawrence_field_government
+		icon = GFX_goal_generic_special_forces
+		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_POLITICAL }
+		x = 27
+		y = 2
+		cost = @lawrence_fed_focus_short
+		prerequisite = { focus = lawrence_fed_the_personal_oath }
+		allow_branch = {
+			has_country_flag = lawrence_fed_route_kingdom
+		}
+		completion_reward = {
+			custom_effect_tooltip = lawrence_fed_lawrence_field_government_tt
+			hidden_effect = {
+				lawrence_fed_command_step = yes
+				lawrence_fed_reward_command_power = yes
+			}
+		}
+		ai_will_do = {
+			base = 20
+		}
+	}
+
+	focus = {
+		id = lawrence_fed_a_crown_bound_by_charter
+		icon = GFX_goal_generic_neutrality_focus
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 25
+		y = 3
+		cost = @lawrence_fed_focus_short
+		prerequisite = { focus = lawrence_fed_council_of_the_founding_houses }
+		mutually_exclusive = { focus = lawrence_fed_the_commanders_state }
+		allow_branch = {
+			has_country_flag = lawrence_fed_route_kingdom
+		}
+		completion_reward = {
+			custom_effect_tooltip = lawrence_fed_a_crown_bound_by_charter_tt
+			hidden_effect = {
+				set_country_flag = lawrence_fed_constitutional
+				lawrence_fed_reward_stability = yes
+				lawrence_fed_authority_medium = yes
+			}
+		}
+		ai_will_do = {
+			base = 20
+		}
+	}
+
+	focus = {
+		id = lawrence_fed_the_commanders_state
+		icon = GFX_goal_generic_military_sphere
+		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_POLITICAL }
+		x = 27
+		y = 3
+		cost = @lawrence_fed_focus_short
+		prerequisite = { focus = lawrence_fed_lawrence_field_government }
+		mutually_exclusive = { focus = lawrence_fed_a_crown_bound_by_charter }
+		allow_branch = {
+			has_country_flag = lawrence_fed_route_kingdom
+		}
+		completion_reward = {
+			custom_effect_tooltip = lawrence_fed_the_commanders_state_tt
+			hidden_effect = {
+				set_country_flag = lawrence_fed_commanders_state
+				lawrence_fed_reward_army_experience = yes
+				lawrence_fed_reward_command_power = yes
+				lawrence_fed_authority_large = yes
+			}
+		}
+		ai_will_do = {
+			base = 10
+		}
+	}
+
+	focus = {
+		id = lawrence_fed_secure_a_succession
+		icon = GFX_goal_generic_construction2
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 26
+		y = 4
+		cost = @lawrence_fed_focus_medium
+		prerequisite = { focus = lawrence_fed_a_crown_bound_by_charter focus = lawrence_fed_the_commanders_state }
+		allow_branch = {
+			has_country_flag = lawrence_fed_route_kingdom
+		}
+		completion_reward = {
+			custom_effect_tooltip = lawrence_fed_secure_a_succession_tt
+			hidden_effect = {
+				set_country_flag = lawrence_fed_succession_secured
+				lawrence_fed_settle_political = yes
+				lawrence_fed_authority_large = yes
+			}
+		}
+		ai_will_do = {
+			base = 25
+		}
+	}
+
+	focus = {
+		id = lawrence_fed_separate_the_state_from_the_man
+		icon = GFX_goal_generic_scientific_exchange
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_POLITICAL_CHARACTER }
+		x = 26
+		y = 5
+		cost = @lawrence_fed_focus_medium
+		prerequisite = { focus = lawrence_fed_secure_a_succession }
+		allow_branch = {
+			has_country_flag = lawrence_fed_route_kingdom
+		}
+		completion_reward = {
+			custom_effect_tooltip = lawrence_fed_separate_the_state_from_the_man_tt
+			hidden_effect = {
+				lawrence_fed_hand_over_to_council = yes
+				lawrence_fed_end_political = { IDEA = lawrence_kingdom_after_lawrence }
+				lawrence_fed_authority_large = yes
+			}
+		}
+		ai_will_do = {
+			base = 20
+		}
+	}
+
+	focus = {
+		id = lawrence_fed_federal_census_and_revenue
+		icon = GFX_goal_generic_consumer_goods
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_INTERNAL_AFFAIRS }
+		x = 31
+		y = 1
+		cost = @lawrence_fed_focus_short
+		prerequisite = { focus = lawrence_fed_provisional_government }
+		completion_reward = {
+			custom_effect_tooltip = lawrence_fed_federal_census_and_revenue_tt
+			hidden_effect = {
+				lawrence_fed_admin_step = yes
+				lawrence_fed_authority_medium = yes
+			}
+		}
+		ai_will_do = {
+			base = 25
+		}
+	}
+
+	focus = {
+		id = lawrence_fed_central_federal_state
+		icon = GFX_goal_generic_political_pressure
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INTERNAL_AFFAIRS }
+		x = 29
+		y = 2
+		cost = @lawrence_fed_focus_short
+		prerequisite = { focus = lawrence_fed_federal_census_and_revenue }
+		mutually_exclusive = { focus = lawrence_fed_charter_federation }
+		completion_reward = {
+			custom_effect_tooltip = lawrence_fed_central_federal_state_tt
+			hidden_effect = {
+				set_country_flag = lawrence_fed_central_state
+				set_temp_variable = { lawrence_autonomy_delta = constant:lawrence_focus.autonomy_step }
+				multiply_temp_variable = { lawrence_autonomy_delta = -1 }
+				lawrence_fed_shift_member_autonomy = yes
+				lawrence_fed_authority_large = yes
+			}
+		}
+		ai_will_do = {
+			base = 10
+			modifier = {
+				add = 10
+				lawrence_fed_route_is_kingdom = yes
+			}
+		}
+	}
+
+	focus = {
+		id = lawrence_fed_charter_federation
+		icon = GFX_goal_generic_improve_relations
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INTERNAL_AFFAIRS }
+		x = 33
+		y = 2
+		cost = @lawrence_fed_focus_short
+		prerequisite = { focus = lawrence_fed_federal_census_and_revenue }
+		mutually_exclusive = { focus = lawrence_fed_central_federal_state }
+		completion_reward = {
+			custom_effect_tooltip = lawrence_fed_charter_federation_tt
+			hidden_effect = {
+				set_country_flag = lawrence_fed_charter_state
+				set_temp_variable = { lawrence_autonomy_delta = constant:lawrence_focus.autonomy_step }
+				lawrence_fed_shift_member_autonomy = yes
+				lawrence_fed_authority_medium = yes
+			}
+		}
+		ai_will_do = {
+			base = 15
+			modifier = {
+				add = 10
+				lawrence_fed_route_is_sovereign = yes
+			}
+		}
+	}
+
+	focus = {
+		id = lawrence_fed_regional_administrative_offices
+		icon = GFX_goal_generic_construct_military
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_INTERNAL_AFFAIRS }
+		x = 31
+		y = 3
+		cost = @lawrence_fed_focus_short
+		prerequisite = { focus = lawrence_fed_central_federal_state focus = lawrence_fed_charter_federation }
+		completion_reward = {
+			custom_effect_tooltip = lawrence_fed_regional_administrative_offices_tt
+			hidden_effect = {
+				lawrence_fed_admin_step = yes
+				lawrence_fed_slot_program = yes
+			}
+		}
+		ai_will_do = {
+			base = 25
+		}
+	}
+
+	focus = {
+		id = lawrence_fed_a_reformed_federation
+		icon = GFX_goal_generic_construction
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 31
+		y = 4
+		cost = @lawrence_fed_focus_medium
+		prerequisite = { focus = lawrence_fed_regional_administrative_offices }
+		available = {
+			custom_trigger_tooltip = {
+			tooltip = lawrence_fed_working_authority_tt
+			hidden_trigger = {
+				OR = {
+					lawrence_fed_band_is_working = yes
+					lawrence_fed_band_is_strong = yes
+				}
+			}
+		}
+		}
+		completion_reward = {
+			custom_effect_tooltip = lawrence_fed_a_reformed_federation_tt
+			hidden_effect = {
+				lawrence_fed_force_administration = yes
+				lawrence_fed_authority_large = yes
+			}
+		}
+		ai_will_do = {
+			base = 20
+		}
+	}
+
+	focus = {
+		id = lawrence_fed_a_federation_of_members
+		icon = GFX_goal_generic_positive_trade_relations
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INTERNAL_AFFAIRS }
+		x = 29
+		y = 5
+		cost = @lawrence_fed_focus_medium
+		prerequisite = { focus = lawrence_fed_a_reformed_federation }
+		mutually_exclusive = { focus = lawrence_fed_one_federal_state }
+		completion_reward = {
+			custom_effect_tooltip = lawrence_fed_a_federation_of_members_tt
+			hidden_effect = {
+				lawrence_fed_end_administration = { IDEA = lawrence_federation_of_members }
+				set_temp_variable = { lawrence_autonomy_delta = constant:lawrence_focus.autonomy_step }
+				lawrence_fed_shift_member_autonomy = yes
+			}
+		}
+		ai_will_do = {
+			base = 15
+		}
+	}
+
+	focus = {
+		id = lawrence_fed_one_federal_state
+		icon = GFX_goal_generic_more_territorial_claims
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_ANNEXATION }
+		x = 33
+		y = 5
+		cost = @lawrence_fed_focus_medium
+		prerequisite = { focus = lawrence_fed_a_reformed_federation }
+		mutually_exclusive = { focus = lawrence_fed_a_federation_of_members }
+		available = {
+			custom_trigger_tooltip = {
+			tooltip = lawrence_fed_strong_authority_tt
+			hidden_trigger = { lawrence_fed_band_is_strong = yes }
+		}
+		}
+		completion_reward = {
+			custom_effect_tooltip = lawrence_fed_one_federal_state_tt
+			hidden_effect = {
+				lawrence_fed_end_administration = { IDEA = lawrence_one_federal_state }
+				lawrence_fed_absorb_ai_members = yes
+			}
+		}
+		ai_will_do = {
+			base = 5
+		}
+	}
+
+	focus = {
+		id = lawrence_fed_recognition_missions
+		icon = GFX_goal_generic_improve_relations
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INTERNATIONAL_TRADE }
+		x = 39
+		y = 2
+		cost = @lawrence_fed_focus_short
+		prerequisite = { focus = lawrence_fed_federal_census_and_revenue }
+		completion_reward = {
+			custom_effect_tooltip = lawrence_fed_recognition_missions_tt
+			hidden_effect = {
+				lawrence_fed_embassy_neighbours = yes
+				lawrence_fed_authority_small = yes
+			}
+		}
+		ai_will_do = {
+			base = 20
+		}
+	}
+
+	focus = {
+		id = lawrence_fed_settle_relations_with_britain
+		icon = GFX_goal_generic_military_deal
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INTERNATIONAL_TRADE }
+		x = 37
+		y = 3
+		cost = @lawrence_fed_focus_short
+		prerequisite = { focus = lawrence_fed_recognition_missions }
+		completion_reward = {
+			custom_effect_tooltip = lawrence_fed_settle_relations_with_britain_tt
+			hidden_effect = {
+				ENG = {
+					add_opinion_modifier = { target = PREV modifier = lawrence_fed_embassy }
+					if = {
+						limit = { NOT = { is_subject_of = PREV } }
+						give_guarantee = PREV
+					}
+				}
+			}
+		}
+		ai_will_do = {
+			base = 15
+		}
+	}
+
+	focus = {
+		id = lawrence_fed_negotiate_with_the_regional_powers
+		icon = GFX_goal_generic_positive_trade_relations
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INTERNATIONAL_TRADE }
+		x = 41
+		y = 3
+		cost = @lawrence_fed_focus_short
+		prerequisite = { focus = lawrence_fed_recognition_missions }
+		completion_reward = {
+			custom_effect_tooltip = lawrence_fed_negotiate_with_the_regional_powers_tt
+			hidden_effect = {
+				lawrence_fed_embassy_majors = yes
+			}
+		}
+		ai_will_do = {
+			base = 15
+		}
+	}
+
+	focus = {
+		id = lawrence_fed_invite_new_members
+		icon = GFX_goal_generic_major_alliance
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_ANNEXATION }
+		x = 39
+		y = 4
+		cost = @lawrence_fed_focus_short
+		prerequisite = { focus = lawrence_fed_settle_relations_with_britain focus = lawrence_fed_negotiate_with_the_regional_powers }
+		completion_reward = {
+			custom_effect_tooltip = lawrence_fed_invite_new_members_tt
+			hidden_effect = {
+				lawrence_fed_invite_now = yes
+				lawrence_fed_authority_small = yes
+			}
+		}
+		ai_will_do = {
+			base = 20
+		}
+	}
+
+	focus = {
+		id = lawrence_fed_guarantee_the_charter_states
+		icon = GFX_goal_generic_defence
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_ARMY_XP }
+		x = 37
+		y = 5
+		cost = @lawrence_fed_focus_short
+		prerequisite = { focus = lawrence_fed_invite_new_members }
+		completion_reward = {
+			custom_effect_tooltip = lawrence_fed_guarantee_the_charter_states_tt
+			hidden_effect = {
+				lawrence_fed_guarantee_partners = yes
+			}
+		}
+		ai_will_do = {
+			base = 10
+		}
+	}
+
+	focus = {
+		id = lawrence_fed_an_arab_league
+		icon = GFX_goal_generic_alliance
+		search_filters = { FOCUS_FILTER_POLITICAL }
+		x = 41
+		y = 5
+		cost = @lawrence_fed_focus_short
+		prerequisite = { focus = lawrence_fed_invite_new_members }
+		completion_reward = {
+			custom_effect_tooltip = lawrence_fed_an_arab_league_tt
+			hidden_effect = {
+				lawrence_fed_form_league = yes
+			}
+		}
+		ai_will_do = {
+			base = 15
+		}
+	}
+
+	focus = {
+		id = lawrence_fed_regional_arbitration
+		icon = GFX_goal_generic_scientific_exchange
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 39
+		y = 6
+		cost = @lawrence_fed_focus_medium
+		prerequisite = { focus = lawrence_fed_guarantee_the_charter_states }
+		prerequisite = { focus = lawrence_fed_an_arab_league }
+		completion_reward = {
+			custom_effect_tooltip = lawrence_fed_regional_arbitration_tt
+			hidden_effect = {
+				lawrence_fed_add_baseline = yes
+				lawrence_fed_authority_large = yes
+			}
+		}
+		ai_will_do = {
+			base = 15
+		}
+	}
+
+	focus = {
+		id = lawrence_fed_voluntary_accession
+		icon = GFX_goal_generic_dangerous_deal
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_ANNEXATION }
+		x = 43
+		y = 6
+		cost = @lawrence_fed_focus_short
+		prerequisite = { focus = lawrence_fed_an_arab_league }
+		completion_reward = {
+			custom_effect_tooltip = lawrence_fed_voluntary_accession_tt
+			hidden_effect = {
+				lawrence_fed_invite_now = yes
+				lawrence_fed_authority_small = yes
+			}
+		}
+		ai_will_do = {
+			base = 15
+		}
+	}
+
+	focus = {
+		id = lawrence_fed_integration_commission
+		icon = GFX_goal_generic_more_territorial_claims
+		search_filters = { FOCUS_FILTER_ANNEXATION FOCUS_FILTER_INTERNAL_AFFAIRS }
+		x = 42
+		y = 7
+		cost = @lawrence_fed_focus_short
+		prerequisite = { focus = lawrence_fed_voluntary_accession }
+		completion_reward = {
+			custom_effect_tooltip = lawrence_fed_integration_commission_tt
+			hidden_effect = {
+				lawrence_fed_claim_member_states = yes
+			}
+		}
+		ai_will_do = {
+			base = 10
+		}
+	}
+
+	focus = {
+		id = lawrence_fed_associated_state_charter
+		icon = GFX_goal_generic_positive_trade_relations
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INTERNAL_AFFAIRS }
+		x = 44
+		y = 7
+		cost = @lawrence_fed_focus_short
+		prerequisite = { focus = lawrence_fed_voluntary_accession }
+		completion_reward = {
+			custom_effect_tooltip = lawrence_fed_associated_state_charter_tt
+			hidden_effect = {
+				lawrence_fed_share_league_benefits = yes
+			}
+		}
+		ai_will_do = {
+			base = 10
+		}
+	}
+
+	focus = {
+		id = lawrence_fed_staged_cores
+		icon = GFX_goal_generic_construction2
+		search_filters = { FOCUS_FILTER_ANNEXATION FOCUS_FILTER_INTERNAL_AFFAIRS }
+		x = 42
+		y = 8
+		cost = @lawrence_fed_focus_medium
+		prerequisite = { focus = lawrence_fed_integration_commission }
+		available = {
+			custom_trigger_tooltip = {
+			tooltip = lawrence_fed_working_authority_tt
+			hidden_trigger = {
+				OR = {
+					lawrence_fed_band_is_working = yes
+					lawrence_fed_band_is_strong = yes
+				}
+			}
+		}
+		}
+		completion_reward = {
+			custom_effect_tooltip = lawrence_fed_staged_cores_tt
+			hidden_effect = {
+				lawrence_fed_core_member_states = yes
+			}
+		}
+		ai_will_do = {
+			base = 10
+		}
+	}
+
+}

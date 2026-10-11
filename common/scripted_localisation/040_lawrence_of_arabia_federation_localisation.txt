@@ -1,0 +1,50 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 040 LAWRENCE OF ARABIA FEDERATION SCRIPTED LOCALISATION
+# ============================================================================
+# The header of the federation category (Federal Authority of the core, the
+# state of an open congress or the call to one), the Federal Authority band,
+# trend and next threshold, and the name of the formed federation by route.
+# Selectors only: all words live in
+# 040_lawrence_of_arabia_federation_l_english.yml.
+# ============================================================================
+
+defined_text = {
+	name = GetLawrenceFedHeader
+	text = { trigger = { has_country_flag = lawrence_federation_core } localization_key = lawrence_fed_header_core }
+	text = { trigger = { has_global_flag = lawrence_congress_open } localization_key = lawrence_fed_header_open }
+	text = { localization_key = lawrence_fed_header_call }
+}
+
+defined_text = {
+	name = GetLawrenceFedBand
+	text = { trigger = { lawrence_fed_band_is_strong = yes } localization_key = lawrence_fed_band_strong }
+	text = { trigger = { lawrence_fed_band_is_working = yes } localization_key = lawrence_fed_band_working }
+	text = { trigger = { lawrence_fed_band_is_weak = yes } localization_key = lawrence_fed_band_weak }
+	text = { localization_key = lawrence_fed_band_fragile }
+}
+
+defined_text = {
+	name = GetLawrenceFedTrend
+	text = { trigger = { check_variable = { var = lawrence_fed_trend value = constant:lawrence_event.trend_rising compare = equals } } localization_key = lawrence_fed_trend_rising }
+	text = { trigger = { check_variable = { var = lawrence_fed_trend value = constant:lawrence_event.trend_falling compare = equals } } localization_key = lawrence_fed_trend_falling }
+	text = { localization_key = lawrence_fed_trend_steady }
+}
+
+defined_text = {
+	name = GetLawrenceFedNext
+	text = { trigger = { lawrence_fed_band_is_strong = yes } localization_key = lawrence_fed_next_strong }
+	text = { trigger = { lawrence_fed_band_is_working = yes } localization_key = lawrence_fed_next_working }
+	text = { trigger = { lawrence_fed_band_is_weak = yes } localization_key = lawrence_fed_next_weak }
+	text = { localization_key = lawrence_fed_next_fragile }
+}
+
+# The Federal Authority line of the core: the band, the largest drag and the
+# state of the starting spirits.
+defined_text = {
+	name = GetLawrenceFedDrag
+	text = { trigger = { has_idea = lawrence_administrative_secession } localization_key = lawrence_fed_drag_secession }
+	text = { trigger = { has_idea = lawrence_uneven_administration has_idea = lawrence_rival_commands } localization_key = lawrence_fed_drag_both }
+	text = { trigger = { has_idea = lawrence_uneven_administration } localization_key = lawrence_fed_drag_administration }
+	text = { trigger = { has_idea = lawrence_rival_commands } localization_key = lawrence_fed_drag_commands }
+	text = { localization_key = lawrence_fed_drag_none }
+}

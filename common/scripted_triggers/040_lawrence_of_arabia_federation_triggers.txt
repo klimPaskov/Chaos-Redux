@@ -1,0 +1,240 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 040 LAWRENCE OF ARABIA FEDERATION TRIGGERS
+# ============================================================================
+# Evolution III: congress calls, the personal route, participation, the
+# federation state and Federal Authority bands.
+# Scope: COUNTRY unless noted. Federation state: global.lawrence_fed_* while a
+# congress runs and country variables on the federation core afterwards.
+# ============================================================================
+
+lawrence_evolution_at_least_3 = {
+	check_variable = { var = global.lawrence_evolution value = constant:lawrence_evolution.stage_3 compare = greater_than_or_equals }
+}
+
+# ANY scope. Evolution III is ready when an established system or a standing
+# counter-bloc exists, at least the minimum number of governments could be
+# drawn into one congress and no federation exists yet.
+lawrence_federation_is_ready = {
+	NOT = { has_global_flag = lawrence_federation_formed }
+	OR = {
+		has_global_flag = lawrence_system_established
+		has_global_flag = lawrence_counter_bloc_active
+	}
+	check_variable = { var = global.lawrence_node_count value = constant:lawrence_fed.minimum_members compare = greater_than_or_equals }
+}
+
+# ANY scope. A congress is open or the federation already exists.
+lawrence_fed_is_blocked = {
+	OR = {
+		has_global_flag = lawrence_congress_open
+		has_global_flag = lawrence_federation_formed
+	}
+}
+
+# COUNTRY. The federation's core country (after formation).
+lawrence_is_federation_core = {
+	has_country_flag = lawrence_federation_core
+}
+
+# COUNTRY. The country has been invited to the open congress.
+lawrence_is_congress_invitee = {
+	has_global_flag = lawrence_congress_open
+	is_in_array = { array = global.lawrence_fed_invited value = THIS }
+}
+
+# COUNTRY. A valid participant for a congress.
+lawrence_fed_participant_is_valid = {
+	exists = yes
+	has_capitulated = no
+	is_actual_nonhuman_country = no
+	is_special_chaos_country = no
+	NOT = { has_country_flag = lawrence_federation_core }
+	# Britain's refusal binds its subjects in every congress but its own.
+	NOT = {
+		AND = {
+			lawrence_british_stance_opposes = yes
+			is_subject_of = ENG
+			NOT = { check_variable = { var = global.lawrence_fed_outcome value = constant:lawrence_fed.outcome_british compare = equals } }
+		}
+	}
+}
+
+# COUNTRY. Britain has chosen to oppose a federation.
+lawrence_british_stance_opposes = {
+	check_variable = { var = global.lawrence_british_stance value = constant:lawrence_fed.stance_oppose compare = equals }
+}
+
+# ANY scope. Britain sponsors a federation.
+lawrence_british_stance_sponsors = {
+	check_variable = { var = global.lawrence_british_stance value = constant:lawrence_fed.stance_support compare = equals }
+}
+
+# ANY scope. The congress outcome kind in flight or formed.
+lawrence_fed_outcome_is_british = {
+	check_variable = { var = global.lawrence_fed_outcome value = constant:lawrence_fed.outcome_british compare = equals }
+}
+
+lawrence_fed_outcome_is_sovereign = {
+	check_variable = { var = global.lawrence_fed_outcome value = constant:lawrence_fed.outcome_sovereign compare = equals }
+}
+
+# ---------------------------------------------------------------------------
+# Congress calls
+# ---------------------------------------------------------------------------
+
+# ENG. Britain calls the congress of its clients and allies.
+lawrence_shows_call_british_congress = {
+	tag = ENG
+	lawrence_evolution_at_least_3 = yes
+	NOT = { lawrence_fed_is_blocked = yes }
+	lawrence_british_stance_sponsors = yes
+	NOT = { has_country_flag = lawrence_congress_cooldown }
+	lawrence_sponsor_can_act = yes
+	check_variable = { var = global.lawrence_node_count value = constant:lawrence_fed.minimum_members compare = greater_than_or_equals }
+}
+
+# COUNTRY. A member of the counter-bloc calls the sovereign congress.
+lawrence_shows_call_arab_congress = {
+	lawrence_evolution_at_least_3 = yes
+	NOT = { lawrence_fed_is_blocked = yes }
+	NOT = { has_country_flag = lawrence_congress_cooldown }
+	has_country_flag = lawrence_bloc_member
+	has_global_flag = lawrence_counter_bloc_active
+	check_variable = { var = global.lawrence_bloc_members^num value = constant:lawrence_fed.minimum_members compare = greater_than_or_equals }
+}
+
+# COUNTRY. The country that hosts Lawrence after his defection calls the
+# personal congress. Every hidden condition must hold.
+lawrence_kingdom_conditions_are_met = {
+	lawrence_status_is_defected = yes
+	is_in_array = { array = global.lawrence_independent_partners value = THIS }
+	has_global_flag = lawrence_counter_bloc_active
+	check_variable = { var = global.lawrence_trust value = constant:lawrence_fed.kingdom_trust compare = greater_than_or_equals }
+	check_variable = { var = global.lawrence_resolved value = constant:lawrence_fed.kingdom_resolved compare = greater_than_or_equals }
+	OR = {
+		check_variable = { var = global.lawrence_credibility value = constant:lawrence_defect.credibility_ceiling compare = less_than }
+		has_global_flag = lawrence_disavowed
+	}
+}
+
+lawrence_shows_call_personal_congress = {
+	lawrence_evolution_at_least_3 = yes
+	NOT = { lawrence_fed_is_blocked = yes }
+	NOT = { has_country_flag = lawrence_congress_cooldown }
+	lawrence_kingdom_conditions_are_met = yes
+}
+
+lawrence_can_pay_congress = {
+	NOT = { has_political_power < constant:lawrence_cost_federation.congress_political_power }
+	NOT = { command_power < constant:lawrence_cost_federation.congress_command_power }
+}
+
+# ---------------------------------------------------------------------------
+# The federation (core scope)
+# ---------------------------------------------------------------------------
+
+lawrence_fed_band_is_fragile = {
+	check_variable = { var = lawrence_federal_authority value = constant:lawrence_fed.weak_edge compare = less_than }
+}
+
+lawrence_fed_band_is_weak = {
+	check_variable = { var = lawrence_federal_authority value = constant:lawrence_fed.weak_edge compare = greater_than_or_equals }
+	check_variable = { var = lawrence_federal_authority value = constant:lawrence_fed.working_edge compare = less_than }
+}
+
+lawrence_fed_band_is_working = {
+	check_variable = { var = lawrence_federal_authority value = constant:lawrence_fed.working_edge compare = greater_than_or_equals }
+	check_variable = { var = lawrence_federal_authority value = constant:lawrence_fed.strong_edge compare = less_than }
+}
+
+lawrence_fed_band_is_strong = {
+	check_variable = { var = lawrence_federal_authority value = constant:lawrence_fed.strong_edge compare = greater_than_or_equals }
+}
+
+lawrence_fed_route_is_british = {
+	check_variable = { var = lawrence_fed_outcome value = constant:lawrence_fed.outcome_british compare = equals }
+	NOT = { has_country_flag = lawrence_fed_breakaway }
+}
+
+lawrence_fed_route_is_sovereign = {
+	check_variable = { var = lawrence_fed_outcome value = constant:lawrence_fed.outcome_sovereign compare = equals }
+}
+
+lawrence_fed_route_is_kingdom = {
+	check_variable = { var = lawrence_fed_outcome value = constant:lawrence_fed.outcome_kingdom compare = equals }
+}
+
+lawrence_shows_federation_category = {
+	OR = {
+		has_country_flag = lawrence_federation_core
+		lawrence_shows_call_british_congress = yes
+		lawrence_shows_call_arab_congress = yes
+		lawrence_shows_call_personal_congress = yes
+	}
+}
+
+lawrence_shows_fed_council = {
+	has_country_flag = lawrence_federation_core
+	NOT = { has_country_flag = lawrence_fed_council_cooldown }
+}
+
+lawrence_shows_fed_revenue = {
+	has_country_flag = lawrence_federation_core
+	NOT = { has_country_flag = lawrence_fed_revenue_cooldown }
+	check_variable = { var = lawrence_fed_baseline value = constant:lawrence_fed.revenue_baseline_maximum compare = less_than }
+}
+
+lawrence_shows_fed_staff = {
+	has_country_flag = lawrence_federation_core
+	NOT = { has_country_flag = lawrence_fed_staff_cooldown }
+	check_variable = { var = lawrence_fed_command_progress value = constant:lawrence_fed.command_progress_max compare = less_than }
+}
+
+lawrence_shows_fed_offices = {
+	has_country_flag = lawrence_federation_core
+	NOT = { has_country_flag = lawrence_fed_offices_cooldown }
+}
+
+# A willing independent registry government to invite, once authority holds.
+lawrence_shows_fed_invite = {
+	has_country_flag = lawrence_federation_core
+	NOT = { has_country_flag = lawrence_fed_invite_cooldown }
+	check_variable = { var = lawrence_federal_authority value = constant:lawrence_fed.invite_authority compare = greater_than_or_equals }
+	any_other_country = { lawrence_fed_can_be_invited = yes }
+}
+
+# COUNTRY. An independent registry government that is not yet a member.
+lawrence_fed_can_be_invited = {
+	exists = yes
+	has_capitulated = no
+	is_subject = no
+	is_special_chaos_country = no
+	is_actual_nonhuman_country = no
+	lawrence_is_registry_country = yes
+	NOT = { has_country_flag = lawrence_federation_core }
+	NOT = { has_country_flag = lawrence_fed_member }
+}
+
+lawrence_can_pay_fed_council = {
+	NOT = { has_political_power < constant:lawrence_cost_federation.council_political_power }
+}
+
+lawrence_can_pay_fed_revenue = {
+	NOT = { has_political_power < constant:lawrence_cost_federation.revenue_political_power }
+	has_stability > constant:lawrence_cost_federation.revenue_stability_floor
+}
+
+lawrence_can_pay_fed_staff = {
+	NOT = { has_army_experience < constant:lawrence_cost_federation.staff_army_experience }
+	NOT = { command_power < constant:lawrence_cost_federation.staff_command_power }
+}
+
+lawrence_can_pay_fed_offices = {
+	NOT = { has_political_power < constant:lawrence_cost_federation.offices_political_power }
+	NOT = { has_equipment = { train_equipment < lawrence_cost_fed_offices_trains } }
+}
+
+lawrence_can_pay_fed_invite = {
+	NOT = { has_political_power < constant:lawrence_cost_federation.invite_political_power }
+	NOT = { command_power < constant:lawrence_cost_federation.invite_command_power }
+}

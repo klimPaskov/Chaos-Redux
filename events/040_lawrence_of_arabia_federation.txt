@@ -1,0 +1,337 @@
+add_namespace = chaosx.nr40
+
+# ============================================================================
+# CHAOS REDUX - EVENT 040 LAWRENCE OF ARABIA FEDERATION
+# ============================================================================
+# Evolution III: Britain's stance, the congress, ratification, the judgement,
+# the reports of the three outcomes, the monthly federal tick and the
+# invitation to join a standing federation.
+#
+#   .41 .42 .43  news: British Arabia, Independent Arab Federation,
+#                Lawrence's Kingdom
+#   .120 invitation to a congress (invitee)   .121 judgement (hidden, caller)
+#   .130 Britain chooses its stance           .132 Britain learns of a congress
+#   .133 the congress fails (caller)          .135 the federation exists (core)
+#   .136 Britain learns the result            .140 federal tick (hidden, core)
+#   .141 administrative secession (core)     .150 invitation to join (invitee)
+# ============================================================================
+
+# ---------------------------------------------------------------------------
+# News
+# ---------------------------------------------------------------------------
+
+news_event = {
+	id = chaosx.nr40.41
+	title = chaosx.nr40.41.t
+	desc = chaosx.nr40.41.d
+	picture = GFX_news_lawrence
+	major = yes
+	is_triggered_only = yes
+	option = {
+		name = chaosx.nr40.41.a
+	}
+}
+
+news_event = {
+	id = chaosx.nr40.42
+	title = chaosx.nr40.42.t
+	desc = chaosx.nr40.42.d
+	picture = GFX_news_lawrence
+	major = yes
+	is_triggered_only = yes
+	option = {
+		name = chaosx.nr40.42.a
+	}
+}
+
+news_event = {
+	id = chaosx.nr40.43
+	title = chaosx.nr40.43.t
+	desc = chaosx.nr40.43.d
+	picture = GFX_news_lawrence
+	major = yes
+	is_triggered_only = yes
+	option = {
+		name = chaosx.nr40.43.a
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Britain's stance
+# ---------------------------------------------------------------------------
+
+country_event = {
+	id = chaosx.nr40.130
+	title = chaosx.nr40.130.t
+	desc = chaosx.nr40.130.d
+	picture = GFX_report_event_040_lawrence_arab_congress
+	is_triggered_only = yes
+	trigger = { tag = ENG }
+	option = {
+		name = chaosx.nr40.130.a
+		custom_effect_tooltip = chaosx.nr40.130.a_tt
+		ai_chance = {
+			base = 40
+			modifier = { add = 25 has_war_with_major = no }
+			modifier = { add = 15 check_variable = { var = global.lawrence_credibility value = constant:lawrence_drift.credibility_high compare = greater_than } }
+			modifier = { factor = 0.3 has_war_with_major = yes }
+		}
+		hidden_effect = {
+			set_temp_variable = { lawrence_stance_choice = constant:lawrence_fed.stance_support }
+			lawrence_set_british_stance = yes
+		}
+	}
+	option = {
+		name = chaosx.nr40.130.b
+		custom_effect_tooltip = chaosx.nr40.130.b_tt
+		ai_chance = {
+			base = 25
+			modifier = { add = 30 has_war_with_major = yes }
+			modifier = { add = 15 check_variable = { var = global.lawrence_credibility value = constant:lawrence_drift.credibility_low compare = less_than } }
+		}
+		hidden_effect = {
+			set_temp_variable = { lawrence_stance_choice = constant:lawrence_fed.stance_reserve }
+			lawrence_set_british_stance = yes
+		}
+	}
+	option = {
+		name = chaosx.nr40.130.c
+		custom_effect_tooltip = chaosx.nr40.130.c_tt
+		ai_chance = {
+			base = 8
+			modifier = { add = 12 check_variable = { var = global.lawrence_credibility value = constant:lawrence_drift.credibility_low compare = less_than } }
+		}
+		hidden_effect = {
+			set_temp_variable = { lawrence_stance_choice = constant:lawrence_fed.stance_oppose }
+			lawrence_set_british_stance = yes
+		}
+	}
+}
+
+# Britain learns that a congress of the region has been called.
+country_event = {
+	id = chaosx.nr40.132
+	title = chaosx.nr40.132.t
+	desc = chaosx.nr40.132.d
+	picture = GFX_report_event_040_lawrence_arab_congress
+	is_triggered_only = yes
+	trigger = { tag = ENG }
+	option = {
+		name = chaosx.nr40.132.a
+		ai_chance = { base = 1 }
+	}
+}
+
+# ---------------------------------------------------------------------------
+# The congress
+# ---------------------------------------------------------------------------
+
+# A government is invited to ratify the charter.
+country_event = {
+	id = chaosx.nr40.120
+	title = chaosx.nr40.120.t
+	desc = {
+		trigger = { lawrence_fed_outcome_is_british = yes }
+		text = chaosx.nr40.120.d_british
+	}
+	desc = {
+		trigger = { lawrence_fed_outcome_is_sovereign = yes }
+		text = chaosx.nr40.120.d_sovereign
+	}
+	desc = {
+		trigger = {
+			NOT = { lawrence_fed_outcome_is_british = yes }
+			NOT = { lawrence_fed_outcome_is_sovereign = yes }
+		}
+		text = chaosx.nr40.120.d_kingdom
+	}
+	picture = GFX_report_event_040_lawrence_arab_congress
+	is_triggered_only = yes
+	trigger = { lawrence_is_congress_invitee = yes }
+	option = {
+		name = chaosx.nr40.120.a
+		custom_effect_tooltip = chaosx.nr40.120.a_tt
+		ai_chance = {
+			base = 35
+			modifier = { add = 30 lawrence_fed_outcome_is_british = yes is_subject_of = ENG }
+			modifier = { add = 25 lawrence_fed_outcome_is_sovereign = yes has_country_flag = lawrence_bloc_member }
+			modifier = { add = 25 has_country_flag = lawrence_bloc_member NOT = { lawrence_fed_outcome_is_british = yes } }
+			modifier = { add = 20 has_variable = lawrence_settlement }
+			modifier = { add = 10 has_idea = lawrence_counter_bloc_member }
+			modifier = { factor = 0.5 is_subject_of = ENG NOT = { lawrence_fed_outcome_is_british = yes } }
+			modifier = { factor = 0.5 has_war = yes has_defensive_war = yes }
+		}
+		hidden_effect = { lawrence_ratify_charter = yes }
+	}
+	option = {
+		name = chaosx.nr40.120.b
+		custom_effect_tooltip = chaosx.nr40.120.b_tt
+		ai_chance = {
+			base = 40
+			modifier = { add = 20 is_in_faction = yes }
+			modifier = { add = 15 lawrence_fed_outcome_is_british = yes NOT = { is_subject_of = ENG } }
+		}
+		hidden_effect = { lawrence_refuse_charter = yes }
+	}
+}
+
+# Judgement of the congress after the answers have arrived.
+country_event = {
+	id = chaosx.nr40.121
+	title = chaosx.nr40.121.t
+	hidden = yes
+	is_triggered_only = yes
+	immediate = {
+		lawrence_judge_congress = yes
+	}
+}
+
+# The congress failed and nothing was changed.
+country_event = {
+	id = chaosx.nr40.133
+	title = chaosx.nr40.133.t
+	desc = {
+		trigger = { check_variable = { var = global.lawrence_fed_failure value = constant:lawrence_fed.failure_too_few compare = equals } }
+		text = chaosx.nr40.133.d_few
+	}
+	desc = {
+		trigger = { check_variable = { var = global.lawrence_fed_failure value = constant:lawrence_fed.failure_britain compare = equals } }
+		text = chaosx.nr40.133.d_britain
+	}
+	desc = {
+		trigger = { check_variable = { var = global.lawrence_fed_failure value = constant:lawrence_fed.failure_subject_core compare = equals } }
+		text = chaosx.nr40.133.d_subject
+	}
+	desc = {
+		trigger = { check_variable = { var = global.lawrence_fed_failure value = constant:lawrence_fed.failure_lawrence compare = equals } }
+		text = chaosx.nr40.133.d_lawrence
+	}
+	desc = {
+		trigger = { check_variable = { var = global.lawrence_fed_failure value = constant:lawrence_fed.failure_war compare = equals } }
+		text = chaosx.nr40.133.d_war
+	}
+	desc = {
+		trigger = { check_variable = { var = global.lawrence_fed_failure value = constant:lawrence_fed.failure_no_core compare = equals } }
+		text = chaosx.nr40.133.d_core
+	}
+	picture = GFX_report_event_040_lawrence_arab_congress
+	is_triggered_only = yes
+	option = {
+		name = chaosx.nr40.133.a
+		ai_chance = { base = 1 }
+		custom_effect_tooltip = chaosx.nr40.133.a_tt
+	}
+}
+
+# ---------------------------------------------------------------------------
+# After formation
+# ---------------------------------------------------------------------------
+
+# The report of the new state to its core.
+country_event = {
+	id = chaosx.nr40.135
+	title = chaosx.nr40.135.t
+	desc = {
+		trigger = { lawrence_fed_route_is_british = yes }
+		text = chaosx.nr40.135.d_british
+	}
+	desc = {
+		trigger = { lawrence_fed_route_is_sovereign = yes }
+		text = chaosx.nr40.135.d_sovereign
+	}
+	desc = {
+		trigger = { lawrence_fed_route_is_kingdom = yes }
+		text = chaosx.nr40.135.d_kingdom
+	}
+	picture = GFX_report_event_040_lawrence_arab_congress
+	is_triggered_only = yes
+	trigger = { has_country_flag = lawrence_federation_core }
+	option = {
+		name = chaosx.nr40.135.a
+		custom_effect_tooltip = chaosx.nr40.135.a_tt
+		ai_chance = { base = 1 }
+	}
+}
+
+# Britain learns the result.
+country_event = {
+	id = chaosx.nr40.136
+	title = chaosx.nr40.136.t
+	desc = {
+		trigger = { lawrence_fed_outcome_is_british = yes }
+		text = chaosx.nr40.136.d_british
+	}
+	desc = {
+		trigger = { lawrence_fed_outcome_is_sovereign = yes }
+		text = chaosx.nr40.136.d_sovereign
+	}
+	desc = {
+		trigger = {
+			NOT = { lawrence_fed_outcome_is_british = yes }
+			NOT = { lawrence_fed_outcome_is_sovereign = yes }
+		}
+		text = chaosx.nr40.136.d_kingdom
+	}
+	picture = GFX_report_event_lawrence
+	is_triggered_only = yes
+	option = {
+		name = chaosx.nr40.136.a
+		ai_chance = { base = 1 }
+	}
+}
+
+# The monthly tick of the federation.
+country_event = {
+	id = chaosx.nr40.140
+	title = chaosx.nr40.140.t
+	hidden = yes
+	is_triggered_only = yes
+	immediate = {
+		lawrence_federal_tick = yes
+	}
+}
+
+# The administration cannot hold: members refuse revenue and law.
+country_event = {
+	id = chaosx.nr40.141
+	title = chaosx.nr40.141.t
+	desc = chaosx.nr40.141.d
+	picture = GFX_report_event_040_lawrence_arab_congress
+	is_triggered_only = yes
+	trigger = { has_country_flag = lawrence_federation_core }
+	option = {
+		name = chaosx.nr40.141.a
+		custom_effect_tooltip = chaosx.nr40.141.a_tt
+		ai_chance = { base = 1 }
+	}
+}
+
+# A willing independent government is offered membership.
+country_event = {
+	id = chaosx.nr40.150
+	title = chaosx.nr40.150.t
+	desc = chaosx.nr40.150.d
+	picture = GFX_report_event_040_lawrence_arab_congress
+	is_triggered_only = yes
+	trigger = { lawrence_fed_can_be_invited = yes }
+	option = {
+		name = chaosx.nr40.150.a
+		custom_effect_tooltip = chaosx.nr40.150.a_tt
+		ai_chance = {
+			base = 35
+			modifier = { add = 25 has_war = yes has_defensive_war = yes }
+			modifier = { add = 20 has_variable = lawrence_settlement }
+			modifier = { add = 15 has_country_flag = lawrence_bloc_member }
+			modifier = { factor = 0.3 is_in_faction = yes }
+		}
+		hidden_effect = { lawrence_fed_accept_membership = yes }
+	}
+	option = {
+		name = chaosx.nr40.150.b
+		custom_effect_tooltip = chaosx.nr40.150.b_tt
+		ai_chance = {
+			base = 50
+			modifier = { add = 20 is_in_faction = yes }
+		}
+	}
+}

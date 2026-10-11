@@ -1,0 +1,82 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 040 LAWRENCE OF ARABIA FEDERATION MTTH
+# ============================================================================
+# AI willingness scores of the congress calls and the federal decisions.
+# Scores are weights, not click chances. Each entry is read for the one
+# country already being evaluated.
+# ============================================================================
+
+# Britain calls its own congress when it is not stretched and enough
+# clients exist.
+lawrence_ai_call_british_congress = {
+	base = constant:lawrence_ai.low
+	modifier = {
+		add = constant:lawrence_ai.standard
+		check_variable = { var = global.lawrence_node_count value = constant:lawrence_fed.minimum_members compare = greater_than }
+	}
+	modifier = {
+		add = constant:lawrence_ai.standard
+		check_variable = { var = global.lawrence_credibility value = constant:lawrence_drift.credibility_high compare = greater_than }
+	}
+	modifier = { factor = 0.2 has_war_with_major = yes }
+}
+
+# A counter-bloc member calls the sovereign congress when the bloc is wider
+# than the minimum and the member is not fighting for survival.
+lawrence_ai_call_arab_congress = {
+	base = constant:lawrence_ai.blocked
+	modifier = {
+		add = constant:lawrence_ai.standard
+		check_variable = { var = global.lawrence_bloc_members^num value = constant:lawrence_fed.minimum_members compare = greater_than }
+	}
+	modifier = { add = constant:lawrence_ai.low has_government = neutrality }
+	modifier = { add = constant:lawrence_ai.low has_government = communism }
+	modifier = { factor = 0.3 has_war = yes has_defensive_war = no }
+	modifier = { factor = 0.4 has_defensive_war = yes }
+}
+
+# The host of Lawrence acts as soon as every condition holds: the
+# conditions are already rare.
+lawrence_ai_call_personal_congress = {
+	base = constant:lawrence_ai.strong
+	modifier = { factor = 0.3 has_defensive_war = yes }
+}
+
+# Federal Authority is repaired when it is weakest.
+lawrence_ai_fed_council = {
+	base = constant:lawrence_ai.blocked
+	modifier = { add = constant:lawrence_ai.urgent lawrence_fed_band_is_fragile = yes }
+	modifier = { add = constant:lawrence_ai.strong lawrence_fed_band_is_weak = yes }
+	modifier = { add = constant:lawrence_ai.low lawrence_fed_band_is_working = yes }
+}
+
+# Revenue costs stability, so it is taken only when the country is stable.
+lawrence_ai_fed_revenue = {
+	base = constant:lawrence_ai.blocked
+	modifier = { add = constant:lawrence_ai.standard has_stability > constant:lawrence_fed.stable_threshold }
+	modifier = { add = constant:lawrence_ai.low lawrence_fed_band_is_weak = yes has_stability > constant:lawrence_fed.stable_threshold }
+	modifier = { add = constant:lawrence_ai.low lawrence_fed_band_is_fragile = yes has_stability > constant:lawrence_fed.stable_threshold }
+}
+
+# Command reform is a priority while Rival Commands remains.
+lawrence_ai_fed_staff = {
+	base = constant:lawrence_ai.blocked
+	modifier = { add = constant:lawrence_ai.strong has_idea = lawrence_rival_commands }
+	modifier = { add = constant:lawrence_ai.low has_idea = lawrence_rival_commands has_war = yes }
+}
+
+# Offices follow once the administration holds.
+lawrence_ai_fed_offices = {
+	base = constant:lawrence_ai.blocked
+	modifier = { add = constant:lawrence_ai.standard lawrence_fed_band_is_working = yes }
+	modifier = { add = constant:lawrence_ai.standard lawrence_fed_band_is_strong = yes }
+	modifier = { add = constant:lawrence_ai.low lawrence_fed_band_is_weak = yes }
+}
+
+# A strong federation invites a willing government when it is not at war.
+lawrence_ai_fed_invite = {
+	base = constant:lawrence_ai.blocked
+	modifier = { add = constant:lawrence_ai.standard lawrence_fed_band_is_strong = yes }
+	modifier = { add = constant:lawrence_ai.low lawrence_fed_band_is_working = yes }
+	modifier = { factor = 0.3 has_war = yes }
+}

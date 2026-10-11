@@ -17,7 +17,7 @@ Britain recalls T. E. Lawrence, reported dead after a motorcycle crash in 1935, 
 | --- | --- | --- |
 | 1 | Recall, target registry and weighting, Lawrence's Influence, decision and mission families, settlements, intelligence, AI, reports, Event Details, event log, achievements, ideas, character | implemented, never run in game |
 | 2 | Evolutions I and II: revolt cells, government replacement, British Arabian System, favoured partner, client autonomy, counter-bloc | implemented, never run in game |
-| 3 | Evolution III, federation transaction, country package, Federal Authority, focus tree, super-events | see Phase 3 handoff |
+| 3 | Evolution III, federation transaction, country package, Federal Authority, focus tree, super-events | implemented, never run in game |
 
 ## Event map
 
@@ -145,11 +145,11 @@ One shipment pending at a time with a receipt serial per delivery, one detention
 - `chaos_redux_040_better_bargain`: as a player target, receive a shipment, keep Influence out of the Dominant band and finish as ally or armed partner.
 - `chaos_redux_040_every_ledger_has_a_name`: as a player target, turn a contact, expose the network and dismantle it without a civil war.
 
-Both are `is_ai = no` and track flags set at the outcome. Evolution achievements follow in the next section. Gold Without Chains and The Uncrowned Kingdom need the federation.
+Both are `is_ai = no` and track flags set at the outcome. Evolution achievements follow in the next section.
 
 ## Event-owned Chaos
 
-Phase 1 owns one change: Lawrence defects from Britain, +5, once (`chaos_meter_history_reason.special.lawrence_defection`, 240). Phase 2 adds the first armed incident of a revolt network (5), the first government replacement (5), the established system (10), three networks dismantled (minus 10) and a recognised counter-bloc (minus 5). The federation outcomes use 244 to 246. Evolution activation never changes Chaos.
+Phase 1 owns one change: Lawrence defects from Britain, +5, once (`chaos_meter_history_reason.special.lawrence_defection`, 240). Phase 2 adds the first armed incident of a revolt network (5), the first government replacement (5), the established system (10), three networks dismantled (minus 10) and a recognised counter-bloc (minus 5). The federation outcomes use 244 to 246: British Arabia 10, the Independent Arab Federation 15 and Lawrence's Kingdom 15, each once when the federation forms. Evolution activation never changes Chaos.
 
 ## Evolutions
 
@@ -189,13 +189,141 @@ The counter-bloc is founded by an independent registry government through Found 
 
 ### Evolution log
 
-Rows, titles, bodies and the summary are wired in the main Evolutions tab, the History details, Event Details and the selected view. Stage 3 is added with the federation.
+Rows, titles, bodies and the summary of all three stages are wired in the main Evolutions tab, the History details, Event Details and the selected view.
 
 ## Evolution achievements
 
 - `chaos_redux_040_promises_kept`: Britain with a registered guarantee, the system established, three partners and no broken guarantee when the campaign closes.
 - `chaos_redux_040_desert_conference`: an independent player government in a bloc of three that Britain recognises.
 - `chaos_redux_040_rails_ports_promises`: a sea route, a repaired rail link and the Desert Air Route together while a later target settles.
+- `chaos_redux_040_gold_without_chains`: a player government that received at least two British shipments (`lawrence_aid_receipts`) ratifies or leads the Independent Arab Federation without being a British subject.
+- `chaos_redux_040_uncrowned_kingdom`: the player government that hosts Lawrence after his defection calls the congress of the founding houses and forms the Arabian Union without a British overlord.
+
+Both new achievements are `is_ai = no`. Gold Without Chains counts shipments only in the target that received them, so a government that joins as a dominion keeps its own receipts.
+
+## Evolution III and the Federation
+
+Evolution III is ready when the British Arabian System or a counter-bloc stands, at least three governments could be drawn into one congress and no federation exists (`lawrence_federation_is_ready`).
+An evolved opening activates it after Evolution II with its own log entry.
+Activation gives Chaos nothing and sends Britain the stance event `.130`.
+
+### Britain's stance
+
+| Stance | Effect |
+| --- | --- |
+| Sponsor | the British congress call opens, Britain's credibility rises by two |
+| Stand aside | no British congress, British subjects may join other congresses, credibility rises by two |
+| Oppose | British subjects cannot join a congress that Britain does not call, credibility falls by three |
+
+### The three congress calls
+
+All three live in `The Arabian Federation` decision category and are visible only while their conditions hold.
+Each costs political power and command power (`lawrence_cost_federation`), builds its invitation list from the real arrays (`global.lawrence_nodes`, `global.lawrence_bloc_members`, `global.lawrence_independent_partners`) and sends `.120` to every invitee.
+Players choose, AI invitees use `ai_chance` from their situation, and `.121` judges the congress after 30 days.
+
+| Call | Caller | Invitees | Result |
+| --- | --- | --- | --- |
+| British Arabian Congress | Britain, after a sponsoring stance | Britain's nodes | British Arabia |
+| Arab Congress | a counter-bloc member | the bloc | Independent Arab Federation |
+| Congress of the Founding Houses | the country that hosts Lawrence after his defection, with trust at least 75, two settled targets, a standing bloc and either low British credibility or a disavowed Lawrence | the bloc and the independent partners | Lawrence's Kingdom |
+
+### Core scoring, validation and the formation transaction
+
+The core is the ratifier with the highest score from factories, divisions and stability, plus British backing for the British route, sovereign standing for the other routes and a large weight for a player so that a player is never absorbed into an AI core without consent.
+The personal congress is always held in the host.
+Validation runs before any mutation: a core exists, at least three ratified, Britain can still sponsor (British route), a sovereign core is not a subject, Lawrence is defected and free in the host (personal route) and no ratifier is at war with the core.
+A failed validation changes nothing and stores the reason in `global.lawrence_fed_failure`, which the report `.133` states.
+After a failed sovereign or personal congress the delegates keep a looser league (a timed spirit for one year) and the caller waits 180 days.
+
+Formation (`lawrence_fed_form`) is one transaction.
+The federation transforms the core country, so no new country tag exists and no tag collision is possible.
+The three cosmetic identities `LAWF_BRITISH`, `LAWF_ARAB` and `LAWF_KINGDOM` are new tokens.
+A search of this mod, the installed game and Kaiserreich found no other use of the prefix `LAWF`, so no collision exists.
+AI members are annexed with their troops and their states become core territory of the federation.
+A player member that is not the core stays a country as an autonomous dominion of the core, so nobody is stranded.
+The campaign closes, Chaos is recorded once, the achievements are awarded, the super-event slot and the news are fired and the core receives the report `.135`.
+When the core is later annexed the federation state is cleared by a one-flag check in `on_annex` and a new congress can be called.
+
+### Federal Authority
+
+One public value, 0 to 100, in four bands (fragile below 25, weak below 50, working below 75, strong from 75), shown in the decision category header with the band, trend and next threshold.
+It starts at 45 in British Arabia, 30 in the Independent Federation and 40 in the Kingdom.
+Each month a tick on the core adds the revenue baseline, minus one for Uneven Administration (minus two for Administrative Secession), minus one for Rival Commands, minus one for the political starting spirit, plus one when stability is above 60 percent and minus one when it is below 35 percent.
+Four months in the fragile band worsen Uneven Administration into Administrative Secession and two months in the working band restore it.
+Weak authority gives -2 percent stability and -5 percent political power, fragile more, working and strong give production and political power.
+
+Federal decisions of the core:
+
+| Decision | Cost | Effect |
+| --- | --- | --- |
+| Convene the Federal Council | political power | authority +10, 90 days |
+| Collect Federal Revenue | political power, 3 percent stability | authority +5 and +1 monthly baseline, 180 days, up to 3 baselines |
+| Reform the Federal Staff | army experience, command power | one step of Rival Commands, authority +5, 120 days |
+| Open Regional Offices | political power, trains by factories | infrastructure in the capital and one founding state, authority +5, 120 days |
+| Invite a Member Government | political power, command power | one willing independent government is invited as a dominion, authority at least 60 |
+
+Representative AI scores (`040_lawrence_of_arabia_federation_mtth.txt`, scores are weights and not click chances):
+council 90 at fragile, 60 at weak, 15 at working, 0 at strong;
+staff reform 60 while Rival Commands remains (75 at war), otherwise 0;
+revenue 35 when stable plus 15 when authority is weak or fragile, otherwise 0;
+offices 35 at working or strong, 15 at weak;
+invite 35 at strong, 15 at working, one third at war;
+British congress 15 plus 35 with more than three nodes plus 35 with credibility above 70, one fifth in a war with a major;
+Arab congress 0 below four members, 35 with four or more plus 15 for a neutral or communist government;
+personal congress 60, 18 in a defensive war.
+These come from the script by hand calculation because the probability tool takes only the focus adapter models.
+
+### Starting spirits and their lifecycles
+
+The federation holds at most three focus-owned spirits at once: administration, command and political.
+The four Federal Authority band spirits are the mechanic's indicator and exactly one is active.
+
+| Slot | Start | Resolved by | Final forms | Worsens to |
+| --- | --- | --- | --- | --- |
+| Administration | Uneven Administration | three steps from the customs line, census, regional offices, constituent congress, member guarantees, founding houses | Central, Charter or Imperial Liaison Administration, then Federation of Members or One Federal State | Administrative Secession |
+| Command | Rival Commands | three steps from seniority, staff or war council, supply columns, staff reform decision, common defence charter, British mission, field government, repair standards | Unified Arab General Staff, Federal War Council, British Arabian Command or Lawrence's Field Household | none |
+| Political | Promise Debt (British), Federal Mistrust (sovereign), Personal Settlement (kingdom) | the route's political focus | Imperial Compact or Equal Partnership, Charter Trust, Succession Settlement, then the late order | none |
+
+### Focus tree
+
+`lawrence_federation_focus_tree` (64 focuses, `common/national_focus/040_lawrence_of_arabia_federation_focus.txt`) is loaded onto the core with `load_focus_tree`.
+It replaces the national tree of the transformed core, which is the carrier approach the spec accepts, and focuses that the core already completed stay completed.
+The opening group is one provisional government.
+Four lanes of choice follow: the political settlement of the route, the federal centre, the army and the economy.
+The air, diplomacy and integration lanes open behind them.
+Rewards are real: infrastructure, supply hubs, factories, radar, air bases, dockyards and anti-air in founding states, building slots, fuel, trains and trucks, equipment pools, a division template, technology bonuses, claims and cores on member states, guarantees, embassies, a faction, autonomy changes, a British release and a leader change to the council of the founding houses.
+Values are in `lawrence_focus`, mostly multiples of 5.
+
+| Branch family | Visible root | Lane | Search filter tags | Focus Navigation shortcut | Major fork or choice | Capstone or payoff | First-glance result | Notes |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Economy, oil | Federal Customs Line | x 0 to 4 | industry, stability, navy | Economy and Oil | none | Common Equipment Repair Standards | Pass | rails and ports join into oil |
+| Army | Register the Member Armies | x 6 to 10 | army, manpower, research | Army | General Staff against War Council | Defend the Long Frontier | Pass | |
+| Air and coast | Desert Airfields | x 12 to 16 | air, navy, industry | Air and Coast | convoy and port against communications | Air Liaison Schools | Pass | opens behind Register the Member Armies |
+| British compact | Ratify the Imperial Compact | x 17 to 19 | political, army | none | Dominion against Protectorate, Voice against Equal Partnership | Pillar of British Strategy or Break with London | Pass | hidden unless the route is British |
+| Sovereign congress | Convene the Constituent Congress | x 21 to 23 | political, trade | none | none | The Sovereign Arab Order | Pass | hidden unless the route is sovereign or broke with London |
+| Personal union | The Personal Oath | x 25 to 27 | political, character | none | Crown Bound by Charter against Commander's State | Separate the State from the Man | Pass | hidden unless the route is the kingdom |
+| Federal centre | Federal Census and Revenue Agreement | x 29 to 33 | internal affairs, industry | Federal Centre | Central State against Charter Federation, Federation of Members against One Federal State | A Federation of Members or One Federal State | Pass | |
+| Diplomacy | Recognition Missions | x 35 to 41 | political, trade | Diplomacy | none | Regional Arbitration | Pass | |
+| Integration | Voluntary Accession | x 41 to 45 | annexation, internal affairs | Integration | none | Staged Cores | Pass | |
+
+The three political lanes carry no Focus Navigation entry because only one is visible.
+The opening is the Charter shortcut.
+`hoi4.focus_inspect` reported no crossings, no overlaps, no unresolved titles and three long connectors, all from the opening group to the three lane roots by design.
+
+### Super-events
+
+Slots 140 (British Arabia), 141 (Independent Arab Federation) and 142 (Lawrence's Kingdom) are wired in the shared getters for image, title, text and the button label.
+There is no quote and no audio: the spec forbids an invented quote and no sourced quote or licensed audio exists yet.
+The super-event is skipped when another super-event is already visible, and the news and report events still fire.
+The Kingdom slot reuses the independent federation image as a stand-in.
+
+### Not implemented
+
+- Flags for `LAWF_BRITISH`, `LAWF_ARAB` and `LAWF_KINGDOM` (normal, medium, small) are missing.
+- No grounded portraits for federation leaders exist and the head of state after the Lawrence settlement is the council with the placeholder portrait.
+- Super-event quotes and audio are missing.
+- The loose-league alternative to a formed federation is a timed spirit and not a separate faction.
+- Counter-bloc members that join a British congress are not given negotiated protections beyond the autonomy changes of the focus tree.
 
 ## Assets
 
@@ -211,10 +339,15 @@ Reused existing art: report image of Lawrence (`GFX_report_event_lawrence`, prov
 | Idea icons (British mission, independent partnership, exposed network, protectorate, arms standard, transport compact, oil agreements, favoured partner, counter-bloc member, provisional administration) | `GFX_idea_040_<name>` | same | `gfx/interface/ideas/040_lawrence_of_arabia/` |
 | Achievement triplets for `chaos_redux_040_better_bargain` (rifle crate under a national lock) and `chaos_redux_040_every_ledger_has_a_name` (open ledger, marked payments, lens) | `GFX_achievement_chaos_redux_040_<id>` and `_grey`, `_not_eligible` | `interface/040_lawrence_of_arabia.gfx` | `gfx/achievements/` |
 | Report images for the recall, a sabotage scene and the settlement reports | `GFX_report_event_040_<name>` | same | `gfx/event_pictures/040_lawrence_of_arabia/` |
+| Flags of the three federation identities, normal, medium and small | tag files `LAWF_BRITISH`, `LAWF_ARAB`, `LAWF_KINGDOM` | none | `gfx/flags/`, `gfx/flags/medium/`, `gfx/flags/small/` |
+| Super-event scene of Lawrence's Kingdom (the slot reuses the independent federation image) | `GFX_super_event_040_lawrence_kingdom_formed` | `interface/040_lawrence_of_arabia.gfx` | `gfx/event_pictures/040_lawrence_of_arabia/` |
+| Super-event audio and a sourced quote for slots 140 to 142 | sound ids pending | pending | pending |
+| Focus icons (the tree uses vanilla `GFX_goal_generic_*`), federal decision icons and idea icons for the federation | `GFX_focus_040_<name>`, `GFX_decision_040_<name>`, `GFX_idea_040_<name>` | `interface/040_lawrence_of_arabia.gfx` | `gfx/interface/goals/`, `gfx/interface/decisions/`, `gfx/interface/ideas/` |
+| Achievement triplets for Gold Without Chains and The Uncrowned Kingdom | `GFX_achievement_chaos_redux_040_<id>` and `_grey`, `_not_eligible` | `interface/040_lawrence_of_arabia.gfx` | `gfx/achievements/` |
 
 ## Validation notes
 
-Nothing was run in the game. The static checks are source review: brace balance, defined identifiers, localisation key coverage and the localisation audit. The `hoi4.script_validate` route returned invalid arguments twice for a path input and was not retried.
+Nothing was run in the game. The static checks are source review: brace balance, defined identifiers, localisation key coverage and the localisation audit. `hoi4.focus_inspect` ran once on the federation tree and returned no blockers. The `hoi4.script_validate` route returned invalid arguments twice for a path input and was not retried.
 
 ## Future plans
 

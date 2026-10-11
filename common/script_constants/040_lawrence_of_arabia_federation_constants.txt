@@ -1,0 +1,144 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 040 LAWRENCE OF ARABIA FEDERATION TUNING
+# ============================================================================
+# Evolution III: the congress, core scoring, validation outcomes, the
+# federation's Federal Authority (0 to 100), its bands, monthly drift,
+# federal decisions and the values of the federation focus tree. Prices of the
+# federal decisions use their own group; the Chaos values of the three
+# outcomes live in lawrence_chaos_evolution (040_lawrence_of_arabia_
+# evolution_constants.txt) because a constant group lives in one file.
+# Scripts read these as constant:<group>.<key>.
+# ============================================================================
+
+# Congress, outcomes, validation results and Federal Authority.
+lawrence_fed = {
+	schema = { any_key = yes data = fixed_point }
+
+	minimum_members = 3
+	congress_days = 30
+	cooldown_days = 180
+	league_days = 365
+	stance_support = 1
+	stance_oppose = 2
+	stance_reserve = 3
+	kingdom_trust = 75
+	kingdom_resolved = 2
+	stance_credibility = 2
+	stance_oppose_credibility = -3
+
+	outcome_british = 1
+	outcome_sovereign = 2
+	outcome_kingdom = 3
+
+	failure_none = 0
+	failure_no_core = 1
+	failure_too_few = 2
+	failure_britain = 3
+	failure_subject_core = 4
+	failure_lawrence = 5
+	failure_war = 6
+
+	score_factory = 4
+	score_division = 3
+	score_stability = 40
+	score_british_backing = 30
+	score_sovereign_standing = 25
+	score_lawrence = 80
+	score_human = 400
+
+	authority_british = 45
+	authority_sovereign = 30
+	authority_kingdom = 40
+	band_fragile = 0
+	band_weak = 1
+	band_working = 2
+	band_strong = 3
+	weak_edge = 25
+	working_edge = 50
+	strong_edge = 75
+
+	tick_days = 30
+	drift_administration = -1
+	drift_secession = -2
+	drift_commands = -1
+	drift_political = -1
+	drift_stable = 1
+	drift_unstable = -1
+	stable_threshold = 0.6
+	unstable_threshold = 0.35
+	secession_months = 4
+	secession_recovery_months = 2
+
+	council_authority = 10
+	council_cooldown_days = 90
+	revenue_authority = 5
+	revenue_baseline = 1
+	revenue_baseline_maximum = 3
+	revenue_cooldown_days = 180
+	staff_authority = 5
+	staff_cooldown_days = 120
+	command_progress_max = 4
+	offices_authority = 5
+	offices_cooldown_days = 120
+	invite_authority = 60
+	invite_cooldown_days = 180
+	member_authority = 5
+	gold_receipts = 2
+
+	super_event_days = 10
+	super_slot_british = 140
+	super_slot_sovereign = 141
+	super_slot_kingdom = 142
+}
+
+# Prices of the federal decisions and of the three congress calls.
+lawrence_cost_federation = {
+	schema = { any_key = yes data = fixed_point }
+
+	congress_political_power = 100
+	congress_command_power = 30
+	council_political_power = 50
+	revenue_political_power = 40
+	revenue_stability_cost = -0.03
+	revenue_stability_percent = 3
+	revenue_stability_floor = 0.5
+	staff_army_experience = 30
+	staff_command_power = 25
+	offices_political_power = 50
+	offices_trains_per_factory = 0.5
+	offices_trains_minimum = 5
+	offices_trains_maximum = 20
+	invite_political_power = 60
+	invite_command_power = 20
+}
+
+# Values read by the federation focus tree.
+lawrence_focus = {
+	schema = { any_key = yes data = fixed_point }
+
+	authority_small = 5
+	authority_medium = 10
+	authority_large = 15
+	authority_loss = -5
+	lifecycle_steps = 3
+	political_power = 100
+	command_power = 25
+	army_experience = 25
+	air_experience = 25
+	stability = 0.05
+	convoys = 20
+	trains = 15
+	fuel = 5000
+	infantry_equipment = 500
+	support_equipment = 100
+	motorized_equipment = 200
+	manpower = 25000
+	program_states = 5
+	autonomy_step = 0.05
+	autonomy_large_step = 0.1
+	baseline_step = 1
+	league_idea_days = 365
+	slot_levels = 1
+}
+
+# Chaos Meter history keys for the federation outcomes are in chaos_meter_constants.txt.

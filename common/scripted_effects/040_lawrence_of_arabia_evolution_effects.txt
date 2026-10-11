@@ -93,6 +93,10 @@ lawrence_apply_evolution_entry = {
 		limit = { check_variable = { var = global.lawrence_evolution value = constant:lawrence_evolution.stage_2 compare = equals } }
 		ENG = { lawrence_collect_nodes = yes }
 	}
+	else_if = {
+		limit = { check_variable = { var = global.lawrence_evolution value = constant:lawrence_evolution.stage_3 compare = equals } }
+		lawrence_apply_evolution_3_entry = yes
+	}
 }
 
 # COUNTRY, scoped to the first target. Evolved opening: every enabled stage
@@ -164,6 +168,22 @@ lawrence_apply_opening_evolution_2 = {
 
 # Placeholder for the stage 3 opening added with the federation phase.
 lawrence_resolve_opening_evolution_extra = {
+	set_temp_variable = { events_log_evolution_event_id = constant:lawrence_event.id }
+	set_temp_variable = { events_log_evolution_type = constant:lawrence_event.evolution_type }
+	set_temp_variable = { events_log_evolution_stage = constant:lawrence_evolution.stage_3 }
+	set_temp_variable = { events_log_evolution_tier = constant:lawrence_evolution.stage_3 }
+	if = {
+		limit = {
+			check_variable = { var = global.lawrence_evolution value = constant:lawrence_evolution.stage_2 compare = equals }
+			is_current_evolution_enabled = yes
+			lawrence_federation_is_ready = yes
+		}
+		set_variable = { global.lawrence_evolution = constant:lawrence_evolution.stage_3 }
+		set_temp_variable = { events_log_evolution_has_actor = constant:lawrence_event.one }
+		save_event_target_as = events_log_evolution_actor
+		record_events_log_evolution_entry = yes
+		lawrence_apply_opening_evolution_3 = yes
+	}
 }
 
 # ---------------------------------------------------------------------------
@@ -581,6 +601,15 @@ lawrence_collect_nodes = {
 		add_to_array = { global.lawrence_nodes = THIS }
 	}
 	set_variable = { global.lawrence_node_count = global.lawrence_nodes^num }
+	lawrence_publish_regional_costs = yes
+}
+
+# ANY scope. The prices of the regional decisions that every country can see
+# are published once as global values so their cost rows read them.
+lawrence_publish_regional_costs = {
+	set_variable = { global.lawrence_cost_node_autonomy_political_power = constant:lawrence_cost_evolution.node_autonomy_political_power }
+	set_variable = { global.lawrence_cost_bloc_political_power = constant:lawrence_cost_evolution.bloc_political_power }
+	set_variable = { global.lawrence_cost_bloc_command_power = constant:lawrence_cost_evolution.bloc_command_power }
 }
 
 # ENG. Monthly health of the system (called by the watchdog). Nodes below

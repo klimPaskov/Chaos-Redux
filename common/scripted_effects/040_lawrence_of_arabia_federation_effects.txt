@@ -1,0 +1,1232 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 040 LAWRENCE OF ARABIA FEDERATION EFFECTS
+# ============================================================================
+# Evolution III: the entry and the evolved opening, the three congress calls,
+# ratification, core selection, the validated formation transaction, the
+# failure paths, the federation identity, Federal Authority, its decisions and
+# the monthly tick.
+#
+# Carrier decision: the federation transforms its strongest member. No new
+# country tag exists, so there is no tag collision. Common/countries holds
+# three cosmetic tags (LAWF_BRITISH, LAWF_ARAB, LAWF_KINGDOM) and the focus
+# tree lawrence_federation_focus_tree is loaded onto the core. Founding AI
+# members are annexed with their troops, so no unit or stockpile is
+# duplicated. A human member that is not the core stays a country as an
+# autonomous dominion of the core, so nobody is stranded.
+#
+# The formation validates everything before the first mutation, so a failed
+# validation changes nothing and needs no rollback: members keep their
+# states, units and leaders and the reason is stored in
+# global.lawrence_fed_failure.
+# Scope: COUNTRY unless noted.
+# ============================================================================
+
+# ---------------------------------------------------------------------------
+# Evolution III entry
+# ---------------------------------------------------------------------------
+
+# COUNTRY, the live target. Active entry: Britain chooses its stance.
+lawrence_apply_evolution_3_entry = {
+	lawrence_fed_refresh_pool = yes
+	set_temp_variable = { lawrence_report_delay = constant:lawrence_event.report_delay_days }
+	ENG = { country_event = { id = chaosx.nr40.130 days = lawrence_report_delay } }
+}
+
+# Evolved opening: unification is a declared long-term objective of the first
+# intervention. It creates no federation and only recognises existing support.
+lawrence_apply_opening_evolution_3 = {
+	set_global_flag = lawrence_objective_declared
+	lawrence_fed_refresh_pool = yes
+	set_temp_variable = { lawrence_report_delay = constant:lawrence_event.report_delay_days }
+	ENG = { country_event = { id = chaosx.nr40.130 days = lawrence_report_delay } }
+}
+
+# ANY scope. Hidden readiness: the number of governments Britain and the
+# region could draw into one congress.
+lawrence_fed_refresh_pool = {
+	ENG = { lawrence_collect_nodes = yes }
+	set_variable = { global.lawrence_cost_congress_political_power = constant:lawrence_cost_federation.congress_political_power }
+	set_variable = { global.lawrence_cost_congress_command_power = constant:lawrence_cost_federation.congress_command_power }
+}
+
+# ---------------------------------------------------------------------------
+# Congress
+# ---------------------------------------------------------------------------
+
+lawrence_pay_congress = {
+	set_temp_variable = { lawrence_charge = constant:lawrence_cost_federation.congress_political_power }
+	lawrence_charge_political_power = yes
+	set_temp_variable = { lawrence_charge = constant:lawrence_cost_federation.congress_command_power }
+	lawrence_charge_command_power = yes
+}
+
+# ENG. Britain calls the congress of its clients and allies.
+lawrence_call_british_congress = {
+	lawrence_pay_congress = yes
+	set_temp_variable = { lawrence_fed_kind = constant:lawrence_fed.outcome_british }
+	lawrence_open_congress = yes
+}
+
+# COUNTRY, a bloc member. The sovereign congress.
+lawrence_call_arab_congress = {
+	lawrence_pay_congress = yes
+	set_temp_variable = { lawrence_fed_kind = constant:lawrence_fed.outcome_sovereign }
+	lawrence_open_congress = yes
+}
+
+# COUNTRY, the Lawrence-aligned host. The personal congress.
+lawrence_call_personal_congress = {
+	lawrence_pay_congress = yes
+	set_temp_variable = { lawrence_fed_kind = constant:lawrence_fed.outcome_kingdom }
+	lawrence_open_congress = yes
+}
+
+# COUNTRY, the caller. Input: temporary lawrence_fed_kind. Builds the invitation
+# list from real arrays and sends the invitations. The answers arrive over the
+# next weeks and chaosx.nr40.121 judges them.
+lawrence_open_congress = {
+	set_global_flag = lawrence_congress_open
+	set_variable = { global.lawrence_fed_outcome = lawrence_fed_kind }
+	set_variable = { global.lawrence_fed_caller = THIS }
+	clear_array = global.lawrence_fed_invited
+	clear_array = global.lawrence_fed_members
+	if = {
+		limit = { check_variable = { var = lawrence_fed_kind value = constant:lawrence_fed.outcome_british compare = equals } }
+		ENG = { lawrence_collect_nodes = yes }
+		for_each_scope_loop = {
+			array = global.lawrence_nodes
+			if = {
+				limit = {
+					lawrence_fed_participant_is_valid = yes
+					NOT = { is_in_array = { array = global.lawrence_fed_invited value = THIS } }
+				}
+				add_to_array = { global.lawrence_fed_invited = THIS }
+			}
+		}
+	}
+	else = {
+		for_each_scope_loop = {
+			array = global.lawrence_bloc_members
+			if = {
+				limit = {
+					lawrence_fed_participant_is_valid = yes
+					NOT = { is_in_array = { array = global.lawrence_fed_invited value = THIS } }
+				}
+				add_to_array = { global.lawrence_fed_invited = THIS }
+			}
+		}
+		if = {
+			limit = { check_variable = { var = lawrence_fed_kind value = constant:lawrence_fed.outcome_kingdom compare = equals } }
+			for_each_scope_loop = {
+				array = global.lawrence_independent_partners
+				if = {
+					limit = {
+						lawrence_fed_participant_is_valid = yes
+						NOT = { is_in_array = { array = global.lawrence_fed_invited value = THIS } }
+					}
+					add_to_array = { global.lawrence_fed_invited = THIS }
+				}
+			}
+		}
+		# The caller joins its own congress.
+		if = {
+			limit = { NOT = { is_in_array = { array = global.lawrence_fed_members value = THIS } } }
+			add_to_array = { global.lawrence_fed_members = THIS }
+			set_country_flag = lawrence_fed_ratified
+		}
+	}
+	for_each_scope_loop = {
+		array = global.lawrence_fed_invited
+		if = {
+			limit = { NOT = { has_country_flag = lawrence_fed_ratified } }
+			country_event = { id = chaosx.nr40.120 }
+		}
+	}
+	set_temp_variable = { lawrence_congress_delay = constant:lawrence_fed.congress_days }
+	country_event = { id = chaosx.nr40.121 days = lawrence_congress_delay }
+	ENG = { country_event = { id = chaosx.nr40.132 days = constant:lawrence_event.report_delay_days } }
+}
+
+# COUNTRY, an invitee. Ratifies the charter.
+lawrence_ratify_charter = {
+	set_country_flag = lawrence_fed_ratified
+	add_to_array = { global.lawrence_fed_members = THIS }
+}
+
+# COUNTRY, an invitee. Refuses: the refusal is remembered.
+lawrence_refuse_charter = {
+	set_country_flag = lawrence_fed_refused
+}
+
+# COUNTRY, the caller. Judges the congress after the answers: core selection,
+# validation, then formation or a failure.
+lawrence_judge_congress = {
+	if = {
+		limit = { has_global_flag = lawrence_congress_open }
+		set_variable = { global.lawrence_fed_failure = constant:lawrence_fed.failure_none }
+		lawrence_fed_select_core = yes
+		lawrence_fed_validate = yes
+		if = {
+			limit = { check_variable = { var = global.lawrence_fed_failure value = constant:lawrence_fed.failure_none compare = equals } }
+			lawrence_fed_form = yes
+		}
+		else = {
+			lawrence_fed_fail = yes
+		}
+	}
+}
+
+# COUNTRY, a participant. Sets variable lawrence_fed_score: industry, army,
+# stability, and the standing the outcome asks for.
+lawrence_fed_score_core = {
+	set_variable = { lawrence_fed_score = num_of_factories }
+	multiply_variable = { lawrence_fed_score = constant:lawrence_fed.score_factory }
+	set_temp_variable = { lawrence_fed_part = num_divisions }
+	multiply_temp_variable = { lawrence_fed_part = constant:lawrence_fed.score_division }
+	add_to_variable = { lawrence_fed_score = lawrence_fed_part }
+	set_temp_variable = { lawrence_fed_part = stability }
+	multiply_temp_variable = { lawrence_fed_part = constant:lawrence_fed.score_stability }
+	add_to_variable = { lawrence_fed_score = lawrence_fed_part }
+	# A player is never absorbed into an AI core without consent.
+	if = {
+		limit = { is_ai = no }
+		add_to_variable = { lawrence_fed_score = constant:lawrence_fed.score_human }
+	}
+	if = {
+		limit = {
+			check_variable = { var = global.lawrence_fed_outcome value = constant:lawrence_fed.outcome_british compare = equals }
+			is_subject_of = ENG
+		}
+		add_to_variable = { lawrence_fed_score = constant:lawrence_fed.score_british_backing }
+	}
+	if = {
+		limit = {
+			NOT = { check_variable = { var = global.lawrence_fed_outcome value = constant:lawrence_fed.outcome_british compare = equals } }
+			is_subject = no
+		}
+		add_to_variable = { lawrence_fed_score = constant:lawrence_fed.score_sovereign_standing }
+	}
+}
+
+# COUNTRY. Picks the ratifier with the highest score as the core.
+lawrence_fed_select_core = {
+	clear_variable = global.lawrence_fed_core
+	if = {
+		limit = { check_variable = { var = global.lawrence_fed_outcome value = constant:lawrence_fed.outcome_kingdom compare = equals } }
+		# The personal congress is held in the country that hosts Lawrence.
+		set_variable = { global.lawrence_fed_core = THIS }
+	}
+	else = {
+		set_temp_variable = { lawrence_fed_best = constant:lawrence_event.zero }
+		for_each_scope_loop = {
+			array = global.lawrence_fed_members
+			if = {
+				limit = { lawrence_fed_participant_is_valid = yes }
+				lawrence_fed_score_core = yes
+				if = {
+					limit = { check_variable = { var = lawrence_fed_score value = lawrence_fed_best compare = greater_than } }
+					set_temp_variable = { lawrence_fed_best = lawrence_fed_score }
+					set_variable = { global.lawrence_fed_core = THIS }
+				}
+			}
+		}
+	}
+}
+
+# COUNTRY. Validates before any mutation. Output: global.lawrence_fed_failure
+# (0 when valid). The kingdom needs Lawrence free in the core, the sovereign
+# route needs an independent core and the British route needs a Britain that
+# can still sustain the federation.
+lawrence_fed_validate = {
+	if = {
+		limit = { NOT = { has_variable = global.lawrence_fed_core } }
+		set_variable = { global.lawrence_fed_failure = constant:lawrence_fed.failure_no_core }
+	}
+	else_if = {
+		limit = { check_variable = { var = global.lawrence_fed_members^num value = constant:lawrence_fed.minimum_members compare = less_than } }
+		set_variable = { global.lawrence_fed_failure = constant:lawrence_fed.failure_too_few }
+	}
+	else_if = {
+		limit = {
+			check_variable = { var = global.lawrence_fed_outcome value = constant:lawrence_fed.outcome_british compare = equals }
+			ENG = { NOT = { lawrence_sponsor_can_act = yes } }
+		}
+		set_variable = { global.lawrence_fed_failure = constant:lawrence_fed.failure_britain }
+	}
+	else_if = {
+		limit = {
+			check_variable = { var = global.lawrence_fed_outcome value = constant:lawrence_fed.outcome_sovereign compare = equals }
+			var:global.lawrence_fed_core = { is_subject = yes }
+		}
+		set_variable = { global.lawrence_fed_failure = constant:lawrence_fed.failure_subject_core }
+	}
+	else_if = {
+		limit = {
+			check_variable = { var = global.lawrence_fed_outcome value = constant:lawrence_fed.outcome_kingdom compare = equals }
+			OR = {
+				NOT = { lawrence_status_is_defected = yes }
+				var:global.lawrence_fed_core = { NOT = { is_in_array = { array = global.lawrence_independent_partners value = THIS } } }
+			}
+		}
+		set_variable = { global.lawrence_fed_failure = constant:lawrence_fed.failure_lawrence }
+	}
+	else = {
+		# No participant may be at war with the core.
+		for_each_scope_loop = {
+			array = global.lawrence_fed_members
+			if = {
+				limit = { has_war_with = var:global.lawrence_fed_core }
+				set_variable = { global.lawrence_fed_failure = constant:lawrence_fed.failure_war }
+			}
+		}
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Formation
+# ---------------------------------------------------------------------------
+
+# COUNTRY, the caller. One transaction after a successful validation.
+lawrence_fed_form = {
+	set_global_flag = lawrence_federation_formed
+	clr_global_flag = lawrence_congress_open
+	lawrence_fed_clear_congress_flags = yes
+	var:global.lawrence_fed_core = {
+		set_country_flag = lawrence_fed_is_core
+		set_variable = { lawrence_fed_outcome = global.lawrence_fed_outcome }
+		set_variable = { lawrence_fed_member_count = global.lawrence_fed_members^num }
+		every_owned_state = { set_state_flag = lawrence_fed_founding_state }
+		# Ratifying governments join. An AI member is annexed with its troops
+		# and its states become core territory of the federation. A player
+		# member stays a country as an autonomous dominion of the core.
+		for_each_scope_loop = {
+			array = global.lawrence_fed_members
+			if = {
+				limit = { NOT = { has_country_flag = lawrence_fed_is_core } }
+				set_country_flag = lawrence_fed_member
+				if = {
+					limit = { is_ai = no }
+					var:global.lawrence_fed_core = {
+						set_autonomy = {
+							target = PREV
+							autonomy_state = autonomy_dominion
+							end_wars = no
+						}
+					}
+				}
+				else = {
+					every_owned_state = { set_state_flag = lawrence_fed_founding_state }
+					var:global.lawrence_fed_core = {
+						annex_country = {
+							target = PREV
+							transfer_troops = yes
+						}
+					}
+				}
+			}
+		}
+		every_owned_state = {
+			limit = { has_state_flag = lawrence_fed_founding_state }
+			add_core_of = PREV
+		}
+		clr_country_flag = lawrence_fed_is_core
+		lawrence_fed_apply_identity = yes
+	}
+	lawrence_fed_award_achievements = yes
+	lawrence_fed_close_campaign = yes
+	lawrence_fed_present_super_event = yes
+	lawrence_fed_notify_formation = yes
+	clear_array = global.lawrence_fed_invited
+}
+
+# COUNTRY, the core. Name, government, authority, focus tree and the three
+# starting spirits of the outcome.
+lawrence_fed_apply_identity = {
+	set_country_flag = lawrence_federation_core
+	set_variable = { lawrence_fed_command_progress = constant:lawrence_event.zero }
+	set_variable = { lawrence_fed_baseline = constant:lawrence_event.zero }
+	set_variable = { lawrence_fed_low_months = constant:lawrence_event.zero }
+	set_variable = { lawrence_fed_admin_steps = constant:lawrence_event.zero }
+	set_variable = { lawrence_fed_command_steps = constant:lawrence_event.zero }
+	set_variable = { lawrence_fed_trend = constant:lawrence_event.trend_steady }
+	set_country_flag = lawrence_fed_has_charter
+	if = {
+		limit = { lawrence_fed_route_is_british = yes }
+		set_cosmetic_tag = LAWF_BRITISH
+		set_country_flag = lawrence_fed_route_british
+		ENG = {
+			set_autonomy = {
+				target = PREV
+				autonomy_state = autonomy_dominion
+				end_wars = no
+			}
+		}
+		add_ideas = lawrence_promise_debt
+		set_variable = { lawrence_federal_authority = constant:lawrence_fed.authority_british }
+		set_temp_variable = { chaos_change = constant:lawrence_chaos_evolution.british_arabia }
+		set_temp_variable = { chaos_history_reason = constant:chaos_meter_history_reason.special.lawrence_british_arabia }
+	}
+	else_if = {
+		limit = { lawrence_fed_route_is_sovereign = yes }
+		set_cosmetic_tag = LAWF_ARAB
+		set_country_flag = lawrence_fed_route_sovereign
+		add_ideas = lawrence_federal_mistrust
+		set_variable = { lawrence_federal_authority = constant:lawrence_fed.authority_sovereign }
+		set_temp_variable = { chaos_change = constant:lawrence_chaos_evolution.independent_federation }
+		set_temp_variable = { chaos_history_reason = constant:chaos_meter_history_reason.special.lawrence_independent_federation }
+	}
+	else = {
+		set_cosmetic_tag = LAWF_KINGDOM
+		set_country_flag = lawrence_fed_route_kingdom
+		add_ideas = lawrence_personal_settlement
+		set_variable = { lawrence_federal_authority = constant:lawrence_fed.authority_kingdom }
+		set_temp_variable = { chaos_change = constant:lawrence_chaos_evolution.kingdom }
+		set_temp_variable = { chaos_history_reason = constant:chaos_meter_history_reason.special.lawrence_kingdom }
+		lawrence_fed_crown_lawrence = yes
+	}
+	set_variable = { lawrence_fed_authority_last = lawrence_federal_authority }
+	lawrence_fed_refresh_costs = yes
+	add_ideas = lawrence_uneven_administration
+	add_ideas = lawrence_rival_commands
+	lawrence_fed_update_authority_band = yes
+	load_focus_tree = { tree = lawrence_federation_focus_tree keep_completed = yes }
+	set_temp_variable = { chaos_history_reason_custom = constant:lawrence_event.one }
+	add_chaos_meter_value = yes
+	set_temp_variable = { lawrence_tick_delay = constant:lawrence_fed.tick_days }
+	country_event = { id = chaosx.nr40.140 days = lawrence_tick_delay }
+}
+
+# COUNTRY, the core of the kingdom. Lawrence holds the central office and
+# leaves every other role. He is one actor beside the founding houses.
+lawrence_fed_crown_lawrence = {
+	set_politics = {
+		ruling_party = neutrality
+		elections_allowed = no
+	}
+	if = {
+		limit = { has_character = t_e_lawrence }
+		add_country_leader_role = {
+			character = t_e_lawrence
+			promote_leader = yes
+			country_leader = {
+				ideology = despotism
+				expire = "1965.1.1.1"
+			}
+		}
+	}
+}
+
+# COUNTRY, the caller. Ends the intervention campaign: Lawrence's Influence
+# closes and Federal Authority takes over.
+lawrence_fed_close_campaign = {
+	if = {
+		limit = {
+			has_global_flag = lawrence_campaign_active
+			has_variable = global.lawrence_target
+			var:global.lawrence_target = { exists = yes }
+		}
+		var:global.lawrence_target = {
+			if = {
+				limit = { lawrence_is_live_target = yes }
+				lawrence_clear_target_state = yes
+			}
+		}
+	}
+	lawrence_close_campaign = yes
+}
+
+# COUNTRY, the caller. Achievements read the outcome and the core.
+lawrence_fed_award_achievements = {
+	for_each_scope_loop = {
+		array = global.lawrence_fed_members
+		if = {
+			limit = {
+				is_ai = no
+				check_variable = { var = global.lawrence_fed_outcome value = constant:lawrence_fed.outcome_sovereign compare = equals }
+				has_variable = lawrence_aid_receipts
+				check_variable = { var = lawrence_aid_receipts value = constant:lawrence_fed.gold_receipts compare = greater_than_or_equals }
+				NOT = { is_subject_of = ENG }
+			}
+			set_country_flag = lawrence_ach_gold_without_chains
+		}
+	}
+	if = {
+		limit = {
+			check_variable = { var = global.lawrence_fed_outcome value = constant:lawrence_fed.outcome_kingdom compare = equals }
+			lawrence_status_is_defected = yes
+		}
+		var:global.lawrence_fed_core = {
+			if = {
+				limit = {
+					is_ai = no
+					NOT = { is_subject_of = ENG }
+				}
+				set_country_flag = lawrence_ach_uncrowned_kingdom
+			}
+		}
+	}
+}
+
+# COUNTRY, the caller. Presentation slots 140 to 142 (no audio and no quote
+# exist yet, see the doc page).
+lawrence_fed_present_super_event = {
+	if = {
+		limit = { NOT = { has_global_flag = super_event_visible } }
+		set_temp_variable = { lawrence_super_days = constant:lawrence_fed.super_event_days }
+		if = {
+			limit = { check_variable = { var = global.lawrence_fed_outcome value = constant:lawrence_fed.outcome_british compare = equals } }
+			set_global_flag = { flag = super_event_visible days = lawrence_super_days value = constant:lawrence_fed.super_slot_british }
+		}
+		else_if = {
+			limit = { check_variable = { var = global.lawrence_fed_outcome value = constant:lawrence_fed.outcome_sovereign compare = equals } }
+			set_global_flag = { flag = super_event_visible days = lawrence_super_days value = constant:lawrence_fed.super_slot_sovereign }
+		}
+		else = {
+			set_global_flag = { flag = super_event_visible days = lawrence_super_days value = constant:lawrence_fed.super_slot_kingdom }
+		}
+	}
+}
+
+# COUNTRY, the caller. The congress fails and nothing was changed. A failed
+# sovereign or personal congress leaves a looser league and the caller waits.
+lawrence_fed_fail = {
+	clr_global_flag = lawrence_congress_open
+	set_temp_variable = { lawrence_flag_days = constant:lawrence_fed.cooldown_days }
+	set_country_flag = { flag = lawrence_congress_cooldown days = lawrence_flag_days }
+	if = {
+		limit = {
+			NOT = { check_variable = { var = global.lawrence_fed_outcome value = constant:lawrence_fed.outcome_british compare = equals } }
+			check_variable = { var = global.lawrence_fed_members^num value = constant:lawrence_event.one compare = greater_than }
+		}
+		set_temp_variable = { lawrence_idea_days = constant:lawrence_fed.league_days }
+		for_each_scope_loop = {
+			array = global.lawrence_fed_members
+			add_timed_idea = { idea = lawrence_arab_league days = lawrence_idea_days }
+		}
+	}
+	lawrence_fed_clear_congress_flags = yes
+	set_temp_variable = { lawrence_report_delay = constant:lawrence_event.report_delay_days }
+	country_event = { id = chaosx.nr40.133 days = lawrence_report_delay }
+	clear_array = global.lawrence_fed_invited
+	clear_array = global.lawrence_fed_members
+}
+
+# ANY scope. The answers of a closed congress are forgotten.
+lawrence_fed_clear_congress_flags = {
+	for_each_scope_loop = {
+		array = global.lawrence_fed_invited
+		clr_country_flag = lawrence_fed_ratified
+		clr_country_flag = lawrence_fed_refused
+	}
+	for_each_scope_loop = {
+		array = global.lawrence_fed_members
+		clr_country_flag = lawrence_fed_ratified
+		clr_country_flag = lawrence_fed_refused
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Britain's stance (chaosx.nr40.130 options)
+# ---------------------------------------------------------------------------
+
+lawrence_set_british_stance = {
+	set_variable = { global.lawrence_british_stance = lawrence_stance_choice }
+	set_temp_variable = { lawrence_credibility_change = constant:lawrence_fed.stance_credibility }
+	if = {
+		limit = { check_variable = { var = lawrence_stance_choice value = constant:lawrence_fed.stance_oppose compare = equals } }
+		set_temp_variable = { lawrence_credibility_change = constant:lawrence_fed.stance_oppose_credibility }
+	}
+	lawrence_add_credibility = yes
+}
+
+# ---------------------------------------------------------------------------
+# Federal Authority
+# ---------------------------------------------------------------------------
+
+# COUNTRY, the core. Authority from 0 to 100 and its band.
+lawrence_fed_update_authority_band = {
+	clamp_variable = { var = lawrence_federal_authority min = constant:lawrence_event.zero max = constant:lawrence_influence.maximum }
+	set_variable = { lawrence_fed_band = constant:lawrence_fed.band_fragile }
+	if = {
+		limit = { lawrence_fed_band_is_weak = yes }
+		set_variable = { lawrence_fed_band = constant:lawrence_fed.band_weak }
+	}
+	else_if = {
+		limit = { lawrence_fed_band_is_working = yes }
+		set_variable = { lawrence_fed_band = constant:lawrence_fed.band_working }
+	}
+	else_if = {
+		limit = { lawrence_fed_band_is_strong = yes }
+		set_variable = { lawrence_fed_band = constant:lawrence_fed.band_strong }
+	}
+	remove_ideas = lawrence_authority_fragile
+	remove_ideas = lawrence_authority_weak
+	remove_ideas = lawrence_authority_working
+	remove_ideas = lawrence_authority_strong
+	if = {
+		limit = { lawrence_fed_band_is_fragile = yes }
+		add_ideas = lawrence_authority_fragile
+	}
+	else_if = {
+		limit = { lawrence_fed_band_is_weak = yes }
+		add_ideas = lawrence_authority_weak
+	}
+	else_if = {
+		limit = { lawrence_fed_band_is_working = yes }
+		add_ideas = lawrence_authority_working
+	}
+	else = {
+		add_ideas = lawrence_authority_strong
+	}
+}
+
+# COUNTRY, the core. Input: temporary lawrence_authority_change (signed).
+lawrence_fed_add_authority = {
+	add_to_variable = { lawrence_federal_authority = lawrence_authority_change }
+	lawrence_fed_update_authority_band = yes
+}
+
+# COUNTRY, the core. The monthly tick, rescheduled by itself while the
+# federation stands.
+lawrence_federal_tick = {
+	if = {
+		limit = { has_country_flag = lawrence_federation_core }
+		set_temp_variable = { lawrence_authority_change = lawrence_fed_baseline }
+		if = {
+			limit = { has_idea = lawrence_uneven_administration }
+			add_to_temp_variable = { lawrence_authority_change = constant:lawrence_fed.drift_administration }
+		}
+		if = {
+			limit = { has_idea = lawrence_administrative_secession }
+			add_to_temp_variable = { lawrence_authority_change = constant:lawrence_fed.drift_secession }
+		}
+		if = {
+			limit = { has_idea = lawrence_rival_commands }
+			add_to_temp_variable = { lawrence_authority_change = constant:lawrence_fed.drift_commands }
+		}
+		if = {
+			limit = {
+				OR = {
+					has_idea = lawrence_promise_debt
+					has_idea = lawrence_federal_mistrust
+					has_idea = lawrence_personal_settlement
+				}
+			}
+			add_to_temp_variable = { lawrence_authority_change = constant:lawrence_fed.drift_political }
+		}
+		set_temp_variable = { lawrence_fed_stability = stability }
+		if = {
+			limit = { check_variable = { var = lawrence_fed_stability value = constant:lawrence_fed.stable_threshold compare = greater_than } }
+			add_to_temp_variable = { lawrence_authority_change = constant:lawrence_fed.drift_stable }
+		}
+		if = {
+			limit = { check_variable = { var = lawrence_fed_stability value = constant:lawrence_fed.unstable_threshold compare = less_than } }
+			add_to_temp_variable = { lawrence_authority_change = constant:lawrence_fed.drift_unstable }
+		}
+		lawrence_fed_add_authority = yes
+		lawrence_fed_refresh_costs = yes
+		lawrence_fed_track_secession = yes
+		lawrence_fed_update_trend = yes
+		set_temp_variable = { lawrence_tick_delay = constant:lawrence_fed.tick_days }
+		country_event = { id = chaosx.nr40.140 days = lawrence_tick_delay }
+	}
+}
+
+# COUNTRY, the core. Costs quoted for the decisions.
+lawrence_fed_refresh_costs = {
+	set_variable = { lawrence_cost_fed_offices_trains = num_of_factories }
+	multiply_variable = { lawrence_cost_fed_offices_trains = constant:lawrence_cost_federation.offices_trains_per_factory }
+	clamp_variable = {
+		var = lawrence_cost_fed_offices_trains
+		min = constant:lawrence_cost_federation.offices_trains_minimum
+		max = constant:lawrence_cost_federation.offices_trains_maximum
+	}
+	round_variable = lawrence_cost_fed_offices_trains
+	set_variable = { lawrence_cost_council_political_power = constant:lawrence_cost_federation.council_political_power }
+	set_variable = { lawrence_cost_revenue_political_power = constant:lawrence_cost_federation.revenue_political_power }
+	set_variable = { lawrence_cost_revenue_stability_points = constant:lawrence_cost_federation.revenue_stability_percent }
+	set_variable = { lawrence_cost_staff_army_experience = constant:lawrence_cost_federation.staff_army_experience }
+	set_variable = { lawrence_cost_staff_command_power = constant:lawrence_cost_federation.staff_command_power }
+	set_variable = { lawrence_cost_offices_political_power = constant:lawrence_cost_federation.offices_political_power }
+	set_variable = { lawrence_cost_invite_political_power = constant:lawrence_cost_federation.invite_political_power }
+	set_variable = { lawrence_cost_invite_command_power = constant:lawrence_cost_federation.invite_command_power }
+}
+
+# Federal decisions.
+lawrence_fed_convene_council = {
+	set_temp_variable = { lawrence_charge = constant:lawrence_cost_federation.council_political_power }
+	lawrence_charge_political_power = yes
+	set_temp_variable = { lawrence_authority_change = constant:lawrence_fed.council_authority }
+	lawrence_fed_add_authority = yes
+	set_temp_variable = { lawrence_flag_days = constant:lawrence_fed.council_cooldown_days }
+	set_country_flag = { flag = lawrence_fed_council_cooldown days = lawrence_flag_days }
+}
+
+lawrence_fed_collect_revenue = {
+	set_temp_variable = { lawrence_charge = constant:lawrence_cost_federation.revenue_political_power }
+	lawrence_charge_political_power = yes
+	set_temp_variable = { lawrence_stab = constant:lawrence_cost_federation.revenue_stability_cost }
+	add_stability = lawrence_stab
+	set_temp_variable = { lawrence_authority_change = constant:lawrence_fed.revenue_authority }
+	lawrence_fed_add_authority = yes
+	add_to_variable = { lawrence_fed_baseline = constant:lawrence_fed.revenue_baseline }
+	set_temp_variable = { lawrence_flag_days = constant:lawrence_fed.revenue_cooldown_days }
+	set_country_flag = { flag = lawrence_fed_revenue_cooldown days = lawrence_flag_days }
+}
+
+lawrence_fed_staff_reform = {
+	set_temp_variable = { lawrence_charge = constant:lawrence_cost_federation.staff_army_experience }
+	lawrence_charge_army_experience = yes
+	set_temp_variable = { lawrence_charge = constant:lawrence_cost_federation.staff_command_power }
+	lawrence_charge_command_power = yes
+	add_to_variable = { lawrence_fed_command_progress = constant:lawrence_event.one }
+	lawrence_fed_command_step = yes
+	set_temp_variable = { lawrence_authority_change = constant:lawrence_fed.staff_authority }
+	lawrence_fed_add_authority = yes
+	set_temp_variable = { lawrence_flag_days = constant:lawrence_fed.staff_cooldown_days }
+	set_country_flag = { flag = lawrence_fed_staff_cooldown days = lawrence_flag_days }
+}
+
+lawrence_fed_regional_offices = {
+	set_temp_variable = { lawrence_charge = constant:lawrence_cost_federation.offices_political_power }
+	lawrence_charge_political_power = yes
+	set_temp_variable = { lawrence_charge = lawrence_cost_fed_offices_trains }
+	lawrence_charge_trains = yes
+	random_owned_state = {
+		limit = { has_state_flag = lawrence_fed_founding_state }
+		add_building_construction = { type = infrastructure level = 1 instant_build = yes }
+	}
+	capital_scope = {
+		add_building_construction = { type = infrastructure level = 1 instant_build = yes }
+	}
+	set_temp_variable = { lawrence_authority_change = constant:lawrence_fed.offices_authority }
+	lawrence_fed_add_authority = yes
+	set_temp_variable = { lawrence_flag_days = constant:lawrence_fed.offices_cooldown_days }
+	set_country_flag = { flag = lawrence_fed_offices_cooldown days = lawrence_flag_days }
+}
+
+# COUNTRY, the core. Invites one willing independent government. It joins as
+# an autonomous dominion with negotiated autonomy.
+lawrence_fed_invite_member = {
+	set_temp_variable = { lawrence_charge = constant:lawrence_cost_federation.invite_political_power }
+	lawrence_charge_political_power = yes
+	set_temp_variable = { lawrence_charge = constant:lawrence_cost_federation.invite_command_power }
+	lawrence_charge_command_power = yes
+	set_temp_variable = { lawrence_flag_days = constant:lawrence_fed.invite_cooldown_days }
+	set_country_flag = { flag = lawrence_fed_invite_cooldown days = lawrence_flag_days }
+	random_other_country = {
+		limit = { lawrence_fed_can_be_invited = yes }
+		country_event = { id = chaosx.nr40.150 }
+	}
+}
+
+# COUNTRY, an invitee. Accepts membership with negotiated autonomy.
+lawrence_fed_accept_membership = {
+	set_country_flag = lawrence_fed_member
+	var:global.lawrence_fed_core = {
+		set_autonomy = {
+			target = PREV
+			autonomy_state = autonomy_dominion
+			end_wars = no
+		}
+		set_temp_variable = { lawrence_authority_change = constant:lawrence_fed.member_authority }
+		lawrence_fed_add_authority = yes
+	}
+}
+
+# COUNTRY, the core. Months in the fragile band worsen the administration
+# into Administrative Secession and months of recovery restore it.
+lawrence_fed_track_secession = {
+	if = {
+		limit = { lawrence_fed_band_is_fragile = yes }
+		add_to_variable = { lawrence_fed_low_months = constant:lawrence_event.one }
+		set_variable = { lawrence_fed_recovery_months = constant:lawrence_event.zero }
+	}
+	else = {
+		set_variable = { lawrence_fed_low_months = constant:lawrence_event.zero }
+	}
+	if = {
+		limit = {
+			has_idea = lawrence_uneven_administration
+			check_variable = { var = lawrence_fed_low_months value = constant:lawrence_fed.secession_months compare = greater_than_or_equals }
+		}
+		swap_ideas = { remove_idea = lawrence_uneven_administration add_idea = lawrence_administrative_secession }
+		set_variable = { lawrence_fed_low_months = constant:lawrence_event.zero }
+		set_temp_variable = { lawrence_report_delay = constant:lawrence_event.report_delay_days }
+		country_event = { id = chaosx.nr40.141 days = lawrence_report_delay }
+	}
+	else_if = {
+		limit = { has_idea = lawrence_administrative_secession }
+		if = {
+			limit = {
+				OR = {
+					lawrence_fed_band_is_working = yes
+					lawrence_fed_band_is_strong = yes
+				}
+			}
+			add_to_variable = { lawrence_fed_recovery_months = constant:lawrence_event.one }
+			if = {
+				limit = { check_variable = { var = lawrence_fed_recovery_months value = constant:lawrence_fed.secession_recovery_months compare = greater_than_or_equals } }
+				swap_ideas = { remove_idea = lawrence_administrative_secession add_idea = lawrence_uneven_administration }
+				set_variable = { lawrence_fed_recovery_months = constant:lawrence_event.zero }
+			}
+		}
+	}
+}
+
+# COUNTRY, the core. The recent trend of Federal Authority, from the net
+# change since the previous tick.
+lawrence_fed_update_trend = {
+	set_temp_variable = { lawrence_fed_delta = lawrence_federal_authority }
+	subtract_from_temp_variable = { lawrence_fed_delta = lawrence_fed_authority_last }
+	set_variable = { lawrence_fed_trend = constant:lawrence_event.trend_steady }
+	if = {
+		limit = { check_variable = { var = lawrence_fed_delta value = constant:lawrence_event.trend_threshold compare = greater_than_or_equals } }
+		set_variable = { lawrence_fed_trend = constant:lawrence_event.trend_rising }
+	}
+	if = {
+		limit = { check_variable = { var = lawrence_fed_delta value = constant:lawrence_event.trend_falling_threshold compare = less_than_or_equals } }
+		set_variable = { lawrence_fed_trend = constant:lawrence_event.trend_falling }
+	}
+	set_variable = { lawrence_fed_authority_last = lawrence_federal_authority }
+}
+
+# COUNTRY, the core. Fixed-size authority changes used by the focus tree.
+lawrence_fed_authority_small = {
+	set_temp_variable = { lawrence_authority_change = constant:lawrence_focus.authority_small }
+	lawrence_fed_add_authority = yes
+}
+
+lawrence_fed_authority_medium = {
+	set_temp_variable = { lawrence_authority_change = constant:lawrence_focus.authority_medium }
+	lawrence_fed_add_authority = yes
+}
+
+lawrence_fed_authority_large = {
+	set_temp_variable = { lawrence_authority_change = constant:lawrence_focus.authority_large }
+	lawrence_fed_add_authority = yes
+}
+
+lawrence_fed_authority_loss = {
+	set_temp_variable = { lawrence_authority_change = constant:lawrence_focus.authority_loss }
+	lawrence_fed_add_authority = yes
+}
+
+# ---------------------------------------------------------------------------
+# Starting-spirit lifecycles
+# ---------------------------------------------------------------------------
+
+# COUNTRY, the core. One step toward replacing Uneven Administration. After
+# the required number of steps the spirit becomes the final form of the route.
+lawrence_fed_admin_step = {
+	if = {
+		limit = {
+			OR = {
+				has_idea = lawrence_uneven_administration
+				has_idea = lawrence_administrative_secession
+			}
+		}
+		add_to_variable = { lawrence_fed_admin_steps = constant:lawrence_event.one }
+		if = {
+			limit = { check_variable = { var = lawrence_fed_admin_steps value = constant:lawrence_focus.lifecycle_steps compare = greater_than_or_equals } }
+			remove_ideas = lawrence_uneven_administration
+			remove_ideas = lawrence_administrative_secession
+			if = {
+				limit = { lawrence_fed_route_is_british = yes }
+				add_ideas = lawrence_imperial_liaison_administration
+			}
+			else_if = {
+				limit = { has_country_flag = lawrence_fed_central_state }
+				add_ideas = lawrence_central_administration
+			}
+			else = {
+				add_ideas = lawrence_charter_administration
+			}
+			set_country_flag = lawrence_fed_administration_settled
+		}
+	}
+}
+
+# COUNTRY, the core. One step toward replacing Rival Commands.
+lawrence_fed_command_step = {
+	if = {
+		limit = { has_idea = lawrence_rival_commands }
+		add_to_variable = { lawrence_fed_command_steps = constant:lawrence_event.one }
+		if = {
+			limit = { check_variable = { var = lawrence_fed_command_steps value = constant:lawrence_focus.lifecycle_steps compare = greater_than_or_equals } }
+			remove_ideas = lawrence_rival_commands
+			if = {
+				limit = { lawrence_fed_route_is_kingdom = yes }
+				add_ideas = lawrence_field_household
+			}
+			else_if = {
+				limit = { lawrence_fed_route_is_british = yes }
+				add_ideas = lawrence_british_arabian_command
+			}
+			else_if = {
+				limit = { has_country_flag = lawrence_fed_general_staff }
+				add_ideas = lawrence_unified_arab_general_staff
+			}
+			else = {
+				add_ideas = lawrence_federal_war_council
+			}
+			set_country_flag = lawrence_fed_command_settled
+		}
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Formation reports, loss of the core and invitations
+# ---------------------------------------------------------------------------
+
+# COUNTRY, the caller. Public news and the reports of the new state and of
+# Britain.
+lawrence_fed_notify_formation = {
+	set_temp_variable = { lawrence_report_delay = constant:lawrence_event.report_delay_days }
+	if = {
+		limit = { lawrence_fed_outcome_is_british = yes }
+		news_event = { id = chaosx.nr40.41 days = lawrence_report_delay }
+	}
+	else_if = {
+		limit = { lawrence_fed_outcome_is_sovereign = yes }
+		news_event = { id = chaosx.nr40.42 days = lawrence_report_delay }
+	}
+	else = {
+		news_event = { id = chaosx.nr40.43 days = lawrence_report_delay }
+	}
+	var:global.lawrence_fed_core = {
+		country_event = { id = chaosx.nr40.135 days = lawrence_report_delay }
+	}
+	ENG = {
+		if = {
+			limit = { NOT = { has_country_flag = lawrence_federation_core } }
+			country_event = { id = chaosx.nr40.136 days = lawrence_report_delay }
+		}
+	}
+}
+
+# COUNTRY, the annexed core. The federation ends with its core: the state is
+# cleared and a new congress can be called.
+lawrence_fed_core_lost = {
+	if = {
+		limit = { has_country_flag = lawrence_federation_core }
+		clr_country_flag = lawrence_federation_core
+		clr_global_flag = lawrence_federation_formed
+		clr_global_flag = lawrence_congress_open
+		set_global_flag = lawrence_federation_lost
+		clear_array = global.lawrence_fed_members
+		clear_variable = global.lawrence_fed_core
+	}
+}
+
+# COUNTRY, the core. Federal hall: renews the spirits' lifecycle checks when
+# the focus tree finishes a route.
+lawrence_fed_settle_political = {
+	if = {
+		limit = { has_idea = lawrence_promise_debt }
+		swap_ideas = { remove_idea = lawrence_promise_debt add_idea = lawrence_imperial_compact }
+	}
+	if = {
+		limit = { has_idea = lawrence_federal_mistrust }
+		swap_ideas = { remove_idea = lawrence_federal_mistrust add_idea = lawrence_charter_trust }
+	}
+	if = {
+		limit = { has_idea = lawrence_personal_settlement }
+		swap_ideas = { remove_idea = lawrence_personal_settlement add_idea = lawrence_succession_settlement }
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Focus tree helpers
+# ---------------------------------------------------------------------------
+
+# COUNTRY, the core. Builds one level of $TYPE$ in up to the configured number
+# of founding states (each state once).
+lawrence_fed_state_program = {
+	set_temp_variable = { lawrence_program_end = constant:lawrence_focus.program_states }
+	for_loop_effect = {
+		start = 0
+		end = lawrence_program_end
+		random_owned_state = {
+			limit = {
+				has_state_flag = lawrence_fed_founding_state
+				NOT = { has_state_flag = lawrence_fed_programmed }
+			}
+			add_building_construction = {
+				type = $TYPE$
+				level = 1
+				instant_build = yes
+			}
+			set_state_flag = lawrence_fed_programmed
+		}
+	}
+	every_owned_state = {
+		limit = { has_state_flag = lawrence_fed_programmed }
+		clr_state_flag = lawrence_fed_programmed
+	}
+}
+
+# COUNTRY, the core. The same for coastal founding states.
+lawrence_fed_coastal_program = {
+	set_temp_variable = { lawrence_program_end = constant:lawrence_focus.program_states }
+	for_loop_effect = {
+		start = 0
+		end = lawrence_program_end
+		random_owned_state = {
+			limit = {
+				has_state_flag = lawrence_fed_founding_state
+				is_coastal = yes
+				NOT = { has_state_flag = lawrence_fed_programmed }
+			}
+			add_building_construction = {
+				type = $TYPE$
+				level = 1
+				instant_build = yes
+			}
+			set_state_flag = lawrence_fed_programmed
+		}
+	}
+	every_owned_state = {
+		limit = { has_state_flag = lawrence_fed_programmed }
+		clr_state_flag = lawrence_fed_programmed
+	}
+}
+
+# COUNTRY, the core. One extra shared building slot in every founding state.
+lawrence_fed_slot_program = {
+	every_owned_state = {
+		limit = { has_state_flag = lawrence_fed_founding_state }
+		add_extra_state_shared_building_slots = constant:lawrence_focus.slot_levels
+	}
+}
+
+lawrence_fed_reward_political_power = {
+	set_temp_variable = { lawrence_reward = constant:lawrence_focus.political_power }
+	add_political_power = lawrence_reward
+}
+
+lawrence_fed_reward_command_power = {
+	set_temp_variable = { lawrence_reward = constant:lawrence_focus.command_power }
+	add_command_power = lawrence_reward
+}
+
+lawrence_fed_reward_army_experience = {
+	set_temp_variable = { lawrence_reward = constant:lawrence_focus.army_experience }
+	army_experience = lawrence_reward
+}
+
+lawrence_fed_reward_air_experience = {
+	set_temp_variable = { lawrence_reward = constant:lawrence_focus.air_experience }
+	air_experience = lawrence_reward
+}
+
+lawrence_fed_reward_stability = {
+	set_temp_variable = { lawrence_reward = constant:lawrence_focus.stability }
+	add_stability = lawrence_reward
+}
+
+lawrence_fed_reward_manpower = {
+	set_temp_variable = { lawrence_reward = constant:lawrence_focus.manpower }
+	add_manpower = lawrence_reward
+}
+
+lawrence_fed_reward_fuel = {
+	set_temp_variable = { lawrence_reward = constant:lawrence_focus.fuel }
+	add_fuel = lawrence_reward
+}
+
+lawrence_fed_reward_convoys = {
+	set_temp_variable = { lawrence_reward = constant:lawrence_focus.convoys }
+	add_equipment_to_stockpile = { type = convoy amount = lawrence_reward }
+}
+
+lawrence_fed_reward_trains = {
+	set_temp_variable = { lawrence_reward = constant:lawrence_focus.trains }
+	add_equipment_to_stockpile = { type = train_equipment amount = lawrence_reward }
+}
+
+lawrence_fed_reward_motorized = {
+	set_temp_variable = { lawrence_reward = constant:lawrence_focus.motorized_equipment }
+	add_equipment_to_stockpile = { type = motorized_equipment amount = lawrence_reward }
+}
+
+lawrence_fed_reward_infantry_pool = {
+	set_temp_variable = { lawrence_reward = constant:lawrence_focus.infantry_equipment }
+	add_equipment_to_stockpile = { type = infantry_equipment amount = lawrence_reward }
+	set_temp_variable = { lawrence_reward = constant:lawrence_focus.support_equipment }
+	add_equipment_to_stockpile = { type = support_equipment amount = lawrence_reward }
+}
+
+# COUNTRY, the core. British lend of the same pool (producer Britain).
+lawrence_fed_reward_british_pool = {
+	set_temp_variable = { lawrence_reward = constant:lawrence_focus.infantry_equipment }
+	add_equipment_to_stockpile = { type = infantry_equipment amount = lawrence_reward producer = ENG }
+	set_temp_variable = { lawrence_reward = constant:lawrence_focus.support_equipment }
+	add_equipment_to_stockpile = { type = support_equipment amount = lawrence_reward producer = ENG }
+}
+
+lawrence_fed_add_baseline = {
+	add_to_variable = { lawrence_fed_baseline = constant:lawrence_focus.baseline_step }
+}
+
+# COUNTRY, the core. Subject members gain or lose autonomy by the temporary
+# value lawrence_autonomy_delta.
+lawrence_fed_shift_member_autonomy = {
+	every_subject_country = {
+		limit = { has_country_flag = lawrence_fed_member }
+		add_autonomy_ratio = {
+			value = lawrence_autonomy_delta
+			localization = lawrence_autonomy_federal_settlement
+		}
+	}
+}
+
+# COUNTRY, the core. Administration is settled at once (reform focus).
+lawrence_fed_force_administration = {
+	set_variable = { lawrence_fed_admin_steps = constant:lawrence_focus.lifecycle_steps }
+	subtract_from_variable = { lawrence_fed_admin_steps = constant:lawrence_event.one }
+	lawrence_fed_admin_step = yes
+}
+
+# COUNTRY, the core. Embassy opinion from other governments of the region.
+lawrence_fed_embassy_neighbours = {
+	every_neighbor_country = {
+		limit = { is_subject = no }
+		add_opinion_modifier = { target = PREV modifier = lawrence_fed_embassy }
+	}
+}
+
+lawrence_fed_embassy_registry = {
+	every_other_country = {
+		limit = { lawrence_is_registry_country = yes is_subject = no }
+		add_opinion_modifier = { target = PREV modifier = lawrence_fed_embassy }
+	}
+}
+
+lawrence_fed_embassy_majors = {
+	every_other_country = {
+		limit = { is_major = yes }
+		add_opinion_modifier = { target = PREV modifier = lawrence_fed_embassy }
+	}
+}
+
+# COUNTRY, the core. Immediate invitation to one willing government.
+lawrence_fed_invite_now = {
+	random_other_country = {
+		limit = { lawrence_fed_can_be_invited = yes }
+		country_event = { id = chaosx.nr40.150 }
+	}
+}
+
+# COUNTRY, the core. Claims, then cores, on the states of subject members.
+lawrence_fed_claim_member_states = {
+	every_subject_country = {
+		limit = { has_country_flag = lawrence_fed_member }
+		every_owned_state = { add_claim_by = ROOT }
+	}
+}
+
+lawrence_fed_core_member_states = {
+	every_subject_country = {
+		limit = { has_country_flag = lawrence_fed_member }
+		every_owned_state = { add_core_of = ROOT }
+	}
+}
+
+# COUNTRY, the core. Subject members that are AI governments are absorbed
+# (One Federal State). Player members decide for themselves.
+lawrence_fed_absorb_ai_members = {
+	every_subject_country = {
+		limit = {
+			has_country_flag = lawrence_fed_member
+			is_ai = yes
+		}
+		every_owned_state = { add_core_of = ROOT }
+		PREV = {
+			annex_country = {
+				target = PREV
+				transfer_troops = yes
+			}
+		}
+	}
+}
+
+# COUNTRY, the core. Guarantees the counter-bloc partners.
+lawrence_fed_guarantee_partners = {
+	for_each_scope_loop = {
+		array = global.lawrence_independent_partners
+		if = {
+			limit = { exists = yes }
+			PREV = { give_guarantee = THIS }
+		}
+	}
+}
+
+# COUNTRY, the core. A league or the faction of Britain.
+lawrence_fed_form_league = {
+	if = {
+		limit = {
+			is_in_faction = no
+			is_subject = no
+		}
+		create_faction = lawrence_fed_league_name
+		every_subject_country = {
+			limit = { has_country_flag = lawrence_fed_member }
+			PREV = { add_to_faction = PREV }
+		}
+	}
+}
+
+# COUNTRY, the core. Subject members share the league's benefits for a year.
+lawrence_fed_share_league_benefits = {
+	set_temp_variable = { lawrence_idea_days = constant:lawrence_focus.league_idea_days }
+	every_subject_country = {
+		limit = { has_country_flag = lawrence_fed_member }
+		add_timed_idea = { idea = lawrence_arab_league days = lawrence_idea_days }
+	}
+}
+
+# COUNTRY, the core. Command of the kingdom passes from the man to the house
+# council: the council becomes the leader and Lawrence keeps his field role.
+lawrence_fed_hand_over_to_council = {
+	create_country_leader = {
+		name = lawrence_fed_council_leader_name
+		desc = lawrence_fed_council_leader_desc
+		picture = GFX_portrait_unknown
+		expire = "1965.1.1.1"
+		ideology = despotism
+		traits = {
+		}
+	}
+}
+
+# COUNTRY, the core. Britain is released: the breakaway.
+lawrence_fed_break_with_britain = {
+	ENG = { end_puppet = PREV }
+	set_country_flag = lawrence_fed_breakaway
+}
+
+# COUNTRY, the core. The late regional order replaces whichever political
+# spirit the route still holds, so the federation never holds more than three
+# focus-owned spirits (administration, command, political).
+lawrence_fed_end_political = {
+	remove_ideas = lawrence_promise_debt
+	remove_ideas = lawrence_imperial_compact
+	remove_ideas = lawrence_equal_partnership
+	remove_ideas = lawrence_federal_mistrust
+	remove_ideas = lawrence_charter_trust
+	remove_ideas = lawrence_personal_settlement
+	remove_ideas = lawrence_succession_settlement
+	add_ideas = $IDEA$
+}
+
+# COUNTRY, the core. The final structure replaces the administration spirit.
+lawrence_fed_end_administration = {
+	remove_ideas = lawrence_uneven_administration
+	remove_ideas = lawrence_administrative_secession
+	remove_ideas = lawrence_central_administration
+	remove_ideas = lawrence_charter_administration
+	remove_ideas = lawrence_imperial_liaison_administration
+	add_ideas = $IDEA$
+	set_country_flag = lawrence_fed_administration_settled
+}
