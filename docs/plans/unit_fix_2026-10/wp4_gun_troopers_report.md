@@ -39,6 +39,16 @@ Source resolution and inherited timing checks are retained in the same WP4 event
 Coat deformation, low-ready idle, recoil, UVs/materials and topology remain open, with no model-byte replacement or live validation in this source tranche.
 Meshy credits spent: 0.
 
+### Clone Infantry
+
+Attack discharges at 0.75 seconds and ejects at 1.5833 seconds; support attack and defend discharge at 1.0 second and eject at 1.8333 seconds.
+The decoded 24 FPS actions and existing `muzzle`/`cartridge` locators support these frame-to-time bindings, and attack/support continue into the firing defend state.
+The single 0.45-second Lee-Enfield report is the reviewed CC0 source derivative, SHA-256 `42f23c496111944c41489a0d295750808777a216f3aa9dc48ae1170962746bfd`, with its source notice in `sound/shared_clone_system/clone_infantry/WP4_ATTRIBUTION.md`.
+This removes the missing defend effects and obsolete report/casing times while preserving the current mesh and actions.
+Aim/stock/elbow contacts, rifle/body materials, idle and transition repairs remain required; numerical event placement does not establish those pose requirements.
+Remaining voice, wound/death fade and landing-source work is tracked separately.
+Meshy credits spent on this source tranche: 0.
+
 Acceptance basis: the user's assignment of all nine WP4 models and every ticket in `C:/Users/klimp/Videos/chaos_redux_trailer/records/showcase/unit_fix_plan.md`.
 The implemented firing/audio tranche is documented in `wp4_firing_audio_tranche.md`; geometry, materials, rig/actions and filmed acceptance remain required.
 
