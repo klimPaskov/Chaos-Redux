@@ -46,6 +46,16 @@ concentration_camps_closure_kind = {
 	quiet_divisor = 2
 }
 
+concentration_camps_order_kind = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	march = 1
+	liquidate = 2
+}
+
 concentration_camps_group = {
 	schema = {
 		any_key = yes
@@ -187,6 +197,10 @@ concentration_camps_cohort = {
 	expansion_maximum_k = 150
 	# Share of a site's living cohort released by a case review.
 	review_release_share = 0.30
+	# Extra intake at a live site from its remaining campaign source.
+	round_up_share = 0.0075
+	round_up_maximum_k = 100
+	round_up_minimum_source_k = 4
 }
 
 # Country pool weights for the shared random-event picker.
@@ -237,6 +251,16 @@ concentration_camps_timing = {
 	suppression_days = 120
 	closure_proof_days = 180
 	liberation_cooldown_days = 60
+	# Aftermath, retreat and proof windows.
+	relief_mission_days = 150
+	record_cooldown_days = 30
+	round_up_cooldown_days = 45
+	front_cooldown_days = 45
+	front_state_cooldown_days = 120
+	retreat_delay_days = 21
+	machine_window_days = 730
+	evidence_proof_days = 180
+	harbor_proof_days = 180
 }
 
 # Incident gates and effects. Pressure impulses reuse the shared
@@ -347,4 +371,66 @@ concentration_camps_limit = {
 	site_array = 400
 	pool_per_state = 12
 	coverage_ceiling_percent = 35
+}
+
+# Liberated sites. The aid bundle (support equipment, trains, fuel) is scaled by
+# the number of liberated states that still wait for relief. Collecting the
+# records of one site costs support equipment and political power.
+concentration_camps_aid = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	scale_per_site = 0.05
+	scale_maximum = 2
+	support = 60
+	trains = 4
+	fuel = 400
+	record_support = 20
+	record_pp = 20
+	# Political power the receiving country puts into housing and papers for people who cross the border.
+	harbor_pp = 15
+}
+
+# Orders of a country whose camp is about to be reached by the front. The share
+# is requested from the living cohort through the shared custody owner.
+concentration_camps_retreat = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	march_share = 0.25
+	liquidate_share = 0.90
+	stability_cost = -0.02
+}
+
+# A closure order that the camp administrators refuse. The chance rises with
+# killing sites, an authoritarian government and a late evolution stage.
+concentration_camps_refusal = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	base = 0.15
+	killing_sites = 0.25
+	authoritarian = 0.10
+	late_stage = 0.10
+	arrest_pp = 25
+	arrest_stability = -0.02
+	force_stability = -0.04
+	force_war_support = -0.03
+}
+
+# Counts that the achievement proofs need.
+concentration_camps_achievement = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	interrupted_required = 3
+	harbor_origins_required = 3
 }

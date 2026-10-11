@@ -291,3 +291,117 @@ concentration_camps_network_is_closed = {
 	NOT = { concentration_camps_has_operational_site = yes }
 	has_country_flag = camp_admin_reforming
 }
+
+# ----------------------------------------------------------------------------
+# Liberated sites (the controller that took a camp from its operator)
+# ----------------------------------------------------------------------------
+
+# COUNTRY. The country controls at least one camp state it took from an operator.
+concentration_camps_has_liberated_sites = {
+	any_of_scopes = {
+		array = concentration_camps_liberated_states
+		is_controlled_by = PREV
+	}
+}
+
+# COUNTRY. A liberated state of ours still waits for relief.
+concentration_camps_has_unrelieved_site = {
+	any_of_scopes = {
+		array = concentration_camps_liberated_states
+		is_controlled_by = PREV
+		hidden_trigger = { NOT = { has_state_flag = concentration_camps_relieved } }
+	}
+}
+
+# STATE, ROOT is the acting country. A liberated camp state that waits for relief.
+concentration_camps_state_needs_relief = {
+	is_controlled_by = ROOT
+	hidden_trigger = {
+		has_state_flag = concentration_camps_liberated
+		NOT = { has_state_flag = concentration_camps_relieved }
+	}
+}
+
+# STATE, ROOT is the acting country. A liberated camp state whose site the
+# investigators have verified and whose records nobody has collected yet.
+concentration_camps_state_can_be_recorded = {
+	is_controlled_by = ROOT
+	hidden_trigger = {
+		has_state_flag = concentration_camps_liberated
+		has_state_flag = genocide_site_discovered
+		NOT = { has_state_flag = concentration_camps_recorded }
+	}
+}
+
+# COUNTRY. Something in the liberated states still needs a decision.
+concentration_camps_has_aftermath_work = {
+	concentration_camps_has_liberated_sites = yes
+	any_of_scopes = {
+		array = concentration_camps_liberated_states
+		is_controlled_by = PREV
+		hidden_trigger = {
+			OR = {
+				NOT = { has_state_flag = concentration_camps_relieved }
+				NOT = { has_state_flag = concentration_camps_recorded }
+			}
+		}
+	}
+}
+
+# COUNTRY. Costs of aid and of collecting records, cached by
+# concentration_camps_refresh_aid_costs.
+concentration_camps_can_pay_aid = {
+	NOT = { has_equipment = { support_equipment < concentration_camps_cost_aid_support } }
+	NOT = { has_equipment = { train_equipment < concentration_camps_cost_aid_trains } }
+	NOT = { has_fuel < concentration_camps_cost_aid_fuel }
+}
+
+concentration_camps_can_pay_record = {
+	NOT = { has_equipment = { support_equipment < concentration_camps_cost_record_support } }
+}
+
+# ----------------------------------------------------------------------------
+# Intake and retreat (the operator)
+# ----------------------------------------------------------------------------
+
+# STATE, ROOT is the acting country. A live site of the network whose campaign
+# source still holds people for another intake.
+concentration_camps_state_can_take_intake = {
+	is_controlled_by = ROOT
+	camp_admin_site_is_operational = yes
+	hidden_trigger = {
+		has_state_flag = concentration_camps_site
+		has_variable = concentration_camps_source_remaining_k
+		check_variable = { concentration_camps_source_remaining_k > constant:concentration_camps_cohort.round_up_minimum_source_k }
+	}
+}
+
+# COUNTRY. At least one site can take another intake.
+concentration_camps_can_round_up = {
+	concentration_camps_network_is_live = yes
+	concentration_camps_government_permits_expansion = yes
+	concentration_camps_mandate_is_coercive = yes
+	any_controlled_state = { concentration_camps_state_can_take_intake = yes }
+	NOT = { concentration_camps_resistance_is_escaping = yes }
+}
+
+# STATE, ROOT is the operator. A live site that holds prisoners and sits next to
+# enemy divisions or enemy controlled territory. The site has no order pending and
+# no earlier front report in the cooldown window.
+concentration_camps_state_is_threatened = {
+	camp_admin_site_is_operational = yes
+	check_variable = { camp_admin_detainees_k > constant:concentration_camps_value.zero }
+	hidden_trigger = {
+		NOT = { has_state_flag = concentration_camps_retreat_pending }
+		NOT = { has_state_flag = concentration_camps_front_reported }
+	}
+	genocide_state_has_enemy_forces_near_root = yes
+}
+
+# COUNTRY. A pending order awaits its day.
+concentration_camps_has_pending_order = {
+	any_of_scopes = {
+		array = concentration_camps_order_states
+		hidden_trigger = { has_state_flag = concentration_camps_retreat_pending }
+	}
+}

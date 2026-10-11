@@ -1,12 +1,13 @@
 # ============================================================================
 # CHAOS REDUX - EVENT 022 CONCENTRATION CAMPS DECISIONS
 # ============================================================================
-# Two actions and one mission. Routine management of a registered network
-# (mandate, economic priority, spending, site roles, release, closure and
-# records) belongs to the shared Camp Administration window and is not
-# repeated here. This category carries only what that window does not own:
-# widening the network by decree, the case review, and the containment of
-# escape networks.
+# Category concentration_camps_category (the operator): widening the network by
+# decree, another intake at a live site, the case review and the containment of
+# escape networks. Routine management of a registered network (mandate, economic
+# priority, spending, site roles, release, closure and records) belongs to the
+# shared Camp Administration window and is not repeated here.
+# Category concentration_camps_relief_category (the controller of a liberated
+# camp): relief, recording and the relief mission, at the end of this file.
 # Costs are cached in the concentration_camps_cost_* country variables.
 # ============================================================================
 
@@ -87,6 +88,49 @@ concentration_camps_category = {
 		}
 	}
 
+	concentration_camps_round_up_prisoners = {
+		icon = GFX_decision_oppression
+		priority = 98
+		state_target = any_controlled_state
+		on_map_mode = map_and_decisions_view
+		days_re_enable = constant:concentration_camps_timing.round_up_cooldown_days
+		visible = {
+			concentration_camps_network_is_live = yes
+			concentration_camps_government_permits_expansion = yes
+		}
+		target_root_trigger = {
+			concentration_camps_can_round_up = yes
+		}
+		target_trigger = {
+			FROM = { concentration_camps_state_can_take_intake = yes }
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = concentration_camps_round_up_requirements_tt
+				concentration_camps_can_round_up = yes
+			}
+			custom_trigger_tooltip = {
+				tooltip = concentration_camps_round_up_state_tt
+				FROM = { concentration_camps_state_can_take_intake = yes }
+			}
+		}
+		custom_cost_trigger = { concentration_camps_can_pay_guards = yes }
+		custom_cost_text = concentration_camps_cost_guards
+		complete_effect = {
+			custom_effect_tooltip = concentration_camps_round_up_prisoners_tt
+			hidden_effect = { concentration_camps_round_up_in_from = yes }
+		}
+		ai_will_do = {
+			base = constant:concentration_camps_ai.blocked
+			modifier = { add = constant:concentration_camps_ai.decision_standard has_war = yes }
+			modifier = { add = constant:concentration_camps_ai.decision_standard has_government = fascism }
+			modifier = { add = constant:concentration_camps_ai.decision_low has_government = communism }
+			modifier = { factor = constant:concentration_camps_ai.blocked has_equipment = { support_equipment < constant:concentration_camps_ai.support_floor } }
+			modifier = { factor = constant:concentration_camps_ai.blocked concentration_camps_exposure_is_leaking = yes }
+			modifier = { factor = constant:concentration_camps_ai.blocked has_stability < constant:concentration_camps_target_weight.unstable_threshold }
+		}
+	}
+
 	# ------------------------------------------------------------------------
 	# Mission
 	# ------------------------------------------------------------------------
@@ -123,6 +167,119 @@ concentration_camps_category = {
 				concentration_camps_escape_mission_failed = yes
 				country_event = { id = chaosx.nr22.103 days = constant:concentration_camps_timing.report_delay_days }
 			}
+		}
+	}
+}
+
+# ============================================================================
+# Liberated camps (category concentration_camps_relief_category)
+# ============================================================================
+# The controller of a camp state that it took from its operator. Two state
+# actions and one mission. Relief removes the unrelieved-survivors modifier of
+# the state, and recording collects the site, the survivors' statements and the
+# papers for investigators. Discovery, the captured site's closure and the
+# release of survivors stay with the shared camp owner.
+
+concentration_camps_relief_category = {
+
+	concentration_camps_relieve_site = {
+		icon = GFX_decision_sov_famine_relief
+		priority = 100
+		state_target = any_controlled_state
+		on_map_mode = map_and_decisions_view
+		visible = {
+			concentration_camps_has_liberated_sites = yes
+		}
+		target_root_trigger = {
+			concentration_camps_has_unrelieved_site = yes
+		}
+		target_trigger = {
+			FROM = { concentration_camps_state_needs_relief = yes }
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = concentration_camps_relieve_state_requirements_tt
+				FROM = { concentration_camps_state_needs_relief = yes }
+			}
+		}
+		custom_cost_trigger = { concentration_camps_can_pay_aid = yes }
+		custom_cost_text = concentration_camps_cost_aid
+		complete_effect = {
+			custom_effect_tooltip = concentration_camps_relieve_site_tt
+			hidden_effect = { concentration_camps_relieve_site_from = yes }
+		}
+		ai_will_do = {
+			base = constant:concentration_camps_ai.decision_strong
+			modifier = { add = constant:concentration_camps_ai.decision_standard has_government = democratic }
+			modifier = { add = constant:concentration_camps_ai.decision_standard has_war = no }
+			modifier = { factor = constant:concentration_camps_ai.blocked has_equipment = { support_equipment < constant:concentration_camps_ai.support_floor } }
+		}
+	}
+
+	concentration_camps_record_site = {
+		icon = GFX_decision_generic_site_inspection
+		priority = 99
+		state_target = any_controlled_state
+		on_map_mode = map_and_decisions_view
+		cost = constant:concentration_camps_aid.record_pp
+		days_re_enable = constant:concentration_camps_timing.record_cooldown_days
+		visible = {
+			concentration_camps_has_liberated_sites = yes
+		}
+		target_root_trigger = {
+			concentration_camps_has_liberated_sites = yes
+		}
+		target_trigger = {
+			FROM = { concentration_camps_state_can_be_recorded = yes }
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = concentration_camps_record_state_requirements_tt
+				FROM = { concentration_camps_state_can_be_recorded = yes }
+			}
+		}
+		custom_cost_trigger = { concentration_camps_can_pay_record = yes }
+		custom_cost_text = concentration_camps_cost_record
+		complete_effect = {
+			custom_effect_tooltip = concentration_camps_record_site_tt
+			hidden_effect = { concentration_camps_record_site_from = yes }
+		}
+		ai_will_do = {
+			base = constant:concentration_camps_ai.decision_standard
+			modifier = { add = constant:concentration_camps_ai.decision_standard has_government = democratic }
+			modifier = { factor = constant:concentration_camps_ai.blocked has_equipment = { support_equipment < constant:concentration_camps_ai.support_floor } }
+		}
+	}
+
+	concentration_camps_mission_relieve_sites = {
+		icon = GFX_decision_generic_civil_support
+		days_mission_timeout = constant:concentration_camps_timing.relief_mission_days
+		selectable_mission = no
+		fire_only_once = no
+		is_good = no
+		activation = {
+			has_country_flag = concentration_camps_relief_mission_active
+			concentration_camps_has_liberated_sites = yes
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = concentration_camps_mission_relief_objective_tt
+				NOT = { concentration_camps_has_unrelieved_site = yes }
+			}
+		}
+		cancel_trigger = {
+			NOT = { concentration_camps_has_liberated_sites = yes }
+		}
+		cancel_effect = {
+			clr_country_flag = concentration_camps_relief_mission_active
+		}
+		complete_effect = {
+			custom_effect_tooltip = concentration_camps_mission_relief_complete_tt
+			hidden_effect = { concentration_camps_relief_mission_succeeded = yes }
+		}
+		timeout_effect = {
+			custom_effect_tooltip = concentration_camps_mission_relief_timeout_tt
+			hidden_effect = { concentration_camps_relief_mission_failed = yes }
 		}
 	}
 }

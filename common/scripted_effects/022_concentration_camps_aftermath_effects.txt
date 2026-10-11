@@ -39,6 +39,7 @@ concentration_camps_on_state_control_changed = {
 		}
 		set_state_flag = concentration_camps_liberated
 		set_state_flag = concentration_camps_relief_protected
+		concentration_camps_register_liberation = yes
 		ROOT = {
 			if = {
 				limit = { NOT = { has_country_flag = concentration_camps_liberation_cooldown } }
@@ -57,25 +58,28 @@ concentration_camps_on_state_control_changed = {
 
 # COUNTRY, the liberator. Supplies and doctors reach the camp.
 concentration_camps_answer_liberation_relief = {
-	concentration_camps_pay_relief = yes
-	add_stability = constant:genocide_liberation.stability
-	add_war_support = constant:genocide_liberation.war_support
+	if = {
+		limit = { has_variable = concentration_camps_liberated_state }
+		concentration_camps_refresh_aid_costs = yes
+		concentration_camps_pay_aid = yes
+		var:concentration_camps_liberated_state = { concentration_camps_relieve_state = yes }
+		concentration_camps_after_relief = yes
+	}
 }
 
 # COUNTRY, the liberator. The commandant's files and the registers are secured
-# for investigators. Same record of intent as the shared foreign tribunal
-# preparation: an opinion modifier and a tribunal severity on the responsible country.
+# for investigators through the same state effect as the records decision.
 concentration_camps_answer_liberation_records = {
 	if = {
-		limit = { has_variable = concentration_camps_liberated_from }
-		add_opinion_modifier = {
-			target = var:concentration_camps_liberated_from
-			modifier = genocide_tribunal_records_prepared
+		limit = {
+			has_variable = concentration_camps_liberated_state
+			var:concentration_camps_liberated_state = {
+				hidden_trigger = { NOT = { has_state_flag = concentration_camps_recorded } }
+			}
 		}
-		var:concentration_camps_liberated_from = {
-			add_to_variable = { genocide_tribunal_severity = constant:genocide_crisis_value.hidden_atrocity_major }
-			set_country_flag = genocide_foreign_tribunal_records_prepared
-		}
+		concentration_camps_pay_record = yes
+		var:concentration_camps_liberated_state = { concentration_camps_record_state = yes }
+		concentration_camps_check_evidence_proof = yes
 	}
 }
 

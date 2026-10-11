@@ -151,6 +151,7 @@ concentration_camps_advance_stage = {
 		set_variable = { concentration_camps_eligible_states = concentration_camps_eligible_count }
 		concentration_camps_split_network = yes
 		concentration_camps_apply_shock_3 = yes
+		concentration_camps_mark_stage_three = yes
 		country_event = { id = chaosx.nr22.401 days = constant:concentration_camps_timing.report_delay_days }
 	}
 	concentration_camps_refresh_network = yes
@@ -276,6 +277,12 @@ concentration_camps_convert_site = {
 	genocide_register_extermination_site_for_root = yes
 	if = {
 		limit = { check_variable = { genocide_camp_conversion_succeeded > constant:concentration_camps_value.zero } }
+		PREV = {
+			if = {
+				limit = { has_country_flag = camp_admin_reforming }
+				set_country_flag = concentration_camps_closure_tainted
+			}
+		}
 		set_state_flag = camp_rework_radicalized_site
 		set_state_flag = concentration_camps_killing_site
 		set_temp_variable = { camp_register_site_type = constant:camp_rework_site_type.radicalized }

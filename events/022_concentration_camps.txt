@@ -530,14 +530,16 @@ country_event = {
 			limit = { has_variable = concentration_camps_liberated_from }
 			var:concentration_camps_liberated_from = { save_event_target_as = concentration_camps_liberated_from }
 		}
-		set_variable = { concentration_camps_cost_relief_support = constant:concentration_camps_cost.relief_support }
-		set_variable = { concentration_camps_cost_relief_trains = constant:concentration_camps_cost.relief_trains }
-		set_variable = { concentration_camps_cost_relief_fuel = constant:concentration_camps_cost.relief_fuel }
+		concentration_camps_refresh_aid_costs = yes
 	}
 
 	option = {
 		name = chaosx.nr22.601.a
-		trigger = { concentration_camps_can_pay_relief = yes }
+		trigger = {
+			concentration_camps_can_pay_aid = yes
+			has_variable = concentration_camps_liberated_state
+			var:concentration_camps_liberated_state = { hidden_trigger = { NOT = { has_state_flag = concentration_camps_relieved } } }
+		}
 		custom_effect_tooltip = chaosx.nr22.601.a_tt
 		hidden_effect = { concentration_camps_answer_liberation_relief = yes }
 		ai_chance = {
@@ -548,6 +550,11 @@ country_event = {
 
 	option = {
 		name = chaosx.nr22.601.b
+		trigger = {
+			concentration_camps_can_pay_record = yes
+			has_variable = concentration_camps_liberated_state
+			var:concentration_camps_liberated_state = { hidden_trigger = { NOT = { has_state_flag = concentration_camps_recorded } } }
+		}
 		custom_effect_tooltip = chaosx.nr22.601.b_tt
 		hidden_effect = { concentration_camps_answer_liberation_records = yes }
 		ai_chance = {
@@ -636,6 +643,8 @@ country_event = {
 	immediate = {
 		set_variable = { concentration_camps_observer_investigate_pp = constant:concentration_camps_incident.observer_investigate_pp }
 		set_variable = { concentration_camps_observer_protect_pp = constant:concentration_camps_incident.observer_protect_pp }
+		set_variable = { concentration_camps_harbor_pp = constant:concentration_camps_aid.harbor_pp }
+		concentration_camps_refresh_aid_costs = yes
 	}
 
 	option = {
@@ -659,6 +668,24 @@ country_event = {
 			base = constant:concentration_camps_ai.low
 			modifier = { add = constant:concentration_camps_ai.moderate has_government = democratic }
 			modifier = { add = constant:concentration_camps_ai.moderate has_war_with = FROM }
+		}
+	}
+
+	option = {
+		name = chaosx.nr22.510.e
+		trigger = {
+			concentration_camps_can_pay_aid = yes
+			has_political_power > constant:concentration_camps_aid.harbor_pp
+			NOT = { has_country_flag = concentration_camps_network_active }
+			NOT = { check_variable = { concentration_camps_generation > constant:concentration_camps_value.zero } }
+		}
+		custom_effect_tooltip = chaosx.nr22.510.e_tt
+		hidden_effect = { concentration_camps_observer_harbor = yes }
+		ai_chance = {
+			base = constant:concentration_camps_ai.low
+			modifier = { add = constant:concentration_camps_ai.moderate has_government = democratic }
+			modifier = { add = constant:concentration_camps_ai.moderate has_war_with = FROM }
+			modifier = { factor = constant:concentration_camps_ai.blocked has_stability < constant:concentration_camps_target_weight.unstable_threshold }
 		}
 	}
 
@@ -691,7 +718,7 @@ country_event = {
 	}
 }
 
-# Hidden proof that an open closure stayed closed. It sets the achievement flag
+# Hidden proof that an open closure stayed closed. It sets the achievement flags
 # only for a player whose country did not reopen a network in the meantime.
 country_event = {
 	id = chaosx.nr22.802
@@ -701,15 +728,7 @@ country_event = {
 	is_triggered_only = yes
 
 	immediate = {
-		if = {
-			limit = {
-				is_ai = no
-				has_country_flag = concentration_camps_closure_proof_pending
-				NOT = { has_country_flag = concentration_camps_network_active }
-			}
-			set_country_flag = concentration_camps_achievement_close_every_gate
-		}
-		clr_country_flag = concentration_camps_closure_proof_pending
+		concentration_camps_resolve_closure_proofs = yes
 	}
 }
 
@@ -725,5 +744,190 @@ country_event = {
 	option = {
 		name = chaosx.nr22.801.a
 		ai_chance = { base = 1 }
+	}
+}
+
+# ----------------------------------------------------------------------------
+# Front approaches and retreat orders
+# ----------------------------------------------------------------------------
+
+# The front reaches a camp that holds prisoners. The operator answers before the
+# line moves again. The state is the country variable concentration_camps_front_state.
+country_event = {
+	id = chaosx.nr22.511
+	title = chaosx.nr22.511.t
+	desc = chaosx.nr22.511.d
+	picture = GFX_report_event_generic_ruins
+
+	is_triggered_only = yes
+	trigger = { concentration_camps_network_is_live = yes }
+
+	immediate = {
+		if = {
+			limit = { has_variable = concentration_camps_front_state }
+			var:concentration_camps_front_state = {
+				save_event_target_as = concentration_camps_front_state
+				ROOT = {
+					set_variable = { concentration_camps_front_people = PREV.camp_admin_detainees_k }
+				}
+			}
+			multiply_variable = { concentration_camps_front_people = constant:camp_admin_value.people_per_k }
+			round_variable = concentration_camps_front_people
+		}
+		set_variable = { concentration_camps_front_march_percent = constant:concentration_camps_retreat.march_share }
+		multiply_variable = { concentration_camps_front_march_percent = constant:camp_admin_value.display_percent_multiplier }
+		round_variable = concentration_camps_front_march_percent
+		set_variable = { concentration_camps_front_clear_percent = constant:concentration_camps_retreat.liquidate_share }
+		multiply_variable = { concentration_camps_front_clear_percent = constant:camp_admin_value.display_percent_multiplier }
+		round_variable = concentration_camps_front_clear_percent
+		set_variable = { concentration_camps_front_delay_days = constant:concentration_camps_timing.retreat_delay_days }
+	}
+
+	option = {
+		name = chaosx.nr22.511.a
+		custom_effect_tooltip = chaosx.nr22.511.a_tt
+		hidden_effect = { concentration_camps_retreat_open_gates = yes }
+		ai_chance = {
+			base = constant:concentration_camps_ai.low
+			modifier = { add = constant:concentration_camps_ai.strong has_government = democratic }
+			modifier = { add = constant:concentration_camps_ai.moderate has_stability < constant:concentration_camps_target_weight.unstable_threshold }
+		}
+	}
+
+	option = {
+		name = chaosx.nr22.511.b
+		custom_effect_tooltip = chaosx.nr22.511.b_tt
+		hidden_effect = { concentration_camps_answer_front_march = yes }
+		ai_chance = {
+			base = constant:concentration_camps_ai.low
+			modifier = { add = constant:concentration_camps_ai.standard OR = { has_government = fascism has_government = communism } }
+			modifier = { add = constant:concentration_camps_ai.moderate has_government = neutrality }
+			modifier = { factor = constant:concentration_camps_ai.blocked has_government = democratic }
+		}
+	}
+
+	option = {
+		name = chaosx.nr22.511.c
+		trigger = { camp_admin_can_use_radical_mandate = yes }
+		custom_effect_tooltip = chaosx.nr22.511.c_tt
+		hidden_effect = { concentration_camps_answer_front_liquidate = yes }
+		ai_chance = {
+			base = constant:concentration_camps_ai.blocked
+			modifier = { add = constant:concentration_camps_ai.standard has_government = fascism }
+			modifier = { add = constant:concentration_camps_ai.moderate has_government = communism }
+			modifier = { factor = constant:concentration_camps_ai.blocked has_stability > constant:concentration_camps_target_weight.stable_threshold }
+		}
+	}
+
+	option = {
+		name = chaosx.nr22.511.f
+		custom_effect_tooltip = chaosx.nr22.511.f_tt
+		hidden_effect = { concentration_camps_retreat_burn_records = yes }
+		ai_chance = {
+			base = constant:concentration_camps_ai.moderate
+			modifier = { add = constant:concentration_camps_ai.moderate NOT = { has_government = democratic } }
+		}
+	}
+
+	option = {
+		name = chaosx.nr22.511.e
+		custom_effect_tooltip = chaosx.nr22.511.e_tt
+		ai_chance = {
+			base = constant:concentration_camps_ai.moderate
+		}
+	}
+}
+
+# Hidden. Carries out every retreat order whose day has come. An order whose
+# state was taken first was marked interrupted by the liberation hook.
+country_event = {
+	id = chaosx.nr22.512
+	title = chaosx.nr22.512.t
+
+	hidden = yes
+	is_triggered_only = yes
+
+	immediate = {
+		concentration_camps_resolve_orders = yes
+	}
+}
+
+# ----------------------------------------------------------------------------
+# Closure orders
+# ----------------------------------------------------------------------------
+
+# The camp administrators refuse the closure order.
+country_event = {
+	id = chaosx.nr22.811
+	title = chaosx.nr22.811.t
+	desc = chaosx.nr22.811.d
+	picture = GFX_report_event_generic_riot
+
+	is_triggered_only = yes
+
+	immediate = {
+		set_variable = { concentration_camps_refusal_arrest_pp = constant:concentration_camps_refusal.arrest_pp }
+	}
+
+	option = {
+		name = chaosx.nr22.811.a
+		trigger = { has_political_power > constant:concentration_camps_refusal.arrest_pp }
+		custom_effect_tooltip = chaosx.nr22.811.a_tt
+		hidden_effect = { concentration_camps_answer_refusal_arrest = yes }
+		ai_chance = {
+			base = constant:concentration_camps_ai.strong
+			modifier = { add = constant:concentration_camps_ai.moderate has_government = democratic }
+		}
+	}
+
+	option = {
+		name = chaosx.nr22.811.b
+		custom_effect_tooltip = chaosx.nr22.811.b_tt
+		hidden_effect = { concentration_camps_answer_refusal_force = yes }
+		ai_chance = {
+			base = constant:concentration_camps_ai.moderate
+			modifier = { add = constant:concentration_camps_ai.moderate has_war = no }
+		}
+	}
+
+	option = {
+		name = chaosx.nr22.811.c
+		custom_effect_tooltip = chaosx.nr22.811.c_tt
+		hidden_effect = { concentration_camps_answer_refusal_concede = yes }
+		ai_chance = {
+			base = constant:concentration_camps_ai.low
+			modifier = { add = constant:concentration_camps_ai.moderate OR = { has_government = fascism has_government = communism } }
+			modifier = { add = constant:concentration_camps_ai.moderate has_war = yes }
+		}
+	}
+}
+
+# ----------------------------------------------------------------------------
+# Hidden proofs
+# ----------------------------------------------------------------------------
+
+# Safe Harbor: 180 days after the third distinct origin.
+country_event = {
+	id = chaosx.nr22.803
+	title = chaosx.nr22.803.t
+
+	hidden = yes
+	is_triggered_only = yes
+
+	immediate = {
+		concentration_camps_resolve_harbor_proof = yes
+	}
+}
+
+# The Evidence Survives: 180 days after the ledger first held every category.
+country_event = {
+	id = chaosx.nr22.804
+	title = chaosx.nr22.804.t
+
+	hidden = yes
+	is_triggered_only = yes
+
+	immediate = {
+		concentration_camps_resolve_evidence_proof = yes
 	}
 }

@@ -1,0 +1,266 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 022 CONCENTRATION CAMPS RELIEF AND INTAKE EFFECTS
+# ============================================================================
+# Overview:
+# - The liberator side of the aftermath. A camp state that a country at war with
+#   its operator takes (concentration_camps_on_state_control_changed) is
+#   registered here as a liberated state. It carries the dynamic modifier
+#   concentration_camps_unrelieved_state until the new controller relieves it,
+#   and it can be recorded once for investigators.
+# - Hook contract (owner: Event 22, called from the shared
+#   genocide_on_state_control_changed through
+#   concentration_camps_on_state_control_changed): the state receives the flags
+#   concentration_camps_liberated and concentration_camps_relief_protected, the
+#   new controller receives the state in the array
+#   concentration_camps_liberated_states, the cached aid costs and the relief
+#   mission. A state whose retreat order was pending is marked interrupted. No
+#   deaths and no population change belong to this file. Discovery, the
+#   captured site's closure and the release of survivors in place stay with the
+#   shared camp owner.
+# - Relief: the aid bundle (support equipment, trains, fuel) removes the
+#   modifier. Records: one collection per state sets the evidence categories
+#   the achievement proof reads and adds tribunal severity against the operator.
+# - Intake: another cohort at a live site from its remaining campaign source,
+#   through the shared custody helper.
+#
+# Scope notes: COUNTRY effects run with ROOT as the country. STATE effects read
+# ROOT as the liberating or operating country (decisions and events both set
+# ROOT to the country).
+# ============================================================================
+
+# ----------------------------------------------------------------------------
+# Costs
+# ----------------------------------------------------------------------------
+
+# COUNTRY. Caches the aid and records costs the triggers and tooltips read.
+# Aid grows with the number of liberated states that still wait for relief.
+concentration_camps_refresh_aid_costs = {
+	set_temp_variable = { concentration_camps_aid_scale = constant:concentration_camps_value.zero }
+	for_each_scope_loop = {
+		array = concentration_camps_liberated_states
+		if = {
+			limit = {
+				is_controlled_by = PREV
+				hidden_trigger = { NOT = { has_state_flag = concentration_camps_relieved } }
+			}
+			add_to_temp_variable = { concentration_camps_aid_scale = constant:concentration_camps_value.one }
+		}
+	}
+	multiply_temp_variable = { concentration_camps_aid_scale = constant:concentration_camps_aid.scale_per_site }
+	add_to_temp_variable = { concentration_camps_aid_scale = constant:concentration_camps_value.one }
+	clamp_temp_variable = { var = concentration_camps_aid_scale min = constant:concentration_camps_value.one max = constant:concentration_camps_aid.scale_maximum }
+	set_variable = { concentration_camps_cost_aid_support = constant:concentration_camps_aid.support }
+	multiply_variable = { concentration_camps_cost_aid_support = concentration_camps_aid_scale }
+	round_variable = concentration_camps_cost_aid_support
+	set_variable = { concentration_camps_cost_aid_trains = constant:concentration_camps_aid.trains }
+	multiply_variable = { concentration_camps_cost_aid_trains = concentration_camps_aid_scale }
+	round_variable = concentration_camps_cost_aid_trains
+	set_variable = { concentration_camps_cost_aid_fuel = constant:concentration_camps_aid.fuel }
+	multiply_variable = { concentration_camps_cost_aid_fuel = concentration_camps_aid_scale }
+	round_variable = concentration_camps_cost_aid_fuel
+	set_variable = { concentration_camps_cost_record_support = constant:concentration_camps_aid.record_support }
+}
+
+concentration_camps_pay_aid = {
+	set_temp_variable = { concentration_camps_pay_support = concentration_camps_cost_aid_support }
+	set_temp_variable = { concentration_camps_pay_trains = concentration_camps_cost_aid_trains }
+	set_temp_variable = { concentration_camps_pay_fuel = concentration_camps_cost_aid_fuel }
+	concentration_camps_pay = yes
+}
+
+concentration_camps_pay_record = {
+	set_temp_variable = { concentration_camps_pay_support = concentration_camps_cost_record_support }
+	concentration_camps_pay = yes
+}
+
+# ----------------------------------------------------------------------------
+# Liberation hook
+# ----------------------------------------------------------------------------
+
+# STATE, ROOT is the new controller. Registers the liberated state with the new
+# controller. A state with a pending retreat order was taken before the order
+# ran, so the order is interrupted.
+concentration_camps_register_liberation = {
+	if = {
+		limit = { NOT = { has_dynamic_modifier = { modifier = concentration_camps_unrelieved_state } } }
+		add_dynamic_modifier = { modifier = concentration_camps_unrelieved_state }
+	}
+	if = {
+		limit = { hidden_trigger = { has_state_flag = concentration_camps_retreat_pending } }
+		clr_state_flag = concentration_camps_retreat_pending
+		set_state_flag = concentration_camps_retreat_interrupted
+		ROOT = {
+			if = {
+				limit = { NOT = { is_in_array = { array = concentration_camps_interrupted_states value = PREV } } }
+				add_to_array = { array = concentration_camps_interrupted_states value = PREV }
+			}
+			if = {
+				limit = { NOT = { has_variable = concentration_camps_interrupt_operator } }
+				set_variable = { concentration_camps_interrupt_operator = PREV.genocide_responsible_country }
+			}
+		}
+	}
+	ROOT = {
+		if = {
+			limit = { NOT = { is_in_array = { array = concentration_camps_liberated_states value = PREV } } }
+			add_to_array = { array = concentration_camps_liberated_states value = PREV }
+		}
+		concentration_camps_refresh_aid_costs = yes
+		concentration_camps_start_relief_mission = yes
+	}
+}
+
+# COUNTRY. Starts the relief mission once while a liberated state waits.
+concentration_camps_start_relief_mission = {
+	if = {
+		limit = { NOT = { has_active_mission = concentration_camps_mission_relieve_sites } }
+		set_country_flag = concentration_camps_relief_mission_active
+		activate_mission = concentration_camps_mission_relieve_sites
+	}
+}
+
+# ----------------------------------------------------------------------------
+# Relief
+# ----------------------------------------------------------------------------
+
+# STATE, ROOT is the liberator. Supplies and doctors reach the survivors.
+concentration_camps_relieve_state = {
+	if = {
+		limit = { has_dynamic_modifier = { modifier = concentration_camps_unrelieved_state } }
+		remove_dynamic_modifier = { modifier = concentration_camps_unrelieved_state }
+	}
+	set_state_flag = concentration_camps_relieved
+	ROOT = {
+		add_stability = constant:genocide_liberation.stability
+		add_war_support = constant:genocide_liberation.war_support
+		add_to_variable = { concentration_camps_relieved_sites = constant:concentration_camps_value.one }
+	}
+}
+
+# COUNTRY. Runs after any relief: refreshes the cached cost, checks the rescue proof.
+concentration_camps_after_relief = {
+	concentration_camps_refresh_aid_costs = yes
+	concentration_camps_check_disappears_proof = yes
+}
+
+# COUNTRY, FROM is the target state. The relief decision.
+concentration_camps_relieve_site_from = {
+	concentration_camps_pay_aid = yes
+	FROM = { concentration_camps_relieve_state = yes }
+	concentration_camps_after_relief = yes
+	camp_admin_refresh_interface = yes
+}
+
+# ----------------------------------------------------------------------------
+# Records
+# ----------------------------------------------------------------------------
+
+# STATE, ROOT is the liberator. Collects the physical site, the survivors'
+# statements and the remaining papers of one camp state. The categories that
+# the state really offers are set on the country: the site always, testimony
+# when survivors were released here, papers when the operator did not destroy
+# them. The operator receives tribunal severity and an opinion modifier, the
+# same record of intent as the shared foreign tribunal preparation.
+concentration_camps_record_state = {
+	set_state_flag = concentration_camps_recorded
+	ROOT = {
+		set_country_flag = concentration_camps_evidence_physical
+		if = {
+			limit = { NOT = { is_in_array = { array = concentration_camps_recorded_states value = PREV } } }
+			add_to_array = { array = concentration_camps_recorded_states value = PREV }
+		}
+	}
+	if = {
+		limit = {
+			has_variable = camp_admin_total_released_k
+			check_variable = { camp_admin_total_released_k > constant:concentration_camps_value.zero }
+		}
+		ROOT = { set_country_flag = concentration_camps_evidence_testimony }
+	}
+	if = {
+		limit = { hidden_trigger = { NOT = { has_state_flag = genocide_evidence_destroyed } } }
+		ROOT = { set_country_flag = concentration_camps_evidence_documents }
+	}
+	if = {
+		limit = { hidden_trigger = { has_state_flag = genocide_site_discovered } }
+		ROOT = { set_country_flag = concentration_camps_evidence_verified }
+	}
+	if = {
+		limit = {
+			has_variable = genocide_responsible_country
+			var:genocide_responsible_country = { exists = yes }
+		}
+		var:genocide_responsible_country = {
+			save_event_target_as = concentration_camps_record_operator
+			add_to_variable = { genocide_tribunal_severity = constant:genocide_crisis_value.hidden_atrocity_major }
+			set_country_flag = genocide_foreign_tribunal_records_prepared
+		}
+		ROOT = {
+			add_opinion_modifier = {
+				target = event_target:concentration_camps_record_operator
+				modifier = genocide_tribunal_records_prepared
+			}
+		}
+		if = {
+			limit = {
+				hidden_trigger = {
+					OR = {
+						has_state_flag = genocide_evidence_destroyed
+						has_state_flag = genocide_evidence_destroy_failed
+					}
+				}
+			}
+			ROOT = { set_country_flag = concentration_camps_evidence_coverup }
+		}
+		if = {
+			limit = { var:genocide_responsible_country = { has_country_flag = concentration_camps_coverup_registered } }
+			ROOT = { set_country_flag = concentration_camps_evidence_coverup }
+		}
+	}
+}
+
+# COUNTRY, FROM is the target state. The records decision.
+concentration_camps_record_site_from = {
+	concentration_camps_pay_record = yes
+	FROM = { concentration_camps_record_state = yes }
+	concentration_camps_check_evidence_proof = yes
+	camp_admin_refresh_interface = yes
+}
+
+# ----------------------------------------------------------------------------
+# Intake
+# ----------------------------------------------------------------------------
+
+# COUNTRY, FROM is the target state. Another cohort at a live site from its
+# remaining campaign source, through the shared custody helper. The remaining
+# source persists, so the same people are never taken twice.
+concentration_camps_round_up_in_from = {
+	concentration_camps_pay_guards = yes
+	FROM = {
+		set_temp_variable = { concentration_camps_cohort_share = constant:concentration_camps_cohort.round_up_share }
+		set_temp_variable = { concentration_camps_cohort_maximum_k = constant:concentration_camps_cohort.round_up_maximum_k }
+		concentration_camps_seed_cohort = yes
+	}
+	set_temp_variable = { concentration_camps_push_resistance = constant:camp_rework_country_value.resistance_minor }
+	set_temp_variable = { concentration_camps_push_visibility = constant:camp_rework_country_value.visibility_minor }
+	set_temp_variable = { concentration_camps_push_overstretch = constant:camp_rework_country_value.overstretch_minor }
+	concentration_camps_push_pressure = yes
+	concentration_camps_refresh_network = yes
+	camp_admin_refresh_interface = yes
+}
+
+# ----------------------------------------------------------------------------
+# Relief mission
+# ----------------------------------------------------------------------------
+
+# COUNTRY. Every liberated state we hold has received aid.
+concentration_camps_relief_mission_succeeded = {
+	add_stability = constant:concentration_camps_incident.stability_gain
+	clr_country_flag = concentration_camps_relief_mission_active
+}
+
+# COUNTRY. The survivors waited too long: the districts blame the new controller.
+concentration_camps_relief_mission_failed = {
+	add_stability = constant:concentration_camps_incident.stability_cost_minor
+	clr_country_flag = concentration_camps_relief_mission_active
+}

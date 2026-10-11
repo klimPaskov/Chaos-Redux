@@ -1,0 +1,281 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 022 CONCENTRATION CAMPS ACHIEVEMENT PROOF EFFECTS
+# ============================================================================
+# Overview:
+# - Idempotent, event driven proofs for the Event 22 achievements. Each proof
+#   reads facts that the Event 22 rules really maintain and sets one country flag
+#   that the achievement trigger reads. Nothing scans the world.
+# - Close Every Gate, The Machine Stopped, A Government Answers and Against the
+#   Order share the closure proof event chaosx.nr22.802, 180 days after an open
+#   closure (concentration_camps_complete_closure sets the pending flags).
+# - The Evidence Survives (chaosx.nr22.804) and Safe Harbor (chaosx.nr22.803)
+#   start their own 180 day proof when their conditions are first met.
+# - No One Disappears Twice is checked after every relief of a liberated state.
+# - Only a human player's country receives an award flag (is_ai = no). A country
+#   that loses the proof clears its ledger, so a later network starts fresh.
+# - The Long Return is not implemented: no shared rule traces displaced camp
+#   survivors to receiving states, and a country flag would not prove it.
+# ============================================================================
+
+# ----------------------------------------------------------------------------
+# The Evidence Survives
+# ----------------------------------------------------------------------------
+
+# COUNTRY. Called after every collection of records. When the site, the survivors'
+# statements, the papers, a cover-up by the operator and a verified responsible
+# actor have all been recorded, the 180 day hold begins.
+concentration_camps_check_evidence_proof = {
+	if = {
+		limit = {
+			is_ai = no
+			has_country_flag = concentration_camps_evidence_physical
+			has_country_flag = concentration_camps_evidence_testimony
+			has_country_flag = concentration_camps_evidence_documents
+			has_country_flag = concentration_camps_evidence_coverup
+			has_country_flag = concentration_camps_evidence_verified
+			NOT = { has_country_flag = concentration_camps_evidence_proof_started }
+			NOT = { has_country_flag = concentration_camps_achievement_evidence_survives }
+		}
+		set_country_flag = concentration_camps_evidence_proof_started
+		country_event = {
+			id = chaosx.nr22.804
+			days = constant:concentration_camps_timing.evidence_proof_days
+		}
+	}
+}
+
+# COUNTRY. Hidden event chaosx.nr22.804. The proof stands when every recorded
+# state is still ours after the hold.
+concentration_camps_resolve_evidence_proof = {
+	if = {
+		limit = {
+			is_ai = no
+			all_of_scopes = {
+				array = concentration_camps_recorded_states
+				is_controlled_by = PREV
+			}
+		}
+		set_country_flag = concentration_camps_achievement_evidence_survives
+	}
+	else = {
+		concentration_camps_reset_evidence_ledger = yes
+	}
+	clr_country_flag = concentration_camps_evidence_proof_started
+}
+
+# COUNTRY. Starts the ledger over. Recorded states keep their own flag and are
+# never recorded twice.
+concentration_camps_reset_evidence_ledger = {
+	clr_country_flag = concentration_camps_evidence_physical
+	clr_country_flag = concentration_camps_evidence_testimony
+	clr_country_flag = concentration_camps_evidence_documents
+	clr_country_flag = concentration_camps_evidence_coverup
+	clr_country_flag = concentration_camps_evidence_verified
+	clear_array = concentration_camps_recorded_states
+}
+
+# ----------------------------------------------------------------------------
+# No One Disappears Twice
+# ----------------------------------------------------------------------------
+
+# COUNTRY. Called after every relief. The liberator took the required number of
+# sites whose retreat order was still pending, every one of them is still ours
+# and relieved, and the operator that gave the orders never completed one.
+concentration_camps_check_disappears_proof = {
+	if = {
+		limit = {
+			is_ai = no
+			NOT = { has_country_flag = concentration_camps_achievement_no_one_disappears }
+			has_variable = concentration_camps_interrupt_operator
+			check_variable = {
+				var = concentration_camps_interrupted_states^num
+				value = constant:concentration_camps_achievement.interrupted_required
+				compare = greater_than_or_equals
+			}
+			all_of_scopes = {
+				array = concentration_camps_interrupted_states
+				is_controlled_by = PREV
+				hidden_trigger = { has_state_flag = concentration_camps_relieved }
+			}
+			var:concentration_camps_interrupt_operator = {
+				NOT = { check_variable = { concentration_camps_retreat_completed > constant:concentration_camps_value.zero } }
+			}
+		}
+		set_country_flag = concentration_camps_achievement_no_one_disappears
+	}
+}
+
+# ----------------------------------------------------------------------------
+# Safe Harbor
+# ----------------------------------------------------------------------------
+
+# COUNTRY, ROOT is the receiving country, FROM the responsible country. The
+# country opens its border to people who leave the camps of FROM. It pays the
+# aid bundle for housing, food and care and the political power for papers, and
+# FROM is remembered once as a distinct origin.
+concentration_camps_observer_harbor = {
+	concentration_camps_pay_aid = yes
+	set_temp_variable = { concentration_camps_payment = constant:concentration_camps_aid.harbor_pp }
+	multiply_temp_variable = { concentration_camps_payment = constant:concentration_camps_value.negative_one }
+	add_political_power = concentration_camps_payment
+	FROM = { save_event_target_as = concentration_camps_harbor_origin }
+	if = {
+		limit = {
+			NOT = { is_in_array = { array = concentration_camps_harbor_origins value = event_target:concentration_camps_harbor_origin } }
+		}
+		add_to_array = { array = concentration_camps_harbor_origins value = event_target:concentration_camps_harbor_origin }
+	}
+	add_opinion_modifier = {
+		target = event_target:concentration_camps_harbor_origin
+		modifier = genocide_atrocity_condemned
+	}
+	FROM = {
+		set_temp_variable = { concentration_camps_push_visibility = constant:camp_rework_country_value.visibility_minor }
+		concentration_camps_push_pressure = yes
+	}
+	concentration_camps_check_harbor_proof = yes
+}
+
+# COUNTRY. The third distinct origin starts the 180 day hold.
+concentration_camps_check_harbor_proof = {
+	if = {
+		limit = {
+			is_ai = no
+			check_variable = {
+				var = concentration_camps_harbor_origins^num
+				value = constant:concentration_camps_achievement.harbor_origins_required
+				compare = greater_than_or_equals
+			}
+			NOT = { has_country_flag = concentration_camps_harbor_proof_started }
+			NOT = { has_country_flag = concentration_camps_achievement_safe_harbor }
+		}
+		set_country_flag = concentration_camps_harbor_proof_started
+		country_event = {
+			id = chaosx.nr22.803
+			days = constant:concentration_camps_timing.harbor_proof_days
+		}
+	}
+}
+
+# COUNTRY. Hidden event chaosx.nr22.803. The proof stands when the country did not
+# become an operator of its own network in the meantime.
+concentration_camps_resolve_harbor_proof = {
+	if = {
+		limit = {
+			is_ai = no
+			NOT = { has_country_flag = concentration_camps_network_active }
+			NOT = { check_variable = { concentration_camps_generation > constant:concentration_camps_value.zero } }
+		}
+		set_country_flag = concentration_camps_achievement_safe_harbor
+	}
+	else = {
+		clear_array = concentration_camps_harbor_origins
+	}
+	clr_country_flag = concentration_camps_harbor_proof_started
+}
+
+# ----------------------------------------------------------------------------
+# Closure proofs (chaosx.nr22.802)
+# ----------------------------------------------------------------------------
+
+# COUNTRY. Marks the proofs that an open closure starts. Called by
+# concentration_camps_complete_closure for an open closure only.
+concentration_camps_mark_closure_proofs = {
+	if = {
+		limit = {
+			has_country_flag = concentration_camps_stage_three_mixed
+			has_country_flag = concentration_camps_stage_three_window
+			NOT = { has_country_flag = concentration_camps_closure_tainted }
+		}
+		set_country_flag = concentration_camps_machine_proof_pending
+	}
+	if = {
+		limit = {
+			has_country_flag = concentration_camps_archives_opened
+			NOT = { has_country_flag = concentration_camps_continued_by_successor }
+			NOT = { has_country_flag = concentration_camps_closure_tainted }
+		}
+		set_country_flag = concentration_camps_government_proof_pending
+	}
+}
+
+# COUNTRY. Hidden event chaosx.nr22.802, 180 days after an open closure. Every
+# closure proof needs the network to have stayed closed.
+concentration_camps_resolve_closure_proofs = {
+	if = {
+		limit = {
+			is_ai = no
+			has_country_flag = concentration_camps_closure_proof_pending
+			NOT = { has_country_flag = concentration_camps_network_active }
+		}
+		set_country_flag = concentration_camps_achievement_close_every_gate
+		if = {
+			limit = { has_country_flag = concentration_camps_machine_proof_pending }
+			set_country_flag = concentration_camps_achievement_machine_stopped
+		}
+		if = {
+			limit = { has_country_flag = concentration_camps_government_proof_pending }
+			set_country_flag = concentration_camps_achievement_government_answers
+		}
+		if = {
+			limit = {
+				has_country_flag = concentration_camps_order_refused
+				has_country_flag = concentration_camps_order_enforced
+				NOT = { has_country_flag = concentration_camps_order_violent }
+				NOT = { has_country_flag = concentration_camps_order_conceded }
+			}
+			set_country_flag = concentration_camps_achievement_against_the_order
+		}
+	}
+	clr_country_flag = concentration_camps_closure_proof_pending
+	clr_country_flag = concentration_camps_machine_proof_pending
+	clr_country_flag = concentration_camps_government_proof_pending
+}
+
+# COUNTRY. Evolution III with both kinds of site present. Called when the third
+# stage is entered. A country without the killing role has no mixed network and
+# never starts the Machine Stopped window. The window runs 730 days.
+concentration_camps_mark_stage_three = {
+	set_temp_variable = { concentration_camps_live_count = constant:concentration_camps_value.zero }
+	set_temp_variable = { concentration_camps_killing_count = constant:concentration_camps_value.zero }
+	for_each_scope_loop = {
+		array = concentration_camps_site_states
+		if = {
+			limit = { camp_admin_site_is_operational = yes }
+			add_to_temp_variable = { concentration_camps_live_count = constant:concentration_camps_value.one }
+			if = {
+				limit = { concentration_camps_state_is_killing_site = yes }
+				add_to_temp_variable = { concentration_camps_killing_count = constant:concentration_camps_value.one }
+			}
+		}
+	}
+	if = {
+		limit = {
+			check_variable = { concentration_camps_killing_count > constant:concentration_camps_value.zero }
+			check_variable = { concentration_camps_live_count > concentration_camps_killing_count }
+		}
+		set_country_flag = concentration_camps_stage_three_mixed
+		set_temp_variable = { concentration_camps_flag_days = constant:concentration_camps_timing.machine_window_days }
+		set_country_flag = { flag = concentration_camps_stage_three_window days = concentration_camps_flag_days }
+	}
+}
+
+# COUNTRY. A new network generation starts clean: the closure and order flags of
+# the earlier generation never carry into the next proof.
+concentration_camps_reset_generation_flags = {
+	clr_country_flag = concentration_camps_stage_three_mixed
+	clr_country_flag = concentration_camps_stage_three_window
+	clr_country_flag = concentration_camps_closure_started
+	clr_country_flag = concentration_camps_closure_tainted
+	clr_country_flag = concentration_camps_order_refused
+	clr_country_flag = concentration_camps_order_enforced
+	clr_country_flag = concentration_camps_order_violent
+	clr_country_flag = concentration_camps_order_conceded
+	clr_country_flag = concentration_camps_archives_opened
+	clr_country_flag = concentration_camps_continued_by_successor
+	clr_country_flag = concentration_camps_coverup_registered
+	clr_country_flag = concentration_camps_closed_openly
+	clr_country_flag = concentration_camps_machine_proof_pending
+	clr_country_flag = concentration_camps_government_proof_pending
+	set_variable = { concentration_camps_retreat_completed = 0 }
+}

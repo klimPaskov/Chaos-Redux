@@ -1,0 +1,23 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 022 CONCENTRATION CAMPS DYNAMIC MODIFIERS
+# ============================================================================
+# Overview:
+# - One state modifier. A camp state that a hostile country has taken carries
+#   it until the new controller delivers relief (concentration_camps_relieve_state).
+#   Survivors who are left without food and medical care slow local recruiting
+#   and construction and turn the district against the new controller.
+# - The modifier is added by concentration_camps_register_liberation and removed by
+#   concentration_camps_relieve_state. It changes no population and records no
+#   death, so it never competes with the shared custody owner.
+# ============================================================================
+
+@CONCENTRATION_CAMPS_UNRELIEVED_MANPOWER = -0.10
+@CONCENTRATION_CAMPS_UNRELIEVED_CONSTRUCTION = -0.20
+@CONCENTRATION_CAMPS_UNRELIEVED_RESISTANCE = 0.08
+
+concentration_camps_unrelieved_state = {
+	icon = GFX_idea_germany_dormant_ss_camp_legacy
+	local_manpower = @CONCENTRATION_CAMPS_UNRELIEVED_MANPOWER
+	state_production_speed_buildings_factor = @CONCENTRATION_CAMPS_UNRELIEVED_CONSTRUCTION
+	resistance_target = @CONCENTRATION_CAMPS_UNRELIEVED_RESISTANCE
+}

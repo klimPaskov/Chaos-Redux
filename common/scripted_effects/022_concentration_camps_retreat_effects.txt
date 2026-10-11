@@ -1,0 +1,286 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 022 CONCENTRATION CAMPS RETREAT AND CLOSURE ORDER EFFECTS
+# ============================================================================
+# Overview:
+# - Front approaches: the monthly monitor of a live network finds an operating
+#   site that holds prisoners and sits next to enemy divisions or enemy held
+#   territory (genocide_state_has_enemy_forces_near_root, the shared proximity
+#   test) and reports it once per site and cooldown window. The operator answers
+#   with chaosx.nr22.511.
+# - Orders: opening the gates and burning the records act at once. A forced
+#   march or a liquidation is an order that runs after a delay
+#   (chaosx.nr22.512). If the state is still controlled and operating on the due
+#   day, the loss is requested through the shared custody owner
+#   (camp_admin_record_deaths) and clamped to the people held there. If an
+#   enemy took the state first, concentration_camps_register_liberation marked
+#   the order interrupted and nobody is lost.
+# - Closure orders: when the monthly monitor first sees the shared national
+#   reform running, the camp administrators may refuse (chaosx.nr22.811).
+#
+# The march and the liquidation never move people to another site, because the
+# shared custody owner offers no generic transfer: a march removes the loss share
+# and releases the rest, a liquidation removes its share and releases the rest.
+# Both leave the operator evidence and condemnation sources through the shared
+# evidence destruction effect.
+#
+# Scope notes: COUNTRY effects run with ROOT as the operator. The state in
+# question is the country variable concentration_camps_front_state.
+# ============================================================================
+
+# ----------------------------------------------------------------------------
+# Front approaches
+# ----------------------------------------------------------------------------
+
+# COUNTRY. Called by the monthly monitor. Output: temp
+# concentration_camps_front_fired, 1 when a report was raised. At most one
+# threatened site is reported per visit and per country cooldown.
+concentration_camps_check_front = {
+	set_temp_variable = { concentration_camps_front_fired = constant:concentration_camps_value.zero }
+	if = {
+		limit = {
+			has_war = yes
+			NOT = { has_country_flag = concentration_camps_front_cooldown }
+			any_of_scopes = {
+				array = concentration_camps_site_states
+				concentration_camps_state_is_threatened = yes
+			}
+		}
+		set_temp_variable = { concentration_camps_front_fired = constant:concentration_camps_value.one }
+		clear_temp_array = concentration_camps_front_pool
+		for_each_scope_loop = {
+			array = concentration_camps_site_states
+			if = {
+				limit = { concentration_camps_state_is_threatened = yes }
+				add_to_temp_array = { array = concentration_camps_front_pool value = THIS }
+			}
+		}
+		set_temp_variable = { concentration_camps_flag_days = constant:concentration_camps_timing.front_state_cooldown_days }
+		random_scope_in_array = {
+			array = concentration_camps_front_pool
+			set_state_flag = { flag = concentration_camps_front_reported days = concentration_camps_flag_days }
+			PREV = { set_variable = { concentration_camps_front_state = PREV } }
+		}
+		clear_temp_array = concentration_camps_front_pool
+		set_temp_variable = { concentration_camps_flag_days = constant:concentration_camps_timing.front_cooldown_days }
+		set_country_flag = { flag = concentration_camps_front_cooldown days = concentration_camps_flag_days }
+		country_event = {
+			id = chaosx.nr22.511
+			days = constant:concentration_camps_timing.report_delay_days
+		}
+	}
+}
+
+# ----------------------------------------------------------------------------
+# Answers to the front report (variable concentration_camps_front_state)
+# ----------------------------------------------------------------------------
+
+# COUNTRY. The guards open the gates. Survivors are released in place, which the
+# shared custody owner records, and the evidence stays.
+concentration_camps_retreat_open_gates = {
+	if = {
+		limit = { has_variable = concentration_camps_front_state }
+		var:concentration_camps_front_state = { camp_admin_release_survivors = yes }
+	}
+	set_temp_variable = { concentration_camps_push_resistance = constant:concentration_camps_incident.relief_resistance_relief }
+	set_temp_variable = { concentration_camps_push_reform = constant:camp_rework_country_value.reform_minor }
+	concentration_camps_push_pressure = yes
+}
+
+# COUNTRY. The records are burned through the shared evidence destruction
+# effect. It may fail visibly when the site is already known.
+concentration_camps_retreat_burn_records = {
+	if = {
+		limit = { has_variable = concentration_camps_front_state }
+		set_variable = { camp_rework_action_state_id = var:concentration_camps_front_state.id }
+		genocide_destroy_camp_evidence_in_action_state = yes
+		clear_variable = camp_rework_action_state_id
+	}
+}
+
+# COUNTRY. Input: temp concentration_camps_order_kind (constant:concentration_camps_order_kind.*).
+# Sets the order on the front state. It runs after the delay unless the state falls first.
+concentration_camps_order_retreat = {
+	if = {
+		limit = { has_variable = concentration_camps_front_state }
+		var:concentration_camps_front_state = {
+			set_state_flag = concentration_camps_retreat_pending
+			set_variable = { concentration_camps_retreat_kind = concentration_camps_order_kind }
+			set_variable = { concentration_camps_retreat_due = global.num_days }
+			add_to_variable = { concentration_camps_retreat_due = constant:concentration_camps_timing.retreat_delay_days }
+			PREV = {
+				if = {
+					limit = { NOT = { is_in_array = { array = concentration_camps_order_states value = PREV } } }
+					add_to_array = { array = concentration_camps_order_states value = PREV }
+				}
+			}
+		}
+		country_event = {
+			id = chaosx.nr22.512
+			days = constant:concentration_camps_timing.retreat_delay_days
+		}
+	}
+}
+
+concentration_camps_answer_front_march = {
+	set_temp_variable = { concentration_camps_order_kind = constant:concentration_camps_order_kind.march }
+	concentration_camps_order_retreat = yes
+}
+
+concentration_camps_answer_front_liquidate = {
+	set_temp_variable = { concentration_camps_order_kind = constant:concentration_camps_order_kind.liquidate }
+	concentration_camps_order_retreat = yes
+}
+
+# ----------------------------------------------------------------------------
+# Order resolution (hidden event chaosx.nr22.512)
+# ----------------------------------------------------------------------------
+
+# COUNTRY. Runs every order whose day has come.
+concentration_camps_resolve_orders = {
+	for_each_scope_loop = {
+		array = concentration_camps_order_states
+		if = {
+			limit = {
+				hidden_trigger = { has_state_flag = concentration_camps_retreat_pending }
+				check_variable = { var = global.num_days value = concentration_camps_retreat_due compare = greater_than_or_equals }
+			}
+			clr_state_flag = concentration_camps_retreat_pending
+			if = {
+				limit = {
+					is_controlled_by = PREV
+					camp_admin_site_is_operational = yes
+					check_variable = { camp_admin_detainees_k > constant:concentration_camps_value.zero }
+				}
+				concentration_camps_execute_retreat = yes
+			}
+		}
+	}
+	if = {
+		limit = { NOT = { concentration_camps_has_pending_order = yes } }
+		clear_array = concentration_camps_order_states
+	}
+}
+
+# STATE, PREV is the operator. The order of the state is carried out. The
+# loss is requested from the shared custody owner and clamped to the living
+# cohort. Violence applies at killing sites, custody elsewhere, the same rule as
+# the evolution shocks. The surviving cohort leaves the camp and the shared owner
+# records the release.
+concentration_camps_execute_retreat = {
+	set_temp_variable = { camp_admin_death_requested_k = camp_admin_detainees_k }
+	set_temp_variable = { camp_admin_death_cause = constant:camp_admin_cause.custody }
+	if = {
+		limit = { check_variable = { concentration_camps_retreat_kind = constant:concentration_camps_order_kind.liquidate } }
+		multiply_temp_variable = { camp_admin_death_requested_k = constant:concentration_camps_retreat.liquidate_share }
+		if = {
+			limit = { concentration_camps_state_is_killing_site = yes }
+			set_temp_variable = { camp_admin_death_cause = constant:camp_admin_cause.violence }
+		}
+	}
+	else = {
+		multiply_temp_variable = { camp_admin_death_requested_k = constant:concentration_camps_retreat.march_share }
+	}
+	set_temp_variable = { camp_admin_death_contract = constant:concentration_camps_value.one }
+	camp_admin_record_deaths = yes
+	camp_admin_release_survivors = yes
+	set_state_flag = concentration_camps_retreat_done
+	PREV = {
+		add_to_variable = { concentration_camps_retreat_completed = constant:concentration_camps_value.one }
+		add_to_variable = { concentration_camps_retreat_deaths_k = camp_admin_death_actual_k }
+		set_temp_variable = { concentration_camps_push_evidence = constant:camp_rework_country_value.evidence_major }
+		set_temp_variable = { concentration_camps_push_visibility = constant:camp_rework_country_value.visibility_major }
+		concentration_camps_push_pressure = yes
+		set_variable = { camp_rework_action_state_id = PREV.id }
+		genocide_destroy_camp_evidence_in_action_state = yes
+		clear_variable = camp_rework_action_state_id
+	}
+}
+
+# ----------------------------------------------------------------------------
+# Closure orders
+# ----------------------------------------------------------------------------
+
+# COUNTRY. Called by the monthly monitor before the closure check. When the
+# shared national reform first shows, the administrators may refuse. The reform
+# can start from the opening report, the evolution reports, the succession report
+# or the Camp Administration window, so the monitor is the one place that sees all of them.
+concentration_camps_check_closure_start = {
+	if = {
+		limit = {
+			has_country_flag = camp_admin_reforming
+			NOT = { has_country_flag = concentration_camps_closure_started }
+		}
+		set_country_flag = concentration_camps_closure_started
+		concentration_camps_roll_refusal = yes
+	}
+}
+
+# COUNTRY. The chance rises with killing sites, an authoritarian government and
+# a late evolution stage.
+concentration_camps_roll_refusal = {
+	set_temp_variable = { concentration_camps_refusal_chance = constant:concentration_camps_refusal.base }
+	if = {
+		limit = {
+			any_of_scopes = {
+				array = concentration_camps_site_states
+				concentration_camps_state_is_killing_site = yes
+			}
+		}
+		add_to_temp_variable = { concentration_camps_refusal_chance = constant:concentration_camps_refusal.killing_sites }
+	}
+	if = {
+		limit = {
+			OR = {
+				has_government = fascism
+				has_government = communism
+			}
+		}
+		add_to_temp_variable = { concentration_camps_refusal_chance = constant:concentration_camps_refusal.authoritarian }
+	}
+	if = {
+		limit = { check_variable = { concentration_camps_evolution > constant:concentration_camps_evolution.stage_1 } }
+		add_to_temp_variable = { concentration_camps_refusal_chance = constant:concentration_camps_refusal.late_stage }
+	}
+	set_temp_variable_to_random = { var = concentration_camps_refusal_roll min = 0 max = 1 }
+	if = {
+		limit = { check_variable = { concentration_camps_refusal_roll < concentration_camps_refusal_chance } }
+		set_country_flag = concentration_camps_order_refused
+		country_event = {
+			id = chaosx.nr22.811
+			days = constant:concentration_camps_timing.report_delay_days
+		}
+	}
+}
+
+# COUNTRY. The commandants are arrested and the files are taken. The order stands.
+concentration_camps_answer_refusal_arrest = {
+	set_temp_variable = { concentration_camps_payment = constant:concentration_camps_refusal.arrest_pp }
+	multiply_temp_variable = { concentration_camps_payment = constant:concentration_camps_value.negative_one }
+	add_political_power = concentration_camps_payment
+	add_stability = constant:concentration_camps_refusal.arrest_stability
+	set_country_flag = concentration_camps_order_enforced
+	set_temp_variable = { concentration_camps_push_reform = constant:camp_rework_country_value.reform_major }
+	concentration_camps_push_pressure = yes
+}
+
+# COUNTRY. Troops take the camps by force. The order stands, and the fighting costs support at home.
+concentration_camps_answer_refusal_force = {
+	add_stability = constant:concentration_camps_refusal.force_stability
+	add_war_support = constant:concentration_camps_refusal.force_war_support
+	set_country_flag = concentration_camps_order_violent
+	set_temp_variable = { concentration_camps_push_evidence = constant:camp_rework_country_value.evidence_minor }
+	set_temp_variable = { concentration_camps_push_resistance = constant:camp_rework_country_value.resistance_minor }
+	concentration_camps_push_pressure = yes
+}
+
+# COUNTRY. The cabinet gives way: the administrators keep the files and the
+# closure no longer counts as an open one.
+concentration_camps_answer_refusal_concede = {
+	set_country_flag = concentration_camps_order_conceded
+	set_variable = { concentration_camps_closure_kind = constant:concentration_camps_closure_kind.quiet }
+	clr_country_flag = concentration_camps_closed_openly
+	clr_country_flag = concentration_camps_closure_proof_pending
+	clr_country_flag = concentration_camps_machine_proof_pending
+	clr_country_flag = concentration_camps_government_proof_pending
+	concentration_camps_register_coverup = yes
+}

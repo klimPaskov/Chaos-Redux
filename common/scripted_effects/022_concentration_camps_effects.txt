@@ -340,6 +340,7 @@ concentration_camps_seed_cohort = {
 # the Evolution III shock.
 concentration_camps_open = {
 	set_temp_variable = { concentration_camps_stability_before = stability }
+	concentration_camps_reset_generation_flags = yes
 	camp_rework_initialize_country_variables = yes
 	concentration_camps_initialize_country = yes
 	add_to_variable = { concentration_camps_generation = constant:concentration_camps_value.one }
@@ -385,6 +386,7 @@ concentration_camps_open = {
 		else_if = {
 			limit = { check_variable = { concentration_camps_open_stage = constant:concentration_camps_evolution.stage_3 } }
 			concentration_camps_apply_shock_3 = yes
+			concentration_camps_mark_stage_three = yes
 		}
 		set_temp_variable = { concentration_camps_log_stage = concentration_camps_open_stage }
 		concentration_camps_record_evolution = yes
@@ -494,6 +496,12 @@ concentration_camps_create_site = {
 # STATE, PREV is the country. Records the site as part of this generation.
 concentration_camps_mark_site = {
 	set_state_flag = concentration_camps_site
+	PREV = {
+		if = {
+			limit = { has_country_flag = camp_admin_reforming }
+			set_country_flag = concentration_camps_closure_tainted
+		}
+	}
 	if = {
 		limit = { NOT = { has_variable = concentration_camps_site_generation } }
 		set_variable = { concentration_camps_site_generation = PREV.concentration_camps_generation }
@@ -560,6 +568,7 @@ concentration_camps_monitor_tick = {
 	if = {
 		limit = { concentration_camps_network_is_live = yes }
 		concentration_camps_refresh_network = yes
+		concentration_camps_check_closure_start = yes
 		concentration_camps_check_end = yes
 		if = {
 			limit = { has_country_flag = concentration_camps_network_active }
@@ -568,7 +577,11 @@ concentration_camps_monitor_tick = {
 			concentration_camps_check_succession = yes
 			if = {
 				limit = { check_variable = { concentration_camps_evolution_fired = constant:concentration_camps_value.zero } }
-				concentration_camps_check_incidents = yes
+				concentration_camps_check_front = yes
+				if = {
+					limit = { check_variable = { concentration_camps_front_fired = constant:concentration_camps_value.zero } }
+					concentration_camps_check_incidents = yes
+				}
 			}
 			country_event = {
 				id = chaosx.nr22.3
@@ -608,11 +621,14 @@ concentration_camps_complete_closure = {
 	set_variable = { concentration_camps_closure_kind = constant:concentration_camps_closure_kind.open }
 	if = {
 		limit = {
-			any_of_scopes = {
-				array = concentration_camps_site_states
-				OR = {
-					has_state_flag = genocide_evidence_destroyed
-					has_state_flag = genocide_destroyed_atrocity_site
+			OR = {
+				has_country_flag = concentration_camps_order_conceded
+				any_of_scopes = {
+					array = concentration_camps_site_states
+					OR = {
+						has_state_flag = genocide_evidence_destroyed
+						has_state_flag = genocide_destroyed_atrocity_site
+					}
 				}
 			}
 		}
@@ -626,6 +642,7 @@ concentration_camps_complete_closure = {
 		limit = { check_variable = { concentration_camps_closure_kind = constant:concentration_camps_closure_kind.open } }
 		set_country_flag = concentration_camps_closed_openly
 		set_country_flag = concentration_camps_closure_proof_pending
+		concentration_camps_mark_closure_proofs = yes
 		country_event = { id = chaosx.nr22.801 days = constant:concentration_camps_timing.report_delay_days }
 		country_event = { id = chaosx.nr22.802 days = constant:concentration_camps_timing.closure_proof_days }
 	}
