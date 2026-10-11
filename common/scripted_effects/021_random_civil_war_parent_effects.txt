@@ -218,8 +218,20 @@ event021_parent_find_event6_package = {
 			# Every admitted loader overwrites country, anchor and host before use.
 			# See script_targets_adapter_overwrite_proof.txt in the startup QA evidence.
 			independence_wave_scenario_load_dispatch_package = yes
+			# The native release moves every donor-owned core of the carrier, so the
+			# package is admitted only when that whole footprint may leave the host.
+			set_temp_variable = { event021_event6_footprint_valid = constant:random_civil_war_value.zero }
+			if = {
+				limit = { has_event_target = liberation_candidate_anchor }
+				event_target:liberation_candidate_anchor = { save_event_target_as = event021_event6_footprint_anchor }
+				set_temp_variable = { event021_event6_footprint_input_package_id = event021_parent_event6_candidate_package_id }
+				set_temp_variable = { event021_event6_footprint_check_rows = constant:random_civil_war_value.one }
+				clear_temp_array = independence_wave_event021_footprint_states
+				event021_parent_collect_event6_native_footprint = yes
+			}
 			if = {
 				limit = {
+					check_variable = { var = event021_event6_footprint_valid value = constant:random_civil_war_value.one compare = equals }
 					has_event_target = liberation_candidate_anchor
 					event_target:liberation_candidate_anchor = {
 						is_owned_by = ROOT
@@ -2684,6 +2696,8 @@ event021_parent_plan_connected_states = {
 				}
 			}
 			ROOT = { if = { limit = { has_variable = random_civil_war_current_state } event021_reserve_state = yes } }
+			# Native release moves every donor-owned core of the carrier with the anchor.
+			if = { limit = { has_variable = random_civil_war_current_state } event021_parent_reserve_event6_native_footprint = yes }
 		}
 		else = {
 			event021_parent_select_connected_anchor = yes
@@ -5346,9 +5360,17 @@ event021_parent_try_event6_secondary_front = {
 			set_variable = { random_civil_war_event6_candidate_archetype = global.random_civil_war_event6_secondary_planned_archetype }
 			set_country_flag = random_civil_war_event6_dormant_route_ready
 		}
+		# The release moves every donor-owned carrier core, so the mutation gate
+		# re-proves that this footprint is still whole, eligible and in the ledger.
+		set_temp_variable = { event021_event6_footprint_covered = constant:random_civil_war_value.zero }
+		if = {
+			limit = { has_country_flag = random_civil_war_event6_dormant_route_ready }
+			event021_parent_prove_event6_footprint_in_ledger = yes
+		}
 		if = {
 			limit = {
 				has_country_flag = random_civil_war_event6_dormant_route_ready
+				check_variable = { var = event021_event6_footprint_covered value = constant:random_civil_war_value.one compare = equals }
 				has_event_target = random_civil_war_event6_selected_anchor has_event_target = random_civil_war_event6_selection_owner event_target:random_civil_war_event6_selection_owner = { has_country_flag = random_civil_war_event6_selected_anchor_valid }
 				event_target:random_civil_war_event6_selected_anchor = {
 					is_owned_by = ROOT
@@ -5399,13 +5421,14 @@ event021_parent_try_event6_secondary_front = {
 					set_state_owner_to = event_target:random_civil_war_event6_selected_actor
 					set_state_controller_to = event_target:random_civil_war_event6_selected_actor
 				}
+				event021_parent_publish_event6_release_footprint = yes
 				event_target:random_civil_war_event6_selected_actor = {
 					set_capital = { state = event_target:random_civil_war_event6_selected_anchor remember_old_capital = yes }
 					set_variable = { random_civil_war_event6_package_id = global.random_civil_war_event6_pending_package_id }
 					set_variable = { random_civil_war_event6_candidate_region = global.random_civil_war_event6_pending_region }
 					set_variable = { random_civil_war_event6_candidate_depth = global.random_civil_war_event6_pending_depth }
 					set_variable = { random_civil_war_event6_candidate_archetype = global.random_civil_war_event6_pending_archetype }
-					set_variable = { random_civil_war_opening_state_count = constant:random_civil_war_value.one }
+					set_variable = { random_civil_war_opening_state_count = global.random_civil_war_event6_pending_opening_state_count }
 					event021_parent_prepare_event6_adapter_actor = yes
 					if = {
 						limit = {
@@ -5447,8 +5470,7 @@ event021_parent_try_event6_secondary_front = {
 						event021_register_global_country = yes
 						event021_parent_capture_actual_actor_force_receipt = yes
 						event021_parent_copy_opening_state_receipts = yes
-						clear_array = random_civil_war_opening_core_states
-						add_to_array = { array = random_civil_war_opening_core_states value = event_target:random_civil_war_event6_selected_anchor }
+						event021_parent_record_event6_actor_footprint = yes
 						set_variable = { random_civil_war_parent_log_payload = constant:random_civil_war_log.multi_front }
 						event021_parent_record_system_log = yes
 						country_event = { id = chaosx.nr21.8 }
@@ -5566,6 +5588,7 @@ event021_parent_execute_event6_front = {
 					set_state_owner_to = event_target:random_civil_war_event6_selected_actor
 					set_state_controller_to = event_target:random_civil_war_event6_selected_actor
 				}
+				event021_parent_publish_event6_release_footprint = yes
 				event_target:random_civil_war_event6_selected_actor = {
 					set_capital = { state = event_target:random_civil_war_global_anchor_state remember_old_capital = yes }
 					set_variable = { random_civil_war_event6_package_id = global.random_civil_war_event6_pending_package_id }

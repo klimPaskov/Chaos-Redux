@@ -42,8 +42,11 @@ event021_parent_append_dynamic_ordinary_front_candidate = {
 	add_to_temp_array = { array = event021_parent_dynamic_optional_front_state_counts value = event021_dynamic_candidate_state_count }
 }
 
-# COUNTRY scope on the opening host. Captures one already-admitted complete
-# Event 006 package before its adapter scratch is cleared.
+# COUNTRY scope on the opening host or reviewing government. Captures one
+# already-admitted complete Event 006 package before its adapter scratch is
+# cleared. The row's state span is the anchor plus every other state the native
+# release hands to the carrier, so the remnant proof, the ledger spans and the
+# front cleanup all see the territory that really changes hands.
 event021_parent_append_dynamic_event6_front_candidate = {
 	if = {
 		limit = {
@@ -56,51 +59,77 @@ event021_parent_append_dynamic_event6_front_candidate = {
 				is_in_array = { array = random_civil_war_scenario_frozen_states value = event_target:random_civil_war_event6_selected_anchor }
 			}
 		}
-		set_temp_variable = { event021_dynamic_candidate_anchor_weight = constant:random_civil_war_value.zero }
-		event_target:random_civil_war_event6_selected_anchor = {
-			set_temp_variable = { event021_anchor_state_score = constant:random_civil_war_value.zero }
-			event021_parent_score_anchor_state = yes
-			set_temp_variable = { event021_dynamic_candidate_anchor_weight = event021_anchor_state_score }
-		}
-		set_temp_variable = { event021_dynamic_candidate_state_offset = event021_parent_dynamic_optional_front_selected_states^num }
-		set_temp_variable = { event021_dynamic_candidate_state_count = constant:random_civil_war_value.zero }
-		add_to_temp_array = { array = event021_parent_dynamic_optional_front_archetypes value = constant:random_civil_war_archetype.event006 }
-		add_to_temp_array = { array = event021_parent_dynamic_optional_front_routes value = constant:random_civil_war_evidence_source.event006 }
-		event_target:random_civil_war_event6_selected_anchor = {
-			add_to_temp_array = { array = event021_parent_dynamic_optional_front_anchors value = THIS }
-			add_to_temp_array = { array = event021_parent_dynamic_optional_front_selected_states value = THIS }
-			add_to_temp_variable = { event021_dynamic_candidate_state_count = constant:random_civil_war_value.one }
-		}
-		add_to_temp_array = { array = event021_parent_dynamic_optional_front_state_offsets value = event021_dynamic_candidate_state_offset }
-		add_to_temp_array = { array = event021_parent_dynamic_optional_front_state_counts value = event021_dynamic_candidate_state_count }
+		# The native release moves every donor-owned core of the carrier, so the
+		# whole footprint must be free before the package becomes a candidate row.
+		set_temp_variable = { event021_event6_footprint_valid = constant:random_civil_war_value.zero }
+		event_target:random_civil_war_event6_selected_anchor = { save_event_target_as = event021_event6_footprint_anchor }
+		set_temp_variable = { event021_event6_footprint_input_package_id = random_civil_war_event6_package_id }
+		set_temp_variable = { event021_event6_footprint_check_rows = constant:random_civil_war_value.one }
+		clear_temp_array = independence_wave_event021_footprint_states
+		event021_parent_collect_event6_native_footprint = yes
 		if = {
-			limit = { has_variable = global.random_civil_war_pending_host_front_id }
-			add_to_temp_array = { array = event021_parent_dynamic_optional_front_sources value = global.random_civil_war_pending_host_front_id }
-		}
-		else = { add_to_temp_array = { array = event021_parent_dynamic_optional_front_sources value = constant:random_civil_war_value.zero } }
-		if = {
-			limit = { has_event_target = random_civil_war_event6_selected_actor }
-			event_target:random_civil_war_event6_selected_actor = { add_to_temp_array = { array = event021_parent_dynamic_optional_front_actor_scopes value = THIS } }
-		}
-		else = { event_target:random_civil_war_dynamic_candidate_host = { add_to_temp_array = { array = event021_parent_dynamic_optional_front_actor_scopes value = THIS } } }
-		add_to_temp_array = { array = event021_parent_dynamic_optional_front_actor_types value = constant:random_civil_war_planned_actor_type.event006_carrier }
-		add_to_temp_array = { array = event021_parent_dynamic_optional_front_relationships value = constant:random_civil_war_planned_relationship.independence_war }
-		add_to_temp_array = { array = event021_parent_dynamic_optional_front_goals value = constant:random_civil_war_front_goal.independence }
-		add_to_temp_array = { array = event021_parent_dynamic_optional_front_packages value = random_civil_war_event6_package_id }
-		add_to_temp_array = { array = event021_parent_dynamic_optional_front_package_regions value = random_civil_war_event6_candidate_region }
-		add_to_temp_array = { array = event021_parent_dynamic_optional_front_package_depths value = random_civil_war_event6_candidate_depth }
-		add_to_temp_array = { array = event021_parent_dynamic_optional_front_package_archetypes value = random_civil_war_event6_candidate_archetype }
-		add_to_temp_array = { array = event021_parent_dynamic_optional_front_state_weights value = event021_dynamic_candidate_anchor_weight }
-		add_to_temp_array = { array = event021_parent_dynamic_optional_front_selected_routes value = constant:random_civil_war_archetype.event006 }
-		if = {
-			limit = { has_global_flag = random_civil_war_manual_scenario_launch_in_progress }
+			limit = { check_variable = { var = event021_event6_footprint_valid value = constant:random_civil_war_value.one compare = equals } }
+			set_temp_variable = { event021_dynamic_candidate_anchor_weight = constant:random_civil_war_value.zero }
 			event_target:random_civil_war_event6_selected_anchor = {
+				set_temp_variable = { event021_anchor_state_score = constant:random_civil_war_value.zero }
+				event021_parent_score_anchor_state = yes
+				set_temp_variable = { event021_dynamic_candidate_anchor_weight = event021_anchor_state_score }
+			}
+			set_temp_variable = { event021_dynamic_candidate_state_offset = event021_parent_dynamic_optional_front_selected_states^num }
+			set_temp_variable = { event021_dynamic_candidate_state_count = constant:random_civil_war_value.zero }
+			add_to_temp_array = { array = event021_parent_dynamic_optional_front_archetypes value = constant:random_civil_war_archetype.event006 }
+			add_to_temp_array = { array = event021_parent_dynamic_optional_front_routes value = constant:random_civil_war_evidence_source.event006 }
+			event_target:random_civil_war_event6_selected_anchor = {
+				add_to_temp_array = { array = event021_parent_dynamic_optional_front_anchors value = THIS }
+				add_to_temp_array = { array = event021_parent_dynamic_optional_front_selected_states value = THIS }
+				add_to_temp_variable = { event021_dynamic_candidate_state_count = constant:random_civil_war_value.one }
+			}
+			for_each_scope_loop = {
+				array = independence_wave_event021_footprint_states
 				if = {
-					limit = { NOT = { is_in_array = { array = global.random_civil_war_scenario_reserved_states value = THIS } } }
-					add_to_array = { array = global.random_civil_war_scenario_reserved_states value = THIS }
+					limit = { NOT = { state = event_target:random_civil_war_event6_selected_anchor } }
+					add_to_temp_array = { array = event021_parent_dynamic_optional_front_selected_states value = THIS }
+					add_to_temp_variable = { event021_dynamic_candidate_state_count = constant:random_civil_war_value.one }
 				}
 			}
-			add_to_array = { array = global.random_civil_war_scenario_reserved_event6_packages value = random_civil_war_event6_package_id }
+			add_to_temp_array = { array = event021_parent_dynamic_optional_front_state_offsets value = event021_dynamic_candidate_state_offset }
+			add_to_temp_array = { array = event021_parent_dynamic_optional_front_state_counts value = event021_dynamic_candidate_state_count }
+			if = {
+				limit = { has_variable = global.random_civil_war_pending_host_front_id }
+				add_to_temp_array = { array = event021_parent_dynamic_optional_front_sources value = global.random_civil_war_pending_host_front_id }
+			}
+			else = { add_to_temp_array = { array = event021_parent_dynamic_optional_front_sources value = constant:random_civil_war_value.zero } }
+			if = {
+				limit = { has_event_target = random_civil_war_event6_selected_actor }
+				event_target:random_civil_war_event6_selected_actor = { add_to_temp_array = { array = event021_parent_dynamic_optional_front_actor_scopes value = THIS } }
+			}
+			else = { event_target:random_civil_war_dynamic_candidate_host = { add_to_temp_array = { array = event021_parent_dynamic_optional_front_actor_scopes value = THIS } } }
+			add_to_temp_array = { array = event021_parent_dynamic_optional_front_actor_types value = constant:random_civil_war_planned_actor_type.event006_carrier }
+			add_to_temp_array = { array = event021_parent_dynamic_optional_front_relationships value = constant:random_civil_war_planned_relationship.independence_war }
+			add_to_temp_array = { array = event021_parent_dynamic_optional_front_goals value = constant:random_civil_war_front_goal.independence }
+			add_to_temp_array = { array = event021_parent_dynamic_optional_front_packages value = random_civil_war_event6_package_id }
+			add_to_temp_array = { array = event021_parent_dynamic_optional_front_package_regions value = random_civil_war_event6_candidate_region }
+			add_to_temp_array = { array = event021_parent_dynamic_optional_front_package_depths value = random_civil_war_event6_candidate_depth }
+			add_to_temp_array = { array = event021_parent_dynamic_optional_front_package_archetypes value = random_civil_war_event6_candidate_archetype }
+			add_to_temp_array = { array = event021_parent_dynamic_optional_front_state_weights value = event021_dynamic_candidate_anchor_weight }
+			add_to_temp_array = { array = event021_parent_dynamic_optional_front_selected_routes value = constant:random_civil_war_archetype.event006 }
+			if = {
+				limit = { has_global_flag = random_civil_war_manual_scenario_launch_in_progress }
+				event_target:random_civil_war_event6_selected_anchor = {
+					if = {
+						limit = { NOT = { is_in_array = { array = global.random_civil_war_scenario_reserved_states value = THIS } } }
+						add_to_array = { array = global.random_civil_war_scenario_reserved_states value = THIS }
+					}
+				}
+				for_each_scope_loop = {
+					array = independence_wave_event021_footprint_states
+					if = {
+						limit = { NOT = { is_in_array = { array = global.random_civil_war_scenario_reserved_states value = THIS } } }
+						add_to_array = { array = global.random_civil_war_scenario_reserved_states value = THIS }
+					}
+				}
+				add_to_array = { array = global.random_civil_war_scenario_reserved_event6_packages value = random_civil_war_event6_package_id }
+			}
 		}
 	}
 }

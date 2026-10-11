@@ -1,6 +1,6 @@
 # Event 021 native release footprint prototype (parked)
 
-Disposition: unresolved, parked outside the loaded mod paths on 2026-10-11.
+Disposition: superseded for the footprint ledger by `common/scripted_effects/021_random_civil_war_event6_footprint_effects.txt` (11 Oct 2026). The living-carrier resolver and snapshot builder below stay parked and unresolved.
 This folder holds the query and snapshot layer drafted for `event021_native_release_footprint_gap_2026-10-07.md` and the registered footprint addendum.
 It is not loaded by the game, because it has no producer or consumer in the shipped Event 021 flow.
 

@@ -24,7 +24,7 @@ The region builder checks adjacency while it grows each span, records allocated 
 
 The valid route list is cycled so multiple regions can use the same supported archetype instead of treating each route type as a one-front slot.
 
-Each ordinary candidate stores a variable-length connected state span and a viable anchor/capital; Event 006 rows retain their package-owned region and force adapter.
+Each ordinary candidate stores a variable-length connected state span and a viable anchor/capital; Event 006 rows retain their package-owned region and force adapter, and their span is the anchor plus every other state the native release hands to the carrier (`021_random_civil_war_event6_footprint_effects.md`).
 
 The candidate collector's ordinary row count is limited by the number of viable anchors, the live severity/territory-derived belligerent capacity, the exact prepared force package, and the remaining front envelope.
 It is also limited to the free dynamic civil-war tags left after the primary claimant's own tag, as counted by `event021_count_free_dynamic_tags` in `021_random_civil_war_dynamic_tag_effects.md`.

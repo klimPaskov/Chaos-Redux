@@ -1,0 +1,158 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 021 EVENT 006 NATIVE RELEASE FOOTPRINT
+# ============================================================================
+# Native `release` gives a dormant Event 006 carrier every state its donor owns
+# that is a core of that carrier. These helpers publish that complete transfer
+# set into the Event 021 front ledger before the release, prove it against the
+# current map at the mutation gate, and record what the carrier actually
+# received afterwards. Event 006 owns the package-to-carrier crosswalk
+# (`independence_wave_collect_event021_native_release_footprint`); this file
+# only validates and records. See 021_random_civil_war_event6_footprint_effects.md.
+# ============================================================================
+
+# COUNTRY scope on the donor. Inputs: temporary `event021_event6_footprint_input_package_id`
+# and `event021_event6_footprint_check_rows` (see the eligibility trigger),
+# regular target `event021_event6_footprint_anchor` (the explicitly assigned
+# anchor, excluded from the eligibility test because callers prove it
+# separately), and caller-declared outputs `event021_event6_footprint_valid` and
+# the temporary array `independence_wave_event021_footprint_states`.
+# Output: the native transfer set and `event021_event6_footprint_valid` = 1 only
+# when every non-anchor member may leave the donor. An empty set is valid.
+event021_parent_collect_event6_native_footprint = {
+	save_event_target_as = event021_event6_footprint_host
+	set_variable = { independence_wave_event021_adapter_package_id = event021_event6_footprint_input_package_id }
+	independence_wave_collect_event021_native_release_footprint = yes
+	clear_variable = independence_wave_event021_adapter_package_id
+	set_temp_variable = { event021_event6_footprint_valid = constant:random_civil_war_value.one }
+	for_each_scope_loop = {
+		array = independence_wave_event021_footprint_states
+		if = {
+			limit = {
+				NOT = { state = event_target:event021_event6_footprint_anchor }
+				NOT = { event021_parent_event6_footprint_state_eligible = yes }
+			}
+			set_temp_variable = { event021_event6_footprint_valid = constant:random_civil_war_value.zero }
+		}
+	}
+}
+
+# COUNTRY scope on the opening host while the opening transaction owns the
+# original map. Called after the selected anchor is reserved. Adds every other
+# state the native release will move to the primary plan and the collision
+# reservation. An unsafe footprint raises `random_civil_war_event6_footprint_blocked`,
+# which makes the opening plan invalid so the transaction rolls back before any
+# ownership change.
+event021_parent_reserve_event6_native_footprint = {
+	clr_country_flag = random_civil_war_event6_footprint_blocked
+	if = {
+		limit = {
+			has_variable = random_civil_war_event6_package_id
+			has_event_target = random_civil_war_event6_selected_anchor
+		}
+		event_target:random_civil_war_event6_selected_anchor = { save_event_target_as = event021_event6_footprint_anchor }
+		set_temp_variable = { event021_event6_footprint_input_package_id = random_civil_war_event6_package_id }
+		set_temp_variable = { event021_event6_footprint_check_rows = constant:random_civil_war_value.zero }
+		set_temp_variable = { event021_event6_footprint_valid = constant:random_civil_war_value.zero }
+		clear_temp_array = independence_wave_event021_footprint_states
+		event021_parent_collect_event6_native_footprint = yes
+		if = {
+			limit = { check_variable = { var = event021_event6_footprint_valid value = constant:random_civil_war_value.one compare = equals } }
+			for_each_scope_loop = {
+				array = independence_wave_event021_footprint_states
+				if = {
+					limit = { NOT = { state = event_target:event021_event6_footprint_anchor } }
+					add_to_array = { array = global.random_civil_war_plan_states value = THIS }
+					add_to_array = { array = global.random_civil_war_reserved_states value = THIS }
+					add_to_variable = { global.random_civil_war_plan_state_count = constant:random_civil_war_value.one }
+				}
+			}
+		}
+		else = { set_country_flag = random_civil_war_event6_footprint_blocked }
+	}
+}
+
+# COUNTRY scope on the host at the mutation gate. Re-reads the native transfer
+# set from the current map and proves each member is still eligible and belongs
+# to a frozen ledger row: the opening plan's row entries or the reviewing
+# government's active row entries. Caller-declared output:
+# `event021_event6_footprint_covered` = 1 when the release cannot move a state
+# outside the ledger.
+event021_parent_prove_event6_footprint_in_ledger = {
+	set_temp_variable = { event021_event6_footprint_covered = constant:random_civil_war_value.zero }
+	if = {
+		limit = {
+			has_variable = random_civil_war_event6_package_id
+			has_event_target = random_civil_war_event6_selected_anchor
+		}
+		event_target:random_civil_war_event6_selected_anchor = { save_event_target_as = event021_event6_footprint_anchor }
+		set_temp_variable = { event021_event6_footprint_input_package_id = random_civil_war_event6_package_id }
+		set_temp_variable = { event021_event6_footprint_check_rows = constant:random_civil_war_value.zero }
+		set_temp_variable = { event021_event6_footprint_valid = constant:random_civil_war_value.zero }
+		clear_temp_array = independence_wave_event021_footprint_states
+		event021_parent_collect_event6_native_footprint = yes
+		if = {
+			limit = { check_variable = { var = event021_event6_footprint_valid value = constant:random_civil_war_value.one compare = equals } }
+			set_temp_variable = { event021_event6_footprint_covered = constant:random_civil_war_value.one }
+			for_each_scope_loop = {
+				array = independence_wave_event021_footprint_states
+				if = {
+					limit = {
+						NOT = { state = event_target:event021_event6_footprint_anchor }
+						NOT = { is_in_array = { array = global.random_civil_war_planned_front_state_entries value = THIS } }
+						NOT = {
+							AND = {
+								has_event_target = random_civil_war_active_front_commit_owner
+								event_target:random_civil_war_active_front_commit_owner = {
+									is_in_array = { array = random_civil_war_active_front_state_entries value = PREV }
+								}
+							}
+						}
+					}
+					set_temp_variable = { event021_event6_footprint_covered = constant:random_civil_war_value.zero }
+				}
+			}
+		}
+	}
+}
+
+# COUNTRY scope on the host, after the native release and the explicit anchor
+# handover. Publishes how many states the carrier actually holds: its whole
+# territory for a dormant birth, the anchor alone for a living reuse (the
+# release does nothing then).
+event021_parent_publish_event6_release_footprint = {
+	set_temp_variable = { event021_event6_released_count = constant:random_civil_war_value.one }
+	if = {
+		limit = {
+			NOT = { has_country_flag = random_civil_war_event6_actor_preexisted }
+			has_event_target = random_civil_war_event6_selected_actor
+		}
+		event_target:random_civil_war_event6_selected_actor = {
+			set_temp_variable = { event021_event6_released_count = num_owned_states }
+		}
+	}
+	set_variable = { random_civil_war_event6_opening_state_count = event021_event6_released_count }
+	set_variable = { global.random_civil_war_event6_pending_opening_state_count = event021_event6_released_count }
+}
+
+# COUNTRY scope on the carrier. Records the states it actually received as its
+# opening region: every owned state after a dormant birth, the anchor alone for
+# a living reuse. The host's `random_civil_war_event6_actor_preexisted` flag
+# tells the two apart.
+event021_parent_record_event6_actor_footprint = {
+	save_event_target_as = event021_event6_footprint_actor
+	clear_array = random_civil_war_opening_core_states
+	if = {
+		limit = {
+			has_event_target = random_civil_war_event6_selection_owner
+			event_target:random_civil_war_event6_selection_owner = { NOT = { has_country_flag = random_civil_war_event6_actor_preexisted } }
+		}
+		every_owned_state = {
+			event_target:event021_event6_footprint_actor = { add_to_array = { array = random_civil_war_opening_core_states value = PREV } }
+		}
+	}
+	else_if = {
+		limit = { has_event_target = random_civil_war_event6_selected_anchor }
+		add_to_array = { array = random_civil_war_opening_core_states value = event_target:random_civil_war_event6_selected_anchor }
+	}
+	set_variable = { random_civil_war_opening_state_count = random_civil_war_opening_core_states^num }
+}

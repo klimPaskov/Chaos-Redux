@@ -1,0 +1,35 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 021 EVENT 006 NATIVE RELEASE FOOTPRINT TRIGGERS
+# ============================================================================
+# Native `release` hands a dormant Event 006 carrier every state the donor owns
+# that is a core of that carrier. This trigger is the per-state eligibility test
+# for that complete transfer set. See
+# 021_random_civil_war_event6_footprint_effects.md for the contract.
+# ============================================================================
+
+# STATE scope. Inputs: regular event target `event021_event6_footprint_host`
+# (the donor country) saved by the collecting effect, and the temporary
+# `event021_event6_footprint_check_rows` (1 while candidate rows are still being
+# assembled, 0 at the plan and mutation gates where the row ledger already
+# holds this footprint). True when this state may leave the donor with a native
+# release: owned and controlled by the donor, not its capital, and not held by
+# another Event 021 reservation, front anchor, or candidate row. A Fracture
+# Cascade scenario reservation is accepted only when the donor's own frozen
+# primary region holds it.
+event021_parent_event6_footprint_state_eligible = {
+	is_owned_by = event_target:event021_event6_footprint_host
+	is_controlled_by = event_target:event021_event6_footprint_host
+	NOT = { is_capital = yes }
+	NOT = { is_in_array = { array = global.random_civil_war_reserved_states value = THIS } }
+	NOT = { is_in_array = { array = global.random_civil_war_front_states value = THIS } }
+	OR = {
+		check_variable = { var = event021_event6_footprint_check_rows value = constant:random_civil_war_value.zero compare = equals }
+		NOT = { is_in_array = { array = event021_parent_dynamic_optional_front_selected_states value = THIS } }
+	}
+	OR = {
+		NOT = { is_in_array = { array = global.random_civil_war_scenario_reserved_states value = THIS } }
+		event_target:event021_event6_footprint_host = {
+			is_in_array = { array = random_civil_war_scenario_frozen_states value = PREV }
+		}
+	}
+}

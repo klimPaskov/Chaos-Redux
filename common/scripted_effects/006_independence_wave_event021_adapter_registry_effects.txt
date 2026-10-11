@@ -154,3 +154,20 @@ independence_wave_release_event021_adapter_actor = {
 	if = { limit = { check_variable = { independence_wave_event021_adapter_package_id = constant:independence_wave_package_id.iw_173 } NOT = { HAW = { exists = yes } } } release = HAW }
 	if = { limit = { check_variable = { independence_wave_event021_adapter_package_id = constant:independence_wave_package_id.iw_184 } NOT = { HBX = { exists = yes } } } release = HBX }
 }
+
+# COUNTRY scope on the exact donor (the Event 021 host or reviewing government).
+# Input: normal `independence_wave_event021_adapter_package_id` on the donor.
+# Output: the caller-declared temporary array `independence_wave_event021_footprint_states`,
+# cleared here and filled with every state the donor owns that the native
+# `release` in `independence_wave_release_event021_adapter_actor` hands to the
+# registered static carrier, regardless of controller. The array is empty when
+# the carrier already exists, because the release then does nothing. Read-only:
+# no ownership, core or flag changes.
+independence_wave_collect_event021_native_release_footprint = {
+	clear_temp_array = independence_wave_event021_footprint_states
+	set_temp_variable = { independence_wave_event021_footprint_package_id = independence_wave_event021_adapter_package_id }
+	every_owned_state = {
+		limit = { independence_wave_state_is_event021_native_release_core = yes }
+		add_to_temp_array = { array = independence_wave_event021_footprint_states value = THIS }
+	}
+}

@@ -1,6 +1,6 @@
 # Event 021 native Event 006 release footprint gap
 
-Disposition: accepted and queued for implementation, not resolved by the single-row remnant proof.
+Disposition: implemented in `common/scripted_effects/021_random_civil_war_event6_footprint_effects.txt` and the Event 006 collector `independence_wave_collect_event021_native_release_footprint`, with fixture tests in `.tools/test_event021_native_release_footprint.py`. Native `release`, living-carrier reuse and rollback remain unobserved in the engine. The text below records the gap that was repaired.
 Acceptance basis: full Event 021 goal, Part 2 region/remnant protection, Part 4 registered Event 006 territory rules, and Part 7 prohibition on taking the protected remnant.
 
 ## Current contradictory evidence
@@ -28,4 +28,5 @@ Keep Event 006 fire state, weight, cap, evolution history and automatic league e
 This is a current implementation gap, not approval to change the accepted Event 006 country packages, replace their trees or create new tags.
 Native release, existing carrier reuse, territory rollback and package admission require mapped engine evidence beyond bounded source fixtures.
 
-A partial query and snapshot prototype for this repair is parked in `native_footprint_prototype/` (not loaded by the game, no producer or consumer in the shipped flow); its README states how to resume.
+The shipped repair is deliberately smaller than the parked prototype in `native_footprint_prototype/`: the footprint is the donor-owned cores of the dormant static carrier plus the anchor, an unsafe member rejects the whole package, and the complete set is the row's state span in the opening, active-review and frozen scenario ledgers.
+The prototype's living-carrier resolver, territory snapshot builder and journaled rollback were not wired and stay parked.

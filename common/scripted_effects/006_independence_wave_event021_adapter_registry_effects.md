@@ -30,6 +30,14 @@ When a complete Event 006 package is added or removed, update this Event 006-own
 - Output: releases the registered static carrier only when that carrier does not already exist.
 - Side effects: country release only; package setup, Event 006 history, evolution, league, and network state remain untouched.
 
+`independence_wave_collect_event021_native_release_footprint` owns the matching package-to-native-footprint mapping.
+
+- Scope: the exact donor country (the Event 021 host or reviewing government).
+- Input: `independence_wave_event021_adapter_package_id`; the caller declares the temporary array `independence_wave_event021_footprint_states` first.
+- Output: that array holds every state the donor owns that native `release` hands to the registered static carrier, whoever controls it; it is empty when the carrier already exists.
+- Side effects: none. The per-state test is `independence_wave_state_is_event021_native_release_core`, which mirrors the release crosswalk tag for tag.
+- Consumer: `021_random_civil_war_event6_footprint_effects.md`.
+
 `independence_wave_event021_dormant_package_available` is defined in `common/scripted_triggers/006_independence_wave_event021_adapter_registry_triggers.txt` and owns the matching package-to-anchor/carrier admission table.
 
 - Scope: proposed Event 021 host country.

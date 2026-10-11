@@ -166,6 +166,11 @@ class CandidateRuntime:
                                     random_civil_war_event6_candidate_archetype=Decimal(2))
                 self.targets.update(random_civil_war_event6_selected_anchor=anchor,
                                     random_civil_war_event6_selected_actor=self.carrier)
+        elif name == 'event021_parent_collect_event6_native_footprint':
+            # Fixture boundary: the footprint rules run in test_event021_native_release_footprint.
+            # Here each package's native release moves only its anchor.
+            self.temp_arrays['independence_wave_event021_footprint_states'] = [self.targets['event021_event6_footprint_anchor']]
+            self.temporary['event021_event6_footprint_valid'] = Decimal(1)
         elif name in ('event021_parent_save_event6_host_identity',
                       'event021_parent_restore_event6_host_identity',
                       'event021_parent_clear_event6_package_transaction'):
