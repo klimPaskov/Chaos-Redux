@@ -256,6 +256,8 @@ Validate native transparency before processing: unused corners and padding must 
 
 For transparent icon sources, a nonzero-alpha bounding box touching the canvas is not sufficient evidence of a clipped subject.
 Inspect boundary coverage at more than one alpha threshold (for example, 1, 8, and 16), together with source-resolution and native-size views.
+Before calling ghost RGB in a raw preview a visible colour fringe or requesting regeneration, compare the source correctly alpha-composited over light and dark backgrounds at source and native size, and record the suspect pixels' alpha range and persistence at the inspected thresholds.
+RGB confined to negligible-alpha pixels is not by itself a visible-fringe defect; reject any fringe visible in the composited views, and preserve legitimate translucent detail.
 Isolated alpha-1 residue outside a complete, inset subject may receive bounded exterior-noise cleanup during normalization; preserve the untouched source, all legitimate subject detail, and the chosen threshold/bounds evidence.
 If a visible leaf, frame, or other subject part is actually cut off, use a focused image-generation edit to restore it; padding or shrinking the clipped painting does not restore the missing detail.
 
