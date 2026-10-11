@@ -159,3 +159,28 @@ Stable registered sprites in `interface/015_utopia_manifesto.gfx` now resolve to
 | `idea_utopia_practical_commonwealth` | `GFX_idea_utopia_practical_commonwealth` | `gfx/interface/ideas/015_utopia_manifesto/idea_utopia_practical_commonwealth_shard6_20261011.dds` |
 | `idea_utopia_stewardship_burden` | `GFX_idea_utopia_stewardship_burden` | `gfx/interface/ideas/015_utopia_manifesto/idea_utopia_stewardship_burden_shard6_20261011.dds` |
 | `idea_utopia_unmeasured_country` | `GFX_idea_utopia_unmeasured_country` | `gfx/interface/ideas/015_utopia_manifesto/idea_utopia_unmeasured_country_shard6_20261011.dds` |
+
+
+## Shard 6 generated decision-icon delivery (2026-10-11)
+
+The current Event 015 decision icons are source-based PNGs and strict DDS outputs generated from fifteen exact action requirements. One independent sample review approved `decision_utopia_settlement_charter`, its current sprite, and live decision consumers; all fifteen passed automatic alpha, dimension, strict header, and round-trip checks.
+
+Existing decision sprite identifiers were retained and their texture paths now use new sibling DDS files. Prior runtime DDS files remain byte-for-byte unchanged.
+
+| Asset | Sprite | Versioned runtime DDS |
+|---|---|---|
+| `decision_utopia_boundary_arbitration` | `GFX_decision_utopia_boundary_arbitration` | `gfx/interface/decisions/015_utopia_manifesto/decision_utopia_boundary_arbitration_shard6_20261011.dds` |
+| `decision_utopia_common_harbor` | `GFX_decision_utopia_common_harbor` | `gfx/interface/decisions/015_utopia_manifesto/decision_utopia_common_harbor_shard6_20261011.dds` |
+| `decision_utopia_constitutional_correction` | `GFX_decision_utopia_constitutional_correction` | `gfx/interface/decisions/015_utopia_manifesto/decision_utopia_constitutional_correction_shard6_20261011.dds` |
+| `decision_utopia_district_foundation` | `GFX_decision_utopia_district_foundation` | `gfx/interface/decisions/015_utopia_manifesto/decision_utopia_district_foundation_shard6_20261011.dds` |
+| `decision_utopia_household_guard` | `GFX_decision_utopia_household_guard` | `gfx/interface/decisions/015_utopia_manifesto/decision_utopia_household_guard_shard6_20261011.dds` |
+| `decision_utopia_just_cause_review` | `GFX_decision_utopia_just_cause_review` | `gfx/interface/decisions/015_utopia_manifesto/decision_utopia_just_cause_review_shard6_20261011.dds` |
+| `decision_utopia_league_aid_corridor` | `GFX_decision_utopia_league_aid_corridor` | `gfx/interface/decisions/015_utopia_manifesto/decision_utopia_league_aid_corridor_shard6_20261011.dds` |
+| `decision_utopia_need_case` | `GFX_decision_utopia_need_case` | `gfx/interface/decisions/015_utopia_manifesto/decision_utopia_need_case_shard6_20261011.dds` |
+| `decision_utopia_publish_accounts` | `GFX_decision_utopia_publish_accounts` | `gfx/interface/decisions/015_utopia_manifesto/decision_utopia_publish_accounts_shard6_20261011.dds` |
+| `decision_utopia_recognize_friend` | `GFX_decision_utopia_recognize_friend` | `gfx/interface/decisions/015_utopia_manifesto/decision_utopia_recognize_friend_shard6_20261011.dds` |
+| `decision_utopia_seasonal_reserve` | `GFX_decision_utopia_seasonal_reserve` | `gfx/interface/decisions/015_utopia_manifesto/decision_utopia_seasonal_reserve_shard6_20261011.dds` |
+| `decision_utopia_send_magistrates` | `GFX_decision_utopia_send_magistrates` | `gfx/interface/decisions/015_utopia_manifesto/decision_utopia_send_magistrates_shard6_20261011.dds` |
+| `decision_utopia_settlement_charter` | `GFX_decision_utopia_settlement_charter` | `gfx/interface/decisions/015_utopia_manifesto/decision_utopia_settlement_charter_shard6_20261011.dds` |
+| `decision_utopia_technical_mission` | `GFX_decision_utopia_technical_mission` | `gfx/interface/decisions/015_utopia_manifesto/decision_utopia_technical_mission_shard6_20261011.dds` |
+| `decision_utopia_ultimatum` | `GFX_decision_utopia_ultimatum` | `gfx/interface/decisions/015_utopia_manifesto/decision_utopia_ultimatum_shard6_20261011.dds` |
