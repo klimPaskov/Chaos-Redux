@@ -1,5 +1,51 @@
 # WP5 Pilot-package and creature rigs - Delivery Report
 
+## Current repair work, 11 October 2026
+
+Package status: incomplete; Cave native geometry and rig work is paused at `wp5_13_paused_source.blend` with no accepted export, and the remaining model repairs are queued for exclusive Blender windows.
+The cavity has known intersection findings within the required jaw opening; it remains an unaccepted source candidate.
+Cave roughness/metalness sources were recovered by one Meshy 7 retexture task with original UVs, and all returned assets were archived immediately.
+All 30,000 original triangle/UV identities match after reversing provider normalization, with maximum restored position error 0.000000504 units.
+The original runtime geometry/normals remain selected; the provider output changes corner normals by up to 97.30 degrees and its diffuse loses the intended magma identity, so neither substitutes for the requested body.
+Recovered roughness/metallic maps are eligible source inputs; the recovered normal map remains unselected until tangent-basis transfer or native rebake is proven.
+WP5 released both owned locks, and WP6 waits behind a competing WP3 reservation while working on source preparation.
+The explicit user assignment includes the WP5 tickets, their raw defects and section 3, permits Meshy credits/downloads, forbids sound downloads/synthesis and prohibits launching HOI4.
+Alien infantry is an additional requested consumer under active WP4 ownership, so it is inventoried without overwriting that owner's work.
+The exact-current source, checkpoint, all-role, scale, topology and UV evidence is recorded in `wp5_models_handoff.md` and `.tmp/wp5_models/evidence/`; it proves source parity rather than model acceptance.
+Thirteen unaccepted source `.anim` derivatives remove 48 quaternion-sign discontinuities with decoded equivalent-motion proof; no runtime mesh or action was installed.
+Dependency prerequisite commit `40a075ac2` reconciles the committed calibrated/finger/dry-material delivery sources and canonical LF hashes; the parent's environment verification has no findings.
+Material prerequisite `17d0c080c` adds strict physical bone/magma/worn-steel classes and hash-bound job recipe calibration without changing existing defaults; 22 texture tests cover source preservation, metal union/leakage and decoded BC3 calibration.
+Pipeline guidance commit `ac1dd1273` records verified retexture payload limits and uncertain-delivery reconciliation; the failed oversized transport dispatched no task, and one corrected smaller exact-geometry GLB delivered the successful provider attempt.
+The two Event 016 historical pilot handoffs identify the active 40-bone paleogenetic and 30-bone xenobiological packages, 30 FPS actions and 0.8 entity scales separately from their historical tranches.
+The parent installed 31 selected PCM16, 44.1 kHz mono WAVs: nine cave cues, nine temporal cues and thirteen independent rat-family cues.
+Selected source/destination hashes, preserved input bytes and timing/level receipts are in `.tmp/wp5wp6/audio_install/`; shipping attribution accompanies each package.
+The cave uses a short growl for repeated states, an eight-second idle-entry bellow, four 0.35-second gravel contacts and a separate death landing cue.
+Audio commits are `834b13c96` for Cave, `95c3fce6a` for Temporal Guard and `13a788bcf` for Rat Brutes; no runtime mesh/action repair is implied by those commits.
+The temporal clock is a recorded four-second loop with a 2.23 dB edge-RMS difference; the death cue has a 0.36-second clock-stop beat and two seconds of recorded buzz decay.
+Rat movement uses two recorded one-second loops with entry-only triggers; the retreat vocal fires once, training retains its safe per-cycle alert, and the death vocal ends 20 ms before the current terminal action ends.
+The `black_plague_rat` consumers are `rat_swarm`, `rat_brutes`, `rat_burrowers`, `rat_carrion_guard`, `rat_dock_stowaways` and `rat_tunnelers`; RTA/RTX infantry selection and order voices bind tag-wide to the independent recorded samples.
+The inherited rat sound definitions and WAVs used by the xenobiological organism are preserved; its wrong-family voice remains unresolved rather than being presented as a repaired source set.
+The scoped 32-state audio check reports no sample or particle overlap; final authored contact markers are still pending, and the ticket's cave idle-entry bellow and rat retreat acknowledgement remain deliberate one-shots.
+Paleogenetic and insectoid source gaps, single-take variant gaps, and the unconsumed temporal selection/acknowledgement identifiers remain explicit in `wp5_wp6_audio_handoff.md` and the current integration evidence.
+The missing historical Ghost table is superseded for the replacement set by verified CC0 original-member evidence in the WP6 audio delivery; no perceptual audition is claimed.
+The shared-delivery sections below remain historical baseline evidence, superseded for current source selection and preparation by this section and the linked handoff.
+Meshy credits spent in this WP5 repair work: 10 (Cave retexture task `01a12a37-85dd-70ca-b902-1566f7f4accd`, provider success; live balance 355 to 345).
+
+## Current per-model work
+
+| Model | Delivered source/audio work | Remaining repair and blocker | Current evidence |
+|---|---|---|---|
+| paleogenetic_creature | Exact active 40-bone source and eight actions reconciled; archived PBR/current UV correspondence proved. | Topology, normals, tentacle weights and eight actions remain; dedicated matched recorded cues are unavailable. | `wp5_models_handoff.md`, source/export and pilot-provider-UV receipts; dedicated audio gaps in `wp5_wp6_audio_handoff.md`. |
+| xenobiological_assault_organism | Exact active 30-bone source and PBR/current UV correspondence proved. | Thorax/head topology, plate normals, scythe motion and all-role review remain; matched insect recordings are unavailable. | Same WP5 source/UV evidence; retained rat bindings explicitly unresolved. |
+| temporal_guard | Nine mastered recorded cues installed, including four-second clock and distinct clock-stop/buzz death; source/PBR/UV correspondence proved. | Geometry/normals, slam, loops and death repair remain; selection/order routing is unidentified. | Commit `95c3fce6a`, temporal audio install receipt, WP5 source handoff. |
+| cave_monster_brood | Nine recorded cues installed; native jaw/stance source checkpoint retained; original-UV PBR recovery completed for 10 credits. | Cavity crossings at required gape, real all-role motion, native class masks, compatible normal transfer and export proofs remain. | Commit `834b13c96`, checkpoint13, retexture/correspondence receipts and WP5 handoff. |
+| rat_brutes | Thirteen independent recorded cues installed, with short calls/bites, scurry loops, terminal-safe death and attack entry blend. | Tail articulation, fur normals/cards, cloth/toe weights, topology and eight-role proofs remain; six cue families still lack a second actual take. | Commit `13a788bcf`, rat install receipt and WP5 handoff. |
+| alien_infantry | Inventory only. | Its active WP4 owner retains all repair and acceptance responsibility. | External-owner boundary in WP5 handoff; no overwrite or approval by this package. |
+
+No runtime mesh or action repair has been installed in this task stage.
+Source/native candidates remain unaccepted where the remaining column identifies defects or missing proof.
+No requested design reduction has been substituted; every unmet model requirement remains open.
+
 Disposition: `implemented` for this documentation handoff; package mesh/action reconstruction, visual acceptance, final entity wiring, and audio install remain open where the measurements below show gaps. The authorized package scope comes from the user-authored unit-fix plan, SHA-256 `1939b400cba160c6d4903e37952e8e55efdb1bfeacf0b4ab061e89c8792c79b2`.
 
 Package models: paleogenetic_creature, xenobiological_assault_organism, temporal_guard, cave_monster_brood, rat_brutes. The full per-model map, DDS, mesh, action, topology, reimport, and entity-lint evidence is in `docs/plans/unit_fix_2026-10/per_model_delivery_metrics.json`.
