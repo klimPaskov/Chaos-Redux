@@ -8,7 +8,9 @@ Cave roughness/metalness sources were recovered by one Meshy 7 retexture task wi
 All 30,000 original triangle/UV identities match after reversing provider normalization, with maximum restored position error 0.000000504 units.
 The original runtime geometry/normals remain selected; the provider output changes corner normals by up to 97.30 degrees and its diffuse loses the intended magma identity, so neither substitutes for the requested body.
 Recovered roughness/metallic maps are eligible source inputs; the recovered normal map remains unselected until tangent-basis transfer or native rebake is proven.
-WP5 released both owned locks, and WP6 waits behind a competing WP3 reservation while working on source preparation.
+WP5 released both owned locks; exclusive native production remains blocked by the foreign WP3 reservation after the independent source and audio work was finished.
+Read-only ownership evidence in `.tmp/wp6_models/foreign_reservation_evidence.json` identifies a live pinned Blender Lab process and the unchanged foreign TEMP reservation; a free OS worker lease does not authorize takeover.
+Resume the saved Cave source only after a verified exclusive handover; no foreign lock, process or scene was changed.
 The explicit user assignment includes the WP5 tickets, their raw defects and section 3, permits Meshy credits/downloads, forbids sound downloads/synthesis and prohibits launching HOI4.
 Alien infantry is an additional requested consumer under active WP4 ownership, so it is inventoried without overwriting that owner's work.
 The exact-current source, checkpoint, all-role, scale, topology and UV evidence is recorded in `wp5_models_handoff.md` and `.tmp/wp5_models/evidence/`; it proves source parity rather than model acceptance.

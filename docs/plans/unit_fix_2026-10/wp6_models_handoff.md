@@ -1,9 +1,12 @@
 # WP6 model production handoff
 
-Current disposition: preparatory production delivered; required live model authoring queued behind an unavailable exclusive Blender session, package incomplete.
+Current disposition: preparatory production delivered; required native model authoring blocked by the unavailable exclusive Blender session, package incomplete.
 The parent assignment authorizes repairs of five existing unit packages, model candidates and evidence, with runtime wiring and commits retained by the parent.
 No Hearts of Iron IV process, sound download, sound synthesis, runtime registry edit or commit has been made by this worker.
 Audio processing belongs to the parent's `wp5_wp6_audio` specialist; cannibal WAVs and definitions remain WP2-owned.
+Current three-cannibal WAV header durations and byte hashes are captured read-only in `.tmp/wp6_models/cannibal_cue_readiness.json`, bound to the parent inventory/lint revisions; all sampled hashes match that inventory.
+Final native/exported markers must cover measured sole plants without duplicate seam events, strike acceleration/contact, training exertion and collapse landing, using the WP2 contact-time rule with 10 ms transient pre-roll.
+Existing entity event times are unverified source timings, and sound definitions, cue edits and event wiring remain parent-owned.
 
 ## Delivered preparatory candidates
 
@@ -184,6 +187,10 @@ WP6 reported that race and has not created, deleted or leased a lock, loaded a m
 The parent has authorized atomic WP6 acquisition when the competing owner genuinely releases; no foreign lock may be removed and the borrowed PID 41392 must never be terminated by WP6.
 The competing TEMP lock subsequently advanced to `wp3_leftovers parasitic_zombies 2026-10-11T12:22:31`, and `Get-Process -Id 41392` returned no process.
 Live Lab discovery must therefore occur after owning the coordinated window instead of assuming the old PID still exists.
+Parent-authorized read-only process/lease inspection subsequently found live pinned background Lab PID 38428, created 2026-10-11 09:24:04 UTC, with MCP port 9877; its launcher parent 44624 is absent.
+At 11:30:57 UTC the OS byte-0 worker lease was free, proved through a read-only OPEN_EXISTING handle and nonblocking lock/unlock with unchanged file size/mtime; the foreign TEMP reservation stayed byte-identical.
+The exact evidence is `.tmp/wp6_models/foreign_reservation_evidence.json`; a persistent live Lab plus free OS lease does not establish abandoned TEMP ownership or a safe scene transfer, so no takeover, deletion or live Lab call occurred.
+The skill's stale-file rule concerns the OS advisory file and forbids deleting it to bypass contention; this worker still may delete only its own TEMP reservation after stopping its own process under the parent assignment.
 The prior WP5 ownership of PID 41392 and both locks is historical, not the current TEMP-lock claim.
 Historical readiness checks recorded the former external WP1/WP4 owner, persistent PID 41392, and temporary workers 21868 and 54096; those observations are not current ownership claims.
 This is a shared production-resource dependency, not a missing provider generation requirement or an unavailable optional check.
@@ -200,6 +207,9 @@ Ghost needs the authored hovering idle and chest-height rakes, articulated claws
 Battalion needs closed attack/support loops, kneel and coat deformation repair, real retained hose geometry and rigid separate lance with finger contacts, independent material stream, all firing-state locator/phase handoff.
 Skeletal changes will invalidate every downstream weight/action/export approval and require all eight roles to be rechecked.
 Gait plant counts and event times remain unmeasured; nominal quarter cycles must not be installed as measured contacts.
+For every final WP6 export, an independent decoded-hierarchy audit must supplement the shared motion gate: only actual finger leaf joints may skip world-translation limits, and every joint retains angular/local-channel limits.
+The current hash-locked shared gate exempts all digit names matching `Hand(Thumb|Index|Middle|Ring|Pinky)digits` at line 356 without a child-hierarchy check; the parent confirmed that nonleaf digits must receive the ordinary calibrated translation checks.
+Its exact source remains `d985ac2702868e030f1de44ed83b74e161de38779194bde3827248c5ddb3811c`, matching the current dependency lock; shared tooling and its foreign working-tree edits remain untouched.
 
 At baseline intake, Siege and March retained no original provider GLB/FBX files; their installed geometry checkpoints remain usable for authorized repair.
 March has the newly archived existing-model retexture GLB described above, which does not replace its selected runtime geometry.

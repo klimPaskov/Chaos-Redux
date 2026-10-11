@@ -2,7 +2,10 @@
 
 ## Current repair work, 11 October 2026
 
-Package status: incomplete; all five model repairs are queued for exclusive Blender windows.
+Package status: incomplete; native production for all five model repairs remains blocked by an unavailable exclusive Blender session.
+All independent source/audio work in this stage is finished; no runtime mesh or action reconstruction is accepted.
+Read-only reservation evidence in `.tmp/wp6_models/foreign_reservation_evidence.json` identifies live pinned Blender Lab PID 38428 and an unchanged foreign TEMP reservation; its free OS worker lease does not prove abandoned scene ownership.
+The native repair route is ready to resume on a verified exclusive handover; no foreign lock, process or scene was changed.
 Ghost has priority because its original-body material sources are recovered; a competing WP3 reservation acquired the released session before WP6, and that reservation is respected.
 The explicit user assignment includes the WP6 tickets, their raw defects and section 3, permits Meshy credits/downloads, forbids sound downloads/synthesis and prohibits launching HOI4.
 Source inventories, active bindings, all 40 action diagnostics and exact blockers are recorded in `wp6_models_handoff.md` and `.tmp/wp6_models/`.
