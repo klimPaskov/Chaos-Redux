@@ -128,6 +128,6 @@ Implementation must use:
 
 - `hoi4.tech_inspect` for every candidate folder, branch, owner technology, prerequisite, unlock, grant, bonus, reference, and missing asset.
 - `hoi4.tech_render` for each affected folder or branch and for the final registry coverage view.
-- `hoi4.tech_compare` after source changes.
+- `hoi4.tech_inspect` (`mode = compare`) after source changes.
 
 The completion report should list the MCP revision or artifact references, verified branch count, excluded branch count, blocked branch count, and the reason for every blocked normal domain.

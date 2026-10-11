@@ -116,7 +116,7 @@ Implementation must update the authoritative workbook and current cluster regist
 
 ### Required MCP evidence
 
-Technology and doctrine surfaces require `hoi4.tech_inspect`, `hoi4.tech_render`, and `hoi4.tech_compare` against the final registry and any source changes.
+Technology and doctrine surfaces require `hoi4.tech_inspect`, `hoi4.tech_render`, and `hoi4.tech_inspect` (`mode = compare`) against the final registry and any source changes.
 Every weighted target, option, incident, foreign offer, route, research priority, and evolution timing surface requires the probability audit cycle defined in the matrix.
 The final event chain requires event inspect, render, and compare evidence where the installed server supports it.
 

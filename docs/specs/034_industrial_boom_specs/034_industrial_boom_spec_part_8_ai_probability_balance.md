@@ -64,7 +64,7 @@ Evolution pacing goals: Evolution I does not normally arrive right after the ope
 
 Incident goals: light incidents dominate low bands, evolution incidents need their stage and a valid target, protection lowers damaging weight, and a recent incident lowers its own repeat weight.
 
-Every patched surface follows the project probability workflow: inspect the surface, declare the candidate pool and external factors, evaluate the named scenarios before and after, and compare with `hoi4.probability_compare` when supported, or with calculations from the actual script when the analyzer cannot handle it.
+Every patched surface follows the project probability workflow: inspect the surface, declare the candidate pool and external factors, evaluate the named scenarios before and after, and compare with `hoi4.probability_analyze` (`analysis = compare`) when supported, or with calculations from the actual script when the analyzer cannot handle it.
 Exact chances are reported only for complete candidate pools.
 
 ## Balance targets

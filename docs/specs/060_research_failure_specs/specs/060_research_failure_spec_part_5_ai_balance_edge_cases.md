@@ -646,7 +646,7 @@ The scenario matrix in this pack defines expected ordering and starvation checks
 The auditor should distinguish exact, bounded, sampled, score-only, and unresolved results.
 It does not choose new balance targets on its own.
 
-Any patch to a probability-bearing surface requires a baseline audit, an owner-applied patch, and `hoi4.probability_compare` under the same named scenarios.
+Any patch to a probability-bearing surface requires a baseline audit, an owner-applied patch, and `hoi4.probability_analyze` (`analysis = compare`) under the same named scenarios.
 
 ## Completion balance evidence
 

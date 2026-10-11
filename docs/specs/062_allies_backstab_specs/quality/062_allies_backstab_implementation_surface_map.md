@@ -239,7 +239,7 @@ Never edit the three CSV exports directly.
 - event render and compare after implementation
 - baseline probability audit
 - owner implementation and balance pass
-- `hoi4.probability_compare` with the same named scenarios
+- `hoi4.probability_analyze` (`analysis = compare`) with the same named scenarios
 - decision and mission audit
 - localisation audit
 - conditional super-event research and wiring audit

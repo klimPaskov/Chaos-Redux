@@ -98,6 +98,11 @@ Skills are authored in `.claude/skills/<name>/SKILL.md`, which is canonical. `.a
 ### HOI4 MCP
 
 The `hoi4-agent-tools` service is exposed through the `mcp__hoi4_agent_tools__hoi4_*` coding-agent tools for focus trees, event chains, technology trees, weighted logic, scripted GUIs, and maps.
+Use `hoi4.probability_inspect` to find and evaluate current weights in one call; `evaluate: false` requests inventory only.
+Use `hoi4.probability_analyze` with explicit `analysis = compare`, `sweep`, `simulate`, `sequence`, or `render` for deeper evidence, and `hoi4.event_inspect` or `hoi4.tech_inspect` with `mode = compare` for graph comparisons.
+`hoi4.focus_render` includes PNG with decoded icons by default (`png: false` for vector only); map views use `hoi4.map_inspect` with `layer`, `overlays`, `scale`, `tile`, or `area`.
+Use `hoi4.mod_index` with `mode = overview` for a mod summary, or `mode = next_id`, `kind`, and `namespace` or `prefix` for the next free numbered ID across layers; it does not reserve the ID.
+Use `hoi4.error_log` only for user-supplied or explicitly requested logs; never seek logs during ordinary issue review.
 Use checks that answer a concrete question about the change and reuse results until their relevant inputs change.
 For a tool failure or unsupported/inconclusive analysis, allow the initial read-only request and at most one retry with corrected or narrower inputs; skip the retry when the tool is known to be unavailable or there is no useful correction.
 The limit follows the underlying failure across files, scenarios, tools using the same unsupported capability, agents, and resumed turns.
@@ -112,7 +117,9 @@ Reuse schema/version discovery for an unchanged connection; a successful read-on
 If task/job negotiation cannot be confirmed, use the ordinary supported domain call or local source review instead of blocking on that optional delivery mechanism.
 For local documentation and source precedents, verify `hoi4.reference_context`, `hoi4.reference_search`, `hoi4.reference_read`, and `hoi4.source_lookup` in the connected tool list and call their live schemas. Retain the cited source path, line span, and revision; follow `nextLine` only for the relevant section. A source list alone does not establish that the rules were read; use the returned source excerpts or `hoi4.reference_read` for the needed text, without repeating a filesystem read of the same material.
 For nested source lookup, diagnostic-line lookup, continuation, and definition-only reads, follow the [local reference workflow](docs/systems/hoi4_agent_tools_mcp_integration.md#local-reference-workflow).
+Review returned `reference_context.knownMistakes` and their citations; a listed rule does not prove a mistake in current source.
 When `hoi4.script_validate` is exposed, use it to check a relevant effect or trigger body under its explicit scope against installed documentation.
+Prefer file mode (`path`) for changed script files; when supported, verify `known_mistakes` in `checksPerformed` and inspect any `KNOWN_MISTAKE_<RULE>` finding and cited fix.
 Its true result covers only `checksPerformed`; unresolved commands, `valid = null`, unchecked argument blocks, and omitted findings require further inspection, and parameter semantics and engine behavior remain separate evidence.
 Before using `hoi4.event_inspect` or `hoi4.tech_inspect` with `mode = helper_expansion`, `hoi4.job_inspect`, `hoi4.job_cancel`, or asynchronous MCP tasks, verify the connected server version and health, live tool schemas, and client task negotiation. Use only confirmed routes; otherwise follow the installed domain tools and record the missing capability. Inspect final tool results and retain continuation URIs, source revisions, coverage, and unresolved findings. Jobs and helper pages are delivery and coverage tools; keep domain-specific inspect, render, compare, and scenario evidence.
 Verify standalone Technology Tree Viewer availability only when the task needs that viewer, separately from exposed technology routes.
@@ -160,7 +167,7 @@ Use these high-level routing rules:
 - Use audit subagents before completion claims: `chaosx_focus_tree_auditor`, `chaosx_decision_mission_auditor`, `chaosx_country_package_auditor`, `chaosx_localisation_auditor`, `chaosx_event_completion_auditor`, and `chaosx_ai_probability_auditor` for every weighted AI or probability surface.
 - Use `chaosx_ai_probability_auditor` for read-only audits of AI weights, MTTH, event `ai_chance`, random lists, focus and research selection, decision and mission scores, AI strategy factors, and declared custom weighted pools; it uses available MCP analysis or source-derived calculations and returns scenario-specific findings.
 - For changed AI weights, MTTH-backed scores, random selection, strategy factors, or weighted targets, preserve before/after source and compare representative named scenarios through `chaosx_ai_probability_auditor`.
-  Prefer `hoi4.probability_compare` when supported; calculations from the actual script are sufficient when the analyzer fails, provided assumptions and score-versus-probability limits are explicit.
+  Prefer `hoi4.probability_analyze` (`analysis = compare`) when supported; calculations from the actual script are sufficient when the analyzer fails, provided assumptions and score-versus-probability limits are explicit.
   A missing old baseline limits historical delta claims; it does not require reconstructing an entire old workspace or block validating the current behavior.
   The auditor remains read-only and does not choose balance targets.
 - Use `chaosx_scripted_system_architect` for reusable scripted effects, triggers, script constants, event targets, meta effects, variable patterns, and dynamic helper design.

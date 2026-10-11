@@ -41,7 +41,7 @@ Implement actual equipment, manpower, fuel, valid aircraft, ordinary commanders,
 National stocks are not fictional state-local warehouses.
 No permanent supply immunity or country-wide combat boost may replace a local requirement.
 Use supported ordinary equipment and templates across the declared DLC profiles without undoing research losses.
-Inspect any technology grant using `hoi4.tech_inspect`, `hoi4.tech_render` and `hoi4.tech_compare`.
+Inspect any technology grant using `hoi4.tech_inspect`, `hoi4.tech_render` and `hoi4.tech_inspect` (`mode = compare`).
 
 Implement highest-enabled pre-fire tiers at Chaos 200, 400 and 600 and delayed active evolution through the supplied framework.
 Active upgrades issue only positive cumulative entitlement through retained access.

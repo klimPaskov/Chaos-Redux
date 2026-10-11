@@ -4,7 +4,7 @@
 
 Every weighted or random surface begins with `hoi4.probability_inspect`.
 
-Use exact evaluation when the complete candidate pool and all external factors are known. Use bounded or score-only evidence when the pool is incomplete. Use seeded simulation for incident variety and sequence behavior. Use `hoi4.probability_compare` after any source change to a weight, modifier, random list, MTTH, AI score, or target weight.
+Use exact evaluation when the complete candidate pool and all external factors are known. Use bounded or score-only evidence when the pool is incomplete. Use seeded simulation for incident variety and sequence behavior. Use `hoi4.probability_analyze` (`analysis = compare`) after any source change to a weight, modifier, random list, MTTH, AI score, or target weight.
 
 The probability auditor remains read-only and does not choose the balance target.
 
@@ -151,7 +151,7 @@ Evidence for all posture scenarios:
 
 ## Sequence-level acceptance
 
-Use `hoi4.probability_sequence` only after the complete custom-pool manifest declares:
+Use `hoi4.probability_analyze` (`analysis = sequence`) only after the complete custom-pool manifest declares:
 
 - Evaluation cadence.
 - Conviction gain and loss sources.

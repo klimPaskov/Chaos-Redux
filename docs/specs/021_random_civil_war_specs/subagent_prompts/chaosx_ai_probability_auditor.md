@@ -36,12 +36,12 @@ Use named scenarios from the matrix.
 
 Use:
 
-- `hoi4.probability_evaluate` for exact named cases
-- `hoi4.probability_sweep` for thresholds and rank reversals
-- `hoi4.probability_simulate` only for declared uncertain inputs
-- `hoi4.probability_sequence` only when cadence, caps, cooldowns, removals, recovery, resets, and terminal states are complete
-- `hoi4.probability_render` when a matrix or timing view improves review
-- `hoi4.probability_compare` after a parent or owning agent patch, using the same scenario IDs
+- `hoi4.probability_inspect` for exact named cases
+- `hoi4.probability_analyze` (`analysis = sweep`) for thresholds and rank reversals
+- `hoi4.probability_analyze` (`analysis = simulate`) only for declared uncertain inputs
+- `hoi4.probability_analyze` (`analysis = sequence`) only when cadence, caps, cooldowns, removals, recovery, resets, and terminal states are complete
+- `hoi4.probability_analyze` (`analysis = render`) when a matrix or timing view improves review
+- `hoi4.probability_analyze` (`analysis = compare`) after a parent or owning agent patch, using the same scenario IDs
 
 Distinguish exact, bounded, sampled, score-only, and unresolved evidence.
 

@@ -18,7 +18,7 @@ Retain full event-owned behavior without DLC-specific embargo mechanics. Native 
 
 Create and wire exactly the static asset inventory in the asset matrix, including report scenes, category art, separate transparent icon families, achievement triplets, final DDS files, manifests, and runtime wiring. Any additional surface requires an accepted source-spec change.
 
-Implement all five achievements, event and evolution history, Event Details, actor handling, reports, docs, AI, localisation, cluster behavior, and workbook alignment. Run every specialist and audit route required by the package. Each weighted patch needs a baseline audit and `hoi4.probability_compare` against the same scenarios.
+Implement all five achievements, event and evolution history, Event Details, actor handling, reports, docs, AI, localisation, cluster behavior, and workbook alignment. Run every specialist and audit route required by the package. Each weighted patch needs a baseline audit and `hoi4.probability_analyze` (`analysis = compare`) against the same scenarios.
 
 Process only registered active crises and bounded participant ledgers. Do not add unrestricted all-country scans. Do not use placeholders, silent fallbacks, copied generic content, fake metrics, tiny reward dust, or unreported simplifications. Preserve unrelated changes. Do not claim live game proof unless the user explicitly invokes the autonomous debug playtest skill and the capability exists.
 

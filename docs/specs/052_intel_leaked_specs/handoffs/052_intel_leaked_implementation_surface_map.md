@@ -131,10 +131,10 @@ Do not edit the three catalog CSV files directly.
 
 - `hoi4.event_inspect` before event-chain rewrite
 - `hoi4.event_render` for entry, target, evolution, cleanup, and cluster paths
-- `hoi4.event_compare` after source changes
+- `hoi4.event_inspect` (`mode = compare`) after source changes
 - `hoi4.probability_inspect` before every weighted-surface analysis
 - named scenario evaluation and sweeps from the probability matrix
-- `hoi4.probability_compare` after weighted patches
+- `hoi4.probability_analyze` (`analysis = compare`) after weighted patches
 - decision and mission audit
 - localisation audit
 - Event 52 completion audit

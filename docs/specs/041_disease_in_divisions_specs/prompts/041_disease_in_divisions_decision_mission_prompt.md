@@ -126,7 +126,7 @@ AI must:
 - stop dangerous postures when their strategic reason ends
 - avoid spending unavailable equipment or transport
 
-Any AI weight or probability patch requires a baseline `chaosx_ai_probability_auditor` pass and a post-change `hoi4.probability_compare` pass against the same scenario IDs.
+Any AI weight or probability patch requires a baseline `chaosx_ai_probability_auditor` pass and a post-change `hoi4.probability_analyze` (`analysis = compare`) pass against the same scenario IDs.
 
 ## Tooltips and localisation
 

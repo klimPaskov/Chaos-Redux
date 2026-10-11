@@ -296,7 +296,7 @@ The probability auditor should use at least these named scenarios:
 | `TT_AI_10` | desperate government offered collaboration | rarity and refusal logic |
 
 The first pass establishes baseline evidence.
-A later weight patch is compared on the same scenarios, preferably with `hoi4.probability_compare`.
+A later weight patch is compared on the same scenarios, preferably with `hoi4.probability_analyze` (`analysis = compare`).
 When the analyzer cannot handle the script, calculations from the actual weights on these scenarios are sufficient, with assumptions and the score-versus-probability limit stated.
 
 ## Cleanup and invalidation

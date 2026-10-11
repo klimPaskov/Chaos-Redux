@@ -269,12 +269,12 @@ For each surface:
 1. run `hoi4.probability_inspect`
 2. record the complete candidate pool and external factors
 3. define scenario IDs and exact inputs
-4. use `hoi4.probability_evaluate` for specific scenarios
-5. use `hoi4.probability_sweep` for threshold and factor sensitivity
-6. use `hoi4.probability_simulate` only when exact normalization is not practical and sampling conditions are declared
-7. use `hoi4.probability_sequence` only for a complete cadence and recovery contract
-8. use `hoi4.probability_render` when a matrix, sensitivity plot, timeline, or comparison improves review
-9. after tuning, run `hoi4.probability_compare` against the same scenarios
+4. use `hoi4.probability_inspect` for specific scenarios
+5. use `hoi4.probability_analyze` (`analysis = sweep`) for threshold and factor sensitivity
+6. use `hoi4.probability_analyze` (`analysis = simulate`) only when exact normalization is not practical and sampling conditions are declared
+7. use `hoi4.probability_analyze` (`analysis = sequence`) only for a complete cadence and recovery contract
+8. use `hoi4.probability_analyze` (`analysis = render`) when a matrix, sensitivity plot, timeline, or comparison improves review
+9. after tuning, run `hoi4.probability_analyze` (`analysis = compare`) against the same scenarios
 
 ## Opening balance model
 

@@ -93,12 +93,12 @@ Use:
 
 - `hoi4.event_inspect`
 - `hoi4.event_render`
-- `hoi4.event_compare`
+- `hoi4.event_inspect` (`mode = compare`)
 - `hoi4.probability_inspect`
-- `hoi4.probability_evaluate`
-- `hoi4.probability_sweep`
-- `hoi4.probability_compare`
-- `hoi4.probability_render` where useful
+- `hoi4.probability_inspect`
+- `hoi4.probability_analyze` (`analysis = sweep`)
+- `hoi4.probability_analyze` (`analysis = compare`)
+- `hoi4.probability_analyze` (`analysis = render`) where useful
 
 For probability changes, use the read-only probability auditor before a patch and again after the owner applies the patch, with the same scenarios.
 

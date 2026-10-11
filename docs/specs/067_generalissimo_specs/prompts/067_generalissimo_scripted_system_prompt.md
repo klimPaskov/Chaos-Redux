@@ -451,7 +451,7 @@ The probability auditor must:
 - state candidate-pool completeness
 - distinguish exact, bounded, sampled, score-only, and unresolved results
 - evaluate targeting, demands, AI decisions, removal, civil-war allocation, focus routes, scenario intensity, world-end outcomes, and bloc behavior
-- use `hoi4.probability_compare` after any weight patch against the same scenarios
+- use `hoi4.probability_analyze` (`analysis = compare`) after any weight patch against the same scenarios
 
 Do not ask the probability tool to prove exact chances when the candidate pool or external game state is incomplete.
 

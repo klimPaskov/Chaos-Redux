@@ -86,7 +86,7 @@ HOI4 cannot create a new texture, state-piece sprite, or positioned scripted-GUI
 Prefer these targeted read-only map checks within the AGENTS.md retry limit:
 
 - `mcp__hoi4_agent_tools__hoi4_map_inspect` with the candidate `stateIds` and bounded `provinceIds` to verify state membership and exact geometry provenance.
-- `mcp__hoi4_agent_tools__hoi4_map_render` with the relevant `state` or `province` layer and review overlays to confirm the source map and projection context.
+- `mcp__hoi4_agent_tools__hoi4_map_inspect` with the relevant `state` or `province` `layer` and review `overlays` (optionally bounded by `tile` or `area`, with `scale` when needed) to confirm the source map and projection context.
 
 Record useful artifacts and file revision. If the routes cannot answer within the retry limit, inspect the exact registry provenance, installed state/province membership, geometry, and projection locally and report the check limitation without claiming engine execution.
 

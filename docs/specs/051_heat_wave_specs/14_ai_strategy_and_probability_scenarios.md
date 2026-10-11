@@ -206,12 +206,12 @@ Every weighted surface requires the project probability workflow.
 
 The auditor must begin with `hoi4.probability_inspect` and then choose tools based on evidence:
 
-- `hoi4.probability_evaluate` for one named situation
-- `hoi4.probability_sweep` for intensity, stockpile, war, or stress ranges
-- `hoi4.probability_compare` after any patch
-- `hoi4.probability_simulate` for repeated target selection when the pool is complete
-- `hoi4.probability_sequence` only when cadence, cooldowns, resource changes, and terminal states are fully declared
-- `hoi4.probability_render` when a matrix or sensitivity view improves review
+- `hoi4.probability_inspect` for one named situation
+- `hoi4.probability_analyze` (`analysis = sweep`) for intensity, stockpile, war, or stress ranges
+- `hoi4.probability_analyze` (`analysis = compare`) after any patch
+- `hoi4.probability_analyze` (`analysis = simulate`) for repeated target selection when the pool is complete
+- `hoi4.probability_analyze` (`analysis = sequence`) only when cadence, cooldowns, resource changes, and terminal states are fully declared
+- `hoi4.probability_analyze` (`analysis = render`) when a matrix or sensitivity view improves review
 
 The auditor remains read-only. The parent or owning patch agent chooses balance targets and edits source.
 

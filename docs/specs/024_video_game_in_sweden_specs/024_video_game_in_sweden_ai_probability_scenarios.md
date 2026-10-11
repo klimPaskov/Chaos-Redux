@@ -9,11 +9,11 @@ For every weighted surface:
 1. Run `hoi4.probability_inspect` first.
 2. Confirm the complete option or candidate pool.
 3. Declare external factors and scheduled state changes.
-4. Use `hoi4.probability_evaluate` for named static scenarios.
-5. Use `hoi4.probability_sweep` for Reliance, Chaos, supply, and stability boundaries.
-6. Use `hoi4.probability_simulate` only where repeated random selection or MTTH sampling needs empirical evidence.
-7. Use `hoi4.probability_compare` after any weight patch, using the same scenario ids.
-8. Use `hoi4.probability_render` when a matrix, timing view, or sensitivity chart improves review.
+4. Use `hoi4.probability_inspect` for named static scenarios.
+5. Use `hoi4.probability_analyze` (`analysis = sweep`) for Reliance, Chaos, supply, and stability boundaries.
+6. Use `hoi4.probability_analyze` (`analysis = simulate`) only where repeated random selection or MTTH sampling needs empirical evidence.
+7. Use `hoi4.probability_analyze` (`analysis = compare`) after any weight patch, using the same scenario ids.
+8. Use `hoi4.probability_analyze` (`analysis = render`) when a matrix, timing view, or sensitivity chart improves review.
 
 Do not present a normalized exact probability when the pool or external state is incomplete.
 
@@ -404,7 +404,7 @@ Any patch to option weights, MTTH modifiers, incident random lists, foreign resp
 
 1. Baseline scenario evidence.
 2. Owner-applied patch.
-3. `hoi4.probability_compare` using the same scenario ids.
+3. `hoi4.probability_analyze` (`analysis = compare`) using the same scenario ids.
 4. A report that states whether the expected ordering improved, regressed, or remains unresolved.
 
 The auditor does not choose the balance target. The targets are the ordering and validity requirements in this file.

@@ -15,7 +15,7 @@ For every weighted surface:
 3. run the appropriate evaluate, sweep, simulation, sequence, comparison, or render operation
 4. classify the result as exact, bounded, sampled, score-only, or unresolved
 5. let the owning agent patch source
-6. run `hoi4.probability_compare` against the same named scenarios
+6. run `hoi4.probability_analyze` (`analysis = compare`) against the same named scenarios
 
 Do not use sequence analysis unless cadence, cooldown, removal, reset, and terminal rules are fully declared.
 
@@ -816,7 +816,7 @@ Flag a failure when:
 
 ## Sequence analysis contract
 
-Use `hoi4.probability_sequence` only after declaring:
+Use `hoi4.probability_analyze` (`analysis = sequence`) only after declaring:
 
 - participant cooldown formula
 - active-demand budget

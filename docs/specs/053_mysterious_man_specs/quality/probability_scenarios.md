@@ -8,10 +8,10 @@ For every scenario:
 
 1. run `hoi4.probability_inspect` on the exact target, demand, or consequence selector
 2. declare the complete candidate pool and every external validity factor
-3. run `hoi4.probability_evaluate`
-4. use `hoi4.probability_sweep` when a threshold or country state changes validity
-5. use `hoi4.probability_compare` after any source patch
-6. use `hoi4.probability_render` for pool matrices, comparisons, or sensitivity views
+3. run `hoi4.probability_inspect`
+4. use `hoi4.probability_analyze` (`analysis = sweep`) when a threshold or country state changes validity
+5. use `hoi4.probability_analyze` (`analysis = compare`) after any source patch
+6. use `hoi4.probability_analyze` (`analysis = render`) for pool matrices, comparisons, or sensitivity views
 7. classify the result as exact, bounded, sampled, score-only, or unresolved
 
 The auditor must record adapter revision, scenario hash, candidate-pool completeness, and artifact references.
@@ -96,7 +96,7 @@ The auditor must record adapter revision, scenario hash, candidate-pool complete
 
 **State changes:** Add a port, add convoys, create naval production, establish an air force, increase civilian factories, increase military factories.
 
-**Method:** Use `hoi4.probability_sweep` across each applicability threshold.
+**Method:** Use `hoi4.probability_analyze` (`analysis = sweep`) across each applicability threshold.
 
 **Expected:** A demand type enters once when its full applicability trigger becomes true. Existing entries retain equal weight.
 
@@ -224,7 +224,7 @@ The auditor must record adapter revision, scenario hash, candidate-pool complete
 
 **State:** Consecutive refusals from zero through the configured cap.
 
-**Method:** `hoi4.probability_sweep` or timing evaluation across each refusal count.
+**Method:** `hoi4.probability_analyze` (`analysis = sweep`) or timing evaluation across each refusal count.
 
 **Expected:** Intervals shorten monotonically until the cap, then stop shortening. No result falls below 45 days.
 
@@ -284,4 +284,4 @@ Any patch to:
 - amount progression
 - AI owner weights inside connected systems
 
-requires a baseline audit, owner-applied patch, and `hoi4.probability_compare` using the same named scenarios.
+requires a baseline audit, owner-applied patch, and `hoi4.probability_analyze` (`analysis = compare`) using the same named scenarios.

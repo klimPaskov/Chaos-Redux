@@ -509,7 +509,7 @@ Event chain:
 
 - `hoi4.event_inspect`
 - `hoi4.event_render`
-- `hoi4.event_compare`
+- `hoi4.event_inspect` (`mode = compare`)
 
 GUI:
 
@@ -522,7 +522,7 @@ Technology:
 
 - `hoi4.tech_inspect`
 - `hoi4.tech_render`
-- `hoi4.tech_compare`
+- `hoi4.tech_inspect` (`mode = compare`)
 
 Probability:
 

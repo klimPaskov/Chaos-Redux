@@ -3,12 +3,12 @@
 ## Evidence workflow
 
 Every weighted surface starts with `hoi4.probability_inspect`.
-The audit then selects `hoi4.probability_evaluate`, `hoi4.probability_sweep`, `hoi4.probability_simulate`, `hoi4.probability_compare`, or `hoi4.probability_render` according to the question.
-Use `hoi4.probability_sequence` only when the manifest fully declares repeat cadence, weight recovery, cap reduction, cooldowns, removals, resets, and terminal states.
+The audit then selects `hoi4.probability_inspect`, `hoi4.probability_analyze` (`analysis = sweep`), `hoi4.probability_analyze` (`analysis = simulate`), `hoi4.probability_analyze` (`analysis = compare`), or `hoi4.probability_analyze` (`analysis = render`) according to the question.
+Use `hoi4.probability_analyze` (`analysis = sequence`) only when the manifest fully declares repeat cadence, weight recovery, cap reduction, cooldowns, removals, resets, and terminal states.
 
 The first audit establishes baseline scenarios before tuning.
 The implementation owner applies any changes.
-The second audit uses `hoi4.probability_compare` against the same scenario identities.
+The second audit uses `hoi4.probability_analyze` (`analysis = compare`) against the same scenario identities.
 
 Results must be labeled exact, bounded, sampled, score-only, or unresolved.
 

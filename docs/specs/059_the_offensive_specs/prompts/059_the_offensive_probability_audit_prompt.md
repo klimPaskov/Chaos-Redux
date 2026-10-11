@@ -16,12 +16,12 @@ Provide:
 ## Required workflow
 
 1. Begin with `hoi4.probability_inspect` for the complete relevant pool.
-2. Run `hoi4.probability_evaluate` for each named scenario that applies.
-3. Run `hoi4.probability_sweep` across local strength, supply, reserve, equipment trend, manpower, fuel, active-war count, target value, legal-path validity, naval capacity, coalition strength, country capacity, and evolution combination.
-4. Run `hoi4.probability_compare` between the unmodified baseline, Event 059 baseline, each individual evolution, and the full enabled stack.
-5. Use `hoi4.probability_render` for scenario rankings, sensitivity, timing, and unresolved cases.
-6. Use `hoi4.probability_simulate` only for a clearly declared uncertain input.
-7. Do not use `hoi4.probability_sequence` unless a complete custom pool manifest defines cadence, recovery, caps, removals, resets, cooldowns, and terminal states.
+2. Run `hoi4.probability_inspect` for each named scenario that applies.
+3. Run `hoi4.probability_analyze` (`analysis = sweep`) across local strength, supply, reserve, equipment trend, manpower, fuel, active-war count, target value, legal-path validity, naval capacity, coalition strength, country capacity, and evolution combination.
+4. Run `hoi4.probability_analyze` (`analysis = compare`) between the unmodified baseline, Event 059 baseline, each individual evolution, and the full enabled stack.
+5. Use `hoi4.probability_analyze` (`analysis = render`) for scenario rankings, sensitivity, timing, and unresolved cases.
+6. Use `hoi4.probability_analyze` (`analysis = simulate`) only for a clearly declared uncertain input.
+7. Do not use `hoi4.probability_analyze` (`analysis = sequence`) unless a complete custom pool manifest defines cadence, recovery, caps, removals, resets, cooldowns, and terminal states.
 
 ## Audit questions
 

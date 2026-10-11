@@ -4,15 +4,15 @@
 
 The auditor must begin with `hoi4.probability_inspect` on the actual generated Event 65 pool and dispatcher.
 
-Use `hoi4.probability_evaluate` for exact scenario results.
+Use `hoi4.probability_inspect` for exact scenario results.
 
-Use `hoi4.probability_sweep` for thresholds, class-share sensitivity, and high-saturation behavior.
+Use `hoi4.probability_analyze` (`analysis = sweep`) for thresholds, class-share sensitivity, and high-saturation behavior.
 
-Use `hoi4.probability_compare` after the owner applies any patch and for direct-versus-cluster parity.
+Use `hoi4.probability_analyze` (`analysis = compare`) after the owner applies any patch and for direct-versus-cluster parity.
 
-Use `hoi4.probability_sequence` only for the declared multi-slot without-replacement scenarios when the complete pool and state transition are supplied.
+Use `hoi4.probability_analyze` (`analysis = sequence`) only for the declared multi-slot without-replacement scenarios when the complete pool and state transition are supplied.
 
-Use `hoi4.probability_render` for the full-pool class matrix, threshold sweep, dispatcher comparison, and unresolved high-saturation view.
+Use `hoi4.probability_analyze` (`analysis = render`) for the full-pool class matrix, threshold sweep, dispatcher comparison, and unresolved high-saturation view.
 
 Use seeded simulation only when the exact tool cannot represent an implementation detail.
 

@@ -16,7 +16,7 @@ Use one member decision category with evolution-dependent static pictures, three
 
 Implement all three paced evolutions with Chaos, Reach, member, region, route, enabled-state, and MTTH proof. Evolution activation gives zero Chaos. Implement every guarded Event 57 Chaos milestone and reversal without duplicating shared Chaos sources.
 
-Implement strategic AI. Run `chaosx_ai_probability_auditor` with `hoi4.probability_inspect` on BM-P01 through BM-P10 before weight changes, then `hoi4.probability_compare` after the owner patch. Use the event MCP inspect, render, and compare workflow for the final chain.
+Implement strategic AI. Run `chaosx_ai_probability_auditor` with `hoi4.probability_inspect` on BM-P01 through BM-P10 before weight changes, then `hoi4.probability_analyze` (`analysis = compare`) after the owner patch. Use the event MCP inspect, render, and compare workflow for the final chain.
 
 Create and wire the complete accepted asset package and all seven achievements. Do not use placeholders, resized unrelated assets, or unreported substitutes. Preserve the no-DLC core and relevant DLC enhancements.
 

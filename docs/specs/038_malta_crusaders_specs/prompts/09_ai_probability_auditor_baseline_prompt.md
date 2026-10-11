@@ -30,6 +30,6 @@ Audit at minimum:
 
 Use the named scenarios in `validation/probability_scenario_manifest.md` and add only scenarios needed to cover an observed surface. State whether each candidate pool and external factor set is complete. Label evidence as exact, bounded, sampled, score-only, or unresolved.
 
-Use `hoi4.probability_evaluate` and `hoi4.probability_sweep` for score and sensitivity. Use seeded simulation only when the complete pool and state contract permit it. Use sequence analysis only when cadence, recovery, caps, cooldowns, removals, resets, and terminal states are fully declared. Render evidence when it improves review.
+Use `hoi4.probability_inspect` and `hoi4.probability_analyze` (`analysis = sweep`) for score and sensitivity. Use seeded simulation only when the complete pool and state contract permit it. Use sequence analysis only when cadence, recovery, caps, cooldowns, removals, resets, and terminal states are fully declared. Render evidence when it improves review.
 
 Return observed ordering, dominance, starvation, invalid candidates, timing, sensitivity, unresolved external state, and scenario hashes. Save the baseline report under `docs/plans/038_malta_crusaders_plans/probability_baseline.md`. The owner will apply any accepted patch.

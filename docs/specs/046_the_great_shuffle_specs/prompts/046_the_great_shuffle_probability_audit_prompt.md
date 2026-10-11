@@ -14,12 +14,12 @@ Name the exact source, pool, scenario IDs, candidate completeness, external fact
 
 Use:
 
-- `hoi4.probability_evaluate` for a complete fixed scenario
-- `hoi4.probability_sweep` for capability, pool-size, weight, threshold, and distribution sensitivity
-- `hoi4.probability_simulate` for sampled family coverage, conflict resolution, result distributions, and rare achievements
-- `hoi4.probability_sequence` only when the parent supplies a complete custom-pool manifest covering cadence, recovery, cap reduction, cooldowns, removals, resets, timer changes, and terminal state
-- `hoi4.probability_compare` after any owner-applied source change, using the same named scenarios
-- `hoi4.probability_render` when a coverage, timing, sensitivity, sequence, or comparison view improves review
+- `hoi4.probability_inspect` for a complete fixed scenario
+- `hoi4.probability_analyze` (`analysis = sweep`) for capability, pool-size, weight, threshold, and distribution sensitivity
+- `hoi4.probability_analyze` (`analysis = simulate`) for sampled family coverage, conflict resolution, result distributions, and rare achievements
+- `hoi4.probability_analyze` (`analysis = sequence`) only when the parent supplies a complete custom-pool manifest covering cadence, recovery, cap reduction, cooldowns, removals, resets, timer changes, and terminal state
+- `hoi4.probability_analyze` (`analysis = compare`) after any owner-applied source change, using the same named scenarios
+- `hoi4.probability_analyze` (`analysis = render`) when a coverage, timing, sensitivity, sequence, or comparison view improves review
 
 Do not edit source and do not choose the intended balance target.
 
@@ -68,7 +68,7 @@ Return one report organized by the exact `P46-*` scenario IDs.
 
 For each scenario include source surface, revision, scenario hash, candidate pool, external factors, tool used, evidence type, result, pass or fail, starvation or dominance finding, and unresolved assumption.
 
-After a patch, provide a `hoi4.probability_compare` result against the baseline revision.
+After a patch, provide a `hoi4.probability_analyze` (`analysis = compare`) result against the baseline revision.
 
 Do not describe sampled frequency as exact probability.
 

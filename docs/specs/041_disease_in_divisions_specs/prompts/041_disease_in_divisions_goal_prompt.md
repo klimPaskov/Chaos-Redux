@@ -18,7 +18,7 @@ Pass or fail requirements:
 
 6. Implement every row in the Chaos impact map with generation guards, caps, reversals, and shared-source exclusions. Do not duplicate Chaos from war, deaths, contamination, unconventional weapon use, or cluster firing.
 
-7. Implement the AI matrix and named probability scenarios. Run `chaosx_ai_probability_auditor` before weighted changes and after them with `hoi4.probability_compare`. Prove that AI choices change with pressure, front threat, supply, transport, medical capacity, allied exposure, civilian risk, and demobilization.
+7. Implement the AI matrix and named probability scenarios. Run `chaosx_ai_probability_auditor` before weighted changes and after them with `hoi4.probability_analyze` (`analysis = compare`). Prove that AI choices change with pressure, front threat, supply, transport, medical capacity, allied exposure, civilian risk, and demobilization.
 
 8. Produce and wire every required report, category, decision, status, aftermath, and achievement asset through the asset prompt. Use separate source art for separate UI families, native transparency for alpha-backed assets, final DDS files, manifests, and runtime crosswalks. Implement all four achievements with full tracking and disqualifiers.
 

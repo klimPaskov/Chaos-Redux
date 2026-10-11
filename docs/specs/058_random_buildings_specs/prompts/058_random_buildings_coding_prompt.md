@@ -43,7 +43,7 @@ Select a risk band first, then select among valid candidates inside that band. I
 
 Use centralized script constants for weights, caps, floors, count formulas, thresholds, and Chaos values. Apply the probability scenarios in `quality/058_random_buildings_probability_scenarios.md` as named acceptance cases.
 
-Route every weighted surface through `chaosx_ai_probability_auditor`. Establish the baseline with `hoi4.probability_inspect` before source changes. After implementation, use the same named scenarios and `hoi4.probability_compare`. The auditor remains read-only. Do not claim exact normalized odds when the candidate pool or external provider state is incomplete.
+Route every weighted surface through `chaosx_ai_probability_auditor`. Establish the baseline with `hoi4.probability_inspect` before source changes. After implementation, use the same named scenarios and `hoi4.probability_analyze` (`analysis = compare`). The auditor remains read-only. Do not claim exact normalized odds when the candidate pool or external provider state is incomplete.
 
 ## Baseline and Evolution I
 

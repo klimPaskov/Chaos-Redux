@@ -104,7 +104,7 @@ Dynamic tooltips must name the exact capital, state group, route, side leader, o
 
 Run `chaosx_ai_probability_auditor` before patching weighted decision or mission logic. Use `hoi4.probability_inspect` and the named `AB-DEC`, `AB-SPN`, and `AB-SET` scenarios.
 
-After implementation and balance changes, run the same auditor with `hoi4.probability_compare` against the same scenarios.
+After implementation and balance changes, run the same auditor with `hoi4.probability_analyze` (`analysis = compare`) against the same scenarios.
 
 Unpayable or invalid actions must have zero AI probability.
 

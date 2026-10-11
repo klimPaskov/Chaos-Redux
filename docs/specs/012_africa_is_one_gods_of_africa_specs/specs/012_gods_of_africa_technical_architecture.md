@@ -773,7 +773,7 @@ Every weighted surface needs:
 3. baseline `hoi4.probability_inspect`
 4. evaluation or sweep matching the question
 5. source patch by the owning agent
-6. `hoi4.probability_compare` using the same scenarios
+6. `hoi4.probability_analyze` (`analysis = compare`) using the same scenarios
 7. unresolved classification when external factors remain incomplete
 
 ## DLC adapters

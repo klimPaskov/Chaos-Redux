@@ -74,7 +74,7 @@ Technology recovery actions may give bounded research support or close one expli
 
 Implement AI-equivalent behavior for every usable action.
 Use the named scenarios in the AI probability matrix as the balance contract.
-Run the required baseline audit, owner patch, and `hoi4.probability_compare` cycle for every weighted action, route, mission, partner, incident, and domain choice.
+Run the required baseline audit, owner patch, and `hoi4.probability_analyze` (`analysis = compare`) cycle for every weighted action, route, mission, partner, incident, and domain choice.
 AI must always retain at least one affordable useful recovery path and must not bankrupt itself during war.
 
 ## Handoff

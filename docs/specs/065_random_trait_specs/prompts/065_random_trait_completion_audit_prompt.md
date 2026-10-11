@@ -41,7 +41,7 @@ Compare the accepted specification with:
 
 ## Required methods
 
-Use narrow `hoi4.event_inspect`, `hoi4.event_render`, and `hoi4.event_compare` evidence.
+Use narrow `hoi4.event_inspect`, `hoi4.event_render`, and `hoi4.event_inspect` (`mode = compare`) evidence.
 
 Read the probability auditor's exact artifacts.
 

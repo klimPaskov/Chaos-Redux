@@ -80,7 +80,7 @@ Target AI must prioritize current danger, mission deadlines, affordability, agen
 
 A weak service should recall and close channels. A strong service should preserve selected networks and use deception. A country under invasion should replan before investing in long-term archive reform.
 
-Every weighted decision and mission surface requires the named AI probability scenario workflow. Establish a baseline with `chaosx_ai_probability_auditor`, apply the owner-approved patch, then run `hoi4.probability_compare` against the same scenarios.
+Every weighted decision and mission surface requires the named AI probability scenario workflow. Establish a baseline with `chaosx_ai_probability_auditor`, apply the owner-approved patch, then run `hoi4.probability_analyze` (`analysis = compare`) against the same scenarios.
 
 ## Cleanup and exploit prevention
 

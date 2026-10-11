@@ -72,7 +72,7 @@ Default the player to the host, with a separate explicit Empire control choice w
 Implement six ordinary custom unit families and two world-end families with production, reinforcement, equipment, templates, caps and actual roles.
 Use the current CXT registration and repair pathway.
 Do not create free daily armies or overwrite ordinary research.
-Use `hoi4.tech_inspect`, `hoi4.tech_render` and `hoi4.tech_compare` for every relevant technology graph change.
+Use `hoi4.tech_inspect`, `hoi4.tech_render` and `hoi4.tech_inspect` (`mode = compare`) for every relevant technology graph change.
 
 ## Stage 5: empire economy and tree
 

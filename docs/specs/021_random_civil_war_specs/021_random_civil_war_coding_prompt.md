@@ -257,7 +257,7 @@ AI evaluates strength, State Authority, capital, supply, equipment, manpower, id
 
 Invalid routes and actions receive zero weight.
 
-Route every weighted surface through `chaosx_ai_probability_auditor` before patching, then run `hoi4.probability_compare` after the change using the same named scenarios.
+Route every weighted surface through `chaosx_ai_probability_auditor` before patching, then run `hoi4.probability_analyze` (`analysis = compare`) after the change using the same named scenarios.
 
 ## Presentation and assets
 

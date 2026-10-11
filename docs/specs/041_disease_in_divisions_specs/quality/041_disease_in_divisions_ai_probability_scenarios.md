@@ -8,12 +8,12 @@ The probability auditor should begin with `hoi4.probability_inspect` for every w
 
 Use:
 
-- `hoi4.probability_evaluate` for the named scenario matrix
-- `hoi4.probability_sweep` for pressure, supply, front threat, and medical-capacity thresholds
-- `hoi4.probability_compare` after implementation or any weight patch
-- `hoi4.probability_render` for ranking and sensitivity evidence
-- `hoi4.probability_simulate` only when an input is intentionally uncertain and declared as a range
-- `hoi4.probability_sequence` only if the complete episode cadence and every state transition in the tested custom pool are declared
+- `hoi4.probability_inspect` for the named scenario matrix
+- `hoi4.probability_analyze` (`analysis = sweep`) for pressure, supply, front threat, and medical-capacity thresholds
+- `hoi4.probability_analyze` (`analysis = compare`) after implementation or any weight patch
+- `hoi4.probability_analyze` (`analysis = render`) for ranking and sensitivity evidence
+- `hoi4.probability_analyze` (`analysis = simulate`) only when an input is intentionally uncertain and declared as a range
+- `hoi4.probability_analyze` (`analysis = sequence`) only if the complete episode cadence and every state transition in the tested custom pool are declared
 
 ## Candidate action families
 

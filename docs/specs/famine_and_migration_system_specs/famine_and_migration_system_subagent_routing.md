@@ -58,7 +58,7 @@ Any patch to an AI weight, MTTH, random selection, destination pool, route pool,
 
 1. `chaosx_ai_probability_auditor` baseline with named scenarios.
 2. Parent or owning patch agent applies the accepted change.
-3. `chaosx_ai_probability_auditor` runs `hoi4.probability_compare` against the same scenarios.
+3. `chaosx_ai_probability_auditor` runs `hoi4.probability_analyze` (`analysis = compare`) against the same scenarios.
 
 ## Handoff paths
 

@@ -14,7 +14,7 @@ Implement the complete Chaos impact map with dynamic scaling and repeat guards. 
 
 Audit vanilla, Chaos Redux, installed Workshop mods, and local mods before assigning tags. Reuse valid identities or protected carriers and preserve origin proof. Complete every country package, route, force, economy, focus, decision, AI plan, formable, and cleanup path. Every flag needs ImageGen evidence. Real people need sourced identity-preserving portraits. Yakub and approved fictional successors use the portrait worker.
 
-Use HOI4 MCP event and focus tools. For every weighted surface, spawn `chaosx_ai_probability_auditor`, start with `hoi4.probability_inspect`, evaluate the named `P44_*` scenarios, sweep material thresholds, and run `hoi4.probability_compare` after changes. Do not claim exact probabilities from incomplete pools. Use technology graph tools only if technology content changes.
+Use HOI4 MCP event and focus tools. For every weighted surface, spawn `chaosx_ai_probability_auditor`, start with `hoi4.probability_inspect`, evaluate the named `P44_*` scenarios, sweep material thresholds, and run `hoi4.probability_analyze` (`analysis = compare`) after changes. Do not claim exact probabilities from incomplete pools. Use technology graph tools only if technology content changes.
 
 Research final super-event titles, text, quotes, cultural remarks, and unique licensed or public-domain music through the proper workflow. Unresearched text or audio is blocked. Produce every accepted asset family and route-aware terminal image. Do not ship placeholders or resized cross-family icons.
 

@@ -26,7 +26,7 @@ Deliver the strong opening force from part 9 once. Resolve the active evolution 
 
 Later evolution activation must not repeat the opening grant. Paid guard institutions and recruitment expand the force afterward. Implement the real custom Immortals subunit family through the shared unit system, with equipment, training, production, reinforcement, capacity, counters, models, sounds, and documentation. Enforce manpower-based capacity across templates, queues, conversions, transfers, and disbanding. Stage equipment preparation and personnel training as specified to respect cost limits.
 
-Inspect every affected technology and doctrine graph with `hoi4.tech_inspect`, render the relevant folder or branch with `hoi4.tech_render`, and compare with `hoi4.tech_compare`. Check prerequisites, exclusivity, production unlocks, and consumers. Do not copy a major country's full research tree or grant incompatible equipment.
+Inspect every affected technology and doctrine graph with `hoi4.tech_inspect`, render the relevant folder or branch with `hoi4.tech_render`, and compare with `hoi4.tech_inspect` (`mode = compare`). Check prerequisites, exclusivity, production unlocks, and consumers. Do not copy a major country's full research tree or grant incompatible equipment.
 
 ## Focus tree and political systems
 
@@ -46,9 +46,9 @@ Before native GUI work, create and review the required reference images from par
 
 ## AI and probability
 
-Spawn `chaosx_ai_probability_auditor` through the available supported delegation runtime with an explicit handoff. Start its weighted-behavior work with `hoi4.probability_inspect`. Use `hoi4.probability_evaluate` for part 15's named scenarios, `hoi4.probability_sweep` for thresholds and rank reversals, and `hoi4.probability_compare` after implementation. Use `hoi4.probability_render` where it aids review.
+Spawn `chaosx_ai_probability_auditor` through the available supported delegation runtime with an explicit handoff. Start its weighted-behavior work with `hoi4.probability_inspect`. Use `hoi4.probability_inspect` for part 15's named scenarios, `hoi4.probability_analyze` (`analysis = sweep`) for thresholds and rank reversals, and `hoi4.probability_analyze` (`analysis = compare`) after implementation. Use `hoi4.probability_analyze` (`analysis = render`) where it aids review.
 
-Use `hoi4.probability_simulate` only for declared uncertain inputs and `hoi4.probability_sequence` only for a complete declared custom pool with cadence and transitions. Do not report exact selection probabilities from incomplete pools. Implement route preference, target assessment, supply preparation, guard recruitment, charters, investment, faction obligations, and crisis recovery.
+Use `hoi4.probability_analyze` (`analysis = simulate`) only for declared uncertain inputs and `hoi4.probability_analyze` (`analysis = sequence`) only for a complete declared custom pool with cadence and transitions. Do not report exact selection probabilities from incomplete pools. Implement route preference, target assessment, supply preparation, guard recruitment, charters, investment, faction obligations, and crisis recovery.
 
 ## Assets, portraits, 3D, and super-events
 

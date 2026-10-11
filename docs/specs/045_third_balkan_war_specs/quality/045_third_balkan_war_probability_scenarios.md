@@ -2,7 +2,7 @@
 
 This document defines the mandatory named scenarios for every weighted Event 045 surface. It does not choose final numeric weights. The implementation owner chooses the intended balance, and `chaosx_ai_probability_auditor` verifies whether the source produces the required ordering.
 
-Every audit begins with `hoi4.probability_inspect`. The auditor must state whether the candidate pool and external factors are complete. Use exact evaluation where the pool is complete, bounded or score-only evidence where it is not, sweeps for changing escalation or strength, and `hoi4.probability_compare` after every patch.
+Every audit begins with `hoi4.probability_inspect`. The auditor must state whether the candidate pool and external factors are complete. Use exact evaluation where the pool is complete, bounded or score-only evidence where it is not, sweeps for changing escalation or strength, and `hoi4.probability_analyze` (`analysis = compare`) after every patch.
 
 ## P45-S01: Coherent calm-world opening
 

@@ -8,7 +8,7 @@ Read the complete Event 54 specification, the technology eligibility matrix, `ma
 
 Start every analyzed surface with `hoi4.probability_inspect`.
 
-Use `hoi4.probability_evaluate` for exact complete pools, without-replacement sequences, candidate rejection, and member participation. Use `hoi4.probability_sweep` for pool size, provider count, recipient date, and cluster availability. Use deterministic simulation only where the declared pool remains too large or stateful for exact evaluation. Use `hoi4.probability_sequence` only when the complete event cadence, recovery, cap, cluster, cooldown, and terminal-state manifest is supplied.
+Use `hoi4.probability_inspect` for exact complete pools, without-replacement sequences, candidate rejection, and member participation. Use `hoi4.probability_analyze` (`analysis = sweep`) for pool size, provider count, recipient date, and cluster availability. Use deterministic simulation only where the declared pool remains too large or stateful for exact evaluation. Use `hoi4.probability_analyze` (`analysis = sequence`) only when the complete event cadence, recovery, cap, cluster, cooldown, and terminal-state manifest is supplied.
 
 Render matrices or comparisons when they make candidate shares, branch exclusions, or member probabilities easier to review.
 
@@ -40,4 +40,4 @@ Run every applicable named scenario from the scenario matrix. State whether each
 
 Do not choose new balance targets and do not patch source. When a result differs from the accepted specification, identify the exact surface, scenario, observed value, expected relationship, and owner who must decide or patch it.
 
-After any candidate weight, provider set, branch family, cluster membership, participation weight, or AI factor changes, rerun the same scenario IDs and use `hoi4.probability_compare` against the baseline.
+After any candidate weight, provider set, branch family, cluster membership, participation weight, or AI factor changes, rerun the same scenario IDs and use `hoi4.probability_analyze` (`analysis = compare`) against the baseline.

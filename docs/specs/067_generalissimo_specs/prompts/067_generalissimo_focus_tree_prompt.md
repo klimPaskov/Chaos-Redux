@@ -319,7 +319,7 @@ Create route-specific AI plans for:
 
 AI must consider war state, enemy strength, Command Cohesion, industry, manpower, equipment, supply, naval access, air capacity, subjects, faction position, nearby military governments, civilian opposition, and world-end role.
 
-Use the named focus scenarios from the probability matrix. Establish baseline evidence through `chaosx_ai_probability_auditor`, apply the intended weights, then require `hoi4.probability_compare` over the same scenarios.
+Use the named focus scenarios from the probability matrix. Establish baseline evidence through `chaosx_ai_probability_auditor`, apply the intended weights, then require `hoi4.probability_analyze` (`analysis = compare`) over the same scenarios.
 
 ## Required MCP evidence
 

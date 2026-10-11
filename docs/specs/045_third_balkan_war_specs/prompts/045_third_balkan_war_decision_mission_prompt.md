@@ -67,7 +67,7 @@ Every action must change a relationship, mission, claim, settlement term, map ob
 
 ## AI and probability evidence
 
-Every AI-usable action needs equivalent scripted logic. Before changing weights, route the surface through `chaosx_ai_probability_auditor` and the named scenarios in `quality/045_third_balkan_war_probability_scenarios.md`. After the owner applies the chosen balance, run `hoi4.probability_compare` on the same scenarios.
+Every AI-usable action needs equivalent scripted logic. Before changing weights, route the surface through `chaosx_ai_probability_auditor` and the named scenarios in `quality/045_third_balkan_war_probability_scenarios.md`. After the owner applies the chosen balance, run `hoi4.probability_analyze` (`analysis = compare`) on the same scenarios.
 
 ## Cleanup
 

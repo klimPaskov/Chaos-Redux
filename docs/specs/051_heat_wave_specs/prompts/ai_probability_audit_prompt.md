@@ -41,7 +41,7 @@ Check:
 
 ## Patch cycle
 
-You are read-only. Return baseline evidence and named findings. After the parent or owner patches source, run `hoi4.probability_compare` against the same scenario IDs and report direction and remaining issues.
+You are read-only. Return baseline evidence and named findings. After the parent or owner patches source, run `hoi4.probability_analyze` (`analysis = compare`) against the same scenario IDs and report direction and remaining issues.
 
 Write the report under:
 

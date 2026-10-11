@@ -193,7 +193,7 @@ Working technology roles:
 - master cadre system, which unlocks Master Assassins at Evolution V
 - mechanized infiltration, which unlocks Mechanized Assassins
 
-The implementation must use `hoi4.tech_inspect`, `hoi4.tech_render`, and `hoi4.tech_compare` for the final branch. It should not create isolated hidden technologies with missing prerequisites or assets.
+The implementation must use `hoi4.tech_inspect`, `hoi4.tech_render`, and `hoi4.tech_inspect` (`mode = compare`) for the final branch. It should not create isolated hidden technologies with missing prerequisites or assets.
 
 ## Event 19 owner integration
 

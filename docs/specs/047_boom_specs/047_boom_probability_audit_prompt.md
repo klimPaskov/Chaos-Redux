@@ -57,6 +57,6 @@ Compare the base 110-day MTTH with Chaos 900+, a prior evolved incident, and sev
 
 State whether each result is exact, bounded, sampled, score-only, or unresolved. Record the candidate pool, external factors, scenario hash, and tool revision.
 
-Use `hoi4.probability_evaluate` for complete static pools, `hoi4.probability_sweep` for threshold and factor changes, `hoi4.probability_simulate` when bounded retry resolution needs sampling, and `hoi4.probability_compare` after any source change.
+Use `hoi4.probability_inspect` for complete static pools, `hoi4.probability_analyze` (`analysis = sweep`) for threshold and factor changes, `hoi4.probability_analyze` (`analysis = simulate`) when bounded retry resolution needs sampling, and `hoi4.probability_analyze` (`analysis = compare`) after any source change.
 
 The auditor does not choose new balance targets and does not patch source.

@@ -270,7 +270,7 @@ This document defines the evidence needed before Event 044 can be called impleme
 - International AI evaluates Cohesion, member risk, logistics, enemy strength, distance, and terminal viability.
 - Every complex weighted surface has named scenarios from the probability matrix.
 - The baseline pass starts with `hoi4.probability_inspect`.
-- Any source patch receives a same-scenario `hoi4.probability_compare` pass.
+- Any source patch receives a same-scenario `hoi4.probability_analyze` (`analysis = compare`) pass.
 - Exact, bounded, sampled, score-only, and unresolved evidence are labeled accurately.
 - The event does not claim exact normalized probability when the candidate pool is incomplete.
 

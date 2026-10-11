@@ -2,7 +2,7 @@
 
 This matrix defines the weighted-behavior evidence required during implementation. It does not assign final script weights.
 
-Every weighted surface must begin with `hoi4.probability_inspect`. The implementation should establish a baseline audit, apply the owner-approved balance change, then run `hoi4.probability_compare` against the same named scenarios. Exact probabilities are valid only when the candidate pool and external factors are complete.
+Every weighted surface must begin with `hoi4.probability_inspect`. The implementation should establish a baseline audit, apply the owner-approved balance change, then run `hoi4.probability_analyze` (`analysis = compare`) against the same named scenarios. Exact probabilities are valid only when the candidate pool and external factors are complete.
 
 ## Scenario set
 
@@ -125,11 +125,11 @@ Scheduled state changes must be declared when asking the analyzer for timing res
 ## Evidence rules
 
 - Use `hoi4.probability_inspect` first for every surface.
-- Use `hoi4.probability_evaluate` for named fixed scenarios.
-- Use `hoi4.probability_sweep` for Exposure, agency strength, pool size, war danger, and Reliance thresholds.
-- Use `hoi4.probability_compare` after every weighted patch against the same scenario set.
-- Use `hoi4.probability_render` for target-count, timing, or sensitivity results when a visual comparison improves review.
-- Use `hoi4.probability_simulate` only when the declared candidate pool is complete and seeded sampling answers a question that exact evaluation cannot.
-- Use `hoi4.probability_sequence` only after the implementation provides a complete Event 52 sequence manifest covering cadence, cooldowns, removals, target caps, repeatable recovery, and terminal cleanup.
+- Use `hoi4.probability_inspect` for named fixed scenarios.
+- Use `hoi4.probability_analyze` (`analysis = sweep`) for Exposure, agency strength, pool size, war danger, and Reliance thresholds.
+- Use `hoi4.probability_analyze` (`analysis = compare`) after every weighted patch against the same scenario set.
+- Use `hoi4.probability_analyze` (`analysis = render`) for target-count, timing, or sensitivity results when a visual comparison improves review.
+- Use `hoi4.probability_analyze` (`analysis = simulate`) only when the declared candidate pool is complete and seeded sampling answers a question that exact evaluation cannot.
+- Use `hoi4.probability_analyze` (`analysis = sequence`) only after the implementation provides a complete Event 52 sequence manifest covering cadence, cooldowns, removals, target caps, repeatable recovery, and terminal cleanup.
 - Label results as exact, bounded, sampled, score-only, or unresolved.
 - Do not infer exact normalized probabilities from an incomplete recipient or domain pool.

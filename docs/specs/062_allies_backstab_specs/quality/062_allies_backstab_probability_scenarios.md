@@ -6,7 +6,7 @@ Every weighted surface requires a baseline audit, an owner-applied implementatio
 
 The probability auditor must begin with `hoi4.probability_inspect`. It must state whether each candidate pool and external factor set is complete. Results must be labeled exact, bounded, sampled, score-only, or unresolved.
 
-Use `hoi4.probability_evaluate` for fixed cases, `hoi4.probability_sweep` for factor ranges, `hoi4.probability_simulate` for weighted draws, and `hoi4.probability_compare` after implementation changes. Use sequence analysis only when the complete repeatable-event and cooldown state is declared.
+Use `hoi4.probability_inspect` for fixed cases, `hoi4.probability_analyze` (`analysis = sweep`) for factor ranges, `hoi4.probability_analyze` (`analysis = simulate`) for weighted draws, and `hoi4.probability_analyze` (`analysis = compare`) after implementation changes. Use sequence analysis only when the complete repeatable-event and cooldown state is declared.
 
 The planning environment did not expose the HOI4 MCP route. No numeric result in this file is presented as measured evidence.
 

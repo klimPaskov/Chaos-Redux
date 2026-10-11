@@ -102,7 +102,7 @@ Event 42 is complete only when every Required row passes or is explicitly remove
 | E42-094 | Workbook | Authoritative XLSX contains final player-facing wording and metadata | Workbook review | Required |
 | E42-095 | CSV export | Export script regenerates all three catalog snapshots | Export result | Required |
 | E42-096 | Probability audit | All named weighted scenarios have evidence | Auditor handoff | Required |
-| E42-097 | Probability compare | Final weighted patch is compared against baseline scenarios | `hoi4.probability_compare` evidence | Required |
+| E42-097 | Probability compare | Final weighted patch is compared against baseline scenarios | `hoi4.probability_analyze` (`analysis = compare`) evidence | Required |
 | E42-098 | Improvement loop | Real planner pass is completed and dispositioned | Plan or closure handoff | Required |
 | E42-099 | Completion audit | Event completion auditor reports no unresolved mapped requirement | Auditor report | Required |
 | E42-100 | Blocker report | Every remaining blocker or simplification is explicit | Final completion report | Required |

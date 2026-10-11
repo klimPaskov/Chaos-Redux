@@ -29,7 +29,7 @@ Audit and patch:
 
 ### chaosx_ai_probability_auditor
 
-Use before any weighted AI or probability patch to establish baseline evidence. Use again after implementation with `hoi4.probability_compare` against the same scenario IDs.
+Use before any weighted AI or probability patch to establish baseline evidence. Use again after implementation with `hoi4.probability_analyze` (`analysis = compare`) against the same scenario IDs.
 
 Audit:
 

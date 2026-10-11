@@ -68,7 +68,7 @@
 ## AI and probability
 
 - Every weighted surface has a baseline P45 scenario audit.
-- Owner-selected balance changes receive a same-scenario `hoi4.probability_compare` pass.
+- Owner-selected balance changes receive a same-scenario `hoi4.probability_analyze` (`analysis = compare`) pass.
 - Invalid actions and targets evaluate to unavailable or zero.
 - Regional AI weighs survival, supply, claims, sponsors, capital security, and settlement feasibility.
 - Outside AI weighs ideology, rivalry, access, reserves, current war load, guarantees, factions, and containment partners.

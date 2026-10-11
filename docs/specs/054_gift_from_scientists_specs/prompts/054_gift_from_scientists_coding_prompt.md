@@ -8,7 +8,7 @@ Read `AGENTS.md`, every specification part, both matrices, the acceptance criter
 
 Read the repository skills for events, event assets, subagents, and improvement review. Read the decision and focus skills only when an existing dependency requires them. Consult the mandatory offline Paradox wiki pages and installed vanilla documentation for technologies, events, effects, triggers, scopes, localization, on actions, AI, achievements, and graphical assets. Inspect at least one current vanilla technology-grant precedent and the closest Chaos Redux custom-technology provider precedent.
 
-Use the installed HOI4 MCP routes for every supported surface. Begin event work with `hoi4.event_inspect`. Use `hoi4.event_render` and `hoi4.event_compare` around the completed chain. Inspect the active technology graph with `hoi4.tech_inspect`, render every affected folder or branch with `hoi4.tech_render`, and use `hoi4.tech_compare` after source changes. Route every weighted candidate, member-participation, or AI probability surface through the required probability audit workflow.
+Use the installed HOI4 MCP routes for every supported surface. Begin event work with `hoi4.event_inspect`. Use `hoi4.event_render` and `hoi4.event_inspect` (`mode = compare`) around the completed chain. Inspect the active technology graph with `hoi4.tech_inspect`, render every affected folder or branch with `hoi4.tech_render`, and use `hoi4.tech_inspect` (`mode = compare`) after source changes. Route every weighted candidate, member-participation, or AI probability surface through the required probability audit workflow.
 
 ## Event result
 

@@ -42,7 +42,7 @@ Implement all AI, multiplayer, persistence, pool-failure, novelty, magnitude, ac
 Never edit catalog CSV exports directly.
 
 Use HOI4 MCP event inspect, render, lint, and compare.
-Run the named probability baseline, tuning, and `hoi4.probability_compare` cycle.
+Run the named probability baseline, tuning, and `hoi4.probability_analyze` (`analysis = compare`) cycle.
 Use the correct project subagents with no inherited parent context for architecture, assets, localisation, probability, completion, and spreadsheet work.
 Run and resolve `chaosx_improvement_loop_planner` after a meaningful implementation tranche.
 

@@ -218,7 +218,7 @@ Use exact evaluate, sweep, sequence, compare, and render routes as required by t
 
 Use simulation only for declared uncertainty.
 
-After any probability patch, run `hoi4.probability_compare`.
+After any probability patch, run `hoi4.probability_analyze` (`analysis = compare`).
 
 If the probability route is unavailable, record the blocker and do not claim completion.
 
@@ -228,7 +228,7 @@ Use `hoi4.event_inspect` before and after edits.
 
 Use `hoi4.event_render` for the direct path, cluster path, form transitions, and report flow.
 
-Use `hoi4.event_compare` against the pre-change baseline and after final changes.
+Use `hoi4.event_inspect` (`mode = compare`) against the pre-change baseline and after final changes.
 
 Keep artifact references in the implementation report.
 

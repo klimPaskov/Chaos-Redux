@@ -13,7 +13,7 @@ One successful firing is one bounded global transaction. Each loaded land state 
 
 Build an owner-extensible provider registry. Every provider needs a stable ID, owner, layer, risk band, weight, availability, location and capacity validation, placement callback, complete owner initialization callback, responsibility, uniqueness, display family, and cleanup contract. Incomplete providers fail closed. Event 58 owns selection and reporting. Provider owners retain normal mechanics, lifecycle, evidence, map entities, removal, and cleanup. A grant must not mark its source event as fired.
 
-Select risk band before candidate and fall only toward safer bands when a band is empty. Centralize tuning. Run `chaosx_ai_probability_auditor` before weighted changes and again afterward with `hoi4.probability_compare` on the same named scenarios.
+Select risk band before candidate and fall only toward safer bands when a band is empty. Centralize tuning. Run `chaosx_ai_probability_auditor` before weighted changes and again afterward with `hoi4.probability_analyze` (`analysis = compare`) on the same named scenarios.
 
 Evolution II must use real province geography. Fort packages cover relevant valid border or coastal provinces. Naval bases use verified coastal provinces. Railways use useful verified segments or short connections. Supply hubs require strict logistics evidence. Use HOI4 MCP map tools. Report a blocker when an accepted map operation cannot be implemented safely. Never replace railway or supply work with infrastructure.
 

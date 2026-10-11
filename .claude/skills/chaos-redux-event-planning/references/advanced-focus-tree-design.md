@@ -117,7 +117,7 @@ Good focus reward types include:
 - objective completion bonuses
 - events or event chains
 
-When a specification adds or changes technologies, doctrines, folders, prerequisites, unlocks, grants, or research bonuses, the coding-agent prompt must require the implementation agent to inspect the affected graph with `hoi4.tech_inspect`, render the relevant folder or branch with `hoi4.tech_render`, and compare the implemented source with `hoi4.tech_compare`. The plan must identify intended placement, prerequisites, exclusivity, unlocks, bonuses, and asset needs so the implementation agent has a concrete result to verify. Apply the AGENTS.md retry limits and use direct source checks when a route remains unavailable; missing tool output does not remove any placement, prerequisite, unlock, bonus, or asset requirement.
+When a specification adds or changes technologies, doctrines, folders, prerequisites, unlocks, grants, or research bonuses, the coding-agent prompt must require the implementation agent to inspect the affected graph with `hoi4.tech_inspect`, render the relevant folder or branch with `hoi4.tech_render`, and compare the implemented source with `hoi4.tech_inspect` (`mode = compare`). The plan must identify intended placement, prerequisites, exclusivity, unlocks, bonuses, and asset needs so the implementation agent has a concrete result to verify. Apply the AGENTS.md retry limits and use direct source checks when a route remains unavailable; missing tool output does not remove any placement, prerequisite, unlock, bonus, or asset requirement.
 
 Every focus path should have a distinct purpose. If two focus groups would grant nearly the same effect, merge them, rewrite one, or make one an upgrade of the other.
 

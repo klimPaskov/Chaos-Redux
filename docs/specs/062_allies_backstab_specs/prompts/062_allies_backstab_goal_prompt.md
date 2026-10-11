@@ -14,7 +14,7 @@ Audit the shared faction-leave Chaos source. Forced hostile exits must not recei
 
 Implement the bounded connections in the source pack. Each owner keeps its own transaction. The Offensive may change aggression, never legality, access, supply, viability, or rational settlement.
 
-Use `chaosx_ai_probability_auditor` before weighted changes and again with `hoi4.probability_compare` after tuning. Use the named scenarios and required MCP event inspect, render, compare, and probability evidence. Invalid AI actions must have zero weight.
+Use `chaosx_ai_probability_auditor` before weighted changes and again with `hoi4.probability_analyze` (`analysis = compare`) after tuning. Use the named scenarios and required MCP event inspect, render, compare, and probability evidence. Invalid AI actions must have zero weight.
 
 Produce every accepted final asset, four achievements, and the conditional fire-once Evolution III super-event with a verified quote, generated image, licensed musical WAV, settings-aware playback, and strict proof. Wire Event Logs, Event Details, Evolutions, Chaos History, registration, default enable state, cluster membership, localisation, documentation, achievements, and the catalog workbook. Regenerate CSV exports.
 

@@ -148,7 +148,7 @@ The `EVO-*` rows evaluate the native MTTH clocks described in part 4, Evolution 
 
 ## Comparison requirement
 
-Any patch to a weighted value must be compared on the same scenario IDs that established the baseline, with `hoi4.probability_compare` when the route works and a labelled source-derived calculation otherwise (part 6, Required probability workflow).
+Any patch to a weighted value must be compared on the same scenario IDs that established the baseline, with `hoi4.probability_analyze` (`analysis = compare`) when the route works and a labelled source-derived calculation otherwise (part 6, Required probability workflow).
 The MCP probability routes are currently `blocked` by repeated `INTERNAL_ERROR`.
 
 The final audit should include:

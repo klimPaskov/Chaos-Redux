@@ -246,12 +246,12 @@ Before and after implementation:
 
 - use `hoi4.event_inspect` for the Event 53 chain
 - use `hoi4.event_render` for event flow and scope review
-- use `hoi4.event_compare` against the pre-rework chain when available
+- use `hoi4.event_inspect` (`mode = compare`) against the pre-rework chain when available
 - use `hoi4.probability_inspect` before probability analysis
-- use `hoi4.probability_evaluate` for named complete-pool scenarios
-- use `hoi4.probability_sweep` for demand and severity thresholds
-- use `hoi4.probability_compare` after any weighted or selection patch
-- use `hoi4.probability_render` when the pool matrix or comparison improves auditability
+- use `hoi4.probability_inspect` for named complete-pool scenarios
+- use `hoi4.probability_analyze` (`analysis = sweep`) for demand and severity thresholds
+- use `hoi4.probability_analyze` (`analysis = compare`) after any weighted or selection patch
+- use `hoi4.probability_analyze` (`analysis = render`) when the pool matrix or comparison improves auditability
 
 The probability auditor remains read-only. The implementation owner applies changes and requests comparison with the same scenarios.
 

@@ -18,12 +18,12 @@ The implementation must be audited through the Chaos Redux probability tools. Th
 ## Required probability tool sequence
 
 1. `hoi4.probability_inspect` for every Event 063 `ai_chance`, `random_list`, weighted candidate pool, and evolution MTTH block.
-2. `hoi4.probability_evaluate` for each named scenario in this file.
-3. `hoi4.probability_sweep` across autonomy, relative strength, overlord weakness, mutual opinion, claim severity, current war load, network support, distance, access, and Liberation Cohesion.
-4. `hoi4.probability_compare` after implementation changes.
-5. `hoi4.probability_simulate` for the declared mixed-pool examples and any other scenario with uncertain external inputs.
-6. `hoi4.probability_sequence` only when the full release pool and post-selection state transitions are declared.
-7. `hoi4.probability_render` for candidate rankings, settlement matrices, timing sensitivity, and intervention ladders when a rendered view makes review easier.
+2. `hoi4.probability_inspect` for each named scenario in this file.
+3. `hoi4.probability_analyze` (`analysis = sweep`) across autonomy, relative strength, overlord weakness, mutual opinion, claim severity, current war load, network support, distance, access, and Liberation Cohesion.
+4. `hoi4.probability_analyze` (`analysis = compare`) after implementation changes.
+5. `hoi4.probability_analyze` (`analysis = simulate`) for the declared mixed-pool examples and any other scenario with uncertain external inputs.
+6. `hoi4.probability_analyze` (`analysis = sequence`) only when the full release pool and post-selection state transitions are declared.
+7. `hoi4.probability_analyze` (`analysis = render`) for candidate rankings, settlement matrices, timing sensitivity, and intervention ladders when a rendered view makes review easier.
 
 The coding agent must provide the auditor with the actual scripted conditions and the declared assumptions. A source-only guess is not sufficient.
 

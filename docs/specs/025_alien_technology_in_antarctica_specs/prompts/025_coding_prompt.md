@@ -134,7 +134,7 @@ Use the named P01 through P15 scenarios and timing scenarios from the package. E
 
 1. read-only baseline audit by `chaosx_ai_probability_auditor`
 2. owner patch
-3. `hoi4.probability_compare` on the same scenarios
+3. `hoi4.probability_analyze` (`analysis = compare`) on the same scenarios
 
 AI must preserve post-spend reserves, repair critical logistics, avoid invalid final recovery, and use cooperation where rational.
 

@@ -4,7 +4,7 @@
 
 Every probability-bearing Event 40 surface must be audited through the HOI4 MCP probability workflow.
 
-Start with `hoi4.probability_inspect`. Use the smallest tool that answers the declared question. Use `hoi4.probability_compare` after any source change, with the same named scenarios used for the baseline.
+Start with `hoi4.probability_inspect`. Use the smallest tool that answers the declared question. Use `hoi4.probability_analyze` (`analysis = compare`) after any source change, with the same named scenarios used for the baseline.
 
 The audit must distinguish:
 

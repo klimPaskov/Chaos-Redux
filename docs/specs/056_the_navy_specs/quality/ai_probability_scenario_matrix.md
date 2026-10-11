@@ -143,6 +143,6 @@ The post-patch audit must use the same scenario IDs and include:
 - ordering changes
 - invalid candidates
 - dominance and starvation findings
-- `hoi4.probability_compare` result
+- `hoi4.probability_analyze` (`analysis = compare`) result
 
 Any scenario that cannot be evaluated exactly must be labeled bounded, sampled, score-only, or unresolved. Do not convert an unresolved result into a balance claim.

@@ -446,12 +446,12 @@ The embargo flag alone should not make every package desirable.
 
 Use:
 
-- `hoi4.probability_evaluate` for complete invitation, option, offer, and bid pools
-- `hoi4.probability_sweep` for Exposure, shortage, reserve, and route-pressure thresholds
-- `hoi4.probability_compare` after every weight patch
-- `hoi4.probability_simulate` for offer rotations and invitations when exact pools are too large but fully declared
-- `hoi4.probability_sequence` only after cadence, recovery, caps, offer expiry, invitations, cooldowns, route loss, and terminal states are fully declared
-- `hoi4.probability_render` for matrix and sensitivity evidence when it improves review
+- `hoi4.probability_inspect` for complete invitation, option, offer, and bid pools
+- `hoi4.probability_analyze` (`analysis = sweep`) for Exposure, shortage, reserve, and route-pressure thresholds
+- `hoi4.probability_analyze` (`analysis = compare`) after every weight patch
+- `hoi4.probability_analyze` (`analysis = simulate`) for offer rotations and invitations when exact pools are too large but fully declared
+- `hoi4.probability_analyze` (`analysis = sequence`) only after cadence, recovery, caps, offer expiry, invitations, cooldowns, route loss, and terminal states are fully declared
+- `hoi4.probability_analyze` (`analysis = render`) for matrix and sensitivity evidence when it improves review
 
 The audit must label evidence as exact, bounded, sampled, score-only, or unresolved.
 

@@ -705,10 +705,10 @@ Required workflow:
 
 1. `hoi4.probability_inspect`
 2. named baseline scenarios
-3. `hoi4.probability_evaluate` for decision and outcome pools
-4. `hoi4.probability_sweep` for Influence, stability, and war-state boundaries
-5. `hoi4.probability_compare` after every source change
-6. `hoi4.probability_render` when a matrix or sensitivity view improves review
+3. `hoi4.probability_inspect` for decision and outcome pools
+4. `hoi4.probability_analyze` (`analysis = sweep`) for Influence, stability, and war-state boundaries
+5. `hoi4.probability_analyze` (`analysis = compare`) after every source change
+6. `hoi4.probability_analyze` (`analysis = render`) when a matrix or sensitivity view improves review
 7. simulation only when the candidate pool and cadence are complete
 
 The probability auditor remains read-only. The parent or owning implementation agent chooses the balance target and applies changes.

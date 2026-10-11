@@ -126,7 +126,7 @@ For every complex or balance-sensitive event option, decision, mission, focus, t
 5. Use simulation only for declared uncertain inputs.
 6. Use sequence analysis only when the complete pool, cadence, caps, recovery, cooldowns, and terminal states are declared.
 7. Apply source changes through the owning agent or parent.
-8. Run `hoi4.probability_compare` against the same scenarios.
+8. Run `hoi4.probability_analyze` (`analysis = compare`) against the same scenarios.
 
 Do not claim exact normalized probabilities from incomplete pools.
 

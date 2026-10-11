@@ -183,7 +183,7 @@ Implement the accepted target profiles:
 
 British AI must consider war, equipment, convoys, fuel, access, strategic value, exposure, and client cost.
 
-Before changing any weight, run `chaosx_ai_probability_auditor` with the named scenarios in `quality/040_lawrence_of_arabia_probability_scenarios.md`. After the owner patch, run `hoi4.probability_compare` through the same auditor.
+Before changing any weight, run `chaosx_ai_probability_auditor` with the named scenarios in `quality/040_lawrence_of_arabia_probability_scenarios.md`. After the owner patch, run `hoi4.probability_analyze` (`analysis = compare`) through the same auditor.
 
 ## Lifecycle and cleanup
 

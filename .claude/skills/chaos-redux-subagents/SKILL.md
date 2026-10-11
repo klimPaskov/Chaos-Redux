@@ -257,7 +257,7 @@ Active small patches include:
 
 Any patch to an AI weight, probability-bearing modifier, MTTH-backed score, random-selection weight, strategy factor, or weighted target check requires a bounded baseline and post-fix comparison using the same named scenarios.
 The parent or owner preserves pre-edit source bytes and the scenario fixture; the read-only probability auditor reviews the baseline, then the owner applies the patch and the auditor compares the changed behavior.
-Use `hoi4.probability_compare` when supported, or retain a before/after source/helper comparison with scenario scores and stated assumptions when the tool cannot answer.
+Use `hoi4.probability_analyze` (`analysis = compare`) when supported, or retain a before/after source/helper comparison with scenario scores and stated assumptions when the tool cannot answer.
 If the original source or a trustworthy snapshot cannot be recovered within the check limit, review current behavior and state that the historical change could not be measured; do not reconstruct an old workspace or block an otherwise reviewed fix solely to obtain that comparison.
 A corrupt or mismatched snapshot must never be used as verified evidence, and a specifically requested exact historical comparison remains incomplete without it.
 The auditor does not choose balance targets or patch source; a failed analyzer or unavailable comparison alone does not block a documented fix.

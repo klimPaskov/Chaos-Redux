@@ -230,7 +230,7 @@ Event 52 should not be treated as complete until every applicable criterion belo
 - [ ] Every weighted surface begins with `hoi4.probability_inspect`.
 - [ ] Complete candidate pools are provided for normalized results.
 - [ ] Exposure, agency strength, pool size, war danger, and Reliance sweeps are run where relevant.
-- [ ] Baseline and final weights are compared with `hoi4.probability_compare`.
+- [ ] Baseline and final weights are compared with `hoi4.probability_analyze` (`analysis = compare`).
 - [ ] Results distinguish exact, bounded, sampled, score-only, and unresolved evidence.
 - [ ] Weak AI services prefer safe containment.
 - [ ] Strong services use selective preservation and deception.

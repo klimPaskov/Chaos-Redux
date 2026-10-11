@@ -114,7 +114,7 @@ Use a bounded technology inheritance and compatibility approach based on formati
 
 Do not grant every American technology automatically. Preserve mutually exclusive industry branches and other incompatible technologies through the established union helper where relevant.
 
-Any new technology or doctrine content requires `hoi4.tech_inspect`, `hoi4.tech_render`, and `hoi4.tech_compare`. The accepted design does not require a new technology tree.
+Any new technology or doctrine content requires `hoi4.tech_inspect`, `hoi4.tech_render`, and `hoi4.tech_inspect` (`mode = compare`). The accepted design does not require a new technology tree.
 
 ## Starting armed forces
 

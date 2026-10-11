@@ -27,7 +27,7 @@ Read:
 - Start every surface with `hoi4.probability_inspect`.
 - Record whether the candidate pool and external state are complete.
 - Run the named scenario IDs from the matrix.
-- Use `hoi4.probability_evaluate` for score and normalized results where complete.
+- Use `hoi4.probability_inspect` for score and normalized results where complete.
 - Use sweeps for National Works Capacity, war state, project scale, partner count, relations, embargo, and equipment reserves.
 - Use rendering for matrices and sensitivity views when it improves review.
 - Do not use sequence analysis unless the complete repeatable event pool, cooldown, cap, recovery, removal, and timer contract is supplied.
@@ -49,6 +49,6 @@ Read:
 
 ## Patch and compare cycle
 
-Return the baseline evidence to the parent. The parent or owning patch agent applies any accepted weight change. Then rerun `hoi4.probability_compare` against the same named scenarios and report every ordering, dominance, starvation, and hard-zero change.
+Return the baseline evidence to the parent. The parent or owning patch agent applies any accepted weight change. Then rerun `hoi4.probability_analyze` (`analysis = compare`) against the same named scenarios and report every ordering, dominance, starvation, and hard-zero change.
 
 Do not accept a weight patch without the compare pass.

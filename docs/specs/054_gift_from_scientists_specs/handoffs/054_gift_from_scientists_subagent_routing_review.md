@@ -20,7 +20,7 @@ Review result: Event 54 should own the selection transaction, receipts, and prov
 
 Primary concern: equal candidate weight, without-replacement draws, pool exhaustion, provider share, and Scientific Research member probabilities.
 
-Review result: the package includes named scenarios in `matrices/054_gift_from_scientists_probability_scenarios.md` and a context-complete audit prompt. Any later probability-bearing change requires the same baseline scenarios and `hoi4.probability_compare` after the patch.
+Review result: the package includes named scenarios in `matrices/054_gift_from_scientists_probability_scenarios.md` and a context-complete audit prompt. Any later probability-bearing change requires the same baseline scenarios and `hoi4.probability_analyze` (`analysis = compare`) after the patch.
 
 ### `chaosx_localisation_auditor`
 

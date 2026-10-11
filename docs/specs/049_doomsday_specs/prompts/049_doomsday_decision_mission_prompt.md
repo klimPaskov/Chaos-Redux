@@ -209,7 +209,7 @@ Before changing any AI weight, MTTH, random selection, target score, or option c
 1. Spawn `chaosx_ai_probability_auditor` with the named scenarios from `quality/049_doomsday_probability_scenarios.md`.
 2. Establish baseline evidence through `hoi4.probability_inspect` and the correct evaluate, sweep, simulate, sequence, or render route.
 3. Apply the bounded owner patch.
-4. Run `hoi4.probability_compare` against the same scenarios.
+4. Run `hoi4.probability_analyze` (`analysis = compare`) against the same scenarios.
 
 The auditor is read-only. The parent or decision owner chooses the intended balance.
 

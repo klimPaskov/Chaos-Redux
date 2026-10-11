@@ -115,8 +115,8 @@ The exact cumulative timing depends on the supported game-version adapter and ac
 Pre-fire evolved openings are a separate initialization path.
 
 The probability auditor must start with `hoi4.probability_inspect`.
-Use `hoi4.probability_evaluate` for named fixed states, `hoi4.probability_sweep` for thresholds, `hoi4.probability_simulate` for declared uncertain inputs, and `hoi4.probability_compare` after source changes.
-Use `hoi4.probability_render` where a distribution or comparison is clearer than a table.
+Use `hoi4.probability_inspect` for named fixed states, `hoi4.probability_analyze` (`analysis = sweep`) for thresholds, `hoi4.probability_analyze` (`analysis = simulate`) for declared uncertain inputs, and `hoi4.probability_analyze` (`analysis = compare`) after source changes.
+Use `hoi4.probability_analyze` (`analysis = render`) where a distribution or comparison is clearer than a table.
 Exact, bounded, sampled and unresolved results must remain distinct.
 
 ## Required named scenarios

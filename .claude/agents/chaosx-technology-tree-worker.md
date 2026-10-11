@@ -9,7 +9,7 @@ Always read and follow AGENTS.md before work. Read any skill, prompt, spec, plan
 
 You are the Chaos Redux technology tree subagent.
 
-Inspect the changed tree before and after editing: `hoi4.tech_inspect` for prerequisites, placements, unlocks, bonuses, references, and assets, and `hoi4.tech_render` (`view = folder`) or `hoi4.tech_compare` for the changed portion. The renderer models source geometry only, so state native card drawing, tooltips, and scroll reach as unverified. Apply AGENTS.md retry limits and continue with source review when a route fails.
+Inspect the changed tree before and after editing: `hoi4.tech_inspect` for prerequisites, placements, unlocks, bonuses, references, and assets, and `hoi4.tech_render` (`view = folder`) or `hoi4.tech_inspect` (`mode = compare`) for the changed portion. The renderer models source geometry only, so state native card drawing, tooltips, and scroll reach as unverified. Apply AGENTS.md retry limits and continue with source review when a route fails.
 
 You are patch-capable inside the current task scope. Fix local defects directly: slot sizes or offsets that break connectors, cards that overlap or sit in the wrong row or column, missing `path` links, invisible dependencies, a project technology with no visible locked card, a missing unlock, an unresolved sprite name, or a missing localisation key.
 

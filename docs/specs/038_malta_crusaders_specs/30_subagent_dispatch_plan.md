@@ -50,7 +50,7 @@ Any patch to AI weights, `ai_chance`, MTTH modifiers, random lists, target weigh
 
 1. baseline read-only audit with named scenarios
 2. owner-applied patch
-3. read-only `hoi4.probability_compare` against the same scenarios
+3. read-only `hoi4.probability_analyze` (`analysis = compare`) against the same scenarios
 
 The probability auditor does not choose the intended balance target and does not patch source.
 

@@ -19,11 +19,11 @@ Remain read-only.
 ## Mandatory tool order
 
 1. Start with `hoi4.probability_inspect` on the real Event 65 runtime selection logic.
-2. Use `hoi4.probability_evaluate` for exact declared scenarios.
-3. Use `hoi4.probability_sweep` for threshold, class-share, settings, and high-saturation scenarios.
-4. Use `hoi4.probability_sequence` only when the complete multi-slot pool and state transitions are declared.
-5. Use `hoi4.probability_compare` for flat-versus-hierarchical logic, direct-versus-cluster paths, and post-patch review.
-6. Use `hoi4.probability_render` for the class matrix, threshold sweep, dispatcher comparison, and unresolved views.
+2. Use `hoi4.probability_inspect` for exact declared scenarios.
+3. Use `hoi4.probability_analyze` (`analysis = sweep`) for threshold, class-share, settings, and high-saturation scenarios.
+4. Use `hoi4.probability_analyze` (`analysis = sequence`) only when the complete multi-slot pool and state transitions are declared.
+5. Use `hoi4.probability_analyze` (`analysis = compare`) for flat-versus-hierarchical logic, direct-versus-cluster paths, and post-patch review.
+6. Use `hoi4.probability_analyze` (`analysis = render`) for the class matrix, threshold sweep, dispatcher comparison, and unresolved views.
 7. Use seeded simulation only when an implementation detail cannot be represented exactly.
 8. Label exact, bounded, sampled, score-only, and unresolved evidence separately.
 
@@ -58,7 +58,7 @@ When a target fails, report the measured behavior and the smallest relevant caus
 
 The main implementation agent owns the patch.
 
-Run `hoi4.probability_compare` again after a patch before marking the scenario passed.
+Run `hoi4.probability_analyze` (`analysis = compare`) again after a patch before marking the scenario passed.
 
 ## Output
 

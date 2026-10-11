@@ -21,7 +21,7 @@ Audit:
 - Positive Economy cluster participation
 - repeat-firing saturation behavior
 
-Use `hoi4.probability_evaluate` for named scenarios, `hoi4.probability_sweep` for thresholds and rank reversals, and `hoi4.probability_compare` for every implemented tuning change. Use simulation only for declared uncertain inputs. Use sequence analysis only if the complete repeatable pool, cadence, cap, recovery, cooldown, removal, timer, and terminal state are supplied. Render matrices, rankings, sensitivities, comparisons, timing, or unresolved views when useful.
+Use `hoi4.probability_inspect` for named scenarios, `hoi4.probability_analyze` (`analysis = sweep`) for thresholds and rank reversals, and `hoi4.probability_analyze` (`analysis = compare`) for every implemented tuning change. Use simulation only for declared uncertain inputs. Use sequence analysis only if the complete repeatable pool, cadence, cap, recovery, cooldown, removal, timer, and terminal state are supplied. Render matrices, rankings, sensitivities, comparisons, timing, or unresolved views when useful.
 
 ## Core questions
 
@@ -56,6 +56,6 @@ Never state an exact probability from an incomplete candidate pool.
 
 Produce a baseline audit before any owner patches the weights.
 
-After the owner applies a bounded change, run `hoi4.probability_compare` on the same scenarios. Report dominance, starvation, rank reversal, rarity drift, repetition, and exploit risk.
+After the owner applies a bounded change, run `hoi4.probability_analyze` (`analysis = compare`) on the same scenarios. Report dominance, starvation, rank reversal, rarity drift, repetition, and exploit risk.
 
 Remain read-only. Recommend concrete fixes with source paths and identifiers, but do not patch the weights.

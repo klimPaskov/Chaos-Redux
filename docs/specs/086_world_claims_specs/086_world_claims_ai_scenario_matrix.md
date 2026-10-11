@@ -31,9 +31,9 @@ Scores are design inputs to review, not accepted engine syntax. The broad orderi
 
 ## Mandatory tool sequence in the implementation environment
 
-Delegate to `chaosx_ai_probability_auditor`. Begin with `hoi4.probability_inspect` to resolve actual choice pools, MTTH entry, competing decisions, helpers, modifiers, cadence, and scenario inputs. Use `hoi4.probability_evaluate` for named complete scenarios. Use `hoi4.probability_sweep` around affordability, thresholds, candidate rank reversals, and Evolution timing changes. Use `hoi4.probability_compare` after a patch.
+Delegate to `chaosx_ai_probability_auditor`. Begin with `hoi4.probability_inspect` to resolve actual choice pools, MTTH entry, competing decisions, helpers, modifiers, cadence, and scenario inputs. Use `hoi4.probability_inspect` for named complete scenarios. Use `hoi4.probability_analyze` (`analysis = sweep`) around affordability, thresholds, candidate rank reversals, and Evolution timing changes. Use `hoi4.probability_analyze` (`analysis = compare`) after a patch.
 
-Use `hoi4.probability_simulate` only when uncertain inputs and their distributions are declared. Use `hoi4.probability_sequence` only for a complete declared custom pool with cadence and state transitions. Render ranking, timing, sensitivity, comparison, or unresolved views where useful. An incomplete pool cannot yield an exact selection percentage.
+Use `hoi4.probability_analyze` (`analysis = simulate`) only when uncertain inputs and their distributions are declared. Use `hoi4.probability_analyze` (`analysis = sequence`) only for a complete declared custom pool with cadence and state transitions. Render ranking, timing, sensitivity, comparison, or unresolved views where useful. An incomplete pool cannot yield an exact selection percentage.
 
 Evolution tests include below 200, exactly 200, 400, 600, 800, 1000, a lower stage disabled with higher enabled, Chaos falling after activation, all higher stages disabled, and a high-stage first opening. Test scheduled changes across a horizon rather than pretending Chaos stays constant when the scenario says otherwise.
 

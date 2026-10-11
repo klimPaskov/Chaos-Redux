@@ -118,11 +118,11 @@ Before claiming the weighted behavior complete:
 
 1. spawn `chaosx_ai_probability_auditor`
 2. run `hoi4.probability_inspect`
-3. evaluate the complete named scenario matrix with `hoi4.probability_evaluate`
-4. sweep material factors with `hoi4.probability_sweep`
-5. compare before and after corrections with `hoi4.probability_compare`
-6. use `hoi4.probability_simulate` only for the declared uncertain mixed pools
-7. use `hoi4.probability_sequence` only for a fully declared release sequence
+3. evaluate the complete named scenario matrix with `hoi4.probability_inspect`
+4. sweep material factors with `hoi4.probability_analyze` (`analysis = sweep`)
+5. compare before and after corrections with `hoi4.probability_analyze` (`analysis = compare`)
+6. use `hoi4.probability_analyze` (`analysis = simulate`) only for the declared uncertain mixed pools
+7. use `hoi4.probability_analyze` (`analysis = sequence`) only for a fully declared release sequence
 8. render rankings, timing, and matrices when useful
 
 Correct any valid option that is starved, invalid option that remains dominant, unexpected rank reversal, or timing band failure. Do not claim exact universal probabilities for incomplete campaign pools.

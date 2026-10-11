@@ -25,12 +25,12 @@ Start with `hoi4.probability_inspect` for every weighted surface.
 Name the source revision, candidate pool, external factors, scenario ID, and whether the pool is complete.
 Then use the minimum evidence tool that answers the question:
 
-- `hoi4.probability_evaluate` for exact option or card pools
-- `hoi4.probability_sweep` for Chaos, evolution, profile, shortage, danger, and desperation changes
-- `hoi4.probability_simulate` for large dynamic pools and repeat diversity
-- `hoi4.probability_compare` for every post-tuning comparison against the same baseline scenarios
-- `hoi4.probability_render` for cardinality, family share, AI ordering, cluster incidence, and sensitivity views
-- `hoi4.probability_sequence` only when cadence, recovery, caps, cooldowns, removals, resets, and terminal states are fully declared
+- `hoi4.probability_inspect` for exact option or card pools
+- `hoi4.probability_analyze` (`analysis = sweep`) for Chaos, evolution, profile, shortage, danger, and desperation changes
+- `hoi4.probability_analyze` (`analysis = simulate`) for large dynamic pools and repeat diversity
+- `hoi4.probability_analyze` (`analysis = compare`) for every post-tuning comparison against the same baseline scenarios
+- `hoi4.probability_analyze` (`analysis = render`) for cardinality, family share, AI ordering, cluster incidence, and sensitivity views
+- `hoi4.probability_analyze` (`analysis = sequence`) only when cadence, recovery, caps, cooldowns, removals, resets, and terminal states are fully declared
 
 Label every result exact, bounded, sampled, score-only, or unresolved.
 Do not calculate an exact probability from an incomplete provider pool.
@@ -75,7 +75,7 @@ The audit must prove these orderings:
 
 The first pass records baseline evidence before any balance patch.
 Return exact scenario hashes and artifact references to the parent.
-After the owner applies tuning, repeat the same scenarios and use `hoi4.probability_compare`.
+After the owner applies tuning, repeat the same scenarios and use `hoi4.probability_analyze` (`analysis = compare`).
 Do not accept different pools, changed seeds, or renamed scenarios as a valid comparison without explaining the effect.
 
 ## Report

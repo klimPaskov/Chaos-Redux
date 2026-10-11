@@ -202,9 +202,9 @@ Run:
 
 - `hoi4.probability_inspect`
 - `hoi4.probability_eval`
-- `hoi4.probability_sweep`
-- `hoi4.probability_simulate` when interactions remain uncertain
-- `hoi4.probability_compare` after weight changes
+- `hoi4.probability_analyze` (`analysis = sweep`)
+- `hoi4.probability_analyze` (`analysis = simulate`) when interactions remain uncertain
+- `hoi4.probability_analyze` (`analysis = compare`) after weight changes
 
 Use every named scenario in the AI probability research file.
 

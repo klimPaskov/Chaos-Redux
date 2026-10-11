@@ -20,6 +20,6 @@ Implement The Generalissimos' World as a public world-end branch. Require 1000 o
 
 Create every accepted gameplay, identity, visual, super-event, licensed audio, and achievement surface. No custom unit, equipment family, technology tree, doctrine tree, 3D model, unit counter, or unit audio package is required.
 
-Use the named probability scenarios for every weighted surface. Run `chaosx_ai_probability_auditor` before each weight patch and require `hoi4.probability_compare` afterward. Run every required specialist audit. Run `chaosx_improvement_loop_planner` after a complete implementation tranche, resolve every accepted addendum, then run a closure review.
+Use the named probability scenarios for every weighted surface. Run `chaosx_ai_probability_auditor` before each weight patch and require `hoi4.probability_analyze` (`analysis = compare`) afterward. Run every required specialist audit. Run `chaosx_improvement_loop_planner` after a complete implementation tranche, resolve every accepted addendum, then run a closure review.
 
 Wire all shared event, evolution, cluster, scenario, world-end, audio, AI, cleanup, documentation, and catalog surfaces. Edit only the XLSX and regenerate its CSV exports. Do not use unapproved fallbacks or hide missing work. The final report must list files, route and scenario coverage, assets, audits, probability evidence, improvement-loop dispositions, blockers, and every simplification or omission.

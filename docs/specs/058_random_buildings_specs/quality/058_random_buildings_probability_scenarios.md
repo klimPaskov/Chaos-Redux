@@ -282,7 +282,7 @@ Any implementation or tuning change to a probability-bearing value requires:
 1. baseline `hoi4.probability_inspect`
 2. named scenario evaluation
 3. owner-applied patch
-4. `hoi4.probability_compare` using the same scenarios
+4. `hoi4.probability_analyze` (`analysis = compare`) using the same scenarios
 5. rendered matrix, sensitivity, ranking, or unresolved view where it improves review
 
 The auditor remains read-only and does not choose the final balance target.

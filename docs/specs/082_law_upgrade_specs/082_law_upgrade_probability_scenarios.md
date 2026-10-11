@@ -10,7 +10,7 @@ Numbers in the numbered specification are proposed inputs and relative prioritie
 
 The `chaosx_ai_probability_auditor` must begin with `hoi4.probability_inspect` against the actual implemented sources and loaded game version. The inspector must identify all relevant MTTH entries, modifiers, scripted helpers, candidate actions, ordinary AI spending alternatives, eligibility gates, and state inputs.
 
-Only after inspection should it use `hoi4.probability_evaluate` for named fixtures, `hoi4.probability_sweep` around boundaries, `hoi4.probability_simulate` for explicitly declared uncertain inputs, and `hoi4.probability_compare` for before-and-after evidence. Use `hoi4.probability_render` where a timing or sensitivity plot makes the evidence clearer.
+Only after inspection should it use `hoi4.probability_inspect` for named fixtures, `hoi4.probability_analyze` (`analysis = sweep`) around boundaries, `hoi4.probability_analyze` (`analysis = simulate`) for explicitly declared uncertain inputs, and `hoi4.probability_analyze` (`analysis = compare`) for before-and-after evidence. Use `hoi4.probability_analyze` (`analysis = render`) where a timing or sensitivity plot makes the evidence clearer.
 
 Keep exact, bounded, sampled, and unresolved results separate. Use the verified game-version MTTH adapter for cumulative timing. The auditor supplies evidence and does not decide the intended balance.
 

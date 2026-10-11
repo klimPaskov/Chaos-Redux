@@ -8,7 +8,7 @@ Event 54 grants random completed technologies to every valid research participan
 
 Read the full Event 54 specification pack, especially Part 2 and the technology eligibility matrix. Read `AGENTS.md`, the events skill, the dynamic effects and triggers registries, Event 16's custom technology grant API and documentation, every currently proposed owner technology definition, the active vanilla technology documentation, and the mandatory offline wiki pages.
 
-Use `hoi4.tech_inspect` before design decisions. Render affected folders and branches. Use `hoi4.tech_compare` after source changes.
+Use `hoi4.tech_inspect` before design decisions. Render affected folders and branches. Use `hoi4.tech_inspect` (`mode = compare`) after source changes.
 
 ## Ownership model
 
@@ -83,4 +83,4 @@ Use script constants for stable profile, provider, and compatibility identifiers
 
 Test direct grants, missing-prerequisite jumps, package grants, callbacks, branch conflicts, rejected callbacks, provider removal, DLC changes, save and reload, repeated Event 54 firings, and a recipient with zero safe candidates.
 
-Run the Event 54 probability scenarios after the registry exists. Any candidate-weight or provider-share change requires a baseline audit and `hoi4.probability_compare` after the patch.
+Run the Event 54 probability scenarios after the registry exists. Any candidate-weight or provider-share change requires a baseline audit and `hoi4.probability_analyze` (`analysis = compare`) after the patch.

@@ -152,7 +152,7 @@ Run the complete probability audit cycle:
 
 1. Baseline `hoi4.probability_inspect` and named scenarios.
 2. Owner-applied weights.
-3. `hoi4.probability_compare` with the same scenarios.
+3. `hoi4.probability_analyze` (`analysis = compare`) with the same scenarios.
 4. Record exact, bounded, sampled, score-only, or unresolved status accurately.
 
 ## Cleanup and persistence

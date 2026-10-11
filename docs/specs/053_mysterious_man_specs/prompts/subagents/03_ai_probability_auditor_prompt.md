@@ -26,7 +26,7 @@ Mandatory surfaces:
 - payment progression and stockpile-dumping sensitivity
 - affordability samples by country size and tier
 
-Start each surface with `hoi4.probability_inspect`. Use `hoi4.probability_evaluate`, `hoi4.probability_sweep`, and `hoi4.probability_compare` as required. Use `hoi4.probability_render` for pool matrices, threshold sweeps, and before-and-after evidence. Use simulation only for declared uncertain inputs. Do not claim exact probabilities from incomplete pools.
+Start each surface with `hoi4.probability_inspect`. Use `hoi4.probability_inspect`, `hoi4.probability_analyze` (`analysis = sweep`), and `hoi4.probability_analyze` (`analysis = compare`) as required. Use `hoi4.probability_analyze` (`analysis = render`) for pool matrices, threshold sweeps, and before-and-after evidence. Use simulation only for declared uncertain inputs. Do not claim exact probabilities from incomplete pools.
 
 For every scenario, record the complete candidate pool, external factors, scenario hash, artifact references, normalized result, and classification as exact, bounded, sampled, score-only, or unresolved.
 

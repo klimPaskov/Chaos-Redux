@@ -34,6 +34,6 @@ No scenario below has measured results in this planning environment. The impleme
 
 ## Compare discipline
 
-Every source change to a listed weighted surface requires a baseline audit before the patch and `hoi4.probability_compare` after the patch using the same scenario inputs.
+Every source change to a listed weighted surface requires a baseline audit before the patch and `hoi4.probability_analyze` (`analysis = compare`) after the patch using the same scenario inputs.
 
 Sequence simulation is permitted only when the complete cadence, recovery, cap, removal, reset, and terminal-state contract is supplied.

@@ -8,7 +8,7 @@ The read-only `chaosx_ai_probability_auditor` starts with `hoi4.probability_insp
 
 The Event 46 owner supplies the intended balance targets and applies source changes.
 
-The auditor then runs `hoi4.probability_compare` over the same named scenarios.
+The auditor then runs `hoi4.probability_analyze` (`analysis = compare`) over the same named scenarios.
 
 Exact probability claims require a complete candidate pool and complete external state.
 

@@ -276,7 +276,7 @@ Spawn `chaosx_ai_probability_auditor` with no inherited thread context (Codex `f
 
 Let the parent or owning patch agent implement the chosen design.
 
-Run the auditor again with `hoi4.probability_compare` against the same scenarios.
+Run the auditor again with `hoi4.probability_analyze` (`analysis = compare`) against the same scenarios.
 
 Audit:
 

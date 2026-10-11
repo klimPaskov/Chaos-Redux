@@ -8,12 +8,12 @@ Every scenario begins with `hoi4.probability_inspect` on the exact Event 54 cand
 
 Use:
 
-- `hoi4.probability_evaluate` for exact recipient draws and cluster member traces
-- `hoi4.probability_sweep` for pool-size, provider-count, and participation sensitivity
-- `hoi4.probability_compare` after any weight, candidate, or member change
-- `hoi4.probability_simulate` only when a declared uncertain pool or campaign sample requires sampling
-- `hoi4.probability_sequence` only when the complete repeatable-event and cluster cadence contract is supplied
-- `hoi4.probability_render` for matrices, comparisons, sensitivity, and unresolved views
+- `hoi4.probability_inspect` for exact recipient draws and cluster member traces
+- `hoi4.probability_analyze` (`analysis = sweep`) for pool-size, provider-count, and participation sensitivity
+- `hoi4.probability_analyze` (`analysis = compare`) after any weight, candidate, or member change
+- `hoi4.probability_analyze` (`analysis = simulate`) only when a declared uncertain pool or campaign sample requires sampling
+- `hoi4.probability_analyze` (`analysis = sequence`) only when the complete repeatable-event and cluster cadence contract is supplied
+- `hoi4.probability_analyze` (`analysis = render`) for matrices, comparisons, sensitivity, and unresolved views
 
 Every conclusion must be labeled exact, bounded, sampled, score-only, or unresolved.
 
@@ -313,7 +313,7 @@ Any later change to candidate eligibility, registered providers, grant count, ca
 
 1. a baseline audit using the same scenario identifiers
 2. the owner-applied change
-3. `hoi4.probability_compare` against the prior scenario artifacts
+3. `hoi4.probability_analyze` (`analysis = compare`) against the prior scenario artifacts
 4. a report of dominance, starvation, rank reversal, and unresolved external factors
 
 No exact probability should be reported when the complete pool is unavailable.

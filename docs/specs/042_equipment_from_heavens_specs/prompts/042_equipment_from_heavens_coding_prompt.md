@@ -164,7 +164,7 @@ Update only `docs/spreadsheets/chaos_redux_events_catalog.xlsx`, then run `pytho
 Before completion:
 
 - run the named probability scenarios through `chaosx_ai_probability_auditor`
-- use `hoi4.probability_compare` after any final weighted patch
+- use `hoi4.probability_analyze` (`analysis = compare`) after any final weighted patch
 - use `chaosx_localisation_auditor`
 - use `chaosx_event_completion_auditor`
 - use the correct asset reviewers

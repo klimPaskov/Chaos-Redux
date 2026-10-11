@@ -9,11 +9,11 @@ This matrix defines the named cases that the AI probability and live behavior au
 For every weighted AI surface used by Event 059:
 
 1. Run `hoi4.probability_inspect` on the complete relevant candidate pool before tuning.
-2. Use `hoi4.probability_evaluate` for every named scenario that applies to that surface.
-3. Use `hoi4.probability_sweep` across strength, supply, reserve, fuel, active-war count, target value, and legal-path thresholds.
-4. Use `hoi4.probability_compare` to compare the unmodified baseline with Event 059 baseline, Evolution I, Evolution II, Evolution III, and the full stack.
-5. Use `hoi4.probability_render` for ranking, sensitivity, timing, and unresolved views that improve review.
-6. Use `hoi4.probability_simulate` only when an input is explicitly uncertain and exact evaluation cannot answer the question.
+2. Use `hoi4.probability_inspect` for every named scenario that applies to that surface.
+3. Use `hoi4.probability_analyze` (`analysis = sweep`) across strength, supply, reserve, fuel, active-war count, target value, and legal-path thresholds.
+4. Use `hoi4.probability_analyze` (`analysis = compare`) to compare the unmodified baseline with Event 059 baseline, Evolution I, Evolution II, Evolution III, and the full stack.
+5. Use `hoi4.probability_analyze` (`analysis = render`) for ranking, sensitivity, timing, and unresolved views that improve review.
+6. Use `hoi4.probability_analyze` (`analysis = simulate`) only when an input is explicitly uncertain and exact evaluation cannot answer the question.
 7. Record whether each result is exact, bounded, score-only, sampled, or unresolved.
 
 The auditor must reject a test that omits relevant competing plans, normalisation, hard vetoes, or owner-specific strategy.

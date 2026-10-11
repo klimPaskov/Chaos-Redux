@@ -1,6 +1,6 @@
 # Event 097 Collaboration: AI and Probability Scenarios
 
-Every weighted surface in Event 097 must be audited by `chaosx_ai_probability_auditor` with the HOI4 MCP probability workflow. The audit begins with `hoi4.probability_inspect` on each surface, evaluates the named scenarios below with `hoi4.probability_evaluate`, sweeps the listed thresholds with `hoi4.probability_sweep`, and compares implemented source against the pre-edit source with `hoi4.probability_compare`. `hoi4.probability_render` is used where a ranking, timing, or comparison view makes the result easier to review. Decision and mission `ai_will_do` results are willingness scores and must not be reported as click probabilities. Option shares are conditional on the event having fired.
+Every weighted surface in Event 097 must be audited by `chaosx_ai_probability_auditor` with the HOI4 MCP probability workflow. The audit begins with `hoi4.probability_inspect` on each surface, evaluates the named scenarios below with `hoi4.probability_inspect`, sweeps the listed thresholds with `hoi4.probability_analyze` (`analysis = sweep`), and compares implemented source against the pre-edit source with `hoi4.probability_analyze` (`analysis = compare`). `hoi4.probability_analyze` (`analysis = render`) is used where a ranking, timing, or comparison view makes the result easier to review. Decision and mission `ai_will_do` results are willingness scores and must not be reported as click probabilities. Option shares are conditional on the event having fired.
 
 The expectations below are orderings, timing bands, and dominance or starvation limits. They are not exact probabilities, because candidate pools and campaign state vary.
 
@@ -174,5 +174,5 @@ Each threshold below gets a sweep across its edge so rank reversals are visible:
 - Each surface names its source file and identifier.
 - Each scenario records whether the candidate pool and external factors were complete.
 - Each result is classified as exact, bounded, sampled, score-only, or unresolved.
-- Before any weight change, an immutable copy of the pre-edit source and the scenario fixture is preserved with a SHA-256 hash, and `hoi4.probability_compare` uses the same scenarios after the change.
+- Before any weight change, an immutable copy of the pre-edit source and the scenario fixture is preserved with a SHA-256 hash, and `hoi4.probability_analyze` (`analysis = compare`) uses the same scenarios after the change.
 - If the probability route is unavailable, the affected conclusions remain unresolved and are reported as blockers.

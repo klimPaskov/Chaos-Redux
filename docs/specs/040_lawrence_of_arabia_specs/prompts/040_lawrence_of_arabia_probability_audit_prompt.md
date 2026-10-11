@@ -26,7 +26,7 @@ Use those real paths for comparison; an analysis artifact cannot replace before-
 3. Evaluate the named baseline scenarios.
 4. Classify each result as exact, bounded, sampled, score-only, or unresolved.
 5. Let the owning parent or patch-capable agent change source.
-6. Run `hoi4.probability_compare` with the same scenarios.
+6. Run `hoi4.probability_analyze` (`analysis = compare`) with the same scenarios.
 7. Render timing, matrix, sensitivity, or comparison evidence when it improves review.
 
 Use sweeps for thresholds and strategy transitions. Use simulation only when the inspected surface and scenario contract support sampling. Use sequence analysis only when cadence, cooldowns, removals, recovery, resets, and terminal states are fully declared.

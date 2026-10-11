@@ -115,7 +115,7 @@ For each Global Jihad type and intensity, inspect:
 - bypass cleanup
 - world-end eligibility
 
-Maximum needs a declared sequence manifest before `hoi4.probability_sequence` can be treated as valid evidence.
+Maximum needs a declared sequence manifest before `hoi4.probability_analyze` (`analysis = sequence`) can be treated as valid evidence.
 
 The manifest must include setup order, carrier limits, actor removals, evolution state, intensity, type, cooldowns, terminal gate, and duplicate prevention.
 

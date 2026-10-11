@@ -30,4 +30,4 @@ Conditional prompts:
 - `14_country_package_auditor.md`
 - `15_focus_tree_auditor.md`
 
-The AI probability auditor requires a second compare pass after weighted patches. Reuse prompt 03 with the final source and require `hoi4.probability_compare` against the same scenario IDs.
+The AI probability auditor requires a second compare pass after weighted patches. Reuse prompt 03 with the final source and require `hoi4.probability_analyze` (`analysis = compare`) against the same scenario IDs.

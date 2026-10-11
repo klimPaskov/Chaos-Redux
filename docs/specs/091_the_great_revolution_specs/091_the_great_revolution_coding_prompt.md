@@ -90,7 +90,7 @@ Route all eight models and genuine skeletal actions through `chaosx_3d_model_pip
 Require measured vanilla scale, textures, contacts, action and firing synchronization, export and reimport, bespoke vanilla-green counters and sourced internet audio.
 The parent wires the final `.asset`, entities, `.gfx`, units, sound definitions and placement, and a static mesh or successful export is not a completed unit.
 
-Use `hoi4.tech_inspect`, `hoi4.tech_render` and `hoi4.tech_compare` for every affected technology, doctrine, prerequisite, unlock, grant or research bonus, including donor inheritance and DLC variants, and check the standalone Technology Tree Viewer only if the task needs it.
+Use `hoi4.tech_inspect`, `hoi4.tech_render` and `hoi4.tech_inspect` (`mode = compare`) for every affected technology, doctrine, prerequisite, unlock, grant or research bonus, including donor inheritance and DLC variants, and check the standalone Technology Tree Viewer only if the task needs it.
 Use bounded event inspection that answers the actual lifecycle question, retain analysis mode, helper coverage and diagnostics when claiming full coverage, and remember that focused traces do not prove full lifecycle closure.
 
 Spawn `chaosx_ai_probability_auditor` with the review contract in `validation/ai_probability_planning_audit.md`.

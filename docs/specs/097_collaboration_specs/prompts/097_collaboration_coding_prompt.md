@@ -74,7 +74,7 @@ Follow the architecture plan for file layout, helper names, and hooks, and keep 
 - The public contract from Part 5 with caller proof checks, documented in the paired reference documents.
 - The complete Chaos impact map, with every row, repeat guard, reversal, history reason, and the generic-source overlap checks.
 - The public value budget: the two network readings and, while active, the Fifth Column band. The restoration mood appears only as a line in reports. Every other value stays hidden. Network-dependent values use the band steps in Part 3, read through comparisons, never an exact collaboration number.
-- AI from Part 6 and the probability matrix. Run `chaosx_ai_probability_auditor` for a baseline before setting weights and a `hoi4.probability_compare` pass afterward with the same named scenarios.
+- AI from Part 6 and the probability matrix. Run `chaosx_ai_probability_auditor` for a baseline before setting weights and a `hoi4.probability_analyze` (`analysis = compare`) pass afterward with the same named scenarios.
 - Assets through `097_collaboration_asset_prompt.md`, super-event through `097_collaboration_super_event_prompt.md`, achievements through `097_collaboration_achievement_prompt.md`.
 - Final localisation written from the localisation direction. No working label becomes final text, and no unresearched super-event text ships.
 - A package-owned CXT test fixture under the dynamic extension contract in `docs/testing/chaosx_test_country.md`: a modifier-free hidden-idea carrier, an idempotent `_apply` setup effect that prepares Event 097 records for inspection without firing the event or adding collaboration, a startup registration, and a registration-only `on_daily_CXT` fallback.

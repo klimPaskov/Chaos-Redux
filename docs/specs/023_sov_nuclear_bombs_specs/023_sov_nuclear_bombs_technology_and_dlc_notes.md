@@ -151,7 +151,7 @@ If implementation adds, changes, completes, or grants technology or project stat
 1. `hoi4.tech_inspect` to identify prerequisites, folders, exclusivity, unlocks, grants, bonuses, references, and missing assets.
 2. `hoi4.tech_render` for the affected folder, project family, or capability surface.
 3. Implement the narrow change.
-4. `hoi4.tech_compare` against the pre-change source.
+4. `hoi4.tech_inspect` (`mode = compare`) against the pre-change source.
 5. Record the exact result in the Event 23 handoff.
 
 The audit should prove that:

@@ -4,7 +4,7 @@ Spawn with a self-contained prompt and no inherited parent context after impleme
 
 Read `AGENTS.md`, `chaos-redux-events`, `chaos-redux-improvement-loop`, `chaos-redux-subagents`, `chaos-redux-event-planning`, `chaos-redux-event-assets`, the complete Event 53 specification, all Event 53 plans and handoffs, implementation files, Event 53 docs, asset manifests, MCP artifacts, probability audit, and workbook export.
 
-Perform a read-only completion audit. Use `hoi4.event_inspect`, `hoi4.event_render`, and `hoi4.event_compare`. Require the probability auditor's scenario-specific evidence for every selection surface.
+Perform a read-only completion audit. Use `hoi4.event_inspect`, `hoi4.event_render`, and `hoi4.event_inspect` (`mode = compare`). Require the probability auditor's scenario-specific evidence for every selection surface.
 
 Compare implementation against every accepted package and scenario. Confirm:
 

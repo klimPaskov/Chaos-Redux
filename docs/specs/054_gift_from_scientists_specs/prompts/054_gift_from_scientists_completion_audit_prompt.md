@@ -27,7 +27,7 @@ Audit:
 
 ## Required evidence
 
-Review final `hoi4.event_inspect`, render, and compare evidence. Review `hoi4.tech_inspect`, render, and compare evidence for every affected graph. Review probability scenario results and the last `hoi4.probability_compare` for changed weighted surfaces. Verify final asset consumers and checksums.
+Review final `hoi4.event_inspect`, render, and compare evidence. Review `hoi4.tech_inspect`, render, and compare evidence for every affected graph. Review probability scenario results and the last `hoi4.probability_analyze` (`analysis = compare`) for changed weighted surfaces. Verify final asset consumers and checksums.
 
 Source-only review cannot clear a missing MCP result. A planned asset cannot clear a missing DDS or runtime consumer. A CSV edit cannot clear a missing workbook update.
 

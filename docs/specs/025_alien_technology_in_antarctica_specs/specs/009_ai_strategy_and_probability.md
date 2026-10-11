@@ -570,7 +570,7 @@ For each probability-bearing implementation change:
 2. define complete named scenarios
 3. evaluate or sweep the baseline
 4. let the owning implementation agent apply the bounded patch
-5. run `hoi4.probability_compare` on the same scenarios
+5. run `hoi4.probability_analyze` (`analysis = compare`) on the same scenarios
 6. render timing or sensitivity evidence when it improves review
 
 The probability auditor remains read-only and does not choose the intended balance target.

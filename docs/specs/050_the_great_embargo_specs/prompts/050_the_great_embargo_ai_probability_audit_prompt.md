@@ -29,7 +29,7 @@ Audit:
 
 ## Evidence rules
 
-Use `hoi4.probability_evaluate` for fixed scenarios, `hoi4.probability_sweep` for sensitivity, and `hoi4.probability_compare` after an owner patch. Use simulation only when the complete normalized pool is supplied. Use sequence analysis only when cadence, caps, recovery, cooldowns, removals, resets, and terminal states are fully declared.
+Use `hoi4.probability_inspect` for fixed scenarios, `hoi4.probability_analyze` (`analysis = sweep`) for sensitivity, and `hoi4.probability_analyze` (`analysis = compare`) after an owner patch. Use simulation only when the complete normalized pool is supplied. Use sequence analysis only when cadence, caps, recovery, cooldowns, removals, resets, and terminal states are fully declared.
 
 Distinguish exact, bounded, sampled, score-only, and unresolved results. Do not infer exact probabilities from an incomplete pool. Do not choose the balance target and do not patch source.
 

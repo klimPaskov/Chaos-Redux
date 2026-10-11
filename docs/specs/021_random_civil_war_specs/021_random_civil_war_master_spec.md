@@ -4961,7 +4961,7 @@ Every complex weighted surface requires:
 2. named scenario evaluation
 3. sweeps where thresholds can reverse ordering
 4. owner-applied patch
-5. `hoi4.probability_compare` on the same scenarios
+5. `hoi4.probability_analyze` (`analysis = compare`) on the same scenarios
 6. rendering when a matrix, timing graph, sensitivity view, or comparison improves review
 
 Use simulation only for declared uncertain inputs.

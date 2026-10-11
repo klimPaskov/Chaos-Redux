@@ -127,7 +127,7 @@ Use the supplied roles with explicit self-contained prompts and no inherited par
 Inspect runtime-specific delegation elsewhere.
 The source-planning session did not run any subagents and no prepared handoff is an independent review.
 
-Use `hoi4.tech_inspect`, `hoi4.tech_render` and `hoi4.tech_compare` for affected research, grants, doctrines, licenses and naval preparation even without a new technology folder.
+Use `hoi4.tech_inspect`, `hoi4.tech_render` and `hoi4.tech_inspect` (`mode = compare`) for affected research, grants, doctrines, licenses and naval preparation even without a new technology folder.
 Spawn the read-only `chaosx_ai_probability_auditor` for baseline inspection and all weighted behavior, using P01-P16, valid candidate pools, evaluations, sweeps, sequences, simulations, comparisons and rendered evidence where appropriate.
 The owner applies balance changes and the auditor performs the mandatory same-scenario comparison.
 Never present raw weights as acceptance probabilities.

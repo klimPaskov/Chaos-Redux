@@ -53,12 +53,12 @@ Use the exact scenario facts and expected ordering in the source spec.
 
 Use:
 
-- `hoi4.probability_evaluate` when the full normalized pool is known
-- `hoi4.probability_sweep` for shortage, reserve, Exposure, route pressure, embargo, and strategic-utility thresholds
-- `hoi4.probability_simulate` for declared offer and invitation pools when sampling is appropriate
-- `hoi4.probability_sequence` only when cadence, cooldowns, caps, recovery, expiry, route loss, and terminal states are completely declared
-- `hoi4.probability_compare` after the owner patches any weight
-- `hoi4.probability_render` for matrix, sensitivity, timing, or comparison evidence when useful
+- `hoi4.probability_inspect` when the full normalized pool is known
+- `hoi4.probability_analyze` (`analysis = sweep`) for shortage, reserve, Exposure, route pressure, embargo, and strategic-utility thresholds
+- `hoi4.probability_analyze` (`analysis = simulate`) for declared offer and invitation pools when sampling is appropriate
+- `hoi4.probability_analyze` (`analysis = sequence`) only when cadence, cooldowns, caps, recovery, expiry, route loss, and terminal states are completely declared
+- `hoi4.probability_analyze` (`analysis = compare`) after the owner patches any weight
+- `hoi4.probability_analyze` (`analysis = render`) for matrix, sensitivity, timing, or comparison evidence when useful
 
 Label each result exact, bounded, sampled, score-only, or unresolved.
 
@@ -82,7 +82,7 @@ For every weight patch:
 1. record baseline inspect and scenario evidence
 2. return the bounded issue to the owner
 3. do not edit source
-4. after the owner patch, run `hoi4.probability_compare` with the same scenarios
+4. after the owner patch, run `hoi4.probability_analyze` (`analysis = compare`) with the same scenarios
 5. report improvement, regression, dominance, starvation, unresolved factors, and candidate-pool completeness
 
 ## Handoff

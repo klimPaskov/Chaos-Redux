@@ -134,7 +134,7 @@ Use one-time or episode receipts and the source values from the spec as tuning a
 
 Implement strategic AI for invitation, posture, purchase, sale, route, Exposure response, penetration, suppression, outsider investigations, and auctions.
 
-Before any weighted patch, run `chaosx_ai_probability_auditor` with `hoi4.probability_inspect` and BM-P01 through BM-P10. The owner applies the patch. The auditor then runs `hoi4.probability_compare` with the same scenarios.
+Before any weighted patch, run `chaosx_ai_probability_auditor` with `hoi4.probability_inspect` and BM-P01 through BM-P10. The owner applies the patch. The auditor then runs `hoi4.probability_analyze` (`analysis = compare`) with the same scenarios.
 
 Hard-invalid options must be zero before weighting.
 

@@ -13,12 +13,12 @@ For every weighted surface:
 1. Run `hoi4.probability_inspect` on the implemented source.
 2. Record the complete candidate pool and every external factor.
 3. Classify the result as exact, bounded, sampled, score-only, or unresolved.
-4. Use `hoi4.probability_evaluate` for named scenarios.
-5. Use `hoi4.probability_sweep` for country size, ideology, war, stability, exposure, resistance, and evolution ranges.
-6. Use `hoi4.probability_sequence` when several dependent selections occur in one firing.
-7. Use `hoi4.probability_simulate` only when exact evaluation is impossible or sequence behavior needs empirical evidence.
-8. Use `hoi4.probability_render` when a visual comparison helps review.
-9. After any weight patch, run `hoi4.probability_compare` against the same scenario set.
+4. Use `hoi4.probability_inspect` for named scenarios.
+5. Use `hoi4.probability_analyze` (`analysis = sweep`) for country size, ideology, war, stability, exposure, resistance, and evolution ranges.
+6. Use `hoi4.probability_analyze` (`analysis = sequence`) when several dependent selections occur in one firing.
+7. Use `hoi4.probability_analyze` (`analysis = simulate`) only when exact evaluation is impossible or sequence behavior needs empirical evidence.
+8. Use `hoi4.probability_analyze` (`analysis = render`) when a visual comparison helps review.
+9. After any weight patch, run `hoi4.probability_analyze` (`analysis = compare`) against the same scenario set.
 
 The probability auditor remains read-only. The parent or owning patch agent chooses the balance target and applies changes.
 

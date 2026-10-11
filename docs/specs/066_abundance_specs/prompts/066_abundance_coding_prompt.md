@@ -139,7 +139,7 @@ Never choose by option index.
 
 Run the full audit cycle through `prompts/066_abundance_ai_probability_audit_prompt.md`.
 Establish named baseline scenarios before tuning.
-After owner changes, run `hoi4.probability_compare` against the same scenarios.
+After owner changes, run `hoi4.probability_analyze` (`analysis = compare`) against the same scenarios.
 Do not claim exact shares from an incomplete provider pool.
 
 ## Presentation and logs

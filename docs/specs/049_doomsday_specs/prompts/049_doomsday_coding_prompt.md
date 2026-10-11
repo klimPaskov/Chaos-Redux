@@ -72,7 +72,7 @@ Real deaths must use the shared population and Deaths transaction. Real populati
 
 Every AI weight, MTTH, random list, target weight, option chance, incident pool, date distribution, evolution timing, peace acceptance, takeover route, focus plan, terminal path, and failed-date response must use the named scenarios in `quality/049_doomsday_probability_scenarios.md`.
 
-Spawn `chaosx_ai_probability_auditor` before a weighted patch. Establish baseline evidence with `hoi4.probability_inspect` and the proper evaluation tools. Apply the owner patch. Run `hoi4.probability_compare` with the same scenarios.
+Spawn `chaosx_ai_probability_auditor` before a weighted patch. Establish baseline evidence with `hoi4.probability_inspect` and the proper evaluation tools. Apply the owner patch. Run `hoi4.probability_analyze` (`analysis = compare`) with the same scenarios.
 
 Use mandatory MCP event and focus inspection, rendering, and comparison. Record exact blockers if a required route is unavailable.
 

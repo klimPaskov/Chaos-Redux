@@ -82,7 +82,7 @@ The decision system supplies validated context to the shared nuclear adapter. It
 
 Before patching complex weights, use `chaosx_ai_probability_auditor` with `fork_turns="none"` and the named scenarios.
 
-After the owner applies the accepted balance change, rerun the same scenarios through `hoi4.probability_compare`.
+After the owner applies the accepted balance change, rerun the same scenarios through `hoi4.probability_analyze` (`analysis = compare`).
 
 AI major first use is impossible below Evolution IV. At Evolution IV it remains gated and rare.
 

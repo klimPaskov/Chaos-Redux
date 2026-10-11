@@ -14,7 +14,7 @@ Implement first through fourth-or-later recipient scaling. Implement Evolutions 
 
 Implement the one-time Chaos map: +2 for first manifestation, +2 for the first firing with at least 25 successful recipients, +4 for the first experimental delivery, +6 for the first impossible package, and +1 for the first previously landlocked country later receiving a package after gaining usable coast. Add repeat guards. Prove that shared generic sources are not counted again. Add no Chaos per ship, recipient, support item, battle, blockade, repeat, or evolution activation. Add no invented reversal.
 
-Implement Event 56 as a Medium member of Sudden Abundance and Military Preparation. Add the proposed memberships and severities after registry and workbook inspection. One selected Event 56 can enter at most one cluster and apply once per transaction. Audit dual-cluster entry, member participation, and AI commissioning with `chaosx_ai_probability_auditor`, with a baseline pass and `hoi4.probability_compare`.
+Implement Event 56 as a Medium member of Sudden Abundance and Military Preparation. Add the proposed memberships and severities after registry and workbook inspection. One selected Event 56 can enter at most one cluster and apply once per transaction. Audit dual-cluster entry, member participation, and AI commissioning with `chaosx_ai_probability_auditor`, with a baseline pass and `hoi4.probability_analyze` (`analysis = compare`).
 
 Implement bounded connections to Event 54 technology state, Event 55 ports and logistics, Event 42 support, Event 32 owner-registered naval assets, and Famine's live blockade requirements. Do not fire another event, duplicate grants, bypass owner permission, or apply famine directly.
 

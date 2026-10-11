@@ -324,7 +324,7 @@ Every weighted surface requires the project audit sequence:
 2. define named scenarios and all external state
 3. evaluate or sweep the baseline
 4. let the owning implementation agent apply the intended weights
-5. use `hoi4.probability_compare` against the same scenarios
+5. use `hoi4.probability_analyze` (`analysis = compare`) against the same scenarios
 6. render the result when a matrix or sensitivity view improves review
 
 The probability auditor remains read-only. It does not select the desired balance target and does not patch source.

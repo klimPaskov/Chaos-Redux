@@ -4,7 +4,7 @@
 
 Every weighted surface must be inspected by `chaosx_ai_probability_auditor` before implementation is declared complete. The auditor starts with `hoi4.probability_inspect`, states whether each candidate pool and external factor is complete, and distinguishes exact, bounded, sampled, score-only, and unresolved evidence.
 
-After any weight patch, run `hoi4.probability_compare` with the same scenario IDs and inputs.
+After any weight patch, run `hoi4.probability_analyze` (`analysis = compare`) with the same scenario IDs and inputs.
 
 ## Surface inventory
 
@@ -247,7 +247,7 @@ Evidence: exact validity evaluation and score sweep.
 
 ## Sequence evidence
 
-Use `hoi4.probability_sequence` only when the Event 42 repeatable-event manifest explicitly provides the complete cadence inputs required by the tool, including repeatable cap reduction, weight recovery, cluster intervention, event timer behavior, evolution pacing, enable state, and terminal conditions.
+Use `hoi4.probability_analyze` (`analysis = sequence`) only when the Event 42 repeatable-event manifest explicitly provides the complete cadence inputs required by the tool, including repeatable cap reduction, weight recovery, cluster intervention, event timer behavior, evolution pacing, enable state, and terminal conditions.
 
 Do not use an incomplete sequence model to claim a campaign-wide firing probability.
 
@@ -257,7 +257,7 @@ Every final weighted change needs:
 
 1. baseline inspection using these scenario IDs
 2. parent or owner patch
-3. `hoi4.probability_compare` with the same candidate pools and external state
+3. `hoi4.probability_analyze` (`analysis = compare`) with the same candidate pools and external state
 4. a short finding that states whether the intended ordering, caps, equality, and starvation limits were preserved
 
 Unresolved or incomplete pools remain explicit blockers.

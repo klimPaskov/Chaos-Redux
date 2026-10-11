@@ -48,7 +48,7 @@ Baseline report path:
 docs/plans/famine_and_migration_system_plans/ai_probability_baseline.md
 ```
 
-After the parent applies weighted patches, rerun the same scenarios and require `hoi4.probability_compare`. Write:
+After the parent applies weighted patches, rerun the same scenarios and require `hoi4.probability_analyze` (`analysis = compare`). Write:
 
 ```text
 docs/plans/famine_and_migration_system_plans/ai_probability_compare.md

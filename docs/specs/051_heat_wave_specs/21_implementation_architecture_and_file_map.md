@@ -358,7 +358,7 @@ Never edit export CSV files directly.
 
 - `hoi4.event_inspect`
 - `hoi4.event_render`
-- `hoi4.event_compare`
+- `hoi4.event_inspect` (`mode = compare`)
 
 ### Weighted logic
 

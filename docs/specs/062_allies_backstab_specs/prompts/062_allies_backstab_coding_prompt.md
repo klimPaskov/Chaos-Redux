@@ -131,7 +131,7 @@ Do not duplicate another event's transaction.
 
 Before changing any weighted surface, spawn `chaosx_ai_probability_auditor` with no inherited context and run the baseline scenarios in `quality/062_allies_backstab_probability_scenarios.md`.
 
-After owner implementation and tuning, run `hoi4.probability_compare` with the same scenarios.
+After owner implementation and tuning, run `hoi4.probability_analyze` (`analysis = compare`) with the same scenarios.
 
 AI must understand faction selection, victim choice, side choice, conflict intent, decisions, sponsors, settlement, supply, access, and The Offensive. Invalid actions always have zero probability.
 

@@ -75,7 +75,7 @@ Implement the achievement with guarded qualification, 180-day survival, stronger
 
 ## Inspection and validation
 
-Use `hoi4.event_inspect`, `hoi4.event_render`, and `hoi4.event_compare` for the event chain. Use the probability workflow in the AI scenario matrix. Verify exact AI strategy names and fields against the installed game and documentation. Do not invent unsupported keys.
+Use `hoi4.event_inspect`, `hoi4.event_render`, and `hoi4.event_inspect` (`mode = compare`) for the event chain. Use the probability workflow in the AI scenario matrix. Verify exact AI strategy names and fields against the installed game and documentation. Do not invent unsupported keys.
 
 Run repository validation, targeted script checks, asset checks, localisation checks, event-log checks, save migration checks, and all named acceptance scenarios. Prepare the named runtime cases for control transition, new-country coverage, supply failure, invasion viability, Evolution II targets, Total Offensive risk, pre-fire catch-up, cluster firing, reload, and achievement qualifications. The user owns live-game validation. Keep those results unverified until evidence is supplied, and inspect supplied saves with chaos-redux-save-inspection.
 

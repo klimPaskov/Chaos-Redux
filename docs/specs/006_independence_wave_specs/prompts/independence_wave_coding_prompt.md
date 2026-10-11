@@ -232,7 +232,7 @@ After meaningful tranches, use the appropriate active auditors and write handoff
 - mandatory improvement-loop pass, then resolve its addendum or closure handoff
 
 Route weighted surfaces through `chaosx_ai_probability_auditor` under `chaos-redux-subagents`.
-Its scenario-specific baseline and matching `hoi4.probability_compare` evidence are required when an owner changes weights, MTTH scores, random selection, or strategy factors.
+Its scenario-specific baseline and matching `hoi4.probability_analyze` (`analysis = compare`) evidence are required when an owner changes weights, MTTH scores, random selection, or strategy factors.
 
 Provide route coverage, candidate coverage by region and depth, mechanics action map, formable coverage, AI scenario evidence, host-survival tests, Event 5 collision tests, scenario tests at every intensity, asset status, super-event research status, achievement status, docs and catalog alignment, and every simplification or blocker.
 

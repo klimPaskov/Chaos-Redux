@@ -5,7 +5,7 @@ Work read-only with no inherited conversation context. Compare the final Event 3
 Require the owner-provided immutable before-source paths, copied-byte hashes and exact saved scenarios under the [current probability contract](../../../../.agents/skills/chaos-redux-subagents/SKILL.md#mcp-evidence-in-handoffs).
 Never compare the final file to itself or substitute a prior analysis artifact for before-source bytes.
 
-Read the full Event 38 specs, `docs/plans/038_malta_crusaders_plans/probability_baseline.md`, the owner patch handoff, and the final weighted source. Start with `hoi4.probability_inspect`, then run `hoi4.probability_compare` against every baseline scenario affected by the patch. Use evaluate, sweep, simulation, or render only when required to explain the comparison.
+Read the full Event 38 specs, `docs/plans/038_malta_crusaders_plans/probability_baseline.md`, the owner patch handoff, and the final weighted source. Start with `hoi4.probability_inspect`, then run `hoi4.probability_analyze` (`analysis = compare`) against every baseline scenario affected by the patch. Use evaluate, sweep, simulation, or render only when required to explain the comparison.
 
 Confirm:
 

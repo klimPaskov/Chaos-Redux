@@ -275,7 +275,7 @@ Audit:
 - foreign coup targets
 - bloc support targets
 
-Use the exact scenario IDs from the matrix. Apply no weighted patch without a post-change `hoi4.probability_compare` result.
+Use the exact scenario IDs from the matrix. Apply no weighted patch without a post-change `hoi4.probability_analyze` (`analysis = compare`) result.
 
 ## Completion handoff
 

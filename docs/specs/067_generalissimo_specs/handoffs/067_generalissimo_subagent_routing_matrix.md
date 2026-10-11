@@ -44,7 +44,7 @@ Every change to an AI weight, MTTH modifier, random-list weight, target score, f
 1. `chaosx_ai_probability_auditor` runs `hoi4.probability_inspect`.
 2. The auditor records the named baseline scenarios and the completeness of each candidate pool.
 3. The owning patch-capable agent or parent applies the accepted change.
-4. The probability auditor runs `hoi4.probability_compare` over the same scenarios.
+4. The probability auditor runs `hoi4.probability_analyze` (`analysis = compare`) over the same scenarios.
 5. The parent accepts, revises, or rejects the change from the evidence.
 
 The auditor does not choose the desired balance and does not edit source.

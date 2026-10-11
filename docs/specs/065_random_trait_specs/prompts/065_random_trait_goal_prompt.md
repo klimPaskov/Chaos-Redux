@@ -47,7 +47,7 @@ Run every scenario in `quality/065_random_trait_probability_scenario_matrix.md`.
 
 Use the exact evaluation, sweep, sequence, comparison, and render routes required there.
 
-Run `hoi4.probability_compare` after any patch.
+Run `hoi4.probability_analyze` (`analysis = compare`) after any patch.
 
 Do not claim probability coverage when the route is unavailable.
 
@@ -77,7 +77,7 @@ Keep acknowledgment non-mechanical.
 
 Validate or replace the existing DDS and prove the `210x176` consumer.
 
-Use `hoi4.event_inspect`, `hoi4.event_render`, and `hoi4.event_compare` before and after changes.
+Use `hoi4.event_inspect`, `hoi4.event_render`, and `hoi4.event_inspect` (`mode = compare`) before and after changes.
 
 Provide route coverage for direct and cluster firing, all forms, human reports, AI mutation, debug paths, save and load, and multiplayer.
 

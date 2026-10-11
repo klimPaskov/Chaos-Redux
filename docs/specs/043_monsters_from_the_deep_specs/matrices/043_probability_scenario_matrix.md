@@ -29,10 +29,10 @@ The probability auditor is read-only. It begins with `hoi4.probability_inspect`,
 
 1. Run baseline scenarios.
 2. Parent or owning specialist applies bounded tuning.
-3. Run `hoi4.probability_compare` with the same scenario IDs.
+3. Run `hoi4.probability_analyze` (`analysis = compare`) with the same scenario IDs.
 4. Record changed order, timing, dominance, starvation, and unresolved external state.
 5. Reject a patch that fixes one scenario by breaking a higher-priority safety case.
 
 ## Sequence limitation
 
-Use `hoi4.probability_sequence` only after the complete Event 043 custom-pool manifest declares cadence, removals, cooldowns, receipts, resets, timer changes, and terminal states.
+Use `hoi4.probability_analyze` (`analysis = sequence`) only after the complete Event 043 custom-pool manifest declares cadence, removals, cooldowns, receipts, resets, timer changes, and terminal states.

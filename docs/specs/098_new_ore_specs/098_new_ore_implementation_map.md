@@ -72,15 +72,15 @@ No HOI4 MCP tools were exposed during the original planning session. Project con
 | Available installed reference/context/search/read/source tools | Exact game documentation, armor definitions, callbacks, cost/removal functions, native consumers, existing source paths and API signatures | Exact files and supported semantics. Do not invent a tool schema from the family name |
 | `hoi4.event_inspect` | Initial discovery, all evolution incidents, agreement and demand chains, concrete milestones | Reachable branches, actors, triggers, receipts, zero/failure outcomes and graph scope |
 | `hoi4.event_render` | Event-chain structure and source-linked relationships | Deterministic graph/route views. Native GUI geometry, text and click-region evidence belongs to `hoi4.gui_inspect` and `hoi4.gui_render` |
-| `hoi4.event_compare` | Same baseline and changed event contexts after implementation | Evidence that intended branches changed and unrelated behavior was preserved |
+| `hoi4.event_inspect` (`mode = compare`) | Same baseline and changed event contexts after implementation | Evidence that intended branches changed and unrelated behavior was preserved |
 | `hoi4.gui_inspect` and `hoi4.gui_render` | Ordinary category, selected source, agreement and demand states, shared details/log and Super-Alloy presentation | Complete relevant displayed states and supported resolution checks. Structural inspection alone is not native visual proof |
 | `hoi4.probability_inspect` | Begin every weighted-surface audit, including discovery, timing, AI offers and responses | Adapter/source identity, complete candidate set, exclusions, factors and unknown external inputs |
-| `hoi4.probability_evaluate` | AI-01 through AI-15 and exact selector/cost/timing boundaries | Actual scenario traces with the correct exact, bounded, score, or unresolved label |
-| `hoi4.probability_sweep` | Chaos thresholds, force, industrial cost capacity, reach, agreement limits, refusal and reliability memory | Sensitivity, illegal-option zeroing, rank reversals, dominance and starvation |
-| `hoi4.probability_compare` | Matched pre/post versions and paired campaign changes | Intended direction preserved across equal inputs, with changed inputs declared |
-| `hoi4.probability_render` | Matrices, timing, source selection, score comparisons and unresolved views that help review | Saved visual evidence linked to the same data and revision |
-| `hoi4.probability_simulate` | Only scenarios with explicitly declared uncertain inputs | Input distributions, sample policy and uncertainty. Never disguise sampling as exact enumeration |
-| `hoi4.probability_sequence` | Only a complete custom candidate pool with declared cadence and state transitions | Full evolution/discovery sequence assumptions and finite results. An incomplete pool cannot establish campaign-wide probabilities |
+| `hoi4.probability_inspect` | AI-01 through AI-15 and exact selector/cost/timing boundaries | Actual scenario traces with the correct exact, bounded, score, or unresolved label |
+| `hoi4.probability_analyze` (`analysis = sweep`) | Chaos thresholds, force, industrial cost capacity, reach, agreement limits, refusal and reliability memory | Sensitivity, illegal-option zeroing, rank reversals, dominance and starvation |
+| `hoi4.probability_analyze` (`analysis = compare`) | Matched pre/post versions and paired campaign changes | Intended direction preserved across equal inputs, with changed inputs declared |
+| `hoi4.probability_analyze` (`analysis = render`) | Matrices, timing, source selection, score comparisons and unresolved views that help review | Saved visual evidence linked to the same data and revision |
+| `hoi4.probability_analyze` (`analysis = simulate`) | Only scenarios with explicitly declared uncertain inputs | Input distributions, sample policy and uncertainty. Never disguise sampling as exact enumeration |
+| `hoi4.probability_analyze` (`analysis = sequence`) | Only a complete custom candidate pool with declared cadence and state transitions | Full evolution/discovery sequence assumptions and finite results. An incomplete pool cannot establish campaign-wide probabilities |
 | Available advertised script validation | Changed source files or effect/trigger snippets supported by the discovered schema | Exact `checksPerformed`, checked commands/scopes, source revision and diagnostics. Unchecked arguments, unknown helpers and unsupported file surfaces stay unresolved, with localisation/registration covered by appropriate separate checks |
 
 The armor floor, immediate transfer before the next combat evaluation, real equipment conservation, ownership of commanded forces, native war-goal removal, final converted assets, and save continuity also require evidence from the actual supported game environment. MCP structural or probability output is not a substitute for behavior it does not observe.
@@ -99,7 +99,7 @@ The armor floor, immediate transfer before the next combat evaluation, real equi
 
 For every surface, an unavailable tool is recorded by exact advertised name or missing family, attempted operation, input revision, and consequence for the claim. Store evidence under the event's plan/evidence path and link it from the route table. A source-only comparison cannot be relabelled as a missing MCP or native result.
 
-If implementation changes technology/doctrine graphs, prerequisites, research grants or bonuses, extend the accepted design with the exact graph consequence and require `hoi4.tech_inspect`, `hoi4.tech_render`, and `hoi4.tech_compare`. Do not introduce a graph change merely as a workaround for unproven existing-equipment coverage.
+If implementation changes technology/doctrine graphs, prerequisites, research grants or bonuses, extend the accepted design with the exact graph consequence and require `hoi4.tech_inspect`, `hoi4.tech_render`, and `hoi4.tech_inspect` (`mode = compare`). Do not introduce a graph change merely as a workaround for unproven existing-equipment coverage.
 
 ## Named proof gates
 

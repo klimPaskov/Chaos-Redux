@@ -130,7 +130,7 @@ No numeric chance, completion probability, or balance conclusion in this package
 | AI | Mainland operating priority while useful | Urgent mainland defense while useful |
 | New equipment, doctrine, 3D units or tags | None planned | None planned |
 
-Any necessary technology grant must still be inspected with `hoi4.tech_inspect`, rendered with `hoi4.tech_render`, and compared with `hoi4.tech_compare`.
+Any necessary technology grant must still be inspected with `hoi4.tech_inspect`, rendered with `hoi4.tech_render`, and compared with `hoi4.tech_inspect` (`mode = compare`).
 A grant profile is not permission to rewrite the technology tree.
 There is no reason to perform a new-tag production pipeline while this scope remains unchanged.
 If an approved later addition introduces a tag, the full vanilla, Chaos Redux, Workshop and local-mod collision audit becomes mandatory before creation.

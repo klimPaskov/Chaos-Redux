@@ -553,7 +553,7 @@ Expected ordering after all tracks are eligible:
 ## Required probability workflow
 
 Every weighted surface uses the named scenarios in `032_missiles_probability_scenario_matrix.md` with a complete candidate pool where normalization applies.
-Prefer `hoi4.probability_inspect` followed by `hoi4.probability_compare` on the same scenarios; add evaluate, sweep, simulate, sequence or render only when they answer a concrete balance question.
+Prefer `hoi4.probability_inspect` followed by `hoi4.probability_analyze` (`analysis = compare`) on the same scenarios; add evaluate, sweep, simulate, sequence or render only when they answer a concrete balance question.
 The CLAUDE.md retry limit applies: one initial call and at most one corrected retry per failing capability.
 
 Current status (`blocked` for MCP evidence): every `hoi4.probability_inspect` call in the 2026-10-03 to 2026-10-08 rounds returned `INTERNAL_ERROR` or timed out (`docs/plans/032_missiles_plans/032_missiles_test_results.md`).

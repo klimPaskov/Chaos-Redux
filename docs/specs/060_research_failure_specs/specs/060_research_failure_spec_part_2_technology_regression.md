@@ -418,7 +418,7 @@ The required pass includes:
 
 - `hoi4.tech_inspect` for the candidate branches and every owner-controlled technology considered.
 - `hoi4.tech_render` for the affected folders or branches.
-- `hoi4.tech_compare` after the registry and source implementation are changed.
+- `hoi4.tech_inspect` (`mode = compare`) after the registry and source implementation are changed.
 - Direct review of the installed vanilla documentation and offline Paradox Wiki pages required by repository rules.
 - Runtime validation of research removal, active-project cancellation, production lines, designs, equipment, facilities, save and reload, and rediscovery.
 

@@ -196,7 +196,7 @@ Priority research areas are:
 - cavalry and mechanized carriers
 - air transport and close support where available
 
-Custom technologies should sit in a dedicated Event 38 branch or approved special project family. Any new technology, doctrine, prerequisite, unlock, bonus, or asset requires `hoi4.tech_inspect`, `hoi4.tech_render`, and `hoi4.tech_compare` evidence.
+Custom technologies should sit in a dedicated Event 38 branch or approved special project family. Any new technology, doctrine, prerequisite, unlock, bonus, or asset requires `hoi4.tech_inspect`, `hoi4.tech_render`, and `hoi4.tech_inspect` (`mode = compare`) evidence.
 
 Technology grants from foreign sponsors must use a compatibility-aware union or targeted bonus. The package must not erase existing research or grant mutually exclusive industry branches incorrectly.
 

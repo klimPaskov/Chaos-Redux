@@ -50,7 +50,7 @@ Pay special attention to:
 
 Do not patch source. Do not choose the desired balance target. Report whether the implemented result matches the specification.
 
-For a requested change, provide a bounded owner-facing handoff with scenario evidence. After the owner patches, rerun `hoi4.probability_compare` using identical scenarios.
+For a requested change, provide a bounded owner-facing handoff with scenario evidence. After the owner patches, rerun `hoi4.probability_analyze` (`analysis = compare`) using identical scenarios.
 
 Write the audit under:
 

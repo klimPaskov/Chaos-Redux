@@ -59,7 +59,7 @@ Implement bounded integration with Event 54 technology state, Event 55 port and 
 
 ## AI
 
-Implement the full AI strategy and task-force handling from the spec. Spawn `chaosx_ai_probability_auditor` before weighted changes, apply the owner patch, then run `hoi4.probability_compare` with the same scenarios. Do not claim exact probabilities from an incomplete pool.
+Implement the full AI strategy and task-force handling from the spec. Spawn `chaosx_ai_probability_auditor` before weighted changes, apply the owner patch, then run `hoi4.probability_analyze` (`analysis = compare`) with the same scenarios. Do not claim exact probabilities from an incomplete pool.
 
 ## Assets and achievements
 

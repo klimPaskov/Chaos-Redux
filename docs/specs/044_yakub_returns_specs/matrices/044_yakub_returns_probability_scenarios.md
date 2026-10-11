@@ -27,11 +27,11 @@ The implementation must route every probability-bearing surface through `chaosx_
 
 ## Required evidence methods
 
-- Use `hoi4.probability_evaluate` for complete option pools and decision scores under the named states.
-- Use `hoi4.probability_sweep` across Influence bands, intelligence strength, stability, Cohesion, and region count.
-- Use `hoi4.probability_compare` after every source change to the audited weights.
-- Use `hoi4.probability_simulate` only where a sampled sequence gives useful evidence.
-- Use `hoi4.probability_sequence` only after the complete cadence, cooldown, threshold, and terminal contract is declared.
-- Use `hoi4.probability_render` for route matrices, influence sweeps, or unresolved candidate gaps.
+- Use `hoi4.probability_inspect` for complete option pools and decision scores under the named states.
+- Use `hoi4.probability_analyze` (`analysis = sweep`) across Influence bands, intelligence strength, stability, Cohesion, and region count.
+- Use `hoi4.probability_analyze` (`analysis = compare`) after every source change to the audited weights.
+- Use `hoi4.probability_analyze` (`analysis = simulate`) only where a sampled sequence gives useful evidence.
+- Use `hoi4.probability_analyze` (`analysis = sequence`) only after the complete cadence, cooldown, threshold, and terminal contract is declared.
+- Use `hoi4.probability_analyze` (`analysis = render`) for route matrices, influence sweeps, or unresolved candidate gaps.
 - Report starvation risks, dominant options, dead branches, and unavailable candidates.
 - The auditor does not choose the desired balance target. The source design above supplies the expected ordering.

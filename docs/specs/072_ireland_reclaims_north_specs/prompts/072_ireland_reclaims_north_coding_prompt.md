@@ -77,7 +77,7 @@ Use the same live qualification helper for state pieces, hover, counts, decision
 No hand-drawn maps, cached owner names, fake map buttons, or whole-world periodic refresh loops are accepted.
 
 Use map inspect/render and GUI inspect/render before and after relevant tranches for matching scenarios and resolutions.
-Use hoi4.tech_inspect, hoi4.tech_render and hoi4.tech_compare around technologies, doctrines, grants, research bonuses and their dependencies.
+Use hoi4.tech_inspect, hoi4.tech_render and hoi4.tech_inspect (mode = compare) around technologies, doctrines, grants, research bonuses and their dependencies.
 Dispatch chaosx_ai_probability_auditor, beginning with probability inspection, then named evaluations, sweeps, comparisons, supported sequence views and declared-input simulations.
 Do not interpret relative scores as verified probabilities or an MTTH input as a known outcome distribution.
 

@@ -209,7 +209,7 @@ The prompt must tell the coding agent to:
 - implement every country package from the spec, including tag, history, names, cosmetic names, ideology names, ruling parties, leaders, leader changes, flags, route-specific identity changes, starting divisions, dynamic unit packages, force-growth decisions and focuses, volunteer routes, decisions, ideas, AI behavior, localisation, assets, and docs
 - implement the full AI strategy matrix from the spec, including route preferences, foreign influence behavior, focus choices, unit-raising choices, decision choices, faction behavior, and high-chaos exceptions
 - perform the full vanilla, Chaos Redux, Workshop, and local-mod tag collision audit before creating a new country tag, reuse existing vanilla identities when they already exist, and preserve living vanilla countries and meaningful existing trees
-- use `hoi4.tech_inspect`, `hoi4.tech_render`, and `hoi4.tech_compare` when technologies, doctrines, folders, prerequisites, unlocks, grants, or research bonuses are involved
+- use `hoi4.tech_inspect`, `hoi4.tech_render`, and `hoi4.tech_inspect` (`mode = compare`) when technologies, doctrines, folders, prerequisites, unlocks, grants, or research bonuses are involved
 - route weighted behavior through one bounded `chaosx_ai_probability_auditor` pass with named representative scenarios and before/after source comparison; prefer targeted MCP tools and use source/helper evaluation when unsupported
 - route required 3D model and skeletal animation production through `chaosx_3d_model_pipeline` with Codex `collaboration.spawn_agent` using `fork_turns="none"`, then implement and validate the final `.asset`, entity, `.gfx`, unit or building consumer, placement, and animation, and review available user-supplied live in-game evidence
 - follow the flat reference-constrained image-generation rule for every flag and the sourced identity-preserving portrait rule for every grounded polity and real person
@@ -418,7 +418,7 @@ Reject the draft if it has any of these problems:
 - new country tags created without inventorying vanilla, Chaos Redux, installed Workshop mods, and other local mods
 - duplicate country identities created when a valid vanilla identity already exists
 - living vanilla countries or meaningful existing trees overwritten without an explicit event requirement
-- technology or doctrine changes without `hoi4.tech_inspect`, `hoi4.tech_render`, and `hoi4.tech_compare` requirements in the coding prompt
+- technology or doctrine changes without `hoi4.tech_inspect`, `hoi4.tech_render`, and `hoi4.tech_inspect` (`mode = compare`) requirements in the coding prompt
 - weighted AI or event behavior without named probability scenarios and the correct inspection, evaluation, sweep, comparison, or rendering workflow
 - visible 3D units, buildings, creatures, vehicles, aircraft, naval objects, or map entities without an asset profile, vanilla scale reference, source geometry measurement, action plan, provider lineage, export and reimport proof, wired consumer, and any available user-supplied screenshot evidence, with absent live proof reported as a limitation
 - a side-profile sheet, turnaround board, collage, or multi-view board planned as a Meshy input instead of one clean reference image

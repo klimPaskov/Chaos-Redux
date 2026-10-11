@@ -130,7 +130,7 @@ Implement the full event family, including:
 
 Register the event as Minor Fire-Once with Chaos level 1. Add it to the reworked default-enabled allowlist only when the complete event is ready for normal selection.
 
-Use `hoi4.event_inspect`, `hoi4.event_render`, and `hoi4.event_compare` before and after the event-chain change.
+Use `hoi4.event_inspect`, `hoi4.event_render`, and `hoi4.event_inspect` (`mode = compare`) before and after the event-chain change.
 
 ### 4. Decisions and missions
 
@@ -182,7 +182,7 @@ Before changing any AI or random weight:
 3. establish named baseline results
 4. apply the intended patch through the owning agent or parent
 5. run the auditor again
-6. require `hoi4.probability_compare` over the same scenarios
+6. require `hoi4.probability_analyze` (`analysis = compare`) over the same scenarios
 
 Cover host targeting, evolution pacing, demand choice, concession and removal AI, revolt allocation, focus routes, scenario intensity, world-end outcomes, and bloc behavior.
 

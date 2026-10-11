@@ -18,11 +18,11 @@ The auditor must inspect the actual candidate pool, availability, costs, cooldow
 
 1. Run `hoi4.probability_inspect` on the exact event option, decision, MTTH, random list, target pool, or strategy surface.
 2. Record whether the complete candidate pool and all external factors are known.
-3. Run `hoi4.probability_evaluate` for the named scenarios below.
-4. Run `hoi4.probability_sweep` across the important value ranges.
-5. Use `hoi4.probability_simulate` only for explicitly declared uncertain inputs.
-6. Use `hoi4.probability_render` for decision rankings, evolution timing, target matrices, sensitivity, and comparisons when useful.
-7. After the implementation owner changes a weighted surface, run `hoi4.probability_compare` with the same scenario IDs and inputs.
+3. Run `hoi4.probability_inspect` for the named scenarios below.
+4. Run `hoi4.probability_analyze` (`analysis = sweep`) across the important value ranges.
+5. Use `hoi4.probability_analyze` (`analysis = simulate`) only for explicitly declared uncertain inputs.
+6. Use `hoi4.probability_analyze` (`analysis = render`) for decision rankings, evolution timing, target matrices, sensitivity, and comparisons when useful.
+7. After the implementation owner changes a weighted surface, run `hoi4.probability_analyze` (`analysis = compare`) with the same scenario IDs and inputs.
 8. Mark unresolved engine state as unresolved instead of inventing a probability.
 
 Tool failures follow the retry limits in `CLAUDE.md`; when a surface cannot be analysed, calculate representative cases from the actual script and state the assumptions.

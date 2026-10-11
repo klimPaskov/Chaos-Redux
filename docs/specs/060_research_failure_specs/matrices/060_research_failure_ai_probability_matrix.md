@@ -120,12 +120,12 @@ The auditor must label each result as exact, bounded, sampled, score-only, or un
 | Evidence need | Preferred tool |
 | --- | --- |
 | Map candidates, factors, external dependencies | `hoi4.probability_inspect` |
-| Compare option or decision scores under one scenario | `hoi4.probability_evaluate` |
-| Check thresholds across stability, war, slots, or Capacity ranges | `hoi4.probability_sweep` |
-| Check random target and incident frequency with a complete pool | `hoi4.probability_simulate` |
-| Check evolution timing with scheduled state changes | `hoi4.probability_evaluate` or timing render, and sequence only when the full cadence contract exists |
-| Compare pre-patch and post-patch behavior | `hoi4.probability_compare` |
-| Present timing, matrix, sensitivity, or unresolved evidence | `hoi4.probability_render` |
+| Compare option or decision scores under one scenario | `hoi4.probability_inspect` |
+| Check thresholds across stability, war, slots, or Capacity ranges | `hoi4.probability_analyze` (`analysis = sweep`) |
+| Check random target and incident frequency with a complete pool | `hoi4.probability_analyze` (`analysis = simulate`) |
+| Check evolution timing with scheduled state changes | `hoi4.probability_inspect` or timing render, and sequence only when the full cadence contract exists |
+| Compare pre-patch and post-patch behavior | `hoi4.probability_analyze` (`analysis = compare`) |
+| Present timing, matrix, sensitivity, or unresolved evidence | `hoi4.probability_analyze` (`analysis = render`) |
 
 ## Acceptance conditions
 

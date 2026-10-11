@@ -312,9 +312,9 @@ This is a balance expectation, not an exact probability claim.
 
 1. Run `hoi4.probability_inspect` on each weighted surface.
 2. Record the complete candidate pool and external factors.
-3. Use `hoi4.probability_evaluate` for named scenarios.
+3. Use `hoi4.probability_inspect` for named scenarios.
 4. Use sweeps for National Works Capacity, war state, partner count, and project scale.
 5. Apply owner-selected weight changes outside the read-only auditor.
-6. Run `hoi4.probability_compare` against the same scenario IDs.
+6. Run `hoi4.probability_analyze` (`analysis = compare`) against the same scenario IDs.
 7. Render matrix or sensitivity evidence when it improves review.
 8. Mark incomplete pools as unresolved, not exact.

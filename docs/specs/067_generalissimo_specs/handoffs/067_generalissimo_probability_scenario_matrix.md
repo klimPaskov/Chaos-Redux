@@ -10,12 +10,12 @@ This matrix defines the named scenarios required for every Event 067 weighted su
 
 1. Use `hoi4.probability_inspect` on the exact source surface.
 2. Confirm the complete candidate pool and all external factors used by the named scenario.
-3. Use `hoi4.probability_evaluate` for complete option and target pools.
-4. Use `hoi4.probability_sweep` across Influence, stability, war direction, command authority, and removal preparation.
-5. Use `hoi4.probability_render` for matrices and sensitivity views that improve review.
-6. Use `hoi4.probability_simulate` only when the candidate pool and repeated cadence are complete.
-7. Use `hoi4.probability_sequence` only when the full demand cadence, cooldown, removal, and terminal-state contract is declared.
-8. After a patch, use `hoi4.probability_compare` with the same scenario IDs.
+3. Use `hoi4.probability_inspect` for complete option and target pools.
+4. Use `hoi4.probability_analyze` (`analysis = sweep`) across Influence, stability, war direction, command authority, and removal preparation.
+5. Use `hoi4.probability_analyze` (`analysis = render`) for matrices and sensitivity views that improve review.
+6. Use `hoi4.probability_analyze` (`analysis = simulate`) only when the candidate pool and repeated cadence are complete.
+7. Use `hoi4.probability_analyze` (`analysis = sequence`) only when the full demand cadence, cooldown, removal, and terminal-state contract is declared.
+8. After a patch, use `hoi4.probability_analyze` (`analysis = compare`) with the same scenario IDs.
 
 ## Target selection scenarios
 
@@ -164,7 +164,7 @@ This matrix defines the named scenarios required for every Event 067 weighted su
 
 ## Sequence audit scenarios
 
-Use `hoi4.probability_sequence` only after the complete cadence is declared.
+Use `hoi4.probability_analyze` (`analysis = sequence`) only after the complete cadence is declared.
 
 | Scenario ID | Sequence | Expected property |
 | --- | --- | --- |
@@ -185,6 +185,6 @@ The final probability report should list:
 - result type, such as exact, bounded, sampled, score-only, or unresolved
 - baseline revision
 - patched revision
-- `hoi4.probability_compare` result
+- `hoi4.probability_analyze` (`analysis = compare`) result
 - whether expected ordering passed
 - remaining balance decision

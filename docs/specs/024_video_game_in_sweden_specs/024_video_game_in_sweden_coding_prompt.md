@@ -58,7 +58,7 @@ Foreign reactions must use a bounded pool of at most three meaningful countries.
 
 Implement route-specific AI for the opening, every evolution option, every decision phase, audits, restrictions, the risk route, foreign licensing, commander handling, and conclusion. AI must consider war state, stability, supply, equipment, trains, fuel, occupied cores, army experience, government type, subject status, world tension, Reliance, prior mismatch incidents, and current route validity where relevant.
 
-Run `chaosx_ai_probability_auditor` before changing weighted values, then run the same named scenarios after the owner patch with `hoi4.probability_compare`. The auditor remains read-only. Preserve the intended ordering and safety constraints in the scenario matrix. Near capitulation, broken supply, or severe instability must never make Trust the Model the preferred route.
+Run `chaosx_ai_probability_auditor` before changing weighted values, then run the same named scenarios after the owner patch with `hoi4.probability_analyze` (`analysis = compare`). The auditor remains read-only. Preserve the intended ordering and safety constraints in the scenario matrix. Near capitulation, broken supply, or severe instability must never make Trust the Model the preferred route.
 
 ## Logs, text, assets, achievements, and docs
 

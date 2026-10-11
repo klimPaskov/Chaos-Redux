@@ -400,6 +400,6 @@ Before editing and after final source changes, implementation must use the event
 - outsider evidence events
 - dormancy and dismantling
 
-Use narrow `hoi4.event_inspect`, `hoi4.event_render`, and `hoi4.event_compare` calls.
+Use narrow `hoi4.event_inspect`, `hoi4.event_render`, and `hoi4.event_inspect` (`mode = compare`) calls.
 
 Weighted options, invitations, offer pools, and AI actions require the separate probability workflow.

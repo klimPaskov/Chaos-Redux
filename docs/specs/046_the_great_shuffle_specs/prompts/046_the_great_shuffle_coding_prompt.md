@@ -125,7 +125,7 @@ The auditor starts with `hoi4.probability_inspect` and uses evaluation, sweep, s
 
 The owner chooses balance targets and applies patches.
 
-Run `hoi4.probability_compare` afterward on the same scenarios.
+Run `hoi4.probability_analyze` (`analysis = compare`) afterward on the same scenarios.
 
 Prove coverage monotonicity, quota termination, no starvation, Evolution V saturation, repeated independence, evolution pacing, cluster non-duplication, and direct Chaos compression.
 

@@ -244,7 +244,7 @@ Use:
 
 - `hoi4.event_inspect`
 - `hoi4.event_render`
-- `hoi4.event_compare`
+- `hoi4.event_inspect` (`mode = compare`)
 
 Inspect entry ordering, invitation branches, transaction scope, evolution flow, outsider evidence, dormancy, and dismantling.
 

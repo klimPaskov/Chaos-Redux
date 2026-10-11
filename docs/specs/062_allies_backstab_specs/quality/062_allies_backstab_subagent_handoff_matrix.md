@@ -65,7 +65,7 @@ Any patch to faction selection, victim selection, victim count, side choice, dec
 
 1. baseline `chaosx_ai_probability_auditor` pass
 2. owner or parent patch
-3. comparison pass with `hoi4.probability_compare`
+3. comparison pass with `hoi4.probability_analyze` (`analysis = compare`)
 
 The auditor remains read-only and does not choose the target balance.
 
