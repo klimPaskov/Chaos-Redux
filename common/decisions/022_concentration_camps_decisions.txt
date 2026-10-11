@@ -1,0 +1,125 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 022 CONCENTRATION CAMPS DECISIONS
+# ============================================================================
+# Two actions and one mission. Routine management of a registered network
+# (mandate, economic priority, spending, site roles, release, closure and
+# records) belongs to the shared Camp Administration window and is not
+# repeated here. This category carries only what that window does not own:
+# widening the network by decree, the case review, and the containment of
+# escape networks.
+# Costs are cached in the concentration_camps_cost_* country variables.
+# ============================================================================
+
+concentration_camps_category = {
+
+	concentration_camps_expand_network = {
+		icon = GFX_decision_oppression
+		priority = 100
+		state_target = any_controlled_state
+		on_map_mode = map_and_decisions_view
+		days_re_enable = constant:concentration_camps_timing.expansion_cooldown_days
+		visible = {
+			concentration_camps_network_is_live = yes
+			concentration_camps_government_permits_expansion = yes
+		}
+		target_root_trigger = {
+			concentration_camps_can_widen_network = yes
+		}
+		target_trigger = {
+			FROM = { concentration_camps_state_is_candidate_for_root = yes }
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = concentration_camps_expand_requirements_tt
+				concentration_camps_can_widen_network = yes
+			}
+			FROM = { concentration_camps_state_is_candidate_for_root = yes }
+		}
+		custom_cost_trigger = { concentration_camps_can_pay_expansion = yes }
+		custom_cost_text = concentration_camps_cost_expansion
+		complete_effect = {
+			custom_effect_tooltip = concentration_camps_expand_network_tt
+			hidden_effect = { concentration_camps_expand_in_from = yes }
+		}
+		ai_will_do = {
+			base = constant:concentration_camps_ai.blocked
+			modifier = { add = constant:concentration_camps_ai.decision_standard has_war = yes }
+			modifier = { add = constant:concentration_camps_ai.decision_standard has_government = fascism }
+			modifier = { add = constant:concentration_camps_ai.decision_low has_government = communism }
+			modifier = { add = constant:concentration_camps_ai.decision_low has_stability < constant:concentration_camps_target_weight.unstable_threshold }
+			modifier = { factor = constant:concentration_camps_ai.blocked has_equipment = { support_equipment < constant:concentration_camps_ai.support_floor } }
+			modifier = { factor = constant:concentration_camps_ai.blocked concentration_camps_resistance_is_escaping = yes }
+			modifier = { factor = constant:concentration_camps_ai.blocked concentration_camps_exposure_is_leaking = yes }
+			modifier = { factor = constant:concentration_camps_ai.blocked NOT = { check_variable = { camp_admin_mandate > constant:camp_admin_mandate.custody } } }
+		}
+	}
+
+	concentration_camps_review_cases = {
+		icon = GFX_decision_generic_political_discourse
+		priority = 99
+		days_re_enable = constant:concentration_camps_timing.review_cooldown_days
+		visible = {
+			concentration_camps_network_is_live = yes
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = concentration_camps_review_requirements_tt
+				concentration_camps_has_detainees = yes
+			}
+		}
+		custom_cost_trigger = { concentration_camps_can_pay_review = yes }
+		custom_cost_text = concentration_camps_cost_review
+		complete_effect = {
+			custom_effect_tooltip = concentration_camps_review_cases_tt
+			hidden_effect = { concentration_camps_review_cases = yes }
+		}
+		ai_will_do = {
+			base = constant:concentration_camps_ai.blocked
+			modifier = { add = constant:concentration_camps_ai.decision_standard has_government = democratic }
+			modifier = { add = constant:concentration_camps_ai.decision_strong concentration_camps_resistance_is_escaping = yes }
+			modifier = { add = constant:concentration_camps_ai.decision_standard concentration_camps_exposure_is_leaking = yes }
+			modifier = { add = constant:concentration_camps_ai.decision_standard has_active_mission = concentration_camps_mission_contain_escape }
+			modifier = { factor = constant:concentration_camps_ai.blocked NOT = { concentration_camps_has_detainees = yes } }
+			modifier = { factor = constant:concentration_camps_ai.blocked has_equipment = { support_equipment < concentration_camps_cost_review_support } }
+		}
+	}
+
+	# ------------------------------------------------------------------------
+	# Mission
+	# ------------------------------------------------------------------------
+
+	concentration_camps_mission_contain_escape = {
+		icon = GFX_decision_generic_civil_support
+		days_mission_timeout = constant:concentration_camps_timing.escape_mission_days
+		selectable_mission = no
+		fire_only_once = no
+		is_good = no
+		activation = {
+			has_country_flag = concentration_camps_mission_escape_active
+			concentration_camps_network_is_live = yes
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = concentration_camps_mission_escape_objective_tt
+				check_variable = { camp_resistance_pressure < constant:camp_rework_threshold.band_medium }
+			}
+		}
+		cancel_trigger = {
+			NOT = { concentration_camps_network_is_live = yes }
+		}
+		cancel_effect = {
+			clr_country_flag = concentration_camps_mission_escape_active
+		}
+		complete_effect = {
+			custom_effect_tooltip = concentration_camps_mission_escape_complete_tt
+			hidden_effect = { concentration_camps_escape_mission_succeeded = yes }
+		}
+		timeout_effect = {
+			custom_effect_tooltip = concentration_camps_mission_escape_timeout_tt
+			hidden_effect = {
+				concentration_camps_escape_mission_failed = yes
+				country_event = { id = chaosx.nr22.103 days = constant:concentration_camps_timing.report_delay_days }
+			}
+		}
+	}
+}

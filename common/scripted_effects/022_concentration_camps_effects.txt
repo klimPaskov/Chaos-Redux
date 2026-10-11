@@ -1,0 +1,690 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 022 CONCENTRATION CAMPS CORE EFFECTS
+# ============================================================================
+# Overview:
+# - Event 22 is the entry and escalation layer on top of the shared Camps and
+#   Repression system. It selects a country, registers the opening sites and
+#   seeds their first cohorts through the shared site and custody helpers,
+#   sets the opening policy through the shared national controls, and answers
+#   the incidents that the shared Exposure and Resistance Pressure values
+#   raise.
+# - It owns no pulse, no death rate, no second evidence ledger and no second
+#   Condemnation source. Recurring harm comes from the shared monthly
+#   processor (camp_admin_monthly_country). The only periodic call here is one
+#   self-rescheduling monitor event per live network (chaosx.nr22.3), started
+#   at the opening and stopped when the network ends. It never scans the world.
+#
+# Scope notes:
+# - COUNTRY effects run with ROOT as the country, inside the entry event
+#   chaosx.nr22.1 and the follow-up events, because the shared registration
+#   helpers read ROOT.
+# - STATE effects read the country as PREV and are called from
+#   for_each_scope_loop over arrays started in the country scope.
+# - Tuning lives in common/script_constants/022_concentration_camps_constants.txt.
+# - The design page is docs/events/022_concentration_camps.md.
+# ============================================================================
+
+# ----------------------------------------------------------------------------
+# Target selection (shared pre-fire path)
+# ----------------------------------------------------------------------------
+
+# ANY scope. Called by fire_event_by_temp_id_no_cluster before history is
+# recorded. Saves concentration_camps_prefire_target for dispatch and the Event
+# History actor, and sets concentration_camps_prefire_ready to 1 on success.
+concentration_camps_prepare_random_event_fire = {
+	set_temp_variable = { concentration_camps_prefire_ready = constant:concentration_camps_value.zero }
+	clear_temp_array = concentration_camps_target_pool
+	every_country = {
+		limit = { concentration_camps_is_valid_target = yes }
+		concentration_camps_score_target = yes
+		for_loop_effect = {
+			start = 0
+			end = concentration_camps_target_weight
+			value = concentration_camps_target_pool_index
+			add_to_temp_array = { array = concentration_camps_target_pool value = THIS }
+		}
+	}
+	if = {
+		limit = { check_variable = { var = concentration_camps_target_pool^num value = constant:concentration_camps_value.zero compare = greater_than } }
+		random_scope_in_array = {
+			array = concentration_camps_target_pool
+			save_event_target_as = concentration_camps_prefire_target
+			set_temp_variable = { concentration_camps_prefire_ready = constant:concentration_camps_value.one }
+		}
+	}
+	clear_temp_array = concentration_camps_target_pool
+}
+
+# COUNTRY. Output: temp concentration_camps_target_weight, an integer of at
+# least 1. Campaign markers raise it, calm and stability lower it, and a country
+# that already runs a network is drawn far less often than a fresh candidate.
+concentration_camps_score_target = {
+	set_temp_variable = { concentration_camps_target_weight = constant:concentration_camps_target_weight.base }
+	set_temp_variable = { concentration_camps_occupied_count = constant:concentration_camps_value.zero }
+	set_temp_variable = { concentration_camps_resisting_count = constant:concentration_camps_value.zero }
+	every_controlled_state = {
+		limit = { NOT = { is_core_of = PREV } }
+		add_to_temp_variable = { concentration_camps_occupied_count = constant:concentration_camps_value.one }
+	}
+	every_controlled_state = {
+		limit = { resistance > constant:concentration_camps_state.resistance_floor }
+		add_to_temp_variable = { concentration_camps_resisting_count = constant:concentration_camps_value.one }
+	}
+	clamp_temp_variable = { var = concentration_camps_occupied_count min = 0 max = constant:concentration_camps_target_weight.occupied_cap }
+	clamp_temp_variable = { var = concentration_camps_resisting_count min = 0 max = constant:concentration_camps_target_weight.resisting_cap }
+	multiply_temp_variable = { concentration_camps_occupied_count = constant:concentration_camps_target_weight.occupied_state }
+	multiply_temp_variable = { concentration_camps_resisting_count = constant:concentration_camps_target_weight.resisting_state }
+	add_to_temp_variable = { concentration_camps_target_weight = concentration_camps_occupied_count }
+	add_to_temp_variable = { concentration_camps_target_weight = concentration_camps_resisting_count }
+	if = {
+		limit = { has_war = yes }
+		add_to_temp_variable = { concentration_camps_target_weight = constant:concentration_camps_target_weight.at_war }
+	}
+	if = {
+		limit = { has_civil_war = yes }
+		add_to_temp_variable = { concentration_camps_target_weight = constant:concentration_camps_target_weight.civil_war }
+	}
+	if = {
+		limit = {
+			OR = {
+				has_government = fascism
+				has_government = communism
+			}
+		}
+		add_to_temp_variable = { concentration_camps_target_weight = constant:concentration_camps_target_weight.authoritarian }
+	}
+	else_if = {
+		limit = { has_government = neutrality }
+		add_to_temp_variable = { concentration_camps_target_weight = constant:concentration_camps_target_weight.neutrality }
+	}
+	if = {
+		limit = { has_stability < constant:concentration_camps_target_weight.unstable_threshold }
+		add_to_temp_variable = { concentration_camps_target_weight = constant:concentration_camps_target_weight.unstable }
+	}
+	if = {
+		limit = { has_active_camp_network = yes }
+		add_to_temp_variable = { concentration_camps_target_weight = constant:concentration_camps_target_weight.existing_network }
+	}
+	if = {
+		limit = { has_government = democratic }
+		multiply_temp_variable = { concentration_camps_target_weight = constant:concentration_camps_target_weight.democratic }
+	}
+	if = {
+		limit = { has_stability > constant:concentration_camps_target_weight.stable_threshold }
+		multiply_temp_variable = { concentration_camps_target_weight = constant:concentration_camps_target_weight.stable }
+	}
+	if = {
+		limit = { has_country_flag = concentration_camps_network_active }
+		multiply_temp_variable = { concentration_camps_target_weight = constant:concentration_camps_target_weight.active_network_factor }
+	}
+	round_temp_variable = concentration_camps_target_weight
+	if = {
+		limit = { check_variable = { var = concentration_camps_target_weight value = constant:concentration_camps_target_weight.minimum compare = less_than } }
+		set_temp_variable = { concentration_camps_target_weight = constant:concentration_camps_target_weight.minimum }
+	}
+}
+
+# ----------------------------------------------------------------------------
+# Country state
+# ----------------------------------------------------------------------------
+
+# COUNTRY. Idempotent persistent defaults.
+concentration_camps_initialize_country = {
+	if = { limit = { NOT = { has_variable = concentration_camps_generation } } set_variable = { concentration_camps_generation = 0 } }
+	if = { limit = { NOT = { has_variable = concentration_camps_opening_sites } } set_variable = { concentration_camps_opening_sites = 0 } }
+	if = { limit = { NOT = { has_variable = concentration_camps_existing_sites } } set_variable = { concentration_camps_existing_sites = 0 } }
+	if = { limit = { NOT = { has_variable = concentration_camps_eligible_states } } set_variable = { concentration_camps_eligible_states = 0 } }
+	if = { limit = { NOT = { has_variable = concentration_camps_live_sites } } set_variable = { concentration_camps_live_sites = 0 } }
+	if = { limit = { NOT = { has_variable = concentration_camps_coverage_percent } } set_variable = { concentration_camps_coverage_percent = 0 } }
+	if = { limit = { NOT = { has_variable = concentration_camps_firings } } set_variable = { concentration_camps_firings = 0 } }
+	if = { limit = { NOT = { has_variable = concentration_camps_policy } } set_variable = { concentration_camps_policy = 0 } }
+}
+
+# COUNTRY. Sets the same-country cooldown. It lengthens for a small country,
+# and shortens while resistance pressure is already at the escape-network band.
+concentration_camps_set_cooldown = {
+	set_temp_variable = { concentration_camps_cooldown_days = constant:concentration_camps_timing.cooldown_days }
+	if = {
+		limit = { num_of_controlled_states < constant:concentration_camps_timing.cooldown_small_country_states }
+		add_to_temp_variable = { concentration_camps_cooldown_days = constant:concentration_camps_timing.cooldown_small_country_days }
+	}
+	if = {
+		limit = { concentration_camps_resistance_is_escaping = yes }
+		subtract_from_temp_variable = { concentration_camps_cooldown_days = constant:concentration_camps_timing.cooldown_pressure_reduction_days }
+	}
+	set_country_flag = { flag = concentration_camps_recent_firing days = concentration_camps_cooldown_days }
+	add_to_variable = { concentration_camps_firings = constant:concentration_camps_value.one }
+}
+
+# COUNTRY. Caches the scaled costs the triggers and tooltips read. A larger
+# network costs more to supply, guard and answer.
+concentration_camps_refresh_costs = {
+	set_temp_variable = { concentration_camps_cost_scale = concentration_camps_live_sites }
+	multiply_temp_variable = { concentration_camps_cost_scale = constant:concentration_camps_cost.scale_per_site }
+	add_to_temp_variable = { concentration_camps_cost_scale = constant:concentration_camps_value.one }
+	clamp_temp_variable = { var = concentration_camps_cost_scale min = constant:concentration_camps_value.one max = constant:concentration_camps_cost.scale_maximum }
+	set_variable = { concentration_camps_cost_expansion_support = constant:concentration_camps_cost.expansion_support }
+	multiply_variable = { concentration_camps_cost_expansion_support = concentration_camps_cost_scale }
+	round_variable = concentration_camps_cost_expansion_support
+	set_variable = { concentration_camps_cost_expansion_trains = constant:concentration_camps_cost.expansion_trains }
+	multiply_variable = { concentration_camps_cost_expansion_trains = concentration_camps_cost_scale }
+	round_variable = concentration_camps_cost_expansion_trains
+	set_variable = { concentration_camps_cost_expansion_manpower_k = constant:concentration_camps_cost.expansion_manpower_k }
+	multiply_variable = { concentration_camps_cost_expansion_manpower_k = concentration_camps_cost_scale }
+	round_variable = concentration_camps_cost_expansion_manpower_k
+	set_variable = { concentration_camps_cost_review_support = constant:concentration_camps_cost.review_support }
+	multiply_variable = { concentration_camps_cost_review_support = concentration_camps_cost_scale }
+	round_variable = concentration_camps_cost_review_support
+	set_variable = { concentration_camps_cost_review_trains = constant:concentration_camps_cost.review_trains }
+	multiply_variable = { concentration_camps_cost_review_trains = concentration_camps_cost_scale }
+	round_variable = concentration_camps_cost_review_trains
+	set_variable = { concentration_camps_cost_guards_support = constant:concentration_camps_cost.guards_support }
+	multiply_variable = { concentration_camps_cost_guards_support = concentration_camps_cost_scale }
+	round_variable = concentration_camps_cost_guards_support
+	set_variable = { concentration_camps_cost_guards_manpower_k = constant:concentration_camps_cost.guards_manpower_k }
+	multiply_variable = { concentration_camps_cost_guards_manpower_k = concentration_camps_cost_scale }
+	round_variable = concentration_camps_cost_guards_manpower_k
+	set_variable = { concentration_camps_cost_relief_support = constant:concentration_camps_cost.relief_support }
+	multiply_variable = { concentration_camps_cost_relief_support = concentration_camps_cost_scale }
+	round_variable = concentration_camps_cost_relief_support
+	set_variable = { concentration_camps_cost_relief_trains = constant:concentration_camps_cost.relief_trains }
+	multiply_variable = { concentration_camps_cost_relief_trains = concentration_camps_cost_scale }
+	round_variable = concentration_camps_cost_relief_trains
+	set_variable = { concentration_camps_cost_relief_fuel = constant:concentration_camps_cost.relief_fuel }
+	multiply_variable = { concentration_camps_cost_relief_fuel = concentration_camps_cost_scale }
+	round_variable = concentration_camps_cost_relief_fuel
+}
+
+# COUNTRY. Recounts live sites and coverage of eligible states, refreshes the
+# shared country values (Exposure, Resistance Pressure) and the cached costs.
+concentration_camps_refresh_network = {
+	set_temp_variable = { concentration_camps_live_count = constant:concentration_camps_value.zero }
+	for_each_scope_loop = {
+		array = concentration_camps_site_states
+		if = {
+			limit = { camp_admin_site_is_operational = yes }
+			add_to_temp_variable = { concentration_camps_live_count = constant:concentration_camps_value.one }
+		}
+	}
+	set_variable = { concentration_camps_live_sites = concentration_camps_live_count }
+	set_temp_variable = { concentration_camps_eligible_count = constant:concentration_camps_value.zero }
+	every_controlled_state = {
+		limit = { concentration_camps_state_is_eligible = yes }
+		add_to_temp_variable = { concentration_camps_eligible_count = constant:concentration_camps_value.one }
+	}
+	set_variable = { concentration_camps_eligible_states = concentration_camps_eligible_count }
+	set_variable = { concentration_camps_coverage_percent = 0 }
+	if = {
+		limit = { check_variable = { concentration_camps_eligible_states > constant:concentration_camps_value.zero } }
+		set_variable = { concentration_camps_coverage_percent = concentration_camps_live_sites }
+		divide_variable = { concentration_camps_coverage_percent = concentration_camps_eligible_states }
+		multiply_variable = { concentration_camps_coverage_percent = constant:camp_admin_value.display_percent_multiplier }
+		round_variable = concentration_camps_coverage_percent
+	}
+	camp_rework_recalculate_country_values = yes
+	concentration_camps_refresh_costs = yes
+}
+
+# ----------------------------------------------------------------------------
+# State scoring and campaign sources
+# ----------------------------------------------------------------------------
+
+# STATE, PREV is the country. Output: temp concentration_camps_state_weight.
+# Needs temp concentration_camps_eligible_count from the caller.
+concentration_camps_score_state = {
+	set_temp_variable = { concentration_camps_state_weight = constant:concentration_camps_state.weight_base }
+	if = {
+		limit = { has_state_flag = genocide_historical_quiet_camp }
+		add_to_temp_variable = { concentration_camps_state_weight = constant:concentration_camps_state.weight_quiet_site }
+	}
+	if = {
+		limit = { NOT = { is_core_of = PREV } }
+		add_to_temp_variable = { concentration_camps_state_weight = constant:concentration_camps_state.weight_occupied }
+	}
+	if = {
+		limit = { resistance > constant:concentration_camps_state.resistance_floor }
+		add_to_temp_variable = { concentration_camps_state_weight = constant:concentration_camps_state.weight_resistance }
+	}
+	if = {
+		limit = { resistance > constant:concentration_camps_state.resistance_high }
+		add_to_temp_variable = { concentration_camps_state_weight = constant:concentration_camps_state.weight_resistance_high }
+	}
+	if = {
+		limit = { concentration_camps_state_has_labor_base = yes }
+		add_to_temp_variable = { concentration_camps_state_weight = constant:concentration_camps_state.weight_industry }
+	}
+	if = {
+		limit = { check_variable = { infrastructure_level > constant:concentration_camps_state.rail_infrastructure } }
+		add_to_temp_variable = { concentration_camps_state_weight = constant:concentration_camps_state.weight_rail }
+	}
+	if = {
+		limit = { is_capital = yes }
+		if = {
+			limit = { check_variable = { concentration_camps_eligible_count < constant:concentration_camps_coverage.capital_exception_states } }
+			set_temp_variable = { concentration_camps_state_weight = constant:concentration_camps_state.weight_capital_small }
+		}
+		else = {
+			set_temp_variable = { concentration_camps_state_weight = constant:concentration_camps_value.zero }
+		}
+	}
+}
+
+# STATE, PREV is the country. Output: temp concentration_camps_source_share, the
+# share of the state's civilians that a campaign marker makes available. The
+# markers are occupied non-core territory, active resistance and a regime that
+# names political enemies. A state with none has no source and no cohort.
+concentration_camps_prepare_source = {
+	set_temp_variable = { concentration_camps_source_share = constant:concentration_camps_value.zero }
+	if = {
+		limit = { NOT = { is_core_of = PREV } }
+		set_temp_variable = { concentration_camps_source_share = constant:concentration_camps_state.source_occupied }
+		set_variable = { concentration_camps_source_kind = constant:concentration_camps_source_kind.occupied }
+	}
+	else_if = {
+		limit = { resistance > constant:concentration_camps_state.resistance_floor }
+		set_temp_variable = { concentration_camps_source_share = constant:concentration_camps_state.source_resistance }
+		set_variable = { concentration_camps_source_kind = constant:concentration_camps_source_kind.resistance }
+	}
+	else_if = {
+		limit = { PREV = { concentration_camps_country_has_political_source = yes } }
+		set_temp_variable = { concentration_camps_source_share = constant:concentration_camps_state.source_political }
+		set_variable = { concentration_camps_source_kind = constant:concentration_camps_source_kind.political }
+	}
+}
+
+# STATE, PREV is the country. Admits one first cohort through the shared custody
+# helper. Inputs: temp concentration_camps_cohort_share and
+# concentration_camps_cohort_maximum_k from the caller. The campaign source is
+# proved once per state: its remaining people persist, so later admissions
+# cannot take the same people twice. No source means no admission.
+concentration_camps_seed_cohort = {
+	concentration_camps_prepare_source = yes
+	if = {
+		limit = {
+			NOT = { has_variable = concentration_camps_source_remaining_k }
+			check_variable = { concentration_camps_source_share > constant:concentration_camps_value.zero }
+		}
+		set_variable = { concentration_camps_source_remaining_k = state_population_k }
+		multiply_variable = { concentration_camps_source_remaining_k = concentration_camps_source_share }
+	}
+	if = {
+		limit = {
+			has_variable = concentration_camps_source_remaining_k
+			check_variable = { concentration_camps_source_remaining_k > constant:concentration_camps_value.zero }
+		}
+		set_temp_variable = { camp_admin_admission_requested_k = state_population_k }
+		multiply_temp_variable = { camp_admin_admission_requested_k = concentration_camps_cohort_share }
+		clamp_temp_variable = { var = camp_admin_admission_requested_k min = constant:concentration_camps_cohort.baseline_minimum_k max = concentration_camps_cohort_maximum_k }
+		set_temp_variable = { camp_admin_admission_source_k = concentration_camps_source_remaining_k }
+		set_temp_variable = { camp_admin_admission_proven = constant:concentration_camps_value.one }
+		camp_admin_admit_detainees = yes
+		subtract_from_variable = { concentration_camps_source_remaining_k = camp_admin_admission_accepted_k }
+		PREV = { add_to_variable = { concentration_camps_seeded_k = camp_admin_admission_accepted_k } }
+	}
+}
+
+# ----------------------------------------------------------------------------
+# Opening
+# ----------------------------------------------------------------------------
+
+# COUNTRY. ROOT is the country. Brings coverage to 20 percent of eligible
+# states, rounded up. Compatible live sites count first, then the weighted
+# candidate pool supplies the rest. Every new site goes through the shared
+# registration and receives its cohort from a campaign marker.
+concentration_camps_open = {
+	camp_rework_initialize_country_variables = yes
+	concentration_camps_initialize_country = yes
+	add_to_variable = { concentration_camps_generation = constant:concentration_camps_value.one }
+	set_country_flag = concentration_camps_network_active
+	clr_country_flag = concentration_camps_report_pending
+	set_variable = { concentration_camps_seeded_k = 0 }
+
+	clear_temp_array = concentration_camps_site_pool
+	clear_temp_array = concentration_camps_picked_states
+	set_temp_variable = { concentration_camps_eligible_count = constant:concentration_camps_value.zero }
+	set_temp_variable = { concentration_camps_existing_count = constant:concentration_camps_value.zero }
+	every_controlled_state = {
+		limit = { concentration_camps_state_is_eligible = yes }
+		add_to_temp_variable = { concentration_camps_eligible_count = constant:concentration_camps_value.one }
+		if = {
+			limit = { concentration_camps_state_has_country_site = yes }
+			add_to_temp_variable = { concentration_camps_existing_count = constant:concentration_camps_value.one }
+		}
+	}
+
+	every_controlled_state = {
+		limit = { concentration_camps_state_is_candidate = yes }
+		concentration_camps_score_state = yes
+		for_loop_effect = {
+			start = 0
+			end = concentration_camps_state_weight
+			value = concentration_camps_site_pool_index
+			add_to_temp_array = { array = concentration_camps_site_pool value = THIS }
+		}
+	}
+
+	set_temp_variable = { concentration_camps_target_sites = concentration_camps_eligible_count }
+	multiply_temp_variable = { concentration_camps_target_sites = constant:concentration_camps_coverage.baseline }
+	add_to_temp_variable = { concentration_camps_target_sites = constant:concentration_camps_value.round_up_offset }
+	round_temp_variable = concentration_camps_target_sites
+	clamp_temp_variable = { var = concentration_camps_target_sites min = constant:concentration_camps_value.one }
+	set_temp_variable = { concentration_camps_needed_sites = concentration_camps_target_sites }
+	subtract_from_temp_variable = { concentration_camps_needed_sites = concentration_camps_existing_count }
+	clamp_temp_variable = { var = concentration_camps_needed_sites min = constant:concentration_camps_value.zero }
+	set_variable = { concentration_camps_existing_sites = concentration_camps_existing_count }
+
+	for_loop_effect = {
+		start = 0
+		end = concentration_camps_needed_sites
+		value = concentration_camps_pick_index
+		random_scope_in_array = {
+			array = concentration_camps_site_pool
+			limit = { NOT = { has_state_flag = concentration_camps_picked } }
+			set_state_flag = concentration_camps_picked
+			add_to_temp_array = { array = concentration_camps_picked_states value = THIS }
+		}
+	}
+
+	set_variable = { concentration_camps_opening_sites = 0 }
+	for_each_scope_loop = {
+		array = concentration_camps_picked_states
+		clr_state_flag = concentration_camps_picked
+		set_temp_variable = { concentration_camps_cohort_share = constant:concentration_camps_cohort.baseline_share }
+		set_temp_variable = { concentration_camps_cohort_maximum_k = constant:concentration_camps_cohort.baseline_maximum_k }
+		concentration_camps_create_site = yes
+		PREV = { add_to_variable = { concentration_camps_opening_sites = constant:concentration_camps_value.one } }
+	}
+	clear_temp_array = concentration_camps_site_pool
+	clear_temp_array = concentration_camps_picked_states
+
+	# Live compatible sites that predate the opening join the network list.
+	every_controlled_state = {
+		limit = {
+			concentration_camps_state_is_eligible = yes
+			concentration_camps_state_has_country_site = yes
+		}
+		concentration_camps_mark_site = yes
+	}
+	concentration_camps_pick_lead_state = yes
+	concentration_camps_refresh_network = yes
+	concentration_camps_set_cooldown = yes
+	concentration_camps_start_monitor = yes
+}
+
+# STATE, PREV is the country, ROOT is the country. Registers one concentration
+# site through the shared helpers and seeds its cohort.
+concentration_camps_create_site = {
+	genocide_register_concentration_site_for_root = yes
+	concentration_camps_mark_site = yes
+	concentration_camps_seed_cohort = yes
+}
+
+# STATE, PREV is the country. Records the site as part of this generation.
+concentration_camps_mark_site = {
+	set_state_flag = concentration_camps_site
+	if = {
+		limit = { NOT = { has_variable = concentration_camps_site_generation } }
+		set_variable = { concentration_camps_site_generation = PREV.concentration_camps_generation }
+	}
+	PREV = {
+		if = {
+			limit = { NOT = { is_in_array = { array = concentration_camps_site_states value = PREV } } }
+			add_to_array = { array = concentration_camps_site_states value = PREV }
+		}
+	}
+}
+
+# COUNTRY. The report names the site with the largest seeded cohort of the
+# network. Stores concentration_camps_lead_state and the source kind of the
+# opening for the report text variant.
+concentration_camps_pick_lead_state = {
+	set_temp_variable = { concentration_camps_lead_cohort = constant:concentration_camps_value.negative_one }
+	set_temp_variable = { concentration_camps_lead_kind = constant:concentration_camps_value.zero }
+	for_each_scope_loop = {
+		array = concentration_camps_site_states
+		if = {
+			limit = {
+				camp_admin_site_is_operational = yes
+				check_variable = { camp_admin_detainees_k > concentration_camps_lead_cohort }
+			}
+			set_temp_variable = { concentration_camps_lead_cohort = camp_admin_detainees_k }
+			set_temp_variable = { concentration_camps_lead_kind = constant:concentration_camps_value.zero }
+			if = {
+				limit = { has_variable = concentration_camps_source_kind }
+				set_temp_variable = { concentration_camps_lead_kind = concentration_camps_source_kind }
+			}
+			PREV = { set_variable = { concentration_camps_lead_state = PREV } }
+		}
+	}
+	if = {
+		limit = { check_variable = { concentration_camps_lead_kind > constant:concentration_camps_value.zero } }
+		set_variable = { concentration_camps_opening_kind = concentration_camps_lead_kind }
+	}
+	else = {
+		set_variable = { concentration_camps_opening_kind = constant:concentration_camps_source_kind.political }
+	}
+}
+
+# ----------------------------------------------------------------------------
+# Monitor (one self-rescheduling hidden event per live network)
+# ----------------------------------------------------------------------------
+
+# COUNTRY. Starts the monitor once.
+concentration_camps_start_monitor = {
+	if = {
+		limit = { NOT = { has_country_flag = concentration_camps_monitor_active } }
+		set_country_flag = concentration_camps_monitor_active
+		country_event = {
+			id = chaosx.nr22.3
+			days = constant:concentration_camps_timing.monitor_first_days
+		}
+	}
+}
+
+# COUNTRY. One monthly visit: refresh the network, close it when no site
+# operates any more, otherwise answer at most one incident and schedule the
+# next visit.
+concentration_camps_monitor_tick = {
+	if = {
+		limit = { concentration_camps_network_is_live = yes }
+		concentration_camps_refresh_network = yes
+		concentration_camps_check_end = yes
+		if = {
+			limit = { has_country_flag = concentration_camps_network_active }
+			concentration_camps_check_public_exposure = yes
+			concentration_camps_check_incidents = yes
+			country_event = {
+				id = chaosx.nr22.3
+				days = constant:camp_admin_dispatch.period_days
+			}
+		}
+		else = {
+			clr_country_flag = concentration_camps_monitor_active
+		}
+	}
+	else = {
+		clr_country_flag = concentration_camps_monitor_active
+	}
+}
+
+# COUNTRY. A network with no operating site has ended. If the country closed it
+# through the shared reform the closure is complete, otherwise the sites were
+# lost or stopped by others.
+concentration_camps_check_end = {
+	if = {
+		limit = { NOT = { concentration_camps_has_operational_site = yes } }
+		if = {
+			limit = { has_country_flag = camp_admin_reforming }
+			concentration_camps_complete_closure = yes
+		}
+		else = {
+			concentration_camps_end_network = yes
+		}
+	}
+}
+
+# COUNTRY. A closed network. Records the closure kind, sets the refire
+# protection and tells the player. A closure that destroyed evidence earns a
+# shorter protection than an open one.
+concentration_camps_complete_closure = {
+	set_temp_variable = { concentration_camps_protection_days = constant:concentration_camps_timing.protection_days }
+	set_variable = { concentration_camps_closure_kind = constant:concentration_camps_closure_kind.open }
+	if = {
+		limit = {
+			any_of_scopes = {
+				array = concentration_camps_site_states
+				OR = {
+					has_state_flag = genocide_evidence_destroyed
+					has_state_flag = genocide_destroyed_atrocity_site
+				}
+			}
+		}
+		set_variable = { concentration_camps_closure_kind = constant:concentration_camps_closure_kind.quiet }
+		divide_temp_variable = { concentration_camps_protection_days = constant:concentration_camps_closure_kind.quiet_divisor }
+	}
+	set_country_flag = { flag = concentration_camps_protected days = concentration_camps_protection_days }
+	concentration_camps_end_network = yes
+	set_country_flag = concentration_camps_closure_reported
+	if = {
+		limit = { check_variable = { concentration_camps_closure_kind = constant:concentration_camps_closure_kind.open } }
+		set_country_flag = concentration_camps_closed_openly
+		set_country_flag = concentration_camps_closure_proof_pending
+		country_event = { id = chaosx.nr22.801 days = constant:concentration_camps_timing.report_delay_days }
+		country_event = { id = chaosx.nr22.802 days = constant:concentration_camps_timing.closure_proof_days }
+	}
+	else = {
+		country_event = { id = chaosx.nr22.800 days = constant:concentration_camps_timing.report_delay_days }
+	}
+}
+
+# COUNTRY. Leaves the live state. The site list and the history stay.
+concentration_camps_end_network = {
+	clr_country_flag = concentration_camps_network_active
+	clr_country_flag = concentration_camps_monitor_active
+	concentration_camps_cancel_missions = yes
+	concentration_camps_refresh_network = yes
+}
+
+concentration_camps_cancel_missions = {
+	if = {
+		limit = { has_active_mission = concentration_camps_mission_contain_escape }
+		remove_mission = concentration_camps_mission_contain_escape
+	}
+	clr_country_flag = concentration_camps_mission_escape_active
+}
+
+# ----------------------------------------------------------------------------
+# Incidents
+# ----------------------------------------------------------------------------
+
+# COUNTRY. Starts the cooldown that spaces incidents apart.
+concentration_camps_start_incident_cooldown = {
+	set_temp_variable = { concentration_camps_flag_days = constant:concentration_camps_timing.incident_cooldown_days }
+	set_country_flag = { flag = concentration_camps_incident_cooldown days = concentration_camps_flag_days }
+}
+
+# COUNTRY. Called from the monitor. At most one incident per visit, weighted by
+# the shared values that caused it. The incident cooldown follows every one.
+concentration_camps_check_incidents = {
+	if = {
+		limit = { concentration_camps_has_incident_ready = yes }
+		concentration_camps_fire_incident = yes
+	}
+}
+
+# COUNTRY. Picks one incident from what the shared values say is going wrong:
+# escape networks, credible leaks, hunger in a camp state.
+concentration_camps_fire_incident = {
+	set_temp_variable = { concentration_camps_weight_escape = constant:concentration_camps_value.zero }
+	set_temp_variable = { concentration_camps_weight_leak = constant:concentration_camps_value.zero }
+	set_temp_variable = { concentration_camps_weight_epidemic = constant:concentration_camps_value.zero }
+	if = {
+		limit = { concentration_camps_resistance_is_escaping = yes }
+		set_temp_variable = { concentration_camps_weight_escape = camp_resistance_pressure }
+	}
+	if = {
+		limit = {
+			concentration_camps_exposure_is_leaking = yes
+			NOT = { has_country_flag = concentration_camps_leak_cooldown }
+		}
+		set_temp_variable = { concentration_camps_weight_leak = camp_foreign_visibility }
+	}
+	if = {
+		limit = { concentration_camps_has_hungry_site = yes }
+		set_temp_variable = { concentration_camps_weight_epidemic = constant:concentration_camps_incident.epidemic_weight }
+	}
+	set_temp_variable = { concentration_camps_weight_total = concentration_camps_weight_escape }
+	add_to_temp_variable = { concentration_camps_weight_total = concentration_camps_weight_leak }
+	add_to_temp_variable = { concentration_camps_weight_total = concentration_camps_weight_epidemic }
+	if = {
+		limit = { check_variable = { concentration_camps_weight_total > constant:concentration_camps_value.zero } }
+		set_temp_variable_to_random = { var = concentration_camps_incident_roll min = 0 max = concentration_camps_weight_total }
+		if = {
+			limit = { check_variable = { concentration_camps_incident_roll < concentration_camps_weight_escape } }
+			concentration_camps_start_incident_cooldown = yes
+			country_event = { id = chaosx.nr22.101 days = constant:concentration_camps_timing.report_delay_days }
+		}
+		else = {
+			subtract_from_temp_variable = { concentration_camps_incident_roll = concentration_camps_weight_escape }
+			if = {
+				limit = { check_variable = { concentration_camps_incident_roll < concentration_camps_weight_leak } }
+				concentration_camps_start_incident_cooldown = yes
+				set_temp_variable = { concentration_camps_flag_days = constant:concentration_camps_timing.leak_cooldown_days }
+				set_country_flag = { flag = concentration_camps_leak_cooldown days = concentration_camps_flag_days }
+				country_event = { id = chaosx.nr22.103 days = constant:concentration_camps_timing.report_delay_days }
+			}
+			else = {
+				concentration_camps_start_incident_cooldown = yes
+				country_event = { id = chaosx.nr22.102 days = constant:concentration_camps_timing.report_delay_days }
+			}
+		}
+	}
+}
+
+# COUNTRY. The first time the network becomes publicly documented, a news
+# report reaches every player once. The shared discovery owner has already
+# produced its own Condemnation source by then; this is only the headline.
+concentration_camps_check_public_exposure = {
+	if = {
+		limit = {
+			concentration_camps_exposure_is_public = yes
+			NOT = { has_country_flag = concentration_camps_news_sent }
+		}
+		set_country_flag = concentration_camps_news_sent
+		news_event = { id = chaosx.news.22 days = constant:concentration_camps_timing.report_delay_days }
+	}
+	if = {
+		limit = {
+			concentration_camps_exposure_is_leaking = yes
+			NOT = { has_country_flag = concentration_camps_observers_sent }
+		}
+		set_temp_variable = { concentration_camps_flag_days = constant:concentration_camps_timing.observer_cooldown_days }
+		set_country_flag = { flag = concentration_camps_observers_sent days = concentration_camps_flag_days }
+		concentration_camps_send_observer_reports = yes
+	}
+}
+
+# COUNTRY. A small number of governments learn of credible reports: one random
+# neighbour and one random enemy. FROM in their event is the responsible country.
+concentration_camps_send_observer_reports = {
+	random_neighbor_country = {
+		limit = {
+			exists = yes
+			NOT = { has_country_flag = concentration_camps_observer_cooldown }
+			NOT = { is_special_chaos_country = yes }
+		}
+		set_temp_variable = { concentration_camps_flag_days = constant:concentration_camps_timing.observer_cooldown_days }
+		set_country_flag = { flag = concentration_camps_observer_cooldown days = concentration_camps_flag_days }
+		country_event = { id = chaosx.nr22.510 days = constant:concentration_camps_timing.report_delay_days }
+	}
+	random_enemy_country = {
+		limit = {
+			exists = yes
+			NOT = { has_country_flag = concentration_camps_observer_cooldown }
+			NOT = { is_special_chaos_country = yes }
+		}
+		set_temp_variable = { concentration_camps_flag_days = constant:concentration_camps_timing.observer_cooldown_days }
+		set_country_flag = { flag = concentration_camps_observer_cooldown days = concentration_camps_flag_days }
+		country_event = { id = chaosx.nr22.510 days = constant:concentration_camps_timing.report_delay_days }
+	}
+}

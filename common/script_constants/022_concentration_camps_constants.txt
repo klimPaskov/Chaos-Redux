@@ -1,0 +1,287 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 022 CONCENTRATION CAMPS CONSTANTS
+# ============================================================================
+# Tuning for the Event 22 layer on top of the shared Camps and Repression
+# system. Recurring harm, caps and maintenance belong to the shared constants
+# (camp_administration_constants.txt, camp_repression_rework_constants.txt).
+# Event 22 owns only: the event identity, target selection, the opening
+# coverage, the campaign-source shares that seed a site's first cohort, the
+# incident gates and the costs of its own decisions.
+# The two public values, Exposure and Resistance Pressure, are the shared
+# camp_foreign_visibility and camp_resistance_pressure (0 to 100) and use the
+# shared camp_rework_threshold bands.
+# ============================================================================
+
+concentration_camps_identity = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	event_id = 22
+	evolution_type = 22
+}
+
+concentration_camps_source_kind = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	none = 0
+	occupied = 1
+	resistance = 2
+	political = 3
+}
+
+concentration_camps_closure_kind = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	open = 1
+	quiet = 2
+	# A quiet closure earns half the refire protection of an open one.
+	quiet_divisor = 2
+}
+
+concentration_camps_policy = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	none = 0
+	closure = 1
+	review = 2
+	labor = 3
+	expansion = 4
+}
+
+concentration_camps_value = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	zero = 0
+	one = 1
+	negative_one = -1
+	# Adding this before round_temp_variable rounds a positive fraction up.
+	round_up_offset = 0.499
+}
+
+# Opening coverage. The baseline is 20 percent of eligible states, rounded up.
+# The generic ceiling for expansion decisions is 35 percent until Evolution III.
+concentration_camps_coverage = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	baseline = 0.20
+	expansion_ceiling = 0.35
+	# A country with fewer eligible states than this may place a site in its capital.
+	capital_exception_states = 4
+}
+
+# State eligibility, site scoring and the campaign-source shares. A state is
+# only a candidate when a campaign marker supplies people for a first cohort.
+concentration_camps_state = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	minimum_population_k = 30
+	resistance_floor = 20
+	resistance_high = 50
+	# Share of the state's civilians that the campaign marker makes available.
+	source_occupied = 0.25
+	source_resistance = 0.15
+	source_political = 0.06
+	weight_base = 4
+	weight_quiet_site = 6
+	weight_occupied = 4
+	weight_resistance = 2
+	weight_resistance_high = 2
+	weight_industry = 3
+	weight_rail = 2
+	rail_infrastructure = 3
+	weight_capital_small = 1
+	weight_minimum = 1
+}
+
+concentration_camps_cohort = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	baseline_share = 0.005
+	baseline_minimum_k = 2
+	baseline_maximum_k = 100
+	expansion_share = 0.0075
+	expansion_maximum_k = 150
+	# Share of a site's living cohort released by a case review.
+	review_release_share = 0.30
+}
+
+# Country pool weights for the shared random-event picker.
+concentration_camps_target_weight = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	base = 10
+	occupied_state = 2
+	occupied_cap = 10
+	resisting_state = 1
+	resisting_cap = 10
+	at_war = 4
+	civil_war = 6
+	authoritarian = 6
+	neutrality = 2
+	unstable = 5
+	unstable_threshold = 0.4
+	stable = 0.4
+	stable_threshold = 0.7
+	democratic = 0.4
+	existing_network = 6
+	active_network_factor = 0.15
+	minimum = 1
+}
+
+concentration_camps_timing = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	cooldown_days = 150
+	cooldown_small_country_days = 120
+	cooldown_small_country_states = 6
+	cooldown_pressure_reduction_days = 60
+	protection_days = 540
+	incident_cooldown_days = 75
+	report_delay_days = 1
+	monitor_first_days = 14
+	escape_mission_days = 120
+	review_cooldown_days = 90
+	expansion_cooldown_days = 60
+	leak_cooldown_days = 150
+	observer_cooldown_days = 240
+	suppression_days = 120
+	closure_proof_days = 180
+}
+
+# Incident gates and effects. Pressure impulses reuse the shared
+# camp_rework_country_value constants; these are Event 22's own odds and sizes.
+concentration_camps_incident = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	epidemic_weight = 20
+	suppression_share = 0.05
+	epidemic_neglect_share = 0.03
+	epidemic_work_share = 0.05
+	guard_resistance_relief = -6
+	relief_resistance_relief = -8
+	relief_visibility_relief = -3
+	conceal_visibility_relief = -6
+	conceal_evidence_gain = 6
+	stability_cost_minor = -0.02
+	stability_cost_major = -0.04
+	stability_gain = 0.02
+	staged_success_chance = 0.5
+	observer_investigate_pp = 15
+	observer_protect_pp = 8
+}
+
+# Base costs. concentration_camps_refresh_costs scales them with the live network
+# and caches the result in country variables the triggers and tooltips read.
+concentration_camps_cost = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	scale_per_site = 0.05
+	scale_maximum = 2
+	expansion_support = 50
+	expansion_trains = 3
+	expansion_manpower_k = 6
+	guards_manpower_k = 8
+	guards_support = 30
+	relief_support = 60
+	relief_trains = 4
+	relief_fuel = 400
+	review_support = 30
+	review_trains = 1
+}
+
+concentration_camps_ai = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	blocked = 0
+	low = 3
+	moderate = 12
+	standard = 25
+	strong = 45
+	dominant = 70
+	# Support equipment kept back before the AI starts a coercive operation.
+	support_floor = 150
+	decision_low = 6
+	decision_standard = 20
+	decision_strong = 40
+}
+
+# AI weights of the opening report (AI profiles of the probability matrix).
+# p1 is a democracy at peace, p2 a democracy at war, p3 a non-democratic
+# government at war, p4 a non-democratic government at peace.
+concentration_camps_open_weight = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	close_p1 = 60
+	review_p1 = 35
+	labor_p1 = 3
+	expand_p1 = 1
+	close_p2 = 30
+	review_p2 = 55
+	labor_p2 = 12
+	expand_p2 = 1
+	close_p3 = 8
+	review_p3 = 12
+	labor_p3 = 55
+	expand_p3 = 25
+	close_p4 = 20
+	review_p4 = 35
+	labor_p4 = 30
+	expand_p4 = 15
+	collapse_close = 15
+	collapse_review = 10
+	collapse_stability = 0.35
+}
+
+# Script-owned ceilings for the compact list of Event 22 sites in the
+# country's own array, kept below the 1000-iteration loop limit.
+concentration_camps_limit = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	site_array = 400
+	pool_per_state = 12
+	coverage_ceiling_percent = 35
+}

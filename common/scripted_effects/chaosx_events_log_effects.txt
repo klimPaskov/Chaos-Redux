@@ -370,6 +370,15 @@ events_log_set_default_actor_for_current_event = {
 	}
 	else_if = {
 		limit = {
+			check_variable = { event_id = constant:concentration_camps_identity.event_id }
+			has_event_target = concentration_camps_prefire_target
+			event_target:concentration_camps_prefire_target = { exists = yes }
+		}
+		event_target:concentration_camps_prefire_target = { ROOT = { set_temp_variable = { events_log_default_actor = PREV } } }
+		set_temp_variable = { events_log_default_has_actor = 1 }
+	}
+	else_if = {
+		limit = {
 			check_variable = { event_id = constant:white_peace_event_log.event_id }
 			has_event_target = white_peace_primary
 		}

@@ -1,0 +1,274 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 022 CONCENTRATION CAMPS TRIGGERS
+# ============================================================================
+# Overview:
+# - Target validity for the shared random-event picker, state eligibility and
+#   campaign-source markers, network lifecycle state, and the gates of the
+#   incidents and decisions.
+# - Exposure and Resistance Pressure are the shared camp_foreign_visibility and
+#   camp_resistance_pressure values. Their bands are the shared
+#   camp_rework_threshold bands, so no second scale exists.
+#
+# Scope notes:
+# - State triggers read the owning country as PREV. They are called from
+#   every_controlled_state, any_controlled_state, for_each_scope_loop and any_of_scopes
+#   started in the country scope, never from the global scope.
+# - Country triggers are safe inside every_country, where ROOT is not the
+#   candidate.
+# ============================================================================
+
+# ----------------------------------------------------------------------------
+# Campaign sources and state eligibility
+# ----------------------------------------------------------------------------
+
+# COUNTRY. A regime that can name political enemies without any occupied or
+# resisting population: authoritarian rule, civil war, or emergency rule at war.
+concentration_camps_country_has_political_source = {
+	OR = {
+		has_government = fascism
+		has_government = communism
+		has_civil_war = yes
+		AND = {
+			has_war = yes
+			has_stability < constant:concentration_camps_target_weight.unstable_threshold
+		}
+	}
+}
+
+# STATE, PREV is the country. Controlled (owned or occupied) and large enough that a camp
+# cohort and the protected population floor stay meaningful.
+concentration_camps_state_is_eligible = {
+	is_controlled_by = PREV
+	check_variable = { state_population_k > constant:concentration_camps_state.minimum_population_k }
+	NOT = { has_state_flag = camp_rework_liberated_evidence }
+	NOT = { has_state_flag = camp_rework_site_dismantled }
+}
+
+# STATE, PREV is the country. The campaign marker that supplies people for a
+# first cohort: non-core territory, active resistance, or a regime
+# that names political enemies. Ethnicity is never read.
+concentration_camps_state_has_source = {
+	OR = {
+		NOT = { is_core_of = PREV }
+		resistance > constant:concentration_camps_state.resistance_floor
+		PREV = { concentration_camps_country_has_political_source = yes }
+	}
+}
+
+# STATE, PREV is the country. Can take a new registered site.
+concentration_camps_state_is_candidate = {
+	concentration_camps_state_is_eligible = yes
+	concentration_camps_state_has_source = yes
+	NOT = { has_state_flag = camp_rework_site_active }
+	OR = {
+		NOT = { genocide_state_has_active_camps = yes }
+		has_state_flag = genocide_historical_quiet_camp
+	}
+}
+
+# STATE, ROOT is the acting country. The same three checks for decision target
+# blocks, where the previous scope is not guaranteed to be the country.
+concentration_camps_state_is_candidate_for_root = {
+	is_controlled_by = ROOT
+	check_variable = { state_population_k > constant:concentration_camps_state.minimum_population_k }
+	NOT = { has_state_flag = camp_rework_liberated_evidence }
+	NOT = { has_state_flag = camp_rework_site_dismantled }
+	NOT = { has_state_flag = camp_rework_site_active }
+	OR = {
+		NOT = { is_core_of = ROOT }
+		resistance > constant:concentration_camps_state.resistance_floor
+		ROOT = { concentration_camps_country_has_political_source = yes }
+	}
+	OR = {
+		NOT = { genocide_state_has_active_camps = yes }
+		has_state_flag = genocide_historical_quiet_camp
+	}
+}
+
+# STATE, PREV is the country. An eligible state that already holds a live site
+# attributed to this country, whoever registered it. Counts toward coverage.
+concentration_camps_state_has_country_site = {
+	is_valid_camp_active_site_state = yes
+	has_variable = genocide_responsible_country
+	check_variable = { genocide_responsible_country = PREV.id }
+}
+
+# STATE. A site state with a real economic base for a labour role.
+concentration_camps_state_has_labor_base = {
+	OR = {
+		arms_factory > 0
+		industrial_complex > 0
+	}
+}
+
+# ----------------------------------------------------------------------------
+# Network lifecycle
+# ----------------------------------------------------------------------------
+
+# COUNTRY. The country runs, or inherited, an Event 22 network.
+concentration_camps_network_is_live = {
+	has_country_flag = concentration_camps_network_active
+	camp_rework_country_is_eligible = yes
+}
+
+# COUNTRY. At least one site of the Event 22 network is still operating.
+concentration_camps_has_operational_site = {
+	any_of_scopes = {
+		array = concentration_camps_site_states
+		camp_admin_site_is_operational = yes
+	}
+}
+
+# COUNTRY. At least one operating site could hold a labour role.
+concentration_camps_has_labor_site = {
+	any_of_scopes = {
+		array = concentration_camps_site_states
+		camp_admin_site_is_operational = yes
+		concentration_camps_state_has_labor_base = yes
+	}
+}
+
+# COUNTRY. The shared Ledger mandate is above custody.
+concentration_camps_mandate_is_coercive = {
+	check_variable = { camp_admin_mandate > constant:camp_admin_mandate.custody }
+}
+
+# COUNTRY. Exposure has left controlled secrecy for credible leaks.
+concentration_camps_exposure_is_leaking = {
+	check_variable = { camp_foreign_visibility > constant:camp_rework_threshold.band_high }
+}
+
+# COUNTRY. The network is publicly documented.
+concentration_camps_exposure_is_public = {
+	check_variable = { camp_foreign_visibility > constant:camp_rework_threshold.band_critical }
+}
+
+# COUNTRY. Escape networks and sabotage have taken hold.
+concentration_camps_resistance_is_escaping = {
+	check_variable = { camp_resistance_pressure > constant:camp_rework_threshold.band_high }
+}
+
+# COUNTRY. Hunger in a site state (famine owner stages) feeds disease in the camps.
+concentration_camps_has_hungry_site = {
+	any_of_scopes = {
+		array = concentration_camps_site_states
+		camp_admin_site_is_operational = yes
+		has_variable = famine_food_stage
+		check_variable = { famine_food_stage > constant:famine_food_stage.supply_strain }
+	}
+}
+
+# COUNTRY. Something an incident can answer, and the incident cooldown is over.
+concentration_camps_has_incident_ready = {
+	concentration_camps_network_is_live = yes
+	NOT = { has_country_flag = concentration_camps_incident_cooldown }
+	OR = {
+		concentration_camps_resistance_is_escaping = yes
+		AND = {
+			concentration_camps_exposure_is_leaking = yes
+			NOT = { has_country_flag = concentration_camps_leak_cooldown }
+		}
+		concentration_camps_has_hungry_site = yes
+	}
+}
+
+# ----------------------------------------------------------------------------
+# Target validity for the shared picker
+# ----------------------------------------------------------------------------
+
+# COUNTRY. A country without a historical camp package that can host the event
+# at all. The cooldown and protection flags are timed.
+concentration_camps_target_basics = {
+	exists = yes
+	camp_rework_country_uses_generic_kit = yes
+	has_capitulated = no
+	NOT = { has_country_flag = concentration_camps_protected }
+	NOT = { has_country_flag = camp_admin_reforming }
+}
+
+# COUNTRY. Valid for a first opening, or for an incident while a network lives.
+concentration_camps_is_valid_target = {
+	concentration_camps_target_basics = yes
+	OR = {
+		AND = {
+			NOT = { has_country_flag = concentration_camps_network_active }
+			NOT = { has_country_flag = concentration_camps_recent_firing }
+			any_controlled_state = { concentration_camps_state_is_candidate = yes }
+		}
+		concentration_camps_has_incident_ready = yes
+	}
+}
+
+# ANY scope. At least one country can take the event now.
+concentration_camps_has_any_target = {
+	any_country = { concentration_camps_is_valid_target = yes }
+}
+
+# ----------------------------------------------------------------------------
+# Decision gates
+# ----------------------------------------------------------------------------
+
+# COUNTRY. The Event 22 decision category is shown while the network is live.
+concentration_camps_category_is_visible = {
+	concentration_camps_network_is_live = yes
+}
+
+# COUNTRY. The government may widen a network by decree.
+concentration_camps_government_permits_expansion = {
+	NOT = { has_government = democratic }
+	NOT = { has_country_flag = camp_rework_expansion_frozen }
+	NOT = { has_country_flag = camp_admin_reforming }
+}
+
+# COUNTRY. Below the generic ceiling and at least one fresh candidate state.
+concentration_camps_can_widen_network = {
+	concentration_camps_network_is_live = yes
+	concentration_camps_government_permits_expansion = yes
+	concentration_camps_mandate_is_coercive = yes
+	any_controlled_state = { concentration_camps_state_is_candidate = yes }
+	NOT = { check_variable = { concentration_camps_coverage_percent > constant:concentration_camps_limit.coverage_ceiling_percent } }
+}
+
+# COUNTRY. The cost variables are cached by concentration_camps_refresh_costs.
+# Paying for a fresh site: support equipment, trains, manpower.
+concentration_camps_can_pay_expansion = {
+	NOT = { has_equipment = { support_equipment < concentration_camps_cost_expansion_support } }
+	NOT = { has_equipment = { train_equipment < concentration_camps_cost_expansion_trains } }
+	NOT = { check_variable = { manpower_k < concentration_camps_cost_expansion_manpower_k } }
+}
+
+# COUNTRY. Paying for a case review: support equipment and a train for the inspectors.
+concentration_camps_can_pay_review = {
+	NOT = { has_equipment = { support_equipment < concentration_camps_cost_review_support } }
+	NOT = { has_equipment = { train_equipment < concentration_camps_cost_review_trains } }
+}
+
+# COUNTRY. Paying for guards: support equipment and manpower.
+concentration_camps_can_pay_guards = {
+	NOT = { has_equipment = { support_equipment < concentration_camps_cost_guards_support } }
+	NOT = { check_variable = { manpower_k < concentration_camps_cost_guards_manpower_k } }
+}
+
+# COUNTRY. Paying for emergency relief: support equipment, trains and fuel.
+concentration_camps_can_pay_relief = {
+	NOT = { has_equipment = { support_equipment < concentration_camps_cost_relief_support } }
+	NOT = { has_equipment = { train_equipment < concentration_camps_cost_relief_trains } }
+	NOT = { has_fuel < concentration_camps_cost_relief_fuel }
+}
+
+# COUNTRY. A site holds enough living detainees for a case review to matter.
+concentration_camps_has_detainees = {
+	any_of_scopes = {
+		array = concentration_camps_site_states
+		camp_admin_site_is_operational = yes
+		check_variable = { camp_admin_detainees_k > constant:concentration_camps_value.zero }
+	}
+}
+
+# COUNTRY. The network finished closing: no live Event 22 site remains and the
+# country itself ended it through the shared reform.
+concentration_camps_network_is_closed = {
+	has_country_flag = concentration_camps_network_active
+	NOT = { concentration_camps_has_operational_site = yes }
+	has_country_flag = camp_admin_reforming
+}

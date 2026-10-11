@@ -1,0 +1,452 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 022 CONCENTRATION CAMPS ACTION EFFECTS
+# ============================================================================
+# Overview:
+# - The opening policy options, the Event 22 decisions, the incident answers and
+#   the observer answers. Every effect uses the shared public API only: the
+#   Ledger mandate and role variables with a recorded history entry, the
+#   custody release and death helpers, the camp_policy_* impulses (which the
+#   shared monthly recalculation decays), and the shared hidden cover-up source.
+# - Payments are support equipment, trains, fuel, manpower and political power,
+#   quoted in the cached concentration_camps_cost_* country variables.
+#
+# Scope notes: COUNTRY unless noted. ROOT is the acting country in every
+# caller. Decisions that target a state read it as FROM.
+# ============================================================================
+
+# ----------------------------------------------------------------------------
+# Payments
+# ----------------------------------------------------------------------------
+
+# COUNTRY. Inputs (temp, all optional, zero when unused):
+# concentration_camps_pay_support, concentration_camps_pay_trains,
+# concentration_camps_pay_fuel and concentration_camps_pay_manpower_k.
+# Clears the inputs after paying.
+concentration_camps_pay = {
+	if = {
+		limit = { check_variable = { concentration_camps_pay_support > constant:concentration_camps_value.zero } }
+		set_temp_variable = { equipment_stockpile_removal_amount = concentration_camps_pay_support }
+		remove_support_equipment_from_stockpile = yes
+	}
+	if = {
+		limit = { check_variable = { concentration_camps_pay_trains > constant:concentration_camps_value.zero } }
+		set_temp_variable = { concentration_camps_payment = concentration_camps_pay_trains }
+		multiply_temp_variable = { concentration_camps_payment = constant:concentration_camps_value.negative_one }
+		add_equipment_to_stockpile = { type = train_equipment amount = concentration_camps_payment }
+	}
+	if = {
+		limit = { check_variable = { concentration_camps_pay_fuel > constant:concentration_camps_value.zero } }
+		set_temp_variable = { concentration_camps_payment = concentration_camps_pay_fuel }
+		multiply_temp_variable = { concentration_camps_payment = constant:concentration_camps_value.negative_one }
+		add_fuel = concentration_camps_payment
+	}
+	if = {
+		limit = { check_variable = { concentration_camps_pay_manpower_k > constant:concentration_camps_value.zero } }
+		set_temp_variable = { concentration_camps_payment = concentration_camps_pay_manpower_k }
+		multiply_temp_variable = { concentration_camps_payment = constant:camp_admin_value.people_per_k }
+		multiply_temp_variable = { concentration_camps_payment = constant:concentration_camps_value.negative_one }
+		add_manpower = concentration_camps_payment
+	}
+	set_temp_variable = { concentration_camps_pay_support = constant:concentration_camps_value.zero }
+	set_temp_variable = { concentration_camps_pay_trains = constant:concentration_camps_value.zero }
+	set_temp_variable = { concentration_camps_pay_fuel = constant:concentration_camps_value.zero }
+	set_temp_variable = { concentration_camps_pay_manpower_k = constant:concentration_camps_value.zero }
+}
+
+concentration_camps_pay_expansion = {
+	set_temp_variable = { concentration_camps_pay_support = concentration_camps_cost_expansion_support }
+	set_temp_variable = { concentration_camps_pay_trains = concentration_camps_cost_expansion_trains }
+	set_temp_variable = { concentration_camps_pay_manpower_k = concentration_camps_cost_expansion_manpower_k }
+	concentration_camps_pay = yes
+}
+
+concentration_camps_pay_review = {
+	set_temp_variable = { concentration_camps_pay_support = concentration_camps_cost_review_support }
+	set_temp_variable = { concentration_camps_pay_trains = concentration_camps_cost_review_trains }
+	concentration_camps_pay = yes
+}
+
+concentration_camps_pay_guards = {
+	set_temp_variable = { concentration_camps_pay_support = concentration_camps_cost_guards_support }
+	set_temp_variable = { concentration_camps_pay_manpower_k = concentration_camps_cost_guards_manpower_k }
+	concentration_camps_pay = yes
+}
+
+concentration_camps_pay_relief = {
+	set_temp_variable = { concentration_camps_pay_support = concentration_camps_cost_relief_support }
+	set_temp_variable = { concentration_camps_pay_trains = concentration_camps_cost_relief_trains }
+	set_temp_variable = { concentration_camps_pay_fuel = concentration_camps_cost_relief_fuel }
+	concentration_camps_pay = yes
+}
+
+# ----------------------------------------------------------------------------
+# Shared national controls
+# ----------------------------------------------------------------------------
+
+# COUNTRY. Input: temp concentration_camps_mandate_target, one of
+# constant:camp_admin_mandate.*. Sets the Ledger mandate without a payment,
+# because the opening choice and the incident answers are the policy decision,
+# and records it in the Ledger history like the Ledger command does.
+concentration_camps_apply_mandate = {
+	camp_admin_initialize_country = yes
+	if = {
+		limit = { NOT = { check_variable = { camp_admin_mandate = concentration_camps_mandate_target } } }
+		set_variable = { camp_admin_mandate = concentration_camps_mandate_target }
+		set_temp_variable = { camp_admin_record_kind = constant:camp_admin_history_kind.mandate }
+		camp_admin_record_history = yes
+		camp_admin_refresh_country_economy = yes
+	}
+	camp_admin_refresh_interface = yes
+}
+
+# COUNTRY. One impulse of shared pressure. Inputs (temp, optional, zero when
+# unused): concentration_camps_push_resistance, _visibility, _evidence,
+# _overstretch, _reform. The shared recalculation folds them into the public
+# values and decays them monthly.
+concentration_camps_push_pressure = {
+	camp_rework_initialize_country_variables = yes
+	add_to_variable = { camp_policy_resistance_pressure = concentration_camps_push_resistance }
+	add_to_variable = { camp_policy_visibility = concentration_camps_push_visibility }
+	add_to_variable = { camp_policy_evidence = concentration_camps_push_evidence }
+	add_to_variable = { camp_policy_overstretch = concentration_camps_push_overstretch }
+	add_to_variable = { camp_policy_reform = concentration_camps_push_reform }
+	set_temp_variable = { concentration_camps_push_resistance = constant:concentration_camps_value.zero }
+	set_temp_variable = { concentration_camps_push_visibility = constant:concentration_camps_value.zero }
+	set_temp_variable = { concentration_camps_push_evidence = constant:concentration_camps_value.zero }
+	set_temp_variable = { concentration_camps_push_overstretch = constant:concentration_camps_value.zero }
+	set_temp_variable = { concentration_camps_push_reform = constant:concentration_camps_value.zero }
+	camp_rework_recalculate_country_values = yes
+}
+
+# ----------------------------------------------------------------------------
+# Opening policy
+# ----------------------------------------------------------------------------
+
+# COUNTRY. Close every site through the shared national reform. The caller
+# checks camp_admin_generic_reform_available, which includes the quote.
+concentration_camps_policy_closure = {
+	set_variable = { concentration_camps_policy = constant:concentration_camps_policy.closure }
+	camp_admin_generic_reform = yes
+}
+
+# COUNTRY. Custody mandate: no forced work while the cases are reviewed.
+concentration_camps_policy_review = {
+	set_variable = { concentration_camps_policy = constant:concentration_camps_policy.review }
+	set_temp_variable = { concentration_camps_mandate_target = constant:camp_admin_mandate.custody }
+	concentration_camps_apply_mandate = yes
+	set_temp_variable = { concentration_camps_push_reform = constant:camp_rework_country_value.reform_minor }
+	concentration_camps_push_pressure = yes
+}
+
+# COUNTRY. Coercive mandate with labour roles at every site that has an economic
+# base. The Ledger priority and budget decide what the labour produces.
+concentration_camps_policy_labor = {
+	set_variable = { concentration_camps_policy = constant:concentration_camps_policy.labor }
+	set_temp_variable = { concentration_camps_mandate_target = constant:camp_admin_mandate.coercive }
+	concentration_camps_apply_mandate = yes
+	for_each_scope_loop = {
+		array = concentration_camps_site_states
+		if = {
+			limit = {
+				camp_admin_site_is_operational = yes
+				concentration_camps_state_has_labor_base = yes
+				NOT = { extermination_camp > 0 }
+			}
+			set_variable = { camp_admin_role = constant:camp_admin_role.labor }
+			camp_admin_refresh_state_economy = yes
+		}
+	}
+	camp_admin_refresh_country_economy = yes
+	set_temp_variable = { concentration_camps_push_resistance = constant:camp_rework_country_value.resistance_minor }
+	set_temp_variable = { concentration_camps_push_overstretch = constant:camp_rework_country_value.overstretch_minor }
+	concentration_camps_push_pressure = yes
+}
+
+# COUNTRY. Coercive mandate and an open expansion decision.
+concentration_camps_policy_expansion = {
+	set_variable = { concentration_camps_policy = constant:concentration_camps_policy.expansion }
+	set_temp_variable = { concentration_camps_mandate_target = constant:camp_admin_mandate.coercive }
+	concentration_camps_apply_mandate = yes
+	set_temp_variable = { concentration_camps_push_resistance = constant:camp_rework_country_value.resistance_minor }
+	set_temp_variable = { concentration_camps_push_visibility = constant:camp_rework_country_value.visibility_minor }
+	set_temp_variable = { concentration_camps_push_overstretch = constant:camp_rework_country_value.overstretch_minor }
+	concentration_camps_push_pressure = yes
+}
+
+# ----------------------------------------------------------------------------
+# Decisions
+# ----------------------------------------------------------------------------
+
+# COUNTRY, FROM is the target state. Widens the network by one site.
+concentration_camps_expand_in_from = {
+	concentration_camps_pay_expansion = yes
+	FROM = {
+		set_temp_variable = { concentration_camps_cohort_share = constant:concentration_camps_cohort.expansion_share }
+		set_temp_variable = { concentration_camps_cohort_maximum_k = constant:concentration_camps_cohort.expansion_maximum_k }
+		concentration_camps_create_site = yes
+	}
+	set_variable = { concentration_camps_policy = constant:concentration_camps_policy.expansion }
+	set_temp_variable = { concentration_camps_push_resistance = constant:camp_rework_country_value.resistance_minor }
+	set_temp_variable = { concentration_camps_push_visibility = constant:camp_rework_country_value.visibility_minor }
+	set_temp_variable = { concentration_camps_push_overstretch = constant:camp_rework_country_value.overstretch_minor }
+	concentration_camps_push_pressure = yes
+	concentration_camps_refresh_network = yes
+	camp_admin_refresh_interface = yes
+}
+
+# COUNTRY. The case review: inspectors go through the files, the mandate returns
+# to custody, and part of every living cohort is released in place.
+concentration_camps_review_cases = {
+	concentration_camps_pay_review = yes
+	set_variable = { concentration_camps_policy = constant:concentration_camps_policy.review }
+	set_temp_variable = { concentration_camps_mandate_target = constant:camp_admin_mandate.custody }
+	concentration_camps_apply_mandate = yes
+	set_variable = { concentration_camps_released_k = 0 }
+	for_each_scope_loop = {
+		array = concentration_camps_site_states
+		if = {
+			limit = {
+				camp_admin_site_is_operational = yes
+				check_variable = { camp_admin_detainees_k > constant:concentration_camps_value.zero }
+			}
+			set_temp_variable = { camp_admin_release_requested_k = camp_admin_detainees_k }
+			multiply_temp_variable = { camp_admin_release_requested_k = constant:concentration_camps_cohort.review_release_share }
+			camp_admin_release_detainees = yes
+			PREV = { add_to_variable = { concentration_camps_released_k = camp_admin_release_actual_k } }
+		}
+	}
+	set_temp_variable = { concentration_camps_push_resistance = constant:concentration_camps_incident.relief_resistance_relief }
+	set_temp_variable = { concentration_camps_push_visibility = constant:camp_rework_country_value.visibility_minor }
+	set_temp_variable = { concentration_camps_push_reform = constant:camp_rework_country_value.reform_major }
+	concentration_camps_push_pressure = yes
+}
+
+# ----------------------------------------------------------------------------
+# Deaths through the shared API
+# ----------------------------------------------------------------------------
+
+# STATE. Inputs (temp): concentration_camps_death_share (of the living cohort)
+# and concentration_camps_death_cause (constant:camp_admin_cause.*). Requests the
+# loss from the shared custody owner, which clamps it to the people actually
+# held and records the Deaths entry. Output: temp camp_admin_death_actual_k.
+concentration_camps_request_deaths = {
+	if = {
+		limit = {
+			camp_admin_site_is_operational = yes
+			check_variable = { camp_admin_detainees_k > constant:concentration_camps_value.zero }
+		}
+		set_temp_variable = { camp_admin_death_requested_k = camp_admin_detainees_k }
+		multiply_temp_variable = { camp_admin_death_requested_k = concentration_camps_death_share }
+		set_temp_variable = { camp_admin_death_cause = concentration_camps_death_cause }
+		set_temp_variable = { camp_admin_death_contract = constant:concentration_camps_value.one }
+		camp_admin_record_deaths = yes
+		PREV = { add_to_variable = { concentration_camps_incident_deaths_k = camp_admin_death_actual_k } }
+	}
+}
+
+# ----------------------------------------------------------------------------
+# Escape incident
+# ----------------------------------------------------------------------------
+
+# COUNTRY. Starts the containment mission once.
+concentration_camps_start_escape_mission = {
+	if = {
+		limit = { NOT = { has_active_mission = concentration_camps_mission_contain_escape } }
+		set_country_flag = concentration_camps_mission_escape_active
+		activate_mission = concentration_camps_mission_contain_escape
+	}
+}
+
+# COUNTRY. Better food, shelter and medical care ease the pressure.
+concentration_camps_answer_conditions = {
+	concentration_camps_pay_relief = yes
+	set_temp_variable = { concentration_camps_push_resistance = constant:concentration_camps_incident.relief_resistance_relief }
+	set_temp_variable = { concentration_camps_push_visibility = constant:concentration_camps_incident.relief_visibility_relief }
+	concentration_camps_push_pressure = yes
+	concentration_camps_start_escape_mission = yes
+}
+
+# COUNTRY. Extra guard posts and patrols hold the sites for now.
+concentration_camps_answer_guards = {
+	concentration_camps_pay_guards = yes
+	set_temp_variable = { concentration_camps_push_resistance = constant:concentration_camps_incident.guard_resistance_relief }
+	set_temp_variable = { concentration_camps_push_overstretch = constant:camp_rework_country_value.overstretch_minor }
+	concentration_camps_push_pressure = yes
+	concentration_camps_start_escape_mission = yes
+}
+
+# COUNTRY. Armed suppression at the site with the most prisoners. It kills
+# through the shared custody owner and raises evidence and visibility.
+concentration_camps_answer_suppression = {
+	set_variable = { concentration_camps_incident_deaths_k = 0 }
+	random_scope_in_array = {
+		array = concentration_camps_site_states
+		limit = {
+			camp_admin_site_is_operational = yes
+			check_variable = { camp_admin_detainees_k > constant:concentration_camps_value.zero }
+		}
+		set_temp_variable = { concentration_camps_death_share = constant:concentration_camps_incident.suppression_share }
+		set_temp_variable = { concentration_camps_death_cause = constant:camp_admin_cause.violence }
+		concentration_camps_request_deaths = yes
+	}
+	set_temp_variable = { concentration_camps_push_resistance = constant:concentration_camps_incident.guard_resistance_relief }
+	set_temp_variable = { concentration_camps_push_evidence = constant:camp_rework_country_value.evidence_major }
+	set_temp_variable = { concentration_camps_push_visibility = constant:camp_rework_country_value.visibility_major }
+	concentration_camps_push_pressure = yes
+	add_stability = constant:concentration_camps_incident.stability_cost_minor
+}
+
+# COUNTRY. The mission failed: escapees reached the border and the sites are
+# watched harder. The shared values rise and the leak incident follows.
+concentration_camps_escape_mission_failed = {
+	set_temp_variable = { concentration_camps_push_resistance = constant:camp_rework_country_value.resistance_major }
+	set_temp_variable = { concentration_camps_push_visibility = constant:camp_rework_country_value.visibility_major }
+	concentration_camps_push_pressure = yes
+	add_stability = constant:concentration_camps_incident.stability_cost_minor
+	clr_country_flag = concentration_camps_mission_escape_active
+}
+
+# COUNTRY. The mission succeeded: the pressure fell below the escape-network band.
+concentration_camps_escape_mission_succeeded = {
+	set_temp_variable = { concentration_camps_push_reform = constant:camp_rework_country_value.reform_minor }
+	concentration_camps_push_pressure = yes
+	add_stability = constant:concentration_camps_incident.stability_gain
+	clr_country_flag = concentration_camps_mission_escape_active
+}
+
+# ----------------------------------------------------------------------------
+# Epidemic incident
+# ----------------------------------------------------------------------------
+
+# COUNTRY. Medical and food relief for the hungry camps.
+concentration_camps_answer_epidemic_relief = {
+	concentration_camps_pay_relief = yes
+	set_temp_variable = { concentration_camps_push_resistance = constant:concentration_camps_incident.relief_resistance_relief }
+	set_temp_variable = { concentration_camps_push_visibility = constant:concentration_camps_incident.relief_visibility_relief }
+	concentration_camps_push_pressure = yes
+}
+
+# COUNTRY. The camps are sealed and the outbreak is left to run. Neglect kills
+# through the shared custody owner, and the secrecy leaves cover-up evidence.
+concentration_camps_answer_epidemic_neglect = {
+	set_variable = { concentration_camps_incident_deaths_k = 0 }
+	for_each_scope_loop = {
+		array = concentration_camps_site_states
+		if = {
+			limit = {
+				has_variable = famine_food_stage
+				check_variable = { famine_food_stage > constant:famine_food_stage.supply_strain }
+			}
+			set_temp_variable = { concentration_camps_death_share = constant:concentration_camps_incident.epidemic_neglect_share }
+			set_temp_variable = { concentration_camps_death_cause = constant:camp_admin_cause.custody }
+			concentration_camps_request_deaths = yes
+		}
+	}
+	concentration_camps_register_coverup = yes
+	set_temp_variable = { concentration_camps_push_visibility = constant:concentration_camps_incident.conceal_visibility_relief }
+	set_temp_variable = { concentration_camps_push_evidence = constant:concentration_camps_incident.conceal_evidence_gain }
+	concentration_camps_push_pressure = yes
+}
+
+# COUNTRY. Work continues in the sick camps. Output holds and the labour toll
+# rises, as the shared labour cause records it.
+concentration_camps_answer_epidemic_work = {
+	set_variable = { concentration_camps_incident_deaths_k = 0 }
+	for_each_scope_loop = {
+		array = concentration_camps_site_states
+		if = {
+			limit = {
+				has_variable = famine_food_stage
+				check_variable = { famine_food_stage > constant:famine_food_stage.supply_strain }
+			}
+			set_temp_variable = { concentration_camps_death_share = constant:concentration_camps_incident.epidemic_work_share }
+			set_temp_variable = { concentration_camps_death_cause = constant:camp_admin_cause.labor }
+			concentration_camps_request_deaths = yes
+		}
+	}
+	set_temp_variable = { concentration_camps_push_resistance = constant:camp_rework_country_value.resistance_minor }
+	set_temp_variable = { concentration_camps_push_evidence = constant:camp_rework_country_value.evidence_minor }
+	concentration_camps_push_pressure = yes
+}
+
+# ----------------------------------------------------------------------------
+# Leak incident
+# ----------------------------------------------------------------------------
+
+# COUNTRY. Registers one hidden cover-up source with the shared owner.
+concentration_camps_register_coverup = {
+	set_temp_variable = { genocide_hidden_coverup_gain = constant:genocide_crisis_value.coverup_effort }
+	set_temp_variable = { genocide_hidden_coverup_severity = constant:condemnation_severity.minor }
+	genocide_register_hidden_coverup = yes
+}
+
+# COUNTRY. Visitors are kept away from the sites.
+concentration_camps_answer_leak_restrict = {
+	concentration_camps_register_coverup = yes
+	set_temp_variable = { concentration_camps_push_visibility = constant:concentration_camps_incident.conceal_visibility_relief }
+	set_temp_variable = { concentration_camps_push_evidence = constant:concentration_camps_incident.conceal_evidence_gain }
+	concentration_camps_push_pressure = yes
+}
+
+# COUNTRY. The records are rewritten and a tour is staged. It works for a
+# while when the files hold together, and fails visibly when they do not.
+concentration_camps_answer_leak_stage = {
+	concentration_camps_register_coverup = yes
+	set_temp_variable_to_random = { var = concentration_camps_stage_roll min = 0 max = 1 }
+	if = {
+		limit = { check_variable = { concentration_camps_stage_roll < constant:concentration_camps_incident.staged_success_chance } }
+		set_temp_variable = { concentration_camps_push_visibility = constant:concentration_camps_incident.conceal_visibility_relief }
+		set_temp_variable = { concentration_camps_push_evidence = constant:concentration_camps_incident.conceal_evidence_gain }
+		concentration_camps_push_pressure = yes
+	}
+	else = {
+		set_temp_variable = { concentration_camps_push_visibility = constant:camp_rework_country_value.visibility_major }
+		set_temp_variable = { concentration_camps_push_evidence = constant:camp_rework_country_value.evidence_major }
+		concentration_camps_push_pressure = yes
+		set_country_flag = concentration_camps_stage_failed
+	}
+}
+
+# COUNTRY. Inspectors are admitted to the sites and the mandate returns to custody.
+concentration_camps_answer_leak_review = {
+	concentration_camps_policy_review = yes
+	set_temp_variable = { concentration_camps_push_visibility = constant:camp_rework_country_value.visibility_minor }
+	set_temp_variable = { concentration_camps_push_reform = constant:camp_rework_country_value.reform_major }
+	concentration_camps_push_pressure = yes
+}
+
+# ----------------------------------------------------------------------------
+# Observer answers (ROOT is the observing country, FROM the responsible one)
+# ----------------------------------------------------------------------------
+
+# COUNTRY, observer. Investigators are sent to the reports. At war with the
+# responsible country, a camp site is checked for verification by the shared
+# discovery owner.
+concentration_camps_observer_investigate = {
+	set_temp_variable = { concentration_camps_payment = constant:concentration_camps_incident.observer_investigate_pp }
+	multiply_temp_variable = { concentration_camps_payment = constant:concentration_camps_value.negative_one }
+	add_political_power = concentration_camps_payment
+	save_event_target_as = genocide_discovering_country
+	FROM = {
+		set_temp_variable = { concentration_camps_push_visibility = constant:camp_rework_country_value.visibility_major }
+		concentration_camps_push_pressure = yes
+		random_scope_in_array = {
+			array = concentration_camps_site_states
+			limit = { genocide_state_has_undiscovered_atrocity_evidence = yes }
+			genocide_try_discover_state_atrocity = yes
+		}
+	}
+}
+
+# COUNTRY, observer. Witnesses and escape routes are supported quietly.
+concentration_camps_observer_protect = {
+	set_temp_variable = { concentration_camps_payment = constant:concentration_camps_incident.observer_protect_pp }
+	multiply_temp_variable = { concentration_camps_payment = constant:concentration_camps_value.negative_one }
+	add_political_power = concentration_camps_payment
+	genocide_foreign_support_resistance_against_target = yes
+	FROM = {
+		set_temp_variable = { concentration_camps_push_resistance = constant:camp_rework_country_value.resistance_minor }
+		set_temp_variable = { concentration_camps_push_visibility = constant:camp_rework_country_value.visibility_minor }
+		concentration_camps_push_pressure = yes
+	}
+}

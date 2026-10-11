@@ -133,6 +133,7 @@ Each item below is proposed (spec audit 2026-10-10), not accepted design, and ne
 - Proposal: keep Exposure and Resistance Pressure as the two meters, drop the Reach band ladder and show Reach as "sites of eligible states".
   Parts 2 and 5 keep the band text as the fallback if the parent keeps three values.
 - Consequence: fewer labels to localise and tune, with no loss of a decision.
+Accepted by parent 2026-10-11: Exposure and Resistance Pressure are the shared `camp_foreign_visibility` and `camp_resistance_pressure` values, and Reach is one status line.
 
 ### P-022-B. Decision and event consolidation
 
@@ -140,6 +141,7 @@ Each item below is proposed (spec audit 2026-10-10), not accepted design, and ne
 - Proposal: the decision map and event chain map now list the consolidated set, with a disposition table for every original working identifier.
   The count falls to 14 decisions, 7 missions and about 40 events.
 - Consequence: the visible action budget (three to five, never more than six) becomes natural instead of enforced by hiding rows.
+Accepted by parent 2026-10-11.
 
 ### P-022-C. Evolution shocks as clamped custody requests
 
@@ -149,6 +151,7 @@ Each item below is proposed (spec audit 2026-10-10), not accepted design, and ne
   The marker is set whether the amount is zero or not.
 - Open point for the camp owner: which shared cause (custody for detention sites, violence for killing-center sites) carries the shock.
 - Consequence: the same people are never removed twice, and the shock cannot exceed the people the network actually holds.
+Accepted by parent 2026-10-11: custody is the cause for detention sites and violence for killing sites.
 
 ### P-022-D. Random Chaos or an existing cluster
 
@@ -156,17 +159,20 @@ Each item below is proposed (spec audit 2026-10-10), not accepted design, and ne
   Domestic Unrest (cluster 16: events 1, 6, 31, 63) already covers internal instability, terrorism and civil conflict, which are Event 22's neighbours.
 - Proposal: register Event 22 as a Severe member of Domestic Unrest and drop the new cluster.
   If the user keeps Random Chaos as a design decision, the catalog handoff already specifies how to register it.
+Accepted by parent 2026-10-11: Event 22 is a Severe member of Domestic Unrest (cluster 16) and no new cluster is created.
 
 ### P-022-E. Achievement overlap
 
 - Problem: "No Second Operator" and "Names Restored" duplicate the shared achievements 000_chaos_redux_60_inherit_the_ledger_close_the_ledger and 000_chaos_redux_61_papers_for_the_liberated.
 - Proposal: drop those two and "From Camps to Care", extend the shared conditions where needed, and keep eight Event 22 achievements.
+Accepted by parent 2026-10-11.
 
 ### P-022-F. Air cleanliness link
 
 - Problem: Part 5 asks camps to read air cleanliness, but the air contamination ledger has no camp footprint and no state-level cleanliness value.
 - Proposal: do not add a camp footprint.
   The camp epidemic incident may read the existing global air contamination level as one weight, with no new value.
+Accepted by parent 2026-10-11: the epidemic incident reads global air contamination as one weight at most.
 
 ## Changelog
 

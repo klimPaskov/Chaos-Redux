@@ -1,0 +1,65 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 022 CONCENTRATION CAMPS SCRIPTED LOCALISATION
+# ============================================================================
+# Category header selectors (Exposure band, Resistance Pressure band, opening
+# policy) and cost fragments with available and blocked colours. Selectors only,
+# all words live in 022_concentration_camps_l_english.yml. The bands use the
+# shared camp_rework_threshold values.
+# ============================================================================
+
+defined_text = {
+	name = GetConcentrationCampsExposureBand
+	text = { trigger = { check_variable = { camp_foreign_visibility > constant:camp_rework_threshold.band_critical } } localization_key = concentration_camps_exposure_band_public }
+	text = { trigger = { check_variable = { camp_foreign_visibility > constant:camp_rework_threshold.band_severe } } localization_key = concentration_camps_exposure_band_verified }
+	text = { trigger = { check_variable = { camp_foreign_visibility > constant:camp_rework_threshold.band_high } } localization_key = concentration_camps_exposure_band_leaks }
+	text = { trigger = { check_variable = { camp_foreign_visibility > constant:camp_rework_threshold.band_medium } } localization_key = concentration_camps_exposure_band_rumours }
+	text = { localization_key = concentration_camps_exposure_band_secrecy }
+}
+
+defined_text = {
+	name = GetConcentrationCampsResistanceBand
+	text = { trigger = { check_variable = { camp_resistance_pressure > constant:camp_rework_threshold.band_critical } } localization_key = concentration_camps_resistance_band_breakdown }
+	text = { trigger = { check_variable = { camp_resistance_pressure > constant:camp_rework_threshold.band_severe } } localization_key = concentration_camps_resistance_band_armed }
+	text = { trigger = { check_variable = { camp_resistance_pressure > constant:camp_rework_threshold.band_high } } localization_key = concentration_camps_resistance_band_sabotage }
+	text = { trigger = { check_variable = { camp_resistance_pressure > constant:camp_rework_threshold.band_medium } } localization_key = concentration_camps_resistance_band_escape }
+	text = { localization_key = concentration_camps_resistance_band_disorganized }
+}
+
+defined_text = {
+	name = GetConcentrationCampsPolicy
+	text = { trigger = { check_variable = { concentration_camps_policy = constant:concentration_camps_policy.closure } } localization_key = concentration_camps_policy_closure }
+	text = { trigger = { check_variable = { concentration_camps_policy = constant:concentration_camps_policy.review } } localization_key = concentration_camps_policy_review }
+	text = { trigger = { check_variable = { concentration_camps_policy = constant:concentration_camps_policy.labor } } localization_key = concentration_camps_policy_labor }
+	text = { trigger = { check_variable = { concentration_camps_policy = constant:concentration_camps_policy.expansion } } localization_key = concentration_camps_policy_expansion }
+	text = { localization_key = concentration_camps_policy_none }
+}
+
+defined_text = {
+	name = GetConcentrationCampsExpansionSupport
+	text = { trigger = { NOT = { has_equipment = { support_equipment < concentration_camps_cost_expansion_support } } } localization_key = concentration_camps_quote_expansion_support_available }
+	text = { localization_key = concentration_camps_quote_expansion_support_blocked }
+}
+
+defined_text = {
+	name = GetConcentrationCampsExpansionTrains
+	text = { trigger = { NOT = { has_equipment = { train_equipment < concentration_camps_cost_expansion_trains } } } localization_key = concentration_camps_quote_expansion_trains_available }
+	text = { localization_key = concentration_camps_quote_expansion_trains_blocked }
+}
+
+defined_text = {
+	name = GetConcentrationCampsExpansionManpower
+	text = { trigger = { NOT = { check_variable = { manpower_k < concentration_camps_cost_expansion_manpower_k } } } localization_key = concentration_camps_quote_expansion_manpower_available }
+	text = { localization_key = concentration_camps_quote_expansion_manpower_blocked }
+}
+
+defined_text = {
+	name = GetConcentrationCampsReviewSupport
+	text = { trigger = { NOT = { has_equipment = { support_equipment < concentration_camps_cost_review_support } } } localization_key = concentration_camps_quote_review_support_available }
+	text = { localization_key = concentration_camps_quote_review_support_blocked }
+}
+
+defined_text = {
+	name = GetConcentrationCampsReviewTrains
+	text = { trigger = { NOT = { has_equipment = { train_equipment < concentration_camps_cost_review_trains } } } localization_key = concentration_camps_quote_review_trains_available }
+	text = { localization_key = concentration_camps_quote_review_trains_blocked }
+}

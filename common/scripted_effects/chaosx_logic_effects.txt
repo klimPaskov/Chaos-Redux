@@ -252,7 +252,6 @@ initialize_event_categories = {
 	add_to_array = { global.fire_once_events = constant:utopia_manifesto_event.id }  # UTOPIA MANIFESTO
 	add_to_array = { global.fire_once_events = constant:brilliant_scientist_event.id }  # BRILLIANT SCIENTIST
 	add_to_array = { global.fire_once_events = constant:black_plague_identity.event_id }  # BLACK PLAGUE
-	add_to_array = { global.fire_once_events = 22 }  # 1391 (JEWS MASSACRE)
 	add_to_array = { global.fire_once_events = 23 }  # SOV NUKES
 	add_to_array = { global.fire_once_events = 24 }  # HOI
 	add_to_array = { global.fire_once_events = 26 }
@@ -292,6 +291,7 @@ initialize_event_categories = {
 	add_to_array = { global.repeatable_events = constant:resources_found_event.id }  # RESOURCES FOUND
 	add_to_array = { global.repeatable_events = constant:infantry_spawn_event.id }  # INF SPAWN
 	add_to_array = { global.repeatable_events = 21 }  # RAND CW
+	add_to_array = { global.repeatable_events = constant:concentration_camps_identity.event_id }  # CONCENTRATION CAMPS
 	add_to_array = { global.repeatable_events = 27 }  # DOCTRINE RESEARCH
 	add_to_array = { global.repeatable_events = constant:riches_found_event.id }  # RICHES FOUND
 	add_to_array = { global.repeatable_events = 31 }  # TERRORISTS
@@ -870,6 +870,13 @@ evaluate_event_pool_candidate_unavailability = {
 			NOT = { industrial_boom_has_any_target = yes }
 		}
 		set_temp_variable = { event_pool_candidate_unavailability_reason = constant:event_system_event_unavailability_reason.industrial_boom_target }
+	}
+	else_if = {
+		limit = {
+			check_variable = { event_id = constant:concentration_camps_identity.event_id }
+			NOT = { concentration_camps_has_any_target = yes }
+		}
+		set_temp_variable = { event_pool_candidate_unavailability_reason = constant:event_system_event_unavailability_reason.concentration_camps_target }
 	}
 
 	if = {

@@ -1,0 +1,416 @@
+add_namespace = chaosx.nr22
+
+# ============================================================================
+# CHAOS REDUX - EVENT 022 CONCENTRATION CAMPS
+# ============================================================================
+# Event 22 is the entry and escalation layer on top of the shared Camps and
+# Repression system. A firing selects one country, registers camp sites in
+# about a fifth of its eligible states and seeds their cohorts from a campaign
+# marker. The country then manages the network through the shared Ledger and a
+# short Event 22 decision category. Exposure and Resistance Pressure are the
+# shared camp_foreign_visibility and camp_resistance_pressure values.
+#
+#   .1   hidden entry on the selected country
+#   .2   opening report with the opening policy
+#   .3   hidden monthly monitor (one per live network)
+#   .101 escape networks        .102 sickness in the camps
+#   .103 reports leave the camps
+#   .510 foreign report of credible camps
+#   .800 closure after destroyed records   .801 closure with open records
+#   .802 hidden closure proof
+#   news chaosx.news.22 lives in events/_chaosx_news.txt
+# ============================================================================
+
+# Hidden entry on the selected country. A country without a live network gets
+# the opening, a country with one gets the incident its shared values call for.
+country_event = {
+	id = chaosx.nr22.1
+	title = chaosx.nr22.1.t
+
+	hidden = yes
+	is_triggered_only = yes
+
+	immediate = {
+		if = {
+			limit = {
+				concentration_camps_target_basics = yes
+				NOT = { has_country_flag = concentration_camps_network_active }
+			}
+			concentration_camps_open = yes
+			camp_admin_generic_reform_refresh_quote = yes
+			set_country_flag = concentration_camps_report_pending
+			country_event = {
+				id = chaosx.nr22.2
+				days = constant:concentration_camps_timing.report_delay_days
+			}
+		}
+		else_if = {
+			limit = { concentration_camps_has_incident_ready = yes }
+			concentration_camps_set_cooldown = yes
+			concentration_camps_fire_incident = yes
+		}
+	}
+}
+
+# Opening report. The camps exist already. The choice sets the national
+# controls of the shared Ledger.
+country_event = {
+	id = chaosx.nr22.2
+	title = chaosx.nr22.2.t
+	desc = {
+		trigger = { check_variable = { var = concentration_camps_opening_kind value = constant:concentration_camps_source_kind.occupied compare = equals } }
+		text = chaosx.nr22.2.d_occupied
+	}
+	desc = {
+		trigger = { check_variable = { var = concentration_camps_opening_kind value = constant:concentration_camps_source_kind.resistance compare = equals } }
+		text = chaosx.nr22.2.d_resistance
+	}
+	desc = {
+		text = chaosx.nr22.2.d_political
+	}
+	picture = GFX_report_event_SWE_internment_camp
+
+	is_triggered_only = yes
+	trigger = { concentration_camps_network_is_live = yes }
+
+	immediate = {
+		clr_country_flag = concentration_camps_report_pending
+		if = {
+			limit = { has_variable = concentration_camps_lead_state }
+			var:concentration_camps_lead_state = { save_event_target_as = concentration_camps_lead_state }
+		}
+	}
+
+	option = {
+		name = chaosx.nr22.2.a
+		trigger = { camp_admin_generic_reform_available = yes }
+		custom_effect_tooltip = chaosx.nr22.2.a_tt
+		hidden_effect = { concentration_camps_policy_closure = yes }
+		ai_chance = {
+			base = 0
+			modifier = { add = constant:concentration_camps_open_weight.close_p1 has_government = democratic has_war = no }
+			modifier = { add = constant:concentration_camps_open_weight.close_p2 has_government = democratic has_war = yes }
+			modifier = { add = constant:concentration_camps_open_weight.close_p3 NOT = { has_government = democratic } has_war = yes }
+			modifier = { add = constant:concentration_camps_open_weight.close_p4 NOT = { has_government = democratic } has_war = no }
+			modifier = { add = constant:concentration_camps_open_weight.collapse_close has_stability < constant:concentration_camps_open_weight.collapse_stability }
+		}
+	}
+
+	option = {
+		name = chaosx.nr22.2.b
+		custom_effect_tooltip = chaosx.nr22.2.b_tt
+		hidden_effect = { concentration_camps_policy_review = yes }
+		ai_chance = {
+			base = 0
+			modifier = { add = constant:concentration_camps_open_weight.review_p1 has_government = democratic has_war = no }
+			modifier = { add = constant:concentration_camps_open_weight.review_p2 has_government = democratic has_war = yes }
+			modifier = { add = constant:concentration_camps_open_weight.review_p3 NOT = { has_government = democratic } has_war = yes }
+			modifier = { add = constant:concentration_camps_open_weight.review_p4 NOT = { has_government = democratic } has_war = no }
+			modifier = { add = constant:concentration_camps_open_weight.collapse_review has_stability < constant:concentration_camps_open_weight.collapse_stability }
+		}
+	}
+
+	option = {
+		name = chaosx.nr22.2.c
+		trigger = { concentration_camps_has_labor_site = yes }
+		custom_effect_tooltip = chaosx.nr22.2.c_tt
+		hidden_effect = { concentration_camps_policy_labor = yes }
+		ai_chance = {
+			base = 0
+			modifier = { add = constant:concentration_camps_open_weight.labor_p1 has_government = democratic has_war = no }
+			modifier = { add = constant:concentration_camps_open_weight.labor_p2 has_government = democratic has_war = yes }
+			modifier = { add = constant:concentration_camps_open_weight.labor_p3 NOT = { has_government = democratic } has_war = yes }
+			modifier = { add = constant:concentration_camps_open_weight.labor_p4 NOT = { has_government = democratic } has_war = no }
+			modifier = { factor = constant:concentration_camps_ai.blocked has_equipment = { support_equipment < constant:concentration_camps_ai.support_floor } }
+		}
+	}
+
+	option = {
+		name = chaosx.nr22.2.d
+		trigger = {
+			concentration_camps_government_permits_expansion = yes
+			any_controlled_state = { concentration_camps_state_is_candidate = yes }
+		}
+		custom_effect_tooltip = chaosx.nr22.2.d_tt
+		hidden_effect = { concentration_camps_policy_expansion = yes }
+		ai_chance = {
+			base = 0
+			modifier = { add = constant:concentration_camps_open_weight.expand_p1 has_government = democratic has_war = no }
+			modifier = { add = constant:concentration_camps_open_weight.expand_p2 has_government = democratic has_war = yes }
+			modifier = { add = constant:concentration_camps_open_weight.expand_p3 NOT = { has_government = democratic } has_war = yes }
+			modifier = { add = constant:concentration_camps_open_weight.expand_p4 NOT = { has_government = democratic } has_war = no }
+			modifier = { factor = constant:concentration_camps_ai.blocked has_equipment = { support_equipment < constant:concentration_camps_ai.support_floor } }
+		}
+	}
+}
+
+# Hidden monthly monitor. One chain per live network, rescheduled by the
+# monitor itself and stopped when the network ends.
+country_event = {
+	id = chaosx.nr22.3
+	title = chaosx.nr22.3.t
+
+	hidden = yes
+	is_triggered_only = yes
+
+	immediate = {
+		concentration_camps_monitor_tick = yes
+	}
+}
+
+# ----------------------------------------------------------------------------
+# Incidents
+# ----------------------------------------------------------------------------
+
+# Escape networks. Fired when Resistance Pressure reaches the escape band.
+country_event = {
+	id = chaosx.nr22.101
+	title = chaosx.nr22.101.t
+	desc = chaosx.nr22.101.d
+	picture = GFX_report_event_generic_riot
+
+	is_triggered_only = yes
+	trigger = { concentration_camps_network_is_live = yes }
+
+	option = {
+		name = chaosx.nr22.101.a
+		trigger = { concentration_camps_can_pay_relief = yes }
+		custom_effect_tooltip = chaosx.nr22.101.a_tt
+		hidden_effect = { concentration_camps_answer_conditions = yes }
+		ai_chance = {
+			base = constant:concentration_camps_ai.moderate
+			modifier = { add = constant:concentration_camps_ai.strong has_government = democratic }
+			modifier = { add = constant:concentration_camps_ai.moderate has_stability > constant:concentration_camps_target_weight.stable_threshold }
+		}
+	}
+
+	option = {
+		name = chaosx.nr22.101.b
+		trigger = { concentration_camps_can_pay_guards = yes }
+		custom_effect_tooltip = chaosx.nr22.101.b_tt
+		hidden_effect = { concentration_camps_answer_guards = yes }
+		ai_chance = {
+			base = constant:concentration_camps_ai.standard
+			modifier = { add = constant:concentration_camps_ai.moderate NOT = { has_government = democratic } }
+		}
+	}
+
+	option = {
+		name = chaosx.nr22.101.c
+		trigger = { concentration_camps_government_permits_expansion = yes }
+		custom_effect_tooltip = chaosx.nr22.101.c_tt
+		hidden_effect = { concentration_camps_answer_suppression = yes }
+		ai_chance = {
+			base = constant:concentration_camps_ai.blocked
+			modifier = { add = constant:concentration_camps_ai.moderate NOT = { has_government = democratic } }
+			modifier = { add = constant:concentration_camps_ai.standard OR = { has_government = fascism has_government = communism } }
+			modifier = { factor = constant:concentration_camps_ai.blocked has_stability < constant:concentration_camps_open_weight.collapse_stability }
+		}
+	}
+
+	option = {
+		name = chaosx.nr22.101.e
+		custom_effect_tooltip = chaosx.nr22.101.e_tt
+		ai_chance = {
+			base = constant:concentration_camps_ai.low
+			modifier = { add = constant:concentration_camps_ai.standard NOT = { concentration_camps_can_pay_relief = yes } NOT = { concentration_camps_can_pay_guards = yes } }
+		}
+	}
+}
+
+# Sickness in the camps. Fired when a site state is short of food.
+country_event = {
+	id = chaosx.nr22.102
+	title = chaosx.nr22.102.t
+	desc = chaosx.nr22.102.d
+	picture = GFX_report_event_generic_ruins
+
+	is_triggered_only = yes
+	trigger = { concentration_camps_network_is_live = yes }
+
+	option = {
+		name = chaosx.nr22.102.a
+		trigger = { concentration_camps_can_pay_relief = yes }
+		custom_effect_tooltip = chaosx.nr22.102.a_tt
+		hidden_effect = { concentration_camps_answer_epidemic_relief = yes }
+		ai_chance = {
+			base = constant:concentration_camps_ai.strong
+			modifier = { add = constant:concentration_camps_ai.moderate has_government = democratic }
+		}
+	}
+
+	option = {
+		name = chaosx.nr22.102.b
+		custom_effect_tooltip = chaosx.nr22.102.b_tt
+		hidden_effect = { concentration_camps_answer_epidemic_neglect = yes }
+		ai_chance = {
+			base = constant:concentration_camps_ai.low
+			modifier = { add = constant:concentration_camps_ai.moderate NOT = { has_government = democratic } }
+			modifier = { add = constant:concentration_camps_ai.moderate NOT = { concentration_camps_can_pay_relief = yes } }
+		}
+	}
+
+	option = {
+		name = chaosx.nr22.102.c
+		trigger = { concentration_camps_mandate_is_coercive = yes }
+		custom_effect_tooltip = chaosx.nr22.102.c_tt
+		hidden_effect = { concentration_camps_answer_epidemic_work = yes }
+		ai_chance = {
+			base = constant:concentration_camps_ai.blocked
+			modifier = { add = constant:concentration_camps_ai.moderate NOT = { has_government = democratic } has_war = yes }
+			modifier = { add = constant:concentration_camps_ai.moderate NOT = { concentration_camps_can_pay_relief = yes } NOT = { has_government = democratic } }
+		}
+	}
+}
+
+# Reports leave the camps. Fired when Exposure reaches credible leaks.
+country_event = {
+	id = chaosx.nr22.103
+	title = chaosx.nr22.103.t
+	desc = chaosx.nr22.103.d
+	picture = GFX_report_event_generic_read_write
+
+	is_triggered_only = yes
+	trigger = { concentration_camps_network_is_live = yes }
+
+	option = {
+		name = chaosx.nr22.103.a
+		custom_effect_tooltip = chaosx.nr22.103.a_tt
+		hidden_effect = { concentration_camps_answer_leak_restrict = yes }
+		ai_chance = {
+			base = constant:concentration_camps_ai.standard
+			modifier = { add = constant:concentration_camps_ai.moderate NOT = { has_government = democratic } }
+		}
+	}
+
+	option = {
+		name = chaosx.nr22.103.b
+		custom_effect_tooltip = chaosx.nr22.103.b_tt
+		hidden_effect = { concentration_camps_answer_leak_stage = yes }
+		ai_chance = {
+			base = constant:concentration_camps_ai.moderate
+			modifier = { add = constant:concentration_camps_ai.moderate OR = { has_government = fascism has_government = communism } }
+			modifier = { factor = constant:concentration_camps_ai.blocked has_government = democratic }
+		}
+	}
+
+	option = {
+		name = chaosx.nr22.103.c
+		custom_effect_tooltip = chaosx.nr22.103.c_tt
+		hidden_effect = { concentration_camps_answer_leak_review = yes }
+		ai_chance = {
+			base = constant:concentration_camps_ai.low
+			modifier = { add = constant:concentration_camps_ai.dominant has_government = democratic }
+			modifier = { add = constant:concentration_camps_ai.moderate has_stability < constant:concentration_camps_open_weight.collapse_stability }
+		}
+	}
+}
+
+# ----------------------------------------------------------------------------
+# Foreign reaction
+# ----------------------------------------------------------------------------
+
+# A neighbour or enemy of the responsible country hears credible reports.
+# FROM is the responsible country.
+country_event = {
+	id = chaosx.nr22.510
+	title = chaosx.nr22.510.t
+	desc = chaosx.nr22.510.d
+	picture = GFX_report_event_generic_conference
+
+	is_triggered_only = yes
+
+	immediate = {
+		set_variable = { concentration_camps_observer_investigate_pp = constant:concentration_camps_incident.observer_investigate_pp }
+		set_variable = { concentration_camps_observer_protect_pp = constant:concentration_camps_incident.observer_protect_pp }
+	}
+
+	option = {
+		name = chaosx.nr22.510.a
+		trigger = { has_political_power > constant:concentration_camps_incident.observer_investigate_pp }
+		custom_effect_tooltip = chaosx.nr22.510.a_tt
+		hidden_effect = { concentration_camps_observer_investigate = yes }
+		ai_chance = {
+			base = constant:concentration_camps_ai.moderate
+			modifier = { add = constant:concentration_camps_ai.strong has_war_with = FROM }
+			modifier = { add = constant:concentration_camps_ai.moderate has_government = democratic }
+		}
+	}
+
+	option = {
+		name = chaosx.nr22.510.b
+		trigger = { has_political_power > constant:concentration_camps_incident.observer_protect_pp }
+		custom_effect_tooltip = chaosx.nr22.510.b_tt
+		hidden_effect = { concentration_camps_observer_protect = yes }
+		ai_chance = {
+			base = constant:concentration_camps_ai.low
+			modifier = { add = constant:concentration_camps_ai.moderate has_government = democratic }
+			modifier = { add = constant:concentration_camps_ai.moderate has_war_with = FROM }
+		}
+	}
+
+	option = {
+		name = chaosx.nr22.510.c
+		custom_effect_tooltip = chaosx.nr22.510.c_tt
+		ai_chance = {
+			base = constant:concentration_camps_ai.standard
+			modifier = { factor = constant:concentration_camps_ai.blocked has_war_with = FROM }
+		}
+	}
+}
+
+# ----------------------------------------------------------------------------
+# Closure
+# ----------------------------------------------------------------------------
+
+# The camps closed after records at one or more sites were destroyed.
+country_event = {
+	id = chaosx.nr22.800
+	title = chaosx.nr22.800.t
+	desc = chaosx.nr22.800.d
+	picture = GFX_report_event_generic_ruins
+
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx.nr22.800.a
+		ai_chance = { base = 1 }
+	}
+}
+
+# Hidden proof that an open closure stayed closed. It sets the achievement flag
+# only for a player whose country did not reopen a network in the meantime.
+country_event = {
+	id = chaosx.nr22.802
+	title = chaosx.nr22.802.t
+
+	hidden = yes
+	is_triggered_only = yes
+
+	immediate = {
+		if = {
+			limit = {
+				is_ai = no
+				has_country_flag = concentration_camps_closure_proof_pending
+				NOT = { has_country_flag = concentration_camps_network_active }
+			}
+			set_country_flag = concentration_camps_achievement_close_every_gate
+		}
+		clr_country_flag = concentration_camps_closure_proof_pending
+	}
+}
+
+# The camps closed and their records were kept.
+country_event = {
+	id = chaosx.nr22.801
+	title = chaosx.nr22.801.t
+	desc = chaosx.nr22.801.d
+	picture = GFX_report_event_generic_parliament
+
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx.nr22.801.a
+		ai_chance = { base = 1 }
+	}
+}
