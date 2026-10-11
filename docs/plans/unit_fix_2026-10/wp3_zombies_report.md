@@ -1,5 +1,43 @@
 # WP3 Zombie Outbreak (002) - Delivery Report
 
+## Current takeover: infected idle and parasite separation, 11 October 2026
+
+The requested infected idle skin correction is installed; parasite tube separation remains in progress, with native work serialized through the exclusive Blender lease.
+This section supersedes the earlier infected idle remainder of 20 stretched edges; the older tranche measurements below remain historical evidence.
+Acceptance basis is the user's explicit WP3 leftover assignment, with the parent reviewing source poses and actual exported-byte deformation before installation.
+
+### Infected zombies: installed idle-weight correction
+
+Nine coat-junction vertices were deliberately reweighted in the live Blender session: 8683, 8692, 8693, 8696, 8704, 8706, 8710, 8750 and 9097.
+Across all 691 integer/half-frame idle samples, the maximum number of edges growing more than 0.3 units falls from 20 to 10, meeting the target of at most 12; maximum growth falls from 0.537330 to 0.412081 units.
+The other seven roles have no increase in maximum stretch count or growth, and their ground-height samples are unchanged.
+The native reimport of the selected mesh and unchanged idle action reproduces 10 stretched edges at frames 45.5, 46 and 46.5; frame 46 has maximum growth 0.41203384 and ground contact +0.00399427 units.
+
+Installed mesh: `gfx/models/units/chaosx_infected_zombies/chaosx_infected_zombies.mesh`, SHA-256 `b6400e0c11300e04b614117f9158d12084c76908bc5bac3ce93940b7376c9709`.
+The selected source is `docs/assets/002_zombie_outbreak/models_3d/infected_zombies/blender/checkpoints/wp3e_05_reviewed.blend`; its export is `export/wp3e/chaosx_infected_zombies.mesh` within that job.
+The preimage `cddff1d6d8c599555e6024be5439c5b4d53dcb4f21e5f7c51100a98b909d30a5` is preserved in the job's `runtime/preimages/wp3e/` directory.
+The mesh retains 30,788 triangles, the same 24-bone skeleton, four `char1.001` streams and the inherited 7.351824-source-unit calibration with entity scale 0.8 applied once.
+Decoded positions, normals, UVs, triangles, materials and skeleton are unchanged; the differences are the intended skin records and exporter tangent rounding no larger than 1.79e-7.
+The manifold and winding gate passes at 0.0005, 0.001 and 0.002 units, and all eight retained actions have hash-bound native reimport receipts.
+All eight runtime `.anim` files, three DDS maps, action registrations and entity behavior are preserved; the GFX header's triangle count is corrected to match the delivered mesh.
+
+Evidence within the infected job: `blender/reports/wp3e_deformation_sweep.json`, `wp3e_invariants.json`, `wp3e_actual_byte_idle46.json`, `export/wp3e/decoded_delta.json`, `chaosx_infected_zombies.delivery.json`, `validation/reimport_wp3e_<role>.json`, and `runtime/parent_install_wp3e.json`.
+The selected export/checkpoint hashes, unchanged action hashes, authored weights and source lineage are consolidated in `runtime/handoff.md`.
+Parent visual review covers the before/after idle-46 closeups, representative poses in all eight roles, attack toe contact, terminal death, and `blender/previews/wp3e/actual_byte_idle46_quarter.png` from the actual-byte reimport.
+
+Remaining limits: the unchanged attack right toe reaches -0.037745 units at frame 42.5; the death's mid-collapse lift ends with the body on the ground at +0.003950 units.
+Importer-default previews have unresolved magenta texture display, so solid previews establish geometry/deformation only; no fresh material-display or live-game acceptance is claimed.
+The existing cough, retch and spit recording gaps remain blocked by absent licensed source material under the no-download rule.
+No requested infected idle-skin requirement was omitted or simplified; no provider credit was spent.
+
+### Parasitic zombies: separate task in progress
+
+The inherited 48-bone source and its eight actions are preserved while the tubes are separated into their own closed skinned parts, including review of the previously uncovered small components and root hub.
+No replacement parasite mesh or action is installed by the infected commit.
+The separation, local seam/skin corrections and actual-byte export/reimport proof remain required before that task can be reported fixed.
+
+Skills used for this takeover: `chaos-redux-3d-model-pipeline`, `chaos-redux-event-assets`, `chaos-redux-subagents`, `chaos-redux-units-divisions` and `chaos-redux-shared-git-commit`; no skill was created or changed.
+
 ## WP3 rebuild results (11 Oct 2026)
 
 Package status: **model, texture and action rebuild delivered for all eight units; tentacle rig, wing-membrane reweighting, new sourced audio and live validation remain open** (listed per unit below).
