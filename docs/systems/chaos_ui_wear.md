@@ -18,7 +18,7 @@ The GUIs set no `dirty` variable, so they refresh every tick and the live flag r
 
 | Scripted GUI | Parent | Decals (position in the parent) |
 | --- | --- | --- |
-| `chaos_ui_wear_topbar_gui` | `parent_window_token = top_bar` | flag frame corner (`corner_tl`, 0,0, scale 0.6); lower lip of the resource and menu block (`strip_h`, 96,48); lower lip of the war-status block (`strip_short`, 780,16); top border of the date and speed widget (`strip_short`, UPPER_RIGHT -330,-14) |
+| `chaos_ui_wear_topbar_gui` | `parent_window_token = top_bar` | flag frame corner (`corner_tl`, 0,0, scale 0.6); lower lip of the resource and menu block (`strip_h`, 96,40); lower lip of the war-status block (`strip_short`, 780,8); top border of the date and speed widget (`strip_short`, UPPER_RIGHT -330,4) |
 | `chaos_ui_wear_minimap_gui` | `parent_window_name = mini_map_interface` | upper-left corner of the minimap frame (`corner_tl`, -6,-6, scale 0.7) |
 | `chaos_ui_wear_<panel>_gui` | `politics_tab`, `decision_tab`, `production_tab`, `construction_tab`, `trade_tab`, `deployment_tab`, `logistics_tab` | header plate seam between the title and the close button (`strip_short`, width-184,26); right frame column (`strip_v`, width-34,60) |
 | `chaos_ui_wear_research_gui` | `technology_tab` | right frame column only; the Research and Facilities tabs sit on the header seam |
@@ -57,7 +57,7 @@ Sheets have `noOfFrames = 5` (frame N = tier N) and are uncompressed BGRA DDS wr
 
 ## Validation
 
-- `hoi4.gui_render` was attempted for the top bar window twice and both calls ended with `JOB_WORKER_EXIT` (worker stopped without an outcome), so no MCP render exists; the retry limit is spent. A source-geometry composite of the decals on the vanilla top bar texture for tiers 1 to 5 is kept at `docs/assets/chaos_ui_wear/check_topbar_tiers_1_5.png`; the lower-lip decal was moved up to sit on the plate lip rather than hang over the map. The render tool also only accepts boolean scenario flags, so the valued `chaos_tier` flag cannot be set in a scenario.
+- `hoi4.gui_render` was attempted for the top bar window twice and both calls ended with `JOB_WORKER_EXIT` (worker stopped without an outcome), so no MCP render exists; the retry limit is spent. A source-geometry composite of the decals on the vanilla top bar texture for tiers 1 to 5 is kept at `docs/assets/chaos_ui_wear/check_topbar_tiers_1_5.png`; the top-bar decals were positioned (lip y=40, war block y=8, date y=4) so that every decal pixel of every frame lies on opaque plate pixels of the vanilla top bar texture (0 pixels outside, checked programmatically); calm shows no decal because tier 0 has no icon or trigger. The render tool also only accepts boolean scenario flags, so the valued `chaos_tier` flag cannot be set in a scenario.
 - Decals contain only borders and empty plate by position; the other surfaces were reviewed from geometry only. In-game confirmation belongs to the user.
 
 ## Future extensions
