@@ -1,0 +1,795 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 038 MALTA CRUSADERS CRUSADE COUNCIL RUNTIME
+# ============================================================================
+# The three public readouts and the weekly pulse that keeps them honest.
+#
+#   Command Standing  malta_standing (1 Fractured to 5 Supreme), computed from
+#                     the four anchors, never edited by hand
+#   Order Cohesion    malta_cohesion (0 to 100)
+#   Sacred Legitimacy malta_legitimacy (0 to 100)
+#
+# Everything else the campaign tracks stays internal: order influence,
+# grievance and incident counts (arrays indexed by malta_order), the open
+# demand, collapse days and the Eleventh Crusade phase.
+#
+# The pulse (event chaosx.nr38.5) runs weekly on the actor only and stops when
+# the actor no longer exists. It refreshes the counters and the standing,
+# answers demand deadlines, opens demands and incidents, reviews the national
+# spirits, watches the expedition for collapse and publishes the costs and
+# header values the decision categories read. Control changes of the anchor
+# states also refresh the standing (common/on_actions/038_malta_crusaders_on_actions.txt).
+#
+# Value changes always go through malta_change_cohesion and
+# malta_change_legitimacy so the 0 to 100 clamp lives in one place.
+# ============================================================================
+
+# ---------------------------------------------------------------------------
+# Value helpers
+# ---------------------------------------------------------------------------
+
+# COUNTRY (MLT). Input: temp malta_change (signed whole number).
+malta_change_cohesion = {
+	add_to_variable = { malta_cohesion = malta_change }
+	clamp_variable = { var = malta_cohesion min = constant:malta_value.min max = constant:malta_value.max }
+}
+
+# COUNTRY (MLT). Input: temp malta_change (signed whole number).
+malta_change_legitimacy = {
+	add_to_variable = { malta_legitimacy = malta_change }
+	clamp_variable = { var = malta_legitimacy min = constant:malta_value.min max = constant:malta_value.max }
+}
+
+# COUNTRY (MLT). Input: temp malta_order (1 to 6). Raises the grievance of the
+# order by one, to the cap.
+malta_raise_grievance = {
+	if = {
+		limit = { check_variable = { var = malta_order_grievance^malta_order value = constant:malta_council.grievance_cap compare = less_than } }
+		add_to_variable = { malta_order_grievance^malta_order = 1 }
+	}
+}
+
+# COUNTRY (MLT). Input: temp malta_order. Lowers the grievance by one, to zero.
+malta_lower_grievance = {
+	if = {
+		limit = { check_variable = { var = malta_order_grievance^malta_order value = 0 compare = greater_than } }
+		subtract_from_variable = { malta_order_grievance^malta_order = 1 }
+	}
+}
+
+# COUNTRY (MLT). Input: temp malta_order. Raises influence one step to high.
+malta_raise_influence = {
+	if = {
+		limit = { check_variable = { var = malta_order_influence^malta_order value = constant:malta_influence.high compare = less_than } }
+		add_to_variable = { malta_order_influence^malta_order = 1 }
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Command Standing
+# ---------------------------------------------------------------------------
+
+# COUNTRY (MLT). Counts the held anchors into malta_anchor_count and computes
+# malta_standing.
+malta_refresh_standing = {
+	set_temp_variable = { malta_anchors = 0 }
+	if = {
+		limit = { malta_anchor_malta_held = yes }
+		add_to_temp_variable = { malta_anchors = 1 }
+	}
+	if = {
+		limit = { malta_anchor_jerusalem_held = yes }
+		add_to_temp_variable = { malta_anchors = 1 }
+	}
+	if = {
+		limit = { malta_anchor_sea_road_held = yes }
+		add_to_temp_variable = { malta_anchors = 1 }
+	}
+	if = {
+		limit = { malta_anchor_port_held = yes }
+		add_to_temp_variable = { malta_anchors = 1 }
+	}
+	set_variable = { malta_anchor_count = malta_anchors }
+
+	set_temp_variable = { malta_new_standing = constant:malta_standing.fractured }
+	if = {
+		limit = { check_variable = { var = malta_anchors value = constant:malta_standing.two_anchors compare = equals } }
+		set_temp_variable = { malta_new_standing = constant:malta_standing.disputed }
+	}
+	else_if = {
+		limit = { check_variable = { var = malta_anchors value = constant:malta_standing.three_anchors compare = equals } }
+		set_temp_variable = { malta_new_standing = constant:malta_standing.functional }
+	}
+	else_if = {
+		limit = { check_variable = { var = malta_anchors value = constant:malta_standing.four_anchors compare = equals } }
+		set_temp_variable = { malta_new_standing = constant:malta_standing.functional }
+		if = {
+			limit = { check_variable = { var = malta_all_anchors_days value = constant:malta_standing.recognized_days compare = greater_than_or_equals } }
+			set_temp_variable = { malta_new_standing = constant:malta_standing.recognized }
+			if = {
+				limit = {
+					has_country_flag = malta_settlement_complete
+					NOT = { has_country_flag = malta_demand_open }
+				}
+				set_temp_variable = { malta_new_standing = constant:malta_standing.supreme }
+			}
+		}
+	}
+	if = {
+		limit = { has_country_flag = malta_rupture }
+		set_temp_variable = { malta_new_standing = constant:malta_standing.fractured }
+	}
+	if = {
+		limit = {
+			check_variable = { var = malta_standing_malus_until value = global.num_days compare = greater_than }
+			check_variable = { var = malta_new_standing value = constant:malta_standing.fractured compare = greater_than }
+		}
+		subtract_from_temp_variable = { malta_new_standing = 1 }
+	}
+	set_variable = { malta_standing = malta_new_standing }
+}
+
+# COUNTRY (MLT). Lowers the standing by one step for the suppression period.
+# Input: temp malta_malus_days.
+malta_apply_standing_malus = {
+	set_variable = { malta_standing_malus_until = global.num_days }
+	add_to_variable = { malta_standing_malus_until = malta_malus_days }
+	malta_refresh_standing = yes
+}
+
+# ---------------------------------------------------------------------------
+# Spirits
+# ---------------------------------------------------------------------------
+
+# COUNTRY (MLT). Replaces the opening spirits when their conditions are met.
+malta_review_spirits = {
+	if = {
+		limit = {
+			has_idea = malta_fortress_without_a_hinterland
+			malta_standing_is_recognized_or_better = yes
+		}
+		swap_ideas = { remove_idea = malta_fortress_without_a_hinterland add_idea = malta_fortified_network }
+	}
+	if = {
+		limit = {
+			has_idea = malta_orders_recalled
+			malta_cohesion_is_united = yes
+		}
+		swap_ideas = { remove_idea = malta_orders_recalled add_idea = malta_orders_united }
+	}
+	if = {
+		limit = {
+			has_idea = malta_orders_united
+			NOT = { malta_cohesion_is_working_or_better = yes }
+		}
+		swap_ideas = { remove_idea = malta_orders_united add_idea = malta_orders_recalled }
+	}
+	if = {
+		limit = {
+			has_idea = malta_army_out_of_time
+			check_variable = { var = num_of_military_factories value = constant:malta_spirits.standardized_factories compare = greater_than_or_equals }
+		}
+		swap_ideas = { remove_idea = malta_army_out_of_time add_idea = malta_banners_standardized }
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Seats
+# ---------------------------------------------------------------------------
+
+# COUNTRY (MLT). Applies or removes the seat idea of the order in temp
+# malta_order (1 to 6) according to whether the seat is filled.
+malta_sync_seat_idea = {
+	set_temp_variable = { malta_seated_now = malta_order_seated^malta_order }
+	if = {
+		limit = { check_variable = { var = malta_order value = constant:malta_order.hospitallers compare = equals } }
+		if = {
+			limit = { check_variable = { var = malta_seated_now value = 1 compare = equals } NOT = { has_idea = malta_seat_hospitallers } }
+			add_ideas = malta_seat_hospitallers
+		}
+		else_if = {
+			limit = { check_variable = { var = malta_seated_now value = 0 compare = equals } has_idea = malta_seat_hospitallers }
+			remove_ideas = malta_seat_hospitallers
+		}
+	}
+	else_if = {
+		limit = { check_variable = { var = malta_order value = constant:malta_order.templars compare = equals } }
+		if = {
+			limit = { check_variable = { var = malta_seated_now value = 1 compare = equals } NOT = { has_idea = malta_seat_templars } }
+			add_ideas = malta_seat_templars
+		}
+		else_if = {
+			limit = { check_variable = { var = malta_seated_now value = 0 compare = equals } has_idea = malta_seat_templars }
+			remove_ideas = malta_seat_templars
+		}
+	}
+	else_if = {
+		limit = { check_variable = { var = malta_order value = constant:malta_order.naval compare = equals } }
+		if = {
+			limit = { check_variable = { var = malta_seated_now value = 1 compare = equals } NOT = { has_idea = malta_seat_naval } }
+			add_ideas = malta_seat_naval
+		}
+		else_if = {
+			limit = { check_variable = { var = malta_seated_now value = 0 compare = equals } has_idea = malta_seat_naval }
+			remove_ideas = malta_seat_naval
+		}
+	}
+	else_if = {
+		limit = { check_variable = { var = malta_order value = constant:malta_order.teutonic compare = equals } }
+		if = {
+			limit = { check_variable = { var = malta_seated_now value = 1 compare = equals } NOT = { has_idea = malta_seat_teutonic } }
+			add_ideas = malta_seat_teutonic
+		}
+		else_if = {
+			limit = { check_variable = { var = malta_seated_now value = 0 compare = equals } has_idea = malta_seat_teutonic }
+			remove_ideas = malta_seat_teutonic
+		}
+	}
+	else_if = {
+		limit = { check_variable = { var = malta_order value = constant:malta_order.lazarus compare = equals } }
+		if = {
+			limit = { check_variable = { var = malta_seated_now value = 1 compare = equals } NOT = { has_idea = malta_seat_lazarus } }
+			add_ideas = malta_seat_lazarus
+		}
+		else_if = {
+			limit = { check_variable = { var = malta_seated_now value = 0 compare = equals } has_idea = malta_seat_lazarus }
+			remove_ideas = malta_seat_lazarus
+		}
+	}
+	else_if = {
+		limit = { check_variable = { var = malta_order value = constant:malta_order.siege compare = equals } }
+		if = {
+			limit = { check_variable = { var = malta_seated_now value = 1 compare = equals } NOT = { has_idea = malta_seat_siege } }
+			add_ideas = malta_seat_siege
+		}
+		else_if = {
+			limit = { check_variable = { var = malta_seated_now value = 0 compare = equals } has_idea = malta_seat_siege }
+			remove_ideas = malta_seat_siege
+		}
+	}
+}
+
+# COUNTRY (MLT). Applies the seat ideas of all six orders.
+malta_sync_all_seats = {
+	set_temp_variable = { malta_order = constant:malta_order.hospitallers }
+	malta_sync_seat_idea = yes
+	set_temp_variable = { malta_order = constant:malta_order.templars }
+	malta_sync_seat_idea = yes
+	set_temp_variable = { malta_order = constant:malta_order.naval }
+	malta_sync_seat_idea = yes
+	set_temp_variable = { malta_order = constant:malta_order.teutonic }
+	malta_sync_seat_idea = yes
+	set_temp_variable = { malta_order = constant:malta_order.lazarus }
+	malta_sync_seat_idea = yes
+	set_temp_variable = { malta_order = constant:malta_order.siege }
+	malta_sync_seat_idea = yes
+}
+
+# COUNTRY (MLT). Recounts the filled seats into malta_seated_count.
+malta_count_seats = {
+	set_temp_variable = { malta_seat_tally = 0 }
+	for_loop_effect = {
+		start = constant:malta_order.hospitallers
+		end = constant:malta_council.order_count
+		compare = less_than_or_equals
+		value = malta_seat_scan
+		if = {
+			limit = { check_variable = { var = malta_order_seated^malta_seat_scan value = 1 compare = equals } }
+			add_to_temp_variable = { malta_seat_tally = 1 }
+		}
+	}
+	set_variable = { malta_seated_count = malta_seat_tally }
+}
+
+# ---------------------------------------------------------------------------
+# Demands
+# ---------------------------------------------------------------------------
+
+# COUNTRY (MLT). Draws one seated order and one request, opens the demand and
+# shows it. The order is never the one that made the previous demand unless it
+# is the only seated order. Weights favour influence and grievance.
+malta_queue_order_demand = {
+	set_temp_variable = { malta_pick = 0 }
+	random_list = {
+		1 = {
+			modifier = { factor = 0 check_variable = { var = malta_order_seated^1 value = 1 compare = less_than } }
+			modifier = { factor = 0 check_variable = { var = malta_last_demand_order value = 1 compare = equals } check_variable = { var = malta_seated_count value = 1 compare = greater_than } }
+			modifier = { add = 1 check_variable = { var = malta_order_influence^1 value = constant:malta_influence.high compare = equals } }
+			modifier = { add = 1 check_variable = { var = malta_order_grievance^1 value = 2 compare = greater_than_or_equals } }
+			set_temp_variable = { malta_pick = 1 }
+		}
+		1 = {
+			modifier = { factor = 0 check_variable = { var = malta_order_seated^2 value = 1 compare = less_than } }
+			modifier = { factor = 0 check_variable = { var = malta_last_demand_order value = 2 compare = equals } check_variable = { var = malta_seated_count value = 1 compare = greater_than } }
+			modifier = { add = 1 check_variable = { var = malta_order_influence^2 value = constant:malta_influence.high compare = equals } }
+			modifier = { add = 1 check_variable = { var = malta_order_grievance^2 value = 2 compare = greater_than_or_equals } }
+			set_temp_variable = { malta_pick = 2 }
+		}
+		1 = {
+			modifier = { factor = 0 check_variable = { var = malta_order_seated^3 value = 1 compare = less_than } }
+			modifier = { factor = 0 check_variable = { var = malta_last_demand_order value = 3 compare = equals } check_variable = { var = malta_seated_count value = 1 compare = greater_than } }
+			modifier = { add = 1 check_variable = { var = malta_order_influence^3 value = constant:malta_influence.high compare = equals } }
+			modifier = { add = 1 check_variable = { var = malta_order_grievance^3 value = 2 compare = greater_than_or_equals } }
+			set_temp_variable = { malta_pick = 3 }
+		}
+		1 = {
+			modifier = { factor = 0 check_variable = { var = malta_order_seated^4 value = 1 compare = less_than } }
+			modifier = { factor = 0 check_variable = { var = malta_last_demand_order value = 4 compare = equals } check_variable = { var = malta_seated_count value = 1 compare = greater_than } }
+			modifier = { add = 1 check_variable = { var = malta_order_influence^4 value = constant:malta_influence.high compare = equals } }
+			modifier = { add = 1 check_variable = { var = malta_order_grievance^4 value = 2 compare = greater_than_or_equals } }
+			set_temp_variable = { malta_pick = 4 }
+		}
+		1 = {
+			modifier = { factor = 0 check_variable = { var = malta_order_seated^5 value = 1 compare = less_than } }
+			modifier = { factor = 0 check_variable = { var = malta_last_demand_order value = 5 compare = equals } check_variable = { var = malta_seated_count value = 1 compare = greater_than } }
+			modifier = { add = 1 check_variable = { var = malta_order_influence^5 value = constant:malta_influence.high compare = equals } }
+			modifier = { add = 1 check_variable = { var = malta_order_grievance^5 value = 2 compare = greater_than_or_equals } }
+			set_temp_variable = { malta_pick = 5 }
+		}
+		1 = {
+			modifier = { factor = 0 check_variable = { var = malta_order_seated^6 value = 1 compare = less_than } }
+			modifier = { factor = 0 check_variable = { var = malta_last_demand_order value = 6 compare = equals } check_variable = { var = malta_seated_count value = 1 compare = greater_than } }
+			modifier = { add = 1 check_variable = { var = malta_order_influence^6 value = constant:malta_influence.high compare = equals } }
+			modifier = { add = 1 check_variable = { var = malta_order_grievance^6 value = 2 compare = greater_than_or_equals } }
+			set_temp_variable = { malta_pick = 6 }
+		}
+	}
+	if = {
+		limit = { check_variable = { var = malta_pick value = 0 compare = greater_than } }
+		set_variable = { malta_demand_order = malta_pick }
+		set_variable = { malta_last_demand_order = malta_pick }
+		malta_draw_demand_kind = yes
+		set_country_flag = malta_demand_open
+		clr_country_flag = malta_demand_compromised
+		set_variable = { malta_demand_deadline = global.num_days }
+		add_to_variable = { malta_demand_deadline = constant:malta_demand.deadline_days }
+		malta_publish_costs = yes
+		malta_publish_header = yes
+		country_event = { id = chaosx.nr38.8 }
+	}
+	malta_schedule_next_demand = yes
+}
+
+# COUNTRY (MLT). Input: variable malta_demand_order. Picks the request. The
+# Templars lean to money and commands, the Hospitallers and the Order of Saint
+# Lazarus to headquarters, the Naval Orders to commands, the Teutonic Chapter
+# to levies and the Siege Brotherhoods to headquarters. Every order can make
+# every request.
+malta_draw_demand_kind = {
+	set_temp_variable = { malta_kind_pick = 0 }
+	random_list = {
+		2 = {
+			modifier = { add = 2 check_variable = { var = malta_demand_order value = constant:malta_order.templars compare = equals } }
+			set_temp_variable = { malta_kind_pick = 1 }
+		}
+		2 = {
+			modifier = { add = 2 check_variable = { var = malta_demand_order value = constant:malta_order.naval compare = equals } }
+			modifier = { add = 1 check_variable = { var = malta_demand_order value = constant:malta_order.templars compare = equals } }
+			set_temp_variable = { malta_kind_pick = 2 }
+		}
+		2 = {
+			modifier = { add = 2 check_variable = { var = malta_demand_order value = constant:malta_order.teutonic compare = equals } }
+			set_temp_variable = { malta_kind_pick = 3 }
+		}
+		2 = {
+			modifier = { add = 2 check_variable = { var = malta_demand_order value = constant:malta_order.hospitallers compare = equals } }
+			modifier = { add = 2 check_variable = { var = malta_demand_order value = constant:malta_order.lazarus compare = equals } }
+			modifier = { add = 2 check_variable = { var = malta_demand_order value = constant:malta_order.siege compare = equals } }
+			set_temp_variable = { malta_kind_pick = 4 }
+		}
+	}
+	set_variable = { malta_demand_kind = malta_kind_pick }
+	if = {
+		limit = { check_variable = { var = malta_demand_kind value = constant:malta_demand_kind.headquarters compare = equals } }
+		malta_pick_headquarters_state = yes
+	}
+}
+
+# COUNTRY (MLT). Names the state the headquarters request is about: an owned
+# expedition state, the Holy Land first. Saved as a global event target for the
+# popup and the decision text.
+malta_pick_headquarters_state = {
+	if = {
+		limit = { owns_state = 454 }
+		454 = { save_global_event_target_as = malta_demand_state }
+	}
+	else_if = {
+		limit = { any_owned_state = { malta_state_is_expedition_state = yes } }
+		random_owned_state = {
+			limit = { malta_state_is_expedition_state = yes }
+			save_global_event_target_as = malta_demand_state
+		}
+	}
+	else = {
+		116 = { save_global_event_target_as = malta_demand_state }
+	}
+}
+
+# COUNTRY (MLT). Sets the day of the next demand from the cadence table:
+# longer while United, shorter below the Strained band, never under the floor.
+malta_schedule_next_demand = {
+	set_temp_variable = { malta_interval = mtth:malta_demand_interval }
+	random_list = {
+		1 = { add_to_temp_variable = { malta_interval = constant:malta_demand.jitter_days } }
+		1 = { }
+		1 = { subtract_from_temp_variable = { malta_interval = constant:malta_demand.jitter_days } }
+	}
+	clamp_temp_variable = { var = malta_interval min = constant:malta_demand.minimum_days }
+	set_variable = { malta_next_demand_day = global.num_days }
+	add_to_variable = { malta_next_demand_day = malta_interval }
+}
+
+# COUNTRY (MLT). Clears the open demand and the named-state target.
+malta_close_demand = {
+	clr_country_flag = malta_demand_open
+	clr_country_flag = malta_demand_compromised
+	set_variable = { malta_demand_kind = 0 }
+	set_variable = { malta_demand_order = 0 }
+	set_variable = { malta_demand_deadline = 0 }
+	clear_global_event_target = malta_demand_state
+	malta_publish_header = yes
+}
+
+# COUNTRY (MLT). Input: variable malta_demand_order. Applies the answer
+# effects shared by every request. Inputs: temp malta_answer (1 accepted,
+# 2 compromised, 3 refused).
+malta_apply_demand_answer = {
+	set_temp_variable = { malta_order = malta_demand_order }
+	if = {
+		limit = { check_variable = { var = malta_answer value = 1 compare = equals } }
+		set_temp_variable = { malta_change = constant:malta_cohesion_change.accept }
+		malta_change_cohesion = yes
+		malta_lower_grievance = yes
+		malta_raise_influence = yes
+		set_temp_variable = { malta_change = constant:malta_legitimacy_change.accept }
+		malta_change_legitimacy = yes
+	}
+	else_if = {
+		limit = { check_variable = { var = malta_answer value = 2 compare = equals } }
+		set_temp_variable = { malta_change = constant:malta_cohesion_change.compromise }
+		malta_change_cohesion = yes
+	}
+	else = {
+		set_temp_variable = { malta_change = constant:malta_cohesion_change.refuse }
+		malta_change_cohesion = yes
+		malta_raise_grievance = yes
+	}
+	if = {
+		limit = {
+			check_variable = { var = malta_answer value = 1 compare = equals }
+			check_variable = { var = malta_demand_kind value = constant:malta_demand_kind.headquarters compare = equals }
+			has_event_target = malta_demand_state
+		}
+		event_target:malta_demand_state = {
+			add_building_construction = { type = infrastructure level = constant:malta_building.headquarters_infrastructure instant_build = yes }
+		}
+	}
+	malta_close_demand = yes
+	malta_refresh_standing = yes
+}
+
+# ---------------------------------------------------------------------------
+# Incidents
+# ---------------------------------------------------------------------------
+
+# COUNTRY (MLT). Opens one incident when an order's grievance has reached the
+# cap or Cohesion fell into Open Rivalry. The order is the seated order with
+# the highest grievance. Only one incident is open at a time.
+malta_try_open_incident = {
+	set_temp_variable = { malta_incident_order_pick = 0 }
+	set_temp_variable = { malta_incident_best = -1 }
+	for_loop_effect = {
+		start = constant:malta_order.hospitallers
+		end = constant:malta_council.order_count
+		compare = less_than_or_equals
+		value = malta_scan
+		if = {
+			limit = {
+				check_variable = { var = malta_order_seated^malta_scan value = 1 compare = equals }
+				check_variable = { var = malta_order_grievance^malta_scan value = malta_incident_best compare = greater_than }
+			}
+			set_temp_variable = { malta_incident_best = malta_order_grievance^malta_scan }
+			set_temp_variable = { malta_incident_order_pick = malta_scan }
+		}
+	}
+	if = {
+		limit = {
+			check_variable = { var = malta_incident_order_pick value = 0 compare = greater_than }
+			OR = {
+				check_variable = { var = malta_incident_best value = constant:malta_council.grievance_cap compare = greater_than_or_equals }
+				malta_cohesion_is_open_rivalry = yes
+			}
+		}
+		set_variable = { malta_incident_order = malta_incident_order_pick }
+		set_country_flag = malta_incident_open
+		malta_publish_header = yes
+		country_event = { id = chaosx.nr38.9 }
+	}
+}
+
+# COUNTRY (MLT). Records an incident of the order in temp malta_order and
+# suspends the seat after the third within the window.
+malta_record_incident = {
+	if = {
+		limit = {
+			check_variable = { var = malta_order_incident_day^malta_order value = 0 compare = greater_than }
+			check_variable = { var = malta_order_incident_day^malta_order value = global.num_days compare = less_than }
+		}
+		set_temp_variable = { malta_window_age = global.num_days }
+		subtract_from_temp_variable = { malta_window_age = malta_order_incident_day^malta_order }
+		if = {
+			limit = { check_variable = { var = malta_window_age value = constant:malta_incident.window_days compare = greater_than } }
+			set_variable = { malta_order_incidents^malta_order = 0 }
+			set_variable = { malta_order_incident_day^malta_order = global.num_days }
+		}
+	}
+	else = {
+		set_variable = { malta_order_incident_day^malta_order = global.num_days }
+	}
+	add_to_variable = { malta_order_incidents^malta_order = 1 }
+	if = {
+		limit = { check_variable = { var = malta_order_incidents^malta_order value = constant:malta_incident.suspension_count compare = greater_than_or_equals } }
+		set_variable = { malta_order_seated^malta_order = 0 }
+		set_variable = { malta_order_returns^malta_order = global.num_days }
+		add_to_variable = { malta_order_returns^malta_order = constant:malta_incident.suspension_days }
+		set_variable = { malta_order_incidents^malta_order = 0 }
+		malta_count_seats = yes
+		malta_sync_seat_idea = yes
+	}
+}
+
+# COUNTRY (MLT). Returns suspended seats whose time has passed.
+malta_return_suspended_seats = {
+	for_loop_effect = {
+		start = constant:malta_order.hospitallers
+		end = constant:malta_council.order_count
+		compare = less_than_or_equals
+		value = malta_scan
+		if = {
+			limit = {
+				check_variable = { var = malta_order_seated^malta_scan value = 0 compare = equals }
+				check_variable = { var = malta_order_returns^malta_scan value = 0 compare = greater_than }
+				check_variable = { var = malta_order_returns^malta_scan value = global.num_days compare = less_than_or_equals }
+			}
+			set_variable = { malta_order_seated^malta_scan = 1 }
+			set_variable = { malta_order_returns^malta_scan = 0 }
+			set_variable = { malta_order_grievance^malta_scan = 1 }
+			set_temp_variable = { malta_order = malta_scan }
+			malta_sync_seat_idea = yes
+		}
+	}
+	malta_count_seats = yes
+}
+
+# ---------------------------------------------------------------------------
+# Collapse watch and the Eleventh Crusade entry
+# ---------------------------------------------------------------------------
+
+# COUNTRY (MLT). Advances or resets the collapse counter. The recovery opens
+# only after sustained loss, never for a one-day occupation change.
+malta_watch_expedition = {
+	if = {
+		limit = {
+			OR = {
+				malta_holy_land_lost = yes
+				check_variable = { var = malta_expedition_count value = constant:malta_eleventh.minimum_footholds compare = less_than }
+			}
+		}
+		add_to_variable = { malta_collapse_days = constant:malta_pulse.days }
+	}
+	else = {
+		set_variable = { malta_collapse_days = 0 }
+	}
+	if = {
+		limit = {
+			malta_expedition_has_collapsed = yes
+			NOT = { malta_eleventh_is_active = yes }
+			malta_anchor_malta_held = yes
+		}
+		malta_open_eleventh_crusade = yes
+	}
+}
+
+# COUNTRY (MLT). Opens the recovery: phase 1, no pending demand or incident.
+malta_open_eleventh_crusade = {
+	set_country_flag = malta_eleventh_active
+	set_variable = { malta_eleventh_phase = constant:malta_eleventh.phase_survivors }
+	set_variable = { malta_eleventh_phase_day = global.num_days }
+	set_country_flag = malta_eleventh_seen
+	malta_close_demand = yes
+	clr_country_flag = malta_incident_open
+	clr_country_flag = malta_settlement_complete
+	malta_publish_costs = yes
+	country_event = { id = chaosx.nr38.14 }
+}
+
+# COUNTRY (MLT). Closes the recovery after a restored or settled campaign.
+malta_close_eleventh_crusade = {
+	clr_country_flag = malta_eleventh_active
+	clr_country_flag = malta_eleventh_landing_chosen
+	clr_country_flag = malta_eleventh_launched
+	set_variable = { malta_eleventh_phase = 0 }
+	set_variable = { malta_collapse_days = 0 }
+	malta_publish_costs = yes
+}
+
+# ---------------------------------------------------------------------------
+# Counters and the weekly pulse
+# ---------------------------------------------------------------------------
+
+# COUNTRY (MLT). Advances the hold counters by one pulse.
+malta_advance_counters = {
+	if = {
+		limit = { malta_holds_jerusalem_now = yes }
+		add_to_variable = { malta_jerusalem_days = constant:malta_pulse.days }
+	}
+	else = {
+		set_variable = { malta_jerusalem_days = 0 }
+	}
+	if = {
+		limit = {
+			malta_anchor_malta_held = yes
+			malta_anchor_jerusalem_held = yes
+			malta_anchor_sea_road_held = yes
+			malta_anchor_port_held = yes
+		}
+		add_to_variable = { malta_all_anchors_days = constant:malta_pulse.days }
+	}
+	else = {
+		set_variable = { malta_all_anchors_days = 0 }
+	}
+	if = {
+		limit = { malta_anchor_sea_road_held = yes }
+		add_to_variable = { malta_sea_road_days = constant:malta_pulse.days }
+	}
+	else = {
+		set_variable = { malta_sea_road_days = 0 }
+	}
+	if = {
+		limit = { malta_holds_holy_land = yes }
+		add_to_variable = { malta_corridor_days = constant:malta_pulse.days }
+	}
+	else = {
+		set_variable = { malta_corridor_days = 0 }
+	}
+	if = {
+		limit = {
+			malta_anchor_malta_held = yes
+			divisions_in_state = { state = 116 size > 0 }
+		}
+		add_to_variable = { malta_harbor_days = constant:malta_pulse.days }
+	}
+	else = {
+		set_variable = { malta_harbor_days = 0 }
+	}
+	if = {
+		limit = { has_active_mission = malta_evacuation_mission }
+		add_to_variable = { malta_evac_days = constant:malta_pulse.days }
+	}
+	if = {
+		limit = { malta_eleventh_is_active = yes }
+		add_to_variable = { malta_rebuild_days = constant:malta_pulse.days }
+		if = {
+			limit = { has_country_flag = malta_eleventh_launched malta_state_held_by_landing = yes }
+			add_to_variable = { malta_landing_hold_days = constant:malta_pulse.days }
+		}
+		else = {
+			set_variable = { malta_landing_hold_days = 0 }
+		}
+	}
+	set_variable = { malta_age_days = global.num_days }
+	subtract_from_variable = { malta_age_days = malta_opening_day }
+	malta_count_expedition_states = yes
+}
+
+# COUNTRY (MLT). One weekly pulse.
+malta_weekly_pulse = {
+	malta_advance_counters = yes
+	malta_refresh_standing = yes
+	malta_return_suspended_seats = yes
+	malta_watch_expedition = yes
+	malta_review_spirits = yes
+	if = {
+		limit = {
+			has_country_flag = malta_demand_open
+			check_variable = { var = global.num_days value = malta_demand_deadline compare = greater_than_or_equals }
+		}
+		set_temp_variable = { malta_answer = 3 }
+		malta_apply_demand_answer = yes
+		country_event = { id = chaosx.nr38.10 }
+	}
+	if = {
+		limit = {
+			malta_council_is_quiet = yes
+			NOT = { malta_eleventh_is_active = yes }
+			check_variable = { var = malta_seated_count value = 1 compare = greater_than_or_equals }
+			check_variable = { var = malta_standing value = constant:malta_standing.disputed compare = greater_than_or_equals }
+			check_variable = { var = global.num_days value = malta_next_demand_day compare = greater_than_or_equals }
+		}
+		malta_queue_order_demand = yes
+	}
+	if = {
+		limit = {
+			malta_council_is_quiet = yes
+			NOT = { malta_eleventh_is_active = yes }
+		}
+		malta_try_open_incident = yes
+	}
+	malta_review_regional_crusade = yes
+	malta_review_achievements = yes
+	malta_update_banner_cap = yes
+	malta_collect_campaign_targets = yes
+	malta_pulse_extra = yes
+	malta_publish_costs = yes
+	malta_publish_header = yes
+}
+
+# COUNTRY (MLT). Hook for the systems added by later phases (evolutions,
+# principalities, settlement watchers). Empty until they exist.
+malta_pulse_extra = {
+}
+
+# COUNTRY (MLT). Publishes the values the category header reads.
+malta_publish_header = {
+	set_variable = { global.malta_pub_standing = malta_standing }
+	set_variable = { global.malta_pub_cohesion = malta_cohesion }
+	set_variable = { global.malta_pub_legitimacy = malta_legitimacy }
+	set_variable = { global.malta_pub_anchors = malta_anchor_count }
+	set_variable = { global.malta_pub_demand_order = malta_demand_order }
+	set_variable = { global.malta_pub_demand_kind = malta_demand_kind }
+	set_variable = { global.malta_pub_phase = malta_eleventh_phase }
+	set_variable = { global.malta_pub_incident_order = malta_incident_order }
+	set_temp_variable = { malta_recognition_left = constant:malta_standing.recognized_days }
+	subtract_from_temp_variable = { malta_recognition_left = malta_all_anchors_days }
+	clamp_temp_variable = { var = malta_recognition_left min = 0 }
+	set_variable = { global.malta_pub_recognition_days = malta_recognition_left }
+	set_temp_variable = { malta_deadline_left = malta_demand_deadline }
+	subtract_from_temp_variable = { malta_deadline_left = global.num_days }
+	clamp_temp_variable = { var = malta_deadline_left min = 0 }
+	set_variable = { global.malta_pub_deadline_days = malta_deadline_left }
+}
+
+# ---------------------------------------------------------------------------
+# Boundary hook
+# ---------------------------------------------------------------------------
+
+# STATE scope (on_state_control_changed: FROM.FROM). Refreshes the standing of
+# the actor when an anchor state changes hands. No world scan and no
+# iteration: one flag test.
+malta_on_anchor_control_changed = {
+	if = {
+		limit = {
+			malta_state_is_registry = yes
+			has_global_flag = malta_event_fired
+		}
+		MLT = {
+			if = {
+				limit = { malta_is_actor = yes }
+				malta_refresh_standing = yes
+				malta_advance_jerusalem_hold_on_change = yes
+			}
+		}
+	}
+}
+
+# COUNTRY (MLT). A state change resets the Jerusalem counter when the actor no
+# longer holds the city.
+malta_advance_jerusalem_hold_on_change = {
+	if = {
+		limit = { NOT = { malta_holds_jerusalem_now = yes } }
+		set_variable = { malta_jerusalem_days = 0 }
+		set_variable = { malta_all_anchors_days = 0 }
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Cleanup
+# ---------------------------------------------------------------------------
+
+# COUNTRY (MLT). The actor has been annexed, capitulated for good or defeated
+# without a successor. Removes pending state.
+malta_cleanup_actor = {
+	malta_close_demand = yes
+	clr_country_flag = malta_incident_open
+	clr_country_flag = malta_pulse_scheduled
+	clr_country_flag = malta_eleventh_active
+}

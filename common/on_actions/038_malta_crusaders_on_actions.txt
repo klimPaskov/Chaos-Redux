@@ -1,0 +1,29 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 038 MALTA CRUSADERS ON ACTIONS
+# ============================================================================
+# One narrow transaction-boundary hook. Native ROOT is the new controller of a
+# changed state, FROM the old controller and FROM.FROM the state. The check is
+# a global flag and a registry test. When the actor gains a registry state it
+# records the former controller on the state, so a settlement by treaty knows
+# whom to return it to, and in every case the standing of the actor is
+# refreshed. No world scan, no recurring hook and no iteration.
+# ============================================================================
+
+on_actions = {
+	on_state_control_changed = {
+		effect = {
+			if = {
+				limit = {
+					has_global_flag = malta_event_fired
+					FROM.FROM = { malta_state_is_registry = yes }
+				}
+				FROM = { save_event_target_as = malta_old_controller }
+				if = {
+					limit = { tag = MLT }
+					FROM.FROM = { set_variable = { malta_former_owner = event_target:malta_old_controller } }
+				}
+				FROM.FROM = { malta_on_anchor_control_changed = yes }
+			}
+		}
+	}
+}

@@ -1,0 +1,696 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 038 MALTA CRUSADERS CONSTANTS
+# ============================================================================
+# Every tuning value of the Malta Crusaders campaign. Groups follow the
+# subsystems: identity, opening, opening grants and force, the three council
+# values, orders, demands and incidents, logistics, campaign, settlement,
+# missions, the Eleventh Crusade, reactions, AI thresholds and action costs.
+# Costs are base values: malta_publish_costs scales them with the footprint.
+# Group schemas use fixed_point so whole numbers and fractions share a type.
+# Ranges and bands come from docs/specs/038_malta_crusaders_specs/28_balance_tuning_tables.md.
+# ============================================================================
+
+
+# Event identity.
+malta_event = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	id = 38
+	evolution_type = 38
+}
+
+# Evolution stages. Stage n needs the Chaos tier n (200, 400, 600).
+malta_evolution = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	stage_1 = 1
+	stage_2 = 2
+	stage_3 = 3
+}
+
+# Shared helpers for sign changes.
+malta_math = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	negative_one = -1
+}
+
+# Days between pulses of the actor.
+malta_pulse = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	days = 7
+}
+
+# Opening transaction limits. owner_cap is the largest number of displaced top owners.
+malta_opening = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	owner_cap = 4
+	minimum_states = 2
+	footholds_baseline = 1
+	footholds_stage_2_extra = 1
+	result_success = 1
+	transaction_offset = 1000
+}
+
+# Opening Cohesion and Legitimacy before and after the stage adjustments (bands: baseline 35-55 / 35-50, stage 1 30-55 / 40-55, stage 2 35-60 / 45-65, stage 3 40-65 / 60-75).
+malta_opening_values = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	cohesion = 45
+	legitimacy = 42
+	stage_1_cohesion = -3
+	stage_1_legitimacy = 5
+	stage_2_cohesion = 6
+	stage_2_legitimacy = 6
+	stage_3_cohesion = 6
+	stage_3_legitimacy = 12
+}
+
+# Range of the two numeric public values.
+malta_value = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	min = 0
+	max = 100
+}
+
+# Order Cohesion bands: below strained is Open Rivalry, working allows Joint Command, united unlocks confederation tools.
+malta_cohesion = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	strained = 30
+	working = 50
+	united = 75
+}
+
+# Sacred Legitimacy bands: contested 20, recognized 40, sacred mandate 65, universal claim 80.
+malta_legitimacy = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	contested = 20
+	recognized = 40
+	sacred_mandate = 65
+	universal_claim = 80
+}
+
+# Command Standing steps and the anchor counts and hold times behind them.
+malta_standing = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	fractured = 1
+	disputed = 2
+	functional = 3
+	recognized = 4
+	supreme = 5
+	two_anchors = 2
+	three_anchors = 3
+	four_anchors = 4
+	jerusalem_days = 30
+	recognized_days = 120
+}
+
+# Expedition footprint thresholds.
+malta_expedition = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	one = 1
+}
+
+# Council structure.
+malta_council = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	array_size = 7
+	order_count = 6
+	two_seats = 2
+	grievance_cap = 3
+}
+
+# Order identities (array index).
+malta_order = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	hospitallers = 1
+	templars = 2
+	naval = 3
+	teutonic = 4
+	lazarus = 5
+	siege = 6
+}
+
+# Order influence steps.
+malta_influence = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	low = 0
+	normal = 1
+	high = 2
+}
+
+# Kinds of order demand.
+malta_demand_kind = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	treasury = 1
+	command = 2
+	levy = 3
+	headquarters = 4
+}
+
+# Demand cadence. The interval is an MTTH: stable councils ask about every 195 days, united councils every 270, a council in open rivalry about every 88, never under minimum_days. The first demand waits for the opening war to be learned.
+malta_demand = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	base_days = 195
+	united_factor = 1.4
+	rivalry_factor = 0.45
+	minimum_days = 60
+	jitter_days = 15
+	first_delay_days = 90
+	deadline_days = 45
+}
+
+# Cohesion movement for the three answers to a demand.
+malta_cohesion_change = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	accept = 8
+	compromise = 4
+	refuse = -6
+}
+
+# Legitimacy movement of an honoured demand.
+malta_legitimacy_change = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	accept = 2
+}
+
+# Incident handling. Three incidents of one order within the window suspend its seat.
+malta_incident = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	window_days = 365
+	suspension_count = 3
+	suspension_days = 180
+}
+
+# Incident answers.
+malta_incident_change = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	concede_cohesion = 8
+	concede_political_power = -35
+	arbitrate_cohesion = 4
+	arbitrate_command_power = -20
+	suppress_cohesion = -10
+	suppress_days = 90
+}
+
+# Convene Joint Command.
+malta_joint = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	cooldown_days = 180
+	success_cohesion = 6
+	failure_cohesion = -4
+	failure_days = 90
+	bonus_days = 120
+}
+
+# Seize an Order Treasury.
+malta_seize = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	political_power = 100
+	infantry_equipment = 300
+	support_equipment = 80
+	cohesion = -15
+	legitimacy = -4
+}
+
+# Arbitration of Jerusalem.
+malta_arbitration = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	jerusalem_days = 120
+	central_cohesion = -6
+	central_legitimacy = 8
+	custody_cohesion = 6
+	custody_legitimacy = 5
+	templar_legitimacy = 3
+	compact_cohesion = -2
+	compact_legitimacy = 12
+}
+
+# Logistics actions.
+malta_logistics = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	escort_cooldown_days = 60
+	rail_days = 150
+	port_days = 180
+	air_bridge_days = 60
+	air_bridge_cooldown_days = 120
+	protected_days = 180
+	convoy_loss = 15
+	failure_days = 60
+	rail_infrastructure = 1
+	rail_legitimacy = 2
+	port_slots = 1
+	port_infrastructure = 1
+	port_dockyards = 1
+	sea_road_cohesion = 3
+}
+
+# Mission lengths (days) and outcomes. The hold times are shorter than the limits so a mission can be won in time.
+malta_mission = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	anchors_days = 180
+	anchors_cohesion = 5
+	anchors_legitimacy = 6
+	anchors_failure_cohesion = -5
+	anchors_failure_legitimacy = -3
+	sea_road_days = 180
+	sea_road_hold_days = 150
+	corridor_days = 180
+	corridor_hold_days = 120
+	corridor_legitimacy = 4
+	corridor_command_power = 40
+	corridor_failure_cohesion = -4
+	corridor_failure_compliance = -10
+	harbor_days = 150
+	harbor_hold_days = 120
+	harbor_cohesion = 3
+	harbor_command_power = 30
+	harbor_failure_days = 60
+	evacuation_days = 100
+	evacuation_min_days = 60
+	rebuild_days = 300
+	foothold_days = 180
+	foothold_hold_days = 120
+}
+
+# Ultimatum and regional crusade.
+malta_campaign = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	ultimatum_cooldown_days = 45
+	tribute = 40
+	tribute_negative = -40
+	accepted_legitimacy = 4
+	refused_legitimacy = -1
+}
+
+# Settlement of held states.
+malta_settlement = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	direct_cohesion = -2
+	direct_compliance = 15
+	direct_slots = 1
+	order_cohesion = 3
+	order_compliance = 10
+	order_infrastructure = 1
+	return_legitimacy = 4
+	return_malus_days = 90
+	return_cooldown_days = 60
+}
+
+# The Eleventh Crusade. collapse_days of sustained loss open it, failure_cap failed landings close the attack.
+malta_eleventh = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	collapse_days = 60
+	minimum_footholds = 1
+	phase_survivors = 1
+	phase_rebuild = 2
+	failure_cap = 3
+	force_divisions = 6
+	force_convoys = 60
+	force_equipment = 1200
+	restore_hold_days = 60
+}
+
+# Eleventh Crusade actions.
+malta_eleventh_change = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	evacuation_cohesion = 4
+	evacuation_experience = 10
+	evacuation_loss_legitimacy = -6
+	malta_slots = 1
+	malta_infrastructure = 1
+	garrison_days = 240
+	volunteer_manpower = 8000
+	volunteer_experience = 15
+	volunteer_legitimacy = 3
+	convoys = 40
+	rebuild_fuel = 1000
+	rebuild_failure_legitimacy = -4
+	landing_force = 2
+	landing_force_cap = 5
+	foothold_legitimacy = 8
+	second_failure_legitimacy = -8
+	restore_cohesion = 8
+	restore_legitimacy = 10
+	fortress_cohesion = 55
+	fortress_stability = 0.05
+}
+
+# Spirit replacement thresholds.
+malta_spirits = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	standardized_factories = 4
+}
+
+# Template identities used by the spawn helpers.
+malta_template = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	fortress = 1
+	knight = 2
+	mounted = 3
+	ranged = 4
+	siege = 5
+	guard = 6
+	engineers = 7
+}
+
+# Opening force by template (stand-in for the custom unit families) and banner limits. Counts grow by the package level.
+malta_force = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	fortress = 1
+	knights = 3
+	knights_per_level = 1
+	knights_on_malta = 1
+	mounted = 2
+	mounted_per_level = 1
+	ranged = 2
+	ranged_per_level = 1
+	siege = 1
+	siege_stage_1_bonus = 1
+	guard_per_state = 1
+	guards_per_level = 2
+	experience_factor = 0.3
+	equipment_factor = 1
+	manpower_factor = 1
+	cap_base = 8
+	cap_per_level = 3
+	cap_per_state = 1
+	training_days = 75
+	siege_training_days = 105
+	engineer_training_days = 60
+	siege_factories = 3
+	engineers_after = 2
+}
+
+# Opening grants. Each value is base plus per_level times the package level. The extra-state terms add for every expedition state beyond the expected number, up to the cap.
+malta_grant = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	political_power = 150
+	political_power_per_level = 50
+	command_power = 50
+	command_power_per_level = 25
+	army_experience = 25
+	army_experience_per_level = 15
+	infantry_equipment = 2400
+	infantry_equipment_per_level = 1000
+	support_equipment = 300
+	support_equipment_per_level = 150
+	convoys = 60
+	convoys_per_level = 30
+	convoys_per_extra_state = 8
+	trains = 20
+	trains_per_level = 10
+	fuel = 3000
+	fuel_per_level = 1500
+	fuel_per_extra_state = 500
+	expected_expedition_states = 4
+	extra_states_cap = 4
+	stability = 0.05
+	war_support = 0.1
+}
+
+# Opening construction. Everything is added on top of what the state has.
+malta_building = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	malta_slots = 2
+	malta_arms_factories = 1
+	malta_dockyards = 1
+	holy_land_slots = 2
+	holy_land_arms_factories = 1
+	holy_land_infrastructure = 1
+	corridor_infrastructure = 1
+	bridge_slots = 1
+	bridge_arms_factories = 1
+	headquarters_infrastructure = 1
+}
+
+# The first command choice.
+malta_posture = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	central_cohesion = -4
+	central_command_power = 25
+	balanced_cohesion = 4
+	civilian_legitimacy = 4
+	civilian_stability = 0.05
+}
+
+# Reaction events of other governments.
+malta_reaction = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	counterattack_war_support = 0.05
+	alarm_days = 120
+	appeal_political_power = 40
+	hold_stability = 0.03
+	hold_command_power = 25
+	volunteers_cost = 40
+	volunteers_cost_negative = -40
+	volunteers_legitimacy = 3
+	volunteers_manpower = 3000
+	words_legitimacy = 1
+	refusal_legitimacy = -2
+	conference_war_support = 0.03
+	conference_stability = 0.02
+	resistance_cost = 30
+	resistance_cost_negative = -30
+	resistance_compliance = -5
+	ports_days = 120
+}
+
+# Achievement proofs.
+malta_achievement = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	stands_alone_days = 540
+}
+
+# AI thresholds.
+malta_ai = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	banner_manpower_reserve = 15000
+	crusade_divisions = 10
+	crusade_divisions_high = 16
+	defender_strong_divisions = 15
+	defender_weak_divisions = 8
+	fortress_failures = 2
+	incident_political_power = 60
+	low_convoys = 40
+	seize_cohesion_floor = 60
+	short_hold_days = 60
+	target_strong_divisions = 25
+	weak_launch_failures = 2
+}
+
+# Footprint scale of the action costs: 1 + per_state times the expedition states, at most cap. The Eleventh Crusade actions also add per_failure for every failed crusade.
+malta_cost_scale = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	per_state = 0.08
+	cap = 2
+	per_failure = 0.25
+}
+
+# Base cost of every action by resource. Resources: political_power, command_power, xp (army experience),
+# manpower, equipment (infantry equipment), support (support equipment), convoys, trains and fuel.
+malta_cost = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	demand_treasury_political_power = 60
+	demand_command_command_power = 25
+	demand_levy_manpower = 3000
+	demand_headquarters_political_power = 40
+	demand_headquarters_xp = 10
+	joint_command_xp = 12
+	joint_command_command_power = 30
+	arbitrate_political_power = 80
+	seize_command_power = 40
+	escort_fuel = 800
+	escort_convoys = 20
+	escort_command_power = 20
+	rail_trains = 8
+	rail_support = 60
+	rail_political_power = 30
+	port_support = 80
+	port_political_power = 40
+	air_bridge_fuel = 600
+	air_bridge_command_power = 20
+	raise_banner_manpower = 6000
+	raise_banner_equipment = 500
+	raise_banner_xp = 10
+	raise_siege_manpower = 5000
+	raise_siege_equipment = 300
+	raise_siege_support = 120
+	raise_siege_xp = 15
+	engineers_support = 100
+	engineers_xp = 10
+	ultimatum_political_power = 50
+	crusade_command_power = 60
+	crusade_equipment = 400
+	settle_political_power = 60
+	settle_support = 40
+	evacuate_convoys = 15
+	evacuate_fuel = 500
+	evacuate_command_power = 30
+	fortify_malta_support = 100
+	fortify_malta_political_power = 40
+	volunteers_convoys = 25
+	volunteers_political_power = 50
+	rebuild_support = 150
+	rebuild_fuel = 800
+	rebuild_political_power = 60
+	launch_command_power = 80
+	launch_equipment = 600
+	launch_convoys = 30
+}

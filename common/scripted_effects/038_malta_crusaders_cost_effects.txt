@@ -1,0 +1,469 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 038 MALTA CRUSADERS ACTION COSTS
+# ============================================================================
+# Every Crusade Council, logistics, recruitment, campaign, settlement and
+# Eleventh Crusade action has one published cost set. malta_publish_costs turns
+# the base values of the malta_cost constants into global.malta_cost_<action>_
+# <resource> whenever the actor changes the footprint (opening, weekly pulse,
+# demand queued, recovery opened or closed). The payment checks in
+# 038_malta_crusaders_triggers.txt, the cost texts in the localisation file and
+# the malta_pay_<action> effects below all read those globals, so what the
+# player sees, what is checked and what is paid are one number.
+# Stockpile debits use the shared helpers of chaosx_dynamic_effects.txt.
+# The four demand actions also publish a half cost for the compromise answer.
+# ============================================================================
+
+# COUNTRY (MLT). Publishes every action cost as global.malta_cost_<action>_<resource>.
+# The base values live in the malta_cost constants. The footprint scale grows with the
+# number of expedition states, and the Eleventh Crusade actions also grow with each
+# failed crusade. Triggers, payment effects and cost texts all read these globals.
+malta_publish_costs = {
+	set_temp_variable = { malta_cost_scale = malta_expedition_count }
+	multiply_temp_variable = { malta_cost_scale = constant:malta_cost_scale.per_state }
+	add_to_temp_variable = { malta_cost_scale = 1 }
+	clamp_temp_variable = { var = malta_cost_scale min = 1 max = constant:malta_cost_scale.cap }
+	set_temp_variable = { malta_cost_scale_eleventh = malta_cost_scale }
+	set_temp_variable = { malta_failure_scale = malta_eleventh_failures }
+	multiply_temp_variable = { malta_failure_scale = constant:malta_cost_scale.per_failure }
+	add_to_temp_variable = { malta_cost_scale_eleventh = malta_failure_scale }
+	set_temp_variable = { malta_cost_value = constant:malta_cost.demand_treasury_political_power }
+	multiply_temp_variable = { malta_cost_value = malta_cost_scale }
+	round_temp_variable = malta_cost_value
+	set_variable = { global.malta_cost_demand_treasury_political_power = malta_cost_value }
+	divide_temp_variable = { malta_cost_value = 2 }
+	round_temp_variable = malta_cost_value
+	set_variable = { global.malta_cost_demand_treasury_political_power_half = malta_cost_value }
+	set_temp_variable = { malta_cost_value = constant:malta_cost.demand_command_command_power }
+	multiply_temp_variable = { malta_cost_value = malta_cost_scale }
+	round_temp_variable = malta_cost_value
+	set_variable = { global.malta_cost_demand_command_command_power = malta_cost_value }
+	divide_temp_variable = { malta_cost_value = 2 }
+	round_temp_variable = malta_cost_value
+	set_variable = { global.malta_cost_demand_command_command_power_half = malta_cost_value }
+	set_temp_variable = { malta_cost_value = constant:malta_cost.demand_levy_manpower }
+	multiply_temp_variable = { malta_cost_value = malta_cost_scale }
+	round_temp_variable = malta_cost_value
+	set_variable = { global.malta_cost_demand_levy_manpower = malta_cost_value }
+	divide_temp_variable = { malta_cost_value = 2 }
+	round_temp_variable = malta_cost_value
+	set_variable = { global.malta_cost_demand_levy_manpower_half = malta_cost_value }
+	set_temp_variable = { malta_cost_value = constant:malta_cost.demand_headquarters_political_power }
+	multiply_temp_variable = { malta_cost_value = malta_cost_scale }
+	round_temp_variable = malta_cost_value
+	set_variable = { global.malta_cost_demand_headquarters_political_power = malta_cost_value }
+	divide_temp_variable = { malta_cost_value = 2 }
+	round_temp_variable = malta_cost_value
+	set_variable = { global.malta_cost_demand_headquarters_political_power_half = malta_cost_value }
+	set_temp_variable = { malta_cost_value = constant:malta_cost.demand_headquarters_xp }
+	multiply_temp_variable = { malta_cost_value = malta_cost_scale }
+	round_temp_variable = malta_cost_value
+	set_variable = { global.malta_cost_demand_headquarters_xp = malta_cost_value }
+	divide_temp_variable = { malta_cost_value = 2 }
+	round_temp_variable = malta_cost_value
+	set_variable = { global.malta_cost_demand_headquarters_xp_half = malta_cost_value }
+	set_temp_variable = { malta_cost_value = constant:malta_cost.joint_command_xp }
+	multiply_temp_variable = { malta_cost_value = malta_cost_scale }
+	round_temp_variable = malta_cost_value
+	set_variable = { global.malta_cost_joint_command_xp = malta_cost_value }
+	set_temp_variable = { malta_cost_value = constant:malta_cost.joint_command_command_power }
+	multiply_temp_variable = { malta_cost_value = malta_cost_scale }
+	round_temp_variable = malta_cost_value
+	set_variable = { global.malta_cost_joint_command_command_power = malta_cost_value }
+	set_temp_variable = { malta_cost_value = constant:malta_cost.arbitrate_political_power }
+	multiply_temp_variable = { malta_cost_value = malta_cost_scale }
+	round_temp_variable = malta_cost_value
+	set_variable = { global.malta_cost_arbitrate_political_power = malta_cost_value }
+	set_temp_variable = { malta_cost_value = constant:malta_cost.seize_command_power }
+	multiply_temp_variable = { malta_cost_value = malta_cost_scale }
+	round_temp_variable = malta_cost_value
+	set_variable = { global.malta_cost_seize_command_power = malta_cost_value }
+	set_temp_variable = { malta_cost_value = constant:malta_cost.escort_fuel }
+	multiply_temp_variable = { malta_cost_value = malta_cost_scale }
+	round_temp_variable = malta_cost_value
+	set_variable = { global.malta_cost_escort_fuel = malta_cost_value }
+	set_temp_variable = { malta_cost_value = constant:malta_cost.escort_convoys }
+	multiply_temp_variable = { malta_cost_value = malta_cost_scale }
+	round_temp_variable = malta_cost_value
+	set_variable = { global.malta_cost_escort_convoys = malta_cost_value }
+	set_temp_variable = { malta_cost_value = constant:malta_cost.escort_command_power }
+	multiply_temp_variable = { malta_cost_value = malta_cost_scale }
+	round_temp_variable = malta_cost_value
+	set_variable = { global.malta_cost_escort_command_power = malta_cost_value }
+	set_temp_variable = { malta_cost_value = constant:malta_cost.rail_trains }
+	multiply_temp_variable = { malta_cost_value = malta_cost_scale }
+	round_temp_variable = malta_cost_value
+	set_variable = { global.malta_cost_rail_trains = malta_cost_value }
+	set_temp_variable = { malta_cost_value = constant:malta_cost.rail_support }
+	multiply_temp_variable = { malta_cost_value = malta_cost_scale }
+	round_temp_variable = malta_cost_value
+	set_variable = { global.malta_cost_rail_support = malta_cost_value }
+	set_temp_variable = { malta_cost_value = constant:malta_cost.rail_political_power }
+	multiply_temp_variable = { malta_cost_value = malta_cost_scale }
+	round_temp_variable = malta_cost_value
+	set_variable = { global.malta_cost_rail_political_power = malta_cost_value }
+	set_temp_variable = { malta_cost_value = constant:malta_cost.port_support }
+	multiply_temp_variable = { malta_cost_value = malta_cost_scale }
+	round_temp_variable = malta_cost_value
+	set_variable = { global.malta_cost_port_support = malta_cost_value }
+	set_temp_variable = { malta_cost_value = constant:malta_cost.port_political_power }
+	multiply_temp_variable = { malta_cost_value = malta_cost_scale }
+	round_temp_variable = malta_cost_value
+	set_variable = { global.malta_cost_port_political_power = malta_cost_value }
+	set_temp_variable = { malta_cost_value = constant:malta_cost.air_bridge_fuel }
+	multiply_temp_variable = { malta_cost_value = malta_cost_scale }
+	round_temp_variable = malta_cost_value
+	set_variable = { global.malta_cost_air_bridge_fuel = malta_cost_value }
+	set_temp_variable = { malta_cost_value = constant:malta_cost.air_bridge_command_power }
+	multiply_temp_variable = { malta_cost_value = malta_cost_scale }
+	round_temp_variable = malta_cost_value
+	set_variable = { global.malta_cost_air_bridge_command_power = malta_cost_value }
+	set_temp_variable = { malta_cost_value = constant:malta_cost.raise_banner_manpower }
+	multiply_temp_variable = { malta_cost_value = malta_cost_scale }
+	round_temp_variable = malta_cost_value
+	set_variable = { global.malta_cost_raise_banner_manpower = malta_cost_value }
+	set_temp_variable = { malta_cost_value = constant:malta_cost.raise_banner_equipment }
+	multiply_temp_variable = { malta_cost_value = malta_cost_scale }
+	round_temp_variable = malta_cost_value
+	set_variable = { global.malta_cost_raise_banner_equipment = malta_cost_value }
+	set_temp_variable = { malta_cost_value = constant:malta_cost.raise_banner_xp }
+	multiply_temp_variable = { malta_cost_value = malta_cost_scale }
+	round_temp_variable = malta_cost_value
+	set_variable = { global.malta_cost_raise_banner_xp = malta_cost_value }
+	set_temp_variable = { malta_cost_value = constant:malta_cost.raise_siege_manpower }
+	multiply_temp_variable = { malta_cost_value = malta_cost_scale }
+	round_temp_variable = malta_cost_value
+	set_variable = { global.malta_cost_raise_siege_manpower = malta_cost_value }
+	set_temp_variable = { malta_cost_value = constant:malta_cost.raise_siege_equipment }
+	multiply_temp_variable = { malta_cost_value = malta_cost_scale }
+	round_temp_variable = malta_cost_value
+	set_variable = { global.malta_cost_raise_siege_equipment = malta_cost_value }
+	set_temp_variable = { malta_cost_value = constant:malta_cost.raise_siege_support }
+	multiply_temp_variable = { malta_cost_value = malta_cost_scale }
+	round_temp_variable = malta_cost_value
+	set_variable = { global.malta_cost_raise_siege_support = malta_cost_value }
+	set_temp_variable = { malta_cost_value = constant:malta_cost.raise_siege_xp }
+	multiply_temp_variable = { malta_cost_value = malta_cost_scale }
+	round_temp_variable = malta_cost_value
+	set_variable = { global.malta_cost_raise_siege_xp = malta_cost_value }
+	set_temp_variable = { malta_cost_value = constant:malta_cost.engineers_support }
+	multiply_temp_variable = { malta_cost_value = malta_cost_scale }
+	round_temp_variable = malta_cost_value
+	set_variable = { global.malta_cost_engineers_support = malta_cost_value }
+	set_temp_variable = { malta_cost_value = constant:malta_cost.engineers_xp }
+	multiply_temp_variable = { malta_cost_value = malta_cost_scale }
+	round_temp_variable = malta_cost_value
+	set_variable = { global.malta_cost_engineers_xp = malta_cost_value }
+	set_temp_variable = { malta_cost_value = constant:malta_cost.ultimatum_political_power }
+	multiply_temp_variable = { malta_cost_value = malta_cost_scale }
+	round_temp_variable = malta_cost_value
+	set_variable = { global.malta_cost_ultimatum_political_power = malta_cost_value }
+	set_temp_variable = { malta_cost_value = constant:malta_cost.crusade_command_power }
+	multiply_temp_variable = { malta_cost_value = malta_cost_scale }
+	round_temp_variable = malta_cost_value
+	set_variable = { global.malta_cost_crusade_command_power = malta_cost_value }
+	set_temp_variable = { malta_cost_value = constant:malta_cost.crusade_equipment }
+	multiply_temp_variable = { malta_cost_value = malta_cost_scale }
+	round_temp_variable = malta_cost_value
+	set_variable = { global.malta_cost_crusade_equipment = malta_cost_value }
+	set_temp_variable = { malta_cost_value = constant:malta_cost.settle_political_power }
+	multiply_temp_variable = { malta_cost_value = malta_cost_scale }
+	round_temp_variable = malta_cost_value
+	set_variable = { global.malta_cost_settle_political_power = malta_cost_value }
+	set_temp_variable = { malta_cost_value = constant:malta_cost.settle_support }
+	multiply_temp_variable = { malta_cost_value = malta_cost_scale }
+	round_temp_variable = malta_cost_value
+	set_variable = { global.malta_cost_settle_support = malta_cost_value }
+	set_temp_variable = { malta_cost_value = constant:malta_cost.evacuate_convoys }
+	multiply_temp_variable = { malta_cost_value = malta_cost_scale_eleventh }
+	round_temp_variable = malta_cost_value
+	set_variable = { global.malta_cost_evacuate_convoys = malta_cost_value }
+	set_temp_variable = { malta_cost_value = constant:malta_cost.evacuate_fuel }
+	multiply_temp_variable = { malta_cost_value = malta_cost_scale_eleventh }
+	round_temp_variable = malta_cost_value
+	set_variable = { global.malta_cost_evacuate_fuel = malta_cost_value }
+	set_temp_variable = { malta_cost_value = constant:malta_cost.evacuate_command_power }
+	multiply_temp_variable = { malta_cost_value = malta_cost_scale_eleventh }
+	round_temp_variable = malta_cost_value
+	set_variable = { global.malta_cost_evacuate_command_power = malta_cost_value }
+	set_temp_variable = { malta_cost_value = constant:malta_cost.fortify_malta_support }
+	multiply_temp_variable = { malta_cost_value = malta_cost_scale_eleventh }
+	round_temp_variable = malta_cost_value
+	set_variable = { global.malta_cost_fortify_malta_support = malta_cost_value }
+	set_temp_variable = { malta_cost_value = constant:malta_cost.fortify_malta_political_power }
+	multiply_temp_variable = { malta_cost_value = malta_cost_scale_eleventh }
+	round_temp_variable = malta_cost_value
+	set_variable = { global.malta_cost_fortify_malta_political_power = malta_cost_value }
+	set_temp_variable = { malta_cost_value = constant:malta_cost.volunteers_convoys }
+	multiply_temp_variable = { malta_cost_value = malta_cost_scale_eleventh }
+	round_temp_variable = malta_cost_value
+	set_variable = { global.malta_cost_volunteers_convoys = malta_cost_value }
+	set_temp_variable = { malta_cost_value = constant:malta_cost.volunteers_political_power }
+	multiply_temp_variable = { malta_cost_value = malta_cost_scale_eleventh }
+	round_temp_variable = malta_cost_value
+	set_variable = { global.malta_cost_volunteers_political_power = malta_cost_value }
+	set_temp_variable = { malta_cost_value = constant:malta_cost.rebuild_support }
+	multiply_temp_variable = { malta_cost_value = malta_cost_scale_eleventh }
+	round_temp_variable = malta_cost_value
+	set_variable = { global.malta_cost_rebuild_support = malta_cost_value }
+	set_temp_variable = { malta_cost_value = constant:malta_cost.rebuild_fuel }
+	multiply_temp_variable = { malta_cost_value = malta_cost_scale_eleventh }
+	round_temp_variable = malta_cost_value
+	set_variable = { global.malta_cost_rebuild_fuel = malta_cost_value }
+	set_temp_variable = { malta_cost_value = constant:malta_cost.rebuild_political_power }
+	multiply_temp_variable = { malta_cost_value = malta_cost_scale_eleventh }
+	round_temp_variable = malta_cost_value
+	set_variable = { global.malta_cost_rebuild_political_power = malta_cost_value }
+	set_temp_variable = { malta_cost_value = constant:malta_cost.launch_command_power }
+	multiply_temp_variable = { malta_cost_value = malta_cost_scale_eleventh }
+	round_temp_variable = malta_cost_value
+	set_variable = { global.malta_cost_launch_command_power = malta_cost_value }
+	set_temp_variable = { malta_cost_value = constant:malta_cost.launch_equipment }
+	multiply_temp_variable = { malta_cost_value = malta_cost_scale_eleventh }
+	round_temp_variable = malta_cost_value
+	set_variable = { global.malta_cost_launch_equipment = malta_cost_value }
+	set_temp_variable = { malta_cost_value = constant:malta_cost.launch_convoys }
+	multiply_temp_variable = { malta_cost_value = malta_cost_scale_eleventh }
+	round_temp_variable = malta_cost_value
+	set_variable = { global.malta_cost_launch_convoys = malta_cost_value }
+}
+
+# ----------------------------------------------------------------------------
+# Payment
+# ----------------------------------------------------------------------------
+
+# COUNTRY (MLT). Pays the published cost of demand treasury.
+malta_pay_demand_treasury = {
+	set_temp_variable = { malta_pay = global.malta_cost_demand_treasury_political_power }
+	multiply_temp_variable = { malta_pay = constant:malta_math.negative_one }
+	add_political_power = malta_pay
+}
+
+# COUNTRY (MLT). Pays the published cost of demand treasury (half, the compromise).
+malta_pay_demand_treasury_half = {
+	set_temp_variable = { malta_pay = global.malta_cost_demand_treasury_political_power_half }
+	multiply_temp_variable = { malta_pay = constant:malta_math.negative_one }
+	add_political_power = malta_pay
+}
+
+# COUNTRY (MLT). Pays the published cost of demand command.
+malta_pay_demand_command = {
+	set_temp_variable = { malta_pay = global.malta_cost_demand_command_command_power }
+	multiply_temp_variable = { malta_pay = constant:malta_math.negative_one }
+	add_command_power = malta_pay
+}
+
+# COUNTRY (MLT). Pays the published cost of demand command (half, the compromise).
+malta_pay_demand_command_half = {
+	set_temp_variable = { malta_pay = global.malta_cost_demand_command_command_power_half }
+	multiply_temp_variable = { malta_pay = constant:malta_math.negative_one }
+	add_command_power = malta_pay
+}
+
+# COUNTRY (MLT). Pays the published cost of demand levy.
+malta_pay_demand_levy = {
+	set_temp_variable = { malta_pay = global.malta_cost_demand_levy_manpower }
+	multiply_temp_variable = { malta_pay = constant:malta_math.negative_one }
+	add_manpower = malta_pay
+}
+
+# COUNTRY (MLT). Pays the published cost of demand levy (half, the compromise).
+malta_pay_demand_levy_half = {
+	set_temp_variable = { malta_pay = global.malta_cost_demand_levy_manpower_half }
+	multiply_temp_variable = { malta_pay = constant:malta_math.negative_one }
+	add_manpower = malta_pay
+}
+
+# COUNTRY (MLT). Pays the published cost of demand headquarters.
+malta_pay_demand_headquarters = {
+	set_temp_variable = { malta_pay = global.malta_cost_demand_headquarters_political_power }
+	multiply_temp_variable = { malta_pay = constant:malta_math.negative_one }
+	add_political_power = malta_pay
+	set_temp_variable = { malta_pay = global.malta_cost_demand_headquarters_xp }
+	multiply_temp_variable = { malta_pay = constant:malta_math.negative_one }
+	add_army_experience = malta_pay
+}
+
+# COUNTRY (MLT). Pays the published cost of demand headquarters (half, the compromise).
+malta_pay_demand_headquarters_half = {
+	set_temp_variable = { malta_pay = global.malta_cost_demand_headquarters_political_power_half }
+	multiply_temp_variable = { malta_pay = constant:malta_math.negative_one }
+	add_political_power = malta_pay
+	set_temp_variable = { malta_pay = global.malta_cost_demand_headquarters_xp_half }
+	multiply_temp_variable = { malta_pay = constant:malta_math.negative_one }
+	add_army_experience = malta_pay
+}
+
+# COUNTRY (MLT). Pays the published cost of joint command.
+malta_pay_joint_command = {
+	set_temp_variable = { malta_pay = global.malta_cost_joint_command_xp }
+	multiply_temp_variable = { malta_pay = constant:malta_math.negative_one }
+	add_army_experience = malta_pay
+	set_temp_variable = { malta_pay = global.malta_cost_joint_command_command_power }
+	multiply_temp_variable = { malta_pay = constant:malta_math.negative_one }
+	add_command_power = malta_pay
+}
+
+# COUNTRY (MLT). Pays the published cost of arbitrate.
+malta_pay_arbitrate = {
+	set_temp_variable = { malta_pay = global.malta_cost_arbitrate_political_power }
+	multiply_temp_variable = { malta_pay = constant:malta_math.negative_one }
+	add_political_power = malta_pay
+}
+
+# COUNTRY (MLT). Pays the published cost of seize.
+malta_pay_seize = {
+	set_temp_variable = { malta_pay = global.malta_cost_seize_command_power }
+	multiply_temp_variable = { malta_pay = constant:malta_math.negative_one }
+	add_command_power = malta_pay
+}
+
+# COUNTRY (MLT). Pays the published cost of escort.
+malta_pay_escort = {
+	set_temp_variable = { fuel_stockpile_removal_amount = global.malta_cost_escort_fuel }
+	remove_fuel_from_stockpile = yes
+	set_temp_variable = { equipment_stockpile_removal_amount = global.malta_cost_escort_convoys }
+	remove_convoys_from_stockpile = yes
+	set_temp_variable = { malta_pay = global.malta_cost_escort_command_power }
+	multiply_temp_variable = { malta_pay = constant:malta_math.negative_one }
+	add_command_power = malta_pay
+}
+
+# COUNTRY (MLT). Pays the published cost of rail.
+malta_pay_rail = {
+	set_temp_variable = { equipment_stockpile_removal_amount = global.malta_cost_rail_trains }
+	remove_trains_from_stockpile = yes
+	set_temp_variable = { equipment_stockpile_removal_amount = global.malta_cost_rail_support }
+	remove_support_equipment_from_stockpile = yes
+	set_temp_variable = { malta_pay = global.malta_cost_rail_political_power }
+	multiply_temp_variable = { malta_pay = constant:malta_math.negative_one }
+	add_political_power = malta_pay
+}
+
+# COUNTRY (MLT). Pays the published cost of port.
+malta_pay_port = {
+	set_temp_variable = { equipment_stockpile_removal_amount = global.malta_cost_port_support }
+	remove_support_equipment_from_stockpile = yes
+	set_temp_variable = { malta_pay = global.malta_cost_port_political_power }
+	multiply_temp_variable = { malta_pay = constant:malta_math.negative_one }
+	add_political_power = malta_pay
+}
+
+# COUNTRY (MLT). Pays the published cost of air bridge.
+malta_pay_air_bridge = {
+	set_temp_variable = { fuel_stockpile_removal_amount = global.malta_cost_air_bridge_fuel }
+	remove_fuel_from_stockpile = yes
+	set_temp_variable = { malta_pay = global.malta_cost_air_bridge_command_power }
+	multiply_temp_variable = { malta_pay = constant:malta_math.negative_one }
+	add_command_power = malta_pay
+}
+
+# COUNTRY (MLT). Pays the published cost of raise banner.
+malta_pay_raise_banner = {
+	set_temp_variable = { malta_pay = global.malta_cost_raise_banner_manpower }
+	multiply_temp_variable = { malta_pay = constant:malta_math.negative_one }
+	add_manpower = malta_pay
+	set_temp_variable = { equipment_stockpile_removal_amount = global.malta_cost_raise_banner_equipment }
+	remove_infantry_equipment_from_stockpile = yes
+	set_temp_variable = { malta_pay = global.malta_cost_raise_banner_xp }
+	multiply_temp_variable = { malta_pay = constant:malta_math.negative_one }
+	add_army_experience = malta_pay
+}
+
+# COUNTRY (MLT). Pays the published cost of raise siege.
+malta_pay_raise_siege = {
+	set_temp_variable = { malta_pay = global.malta_cost_raise_siege_manpower }
+	multiply_temp_variable = { malta_pay = constant:malta_math.negative_one }
+	add_manpower = malta_pay
+	set_temp_variable = { equipment_stockpile_removal_amount = global.malta_cost_raise_siege_equipment }
+	remove_infantry_equipment_from_stockpile = yes
+	set_temp_variable = { equipment_stockpile_removal_amount = global.malta_cost_raise_siege_support }
+	remove_support_equipment_from_stockpile = yes
+	set_temp_variable = { malta_pay = global.malta_cost_raise_siege_xp }
+	multiply_temp_variable = { malta_pay = constant:malta_math.negative_one }
+	add_army_experience = malta_pay
+}
+
+# COUNTRY (MLT). Pays the published cost of engineers.
+malta_pay_engineers = {
+	set_temp_variable = { equipment_stockpile_removal_amount = global.malta_cost_engineers_support }
+	remove_support_equipment_from_stockpile = yes
+	set_temp_variable = { malta_pay = global.malta_cost_engineers_xp }
+	multiply_temp_variable = { malta_pay = constant:malta_math.negative_one }
+	add_army_experience = malta_pay
+}
+
+# COUNTRY (MLT). Pays the published cost of ultimatum.
+malta_pay_ultimatum = {
+	set_temp_variable = { malta_pay = global.malta_cost_ultimatum_political_power }
+	multiply_temp_variable = { malta_pay = constant:malta_math.negative_one }
+	add_political_power = malta_pay
+}
+
+# COUNTRY (MLT). Pays the published cost of crusade.
+malta_pay_crusade = {
+	set_temp_variable = { malta_pay = global.malta_cost_crusade_command_power }
+	multiply_temp_variable = { malta_pay = constant:malta_math.negative_one }
+	add_command_power = malta_pay
+	set_temp_variable = { equipment_stockpile_removal_amount = global.malta_cost_crusade_equipment }
+	remove_infantry_equipment_from_stockpile = yes
+}
+
+# COUNTRY (MLT). Pays the published cost of settle.
+malta_pay_settle = {
+	set_temp_variable = { malta_pay = global.malta_cost_settle_political_power }
+	multiply_temp_variable = { malta_pay = constant:malta_math.negative_one }
+	add_political_power = malta_pay
+	set_temp_variable = { equipment_stockpile_removal_amount = global.malta_cost_settle_support }
+	remove_support_equipment_from_stockpile = yes
+}
+
+# COUNTRY (MLT). Pays the published cost of evacuate.
+malta_pay_evacuate = {
+	set_temp_variable = { equipment_stockpile_removal_amount = global.malta_cost_evacuate_convoys }
+	remove_convoys_from_stockpile = yes
+	set_temp_variable = { fuel_stockpile_removal_amount = global.malta_cost_evacuate_fuel }
+	remove_fuel_from_stockpile = yes
+	set_temp_variable = { malta_pay = global.malta_cost_evacuate_command_power }
+	multiply_temp_variable = { malta_pay = constant:malta_math.negative_one }
+	add_command_power = malta_pay
+}
+
+# COUNTRY (MLT). Pays the published cost of fortify malta.
+malta_pay_fortify_malta = {
+	set_temp_variable = { equipment_stockpile_removal_amount = global.malta_cost_fortify_malta_support }
+	remove_support_equipment_from_stockpile = yes
+	set_temp_variable = { malta_pay = global.malta_cost_fortify_malta_political_power }
+	multiply_temp_variable = { malta_pay = constant:malta_math.negative_one }
+	add_political_power = malta_pay
+}
+
+# COUNTRY (MLT). Pays the published cost of volunteers.
+malta_pay_volunteers = {
+	set_temp_variable = { equipment_stockpile_removal_amount = global.malta_cost_volunteers_convoys }
+	remove_convoys_from_stockpile = yes
+	set_temp_variable = { malta_pay = global.malta_cost_volunteers_political_power }
+	multiply_temp_variable = { malta_pay = constant:malta_math.negative_one }
+	add_political_power = malta_pay
+}
+
+# COUNTRY (MLT). Pays the published cost of rebuild.
+malta_pay_rebuild = {
+	set_temp_variable = { equipment_stockpile_removal_amount = global.malta_cost_rebuild_support }
+	remove_support_equipment_from_stockpile = yes
+	set_temp_variable = { fuel_stockpile_removal_amount = global.malta_cost_rebuild_fuel }
+	remove_fuel_from_stockpile = yes
+	set_temp_variable = { malta_pay = global.malta_cost_rebuild_political_power }
+	multiply_temp_variable = { malta_pay = constant:malta_math.negative_one }
+	add_political_power = malta_pay
+}
+
+# COUNTRY (MLT). Pays the published cost of launch.
+malta_pay_launch = {
+	set_temp_variable = { malta_pay = global.malta_cost_launch_command_power }
+	multiply_temp_variable = { malta_pay = constant:malta_math.negative_one }
+	add_command_power = malta_pay
+	set_temp_variable = { equipment_stockpile_removal_amount = global.malta_cost_launch_equipment }
+	remove_infantry_equipment_from_stockpile = yes
+	set_temp_variable = { equipment_stockpile_removal_amount = global.malta_cost_launch_convoys }
+	remove_convoys_from_stockpile = yes
+}

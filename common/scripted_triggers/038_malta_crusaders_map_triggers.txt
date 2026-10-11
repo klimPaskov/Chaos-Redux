@@ -1,0 +1,175 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 038 MALTA CRUSADERS MAP REGISTRY
+# ============================================================================
+# The one exact state registry for Event 38. Every state id below was read
+# from the installed history/states files and confirmed by the map inspector
+# (the mod carries no history/states override). All triggers run in STATE
+# scope and are read-only. A state belongs to the registry or Event 38 never
+# touches it. Overlap between groups is deliberate where a state plays two
+# roles and is stated in the comments.
+#
+#   Role                 State                       1936 owner
+#   heartland            116 Malta                   ENG
+#   Holy Land command    454 Israel (Palestine)      PAL (holds Jerusalem)
+#   Holy Land corridor   455 Jordan                  JOR
+#   maritime bridge      183 Cyprus                  ENG
+#   island foothold      164 Dodecanese              ITA  (preferred)
+#                        187 Aegean Islands          GRE
+#                        182 Crete                   GRE
+#   Levantine frontier   553 Lebanon                 LEB
+#                        677 Aleppo                  SYR
+#                        799 Hatay                   SYR (TUR after 1938)
+#   Anatolian march      342 Antalya                 TUR
+#                        344 Adana                   TUR
+#                        345 Mersin                  TUR
+#   Greek mainland       47 Greece (Attica)          GRE
+#                        186 Peloponnese             GRE
+#                        185 Epirus                  GRE
+#                        731 Central Macedonia       GRE
+#                        184 Thrace                  GRE
+#   North African coast  661 Tripolitania            ITA
+#                        663 Cyrenaica               ITA
+#
+# The two North African states are wasteland with no installed naval base.
+# They are registry members for regional campaigns only and never part of an
+# opening package. Diyarbekir (350), Sinai (453) and Cairo (446) of the old
+# stub are outside the registry on purpose, because they would turn the
+# opening into a Turkish and Egyptian war.
+# ============================================================================
+
+malta_state_is_heartland = {
+	state = 116
+}
+
+malta_state_is_jerusalem = {
+	state = 454
+}
+
+malta_state_is_holy_land = {
+	OR = {
+		state = 454
+		state = 455
+	}
+}
+
+malta_state_is_bridge = {
+	state = 183
+}
+
+malta_state_is_island_foothold = {
+	OR = {
+		state = 164
+		state = 187
+		state = 182
+	}
+}
+
+# A state that links Malta to the Holy Land by sea: Cyprus or an island foothold.
+malta_state_is_bridge_link = {
+	OR = {
+		malta_state_is_bridge = yes
+		malta_state_is_island_foothold = yes
+	}
+}
+
+# States the opening can transfer, before any validity check.
+malta_state_is_opening_pool = {
+	OR = {
+		malta_state_is_heartland = yes
+		malta_state_is_holy_land = yes
+		malta_state_is_bridge = yes
+		malta_state_is_island_foothold = yes
+	}
+}
+
+malta_state_is_levant_frontier = {
+	OR = {
+		state = 553
+		state = 677
+		state = 799
+	}
+}
+
+malta_state_is_anatolian_march = {
+	OR = {
+		state = 342
+		state = 344
+		state = 345
+	}
+}
+
+malta_state_is_greek_mainland = {
+	OR = {
+		state = 47
+		state = 186
+		state = 185
+		state = 731
+		state = 184
+	}
+}
+
+malta_state_is_north_african_coast = {
+	OR = {
+		state = 661
+		state = 663
+	}
+}
+
+# States a regional crusade can claim and take. The island footholds stay in
+# the pool until Malta owns them.
+malta_state_is_campaign_pool = {
+	OR = {
+		malta_state_is_levant_frontier = yes
+		malta_state_is_anatolian_march = yes
+		malta_state_is_greek_mainland = yes
+		malta_state_is_north_african_coast = yes
+		malta_state_is_island_foothold = yes
+		malta_state_is_holy_land = yes
+		malta_state_is_bridge = yes
+	}
+}
+
+malta_state_is_registry = {
+	OR = {
+		malta_state_is_opening_pool = yes
+		malta_state_is_campaign_pool = yes
+	}
+}
+
+# A state Event 38 can move at all: it exists in the registry and normal
+# civilian systems apply to it.
+malta_state_is_usable = {
+	malta_state_is_registry = yes
+	NOT = { has_state_category = wasteland }
+}
+
+# A state the opening can take from its owner. A heartland that Malta already
+# owns needs no transfer and is not a target.
+malta_state_can_be_opening_target = {
+	malta_state_is_opening_pool = yes
+	malta_state_is_usable = yes
+	NOT = { is_owned_by = MLT }
+	owner = {
+		exists = yes
+		has_capitulated = no
+		is_special_chaos_country = no
+		is_actual_nonhuman_country = no
+	}
+}
+
+# A state that counts toward an anchor or the footprint when Malta controls it.
+malta_state_is_expedition_state = {
+	malta_state_is_registry = yes
+	NOT = { malta_state_is_heartland = yes }
+}
+
+# A state an Eleventh Crusade landing can aim at: the Holy Land, the bridge
+# islands and the Levantine frontier.
+malta_state_is_landing_candidate = {
+	malta_state_is_usable = yes
+	OR = {
+		malta_state_is_holy_land = yes
+		malta_state_is_bridge_link = yes
+		malta_state_is_levant_frontier = yes
+	}
+}

@@ -1,0 +1,961 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 038 MALTA CRUSADERS OPENING TRANSACTION AND PACKAGE
+# ============================================================================
+# The release transaction in three steps, then the Malta country package.
+#
+#   1. malta_prepare_opening_transaction (ANY scope)
+#      Freeze. Reads the live map and writes the proposed state set, the
+#      owners those states have now and the displaced top owners to private
+#      global arrays. No ownership changes. Sets global.malta_opening_ready
+#      to 1 or leaves a reject code in global.malta_opening_reject:
+#        1 the actor tag is a subject, capitulated, special or already marked
+#        2 the heartland (Malta, state 116) cannot be taken or released
+#        3 no Holy Land command state can be taken or is already held
+#        4 neither Cyprus nor an island foothold can serve as the sea bridge
+#        5 more displaced owners than the package allows
+#   2. malta_validate_opening_transaction (ANY scope)
+#      Re-checks every frozen state against the map as it is at commit.
+#   3. malta_commit_opening_transaction (ANY scope)
+#      Transfers the frozen states, proves ownership, applies the package,
+#      declares the bounded wars and records the result in
+#      global.malta_opening_result (1 success, 2 rolled back or rejected).
+#      A failed proof restores every state to the owner recorded at freeze
+#      and leaves no actor package, no war and no flag behind.
+#
+# The actor is the vanilla tag MLT. A live Malta is transformed. A dead Malta
+# comes back through the first state transfer and receives the package.
+# Package level is the highest active evolution stage (0 to 3). A stage that
+# is disabled in the Event Details list contributes nothing, and the opening
+# builds the cumulative package in one pass.
+#
+# Interim stand-in: the army uses the ordinary infantry, cavalry, artillery
+# and engineer sub-units under templates named after the medieval formations.
+# The custom unit families wait for the model pipeline. Swapping a family in
+# later means changing the template tables in malta_create_templates only.
+# ============================================================================
+
+# ---------------------------------------------------------------------------
+# Stages
+# ---------------------------------------------------------------------------
+
+# ANY scope. Sets global flags malta_stage_1_active to malta_stage_3_active for
+# every evolution stage that is enabled and reached by the Chaos value, and
+# global.malta_package_level to the highest of them.
+malta_resolve_stages = {
+	clr_global_flag = malta_stage_1_active
+	clr_global_flag = malta_stage_2_active
+	clr_global_flag = malta_stage_3_active
+	set_variable = { global.malta_package_level = 0 }
+	set_temp_variable = { events_log_evolution_event_id = constant:malta_event.id }
+	set_temp_variable = { events_log_evolution_type = constant:malta_event.evolution_type }
+
+	set_temp_variable = { events_log_evolution_stage = constant:malta_evolution.stage_1 }
+	set_temp_variable = { events_log_evolution_tier = constant:malta_evolution.stage_1 }
+	if = {
+		limit = { is_current_evolution_enabled = yes }
+		set_global_flag = malta_stage_1_active
+		set_variable = { global.malta_package_level = constant:malta_evolution.stage_1 }
+	}
+	set_temp_variable = { events_log_evolution_stage = constant:malta_evolution.stage_2 }
+	set_temp_variable = { events_log_evolution_tier = constant:malta_evolution.stage_2 }
+	if = {
+		limit = { is_current_evolution_enabled = yes }
+		set_global_flag = malta_stage_2_active
+		set_variable = { global.malta_package_level = constant:malta_evolution.stage_2 }
+	}
+	set_temp_variable = { events_log_evolution_stage = constant:malta_evolution.stage_3 }
+	set_temp_variable = { events_log_evolution_tier = constant:malta_evolution.stage_3 }
+	if = {
+		limit = { is_current_evolution_enabled = yes }
+		set_global_flag = malta_stage_3_active
+		set_variable = { global.malta_package_level = constant:malta_evolution.stage_3 }
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Freeze
+# ---------------------------------------------------------------------------
+
+# STATE scope. Saves the top owner of the state in event target
+# malta_top_owner: the owner, or the overlord when the owner is a subject, up
+# to two links.
+malta_find_top_owner = {
+	owner = {
+		save_event_target_as = malta_top_owner
+		if = {
+			limit = { is_subject = yes }
+			overlord = {
+				save_event_target_as = malta_top_owner
+				if = {
+					limit = { is_subject = yes }
+					overlord = { save_event_target_as = malta_top_owner }
+				}
+			}
+		}
+	}
+}
+
+# STATE scope. Appends the state and its present owner to the frozen ledger
+# and records the top owner as displaced.
+malta_freeze_state = {
+	malta_freeze_state_peaceful = yes
+	malta_find_top_owner = yes
+	event_target:malta_top_owner = {
+		if = {
+			limit = { NOT = { is_in_array = { array = global.malta_displaced_owners value = THIS } } }
+			add_to_array = { global.malta_displaced_owners = THIS }
+		}
+	}
+}
+
+# STATE scope. The same without recording a displaced owner. The heartland is
+# released this way: it is the one state whose owner does not take part in the
+# war set unless it loses another frozen state.
+malta_freeze_state_peaceful = {
+	add_to_array = { global.malta_frozen_states = THIS }
+	owner = { add_to_array = { global.malta_frozen_owners = THIS } }
+}
+
+# STATE scope. Takes one island foothold when fewer than the wanted number
+# were taken and the top owner fits the displaced-owner cap.
+malta_try_pick_foothold = {
+	if = {
+		limit = {
+			check_variable = { var = malta_foothold_picks value = malta_foothold_wanted compare = less_than }
+			malta_state_can_be_opening_target = yes
+		}
+		malta_find_top_owner = yes
+		set_temp_variable = { malta_cap_ok = 1 }
+		event_target:malta_top_owner = {
+			if = {
+				limit = {
+					NOT = { is_in_array = { array = global.malta_displaced_owners value = THIS } }
+					check_variable = { var = global.malta_displaced_owners^num value = constant:malta_opening.owner_cap compare = greater_than_or_equals }
+				}
+				set_temp_variable = { malta_cap_ok = 0 }
+			}
+		}
+		if = {
+			limit = { check_variable = { var = malta_cap_ok value = 1 compare = equals } }
+			malta_freeze_state = yes
+			add_to_temp_variable = { malta_foothold_picks = 1 }
+		}
+	}
+}
+
+# ANY scope. Freeze. See the file header for the reject codes.
+malta_prepare_opening_transaction = {
+	clear_array = global.malta_frozen_states
+	clear_array = global.malta_frozen_owners
+	clear_array = global.malta_displaced_owners
+	set_variable = { global.malta_opening_ready = 0 }
+	set_variable = { global.malta_opening_reject = 0 }
+	set_temp_variable = { malta_reject = 0 }
+	set_temp_variable = { malta_holy_land_ok = 0 }
+	set_temp_variable = { malta_bridge_ok = 0 }
+	set_temp_variable = { malta_foothold_picks = 0 }
+	set_temp_variable = { malta_foothold_wanted = constant:malta_opening.footholds_baseline }
+	malta_resolve_stages = yes
+
+	clr_global_flag = malta_transformed_existing
+	MLT = {
+		if = {
+			limit = { exists = yes }
+			set_global_flag = malta_transformed_existing
+		}
+		if = {
+			limit = {
+				OR = {
+					AND = { exists = yes is_subject = yes }
+					AND = { exists = yes has_capitulated = yes }
+					AND = { exists = yes is_special_chaos_country = yes }
+					AND = { exists = yes is_actual_nonhuman_country = yes }
+					has_country_flag = malta_origin
+				}
+			}
+			set_temp_variable = { malta_reject = 1 }
+		}
+	}
+
+	116 = {
+		if = {
+			limit = { NOT = { is_owned_by = MLT } }
+			if = {
+				limit = { malta_state_can_be_opening_target = yes }
+				malta_freeze_state_peaceful = yes
+			}
+			else_if = {
+				limit = { check_variable = { var = malta_reject value = 0 compare = equals } }
+				set_temp_variable = { malta_reject = 2 }
+			}
+		}
+	}
+
+	454 = {
+		if = {
+			limit = { is_owned_by = MLT }
+			set_temp_variable = { malta_holy_land_ok = 1 }
+		}
+		else_if = {
+			limit = { malta_state_can_be_opening_target = yes }
+			malta_freeze_state = yes
+			set_temp_variable = { malta_holy_land_ok = 1 }
+		}
+	}
+	455 = {
+		if = {
+			limit = {
+				check_variable = { var = malta_holy_land_ok value = 1 compare = equals }
+				malta_state_can_be_opening_target = yes
+			}
+			malta_freeze_state = yes
+		}
+	}
+	183 = {
+		if = {
+			limit = { is_owned_by = MLT }
+			set_temp_variable = { malta_bridge_ok = 1 }
+		}
+		else_if = {
+			limit = { malta_state_can_be_opening_target = yes }
+			malta_freeze_state = yes
+			set_temp_variable = { malta_bridge_ok = 1 }
+		}
+	}
+
+	if = {
+		limit = { has_global_flag = malta_stage_2_active }
+		add_to_temp_variable = { malta_foothold_wanted = constant:malta_opening.footholds_stage_2_extra }
+	}
+	164 = { malta_try_pick_foothold = yes }
+	187 = { malta_try_pick_foothold = yes }
+	182 = { malta_try_pick_foothold = yes }
+	if = {
+		limit = { check_variable = { var = malta_foothold_picks value = 0 compare = greater_than } }
+		set_temp_variable = { malta_bridge_ok = 1 }
+	}
+	# An owned island foothold also serves as the bridge.
+	if = {
+		limit = { MLT = { any_owned_state = { malta_state_is_island_foothold = yes } } }
+		set_temp_variable = { malta_bridge_ok = 1 }
+	}
+
+	if = {
+		limit = {
+			check_variable = { var = malta_reject value = 0 compare = equals }
+			check_variable = { var = malta_holy_land_ok value = 1 compare = less_than }
+		}
+		set_temp_variable = { malta_reject = 3 }
+	}
+	if = {
+		limit = {
+			check_variable = { var = malta_reject value = 0 compare = equals }
+			check_variable = { var = malta_bridge_ok value = 1 compare = less_than }
+		}
+		set_temp_variable = { malta_reject = 4 }
+	}
+	if = {
+		limit = {
+			check_variable = { var = malta_reject value = 0 compare = equals }
+			check_variable = { var = global.malta_displaced_owners^num value = constant:malta_opening.owner_cap compare = greater_than }
+		}
+		set_temp_variable = { malta_reject = 5 }
+	}
+	set_variable = { global.malta_opening_reject = malta_reject }
+	if = {
+		limit = { check_variable = { var = malta_reject value = 0 compare = equals } }
+		set_variable = { global.malta_opening_ready = 1 }
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Validate
+# ---------------------------------------------------------------------------
+
+# ANY scope. Output: temporary malta_validate_ok (1 when every frozen state
+# can still be taken).
+malta_validate_opening_transaction = {
+	set_temp_variable = { malta_validate_ok = 1 }
+	if = {
+		limit = {
+			OR = {
+				check_variable = { var = global.malta_opening_ready value = 1 compare = less_than }
+				check_variable = { var = global.malta_frozen_states^num value = constant:malta_opening.minimum_states compare = less_than }
+			}
+		}
+		set_temp_variable = { malta_validate_ok = 0 }
+	}
+	for_each_scope_loop = {
+		array = global.malta_frozen_states
+		if = {
+			limit = { NOT = { malta_state_can_be_opening_target = yes } }
+			set_temp_variable = { malta_validate_ok = 0 }
+		}
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Commit and rollback
+# ---------------------------------------------------------------------------
+
+# ANY scope. Restores every frozen state to the owner recorded at freeze.
+malta_rollback_opening_transaction = {
+	set_temp_variable = { malta_rollback_count = global.malta_frozen_states^num }
+	for_loop_effect = {
+		start = 0
+		end = malta_rollback_count
+		value = malta_rollback_index
+		set_temp_variable = { malta_rollback_state = global.malta_frozen_states^malta_rollback_index }
+		set_temp_variable = { malta_rollback_owner = global.malta_frozen_owners^malta_rollback_index }
+		var:malta_rollback_state = {
+			transfer_state_to = var:malta_rollback_owner
+		}
+	}
+}
+
+# ANY scope. Commit. Reads the frozen ledger and records the result in
+# global.malta_opening_result.
+malta_commit_opening_transaction = {
+	set_variable = { global.malta_opening_result = 0 }
+	malta_validate_opening_transaction = yes
+	if = {
+		limit = { check_variable = { var = malta_validate_ok value = 1 compare = equals } }
+		set_global_flag = malta_opening_in_progress
+		set_variable = { global.malta_transaction_id = global.num_days }
+		add_to_variable = { global.malta_transaction_id = constant:malta_opening.transaction_offset }
+		for_each_scope_loop = {
+			array = global.malta_frozen_states
+			owner = { save_event_target_as = malta_freeze_owner }
+			set_variable = { malta_former_owner = event_target:malta_freeze_owner }
+			transfer_state_to = MLT
+		}
+		set_temp_variable = { malta_commit_ok = 1 }
+		if = {
+			limit = { NOT = { country_exists = MLT } }
+			set_temp_variable = { malta_commit_ok = 0 }
+		}
+		for_each_scope_loop = {
+			array = global.malta_frozen_states
+			if = {
+				limit = { NOT = { is_owned_by = MLT } }
+				set_temp_variable = { malta_commit_ok = 0 }
+			}
+		}
+		if = {
+			limit = { check_variable = { var = malta_commit_ok value = 1 compare = equals } }
+			MLT = {
+				malta_initialize_country_package = yes
+				malta_declare_opening_wars = yes
+			}
+			set_global_flag = malta_event_fired
+			set_variable = { global.malta_opening_result = 1 }
+		}
+		else = {
+			malta_rollback_opening_transaction = yes
+			set_variable = { global.malta_opening_result = 2 }
+		}
+		clr_global_flag = malta_opening_in_progress
+	}
+	else = {
+		set_variable = { global.malta_opening_result = 2 }
+	}
+	# The ledger keeps its owners for settlement decisions and is cleared on
+	# the next freeze. Per-package stage flags are cleared by the package.
+}
+
+# ---------------------------------------------------------------------------
+# Wars
+# ---------------------------------------------------------------------------
+
+# COUNTRY (MLT). One war per displaced top owner that is not already at war
+# with Malta. A claim on every registry state the owner still holds gives the
+# war a real goal.
+malta_declare_opening_wars = {
+	save_event_target_as = malta_actor
+	for_each_scope_loop = {
+		array = global.malta_displaced_owners
+		if = {
+			limit = {
+				exists = yes
+				NOT = { has_war_with = event_target:malta_actor }
+			}
+			malta_add_registry_claims = yes
+			event_target:malta_actor = {
+				declare_war_on = {
+					target = PREV
+					type = take_claimed_state
+				}
+			}
+		}
+	}
+}
+
+# COUNTRY (the owner). Claims by the actor on every campaign-pool state the
+# scoped country owns. Used before a war so take_claimed_state has a goal.
+malta_add_registry_claims = {
+	every_owned_state = {
+		limit = {
+			malta_state_is_campaign_pool = yes
+			NOT = { is_claimed_by = event_target:malta_actor }
+		}
+		add_claim_by = event_target:malta_actor
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Country package
+# ---------------------------------------------------------------------------
+
+# COUNTRY (MLT). The whole package in one pass. The caller proved ownership of
+# the frozen states and the country exists.
+malta_initialize_country_package = {
+	save_event_target_as = malta_actor
+	set_country_flag = malta_origin
+	set_country_flag = malta_origin_event_038
+	set_variable = { malta_package_level = global.malta_package_level }
+	set_variable = { malta_release_transaction_id = global.malta_transaction_id }
+	if = {
+		limit = { is_ai = no }
+		set_country_flag = malta_human_controlled_at_release
+	}
+	if = {
+		limit = { has_global_flag = malta_transformed_existing }
+		set_country_flag = malta_existing_country_transformed
+	}
+
+	set_capital = { state = 116 remember_old_capital = no }
+	set_cosmetic_tag = CRU
+	set_politics = {
+		ruling_party = neutrality
+		elections_allowed = no
+		long_name = malta_party_crusade_council
+		name = malta_party_crusade_council_short
+	}
+	set_popularities = {
+		neutrality = 64
+		democratic = 18
+		fascism = 8
+		communism = 10
+	}
+	malta_install_leaders = yes
+
+	add_ideas = {
+		malta_fortress_without_a_hinterland
+		malta_orders_recalled
+		malta_army_out_of_time
+		limited_conscription
+		low_economic_mobilisation
+		limited_exports
+	}
+	malta_apply_baseline_technology = yes
+	malta_apply_opening_grants = yes
+	malta_apply_opening_buildings = yes
+	malta_create_templates = yes
+	malta_spawn_opening_forces = yes
+	malta_initialize_council = yes
+	if = {
+		limit = { has_global_flag = malta_stage_3_active }
+		malta_apply_stage_3_standing = yes
+	}
+	set_country_flag = malta_pulse_scheduled
+	country_event = { id = chaosx.nr38.5 days = 7 }
+	country_event = { id = chaosx.nr38.2 days = 1 }
+}
+
+# COUNTRY (MLT). Grand Master and the officers of the orders.
+malta_install_leaders = {
+	retire_country_leader = yes
+	add_country_leader_role = {
+		character = malta_grand_master
+		promote_leader = yes
+		country_leader = {
+			ideology = oligarchism
+			expire = "1965.1.1.1"
+		}
+	}
+	recruit_character = malta_marshal_of_the_order
+	recruit_character = malta_marshal_hospitaller
+	recruit_character = malta_preceptor_templar
+	recruit_character = malta_master_engineer
+	recruit_character = malta_admiral_galleys
+	if = {
+		limit = { has_global_flag = malta_stage_1_active }
+		recruit_character = malta_komtur_teutonic
+	}
+}
+
+# COUNTRY (MLT). A coherent 1936 baseline. It does not copy a prior controller.
+malta_apply_baseline_technology = {
+	set_technology = {
+		infantry_weapons = 1
+		infantry_weapons1 = 1
+		gw_artillery = 1
+		tech_support = 1
+		tech_engineers = 1
+		tech_recon = 1
+		tech_field_hospital = 1
+		tech_military_police = 1
+		tech_maintenance_company = 1
+		basic_train = 1
+		popup = no
+	}
+}
+
+# COUNTRY (MLT). Political power, command power, experience, stockpiles and
+# fuel from the opening grant table, scaled by the package level and the
+# number of expedition states.
+malta_apply_opening_grants = {
+	malta_count_expedition_states = yes
+	set_temp_variable = { malta_scale_level = global.malta_package_level }
+	set_temp_variable = { malta_scale_extra = malta_expedition_count }
+	subtract_from_temp_variable = { malta_scale_extra = constant:malta_grant.expected_expedition_states }
+	clamp_temp_variable = { var = malta_scale_extra min = 0 max = constant:malta_grant.extra_states_cap }
+
+	set_temp_variable = { malta_grant_pp = malta_scale_level }
+	multiply_temp_variable = { malta_grant_pp = constant:malta_grant.political_power_per_level }
+	add_to_temp_variable = { malta_grant_pp = constant:malta_grant.political_power }
+	add_political_power = malta_grant_pp
+
+	set_temp_variable = { malta_grant_cp = malta_scale_level }
+	multiply_temp_variable = { malta_grant_cp = constant:malta_grant.command_power_per_level }
+	add_to_temp_variable = { malta_grant_cp = constant:malta_grant.command_power }
+	add_command_power = malta_grant_cp
+
+	set_temp_variable = { malta_grant_xp = malta_scale_level }
+	multiply_temp_variable = { malta_grant_xp = constant:malta_grant.army_experience_per_level }
+	add_to_temp_variable = { malta_grant_xp = constant:malta_grant.army_experience }
+	add_army_experience = malta_grant_xp
+
+	set_temp_variable = { malta_grant_infantry = malta_scale_level }
+	multiply_temp_variable = { malta_grant_infantry = constant:malta_grant.infantry_equipment_per_level }
+	add_to_temp_variable = { malta_grant_infantry = constant:malta_grant.infantry_equipment }
+	add_equipment_to_stockpile = { type = infantry_equipment amount = malta_grant_infantry producer = MLT }
+
+	set_temp_variable = { malta_grant_support = malta_scale_level }
+	multiply_temp_variable = { malta_grant_support = constant:malta_grant.support_equipment_per_level }
+	add_to_temp_variable = { malta_grant_support = constant:malta_grant.support_equipment }
+	add_equipment_to_stockpile = { type = support_equipment amount = malta_grant_support producer = MLT }
+
+	set_temp_variable = { malta_grant_convoys = malta_scale_level }
+	multiply_temp_variable = { malta_grant_convoys = constant:malta_grant.convoys_per_level }
+	add_to_temp_variable = { malta_grant_convoys = constant:malta_grant.convoys }
+	set_temp_variable = { malta_grant_convoys_extra = malta_scale_extra }
+	multiply_temp_variable = { malta_grant_convoys_extra = constant:malta_grant.convoys_per_extra_state }
+	add_to_temp_variable = { malta_grant_convoys = malta_grant_convoys_extra }
+	add_equipment_to_stockpile = { type = convoy_1 amount = malta_grant_convoys producer = MLT }
+
+	set_temp_variable = { malta_grant_trains = malta_scale_level }
+	multiply_temp_variable = { malta_grant_trains = constant:malta_grant.trains_per_level }
+	add_to_temp_variable = { malta_grant_trains = constant:malta_grant.trains }
+	add_equipment_to_stockpile = { type = train_equipment amount = malta_grant_trains producer = MLT }
+
+	set_temp_variable = { malta_grant_fuel = malta_scale_level }
+	multiply_temp_variable = { malta_grant_fuel = constant:malta_grant.fuel_per_level }
+	add_to_temp_variable = { malta_grant_fuel = constant:malta_grant.fuel }
+	set_temp_variable = { malta_grant_fuel_extra = malta_scale_extra }
+	multiply_temp_variable = { malta_grant_fuel_extra = constant:malta_grant.fuel_per_extra_state }
+	add_to_temp_variable = { malta_grant_fuel = malta_grant_fuel_extra }
+	add_fuel = malta_grant_fuel
+
+	add_stability = constant:malta_grant.stability
+	add_war_support = constant:malta_grant.war_support
+}
+
+# COUNTRY (MLT). Fortress workshops in Malta, a workshop in the Holy Land and
+# a little rail and road work, all instant and bounded. Existing buildings are
+# never overwritten: each call adds levels.
+malta_apply_opening_buildings = {
+	116 = {
+		add_extra_state_shared_building_slots = constant:malta_building.malta_slots
+		add_building_construction = { type = arms_factory level = constant:malta_building.malta_arms_factories instant_build = yes }
+		add_building_construction = { type = dockyard level = constant:malta_building.malta_dockyards instant_build = yes }
+	}
+	454 = {
+		if = {
+			limit = { is_owned_by = MLT }
+			add_extra_state_shared_building_slots = constant:malta_building.holy_land_slots
+			add_building_construction = { type = arms_factory level = constant:malta_building.holy_land_arms_factories instant_build = yes }
+			add_building_construction = { type = infrastructure level = constant:malta_building.holy_land_infrastructure instant_build = yes }
+		}
+	}
+	455 = {
+		if = {
+			limit = { is_owned_by = MLT }
+			add_building_construction = { type = infrastructure level = constant:malta_building.corridor_infrastructure instant_build = yes }
+		}
+	}
+	if = {
+		limit = { has_global_flag = malta_stage_1_active }
+		random_owned_state = {
+			limit = { malta_state_is_bridge_link = yes }
+			add_extra_state_shared_building_slots = constant:malta_building.bridge_slots
+			add_building_construction = { type = arms_factory level = constant:malta_building.bridge_arms_factories instant_build = yes }
+		}
+	}
+}
+
+# COUNTRY (MLT). Output: variable malta_expedition_count (expedition states
+# owned and controlled by the actor).
+malta_count_expedition_states = {
+	set_temp_variable = { malta_expedition_tally = 0 }
+	every_owned_state = {
+		limit = {
+			malta_state_is_expedition_state = yes
+			is_controlled_by = MLT
+		}
+		add_to_temp_variable = { malta_expedition_tally = 1 }
+	}
+	set_variable = { malta_expedition_count = malta_expedition_tally }
+}
+
+# ---------------------------------------------------------------------------
+# Templates and forces
+# ---------------------------------------------------------------------------
+
+# COUNTRY (MLT). Seven readable templates. Created once.
+malta_create_templates = {
+	if = {
+		limit = { NOT = { has_country_flag = malta_templates_created } }
+		set_country_flag = malta_templates_created
+
+		division_template = {
+			name = "Fortress Commandery"
+			regiments = {
+				infantry = { x = 0 y = 0 }
+				infantry = { x = 0 y = 1 }
+				infantry = { x = 1 y = 0 }
+				infantry = { x = 1 y = 1 }
+				irregular_infantry = { x = 2 y = 0 }
+				irregular_infantry = { x = 2 y = 1 }
+			}
+			support = {
+				engineer = { x = 0 y = 0 }
+				field_hospital = { x = 0 y = 1 }
+			}
+		}
+
+		division_template = {
+			name = "Armored Knight Banner"
+			regiments = {
+				infantry = { x = 0 y = 0 }
+				infantry = { x = 0 y = 1 }
+				infantry = { x = 0 y = 2 }
+				infantry = { x = 1 y = 0 }
+				infantry = { x = 1 y = 1 }
+				infantry = { x = 1 y = 2 }
+			}
+			support = {
+				engineer = { x = 0 y = 0 }
+				field_hospital = { x = 0 y = 1 }
+			}
+		}
+
+		division_template = {
+			name = "Mounted Crusader Column"
+			regiments = {
+				cavalry = { x = 0 y = 0 }
+				cavalry = { x = 0 y = 1 }
+				cavalry = { x = 1 y = 0 }
+				cavalry = { x = 1 y = 1 }
+			}
+			support = {
+				recon = { x = 0 y = 0 }
+			}
+		}
+
+		division_template = {
+			name = "Crossbow Levy"
+			regiments = {
+				infantry = { x = 0 y = 0 }
+				infantry = { x = 0 y = 1 }
+				infantry = { x = 0 y = 2 }
+				infantry = { x = 1 y = 0 }
+				infantry = { x = 1 y = 1 }
+				artillery_brigade = { x = 2 y = 0 }
+			}
+			support = {
+				maintenance_company = { x = 0 y = 0 }
+			}
+		}
+
+		division_template = {
+			name = "Siege Host"
+			regiments = {
+				infantry = { x = 0 y = 0 }
+				infantry = { x = 0 y = 1 }
+				artillery_brigade = { x = 1 y = 0 }
+				artillery_brigade = { x = 1 y = 1 }
+				artillery_brigade = { x = 2 y = 0 }
+			}
+			support = {
+				engineer = { x = 0 y = 0 }
+				maintenance_company = { x = 0 y = 1 }
+			}
+		}
+
+		division_template = {
+			name = "Crusader Engineers"
+			regiments = {
+				infantry = { x = 0 y = 0 }
+				infantry = { x = 0 y = 1 }
+			}
+			support = {
+				engineer = { x = 0 y = 0 }
+				engineer = { x = 0 y = 1 }
+				maintenance_company = { x = 0 y = 2 }
+			}
+		}
+
+		division_template = {
+			name = "Holy Land Guard"
+			regiments = {
+				irregular_infantry = { x = 0 y = 0 }
+				irregular_infantry = { x = 0 y = 1 }
+				irregular_infantry = { x = 0 y = 2 }
+				irregular_infantry = { x = 1 y = 0 }
+			}
+			support = {
+				military_police = { x = 0 y = 0 }
+			}
+		}
+	}
+}
+
+# STATE scope. Spawns malta_spawn_count divisions of template id
+# malta_spawn_template here. The names come from the scripted localisation
+# functions GetMaltaTemplateName and GetMaltaDivisionName.
+malta_spawn_loop = {
+	for_loop_effect = {
+		start = 0
+		end = malta_spawn_count
+		value = malta_spawn_n
+		meta_effect = {
+			text = {
+				create_unit = {
+					division = "name = \"[DIV_NAME]\" division_template = \"[TEMPLATE_NAME]\" start_experience_factor = [XP_FACTOR] start_equipment_factor = [EQ_FACTOR] start_manpower_factor = [MP_FACTOR]"
+					owner = MLT
+					allow_spawning_on_enemy_provs = no
+				}
+			}
+			DIV_NAME = "[This.GetMaltaDivisionName]"
+			TEMPLATE_NAME = "[This.GetMaltaTemplateName]"
+			XP_FACTOR = "[?global.malta_spawn_xp|.2]"
+			EQ_FACTOR = "[?global.malta_spawn_equipment|.2]"
+			MP_FACTOR = "[?global.malta_spawn_manpower|.2]"
+		}
+	}
+}
+
+# COUNTRY (MLT). Spawns the division count in malta_spawn_count of template
+# malta_spawn_template in state $STATE$ when the actor owns it, in Malta
+# otherwise.
+malta_spawn_in = {
+	if = {
+		limit = { owns_state = $STATE$ }
+		$STATE$ = { malta_spawn_loop = yes }
+	}
+	else = {
+		116 = { malta_spawn_loop = yes }
+	}
+}
+
+# COUNTRY (MLT). Spawns the division count in malta_spawn_count of template
+# malta_spawn_template in an owned island foothold, in Malta when there is
+# none.
+malta_spawn_in_foothold = {
+	if = {
+		limit = { any_owned_state = { malta_state_is_island_foothold = yes } }
+		random_owned_state = {
+			limit = { malta_state_is_island_foothold = yes }
+			malta_spawn_loop = yes
+		}
+	}
+	else = {
+		116 = { malta_spawn_loop = yes }
+	}
+}
+
+# COUNTRY (MLT). The one-time opening force, scaled by the package level and
+# the footprint. Counts per template come from the malta_force constants.
+malta_spawn_opening_forces = {
+	set_variable = { global.malta_spawn_xp = constant:malta_force.experience_factor }
+	set_variable = { global.malta_spawn_equipment = constant:malta_force.equipment_factor }
+	set_variable = { global.malta_spawn_manpower = constant:malta_force.manpower_factor }
+	set_temp_variable = { malta_force_level = global.malta_package_level }
+	set_temp_variable = { malta_force_extra = malta_expedition_count }
+	subtract_from_temp_variable = { malta_force_extra = constant:malta_grant.expected_expedition_states }
+	clamp_temp_variable = { var = malta_force_extra min = 0 max = constant:malta_grant.extra_states_cap }
+
+	# Fortress garrison.
+	set_variable = { global.malta_spawn_template = constant:malta_template.fortress }
+	set_temp_variable = { malta_spawn_count = constant:malta_force.fortress }
+	malta_spawn_in = { STATE = 116 }
+
+	# Armored knights: one banner on the island, the rest in the Holy Land.
+	set_temp_variable = { malta_n_knights = malta_force_level }
+	multiply_temp_variable = { malta_n_knights = constant:malta_force.knights_per_level }
+	add_to_temp_variable = { malta_n_knights = constant:malta_force.knights }
+	set_variable = { global.malta_spawn_template = constant:malta_template.knight }
+	set_temp_variable = { malta_spawn_count = constant:malta_force.knights_on_malta }
+	malta_spawn_in = { STATE = 116 }
+	set_temp_variable = { malta_spawn_count = malta_n_knights }
+	subtract_from_temp_variable = { malta_spawn_count = constant:malta_force.knights_on_malta }
+	malta_spawn_in = { STATE = 454 }
+
+	# Mounted columns: the Holy Land, with the corridor taking the surplus.
+	set_temp_variable = { malta_n_mounted = malta_force_level }
+	multiply_temp_variable = { malta_n_mounted = constant:malta_force.mounted_per_level }
+	add_to_temp_variable = { malta_n_mounted = constant:malta_force.mounted }
+	set_variable = { global.malta_spawn_template = constant:malta_template.mounted }
+	set_temp_variable = { malta_spawn_count = constant:malta_force.mounted }
+	malta_spawn_in = { STATE = 454 }
+	set_temp_variable = { malta_spawn_count = malta_n_mounted }
+	subtract_from_temp_variable = { malta_spawn_count = constant:malta_force.mounted }
+	malta_spawn_in = { STATE = 455 }
+
+	# Crossbow levies: the Holy Land and the bridge.
+	set_temp_variable = { malta_n_ranged = malta_force_level }
+	multiply_temp_variable = { malta_n_ranged = constant:malta_force.ranged_per_level }
+	add_to_temp_variable = { malta_n_ranged = constant:malta_force.ranged }
+	set_variable = { global.malta_spawn_template = constant:malta_template.ranged }
+	set_temp_variable = { malta_spawn_count = constant:malta_force.ranged }
+	malta_spawn_in = { STATE = 454 }
+	set_temp_variable = { malta_spawn_count = malta_n_ranged }
+	subtract_from_temp_variable = { malta_spawn_count = constant:malta_force.ranged }
+	malta_spawn_in = { STATE = 183 }
+
+	# Siege hosts. Evolution I adds another when the stage is active.
+	set_variable = { global.malta_spawn_template = constant:malta_template.siege }
+	set_temp_variable = { malta_spawn_count = constant:malta_force.siege }
+	if = {
+		limit = { has_global_flag = malta_stage_1_active }
+		add_to_temp_variable = { malta_spawn_count = constant:malta_force.siege_stage_1_bonus }
+	}
+	malta_spawn_in = { STATE = 454 }
+
+	# Holy Land guards and militia: every held state takes one, the surplus
+	# goes to the Holy Land.
+	set_variable = { global.malta_spawn_template = constant:malta_template.guard }
+	set_temp_variable = { malta_spawn_count = constant:malta_force.guard_per_state }
+	malta_spawn_in = { STATE = 454 }
+	malta_spawn_in = { STATE = 455 }
+	malta_spawn_in = { STATE = 183 }
+	malta_spawn_in_foothold = yes
+	set_temp_variable = { malta_spawn_count = malta_force_level }
+	multiply_temp_variable = { malta_spawn_count = constant:malta_force.guards_per_level }
+	add_to_temp_variable = { malta_spawn_count = malta_force_extra }
+	malta_spawn_in = { STATE = 454 }
+}
+
+# ---------------------------------------------------------------------------
+# Council initialisation
+# ---------------------------------------------------------------------------
+
+# COUNTRY (MLT). Values, seats and clocks.
+malta_initialize_council = {
+	set_variable = { malta_standing = constant:malta_standing.functional }
+	set_variable = { malta_cohesion = constant:malta_opening_values.cohesion }
+	set_variable = { malta_legitimacy = constant:malta_opening_values.legitimacy }
+	set_variable = { malta_jerusalem_days = 0 }
+	set_variable = { malta_all_anchors_days = 0 }
+	set_variable = { malta_collapse_days = 0 }
+	set_variable = { malta_standing_malus_until = 0 }
+	set_variable = { malta_next_demand_day = global.num_days }
+	add_to_variable = { malta_next_demand_day = constant:malta_demand.first_delay_days }
+	set_variable = { malta_seated_count = 0 }
+	set_variable = { malta_incident_count_recent = 0 }
+	set_variable = { malta_last_demand_order = 0 }
+	set_variable = { malta_eleventh_failures = 0 }
+	set_variable = { malta_opening_day = global.num_days }
+	set_variable = { malta_age_days = 0 }
+	set_variable = { malta_eleventh_phase = 0 }
+	set_variable = { malta_incident_order = 0 }
+	set_variable = { malta_demand_order = 0 }
+	set_variable = { malta_demand_kind = 0 }
+	set_variable = { malta_demand_deadline = 0 }
+	set_variable = { malta_banners_used = 0 }
+	set_variable = { malta_banners_raised = 0 }
+	set_variable = { malta_sea_road_days = 0 }
+	set_variable = { malta_corridor_days = 0 }
+	set_variable = { malta_harbor_days = 0 }
+	set_variable = { malta_rebuild_days = 0 }
+	set_variable = { malta_evac_days = 0 }
+	set_variable = { malta_landing_hold_days = 0 }
+	clear_array = malta_order_seated
+	clear_array = malta_order_influence
+	clear_array = malta_order_grievance
+	clear_array = malta_order_incidents
+	clear_array = malta_order_incident_day
+	clear_array = malta_order_returns
+	clear_array = malta_order_compromise_used
+	set_temp_variable = { malta_array_size = constant:malta_council.array_size }
+	for_loop_effect = {
+		start = 0
+		end = malta_array_size
+		add_to_array = { malta_order_seated = 0 }
+		add_to_array = { malta_order_influence = constant:malta_influence.normal }
+		add_to_array = { malta_order_grievance = 0 }
+		add_to_array = { malta_order_incidents = 0 }
+		add_to_array = { malta_order_incident_day = 0 }
+		add_to_array = { malta_order_returns = 0 }
+		add_to_array = { malta_order_compromise_used = 0 }
+	}
+	set_temp_variable = { malta_seat_order = constant:malta_order.hospitallers }
+	malta_seat_order_now = yes
+	set_temp_variable = { malta_seat_order = constant:malta_order.templars }
+	malta_seat_order_now = yes
+	set_temp_variable = { malta_seat_order = constant:malta_order.naval }
+	malta_seat_order_now = yes
+	if = {
+		limit = { has_global_flag = malta_stage_1_active }
+		malta_seat_remaining_orders = yes
+		add_to_variable = { malta_legitimacy = constant:malta_opening_values.stage_1_legitimacy }
+		add_to_variable = { malta_cohesion = constant:malta_opening_values.stage_1_cohesion }
+	}
+	if = {
+		limit = { has_global_flag = malta_stage_2_active }
+		add_to_variable = { malta_legitimacy = constant:malta_opening_values.stage_2_legitimacy }
+		add_to_variable = { malta_cohesion = constant:malta_opening_values.stage_2_cohesion }
+	}
+	if = {
+		limit = { has_global_flag = malta_stage_3_active }
+		add_to_variable = { malta_legitimacy = constant:malta_opening_values.stage_3_legitimacy }
+		add_to_variable = { malta_cohesion = constant:malta_opening_values.stage_3_cohesion }
+	}
+	clamp_variable = { var = malta_cohesion min = constant:malta_value.min max = constant:malta_value.max }
+	clamp_variable = { var = malta_legitimacy min = constant:malta_value.min max = constant:malta_value.max }
+	malta_sync_all_seats = yes
+	malta_update_banner_cap = yes
+	malta_collect_campaign_targets = yes
+	malta_publish_costs = yes
+	malta_publish_header = yes
+	activate_mission = malta_hold_four_anchors_mission
+}
+
+# COUNTRY (MLT). Input: temp malta_seat_order. Seats the order once.
+malta_seat_order_now = {
+	if = {
+		limit = { check_variable = { var = malta_order_seated^malta_seat_order value = 0 compare = equals } }
+		set_variable = { malta_order_seated^malta_seat_order = 1 }
+		add_to_variable = { malta_seated_count = 1 }
+	}
+}
+
+# COUNTRY (MLT). Seats the Teutonic Chapter, the Order of Saint Lazarus and
+# the Siege Brotherhoods.
+malta_seat_remaining_orders = {
+	set_temp_variable = { malta_seat_order = constant:malta_order.teutonic }
+	malta_seat_order_now = yes
+	set_temp_variable = { malta_seat_order = constant:malta_order.lazarus }
+	malta_seat_order_now = yes
+	set_temp_variable = { malta_seat_order = constant:malta_order.siege }
+	malta_seat_order_now = yes
+}
+
+# COUNTRY (MLT). Evolution III opening: the coalition has already proven the
+# anchors, so the command starts Recognized.
+malta_apply_stage_3_standing = {
+	set_variable = { malta_standing = constant:malta_standing.recognized }
+	set_variable = { malta_jerusalem_days = constant:malta_standing.jerusalem_days }
+	set_variable = { malta_all_anchors_days = constant:malta_standing.recognized_days }
+}

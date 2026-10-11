@@ -100,6 +100,21 @@ Believers vs Nonbelievers uses centrally reserved `SCN-021` / raw `21` under the
 The user’s 7 October allocation instruction resolves this identifier, while gameplay acceptance and implementation remain separate.
 Planning-era source receipts preserve the superseded `SCN-015` candidate as history.
 
+## Accepted by parent 2026-10-11
+
+The release-pass parent accepted these parts of the pack for implementation:
+
+- the event contract (`01_event_contract.md`)
+- the opening release transaction and its map rules (`02_opening_release_and_map.md`)
+- the Malta country package (`03_malta_country_package.md`)
+- the Crusade Council mechanic with its three public values, Crusade Authority read as Command Standing, Order Cohesion and Sacred Legitimacy (`04_crusade_council_mechanic.md`)
+- the baseline decisions and missions with the Eleventh Crusade comeback (`07_decisions_missions_and_failure.md`, `25_decision_register.md`)
+- the focus tree architecture for the Malta-led realm, the Holy See and the Kingdom of God outcomes (`06_focus_tree_architecture.md`, `26_focus_route_matrix.md`)
+- the principalities and governance (`08_principalities_and_governance.md`)
+- Evolutions I to III (`09_evolutions_and_prefire_scaling.md`)
+
+Deferred to a later pass by the same decision: the custom 3D unit families with their counters, audio and animation (`05_custom_military_families.md`, `17_assets_3d_audio_animation.md`), the hidden Teutonic Order and Atlantis routes (`10`, `11`), the Holy World terminal and the Believers vs Nonbelievers scenario (`12`, `13`) and the super-event quotes and audio (`18`). For now Malta's forces use the ordinary land sub-units under interim template names, marked in `docs/events/038_malta_crusaders.md`.
+
 ## Planning status
 
 The planning pack contains no approved fallback. Exact state IDs, exact country carrier decisions, final numerical values, final player-facing wording, final quotes, final music, final images, and final model sources remain implementation-time evidence gates. Those gates are defined precisely so they cannot be filled by guesswork.

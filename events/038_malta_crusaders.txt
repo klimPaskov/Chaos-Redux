@@ -1,22 +1,30 @@
 add_namespace = chaosx.nr38
 
 ##############################################################################################################
-#    ##    ## ########      #######   #######
-#    ###   ## ##     ##    ##     ## ##     ##
-#    ####  ## ##     ##           ## ##     ##
-#    ## ## ## ########      #######   #######
-#    ##  #### ##   ##             ## ##     ##
-#    ##   ### ##    ##     ##     ## ##     ##
-#    ##    ## ##     ##     #######   #######
+# EVENT 38 - MALTA CRUSADERS
 ##############################################################################################################
-#   #     #
-#   ##   ##   ##   #      #####   ##       ####  #####  #    #  ####    ##   #####  ###### #####   ####
-#   # # # #  #  #  #        #    #  #     #    # #    # #    # #       #  #  #    # #      #    # #
-#   #  #  # #    # #        #   #    #    #      #    # #    #  ####  #    # #    # #####  #    #  ####
-#   #     # ###### #        #   ######    #      #####  #    #      # ###### #    # #      #####       #
-#   #     # #    # #        #   #    #    #    # #   #  #    # #    # #    # #    # #      #   #  #    #
-#   #     # #    # ######   #   #    #     ####  #    #  ####   ####  #    # #####  ###### #    #  ####
-
+# Entry event chaosx.nr38.1 is hidden and runs the opening release transaction
+# (common/scripted_effects/038_malta_crusaders_setup_effects.txt). The pre-fire
+# hook malta_prepare_random_event_fire freezes the state set before the Event
+# History row is written, so the row names Malta as its actor.
+#
+#   .1   entry, opening transaction (hidden)
+#   .2   Malta: The Crusade Is Underway, and the choice of the first command
+#   .3   displaced owner: crusaders on our soil
+#   .4   Catholic governments: the appeal from Malta
+#   .5   weekly pulse of the actor (hidden)
+#   .6   neighbouring governments: banners in the Levant
+#   .7   world news
+#   .8   an order's demand
+#   .9   a rift in the council
+#   .10  an unanswered demand
+#   .14  the Holy Land is lost (opens the Eleventh Crusade)
+#   .15  the cross returns (the recovery succeeds)
+#   .16  Malta closes its gates (the island settlement)
+#   .20  who keeps Jerusalem
+#   .21  a charter for one order
+#   .30  an ultimatum from Valletta
+#   .31  the answer to the ultimatum
 ##############################################################################################################
 
 country_event = {
@@ -27,117 +35,728 @@ country_event = {
 	is_triggered_only = yes
 
 	immediate = {
-		every_country = {
-			limit = { any_owned_state = { is_core_of = MLT } }
-			release = MLT
-		}
-		news_event = { id = chaosx.news.43 days = 2 }
-		MLT = {
-			set_cosmetic_tag = CRU
-			add_ideas = ninth_crusade
-			add_war_support = 1.00
-			add_stability = 1.00
-			set_politics = {
-				ruling_party = neutrality
-				elections_allowed = no
-				election_frequency = 48
-				long_name = "The Ninth Crusade Order"
-				name = "Crusaders"
-			}
-			add_popularity = {
-				ideology = neutrality
-				popularity = 1.00
-			}
-			retire_country_leader = yes
-			create_country_leader = {
-				name = "The Leader of the Order of Malta"
-				picture = GFX_portrait_CRU_crusader
-				ideology = despotism
-			}
-			set_technology = {
-				artillery1 = 1
-				tech_support = 1
-				tech_engineers = 1
-				tech_recon = 1
-				tech_maintenance_company = 1
-				infantry_weapons1 = 1
-			}
-			add_equipment_to_stockpile = {
-				type = convoy
-				amount = 200
-			}
-
-		}
-		every_state = {
-			limit = { OR = { state = 677 state = 344 state = 350 state = 553 state = 454 state = 799 state = 183 state = 182 state = 455 is_core_of = GRE is_core_of = TUR state = 453 state = 446 } }
-			add_core_of = MLT
-		}
-		every_state = {
-			limit = { OR = { state = 183 state = 797 state = 182 state = 47 state = 454 state = 553 state = 799 state = 677 state = 344 state = 345 } }
-			transfer_state_to = MLT
-		}
-
-		MLT = {
-			division_template = {
-				name = "Malta Knights Division"
-				regiments = {
-					irregular_infantry = { x = 0 y = 0 }
-					irregular_infantry = { x = 0 y = 1 }
-					irregular_infantry = { x = 0 y = 2 }
-					irregular_infantry = { x = 0 y = 3 }
-					irregular_infantry = { x = 1 y = 0 }
-					irregular_infantry = { x = 1 y = 1 }
-					irregular_infantry = { x = 1 y = 2 }
-					irregular_infantry = { x = 1 y = 3 }
-					irregular_infantry = { x = 2 y = 0 }
-					irregular_infantry = { x = 2 y = 1 }
-					irregular_infantry = { x = 2 y = 2 }
-					irregular_infantry = { x = 2 y = 3 }
-					irregular_infantry = { x = 3 y = 0 }
-					irregular_infantry = { x = 3 y = 1 }
-					irregular_infantry = { x = 3 y = 2 }
-					irregular_infantry = { x = 3 y = 3 }
-				}
-				support = {
-					recon = { x = 0 y = 0 }
-					maintenance_company = { x = 0 y = 1 }
-					engineer = { x = 0 y = 2 }
-					artillery = { x = 0 y = 3 }
-				}
-			}
-			every_owned_state = {
-				create_unit = {
-					division = "name = \"The Crusaders\" division_template = \"Malta Knights Division\" start_experience_factor = 0.2"
-					count = 2
-					owner = MLT
-				}
-			}
-		}
-		every_country = {
-			limit = { any_owned_state = { is_core_of = MLT }  }
-			MLT = {
-				declare_war_on = {
-					type = take_core_state
-					target = PREV
-				}
-			}
-			country_event = { id = chaosx.nr38.2 days = 1 }
+		malta_commit_opening_transaction = yes
+		if = {
+			limit = { check_variable = { var = global.malta_opening_result value = constant:malta_opening.result_success compare = equals } }
+			malta_send_opening_messages = yes
 		}
 	}
 }
 
 ##############################################################################################################
 
+# Malta: the opening and the first command.
 country_event = {
 	id = chaosx.nr38.2
 	title = chaosx.nr38.2.t
 	desc = chaosx.nr38.2.d
-	picture = GFX_report_event_FIN_petsamo_mine
+	picture = GFX_news_crusaders
 
 	is_triggered_only = yes
 
 	option = {
-		ai_chance = { base = 100 }
 		name = chaosx.nr38.2.a
+		trigger = { malta_is_actor = yes }
+		ai_chance = { base = 20 modifier = { add = 25 malta_cohesion_is_working_or_better = no } }
+		custom_effect_tooltip = malta_posture_central_tt
+		hidden_effect = {
+			set_country_flag = malta_posture_central
+			set_temp_variable = { malta_change = constant:malta_posture.central_cohesion }
+			malta_change_cohesion = yes
+			add_command_power = constant:malta_posture.central_command_power
+		}
+	}
+
+	option = {
+		name = chaosx.nr38.2.b
+		trigger = { malta_is_actor = yes }
+		ai_chance = { base = 60 }
+		custom_effect_tooltip = malta_posture_balanced_tt
+		hidden_effect = {
+			set_country_flag = malta_posture_balanced
+			set_temp_variable = { malta_change = constant:malta_posture.balanced_cohesion }
+			malta_change_cohesion = yes
+		}
+	}
+
+	option = {
+		name = chaosx.nr38.2.c
+		trigger = { malta_is_actor = yes }
+		ai_chance = { base = 20 }
+		custom_effect_tooltip = malta_posture_civilian_tt
+		hidden_effect = {
+			set_country_flag = malta_posture_civilian
+			set_temp_variable = { malta_change = constant:malta_posture.civilian_legitimacy }
+			malta_change_legitimacy = yes
+			add_stability = constant:malta_posture.civilian_stability
+		}
+	}
+}
+
+##############################################################################################################
+
+# A displaced owner.
+country_event = {
+	id = chaosx.nr38.3
+	title = chaosx.nr38.3.t
+	desc = chaosx.nr38.3.d
+	picture = GFX_news_crusaders
+
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx.nr38.3.a
+		ai_chance = {
+			base = 50
+			modifier = { add = 20 check_variable = { var = num_divisions value = constant:malta_ai.defender_strong_divisions compare = greater_than } }
+		}
+		custom_effect_tooltip = malta_owner_counterattack_tt
+		hidden_effect = {
+			add_war_support = constant:malta_reaction.counterattack_war_support
+			set_temp_variable = { malta_timer_days = constant:malta_reaction.alarm_days }
+			add_timed_idea = { idea = malta_front_alarm days = malta_timer_days }
+		}
+	}
+
+	option = {
+		name = chaosx.nr38.3.b
+		ai_chance = { base = 30 }
+		custom_effect_tooltip = malta_owner_appeal_tt
+		hidden_effect = {
+			add_political_power = constant:malta_reaction.appeal_political_power
+		}
+	}
+
+	option = {
+		name = chaosx.nr38.3.c
+		ai_chance = {
+			base = 20
+			modifier = { add = 20 check_variable = { var = num_divisions value = constant:malta_ai.defender_weak_divisions compare = less_than } }
+		}
+		custom_effect_tooltip = malta_owner_hold_tt
+		hidden_effect = {
+			add_stability = constant:malta_reaction.hold_stability
+			add_command_power = constant:malta_reaction.hold_command_power
+		}
+	}
+}
+
+##############################################################################################################
+
+# Catholic governments.
+country_event = {
+	id = chaosx.nr38.4
+	title = chaosx.nr38.4.t
+	desc = chaosx.nr38.4.d
+	picture = GFX_news_crusaders
+
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx.nr38.4.a
+		trigger = { NOT = { has_political_power < constant:malta_reaction.volunteers_cost } }
+		ai_chance = {
+			base = 25
+			modifier = { add = 25 has_government = neutrality }
+			modifier = { factor = 0.2 has_government = communism }
+			modifier = { factor = 0.3 has_government = democratic }
+		}
+		custom_effect_tooltip = malta_catholic_support_tt
+		hidden_effect = {
+			add_political_power = constant:malta_reaction.volunteers_cost_negative
+			MLT = {
+				if = {
+					limit = { malta_is_actor = yes }
+					set_temp_variable = { malta_change = constant:malta_reaction.volunteers_legitimacy }
+					malta_change_legitimacy = yes
+					add_manpower = constant:malta_reaction.volunteers_manpower
+				}
+			}
+		}
+	}
+
+	option = {
+		name = chaosx.nr38.4.b
+		ai_chance = { base = 55 }
+		custom_effect_tooltip = malta_catholic_words_tt
+		hidden_effect = {
+			MLT = {
+				if = {
+					limit = { malta_is_actor = yes }
+					set_temp_variable = { malta_change = constant:malta_reaction.words_legitimacy }
+					malta_change_legitimacy = yes
+				}
+			}
+		}
+	}
+
+	option = {
+		name = chaosx.nr38.4.c
+		ai_chance = {
+			base = 20
+			modifier = { add = 30 has_government = communism }
+			modifier = { add = 15 has_government = democratic }
+		}
+		custom_effect_tooltip = malta_catholic_refusal_tt
+		hidden_effect = {
+			MLT = {
+				if = {
+					limit = { malta_is_actor = yes }
+					set_temp_variable = { malta_change = constant:malta_reaction.refusal_legitimacy }
+					malta_change_legitimacy = yes
+				}
+			}
+		}
+	}
+}
+
+##############################################################################################################
+
+# Weekly pulse of the actor (hidden).
+country_event = {
+	id = chaosx.nr38.5
+	title = chaosx.nr38.5.t
+
+	hidden = yes
+	is_triggered_only = yes
+
+	immediate = {
+		clr_country_flag = malta_pulse_scheduled
+		if = {
+			limit = { malta_is_actor = yes }
+			malta_weekly_pulse = yes
+			set_country_flag = malta_pulse_scheduled
+			country_event = { id = chaosx.nr38.5 days = 7 }
+		}
+		else = {
+			malta_cleanup_actor = yes
+		}
+	}
+}
+
+##############################################################################################################
+
+# Neighbouring governments.
+country_event = {
+	id = chaosx.nr38.6
+	title = chaosx.nr38.6.t
+	desc = chaosx.nr38.6.d
+	picture = GFX_news_crusaders
+
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx.nr38.6.a
+		ai_chance = {
+			base = 40
+			modifier = { add = 20 has_war = no }
+		}
+		custom_effect_tooltip = malta_neighbour_conference_tt
+		hidden_effect = {
+			add_war_support = constant:malta_reaction.conference_war_support
+			add_stability = constant:malta_reaction.conference_stability
+		}
+	}
+
+	option = {
+		name = chaosx.nr38.6.b
+		trigger = { NOT = { has_political_power < constant:malta_reaction.resistance_cost } }
+		ai_chance = {
+			base = 25
+			modifier = { add = 15 has_government = communism }
+		}
+		custom_effect_tooltip = malta_neighbour_resistance_tt
+		hidden_effect = {
+			add_political_power = constant:malta_reaction.resistance_cost_negative
+			MLT = {
+				if = {
+					limit = { malta_is_actor = yes }
+					every_owned_state = {
+						limit = { malta_state_is_expedition_state = yes }
+						add_compliance = constant:malta_reaction.resistance_compliance
+					}
+				}
+			}
+		}
+	}
+
+	option = {
+		name = chaosx.nr38.6.c
+		ai_chance = { base = 35 }
+		custom_effect_tooltip = malta_neighbour_ports_tt
+		hidden_effect = {
+			MLT = {
+				if = {
+					limit = {
+						malta_is_actor = yes
+						NOT = { has_idea = malta_ports_closed }
+					}
+					set_temp_variable = { malta_timer_days = constant:malta_reaction.ports_days }
+					add_timed_idea = { idea = malta_ports_closed days = malta_timer_days }
+				}
+			}
+		}
+	}
+}
+
+##############################################################################################################
+
+# World news.
+news_event = {
+	id = chaosx.nr38.7
+	title = chaosx.nr38.7.t
+	desc = chaosx.nr38.7.d
+	picture = GFX_news_crusaders
+
+	major = yes
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx.nr38.7.a
+	}
+}
+
+##############################################################################################################
+
+# An order's demand.
+country_event = {
+	id = chaosx.nr38.8
+	title = chaosx.nr38.8.t
+	desc = chaosx.nr38.8.d
+	picture = GFX_news_crusaders
+
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx.nr38.8.a
+		trigger = {
+			malta_has_open_demand = yes
+			malta_can_pay_open_demand = yes
+		}
+		ai_chance = { base = 0 modifier = { set_temp_variable = { malta_ai_weight = mtth:malta_ai_accept_demand } add = malta_ai_weight } }
+		custom_effect_tooltip = malta_accept_demand_tt
+		hidden_effect = {
+			if = {
+				limit = { malta_has_open_demand = yes }
+				malta_accept_open_demand = yes
+			}
+		}
+	}
+
+	option = {
+		name = chaosx.nr38.8.b
+		trigger = {
+			malta_has_open_demand = yes
+			malta_can_compromise_demand = yes
+			malta_can_pay_open_demand_half = yes
+		}
+		ai_chance = { base = 0 modifier = { set_temp_variable = { malta_ai_weight = mtth:malta_ai_compromise_demand } add = malta_ai_weight } }
+		custom_effect_tooltip = malta_compromise_demand_tt
+		hidden_effect = {
+			if = {
+				limit = { malta_has_open_demand = yes }
+				malta_compromise_open_demand = yes
+			}
+		}
+	}
+
+	option = {
+		name = chaosx.nr38.8.c
+		trigger = { malta_has_open_demand = yes }
+		ai_chance = { base = 0 modifier = { set_temp_variable = { malta_ai_weight = mtth:malta_ai_refuse_demand } add = malta_ai_weight } }
+		custom_effect_tooltip = malta_refuse_demand_tt
+		hidden_effect = {
+			if = {
+				limit = { malta_has_open_demand = yes }
+				malta_refuse_open_demand = yes
+			}
+		}
+	}
+
+	option = {
+		name = chaosx.nr38.8.later
+		ai_chance = { base = 1 }
+	}
+}
+
+##############################################################################################################
+
+# A rift in the council.
+country_event = {
+	id = chaosx.nr38.9
+	title = chaosx.nr38.9.t
+	desc = chaosx.nr38.9.d
+	picture = GFX_news_crusaders
+
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx.nr38.9.a
+		trigger = { malta_has_open_incident = yes }
+		ai_chance = {
+			base = 35
+			modifier = { add = 25 has_political_power > constant:malta_ai.incident_political_power }
+		}
+		custom_effect_tooltip = malta_incident_concede_tt
+		hidden_effect = {
+			if = {
+				limit = { malta_has_open_incident = yes }
+				malta_incident_concede = yes
+			}
+		}
+	}
+
+	option = {
+		name = chaosx.nr38.9.b
+		trigger = { malta_has_open_incident = yes }
+		ai_chance = {
+			base = 45
+			modifier = { add = 20 malta_cohesion_is_open_rivalry = yes }
+		}
+		custom_effect_tooltip = malta_incident_arbitrate_tt
+		hidden_effect = {
+			if = {
+				limit = { malta_has_open_incident = yes }
+				malta_incident_arbitrate = yes
+			}
+		}
+	}
+
+	option = {
+		name = chaosx.nr38.9.c
+		trigger = { malta_has_open_incident = yes }
+		ai_chance = { base = 12 }
+		custom_effect_tooltip = malta_incident_suppress_tt
+		hidden_effect = {
+			if = {
+				limit = { malta_has_open_incident = yes }
+				malta_incident_suppress = yes
+			}
+		}
+	}
+}
+
+##############################################################################################################
+
+# An unanswered demand.
+country_event = {
+	id = chaosx.nr38.10
+	title = chaosx.nr38.10.t
+	desc = chaosx.nr38.10.d
+	picture = GFX_news_crusaders
+
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx.nr38.10.a
+		ai_chance = { base = 1 }
+	}
+}
+
+##############################################################################################################
+
+# The Holy Land is lost.
+country_event = {
+	id = chaosx.nr38.14
+	title = chaosx.nr38.14.t
+	desc = chaosx.nr38.14.d
+	picture = GFX_news_crusaders
+
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx.nr38.14.a
+		ai_chance = { base = 1 }
+	}
+}
+
+# The cross returns.
+country_event = {
+	id = chaosx.nr38.15
+	title = chaosx.nr38.15.t
+	desc = chaosx.nr38.15.d
+	picture = GFX_news_crusaders
+
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx.nr38.15.a
+		ai_chance = { base = 1 }
+	}
+}
+
+# Malta closes its gates.
+country_event = {
+	id = chaosx.nr38.16
+	title = chaosx.nr38.16.t
+	desc = chaosx.nr38.16.d
+	picture = GFX_news_crusaders
+
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx.nr38.16.a
+		ai_chance = { base = 1 }
+	}
+}
+
+##############################################################################################################
+
+# Who keeps Jerusalem.
+country_event = {
+	id = chaosx.nr38.20
+	title = chaosx.nr38.20.t
+	desc = chaosx.nr38.20.d
+	picture = GFX_news_crusaders
+
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx.nr38.20.a
+		ai_chance = { base = 0 }
+		custom_effect_tooltip = malta_jerusalem_adjourn_tt
+	}
+
+	option = {
+		name = chaosx.nr38.20.central
+		trigger = { malta_can_arbitrate_jerusalem = yes }
+		ai_chance = { base = 20 modifier = { add = 25 check_variable = { var = malta_cohesion value = constant:malta_cohesion.working compare = less_than } } }
+		custom_effect_tooltip = malta_jerusalem_central_tt
+		hidden_effect = {
+			malta_pay_arbitrate = yes
+			set_temp_variable = { malta_arbitration = 1 }
+			malta_settle_jerusalem = yes
+		}
+	}
+
+	option = {
+		name = chaosx.nr38.20.hospitallers
+		trigger = {
+			malta_can_arbitrate_jerusalem = yes
+			check_variable = { var = malta_order_seated^1 value = 1 compare = equals }
+		}
+		ai_chance = { base = 30 }
+		custom_effect_tooltip = malta_jerusalem_hospitallers_tt
+		hidden_effect = {
+			malta_pay_arbitrate = yes
+			set_temp_variable = { malta_arbitration = 2 }
+			malta_settle_jerusalem = yes
+		}
+	}
+
+	option = {
+		name = chaosx.nr38.20.templars
+		trigger = {
+			malta_can_arbitrate_jerusalem = yes
+			check_variable = { var = malta_order_seated^2 value = 1 compare = equals }
+		}
+		ai_chance = { base = 20 }
+		custom_effect_tooltip = malta_jerusalem_templars_tt
+		hidden_effect = {
+			malta_pay_arbitrate = yes
+			set_temp_variable = { malta_arbitration = 3 }
+			malta_settle_jerusalem = yes
+		}
+	}
+
+	option = {
+		name = chaosx.nr38.20.compact
+		trigger = { malta_can_arbitrate_jerusalem = yes }
+		ai_chance = { base = 30 modifier = { add = 20 malta_legitimacy_is_discredited = yes } }
+		custom_effect_tooltip = malta_jerusalem_compact_tt
+		hidden_effect = {
+			malta_pay_arbitrate = yes
+			set_temp_variable = { malta_arbitration = 4 }
+			malta_settle_jerusalem = yes
+		}
+	}
+}
+
+##############################################################################################################
+
+# A charter for one order. The chosen state is saved as malta_grant_state.
+country_event = {
+	id = chaosx.nr38.21
+	title = chaosx.nr38.21.t
+	desc = chaosx.nr38.21.d
+	picture = GFX_news_crusaders
+
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx.nr38.21.a
+		ai_chance = { base = 0 }
+		hidden_effect = { clear_global_event_target = malta_grant_state }
+	}
+
+	option = {
+		name = chaosx.nr38.21.hospitallers
+		trigger = { check_variable = { var = malta_order_seated^1 value = 1 compare = equals } malta_can_pay_settlement = yes }
+		ai_chance = { base = 25 }
+		custom_effect_tooltip = malta_charter_order_tt
+		hidden_effect = {
+			set_temp_variable = { malta_grant_order = constant:malta_order.hospitallers }
+			malta_settle_to_order_state = yes
+		}
+	}
+
+	option = {
+		name = chaosx.nr38.21.templars
+		trigger = { check_variable = { var = malta_order_seated^2 value = 1 compare = equals } malta_can_pay_settlement = yes }
+		ai_chance = { base = 25 }
+		custom_effect_tooltip = malta_charter_order_tt
+		hidden_effect = {
+			set_temp_variable = { malta_grant_order = constant:malta_order.templars }
+			malta_settle_to_order_state = yes
+		}
+	}
+
+	option = {
+		name = chaosx.nr38.21.naval
+		trigger = { check_variable = { var = malta_order_seated^3 value = 1 compare = equals } malta_can_pay_settlement = yes }
+		ai_chance = { base = 25 }
+		custom_effect_tooltip = malta_charter_order_tt
+		hidden_effect = {
+			set_temp_variable = { malta_grant_order = constant:malta_order.naval }
+			malta_settle_to_order_state = yes
+		}
+	}
+
+	option = {
+		name = chaosx.nr38.21.teutonic
+		trigger = { check_variable = { var = malta_order_seated^4 value = 1 compare = equals } malta_can_pay_settlement = yes }
+		ai_chance = { base = 25 }
+		custom_effect_tooltip = malta_charter_order_tt
+		hidden_effect = {
+			set_temp_variable = { malta_grant_order = constant:malta_order.teutonic }
+			malta_settle_to_order_state = yes
+		}
+	}
+
+	option = {
+		name = chaosx.nr38.21.lazarus
+		trigger = { check_variable = { var = malta_order_seated^5 value = 1 compare = equals } malta_can_pay_settlement = yes }
+		ai_chance = { base = 25 }
+		custom_effect_tooltip = malta_charter_order_tt
+		hidden_effect = {
+			set_temp_variable = { malta_grant_order = constant:malta_order.lazarus }
+			malta_settle_to_order_state = yes
+		}
+	}
+
+	option = {
+		name = chaosx.nr38.21.siege
+		trigger = { check_variable = { var = malta_order_seated^6 value = 1 compare = equals } malta_can_pay_settlement = yes }
+		ai_chance = { base = 25 }
+		custom_effect_tooltip = malta_charter_order_tt
+		hidden_effect = {
+			set_temp_variable = { malta_grant_order = constant:malta_order.siege }
+			malta_settle_to_order_state = yes
+		}
+	}
+}
+
+##############################################################################################################
+
+# An ultimatum from Valletta. FROM is the sender.
+country_event = {
+	id = chaosx.nr38.30
+	title = chaosx.nr38.30.t
+	desc = chaosx.nr38.30.d
+	picture = GFX_news_crusaders
+
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx.nr38.30.a
+		ai_chance = {
+			base = 0
+			modifier = { add = 10 check_variable = { var = num_divisions value = constant:malta_ai.defender_weak_divisions compare = less_than } }
+			modifier = { add = 25 has_capitulated = yes }
+		}
+		custom_effect_tooltip = malta_ultimatum_accept_tt
+		hidden_effect = {
+			clr_country_flag = malta_ultimatum_received
+			malta_cede_registry_states = yes
+			MLT = { set_country_flag = malta_ultimatum_accepted }
+			MLT = { country_event = { id = chaosx.nr38.31 } }
+		}
+	}
+
+	option = {
+		name = chaosx.nr38.30.b
+		ai_chance = {
+			base = 25
+			modifier = { add = 20 check_variable = { var = num_divisions value = constant:malta_ai.defender_weak_divisions compare = less_than } }
+		}
+		custom_effect_tooltip = malta_ultimatum_tribute_tt
+		hidden_effect = {
+			clr_country_flag = malta_ultimatum_received
+			add_political_power = constant:malta_campaign.tribute_negative
+			MLT = {
+				add_political_power = constant:malta_campaign.tribute
+				set_country_flag = malta_ultimatum_bargained
+				country_event = { id = chaosx.nr38.31 }
+			}
+		}
+	}
+
+	option = {
+		name = chaosx.nr38.30.c
+		ai_chance = { base = 75 }
+		custom_effect_tooltip = malta_ultimatum_refuse_tt
+		hidden_effect = {
+			clr_country_flag = malta_ultimatum_received
+			MLT = {
+				set_country_flag = malta_ultimatum_refused
+				country_event = { id = chaosx.nr38.31 }
+			}
+		}
+	}
+}
+
+# The answer to the ultimatum.
+country_event = {
+	id = chaosx.nr38.31
+	title = chaosx.nr38.31.t
+	desc = {
+		trigger = { has_country_flag = malta_ultimatum_accepted }
+		text = chaosx.nr38.31.accepted
+	}
+	desc = {
+		trigger = { has_country_flag = malta_ultimatum_bargained }
+		text = chaosx.nr38.31.bargained
+	}
+	desc = {
+		trigger = { has_country_flag = malta_ultimatum_refused }
+		text = chaosx.nr38.31.refused
+	}
+	picture = GFX_news_crusaders
+
+	is_triggered_only = yes
+
+	immediate = {
+		hidden_effect = {
+			set_temp_variable = { malta_change = 0 }
+			if = {
+				limit = { has_country_flag = malta_ultimatum_accepted }
+				set_temp_variable = { malta_change = constant:malta_campaign.accepted_legitimacy }
+			}
+			else_if = {
+				limit = { has_country_flag = malta_ultimatum_refused }
+				set_temp_variable = { malta_change = constant:malta_campaign.refused_legitimacy }
+			}
+			malta_change_legitimacy = yes
+		}
+	}
+
+	option = {
+		name = chaosx.nr38.31.a
+		ai_chance = { base = 1 }
+		hidden_effect = {
+			clr_country_flag = malta_ultimatum_accepted
+			clr_country_flag = malta_ultimatum_bargained
+			clr_country_flag = malta_ultimatum_refused
+		}
 	}
 }

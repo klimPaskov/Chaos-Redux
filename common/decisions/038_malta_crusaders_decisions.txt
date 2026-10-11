@@ -1,0 +1,1255 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 038 MALTA CRUSADERS DECISIONS AND MISSIONS
+# ============================================================================
+# The Crusade Council: the three answers to an open order demand, Joint
+# Command, the arbitration of Jerusalem and the seizure of an order treasury.
+# Mediterranean Campaigns: escort the sea road, repair the Holy Land rail,
+# fortify a port, the emergency air bridge, the ultimatum and the regional
+# crusade (both aimed at a country), the three settlements of a held state and
+# four missions. The Banners: one row per formation family. The Eleventh
+# Crusade: recovery rows by phase and three missions.
+#
+# Merged design rows (reported in docs/events/038_malta_crusaders.md):
+# Select Regional Objective is the target list of the two campaign rows, the
+# Port Project mission is the timer of Fortify a Port, Convert Captured
+# Equipment, Request Foreign Equipment and Seek Temporary Refuge need systems
+# of later phases.
+#
+# Every row has a payment check that reads the published cost, an effect
+# tooltip and an AI score from common/mtth/038_malta_crusaders_mtth.txt.
+# ============================================================================
+
+# ---------------------------------------------------------------------------
+# The Crusade Council
+# ---------------------------------------------------------------------------
+
+malta_council_category = {
+
+	malta_accept_demand = {
+		icon = GFX_decision_generic_political_discourse
+		priority = 120
+		visible = { malta_has_open_demand = yes }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = malta_demand_unaffordable_tt
+				hidden_trigger = { malta_can_pay_open_demand = yes }
+			}
+		}
+		custom_cost_trigger = { malta_can_pay_open_demand = yes }
+		custom_cost_text = malta_demand_accept_cost
+		complete_effect = {
+			custom_effect_tooltip = malta_accept_demand_tt
+			hidden_effect = { malta_accept_open_demand = yes }
+		}
+		ai_will_do = {
+			factor = 0
+			modifier = {
+				set_temp_variable = { malta_ai_weight = mtth:malta_ai_accept_demand }
+				add = malta_ai_weight
+			}
+		}
+	}
+
+	malta_compromise_demand = {
+		icon = GFX_decision_generic_civil_support
+		priority = 119
+		visible = { malta_has_open_demand = yes }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = malta_compromise_used_tt
+				hidden_trigger = { malta_can_compromise_demand = yes }
+			}
+			custom_trigger_tooltip = {
+				tooltip = malta_demand_unaffordable_tt
+				hidden_trigger = { malta_can_pay_open_demand_half = yes }
+			}
+		}
+		custom_cost_trigger = { malta_can_pay_open_demand_half = yes }
+		custom_cost_text = malta_demand_compromise_cost
+		complete_effect = {
+			custom_effect_tooltip = malta_compromise_demand_tt
+			hidden_effect = { malta_compromise_open_demand = yes }
+		}
+		ai_will_do = {
+			factor = 0
+			modifier = {
+				set_temp_variable = { malta_ai_weight = mtth:malta_ai_compromise_demand }
+				add = malta_ai_weight
+			}
+		}
+	}
+
+	malta_refuse_demand = {
+		icon = GFX_decision_generic_break_treaty
+		priority = 118
+		visible = { malta_has_open_demand = yes }
+		available = { always = yes }
+		complete_effect = {
+			custom_effect_tooltip = malta_refuse_demand_tt
+			hidden_effect = { malta_refuse_open_demand = yes }
+		}
+		ai_will_do = {
+			factor = 0
+			modifier = {
+				set_temp_variable = { malta_ai_weight = mtth:malta_ai_refuse_demand }
+				add = malta_ai_weight
+			}
+		}
+	}
+
+	malta_convene_joint_command = {
+		icon = GFX_decision_generic_army_support
+		priority = 110
+		visible = { malta_shows_joint_command = yes }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = malta_joint_command_requirement_tt
+				hidden_trigger = {
+					check_variable = { var = malta_cohesion value = constant:malta_cohesion.working compare = greater_than_or_equals }
+					malta_has_two_seats = yes
+					malta_council_is_quiet = yes
+					NOT = { has_country_flag = malta_joint_command_cooldown }
+				}
+			}
+		}
+		custom_cost_trigger = { malta_can_convene_joint_command = yes }
+		custom_cost_text = malta_cost_joint_command
+		complete_effect = {
+			custom_effect_tooltip = malta_convene_joint_command_tt
+			hidden_effect = { malta_convene_joint_command = yes }
+		}
+		ai_will_do = {
+			factor = 0
+			modifier = {
+				set_temp_variable = { malta_ai_weight = mtth:malta_ai_joint_command }
+				add = malta_ai_weight
+			}
+		}
+	}
+
+	malta_arbitrate_jerusalem = {
+		icon = GFX_decision_generic_political_address
+		priority = 108
+		visible = {
+			malta_is_active_actor = yes
+			NOT = { has_country_flag = malta_jerusalem_arbitrated }
+			NOT = { malta_eleventh_is_active = yes }
+			malta_holds_jerusalem_now = yes
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = malta_arbitrate_requirement_tt
+				hidden_trigger = {
+					malta_standing_is_functional_or_better = yes
+					malta_council_is_quiet = yes
+					check_variable = { var = malta_jerusalem_days value = constant:malta_arbitration.jerusalem_days compare = greater_than_or_equals }
+				}
+			}
+		}
+		custom_cost_trigger = { malta_can_arbitrate_jerusalem = yes }
+		custom_cost_text = malta_cost_arbitrate
+		complete_effect = {
+			custom_effect_tooltip = malta_arbitrate_jerusalem_tt
+			hidden_effect = { country_event = { id = chaosx.nr38.20 } }
+		}
+		ai_will_do = {
+			factor = 0
+			modifier = {
+				set_temp_variable = { malta_ai_weight = mtth:malta_ai_arbitrate_jerusalem }
+				add = malta_ai_weight
+			}
+		}
+	}
+
+	malta_seize_order_treasury = {
+		icon = GFX_decision_generic_confiscation
+		priority = 100
+		visible = {
+			malta_is_active_actor = yes
+			NOT = { has_country_flag = malta_treasury_seized }
+			NOT = { malta_eleventh_is_active = yes }
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = malta_seize_requirement_tt
+				hidden_trigger = {
+					malta_standing_is_functional_or_better = yes
+					malta_council_is_quiet = yes
+				}
+			}
+		}
+		custom_cost_trigger = { malta_can_seize_treasury = yes }
+		custom_cost_text = malta_cost_seize
+		complete_effect = {
+			custom_effect_tooltip = malta_seize_order_treasury_tt
+			hidden_effect = { malta_seize_treasury = yes }
+		}
+		ai_will_do = {
+			factor = 0
+			modifier = {
+				set_temp_variable = { malta_ai_weight = mtth:malta_ai_seize_treasury }
+				add = malta_ai_weight
+			}
+		}
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Mediterranean Campaigns
+# ---------------------------------------------------------------------------
+
+malta_campaign_category = {
+
+	# ------------------------------------------------------------------------
+	# Logistics
+	# ------------------------------------------------------------------------
+
+	malta_escort_sea_road = {
+		icon = GFX_decision_generic_naval
+		priority = 115
+		visible = {
+			malta_is_active_actor = yes
+			malta_anchor_sea_road_held = yes
+			NOT = { has_active_mission = malta_keep_sea_road_open_mission }
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = malta_cost_escort_tt
+				hidden_trigger = { malta_can_pay_escort_sea_road = yes }
+			}
+		}
+		custom_cost_trigger = { malta_can_pay_escort_sea_road = yes }
+		custom_cost_text = malta_cost_escort
+		days_re_enable = constant:malta_logistics.escort_cooldown_days
+		complete_effect = {
+			custom_effect_tooltip = malta_escort_sea_road_tt
+			hidden_effect = { malta_start_escort = yes }
+		}
+		ai_will_do = {
+			factor = 0
+			modifier = {
+				set_temp_variable = { malta_ai_weight = mtth:malta_ai_escort_sea_road }
+				add = malta_ai_weight
+			}
+		}
+	}
+
+	malta_repair_holy_land_rail = {
+		icon = GFX_decision_generic_train
+		priority = 114
+		visible = {
+			malta_is_active_actor = yes
+			malta_holds_holy_land = yes
+			NOT = { has_active_mission = malta_guard_jordan_corridor_mission }
+			NOT = { has_country_flag = malta_rail_repaired }
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = malta_cost_rail_tt
+				hidden_trigger = { malta_can_pay_rail_repair = yes }
+			}
+		}
+		custom_cost_trigger = { malta_can_pay_rail_repair = yes }
+		custom_cost_text = malta_cost_rail
+		days_remove = constant:malta_logistics.rail_days
+		cancel_trigger = { NOT = { malta_is_actor = yes } }
+		complete_effect = {
+			custom_effect_tooltip = malta_repair_rail_tt
+			hidden_effect = { malta_start_rail_repair = yes }
+		}
+		remove_effect = {
+			custom_effect_tooltip = malta_repair_rail_done_tt
+			hidden_effect = {
+				set_country_flag = malta_rail_repaired
+				malta_finish_rail_repair = yes
+			}
+		}
+		ai_will_do = {
+			factor = 0
+			modifier = {
+				set_temp_variable = { malta_ai_weight = mtth:malta_ai_repair_rail }
+				add = malta_ai_weight
+			}
+		}
+	}
+
+	malta_fortify_port = {
+		icon = GFX_decision_generic_coastal_fortification
+		priority = 113
+		state_target = yes
+		target_root_trigger = {
+			malta_is_active_actor = yes
+		}
+		target_trigger = {
+			FROM = {
+				malta_state_is_usable = yes
+				is_owned_by = ROOT
+				is_coastal = yes
+				NOT = { has_state_flag = malta_port_project }
+				NOT = { has_state_flag = malta_fortified_port }
+			}
+		}
+		on_map_mode = map_only
+		visible = {
+			malta_is_active_actor = yes
+			NOT = { malta_eleventh_is_active = yes }
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = malta_cost_port_tt
+				hidden_trigger = { malta_can_pay_port_fortify = yes }
+			}
+		}
+		custom_cost_trigger = { malta_can_pay_port_fortify = yes }
+		custom_cost_text = malta_cost_port
+		days_remove = constant:malta_logistics.port_days
+		cancel_trigger = { NOT = { malta_is_actor = yes } }
+		complete_effect = {
+			custom_effect_tooltip = malta_fortify_port_tt
+			hidden_effect = { malta_start_port_project = yes }
+		}
+		remove_effect = {
+			custom_effect_tooltip = malta_fortify_port_done_tt
+			hidden_effect = { FROM = { malta_finish_port_project = yes } }
+		}
+		ai_will_do = {
+			factor = 0
+			modifier = {
+				set_temp_variable = { malta_ai_weight = mtth:malta_ai_fortify_port }
+				add = malta_ai_weight
+			}
+			modifier = {
+				factor = 2
+				FROM = { malta_state_is_heartland = yes }
+			}
+			modifier = {
+				factor = 0.5
+				FROM = { NOT = { malta_state_is_heartland = yes } }
+			}
+		}
+	}
+
+	malta_emergency_air_bridge = {
+		icon = GFX_decision_generic_air
+		priority = 112
+		visible = {
+			malta_is_active_actor = yes
+			OR = {
+				NOT = { malta_anchor_sea_road_held = yes }
+				check_variable = { var = malta_collapse_days value = 0 compare = greater_than }
+			}
+			NOT = { has_idea = malta_air_bridge }
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = malta_cost_air_bridge_tt
+				hidden_trigger = { malta_can_pay_air_bridge = yes }
+			}
+		}
+		custom_cost_trigger = { malta_can_pay_air_bridge = yes }
+		custom_cost_text = malta_cost_air_bridge
+		days_re_enable = constant:malta_logistics.air_bridge_cooldown_days
+		complete_effect = {
+			custom_effect_tooltip = malta_air_bridge_tt
+			hidden_effect = { malta_start_air_bridge = yes }
+		}
+		ai_will_do = {
+			factor = 0
+			modifier = {
+				set_temp_variable = { malta_ai_weight = mtth:malta_ai_air_bridge }
+				add = malta_ai_weight
+			}
+		}
+	}
+
+	# ------------------------------------------------------------------------
+	# Regional campaign. Both rows are aimed at the owner of registry states
+	# that Malta does not hold. Only one regional crusade runs at a time.
+	# ------------------------------------------------------------------------
+
+	malta_issue_ultimatum = {
+		icon = GFX_decision_generic_political_address
+		priority = 105
+		target_array = global.malta_campaign_targets
+		target_root_trigger = {
+			malta_is_active_actor = yes
+			malta_standing_is_functional_or_better = yes
+		}
+		target_trigger = {
+			FROM = {
+				exists = yes
+				NOT = { has_war_with = ROOT }
+				NOT = { has_country_flag = malta_ultimatum_received }
+			}
+		}
+		visible = {
+			NOT = { malta_eleventh_is_active = yes }
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = malta_ultimatum_cooldown_tt
+				hidden_trigger = { NOT = { has_country_flag = malta_ultimatum_cooldown } }
+			}
+			custom_trigger_tooltip = {
+				tooltip = malta_cost_ultimatum_tt
+				hidden_trigger = { malta_can_pay_ultimatum = yes }
+			}
+		}
+		custom_cost_trigger = { malta_can_pay_ultimatum = yes }
+		custom_cost_text = malta_cost_ultimatum
+		complete_effect = {
+			custom_effect_tooltip = malta_issue_ultimatum_tt
+			hidden_effect = { malta_send_ultimatum = yes }
+		}
+		ai_will_do = { factor = 0 }
+	}
+
+	malta_launch_regional_crusade = {
+		icon = GFX_decision_generic_military
+		priority = 104
+		target_array = global.malta_campaign_targets
+		target_root_trigger = {
+			malta_is_active_actor = yes
+			malta_standing_is_functional_or_better = yes
+		}
+		target_trigger = {
+			FROM = {
+				exists = yes
+				NOT = { has_war_with = ROOT }
+			}
+		}
+		visible = {
+			NOT = { malta_eleventh_is_active = yes }
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = malta_one_crusade_tt
+				hidden_trigger = { NOT = { has_country_flag = malta_regional_crusade_active } }
+			}
+			custom_trigger_tooltip = {
+				tooltip = malta_cost_crusade_tt
+				hidden_trigger = { malta_can_pay_regional_crusade = yes }
+			}
+		}
+		custom_cost_trigger = { malta_can_pay_regional_crusade = yes }
+		custom_cost_text = malta_cost_crusade
+		complete_effect = {
+			custom_effect_tooltip = malta_launch_regional_crusade_tt
+			hidden_effect = { malta_launch_regional_crusade = yes }
+		}
+		ai_will_do = {
+			factor = 0
+			modifier = {
+				set_temp_variable = { malta_ai_weight = mtth:malta_ai_regional_crusade }
+				add = malta_ai_weight
+			}
+			modifier = {
+				factor = 0
+				FROM = { is_major = yes }
+			}
+			modifier = {
+				factor = 0.4
+				FROM = { check_variable = { var = num_divisions value = constant:malta_ai.target_strong_divisions compare = greater_than } }
+			}
+			modifier = {
+				factor = 1.5
+				FROM = {
+					has_war = yes
+					NOT = { has_war_with = ROOT }
+				}
+			}
+			modifier = {
+				factor = 1.6
+				FROM = { any_owned_state = { malta_state_is_bridge_link = yes } }
+			}
+			modifier = {
+				factor = 1.3
+				FROM = { any_owned_state = { malta_state_is_levant_frontier = yes } }
+			}
+		}
+	}
+
+	# ------------------------------------------------------------------------
+	# Settlement of held states
+	# ------------------------------------------------------------------------
+
+	malta_settle_direct_commandery = {
+		icon = GFX_decision_generic_colonial_administration
+		priority = 103
+		state_target = yes
+		target_root_trigger = {
+			malta_is_active_actor = yes
+			malta_standing_is_functional_or_better = yes
+		}
+		target_trigger = {
+			FROM = {
+				malta_state_is_expedition_state = yes
+				malta_state_is_usable = yes
+				is_owned_by = ROOT
+				NOT = { has_state_flag = malta_settled }
+			}
+		}
+		on_map_mode = map_only
+		visible = {
+			NOT = { malta_eleventh_is_active = yes }
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = malta_cost_settle_tt
+				hidden_trigger = { malta_can_pay_settlement = yes }
+			}
+		}
+		custom_cost_trigger = { malta_can_pay_settlement = yes }
+		custom_cost_text = malta_cost_settle
+		complete_effect = {
+			custom_effect_tooltip = malta_settle_direct_tt
+			hidden_effect = { malta_settle_direct = yes }
+		}
+		ai_will_do = {
+			factor = 0
+			modifier = {
+				set_temp_variable = { malta_ai_weight = mtth:malta_ai_settle_direct }
+				add = malta_ai_weight
+			}
+		}
+	}
+
+	malta_settle_order_grant = {
+		icon = GFX_decision_generic_fortification
+		priority = 102
+		state_target = yes
+		target_root_trigger = {
+			malta_is_active_actor = yes
+			malta_standing_is_functional_or_better = yes
+			check_variable = { var = malta_seated_count value = 1 compare = greater_than_or_equals }
+		}
+		target_trigger = {
+			FROM = {
+				malta_state_is_expedition_state = yes
+				malta_state_is_usable = yes
+				is_owned_by = ROOT
+				NOT = { has_state_flag = malta_settled }
+			}
+		}
+		on_map_mode = map_only
+		visible = {
+			NOT = { malta_eleventh_is_active = yes }
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = malta_council_quiet_tt
+				hidden_trigger = { malta_council_is_quiet = yes }
+			}
+			custom_trigger_tooltip = {
+				tooltip = malta_cost_settle_tt
+				hidden_trigger = { malta_can_pay_settlement = yes }
+			}
+		}
+		custom_cost_trigger = { malta_can_pay_settlement = yes }
+		custom_cost_text = malta_cost_settle
+		complete_effect = {
+			custom_effect_tooltip = malta_settle_order_grant_tt
+			hidden_effect = {
+				FROM = { save_global_event_target_as = malta_grant_state }
+				country_event = { id = chaosx.nr38.21 }
+			}
+		}
+		ai_will_do = {
+			factor = 0
+			modifier = {
+				set_temp_variable = { malta_ai_weight = mtth:malta_ai_settle_order_grant }
+				add = malta_ai_weight
+			}
+		}
+	}
+
+	malta_settle_return_under_treaty = {
+		icon = GFX_decision_generic_independence
+		priority = 101
+		state_target = yes
+		target_root_trigger = {
+			malta_is_active_actor = yes
+			malta_standing_is_functional_or_better = yes
+		}
+		target_trigger = {
+			FROM = {
+				malta_state_is_expedition_state = yes
+				is_owned_by = ROOT
+				has_variable = malta_former_owner
+				NOT = { has_state_flag = malta_settled }
+			}
+		}
+		on_map_mode = map_only
+		visible = {
+			NOT = { malta_eleventh_is_active = yes }
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = malta_return_cooldown_tt
+				hidden_trigger = { NOT = { has_country_flag = malta_returned_recently } }
+			}
+			custom_trigger_tooltip = {
+				tooltip = malta_cost_settle_tt
+				hidden_trigger = { malta_can_pay_settlement = yes }
+			}
+		}
+		custom_cost_trigger = { malta_can_pay_settlement = yes }
+		custom_cost_text = malta_cost_settle
+		complete_effect = {
+			custom_effect_tooltip = malta_settle_return_tt
+			hidden_effect = {
+				set_temp_variable = { malta_timer_days = constant:malta_settlement.return_cooldown_days }
+				set_country_flag = { flag = malta_returned_recently days = malta_timer_days }
+				malta_settle_return = yes
+			}
+		}
+		ai_will_do = {
+			factor = 0
+			modifier = {
+				set_temp_variable = { malta_ai_weight = mtth:malta_ai_settle_return }
+				add = malta_ai_weight
+			}
+		}
+	}
+
+	# ------------------------------------------------------------------------
+	# Missions
+	# ------------------------------------------------------------------------
+
+	malta_hold_four_anchors_mission = {
+		icon = GFX_decision_generic_protection
+		priority = 130
+		allowed = { always = yes }
+		activation = { always = no }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = malta_four_anchors_tt
+				hidden_trigger = { malta_standing_is_recognized_or_better = yes }
+			}
+		}
+		days_mission_timeout = constant:malta_mission.anchors_days
+		cancel_trigger = { NOT = { malta_is_actor = yes } }
+		complete_effect = {
+			custom_effect_tooltip = malta_four_anchors_success_tt
+			hidden_effect = { malta_four_anchors_success = yes }
+		}
+		timeout_effect = {
+			custom_effect_tooltip = malta_four_anchors_failure_tt
+			hidden_effect = { malta_four_anchors_failure = yes }
+		}
+	}
+
+	malta_keep_sea_road_open_mission = {
+		icon = GFX_decision_generic_naval
+		priority = 129
+		allowed = { always = yes }
+		activation = { always = no }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = malta_sea_road_hold_tt
+				hidden_trigger = { check_variable = { var = malta_sea_road_days value = constant:malta_mission.sea_road_hold_days compare = greater_than_or_equals } }
+			}
+		}
+		days_mission_timeout = constant:malta_mission.sea_road_days
+		cancel_trigger = { NOT = { malta_is_actor = yes } }
+		complete_effect = {
+			custom_effect_tooltip = malta_sea_road_success_tt
+			hidden_effect = { malta_sea_road_success = yes }
+		}
+		timeout_effect = {
+			custom_effect_tooltip = malta_sea_road_failure_tt
+			hidden_effect = { malta_sea_road_failure = yes }
+		}
+	}
+
+	malta_guard_jordan_corridor_mission = {
+		icon = GFX_decision_generic_train
+		priority = 128
+		allowed = { always = yes }
+		activation = { always = no }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = malta_corridor_hold_tt
+				hidden_trigger = { check_variable = { var = malta_corridor_days value = constant:malta_mission.corridor_hold_days compare = greater_than_or_equals } }
+			}
+		}
+		days_mission_timeout = constant:malta_mission.corridor_days
+		cancel_trigger = { NOT = { malta_is_actor = yes } }
+		complete_effect = {
+			custom_effect_tooltip = malta_corridor_success_tt
+			hidden_effect = { malta_corridor_success = yes }
+		}
+		timeout_effect = {
+			custom_effect_tooltip = malta_corridor_failure_tt
+			hidden_effect = { malta_corridor_failure = yes }
+		}
+	}
+
+	malta_protect_grand_harbour_mission = {
+		icon = GFX_decision_generic_coastal_fortification
+		priority = 127
+		allowed = { always = yes }
+		activation = { always = no }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = malta_harbor_hold_tt
+				hidden_trigger = { check_variable = { var = malta_harbor_days value = constant:malta_mission.harbor_hold_days compare = greater_than_or_equals } }
+			}
+		}
+		days_mission_timeout = constant:malta_mission.harbor_days
+		cancel_trigger = { NOT = { malta_is_actor = yes } }
+		complete_effect = {
+			custom_effect_tooltip = malta_harbor_success_tt
+			hidden_effect = { malta_harbor_success = yes }
+		}
+		timeout_effect = {
+			custom_effect_tooltip = malta_harbor_failure_tt
+			hidden_effect = { malta_harbor_failure = yes }
+		}
+	}
+}
+
+# ---------------------------------------------------------------------------
+# The Banners
+# ---------------------------------------------------------------------------
+
+malta_banners_category = {
+
+	malta_raise_armored_knights = {
+		icon = GFX_decision_generic_pickelhaube
+		priority = 120
+		visible = { malta_shows_banner_family = yes }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = malta_banner_cap_tt
+				hidden_trigger = { malta_banner_slot_free = yes }
+			}
+			custom_trigger_tooltip = {
+				tooltip = malta_cost_raise_banner_tt
+				hidden_trigger = { malta_can_pay_raise_banner = yes }
+			}
+		}
+		custom_cost_trigger = { malta_can_pay_raise_banner = yes }
+		custom_cost_text = malta_cost_raise_banner
+		days_remove = constant:malta_force.training_days
+		cancel_trigger = { NOT = { malta_is_actor = yes } }
+		complete_effect = {
+			custom_effect_tooltip = malta_raise_armored_knights_tt
+			hidden_effect = {
+				malta_pay_raise_banner = yes
+				malta_start_banner = yes
+			}
+		}
+		remove_effect = {
+			custom_effect_tooltip = malta_banner_done_tt
+			hidden_effect = {
+				set_variable = { global.malta_spawn_template = constant:malta_template.knight }
+				malta_finish_banner = yes
+			}
+		}
+		ai_will_do = {
+			factor = 0
+			modifier = {
+				set_temp_variable = { malta_ai_weight = mtth:malta_ai_raise_knights }
+				add = malta_ai_weight
+			}
+		}
+	}
+
+	malta_raise_mounted_column = {
+		icon = GFX_decision_generic_cavalry
+		priority = 119
+		visible = { malta_shows_banner_family = yes }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = malta_banner_cap_tt
+				hidden_trigger = { malta_banner_slot_free = yes }
+			}
+			custom_trigger_tooltip = {
+				tooltip = malta_cost_raise_banner_tt
+				hidden_trigger = { malta_can_pay_raise_banner = yes }
+			}
+		}
+		custom_cost_trigger = { malta_can_pay_raise_banner = yes }
+		custom_cost_text = malta_cost_raise_banner
+		days_remove = constant:malta_force.training_days
+		cancel_trigger = { NOT = { malta_is_actor = yes } }
+		complete_effect = {
+			custom_effect_tooltip = malta_raise_mounted_column_tt
+			hidden_effect = {
+				malta_pay_raise_banner = yes
+				malta_start_banner = yes
+			}
+		}
+		remove_effect = {
+			custom_effect_tooltip = malta_banner_done_tt
+			hidden_effect = {
+				set_variable = { global.malta_spawn_template = constant:malta_template.mounted }
+				malta_finish_banner = yes
+			}
+		}
+		ai_will_do = {
+			factor = 0
+			modifier = {
+				set_temp_variable = { malta_ai_weight = mtth:malta_ai_raise_mounted }
+				add = malta_ai_weight
+			}
+		}
+	}
+
+	malta_raise_ranged_company = {
+		icon = GFX_decision_generic_military
+		priority = 118
+		visible = { malta_shows_banner_family = yes }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = malta_banner_cap_tt
+				hidden_trigger = { malta_banner_slot_free = yes }
+			}
+			custom_trigger_tooltip = {
+				tooltip = malta_cost_raise_banner_tt
+				hidden_trigger = { malta_can_pay_raise_banner = yes }
+			}
+		}
+		custom_cost_trigger = { malta_can_pay_raise_banner = yes }
+		custom_cost_text = malta_cost_raise_banner
+		days_remove = constant:malta_force.training_days
+		cancel_trigger = { NOT = { malta_is_actor = yes } }
+		complete_effect = {
+			custom_effect_tooltip = malta_raise_ranged_company_tt
+			hidden_effect = {
+				malta_pay_raise_banner = yes
+				malta_start_banner = yes
+			}
+		}
+		remove_effect = {
+			custom_effect_tooltip = malta_banner_done_tt
+			hidden_effect = {
+				set_variable = { global.malta_spawn_template = constant:malta_template.ranged }
+				malta_finish_banner = yes
+			}
+		}
+		ai_will_do = {
+			factor = 0
+			modifier = {
+				set_temp_variable = { malta_ai_weight = mtth:malta_ai_raise_ranged }
+				add = malta_ai_weight
+			}
+		}
+	}
+
+	malta_raise_siege_host = {
+		icon = GFX_decision_generic_tank
+		priority = 117
+		visible = {
+			malta_shows_banner_family = yes
+			check_variable = { var = num_of_military_factories value = constant:malta_force.siege_factories compare = greater_than_or_equals }
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = malta_banner_cap_tt
+				hidden_trigger = { malta_banner_slot_free = yes }
+			}
+			custom_trigger_tooltip = {
+				tooltip = malta_cost_raise_siege_tt
+				hidden_trigger = { malta_can_pay_raise_siege = yes }
+			}
+		}
+		custom_cost_trigger = { malta_can_pay_raise_siege = yes }
+		custom_cost_text = malta_cost_raise_siege
+		days_remove = constant:malta_force.siege_training_days
+		cancel_trigger = { NOT = { malta_is_actor = yes } }
+		complete_effect = {
+			custom_effect_tooltip = malta_raise_siege_host_tt
+			hidden_effect = {
+				malta_pay_raise_siege = yes
+				malta_start_banner = yes
+			}
+		}
+		remove_effect = {
+			custom_effect_tooltip = malta_banner_done_tt
+			hidden_effect = {
+				set_variable = { global.malta_spawn_template = constant:malta_template.siege }
+				malta_finish_banner = yes
+			}
+		}
+		ai_will_do = {
+			factor = 0
+			modifier = {
+				set_temp_variable = { malta_ai_weight = mtth:malta_ai_raise_siege }
+				add = malta_ai_weight
+			}
+		}
+	}
+
+	malta_train_crusader_engineers = {
+		icon = GFX_decision_generic_construction
+		priority = 116
+		visible = {
+			malta_shows_banner_family = yes
+			check_variable = { var = malta_banners_raised value = constant:malta_force.engineers_after compare = greater_than_or_equals }
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = malta_banner_cap_tt
+				hidden_trigger = { malta_banner_slot_free = yes }
+			}
+			custom_trigger_tooltip = {
+				tooltip = malta_cost_engineers_tt
+				hidden_trigger = { malta_can_pay_train_engineers = yes }
+			}
+		}
+		custom_cost_trigger = { malta_can_pay_train_engineers = yes }
+		custom_cost_text = malta_cost_engineers
+		days_remove = constant:malta_force.engineer_training_days
+		cancel_trigger = { NOT = { malta_is_actor = yes } }
+		complete_effect = {
+			custom_effect_tooltip = malta_train_engineers_tt
+			hidden_effect = {
+				malta_pay_engineers = yes
+				malta_start_banner = yes
+			}
+		}
+		remove_effect = {
+			custom_effect_tooltip = malta_banner_done_tt
+			hidden_effect = {
+				set_variable = { global.malta_spawn_template = constant:malta_template.engineers }
+				malta_finish_banner = yes
+			}
+		}
+		ai_will_do = {
+			factor = 0
+			modifier = {
+				set_temp_variable = { malta_ai_weight = mtth:malta_ai_train_engineers }
+				add = malta_ai_weight
+			}
+		}
+	}
+}
+
+# ---------------------------------------------------------------------------
+# The Eleventh Crusade
+# ---------------------------------------------------------------------------
+
+malta_eleventh_category = {
+
+	malta_evacuate_exposed_orders = {
+		icon = GFX_decision_generic_protection
+		priority = 120
+		visible = {
+			malta_eleventh_phase_survivors = yes
+			NOT = { has_country_flag = malta_evacuation_started }
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = malta_cost_evacuate_tt
+				hidden_trigger = { malta_can_pay_evacuation = yes }
+			}
+		}
+		custom_cost_trigger = { malta_can_pay_evacuation = yes }
+		custom_cost_text = malta_cost_evacuate
+		complete_effect = {
+			custom_effect_tooltip = malta_evacuate_tt
+			hidden_effect = { malta_start_evacuation = yes }
+		}
+		ai_will_do = {
+			factor = 0
+			modifier = {
+				set_temp_variable = { malta_ai_weight = mtth:malta_ai_evacuate }
+				add = malta_ai_weight
+			}
+		}
+	}
+
+	malta_fortify_malta = {
+		icon = GFX_decision_generic_fortification
+		priority = 119
+		visible = {
+			malta_eleventh_phase_survivors = yes
+			NOT = { has_country_flag = malta_island_fortified }
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = malta_cost_fortify_malta_tt
+				hidden_trigger = { malta_can_pay_fortify_malta = yes }
+			}
+		}
+		custom_cost_trigger = { malta_can_pay_fortify_malta = yes }
+		custom_cost_text = malta_cost_fortify_malta
+		complete_effect = {
+			custom_effect_tooltip = malta_fortify_malta_tt
+			hidden_effect = { malta_fortify_malta_island = yes }
+		}
+		ai_will_do = {
+			factor = 0
+			modifier = {
+				set_temp_variable = { malta_ai_weight = mtth:malta_ai_fortify_malta }
+				add = malta_ai_weight
+			}
+		}
+	}
+
+	malta_call_for_volunteers = {
+		icon = GFX_decision_generic_civil_support
+		priority = 118
+		visible = {
+			malta_eleventh_phase_rebuild = yes
+			NOT = { has_country_flag = malta_volunteers_called }
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = malta_cost_volunteers_tt
+				hidden_trigger = { malta_can_pay_volunteers = yes }
+			}
+			custom_trigger_tooltip = {
+				tooltip = malta_volunteers_credit_tt
+				hidden_trigger = { NOT = { malta_legitimacy_is_discredited = yes } }
+			}
+		}
+		custom_cost_trigger = { malta_can_pay_volunteers = yes }
+		custom_cost_text = malta_cost_volunteers
+		complete_effect = {
+			custom_effect_tooltip = malta_volunteers_tt
+			hidden_effect = { malta_call_volunteers = yes }
+		}
+		ai_will_do = {
+			factor = 0
+			modifier = {
+				set_temp_variable = { malta_ai_weight = mtth:malta_ai_volunteers }
+				add = malta_ai_weight
+			}
+		}
+	}
+
+	malta_rebuild_transports_and_workshops = {
+		icon = GFX_decision_generic_factory
+		priority = 117
+		visible = {
+			malta_eleventh_phase_rebuild = yes
+			NOT = { has_country_flag = malta_transports_rebuilt }
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = malta_cost_rebuild_tt
+				hidden_trigger = { malta_can_pay_rebuild_transports = yes }
+			}
+		}
+		custom_cost_trigger = { malta_can_pay_rebuild_transports = yes }
+		custom_cost_text = malta_cost_rebuild
+		complete_effect = {
+			custom_effect_tooltip = malta_rebuild_tt
+			hidden_effect = { malta_rebuild_transports = yes }
+		}
+		ai_will_do = {
+			factor = 0
+			modifier = {
+				set_temp_variable = { malta_ai_weight = mtth:malta_ai_rebuild }
+				add = malta_ai_weight
+			}
+		}
+	}
+
+	malta_select_new_landing = {
+		icon = GFX_decision_generic_operation
+		priority = 116
+		target_array = global.malta_campaign_targets
+		target_root_trigger = {
+			malta_is_actor = yes
+			malta_eleventh_phase_rebuild = yes
+			NOT = { has_country_flag = malta_eleventh_landing_chosen }
+		}
+		target_trigger = {
+			FROM = {
+				exists = yes
+				any_owned_state = { malta_state_is_landing_candidate = yes }
+			}
+		}
+		visible = {
+			malta_eleventh_phase_rebuild = yes
+			NOT = { has_country_flag = malta_eleventh_landing_chosen }
+			NOT = { has_country_flag = malta_fortress_settlement }
+		}
+		available = { always = yes }
+		complete_effect = {
+			custom_effect_tooltip = malta_select_landing_tt
+			hidden_effect = { malta_select_landing = yes }
+		}
+		ai_will_do = {
+			factor = 0
+			modifier = {
+				set_temp_variable = { malta_ai_weight = mtth:malta_ai_select_landing }
+				add = malta_ai_weight
+			}
+			modifier = {
+				factor = 0.2
+				FROM = { is_major = yes }
+			}
+			modifier = {
+				factor = 1.5
+				FROM = { any_owned_state = { malta_state_is_holy_land = yes } }
+			}
+		}
+	}
+
+	malta_launch_eleventh_crusade = {
+		icon = GFX_decision_generic_military
+		priority = 115
+		visible = {
+			malta_eleventh_phase_rebuild = yes
+			has_country_flag = malta_eleventh_landing_chosen
+			NOT = { has_country_flag = malta_eleventh_launched }
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = malta_launch_ready_tt
+				hidden_trigger = {
+					has_country_flag = malta_eleventh_force_ready
+					NOT = { malta_eleventh_is_closed_to_attack = yes }
+				}
+			}
+			custom_trigger_tooltip = {
+				tooltip = malta_cost_launch_tt
+				hidden_trigger = { malta_can_pay_launch_eleventh = yes }
+			}
+		}
+		custom_cost_trigger = { malta_can_pay_launch_eleventh = yes }
+		custom_cost_text = malta_cost_launch
+		complete_effect = {
+			custom_effect_tooltip = malta_launch_eleventh_tt
+			hidden_effect = { malta_launch_eleventh_crusade = yes }
+		}
+		ai_will_do = {
+			factor = 0
+			modifier = {
+				set_temp_variable = { malta_ai_weight = mtth:malta_ai_launch_eleventh }
+				add = malta_ai_weight
+			}
+		}
+	}
+
+	malta_restore_holy_land_command = {
+		icon = GFX_decision_generic_form_nation
+		priority = 125
+		visible = {
+			malta_eleventh_is_active = yes
+			malta_holds_jerusalem_now = yes
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = malta_restore_requirement_tt
+				hidden_trigger = {
+					check_variable = { var = malta_jerusalem_days value = constant:malta_eleventh.restore_hold_days compare = greater_than_or_equals }
+				}
+			}
+		}
+		complete_effect = {
+			custom_effect_tooltip = malta_restore_command_tt
+			hidden_effect = { malta_restore_holy_land_command = yes }
+		}
+		ai_will_do = { factor = 100 }
+	}
+
+	malta_accept_fortress_malta = {
+		icon = GFX_decision_generic_scorched_earth
+		priority = 90
+		visible = {
+			malta_eleventh_phase_rebuild = yes
+			NOT = { has_country_flag = malta_eleventh_launched }
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = malta_fortress_requirement_tt
+				hidden_trigger = { has_country_flag = malta_island_fortified }
+			}
+		}
+		complete_effect = {
+			custom_effect_tooltip = malta_accept_fortress_tt
+			hidden_effect = { malta_accept_fortress_settlement = yes }
+		}
+		ai_will_do = {
+			factor = 0
+			modifier = {
+				set_temp_variable = { malta_ai_weight = mtth:malta_ai_accept_fortress }
+				add = malta_ai_weight
+			}
+		}
+	}
+
+	# ------------------------------------------------------------------------
+	# Missions
+	# ------------------------------------------------------------------------
+
+	malta_evacuation_mission = {
+		icon = GFX_decision_generic_protection
+		priority = 130
+		allowed = { always = yes }
+		activation = { always = no }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = malta_evacuation_hold_tt
+				hidden_trigger = { malta_anchor_malta_held = yes check_variable = { var = malta_evac_days value = constant:malta_mission.evacuation_min_days compare = greater_than_or_equals } }
+			}
+		}
+		days_mission_timeout = constant:malta_mission.evacuation_days
+		cancel_trigger = { NOT = { malta_is_actor = yes } }
+		complete_effect = {
+			custom_effect_tooltip = malta_evacuation_success_tt
+			hidden_effect = { malta_evacuation_success = yes }
+		}
+		timeout_effect = {
+			custom_effect_tooltip = malta_evacuation_failure_tt
+			hidden_effect = { malta_evacuation_failure = yes }
+		}
+	}
+
+	malta_rebuild_eleventh_force_mission = {
+		icon = GFX_decision_generic_factory
+		priority = 129
+		allowed = { always = yes }
+		activation = { always = no }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = malta_rebuild_force_tt
+				hidden_trigger = { malta_eleventh_force_is_ready = yes }
+			}
+		}
+		days_mission_timeout = constant:malta_mission.rebuild_days
+		cancel_trigger = { NOT = { malta_is_actor = yes } }
+		complete_effect = {
+			custom_effect_tooltip = malta_rebuild_force_success_tt
+			hidden_effect = { set_country_flag = malta_eleventh_force_ready }
+		}
+		timeout_effect = {
+			custom_effect_tooltip = malta_rebuild_force_failure_tt
+			hidden_effect = {
+				set_temp_variable = { malta_change = constant:malta_eleventh_change.rebuild_failure_legitimacy }
+				malta_change_legitimacy = yes
+				set_country_flag = malta_eleventh_force_ready
+				set_country_flag = malta_eleventh_force_weak
+			}
+		}
+	}
+
+	malta_hold_new_foothold_mission = {
+		icon = GFX_decision_generic_form_nation
+		priority = 128
+		allowed = { always = yes }
+		activation = { always = no }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = malta_foothold_hold_tt
+				hidden_trigger = { check_variable = { var = malta_landing_hold_days value = constant:malta_mission.foothold_hold_days compare = greater_than_or_equals } }
+			}
+		}
+		days_mission_timeout = constant:malta_mission.foothold_days
+		cancel_trigger = { NOT = { malta_is_actor = yes } }
+		complete_effect = {
+			custom_effect_tooltip = malta_foothold_success_tt
+			hidden_effect = { malta_hold_foothold_success = yes }
+		}
+		timeout_effect = {
+			custom_effect_tooltip = malta_foothold_failure_tt
+			hidden_effect = { malta_hold_foothold_failure = yes }
+		}
+	}
+}

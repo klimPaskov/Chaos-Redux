@@ -1,0 +1,113 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 038 MALTA CRUSADERS EVENT PIPELINE
+# ============================================================================
+# The glue between the shared random-event pipeline and the Event 38 owner
+# code: the pre-fire hook, the opening messages and the achievement hooks.
+#
+# malta_prepare_random_event_fire is called by fire_event_by_temp_id_no_cluster
+# (chaosx_settings_effects.txt) before the Event History row is written. It
+# freezes the opening, saves the country that receives the entry event as the
+# regular event target malta_prefire_host and sets temp malta_prefire_ready to
+# 1 when the opening can commit. A blocked opening leaves the fire-once state
+# unconsumed and the Events list shows N/A with the Malta reason.
+# ============================================================================
+
+# ANY scope. Output: temp malta_prefire_ready (1 when the opening is ready) and
+# event target malta_prefire_host (the owner of Malta, alive by validation).
+malta_prepare_random_event_fire = {
+	malta_prepare_opening_transaction = yes
+	if = {
+		limit = { check_variable = { var = global.malta_opening_ready value = 1 compare = equals } }
+		116 = { owner = { save_event_target_as = malta_prefire_host } }
+		set_temp_variable = { malta_prefire_ready = 1 }
+	}
+}
+
+# ANY scope (the host of the entry event). One news event, one response event
+# for every displaced owner, and the bounded reaction events of the Catholic
+# and the neighbouring governments. Nobody is notified twice.
+malta_send_opening_messages = {
+	news_event = { id = chaosx.nr38.7 days = 2 }
+	for_each_scope_loop = {
+		array = global.malta_displaced_owners
+		country_event = { id = chaosx.nr38.3 days = 1 }
+	}
+	ITA = { malta_notify_catholic = yes }
+	FRA = { malta_notify_catholic = yes }
+	SPA = { malta_notify_catholic = yes }
+	SPR = { malta_notify_catholic = yes }
+	POR = { malta_notify_catholic = yes }
+	BEL = { malta_notify_catholic = yes }
+	POL = { malta_notify_catholic = yes }
+	IRE = { malta_notify_catholic = yes }
+	TUR = { malta_notify_neighbour = yes }
+	GRE = { malta_notify_neighbour = yes }
+	EGY = { malta_notify_neighbour = yes }
+	SYR = { malta_notify_neighbour = yes }
+	LEB = { malta_notify_neighbour = yes }
+	IRQ = { malta_notify_neighbour = yes }
+	SAU = { malta_notify_neighbour = yes }
+	BUL = { malta_notify_neighbour = yes }
+	YUG = { malta_notify_neighbour = yes }
+}
+
+# COUNTRY. Appeal from Malta to a Catholic government that has not been
+# notified as a displaced owner.
+malta_notify_catholic = {
+	if = {
+		limit = {
+			exists = yes
+			malta_is_reaction_recipient = yes
+		}
+		country_event = { id = chaosx.nr38.4 days = 2 random_days = 3 }
+	}
+}
+
+# COUNTRY. Report to a neighbouring government that has not been notified as a
+# displaced owner.
+malta_notify_neighbour = {
+	if = {
+		limit = {
+			exists = yes
+			malta_is_reaction_recipient = yes
+		}
+		country_event = { id = chaosx.nr38.6 days = 2 random_days = 3 }
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Achievement hooks (COUNTRY, the actor)
+# ---------------------------------------------------------------------------
+
+# Sets the achievement flags of the baseline set when the proof is complete.
+# Called from the weekly pulse. Human players only, never in Force Trigger Mode.
+malta_review_achievements = {
+	if = {
+		limit = { malta_achievement_eligible = yes }
+		if = {
+			limit = {
+				has_country_flag = malta_four_anchors_proven
+				has_country_flag = malta_rail_repaired
+				owns_state = 183
+				controls_state = 183
+				NOT = { has_country_flag = malta_ach_deus_vult }
+			}
+			set_country_flag = malta_ach_deus_vult
+		}
+		if = {
+			limit = {
+				has_country_flag = malta_comeback_complete
+				has_country_flag = malta_foothold_held
+				NOT = { has_country_flag = malta_ach_eleventh_time }
+			}
+			set_country_flag = malta_ach_eleventh_time
+		}
+		if = {
+			limit = {
+				malta_stands_alone_proof = yes
+				NOT = { has_country_flag = malta_ach_stands_alone }
+			}
+			set_country_flag = malta_ach_stands_alone
+		}
+	}
+}

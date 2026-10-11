@@ -1,0 +1,491 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 038 MALTA CRUSADERS TRIGGERS
+# ============================================================================
+# Read-only triggers for the Malta Crusaders campaign. COUNTRY scope means the
+# actor (tag MLT, carrying cosmetic identities) unless stated otherwise.
+# Sections: actor and origin, anchors and Command Standing, value bands,
+# council (orders, demands, incidents), expedition state, the Eleventh
+# Crusade, visibility rules of the decision categories and the payment checks
+# of the actions. Payment checks read the costs published by
+# malta_publish_costs (global.malta_cost_*), so a displayed cost and the
+# checked cost are the same number.
+# ============================================================================
+
+# ---------------------------------------------------------------------------
+# Actor and origin
+# ---------------------------------------------------------------------------
+
+# COUNTRY. A live country that carries the Event 38 origin proof.
+malta_is_actor = {
+	exists = yes
+	has_country_flag = malta_origin
+}
+
+# COUNTRY. The same, and the player or AI can still take actions.
+malta_is_active_actor = {
+	malta_is_actor = yes
+	has_capitulated = no
+}
+
+# ANY. The event has fired and the actor is alive.
+malta_campaign_is_live = {
+	has_global_flag = malta_event_fired
+	MLT = { malta_is_actor = yes }
+}
+
+# ---------------------------------------------------------------------------
+# Anchors and Command Standing
+# ---------------------------------------------------------------------------
+
+# COUNTRY. Malta itself, held with its harbour.
+malta_anchor_malta_held = {
+	owns_state = 116
+	controls_state = 116
+}
+
+# COUNTRY. Jerusalem is held and has been for the proof period. The counter
+# lives on the actor and is advanced by the weekly pulse.
+malta_anchor_jerusalem_held = {
+	owns_state = 454
+	controls_state = 454
+	check_variable = { var = malta_jerusalem_days value = constant:malta_standing.jerusalem_days compare = greater_than_or_equals }
+}
+
+# COUNTRY. Jerusalem is held now, whatever the counter says.
+malta_holds_jerusalem_now = {
+	owns_state = 454
+	controls_state = 454
+}
+
+# COUNTRY. At least one bridge state links Malta to the Holy Land by sea.
+malta_anchor_sea_road_held = {
+	malta_anchor_malta_held = yes
+	any_owned_state = {
+		malta_state_is_bridge_link = yes
+		is_controlled_by = MLT
+	}
+}
+
+# COUNTRY. A port of the Holy Land command.
+malta_anchor_port_held = {
+	OR = {
+		AND = {
+			owns_state = 454
+			controls_state = 454
+		}
+		AND = {
+			owns_state = 455
+			controls_state = 455
+		}
+	}
+}
+
+# COUNTRY. Every state of the Holy Land command is held.
+malta_holds_holy_land = {
+	owns_state = 454
+	controls_state = 454
+	owns_state = 455
+	controls_state = 455
+}
+
+# COUNTRY. The actor holds no state of the Holy Land command.
+malta_holy_land_lost = {
+	NOT = {
+		OR = {
+			AND = {
+				owns_state = 454
+				controls_state = 454
+			}
+			AND = {
+				owns_state = 455
+				controls_state = 455
+			}
+		}
+	}
+}
+
+# COUNTRY. The command is at the given step or better. Steps are the
+# malta_standing constants (1 Fractured to 5 Supreme).
+malta_standing_is_functional_or_better = {
+	check_variable = { var = malta_standing value = constant:malta_standing.functional compare = greater_than_or_equals }
+}
+
+malta_standing_is_recognized_or_better = {
+	check_variable = { var = malta_standing value = constant:malta_standing.recognized compare = greater_than_or_equals }
+}
+
+malta_standing_is_fractured = {
+	check_variable = { var = malta_standing value = constant:malta_standing.fractured compare = less_than_or_equals }
+}
+
+# ---------------------------------------------------------------------------
+# Value bands
+# ---------------------------------------------------------------------------
+
+malta_cohesion_is_open_rivalry = {
+	check_variable = { var = malta_cohesion value = constant:malta_cohesion.strained compare = less_than }
+}
+
+malta_cohesion_is_strained = {
+	check_variable = { var = malta_cohesion value = constant:malta_cohesion.strained compare = greater_than_or_equals }
+	check_variable = { var = malta_cohesion value = constant:malta_cohesion.working compare = less_than }
+}
+
+malta_cohesion_is_working_or_better = {
+	check_variable = { var = malta_cohesion value = constant:malta_cohesion.working compare = greater_than_or_equals }
+}
+
+malta_cohesion_is_united = {
+	check_variable = { var = malta_cohesion value = constant:malta_cohesion.united compare = greater_than_or_equals }
+}
+
+malta_legitimacy_is_discredited = {
+	check_variable = { var = malta_legitimacy value = constant:malta_legitimacy.contested compare = less_than }
+}
+
+malta_legitimacy_is_recognized_or_better = {
+	check_variable = { var = malta_legitimacy value = constant:malta_legitimacy.recognized compare = greater_than_or_equals }
+}
+
+malta_legitimacy_is_sacred_mandate = {
+	check_variable = { var = malta_legitimacy value = constant:malta_legitimacy.sacred_mandate compare = greater_than_or_equals }
+}
+
+# ---------------------------------------------------------------------------
+# Council: orders, demands and incidents
+# ---------------------------------------------------------------------------
+
+# COUNTRY. A demand is open and waiting for an answer.
+malta_has_open_demand = {
+	has_country_flag = malta_demand_open
+}
+
+malta_has_open_incident = {
+	has_country_flag = malta_incident_open
+}
+
+# COUNTRY. Two seats or more are filled (joint command needs a second order).
+malta_has_two_seats = {
+	check_variable = { var = malta_seated_count value = constant:malta_council.two_seats compare = greater_than_or_equals }
+}
+
+# COUNTRY. The command is not tied up by an open demand or incident.
+malta_council_is_quiet = {
+	NOT = { has_country_flag = malta_demand_open }
+	NOT = { has_country_flag = malta_incident_open }
+}
+
+# ---------------------------------------------------------------------------
+# Expedition state and the Eleventh Crusade
+# ---------------------------------------------------------------------------
+
+# COUNTRY. Number of expedition states held, from the weekly pulse.
+malta_holds_at_least_one_foothold = {
+	check_variable = { var = malta_expedition_count value = constant:malta_expedition.one compare = greater_than_or_equals }
+}
+
+# COUNTRY. The Eleventh Crusade recovery is running.
+malta_eleventh_is_active = {
+	has_country_flag = malta_eleventh_active
+}
+
+# COUNTRY. The state saved as the landing of the Eleventh Crusade is held.
+malta_state_held_by_landing = {
+	has_event_target = malta_landing_state
+	event_target:malta_landing_state = { is_controlled_by = MLT }
+}
+
+# COUNTRY. The expedition has collapsed for long enough to open the recovery.
+malta_expedition_has_collapsed = {
+	check_variable = { var = malta_collapse_days value = constant:malta_eleventh.collapse_days compare = greater_than_or_equals }
+}
+
+# ---------------------------------------------------------------------------
+# Decision category visibility
+# ---------------------------------------------------------------------------
+
+malta_shows_council_category = {
+	malta_is_active_actor = yes
+}
+
+malta_shows_campaign_category = {
+	malta_is_active_actor = yes
+	NOT = { malta_eleventh_is_active = yes }
+}
+
+# The banner rows are offered while the command can stand behind them.
+malta_shows_banner_family = {
+	malta_is_active_actor = yes
+	NOT = { malta_eleventh_is_active = yes }
+	malta_standing_is_functional_or_better = yes
+}
+
+# A banner is allowed while the used slots stay under the cap.
+malta_banner_slot_free = {
+	check_variable = { var = malta_banners_used value = malta_banner_cap compare = less_than }
+}
+
+malta_eleventh_phase_survivors = {
+	malta_is_actor = yes
+	malta_eleventh_is_active = yes
+	check_variable = { var = malta_eleventh_phase value = constant:malta_eleventh.phase_survivors compare = equals }
+}
+
+malta_eleventh_phase_rebuild = {
+	malta_is_actor = yes
+	malta_eleventh_is_active = yes
+	check_variable = { var = malta_eleventh_phase value = constant:malta_eleventh.phase_rebuild compare = equals }
+}
+
+# After the failure cap only the island settlement remains.
+malta_eleventh_is_closed_to_attack = {
+	check_variable = { var = malta_eleventh_failures value = constant:malta_eleventh.failure_cap compare = greater_than_or_equals }
+}
+
+# The rebuilt force: enough divisions, convoys and rifles for a landing.
+malta_eleventh_force_is_ready = {
+	check_variable = { var = num_divisions value = constant:malta_eleventh.force_divisions compare = greater_than_or_equals }
+	has_equipment = { convoy_1 > constant:malta_eleventh.force_convoys }
+	has_equipment = { infantry_equipment > constant:malta_eleventh.force_equipment }
+	has_country_flag = malta_transports_rebuilt
+}
+
+malta_shows_eleventh_category = {
+	malta_is_actor = yes
+	malta_eleventh_is_active = yes
+}
+
+# ---------------------------------------------------------------------------
+# Decision visibility and payment checks. Payment triggers read the published
+# costs, so the tooltip and the check always agree.
+# ---------------------------------------------------------------------------
+
+malta_shows_joint_command = {
+	malta_is_active_actor = yes
+	NOT = { malta_eleventh_is_active = yes }
+	NOT = { has_idea = malta_joint_command }
+}
+
+malta_can_convene_joint_command = {
+	check_variable = { var = malta_cohesion value = constant:malta_cohesion.working compare = greater_than_or_equals }
+	malta_has_two_seats = yes
+	malta_council_is_quiet = yes
+	NOT = { has_country_flag = malta_joint_command_cooldown }
+	NOT = { has_army_experience < global.malta_cost_joint_command_xp }
+	NOT = { command_power < global.malta_cost_joint_command_command_power }
+}
+
+malta_can_pay_demand_treasury = {
+	NOT = { has_political_power < global.malta_cost_demand_treasury_political_power }
+}
+
+malta_can_pay_demand_command = {
+	NOT = { command_power < global.malta_cost_demand_command_command_power }
+}
+
+malta_can_pay_demand_levy = {
+	NOT = { has_manpower < global.malta_cost_demand_levy_manpower }
+}
+
+malta_can_pay_demand_headquarters = {
+	NOT = { has_political_power < global.malta_cost_demand_headquarters_political_power }
+	NOT = { has_army_experience < global.malta_cost_demand_headquarters_xp }
+}
+
+malta_can_pay_demand_treasury_half = {
+	NOT = { has_political_power < global.malta_cost_demand_treasury_political_power_half }
+}
+
+malta_can_pay_demand_command_half = {
+	NOT = { command_power < global.malta_cost_demand_command_command_power_half }
+}
+
+malta_can_pay_demand_levy_half = {
+	NOT = { has_manpower < global.malta_cost_demand_levy_manpower_half }
+}
+
+malta_can_pay_demand_headquarters_half = {
+	NOT = { has_political_power < global.malta_cost_demand_headquarters_political_power_half }
+	NOT = { has_army_experience < global.malta_cost_demand_headquarters_xp_half }
+}
+
+# The half payment of the compromise answer, whatever the kind.
+malta_can_pay_open_demand_half = {
+	OR = {
+		AND = {
+			check_variable = { var = malta_demand_kind value = constant:malta_demand_kind.treasury compare = equals }
+			malta_can_pay_demand_treasury_half = yes
+		}
+		AND = {
+			check_variable = { var = malta_demand_kind value = constant:malta_demand_kind.command compare = equals }
+			malta_can_pay_demand_command_half = yes
+		}
+		AND = {
+			check_variable = { var = malta_demand_kind value = constant:malta_demand_kind.levy compare = equals }
+			malta_can_pay_demand_levy_half = yes
+		}
+		AND = {
+			check_variable = { var = malta_demand_kind value = constant:malta_demand_kind.headquarters compare = equals }
+			malta_can_pay_demand_headquarters_half = yes
+		}
+	}
+}
+
+# The payment check of the open demand, whatever its kind.
+malta_can_pay_open_demand = {
+	OR = {
+		AND = {
+			check_variable = { var = malta_demand_kind value = constant:malta_demand_kind.treasury compare = equals }
+			malta_can_pay_demand_treasury = yes
+		}
+		AND = {
+			check_variable = { var = malta_demand_kind value = constant:malta_demand_kind.command compare = equals }
+			malta_can_pay_demand_command = yes
+		}
+		AND = {
+			check_variable = { var = malta_demand_kind value = constant:malta_demand_kind.levy compare = equals }
+			malta_can_pay_demand_levy = yes
+		}
+		AND = {
+			check_variable = { var = malta_demand_kind value = constant:malta_demand_kind.headquarters compare = equals }
+			malta_can_pay_demand_headquarters = yes
+		}
+	}
+}
+
+malta_can_compromise_demand = {
+	check_variable = { var = malta_order_compromise_used^malta_demand_order value = 0 compare = equals }
+}
+
+malta_can_arbitrate_jerusalem = {
+	malta_standing_is_functional_or_better = yes
+	malta_council_is_quiet = yes
+	check_variable = { var = malta_jerusalem_days value = constant:malta_arbitration.jerusalem_days compare = greater_than_or_equals }
+	NOT = { has_political_power < global.malta_cost_arbitrate_political_power }
+}
+
+malta_can_seize_treasury = {
+	malta_standing_is_functional_or_better = yes
+	malta_council_is_quiet = yes
+	NOT = { has_country_flag = malta_treasury_seized }
+	NOT = { command_power < global.malta_cost_seize_command_power }
+}
+
+# Logistics actions. Each reads its own published cost.
+malta_can_pay_escort_sea_road = {
+	NOT = { has_fuel < global.malta_cost_escort_fuel }
+	NOT = { has_equipment = { convoy_1 < global.malta_cost_escort_convoys } }
+	NOT = { command_power < global.malta_cost_escort_command_power }
+}
+
+malta_can_pay_rail_repair = {
+	NOT = { has_equipment = { train_equipment < global.malta_cost_rail_trains } }
+	NOT = { has_equipment = { support_equipment < global.malta_cost_rail_support } }
+	NOT = { has_political_power < global.malta_cost_rail_political_power }
+}
+
+malta_can_pay_port_fortify = {
+	NOT = { has_equipment = { support_equipment < global.malta_cost_port_support } }
+	NOT = { has_political_power < global.malta_cost_port_political_power }
+}
+
+malta_can_pay_air_bridge = {
+	NOT = { has_fuel < global.malta_cost_air_bridge_fuel }
+	NOT = { command_power < global.malta_cost_air_bridge_command_power }
+}
+
+# Recruitment actions.
+malta_can_pay_raise_banner = {
+	NOT = { has_manpower < global.malta_cost_raise_banner_manpower }
+	NOT = { has_equipment = { infantry_equipment < global.malta_cost_raise_banner_equipment } }
+	NOT = { has_army_experience < global.malta_cost_raise_banner_xp }
+}
+
+malta_can_pay_raise_siege = {
+	NOT = { has_manpower < global.malta_cost_raise_siege_manpower }
+	NOT = { has_equipment = { infantry_equipment < global.malta_cost_raise_siege_equipment } }
+	NOT = { has_equipment = { support_equipment < global.malta_cost_raise_siege_support } }
+	NOT = { has_army_experience < global.malta_cost_raise_siege_xp }
+}
+
+malta_can_pay_train_engineers = {
+	NOT = { has_equipment = { support_equipment < global.malta_cost_engineers_support } }
+	NOT = { has_army_experience < global.malta_cost_engineers_xp }
+}
+
+# Campaign actions.
+malta_can_pay_ultimatum = {
+	NOT = { has_political_power < global.malta_cost_ultimatum_political_power }
+	malta_standing_is_functional_or_better = yes
+}
+
+malta_can_pay_regional_crusade = {
+	malta_standing_is_functional_or_better = yes
+	NOT = { command_power < global.malta_cost_crusade_command_power }
+	NOT = { has_equipment = { infantry_equipment < global.malta_cost_crusade_equipment } }
+}
+
+# Settlement actions.
+malta_can_pay_settlement = {
+	NOT = { has_political_power < global.malta_cost_settle_political_power }
+	NOT = { has_equipment = { support_equipment < global.malta_cost_settle_support } }
+}
+
+# Eleventh Crusade actions.
+malta_can_pay_evacuation = {
+	NOT = { has_equipment = { convoy_1 < global.malta_cost_evacuate_convoys } }
+	NOT = { has_fuel < global.malta_cost_evacuate_fuel }
+	NOT = { command_power < global.malta_cost_evacuate_command_power }
+}
+
+malta_can_pay_fortify_malta = {
+	NOT = { has_equipment = { support_equipment < global.malta_cost_fortify_malta_support } }
+	NOT = { has_political_power < global.malta_cost_fortify_malta_political_power }
+}
+
+malta_can_pay_volunteers = {
+	NOT = { has_equipment = { convoy_1 < global.malta_cost_volunteers_convoys } }
+	NOT = { has_political_power < global.malta_cost_volunteers_political_power }
+}
+
+malta_can_pay_rebuild_transports = {
+	NOT = { has_equipment = { support_equipment < global.malta_cost_rebuild_support } }
+	NOT = { has_fuel < global.malta_cost_rebuild_fuel }
+	NOT = { has_political_power < global.malta_cost_rebuild_political_power }
+}
+
+malta_can_pay_launch_eleventh = {
+	NOT = { command_power < global.malta_cost_launch_command_power }
+	NOT = { has_equipment = { infantry_equipment < global.malta_cost_launch_equipment } }
+	NOT = { has_equipment = { convoy_1 < global.malta_cost_launch_convoys } }
+}
+
+# ---------------------------------------------------------------------------
+# Reactions and achievements
+# ---------------------------------------------------------------------------
+
+# COUNTRY. A government that can receive one of the bounded reaction events:
+# not the actor, not a displaced owner and not a special actor.
+malta_is_reaction_recipient = {
+	NOT = { tag = MLT }
+	NOT = { is_in_array = { array = global.malta_displaced_owners value = THIS } }
+	is_special_chaos_country = no
+	is_actual_nonhuman_country = no
+	has_capitulated = no
+}
+
+# COUNTRY (the actor). A human actor outside Force Trigger Mode.
+malta_achievement_eligible = {
+	is_ai = no
+	NOT = { has_country_flag = force_trigger_mode_enabled }
+}
+
+# COUNTRY (the actor). The campaign ran its first stretch without a foreign
+# sponsor, a lost expedition or a principality.
+malta_stands_alone_proof = {
+	check_variable = { var = malta_age_days value = constant:malta_achievement.stands_alone_days compare = greater_than_or_equals }
+	malta_standing_is_recognized_or_better = yes
+	NOT = { has_country_flag = malta_foreign_help_used }
+	NOT = { has_country_flag = malta_eleventh_seen }
+	malta_holds_jerusalem_now = yes
+}

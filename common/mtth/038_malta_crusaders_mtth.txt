@@ -1,0 +1,377 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 038 MALTA CRUSADERS MTTH
+# ============================================================================
+# Pacing of the order demands and the AI scores of every decision. Scores are
+# weights, not click chances: a score of zero is never taken, and the engine's
+# own AI roll decides among the rest. Each entry is evaluated for the actor
+# only (the country already being evaluated), so no world scan is needed.
+# Rows aimed at a target (regional crusade, landing, settlements, port
+# projects) add their target factors inline in the decision, where FROM is
+# available. Survival comes before spectacle: the escort, the air bridge, the
+# rail and the harbour outrank banners and expansion while supply is short.
+# ============================================================================
+
+# Days between order demands. United councils ask less often, a council in open
+# rivalry asks more often. The cadence floor lives in the demand constants.
+malta_demand_interval = {
+	base = constant:malta_demand.base_days
+	modifier = {
+		factor = constant:malta_demand.united_factor
+		malta_cohesion_is_united = yes
+	}
+	modifier = {
+		factor = constant:malta_demand.rivalry_factor
+		malta_cohesion_is_open_rivalry = yes
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Crusade Council
+# ---------------------------------------------------------------------------
+
+# Accept when the price can be paid and the council needs calming.
+malta_ai_accept_demand = {
+	base = 0
+	modifier = {
+		add = 40
+		malta_can_pay_open_demand = yes
+		NOT = { malta_cohesion_is_working_or_better = yes }
+	}
+	modifier = {
+		add = 20
+		malta_can_pay_open_demand = yes
+		malta_cohesion_is_working_or_better = yes
+		check_variable = { var = malta_order_grievance^malta_demand_order value = 2 compare = greater_than_or_equals }
+	}
+	modifier = {
+		add = 10
+		malta_can_pay_open_demand = yes
+		check_variable = { var = malta_order_influence^malta_demand_order value = constant:malta_influence.high compare = equals }
+	}
+}
+
+# Compromise when the full price is out of reach or the order is not pressing.
+malta_ai_compromise_demand = {
+	base = 0
+	modifier = {
+		add = 45
+		malta_can_pay_open_demand = no
+		malta_can_pay_open_demand_half = yes
+	}
+	modifier = {
+		add = 15
+		malta_can_pay_open_demand = yes
+		malta_cohesion_is_working_or_better = yes
+		check_variable = { var = malta_order_grievance^malta_demand_order value = 2 compare = less_than }
+	}
+}
+
+# Refuse only when nothing can be paid, or the order is a minor voice.
+malta_ai_refuse_demand = {
+	base = 0
+	modifier = {
+		add = 30
+		malta_can_pay_open_demand_half = no
+	}
+	modifier = {
+		add = 12
+		malta_cohesion_is_working_or_better = yes
+		check_variable = { var = malta_order_influence^malta_demand_order value = 0 compare = equals }
+	}
+}
+
+malta_ai_joint_command = {
+	base = 0
+	modifier = {
+		add = 25
+		malta_can_convene_joint_command = yes
+	}
+	modifier = {
+		add = 20
+		malta_can_convene_joint_command = yes
+		has_war = yes
+	}
+	modifier = {
+		factor = 0
+		malta_can_convene_joint_command = no
+	}
+}
+
+malta_ai_arbitrate_jerusalem = {
+	base = 0
+	modifier = {
+		add = 35
+		malta_can_arbitrate_jerusalem = yes
+	}
+	modifier = {
+		add = 15
+		malta_can_arbitrate_jerusalem = yes
+		NOT = { malta_cohesion_is_working_or_better = yes }
+	}
+}
+
+# The AI takes an order treasury only when it is poor and the council is calm.
+malta_ai_seize_treasury = {
+	base = 0
+	modifier = {
+		add = 8
+		malta_can_seize_treasury = yes
+		has_political_power < 30
+		malta_cohesion_is_working_or_better = yes
+		check_variable = { var = malta_cohesion value = constant:malta_ai.seize_cohesion_floor compare = greater_than_or_equals }
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Logistics
+# ---------------------------------------------------------------------------
+
+malta_ai_escort_sea_road = {
+	base = 0
+	modifier = {
+		add = 45
+		malta_can_pay_escort_sea_road = yes
+		has_war = yes
+	}
+	modifier = {
+		add = 35
+		malta_can_pay_escort_sea_road = yes
+		has_equipment = { convoy_1 < constant:malta_ai.low_convoys }
+	}
+	modifier = {
+		add = 10
+		malta_can_pay_escort_sea_road = yes
+	}
+}
+
+malta_ai_repair_rail = {
+	base = 0
+	modifier = {
+		add = 35
+		malta_can_pay_rail_repair = yes
+	}
+	modifier = {
+		add = 20
+		malta_can_pay_rail_repair = yes
+		check_variable = { var = malta_corridor_days value = constant:malta_ai.short_hold_days compare = less_than }
+	}
+}
+
+malta_ai_fortify_port = {
+	base = 0
+	modifier = {
+		add = 28
+		malta_can_pay_port_fortify = yes
+		has_war = yes
+	}
+	modifier = {
+		add = 10
+		malta_can_pay_port_fortify = yes
+	}
+}
+
+malta_ai_air_bridge = {
+	base = 0
+	modifier = {
+		add = 90
+		malta_can_pay_air_bridge = yes
+		check_variable = { var = malta_collapse_days value = 0 compare = greater_than }
+	}
+	modifier = {
+		add = 55
+		malta_can_pay_air_bridge = yes
+		NOT = { malta_anchor_sea_road_held = yes }
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Banners. The AI builds a banner only when manpower and rifles are in hand
+# and the cap has room, and prefers the ordinary line before the specialists.
+# ---------------------------------------------------------------------------
+
+malta_ai_raise_knights = {
+	base = 0
+	modifier = {
+		add = 32
+		malta_can_pay_raise_banner = yes
+		malta_banner_slot_free = yes
+		has_manpower > constant:malta_ai.banner_manpower_reserve
+	}
+}
+
+malta_ai_raise_mounted = {
+	base = 0
+	modifier = {
+		add = 22
+		malta_can_pay_raise_banner = yes
+		malta_banner_slot_free = yes
+		has_manpower > constant:malta_ai.banner_manpower_reserve
+	}
+}
+
+malta_ai_raise_ranged = {
+	base = 0
+	modifier = {
+		add = 27
+		malta_can_pay_raise_banner = yes
+		malta_banner_slot_free = yes
+		has_manpower > constant:malta_ai.banner_manpower_reserve
+	}
+}
+
+malta_ai_raise_siege = {
+	base = 0
+	modifier = {
+		add = 18
+		malta_can_pay_raise_siege = yes
+		malta_banner_slot_free = yes
+		has_manpower > constant:malta_ai.banner_manpower_reserve
+	}
+	modifier = {
+		add = 12
+		has_active_mission = malta_guard_jordan_corridor_mission
+	}
+}
+
+malta_ai_train_engineers = {
+	base = 0
+	modifier = {
+		add = 12
+		malta_can_pay_train_engineers = yes
+		malta_banner_slot_free = yes
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Campaign. The target factors are inline in the decisions.
+# ---------------------------------------------------------------------------
+
+# Readiness of the actor for a regional crusade: a supplied command and enough
+# divisions. The target adds its own factors in the decision.
+malta_ai_regional_crusade = {
+	base = 0
+	modifier = {
+		add = 40
+		malta_can_pay_regional_crusade = yes
+		malta_standing_is_recognized_or_better = yes
+		check_variable = { var = num_divisions value = constant:malta_ai.crusade_divisions compare = greater_than_or_equals }
+		malta_cohesion_is_working_or_better = yes
+	}
+	modifier = {
+		add = 15
+		malta_can_pay_regional_crusade = yes
+		malta_standing_is_functional_or_better = yes
+		check_variable = { var = num_divisions value = constant:malta_ai.crusade_divisions_high compare = greater_than_or_equals }
+	}
+	modifier = {
+		factor = 0
+		check_variable = { var = malta_anchor_count value = constant:malta_standing.three_anchors compare = less_than }
+	}
+}
+
+malta_ai_settle_direct = {
+	base = 0
+	modifier = {
+		add = 28
+		malta_can_pay_settlement = yes
+		malta_standing_is_recognized_or_better = yes
+	}
+}
+
+malta_ai_settle_order_grant = {
+	base = 0
+	modifier = {
+		add = 18
+		malta_can_pay_settlement = yes
+		malta_cohesion_is_strained = yes
+	}
+	modifier = {
+		add = 12
+		malta_can_pay_settlement = yes
+		malta_council_is_quiet = yes
+	}
+}
+
+malta_ai_settle_return = {
+	base = 0
+	modifier = {
+		add = 4
+		malta_can_pay_settlement = yes
+		malta_standing_is_fractured = yes
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Eleventh Crusade
+# ---------------------------------------------------------------------------
+
+malta_ai_evacuate = {
+	base = 0
+	modifier = {
+		add = 95
+		malta_can_pay_evacuation = yes
+	}
+}
+
+malta_ai_fortify_malta = {
+	base = 0
+	modifier = {
+		add = 85
+		malta_can_pay_fortify_malta = yes
+	}
+}
+
+malta_ai_volunteers = {
+	base = 0
+	modifier = {
+		add = 70
+		malta_can_pay_volunteers = yes
+	}
+}
+
+malta_ai_rebuild = {
+	base = 0
+	modifier = {
+		add = 75
+		malta_can_pay_rebuild_transports = yes
+	}
+}
+
+malta_ai_select_landing = {
+	base = 0
+	modifier = {
+		add = 60
+	}
+}
+
+# A launch needs the rebuilt force and a stock that is not reckless. After the
+# failure cap the AI no longer attacks.
+malta_ai_launch_eleventh = {
+	base = 0
+	modifier = {
+		add = 70
+		malta_can_pay_launch_eleventh = yes
+		has_country_flag = malta_eleventh_force_ready
+		NOT = { has_country_flag = malta_eleventh_force_weak }
+	}
+	modifier = {
+		add = 25
+		malta_can_pay_launch_eleventh = yes
+		has_country_flag = malta_eleventh_force_ready
+		has_country_flag = malta_eleventh_force_weak
+		check_variable = { var = malta_eleventh_failures value = constant:malta_ai.weak_launch_failures compare = less_than }
+	}
+}
+
+malta_ai_accept_fortress = {
+	base = 0
+	modifier = {
+		add = 90
+		malta_eleventh_is_closed_to_attack = yes
+	}
+	modifier = {
+		add = 35
+		check_variable = { var = malta_eleventh_failures value = constant:malta_ai.fortress_failures compare = greater_than_or_equals }
+		has_country_flag = malta_island_fortified
+	}
+}
