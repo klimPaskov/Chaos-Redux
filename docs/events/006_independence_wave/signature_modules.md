@@ -26,7 +26,7 @@ The congress focus opens the existing regional-ambition and leadership actions w
 ATJ enters after the notables, madrasah and pepper-port projects are complete, the signature branch is open and the stored anchor remains owned and controlled. The uleebalang district, ulama school-board and shared-council branches are mutually exclusive and follow the current internal power-balance result. Their selected idea replaces the Level 2 Council of Notables. The later school network is a separate institution from the selected government route.
 
 The school-network focus authorizes an optional PUSA organization decision.
-PUSA is named from 5 May 1939, the dated foundation recorded by the [Indonesian Ministry of Education and Culture entry](https://esi.kemenbud.go.id/wiki/Teungku_Muhammad_Daud_Beureueh) and the [Oxford Academic account](https://academic.oup.com/book/25629/chapter/193029309).
+PUSA is named for the 1939 association recorded by the [Indonesian Ministry of Education and Culture entry](https://esi.kemenbud.go.id/wiki/Teungku_Muhammad_Daud_Beureueh) and the [Oxford Academic account](https://academic.oup.com/book/25629/chapter/193029309).
 Successful paid organization replaces the ordinary school-network idea and grants one named 50% industry research bonus, representing practical teacher training in this alternate-history program.
 Its durable generation receipt prevents replenishment through repeated completion, cleanup/setup or CXT application in the same origin generation.
 

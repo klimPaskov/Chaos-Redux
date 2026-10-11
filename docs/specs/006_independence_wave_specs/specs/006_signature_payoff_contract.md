@@ -68,7 +68,7 @@ Existing institution-choice weights and power-balance availability/bypass rules 
 
 ## Aceh PUSA education
 
-The paid `independence_wave_atj_signature_organize_pusa` project retains the exact ATJ/IW-150 live-origin and current-generation proof, school-network prerequisite, shared slot, original price and `date > 1939.5.4` gate.
+The paid `independence_wave_atj_signature_organize_pusa` project retains the exact ATJ/IW-150 live-origin and current-generation proof, school-network prerequisite, shared slot, original price and completed-settlement gate.
 PUSA is available from May 5, 1939 and is not a 1936 opening organization.
 Its administration payment remains 20 Command Power and 5,000 manpower, with two civilian factories reserved for 120 days.
 The source willingness base remains `constant:independence_wave_decision_ai.high` (25), pending the probability owner's complete scenarios.
