@@ -1,0 +1,23 @@
+# ============================================================================
+# CHAOS REDUX - RUNTIME CHARACTER RECRUITMENT
+# ============================================================================
+# Overview:
+# - chaosx_recruit_character attaches one character to the COUNTRY scope it runs in.
+# - The character id travels as a token in the caller-set temporary
+#   chaosx_recruit_character_token, so the recruit_character effect is built by a
+#   meta effect when it executes instead of being parsed at game load.
+# - Callers register the character id in common/synchronized_dynamic_tokens/.
+# - The engine still advises that recruit_character belongs in history files when
+#   a mechanic recruits during play; the characters belong to countries that are
+#   created or revived at runtime, so no history file can recruit them.
+# ============================================================================
+
+# COUNTRY. Input: temp chaosx_recruit_character_token (character id token).
+chaosx_recruit_character = {
+	meta_effect = {
+		text = {
+			recruit_character = [CHARACTER]
+		}
+		CHARACTER = "[?chaosx_recruit_character_token.GetTokenKey]"
+	}
+}

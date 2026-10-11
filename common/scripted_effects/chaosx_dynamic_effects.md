@@ -493,6 +493,25 @@ Settings supplies the request context, and its dispatcher or an owner event call
 No icon or additional visual asset is required for this native text report.
 Detailed reference evidence and integration limits are recorded in `docs/plans/shared_interface_plans/subagent_handoffs/forced_feedback_hook_20261005.md`.
 
+## chaosx_recruit_character
+
+Purpose: attach one defined character to the country that runs it, during play.
+Source: `chaosx_runtime_recruit_effects.txt`.
+
+Scope: COUNTRY.
+Input: caller-set temporary `chaosx_recruit_character_token = token:<character_id>`, set immediately before `chaosx_recruit_character = yes`.
+The character id must be listed in `common/synchronized_dynamic_tokens/chaosx_runtime_tokens.txt`.
+The helper builds `recruit_character = <id>` with a meta effect, so the effect is parsed when it executes rather than at game load.
+The engine still advises that `recruit_character` belongs in country history when a mechanic recruits during play; the Malta, Time Traveler, Lawrence and Fallout mechanics recruit their characters in response to events, decisions and focuses.
+Side effects: none beyond the native recruitment.
+
+Example:
+
+```text
+set_temp_variable = { chaosx_recruit_character_token = token:malta_pope }
+chaosx_recruit_character = yes
+```
+
 ## owner_owned_apis
 
 The following APIs are useful to other systems but are not declared in this registry. Use the named owner source and documentation for their contracts. This index is deliberately not a second copy of those event or subsystem implementations.
@@ -514,6 +533,7 @@ The following APIs are useful to other systems but are not declared in this regi
 | `custom_technology_grants` | [`016_brilliant_scientist_custom_technology_api_effects.txt`](016_brilliant_scientist_custom_technology_api_effects.txt) | [`custom_technology_api`](016_brilliant_scientist_custom_technology_api_effects.md) |
 | `portal_transit_equipment_output` | [`016_portal_transit_batch_effects.txt`](016_portal_transit_batch_effects.txt) | [neutral physical output and paid KRG transaction contract](016_portal_transit_batch_effects.md) |
 | `private_paleogenetics_deployment` | [`016_mengele_paleogenetics_deployment_effects.txt`](016_mengele_paleogenetics_deployment_effects.txt) and [`016_mengele_paleogenetics_deployment_triggers.txt`](../scripted_triggers/016_mengele_paleogenetics_deployment_triggers.txt) | [actor-bound paired construction and retained payment](016_mengele_paleogenetics_deployment_effects.md) |
+| `private_paleogenetics_staffing` | [`016_mengele_paleogenetics_staff_effects.txt`](016_mengele_paleogenetics_staff_effects.txt) and [`016_mengele_paleogenetics_staff_triggers.txt`](../scripted_triggers/016_mengele_paleogenetics_staff_triggers.txt) | [actual workforce allocation, training fee and bounded release](016_mengele_paleogenetics_staff_effects.md) |
 | `transit_state_province_membership` | [`016_transit_state_province_catalog_triggers.txt`](../scripted_triggers/016_transit_state_province_catalog_triggers.txt) | [lazy pure STATE membership query](../scripted_triggers/016_transit_state_province_catalog_triggers.md) |
 | `conventional_technology_packages` | [`016_conventional_technology_api_effects.txt`](016_conventional_technology_api_effects.txt) and [`016_conventional_technology_api_triggers.txt`](../scripted_triggers/016_conventional_technology_api_triggers.txt) | [`conventional_technology_api_effects`](016_conventional_technology_api_effects.md) |
 | `biological_operations` | [`016_brilliant_scientist_biological_operations_effects.txt`](016_brilliant_scientist_biological_operations_effects.txt) and [`016_brilliant_scientist_biological_operations_triggers.txt`](../scripted_triggers/016_brilliant_scientist_biological_operations_triggers.txt) | [`biological_operations`](../../docs/events/016_brilliant_scientist/systems/biological_operations.md) |
