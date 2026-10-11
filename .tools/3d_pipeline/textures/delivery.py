@@ -704,6 +704,7 @@ def _apply_scope(root: Path, item: Dict[str, object], source: Image.Image, mask:
             masks,
             mask,
             source_hashes=source_hashes,
+            recipe_overrides=provenance.get("material_recipe_overrides"),
         )
         report.update(details)
         return processed, report
@@ -872,12 +873,14 @@ def _compression_gate(
         for name, mask in list(masks.items()):
             if mask.size != pillow_pixels.size:
                 masks[name] = mask.resize(pillow_pixels.size, Image.Resampling.NEAREST)
-        precompression_gate = gate_specular(mip_sources[0], occupancy, masks)
+        precompression_gate = gate_specular(mip_sources[0], occupancy, masks,
+                                           recipe_overrides=provenance.get("material_recipe_overrides"))
         decoded_gate = gate_specular(
             pillow_pixels,
             occupancy,
             masks,
             steel_blue_tolerance=5,
+            recipe_overrides=provenance.get("material_recipe_overrides"),
         )
         semantics = {
             "status": "passed" if precompression_gate["status"] == decoded_gate["status"] == "passed" else "failed",
@@ -897,6 +900,7 @@ def _compression_gate(
             occupancy,
             masks,
             steel_blue_tolerance=5,
+            recipe_overrides=provenance.get("material_recipe_overrides"),
         )
     elif item.get("provenance_rel") and provenance.get("kind") == "pdx_packed_normal_evidence" and item["role"] == "normal":
         semantics = gate_normal(pillow_pixels, occupancy)

@@ -22,7 +22,7 @@ No desktop window is opened by this route.
 | `runtime/accept_texture_repair.py --manifest <json> --proof <json>` | Independently re-encode a reviewed, isolated failed mip and reconcile its exact QA paths without rerunning the batch or relaxing thresholds. |
 | `textures/cli.py prepare/convert/install/resolve-mask` | General hash-bound texture batch CLI, described in `textures/README.md`. |
 | `textures/bc_codec.py`, `dds.py`, `atlas.py` | Native source-derived BC1/BC3 endpoint fitting, complete legacy DDS parsing and mip decoding, and masked gutter dilation. They create no texture detail. |
-| `textures/conventions.py` | Explicit cloth/skin/leather/steel/stone/fur recipes from provider maps and class masks; RRxG normal packing and G/A-preserving packed-map cleanup. |
+| `textures/conventions.py` | Physical material recipes and reviewed job calibration from provider maps/disjoint class masks; RRxG normal packing and G/A-preserving packed-map cleanup. |
 | `textures/checkpoint_delivery.py` | Deliver extracted native checkpoint textures with their measured UVs and explicit/native-connected texture roles through BC/mip QA. |
 | `textures/single_map.py` | Deliver an already-authored packed map through the same masked BC/mip gates, including the pilot runner's grading and final map steps. |
 | `review/pdx_textures.py` | Provider PBR conversion with source-adjacent `material_classes.json`; no flat-G recipe, no raw RGBA DDS route, no source upscaling. |
@@ -36,7 +36,8 @@ No desktop window is opened by this route.
 Unit diffuse maps use BC1 unless meaningful alpha requires BC3; normal and specular maps use BC3.
 The default is 512 with every mip through 1×1, no source upscaling, 8–16 pixel occupancy-based padding, and an explicit atlas justification for 1024.
 Compression-only updates retain pre-existing material defects as unresolved diagnostics rather than claiming full model acceptance.
-Provider specular conversion requires an explicit steel mask, even when empty, and class/UV masks in `material_classes.json` beside the source roughness map.
+Provider specular conversion requires explicit steel/worn-steel metal coverage (an empty steel mask for a nonmetal atlas) and class/UV masks in `material_classes.json` beside the source roughness map.
+For hash-bound CLI recipe calibration, use the provenance `material_recipe_overrides` contract in [textures/README.md](textures/README.md); preserve shared defaults and record the job's accepted physical ranges.
 Its schema is `{"classes":{"cloth":"cloth.png","steel":"steel.png"},"occupancy":"uv_occupancy.png"}`; masks have the source dimensions and all paths remain inside the approved job.
 Normal cleanup preserves existing G/A when source tangent handedness is not proven, mirrors G into R, zeros unused B, and uses flat padding.
 Reconstructing missing normal detail or changing material identity requires source-backed package work.

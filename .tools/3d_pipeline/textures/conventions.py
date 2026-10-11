@@ -22,12 +22,48 @@ MATERIAL_RECIPES = {
     "steel": {"green": (180, 255), "alpha": (150, 180)},
     "stone": {"green": (60, 90), "alpha": (50, 70)},
     "fur": {"green": (20, 40), "alpha": (40, 70)},
+    "bone": {"green": (110, 140), "alpha": (70, 100)},
+    "worn_steel": {"green": (150, 180), "alpha": (70, 100)},
+    "magma": {"green": (140, 180), "alpha": (70, 100)},
     # Vanilla-calibrated low-gloss classes. The installed vanilla infantry specular alpha averages 44 (p95 76); the
     # 2026-10 footage review measured A 114-122 reading as plastic or wet chrome on dry cloth and skin, so unit
     # fabric and dry flesh stay inside the vanilla alpha band instead of the wet-skin range above.
     "matte_cloth": {"green": (40, 90), "alpha": (25, 50)},
     "dry_skin": {"green": (80, 130), "alpha": (30, 70)},
 }
+
+METAL_CLASSES = frozenset({"steel", "worn_steel"})
+
+
+def resolve_material_recipes(overrides=None):
+    """Resolve explicit job calibration without mutating shared defaults."""
+    recipes = {name: dict(recipe) for name, recipe in MATERIAL_RECIPES.items()}
+    if overrides is None:
+        return recipes
+    if not isinstance(overrides, Mapping):
+        raise ValueError("Material recipe overrides must be a class/range mapping.")
+    for name, values in overrides.items():
+        if name not in recipes:
+            raise ValueError(f"Unknown material class {name!r}.")
+        if not isinstance(values, Mapping) or not values or set(values) - {"green", "alpha"}:
+            raise ValueError("Recipe overrides accept only explicit green/alpha ranges.")
+        for channel, bounds in values.items():
+            if not isinstance(bounds, (list, tuple)) or len(bounds) != 2:
+                raise ValueError("A calibrated channel requires two integer bounds.")
+            low, high = bounds
+            if type(low) is not int or type(high) is not int or not 0 <= low <= high <= 255:
+                raise ValueError("Calibrated channel bounds must be ordered integers in 0..255.")
+            recipes[name][channel] = (low, high)
+    return recipes
+
+
+def _metal_mask_values(masks, size):
+    metal_masks = [values for name, values in masks.items() if name in METAL_CLASSES]
+    if not metal_masks:
+        raise ValueError("An explicit steel/worn_steel mask is required for metalness validation.")
+    if len(metal_masks) == 1:
+        return metal_masks[0]
+    return bytes(255 if any(values[index] for values in metal_masks) else 0 for index in range(size))
 
 NORMAL_FLAT_RGBA = (128, 128, 0, 128)
 
@@ -245,16 +281,18 @@ def build_pdx_specular_from_provider(
     occupancy_mask: Image.Image,
     *,
     source_hashes: Optional[Mapping[str, object]] = None,
+    recipe_overrides=None,
 ) -> Tuple[Image.Image, Dict[str, object]]:
     """Derive a PDX specular map from provider PBR maps and explicit masks.
 
-    Green maps each class recipe over its planned range using provider
+    Green maps each resolved class recipe over its planned range using provider
     roughness; alpha is inverted roughness and clamped only to an explicitly
-    planned class interval. Blue is zero outside the explicit steel mask and
-    is max(200, provider metalness) within steel. Without a metalness map, the
-    steel mask receives 200. Original provider maps remain untouched.
+    planned class interval. Blue is zero outside the explicit metal-class union
+    and is max(200, provider metalness) within steel/worn_steel. Without a
+    metalness map, those masks receive 200. Provider maps remain untouched.
     """
 
+    recipes = resolve_material_recipes(recipe_overrides)
     roughness_l = _gray_image(roughness, "roughness")
     occupancy = load_occupancy_mask(occupancy_mask, roughness_l.size)
     if metalness is not None:
@@ -266,10 +304,8 @@ def build_pdx_specular_from_provider(
         metal_values = None
     occupied = [value > 0 for value in occupancy.tobytes()]
     classes, masks = _class_membership(material_masks, roughness_l.size, occupied)
-    if "steel" not in masks:
-        raise ValueError("An explicit steel/metal mask is required for the blue-channel leakage gate.")
     rough_values = roughness_l.tobytes()
-    steel_mask_values = masks["steel"]
+    steel_mask_values = _metal_mask_values(masks, len(occupied))
     pixels = []
     source_metal_values = []
     output_metal_values = []
@@ -280,7 +316,7 @@ def build_pdx_specular_from_provider(
             pixels.append((0, 0, 0, 0))
             continue
         class_name = classes[index]
-        recipe = MATERIAL_RECIPES[class_name]
+        recipe = recipes[class_name]
         rough = rough_values[index]
         g_min, g_max = recipe["green"]
         green = int(round(g_min + ((255 - rough) / 255.0) * (g_max - g_min)))
@@ -318,10 +354,12 @@ def build_pdx_specular_from_provider(
     report = {
         "status": "packed",
         "layout": PDX_SPECULAR_LAYOUT,
-        "recipes": MATERIAL_RECIPES,
+        "recipes": recipes,
+        "recipe_overrides": dict(recipe_overrides or {}),
         "provider_roughness_used": True,
         "provider_metalness_used": metalness is not None,
-        "metal_mask": "explicit steel material mask",
+        "metal_mask": "explicit steel/worn_steel material mask union",
+        "metal_classes": sorted(name for name in masks if name in METAL_CLASSES),
         "blue_channel_masking": {
             "applied": True,
             "outside_steel": 0,
@@ -350,7 +388,9 @@ def specular_statistics(
     material_masks: Mapping[str, Image.Image],
     *,
     wet_classes=(),
+    recipe_overrides=None,
 ) -> Dict[str, object]:
+    recipes = resolve_material_recipes(recipe_overrides)
     data = _image_channels(image, occupancy_mask)
     classes, masks = _class_membership(material_masks, data["rgba"].size, data["occupied"])
     values_by_channel = {
@@ -367,9 +407,7 @@ def specular_statistics(
             channel: _stats_for_values([channel_bytes[channel][index] for index in indices])
             for channel in ("G", "A", "B")
         }
-    steel_mask = masks.get("steel")
-    if steel_mask is None:
-        raise ValueError("An explicit steel/metal mask is required for blue-channel validation.")
+    steel_mask = _metal_mask_values(masks, len(data["occupied"]))
     outside_metal = [
         channel_bytes["B"][index]
         for index, is_occupied in enumerate(data["occupied"])
@@ -382,6 +420,7 @@ def specular_statistics(
         "class_stats": class_stats,
         "outside_metal_b": _stats_for_values(outside_metal),
         "wet_classes": sorted(wet_classes),
+        "recipes": recipes,
         "mask": data["mask_report"],
     }
 
@@ -393,10 +432,12 @@ def gate_specular(
     *,
     wet_classes=(),
     steel_blue_tolerance: int = 0,
+    recipe_overrides=None,
 ) -> Dict[str, object]:
     """Validate packed PDX channels against class-aware material evidence."""
 
-    stats = specular_statistics(image, occupancy_mask, material_masks, wet_classes=wet_classes)
+    stats = specular_statistics(image, occupancy_mask, material_masks,
+                               wet_classes=wet_classes, recipe_overrides=recipe_overrides)
     failures = []
     if stats["channels"]["G"]["std"] == 0:
         failures.append("specular green standard deviation is zero.")
@@ -406,16 +447,17 @@ def gate_specular(
         )
     if steel_blue_tolerance < 0 or steel_blue_tolerance > 5:
         raise ValueError("steel_blue_tolerance must be from 0 through 5 channel values.")
-    steel_stats = stats["class_stats"].get("steel")
-    if steel_stats is not None and steel_stats["B"]["min"] < 200 - steel_blue_tolerance:
-        failures.append(
-            "steel blue/metalness has a value below the 200 minimum "
-            f"(allowed compression tolerance {steel_blue_tolerance}): {steel_stats['B']['min']}."
-        )
+    for metal_class in sorted(METAL_CLASSES):
+        steel_stats = stats["class_stats"].get(metal_class)
+        if steel_stats is not None and steel_stats["B"]["min"] < 200 - steel_blue_tolerance:
+            failures.append(
+                f"{metal_class} blue/metalness has a value below the 200 minimum "
+                f"(allowed compression tolerance {steel_blue_tolerance}): {steel_stats['B']['min']}."
+            )
     stats["steel_blue_minimum"] = 200
     stats["steel_blue_compression_tolerance"] = steel_blue_tolerance
     for class_name, channels in stats["class_stats"].items():
-        recipe = MATERIAL_RECIPES[class_name]
+        recipe = stats["recipes"][class_name]
         green_min, green_max = recipe["green"]
         green_stats = channels["G"]
         if green_stats["min"] < green_min or green_stats["max"] > green_max:

@@ -28,13 +28,15 @@ The provider-normal recipe maps source R to PDX R and G, maps source G to PDX A 
 
 For an existing PDX normal, `packed_normal_cleanup` copies occupied G into R, preserves occupied G and A, clears B, sets unused map pixels to `(128, 128, 0, 128)`, and applies mask-based dilation without synthesizing tangent detail.
 
-Specular maps use R=0, G=specular strength, and A=255 minus provider roughness; the explicit steel mask sets B to zero outside steel and to `max(200, provider metalness)` inside steel, or 200 inside steel when no metalness map exists.
+Specular maps use R=0, G=specular strength, and A=255 minus provider roughness; the union of explicit `steel` and `worn_steel` masks sets B to zero outside metal and to `max(200, provider metalness)` inside metal, or 200 when no metalness map exists.
+An all-nonmetal atlas still supplies an empty steel mask; bone and magma are nonmetal classes, not proxies for skin or steel.
 
 The class recipe ranges are cloth G 40–90/A 60–100, skin G 110–160/A 120–160, leather G 120–160 with provider-derived alpha, steel G 180–255/A 150–180, stone G 60–90/A 50–70, and fur G 20–40/A 40–70. Two vanilla-calibrated classes, `matte_cloth` (G 40–90/A 25–50) and `dry_skin` (G 80–130/A 30–70), cover unit fabric and dry flesh: the installed vanilla infantry specular alpha averages 44 (p95 76) and gloss of 114–122 read as plastic or wet chrome in the 2026-10 footage review, so the wet `skin` range is reserved for explicitly wet flesh.
 
 The specular gate rejects constant G, mean B above 5 outside the explicit steel mask, steel B below 200, and mean A above 110 on nonwet classes; the decoded BC3 check allows up to five values of blue-channel quantization error, and skin and steel may exceed 110 only inside their explicit masks and within their listed alpha ranges.
 
 The specular report retains the original provider roughness, metalness, and class-mask path/SHA rows, provider blue-channel statistics, derived blue statistics, the count of occupied pixels changed by the mask, and confirmation that provider inputs remain unchanged.
+Additional physical recipes are `bone` (G 110..140/A 70..100), `worn_steel` (G 150..180/A 70..100) and `magma` (G 140..180/A 70..100).
 
 The normal gate measures only occupied pixels and requires G and A standard deviations from 15 through 35, mean tangent tilt no greater than 0.35, an R/G mirror error no greater than 5 values, and zero-valued B apart from the declared compression tolerance.
 
@@ -76,6 +78,9 @@ An optional `expected_target_sha256` must match the target when planning; otherw
 Provider-normal repacking uses a JSON object with `kind: provider_rgb_normal`, an exact `source` path and SHA, and `green_sign: preserve` or `invert`; `invert` also requires a separately hashed `green_sign_evidence` file.
 
 Provider-specular generation uses `kind: provider_pbr_specular`, exact `roughness` and optional `metalness` path/SHA rows, and an explicit path/SHA row for every class mask.
+For a reviewed job whose accepted physical calibration differs from a shared default, its hashed provenance may include `material_recipe_overrides`, for example `{"stone": {"alpha": [70, 100]}}`.
+Only known physical classes and ordered integer `green`/`alpha` ranges in 0..255 are accepted; this does not change shared defaults, metal classification, complete disjoint-mask coverage, provider source requirements or the nonwet gloss gate.
+Record the accepted calibration basis in the job handoff before conversion; the same ranges govern packing, precompression QA, decoded BC3 QA and packed-map evidence review.
 
 Compression-only semantic review of an existing PDX normal uses `kind: pdx_packed_normal_evidence` with the exact source path and SHA.
 

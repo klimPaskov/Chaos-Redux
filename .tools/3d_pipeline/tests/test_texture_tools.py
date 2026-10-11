@@ -25,6 +25,7 @@ from textures.conventions import (
     packed_normal_cleanup,
     repack_provider_normal,
     build_pdx_specular_from_provider,
+    resolve_material_recipes,
 )
 from textures.dds import DdsError, decode_mip_rgba, parse_dds_header
 from textures.delivery import (
@@ -280,6 +281,39 @@ class AtlasAndConventionTests(unittest.TestCase):
         leaked = Image.new("RGBA", size, (0, 50, 40, 80))
         self.assertTrue(any("outside the explicit steel mask" in x for x in gate_specular(leaked, occupancy, masks)["failures"]))
 
+    def test_bone_magma_and_worn_steel_keep_physical_ranges_and_metal_union(self):
+        size = (5, 1)
+        roughness = Image.new("L", size)
+        roughness.putdata([0, 100, 150, 200, 255])
+        metalness = Image.new("L", size)
+        metalness.putdata([255, 255, 255, 230, 255])
+        originals = (roughness.tobytes(), metalness.tobytes())
+        masks = {}
+        for name, indices in {"bone": (0, 1), "steel": (2,), "worn_steel": (3,), "magma": (4,)}.items():
+            mask = Image.new("L", size)
+            mask.putdata([255 if index in indices else 0 for index in range(5)])
+            masks[name] = mask
+        occupancy = Image.new("L", size, 255)
+        packed, report = build_pdx_specular_from_provider(roughness, metalness, masks, occupancy)
+        self.assertEqual(list(packed.getdata()), [(0, 140, 0, 100), (0, 128, 0, 100),
+                                               (0, 211, 255, 150), (0, 156, 230, 70), (0, 140, 0, 70)])
+        self.assertEqual(report["metal_classes"], ["steel", "worn_steel"])
+        self.assertEqual(gate_specular(packed, occupancy, masks)["status"], "passed")
+        self.assertEqual((roughness.tobytes(), metalness.tobytes()), originals)
+        leaked = packed.copy()
+        leaked.putpixel((0, 0), (0, 140, 30, 100))
+        self.assertEqual(gate_specular(leaked, occupancy, masks)["status"], "failed")
+
+    def test_explicit_calibration_preserves_defaults_and_rejects_invalid_ranges(self):
+        before = resolve_material_recipes()
+        calibrated = resolve_material_recipes({"stone": {"alpha": [70, 100]}})
+        self.assertEqual(calibrated["stone"]["alpha"], (70, 100))
+        self.assertEqual(resolve_material_recipes(), before)
+        for override in ({"unknown": {"green": [1, 2]}}, {"bone": {"alpha": [100, 70]}},
+                         {"bone": {"alpha": [0.0, 100]}}, {"bone": {"blue": [0, 255]}}):
+            with self.assertRaises(ValueError):
+                resolve_material_recipes(override)
+
 
 class TextureDeliveryTests(unittest.TestCase):
     def _make_root(self):
@@ -448,6 +482,10 @@ class TextureDeliveryTests(unittest.TestCase):
                 "cloth": input_rows["cloth"],
                 "steel": input_rows["steel"],
             },
+            "material_recipe_overrides": {
+                "cloth": {"green": [45, 80], "alpha": [70, 95]},
+                "steel": {"green": [150, 180], "alpha": [70, 100]},
+            },
         }
         provenance_path = root / "evidence" / "provider_materials.json"
         provenance_path.write_text(json.dumps(provenance), encoding="utf-8")
@@ -467,6 +505,8 @@ class TextureDeliveryTests(unittest.TestCase):
         self.assertEqual(converted["state"], "staged", converted.get("conversion"))
         item = converted["items"][0]
         self.assertEqual(item["converted"]["qa"]["material_semantic_gate"]["status"], "passed")
+        self.assertEqual(item["converted"]["processing"]["recipe_overrides"],
+                         provenance["material_recipe_overrides"])
         blue_report = item["converted"]["processing"]["blue_channel_masking"]
         self.assertEqual(blue_report["outside_steel"], 0)
         self.assertTrue(blue_report["inside_steel"].startswith("max(200"))
