@@ -16,6 +16,7 @@ add_namespace = chaosx.nr22
 #   .101 escape networks        .102 sickness in the camps
 #   .103 reports leave the camps
 #   .201 Evolution I killing orders   .301 Evolution II deaths   .401 Evolution III half the country
+#   .601 liberation report   .701 succession report
 #   .510 foreign report of credible camps
 #   .800 closure after destroyed records   .801 closure with open records
 #   .802 hidden closure proof
@@ -442,8 +443,8 @@ country_event = {
 	}
 
 	option = {
-		name = chaosx.nr22.301.d
-		custom_effect_tooltip = chaosx.nr22.301.d_tt
+		name = chaosx.nr22.301.e
+		custom_effect_tooltip = chaosx.nr22.301.e_tt
 		hidden_effect = { concentration_camps_answer_inquiry = yes }
 		ai_chance = {
 			base = constant:concentration_camps_ai.low
@@ -496,13 +497,124 @@ country_event = {
 	}
 
 	option = {
-		name = chaosx.nr22.401.d
-		custom_effect_tooltip = chaosx.nr22.401.d_tt
+		name = chaosx.nr22.401.e
+		custom_effect_tooltip = chaosx.nr22.401.e_tt
 		hidden_effect = { concentration_camps_answer_halt_and_review = yes }
 		ai_chance = {
 			base = constant:concentration_camps_ai.low
 			modifier = { add = constant:concentration_camps_ai.moderate has_stability < constant:concentration_camps_target_weight.unstable_threshold }
 			modifier = { add = constant:concentration_camps_ai.strong has_government = democratic }
+		}
+	}
+}
+
+# ----------------------------------------------------------------------------
+# Liberation and succession
+# ----------------------------------------------------------------------------
+
+# A hostile country takes a camp. The liberator gets the report, FROM is not used.
+country_event = {
+	id = chaosx.nr22.601
+	title = chaosx.nr22.601.t
+	desc = chaosx.nr22.601.d
+	picture = GFX_report_event_generic_camp_discovery
+
+	is_triggered_only = yes
+
+	immediate = {
+		if = {
+			limit = { has_variable = concentration_camps_liberated_state }
+			var:concentration_camps_liberated_state = { save_event_target_as = concentration_camps_liberated_state }
+		}
+		if = {
+			limit = { has_variable = concentration_camps_liberated_from }
+			var:concentration_camps_liberated_from = { save_event_target_as = concentration_camps_liberated_from }
+		}
+		set_variable = { concentration_camps_cost_relief_support = constant:concentration_camps_cost.relief_support }
+		set_variable = { concentration_camps_cost_relief_trains = constant:concentration_camps_cost.relief_trains }
+		set_variable = { concentration_camps_cost_relief_fuel = constant:concentration_camps_cost.relief_fuel }
+	}
+
+	option = {
+		name = chaosx.nr22.601.a
+		trigger = { concentration_camps_can_pay_relief = yes }
+		custom_effect_tooltip = chaosx.nr22.601.a_tt
+		hidden_effect = { concentration_camps_answer_liberation_relief = yes }
+		ai_chance = {
+			base = constant:concentration_camps_ai.strong
+			modifier = { add = constant:concentration_camps_ai.moderate has_government = democratic }
+		}
+	}
+
+	option = {
+		name = chaosx.nr22.601.b
+		custom_effect_tooltip = chaosx.nr22.601.b_tt
+		hidden_effect = { concentration_camps_answer_liberation_records = yes }
+		ai_chance = {
+			base = constant:concentration_camps_ai.standard
+			modifier = { add = constant:concentration_camps_ai.moderate has_government = democratic }
+		}
+	}
+
+	option = {
+		name = chaosx.nr22.601.c
+		custom_effect_tooltip = chaosx.nr22.601.c_tt
+		ai_chance = {
+			base = constant:concentration_camps_ai.low
+		}
+	}
+}
+
+# A new ruling ideology inherits a live network.
+country_event = {
+	id = chaosx.nr22.701
+	title = chaosx.nr22.701.t
+	desc = chaosx.nr22.701.d
+	picture = GFX_report_event_generic_parliament
+
+	is_triggered_only = yes
+	trigger = { concentration_camps_network_is_live = yes }
+
+	option = {
+		name = chaosx.nr22.701.a
+		trigger = { camp_admin_generic_reform_available = yes }
+		custom_effect_tooltip = chaosx.nr22.701.a_tt
+		hidden_effect = { concentration_camps_answer_succession_archives = yes }
+		ai_chance = {
+			base = constant:concentration_camps_ai.standard
+			modifier = { add = constant:concentration_camps_ai.dominant has_government = democratic }
+			modifier = { add = constant:concentration_camps_ai.strong NOT = { has_government = fascism } NOT = { has_government = communism } }
+		}
+	}
+
+	option = {
+		name = chaosx.nr22.701.b
+		custom_effect_tooltip = chaosx.nr22.701.b_tt
+		hidden_effect = { concentration_camps_policy_review = yes }
+		ai_chance = {
+			base = constant:concentration_camps_ai.moderate
+			modifier = { add = constant:concentration_camps_ai.standard has_war = yes has_government = democratic }
+		}
+	}
+
+	option = {
+		name = chaosx.nr22.701.c
+		trigger = { concentration_camps_government_permits_expansion = yes }
+		custom_effect_tooltip = chaosx.nr22.701.c_tt
+		hidden_effect = { concentration_camps_answer_succession_continue = yes }
+		ai_chance = {
+			base = constant:concentration_camps_ai.low
+			modifier = { add = constant:concentration_camps_ai.dominant OR = { has_government = fascism has_government = communism } }
+		}
+	}
+
+	option = {
+		name = chaosx.nr22.701.e
+		custom_effect_tooltip = chaosx.nr22.701.e_tt
+		hidden_effect = { concentration_camps_answer_leak_restrict = yes }
+		ai_chance = {
+			base = constant:concentration_camps_ai.low
+			modifier = { add = constant:concentration_camps_ai.moderate NOT = { has_government = democratic } }
 		}
 	}
 }

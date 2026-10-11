@@ -346,6 +346,7 @@ concentration_camps_open = {
 	clr_country_flag = concentration_camps_report_pending
 	set_variable = { concentration_camps_seeded_k = 0 }
 	set_variable = { concentration_camps_evolution = 0 }
+	concentration_camps_store_group = yes
 	clear_variable = concentration_camps_evolution_due_day
 	set_variable = { concentration_camps_stage_converted = 0 }
 	set_variable = { concentration_camps_stage_added = 0 }
@@ -544,6 +545,7 @@ concentration_camps_monitor_tick = {
 			limit = { has_country_flag = concentration_camps_network_active }
 			concentration_camps_check_public_exposure = yes
 			concentration_camps_try_evolution = yes
+			concentration_camps_check_succession = yes
 			if = {
 				limit = { check_variable = { concentration_camps_evolution_fired = constant:concentration_camps_value.zero } }
 				concentration_camps_check_incidents = yes
@@ -667,6 +669,11 @@ concentration_camps_fire_incident = {
 	if = {
 		limit = { concentration_camps_has_hungry_site = yes }
 		set_temp_variable = { concentration_camps_weight_epidemic = constant:concentration_camps_incident.epidemic_weight }
+		# Polluted air is one more weight on the sickness, never a reason by itself.
+		if = {
+			limit = { check_variable = { global.air_contamination_bp > constant:air_contamination_threshold_bp.spread_25 } }
+			add_to_temp_variable = { concentration_camps_weight_epidemic = constant:concentration_camps_incident.epidemic_contamination_weight }
+		}
 	}
 	set_temp_variable = { concentration_camps_weight_total = concentration_camps_weight_escape }
 	add_to_temp_variable = { concentration_camps_weight_total = concentration_camps_weight_leak }

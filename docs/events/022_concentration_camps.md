@@ -17,6 +17,8 @@ It is an entry and escalation layer. Camp buildings, responsibility, custody coh
 | `chaosx.nr22.102` | report | sickness in the camps |
 | `chaosx.nr22.103` | report | reports leave the camps |
 | `chaosx.nr22.201` / `.301` / `.401` | report | Evolution I, II and III |
+| `chaosx.nr22.601` | report | a hostile country takes a camp |
+| `chaosx.nr22.701` | report | a new ruling ideology inherits a live network |
 | `chaosx.nr22.510` | report | foreign report of credible camps (neighbour and enemy) |
 | `chaosx.nr22.800` / `.801` | report | closure after destroyed records / closure with open records |
 | `chaosx.nr22.802` | hidden | proof that an open closure stayed closed |
@@ -41,6 +43,13 @@ The shared evolution context (event 22, type 22, stage and tier 1 to 3, gated by
 | III Half the country | coverage to 50 percent of eligible states, an even concentration and killing split, then 2 percent once per state | 50 percent opening, even split, only the 2 percent loss |
 
 Every loss is requested through `camp_admin_record_deaths` and clamped to the people the camp holds (cause custody for detention camps, violence for killing camps), so a small cohort takes a smaller shock and the state marker is set even when the applied amount is zero. Conversion needs `camp_admin_can_use_radical_mandate`. A country without the radical route keeps its concentration camps and still advances. Killing begins only when the Ledger mandate is radical, which the report options set (accept, or the extremist option of the late report). Review and the Ledger mandate stop it. A site added later takes the shock of the active stage once.
+
+## Control loss, succession and the shared links
+
+- Control loss: `genocide_on_state_control_changed` calls `concentration_camps_on_state_control_changed`. A camp site taken by a country at war with its operator is marked liberated and relief-protected (no new camp is built there) and the new controller gets one report every 60 days at most. The three answers are relief supplies (stability and war support), securing the records for investigators (a tribunal severity and opinion modifier on the operator) or leaving the site. Discovery, the captured site's closure, the release of survivors in place, responsibility and Condemnation stay with the shared system.
+- Succession: the monitor stores the ruling ideology group (fascism, communism, democratic, neutral). A change reports once. Opening the archives closes the camps through the shared reform, a review sets the custody mandate, continuing starts a new network generation under the new government, and burning the files is the shared cover-up. Original responsibility stays on the shared immutable records.
+- Famine and air: the sickness incident needs a camp state past supply strain in the famine stages and adds one weight when global air contamination passes the 25 percent spread threshold.
+- Migration, tribunals and the Soviet adapter are shared-owner content and are not repeated here.
 
 ## Selection
 
@@ -89,4 +98,4 @@ See `docs/plans/022_concentration_camps_plans/subagent_handoffs/022_release_pass
 
 ## Future plans
 
-Discovery steps, liberation and relief decisions, succession, displacement and the Germany, Japan and Soviet adapters follow the spec parts 4 and 5.
+The staged relief decisions and missions, displaced-person and accountability events, retreat events, restricted chemical integration, further achievements and the Germany, Japan and Soviet adapters follow the spec parts 4 and 5.

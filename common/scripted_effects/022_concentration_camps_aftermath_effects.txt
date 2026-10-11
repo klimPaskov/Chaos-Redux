@@ -1,0 +1,147 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 022 CONCENTRATION CAMPS AFTERMATH EFFECTS
+# ============================================================================
+# Overview:
+# - Control loss: a hostile country that takes an Event 22 site gets one report
+#   and three answers. The shared system keeps ownership of discovery,
+#   dismantlement of the captured site, the survivors' release in place,
+#   responsibility and Condemnation (genocide_on_state_control_changed). Event 22
+#   only marks the site as liberated and relief-protected, so the picker does not
+#   build a new camp there, and reports it to the liberator.
+# - Succession: when the ruling ideology group of a country with a live network
+#   changes, the new government gets one report. Original responsibility stays
+#   with the shared immutable records. Continuing the camps starts a new
+#   network generation under the new government.
+# - Both entry points are event driven. Succession is checked by the monthly
+#   monitor of the live network. Nothing scans the world.
+#
+# Scope notes: the control hook runs in the STATE scope with ROOT as the new
+# controller. The succession effects run in the COUNTRY scope with ROOT as the
+# country.
+# ============================================================================
+
+# ----------------------------------------------------------------------------
+# Control loss
+# ----------------------------------------------------------------------------
+
+# STATE, ROOT is the new controller. Called from genocide_on_state_control_changed.
+concentration_camps_on_state_control_changed = {
+	if = {
+		limit = {
+			has_state_flag = concentration_camps_site
+			has_variable = genocide_responsible_country
+			NOT = { has_state_flag = concentration_camps_liberated }
+			var:genocide_responsible_country = {
+				exists = yes
+				NOT = { tag = ROOT }
+				has_war_with = ROOT
+			}
+		}
+		set_state_flag = concentration_camps_liberated
+		set_state_flag = concentration_camps_relief_protected
+		ROOT = {
+			if = {
+				limit = { NOT = { has_country_flag = concentration_camps_liberation_cooldown } }
+				set_temp_variable = { concentration_camps_flag_days = constant:concentration_camps_timing.liberation_cooldown_days }
+				set_country_flag = { flag = concentration_camps_liberation_cooldown days = concentration_camps_flag_days }
+				set_variable = { concentration_camps_liberated_state = PREV }
+				set_variable = { concentration_camps_liberated_from = PREV.genocide_responsible_country }
+				country_event = {
+					id = chaosx.nr22.601
+					days = constant:concentration_camps_timing.report_delay_days
+				}
+			}
+		}
+	}
+}
+
+# COUNTRY, the liberator. Supplies and doctors reach the camp.
+concentration_camps_answer_liberation_relief = {
+	concentration_camps_pay_relief = yes
+	add_stability = constant:genocide_liberation.stability
+	add_war_support = constant:genocide_liberation.war_support
+}
+
+# COUNTRY, the liberator. The commandant's files and the registers are secured
+# for investigators. Same record of intent as the shared foreign tribunal
+# preparation: an opinion modifier and a tribunal severity on the responsible country.
+concentration_camps_answer_liberation_records = {
+	if = {
+		limit = { has_variable = concentration_camps_liberated_from }
+		add_opinion_modifier = {
+			target = var:concentration_camps_liberated_from
+			modifier = genocide_tribunal_records_prepared
+		}
+		var:concentration_camps_liberated_from = {
+			add_to_variable = { genocide_tribunal_severity = constant:genocide_crisis_value.hidden_atrocity_major }
+			set_country_flag = genocide_foreign_tribunal_records_prepared
+		}
+	}
+}
+
+# ----------------------------------------------------------------------------
+# Succession
+# ----------------------------------------------------------------------------
+
+# COUNTRY. Output: temp concentration_camps_group, the ruling ideology group
+# (constant:concentration_camps_group.*).
+concentration_camps_current_group = {
+	set_temp_variable = { concentration_camps_group = constant:concentration_camps_group.neutrality }
+	if = {
+		limit = { has_government = fascism }
+		set_temp_variable = { concentration_camps_group = constant:concentration_camps_group.fascism }
+	}
+	else_if = {
+		limit = { has_government = communism }
+		set_temp_variable = { concentration_camps_group = constant:concentration_camps_group.communism }
+	}
+	else_if = {
+		limit = { has_government = democratic }
+		set_temp_variable = { concentration_camps_group = constant:concentration_camps_group.democratic }
+	}
+}
+
+# COUNTRY. Stores the ruling group of the operating government.
+concentration_camps_store_group = {
+	concentration_camps_current_group = yes
+	set_variable = { concentration_camps_operator_group = concentration_camps_group }
+}
+
+# COUNTRY. Called by the monitor. A change of the ruling group reports once.
+# Sets temp concentration_camps_evolution_fired so the same visit raises no incident.
+concentration_camps_check_succession = {
+	concentration_camps_current_group = yes
+	if = {
+		limit = { NOT = { has_variable = concentration_camps_operator_group } }
+		set_variable = { concentration_camps_operator_group = concentration_camps_group }
+	}
+	else_if = {
+		limit = { NOT = { check_variable = { concentration_camps_operator_group = concentration_camps_group } } }
+		set_variable = { concentration_camps_operator_group = concentration_camps_group }
+		set_temp_variable = { concentration_camps_evolution_fired = constant:concentration_camps_value.one }
+		country_event = {
+			id = chaosx.nr22.701
+			days = constant:concentration_camps_timing.report_delay_days
+		}
+	}
+}
+
+# COUNTRY. The new government opens the archives and closes the camps.
+concentration_camps_answer_succession_archives = {
+	set_country_flag = concentration_camps_archives_opened
+	set_temp_variable = { concentration_camps_push_visibility = constant:camp_rework_country_value.visibility_minor }
+	set_temp_variable = { concentration_camps_push_reform = constant:camp_rework_country_value.reform_major }
+	concentration_camps_push_pressure = yes
+	concentration_camps_policy_closure = yes
+}
+
+# COUNTRY. The new government keeps the camps running. A new generation begins
+# under its authority, and the shared records keep the predecessor responsible
+# for what came before.
+concentration_camps_answer_succession_continue = {
+	add_to_variable = { concentration_camps_generation = constant:concentration_camps_value.one }
+	set_country_flag = concentration_camps_continued_by_successor
+	set_temp_variable = { concentration_camps_push_resistance = constant:camp_rework_country_value.resistance_minor }
+	set_temp_variable = { concentration_camps_push_visibility = constant:camp_rework_country_value.visibility_minor }
+	concentration_camps_push_pressure = yes
+}
