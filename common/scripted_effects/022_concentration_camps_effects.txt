@@ -138,6 +138,11 @@ concentration_camps_initialize_country = {
 	if = { limit = { NOT = { has_variable = concentration_camps_coverage_percent } } set_variable = { concentration_camps_coverage_percent = 0 } }
 	if = { limit = { NOT = { has_variable = concentration_camps_firings } } set_variable = { concentration_camps_firings = 0 } }
 	if = { limit = { NOT = { has_variable = concentration_camps_policy } } set_variable = { concentration_camps_policy = 0 } }
+	if = { limit = { NOT = { has_variable = concentration_camps_evolution } } set_variable = { concentration_camps_evolution = 0 } }
+	if = { limit = { NOT = { has_variable = concentration_camps_stage_converted } } set_variable = { concentration_camps_stage_converted = 0 } }
+	if = { limit = { NOT = { has_variable = concentration_camps_stage_added } } set_variable = { concentration_camps_stage_added = 0 } }
+	if = { limit = { NOT = { has_variable = concentration_camps_evolution_loss_k } } set_variable = { concentration_camps_evolution_loss_k = 0 } }
+	if = { limit = { NOT = { has_variable = concentration_camps_evolution_loss_people } } set_variable = { concentration_camps_evolution_loss_people = 0 } }
 }
 
 # COUNTRY. Sets the same-country cooldown. It lengthens for a small country,
@@ -327,10 +332,12 @@ concentration_camps_seed_cohort = {
 # Opening
 # ----------------------------------------------------------------------------
 
-# COUNTRY. ROOT is the country. Brings coverage to 20 percent of eligible
-# states, rounded up. Compatible live sites count first, then the weighted
-# candidate pool supplies the rest. Every new site goes through the shared
-# registration and receives its cohort from a campaign marker.
+# COUNTRY. ROOT is the country. The pre-fire evolved opening: the stage that is
+# already active when the country first receives the event decides the target
+# coverage (20 percent, or 50 percent at Evolution III), the killing share of
+# the sites and the one-time shock. A stage that is already active records one
+# evolution row for the country, and an opening below Evolution III never takes
+# the Evolution III shock.
 concentration_camps_open = {
 	camp_rework_initialize_country_variables = yes
 	concentration_camps_initialize_country = yes
@@ -338,11 +345,65 @@ concentration_camps_open = {
 	set_country_flag = concentration_camps_network_active
 	clr_country_flag = concentration_camps_report_pending
 	set_variable = { concentration_camps_seeded_k = 0 }
+	set_variable = { concentration_camps_evolution = 0 }
+	clear_variable = concentration_camps_evolution_due_day
+	set_variable = { concentration_camps_stage_converted = 0 }
+	set_variable = { concentration_camps_stage_added = 0 }
+	set_variable = { concentration_camps_evolution_loss_k = 0 }
 
+	concentration_camps_resolve_opening_stage = yes
+	set_temp_variable = { concentration_camps_target_share = constant:concentration_camps_coverage.baseline }
+	if = {
+		limit = { check_variable = { concentration_camps_open_stage > constant:concentration_camps_evolution.stage_2 } }
+		set_temp_variable = { concentration_camps_target_share = constant:concentration_camps_coverage.late_stage }
+	}
+	concentration_camps_place_sites = yes
+	set_variable = { concentration_camps_opening_sites = concentration_camps_placed_count }
+	set_variable = { concentration_camps_existing_sites = concentration_camps_existing_count }
+	set_variable = { concentration_camps_eligible_states = concentration_camps_eligible_count }
+
+	# Live compatible sites that predate the opening join the network list.
+	every_controlled_state = {
+		limit = {
+			concentration_camps_state_is_eligible = yes
+			concentration_camps_state_has_country_site = yes
+		}
+		concentration_camps_mark_site = yes
+	}
+	concentration_camps_pick_lead_state = yes
+
+	if = {
+		limit = { check_variable = { concentration_camps_open_stage > constant:concentration_camps_value.zero } }
+		concentration_camps_split_network = yes
+		set_variable = { concentration_camps_evolution = concentration_camps_open_stage }
+		if = {
+			limit = { check_variable = { concentration_camps_open_stage = constant:concentration_camps_evolution.stage_2 } }
+			concentration_camps_apply_shock_2 = yes
+		}
+		else_if = {
+			limit = { check_variable = { concentration_camps_open_stage = constant:concentration_camps_evolution.stage_3 } }
+			concentration_camps_apply_shock_3 = yes
+		}
+		set_temp_variable = { concentration_camps_log_stage = concentration_camps_open_stage }
+		concentration_camps_record_evolution = yes
+	}
+	concentration_camps_refresh_network = yes
+	concentration_camps_set_cooldown = yes
+	concentration_camps_start_monitor = yes
+}
+
+# COUNTRY. Inputs: temp concentration_camps_target_share (share of eligible
+# states) and temp concentration_camps_open_stage. Counts live compatible sites
+# toward the target, then fills the rest from the weighted candidate pool. Every
+# new site goes through the shared registration and receives its first cohort.
+# Outputs: temp concentration_camps_placed_count and
+# concentration_camps_existing_count.
+concentration_camps_place_sites = {
 	clear_temp_array = concentration_camps_site_pool
 	clear_temp_array = concentration_camps_picked_states
 	set_temp_variable = { concentration_camps_eligible_count = constant:concentration_camps_value.zero }
 	set_temp_variable = { concentration_camps_existing_count = constant:concentration_camps_value.zero }
+	set_temp_variable = { concentration_camps_placed_count = constant:concentration_camps_value.zero }
 	every_controlled_state = {
 		limit = { concentration_camps_state_is_eligible = yes }
 		add_to_temp_variable = { concentration_camps_eligible_count = constant:concentration_camps_value.one }
@@ -364,14 +425,13 @@ concentration_camps_open = {
 	}
 
 	set_temp_variable = { concentration_camps_target_sites = concentration_camps_eligible_count }
-	multiply_temp_variable = { concentration_camps_target_sites = constant:concentration_camps_coverage.baseline }
+	multiply_temp_variable = { concentration_camps_target_sites = concentration_camps_target_share }
 	add_to_temp_variable = { concentration_camps_target_sites = constant:concentration_camps_value.round_up_offset }
 	round_temp_variable = concentration_camps_target_sites
 	clamp_temp_variable = { var = concentration_camps_target_sites min = constant:concentration_camps_value.one }
 	set_temp_variable = { concentration_camps_needed_sites = concentration_camps_target_sites }
 	subtract_from_temp_variable = { concentration_camps_needed_sites = concentration_camps_existing_count }
 	clamp_temp_variable = { var = concentration_camps_needed_sites min = constant:concentration_camps_value.zero }
-	set_variable = { concentration_camps_existing_sites = concentration_camps_existing_count }
 
 	for_loop_effect = {
 		start = 0
@@ -385,30 +445,21 @@ concentration_camps_open = {
 		}
 	}
 
-	set_variable = { concentration_camps_opening_sites = 0 }
 	for_each_scope_loop = {
 		array = concentration_camps_picked_states
 		clr_state_flag = concentration_camps_picked
 		set_temp_variable = { concentration_camps_cohort_share = constant:concentration_camps_cohort.baseline_share }
 		set_temp_variable = { concentration_camps_cohort_maximum_k = constant:concentration_camps_cohort.baseline_maximum_k }
+		if = {
+			limit = { check_variable = { concentration_camps_open_stage > constant:concentration_camps_evolution.stage_2 } }
+			set_temp_variable = { concentration_camps_cohort_share = constant:concentration_camps_evolution_value.late_cohort_share }
+			set_temp_variable = { concentration_camps_cohort_maximum_k = constant:concentration_camps_evolution_value.late_cohort_maximum_k }
+		}
 		concentration_camps_create_site = yes
-		PREV = { add_to_variable = { concentration_camps_opening_sites = constant:concentration_camps_value.one } }
+		add_to_temp_variable = { concentration_camps_placed_count = constant:concentration_camps_value.one }
 	}
 	clear_temp_array = concentration_camps_site_pool
 	clear_temp_array = concentration_camps_picked_states
-
-	# Live compatible sites that predate the opening join the network list.
-	every_controlled_state = {
-		limit = {
-			concentration_camps_state_is_eligible = yes
-			concentration_camps_state_has_country_site = yes
-		}
-		concentration_camps_mark_site = yes
-	}
-	concentration_camps_pick_lead_state = yes
-	concentration_camps_refresh_network = yes
-	concentration_camps_set_cooldown = yes
-	concentration_camps_start_monitor = yes
 }
 
 # STATE, PREV is the country, ROOT is the country. Registers one concentration
@@ -492,7 +543,11 @@ concentration_camps_monitor_tick = {
 		if = {
 			limit = { has_country_flag = concentration_camps_network_active }
 			concentration_camps_check_public_exposure = yes
-			concentration_camps_check_incidents = yes
+			concentration_camps_try_evolution = yes
+			if = {
+				limit = { check_variable = { concentration_camps_evolution_fired = constant:concentration_camps_value.zero } }
+				concentration_camps_check_incidents = yes
+			}
 			country_event = {
 				id = chaosx.nr22.3
 				days = constant:camp_admin_dispatch.period_days

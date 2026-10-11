@@ -59,6 +59,42 @@ concentration_camps_policy = {
 	expansion = 4
 }
 
+concentration_camps_evolution = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	stage_1 = 1
+	stage_2 = 2
+	stage_3 = 3
+	tier_1 = 1
+	tier_2 = 2
+	tier_3 = 3
+	base_days = 90
+}
+
+# Evolution values. The shocks are shares of the current state civilian
+# population, requested through the shared custody owner and clamped to the
+# people the camp actually holds. New sites of the late stage take a larger
+# first cohort.
+concentration_camps_evolution_value = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	shock_stage_2 = 0.01
+	shock_stage_3 = 0.02
+	fast_factor = 0.75
+	slow_factor = 1.4
+	late_cohort_share = 0.01
+	late_cohort_maximum_k = 250
+	# floor(n / 2) of a site count is round(n / 2 - 0.25).
+	half_floor_offset = 0.25
+	half = 0.5
+}
+
 concentration_camps_value = {
 	schema = {
 		any_key = yes
@@ -84,6 +120,7 @@ concentration_camps_coverage = {
 	expansion_ceiling = 0.35
 	# A country with fewer eligible states than this may place a site in its capital.
 	capital_exception_states = 4
+	late_stage = 0.50
 }
 
 # State eligibility, site scoring and the campaign-source shares. A state is

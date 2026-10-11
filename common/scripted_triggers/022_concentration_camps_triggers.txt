@@ -93,6 +93,21 @@ concentration_camps_state_has_country_site = {
 	check_variable = { genocide_responsible_country = PREV.id }
 }
 
+# STATE. The site holds the killing role or an extermination camp.
+concentration_camps_state_is_killing_site = {
+	OR = {
+		extermination_camp > 0
+		check_variable = { camp_admin_role = constant:camp_admin_role.killing }
+	}
+}
+
+# STATE. A live concentration camp that has not been given the killing role.
+concentration_camps_state_is_convertible = {
+	camp_admin_site_is_operational = yes
+	concentration_camp > 0
+	NOT = { concentration_camps_state_is_killing_site = yes }
+}
+
 # STATE. A site state with a real economic base for a labour role.
 concentration_camps_state_has_labor_base = {
 	OR = {

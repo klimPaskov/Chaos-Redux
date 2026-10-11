@@ -16,6 +16,7 @@ It is an entry and escalation layer. Camp buildings, responsibility, custody coh
 | `chaosx.nr22.101` | report | escape networks |
 | `chaosx.nr22.102` | report | sickness in the camps |
 | `chaosx.nr22.103` | report | reports leave the camps |
+| `chaosx.nr22.201` / `.301` / `.401` | report | Evolution I, II and III |
 | `chaosx.nr22.510` | report | foreign report of credible camps (neighbour and enemy) |
 | `chaosx.nr22.800` / `.801` | report | closure after destroyed records / closure with open records |
 | `chaosx.nr22.802` | hidden | proof that an open closure stayed closed |
@@ -28,6 +29,18 @@ It is an entry and escalation layer. Camp buildings, responsibility, custody coh
 3. `chaosx.nr22.2` offers closure (the shared national reform), case review (custody mandate), forced labour (coercive mandate and labour roles at sites with an economic base) and expansion (coercive mandate and the expansion decision). Each sets the shared Ledger controls. There is no Event 22 policy engine.
 4. The monitor visits every 28 days (`camp_admin_dispatch.period_days`) while the network is live. It refreshes the shared values, ends the network when no site operates, and fires at most one incident.
 5. Closure through the shared reform ends the network, sets the refire protection (540 days for an open closure, half that if records were destroyed) and reports it. Event 22 never removes buildings or population.
+
+## Evolutions
+
+The shared evolution context (event 22, type 22, stage and tier 1 to 3, gated by `is_current_evolution_enabled`) drives three stages. An active network advances through a due day of about 90 days (75 to 140 percent) that the monthly monitor sets and checks. A country whose first firing begins while a stage is active opens directly in that stage and records one evolution row.
+
+| Stage | Active network | Pre-fire opening |
+| --- | --- | --- |
+| I Killing orders | `floor(n / 2)` of the valid concentration camps receive the shared killing role through `genocide_register_extermination_site_for_root` | the opening sites are split the same way |
+| II A month of deaths | 1 percent of the current civilian population of every operating camp state, once per state | the same, applied to the opening sites |
+| III Half the country | coverage to 50 percent of eligible states, an even concentration and killing split, then 2 percent once per state | 50 percent opening, even split, only the 2 percent loss |
+
+Every loss is requested through `camp_admin_record_deaths` and clamped to the people the camp holds (cause custody for detention camps, violence for killing camps), so a small cohort takes a smaller shock and the state marker is set even when the applied amount is zero. Conversion needs `camp_admin_can_use_radical_mandate`. A country without the radical route keeps its concentration camps and still advances. Killing begins only when the Ledger mandate is radical, which the report options set (accept, or the extremist option of the late report). Review and the Ledger mandate stop it. A site added later takes the shock of the active stage once.
 
 ## Selection
 
@@ -76,4 +89,4 @@ See `docs/plans/022_concentration_camps_plans/subagent_handoffs/022_release_pass
 
 ## Future plans
 
-Evolutions I to III (killing-site conversion, the 1 and 2 percent shocks, half-country coverage), discovery steps, liberation and relief decisions, succession, displacement and the Germany, Japan and Soviet adapters follow the spec parts 3 to 5.
+Discovery steps, liberation and relief decisions, succession, displacement and the Germany, Japan and Soviet adapters follow the spec parts 4 and 5.

@@ -1,0 +1,437 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 022 CONCENTRATION CAMPS EVOLUTION EFFECTS
+# ============================================================================
+# Overview:
+# - Three evolutions on the shared evolution context (event id 22, type 22,
+#   stage and tier 1 to 3, gated by is_current_evolution_enabled):
+#     I   Killing orders: half of the valid concentration camps (rounded down)
+#         receive the shared killing role.
+#     II  One synchronized loss of 1 percent of the civilian population of every
+#         camp state.
+#     III Coverage of half the eligible states, split as evenly as possible
+#         between concentration and killing sites, and a 2 percent loss.
+# - Active networks reach a stage through a per-country MTTH-style due day that
+#   the monthly monitor advances. A country that first receives the event while
+#   a stage is active opens directly in that stage (concentration_camps_open).
+# - Every loss goes through camp_admin_record_deaths, the shared camp owner's
+#   only physical debit. It is clamped to the people the camp actually holds, so
+#   a small cohort takes a smaller shock, and the state marker is set even when
+#   the applied amount is zero. Cause: custody for detention sites, violence for
+#   killing sites. Evolution state itself gives zero Chaos.
+# - Conversion needs the shared radical route (camp_admin_can_use_radical_mandate).
+#   A country without it keeps its concentration camps and still advances the stage.
+#
+# Scope notes: COUNTRY effects run with ROOT as the country, STATE effects read
+# the country as PREV.
+# ============================================================================
+
+# ----------------------------------------------------------------------------
+# Stage resolution and logging
+# ----------------------------------------------------------------------------
+
+# COUNTRY. Input: temp concentration_camps_stage_probe (1 to 3). Output: temp
+# concentration_camps_stage_ok, 1 when that evolution is enabled and its chaos
+# tier is reached. Sets the shared evolution context.
+concentration_camps_probe_stage = {
+	set_temp_variable = { events_log_evolution_event_id = constant:concentration_camps_identity.event_id }
+	set_temp_variable = { events_log_evolution_type = constant:concentration_camps_identity.evolution_type }
+	set_temp_variable = { events_log_evolution_stage = concentration_camps_stage_probe }
+	set_temp_variable = { events_log_evolution_tier = concentration_camps_stage_probe }
+	set_temp_variable = { concentration_camps_stage_ok = constant:concentration_camps_value.zero }
+	if = {
+		limit = { is_current_evolution_enabled = yes }
+		set_temp_variable = { concentration_camps_stage_ok = constant:concentration_camps_value.one }
+	}
+}
+
+# COUNTRY. Output: temp concentration_camps_open_stage, the highest contiguous
+# enabled stage (0 when none).
+concentration_camps_resolve_opening_stage = {
+	set_temp_variable = { concentration_camps_open_stage = constant:concentration_camps_value.zero }
+	set_temp_variable = { concentration_camps_stage_probe = constant:concentration_camps_evolution.stage_1 }
+	concentration_camps_probe_stage = yes
+	if = {
+		limit = { check_variable = { concentration_camps_stage_ok = constant:concentration_camps_value.one } }
+		set_temp_variable = { concentration_camps_open_stage = constant:concentration_camps_evolution.stage_1 }
+		set_temp_variable = { concentration_camps_stage_probe = constant:concentration_camps_evolution.stage_2 }
+		concentration_camps_probe_stage = yes
+		if = {
+			limit = { check_variable = { concentration_camps_stage_ok = constant:concentration_camps_value.one } }
+			set_temp_variable = { concentration_camps_open_stage = constant:concentration_camps_evolution.stage_2 }
+			set_temp_variable = { concentration_camps_stage_probe = constant:concentration_camps_evolution.stage_3 }
+			concentration_camps_probe_stage = yes
+			if = {
+				limit = { check_variable = { concentration_camps_stage_ok = constant:concentration_camps_value.one } }
+				set_temp_variable = { concentration_camps_open_stage = constant:concentration_camps_evolution.stage_3 }
+			}
+		}
+	}
+}
+
+# COUNTRY. Input: temp concentration_camps_log_stage. Writes one evolution row
+# for this country in the shared log.
+concentration_camps_record_evolution = {
+	set_temp_variable = { events_log_evolution_event_id = constant:concentration_camps_identity.event_id }
+	set_temp_variable = { events_log_evolution_type = constant:concentration_camps_identity.evolution_type }
+	set_temp_variable = { events_log_evolution_stage = concentration_camps_log_stage }
+	set_temp_variable = { events_log_evolution_tier = concentration_camps_log_stage }
+	set_temp_variable = { events_log_evolution_has_actor = constant:concentration_camps_value.one }
+	save_event_target_as = events_log_evolution_actor
+	record_events_log_evolution_entry = yes
+}
+
+# ----------------------------------------------------------------------------
+# Pacing (called by the monthly monitor)
+# ----------------------------------------------------------------------------
+
+# COUNTRY. Advances an active network toward the next stage. The due day is
+# about 90 days away, between the fast and slow factor. A disabled evolution
+# clears the due day, and the baseline network keeps running.
+concentration_camps_try_evolution = {
+	set_temp_variable = { concentration_camps_evolution_fired = constant:concentration_camps_value.zero }
+	if = {
+		limit = { check_variable = { concentration_camps_evolution < constant:concentration_camps_evolution.stage_3 } }
+		set_temp_variable = { concentration_camps_next_stage = concentration_camps_evolution }
+		add_to_temp_variable = { concentration_camps_next_stage = constant:concentration_camps_value.one }
+		set_temp_variable = { concentration_camps_stage_probe = concentration_camps_next_stage }
+		concentration_camps_probe_stage = yes
+		if = {
+			limit = { check_variable = { concentration_camps_stage_ok = constant:concentration_camps_value.one } }
+			if = {
+				limit = { NOT = { has_variable = concentration_camps_evolution_due_day } }
+				set_temp_variable_to_random = {
+					var = concentration_camps_delay_factor
+					min = constant:concentration_camps_evolution_value.fast_factor
+					max = constant:concentration_camps_evolution_value.slow_factor
+				}
+				set_temp_variable = { concentration_camps_delay_days = constant:concentration_camps_evolution.base_days }
+				multiply_temp_variable = { concentration_camps_delay_days = concentration_camps_delay_factor }
+				round_temp_variable = concentration_camps_delay_days
+				set_variable = { concentration_camps_evolution_due_day = global.num_days }
+				add_to_variable = { concentration_camps_evolution_due_day = concentration_camps_delay_days }
+			}
+			else_if = {
+				limit = { check_variable = { var = global.num_days value = concentration_camps_evolution_due_day compare = greater_than_or_equals } }
+				clear_variable = concentration_camps_evolution_due_day
+				set_variable = { concentration_camps_evolution = concentration_camps_next_stage }
+				set_temp_variable = { concentration_camps_evolution_fired = constant:concentration_camps_value.one }
+				concentration_camps_advance_stage = yes
+			}
+		}
+		else = {
+			clear_variable = concentration_camps_evolution_due_day
+		}
+	}
+}
+
+# COUNTRY. Applies the stage that was just entered. Input: variable
+# concentration_camps_evolution. Resets the figures the stage report quotes.
+concentration_camps_advance_stage = {
+	set_variable = { concentration_camps_stage_converted = 0 }
+	set_variable = { concentration_camps_stage_added = 0 }
+	set_variable = { concentration_camps_evolution_loss_k = 0 }
+	clr_country_flag = concentration_camps_single_site_pending
+	set_temp_variable = { concentration_camps_log_stage = concentration_camps_evolution }
+	concentration_camps_record_evolution = yes
+	if = {
+		limit = { check_variable = { concentration_camps_evolution = constant:concentration_camps_evolution.stage_1 } }
+		concentration_camps_stage_one = yes
+		country_event = { id = chaosx.nr22.201 days = constant:concentration_camps_timing.report_delay_days }
+	}
+	else_if = {
+		limit = { check_variable = { concentration_camps_evolution = constant:concentration_camps_evolution.stage_2 } }
+		concentration_camps_apply_shock_2 = yes
+		country_event = { id = chaosx.nr22.301 days = constant:concentration_camps_timing.report_delay_days }
+	}
+	else = {
+		set_temp_variable = { concentration_camps_open_stage = constant:concentration_camps_evolution.stage_3 }
+		set_temp_variable = { concentration_camps_target_share = constant:concentration_camps_coverage.late_stage }
+		concentration_camps_place_sites = yes
+		set_variable = { concentration_camps_stage_added = concentration_camps_placed_count }
+		set_variable = { concentration_camps_eligible_states = concentration_camps_eligible_count }
+		concentration_camps_split_network = yes
+		concentration_camps_apply_shock_3 = yes
+		country_event = { id = chaosx.nr22.401 days = constant:concentration_camps_timing.report_delay_days }
+	}
+	concentration_camps_refresh_network = yes
+}
+
+# ----------------------------------------------------------------------------
+# Evolution I, killing orders
+# ----------------------------------------------------------------------------
+
+# COUNTRY. Output: temp concentration_camps_convertible_count, live concentration
+# sites that have not yet been given the killing role.
+concentration_camps_count_convertible = {
+	set_temp_variable = { concentration_camps_convertible_count = constant:concentration_camps_value.zero }
+	for_each_scope_loop = {
+		array = concentration_camps_site_states
+		if = {
+			limit = { concentration_camps_state_is_convertible = yes }
+			add_to_temp_variable = { concentration_camps_convertible_count = constant:concentration_camps_value.one }
+		}
+	}
+}
+
+# COUNTRY. Half of the valid concentration camps, rounded down, are converted.
+# A lone valid camp is converted only after the government accepts the orders.
+concentration_camps_stage_one = {
+	concentration_camps_count_convertible = yes
+	if = {
+		limit = { camp_admin_can_use_radical_mandate = yes }
+		set_temp_variable = { concentration_camps_convert_count = concentration_camps_convertible_count }
+		multiply_temp_variable = { concentration_camps_convert_count = constant:concentration_camps_evolution_value.half }
+		subtract_from_temp_variable = { concentration_camps_convert_count = constant:concentration_camps_evolution_value.half_floor_offset }
+		round_temp_variable = concentration_camps_convert_count
+		if = {
+			limit = { check_variable = { concentration_camps_convert_count > constant:concentration_camps_value.zero } }
+			concentration_camps_convert_sites = yes
+		}
+		else_if = {
+			limit = { check_variable = { concentration_camps_convertible_count = constant:concentration_camps_value.one } }
+			set_country_flag = concentration_camps_single_site_pending
+		}
+	}
+}
+
+# COUNTRY. The coverage split of a late or evolved network: half of the live
+# sites, rounded down, hold the killing role, and an existing killing site is
+# never downgraded. The extra site of an odd count stays a concentration camp.
+concentration_camps_split_network = {
+	set_temp_variable = { concentration_camps_live_count = constant:concentration_camps_value.zero }
+	set_temp_variable = { concentration_camps_killing_count = constant:concentration_camps_value.zero }
+	for_each_scope_loop = {
+		array = concentration_camps_site_states
+		if = {
+			limit = { camp_admin_site_is_operational = yes }
+			add_to_temp_variable = { concentration_camps_live_count = constant:concentration_camps_value.one }
+			if = {
+				limit = { concentration_camps_state_is_killing_site = yes }
+				add_to_temp_variable = { concentration_camps_killing_count = constant:concentration_camps_value.one }
+			}
+		}
+	}
+	set_temp_variable = { concentration_camps_convert_count = concentration_camps_live_count }
+	multiply_temp_variable = { concentration_camps_convert_count = constant:concentration_camps_evolution_value.half }
+	subtract_from_temp_variable = { concentration_camps_convert_count = constant:concentration_camps_evolution_value.half_floor_offset }
+	round_temp_variable = concentration_camps_convert_count
+	subtract_from_temp_variable = { concentration_camps_convert_count = concentration_camps_killing_count }
+	if = {
+		limit = {
+			check_variable = { concentration_camps_convert_count > constant:concentration_camps_value.zero }
+			camp_admin_can_use_radical_mandate = yes
+		}
+		concentration_camps_convert_sites = yes
+	}
+}
+
+# COUNTRY. Input: temp concentration_camps_convert_count. Picks that many valid
+# concentration camps from a weighted pool (non-core, resisting, quiet and
+# industrial states first, the capital last) and gives them the killing role.
+concentration_camps_convert_sites = {
+	clear_temp_array = concentration_camps_convert_pool
+	clear_temp_array = concentration_camps_convert_picked
+	set_temp_variable = { concentration_camps_eligible_count = concentration_camps_eligible_states }
+	for_each_scope_loop = {
+		array = concentration_camps_site_states
+		if = {
+			limit = { concentration_camps_state_is_convertible = yes }
+			concentration_camps_score_state = yes
+			for_loop_effect = {
+				start = 0
+				end = concentration_camps_state_weight
+				value = concentration_camps_convert_pool_index
+				add_to_temp_array = { array = concentration_camps_convert_pool value = THIS }
+			}
+		}
+	}
+	for_loop_effect = {
+		start = 0
+		end = concentration_camps_convert_count
+		value = concentration_camps_convert_index
+		random_scope_in_array = {
+			array = concentration_camps_convert_pool
+			limit = { NOT = { has_state_flag = concentration_camps_picked } }
+			set_state_flag = concentration_camps_picked
+			add_to_temp_array = { array = concentration_camps_convert_picked value = THIS }
+		}
+	}
+	for_each_scope_loop = {
+		array = concentration_camps_convert_picked
+		clr_state_flag = concentration_camps_picked
+		concentration_camps_convert_site = yes
+	}
+	clear_temp_array = concentration_camps_convert_pool
+	clear_temp_array = concentration_camps_convert_picked
+	set_temp_variable = { concentration_camps_push_resistance = constant:camp_rework_country_value.resistance_major }
+	set_temp_variable = { concentration_camps_push_evidence = constant:camp_rework_country_value.evidence_major }
+	set_temp_variable = { concentration_camps_push_visibility = constant:camp_rework_country_value.visibility_major }
+	concentration_camps_push_pressure = yes
+}
+
+# STATE, PREV is the country, ROOT is the country. Same steps as the Ledger
+# role order: the shared extermination registration, the radicalized site type,
+# the killing role. The cohort, responsibility and evidence stay.
+concentration_camps_convert_site = {
+	genocide_register_extermination_site_for_root = yes
+	if = {
+		limit = { check_variable = { genocide_camp_conversion_succeeded > constant:concentration_camps_value.zero } }
+		set_state_flag = camp_rework_radicalized_site
+		set_state_flag = concentration_camps_killing_site
+		set_temp_variable = { camp_register_site_type = constant:camp_rework_site_type.radicalized }
+		camp_rework_register_active_site = yes
+		camp_admin_refresh_capacity = yes
+		set_variable = { camp_admin_role = constant:camp_admin_role.killing }
+		camp_admin_refresh_state_economy = yes
+		PREV = { add_to_variable = { concentration_camps_stage_converted = constant:concentration_camps_value.one } }
+	}
+}
+
+# COUNTRY. Ends the killing role at every site that holds it. The building and
+# the evidence stay, and no one is brought back.
+concentration_camps_halt_killing = {
+	for_each_scope_loop = {
+		array = concentration_camps_site_states
+		if = {
+			limit = {
+				camp_admin_site_is_operational = yes
+				concentration_camps_state_is_killing_site = yes
+			}
+			set_variable = { camp_admin_role = constant:camp_admin_role.custody }
+			camp_admin_refresh_state_economy = yes
+		}
+	}
+	camp_admin_refresh_country_economy = yes
+}
+
+# COUNTRY. The government accepts the killing orders: the radical mandate, and
+# the lone valid camp is converted when that was the question.
+concentration_camps_accept_killing_orders = {
+	if = {
+		limit = { has_country_flag = concentration_camps_single_site_pending }
+		clr_country_flag = concentration_camps_single_site_pending
+		set_temp_variable = { concentration_camps_convert_count = constant:concentration_camps_value.one }
+		concentration_camps_convert_sites = yes
+	}
+	set_temp_variable = { concentration_camps_mandate_target = constant:camp_admin_mandate.radical }
+	concentration_camps_apply_mandate = yes
+}
+
+# ----------------------------------------------------------------------------
+# Evolution II and III, the shocks
+# ----------------------------------------------------------------------------
+
+# STATE, PREV is the country. Input: temp concentration_camps_shock_fraction.
+# Requests that share of the current state civilian population, clamped by the
+# shared owner to the people the camp holds. Cause: violence at a killing site,
+# custody elsewhere.
+concentration_camps_request_shock = {
+	set_temp_variable = { camp_admin_death_requested_k = state_population_k }
+	multiply_temp_variable = { camp_admin_death_requested_k = concentration_camps_shock_fraction }
+	set_temp_variable = { camp_admin_death_cause = constant:camp_admin_cause.custody }
+	if = {
+		limit = { concentration_camps_state_is_killing_site = yes }
+		set_temp_variable = { camp_admin_death_cause = constant:camp_admin_cause.violence }
+	}
+	set_temp_variable = { camp_admin_death_contract = constant:concentration_camps_value.one }
+	camp_admin_record_deaths = yes
+	PREV = { add_to_variable = { concentration_camps_evolution_loss_k = camp_admin_death_actual_k } }
+}
+
+# COUNTRY. The 1 percent loss, once per operating site of the network.
+concentration_camps_apply_shock_2 = {
+	set_variable = { concentration_camps_evolution_loss_k = 0 }
+	for_each_scope_loop = {
+		array = concentration_camps_site_states
+		if = {
+			limit = {
+				camp_admin_site_is_operational = yes
+				NOT = { has_state_flag = concentration_camps_shock_2_applied }
+			}
+			set_state_flag = concentration_camps_shock_2_applied
+			set_temp_variable = { concentration_camps_shock_fraction = constant:concentration_camps_evolution_value.shock_stage_2 }
+			concentration_camps_request_shock = yes
+		}
+	}
+	concentration_camps_finish_shock = yes
+}
+
+# COUNTRY. The 2 percent loss, once per operating site of the network.
+concentration_camps_apply_shock_3 = {
+	set_variable = { concentration_camps_evolution_loss_k = 0 }
+	for_each_scope_loop = {
+		array = concentration_camps_site_states
+		if = {
+			limit = {
+				camp_admin_site_is_operational = yes
+				NOT = { has_state_flag = concentration_camps_shock_3_applied }
+			}
+			set_state_flag = concentration_camps_shock_3_applied
+			set_temp_variable = { concentration_camps_shock_fraction = constant:concentration_camps_evolution_value.shock_stage_3 }
+			concentration_camps_request_shock = yes
+		}
+	}
+	concentration_camps_finish_shock = yes
+}
+
+# COUNTRY. Totals the applied loss for the report and raises the shared
+# pressure in proportion to it.
+concentration_camps_finish_shock = {
+	set_variable = { concentration_camps_evolution_loss_people = concentration_camps_evolution_loss_k }
+	multiply_variable = { concentration_camps_evolution_loss_people = constant:camp_admin_value.people_per_k }
+	round_variable = concentration_camps_evolution_loss_people
+	if = {
+		limit = { check_variable = { concentration_camps_evolution_loss_k > constant:concentration_camps_value.zero } }
+		set_temp_variable = { concentration_camps_push_resistance = constant:camp_rework_country_value.resistance_major }
+		set_temp_variable = { concentration_camps_push_evidence = constant:camp_rework_country_value.evidence_major }
+		set_temp_variable = { concentration_camps_push_visibility = constant:camp_rework_country_value.visibility_minor }
+		concentration_camps_push_pressure = yes
+	}
+}
+
+# STATE, PREV is the country. A site added after Evolution II or III takes the
+# shock of the current stage once, when it becomes operational.
+concentration_camps_shock_new_site = {
+	if = {
+		limit = { check_variable = { concentration_camps_current_stage > constant:concentration_camps_evolution.stage_2 } }
+		set_state_flag = concentration_camps_shock_3_applied
+		set_temp_variable = { concentration_camps_shock_fraction = constant:concentration_camps_evolution_value.shock_stage_3 }
+		concentration_camps_request_shock = yes
+	}
+	else_if = {
+		limit = { check_variable = { concentration_camps_current_stage = constant:concentration_camps_evolution.stage_2 } }
+		set_state_flag = concentration_camps_shock_2_applied
+		set_temp_variable = { concentration_camps_shock_fraction = constant:concentration_camps_evolution_value.shock_stage_2 }
+		concentration_camps_request_shock = yes
+	}
+}
+
+# ----------------------------------------------------------------------------
+# Report answers
+# ----------------------------------------------------------------------------
+
+# COUNTRY. The government orders the killing stopped and the camps closed.
+concentration_camps_answer_halt_and_close = {
+	concentration_camps_halt_killing = yes
+	concentration_camps_policy_closure = yes
+}
+
+# COUNTRY. Killing roles end, the mandate returns to custody, the cases are reviewed.
+concentration_camps_answer_halt_and_review = {
+	concentration_camps_halt_killing = yes
+	concentration_camps_policy_review = yes
+}
+
+# COUNTRY. Lower intensity: the mandate returns to custody and the killing role stays on the books.
+concentration_camps_answer_reduce_intensity = {
+	set_temp_variable = { concentration_camps_mandate_target = constant:camp_admin_mandate.custody }
+	concentration_camps_apply_mandate = yes
+}
+
+# COUNTRY. An inquiry into who ordered the escalation.
+concentration_camps_answer_inquiry = {
+	set_temp_variable = { concentration_camps_push_visibility = constant:camp_rework_country_value.visibility_minor }
+	set_temp_variable = { concentration_camps_push_reform = constant:camp_rework_country_value.reform_major }
+	concentration_camps_push_pressure = yes
+	add_stability = constant:concentration_camps_incident.stability_gain
+}

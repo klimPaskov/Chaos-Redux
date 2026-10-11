@@ -15,6 +15,7 @@ add_namespace = chaosx.nr22
 #   .3   hidden monthly monitor (one per live network)
 #   .101 escape networks        .102 sickness in the camps
 #   .103 reports leave the camps
+#   .201 Evolution I killing orders   .301 Evolution II deaths   .401 Evolution III half the country
 #   .510 foreign report of credible camps
 #   .800 closure after destroyed records   .801 closure with open records
 #   .802 hidden closure proof
@@ -122,6 +123,23 @@ country_event = {
 			modifier = { add = constant:concentration_camps_open_weight.labor_p3 NOT = { has_government = democratic } has_war = yes }
 			modifier = { add = constant:concentration_camps_open_weight.labor_p4 NOT = { has_government = democratic } has_war = no }
 			modifier = { factor = constant:concentration_camps_ai.blocked has_equipment = { support_equipment < constant:concentration_camps_ai.support_floor } }
+		}
+	}
+
+	option = {
+		name = chaosx.nr22.2.e
+		trigger = {
+			camp_admin_can_use_radical_mandate = yes
+			check_variable = { concentration_camps_stage_converted > constant:concentration_camps_value.zero }
+		}
+		custom_effect_tooltip = chaosx.nr22.2.e_tt
+		hidden_effect = { concentration_camps_accept_killing_orders = yes }
+		ai_chance = {
+			base = constant:concentration_camps_ai.low
+			modifier = { add = constant:concentration_camps_ai.dominant has_government = fascism has_war = yes }
+			modifier = { add = constant:concentration_camps_ai.strong has_government = communism has_war = yes }
+			modifier = { add = constant:concentration_camps_ai.moderate has_civil_war = yes }
+			modifier = { factor = constant:concentration_camps_ai.blocked has_stability < constant:concentration_camps_open_weight.collapse_stability }
 		}
 	}
 
@@ -302,6 +320,189 @@ country_event = {
 			base = constant:concentration_camps_ai.low
 			modifier = { add = constant:concentration_camps_ai.dominant has_government = democratic }
 			modifier = { add = constant:concentration_camps_ai.moderate has_stability < constant:concentration_camps_open_weight.collapse_stability }
+		}
+	}
+}
+
+# ----------------------------------------------------------------------------
+# Evolutions
+# ----------------------------------------------------------------------------
+
+# Evolution I. Killing orders reach part of the network.
+country_event = {
+	id = chaosx.nr22.201
+	title = chaosx.nr22.201.t
+	desc = {
+		trigger = { check_variable = { concentration_camps_stage_converted > constant:concentration_camps_value.zero } }
+		text = chaosx.nr22.201.d_converted
+	}
+	desc = {
+		trigger = { has_country_flag = concentration_camps_single_site_pending }
+		text = chaosx.nr22.201.d_single
+	}
+	desc = {
+		text = chaosx.nr22.201.d_blocked
+	}
+	picture = GFX_report_event_generic_train
+
+	is_triggered_only = yes
+	trigger = { concentration_camps_network_is_live = yes }
+
+	option = {
+		name = chaosx.nr22.201.a
+		trigger = {
+			camp_admin_can_use_radical_mandate = yes
+			OR = {
+				check_variable = { concentration_camps_stage_converted > constant:concentration_camps_value.zero }
+				has_country_flag = concentration_camps_single_site_pending
+			}
+		}
+		custom_effect_tooltip = chaosx.nr22.201.a_tt
+		hidden_effect = { concentration_camps_accept_killing_orders = yes }
+		ai_chance = {
+			base = constant:concentration_camps_ai.low
+			modifier = { add = constant:concentration_camps_ai.strong has_government = fascism has_war = yes }
+			modifier = { add = constant:concentration_camps_ai.standard has_government = communism has_war = yes }
+			modifier = { add = constant:concentration_camps_ai.moderate has_civil_war = yes }
+			modifier = { factor = constant:concentration_camps_ai.blocked has_stability < constant:concentration_camps_open_weight.collapse_stability }
+		}
+	}
+
+	option = {
+		name = chaosx.nr22.201.b
+		trigger = { camp_admin_generic_reform_available = yes }
+		custom_effect_tooltip = chaosx.nr22.201.b_tt
+		hidden_effect = { concentration_camps_answer_halt_and_close = yes }
+		ai_chance = {
+			base = constant:concentration_camps_ai.low
+			modifier = { add = constant:concentration_camps_ai.standard has_stability < constant:concentration_camps_open_weight.collapse_stability }
+			modifier = { add = constant:concentration_camps_ai.moderate has_war = no }
+		}
+	}
+
+	option = {
+		name = chaosx.nr22.201.c
+		custom_effect_tooltip = chaosx.nr22.201.c_tt
+		hidden_effect = { concentration_camps_answer_halt_and_review = yes }
+		ai_chance = {
+			base = constant:concentration_camps_ai.standard
+			modifier = { add = constant:concentration_camps_ai.moderate has_stability < constant:concentration_camps_target_weight.unstable_threshold }
+		}
+	}
+
+	option = {
+		name = chaosx.nr22.201.e
+		custom_effect_tooltip = chaosx.nr22.201.e_tt
+		ai_chance = {
+			base = constant:concentration_camps_ai.moderate
+		}
+	}
+}
+
+# Evolution II. One synchronized month of deaths in every camp state.
+country_event = {
+	id = chaosx.nr22.301
+	title = chaosx.nr22.301.t
+	desc = chaosx.nr22.301.d
+	picture = GFX_report_event_generic_funeral
+
+	is_triggered_only = yes
+	trigger = { concentration_camps_network_is_live = yes }
+
+	option = {
+		name = chaosx.nr22.301.a
+		custom_effect_tooltip = chaosx.nr22.301.a_tt
+		ai_chance = {
+			base = constant:concentration_camps_ai.standard
+			modifier = { add = constant:concentration_camps_ai.moderate NOT = { has_government = democratic } }
+		}
+	}
+
+	option = {
+		name = chaosx.nr22.301.b
+		custom_effect_tooltip = chaosx.nr22.301.b_tt
+		hidden_effect = { concentration_camps_answer_reduce_intensity = yes }
+		ai_chance = {
+			base = constant:concentration_camps_ai.low
+			modifier = { add = constant:concentration_camps_ai.standard has_stability < constant:concentration_camps_target_weight.unstable_threshold }
+			modifier = { add = constant:concentration_camps_ai.strong has_government = democratic }
+		}
+	}
+
+	option = {
+		name = chaosx.nr22.301.c
+		trigger = { camp_admin_generic_reform_available = yes }
+		custom_effect_tooltip = chaosx.nr22.301.c_tt
+		hidden_effect = { concentration_camps_policy_closure = yes }
+		ai_chance = {
+			base = constant:concentration_camps_ai.blocked
+			modifier = { add = constant:concentration_camps_ai.moderate has_stability < constant:concentration_camps_open_weight.collapse_stability }
+			modifier = { add = constant:concentration_camps_ai.dominant has_government = democratic }
+		}
+	}
+
+	option = {
+		name = chaosx.nr22.301.d
+		custom_effect_tooltip = chaosx.nr22.301.d_tt
+		hidden_effect = { concentration_camps_answer_inquiry = yes }
+		ai_chance = {
+			base = constant:concentration_camps_ai.low
+			modifier = { add = constant:concentration_camps_ai.moderate has_government = democratic }
+		}
+	}
+}
+
+# Evolution III. The camps reach half of the country.
+country_event = {
+	id = chaosx.nr22.401
+	title = chaosx.nr22.401.t
+	desc = chaosx.nr22.401.d
+	picture = GFX_report_event_generic_ruins
+
+	is_triggered_only = yes
+	trigger = { concentration_camps_network_is_live = yes }
+
+	option = {
+		name = chaosx.nr22.401.a
+		trigger = { camp_admin_generic_reform_available = yes }
+		custom_effect_tooltip = chaosx.nr22.401.a_tt
+		hidden_effect = { concentration_camps_answer_halt_and_close = yes }
+		ai_chance = {
+			base = constant:concentration_camps_ai.blocked
+			modifier = { add = constant:concentration_camps_ai.standard has_stability < constant:concentration_camps_open_weight.collapse_stability }
+			modifier = { add = constant:concentration_camps_ai.strong has_government = democratic }
+		}
+	}
+
+	option = {
+		name = chaosx.nr22.401.b
+		custom_effect_tooltip = chaosx.nr22.401.b_tt
+		ai_chance = {
+			base = constant:concentration_camps_ai.strong
+			modifier = { factor = constant:concentration_camps_ai.blocked has_government = democratic }
+		}
+	}
+
+	option = {
+		name = chaosx.nr22.401.c
+		trigger = { camp_admin_can_use_radical_mandate = yes }
+		custom_effect_tooltip = chaosx.nr22.401.c_tt
+		hidden_effect = { concentration_camps_accept_killing_orders = yes }
+		ai_chance = {
+			base = constant:concentration_camps_ai.low
+			modifier = { add = constant:concentration_camps_ai.standard has_government = fascism has_war = yes }
+			modifier = { factor = constant:concentration_camps_ai.blocked has_stability < constant:concentration_camps_open_weight.collapse_stability }
+		}
+	}
+
+	option = {
+		name = chaosx.nr22.401.d
+		custom_effect_tooltip = chaosx.nr22.401.d_tt
+		hidden_effect = { concentration_camps_answer_halt_and_review = yes }
+		ai_chance = {
+			base = constant:concentration_camps_ai.low
+			modifier = { add = constant:concentration_camps_ai.moderate has_stability < constant:concentration_camps_target_weight.unstable_threshold }
+			modifier = { add = constant:concentration_camps_ai.strong has_government = democratic }
 		}
 	}
 }
