@@ -327,7 +327,7 @@ The Kingdom slot reuses the independent federation image as a stand-in.
 
 ## Assets
 
-Reused existing art: report image of Lawrence (`GFX_report_event_lawrence`, provenance of the source photograph is not recorded in the repository and must be confirmed before release), arab congress report image and the decision category picture (`interface/040_lawrence_of_arabia.gfx`), news image `GFX_news_lawrence`. Most decision icons and four prompt-listed idea icons still use vanilla generic sprites. Six current idea consumers use dedicated aliases in `interface/040_lawrence_idea_icons.gfx` with DDS files under `gfx/interface/ideas/040_lawrence_of_arabia/`: anti-intervention confidence, uneven administration, rival commands, promise debt, federal mistrust and personal settlement. Their existing vanilla stand-in sprites are unchanged.
+Reused existing art: report image of Lawrence (`GFX_report_event_lawrence`, provenance of the source photograph is not recorded in the repository and must be confirmed before release), arab congress report image and the decision category picture (`interface/040_lawrence_of_arabia.gfx`), news image `GFX_news_lawrence`. One decision icon row (client reinforcement) and four prompt-listed idea icons still use vanilla generic sprites. Fourteen current decision consumers and six idea consumers use dedicated aliases in `interface/040_lawrence_decision_icons.gfx` and `interface/040_lawrence_idea_icons.gfx`, with DDS files under `gfx/interface/decisions/040_lawrence_of_arabia/` and `gfx/interface/ideas/040_lawrence_of_arabia/`. Their existing vanilla stand-in sprites are unchanged.
 
 ### Assets still needed
 
@@ -335,13 +335,13 @@ Reused existing art: report image of Lawrence (`GFX_report_event_lawrence`, prov
 | --- | --- | --- | --- |
 | Grounded portrait of T. E. Lawrence (corps commander and later roles), user-supplied HOI4-style final | `GFX_portrait_t_e_lawrence` | `interface/040_lawrence_of_arabia.gfx` | `gfx/leaders/` through the portrait workflow |
 | Decision category icon (headcloth, field notes, liaison seal) | `GFX_decision_category_040_lawrence` | `interface/040_lawrence_of_arabia.gfx` | `gfx/interface/decisions/040_lawrence_of_arabia/` |
-| Target and British decision icons (custody of arms, ledger audit, guarded travel, turned contact, exposure, expulsion, charter, gold and arms package, officer cadres, Red Sea route, base agreement, recovery) | `GFX_decision_040_<name>` | same | same |
+| Client reinforcement decision icon candidate | `GFX_decision_040_lawrence_client_reinforcement` | `alternative_for_review`; no exact live decision mapping | `docs/assets/040_lawrence_of_arabia/icons/alternative_for_review/decisions_20261011_s2/` |
 | Remaining prompt-listed idea icons (British mission, independent partner, exposed network and British Arabian system) | `GFX_idea_040_<name>` | `interface/040_lawrence_idea_icons.gfx` | `gfx/interface/ideas/040_lawrence_of_arabia/` |
 | Report images for the recall, a sabotage scene and the settlement reports | `GFX_report_event_040_<name>` | same | `gfx/event_pictures/040_lawrence_of_arabia/` |
 | Flags of the three federation identities, normal, medium and small | tag files `LAWF_BRITISH`, `LAWF_ARAB`, `LAWF_KINGDOM` | none | `gfx/flags/`, `gfx/flags/medium/`, `gfx/flags/small/` |
 | Super-event scene of Lawrence's Kingdom (the slot reuses the independent federation image) | `GFX_super_event_040_lawrence_kingdom_formed` | `interface/040_lawrence_of_arabia.gfx` | `gfx/event_pictures/040_lawrence_of_arabia/` |
 | Super-event audio and a sourced quote for slots 140 to 142 | sound ids pending | pending | pending |
-| Focus icon families and 15 dedicated decision icons; current candidates await sample review and exact consumer mapping | `GFX_focus_040_<name>`, `GFX_decision_040_<name>` | new sprite definitions only after consumer mapping | `gfx/interface/goals/`, `gfx/interface/decisions/` |
+| Eight focus icon families remain unwired until exact focus-node mappings are established | `GFX_focus_040_<name>` | no stable family-to-node mapping yet | `docs/assets/040_lawrence_of_arabia/focus_icons/alternative_for_review/` |
 | Achievement triplets for Gold Without Chains, Desert Conference and Rails, Ports and Promises; the Uncrowned Kingdom triplet is installed | `GFX_achievement_chaos_redux_040_<id>` and `_grey`, `_not_eligible` | filename-convention achievement textures | `gfx/achievements/` |
 
 ## Validation notes
