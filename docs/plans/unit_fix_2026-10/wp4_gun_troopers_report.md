@@ -49,6 +49,19 @@ Aim/stock/elbow contacts, rifle/body materials, idle and transition repairs rema
 Remaining voice, wound/death fade and landing-source work is tracked separately.
 Meshy credits spent on this source tranche: 0.
 
+### Portal Raider
+
+The four laser events retain their authored times and use finite particle lifecycles.
+Idle and guard start one source-bound electrical loop with `trigger_once`, `loop = yes` and `max_audible = 1`.
+The one-second archived-source derivative measures -20 LUFS and a 2.58 dB inner head/tail RMS difference; source and installed hashes are recorded in `sound/portal_raider/WP4_ATTRIBUTION.md`.
+This source lifecycle repair is separate from live state-exit playback verification and the remaining ray, step and death-cue work.
+
+The selected September 6 weapon-free provider body/maps and `wf_export2.blend` are missing from the current job, local scratch, archive and exact-hash LFS checks.
+The runtime 45-bone mesh and matching native installed-byte reimport remain available.
+The older shared-job Meshy 6 maps belong to a rejected predecessor and must not be applied to this body's UVs.
+The requested original-provider normal repack is therefore blocked by those missing source maps; current-geometry action and material review can proceed independently.
+Meshy credits spent on this source tranche: 0.
+
 Acceptance basis: the user's assignment of all nine WP4 models and every ticket in `C:/Users/klimp/Videos/chaos_redux_trailer/records/showcase/unit_fix_plan.md`.
 The implemented firing/audio tranche is documented in `wp4_firing_audio_tranche.md`; geometry, materials, rig/actions and filmed acceptance remain required.
 
