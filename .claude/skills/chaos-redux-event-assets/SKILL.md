@@ -445,13 +445,15 @@ The handoff must include:
 
 If the main agent already registered `.gfx` sprites or texture paths before requesting art, the asset subagent must follow those filenames, sprite names, DDS paths, and target sizes exactly. It should only propose names or paths when they were not provided.
 
-Before runtime promotion, resolve the current sprite's texture in both the mod and installed vanilla.
-Never repoint an existing sprite when its current texture file exists in either location, and never overwrite or delete an existing texture.
+Before runtime promotion, resolve the current sprite's `texturefile` in both the mod and installed vanilla.
+Never overwrite or delete an existing runtime texture, or change an existing sprite's `texturefile` when its current texture exists in either location, even when a spec or inventory requests a new image.
 A receipt plus an existing final file means the asset is done; do not replace it.
-Wire new art only when the current sprite texture is missing; when a new sprite name has no `.gfx` definition and current mod script, GUI, or localisation references it; or when the consumer uses a placeholder or clearly shared stand-in and the accepted spec explicitly requests a dedicated icon.
-For the placeholder or shared-stand-in case, add a new sprite alias and point the consumer to it without changing the stand-in sprite.
+Save new versions under unique filenames, label them `alternative for review` in the handoff and manifest, and keep them unbound.
+Wire new art only when the existing sprite's current texture is absent in both the mod and installed vanilla; when a new sprite name is already referenced by a mod consumer but has no `.gfx` definition; or when an accepted spec or explicit user instruction requests a dedicated icon for a consumer using a shared stand-in.
+For the dedicated-icon case, add a NEW sprite and change only that consumer; preserve the shared stand-in sprite and texture.
 If uncertain, leave the alternative for review without changing runtime wiring.
-Before each commit, inspect the staged `.gfx` diff and reject every `texturefile` change whose old path exists in the mod or installed vanilla.
+Before each commit, inspect the staged `.gfx` diff and drop every hunk that repoints an existing texture in the mod or installed vanilla.
+Isolated asset commits must not include unrelated `.gfx` edits.
 
 Within this gate, the main agent adds the sprite to the correct existing `.gfx` using its naming/formatting pattern, points it to the final DDS, updates the affected localisation/GUI/event/focus/idea/decision consumers, and aligns relevant docs and spreadsheet rows.
 
