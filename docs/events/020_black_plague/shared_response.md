@@ -4,6 +4,46 @@ Event 020 uses two coordinated decision surfaces. The dedicated `black_plague_re
 
 The dedicated category mounts the Event 020-owned `black_plague_response_category_scripted_gui`. Its compact, read-only dashboard shows Countermeasure Progress as the primary 0–100 meter and Medical Reserve and Response Capacity as the two supporting values. Programme stage, country and worldwide deaths, and international-response status remain available through concise text and tooltips. The dashboard starts no projects and changes no gameplay state; all cure, logistics, cooperation, knowledge, recovery, and selected-state actions remain decisions on their existing category surfaces.
 
+## Shared containment board
+
+The shared `disease_containment_board_window` uses an 820×520 native window attached to `top_bar` through `player_context`.
+The decision-category header remains its entry point.
+Disease tabs lead the layout, followed by Preparedness and Medical Capacity with the existing biosecurity and medical icons, labelled state filters, a scrollable state list, and the selected state's report.
+The 250-pixel list viewport holds five complete 50-pixel rows.
+Owner and controller occupy separate lines, while short response guidance replaces the body paragraph.
+The Black Plague report shows Disease Load and Containment; its tooltip retains every original private metric or public qualitative record under the existing access predicate.
+National response records and world and Royal Basin records remain on the phase and disease tooltips.
+All fourteen original button identifiers and their callbacks remain present, including the category opener, five disease tabs, four filters, state selection, Refresh, Close, and Go to State.
+The dynamic-list array, selected-state pointer, response-target behaviour, dirty variable, region-selection guard, and gameplay effects retain their existing contracts.
+
+The owned source is `interface/biowarfare_disease_containment.gui`, `common/scripted_guis/biowarfare_disease_containment_scripted_gui.txt`, `common/scripted_localisation/biowarfare_disease_containment_scripted_localisation.txt`, and `localisation/english/biowarfare_disease_containment_l_english.yml`.
+No artwork is replaced: `interface/chaosx.gfx` supplies the existing button, existing vanilla tiled panels and scrollbar supply the shell, existing Black Plague seals retain their consumers, and `interface/biological_countermeasures.gfx` supplies `GFX_decision_bio_expand_biosecurity_capacity` and `GFX_decision_bio_expand_medical_capacity` from the existing 32×32 textures in `gfx/interface/decisions/biowarfare/countermeasures/`.
+The button texture has a 123×36 canvas and a 34-pixel painted face; the grid retains room for its complete native hitbox.
+
+### Layout review and evidence — 11 October 2026
+
+The user authorized a compact native layout with existing art and every function retained.
+The parent selected and reviewed `.tmp/disease_board_ui/intended-reference.png` before source edits, with element mapping and acceptance recorded in `.tmp/disease_board_ui/reference-acceptance.md`.
+The parent source review checks the unchanged callbacks, all fourteen button IDs, retained private and public records, full rows, local anchors, column bounds, tooltip bindings, and mutually exclusive empty-selection and selected-state panels; its evidence is `.tmp/disease_board_ui/source-review.json`.
+The two visible national values plus the two private Black Plague state values meet the four-value surface ceiling.
+All original records and navigation remain available; there are no functional or artwork simplifications.
+
+The configured MCP 4.0.0 server was accessed through a separate read-only stdio connection because its coding tools were absent from the session tool list.
+Reference context, search, read, and source lookup returned results; the initial inspection result could not be archived when C: ran out of space.
+The initial render produced no usable artifact, and the single narrower retry was stopped after the bounded wait without a response.
+The retry allowance for this underlying GUI-render failure is exhausted; another attempt requires evidence that the service or storage condition causing the failure has been resolved.
+The requested before-and-after render comparison is incomplete: there are no before or after render paths, and no MCP visual or live-game acceptance is claimed.
+Post-edit rendering was not repeated after the same renderer failure exhausted its retry allowance.
+The eight declared fixtures for no disease, one active disease, many states, and a critical selected state at 1920×1080 and 2560×1440, UI scale 1, remain in `.tmp/disease_board_ui/scenarios.json`, alongside original source copies and both render requests.
+The empty-disease fixture explicitly overrides board visibility and is a synthetic boundary check, not proof that the opener normally permits that state.
+Real in-game trailer capture is requested through `records/cx/video_capture_board.md` in the trailer workspace.
+The required broad localisation audit was launched but stopped after ten minutes in its repository token-indexing stage; the unmodified maintained parser was then run directly on the actual owned localisation file and accepted all 131 keys with no parse errors.
+MCP file-mode scope validation also returned no result within the bounded connection wait; installed-reference and source review support the trigger change, without a claim that MCP validation passed.
+
+References read: installed `common/scripted_guis/_documentation.md`, lines 1–146, revision `43ce647fc5fde27488855b060b5463c790e5e356149fceb010d36b960b40f838`; offline `Interface modding - Hearts of Iron 4 Wiki.md`, lines 154–256, revision `b74afc86be4e5dbb3b0fc600820d73a8340f7dc1821fc5ef02c9ee1f028c0b1c`; offline `Scripted GUI modding - Hearts of Iron 4 Wiki.md`, lines 40–110, 165–205, and 249–282, revision `b07d850ea78c4e1e3fc113574059ad2f3ea37df320b9259128d66814023c1f30`; and offline `Localisation - Hearts of Iron 4 Wiki.md`, lines 244–259, revision `1a8f72362a34b4bb653186746b9fae0b98e463205cb02f12ccf2c3d9ccd3a064`.
+The installed `interface/sov_paranoia_system_scripted_gui.gui`, lines 18–65, supplies the precedent for separate native icons, value labels, and tooltip consumers.
+Skills used: `chaos-redux-scripted-gui` and `chaos-redux-shared-git-commit`; neither skill is modified.
+
 ## State actions
 
 The Event 020-owned containment decisions in `common/decisions/020_black_plague_response_decisions.txt` include Seal Food Stores and Clear Sewers and Burrows. Each pays its state-scaled support equipment and fuel once when ordered, while civilian factories and Response Capacity remain committed for the timed work. Personnel and trucks must be available but are not consumed. Treat Flea Infestations pays support equipment and Medical Reserve, while Purge Transport Depots pays trains and fuel. Both retain their factory and Response Capacity commitments. Their other stock and staffing checks remain on-hand requirements. Completion and cancellation retain their original state-lane and disease effects. The first two actions' four-type payment correction is recorded in `docs/specs/020_black_plague_specs/corrections/2026-09-26_seal_and_sewers_payment_budget.md`. The later pair is recorded in `docs/specs/020_black_plague_specs/corrections/2026-09-26_flea_and_transport_payment_budget.md`. The other Event 020 state responses remain queued for the same cost-budget review.
