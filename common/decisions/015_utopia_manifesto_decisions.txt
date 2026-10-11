@@ -771,7 +771,19 @@ utopia_manifesto_ledger_category = {
 				NOT = { utopia_manifesto_selected_calling_has_shortage = yes }
 			}
 		}
-		cancel_effect = { hidden_effect = { utopia_manifesto_fail_unpopular_calling = yes } }
+		cancel_effect = {
+			hidden_effect = {
+				if = {
+					limit = {
+						utopia_manifesto_has_ledger = yes
+						NOT = { utopia_manifesto_selected_calling_has_shortage = yes }
+					}
+					clr_country_flag = utopia_manifesto_calling_mission_active
+					utopia_manifesto_mark_selected_calling_method_recent = yes
+				}
+				else = { utopia_manifesto_fail_unpopular_calling = yes }
+			}
+		}
 		timeout_effect = {
 			custom_effect_tooltip = mission_utopia_fill_unpopular_calling_outcome_tt
 			hidden_effect = { utopia_manifesto_resolve_unpopular_calling = yes }
