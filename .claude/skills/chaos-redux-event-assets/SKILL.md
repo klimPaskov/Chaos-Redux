@@ -445,7 +445,15 @@ The handoff must include:
 
 If the main agent already registered `.gfx` sprites or texture paths before requesting art, the asset subagent must follow those filenames, sprite names, DDS paths, and target sizes exactly. It should only propose names or paths when they were not provided.
 
-The main agent adds the sprite to the correct existing `.gfx` using its naming/formatting pattern, points it to the final DDS, preserves sprite names, updates all localisation/GUI/event/focus/idea/decision consumers, and aligns relevant docs and spreadsheet rows.
+Before runtime promotion, resolve the current sprite's texture in both the mod and installed vanilla.
+Never repoint an existing sprite when its current texture file exists in either location, and never overwrite or delete an existing texture.
+A receipt plus an existing final file means the asset is done; do not replace it.
+Wire new art only when the current sprite texture is missing; when a new sprite name has no `.gfx` definition and current mod script, GUI, or localisation references it; or when the consumer uses a placeholder or clearly shared stand-in and the accepted spec explicitly requests a dedicated icon.
+For the placeholder or shared-stand-in case, add a new sprite alias and point the consumer to it without changing the stand-in sprite.
+If uncertain, leave the alternative for review without changing runtime wiring.
+Before each commit, inspect the staged `.gfx` diff and reject every `texturefile` change whose old path exists in the mod or installed vanilla.
+
+Within this gate, the main agent adds the sprite to the correct existing `.gfx` using its naming/formatting pattern, points it to the final DDS, updates the affected localisation/GUI/event/focus/idea/decision consumers, and aligns relevant docs and spreadsheet rows.
 
 When wiring event-owned sprite-backed art, the texture path should point to the event-scoped folder for that asset category. If an asset must stay root-only, document the engine reason in the handoff or manifest.
 
