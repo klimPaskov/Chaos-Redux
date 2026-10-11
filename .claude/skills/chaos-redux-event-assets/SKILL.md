@@ -29,8 +29,14 @@ This skill owns the image-generation route for the whole repository. Claude Code
 - For alpha-backed families, request a genuinely transparent background in the prompt and set `transparent_background = true` with Codex native ImageGen; the gptimage MCP route has no explicit alpha parameter. Verify the alpha channel of the saved PNG, and fall back to the documented [background-removal fallback](#native-transparency-and-background-removal-fallback) only when the saved PNG has no usable alpha.
 - When a call fails, check authentication with `image_auth_status` before retrying.
 
-When Codex native `image_gen__imagegen` returns `result.image_url` as a `data:image/png;base64,...` URL without a local path, save the returned bytes before processing.
-In `functions.exec`, retain the result with `store()` and recover it with `load()` if needed; extract only the payload after the data-URL prefix and pass it directly to `tools.apply_patch` to create a uniquely named ignored `<job>/source_png/<candidate>.b64` file.
+For Codex native ImageGen, save the exact argument record before the call under [Candidate lineage and review](references/manifest-and-lineage.md#candidate-lineage-and-review); never claim an unavailable historical request was saved before its call.
+In `functions.exec`, retain the returned result with `store()` and recover it with `load()` when persistence spans calls.
+Print only small metadata such as result keys and `output_hint`, never base64 or a sliced serialization of the huge result, which can hide the saved-path hint.
+When `output_hint` reports a saved local PNG under `CODEX_HOME/generated_images`, copy from that actual reported path into the source workspace and verify the copied SHA-256 matches the original.
+If persistence fails after successful generation, recover the existing output from the reported session folder and timestamp and inspect its subject before selecting it; do not repeat a successful generation merely to save its output.
+
+When Codex native `image_gen__imagegen` returns `result.image_url` as a `data:image/png;base64,...` URL with no reported local path, save the returned bytes before processing.
+Extract only the payload after the data-URL prefix and pass it directly to `tools.apply_patch` to create a uniquely named ignored `<job>/source_png/<candidate>.b64` file.
 Never print the payload with `text()` or `notify()`, or embed it in an `exec_command` argument: image-sized arguments exceed Windows command-length limits.
 Then invoke Python through `tools.exec_command` with only local paths, read the payload file, and use `base64.b64decode` to write a new source PNG without overwriting an existing candidate.
 Verify the PNG with an image decoder, record its SHA-256 in the candidate lineage, and preserve it unchanged; crops, resizing, and alpha repairs belong in separate processed files.
