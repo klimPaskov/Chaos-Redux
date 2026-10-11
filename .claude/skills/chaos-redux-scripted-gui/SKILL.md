@@ -65,6 +65,8 @@ Check the live `gui_inspect`/`gui_render` schemas for the scenario fields being 
 
 When `GUI_RENDERED` returns a linked artifact URI but the wire response truncates, retrieve the authoritative SVG/JSON through the `hoi4_agent_tools` MCP resource in byte ranges (`?offset=&length=32768`) while useful retrieval continues within the AGENTS.md failure/retry limits. Archive the assembled bytes, verify the full SHA-256 against the resource metadata, and convert the complete SVG to PNG with the configured Node `sharp` runtime for image review. A truncated wire excerpt is not a production image. If the output cannot be retrieved, retain its URI and report the missing visual check instead of using a truncated image.
 
+A scenario/resolution matrix PNG may be a thumbnail while its SVG embeds full-resolution PNGs as `data:image/png;base64` image hrefs. Before requesting redundant renders, inspect the exact authoritative matrix SVG and paired JSON, match the SVG hash, `sourceRevision`, and scenario order, and decode those embedded PNG bytes with XML/base64 and Pillow under ignored `.tmp/<task>/`. Record each embedded PNG's SHA-256, actual dimensions, scenario identity, and alpha bounds; inspect the original and alpha-bounds crops at native size without enlargement or UI-scale changes. If the matrix URI is missing or unreadable, use available resource-byte retrieval or the exact local artifact within the shared failure/retry limits, verifying its identity against returned metadata. An older artifact or whichever filename is latest cannot establish current coverage. Keep one-off extraction helpers in `.tmp/`.
+
 Where supported, add `scenario.expectations.visible`, `hidden`, `containedBy`, and `centeredOn` assertions against actual element selectors. `centeredOn` checks rendered glyph bounds and can catch a visually off-center label inside an apparently centered text box. A successful tool call or `validation.passed: true` does not prove visual acceptance. Review warnings and correct confirmed source or layout defects. A warning caused only by unsupported evaluation or unavailable game state remains a stated check limitation; do not chase a warning-free report by changing valid gameplay or inventing scenario values.
 
 ### Visual review and limitations
@@ -78,6 +80,8 @@ Use this checklist when designing the native mapping and reviewing baseline and 
 ### Geometry, typography, and control bounds
 
 Distinguish the source texture canvas, the painted/alpha-visible shape, its designed usable interior, the logical GUI rectangle, the rendered glyph bounds, and the effective click region. Transparent padding, bevels, asymmetric ornaments, glyph bearings, borders, sprite frame dimensions, and parent transforms can make these differ. Measure the actual element after its scale, anchor/orientation, parent offsets, and frame selection; nominal texture width alone does not prove alignment.
+
+Children without explicit orientation inherit their container's orientation. In a `CENTER`-oriented root, background, title, or body elements intended to use local top-left coordinates need explicit `orientation = UPPER_LEFT` and, where supported by the element, `origo = UPPER_LEFT`. Before adapting source coordinates, verify native texture dimensions and the root's painted bounds, then distinguish `position` from the settled `show_position` when show/hide animation is present.
 
 | Check | Acceptance evidence |
 | --- | --- |
