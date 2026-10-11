@@ -1,5 +1,18 @@
 # Event 016 Paleogenetic Creature runtime closure handoff
 
+## Current runtime source, 11 October 2026
+
+The historical geometry, rig, scale, action and route claims below are superseded for the active runtime by the WP5 source audit in `docs/plans/unit_fix_2026-10/wp5_models_handoff.md`.
+The active `chaosx_paleogenetic_creature.mesh` has 40 bones and source height 8.087005615, with entity scale 0.8 and effective height 6.469604492; all eight registered actions run at 30 FPS.
+Decoded geometry, normals, UVs, weights and skeleton match `export/v4/chaosx_paleogenetic_creature.mesh`, and its source checkpoint is `blender/working/v3/blender/checkpoints/25_export_batches.blend`.
+The exact source and current-runtime hashes, action correspondence and checkpoint identity are in `.tmp/wp5_models/evidence/source_export_comparison.json`.
+The current topology and all eight action roles require the repairs listed in the WP5 handoff; a matching source or earlier native import is not model acceptance.
+The sourced dedicated audio set remains unresolved; the current zombie-family bindings do not establish the requested creature sound identity.
+Paleogenetic repair is queued for exclusive WP5/WP6 native production; the available Lab session/build/socket must be verified when that window is acquired.
+Historical missing adapter operations below are not the current production route.
+
+## Historical tranche
+
 Date: 2026-09-05. Owner: `/root/paleogenetic_runtime_final`. Scope: final 3D runtime/artifact closure for the existing reusable `paleogenetic_creature` geometry. No regeneration, geometry substitution, gameplay edit, staging, commit, or live-game claim was made.
 
 ## Outcome
