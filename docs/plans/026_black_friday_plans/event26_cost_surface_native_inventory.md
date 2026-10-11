@@ -5,6 +5,7 @@ Update 2026-10-04: the 399 positive native costs in the 15 inactive owner files 
 The acceptance basis is the parent prompt dated 2026-10-03, which records the original user goal of a full universal cost registry against the final commit.
 The current worktree is evidence of declarations and call sites only; it does not establish design approval, working discounts, or universal coverage.
 Event 26 implementation remains incomplete and default-disabled according to the parent; this refresh does not change that disposition.
+Update 2026-10-11: `044_space_race_decisions.txt` now holds four decisions with four positive costs (the row below records the earlier 21), so the converted total is 382.
 Full scan window: 2026-10-03T05:18:11.9235070Z through 2026-10-03T05:18:37.7233668Z; detected concurrent source changes were refreshed through 2026-10-03T05:31:23.6952522Z.
 Repository HEAD at the final targeted refresh: `5cb073ae0f4471f4a3330f8cdebb6d0b62a5c876`.
 All 346 recorded file hashes and paths matched the final independent recheck at 2026-10-03T05:31:29.5310770Z.

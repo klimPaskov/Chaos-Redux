@@ -375,13 +375,13 @@ Positive native costs: 0; dynamic native costs: 0; custom cost declarations: 5.
 
 ### Event 007 Fury
 
-Converted: all 17 custom-cost decisions read the sale through the BF-FUR adapters.
+Converted: all 15 custom-cost decisions read the sale through the BF-FUR adapters.
 
-Positive native costs: 0; dynamic native costs: 0; custom cost declarations: 17.
+Positive native costs: 0; dynamic native costs: 0; custom cost declarations: 15.
 
 | File | Native positive cost lines | Dynamic native cost lines | Custom cost trigger lines |
 | --- | --- | --- | --- |
-| `common/decisions/007_fury_decisions.txt` | - | - | 31, 58, 92, 138, 166, 222, 243, 297, 332, 363, 396, 419, 444, 506, 574, 596, 661 |
+| `common/decisions/007_fury_decisions.txt` | - | - | 39, 85, 137, 182, 210, 285, 306, 374, 433, 478, 506, 531, 593, 661, 683 |
 
 ### Event 017 Random Faction
 

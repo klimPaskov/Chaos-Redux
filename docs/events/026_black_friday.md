@@ -2,7 +2,10 @@
 
 ## Current status
 
-Event 26 preserves `chaosx.nr26.1` as the canonical actorless entry and remains classified as Minor Fire-Once. It is on the default-enabled event list (`event_log_event_is_reworked_default_enabled`), so a new campaign starts with it enabled (agent decision D8). Owner custom costs that have not adopted the sale yet charge their ordinary price and carry per-owner dispositions in the cost registry; live acceptance evidence is still pending, and the catalog status stays Needs Testing.
+Event 26 preserves `chaosx.nr26.1` as the canonical actorless entry and remains classified as Minor Fire-Once.
+It remains default-disabled until the complete cost registry, implementation surfaces, and required acceptance gates are finished.
+Unadapted owner costs, native composition and quantization, exact inaccessible-surface proof, and live acceptance remain unresolved.
+The catalog status must remain Needs Testing until live validation passes.
 
 ## Gameplay contract
 

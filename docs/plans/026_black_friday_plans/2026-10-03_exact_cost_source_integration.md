@@ -96,6 +96,10 @@ Every bounded source repair above uses shared-tree isolated-index publication an
 
 The full logical-transaction registry and every remaining unadapted owner still need source implementation and semantic review.
 The restored CBRN seal-state and destroy-records ordinary PP providers have no Black Friday quote/payment/display/receipt adapter yet.
+
+The October 7 continuation supersedes that absence finding with source-implemented adapters, typed receipts, actual-paid refund recovery, and matching price text.
+See the two `BF-CBRN-COVERUP` rows in `event26_cost_surface_registry.md` and `subagent_handoffs/2026-10-07_cbrn_coverup_cost_adapter.md` for current evidence and open native acceptance.
+The October 3 text above remains the historical starting point, not a current missing-source claim.
 The inspected Event 15 prefire domestic-shore purchase remains a three-component uncovered action: native PP 40, support equipment 50, and train equipment 5, with its original timed mission and non-refundable launch supplies.
 Its equipment-family payment must preserve the original family/model rules, not restrict the player to model 1 as a shortcut.
 No Event 15 source was patched by this inspection.

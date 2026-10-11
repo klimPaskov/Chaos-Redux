@@ -42,7 +42,10 @@ Rows marked `Calendar-calibration-blocked` below now depend only on live date-pr
 
 This record is reconciled against the current implementation worktree on 2026-09-02 and is not a claim of completion. `Source` means the relevant script, localisation, registry, or asset path was inspected. `MCP-partial` means the installed HOI4 MCP returned a workspace-wide partial result without a selector-specific blocker. `Live-blocked` means the scenario requires the user-owned live game or multiplayer session. `Calendar-calibration-blocked` originally meant the absolute `global.num_days % 7 == 2` source anchor; that anchor was wrong and is superseded by the 2026-10-04 calendar correction above, so the remaining label only marks the live date-progression evidence that is still outstanding. `Adapter-blocked` means the final cost registry has no complete owner callsite or engine-accessible route for the scenario; the bounded Communist-spread, Fury, Japan chemical, biological medical-capacity, CBRN shelter, Japan biological, Germany Mengele, and D'Rhondan alien-reserve source tranches have separate bounded adapter status.
 
-Event 26 is on the default-enabled event list under agent decision D8 (2026-10-04). The open items below remain live acceptance work or per-owner dispositions; they no longer keep the event disabled.
+Event 26 is default-disabled under the original user completion gate, restored on 2026-10-07 in commit `b9e4e75401e203640ff289f847ec273f45c9f5fb`.
+The October 4 D8 enablement is superseded.
+The complete semantic registry, exact inaccessible-surface route proof, native pricing, assets, localisation, logs, docs, audits, catalog fields, and tests must all be complete before re-enabling.
+Open native, multiplayer, persistence, and live Part 8 scenarios remain completion blockers.
 
 ## Reservation and timing
 
@@ -50,7 +53,7 @@ Event 26 is on the default-enabled event list under agent decision D8 (2026-10-0
 | --- | --- | --- |
 | `BF-T01` | Source; Live-blocked | Event-list status returns `N/A` below 200 Chaos and the reservation trigger requires the threshold; live picker evidence is unavailable. |
 | `BF-T02` | Source; Live-blocked | Automatic selection sets the global reservation, rejects the reserved event from later candidate evaluation without mutating its stored weight, and resolves the timer without history or pacing; live timer evidence is unavailable. |
-| `BF-T03` | Source; Calendar-calibration-blocked; Live-blocked | The bounded daily pulse activates a reservation when the shared absolute-date helper reports Friday. Known-date arithmetic supports remainder 2, but no installed Vanilla weekday precedent or live date progression closes the acceptance row. |
+| `BF-T03` | Source; Calendar-calibration-blocked; Live-blocked | The bounded daily pulse activates a reservation when the shared absolute-date helper reports Friday. The October 4 correction uses remainder 6 from 3 January 1936 at engine day 706642, but live date progression remains unresolved. |
 | `BF-T04` | Source; Calendar-calibration-blocked; Live-blocked | A helper-qualified Friday selection calls the canonical entry and activates in the same transaction; the absolute-date anchor is source-checked, while the Vanilla precedent and live same-day behavior remain unproven. |
 | `BF-T05` | Source; Calendar-calibration-blocked; Live-blocked | Natural activation requires current Chaos at or above 200, so a helper-qualified low-chaos Friday is skipped while reservation state remains; the Vanilla weekday precedent and live behavior remain unproven. |
 | `BF-T06` | Source; Calendar-calibration-blocked; Live-blocked | The Chaos-change hook rechecks an existing reservation and permits activation on a helper-qualified Friday; the source anchor is checked, while the Vanilla precedent and live behavior remain unproven. |
@@ -218,7 +221,9 @@ The authoritative workbook row for ID 26 is Black Friday, the duplicate no-ID ro
 
 ## Current conclusion (2026-10-05)
 
-The lifecycle, event-log, presentation, arithmetic, asset, and catalog source paths are implemented, and Event 26 is on the default-enabled event list (agent decision D8). The sale opens on the in-game Friday (D1).
+The October 4 takeover recorded lifecycle, event-log, presentation, arithmetic, asset, and catalog source paths and enabled Event 26 under D8.
+That enabling decision is superseded by the October 7 correction, and this historical result does not establish current completion or default enablement.
+The sale's Friday anchor follows D1, with live acceptance still unresolved.
 The queued owners' native and custom costs read the sale price table or the simple API (D4, D5, D11 to D22, D28, and D30, which covers Event 019's family management and its own family providers), their paid event options are classified as purchases or not (D26), and every native price-table decision credits the achievement (D27).
 Engine costs that no modifier can multiply keep their normal price, and the report and Event Details name them (D7 and D24).
 The open work is the active workstreams' own adoption of the sale (`owner_adoption_requests.md`), which leaves a missed discount rather than a wrong charge, and the live evidence listed above, which belongs to the user's live sessions.
@@ -232,3 +237,12 @@ Achievement inference remains weaker than individual native payment proof.
 The catalog wording in `catalog_changes_pending.md` remains queued with the workbook owner.
 The current audit handoffs and exact live checks are in `takeover_status_2026-10-06.md`.
 No new live, save/reload, multiplayer, or universal AI acceptance is claimed.
+
+## Controlling continuation result (2026-10-07)
+
+Commit `b9e4e75401e203640ff289f847ec273f45c9f5fb` restores the user's explicit disabled-default completion gate and supersedes the D8 enablement claims in the historical matrix and takeover notes.
+No partial owner adoption, disclosure, or source-only result waives that gate.
+The current exact-price regression retains 434 quote cases, 56 quantizer cases, eight NOR truth-table cases, and 84 malformed-source rejection checks.
+The 45-case shared receipt suite and 36-case public achievement proof suite also execute successfully against the current source.
+These are bounded source results, not native payment, serialization, multiplayer, UI, performance, or whole-achievement acceptance.
+The full semantic registry against the final implementation commit, exact per-surface inaccessible-route evidence, native composition and minimum-payment proof, catalog alignment, and live Part 8 scenarios remain unresolved.
