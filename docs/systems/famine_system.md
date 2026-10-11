@@ -165,6 +165,8 @@ Famine blockade evaluation refreshes neutral physical railway damage through `ci
 
 The reverse connection uses `migration_to_famine_reception_demand_*`. Migration publishes the exact trapped people amount, cause, schema, generation, revision, and proof; famine validates it and stores `famine_reception_demand_population`. Food need and vulnerability normalize only that famine-owned receipt against live state population.
 
+Event 037 Mysterious People tops up a food-need shock in crowded states at Overpopulation Pressure 60 or more through `famine_request_event_pressure` (source `event`), raising the state's food need toward the pressure minus 40 (`mysterious_people_adapter` constants). Famine decides what the shock does to the food state.
+
 ## Assets and mapmode
 
 Famine assets use `famine_*` filenames and sprite identifiers. `interface/famine_system.gfx` owns the category, decision, state-modifier, and achievement sprites; `interface/chaosx_texticons.gfx` owns the famine Deaths texticon; `interface/famine_report_pictures.gfx` and `interface/famine_report_header.gui` own the compact famine report art consumer; `interface/mapmodes_interface.gfx` owns the two famine mapmode button states.
