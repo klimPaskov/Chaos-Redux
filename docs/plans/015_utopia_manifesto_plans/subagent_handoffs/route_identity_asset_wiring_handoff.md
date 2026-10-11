@@ -137,3 +137,25 @@ This subtask explicitly forbids edits to Event 015 decisions and decision catego
 - vanilla `common/characters/_documentation.md`, `common/scripted_guis/_documentation.md`, `common/decisions/_documentation.md`, character/advisor examples, portrait sprite examples, and scripted-GUI image-property examples
 
 No skill was created or updated; this pass exposed no reusable workflow gap beyond the existing asset-wiring guidance.
+
+
+## Shard 6 generated idea-icon delivery (2026-10-11)
+
+The user-authorized current asset batch delivered twelve 64x64 transparent idea icons; an independent full sample review approved `idea_utopia_found_manifesto`, and all twelve source-to-DDS checks passed for native alpha, strict BGRA dimensions, and exact decoded-pixel round-trip.
+
+Stable registered sprites in `interface/015_utopia_manifesto.gfx` now resolve to versioned sibling DDS files. The original runtime DDS files remain byte-for-byte untouched. The full source prompts, source/processed images, candidates, contact sheet, manifest, and row checks remain in the active asset workspace; detailed review evidence is `.tmp/assets_shard_6/reviews/015_idea_review.md`.
+
+| Asset | Stable sprite | Versioned runtime DDS |
+|---|---|---|
+| `idea_utopia_auxiliary_dependency` | `GFX_idea_utopia_auxiliary_dependency` | `gfx/interface/ideas/015_utopia_manifesto/idea_utopia_auxiliary_dependency_shard6_20261011.dds` |
+| `idea_utopia_charter_of_households` | `GFX_idea_utopia_charter_of_households` | `gfx/interface/ideas/015_utopia_manifesto/idea_utopia_charter_of_households_shard6_20261011.dds` |
+| `idea_utopia_closed_island` | `GFX_idea_utopia_closed_island` | `gfx/interface/ideas/015_utopia_manifesto/idea_utopia_closed_island_shard6_20261011.dds` |
+| `idea_utopia_common_store_network` | `GFX_idea_utopia_common_store_network` | `gfx/interface/ideas/015_utopia_manifesto/idea_utopia_common_store_network_shard6_20261011.dds` |
+| `idea_utopia_common_table` | `GFX_idea_utopia_common_table` | `gfx/interface/ideas/015_utopia_manifesto/idea_utopia_common_table_shard6_20261011.dds` |
+| `idea_utopia_found_manifesto` | `GFX_idea_utopia_found_manifesto` | `gfx/interface/ideas/015_utopia_manifesto/idea_utopia_found_manifesto_shard6_20261011.dds` |
+| `idea_utopia_garden_district_network` | `GFX_idea_utopia_garden_district_network` | `gfx/interface/ideas/015_utopia_manifesto/idea_utopia_garden_district_network_shard6_20261011.dds` |
+| `idea_utopia_inherited_order` | `GFX_idea_utopia_inherited_order` | `gfx/interface/ideas/015_utopia_manifesto/idea_utopia_inherited_order_shard6_20261011.dds` |
+| `idea_utopia_perfect_measure` | `GFX_idea_utopia_perfect_measure` | `gfx/interface/ideas/015_utopia_manifesto/idea_utopia_perfect_measure_shard6_20261011.dds` |
+| `idea_utopia_practical_commonwealth` | `GFX_idea_utopia_practical_commonwealth` | `gfx/interface/ideas/015_utopia_manifesto/idea_utopia_practical_commonwealth_shard6_20261011.dds` |
+| `idea_utopia_stewardship_burden` | `GFX_idea_utopia_stewardship_burden` | `gfx/interface/ideas/015_utopia_manifesto/idea_utopia_stewardship_burden_shard6_20261011.dds` |
+| `idea_utopia_unmeasured_country` | `GFX_idea_utopia_unmeasured_country` | `gfx/interface/ideas/015_utopia_manifesto/idea_utopia_unmeasured_country_shard6_20261011.dds` |
