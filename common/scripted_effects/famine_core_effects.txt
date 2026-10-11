@@ -272,8 +272,7 @@ famine_select_historical_profile_id = {
 		limit = {
 			state = @FAMINE_STATE_HENAN
 			OR = { OWNER = { tag = CHI } CONTROLLER = { tag = CHI } OWNER = { tag = MAN } CONTROLLER = { tag = MAN } }
-			date > 1942.01.01
-			date < 1943.12.31
+			famine_state_holders_at_war = yes
 			OR = { check_variable = { var = famine_local_war_evidence value = constant:humanitarian_runtime.zero compare = greater_than } has_state_flag = famine_surface_context_active }
 		}
 		set_variable = { famine_historical_profile_id = constant:famine_profile_id.hist_china_henan_1942 }
@@ -281,6 +280,7 @@ famine_select_historical_profile_id = {
 	else_if = {
 		limit = {
 			state = @FAMINE_STATE_HENAN
+			# Not on the start day: the profile needs a live food shock.
 			date > 1936.01.01
 			famine_china_policy_profile_cause_proven = yes
 		}
@@ -290,8 +290,7 @@ famine_select_historical_profile_id = {
 		limit = {
 			OR = { state = @FAMINE_STATE_EAST_BENGAL state = @FAMINE_STATE_WEST_BENGAL }
 			OR = { OWNER = { tag = RAJ } CONTROLLER = { tag = RAJ } OWNER = { tag = ENG } CONTROLLER = { tag = ENG } }
-			date > 1943.01.01
-			date < 1944.12.31
+			famine_state_holders_at_war = yes
 			OR = { check_variable = { var = famine_local_war_evidence value = constant:humanitarian_runtime.zero compare = greater_than } check_variable = { var = famine_food_pressure value = constant:humanitarian_population.zero compare = greater_than } }
 		}
 		set_variable = { famine_historical_profile_id = constant:famine_profile_id.hist_bengal_1943 }
@@ -300,8 +299,7 @@ famine_select_historical_profile_id = {
 		limit = {
 			OR = { state = @FAMINE_STATE_VIETNAM_TONKIN state = @FAMINE_STATE_VIETNAM_COCHINCHINA }
 			OR = { OWNER = { tag = FRA } CONTROLLER = { tag = FRA } OWNER = { tag = JAP } CONTROLLER = { tag = JAP } }
-			date > 1944.01.01
-			date < 1945.12.31
+			famine_state_holders_at_war = yes
 			OR = { check_variable = { var = famine_local_war_evidence value = constant:humanitarian_runtime.zero compare = greater_than } check_variable = { var = famine_food_pressure value = constant:humanitarian_population.zero compare = greater_than } }
 		}
 		set_variable = { famine_historical_profile_id = constant:famine_profile_id.hist_vietnam_1944 }
@@ -310,8 +308,7 @@ famine_select_historical_profile_id = {
 		limit = {
 			OR = { state = @FAMINE_STATE_JAVA_WEST state = @FAMINE_STATE_JAVA_EAST }
 			OR = { OWNER = { tag = HOL } CONTROLLER = { tag = HOL } OWNER = { tag = JAP } CONTROLLER = { tag = JAP } }
-			date > 1944.01.01
-			date < 1945.12.31
+			famine_state_holders_at_war = yes
 			OR = { check_variable = { var = famine_local_war_evidence value = constant:humanitarian_runtime.zero compare = greater_than } check_variable = { var = famine_food_pressure value = constant:humanitarian_population.zero compare = greater_than } }
 		}
 		set_variable = { famine_historical_profile_id = constant:famine_profile_id.hist_java_1944 }
@@ -320,8 +317,7 @@ famine_select_historical_profile_id = {
 		limit = {
 			OR = { state = @FAMINE_STATE_GREECE state = @FAMINE_STATE_GREECE_PELOPONNESE state = @FAMINE_STATE_GREECE_AEGEAN }
 			OR = { OWNER = { tag = GRE } CONTROLLER = { tag = GRE } OWNER = { tag = GER } CONTROLLER = { tag = GER } OWNER = { tag = ITA } CONTROLLER = { tag = ITA } }
-			date > 1941.01.01
-			date < 1942.12.31
+			famine_state_holders_at_war = yes
 			OR = { check_variable = { var = famine_local_war_evidence value = constant:humanitarian_runtime.zero compare = greater_than } check_variable = { var = famine_food_pressure value = constant:humanitarian_population.zero compare = greater_than } }
 		}
 		set_variable = { famine_historical_profile_id = constant:famine_profile_id.hist_greece_1941 }
@@ -330,8 +326,7 @@ famine_select_historical_profile_id = {
 		limit = {
 			state = @FAMINE_STATE_LENINGRAD
 			OR = { OWNER = { tag = SOV } CONTROLLER = { tag = SOV } OWNER = { tag = GER } CONTROLLER = { tag = GER } }
-			date > 1941.01.01
-			date < 1944.12.31
+			famine_state_holders_at_war = yes
 			OR = { check_variable = { var = famine_local_war_evidence value = constant:humanitarian_runtime.zero compare = greater_than } check_variable = { var = famine_blockade_local_food_insufficient_proven value = constant:humanitarian_runtime.zero compare = greater_than } }
 		}
 		set_variable = { famine_historical_profile_id = constant:famine_profile_id.hist_leningrad_siege }
@@ -340,8 +335,7 @@ famine_select_historical_profile_id = {
 		limit = {
 			OR = { state = @FAMINE_STATE_HOLLAND state = @FAMINE_STATE_FRIESLAND }
 			OR = { OWNER = { tag = HOL } CONTROLLER = { tag = HOL } OWNER = { tag = GER } CONTROLLER = { tag = GER } }
-			date > 1944.01.01
-			date < 1946.01.01
+			famine_state_holders_at_war = yes
 			OR = { check_variable = { var = famine_local_war_evidence value = constant:humanitarian_runtime.zero compare = greater_than } check_variable = { var = famine_food_pressure value = constant:humanitarian_population.zero compare = greater_than } }
 		}
 		set_variable = { famine_historical_profile_id = constant:famine_profile_id.hist_dutch_hunger_winter }
@@ -373,8 +367,6 @@ famine_select_historical_profile_id = {
 				state = @FAMINE_STATE_SPAIN_EASTERN_ARAGON
 			}
 			OR = { OWNER = { tag = SPR } CONTROLLER = { tag = SPR } }
-			date > 1939.01.01
-			date < 1943.01.01
 			OR = { check_variable = { var = famine_local_war_evidence value = constant:humanitarian_runtime.zero compare = greater_than } check_variable = { var = famine_food_pressure value = constant:humanitarian_population.zero compare = greater_than } }
 		}
 		set_variable = { famine_historical_profile_id = constant:famine_profile_id.hist_spain_early_1940s }
@@ -1505,8 +1497,7 @@ famine_resolve_historical_profile_context = {
 			check_variable = { var = famine_historical_profile_id value = constant:famine_profile_id.hist_china_henan_1942 compare = equals }
 			check_variable = { var = famine_profile_resolver_state_id value = @FAMINE_STATE_HENAN compare = equals }
 			OR = { OWNER = { tag = CHI } CONTROLLER = { tag = CHI } OWNER = { tag = MAN } CONTROLLER = { tag = MAN } }
-			date > 1942.01.01
-			date < 1943.12.31
+			famine_state_holders_at_war = yes
 			OR = { check_variable = { var = famine_local_war_evidence value = constant:humanitarian_runtime.zero compare = greater_than } has_state_flag = famine_surface_context_active }
 		}
 		set_temp_variable = { famine_profile_mapping_result = constant:humanitarian_runtime.one }
@@ -1515,6 +1506,7 @@ famine_resolve_historical_profile_context = {
 		limit = {
 			check_variable = { var = famine_historical_profile_id value = constant:famine_profile_id.hist_china_policy_famine compare = equals }
 			check_variable = { var = famine_profile_resolver_state_id value = @FAMINE_STATE_HENAN compare = equals }
+			# Not on the start day: the profile needs a live food shock.
 			date > 1936.01.01
 			famine_china_policy_profile_cause_proven = yes
 		}
@@ -1528,8 +1520,7 @@ famine_resolve_historical_profile_context = {
 				check_variable = { var = famine_profile_resolver_state_id value = @FAMINE_STATE_WEST_BENGAL compare = equals }
 			}
 			OR = { OWNER = { tag = RAJ } CONTROLLER = { tag = RAJ } OWNER = { tag = ENG } CONTROLLER = { tag = ENG } }
-			date > 1943.01.01
-			date < 1944.12.31
+			famine_state_holders_at_war = yes
 			OR = { check_variable = { var = famine_local_war_evidence value = constant:humanitarian_runtime.zero compare = greater_than } check_variable = { var = famine_food_pressure value = constant:humanitarian_population.zero compare = greater_than } }
 		}
 		set_temp_variable = { famine_profile_mapping_result = constant:humanitarian_runtime.one }
@@ -1539,8 +1530,7 @@ famine_resolve_historical_profile_context = {
 			check_variable = { var = famine_historical_profile_id value = constant:famine_profile_id.hist_vietnam_1944 compare = equals }
 			OR = { check_variable = { var = famine_profile_resolver_state_id value = @FAMINE_STATE_VIETNAM_TONKIN compare = equals } check_variable = { var = famine_profile_resolver_state_id value = @FAMINE_STATE_VIETNAM_COCHINCHINA compare = equals } }
 			OR = { OWNER = { tag = FRA } CONTROLLER = { tag = FRA } OWNER = { tag = JAP } CONTROLLER = { tag = JAP } }
-			date > 1944.01.01
-			date < 1945.12.31
+			famine_state_holders_at_war = yes
 			OR = { check_variable = { var = famine_local_war_evidence value = constant:humanitarian_runtime.zero compare = greater_than } check_variable = { var = famine_food_pressure value = constant:humanitarian_population.zero compare = greater_than } }
 		}
 		set_temp_variable = { famine_profile_mapping_result = constant:humanitarian_runtime.one }
@@ -1550,8 +1540,7 @@ famine_resolve_historical_profile_context = {
 			check_variable = { var = famine_historical_profile_id value = constant:famine_profile_id.hist_java_1944 compare = equals }
 			OR = { check_variable = { var = famine_profile_resolver_state_id value = @FAMINE_STATE_JAVA_WEST compare = equals } check_variable = { var = famine_profile_resolver_state_id value = @FAMINE_STATE_JAVA_EAST compare = equals } }
 			OR = { OWNER = { tag = HOL } CONTROLLER = { tag = HOL } OWNER = { tag = JAP } CONTROLLER = { tag = JAP } }
-			date > 1944.01.01
-			date < 1945.12.31
+			famine_state_holders_at_war = yes
 			OR = { check_variable = { var = famine_local_war_evidence value = constant:humanitarian_runtime.zero compare = greater_than } check_variable = { var = famine_food_pressure value = constant:humanitarian_population.zero compare = greater_than } }
 		}
 		set_temp_variable = { famine_profile_mapping_result = constant:humanitarian_runtime.one }
@@ -1561,8 +1550,7 @@ famine_resolve_historical_profile_context = {
 			check_variable = { var = famine_historical_profile_id value = constant:famine_profile_id.hist_greece_1941 compare = equals }
 			OR = { check_variable = { var = famine_profile_resolver_state_id value = @FAMINE_STATE_GREECE compare = equals } check_variable = { var = famine_profile_resolver_state_id value = @FAMINE_STATE_GREECE_PELOPONNESE compare = equals } check_variable = { var = famine_profile_resolver_state_id value = @FAMINE_STATE_GREECE_AEGEAN compare = equals } }
 			OR = { OWNER = { tag = GRE } CONTROLLER = { tag = GRE } OWNER = { tag = GER } CONTROLLER = { tag = GER } OWNER = { tag = ITA } CONTROLLER = { tag = ITA } }
-			date > 1941.01.01
-			date < 1942.12.31
+			famine_state_holders_at_war = yes
 			OR = { check_variable = { var = famine_local_war_evidence value = constant:humanitarian_runtime.zero compare = greater_than } check_variable = { var = famine_food_pressure value = constant:humanitarian_population.zero compare = greater_than } }
 		}
 		set_temp_variable = { famine_profile_mapping_result = constant:humanitarian_runtime.one }
@@ -1572,8 +1560,7 @@ famine_resolve_historical_profile_context = {
 			check_variable = { var = famine_historical_profile_id value = constant:famine_profile_id.hist_leningrad_siege compare = equals }
 			check_variable = { var = famine_profile_resolver_state_id value = @FAMINE_STATE_LENINGRAD compare = equals }
 			OR = { OWNER = { tag = SOV } CONTROLLER = { tag = SOV } OWNER = { tag = GER } CONTROLLER = { tag = GER } }
-			date > 1941.01.01
-			date < 1944.12.31
+			famine_state_holders_at_war = yes
 			OR = { check_variable = { var = famine_local_war_evidence value = constant:humanitarian_runtime.zero compare = greater_than } check_variable = { var = famine_blockade_local_food_insufficient_proven value = constant:humanitarian_runtime.zero compare = greater_than } }
 		}
 		set_temp_variable = { famine_profile_mapping_result = constant:humanitarian_runtime.one }
@@ -1583,8 +1570,7 @@ famine_resolve_historical_profile_context = {
 			check_variable = { var = famine_historical_profile_id value = constant:famine_profile_id.hist_dutch_hunger_winter compare = equals }
 			OR = { check_variable = { var = famine_profile_resolver_state_id value = @FAMINE_STATE_HOLLAND compare = equals } check_variable = { var = famine_profile_resolver_state_id value = @FAMINE_STATE_FRIESLAND compare = equals } }
 			OR = { OWNER = { tag = HOL } CONTROLLER = { tag = HOL } OWNER = { tag = GER } CONTROLLER = { tag = GER } }
-			date > 1944.01.01
-			date < 1946.01.01
+			famine_state_holders_at_war = yes
 			OR = { check_variable = { var = famine_local_war_evidence value = constant:humanitarian_runtime.zero compare = greater_than } check_variable = { var = famine_food_pressure value = constant:humanitarian_population.zero compare = greater_than } }
 		}
 		set_temp_variable = { famine_profile_mapping_result = constant:humanitarian_runtime.one }
@@ -1617,8 +1603,6 @@ famine_resolve_historical_profile_context = {
 				check_variable = { var = famine_profile_resolver_state_id value = @FAMINE_STATE_SPAIN_EASTERN_ARAGON compare = equals }
 			}
 			OR = { OWNER = { tag = SPR } CONTROLLER = { tag = SPR } }
-			date > 1939.01.01
-			date < 1943.01.01
 			OR = { check_variable = { var = famine_local_war_evidence value = constant:humanitarian_runtime.zero compare = greater_than } check_variable = { var = famine_food_pressure value = constant:humanitarian_population.zero compare = greater_than } }
 		}
 		set_temp_variable = { famine_profile_mapping_result = constant:humanitarian_runtime.one }

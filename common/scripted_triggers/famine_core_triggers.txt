@@ -219,6 +219,20 @@ famine_historical_profile_candidate_is_valid = {
 }
 
 
+# State scope. The wartime historical profiles (Henan, Bengal, Indochina, Java,
+# Greece, Leningrad, the Netherlands) apply while the owner or the controller
+# is at war. The calendar does not select a profile; the war and the live food
+# proof the caller checks do.
+famine_state_holders_at_war = {
+	hidden_trigger = {
+		OR = {
+			OWNER = { has_war = yes }
+			CONTROLLER = { has_war = yes }
+		}
+	}
+}
+
+
 # Cause gates for the three policy and regional profiles (spec Part 5). Profile
 # selection and profile mapping both use them, after the caller has resolved
 # the temporary famine_occupation_profile and, for Congo, the temporary
