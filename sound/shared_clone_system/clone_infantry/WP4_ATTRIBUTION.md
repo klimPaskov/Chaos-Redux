@@ -38,3 +38,27 @@ Original sources, selected candidates, exact transformations and measured receip
 
 No audio was downloaded, synthesized or recorded by the agent; no auditory, spoken-word or live playback acceptance is asserted.
 CC BY 3.0 sources retain attribution and adaptation notices: https://creativecommons.org/licenses/by/3.0/.
+
+## Distinct recorded voice takes
+
+The attack pool retains its original take and adds one recorded battlecry; the wounded pool retains its original and adds two recorded wounded vocal events.
+All three additions use Soldier Voice Acting by kurt, CC BY 3.0, https://opengameart.org/content/soldier-voice-acting, https://creativecommons.org/licenses/by/3.0/.
+
+`clone_infantry_attack_voice_02.wav` uses `docs/assets/shared_clone_system/models_3d/clone_infantry/clone_preserved_acceptance_audio/battlecries.ogg`, source SHA-256 `26fbe5af927786b854389e5ba6d2e04d0283f95e47aa16214a1d82943ba9db74`, source window 0.934000000-1.234000000 seconds.
+Mechanical processing applies 10 ms entry and 30 ms release fades, 30 Hz high-pass filtering, -1.626085434 dB gain and mono PCM16/44.1 kHz conversion.
+Derivative SHA-256 `6f551f3e4e0df06558c8804751d6fdde869272e1257526134b6d194d54d4ecd3`; duration 0.300000 seconds, peak -2.999988 dBFS, leading silence 19.954649 ms.
+
+`clone_infantry_wounded_02.wav` uses `docs/assets/shared_clone_system/models_3d/clone_infantry/clone_preserved_acceptance_audio/wounded.ogg`, source SHA-256 `eeb48bd1abee14052941df29fe93b660df4a811998146616f5d6eaa138484ee6`, source window 1.727000000-2.130000000 seconds.
+Mechanical processing applies 10 ms entry and 20 ms release fades, 30 Hz high-pass filtering, 3.776421109 dB gain and mono PCM16/44.1 kHz conversion.
+Derivative SHA-256 `673e86f516c4ae911d78ce6f48fca17c4a22e1e014ba86cd21da52e8451136cf`; duration 0.407370 seconds, peak -6.677271 dBFS, leading silence 19.954649 ms.
+
+`clone_infantry_wounded_03.wav` uses `docs/assets/shared_clone_system/models_3d/clone_infantry/clone_preserved_acceptance_audio/wounded.ogg`, source SHA-256 `eeb48bd1abee14052941df29fe93b660df4a811998146616f5d6eaa138484ee6`, source window 3.333000000-4.109818594 seconds.
+Mechanical processing applies 10 ms entry and 20 ms release fades, 30 Hz high-pass filtering, 4.616138215 dB gain and mono PCM16/44.1 kHz conversion.
+Derivative SHA-256 `5971c359aa56b322fdacb60c515a1742c6ef74052a1010cf1f43d49478273c53`; duration 0.776825 seconds, peak -6.677271 dBFS, leading silence 14.965986 ms.
+
+Wounded peaks retain the accepted -6.677271 dBFS level; the added battlecry peaks at -3 dBFS.
+The rejected additional battlecry remains unused because preserving its early vocal onset did not meet the unchanged 20 ms leading-silence gate.
+The selected attack pool has two takes and the wounded pool has three, both preventing immediate repetition.
+Original takes, entity events, cue volumes and playback-rate ranges are unchanged.
+Source/context waveforms, exact recipes and candidate checks are in the Clone job `evidence/wp4_audio_takeover/voice_variants/review_packet.json`; installed binding checks are in `integration_receipt.json` there.
+No sound was downloaded, synthesized or recorded by the agent; no auditory, spoken-content or live playback acceptance is claimed.

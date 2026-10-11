@@ -52,6 +52,9 @@ The single 0.45-second Lee-Enfield report is the reviewed CC0 source derivative,
 This removes the missing defend effects and obsolete report/casing times while preserving the current mesh and actions.
 Aim/stock/elbow contacts, rifle/body materials, idle and transition repairs remain required; numerical event placement does not establish those pose requirements.
 The complete source-derived shout is 0.791859 seconds at -3 dBFS; wound and death fades retain their captured -6.677 and -7.667 dBFS peaks.
+The attack-voice pool has two distinct recorded takes and the wounded pool has three, all from the existing kurt CC BY 3.0 source recordings, with immediate repetition prevented.
+The three additions preserve complete visible vocal envelopes, pass the 20 ms leading-silence limit and retain the accepted role levels; exact source cuts, waveform comparisons and installed bindings are in the Clone job's `evidence/wp4_audio_takeover/voice_variants/`.
+An additional battlecry remains rejected because preserving its early vocal onset did not satisfy that limit; the selected two-take attack pool meets the requested range without weakening the gate.
 The 0.9-second licensed body-fall cue is wired at 1.5 seconds from the preserved authored frame-37 marker at 24 FPS.
 The marker's selected death-action SHA-256 matches the installed action; this establishes source timing, not a fresh anatomical contact observation.
 Exact source, waveform, transformation, destination-hash and playback-rate evidence is retained in `docs/assets/shared_clone_system/models_3d/clone_infantry/evidence/wp4_audio_takeover/`.
