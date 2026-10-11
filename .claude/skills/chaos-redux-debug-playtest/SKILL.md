@@ -43,6 +43,8 @@ Rules for every call:
 - On the user's PC the AMD Radeon overlay intercepts Ctrl+Shift chords. Open Chaos Redux windows with their top-bar buttons (`hoi4_click`) or with the plain keys that do not use the chord (Chaos Meter `M`, Event Logs `E`, Scenarios `S`); do not send Ctrl+Shift+C for Settings.
 - A slow call is not a failed call: the tools wait and re-read on a busy machine. Retry a failed call once, then change the plan.
 - The server writes only `hoi4live_*` saves and never edits `settings.txt`.
+- Verify the rendered viewport before labeling a resolution capture: external X11 window geometry alone can change while the game keeps its old viewport; native Video-option resolution changes require the indicated restart.
+- For an explicitly authorized alternate input route, use a bounded held mouse press followed by release when instant synthetic clicks are not registered, and allow the actual transition animation to finish before capturing.
 
 #### Efficiency
 
@@ -190,6 +192,23 @@ Do not make broad speculative fixes from a generic warning. Find a reproducible 
 #### Script-constant schemas
 
 For a repeated pre-menu crash with an empty fresh `error.log`, check `common/script_constants/` category schemas early; the empty log does not prove successful startup. Read installed vanilla `common/script_constants/documentation.md` and the Script Constants section of `documentation/script_concept_documentation.md`: each category requires `schema` as its first entry, and scalar declarations use `data = int` or `data = fixed_point`, not `any_value`. Preserve valid array declarations using the installed `common/script_constants/country_groups.txt` (`array = country`) and `state_groups.txt` (`array = state`) precedents; absence of scalar `data` alone is not an array-schema defect. Repair confirmed declaration defects without changing tuning values, constant names, or consumers. A parsed-object key recovered from a crash dump is an investigative lead, not proof that the named entry alone caused the crash; shortening or removing it does not establish a cause without a successful controlled retest. Resolving an early parse crash can expose a large downstream error batch that earlier launches never reached, so distinguish newly observable errors from demonstrated patch regressions using the recorded evidence. Keep the clean-start gate pending until the required main-menu and country-map observations and fresh-log checks pass.
+
+#### Trigger-side temporary-array parser stalls
+
+For a repeatable loading-history stall, require native parser evidence tied to the exact source before applying a compatibility repair.
+In Linux HOI4 1.19.3 (build 25205862), repeated read-only samples at the same unconditional self-jump, receiver RTTI `CResizeTempArrayTrigger`, and the reader key `array` implicated long-form trigger-side `resize_temp_array = { array = ... size = ... value = THIS }`.
+A name, loading-screen label, empty log, or unsupported analyzer result alone does not identify this failure.
+Read the installed trigger documentation sections for `resize_temp_array`, `all_of`, and `set_temp_variable`, plus offline Data structures guidance for indexed temporary elements and scope retention.
+When the same failure is confirmed, use documented short resizing `{ array_name = dynamic_size }`, preserving the original size expression and default zero fill for numeric arrays.
+For scope-token arrays that require `THIS`, resize first, then use numeric `all_of` with a separate index scratch variable and `set_temp_variable` to assign `THIS` to each existing indexed element before the original `all_of_scopes` traversal.
+Keep the fill in the caller frame, preserve array length and arithmetic cursors, and keep its trigger body true so every element is filled.
+Do not blanket-rewrite effect-side resize calls; their reader and fill contract require separate evidence.
+The reusable implementation and reference citations belong to [exact-cost trigger documentation](../../../common/scripted_triggers/chaosx_universal_cost_exact_triggers.md#trigger-iteration-capability).
+
+Retain before/after source behavior checks and a controlled native startup retest separately.
+Reaching the main menu establishes parser/startup recovery, not native indexed filling, scope retention, arithmetic correctness, or consumer performance.
+Source-VM parity supports the modeled behavior only; report which native semantic checks remain unobserved.
+Debugger or isolated-platform investigation requires explicit authorization and does not replace the ordinary `hoi4-live` route.
 
 #### Variable comparisons
 
