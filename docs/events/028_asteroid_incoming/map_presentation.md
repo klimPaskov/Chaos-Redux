@@ -6,7 +6,7 @@ The October 4 decision to retain native detonation damage is superseded for this
 
 ## Exact consumers and flow
 
-`gfx/entities/028_asteroid_incoming_visuals.asset` defines two presentation aliases.
+`gfx/entities/nuke_028_asteroid_incoming_visuals.asset` defines two presentation aliases.
 `asteroid_incoming_main_visual_entity` clones installed `nuke_big_entity`, and `asteroid_incoming_fragment_visual_entity` clones installed `nuke_entity`.
 Each sets `default_state = "attack"` while inheriting the vanilla mesh, animation, scale, particle, light and map-sound package.
 No custom mesh, animation, DDS, icon, portrait, GUI, raid or bomb definition is introduced.
