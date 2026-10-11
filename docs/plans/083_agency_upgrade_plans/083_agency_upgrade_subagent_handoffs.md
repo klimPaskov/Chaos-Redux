@@ -61,3 +61,7 @@ The independent report sample review confirmed the period scene, transparent car
 ## Preserved report binding (2026-10-11)
 
 The prior runtime texture `gfx/event_pictures/083_agency_upgrade/report_event_intel.dds` remains on the `GFX_report_event_intel` sprite. The reviewed `report_event_agency_upgrade.dds` is retained as an unbound alternative because the current sprite already has an existing texture. No existing art file was replaced or removed.
+
+## Current Event 83 report binding (2026-10-11)
+
+The accepted asset prompt explicitly requests `gfx/event_pictures/083_agency_upgrade/report_event_agency_upgrade.dds` for the Event 83 country-award report. Following the user's no-replacement rule, the stand-in `GFX_report_event_intel` definition and its existing `report_event_intel.dds` texture were left unchanged. A new `GFX_report_event_agency_upgrade` sprite now points to the dedicated report DDS, and `events/083_agency_upgrade.txt` selects that new sprite. The DDS was already present, sample-reviewed, and pixel-verified; this wiring adds no new texture file.
