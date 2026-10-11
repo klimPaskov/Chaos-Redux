@@ -48,11 +48,7 @@ scripted_gui = {
 			disease_containment_board_close_click = { disease_containment_board_close = yes }
 			disease_containment_board_refresh_click = { disease_containment_board_refresh = yes }
 			disease_containment_board_goto_click = { disease_containment_board_goto_view_state = yes }
-			disease_containment_board_tab_anthrax_click = { disease_containment_board_select_anthrax_tab = yes }
-			disease_containment_board_tab_plague_click = { disease_containment_board_select_plague_tab = yes }
-			disease_containment_board_tab_tularemia_click = { disease_containment_board_select_tularemia_tab = yes }
-			disease_containment_board_tab_smallpox_click = { disease_containment_board_select_smallpox_tab = yes }
-			disease_containment_board_tab_black_plague_click = { disease_containment_board_select_black_plague_tab = yes }
+			disease_containment_board_disease_entry_select_click = { ROOT = { disease_containment_board_select_disease_entry = yes } }
 			disease_containment_board_status_filter_click = { disease_containment_board_cycle_status_filter = yes }
 			disease_containment_board_ownership_filter_click = { disease_containment_board_cycle_ownership_filter = yes }
 			disease_containment_board_region_filter_click = { disease_containment_board_toggle_region_filter = yes }
@@ -94,14 +90,20 @@ scripted_gui = {
 					}
 				}
 			}
-			disease_containment_board_state_entry_selected_visible = { disease_containment_board_entry_is_selected = yes }
-			disease_containment_board_state_entry_response_visible = { disease_containment_board_entry_is_response_target = yes }
+			disease_containment_board_disease_entry_select_click_enabled = { ROOT = { disease_containment_board_category_is_visible = yes } }
 			disease_containment_board_no_states_visible = {
 				check_variable = { disease_containment_board_state_count = constant:disease_containment_board_value.zero }
 			}
 		}
 
 		dynamic_lists = {
+			disease_containment_board_disease_dynamic_list = {
+				array = disease_containment_known_diseases
+				value = disease_containment_board_disease_id
+				index = disease_containment_board_disease_index
+				change_scope = no
+				entry_container = "disease_containment_board_disease_entry"
+			}
 			disease_containment_board_state_dynamic_list = {
 				array = disease_containment_board_state_entries
 				value = disease_containment_board_state_entry

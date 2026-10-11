@@ -27,6 +27,53 @@ defined_text = {
 	text = { localization_key = disease_containment_agent_none }
 }
 
+# Disease registry. Adding an ordinary disease takes one id constant, one name key,
+# one modifier-key line here and one name line below.
+defined_text = {
+	name = GetDiseaseContainmentModifierKey
+	text = { trigger = { check_variable = { disease_containment_probe_id = constant:disease_containment_agent.smallpox } } localization_key = disease_containment_modifier_key_smallpox }
+	text = { trigger = { check_variable = { disease_containment_probe_id = constant:disease_containment_agent.tularemia } } localization_key = disease_containment_modifier_key_tularemia }
+	text = { trigger = { check_variable = { disease_containment_probe_id = constant:disease_containment_agent.plague } } localization_key = disease_containment_modifier_key_plague }
+	text = { trigger = { check_variable = { disease_containment_probe_id = constant:disease_containment_agent.anthrax } } localization_key = disease_containment_modifier_key_anthrax }
+	text = { localization_key = disease_containment_modifier_key_none }
+}
+
+# COUNTRY scope, inside a selector entry (disease_containment_board_disease_id).
+defined_text = {
+	name = GetDiseaseContainmentEntryName
+	text = { trigger = { check_variable = { disease_containment_board_disease_id = constant:disease_containment_agent.black_plague } } localization_key = disease_containment_agent_black_plague }
+	text = { trigger = { check_variable = { disease_containment_board_disease_id = constant:disease_containment_agent.smallpox } } localization_key = disease_containment_agent_smallpox }
+	text = { trigger = { check_variable = { disease_containment_board_disease_id = constant:disease_containment_agent.tularemia } } localization_key = disease_containment_agent_tularemia }
+	text = { trigger = { check_variable = { disease_containment_board_disease_id = constant:disease_containment_agent.plague } } localization_key = disease_containment_agent_plague }
+	text = { trigger = { check_variable = { disease_containment_board_disease_id = constant:disease_containment_agent.anthrax } } localization_key = disease_containment_agent_anthrax }
+	text = { localization_key = disease_containment_agent_none }
+}
+
+defined_text = {
+	name = GetDiseaseContainmentEntryMark
+	text = { trigger = { disease_containment_board_disease_entry_is_selected = yes } localization_key = disease_containment_entry_mark_selected }
+	text = { localization_key = disease_containment_entry_mark_idle }
+}
+
+# STATE scope list entries: the inspected state is picked out by colour.
+defined_text = {
+	name = GetDiseaseContainmentBoardStateEntryName
+	text = { trigger = { disease_containment_board_entry_is_selected = yes } localization_key = disease_containment_state_entry_name_selected }
+	text = { localization_key = disease_containment_state_entry_name }
+}
+
+defined_text = {
+	name = GetDiseaseContainmentBoardStateEntryTarget
+	text = { trigger = { disease_containment_board_entry_is_response_target = yes } localization_key = disease_containment_state_entry_target }
+	text = { localization_key = disease_containment_state_entry_no_target }
+}
+
+defined_text = {
+	name = GetDiseaseContainmentEmptyListText
+	text = { trigger = { NOT = { disease_containment_board_has_valid_selected_disease = yes } } localization_key = disease_containment_empty_no_disease }
+	text = { localization_key = disease_containment_empty_no_states }
+}
+
 defined_text = {
 	name = GetDiseaseContainmentCountryPhase
 	text = {
@@ -121,32 +168,8 @@ defined_text = {
 		localization_key = disease_containment_state_status_black_plague
 	}
 	text = {
-		trigger = {
-			ROOT = { check_variable = { disease_containment_selected_disease = constant:disease_containment_agent.smallpox } }
-			has_dynamic_modifier = { modifier = smallpox_contaminated_state }
-		}
-		localization_key = disease_containment_agent_smallpox
-	}
-	text = {
-		trigger = {
-			ROOT = { check_variable = { disease_containment_selected_disease = constant:disease_containment_agent.tularemia } }
-			has_dynamic_modifier = { modifier = tularemia_contaminated_state }
-		}
-		localization_key = disease_containment_agent_tularemia
-	}
-	text = {
-		trigger = {
-			ROOT = { check_variable = { disease_containment_selected_disease = constant:disease_containment_agent.plague } }
-			has_dynamic_modifier = { modifier = plague_contaminated_state }
-		}
-		localization_key = disease_containment_agent_plague
-	}
-	text = {
-		trigger = {
-			ROOT = { check_variable = { disease_containment_selected_disease = constant:disease_containment_agent.anthrax } }
-			has_dynamic_modifier = { modifier = anthrax_contaminated_state }
-		}
-		localization_key = disease_containment_agent_anthrax
+		trigger = { disease_containment_board_state_matches_selected_ordinary_disease = yes }
+		localization_key = disease_containment_state_status_ordinary
 	}
 	text = { localization_key = disease_containment_agent_none }
 }

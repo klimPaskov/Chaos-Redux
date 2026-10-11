@@ -6,43 +6,30 @@
 # keeps a public inspection state separate from the persistent, controlled
 # Black Plague response state used by paid actions.
 #
-# The only all-state scan in this file is an explicit player refresh for the
-# four legacy diseases, which do not have state registries. Black Plague views
-# always use Event 20's bounded registry. No recurring on_action calls this
-# scan.
+# The board lists only diseases the country has identified: present in a state it
+# owns or controls or one directly across its border, or visible through the
+# Black Plague registry. Identified ids persist in disease_containment_known_diseases.
+# The only all-state scans in this file are explicit player actions (opening or
+# refreshing the board, selecting a disease), for the ordinary diseases, which
+# have no state registries. Black Plague views always use Event 20's bounded
+# registry. No recurring on_action calls these scans.
 # ============================================================================
 
 disease_containment_board_initialize_country = {
 	cbrn_initialize_country_data = yes
 
+	disease_containment_board_discover_black_plague = yes
 	if = {
 		limit = { NOT = { disease_containment_board_has_valid_selected_disease = yes } }
 		set_variable = { disease_containment_selected_disease = constant:disease_containment_agent.none }
+		set_temp_variable = { disease_containment_probe_id = constant:disease_containment_agent.black_plague }
 		if = {
-			limit = {
-				any_state_in = {
-					array = global.black_plague_active_states
-					is_controlled_by = ROOT
-					black_plague_state_is_tracked = yes
-				}
-			}
+			limit = { is_in_array = { array = disease_containment_known_diseases value = disease_containment_probe_id } }
 			set_variable = { disease_containment_selected_disease = constant:disease_containment_agent.black_plague }
 		}
 		else_if = {
-			limit = { any_controlled_state = { has_dynamic_modifier = { modifier = anthrax_contaminated_state } } }
-			set_variable = { disease_containment_selected_disease = constant:disease_containment_agent.anthrax }
-		}
-		else_if = {
-			limit = { any_controlled_state = { has_dynamic_modifier = { modifier = plague_contaminated_state } } }
-			set_variable = { disease_containment_selected_disease = constant:disease_containment_agent.plague }
-		}
-		else_if = {
-			limit = { any_controlled_state = { has_dynamic_modifier = { modifier = tularemia_contaminated_state } } }
-			set_variable = { disease_containment_selected_disease = constant:disease_containment_agent.tularemia }
-		}
-		else_if = {
-			limit = { any_controlled_state = { has_dynamic_modifier = { modifier = smallpox_contaminated_state } } }
-			set_variable = { disease_containment_selected_disease = constant:disease_containment_agent.smallpox }
+			limit = { check_variable = { disease_containment_known_diseases^num > constant:disease_containment_board_value.zero } }
+			set_variable = { disease_containment_selected_disease = disease_containment_known_diseases^0 }
 		}
 	}
 
@@ -56,6 +43,70 @@ disease_containment_board_initialize_country = {
 	if = { limit = { NOT = { has_variable = black_plague_response_burden } } set_variable = { black_plague_response_burden = constant:disease_containment_board_value.minimum } }
 	clamp_variable = { var = black_plague_countermeasure_progress min = constant:disease_containment_board_value.minimum max = constant:disease_containment_board_value.maximum }
 	clamp_variable = { var = black_plague_response_burden min = constant:disease_containment_board_value.minimum max = constant:disease_containment_board_value.maximum }
+}
+
+# COUNTRY scope. Records Black Plague once the player can see one of its states.
+disease_containment_board_discover_black_plague = {
+	set_temp_variable = { disease_containment_probe_id = constant:disease_containment_agent.black_plague }
+	if = {
+		limit = {
+			NOT = { is_in_array = { array = disease_containment_known_diseases value = disease_containment_probe_id } }
+			OR = {
+				has_country_flag = black_plague_crisis_board_available
+				any_state_in = {
+					array = global.black_plague_active_states
+					black_plague_state_is_tracked = yes
+					black_plague_state_is_visible_to_mapmode_player = yes
+				}
+			}
+		}
+		add_to_array = { array = disease_containment_known_diseases value = disease_containment_probe_id }
+	}
+}
+
+# COUNTRY scope. One state scan per ordinary disease id; explicit player action only.
+disease_containment_board_discover_ordinary_diseases = {
+	set_temp_variable = { disease_containment_probe_first = constant:disease_containment_agent.ordinary_first }
+	set_temp_variable = { disease_containment_probe_last = constant:disease_containment_agent.ordinary_last }
+	for_loop_effect = {
+		start = disease_containment_probe_first
+		end = disease_containment_probe_last
+		compare = less_than_or_equals
+		value = disease_containment_probe_id
+		if = {
+			limit = {
+				NOT = { is_in_array = { array = disease_containment_known_diseases value = disease_containment_probe_id } }
+				any_state = {
+					disease_containment_state_is_observable_by_root = yes
+					disease_containment_state_has_probed_disease = yes
+				}
+			}
+			add_to_array = { array = disease_containment_known_diseases value = disease_containment_probe_id }
+		}
+	}
+}
+
+disease_containment_board_refresh_known_diseases = {
+	disease_containment_board_discover_ordinary_diseases = yes
+	disease_containment_board_discover_black_plague = yes
+}
+
+# COUNTRY scope, from the disease selector entry. The entry index addresses
+# disease_containment_known_diseases.
+disease_containment_board_select_disease_entry = {
+	if = {
+		limit = {
+			check_variable = { disease_containment_board_disease_index > constant:disease_containment_board_value.negative_one }
+			check_variable = {
+				var = disease_containment_board_disease_index
+				value = disease_containment_known_diseases^num
+				compare = less_than
+			}
+		}
+		set_variable = { disease_containment_selected_disease = disease_containment_known_diseases^disease_containment_board_disease_index }
+		clear_variable = disease_containment_board_view_state
+		disease_containment_board_rebuild_state_entries = yes
+	}
 }
 
 disease_containment_board_refresh_country_capacity = {
@@ -392,6 +443,7 @@ disease_containment_board_rebuild_state_entries = {
 }
 
 disease_containment_board_open = {
+	disease_containment_board_refresh_known_diseases = yes
 	disease_containment_board_initialize_country = yes
 	set_country_flag = disease_containment_board_open
 	if = {
@@ -415,36 +467,12 @@ disease_containment_board_close = {
 }
 
 disease_containment_board_refresh = {
+	disease_containment_board_refresh_known_diseases = yes
 	disease_containment_board_rebuild_state_entries = yes
 	force_update_map_mode = {
 		limit = { always = yes }
 		mapmode = contaminated_states_map_mode
 	}
-}
-
-disease_containment_board_select_anthrax_tab = {
-	set_variable = { disease_containment_selected_disease = constant:disease_containment_agent.anthrax }
-	disease_containment_board_rebuild_state_entries = yes
-}
-
-disease_containment_board_select_plague_tab = {
-	set_variable = { disease_containment_selected_disease = constant:disease_containment_agent.plague }
-	disease_containment_board_rebuild_state_entries = yes
-}
-
-disease_containment_board_select_tularemia_tab = {
-	set_variable = { disease_containment_selected_disease = constant:disease_containment_agent.tularemia }
-	disease_containment_board_rebuild_state_entries = yes
-}
-
-disease_containment_board_select_smallpox_tab = {
-	set_variable = { disease_containment_selected_disease = constant:disease_containment_agent.smallpox }
-	disease_containment_board_rebuild_state_entries = yes
-}
-
-disease_containment_board_select_black_plague_tab = {
-	set_variable = { disease_containment_selected_disease = constant:disease_containment_agent.black_plague }
-	disease_containment_board_rebuild_state_entries = yes
 }
 
 disease_containment_board_cycle_status_filter = {

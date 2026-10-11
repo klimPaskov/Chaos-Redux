@@ -12,6 +12,8 @@
 @DISEASE_BOARD_HEIGHT = 520
 @DISEASE_BOARD_ENTRY_WIDTH = 376
 @DISEASE_BOARD_ENTRY_HEIGHT = 50
+@DISEASE_BOARD_DISEASE_ENTRY_WIDTH = 130
+@DISEASE_BOARD_DISEASE_ENTRY_HEIGHT = 40
 
 guiTypes = {
 	containerWindowType = {
@@ -40,17 +42,22 @@ guiTypes = {
 		background = { name = "Background" quadTextureSprite = "GFX_tiled_window" }
 
 		instantTextBoxType = { name = "disease_containment_board_title" orientation = UPPER_LEFT position = { x = 20 y = 14 } font = "hoi_24header" text = "disease_containment.gui.title" format = left maxWidth = 510 maxHeight = 32 fixedsize = yes }
-		instantTextBoxType = { name = "disease_containment_board_global_summary" orientation = UPPER_LEFT position = { x = 680 y = 56 } font = "hoi_16mbs" text = "disease_containment.gui.global_summary" format = left maxWidth = 120 maxHeight = 40 fixedsize = yes pdx_tooltip = "disease_containment.gui.global_summary.tt" }
 		buttonType = { name = "disease_containment_board_refresh" orientation = UPPER_LEFT position = { x = 548 y = 14 } spriteType = "GFX_chaosx_button_123x34" buttonFont = "hoi_16mbs" buttonText = "disease_containment.gui.refresh" clicksound = decisions_ui_button pdx_tooltip = "disease_containment.gui.refresh.tt" scale = 1 }
 		buttonType = { name = "disease_containment_board_close" orientation = UPPER_LEFT position = { x = 680 y = 14 } spriteType = "GFX_chaosx_button_123x34" buttonFont = "hoi_16mbs" buttonText = "disease_containment.gui.close" clicksound = decisions_ui_button pdx_tooltip = "disease_containment.gui.close.tt" scale = 1 }
 
-		buttonType = { name = "disease_containment_board_tab_anthrax" orientation = UPPER_LEFT position = { x = 20 y = 56 } spriteType = "GFX_chaosx_button_123x34" buttonFont = "hoi_16mbs" buttonText = "disease_containment.gui.tab.anthrax" clicksound = decisions_ui_button pdx_tooltip = "disease_containment.gui.tab.anthrax.tt" scale = 1 }
-		buttonType = { name = "disease_containment_board_tab_plague" orientation = UPPER_LEFT position = { x = 152 y = 56 } spriteType = "GFX_chaosx_button_123x34" buttonFont = "hoi_16mbs" buttonText = "disease_containment.gui.tab.plague" clicksound = decisions_ui_button pdx_tooltip = "disease_containment.gui.tab.plague.tt" scale = 1 }
-		buttonType = { name = "disease_containment_board_tab_tularemia" orientation = UPPER_LEFT position = { x = 284 y = 56 } spriteType = "GFX_chaosx_button_123x34" buttonFont = "hoi_16mbs" buttonText = "disease_containment.gui.tab.tularemia" clicksound = decisions_ui_button pdx_tooltip = "disease_containment.gui.tab.tularemia.tt" scale = 1 }
-		buttonType = { name = "disease_containment_board_tab_smallpox" orientation = UPPER_LEFT position = { x = 416 y = 56 } spriteType = "GFX_chaosx_button_123x34" buttonFont = "hoi_16mbs" buttonText = "disease_containment.gui.tab.smallpox" clicksound = decisions_ui_button pdx_tooltip = "disease_containment.gui.tab.smallpox.tt" scale = 1 }
-		buttonType = { name = "disease_containment_board_tab_black_plague" orientation = UPPER_LEFT position = { x = 548 y = 56 } spriteType = "GFX_chaosx_button_123x34" buttonFont = "hoi_16mbs" buttonText = "disease_containment.gui.tab.black_plague" clicksound = decisions_ui_button pdx_tooltip = "disease_containment.gui.tab.black_plague.tt" scale = 1 }
+		containerWindowType = {
+			name = "disease_containment_board_disease_selector"
+			orientation = UPPER_LEFT
+			position = { x = 20 y = 52 }
+			size = { width = 796 height = @DISEASE_BOARD_DISEASE_ENTRY_HEIGHT }
+			clipping = yes
+			verticalScrollbar = "right_vertical_slider_intel"
+			scroll_wheel_factor = 40
+			smooth_scrolling = yes
+			background = { name = "Background" quadTextureSprite = "GFX_tiled_window_transparent" }
+			gridBoxType = { name = "disease_containment_board_disease_dynamic_list" orientation = UPPER_LEFT position = { x = 0 y = 0 } size = { width = 780 height = @DISEASE_BOARD_DISEASE_ENTRY_HEIGHT } slotsize = { width = @DISEASE_BOARD_DISEASE_ENTRY_WIDTH height = @DISEASE_BOARD_DISEASE_ENTRY_HEIGHT } format = "UPPER_LEFT" max_slots_horizontal = 6 }
+		}
 
-		instantTextBoxType = { name = "disease_containment_board_country_summary" orientation = UPPER_LEFT position = { x = 20 y = 138 } font = "hoi_16mbs" text = "disease_containment.gui.country_summary" format = left maxWidth = 780 maxHeight = 20 fixedsize = yes pdx_tooltip = "disease_containment.gui.country_summary.tt" }
 
 		buttonType = { name = "disease_containment_board_status_filter" orientation = UPPER_LEFT position = { x = 20 y = 178 } spriteType = "GFX_sort_button_100x29" buttonFont = "hoi_16mbs" buttonText = "disease_containment.gui.filter.status" clicksound = decisions_ui_button pdx_tooltip = "disease_containment.gui.filter.status.tt" scale = 0.94 }
 		buttonType = { name = "disease_containment_board_ownership_filter" orientation = UPPER_LEFT position = { x = 120 y = 178 } spriteType = "GFX_sort_button_100x29" buttonFont = "hoi_16mbs" buttonText = "disease_containment.gui.filter.ownership" clicksound = decisions_ui_button pdx_tooltip = "disease_containment.gui.filter.ownership.tt" scale = 0.94 }
@@ -60,9 +67,10 @@ guiTypes = {
 
 		# National readiness uses the existing countermeasure artwork.
 		iconType = { name = "disease_containment_board_preparedness_icon" orientation = UPPER_LEFT position = { x = 20 y = 100 } spriteType = "GFX_decision_bio_expand_biosecurity_capacity" alwaysTransparent = yes }
-		instantTextBoxType = { name = "disease_containment_board_preparedness" orientation = UPPER_LEFT position = { x = 60 y = 106 } font = "hoi_18mbs" text = "disease_containment.gui.preparedness" format = left maxWidth = 348 maxHeight = 24 fixedsize = yes pdx_tooltip = "disease_containment.gui.preparedness.tt" }
-		iconType = { name = "disease_containment_board_medical_icon" orientation = UPPER_LEFT position = { x = 436 y = 100 } spriteType = "GFX_decision_bio_expand_medical_capacity" alwaysTransparent = yes }
-		instantTextBoxType = { name = "disease_containment_board_medical" orientation = UPPER_LEFT position = { x = 476 y = 106 } font = "hoi_18mbs" text = "disease_containment.gui.medical" format = left maxWidth = 324 maxHeight = 24 fixedsize = yes pdx_tooltip = "disease_containment.gui.medical.tt" }
+		instantTextBoxType = { name = "disease_containment_board_preparedness" orientation = UPPER_LEFT position = { x = 60 y = 106 } font = "hoi_18mbs" text = "disease_containment.gui.preparedness" format = left maxWidth = 210 maxHeight = 24 fixedsize = yes pdx_tooltip = "disease_containment.gui.preparedness.tt" }
+		iconType = { name = "disease_containment_board_medical_icon" orientation = UPPER_LEFT position = { x = 290 y = 100 } spriteType = "GFX_decision_bio_expand_medical_capacity" alwaysTransparent = yes }
+		instantTextBoxType = { name = "disease_containment_board_medical" orientation = UPPER_LEFT position = { x = 330 y = 106 } font = "hoi_18mbs" text = "disease_containment.gui.medical" format = left maxWidth = 220 maxHeight = 24 fixedsize = yes pdx_tooltip = "disease_containment.gui.medical.tt" }
+		instantTextBoxType = { name = "disease_containment_board_phase" orientation = UPPER_LEFT position = { x = 580 y = 106 } font = "hoi_18mbs" text = "disease_containment.gui.phase" format = left maxWidth = 220 maxHeight = 24 fixedsize = yes pdx_tooltip = "disease_containment.gui.phase.tt" }
 		instantTextBoxType = { name = "disease_containment_board_status_label" orientation = UPPER_LEFT position = { x = 20 y = 158 } font = "hoi_16mbs" text = "disease_containment.gui.label.status" format = left maxWidth = 94 maxHeight = 20 fixedsize = yes alwaysTransparent = yes }
 		instantTextBoxType = { name = "disease_containment_board_ownership_label" orientation = UPPER_LEFT position = { x = 120 y = 158 } font = "hoi_16mbs" text = "disease_containment.gui.label.ownership" format = left maxWidth = 94 maxHeight = 20 fixedsize = yes alwaysTransparent = yes }
 		instantTextBoxType = { name = "disease_containment_board_urgency_label" orientation = UPPER_LEFT position = { x = 220 y = 158 } font = "hoi_16mbs" text = "disease_containment.gui.label.urgency" format = left maxWidth = 94 maxHeight = 20 fixedsize = yes alwaysTransparent = yes }
@@ -119,8 +127,16 @@ guiTypes = {
 		size = { width = @DISEASE_BOARD_ENTRY_WIDTH height = @DISEASE_BOARD_ENTRY_HEIGHT }
 		background = { name = "Background" quadTextureSprite = "GFX_tiled_window_transparent" }
 		buttonType = { name = "disease_containment_board_state_entry_select" orientation = UPPER_LEFT position = { x = 0 y = 0 } size = { x = @DISEASE_BOARD_ENTRY_WIDTH y = @DISEASE_BOARD_ENTRY_HEIGHT } quadTextureSprite = "GFX_tiled_window_transparent" clicksound = decisions_ui_button pdx_tooltip = "disease_containment.gui.state_entry.select.tt" }
-		instantTextBoxType = { name = "disease_containment_board_state_entry_text" orientation = UPPER_LEFT position = { x = 12 y = 4 } font = "hoi_16mbs" text = "disease_containment.gui.state_entry" format = left maxWidth = 274 maxHeight = 42 fixedsize = yes alwaysTransparent = yes }
-		instantTextBoxType = { name = "disease_containment_board_state_entry_selected" orientation = UPPER_LEFT position = { x = 288 y = 4 } font = "hoi_16mbs" text = "disease_containment.gui.state_entry.view" format = right maxWidth = 76 maxHeight = 20 fixedsize = yes alwaysTransparent = yes }
-		instantTextBoxType = { name = "disease_containment_board_state_entry_response" orientation = UPPER_LEFT position = { x = 288 y = 26 } font = "hoi_16mbs" text = "disease_containment.gui.state_entry.response" format = right maxWidth = 76 maxHeight = 20 fixedsize = yes alwaysTransparent = yes }
+		instantTextBoxType = { name = "disease_containment_board_state_entry_text" orientation = UPPER_LEFT position = { x = 12 y = 4 } font = "hoi_16mbs" text = "disease_containment.gui.state_entry" format = left maxWidth = 352 maxHeight = 42 fixedsize = yes alwaysTransparent = yes }
+	}
+
+	containerWindowType = {
+		name = "disease_containment_board_disease_entry"
+		orientation = UPPER_LEFT
+		position = { x = 0 y = 0 }
+		size = { width = @DISEASE_BOARD_DISEASE_ENTRY_WIDTH height = @DISEASE_BOARD_DISEASE_ENTRY_HEIGHT }
+		background = { name = "Background" quadTextureSprite = "GFX_tiled_window_transparent" }
+		buttonType = { name = "disease_containment_board_disease_entry_select" orientation = UPPER_LEFT position = { x = 0 y = 2 } spriteType = "GFX_chaosx_button_123x34" clicksound = decisions_ui_button pdx_tooltip = "disease_containment.gui.disease_entry.tt" }
+		instantTextBoxType = { name = "disease_containment_board_disease_entry_text" orientation = UPPER_LEFT position = { x = 4 y = 12 } font = "hoi_16mbs" text = "disease_containment.gui.disease_entry" format = center maxWidth = 115 maxHeight = 20 fixedsize = yes alwaysTransparent = yes }
 	}
 }

@@ -6,18 +6,19 @@
 # inspection view. ROOT is the viewing/responding country for state predicates.
 # ============================================================================
 
+# A selected disease is valid only once the country has identified it.
 disease_containment_board_has_valid_selected_disease = {
 	has_variable = disease_containment_selected_disease
-	check_variable = {
-		var = disease_containment_selected_disease
-		value = constant:disease_containment_agent.anthrax
-		compare = greater_than_or_equals
+	NOT = { check_variable = { disease_containment_selected_disease = constant:disease_containment_agent.none } }
+	is_in_array = {
+		array = disease_containment_known_diseases
+		value = disease_containment_selected_disease
 	}
-	check_variable = {
-		var = disease_containment_selected_disease
-		value = constant:disease_containment_agent.black_plague
-		compare = less_than_or_equals
-	}
+}
+
+disease_containment_board_disease_entry_is_selected = {
+	has_variable = disease_containment_selected_disease
+	check_variable = { disease_containment_board_disease_id = disease_containment_selected_disease }
 }
 
 disease_containment_board_is_black_plague_selected = {
@@ -40,23 +41,33 @@ disease_containment_board_category_is_visible = {
 	}
 }
 
+# STATE scope. Reads the temporary disease_containment_probe_id. The contaminated
+# state modifier of every ordinary disease is named <key>_contaminated_state, and
+# GetDiseaseContainmentModifierKey maps a disease id to its key.
+disease_containment_state_has_probed_disease = {
+	meta_trigger = {
+		text = { has_dynamic_modifier = { modifier = [DISEASE_KEY]_contaminated_state } }
+		DISEASE_KEY = "[This.GetDiseaseContainmentModifierKey]"
+	}
+}
+
+# STATE scope. Matches the disease selected on the viewing country's board.
 disease_containment_board_state_matches_selected_ordinary_disease = {
+	set_temp_variable = { disease_containment_probe_id = ROOT.disease_containment_selected_disease }
+	disease_containment_state_has_probed_disease = yes
+}
+
+# STATE scope. Whether the viewing country can see this state's outbreak: its own
+# states and the states directly across its borders.
+disease_containment_state_is_observable_by_root = {
 	OR = {
-		AND = {
-			ROOT = { check_variable = { disease_containment_selected_disease = constant:disease_containment_agent.anthrax } }
-			has_dynamic_modifier = { modifier = anthrax_contaminated_state }
-		}
-		AND = {
-			ROOT = { check_variable = { disease_containment_selected_disease = constant:disease_containment_agent.plague } }
-			has_dynamic_modifier = { modifier = plague_contaminated_state }
-		}
-		AND = {
-			ROOT = { check_variable = { disease_containment_selected_disease = constant:disease_containment_agent.tularemia } }
-			has_dynamic_modifier = { modifier = tularemia_contaminated_state }
-		}
-		AND = {
-			ROOT = { check_variable = { disease_containment_selected_disease = constant:disease_containment_agent.smallpox } }
-			has_dynamic_modifier = { modifier = smallpox_contaminated_state }
+		is_owned_by = ROOT
+		is_controlled_by = ROOT
+		any_neighbor_state = {
+			OR = {
+				is_owned_by = ROOT
+				is_controlled_by = ROOT
+			}
 		}
 	}
 }
