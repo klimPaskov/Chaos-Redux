@@ -21,7 +21,11 @@ on_actions = {
 	on_nuke_drop = {
 		effect = {
 			if = {
-				limit = { ROOT = { has_country_flag = efh_ach_nuclear_active } }
+				limit = {
+					NOT = { has_global_flag = asteroid_incoming_visual_strike_active }
+					FROM = { NOT = { has_state_flag = asteroid_incoming_visual_strike_state } }
+					ROOT = { has_country_flag = efh_ach_nuclear_active }
+				}
 				ROOT = { equipment_from_heavens_achievement_on_nuke_drop = yes }
 			}
 		}
