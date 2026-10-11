@@ -1,0 +1,682 @@
+add_namespace = chaosx.nr30
+
+# ============================================================================
+# CHAOS REDUX - EVENT 030 TIME TRAVELER HISTORICAL FIGURES (EVOLUTION II)
+# ============================================================================
+# Written from the figure table of the generator: one scaffold, four stage
+# events per figure. Ids are 200 plus ten times the figure id plus the stage:
+#   Napoleon 211 to 214, Joan 221 to 224, Frederick 231 to 234
+#   .1 arrival and authenticity   .2 custody   .3 movement and power   .4 resolution
+# .200 is the hidden pacing tick of the host tags FRA and GER.
+# Effects are in common/scripted_effects/030_time_traveler_figure_effects.txt.
+# ============================================================================
+
+country_event = {
+	id = chaosx.nr30.200
+	title = chaosx.nr30.200.t
+
+	hidden = yes
+	is_triggered_only = yes
+
+	immediate = {
+		time_traveler_figure_tick = yes
+	}
+}
+
+country_event = {
+	id = chaosx.nr30.211
+	title = chaosx.nr30.211.t
+	desc = chaosx.nr30.211.d
+	picture = GFX_report_event_generic_military_parade
+
+	is_triggered_only = yes
+	trigger = { check_variable = { global.time_traveler_fig_state^1 = constant:time_traveler_figure_state.arrived } }
+
+	option = {
+		name = chaosx.nr30.211.test1
+		ai_chance = { base = 30 }
+		custom_effect_tooltip = chaosx.nr30.211.test1_tt
+		hidden_effect = {
+			set_temp_variable = { time_traveler_fig = 1 }
+			set_temp_variable = { time_traveler_choice = 1 }
+			time_traveler_figure_test = yes
+		}
+	}
+	option = {
+		name = chaosx.nr30.211.test2
+		ai_chance = { base = 35 }
+		custom_effect_tooltip = chaosx.nr30.211.test2_tt
+		hidden_effect = {
+			set_temp_variable = { time_traveler_fig = 1 }
+			set_temp_variable = { time_traveler_choice = 2 }
+			time_traveler_figure_test = yes
+		}
+	}
+	option = {
+		name = chaosx.nr30.211.test3
+		ai_chance = { base = 35 }
+		custom_effect_tooltip = chaosx.nr30.211.test3_tt
+		hidden_effect = {
+			set_temp_variable = { time_traveler_fig = 1 }
+			set_temp_variable = { time_traveler_choice = 3 }
+			time_traveler_figure_test = yes
+		}
+	}
+}
+
+country_event = {
+	id = chaosx.nr30.212
+	title = chaosx.nr30.212.t
+	desc = chaosx.nr30.212.d
+	picture = GFX_report_event_generic_military_parade
+
+	is_triggered_only = yes
+	trigger = { check_variable = { global.time_traveler_fig_state^1 = constant:time_traveler_figure_state.verified } }
+
+	option = {
+		name = chaosx.nr30.212.custody1
+		ai_chance = { base = 40 }
+		custom_effect_tooltip = chaosx.nr30.212.custody1_tt
+		hidden_effect = {
+			set_temp_variable = { time_traveler_fig = 1 }
+			set_temp_variable = { time_traveler_choice = 1 }
+			time_traveler_figure_custody = yes
+		}
+	}
+	option = {
+		name = chaosx.nr30.212.custody2
+		ai_chance = { base = 15 modifier = { add = 15 has_stability > constant:time_traveler_ai.stability_high } }
+		custom_effect_tooltip = chaosx.nr30.212.custody2_tt
+		hidden_effect = {
+			set_temp_variable = { time_traveler_fig = 1 }
+			set_temp_variable = { time_traveler_choice = 2 }
+			time_traveler_figure_custody = yes
+		}
+	}
+	option = {
+		name = chaosx.nr30.212.custody3
+		ai_chance = { base = 10 modifier = { add = 20 has_government = fascism } }
+		custom_effect_tooltip = chaosx.nr30.212.custody3_tt
+		hidden_effect = {
+			set_temp_variable = { time_traveler_fig = 1 }
+			set_temp_variable = { time_traveler_choice = 3 }
+			time_traveler_figure_custody = yes
+		}
+	}
+	option = {
+		name = chaosx.nr30.212.custody4
+		ai_chance = { base = 25 modifier = { add = 20 has_war = yes } }
+		custom_effect_tooltip = chaosx.nr30.212.custody4_tt
+		hidden_effect = {
+			set_temp_variable = { time_traveler_fig = 1 }
+			set_temp_variable = { time_traveler_choice = 4 }
+			time_traveler_figure_custody = yes
+		}
+	}
+}
+
+country_event = {
+	id = chaosx.nr30.213
+	title = chaosx.nr30.213.t
+	desc = {
+		trigger = { NOT = { check_variable = { global.time_traveler_fig_support^1 < constant:time_traveler_figure_value.high_edge } } }
+		text = chaosx.nr30.213.d_high
+	}
+	desc = {
+		trigger = { NOT = { check_variable = { global.time_traveler_fig_support^1 < constant:time_traveler_figure_value.low_edge } } }
+		text = chaosx.nr30.213.d_mid
+	}
+	desc = {
+		text = chaosx.nr30.213.d_low
+	}
+	picture = GFX_report_event_generic_military_parade
+
+	is_triggered_only = yes
+	trigger = { check_variable = { global.time_traveler_fig_state^1 = constant:time_traveler_figure_state.movement } }
+
+	option = {
+		name = chaosx.nr30.213.adviser
+		ai_chance = { base = 40 modifier = { add = 20 has_war = yes } }
+		custom_effect_tooltip = chaosx.nr30.213.adviser_tt
+		hidden_effect = {
+			set_temp_variable = { time_traveler_fig = 1 }
+			set_temp_variable = { time_traveler_route = 1 }
+			time_traveler_figure_power = yes
+		}
+	}
+	option = {
+		name = chaosx.nr30.213.symbol
+		ai_chance = { base = 25 }
+		custom_effect_tooltip = chaosx.nr30.213.symbol_tt
+		hidden_effect = {
+			set_temp_variable = { time_traveler_fig = 1 }
+			set_temp_variable = { time_traveler_route = 2 }
+			time_traveler_figure_power = yes
+		}
+	}
+	option = {
+		name = chaosx.nr30.213.office
+		trigger = { NOT = { check_variable = { global.time_traveler_fig_support^1 < constant:time_traveler_figure_value.office_min } } }
+		ai_chance = { base = 5 modifier = { add = 30 NOT = { check_variable = { global.time_traveler_fig_support^1 < constant:time_traveler_figure_value.high_edge } } has_stability < constant:time_traveler_ai.stability_low } }
+		custom_effect_tooltip = chaosx.nr30.213.office_tt
+		hidden_effect = {
+			set_temp_variable = { time_traveler_fig = 1 }
+			set_temp_variable = { time_traveler_route = 3 }
+			time_traveler_figure_power = yes
+		}
+	}
+	option = {
+		name = chaosx.nr30.213.suppress
+		ai_chance = { base = 15 modifier = { add = 20 has_government = fascism } modifier = { add = 15 has_government = communism } }
+		custom_effect_tooltip = chaosx.nr30.213.suppress_tt
+		hidden_effect = {
+			set_temp_variable = { time_traveler_fig = 1 }
+			set_temp_variable = { time_traveler_route = 4 }
+			time_traveler_figure_power = yes
+		}
+	}
+	option = {
+		name = chaosx.nr30.213.exile
+		ai_chance = { base = 8 }
+		custom_effect_tooltip = chaosx.nr30.213.exile_tt
+		hidden_effect = {
+			set_temp_variable = { time_traveler_fig = 1 }
+			set_temp_variable = { time_traveler_route = 5 }
+			time_traveler_figure_power = yes
+		}
+	}
+	option = {
+		name = chaosx.nr30.213.claim
+		ai_chance = { base = 0 }
+		custom_effect_tooltip = chaosx.nr30.213.claim_tt
+		hidden_effect = {
+			set_temp_variable = { time_traveler_fig = 1 }
+			set_temp_variable = { time_traveler_route = 6 }
+			time_traveler_figure_power = yes
+		}
+	}
+}
+
+country_event = {
+	id = chaosx.nr30.214
+	title = chaosx.nr30.214.t
+	desc = {
+		trigger = { check_variable = { global.time_traveler_fig_outcome^1 = constant:time_traveler_figure_outcome.integrated } }
+		text = chaosx.nr30.214.d_integrated
+	}
+	desc = {
+		trigger = { check_variable = { global.time_traveler_fig_outcome^1 = constant:time_traveler_figure_outcome.symbol } }
+		text = chaosx.nr30.214.d_symbol
+	}
+	desc = {
+		trigger = { check_variable = { global.time_traveler_fig_outcome^1 = constant:time_traveler_figure_outcome.office } }
+		text = chaosx.nr30.214.d_office
+	}
+	desc = {
+		trigger = { check_variable = { global.time_traveler_fig_outcome^1 = constant:time_traveler_figure_outcome.imprisoned } }
+		text = chaosx.nr30.214.d_imprisoned
+	}
+	desc = {
+		trigger = { check_variable = { global.time_traveler_fig_outcome^1 = constant:time_traveler_figure_outcome.exiled } }
+		text = chaosx.nr30.214.d_exiled
+	}
+	desc = {
+		trigger = { check_variable = { global.time_traveler_fig_outcome^1 = constant:time_traveler_figure_outcome.revolt } }
+		text = chaosx.nr30.214.d_revolt
+	}
+	desc = {
+		trigger = { check_variable = { global.time_traveler_fig_outcome^1 = constant:time_traveler_figure_outcome.civil_war } }
+		text = chaosx.nr30.214.d_civil_war
+	}
+	desc = {
+		text = chaosx.nr30.214.d_died
+	}
+	picture = GFX_report_event_generic_military_parade
+
+	is_triggered_only = yes
+	trigger = { check_variable = { global.time_traveler_fig_state^1 = constant:time_traveler_figure_state.resolved } }
+
+	option = {
+		name = chaosx.nr30.214.a
+		ai_chance = { base = 100 }
+	}
+}
+
+country_event = {
+	id = chaosx.nr30.221
+	title = chaosx.nr30.221.t
+	desc = chaosx.nr30.221.d
+	picture = GFX_report_event_generic_rally
+
+	is_triggered_only = yes
+	trigger = { check_variable = { global.time_traveler_fig_state^2 = constant:time_traveler_figure_state.arrived } }
+
+	option = {
+		name = chaosx.nr30.221.test1
+		ai_chance = { base = 30 }
+		custom_effect_tooltip = chaosx.nr30.221.test1_tt
+		hidden_effect = {
+			set_temp_variable = { time_traveler_fig = 2 }
+			set_temp_variable = { time_traveler_choice = 1 }
+			time_traveler_figure_test = yes
+		}
+	}
+	option = {
+		name = chaosx.nr30.221.test2
+		ai_chance = { base = 35 }
+		custom_effect_tooltip = chaosx.nr30.221.test2_tt
+		hidden_effect = {
+			set_temp_variable = { time_traveler_fig = 2 }
+			set_temp_variable = { time_traveler_choice = 2 }
+			time_traveler_figure_test = yes
+		}
+	}
+	option = {
+		name = chaosx.nr30.221.test3
+		ai_chance = { base = 35 }
+		custom_effect_tooltip = chaosx.nr30.221.test3_tt
+		hidden_effect = {
+			set_temp_variable = { time_traveler_fig = 2 }
+			set_temp_variable = { time_traveler_choice = 3 }
+			time_traveler_figure_test = yes
+		}
+	}
+}
+
+country_event = {
+	id = chaosx.nr30.222
+	title = chaosx.nr30.222.t
+	desc = chaosx.nr30.222.d
+	picture = GFX_report_event_generic_rally
+
+	is_triggered_only = yes
+	trigger = { check_variable = { global.time_traveler_fig_state^2 = constant:time_traveler_figure_state.verified } }
+
+	option = {
+		name = chaosx.nr30.222.custody1
+		ai_chance = { base = 40 }
+		custom_effect_tooltip = chaosx.nr30.222.custody1_tt
+		hidden_effect = {
+			set_temp_variable = { time_traveler_fig = 2 }
+			set_temp_variable = { time_traveler_choice = 1 }
+			time_traveler_figure_custody = yes
+		}
+	}
+	option = {
+		name = chaosx.nr30.222.custody2
+		ai_chance = { base = 15 modifier = { add = 15 has_stability > constant:time_traveler_ai.stability_high } }
+		custom_effect_tooltip = chaosx.nr30.222.custody2_tt
+		hidden_effect = {
+			set_temp_variable = { time_traveler_fig = 2 }
+			set_temp_variable = { time_traveler_choice = 2 }
+			time_traveler_figure_custody = yes
+		}
+	}
+	option = {
+		name = chaosx.nr30.222.custody3
+		ai_chance = { base = 10 modifier = { add = 20 has_government = fascism } }
+		custom_effect_tooltip = chaosx.nr30.222.custody3_tt
+		hidden_effect = {
+			set_temp_variable = { time_traveler_fig = 2 }
+			set_temp_variable = { time_traveler_choice = 3 }
+			time_traveler_figure_custody = yes
+		}
+	}
+	option = {
+		name = chaosx.nr30.222.custody4
+		ai_chance = { base = 25 modifier = { add = 20 has_war = yes } }
+		custom_effect_tooltip = chaosx.nr30.222.custody4_tt
+		hidden_effect = {
+			set_temp_variable = { time_traveler_fig = 2 }
+			set_temp_variable = { time_traveler_choice = 4 }
+			time_traveler_figure_custody = yes
+		}
+	}
+}
+
+country_event = {
+	id = chaosx.nr30.223
+	title = chaosx.nr30.223.t
+	desc = {
+		trigger = { NOT = { check_variable = { global.time_traveler_fig_support^2 < constant:time_traveler_figure_value.high_edge } } }
+		text = chaosx.nr30.223.d_high
+	}
+	desc = {
+		trigger = { NOT = { check_variable = { global.time_traveler_fig_support^2 < constant:time_traveler_figure_value.low_edge } } }
+		text = chaosx.nr30.223.d_mid
+	}
+	desc = {
+		text = chaosx.nr30.223.d_low
+	}
+	picture = GFX_report_event_generic_rally
+
+	is_triggered_only = yes
+	trigger = { check_variable = { global.time_traveler_fig_state^2 = constant:time_traveler_figure_state.movement } }
+
+	option = {
+		name = chaosx.nr30.223.adviser
+		ai_chance = { base = 40 modifier = { add = 20 has_war = yes } }
+		custom_effect_tooltip = chaosx.nr30.223.adviser_tt
+		hidden_effect = {
+			set_temp_variable = { time_traveler_fig = 2 }
+			set_temp_variable = { time_traveler_route = 1 }
+			time_traveler_figure_power = yes
+		}
+	}
+	option = {
+		name = chaosx.nr30.223.symbol
+		ai_chance = { base = 35 }
+		custom_effect_tooltip = chaosx.nr30.223.symbol_tt
+		hidden_effect = {
+			set_temp_variable = { time_traveler_fig = 2 }
+			set_temp_variable = { time_traveler_route = 2 }
+			time_traveler_figure_power = yes
+		}
+	}
+	option = {
+		name = chaosx.nr30.223.office
+		trigger = { NOT = { check_variable = { global.time_traveler_fig_support^2 < constant:time_traveler_figure_value.office_min } } }
+		ai_chance = { base = 3 modifier = { add = 30 NOT = { check_variable = { global.time_traveler_fig_support^2 < constant:time_traveler_figure_value.high_edge } } has_stability < constant:time_traveler_ai.stability_low } }
+		custom_effect_tooltip = chaosx.nr30.223.office_tt
+		hidden_effect = {
+			set_temp_variable = { time_traveler_fig = 2 }
+			set_temp_variable = { time_traveler_route = 3 }
+			time_traveler_figure_power = yes
+		}
+	}
+	option = {
+		name = chaosx.nr30.223.suppress
+		ai_chance = { base = 8 modifier = { add = 20 has_government = fascism } modifier = { add = 15 has_government = communism } }
+		custom_effect_tooltip = chaosx.nr30.223.suppress_tt
+		hidden_effect = {
+			set_temp_variable = { time_traveler_fig = 2 }
+			set_temp_variable = { time_traveler_route = 4 }
+			time_traveler_figure_power = yes
+		}
+	}
+	option = {
+		name = chaosx.nr30.223.exile
+		ai_chance = { base = 8 }
+		custom_effect_tooltip = chaosx.nr30.223.exile_tt
+		hidden_effect = {
+			set_temp_variable = { time_traveler_fig = 2 }
+			set_temp_variable = { time_traveler_route = 5 }
+			time_traveler_figure_power = yes
+		}
+	}
+	option = {
+		name = chaosx.nr30.223.claim
+		ai_chance = { base = 0 }
+		custom_effect_tooltip = chaosx.nr30.223.claim_tt
+		hidden_effect = {
+			set_temp_variable = { time_traveler_fig = 2 }
+			set_temp_variable = { time_traveler_route = 6 }
+			time_traveler_figure_power = yes
+		}
+	}
+}
+
+country_event = {
+	id = chaosx.nr30.224
+	title = chaosx.nr30.224.t
+	desc = {
+		trigger = { check_variable = { global.time_traveler_fig_outcome^2 = constant:time_traveler_figure_outcome.integrated } }
+		text = chaosx.nr30.224.d_integrated
+	}
+	desc = {
+		trigger = { check_variable = { global.time_traveler_fig_outcome^2 = constant:time_traveler_figure_outcome.symbol } }
+		text = chaosx.nr30.224.d_symbol
+	}
+	desc = {
+		trigger = { check_variable = { global.time_traveler_fig_outcome^2 = constant:time_traveler_figure_outcome.office } }
+		text = chaosx.nr30.224.d_office
+	}
+	desc = {
+		trigger = { check_variable = { global.time_traveler_fig_outcome^2 = constant:time_traveler_figure_outcome.imprisoned } }
+		text = chaosx.nr30.224.d_imprisoned
+	}
+	desc = {
+		trigger = { check_variable = { global.time_traveler_fig_outcome^2 = constant:time_traveler_figure_outcome.exiled } }
+		text = chaosx.nr30.224.d_exiled
+	}
+	desc = {
+		trigger = { check_variable = { global.time_traveler_fig_outcome^2 = constant:time_traveler_figure_outcome.revolt } }
+		text = chaosx.nr30.224.d_revolt
+	}
+	desc = {
+		trigger = { check_variable = { global.time_traveler_fig_outcome^2 = constant:time_traveler_figure_outcome.civil_war } }
+		text = chaosx.nr30.224.d_civil_war
+	}
+	desc = {
+		text = chaosx.nr30.224.d_died
+	}
+	picture = GFX_report_event_generic_rally
+
+	is_triggered_only = yes
+	trigger = { check_variable = { global.time_traveler_fig_state^2 = constant:time_traveler_figure_state.resolved } }
+
+	option = {
+		name = chaosx.nr30.224.a
+		ai_chance = { base = 100 }
+	}
+}
+
+country_event = {
+	id = chaosx.nr30.231
+	title = chaosx.nr30.231.t
+	desc = chaosx.nr30.231.d
+	picture = GFX_report_event_generic_conference
+
+	is_triggered_only = yes
+	trigger = { check_variable = { global.time_traveler_fig_state^3 = constant:time_traveler_figure_state.arrived } }
+
+	option = {
+		name = chaosx.nr30.231.test1
+		ai_chance = { base = 30 }
+		custom_effect_tooltip = chaosx.nr30.231.test1_tt
+		hidden_effect = {
+			set_temp_variable = { time_traveler_fig = 3 }
+			set_temp_variable = { time_traveler_choice = 1 }
+			time_traveler_figure_test = yes
+		}
+	}
+	option = {
+		name = chaosx.nr30.231.test2
+		ai_chance = { base = 35 }
+		custom_effect_tooltip = chaosx.nr30.231.test2_tt
+		hidden_effect = {
+			set_temp_variable = { time_traveler_fig = 3 }
+			set_temp_variable = { time_traveler_choice = 2 }
+			time_traveler_figure_test = yes
+		}
+	}
+	option = {
+		name = chaosx.nr30.231.test3
+		ai_chance = { base = 35 }
+		custom_effect_tooltip = chaosx.nr30.231.test3_tt
+		hidden_effect = {
+			set_temp_variable = { time_traveler_fig = 3 }
+			set_temp_variable = { time_traveler_choice = 3 }
+			time_traveler_figure_test = yes
+		}
+	}
+}
+
+country_event = {
+	id = chaosx.nr30.232
+	title = chaosx.nr30.232.t
+	desc = chaosx.nr30.232.d
+	picture = GFX_report_event_generic_conference
+
+	is_triggered_only = yes
+	trigger = { check_variable = { global.time_traveler_fig_state^3 = constant:time_traveler_figure_state.verified } }
+
+	option = {
+		name = chaosx.nr30.232.custody1
+		ai_chance = { base = 40 }
+		custom_effect_tooltip = chaosx.nr30.232.custody1_tt
+		hidden_effect = {
+			set_temp_variable = { time_traveler_fig = 3 }
+			set_temp_variable = { time_traveler_choice = 1 }
+			time_traveler_figure_custody = yes
+		}
+	}
+	option = {
+		name = chaosx.nr30.232.custody2
+		ai_chance = { base = 15 modifier = { add = 15 has_stability > constant:time_traveler_ai.stability_high } }
+		custom_effect_tooltip = chaosx.nr30.232.custody2_tt
+		hidden_effect = {
+			set_temp_variable = { time_traveler_fig = 3 }
+			set_temp_variable = { time_traveler_choice = 2 }
+			time_traveler_figure_custody = yes
+		}
+	}
+	option = {
+		name = chaosx.nr30.232.custody3
+		ai_chance = { base = 10 modifier = { add = 20 has_government = fascism } }
+		custom_effect_tooltip = chaosx.nr30.232.custody3_tt
+		hidden_effect = {
+			set_temp_variable = { time_traveler_fig = 3 }
+			set_temp_variable = { time_traveler_choice = 3 }
+			time_traveler_figure_custody = yes
+		}
+	}
+	option = {
+		name = chaosx.nr30.232.custody4
+		ai_chance = { base = 25 modifier = { add = 20 has_war = yes } }
+		custom_effect_tooltip = chaosx.nr30.232.custody4_tt
+		hidden_effect = {
+			set_temp_variable = { time_traveler_fig = 3 }
+			set_temp_variable = { time_traveler_choice = 4 }
+			time_traveler_figure_custody = yes
+		}
+	}
+}
+
+country_event = {
+	id = chaosx.nr30.233
+	title = chaosx.nr30.233.t
+	desc = {
+		trigger = { NOT = { check_variable = { global.time_traveler_fig_support^3 < constant:time_traveler_figure_value.high_edge } } }
+		text = chaosx.nr30.233.d_high
+	}
+	desc = {
+		trigger = { NOT = { check_variable = { global.time_traveler_fig_support^3 < constant:time_traveler_figure_value.low_edge } } }
+		text = chaosx.nr30.233.d_mid
+	}
+	desc = {
+		text = chaosx.nr30.233.d_low
+	}
+	picture = GFX_report_event_generic_conference
+
+	is_triggered_only = yes
+	trigger = { check_variable = { global.time_traveler_fig_state^3 = constant:time_traveler_figure_state.movement } }
+
+	option = {
+		name = chaosx.nr30.233.adviser
+		ai_chance = { base = 40 modifier = { add = 20 has_war = yes } }
+		custom_effect_tooltip = chaosx.nr30.233.adviser_tt
+		hidden_effect = {
+			set_temp_variable = { time_traveler_fig = 3 }
+			set_temp_variable = { time_traveler_route = 1 }
+			time_traveler_figure_power = yes
+		}
+	}
+	option = {
+		name = chaosx.nr30.233.symbol
+		ai_chance = { base = 25 }
+		custom_effect_tooltip = chaosx.nr30.233.symbol_tt
+		hidden_effect = {
+			set_temp_variable = { time_traveler_fig = 3 }
+			set_temp_variable = { time_traveler_route = 2 }
+			time_traveler_figure_power = yes
+		}
+	}
+	option = {
+		name = chaosx.nr30.233.office
+		trigger = { NOT = { check_variable = { global.time_traveler_fig_support^3 < constant:time_traveler_figure_value.office_min } } }
+		ai_chance = { base = 5 modifier = { add = 30 NOT = { check_variable = { global.time_traveler_fig_support^3 < constant:time_traveler_figure_value.high_edge } } has_stability < constant:time_traveler_ai.stability_low } }
+		custom_effect_tooltip = chaosx.nr30.233.office_tt
+		hidden_effect = {
+			set_temp_variable = { time_traveler_fig = 3 }
+			set_temp_variable = { time_traveler_route = 3 }
+			time_traveler_figure_power = yes
+		}
+	}
+	option = {
+		name = chaosx.nr30.233.suppress
+		ai_chance = { base = 15 modifier = { add = 20 has_government = fascism } modifier = { add = 15 has_government = communism } }
+		custom_effect_tooltip = chaosx.nr30.233.suppress_tt
+		hidden_effect = {
+			set_temp_variable = { time_traveler_fig = 3 }
+			set_temp_variable = { time_traveler_route = 4 }
+			time_traveler_figure_power = yes
+		}
+	}
+	option = {
+		name = chaosx.nr30.233.exile
+		ai_chance = { base = 8 }
+		custom_effect_tooltip = chaosx.nr30.233.exile_tt
+		hidden_effect = {
+			set_temp_variable = { time_traveler_fig = 3 }
+			set_temp_variable = { time_traveler_route = 5 }
+			time_traveler_figure_power = yes
+		}
+	}
+	option = {
+		name = chaosx.nr30.233.claim
+		ai_chance = { base = 0 }
+		custom_effect_tooltip = chaosx.nr30.233.claim_tt
+		hidden_effect = {
+			set_temp_variable = { time_traveler_fig = 3 }
+			set_temp_variable = { time_traveler_route = 6 }
+			time_traveler_figure_power = yes
+		}
+	}
+}
+
+country_event = {
+	id = chaosx.nr30.234
+	title = chaosx.nr30.234.t
+	desc = {
+		trigger = { check_variable = { global.time_traveler_fig_outcome^3 = constant:time_traveler_figure_outcome.integrated } }
+		text = chaosx.nr30.234.d_integrated
+	}
+	desc = {
+		trigger = { check_variable = { global.time_traveler_fig_outcome^3 = constant:time_traveler_figure_outcome.symbol } }
+		text = chaosx.nr30.234.d_symbol
+	}
+	desc = {
+		trigger = { check_variable = { global.time_traveler_fig_outcome^3 = constant:time_traveler_figure_outcome.office } }
+		text = chaosx.nr30.234.d_office
+	}
+	desc = {
+		trigger = { check_variable = { global.time_traveler_fig_outcome^3 = constant:time_traveler_figure_outcome.imprisoned } }
+		text = chaosx.nr30.234.d_imprisoned
+	}
+	desc = {
+		trigger = { check_variable = { global.time_traveler_fig_outcome^3 = constant:time_traveler_figure_outcome.exiled } }
+		text = chaosx.nr30.234.d_exiled
+	}
+	desc = {
+		trigger = { check_variable = { global.time_traveler_fig_outcome^3 = constant:time_traveler_figure_outcome.revolt } }
+		text = chaosx.nr30.234.d_revolt
+	}
+	desc = {
+		trigger = { check_variable = { global.time_traveler_fig_outcome^3 = constant:time_traveler_figure_outcome.civil_war } }
+		text = chaosx.nr30.234.d_civil_war
+	}
+	desc = {
+		text = chaosx.nr30.234.d_died
+	}
+	picture = GFX_report_event_generic_conference
+
+	is_triggered_only = yes
+	trigger = { check_variable = { global.time_traveler_fig_state^3 = constant:time_traveler_figure_state.resolved } }
+
+	option = {
+		name = chaosx.nr30.234.a
+		ai_chance = { base = 100 }
+	}
+}
+

@@ -675,6 +675,10 @@ time_traveler_set_stage_unverified = {
 time_traveler_lose_custody = {
 	clr_country_flag = time_traveler_custodian
 	clr_country_flag = time_traveler_rumor_chain
+	clr_country_flag = time_traveler_ambition_chain
+	clr_country_flag = time_traveler_is_leader
+	clr_country_flag = time_traveler_charter
+	clr_country_flag = time_traveler_emergency_authority
 	clr_country_flag = time_traveler_relocating
 	clr_country_flag = time_traveler_wounded
 	clr_country_flag = time_traveler_guard_detail
@@ -694,6 +698,10 @@ time_traveler_traveler_dies = {
 	save_event_target_as = time_traveler_old_custodian
 	time_traveler_lose_custody = yes
 	set_variable = { global.time_traveler_status = constant:time_traveler_status.dead }
+	if = {
+		limit = { NOT = { check_variable = { global.time_traveler_ambition = constant:time_traveler_ambition_state.resolved } } }
+		set_variable = { global.time_traveler_ambition = constant:time_traveler_ambition_state.closed }
+	}
 	set_variable = { global.time_traveler_outcome = constant:time_traveler_outcome.assassinated }
 	time_traveler_clear_registry = yes
 	retire_character = time_traveler_visitor

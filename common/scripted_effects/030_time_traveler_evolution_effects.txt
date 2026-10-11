@@ -1,0 +1,897 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 030 TIME TRAVELER EVOLUTION I EFFECTS
+# ============================================================================
+# Evolution I, The Traveler's Ambition. Privileged advice becomes a political
+# struggle. Three hidden blocs of the custodian (Government, Security and
+# Technocrats, 0 to 100) decide which routes can succeed:
+#   appointment and open contest need Government support and one more bloc
+#   arrest and secret removal depend on how much of the Security bloc backs him
+#   a coup needs Security support, a civil war needs territory as well
+# The player sees the coalition through event text, decisions and warnings,
+# never as numbers.
+#
+# Pacing: the hidden tick chaosx.nr30.100 runs on the custodian every 30 days
+# until the crisis opens. The due day is about 105 days after the Chaos gate is
+# met, shortened or lengthened by the factors of mtth:time_traveler_ambition_delay.
+# State: global.time_traveler_ambition (constant:time_traveler_ambition_state.*)
+# and global.time_traveler_ambition_outcome.
+# ============================================================================
+
+# ---------------------------------------------------------------------------
+# Blocs
+# ---------------------------------------------------------------------------
+
+# COUNTRY (custodian). Seeds the blocs from the arrangement, or moves them half
+# way towards the new arrangement's seed when it is revised.
+time_traveler_seed_blocs = {
+	if = {
+		limit = { time_traveler_arrangement_is_cabinet = yes }
+		set_temp_variable = { time_traveler_seed_government = constant:time_traveler_ambition_value.seed_cabinet_government }
+		set_temp_variable = { time_traveler_seed_security = constant:time_traveler_ambition_value.seed_cabinet_security }
+		set_temp_variable = { time_traveler_seed_technocrats = constant:time_traveler_ambition_value.seed_cabinet_technocrats }
+	}
+	else_if = {
+		limit = { time_traveler_arrangement_is_secret = yes }
+		set_temp_variable = { time_traveler_seed_government = constant:time_traveler_ambition_value.seed_secret_government }
+		set_temp_variable = { time_traveler_seed_security = constant:time_traveler_ambition_value.seed_secret_security }
+		set_temp_variable = { time_traveler_seed_technocrats = constant:time_traveler_ambition_value.seed_secret_technocrats }
+	}
+	else_if = {
+		limit = { time_traveler_arrangement_is_confinement = yes }
+		set_temp_variable = { time_traveler_seed_government = constant:time_traveler_ambition_value.seed_confinement_government }
+		set_temp_variable = { time_traveler_seed_security = constant:time_traveler_ambition_value.seed_confinement_security }
+		set_temp_variable = { time_traveler_seed_technocrats = constant:time_traveler_ambition_value.seed_confinement_technocrats }
+	}
+	else = {
+		set_temp_variable = { time_traveler_seed_government = constant:time_traveler_ambition_value.seed_public_government }
+		set_temp_variable = { time_traveler_seed_security = constant:time_traveler_ambition_value.seed_public_security }
+		set_temp_variable = { time_traveler_seed_technocrats = constant:time_traveler_ambition_value.seed_public_technocrats }
+	}
+	if = {
+		limit = { has_variable = time_traveler_bloc_government }
+		add_to_temp_variable = { time_traveler_seed_government = time_traveler_bloc_government }
+		add_to_temp_variable = { time_traveler_seed_security = time_traveler_bloc_security }
+		add_to_temp_variable = { time_traveler_seed_technocrats = time_traveler_bloc_technocrats }
+		divide_temp_variable = { time_traveler_seed_government = constant:time_traveler_value.two }
+		divide_temp_variable = { time_traveler_seed_security = constant:time_traveler_value.two }
+		divide_temp_variable = { time_traveler_seed_technocrats = constant:time_traveler_value.two }
+	}
+	set_variable = { time_traveler_bloc_government = time_traveler_seed_government }
+	set_variable = { time_traveler_bloc_security = time_traveler_seed_security }
+	set_variable = { time_traveler_bloc_technocrats = time_traveler_seed_technocrats }
+	time_traveler_clamp_blocs = yes
+}
+
+time_traveler_clamp_blocs = {
+	clamp_variable = { var = time_traveler_bloc_government min = constant:time_traveler_value.zero max = constant:time_traveler_ambition_value.bloc_max }
+	clamp_variable = { var = time_traveler_bloc_security min = constant:time_traveler_value.zero max = constant:time_traveler_ambition_value.bloc_max }
+	clamp_variable = { var = time_traveler_bloc_technocrats min = constant:time_traveler_value.zero max = constant:time_traveler_ambition_value.bloc_max }
+}
+
+# COUNTRY (custodian). A carried-out consultation wins the bloc that cares about
+# its field: the army and the services, the factories and laboratories, the
+# ministries.
+time_traveler_blocs_from_consultation = {
+	if = {
+		limit = { check_variable = { time_traveler_c_family = constant:time_traveler_family.military } }
+		add_to_variable = { time_traveler_bloc_security = constant:time_traveler_ambition_value.bloc_gain_military }
+	}
+	else_if = {
+		limit = { check_variable = { time_traveler_c_family = constant:time_traveler_family.industrial } }
+		add_to_variable = { time_traveler_bloc_technocrats = constant:time_traveler_ambition_value.bloc_gain_industrial }
+	}
+	else_if = {
+		limit = { check_variable = { time_traveler_c_family = constant:time_traveler_family.scientific } }
+		add_to_variable = { time_traveler_bloc_technocrats = constant:time_traveler_ambition_value.bloc_gain_scientific }
+	}
+	else_if = {
+		limit = { check_variable = { time_traveler_c_family = constant:time_traveler_family.diplomatic } }
+		add_to_variable = { time_traveler_bloc_government = constant:time_traveler_ambition_value.bloc_gain_diplomatic }
+	}
+	else_if = {
+		limit = { check_variable = { time_traveler_c_family = constant:time_traveler_family.counterintelligence } }
+		add_to_variable = { time_traveler_bloc_security = constant:time_traveler_ambition_value.bloc_gain_counterintelligence }
+	}
+	else = {
+		add_to_variable = { time_traveler_bloc_government = constant:time_traveler_ambition_value.bloc_gain_domestic }
+	}
+	time_traveler_clamp_blocs = yes
+}
+
+# ---------------------------------------------------------------------------
+# Pacing and logging
+# ---------------------------------------------------------------------------
+
+# COUNTRY (custodian). Input: temp time_traveler_probe_stage (constant:
+# time_traveler_evolution.stage_*). Output: temp time_traveler_probe_ok, 1 when the
+# evolution is enabled and its Chaos tier is reached. Sets the shared context.
+time_traveler_probe_evolution = {
+	set_temp_variable = { events_log_evolution_event_id = constant:time_traveler_identity.event_id }
+	set_temp_variable = { events_log_evolution_type = constant:time_traveler_identity.evolution_type }
+	set_temp_variable = { events_log_evolution_stage = time_traveler_probe_stage }
+	set_temp_variable = { events_log_evolution_tier = time_traveler_probe_stage }
+	set_temp_variable = { time_traveler_probe_ok = constant:time_traveler_value.zero }
+	if = {
+		limit = { is_current_evolution_enabled = yes }
+		set_temp_variable = { time_traveler_probe_ok = constant:time_traveler_value.one }
+	}
+}
+
+# COUNTRY. Input: temp time_traveler_log_stage. Writes one evolution row with
+# this country as the actor.
+time_traveler_record_evolution = {
+	set_temp_variable = { events_log_evolution_event_id = constant:time_traveler_identity.event_id }
+	set_temp_variable = { events_log_evolution_type = constant:time_traveler_identity.evolution_type }
+	set_temp_variable = { events_log_evolution_stage = time_traveler_log_stage }
+	set_temp_variable = { events_log_evolution_tier = time_traveler_log_stage }
+	set_temp_variable = { events_log_evolution_has_actor = constant:time_traveler_value.one }
+	save_event_target_as = events_log_evolution_actor
+	record_events_log_evolution_entry = yes
+}
+
+# COUNTRY (custodian). Starts the pacing chain of Evolution I once.
+time_traveler_schedule_ambition = {
+	if = {
+		limit = {
+			NOT = { has_country_flag = time_traveler_ambition_chain }
+			NOT = { check_variable = { global.time_traveler_ambition > constant:time_traveler_ambition_state.pending } }
+		}
+		set_country_flag = time_traveler_ambition_chain
+		country_event = { id = chaosx.nr30.100 days = constant:time_traveler_ambition_value.check_days }
+	}
+}
+
+# COUNTRY (custodian), called by the hidden tick. The gate is the Chaos tier of
+# the evolution. After the gate the crisis is due about 105 days later, and a
+# compressed opening makes it due at once.
+time_traveler_try_ambition = {
+	set_temp_variable = { time_traveler_probe_stage = constant:time_traveler_evolution.stage_1 }
+	time_traveler_probe_evolution = yes
+	set_temp_variable = { time_traveler_continue = constant:time_traveler_value.one }
+	if = {
+		limit = {
+			check_variable = { time_traveler_probe_ok = constant:time_traveler_value.one }
+			time_traveler_has_direct_access = yes
+		}
+		if = {
+			limit = { check_variable = { global.time_traveler_ambition = constant:time_traveler_ambition_state.none } }
+			set_temp_variable = { time_traveler_delay = mtth:time_traveler_ambition_delay }
+			if = {
+				limit = { has_country_flag = time_traveler_compressed }
+				set_temp_variable = { time_traveler_delay = constant:time_traveler_timing.report_delay_days }
+			}
+			round_temp_variable = time_traveler_delay
+			set_variable = { global.time_traveler_ambition_due = global.num_days }
+			add_to_variable = { global.time_traveler_ambition_due = time_traveler_delay }
+			set_variable = { global.time_traveler_ambition = constant:time_traveler_ambition_state.pending }
+		}
+		else_if = {
+			limit = {
+				check_variable = { global.time_traveler_ambition = constant:time_traveler_ambition_state.pending }
+				NOT = { check_variable = { global.num_days < global.time_traveler_ambition_due } }
+			}
+			set_variable = { global.time_traveler_ambition = constant:time_traveler_ambition_state.crisis }
+			set_temp_variable = { time_traveler_log_stage = constant:time_traveler_evolution.stage_1 }
+			time_traveler_record_evolution = yes
+			country_event = { id = chaosx.nr30.101 days = constant:time_traveler_timing.report_delay_days }
+			set_temp_variable = { time_traveler_continue = constant:time_traveler_value.zero }
+		}
+	}
+	if = {
+		limit = { check_variable = { time_traveler_continue = constant:time_traveler_value.one } }
+		country_event = { id = chaosx.nr30.100 days = constant:time_traveler_ambition_value.check_days }
+	}
+	else = { clr_country_flag = time_traveler_ambition_chain }
+}
+
+# ---------------------------------------------------------------------------
+# Resolution helpers
+# ---------------------------------------------------------------------------
+
+# COUNTRY (custodian). Input: temp time_traveler_outcome_id. Optional temp
+# time_traveler_silent (1 sends no report). Closes the crisis.
+time_traveler_finish_ambition = {
+	set_variable = { global.time_traveler_ambition = constant:time_traveler_ambition_state.resolved }
+	set_variable = { global.time_traveler_ambition_outcome = time_traveler_outcome_id }
+	if = {
+		limit = { NOT = { check_variable = { time_traveler_silent = constant:time_traveler_value.one } } }
+		country_event = { id = chaosx.nr30.102 days = constant:time_traveler_timing.report_delay_days }
+	}
+	set_temp_variable = { time_traveler_silent = constant:time_traveler_value.zero }
+}
+
+# COUNTRY (custodian). One-shot Chaos movement through the shared history path.
+# Inputs: temp chaos_change, chaos_history_reason (set by the caller) and the
+# global flag that guards the milestone (temp time_traveler_milestone_flag is
+# not used: each caller names its own flag).
+time_traveler_chaos_leader = {
+	if = {
+		limit = { NOT = { has_global_flag = time_traveler_leader_chaos_recorded } }
+		set_global_flag = time_traveler_leader_chaos_recorded
+		set_temp_variable = { chaos_change = constant:time_traveler_chaos_ambition.leader_peaceful }
+		set_temp_variable = { chaos_history_reason = constant:chaos_meter_history_reason.special.time_traveler_leader }
+		set_temp_variable = { chaos_history_reason_custom = constant:time_traveler_value.one }
+		add_chaos_meter_value = yes
+	}
+}
+
+time_traveler_chaos_coup_failed = {
+	if = {
+		limit = { NOT = { has_global_flag = time_traveler_coup_chaos_recorded } }
+		set_global_flag = time_traveler_coup_chaos_recorded
+		set_temp_variable = { chaos_change = constant:time_traveler_chaos_ambition.coup_failed }
+		set_temp_variable = { chaos_history_reason = constant:chaos_meter_history_reason.special.time_traveler_coup_failed }
+		set_temp_variable = { chaos_history_reason_custom = constant:time_traveler_value.one }
+		add_chaos_meter_value = yes
+	}
+}
+
+time_traveler_chaos_civil_war = {
+	if = {
+		limit = { NOT = { has_global_flag = time_traveler_civil_war_chaos_recorded } }
+		set_global_flag = time_traveler_civil_war_chaos_recorded
+		set_temp_variable = { chaos_change = constant:time_traveler_chaos_ambition.civil_war }
+		set_temp_variable = { chaos_history_reason = constant:chaos_meter_history_reason.special.time_traveler_civil_war }
+		set_temp_variable = { chaos_history_reason_custom = constant:time_traveler_value.one }
+		add_chaos_meter_value = yes
+	}
+}
+
+time_traveler_chaos_detention = {
+	if = {
+		limit = { NOT = { has_global_flag = time_traveler_detention_chaos_recorded } }
+		set_global_flag = time_traveler_detention_chaos_recorded
+		set_temp_variable = { chaos_change = constant:time_traveler_chaos_ambition.detention_public }
+		set_temp_variable = { chaos_history_reason = constant:chaos_meter_history_reason.special.time_traveler_detention }
+		set_temp_variable = { chaos_history_reason_custom = constant:time_traveler_value.one }
+		add_chaos_meter_value = yes
+	}
+}
+
+time_traveler_chaos_charter = {
+	if = {
+		limit = { NOT = { has_global_flag = time_traveler_charter_chaos_recorded } }
+		set_global_flag = time_traveler_charter_chaos_recorded
+		set_temp_variable = { chaos_change = constant:time_traveler_chaos_ambition.charter }
+		set_temp_variable = { chaos_history_reason = constant:chaos_meter_history_reason.special.time_traveler_charter }
+		set_temp_variable = { chaos_history_reason_custom = constant:time_traveler_value.one }
+		add_chaos_meter_value = yes
+	}
+}
+
+time_traveler_chaos_reintegration = {
+	if = {
+		limit = { NOT = { has_global_flag = time_traveler_reintegration_chaos_recorded } }
+		set_global_flag = time_traveler_reintegration_chaos_recorded
+		set_temp_variable = { chaos_change = constant:time_traveler_chaos_ambition.reintegration }
+		set_temp_variable = { chaos_history_reason = constant:chaos_meter_history_reason.special.time_traveler_reintegration }
+		set_temp_variable = { chaos_history_reason_custom = constant:time_traveler_value.one }
+		add_chaos_meter_value = yes
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Routes of the opening crisis
+# ---------------------------------------------------------------------------
+
+# COUNTRY (custodian). A written charter limits the traveler to advice, requires
+# documented consultations and forbids unilateral orders.
+time_traveler_route_charter = {
+	set_country_flag = time_traveler_charter
+	set_variable = { time_traveler_charter_strikes = constant:time_traveler_value.zero }
+	add_to_variable = { time_traveler_bloc_government = constant:time_traveler_ambition_value.charter_government_gain }
+	subtract_from_variable = { time_traveler_bloc_security = constant:time_traveler_ambition_value.charter_security_drop }
+	time_traveler_clamp_blocs = yes
+	if = {
+		limit = { NOT = { has_idea = time_traveler_bound_charter } }
+		add_ideas = time_traveler_bound_charter
+	}
+	time_traveler_chaos_charter = yes
+	set_temp_variable = { time_traveler_outcome_id = constant:time_traveler_ambition_outcome.charter }
+	time_traveler_finish_ambition = yes
+}
+
+# COUNTRY (custodian). Temporary authority over one crisis with a public
+# duration. It ends in chaosx.nr30.106.
+time_traveler_route_emergency = {
+	set_country_flag = time_traveler_emergency_authority
+	set_temp_variable = { time_traveler_days = constant:time_traveler_ambition_value.emergency_days }
+	add_timed_idea = { idea = time_traveler_emergency_authority days = time_traveler_days }
+	add_to_variable = { time_traveler_bloc_technocrats = constant:time_traveler_ambition_value.emergency_technocrats_gain }
+	add_to_variable = { time_traveler_bloc_security = constant:time_traveler_ambition_value.emergency_security_gain }
+	time_traveler_clamp_blocs = yes
+	set_temp_variable = { time_traveler_amount = constant:time_traveler_ambition_divergence.emergency }
+	set_temp_variable = { time_traveler_cause = constant:time_traveler_cause_id.arrangement }
+	time_traveler_raise_divergence = yes
+	country_event = { id = chaosx.nr30.106 days = time_traveler_days }
+}
+
+# COUNTRY (custodian). The mandate ends. A stable country turns the lessons into
+# a permanent institution, an unstable one pays in Credibility and strengthens
+# the officers who opposed it.
+time_traveler_emergency_ends = {
+	clr_country_flag = time_traveler_emergency_authority
+	if = {
+		limit = { has_stability > constant:time_traveler_ambition_value.emergency_success_stability }
+		if = {
+			limit = { NOT = { has_idea = time_traveler_state_institution } }
+			add_ideas = time_traveler_state_institution
+		}
+		set_temp_variable = { time_traveler_amount = constant:time_traveler_ambition_value.emergency_success_credibility }
+		set_temp_variable = { time_traveler_cause = constant:time_traveler_cause_id.consultation_success }
+		time_traveler_raise_credibility = yes
+		set_temp_variable = { time_traveler_outcome_id = constant:time_traveler_ambition_outcome.emergency_success }
+		set_country_flag = time_traveler_emergency_succeeded
+		time_traveler_finish_ambition = yes
+	}
+	else = {
+		set_temp_variable = { time_traveler_amount = constant:time_traveler_ambition_value.emergency_failure_credibility }
+		set_temp_variable = { time_traveler_cause = constant:time_traveler_cause_id.failed_ignored }
+		time_traveler_lower_credibility = yes
+		add_to_variable = { time_traveler_bloc_security = constant:time_traveler_ambition_value.removal_failed_security_gain }
+		time_traveler_clamp_blocs = yes
+		clr_country_flag = time_traveler_emergency_succeeded
+		set_temp_variable = { time_traveler_outcome_id = constant:time_traveler_ambition_outcome.emergency_failed }
+		set_temp_variable = { time_traveler_silent = constant:time_traveler_value.one }
+		time_traveler_finish_ambition = yes
+		set_variable = { global.time_traveler_ambition = constant:time_traveler_ambition_state.crisis }
+		country_event = { id = chaosx.nr30.110 days = constant:time_traveler_ambition_value.escalation_days }
+	}
+}
+
+# COUNTRY (custodian). Appointment through the established route needs
+# Government support and one more bloc. Otherwise the cabinet refuses and the
+# crisis escalates to an attempted removal.
+time_traveler_route_appoint = {
+	if = {
+		limit = { time_traveler_government_bloc_is_strong = yes }
+		set_temp_variable = { time_traveler_leader_route_id = constant:time_traveler_leader_route.appointed }
+		time_traveler_become_leader = yes
+	}
+	else = {
+		set_country_flag = time_traveler_cabinet_refused
+		country_event = { id = chaosx.nr30.110 days = constant:time_traveler_ambition_value.escalation_days }
+	}
+}
+
+# COUNTRY (custodian). An open contest in a country with public competition. The
+# chance follows the Government and Technocrat blocs.
+time_traveler_route_contest = {
+	set_temp_variable = { time_traveler_chance = time_traveler_bloc_government }
+	add_to_temp_variable = { time_traveler_chance = time_traveler_bloc_technocrats }
+	divide_temp_variable = { time_traveler_chance = constant:time_traveler_value.two }
+	clamp_temp_variable = { var = time_traveler_chance min = constant:time_traveler_ambition_value.contest_minimum max = constant:time_traveler_ambition_value.contest_maximum }
+	time_traveler_roll_percent = yes
+	if = {
+		limit = { check_variable = { time_traveler_roll < time_traveler_chance } }
+		set_temp_variable = { time_traveler_leader_route_id = constant:time_traveler_leader_route.contest }
+		time_traveler_become_leader = yes
+	}
+	else = {
+		set_variable = { global.time_traveler_ambition_outcome = constant:time_traveler_ambition_outcome.contest_lost }
+		country_event = { id = chaosx.nr30.121 days = constant:time_traveler_timing.report_delay_days }
+	}
+}
+
+# COUNTRY (custodian). Arrest and investigation. A clean arrest needs the
+# Security bloc to stay away. Otherwise a rescue attempt becomes a coup.
+time_traveler_route_arrest = {
+	set_temp_variable = { time_traveler_chance = constant:time_traveler_value.percent_max }
+	subtract_from_temp_variable = { time_traveler_chance = time_traveler_bloc_security }
+	clamp_temp_variable = { var = time_traveler_chance min = constant:time_traveler_ambition_value.arrest_floor max = constant:time_traveler_ambition_value.arrest_ceiling }
+	time_traveler_resolve_chance = yes
+	if = {
+		limit = { check_variable = { time_traveler_success = constant:time_traveler_value.one } }
+		time_traveler_arrest_succeeds = yes
+	}
+	else = {
+		set_country_flag = time_traveler_rescue_attempt
+		country_event = { id = chaosx.nr30.111 days = constant:time_traveler_ambition_value.escalation_days }
+	}
+}
+
+# COUNTRY (custodian). The arrest holds, the network is dismantled and the
+# investigation may name a foreign sponsor.
+time_traveler_arrest_succeeds = {
+	subtract_from_variable = { time_traveler_bloc_government = constant:time_traveler_ambition_value.arrest_bloc_drop }
+	subtract_from_variable = { time_traveler_bloc_security = constant:time_traveler_ambition_value.arrest_bloc_drop }
+	subtract_from_variable = { time_traveler_bloc_technocrats = constant:time_traveler_ambition_value.arrest_bloc_drop }
+	time_traveler_clamp_blocs = yes
+	set_temp_variable = { time_traveler_arrangement_new = constant:time_traveler_arrangement.confinement }
+	time_traveler_apply_arrangement = yes
+	set_temp_variable = { time_traveler_amount = constant:time_traveler_ambition_value.arrest_credibility_loss }
+	set_temp_variable = { time_traveler_cause = constant:time_traveler_cause_id.arrangement }
+	time_traveler_lower_credibility = yes
+	set_temp_variable = { time_traveler_chance = constant:time_traveler_ambition_value.arrest_sponsor_chance }
+	time_traveler_resolve_chance = yes
+	if = {
+		limit = {
+			check_variable = { time_traveler_success = constant:time_traveler_value.one }
+			check_variable = { global.time_traveler_interest^num > constant:time_traveler_value.zero }
+		}
+		random_scope_in_array = {
+			array = global.time_traveler_interest
+			limit = { check_variable = { time_traveler_network > constant:time_traveler_value.zero } }
+			set_variable = { time_traveler_network = constant:time_traveler_network.none }
+			add_opinion_modifier = { target = var:global.time_traveler_custodian modifier = time_traveler_exposed_cell }
+		}
+	}
+	set_temp_variable = { time_traveler_outcome_id = constant:time_traveler_ambition_outcome.arrested }
+	time_traveler_finish_ambition = yes
+}
+
+# COUNTRY (custodian). Exile. The traveler leaves, a reappearance remains
+# possible and the temporal disturbance stays.
+time_traveler_route_exile = {
+	time_traveler_lose_custody = yes
+	set_variable = { global.time_traveler_status = constant:time_traveler_status.missing }
+	set_variable = { global.time_traveler_outcome = constant:time_traveler_outcome.disappeared }
+	set_global_flag = time_traveler_reappearance_open
+	save_event_target_as = time_traveler_exile_origin
+	time_traveler_clear_registry = yes
+	country_event = { id = chaosx.nr30.150 days = constant:time_traveler_ambition_value.reappearance_days }
+	set_temp_variable = { time_traveler_outcome_id = constant:time_traveler_ambition_outcome.exiled }
+	time_traveler_finish_ambition = yes
+}
+
+# COUNTRY (custodian). A monitored transfer to an ally.
+time_traveler_route_transfer = {
+	save_event_target_as = time_traveler_ambition_host
+	random_country = {
+		limit = {
+			exists = yes
+			NOT = { has_country_flag = time_traveler_custodian }
+			is_in_faction_with = event_target:time_traveler_ambition_host
+			is_special_chaos_country = no
+			is_actual_nonhuman_country = no
+		}
+		set_temp_variable = { time_traveler_transfer_method = constant:time_traveler_transfer.negotiated }
+		time_traveler_transfer_custody = yes
+	}
+	set_temp_variable = { time_traveler_outcome_id = constant:time_traveler_ambition_outcome.transferred }
+	time_traveler_finish_ambition = yes
+}
+
+# COUNTRY (custodian). Secret removal. A success removes the character and
+# leaves records, supporters and the disturbance. A failure is a public scandal
+# and the officers who backed him answer it.
+time_traveler_route_remove = {
+	set_temp_variable = { time_traveler_chance = time_traveler_bloc_security }
+	multiply_temp_variable = { time_traveler_chance = constant:time_traveler_ambition_value.removal_security_share }
+	add_to_temp_variable = { time_traveler_chance = constant:time_traveler_ambition_value.removal_base }
+	time_traveler_resolve_chance = yes
+	if = {
+		limit = { check_variable = { time_traveler_success = constant:time_traveler_value.one } }
+		time_traveler_traveler_dies = yes
+		set_temp_variable = { time_traveler_outcome_id = constant:time_traveler_ambition_outcome.removed }
+		set_temp_variable = { time_traveler_silent = constant:time_traveler_value.one }
+		time_traveler_finish_ambition = yes
+	}
+	else = {
+		set_temp_variable = { condemnation_source_type = constant:condemnation_source.atrocity }
+		set_temp_variable = { condemnation_base_gain = constant:time_traveler_government_cost.condemnation_detention }
+		set_temp_variable = { condemnation_visibility_type = constant:condemnation_visibility.public }
+		set_temp_variable = { condemnation_severity_type = constant:condemnation_severity.combat }
+		condemnation_add_source = yes
+		add_stability = constant:time_traveler_ambition_value.removal_failed_stability
+		add_to_variable = { time_traveler_bloc_security = constant:time_traveler_ambition_value.removal_failed_security_gain }
+		time_traveler_clamp_blocs = yes
+		set_temp_variable = { time_traveler_amount = constant:time_traveler_exposure.leak_rise }
+		set_temp_variable = { time_traveler_cause = constant:time_traveler_cause_id.leak }
+		time_traveler_raise_exposure = yes
+		time_traveler_check_revelation = yes
+		set_country_flag = time_traveler_removal_scandal
+		country_event = { id = chaosx.nr30.111 days = constant:time_traveler_ambition_value.escalation_days }
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Escalation, coup and revolt
+# ---------------------------------------------------------------------------
+
+# COUNTRY (custodian), called by chaosx.nr30.111. The officers act: a civil war
+# needs a large Security bloc, a weak Government bloc and enough territory, a
+# coup needs Security support, and otherwise the attempt fails.
+time_traveler_resolve_coup = {
+	clr_country_flag = time_traveler_rescue_attempt
+	clr_country_flag = time_traveler_removal_scandal
+	if = {
+		limit = { time_traveler_security_can_fight_a_war = yes }
+		set_variable = { time_traveler_coup_result = constant:time_traveler_ambition_outcome.civil_war }
+		time_traveler_chaos_civil_war = yes
+		time_traveler_start_revolt = yes
+		set_temp_variable = { time_traveler_outcome_id = constant:time_traveler_ambition_outcome.civil_war }
+		set_temp_variable = { time_traveler_silent = constant:time_traveler_value.one }
+		time_traveler_finish_ambition = yes
+	}
+	else_if = {
+		limit = { time_traveler_security_can_coup = yes }
+		set_variable = { time_traveler_coup_result = constant:time_traveler_ambition_outcome.coup_won }
+		add_stability = constant:time_traveler_ambition_value.coup_stability
+		add_war_support = constant:time_traveler_ambition_value.coup_war_support
+		set_global_flag = time_traveler_violent_rise
+		set_temp_variable = { time_traveler_leader_route_id = constant:time_traveler_leader_route.coup }
+		set_temp_variable = { time_traveler_silent = constant:time_traveler_value.one }
+		time_traveler_become_leader = yes
+	}
+	else = {
+		set_variable = { time_traveler_coup_result = constant:time_traveler_ambition_outcome.coup_failed }
+		time_traveler_chaos_coup_failed = yes
+		set_global_flag = time_traveler_violent_rise
+		set_temp_variable = { time_traveler_silent = constant:time_traveler_value.one }
+		time_traveler_arrest_succeeds = yes
+		set_variable = { global.time_traveler_ambition_outcome = constant:time_traveler_ambition_outcome.coup_failed }
+	}
+}
+
+# COUNTRY (custodian). A civil war led by the traveler. The loyalists keep the
+# ruling party. The rebels take the group named for the host and the traveler
+# leads them. The vanilla effect runs the block inside the rebel country.
+time_traveler_start_revolt = {
+	save_event_target_as = time_traveler_ambition_host
+	set_variable = { global.time_traveler_carry_credibility = time_traveler_credibility }
+	set_variable = { global.time_traveler_carry_exposure = time_traveler_exposure }
+	set_variable = { global.time_traveler_carry_arrangement = time_traveler_arrangement }
+	set_variable = { global.time_traveler_carry_stage = time_traveler_stage }
+	set_variable = { global.time_traveler_carry_consults = time_traveler_consults }
+	set_temp_variable = { time_traveler_cw_size = constant:time_traveler_ambition_value.civil_war_size }
+	if = {
+		limit = { has_government = neutrality }
+		meta_effect = {
+			text = {
+				start_civil_war = {
+					ideology = democratic
+					ruling_party = neutrality
+					size = [CW_SIZE]
+					keep_political_leader = no
+					time_traveler_arm_revolter = yes
+				}
+			}
+			CW_SIZE = "[?time_traveler_cw_size|.2]"
+		}
+	}
+	else_if = {
+		limit = { has_government = fascism }
+		meta_effect = {
+			text = {
+				start_civil_war = {
+					ideology = neutrality
+					ruling_party = fascism
+					size = [CW_SIZE]
+					keep_political_leader = no
+					time_traveler_arm_revolter = yes
+				}
+			}
+			CW_SIZE = "[?time_traveler_cw_size|.2]"
+		}
+	}
+	else_if = {
+		limit = { has_government = communism }
+		meta_effect = {
+			text = {
+				start_civil_war = {
+					ideology = neutrality
+					ruling_party = communism
+					size = [CW_SIZE]
+					keep_political_leader = no
+					time_traveler_arm_revolter = yes
+				}
+			}
+			CW_SIZE = "[?time_traveler_cw_size|.2]"
+		}
+	}
+	else = {
+		meta_effect = {
+			text = {
+				start_civil_war = {
+					ideology = neutrality
+					ruling_party = democratic
+					size = [CW_SIZE]
+					keep_political_leader = no
+					time_traveler_arm_revolter = yes
+				}
+			}
+			CW_SIZE = "[?time_traveler_cw_size|.2]"
+		}
+	}
+	time_traveler_lose_custody = yes
+}
+
+# COUNTRY (the rebel country). Gives the revolt its leader and its custody of the
+# traveler. Runs inside start_civil_war.
+time_traveler_arm_revolter = {
+	save_event_target_as = time_traveler_new_home
+	set_variable = { global.time_traveler_custodian = THIS }
+	set_country_flag = time_traveler_custodian
+	set_country_flag = time_traveler_is_leader
+	set_variable = { time_traveler_credibility = global.time_traveler_carry_credibility }
+	set_variable = { time_traveler_exposure = global.time_traveler_carry_exposure }
+	set_variable = { time_traveler_arrangement = global.time_traveler_carry_arrangement }
+	set_variable = { time_traveler_stage = global.time_traveler_carry_stage }
+	set_variable = { time_traveler_consults = global.time_traveler_carry_consults }
+	set_variable = { time_traveler_shareable = constant:time_traveler_value.zero }
+	set_variable = { time_traveler_c_kind = constant:time_traveler_kind.none }
+	time_traveler_visitor = { set_nationality = event_target:time_traveler_new_home }
+	time_traveler_install_leader_role = yes
+	time_traveler_apply_spirit = yes
+	time_traveler_refresh_costs = yes
+}
+
+# ---------------------------------------------------------------------------
+# The traveler governs
+# ---------------------------------------------------------------------------
+
+# COUNTRY. Adds the country leader role in the ruling ideology type and promotes
+# him. He does not change the ideology.
+time_traveler_install_leader_role = {
+	meta_effect = {
+		text = {
+			add_country_leader_role = {
+				character = time_traveler_visitor
+				promote_leader = yes
+				country_leader = {
+					ideology = [IDEOLOGY]
+					traits = { time_traveler_trait_leader }
+				}
+			}
+		}
+		IDEOLOGY = "[GetTimeTravelerLeaderIdeology]"
+	}
+}
+
+# COUNTRY (custodian). Input: temp time_traveler_leader_route_id
+# (constant:time_traveler_leader_route.*). Optional temp
+# time_traveler_report_suppressed. The traveler becomes head of government.
+time_traveler_become_leader = {
+	time_traveler_release_character = yes
+	time_traveler_install_leader_role = yes
+	set_country_flag = time_traveler_is_leader
+	if = {
+		limit = { has_idea = time_traveler_bound_charter }
+		remove_ideas = time_traveler_bound_charter
+	}
+	clr_country_flag = time_traveler_charter
+	add_ideas = time_traveler_traveler_government
+	set_temp_variable = { time_traveler_amount = constant:time_traveler_ambition_divergence.leader }
+	set_temp_variable = { time_traveler_cause = constant:time_traveler_cause_id.arrangement }
+	time_traveler_raise_divergence = yes
+	set_temp_variable = { time_traveler_outcome_id = constant:time_traveler_ambition_outcome.appointed }
+	if = {
+		limit = { check_variable = { time_traveler_leader_route_id = constant:time_traveler_leader_route.contest } }
+		set_temp_variable = { time_traveler_outcome_id = constant:time_traveler_ambition_outcome.contest_won }
+	}
+	else_if = {
+		limit = { check_variable = { time_traveler_leader_route_id = constant:time_traveler_leader_route.conceded } }
+		set_temp_variable = { time_traveler_outcome_id = constant:time_traveler_ambition_outcome.conceded }
+	}
+	else_if = {
+		limit = { check_variable = { time_traveler_leader_route_id = constant:time_traveler_leader_route.coup } }
+		set_temp_variable = { time_traveler_outcome_id = constant:time_traveler_ambition_outcome.coup_won }
+	}
+	if = {
+		limit = { NOT = { check_variable = { time_traveler_leader_route_id = constant:time_traveler_leader_route.coup } } }
+		time_traveler_chaos_leader = yes
+		if = {
+			limit = {
+				is_ai = no
+				NOT = { has_global_flag = time_traveler_violent_rise }
+			}
+			set_country_flag = time_traveler_ach_office
+		}
+	}
+	time_traveler_finish_ambition = yes
+}
+
+# ---------------------------------------------------------------------------
+# Traveler government decisions
+# ---------------------------------------------------------------------------
+
+time_traveler_pay_watch = {
+	set_temp_variable = { time_traveler_pay_command = time_traveler_cost_watch_command }
+	set_temp_variable = { time_traveler_pay_support = time_traveler_cost_watch_support }
+	time_traveler_pay = yes
+}
+
+time_traveler_pay_restrict = {
+	set_temp_variable = { time_traveler_pay_political = time_traveler_cost_restrict_political }
+	set_temp_variable = { time_traveler_pay_command = time_traveler_cost_restrict_command }
+	set_temp_variable = { time_traveler_pay_manpower_k = time_traveler_cost_restrict_manpower_k }
+	time_traveler_pay = yes
+}
+
+time_traveler_pay_build = {
+	set_temp_variable = { time_traveler_pay_political = time_traveler_cost_build_political }
+	set_temp_variable = { time_traveler_pay_support = time_traveler_cost_build_support }
+	time_traveler_pay = yes
+}
+
+time_traveler_pay_suppress = {
+	set_temp_variable = { time_traveler_pay_political = time_traveler_cost_suppress_political }
+	time_traveler_pay = yes
+}
+
+# COUNTRY. Quotes for the traveler government decisions, scaled like every other
+# quote of the event. Called from time_traveler_refresh_costs.
+time_traveler_refresh_government_costs = {
+	set_variable = { time_traveler_cost_watch_command = constant:time_traveler_government_cost.watch_command }
+	set_variable = { time_traveler_cost_watch_support = constant:time_traveler_government_cost.watch_support }
+	multiply_variable = { time_traveler_cost_watch_support = time_traveler_scale }
+	round_variable = time_traveler_cost_watch_support
+	set_variable = { time_traveler_cost_restrict_political = constant:time_traveler_government_cost.restrict_political }
+	multiply_variable = { time_traveler_cost_restrict_political = time_traveler_scale }
+	round_variable = time_traveler_cost_restrict_political
+	set_variable = { time_traveler_cost_restrict_command = constant:time_traveler_government_cost.restrict_command }
+	set_variable = { time_traveler_cost_restrict_manpower_k = constant:time_traveler_government_cost.restrict_manpower_k }
+	multiply_variable = { time_traveler_cost_restrict_manpower_k = time_traveler_scale }
+	round_variable = time_traveler_cost_restrict_manpower_k
+	set_variable = { time_traveler_cost_build_political = constant:time_traveler_government_cost.build_political }
+	multiply_variable = { time_traveler_cost_build_political = time_traveler_scale }
+	round_variable = time_traveler_cost_build_political
+	set_variable = { time_traveler_cost_build_support = constant:time_traveler_government_cost.build_support }
+	multiply_variable = { time_traveler_cost_build_support = time_traveler_scale }
+	round_variable = time_traveler_cost_build_support
+	set_variable = { time_traveler_cost_suppress_political = constant:time_traveler_government_cost.suppress_political }
+	multiply_variable = { time_traveler_cost_suppress_political = time_traveler_scale }
+	round_variable = time_traveler_cost_suppress_political
+}
+
+# COUNTRY (leader). Watch the predicted threat: better intelligence and command
+# power for a time. The surveillance can become public.
+time_traveler_do_watch = {
+	time_traveler_pay_watch = yes
+	set_temp_variable = { time_traveler_days = constant:time_traveler_government_cost.posture_days }
+	add_timed_idea = { idea = time_traveler_watch_posture days = time_traveler_days }
+	set_temp_variable = { time_traveler_days = constant:time_traveler_government_cost.watch_cooldown_days }
+	set_country_flag = { flag = time_traveler_watch_cooldown days = time_traveler_days }
+	set_temp_variable = { time_traveler_chance = constant:time_traveler_government_cost.watch_public_chance }
+	time_traveler_resolve_chance = yes
+	if = {
+		limit = { check_variable = { time_traveler_success = constant:time_traveler_value.one } }
+		set_temp_variable = { time_traveler_amount = constant:time_traveler_government_cost.watch_public_exposure }
+		set_temp_variable = { time_traveler_cause = constant:time_traveler_cause_id.leak }
+		time_traveler_raise_exposure = yes
+		time_traveler_check_revelation = yes
+	}
+	time_traveler_refresh_costs = yes
+}
+
+# COUNTRY (leader). Restrict future offenders. The strategic risk falls and
+# stability pays for it. When the program becomes public it joins the shared
+# condemnation record and moves Chaos once. Detainees are held in ordinary
+# custody: the camp intake of the shared camp owner is not called.
+time_traveler_do_restrict = {
+	time_traveler_pay_restrict = yes
+	add_stability = constant:time_traveler_government_cost.restrict_stability
+	set_temp_variable = { time_traveler_days = constant:time_traveler_government_cost.posture_days }
+	add_timed_idea = { idea = time_traveler_preventive_order days = time_traveler_days }
+	set_temp_variable = { time_traveler_days = constant:time_traveler_government_cost.restrict_cooldown_days }
+	set_country_flag = { flag = time_traveler_restrict_cooldown days = time_traveler_days }
+	set_temp_variable = { time_traveler_chance = constant:time_traveler_government_cost.restrict_public_chance }
+	time_traveler_resolve_chance = yes
+	if = {
+		limit = { check_variable = { time_traveler_success = constant:time_traveler_value.one } }
+		set_temp_variable = { condemnation_source_type = constant:condemnation_source.atrocity }
+		set_temp_variable = { condemnation_base_gain = constant:time_traveler_government_cost.condemnation_detention }
+		set_temp_variable = { condemnation_visibility_type = constant:condemnation_visibility.public }
+		set_temp_variable = { condemnation_severity_type = constant:condemnation_severity.combat }
+		condemnation_add_source = yes
+		set_temp_variable = { time_traveler_amount = constant:time_traveler_government_cost.restrict_public_exposure }
+		set_temp_variable = { time_traveler_cause = constant:time_traveler_cause_id.leak }
+		time_traveler_raise_exposure = yes
+		time_traveler_check_revelation = yes
+		time_traveler_chaos_detention = yes
+	}
+	time_traveler_refresh_costs = yes
+}
+
+# COUNTRY (leader). Build the successful institution: one remembered model
+# becomes a permanent state institution.
+time_traveler_do_build = {
+	time_traveler_pay_build = yes
+	if = {
+		limit = { NOT = { has_idea = time_traveler_state_institution } }
+		add_ideas = time_traveler_state_institution
+	}
+	set_temp_variable = { time_traveler_amount = constant:time_traveler_ambition_divergence.institution }
+	set_temp_variable = { time_traveler_cause = constant:time_traveler_cause_id.consultation_success }
+	time_traveler_raise_divergence = yes
+	time_traveler_refresh_costs = yes
+}
+
+# COUNTRY (leader). Suppress the failed institution: a reform that the officials
+# who depend on it resist.
+time_traveler_do_suppress = {
+	time_traveler_pay_suppress = yes
+	add_stability = constant:time_traveler_government_cost.suppress_stability
+	set_temp_variable = { time_traveler_days = constant:time_traveler_government_cost.posture_days }
+	add_timed_idea = { idea = time_traveler_retained_efficiency days = time_traveler_days }
+	set_temp_variable = { time_traveler_days = constant:time_traveler_government_cost.suppress_cooldown_days }
+	set_country_flag = { flag = time_traveler_suppress_cooldown days = time_traveler_days }
+	subtract_from_variable = { time_traveler_bloc_security = constant:time_traveler_ambition_value.suppress_security_drop }
+	time_traveler_clamp_blocs = yes
+	time_traveler_refresh_costs = yes
+}
+
+# ---------------------------------------------------------------------------
+# Reappearance
+# ---------------------------------------------------------------------------
+
+# COUNTRY (the former custodian), called by chaosx.nr30.150. One of three
+# explanations is chosen once and saved. The traveler returns to the former
+# custodian or, when a foreign service had hidden him, to a member of the
+# registry.
+time_traveler_reappear = {
+	clr_global_flag = time_traveler_reappearance_open
+	set_temp_variable_to_random = { var = time_traveler_explanation_roll min = constant:time_traveler_value.zero max = constant:time_traveler_value.three integer = yes }
+	set_variable = { global.time_traveler_explanation = time_traveler_explanation_roll }
+	save_event_target_as = time_traveler_ambition_host
+	set_variable = { global.time_traveler_status = constant:time_traveler_status.choosing_access }
+	set_country_flag = time_traveler_custodian
+	set_country_flag = time_traveler_transferred_in
+	set_variable = { global.time_traveler_custodian = THIS }
+	set_variable = { time_traveler_arrangement = constant:time_traveler_arrangement.none }
+	set_variable = { time_traveler_stage = constant:time_traveler_stage.unverified }
+	set_variable = { time_traveler_c_kind = constant:time_traveler_kind.none }
+	if = {
+		limit = { NOT = { has_variable = time_traveler_credibility } }
+		set_variable = { time_traveler_credibility = constant:time_traveler_credibility.transfer_negotiated }
+	}
+	time_traveler_apply_spirit = yes
+	time_traveler_select_arrival_state = yes
+	time_traveler_refresh_costs = yes
+	time_traveler_rebuild_interest_registry = yes
+	country_event = { id = chaosx.nr30.151 days = constant:time_traveler_timing.report_delay_days }
+	country_event = { id = chaosx.nr30.13 days = constant:time_traveler_timing.report_delay_days }
+}
+
+# COUNTRY (custodian). Amnesty after a lawful defeat: the movement is
+# reintegrated, the officials who followed him are not pursued and the traveler
+# stays as an adviser under stricter terms.
+time_traveler_route_amnesty = {
+	subtract_from_variable = { time_traveler_bloc_government = constant:time_traveler_ambition_value.arrest_bloc_drop }
+	subtract_from_variable = { time_traveler_bloc_security = constant:time_traveler_ambition_value.arrest_bloc_drop }
+	time_traveler_clamp_blocs = yes
+	set_temp_variable = { time_traveler_amount = constant:time_traveler_ambition_value.amnesty_credibility }
+	set_temp_variable = { time_traveler_cause = constant:time_traveler_cause_id.arrangement }
+	time_traveler_raise_credibility = yes
+	time_traveler_chaos_reintegration = yes
+	set_temp_variable = { time_traveler_outcome_id = constant:time_traveler_ambition_outcome.amnesty }
+	time_traveler_finish_ambition = yes
+}
+
+# COUNTRY (leader). Change the remembered war: an early deterrent or a
+# mobilization. Both move the timeline and raise world tension. No war goal is
+# granted.
+time_traveler_do_deterrent = {
+	set_temp_variable = { time_traveler_days = constant:time_traveler_government_cost.posture_days }
+	add_timed_idea = { idea = time_traveler_deterrent_posture days = time_traveler_days }
+	time_traveler_after_change_war = yes
+}
+
+time_traveler_do_mobilization = {
+	set_temp_variable = { time_traveler_days = constant:time_traveler_government_cost.posture_days }
+	add_timed_idea = { idea = time_traveler_mobilization_posture days = time_traveler_days }
+	time_traveler_after_change_war = yes
+}
+
+time_traveler_after_change_war = {
+	add_named_threat = { threat = constant:time_traveler_government_cost.deterrent_threat name = time_traveler_prevention_threat }
+	set_temp_variable = { time_traveler_amount = constant:time_traveler_ambition_divergence.change_war }
+	set_temp_variable = { time_traveler_cause = constant:time_traveler_cause_id.remembered_war }
+	time_traveler_raise_divergence = yes
+	set_temp_variable = { time_traveler_days = constant:time_traveler_government_cost.change_war_cooldown_days }
+	set_country_flag = { flag = time_traveler_change_war_cooldown days = time_traveler_days }
+}
+
+# COUNTRY (custodian). The government ignored successful advice too often and
+# the charter lapses. The crisis opens again.
+time_traveler_break_charter = {
+	clr_country_flag = time_traveler_charter
+	if = {
+		limit = { has_idea = time_traveler_bound_charter }
+		remove_ideas = time_traveler_bound_charter
+	}
+	set_variable = { time_traveler_charter_strikes = constant:time_traveler_value.zero }
+	set_variable = { global.time_traveler_ambition = constant:time_traveler_ambition_state.crisis }
+	country_event = { id = chaosx.nr30.101 days = constant:time_traveler_ambition_value.escalation_days }
+}

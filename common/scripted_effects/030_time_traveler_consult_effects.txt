@@ -714,6 +714,7 @@ time_traveler_consultation_succeeded = {
 		time_traveler_consultation_divergence = yes
 		add_to_variable = { time_traveler_consults = constant:time_traveler_value.one }
 		add_to_variable = { time_traveler_shareable = constant:time_traveler_value.one }
+		time_traveler_blocs_from_consultation = yes
 		if = {
 			limit = {
 				check_variable = { time_traveler_stage = constant:time_traveler_stage.directed }
@@ -804,6 +805,17 @@ time_traveler_consultation_failed = {
 	if = {
 		limit = { time_traveler_is_custodian = yes }
 		time_traveler_lower_credibility = yes
+		if = {
+			limit = {
+				time_traveler_charter_is_active = yes
+				check_variable = { time_traveler_c_failure = constant:time_traveler_failure.ignored }
+			}
+			add_to_variable = { time_traveler_charter_strikes = constant:time_traveler_value.one }
+			if = {
+				limit = { NOT = { check_variable = { time_traveler_charter_strikes < constant:time_traveler_ambition_value.strikes_limit } } }
+				time_traveler_break_charter = yes
+			}
+		}
 	}
 	country_event = { id = chaosx.nr30.24 days = constant:time_traveler_timing.report_delay_days }
 	time_traveler_close_consultation = yes

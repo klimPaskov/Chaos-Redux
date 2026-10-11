@@ -129,3 +129,35 @@ time_traveler_ai_family_domestic = {
 	modifier = { add = constant:time_traveler_ai.strong has_stability < constant:time_traveler_ai.stability_low }
 	modifier = { add = constant:time_traveler_ai.standard time_traveler_family_is_strong_domestic = yes }
 }
+
+# Days between the Chaos gate and the arrival of the next historical figure (host
+# scope). A timeline that still matches the traveler's memory slows it, a broken
+# one speeds it up, and so do a public traveler, a lost traveler and several
+# foreign copies of his knowledge.
+time_traveler_figure_delay = {
+	base = constant:time_traveler_figure_value.base_days
+	modifier = { factor = constant:time_traveler_interval.slow_factor time_traveler_divergence_is_recognizable = yes }
+	modifier = { factor = constant:time_traveler_interval.fast_factor time_traveler_divergence_is_broken = yes }
+	modifier = { factor = constant:time_traveler_interval.fast_factor has_global_flag = time_traveler_public_floor }
+	modifier = { factor = constant:time_traveler_interval.fast_factor check_variable = { global.time_traveler_status = constant:time_traveler_status.missing } }
+	modifier = { factor = constant:time_traveler_interval.fast_factor NOT = { check_variable = { global.time_traveler_fragments < constant:time_traveler_value.two } } }
+}
+
+# ---------------------------------------------------------------------------
+# Evolution I pacing (custodian scope)
+# ---------------------------------------------------------------------------
+
+# Days between the Chaos gate and the opening of the ambition crisis. Public
+# standing, broad access, an unsettled government and repeated successes speed
+# it up. Confinement and doubt slow it down.
+time_traveler_ambition_delay = {
+	base = constant:time_traveler_ambition_value.base_days
+	modifier = { factor = constant:time_traveler_interval.fast_factor time_traveler_credibility_is_indispensable = yes }
+	modifier = { factor = constant:time_traveler_interval.fast_factor time_traveler_arrangement_is_cabinet = yes }
+	modifier = { factor = constant:time_traveler_interval.fast_factor time_traveler_arrangement_is_public = yes }
+	modifier = { factor = constant:time_traveler_interval.fast_factor has_stability < constant:time_traveler_ai.stability_low }
+	modifier = { factor = constant:time_traveler_interval.fast_factor NOT = { check_variable = { time_traveler_consults < constant:time_traveler_consultation.stage_distributed_count } } }
+	modifier = { factor = constant:time_traveler_interval.fast_factor has_country_flag = time_traveler_forgery_acted }
+	modifier = { factor = constant:time_traveler_interval.slow_factor time_traveler_arrangement_is_confinement = yes }
+	modifier = { factor = constant:time_traveler_interval.slow_factor time_traveler_credibility_is_doubted = yes }
+}

@@ -1,0 +1,412 @@
+add_namespace = chaosx.nr30
+
+# ============================================================================
+# CHAOS REDUX - EVENT 030 TIME TRAVELER EVOLUTIONS
+# ============================================================================
+# Evolution I, The Traveler's Ambition (stage 1, Chaos 200 and above):
+#   .100 hidden pacing tick     .101 the crisis and its routes
+#   .102 resolution report      .106 emergency authority ends
+#   .110 attempted removal      .111 coup or revolt
+#   .121 defeat, what follows   .130 changing the remembered war
+#   .150 hidden reappearance    .151 the reappearance report
+# Evolution II, The Door to the Past (stage 2, Chaos 400 and above) follows in
+# the same file.
+# The support blocs behind the routes are hidden. The text shows the situation,
+# never a number.
+# ============================================================================
+
+# Hidden pacing tick on the custodian. It runs until the crisis opens.
+country_event = {
+	id = chaosx.nr30.100
+	title = chaosx.nr30.100.t
+
+	hidden = yes
+	is_triggered_only = yes
+
+	immediate = {
+		if = {
+			limit = {
+				time_traveler_has_direct_access = yes
+				NOT = { check_variable = { global.time_traveler_ambition > constant:time_traveler_ambition_state.pending } }
+			}
+			time_traveler_try_ambition = yes
+		}
+		else = {
+			clr_country_flag = time_traveler_ambition_chain
+		}
+	}
+}
+
+# The crisis. The wording follows the arrangement and the routes follow what the
+# host can actually do.
+country_event = {
+	id = chaosx.nr30.101
+	title = chaosx.nr30.101.t
+	desc = {
+		trigger = { time_traveler_arrangement_is_secret = yes }
+		text = chaosx.nr30.101.d_secret
+	}
+	desc = {
+		trigger = { time_traveler_arrangement_is_confinement = yes }
+		text = chaosx.nr30.101.d_confinement
+	}
+	desc = {
+		trigger = { time_traveler_arrangement_is_public = yes }
+		text = chaosx.nr30.101.d_public
+	}
+	desc = {
+		text = chaosx.nr30.101.d_cabinet
+	}
+	picture = GFX_report_event_generic_parliament
+
+	is_triggered_only = yes
+	trigger = {
+		time_traveler_has_direct_access = yes
+		time_traveler_ambition_is_open = yes
+	}
+
+	option = {
+		name = chaosx.nr30.101.charter
+		ai_chance = {
+			base = 30
+			modifier = { add = 20 has_government = democratic has_war = no }
+			modifier = { add = 15 has_stability < constant:time_traveler_ai.stability_low }
+		}
+		custom_effect_tooltip = chaosx.nr30.101.charter_tt
+		hidden_effect = { time_traveler_route_charter = yes }
+	}
+	option = {
+		name = chaosx.nr30.101.emergency
+		ai_chance = {
+			base = 15
+			modifier = { add = 25 has_war = yes }
+		}
+		custom_effect_tooltip = chaosx.nr30.101.emergency_tt
+		hidden_effect = { time_traveler_route_emergency = yes }
+	}
+	option = {
+		name = chaosx.nr30.101.appoint
+		ai_chance = {
+			base = 5
+			modifier = { add = 25 time_traveler_government_bloc_is_strong = yes }
+		}
+		custom_effect_tooltip = chaosx.nr30.101.appoint_tt
+		hidden_effect = { time_traveler_route_appoint = yes }
+	}
+	option = {
+		name = chaosx.nr30.101.contest
+		trigger = { time_traveler_contest_is_possible = yes }
+		ai_chance = {
+			base = 5
+			modifier = { add = 20 time_traveler_government_bloc_is_strong = yes }
+		}
+		custom_effect_tooltip = chaosx.nr30.101.contest_tt
+		hidden_effect = { time_traveler_route_contest = yes }
+	}
+	option = {
+		name = chaosx.nr30.101.arrest
+		trigger = { time_traveler_arrest_is_possible = yes }
+		ai_chance = {
+			base = 5
+			modifier = { add = 25 has_stability < constant:time_traveler_ai.stability_low }
+			modifier = { add = 15 has_government = fascism }
+		}
+		custom_effect_tooltip = chaosx.nr30.101.arrest_tt
+		hidden_effect = { time_traveler_route_arrest = yes }
+	}
+	option = {
+		name = chaosx.nr30.101.exile
+		ai_chance = {
+			base = 12
+			modifier = { add = 10 has_war = yes }
+		}
+		custom_effect_tooltip = chaosx.nr30.101.exile_tt
+		hidden_effect = { time_traveler_route_exile = yes }
+	}
+	option = {
+		name = chaosx.nr30.101.transfer
+		trigger = { time_traveler_has_transfer_partner = yes }
+		ai_chance = { base = 10 }
+		custom_effect_tooltip = chaosx.nr30.101.transfer_tt
+		hidden_effect = { time_traveler_route_transfer = yes }
+	}
+	option = {
+		name = chaosx.nr30.101.remove
+		ai_chance = {
+			base = 1
+			modifier = { add = 6 has_government = fascism has_stability < constant:time_traveler_ai.stability_low }
+		}
+		custom_effect_tooltip = chaosx.nr30.101.remove_tt
+		hidden_effect = { time_traveler_route_remove = yes }
+	}
+}
+
+# What the crisis led to.
+country_event = {
+	id = chaosx.nr30.102
+	title = chaosx.nr30.102.t
+	desc = {
+		trigger = { check_variable = { global.time_traveler_ambition_outcome = constant:time_traveler_ambition_outcome.charter } }
+		text = chaosx.nr30.102.d_charter
+	}
+	desc = {
+		trigger = { check_variable = { global.time_traveler_ambition_outcome = constant:time_traveler_ambition_outcome.emergency_success } }
+		text = chaosx.nr30.102.d_emergency
+	}
+	desc = {
+		trigger = { check_variable = { global.time_traveler_ambition_outcome = constant:time_traveler_ambition_outcome.appointed } }
+		text = chaosx.nr30.102.d_appointed
+	}
+	desc = {
+		trigger = { check_variable = { global.time_traveler_ambition_outcome = constant:time_traveler_ambition_outcome.contest_won } }
+		text = chaosx.nr30.102.d_contest
+	}
+	desc = {
+		trigger = { check_variable = { global.time_traveler_ambition_outcome = constant:time_traveler_ambition_outcome.arrested } }
+		text = chaosx.nr30.102.d_arrested
+	}
+	desc = {
+		trigger = { check_variable = { global.time_traveler_ambition_outcome = constant:time_traveler_ambition_outcome.exiled } }
+		text = chaosx.nr30.102.d_exiled
+	}
+	desc = {
+		trigger = { check_variable = { global.time_traveler_ambition_outcome = constant:time_traveler_ambition_outcome.transferred } }
+		text = chaosx.nr30.102.d_transferred
+	}
+	desc = {
+		trigger = { check_variable = { global.time_traveler_ambition_outcome = constant:time_traveler_ambition_outcome.conceded } }
+		text = chaosx.nr30.102.d_conceded
+	}
+	desc = {
+		text = chaosx.nr30.102.d_amnesty
+	}
+	picture = GFX_report_event_generic_parliament
+
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx.nr30.102.a
+		ai_chance = { base = 100 }
+	}
+}
+
+# The emergency authority ends.
+country_event = {
+	id = chaosx.nr30.106
+	title = chaosx.nr30.106.t
+	desc = {
+		trigger = { has_stability > constant:time_traveler_ambition_value.emergency_success_stability }
+		text = chaosx.nr30.106.d_success
+	}
+	desc = {
+		text = chaosx.nr30.106.d_failure
+	}
+	picture = GFX_report_event_generic_conference
+
+	is_triggered_only = yes
+	trigger = { has_country_flag = time_traveler_emergency_authority }
+
+	option = {
+		name = chaosx.nr30.106.a
+		ai_chance = { base = 100 }
+		custom_effect_tooltip = chaosx.nr30.106.a_tt
+		hidden_effect = { time_traveler_emergency_ends = yes }
+	}
+}
+
+# An attempted removal: the cabinet refused or the authority failed and the
+# supporters move.
+country_event = {
+	id = chaosx.nr30.110
+	title = chaosx.nr30.110.t
+	desc = {
+		trigger = { has_country_flag = time_traveler_cabinet_refused }
+		text = chaosx.nr30.110.d_refused
+	}
+	desc = {
+		text = chaosx.nr30.110.d_failed
+	}
+	picture = GFX_report_event_generic_riot
+
+	is_triggered_only = yes
+	trigger = { time_traveler_has_direct_access = yes }
+
+	immediate = { hidden_effect = { clr_country_flag = time_traveler_cabinet_refused } }
+
+	option = {
+		name = chaosx.nr30.110.concede
+		ai_chance = {
+			base = 20
+			modifier = { add = 25 time_traveler_security_can_coup = yes }
+		}
+		custom_effect_tooltip = chaosx.nr30.110.concede_tt
+		hidden_effect = {
+			set_temp_variable = { time_traveler_leader_route_id = constant:time_traveler_leader_route.conceded }
+			time_traveler_become_leader = yes
+		}
+	}
+	option = {
+		name = chaosx.nr30.110.arrest
+		trigger = { time_traveler_arrest_is_possible = yes }
+		ai_chance = {
+			base = 30
+			modifier = { factor = 0.3 time_traveler_security_can_coup = yes }
+		}
+		custom_effect_tooltip = chaosx.nr30.101.arrest_tt
+		hidden_effect = { time_traveler_route_arrest = yes }
+	}
+	option = {
+		name = chaosx.nr30.110.charter
+		ai_chance = { base = 35 }
+		custom_effect_tooltip = chaosx.nr30.101.charter_tt
+		hidden_effect = {
+			set_temp_variable = { time_traveler_amount = constant:time_traveler_ambition_value.charter_failure_credibility }
+			set_temp_variable = { time_traveler_cause = constant:time_traveler_cause_id.arrangement }
+			time_traveler_lower_credibility = yes
+			time_traveler_route_charter = yes
+		}
+	}
+}
+
+# Coup or revolt. The officers act and the report shows how it ended.
+country_event = {
+	id = chaosx.nr30.111
+	title = chaosx.nr30.111.t
+	desc = {
+		trigger = { check_variable = { time_traveler_coup_result = constant:time_traveler_ambition_outcome.civil_war } }
+		text = chaosx.nr30.111.d_civil_war
+	}
+	desc = {
+		trigger = { check_variable = { time_traveler_coup_result = constant:time_traveler_ambition_outcome.coup_won } }
+		text = chaosx.nr30.111.d_won
+	}
+	desc = {
+		text = chaosx.nr30.111.d_failed
+	}
+	picture = GFX_report_event_generic_riot
+
+	is_triggered_only = yes
+	trigger = { time_traveler_ambition_is_open = yes }
+
+	immediate = { hidden_effect = { time_traveler_resolve_coup = yes } }
+
+	option = {
+		name = chaosx.nr30.111.a
+		ai_chance = { base = 100 }
+	}
+}
+
+# Defeat: what is to become of him.
+country_event = {
+	id = chaosx.nr30.121
+	title = chaosx.nr30.121.t
+	desc = chaosx.nr30.121.d
+	picture = GFX_report_event_generic_parliament
+
+	is_triggered_only = yes
+	trigger = { time_traveler_has_direct_access = yes }
+
+	option = {
+		name = chaosx.nr30.121.imprison
+		trigger = { time_traveler_arrest_is_possible = yes }
+		ai_chance = { base = 20 modifier = { add = 20 has_government = fascism } }
+		custom_effect_tooltip = chaosx.nr30.121.imprison_tt
+		hidden_effect = { time_traveler_arrest_succeeds = yes }
+	}
+	option = {
+		name = chaosx.nr30.121.advisory
+		ai_chance = { base = 30 }
+		custom_effect_tooltip = chaosx.nr30.101.charter_tt
+		hidden_effect = { time_traveler_route_charter = yes }
+	}
+	option = {
+		name = chaosx.nr30.121.exile
+		ai_chance = { base = 20 }
+		custom_effect_tooltip = chaosx.nr30.101.exile_tt
+		hidden_effect = { time_traveler_route_exile = yes }
+	}
+	option = {
+		name = chaosx.nr30.121.amnesty
+		ai_chance = { base = 30 modifier = { add = 20 has_government = democratic } }
+		custom_effect_tooltip = chaosx.nr30.121.amnesty_tt
+		hidden_effect = { time_traveler_route_amnesty = yes }
+	}
+	option = {
+		name = chaosx.nr30.121.remove
+		ai_chance = { base = 1 }
+		custom_effect_tooltip = chaosx.nr30.101.remove_tt
+		hidden_effect = { time_traveler_route_remove = yes }
+	}
+}
+
+# Changing the remembered war.
+country_event = {
+	id = chaosx.nr30.130
+	title = chaosx.nr30.130.t
+	desc = chaosx.nr30.130.d
+	picture = GFX_report_event_generic_army
+
+	is_triggered_only = yes
+	trigger = { time_traveler_is_leader = yes }
+
+	option = {
+		name = chaosx.nr30.130.cancel
+		ai_chance = { base = 0 }
+	}
+	option = {
+		name = chaosx.nr30.130.deterrent
+		ai_chance = { base = 60 }
+		custom_effect_tooltip = chaosx.nr30.130.deterrent_tt
+		hidden_effect = { time_traveler_do_deterrent = yes }
+	}
+	option = {
+		name = chaosx.nr30.130.mobilize
+		ai_chance = { base = 40 modifier = { add = 30 has_war = yes } }
+		custom_effect_tooltip = chaosx.nr30.130.mobilize_tt
+		hidden_effect = { time_traveler_do_mobilization = yes }
+	}
+}
+
+# Hidden reappearance of an exiled traveler.
+country_event = {
+	id = chaosx.nr30.150
+	title = chaosx.nr30.150.t
+
+	hidden = yes
+	is_triggered_only = yes
+
+	immediate = {
+		if = {
+			limit = {
+				has_global_flag = time_traveler_reappearance_open
+				exists = yes
+				check_variable = { global.time_traveler_status = constant:time_traveler_status.missing }
+			}
+			time_traveler_reappear = yes
+		}
+	}
+}
+
+country_event = {
+	id = chaosx.nr30.151
+	title = chaosx.nr30.151.t
+	desc = {
+		trigger = { check_variable = { global.time_traveler_explanation = constant:time_traveler_value.zero } }
+		text = chaosx.nr30.151.d_portal
+	}
+	desc = {
+		trigger = { check_variable = { global.time_traveler_explanation = constant:time_traveler_value.one } }
+		text = chaosx.nr30.151.d_service
+	}
+	desc = {
+		text = chaosx.nr30.151.d_staged
+	}
+	picture = GFX_report_event_030_time_traveler_baseline_arrival
+
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx.nr30.151.a
+		ai_chance = { base = 100 }
+	}
+}

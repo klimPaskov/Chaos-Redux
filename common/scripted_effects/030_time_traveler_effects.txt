@@ -175,6 +175,8 @@ time_traveler_begin = {
 	set_variable = { global.time_traveler_custodian = THIS }
 	set_variable = { global.time_traveler_divergence = constant:time_traveler_value.zero }
 	set_variable = { global.time_traveler_outcome = constant:time_traveler_outcome.none }
+	set_variable = { global.time_traveler_ambition = constant:time_traveler_ambition_state.none }
+	set_variable = { global.time_traveler_ambition_outcome = constant:time_traveler_ambition_outcome.none }
 	set_variable = { global.time_traveler_proofs = constant:time_traveler_value.zero }
 	set_global_flag = time_traveler_appeared
 	set_variable = { global.time_traveler_arrival_day = global.num_days }
@@ -187,7 +189,19 @@ time_traveler_begin = {
 	set_variable = { time_traveler_consults = constant:time_traveler_value.zero }
 	set_variable = { time_traveler_shareable = constant:time_traveler_value.zero }
 	set_variable = { time_traveler_c_kind = constant:time_traveler_kind.none }
+	set_variable = { time_traveler_bloc_government = constant:time_traveler_value.zero }
+	set_variable = { time_traveler_bloc_security = constant:time_traveler_value.zero }
+	set_variable = { time_traveler_bloc_technocrats = constant:time_traveler_value.zero }
 	time_traveler_pick_profile = yes
+	time_traveler_figure_init_arrays = yes
+	if = {
+		limit = { FRA = { exists = yes } }
+		FRA = { time_traveler_start_figure_chain = yes }
+	}
+	if = {
+		limit = { GER = { exists = yes } }
+		GER = { time_traveler_start_figure_chain = yes }
+	}
 	time_traveler_select_arrival_state = yes
 	time_traveler_refresh_costs = yes
 	if = {
@@ -394,6 +408,7 @@ time_traveler_refresh_costs = {
 	set_variable = { time_traveler_cost_share_political = constant:time_traveler_cost.share_political }
 	multiply_variable = { time_traveler_cost_share_political = time_traveler_scale }
 	round_variable = time_traveler_cost_share_political
+	time_traveler_refresh_government_costs = yes
 }
 
 # COUNTRY (an interested country). The foreign operations cost the rival's own

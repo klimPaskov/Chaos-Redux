@@ -742,6 +742,326 @@ time_traveler_tech = {
 }
 
 # Event-owned Chaos milestones. Each fires once per campaign.
+# ============================================================================
+# Evolutions
+# ============================================================================
+# Evolution I, The Traveler's Ambition (stage 1, Chaos 200 and above) and
+# Evolution II, The Door to the Past (stage 2, Chaos 400 and above) share one
+# evolution type. Evolution state gives zero Chaos.
+
+time_traveler_evolution = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	stage_1 = 1
+	stage_2 = 2
+	tier_1 = 1
+	tier_2 = 2
+}
+
+time_traveler_ambition_state = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	none = 0
+	pending = 1
+	crisis = 2
+	resolved = 3
+	closed = 4
+}
+
+time_traveler_ambition_outcome = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	none = 0
+	charter = 1
+	emergency_success = 2
+	emergency_failed = 3
+	appointed = 4
+	contest_won = 5
+	contest_lost = 6
+	arrested = 7
+	exiled = 8
+	transferred = 9
+	removed = 10
+	removal_failed = 11
+	coup_won = 12
+	coup_failed = 13
+	civil_war = 14
+	conceded = 15
+	amnesty = 16
+}
+
+# How the traveler came to lead the country.
+time_traveler_leader_route = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	appointed = 1
+	contest = 2
+	conceded = 3
+	coup = 4
+}
+
+time_traveler_ambition_value = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	check_days = 30
+	base_days = 105
+	escalation_days = 3
+	reappearance_days = 300
+	emergency_days = 180
+	emergency_success_stability = 0.5
+	strikes_limit = 2
+	# Hidden bloc seeds: Government, Security, Technocrats per arrangement.
+	seed_cabinet_government = 60
+	seed_cabinet_security = 25
+	seed_cabinet_technocrats = 40
+	seed_secret_government = 25
+	seed_secret_security = 60
+	seed_secret_technocrats = 30
+	seed_confinement_government = 15
+	seed_confinement_security = 15
+	seed_confinement_technocrats = 15
+	seed_public_government = 55
+	seed_public_security = 20
+	seed_public_technocrats = 55
+	# What a successful consultation does to the blocs.
+	bloc_gain_military = 8
+	bloc_gain_industrial = 8
+	bloc_gain_scientific = 8
+	bloc_gain_diplomatic = 8
+	bloc_gain_counterintelligence = 6
+	bloc_gain_domestic = 6
+	bloc_max = 100
+	appoint_government_min = 50
+	appoint_other_min = 40
+	coup_security_min = 60
+	civil_war_security_min = 75
+	civil_war_government_max = 40
+	civil_war_states_min = 8
+	civil_war_size = 0.4
+	contest_minimum = 5
+	contest_maximum = 90
+	arrest_floor = 20
+	arrest_ceiling = 80
+	arrest_bloc_drop = 20
+	arrest_sponsor_chance = 40
+	arrest_credibility_loss = 10
+	removal_base = 45
+	removal_security_share = 0.25
+	charter_government_gain = 10
+	charter_security_drop = 10
+	emergency_technocrats_gain = 8
+	emergency_security_gain = 15
+	removal_failed_security_gain = 10
+	suppress_security_drop = 10
+	coup_stability = -0.15
+	coup_war_support = -0.1
+	removal_failed_stability = -0.05
+	charter_failure_credibility = 6
+	emergency_failure_credibility = 8
+	emergency_success_credibility = 9
+	amnesty_credibility = 4
+	removal_failed_credibility = 6
+}
+
+time_traveler_ambition_divergence = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	emergency = 5
+	leader = 6
+	change_war = 4
+	institution = 3
+}
+
+time_traveler_government_cost = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	watch_command = 25
+	watch_support = 40
+	restrict_political = 80
+	restrict_command = 30
+	restrict_manpower_k = 10
+	build_political = 100
+	build_support = 60
+	suppress_political = 90
+	watch_cooldown_days = 120
+	restrict_cooldown_days = 180
+	suppress_cooldown_days = 150
+	change_war_cooldown_days = 150
+	watch_public_chance = 25
+	restrict_public_chance = 40
+	watch_public_exposure = 4
+	restrict_public_exposure = 8
+	restrict_stability = -0.03
+	suppress_stability = -0.04
+	posture_days = 180
+	deterrent_threat = 3
+	condemnation_detention = 6
+}
+
+time_traveler_chaos_ambition = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	leader_peaceful = 6
+	coup_failed = 4
+	civil_war = 12
+	detention_public = 5
+	charter = -3
+	reintegration = -2
+}
+
+# ============================================================================
+# Evolution II, The Door to the Past
+# ============================================================================
+# Three curated historical figures share one scaffold of arrival and
+# authenticity, custody, movement and power, resolution. Figure state lives in
+# global arrays indexed by the figure id (index 0 is unused):
+# time_traveler_fig_state, _support, _outcome, _route.
+
+time_traveler_figure = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	none = 0
+	napoleon = 1
+	joan = 2
+	frederick = 3
+	count = 3
+	array_size = 4
+	# Event ids are 200 plus ten times the figure id plus the stage.
+	event_base = 200
+	event_step = 10
+	stage_arrival = 1
+	stage_custody = 2
+	stage_power = 3
+	stage_resolution = 4
+}
+
+time_traveler_figure_state = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	unused = 0
+	arrived = 1
+	verified = 2
+	movement = 3
+	resolved = 4
+}
+
+time_traveler_figure_route = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	adviser = 1
+	symbol = 2
+	office = 3
+	suppress = 4
+	exile = 5
+	claim = 6
+}
+
+time_traveler_figure_outcome = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	none = 0
+	integrated = 1
+	symbol = 2
+	office = 3
+	imprisoned = 4
+	exiled = 5
+	revolt = 6
+	civil_war = 7
+	died = 8
+}
+
+time_traveler_figure_value = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	check_days = 30
+	base_days = 135
+	active_cap = 3
+	support_seed = 30
+	support_max = 100
+	test_language = 5
+	test_archive = 8
+	test_veterans = 12
+	custody_protect = 5
+	custody_public = 20
+	custody_detain = 5
+	custody_consult = 10
+	custody_exposure = 8
+	custody_stability = -0.02
+	office_min = 55
+	low_edge = 30
+	high_edge = 60
+	napoleon_revolt_min = 45
+	napoleon_war_min = 70
+	joan_revolt_min = 60
+	joan_war_min = 85
+	frederick_revolt_min = 50
+	frederick_war_min = 75
+	revolt_size = 0.15
+	war_size = 0.4
+	custody_death_chance = 25
+	martyr_support = 15
+	suppress_support_drop = 10
+	movement_days = 365
+	resolution_delay_days = 3
+	claim_delay_days = 5
+	arrival_divergence = 2
+	office_divergence = 6
+	adviser_divergence = 2
+	exposure_rise = 6
+	adviser_xp = 15
+	symbol_stability = 0.03
+}
+
+time_traveler_chaos_figure = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	restoration = 4
+	claimant_settled = -2
+	figure_war = 8
+}
+
 time_traveler_chaos = {
 	schema = {
 		any_key = yes

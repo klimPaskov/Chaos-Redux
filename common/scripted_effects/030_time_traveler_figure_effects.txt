@@ -1,0 +1,687 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 030 TIME TRAVELER EVOLUTION II EFFECTS
+# ============================================================================
+# Evolution II, The Door to the Past. Three curated historical figures arrive
+# in the modern world: Napoleon Bonaparte and Joan of Arc in France, Frederick
+# the Great in Germany. Every package follows one scaffold:
+#   arrival and authenticity -> custody -> movement and power -> resolution
+# with one event per stage and figure (ids 200 + 10 x figure + stage, written
+# by the generator of the figure events). The state of a package lives in global
+# arrays indexed by the figure id: time_traveler_fig_state, _support (the hidden
+# strength of the movement, 0 to 100), _outcome and _route.
+# Scope is the host country and the temp variable time_traveler_fig names the
+# figure. Real-person rules: one character token per figure, never cloned, no
+# portrait wired (the portrait workflow owns the art), a resolved figure cannot
+# arrive again.
+# Pacing: a self-rescheduling hidden tick on the host tags (FRA and GER only,
+# chaosx.nr30.200). No world scan and no on_action.
+# ============================================================================
+
+# ---------------------------------------------------------------------------
+# State
+# ---------------------------------------------------------------------------
+
+# ANY scope. Prepares the four arrays (index 0 is unused).
+time_traveler_figure_init_arrays = {
+	clear_array = global.time_traveler_fig_state
+	clear_array = global.time_traveler_fig_support
+	clear_array = global.time_traveler_fig_outcome
+	clear_array = global.time_traveler_fig_route
+	for_loop_effect = {
+		start = 0
+		end = constant:time_traveler_figure.array_size
+		add_to_array = { global.time_traveler_fig_state = 0 }
+		add_to_array = { global.time_traveler_fig_support = 0 }
+		add_to_array = { global.time_traveler_fig_outcome = 0 }
+		add_to_array = { global.time_traveler_fig_route = 0 }
+	}
+	set_variable = { global.time_traveler_figures_active = constant:time_traveler_value.zero }
+	set_variable = { global.time_traveler_figures_peaceful = constant:time_traveler_value.zero }
+}
+
+# ANY scope. Inputs: temp time_traveler_fig, time_traveler_amount (positive).
+time_traveler_figure_raise_support = {
+	set_temp_variable = { time_traveler_support_now = global.time_traveler_fig_support^time_traveler_fig }
+	add_to_temp_variable = { time_traveler_support_now = time_traveler_amount }
+	clamp_temp_variable = { var = time_traveler_support_now min = constant:time_traveler_value.zero max = constant:time_traveler_figure_value.support_max }
+	set_variable = { global.time_traveler_fig_support^time_traveler_fig = time_traveler_support_now }
+}
+
+time_traveler_figure_lower_support = {
+	set_temp_variable = { time_traveler_support_now = global.time_traveler_fig_support^time_traveler_fig }
+	subtract_from_temp_variable = { time_traveler_support_now = time_traveler_amount }
+	clamp_temp_variable = { var = time_traveler_support_now min = constant:time_traveler_value.zero max = constant:time_traveler_figure_value.support_max }
+	set_variable = { global.time_traveler_fig_support^time_traveler_fig = time_traveler_support_now }
+}
+
+# HOST. Inputs: temp time_traveler_fig, time_traveler_fig_stage (1 to 4) and
+# time_traveler_fire_days. Fires the stage event of the figure on the host.
+time_traveler_figure_fire = {
+	set_temp_variable = { time_traveler_event_id = time_traveler_fig }
+	multiply_temp_variable = { time_traveler_event_id = constant:time_traveler_figure.event_step }
+	add_to_temp_variable = { time_traveler_event_id = constant:time_traveler_figure.event_base }
+	add_to_temp_variable = { time_traveler_event_id = time_traveler_fig_stage }
+	meta_effect = {
+		text = {
+			country_event = { id = chaosx.nr30.[EVENT_ID] days = [FIRE_DAYS] }
+		}
+		EVENT_ID = "[?time_traveler_event_id|.0]"
+		FIRE_DAYS = "[?time_traveler_fire_days|.0]"
+	}
+}
+
+# HOST. The figure of the token is recruited once and never again.
+time_traveler_figure_install_character = {
+	if = {
+		limit = { check_variable = { time_traveler_fig = constant:time_traveler_figure.napoleon } NOT = { has_global_flag = time_traveler_napoleon_recruited } }
+		set_global_flag = time_traveler_napoleon_recruited
+		recruit_character = time_traveler_napoleon
+	}
+	else_if = {
+		limit = { check_variable = { time_traveler_fig = constant:time_traveler_figure.joan } NOT = { has_global_flag = time_traveler_joan_recruited } }
+		set_global_flag = time_traveler_joan_recruited
+		recruit_character = time_traveler_joan
+	}
+	else_if = {
+		limit = { check_variable = { time_traveler_fig = constant:time_traveler_figure.frederick } NOT = { has_global_flag = time_traveler_frederick_recruited } }
+		set_global_flag = time_traveler_frederick_recruited
+		recruit_character = time_traveler_frederick
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Pacing
+# ---------------------------------------------------------------------------
+
+# FRA or GER. Starts the tick chain of the host tag once.
+time_traveler_start_figure_chain = {
+	if = {
+		limit = { NOT = { has_country_flag = time_traveler_figure_chain } }
+		set_country_flag = time_traveler_figure_chain
+		country_event = { id = chaosx.nr30.200 days = constant:time_traveler_figure_value.check_days }
+	}
+}
+
+# HOST (FRA or GER). Output: temp time_traveler_fig_pick, 0 when this tag has no
+# unused figure. France draws between Napoleon and Joan: a defeated or occupied
+# France is more likely to receive Joan.
+time_traveler_figure_choose = {
+	set_temp_variable = { time_traveler_fig_pick = constant:time_traveler_figure.none }
+	if = {
+		limit = { tag = GER }
+		if = {
+			limit = { check_variable = { global.time_traveler_fig_state^3 = constant:time_traveler_figure_state.unused } }
+			set_temp_variable = { time_traveler_fig_pick = constant:time_traveler_figure.frederick }
+		}
+	}
+	else_if = {
+		limit = { tag = FRA }
+		if = {
+			limit = {
+				check_variable = { global.time_traveler_fig_state^1 = constant:time_traveler_figure_state.unused }
+				check_variable = { global.time_traveler_fig_state^2 = constant:time_traveler_figure_state.unused }
+			}
+			set_temp_variable = { time_traveler_weight_napoleon = constant:time_traveler_value.two }
+			set_temp_variable = { time_traveler_weight_joan = constant:time_traveler_value.two }
+			if = {
+				limit = { has_capitulated = yes }
+				add_to_temp_variable = { time_traveler_weight_joan = constant:time_traveler_value.three }
+			}
+			if = {
+				limit = { has_war = yes NOT = { has_capitulated = yes } }
+				add_to_temp_variable = { time_traveler_weight_napoleon = constant:time_traveler_value.two }
+			}
+			set_temp_variable = { time_traveler_weight_total = time_traveler_weight_napoleon }
+			add_to_temp_variable = { time_traveler_weight_total = time_traveler_weight_joan }
+			set_temp_variable_to_random = { var = time_traveler_roll }
+			multiply_temp_variable = { time_traveler_roll = time_traveler_weight_total }
+			if = {
+				limit = { check_variable = { time_traveler_roll < time_traveler_weight_napoleon } }
+				set_temp_variable = { time_traveler_fig_pick = constant:time_traveler_figure.napoleon }
+			}
+			else = { set_temp_variable = { time_traveler_fig_pick = constant:time_traveler_figure.joan } }
+		}
+		else_if = {
+			limit = { check_variable = { global.time_traveler_fig_state^1 = constant:time_traveler_figure_state.unused } }
+			set_temp_variable = { time_traveler_fig_pick = constant:time_traveler_figure.napoleon }
+		}
+		else_if = {
+			limit = { check_variable = { global.time_traveler_fig_state^2 = constant:time_traveler_figure_state.unused } }
+			set_temp_variable = { time_traveler_fig_pick = constant:time_traveler_figure.joan }
+		}
+	}
+}
+
+# HOST. The tick. Evolution II needs its Chaos tier, Evolution I resolved,
+# closed or bypassed (disabled, or no custodian can run it), fewer than three
+# active packages and a host that is not special or nonhuman. After the gate the
+# next figure is due about 135 days later, shaped by Timeline Divergence.
+time_traveler_figure_tick = {
+	set_temp_variable = { time_traveler_continue = constant:time_traveler_value.one }
+	time_traveler_figure_choose = yes
+	if = {
+		limit = { check_variable = { time_traveler_fig_pick = constant:time_traveler_figure.none } }
+		set_temp_variable = { time_traveler_continue = constant:time_traveler_value.zero }
+	}
+	else = {
+		set_temp_variable = { time_traveler_probe_stage = constant:time_traveler_evolution.stage_2 }
+		time_traveler_probe_evolution = yes
+		set_temp_variable = { time_traveler_second_ok = time_traveler_probe_ok }
+		set_temp_variable = { time_traveler_probe_stage = constant:time_traveler_evolution.stage_1 }
+		time_traveler_probe_evolution = yes
+		set_temp_variable = { time_traveler_first_bypassed = constant:time_traveler_value.zero }
+		if = {
+			limit = {
+				OR = {
+					NOT = { check_variable = { global.time_traveler_ambition < constant:time_traveler_ambition_state.resolved } }
+					check_variable = { time_traveler_probe_ok = constant:time_traveler_value.zero }
+					NOT = { check_variable = { global.time_traveler_status = constant:time_traveler_status.active } }
+				}
+			}
+			set_temp_variable = { time_traveler_first_bypassed = constant:time_traveler_value.one }
+		}
+		if = {
+			limit = {
+				check_variable = { time_traveler_second_ok = constant:time_traveler_value.one }
+				check_variable = { time_traveler_first_bypassed = constant:time_traveler_value.one }
+				check_variable = { global.time_traveler_figures_active < constant:time_traveler_figure_value.active_cap }
+				is_special_chaos_country = no
+				is_actual_nonhuman_country = no
+			}
+			if = {
+				limit = { NOT = { has_variable = time_traveler_figure_due } }
+				set_temp_variable = { time_traveler_delay = mtth:time_traveler_figure_delay }
+				round_temp_variable = time_traveler_delay
+				set_variable = { time_traveler_figure_due = global.num_days }
+				add_to_variable = { time_traveler_figure_due = time_traveler_delay }
+			}
+			else_if = {
+				limit = { NOT = { check_variable = { global.num_days < time_traveler_figure_due } } }
+				clear_variable = time_traveler_figure_due
+				set_temp_variable = { time_traveler_fig = time_traveler_fig_pick }
+				time_traveler_figure_begin = yes
+			}
+		}
+	}
+	if = {
+		limit = { check_variable = { time_traveler_continue = constant:time_traveler_value.one } }
+		country_event = { id = chaosx.nr30.200 days = constant:time_traveler_figure_value.check_days }
+	}
+	else = { clr_country_flag = time_traveler_figure_chain }
+}
+
+# HOST. Input: temp time_traveler_fig. The figure arrives.
+time_traveler_figure_begin = {
+	set_variable = { global.time_traveler_fig_state^time_traveler_fig = constant:time_traveler_figure_state.arrived }
+	set_variable = { global.time_traveler_fig_support^time_traveler_fig = constant:time_traveler_figure_value.support_seed }
+	add_to_variable = { global.time_traveler_figures_active = constant:time_traveler_value.one }
+	set_country_flag = time_traveler_figure_host
+	set_temp_variable = { time_traveler_log_stage = constant:time_traveler_evolution.stage_2 }
+	time_traveler_record_evolution = yes
+	time_traveler_figure_install_character = yes
+	set_temp_variable = { time_traveler_amount = constant:time_traveler_figure_value.arrival_divergence }
+	set_temp_variable = { time_traveler_cause = constant:time_traveler_cause_id.arrangement }
+	time_traveler_raise_divergence = yes
+	if = {
+		limit = { has_variable = global.time_traveler_custodian }
+		var:global.time_traveler_custodian = {
+			if = {
+				limit = { time_traveler_has_direct_access = yes }
+				set_temp_variable = { time_traveler_amount = constant:time_traveler_figure_value.exposure_rise }
+				set_temp_variable = { time_traveler_cause = constant:time_traveler_cause_id.leak }
+				time_traveler_raise_exposure = yes
+				time_traveler_check_revelation = yes
+			}
+		}
+	}
+	set_temp_variable = { time_traveler_fig_stage = constant:time_traveler_figure.stage_arrival }
+	set_temp_variable = { time_traveler_fire_days = constant:time_traveler_timing.report_delay_days }
+	time_traveler_figure_fire = yes
+}
+
+# ---------------------------------------------------------------------------
+# Stage choices
+# ---------------------------------------------------------------------------
+
+# HOST. Inputs: temp time_traveler_fig, time_traveler_choice (1 language, 2
+# archive, 3 veterans). Each test wins a different group.
+time_traveler_figure_test = {
+	if = {
+		limit = { check_variable = { time_traveler_choice = constant:time_traveler_value.one } }
+		set_temp_variable = { time_traveler_amount = constant:time_traveler_figure_value.test_language }
+	}
+	else_if = {
+		limit = { check_variable = { time_traveler_choice = constant:time_traveler_value.two } }
+		set_temp_variable = { time_traveler_amount = constant:time_traveler_figure_value.test_archive }
+	}
+	else = { set_temp_variable = { time_traveler_amount = constant:time_traveler_figure_value.test_veterans } }
+	time_traveler_figure_raise_support = yes
+	set_variable = { global.time_traveler_fig_state^time_traveler_fig = constant:time_traveler_figure_state.verified }
+	set_temp_variable = { time_traveler_fig_stage = constant:time_traveler_figure.stage_custody }
+	set_temp_variable = { time_traveler_fire_days = constant:time_traveler_timing.report_delay_days }
+	time_traveler_figure_fire = yes
+}
+
+# HOST. Inputs: temp time_traveler_fig, time_traveler_choice (1 protect, 2
+# present publicly, 3 detain, 4 military consultation).
+time_traveler_figure_custody = {
+	if = {
+		limit = { check_variable = { time_traveler_choice = constant:time_traveler_value.one } }
+		set_temp_variable = { time_traveler_amount = constant:time_traveler_figure_value.custody_protect }
+		time_traveler_figure_raise_support = yes
+	}
+	else_if = {
+		limit = { check_variable = { time_traveler_choice = constant:time_traveler_value.two } }
+		set_temp_variable = { time_traveler_amount = constant:time_traveler_figure_value.custody_public }
+		time_traveler_figure_raise_support = yes
+		add_stability = constant:time_traveler_figure_value.custody_stability
+		if = {
+			limit = { has_variable = global.time_traveler_custodian }
+			var:global.time_traveler_custodian = {
+				if = {
+					limit = { time_traveler_has_direct_access = yes }
+					set_temp_variable = { time_traveler_amount = constant:time_traveler_figure_value.custody_exposure }
+					set_temp_variable = { time_traveler_cause = constant:time_traveler_cause_id.leak }
+					time_traveler_raise_exposure = yes
+					time_traveler_check_revelation = yes
+				}
+			}
+		}
+	}
+	else_if = {
+		limit = { check_variable = { time_traveler_choice = constant:time_traveler_value.three } }
+		set_temp_variable = { time_traveler_amount = constant:time_traveler_figure_value.custody_detain }
+		time_traveler_figure_lower_support = yes
+	}
+	else = {
+		set_temp_variable = { time_traveler_amount = constant:time_traveler_figure_value.custody_consult }
+		time_traveler_figure_raise_support = yes
+	}
+	set_variable = { global.time_traveler_fig_state^time_traveler_fig = constant:time_traveler_figure_state.movement }
+	set_temp_variable = { time_traveler_fig_stage = constant:time_traveler_figure.stage_power }
+	set_temp_variable = { time_traveler_fire_days = constant:time_traveler_timing.report_delay_days }
+	time_traveler_figure_fire = yes
+}
+
+# HOST. Inputs: temp time_traveler_fig, time_traveler_route (the six routes).
+time_traveler_figure_power = {
+	set_variable = { global.time_traveler_fig_route^time_traveler_fig = time_traveler_route }
+	if = {
+		limit = { check_variable = { time_traveler_route = constant:time_traveler_figure_route.adviser } }
+		time_traveler_figure_install_unit_role = yes
+		set_temp_variable = { time_traveler_amount = constant:time_traveler_figure_value.adviser_divergence }
+		set_temp_variable = { time_traveler_cause = constant:time_traveler_cause_id.arrangement }
+		time_traveler_raise_divergence = yes
+		set_temp_variable = { time_traveler_outcome_now = constant:time_traveler_figure_outcome.integrated }
+		time_traveler_figure_resolve = yes
+	}
+	else_if = {
+		limit = { check_variable = { time_traveler_route = constant:time_traveler_figure_route.symbol } }
+		time_traveler_figure_add_symbol_spirit = yes
+		add_stability = constant:time_traveler_figure_value.symbol_stability
+		set_temp_variable = { time_traveler_outcome_now = constant:time_traveler_figure_outcome.symbol }
+		time_traveler_figure_resolve = yes
+	}
+	else_if = {
+		limit = { check_variable = { time_traveler_route = constant:time_traveler_figure_route.office } }
+		time_traveler_figure_install_leader = yes
+		time_traveler_figure_add_restoration_spirit = yes
+		set_temp_variable = { time_traveler_amount = constant:time_traveler_figure_value.office_divergence }
+		set_temp_variable = { time_traveler_cause = constant:time_traveler_cause_id.arrangement }
+		time_traveler_raise_divergence = yes
+		time_traveler_figure_chaos_restoration = yes
+		set_temp_variable = { time_traveler_outcome_now = constant:time_traveler_figure_outcome.office }
+		time_traveler_figure_resolve = yes
+	}
+	else_if = {
+		limit = { check_variable = { time_traveler_route = constant:time_traveler_figure_route.suppress } }
+		set_temp_variable = { time_traveler_amount = constant:time_traveler_figure_value.suppress_support_drop }
+		time_traveler_figure_lower_support = yes
+		time_traveler_figure_revolt_thresholds = yes
+		if = {
+			limit = { NOT = { check_variable = { global.time_traveler_fig_support^time_traveler_fig < time_traveler_revolt_min } } }
+			time_traveler_figure_claim = yes
+		}
+		else = {
+			time_traveler_roll_percent = yes
+			if = {
+				limit = { check_variable = { time_traveler_roll < constant:time_traveler_figure_value.custody_death_chance } }
+				time_traveler_figure_dies_in_custody = yes
+			}
+			else = {
+				set_temp_variable = { time_traveler_outcome_now = constant:time_traveler_figure_outcome.imprisoned }
+				time_traveler_figure_resolve = yes
+			}
+		}
+	}
+	else_if = {
+		limit = { check_variable = { time_traveler_route = constant:time_traveler_figure_route.exile } }
+		set_temp_variable = { time_traveler_outcome_now = constant:time_traveler_figure_outcome.exiled }
+		time_traveler_figure_add_movement_spirit = yes
+		time_traveler_figure_resolve = yes
+	}
+	else = {
+		time_traveler_figure_claim = yes
+	}
+}
+
+# HOST. Output: temp time_traveler_revolt_min and time_traveler_war_min for the
+# figure. Joan is less likely to take up arms than the rulers.
+time_traveler_figure_revolt_thresholds = {
+	if = {
+		limit = { check_variable = { time_traveler_fig = constant:time_traveler_figure.napoleon } }
+		set_temp_variable = { time_traveler_revolt_min = constant:time_traveler_figure_value.napoleon_revolt_min }
+		set_temp_variable = { time_traveler_war_min = constant:time_traveler_figure_value.napoleon_war_min }
+	}
+	else_if = {
+		limit = { check_variable = { time_traveler_fig = constant:time_traveler_figure.joan } }
+		set_temp_variable = { time_traveler_revolt_min = constant:time_traveler_figure_value.joan_revolt_min }
+		set_temp_variable = { time_traveler_war_min = constant:time_traveler_figure_value.joan_war_min }
+	}
+	else = {
+		set_temp_variable = { time_traveler_revolt_min = constant:time_traveler_figure_value.frederick_revolt_min }
+		set_temp_variable = { time_traveler_war_min = constant:time_traveler_figure_value.frederick_war_min }
+	}
+}
+
+# HOST. The figure refuses the role offered and leads his or her supporters. A
+# full civil war needs a strong movement and territory. A smaller revolt needs a
+# movement that can fight. Otherwise the claim fizzles and the figure is
+# arrested.
+time_traveler_figure_claim = {
+	time_traveler_figure_revolt_thresholds = yes
+	if = {
+		limit = {
+			NOT = { check_variable = { global.time_traveler_fig_support^time_traveler_fig < time_traveler_war_min } }
+			NOT = { check_variable = { num_controlled_states < constant:time_traveler_ambition_value.civil_war_states_min } }
+		}
+		time_traveler_figure_chaos_war = yes
+		set_temp_variable = { time_traveler_cw_size = constant:time_traveler_figure_value.war_size }
+		time_traveler_start_figure_revolt = yes
+		set_temp_variable = { time_traveler_outcome_now = constant:time_traveler_figure_outcome.civil_war }
+		time_traveler_figure_resolve = yes
+	}
+	else_if = {
+		limit = { NOT = { check_variable = { global.time_traveler_fig_support^time_traveler_fig < time_traveler_revolt_min } } }
+		set_temp_variable = { time_traveler_cw_size = constant:time_traveler_figure_value.revolt_size }
+		time_traveler_start_figure_revolt = yes
+		set_temp_variable = { time_traveler_outcome_now = constant:time_traveler_figure_outcome.revolt }
+		time_traveler_figure_resolve = yes
+	}
+	else = {
+		set_temp_variable = { time_traveler_outcome_now = constant:time_traveler_figure_outcome.imprisoned }
+		time_traveler_figure_resolve = yes
+	}
+}
+
+# HOST. The figure dies in custody. The movement keeps going without anyone to
+# restrain it.
+time_traveler_figure_dies_in_custody = {
+	set_temp_variable = { time_traveler_amount = constant:time_traveler_figure_value.martyr_support }
+	time_traveler_figure_raise_support = yes
+	time_traveler_figure_add_movement_spirit = yes
+	set_temp_variable = { time_traveler_outcome_now = constant:time_traveler_figure_outcome.died }
+	time_traveler_figure_resolve = yes
+}
+
+# HOST. Input: temp time_traveler_outcome_now. Closes the package once and
+# reports it.
+time_traveler_figure_resolve = {
+	set_variable = { global.time_traveler_fig_state^time_traveler_fig = constant:time_traveler_figure_state.resolved }
+	set_variable = { global.time_traveler_fig_outcome^time_traveler_fig = time_traveler_outcome_now }
+	subtract_from_variable = { global.time_traveler_figures_active = constant:time_traveler_value.one }
+	clamp_variable = { var = global.time_traveler_figures_active min = constant:time_traveler_value.zero }
+	if = {
+		limit = {
+			NOT = { check_variable = { time_traveler_outcome_now = constant:time_traveler_figure_outcome.died } }
+			NOT = { check_variable = { time_traveler_outcome_now = constant:time_traveler_figure_outcome.civil_war } }
+		}
+		add_to_variable = { global.time_traveler_figures_peaceful = constant:time_traveler_value.one }
+		if = {
+			limit = {
+				OR = {
+					check_variable = { time_traveler_outcome_now = constant:time_traveler_figure_outcome.integrated }
+					check_variable = { time_traveler_outcome_now = constant:time_traveler_figure_outcome.symbol }
+				}
+			}
+			time_traveler_figure_chaos_settled = yes
+		}
+		if = {
+			limit = { NOT = { check_variable = { global.time_traveler_figures_peaceful < constant:time_traveler_consultation.achievement_count } } }
+			time_traveler_figure_award_nine_lives = yes
+		}
+	}
+	set_temp_variable = { time_traveler_fig_stage = constant:time_traveler_figure.stage_resolution }
+	set_temp_variable = { time_traveler_fire_days = constant:time_traveler_figure_value.resolution_delay_days }
+	time_traveler_figure_fire = yes
+}
+
+# ANY scope. Three packages resolved without a death or a civil war: the human
+# countries that took part earn the achievement flag. One bounded sweep at the
+# moment the third package resolves.
+time_traveler_figure_award_nine_lives = {
+	every_country = {
+		limit = {
+			is_ai = no
+			OR = {
+				has_country_flag = time_traveler_figure_host
+				has_country_flag = time_traveler_custodian
+				has_country_flag = time_traveler_former_custodian
+			}
+		}
+		set_country_flag = time_traveler_ach_nine_lives
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Roles, spirits and Chaos
+# ---------------------------------------------------------------------------
+
+# HOST. Napoleon and Frederick become field marshals and Joan a corps
+# commander. Each has a severe modernity limit: weak logistics and the traits of
+# another century. The role is a gift of the government and not a promotion.
+time_traveler_figure_install_unit_role = {
+	if = {
+		limit = { check_variable = { time_traveler_fig = constant:time_traveler_figure.napoleon } }
+		add_field_marshal_role = {
+			character = time_traveler_napoleon
+			traits = { brilliant_strategist politically_connected }
+			skill = 3
+			attack_skill = 4
+			defense_skill = 3
+			planning_skill = 4
+			logistics_skill = 1
+		}
+	}
+	else_if = {
+		limit = { check_variable = { time_traveler_fig = constant:time_traveler_figure.joan } }
+		add_corps_commander_role = {
+			character = time_traveler_joan
+			traits = { inspirational_leader war_hero }
+			skill = 2
+			attack_skill = 3
+			defense_skill = 2
+			planning_skill = 2
+			logistics_skill = 2
+		}
+	}
+	else = {
+		add_field_marshal_role = {
+			character = time_traveler_frederick
+			traits = { old_guard inflexible_strategist }
+			skill = 3
+			attack_skill = 4
+			defense_skill = 3
+			planning_skill = 4
+			logistics_skill = 2
+		}
+	}
+	army_experience = constant:time_traveler_figure_value.adviser_xp
+}
+
+# HOST. Takes the country leader role in the ruling ideology type. The figure
+# does not change the ideology.
+time_traveler_figure_install_leader = {
+	set_variable = { global.time_traveler_fig_current = time_traveler_fig }
+	meta_effect = {
+		text = {
+			add_country_leader_role = {
+				character = time_traveler_[KEY]
+				promote_leader = yes
+				country_leader = {
+					ideology = [IDEOLOGY]
+					traits = { time_traveler_trait_[KEY] }
+				}
+			}
+		}
+		KEY = "[GetTimeTravelerFigureKey]"
+		IDEOLOGY = "[GetTimeTravelerLeaderIdeology]"
+	}
+}
+
+time_traveler_figure_add_symbol_spirit = {
+	if = {
+		limit = { check_variable = { time_traveler_fig = constant:time_traveler_figure.napoleon } }
+		add_ideas = time_traveler_symbol_napoleon
+	}
+	else_if = {
+		limit = { check_variable = { time_traveler_fig = constant:time_traveler_figure.joan } }
+		add_ideas = time_traveler_symbol_joan
+	}
+	else = { add_ideas = time_traveler_symbol_frederick }
+}
+
+time_traveler_figure_add_restoration_spirit = {
+	if = {
+		limit = { check_variable = { time_traveler_fig = constant:time_traveler_figure.napoleon } }
+		add_ideas = time_traveler_restoration_napoleon
+	}
+	else_if = {
+		limit = { check_variable = { time_traveler_fig = constant:time_traveler_figure.joan } }
+		add_ideas = time_traveler_restoration_joan
+	}
+	else = { add_ideas = time_traveler_restoration_frederick }
+}
+
+# HOST. The movement outlives the figure's role: one timed spirit.
+time_traveler_figure_add_movement_spirit = {
+	set_temp_variable = { time_traveler_days = constant:time_traveler_figure_value.movement_days }
+	add_timed_idea = { idea = time_traveler_claimant_movement days = time_traveler_days }
+}
+
+# One-shot Chaos movements through the shared history path, once per figure.
+time_traveler_figure_chaos_restoration = {
+	if = {
+		limit = { NOT = { has_global_flag = time_traveler_restoration_chaos_recorded } }
+		set_global_flag = time_traveler_restoration_chaos_recorded
+		set_temp_variable = { chaos_change = constant:time_traveler_chaos_figure.restoration }
+		set_temp_variable = { chaos_history_reason = constant:chaos_meter_history_reason.special.time_traveler_restoration }
+		set_temp_variable = { chaos_history_reason_custom = constant:time_traveler_value.one }
+		add_chaos_meter_value = yes
+	}
+}
+
+time_traveler_figure_chaos_settled = {
+	if = {
+		limit = { NOT = { has_global_flag = time_traveler_settled_chaos_recorded } }
+		set_global_flag = time_traveler_settled_chaos_recorded
+		set_temp_variable = { chaos_change = constant:time_traveler_chaos_figure.claimant_settled }
+		set_temp_variable = { chaos_history_reason = constant:chaos_meter_history_reason.special.time_traveler_claimant_settled }
+		set_temp_variable = { chaos_history_reason_custom = constant:time_traveler_value.one }
+		add_chaos_meter_value = yes
+	}
+}
+
+time_traveler_figure_chaos_war = {
+	if = {
+		limit = { NOT = { has_global_flag = time_traveler_figure_war_chaos_recorded } }
+		set_global_flag = time_traveler_figure_war_chaos_recorded
+		set_temp_variable = { chaos_change = constant:time_traveler_chaos_figure.figure_war }
+		set_temp_variable = { chaos_history_reason = constant:chaos_meter_history_reason.special.time_traveler_figure_war }
+		set_temp_variable = { chaos_history_reason_custom = constant:time_traveler_value.one }
+		add_chaos_meter_value = yes
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Revolt
+# ---------------------------------------------------------------------------
+
+# HOST. Input: temp time_traveler_cw_size and time_traveler_fig. The loyalists
+# keep the ruling party and the rebels take the neutral group (the democratic
+# group for a neutral host). The figure leads the rebels.
+time_traveler_start_figure_revolt = {
+	save_event_target_as = time_traveler_ambition_host
+	set_variable = { global.time_traveler_fig_current = time_traveler_fig }
+	if = {
+		limit = { has_government = neutrality }
+		meta_effect = {
+			text = {
+				start_civil_war = {
+					ideology = democratic
+					ruling_party = neutrality
+					size = [CW_SIZE]
+					keep_political_leader = no
+					time_traveler_arm_figure_revolter = yes
+				}
+			}
+			CW_SIZE = "[?time_traveler_cw_size|.2]"
+		}
+	}
+	else_if = {
+		limit = { has_government = fascism }
+		meta_effect = {
+			text = {
+				start_civil_war = {
+					ideology = neutrality
+					ruling_party = fascism
+					size = [CW_SIZE]
+					keep_political_leader = no
+					time_traveler_arm_figure_revolter = yes
+				}
+			}
+			CW_SIZE = "[?time_traveler_cw_size|.2]"
+		}
+	}
+	else_if = {
+		limit = { has_government = communism }
+		meta_effect = {
+			text = {
+				start_civil_war = {
+					ideology = neutrality
+					ruling_party = communism
+					size = [CW_SIZE]
+					keep_political_leader = no
+					time_traveler_arm_figure_revolter = yes
+				}
+			}
+			CW_SIZE = "[?time_traveler_cw_size|.2]"
+		}
+	}
+	else = {
+		meta_effect = {
+			text = {
+				start_civil_war = {
+					ideology = neutrality
+					ruling_party = democratic
+					size = [CW_SIZE]
+					keep_political_leader = no
+					time_traveler_arm_figure_revolter = yes
+				}
+			}
+			CW_SIZE = "[?time_traveler_cw_size|.2]"
+		}
+	}
+}
+
+# REBEL COUNTRY. The figure leads the revolt. Runs inside start_civil_war.
+time_traveler_arm_figure_revolter = {
+	save_event_target_as = time_traveler_new_home
+	meta_effect = {
+		text = {
+			time_traveler_[KEY] = { set_nationality = event_target:time_traveler_new_home }
+		}
+		KEY = "[GetTimeTravelerFigureKey]"
+	}
+	time_traveler_figure_install_leader = yes
+}

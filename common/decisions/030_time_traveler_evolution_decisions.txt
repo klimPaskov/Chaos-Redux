@@ -1,0 +1,137 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 030 TIME TRAVELER GOVERNMENT DECISIONS
+# ============================================================================
+# The country the traveler leads. A traveler-led government is strong in
+# coordination and intelligence and carries specific risks: preventive
+# detention based on predicted crimes, hostility towards officials whose future
+# conduct he remembers, premature wars and a growing distance from the public.
+# The five preventive choices of Evolution I:
+#   watch      surveillance of a predicted threat (can become public)
+#   restrict   remove future offenders before the remembered offense
+#   change     an early deterrent or a mobilization (chaosx.nr30.130)
+#   build      a permanent institution imported from the remembered future
+#   suppress   reform an institution that later failed
+# Costs are cached by time_traveler_refresh_costs. No decision grants a war
+# goal. Detainees of the restriction are held in ordinary custody.
+# ============================================================================
+
+time_traveler_government_category = {
+
+	time_traveler_watch = {
+		icon = GFX_decision_time_traveler_counterintelligence_map
+		priority = 100
+		visible = { time_traveler_is_leader = yes }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = time_traveler_watch_requirements_tt
+				NOT = { has_country_flag = time_traveler_watch_cooldown }
+			}
+		}
+		custom_cost_trigger = { time_traveler_can_pay_watch = yes }
+		custom_cost_text = time_traveler_cost_watch
+		complete_effect = {
+			custom_effect_tooltip = time_traveler_watch_tt
+			hidden_effect = { time_traveler_do_watch = yes }
+		}
+		ai_will_do = {
+			base = constant:time_traveler_ai.low
+			modifier = { add = constant:time_traveler_ai.standard has_stability < constant:time_traveler_ai.stability_low }
+			modifier = { add = constant:time_traveler_ai.standard has_war = yes }
+			modifier = { factor = constant:time_traveler_ai.blocked has_equipment = { support_equipment < constant:time_traveler_ai.support_floor } }
+		}
+	}
+
+	time_traveler_restrict = {
+		icon = GFX_decision_time_traveler_domestic_threat_assessment
+		priority = 90
+		visible = { time_traveler_is_leader = yes }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = time_traveler_restrict_requirements_tt
+				NOT = { has_country_flag = time_traveler_restrict_cooldown }
+			}
+		}
+		custom_cost_trigger = { time_traveler_can_pay_restrict = yes }
+		custom_cost_text = time_traveler_cost_restrict
+		complete_effect = {
+			custom_effect_tooltip = time_traveler_restrict_tt
+			hidden_effect = { time_traveler_do_restrict = yes }
+		}
+		ai_will_do = {
+			base = constant:time_traveler_ai.blocked
+			modifier = { add = constant:time_traveler_ai.standard has_government = fascism }
+			modifier = { add = constant:time_traveler_ai.standard has_government = communism }
+			modifier = { add = constant:time_traveler_ai.standard has_stability < constant:time_traveler_ai.stability_low }
+			modifier = { factor = constant:time_traveler_ai.blocked has_government = democratic }
+		}
+	}
+
+	time_traveler_change_war = {
+		icon = GFX_decision_time_traveler_military_forecast
+		priority = 80
+		visible = { time_traveler_is_leader = yes }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = time_traveler_change_war_requirements_tt
+				NOT = { has_country_flag = time_traveler_change_war_cooldown }
+			}
+		}
+		complete_effect = {
+			custom_effect_tooltip = time_traveler_change_war_tt
+			hidden_effect = { country_event = { id = chaosx.nr30.130 } }
+		}
+		ai_will_do = {
+			base = constant:time_traveler_ai.standard
+			modifier = { add = constant:time_traveler_ai.standard has_war = yes }
+		}
+	}
+
+	time_traveler_build_institution = {
+		icon = GFX_decision_time_traveler_industrial_bottleneck
+		priority = 70
+		visible = {
+			time_traveler_is_leader = yes
+			NOT = { has_idea = time_traveler_state_institution }
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = time_traveler_build_requirements_tt
+				time_traveler_credibility_is_at_least_trusted = yes
+			}
+		}
+		custom_cost_trigger = { time_traveler_can_pay_build = yes }
+		custom_cost_text = time_traveler_cost_build
+		complete_effect = {
+			custom_effect_tooltip = time_traveler_build_tt
+			hidden_effect = { time_traveler_do_build = yes }
+		}
+		ai_will_do = {
+			base = constant:time_traveler_ai.standard
+			modifier = { add = constant:time_traveler_ai.standard has_war = no }
+			modifier = { factor = constant:time_traveler_ai.blocked has_equipment = { support_equipment < constant:time_traveler_ai.support_floor } }
+		}
+	}
+
+	time_traveler_suppress_institution = {
+		icon = GFX_decision_time_traveler_scientific_shortcut
+		priority = 60
+		visible = { time_traveler_is_leader = yes }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = time_traveler_suppress_requirements_tt
+				NOT = { has_country_flag = time_traveler_suppress_cooldown }
+			}
+		}
+		custom_cost_trigger = { time_traveler_can_pay_suppress = yes }
+		custom_cost_text = time_traveler_cost_suppress
+		complete_effect = {
+			custom_effect_tooltip = time_traveler_suppress_tt
+			hidden_effect = { time_traveler_do_suppress = yes }
+		}
+		ai_will_do = {
+			base = constant:time_traveler_ai.low
+			modifier = { add = constant:time_traveler_ai.standard NOT = { has_stability < constant:time_traveler_ai.stability_high } }
+			modifier = { factor = constant:time_traveler_ai.blocked has_stability < constant:time_traveler_ai.stability_low }
+		}
+	}
+}

@@ -1,0 +1,93 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 030 TIME TRAVELER EVOLUTION TRIGGERS
+# ============================================================================
+# Evolution I (the traveler's ambition) and Evolution II (the door to the past).
+# The three support blocs of Evolution I are hidden custodian variables
+# time_traveler_bloc_government, _security and _technocrats (0 to 100) and are
+# only ever read through these triggers and the route effects.
+# ============================================================================
+
+# COUNTRY. The traveler governs this country.
+time_traveler_is_leader = {
+	has_country_flag = time_traveler_is_leader
+}
+
+# COUNTRY. A written charter binds the traveler to advice.
+time_traveler_charter_is_active = {
+	has_country_flag = time_traveler_charter
+}
+
+# GLOBAL. The ambition crisis is open.
+time_traveler_ambition_is_open = {
+	check_variable = { global.time_traveler_ambition = constant:time_traveler_ambition_state.crisis }
+}
+
+# COUNTRY (custodian). Hidden bloc reads.
+time_traveler_government_bloc_is_strong = {
+	hidden_trigger = {
+		NOT = { check_variable = { time_traveler_bloc_government < constant:time_traveler_ambition_value.appoint_government_min } }
+		OR = {
+			NOT = { check_variable = { time_traveler_bloc_security < constant:time_traveler_ambition_value.appoint_other_min } }
+			NOT = { check_variable = { time_traveler_bloc_technocrats < constant:time_traveler_ambition_value.appoint_other_min } }
+		}
+	}
+}
+
+time_traveler_security_can_coup = {
+	hidden_trigger = { NOT = { check_variable = { time_traveler_bloc_security < constant:time_traveler_ambition_value.coup_security_min } } }
+}
+
+time_traveler_security_can_fight_a_war = {
+	hidden_trigger = {
+		NOT = { check_variable = { time_traveler_bloc_security < constant:time_traveler_ambition_value.civil_war_security_min } }
+		check_variable = { time_traveler_bloc_government < constant:time_traveler_ambition_value.civil_war_government_max }
+		NOT = { check_variable = { num_controlled_states < constant:time_traveler_ambition_value.civil_war_states_min } }
+	}
+}
+
+# COUNTRY. Options of the crisis.
+time_traveler_contest_is_possible = {
+	has_government = democratic
+}
+
+time_traveler_arrest_is_possible = {
+	has_intelligence_agency = yes
+}
+
+# COUNTRY (custodian), read in an event option where ROOT is the custodian. A
+# partner for a negotiated transfer exists.
+time_traveler_has_transfer_partner = {
+	hidden_trigger = {
+		any_country = {
+			exists = yes
+			NOT = { has_country_flag = time_traveler_custodian }
+			is_in_faction_with = ROOT
+			is_special_chaos_country = no
+			is_actual_nonhuman_country = no
+		}
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Traveler government costs
+# ---------------------------------------------------------------------------
+
+time_traveler_can_pay_watch = {
+	NOT = { check_variable = { command_power < time_traveler_cost_watch_command } }
+	NOT = { has_equipment = { support_equipment < time_traveler_cost_watch_support } }
+}
+
+time_traveler_can_pay_restrict = {
+	NOT = { has_political_power < time_traveler_cost_restrict_political }
+	NOT = { check_variable = { command_power < time_traveler_cost_restrict_command } }
+	NOT = { check_variable = { manpower_k < time_traveler_cost_restrict_manpower_k } }
+}
+
+time_traveler_can_pay_build = {
+	NOT = { has_political_power < time_traveler_cost_build_political }
+	NOT = { has_equipment = { support_equipment < time_traveler_cost_build_support } }
+}
+
+time_traveler_can_pay_suppress = {
+	NOT = { has_political_power < time_traveler_cost_suppress_political }
+}
