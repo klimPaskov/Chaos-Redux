@@ -30,6 +30,15 @@ The firing-source repair does not close those model requirements or claim live-g
 No requested functionality was removed in this family tranche; model requirements are retained as unfinished work.
 Meshy credits spent on this firing tranche: 0.
 
+### Silent Guard
+
+Attack, support attack and defend use two, two and one compact SMG burst emissions, each paired with one smoke event and the recorded infantry-family burst cue.
+The two-take death pool fires at 0.3 seconds.
+This model consumes the Cadre commit's shared 0.35-second particle and licensed audio definitions; its own changed runtime file is `gfx/entities/chaosx_silent_guard.asset`.
+Source resolution and inherited timing checks are retained in the same WP4 event crosswalk and lint evidence.
+Coat deformation, low-ready idle, recoil, UVs/materials and topology remain open, with no model-byte replacement or live validation in this source tranche.
+Meshy credits spent: 0.
+
 Acceptance basis: the user's assignment of all nine WP4 models and every ticket in `C:/Users/klimp/Videos/chaos_redux_trailer/records/showcase/unit_fix_plan.md`.
 The implemented firing/audio tranche is documented in `wp4_firing_audio_tranche.md`; geometry, materials, rig/actions and filmed acceptance remain required.
 
