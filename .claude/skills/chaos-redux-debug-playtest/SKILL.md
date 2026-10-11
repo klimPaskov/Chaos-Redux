@@ -5,7 +5,12 @@ description: Explicit-invocation-only Chaos Redux live QA workflow. Use only whe
 
 # Chaos Redux Autonomous Debug Playtest
 
-Use this skill only after the user explicitly invokes it or explicitly asks for autonomous Chaos Redux live testing. The run is played through the HOI4 Live Tools MCP server (`hoi4-live`); the agent does not script the desktop itself.
+Use this skill only after the user explicitly invokes it or explicitly asks for autonomous Chaos Redux live testing. The default run is played through the HOI4 Live Tools MCP server (`hoi4-live`); the agent does not script the desktop itself.
+
+For an explicitly requested isolated Linux/WSL run, follow [Clausewitz-MCP Linux testing](../../../docs/testing/clausewitz_mcp_linux.md) before using the disabled-by-default `clausewitz_linux` server or its opt-in launcher.
+That route requires the matching WSL game lease and a verified compatible ELF build; an exposed tool list or successful installation does not establish memory-layout compatibility.
+Keep Windows HOI4 and the Windows desktop untouched, never take another job's game lease, and report refused or unavailable capabilities separately from observed game results.
+Use the ordinary `hoi4-live` route below for Windows; this Linux routing note does not authorize autonomous testing outside the user's requested scope.
 
 Do not add this skill to `AGENTS.md`, `chaos-redux-subagents`, completion-audit routing, event implementation routing, or any default workflow unless the user separately requests that integration. Normal coding agents must not use this skill merely because a feature needs validation.
 
