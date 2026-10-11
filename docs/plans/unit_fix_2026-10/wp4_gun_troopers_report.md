@@ -73,6 +73,23 @@ Body/pistol materials, scan/idle/recoil, impact and movement-source work remain 
 No auditory or live-game acceptance is claimed; the parent audio input route reported that this model cannot consume audio.
 Meshy credits spent on this source tranche: 0.
 
+### Autonomous Robot
+
+Attack and support attack each start one finite sustained emitter and one recorded burst per gun, preserving the 0.125-second left/right offset.
+Defend starts one short burst per gun at 0.75 and 2.75 seconds.
+The sustained emitter contains eleven flashes at 0.25-second intervals and ends at 2.6 seconds; the short emitter contains four flashes and ends at 0.6 seconds.
+Each gun receives one reduced-scale smoke emitter rather than the original per-shot smoke stack.
+The two intentionally overlapping gun recordings are limited to two audible sources at volume 0.36.
+The new emitter files and registry reuse installed vanilla texture assets; source derivation and exact timings are in `robot_particle_derivation.json` and the final firing crosswalk.
+
+The source-approved footfall is 0.2 seconds, or 0.20833 seconds at the slowest configured rate, below the 0.291667-second retreat event gap.
+The second casing take is shortened to 0.7 seconds, below its 0.75-second gap.
+Both destination hashes match the reviewed candidates; source licenses, transformations and hashes ship in the robot's `WP4_ATTRIBUTION.md`.
+The final source lint clears those specific overlaps while retaining the intentional paired-gun polyphony and the generic lint's smoke-classification limitations.
+No model, skeleton, weights, actions or maps changed in this source tranche; topology, materials, sensor/servo motion and anatomical contacts remain required.
+Rendered smoke size, orange-pixel area and in-game playback are unmeasured.
+Meshy credits spent on this source tranche: 0.
+
 Acceptance basis: the user's assignment of all nine WP4 models and every ticket in `C:/Users/klimp/Videos/chaos_redux_trailer/records/showcase/unit_fix_plan.md`.
 The implemented firing/audio tranche is documented in `wp4_firing_audio_tranche.md`; geometry, materials, rig/actions and filmed acceptance remain required.
 
