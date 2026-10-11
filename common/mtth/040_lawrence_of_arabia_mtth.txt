@@ -1,0 +1,390 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 040 LAWRENCE OF ARABIA MTTH
+# ============================================================================
+# Incident pacing, the delay between targets and the AI willingness scores of
+# every decision. Scores are weights, not click chances: a decision with a
+# score of zero is never taken, and the engine's own AI roll decides among the
+# rest. Each entry is read for the one country already being evaluated (the
+# live target for target decisions, ENG for British decisions) so no world
+# scan is needed. The target profile comes from lawrence_ai_profile and the
+# British profile from the state of the war, the routes and the stockpile.
+# ============================================================================
+
+# Days between baseline incidents in a live target.
+lawrence_incident_interval = {
+	base = constant:lawrence_incident.base_days
+	modifier = {
+		factor = constant:lawrence_incident.fast_factor
+		check_variable = { var = lawrence_influence value = constant:lawrence_influence.contested_edge compare = greater_than_or_equals }
+	}
+	modifier = {
+		factor = constant:lawrence_incident.fast_factor
+		check_variable = { var = lawrence_officers value = constant:lawrence_officers.capture_threshold compare = greater_than_or_equals }
+	}
+	modifier = {
+		factor = constant:lawrence_incident.slow_factor
+		has_country_flag = lawrence_file
+	}
+	modifier = {
+		factor = constant:lawrence_incident.slow_factor
+		has_country_flag = lawrence_escorted
+	}
+	modifier = {
+		factor = constant:lawrence_incident.fast_factor
+		has_country_flag = lawrence_delivery_pending
+	}
+}
+
+# Days between one target's settlement and the next target.
+lawrence_next_target_delay = {
+	base = constant:lawrence_campaign.delay_base_days
+	modifier = {
+		factor = constant:lawrence_campaign.delay_fast_factor
+		check_variable = { var = global.lawrence_clients^num value = constant:lawrence_campaign.delay_client_count compare = greater_than_or_equals }
+	}
+	modifier = {
+		factor = constant:lawrence_campaign.delay_fast_factor
+		check_variable = { var = global.lawrence_credibility value = constant:lawrence_drift.credibility_high compare = greater_than }
+	}
+	modifier = {
+		factor = constant:lawrence_campaign.delay_slow_factor
+		ENG = { has_war_with_major = yes }
+	}
+	modifier = {
+		factor = constant:lawrence_campaign.delay_slow_factor
+		check_variable = { var = global.lawrence_credibility value = constant:lawrence_drift.credibility_low compare = less_than }
+	}
+	modifier = {
+		factor = constant:lawrence_campaign.delay_slow_factor
+		check_variable = { var = global.lawrence_dismantled_count value = constant:lawrence_event.zero compare = greater_than }
+	}
+	modifier = {
+		factor = constant:lawrence_campaign.delay_slow_factor
+		OR = {
+			lawrence_status_is_dead = yes
+			lawrence_status_is_defected = yes
+			has_global_flag = lawrence_agents_only
+		}
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Target decisions
+# ---------------------------------------------------------------------------
+
+lawrence_ai_take_custody = {
+	base = constant:lawrence_ai.blocked
+	modifier = { add = constant:lawrence_ai.strong lawrence_ai_is_pragmatist = yes }
+	modifier = { add = constant:lawrence_ai.strong lawrence_ai_is_counterintelligence = yes }
+	modifier = { add = constant:lawrence_ai.standard lawrence_ai_is_challenger = yes }
+	modifier = { add = constant:lawrence_ai.strong lawrence_ai_is_double_gamer = yes }
+	modifier = { add = constant:lawrence_ai.low lawrence_ai_is_client = yes }
+	modifier = { add = constant:lawrence_ai.low lawrence_ai_is_fractured = yes }
+}
+
+lawrence_ai_open_office = {
+	base = constant:lawrence_ai.blocked
+	modifier = { add = constant:lawrence_ai.strong lawrence_ai_is_pragmatist = yes }
+	modifier = { add = constant:lawrence_ai.standard lawrence_ai_is_challenger = yes }
+	modifier = { add = constant:lawrence_ai.standard lawrence_ai_is_counterintelligence = yes }
+	modifier = { add = constant:lawrence_ai.standard lawrence_ai_is_double_gamer = yes }
+	modifier = { add = constant:lawrence_ai.low lawrence_ai_is_client = yes }
+	modifier = { factor = 0.4 check_variable = { var = lawrence_officers value = constant:lawrence_officers.capture_threshold compare = greater_than_or_equals } }
+}
+
+lawrence_ai_escort = {
+	base = constant:lawrence_ai.blocked
+	modifier = {
+		add = constant:lawrence_ai.strong
+		lawrence_ai_is_counterintelligence = yes
+		check_variable = { var = lawrence_influence value = constant:lawrence_influence.contested_edge compare = greater_than_or_equals }
+	}
+	modifier = {
+		add = constant:lawrence_ai.standard
+		lawrence_ai_is_challenger = yes
+		check_variable = { var = lawrence_influence value = constant:lawrence_influence.contested_edge compare = greater_than_or_equals }
+	}
+	modifier = {
+		add = constant:lawrence_ai.low
+		lawrence_ai_is_pragmatist = yes
+		check_variable = { var = lawrence_influence value = constant:lawrence_influence.embedded_edge compare = greater_than_or_equals }
+	}
+}
+
+lawrence_ai_file = {
+	base = constant:lawrence_ai.blocked
+	modifier = { add = constant:lawrence_ai.urgent lawrence_ai_is_counterintelligence = yes }
+	modifier = { add = constant:lawrence_ai.strong lawrence_ai_is_challenger = yes }
+	modifier = { add = constant:lawrence_ai.strong lawrence_ai_is_double_gamer = yes }
+	modifier = { add = constant:lawrence_ai.standard lawrence_ai_is_pragmatist = yes }
+	modifier = { add = constant:lawrence_ai.low lawrence_ai_is_fractured = yes }
+}
+
+lawrence_ai_audit = {
+	base = constant:lawrence_ai.blocked
+	modifier = { add = constant:lawrence_ai.strong lawrence_ai_is_counterintelligence = yes }
+	modifier = { add = constant:lawrence_ai.strong lawrence_ai_is_challenger = yes }
+	modifier = { add = constant:lawrence_ai.standard lawrence_ai_is_double_gamer = yes }
+	modifier = { add = constant:lawrence_ai.low lawrence_ai_is_pragmatist = yes }
+}
+
+lawrence_ai_turn = {
+	base = constant:lawrence_ai.blocked
+	modifier = {
+		add = constant:lawrence_ai.strong
+		lawrence_ai_is_counterintelligence = yes
+		check_variable = { var = lawrence_security value = constant:lawrence_ai.turn_security compare = greater_than_or_equals }
+	}
+	modifier = {
+		add = constant:lawrence_ai.urgent
+		lawrence_ai_is_double_gamer = yes
+		check_variable = { var = lawrence_security value = constant:lawrence_ai.turn_security compare = greater_than_or_equals }
+	}
+	modifier = {
+		add = constant:lawrence_ai.standard
+		lawrence_ai_is_challenger = yes
+		check_variable = { var = lawrence_security value = constant:lawrence_ai.turn_security compare = greater_than_or_equals }
+	}
+}
+
+lawrence_ai_feed = {
+	base = constant:lawrence_ai.blocked
+	modifier = { add = constant:lawrence_ai.urgent lawrence_ai_is_double_gamer = yes }
+	modifier = { add = constant:lawrence_ai.low lawrence_ai_is_counterintelligence = yes }
+	modifier = { add = constant:lawrence_ai.low lawrence_ai_is_challenger = yes }
+}
+
+lawrence_ai_officers = {
+	base = constant:lawrence_ai.blocked
+	modifier = { add = constant:lawrence_ai.strong lawrence_ai_is_counterintelligence = yes }
+	modifier = { add = constant:lawrence_ai.strong lawrence_ai_is_challenger = yes }
+	modifier = { add = constant:lawrence_ai.standard lawrence_ai_is_pragmatist = yes }
+	modifier = { add = constant:lawrence_ai.standard lawrence_ai_is_fractured = yes }
+	modifier = { add = constant:lawrence_ai.low lawrence_ai_is_double_gamer = yes }
+}
+
+lawrence_ai_expose = {
+	base = constant:lawrence_ai.blocked
+	modifier = { add = constant:lawrence_ai.strong lawrence_ai_is_challenger = yes }
+	modifier = { add = constant:lawrence_ai.standard lawrence_ai_is_counterintelligence = yes }
+	modifier = {
+		add = constant:lawrence_ai.standard
+		lawrence_ai_is_double_gamer = yes
+		has_country_flag = lawrence_double_ready
+	}
+	modifier = { factor = 0.2 lawrence_ai_is_double_gamer = yes NOT = { has_country_flag = lawrence_double_ready } }
+}
+
+# A reckless expulsion at high Influence is avoided unless the target has a
+# real counterintelligence base and a resistance coalition.
+lawrence_ai_expel = {
+	base = constant:lawrence_ai.blocked
+	modifier = {
+		add = constant:lawrence_ai.strong
+		lawrence_ai_is_challenger = yes
+		lawrence_influence_is_low = yes
+	}
+	modifier = {
+		add = constant:lawrence_ai.standard
+		lawrence_ai_is_counterintelligence = yes
+		lawrence_influence_is_low = yes
+	}
+	modifier = {
+		add = constant:lawrence_ai.low
+		lawrence_ai_is_pragmatist = yes
+		lawrence_influence_is_low = yes
+		has_country_flag = lawrence_exposed
+	}
+	modifier = {
+		add = constant:lawrence_ai.standard
+		lawrence_ai_is_challenger = yes
+		NOT = { lawrence_influence_is_low = yes }
+		check_variable = { var = lawrence_security value = constant:lawrence_ai.confront_security compare = greater_than_or_equals }
+		has_country_flag = lawrence_nodes_secured
+		has_country_flag = lawrence_officers_secured
+	}
+}
+
+lawrence_ai_detain = {
+	base = constant:lawrence_ai.blocked
+	modifier = {
+		add = constant:lawrence_ai.standard
+		lawrence_ai_is_counterintelligence = yes
+		check_variable = { var = lawrence_influence value = constant:lawrence_influence.embedded_edge compare = less_than }
+	}
+	modifier = {
+		add = constant:lawrence_ai.standard
+		lawrence_ai_is_challenger = yes
+		check_variable = { var = lawrence_influence value = constant:lawrence_influence.embedded_edge compare = less_than }
+	}
+	modifier = {
+		factor = 0.3
+		has_country_flag = lawrence_officers_cooldown
+	}
+}
+
+lawrence_ai_dismantle = {
+	base = constant:lawrence_ai.strong
+	modifier = { add = constant:lawrence_ai.strong lawrence_ai_is_counterintelligence = yes }
+	modifier = { add = constant:lawrence_ai.strong lawrence_ai_is_challenger = yes }
+}
+
+lawrence_ai_preserve = {
+	base = constant:lawrence_ai.blocked
+	modifier = { add = constant:lawrence_ai.urgent lawrence_ai_is_pragmatist = yes }
+	modifier = { add = constant:lawrence_ai.standard lawrence_ai_is_counterintelligence = yes }
+	modifier = { add = constant:lawrence_ai.low lawrence_ai_is_fractured = yes }
+}
+
+lawrence_ai_treaty = {
+	base = constant:lawrence_ai.blocked
+	modifier = { add = constant:lawrence_ai.strong lawrence_ai_is_pragmatist = yes }
+	modifier = { add = constant:lawrence_ai.standard lawrence_ai_is_client = yes }
+	modifier = { add = constant:lawrence_ai.low lawrence_ai_is_fractured = yes }
+}
+
+lawrence_ai_charter = {
+	base = constant:lawrence_ai.blocked
+	modifier = { add = constant:lawrence_ai.low lawrence_ai_is_challenger = yes }
+}
+
+lawrence_ai_rival = {
+	base = constant:lawrence_ai.blocked
+	modifier = { add = constant:lawrence_ai.standard lawrence_ai_is_pragmatist = yes }
+	modifier = { add = constant:lawrence_ai.standard lawrence_ai_is_client = yes }
+	modifier = { add = constant:lawrence_ai.standard lawrence_ai_is_fractured = yes }
+}
+
+lawrence_ai_balance = {
+	base = constant:lawrence_ai.blocked
+	modifier = { add = constant:lawrence_ai.strong lawrence_ai_is_pragmatist = yes }
+	modifier = { add = constant:lawrence_ai.standard lawrence_ai_is_challenger = yes }
+	modifier = { add = constant:lawrence_ai.standard lawrence_ai_is_double_gamer = yes }
+}
+
+# ---------------------------------------------------------------------------
+# British decisions (scope ENG, the target through var:global.lawrence_target)
+# ---------------------------------------------------------------------------
+
+lawrence_ai_gold_arms = {
+	base = constant:lawrence_ai.standard
+	modifier = {
+		add = constant:lawrence_ai.standard
+		var:global.lawrence_target = { lawrence_target_is_coastal = yes }
+	}
+	modifier = {
+		add = constant:lawrence_ai.standard
+		var:global.lawrence_target = {
+			check_variable = { var = lawrence_influence value = constant:lawrence_influence.contested_edge compare = greater_than_or_equals }
+			check_variable = { var = lawrence_influence value = constant:lawrence_influence.ascendant_edge compare = less_than }
+		}
+	}
+	modifier = {
+		add = constant:lawrence_ai.low
+		var:global.lawrence_target = { has_stability < 0.4 }
+	}
+	modifier = { factor = 0.2 has_war_with_major = yes }
+	modifier = { factor = 0.3 convoy_threat > constant:lawrence_british.overextended_convoy_threat }
+	modifier = { factor = 0.4 check_variable = { var = global.lawrence_credibility value = constant:lawrence_drift.credibility_low compare = less_than } }
+	modifier = {
+		factor = 0
+		var:global.lawrence_target = { check_variable = { var = lawrence_influence value = constant:lawrence_influence.ascendant_edge compare = greater_than_or_equals } }
+	}
+}
+
+lawrence_ai_cadres = {
+	base = constant:lawrence_ai.low
+	modifier = {
+		add = constant:lawrence_ai.strong
+		var:global.lawrence_target = { check_variable = { var = lawrence_officers value = constant:lawrence_officers.cadres_floor compare = less_than } }
+	}
+	modifier = { factor = 0.3 has_war_with_major = yes }
+	modifier = {
+		factor = 0
+		var:global.lawrence_target = { check_variable = { var = lawrence_influence value = constant:lawrence_influence.ascendant_edge compare = greater_than_or_equals } }
+	}
+}
+
+lawrence_ai_sea_route = {
+	base = constant:lawrence_ai.standard
+	modifier = { add = constant:lawrence_ai.standard lawrence_sponsor_has_regional_base = yes }
+	modifier = { factor = 0.1 convoy_threat > constant:lawrence_british.overextended_convoy_threat }
+	modifier = { factor = 0.3 has_war_with_major = yes }
+}
+
+lawrence_ai_rail_link = {
+	base = constant:lawrence_ai.low
+	modifier = {
+		add = constant:lawrence_ai.standard
+		var:global.lawrence_target = { lawrence_target_is_coastal = no }
+	}
+	modifier = { factor = 0.3 has_war_with_major = yes }
+}
+
+lawrence_ai_press = {
+	base = constant:lawrence_ai.low
+	modifier = {
+		add = constant:lawrence_ai.standard
+		var:global.lawrence_target = { check_variable = { var = lawrence_influence value = constant:lawrence_influence.contested_edge compare = less_than } }
+	}
+	modifier = {
+		factor = 0.3
+		var:global.lawrence_target = { check_variable = { var = lawrence_security value = constant:lawrence_effect.press_censorship_security compare = greater_than_or_equals } }
+	}
+}
+
+lawrence_ai_guarantees = {
+	base = constant:lawrence_ai.blocked
+	modifier = {
+		add = constant:lawrence_ai.low
+		var:global.lawrence_target = { check_variable = { var = lawrence_influence value = constant:lawrence_influence.contested_edge compare = less_than } }
+		check_variable = { var = global.lawrence_credibility value = constant:lawrence_drift.credibility_low compare = greater_than_or_equals }
+	}
+}
+
+lawrence_ai_bases = {
+	base = constant:lawrence_ai.blocked
+	modifier = {
+		add = constant:lawrence_ai.strong
+		var:global.lawrence_target = { check_variable = { var = lawrence_influence value = constant:lawrence_influence.contested_edge compare = greater_than_or_equals } }
+	}
+	modifier = { factor = 0.2 has_war_with_major = yes }
+}
+
+lawrence_ai_recovery = {
+	base = constant:lawrence_ai.blocked
+	modifier = {
+		add = constant:lawrence_ai.strong
+		var:global.lawrence_target = {
+			check_variable = { var = lawrence_officers value = constant:lawrence_recovery.contact_officers compare = greater_than_or_equals }
+			has_country_flag = lawrence_route_open
+		}
+	}
+	modifier = {
+		factor = 0.2
+		var:global.lawrence_target = { check_variable = { var = lawrence_security value = constant:lawrence_recovery.strong_security compare = greater_than_or_equals } }
+	}
+}
+
+lawrence_ai_exchange = {
+	base = constant:lawrence_ai.standard
+	modifier = {
+		add = constant:lawrence_ai.standard
+		var:global.lawrence_target = { check_variable = { var = lawrence_officers value = constant:lawrence_recovery.contact_officers compare = less_than } }
+	}
+	modifier = {
+		add = constant:lawrence_ai.standard
+		has_global_flag = lawrence_recovery_attempted
+	}
+}
+
+lawrence_ai_disavow = {
+	base = constant:lawrence_ai.blocked
+	modifier = {
+		add = constant:lawrence_ai.standard
+		check_variable = { var = global.lawrence_credibility value = constant:lawrence_drift.credibility_low compare = less_than }
+	}
+}
+
+# AI weights of the incident, bases and exchange events are written inline as
+# ai_chance blocks in events/040_lawrence_of_arabia.txt.

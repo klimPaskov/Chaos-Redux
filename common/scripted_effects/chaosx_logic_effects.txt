@@ -257,6 +257,7 @@ initialize_event_categories = {
 	add_to_array = { global.fire_once_events = 26 }
 	add_to_array = { global.fire_once_events = constant:cbrn_convention.event_id }  # CHEMICAL AND BIOLOGICAL WEAPONS CONVENTION
 	add_to_array = { global.fire_once_events = 38 }  # MALTA CRUSADERS
+	add_to_array = { global.fire_once_events = constant:lawrence_event.id }  # LAWRENCE OF ARABIA
 	add_to_array = { global.fire_once_events = constant:murder_mystery_identity.event_id }  # MURDER MYSTERY
 	add_to_array = { global.fire_once_events = 45 }  # THIRD BALKAN WAR
 	add_to_array = { global.fire_once_events = 48 }  # BUL AMBITIONS
@@ -299,7 +300,6 @@ initialize_event_categories = {
 	add_to_array = { global.repeatable_events = constant:industrial_boom_event.id }  # INDUSTRIAL BOOM
 	add_to_array = { global.repeatable_events = 35 }  # GREAT DEPRESSION
 	add_to_array = { global.repeatable_events = 37 }  # MYSTERIOUS POPULATION
-	add_to_array = { global.repeatable_events = 40 }  # LAWRENCE OF ARABIA
 	add_to_array = { global.repeatable_events = 41 }  # DISEASE IN DIVISIONS
 	add_to_array = { global.repeatable_events = 42 }  # EQUIPMENT FROM HEAVENS
 	add_to_array = { global.repeatable_events = 43 }  # MASSIVE FLOOD
@@ -877,6 +877,17 @@ evaluate_event_pool_candidate_unavailability = {
 			NOT = { concentration_camps_has_any_target = yes }
 		}
 		set_temp_variable = { event_pool_candidate_unavailability_reason = constant:event_system_event_unavailability_reason.concentration_camps_target }
+	}
+	else_if = {
+		limit = { check_variable = { event_id = constant:lawrence_event.id } }
+		if = {
+			limit = { NOT = { ENG = { lawrence_sponsor_can_act = yes } } }
+			set_temp_variable = { event_pool_candidate_unavailability_reason = constant:event_system_event_unavailability_reason.lawrence_sponsor }
+		}
+		else_if = {
+			limit = { NOT = { any_country = { lawrence_is_valid_target = yes } } }
+			set_temp_variable = { event_pool_candidate_unavailability_reason = constant:event_system_event_unavailability_reason.lawrence_target }
+		}
 	}
 
 	if = {

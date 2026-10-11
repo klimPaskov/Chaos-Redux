@@ -1,0 +1,691 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 040 LAWRENCE OF ARABIA TUNING
+# ============================================================================
+# Every number the event reads lives here: Lawrence's Influence and its six
+# bands, the weekly drift terms, target weights, confirmation windows, costs,
+# effects, timers, AI levels and the one event-owned Chaos change. The scripted
+# effects, triggers, decisions, MTTH entries and events reference these values
+# as constant:<group>.<key>. Durations passed to days = fields are copied into
+# a variable first, because those fields reject constants.
+# Later phases extend this file with the evolution and federation groups.
+# ============================================================================
+
+# Identity, pacing and trend thresholds.
+lawrence_event = {
+	schema = { any_key = yes data = fixed_point }
+
+	id = 40
+	evolution_type = 40
+	zero = 0
+	one = 1
+	pulse_days = 7
+	report_delay_days = 1
+	report_cooldown_days = 30
+	trend_steady = 0
+	trend_rising = 1
+	trend_falling = -1
+	trend_threshold = 0.25
+	trend_falling_threshold = -0.25
+}
+
+# Settlement report events are chaosx.nr40.<base + outcome>.
+lawrence_report = {
+	schema = { any_key = yes data = fixed_point }
+
+	base = 70
+}
+
+# Neighbour reaction kinds.
+lawrence_alert = {
+	schema = { any_key = yes data = fixed_point }
+
+	alarm = 1
+	overture = 2
+}
+
+# News variants of chaosx.nr40.40.
+lawrence_news = {
+	schema = { any_key = yes data = fixed_point }
+
+	revealed = 1
+	detained = 2
+	died = 3
+	dismantled = 4
+	defected = 5
+}
+
+# Phase of one target generation.
+lawrence_phase = {
+	schema = { any_key = yes data = fixed_point }
+
+	opening = 0
+	contest = 1
+	final = 2
+}
+
+# The six readable bands of Lawrence Influence.
+lawrence_band = {
+	schema = { any_key = yes data = fixed_point }
+
+	broken = 0
+	restricted = 1
+	contested = 2
+	embedded = 3
+	ascendant = 4
+	dominant = 5
+}
+
+# Contributors named in the category header.
+lawrence_cause = {
+	schema = { any_key = yes data = fixed_point }
+
+	none = 0
+	support = 1
+	unrest = 2
+	officers = 3
+	network = 4
+	counter = 5
+	britain = 6
+}
+
+# Lawrence's personal state (global.lawrence_status).
+lawrence_status = {
+	schema = { any_key = yes data = fixed_point }
+
+	pending = 0
+	active = 1
+	detained = 2
+	expelled = 3
+	defected = 4
+	dead = 5
+	disavowed = 6
+	retired = 7
+}
+
+# Settlement identities. Report events follow this numbering.
+lawrence_outcome = {
+	schema = { any_key = yes data = fixed_point }
+
+	client = 1
+	ally = 2
+	partner = 3
+	restricted = 4
+	expelled = 5
+	dismantled = 6
+	double_game = 7
+	defected = 8
+}
+
+# Terms of access chosen by the target.
+lawrence_terms = {
+	schema = { any_key = yes data = fixed_point }
+
+	unset = 0
+	broad = 1
+	liaison = 2
+	escorted = 3
+	refused = 4
+	refusal_ceiling = 60
+}
+
+# Lawrence's Influence: range, band edges, exits, starting value and the largest single change.
+lawrence_influence = {
+	schema = { any_key = yes data = fixed_point }
+
+	minimum = 0
+	maximum = 100
+	restricted_edge = 20
+	contested_edge = 40
+	embedded_edge = 60
+	ascendant_edge = 80
+	dominant_edge = 95
+	ascendant_exit = 75
+	dominant_exit = 90
+	clean_removal_ceiling = 40
+	start_base = 30
+	start_faction = 10
+	start_access = 5
+	start_neighbour = 4
+	start_unstable = 6
+	start_threatened = 4
+	start_public = 6
+	start_security_factor = 0.15
+	start_prepared_each = 4
+	start_minimum = 15
+	start_maximum = 55
+	change_minimum = -30
+	change_maximum = 30
+}
+
+# Hidden exposure of the British network.
+lawrence_exposure = {
+	schema = { any_key = yes data = fixed_point }
+
+	start = 10
+}
+
+# Counterintelligence evidence (0 to 4) and the levels the actions need.
+lawrence_evidence = {
+	schema = { any_key = yes data = fixed_point }
+
+	maximum = 4
+	mission_start = 2
+	exposure = 3
+	detention = 2
+	after_failure = 1
+}
+
+# Share of the officer corps that follows the British network (0 to 100).
+lawrence_officers = {
+	schema = { any_key = yes data = fixed_point }
+
+	start_factor = 0.8
+	capture_threshold = 60
+	secure_target = 30
+	cadres_floor = 40
+	incident_floor = 20
+}
+
+# Regional preparedness memory kept per country.
+lawrence_preparedness = {
+	schema = { any_key = yes data = fixed_point }
+
+	maximum = 3
+}
+
+# Confirmation windows. A spike never decides a country.
+lawrence_confirm = {
+	schema = { any_key = yes data = fixed_point }
+
+	dominant_days = 30
+	embedded_days = 60
+	mid_days = 60
+	broken_days = 120
+	delay_cooldown_days = 60
+	refusal_cooldown_days = 120
+}
+
+# Campaign pacing, caps and the delay between targets.
+lawrence_campaign = {
+	schema = { any_key = yes data = fixed_point }
+
+	opening_days = 60
+	maximum_days = 540
+	maximum_targets = 8
+	trust_start = 45
+	credibility_start = 70
+	delay_base_days = 150
+	delay_minimum_days = 90
+	delay_maximum_days = 240
+	delay_fast_factor = 0.8
+	delay_slow_factor = 1.2
+	delay_client_count = 2
+	pause_days = 30
+	pause_limit = 6
+	watchdog_days = 30
+}
+
+# British capacity.
+lawrence_british = {
+	schema = { any_key = yes data = fixed_point }
+
+	overextended_convoy_threat = 0.5
+}
+
+# The target's practical counterintelligence strength (0 to 100).
+lawrence_security = {
+	schema = { any_key = yes data = fixed_point }
+
+	base = 20
+	stability_weight = 35
+	division_weight = 1.5
+	division_cap = 15
+	encryption_basic = 4
+	encryption_improved = 4
+	decryption_basic = 3
+	security_spirit = 8
+	prepared_each = 6
+	civil_conflict = -20
+	disorder = -15
+	agency_upgrade_weight = 5
+	agency_cap = 20
+	operative_weight = 3
+	operative_cap = 12
+	decryption_threshold = 0.3
+	decryption_bonus = 8
+	civilian_intel_threshold = 0.3
+	civilian_intel_bonus = 6
+}
+
+# Target selection weights. They order candidates and are not probabilities.
+lawrence_target_weight = {
+	schema = { any_key = yes data = fixed_point }
+
+	base = 10
+	unstable_threshold = 0.45
+	unstable = 6
+	very_unstable_threshold = 0.3
+	very_unstable = 4
+	stable_threshold = 0.7
+	stable = -3
+	threatened = 4
+	hostile_power = 4
+	requested = 8
+	port = 3
+	british_faction = 6
+	british_neighbour = 5
+	british_access = 4
+	strong_security = 60
+	security = -6
+	prepared_each = -3
+	british_war = -4
+	british_war_remote = -4
+	british_convoys = -4
+	minimum = 1
+	maximum = 40
+}
+
+# Weekly drift of Influence in points. Each term is one visible cause.
+lawrence_drift = {
+	schema = { any_key = yes data = fixed_point }
+
+	weekly_minimum = -4
+	weekly_maximum = 4
+	opening_factor = 0.5
+	agents_factor = 0.5
+	cause_floor = 0.3
+	support_each = 1.2
+	unstable_threshold = 0.45
+	unstable = 0.6
+	very_unstable_threshold = 0.3
+	very_unstable = 0.8
+	threatened = 0.4
+	confident_threshold = 0.7
+	confident = -0.4
+	officers_factor = 0.02
+	officers_neutral = 0.8
+	terms_broad = 0.5
+	terms_liaison = 0.2
+	terms_escorted = -0.3
+	press = 0.5
+	guarantee = 0.2
+	bases = 0.4
+	security_factor = 0.02
+	file = -0.5
+	office = -0.4
+	escort = -0.6
+	custody = -0.4
+	turned = -0.4
+	nodes = -0.5
+	british_overextended = -0.8
+	route_closed = -0.6
+	credibility_low = 40
+	credibility_penalty = -0.6
+	credibility_high = 70
+	credibility_bonus = 0.3
+	detained_decay = -1.5
+}
+
+# British support in force: power multiplies support_each and each source runs for its days.
+lawrence_support = {
+	schema = { any_key = yes data = fixed_point }
+
+	opening_power = 1
+	opening_days = 60
+	opening_days_liaison = 40
+	shipment_power = 2
+	shipment_days = 70
+	rival_power = 3
+	rival_days = 60
+	route_power = 2
+	route_days = 60
+	cadres_power = 1
+	cadres_days = 90
+}
+
+# Shipments: travel time, government share and the effect on Influence.
+lawrence_delivery = {
+	schema = { any_key = yes data = fixed_point }
+
+	base_days = 45
+	sea_route_days = 15
+	rail_days = 10
+	bases_days = 10
+	remote_days = 20
+	closed_route_days = 20
+	minimum_days = 14
+	maximum_days = 120
+	custody_share = 1.0
+	diverted_share = 0.7
+	network_share = 0.6
+	seized_share = 1.0
+	network_influence = 4
+	custody_influence = 1
+	intercepted_influence = -4
+	seizure_security = 60
+}
+
+# Timed British routes.
+lawrence_route = {
+	schema = { any_key = yes data = fixed_point }
+
+	sea_days = 180
+}
+
+# Missions: durations, holds, retries and the active cap.
+lawrence_mission = {
+	schema = { any_key = yes data = fixed_point }
+
+	max_active = 2
+	ledger_days = 130
+	ledger_hold_days = 42
+	officers_days = 150
+	expose_days = 120
+	dismantle_days = 150
+	dismantle_hold_days = 56
+	partial_hold_days = 21
+	retry_days = 90
+	arms_route_days = 140
+	garrison_heavy = 2
+	garrison_light = 1
+	garrison_light_security = 55
+}
+
+# Decision timers and cooldowns in days.
+lawrence_action = {
+	schema = { any_key = yes data = fixed_point }
+
+	escort_days = 150
+	file_days = 45
+	press_days = 150
+	arms_cooldown_days = 60
+	cadres_cooldown_days = 120
+	turn_cooldown_days = 120
+	feed_cooldown_days = 90
+	recovery_cooldown_days = 120
+	exchange_cooldown_days = 90
+}
+
+# Costs. Equipment quotes scale with the size of the target and the rest are fixed.
+lawrence_cost = {
+	schema = { any_key = yes data = fixed_point }
+
+	default_base = 15
+	custody_command_power = 15
+	custody_support_per_factory = 1.0
+	custody_support_minimum = 15
+	office_political_power = 60
+	office_support_per_factory = 0.8
+	office_support_minimum = 12
+	escort_command_power = 20
+	escort_support_per_factory = 1.0
+	escort_support_minimum = 15
+	file_political_power = 40
+	file_support_per_factory = 1.2
+	file_support_minimum = 20
+	audit_political_power = 30
+	audit_command_power = 20
+	turn_political_power = 30
+	turn_command_power = 25
+	feed_command_power = 15
+	feed_political_power = 20
+	officers_army_experience = 15
+	officers_command_power = 25
+	expose_political_power = 60
+	expose_stability_cost = -0.03
+	expose_stability_floor = 0.35
+	expel_political_power = 50
+	expel_stability_floor = 0.25
+	detain_command_power = 40
+	detain_political_power = 40
+	detain_divisions = 4
+	dismantle_command_power = 30
+	dismantle_political_power = 40
+	dismantle_support_per_factory = 1.5
+	dismantle_support_minimum = 25
+	preserve_army_experience = 20
+	preserve_command_power = 25
+	preserve_political_power = 50
+	treaty_political_power = 70
+	charter_political_power = 80
+	charter_stability_cost = -0.02
+	charter_stability_floor = 0.4
+	balance_political_power = 60
+	balance_command_power = 20
+	rival_political_power = 40
+	arms_infantry_per_factory = 25
+	arms_infantry_minimum = 400
+	arms_infantry_maximum = 1500
+	arms_support_per_factory = 3
+	arms_support_minimum = 60
+	arms_support_maximum = 220
+	arms_political_power = 30
+	cadres_army_experience = 25
+	cadres_command_power = 25
+	cadres_political_power = 20
+	route_convoys_per_factory = 0.8
+	route_convoys_minimum = 20
+	route_convoys_maximum = 60
+	route_fuel_per_factory = 60
+	route_fuel_minimum = 1500
+	route_fuel_maximum = 4000
+	route_command_power = 25
+	rail_trains_per_factory = 0.6
+	rail_trains_minimum = 15
+	rail_trains_maximum = 45
+	rail_support_per_factory = 2
+	rail_support_minimum = 40
+	rail_support_maximum = 120
+	rail_political_power = 30
+	press_political_power = 50
+	press_support_factor = 0.5
+	guarantee_political_power = 40
+	bases_package_factor = 1.5
+	bases_political_power = 50
+	recovery_command_power = 40
+	recovery_support_factor = 0.8
+	recovery_fuel_factor = 1.0
+	exchange_package_factor = 1.2
+	exchange_political_power = 40
+	disavow_political_power = 30
+}
+
+# Effects of the opening terms.
+lawrence_terms_effect = {
+	schema = { any_key = yes data = fixed_point }
+
+	broad_influence = 4
+	broad_trust = 4
+	broad_exposure = 8
+	escort_influence = -3
+	escort_trust = -3
+	escort_exposure = -6
+}
+
+# Effects of decisions, missions and events, in Influence, evidence, exposure, trust and credibility points.
+lawrence_effect = {
+	schema = { any_key = yes data = fixed_point }
+
+	custody_army_experience = 8
+	custody_trust = 3
+	office_influence = -5
+	office_captured_influence = 6
+	office_trust = 3
+	escort_influence = -3
+	escort_exposure = -8
+	escort_trust = -3
+	file_evidence = 1
+	file_strong_bonus = 1
+	file_strong_security = 60
+	file_exposure = -6
+	ledger_evidence = 1
+	ledger_influence = -8
+	ledger_exposure = -10
+	ledger_failure_influence = 4
+	ledger_failure_exposure = 8
+	turn_evidence = 1
+	turn_strong_security = 60
+	turn_failure_influence = 4
+	turn_failure_evidence = -1
+	feed_weak_security = 35
+	feed_influence = -3
+	feed_credibility = -3
+	feed_trust = 2
+	double_ready_progress = 3
+	feed_detected_influence = 5
+	feed_detected_evidence = -1
+	officers_securing_rate = 4
+	officers_influence = -10
+	officers_trust = 3
+	officers_failure_stability = -0.04
+	officers_failure_influence = 5
+	expose_influence = -25
+	expose_credibility = -15
+	expose_exposure = 20
+	expose_partial_influence = -8
+	expose_partial_credibility = -5
+	expose_failure_stability = -0.03
+	expose_failure_influence = 5
+	expose_failure_evidence = -1
+	dismantle_partial_influence = -12
+	dismantle_partial_exposure = -10
+	dismantle_failure_influence = 6
+	charter_trust = 10
+	charter_influence = -2
+	charter_declined_trust = -15
+	rival_influence = 6
+	balance_influence = -8
+	balance_credibility = -2
+	cadres_army_experience = 15
+	cadres_officers = 15
+	cadres_influence = 4
+	cadres_exposure = 12
+	cadres_commitment_days = 120
+	route_credibility = 3
+	route_influence = 3
+	route_failure_credibility = -3
+	press_influence = 4
+	press_censored_influence = 2
+	press_censorship_security = 70
+	press_exposure = 8
+	guarantee_credibility = 5
+	guarantee_influence = 3
+	bases_influence = 8
+	bases_credibility = -3
+	bases_declined_trust = 3
+	recovery_failed_credibility = -10
+	recovery_failed_preparedness = 1
+	disavow_credibility = -8
+	disavow_trust = 10
+	disavow_influence = -15
+	refusal_influence = -15
+	refusal_credibility = -3
+	exchange_published_credibility = -10
+	exchange_published_preparedness = 1
+	neighbour_preparedness = 1
+}
+
+# Detention of Lawrence by the target.
+lawrence_detention = {
+	schema = { any_key = yes data = fixed_point }
+
+	maximum_days = 270
+	influence = -15
+	trust = -10
+	credibility = -5
+	release_influence = 25
+	death_credibility = -10
+	death_preparedness = 1
+}
+
+# Recovery operation inputs.
+lawrence_recovery = {
+	schema = { any_key = yes data = fixed_point }
+
+	contact_officers = 50
+	strong_security = 60
+}
+
+# Persistent effects of settlements.
+lawrence_outcome_effect = {
+	schema = { any_key = yes data = fixed_point }
+
+	broken_guarantee_credibility = -20
+	restricted_days = 365
+	confidence_days = 540
+	disorder_days = 150
+	expelled_preparedness = 1
+	dismantled_preparedness = 2
+	dismantled_credibility = -10
+	double_credibility = -15
+	double_trust = -5
+	double_preparedness = 1
+	retaliation_days = 120
+}
+
+# The rare personal route needs every one of these.
+lawrence_defect = {
+	schema = { any_key = yes data = fixed_point }
+
+	trust_minimum = 65
+	trust_final = 75
+	influence_ceiling = 55
+	missions_minimum = 2
+	credibility_ceiling = 45
+}
+
+# Event-owned Chaos changes. Evolution activation gives none.
+lawrence_chaos = {
+	schema = { any_key = yes data = fixed_point }
+
+	defection = 5
+}
+
+# AI willingness levels, profile ids and the thresholds that choose a profile.
+lawrence_ai = {
+	schema = { any_key = yes data = fixed_point }
+
+	blocked = 0
+	low = 15
+	standard = 35
+	strong = 60
+	urgent = 90
+	profile_client = 1
+	profile_pragmatist = 2
+	profile_counterintelligence = 3
+	profile_challenger = 4
+	profile_double_gamer = 5
+	profile_fractured = 6
+	fractured_stability = 0.35
+	challenger_security = 45
+	double_security = 50
+	counterintelligence_security = 55
+	client_stability_ceiling = 0.55
+	turn_security = 40
+	confront_security = 60
+}
+
+# Baseline incidents.
+lawrence_incident = {
+	schema = { any_key = yes data = fixed_point }
+
+	first_days = 90
+	base_days = 120
+	fast_factor = 0.8
+	slow_factor = 1.25
+	payroll_evidence = 1
+	payroll_found_influence = -4
+	payroll_lost_influence = 4
+	payroll_ignored_influence = 4
+	commander_replaced_stability = -0.02
+	commander_replaced_officers = -8
+	commander_replaced_influence = -3
+	commander_backlash_influence = 5
+	commander_accepted_officers = 6
+	commander_accepted_influence = 3
+	courier_evidence = 1
+	courier_held_influence = -2
+	courier_delay_days = 14
+	courier_released_influence = 3
+	courier_released_exposure = 5
+}

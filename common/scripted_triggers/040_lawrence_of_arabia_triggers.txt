@@ -1,0 +1,834 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 040 LAWRENCE OF ARABIA TRIGGERS
+# ============================================================================
+# Registry membership, target and sponsor validity, campaign proof, Lawrence's
+# status, band and phase predicates, decision visibility and affordability.
+#
+# Scope: COUNTRY unless noted. ROOT is the active target inside the target
+# category, its decisions and the target events. The sponsor is always the
+# United Kingdom (ENG). Variable and flag names are bookkeeping, so every
+# trigger used in an available block is wrapped by its caller in
+# hidden_trigger or custom_trigger_tooltip.
+# Tuning lives in common/script_constants/040_lawrence_of_arabia_constants.txt.
+# ============================================================================
+
+# ---------------------------------------------------------------------------
+# Registry (explicit, never inferred from terrain, religion or continent)
+# ---------------------------------------------------------------------------
+
+# STATE. Peninsula, Levant and Mesopotamia states of the ordinary registry.
+lawrence_is_registry_state = {
+	OR = {
+		# Arabian Peninsula
+		state = 292
+		state = 293
+		state = 294
+		state = 656
+		state = 658
+		state = 659
+		state = 678
+		state = 679
+		state = 765
+		state = 854
+		state = 855
+		state = 856
+		state = 857
+		state = 858
+		state = 859
+		state = 992
+		state = 1013
+		state = 1014
+		state = 1015
+		state = 1016
+		# Levant
+		state = 454
+		state = 455
+		state = 553
+		state = 554
+		state = 677
+		state = 680
+		state = 799
+		# Mesopotamia
+		state = 291
+		state = 675
+		state = 676
+		state = 1010
+		state = 1011
+	}
+}
+
+# STATE. Registry states Britain can reach from its own regional bases.
+lawrence_is_british_base_state = {
+	OR = {
+		state = 446
+		state = 453
+		state = 454
+		state = 455
+		state = 658
+		state = 659
+		state = 992
+		state = 1014
+		state = 765
+		state = 656
+	}
+}
+
+# COUNTRY. Registry membership by capital, so released or successor countries
+# qualify without a tag list. Egypt joins only as a sovereign government.
+lawrence_is_registry_country = {
+	OR = {
+		capital_scope = { lawrence_is_registry_state = yes }
+		AND = {
+			tag = EGY
+			is_subject = no
+		}
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Sponsor and target validity
+# ---------------------------------------------------------------------------
+
+# COUNTRY, scoped to ENG. Britain can support a foreign mission.
+lawrence_sponsor_can_act = {
+	exists = yes
+	has_capitulated = no
+	is_actual_nonhuman_country = no
+	NOT = { has_global_flag = lawrence_campaign_closed }
+}
+
+# COUNTRY, scoped to ENG. Britain keeps at least one base in the registry.
+lawrence_sponsor_has_regional_base = {
+	any_controlled_state = { lawrence_is_british_base_state = yes }
+}
+
+# COUNTRY. A government that can be the next or first target.
+lawrence_is_valid_target = {
+	exists = yes
+	NOT = { tag = ENG }
+	has_capitulated = no
+	is_subject = no
+	is_special_chaos_country = no
+	is_actual_nonhuman_country = no
+	lawrence_is_registry_country = yes
+	any_owned_state = { lawrence_is_registry_state = yes }
+	NOT = { has_war_with = ENG }
+	NOT = { has_country_flag = lawrence_active_target }
+	NOT = { has_country_flag = lawrence_settled }
+	NOT = { has_civil_war = yes }
+	NOT = { has_country_flag = lawrence_target_blocked }
+}
+
+# ANY scope. At least one valid target exists and Britain can act.
+lawrence_has_any_valid_target = {
+	ENG = { lawrence_sponsor_can_act = yes }
+	any_country = { lawrence_is_valid_target = yes }
+}
+
+# ANY scope. Event 40 can enter the random pool.
+lawrence_automatic_event_is_available = {
+	lawrence_has_any_valid_target = yes
+	NOT = { has_global_flag = lawrence_campaign_active }
+	NOT = { has_global_flag = lawrence_campaign_closed }
+}
+
+# ---------------------------------------------------------------------------
+# Campaign proof (generation receipts)
+# ---------------------------------------------------------------------------
+
+# COUNTRY. This country is the live target of the current generation.
+lawrence_is_live_target = {
+	has_country_flag = lawrence_active_target
+	has_variable = lawrence_generation_id
+	check_variable = { var = lawrence_generation_id value = global.lawrence_generation compare = equals }
+	has_global_flag = lawrence_campaign_active
+}
+
+# COUNTRY. The live target is also inside the opening phase.
+lawrence_is_live_target_opening = {
+	lawrence_is_live_target = yes
+	check_variable = { var = lawrence_phase value = constant:lawrence_phase.opening compare = equals }
+}
+
+lawrence_is_live_target_contest = {
+	lawrence_is_live_target = yes
+	check_variable = { var = lawrence_phase value = constant:lawrence_phase.contest compare = equals }
+}
+
+lawrence_is_live_target_final = {
+	lawrence_is_live_target = yes
+	check_variable = { var = lawrence_phase value = constant:lawrence_phase.final compare = equals }
+}
+
+# ANY scope. The active campaign has a live target.
+lawrence_campaign_has_live_target = {
+	has_global_flag = lawrence_campaign_active
+	has_variable = global.lawrence_target
+	var:global.lawrence_target = { lawrence_is_live_target = yes }
+}
+
+# ---------------------------------------------------------------------------
+# Lawrence's personal state (global variable global.lawrence_status)
+# ---------------------------------------------------------------------------
+
+lawrence_status_is_active = {
+	check_variable = { var = global.lawrence_status value = constant:lawrence_status.active compare = equals }
+}
+
+lawrence_status_is_detained = {
+	check_variable = { var = global.lawrence_status value = constant:lawrence_status.detained compare = equals }
+}
+
+lawrence_status_is_dead = {
+	check_variable = { var = global.lawrence_status value = constant:lawrence_status.dead compare = equals }
+}
+
+lawrence_status_is_defected = {
+	check_variable = { var = global.lawrence_status value = constant:lawrence_status.defected compare = equals }
+}
+
+# Lawrence is free to act in the target: still British, or disavowed.
+lawrence_status_is_free = {
+	OR = {
+		check_variable = { var = global.lawrence_status value = constant:lawrence_status.active compare = equals }
+		check_variable = { var = global.lawrence_status value = constant:lawrence_status.disavowed compare = equals }
+	}
+}
+
+# ANY scope. British personal actions are open: Lawrence is British and free,
+# or local agents carry the mission on without him.
+lawrence_british_personal_actions_open = {
+	OR = {
+		lawrence_status_is_active = yes
+		has_global_flag = lawrence_agents_only
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Bands and trend (target scope)
+# ---------------------------------------------------------------------------
+
+lawrence_band_is_broken = {
+	check_variable = { var = lawrence_band value = constant:lawrence_band.broken compare = equals }
+}
+
+lawrence_band_is_restricted = {
+	check_variable = { var = lawrence_band value = constant:lawrence_band.restricted compare = equals }
+}
+
+lawrence_band_is_contested = {
+	check_variable = { var = lawrence_band value = constant:lawrence_band.contested compare = equals }
+}
+
+lawrence_band_is_embedded_or_higher = {
+	check_variable = { var = lawrence_band value = constant:lawrence_band.embedded compare = greater_than_or_equals }
+}
+
+lawrence_band_is_ascendant_or_higher = {
+	check_variable = { var = lawrence_band value = constant:lawrence_band.ascendant compare = greater_than_or_equals }
+}
+
+lawrence_band_is_dominant = {
+	check_variable = { var = lawrence_band value = constant:lawrence_band.dominant compare = equals }
+}
+
+# Influence at or below the clean-removal ceiling.
+lawrence_influence_is_low = {
+	check_variable = { var = lawrence_influence value = constant:lawrence_influence.clean_removal_ceiling compare = less_than }
+}
+
+# ---------------------------------------------------------------------------
+# Target-side state predicates (target scope)
+# ---------------------------------------------------------------------------
+
+lawrence_target_has_terms = {
+	NOT = { check_variable = { var = lawrence_terms value = constant:lawrence_terms.unset compare = equals } }
+}
+
+lawrence_target_has_file = { has_country_flag = lawrence_file }
+lawrence_target_has_office = { has_country_flag = lawrence_office }
+lawrence_target_has_custody_history = { has_country_flag = lawrence_custody_taken }
+lawrence_target_contact_turned = { has_country_flag = lawrence_contact_turned }
+lawrence_target_has_leverage = { has_country_flag = lawrence_leverage }
+
+lawrence_target_has_evidence_for_detention = {
+	check_variable = { var = lawrence_evidence value = constant:lawrence_evidence.detention compare = greater_than_or_equals }
+}
+
+lawrence_target_has_evidence_for_exposure = {
+	check_variable = { var = lawrence_evidence value = constant:lawrence_evidence.exposure compare = greater_than_or_equals }
+}
+
+# A mission slot is open: at most two Event 40 missions at once.
+lawrence_target_has_free_mission_slot = {
+	check_variable = { var = lawrence_missions_active value = constant:lawrence_mission.max_active compare = less_than }
+}
+
+# A British shipment is waiting for arrival.
+lawrence_target_delivery_is_pending = {
+	has_country_flag = lawrence_delivery_pending
+}
+
+# ---------------------------------------------------------------------------
+# Target decision visibility. Each rule hides the actions of a finished stage,
+# so a phase shows three to five actions and never more than six. Counterintel
+# runs as one lane (file, audit, turn, feed, expose, dismantle): at most two
+# of its decisions are visible together.
+# ---------------------------------------------------------------------------
+
+lawrence_shows_target_category = {
+	lawrence_is_live_target = yes
+}
+
+# Opening: the terms of access are still open.
+lawrence_shows_set_terms = {
+	lawrence_is_live_target_opening = yes
+}
+
+lawrence_shows_take_custody = {
+	lawrence_is_live_target = yes
+	lawrence_target_delivery_is_pending = yes
+	NOT = { has_country_flag = lawrence_delivery_custody }
+}
+
+lawrence_shows_open_office = {
+	lawrence_is_live_target_contest = yes
+	NOT = { has_country_flag = lawrence_office_built }
+}
+
+lawrence_shows_escort = {
+	lawrence_is_live_target_contest = yes
+	lawrence_status_is_free = yes
+	NOT = { check_variable = { var = lawrence_terms value = constant:lawrence_terms.escorted compare = equals } }
+	NOT = { has_country_flag = lawrence_escorted }
+	NOT = { has_country_flag = lawrence_final_pending }
+	check_variable = { var = lawrence_influence value = constant:lawrence_influence.contested_edge compare = greater_than_or_equals }
+}
+
+lawrence_shows_counterintelligence_file = {
+	lawrence_is_live_target_contest = yes
+	lawrence_status_is_free = yes
+	NOT = { has_country_flag = lawrence_file }
+	NOT = { has_country_flag = lawrence_file_in_progress }
+}
+
+lawrence_shows_audit_ledger = {
+	lawrence_is_live_target_contest = yes
+	lawrence_status_is_free = yes
+	has_country_flag = lawrence_file
+	NOT = { has_country_flag = lawrence_ledger_traced }
+	NOT = { has_country_flag = lawrence_ledger_cooldown }
+	NOT = { has_active_mission = lawrence_trace_ledger_mission }
+	lawrence_target_has_free_mission_slot = yes
+}
+
+lawrence_shows_turn_contact = {
+	lawrence_is_live_target_contest = yes
+	lawrence_status_is_free = yes
+	has_country_flag = lawrence_file
+	has_country_flag = lawrence_ledger_traced
+	NOT = { has_country_flag = lawrence_contact_turned }
+	NOT = { has_country_flag = lawrence_double_detected }
+}
+
+lawrence_shows_feed_intelligence = {
+	lawrence_is_live_target_contest = yes
+	lawrence_status_is_free = yes
+	has_country_flag = lawrence_contact_turned
+	NOT = { has_country_flag = lawrence_double_ready }
+}
+
+lawrence_shows_expose_network = {
+	lawrence_is_live_target_contest = yes
+	lawrence_status_is_free = yes
+	has_country_flag = lawrence_file
+	NOT = { has_country_flag = lawrence_exposed }
+	NOT = { has_country_flag = lawrence_expose_cooldown }
+	NOT = { has_active_mission = lawrence_expose_network_mission }
+	lawrence_target_has_free_mission_slot = yes
+	check_variable = { var = lawrence_evidence value = constant:lawrence_evidence.mission_start compare = greater_than_or_equals }
+}
+
+lawrence_shows_dismantle = {
+	lawrence_is_live_target = yes
+	has_country_flag = lawrence_exposed
+	NOT = { has_country_flag = lawrence_dismantled }
+	NOT = { has_country_flag = lawrence_dismantle_cooldown }
+	NOT = { has_active_mission = lawrence_dismantle_mission }
+	lawrence_target_has_free_mission_slot = yes
+}
+
+lawrence_shows_secure_officers = {
+	lawrence_is_live_target_contest = yes
+	lawrence_status_is_free = yes
+	NOT = { has_country_flag = lawrence_officers_secured }
+	NOT = { has_country_flag = lawrence_officers_cooldown }
+	NOT = { has_active_mission = lawrence_secure_officers_mission }
+	lawrence_target_has_free_mission_slot = yes
+	check_variable = { var = lawrence_officers value = constant:lawrence_officers.secure_target compare = greater_than }
+	check_variable = { var = lawrence_influence value = constant:lawrence_influence.contested_edge compare = greater_than_or_equals }
+}
+
+lawrence_shows_expel = {
+	lawrence_is_live_target_contest = yes
+	lawrence_status_is_free = yes
+	NOT = { has_country_flag = lawrence_final_pending }
+}
+
+lawrence_shows_detain = {
+	lawrence_is_live_target_contest = yes
+	lawrence_status_is_active = yes
+	NOT = { has_country_flag = lawrence_detained_once }
+	NOT = { has_country_flag = lawrence_final_pending }
+	lawrence_target_has_evidence_for_detention = yes
+	check_variable = { var = lawrence_influence value = constant:lawrence_influence.dominant_edge compare = less_than }
+}
+
+lawrence_shows_play_britain_against_rival = {
+	lawrence_is_live_target_contest = yes
+	lawrence_status_is_free = yes
+	NOT = { has_country_flag = lawrence_rival_played }
+	NOT = { has_country_flag = lawrence_final_pending }
+	check_variable = { var = lawrence_influence value = constant:lawrence_influence.ascendant_edge compare = less_than }
+	lawrence_target_has_rival_threat = yes
+}
+
+lawrence_shows_balance_sponsors = {
+	lawrence_is_live_target_contest = yes
+	lawrence_status_is_free = yes
+	NOT = { has_country_flag = lawrence_sponsors_balanced }
+	NOT = { has_country_flag = lawrence_final_pending }
+	check_variable = { var = lawrence_influence value = constant:lawrence_influence.contested_edge compare = greater_than_or_equals }
+	lawrence_target_has_alternative_sponsor = yes
+}
+
+lawrence_shows_preserve_custody = {
+	lawrence_is_live_target_contest = yes
+	lawrence_status_is_free = yes
+	has_country_flag = lawrence_custody_taken
+	has_country_flag = lawrence_office
+	NOT = { has_country_flag = lawrence_final_pending }
+	check_variable = { var = lawrence_influence value = constant:lawrence_influence.embedded_edge compare = less_than }
+}
+
+lawrence_shows_seek_treaty = {
+	lawrence_is_live_target_contest = yes
+	lawrence_status_is_free = yes
+	NOT = { has_country_flag = lawrence_final_pending }
+	NOT = { has_country_flag = lawrence_treaty_cooldown }
+	check_variable = { var = lawrence_mid_days value = constant:lawrence_confirm.mid_days compare = greater_than_or_equals }
+}
+
+lawrence_shows_independent_charter = {
+	lawrence_is_live_target_contest = yes
+	lawrence_status_is_free = yes
+	NOT = { has_country_flag = lawrence_charter_offered }
+	lawrence_charter_conditions_are_met = yes
+}
+
+# COUNTRY. The rival threat that makes British aid attractive: a war or a
+# major power on the border.
+lawrence_target_has_rival_threat = {
+	OR = {
+		has_war = yes
+		any_neighbor_country = {
+			is_major = yes
+			NOT = { tag = ENG }
+			NOT = { is_subject_of = ENG }
+			NOT = { is_in_faction_with = ENG }
+		}
+	}
+}
+
+# COUNTRY, scoped to a candidate sponsor with ROOT as the target. A real
+# patron with a reason and a route: an enemy of Britain with access, or a
+# major power of the same ideology on the border or in the same faction.
+lawrence_is_alternative_sponsor = {
+	is_major = yes
+	exists = yes
+	has_capitulated = no
+	NOT = { tag = ENG }
+	NOT = { is_subject_of = ENG }
+	NOT = { is_in_faction_with = ENG }
+	is_actual_nonhuman_country = no
+	OR = {
+		has_war_with = ENG
+		AND = {
+			ideology_group_matches_target = yes
+			OR = {
+				is_neighbor_of = ROOT
+				is_in_faction_with = ROOT
+			}
+		}
+	}
+	OR = {
+		has_military_access_to = ROOT
+		ROOT = { has_military_access_to = PREV }
+		is_neighbor_of = ROOT
+		is_in_faction_with = ROOT
+	}
+}
+
+# COUNTRY, the target. At least one alternative sponsor exists.
+lawrence_target_has_alternative_sponsor = {
+	any_other_country = { lawrence_is_alternative_sponsor = yes }
+}
+
+# COUNTRY. Same broad ideology group as the target (ROOT).
+ideology_group_matches_target = {
+	OR = {
+		AND = {
+			has_government = democratic
+			ROOT = { has_government = democratic }
+		}
+		AND = {
+			has_government = fascism
+			ROOT = { has_government = fascism }
+		}
+		AND = {
+			has_government = communism
+			ROOT = { has_government = communism }
+		}
+	}
+}
+
+# COUNTRY. The conditions of the rare personal route: office, custody, trust,
+# earlier success and British overreach or disavowal.
+lawrence_charter_conditions_are_met = {
+	has_country_flag = lawrence_office
+	has_country_flag = lawrence_custody_taken
+	check_variable = { var = global.lawrence_trust value = constant:lawrence_defect.trust_minimum compare = greater_than_or_equals }
+	check_variable = { var = lawrence_influence value = constant:lawrence_defect.influence_ceiling compare = less_than }
+	check_variable = { var = lawrence_missions_done value = constant:lawrence_defect.missions_minimum compare = greater_than_or_equals }
+	OR = {
+		check_variable = { var = global.lawrence_credibility value = constant:lawrence_defect.credibility_ceiling compare = less_than }
+		has_global_flag = lawrence_disavowed
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Garrison objectives (the named nodes the missions ask the target to hold)
+# ---------------------------------------------------------------------------
+
+# COUNTRY. The capital node holds the required garrison.
+lawrence_capital_garrisoned = {
+	has_variable = lawrence_node_capital
+	OR = {
+		AND = {
+			check_variable = { var = lawrence_garrison_need value = constant:lawrence_mission.garrison_light compare = equals }
+			divisions_in_state = { state = var:lawrence_node_capital size > 0 }
+		}
+		AND = {
+			check_variable = { var = lawrence_garrison_need value = constant:lawrence_mission.garrison_light compare = greater_than }
+			divisions_in_state = { state = var:lawrence_node_capital size > 1 }
+		}
+	}
+}
+
+# COUNTRY. The port node holds the required garrison, or the target has no
+# separate port node.
+lawrence_port_garrisoned = {
+	OR = {
+		NOT = { has_variable = lawrence_node_port }
+		AND = {
+			check_variable = { var = lawrence_garrison_need value = constant:lawrence_mission.garrison_light compare = equals }
+			divisions_in_state = { state = var:lawrence_node_port size > 0 }
+		}
+		AND = {
+			check_variable = { var = lawrence_garrison_need value = constant:lawrence_mission.garrison_light compare = greater_than }
+			divisions_in_state = { state = var:lawrence_node_port size > 1 }
+		}
+	}
+}
+
+# COUNTRY. The route node holds the required garrison, or no route node exists.
+lawrence_route_garrisoned = {
+	OR = {
+		NOT = { has_variable = lawrence_node_route }
+		AND = {
+			check_variable = { var = lawrence_garrison_need value = constant:lawrence_mission.garrison_light compare = equals }
+			divisions_in_state = { state = var:lawrence_node_route size > 0 }
+		}
+		AND = {
+			check_variable = { var = lawrence_garrison_need value = constant:lawrence_mission.garrison_light compare = greater_than }
+			divisions_in_state = { state = var:lawrence_node_route size > 1 }
+		}
+	}
+}
+
+# COUNTRY. Every named node is held.
+lawrence_all_nodes_garrisoned = {
+	lawrence_capital_garrisoned = yes
+	lawrence_port_garrisoned = yes
+	lawrence_route_garrisoned = yes
+}
+
+# ---------------------------------------------------------------------------
+# AI profile predicates (target scope)
+# ---------------------------------------------------------------------------
+
+lawrence_ai_is_client = {
+	check_variable = { var = lawrence_ai_profile value = constant:lawrence_ai.profile_client compare = equals }
+}
+
+lawrence_ai_is_pragmatist = {
+	check_variable = { var = lawrence_ai_profile value = constant:lawrence_ai.profile_pragmatist compare = equals }
+}
+
+lawrence_ai_is_counterintelligence = {
+	check_variable = { var = lawrence_ai_profile value = constant:lawrence_ai.profile_counterintelligence compare = equals }
+}
+
+lawrence_ai_is_challenger = {
+	check_variable = { var = lawrence_ai_profile value = constant:lawrence_ai.profile_challenger compare = equals }
+}
+
+lawrence_ai_is_double_gamer = {
+	check_variable = { var = lawrence_ai_profile value = constant:lawrence_ai.profile_double_gamer compare = equals }
+}
+
+lawrence_ai_is_fractured = {
+	check_variable = { var = lawrence_ai_profile value = constant:lawrence_ai.profile_fractured compare = equals }
+}
+
+# ---------------------------------------------------------------------------
+# British visibility (scope ENG)
+# ---------------------------------------------------------------------------
+
+lawrence_shows_british_category = {
+	tag = ENG
+	lawrence_campaign_has_live_target = yes
+}
+
+lawrence_shows_gold_and_arms = {
+	lawrence_shows_british_category = yes
+	lawrence_british_personal_actions_open = yes
+	NOT = { var:global.lawrence_target = { lawrence_is_live_target_final = yes } }
+}
+
+lawrence_shows_officer_cadres = {
+	lawrence_shows_british_category = yes
+	lawrence_british_personal_actions_open = yes
+	var:global.lawrence_target = {
+		lawrence_is_live_target_contest = yes
+		NOT = { has_country_flag = lawrence_cadres_sent }
+	}
+}
+
+lawrence_shows_sea_route = {
+	lawrence_shows_british_category = yes
+	lawrence_british_personal_actions_open = yes
+	var:global.lawrence_target = {
+		lawrence_is_live_target_contest = yes
+		lawrence_target_is_coastal = yes
+		NOT = { has_country_flag = lawrence_route_sea }
+	}
+	NOT = { has_active_mission = lawrence_arms_route_mission }
+}
+
+lawrence_shows_rail_link = {
+	lawrence_shows_british_category = yes
+	lawrence_british_personal_actions_open = yes
+	var:global.lawrence_target = {
+		lawrence_is_live_target_contest = yes
+		NOT = { has_country_flag = lawrence_rail_repaired }
+	}
+	NOT = { has_active_mission = lawrence_arms_route_mission }
+}
+
+lawrence_shows_press_network = {
+	lawrence_shows_british_category = yes
+	lawrence_british_personal_actions_open = yes
+	var:global.lawrence_target = {
+		lawrence_is_live_target_contest = yes
+		check_variable = { var = lawrence_influence value = constant:lawrence_influence.ascendant_edge compare = less_than }
+		NOT = { has_country_flag = lawrence_press_active }
+	}
+}
+
+lawrence_shows_guarantees = {
+	lawrence_shows_british_category = yes
+	lawrence_british_personal_actions_open = yes
+	var:global.lawrence_target = {
+		lawrence_is_live_target_contest = yes
+		NOT = { has_country_flag = lawrence_guarantee_given }
+	}
+}
+
+lawrence_shows_bases_for_aid = {
+	lawrence_shows_british_category = yes
+	lawrence_british_personal_actions_open = yes
+	var:global.lawrence_target = {
+		lawrence_is_live_target_contest = yes
+		check_variable = { var = lawrence_influence value = constant:lawrence_influence.contested_edge compare = greater_than_or_equals }
+		NOT = { has_country_flag = lawrence_bases_resolved }
+	}
+}
+
+lawrence_shows_recovery_set = {
+	lawrence_shows_british_category = yes
+	lawrence_status_is_detained = yes
+}
+
+lawrence_shows_disavow = {
+	lawrence_shows_british_category = yes
+	lawrence_british_personal_actions_open = yes
+	var:global.lawrence_target = {
+		lawrence_is_live_target = yes
+		has_country_flag = lawrence_exposed
+	}
+	NOT = { has_global_flag = lawrence_disavowed }
+}
+
+# STATE scope helper through ROOT: the target has a coastal state.
+lawrence_target_is_coastal = {
+	any_owned_state = { is_coastal = yes }
+}
+
+# ---------------------------------------------------------------------------
+# Affordability. One predicate per paid action feeds available, the cost row
+# and the payment (inclusive).
+# ---------------------------------------------------------------------------
+
+lawrence_can_pay_custody = {
+	NOT = { command_power < constant:lawrence_cost.custody_command_power }
+	NOT = { has_equipment = { support_equipment < lawrence_cost_custody_support } }
+}
+
+lawrence_can_pay_office = {
+	NOT = { has_political_power < constant:lawrence_cost.office_political_power }
+	NOT = { has_equipment = { support_equipment < lawrence_cost_office_support } }
+}
+
+lawrence_can_pay_escort = {
+	NOT = { command_power < constant:lawrence_cost.escort_command_power }
+	NOT = { has_equipment = { support_equipment < lawrence_cost_escort_support } }
+}
+
+lawrence_can_pay_file = {
+	NOT = { has_political_power < constant:lawrence_cost.file_political_power }
+	NOT = { has_equipment = { support_equipment < lawrence_cost_file_support } }
+}
+
+lawrence_can_pay_audit = {
+	NOT = { has_political_power < constant:lawrence_cost.audit_political_power }
+	NOT = { command_power < constant:lawrence_cost.audit_command_power }
+}
+
+lawrence_can_pay_turn = {
+	NOT = { has_political_power < constant:lawrence_cost.turn_political_power }
+	NOT = { command_power < constant:lawrence_cost.turn_command_power }
+}
+
+lawrence_can_pay_feed = {
+	NOT = { command_power < constant:lawrence_cost.feed_command_power }
+	NOT = { has_political_power < constant:lawrence_cost.feed_political_power }
+}
+
+lawrence_can_pay_officers = {
+	NOT = { has_army_experience < constant:lawrence_cost.officers_army_experience }
+	NOT = { command_power < constant:lawrence_cost.officers_command_power }
+}
+
+lawrence_can_pay_expose = {
+	NOT = { has_political_power < constant:lawrence_cost.expose_political_power }
+	has_stability > constant:lawrence_cost.expose_stability_floor
+}
+
+lawrence_can_pay_expel = {
+	NOT = { has_political_power < constant:lawrence_cost.expel_political_power }
+	NOT = { has_stability < constant:lawrence_cost.expel_stability_floor }
+}
+
+lawrence_can_pay_detain = {
+	NOT = { command_power < constant:lawrence_cost.detain_command_power }
+	NOT = { num_divisions < constant:lawrence_cost.detain_divisions }
+	NOT = { has_political_power < constant:lawrence_cost.detain_political_power }
+}
+
+lawrence_can_pay_dismantle = {
+	NOT = { command_power < constant:lawrence_cost.dismantle_command_power }
+	NOT = { has_political_power < constant:lawrence_cost.dismantle_political_power }
+	NOT = { has_equipment = { support_equipment < lawrence_cost_dismantle_support } }
+}
+
+lawrence_can_pay_preserve_custody = {
+	NOT = { has_army_experience < constant:lawrence_cost.preserve_army_experience }
+	NOT = { command_power < constant:lawrence_cost.preserve_command_power }
+	NOT = { has_political_power < constant:lawrence_cost.preserve_political_power }
+}
+
+lawrence_can_pay_treaty = {
+	NOT = { has_political_power < constant:lawrence_cost.treaty_political_power }
+}
+
+lawrence_can_pay_charter = {
+	NOT = { has_political_power < constant:lawrence_cost.charter_political_power }
+	has_stability > constant:lawrence_cost.charter_stability_floor
+}
+
+lawrence_can_pay_sponsor_balance = {
+	NOT = { has_political_power < constant:lawrence_cost.balance_political_power }
+	NOT = { command_power < constant:lawrence_cost.balance_command_power }
+}
+
+lawrence_can_pay_rival_play = {
+	NOT = { has_political_power < constant:lawrence_cost.rival_political_power }
+}
+
+# British (scope ENG)
+
+lawrence_can_pay_gold_arms = {
+	NOT = { has_equipment = { infantry_equipment < lawrence_cost_arms_infantry } }
+	NOT = { has_equipment = { support_equipment < lawrence_cost_arms_support } }
+	NOT = { has_political_power < constant:lawrence_cost.arms_political_power }
+}
+
+lawrence_can_pay_cadres = {
+	NOT = { has_army_experience < constant:lawrence_cost.cadres_army_experience }
+	NOT = { command_power < constant:lawrence_cost.cadres_command_power }
+	NOT = { has_political_power < constant:lawrence_cost.cadres_political_power }
+}
+
+lawrence_can_pay_sea_route = {
+	NOT = { has_equipment = { convoy_1 < lawrence_cost_route_convoys } }
+	NOT = { has_fuel < lawrence_cost_route_fuel }
+	NOT = { command_power < constant:lawrence_cost.route_command_power }
+}
+
+lawrence_can_pay_rail_link = {
+	NOT = { has_equipment = { train_equipment < lawrence_cost_rail_trains } }
+	NOT = { has_equipment = { support_equipment < lawrence_cost_rail_support } }
+	NOT = { has_political_power < constant:lawrence_cost.rail_political_power }
+}
+
+lawrence_can_pay_press = {
+	NOT = { has_political_power < constant:lawrence_cost.press_political_power }
+	NOT = { has_equipment = { support_equipment < lawrence_cost_press_support } }
+}
+
+lawrence_can_pay_guarantees = {
+	NOT = { has_political_power < constant:lawrence_cost.guarantee_political_power }
+}
+
+lawrence_can_pay_bases = {
+	NOT = { has_equipment = { infantry_equipment < lawrence_cost_bases_infantry } }
+	NOT = { has_equipment = { support_equipment < lawrence_cost_bases_support } }
+	NOT = { has_political_power < constant:lawrence_cost.bases_political_power }
+}
+
+lawrence_can_pay_recovery = {
+	NOT = { command_power < constant:lawrence_cost.recovery_command_power }
+	NOT = { has_equipment = { support_equipment < lawrence_cost_recovery_support } }
+	NOT = { has_fuel < lawrence_cost_recovery_fuel }
+}
+
+lawrence_can_pay_exchange = {
+	NOT = { has_equipment = { infantry_equipment < lawrence_cost_exchange_infantry } }
+	NOT = { has_equipment = { support_equipment < lawrence_cost_exchange_support } }
+	NOT = { has_political_power < constant:lawrence_cost.exchange_political_power }
+}
+
+lawrence_can_pay_disavow = {
+	NOT = { has_political_power < constant:lawrence_cost.disavow_political_power }
+}

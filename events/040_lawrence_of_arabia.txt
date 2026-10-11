@@ -1,23 +1,32 @@
 add_namespace = chaosx.nr40
 
-##############################################################################################################
-#    ##    ## ########     ##          #####
-#    ###   ## ##     ##    ##    ##   ##   ##
-#    ####  ## ##     ##    ##    ##  ##     ##
-#    ## ## ## ########     ##    ##  ##     ##
-#    ##  #### ##   ##      ######### ##     ##
-#    ##   ### ##    ##           ##   ##   ##
-#    ##    ## ##     ##          ##    #####
-##############################################################################################################
-#   #                                                                               #
-#   #         ##   #    # #####  ###### #    #  ####  ######     ####  ######      # #   #####    ##   #####  #   ##
-#   #        #  #  #    # #    # #      ##   # #    # #         #    # #          #   #  #    #  #  #  #    # #  #  #
-#   #       #    # #    # #    # #####  # #  # #      #####     #    # #####     #     # #    # #    # #####  # #    #
-#   #       ###### # ## # #####  #      #  # # #      #         #    # #         ####### #####  ###### #    # # ######
-#   #       #    # ##  ## #   #  #      #   ## #    # #         #    # #         #     # #   #  #    # #    # # #    #
-#   ####### #    # #    # #    # ###### #    #  ####  ######     ####  #         #     # #    # #    # #####  # #    #
+# ============================================================================
+# CHAOS REDUX - EVENT 040 LAWRENCE OF ARABIA
+# ============================================================================
+# Britain recalls a man believed dead and sends him into one Arabian
+# government at a time. The target decides the terms, both sides play out the
+# contest through decisions and missions, and each target ends in one
+# settlement. Event 40 is Minor Fire-Once: later targets are internal stages.
+#
+#   .1  hidden entry on ENG                .2  opening report (target)
+#   .3  recall report (ENG)                .4  terms of access (target)
+#   .5  weekly pulse (hidden, target)      .6  next target job (hidden, ENG)
+#   .7  Embedded report (target)           .8  Ascendant report (target)
+#   .9  protectorate terms (target)        .10 independent treaty (ENG)
+#   .11 protectorate notice (ENG)          .12 shipment on its way (target)
+#   .13 shipment landed (target)           .15 bases for aid (target)
+#   .16 exchange offer (target)            .17 .18 .19 contact reports
+#   .20 .21 recovery success               .22 .23 recovery failure
+#   .24 .25 detention reports              .26 local agents decision (ENG)
+#   .27 watchdog (hidden, ENG)             .28 campaign closed (ENG)
+#   .30 Lawrence's choice (target)         .40 news (all news kinds)
+#   .45 retaliation choice (ENG)           .50 .51 neighbour reactions
+#   .60 .61 .62 incidents                  .71 to .78 settlement reports
+# ============================================================================
 
-##############################################################################################################
+# ---------------------------------------------------------------------------
+# Entry, opening and recall
+# ---------------------------------------------------------------------------
 
 country_event = {
 	id = chaosx.nr40.1
@@ -27,34 +36,1183 @@ country_event = {
 	is_triggered_only = yes
 
 	immediate = {
-		ENG = {
-			country_event = { id = chaosx.nr40.2 days = 1 }
-		}
+		lawrence_open_campaign = yes
 	}
 }
-
-##############################################################################################################
 
 country_event = {
 	id = chaosx.nr40.2
 	title = chaosx.nr40.2.t
 	desc = chaosx.nr40.2.d
+	picture = GFX_report_event_040_lawrence_arab_congress
+
+	is_triggered_only = yes
+	trigger = { lawrence_is_live_target = yes }
+
+	option = {
+		name = chaosx.nr40.2.a
+		ai_chance = { base = 1 }
+		custom_effect_tooltip = chaosx.nr40.2.a_tt
+	}
+}
+
+country_event = {
+	id = chaosx.nr40.3
+	title = chaosx.nr40.3.t
+	desc = chaosx.nr40.3.d
 	picture = GFX_report_event_lawrence
 
 	is_triggered_only = yes
+	trigger = { has_global_flag = lawrence_campaign_active }
 
 	option = {
-		ai_chance = { base = 100 }
-		name = chaosx.nr40.2.a
-		random_country = {
-			limit = { capital_scope = { is_on_continent = middle_east } NOT = { tag = TUR } is_puppet = no }
-			ENG = {
-				puppet = {
-					target = PREV
-					end_wars = no
+		name = chaosx.nr40.3.a
+		ai_chance = { base = 1 }
+		custom_effect_tooltip = chaosx.nr40.3.a_tt
+	}
+}
+
+# Terms of access. Every option ends the opening and starts the contest.
+country_event = {
+	id = chaosx.nr40.4
+	title = chaosx.nr40.4.t
+	desc = chaosx.nr40.4.d
+	picture = GFX_report_event_040_lawrence_arab_congress
+
+	is_triggered_only = yes
+	trigger = { lawrence_is_live_target_opening = yes }
+
+	option = {
+		name = chaosx.nr40.4.a
+		custom_effect_tooltip = chaosx.nr40.4.a_tt
+		ai_chance = {
+			base = 5
+			modifier = { add = 60 lawrence_ai_is_client = yes }
+			modifier = { add = 25 lawrence_ai_is_fractured = yes }
+			modifier = { add = 15 lawrence_ai_is_pragmatist = yes }
+		}
+		hidden_effect = {
+			set_temp_variable = { lawrence_terms_choice = constant:lawrence_terms.broad }
+			lawrence_apply_terms = yes
+		}
+	}
+	option = {
+		name = chaosx.nr40.4.b
+		custom_effect_tooltip = chaosx.nr40.4.b_tt
+		ai_chance = {
+			base = 5
+			modifier = { add = 60 lawrence_ai_is_pragmatist = yes }
+			modifier = { add = 40 lawrence_ai_is_double_gamer = yes }
+			modifier = { add = 20 lawrence_ai_is_counterintelligence = yes }
+		}
+		hidden_effect = {
+			set_temp_variable = { lawrence_terms_choice = constant:lawrence_terms.liaison }
+			lawrence_apply_terms = yes
+		}
+	}
+	option = {
+		name = chaosx.nr40.4.c
+		custom_effect_tooltip = chaosx.nr40.4.c_tt
+		ai_chance = {
+			base = 5
+			modifier = { add = 55 lawrence_ai_is_counterintelligence = yes }
+			modifier = { add = 25 lawrence_ai_is_challenger = yes }
+		}
+		hidden_effect = {
+			set_temp_variable = { lawrence_terms_choice = constant:lawrence_terms.escorted }
+			lawrence_apply_terms = yes
+		}
+	}
+	option = {
+		name = chaosx.nr40.4.e
+		trigger = {
+			check_variable = { var = lawrence_influence value = constant:lawrence_terms.refusal_ceiling compare = less_than }
+		}
+		custom_effect_tooltip = chaosx.nr40.4.e_tt
+		ai_chance = {
+			base = 0
+			modifier = { add = 40 lawrence_ai_is_challenger = yes }
+			modifier = { add = 10 lawrence_ai_is_counterintelligence = yes }
+		}
+		hidden_effect = {
+			set_temp_variable = { lawrence_terms_choice = constant:lawrence_terms.refused }
+			lawrence_apply_terms = yes
+		}
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Scheduled hidden events
+# ---------------------------------------------------------------------------
+
+country_event = {
+	id = chaosx.nr40.5
+	title = chaosx.nr40.5.t
+
+	hidden = yes
+	is_triggered_only = yes
+
+	immediate = {
+		lawrence_pulse = yes
+	}
+}
+
+country_event = {
+	id = chaosx.nr40.6
+	title = chaosx.nr40.6.t
+
+	hidden = yes
+	is_triggered_only = yes
+
+	immediate = {
+		lawrence_try_next_target = yes
+	}
+}
+
+country_event = {
+	id = chaosx.nr40.27
+	title = chaosx.nr40.27.t
+
+	hidden = yes
+	is_triggered_only = yes
+
+	immediate = {
+		lawrence_watchdog = yes
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Band reports
+# ---------------------------------------------------------------------------
+
+country_event = {
+	id = chaosx.nr40.7
+	title = chaosx.nr40.7.t
+	desc = chaosx.nr40.7.d
+	picture = GFX_report_event_040_lawrence_arab_congress
+
+	is_triggered_only = yes
+	trigger = { lawrence_is_live_target = yes }
+
+	option = {
+		name = chaosx.nr40.7.a
+		ai_chance = { base = 1 }
+		custom_effect_tooltip = chaosx.nr40.7.a_tt
+	}
+}
+
+country_event = {
+	id = chaosx.nr40.8
+	title = chaosx.nr40.8.t
+	desc = chaosx.nr40.8.d
+	picture = GFX_report_event_040_lawrence_arab_congress
+
+	is_triggered_only = yes
+	trigger = { lawrence_is_live_target = yes }
+
+	option = {
+		name = chaosx.nr40.8.a
+		ai_chance = { base = 1 }
+		custom_effect_tooltip = chaosx.nr40.8.a_tt
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Settlement offers
+# ---------------------------------------------------------------------------
+
+# Protectorate terms. Delay is first, because the native timeout takes the
+# first option and silence must never accept a protectorate.
+country_event = {
+	id = chaosx.nr40.9
+	title = chaosx.nr40.9.t
+	desc = chaosx.nr40.9.d
+	picture = GFX_report_event_040_lawrence_arab_congress
+
+	is_triggered_only = yes
+	trigger = {
+		lawrence_is_live_target = yes
+		has_country_flag = lawrence_final_pending
+	}
+
+	option = {
+		name = chaosx.nr40.9.a
+		custom_effect_tooltip = chaosx.nr40.9.a_tt
+		ai_chance = {
+			base = 10
+			modifier = { add = 30 lawrence_ai_is_challenger = yes }
+			modifier = { add = 25 lawrence_ai_is_counterintelligence = yes }
+			modifier = { add = 15 lawrence_ai_is_double_gamer = yes }
+		}
+		hidden_effect = {
+			clr_country_flag = lawrence_final_pending
+			set_variable = { lawrence_phase = constant:lawrence_phase.contest }
+			set_temp_variable = { lawrence_flag_days = constant:lawrence_confirm.delay_cooldown_days }
+			set_country_flag = { flag = lawrence_terms_refused_recently days = lawrence_flag_days }
+			set_variable = { lawrence_dominant_days = constant:lawrence_event.zero }
+			set_variable = { lawrence_embedded_days = constant:lawrence_event.zero }
+		}
+	}
+	option = {
+		name = chaosx.nr40.9.b
+		custom_effect_tooltip = chaosx.nr40.9.b_tt
+		ai_chance = {
+			base = 0
+			modifier = { add = 90 lawrence_ai_is_client = yes }
+			modifier = { add = 45 lawrence_ai_is_fractured = yes }
+			modifier = { add = 10 lawrence_ai_is_pragmatist = yes }
+		}
+		hidden_effect = {
+			set_temp_variable = { lawrence_settle_outcome = constant:lawrence_outcome.client }
+			lawrence_settle = yes
+		}
+	}
+	option = {
+		name = chaosx.nr40.9.c
+		custom_effect_tooltip = chaosx.nr40.9.c_tt
+		ai_chance = {
+			base = 0
+			modifier = { add = 80 lawrence_ai_is_pragmatist = yes }
+			modifier = { add = 20 lawrence_ai_is_client = yes }
+			modifier = { add = 10 lawrence_ai_is_fractured = yes }
+		}
+		hidden_effect = {
+			set_temp_variable = { lawrence_settle_outcome = constant:lawrence_outcome.ally }
+			lawrence_settle = yes
+		}
+	}
+	option = {
+		name = chaosx.nr40.9.e
+		custom_effect_tooltip = chaosx.nr40.9.e_tt
+		ai_chance = {
+			base = 0
+			modifier = { add = 35 lawrence_ai_is_challenger = yes }
+			modifier = { add = 20 lawrence_ai_is_counterintelligence = yes }
+		}
+		hidden_effect = {
+			clr_country_flag = lawrence_final_pending
+			set_variable = { lawrence_phase = constant:lawrence_phase.contest }
+			set_temp_variable = { lawrence_flag_days = constant:lawrence_confirm.refusal_cooldown_days }
+			set_country_flag = { flag = lawrence_terms_refused_recently days = lawrence_flag_days }
+			set_temp_variable = { lawrence_change = constant:lawrence_effect.refusal_influence }
+			lawrence_add_influence = yes
+			set_variable = { lawrence_dominant_days = constant:lawrence_event.zero }
+			set_variable = { lawrence_embedded_days = constant:lawrence_event.zero }
+			set_temp_variable = { lawrence_credibility_change = constant:lawrence_effect.refusal_credibility }
+			lawrence_add_credibility = yes
+		}
+	}
+}
+
+# Independent treaty: Britain answers the target's request.
+country_event = {
+	id = chaosx.nr40.10
+	title = chaosx.nr40.10.t
+	desc = chaosx.nr40.10.d
+	picture = GFX_report_event_lawrence
+
+	is_triggered_only = yes
+	trigger = {
+		has_global_flag = lawrence_campaign_active
+		lawrence_sponsor_can_act = yes
+	}
+
+	option = {
+		name = chaosx.nr40.10.a
+		custom_effect_tooltip = chaosx.nr40.10.a_tt
+		ai_chance = {
+			base = 70
+			modifier = { factor = 0.4 has_war_with_major = yes }
+		}
+		hidden_effect = {
+			if = {
+				limit = { has_variable = global.lawrence_target }
+				var:global.lawrence_target = {
+					set_temp_variable = { lawrence_settle_outcome = constant:lawrence_outcome.ally }
+					lawrence_settle = yes
 				}
 			}
 		}
-		news_event = { id = chaosx.news.45 days = 2 }
+	}
+	option = {
+		name = chaosx.nr40.10.b
+		custom_effect_tooltip = chaosx.nr40.10.b_tt
+		ai_chance = {
+			base = 30
+			modifier = { add = 20 has_war_with_major = yes }
+		}
+		hidden_effect = {
+			if = {
+				limit = { has_variable = global.lawrence_target }
+				var:global.lawrence_target = {
+					clr_country_flag = lawrence_final_pending
+					set_variable = { lawrence_phase = constant:lawrence_phase.contest }
+					set_temp_variable = { lawrence_flag_days = constant:lawrence_confirm.refusal_cooldown_days }
+					set_country_flag = { flag = lawrence_treaty_cooldown days = lawrence_flag_days }
+					set_variable = { lawrence_mid_days = constant:lawrence_event.zero }
+				}
+			}
+		}
+	}
+}
+
+country_event = {
+	id = chaosx.nr40.11
+	title = chaosx.nr40.11.t
+	desc = chaosx.nr40.11.d
+	picture = GFX_report_event_lawrence
+
+	is_triggered_only = yes
+	trigger = { has_global_flag = lawrence_campaign_active }
+
+	option = {
+		name = chaosx.nr40.11.a
+		ai_chance = { base = 1 }
+		custom_effect_tooltip = chaosx.nr40.11.a_tt
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Shipments
+# ---------------------------------------------------------------------------
+
+country_event = {
+	id = chaosx.nr40.12
+	title = chaosx.nr40.12.t
+	desc = chaosx.nr40.12.d
+	picture = GFX_report_event_040_lawrence_arab_congress
+
+	is_triggered_only = yes
+	trigger = {
+		lawrence_is_live_target = yes
+		has_country_flag = lawrence_delivery_pending
+	}
+
+	option = {
+		name = chaosx.nr40.12.a
+		ai_chance = { base = 1 }
+		custom_effect_tooltip = chaosx.nr40.12.a_tt
+	}
+}
+
+country_event = {
+	id = chaosx.nr40.13
+	title = chaosx.nr40.13.t
+	desc = chaosx.nr40.13.d
+	picture = GFX_report_event_040_lawrence_arab_congress
+
+	is_triggered_only = yes
+	trigger = { lawrence_is_live_target = yes }
+
+	option = {
+		name = chaosx.nr40.13.a
+		ai_chance = { base = 1 }
+		custom_effect_tooltip = chaosx.nr40.13.a_tt
+	}
+}
+
+# Bases for aid: the target answers Britain's escrowed package.
+country_event = {
+	id = chaosx.nr40.15
+	title = chaosx.nr40.15.t
+	desc = chaosx.nr40.15.d
+	picture = GFX_report_event_040_lawrence_arab_congress
+
+	is_triggered_only = yes
+	trigger = {
+		lawrence_is_live_target = yes
+		has_country_flag = lawrence_bases_offer_open
+	}
+
+	option = {
+		name = chaosx.nr40.15.a
+		custom_effect_tooltip = chaosx.nr40.15.a_tt
+		ai_chance = {
+			base = 0
+			modifier = { add = 70 lawrence_ai_is_client = yes }
+			modifier = { add = 50 lawrence_ai_is_fractured = yes }
+			modifier = { add = 25 lawrence_ai_is_pragmatist = yes }
+			modifier = { add = 5 lawrence_ai_is_double_gamer = yes }
+		}
+		hidden_effect = { lawrence_accept_bases = yes }
+	}
+	option = {
+		name = chaosx.nr40.15.b
+		custom_effect_tooltip = chaosx.nr40.15.b_tt
+		ai_chance = {
+			base = 10
+			modifier = { add = 60 lawrence_ai_is_challenger = yes }
+			modifier = { add = 50 lawrence_ai_is_counterintelligence = yes }
+			modifier = { add = 30 lawrence_ai_is_double_gamer = yes }
+			modifier = { add = 20 lawrence_ai_is_pragmatist = yes }
+		}
+		hidden_effect = { lawrence_decline_bases = yes }
+	}
+}
+
+# Exchange: the target answers Britain's offer for Lawrence.
+country_event = {
+	id = chaosx.nr40.16
+	title = chaosx.nr40.16.t
+	desc = chaosx.nr40.16.d
+	picture = GFX_report_event_040_lawrence_arab_congress
+
+	is_triggered_only = yes
+	trigger = {
+		lawrence_is_live_target = yes
+		lawrence_status_is_detained = yes
+		has_country_flag = lawrence_exchange_offer_open
+	}
+
+	option = {
+		name = chaosx.nr40.16.a
+		custom_effect_tooltip = chaosx.nr40.16.a_tt
+		ai_chance = {
+			base = 30
+			modifier = { add = 40 lawrence_ai_is_pragmatist = yes }
+			modifier = { add = 40 lawrence_ai_is_client = yes }
+			modifier = { add = 30 lawrence_ai_is_fractured = yes }
+		}
+		hidden_effect = { lawrence_accept_exchange = yes }
+	}
+	option = {
+		name = chaosx.nr40.16.b
+		custom_effect_tooltip = chaosx.nr40.16.b_tt
+		ai_chance = {
+			base = 20
+			modifier = { add = 30 lawrence_ai_is_challenger = yes }
+			modifier = { add = 25 lawrence_ai_is_counterintelligence = yes }
+		}
+		hidden_effect = { lawrence_refuse_exchange = yes }
+	}
+	option = {
+		name = chaosx.nr40.16.c
+		custom_effect_tooltip = chaosx.nr40.16.c_tt
+		ai_chance = {
+			base = 5
+			modifier = { add = 35 lawrence_ai_is_challenger = yes }
+			modifier = { add = 20 lawrence_ai_is_double_gamer = yes }
+		}
+		hidden_effect = {
+			lawrence_accept_exchange = yes
+			set_temp_variable = { lawrence_credibility_change = constant:lawrence_effect.exchange_published_credibility }
+			lawrence_add_credibility = yes
+			set_temp_variable = { lawrence_preparedness_change = constant:lawrence_effect.exchange_published_preparedness }
+			lawrence_add_preparedness = yes
+		}
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Counterintelligence reports (target)
+# ---------------------------------------------------------------------------
+
+country_event = {
+	id = chaosx.nr40.17
+	title = chaosx.nr40.17.t
+	desc = chaosx.nr40.17.d
+	picture = GFX_report_event_040_lawrence_arab_congress
+	is_triggered_only = yes
+	trigger = { lawrence_is_live_target = yes }
+	option = {
+		name = chaosx.nr40.17.a
+		ai_chance = { base = 1 }
+		custom_effect_tooltip = chaosx.nr40.17.a_tt
+	}
+}
+
+country_event = {
+	id = chaosx.nr40.18
+	title = chaosx.nr40.18.t
+	desc = chaosx.nr40.18.d
+	picture = GFX_report_event_040_lawrence_arab_congress
+	is_triggered_only = yes
+	trigger = { lawrence_is_live_target = yes }
+	option = {
+		name = chaosx.nr40.18.a
+		ai_chance = { base = 1 }
+		custom_effect_tooltip = chaosx.nr40.18.a_tt
+	}
+}
+
+country_event = {
+	id = chaosx.nr40.19
+	title = chaosx.nr40.19.t
+	desc = chaosx.nr40.19.d
+	picture = GFX_report_event_040_lawrence_arab_congress
+	is_triggered_only = yes
+	trigger = { lawrence_is_live_target = yes }
+	option = {
+		name = chaosx.nr40.19.a
+		ai_chance = { base = 1 }
+		custom_effect_tooltip = chaosx.nr40.19.a_tt
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Detention
+# ---------------------------------------------------------------------------
+
+country_event = {
+	id = chaosx.nr40.20
+	title = chaosx.nr40.20.t
+	desc = chaosx.nr40.20.d
+	picture = GFX_report_event_040_lawrence_arab_congress
+	is_triggered_only = yes
+	option = {
+		name = chaosx.nr40.20.a
+		ai_chance = { base = 1 }
+		custom_effect_tooltip = chaosx.nr40.20.a_tt
+	}
+}
+
+country_event = {
+	id = chaosx.nr40.21
+	title = chaosx.nr40.21.t
+	desc = chaosx.nr40.21.d
+	picture = GFX_report_event_lawrence
+	is_triggered_only = yes
+	option = {
+		name = chaosx.nr40.21.a
+		ai_chance = { base = 1 }
+		custom_effect_tooltip = chaosx.nr40.21.a_tt
+	}
+}
+
+country_event = {
+	id = chaosx.nr40.22
+	title = chaosx.nr40.22.t
+	desc = chaosx.nr40.22.d
+	picture = GFX_report_event_040_lawrence_arab_congress
+	is_triggered_only = yes
+	option = {
+		name = chaosx.nr40.22.a
+		ai_chance = { base = 1 }
+		custom_effect_tooltip = chaosx.nr40.22.a_tt
+	}
+}
+
+country_event = {
+	id = chaosx.nr40.23
+	title = chaosx.nr40.23.t
+	desc = chaosx.nr40.23.d
+	picture = GFX_report_event_lawrence
+	is_triggered_only = yes
+	option = {
+		name = chaosx.nr40.23.a
+		ai_chance = { base = 1 }
+		custom_effect_tooltip = chaosx.nr40.23.a_tt
+	}
+}
+
+country_event = {
+	id = chaosx.nr40.24
+	title = chaosx.nr40.24.t
+	desc = chaosx.nr40.24.d
+	picture = GFX_report_event_040_lawrence_arab_congress
+	is_triggered_only = yes
+	trigger = { lawrence_is_live_target = yes }
+	option = {
+		name = chaosx.nr40.24.a
+		ai_chance = { base = 1 }
+		custom_effect_tooltip = chaosx.nr40.24.a_tt
+	}
+}
+
+country_event = {
+	id = chaosx.nr40.25
+	title = chaosx.nr40.25.t
+	desc = chaosx.nr40.25.d
+	picture = GFX_report_event_lawrence
+	is_triggered_only = yes
+	option = {
+		name = chaosx.nr40.25.a
+		ai_chance = { base = 1 }
+		custom_effect_tooltip = chaosx.nr40.25.a_tt
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Lawrence removed: local agents or the end of the mission
+# ---------------------------------------------------------------------------
+
+country_event = {
+	id = chaosx.nr40.26
+	title = chaosx.nr40.26.t
+	desc = {
+		trigger = { lawrence_status_is_dead = yes }
+		text = chaosx.nr40.26.d_dead
+	}
+	desc = {
+		trigger = { NOT = { lawrence_status_is_dead = yes } }
+		text = chaosx.nr40.26.d_defected
+	}
+	picture = GFX_report_event_lawrence
+
+	is_triggered_only = yes
+	trigger = { has_global_flag = lawrence_awaiting_agents_decision }
+
+	option = {
+		name = chaosx.nr40.26.a
+		custom_effect_tooltip = chaosx.nr40.26.a_tt
+		ai_chance = {
+			base = 20
+			modifier = { add = 35 check_variable = { var = global.lawrence_credibility value = constant:lawrence_drift.credibility_low compare = greater_than_or_equals } }
+			modifier = { factor = 0.3 has_war_with_major = yes }
+		}
+		hidden_effect = {
+			clr_global_flag = lawrence_awaiting_agents_decision
+			set_global_flag = lawrence_agents_only
+			lawrence_schedule_next_target = yes
+		}
+	}
+	option = {
+		name = chaosx.nr40.26.b
+		custom_effect_tooltip = chaosx.nr40.26.b_tt
+		ai_chance = {
+			base = 35
+			modifier = { add = 25 has_war_with_major = yes }
+			modifier = { add = 20 check_variable = { var = global.lawrence_credibility value = constant:lawrence_drift.credibility_low compare = less_than } }
+		}
+		hidden_effect = {
+			clr_global_flag = lawrence_awaiting_agents_decision
+			lawrence_close_campaign = yes
+		}
+	}
+}
+
+country_event = {
+	id = chaosx.nr40.28
+	title = chaosx.nr40.28.t
+	desc = chaosx.nr40.28.d
+	picture = GFX_report_event_lawrence
+	is_triggered_only = yes
+	option = {
+		name = chaosx.nr40.28.a
+		ai_chance = { base = 1 }
+		custom_effect_tooltip = chaosx.nr40.28.a_tt
+	}
+}
+
+# Lawrence's choice. The charter, the trust, the earlier success and the
+# British overreach all exist before this is shown.
+country_event = {
+	id = chaosx.nr40.30
+	title = chaosx.nr40.30.t
+	desc = chaosx.nr40.30.d
+	picture = GFX_report_event_040_lawrence_arab_congress
+
+	is_triggered_only = yes
+	trigger = {
+		lawrence_is_live_target = yes
+		lawrence_status_is_free = yes
+	}
+
+	option = {
+		name = chaosx.nr40.30.a
+		custom_effect_tooltip = chaosx.nr40.30.a_tt
+		ai_chance = {
+			base = 0
+			modifier = { add = 30 lawrence_ai_is_challenger = yes }
+			modifier = { add = 20 lawrence_ai_is_pragmatist = yes }
+			modifier = { add = 10 lawrence_ai_is_counterintelligence = yes }
+		}
+		hidden_effect = { lawrence_defect = yes }
+	}
+	option = {
+		name = chaosx.nr40.30.b
+		custom_effect_tooltip = chaosx.nr40.30.b_tt
+		ai_chance = {
+			base = 40
+			modifier = { add = 30 lawrence_ai_is_client = yes }
+			modifier = { add = 20 lawrence_ai_is_fractured = yes }
+		}
+		hidden_effect = {
+			clr_country_flag = lawrence_charter_offered
+			set_temp_variable = { lawrence_trust_change = constant:lawrence_effect.charter_declined_trust }
+			lawrence_add_trust = yes
+		}
+	}
+}
+
+# ---------------------------------------------------------------------------
+# News
+# ---------------------------------------------------------------------------
+
+news_event = {
+	id = chaosx.nr40.40
+	title = chaosx.nr40.40.t
+	desc = {
+		trigger = { check_variable = { var = global.lawrence_news_kind value = constant:lawrence_news.revealed compare = equals } }
+		text = chaosx.nr40.40.d_revealed
+	}
+	desc = {
+		trigger = { check_variable = { var = global.lawrence_news_kind value = constant:lawrence_news.detained compare = equals } }
+		text = chaosx.nr40.40.d_detained
+	}
+	desc = {
+		trigger = { check_variable = { var = global.lawrence_news_kind value = constant:lawrence_news.died compare = equals } }
+		text = chaosx.nr40.40.d_died
+	}
+	desc = {
+		trigger = { check_variable = { var = global.lawrence_news_kind value = constant:lawrence_news.dismantled compare = equals } }
+		text = chaosx.nr40.40.d_dismantled
+	}
+	desc = {
+		trigger = { check_variable = { var = global.lawrence_news_kind value = constant:lawrence_news.defected compare = equals } }
+		text = chaosx.nr40.40.d_defected
+	}
+	picture = GFX_news_lawrence
+
+	major = yes
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx.nr40.40.a
+	}
+}
+
+# ---------------------------------------------------------------------------
+# British retaliation after a double game
+# ---------------------------------------------------------------------------
+
+country_event = {
+	id = chaosx.nr40.45
+	title = chaosx.nr40.45.t
+	desc = chaosx.nr40.45.d
+	picture = GFX_report_event_lawrence
+
+	is_triggered_only = yes
+	trigger = { has_variable = global.lawrence_retaliation_target }
+
+	option = {
+		name = chaosx.nr40.45.a
+		custom_effect_tooltip = chaosx.nr40.45.a_tt
+		ai_chance = {
+			base = 25
+			modifier = { add = 25 check_variable = { var = global.lawrence_credibility value = constant:lawrence_drift.credibility_low compare = less_than } }
+			modifier = { factor = 0.3 has_war_with_major = yes }
+		}
+		hidden_effect = {
+			var:global.lawrence_retaliation_target = {
+				add_opinion_modifier = { target = ENG modifier = lawrence_british_retaliation }
+				ENG = { add_opinion_modifier = { target = PREV modifier = lawrence_british_retaliation } }
+			}
+			clear_variable = global.lawrence_retaliation_target
+		}
+	}
+	option = {
+		name = chaosx.nr40.45.b
+		custom_effect_tooltip = chaosx.nr40.45.b_tt
+		ai_chance = { base = 50 }
+		hidden_effect = {
+			clear_variable = global.lawrence_retaliation_target
+		}
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Neighbour reactions
+# ---------------------------------------------------------------------------
+
+country_event = {
+	id = chaosx.nr40.50
+	title = chaosx.nr40.50.t
+	desc = chaosx.nr40.50.d
+	picture = GFX_report_event_040_lawrence_arab_congress
+
+	is_triggered_only = yes
+	trigger = { lawrence_is_valid_target = yes }
+
+	option = {
+		name = chaosx.nr40.50.a
+		custom_effect_tooltip = chaosx.nr40.50.a_tt
+		ai_chance = {
+			base = 50
+			modifier = { add = 20 has_government = communism }
+			modifier = { add = 20 has_government = fascism }
+		}
+		hidden_effect = {
+			lawrence_neighbour_prepares = yes
+		}
+	}
+	option = {
+		name = chaosx.nr40.50.b
+		custom_effect_tooltip = chaosx.nr40.50.b_tt
+		ai_chance = {
+			base = 20
+			modifier = { add = 30 has_defensive_war = yes }
+			modifier = { add = 25 has_stability < 0.4 }
+		}
+		hidden_effect = {
+			set_country_flag = lawrence_requested_protection
+		}
+	}
+}
+
+country_event = {
+	id = chaosx.nr40.51
+	title = chaosx.nr40.51.t
+	desc = chaosx.nr40.51.d
+	picture = GFX_report_event_040_lawrence_arab_congress
+
+	is_triggered_only = yes
+	trigger = { lawrence_is_valid_target = yes }
+
+	option = {
+		name = chaosx.nr40.51.a
+		custom_effect_tooltip = chaosx.nr40.51.a_tt
+		ai_chance = {
+			base = 30
+			modifier = { add = 30 has_defensive_war = yes }
+			modifier = { add = 20 has_stability < 0.45 }
+		}
+		hidden_effect = {
+			set_country_flag = lawrence_requested_protection
+		}
+	}
+	option = {
+		name = chaosx.nr40.51.b
+		custom_effect_tooltip = chaosx.nr40.51.b_tt
+		ai_chance = { base = 50 }
+		hidden_effect = {
+			lawrence_neighbour_prepares = yes
+		}
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Incidents (baseline, one at a time, never a settlement)
+# ---------------------------------------------------------------------------
+
+# Missing payroll.
+country_event = {
+	id = chaosx.nr40.60
+	title = chaosx.nr40.60.t
+	desc = chaosx.nr40.60.d
+	picture = GFX_report_event_040_lawrence_arab_congress
+
+	is_triggered_only = yes
+	trigger = { lawrence_is_live_target = yes }
+
+	option = {
+		name = chaosx.nr40.60.a
+		custom_effect_tooltip = chaosx.nr40.60.a_tt
+		ai_chance = {
+			base = 20
+			modifier = { add = 50 lawrence_ai_is_counterintelligence = yes }
+			modifier = { add = 40 lawrence_ai_is_challenger = yes }
+			modifier = { add = 30 lawrence_ai_is_double_gamer = yes }
+		}
+		hidden_effect = {
+			clr_country_flag = lawrence_incident_open
+			random_list = {
+				50 = {
+					modifier = { add = 25 check_variable = { var = lawrence_security value = constant:lawrence_effect.turn_strong_security compare = greater_than_or_equals } }
+					modifier = { factor = 0.5 check_variable = { var = lawrence_security value = constant:lawrence_effect.feed_weak_security compare = less_than } }
+					set_temp_variable = { lawrence_evidence_change = constant:lawrence_incident.payroll_evidence }
+					lawrence_add_evidence = yes
+					set_temp_variable = { lawrence_change = constant:lawrence_incident.payroll_found_influence }
+					lawrence_add_influence = yes
+				}
+				50 = {
+					modifier = { factor = 0.5 check_variable = { var = lawrence_security value = constant:lawrence_effect.turn_strong_security compare = greater_than_or_equals } }
+					set_temp_variable = { lawrence_change = constant:lawrence_incident.payroll_lost_influence }
+					lawrence_add_influence = yes
+				}
+			}
+		}
+	}
+	option = {
+		name = chaosx.nr40.60.b
+		custom_effect_tooltip = chaosx.nr40.60.b_tt
+		ai_chance = {
+			base = 20
+			modifier = { add = 30 lawrence_ai_is_client = yes }
+			modifier = { add = 30 lawrence_ai_is_fractured = yes }
+		}
+		hidden_effect = {
+			clr_country_flag = lawrence_incident_open
+			set_temp_variable = { lawrence_change = constant:lawrence_incident.payroll_ignored_influence }
+			lawrence_add_influence = yes
+		}
+	}
+}
+
+# A commander refuses a transfer.
+country_event = {
+	id = chaosx.nr40.61
+	title = chaosx.nr40.61.t
+	desc = chaosx.nr40.61.d
+	picture = GFX_report_event_040_lawrence_arab_congress
+
+	is_triggered_only = yes
+	trigger = { lawrence_is_live_target = yes }
+
+	option = {
+		name = chaosx.nr40.61.a
+		custom_effect_tooltip = chaosx.nr40.61.a_tt
+		ai_chance = {
+			base = 20
+			modifier = { add = 40 lawrence_ai_is_counterintelligence = yes }
+			modifier = { add = 40 lawrence_ai_is_challenger = yes }
+			modifier = { factor = 0.4 lawrence_ai_is_fractured = yes }
+		}
+		hidden_effect = {
+			clr_country_flag = lawrence_incident_open
+			set_temp_variable = { lawrence_stab = constant:lawrence_incident.commander_replaced_stability }
+			add_stability = lawrence_stab
+			if = {
+				limit = { check_variable = { var = lawrence_officers value = constant:lawrence_officers.capture_threshold compare = greater_than_or_equals } }
+				set_temp_variable = { lawrence_change = constant:lawrence_incident.commander_backlash_influence }
+				lawrence_add_influence = yes
+			}
+			else = {
+				set_temp_variable = { lawrence_officers_change = constant:lawrence_incident.commander_replaced_officers }
+				lawrence_add_officers = yes
+				set_temp_variable = { lawrence_change = constant:lawrence_incident.commander_replaced_influence }
+				lawrence_add_influence = yes
+			}
+		}
+	}
+	option = {
+		name = chaosx.nr40.61.b
+		custom_effect_tooltip = chaosx.nr40.61.b_tt
+		ai_chance = {
+			base = 20
+			modifier = { add = 30 lawrence_ai_is_client = yes }
+			modifier = { add = 25 lawrence_ai_is_fractured = yes }
+		}
+		hidden_effect = {
+			clr_country_flag = lawrence_incident_open
+			set_temp_variable = { lawrence_officers_change = constant:lawrence_incident.commander_accepted_officers }
+			lawrence_add_officers = yes
+			set_temp_variable = { lawrence_change = constant:lawrence_incident.commander_accepted_influence }
+			lawrence_add_influence = yes
+		}
+	}
+}
+
+# A courier is stopped.
+country_event = {
+	id = chaosx.nr40.62
+	title = chaosx.nr40.62.t
+	desc = chaosx.nr40.62.d
+	picture = GFX_report_event_040_lawrence_arab_congress
+
+	is_triggered_only = yes
+	trigger = { lawrence_is_live_target = yes }
+
+	option = {
+		name = chaosx.nr40.62.a
+		custom_effect_tooltip = chaosx.nr40.62.a_tt
+		ai_chance = {
+			base = 20
+			modifier = { add = 40 lawrence_ai_is_counterintelligence = yes }
+			modifier = { add = 35 lawrence_ai_is_challenger = yes }
+			modifier = { add = 20 lawrence_ai_is_double_gamer = yes }
+		}
+		hidden_effect = {
+			clr_country_flag = lawrence_incident_open
+			set_temp_variable = { lawrence_evidence_change = constant:lawrence_incident.courier_evidence }
+			lawrence_add_evidence = yes
+			set_temp_variable = { lawrence_change = constant:lawrence_incident.courier_held_influence }
+			lawrence_add_influence = yes
+			if = {
+				limit = { has_country_flag = lawrence_delivery_pending }
+				add_to_variable = { lawrence_delivery_arrival_day = constant:lawrence_incident.courier_delay_days }
+			}
+		}
+	}
+	option = {
+		name = chaosx.nr40.62.b
+		custom_effect_tooltip = chaosx.nr40.62.b_tt
+		ai_chance = {
+			base = 20
+			modifier = { add = 30 lawrence_ai_is_client = yes }
+			modifier = { add = 20 lawrence_ai_is_pragmatist = yes }
+			modifier = { add = 20 lawrence_ai_is_fractured = yes }
+		}
+		hidden_effect = {
+			clr_country_flag = lawrence_incident_open
+			set_temp_variable = { lawrence_change = constant:lawrence_incident.courier_released_influence }
+			lawrence_add_influence = yes
+			set_temp_variable = { lawrence_exposure_change = constant:lawrence_incident.courier_released_exposure }
+			lawrence_add_exposure = yes
+		}
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Settlement reports, one per identity, shown to the target and to Britain
+# ---------------------------------------------------------------------------
+
+country_event = {
+	id = chaosx.nr40.71
+	title = chaosx.nr40.71.t
+	desc = {
+		trigger = { tag = ENG }
+		text = chaosx.nr40.71.d_britain
+	}
+	desc = {
+		trigger = { NOT = { tag = ENG } }
+		text = chaosx.nr40.71.d
+	}
+	picture = GFX_report_event_040_lawrence_arab_congress
+	is_triggered_only = yes
+	option = {
+		name = chaosx.nr40.71.a
+		ai_chance = { base = 1 }
+		custom_effect_tooltip = chaosx.nr40.71.a_tt
+	}
+}
+
+country_event = {
+	id = chaosx.nr40.72
+	title = chaosx.nr40.72.t
+	desc = {
+		trigger = { tag = ENG }
+		text = chaosx.nr40.72.d_britain
+	}
+	desc = {
+		trigger = { NOT = { tag = ENG } }
+		text = chaosx.nr40.72.d
+	}
+	picture = GFX_report_event_040_lawrence_arab_congress
+	is_triggered_only = yes
+	option = {
+		name = chaosx.nr40.72.a
+		ai_chance = { base = 1 }
+		custom_effect_tooltip = chaosx.nr40.72.a_tt
+	}
+}
+
+country_event = {
+	id = chaosx.nr40.73
+	title = chaosx.nr40.73.t
+	desc = {
+		trigger = { tag = ENG }
+		text = chaosx.nr40.73.d_britain
+	}
+	desc = {
+		trigger = { NOT = { tag = ENG } }
+		text = chaosx.nr40.73.d
+	}
+	picture = GFX_report_event_040_lawrence_arab_congress
+	is_triggered_only = yes
+	option = {
+		name = chaosx.nr40.73.a
+		ai_chance = { base = 1 }
+		custom_effect_tooltip = chaosx.nr40.73.a_tt
+	}
+}
+
+country_event = {
+	id = chaosx.nr40.74
+	title = chaosx.nr40.74.t
+	desc = {
+		trigger = { tag = ENG }
+		text = chaosx.nr40.74.d_britain
+	}
+	desc = {
+		trigger = { NOT = { tag = ENG } }
+		text = chaosx.nr40.74.d
+	}
+	picture = GFX_report_event_040_lawrence_arab_congress
+	is_triggered_only = yes
+	option = {
+		name = chaosx.nr40.74.a
+		ai_chance = { base = 1 }
+		custom_effect_tooltip = chaosx.nr40.74.a_tt
+	}
+}
+
+country_event = {
+	id = chaosx.nr40.75
+	title = chaosx.nr40.75.t
+	desc = {
+		trigger = { tag = ENG }
+		text = chaosx.nr40.75.d_britain
+	}
+	desc = {
+		trigger = {
+			NOT = { tag = ENG }
+			has_country_flag = lawrence_disorder
+		}
+		text = chaosx.nr40.75.d_disorder
+	}
+	desc = {
+		trigger = {
+			NOT = { tag = ENG }
+			NOT = { has_country_flag = lawrence_disorder }
+		}
+		text = chaosx.nr40.75.d
+	}
+	picture = GFX_report_event_040_lawrence_arab_congress
+	is_triggered_only = yes
+	option = {
+		name = chaosx.nr40.75.a
+		ai_chance = { base = 1 }
+		custom_effect_tooltip = chaosx.nr40.75.a_tt
+	}
+}
+
+country_event = {
+	id = chaosx.nr40.76
+	title = chaosx.nr40.76.t
+	desc = {
+		trigger = { tag = ENG }
+		text = chaosx.nr40.76.d_britain
+	}
+	desc = {
+		trigger = { NOT = { tag = ENG } }
+		text = chaosx.nr40.76.d
+	}
+	picture = GFX_report_event_040_lawrence_arab_congress
+	is_triggered_only = yes
+	option = {
+		name = chaosx.nr40.76.a
+		ai_chance = { base = 1 }
+		custom_effect_tooltip = chaosx.nr40.76.a_tt
+	}
+}
+
+country_event = {
+	id = chaosx.nr40.77
+	title = chaosx.nr40.77.t
+	desc = {
+		trigger = { tag = ENG }
+		text = chaosx.nr40.77.d_britain
+	}
+	desc = {
+		trigger = { NOT = { tag = ENG } }
+		text = chaosx.nr40.77.d
+	}
+	picture = GFX_report_event_040_lawrence_arab_congress
+	is_triggered_only = yes
+	option = {
+		name = chaosx.nr40.77.a
+		ai_chance = { base = 1 }
+		custom_effect_tooltip = chaosx.nr40.77.a_tt
+	}
+}
+
+country_event = {
+	id = chaosx.nr40.78
+	title = chaosx.nr40.78.t
+	desc = {
+		trigger = { tag = ENG }
+		text = chaosx.nr40.78.d_britain
+	}
+	desc = {
+		trigger = { NOT = { tag = ENG } }
+		text = chaosx.nr40.78.d
+	}
+	picture = GFX_report_event_040_lawrence_arab_congress
+	is_triggered_only = yes
+	option = {
+		name = chaosx.nr40.78.a
+		ai_chance = { base = 1 }
+		custom_effect_tooltip = chaosx.nr40.78.a_tt
 	}
 }

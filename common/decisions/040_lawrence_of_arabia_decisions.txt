@@ -1,0 +1,813 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 040 LAWRENCE OF ARABIA DECISIONS
+# ============================================================================
+# Target category: terms of access, custody of shipments, the liaison office,
+# escort, one counterintelligence lane (file, audit, turn, feed, expose,
+# dismantle), the officer corps, removal (expel, detain) and the settlements
+# a sovereign government can reach (national custody, treaty, charter,
+# foreign sponsors).
+# British category: gold and arms, officer cadres, the sea route or the rail
+# link, the press network, guarantees, aid for bases, and the detention set
+# (recovery, exchange, disavowal).
+# Rows invalid for the phase are hidden, so a phase shows three to five
+# actions. At most two target missions are active. AI scores live in
+# common/mtth/040_lawrence_of_arabia_mtth.txt.
+# ============================================================================
+
+lawrence_target_category = {
+
+	# ------------------------------------------------------------------------
+	# Terms of access
+	# ------------------------------------------------------------------------
+
+	lawrence_set_terms = {
+		icon = GFX_decision_generic_political_discourse
+		priority = 110
+		visible = { lawrence_shows_set_terms = yes }
+		complete_effect = {
+			custom_effect_tooltip = lawrence_set_terms_tt
+			hidden_effect = { country_event = { id = chaosx.nr40.4 } }
+		}
+		ai_will_do = { factor = 100 }
+	}
+
+	lawrence_take_custody = {
+		icon = GFX_decision_generic_confiscation
+		priority = 109
+		visible = { lawrence_shows_take_custody = yes }
+		available = { hidden_trigger = { lawrence_can_pay_custody = yes } }
+		custom_cost_trigger = { lawrence_can_pay_custody = yes }
+		custom_cost_text = lawrence_cost_custody
+		complete_effect = {
+			custom_effect_tooltip = lawrence_take_custody_tt
+			hidden_effect = { lawrence_take_custody = yes }
+		}
+		ai_will_do = {
+			factor = 0
+			modifier = {
+				set_temp_variable = { lawrence_ai_weight = mtth:lawrence_ai_take_custody }
+				add = lawrence_ai_weight
+			}
+		}
+	}
+
+	lawrence_open_liaison_office = {
+		icon = GFX_decision_generic_construction
+		priority = 108
+		visible = { lawrence_shows_open_office = yes }
+		available = { hidden_trigger = { lawrence_can_pay_office = yes } }
+		custom_cost_trigger = { lawrence_can_pay_office = yes }
+		custom_cost_text = lawrence_cost_office
+		complete_effect = {
+			custom_effect_tooltip = lawrence_open_office_tt
+			hidden_effect = { lawrence_open_office = yes }
+		}
+		ai_will_do = {
+			factor = 0
+			modifier = {
+				set_temp_variable = { lawrence_ai_weight = mtth:lawrence_ai_open_office }
+				add = lawrence_ai_weight
+			}
+		}
+	}
+
+	lawrence_place_under_escort = {
+		icon = GFX_decision_generic_protection
+		priority = 107
+		visible = { lawrence_shows_escort = yes }
+		available = { hidden_trigger = { lawrence_can_pay_escort = yes } }
+		custom_cost_trigger = { lawrence_can_pay_escort = yes }
+		custom_cost_text = lawrence_cost_escort
+		days_remove = constant:lawrence_action.escort_days
+		cancel_trigger = { NOT = { lawrence_is_live_target = yes } }
+		complete_effect = {
+			custom_effect_tooltip = lawrence_place_under_escort_tt
+			hidden_effect = { lawrence_start_escort = yes }
+		}
+		remove_effect = {
+			custom_effect_tooltip = lawrence_escort_ended_tt
+			hidden_effect = { lawrence_end_escort = yes }
+		}
+		ai_will_do = {
+			factor = 0
+			modifier = {
+				set_temp_variable = { lawrence_ai_weight = mtth:lawrence_ai_escort }
+				add = lawrence_ai_weight
+			}
+		}
+	}
+
+	# ------------------------------------------------------------------------
+	# Counterintelligence lane
+	# ------------------------------------------------------------------------
+
+	lawrence_build_counterintelligence_file = {
+		icon = GFX_decision_generic_intelligence_operation
+		priority = 106
+		visible = { lawrence_shows_counterintelligence_file = yes }
+		available = { hidden_trigger = { lawrence_can_pay_file = yes } }
+		custom_cost_trigger = { lawrence_can_pay_file = yes }
+		custom_cost_text = lawrence_cost_file
+		days_remove = constant:lawrence_action.file_days
+		cancel_trigger = { NOT = { lawrence_is_live_target = yes } }
+		complete_effect = {
+			custom_effect_tooltip = lawrence_build_file_tt
+			hidden_effect = { lawrence_start_file = yes }
+		}
+		remove_effect = {
+			custom_effect_tooltip = lawrence_build_file_done_tt
+			hidden_effect = { lawrence_finish_file = yes }
+		}
+		ai_will_do = {
+			factor = 0
+			modifier = {
+				set_temp_variable = { lawrence_ai_weight = mtth:lawrence_ai_file }
+				add = lawrence_ai_weight
+			}
+		}
+	}
+
+	lawrence_audit_gold_ledger = {
+		icon = GFX_decision_generic_research
+		priority = 105
+		visible = { lawrence_shows_audit_ledger = yes }
+		available = { hidden_trigger = { lawrence_can_pay_audit = yes } }
+		custom_cost_trigger = { lawrence_can_pay_audit = yes }
+		custom_cost_text = lawrence_cost_audit
+		complete_effect = {
+			custom_effect_tooltip = lawrence_audit_ledger_tt
+			hidden_effect = { lawrence_start_ledger_mission = yes }
+		}
+		ai_will_do = {
+			factor = 0
+			modifier = {
+				set_temp_variable = { lawrence_ai_weight = mtth:lawrence_ai_audit }
+				add = lawrence_ai_weight
+			}
+		}
+	}
+
+	lawrence_turn_a_contact = {
+		icon = GFX_decision_generic_brainwash
+		priority = 104
+		visible = { lawrence_shows_turn_contact = yes }
+		available = { hidden_trigger = { lawrence_can_pay_turn = yes } }
+		custom_cost_trigger = { lawrence_can_pay_turn = yes }
+		custom_cost_text = lawrence_cost_turn
+		days_re_enable = constant:lawrence_action.turn_cooldown_days
+		complete_effect = {
+			custom_effect_tooltip = lawrence_turn_contact_tt
+			hidden_effect = { lawrence_turn_contact = yes }
+		}
+		ai_will_do = {
+			factor = 0
+			modifier = {
+				set_temp_variable = { lawrence_ai_weight = mtth:lawrence_ai_turn }
+				add = lawrence_ai_weight
+			}
+		}
+	}
+
+	lawrence_feed_controlled_intelligence = {
+		icon = GFX_decision_hol_exchange_intelligence_data
+		priority = 104
+		visible = { lawrence_shows_feed_intelligence = yes }
+		available = { hidden_trigger = { lawrence_can_pay_feed = yes } }
+		custom_cost_trigger = { lawrence_can_pay_feed = yes }
+		custom_cost_text = lawrence_cost_feed
+		days_re_enable = constant:lawrence_action.feed_cooldown_days
+		complete_effect = {
+			custom_effect_tooltip = lawrence_feed_intelligence_tt
+			hidden_effect = { lawrence_feed_intelligence = yes }
+		}
+		ai_will_do = {
+			factor = 0
+			modifier = {
+				set_temp_variable = { lawrence_ai_weight = mtth:lawrence_ai_feed }
+				add = lawrence_ai_weight
+			}
+		}
+	}
+
+	lawrence_expose_the_network = {
+		icon = GFX_decision_generic_speech
+		priority = 103
+		visible = { lawrence_shows_expose_network = yes }
+		available = { hidden_trigger = { lawrence_can_pay_expose = yes } }
+		custom_cost_trigger = { lawrence_can_pay_expose = yes }
+		custom_cost_text = lawrence_cost_expose
+		complete_effect = {
+			custom_effect_tooltip = lawrence_expose_network_tt
+			hidden_effect = { lawrence_start_expose_mission = yes }
+		}
+		ai_will_do = {
+			factor = 0
+			modifier = {
+				set_temp_variable = { lawrence_ai_weight = mtth:lawrence_ai_expose }
+				add = lawrence_ai_weight
+			}
+		}
+	}
+
+	lawrence_dismantle_the_contact_network = {
+		icon = GFX_decision_generic_wreckers
+		priority = 103
+		visible = { lawrence_shows_dismantle = yes }
+		available = { hidden_trigger = { lawrence_can_pay_dismantle = yes } }
+		custom_cost_trigger = { lawrence_can_pay_dismantle = yes }
+		custom_cost_text = lawrence_cost_dismantle
+		complete_effect = {
+			custom_effect_tooltip = lawrence_dismantle_network_tt
+			hidden_effect = { lawrence_start_dismantle_mission = yes }
+		}
+		ai_will_do = {
+			factor = 0
+			modifier = {
+				set_temp_variable = { lawrence_ai_weight = mtth:lawrence_ai_dismantle }
+				add = lawrence_ai_weight
+			}
+		}
+	}
+
+	# ------------------------------------------------------------------------
+	# Officer corps
+	# ------------------------------------------------------------------------
+
+	lawrence_secure_the_officer_corps = {
+		icon = GFX_decision_generic_army_support
+		priority = 102
+		visible = { lawrence_shows_secure_officers = yes }
+		available = { hidden_trigger = { lawrence_can_pay_officers = yes } }
+		custom_cost_trigger = { lawrence_can_pay_officers = yes }
+		custom_cost_text = lawrence_cost_officers
+		complete_effect = {
+			custom_effect_tooltip = lawrence_secure_officers_tt
+			hidden_effect = { lawrence_start_officers_mission = yes }
+		}
+		ai_will_do = {
+			factor = 0
+			modifier = {
+				set_temp_variable = { lawrence_ai_weight = mtth:lawrence_ai_officers }
+				add = lawrence_ai_weight
+			}
+		}
+	}
+
+	# ------------------------------------------------------------------------
+	# Removal
+	# ------------------------------------------------------------------------
+
+	lawrence_expel_the_mission = {
+		icon = GFX_decision_generic_break_treaty
+		priority = 101
+		visible = { lawrence_shows_expel = yes }
+		available = { hidden_trigger = { lawrence_can_pay_expel = yes } }
+		custom_cost_trigger = { lawrence_can_pay_expel = yes }
+		custom_cost_text = lawrence_cost_expel
+		complete_effect = {
+			if = {
+				limit = { lawrence_influence_is_low = yes }
+				custom_effect_tooltip = lawrence_expel_clean_tt
+			}
+			else = {
+				custom_effect_tooltip = lawrence_expel_reckless_tt
+			}
+			hidden_effect = { lawrence_expel_mission = yes }
+		}
+		ai_will_do = {
+			factor = 0
+			modifier = {
+				set_temp_variable = { lawrence_ai_weight = mtth:lawrence_ai_expel }
+				add = lawrence_ai_weight
+			}
+		}
+	}
+
+	lawrence_detain_the_mission = {
+		icon = GFX_decision_generic_arrest
+		priority = 100
+		visible = { lawrence_shows_detain = yes }
+		available = {
+			hidden_trigger = { lawrence_can_pay_detain = yes }
+			custom_trigger_tooltip = {
+				tooltip = lawrence_detain_evidence_tt
+				hidden_trigger = { lawrence_target_has_evidence_for_detention = yes }
+			}
+		}
+		custom_cost_trigger = { lawrence_can_pay_detain = yes }
+		custom_cost_text = lawrence_cost_detain
+		complete_effect = {
+			custom_effect_tooltip = lawrence_detain_mission_tt
+			hidden_effect = { lawrence_detain_mission = yes }
+		}
+		ai_will_do = {
+			factor = 0
+			modifier = {
+				set_temp_variable = { lawrence_ai_weight = mtth:lawrence_ai_detain }
+				add = lawrence_ai_weight
+			}
+		}
+	}
+
+	# ------------------------------------------------------------------------
+	# Foreign sponsors and settlements
+	# ------------------------------------------------------------------------
+
+	lawrence_play_britain_against_a_rival = {
+		icon = GFX_decision_generic_independence
+		priority = 99
+		visible = { lawrence_shows_play_britain_against_rival = yes }
+		available = { hidden_trigger = { lawrence_can_pay_rival_play = yes } }
+		custom_cost_trigger = { lawrence_can_pay_rival_play = yes }
+		custom_cost_text = lawrence_cost_rival
+		complete_effect = {
+			custom_effect_tooltip = lawrence_play_rival_tt
+			hidden_effect = { lawrence_play_britain_against_rival = yes }
+		}
+		ai_will_do = {
+			factor = 0
+			modifier = {
+				set_temp_variable = { lawrence_ai_weight = mtth:lawrence_ai_rival }
+				add = lawrence_ai_weight
+			}
+		}
+	}
+
+	lawrence_balance_foreign_sponsors = {
+		icon = GFX_decision_generic_fundraising
+		priority = 98
+		visible = { lawrence_shows_balance_sponsors = yes }
+		available = { hidden_trigger = { lawrence_can_pay_sponsor_balance = yes } }
+		custom_cost_trigger = { lawrence_can_pay_sponsor_balance = yes }
+		custom_cost_text = lawrence_cost_balance
+		complete_effect = {
+			custom_effect_tooltip = lawrence_balance_sponsors_tt
+			hidden_effect = { lawrence_balance_sponsors = yes }
+		}
+		ai_will_do = {
+			factor = 0
+			modifier = {
+				set_temp_variable = { lawrence_ai_weight = mtth:lawrence_ai_balance }
+				add = lawrence_ai_weight
+			}
+		}
+	}
+
+	lawrence_preserve_national_custody = {
+		icon = GFX_decision_generic_military
+		priority = 97
+		visible = { lawrence_shows_preserve_custody = yes }
+		available = { hidden_trigger = { lawrence_can_pay_preserve_custody = yes } }
+		custom_cost_trigger = { lawrence_can_pay_preserve_custody = yes }
+		custom_cost_text = lawrence_cost_preserve
+		complete_effect = {
+			custom_effect_tooltip = lawrence_preserve_custody_tt
+			hidden_effect = { lawrence_preserve_custody = yes }
+		}
+		ai_will_do = {
+			factor = 0
+			modifier = {
+				set_temp_variable = { lawrence_ai_weight = mtth:lawrence_ai_preserve }
+				add = lawrence_ai_weight
+			}
+		}
+	}
+
+	lawrence_seek_an_independent_treaty = {
+		icon = GFX_decision_generic_decision
+		priority = 96
+		visible = { lawrence_shows_seek_treaty = yes }
+		available = { hidden_trigger = { lawrence_can_pay_treaty = yes } }
+		custom_cost_trigger = { lawrence_can_pay_treaty = yes }
+		custom_cost_text = lawrence_cost_treaty
+		complete_effect = {
+			custom_effect_tooltip = lawrence_seek_treaty_tt
+			hidden_effect = { lawrence_seek_treaty = yes }
+		}
+		ai_will_do = {
+			factor = 0
+			modifier = {
+				set_temp_variable = { lawrence_ai_weight = mtth:lawrence_ai_treaty }
+				add = lawrence_ai_weight
+			}
+		}
+	}
+
+	lawrence_offer_an_independent_charter = {
+		icon = GFX_decision_generic_form_nation
+		priority = 95
+		visible = { lawrence_shows_independent_charter = yes }
+		available = { hidden_trigger = { lawrence_can_pay_charter = yes } }
+		custom_cost_trigger = { lawrence_can_pay_charter = yes }
+		custom_cost_text = lawrence_cost_charter
+		complete_effect = {
+			custom_effect_tooltip = lawrence_offer_charter_tt
+			hidden_effect = { lawrence_offer_charter = yes }
+		}
+		ai_will_do = {
+			factor = 0
+			modifier = {
+				set_temp_variable = { lawrence_ai_weight = mtth:lawrence_ai_charter }
+				add = lawrence_ai_weight
+			}
+		}
+	}
+
+	# ------------------------------------------------------------------------
+	# Missions
+	# ------------------------------------------------------------------------
+
+	lawrence_trace_ledger_mission = {
+		icon = GFX_decision_generic_research
+		priority = 120
+		allowed = { always = yes }
+		activation = { always = no }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = lawrence_ledger_hold_tt
+				hidden_trigger = {
+					check_variable = { var = lawrence_ledger_hold_days value = constant:lawrence_mission.ledger_hold_days compare = greater_than_or_equals }
+				}
+			}
+		}
+		days_mission_timeout = constant:lawrence_mission.ledger_days
+		cancel_trigger = { NOT = { lawrence_is_live_target = yes } }
+		complete_effect = {
+			custom_effect_tooltip = lawrence_ledger_success_tt
+			hidden_effect = { lawrence_ledger_success = yes }
+		}
+		timeout_effect = {
+			if = {
+				limit = { check_variable = { var = lawrence_ledger_hold_days value = constant:lawrence_mission.partial_hold_days compare = greater_than_or_equals } }
+				custom_effect_tooltip = lawrence_ledger_partial_tt
+				hidden_effect = { lawrence_ledger_partial = yes }
+			}
+			else = {
+				custom_effect_tooltip = lawrence_ledger_failure_tt
+				hidden_effect = { lawrence_ledger_failure = yes }
+			}
+		}
+	}
+
+	lawrence_secure_officers_mission = {
+		icon = GFX_decision_generic_army_support
+		priority = 119
+		allowed = { always = yes }
+		activation = { always = no }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = lawrence_officers_secured_tt
+				hidden_trigger = {
+					check_variable = { var = lawrence_officers value = constant:lawrence_officers.secure_target compare = less_than_or_equals }
+				}
+			}
+		}
+		days_mission_timeout = constant:lawrence_mission.officers_days
+		cancel_trigger = { NOT = { lawrence_is_live_target = yes } }
+		complete_effect = {
+			custom_effect_tooltip = lawrence_officers_success_tt
+			hidden_effect = { lawrence_officers_success = yes }
+		}
+		timeout_effect = {
+			custom_effect_tooltip = lawrence_officers_failure_tt
+			hidden_effect = { lawrence_officers_failure = yes }
+		}
+	}
+
+	lawrence_expose_network_mission = {
+		icon = GFX_decision_generic_speech
+		priority = 118
+		allowed = { always = yes }
+		activation = { always = no }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = lawrence_expose_evidence_tt
+				hidden_trigger = { lawrence_target_has_evidence_for_exposure = yes }
+			}
+		}
+		days_mission_timeout = constant:lawrence_mission.expose_days
+		cancel_trigger = { NOT = { lawrence_is_live_target = yes } }
+		complete_effect = {
+			custom_effect_tooltip = lawrence_expose_success_tt
+			hidden_effect = { lawrence_expose_success = yes }
+		}
+		timeout_effect = {
+			if = {
+				limit = { has_country_flag = lawrence_double_ready }
+				custom_effect_tooltip = lawrence_expose_double_tt
+				hidden_effect = {
+					lawrence_mission_closed = yes
+					set_temp_variable = { lawrence_settle_outcome = constant:lawrence_outcome.double_game }
+					lawrence_settle = yes
+				}
+			}
+			else_if = {
+				limit = { has_country_flag = lawrence_file }
+				custom_effect_tooltip = lawrence_expose_partial_tt
+				hidden_effect = { lawrence_expose_partial = yes }
+			}
+			else = {
+				custom_effect_tooltip = lawrence_expose_failure_tt
+				hidden_effect = { lawrence_expose_failure = yes }
+			}
+		}
+	}
+
+	lawrence_dismantle_mission = {
+		icon = GFX_decision_generic_wreckers
+		priority = 117
+		allowed = { always = yes }
+		activation = { always = no }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = lawrence_dismantle_hold_tt
+				hidden_trigger = {
+					check_variable = { var = lawrence_dismantle_hold_days value = constant:lawrence_mission.dismantle_hold_days compare = greater_than_or_equals }
+				}
+			}
+		}
+		days_mission_timeout = constant:lawrence_mission.dismantle_days
+		cancel_trigger = { NOT = { lawrence_is_live_target = yes } }
+		complete_effect = {
+			custom_effect_tooltip = lawrence_dismantle_success_tt
+			hidden_effect = { lawrence_dismantle_success = yes }
+		}
+		timeout_effect = {
+			if = {
+				limit = { check_variable = { var = lawrence_dismantle_hold_days value = constant:lawrence_mission.partial_hold_days compare = greater_than_or_equals } }
+				custom_effect_tooltip = lawrence_dismantle_partial_tt
+				hidden_effect = { lawrence_dismantle_partial = yes }
+			}
+			else = {
+				custom_effect_tooltip = lawrence_dismantle_failure_tt
+				hidden_effect = { lawrence_dismantle_failure = yes }
+			}
+		}
+	}
+}
+
+lawrence_british_category = {
+
+	# ------------------------------------------------------------------------
+	# Resource and route commitments
+	# ------------------------------------------------------------------------
+
+	lawrence_authorize_gold_and_arms = {
+		icon = GFX_decision_generic_trucks
+		priority = 110
+		visible = { lawrence_shows_gold_and_arms = yes }
+		available = {
+			hidden_trigger = { lawrence_can_pay_gold_arms = yes }
+			custom_trigger_tooltip = {
+				tooltip = lawrence_no_shipment_pending_tt
+				hidden_trigger = { var:global.lawrence_target = { NOT = { lawrence_target_delivery_is_pending = yes } } }
+			}
+		}
+		custom_cost_trigger = { lawrence_can_pay_gold_arms = yes }
+		custom_cost_text = lawrence_cost_arms
+		days_re_enable = constant:lawrence_action.arms_cooldown_days
+		complete_effect = {
+			custom_effect_tooltip = lawrence_authorize_arms_tt
+			hidden_effect = { lawrence_authorize_gold_and_arms = yes }
+		}
+		ai_will_do = {
+			factor = 0
+			modifier = {
+				set_temp_variable = { lawrence_ai_weight = mtth:lawrence_ai_gold_arms }
+				add = lawrence_ai_weight
+			}
+		}
+	}
+
+	lawrence_send_officer_cadres = {
+		icon = GFX_decision_generic_army_support
+		priority = 109
+		visible = { lawrence_shows_officer_cadres = yes }
+		available = { hidden_trigger = { lawrence_can_pay_cadres = yes } }
+		custom_cost_trigger = { lawrence_can_pay_cadres = yes }
+		custom_cost_text = lawrence_cost_cadres
+		days_re_enable = constant:lawrence_action.cadres_cooldown_days
+		complete_effect = {
+			custom_effect_tooltip = lawrence_send_cadres_tt
+			hidden_effect = { lawrence_send_officer_cadres = yes }
+		}
+		ai_will_do = {
+			factor = 0
+			modifier = {
+				set_temp_variable = { lawrence_ai_weight = mtth:lawrence_ai_cadres }
+				add = lawrence_ai_weight
+			}
+		}
+	}
+
+	lawrence_secure_the_red_sea_route = {
+		icon = GFX_decision_generic_naval
+		priority = 108
+		visible = { lawrence_shows_sea_route = yes }
+		available = {
+			hidden_trigger = { lawrence_can_pay_sea_route = yes }
+			custom_trigger_tooltip = {
+				tooltip = lawrence_british_base_tt
+				hidden_trigger = { lawrence_sponsor_has_regional_base = yes }
+			}
+		}
+		custom_cost_trigger = { lawrence_can_pay_sea_route = yes }
+		custom_cost_text = lawrence_cost_route
+		complete_effect = {
+			custom_effect_tooltip = lawrence_secure_sea_route_tt
+			hidden_effect = { lawrence_secure_sea_route = yes }
+		}
+		ai_will_do = {
+			factor = 0
+			modifier = {
+				set_temp_variable = { lawrence_ai_weight = mtth:lawrence_ai_sea_route }
+				add = lawrence_ai_weight
+			}
+		}
+	}
+
+	lawrence_repair_the_rail_and_telegraph_link = {
+		icon = GFX_decision_generic_train
+		priority = 107
+		visible = { lawrence_shows_rail_link = yes }
+		available = { hidden_trigger = { lawrence_can_pay_rail_link = yes } }
+		custom_cost_trigger = { lawrence_can_pay_rail_link = yes }
+		custom_cost_text = lawrence_cost_rail
+		complete_effect = {
+			custom_effect_tooltip = lawrence_repair_rail_tt
+			hidden_effect = { lawrence_repair_rail_link = yes }
+		}
+		ai_will_do = {
+			factor = 0
+			modifier = {
+				set_temp_variable = { lawrence_ai_weight = mtth:lawrence_ai_rail_link }
+				add = lawrence_ai_weight
+			}
+		}
+	}
+
+	# ------------------------------------------------------------------------
+	# Political penetration
+	# ------------------------------------------------------------------------
+
+	lawrence_expand_the_radio_and_press_network = {
+		icon = GFX_decision_eng_propaganda_campaigns
+		priority = 106
+		visible = { lawrence_shows_press_network = yes }
+		available = { hidden_trigger = { lawrence_can_pay_press = yes } }
+		custom_cost_trigger = { lawrence_can_pay_press = yes }
+		custom_cost_text = lawrence_cost_press
+		days_remove = constant:lawrence_action.press_days
+		cancel_trigger = { NOT = { lawrence_campaign_has_live_target = yes } }
+		complete_effect = {
+			custom_effect_tooltip = lawrence_expand_press_tt
+			hidden_effect = { lawrence_expand_press_network = yes }
+		}
+		remove_effect = {
+			custom_effect_tooltip = lawrence_press_ended_tt
+			hidden_effect = { lawrence_end_press_network = yes }
+		}
+		ai_will_do = {
+			factor = 0
+			modifier = {
+				set_temp_variable = { lawrence_ai_weight = mtth:lawrence_ai_press }
+				add = lawrence_ai_weight
+			}
+		}
+	}
+
+	lawrence_promise_constitutional_guarantees = {
+		icon = GFX_decision_generic_political_address
+		priority = 105
+		visible = { lawrence_shows_guarantees = yes }
+		available = { hidden_trigger = { lawrence_can_pay_guarantees = yes } }
+		custom_cost_trigger = { lawrence_can_pay_guarantees = yes }
+		custom_cost_text = lawrence_cost_guarantee
+		complete_effect = {
+			custom_effect_tooltip = lawrence_promise_guarantees_tt
+			hidden_effect = { lawrence_promise_guarantees = yes }
+		}
+		ai_will_do = {
+			factor = 0
+			modifier = {
+				set_temp_variable = { lawrence_ai_weight = mtth:lawrence_ai_guarantees }
+				add = lawrence_ai_weight
+			}
+		}
+	}
+
+	lawrence_tie_aid_to_bases_and_access = {
+		icon = GFX_decision_generic_fortification
+		priority = 104
+		visible = { lawrence_shows_bases_for_aid = yes }
+		available = { hidden_trigger = { lawrence_can_pay_bases = yes } }
+		custom_cost_trigger = { lawrence_can_pay_bases = yes }
+		custom_cost_text = lawrence_cost_bases
+		complete_effect = {
+			custom_effect_tooltip = lawrence_offer_bases_tt
+			hidden_effect = { lawrence_offer_bases_for_aid = yes }
+		}
+		ai_will_do = {
+			factor = 0
+			modifier = {
+				set_temp_variable = { lawrence_ai_weight = mtth:lawrence_ai_bases }
+				add = lawrence_ai_weight
+			}
+		}
+	}
+
+	lawrence_disavow_the_mission = {
+		icon = GFX_decision_generic_break_treaty
+		priority = 103
+		visible = { lawrence_shows_disavow = yes }
+		available = { hidden_trigger = { lawrence_can_pay_disavow = yes } }
+		custom_cost_trigger = { lawrence_can_pay_disavow = yes }
+		custom_cost_text = lawrence_cost_disavow
+		complete_effect = {
+			custom_effect_tooltip = lawrence_disavow_tt
+			hidden_effect = { lawrence_disavow_mission = yes }
+		}
+		ai_will_do = {
+			factor = 0
+			modifier = {
+				set_temp_variable = { lawrence_ai_weight = mtth:lawrence_ai_disavow }
+				add = lawrence_ai_weight
+			}
+		}
+	}
+
+	# ------------------------------------------------------------------------
+	# Detention: Lawrence is held by the target
+	# ------------------------------------------------------------------------
+
+	lawrence_attempt_a_recovery_operation = {
+		icon = GFX_decision_generic_operation
+		priority = 110
+		visible = { lawrence_shows_recovery_set = yes }
+		available = { hidden_trigger = { lawrence_can_pay_recovery = yes } }
+		custom_cost_trigger = { lawrence_can_pay_recovery = yes }
+		custom_cost_text = lawrence_cost_recovery
+		days_re_enable = constant:lawrence_action.recovery_cooldown_days
+		complete_effect = {
+			custom_effect_tooltip = lawrence_recovery_tt
+			hidden_effect = { lawrence_attempt_recovery = yes }
+		}
+		ai_will_do = {
+			factor = 0
+			modifier = {
+				set_temp_variable = { lawrence_ai_weight = mtth:lawrence_ai_recovery }
+				add = lawrence_ai_weight
+			}
+		}
+	}
+
+	lawrence_negotiate_an_exchange = {
+		icon = GFX_decision_generic_decision
+		priority = 109
+		visible = { lawrence_shows_recovery_set = yes }
+		available = {
+			hidden_trigger = { lawrence_can_pay_exchange = yes }
+			custom_trigger_tooltip = {
+				tooltip = lawrence_exchange_once_tt
+				hidden_trigger = { var:global.lawrence_target = { NOT = { has_country_flag = lawrence_exchange_offer_open } } }
+			}
+		}
+		custom_cost_trigger = { lawrence_can_pay_exchange = yes }
+		custom_cost_text = lawrence_cost_exchange
+		days_re_enable = constant:lawrence_action.exchange_cooldown_days
+		complete_effect = {
+			custom_effect_tooltip = lawrence_exchange_tt
+			hidden_effect = { lawrence_negotiate_exchange = yes }
+		}
+		ai_will_do = {
+			factor = 0
+			modifier = {
+				set_temp_variable = { lawrence_ai_weight = mtth:lawrence_ai_exchange }
+				add = lawrence_ai_weight
+			}
+		}
+	}
+
+	lawrence_arms_route_mission = {
+		icon = GFX_decision_generic_trucks
+		priority = 120
+		allowed = { always = yes }
+		activation = { always = no }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = lawrence_route_delivered_tt
+				hidden_trigger = { has_global_flag = lawrence_arms_delivered }
+			}
+		}
+		days_mission_timeout = constant:lawrence_mission.arms_route_days
+		cancel_trigger = { NOT = { lawrence_campaign_has_live_target = yes } }
+		complete_effect = {
+			custom_effect_tooltip = lawrence_route_success_tt
+			hidden_effect = { lawrence_arms_route_success = yes }
+		}
+		timeout_effect = {
+			custom_effect_tooltip = lawrence_route_failure_tt
+			hidden_effect = { lawrence_arms_route_failure = yes }
+		}
+	}
+}

@@ -1,0 +1,1141 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 040 LAWRENCE OF ARABIA ACTION EFFECTS
+# ============================================================================
+# Effects behind the target and British decisions, the missions and the
+# incident and reaction events. Every paid action debits through the charge
+# helpers below, so the cost row, the affordability trigger and the payment
+# read the same quote.
+#
+# Scope: COUNTRY. Target actions run in the live target (ROOT). British
+# actions run in ENG and reach the target through var:global.lawrence_target.
+# Temporary variables carry inputs across scope changes inside one chain.
+# ============================================================================
+
+# ---------------------------------------------------------------------------
+# Payment helpers. Input: temporary lawrence_charge (a positive amount).
+# ---------------------------------------------------------------------------
+
+lawrence_charge_political_power = {
+	multiply_temp_variable = { lawrence_charge = -1 }
+	add_political_power = lawrence_charge
+}
+
+lawrence_charge_command_power = {
+	multiply_temp_variable = { lawrence_charge = -1 }
+	add_command_power = lawrence_charge
+}
+
+lawrence_charge_army_experience = {
+	multiply_temp_variable = { lawrence_charge = -1 }
+	add_army_experience = lawrence_charge
+}
+
+lawrence_charge_support_equipment = {
+	multiply_temp_variable = { lawrence_charge = -1 }
+	add_equipment_to_stockpile = { type = support_equipment amount = lawrence_charge }
+}
+
+lawrence_charge_infantry_equipment = {
+	multiply_temp_variable = { lawrence_charge = -1 }
+	add_equipment_to_stockpile = { type = infantry_equipment amount = lawrence_charge }
+}
+
+lawrence_charge_convoys = {
+	multiply_temp_variable = { lawrence_charge = -1 }
+	add_equipment_to_stockpile = { type = convoy_1 amount = lawrence_charge }
+}
+
+lawrence_charge_trains = {
+	multiply_temp_variable = { lawrence_charge = -1 }
+	add_equipment_to_stockpile = { type = train_equipment amount = lawrence_charge }
+}
+
+lawrence_charge_fuel = {
+	multiply_temp_variable = { lawrence_charge = -1 }
+	add_fuel = lawrence_charge
+}
+
+# ---------------------------------------------------------------------------
+# Bounded bookkeeping
+# ---------------------------------------------------------------------------
+
+# Input: temporary lawrence_evidence_change (signed). Evidence stays 0 to 4.
+lawrence_add_evidence = {
+	add_to_variable = { lawrence_evidence = lawrence_evidence_change }
+	clamp_variable = { var = lawrence_evidence min = constant:lawrence_event.zero max = constant:lawrence_evidence.maximum }
+}
+
+# Input: temporary lawrence_exposure_change (signed). Exposure stays 0 to 100.
+lawrence_add_exposure = {
+	add_to_variable = { lawrence_exposure = lawrence_exposure_change }
+	clamp_variable = { var = lawrence_exposure min = constant:lawrence_event.zero max = constant:lawrence_influence.maximum }
+}
+
+# Input: temporary lawrence_officers_change (signed). Officers stay 0 to 100.
+lawrence_add_officers = {
+	add_to_variable = { lawrence_officers = lawrence_officers_change }
+	clamp_variable = { var = lawrence_officers min = constant:lawrence_event.zero max = constant:lawrence_influence.maximum }
+}
+
+# Global hidden values. Input: temporary lawrence_trust_change or
+# lawrence_credibility_change (signed).
+lawrence_add_trust = {
+	add_to_variable = { global.lawrence_trust = lawrence_trust_change }
+	clamp_variable = { var = global.lawrence_trust min = constant:lawrence_event.zero max = constant:lawrence_influence.maximum }
+}
+
+lawrence_add_credibility = {
+	add_to_variable = { global.lawrence_credibility = lawrence_credibility_change }
+	clamp_variable = { var = global.lawrence_credibility min = constant:lawrence_event.zero max = constant:lawrence_influence.maximum }
+}
+
+# A mission started or ended. Missions stay at most two per target.
+lawrence_mission_started = {
+	add_to_variable = { lawrence_missions_active = constant:lawrence_event.one }
+}
+
+lawrence_mission_closed = {
+	subtract_from_variable = { lawrence_missions_active = constant:lawrence_event.one }
+	clamp_variable = { var = lawrence_missions_active min = constant:lawrence_event.zero max = constant:lawrence_mission.max_active }
+}
+
+# A mission was completed in the target's favour.
+lawrence_mission_succeeded = {
+	lawrence_mission_closed = yes
+	add_to_variable = { lawrence_missions_done = constant:lawrence_event.one }
+}
+
+# ---------------------------------------------------------------------------
+# Terms of access (chaosx.nr40.4 options)
+# ---------------------------------------------------------------------------
+
+# COUNTRY, the target. Input: temporary lawrence_terms_choice.
+lawrence_apply_terms = {
+	set_variable = { lawrence_terms = lawrence_terms_choice }
+	set_variable = { lawrence_phase = constant:lawrence_phase.contest }
+	if = {
+		limit = { check_variable = { var = lawrence_terms value = constant:lawrence_terms.broad compare = equals } }
+		set_temp_variable = { lawrence_change = constant:lawrence_terms_effect.broad_influence }
+		lawrence_add_influence = yes
+		set_temp_variable = { lawrence_trust_change = constant:lawrence_terms_effect.broad_trust }
+		lawrence_add_trust = yes
+		set_temp_variable = { lawrence_exposure_change = constant:lawrence_terms_effect.broad_exposure }
+		lawrence_add_exposure = yes
+		set_variable = { lawrence_support_power = constant:lawrence_support.opening_power }
+		set_variable = { lawrence_support_until = global.num_days }
+		add_to_variable = { lawrence_support_until = constant:lawrence_support.opening_days }
+	}
+	else_if = {
+		limit = { check_variable = { var = lawrence_terms value = constant:lawrence_terms.liaison compare = equals } }
+		set_variable = { lawrence_support_power = constant:lawrence_support.opening_power }
+		set_variable = { lawrence_support_until = global.num_days }
+		add_to_variable = { lawrence_support_until = constant:lawrence_support.opening_days_liaison }
+	}
+	else_if = {
+		limit = { check_variable = { var = lawrence_terms value = constant:lawrence_terms.escorted compare = equals } }
+		set_country_flag = lawrence_escorted
+		set_temp_variable = { lawrence_change = constant:lawrence_terms_effect.escort_influence }
+		lawrence_add_influence = yes
+		set_temp_variable = { lawrence_trust_change = constant:lawrence_terms_effect.escort_trust }
+		lawrence_add_trust = yes
+		set_temp_variable = { lawrence_exposure_change = constant:lawrence_terms_effect.escort_exposure }
+		lawrence_add_exposure = yes
+	}
+	else_if = {
+		limit = { check_variable = { var = lawrence_terms value = constant:lawrence_terms.refused compare = equals } }
+		set_temp_variable = { lawrence_settle_outcome = constant:lawrence_outcome.expelled }
+		set_temp_variable = { lawrence_settle_clean = constant:lawrence_event.one }
+		lawrence_settle = yes
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Target actions
+# ---------------------------------------------------------------------------
+
+# Take Custody of the Shipment. The government inspects and distributes the
+# delivery itself.
+lawrence_pay_custody = {
+	set_temp_variable = { lawrence_charge = constant:lawrence_cost.custody_command_power }
+	lawrence_charge_command_power = yes
+	set_temp_variable = { lawrence_charge = lawrence_cost_custody_support }
+	lawrence_charge_support_equipment = yes
+}
+
+lawrence_take_custody = {
+	lawrence_pay_custody = yes
+	set_country_flag = lawrence_delivery_custody
+	set_country_flag = lawrence_custody_taken
+	set_temp_variable = { lawrence_xp = constant:lawrence_effect.custody_army_experience }
+	add_army_experience = lawrence_xp
+	set_temp_variable = { lawrence_trust_change = constant:lawrence_effect.custody_trust }
+	lawrence_add_trust = yes
+}
+
+# Open an Arab Liaison Office. An office the pro-British officers already
+# control serves the network instead of the government.
+lawrence_pay_office = {
+	set_temp_variable = { lawrence_charge = constant:lawrence_cost.office_political_power }
+	lawrence_charge_political_power = yes
+	set_temp_variable = { lawrence_charge = lawrence_cost_office_support }
+	lawrence_charge_support_equipment = yes
+}
+
+lawrence_open_office = {
+	lawrence_pay_office = yes
+	set_country_flag = lawrence_office_built
+	add_ideas = lawrence_liaison_office
+	if = {
+		limit = { check_variable = { var = lawrence_officers value = constant:lawrence_officers.capture_threshold compare = greater_than_or_equals } }
+		set_country_flag = lawrence_office_captured
+		set_temp_variable = { lawrence_change = constant:lawrence_effect.office_captured_influence }
+		lawrence_add_influence = yes
+	}
+	else = {
+		set_country_flag = lawrence_office
+		set_temp_variable = { lawrence_change = constant:lawrence_effect.office_influence }
+		lawrence_add_influence = yes
+		set_temp_variable = { lawrence_trust_change = constant:lawrence_effect.office_trust }
+		lawrence_add_trust = yes
+	}
+}
+
+# Place Lawrence Under Escort (timed decision). Started on selection and
+# ended by its remove effect.
+lawrence_pay_escort = {
+	set_temp_variable = { lawrence_charge = constant:lawrence_cost.escort_command_power }
+	lawrence_charge_command_power = yes
+	set_temp_variable = { lawrence_charge = lawrence_cost_escort_support }
+	lawrence_charge_support_equipment = yes
+}
+
+lawrence_start_escort = {
+	lawrence_pay_escort = yes
+	set_country_flag = lawrence_escorted
+	set_temp_variable = { lawrence_change = constant:lawrence_effect.escort_influence }
+	lawrence_add_influence = yes
+	set_temp_variable = { lawrence_exposure_change = constant:lawrence_effect.escort_exposure }
+	lawrence_add_exposure = yes
+	set_temp_variable = { lawrence_trust_change = constant:lawrence_effect.escort_trust }
+	lawrence_add_trust = yes
+}
+
+lawrence_end_escort = {
+	clr_country_flag = lawrence_escorted
+}
+
+# Build a Counterintelligence File (timed decision).
+lawrence_pay_file = {
+	set_temp_variable = { lawrence_charge = constant:lawrence_cost.file_political_power }
+	lawrence_charge_political_power = yes
+	set_temp_variable = { lawrence_charge = lawrence_cost_file_support }
+	lawrence_charge_support_equipment = yes
+}
+
+lawrence_start_file = {
+	lawrence_pay_file = yes
+	set_country_flag = lawrence_file_in_progress
+}
+
+lawrence_finish_file = {
+	clr_country_flag = lawrence_file_in_progress
+	if = {
+		limit = { lawrence_is_live_target = yes }
+		set_country_flag = lawrence_file
+		set_temp_variable = { lawrence_evidence_change = constant:lawrence_effect.file_evidence }
+		if = {
+			limit = { check_variable = { var = lawrence_security value = constant:lawrence_effect.file_strong_security compare = greater_than_or_equals } }
+			add_to_temp_variable = { lawrence_evidence_change = constant:lawrence_effect.file_strong_bonus }
+		}
+		lawrence_add_evidence = yes
+		set_temp_variable = { lawrence_exposure_change = constant:lawrence_effect.file_exposure }
+		lawrence_add_exposure = yes
+	}
+}
+
+# Audit the Gold Ledger: opens the Trace the Gold Ledger mission.
+lawrence_pay_audit = {
+	set_temp_variable = { lawrence_charge = constant:lawrence_cost.audit_political_power }
+	lawrence_charge_political_power = yes
+	set_temp_variable = { lawrence_charge = constant:lawrence_cost.audit_command_power }
+	lawrence_charge_command_power = yes
+}
+
+lawrence_start_ledger_mission = {
+	lawrence_pay_audit = yes
+	lawrence_set_garrison_need = yes
+	set_variable = { lawrence_ledger_hold_days = constant:lawrence_event.zero }
+	lawrence_mission_started = yes
+	activate_mission = lawrence_trace_ledger_mission
+}
+
+# Garrison need: a strong security service reads the ledgers with a lighter
+# guard on the offices than a weak one.
+lawrence_set_garrison_need = {
+	set_variable = { lawrence_garrison_need = constant:lawrence_mission.garrison_heavy }
+	if = {
+		limit = { check_variable = { var = lawrence_security value = constant:lawrence_mission.garrison_light_security compare = greater_than_or_equals } }
+		set_variable = { lawrence_garrison_need = constant:lawrence_mission.garrison_light }
+	}
+}
+
+lawrence_ledger_success = {
+	lawrence_mission_succeeded = yes
+	set_country_flag = lawrence_ledger_traced
+	set_country_flag = lawrence_nodes_secured
+	set_temp_variable = { lawrence_evidence_change = constant:lawrence_effect.ledger_evidence }
+	lawrence_add_evidence = yes
+	set_temp_variable = { lawrence_change = constant:lawrence_effect.ledger_influence }
+	lawrence_add_influence = yes
+	set_temp_variable = { lawrence_exposure_change = constant:lawrence_effect.ledger_exposure }
+	lawrence_add_exposure = yes
+}
+
+lawrence_ledger_partial = {
+	lawrence_mission_closed = yes
+	set_country_flag = lawrence_ledger_traced
+	set_temp_variable = { lawrence_evidence_change = constant:lawrence_effect.ledger_evidence }
+	lawrence_add_evidence = yes
+}
+
+lawrence_ledger_failure = {
+	lawrence_mission_closed = yes
+	set_temp_variable = { lawrence_change = constant:lawrence_effect.ledger_failure_influence }
+	lawrence_add_influence = yes
+	set_temp_variable = { lawrence_exposure_change = constant:lawrence_effect.ledger_failure_exposure }
+	lawrence_add_exposure = yes
+	set_temp_variable = { lawrence_flag_days = constant:lawrence_mission.retry_days }
+	set_country_flag = { flag = lawrence_ledger_cooldown days = lawrence_flag_days }
+}
+
+# Turn a Contact, then Feed Controlled Intelligence through it.
+lawrence_pay_turn = {
+	set_temp_variable = { lawrence_charge = constant:lawrence_cost.turn_political_power }
+	lawrence_charge_political_power = yes
+	set_temp_variable = { lawrence_charge = constant:lawrence_cost.turn_command_power }
+	lawrence_charge_command_power = yes
+}
+
+lawrence_turn_contact = {
+	lawrence_pay_turn = yes
+	random_list = {
+		50 = {
+			modifier = { add = 25 check_variable = { var = lawrence_security value = constant:lawrence_effect.turn_strong_security compare = greater_than_or_equals } }
+			modifier = { add = 15 has_country_flag = lawrence_ledger_traced }
+			modifier = { factor = 0.5 check_variable = { var = lawrence_officers value = constant:lawrence_officers.capture_threshold compare = greater_than_or_equals } }
+			set_country_flag = lawrence_contact_turned
+			set_country_flag = lawrence_ach_turned_once
+			set_variable = { lawrence_double_progress = constant:lawrence_event.zero }
+			set_temp_variable = { lawrence_evidence_change = constant:lawrence_effect.turn_evidence }
+			lawrence_add_evidence = yes
+			country_event = { id = chaosx.nr40.17 }
+		}
+		50 = {
+			modifier = { factor = 0.6 check_variable = { var = lawrence_security value = constant:lawrence_effect.turn_strong_security compare = greater_than_or_equals } }
+			modifier = { add = 20 check_variable = { var = lawrence_officers value = constant:lawrence_officers.capture_threshold compare = greater_than_or_equals } }
+			set_temp_variable = { lawrence_change = constant:lawrence_effect.turn_failure_influence }
+			lawrence_add_influence = yes
+			set_temp_variable = { lawrence_evidence_change = constant:lawrence_effect.turn_failure_evidence }
+			lawrence_add_evidence = yes
+			country_event = { id = chaosx.nr40.18 }
+		}
+	}
+}
+
+lawrence_pay_feed = {
+	set_temp_variable = { lawrence_charge = constant:lawrence_cost.feed_command_power }
+	lawrence_charge_command_power = yes
+	set_temp_variable = { lawrence_charge = constant:lawrence_cost.feed_political_power }
+	lawrence_charge_political_power = yes
+}
+
+lawrence_feed_intelligence = {
+	lawrence_pay_feed = yes
+	random_list = {
+		70 = {
+			modifier = { add = 15 check_variable = { var = lawrence_security value = constant:lawrence_effect.turn_strong_security compare = greater_than_or_equals } }
+			modifier = { factor = 0.6 check_variable = { var = lawrence_security value = constant:lawrence_effect.feed_weak_security compare = less_than } }
+			add_to_variable = { lawrence_double_progress = constant:lawrence_event.one }
+			set_temp_variable = { lawrence_change = constant:lawrence_effect.feed_influence }
+			lawrence_add_influence = yes
+			set_temp_variable = { lawrence_credibility_change = constant:lawrence_effect.feed_credibility }
+			lawrence_add_credibility = yes
+			set_temp_variable = { lawrence_trust_change = constant:lawrence_effect.feed_trust }
+			lawrence_add_trust = yes
+			if = {
+				limit = { check_variable = { var = lawrence_double_progress value = constant:lawrence_effect.double_ready_progress compare = greater_than_or_equals } }
+				set_country_flag = lawrence_double_ready
+			}
+		}
+		30 = {
+			modifier = { factor = 0.5 check_variable = { var = lawrence_security value = constant:lawrence_effect.turn_strong_security compare = greater_than_or_equals } }
+			modifier = { add = 25 check_variable = { var = lawrence_security value = constant:lawrence_effect.feed_weak_security compare = less_than } }
+			clr_country_flag = lawrence_contact_turned
+			clr_country_flag = lawrence_double_ready
+			set_variable = { lawrence_double_progress = constant:lawrence_event.zero }
+			set_country_flag = lawrence_double_detected
+			set_temp_variable = { lawrence_change = constant:lawrence_effect.feed_detected_influence }
+			lawrence_add_influence = yes
+			set_temp_variable = { lawrence_evidence_change = constant:lawrence_effect.feed_detected_evidence }
+			lawrence_add_evidence = yes
+			country_event = { id = chaosx.nr40.19 }
+		}
+	}
+}
+
+# Secure the Officer Corps: opens the officers mission.
+lawrence_pay_officers = {
+	set_temp_variable = { lawrence_charge = constant:lawrence_cost.officers_army_experience }
+	lawrence_charge_army_experience = yes
+	set_temp_variable = { lawrence_charge = constant:lawrence_cost.officers_command_power }
+	lawrence_charge_command_power = yes
+}
+
+lawrence_start_officers_mission = {
+	lawrence_pay_officers = yes
+	lawrence_mission_started = yes
+	activate_mission = lawrence_secure_officers_mission
+}
+
+lawrence_officers_success = {
+	lawrence_mission_succeeded = yes
+	set_country_flag = lawrence_officers_secured
+	set_temp_variable = { lawrence_change = constant:lawrence_effect.officers_influence }
+	lawrence_add_influence = yes
+	set_temp_variable = { lawrence_trust_change = constant:lawrence_effect.officers_trust }
+	lawrence_add_trust = yes
+}
+
+lawrence_officers_failure = {
+	lawrence_mission_closed = yes
+	set_temp_variable = { lawrence_stab = constant:lawrence_effect.officers_failure_stability }
+	add_stability = lawrence_stab
+	set_temp_variable = { lawrence_change = constant:lawrence_effect.officers_failure_influence }
+	lawrence_add_influence = yes
+	set_temp_variable = { lawrence_flag_days = constant:lawrence_mission.retry_days }
+	set_country_flag = { flag = lawrence_officers_cooldown days = lawrence_flag_days }
+}
+
+# Weekly: the ledger and dismantle missions count the days the named nodes
+# stay garrisoned, and the securing mission moves officers only while the
+# capital is held.
+lawrence_track_mission_holds = {
+	if = {
+		limit = { has_active_mission = lawrence_trace_ledger_mission }
+		if = {
+			limit = {
+				lawrence_capital_garrisoned = yes
+				lawrence_port_garrisoned = yes
+			}
+			add_to_variable = { lawrence_ledger_hold_days = constant:lawrence_event.pulse_days }
+		}
+		else = {
+			set_variable = { lawrence_ledger_hold_days = constant:lawrence_event.zero }
+		}
+	}
+	if = {
+		limit = { has_active_mission = lawrence_dismantle_mission }
+		if = {
+			limit = { lawrence_all_nodes_garrisoned = yes }
+			add_to_variable = { lawrence_dismantle_hold_days = constant:lawrence_event.pulse_days }
+		}
+		else = {
+			set_variable = { lawrence_dismantle_hold_days = constant:lawrence_event.zero }
+		}
+	}
+	lawrence_track_officer_securing = yes
+}
+
+# Weekly: the securing mission only moves officers while the capital is held.
+lawrence_track_officer_securing = {
+	if = {
+		limit = {
+			has_active_mission = lawrence_secure_officers_mission
+			lawrence_capital_garrisoned = yes
+		}
+		set_temp_variable = { lawrence_officers_change = constant:lawrence_effect.officers_securing_rate }
+		multiply_temp_variable = { lawrence_officers_change = -1 }
+		lawrence_add_officers = yes
+	}
+}
+
+# Expose the Network: opens the exposure mission (target).
+lawrence_pay_expose = {
+	set_temp_variable = { lawrence_charge = constant:lawrence_cost.expose_political_power }
+	lawrence_charge_political_power = yes
+	set_temp_variable = { lawrence_stab = constant:lawrence_cost.expose_stability_cost }
+	add_stability = lawrence_stab
+}
+
+lawrence_start_expose_mission = {
+	lawrence_pay_expose = yes
+	lawrence_mission_started = yes
+	activate_mission = lawrence_expose_network_mission
+}
+
+# Public exposure.
+lawrence_expose_success = {
+	lawrence_mission_succeeded = yes
+	set_country_flag = lawrence_exposed
+	set_global_flag = lawrence_survival_public
+	set_temp_variable = { lawrence_change = constant:lawrence_effect.expose_influence }
+	lawrence_add_influence = yes
+	set_temp_variable = { lawrence_credibility_change = constant:lawrence_effect.expose_credibility }
+	lawrence_add_credibility = yes
+	set_temp_variable = { lawrence_exposure_change = constant:lawrence_effect.expose_exposure }
+	lawrence_add_exposure = yes
+	set_temp_variable = { lawrence_alert_kind = constant:lawrence_alert.alarm }
+	lawrence_alert_neighbour = yes
+	set_variable = { global.lawrence_news_kind = constant:lawrence_news.revealed }
+	set_temp_variable = { lawrence_report_delay = constant:lawrence_event.report_delay_days }
+	news_event = { id = chaosx.nr40.40 days = lawrence_report_delay }
+}
+
+# Private leverage. The evidence is kept for bargaining and a double game.
+lawrence_expose_partial = {
+	lawrence_mission_closed = yes
+	set_country_flag = lawrence_leverage
+	set_temp_variable = { lawrence_change = constant:lawrence_effect.expose_partial_influence }
+	lawrence_add_influence = yes
+	set_temp_variable = { lawrence_credibility_change = constant:lawrence_effect.expose_partial_credibility }
+	lawrence_add_credibility = yes
+}
+
+lawrence_expose_failure = {
+	lawrence_mission_closed = yes
+	set_temp_variable = { lawrence_stab = constant:lawrence_effect.expose_failure_stability }
+	add_stability = lawrence_stab
+	set_temp_variable = { lawrence_change = constant:lawrence_effect.expose_failure_influence }
+	lawrence_add_influence = yes
+	set_temp_variable = { lawrence_evidence_change = constant:lawrence_effect.expose_failure_evidence }
+	lawrence_add_evidence = yes
+	set_temp_variable = { lawrence_flag_days = constant:lawrence_mission.retry_days }
+	set_country_flag = { flag = lawrence_expose_cooldown days = lawrence_flag_days }
+}
+
+# Dismantle the Contact Network: the cleanup mission after exposure.
+lawrence_pay_dismantle = {
+	set_temp_variable = { lawrence_charge = constant:lawrence_cost.dismantle_command_power }
+	lawrence_charge_command_power = yes
+	set_temp_variable = { lawrence_charge = constant:lawrence_cost.dismantle_political_power }
+	lawrence_charge_political_power = yes
+	set_temp_variable = { lawrence_charge = lawrence_cost_dismantle_support }
+	lawrence_charge_support_equipment = yes
+}
+
+lawrence_start_dismantle_mission = {
+	lawrence_pay_dismantle = yes
+	lawrence_set_garrison_need = yes
+	set_variable = { lawrence_dismantle_hold_days = constant:lawrence_event.zero }
+	lawrence_mission_started = yes
+	activate_mission = lawrence_dismantle_mission
+}
+
+lawrence_dismantle_success = {
+	lawrence_mission_succeeded = yes
+	set_country_flag = lawrence_dismantled
+	set_temp_variable = { lawrence_settle_outcome = constant:lawrence_outcome.dismantled }
+	lawrence_settle = yes
+}
+
+lawrence_dismantle_partial = {
+	lawrence_mission_closed = yes
+	set_temp_variable = { lawrence_change = constant:lawrence_effect.dismantle_partial_influence }
+	lawrence_add_influence = yes
+	set_temp_variable = { lawrence_exposure_change = constant:lawrence_effect.dismantle_partial_exposure }
+	lawrence_add_exposure = yes
+	set_temp_variable = { lawrence_flag_days = constant:lawrence_mission.retry_days }
+	set_country_flag = { flag = lawrence_dismantle_cooldown days = lawrence_flag_days }
+}
+
+lawrence_dismantle_failure = {
+	lawrence_mission_closed = yes
+	set_temp_variable = { lawrence_change = constant:lawrence_effect.dismantle_failure_influence }
+	lawrence_add_influence = yes
+	clr_country_flag = lawrence_exposed
+	set_variable = { lawrence_evidence = constant:lawrence_evidence.after_failure }
+}
+
+# Expel the Mission.
+lawrence_pay_expel = {
+	set_temp_variable = { lawrence_charge = constant:lawrence_cost.expel_political_power }
+	lawrence_charge_political_power = yes
+}
+
+lawrence_expel_mission = {
+	lawrence_pay_expel = yes
+	set_temp_variable = { lawrence_settle_outcome = constant:lawrence_outcome.expelled }
+	set_temp_variable = { lawrence_settle_clean = constant:lawrence_event.zero }
+	if = {
+		limit = { lawrence_influence_is_low = yes }
+		set_temp_variable = { lawrence_settle_clean = constant:lawrence_event.one }
+	}
+	lawrence_settle = yes
+}
+
+# Detain the Mission.
+lawrence_pay_detain = {
+	set_temp_variable = { lawrence_charge = constant:lawrence_cost.detain_command_power }
+	lawrence_charge_command_power = yes
+	set_temp_variable = { lawrence_charge = constant:lawrence_cost.detain_political_power }
+	lawrence_charge_political_power = yes
+}
+
+lawrence_detain_mission = {
+	lawrence_pay_detain = yes
+	lawrence_begin_detention = yes
+}
+
+# Preserve National Custody: the sovereign armed partner settlement.
+lawrence_pay_preserve = {
+	set_temp_variable = { lawrence_charge = constant:lawrence_cost.preserve_army_experience }
+	lawrence_charge_army_experience = yes
+	set_temp_variable = { lawrence_charge = constant:lawrence_cost.preserve_command_power }
+	lawrence_charge_command_power = yes
+	set_temp_variable = { lawrence_charge = constant:lawrence_cost.preserve_political_power }
+	lawrence_charge_political_power = yes
+}
+
+lawrence_preserve_custody = {
+	lawrence_pay_preserve = yes
+	set_temp_variable = { lawrence_settle_outcome = constant:lawrence_outcome.partner }
+	lawrence_settle = yes
+}
+
+# Seek an independent treaty: Britain answers through chaosx.nr40.10.
+lawrence_pay_treaty = {
+	set_temp_variable = { lawrence_charge = constant:lawrence_cost.treaty_political_power }
+	lawrence_charge_political_power = yes
+}
+
+lawrence_seek_treaty = {
+	lawrence_pay_treaty = yes
+	set_country_flag = lawrence_final_pending
+	set_variable = { lawrence_phase = constant:lawrence_phase.final }
+	ENG = { country_event = { id = chaosx.nr40.10 } }
+}
+
+# Offer an Independent Charter: the first stage of the personal route.
+lawrence_pay_charter = {
+	set_temp_variable = { lawrence_charge = constant:lawrence_cost.charter_political_power }
+	lawrence_charge_political_power = yes
+	set_temp_variable = { lawrence_stab = constant:lawrence_cost.charter_stability_cost }
+	add_stability = lawrence_stab
+}
+
+lawrence_offer_charter = {
+	lawrence_pay_charter = yes
+	set_country_flag = lawrence_charter_offered
+	set_temp_variable = { lawrence_trust_change = constant:lawrence_effect.charter_trust }
+	lawrence_add_trust = yes
+	set_temp_variable = { lawrence_change = constant:lawrence_effect.charter_influence }
+	lawrence_add_influence = yes
+}
+
+# Play Britain Against a Rival: a British guarantee and a larger shipment
+# pipeline in return for dependence.
+lawrence_pay_rival_play = {
+	set_temp_variable = { lawrence_charge = constant:lawrence_cost.rival_political_power }
+	lawrence_charge_political_power = yes
+}
+
+lawrence_play_britain_against_rival = {
+	lawrence_pay_rival_play = yes
+	set_country_flag = lawrence_rival_played
+	ENG = {
+		diplomatic_relation = {
+			country = PREV
+			relation = guarantee
+			active = yes
+		}
+	}
+	set_temp_variable = { lawrence_change = constant:lawrence_effect.rival_influence }
+	lawrence_add_influence = yes
+	set_variable = { lawrence_support_power = constant:lawrence_support.rival_power }
+	set_variable = { lawrence_support_until = global.num_days }
+	add_to_variable = { lawrence_support_until = constant:lawrence_support.rival_days }
+}
+
+# Balance Foreign Sponsors: a real second patron.
+lawrence_pay_balance = {
+	set_temp_variable = { lawrence_charge = constant:lawrence_cost.balance_political_power }
+	lawrence_charge_political_power = yes
+	set_temp_variable = { lawrence_charge = constant:lawrence_cost.balance_command_power }
+	lawrence_charge_command_power = yes
+}
+
+lawrence_balance_sponsors = {
+	lawrence_pay_balance = yes
+	set_country_flag = lawrence_sponsors_balanced
+	random_other_country = {
+		limit = { lawrence_is_alternative_sponsor = yes }
+		add_opinion_modifier = { target = ROOT modifier = lawrence_rival_patronage }
+		ROOT = { add_opinion_modifier = { target = PREV modifier = lawrence_rival_patronage } }
+		give_military_access = ROOT
+	}
+	set_temp_variable = { lawrence_change = constant:lawrence_effect.balance_influence }
+	lawrence_add_influence = yes
+	set_temp_variable = { lawrence_credibility_change = constant:lawrence_effect.balance_credibility }
+	lawrence_add_credibility = yes
+}
+
+# ---------------------------------------------------------------------------
+# British actions (scope ENG)
+# ---------------------------------------------------------------------------
+
+lawrence_pay_gold_arms = {
+	set_temp_variable = { lawrence_charge = lawrence_cost_arms_infantry }
+	lawrence_charge_infantry_equipment = yes
+	set_temp_variable = { lawrence_charge = lawrence_cost_arms_support }
+	lawrence_charge_support_equipment = yes
+	set_temp_variable = { lawrence_charge = constant:lawrence_cost.arms_political_power }
+	lawrence_charge_political_power = yes
+}
+
+# ENG. Pays for one shipment and queues it for the live target.
+lawrence_authorize_gold_and_arms = {
+	set_temp_variable = { lawrence_ship_infantry = lawrence_cost_arms_infantry }
+	set_temp_variable = { lawrence_ship_support = lawrence_cost_arms_support }
+	lawrence_pay_gold_arms = yes
+	var:global.lawrence_target = { lawrence_queue_shipment = yes }
+}
+
+# COUNTRY, the target. Inputs: temporary lawrence_ship_infantry and
+# lawrence_ship_support, already paid by the sender.
+lawrence_queue_shipment = {
+	add_to_variable = { lawrence_delivery_serial = constant:lawrence_event.one }
+	set_variable = { lawrence_delivery_infantry = lawrence_ship_infantry }
+	set_variable = { lawrence_delivery_support = lawrence_ship_support }
+	set_country_flag = lawrence_delivery_pending
+	clr_country_flag = lawrence_delivery_custody
+	clr_country_flag = lawrence_delivery_intercepted
+	set_temp_variable = { lawrence_travel = constant:lawrence_delivery.base_days }
+	if = {
+		limit = { has_country_flag = lawrence_route_sea }
+		subtract_from_temp_variable = { lawrence_travel = constant:lawrence_delivery.sea_route_days }
+	}
+	if = {
+		limit = { has_country_flag = lawrence_rail_repaired }
+		subtract_from_temp_variable = { lawrence_travel = constant:lawrence_delivery.rail_days }
+	}
+	if = {
+		limit = { has_country_flag = lawrence_bases_agreed }
+		subtract_from_temp_variable = { lawrence_travel = constant:lawrence_delivery.bases_days }
+	}
+	if = {
+		limit = {
+			NOT = { any_owned_state = { is_coastal = yes } }
+			NOT = { any_neighbor_country = { OR = { tag = ENG is_subject_of = ENG } } }
+		}
+		add_to_temp_variable = { lawrence_travel = constant:lawrence_delivery.remote_days }
+	}
+	if = {
+		limit = { NOT = { has_country_flag = lawrence_route_open } }
+		add_to_temp_variable = { lawrence_travel = constant:lawrence_delivery.closed_route_days }
+	}
+	clamp_temp_variable = { var = lawrence_travel min = constant:lawrence_delivery.minimum_days max = constant:lawrence_delivery.maximum_days }
+	set_variable = { lawrence_delivery_arrival_day = global.num_days }
+	add_to_variable = { lawrence_delivery_arrival_day = lawrence_travel }
+	# A shipment crossing a country with a strong security service and no
+	# secured route can be seized.
+	if = {
+		limit = {
+			NOT = { has_country_flag = lawrence_route_sea }
+			NOT = { has_country_flag = lawrence_rail_repaired }
+			check_variable = { var = lawrence_security value = constant:lawrence_delivery.seizure_security compare = greater_than_or_equals }
+		}
+		random_list = {
+			35 = {
+				modifier = { factor = 0.4 has_country_flag = lawrence_bases_agreed }
+				modifier = { factor = 1.4 has_country_flag = lawrence_nodes_secured }
+				set_country_flag = lawrence_delivery_intercepted
+			}
+			65 = { }
+		}
+	}
+	set_temp_variable = { lawrence_report_delay = constant:lawrence_event.report_delay_days }
+	country_event = { id = chaosx.nr40.12 days = lawrence_report_delay }
+}
+
+lawrence_pay_cadres = {
+	set_temp_variable = { lawrence_charge = constant:lawrence_cost.cadres_army_experience }
+	lawrence_charge_army_experience = yes
+	set_temp_variable = { lawrence_charge = constant:lawrence_cost.cadres_command_power }
+	lawrence_charge_command_power = yes
+	set_temp_variable = { lawrence_charge = constant:lawrence_cost.cadres_political_power }
+	lawrence_charge_political_power = yes
+}
+
+# ENG. Officer cadres: training for the target, a personnel commitment for Britain.
+lawrence_send_officer_cadres = {
+	lawrence_pay_cadres = yes
+	set_temp_variable = { lawrence_idea_days = constant:lawrence_effect.cadres_commitment_days }
+	add_timed_idea = { idea = lawrence_cadre_commitment days = lawrence_idea_days }
+	var:global.lawrence_target = { lawrence_receive_cadres = yes }
+}
+
+lawrence_receive_cadres = {
+	set_country_flag = lawrence_cadres_sent
+	set_temp_variable = { lawrence_xp = constant:lawrence_effect.cadres_army_experience }
+	add_army_experience = lawrence_xp
+	set_temp_variable = { lawrence_officers_change = constant:lawrence_effect.cadres_officers }
+	lawrence_add_officers = yes
+	set_temp_variable = { lawrence_change = constant:lawrence_effect.cadres_influence }
+	lawrence_add_influence = yes
+	set_temp_variable = { lawrence_exposure_change = constant:lawrence_effect.cadres_exposure }
+	lawrence_add_exposure = yes
+	set_variable = { lawrence_support_power = constant:lawrence_support.cadres_power }
+	set_variable = { lawrence_support_until = global.num_days }
+	add_to_variable = { lawrence_support_until = constant:lawrence_support.cadres_days }
+}
+
+lawrence_pay_sea_route = {
+	set_temp_variable = { lawrence_charge = lawrence_cost_route_convoys }
+	lawrence_charge_convoys = yes
+	set_temp_variable = { lawrence_charge = lawrence_cost_route_fuel }
+	lawrence_charge_fuel = yes
+	set_temp_variable = { lawrence_charge = constant:lawrence_cost.route_command_power }
+	lawrence_charge_command_power = yes
+}
+
+# ENG. Secure the Red Sea and Gulf route and open the arms route mission.
+lawrence_secure_sea_route = {
+	lawrence_pay_sea_route = yes
+	var:global.lawrence_target = {
+		set_temp_variable = { lawrence_flag_days = constant:lawrence_route.sea_days }
+		set_country_flag = { flag = lawrence_route_sea days = lawrence_flag_days }
+	}
+	lawrence_start_arms_route_mission = yes
+}
+
+lawrence_pay_rail_link = {
+	set_temp_variable = { lawrence_charge = lawrence_cost_rail_trains }
+	lawrence_charge_trains = yes
+	set_temp_variable = { lawrence_charge = lawrence_cost_rail_support }
+	lawrence_charge_support_equipment = yes
+	set_temp_variable = { lawrence_charge = constant:lawrence_cost.rail_political_power }
+	lawrence_charge_political_power = yes
+}
+
+# ENG. Repair the rail and telegraph link through the target's capital and
+# route states and open the arms route mission.
+lawrence_repair_rail_link = {
+	lawrence_pay_rail_link = yes
+	var:global.lawrence_target = {
+		set_country_flag = lawrence_rail_repaired
+		var:lawrence_node_capital = {
+			add_building_construction = { type = infrastructure level = 1 instant_build = yes }
+		}
+		if = {
+			limit = { has_variable = lawrence_node_route }
+			var:lawrence_node_route = {
+				add_building_construction = { type = infrastructure level = 1 instant_build = yes }
+			}
+		}
+	}
+	lawrence_start_arms_route_mission = yes
+}
+
+lawrence_start_arms_route_mission = {
+	if = {
+		limit = { NOT = { has_active_mission = lawrence_arms_route_mission } }
+		clr_global_flag = lawrence_arms_delivered
+		activate_mission = lawrence_arms_route_mission
+	}
+}
+
+lawrence_arms_route_success = {
+	set_temp_variable = { lawrence_credibility_change = constant:lawrence_effect.route_credibility }
+	lawrence_add_credibility = yes
+	var:global.lawrence_target = {
+		set_temp_variable = { lawrence_change = constant:lawrence_effect.route_influence }
+		lawrence_add_influence = yes
+		set_variable = { lawrence_support_power = constant:lawrence_support.route_power }
+		set_variable = { lawrence_support_until = global.num_days }
+		add_to_variable = { lawrence_support_until = constant:lawrence_support.route_days }
+	}
+	clr_global_flag = lawrence_arms_delivered
+}
+
+lawrence_arms_route_failure = {
+	set_temp_variable = { lawrence_credibility_change = constant:lawrence_effect.route_failure_credibility }
+	lawrence_add_credibility = yes
+	if = {
+		limit = { has_global_flag = lawrence_campaign_active has_variable = global.lawrence_target }
+		var:global.lawrence_target = {
+			clr_country_flag = lawrence_route_sea
+			clr_country_flag = lawrence_rail_repaired
+		}
+	}
+}
+
+lawrence_pay_press = {
+	set_temp_variable = { lawrence_charge = constant:lawrence_cost.press_political_power }
+	lawrence_charge_political_power = yes
+	set_temp_variable = { lawrence_charge = lawrence_cost_press_support }
+	lawrence_charge_support_equipment = yes
+}
+
+# ENG. Press and radio network: a lasting pull whose strength depends on how
+# closely the target watches its own communications.
+lawrence_expand_press_network = {
+	lawrence_pay_press = yes
+	var:global.lawrence_target = {
+		set_country_flag = lawrence_press_active
+		set_temp_variable = { lawrence_change = constant:lawrence_effect.press_influence }
+		if = {
+			limit = {
+				OR = {
+					has_country_flag = lawrence_file
+					check_variable = { var = lawrence_security value = constant:lawrence_effect.press_censorship_security compare = greater_than_or_equals }
+				}
+			}
+			set_temp_variable = { lawrence_change = constant:lawrence_effect.press_censored_influence }
+		}
+		lawrence_add_influence = yes
+		set_temp_variable = { lawrence_exposure_change = constant:lawrence_effect.press_exposure }
+		lawrence_add_exposure = yes
+	}
+}
+
+lawrence_end_press_network = {
+	if = {
+		limit = { has_global_flag = lawrence_campaign_active has_variable = global.lawrence_target }
+		var:global.lawrence_target = { clr_country_flag = lawrence_press_active }
+	}
+}
+
+lawrence_pay_guarantees = {
+	set_temp_variable = { lawrence_charge = constant:lawrence_cost.guarantee_political_power }
+	lawrence_charge_political_power = yes
+}
+
+# ENG. A registered guarantee of internal autonomy. A client settlement later
+# breaks it and costs promise credibility across the region.
+lawrence_promise_guarantees = {
+	lawrence_pay_guarantees = yes
+	add_to_variable = { global.lawrence_promises_made = constant:lawrence_event.one }
+	set_temp_variable = { lawrence_credibility_change = constant:lawrence_effect.guarantee_credibility }
+	lawrence_add_credibility = yes
+	var:global.lawrence_target = {
+		set_country_flag = lawrence_guarantee_given
+		set_temp_variable = { lawrence_change = constant:lawrence_effect.guarantee_influence }
+		lawrence_add_influence = yes
+	}
+}
+
+lawrence_pay_bases = {
+	set_temp_variable = { lawrence_charge = lawrence_cost_bases_infantry }
+	lawrence_charge_infantry_equipment = yes
+	set_temp_variable = { lawrence_charge = lawrence_cost_bases_support }
+	lawrence_charge_support_equipment = yes
+	set_temp_variable = { lawrence_charge = constant:lawrence_cost.bases_political_power }
+	lawrence_charge_political_power = yes
+}
+
+# ENG. Tie Aid to Bases and Access. The package is escrowed and the target
+# answers through chaosx.nr40.15. A refusal returns the equipment.
+lawrence_offer_bases_for_aid = {
+	set_variable = { lawrence_escrow_infantry = lawrence_cost_bases_infantry }
+	set_variable = { lawrence_escrow_support = lawrence_cost_bases_support }
+	lawrence_pay_bases = yes
+	var:global.lawrence_target = {
+		set_country_flag = lawrence_bases_resolved
+		set_country_flag = lawrence_bases_offer_open
+		country_event = { id = chaosx.nr40.15 }
+	}
+}
+
+# COUNTRY scoped to ENG. Settles an escrowed package: accepted delivers it,
+# refused returns it. Input: temporary lawrence_escrow_delivered (1 or 0).
+lawrence_settle_bases_escrow = {
+	if = {
+		limit = { check_variable = { var = lawrence_escrow_delivered value = constant:lawrence_event.zero compare = greater_than } }
+		set_temp_variable = { lawrence_ship_infantry = lawrence_escrow_infantry }
+		set_temp_variable = { lawrence_ship_support = lawrence_escrow_support }
+		var:global.lawrence_target = {
+			add_equipment_to_stockpile = { type = infantry_equipment amount = lawrence_ship_infantry producer = ENG }
+			add_equipment_to_stockpile = { type = support_equipment amount = lawrence_ship_support producer = ENG }
+		}
+	}
+	else = {
+		add_equipment_to_stockpile = { type = infantry_equipment amount = lawrence_escrow_infantry }
+		add_equipment_to_stockpile = { type = support_equipment amount = lawrence_escrow_support }
+	}
+	set_variable = { lawrence_escrow_infantry = constant:lawrence_event.zero }
+	set_variable = { lawrence_escrow_support = constant:lawrence_event.zero }
+}
+
+# COUNTRY, the target. The target accepts bases and access in return for the aid.
+lawrence_accept_bases = {
+	clr_country_flag = lawrence_bases_offer_open
+	set_country_flag = lawrence_bases_agreed
+	add_ideas = lawrence_bases_agreement
+	give_military_access = ENG
+	set_temp_variable = { lawrence_change = constant:lawrence_effect.bases_influence }
+	lawrence_add_influence = yes
+	set_temp_variable = { lawrence_credibility_change = constant:lawrence_effect.bases_credibility }
+	lawrence_add_credibility = yes
+	set_temp_variable = { lawrence_escrow_delivered = constant:lawrence_event.one }
+	ENG = {
+		give_military_access = PREV
+		lawrence_settle_bases_escrow = yes
+	}
+}
+
+lawrence_decline_bases = {
+	clr_country_flag = lawrence_bases_offer_open
+	set_temp_variable = { lawrence_escrow_delivered = constant:lawrence_event.zero }
+	ENG = { lawrence_settle_bases_escrow = yes }
+	set_temp_variable = { lawrence_trust_change = constant:lawrence_effect.bases_declined_trust }
+	lawrence_add_trust = yes
+}
+
+# ---------------------------------------------------------------------------
+# Detention chain (British actions while Lawrence is held)
+# ---------------------------------------------------------------------------
+
+lawrence_pay_recovery = {
+	set_temp_variable = { lawrence_charge = constant:lawrence_cost.recovery_command_power }
+	lawrence_charge_command_power = yes
+	set_temp_variable = { lawrence_charge = lawrence_cost_recovery_support }
+	lawrence_charge_support_equipment = yes
+	set_temp_variable = { lawrence_charge = lawrence_cost_recovery_fuel }
+	lawrence_charge_fuel = yes
+}
+
+# ENG. A recovery operation. Success needs contacts and a route and a failure
+# can cost Lawrence his life.
+lawrence_attempt_recovery = {
+	lawrence_pay_recovery = yes
+	set_global_flag = lawrence_recovery_attempted
+	var:global.lawrence_target = {
+		random_list = {
+			30 = {
+				modifier = { add = 25 check_variable = { var = lawrence_officers value = constant:lawrence_recovery.contact_officers compare = greater_than_or_equals } }
+				modifier = { add = 15 has_country_flag = lawrence_route_open }
+				modifier = { factor = 0.4 check_variable = { var = lawrence_security value = constant:lawrence_recovery.strong_security compare = greater_than_or_equals } }
+				lawrence_release_lawrence = yes
+				country_event = { id = chaosx.nr40.20 }
+				ENG = { country_event = { id = chaosx.nr40.21 } }
+			}
+			40 = {
+				modifier = { add = 15 check_variable = { var = lawrence_security value = constant:lawrence_recovery.strong_security compare = greater_than_or_equals } }
+				set_temp_variable = { lawrence_credibility_change = constant:lawrence_effect.recovery_failed_credibility }
+				lawrence_add_credibility = yes
+				set_temp_variable = { lawrence_preparedness_change = constant:lawrence_effect.recovery_failed_preparedness }
+				lawrence_add_preparedness = yes
+				country_event = { id = chaosx.nr40.22 }
+				ENG = { country_event = { id = chaosx.nr40.23 } }
+			}
+			20 = {
+				modifier = { add = 20 check_variable = { var = lawrence_security value = constant:lawrence_recovery.strong_security compare = greater_than_or_equals } }
+				modifier = { factor = 0.4 NOT = { has_country_flag = lawrence_route_open } }
+				lawrence_kill_lawrence = yes
+			}
+		}
+	}
+}
+
+lawrence_pay_exchange = {
+	set_temp_variable = { lawrence_charge = lawrence_cost_exchange_infantry }
+	lawrence_charge_infantry_equipment = yes
+	set_temp_variable = { lawrence_charge = lawrence_cost_exchange_support }
+	lawrence_charge_support_equipment = yes
+	set_temp_variable = { lawrence_charge = constant:lawrence_cost.exchange_political_power }
+	lawrence_charge_political_power = yes
+}
+
+# ENG. Negotiate an Exchange. The package is escrowed and the target decides
+# through chaosx.nr40.16.
+lawrence_negotiate_exchange = {
+	set_variable = { lawrence_escrow_infantry = lawrence_cost_exchange_infantry }
+	set_variable = { lawrence_escrow_support = lawrence_cost_exchange_support }
+	lawrence_pay_exchange = yes
+	var:global.lawrence_target = {
+		set_country_flag = lawrence_exchange_offer_open
+		country_event = { id = chaosx.nr40.16 }
+	}
+}
+
+# COUNTRY, the target. The exchange is accepted, once.
+lawrence_accept_exchange = {
+	clr_country_flag = lawrence_exchange_offer_open
+	set_country_flag = lawrence_exchange_done
+	set_temp_variable = { lawrence_escrow_delivered = constant:lawrence_event.one }
+	ENG = { lawrence_settle_bases_escrow = yes }
+	lawrence_release_lawrence = yes
+}
+
+lawrence_refuse_exchange = {
+	clr_country_flag = lawrence_exchange_offer_open
+	set_temp_variable = { lawrence_escrow_delivered = constant:lawrence_event.zero }
+	ENG = { lawrence_settle_bases_escrow = yes }
+}
+
+lawrence_pay_disavow = {
+	set_temp_variable = { lawrence_charge = constant:lawrence_cost.disavow_political_power }
+	lawrence_charge_political_power = yes
+}
+
+# ENG. Disavow an overexposed mission. Britain keeps the contacts alive through
+# local agents and Lawrence stops being a British officer.
+lawrence_disavow_mission = {
+	lawrence_pay_disavow = yes
+	set_global_flag = lawrence_disavowed
+	set_global_flag = lawrence_agents_only
+	set_temp_variable = { lawrence_credibility_change = constant:lawrence_effect.disavow_credibility }
+	lawrence_add_credibility = yes
+	set_temp_variable = { lawrence_trust_change = constant:lawrence_effect.disavow_trust }
+	lawrence_add_trust = yes
+	set_variable = { global.lawrence_status = constant:lawrence_status.disavowed }
+	var:global.lawrence_target = {
+		set_temp_variable = { lawrence_change = constant:lawrence_effect.disavow_influence }
+		lawrence_add_influence = yes
+		if = {
+			limit = { lawrence_status_is_detained = yes }
+			lawrence_release_lawrence = yes
+		}
+	}
+}
+
+# Input: temporary lawrence_preparedness_change. Preparedness stays 0 to 3.
+lawrence_add_preparedness = {
+	if = {
+		limit = { NOT = { has_variable = lawrence_preparedness } }
+		set_variable = { lawrence_preparedness = constant:lawrence_event.zero }
+	}
+	add_to_variable = { lawrence_preparedness = lawrence_preparedness_change }
+	clamp_variable = { var = lawrence_preparedness min = constant:lawrence_event.zero max = constant:lawrence_preparedness.maximum }
+}
+
+# ---------------------------------------------------------------------------
+# Regional reactions
+# ---------------------------------------------------------------------------
+
+# COUNTRY, the target. Input: temporary lawrence_alert_kind. One neighbour is
+# told, never every country. The alarm tells a neighbour to prepare. The
+# overture lets a neighbour ask Britain for protection.
+lawrence_alert_neighbour = {
+	if = {
+		limit = {
+			any_neighbor_country = { lawrence_is_valid_target = yes }
+		}
+		random_neighbor_country = {
+			limit = { lawrence_is_valid_target = yes }
+			if = {
+				limit = { check_variable = { var = lawrence_alert_kind value = constant:lawrence_alert.alarm compare = equals } }
+				country_event = { id = chaosx.nr40.50 }
+			}
+			else = {
+				country_event = { id = chaosx.nr40.51 }
+			}
+		}
+	}
+}
+
+# COUNTRY, a neighbour. The neighbour tightens its own counterintelligence.
+lawrence_neighbour_prepares = {
+	set_temp_variable = { lawrence_preparedness_change = constant:lawrence_effect.neighbour_preparedness }
+	lawrence_add_preparedness = yes
+}

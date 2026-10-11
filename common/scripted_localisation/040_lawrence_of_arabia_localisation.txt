@@ -1,0 +1,99 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 040 LAWRENCE OF ARABIA SCRIPTED LOCALISATION
+# ============================================================================
+# Category headers for the target and Britain (band, trend, next threshold,
+# largest cause, Lawrence's status and the current access). Selectors only: all words and
+# formatting live in 040_lawrence_of_arabia_l_english.yml.
+# The headers read the published values global.lawrence_pub_* so the target
+# and Britain always see the same campaign.
+# ============================================================================
+
+defined_text = {
+	name = GetLawrenceBand
+	text = { trigger = { check_variable = { var = global.lawrence_pub_band value = constant:lawrence_band.dominant compare = equals } } localization_key = lawrence_band_dominant }
+	text = { trigger = { check_variable = { var = global.lawrence_pub_band value = constant:lawrence_band.ascendant compare = equals } } localization_key = lawrence_band_ascendant }
+	text = { trigger = { check_variable = { var = global.lawrence_pub_band value = constant:lawrence_band.embedded compare = equals } } localization_key = lawrence_band_embedded }
+	text = { trigger = { check_variable = { var = global.lawrence_pub_band value = constant:lawrence_band.contested compare = equals } } localization_key = lawrence_band_contested }
+	text = { trigger = { check_variable = { var = global.lawrence_pub_band value = constant:lawrence_band.restricted compare = equals } } localization_key = lawrence_band_restricted }
+	text = { localization_key = lawrence_band_broken }
+}
+
+defined_text = {
+	name = GetLawrenceTrend
+	text = { trigger = { check_variable = { var = global.lawrence_pub_trend value = constant:lawrence_event.trend_rising compare = equals } } localization_key = lawrence_trend_rising }
+	text = { trigger = { check_variable = { var = global.lawrence_pub_trend value = constant:lawrence_event.trend_falling compare = equals } } localization_key = lawrence_trend_falling }
+	text = { localization_key = lawrence_trend_steady }
+}
+
+defined_text = {
+	name = GetLawrenceNextThreshold
+	text = { trigger = { check_variable = { var = global.lawrence_pub_band value = constant:lawrence_band.dominant compare = equals } } localization_key = lawrence_next_dominant }
+	text = { trigger = { check_variable = { var = global.lawrence_pub_band value = constant:lawrence_band.ascendant compare = equals } } localization_key = lawrence_next_ascendant }
+	text = { trigger = { check_variable = { var = global.lawrence_pub_band value = constant:lawrence_band.embedded compare = equals } } localization_key = lawrence_next_embedded }
+	text = { trigger = { check_variable = { var = global.lawrence_pub_band value = constant:lawrence_band.contested compare = equals } } localization_key = lawrence_next_contested }
+	text = { trigger = { check_variable = { var = global.lawrence_pub_band value = constant:lawrence_band.restricted compare = equals } } localization_key = lawrence_next_restricted }
+	text = { localization_key = lawrence_next_broken }
+}
+
+defined_text = {
+	name = GetLawrenceCause
+	text = { trigger = { check_variable = { var = global.lawrence_pub_cause value = constant:lawrence_cause.support compare = equals } } localization_key = lawrence_cause_support }
+	text = { trigger = { check_variable = { var = global.lawrence_pub_cause value = constant:lawrence_cause.unrest compare = equals } } localization_key = lawrence_cause_unrest }
+	text = { trigger = { check_variable = { var = global.lawrence_pub_cause value = constant:lawrence_cause.officers compare = equals } } localization_key = lawrence_cause_officers }
+	text = { trigger = { check_variable = { var = global.lawrence_pub_cause value = constant:lawrence_cause.network compare = equals } } localization_key = lawrence_cause_network }
+	text = { trigger = { check_variable = { var = global.lawrence_pub_cause value = constant:lawrence_cause.counter compare = equals } } localization_key = lawrence_cause_counter }
+	text = { trigger = { check_variable = { var = global.lawrence_pub_cause value = constant:lawrence_cause.britain compare = equals } } localization_key = lawrence_cause_britain }
+	text = { localization_key = lawrence_cause_none }
+}
+
+# Lawrence's own state and the access he has, in one short line.
+defined_text = {
+	name = GetLawrenceStatusLine
+	text = { trigger = { lawrence_status_is_detained = yes } localization_key = lawrence_status_detained_line }
+	text = { trigger = { check_variable = { var = global.lawrence_status value = constant:lawrence_status.disavowed compare = equals } } localization_key = lawrence_status_disavowed_line }
+	text = { trigger = { has_global_flag = lawrence_agents_only } localization_key = lawrence_status_agents_line }
+	text = { trigger = { has_country_flag = lawrence_final_pending } localization_key = lawrence_status_final_line }
+	text = { trigger = { has_country_flag = lawrence_escorted } localization_key = lawrence_status_escorted_line }
+	text = {
+		trigger = {
+			has_variable = lawrence_terms
+			check_variable = { var = lawrence_terms value = constant:lawrence_terms.broad compare = equals }
+		}
+		localization_key = lawrence_status_broad_line
+	}
+	text = {
+		trigger = {
+			has_variable = lawrence_terms
+			check_variable = { var = lawrence_terms value = constant:lawrence_terms.unset compare = equals }
+		}
+		localization_key = lawrence_status_unset_line
+	}
+	text = { localization_key = lawrence_status_liaison_line }
+}
+
+# The British header: what is committed and what blocks further support.
+defined_text = {
+	name = GetLawrenceBritishLine
+	text = { trigger = { lawrence_status_is_detained = yes } localization_key = lawrence_british_detained_line }
+	text = {
+		trigger = {
+			has_global_flag = lawrence_campaign_active
+			has_variable = global.lawrence_target
+			var:global.lawrence_target = { has_country_flag = lawrence_delivery_pending }
+		}
+		localization_key = lawrence_british_shipment_line
+	}
+	text = {
+		trigger = {
+			has_global_flag = lawrence_campaign_active
+			has_variable = global.lawrence_target
+			var:global.lawrence_target = { NOT = { has_country_flag = lawrence_route_open } }
+		}
+		localization_key = lawrence_british_route_closed_line
+	}
+	text = {
+		trigger = { NOT = { lawrence_sponsor_has_regional_base = yes } }
+		localization_key = lawrence_british_no_base_line
+	}
+	text = { localization_key = lawrence_british_open_line }
+}

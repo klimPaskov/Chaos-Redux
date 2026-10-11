@@ -4429,6 +4429,27 @@ fire_event_by_temp_id_no_cluster = {
 		}
 	}
 	if = {
+		limit = { check_variable = { event_id = constant:lawrence_event.id } }
+		set_temp_variable = { lawrence_prefire_ready = constant:lawrence_event.zero }
+		lawrence_prepare_random_event_fire = yes
+		if = {
+			limit = {
+				OR = {
+					check_variable = { lawrence_prefire_ready < constant:lawrence_event.one }
+					NOT = { has_event_target = lawrence_prefire_target }
+				}
+			}
+			set_temp_variable = { event_single_fire_allowed = constant:lawrence_event.zero }
+			if = {
+				limit = {
+					has_variable = automatic_event_firing_context
+					check_variable = { automatic_event_firing_context > constant:lawrence_event.zero }
+				}
+				calculate_next_timer_value = yes
+			}
+		}
+	}
+	if = {
 		limit = {
 			check_variable = {
 				var = event_single_fire_allowed
@@ -4607,6 +4628,15 @@ fire_event_by_temp_id_no_cluster = {
 				}
 				event_target:murder_mystery_prefire_host = {
 					country_event = { id = chaosx.nr39.1 }
+				}
+			}
+			else_if = {
+				limit = {
+					check_variable = { event_fire_record_id = constant:lawrence_event.id }
+					has_event_target = lawrence_prefire_target
+				}
+				ENG = {
+					country_event = { id = chaosx.nr40.1 }
 				}
 			}
 			else = {

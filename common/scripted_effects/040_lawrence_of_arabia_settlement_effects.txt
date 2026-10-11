@@ -1,0 +1,686 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 040 LAWRENCE OF ARABIA SETTLEMENT EFFECTS
+# ============================================================================
+# The character, detention, the settlement of one target, regional memory,
+# the delayed next target, the campaign watchdog and the closing of the
+# campaign.
+#
+# Scope: COUNTRY. lawrence_settle runs in the live target (ROOT). The
+# watchdog and the next-target job run in ENG. Inputs travel as temporary
+# variables: lawrence_settle_outcome and lawrence_settle_clean.
+# Every settlement is one transaction: it records the identity, applies the
+# package, informs both governments, clears the generation and schedules the
+# delay. A settled country keeps its durable identity and is never selected
+# again as a fresh target.
+# ============================================================================
+
+# ---------------------------------------------------------------------------
+# Character
+# ---------------------------------------------------------------------------
+
+# ANY scope. Lawrence is one canonical character, recruited once. A later
+# removal retires him from the roster and a return recruits him again.
+lawrence_ensure_character = {
+	if = {
+		limit = { NOT = { has_global_flag = lawrence_character_created } }
+		set_global_flag = lawrence_character_created
+		ENG = { recruit_character = t_e_lawrence }
+	}
+}
+
+# ENG. Lawrence leaves the British roster.
+lawrence_leave_british_roster = {
+	if = {
+		limit = { has_character = t_e_lawrence }
+		retire_character = t_e_lawrence
+	}
+}
+
+# ENG. Lawrence returns to the British roster, unless he is gone for good.
+lawrence_return_to_british_roster = {
+	if = {
+		limit = {
+			NOT = { has_character = t_e_lawrence }
+			NOT = { lawrence_status_is_dead = yes }
+			NOT = { lawrence_status_is_defected = yes }
+		}
+		recruit_character = t_e_lawrence
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Detention
+# ---------------------------------------------------------------------------
+
+# COUNTRY, the target. The target holds Lawrence. British personal actions
+# close and the detention chain opens. One detention per target.
+lawrence_begin_detention = {
+	set_variable = { global.lawrence_status = constant:lawrence_status.detained }
+	set_country_flag = lawrence_detained_once
+	set_variable = { lawrence_detention_end_day = global.num_days }
+	add_to_variable = { lawrence_detention_end_day = constant:lawrence_detention.maximum_days }
+	clr_global_flag = lawrence_recovery_attempted
+	set_global_flag = lawrence_survival_public
+	ENG = { lawrence_leave_british_roster = yes }
+	set_temp_variable = { lawrence_change = constant:lawrence_detention.influence }
+	lawrence_add_influence = yes
+	set_temp_variable = { lawrence_trust_change = constant:lawrence_detention.trust }
+	lawrence_add_trust = yes
+	set_temp_variable = { lawrence_credibility_change = constant:lawrence_detention.credibility }
+	lawrence_add_credibility = yes
+	set_variable = { global.lawrence_news_kind = constant:lawrence_news.detained }
+	set_temp_variable = { lawrence_report_delay = constant:lawrence_event.report_delay_days }
+	news_event = { id = chaosx.nr40.40 days = lawrence_report_delay }
+	country_event = { id = chaosx.nr40.24 days = lawrence_report_delay }
+	ENG = { country_event = { id = chaosx.nr40.25 days = lawrence_report_delay } }
+}
+
+# COUNTRY, the target. Lawrence is released or recovered. The network starts
+# again from a low base and the same detention cannot repeat.
+lawrence_release_lawrence = {
+	if = {
+		limit = { lawrence_status_is_detained = yes }
+		set_variable = { global.lawrence_status = constant:lawrence_status.active }
+		ENG = { lawrence_return_to_british_roster = yes }
+		set_variable = { lawrence_influence = constant:lawrence_detention.release_influence }
+		set_variable = { lawrence_prev_influence = lawrence_influence }
+		lawrence_update_band = yes
+		set_variable = { lawrence_dominant_days = constant:lawrence_event.zero }
+		set_variable = { lawrence_embedded_days = constant:lawrence_event.zero }
+		set_variable = { lawrence_mid_days = constant:lawrence_event.zero }
+		clr_global_flag = lawrence_recovery_attempted
+	}
+}
+
+# COUNTRY, the target. Lawrence dies. Every Lawrence-dependent route closes
+# for good and the target keeps the fruits of the failed operation.
+lawrence_kill_lawrence = {
+	set_variable = { global.lawrence_status = constant:lawrence_status.dead }
+	set_global_flag = lawrence_lawrence_removed
+	set_global_flag = lawrence_survival_public
+	ENG = { lawrence_leave_british_roster = yes }
+	set_temp_variable = { lawrence_credibility_change = constant:lawrence_detention.death_credibility }
+	lawrence_add_credibility = yes
+	set_temp_variable = { lawrence_preparedness_change = constant:lawrence_detention.death_preparedness }
+	lawrence_add_preparedness = yes
+	set_variable = { global.lawrence_news_kind = constant:lawrence_news.died }
+	set_temp_variable = { lawrence_report_delay = constant:lawrence_event.report_delay_days }
+	news_event = { id = chaosx.nr40.40 days = lawrence_report_delay }
+	ENG = { country_event = { id = chaosx.nr40.26 days = lawrence_report_delay } }
+	set_temp_variable = { lawrence_settle_outcome = constant:lawrence_outcome.expelled }
+	set_temp_variable = { lawrence_settle_clean = constant:lawrence_event.one }
+	lawrence_settle = yes
+}
+
+# Weekly: a detention that runs out ends with deportation.
+lawrence_track_detention = {
+	if = {
+		limit = {
+			lawrence_is_live_target = yes
+			lawrence_status_is_detained = yes
+			check_variable = { var = global.num_days value = lawrence_detention_end_day compare = greater_than_or_equals }
+		}
+		set_temp_variable = { lawrence_settle_outcome = constant:lawrence_outcome.expelled }
+		set_temp_variable = { lawrence_settle_clean = constant:lawrence_event.one }
+		lawrence_release_lawrence = yes
+		lawrence_settle = yes
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Defection (the rare personal settlement)
+# ---------------------------------------------------------------------------
+
+# COUNTRY, the target. Lawrence joins the independent project. Event-owned
+# Chaos applies once.
+lawrence_defect = {
+	set_variable = { global.lawrence_status = constant:lawrence_status.defected }
+	set_global_flag = lawrence_lawrence_removed
+	set_global_flag = lawrence_survival_public
+	ENG = { lawrence_leave_british_roster = yes }
+	recruit_character = t_e_lawrence
+	if = {
+		limit = { NOT = { has_global_flag = lawrence_defection_chaos_recorded } }
+		set_global_flag = lawrence_defection_chaos_recorded
+		set_temp_variable = { chaos_change = constant:lawrence_chaos.defection }
+		set_temp_variable = { chaos_history_reason = constant:chaos_meter_history_reason.special.lawrence_defection }
+		set_temp_variable = { chaos_history_reason_custom = constant:lawrence_event.one }
+		add_chaos_meter_value = yes
+	}
+	set_variable = { global.lawrence_news_kind = constant:lawrence_news.defected }
+	set_temp_variable = { lawrence_report_delay = constant:lawrence_event.report_delay_days }
+	news_event = { id = chaosx.nr40.40 days = lawrence_report_delay }
+	set_temp_variable = { lawrence_settle_outcome = constant:lawrence_outcome.defected }
+	lawrence_settle = yes
+	ENG = { country_event = { id = chaosx.nr40.26 days = lawrence_report_delay } }
+}
+
+# ---------------------------------------------------------------------------
+# Settlement of one target
+# ---------------------------------------------------------------------------
+
+# COUNTRY, the target. Inputs: temporary lawrence_settle_outcome (one of
+# constant:lawrence_outcome.*) and lawrence_settle_clean (1 for a clean
+# removal). Runs once per generation.
+lawrence_settle = {
+	if = {
+		limit = { lawrence_is_live_target = yes }
+		set_temp_variable = { lawrence_final_outcome = lawrence_settle_outcome }
+		# A protectorate or alliance needs a Britain that can still sustain it.
+		if = {
+			limit = {
+				OR = {
+					check_variable = { var = lawrence_final_outcome value = constant:lawrence_outcome.client compare = equals }
+					check_variable = { var = lawrence_final_outcome value = constant:lawrence_outcome.ally compare = equals }
+				}
+				ENG = { NOT = { lawrence_sponsor_can_act = yes } }
+			}
+			set_temp_variable = { lawrence_final_outcome = constant:lawrence_outcome.restricted }
+		}
+		set_variable = { lawrence_settlement = lawrence_final_outcome }
+		set_variable = { lawrence_settled_day = global.num_days }
+		set_variable = { lawrence_settled_generation = lawrence_generation_id }
+		set_variable = { global.lawrence_last_target = THIS }
+		if = {
+			limit = { check_variable = { var = lawrence_final_outcome value = constant:lawrence_outcome.client compare = equals } }
+			lawrence_outcome_client = yes
+		}
+		else_if = {
+			limit = { check_variable = { var = lawrence_final_outcome value = constant:lawrence_outcome.ally compare = equals } }
+			lawrence_outcome_ally = yes
+		}
+		else_if = {
+			limit = { check_variable = { var = lawrence_final_outcome value = constant:lawrence_outcome.partner compare = equals } }
+			lawrence_outcome_partner = yes
+		}
+		else_if = {
+			limit = { check_variable = { var = lawrence_final_outcome value = constant:lawrence_outcome.expelled compare = equals } }
+			lawrence_outcome_expelled = yes
+		}
+		else_if = {
+			limit = { check_variable = { var = lawrence_final_outcome value = constant:lawrence_outcome.dismantled compare = equals } }
+			lawrence_outcome_dismantled = yes
+		}
+		else_if = {
+			limit = { check_variable = { var = lawrence_final_outcome value = constant:lawrence_outcome.double_game compare = equals } }
+			lawrence_outcome_double_game = yes
+		}
+		else_if = {
+			limit = { check_variable = { var = lawrence_final_outcome value = constant:lawrence_outcome.defected compare = equals } }
+			lawrence_outcome_defected = yes
+		}
+		else = {
+			lawrence_outcome_restricted = yes
+		}
+		lawrence_fire_outcome_reports = yes
+		add_to_variable = { global.lawrence_resolved = constant:lawrence_event.one }
+		add_to_array = { global.lawrence_settled_countries = THIS }
+		set_country_flag = lawrence_settled
+		lawrence_clear_target_state = yes
+		lawrence_schedule_next_target = yes
+	}
+}
+
+# Reports to the target and to Britain, one event per identity.
+lawrence_fire_outcome_reports = {
+	set_temp_variable = { lawrence_report_delay = constant:lawrence_event.report_delay_days }
+	set_temp_variable = { lawrence_report_event = constant:lawrence_report.base }
+	add_to_temp_variable = { lawrence_report_event = lawrence_final_outcome }
+	meta_effect = {
+		text = {
+			country_event = { id = chaosx.nr40.[REPORT_ID] days = lawrence_report_delay }
+			ENG = { country_event = { id = chaosx.nr40.[REPORT_ID] days = lawrence_report_delay } }
+		}
+		REPORT_ID = "[?lawrence_report_event|0]"
+	}
+}
+
+# British client: the autonomy relationship forms, the promised package lands
+# and the registered guarantee, if any, is broken.
+lawrence_outcome_client = {
+	ENG = {
+		set_autonomy = {
+			target = PREV
+			autonomy_state = autonomy_puppet
+			end_wars = no
+		}
+	}
+	add_ideas = lawrence_british_protectorate
+	var:lawrence_node_capital = {
+		add_building_construction = { type = infrastructure level = 1 instant_build = yes }
+	}
+	if = {
+		limit = { has_country_flag = lawrence_guarantee_given }
+		add_to_variable = { global.lawrence_promises_broken = constant:lawrence_event.one }
+		set_temp_variable = { lawrence_credibility_change = constant:lawrence_outcome_effect.broken_guarantee_credibility }
+		lawrence_add_credibility = yes
+		set_country_flag = lawrence_guarantee_broken
+	}
+	add_to_array = { global.lawrence_clients = THIS }
+	set_temp_variable = { lawrence_alert_kind = constant:lawrence_alert.overture }
+	lawrence_alert_neighbour = yes
+}
+
+# Independent British ally: sovereignty stays and Britain receives negotiated
+# access only.
+lawrence_outcome_ally = {
+	ENG = {
+		give_military_access = PREV
+		diplomatic_relation = {
+			country = PREV
+			relation = guarantee
+			active = yes
+		}
+	}
+	give_military_access = ENG
+	add_ideas = lawrence_british_alliance
+	lawrence_award_better_bargain = yes
+	if = {
+		limit = {
+			ENG = { is_faction_leader = yes }
+			NOT = { is_in_faction = yes }
+		}
+		ENG = { add_to_faction = PREV }
+	}
+	add_to_array = { global.lawrence_clients = THIS }
+	set_temp_variable = { lawrence_alert_kind = constant:lawrence_alert.overture }
+	lawrence_alert_neighbour = yes
+}
+
+# A Better Bargain: a player took a British shipment and kept Influence out of
+# the dominant band before settling as an ally or an armed partner.
+lawrence_award_better_bargain = {
+	if = {
+		limit = {
+			is_ai = no
+			has_country_flag = lawrence_ach_aid_received
+			NOT = { has_country_flag = lawrence_ach_dominant_reached }
+		}
+		set_country_flag = lawrence_ach_better_bargain
+	}
+}
+
+# Sovereign armed partner: weapons and training under national custody.
+lawrence_outcome_partner = {
+	add_ideas = lawrence_armed_partnership
+	lawrence_award_better_bargain = yes
+}
+
+# Restricted mission: a small British contact network and a suspicion
+# modifier remain.
+lawrence_outcome_restricted = {
+	set_temp_variable = { lawrence_idea_days = constant:lawrence_outcome_effect.restricted_days }
+	add_timed_idea = { idea = lawrence_british_contacts days = lawrence_idea_days }
+}
+
+# Expulsion. A clean removal leaves a confident government. A reckless one
+# at high Influence leaves disorder in the officer corps and the streets.
+lawrence_outcome_expelled = {
+	if = {
+		limit = { lawrence_status_is_active = yes }
+		set_variable = { global.lawrence_status = constant:lawrence_status.expelled }
+		ENG = { lawrence_leave_british_roster = yes }
+	}
+	set_temp_variable = { lawrence_preparedness_change = constant:lawrence_outcome_effect.expelled_preparedness }
+	lawrence_add_preparedness = yes
+	set_temp_variable = { lawrence_idea_days = constant:lawrence_outcome_effect.confidence_days }
+	add_timed_idea = { idea = lawrence_anti_intervention_confidence days = lawrence_idea_days }
+	if = {
+		limit = {
+			check_variable = { var = lawrence_settle_clean value = constant:lawrence_event.zero compare = equals }
+			check_variable = { var = lawrence_influence value = constant:lawrence_influence.embedded_edge compare = greater_than_or_equals }
+		}
+		set_temp_variable = { lawrence_idea_days = constant:lawrence_outcome_effect.disorder_days }
+		add_timed_idea = { idea = lawrence_expulsion_disorder days = lawrence_idea_days }
+		set_country_flag = { flag = lawrence_disorder days = lawrence_idea_days }
+	}
+	set_temp_variable = { lawrence_alert_kind = constant:lawrence_alert.alarm }
+	lawrence_alert_neighbour = yes
+}
+
+# Network dismantled: methods other governments can copy and a weaker regional
+# reach for Britain.
+lawrence_outcome_dismantled = {
+	set_temp_variable = { lawrence_preparedness_change = constant:lawrence_outcome_effect.dismantled_preparedness }
+	lawrence_add_preparedness = yes
+	add_ideas = lawrence_exposed_network
+	if = {
+		limit = {
+			is_ai = no
+			has_country_flag = lawrence_exposed
+			has_country_flag = lawrence_ach_turned_once
+			has_civil_war = no
+		}
+		set_country_flag = lawrence_ach_every_ledger
+	}
+	add_to_variable = { global.lawrence_dismantled_count = constant:lawrence_event.one }
+	set_temp_variable = { lawrence_credibility_change = constant:lawrence_outcome_effect.dismantled_credibility }
+	lawrence_add_credibility = yes
+	if = {
+		limit = { lawrence_status_is_active = yes }
+		set_variable = { global.lawrence_status = constant:lawrence_status.expelled }
+		ENG = { lawrence_leave_british_roster = yes }
+	}
+	set_variable = { global.lawrence_news_kind = constant:lawrence_news.dismantled }
+	set_temp_variable = { lawrence_report_delay = constant:lawrence_event.report_delay_days }
+	news_event = { id = chaosx.nr40.40 days = lawrence_report_delay }
+	set_temp_variable = { lawrence_alert_kind = constant:lawrence_alert.alarm }
+	lawrence_alert_neighbour = yes
+}
+
+# Double-game victory: the target keeps the aid and denies Britain the
+# settlement. Retaliation is a British choice later.
+lawrence_outcome_double_game = {
+	add_ideas = lawrence_double_game_gains
+	set_temp_variable = { lawrence_credibility_change = constant:lawrence_outcome_effect.double_credibility }
+	lawrence_add_credibility = yes
+	set_temp_variable = { lawrence_trust_change = constant:lawrence_outcome_effect.double_trust }
+	lawrence_add_trust = yes
+	set_country_flag = lawrence_retaliation_open
+	set_temp_variable = { lawrence_preparedness_change = constant:lawrence_outcome_effect.double_preparedness }
+	lawrence_add_preparedness = yes
+	if = {
+		limit = { lawrence_status_is_active = yes }
+		set_variable = { global.lawrence_status = constant:lawrence_status.expelled }
+		ENG = { lawrence_leave_british_roster = yes }
+	}
+	set_variable = { global.lawrence_retaliation_target = THIS }
+	set_temp_variable = { lawrence_retaliation_delay = constant:lawrence_outcome_effect.retaliation_days }
+	ENG = { country_event = { id = chaosx.nr40.45 days = lawrence_retaliation_delay } }
+}
+
+# Lawrence-aligned independent partner. The target keeps its independence.
+lawrence_outcome_defected = {
+	add_ideas = lawrence_independent_charter
+	add_to_array = { global.lawrence_independent_partners = THIS }
+	set_temp_variable = { lawrence_alert_kind = constant:lawrence_alert.alarm }
+	lawrence_alert_neighbour = yes
+}
+
+# ---------------------------------------------------------------------------
+# Cleanup of one generation
+# ---------------------------------------------------------------------------
+
+# COUNTRY, the target. Clears every per-generation value, mission and active
+# idea and keeps durable memory (settlement identity, preparedness).
+lawrence_clear_target_state = {
+	clr_country_flag = lawrence_active_target
+	clr_country_flag = lawrence_file
+	clr_country_flag = lawrence_file_in_progress
+	clr_country_flag = lawrence_office
+	clr_country_flag = lawrence_office_built
+	clr_country_flag = lawrence_office_captured
+	clr_country_flag = lawrence_escorted
+	clr_country_flag = lawrence_custody_taken
+	clr_country_flag = lawrence_delivery_pending
+	clr_country_flag = lawrence_delivery_custody
+	clr_country_flag = lawrence_delivery_intercepted
+	clr_country_flag = lawrence_contact_turned
+	clr_country_flag = lawrence_double_ready
+	clr_country_flag = lawrence_double_detected
+	clr_country_flag = lawrence_leverage
+	clr_country_flag = lawrence_exposed
+	clr_country_flag = lawrence_dismantled
+	clr_country_flag = lawrence_ledger_traced
+	clr_country_flag = lawrence_nodes_secured
+	clr_country_flag = lawrence_officers_secured
+	clr_country_flag = lawrence_charter_offered
+	clr_country_flag = lawrence_defection_decided
+	clr_country_flag = lawrence_rival_played
+	clr_country_flag = lawrence_sponsors_balanced
+	clr_country_flag = lawrence_press_active
+	clr_country_flag = lawrence_guarantee_given
+	clr_country_flag = lawrence_bases_agreed
+	clr_country_flag = lawrence_bases_resolved
+	clr_country_flag = lawrence_bases_offer_open
+	clr_country_flag = lawrence_cadres_sent
+	clr_country_flag = lawrence_route_sea
+	clr_country_flag = lawrence_rail_repaired
+	clr_country_flag = lawrence_route_open
+	clr_country_flag = lawrence_final_pending
+	clr_country_flag = lawrence_incident_open
+	clr_country_flag = lawrence_exchange_done
+	clr_country_flag = lawrence_exchange_offer_open
+	clr_country_flag = lawrence_band_report_cooldown
+	clr_country_flag = lawrence_terms_refused_recently
+	clr_country_flag = lawrence_requested_protection
+	remove_ideas = lawrence_british_mission
+	remove_ideas = lawrence_embedded_mission
+	remove_ideas = lawrence_liaison_office
+	remove_ideas = lawrence_bases_agreement
+	if = {
+		limit = { has_active_mission = lawrence_trace_ledger_mission }
+		remove_mission = lawrence_trace_ledger_mission
+	}
+	if = {
+		limit = { has_active_mission = lawrence_secure_officers_mission }
+		remove_mission = lawrence_secure_officers_mission
+	}
+	if = {
+		limit = { has_active_mission = lawrence_expose_network_mission }
+		remove_mission = lawrence_expose_network_mission
+	}
+	if = {
+		limit = { has_active_mission = lawrence_dismantle_mission }
+		remove_mission = lawrence_dismantle_mission
+	}
+	clear_variable = lawrence_generation_id
+	clear_variable = lawrence_phase
+	clear_variable = lawrence_terms
+	clear_variable = lawrence_influence
+	clear_variable = lawrence_prev_influence
+	clear_variable = lawrence_band
+	clear_variable = lawrence_trend
+	clear_variable = lawrence_cause
+	clear_variable = lawrence_exposure
+	clear_variable = lawrence_evidence
+	clear_variable = lawrence_officers
+	clear_variable = lawrence_missions_active
+	clear_variable = lawrence_missions_done
+	clear_variable = lawrence_dominant_days
+	clear_variable = lawrence_embedded_days
+	clear_variable = lawrence_mid_days
+	clear_variable = lawrence_broken_days
+	clear_variable = lawrence_support_power
+	clear_variable = lawrence_support_until
+	clear_variable = lawrence_double_progress
+	clear_variable = lawrence_garrison_need
+	clear_variable = lawrence_ledger_hold_days
+	clear_variable = lawrence_dismantle_hold_days
+	clear_variable = lawrence_delivery_serial
+	clear_variable = lawrence_delivery_received_serial
+	clear_variable = lawrence_delivery_infantry
+	clear_variable = lawrence_delivery_support
+	clear_variable = lawrence_delivery_arrival_day
+	clear_variable = lawrence_next_pulse_day
+	clear_variable = lawrence_next_incident_day
+	clear_variable = lawrence_deadline_day
+	clear_variable = lawrence_opening_end_day
+	clear_variable = lawrence_start_day
+	clear_variable = lawrence_detention_end_day
+	clear_variable = lawrence_node_capital
+	clear_variable = lawrence_node_port
+	clear_variable = lawrence_node_route
+	clear_variable = lawrence_ai_profile
+	clear_variable = lawrence_security
+}
+
+# ---------------------------------------------------------------------------
+# Regional delay and the next target
+# ---------------------------------------------------------------------------
+
+# COUNTRY, the settled target. Closes the active generation globally and
+# queues the next target after a dynamic delay, unless the campaign is over.
+lawrence_schedule_next_target = {
+	clr_global_flag = lawrence_campaign_active
+	clear_variable = global.lawrence_target
+	if = {
+		limit = { check_variable = { var = global.lawrence_resolved value = constant:lawrence_campaign.maximum_targets compare = greater_than_or_equals } }
+		lawrence_close_campaign = yes
+	}
+	else_if = {
+		# Britain decides in chaosx.nr40.26 whether local agents continue.
+		limit = {
+			OR = {
+				lawrence_status_is_dead = yes
+				lawrence_status_is_defected = yes
+			}
+			NOT = { has_global_flag = lawrence_agents_only }
+		}
+		set_global_flag = lawrence_awaiting_agents_decision
+	}
+	else = {
+		set_temp_variable = { lawrence_next_delay = mtth:lawrence_next_target_delay }
+		clamp_temp_variable = {
+			var = lawrence_next_delay
+			min = constant:lawrence_campaign.delay_minimum_days
+			max = constant:lawrence_campaign.delay_maximum_days
+		}
+		set_variable = { global.lawrence_next_target_day = global.num_days }
+		add_to_variable = { global.lawrence_next_target_day = lawrence_next_delay }
+		set_variable = { global.lawrence_pause_count = constant:lawrence_event.zero }
+		ENG = { country_event = { id = chaosx.nr40.6 days = lawrence_next_delay } }
+	}
+}
+
+# COUNTRY scoped to ENG. The delayed job. Britain picks the next government
+# from the whole registry, or pauses while it cannot act.
+lawrence_try_next_target = {
+	if = {
+		limit = {
+			NOT = { has_global_flag = lawrence_campaign_closed }
+			NOT = { has_global_flag = lawrence_campaign_active }
+		}
+		if = {
+			limit = {
+				OR = {
+					NOT = { lawrence_sponsor_can_act = yes }
+					NOT = { lawrence_sponsor_has_regional_base = yes }
+				}
+			}
+			add_to_variable = { global.lawrence_pause_count = constant:lawrence_event.one }
+			if = {
+				limit = { check_variable = { var = global.lawrence_pause_count value = constant:lawrence_campaign.pause_limit compare = greater_than_or_equals } }
+				lawrence_close_campaign = yes
+			}
+			else = {
+				set_temp_variable = { lawrence_pause_delay = constant:lawrence_campaign.pause_days }
+				country_event = { id = chaosx.nr40.6 days = lawrence_pause_delay }
+			}
+		}
+		else = {
+			set_temp_variable = { lawrence_pick_ready = constant:lawrence_event.zero }
+			lawrence_pick_weighted_target = yes
+			if = {
+				limit = { check_variable = { var = lawrence_pick_ready value = constant:lawrence_event.zero compare = greater_than } }
+				if = {
+					limit = { check_variable = { var = global.lawrence_status value = constant:lawrence_status.expelled compare = equals } }
+					set_variable = { global.lawrence_status = constant:lawrence_status.active }
+				}
+				lawrence_return_to_british_roster = yes
+				event_target:lawrence_prefire_target = { lawrence_begin_target = yes }
+			}
+			else = {
+				lawrence_close_campaign = yes
+			}
+		}
+	}
+}
+
+# COUNTRY scoped to ENG. Called by the campaign watchdog (chaosx.nr40.27) every
+# month while a target is live. A target that was annexed, capitulated or
+# lost its independence ends its generation. A Britain that cannot act for
+# a long time closes the campaign.
+lawrence_watchdog = {
+	if = {
+		limit = { has_global_flag = lawrence_campaign_active }
+		if = {
+			limit = {
+				has_variable = global.lawrence_target
+				NOT = { var:global.lawrence_target = { exists = yes } }
+			}
+			lawrence_abandon_missing_target = yes
+		}
+		else_if = {
+			limit = {
+				has_variable = global.lawrence_target
+				var:global.lawrence_target = {
+					OR = {
+						has_capitulated = yes
+						is_subject = yes
+						lawrence_is_live_target = no
+					}
+				}
+			}
+			var:global.lawrence_target = {
+				if = {
+					limit = { lawrence_is_live_target = yes }
+					set_temp_variable = { lawrence_settle_outcome = constant:lawrence_outcome.restricted }
+					lawrence_settle = yes
+				}
+				else = {
+					lawrence_clear_target_state = yes
+					lawrence_schedule_next_target = yes
+				}
+			}
+		}
+		if = {
+			limit = { NOT = { lawrence_sponsor_can_act = yes } }
+			add_to_variable = { global.lawrence_pause_count = constant:lawrence_event.one }
+			if = {
+				limit = { check_variable = { var = global.lawrence_pause_count value = constant:lawrence_campaign.pause_limit compare = greater_than_or_equals } }
+				lawrence_close_campaign = yes
+			}
+		}
+		else = {
+			set_variable = { global.lawrence_pause_count = constant:lawrence_event.zero }
+		}
+		if = {
+			limit = { has_global_flag = lawrence_campaign_active }
+			set_temp_variable = { lawrence_watchdog_delay = constant:lawrence_campaign.watchdog_days }
+			country_event = { id = chaosx.nr40.27 days = lawrence_watchdog_delay }
+		}
+	}
+}
+
+# ANY scope. The active target no longer exists: no scope remains to clean, so
+# the global state closes the generation.
+lawrence_abandon_missing_target = {
+	clr_global_flag = lawrence_campaign_active
+	clear_variable = global.lawrence_target
+	add_to_variable = { global.lawrence_resolved = constant:lawrence_event.one }
+	if = {
+		limit = { check_variable = { var = global.lawrence_resolved value = constant:lawrence_campaign.maximum_targets compare = greater_than_or_equals } }
+		lawrence_close_campaign = yes
+	}
+	else = {
+		set_temp_variable = { lawrence_next_delay = mtth:lawrence_next_target_delay }
+		clamp_temp_variable = {
+			var = lawrence_next_delay
+			min = constant:lawrence_campaign.delay_minimum_days
+			max = constant:lawrence_campaign.delay_maximum_days
+		}
+		ENG = { country_event = { id = chaosx.nr40.6 days = lawrence_next_delay } }
+	}
+}
+
+# ANY scope. The campaign ends. Durable settlements, the character state and
+# achievements stay. Nothing else runs for a closed campaign.
+lawrence_close_campaign = {
+	set_global_flag = lawrence_campaign_closed
+	clr_global_flag = lawrence_campaign_active
+	clear_variable = global.lawrence_target
+	if = {
+		limit = {
+			NOT = { lawrence_status_is_dead = yes }
+			NOT = { lawrence_status_is_defected = yes }
+		}
+		set_variable = { global.lawrence_status = constant:lawrence_status.retired }
+		ENG = { lawrence_leave_british_roster = yes }
+	}
+	ENG = {
+		remove_ideas = lawrence_cadre_commitment
+		set_temp_variable = { lawrence_report_delay = constant:lawrence_event.report_delay_days }
+		country_event = { id = chaosx.nr40.28 days = lawrence_report_delay }
+	}
+}
