@@ -26,12 +26,12 @@ The update covers:
 4. `Chaos Cracks` turns the Chaos-tier interface cracks on or off; see [../chaos_ui_wear.md](../chaos_ui_wear.md).
 5. The default audio volume is `1.5x`.
 
-The Fallout consequence toggle lives in the Air Cleanliness tab of the Chaos Meter window and in the All Settings window; see [settings_all_settings_window.md](settings_all_settings_window.md).
+The Fallout consequence toggle lives in the Air Cleanliness tab of the Chaos Meter window; see [settings_system_settings_window.md](settings_system_settings_window.md).
 
 These defaults are applied in both `initialize_miscellaneous_settings` and `reset_miscellaneous_to_defaults`.
 
 ## Non-AI Crisis Pressure
-The settings defaults set `chaosx_setting_non_ai_crisis_pressure_enabled` on the player country; the menu has no toggle for it. The reusable trigger `chaosx_is_non_ai_crisis_pressure_active` is true only for non-AI countries with that flag.
+The settings defaults set `chaosx_setting_non_ai_crisis_pressure_enabled` on the player country; the toggle lives in the System Settings window, see [settings_system_settings_window.md](settings_system_settings_window.md). The reusable trigger `chaosx_is_non_ai_crisis_pressure_active` is true only for non-AI countries with that flag.
 
 The shared pressure helpers live in:
 - `common/script_constants/crisis_pressure_constants.txt`

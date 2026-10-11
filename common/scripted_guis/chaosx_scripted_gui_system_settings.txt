@@ -1,0 +1,139 @@
+# ============================================================================
+# CHAOS REDUX - SYSTEM SETTINGS WINDOW
+# ============================================================================
+# Scripted GUI for chaosx_system_settings_window (interface/chaosx_system_settings.gui).
+# The window shows the settings the settings system keeps at runtime without a page of
+# their own: the staged base event weight and event interval scale (applied with
+# the Apply button, as on the Event Weights page) and the crisis pressure flag.
+# Left click on an arrow uses the step, right click the large step; both come from
+# settings_system_steps in common/script_constants/settings_constants.txt.
+# Effects live in common/scripted_effects/chaosx_system_settings_effects.txt and the
+# checkbox sprite in common/scripted_localisation/chaosx_scripted_localisation_system_settings.txt.
+# ============================================================================
+
+scripted_gui = {
+	chaosx_system_settings_gui = {
+		window_name = "chaosx_system_settings_window"
+		context_type = player_context
+		parent_window_token = top_bar
+
+		visible = {
+			has_country_flag = chaosx_settings_open
+			has_country_flag = chaosx_system_settings_open
+		}
+
+		effects = {
+			system_settings_close_button_click = {
+				close_chaosx_system_settings_window = yes
+			}
+
+			system_settings_event_weight_decrease_click = {
+				set_temp_variable = { system_settings_delta = constant:settings_system_steps.event_weight }
+				multiply_temp_variable = { system_settings_delta = -1 }
+				adjust_system_event_weight = yes
+			}
+
+			system_settings_event_weight_decrease_right_click = {
+				set_temp_variable = { system_settings_delta = constant:settings_system_steps.event_weight_large }
+				multiply_temp_variable = { system_settings_delta = -1 }
+				adjust_system_event_weight = yes
+			}
+
+			system_settings_event_weight_increase_click = {
+				set_temp_variable = { system_settings_delta = constant:settings_system_steps.event_weight }
+				adjust_system_event_weight = yes
+			}
+
+			system_settings_event_weight_increase_right_click = {
+				set_temp_variable = { system_settings_delta = constant:settings_system_steps.event_weight_large }
+				adjust_system_event_weight = yes
+			}
+
+			system_settings_timer_modifier_decrease_click = {
+				set_temp_variable = { system_settings_delta = constant:settings_system_steps.timer_modifier }
+				multiply_temp_variable = { system_settings_delta = -1 }
+				adjust_system_timer_modifier = yes
+			}
+
+			system_settings_timer_modifier_decrease_right_click = {
+				set_temp_variable = { system_settings_delta = constant:settings_system_steps.timer_modifier_large }
+				multiply_temp_variable = { system_settings_delta = -1 }
+				adjust_system_timer_modifier = yes
+			}
+
+			system_settings_timer_modifier_increase_click = {
+				set_temp_variable = { system_settings_delta = constant:settings_system_steps.timer_modifier }
+				adjust_system_timer_modifier = yes
+			}
+
+			system_settings_timer_modifier_increase_right_click = {
+				set_temp_variable = { system_settings_delta = constant:settings_system_steps.timer_modifier_large }
+				adjust_system_timer_modifier = yes
+			}
+
+			system_settings_apply_button_click = {
+				apply_system_settings = yes
+			}
+
+			system_settings_pacing_reset_button_click = {
+				reset_system_pacing_to_defaults = yes
+			}
+
+			system_settings_pressure_checkbox_click = {
+				toggle_non_ai_crisis_pressure = yes
+			}
+
+			system_settings_reset_all_button_click = {
+				reset_system_settings_to_defaults = yes
+			}
+		}
+
+		triggers = {
+			system_settings_close_button_click_enabled = {
+				always = yes
+			}
+
+			system_settings_apply_button_click_enabled = {
+				always = yes
+			}
+
+			system_settings_pacing_reset_button_click_enabled = {
+				always = yes
+			}
+
+			system_settings_pressure_checkbox_click_enabled = {
+				always = yes
+			}
+
+			system_settings_reset_all_button_click_enabled = {
+				always = yes
+			}
+
+			system_settings_event_weight_decrease_click_enabled = {
+				check_variable = { var = global.settings_event_weight value = constant:settings_advanced_bounds.event_weight.min compare = greater_than }
+			}
+
+			system_settings_event_weight_increase_click_enabled = {
+				check_variable = { var = global.settings_event_weight value = constant:settings_advanced_bounds.event_weight.max compare = less_than }
+			}
+
+			system_settings_timer_modifier_decrease_click_enabled = {
+				check_variable = { var = global.settings_timer_modifier value = constant:settings_advanced_bounds.timer_modifier.min compare = greater_than }
+			}
+
+			system_settings_timer_modifier_increase_click_enabled = {
+				check_variable = { var = global.settings_timer_modifier value = constant:settings_advanced_bounds.timer_modifier.max compare = less_than }
+			}
+		}
+
+		properties = {
+			system_settings_pressure_checkbox = {
+				image = "[GetSystemSettingsCrisisPressureSprite]"
+			}
+		}
+
+		ai_enabled = {
+			always = no
+		}
+	}
+}

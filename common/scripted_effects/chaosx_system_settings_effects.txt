@@ -1,0 +1,95 @@
+# ============================================================================
+# CHAOS REDUX - SYSTEM SETTINGS WINDOW EFFECTS
+# ============================================================================
+# Effects for chaosx_system_settings_window (interface/chaosx_system_settings.gui),
+# the window of normally hidden system tuning opened from Settings > Advanced
+# Settings. It exposes values the settings system already keeps at runtime:
+#
+# - global.settings_event_weight   staged value of global.default_event_weight
+# - global.settings_timer_modifier staged value of global.chaos_timer_modifier_calm
+#                                  (the other tier modifiers scale from it)
+# - chaosx_setting_non_ai_crisis_pressure_enabled   country flag read by
+#                                  chaosx_is_non_ai_crisis_pressure_active
+#
+# The two staged values follow the Event Weights page: the arrows change the
+# staged value and apply_system_settings copies both into the live variables.
+# Changing default_event_weight affects fallback caps, rescue floors and the
+# White Peace decay denominator. It does not rewrite stored event weights/caps.
+# Timer changes apply to future timer calculations, preserving the current roll.
+# Supported scope: COUNTRY (the player).
+# ============================================================================
+
+toggle_chaosx_system_settings_window = {
+	if = {
+		limit = { has_country_flag = chaosx_system_settings_open }
+		clr_country_flag = chaosx_system_settings_open
+	}
+	else = {
+		set_country_flag = chaosx_system_settings_open
+	}
+}
+
+close_chaosx_system_settings_window = {
+	clr_country_flag = chaosx_system_settings_open
+}
+
+# Input: required temp variable system_settings_delta (signed weight change).
+# Output: global.settings_event_weight, clamped to its existing settings bounds.
+# Side effects: new_value is a temporary scratch value. No live weights change.
+adjust_system_event_weight = {
+	set_temp_variable = { new_value = global.settings_event_weight }
+	add_to_temp_variable = { new_value = system_settings_delta }
+	clamp_temp_variable = {
+		var = new_value
+		min = constant:settings_advanced_bounds.event_weight.min
+		max = constant:settings_advanced_bounds.event_weight.max
+	}
+	set_variable = { global.settings_event_weight = new_value }
+}
+
+# Input: required temp variable system_settings_delta (signed scale change).
+# Output: global.settings_timer_modifier, clamped to its existing settings bounds.
+# Side effects: new_value is a temporary scratch value. No timer is rerolled.
+adjust_system_timer_modifier = {
+	set_temp_variable = { new_value = global.settings_timer_modifier }
+	add_to_temp_variable = { new_value = system_settings_delta }
+	clamp_temp_variable = {
+		var = new_value
+		min = constant:settings_advanced_bounds.timer_modifier.min
+		max = constant:settings_advanced_bounds.timer_modifier.max
+	}
+	set_variable = { global.settings_timer_modifier = new_value }
+}
+
+# Copy the staged base event weight and timer modifier into the live system.
+# update_all_timer_modifiers also refreshes the five higher Chaos tier modifiers.
+# Output: existing live globals. Side effects: timer range and welcome text refresh.
+# No event targets, periodic hooks, costs or AI actions belong to these helpers.
+apply_system_settings = {
+	set_variable = { global.default_event_weight = global.settings_event_weight }
+	update_all_timer_modifiers = yes
+	initialize_welcome_screen_values = yes
+}
+
+# Stage the default values of the two applied settings.
+reset_system_pacing_to_defaults = {
+	set_variable = { global.settings_event_weight = constant:event_system_defaults.event_weight }
+	set_variable = { global.settings_timer_modifier = constant:event_system_timer_modifier_default.calm }
+}
+
+# Restore every setting of the window and apply it. Also part of reset_all_settings.
+reset_system_settings_to_defaults = {
+	reset_system_pacing_to_defaults = yes
+	apply_system_settings = yes
+	set_country_flag = chaosx_setting_non_ai_crisis_pressure_enabled
+}
+
+toggle_non_ai_crisis_pressure = {
+	if = {
+		limit = { has_country_flag = chaosx_setting_non_ai_crisis_pressure_enabled }
+		clr_country_flag = chaosx_setting_non_ai_crisis_pressure_enabled
+	}
+	else = {
+		set_country_flag = chaosx_setting_non_ai_crisis_pressure_enabled
+	}
+}

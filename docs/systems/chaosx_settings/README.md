@@ -4,7 +4,7 @@ This directory documents shared settings controls and their persisted or staged 
 
 ## Navigation
 
-- [`settings_all_settings_window.md`](settings_all_settings_window.md) defines the All Settings window opened from Advanced Settings.
+- [`settings_system_settings_window.md`](settings_system_settings_window.md) defines the additional runtime controls opened by Show All Settings under Advanced Settings.
 - [`chaosx_event_logging_controls.md`](chaosx_event_logging_controls.md) defines shared logging and diagnostic controls exposed through settings.
 - [`chaosx_help_window.md`](chaosx_help_window.md) defines the help-window content and ownership boundaries.
 - [`chaosx_settings_export.md`](chaosx_settings_export.md) defines settings export behavior.

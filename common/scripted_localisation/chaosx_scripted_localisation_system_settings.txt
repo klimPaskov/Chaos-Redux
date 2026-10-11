@@ -1,0 +1,37 @@
+# ============================================================================
+# CHAOS REDUX - SYSTEM SETTINGS SCRIPTED LOCALISATION
+# ============================================================================
+# Checkbox sprites for chaosx_system_settings_window and the Air Cleanliness
+# Fallout toggle. Both checkboxes are checked when their feature is on.
+# ============================================================================
+
+# Checked while communist crisis pressure applies to the player country.
+defined_text = {
+	name = GetSystemSettingsCrisisPressureSprite
+	text = {
+		trigger = { has_country_flag = chaosx_setting_non_ai_crisis_pressure_enabled }
+		localization_key = "GFX_chaosx_checkbox_checked"
+	}
+	text = {
+		localization_key = "GFX_chaosx_checkbox_unchecked"
+	}
+}
+
+# Fallout stays checked once it has begun, because it can no longer be turned off.
+defined_text = {
+	name = GetFalloutAllowedCheckboxSprite
+	text = {
+		trigger = {
+			OR = {
+				fallout_consequence_enabled = yes
+				has_global_flag = fallout_transition_active
+				has_global_flag = fallout_active
+				has_global_flag = fallout_air_contamination_permanent_99
+			}
+		}
+		localization_key = "GFX_chaosx_checkbox_checked"
+	}
+	text = {
+		localization_key = "GFX_chaosx_checkbox_unchecked"
+	}
+}
