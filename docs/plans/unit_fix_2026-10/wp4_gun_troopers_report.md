@@ -66,6 +66,7 @@ The one-second archived-source derivative measures -20 LUFS and a 2.58 dB inner 
 The ray uses the verified existing source stretched to 0.6 seconds with pitch fixed and a 60 ms terminal fade, played at the requested volume of 0.75.
 The rejected early-decay candidate is not installed; the selected waveform retains its body through the extended clip and fits the 0.916667-second minimum interval between support shots.
 Six original footstep takes have source-derived edge fades at -6 dBFS, and death combines the existing power-down sound with a licensed human grunt.
+The six-take footstep pool prevents immediate random repetition, retaining its existing volume and event times.
 The first boot-step derivative is an explicitly shared Portal/Alien pool member, not an independent new take.
 Per-file provenance, exact transformations, waveforms, copies and cue-rate checks are retained in `docs/assets/shared_portal_raider_system/models_3d/portal_raider/evidence/wp4_audio_takeover/`.
 Live state-exit playback and perceived timbre remain unverified.
@@ -188,7 +189,9 @@ Those earlier deliveries are baseline facts, not newly produced WP4 repairs.
 `pipeline_report.md`, `per_model_delivery_metrics.json` and their install manifests retain those facts.
 The requested `unit_s3_report.md` is absent and is recorded as an input-path gap.
 Material-class provenance, weak normal detail and fragmented atlases remain unresolved; compression does not establish material acceptance.
-The model worker's current source selections and UV comparisons are retained in `.tmp/unit_takeover_wp4_models/intake_inventory.json`, `source_uv_audit.json` and `materials/source_metrics.json`.
+Each owning model job retains its relevant source-selection and model-intake evidence under `evidence/wp4_model_takeover/`, with an `archive_manifest.json` and `intake_row.json`.
+Robot and Alien additionally retain their source UV comparisons, source/current channel sheets, metrics and exact embedded-source maps in those archives; Portal retains the missing-selected-source and rejected-predecessor-map disposition.
+The compact cross-job mapping remains `.tmp/unit_takeover_wp4_models/intake_inventory.json`.
 No Robot or Alien texture candidate is promoted: the source-normal detail and modified UV/tangent gaps remain unresolved.
 
 ## Evidence and validation limits
