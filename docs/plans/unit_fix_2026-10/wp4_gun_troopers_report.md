@@ -127,6 +127,10 @@ Source windows, different PCM, waveform comparisons, mastering checks and instal
 The new emitter files and registry reuse installed vanilla texture assets; source derivation and exact timings are in `robot_particle_derivation.json` and the final firing crosswalk.
 
 The source-approved footfall is 0.2 seconds, or 0.20833 seconds at the slowest configured rate, below the 0.291667-second retreat event gap.
+The Robot footfall family retains that accepted take and adds one complete dominant door-knock strike; both choices pass the composite step-role gates and prevent immediate repetition.
+The second strike and its returns last 0.267006803 seconds (0.278132086 seconds at playback rate 0.96); source activity at -55 dB continues into preparation for the third strike, so this boundary uncertainty remains recorded in `evidence/wp4_audio_takeover/footfall_variants/`.
+A third recorded strike would require at least 0.311224490 seconds including its tail and cannot fit the 0.280000000-second source limit for the retreat gap; it is not included.
+The metal-drop bed has a standalone source centroid below 200 Hz and remains only as the original component of the composite that passes the unchanged step gates, without a subsonic override.
 The second casing take is shortened to 0.7 seconds, below its 0.75-second gap.
 Both destination hashes match the reviewed candidates; source licenses, transformations and hashes ship in the robot's `WP4_ATTRIBUTION.md`.
 The final source lint clears those specific overlaps while retaining the intentional paired-gun polyphony and the generic lint's smoke-classification limitations.
