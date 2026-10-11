@@ -517,5 +517,6 @@ After completing each meaningful plan, create a Git commit.
 The commit must only include changes related to that plan. Before committing, review the diff, verify that the implementation is complete.
 
 Use a clear commit message that describes what was implemented.
+Never add `Co-Authored-By`, "Generated with" or any other AI attribution line to commit messages or pull request descriptions: the user is the sole author of this repository.
 
 Do not commit broken, unrelated, or half-finished work. If the plan cannot be completed cleanly, report the blocker instead of creating a misleading commit.
