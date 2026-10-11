@@ -54,5 +54,10 @@ The decisions/missions, focus-tree, scripted-GUI, frame-animation, super-event, 
 ## Event 083 report asset disposition (2026-10-11)
 
 The current asset specification requests the 210x176 agency-development report image, and the accepted source/processed/DDS package is recorded in `docs/assets/083_agency_upgrade/manifest.md`.
-The active `GFX_report_event_intel` registration and its Event 83 consumer remain stable; `interface/chaosx_pictures.gfx` now resolves that sprite to `gfx/event_pictures/083_agency_upgrade/report_event_agency_upgrade.dds`.
+The dedicated report candidate is retained in the asset workspace as an unbound alternative; the existing `GFX_report_event_intel` registration continues to use its original texture.
 The independent report sample review confirmed the period scene, transparent card corners, DDS dimensions, and exact decoded-pixel match; its receipt and SHA-256 are in `.tmp/assets_shard_6/reviews/083_report_review.md`.
+
+
+## Preserved report binding (2026-10-11)
+
+The prior runtime texture `gfx/event_pictures/083_agency_upgrade/report_event_intel.dds` remains on the `GFX_report_event_intel` sprite. The reviewed `report_event_agency_upgrade.dds` is retained as an unbound alternative because the current sprite already has an existing texture. No existing art file was replaced or removed.
