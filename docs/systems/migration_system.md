@@ -136,6 +136,15 @@ A minimum state size, a minimum request and a per-state cooldown keep the regist
 This covers wars created by event owners, such as civil wars and collapse wars, without editing their files.
 When a special Chaos Redux power that runs no civilian system (the walking dead, a rat swarm, ZIN, Death, a revolutionary or terror command) takes a state, that state leaves both mechanics, so `humanitarian_handle_special_front_capture` sends 2% (4% for a nonhuman captor) of each neighbouring state the former owner still holds into flight instead: people run from the advancing front.
 
+## Category header
+
+The migration category header shows the report scene art and title beside a live list of the visible states the country owns or controls that hold trapped, fleeing or sheltered civilians, trapped states first, each with its trapped, sheltered or fleeing count.
+Selecting an entry centres the map on that state.
+`migration_refresh_header_states` rebuilds the country array `migration_header_states` and `migration_header_state_count` from `global.migration_active_states` at the start of each decision-phase refresh.
+Until a state qualifies the header falls back to the scene summary.
+The category description keeps Displacement Load, Reception Capacity, Border Policy and Priority.
+The dynamic list inside a decision-category scripted GUI has not been confirmed in a running game.
+
 ## Assets and mapmode
 
 Migration assets use `migration_*` filenames and sprite identifiers. `interface/migration_system.gfx` owns the category, decision, state-modifier, and achievement sprites; `interface/chaosx_texticons.gfx` owns the migration Deaths texticon; `interface/migration_report_pictures.gfx` and `interface/migration_report_header.gui` own the compact migration report art consumer; `interface/mapmodes_interface.gfx` owns the two migration mapmode button states.
