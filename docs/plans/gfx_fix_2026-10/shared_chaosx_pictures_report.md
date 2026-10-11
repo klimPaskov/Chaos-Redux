@@ -115,3 +115,20 @@ Disposition: implemented under the explicit distinct-Tibet-picture request.
 The parent changed only the texture path in the existing `GFX_report_event_tibet` block to `gfx/event_pictures/003_holy_realm/report_event_tibet.dds`.
 The neighbouring unowned Equipment from Heaven sprite deletion remains separate work and is excluded from this commit.
 The new Tibet texture is 210x176, SHA-256 `9e78d8fe7b45c80ef6e4c4955208f68a9c7f85adbf24dc2fbb640885e61fdac3`; the sprite name and consumers remain stable.
+
+## Current spacecraft bindings, 2026-10-11
+
+The retained photographs are accepted under the current all-spec-assets instruction after independent shard 4 review.
+The historical severity-3 receipt above retains its original Event 036 path and event mapping; the active registry instead loads these unchanged textures from Event 025.
+
+| Sprite | Current runtime texture | Current consumers | Review |
+| --- | --- | --- | --- |
+| GFX_report_event_alien_spacecraft | gfx/event_pictures/025_alien_technology_in_antarctica/report_event_alien_spacecraft.dds | chaosx.nr25.261, chaosx.nr16.18 | Source and native DDS pass; 210x176 tilted sepia card, transparent corners, exact processed-PNG pixels |
+| GFX_news_alien_spacecraft | gfx/event_pictures/025_alien_technology_in_antarctica/news_alien_spacecraft.dds | chaosx.news.41 | Source and native DDS pass; 397x153 opaque monochrome scene, exact processed-PNG pixels |
+
+Both stable sprites are registered in interface/chaosx_pictures.gfx; their file hashes remain the severity-3 hashes above.
+No existing artwork was overwritten or regenerated.
+Independent reviewer: shard 4 reviewer, 2026-10-11; evidence is .tmp/assets_shard_4_20261011/reviewer/spacecraft_review.json.
+The exact historical request arguments and input identities are unavailable; retained prompts, original source PNGs, processed PNGs and hashes remain the provenance evidence.
+Verification used local consumers and canonical reference families because HOI4 MCP routes are not exposed in this connection; it is not a live-game result.
+Local syntax references: offline paradox_wiki/Graphical asset modding - Hearts of Iron 4 Wiki.md, lines 28-81, and installed interface/decisions.gfx, lines 1-36; the installed documentation folder has no GUI/GFX documentation section.
