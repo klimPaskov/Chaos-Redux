@@ -345,6 +345,76 @@ infantry_spawn_can_pay_anything_request = {
 }
 
 # ---------------------------------------------------------------------------
+# Chosen request type
+# ---------------------------------------------------------------------------
+# infantry_spawn_request_mode_choice stores the request type of the single
+# Request Formation decision. A human cycles it with the Change Request Type
+# decision; the AI draws it with the weights in common/mtth. The type must be
+# one the current evolution tier and strategic lane offers: Evolution II
+# offers two types at peace and two at war, Evolution III replaces them with
+# two at peace, two at war, and the unrestricted request in both.
+
+infantry_spawn_request_choice_is_offered = {
+	infantry_spawn_has_evolution_ii = yes
+	OR = {
+		AND = {
+			NOT = { infantry_spawn_has_evolution_iii = yes }
+			OR = {
+				AND = {
+					infantry_spawn_event19_evolution_ii_peacetime_request_lane = yes
+					OR = {
+						check_variable = { infantry_spawn_request_mode_choice = constant:infantry_spawn_request_mode.field_reinforcement }
+						check_variable = { infantry_spawn_request_mode_choice = constant:infantry_spawn_request_mode.territorial_defense }
+					}
+				}
+				AND = {
+					infantry_spawn_event19_evolution_ii_frontline_request_lane = yes
+					OR = {
+						check_variable = { infantry_spawn_request_mode_choice = constant:infantry_spawn_request_mode.mobile_reserve }
+						check_variable = { infantry_spawn_request_mode_choice = constant:infantry_spawn_request_mode.specialist }
+					}
+				}
+			}
+		}
+		AND = {
+			infantry_spawn_has_evolution_iii = yes
+			OR = {
+				AND = {
+					infantry_spawn_event19_evolution_iii_peacetime_request_lane = yes
+					OR = {
+						check_variable = { infantry_spawn_request_mode_choice = constant:infantry_spawn_request_mode.numbers }
+						check_variable = { infantry_spawn_request_mode_choice = constant:infantry_spawn_request_mode.discipline }
+					}
+				}
+				AND = {
+					infantry_spawn_event19_evolution_iii_frontline_request_lane = yes
+					OR = {
+						check_variable = { infantry_spawn_request_mode_choice = constant:infantry_spawn_request_mode.firepower }
+						check_variable = { infantry_spawn_request_mode_choice = constant:infantry_spawn_request_mode.mobility }
+					}
+				}
+				check_variable = { infantry_spawn_request_mode_choice = constant:infantry_spawn_request_mode.anything }
+			}
+		}
+	}
+}
+
+infantry_spawn_can_pay_chosen_request = {
+	infantry_spawn_request_choice_is_offered = yes
+	OR = {
+		AND = { check_variable = { infantry_spawn_request_mode_choice = constant:infantry_spawn_request_mode.field_reinforcement } infantry_spawn_can_pay_field_request = yes }
+		AND = { check_variable = { infantry_spawn_request_mode_choice = constant:infantry_spawn_request_mode.mobile_reserve } infantry_spawn_can_pay_mobile_reserve_request = yes }
+		AND = { check_variable = { infantry_spawn_request_mode_choice = constant:infantry_spawn_request_mode.territorial_defense } infantry_spawn_can_pay_territorial_request = yes }
+		AND = { check_variable = { infantry_spawn_request_mode_choice = constant:infantry_spawn_request_mode.specialist } infantry_spawn_can_pay_specialist_request = yes }
+		AND = { check_variable = { infantry_spawn_request_mode_choice = constant:infantry_spawn_request_mode.numbers } infantry_spawn_can_pay_numbers_request = yes }
+		AND = { check_variable = { infantry_spawn_request_mode_choice = constant:infantry_spawn_request_mode.discipline } infantry_spawn_can_pay_discipline_request = yes }
+		AND = { check_variable = { infantry_spawn_request_mode_choice = constant:infantry_spawn_request_mode.firepower } infantry_spawn_can_pay_firepower_request = yes }
+		AND = { check_variable = { infantry_spawn_request_mode_choice = constant:infantry_spawn_request_mode.mobility } infantry_spawn_can_pay_mobility_request = yes }
+		AND = { check_variable = { infantry_spawn_request_mode_choice = constant:infantry_spawn_request_mode.anything } infantry_spawn_can_pay_anything_request = yes }
+	}
+}
+
+# ---------------------------------------------------------------------------
 # Selected anomalous-family action parity
 # ---------------------------------------------------------------------------
 

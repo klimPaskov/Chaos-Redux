@@ -375,10 +375,12 @@ Purpose:
 
 ## Group E: Formation requests
 
-The implemented request surface splits the modes into a peace lane and a war lane so that a human player sees only two or three request decisions at once.
-At Evolution II, a country at peace sees Request a Field Reinforcement and Request Territorial Defenders, and a country at war sees Request a Mobile Reserve and Request Specialist Firepower (`infantry_spawn_event19_evolution_ii_peacetime_request_lane` and `infantry_spawn_event19_evolution_ii_frontline_request_lane`).
+The implemented request surface is one Request Formation decision whose request type the player changes with a Change Request Type decision.
+The offered types follow a peace lane and a war lane (`infantry_spawn_event19_evolution_ii_peacetime_request_lane` and `infantry_spawn_event19_evolution_ii_frontline_request_lane`).
+At Evolution II, a country at peace is offered Field Reinforcement and Territorial Defenders, and a country at war is offered Mobile Reserve and Specialist Firepower.
 At Evolution III these four are replaced by the Part 4 request philosophies: Ask for Numbers and Ask for Discipline in peace, Ask for Firepower and Ask for Mobility in war, and Ask for Anything in both lanes.
-AI countries pass both lanes and choose through their `ai_will_do` weights.
+The chosen type is stored in `infantry_spawn_request_mode_choice` and moves to the next offered type when the strategic lane changes it.
+AI countries are offered every type of the current evolution tier and draw one affordable type each pulse and when the request interval ends, weighted by the `infantry_spawn_request_*_weight` entries in `common/mtth/019_infantry_spawn_mtth.txt`; the Request Formation decision then carries the weight of the drawn type.
 The unrestricted draw is therefore an Evolution III feature; Evolution II has no unrestricted request.
 
 ### Request a Field Reinforcement

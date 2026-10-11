@@ -1,11 +1,11 @@
 # Event 19 Decision and Mission Map
 
-The live package contains 68 decisions and 14 timed missions. The tables below group those objects by gameplay purpose; the exact source inventory at the end is the count authority.
+The live package contains 61 decisions and 14 timed missions. The tables below group those objects by gameplay purpose; the exact source inventory at the end is the count authority.
 
 The first table uses design labels.
 Rows marked unresolved have no live decision, and rows marked as an outcome or timeout are implemented without a button.
 The label-to-identifier mapping is in Part 7 of the specification ("Live decision mapping"), and the retire-or-build proposal for the unresolved rows is in the package README under Open questions.
-The Evolution II request rows are live as a peace lane and a war lane, and Evolution III replaces them with Ask for Numbers, Discipline, Firepower, and Mobility plus Request Anything.
+Formation requests are one Request Formation decision plus a Change Request Type decision. Evolution II offers Field Reinforcement and Territorial Defenders at peace and Mobile Reserve and Specialist Firepower at war; Evolution III replaces them with Ask for Numbers and Discipline at peace, Ask for Firepower and Mobility at war, and Ask for Anything in both.
 
 ## Decision families
 
@@ -26,11 +26,8 @@ The Evolution II request rows are live as a peace lane and a war lane, and Evolu
 | Preserve the Prototype Formation | Evolution II onward | ordinary country | army experience, support equipment, trains, fuel, time | exact advanced lot survives with improved training and finite research insight | material decay or identity-proof failure |
 | Cannibalize the Advanced Lot | Evolution II onward | ordinary country | permanent loss of exact prototype cohort | settled unit-backed salvage, congestion relief, possible small research insight | unpaid obligations are forfeited and no demobilization credit is earned |
 | Disarm a Claimant District (unresolved) | Evolution III onward | ordinary country | loyal forces, equipment handling | weakens revolt | can trigger immediate revolt |
-| Request Field Reinforcement | Evolution II onward | ordinary country | dynamic military and equipment cost | random balanced lot | congestion and bad result |
-| Request Mobile Reserve | Evolution II onward | ordinary country | fuel, transport, army experience | random mobile lot | terrain or equipment mismatch |
-| Request Territorial Defenders | Evolution II onward | ordinary country | manpower, local support, rifles | supply-light lot | weak offensive value |
-| Request Specialist Firepower | Evolution II onward | ordinary country | equipment, industry, supply | firepower-biased lot | unsupported equipment |
-| Request Anything | Evolution III onward | ordinary country | highest dynamic cost | full random pool | widest tails and claimant risk |
+| Request Formation (chosen request type) | Evolution II onward | ordinary country | cost of the chosen type: army experience with equipment, fuel, trains, or manpower | random lot biased by the chosen type | congestion and bad result; Anything carries the widest tails and claimant risk |
+| Change Request Type | Evolution II onward | ordinary country | none | selects the next request type offered in the current lane | none |
 | Request Anomalous Formation | Evolution IV onward | ordinary country | containment, family cost, saturation | registry family lot | derivative risk |
 | Grant Formal Command | Evolution III onward | ordinary country | political and military authority | improves claimant lots | influence rises |
 | Reassign Loyal Formations (unresolved) | Evolution III onward | ordinary country | replacement officers, supply | lowers claimant force | can fail or provoke |
@@ -94,7 +91,7 @@ The Evolution II request rows are live as a peace lane and a war lane, and Evolu
 
 ## Exact source inventory
 
-The 68 decision objects are the 39 ordinary management/request/trial objects, six claimant objects, and 23 derivative-government objects defined in:
+The 61 decision objects are the 32 ordinary management/request/trial objects, six claimant objects, and 23 derivative-government objects defined in:
 
 - `common/decisions/019_infantry_spawn_decisions.txt`;
 - `common/decisions/019_infantry_spawn_claimant_decisions.txt`;

@@ -710,49 +710,232 @@ infantry_spawn_execute_selected_request_mode_unlocked = {
 	infantry_spawn_muster_board_refresh_if_open = yes
 }
 
-infantry_spawn_request_field_reinforcement_action = {
-	set_temp_variable = { infantry_spawn_request_mode_selection = constant:infantry_spawn_request_mode.field_reinforcement }
+# ---------------------------------------------------------------------------
+# Request Formation: one decision, one chosen request type
+# ---------------------------------------------------------------------------
+# infantry_spawn_request_mode_choice (country variable) holds the request type
+# the Request Formation decision places. A human steps through the types the
+# current strategic lane offers with infantry_spawn_cycle_request_mode; the AI
+# draws a payable type with the infantry_spawn_request_*_weight MTTH entries.
+# The title, description, tooltip, and cost rows of the decision read the
+# localisation tokens published by infantry_spawn_refresh_request_choice_presentation.
+
+infantry_spawn_request_chosen_formation_action = {
+	set_temp_variable = { infantry_spawn_request_mode_selection = infantry_spawn_request_mode_choice }
 	infantry_spawn_execute_selected_request_mode = yes
 }
 
-infantry_spawn_request_mobile_reserve_action = {
-	set_temp_variable = { infantry_spawn_request_mode_selection = constant:infantry_spawn_request_mode.mobile_reserve }
-	infantry_spawn_execute_selected_request_mode = yes
+infantry_spawn_refresh_request_choice_presentation = {
+	if = {
+		limit = { check_variable = { infantry_spawn_request_mode_choice = constant:infantry_spawn_request_mode.field_reinforcement } }
+		set_variable = { var = infantry_spawn_request_choice_title_token value = token:infantry_spawn_request_field_reinforcement }
+		set_variable = { var = infantry_spawn_request_choice_desc_token value = token:infantry_spawn_request_field_reinforcement_desc }
+		set_variable = { var = infantry_spawn_request_choice_tt_token value = token:infantry_spawn_request_field_reinforcement_tt }
+		set_variable = { var = infantry_spawn_request_choice_cost_token value = token:infantry_spawn_request_field_reinforcement_cost }
+		set_variable = { var = infantry_spawn_request_choice_cost_blocked_token value = token:infantry_spawn_request_field_reinforcement_cost_blocked }
+		set_variable = { var = infantry_spawn_request_choice_cost_tooltip_token value = token:infantry_spawn_request_field_reinforcement_cost_tooltip }
+	}
+	else_if = {
+		limit = { check_variable = { infantry_spawn_request_mode_choice = constant:infantry_spawn_request_mode.mobile_reserve } }
+		set_variable = { var = infantry_spawn_request_choice_title_token value = token:infantry_spawn_request_mobile_reserve }
+		set_variable = { var = infantry_spawn_request_choice_desc_token value = token:infantry_spawn_request_mobile_reserve_desc }
+		set_variable = { var = infantry_spawn_request_choice_tt_token value = token:infantry_spawn_request_mobile_reserve_tt }
+		set_variable = { var = infantry_spawn_request_choice_cost_token value = token:infantry_spawn_request_mobile_reserve_cost }
+		set_variable = { var = infantry_spawn_request_choice_cost_blocked_token value = token:infantry_spawn_request_mobile_reserve_cost_blocked }
+		set_variable = { var = infantry_spawn_request_choice_cost_tooltip_token value = token:infantry_spawn_request_mobile_reserve_cost_tooltip }
+	}
+	else_if = {
+		limit = { check_variable = { infantry_spawn_request_mode_choice = constant:infantry_spawn_request_mode.territorial_defense } }
+		set_variable = { var = infantry_spawn_request_choice_title_token value = token:infantry_spawn_request_territorial_defenders }
+		set_variable = { var = infantry_spawn_request_choice_desc_token value = token:infantry_spawn_request_territorial_defenders_desc }
+		set_variable = { var = infantry_spawn_request_choice_tt_token value = token:infantry_spawn_request_territorial_defenders_tt }
+		set_variable = { var = infantry_spawn_request_choice_cost_token value = token:infantry_spawn_request_territorial_defenders_cost }
+		set_variable = { var = infantry_spawn_request_choice_cost_blocked_token value = token:infantry_spawn_request_territorial_defenders_cost_blocked }
+		set_variable = { var = infantry_spawn_request_choice_cost_tooltip_token value = token:infantry_spawn_request_territorial_defenders_cost_tooltip }
+	}
+	else_if = {
+		limit = { check_variable = { infantry_spawn_request_mode_choice = constant:infantry_spawn_request_mode.specialist } }
+		set_variable = { var = infantry_spawn_request_choice_title_token value = token:infantry_spawn_request_specialist_firepower }
+		set_variable = { var = infantry_spawn_request_choice_desc_token value = token:infantry_spawn_request_specialist_firepower_desc }
+		set_variable = { var = infantry_spawn_request_choice_tt_token value = token:infantry_spawn_request_specialist_firepower_tt }
+		set_variable = { var = infantry_spawn_request_choice_cost_token value = token:infantry_spawn_request_specialist_firepower_cost }
+		set_variable = { var = infantry_spawn_request_choice_cost_blocked_token value = token:infantry_spawn_request_specialist_firepower_cost_blocked }
+		set_variable = { var = infantry_spawn_request_choice_cost_tooltip_token value = token:infantry_spawn_request_specialist_firepower_cost_tooltip }
+	}
+	else_if = {
+		limit = { check_variable = { infantry_spawn_request_mode_choice = constant:infantry_spawn_request_mode.numbers } }
+		set_variable = { var = infantry_spawn_request_choice_title_token value = token:infantry_spawn_request_numbers }
+		set_variable = { var = infantry_spawn_request_choice_desc_token value = token:infantry_spawn_request_numbers_desc }
+		set_variable = { var = infantry_spawn_request_choice_tt_token value = token:infantry_spawn_request_numbers_tt }
+		set_variable = { var = infantry_spawn_request_choice_cost_token value = token:infantry_spawn_request_numbers_cost }
+		set_variable = { var = infantry_spawn_request_choice_cost_blocked_token value = token:infantry_spawn_request_numbers_cost_blocked }
+		set_variable = { var = infantry_spawn_request_choice_cost_tooltip_token value = token:infantry_spawn_request_numbers_cost_tooltip }
+	}
+	else_if = {
+		limit = { check_variable = { infantry_spawn_request_mode_choice = constant:infantry_spawn_request_mode.discipline } }
+		set_variable = { var = infantry_spawn_request_choice_title_token value = token:infantry_spawn_request_discipline }
+		set_variable = { var = infantry_spawn_request_choice_desc_token value = token:infantry_spawn_request_discipline_desc }
+		set_variable = { var = infantry_spawn_request_choice_tt_token value = token:infantry_spawn_request_discipline_tt }
+		set_variable = { var = infantry_spawn_request_choice_cost_token value = token:infantry_spawn_request_discipline_cost }
+		set_variable = { var = infantry_spawn_request_choice_cost_blocked_token value = token:infantry_spawn_request_discipline_cost_blocked }
+		set_variable = { var = infantry_spawn_request_choice_cost_tooltip_token value = token:infantry_spawn_request_discipline_cost_tooltip }
+	}
+	else_if = {
+		limit = { check_variable = { infantry_spawn_request_mode_choice = constant:infantry_spawn_request_mode.firepower } }
+		set_variable = { var = infantry_spawn_request_choice_title_token value = token:infantry_spawn_request_firepower }
+		set_variable = { var = infantry_spawn_request_choice_desc_token value = token:infantry_spawn_request_firepower_desc }
+		set_variable = { var = infantry_spawn_request_choice_tt_token value = token:infantry_spawn_request_firepower_tt }
+		set_variable = { var = infantry_spawn_request_choice_cost_token value = token:infantry_spawn_request_firepower_cost }
+		set_variable = { var = infantry_spawn_request_choice_cost_blocked_token value = token:infantry_spawn_request_firepower_cost_blocked }
+		set_variable = { var = infantry_spawn_request_choice_cost_tooltip_token value = token:infantry_spawn_request_firepower_cost_tooltip }
+	}
+	else_if = {
+		limit = { check_variable = { infantry_spawn_request_mode_choice = constant:infantry_spawn_request_mode.mobility } }
+		set_variable = { var = infantry_spawn_request_choice_title_token value = token:infantry_spawn_request_mobility }
+		set_variable = { var = infantry_spawn_request_choice_desc_token value = token:infantry_spawn_request_mobility_desc }
+		set_variable = { var = infantry_spawn_request_choice_tt_token value = token:infantry_spawn_request_mobility_tt }
+		set_variable = { var = infantry_spawn_request_choice_cost_token value = token:infantry_spawn_request_mobility_cost }
+		set_variable = { var = infantry_spawn_request_choice_cost_blocked_token value = token:infantry_spawn_request_mobility_cost_blocked }
+		set_variable = { var = infantry_spawn_request_choice_cost_tooltip_token value = token:infantry_spawn_request_mobility_cost_tooltip }
+	}
+	else_if = {
+		limit = { check_variable = { infantry_spawn_request_mode_choice = constant:infantry_spawn_request_mode.anything } }
+		set_variable = { var = infantry_spawn_request_choice_title_token value = token:infantry_spawn_request_anything }
+		set_variable = { var = infantry_spawn_request_choice_desc_token value = token:infantry_spawn_request_anything_desc }
+		set_variable = { var = infantry_spawn_request_choice_tt_token value = token:infantry_spawn_request_anything_tt }
+		set_variable = { var = infantry_spawn_request_choice_cost_token value = token:infantry_spawn_request_anything_cost }
+		set_variable = { var = infantry_spawn_request_choice_cost_blocked_token value = token:infantry_spawn_request_anything_cost_blocked }
+		set_variable = { var = infantry_spawn_request_choice_cost_tooltip_token value = token:infantry_spawn_request_anything_cost_tooltip }
+	}
 }
 
-infantry_spawn_request_territorial_defenders_action = {
-	set_temp_variable = { infantry_spawn_request_mode_selection = constant:infantry_spawn_request_mode.territorial_defense }
-	infantry_spawn_execute_selected_request_mode = yes
+infantry_spawn_cycle_request_mode = {
+	set_temp_variable = { infantry_spawn_request_cycle_remaining = constant:infantry_spawn_request_mode.choice_limit }
+	set_temp_variable = { infantry_spawn_request_cycle_found = 0 }
+	while_loop_effect = {
+		limit = {
+			check_variable = { infantry_spawn_request_cycle_remaining > 0 }
+			check_variable = { infantry_spawn_request_cycle_found = 0 }
+		}
+		add_to_variable = { infantry_spawn_request_mode_choice = 1 }
+		if = {
+			limit = { check_variable = { var = infantry_spawn_request_mode_choice value = constant:infantry_spawn_request_mode.choice_limit compare = greater_than_or_equals } }
+			set_variable = { infantry_spawn_request_mode_choice = constant:infantry_spawn_request_mode.first_choice }
+		}
+		if = {
+			limit = { infantry_spawn_request_choice_is_offered = yes }
+			set_temp_variable = { infantry_spawn_request_cycle_found = 1 }
+		}
+		subtract_from_temp_variable = { infantry_spawn_request_cycle_remaining = 1 }
+	}
+	infantry_spawn_refresh_request_choice_presentation = yes
 }
 
-infantry_spawn_request_specialist_firepower_action = {
-	set_temp_variable = { infantry_spawn_request_mode_selection = constant:infantry_spawn_request_mode.specialist }
-	infantry_spawn_execute_selected_request_mode = yes
+infantry_spawn_load_chosen_request_ai_weight = {
+	if = {
+		limit = { check_variable = { infantry_spawn_request_mode_choice = constant:infantry_spawn_request_mode.field_reinforcement } }
+		set_temp_variable = { infantry_spawn_ai_request_probe_weight = mtth:infantry_spawn_request_field_reinforcement_weight }
+	}
+	else_if = {
+		limit = { check_variable = { infantry_spawn_request_mode_choice = constant:infantry_spawn_request_mode.mobile_reserve } }
+		set_temp_variable = { infantry_spawn_ai_request_probe_weight = mtth:infantry_spawn_request_mobile_reserve_weight }
+	}
+	else_if = {
+		limit = { check_variable = { infantry_spawn_request_mode_choice = constant:infantry_spawn_request_mode.territorial_defense } }
+		set_temp_variable = { infantry_spawn_ai_request_probe_weight = mtth:infantry_spawn_request_territorial_defenders_weight }
+	}
+	else_if = {
+		limit = { check_variable = { infantry_spawn_request_mode_choice = constant:infantry_spawn_request_mode.specialist } }
+		set_temp_variable = { infantry_spawn_ai_request_probe_weight = mtth:infantry_spawn_request_specialist_firepower_weight }
+	}
+	else_if = {
+		limit = { check_variable = { infantry_spawn_request_mode_choice = constant:infantry_spawn_request_mode.numbers } }
+		set_temp_variable = { infantry_spawn_ai_request_probe_weight = mtth:infantry_spawn_request_numbers_weight }
+	}
+	else_if = {
+		limit = { check_variable = { infantry_spawn_request_mode_choice = constant:infantry_spawn_request_mode.discipline } }
+		set_temp_variable = { infantry_spawn_ai_request_probe_weight = mtth:infantry_spawn_request_discipline_weight }
+	}
+	else_if = {
+		limit = { check_variable = { infantry_spawn_request_mode_choice = constant:infantry_spawn_request_mode.firepower } }
+		set_temp_variable = { infantry_spawn_ai_request_probe_weight = mtth:infantry_spawn_request_firepower_weight }
+	}
+	else_if = {
+		limit = { check_variable = { infantry_spawn_request_mode_choice = constant:infantry_spawn_request_mode.mobility } }
+		set_temp_variable = { infantry_spawn_ai_request_probe_weight = mtth:infantry_spawn_request_mobility_weight }
+	}
+	else_if = {
+		limit = { check_variable = { infantry_spawn_request_mode_choice = constant:infantry_spawn_request_mode.anything } }
+		set_temp_variable = { infantry_spawn_ai_request_probe_weight = mtth:infantry_spawn_request_anything_weight }
+	}
 }
 
-infantry_spawn_request_numbers_action = {
-	set_temp_variable = { infantry_spawn_request_mode_selection = constant:infantry_spawn_request_mode.numbers }
-	infantry_spawn_execute_selected_request_mode = yes
+infantry_spawn_choose_ai_request_mode = {
+	clear_temp_array = infantry_spawn_ai_request_weight_entries
+	set_temp_variable = { infantry_spawn_ai_request_total = 0 }
+	set_temp_variable = { infantry_spawn_ai_request_probe = constant:infantry_spawn_request_mode.first_choice }
+	while_loop_effect = {
+		limit = { check_variable = { var = infantry_spawn_ai_request_probe value = constant:infantry_spawn_request_mode.choice_limit compare = less_than } }
+		set_variable = { infantry_spawn_request_mode_choice = infantry_spawn_ai_request_probe }
+		set_temp_variable = { infantry_spawn_ai_request_probe_weight = 0 }
+		if = {
+			limit = { infantry_spawn_can_pay_chosen_request = yes }
+			infantry_spawn_load_chosen_request_ai_weight = yes
+		}
+		add_to_temp_array = { infantry_spawn_ai_request_weight_entries = infantry_spawn_ai_request_probe_weight }
+		add_to_temp_variable = { infantry_spawn_ai_request_total = infantry_spawn_ai_request_probe_weight }
+		add_to_temp_variable = { infantry_spawn_ai_request_probe = 1 }
+	}
+	set_variable = { infantry_spawn_request_ai_weight = 0 }
+	set_temp_variable = { infantry_spawn_ai_request_picked = 0 }
+	if = {
+		limit = { check_variable = { infantry_spawn_ai_request_total > 0 } }
+		set_temp_variable_to_random = { var = infantry_spawn_ai_request_roll min = 0 max = infantry_spawn_ai_request_total }
+		set_temp_variable = { infantry_spawn_ai_request_index = 0 }
+		set_temp_variable = { infantry_spawn_ai_request_probe = constant:infantry_spawn_request_mode.first_choice }
+		while_loop_effect = {
+			limit = {
+				check_variable = { infantry_spawn_ai_request_picked = 0 }
+				check_variable = { var = infantry_spawn_ai_request_index value = infantry_spawn_ai_request_weight_entries^num compare = less_than }
+			}
+			set_temp_variable = { infantry_spawn_ai_request_probe_weight = infantry_spawn_ai_request_weight_entries^infantry_spawn_ai_request_index }
+			if = {
+				limit = {
+					check_variable = { infantry_spawn_ai_request_probe_weight > 0 }
+					check_variable = { var = infantry_spawn_ai_request_roll value = infantry_spawn_ai_request_probe_weight compare = less_than_or_equals }
+				}
+				set_temp_variable = { infantry_spawn_ai_request_picked = infantry_spawn_ai_request_probe }
+				set_variable = { infantry_spawn_request_ai_weight = infantry_spawn_ai_request_probe_weight }
+			}
+			else = { subtract_from_temp_variable = { infantry_spawn_ai_request_roll = infantry_spawn_ai_request_probe_weight } }
+			add_to_temp_variable = { infantry_spawn_ai_request_index = 1 }
+			add_to_temp_variable = { infantry_spawn_ai_request_probe = 1 }
+		}
+	}
+	clear_temp_array = infantry_spawn_ai_request_weight_entries
+	if = {
+		limit = { check_variable = { infantry_spawn_ai_request_picked > 0 } }
+		set_variable = { infantry_spawn_request_mode_choice = infantry_spawn_ai_request_picked }
+	}
+	else = { set_variable = { infantry_spawn_request_mode_choice = constant:infantry_spawn_request_mode.first_choice } }
 }
 
-infantry_spawn_request_discipline_action = {
-	set_temp_variable = { infantry_spawn_request_mode_selection = constant:infantry_spawn_request_mode.discipline }
-	infantry_spawn_execute_selected_request_mode = yes
-}
-
-infantry_spawn_request_firepower_action = {
-	set_temp_variable = { infantry_spawn_request_mode_selection = constant:infantry_spawn_request_mode.firepower }
-	infantry_spawn_execute_selected_request_mode = yes
-}
-
-infantry_spawn_request_mobility_action = {
-	set_temp_variable = { infantry_spawn_request_mode_selection = constant:infantry_spawn_request_mode.mobility }
-	infantry_spawn_execute_selected_request_mode = yes
-}
-
-infantry_spawn_request_anything_action = {
-	set_temp_variable = { infantry_spawn_request_mode_selection = constant:infantry_spawn_request_mode.anything }
-	infantry_spawn_execute_selected_request_mode = yes
+# Keeps the chosen request type valid for the current evolution tier and lane.
+# The AI redraws its type; a human moves on to the next offered type only when
+# the previous one stopped being offered.
+infantry_spawn_refresh_request_mode_choice = {
+	if = {
+		limit = { infantry_spawn_has_evolution_ii = yes }
+		if = {
+			limit = { is_ai = yes }
+			infantry_spawn_choose_ai_request_mode = yes
+		}
+		if = {
+			limit = { NOT = { infantry_spawn_request_choice_is_offered = yes } }
+			infantry_spawn_cycle_request_mode = yes
+		}
+		else = { infantry_spawn_refresh_request_choice_presentation = yes }
+	}
 }
 
 # ---------------------------------------------------------------------------
