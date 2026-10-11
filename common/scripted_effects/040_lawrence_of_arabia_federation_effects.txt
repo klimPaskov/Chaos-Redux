@@ -940,8 +940,8 @@ lawrence_fed_settle_political = {
 # Focus tree helpers
 # ---------------------------------------------------------------------------
 
-# COUNTRY, the core. Builds one level of $TYPE$ in up to the configured number
-# of founding states (each state once).
+# COUNTRY, the core. Input: temp lawrence_fed_state_program_type (building token). Builds one
+# level of that building in up to the configured number of founding states (each state once).
 lawrence_fed_state_program = {
 	set_temp_variable = { lawrence_program_end = constant:lawrence_focus.program_states }
 	for_loop_effect = {
@@ -952,10 +952,15 @@ lawrence_fed_state_program = {
 				has_state_flag = lawrence_fed_founding_state
 				NOT = { has_state_flag = lawrence_fed_programmed }
 			}
-			add_building_construction = {
-				type = $TYPE$
-				level = 1
-				instant_build = yes
+			meta_effect = {
+				text = {
+					add_building_construction = {
+						type = [TYPE]
+						level = 1
+						instant_build = yes
+					}
+				}
+				TYPE = "[?lawrence_fed_state_program_type.GetTokenKey]"
 			}
 			set_state_flag = lawrence_fed_programmed
 		}
@@ -966,7 +971,8 @@ lawrence_fed_state_program = {
 	}
 }
 
-# COUNTRY, the core. The same for coastal founding states.
+# COUNTRY, the core. Input: temp lawrence_fed_coastal_program_type (building token). The same
+# for coastal founding states.
 lawrence_fed_coastal_program = {
 	set_temp_variable = { lawrence_program_end = constant:lawrence_focus.program_states }
 	for_loop_effect = {
@@ -978,10 +984,15 @@ lawrence_fed_coastal_program = {
 				is_coastal = yes
 				NOT = { has_state_flag = lawrence_fed_programmed }
 			}
-			add_building_construction = {
-				type = $TYPE$
-				level = 1
-				instant_build = yes
+			meta_effect = {
+				text = {
+					add_building_construction = {
+						type = [TYPE]
+						level = 1
+						instant_build = yes
+					}
+				}
+				TYPE = "[?lawrence_fed_coastal_program_type.GetTokenKey]"
 			}
 			set_state_flag = lawrence_fed_programmed
 		}
@@ -1206,9 +1217,8 @@ lawrence_fed_break_with_britain = {
 	set_country_flag = lawrence_fed_breakaway
 }
 
-# COUNTRY, the core. The late regional order replaces whichever political
-# spirit the route still holds, so the federation never holds more than three
-# focus-owned spirits (administration, command, political).
+# COUNTRY, the core. Input: temp lawrence_fed_end_political_idea (idea token). The final
+# structure replaces the political spirit.
 lawrence_fed_end_political = {
 	remove_ideas = lawrence_promise_debt
 	remove_ideas = lawrence_imperial_compact
@@ -1217,16 +1227,27 @@ lawrence_fed_end_political = {
 	remove_ideas = lawrence_charter_trust
 	remove_ideas = lawrence_personal_settlement
 	remove_ideas = lawrence_succession_settlement
-	add_ideas = $IDEA$
+	meta_effect = {
+		text = {
+			add_ideas = [IDEA]
+		}
+		IDEA = "[?lawrence_fed_end_political_idea.GetTokenKey]"
+	}
 }
 
-# COUNTRY, the core. The final structure replaces the administration spirit.
+# COUNTRY, the core. Input: temp lawrence_fed_end_administration_idea (idea token). The final
+# structure replaces the administration spirit.
 lawrence_fed_end_administration = {
 	remove_ideas = lawrence_uneven_administration
 	remove_ideas = lawrence_administrative_secession
 	remove_ideas = lawrence_central_administration
 	remove_ideas = lawrence_charter_administration
 	remove_ideas = lawrence_imperial_liaison_administration
-	add_ideas = $IDEA$
+	meta_effect = {
+		text = {
+			add_ideas = [IDEA]
+		}
+		IDEA = "[?lawrence_fed_end_administration_idea.GetTokenKey]"
+	}
 	set_country_flag = lawrence_fed_administration_settled
 }
