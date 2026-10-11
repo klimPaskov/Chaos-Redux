@@ -342,3 +342,18 @@ The model and waveform review interfaces do not establish live listening; the or
 Selection is a separate engine consumer from entity-state idle.
 No per-subunit selection voice is claimed from the new idle or movement pools; country/original-tag voice routing and mixed-infantry limitations remain open.
 Every genuinely missing recording remains a need for the orchestrator to source with permission; none was downloaded by this pass.
+
+## 11 Oct 2026 rework
+
+Role-matched cues that could be built from already archived licensed recordings were installed in the 11 Oct audio-only pass; the per-file tables are appended to `wp1_sound_attribution.md`.
+The recordings below are still genuinely missing and were not downloaded or created.
+
+| Unit | Recording still needed | Why no archived recording fits |
+|---|---|---|
+| gorilla_heavy_infantry | Real gorilla chest-beat or bark for select, a gorilla breath/rumble for idle, and a gorilla roar or groan for death, about 0.5-1.5 s each | The only primate vocal is the chimpanzee pant-hoot; the only breath recording is clipped. Attack, defend, move and the death collapse were rebuilt from recorded metal thuds, ground thumps and pitched-down footsteps. |
+| pan_sappers | Goat or deer hoof steps; a burning-fuse hiss; workshop tool clatter and wire tick; cloth rustle for idle | Horse hoof recordings pitched up, the CC0 aerosol Spray hiss, a recorded shovel with a metal door-knock clack and quiet goat bleats stand in; they are the closest archived matches. |
+| stone_cohorts | Isolated CC0 rock-impact hits; a rockslide or large rock-fall recording | The tile, stone and metal debris crash with a metal thud, the quern grind and the rock-blast tail stand in. |
+| riverborn | Wet impact thuds; wet bare-foot steps; water flow and splash for idle and water transition | The attack uses a recorded staff whoosh plus a dry ground thump; the other cues keep their unrecorded float32 files. |
+| forest_giants | Tree-fall crack and crash for death; a root-tearing recording for emergence | Death is unchanged; emergence uses the wood creak as the tearing stand-in under a leaf-rustle bed. |
+| oracle_recon | Barefoot steps; breathy chant or whisper for idle and observation; a dedicated gasp | Only the death was rebuilt (human death vocal plus body fall); five float32 cues keep their unrecorded files. |
+| plague_carriers | Donkey bray (2-3 takes, 0.4-1 s) and donkey idle and death voice | No donkey vocal is archived; idle and death were tail-trimmed and given pitch-varied takes of the existing derivatives. |
