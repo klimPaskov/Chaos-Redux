@@ -167,6 +167,15 @@ The reverse connection uses `migration_to_famine_reception_demand_*`. Migration 
 
 Event 037 Mysterious People tops up a food-need shock in crowded states at Overpopulation Pressure 60 or more through `famine_request_event_pressure` (source `event`), raising the state's food need toward the pressure minus 40 (`mysterious_people_adapter` constants). Famine decides what the shock does to the food state.
 
+## Category header
+
+The famine category header shows the report scene art and title beside a live list of the country's crisis states (acute shortage or worse, concealed states excluded), catastrophic states first, each with its food stage.
+Selecting an entry centres the map on that state.
+`famine_refresh_national_food_crisis` rebuilds the country array `famine_header_states` and `famine_header_state_count` from the sparse active-state registry in the same pass that sets the national crisis penalties, and clears them when no crisis state remains.
+Until a crisis state exists the header falls back to the scene summary.
+The category description keeps Food Security, Food Reserves, Relief Access and Priority.
+The dynamic list inside a decision-category scripted GUI has not been confirmed in a running game.
+
 ## Assets and mapmode
 
 Famine assets use `famine_*` filenames and sprite identifiers. `interface/famine_system.gfx` owns the category, decision, state-modifier, and achievement sprites; `interface/chaosx_texticons.gfx` owns the famine Deaths texticon; `interface/famine_report_pictures.gfx` and `interface/famine_report_header.gui` own the compact famine report art consumer; `interface/mapmodes_interface.gfx` owns the two famine mapmode button states.

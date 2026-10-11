@@ -1,5 +1,7 @@
 @FAMINE_REPORT_HEADER_WIDTH = 470
 @FAMINE_REPORT_HEADER_HEIGHT = 190
+@FAMINE_HEADER_ENTRY_WIDTH = 206
+@FAMINE_HEADER_ENTRY_HEIGHT = 36
 
 guiTypes = {
 	containerWindowType = {
@@ -20,5 +22,27 @@ guiTypes = {
 		instantTextBoxType = { name = "famine_report_island_blockade_summary" position = { x = 230 y = 52 } font = "hoi_16mbs" text = "famine_report_island_blockade_summary" format = left maxWidth = 220 maxHeight = 120 fixedsize = yes }
 		instantTextBoxType = { name = "famine_report_relief_arrival_title" position = { x = 230 y = 14 } font = "hoi_24header" text = "famine_report_relief_arrival" format = left maxWidth = 220 maxHeight = 32 fixedsize = yes }
 		instantTextBoxType = { name = "famine_report_relief_arrival_summary" position = { x = 230 y = 52 } font = "hoi_16mbs" text = "famine_report_relief_arrival_summary" format = left maxWidth = 220 maxHeight = 120 fixedsize = yes }
+
+		instantTextBoxType = { name = "famine_header_count" position = { x = 230 y = 48 } font = "hoi_16mbs" text = "famine_header_count" format = left maxWidth = 220 maxHeight = 22 fixedsize = yes pdx_tooltip = "famine_header_count_tt" }
+		containerWindowType = {
+			name = "famine_header_state_panel"
+			position = { x = 230 y = 76 }
+			size = { width = 232 height = 108 }
+			clipping = yes
+			verticalScrollbar = "right_vertical_slider_intel"
+			scroll_wheel_factor = 36
+			smooth_scrolling = yes
+			background = { name = "Background" quadTextureSprite = "GFX_tiled_window_transparent" }
+			gridBoxType = { name = "famine_header_state_list" position = { x = 0 y = 0 } size = { width = @FAMINE_HEADER_ENTRY_WIDTH height = 108 } slotsize = { width = @FAMINE_HEADER_ENTRY_WIDTH height = @FAMINE_HEADER_ENTRY_HEIGHT } format = "UPPER_LEFT" max_slots_horizontal = 1 }
+		}
+	}
+
+	containerWindowType = {
+		name = "famine_header_state_entry"
+		position = { x = 0 y = 0 }
+		size = { width = @FAMINE_HEADER_ENTRY_WIDTH height = @FAMINE_HEADER_ENTRY_HEIGHT }
+		background = { name = "Background" quadTextureSprite = "GFX_tiled_window_transparent" }
+		buttonType = { name = "famine_header_state_entry_select" position = { x = 0 y = 0 } size = { x = @FAMINE_HEADER_ENTRY_WIDTH y = @FAMINE_HEADER_ENTRY_HEIGHT } quadTextureSprite = "GFX_tiled_window_transparent" clicksound = decisions_ui_button pdx_tooltip = "famine_header_state_entry_tt" }
+		instantTextBoxType = { name = "famine_header_state_entry_text" position = { x = 8 y = 2 } font = "hoi_16mbs" text = "famine_header_state_entry" format = left maxWidth = 196 maxHeight = 34 fixedsize = yes alwaysTransparent = yes }
 	}
 }

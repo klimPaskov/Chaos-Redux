@@ -58,3 +58,17 @@ defined_text = {
 	text = { trigger = { check_variable = { migration_cohort_resolved_source = constant:humanitarian_pressure_source.cross_border_flight } } localization_key = migration_cohort_refugees }
 	text = { trigger = { always = yes } localization_key = migration_cohort_unknown }
 }
+
+# STATE scope. One line for a listed header state: trapped people first.
+defined_text = {
+	name = GetMigrationHeaderStateDetail
+	text = { trigger = { migration_state_has_header_trapped_people = yes } localization_key = migration_header_state_trapped }
+	text = {
+		trigger = {
+			has_variable = migration_state_reception_load
+			check_variable = { migration_state_reception_load > constant:humanitarian_population.zero }
+		}
+		localization_key = migration_header_state_sheltered
+	}
+	text = { localization_key = migration_header_state_fleeing }
+}

@@ -11,19 +11,46 @@ scripted_gui = {
 			migration_has_selected_report_scene = yes
 		}
 
+		effects = {
+			migration_header_state_entry_select_click = { ROOT = { goto_state = PREV } }
+		}
+
 		triggers = {
+			migration_header_state_entry_select_click_enabled = { ROOT = { migration_header_has_states = yes } }
+			migration_header_count_visible = { migration_header_has_states = yes }
+			migration_header_state_panel_visible = { migration_header_has_states = yes }
 			migration_report_wartime_evacuation_visible = { migration_report_scene_is_wartime_evacuation = yes }
 			migration_report_wartime_evacuation_title_visible = { migration_report_scene_is_wartime_evacuation = yes }
-			migration_report_wartime_evacuation_summary_visible = { migration_report_scene_is_wartime_evacuation = yes }
+			migration_report_wartime_evacuation_summary_visible = {
+				migration_report_scene_is_wartime_evacuation = yes
+				NOT = { migration_header_has_states = yes }
+			}
 			migration_report_closed_border_visible = { migration_report_scene_is_closed_border = yes }
 			migration_report_closed_border_title_visible = { migration_report_scene_is_closed_border = yes }
-			migration_report_closed_border_summary_visible = { migration_report_scene_is_closed_border = yes }
+			migration_report_closed_border_summary_visible = {
+				migration_report_scene_is_closed_border = yes
+				NOT = { migration_header_has_states = yes }
+			}
 			migration_report_nuclear_evacuation_visible = { migration_report_scene_is_nuclear_evacuation = yes }
 			migration_report_nuclear_evacuation_title_visible = { migration_report_scene_is_nuclear_evacuation = yes }
-			migration_report_nuclear_evacuation_summary_visible = { migration_report_scene_is_nuclear_evacuation = yes }
+			migration_report_nuclear_evacuation_summary_visible = {
+				migration_report_scene_is_nuclear_evacuation = yes
+				NOT = { migration_header_has_states = yes }
+			}
 			migration_report_return_visible = { migration_report_scene_is_return = yes }
 			migration_report_return_title_visible = { migration_report_scene_is_return = yes }
-			migration_report_return_summary_visible = { migration_report_scene_is_return = yes }
+			migration_report_return_summary_visible = {
+				migration_report_scene_is_return = yes
+				NOT = { migration_header_has_states = yes }
+			}
+		}
+
+		dynamic_lists = {
+			migration_header_state_list = {
+				array = migration_header_states
+				change_scope = yes
+				entry_container = "migration_header_state_entry"
+			}
 		}
 
 		ai_enabled = { always = no }

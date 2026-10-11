@@ -587,12 +587,28 @@ famine_refresh_national_food_crisis = {
 	set_temp_variable = { famine_national_stability_total = constant:famine_national_crisis.zero }
 	set_temp_variable = { famine_national_war_support_total = constant:famine_national_crisis.zero }
 	save_event_target_as = famine_national_crisis_country
+	clear_array = famine_header_states
+	set_temp_variable = { famine_header_front_index = constant:humanitarian_runtime.zero }
 	for_each_scope_loop = {
 		array = global.famine_active_states
 		if = {
 			limit = {
 				OWNER = { tag = event_target:famine_national_crisis_country }
 				NOT = { has_state_flag = famine_crisis_concealed }
+			}
+			# The category header lists crisis states, worst first.
+			if = {
+				limit = { has_state_flag = famine_food_stage_catastrophic }
+				event_target:famine_national_crisis_country = { add_to_array = { array = famine_header_states value = PREV index = famine_header_front_index } }
+			}
+			else_if = {
+				limit = {
+					OR = {
+						has_state_flag = famine_food_stage_famine
+						has_state_flag = famine_food_stage_acute_shortage
+					}
+				}
+				event_target:famine_national_crisis_country = { add_to_array = { array = famine_header_states value = PREV } }
 			}
 			if = {
 				limit = { has_state_flag = famine_food_stage_acute_shortage }
@@ -610,6 +626,7 @@ famine_refresh_national_food_crisis = {
 			}
 		}
 	}
+	set_variable = { famine_header_state_count = famine_header_states^num }
 	clamp_temp_variable = { var = famine_national_stability_total min = constant:famine_national_crisis.stability_cap max = constant:famine_national_crisis.zero }
 	clamp_temp_variable = { var = famine_national_war_support_total min = constant:famine_national_crisis.war_support_cap max = constant:famine_national_crisis.zero }
 	if = {
@@ -632,6 +649,8 @@ famine_clear_national_food_crisis = {
 	}
 	clear_variable = famine_national_stability_penalty
 	clear_variable = famine_national_war_support_penalty
+	clear_array = famine_header_states
+	set_variable = { famine_header_state_count = constant:humanitarian_runtime.zero }
 }
 
 # STATE scope. Queue one genuine material assessment for ordinary simulation.

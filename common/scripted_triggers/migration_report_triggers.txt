@@ -13,3 +13,29 @@ migration_report_scene_is_wartime_evacuation = { has_country_flag = migration_re
 migration_report_scene_is_closed_border = { has_country_flag = migration_report_closed_border }
 migration_report_scene_is_nuclear_evacuation = { has_country_flag = migration_report_nuclear_evacuation }
 migration_report_scene_is_return = { has_country_flag = migration_report_return }
+
+# STATE scope. Header list membership and ordering.
+migration_state_has_header_trapped_people = {
+	has_variable = migration_state_trapped_population
+	check_variable = { migration_state_trapped_population > constant:humanitarian_population.zero }
+}
+
+migration_state_has_header_sheltered_or_fleeing_people = {
+	OR = {
+		AND = {
+			has_variable = migration_state_reception_load
+			check_variable = { migration_state_reception_load > constant:humanitarian_population.zero }
+		}
+		AND = {
+			has_variable = migration_state_flight_population
+			check_variable = { migration_state_flight_population > constant:humanitarian_population.zero }
+		}
+	}
+}
+
+# COUNTRY scope. The header lists states once any are visible and falls back to
+# the scene summary otherwise.
+migration_header_has_states = {
+	has_variable = migration_header_state_count
+	check_variable = { migration_header_state_count > constant:humanitarian_runtime.zero }
+}

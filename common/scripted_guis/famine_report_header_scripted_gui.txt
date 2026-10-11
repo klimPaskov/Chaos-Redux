@@ -11,16 +11,40 @@ scripted_gui = {
 			famine_has_selected_report_scene = yes
 		}
 
+		effects = {
+			famine_header_state_entry_select_click = { ROOT = { goto_state = PREV } }
+		}
+
 		triggers = {
 			famine_report_generic_visible = { famine_report_scene_is_generic = yes }
 			famine_report_generic_title_visible = { famine_report_scene_is_generic = yes }
-			famine_report_generic_summary_visible = { famine_report_scene_is_generic = yes }
+			famine_report_generic_summary_visible = {
+				famine_report_scene_is_generic = yes
+				NOT = { famine_header_has_states = yes }
+			}
 			famine_report_island_blockade_visible = { famine_report_scene_is_island_blockade = yes }
 			famine_report_island_blockade_title_visible = { famine_report_scene_is_island_blockade = yes }
-			famine_report_island_blockade_summary_visible = { famine_report_scene_is_island_blockade = yes }
+			famine_report_island_blockade_summary_visible = {
+				famine_report_scene_is_island_blockade = yes
+				NOT = { famine_header_has_states = yes }
+			}
 			famine_report_relief_arrival_visible = { famine_report_scene_is_relief_arrival = yes }
 			famine_report_relief_arrival_title_visible = { famine_report_scene_is_relief_arrival = yes }
-			famine_report_relief_arrival_summary_visible = { famine_report_scene_is_relief_arrival = yes }
+			famine_report_relief_arrival_summary_visible = {
+				famine_report_scene_is_relief_arrival = yes
+				NOT = { famine_header_has_states = yes }
+			}
+			famine_header_state_entry_select_click_enabled = { ROOT = { famine_header_has_states = yes } }
+			famine_header_count_visible = { famine_header_has_states = yes }
+			famine_header_state_panel_visible = { famine_header_has_states = yes }
+		}
+
+		dynamic_lists = {
+			famine_header_state_list = {
+				array = famine_header_states
+				change_scope = yes
+				entry_container = "famine_header_state_entry"
+			}
 		}
 
 		ai_enabled = { always = no }
