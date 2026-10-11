@@ -27,3 +27,5 @@ Keep Event 006 fire state, weight, cap, evolution history and automatic league e
 
 This is a current implementation gap, not approval to change the accepted Event 006 country packages, replace their trees or create new tags.
 Native release, existing carrier reuse, territory rollback and package admission require mapped engine evidence beyond bounded source fixtures.
+
+A partial query and snapshot prototype for this repair is parked in `native_footprint_prototype/` (not loaded by the game, no producer or consumer in the shipped flow); its README states how to resume.

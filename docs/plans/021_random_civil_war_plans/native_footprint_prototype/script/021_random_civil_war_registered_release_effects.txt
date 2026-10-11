@@ -1,0 +1,305 @@
+# Event 021 registered carrier territory snapshot preparation.
+# COUNTRY scope on the transaction owner. This layer freezes data only; it
+# does not authorize native release, grant package content or reserve resources.
+# Required normal inputs: release_source_scope, event6_package_id,
+# event6_anchor_state (random_civil_war_ prefix). Explicit authorized territory
+# is supplied by the Event 006 package publisher in release_authorized_states.
+# Living reuse additionally requires release_territory_contract_ready.
+
+event021_parent_prepare_registered_release_snapshot = {
+	if = {
+		limit = { NOT = { has_country_flag = random_civil_war_release_mutation_active } }
+		event021_parent_build_registered_release_snapshot = yes
+	}
+}
+
+# Internal COUNTRY builder. The public wrapper protects an in-flight journal.
+event021_parent_build_registered_release_snapshot = {
+	clr_country_flag = random_civil_war_release_snapshot_ready
+	set_variable = { random_civil_war_release_snapshot_status = constant:event021_release_query_status.invalid_source }
+	clear_array = random_civil_war_release_native_states
+	clear_array = random_civil_war_release_transfer_states
+	clear_array = random_civil_war_release_previous_owners
+	clear_array = random_civil_war_release_previous_controllers
+	clear_array = random_civil_war_release_source_core_states
+	clear_array = random_civil_war_release_recipient_core_states
+	clear_array = random_civil_war_release_recipient_baseline_states
+	clear_variable = random_civil_war_release_carrier_scope
+	clear_variable = random_civil_war_release_recipient_scope
+	clear_variable = random_civil_war_release_disposition
+	if = {
+		limit = {
+			exists = yes
+			has_variable = random_civil_war_release_source_scope
+			var:random_civil_war_release_source_scope = { exists = yes NOT = { is_actual_nonhuman_country = yes } }
+			has_variable = random_civil_war_event6_package_id
+			has_variable = random_civil_war_event6_anchor_state
+		}
+		save_event_target_as = event021_release_snapshot_owner
+		set_temp_variable = { event021_release_wanted_package_id = random_civil_war_event6_package_id }
+		set_temp_variable = { event021_release_query_status = constant:event021_release_query_status.unavailable }
+		set_temp_variable = { event021_release_carrier_id = constant:random_civil_war_value.zero }
+		set_temp_variable = { event021_release_queried_package_id = constant:random_civil_war_value.zero }
+		set_temp_variable = { event021_release_native_status = constant:event021_release_query_status.unavailable }
+		set_temp_variable = { event021_release_native_count = constant:random_civil_war_value.zero }
+		set_temp_variable = { event021_release_live_status = constant:event021_release_query_status.unavailable }
+		set_temp_variable = { event021_release_live_count = constant:random_civil_war_value.zero }
+		set_temp_variable = { event021_release_registered_status = constant:event021_release_query_status.unavailable }
+		set_temp_variable = { event021_release_registered_count = constant:random_civil_war_value.zero }
+		clear_temp_array = event021_release_native_states
+		clear_temp_array = event021_release_prior_controllers
+		clear_temp_array = event021_release_source_core_states
+		clear_temp_array = event021_release_live_matches
+		clear_temp_array = event021_release_live_identity_statuses
+		clear_temp_array = event021_release_registered_states
+		var:random_civil_war_release_source_scope = {
+			save_event_target_as = event021_release_footprint_source
+			clear_variable = event021_release_saved_adapter_package_id
+			if = {
+				limit = { has_variable = independence_wave_event021_adapter_package_id }
+				set_variable = { event021_release_saved_adapter_package_id = independence_wave_event021_adapter_package_id }
+			}
+			set_variable = { independence_wave_event021_adapter_package_id = event021_release_wanted_package_id }
+			independence_wave_query_event021_carrier_blueprint = yes
+			independence_wave_collect_event021_registered_homeland = yes
+			independence_wave_resolve_event021_live_carrier = yes
+			if = {
+				limit = { check_variable = { var = event021_release_live_status value = constant:event021_release_query_status.dormant_birth compare = equals } }
+				independence_wave_collect_event021_native_footprint = yes
+			}
+			if = {
+				limit = { has_variable = event021_release_saved_adapter_package_id }
+				set_variable = { independence_wave_event021_adapter_package_id = event021_release_saved_adapter_package_id }
+			}
+			else = { clear_variable = independence_wave_event021_adapter_package_id }
+			clear_variable = event021_release_saved_adapter_package_id
+		}
+		set_variable = { random_civil_war_release_snapshot_status = event021_release_live_status }
+		if = {
+			limit = {
+				OR = {
+					AND = {
+						check_variable = { var = event021_release_live_status value = constant:event021_release_query_status.dormant_birth compare = equals }
+						check_variable = { var = event021_release_native_status value = constant:event021_release_query_status.matched compare = equals }
+					}
+					AND = {
+						check_variable = { var = event021_release_live_status value = constant:event021_release_query_status.living_reuse compare = equals }
+						check_variable = { var = event021_release_registered_status value = constant:event021_release_query_status.matched compare = equals }
+					}
+				}
+			}
+			set_variable = { random_civil_war_release_disposition = event021_release_live_status }
+			set_variable = { random_civil_war_release_carrier_scope = event_target:event021_release_carrier_blueprint }
+			set_variable = { random_civil_war_release_recipient_scope = event_target:event021_release_carrier_blueprint }
+			set_variable = { random_civil_war_release_snapshot_status = constant:event021_release_query_status.matched }
+			if = {
+				limit = { check_variable = { var = event021_release_live_status value = constant:event021_release_query_status.living_reuse compare = equals } }
+				set_variable = { random_civil_war_release_recipient_scope = event_target:event021_release_live_carrier }
+				var:random_civil_war_release_recipient_scope = {
+					every_owned_state = {
+						event_target:event021_release_snapshot_owner = { add_to_array = { array = random_civil_war_release_recipient_baseline_states value = PREV } }
+					}
+				}
+			}
+			for_each_scope_loop = {
+				array = event021_release_native_states
+				event_target:event021_release_snapshot_owner = {
+					add_to_array = { array = random_civil_war_release_native_states value = PREV }
+					add_to_array = { array = random_civil_war_release_transfer_states value = PREV }
+				}
+			}
+			for_each_scope_loop = {
+				array = event021_release_registered_states
+				if = {
+					limit = { NOT = { is_in_array = { array = event_target:event021_release_snapshot_owner.random_civil_war_release_transfer_states value = THIS } } }
+					event_target:event021_release_snapshot_owner = { add_to_array = { array = random_civil_war_release_transfer_states value = PREV } }
+				}
+			}
+			for_each_scope_loop = {
+				array = random_civil_war_release_authorized_states
+				if = {
+					limit = {
+						is_owned_by = event_target:event021_release_footprint_source
+						NOT = { is_in_array = { array = event_target:event021_release_snapshot_owner.random_civil_war_release_transfer_states value = THIS } }
+					}
+					event_target:event021_release_snapshot_owner = { add_to_array = { array = random_civil_war_release_transfer_states value = PREV } }
+				}
+				else_if = {
+					limit = { NOT = { is_owned_by = event_target:event021_release_footprint_source } }
+					if = {
+						limit = {
+							NOT = {
+								AND = {
+								event_target:event021_release_snapshot_owner = {
+									check_variable = { var = random_civil_war_release_disposition value = constant:event021_release_query_status.living_reuse compare = equals }
+									has_variable = random_civil_war_release_recipient_scope
+								}
+								is_owned_by = event_target:event021_release_snapshot_owner.random_civil_war_release_recipient_scope
+								}
+							}
+						}
+						event_target:event021_release_snapshot_owner = { set_variable = { random_civil_war_release_snapshot_status = constant:event021_release_query_status.invalid_source } }
+					}
+				}
+			}
+			var:random_civil_war_event6_anchor_state = {
+				if = {
+					limit = {
+						is_owned_by = event_target:event021_release_footprint_source
+						is_controlled_by = event_target:event021_release_footprint_source
+					}
+					if = {
+						limit = { NOT = { is_in_array = { array = event_target:event021_release_snapshot_owner.random_civil_war_release_transfer_states value = THIS } } }
+						event_target:event021_release_snapshot_owner = { add_to_array = { array = random_civil_war_release_transfer_states value = PREV } }
+					}
+				}
+				else = { event_target:event021_release_snapshot_owner = { set_variable = { random_civil_war_release_snapshot_status = constant:event021_release_query_status.invalid_source } } }
+			}
+			for_each_scope_loop = {
+				array = random_civil_war_release_transfer_states
+				owner = { event_target:event021_release_snapshot_owner = { add_to_array = { array = random_civil_war_release_previous_owners value = PREV } } }
+				controller = { event_target:event021_release_snapshot_owner = { add_to_array = { array = random_civil_war_release_previous_controllers value = PREV } } }
+				if = {
+					limit = { is_core_of = event_target:event021_release_footprint_source }
+					event_target:event021_release_snapshot_owner = { add_to_array = { array = random_civil_war_release_source_core_states value = PREV } }
+				}
+				if = {
+					limit = { is_core_of = event_target:event021_release_snapshot_owner.random_civil_war_release_recipient_scope }
+					event_target:event021_release_snapshot_owner = { add_to_array = { array = random_civil_war_release_recipient_core_states value = PREV } }
+				}
+			}
+			if = {
+				limit = {
+					check_variable = { var = random_civil_war_release_snapshot_status value = constant:event021_release_query_status.matched compare = equals }
+					check_variable = { var = random_civil_war_release_transfer_states^num value = constant:random_civil_war_value.zero compare = greater_than }
+					check_variable = { var = random_civil_war_release_previous_owners^num value = random_civil_war_release_transfer_states^num compare = equals }
+					check_variable = { var = random_civil_war_release_previous_controllers^num value = random_civil_war_release_transfer_states^num compare = equals }
+				}
+				set_country_flag = random_civil_war_release_snapshot_ready
+			}
+			else_if = {
+				limit = { check_variable = { var = random_civil_war_release_snapshot_status value = constant:event021_release_query_status.matched compare = equals } }
+				set_variable = { random_civil_war_release_snapshot_status = constant:event021_release_query_status.snapshot_incomplete }
+			}
+		}
+	}
+}
+# COUNTRY scope on the snapshot owner. Caller owns the reached-state array and
+# count before this helper; normal owner inputs identify the exact source and T.
+# The owner's private exclusion flag selects baseline or post-transfer search.
+# Scope iteration witnesses avoid the 1,000-iteration numeric-loop truncation.
+event021_parent_measure_registered_release_remnant = {
+	clear_temp_array = event021_release_remnant_states
+	set_temp_variable = { event021_release_remnant_count = constant:random_civil_war_value.zero }
+	set_temp_variable = { event021_release_remnant_growth = constant:random_civil_war_value.zero }
+	var:random_civil_war_release_source_scope = {
+		every_owned_state = { clr_state_flag = event021_release_remnant_reach }
+		capital_scope = {
+			if = {
+				limit = {
+					is_controlled_by = event_target:event021_release_footprint_source
+					is_owned_by = event_target:event021_release_footprint_source
+					OR = {
+						event_target:event021_release_snapshot_owner = { NOT = { has_country_flag = event021_release_remnant_exclusion_active } }
+						NOT = { is_in_array = { array = event_target:event021_release_snapshot_owner.random_civil_war_release_transfer_states value = THIS } }
+					}
+				}
+				set_state_flag = event021_release_remnant_reach
+				add_to_temp_array = { array = event021_release_remnant_states value = THIS }
+				set_temp_variable = { event021_release_remnant_growth = constant:random_civil_war_value.one }
+			}
+		}
+		every_owned_state = {
+			if = {
+				limit = { check_variable = { var = event021_release_remnant_growth value = constant:random_civil_war_value.zero compare = greater_than } }
+				set_temp_variable = { event021_release_remnant_growth = constant:random_civil_war_value.zero }
+				event_target:event021_release_footprint_source = {
+					every_owned_state = {
+						limit = {
+							NOT = { has_state_flag = event021_release_remnant_reach }
+							is_controlled_by = event_target:event021_release_footprint_source
+							OR = {
+								event_target:event021_release_snapshot_owner = { NOT = { has_country_flag = event021_release_remnant_exclusion_active } }
+								NOT = { is_in_array = { array = event_target:event021_release_snapshot_owner.random_civil_war_release_transfer_states value = THIS } }
+							}
+							any_neighbor_state = { has_state_flag = event021_release_remnant_reach }
+						}
+						set_state_flag = event021_release_remnant_reach
+						add_to_temp_array = { array = event021_release_remnant_states value = THIS }
+						add_to_temp_variable = { event021_release_remnant_growth = constant:random_civil_war_value.one }
+					}
+				}
+			}
+		}
+	}
+	set_temp_variable = { event021_release_remnant_count = event021_release_remnant_states^num }
+	for_each_scope_loop = { array = event021_release_remnant_states clr_state_flag = event021_release_remnant_reach }
+}
+
+# COUNTRY scope on the journal owner. Territory-only proof, not release/resource
+# authorization. Occupation with an unproved recipient/controller relationship
+# is rejected individually without omitting any state from the native footprint.
+event021_parent_validate_registered_release_territory = {
+	clr_country_flag = random_civil_war_release_territory_ready
+	clr_country_flag = event021_release_remnant_exclusion_active
+	if = {
+		limit = { has_country_flag = random_civil_war_release_snapshot_ready }
+		save_event_target_as = event021_release_snapshot_owner
+		var:random_civil_war_release_source_scope = { save_event_target_as = event021_release_footprint_source }
+		set_temp_variable = { event021_release_territory_status = constant:event021_release_query_status.matched }
+		for_each_scope_loop = {
+			array = random_civil_war_release_transfer_states
+			if = {
+				limit = {
+					OR = {
+						NOT = { is_owned_by = event_target:event021_release_footprint_source }
+						NOT = { is_controlled_by = event_target:event021_release_footprint_source }
+						has_state_flag = random_civil_war_opening_transfer_state
+						has_state_flag = random_civil_war_secondary_transfer_state
+						is_in_array = { array = global.random_civil_war_reserved_states value = THIS }
+						is_in_array = { array = global.random_civil_war_scenario_reserved_states value = THIS }
+						is_in_array = { array = event021_parent_dynamic_optional_front_selected_states value = THIS }
+					}
+				}
+				set_temp_variable = { event021_release_territory_status = constant:event021_release_query_status.invalid_source }
+			}
+		}
+		clear_temp_array = event021_release_remnant_states
+		clear_temp_array = event021_release_remnant_baseline_states
+		set_temp_variable = { event021_release_remnant_count = constant:random_civil_war_value.zero }
+		event021_parent_measure_registered_release_remnant = yes
+		set_temp_variable = { event021_release_expected_remnant = event021_release_remnant_count }
+		for_each_scope_loop = { array = event021_release_remnant_states add_to_temp_array = { array = event021_release_remnant_baseline_states value = THIS } }
+		for_each_scope_loop = {
+			array = random_civil_war_release_transfer_states
+			if = { limit = { is_in_array = { array = event021_release_remnant_baseline_states value = THIS } } subtract_from_temp_variable = { event021_release_expected_remnant = constant:random_civil_war_value.one } }
+		}
+		set_country_flag = event021_release_remnant_exclusion_active
+		event021_parent_measure_registered_release_remnant = yes
+		clr_country_flag = event021_release_remnant_exclusion_active
+		set_temp_variable = { event021_release_remnant_factories = constant:random_civil_war_value.zero }
+		set_temp_variable = { event021_release_remnant_population_k = constant:random_civil_war_value.zero }
+		set_temp_variable = { event021_release_remnant_supply_states = constant:random_civil_war_value.zero }
+		for_each_scope_loop = {
+			array = event021_release_remnant_states
+			add_to_temp_variable = { event021_release_remnant_factories = building_level@industrial_complex }
+			add_to_temp_variable = { event021_release_remnant_factories = building_level@arms_factory }
+			add_to_temp_variable = { event021_release_remnant_factories = building_level@dockyard }
+			add_to_temp_variable = { event021_release_remnant_population_k = state_population_k }
+			if = { limit = { OR = { supply_node > constant:random_civil_war_value.zero infrastructure > constant:random_civil_war_value.zero } } add_to_temp_variable = { event021_release_remnant_supply_states = constant:random_civil_war_value.one } }
+		}
+		if = {
+			limit = {
+				check_variable = { var = event021_release_territory_status value = constant:event021_release_query_status.matched compare = equals }
+				check_variable = { var = event021_release_remnant_count value = event021_release_expected_remnant compare = equals }
+				check_variable = { var = event021_release_remnant_count value = constant:random_civil_war_capacity.minimum_remnant_states compare = greater_than_or_equals }
+				check_variable = { var = event021_release_remnant_factories value = constant:random_civil_war_value.zero compare = greater_than }
+				check_variable = { var = event021_release_remnant_population_k value = constant:event021_parent_tuning.minimum_state_population_k compare = greater_than }
+				check_variable = { var = event021_release_remnant_supply_states value = constant:random_civil_war_value.zero compare = greater_than }
+			}
+			set_country_flag = random_civil_war_release_territory_ready
+		}
+		clear_temp_array = event021_release_remnant_states
+		clear_temp_array = event021_release_remnant_baseline_states
+	}
+}
