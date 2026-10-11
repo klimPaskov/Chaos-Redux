@@ -26,8 +26,14 @@ This skill owns the image-generation route for the whole repository. Claude Code
 
 - Make one image per call. Existing output paths are auto-versioned, so name the final `out` path explicitly and use the path the tool reports.
 - State each reference image's role in the prompt, for example "Image 1 is the vanilla style reference, Image 2 the subject to keep".
-- For alpha-backed families, request a genuinely transparent background in the prompt. The tool has no explicit alpha parameter, so verify the alpha channel of the saved PNG, and fall back to the documented [background-removal fallback](#native-transparency-and-background-removal-fallback) only when the saved PNG has no usable alpha.
+- For alpha-backed families, request a genuinely transparent background in the prompt and set `transparent_background = true` with Codex native ImageGen; the gptimage MCP route has no explicit alpha parameter. Verify the alpha channel of the saved PNG, and fall back to the documented [background-removal fallback](#native-transparency-and-background-removal-fallback) only when the saved PNG has no usable alpha.
 - When a call fails, check authentication with `image_auth_status` before retrying.
+
+When Codex native `image_gen__imagegen` returns `result.image_url` as a `data:image/png;base64,...` URL without a local path, save the returned bytes before processing.
+In `functions.exec`, retain the result with `store()` and recover it with `load()` if needed; extract only the payload after the data-URL prefix and pass it directly to `tools.apply_patch` to create a uniquely named ignored `<job>/source_png/<candidate>.b64` file.
+Never print the payload with `text()` or `notify()`, or embed it in an `exec_command` argument: image-sized arguments exceed Windows command-length limits.
+Then invoke Python through `tools.exec_command` with only local paths, read the payload file, and use `base64.b64decode` to write a new source PNG without overwriting an existing candidate.
+Verify the PNG with an image decoder, record its SHA-256 in the candidate lineage, and preserve it unchanged; crops, resizing, and alpha repairs belong in separate processed files.
 
 ## Scope and routing
 
