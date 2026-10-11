@@ -5,7 +5,20 @@ The pinned server is installed and project configuration is present but disabled
 The adapter deliberately refuses memory reads, native calls, and event execution on that binary.
 Do not remove this check, substitute the installed build ID for the expected one, change the shared game without explicit authorization and its exclusive lease, or interpret upstream `doctor` reporting `ready` as build compatibility.
 
-## 1.19.3 table-port attempt (2026-10-11)
+## Current 1.19.3 port status (2026-10-11)
+
+The installed Linux game remains on ELF build `a4971c9e8ac9a6f2487dea109e01f9839ee59db7`, SHA-256 `56fc2945cdbf2475a316db3285eb3458ae5d577db149db6dfdba6f004de3a88a`.
+Upstream remains at `97c85437081904d5ad07bae1623ec58d1c0a5b9e`; it has no 1.19.3 branch or issue describing support.
+The offline port has verified the target RTTI, function-boundary and command-table candidates, including 358/358 command addresses and 357/358 command sizes; `CReadyAfterHotJoinCommand` size remains unresolved, and `CDisengageFromNavalCombatCommand` has a target field-layout change.
+Target evidence also identifies a `CCountry` serializer at `0xd1a660`, the CGameState root at `0x44086a8`, country lookup at `0xd784a0`, and the `CDeclareWarAction` / `CGenerateWarGoalAction` constructors at `0xa50fa0` / `0xa57600`.
+Those findings do not constitute a complete 1.19.3 runtime table: console dispatch, the variable resolver, several state getters and globals, and other call surfaces remain unresolved.
+The 1.19.2 build gate is unchanged and continues to refuse this ELF before memory access; no native call, attach, screenshot, event, or register/thread-recovery test was made.
+The current derivation and evidence are in `/home/klim/tools/Clausewitz-MCP-ports/1.19.3/PORT_STATUS.md`.
+
+Clausewitz-MCP is preferred for the Linux process only when its exact ELF build has a reviewed table and this job holds the WSL lease.
+HOI4 Live Tools is the fallback only when it reaches that same Linux process; a Windows session does not verify Linux gameplay.
+
+## Initial 1.19.3 blocker snapshot (2026-10-11; historical)
 
 Upstream has no 1.19.3 support: `origin/main` still points to `97c85437081904d5ad07bae1623ec58d1c0a5b9e`, the only advertised branch is `main`, and the public issues endpoint returned an empty list.
 The installed Linux executable is ELF build `a4971c9e8ac9a6f2487dea109e01f9839ee59db7` with SHA-256 `56fc2945cdbf2475a316db3285eb3458ae5d577db149db6dfdba6f004de3a88a`.
@@ -33,9 +46,11 @@ Clausewitz-MCP is the preferred live interface on Linux only after the exact ELF
 HOI4 Live Tools is the fallback when it is connected to the intended game; results from another OS installation do not validate the Linux process.
 For the current 1.19.3 ELF, Clausewitz remains blocked and no state reads or captures should be attributed to it.
 
-## In-place downgrade availability check (2026-10-11)
+## In-place downgrade availability check (2026-10-11; superseded)
 
-The user authorized replacing the existing `/home/klim/games/hoi4` installation with 1.19.2, superseding the earlier side-by-side request.
+This historical branch and downgrade plan is withdrawn by the current direction: keep the single Linux install at 1.19.3 and do not download the 1.19.2 depot or downgrade the game.
+
+Historical direction: a prior user instruction temporarily authorized replacing the existing `/home/klim/games/hoi4` installation with 1.19.2.
 **The downgrade is incomplete because Steam does not expose the requested branch to the cached account.**
 The metadata-only command below logged in successfully without a password or Steam Guard prompt and exited successfully:
 
@@ -97,21 +112,7 @@ Game-download disk use was zero; the retained Steam response is 188,037 bytes, e
 C: had 56.652 GiB free before the metadata request and 30.579 GiB at the post-query check; concurrent shared-disk activity means that difference is not attributable to this metadata-only task.
 The existing app manifest reports 6,816,192,348 bytes installed.
 
-To resume, an accessible Steam branch delivering the required ELF must first be available.
-Then coordinate the board, wait for a free lease and no `hoi4` process, acquire the lease exclusively, back up the Linux settings and mod symlinks without following them, and recheck disk headroom before an in-place `app_update 394360 -beta <verified-branch> validate`.
-Preserve the selected beta in the Steam app manifest and explicitly include the same `-beta` on future SteamCMD maintenance commands; do not claim a pin before checking the saved branch.
-Retain at least 15 GiB free and verify the executable's ELF ID before any attach-mode launch.
-
-No return to 1.19.3 is necessary: it is still installed.
-For a future rollback after a successful downgrade, use the same exclusive-lease, no-running-game, backup, disk, and cached-login checks with:
-
-```bash
-/usr/games/steamcmd +@sSteamCmdForcePlatformType linux +force_install_dir /home/klim/games/hoi4 +login klimpaskov +app_update 394360 -beta public validate +quit
-```
-
-This selects the current public release, which was Steam build 25205862 at this check; it does not guarantee 1.19.3 after the public branch changes.
-Re-query branch metadata and verify the installed build before calling that a 1.19.3 rollback.
-There were no substitutions or gameplay simplifications; installation, branch pinning, and all requested live verification remain unperformed because the requested branch is unavailable.
+This section is retained as a historical branch-availability record only. Its earlier in-place update and rollback proposals are withdrawn and must not be executed.
 
 ## Installation and ownership
 
