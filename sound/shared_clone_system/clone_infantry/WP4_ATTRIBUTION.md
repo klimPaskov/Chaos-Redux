@@ -62,3 +62,18 @@ The selected attack pool has two takes and the wounded pool has three, both prev
 Original takes, entity events, cue volumes and playback-rate ranges are unchanged.
 Source/context waveforms, exact recipes and candidate checks are in the Clone job `evidence/wp4_audio_takeover/voice_variants/review_packet.json`; installed binding checks are in `integration_receipt.json` there.
 No sound was downloaded, synthesized or recorded by the agent; no auditory, spoken-content or live playback acceptance is claimed.
+
+`clone_infantry_death_02.wav` uses the distinct recorded death/pain event from the original CC0 source by thebardofblasphemy.
+Source `docs/assets/shared_clone_system/models_3d/clone_infantry/audio/evidence/originals/death_pain_grunts.wav`, SHA-256 `3f00fba827f20ff9ccea1bc07d2c21ab8d3a36e81b48a6005cf8459f02779586`, source window 20.318004535-22.500000000s.
+Processing preserves the complete documented envelope with 10 ms entry and 20 ms release fades, 30 Hz high-pass, level matched to -7.667008 dBFS, mono PCM16/44.1kHz.
+Installed duration 2.181995s; lead 19.954649ms; candidate SHA-256 `0526962a0c247dd6a65a9a8792bfb161ccb35c1470e2a3179b19bbeed567ddf3`.
+
+`clone_infantry_death_03.wav` uses the distinct recorded death/pain event from the original CC0 source by thebardofblasphemy.
+Source `docs/assets/shared_clone_system/models_3d/clone_infantry/audio/evidence/originals/death_pain_grunts.wav`, SHA-256 `3f00fba827f20ff9ccea1bc07d2c21ab8d3a36e81b48a6005cf8459f02779586`, source window 23.844988662-25.950000000s.
+Processing preserves the complete documented envelope with 10 ms entry and 20 ms release fades, 30 Hz high-pass, level matched to -7.667008 dBFS, mono PCM16/44.1kHz.
+Installed duration 2.105011s; lead 14.965986ms; candidate SHA-256 `c3e02ca7220df6f99263ee7feaccfffdc2d79d2e23c512fd2650f57a866eaa74`.
+
+The death cue has three distinct source-event choices from the existing CC0 voice recording, with the captured -7.667 dBFS role level, existing single one-shot death event and immediate-repetition prevention preserved.
+The chosen excerpts are disjoint from the installed 0.506-1.893s event and from each other. An initially selected pair with 29.932ms leading silence remains rejected evidence; the retained pair passes the unchanged 20ms gate.
+Exact source windows, recipes, levels and waveform/context evidence are in the Clone job `evidence/wp4_audio_takeover/death_variants/`.
+No audio was downloaded, synthesized or recorded; no auditory, spoken-content or live playback acceptance is claimed.
