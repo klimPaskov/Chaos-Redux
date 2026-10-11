@@ -195,20 +195,22 @@ black_plague_rat_king_restoration_can_start = {
 	NOT = { has_global_flag = black_plague_terminal_takeover_active }
 	NOT = { has_country_flag = black_plague_rat_country_retired }
 	NOT = { has_country_flag = black_plague_rat_king_restoration_cooldown }
-	check_variable = {
-		var = black_plague_rat_brood_mass
-		value = constant:black_plague_rat_decision.king_restoration_mass_cost
-		compare = greater_than_or_equals
-	}
-	check_variable = {
-		var = black_plague_rat_sentience
-		value = constant:black_plague_rat_decision.king_restoration_sentience_gate
-		compare = greater_than_or_equals
-	}
-	check_variable = {
-		var = black_plague_rat_coherence
-		value = constant:black_plague_rat_decision.king_restoration_cohesion_gate
-		compare = greater_than_or_equals
+	hidden_trigger = {
+		check_variable = {
+			var = black_plague_rat_brood_mass
+			value = constant:black_plague_rat_decision.king_restoration_mass_cost
+			compare = greater_than_or_equals
+		}
+		check_variable = {
+			var = black_plague_rat_sentience
+			value = constant:black_plague_rat_decision.king_restoration_sentience_gate
+			compare = greater_than_or_equals
+		}
+		check_variable = {
+			var = black_plague_rat_coherence
+			value = constant:black_plague_rat_decision.king_restoration_cohesion_gate
+			compare = greater_than_or_equals
+		}
 	}
 	num_of_controlled_states > 1
 	any_state = {
@@ -234,11 +236,13 @@ black_plague_rat_country_is_nonhuman_army = {
 }
 
 black_plague_rat_country_has_brood_mass = {
-	has_variable = black_plague_rat_brood_mass
-	check_variable = {
-		var = black_plague_rat_brood_mass
-		value = constant:black_plague_rat_pool.brood_mass_raise_cost
-		compare = greater_than_or_equals
+	hidden_trigger = {
+		has_variable = black_plague_rat_brood_mass
+		check_variable = {
+			var = black_plague_rat_brood_mass
+			value = constant:black_plague_rat_pool.brood_mass_raise_cost
+			compare = greater_than_or_equals
+		}
 	}
 }
 
@@ -337,10 +341,13 @@ black_plague_rat_country_can_raise_brood = {
 	black_plague_rat_country_is_nonhuman_army = yes
 	black_plague_rat_country_has_brood_mass = yes
 	NOT = { has_country_flag = black_plague_rat_reinforcement_cooldown }
-	check_variable = {
-		var = black_plague_rat_division_count
-		value = black_plague_rat_division_cap
-		compare = less_than
+	custom_trigger_tooltip = {
+		tooltip = black_plague_rat_force_ceiling_room_tt
+		check_variable = {
+			var = black_plague_rat_division_count
+			value = black_plague_rat_division_cap
+			compare = less_than
+		}
 	}
 }
 
@@ -350,10 +357,13 @@ black_plague_rat_country_can_raise_brood = {
 black_plague_rat_country_can_strip_outer_districts = {
 	black_plague_rat_country_is_active = yes
 	NOT = { has_country_flag = black_plague_rat_feeding_cooldown }
-	check_variable = {
-		var = black_plague_rat_hunger
-		value = constant:black_plague_rat_decision.feeding_hunger_threshold
-		compare = greater_than_or_equals
+	custom_trigger_tooltip = {
+		tooltip = black_plague_rat_hunger_high_tt
+		check_variable = {
+			var = black_plague_rat_hunger
+			value = constant:black_plague_rat_decision.feeding_hunger_threshold
+			compare = greater_than_or_equals
+		}
 	}
 	any_owned_state = { black_plague_rat_state_can_strip_outer_districts = yes }
 }
@@ -395,35 +405,44 @@ black_plague_rat_state_can_follow_refugee_road = {
 black_plague_rat_country_can_concentrate_brood = {
 	black_plague_rat_country_is_active = yes
 	NOT = { has_country_flag = black_plague_rat_concentrate_brood_cooldown }
-	check_variable = {
-		var = black_plague_rat_brood_mass
-		value = constant:black_plague_rat_decision.concentrate_brood_mass_cost
-		compare = greater_than_or_equals
+	hidden_trigger = {
+		check_variable = {
+			var = black_plague_rat_brood_mass
+			value = constant:black_plague_rat_decision.concentrate_brood_mass_cost
+			compare = greater_than_or_equals
+		}
 	}
 }
 
 black_plague_rat_country_can_scatter_brood = {
 	black_plague_rat_country_is_active = yes
 	NOT = { has_country_flag = black_plague_rat_scatter_brood_cooldown }
-	check_variable = {
-		var = black_plague_rat_brood_mass
-		value = constant:black_plague_rat_decision.scatter_brood_mass_cost
-		compare = greater_than_or_equals
+	hidden_trigger = {
+		check_variable = {
+			var = black_plague_rat_brood_mass
+			value = constant:black_plague_rat_decision.scatter_brood_mass_cost
+			compare = greater_than_or_equals
+		}
 	}
-	check_variable = {
-		var = black_plague_rat_coherence
-		value = constant:black_plague_rat_decision.scatter_brood_coherence_threshold
-		compare = less_than
+	custom_trigger_tooltip = {
+		tooltip = black_plague_rat_coherence_low_tt
+		check_variable = {
+			var = black_plague_rat_coherence
+			value = constant:black_plague_rat_decision.scatter_brood_coherence_threshold
+			compare = less_than
+		}
 	}
 }
 
 black_plague_rat_country_can_devour_rival = {
 	black_plague_rat_country_is_active = yes
 	NOT = { has_country_flag = black_plague_rat_devour_rival_cooldown }
-	check_variable = {
-		var = black_plague_rat_brood_mass
-		value = constant:black_plague_rat_decision.devour_rival_mass_cost
-		compare = greater_than_or_equals
+	hidden_trigger = {
+		check_variable = {
+			var = black_plague_rat_brood_mass
+			value = constant:black_plague_rat_decision.devour_rival_mass_cost
+			compare = greater_than_or_equals
+		}
 	}
 	black_plague_rat_can_absorb_adjacent_brood = yes
 }
@@ -434,10 +453,12 @@ black_plague_rat_country_can_distribute_the_nests = {
 	black_plague_rat_country_is_active = yes
 	black_plague_rat_hierarchy_is_distributed = yes
 	NOT = { has_country_flag = black_plague_rat_distributed_nests_cooldown }
-	check_variable = {
-		var = black_plague_rat_brood_mass
-		value = constant:black_plague_rat_decision.distributed_nests_mass_cost
-		compare = greater_than_or_equals
+	hidden_trigger = {
+		check_variable = {
+			var = black_plague_rat_brood_mass
+			value = constant:black_plague_rat_decision.distributed_nests_mass_cost
+			compare = greater_than_or_equals
+		}
 	}
 	num_of_controlled_states > constant:black_plague_value.one
 }
@@ -446,15 +467,17 @@ black_plague_rat_country_can_seat_the_alpha = {
 	black_plague_rat_country_is_active = yes
 	black_plague_rat_hierarchy_is_dominant = yes
 	NOT = { has_country_flag = black_plague_rat_dominant_alpha_cooldown }
-	check_variable = {
-		var = black_plague_rat_brood_mass
-		value = constant:black_plague_rat_decision.dominant_alpha_mass_cost
-		compare = greater_than_or_equals
-	}
-	check_variable = {
-		var = black_plague_rat_coherence
-		value = constant:black_plague_rat_pool.coherence_low_threshold
-		compare = greater_than_or_equals
+	hidden_trigger = {
+		check_variable = {
+			var = black_plague_rat_brood_mass
+			value = constant:black_plague_rat_decision.dominant_alpha_mass_cost
+			compare = greater_than_or_equals
+		}
+		check_variable = {
+			var = black_plague_rat_coherence
+			value = constant:black_plague_rat_pool.coherence_low_threshold
+			compare = greater_than_or_equals
+		}
 	}
 }
 
@@ -477,10 +500,12 @@ black_plague_rat_country_can_decode_route_memory = {
 	black_plague_rat_country_is_active = yes
 	black_plague_rat_hierarchy_is_emergent = yes
 	NOT = { has_country_flag = black_plague_rat_route_memory_cooldown }
-	check_variable = {
-		var = black_plague_rat_brood_mass
-		value = constant:black_plague_rat_decision.emergent_route_memory_mass_cost
-		compare = greater_than_or_equals
+	hidden_trigger = {
+		check_variable = {
+			var = black_plague_rat_brood_mass
+			value = constant:black_plague_rat_decision.emergent_route_memory_mass_cost
+			compare = greater_than_or_equals
+		}
 	}
 	any_state = { black_plague_rat_state_can_decode_route_memory = yes }
 }
@@ -493,12 +518,15 @@ black_plague_rat_state_can_resist_absorption = {
 	black_plague_state_is_rat_controlled = yes
 	CONTROLLER = { black_plague_rat_country_is_active = yes }
 	NOT = { has_state_flag = black_plague_rat_resist_absorption }
-	any_neighbor_state = {
-		black_plague_rat_state_is_valid_merger_state = yes
-		check_variable = {
-			var = black_plague_rat_brood_strength
-			value = PREV.black_plague_rat_brood_strength
-			compare = greater_than
+	custom_trigger_tooltip = {
+		tooltip = black_plague_rat_state_can_resist_absorption_tt
+		any_neighbor_state = {
+			black_plague_rat_state_is_valid_merger_state = yes
+			check_variable = {
+				var = black_plague_rat_brood_strength
+				value = PREV.black_plague_rat_brood_strength
+				compare = greater_than
+			}
 		}
 	}
 }
@@ -608,20 +636,25 @@ black_plague_rat_can_absorb_adjacent_brood = {
 	black_plague_rat_merger_cooldown_ready = yes
 	has_country_flag = black_plague_rat_dominance_ready
 	NOT = { has_country_flag = black_plague_rat_merger_lock }
-	check_variable = {
-		var = black_plague_rat_brood_mass
-		value = constant:black_plague_rat_decision.merger_mass_cost
-		compare = greater_than_or_equals
+	hidden_trigger = {
+		check_variable = {
+			var = black_plague_rat_brood_mass
+			value = constant:black_plague_rat_decision.merger_mass_cost
+			compare = greater_than_or_equals
+		}
 	}
-	any_owned_state = {
-		black_plague_state_is_rat_controlled = yes
-		NOT = { has_state_flag = black_plague_rat_brood_absorbed }
-		any_neighbor_state = {
-			black_plague_rat_state_is_valid_merger_state = yes
-			check_variable = {
-				var = black_plague_rat_brood_strength
-				value = PREV.black_plague_rat_brood_strength
-				compare = less_than
+	custom_trigger_tooltip = {
+		tooltip = black_plague_rat_can_absorb_adjacent_brood_target_tt
+		any_owned_state = {
+			black_plague_state_is_rat_controlled = yes
+			NOT = { has_state_flag = black_plague_rat_brood_absorbed }
+			any_neighbor_state = {
+				black_plague_rat_state_is_valid_merger_state = yes
+				check_variable = {
+					var = black_plague_rat_brood_strength
+					value = PREV.black_plague_rat_brood_strength
+					compare = less_than
+				}
 			}
 		}
 	}
