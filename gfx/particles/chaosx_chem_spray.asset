@@ -2,6 +2,57 @@
 # vanilla flamethrower jet and smoke systems (soft alpha-blended cloud sprites instead of additive flame).
 # Registered in gfx/entities/chaosx_chem_spray_particles.gfx; emitted from a unit's nozzle locator.
 
+# A braced short discharge uses its own finite emitter; its 0.61-second emission
+# and 0.35-second particle life finish before the next one-second-spaced burst.
+particle={
+	name="chaosx_chem_spray_burst_file"
+	subsystem={
+		name="jet"
+		max_amount=60
+		slave_particles=0
+		emitter_type="point"
+		invert=no
+		trail=no
+		local_space=no
+		billboard=yes
+		hide=no
+		texture={
+			file="gfx/particles/gradient_circle2.dds"
+			x=1
+			y=1
+			shader="ParticleAlphaBlend"
+		}
+		color={
+			x=196.000
+			y=214.000
+			z=96.000
+			alpha=210.000,burst_fade
+		}
+		position={ x=0.000 y=0.000 z=0.000 }
+		duration=0.610
+		emitter_yaw={ 0.000 0.000 }
+		emitter_pitch={ 0.000 0.000 }
+		velocity_pitch={ 90.000 5.000 }
+		velocity_yaw={ 0.000 5.000 }
+		velocity={ 4.000 0.050 }
+		life=0.350
+		emission=100.000
+		size=0.250
+		rotation={ 0.000 180.000 }
+	}
+	animation={
+		name="burst_fade"
+		start=0.000
+		duration=1.000
+		repeat=no
+		minValue=0.000
+		maxValue=1.000
+		curve={ 0.000 0.000 0.100 1.000 0.700 1.000 1.000 0.000 }
+		op="MUL"
+		time="life"
+	}
+}
+
 particle={
 	name="chaosx_chem_spray_file"
 	subsystem={
@@ -38,7 +89,7 @@ particle={
 		emitter_pitch={ 0.000 0.000 }
 		velocity_pitch={ 90.000 0.000 }
 		velocity_yaw={ 0.000 0.000 }
-		velocity={ 1.000 0.000 }
+		velocity={ 4.000 0.000 }
 		life=0.500
 		emission=10.000
 		size={ 1.000,glow_scale 1.000 }
@@ -75,11 +126,11 @@ particle={
 		}
 		duration=3.000
 		emission_pulse_silence=5.000
-		emitter_yaw={ 25.000 0.000 }
+		emitter_yaw={ 0.000 0.000 }
 		emitter_pitch={ 0.000 0.000 }
 		velocity_pitch={ 90.000 5.000 }
 		velocity_yaw={ 0.000 5.000 }
-		velocity=1.000
+		velocity=4.000
 		life={ 0.420 0.450 }
 		emission=100.000
 		size={ 0.500,glow_scale 0.500 }
@@ -116,13 +167,13 @@ particle={
 		}
 		duration=3.000
 		emission_pulse_silence=5.000
-		emitter_yaw={ 25.000 0.000 }
+		emitter_yaw={ 0.000 0.000 }
 		emitter_pitch={ 0.000 0.000 }
 		velocity_pitch={ 90.000 5.000 }
 		velocity_yaw={ 0.000 5.000 }
-		velocity={ 1.000 0.050 }
-		life={ 2.000 1.000 }
-		emission=90.000
+		velocity={ 4.000 0.050 }
+		life=1.500
+		emission=60.000
 		size={ 1.000,fire_size 0.500 }
 		rotation={ 0.000 180.000 }
 		rotation_speed={ -20.000 20.000 }
@@ -221,7 +272,7 @@ particle={
 		velocity_pitch={ 90.000 20.000 }
 		velocity_yaw={ 0.000 20.000 }
 		velocity={ 0.500 0.100 }
-		life={ 5.000 3.000 }
+		life=1.500
 		emission=5.000
 		size={ 5.000,smoke_spread 3.000 }
 		rotation={ 0.000 180.000 }
