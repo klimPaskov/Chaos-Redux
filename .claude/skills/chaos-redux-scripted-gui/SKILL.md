@@ -81,7 +81,7 @@ Use this checklist when designing the native mapping and reviewing baseline and 
 
 Distinguish the source texture canvas, the painted/alpha-visible shape, its designed usable interior, the logical GUI rectangle, the rendered glyph bounds, and the effective click region. Transparent padding, bevels, asymmetric ornaments, glyph bearings, borders, sprite frame dimensions, and parent transforms can make these differ. Measure the actual element after its scale, anchor/orientation, parent offsets, and frame selection; nominal texture width alone does not prove alignment.
 
-Children without explicit orientation inherit their container's orientation. In a `CENTER`-oriented root, background, title, or body elements intended to use local top-left coordinates need explicit `orientation = UPPER_LEFT` and, where supported by the element, `origo = UPPER_LEFT`. Before adapting source coordinates, verify native texture dimensions and the root's painted bounds, then distinguish `position` from the settled `show_position` when show/hide animation is present.
+A centered parent coordinate origin can shift children that lack explicit local anchors. For elements intended to use top-left local coordinates, declare `orientation = UPPER_LEFT` and, where supported by the element, `origo = UPPER_LEFT`, then verify native texture dimensions and the root's painted bounds before adapting source coordinates. Distinguish `position` from the settled `show_position` when show/hide animation is present.
 
 | Check | Acceptance evidence |
 | --- | --- |
