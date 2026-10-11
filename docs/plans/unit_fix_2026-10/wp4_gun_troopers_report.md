@@ -46,7 +46,11 @@ The decoded 24 FPS actions and existing `muzzle`/`cartridge` locators support th
 The single 0.45-second Lee-Enfield report is the reviewed CC0 source derivative, SHA-256 `42f23c496111944c41489a0d295750808777a216f3aa9dc48ae1170962746bfd`, with its source notice in `sound/shared_clone_system/clone_infantry/WP4_ATTRIBUTION.md`.
 This removes the missing defend effects and obsolete report/casing times while preserving the current mesh and actions.
 Aim/stock/elbow contacts, rifle/body materials, idle and transition repairs remain required; numerical event placement does not establish those pose requirements.
-Remaining voice, wound/death fade and landing-source work is tracked separately.
+The complete source-derived shout is 0.791859 seconds at -3 dBFS; wound and death fades retain their captured -6.677 and -7.667 dBFS peaks.
+The 0.9-second licensed body-fall cue is wired at 1.5 seconds from the preserved authored frame-37 marker at 24 FPS.
+The marker's selected death-action SHA-256 matches the installed action; this establishes source timing, not a fresh anatomical contact observation.
+Exact source, waveform, transformation, destination-hash and playback-rate evidence is retained in `docs/assets/shared_clone_system/models_3d/clone_infantry/evidence/wp4_audio_takeover/`.
+Spoken-word content and in-game playback were not audited through the unavailable audio-input route.
 Meshy credits spent on this source tranche: 0.
 
 ### Portal Raider
@@ -115,7 +119,7 @@ The implemented firing/audio tranche is documented in `wp4_firing_audio_tranche.
 | Master Assassin | Shares Cadre mesh/actions/events; oxblood dye retains its fragment atlas | Inherits corrected bursts, death pool and timing | Derive the oxblood diffuse after the Cadre rebake; verify occupied texels and inheritance |
 | Silent Guard | 6/6/3 flashes; no cartridge locator; low-contrast diffuse and coat deformation | 2/2/1 finite flashes with smoke and sourced burst/death audio | UV/body/SMG rebake, holes/winding, wool/leather/steel masks, deliberate skirt weights, low-ready idle and recoil |
 | Mechanized Assassin | Two reports per state against one continuous emitter; defend shorter than one vanilla take | One timed barrel flash/report per cycle; four shorter vanilla takes in defend; 1.36 s recorded destruction cue at 0.1 s | Hull/turret/wheel UV/material rebake, holes, scan/settle and traverse actions; optional engine loop |
-| Clone Infantry | No particles; silent defend; obsolete firing times; inherited simulated rifle cue | Flash/report at attack 0.75 s and support/defend 1 s; cartridge at 1.5833/1.8333 s; attack/support lead into defend; recorded 0.45 s rifle report | Aim/grip/shoulder pocket, entry/recovery and idle, rifle UV/normal/materials, sleeve values, remaining voice/impact/fades |
+| Clone Infantry | No particles; silent defend; obsolete firing times; inherited simulated rifle cue | Timed shots/casings and defend chaining; recorded rifle report, full source shout, level-preserving voice fades and frame-37 landing cue | Aim/grip/shoulder pocket, entry/recovery and idle, rifle UV/normal/materials, sleeve values and physical-contact review |
 | Portal Raider | Dark diffuse, weak normal detail, stale rejected-candidate docs and one-shot idle | Finite laser particles; exact-original electrical idle/guard loop with one audible source | Source-to-current-UV proof before grade/normal repack; recoil and second attack; low-ready idle; rifle normals; remaining ray/death edits |
 | Alien Infantry | Frozen idle, weak normals/flat pistol maps, one-shot vehicle hum and overlapping 1.2 s laser | Finite laser particles; the ticket's permitted removal of the one-shot hum | Body grade/normal and proper pistol UV/materials; breathing/scan/recoil; recorded laser/impact fixes |
 | Autonomous Robot | 22 flash/smoke/report emissions in attack/support, 8 in defend; 28 non-manifold edges; faceting/flat gun maps and long audio tails | Two finite gun emissions/cues per burst cycle; 2.6 s sustained and 0.6 s braced recorded bursts at volume 0.36/max two; 2 s wreck blast | Winding/topology/smooth normals and weapon material rebake; sensor/servo idle; short footfall and casing fades/tail fixes |
