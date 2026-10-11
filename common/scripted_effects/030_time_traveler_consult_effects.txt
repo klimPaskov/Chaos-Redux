@@ -250,8 +250,16 @@ time_traveler_offer_diplomatic = {
 					is_neighbor_of = event_target:time_traveler_scope_country
 					is_in_faction_with = event_target:time_traveler_scope_country
 				}
-				NOT = { has_opinion = { target = event_target:time_traveler_scope_country value > constant:time_traveler_objective.relation_ceiling } }
-				has_opinion = { target = event_target:time_traveler_scope_country value > constant:time_traveler_objective.relation_floor }
+				NOT = {
+					meta_trigger = {
+						text = { has_opinion = { target = event_target:time_traveler_scope_country value > [VALUE] } }
+						VALUE = "[?constant:time_traveler_objective.relation_ceiling|.0]"
+					}
+				}
+				meta_trigger = {
+					text = { has_opinion = { target = event_target:time_traveler_scope_country value > [VALUE] } }
+					VALUE = "[?constant:time_traveler_objective.relation_floor|.0]"
+				}
 			}
 			save_event_target_as = time_traveler_offer_target
 			set_temp_variable = { time_traveler_found = constant:time_traveler_value.one }
@@ -997,8 +1005,8 @@ time_traveler_reward_diplomatic = {
 			var:time_traveler_c_target = { exists = yes }
 			NOT = { has_country_flag = time_traveler_pact_goal }
 		}
-		add_opinion_modifier = { target = var:time_traveler_c_target modifier = time_traveler_goodwill }
-		reverse_add_opinion_modifier = { target = var:time_traveler_c_target modifier = time_traveler_goodwill }
+		var:time_traveler_c_target = { reverse_add_opinion_modifier = { target = PREV modifier = time_traveler_goodwill } }
+		var:time_traveler_c_target = { add_opinion_modifier = { target = PREV modifier = time_traveler_goodwill } }
 		if = {
 			limit = {
 				NOT = { check_variable = { time_traveler_reward_share < constant:time_traveler_value.one } }
@@ -1006,7 +1014,8 @@ time_traveler_reward_diplomatic = {
 				NOT = { has_non_aggression_pact_with = var:time_traveler_c_target }
 				NOT = { is_in_faction_with = var:time_traveler_c_target }
 			}
-			diplomatic_relation = { country = var:time_traveler_c_target relation = non_aggression_pact active = yes }
+			var:time_traveler_c_target = { save_event_target_as = time_traveler_reward_target }
+			diplomatic_relation = { country = event_target:time_traveler_reward_target relation = non_aggression_pact active = yes }
 		}
 	}
 }

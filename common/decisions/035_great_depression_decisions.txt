@@ -9,6 +9,8 @@
 
 # The AI hint field accepts a file-local literal rather than a script constant.
 @great_depression_ai_hint_pp_cost = 25
+# Mission priority rejects script constants; keep aligned with great_depression_event.bank_support_mission_priority.
+@great_depression_bank_support_mission_priority = 103
 
 great_depression_category = {
 
@@ -2899,7 +2901,7 @@ great_depression_category = {
 	# Completion is automatic only after the full interval and viable-bank proof.
 	great_depression_audit_viable_banks = {
 		icon = GFX_decision_mission_great_depression_halt_the_panic
-		priority = constant:great_depression_event.bank_support_mission_priority
+		priority = @great_depression_bank_support_mission_priority
 		activation = { great_depression_bank_audit_context_is_valid = yes }
 		available = { great_depression_bank_audit_objective_is_met = yes }
 		custom_cost_trigger = { always = yes }
@@ -2925,7 +2927,7 @@ great_depression_category = {
 
 	great_depression_certify_bank_recapitalization = {
 		icon = GFX_decision_mission_great_depression_prevent_a_relapse
-		priority = constant:great_depression_event.bank_support_mission_priority
+		priority = @great_depression_bank_support_mission_priority
 		activation = { great_depression_bank_recapitalization_context_is_valid = yes }
 		available = { great_depression_bank_recapitalization_objective_is_met = yes }
 		custom_cost_trigger = { always = yes }
