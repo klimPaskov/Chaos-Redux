@@ -1,86 +1,126 @@
-# WP4 Gun troopers - Delivery Report
+﻿# WP4 gun troopers repair report
 
-Disposition: `implemented` for this documentation handoff; package mesh/action reconstruction, visual acceptance, final entity wiring, and audio install remain open where the measurements below show gaps. The authorized package scope comes from the user-authored unit-fix plan, SHA-256 `1939b400cba160c6d4903e37952e8e55efdb1bfeacf0b4ab061e89c8792c79b2`.
+Status: incomplete.
 
-Package models: assassin_cadre, shadow_company, master_assassin, silent_guard, mechanized_assassin, clone_infantry, portal_raider, alien_infantry, autonomous_robot. The full per-model map, DDS, mesh, action, topology, reimport, and entity-lint evidence is in `docs/plans/unit_fix_2026-10/per_model_delivery_metrics.json`.
+## Takeover review, 11 October 2026
 
-## Shared delivery facts
+The user authorized finishing the stopped agent's WP4 work, preserving WP5/WP6 ownership, using existing licensed audio only, and committing each model separately.
+The current source review below supersedes older firing-tranche statements where explicitly identified; mesh, material, grip and action repairs remain separate open requirements.
 
-Across the shared pipeline, 119 unique active DDS targets are installed (41 diffuse, 39 normal, 39 specular), all 512x512 BC1/BC3 with ten mips. This package references 32 unique DDS paths (12 diffuse, 10 normal, 10 specular). Eighty targets used compression-only conversion and 39 normals received `packed_normal_cleanup` (R=existing G, G/A preserved, B=0). The reviewed T062 mip-7 repair replayed the same QA gates. Unique archived input bytes total 470,825,856; installed bytes total 34,446,104. The item-level JSON records each target's exact before/after dimensions, fourCC, mip count, bytes, SHA-256, decoder QA, and semantic gate results. Runtime cleanup archived nine genuinely unreferenced DDS files (37,749,888 bytes); active shared-variant maps were retained. The global tranche changed no runtime `.mesh` or `.anim` bytes and rewrote no model geometry or actions; native imports created proof checkpoints from the installed mesh bytes.
+### Assassin Cadre, Shadow Company and Master Assassin
 
-The material semantic outcomes across this package's unique DDS paths are 1 passed, 9 failed, and 22 unresolved. Normal-map convention outcomes are 1 passed and 9 failed after packed-normal cleanup; cleanup preserves occupied G/A source detail and does not synthesize detail for flat maps. The full decoded per-map statistics and failures are recorded in the JSON.
+The inherited three stacked MG emitters per burst are replaced by one compact three-shot emitter and one finite smoke event per burst.
+Attack, support attack and defend retain three, four and three burst starts respectively; both clones inherit the base entity's state events.
+The dedicated `chaosx_039_smg_muzzle_particle` uses the installed vanilla MG textures, with internal flame starts at 0.0, 0.1 and 0.2 seconds and a maximum source-derived visible lifetime of 0.35 seconds.
+Its registry scale is 0.15; the maximum nominal glow size is 1.5 source units against the Cadre's measured head spans of approximately 0.91, 0.93 and 1.16 units.
+These are emitter/mesh-source measurements, not rendered orange-pixel or in-game area measurements.
 
-All 9 model registrations have unchanged installed `.mesh` SHA-256 and unchanged registered `.anim` SHA-256. Each has a native geometry-only Blender reimport checkpoint keyed to its installed mesh SHA. These checkpoints establish readable geometry and stored evidence; `visual_material_acceptance` remains false. Geometry gates are 2 pass and 7 blocked for this package; registered action checks are 26 pass and 48 blocked.
+The reviewed archived three-transient gunshot and two death takes are wired through the Event 039 infantry-family sound definitions, with their CC BY 3.0 and CC0 notices shipped beside the WAVs.
+The three waveform hashes match the preserved accepted source receipts and pass fresh short-cue format/level checks.
+No sound was downloaded or synthesized.
+The mechanized definitions are separated into their own Event 039 sound file without changing identifiers or category membership, so they can be reviewed and committed with that model.
 
-The package's 74 baseline entity states have not been edited by the shared pipeline tranche. Entity lint results are pre-edit evidence; no entity, sound-definition, or particle-definition changes are part of this delivery.
+Changed runtime paths for this family are `gfx/entities/chaosx_assassin_cadre.asset`, `gfx/entities/chaosx_039_unit_particles.gfx`, `gfx/particles/039_murder_mystery/smg_muzzle.asset`, `sound/039_murder_mystery_units_sound.asset`, and the three WAVs and attribution under `sound/039_murder_mystery/units/`.
+Evidence is retained in `.tmp/unit_takeover_wp4/`: `smg_particle_derivation.json`, `sound_partition_parity.json`, `audio_receipt_verification.json`, and the before/after inventory, event crosswalk and lint files.
+The offline Entity modding Event section, lines 139-150, revision `74ff51b8ea0924281eb1c067300b52dc373ea9d112341bbb9c34fcb1a11d2d6a`, and installed vanilla `gfx/particles/infantry/mg_muzzle.asset`, SHA-256 `875c1d7424509278ee48dd3d8f29f92eb1162f9922a1f995a6ba5cb05a307420`, supply the event and particle precedents.
+The broad MCP source lookup stalled and was stopped; direct vanilla source inspection supplied that evidence instead.
 
-## Per-model reconciliation
+Remaining: the measured cartridge locator, coherent body/weapon atlases and material masks, topology repair, final grip and recoil/contact review, and fresh model export/reimport.
+The firing-source repair does not close those model requirements or claim live-game validation.
+No requested functionality was removed in this family tranche; model requirements are retained as unfinished work.
+Meshy credits spent on this firing tranche: 0.
 
-| Model | Original triage concern | Installed mesh SHA-256 | Bones / action FPS / entity scale | Geometry gate; boundary edges at 0.0005 | Action audit | Unique DDS paths and normal QA | Entity lint baseline |
-|---|---|---|---|---|---|---|---|
-| `assassin_cadre` | Triple-stacked mg_muzzle_particle spawns: 0.8 s fireballs six head-areas wide on every burst. | `cc59d460f9be4be7581022d1eb832b23669f4adbbb96254a77dab34d1f676f57` | 24 / 30 FPS / assassin_cadre_entity=0.8 | blocked; 63 / 66 boundary/non-manifold at source tolerance; same-direction edges 3 | 1 pass, 7 blocked; roles: move, attack, defend, support_attack, retreat, training, death | 5 paths; normal 0 pass/1 fail | 8 states, 93 pre-edit findings |
-| `shadow_company` | Inherits the cadre fireball; its diffuse is a dye of the same 6,288-island fragment atlas. | `cc59d460f9be4be7581022d1eb832b23669f4adbbb96254a77dab34d1f676f57` | 24 / 30 FPS / shadow_company_entity=1 | blocked; 63 / 66 boundary/non-manifold at source tolerance; same-direction edges 3 | 1 pass, 7 blocked; roles: move, attack, defend, support_attack, retreat, training, death | 5 paths; normal 0 pass/1 fail | 8 states, 93 pre-edit findings |
-| `master_assassin` | Inherits the cadre fireball; oxblood dye of the fragment atlas. | `cc59d460f9be4be7581022d1eb832b23669f4adbbb96254a77dab34d1f676f57` | 24 / 30 FPS / master_assassin_entity=1 | blocked; 63 / 66 boundary/non-manifold at source tolerance; same-direction edges 3 | 1 pass, 7 blocked; roles: move, attack, defend, support_attack, retreat, training, death | 5 paths; normal 0 pass/1 fail | 8 states, 93 pre-edit findings |
-| `silent_guard` | Same triple muzzle fireball; a luminance-69 / sd-8 diffuse makes the figure a featureless silhouette. | `134d143329cbbc8328f7562bc3809e672780c43c716d191ba3232f0b18b5cb13` | 24 / 30 FPS / silent_guard_entity=0.8 | blocked; 75 / 59 boundary/non-manifold at source tolerance; same-direction edges 4 | 1 pass, 7 blocked; roles: move, attack, defend, support_attack, retreat, training, death | 3 paths; normal 0 pass/1 fail | 8 states, 50 pre-edit findings |
-| `mechanized_assassin` | Flat mid-grey 7,863-island diffuse (sd 15): a plastic toy hull; the second MG burst of every pair has no flash. | `096f6b016fcaf47c7dca5de8245dcafd1bed02b0383c50bfe5bef81529c9eca4` | 7 / 30 FPS / mechanized_assassin_entity=0.6 | blocked; 207 / 283 boundary/non-manifold at source tolerance; same-direction edges 3 | 6 pass, 2 blocked; roles: move, retreat | 3 paths; normal 1 pass/0 fail | 8 states, 13 pre-edit findings |
-| `clone_infantry` | Fires with no muzzle flash, no casing and no sound in defend; every cue time belongs to superseded actions. | `810e83f81c29c5833cb68dcbf04cf587d25a6c5fc0afd34a0fa47e33e70334b6` | 44 / 24 FPS / clone_infantry_entity=0.8 | pass; 0 / 0 boundary/non-manifold at source tolerance; same-direction edges 0 | 2 pass, 7 blocked; roles: move, attack, support_attack, retreat, training, wounded, death | 6 paths; normal 0 pass/2 fail | 9 states, 9 pre-edit findings |
-| `portal_raider` | Diffuse mean RGB 46/44/37: a black silhouette in every frame. | `3b63ff39642713334223c8820f500e0dc48251dce093876f1ac2f711e9cb68b9` | 45 / 24 FPS / portal_raider_entity=0.8 | pass; 0 / 0 boundary/non-manifold at source tolerance; same-direction edges 0 | 8 pass, 2 blocked; roles: move, death | 3 paths; normal 0 pass/1 fail | 10 states, 11 pre-edit findings |
-| `alien_infantry` | Footsteps are the raw -22 dBFS zombie step file (inaudible); the idle is a frozen pose with a one-shot hum. | `889cd9f64f4fc4c76af8811bf2b1b72809541a1546ba84bed6407858606d26bf` | 50 / 30 FPS / alien_infantry_entity=0.8 | blocked; 0 / 0 boundary/non-manifold at source tolerance; same-direction edges 0 | 4 pass, 3 blocked; roles: move, retreat, death | 6 paths; normal 0 pass/2 fail | 7 states, 8 pre-edit findings |
-| `autonomous_robot` | 22 keep_particle smoke spawns and 22 reverberant MG reports per burst: the smoke column hides the model and the audio smears into a roar. | `c1b95902d34c299cd4cba41e1cf262fa08a753a2eb8cc9e9172c4d68dbfe04d9` | 22 / 24 FPS / autonomous_robot_entity=0.8 | blocked; 0 / 28 boundary/non-manifold at source tolerance; same-direction edges 0 | 2 pass, 6 blocked; roles: move, attack, support_attack, retreat, training, death | 6 paths; normal 0 pass/2 fail | 8 states, 218 pre-edit findings |
+Acceptance basis: the user's assignment of all nine WP4 models and every ticket in `C:/Users/klimp/Videos/chaos_redux_trailer/records/showcase/unit_fix_plan.md`.
+The implemented firing/audio tranche is documented in `wp4_firing_audio_tranche.md`; geometry, materials, rig/actions and filmed acceptance remain required.
 
-## Hash-bound native geometry checkpoints
+## Runtime changes and per-model findings
 
-The parent's serialized imports use installed bytes and preserve a per-model receipt and checkpoint path. The exact paths and complete hashes below are also in the JSON crosswalk. The import was geometry-only and does not approve textures, poses, or appearance.
+| Model | Found in installed bytes | Implemented | Still required |
+|---|---|---|---|
+| Assassin Cadre | 9/12/9 flashes in attack/support/defend; no cartridge locator; fragment atlas and failed topology/action gates | 3/4/3 finite flash emissions, one smoke and dry recorded cue per burst; two recorded death takes at 0.3 s | Measured ejection locator, <60-island UV rebake with >90% coverage, holes/winding, class-specific specular, planted rear foot and recoil |
+| Shadow Company | Shares Cadre mesh/actions/events; slate-blue dye retains its fragment atlas | Inherits corrected bursts, death pool and timing | Derive the slate-blue diffuse after the Cadre rebake; verify occupied texels and inheritance |
+| Master Assassin | Shares Cadre mesh/actions/events; oxblood dye retains its fragment atlas | Inherits corrected bursts, death pool and timing | Derive the oxblood diffuse after the Cadre rebake; verify occupied texels and inheritance |
+| Silent Guard | 6/6/3 flashes; no cartridge locator; low-contrast diffuse and coat deformation | 2/2/1 finite flashes with smoke and sourced burst/death audio | UV/body/SMG rebake, holes/winding, wool/leather/steel masks, deliberate skirt weights, low-ready idle and recoil |
+| Mechanized Assassin | Two reports per state against one continuous emitter; defend shorter than one vanilla take | One timed barrel flash/report per cycle; four shorter vanilla takes in defend; 1.36 s recorded destruction cue at 0.1 s | Hull/turret/wheel UV/material rebake, holes, scan/settle and traverse actions; optional engine loop |
+| Clone Infantry | No particles; silent defend; obsolete firing times; inherited simulated rifle cue | Flash/report at attack 0.75 s and support/defend 1 s; cartridge at 1.5833/1.8333 s; attack/support lead into defend; recorded 0.45 s rifle report | Aim/grip/shoulder pocket, entry/recovery and idle, rifle UV/normal/materials, sleeve values, remaining voice/impact/fades |
+| Portal Raider | Dark diffuse, weak normal detail, stale rejected-candidate docs and one-shot idle | Finite laser particles; exact-original electrical idle/guard loop with one audible source | Source-to-current-UV proof before grade/normal repack; recoil and second attack; low-ready idle; rifle normals; remaining ray/death edits |
+| Alien Infantry | Frozen idle, weak normals/flat pistol maps, one-shot vehicle hum and overlapping 1.2 s laser | Finite laser particles; the ticket's permitted removal of the one-shot hum | Body grade/normal and proper pistol UV/materials; breathing/scan/recoil; recorded laser/impact fixes |
+| Autonomous Robot | 22 flash/smoke/report emissions in attack/support, 8 in defend; 28 non-manifold edges; faceting/flat gun maps and long audio tails | Two finite gun emissions/cues per burst cycle; 2.6 s sustained and 0.6 s braced recorded bursts at volume 0.36/max two; 2 s wreck blast | Winding/topology/smooth normals and weapon material rebake; sensor/servo idle; short footfall and casing fades/tail fixes |
 
-- `assassin_cadre`: mesh `cc59d460f9be4be7581022d1eb832b23669f4adbbb96254a77dab34d1f676f57` -> `docs/assets/039_murder_mystery/models_3d/assassin_cadre/blender/checkpoints/reimport_installed_cc59d460f9be4be7.blend` (checkpoint SHA-256 `3d174ce474f1ed81001c4385c2e63c574923778985aa1478ffead59c6a72aacb`); receipt `docs/assets/039_murder_mystery/models_3d/assassin_cadre/validation/reimport_installed_cc59d460f9be4be7.json`; visual/material acceptance is false.
-- `shadow_company`: mesh `cc59d460f9be4be7581022d1eb832b23669f4adbbb96254a77dab34d1f676f57` -> `docs/assets/039_murder_mystery/models_3d/assassin_cadre/blender/checkpoints/reimport_installed_cc59d460f9be4be7.blend` (checkpoint SHA-256 `3d174ce474f1ed81001c4385c2e63c574923778985aa1478ffead59c6a72aacb`); receipt `docs/assets/039_murder_mystery/models_3d/assassin_cadre/validation/reimport_installed_cc59d460f9be4be7.json`; visual/material acceptance is false.
-- `master_assassin`: mesh `cc59d460f9be4be7581022d1eb832b23669f4adbbb96254a77dab34d1f676f57` -> `docs/assets/039_murder_mystery/models_3d/assassin_cadre/blender/checkpoints/reimport_installed_cc59d460f9be4be7.blend` (checkpoint SHA-256 `3d174ce474f1ed81001c4385c2e63c574923778985aa1478ffead59c6a72aacb`); receipt `docs/assets/039_murder_mystery/models_3d/assassin_cadre/validation/reimport_installed_cc59d460f9be4be7.json`; visual/material acceptance is false.
-- `silent_guard`: mesh `134d143329cbbc8328f7562bc3809e672780c43c716d191ba3232f0b18b5cb13` -> `docs/assets/039_murder_mystery/models_3d/silent_guard/blender/checkpoints/reimport_installed_134d143329cbbc83.blend` (checkpoint SHA-256 `60b083e5231305be9c1c080e1b0727139e1d02b564bab9595094dbadb8319467`); receipt `docs/assets/039_murder_mystery/models_3d/silent_guard/validation/reimport_installed_134d143329cbbc83.json`; visual/material acceptance is false.
-- `mechanized_assassin`: mesh `096f6b016fcaf47c7dca5de8245dcafd1bed02b0383c50bfe5bef81529c9eca4` -> `docs/assets/039_murder_mystery/models_3d/mechanized_assassin/blender/checkpoints/reimport_installed_096f6b016fcaf47c.blend` (checkpoint SHA-256 `a7042ca15b7eae02132eab5b3e6f7dc605ea0bebed52f30a9a719cd9d2c546dd`); receipt `docs/assets/039_murder_mystery/models_3d/mechanized_assassin/validation/reimport_installed_096f6b016fcaf47c.json`; visual/material acceptance is false.
-- `clone_infantry`: mesh `810e83f81c29c5833cb68dcbf04cf587d25a6c5fc0afd34a0fa47e33e70334b6` -> `docs/assets/shared_clone_system/models_3d/clone_infantry/blender/checkpoints/reimport_installed_810e83f81c29c583.blend` (checkpoint SHA-256 `8e6127ac4b28f7cf7d84c20b8dccd2f874bb76c8ba33464f0352c7de47789114`); receipt `docs/assets/shared_clone_system/models_3d/clone_infantry/validation/reimport_installed_810e83f81c29c583.json`; visual/material acceptance is false.
-- `portal_raider`: mesh `3b63ff39642713334223c8820f500e0dc48251dce093876f1ac2f711e9cb68b9` -> `docs/assets/shared_portal_raider_system/models_3d/portal_raider/blender/checkpoints/reimport_installed_3b63ff3964271333.blend` (checkpoint SHA-256 `f8cf3640c98048ced37196c79ae4f164e2296d860d9b6adb036efdb928e12248`); receipt `docs/assets/shared_portal_raider_system/models_3d/portal_raider/validation/reimport_installed_3b63ff3964271333.json`; visual/material acceptance is false.
-- `alien_infantry`: mesh `889cd9f64f4fc4c76af8811bf2b1b72809541a1546ba84bed6407858606d26bf` -> `docs/assets/016_brilliant_scientist/models_3d/alien_infantry/blender/checkpoints/reimport_installed_889cd9f64f4fc4c7.blend` (checkpoint SHA-256 `fdc52af956e178223ca5e9cd6ebe0e5c2640eed18ccdb6ab33fce4a0b428ebe2`); receipt `docs/assets/016_brilliant_scientist/models_3d/alien_infantry/validation/reimport_installed_889cd9f64f4fc4c7.json`; visual/material acceptance is false.
-- `autonomous_robot`: mesh `c1b95902d34c299cd4cba41e1cf262fa08a753a2eb8cc9e9172c4d68dbfe04d9` -> `docs/assets/shared_robot_system/models_3d/autonomous_robot/blender/checkpoints/reimport_installed_c1b95902d34c299c.blend` (checkpoint SHA-256 `1934a9a5b6819273a2b2e6b21e3484219c3aee68884e61901728cd2e01103968`); receipt `docs/assets/shared_robot_system/models_3d/autonomous_robot/validation/reimport_installed_c1b95902d34c299c.json`; visual/material acceptance is false.
+The four 039 infantry consumers share a declared recorded burst/death pool.
+The two robot guns share a declared recorded weapon pool and retain their first-discharge offsets.
+The mechanized destruction file preserves its complete 1.36 s archived decay rather than fabricating the ticket's approximate two-second length.
+The first tail-heavy SMG candidate and a loud first death take failed the unchanged RMS gates and were not installed.
+Original archives and rejected candidates remain evidence.
 
-## Package work still open
+## Model measurements before and after firing/audio changes
 
-- `assassin_cadre`: geometry audit gate is blocked (worst recorded 0.0005 positional-tolerance boundary count 63; see topology-by-tolerance and winding data in the JSON); normal semantic failure(s): g_std=14.399117 is outside 15..35.; a_std=13.415748 is outside 15..35.; 4 texture semantic gate(s) unresolved for missing material provenance; 7 action role(s) are blocked in the unchanged installed bytes; move has 174 single-frame-limit violation(s), while maximum measured root planar drift is 0.000 u death; final entity lint remains 93 finding(s) across the registered state rows; all visible content still needs stationary filming with a crop locked to the entity map position.
-- `shadow_company`: geometry audit gate is blocked (worst recorded 0.0005 positional-tolerance boundary count 63; see topology-by-tolerance and winding data in the JSON); normal semantic failure(s): g_std=14.399117 is outside 15..35.; a_std=13.415748 is outside 15..35.; 4 texture semantic gate(s) unresolved for missing material provenance; 7 action role(s) are blocked in the unchanged installed bytes; move has 174 single-frame-limit violation(s), while maximum measured root planar drift is 0.000 u death; final entity lint remains 93 finding(s) across the registered state rows; all visible content still needs stationary filming with a crop locked to the entity map position.
-- `master_assassin`: geometry audit gate is blocked (worst recorded 0.0005 positional-tolerance boundary count 63; see topology-by-tolerance and winding data in the JSON); normal semantic failure(s): g_std=14.399117 is outside 15..35.; a_std=13.415748 is outside 15..35.; 4 texture semantic gate(s) unresolved for missing material provenance; 7 action role(s) are blocked in the unchanged installed bytes; move has 174 single-frame-limit violation(s), while maximum measured root planar drift is 0.000 u death; final entity lint remains 93 finding(s) across the registered state rows; all visible content still needs stationary filming with a crop locked to the entity map position.
-- `silent_guard`: geometry audit gate is blocked (worst recorded 0.0005 positional-tolerance boundary count 75; see topology-by-tolerance and winding data in the JSON); normal semantic failure(s): g_std=11.768222 is outside 15..35.; a_std=11.827842 is outside 15..35.; 2 texture semantic gate(s) unresolved for missing material provenance; 7 action role(s) are blocked in the unchanged installed bytes; death has 165 single-frame-limit violation(s), while maximum measured root planar drift is 0.000 u death; final entity lint remains 50 finding(s) across the registered state rows; all visible content still needs stationary filming with a crop locked to the entity map position.
-- `mechanized_assassin`: geometry audit gate is blocked (worst recorded 0.0005 positional-tolerance boundary count 207; see topology-by-tolerance and winding data in the JSON); 2 texture semantic gate(s) unresolved for missing material provenance; 2 action role(s) are blocked in the unchanged installed bytes; move has 32 single-frame-limit violation(s), while maximum measured root planar drift is 0.000 u idle; final entity lint remains 13 finding(s) across the registered state rows; all visible content still needs stationary filming with a crop locked to the entity map position.
-- `clone_infantry`: normal semantic failure(s): g_std=2.149284 is outside 15..35.; a_std=1.974301 is outside 15..35.; g_std=0.0 is outside 15..35.; 4 texture semantic gate(s) unresolved for missing material provenance; 7 action role(s) are blocked in the unchanged installed bytes; death has 153 single-frame-limit violation(s), while maximum measured root planar drift is 0.000 u idle; final entity lint remains 9 finding(s) across the registered state rows; all visible content still needs stationary filming with a crop locked to the entity map position.
-- `portal_raider`: normal semantic failure(s): g_std=2.729343 is outside 15..35.; a_std=2.524583 is outside 15..35.; 2 texture semantic gate(s) unresolved for missing material provenance; 2 action role(s) are blocked in the unchanged installed bytes; death has 13 single-frame-limit violation(s), while maximum measured root planar drift is 0.000 u idle; final entity lint remains 11 finding(s) across the registered state rows; all visible content still needs stationary filming with a crop locked to the entity map position.
-- `alien_infantry`: geometry audit gate is blocked (worst recorded 0.0005 positional-tolerance boundary count 0; see topology-by-tolerance and winding data in the JSON); normal semantic failure(s): g_std=1.838118 is outside 15..35.; a_std=1.73504 is outside 15..35.; g_std=0.0 is outside 15..35.; 4 texture semantic gate(s) unresolved for missing material provenance; 3 action role(s) are blocked in the unchanged installed bytes; death has 340 single-frame-limit violation(s), while maximum measured root planar drift is 0.000 u idle; final entity lint remains 8 finding(s) across the registered state rows; all visible content still needs stationary filming with a crop locked to the entity map position.
-- `autonomous_robot`: geometry audit gate is blocked (worst recorded 0.0005 positional-tolerance boundary count 0; see topology-by-tolerance and winding data in the JSON); normal semantic failure(s): g_std=2.159573 is outside 15..35.; a_std=1.879261 is outside 15..35.; g_std=0.0 is outside 15..35.; 4 texture semantic gate(s) unresolved for missing material provenance; 6 action role(s) are blocked in the unchanged installed bytes; death has 94 single-frame-limit violation(s), while maximum measured root planar drift is 0.000 u idle; final entity lint remains 218 finding(s) across the registered state rows; all visible content still needs stationary filming with a crop locked to the entity map position.
+`wp4_evidence/model_baseline_compact.json` retains exact mesh/action hashes, parser revision and measurements.
+`mesh_action_integrity_after_firing.json` confirms all nine registrations retain their captured mesh and action hashes.
+These 0.0005-tolerance measurements are unchanged; the complete geometry gate also checks other requested weld tolerances, winding and degeneracy.
+A zero at one tolerance does not establish the full gate.
 
-## Capture and remaining acceptance work
+| Model | Boundary/non-manifold edges before -> current | Geometry gate | Structural action gates passed/registered |
+|---|---|---|---|
+| Assassin Cadre | 63/66 -> 63/66 | blocked | 1/8 |
+| Shadow Company | 63/66 -> 63/66 | blocked | 1/8 |
+| Master Assassin | 63/66 -> 63/66 | blocked | 1/8 |
+| Silent Guard | 75/59 -> 75/59 | blocked | 1/8 |
+| Mechanized Assassin | 207/283 -> 207/283 | blocked | 6/8 |
+| Clone Infantry | 0/0 -> 0/0 | pass | 2/9 |
+| Portal Raider | 0/0 -> 0/0 | pass | 8/10 |
+| Alien Infantry | 0/0 -> 0/0 | blocked across requested tolerances | 4/7 |
+| Autonomous Robot | 0/28 -> 0/28 | blocked | 2/8 |
 
-Final audio delivery for this package's active mod sound paths: 26 unique paths are installed and verified; 12 paths remain held (9 blocked source rows, 3 without a review row, 0 eligible but not installed). Installed file roles are loop 2, shot 16, step 8. All installed paths are provenance-eligible; their exact before/after hashes and audio measurements are in `docs/plans/unit_fix_2026-10/audio_evidence/install/manifest.json`. Held paths and source-to-runtime needs are itemized in `docs/plans/unit_fix_2026-10/wp4_gun_troopers_audio_needs.md`. All 135 installed files are pcm_s16le, 44.1 kHz mono 16-bit; actual file hashes match the manifest, every recorded role peak target passed, no direct flat top was detected, and max lead silence was 19.95 ms. This is file mastering and integrity evidence, not cue suitability or acceptance. The current entity lint remains 74 states with 588 findings: contact_evidence_required 47, keep_particle_on_impulse_emitter 216, measured_contact_peak_offset 34, one_flash_per_report 43, one_shot_then_silent_repeating_state 11, particle_overlap_on_locator 203, sample_longer_than_cycle_without_single_loop 10, sound_samples_overlap 23, weapon_state_missing_particle_or_sound 1. Sound definitions and entity/action files remain unchanged. Recovery2 contains 3 staged, 1 of those exact output hashes present in final install, 2 staged outputs absent from install, and 0 unresolved result(s).
+Seven unique meshes serve nine registrations.
+Seven registrations remain geometry-blocked; 26/74 registered actions pass structural checks and 48 remain blocked.
+Structural checks do not establish readable idle, grip, recoil, grounded stride or action semantics.
+No completed model reconstruction, action export or reimport is asserted by this firing/audio tranche.
+Shadow Company and Master Assassin inherit scale 0.8; the earlier inventory default of 1 for an absent clone field is superseded by the effective entity review.
 
-The final sound-tree audit records 209 active cues, 173 single-sample cues, 52 duplicate groups, and 52 undeclared cross-unit duplicate groups. Across the entity-lint surface, measured contact-peak offsets, missing timing evidence, sample/state overlaps, and particle/report overlaps remain; mastering does not clear them. The source details are in `docs/plans/unit_fix_2026-10/pipeline_evidence/entity_lint_after.json` and `contact_peak_evidence.json`.
+## Section 3 delivery baseline
 
-Refilm all package models with a stationary unit or a shot in-point after division repositioning. Lock the crop to the known entity position, not motion detection, and regenerate both idle and attack review sheets before reviewers measure severity-1/2 defects. This is capture work from unit-fix plan section 3.10, not a geometry acceptance.
+The shared owner already installed 512-pixel BC1/BC3 maps with complete ten-level mips, occupancy dilation, packed-normal cleanup and removal/archive of nine unused legacy DDS files.
+The obsolete alien/robot/clone triplets are absent and the current inventory finds no unreferenced files in those three folders.
+Those earlier deliveries are baseline facts, not newly produced WP4 repairs.
+`pipeline_report.md`, `per_model_delivery_metrics.json` and their install manifests retain those facts.
+The requested `unit_s3_report.md` is absent and is recorded as an input-path gap.
+Material-class provenance, weak normal detail and fragmented atlases remain unresolved; compression does not establish material acceptance.
+The model worker's source/UV comparisons and independently prepared candidates belong in `wp4_models_handoff.md`.
 
-The parent owns package-manifest/handoff integration and final acceptance reporting. The user performs live-game validation. No commits were created by this documentation tranche.
+## Evidence and validation limits
 
-## Evidence sources and checksums
-- `C:/Users/klimp/Videos/chaos_redux_trailer/records/showcase/unit_fix_plan.md` - SHA-256 `1939b400cba160c6d4903e37952e8e55efdb1bfeacf0b4ab061e89c8792c79b2`
-- `docs/plans/unit_fix_2026-10/audio_evidence/install/manifest.json` - SHA-256 `72054623f8c388f79f7a8a0c71881025add5efe505c5ae4317db1e3c5ba1ecb5`
-- `docs/plans/unit_fix_2026-10/audio_evidence/master_batch.json` - SHA-256 `ec787f36a48db089ef306fb1802736361b0e8d1574de6bedc95577cea61d8e77`
-- `docs/plans/unit_fix_2026-10/audio_evidence/provenance_review.json` - SHA-256 `bd4e36c9edbba24c926a2306efb4190541c3f6b90290e9f9a3a0c6111f74b577`
-- `docs/plans/unit_fix_2026-10/audio_evidence/recovery2_evidence/recovery2_batch.json` - SHA-256 `e277faf5be6a49d26fd81bf305b0b873ada14e0ae3e36bb11e9f95ff78cf360a`
-- `docs/plans/unit_fix_2026-10/audio_evidence/sound_tree_after.json` - SHA-256 `532aae613a6eaab88e21067aa75222fb8a8da8a77ed9d1792363b7cb8d7bb275`
-- `docs/plans/unit_fix_2026-10/per_model_delivery_metrics.json` - SHA-256 `df87b418f1f964bdd41269254aee9d3cf39160b738abc81bbb099f010ea505e0`
-- `docs/plans/unit_fix_2026-10/pipeline_evidence/baseline_inventory.json` - SHA-256 `6b87475048580ee78e33ccf052d1f67be5002099b3c5db17092dfb1baece633d`
-- `docs/plans/unit_fix_2026-10/pipeline_evidence/contact_peak_evidence.json` - SHA-256 `b6193d744c0b10f3d4c6bf464799934010ab07f6ed9991d04ac89bce68a96af8`
-- `docs/plans/unit_fix_2026-10/pipeline_evidence/entity_lint_after.json` - SHA-256 `a388fae714faf098968191b752e99193a82fdd37a28daf6bf6b6ca372dfe42bc`
-- `docs/plans/unit_fix_2026-10/pipeline_evidence/entity_lint_before.json` - SHA-256 `6fb2ad4eaa2ed9176d341f3012ce04fd3ed183a932a2d264ce2c06e9cb7820d1`
-- `docs/plans/unit_fix_2026-10/pipeline_evidence/final_inventory.json` - SHA-256 `d1f72e1456c6a09cdce948df00590534414b91518c8241ec36ca3e11ccb6bb6b`
-- `docs/plans/unit_fix_2026-10/pipeline_evidence/installed_after_textures.json` - SHA-256 `c594e4fb8b16c19c18a53963c27142221d3832d57496e53045485bdc2d6408fa`
-- `docs/plans/unit_fix_2026-10/pipeline_evidence/runtime_cleanup/manifest.json` - SHA-256 `95f3985f233cfea73472e49d4d88fab791203b1cbfd55b3f44441774cf18c8c9`
-- `docs/plans/unit_fix_2026-10/pipeline_evidence/runtime_reimport.json` - SHA-256 `8183c5446cef0085b9baa677e5cccde701214d603ada6e52c2c2e3efda19cee8`
-- `docs/plans/unit_fix_2026-10/pipeline_evidence/texture_delivery/manifest.json` - SHA-256 `8e7de281210db53460add9a647a10799e76c7eb90bfd62b428c24e434b4333ff`
-- `docs/plans/unit_fix_2026-10/audio_evidence/recovery_batch.json` - SHA-256 `148ffb5a39ce96a1ee6cd532b72dc5426ff5d3abbeccb4afe5a7eba734e533d8`.
-- Per-model metrics `docs/plans/unit_fix_2026-10/per_model_delivery_metrics.json` - SHA-256 `89c6d0d0954719a09a8f9dd66eafbd5f3f42e3d2a28b4c29ff29b6f067b9e365`.
-- Package held-source report `docs/plans/unit_fix_2026-10/wp4_gun_troopers_audio_needs.md` - SHA-256 `7a778fd17f5fc6b32a2e7dc37174a834ae5fb27c8525c06d1b18d76beeb89835`.
+`wp4_evidence/references.json` retains offline wiki and installed vanilla source paths, spans and hashes.
+The inherited 6 October session lacked HOI4 reference routes; the 11 October takeover successfully read the offline reference context, search and cited Event section.
+The broad source lookup stalled, so exact installed vanilla files were inspected directly.
+The genuine pre-edit entity baseline uses preserved blocks with clone inheritance.
+Current locators, cue definitions, copied WAV hashes, category registration and state timing are reviewed in `.tmp/unit_takeover_wp4/` inventories, crosswalks and source audits.
+The shared lint's smoke-as-flash and intentional paired flash/smoke overlap findings remain visible beside the genuine overlaps.
+The two robot gun cues intentionally overlap; their quieter two-source cap is the accepted weapon-pair design.
+
+`wp4_audio_evidence/install/accepted_tranche*.json` retains runtime preimages, candidate/source/report hashes, mastering checks and destination verification.
+Runtime attribution retains creators, terms, URLs and actual edits.
+Held recordings and take-coverage gaps remain in `wp4_gun_troopers_audio_needs.md` and `wp4_audio_handoff.md`.
+Final visible flash area/duration, material/deformation, authored contacts and live playback are independent acceptance requirements.
+
+## Authoring blocker and omissions
+
+Blender 5.2.2, adapter 1.11.0 and io_pdx 0.91 are the locked production stack.
+WP5 holds the machine-wide Blender lease during this takeover; its scene and processes are preserved while independent source and provider work proceeds.
+The recovered current model selections are recorded in `.tmp/unit_takeover_wp4_models/intake_inventory.json`.
+Geometry, UV, weights, idle, recoil and action repairs need the verified authoring route; repository code may not synthesize replacements.
+The parent coordinates lease acquisition through `%TEMP%/chaosx_blender.lock`; no user confirmation or game launch is required.
+Every pending model row remains required, and WP4 is incomplete.
+No substitute model or unverified recording is represented as an accepted final.
+No workbook or exported catalog CSV was edited.
+
+## Decisions and orchestrator checks
+
+Event 039: `docs/plans/039_murder_mystery_plans/agent_decisions_2026-10-05.md`.
+Event 016/shared consumers: `docs/plans/016_brilliant_scientist_plans/agent_decisions_2026-10-05.md` and `wp4_agent_decisions_2026-10-05.md`.
+CXT setup, state actions, expected visible/audio outcomes and stationary capture checks are in `wp4_firing_audio_tranche.md`.
+All nine models need re-filming after the remaining requirements: Assassin Cadre, Shadow Company, Master Assassin, Silent Guard, Mechanized Assassin, Clone Infantry, Portal Raider, Alien Infantry and Autonomous Robot.
+Film at least two cycles per state with the crop locked to the entity's combat position, retaining zoom/audio settings.
+
+Skills used: chaos-redux-3d-model-pipeline, chaos-redux-event-assets, chaos-redux-subagents and chaos-redux-shared-git-commit.
+Shared pipeline/skill files remain owned by their tools worker; WP4 records the float pre-attenuation lesson in task evidence without rewriting them.
