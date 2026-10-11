@@ -124,11 +124,24 @@ When an armored or other variant is defined as the visual derivative of a specia
 
 ### Weight and topology validation
 
+For component separation, treat UV charts, material slots, and color masks as candidate evidence rather than anatomical boundaries.
+Review the immutable source diffuse alongside geometry, cross-sections, and clearance from the host; similar colors can include host hair or skin, and one complete free component can span several UV charts.
+Preserve the whole intended free component and classify fixed attachment tissue separately; separation alone does not authorize host-skin reconstruction.
+Close and orient both cut sides with deliberately assigned cap UVs, then inspect manifoldness, winding, degenerates, intersections, and posed clearance; zero boundary edges alone do not prove valid topology.
+
 Use `.tools/3d_pipeline/adapter/geometry_delivery_checks.py` on the decoded delivered mesh. Combine all PDX material/vertex streams beneath each logical object for topology and winding analysis, while reporting each stream's export capacity separately; stream borders alone are not holes. Preserve the complete read-only topology and winding report even when non-manifold geometry blocks repair. Non-manifold, duplicate, or degenerate input remains ambiguous for automatic orientation repair, and a produced report does not authorize a flip, weld, cap, or acceptance.
 
 Require no zero-weight deforming vertices, normalized weights, influence counts within local precedent, no unapproved opposite-side stretch, rigid assignment for rigid parts, and deformation tests in representative poses. Skin weights come from the deliberate live authoring required by `Live Blender authoring session`.
 
+After splitting or rebuilding a mesh object, verify its exact source `Object.vertex_groups` name/index table: indexed deform records can survive while the object loses the table that maps those indices to bones.
+Restore that mapping before claiming preserved skinning and prove that the resulting component deforms in representative poses.
+Bisected or interpolated vertices can gain more influences than either source vertex, so inspect newly created vertices against the verified exporter limit and deliberately review any influence reduction, normalization, and resulting poses before export.
+
 `sanitize_runtime_candidate` creates the runtime checkpoint and enforces the engine weight limits: it removes invalid and zero-weight influences, keeps the strongest influences within the maximum influence count, renormalizes the survivors, and reports the result per mesh while preserving geometry, the rig, weapons, and materials in `weight_only` mode. An unweighted vertex is a rigging defect: the pipeline raises on it and reports it for real authoring in Blender rather than pinning it to the root bone.
+This enforcement is not an unreviewed authoring substitute; retain the before/after influence report and deformation review instead of relying on silent exporter truncation.
+
+For deformation measurements from actual exported bytes, distinguish seam-duplicated vertex records from unique physical edges.
+Record the measurement space, edge identity or deduplication rule, and metric definition, and preserve them across comparisons; record-level counts and maxima must not be relabeled as physical-edge measurements.
 
 Nearest-N bone weighting and axis-aligned bounding-box selections can produce abrupt weight seams despite full coverage and nonzero weights. Render articulation extremes and inspect stretched edges; repair affected deforming regions with locally smooth, explicit normalized weights, verify the selected vertices receive the intended assignment, and confirm unselected weights remain unchanged.
 
