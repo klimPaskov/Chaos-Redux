@@ -30,7 +30,7 @@ Evidence is retained in `.tmp/unit_takeover_wp4/`: `smg_particle_derivation.json
 The offline Entity modding Event section, lines 139-150, revision `74ff51b8ea0924281eb1c067300b52dc373ea9d112341bbb9c34fcb1a11d2d6a`, and installed vanilla `gfx/particles/infantry/mg_muzzle.asset`, SHA-256 `875c1d7424509278ee48dd3d8f29f92eb1162f9922a1f995a6ba5cb05a307420`, supply the event and particle precedents.
 The broad MCP source lookup stalled and was stopped; direct vanilla source inspection supplied that evidence instead.
 
-Remaining: the measured cartridge locator, coherent body/weapon atlases and material masks, topology repair, final grip and recoil/contact review, and fresh model export/reimport.
+Remaining: the measured cartridge locator, coherent body/weapon atlases and material masks, topology repair, final grip and recoil/contact review, repeating footsteps aligned to measured gait contacts, and fresh model export/reimport.
 The firing-source repair does not close those model requirements or claim live-game validation.
 No requested functionality was removed in this family tranche; model requirements are retained as unfinished work.
 Meshy credits spent on this firing tranche: 0.
@@ -41,7 +41,7 @@ Attack, support attack and defend use two, two and one compact SMG burst emissio
 The two-take death pool fires at 0.3 seconds.
 This model consumes the Cadre family's shared 0.35-second particle and two-variant licensed burst pool; its own changed runtime file is `gfx/entities/chaosx_silent_guard.asset`.
 Source resolution and inherited timing checks are retained in the same WP4 event crosswalk and lint evidence.
-Coat deformation, low-ready idle, recoil, UVs/materials and topology remain open, with no model-byte replacement or live validation in this source tranche.
+Coat deformation, low-ready idle, recoil, UVs/materials, topology and repeating footsteps aligned to measured gait contacts remain open, with no model-byte replacement or live validation in this source tranche.
 Meshy credits spent: 0.
 
 ### Clone Infantry
@@ -81,8 +81,15 @@ Meshy credits spent on this source tranche: 0.
 
 The ticket-permitted idle-hum removal and finite laser effects are retained.
 The existing CC0 bart laser sound is shortened from 1.2 to 0.9 seconds and layered with the archived CC0 Kenney `laserSmall_000` tonal cue.
-Both originals, the source-bound preimage and installed derivative are verified in the takeover audio receipts and `sound/shared_alien_system/alien_infantry/WP4_ATTRIBUTION.md`.
-At the slowest configured playback rate of 0.97, its 0.92784-second duration fits the 1.066667-second interval between support shots.
+The laser pool also contains two source-based variants using `laserSmall_001` and `_002` over the same preserved bart core, with immediate repetition prevented.
+All three clips remain 0.9 seconds; the two added variants peak at -3 dBFS and measure -21.005/-20.777 dBFS RMS under the unchanged shot gates.
+Their source/member hashes, transformations, waveform comparisons and install checks are retained in the Alien job's `evidence/wp4_audio_takeover/library_variants/` directory.
+The tested `impactMetal_001` and `_002` candidates remain rejected because their source centroids fail the required frequency gate; no override or filtering to force a pass was used.
+The impact pool instead retains its original take and uses the passing archived `impactMetal_003` and `_004` members as two additional variants, all at -6 dBFS.
+Their complete decoded durations are 0.776780 and 0.389524 seconds; the longest plays for 0.809146 seconds at rate 0.96 and ends 0.209146 seconds beyond the two-second death pose after its 1.4-second event.
+That is a one-shot decay tail rather than a repeated-cue overlap; state-exit playback is not observed, and the tail was not cut merely to fit the pose length.
+The preserved bart core, Kenney members, source preimages and installed derivatives are bound by the takeover audio receipts and `sound/shared_alien_system/alien_infantry/WP4_ATTRIBUTION.md`.
+At the slowest configured playback rate of 0.97, each laser clip lasts 0.92784 seconds and fits the 1.066667-second interval between support shots.
 The original shortened-only candidate retained a 0.988637 correlation over its first 0.78 seconds; the selected layered follow-up supersedes that candidate, so this is not a correlation claim about the final mix.
 Movement uses the licensed Gbox boot-step source at -6 dBFS, explicitly shared with Portal Raider's first take; impact has source-derived edge fades at -6 dBFS.
 The movement pool retains that first source and references Portal's five other existing step definitions, yielding six distinct licensed takes with immediate repetition prevented and no WAV changes.
@@ -149,7 +156,7 @@ The implemented firing/audio tranche is documented in `wp4_firing_audio_tranche.
 | Mechanized Assassin | Two reports per state against one continuous emitter; defend shorter than one vanilla take | One timed barrel flash/report per cycle; four shorter vanilla takes in defend; 1.36 s recorded destruction cue at 0.1 s | Hull/turret/wheel UV/material rebake, holes, scan/settle and traverse actions; optional engine loop |
 | Clone Infantry | No particles; silent defend; obsolete firing times; inherited simulated rifle cue | Timed shots/casings and defend chaining; recorded rifle report, full source shout, level-preserving voice fades and frame-37 landing cue | Aim/grip/shoulder pocket, entry/recovery and idle, rifle UV/normal/materials, sleeve values and physical-contact review |
 | Portal Raider | Dark diffuse, weak normal detail, stale rejected-candidate docs and one-shot idle | Finite laser effects, electrical idle/guard loop, 0.6-second ray, faded six-take footsteps and human-layered death | Missing selected provider maps; source-to-current-UV proof, recoil/second attack, low-ready idle and rifle normals |
-| Alien Infantry | Frozen idle, weak normals/flat pistol maps, one-shot vehicle hum and overlapping 1.2 s laser | Finite laser particles; permitted hum removal; 0.9 s source-layered tonal laser, shared six-take boot pool and faded impact | Body grade/normal and proper pistol UV/materials; breathing/scan/recoil; modified UV/tangent review |
+| Alien Infantry | Frozen idle, weak normals/flat pistol maps, one-shot vehicle hum and overlapping 1.2 s laser | Finite laser particles; permitted hum removal; three sourced variants per laser/impact pool and shared six-take boots | Body grade/normal and proper pistol UV/materials; breathing/scan/recoil; modified UV/tangent review |
 | Autonomous Robot | 22 flash/smoke/report emissions in attack/support, 8 in defend; 28 non-manifold edges; faceting/flat gun maps and long audio tails | Two finite gun emissions/cues per burst cycle; three sourced variants per burst pool; quieter paired guns; 2 s wreck blast; short footfall/casing, hydraulic/heave fades and -20 LUFS source-derived idle | Winding/topology/smooth normals and weapon material rebake; sensor/servo idle; modified UV/tangent review |
 
 The four 039 infantry consumers share a declared recorded burst/death pool.
@@ -201,6 +208,10 @@ No Robot or Alien texture candidate is promoted: the source-normal detail and mo
 `wp4_evidence/references.json` retains offline wiki and installed vanilla source paths, spans and hashes.
 The inherited 6 October session lacked HOI4 reference routes; the 11 October takeover successfully read the offline reference context, search and cited Event section.
 The broad source lookup stalled, so exact installed vanilla files were inspected directly.
+Later sound-pool context/search calls returned `Transport closed`; no further request was made on that failed connection.
+Direct reading of offline `Sound modding`, lines 19-120, revision `904c1909fcb8a6ac3d3f6bb5286eca216bb996513a3bc0788f12f96ab7cc6e4f`, and installed `sound/soundeffects.asset`, lines 907-928, revision `cb13be6f368723dd48be9d9544f7b7b50cfd228b850c88ef55600187ba65b01f`, supplies the named-source, repetition and infantry-pool references.
+No pertinent soundeffect field documentation was found under the installed `documentation/` directory; the exact vanilla source is the recorded fallback.
+The offline page's float32 format sentence is superseded by the explicit user and locked-pipeline PCM16 requirement.
 The genuine pre-edit entity baseline uses preserved blocks with clone inheritance.
 Current locators, cue definitions, copied WAV hashes, category registration and state timing are reviewed in `.tmp/unit_takeover_wp4/` inventories, crosswalks and source audits.
 The shared lint's smoke-as-flash and intentional paired flash/smoke overlap findings remain visible beside the genuine overlaps.
