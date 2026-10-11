@@ -1,3 +1,11 @@
+# Stealing from a leading rival: the success chance and the research bonus
+# are file-scoped because `random` and `steal_random_tech_bonus` read literals.
+# Every space-race technology sits in the electronics folder.
+@space_race_steal_chance = 50
+@space_race_steal_bonus = 1.0
+@space_race_steal_ahead_reduction = 1.0
+@space_race_steal_base_bonus = 0.25
+
 chaosx_space_race_decision_category = {
 	space_race_launch_decision = {
 
@@ -21,6 +29,7 @@ chaosx_space_race_decision_category = {
 		complete_effect = {
 			hidden_effect = { black_friday_credit_political_power_purchase = yes }
 			clr_global_flag = space_race
+			hidden_effect = { clear_array = global.space_race_contenders }
 			country_event = { id = chaosx.nr44.3 days = 2 }
 			hidden_effect = { remove_ideas = leading_space_race }
 		}
@@ -101,6 +110,14 @@ chaosx_space_race_decision_category = {
 		fixed_random_seed = no
 
 		target_array = global.space_race_contenders
+		target_trigger = {
+			FROM = {
+				exists = yes
+				NOT = { tag = ROOT }
+				# Only a rival ahead of us has research worth taking.
+				check_variable = { var = space_race_points value = ROOT.space_race_points compare = greater_than }
+			}
+		}
 
 		ai_will_do = {
 			factor = 0
@@ -124,13 +141,18 @@ chaosx_space_race_decision_category = {
 
 		complete_effect = {
 			hidden_effect = { black_friday_credit_political_power_purchase = yes }
+			custom_effect_tooltip = space_race_steal_tech_targeted_decision_effect_tt
 			random = {
-				chance = 50
-				# steal_random_tech_bonus = {
-				#     folder = electronics_folder
-				#     target = FROM
-				#     instant = yes
-				# }
+				chance = @space_race_steal_chance
+				steal_random_tech_bonus = {
+					folder = electronics_folder
+					target = FROM
+					bonus = @space_race_steal_bonus
+					ahead_reduction = @space_race_steal_ahead_reduction
+					base_bonus = @space_race_steal_base_bonus
+					name = space_race_stolen_research
+					uses = 1
+				}
 			}
 		}
 	}
