@@ -235,6 +235,22 @@ For deliberately inert ordinary country templates, a comment-only history file c
 
 When an error appears after the agent's patch, treat it as caused by the current change set until the agent proves otherwise from the pre-patch log evidence.
 
+
+#### Engine rejections that look like cascades
+
+A cold-start `error.log` with thousands of lines usually has a few roots. Fix these first and re-read the log before touching the cascade.
+
+- A byte-order mark at the start of a `common/` or `events/` script file makes the first token after the header comments unparseable (`unexpected token ( BOM )`) and drops the whole effect, decision or event. Script files carry no BOM; only localisation files do.
+- Scripted effects take no `$PARAMETER$` arguments and no `{ NAME = value }` call blocks; the call block is parsed as effects (`Invalid effect 'TEMPLATE'`) and the following lines misparse. Pass inputs through temporary or global variables, and inject static fields with `meta_effect`. Identifier inputs go through `token:` plus `[?var.GetTokenKey]`, and literal strings through a global token and a scripted-localisation getter.
+- `token:name` needs `name` in `common/synchronized_dynamic_tokens/` (or a registered database item). A missing token fails the lexer and breaks the enclosing block (`Unknown effect-type: var`).
+- Names that scripts build through variables or meta effects appear as `is a dynamic token` warnings until they are listed in the synchronized token files.
+- `custom_override_tooltip` is an effect; availability blocks use `custom_trigger_tooltip`, whose triggers sit directly in the block without a `trigger = { }` wrapper.
+- Scripted localisation uses `localization_key`, not `localisation_key`. Event `desc` entries use `text =` with `trigger =`, not `localization_key`.
+- `@name` constants are global per database folder: a second definition anywhere in the folder is `already taken` and breaks the block.
+- `add_ai_strategy value`, `has_opinion value`, `add_opinion_modifier target`, `diplomatic_relation country` and mission `priority` reject `constant:` and `var:` tokens. Use `meta_effect`/`meta_trigger` with `[?constant:x|.0]`, a scope switch, a saved event target, or a file-scoped `@` mirror.
+- A clone entity must load after its parent: a mod `.asset` named `028_...` sorts before the installed `nuke.asset`, so name it to sort after.
+- `recruit_character` outside history logs an advisory at load and cannot be removed without recruiting in history.
+- Reload artifacts: `Reloading Database` followed by token, BOM-like or `Constant value` errors comes from an in-game reload, not from a cold start.
 ### 8. Repair loop
 
 For each batch of attributable errors from one launch:
