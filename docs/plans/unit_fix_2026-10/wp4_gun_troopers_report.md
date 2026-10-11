@@ -99,6 +99,11 @@ Defend starts one short burst per gun at 0.75 and 2.75 seconds.
 The sustained emitter contains eleven flashes at 0.25-second intervals and ends at 2.6 seconds; the short emitter contains four flashes and ends at 0.6 seconds.
 Each gun receives one reduced-scale smoke emitter rather than the original per-shot smoke stack.
 The two intentionally overlapping gun recordings are limited to two audible sources at volume 0.36.
+The sustained and braced sound pools each contain three source-distinct burst variants with immediate repetition prevented.
+The additional variants use separate archived firing episodes beginning at 4.914535 and 6.121633 seconds, while the first accepted takes remain unchanged.
+Each variant repeats its own recorded report internally at the authored cadence; those internal repetitions do not count as independent takes.
+Sustained clips remain 2.6 seconds and braced clips remain 0.6 seconds, below the 4.041667-second same-gun cycle and the two-second combined defend-cue gap respectively.
+Source windows, different PCM, waveform comparisons, mastering checks and installed-file/source-binding receipts are retained in `docs/assets/shared_robot_system/models_3d/autonomous_robot/evidence/wp4_audio_takeover/take_variants/`.
 The new emitter files and registry reuse installed vanilla texture assets; source derivation and exact timings are in `robot_particle_derivation.json` and the final firing crosswalk.
 
 The source-approved footfall is 0.2 seconds, or 0.20833 seconds at the slowest configured rate, below the 0.291667-second retreat event gap.
@@ -142,7 +147,7 @@ The implemented firing/audio tranche is documented in `wp4_firing_audio_tranche.
 | Clone Infantry | No particles; silent defend; obsolete firing times; inherited simulated rifle cue | Timed shots/casings and defend chaining; recorded rifle report, full source shout, level-preserving voice fades and frame-37 landing cue | Aim/grip/shoulder pocket, entry/recovery and idle, rifle UV/normal/materials, sleeve values and physical-contact review |
 | Portal Raider | Dark diffuse, weak normal detail, stale rejected-candidate docs and one-shot idle | Finite laser effects, electrical idle/guard loop, 0.6-second ray, faded six-take footsteps and human-layered death | Missing selected provider maps; source-to-current-UV proof, recoil/second attack, low-ready idle and rifle normals |
 | Alien Infantry | Frozen idle, weak normals/flat pistol maps, one-shot vehicle hum and overlapping 1.2 s laser | Finite laser particles; permitted hum removal; 0.9 s source-layered tonal laser, licensed boot step and faded impact | Body grade/normal and proper pistol UV/materials; breathing/scan/recoil; modified UV/tangent review |
-| Autonomous Robot | 22 flash/smoke/report emissions in attack/support, 8 in defend; 28 non-manifold edges; faceting/flat gun maps and long audio tails | Two finite gun emissions/cues per burst cycle; quieter paired bursts; 2 s wreck blast; short footfall/casing, hydraulic/heave fades and -20 LUFS source-derived idle | Winding/topology/smooth normals and weapon material rebake; sensor/servo idle; modified UV/tangent review |
+| Autonomous Robot | 22 flash/smoke/report emissions in attack/support, 8 in defend; 28 non-manifold edges; faceting/flat gun maps and long audio tails | Two finite gun emissions/cues per burst cycle; three sourced variants per burst pool; quieter paired guns; 2 s wreck blast; short footfall/casing, hydraulic/heave fades and -20 LUFS source-derived idle | Winding/topology/smooth normals and weapon material rebake; sensor/servo idle; modified UV/tangent review |
 
 The four 039 infantry consumers share a declared recorded burst/death pool.
 The two robot guns share a declared recorded weapon pool and retain their first-discharge offsets.
@@ -201,10 +206,11 @@ Runtime attribution retains creators, terms, URLs and actual edits.
 Held recordings and take-coverage gaps remain in `wp4_gun_troopers_audio_needs.md` and `wp4_audio_handoff.md`.
 Final visible flash area/duration, material/deformation, authored contacts and live playback are independent acceptance requirements.
 
-## Authoring blocker and omissions
+## Remaining authoring and omissions
 
 Blender 5.2.2, adapter 1.11.0 and io_pdx 0.91 are the locked production stack.
-WP5 holds the machine-wide Blender lease during this takeover; its scene and processes are preserved while independent source and provider work proceeds.
+Native model work is serialized through the machine-wide Blender lease alongside WP3 and the external WP5/WP6 work; earlier source and provider preparation proceeded while WP5 held it.
+The queue does not waive any model requirement, and another owner's scene or processes are never displaced.
 The recovered current model selections are recorded in `.tmp/unit_takeover_wp4_models/intake_inventory.json`.
 Geometry, UV, weights, idle, recoil and action repairs need the verified authoring route; repository code may not synthesize replacements.
 The parent coordinates lease acquisition through `%TEMP%/chaosx_blender.lock`; no user confirmation or game launch is required.

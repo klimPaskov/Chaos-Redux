@@ -58,3 +58,37 @@ Installed derivative SHA-256: `1a2b54b595bd7363e4fc90924767b5610e035f8a976524060
 Original sources, selected candidates, exact transformations and measured receipts are retained in `docs/assets/shared_robot_system/models_3d/autonomous_robot/evidence/wp4_audio_takeover/receipt.json` while the model repair remains active.
 
 No audio was downloaded, synthesized or recorded by the agent; no auditory, spoken-word or live playback acceptance is asserted.
+
+## Distinct recorded burst takes
+
+`autonomous_robot_mg_report_02.wav` derives from “Machine gun firing (blanks. In studio shoot).wav” by Cymeon, CC0 1.0, https://freesound.org/people/Cymeon/sounds/205901/.
+Immutable source SHA-256: `f8117a396c4d75e0977e797c42e2559574c8d67080152608396c8686790147ac`; distinct report window 4.914535147–5.014535147 seconds.
+One distinct recorded report is repeated internally 11 times at 0.250000000-second spacing, with source entry/release fades, DC removal and PCM16 mono 44.1 kHz mastering.
+Internal repetitions are not counted as additional independently recorded takes.
+The natural burst length is 2.600000 seconds; no end padding or new tone/noise is added.
+Installed derivative SHA-256: `3e3219cce2eb4adb8cfa963b988e12ea8cde7ba73a12fafe7b55aee5448c7ebd`.
+
+`autonomous_robot_mg_short_burst_02.wav` derives from “Machine gun firing (blanks. In studio shoot).wav” by Cymeon, CC0 1.0, https://freesound.org/people/Cymeon/sounds/205901/.
+Immutable source SHA-256: `f8117a396c4d75e0977e797c42e2559574c8d67080152608396c8686790147ac`; distinct report window 4.914535147–5.014535147 seconds.
+One distinct recorded report is repeated internally 4 times at 0.166666667-second spacing, with source entry/release fades, DC removal and PCM16 mono 44.1 kHz mastering.
+Internal repetitions are not counted as additional independently recorded takes.
+The natural burst length is 0.600000 seconds; no end padding or new tone/noise is added.
+Installed derivative SHA-256: `524145a9435b5c949e9d83e88288db3fb190e78189628d9ed9b4fdd9dde458b9`.
+
+`autonomous_robot_mg_report_03.wav` derives from “Machine gun firing (blanks. In studio shoot).wav” by Cymeon, CC0 1.0, https://freesound.org/people/Cymeon/sounds/205901/.
+Immutable source SHA-256: `f8117a396c4d75e0977e797c42e2559574c8d67080152608396c8686790147ac`; distinct report window 6.121632653–6.221632653 seconds.
+One distinct recorded report is repeated internally 11 times at 0.250000000-second spacing, with source entry/release fades, DC removal and PCM16 mono 44.1 kHz mastering.
+Internal repetitions are not counted as additional independently recorded takes.
+The natural burst length is 2.600000 seconds; no end padding or new tone/noise is added.
+Installed derivative SHA-256: `2d60acee5ff32e66362a842f3e526a0b6a0de54645ab312169861865dfe1fd9d`.
+
+`autonomous_robot_mg_short_burst_03.wav` derives from “Machine gun firing (blanks. In studio shoot).wav” by Cymeon, CC0 1.0, https://freesound.org/people/Cymeon/sounds/205901/.
+Immutable source SHA-256: `f8117a396c4d75e0977e797c42e2559574c8d67080152608396c8686790147ac`; distinct report window 6.121632653–6.221632653 seconds.
+One distinct recorded report is repeated internally 4 times at 0.166666667-second spacing, with source entry/release fades, DC removal and PCM16 mono 44.1 kHz mastering.
+Internal repetitions are not counted as additional independently recorded takes.
+The natural burst length is 0.600000 seconds; no end padding or new tone/noise is added.
+Installed derivative SHA-256: `b52e2ad9451ebdaae2dddff64a9304900fdbfd3e3d0bfe3e7bde50a3b6521c9c`.
+
+The first accepted takes remain unchanged; both robot guns share one declared recorded weapon family.
+Exact source windows, current comparison hashes, recipes and mastering checks are archived in `docs/assets/shared_robot_system/models_3d/autonomous_robot/evidence/wp4_audio_takeover/take_variants/review_packet.json` and `master_report.json`.
+No new download, synthesis, auditory review or live-game acceptance is asserted.
