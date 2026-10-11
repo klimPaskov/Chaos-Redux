@@ -612,16 +612,16 @@ brilliant_scientist_try_schedule_alien_artifact_contact = {
 	dhrondan_try_apply_antarctic_craft_bypass = yes
 }
 
-# COUNTRY scope. The time-traveler idea may arrive before or after the Kruger
-# appointment. The appointment calls this helper for an already-known traveler,
+# COUNTRY scope. The time traveler's custody (time_traveler_has_direct_access)
+# may begin before or after the Kruger appointment. The appointment calls this helper for an already-known traveler,
 # while Event 030 calls the same guarded path when the traveler is observed
 # after the appointment. The contact receipt is distinct from the temporary
-# idea so the report cannot be duplicated across either ordering.
+# custody so the report cannot be duplicated across either ordering.
 brilliant_scientist_try_schedule_time_traveler_contact = {
 	if = {
 		limit = {
 			brilliant_scientist_is_current_host = yes
-			has_idea = time_traveler
+			time_traveler_has_direct_access = yes
 			NOT = { has_global_flag = world_end }
 			NOT = { has_country_flag = brilliant_scientist_time_traveler_contact }
 			NOT = { has_country_flag = brilliant_scientist_time_traveler_contact_report_seen }

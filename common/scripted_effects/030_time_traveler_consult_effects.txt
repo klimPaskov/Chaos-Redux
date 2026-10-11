@@ -1,0 +1,1015 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 030 TIME TRAVELER CONSULTATION EFFECTS
+# ============================================================================
+# The six consultation families share four objective shells:
+#   garrison  place divisions in a named state      (military, domestic,
+#             counterintelligence, the American remembered war)
+#   build     raise the infrastructure of a named state  (industrial)
+#   research  complete a named technology            (scientific)
+#   relation  raise the opinion of a named country   (diplomatic, and the
+#             German remembered war, where the pact itself is the objective)
+# A consultation is offered in chaosx.nr30.21 after the family is picked in
+# chaosx.nr30.20. The offer stores its objective in country variables
+# time_traveler_c_*, shows the quote and, once committed, starts one mission.
+# The mission completes on its own when the objective is observed, and at the
+# deadline it resolves as partial (part of the objective is observed) or failed
+# with a named cause. Waiting alone never completes anything.
+# ============================================================================
+
+# add_tech_bonus reads plain numbers, so its strength is a file constant.
+@time_traveler_scientific_bonus = 1.0
+@time_traveler_scientific_uses_full = 2
+@time_traveler_scientific_uses_partial = 1
+
+# ---------------------------------------------------------------------------
+# Objective sizing
+# ---------------------------------------------------------------------------
+
+# COUNTRY. Output (temp): time_traveler_size divisions, time_traveler_tmp_above
+# (the size minus one, for "size > above") and time_traveler_tmp_partial_above
+# for the half-way mark.
+time_traveler_set_garrison_size = {
+	set_temp_variable = { time_traveler_size = num_divisions }
+	divide_temp_variable = { time_traveler_size = constant:time_traveler_objective.garrison_per_divisions }
+	add_to_temp_variable = { time_traveler_size = constant:time_traveler_objective.garrison_base }
+	round_temp_variable = time_traveler_size
+	clamp_temp_variable = { var = time_traveler_size min = constant:time_traveler_objective.garrison_base max = constant:time_traveler_objective.garrison_max }
+	set_temp_variable = { time_traveler_tmp_above = time_traveler_size }
+	subtract_from_temp_variable = { time_traveler_tmp_above = constant:time_traveler_value.one }
+	set_temp_variable = { time_traveler_tmp_partial_above = time_traveler_size }
+	multiply_temp_variable = { time_traveler_tmp_partial_above = constant:time_traveler_objective.partial_share }
+	round_temp_variable = time_traveler_tmp_partial_above
+	subtract_from_temp_variable = { time_traveler_tmp_partial_above = constant:time_traveler_value.one }
+	clamp_temp_variable = { var = time_traveler_tmp_partial_above min = constant:time_traveler_value.zero }
+}
+
+# COUNTRY. Stores the garrison objective for the state saved as the event target
+# time_traveler_offer_site.
+time_traveler_store_garrison = {
+	set_variable = { time_traveler_c_kind = constant:time_traveler_kind.garrison }
+	set_variable = { time_traveler_c_state = event_target:time_traveler_offer_site }
+	set_variable = { time_traveler_c_required = time_traveler_size }
+	set_variable = { time_traveler_c_above = time_traveler_tmp_above }
+	set_variable = { time_traveler_c_partial_above = time_traveler_tmp_partial_above }
+	set_country_flag = time_traveler_offer_valid
+}
+
+# ---------------------------------------------------------------------------
+# Family resolvers (country scope, custodian). Each saves a site or target and
+# sets time_traveler_offer_valid when the objective is real and not yet met.
+# ---------------------------------------------------------------------------
+
+# COUNTRY. Saves the capital as the offer site when it is controlled and holds
+# no more than the divisions the objective asks for.
+time_traveler_try_capital_site = {
+	if = {
+		limit = {
+			capital_scope = {
+				is_controlled_by = event_target:time_traveler_scope_country
+				meta_trigger = {
+					text = {
+						event_target:time_traveler_scope_country = { NOT = { divisions_in_state = { state = PREV size > [ABOVE] } } }
+					}
+					ABOVE = "[?time_traveler_tmp_above|.0]"
+				}
+			}
+		}
+		capital_scope = { save_event_target_as = time_traveler_offer_site }
+		set_temp_variable = { time_traveler_found = constant:time_traveler_value.one }
+	}
+}
+
+# COUNTRY. Saves the arrival state as the offer site under the same condition.
+time_traveler_try_arrival_site = {
+	if = {
+		limit = {
+			has_variable = time_traveler_arrival_state
+			var:time_traveler_arrival_state = {
+				is_controlled_by = event_target:time_traveler_scope_country
+				meta_trigger = {
+					text = {
+						event_target:time_traveler_scope_country = { NOT = { divisions_in_state = { state = PREV size > [ABOVE] } } }
+					}
+					ABOVE = "[?time_traveler_tmp_above|.0]"
+				}
+			}
+		}
+		var:time_traveler_arrival_state = { save_event_target_as = time_traveler_offer_site }
+		set_temp_variable = { time_traveler_found = constant:time_traveler_value.one }
+	}
+}
+
+time_traveler_offer_military = {
+	time_traveler_set_garrison_size = yes
+	set_temp_variable = { time_traveler_found = constant:time_traveler_value.zero }
+	if = {
+		limit = { has_war = yes }
+		random_controlled_state = {
+			limit = {
+				is_core_of = event_target:time_traveler_scope_country
+				any_neighbor_state = { controller = { has_war_with = event_target:time_traveler_scope_country } }
+				meta_trigger = {
+					text = {
+						event_target:time_traveler_scope_country = { NOT = { divisions_in_state = { state = PREV size > [ABOVE] } } }
+					}
+					ABOVE = "[?time_traveler_tmp_above|.0]"
+				}
+			}
+			save_event_target_as = time_traveler_offer_site
+			set_temp_variable = { time_traveler_found = constant:time_traveler_value.one }
+		}
+	}
+	if = {
+		limit = { check_variable = { time_traveler_found = constant:time_traveler_value.zero } }
+		time_traveler_try_capital_site = yes
+	}
+	if = {
+		limit = { check_variable = { time_traveler_found = constant:time_traveler_value.one } }
+		time_traveler_store_garrison = yes
+	}
+}
+
+time_traveler_offer_industrial = {
+	set_temp_variable = { time_traveler_found = constant:time_traveler_value.zero }
+	random_controlled_state = {
+		limit = {
+			is_core_of = event_target:time_traveler_scope_country
+			check_variable = { infrastructure_level < constant:time_traveler_objective.infrastructure_ceiling }
+		}
+		save_event_target_as = time_traveler_offer_site
+		set_temp_variable = { time_traveler_tmp_level = infrastructure_level }
+		set_temp_variable = { time_traveler_found = constant:time_traveler_value.one }
+	}
+	if = {
+		limit = { check_variable = { time_traveler_found = constant:time_traveler_value.one } }
+		set_variable = { time_traveler_c_kind = constant:time_traveler_kind.build }
+		set_variable = { time_traveler_c_state = event_target:time_traveler_offer_site }
+		set_variable = { time_traveler_c_partial_level = time_traveler_tmp_level }
+		set_variable = { time_traveler_c_level = time_traveler_tmp_level }
+		add_to_variable = { time_traveler_c_level = constant:time_traveler_value.one }
+		set_country_flag = time_traveler_offer_valid
+	}
+}
+
+time_traveler_offer_scientific = {
+	clear_temp_array = time_traveler_tech_pool
+	if = {
+		limit = { NOT = { has_tech = fuel_silos } can_research = fuel_silos }
+		add_to_temp_array = { time_traveler_tech_pool = constant:time_traveler_tech.fuel_silos }
+	}
+	if = {
+		limit = { NOT = { has_tech = improved_machine_tools } can_research = improved_machine_tools }
+		add_to_temp_array = { time_traveler_tech_pool = constant:time_traveler_tech.improved_machine_tools }
+	}
+	if = {
+		limit = { NOT = { has_tech = advanced_machine_tools } can_research = advanced_machine_tools }
+		add_to_temp_array = { time_traveler_tech_pool = constant:time_traveler_tech.advanced_machine_tools }
+	}
+	if = {
+		limit = { NOT = { has_tech = computing_machine } can_research = computing_machine }
+		add_to_temp_array = { time_traveler_tech_pool = constant:time_traveler_tech.computing_machine }
+	}
+	if = {
+		limit = { NOT = { has_tech = radio } can_research = radio }
+		add_to_temp_array = { time_traveler_tech_pool = constant:time_traveler_tech.radio }
+	}
+	if = {
+		limit = { check_variable = { time_traveler_tech_pool^num > constant:time_traveler_value.zero } }
+		set_temp_variable = { time_traveler_pool_size = time_traveler_tech_pool^num }
+		set_temp_variable_to_random = { var = time_traveler_tech_roll min = constant:time_traveler_value.zero max = time_traveler_pool_size integer = yes }
+		set_temp_variable = { time_traveler_tech_pick = time_traveler_tech_pool^time_traveler_tech_roll }
+		set_variable = { time_traveler_c_kind = constant:time_traveler_kind.research }
+		set_variable = { time_traveler_c_tech = time_traveler_tech_pick }
+		set_country_flag = time_traveler_offer_valid
+	}
+	clear_temp_array = time_traveler_tech_pool
+}
+
+time_traveler_offer_diplomatic = {
+	set_temp_variable = { time_traveler_found = constant:time_traveler_value.zero }
+	clr_country_flag = time_traveler_pact_goal
+	clr_country_flag = time_traveler_pacific_goal
+	# The remembered war of Germany: a pact with the Soviet Union.
+	if = {
+		limit = {
+			tag = GER
+			SOV = { exists = yes }
+			NOT = { is_in_faction_with = SOV }
+			NOT = { has_war_with = SOV }
+			NOT = { has_global_flag = time_traveler_german_variant_used }
+		}
+		SOV = { save_event_target_as = time_traveler_offer_target }
+		set_variable = { time_traveler_c_kind = constant:time_traveler_kind.relation }
+		set_variable = { time_traveler_c_target = event_target:time_traveler_offer_target }
+		set_country_flag = time_traveler_pact_goal
+		set_country_flag = time_traveler_offer_valid
+		set_temp_variable = { time_traveler_found = constant:time_traveler_value.one }
+	}
+	# The remembered war of the United States: Hawaii (state 629) held against Japan.
+	if = {
+		limit = {
+			check_variable = { time_traveler_found = constant:time_traveler_value.zero }
+			tag = USA
+			JAP = { exists = yes }
+			NOT = { has_war_with = JAP }
+			NOT = { has_global_flag = time_traveler_american_variant_used }
+			controls_state = 629
+		}
+		time_traveler_set_garrison_size = yes
+		if = {
+			limit = {
+				629 = {
+					meta_trigger = {
+						text = {
+							event_target:time_traveler_scope_country = { NOT = { divisions_in_state = { state = PREV size > [ABOVE] } } }
+						}
+						ABOVE = "[?time_traveler_tmp_above|.0]"
+					}
+				}
+			}
+			629 = { save_event_target_as = time_traveler_offer_site }
+			set_temp_variable = { time_traveler_found = constant:time_traveler_value.one }
+		}
+		if = {
+			limit = { check_variable = { time_traveler_found = constant:time_traveler_value.one } }
+			time_traveler_store_garrison = yes
+			set_country_flag = time_traveler_pacific_goal
+		}
+	}
+	# Any other country: a neighbor or faction partner whose opinion can be raised.
+	if = {
+		limit = { check_variable = { time_traveler_found = constant:time_traveler_value.zero } }
+		random_country = {
+			limit = {
+				exists = yes
+				NOT = { has_country_flag = time_traveler_custodian }
+				is_special_chaos_country = no
+				NOT = { has_war_with = event_target:time_traveler_scope_country }
+				NOT = { is_subject_of = event_target:time_traveler_scope_country }
+				OR = {
+					is_neighbor_of = event_target:time_traveler_scope_country
+					is_in_faction_with = event_target:time_traveler_scope_country
+				}
+				NOT = { has_opinion = { target = event_target:time_traveler_scope_country value > constant:time_traveler_objective.relation_ceiling } }
+				has_opinion = { target = event_target:time_traveler_scope_country value > constant:time_traveler_objective.relation_floor }
+			}
+			save_event_target_as = time_traveler_offer_target
+			set_temp_variable = { time_traveler_found = constant:time_traveler_value.one }
+		}
+		if = {
+			limit = { check_variable = { time_traveler_found = constant:time_traveler_value.one } }
+			set_variable = { time_traveler_c_kind = constant:time_traveler_kind.relation }
+			set_variable = { time_traveler_c_target = event_target:time_traveler_offer_target }
+			set_variable = { time_traveler_c_goal = constant:time_traveler_objective.relation_goal }
+			set_variable = { time_traveler_c_partial_goal = constant:time_traveler_objective.relation_partial_goal }
+			set_country_flag = time_traveler_offer_valid
+		}
+	}
+}
+
+time_traveler_offer_counterintelligence = {
+	time_traveler_set_garrison_size = yes
+	set_temp_variable = { time_traveler_found = constant:time_traveler_value.zero }
+	time_traveler_try_arrival_site = yes
+	if = {
+		limit = { check_variable = { time_traveler_found = constant:time_traveler_value.one } }
+		time_traveler_store_garrison = yes
+	}
+}
+
+time_traveler_offer_domestic = {
+	time_traveler_set_garrison_size = yes
+	set_temp_variable = { time_traveler_found = constant:time_traveler_value.zero }
+	if = {
+		limit = {
+			OR = {
+				has_stability < constant:time_traveler_ai.stability_high
+				any_controlled_state = { has_active_resistance = yes }
+			}
+		}
+		random_controlled_state = {
+			limit = {
+				is_core_of = event_target:time_traveler_scope_country
+				has_active_resistance = yes
+				meta_trigger = {
+					text = {
+						event_target:time_traveler_scope_country = { NOT = { divisions_in_state = { state = PREV size > [ABOVE] } } }
+					}
+					ABOVE = "[?time_traveler_tmp_above|.0]"
+				}
+			}
+			save_event_target_as = time_traveler_offer_site
+			set_temp_variable = { time_traveler_found = constant:time_traveler_value.one }
+		}
+		if = {
+			limit = { check_variable = { time_traveler_found = constant:time_traveler_value.zero } }
+			time_traveler_try_capital_site = yes
+		}
+	}
+	if = {
+		limit = { check_variable = { time_traveler_found = constant:time_traveler_value.one } }
+		time_traveler_store_garrison = yes
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Offer preparation
+# ---------------------------------------------------------------------------
+
+# COUNTRY (custodian). Clears the stored objective.
+time_traveler_clear_objective = {
+	clr_country_flag = time_traveler_offer_valid
+	set_variable = { time_traveler_c_kind = constant:time_traveler_kind.none }
+	set_variable = { time_traveler_c_family = constant:time_traveler_family.none }
+	set_variable = { time_traveler_c_cost_xp = constant:time_traveler_value.zero }
+	set_variable = { time_traveler_c_cost_command = constant:time_traveler_value.zero }
+	set_variable = { time_traveler_c_cost_support = constant:time_traveler_value.zero }
+	set_variable = { time_traveler_c_cost_fuel = constant:time_traveler_value.zero }
+	set_variable = { time_traveler_c_cost_trains = constant:time_traveler_value.zero }
+	set_variable = { time_traveler_c_cost_political = constant:time_traveler_value.zero }
+	clear_variable = time_traveler_c_state
+	clear_variable = time_traveler_c_target
+	clr_country_flag = time_traveler_pact_goal
+	clr_country_flag = time_traveler_pacific_goal
+	clr_country_flag = time_traveler_c_spread
+	clr_country_flag = time_traveler_c_extended
+}
+
+# COUNTRY (custodian). Input: temp time_traveler_offer_family. Resolves the
+# objective for that family and quotes its cost. Leaves time_traveler_offer_valid
+# set when the family can be offered.
+time_traveler_prepare_offer = {
+	save_event_target_as = time_traveler_scope_country
+	time_traveler_clear_objective = yes
+	set_variable = { time_traveler_c_family = time_traveler_offer_family }
+	if = {
+		limit = { check_variable = { time_traveler_offer_family = constant:time_traveler_family.military } }
+		time_traveler_offer_military = yes
+	}
+	else_if = {
+		limit = { check_variable = { time_traveler_offer_family = constant:time_traveler_family.industrial } }
+		time_traveler_offer_industrial = yes
+	}
+	else_if = {
+		limit = { check_variable = { time_traveler_offer_family = constant:time_traveler_family.scientific } }
+		time_traveler_offer_scientific = yes
+	}
+	else_if = {
+		limit = { check_variable = { time_traveler_offer_family = constant:time_traveler_family.diplomatic } }
+		time_traveler_offer_diplomatic = yes
+	}
+	else_if = {
+		limit = { check_variable = { time_traveler_offer_family = constant:time_traveler_family.counterintelligence } }
+		time_traveler_offer_counterintelligence = yes
+	}
+	else = { time_traveler_offer_domestic = yes }
+	if = {
+		limit = { has_country_flag = time_traveler_offer_valid }
+		time_traveler_quote_offer = yes
+	}
+}
+
+# COUNTRY (custodian). Quotes the cost, the length and the spread of the stored
+# offer. Costs scale with the country and the profile's strongest families are
+# cheaper.
+time_traveler_quote_offer = {
+	time_traveler_compute_cost_scale = yes
+	if = {
+		limit = { check_variable = { time_traveler_offer_family = constant:time_traveler_family.military } }
+		set_variable = { time_traveler_c_cost_xp = constant:time_traveler_cost.military_xp }
+		set_variable = { time_traveler_c_cost_command = constant:time_traveler_cost.military_command }
+		set_variable = { time_traveler_c_cost_support = constant:time_traveler_cost.military_support }
+		set_variable = { time_traveler_c_days = constant:time_traveler_timing.mission_military_days }
+	}
+	else_if = {
+		limit = { check_variable = { time_traveler_offer_family = constant:time_traveler_family.industrial } }
+		set_variable = { time_traveler_c_cost_fuel = constant:time_traveler_cost.industrial_fuel }
+		set_variable = { time_traveler_c_cost_trains = constant:time_traveler_cost.industrial_trains }
+		set_variable = { time_traveler_c_days = constant:time_traveler_timing.mission_industrial_days }
+	}
+	else_if = {
+		limit = { check_variable = { time_traveler_offer_family = constant:time_traveler_family.scientific } }
+		set_variable = { time_traveler_c_cost_support = constant:time_traveler_cost.scientific_support }
+		set_variable = { time_traveler_c_cost_political = constant:time_traveler_cost.scientific_political }
+		set_variable = { time_traveler_c_days = constant:time_traveler_timing.mission_scientific_days }
+	}
+	else_if = {
+		limit = { check_variable = { time_traveler_offer_family = constant:time_traveler_family.diplomatic } }
+		set_variable = { time_traveler_c_cost_political = constant:time_traveler_cost.diplomatic_political }
+		set_variable = { time_traveler_c_days = constant:time_traveler_timing.mission_diplomatic_days }
+	}
+	else_if = {
+		limit = { check_variable = { time_traveler_offer_family = constant:time_traveler_family.counterintelligence } }
+		set_variable = { time_traveler_c_cost_command = constant:time_traveler_cost.counterintelligence_command }
+		set_variable = { time_traveler_c_cost_support = constant:time_traveler_cost.counterintelligence_support }
+		set_variable = { time_traveler_c_days = constant:time_traveler_timing.mission_counterintelligence_days }
+	}
+	else = {
+		set_variable = { time_traveler_c_cost_political = constant:time_traveler_cost.domestic_political }
+		set_variable = { time_traveler_c_cost_command = constant:time_traveler_cost.domestic_command }
+		set_variable = { time_traveler_c_days = constant:time_traveler_timing.mission_domestic_days }
+	}
+	# Scale everything but command power, discount the profile's families.
+	multiply_variable = { time_traveler_c_cost_xp = time_traveler_scale }
+	multiply_variable = { time_traveler_c_cost_support = time_traveler_scale }
+	multiply_variable = { time_traveler_c_cost_fuel = time_traveler_scale }
+	multiply_variable = { time_traveler_c_cost_trains = time_traveler_scale }
+	multiply_variable = { time_traveler_c_cost_political = time_traveler_scale }
+	if = {
+		limit = { time_traveler_c_family_is_strong = yes }
+		multiply_variable = { time_traveler_c_cost_xp = constant:time_traveler_cost.specialty_discount }
+		multiply_variable = { time_traveler_c_cost_command = constant:time_traveler_cost.specialty_discount }
+		multiply_variable = { time_traveler_c_cost_support = constant:time_traveler_cost.specialty_discount }
+		multiply_variable = { time_traveler_c_cost_fuel = constant:time_traveler_cost.specialty_discount }
+		multiply_variable = { time_traveler_c_cost_trains = constant:time_traveler_cost.specialty_discount }
+		multiply_variable = { time_traveler_c_cost_political = constant:time_traveler_cost.specialty_discount }
+	}
+	round_variable = time_traveler_c_cost_xp
+	round_variable = time_traveler_c_cost_command
+	round_variable = time_traveler_c_cost_support
+	round_variable = time_traveler_c_cost_fuel
+	round_variable = time_traveler_c_cost_trains
+	round_variable = time_traveler_c_cost_political
+	# Knowledge spreads beyond the traveler when many people work with him.
+	if = {
+		limit = {
+			OR = {
+				time_traveler_arrangement_is_cabinet = yes
+				time_traveler_arrangement_is_public = yes
+				time_traveler_exposure_is_suspected_or_higher = yes
+			}
+		}
+		set_country_flag = time_traveler_c_spread
+	}
+	else = { clr_country_flag = time_traveler_c_spread }
+}
+
+# COUNTRY (custodian). Sets one ready flag per family so the family picker only
+# lists offers that exist. Re-run the preparation for the chosen family after.
+time_traveler_refresh_ready = {
+	clr_country_flag = time_traveler_ready_military
+	clr_country_flag = time_traveler_ready_industrial
+	clr_country_flag = time_traveler_ready_scientific
+	clr_country_flag = time_traveler_ready_diplomatic
+	clr_country_flag = time_traveler_ready_counterintelligence
+	clr_country_flag = time_traveler_ready_domestic
+	set_temp_variable = { time_traveler_offer_family = constant:time_traveler_family.military }
+	time_traveler_prepare_offer = yes
+	if = { limit = { has_country_flag = time_traveler_offer_valid } set_country_flag = time_traveler_ready_military }
+	set_temp_variable = { time_traveler_offer_family = constant:time_traveler_family.industrial }
+	time_traveler_prepare_offer = yes
+	if = { limit = { has_country_flag = time_traveler_offer_valid } set_country_flag = time_traveler_ready_industrial }
+	set_temp_variable = { time_traveler_offer_family = constant:time_traveler_family.scientific }
+	time_traveler_prepare_offer = yes
+	if = { limit = { has_country_flag = time_traveler_offer_valid } set_country_flag = time_traveler_ready_scientific }
+	set_temp_variable = { time_traveler_offer_family = constant:time_traveler_family.diplomatic }
+	time_traveler_prepare_offer = yes
+	if = { limit = { has_country_flag = time_traveler_offer_valid } set_country_flag = time_traveler_ready_diplomatic }
+	set_temp_variable = { time_traveler_offer_family = constant:time_traveler_family.counterintelligence }
+	time_traveler_prepare_offer = yes
+	if = { limit = { has_country_flag = time_traveler_offer_valid } set_country_flag = time_traveler_ready_counterintelligence }
+	set_temp_variable = { time_traveler_offer_family = constant:time_traveler_family.domestic }
+	time_traveler_prepare_offer = yes
+	if = { limit = { has_country_flag = time_traveler_offer_valid } set_country_flag = time_traveler_ready_domestic }
+	time_traveler_clear_objective = yes
+}
+
+# ---------------------------------------------------------------------------
+# Payment
+# ---------------------------------------------------------------------------
+
+# COUNTRY. Debits the temp pay amounts (zero means unused) and resets them.
+# Inputs: time_traveler_pay_xp, _command, _support, _fuel, _trains, _political,
+# _manpower_k.
+time_traveler_pay = {
+	if = {
+		limit = { check_variable = { time_traveler_pay_xp > constant:time_traveler_value.zero } }
+		set_temp_variable = { time_traveler_payment = time_traveler_pay_xp }
+		multiply_temp_variable = { time_traveler_payment = constant:time_traveler_value.negative_one }
+		army_experience = time_traveler_payment
+	}
+	if = {
+		limit = { check_variable = { time_traveler_pay_command > constant:time_traveler_value.zero } }
+		set_temp_variable = { time_traveler_payment = time_traveler_pay_command }
+		multiply_temp_variable = { time_traveler_payment = constant:time_traveler_value.negative_one }
+		add_command_power = time_traveler_payment
+	}
+	if = {
+		limit = { check_variable = { time_traveler_pay_support > constant:time_traveler_value.zero } }
+		set_temp_variable = { equipment_stockpile_removal_amount = time_traveler_pay_support }
+		remove_support_equipment_from_stockpile = yes
+	}
+	if = {
+		limit = { check_variable = { time_traveler_pay_fuel > constant:time_traveler_value.zero } }
+		set_temp_variable = { time_traveler_payment = time_traveler_pay_fuel }
+		multiply_temp_variable = { time_traveler_payment = constant:time_traveler_value.negative_one }
+		add_fuel = time_traveler_payment
+	}
+	if = {
+		limit = { check_variable = { time_traveler_pay_trains > constant:time_traveler_value.zero } }
+		set_temp_variable = { time_traveler_payment = time_traveler_pay_trains }
+		multiply_temp_variable = { time_traveler_payment = constant:time_traveler_value.negative_one }
+		add_equipment_to_stockpile = { type = train_equipment amount = time_traveler_payment }
+	}
+	if = {
+		limit = { check_variable = { time_traveler_pay_political > constant:time_traveler_value.zero } }
+		set_temp_variable = { time_traveler_payment = time_traveler_pay_political }
+		multiply_temp_variable = { time_traveler_payment = constant:time_traveler_value.negative_one }
+		add_political_power = time_traveler_payment
+	}
+	if = {
+		limit = { check_variable = { time_traveler_pay_manpower_k > constant:time_traveler_value.zero } }
+		set_temp_variable = { time_traveler_payment = time_traveler_pay_manpower_k }
+		multiply_temp_variable = { time_traveler_payment = constant:time_traveler_value.people_per_k }
+		multiply_temp_variable = { time_traveler_payment = constant:time_traveler_value.negative_one }
+		add_manpower = time_traveler_payment
+	}
+	set_temp_variable = { time_traveler_pay_xp = constant:time_traveler_value.zero }
+	set_temp_variable = { time_traveler_pay_command = constant:time_traveler_value.zero }
+	set_temp_variable = { time_traveler_pay_support = constant:time_traveler_value.zero }
+	set_temp_variable = { time_traveler_pay_fuel = constant:time_traveler_value.zero }
+	set_temp_variable = { time_traveler_pay_trains = constant:time_traveler_value.zero }
+	set_temp_variable = { time_traveler_pay_political = constant:time_traveler_value.zero }
+	set_temp_variable = { time_traveler_pay_manpower_k = constant:time_traveler_value.zero }
+}
+
+time_traveler_pay_consultation = {
+	set_temp_variable = { time_traveler_pay_xp = time_traveler_c_cost_xp }
+	set_temp_variable = { time_traveler_pay_command = time_traveler_c_cost_command }
+	set_temp_variable = { time_traveler_pay_support = time_traveler_c_cost_support }
+	set_temp_variable = { time_traveler_pay_fuel = time_traveler_c_cost_fuel }
+	set_temp_variable = { time_traveler_pay_trains = time_traveler_c_cost_trains }
+	set_temp_variable = { time_traveler_pay_political = time_traveler_c_cost_political }
+	time_traveler_pay = yes
+}
+
+time_traveler_pay_revise = {
+	set_temp_variable = { time_traveler_pay_political = time_traveler_cost_revise_political }
+	time_traveler_pay = yes
+}
+
+time_traveler_pay_relocate = {
+	set_temp_variable = { time_traveler_pay_command = time_traveler_cost_relocate_command }
+	set_temp_variable = { time_traveler_pay_support = time_traveler_cost_relocate_support }
+	set_temp_variable = { time_traveler_pay_fuel = time_traveler_cost_relocate_fuel }
+	time_traveler_pay = yes
+}
+
+time_traveler_pay_guard = {
+	set_temp_variable = { time_traveler_pay_command = time_traveler_cost_guard_command }
+	set_temp_variable = { time_traveler_pay_support = time_traveler_cost_guard_support }
+	set_temp_variable = { time_traveler_pay_manpower_k = time_traveler_cost_guard_manpower_k }
+	time_traveler_pay = yes
+}
+
+time_traveler_pay_sting = {
+	set_temp_variable = { time_traveler_pay_command = time_traveler_cost_sting_command }
+	set_temp_variable = { time_traveler_pay_support = time_traveler_cost_sting_support }
+	time_traveler_pay = yes
+}
+
+time_traveler_pay_share = {
+	set_temp_variable = { time_traveler_pay_political = time_traveler_cost_share_political }
+	time_traveler_pay = yes
+}
+
+time_traveler_pay_infiltrate = {
+	set_temp_variable = { time_traveler_pay_command = time_traveler_cost_infiltrate_command }
+	set_temp_variable = { time_traveler_pay_support = time_traveler_cost_infiltrate_support }
+	time_traveler_pay = yes
+}
+
+time_traveler_pay_forge = {
+	set_temp_variable = { time_traveler_pay_command = time_traveler_cost_forge_command }
+	set_temp_variable = { time_traveler_pay_political = time_traveler_cost_forge_political }
+	time_traveler_pay = yes
+}
+
+time_traveler_pay_asylum = {
+	set_temp_variable = { time_traveler_pay_political = time_traveler_cost_asylum_political }
+	time_traveler_pay = yes
+}
+
+time_traveler_pay_seize = {
+	set_temp_variable = { time_traveler_pay_command = time_traveler_cost_seize_command }
+	set_temp_variable = { time_traveler_pay_support = time_traveler_cost_seize_support }
+	set_temp_variable = { time_traveler_pay_manpower_k = time_traveler_cost_seize_manpower_k }
+	time_traveler_pay = yes
+}
+
+# ---------------------------------------------------------------------------
+# Commitment and mission
+# ---------------------------------------------------------------------------
+
+# COUNTRY (custodian). Pays the quote, starts the shared cooldown and the
+# mission of the stored objective. The remembered war variants start their
+# diplomatic chain here.
+time_traveler_commit_consultation = {
+	time_traveler_pay_consultation = yes
+	set_variable = { time_traveler_c_deadline = global.num_days }
+	add_to_variable = { time_traveler_c_deadline = time_traveler_c_days }
+	set_variable = { time_traveler_c_divergence = global.time_traveler_divergence }
+	clr_country_flag = time_traveler_offer_valid
+	time_traveler_set_consult_cooldown = yes
+	if = {
+		limit = { check_variable = { time_traveler_c_kind = constant:time_traveler_kind.garrison } }
+		activate_mission = time_traveler_mission_garrison
+		set_temp_variable = { time_traveler_timeout_delta = time_traveler_c_days }
+		subtract_from_temp_variable = { time_traveler_timeout_delta = days_mission_timeout@time_traveler_mission_garrison }
+		add_days_mission_timeout = { mission = time_traveler_mission_garrison days = time_traveler_timeout_delta }
+	}
+	else_if = {
+		limit = { check_variable = { time_traveler_c_kind = constant:time_traveler_kind.build } }
+		activate_mission = time_traveler_mission_build
+		set_temp_variable = { time_traveler_timeout_delta = time_traveler_c_days }
+		subtract_from_temp_variable = { time_traveler_timeout_delta = days_mission_timeout@time_traveler_mission_build }
+		add_days_mission_timeout = { mission = time_traveler_mission_build days = time_traveler_timeout_delta }
+	}
+	else_if = {
+		limit = { check_variable = { time_traveler_c_kind = constant:time_traveler_kind.research } }
+		activate_mission = time_traveler_mission_research
+		set_temp_variable = { time_traveler_timeout_delta = time_traveler_c_days }
+		subtract_from_temp_variable = { time_traveler_timeout_delta = days_mission_timeout@time_traveler_mission_research }
+		add_days_mission_timeout = { mission = time_traveler_mission_research days = time_traveler_timeout_delta }
+	}
+	else = {
+		activate_mission = time_traveler_mission_relation
+		set_temp_variable = { time_traveler_timeout_delta = time_traveler_c_days }
+		subtract_from_temp_variable = { time_traveler_timeout_delta = days_mission_timeout@time_traveler_mission_relation }
+		add_days_mission_timeout = { mission = time_traveler_mission_relation days = time_traveler_timeout_delta }
+	}
+	if = {
+		limit = { has_country_flag = time_traveler_pact_goal }
+		set_global_flag = time_traveler_german_variant_used
+		country_event = { id = chaosx.nr30.3 days = constant:time_traveler_timing.report_delay_days }
+	}
+	if = {
+		limit = { has_country_flag = time_traveler_pacific_goal }
+		set_global_flag = time_traveler_american_variant_used
+		country_event = { id = chaosx.nr30.7 days = constant:time_traveler_timing.report_delay_days }
+	}
+	time_traveler_refresh_costs = yes
+}
+
+# COUNTRY (custodian). The shared cooldown between consultations. Public
+# Recognition coordinates the staff faster and the profile's families recover
+# sooner.
+time_traveler_set_consult_cooldown = {
+	set_temp_variable = { time_traveler_cooldown = constant:time_traveler_timing.consult_cooldown_days }
+	if = {
+		limit = { time_traveler_arrangement_is_public = yes }
+		multiply_temp_variable = { time_traveler_cooldown = constant:time_traveler_arrangement_value.public_cooldown_factor }
+	}
+	if = {
+		limit = { time_traveler_c_family_is_strong = yes }
+		multiply_temp_variable = { time_traveler_cooldown = constant:time_traveler_arrangement_value.specialty_cooldown_factor }
+	}
+	round_temp_variable = time_traveler_cooldown
+	set_country_flag = { flag = time_traveler_consult_cooldown days = time_traveler_cooldown }
+}
+
+# ---------------------------------------------------------------------------
+# Resolution
+# ---------------------------------------------------------------------------
+
+# COUNTRY. Removes the mission of the finished consultation. The family, state and
+# target stay stored so the result report can name them. The next offer clears them.
+time_traveler_close_consultation = {
+	if = { limit = { has_active_mission = time_traveler_mission_garrison } remove_mission = time_traveler_mission_garrison }
+	if = { limit = { has_active_mission = time_traveler_mission_build } remove_mission = time_traveler_mission_build }
+	if = { limit = { has_active_mission = time_traveler_mission_research } remove_mission = time_traveler_mission_research }
+	if = { limit = { has_active_mission = time_traveler_mission_relation } remove_mission = time_traveler_mission_relation }
+	set_variable = { time_traveler_c_kind = constant:time_traveler_kind.none }
+	clr_country_flag = time_traveler_offer_valid
+	clr_country_flag = time_traveler_pact_goal
+	clr_country_flag = time_traveler_pacific_goal
+	clr_country_flag = time_traveler_pact_refused
+	clr_country_flag = time_traveler_c_extended
+}
+
+# COUNTRY. Called by the mission when the objective is observed. The result
+# belongs to the government that committed, so the values only move for the
+# current custodian.
+time_traveler_consultation_succeeded = {
+	set_temp_variable = { time_traveler_reward_share = constant:time_traveler_value.one }
+	if = {
+		limit = { time_traveler_c_family_is_strong = yes }
+		set_temp_variable = { time_traveler_reward_share = constant:time_traveler_reward.specialty_share }
+	}
+	if = {
+		limit = { time_traveler_is_custodian = yes time_traveler_credibility_is_indispensable = yes }
+		add_to_temp_variable = { time_traveler_reward_share = constant:time_traveler_reward.indispensable_bonus }
+	}
+	time_traveler_grant_reward = yes
+	if = {
+		limit = { time_traveler_is_custodian = yes }
+		set_temp_variable = { time_traveler_amount = constant:time_traveler_credibility.success_gain }
+		if = {
+			limit = { time_traveler_divergence_is_recognizable = yes }
+			add_to_temp_variable = { time_traveler_amount = constant:time_traveler_credibility.recognizable_bonus }
+		}
+		set_temp_variable = { time_traveler_cause = constant:time_traveler_cause_id.consultation_success }
+		time_traveler_raise_credibility = yes
+		time_traveler_consultation_exposure = yes
+		time_traveler_consultation_divergence = yes
+		add_to_variable = { time_traveler_consults = constant:time_traveler_value.one }
+		add_to_variable = { time_traveler_shareable = constant:time_traveler_value.one }
+		if = {
+			limit = {
+				check_variable = { time_traveler_stage = constant:time_traveler_stage.directed }
+				NOT = { check_variable = { time_traveler_consults < constant:time_traveler_consultation.stage_distributed_count } }
+			}
+			set_variable = { time_traveler_stage = constant:time_traveler_stage.distributed }
+			time_traveler_apply_spirit = yes
+		}
+		time_traveler_update_outcome = yes
+	}
+	set_variable = { time_traveler_c_result = constant:time_traveler_result.success }
+	clr_country_flag = time_traveler_forgery_acted
+	country_event = { id = chaosx.nr30.22 days = constant:time_traveler_timing.report_delay_days }
+	time_traveler_close_consultation = yes
+	time_traveler_refresh_costs = yes
+}
+
+# COUNTRY. Called when the mission times out. Part of the objective earns a
+# partial result and a choice. Otherwise the consultation fails with a named
+# cause.
+time_traveler_consultation_timed_out = {
+	set_temp_variable = { time_traveler_partial_met = constant:time_traveler_value.zero }
+	if = {
+		limit = {
+			check_variable = { time_traveler_c_kind = constant:time_traveler_kind.garrison }
+			time_traveler_garrison_objective_partial = yes
+		}
+		set_temp_variable = { time_traveler_partial_met = constant:time_traveler_value.one }
+	}
+	else_if = {
+		limit = {
+			check_variable = { time_traveler_c_kind = constant:time_traveler_kind.build }
+			time_traveler_build_objective_partial = yes
+		}
+		set_temp_variable = { time_traveler_partial_met = constant:time_traveler_value.one }
+	}
+	else_if = {
+		limit = {
+			check_variable = { time_traveler_c_kind = constant:time_traveler_kind.research }
+			time_traveler_research_objective_partial = yes
+		}
+		set_temp_variable = { time_traveler_partial_met = constant:time_traveler_value.one }
+	}
+	else_if = {
+		limit = {
+			check_variable = { time_traveler_c_kind = constant:time_traveler_kind.relation }
+			OR = {
+				AND = { has_country_flag = time_traveler_pact_goal has_country_flag = time_traveler_pact_refused }
+				AND = { NOT = { has_country_flag = time_traveler_pact_goal } time_traveler_relation_objective_partial = yes }
+			}
+		}
+		set_temp_variable = { time_traveler_partial_met = constant:time_traveler_value.one }
+	}
+	if = {
+		limit = { check_variable = { time_traveler_partial_met = constant:time_traveler_value.one } }
+		set_variable = { time_traveler_c_result = constant:time_traveler_result.partial }
+		country_event = { id = chaosx.nr30.23 days = constant:time_traveler_timing.report_delay_days }
+	}
+	else = {
+		time_traveler_consultation_failed = yes
+	}
+}
+
+# COUNTRY. The objective was missed. The cause is the recorded forgery when one
+# was acted on, the recorded timeline change when Divergence moved far enough
+# since the offer, and otherwise the ignored objective.
+time_traveler_consultation_failed = {
+	set_variable = { time_traveler_c_result = constant:time_traveler_result.failed }
+	set_temp_variable = { time_traveler_shift = global.time_traveler_divergence }
+	subtract_from_temp_variable = { time_traveler_shift = time_traveler_c_divergence }
+	set_temp_variable = { time_traveler_cause = constant:time_traveler_cause_id.failed_ignored }
+	set_temp_variable = { time_traveler_amount = constant:time_traveler_credibility.fail_ignored }
+	set_variable = { time_traveler_c_failure = constant:time_traveler_failure.ignored }
+	if = {
+		limit = { has_country_flag = time_traveler_forgery_acted }
+		set_variable = { time_traveler_c_failure = constant:time_traveler_failure.forgery }
+		set_temp_variable = { time_traveler_cause = constant:time_traveler_cause_id.failed_forgery }
+		set_temp_variable = { time_traveler_amount = constant:time_traveler_credibility.fail_forgery }
+		clr_country_flag = time_traveler_forgery_acted
+		add_stability = constant:time_traveler_reward.forgery_stability
+	}
+	else_if = {
+		limit = { NOT = { check_variable = { time_traveler_shift < constant:time_traveler_reward.timeline_shift } } }
+		set_variable = { time_traveler_c_failure = constant:time_traveler_failure.timeline }
+		set_temp_variable = { time_traveler_cause = constant:time_traveler_cause_id.failed_timeline }
+		set_temp_variable = { time_traveler_amount = constant:time_traveler_credibility.fail_timeline }
+	}
+	if = {
+		limit = { time_traveler_is_custodian = yes }
+		time_traveler_lower_credibility = yes
+	}
+	country_event = { id = chaosx.nr30.24 days = constant:time_traveler_timing.report_delay_days }
+	time_traveler_close_consultation = yes
+	time_traveler_refresh_costs = yes
+}
+
+# COUNTRY. The partial result: half the reward, no Credibility penalty.
+time_traveler_consultation_partial_accepted = {
+	set_temp_variable = { time_traveler_reward_share = constant:time_traveler_reward.partial_share }
+	time_traveler_grant_reward = yes
+	if = {
+		limit = { time_traveler_is_custodian = yes }
+		set_temp_variable = { time_traveler_amount = constant:time_traveler_credibility.partial_gain }
+		set_temp_variable = { time_traveler_cause = constant:time_traveler_cause_id.consultation_partial }
+		time_traveler_raise_credibility = yes
+	}
+	time_traveler_close_consultation = yes
+	time_traveler_refresh_costs = yes
+}
+
+# COUNTRY. Press on after a partial result: the mission runs again once with the
+# same objective.
+time_traveler_consultation_extended = {
+	set_country_flag = time_traveler_c_extended
+	set_variable = { time_traveler_c_days = constant:time_traveler_timing.extension_days }
+	if = {
+		limit = { check_variable = { time_traveler_c_kind = constant:time_traveler_kind.garrison } }
+		activate_mission = time_traveler_mission_garrison
+		set_temp_variable = { time_traveler_timeout_delta = time_traveler_c_days }
+		subtract_from_temp_variable = { time_traveler_timeout_delta = days_mission_timeout@time_traveler_mission_garrison }
+		add_days_mission_timeout = { mission = time_traveler_mission_garrison days = time_traveler_timeout_delta }
+	}
+	else_if = {
+		limit = { check_variable = { time_traveler_c_kind = constant:time_traveler_kind.build } }
+		activate_mission = time_traveler_mission_build
+		set_temp_variable = { time_traveler_timeout_delta = time_traveler_c_days }
+		subtract_from_temp_variable = { time_traveler_timeout_delta = days_mission_timeout@time_traveler_mission_build }
+		add_days_mission_timeout = { mission = time_traveler_mission_build days = time_traveler_timeout_delta }
+	}
+	else_if = {
+		limit = { check_variable = { time_traveler_c_kind = constant:time_traveler_kind.research } }
+		activate_mission = time_traveler_mission_research
+		set_temp_variable = { time_traveler_timeout_delta = time_traveler_c_days }
+		subtract_from_temp_variable = { time_traveler_timeout_delta = days_mission_timeout@time_traveler_mission_research }
+		add_days_mission_timeout = { mission = time_traveler_mission_research days = time_traveler_timeout_delta }
+	}
+	else = {
+		activate_mission = time_traveler_mission_relation
+		set_temp_variable = { time_traveler_timeout_delta = time_traveler_c_days }
+		subtract_from_temp_variable = { time_traveler_timeout_delta = days_mission_timeout@time_traveler_mission_relation }
+		add_days_mission_timeout = { mission = time_traveler_mission_relation days = time_traveler_timeout_delta }
+	}
+}
+
+# COUNTRY. Exposure after a success depends on how many people the arrangement
+# lets near the advice. A Secret Program breach is a larger jump when it leaks.
+time_traveler_consultation_exposure = {
+	set_temp_variable = { time_traveler_cause = constant:time_traveler_cause_id.consultation_success }
+	if = {
+		limit = { time_traveler_arrangement_is_cabinet = yes }
+		set_temp_variable = { time_traveler_amount = constant:time_traveler_exposure.success_cabinet }
+	}
+	else_if = {
+		limit = { time_traveler_arrangement_is_secret = yes }
+		set_temp_variable = { time_traveler_amount = constant:time_traveler_exposure.success_secret }
+	}
+	else_if = {
+		limit = { time_traveler_arrangement_is_confinement = yes }
+		set_temp_variable = { time_traveler_amount = constant:time_traveler_exposure.success_confinement }
+	}
+	else = { set_temp_variable = { time_traveler_amount = constant:time_traveler_exposure.success_public } }
+	time_traveler_raise_exposure = yes
+	time_traveler_check_revelation = yes
+}
+
+# COUNTRY. Divergence after a success: advice that changes an outcome moves the
+# timeline further than advice that only improves a plan.
+time_traveler_consultation_divergence = {
+	set_temp_variable = { time_traveler_cause = constant:time_traveler_cause_id.consultation_success }
+	if = {
+		limit = { check_variable = { time_traveler_c_family = constant:time_traveler_family.military } }
+		set_temp_variable = { time_traveler_amount = constant:time_traveler_divergence.success_military }
+	}
+	else_if = {
+		limit = { check_variable = { time_traveler_c_family = constant:time_traveler_family.diplomatic } }
+		set_temp_variable = { time_traveler_amount = constant:time_traveler_divergence.success_diplomatic }
+	}
+	else_if = {
+		limit = { check_variable = { time_traveler_c_family = constant:time_traveler_family.domestic } }
+		set_temp_variable = { time_traveler_amount = constant:time_traveler_divergence.success_domestic }
+	}
+	else_if = {
+		limit = { check_variable = { time_traveler_c_family = constant:time_traveler_family.counterintelligence } }
+		set_temp_variable = { time_traveler_amount = constant:time_traveler_divergence.success_counterintelligence }
+	}
+	else = { set_temp_variable = { time_traveler_amount = constant:time_traveler_divergence.success_industrial } }
+	time_traveler_raise_divergence = yes
+}
+
+# ---------------------------------------------------------------------------
+# Rewards
+# ---------------------------------------------------------------------------
+
+# COUNTRY. Input: temp time_traveler_reward_share (1 full, a half for a partial
+# result, more for the profile's families). One real change per family.
+time_traveler_grant_reward = {
+	if = {
+		limit = { check_variable = { time_traveler_c_family = constant:time_traveler_family.military } }
+		set_temp_variable = { time_traveler_xp = constant:time_traveler_reward.military_xp }
+		multiply_temp_variable = { time_traveler_xp = time_traveler_reward_share }
+		round_temp_variable = time_traveler_xp
+		army_experience = time_traveler_xp
+		set_temp_variable = { time_traveler_days = constant:time_traveler_reward.military_window_days }
+		multiply_temp_variable = { time_traveler_days = time_traveler_reward_share }
+		round_temp_variable = time_traveler_days
+		add_timed_idea = { idea = time_traveler_operational_window days = time_traveler_days }
+	}
+	else_if = {
+		limit = { check_variable = { time_traveler_c_family = constant:time_traveler_family.industrial } }
+		set_temp_variable = { time_traveler_days = constant:time_traveler_reward.industrial_window_days }
+		multiply_temp_variable = { time_traveler_days = time_traveler_reward_share }
+		round_temp_variable = time_traveler_days
+		add_timed_idea = { idea = time_traveler_retained_efficiency days = time_traveler_days }
+		if = {
+			limit = {
+				NOT = { check_variable = { time_traveler_reward_share < constant:time_traveler_value.one } }
+				has_variable = time_traveler_c_state
+			}
+			var:time_traveler_c_state = {
+				add_building_construction = { type = infrastructure level = constant:time_traveler_reward.industrial_infrastructure instant_build = yes }
+			}
+		}
+	}
+	else_if = {
+		limit = { check_variable = { time_traveler_c_family = constant:time_traveler_family.scientific } }
+		if = {
+			limit = { check_variable = { time_traveler_reward_share < constant:time_traveler_value.one } }
+			if = {
+				limit = { check_variable = { time_traveler_c_tech < constant:time_traveler_tech.computing_machine } }
+				add_tech_bonus = { name = time_traveler_scientific_shortcut bonus = @time_traveler_scientific_bonus uses = @time_traveler_scientific_uses_partial category = industry }
+			}
+			else = {
+				add_tech_bonus = { name = time_traveler_scientific_shortcut bonus = @time_traveler_scientific_bonus uses = @time_traveler_scientific_uses_partial category = electronics }
+			}
+		}
+		else_if = {
+			limit = { check_variable = { time_traveler_c_tech < constant:time_traveler_tech.computing_machine } }
+			add_tech_bonus = { name = time_traveler_scientific_shortcut bonus = @time_traveler_scientific_bonus uses = @time_traveler_scientific_uses_full category = industry }
+		}
+		else = {
+			add_tech_bonus = { name = time_traveler_scientific_shortcut bonus = @time_traveler_scientific_bonus uses = @time_traveler_scientific_uses_full category = electronics }
+		}
+	}
+	else_if = {
+		limit = { check_variable = { time_traveler_c_family = constant:time_traveler_family.diplomatic } }
+		time_traveler_reward_diplomatic = yes
+	}
+	else_if = {
+		limit = { check_variable = { time_traveler_c_family = constant:time_traveler_family.counterintelligence } }
+		time_traveler_reward_counterintelligence = yes
+	}
+	else = {
+		set_temp_variable = { time_traveler_stability = constant:time_traveler_reward.domestic_stability }
+		multiply_temp_variable = { time_traveler_stability = time_traveler_reward_share }
+		add_stability = time_traveler_stability
+		set_temp_variable = { time_traveler_days = constant:time_traveler_reward.domestic_window_days }
+		multiply_temp_variable = { time_traveler_days = time_traveler_reward_share }
+		round_temp_variable = time_traveler_days
+		add_timed_idea = { idea = time_traveler_secured_order days = time_traveler_days }
+	}
+}
+
+# COUNTRY. A pact objective already gave its reward through the legacy chain. A
+# relation objective gives lasting goodwill and, on a full result, a pact.
+time_traveler_reward_diplomatic = {
+	if = {
+		limit = {
+			has_variable = time_traveler_c_target
+			var:time_traveler_c_target = { exists = yes }
+			NOT = { has_country_flag = time_traveler_pact_goal }
+		}
+		add_opinion_modifier = { target = var:time_traveler_c_target modifier = time_traveler_goodwill }
+		reverse_add_opinion_modifier = { target = var:time_traveler_c_target modifier = time_traveler_goodwill }
+		if = {
+			limit = {
+				NOT = { check_variable = { time_traveler_reward_share < constant:time_traveler_value.one } }
+				NOT = { has_war_with = var:time_traveler_c_target }
+				NOT = { has_non_aggression_pact_with = var:time_traveler_c_target }
+				NOT = { is_in_faction_with = var:time_traveler_c_target }
+			}
+			diplomatic_relation = { country = var:time_traveler_c_target relation = non_aggression_pact active = yes }
+		}
+	}
+}
+
+# COUNTRY. The next sting is cheaper: a captured cell lowers the network of one
+# interested country and the arrival site draws less attention.
+time_traveler_reward_counterintelligence = {
+	set_temp_variable = { time_traveler_amount = constant:time_traveler_exposure.counterintelligence_drop }
+	multiply_temp_variable = { time_traveler_amount = time_traveler_reward_share }
+	round_temp_variable = time_traveler_amount
+	set_temp_variable = { time_traveler_cause = constant:time_traveler_cause_id.counterintelligence }
+	if = {
+		limit = { time_traveler_is_custodian = yes }
+		time_traveler_lower_exposure = yes
+		time_traveler_drop_random_network = yes
+	}
+	add_timed_idea = { idea = time_traveler_sting_ready days = constant:time_traveler_reward.sting_window_days }
+}

@@ -37,5 +37,6 @@ These summaries describe their recorded source and validation evidence, which do
 | 032 Missiles | [`032_missiles/overview.md`](032_missiles/overview.md) | [Expanded API, custody, scenario, and validation record](032_missiles.md) |
 | 033 Acid Rain | [`033_acid_rain/overview.md`](033_acid_rain/overview.md) | Weather and contamination contracts |
 | 035 Great Depression 2.0 | [`035_great_depression.md`](035_great_depression.md) | Standalone implementation contract |
+| 030 Time Traveler | [`030_time_traveler.md`](030_time_traveler.md) | Major event, three public values, consultations, intelligence war, Evolutions I and II |
 | 040 Lawrence of Arabia | [`040_lawrence_of_arabia.md`](040_lawrence_of_arabia.md) | Minor Fire-Once, one public value, target and British decision families |
 | Germany Mengele chain | [`germany_mengele/overview.md`](germany_mengele/overview.md) | Country event chain outside the random-event pool |

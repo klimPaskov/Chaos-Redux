@@ -1,23 +1,182 @@
 # ============================================================================
-# CHAOS REDUX - EVENT 030 TIME TRAVELER IDEAS
+# CHAOS REDUX - EVENT 030 TIME TRAVELER NATIONAL SPIRITS
 # ============================================================================
-# Ideas owned by Event 030 Time Traveler.
+# One institutional spirit at a time on the custodian, never stacked:
+#   Unverified Forecasts        before verification and after custody changes
+#   Directed Foreknowledge      verified traveler with direct access (per profile)
+#   Distributed Future Knowledge after three successful consultations (per profile)
+#   Scattered Forecasts         a former custodian, deeper after three consultations
+#   Future Fragment             one minor spirit a foreign country gains from
+#                               stolen or shared knowledge
+# Strength anchors: Directed Foreknowledge is an ordinary advisor, Distributed
+# Future Knowledge a mid-tree focus reward, both far below the retired spirit
+# (+20 percent research speed, +100 percent planning speed, +50 percent offence,
+# +20 percent army experience). Modifier values cannot read script constants,
+# so the strengths are written here and nowhere else. Consultations carry the
+# strong rewards through time_traveler_grant_reward.
+# Timed spirits are rewards of the consultations and expire by themselves.
 # ============================================================================
 
 ideas = {
 	country = {
-		time_traveler = {
-			picture = new_deal
-			allowed_civil_war = {
-				always = no
-			}
+
+		time_traveler_unverified_forecasts = {
+			picture = time_traveler_unverified_forecasts
+			allowed = { always = no }
+			removal_cost = -1
 			modifier = {
-				research_speed_factor = 0.20
+				research_speed_factor = 0.03
+				planning_speed = 0.10
+				stability_factor = -0.03
+			}
+		}
+
+		# Directed Foreknowledge, shaped by the profile.
+		time_traveler_directed_analyst = {
+			picture = time_traveler_directed_foreknowledge
+			allowed = { always = no }
+			removal_cost = -1
+			modifier = {
+				planning_speed = 0.25
+				experience_gain_army_factor = 0.10
+				research_speed_factor = 0.03
+			}
+		}
+
+		time_traveler_directed_engineer = {
+			picture = time_traveler_directed_foreknowledge
+			allowed = { always = no }
+			removal_cost = -1
+			modifier = {
+				research_speed_factor = 0.05
+				production_speed_buildings_factor = 0.05
+				production_factory_efficiency_gain_factor = 0.05
+			}
+		}
+
+		time_traveler_directed_historian = {
+			picture = time_traveler_directed_foreknowledge
+			allowed = { always = no }
+			removal_cost = -1
+			modifier = {
+				stability_factor = 0.04
+				political_power_gain = 0.10
+				planning_speed = 0.10
+			}
+		}
+
+		# Distributed Future Knowledge, shaped by the profile.
+		time_traveler_distributed_analyst = {
+			picture = time_traveler_distributed_future_knowledge
+			allowed = { always = no }
+			removal_cost = -1
+			modifier = {
+				planning_speed = 0.50
+				experience_gain_army_factor = 0.15
+				army_defence_factor = 0.10
+				research_speed_factor = 0.04
+			}
+		}
+
+		time_traveler_distributed_engineer = {
+			picture = time_traveler_distributed_future_knowledge
+			allowed = { always = no }
+			removal_cost = -1
+			modifier = {
+				research_speed_factor = 0.08
+				production_speed_buildings_factor = 0.10
+				production_factory_efficiency_gain_factor = 0.08
+				production_factory_max_efficiency_factor = 0.05
+			}
+		}
+
+		time_traveler_distributed_historian = {
+			picture = time_traveler_distributed_future_knowledge
+			allowed = { always = no }
+			removal_cost = -1
+			modifier = {
+				stability_factor = 0.07
+				political_power_gain = 0.20
+				planning_speed = 0.20
+				resistance_target = -0.05
+			}
+		}
+
+		# Legacy of a former custodian.
+		time_traveler_scattered_forecasts = {
+			picture = time_traveler_scattered_forecasts
+			allowed = { always = no }
+			removal_cost = -1
+			modifier = {
+				research_speed_factor = 0.02
+				planning_speed = 0.10
+			}
+		}
+
+		time_traveler_scattered_forecasts_deep = {
+			picture = time_traveler_scattered_forecasts
+			allowed = { always = no }
+			removal_cost = -1
+			modifier = {
+				research_speed_factor = 0.04
+				planning_speed = 0.20
+				experience_gain_army_factor = 0.05
+			}
+		}
+
+		# The single minor spirit of a foreign copy.
+		time_traveler_future_fragment = {
+			picture = time_traveler_future_fragment
+			allowed = { always = no }
+			removal_cost = -1
+			modifier = {
+				research_speed_factor = 0.02
+				planning_speed = 0.05
+			}
+		}
+
+		# Consultation rewards (timed).
+		time_traveler_operational_window = {
+			picture = generic_war_preparation
+			allowed = { always = no }
+			removal_cost = -1
+			modifier = {
 				planning_speed = 1.0
-				offence = 0.5
-				ai_badass_factor = 0.5
-				ai_focus_war_production_factor = 0.5
-				experience_gain_army = 0.2
+				army_attack_factor = 0.12
+				army_defence_factor = 0.12
+				dig_in_speed_factor = 0.15
+			}
+		}
+
+		time_traveler_retained_efficiency = {
+			picture = generic_central_management
+			allowed = { always = no }
+			removal_cost = -1
+			modifier = {
+				production_factory_max_efficiency_factor = 0.10
+				production_factory_efficiency_gain_factor = 0.15
+				production_speed_buildings_factor = 0.10
+			}
+		}
+
+		time_traveler_secured_order = {
+			picture = generic_foreign_capital
+			allowed = { always = no }
+			removal_cost = -1
+			modifier = {
+				stability_factor = 0.05
+				resistance_target = -0.10
+				political_power_gain = 0.10
+			}
+		}
+
+		time_traveler_sting_ready = {
+			picture = generic_central_management
+			allowed = { always = no }
+			removal_cost = -1
+			modifier = {
+				intelligence_agency_defense = 0.15
+				command_power_gain_mult = 0.10
 			}
 		}
 	}

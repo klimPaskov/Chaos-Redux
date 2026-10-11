@@ -418,6 +418,15 @@ events_log_set_default_actor_for_current_event = {
 	}
 	else_if = {
 		limit = {
+			check_variable = { event_id = constant:time_traveler_identity.event_id }
+			has_variable = global.time_traveler_custodian
+			var:global.time_traveler_custodian = { exists = yes }
+		}
+		var:global.time_traveler_custodian = { ROOT = { set_temp_variable = { events_log_default_actor = PREV } } }
+		set_temp_variable = { events_log_default_has_actor = 1 }
+	}
+	else_if = {
+		limit = {
 			check_variable = { event_id = constant:lawrence_event.id }
 			has_event_target = lawrence_prefire_target
 			event_target:lawrence_prefire_target = { exists = yes }

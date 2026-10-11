@@ -1,0 +1,424 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 030 TIME TRAVELER DECISIONS
+# ============================================================================
+# Custodian category (time_traveler_category): six decisions and the consultation
+# missions.
+#   consult     opens the family picker, chaosx.nr30.20
+#   revise      reopens the access arrangement, chaosx.nr30.14
+#   relocate    moves the traveler to another secure state
+#   guard       a guard detail around the traveler
+#   sting       a counterintelligence sting against one interested country
+#   share       one forecast shared with an ally
+# Foreign category (time_traveler_foreign_category): the four operations of an
+# interested country. AI countries act through chaosx.nr30.30 and never through
+# these decisions, so their weights are zero.
+# Costs are cached in the time_traveler_cost_* country variables, refreshed by
+# time_traveler_refresh_costs and time_traveler_refresh_rival_costs. Missions
+# complete on their own when the objective is observed.
+# ============================================================================
+
+time_traveler_category = {
+
+	time_traveler_consult = {
+		icon = GFX_decision_time_traveler_select_program
+		priority = 100
+		visible = {
+			time_traveler_has_direct_access = yes
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = time_traveler_consult_requirements_tt
+				time_traveler_can_consult = yes
+				NOT = { has_country_flag = time_traveler_consult_cooldown }
+			}
+		}
+		complete_effect = {
+			custom_effect_tooltip = time_traveler_consult_tt
+			hidden_effect = {
+				time_traveler_refresh_costs = yes
+				time_traveler_refresh_ready = yes
+				country_event = { id = chaosx.nr30.20 }
+			}
+		}
+		ai_will_do = {
+			base = constant:time_traveler_ai.standard
+			modifier = { add = constant:time_traveler_ai.standard time_traveler_credibility_is_at_least_trusted = yes }
+		}
+	}
+
+	time_traveler_revise = {
+		icon = GFX_decision_time_traveler_revise_arrangement
+		priority = 90
+		visible = {
+			time_traveler_has_direct_access = yes
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = time_traveler_revise_requirements_tt
+				NOT = { has_country_flag = time_traveler_revision_cooldown }
+				NOT = { time_traveler_mission_is_active = yes }
+			}
+		}
+		custom_cost_trigger = { time_traveler_can_pay_revise = yes }
+		custom_cost_text = time_traveler_cost_revise
+		complete_effect = {
+			custom_effect_tooltip = time_traveler_revise_tt
+			hidden_effect = {
+				time_traveler_pay_revise = yes
+				country_event = { id = chaosx.nr30.14 }
+			}
+		}
+		ai_will_do = {
+			base = constant:time_traveler_ai.blocked
+			modifier = { add = constant:time_traveler_ai.low time_traveler_arrangement_is_secret = yes time_traveler_exposure_is_public = yes }
+			modifier = { add = constant:time_traveler_ai.low time_traveler_arrangement_is_confinement = yes time_traveler_credibility_is_indispensable = yes }
+			modifier = { add = constant:time_traveler_ai.low time_traveler_arrangement_is_cabinet = yes time_traveler_exposure_is_public = yes has_war = yes }
+		}
+	}
+
+	time_traveler_relocate = {
+		icon = GFX_decision_time_traveler_relocate_traveler
+		priority = 80
+		visible = {
+			time_traveler_has_direct_access = yes
+			time_traveler_exposure_is_suspected_or_higher = yes
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = time_traveler_relocate_requirements_tt
+				time_traveler_can_relocate = yes
+				NOT = { has_country_flag = time_traveler_relocation_cooldown }
+			}
+		}
+		custom_cost_trigger = { time_traveler_can_pay_relocate = yes }
+		custom_cost_text = time_traveler_cost_relocate
+		complete_effect = {
+			custom_effect_tooltip = time_traveler_relocate_tt
+			hidden_effect = { time_traveler_do_relocate = yes }
+		}
+		ai_will_do = {
+			base = constant:time_traveler_ai.blocked
+			modifier = { add = constant:time_traveler_ai.standard time_traveler_exposure_is_public = yes }
+			modifier = { add = constant:time_traveler_ai.standard time_traveler_has_stingable_country = yes }
+			modifier = { factor = constant:time_traveler_ai.blocked has_equipment = { support_equipment < constant:time_traveler_ai.support_floor } }
+		}
+	}
+
+	time_traveler_guard = {
+		icon = GFX_decision_time_traveler_guard_detail
+		priority = 70
+		visible = {
+			time_traveler_has_direct_access = yes
+			time_traveler_exposure_is_suspected_or_higher = yes
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = time_traveler_guard_requirements_tt
+				NOT = { has_country_flag = time_traveler_guard_detail }
+				NOT = { has_country_flag = time_traveler_guard_cooldown }
+			}
+		}
+		custom_cost_trigger = { time_traveler_can_pay_guard = yes }
+		custom_cost_text = time_traveler_cost_guard
+		complete_effect = {
+			custom_effect_tooltip = time_traveler_guard_tt
+			hidden_effect = { time_traveler_do_guard = yes }
+		}
+		ai_will_do = {
+			base = constant:time_traveler_ai.blocked
+			modifier = { add = constant:time_traveler_ai.strong time_traveler_exposure_is_public = yes }
+			modifier = { add = constant:time_traveler_ai.standard time_traveler_has_stingable_country = yes }
+			modifier = { factor = constant:time_traveler_ai.blocked has_equipment = { support_equipment < constant:time_traveler_ai.support_floor } }
+		}
+	}
+
+	time_traveler_sting = {
+		icon = GFX_decision_time_traveler_counterintelligence_sting
+		priority = 60
+		target_array = global.time_traveler_interest
+		target_root_trigger = {
+			time_traveler_has_direct_access = yes
+		}
+		target_trigger = {
+			FROM = {
+				exists = yes
+				time_traveler_is_interested = yes
+			}
+		}
+		visible = {
+			time_traveler_has_direct_access = yes
+			time_traveler_exposure_is_suspected_or_higher = yes
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = time_traveler_sting_requirements_tt
+				NOT = { has_country_flag = time_traveler_sting_cooldown }
+			}
+		}
+		custom_cost_trigger = { time_traveler_can_pay_sting = yes }
+		custom_cost_text = time_traveler_cost_sting
+		complete_effect = {
+			custom_effect_tooltip = time_traveler_sting_tt
+			hidden_effect = { time_traveler_do_sting = yes }
+		}
+		ai_will_do = {
+			base = constant:time_traveler_ai.blocked
+			modifier = { add = constant:time_traveler_ai.standard time_traveler_exposure_is_suspected_or_higher = yes }
+			modifier = { add = constant:time_traveler_ai.standard time_traveler_exposure_is_public = yes }
+			modifier = { add = constant:time_traveler_ai.standard FROM = { check_variable = { time_traveler_network > constant:time_traveler_value.one } } }
+			modifier = { factor = constant:time_traveler_ai.blocked has_equipment = { support_equipment < constant:time_traveler_ai.support_floor } }
+		}
+	}
+
+	time_traveler_share = {
+		icon = GFX_decision_time_traveler_share_forecast
+		priority = 50
+		target_root_trigger = {
+			time_traveler_has_direct_access = yes
+			check_variable = { time_traveler_shareable > constant:time_traveler_value.zero }
+		}
+		target_trigger = {
+			FROM = {
+				exists = yes
+				is_special_chaos_country = no
+				is_in_faction_with = ROOT
+				NOT = { has_idea = time_traveler_future_fragment }
+			}
+		}
+		visible = {
+			time_traveler_has_direct_access = yes
+			check_variable = { time_traveler_shareable > constant:time_traveler_value.zero }
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = time_traveler_share_requirements_tt
+				NOT = { has_country_flag = time_traveler_share_cooldown }
+			}
+		}
+		custom_cost_trigger = { time_traveler_can_pay_share = yes }
+		custom_cost_text = time_traveler_cost_share
+		complete_effect = {
+			custom_effect_tooltip = time_traveler_share_tt
+			hidden_effect = { time_traveler_do_share = yes }
+		}
+		ai_will_do = {
+			base = constant:time_traveler_ai.blocked
+			modifier = { add = constant:time_traveler_ai.standard has_war = yes }
+			modifier = { add = constant:time_traveler_ai.low time_traveler_credibility_is_at_least_trusted = yes }
+			modifier = { factor = constant:time_traveler_ai.blocked time_traveler_arrangement_is_secret = yes }
+		}
+	}
+
+	# ------------------------------------------------------------------------
+	# Consultation missions. One shell per kind of objective. Each completes by
+	# itself when the objective is observed.
+	# ------------------------------------------------------------------------
+
+	time_traveler_mission_garrison = {
+		icon = GFX_decision_time_traveler_military_forecast
+		days_mission_timeout = constant:time_traveler_timing.mission_military_days
+		selectable_mission = no
+		fire_only_once = no
+		is_good = yes
+		activation = { always = no }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = time_traveler_mission_garrison_objective_tt
+				time_traveler_garrison_objective_met = yes
+			}
+		}
+		cancel_trigger = {
+			NOT = { check_variable = { time_traveler_c_kind = constant:time_traveler_kind.garrison } }
+		}
+		complete_effect = {
+			custom_effect_tooltip = time_traveler_mission_complete_tt
+			hidden_effect = { time_traveler_consultation_succeeded = yes }
+		}
+		timeout_effect = {
+			custom_effect_tooltip = time_traveler_mission_timeout_tt
+			hidden_effect = { time_traveler_consultation_timed_out = yes }
+		}
+	}
+
+	time_traveler_mission_build = {
+		icon = GFX_decision_time_traveler_industrial_bottleneck
+		days_mission_timeout = constant:time_traveler_timing.mission_industrial_days
+		selectable_mission = no
+		fire_only_once = no
+		is_good = yes
+		activation = { always = no }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = time_traveler_mission_build_objective_tt
+				time_traveler_build_objective_met = yes
+			}
+		}
+		cancel_trigger = {
+			NOT = { check_variable = { time_traveler_c_kind = constant:time_traveler_kind.build } }
+		}
+		complete_effect = {
+			custom_effect_tooltip = time_traveler_mission_complete_tt
+			hidden_effect = { time_traveler_consultation_succeeded = yes }
+		}
+		timeout_effect = {
+			custom_effect_tooltip = time_traveler_mission_timeout_tt
+			hidden_effect = { time_traveler_consultation_timed_out = yes }
+		}
+	}
+
+	time_traveler_mission_research = {
+		icon = GFX_decision_time_traveler_scientific_shortcut
+		days_mission_timeout = constant:time_traveler_timing.mission_scientific_days
+		selectable_mission = no
+		fire_only_once = no
+		is_good = yes
+		activation = { always = no }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = time_traveler_mission_research_objective_tt
+				time_traveler_research_objective_met = yes
+			}
+		}
+		cancel_trigger = {
+			NOT = { check_variable = { time_traveler_c_kind = constant:time_traveler_kind.research } }
+		}
+		complete_effect = {
+			custom_effect_tooltip = time_traveler_mission_complete_tt
+			hidden_effect = { time_traveler_consultation_succeeded = yes }
+		}
+		timeout_effect = {
+			custom_effect_tooltip = time_traveler_mission_timeout_tt
+			hidden_effect = { time_traveler_consultation_timed_out = yes }
+		}
+	}
+
+	time_traveler_mission_relation = {
+		icon = GFX_decision_time_traveler_diplomatic_forecast
+		days_mission_timeout = constant:time_traveler_timing.mission_diplomatic_days
+		selectable_mission = no
+		fire_only_once = no
+		is_good = yes
+		activation = { always = no }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = time_traveler_mission_relation_objective_tt
+				OR = {
+					AND = {
+						has_country_flag = time_traveler_pact_goal
+						time_traveler_pact_objective_met = yes
+					}
+					AND = {
+						NOT = { has_country_flag = time_traveler_pact_goal }
+						time_traveler_relation_objective_met = yes
+					}
+				}
+			}
+		}
+		cancel_trigger = {
+			NOT = { check_variable = { time_traveler_c_kind = constant:time_traveler_kind.relation } }
+		}
+		complete_effect = {
+			custom_effect_tooltip = time_traveler_mission_complete_tt
+			hidden_effect = { time_traveler_consultation_succeeded = yes }
+		}
+		timeout_effect = {
+			custom_effect_tooltip = time_traveler_mission_timeout_tt
+			hidden_effect = { time_traveler_consultation_timed_out = yes }
+		}
+	}
+}
+
+time_traveler_foreign_category = {
+
+	time_traveler_infiltrate = {
+		icon = GFX_decision_time_traveler_infiltrate_program
+		priority = 100
+		visible = { time_traveler_rival_can_infiltrate = yes }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = time_traveler_operation_requirements_tt
+				NOT = { has_country_flag = time_traveler_operation_cooldown }
+			}
+		}
+		custom_cost_trigger = { time_traveler_can_pay_infiltrate = yes }
+		custom_cost_text = time_traveler_cost_infiltrate
+		complete_effect = {
+			custom_effect_tooltip = time_traveler_infiltrate_tt
+			hidden_effect = {
+				time_traveler_pay_infiltrate = yes
+				time_traveler_set_operation_cooldown = yes
+				time_traveler_operation_infiltrate = yes
+			}
+		}
+		ai_will_do = { base = constant:time_traveler_ai.blocked }
+	}
+
+	time_traveler_forge = {
+		icon = GFX_decision_time_traveler_plant_forged_advice
+		priority = 90
+		visible = { time_traveler_rival_can_forge = yes }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = time_traveler_operation_requirements_tt
+				NOT = { has_country_flag = time_traveler_operation_cooldown }
+			}
+		}
+		custom_cost_trigger = { time_traveler_can_pay_forge = yes }
+		custom_cost_text = time_traveler_cost_forge
+		complete_effect = {
+			custom_effect_tooltip = time_traveler_forge_tt
+			hidden_effect = {
+				time_traveler_pay_forge = yes
+				time_traveler_set_operation_cooldown = yes
+				time_traveler_operation_forge = yes
+			}
+		}
+		ai_will_do = { base = constant:time_traveler_ai.blocked }
+	}
+
+	time_traveler_asylum = {
+		icon = GFX_decision_time_traveler_offer_asylum
+		priority = 80
+		visible = { time_traveler_rival_can_offer_asylum = yes }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = time_traveler_operation_requirements_tt
+				NOT = { has_country_flag = time_traveler_operation_cooldown }
+			}
+		}
+		custom_cost_trigger = { time_traveler_can_pay_asylum = yes }
+		custom_cost_text = time_traveler_cost_asylum
+		complete_effect = {
+			custom_effect_tooltip = time_traveler_asylum_tt
+			hidden_effect = {
+				time_traveler_pay_asylum = yes
+				time_traveler_set_operation_cooldown = yes
+				time_traveler_operation_asylum = yes
+			}
+		}
+		ai_will_do = { base = constant:time_traveler_ai.blocked }
+	}
+
+	time_traveler_seize = {
+		icon = GFX_decision_time_traveler_seize_traveler
+		priority = 70
+		visible = { time_traveler_rival_can_seize = yes }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = time_traveler_operation_requirements_tt
+				NOT = { has_country_flag = time_traveler_operation_cooldown }
+			}
+		}
+		custom_cost_trigger = { time_traveler_can_pay_seize = yes }
+		custom_cost_text = time_traveler_cost_seize
+		complete_effect = {
+			custom_effect_tooltip = time_traveler_seize_tt
+			hidden_effect = {
+				time_traveler_pay_seize = yes
+				time_traveler_set_operation_cooldown = yes
+				time_traveler_operation_seize = yes
+			}
+		}
+		ai_will_do = { base = constant:time_traveler_ai.blocked }
+	}
+}

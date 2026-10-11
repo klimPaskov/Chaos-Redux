@@ -1,0 +1,454 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 030 TIME TRAVELER SCRIPTED LOCALISATION
+# ============================================================================
+# Selectors only. Every word and every formatting code lives in
+# localisation/english/030_time_traveler_l_english.yml. The category header and
+# the consultation offer read the custodian's variables directly because both
+# are shown to the custodian only.
+# ============================================================================
+
+# Trait token of the traveler's profile, used by the advisor role.
+defined_text = {
+	name = GetTimeTravelerProfileToken
+	text = { trigger = { check_variable = { var = global.time_traveler_profile value = constant:time_traveler_profile.analyst compare = equals } } localization_key = time_traveler_profile_token_analyst }
+	text = { trigger = { check_variable = { var = global.time_traveler_profile value = constant:time_traveler_profile.engineer compare = equals } } localization_key = time_traveler_profile_token_engineer }
+	text = { localization_key = time_traveler_profile_token_historian }
+}
+
+defined_text = {
+	name = GetTimeTravelerArrangementName
+	text = { trigger = { check_variable = { var = time_traveler_arrangement value = constant:time_traveler_arrangement.cabinet compare = equals } } localization_key = time_traveler_arrangement_cabinet }
+	text = { trigger = { check_variable = { var = time_traveler_arrangement value = constant:time_traveler_arrangement.secret compare = equals } } localization_key = time_traveler_arrangement_secret }
+	text = { trigger = { check_variable = { var = time_traveler_arrangement value = constant:time_traveler_arrangement.confinement compare = equals } } localization_key = time_traveler_arrangement_confinement }
+	text = { trigger = { check_variable = { var = time_traveler_arrangement value = constant:time_traveler_arrangement.public compare = equals } } localization_key = time_traveler_arrangement_public }
+	text = { localization_key = time_traveler_arrangement_none }
+}
+
+defined_text = {
+	name = GetTimeTravelerCredibilityBand
+	text = { trigger = { time_traveler_credibility_is_doubted = yes } localization_key = time_traveler_band_doubted }
+	text = { trigger = { time_traveler_credibility_is_trusted = yes } localization_key = time_traveler_band_trusted }
+	text = { localization_key = time_traveler_band_indispensable }
+}
+
+defined_text = {
+	name = GetTimeTravelerExposureBand
+	text = { trigger = { time_traveler_exposure_is_secret = yes } localization_key = time_traveler_band_secret }
+	text = { trigger = { time_traveler_exposure_is_public = yes } localization_key = time_traveler_band_public }
+	text = { localization_key = time_traveler_band_suspected }
+}
+
+defined_text = {
+	name = GetTimeTravelerDivergenceBand
+	text = { trigger = { time_traveler_divergence_is_recognizable = yes } localization_key = time_traveler_band_recognizable }
+	text = { trigger = { time_traveler_divergence_is_altered = yes } localization_key = time_traveler_band_altered }
+	text = { localization_key = time_traveler_band_broken }
+}
+
+defined_text = {
+	name = GetTimeTravelerCredibilityEffect
+	text = { trigger = { time_traveler_credibility_is_doubted = yes } localization_key = time_traveler_credibility_effect_doubted }
+	text = { trigger = { time_traveler_credibility_is_trusted = yes } localization_key = time_traveler_credibility_effect_trusted }
+	text = { localization_key = time_traveler_credibility_effect_indispensable }
+}
+
+defined_text = {
+	name = GetTimeTravelerExposureEffect
+	text = { trigger = { time_traveler_exposure_is_secret = yes } localization_key = time_traveler_exposure_effect_secret }
+	text = { trigger = { time_traveler_exposure_is_public = yes } localization_key = time_traveler_exposure_effect_public }
+	text = { localization_key = time_traveler_exposure_effect_suspected }
+}
+
+defined_text = {
+	name = GetTimeTravelerDivergenceEffect
+	text = { trigger = { time_traveler_divergence_is_recognizable = yes } localization_key = time_traveler_divergence_effect_recognizable }
+	text = { trigger = { time_traveler_divergence_is_altered = yes } localization_key = time_traveler_divergence_effect_altered }
+	text = { localization_key = time_traveler_divergence_effect_broken }
+}
+
+defined_text = {
+	name = GetTimeTravelerStatusLine
+	text = { trigger = { has_country_flag = time_traveler_wounded } localization_key = time_traveler_status_wounded }
+	text = { trigger = { has_country_flag = time_traveler_relocating } localization_key = time_traveler_status_relocating }
+	text = { trigger = { check_variable = { var = global.time_traveler_status value = constant:time_traveler_status.choosing_access compare = equals } } localization_key = time_traveler_status_choosing }
+	text = { trigger = { has_country_flag = time_traveler_guard_detail } localization_key = time_traveler_status_guarded }
+	text = { localization_key = time_traveler_status_none }
+}
+
+defined_text = {
+	name = GetTimeTravelerRecent0
+	text = { trigger = { check_variable = { global.time_traveler_recent^num > 0 } check_variable = { var = global.time_traveler_recent^0 value = constant:time_traveler_cause_id.proof_verified compare = equals } } localization_key = time_traveler_cause_proof_verified }
+	text = { trigger = { check_variable = { global.time_traveler_recent^num > 0 } check_variable = { var = global.time_traveler_recent^0 value = constant:time_traveler_cause_id.opening_handling compare = equals } } localization_key = time_traveler_cause_opening_handling }
+	text = { trigger = { check_variable = { global.time_traveler_recent^num > 0 } check_variable = { var = global.time_traveler_recent^0 value = constant:time_traveler_cause_id.consultation_success compare = equals } } localization_key = time_traveler_cause_consultation_success }
+	text = { trigger = { check_variable = { global.time_traveler_recent^num > 0 } check_variable = { var = global.time_traveler_recent^0 value = constant:time_traveler_cause_id.consultation_partial compare = equals } } localization_key = time_traveler_cause_consultation_partial }
+	text = { trigger = { check_variable = { global.time_traveler_recent^num > 0 } check_variable = { var = global.time_traveler_recent^0 value = constant:time_traveler_cause_id.failed_timeline compare = equals } } localization_key = time_traveler_cause_failed_timeline }
+	text = { trigger = { check_variable = { global.time_traveler_recent^num > 0 } check_variable = { var = global.time_traveler_recent^0 value = constant:time_traveler_cause_id.failed_forgery compare = equals } } localization_key = time_traveler_cause_failed_forgery }
+	text = { trigger = { check_variable = { global.time_traveler_recent^num > 0 } check_variable = { var = global.time_traveler_recent^0 value = constant:time_traveler_cause_id.failed_ignored compare = equals } } localization_key = time_traveler_cause_failed_ignored }
+	text = { trigger = { check_variable = { global.time_traveler_recent^num > 0 } check_variable = { var = global.time_traveler_recent^0 value = constant:time_traveler_cause_id.forgery_exposed compare = equals } } localization_key = time_traveler_cause_forgery_exposed }
+	text = { trigger = { check_variable = { global.time_traveler_recent^num > 0 } check_variable = { var = global.time_traveler_recent^0 value = constant:time_traveler_cause_id.forgery_acted compare = equals } } localization_key = time_traveler_cause_forgery_acted }
+	text = { trigger = { check_variable = { global.time_traveler_recent^num > 0 } check_variable = { var = global.time_traveler_recent^0 value = constant:time_traveler_cause_id.rival_belief compare = equals } } localization_key = time_traveler_cause_rival_belief }
+	text = { trigger = { check_variable = { global.time_traveler_recent^num > 0 } check_variable = { var = global.time_traveler_recent^0 value = constant:time_traveler_cause_id.leak compare = equals } } localization_key = time_traveler_cause_leak }
+	text = { trigger = { check_variable = { global.time_traveler_recent^num > 0 } check_variable = { var = global.time_traveler_recent^0 value = constant:time_traveler_cause_id.relocation compare = equals } } localization_key = time_traveler_cause_relocation }
+	text = { trigger = { check_variable = { global.time_traveler_recent^num > 0 } check_variable = { var = global.time_traveler_recent^0 value = constant:time_traveler_cause_id.guard compare = equals } } localization_key = time_traveler_cause_guard }
+	text = { trigger = { check_variable = { global.time_traveler_recent^num > 0 } check_variable = { var = global.time_traveler_recent^0 value = constant:time_traveler_cause_id.sting compare = equals } } localization_key = time_traveler_cause_sting }
+	text = { trigger = { check_variable = { global.time_traveler_recent^num > 0 } check_variable = { var = global.time_traveler_recent^0 value = constant:time_traveler_cause_id.staff_copy compare = equals } } localization_key = time_traveler_cause_staff_copy }
+	text = { trigger = { check_variable = { global.time_traveler_recent^num > 0 } check_variable = { var = global.time_traveler_recent^0 value = constant:time_traveler_cause_id.shared_forecast compare = equals } } localization_key = time_traveler_cause_shared_forecast }
+	text = { trigger = { check_variable = { global.time_traveler_recent^num > 0 } check_variable = { var = global.time_traveler_recent^0 value = constant:time_traveler_cause_id.arrangement compare = equals } } localization_key = time_traveler_cause_arrangement }
+	text = { trigger = { check_variable = { global.time_traveler_recent^num > 0 } check_variable = { var = global.time_traveler_recent^0 value = constant:time_traveler_cause_id.public_floor compare = equals } } localization_key = time_traveler_cause_public_floor }
+	text = { trigger = { check_variable = { global.time_traveler_recent^num > 0 } check_variable = { var = global.time_traveler_recent^0 value = constant:time_traveler_cause_id.theft compare = equals } } localization_key = time_traveler_cause_theft }
+	text = { trigger = { check_variable = { global.time_traveler_recent^num > 0 } check_variable = { var = global.time_traveler_recent^0 value = constant:time_traveler_cause_id.rumor_scientists compare = equals } } localization_key = time_traveler_cause_rumor_scientists }
+	text = { trigger = { check_variable = { global.time_traveler_recent^num > 0 } check_variable = { var = global.time_traveler_recent^0 value = constant:time_traveler_cause_id.rumor_officers compare = equals } } localization_key = time_traveler_cause_rumor_officers }
+	text = { trigger = { check_variable = { global.time_traveler_recent^num > 0 } check_variable = { var = global.time_traveler_recent^0 value = constant:time_traveler_cause_id.rumor_press compare = equals } } localization_key = time_traveler_cause_rumor_press }
+	text = { trigger = { check_variable = { global.time_traveler_recent^num > 0 } check_variable = { var = global.time_traveler_recent^0 value = constant:time_traveler_cause_id.rumor_diplomats compare = equals } } localization_key = time_traveler_cause_rumor_diplomats }
+	text = { trigger = { check_variable = { global.time_traveler_recent^num > 0 } check_variable = { var = global.time_traveler_recent^0 value = constant:time_traveler_cause_id.rumor_industry compare = equals } } localization_key = time_traveler_cause_rumor_industry }
+	text = { trigger = { check_variable = { global.time_traveler_recent^num > 0 } check_variable = { var = global.time_traveler_recent^0 value = constant:time_traveler_cause_id.rumor_opposition compare = equals } } localization_key = time_traveler_cause_rumor_opposition }
+	text = { trigger = { check_variable = { global.time_traveler_recent^num > 0 } check_variable = { var = global.time_traveler_recent^0 value = constant:time_traveler_cause_id.transfer compare = equals } } localization_key = time_traveler_cause_transfer }
+	text = { trigger = { check_variable = { global.time_traveler_recent^num > 0 } check_variable = { var = global.time_traveler_recent^0 value = constant:time_traveler_cause_id.remembered_war compare = equals } } localization_key = time_traveler_cause_remembered_war }
+	text = { trigger = { check_variable = { global.time_traveler_recent^num > 0 } check_variable = { var = global.time_traveler_recent^0 value = constant:time_traveler_cause_id.refusal compare = equals } } localization_key = time_traveler_cause_refusal }
+	text = { trigger = { check_variable = { global.time_traveler_recent^num > 0 } check_variable = { var = global.time_traveler_recent^0 value = constant:time_traveler_cause_id.secret_breach compare = equals } } localization_key = time_traveler_cause_secret_breach }
+	text = { trigger = { check_variable = { global.time_traveler_recent^num > 0 } check_variable = { var = global.time_traveler_recent^0 value = constant:time_traveler_cause_id.counterintelligence compare = equals } } localization_key = time_traveler_cause_counterintelligence }
+	text = { localization_key = time_traveler_cause_empty }
+}
+
+defined_text = {
+	name = GetTimeTravelerRecent1
+	text = { trigger = { check_variable = { global.time_traveler_recent^num > 1 } check_variable = { var = global.time_traveler_recent^1 value = constant:time_traveler_cause_id.proof_verified compare = equals } } localization_key = time_traveler_cause_proof_verified }
+	text = { trigger = { check_variable = { global.time_traveler_recent^num > 1 } check_variable = { var = global.time_traveler_recent^1 value = constant:time_traveler_cause_id.opening_handling compare = equals } } localization_key = time_traveler_cause_opening_handling }
+	text = { trigger = { check_variable = { global.time_traveler_recent^num > 1 } check_variable = { var = global.time_traveler_recent^1 value = constant:time_traveler_cause_id.consultation_success compare = equals } } localization_key = time_traveler_cause_consultation_success }
+	text = { trigger = { check_variable = { global.time_traveler_recent^num > 1 } check_variable = { var = global.time_traveler_recent^1 value = constant:time_traveler_cause_id.consultation_partial compare = equals } } localization_key = time_traveler_cause_consultation_partial }
+	text = { trigger = { check_variable = { global.time_traveler_recent^num > 1 } check_variable = { var = global.time_traveler_recent^1 value = constant:time_traveler_cause_id.failed_timeline compare = equals } } localization_key = time_traveler_cause_failed_timeline }
+	text = { trigger = { check_variable = { global.time_traveler_recent^num > 1 } check_variable = { var = global.time_traveler_recent^1 value = constant:time_traveler_cause_id.failed_forgery compare = equals } } localization_key = time_traveler_cause_failed_forgery }
+	text = { trigger = { check_variable = { global.time_traveler_recent^num > 1 } check_variable = { var = global.time_traveler_recent^1 value = constant:time_traveler_cause_id.failed_ignored compare = equals } } localization_key = time_traveler_cause_failed_ignored }
+	text = { trigger = { check_variable = { global.time_traveler_recent^num > 1 } check_variable = { var = global.time_traveler_recent^1 value = constant:time_traveler_cause_id.forgery_exposed compare = equals } } localization_key = time_traveler_cause_forgery_exposed }
+	text = { trigger = { check_variable = { global.time_traveler_recent^num > 1 } check_variable = { var = global.time_traveler_recent^1 value = constant:time_traveler_cause_id.forgery_acted compare = equals } } localization_key = time_traveler_cause_forgery_acted }
+	text = { trigger = { check_variable = { global.time_traveler_recent^num > 1 } check_variable = { var = global.time_traveler_recent^1 value = constant:time_traveler_cause_id.rival_belief compare = equals } } localization_key = time_traveler_cause_rival_belief }
+	text = { trigger = { check_variable = { global.time_traveler_recent^num > 1 } check_variable = { var = global.time_traveler_recent^1 value = constant:time_traveler_cause_id.leak compare = equals } } localization_key = time_traveler_cause_leak }
+	text = { trigger = { check_variable = { global.time_traveler_recent^num > 1 } check_variable = { var = global.time_traveler_recent^1 value = constant:time_traveler_cause_id.relocation compare = equals } } localization_key = time_traveler_cause_relocation }
+	text = { trigger = { check_variable = { global.time_traveler_recent^num > 1 } check_variable = { var = global.time_traveler_recent^1 value = constant:time_traveler_cause_id.guard compare = equals } } localization_key = time_traveler_cause_guard }
+	text = { trigger = { check_variable = { global.time_traveler_recent^num > 1 } check_variable = { var = global.time_traveler_recent^1 value = constant:time_traveler_cause_id.sting compare = equals } } localization_key = time_traveler_cause_sting }
+	text = { trigger = { check_variable = { global.time_traveler_recent^num > 1 } check_variable = { var = global.time_traveler_recent^1 value = constant:time_traveler_cause_id.staff_copy compare = equals } } localization_key = time_traveler_cause_staff_copy }
+	text = { trigger = { check_variable = { global.time_traveler_recent^num > 1 } check_variable = { var = global.time_traveler_recent^1 value = constant:time_traveler_cause_id.shared_forecast compare = equals } } localization_key = time_traveler_cause_shared_forecast }
+	text = { trigger = { check_variable = { global.time_traveler_recent^num > 1 } check_variable = { var = global.time_traveler_recent^1 value = constant:time_traveler_cause_id.arrangement compare = equals } } localization_key = time_traveler_cause_arrangement }
+	text = { trigger = { check_variable = { global.time_traveler_recent^num > 1 } check_variable = { var = global.time_traveler_recent^1 value = constant:time_traveler_cause_id.public_floor compare = equals } } localization_key = time_traveler_cause_public_floor }
+	text = { trigger = { check_variable = { global.time_traveler_recent^num > 1 } check_variable = { var = global.time_traveler_recent^1 value = constant:time_traveler_cause_id.theft compare = equals } } localization_key = time_traveler_cause_theft }
+	text = { trigger = { check_variable = { global.time_traveler_recent^num > 1 } check_variable = { var = global.time_traveler_recent^1 value = constant:time_traveler_cause_id.rumor_scientists compare = equals } } localization_key = time_traveler_cause_rumor_scientists }
+	text = { trigger = { check_variable = { global.time_traveler_recent^num > 1 } check_variable = { var = global.time_traveler_recent^1 value = constant:time_traveler_cause_id.rumor_officers compare = equals } } localization_key = time_traveler_cause_rumor_officers }
+	text = { trigger = { check_variable = { global.time_traveler_recent^num > 1 } check_variable = { var = global.time_traveler_recent^1 value = constant:time_traveler_cause_id.rumor_press compare = equals } } localization_key = time_traveler_cause_rumor_press }
+	text = { trigger = { check_variable = { global.time_traveler_recent^num > 1 } check_variable = { var = global.time_traveler_recent^1 value = constant:time_traveler_cause_id.rumor_diplomats compare = equals } } localization_key = time_traveler_cause_rumor_diplomats }
+	text = { trigger = { check_variable = { global.time_traveler_recent^num > 1 } check_variable = { var = global.time_traveler_recent^1 value = constant:time_traveler_cause_id.rumor_industry compare = equals } } localization_key = time_traveler_cause_rumor_industry }
+	text = { trigger = { check_variable = { global.time_traveler_recent^num > 1 } check_variable = { var = global.time_traveler_recent^1 value = constant:time_traveler_cause_id.rumor_opposition compare = equals } } localization_key = time_traveler_cause_rumor_opposition }
+	text = { trigger = { check_variable = { global.time_traveler_recent^num > 1 } check_variable = { var = global.time_traveler_recent^1 value = constant:time_traveler_cause_id.transfer compare = equals } } localization_key = time_traveler_cause_transfer }
+	text = { trigger = { check_variable = { global.time_traveler_recent^num > 1 } check_variable = { var = global.time_traveler_recent^1 value = constant:time_traveler_cause_id.remembered_war compare = equals } } localization_key = time_traveler_cause_remembered_war }
+	text = { trigger = { check_variable = { global.time_traveler_recent^num > 1 } check_variable = { var = global.time_traveler_recent^1 value = constant:time_traveler_cause_id.refusal compare = equals } } localization_key = time_traveler_cause_refusal }
+	text = { trigger = { check_variable = { global.time_traveler_recent^num > 1 } check_variable = { var = global.time_traveler_recent^1 value = constant:time_traveler_cause_id.secret_breach compare = equals } } localization_key = time_traveler_cause_secret_breach }
+	text = { trigger = { check_variable = { global.time_traveler_recent^num > 1 } check_variable = { var = global.time_traveler_recent^1 value = constant:time_traveler_cause_id.counterintelligence compare = equals } } localization_key = time_traveler_cause_counterintelligence }
+	text = { localization_key = time_traveler_cause_empty }
+}
+
+defined_text = {
+	name = GetTimeTravelerRecent2
+	text = { trigger = { check_variable = { global.time_traveler_recent^num > 2 } check_variable = { var = global.time_traveler_recent^2 value = constant:time_traveler_cause_id.proof_verified compare = equals } } localization_key = time_traveler_cause_proof_verified }
+	text = { trigger = { check_variable = { global.time_traveler_recent^num > 2 } check_variable = { var = global.time_traveler_recent^2 value = constant:time_traveler_cause_id.opening_handling compare = equals } } localization_key = time_traveler_cause_opening_handling }
+	text = { trigger = { check_variable = { global.time_traveler_recent^num > 2 } check_variable = { var = global.time_traveler_recent^2 value = constant:time_traveler_cause_id.consultation_success compare = equals } } localization_key = time_traveler_cause_consultation_success }
+	text = { trigger = { check_variable = { global.time_traveler_recent^num > 2 } check_variable = { var = global.time_traveler_recent^2 value = constant:time_traveler_cause_id.consultation_partial compare = equals } } localization_key = time_traveler_cause_consultation_partial }
+	text = { trigger = { check_variable = { global.time_traveler_recent^num > 2 } check_variable = { var = global.time_traveler_recent^2 value = constant:time_traveler_cause_id.failed_timeline compare = equals } } localization_key = time_traveler_cause_failed_timeline }
+	text = { trigger = { check_variable = { global.time_traveler_recent^num > 2 } check_variable = { var = global.time_traveler_recent^2 value = constant:time_traveler_cause_id.failed_forgery compare = equals } } localization_key = time_traveler_cause_failed_forgery }
+	text = { trigger = { check_variable = { global.time_traveler_recent^num > 2 } check_variable = { var = global.time_traveler_recent^2 value = constant:time_traveler_cause_id.failed_ignored compare = equals } } localization_key = time_traveler_cause_failed_ignored }
+	text = { trigger = { check_variable = { global.time_traveler_recent^num > 2 } check_variable = { var = global.time_traveler_recent^2 value = constant:time_traveler_cause_id.forgery_exposed compare = equals } } localization_key = time_traveler_cause_forgery_exposed }
+	text = { trigger = { check_variable = { global.time_traveler_recent^num > 2 } check_variable = { var = global.time_traveler_recent^2 value = constant:time_traveler_cause_id.forgery_acted compare = equals } } localization_key = time_traveler_cause_forgery_acted }
+	text = { trigger = { check_variable = { global.time_traveler_recent^num > 2 } check_variable = { var = global.time_traveler_recent^2 value = constant:time_traveler_cause_id.rival_belief compare = equals } } localization_key = time_traveler_cause_rival_belief }
+	text = { trigger = { check_variable = { global.time_traveler_recent^num > 2 } check_variable = { var = global.time_traveler_recent^2 value = constant:time_traveler_cause_id.leak compare = equals } } localization_key = time_traveler_cause_leak }
+	text = { trigger = { check_variable = { global.time_traveler_recent^num > 2 } check_variable = { var = global.time_traveler_recent^2 value = constant:time_traveler_cause_id.relocation compare = equals } } localization_key = time_traveler_cause_relocation }
+	text = { trigger = { check_variable = { global.time_traveler_recent^num > 2 } check_variable = { var = global.time_traveler_recent^2 value = constant:time_traveler_cause_id.guard compare = equals } } localization_key = time_traveler_cause_guard }
+	text = { trigger = { check_variable = { global.time_traveler_recent^num > 2 } check_variable = { var = global.time_traveler_recent^2 value = constant:time_traveler_cause_id.sting compare = equals } } localization_key = time_traveler_cause_sting }
+	text = { trigger = { check_variable = { global.time_traveler_recent^num > 2 } check_variable = { var = global.time_traveler_recent^2 value = constant:time_traveler_cause_id.staff_copy compare = equals } } localization_key = time_traveler_cause_staff_copy }
+	text = { trigger = { check_variable = { global.time_traveler_recent^num > 2 } check_variable = { var = global.time_traveler_recent^2 value = constant:time_traveler_cause_id.shared_forecast compare = equals } } localization_key = time_traveler_cause_shared_forecast }
+	text = { trigger = { check_variable = { global.time_traveler_recent^num > 2 } check_variable = { var = global.time_traveler_recent^2 value = constant:time_traveler_cause_id.arrangement compare = equals } } localization_key = time_traveler_cause_arrangement }
+	text = { trigger = { check_variable = { global.time_traveler_recent^num > 2 } check_variable = { var = global.time_traveler_recent^2 value = constant:time_traveler_cause_id.public_floor compare = equals } } localization_key = time_traveler_cause_public_floor }
+	text = { trigger = { check_variable = { global.time_traveler_recent^num > 2 } check_variable = { var = global.time_traveler_recent^2 value = constant:time_traveler_cause_id.theft compare = equals } } localization_key = time_traveler_cause_theft }
+	text = { trigger = { check_variable = { global.time_traveler_recent^num > 2 } check_variable = { var = global.time_traveler_recent^2 value = constant:time_traveler_cause_id.rumor_scientists compare = equals } } localization_key = time_traveler_cause_rumor_scientists }
+	text = { trigger = { check_variable = { global.time_traveler_recent^num > 2 } check_variable = { var = global.time_traveler_recent^2 value = constant:time_traveler_cause_id.rumor_officers compare = equals } } localization_key = time_traveler_cause_rumor_officers }
+	text = { trigger = { check_variable = { global.time_traveler_recent^num > 2 } check_variable = { var = global.time_traveler_recent^2 value = constant:time_traveler_cause_id.rumor_press compare = equals } } localization_key = time_traveler_cause_rumor_press }
+	text = { trigger = { check_variable = { global.time_traveler_recent^num > 2 } check_variable = { var = global.time_traveler_recent^2 value = constant:time_traveler_cause_id.rumor_diplomats compare = equals } } localization_key = time_traveler_cause_rumor_diplomats }
+	text = { trigger = { check_variable = { global.time_traveler_recent^num > 2 } check_variable = { var = global.time_traveler_recent^2 value = constant:time_traveler_cause_id.rumor_industry compare = equals } } localization_key = time_traveler_cause_rumor_industry }
+	text = { trigger = { check_variable = { global.time_traveler_recent^num > 2 } check_variable = { var = global.time_traveler_recent^2 value = constant:time_traveler_cause_id.rumor_opposition compare = equals } } localization_key = time_traveler_cause_rumor_opposition }
+	text = { trigger = { check_variable = { global.time_traveler_recent^num > 2 } check_variable = { var = global.time_traveler_recent^2 value = constant:time_traveler_cause_id.transfer compare = equals } } localization_key = time_traveler_cause_transfer }
+	text = { trigger = { check_variable = { global.time_traveler_recent^num > 2 } check_variable = { var = global.time_traveler_recent^2 value = constant:time_traveler_cause_id.remembered_war compare = equals } } localization_key = time_traveler_cause_remembered_war }
+	text = { trigger = { check_variable = { global.time_traveler_recent^num > 2 } check_variable = { var = global.time_traveler_recent^2 value = constant:time_traveler_cause_id.refusal compare = equals } } localization_key = time_traveler_cause_refusal }
+	text = { trigger = { check_variable = { global.time_traveler_recent^num > 2 } check_variable = { var = global.time_traveler_recent^2 value = constant:time_traveler_cause_id.secret_breach compare = equals } } localization_key = time_traveler_cause_secret_breach }
+	text = { trigger = { check_variable = { global.time_traveler_recent^num > 2 } check_variable = { var = global.time_traveler_recent^2 value = constant:time_traveler_cause_id.counterintelligence compare = equals } } localization_key = time_traveler_cause_counterintelligence }
+	text = { localization_key = time_traveler_cause_empty }
+}
+
+defined_text = {
+	name = GetTimeTravelerCustodianName
+	text = { trigger = { has_variable = global.time_traveler_custodian } localization_key = time_traveler_custodian_named }
+	text = { localization_key = time_traveler_custodian_none }
+}
+
+defined_text = {
+	name = GetTimeTravelerFamilyName
+	text = { trigger = { check_variable = { var = time_traveler_c_family value = constant:time_traveler_family.military compare = equals } } localization_key = time_traveler_family_military }
+	text = { trigger = { check_variable = { var = time_traveler_c_family value = constant:time_traveler_family.industrial compare = equals } } localization_key = time_traveler_family_industrial }
+	text = { trigger = { check_variable = { var = time_traveler_c_family value = constant:time_traveler_family.scientific compare = equals } } localization_key = time_traveler_family_scientific }
+	text = { trigger = { check_variable = { var = time_traveler_c_family value = constant:time_traveler_family.diplomatic compare = equals } } localization_key = time_traveler_family_diplomatic }
+	text = { trigger = { check_variable = { var = time_traveler_c_family value = constant:time_traveler_family.counterintelligence compare = equals } } localization_key = time_traveler_family_counterintelligence }
+	text = { localization_key = time_traveler_family_domestic }
+}
+
+defined_text = {
+	name = GetTimeTravelerOfferIntro
+	text = { trigger = { has_country_flag = time_traveler_pact_goal } localization_key = time_traveler_intro_pact }
+	text = { trigger = { has_country_flag = time_traveler_pacific_goal } localization_key = time_traveler_intro_pacific }
+	text = { trigger = { check_variable = { var = time_traveler_c_family value = constant:time_traveler_family.military compare = equals } } localization_key = time_traveler_intro_military }
+	text = { trigger = { check_variable = { var = time_traveler_c_family value = constant:time_traveler_family.industrial compare = equals } } localization_key = time_traveler_intro_industrial }
+	text = { trigger = { check_variable = { var = time_traveler_c_family value = constant:time_traveler_family.scientific compare = equals } } localization_key = time_traveler_intro_scientific }
+	text = { trigger = { check_variable = { var = time_traveler_c_family value = constant:time_traveler_family.diplomatic compare = equals } } localization_key = time_traveler_intro_diplomatic }
+	text = { trigger = { check_variable = { var = time_traveler_c_family value = constant:time_traveler_family.counterintelligence compare = equals } } localization_key = time_traveler_intro_counterintelligence }
+	text = { localization_key = time_traveler_intro_domestic }
+}
+
+defined_text = {
+	name = GetTimeTravelerObjectiveText
+	text = { trigger = { has_country_flag = time_traveler_pact_goal } localization_key = time_traveler_objective_pact }
+	text = { trigger = { has_country_flag = time_traveler_pacific_goal } localization_key = time_traveler_objective_pacific }
+	text = { trigger = { check_variable = { var = time_traveler_c_kind value = constant:time_traveler_kind.build compare = equals } } localization_key = time_traveler_objective_build }
+	text = { trigger = { check_variable = { var = time_traveler_c_kind value = constant:time_traveler_kind.research compare = equals } } localization_key = time_traveler_objective_research }
+	text = { trigger = { check_variable = { var = time_traveler_c_kind value = constant:time_traveler_kind.relation compare = equals } } localization_key = time_traveler_objective_relation }
+	text = { trigger = { check_variable = { var = time_traveler_c_family value = constant:time_traveler_family.counterintelligence compare = equals } } localization_key = time_traveler_objective_counterintelligence }
+	text = { trigger = { check_variable = { var = time_traveler_c_family value = constant:time_traveler_family.domestic compare = equals } } localization_key = time_traveler_objective_domestic }
+	text = { localization_key = time_traveler_objective_military }
+}
+
+defined_text = {
+	name = GetTimeTravelerTechName
+	text = { trigger = { check_variable = { var = time_traveler_c_tech value = constant:time_traveler_tech.fuel_silos compare = equals } } localization_key = time_traveler_tech_fuel_silos }
+	text = { trigger = { check_variable = { var = time_traveler_c_tech value = constant:time_traveler_tech.improved_machine_tools compare = equals } } localization_key = time_traveler_tech_improved_machine_tools }
+	text = { trigger = { check_variable = { var = time_traveler_c_tech value = constant:time_traveler_tech.advanced_machine_tools compare = equals } } localization_key = time_traveler_tech_advanced_machine_tools }
+	text = { trigger = { check_variable = { var = time_traveler_c_tech value = constant:time_traveler_tech.computing_machine compare = equals } } localization_key = time_traveler_tech_computing_machine }
+	text = { localization_key = time_traveler_tech_radio }
+}
+
+defined_text = {
+	name = GetTimeTravelerOfferReward
+	text = { trigger = { has_country_flag = time_traveler_pact_goal } localization_key = time_traveler_reward_pact }
+	text = { trigger = { check_variable = { var = time_traveler_c_family value = constant:time_traveler_family.military compare = equals } } localization_key = time_traveler_reward_military }
+	text = { trigger = { check_variable = { var = time_traveler_c_family value = constant:time_traveler_family.industrial compare = equals } } localization_key = time_traveler_reward_industrial }
+	text = { trigger = { check_variable = { var = time_traveler_c_family value = constant:time_traveler_family.scientific compare = equals } } localization_key = time_traveler_reward_scientific }
+	text = { trigger = { check_variable = { var = time_traveler_c_family value = constant:time_traveler_family.diplomatic compare = equals } } localization_key = time_traveler_reward_relation }
+	text = { trigger = { check_variable = { var = time_traveler_c_family value = constant:time_traveler_family.counterintelligence compare = equals } } localization_key = time_traveler_reward_counterintelligence }
+	text = { localization_key = time_traveler_reward_domestic }
+}
+
+defined_text = {
+	name = GetTimeTravelerPrecisionLine
+	text = { trigger = { time_traveler_divergence_is_recognizable = yes } localization_key = time_traveler_precision_recognizable }
+	text = { trigger = { time_traveler_divergence_is_altered = yes } localization_key = time_traveler_precision_altered }
+	text = { localization_key = time_traveler_precision_broken }
+}
+
+defined_text = {
+	name = GetTimeTravelerSpreadLine
+	text = { trigger = { has_country_flag = time_traveler_c_spread } localization_key = time_traveler_spread_yes }
+	text = { localization_key = time_traveler_spread_no }
+}
+
+defined_text = {
+	name = GetTimeTravelerPlainCost_xp
+	text = { trigger = { check_variable = { time_traveler_c_cost_xp > 0 } } localization_key = time_traveler_costplain_xp }
+	text = { localization_key = time_traveler_cost_empty }
+}
+
+defined_text = {
+	name = GetTimeTravelerPlainCost_command
+	text = { trigger = { check_variable = { time_traveler_c_cost_command > 0 } } localization_key = time_traveler_costplain_command }
+	text = { localization_key = time_traveler_cost_empty }
+}
+
+defined_text = {
+	name = GetTimeTravelerPlainCost_support
+	text = { trigger = { check_variable = { time_traveler_c_cost_support > 0 } } localization_key = time_traveler_costplain_support }
+	text = { localization_key = time_traveler_cost_empty }
+}
+
+defined_text = {
+	name = GetTimeTravelerPlainCost_fuel
+	text = { trigger = { check_variable = { time_traveler_c_cost_fuel > 0 } } localization_key = time_traveler_costplain_fuel }
+	text = { localization_key = time_traveler_cost_empty }
+}
+
+defined_text = {
+	name = GetTimeTravelerPlainCost_trains
+	text = { trigger = { check_variable = { time_traveler_c_cost_trains > 0 } } localization_key = time_traveler_costplain_trains }
+	text = { localization_key = time_traveler_cost_empty }
+}
+
+defined_text = {
+	name = GetTimeTravelerPlainCost_political
+	text = { trigger = { check_variable = { time_traveler_c_cost_political > 0 } } localization_key = time_traveler_costplain_political }
+	text = { localization_key = time_traveler_cost_empty }
+}
+
+defined_text = {
+	name = GetTimeTravelerAffordability
+	text = { trigger = { time_traveler_can_pay_consultation = yes } localization_key = time_traveler_cost_empty }
+	text = { localization_key = time_traveler_afford_no }
+}
+
+defined_text = {
+	name = GetTimeTravelerSuccessBody
+	text = { trigger = { check_variable = { var = time_traveler_c_family value = constant:time_traveler_family.military compare = equals } } localization_key = time_traveler_success_military }
+	text = { trigger = { check_variable = { var = time_traveler_c_family value = constant:time_traveler_family.industrial compare = equals } } localization_key = time_traveler_success_industrial }
+	text = { trigger = { check_variable = { var = time_traveler_c_family value = constant:time_traveler_family.scientific compare = equals } } localization_key = time_traveler_success_scientific }
+	text = { trigger = { check_variable = { var = time_traveler_c_family value = constant:time_traveler_family.diplomatic compare = equals } } localization_key = time_traveler_success_diplomatic }
+	text = { trigger = { check_variable = { var = time_traveler_c_family value = constant:time_traveler_family.counterintelligence compare = equals } } localization_key = time_traveler_success_counterintelligence }
+	text = { localization_key = time_traveler_success_domestic }
+}
+
+defined_text = {
+	name = GetTimeTravelerPartialBody
+	text = { trigger = { check_variable = { var = time_traveler_c_kind value = constant:time_traveler_kind.build compare = equals } } localization_key = time_traveler_partial_build }
+	text = { trigger = { check_variable = { var = time_traveler_c_kind value = constant:time_traveler_kind.research compare = equals } } localization_key = time_traveler_partial_research }
+	text = { trigger = { has_country_flag = time_traveler_pact_goal } localization_key = time_traveler_partial_pact }
+	text = { trigger = { check_variable = { var = time_traveler_c_kind value = constant:time_traveler_kind.relation compare = equals } } localization_key = time_traveler_partial_relation }
+	text = { localization_key = time_traveler_partial_garrison }
+}
+
+defined_text = {
+	name = GetTimeTravelerOpReportBody
+	text = { trigger = { check_variable = { time_traveler_last_op = constant:time_traveler_operation.infiltrate } check_variable = { time_traveler_last_op_result = -1 } } localization_key = time_traveler_op_infiltrate_exposed }
+	text = { trigger = { check_variable = { time_traveler_last_op = constant:time_traveler_operation.infiltrate } check_variable = { time_traveler_last_op_result = 1 } } localization_key = time_traveler_op_infiltrate_1 }
+	text = { trigger = { check_variable = { time_traveler_last_op = constant:time_traveler_operation.infiltrate } check_variable = { time_traveler_last_op_result = 2 } } localization_key = time_traveler_op_infiltrate_2 }
+	text = { trigger = { check_variable = { time_traveler_last_op = constant:time_traveler_operation.infiltrate } check_variable = { time_traveler_last_op_result = 3 } } localization_key = time_traveler_op_infiltrate_3 }
+	text = { trigger = { check_variable = { time_traveler_last_op = constant:time_traveler_operation.infiltrate } check_variable = { time_traveler_last_op_result = 0 } } localization_key = time_traveler_op_infiltrate_fail }
+	text = { trigger = { check_variable = { time_traveler_last_op = constant:time_traveler_operation.forge } check_variable = { time_traveler_last_op_result = 1 } } localization_key = time_traveler_op_forge_ok }
+	text = { trigger = { check_variable = { time_traveler_last_op = constant:time_traveler_operation.forge } check_variable = { time_traveler_last_op_result = -1 } } localization_key = time_traveler_op_forge_exposed }
+	text = { trigger = { check_variable = { time_traveler_last_op = constant:time_traveler_operation.forge } check_variable = { time_traveler_last_op_result = 0 } } localization_key = time_traveler_op_forge_fail }
+	text = { trigger = { check_variable = { time_traveler_last_op = constant:time_traveler_operation.asylum } check_variable = { time_traveler_last_op_result = 1 } } localization_key = time_traveler_op_asylum_ok }
+	text = { trigger = { check_variable = { time_traveler_last_op = constant:time_traveler_operation.asylum } check_variable = { time_traveler_last_op_result = 0 } } localization_key = time_traveler_op_asylum_fail }
+	text = { trigger = { check_variable = { time_traveler_last_op = constant:time_traveler_operation.seize } check_variable = { time_traveler_last_op_result = constant:time_traveler_seizure.double } } localization_key = time_traveler_op_seize_double }
+	text = { trigger = { check_variable = { time_traveler_last_op = constant:time_traveler_operation.seize } check_variable = { time_traveler_last_op_result = constant:time_traveler_seizure.wounded } } localization_key = time_traveler_op_seize_wounded }
+	text = { trigger = { check_variable = { time_traveler_last_op = constant:time_traveler_operation.seize } check_variable = { time_traveler_last_op_result = constant:time_traveler_seizure.transferred } } localization_key = time_traveler_op_seize_transferred }
+	text = { trigger = { check_variable = { time_traveler_last_op = constant:time_traveler_operation.seize } check_variable = { time_traveler_last_op_result = constant:time_traveler_seizure.exposed } } localization_key = time_traveler_op_seize_exposed }
+	text = { trigger = { check_variable = { time_traveler_last_op = constant:time_traveler_operation.seize } check_variable = { time_traveler_last_op_result = constant:time_traveler_seizure.vanished } } localization_key = time_traveler_op_seize_vanished }
+	text = { trigger = { check_variable = { time_traveler_last_op = constant:time_traveler_operation.seize } check_variable = { time_traveler_last_op_result = constant:time_traveler_seizure.assassinated } } localization_key = time_traveler_op_seize_assassinated }
+	text = { localization_key = time_traveler_op_seize_failed }
+}
+
+defined_text = {
+	name = GetTimeTravelerQuote_revise_political
+	text = { trigger = { NOT = { has_political_power < time_traveler_cost_revise_political } } localization_key = time_traveler_quote_revise_political_available }
+	text = { localization_key = time_traveler_quote_revise_political_blocked }
+}
+
+defined_text = {
+	name = GetTimeTravelerQuote_relocate_command
+	text = { trigger = { NOT = { check_variable = { command_power < time_traveler_cost_relocate_command } } } localization_key = time_traveler_quote_relocate_command_available }
+	text = { localization_key = time_traveler_quote_relocate_command_blocked }
+}
+
+defined_text = {
+	name = GetTimeTravelerQuote_relocate_support
+	text = { trigger = { NOT = { has_equipment = { support_equipment < time_traveler_cost_relocate_support } } } localization_key = time_traveler_quote_relocate_support_available }
+	text = { localization_key = time_traveler_quote_relocate_support_blocked }
+}
+
+defined_text = {
+	name = GetTimeTravelerQuote_relocate_fuel
+	text = { trigger = { NOT = { has_fuel < time_traveler_cost_relocate_fuel } } localization_key = time_traveler_quote_relocate_fuel_available }
+	text = { localization_key = time_traveler_quote_relocate_fuel_blocked }
+}
+
+defined_text = {
+	name = GetTimeTravelerQuote_guard_command
+	text = { trigger = { NOT = { check_variable = { command_power < time_traveler_cost_guard_command } } } localization_key = time_traveler_quote_guard_command_available }
+	text = { localization_key = time_traveler_quote_guard_command_blocked }
+}
+
+defined_text = {
+	name = GetTimeTravelerQuote_guard_support
+	text = { trigger = { NOT = { has_equipment = { support_equipment < time_traveler_cost_guard_support } } } localization_key = time_traveler_quote_guard_support_available }
+	text = { localization_key = time_traveler_quote_guard_support_blocked }
+}
+
+defined_text = {
+	name = GetTimeTravelerQuote_guard_manpower_k
+	text = { trigger = { NOT = { check_variable = { manpower_k < time_traveler_cost_guard_manpower_k } } } localization_key = time_traveler_quote_guard_manpower_k_available }
+	text = { localization_key = time_traveler_quote_guard_manpower_k_blocked }
+}
+
+defined_text = {
+	name = GetTimeTravelerQuote_sting_command
+	text = { trigger = { NOT = { check_variable = { command_power < time_traveler_cost_sting_command } } } localization_key = time_traveler_quote_sting_command_available }
+	text = { localization_key = time_traveler_quote_sting_command_blocked }
+}
+
+defined_text = {
+	name = GetTimeTravelerQuote_sting_support
+	text = { trigger = { NOT = { has_equipment = { support_equipment < time_traveler_cost_sting_support } } } localization_key = time_traveler_quote_sting_support_available }
+	text = { localization_key = time_traveler_quote_sting_support_blocked }
+}
+
+defined_text = {
+	name = GetTimeTravelerQuote_share_political
+	text = { trigger = { NOT = { has_political_power < time_traveler_cost_share_political } } localization_key = time_traveler_quote_share_political_available }
+	text = { localization_key = time_traveler_quote_share_political_blocked }
+}
+
+defined_text = {
+	name = GetTimeTravelerQuote_infiltrate_command
+	text = { trigger = { NOT = { check_variable = { command_power < time_traveler_cost_infiltrate_command } } } localization_key = time_traveler_quote_infiltrate_command_available }
+	text = { localization_key = time_traveler_quote_infiltrate_command_blocked }
+}
+
+defined_text = {
+	name = GetTimeTravelerQuote_infiltrate_support
+	text = { trigger = { NOT = { has_equipment = { support_equipment < time_traveler_cost_infiltrate_support } } } localization_key = time_traveler_quote_infiltrate_support_available }
+	text = { localization_key = time_traveler_quote_infiltrate_support_blocked }
+}
+
+defined_text = {
+	name = GetTimeTravelerQuote_forge_command
+	text = { trigger = { NOT = { check_variable = { command_power < time_traveler_cost_forge_command } } } localization_key = time_traveler_quote_forge_command_available }
+	text = { localization_key = time_traveler_quote_forge_command_blocked }
+}
+
+defined_text = {
+	name = GetTimeTravelerQuote_forge_political
+	text = { trigger = { NOT = { has_political_power < time_traveler_cost_forge_political } } localization_key = time_traveler_quote_forge_political_available }
+	text = { localization_key = time_traveler_quote_forge_political_blocked }
+}
+
+defined_text = {
+	name = GetTimeTravelerQuote_asylum_political
+	text = { trigger = { NOT = { has_political_power < time_traveler_cost_asylum_political } } localization_key = time_traveler_quote_asylum_political_available }
+	text = { localization_key = time_traveler_quote_asylum_political_blocked }
+}
+
+defined_text = {
+	name = GetTimeTravelerQuote_seize_command
+	text = { trigger = { NOT = { check_variable = { command_power < time_traveler_cost_seize_command } } } localization_key = time_traveler_quote_seize_command_available }
+	text = { localization_key = time_traveler_quote_seize_command_blocked }
+}
+
+defined_text = {
+	name = GetTimeTravelerQuote_seize_support
+	text = { trigger = { NOT = { has_equipment = { support_equipment < time_traveler_cost_seize_support } } } localization_key = time_traveler_quote_seize_support_available }
+	text = { localization_key = time_traveler_quote_seize_support_blocked }
+}
+
+defined_text = {
+	name = GetTimeTravelerQuote_seize_manpower_k
+	text = { trigger = { NOT = { check_variable = { manpower_k < time_traveler_cost_seize_manpower_k } } } localization_key = time_traveler_quote_seize_manpower_k_available }
+	text = { localization_key = time_traveler_quote_seize_manpower_k_blocked }
+}
+
+defined_text = {
+	name = GetTimeTravelerDeadlineLine
+	text = { localization_key = time_traveler_deadline_line }
+}
+
+defined_text = {
+	name = GetTimeTravelerDeadlineLineOffer
+	text = { localization_key = time_traveler_deadline_line_offer }
+}

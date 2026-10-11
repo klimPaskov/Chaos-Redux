@@ -1,0 +1,310 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 030 TIME TRAVELER FLOW EFFECTS
+# ============================================================================
+# The arrival, the verification chain, the access arrangements and the rumors.
+#
+# Flow (custodian scope throughout):
+#   chaosx.nr30.2   opening report, five ways to handle the visitor
+#   chaosx.nr30.10  first proof (a hidden project of the host)
+#   chaosx.nr30.11  second proof (a private conversation), then verification
+#   chaosx.nr30.13  choice of the access arrangement
+#   chaosx.nr30.12  the near-term forecast is checked against the world
+# The first two proofs are checked against the host's own state. The forecast
+# proof compares the world's Chaos with the value recorded when it was made.
+# ============================================================================
+
+# ---------------------------------------------------------------------------
+# Opening
+# ---------------------------------------------------------------------------
+
+# COUNTRY (custodian). Applies the opening handling. Input: temp
+# time_traveler_mode (constant:time_traveler_opening.*). Exposure follows how
+# many people the handling involves and Credibility how the visitor is treated.
+time_traveler_choose_opening = {
+	set_variable = { time_traveler_opening = time_traveler_mode }
+	set_temp_variable = { time_traveler_cause = constant:time_traveler_cause_id.opening_handling }
+	if = {
+		limit = { check_variable = { time_traveler_mode = constant:time_traveler_opening.dismiss } }
+		set_temp_variable = { time_traveler_amount = constant:time_traveler_exposure.opening_dismiss }
+		time_traveler_raise_exposure = yes
+		time_traveler_withdraw = yes
+	}
+	else = {
+		if = {
+			limit = { check_variable = { time_traveler_mode = constant:time_traveler_opening.hear } }
+			set_temp_variable = { time_traveler_amount = constant:time_traveler_exposure.opening_hear }
+		}
+		else_if = {
+			limit = { check_variable = { time_traveler_mode = constant:time_traveler_opening.detain } }
+			set_temp_variable = { time_traveler_amount = constant:time_traveler_exposure.opening_detain }
+		}
+		else_if = {
+			limit = { check_variable = { time_traveler_mode = constant:time_traveler_opening.isolate } }
+			set_temp_variable = { time_traveler_amount = constant:time_traveler_exposure.opening_isolate }
+		}
+		else = {
+			set_temp_variable = { time_traveler_amount = constant:time_traveler_exposure.opening_test }
+		}
+		time_traveler_raise_exposure = yes
+		if = {
+			limit = { check_variable = { time_traveler_mode = constant:time_traveler_opening.detain } }
+			set_temp_variable = { time_traveler_amount = constant:time_traveler_credibility.opening_detain_penalty }
+			set_temp_variable = { time_traveler_cause = constant:time_traveler_cause_id.opening_handling }
+			time_traveler_lower_credibility = yes
+		}
+		else_if = {
+			limit = { check_variable = { time_traveler_mode = constant:time_traveler_opening.test } }
+			set_temp_variable = { time_traveler_amount = constant:time_traveler_credibility.opening_test_bonus }
+			set_temp_variable = { time_traveler_cause = constant:time_traveler_cause_id.opening_handling }
+			time_traveler_raise_credibility = yes
+		}
+		set_variable = { global.time_traveler_status = constant:time_traveler_status.verifying }
+		set_variable = { time_traveler_stage = constant:time_traveler_stage.unverified }
+		time_traveler_apply_spirit = yes
+		if = {
+			limit = { has_country_flag = time_traveler_compressed }
+			set_temp_variable = { time_traveler_amount = constant:time_traveler_exposure.chaos_compression }
+			set_temp_variable = { time_traveler_cause = constant:time_traveler_cause_id.leak }
+			time_traveler_raise_exposure = yes
+		}
+		country_event = { id = chaosx.nr30.10 days = constant:time_traveler_timing.proof_one_days }
+		country_event = { id = chaosx.nr30.11 days = constant:time_traveler_timing.proof_two_days }
+	}
+}
+
+# COUNTRY (custodian). The visitor leaves after being turned away. Officials
+# have copied the first proof, a rumor escapes and the timeline starts to move.
+time_traveler_withdraw = {
+	set_variable = { global.time_traveler_status = constant:time_traveler_status.withdrawn }
+	set_variable = { global.time_traveler_outcome = constant:time_traveler_outcome.disappeared }
+	clr_country_flag = time_traveler_custodian
+	set_temp_variable = { time_traveler_amount = constant:time_traveler_divergence.refusal }
+	set_temp_variable = { time_traveler_cause = constant:time_traveler_cause_id.refusal }
+	time_traveler_raise_divergence = yes
+	country_event = { id = chaosx.nr30.15 days = constant:time_traveler_timing.report_delay_days }
+}
+
+# ---------------------------------------------------------------------------
+# Verification
+# ---------------------------------------------------------------------------
+
+# COUNTRY (custodian). One proof counted. Credibility rises with each.
+time_traveler_proof_passed = {
+	add_to_variable = { global.time_traveler_proofs = constant:time_traveler_value.one }
+	set_temp_variable = { time_traveler_amount = constant:time_traveler_credibility.proof_gain }
+	set_temp_variable = { time_traveler_cause = constant:time_traveler_cause_id.proof_verified }
+	time_traveler_raise_credibility = yes
+}
+
+# COUNTRY (custodian). Called by the second proof. Two proofs verify the
+# traveler and open the choice of an access arrangement. The forecast is
+# recorded here and checked after its window.
+time_traveler_complete_verification = {
+	if = {
+		limit = { check_variable = { global.time_traveler_proofs > constant:time_traveler_value.one } }
+		set_variable = { global.time_traveler_status = constant:time_traveler_status.choosing_access }
+		if = {
+			limit = { NOT = { has_country_flag = time_traveler_compressed } }
+			set_variable = { time_traveler_forecast_chaos = global.chaos_meter_value }
+			set_country_flag = time_traveler_forecast_open
+			country_event = { id = chaosx.nr30.12 days = constant:time_traveler_timing.proof_three_window_days }
+		}
+		country_event = { id = chaosx.nr30.13 days = constant:time_traveler_timing.access_choice_days }
+	}
+}
+
+# COUNTRY (custodian). Checks the recorded forecast against the world.
+time_traveler_resolve_forecast = {
+	clr_country_flag = time_traveler_forecast_open
+	if = {
+		limit = { check_variable = { global.chaos_meter_value > time_traveler_forecast_chaos } }
+		set_country_flag = time_traveler_forecast_correct
+		time_traveler_proof_passed = yes
+	}
+	else = {
+		clr_country_flag = time_traveler_forecast_correct
+		add_to_variable = { global.time_traveler_proofs_missed = constant:time_traveler_value.one }
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Access arrangements
+# ---------------------------------------------------------------------------
+
+# COUNTRY (custodian). Applies an access arrangement. Input: temp
+# time_traveler_arrangement_new. Works for the first choice and for a revision.
+time_traveler_apply_arrangement = {
+	set_variable = { time_traveler_arrangement = time_traveler_arrangement_new }
+	set_temp_variable = { time_traveler_cause = constant:time_traveler_cause_id.arrangement }
+	if = {
+		limit = { check_variable = { time_traveler_arrangement_new = constant:time_traveler_arrangement.public } }
+		time_traveler_set_public_floor = yes
+		add_political_power = constant:time_traveler_arrangement_value.public_political
+	}
+	if = {
+		limit = { check_variable = { time_traveler_arrangement_new = constant:time_traveler_arrangement.secret } }
+		set_country_flag = time_traveler_secret_program
+	}
+	else = { clr_country_flag = time_traveler_secret_program }
+	if = {
+		limit = { check_variable = { time_traveler_stage = constant:time_traveler_stage.unverified } }
+		set_variable = { time_traveler_stage = constant:time_traveler_stage.directed }
+		time_traveler_apply_spirit = yes
+	}
+}
+
+# COUNTRY (custodian). The first access: the character, the category, the first
+# offer and the chains that run for as long as the traveler is held.
+time_traveler_start_access = {
+	set_variable = { global.time_traveler_status = constant:time_traveler_status.active }
+	time_traveler_install_character = yes
+	time_traveler_refresh_costs = yes
+	if = {
+		limit = { brilliant_scientist_is_current_host = yes }
+		brilliant_scientist_try_schedule_time_traveler_contact = yes
+	}
+	country_event = { id = chaosx.nr30.20 days = constant:time_traveler_timing.first_offer_days }
+	time_traveler_rebuild_interest_registry = yes
+	time_traveler_schedule_rumor = yes
+}
+
+# COUNTRY (custodian). Public Recognition, or the first public revelation,
+# fixes Exposure at the Public band for the rest of the campaign.
+time_traveler_set_public_floor = {
+	if = {
+		limit = { NOT = { has_global_flag = time_traveler_public_floor } }
+		set_global_flag = time_traveler_public_floor
+		time_traveler_apply_exposure_floor = yes
+		set_temp_variable = { time_traveler_cause = constant:time_traveler_cause_id.public_floor }
+		time_traveler_record_cause = yes
+		time_traveler_public_revelation = yes
+	}
+}
+
+# COUNTRY (custodian). The first verified public revelation: one global Chaos
+# milestone, the foreign interest registry rebuilt and a news report.
+time_traveler_public_revelation = {
+	if = {
+		limit = { NOT = { has_global_flag = time_traveler_revelation_recorded } }
+		set_global_flag = time_traveler_revelation_recorded
+		set_temp_variable = { chaos_change = constant:time_traveler_chaos.revelation }
+		set_temp_variable = { chaos_history_reason = constant:chaos_meter_history_reason.special.time_traveler_revelation }
+		set_temp_variable = { chaos_history_reason_custom = constant:time_traveler_value.one }
+		add_chaos_meter_value = yes
+		save_event_target_as = time_traveler_news_country
+		news_event = { id = chaosx.news.300 days = constant:time_traveler_timing.report_delay_days }
+		time_traveler_rebuild_interest_registry = yes
+	}
+}
+
+# COUNTRY (custodian). Checks whether Exposure has reached the Public band.
+time_traveler_check_revelation = {
+	if = {
+		limit = {
+			time_traveler_exposure_is_public = yes
+			NOT = { has_global_flag = time_traveler_public_floor }
+		}
+		time_traveler_set_public_floor = yes
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Rumors
+# ---------------------------------------------------------------------------
+
+# COUNTRY (custodian). Schedules the next rumor. The interval is shorter at
+# higher Exposure and longer at lower, and jittered so rumors never line up.
+time_traveler_schedule_rumor = {
+	if = {
+		limit = { NOT = { has_country_flag = time_traveler_rumor_chain } }
+		set_country_flag = time_traveler_rumor_chain
+		set_temp_variable = { time_traveler_delay = constant:time_traveler_timing.rumor_first_days }
+		country_event = { id = chaosx.nr30.40 days = time_traveler_delay }
+	}
+}
+
+time_traveler_next_rumor = {
+	set_temp_variable = { time_traveler_delay = mtth:time_traveler_rumor_interval }
+	set_temp_variable_to_random = { var = time_traveler_jitter min = constant:time_traveler_interval.jitter_low max = constant:time_traveler_interval.jitter_high }
+	multiply_temp_variable = { time_traveler_delay = time_traveler_jitter }
+	round_temp_variable = time_traveler_delay
+	country_event = { id = chaosx.nr30.40 days = time_traveler_delay }
+}
+
+# COUNTRY (custodian). Fires one of the six rumor reports. The last rumor is
+# not repeated.
+time_traveler_fire_rumor = {
+	random_list = {
+		10 = {
+			modifier = { factor = 0 has_country_flag = time_traveler_last_rumor_scientists }
+			time_traveler_remember_rumor = yes
+			country_event = { id = chaosx.nr30.41 }
+		}
+		10 = {
+			modifier = { factor = 0 has_country_flag = time_traveler_last_rumor_officers }
+			time_traveler_remember_rumor = yes
+			country_event = { id = chaosx.nr30.42 }
+		}
+		10 = {
+			modifier = { factor = 0 has_country_flag = time_traveler_last_rumor_press }
+			time_traveler_remember_rumor = yes
+			country_event = { id = chaosx.nr30.43 }
+		}
+		10 = {
+			modifier = { factor = 0 has_country_flag = time_traveler_last_rumor_diplomats }
+			time_traveler_remember_rumor = yes
+			country_event = { id = chaosx.nr30.44 }
+		}
+		10 = {
+			modifier = { factor = 0 has_country_flag = time_traveler_last_rumor_industry }
+			time_traveler_remember_rumor = yes
+			country_event = { id = chaosx.nr30.45 }
+		}
+		10 = {
+			modifier = { factor = 0 has_country_flag = time_traveler_last_rumor_opposition }
+			time_traveler_remember_rumor = yes
+			country_event = { id = chaosx.nr30.46 }
+		}
+	}
+}
+
+# Clears the previous marker; each rumor event sets its own marker.
+time_traveler_remember_rumor = {
+	clr_country_flag = time_traveler_last_rumor_scientists
+	clr_country_flag = time_traveler_last_rumor_officers
+	clr_country_flag = time_traveler_last_rumor_press
+	clr_country_flag = time_traveler_last_rumor_diplomats
+	clr_country_flag = time_traveler_last_rumor_industry
+	clr_country_flag = time_traveler_last_rumor_opposition
+}
+
+# ---------------------------------------------------------------------------
+# Durable outcome
+# ---------------------------------------------------------------------------
+
+# COUNTRY (custodian). Sets the durable baseline outcome once three
+# consultations are complete, or when copies are spread over three countries.
+time_traveler_update_outcome = {
+	if = {
+		limit = {
+			check_variable = { global.time_traveler_outcome = constant:time_traveler_outcome.none }
+			NOT = { check_variable = { time_traveler_consults < constant:time_traveler_consultation.stage_distributed_count } }
+		}
+		if = {
+			limit = { time_traveler_arrangement_is_public = yes }
+			set_variable = { global.time_traveler_outcome = constant:time_traveler_outcome.public_figure }
+		}
+		else_if = {
+			limit = { time_traveler_arrangement_is_confinement = yes }
+			set_variable = { global.time_traveler_outcome = constant:time_traveler_outcome.confined_asset }
+		}
+		else = { set_variable = { global.time_traveler_outcome = constant:time_traveler_outcome.trusted_advisor } }
+	}
+	if = {
+		limit = {
+			NOT = { check_variable = { global.time_traveler_fragments < constant:time_traveler_value.three } }
+			NOT = { check_variable = { global.time_traveler_outcome = constant:time_traveler_outcome.dispersed } }
+		}
+		set_variable = { global.time_traveler_outcome = constant:time_traveler_outcome.dispersed }
+	}
+}

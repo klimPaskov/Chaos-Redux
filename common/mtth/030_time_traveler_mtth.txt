@@ -1,0 +1,131 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 030 TIME TRAVELER MTTH
+# ============================================================================
+# Pacing of the rumor chain (custodian) and of the AI rival turns (rival), and
+# the willingness of an AI custodian to choose each access arrangement.
+# Scores are weights, not click chances: a score of zero is never chosen and
+# the event's own AI roll decides among the rest. Each entry is read for the one
+# country already being evaluated, so no world scan is needed.
+# ============================================================================
+
+# Days between rumors on the custodian. More people near the secret and a
+# higher Exposure make rumors come sooner.
+time_traveler_rumor_interval = {
+	base = constant:time_traveler_timing.rumor_interval_days
+	modifier = {
+		factor = constant:time_traveler_interval.fast_factor
+		time_traveler_exposure_is_public = yes
+	}
+	modifier = {
+		factor = constant:time_traveler_interval.slow_factor
+		time_traveler_exposure_is_secret = yes
+	}
+	modifier = {
+		factor = constant:time_traveler_interval.fast_factor
+		time_traveler_arrangement_is_cabinet = yes
+	}
+	modifier = {
+		factor = constant:time_traveler_interval.slow_factor
+		time_traveler_arrangement_is_confinement = yes
+	}
+}
+
+# Days between turns of an AI rival.
+time_traveler_rival_interval = {
+	base = constant:time_traveler_timing.rival_interval_days
+	modifier = {
+		factor = constant:time_traveler_interval.fast_factor
+		var:global.time_traveler_custodian = { time_traveler_exposure_is_public = yes }
+	}
+	modifier = {
+		factor = constant:time_traveler_interval.slow_factor
+		var:global.time_traveler_custodian = { time_traveler_exposure_is_secret = yes }
+	}
+	modifier = {
+		factor = constant:time_traveler_interval.fast_factor
+		has_war_with = var:global.time_traveler_custodian
+	}
+	modifier = {
+		factor = constant:time_traveler_interval.slow_factor
+		is_in_faction_with = var:global.time_traveler_custodian
+	}
+	modifier = {
+		factor = constant:time_traveler_interval.fast_factor
+		has_intelligence_agency = yes
+	}
+}
+
+# ---------------------------------------------------------------------------
+# AI choice of the access arrangement (custodian scope)
+# ---------------------------------------------------------------------------
+
+time_traveler_ai_cabinet = {
+	base = constant:time_traveler_ai.standard
+	modifier = { add = constant:time_traveler_ai.strong has_government = democratic has_war = no }
+	modifier = { add = constant:time_traveler_ai.standard NOT = { has_stability < constant:time_traveler_ai.stability_high } }
+	modifier = { factor = 0.4 has_war = yes NOT = { has_government = democratic } }
+	modifier = { factor = 0.5 has_stability < constant:time_traveler_ai.stability_low }
+	modifier = { factor = 0.5 time_traveler_exposure_is_public = yes }
+}
+
+time_traveler_ai_secret = {
+	base = constant:time_traveler_ai.low
+	modifier = { add = constant:time_traveler_ai.strong has_war = yes }
+	modifier = { add = constant:time_traveler_ai.standard has_government = fascism }
+	modifier = { add = constant:time_traveler_ai.standard has_government = communism }
+	modifier = { add = constant:time_traveler_ai.standard has_intelligence_agency = yes }
+	modifier = { factor = 0.5 time_traveler_exposure_is_public = yes }
+}
+
+time_traveler_ai_confinement = {
+	base = constant:time_traveler_ai.low
+	modifier = { add = constant:time_traveler_ai.dominant has_stability < constant:time_traveler_ai.stability_low }
+	modifier = { add = constant:time_traveler_ai.standard has_government = democratic has_war = no }
+	modifier = { add = constant:time_traveler_ai.standard time_traveler_credibility_is_doubted = yes }
+}
+
+time_traveler_ai_public = {
+	base = constant:time_traveler_ai.blocked
+	modifier = { add = constant:time_traveler_ai.strong time_traveler_exposure_is_public = yes }
+	modifier = { add = constant:time_traveler_ai.standard has_government = democratic has_war = no NOT = { has_stability < constant:time_traveler_ai.stability_high } }
+}
+
+# ---------------------------------------------------------------------------
+# AI consultation family (custodian scope), read by the family picker event
+# ---------------------------------------------------------------------------
+
+time_traveler_ai_family_military = {
+	base = constant:time_traveler_ai.low
+	modifier = { add = constant:time_traveler_ai.dominant has_war = yes }
+	modifier = { add = constant:time_traveler_ai.standard time_traveler_family_is_strong_military = yes }
+}
+
+time_traveler_ai_family_industrial = {
+	base = constant:time_traveler_ai.standard
+	modifier = { add = constant:time_traveler_ai.standard has_war = no }
+	modifier = { add = constant:time_traveler_ai.standard time_traveler_family_is_strong_industrial = yes }
+}
+
+time_traveler_ai_family_scientific = {
+	base = constant:time_traveler_ai.low
+	modifier = { add = constant:time_traveler_ai.standard has_war = no }
+	modifier = { add = constant:time_traveler_ai.standard time_traveler_family_is_strong_scientific = yes }
+}
+
+time_traveler_ai_family_diplomatic = {
+	base = constant:time_traveler_ai.low
+	modifier = { add = constant:time_traveler_ai.strong has_war = no }
+	modifier = { add = constant:time_traveler_ai.standard time_traveler_family_is_strong_diplomatic = yes }
+}
+
+time_traveler_ai_family_counterintelligence = {
+	base = constant:time_traveler_ai.blocked
+	modifier = { add = constant:time_traveler_ai.strong time_traveler_exposure_is_suspected_or_higher = yes }
+	modifier = { add = constant:time_traveler_ai.standard time_traveler_family_is_strong_counterintelligence = yes }
+}
+
+time_traveler_ai_family_domestic = {
+	base = constant:time_traveler_ai.blocked
+	modifier = { add = constant:time_traveler_ai.strong has_stability < constant:time_traveler_ai.stability_low }
+	modifier = { add = constant:time_traveler_ai.standard time_traveler_family_is_strong_domestic = yes }
+}

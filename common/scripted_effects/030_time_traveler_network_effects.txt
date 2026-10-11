@@ -1,0 +1,954 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 030 TIME TRAVELER INTELLIGENCE WAR EFFECTS
+# ============================================================================
+# The interest registry, the four foreign operations, the four host
+# countermeasures, the double, custody transfer and the loss of the traveler.
+#
+# Registry: global.time_traveler_interest holds at most two, four or six
+# countries (Secret, Suspected, Public Exposure). It is rebuilt only after a
+# public revelation, a custody transfer, a new evolution or when a member stops
+# being valid, never by a recurring world scan. A member carries the flag
+# time_traveler_interested and a hidden network level time_traveler_network
+# from 0 to 3 that no screen prints as a number.
+# AI members act through a self-rescheduling hidden event, chaosx.nr30.30, one
+# per member, so no on_action is used. Human members act through decisions.
+# The operations are always scoped to the attacker. The custodian is read from
+# global.time_traveler_custodian.
+# ============================================================================
+
+# add_tech_bonus reads plain numbers, so its strength is a file constant.
+@time_traveler_stolen_bonus = 0.5
+
+# ---------------------------------------------------------------------------
+# Dice
+# ---------------------------------------------------------------------------
+
+# ANY scope. Output: temp time_traveler_roll in [0, 100).
+time_traveler_roll_percent = {
+	set_temp_variable_to_random = { var = time_traveler_roll min = constant:time_traveler_value.zero max = constant:time_traveler_value.percent_max }
+}
+
+# ANY scope. Input: temp time_traveler_chance. Clamps it and rolls. Output: temp
+# time_traveler_success (1 when the roll is below the chance).
+time_traveler_resolve_chance = {
+	clamp_temp_variable = { var = time_traveler_chance min = constant:time_traveler_chance.minimum max = constant:time_traveler_chance.maximum }
+	time_traveler_roll_percent = yes
+	set_temp_variable = { time_traveler_success = constant:time_traveler_value.zero }
+	if = {
+		limit = { check_variable = { time_traveler_roll < time_traveler_chance } }
+		set_temp_variable = { time_traveler_success = constant:time_traveler_value.one }
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Interest registry
+# ---------------------------------------------------------------------------
+
+# COUNTRY (candidate). Scores how likely this country is to chase the traveler.
+# Reads the custodian saved as time_traveler_scope_country.
+time_traveler_score_interest_candidate = {
+	set_variable = { time_traveler_interest_score = constant:time_traveler_value.zero }
+	if = {
+		limit = { is_major = yes }
+		add_to_variable = { time_traveler_interest_score = constant:time_traveler_interest.major }
+	}
+	if = {
+		limit = { is_ai = no }
+		add_to_variable = { time_traveler_interest_score = constant:time_traveler_interest.player }
+	}
+	if = {
+		limit = { has_intelligence_agency = yes }
+		add_to_variable = { time_traveler_interest_score = constant:time_traveler_interest.agency }
+	}
+	if = {
+		limit = { has_war_with = event_target:time_traveler_scope_country }
+		add_to_variable = { time_traveler_interest_score = constant:time_traveler_interest.war_with_custodian }
+	}
+	if = {
+		limit = { is_neighbor_of = event_target:time_traveler_scope_country }
+		add_to_variable = { time_traveler_interest_score = constant:time_traveler_interest.neighbor }
+	}
+	if = {
+		limit = { is_in_faction_with = event_target:time_traveler_scope_country }
+		add_to_variable = { time_traveler_interest_score = constant:time_traveler_interest.ally }
+	}
+}
+
+# COUNTRY (candidate). Adds this country to the registry.
+time_traveler_register_member = {
+	add_to_array = { global.time_traveler_interest = THIS }
+	set_country_flag = time_traveler_interested
+	if = {
+		limit = { NOT = { has_variable = time_traveler_network } }
+		set_variable = { time_traveler_network = constant:time_traveler_network.none }
+	}
+}
+
+# COUNTRY (custodian). Empties the registry. Members that leave lose their
+# network.
+time_traveler_clear_registry = {
+	for_each_scope_loop = {
+		array = global.time_traveler_interest
+		clr_country_flag = time_traveler_interested
+		clr_country_flag = time_traveler_rival_chain
+		set_variable = { time_traveler_network = constant:time_traveler_network.none }
+	}
+	clear_array = global.time_traveler_interest
+}
+
+# COUNTRY (custodian). Rebuilds the registry for the current Exposure band.
+# Strong candidates come first, then the others, up to the band's cap. A
+# member that stays keeps its network, a member that leaves loses it.
+time_traveler_rebuild_interest_registry = {
+	save_event_target_as = time_traveler_scope_country
+	set_temp_variable = { time_traveler_slots = constant:time_traveler_band.interest_cap_secret }
+	if = {
+		limit = { time_traveler_exposure_is_public = yes }
+		set_temp_variable = { time_traveler_slots = constant:time_traveler_band.interest_cap_public }
+	}
+	else_if = {
+		limit = { time_traveler_exposure_is_suspected_or_higher = yes }
+		set_temp_variable = { time_traveler_slots = constant:time_traveler_band.interest_cap_suspected }
+	}
+	for_each_scope_loop = {
+		array = global.time_traveler_interest
+		set_country_flag = time_traveler_previous_member
+		clr_country_flag = time_traveler_interested
+	}
+	clear_array = global.time_traveler_interest
+	every_country = {
+		limit = {
+			exists = yes
+			NOT = { has_country_flag = time_traveler_custodian }
+			is_special_chaos_country = no
+			is_actual_nonhuman_country = no
+			NOT = { has_capitulated = yes }
+		}
+		time_traveler_score_interest_candidate = yes
+	}
+	for_loop_effect = {
+		start = 0
+		end = time_traveler_slots
+		value = time_traveler_slot_index
+		set_temp_variable = { time_traveler_picked = constant:time_traveler_value.zero }
+		random_country = {
+			limit = {
+				has_variable = time_traveler_interest_score
+				NOT = { has_country_flag = time_traveler_interested }
+				NOT = { check_variable = { time_traveler_interest_score < constant:time_traveler_interest.strong_score } }
+			}
+			time_traveler_register_member = yes
+			set_temp_variable = { time_traveler_picked = constant:time_traveler_value.one }
+		}
+		if = {
+			limit = { check_variable = { time_traveler_picked = constant:time_traveler_value.zero } }
+			random_country = {
+				limit = {
+					has_variable = time_traveler_interest_score
+					NOT = { has_country_flag = time_traveler_interested }
+					NOT = { check_variable = { time_traveler_interest_score < constant:time_traveler_interest.minimum_score } }
+				}
+				time_traveler_register_member = yes
+			}
+		}
+	}
+	every_country = {
+		limit = {
+			OR = {
+				has_variable = time_traveler_interest_score
+				has_country_flag = time_traveler_previous_member
+			}
+		}
+		clear_variable = time_traveler_interest_score
+		if = {
+			limit = {
+				has_country_flag = time_traveler_previous_member
+				NOT = { has_country_flag = time_traveler_interested }
+			}
+			set_variable = { time_traveler_network = constant:time_traveler_network.none }
+			clr_country_flag = time_traveler_rival_chain
+		}
+		clr_country_flag = time_traveler_previous_member
+	}
+	for_each_scope_loop = {
+		array = global.time_traveler_interest
+		time_traveler_start_rival_chain = yes
+	}
+}
+
+# COUNTRY (member). Starts the chain of rival turns of an AI member once and
+# informs a human member that it can act.
+time_traveler_start_rival_chain = {
+	time_traveler_refresh_rival_costs = yes
+	if = {
+		limit = {
+			is_ai = yes
+			NOT = { has_country_flag = time_traveler_rival_chain }
+		}
+		set_country_flag = time_traveler_rival_chain
+		set_temp_variable = { time_traveler_delay = constant:time_traveler_timing.rival_first_days }
+		country_event = { id = chaosx.nr30.30 days = time_traveler_delay }
+	}
+	if = {
+		limit = {
+			is_ai = no
+			NOT = { has_country_flag = time_traveler_informed }
+		}
+		set_country_flag = time_traveler_informed
+		country_event = { id = chaosx.nr30.50 days = constant:time_traveler_timing.registry_rebuild_days }
+	}
+}
+
+# COUNTRY (custodian). Lowers the network of one random member by the reward
+# amount, used by counterintelligence successes.
+time_traveler_drop_random_network = {
+	random_scope_in_array = {
+		array = global.time_traveler_interest
+		limit = { check_variable = { time_traveler_network > constant:time_traveler_value.zero } }
+		subtract_from_variable = { time_traveler_network = constant:time_traveler_reward.counterintelligence_network_drop }
+		clamp_variable = { var = time_traveler_network min = constant:time_traveler_value.zero max = constant:time_traveler_network.mature }
+	}
+}
+
+# ---------------------------------------------------------------------------
+# AI rival turn
+# ---------------------------------------------------------------------------
+
+# COUNTRY (an AI member), called by chaosx.nr30.30. Picks one operation or
+# restraint from relations, intelligence capacity, ideology, proximity and the
+# network it already holds. A low-chance seizure is never repeated.
+time_traveler_rival_turn = {
+	set_temp_variable = { time_traveler_weight_infiltrate = constant:time_traveler_ai.rival_infiltrate }
+	set_temp_variable = { time_traveler_weight_forge = constant:time_traveler_value.zero }
+	set_temp_variable = { time_traveler_weight_asylum = constant:time_traveler_value.zero }
+	set_temp_variable = { time_traveler_weight_seize = constant:time_traveler_value.zero }
+	set_temp_variable = { time_traveler_weight_restraint = constant:time_traveler_ai.rival_restraint }
+	if = {
+		limit = { time_traveler_rival_can_infiltrate = yes }
+		if = {
+			limit = { has_intelligence_agency = yes }
+			add_to_temp_variable = { time_traveler_weight_infiltrate = constant:time_traveler_ai.rival_agency }
+		}
+	}
+	else = { set_temp_variable = { time_traveler_weight_infiltrate = constant:time_traveler_value.zero } }
+	if = {
+		limit = { time_traveler_rival_can_forge = yes }
+		set_temp_variable = { time_traveler_weight_forge = constant:time_traveler_ai.rival_forge }
+		if = {
+			limit = { has_war_with = var:global.time_traveler_custodian }
+			add_to_temp_variable = { time_traveler_weight_forge = constant:time_traveler_ai.rival_hostile }
+		}
+	}
+	if = {
+		limit = { time_traveler_rival_can_offer_asylum = yes }
+		set_temp_variable = { time_traveler_weight_asylum = constant:time_traveler_ai.rival_asylum }
+		if = {
+			limit = { time_traveler_same_ideology_as_custodian = yes }
+			add_to_temp_variable = { time_traveler_weight_asylum = constant:time_traveler_ai.rival_ideology }
+		}
+	}
+	if = {
+		limit = {
+			time_traveler_rival_can_seize = yes
+			NOT = { has_country_flag = time_traveler_seize_tried }
+		}
+		set_temp_variable = { time_traveler_weight_seize = constant:time_traveler_ai.rival_seize }
+	}
+	if = {
+		limit = { is_in_faction_with = var:global.time_traveler_custodian }
+		set_temp_variable = { time_traveler_weight_seize = constant:time_traveler_value.zero }
+		add_to_temp_variable = { time_traveler_weight_restraint = constant:time_traveler_ai.rival_ally_restraint }
+	}
+	set_temp_variable = { time_traveler_weight_total = time_traveler_weight_infiltrate }
+	add_to_temp_variable = { time_traveler_weight_total = time_traveler_weight_forge }
+	add_to_temp_variable = { time_traveler_weight_total = time_traveler_weight_asylum }
+	add_to_temp_variable = { time_traveler_weight_total = time_traveler_weight_seize }
+	add_to_temp_variable = { time_traveler_weight_total = time_traveler_weight_restraint }
+	set_temp_variable_to_random = { var = time_traveler_pick }
+	multiply_temp_variable = { time_traveler_pick = time_traveler_weight_total }
+	set_temp_variable = { time_traveler_edge = time_traveler_weight_infiltrate }
+	if = {
+		limit = { check_variable = { time_traveler_pick < time_traveler_edge } }
+		time_traveler_operation_infiltrate = yes
+	}
+	else = {
+		add_to_temp_variable = { time_traveler_edge = time_traveler_weight_forge }
+		if = {
+			limit = { check_variable = { time_traveler_pick < time_traveler_edge } }
+			time_traveler_operation_forge = yes
+		}
+		else = {
+			add_to_temp_variable = { time_traveler_edge = time_traveler_weight_asylum }
+			if = {
+				limit = { check_variable = { time_traveler_pick < time_traveler_edge } }
+				time_traveler_operation_asylum = yes
+			}
+			else = {
+				add_to_temp_variable = { time_traveler_edge = time_traveler_weight_seize }
+				if = {
+					limit = { check_variable = { time_traveler_pick < time_traveler_edge } }
+					time_traveler_operation_seize = yes
+				}
+			}
+		}
+	}
+}
+
+# COUNTRY (an AI member). Schedules the next rival turn.
+time_traveler_next_rival_turn = {
+	set_temp_variable = { time_traveler_delay = mtth:time_traveler_rival_interval }
+	set_temp_variable_to_random = { var = time_traveler_jitter min = constant:time_traveler_interval.jitter_low max = constant:time_traveler_interval.jitter_high }
+	multiply_temp_variable = { time_traveler_delay = time_traveler_jitter }
+	round_temp_variable = time_traveler_delay
+	country_event = { id = chaosx.nr30.30 days = time_traveler_delay }
+}
+
+# ---------------------------------------------------------------------------
+# Operations (scope: the attacker)
+# ---------------------------------------------------------------------------
+
+# COUNTRY (attacker). Records what a human attacker will read in the result
+# report. Inputs: temp time_traveler_op_kind and time_traveler_op_result.
+time_traveler_report_to_attacker = {
+	set_variable = { time_traveler_last_op = time_traveler_op_kind }
+	set_variable = { time_traveler_last_op_result = time_traveler_op_result }
+	if = {
+		limit = { is_ai = no }
+		country_event = { id = chaosx.nr30.37 days = constant:time_traveler_timing.report_delay_days }
+	}
+}
+
+# COUNTRY (attacker). Infiltrate the program. Each success advances the network
+# one step: schedules and staff names, then a recruited staff member and a
+# Future Fragment, then the archive and the first global theft milestone.
+time_traveler_operation_infiltrate = {
+	var:global.time_traveler_custodian = { save_event_target_as = time_traveler_target_custodian }
+	set_temp_variable = { time_traveler_op_kind = constant:time_traveler_operation.infiltrate }
+	set_temp_variable = { time_traveler_chance = constant:time_traveler_chance.infiltrate_base }
+	set_temp_variable = { time_traveler_step = time_traveler_network }
+	multiply_temp_variable = { time_traveler_step = constant:time_traveler_chance.infiltrate_per_network }
+	add_to_temp_variable = { time_traveler_chance = time_traveler_step }
+	if = {
+		limit = { has_intelligence_agency = yes }
+		add_to_temp_variable = { time_traveler_chance = constant:time_traveler_chance.infiltrate_agency_bonus }
+	}
+	event_target:time_traveler_target_custodian = {
+		if = {
+			limit = { has_country_flag = time_traveler_guard_detail }
+			subtract_from_temp_variable = { time_traveler_chance = constant:time_traveler_chance.infiltrate_guard_penalty }
+		}
+		if = {
+			limit = { has_country_flag = time_traveler_sting_recent }
+			subtract_from_temp_variable = { time_traveler_chance = constant:time_traveler_chance.infiltrate_sting_penalty }
+		}
+		if = {
+			limit = { time_traveler_arrangement_is_secret = yes }
+			subtract_from_temp_variable = { time_traveler_chance = constant:time_traveler_chance.infiltrate_secret_penalty }
+		}
+	}
+	if = {
+		limit = { has_country_flag = time_traveler_watched }
+		subtract_from_temp_variable = { time_traveler_chance = constant:time_traveler_double.watched_penalty }
+		clr_country_flag = time_traveler_watched
+	}
+	time_traveler_resolve_chance = yes
+	if = {
+		limit = { check_variable = { time_traveler_success = constant:time_traveler_value.one } }
+		if = {
+			limit = { check_variable = { time_traveler_network < constant:time_traveler_network.archive } }
+			add_to_variable = { time_traveler_network = constant:time_traveler_value.one }
+		}
+		set_temp_variable = { time_traveler_op_result = time_traveler_network }
+		if = {
+			limit = { check_variable = { time_traveler_network = constant:time_traveler_network.recruit } }
+			time_traveler_grant_fragment = yes
+			event_target:time_traveler_target_custodian = { country_event = { id = chaosx.nr30.31 days = constant:time_traveler_timing.theft_report_days } }
+		}
+		else_if = {
+			limit = { check_variable = { time_traveler_network = constant:time_traveler_network.archive } }
+			time_traveler_grant_fragment = yes
+			time_traveler_steal_archive = yes
+		}
+	}
+	else = {
+		set_temp_variable = { time_traveler_op_result = constant:time_traveler_value.zero }
+		time_traveler_roll_percent = yes
+		if = {
+			limit = {
+				check_variable = { time_traveler_roll < constant:time_traveler_chance.exposed_after_failure }
+				check_variable = { time_traveler_network > constant:time_traveler_value.zero }
+			}
+			subtract_from_variable = { time_traveler_network = constant:time_traveler_value.one }
+			set_temp_variable = { time_traveler_op_result = constant:time_traveler_value.negative_one }
+			event_target:time_traveler_target_custodian = { country_event = { id = chaosx.nr30.36 days = constant:time_traveler_timing.theft_report_days } }
+		}
+	}
+	time_traveler_report_to_attacker = yes
+}
+
+# COUNTRY (attacker). The third infiltration step: the archive is copied. The
+# attacker gains a research bonus for the specialty copied, the custodian
+# learns of the theft and the first theft in the campaign moves Chaos once.
+time_traveler_steal_archive = {
+	add_tech_bonus = { name = time_traveler_stolen_archive bonus = @time_traveler_stolen_bonus uses = 1 category = industry }
+	if = {
+		limit = { NOT = { has_global_flag = time_traveler_theft_recorded } }
+		set_global_flag = time_traveler_theft_recorded
+		set_temp_variable = { chaos_change = constant:time_traveler_chaos.theft }
+		set_temp_variable = { chaos_history_reason = constant:chaos_meter_history_reason.special.time_traveler_theft }
+		set_temp_variable = { chaos_history_reason_custom = constant:time_traveler_value.one }
+		add_chaos_meter_value = yes
+	}
+	set_global_flag = time_traveler_theft_happened
+	event_target:time_traveler_target_custodian = { country_event = { id = chaosx.nr30.35 days = constant:time_traveler_timing.theft_report_days } }
+}
+
+# COUNTRY (attacker). Plant forged advice. It needs a network of its own.
+time_traveler_operation_forge = {
+	var:global.time_traveler_custodian = { save_event_target_as = time_traveler_target_custodian }
+	set_temp_variable = { time_traveler_op_kind = constant:time_traveler_operation.forge }
+	set_temp_variable = { time_traveler_chance = constant:time_traveler_chance.forge_base }
+	set_temp_variable = { time_traveler_step = time_traveler_network }
+	multiply_temp_variable = { time_traveler_step = constant:time_traveler_chance.forge_per_network }
+	add_to_temp_variable = { time_traveler_chance = time_traveler_step }
+	event_target:time_traveler_target_custodian = {
+		if = {
+			limit = { has_country_flag = time_traveler_sting_recent }
+			subtract_from_temp_variable = { time_traveler_chance = constant:time_traveler_chance.infiltrate_sting_penalty }
+		}
+	}
+	time_traveler_resolve_chance = yes
+	if = {
+		limit = { check_variable = { time_traveler_success = constant:time_traveler_value.one } }
+		set_temp_variable = { time_traveler_op_result = constant:time_traveler_value.one }
+		event_target:time_traveler_target_custodian = {
+			set_country_flag = time_traveler_forgery_pending
+			country_event = { id = chaosx.nr30.32 days = constant:time_traveler_timing.theft_report_days }
+		}
+		save_event_target_as = time_traveler_forger
+	}
+	else = {
+		set_temp_variable = { time_traveler_op_result = constant:time_traveler_value.zero }
+		subtract_from_variable = { time_traveler_network = constant:time_traveler_value.one }
+		clamp_variable = { var = time_traveler_network min = constant:time_traveler_value.zero max = constant:time_traveler_network.mature }
+		time_traveler_roll_percent = yes
+		if = {
+			limit = { check_variable = { time_traveler_roll < constant:time_traveler_chance.forge_exposed_base } }
+			set_temp_variable = { time_traveler_op_result = constant:time_traveler_value.negative_one }
+			event_target:time_traveler_target_custodian = { country_event = { id = chaosx.nr30.36 days = constant:time_traveler_timing.theft_report_days } }
+		}
+	}
+	time_traveler_report_to_attacker = yes
+}
+
+# COUNTRY (attacker). Offer asylum. The traveler weighs his treatment, the
+# stability of his host and the offering country.
+time_traveler_operation_asylum = {
+	var:global.time_traveler_custodian = { save_event_target_as = time_traveler_target_custodian }
+	set_temp_variable = { time_traveler_op_kind = constant:time_traveler_operation.asylum }
+	set_temp_variable = { time_traveler_chance = constant:time_traveler_chance.asylum_base }
+	event_target:time_traveler_target_custodian = {
+		if = {
+			limit = { time_traveler_arrangement_is_confinement = yes }
+			add_to_temp_variable = { time_traveler_chance = constant:time_traveler_chance.asylum_confinement }
+		}
+		else_if = {
+			limit = { time_traveler_arrangement_is_cabinet = yes }
+			add_to_temp_variable = { time_traveler_chance = constant:time_traveler_chance.asylum_cabinet }
+		}
+		else_if = {
+			limit = { time_traveler_arrangement_is_secret = yes }
+			add_to_temp_variable = { time_traveler_chance = constant:time_traveler_chance.asylum_secret }
+		}
+		else = { add_to_temp_variable = { time_traveler_chance = constant:time_traveler_chance.asylum_public } }
+		if = {
+			limit = { time_traveler_credibility_is_at_least_trusted = yes }
+			subtract_from_temp_variable = { time_traveler_chance = constant:time_traveler_chance.asylum_trusted_penalty }
+		}
+		if = {
+			limit = { has_stability < constant:time_traveler_ai.stability_low }
+			add_to_temp_variable = { time_traveler_chance = constant:time_traveler_chance.asylum_unstable_bonus }
+		}
+	}
+	if = {
+		limit = { time_traveler_same_ideology_as_custodian = yes }
+		add_to_temp_variable = { time_traveler_chance = constant:time_traveler_chance.asylum_ideology_bonus }
+	}
+	if = {
+		limit = { is_neighbor_of = var:global.time_traveler_custodian }
+		add_to_temp_variable = { time_traveler_chance = constant:time_traveler_chance.asylum_neighbor_bonus }
+	}
+	time_traveler_resolve_chance = yes
+	if = {
+		limit = { check_variable = { time_traveler_success = constant:time_traveler_value.one } }
+		set_temp_variable = { time_traveler_op_result = constant:time_traveler_value.one }
+		set_temp_variable = { time_traveler_transfer_method = constant:time_traveler_transfer.asylum }
+		time_traveler_transfer_custody = yes
+	}
+	else = {
+		set_temp_variable = { time_traveler_op_result = constant:time_traveler_value.zero }
+		event_target:time_traveler_target_custodian = {
+			country_event = { id = chaosx.nr30.33 days = constant:time_traveler_timing.theft_report_days }
+			set_temp_variable = { time_traveler_amount = constant:time_traveler_credibility.rival_belief_gain }
+			set_temp_variable = { time_traveler_cause = constant:time_traveler_cause_id.rival_belief }
+			time_traveler_raise_credibility = yes
+		}
+	}
+	time_traveler_report_to_attacker = yes
+}
+
+# COUNTRY (attacker). Seize the traveler. The chance falls with a guard detail
+# and rises with the attacker's agency and proximity. A failed attempt may leave
+# a captured double, a wounded traveler or an exposed sponsor. Assassination is
+# chosen only when the sponsor is at war with the custodian.
+time_traveler_operation_seize = {
+	var:global.time_traveler_custodian = { save_event_target_as = time_traveler_target_custodian }
+	set_country_flag = time_traveler_seize_tried
+	set_temp_variable = { time_traveler_op_kind = constant:time_traveler_operation.seize }
+	set_temp_variable = { time_traveler_chance = constant:time_traveler_chance.seize_base }
+	if = {
+		limit = { has_intelligence_agency = yes }
+		add_to_temp_variable = { time_traveler_chance = constant:time_traveler_chance.seize_agency_bonus }
+	}
+	if = {
+		limit = { is_neighbor_of = var:global.time_traveler_custodian }
+		add_to_temp_variable = { time_traveler_chance = constant:time_traveler_chance.seize_neighbor_bonus }
+	}
+	event_target:time_traveler_target_custodian = {
+		if = {
+			limit = { has_country_flag = time_traveler_guard_detail }
+			subtract_from_temp_variable = { time_traveler_chance = constant:time_traveler_chance.seize_guard_penalty }
+		}
+	}
+	time_traveler_resolve_chance = yes
+	if = {
+		limit = { check_variable = { time_traveler_success = constant:time_traveler_value.one } }
+		time_traveler_roll_percent = yes
+		if = {
+			limit = {
+				has_war_with = var:global.time_traveler_custodian
+				check_variable = { time_traveler_roll < constant:time_traveler_chance.assassinate_threat }
+			}
+			set_temp_variable = { time_traveler_seizure_outcome = constant:time_traveler_seizure.assassinated }
+		}
+		else_if = {
+			limit = { check_variable = { time_traveler_roll < constant:time_traveler_chance.vanish_threat } }
+			set_temp_variable = { time_traveler_seizure_outcome = constant:time_traveler_seizure.vanished }
+		}
+		else = { set_temp_variable = { time_traveler_seizure_outcome = constant:time_traveler_seizure.transferred } }
+	}
+	else = {
+		time_traveler_roll_percent = yes
+		set_temp_variable = { time_traveler_seizure_outcome = constant:time_traveler_seizure.failed }
+		if = {
+			limit = { event_target:time_traveler_target_custodian = { has_country_flag = time_traveler_decoy_set } }
+			set_temp_variable = { time_traveler_seizure_outcome = constant:time_traveler_seizure.double }
+		}
+		else_if = {
+			limit = { check_variable = { time_traveler_roll < constant:time_traveler_chance.seize_double_chance } }
+			set_temp_variable = { time_traveler_seizure_outcome = constant:time_traveler_seizure.exposed }
+		}
+		else_if = {
+			limit = { check_variable = { time_traveler_roll < constant:time_traveler_chance.seize_wound_chance } }
+			set_temp_variable = { time_traveler_seizure_outcome = constant:time_traveler_seizure.wounded }
+		}
+	}
+	set_temp_variable = { time_traveler_op_result = time_traveler_seizure_outcome }
+	time_traveler_apply_seizure = yes
+	time_traveler_report_to_attacker = yes
+}
+
+# COUNTRY (attacker). Applies the outcome of a seizure and informs the
+# custodian. The sponsor is shown to the custodian only when it was exposed.
+time_traveler_apply_seizure = {
+	set_variable = { global.time_traveler_seizure_outcome = time_traveler_seizure_outcome }
+	if = {
+		limit = { check_variable = { time_traveler_seizure_outcome = constant:time_traveler_seizure.transferred } }
+		set_temp_variable = { time_traveler_transfer_method = constant:time_traveler_transfer.abduction }
+		time_traveler_transfer_custody = yes
+		add_opinion_modifier = { target = var:global.time_traveler_previous_custodian modifier = time_traveler_abduction }
+	}
+	else_if = {
+		limit = { check_variable = { time_traveler_seizure_outcome = constant:time_traveler_seizure.assassinated } }
+		event_target:time_traveler_target_custodian = { time_traveler_traveler_dies = yes }
+	}
+	else_if = {
+		limit = { check_variable = { time_traveler_seizure_outcome = constant:time_traveler_seizure.vanished } }
+		event_target:time_traveler_target_custodian = { time_traveler_traveler_vanishes = yes }
+	}
+	else_if = {
+		limit = { check_variable = { time_traveler_seizure_outcome = constant:time_traveler_seizure.double } }
+		save_event_target_as = time_traveler_double_captor
+		event_target:time_traveler_target_custodian = {
+			clr_country_flag = time_traveler_decoy_set
+			country_event = { id = chaosx.nr30.34 days = constant:time_traveler_timing.theft_report_days }
+		}
+		country_event = { id = chaosx.nr30.38 days = constant:time_traveler_timing.theft_report_days }
+	}
+	else_if = {
+		limit = { check_variable = { time_traveler_seizure_outcome = constant:time_traveler_seizure.wounded } }
+		set_temp_variable = { time_traveler_days = constant:time_traveler_timing.wound_days }
+		event_target:time_traveler_target_custodian = {
+			set_country_flag = { flag = time_traveler_wounded days = time_traveler_days }
+			country_event = { id = chaosx.nr30.34 days = constant:time_traveler_timing.theft_report_days }
+		}
+	}
+	else = {
+		event_target:time_traveler_target_custodian = {
+			set_temp_variable = { time_traveler_amount = constant:time_traveler_exposure.leak_rise }
+			set_temp_variable = { time_traveler_cause = constant:time_traveler_cause_id.leak }
+			time_traveler_raise_exposure = yes
+			time_traveler_check_revelation = yes
+			country_event = { id = chaosx.nr30.34 days = constant:time_traveler_timing.theft_report_days }
+		}
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Custody
+# ---------------------------------------------------------------------------
+
+# COUNTRY (the attacker, who becomes the custodian). Input: temp
+# time_traveler_transfer_method (constant:time_traveler_transfer.*). Moves the
+# character, the category, the crisis slot and the Exposure state. Credibility
+# is recalculated from the transfer. The old custodian keeps a reduced legacy.
+time_traveler_transfer_custody = {
+	save_event_target_as = time_traveler_new_custodian
+	var:global.time_traveler_custodian = {
+		save_event_target_as = time_traveler_old_custodian
+	}
+	set_variable = { global.time_traveler_previous_custodian = global.time_traveler_custodian }
+	set_global_flag = time_traveler_transferred_once
+	event_target:time_traveler_old_custodian = {
+		set_variable = { global.time_traveler_exposure_carried = time_traveler_exposure }
+		time_traveler_lose_custody = yes
+	}
+	set_variable = { global.time_traveler_custodian = THIS }
+	set_variable = { global.time_traveler_status = constant:time_traveler_status.choosing_access }
+	set_country_flag = time_traveler_custodian
+	set_country_flag = time_traveler_transferred_in
+	clr_country_flag = time_traveler_informed
+	set_variable = { time_traveler_exposure = global.time_traveler_exposure_carried }
+	time_traveler_apply_exposure_floor = yes
+	set_variable = { time_traveler_arrangement = constant:time_traveler_arrangement.none }
+	set_variable = { time_traveler_stage = constant:time_traveler_stage.unverified }
+	set_variable = { time_traveler_consults = constant:time_traveler_value.zero }
+	set_variable = { time_traveler_shareable = constant:time_traveler_value.zero }
+	set_variable = { time_traveler_c_kind = constant:time_traveler_kind.none }
+	set_variable = { time_traveler_credibility = constant:time_traveler_credibility.transfer_negotiated }
+	if = {
+		limit = { check_variable = { time_traveler_transfer_method = constant:time_traveler_transfer.asylum } }
+		set_variable = { time_traveler_credibility = constant:time_traveler_credibility.transfer_asylum }
+	}
+	else_if = {
+		limit = { check_variable = { time_traveler_transfer_method = constant:time_traveler_transfer.abduction } }
+		set_variable = { time_traveler_credibility = constant:time_traveler_credibility.transfer_abduction }
+	}
+	set_variable = { global.time_traveler_transfer_kind = time_traveler_transfer_method }
+	clr_country_flag = time_traveler_interested
+	clr_country_flag = time_traveler_rival_chain
+	set_variable = { time_traveler_network = constant:time_traveler_network.none }
+	if = {
+		limit = { has_idea = time_traveler_future_fragment }
+		remove_ideas = time_traveler_future_fragment
+	}
+	set_temp_variable = { time_traveler_cause = constant:time_traveler_cause_id.transfer }
+	time_traveler_record_cause = yes
+	set_variable = { global.time_traveler_outcome = constant:time_traveler_outcome.transferred }
+	time_traveler_select_arrival_state = yes
+	time_traveler_set_stage_unverified = yes
+	time_traveler_refresh_costs = yes
+	time_traveler_rebuild_interest_registry = yes
+	country_event = { id = chaosx.nr30.13 days = constant:time_traveler_timing.report_delay_days }
+	event_target:time_traveler_old_custodian = { country_event = { id = chaosx.nr30.51 days = constant:time_traveler_timing.report_delay_days } }
+}
+
+# Unverified spirit for a new custodian until it chooses an arrangement.
+time_traveler_set_stage_unverified = {
+	set_variable = { time_traveler_stage = constant:time_traveler_stage.unverified }
+	time_traveler_apply_spirit = yes
+}
+
+# COUNTRY (the country that loses the traveler). Direct access ends. The
+# country keeps a reduced legacy that depends on the completed consultations,
+# and a recorded mission is closed without penalty.
+time_traveler_lose_custody = {
+	clr_country_flag = time_traveler_custodian
+	clr_country_flag = time_traveler_rumor_chain
+	clr_country_flag = time_traveler_relocating
+	clr_country_flag = time_traveler_wounded
+	clr_country_flag = time_traveler_guard_detail
+	clr_country_flag = time_traveler_decoy_set
+	clr_country_flag = time_traveler_forgery_pending
+	clr_country_flag = time_traveler_secret_program
+	time_traveler_close_consultation = yes
+	time_traveler_release_character = yes
+	set_variable = { time_traveler_stage = constant:time_traveler_stage.scattered }
+	time_traveler_apply_spirit = yes
+	set_country_flag = time_traveler_former_custodian
+}
+
+# COUNTRY (the custodian). The traveler is killed. Direct access ends for good,
+# the temporal disturbance and the copied knowledge remain.
+time_traveler_traveler_dies = {
+	save_event_target_as = time_traveler_old_custodian
+	time_traveler_lose_custody = yes
+	set_variable = { global.time_traveler_status = constant:time_traveler_status.dead }
+	set_variable = { global.time_traveler_outcome = constant:time_traveler_outcome.assassinated }
+	time_traveler_clear_registry = yes
+	retire_character = time_traveler_visitor
+	set_temp_variable = { time_traveler_cause = constant:time_traveler_cause_id.transfer }
+	time_traveler_record_cause = yes
+	country_event = { id = chaosx.nr30.52 days = constant:time_traveler_timing.report_delay_days }
+}
+
+# COUNTRY (the custodian). The traveler disappears before either side arrives.
+time_traveler_traveler_vanishes = {
+	save_event_target_as = time_traveler_old_custodian
+	time_traveler_lose_custody = yes
+	set_variable = { global.time_traveler_status = constant:time_traveler_status.missing }
+	set_variable = { global.time_traveler_outcome = constant:time_traveler_outcome.disappeared }
+	time_traveler_clear_registry = yes
+	country_event = { id = chaosx.nr30.53 days = constant:time_traveler_timing.report_delay_days }
+}
+
+# ---------------------------------------------------------------------------
+# Host countermeasures (scope: the custodian)
+# ---------------------------------------------------------------------------
+
+# COUNTRY. Relocate the traveler to another valid secure state. The move
+# interrupts consultations for a few days, lowers Exposure and may leak.
+time_traveler_do_relocate = {
+	time_traveler_pay_relocate = yes
+	if = {
+		limit = { has_variable = time_traveler_arrival_state }
+		var:time_traveler_arrival_state = { set_state_flag = time_traveler_current_site }
+	}
+	time_traveler_select_arrival_state = yes
+	if = {
+		limit = { has_variable = time_traveler_arrival_state }
+		every_controlled_state = {
+			limit = { has_state_flag = time_traveler_current_site }
+			clr_state_flag = time_traveler_current_site
+		}
+	}
+	set_temp_variable = { time_traveler_days = constant:time_traveler_timing.relocation_pause_days }
+	set_country_flag = { flag = time_traveler_relocating days = time_traveler_days }
+	set_temp_variable = { time_traveler_cause = constant:time_traveler_cause_id.relocation }
+	set_temp_variable = { time_traveler_chance = constant:time_traveler_chance.relocation_leak }
+	time_traveler_resolve_chance = yes
+	if = {
+		limit = { check_variable = { time_traveler_success = constant:time_traveler_value.one } }
+		set_temp_variable = { time_traveler_amount = constant:time_traveler_exposure.leak_rise }
+		set_temp_variable = { time_traveler_cause = constant:time_traveler_cause_id.leak }
+		time_traveler_raise_exposure = yes
+		time_traveler_check_revelation = yes
+	}
+	else = {
+		set_temp_variable = { time_traveler_amount = constant:time_traveler_exposure.relocation_drop }
+		time_traveler_lower_exposure = yes
+	}
+	set_temp_variable = { time_traveler_days = constant:time_traveler_timing.relocation_cooldown_days }
+	set_country_flag = { flag = time_traveler_relocation_cooldown days = time_traveler_days }
+	time_traveler_break_known_targeting = yes
+	time_traveler_refresh_costs = yes
+}
+
+# COUNTRY. A move breaks the known targeting: every member loses one network step.
+time_traveler_break_known_targeting = {
+	for_each_scope_loop = {
+		array = global.time_traveler_interest
+		if = {
+			limit = { check_variable = { time_traveler_network > constant:time_traveler_value.zero } }
+			subtract_from_variable = { time_traveler_network = constant:time_traveler_value.one }
+		}
+	}
+}
+
+# COUNTRY. Assign a guard detail: seizure and infiltration become harder, and
+# the extra people involved raise Exposure.
+time_traveler_do_guard = {
+	time_traveler_pay_guard = yes
+	set_temp_variable = { time_traveler_days = constant:time_traveler_timing.guard_days }
+	set_country_flag = { flag = time_traveler_guard_detail days = time_traveler_days }
+	set_temp_variable = { time_traveler_days = constant:time_traveler_timing.guard_cooldown_days }
+	set_country_flag = { flag = time_traveler_guard_cooldown days = time_traveler_days }
+	set_temp_variable = { time_traveler_amount = constant:time_traveler_exposure.guard_detail }
+	set_temp_variable = { time_traveler_cause = constant:time_traveler_cause_id.guard }
+	time_traveler_raise_exposure = yes
+	time_traveler_check_revelation = yes
+	time_traveler_refresh_costs = yes
+}
+
+# COUNTRY (custodian), FROM is the interested country. Run a counterintelligence
+# sting: decoy meetings and false schedules against one member.
+time_traveler_do_sting = {
+	time_traveler_pay_sting = yes
+	save_event_target_as = time_traveler_sting_custodian
+	FROM = { save_event_target_as = time_traveler_sting_target }
+	set_temp_variable = { time_traveler_days = constant:time_traveler_timing.sting_cooldown_days }
+	set_country_flag = { flag = time_traveler_sting_cooldown days = time_traveler_days }
+	set_country_flag = { flag = time_traveler_sting_recent days = time_traveler_days }
+	set_temp_variable = { time_traveler_chance = constant:time_traveler_chance.sting_base }
+	event_target:time_traveler_sting_target = { set_temp_variable = { time_traveler_step = time_traveler_network } }
+	multiply_temp_variable = { time_traveler_step = constant:time_traveler_chance.sting_per_network }
+	add_to_temp_variable = { time_traveler_chance = time_traveler_step }
+	if = {
+		limit = { has_idea = time_traveler_sting_ready }
+		add_to_temp_variable = { time_traveler_chance = constant:time_traveler_chance.sting_agency_bonus }
+	}
+	time_traveler_resolve_chance = yes
+	if = {
+		limit = { check_variable = { time_traveler_success = constant:time_traveler_value.one } }
+		event_target:time_traveler_sting_target = {
+			subtract_from_variable = { time_traveler_network = constant:time_traveler_reward.sting_network_drop }
+			clamp_variable = { var = time_traveler_network min = constant:time_traveler_value.zero max = constant:time_traveler_network.mature }
+		}
+		set_temp_variable = { time_traveler_amount = constant:time_traveler_exposure.sting_drop }
+		set_temp_variable = { time_traveler_cause = constant:time_traveler_cause_id.sting }
+		time_traveler_lower_exposure = yes
+		set_temp_variable = { time_traveler_amount = constant:time_traveler_credibility.sting_gain }
+		time_traveler_raise_credibility = yes
+		set_variable = { time_traveler_sting_result = constant:time_traveler_value.one }
+		time_traveler_roll_percent = yes
+		if = {
+			limit = { check_variable = { time_traveler_roll < constant:time_traveler_chance.decoy_chance } }
+			set_temp_variable = { time_traveler_days = constant:time_traveler_timing.sting_cooldown_days }
+			set_country_flag = { flag = time_traveler_decoy_set days = time_traveler_days }
+		}
+	}
+	else = {
+		set_temp_variable = { time_traveler_amount = constant:time_traveler_exposure.leak_rise }
+		set_temp_variable = { time_traveler_cause = constant:time_traveler_cause_id.leak }
+		time_traveler_raise_exposure = yes
+		set_variable = { time_traveler_sting_result = constant:time_traveler_value.zero }
+	}
+	event_target:time_traveler_sting_target = { save_event_target_as = time_traveler_sting_target }
+	country_event = { id = chaosx.nr30.39 days = constant:time_traveler_timing.report_delay_days }
+	time_traveler_refresh_costs = yes
+}
+
+# COUNTRY (custodian). Use the traveler as bait after a successful sting. A
+# success exposes several networks. A failure risks injury, abduction or scandal.
+time_traveler_do_bait = {
+	set_temp_variable = { time_traveler_chance = constant:time_traveler_chance.bait_base }
+	set_temp_variable = { time_traveler_members = global.time_traveler_interest^num }
+	multiply_temp_variable = { time_traveler_members = constant:time_traveler_chance.bait_per_exposed_network }
+	add_to_temp_variable = { time_traveler_chance = time_traveler_members }
+	if = {
+		limit = { has_country_flag = time_traveler_guard_detail }
+		add_to_temp_variable = { time_traveler_chance = constant:time_traveler_chance.bait_guard_bonus }
+	}
+	time_traveler_resolve_chance = yes
+	if = {
+		limit = { check_variable = { time_traveler_success = constant:time_traveler_value.one } }
+		for_each_scope_loop = {
+			array = global.time_traveler_interest
+			subtract_from_variable = { time_traveler_network = constant:time_traveler_reward.bait_network_drop }
+			clamp_variable = { var = time_traveler_network min = constant:time_traveler_value.zero max = constant:time_traveler_network.mature }
+		}
+		set_temp_variable = { time_traveler_amount = constant:time_traveler_credibility.bait_gain }
+		set_temp_variable = { time_traveler_cause = constant:time_traveler_cause_id.sting }
+		time_traveler_raise_credibility = yes
+		set_variable = { time_traveler_bait_result = constant:time_traveler_value.one }
+	}
+	else = {
+		set_variable = { time_traveler_bait_result = constant:time_traveler_value.zero }
+		time_traveler_roll_percent = yes
+		if = {
+			limit = { check_variable = { time_traveler_roll < constant:time_traveler_chance.bait_injury } }
+			set_temp_variable = { time_traveler_days = constant:time_traveler_timing.wound_days }
+			set_country_flag = { flag = time_traveler_wounded days = time_traveler_days }
+			set_variable = { time_traveler_bait_result = constant:time_traveler_value.negative_one }
+		}
+		else_if = {
+			limit = { check_variable = { time_traveler_roll < constant:time_traveler_chance.bait_abduction } }
+			set_variable = { time_traveler_bait_result = constant:time_traveler_value.two }
+			time_traveler_bait_abduction = yes
+		}
+		else = {
+			set_temp_variable = { time_traveler_amount = constant:time_traveler_exposure.leak_rise }
+			set_temp_variable = { time_traveler_cause = constant:time_traveler_cause_id.leak }
+			time_traveler_raise_exposure = yes
+			time_traveler_check_revelation = yes
+			add_stability = constant:time_traveler_reward.bait_scandal_stability
+			set_variable = { time_traveler_bait_result = constant:time_traveler_value.three }
+		}
+	}
+	country_event = { id = chaosx.nr30.54 days = constant:time_traveler_timing.report_delay_days }
+}
+
+# COUNTRY (custodian). A failed bait operation lets the member with the
+# strongest network take the traveler.
+time_traveler_bait_abduction = {
+	random_scope_in_array = {
+		array = global.time_traveler_interest
+		limit = { NOT = { check_variable = { time_traveler_network < constant:time_traveler_network.recruit } } }
+		set_temp_variable = { time_traveler_transfer_method = constant:time_traveler_transfer.abduction }
+		time_traveler_transfer_custody = yes
+	}
+}
+
+# COUNTRY (custodian), FROM is the allied recipient. Share one verified forecast:
+# the ally gains a Future Fragment and the remembered war of its own, its
+# network pressure ends and the timeline moves further.
+time_traveler_do_share = {
+	time_traveler_pay_share = yes
+	FROM = { save_event_target_as = time_traveler_share_target }
+	subtract_from_variable = { time_traveler_shareable = constant:time_traveler_value.one }
+	clamp_variable = { var = time_traveler_shareable min = constant:time_traveler_value.zero }
+	set_temp_variable = { time_traveler_days = constant:time_traveler_timing.share_cooldown_days }
+	set_country_flag = { flag = time_traveler_share_cooldown days = time_traveler_days }
+	event_target:time_traveler_share_target = {
+		time_traveler_grant_fragment = yes
+		set_variable = { time_traveler_network = constant:time_traveler_network.none }
+		country_event = { id = chaosx.nr30.16 days = constant:time_traveler_timing.report_delay_days }
+	}
+	set_temp_variable = { time_traveler_amount = constant:time_traveler_divergence.share_forecast }
+	set_temp_variable = { time_traveler_cause = constant:time_traveler_cause_id.shared_forecast }
+	time_traveler_raise_divergence = yes
+	if = {
+		limit = {
+			event_target:time_traveler_share_target = { tag = GER }
+			NOT = { has_global_flag = time_traveler_german_variant_used }
+			SOV = { exists = yes }
+		}
+		set_global_flag = time_traveler_german_variant_used
+		GER = { country_event = { id = chaosx.nr30.3 days = constant:time_traveler_timing.report_delay_days } }
+	}
+	if = {
+		limit = {
+			event_target:time_traveler_share_target = { tag = USA }
+			NOT = { has_global_flag = time_traveler_american_variant_used }
+			JAP = { exists = yes }
+		}
+		set_global_flag = time_traveler_american_variant_used
+		USA = { country_event = { id = chaosx.nr30.7 days = constant:time_traveler_timing.report_delay_days } }
+	}
+	time_traveler_refresh_costs = yes
+}
+
+# COUNTRY (a human rival). One operation per cooldown, so the decisions match the
+# rhythm of an AI member.
+time_traveler_set_operation_cooldown = {
+	set_temp_variable = { time_traveler_days = constant:time_traveler_timing.operation_cooldown_days }
+	set_country_flag = { flag = time_traveler_operation_cooldown days = time_traveler_days }
+}
+
+# COUNTRY (the winner of an annexation whose loser held the traveler). Custody
+# passes to the winner when it is a country that can hold him and otherwise the
+# traveler disappears. Called by on_annex with FROM as the annexed custodian.
+time_traveler_custody_after_annexation = {
+	if = {
+		limit = {
+			is_special_chaos_country = no
+			is_actual_nonhuman_country = no
+			exists = yes
+		}
+		set_temp_variable = { time_traveler_transfer_method = constant:time_traveler_transfer.negotiated }
+		time_traveler_transfer_custody = yes
+	}
+	else = {
+		FROM = { time_traveler_traveler_vanishes = yes }
+	}
+}

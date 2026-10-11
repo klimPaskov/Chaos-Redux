@@ -46,7 +46,7 @@ The shared layer does not maintain a second persistent counter, so winning, losi
 | Random Civil War | `random_civil_war_active` |
 | Video Game in Sweden | `video_game_in_sweden_program_active` |
 | Riches Found | A controlled state has an active mine |
-| Time Traveler | The short prefire reservation or timed `time_traveler` idea is present |
+| Time Traveler | The country is the current custodian of the traveler (`time_traveler_custodian`). A custody transfer moves the slot, and legacy or Future Fragment holders do not count |
 | Random Terror | `random_terror_affected_country` or an active controlled terror state exists |
 | Murder Mystery | The global runtime is active and the country is the original host |
 
@@ -73,7 +73,7 @@ The blocked architecture contract, smallest next integration change, and validat
 
 Natural Disaster automatic and Disaster Barrage routes, Resources Found and Riches Found direct-entry routes, Video Game in Sweden, and the other package-owned preflight routes recheck capacity before accepting their final target.
 
-Time Traveler resolves an eligible weighted host before the fire-once history record is accepted, and its short prefire flag reserves the slot until the timed idea is applied, so an empty eligible pool does not consume the event and the one-day report delay cannot admit a fourth package.
+Time Traveler resolves an eligible weighted host (major countries and player countries) before the fire-once history record is accepted, and the custodian flag is set in the same chain that sends the host the entry event, so an empty eligible pool does not consume the event and the one-day report delay cannot admit a fourth package.
 
 ## Global exemptions
 

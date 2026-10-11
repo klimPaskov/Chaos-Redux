@@ -1,0 +1,637 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 030 TIME TRAVELER TRIGGERS
+# ============================================================================
+# Scope notes: "country" triggers are read in a country scope, "global" ones
+# in any scope. The custodian is the one country that physically holds the
+# original traveler and carries the flag time_traveler_custodian. The three
+# public values are Credibility and Exposure (country variables on the
+# custodian) and Timeline Divergence (global.time_traveler_divergence).
+# Triggers used inside available or visible blocks of decisions keep their
+# bookkeeping in hidden_trigger so no raw variable name reaches a tooltip.
+# ============================================================================
+
+# ---------------------------------------------------------------------------
+# Custody and status
+# ---------------------------------------------------------------------------
+
+# COUNTRY. The country that physically holds the original traveler.
+time_traveler_is_custodian = {
+	has_country_flag = time_traveler_custodian
+}
+
+# GLOBAL. The traveler is verified and available to the custodian.
+time_traveler_status_is_active = {
+	check_variable = { global.time_traveler_status = constant:time_traveler_status.active }
+}
+
+# GLOBAL. The traveler exists in the campaign and has not been lost.
+time_traveler_is_present = {
+	OR = {
+		check_variable = { global.time_traveler_status = constant:time_traveler_status.arriving }
+		check_variable = { global.time_traveler_status = constant:time_traveler_status.verifying }
+		check_variable = { global.time_traveler_status = constant:time_traveler_status.choosing_access }
+		check_variable = { global.time_traveler_status = constant:time_traveler_status.active }
+	}
+}
+
+# COUNTRY. Direct access: the custodian can consult the traveler.
+time_traveler_has_direct_access = {
+	has_country_flag = time_traveler_custodian
+	hidden_trigger = { check_variable = { global.time_traveler_status = constant:time_traveler_status.active } }
+}
+
+# COUNTRY. The main decision category is shown to the custodian.
+time_traveler_category_is_visible = {
+	has_country_flag = time_traveler_custodian
+	hidden_trigger = {
+		OR = {
+			check_variable = { global.time_traveler_status = constant:time_traveler_status.choosing_access }
+			check_variable = { global.time_traveler_status = constant:time_traveler_status.active }
+		}
+	}
+}
+
+# COUNTRY. A consultation mission is running.
+time_traveler_mission_is_active = {
+	OR = {
+		has_active_mission = time_traveler_mission_garrison
+		has_active_mission = time_traveler_mission_build
+		has_active_mission = time_traveler_mission_research
+		has_active_mission = time_traveler_mission_relation
+	}
+}
+
+# COUNTRY. Legacy access held by a former custodian or an ally.
+time_traveler_has_legacy_spirit = {
+	OR = {
+		has_idea = time_traveler_scattered_forecasts
+		has_idea = time_traveler_scattered_forecasts_deep
+		has_idea = time_traveler_future_fragment
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Value bands
+# ---------------------------------------------------------------------------
+
+# COUNTRY (custodian).
+time_traveler_credibility_is_doubted = {
+	hidden_trigger = { check_variable = { time_traveler_credibility < constant:time_traveler_band.trusted_min } }
+}
+
+time_traveler_credibility_is_trusted = {
+	hidden_trigger = {
+		NOT = { check_variable = { time_traveler_credibility < constant:time_traveler_band.trusted_min } }
+		check_variable = { time_traveler_credibility < constant:time_traveler_band.indispensable_min }
+	}
+}
+
+time_traveler_credibility_is_indispensable = {
+	hidden_trigger = { NOT = { check_variable = { time_traveler_credibility < constant:time_traveler_band.indispensable_min } } }
+}
+
+# COUNTRY (custodian). Trusted or higher.
+time_traveler_credibility_is_at_least_trusted = {
+	hidden_trigger = { NOT = { check_variable = { time_traveler_credibility < constant:time_traveler_band.trusted_min } } }
+}
+
+time_traveler_exposure_is_secret = {
+	hidden_trigger = { check_variable = { time_traveler_exposure < constant:time_traveler_band.suspected_min } }
+}
+
+time_traveler_exposure_is_suspected_or_higher = {
+	hidden_trigger = { NOT = { check_variable = { time_traveler_exposure < constant:time_traveler_band.suspected_min } } }
+}
+
+time_traveler_exposure_is_public = {
+	hidden_trigger = { NOT = { check_variable = { time_traveler_exposure < constant:time_traveler_band.public_min } } }
+}
+
+# GLOBAL.
+time_traveler_divergence_is_recognizable = {
+	hidden_trigger = { check_variable = { global.time_traveler_divergence < constant:time_traveler_band.altered_min } }
+}
+
+time_traveler_divergence_is_altered = {
+	hidden_trigger = {
+		NOT = { check_variable = { global.time_traveler_divergence < constant:time_traveler_band.altered_min } }
+		check_variable = { global.time_traveler_divergence < constant:time_traveler_band.broken_min }
+	}
+}
+
+time_traveler_divergence_is_broken = {
+	hidden_trigger = { NOT = { check_variable = { global.time_traveler_divergence < constant:time_traveler_band.broken_min } } }
+}
+
+# ---------------------------------------------------------------------------
+# Arrangements and profile
+# ---------------------------------------------------------------------------
+
+time_traveler_arrangement_is_cabinet = {
+	hidden_trigger = { check_variable = { time_traveler_arrangement = constant:time_traveler_arrangement.cabinet } }
+}
+
+time_traveler_arrangement_is_secret = {
+	hidden_trigger = { check_variable = { time_traveler_arrangement = constant:time_traveler_arrangement.secret } }
+}
+
+time_traveler_arrangement_is_confinement = {
+	hidden_trigger = { check_variable = { time_traveler_arrangement = constant:time_traveler_arrangement.confinement } }
+}
+
+time_traveler_arrangement_is_public = {
+	hidden_trigger = { check_variable = { time_traveler_arrangement = constant:time_traveler_arrangement.public } }
+}
+
+# GLOBAL. The family is one of the profile's strongest.
+time_traveler_family_is_strong_military = {
+	check_variable = { global.time_traveler_profile = constant:time_traveler_profile.analyst }
+}
+
+time_traveler_family_is_strong_industrial = {
+	check_variable = { global.time_traveler_profile = constant:time_traveler_profile.engineer }
+}
+
+time_traveler_family_is_strong_scientific = {
+	check_variable = { global.time_traveler_profile = constant:time_traveler_profile.engineer }
+}
+
+time_traveler_family_is_strong_diplomatic = {
+	OR = {
+		check_variable = { global.time_traveler_profile = constant:time_traveler_profile.analyst }
+		check_variable = { global.time_traveler_profile = constant:time_traveler_profile.historian }
+	}
+}
+
+time_traveler_family_is_strong_counterintelligence = {
+	check_variable = { global.time_traveler_profile = constant:time_traveler_profile.analyst }
+}
+
+time_traveler_family_is_strong_domestic = {
+	check_variable = { global.time_traveler_profile = constant:time_traveler_profile.historian }
+}
+
+# COUNTRY. The Secret Program keeps only the profile's two strongest families
+# and counterintelligence. Every other arrangement opens all six.
+time_traveler_allows_military = {
+	OR = {
+		NOT = { time_traveler_arrangement_is_secret = yes }
+		time_traveler_family_is_strong_military = yes
+	}
+}
+
+time_traveler_allows_industrial = {
+	OR = {
+		NOT = { time_traveler_arrangement_is_secret = yes }
+		time_traveler_family_is_strong_industrial = yes
+	}
+}
+
+time_traveler_allows_scientific = {
+	OR = {
+		NOT = { time_traveler_arrangement_is_secret = yes }
+		time_traveler_family_is_strong_scientific = yes
+	}
+}
+
+time_traveler_allows_diplomatic = {
+	OR = {
+		NOT = { time_traveler_arrangement_is_secret = yes }
+		time_traveler_family_is_strong_diplomatic = yes
+	}
+}
+
+time_traveler_allows_counterintelligence = {
+	always = yes
+}
+
+time_traveler_allows_domestic = {
+	OR = {
+		NOT = { time_traveler_arrangement_is_secret = yes }
+		time_traveler_family_is_strong_domestic = yes
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Host selection
+# ---------------------------------------------------------------------------
+
+# COUNTRY. A valid host: an existing major country or a player country with
+# civilian institutions, below the individual-crisis cap, not in a terminal
+# state.
+time_traveler_is_valid_host = {
+	exists = yes
+	hidden_trigger = {
+		is_special_chaos_country = no
+		is_actual_nonhuman_country = no
+		uses_normal_civilian_systems = yes
+		individual_crisis_load_is_below_cap = yes
+		NOT = { has_capitulated = yes }
+		NOT = { has_country_flag = time_traveler_custodian }
+		OR = {
+			is_major = yes
+			is_ai = no
+		}
+	}
+}
+
+# GLOBAL. The traveler has not appeared and some country can host him. Used for
+# the Not Available reason in the event list.
+time_traveler_has_host = {
+	time_traveler_has_not_appeared = yes
+	any_country = { time_traveler_is_valid_host = yes }
+}
+
+# GLOBAL. The traveler appears once per campaign.
+time_traveler_has_not_appeared = {
+	hidden_trigger = { check_variable = { global.time_traveler_status = constant:time_traveler_status.dormant } }
+}
+
+# ---------------------------------------------------------------------------
+# Consultations
+# ---------------------------------------------------------------------------
+
+# COUNTRY. The custodian can start a consultation: direct access, no running
+# mission, the traveler not wounded or relocating.
+time_traveler_can_consult = {
+	time_traveler_has_direct_access = yes
+	NOT = { time_traveler_mission_is_active = yes }
+	NOT = { has_country_flag = time_traveler_wounded }
+	NOT = { has_country_flag = time_traveler_relocating }
+}
+
+# COUNTRY. A stored objective is live (country variables of the custodian).
+time_traveler_has_objective = {
+	hidden_trigger = { check_variable = { time_traveler_c_kind > constant:time_traveler_kind.none } }
+}
+
+# COUNTRY. Garrison objective: the named state is controlled and holds more
+# than time_traveler_c_above divisions.
+time_traveler_garrison_objective_met = {
+	hidden_trigger = {
+		var:time_traveler_c_state = { is_controlled_by = PREV }
+		meta_trigger = {
+			text = {
+				divisions_in_state = { state = var:time_traveler_c_state size > [ABOVE] }
+			}
+			ABOVE = "[?time_traveler_c_above|.0]"
+		}
+	}
+}
+
+# COUNTRY. Garrison objective: at least half of the divisions are in place.
+time_traveler_garrison_objective_partial = {
+	hidden_trigger = {
+		var:time_traveler_c_state = { is_controlled_by = PREV }
+		meta_trigger = {
+			text = {
+				divisions_in_state = { state = var:time_traveler_c_state size > [ABOVE] }
+			}
+			ABOVE = "[?time_traveler_c_partial_above|.0]"
+		}
+	}
+}
+
+# COUNTRY. Build objective: the named state holds more infrastructure than
+# time_traveler_c_level and is still controlled.
+time_traveler_build_objective_met = {
+	hidden_trigger = {
+		var:time_traveler_c_state = { is_controlled_by = PREV }
+		meta_trigger = {
+			text = {
+				var:time_traveler_c_state = { infrastructure > [LEVEL] }
+			}
+			LEVEL = "[?time_traveler_c_level|.0]"
+		}
+	}
+}
+
+time_traveler_build_objective_partial = {
+	hidden_trigger = {
+		var:time_traveler_c_state = { is_controlled_by = PREV }
+		meta_trigger = {
+			text = {
+				var:time_traveler_c_state = { infrastructure > [LEVEL] }
+			}
+			LEVEL = "[?time_traveler_c_partial_level|.0]"
+		}
+	}
+}
+
+# COUNTRY. Research objective: the named technology is researched.
+time_traveler_research_objective_met = {
+	hidden_trigger = {
+		OR = {
+			AND = { check_variable = { time_traveler_c_tech = constant:time_traveler_tech.fuel_silos } has_tech = fuel_silos }
+			AND = { check_variable = { time_traveler_c_tech = constant:time_traveler_tech.improved_machine_tools } has_tech = improved_machine_tools }
+			AND = { check_variable = { time_traveler_c_tech = constant:time_traveler_tech.advanced_machine_tools } has_tech = advanced_machine_tools }
+			AND = { check_variable = { time_traveler_c_tech = constant:time_traveler_tech.computing_machine } has_tech = computing_machine }
+			AND = { check_variable = { time_traveler_c_tech = constant:time_traveler_tech.radio } has_tech = radio }
+		}
+	}
+}
+
+time_traveler_research_objective_partial = {
+	hidden_trigger = {
+		OR = {
+			AND = { check_variable = { time_traveler_c_tech = constant:time_traveler_tech.fuel_silos } is_researching_technology = fuel_silos }
+			AND = { check_variable = { time_traveler_c_tech = constant:time_traveler_tech.improved_machine_tools } is_researching_technology = improved_machine_tools }
+			AND = { check_variable = { time_traveler_c_tech = constant:time_traveler_tech.advanced_machine_tools } is_researching_technology = advanced_machine_tools }
+			AND = { check_variable = { time_traveler_c_tech = constant:time_traveler_tech.computing_machine } is_researching_technology = computing_machine }
+			AND = { check_variable = { time_traveler_c_tech = constant:time_traveler_tech.radio } is_researching_technology = radio }
+		}
+	}
+}
+
+# COUNTRY. A technology of the candidate list can be started now.
+time_traveler_can_research_candidate = {
+	OR = {
+		AND = { NOT = { has_tech = fuel_silos } can_research = fuel_silos }
+		AND = { NOT = { has_tech = improved_machine_tools } can_research = improved_machine_tools }
+		AND = { NOT = { has_tech = advanced_machine_tools } can_research = advanced_machine_tools }
+		AND = { NOT = { has_tech = computing_machine } can_research = computing_machine }
+		AND = { NOT = { has_tech = radio } can_research = radio }
+	}
+}
+
+# COUNTRY. Relation objective: the opinion of the named country reaches the
+# stored goal.
+time_traveler_relation_objective_met = {
+	hidden_trigger = {
+		meta_trigger = {
+			text = {
+				has_opinion = { target = var:time_traveler_c_target value > [GOAL] }
+			}
+			GOAL = "[?time_traveler_c_goal|.0]"
+		}
+	}
+}
+
+time_traveler_relation_objective_partial = {
+	hidden_trigger = {
+		meta_trigger = {
+			text = {
+				has_opinion = { target = var:time_traveler_c_target value > [GOAL] }
+			}
+			GOAL = "[?time_traveler_c_partial_goal|.0]"
+		}
+	}
+}
+
+# COUNTRY. The remembered-war pact objective is met when the two countries
+# share a faction.
+time_traveler_pact_objective_met = {
+	hidden_trigger = {
+		has_country_flag = time_traveler_pact_goal
+		var:time_traveler_c_target = { exists = yes }
+		is_in_faction_with = var:time_traveler_c_target
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Costs (one trigger per action, reading the cached quote variables)
+# ---------------------------------------------------------------------------
+
+time_traveler_can_pay_consultation = {
+	NOT = { check_variable = { army_experience < time_traveler_c_cost_xp } }
+	NOT = { check_variable = { command_power < time_traveler_c_cost_command } }
+	NOT = { has_equipment = { support_equipment < time_traveler_c_cost_support } }
+	NOT = { has_fuel < time_traveler_c_cost_fuel }
+	NOT = { has_equipment = { train_equipment < time_traveler_c_cost_trains } }
+	NOT = { has_political_power < time_traveler_c_cost_political }
+}
+
+time_traveler_can_pay_revise = {
+	NOT = { has_political_power < time_traveler_cost_revise_political }
+}
+
+time_traveler_can_pay_relocate = {
+	NOT = { check_variable = { command_power < time_traveler_cost_relocate_command } }
+	NOT = { has_equipment = { support_equipment < time_traveler_cost_relocate_support } }
+	NOT = { has_fuel < time_traveler_cost_relocate_fuel }
+}
+
+time_traveler_can_pay_guard = {
+	NOT = { check_variable = { command_power < time_traveler_cost_guard_command } }
+	NOT = { has_equipment = { support_equipment < time_traveler_cost_guard_support } }
+	NOT = { check_variable = { manpower_k < time_traveler_cost_guard_manpower_k } }
+}
+
+time_traveler_can_pay_sting = {
+	NOT = { check_variable = { command_power < time_traveler_cost_sting_command } }
+	NOT = { has_equipment = { support_equipment < time_traveler_cost_sting_support } }
+}
+
+time_traveler_can_pay_share = {
+	NOT = { has_political_power < time_traveler_cost_share_political }
+}
+
+time_traveler_can_pay_infiltrate = {
+	NOT = { check_variable = { command_power < time_traveler_cost_infiltrate_command } }
+	NOT = { has_equipment = { support_equipment < time_traveler_cost_infiltrate_support } }
+}
+
+time_traveler_can_pay_forge = {
+	NOT = { check_variable = { command_power < time_traveler_cost_forge_command } }
+	NOT = { has_political_power < time_traveler_cost_forge_political }
+}
+
+time_traveler_can_pay_asylum = {
+	NOT = { has_political_power < time_traveler_cost_asylum_political }
+}
+
+time_traveler_can_pay_seize = {
+	NOT = { check_variable = { command_power < time_traveler_cost_seize_command } }
+	NOT = { has_equipment = { support_equipment < time_traveler_cost_seize_support } }
+	NOT = { check_variable = { manpower_k < time_traveler_cost_seize_manpower_k } }
+}
+
+# ---------------------------------------------------------------------------
+# Countermeasures
+# ---------------------------------------------------------------------------
+
+# COUNTRY. No consultation or foreign operation resolves while the traveler
+# is being moved.
+time_traveler_can_relocate = {
+	time_traveler_has_direct_access = yes
+	NOT = { time_traveler_mission_is_active = yes }
+	NOT = { has_country_flag = time_traveler_relocating }
+}
+
+# COUNTRY. The sting needs at least one interested country with a network.
+time_traveler_has_stingable_country = {
+	hidden_trigger = { check_variable = { global.time_traveler_interest^num > 0 } }
+}
+
+# ---------------------------------------------------------------------------
+# Foreign operations (scope: the interested country)
+# ---------------------------------------------------------------------------
+
+# COUNTRY. This country is on the interest registry.
+time_traveler_is_interested = {
+	has_country_flag = time_traveler_interested
+}
+
+time_traveler_rival_category_is_visible = {
+	has_country_flag = time_traveler_interested
+	hidden_trigger = {
+		time_traveler_is_present = yes
+		NOT = { has_country_flag = time_traveler_custodian }
+		var:global.time_traveler_custodian = { exists = yes }
+	}
+}
+
+# COUNTRY. Infiltration is always the rival's first option.
+time_traveler_rival_can_infiltrate = {
+	time_traveler_rival_category_is_visible = yes
+	hidden_trigger = { check_variable = { time_traveler_network < constant:time_traveler_network.archive } }
+}
+
+# COUNTRY. Forged advice needs the Suspected band, hostility and a network.
+time_traveler_rival_can_forge = {
+	time_traveler_rival_category_is_visible = yes
+	hidden_trigger = {
+		check_variable = { time_traveler_network > constant:time_traveler_value.zero }
+		var:global.time_traveler_custodian = { time_traveler_exposure_is_suspected_or_higher = yes }
+		OR = {
+			has_war_with = var:global.time_traveler_custodian
+			NOT = { is_in_faction_with = var:global.time_traveler_custodian }
+		}
+	}
+}
+
+time_traveler_rival_can_offer_asylum = {
+	time_traveler_rival_category_is_visible = yes
+	hidden_trigger = {
+		var:global.time_traveler_custodian = { time_traveler_exposure_is_suspected_or_higher = yes }
+	}
+}
+
+# COUNTRY. Seizure needs the Public band, a mature network and a route.
+time_traveler_rival_can_seize = {
+	time_traveler_rival_category_is_visible = yes
+	hidden_trigger = {
+		check_variable = { time_traveler_network > constant:time_traveler_value.two }
+		var:global.time_traveler_custodian = { time_traveler_exposure_is_public = yes }
+		OR = {
+			is_neighbor_of = var:global.time_traveler_custodian
+			has_war_with = var:global.time_traveler_custodian
+			is_in_faction_with = var:global.time_traveler_custodian
+			has_intelligence_agency = yes
+		}
+	}
+}
+
+# COUNTRY (custodian). The stored consultation is one of the profile's strongest
+# families.
+time_traveler_c_family_is_strong = {
+	hidden_trigger = {
+		OR = {
+			AND = {
+				check_variable = { time_traveler_c_family = constant:time_traveler_family.military }
+				time_traveler_family_is_strong_military = yes
+			}
+			AND = {
+				check_variable = { time_traveler_c_family = constant:time_traveler_family.industrial }
+				time_traveler_family_is_strong_industrial = yes
+			}
+			AND = {
+				check_variable = { time_traveler_c_family = constant:time_traveler_family.scientific }
+				time_traveler_family_is_strong_scientific = yes
+			}
+			AND = {
+				check_variable = { time_traveler_c_family = constant:time_traveler_family.diplomatic }
+				time_traveler_family_is_strong_diplomatic = yes
+			}
+			AND = {
+				check_variable = { time_traveler_c_family = constant:time_traveler_family.counterintelligence }
+				time_traveler_family_is_strong_counterintelligence = yes
+			}
+			AND = {
+				check_variable = { time_traveler_c_family = constant:time_traveler_family.domestic }
+				time_traveler_family_is_strong_domestic = yes
+			}
+		}
+	}
+}
+
+# COUNTRY (attacker). The same ideology group as the custodian.
+time_traveler_same_ideology_as_custodian = {
+	hidden_trigger = {
+		OR = {
+			AND = { has_government = democratic var:global.time_traveler_custodian = { has_government = democratic } }
+			AND = { has_government = fascism var:global.time_traveler_custodian = { has_government = fascism } }
+			AND = { has_government = communism var:global.time_traveler_custodian = { has_government = communism } }
+			AND = { has_government = neutrality var:global.time_traveler_custodian = { has_government = neutrality } }
+		}
+	}
+}
+
+# COUNTRY. The consultation cooldown is running.
+time_traveler_consult_is_cooling = {
+	has_country_flag = time_traveler_consult_cooldown
+}
+
+# COUNTRY (custodian). The family picker lists this family: its offer exists and
+# the arrangement allows it.
+time_traveler_family_is_listed_military = {
+	has_country_flag = time_traveler_ready_military
+	time_traveler_allows_military = yes
+	OR = {
+		time_traveler_credibility_is_at_least_trusted = yes
+		time_traveler_family_is_strong_military = yes
+	}
+}
+
+time_traveler_family_is_listed_industrial = {
+	has_country_flag = time_traveler_ready_industrial
+	time_traveler_allows_industrial = yes
+	OR = {
+		time_traveler_credibility_is_at_least_trusted = yes
+		time_traveler_family_is_strong_industrial = yes
+	}
+}
+
+time_traveler_family_is_listed_scientific = {
+	has_country_flag = time_traveler_ready_scientific
+	time_traveler_allows_scientific = yes
+	OR = {
+		time_traveler_credibility_is_at_least_trusted = yes
+		time_traveler_family_is_strong_scientific = yes
+	}
+}
+
+time_traveler_family_is_listed_diplomatic = {
+	has_country_flag = time_traveler_ready_diplomatic
+	time_traveler_allows_diplomatic = yes
+	OR = {
+		time_traveler_credibility_is_at_least_trusted = yes
+		time_traveler_family_is_strong_diplomatic = yes
+	}
+}
+
+time_traveler_family_is_listed_counterintelligence = {
+	has_country_flag = time_traveler_ready_counterintelligence
+	time_traveler_allows_counterintelligence = yes
+}
+
+time_traveler_family_is_listed_domestic = {
+	has_country_flag = time_traveler_ready_domestic
+	time_traveler_allows_domestic = yes
+	OR = {
+		time_traveler_credibility_is_at_least_trusted = yes
+		time_traveler_family_is_strong_domestic = yes
+	}
+}
+
+# COUNTRY (custodian). The traveler may leave by a lawful, voluntary agreement
+# once the government has acted on enough of his advice and trusts him.
+time_traveler_can_end_access_by_agreement = {
+	time_traveler_has_direct_access = yes
+	NOT = { time_traveler_mission_is_active = yes }
+	hidden_trigger = {
+		NOT = { check_variable = { time_traveler_consults < constant:time_traveler_consultation.release_min_consults } }
+		time_traveler_credibility_is_at_least_trusted = yes
+	}
+}
+

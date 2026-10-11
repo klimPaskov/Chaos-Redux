@@ -1,0 +1,753 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 030 TIME TRAVELER CONSTANTS
+# ============================================================================
+# Tuning for the baseline (custody, three public values, access arrangements,
+# six consultation families, countermeasures, rival operations and the
+# institutional spirit) and for Evolutions I and II.
+#
+# The three public values run from 0 to 100 and each has three bands:
+#   Credibility          Doubted / Trusted / Indispensable (custodian)
+#   Exposure             Secret / Suspected / Public       (traveler)
+#   Timeline Divergence  Recognizable / Altered / Broken   (global)
+# Everything else (network levels, support blocs, objective data) is internal.
+# Every number a script reads lives here, never inline.
+# ============================================================================
+
+time_traveler_identity = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	event_id = 30
+	evolution_type = 30
+	prefire_reservation_days = 3
+}
+
+time_traveler_value = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	zero = 0
+	one = 1
+	two = 2
+	three = 3
+	four = 4
+	negative_one = -1
+	percent_max = 100
+	half = 0.5
+	# Added before round_temp_variable to round a positive fraction up.
+	round_up = 0.499
+	people_per_k = 1000
+}
+
+# Status of the original traveler (global.time_traveler_status).
+time_traveler_status = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	dormant = 0
+	arriving = 1
+	verifying = 2
+	choosing_access = 3
+	active = 4
+	missing = 5
+	dead = 6
+	withdrawn = 7
+}
+
+time_traveler_arrangement = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	none = 0
+	cabinet = 1
+	secret = 2
+	confinement = 3
+	public = 4
+}
+
+# Strength of the arrangement effects that are not costs.
+time_traveler_arrangement_value = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	# One-time prestige of Public Recognition.
+	public_political = 50
+	# Public Recognition shortens the consultation cooldown to this share.
+	public_cooldown_factor = 0.75
+	specialty_cooldown_factor = 0.8
+	# Secret Program: a breach adds this to Exposure on top of the leak.
+	secret_breach_extra = 18
+}
+
+time_traveler_profile = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	none = 0
+	analyst = 1
+	engineer = 2
+	historian = 3
+}
+
+time_traveler_family = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	none = 0
+	military = 1
+	industrial = 2
+	scientific = 3
+	diplomatic = 4
+	counterintelligence = 5
+	domestic = 6
+	count = 6
+}
+
+# Objective shells shared by the six families.
+time_traveler_kind = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	none = 0
+	garrison = 1
+	build = 2
+	research = 3
+	relation = 4
+}
+
+time_traveler_result = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	none = 0
+	success = 1
+	partial = 2
+	failed = 3
+}
+
+# Named cause of a failed consultation.
+time_traveler_failure = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	timeline = 1
+	forgery = 2
+	ignored = 3
+}
+
+time_traveler_operation = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	none = 0
+	infiltrate = 1
+	forge = 2
+	asylum = 3
+	seize = 4
+}
+
+# Seizure outcomes carried to the report events.
+time_traveler_seizure = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	failed = 1
+	double = 2
+	wounded = 3
+	transferred = 4
+	exposed = 5
+	vanished = 6
+	assassinated = 7
+}
+
+# Institutional spirit stages.
+time_traveler_stage = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	none = 0
+	unverified = 1
+	directed = 2
+	distributed = 3
+	scattered = 4
+}
+
+# Durable baseline outcomes (global.time_traveler_outcome).
+time_traveler_outcome = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	none = 0
+	trusted_advisor = 1
+	confined_asset = 2
+	public_figure = 3
+	transferred = 4
+	assassinated = 5
+	disappeared = 6
+	dispersed = 7
+}
+
+# Opening handling chosen in the first report.
+# How custody changed hands.
+time_traveler_transfer = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	asylum = 1
+	abduction = 2
+	negotiated = 3
+}
+
+time_traveler_opening = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	hear = 1
+	detain = 2
+	isolate = 3
+	test = 4
+	dismiss = 5
+}
+
+# Band edges for the three public values.
+time_traveler_band = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	trusted_min = 35
+	indispensable_min = 70
+	suspected_min = 30
+	public_min = 65
+	altered_min = 30
+	broken_min = 65
+	# Temporal Stability is 100 minus Divergence, Collapsing below this edge.
+	stability_collapsing = 36
+	# Exposure cap on the number of interested countries per band.
+	interest_cap_secret = 2
+	interest_cap_suspected = 4
+	interest_cap_public = 6
+}
+
+time_traveler_credibility = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	start_base = 20
+	proof_gain = 8
+	opening_test_bonus = 5
+	opening_detain_penalty = 8
+	transfer_abduction = 15
+	transfer_asylum = 45
+	transfer_negotiated = 35
+	success_gain = 9
+	recognizable_bonus = 3
+	partial_gain = 3
+	fail_timeline = 2
+	fail_forgery = 8
+	fail_ignored = 14
+	forgery_exposed_gain = 10
+	forgery_acted_loss = 12
+	rival_belief_gain = 4
+	bait_gain = 6
+	sting_gain = 3
+	# Confinement halves every gain.
+	confinement_divisor = 2
+}
+
+time_traveler_exposure = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	opening_hear = 6
+	opening_detain = 3
+	opening_isolate = 2
+	opening_test = 4
+	opening_dismiss = 10
+	success_cabinet = 6
+	success_secret = 2
+	success_confinement = 3
+	success_public = 2
+	guard_detail = 5
+	relocation_drop = 8
+	sting_drop = 6
+	forgery_story_drop = 4
+	leak_rise = 7
+	secret_breach_rise = 18
+	public_revelation = 12
+	theft_rise = 6
+	counterintelligence_drop = 7
+	chaos_compression = 12
+}
+
+time_traveler_divergence = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	refusal = 2
+	success_military = 3
+	success_diplomatic = 3
+	success_domestic = 3
+	success_industrial = 2
+	success_scientific = 2
+	success_counterintelligence = 1
+	remembered_war = 6
+	share_forecast = 4
+	kruger_prototype = 3
+	kruger_deployment = 6
+}
+
+# Delays and durations in days.
+time_traveler_timing = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	report_delay_days = 2
+	proof_one_days = 5
+	proof_two_days = 9
+	proof_three_window_days = 40
+	proof_three_days = 3
+	access_choice_days = 3
+	first_offer_days = 6
+	consult_cooldown_days = 90
+	revision_cooldown_days = 120
+	relocation_cooldown_days = 60
+	guard_days = 150
+	guard_cooldown_days = 150
+	sting_cooldown_days = 75
+	share_cooldown_days = 120
+	mission_military_days = 120
+	mission_industrial_days = 150
+	mission_scientific_days = 180
+	mission_diplomatic_days = 120
+	mission_counterintelligence_days = 105
+	mission_domestic_days = 135
+	wound_days = 60
+	extension_days = 60
+	operation_cooldown_days = 45
+	relocation_pause_days = 10
+	rival_interval_days = 75
+	rival_first_days = 40
+	rumor_interval_days = 100
+	rumor_first_days = 55
+	registry_rebuild_days = 2
+	asylum_decision_days = 3
+	theft_report_days = 4
+}
+
+time_traveler_interval = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	fast_factor = 0.7
+	slow_factor = 1.35
+	jitter_low = 0.8
+	jitter_high = 1.25
+}
+
+# Base costs. Everything but command power is multiplied by the cost scale of
+# the paying country: 1 plus its factories divided by factories_per_step, up to
+# scale_max. Command power stays below the 60 point limit of the decision rules.
+time_traveler_cost = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	factories_per_step = 40
+	scale_max = 5
+	military_xp = 20
+	military_command = 25
+	military_support = 60
+	industrial_fuel = 1200
+	industrial_trains = 15
+	scientific_support = 40
+	scientific_political = 60
+	diplomatic_political = 90
+	counterintelligence_command = 20
+	counterintelligence_support = 40
+	domestic_political = 70
+	domestic_command = 25
+	revise_political = 100
+	relocate_command = 15
+	relocate_support = 30
+	relocate_fuel = 400
+	guard_command = 25
+	guard_support = 80
+	guard_manpower_k = 12
+	sting_command = 20
+	sting_support = 40
+	share_political = 60
+	infiltrate_command = 15
+	infiltrate_support = 30
+	forge_command = 20
+	forge_political = 50
+	asylum_political = 80
+	seize_command = 30
+	seize_support = 90
+	seize_manpower_k = 15
+	# Short and partial offers cost this share of a full cost.
+	coverage_cost_discount = 0.5
+	specialty_discount = 0.8
+}
+
+# Objective sizing for the consultation missions.
+time_traveler_objective = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	garrison_base = 2
+	garrison_per_divisions = 25
+	garrison_max = 6
+	infrastructure_ceiling = 4
+	relation_gap = 30
+	relation_ceiling = 80
+	relation_floor = -60
+	relation_goal = 55
+	relation_partial_goal = 40
+	partial_share = 0.5
+	tech_count = 5
+}
+
+time_traveler_reward = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	military_xp = 25
+	military_window_days = 120
+	industrial_window_days = 180
+	domestic_window_days = 180
+	sting_window_days = 120
+	forgery_stability = -0.03
+	sting_network_drop = 2
+	bait_network_drop = 2
+	bait_scandal_stability = -0.05
+	timeline_shift = 8
+	industrial_infrastructure = 1
+	diplomatic_opinion = 40
+	counterintelligence_network_drop = 2
+	domestic_stability = 0.06
+	partial_share = 0.5
+	specialty_share = 1.25
+	indispensable_bonus = 0.25
+	fragment_days = 365
+}
+
+# Hidden network level of an interested country.
+time_traveler_network = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	none = 0
+	schedules = 1
+	recruit = 2
+	archive = 3
+	mature = 3
+}
+
+# Chances (percent) for the foreign operations and the host answers.
+time_traveler_chance = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	infiltrate_base = 45
+	infiltrate_per_network = 6
+	infiltrate_agency_bonus = 10
+	infiltrate_guard_penalty = 20
+	infiltrate_sting_penalty = 15
+	forge_base = 40
+	forge_per_network = 8
+	forge_exposed_base = 35
+	asylum_base = 12
+	asylum_confinement = 28
+	asylum_cabinet = 6
+	asylum_secret = 10
+	asylum_public = 18
+	asylum_trusted_penalty = 10
+	asylum_ideology_bonus = 12
+	asylum_neighbor_bonus = 6
+	seize_base = 25
+	seize_guard_penalty = 20
+	seize_agency_bonus = 8
+	seize_neighbor_bonus = 12
+	seize_double_chance = 30
+	assassinate_threat = 20
+	sting_base = 55
+	sting_per_network = 5
+	sting_agency_bonus = 8
+	bait_base = 40
+	bait_per_exposed_network = 6
+	maximum = 90
+	minimum = 5
+	infiltrate_secret_penalty = 8
+	exposed_after_failure = 25
+	asylum_unstable_bonus = 10
+	vanish_threat = 15
+	seize_wound_chance = 60
+	relocation_leak = 20
+	decoy_chance = 35
+	bait_injury = 35
+	bait_abduction = 65
+	bait_guard_bonus = 12
+}
+
+# Interest registry scoring.
+time_traveler_interest = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	major = 2
+	player = 2
+	agency = 2
+	war_with_custodian = 3
+	neighbor = 1
+	ally = 1
+	minimum_score = 2
+	strong_score = 4
+}
+
+# Host selection weights before the individual-crisis ticket curve.
+time_traveler_host_weight = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	player = 16
+	major = 2
+	capital_search_states = 12
+}
+
+# Compressed opening above this Chaos tier.
+time_traveler_compression = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	minimum_tier = 1
+}
+
+# Remembered war variants (reuse of the legacy diplomatic content).
+time_traveler_remembered = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	german_min_delay = 5
+	german_max_delay = 20
+	german_political_power = 200
+	german_war_support = 0.1
+	american_intel = 100
+	american_defence_divisions = 3
+	pact_ai_value = 2000
+	pact_threat = 10
+	soviet_ai_accept = 60
+	soviet_ai_refuse = 40
+	german_ai_accept = 90
+	german_ai_refuse = 10
+}
+
+# Recent-cause ids shown in the category header (last three changes).
+time_traveler_cause_id = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	none = 0
+	proof_verified = 1
+	opening_handling = 2
+	consultation_success = 3
+	consultation_partial = 4
+	failed_timeline = 5
+	failed_forgery = 6
+	failed_ignored = 7
+	forgery_exposed = 8
+	forgery_acted = 9
+	rival_belief = 10
+	leak = 11
+	relocation = 12
+	guard = 13
+	sting = 14
+	staff_copy = 15
+	shared_forecast = 16
+	arrangement = 17
+	public_floor = 18
+	theft = 19
+	rumor_scientists = 20
+	rumor_officers = 21
+	rumor_press = 22
+	rumor_diplomats = 23
+	rumor_industry = 24
+	rumor_opposition = 25
+	transfer = 26
+	remembered_war = 27
+	refusal = 28
+	secret_breach = 29
+	counterintelligence = 30
+}
+
+time_traveler_ai = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	blocked = 0
+	low = 5
+	standard = 15
+	strong = 30
+	dominant = 60
+	support_floor = 60
+	stability_low = 0.45
+	stability_high = 0.7
+	rival_infiltrate = 50
+	rival_restraint = 30
+	rival_agency = 15
+	rival_forge = 20
+	rival_hostile = 15
+	rival_asylum = 10
+	rival_ideology = 15
+	rival_seize = 12
+	rival_ally_restraint = 40
+}
+
+# Consultation counts that move the spirit stage and the achievements.
+time_traveler_consultation = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	achievement_days = 730
+	release_min_consults = 3
+
+	stage_distributed_count = 3
+	legacy_deep_count = 3
+	achievement_count = 3
+}
+
+time_traveler_rumor = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	exposure_rise = 4
+	refusal_stability = -0.02
+	refusal_war_support = -0.03
+	officer_xp = 10
+	cover_political = -25
+	cover_drop = 6
+	assurance_political = -30
+	evasion_credibility = 5
+	contract_days = 150
+	open_files_stability = 0.03
+	open_files_exposure = 8
+	dismiss_stability = -0.02
+}
+
+time_traveler_double = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	turn_chance = 50
+	verify_chance = 55
+	verify_watch_bonus = 15
+	forgery_acted_stability = -0.04
+	forgery_acted_war_support = -0.04
+	forgery_gain_stability = 0.03
+	forgery_gain_political = 50
+	watched_penalty = 30
+	vanish_political = 0
+
+	expose_exposure_drop = 4
+	publish_exposure_rise = 8
+	trade_opinion = 25
+	fabricated_stability = -0.06
+	fabricated_war_support = -0.04
+}
+
+# Candidate technologies of the scientific consultation (index into the
+# triggers and effects that name the technology).
+time_traveler_tech = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	none = 0
+	fuel_silos = 1
+	improved_machine_tools = 2
+	advanced_machine_tools = 3
+	computing_machine = 4
+	radio = 5
+}
+
+# Event-owned Chaos milestones. Each fires once per campaign.
+time_traveler_chaos = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	revelation = 4
+	theft = 3
+}

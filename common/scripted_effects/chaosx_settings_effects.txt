@@ -4408,6 +4408,27 @@ fire_event_by_temp_id_no_cluster = {
 		}
 	}
 	if = {
+		limit = { check_variable = { event_id = constant:time_traveler_identity.event_id } }
+		set_temp_variable = { time_traveler_prefire_ready = constant:time_traveler_value.zero }
+		time_traveler_prepare_random_event_fire = yes
+		if = {
+			limit = {
+				OR = {
+					check_variable = { time_traveler_prefire_ready < constant:time_traveler_value.one }
+					NOT = { has_event_target = time_traveler_prefire_host }
+				}
+			}
+			set_temp_variable = { event_single_fire_allowed = constant:time_traveler_value.zero }
+			if = {
+				limit = {
+					has_variable = automatic_event_firing_context
+					check_variable = { automatic_event_firing_context > constant:time_traveler_value.zero }
+				}
+				calculate_next_timer_value = yes
+			}
+		}
+	}
+	if = {
 		limit = { check_variable = { event_id = constant:murder_mystery_identity.event_id } }
 		set_temp_variable = { murder_mystery_prefire_ready = constant:murder_mystery_value.zero }
 		murder_mystery_prepare_random_event_fire = yes
@@ -4628,6 +4649,15 @@ fire_event_by_temp_id_no_cluster = {
 				}
 				event_target:murder_mystery_prefire_host = {
 					country_event = { id = chaosx.nr39.1 }
+				}
+			}
+			else_if = {
+				limit = {
+					check_variable = { event_fire_record_id = constant:time_traveler_identity.event_id }
+					has_event_target = time_traveler_prefire_host
+				}
+				event_target:time_traveler_prefire_host = {
+					country_event = { id = chaosx.nr30.1 }
 				}
 			}
 			else_if = {

@@ -1,0 +1,173 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 030 TIME TRAVELER ANSWER EFFECTS
+# ============================================================================
+# The effects behind the options of the intelligence-war events and the
+# arrangement revision. Scope is the country that clicked the option. FROM is
+# the foreign country that caused the event where the event came from an
+# operation (the sponsor is never named in the text unless it was exposed).
+# ============================================================================
+
+# COUNTRY (custodian). Closes a revision: the cooldown and fresh quotes.
+time_traveler_close_revision = {
+	set_temp_variable = { time_traveler_days = constant:time_traveler_timing.revision_cooldown_days }
+	set_country_flag = { flag = time_traveler_revision_cooldown days = time_traveler_days }
+	time_traveler_refresh_costs = yes
+}
+
+# COUNTRY (custodian). Dismissing the compromised staff member sets the
+# sponsor's network back one step.
+time_traveler_answer_staff_dismiss = {
+	FROM = {
+		subtract_from_variable = { time_traveler_network = constant:time_traveler_value.one }
+		clamp_variable = { var = time_traveler_network min = constant:time_traveler_value.zero max = constant:time_traveler_network.mature }
+	}
+}
+
+# COUNTRY (custodian). Turning the staff member: a success ends the sponsor's
+# network and shows that foreign governments believe the traveler, a failure
+# tells the sponsor the cell was found out.
+time_traveler_answer_staff_turn = {
+	set_temp_variable = { time_traveler_chance = constant:time_traveler_double.turn_chance }
+	time_traveler_resolve_chance = yes
+	if = {
+		limit = { check_variable = { time_traveler_success = constant:time_traveler_value.one } }
+		FROM = { set_variable = { time_traveler_network = constant:time_traveler_network.none } }
+		set_temp_variable = { time_traveler_amount = constant:time_traveler_credibility.rival_belief_gain }
+		set_temp_variable = { time_traveler_cause = constant:time_traveler_cause_id.rival_belief }
+		time_traveler_raise_credibility = yes
+	}
+	else = {
+		set_temp_variable = { time_traveler_amount = constant:time_traveler_exposure.leak_rise }
+		set_temp_variable = { time_traveler_cause = constant:time_traveler_cause_id.leak }
+		time_traveler_raise_exposure = yes
+		time_traveler_check_revelation = yes
+	}
+}
+
+# COUNTRY (custodian). Watching the staff member: the sponsor's next
+# operation is much more likely to fail.
+time_traveler_answer_staff_watch = {
+	FROM = { set_country_flag = time_traveler_watched }
+}
+
+# COUNTRY (custodian). Checking forged advice before acting on it. A success
+# exposes the forgery, collapses the sponsor's network and raises Credibility.
+time_traveler_answer_forgery_verify = {
+	clr_country_flag = time_traveler_forgery_pending
+	set_temp_variable = { time_traveler_chance = constant:time_traveler_double.verify_chance }
+	if = {
+		limit = { has_country_flag = time_traveler_sting_recent }
+		add_to_temp_variable = { time_traveler_chance = constant:time_traveler_double.verify_watch_bonus }
+	}
+	time_traveler_resolve_chance = yes
+	if = {
+		limit = { check_variable = { time_traveler_success = constant:time_traveler_value.one } }
+		FROM = {
+			set_variable = { time_traveler_network = constant:time_traveler_network.none }
+			add_opinion_modifier = { target = ROOT modifier = time_traveler_exposed_cell }
+		}
+		set_temp_variable = { time_traveler_amount = constant:time_traveler_credibility.forgery_exposed_gain }
+		set_temp_variable = { time_traveler_cause = constant:time_traveler_cause_id.forgery_exposed }
+		time_traveler_raise_credibility = yes
+		set_temp_variable = { time_traveler_amount = constant:time_traveler_exposure.forgery_story_drop }
+		time_traveler_lower_exposure = yes
+	}
+}
+
+# COUNTRY (custodian). Acting on forged advice: the sponsor gains a strategic
+# benefit and the custodian a concrete setback. A consultation that fails
+# afterwards names the forgery as its cause.
+time_traveler_answer_forgery_act = {
+	clr_country_flag = time_traveler_forgery_pending
+	set_country_flag = time_traveler_forgery_acted
+	set_temp_variable = { time_traveler_amount = constant:time_traveler_credibility.forgery_acted_loss }
+	set_temp_variable = { time_traveler_cause = constant:time_traveler_cause_id.forgery_acted }
+	time_traveler_lower_credibility = yes
+	add_stability = constant:time_traveler_double.forgery_acted_stability
+	add_war_support = constant:time_traveler_double.forgery_acted_war_support
+	FROM = {
+		add_stability = constant:time_traveler_double.forgery_gain_stability
+		add_political_power = constant:time_traveler_double.forgery_gain_political
+	}
+}
+
+# COUNTRY (captor). The double is questioned until the deception is clear. The
+# captor learns how the custodian guards the traveler: its network falls and the
+# custodian's decoy has done its work.
+time_traveler_answer_double_expose = {
+	subtract_from_variable = { time_traveler_network = constant:time_traveler_reward.sting_network_drop }
+	clamp_variable = { var = time_traveler_network min = constant:time_traveler_value.zero max = constant:time_traveler_network.mature }
+	var:global.time_traveler_custodian = {
+		set_temp_variable = { time_traveler_amount = constant:time_traveler_double.expose_exposure_drop }
+		set_temp_variable = { time_traveler_cause = constant:time_traveler_cause_id.sting }
+		time_traveler_lower_exposure = yes
+	}
+}
+
+# COUNTRY (captor). The double is returned for a favor.
+time_traveler_answer_double_trade = {
+	add_opinion_modifier = { target = var:global.time_traveler_custodian modifier = time_traveler_goodwill }
+	reverse_add_opinion_modifier = { target = var:global.time_traveler_custodian modifier = time_traveler_goodwill }
+}
+
+# COUNTRY (captor). The captor publishes a false claim built on the double. The
+# custodian's program draws more attention.
+time_traveler_answer_double_publish = {
+	var:global.time_traveler_custodian = {
+		set_temp_variable = { time_traveler_amount = constant:time_traveler_double.publish_exposure_rise }
+		set_temp_variable = { time_traveler_cause = constant:time_traveler_cause_id.leak }
+		time_traveler_raise_exposure = yes
+		time_traveler_check_revelation = yes
+	}
+	add_political_power = constant:time_traveler_double.forgery_gain_political
+}
+
+# COUNTRY (captor). Policy built on fabricated knowledge. The setback is real.
+time_traveler_answer_double_believe = {
+	add_stability = constant:time_traveler_double.fabricated_stability
+	add_war_support = constant:time_traveler_double.fabricated_war_support
+}
+
+# ---------------------------------------------------------------------------
+# Ending access by agreement
+# ---------------------------------------------------------------------------
+
+# COUNTRY (custodian). Ends direct access by agreement. The institution keeps
+# its legacy, the timeline stays where it is and nothing is taken by force.
+time_traveler_release_by_agreement = {
+	if = {
+		limit = {
+			is_ai = no
+			time_traveler_divergence_is_recognizable = yes
+		}
+		set_country_flag = time_traveler_ach_future_refused
+	}
+	time_traveler_lose_custody = yes
+	set_variable = { global.time_traveler_status = constant:time_traveler_status.withdrawn }
+	set_variable = { global.time_traveler_outcome = constant:time_traveler_outcome.disappeared }
+	time_traveler_clear_registry = yes
+	country_event = { id = chaosx.nr30.55 days = constant:time_traveler_timing.report_delay_days }
+}
+
+# COUNTRY (custodian), called by the rumor chain. Two years of secrecy: the
+# traveler alive with the custodian, Exposure never in the Public band and no
+# foreign copy anywhere.
+time_traveler_check_no_one_owns_tomorrow = {
+	if = {
+		limit = {
+			is_ai = no
+			NOT = { has_country_flag = time_traveler_ach_no_one_owns_tomorrow }
+			NOT = { has_global_flag = time_traveler_ever_public }
+			NOT = { has_global_flag = time_traveler_theft_happened }
+			NOT = { has_global_flag = time_traveler_transferred_once }
+			NOT = { check_variable = { global.time_traveler_fragments > constant:time_traveler_value.zero } }
+			check_variable = { global.time_traveler_arrival_day > constant:time_traveler_value.zero }
+		}
+		set_temp_variable = { time_traveler_elapsed = global.num_days }
+		subtract_from_temp_variable = { time_traveler_elapsed = global.time_traveler_arrival_day }
+		if = {
+			limit = { NOT = { check_variable = { time_traveler_elapsed < constant:time_traveler_consultation.achievement_days } } }
+			set_country_flag = time_traveler_ach_no_one_owns_tomorrow
+		}
+	}
+}

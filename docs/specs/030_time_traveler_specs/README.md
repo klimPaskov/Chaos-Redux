@@ -35,9 +35,14 @@ Each part opens with its acceptance status.
 | the nine historical figures and the three named future visitors | the user's Event 030 brief | user-brief requirement |
 | prehistoric animals with Africa as a prominent region | the user's Event 030 brief | user-brief requirement |
 | a traveler who warns governments away from lost wars, Napoleon's return, and a robot invasion from the future | the legacy catalog row and the user's brief | user-brief requirement |
+| Parts 1, 2 and 3: baseline custody, three public values with three bands, four access arrangements, six consultation families, four countermeasures, four rival operations, institutional spirit stages, remembered war variants for Germany and the United States, durable outcomes | release-pass parent decision of 2026-10-11 | Accepted by parent 2026-10-11 |
+| Evolution I and Evolution II designs (Parts 4 and 5), Evolution II restricted to Napoleon Bonaparte, Joan of Arc and Frederick the Great (open question 2) | release-pass parent decision of 2026-10-11 | Accepted by parent 2026-10-11 |
+| open question 1: keep the label Timeline Divergence throughout and name the Evolution V band Collapsing | release-pass parent decision of 2026-10-11 | Accepted by parent 2026-10-11 |
+| Evolutions III to V, the Closed Future country, the modern named visitors (open question 3), the Machine Extinction War, All Times at Once and the remaining figures of Part 5 | release-pass parent decision of 2026-10-11 | Deferred to a later pass. The modern visitors are living public figures and stay out until the user confirms the names |
 | everything else in the twelve parts and matrices | planning-session proposal and the 2026-10-10 audit | `unresolved` until the parent or user records acceptance |
 
-Implementation must not start on an `unresolved` part until acceptance is recorded here or in `docs/plans/030_time_traveler_plans/`.
+Implementation does not start on an `unresolved` or deferred part until acceptance is recorded here or in `docs/plans/030_time_traveler_plans/`.
+The release pass of 2026-10-11 implemented the accepted parts. The record is `docs/events/030_time_traveler.md` and `docs/plans/030_time_traveler_plans/subagent_handoffs/030_release_pass_2026-10-11.md`.
 
 ## Implementation status
 

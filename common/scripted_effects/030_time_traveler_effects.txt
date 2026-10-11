@@ -1,39 +1,471 @@
 # ============================================================================
-# CHAOS REDUX - EVENT 030 TIME TRAVELER EFFECTS
+# CHAOS REDUX - EVENT 030 TIME TRAVELER CORE EFFECTS
 # ============================================================================
-# Load-aware country prefire selection for the timed Time Traveler package.
-# The timed idea remains the lifecycle authority and expires normally.
+# Host selection, the arrival, the three public values, the institutional
+# spirit, cached action costs and the character. Flow effects (opening,
+# verification, consultations) are in 030_time_traveler_flow_effects.txt and
+# the intelligence war (registry, operations, countermeasures, custody) in
+# 030_time_traveler_network_effects.txt.
+#
+# State of the original traveler:
+#   global.time_traveler_status        see constant:time_traveler_status
+#   global.time_traveler_custodian     the country that holds him (variable scope)
+#   global.time_traveler_profile       knowledge profile chosen at arrival
+#   global.time_traveler_divergence    Timeline Divergence, 0 to 100
+#   global.time_traveler_recent        the last three causes of a value change
+# Custodian country variables: time_traveler_credibility, time_traveler_exposure,
+# time_traveler_arrangement, time_traveler_stage, time_traveler_consults and the
+# cached costs time_traveler_cost_*.
+# Values change only through the raise/lower helpers below, each of which
+# clamps the result to 0..100 and records its cause.
 # ============================================================================
 
+# ---------------------------------------------------------------------------
+# Host selection
+# ---------------------------------------------------------------------------
+
+# COUNTRY. Adds the current country to the temp ticket array. The base weight
+# is the player or major weight, multiplied by the shared individual-crisis
+# ticket curve so a loaded country is less likely and a full one is excluded.
 time_traveler_add_current_country_to_prefire_pool = {
-	set_temp_variable = { individual_crisis_candidate_base_weight = constant:individual_crisis_targeting.one }
+	set_temp_variable = { individual_crisis_candidate_base_weight = constant:time_traveler_host_weight.major }
+	if = {
+		limit = { is_ai = no }
+		set_temp_variable = { individual_crisis_candidate_base_weight = constant:time_traveler_host_weight.player }
+	}
 	adjust_individual_crisis_candidate_ticket_weight = yes
 	set_temp_variable = { time_traveler_prefire_pool_remaining = individual_crisis_candidate_adjusted_weight }
 	while_loop_effect = {
-		limit = { check_variable = { time_traveler_prefire_pool_remaining > constant:individual_crisis_targeting.zero } }
+		limit = { check_variable = { time_traveler_prefire_pool_remaining > constant:time_traveler_value.zero } }
 		add_to_temp_array = { time_traveler_prefire_host_pool = THIS }
-		subtract_from_temp_variable = { time_traveler_prefire_pool_remaining = constant:individual_crisis_targeting.one }
+		subtract_from_temp_variable = { time_traveler_prefire_pool_remaining = constant:time_traveler_value.one }
 	}
 }
 
+# ANY scope. Draws the host from the ticket array and saves it as the event
+# target time_traveler_prefire_host. Output: temp time_traveler_prefire_ready.
 time_traveler_select_weighted_prefire_host = {
-	set_temp_variable = { time_traveler_prefire_ready = constant:individual_crisis_targeting.zero }
+	set_temp_variable = { time_traveler_prefire_ready = constant:time_traveler_value.zero }
 	clear_temp_array = time_traveler_prefire_host_pool
 	every_country = {
-		limit = { exists = yes }
+		limit = { time_traveler_is_valid_host = yes }
 		time_traveler_add_current_country_to_prefire_pool = yes
 	}
 	if = {
-		limit = { check_variable = { time_traveler_prefire_host_pool^num > constant:individual_crisis_targeting.zero } }
+		limit = { check_variable = { time_traveler_prefire_host_pool^num > constant:time_traveler_value.zero } }
 		random_scope_in_array = {
 			array = time_traveler_prefire_host_pool
 			save_event_target_as = time_traveler_prefire_host
-			set_temp_variable = { time_traveler_prefire_ready = constant:individual_crisis_targeting.one }
+			set_temp_variable = { time_traveler_prefire_ready = constant:time_traveler_value.one }
 		}
 	}
 	clear_temp_array = time_traveler_prefire_host_pool
 }
 
+# ANY scope. Called by the shared fire dispatcher before the history row is
+# accepted. The traveler appears once per campaign.
 time_traveler_prepare_random_event_fire = {
-	time_traveler_select_weighted_prefire_host = yes
+	set_temp_variable = { time_traveler_prefire_ready = constant:time_traveler_value.zero }
+	if = {
+		limit = { time_traveler_has_not_appeared = yes }
+		time_traveler_select_weighted_prefire_host = yes
+	}
+}
+
+# COUNTRY (the host). Saves the arrival state: the capital when it is
+# controlled and not next to an enemy, otherwise a safe controlled core state
+# with infrastructure, otherwise any core state, otherwise any controlled state.
+# The choice is stored once in time_traveler_arrival_state.
+time_traveler_select_arrival_state = {
+	set_temp_variable = { time_traveler_state_ready = constant:time_traveler_value.zero }
+	save_event_target_as = time_traveler_scope_country
+	if = {
+		limit = {
+			capital_scope = {
+				NOT = { has_state_flag = time_traveler_current_site }
+				is_owned_by = event_target:time_traveler_scope_country
+				is_controlled_by = event_target:time_traveler_scope_country
+				NOT = { any_neighbor_state = { controller = { has_war_with = event_target:time_traveler_scope_country } } }
+			}
+		}
+		capital_scope = { save_event_target_as = time_traveler_arrival_site }
+		set_temp_variable = { time_traveler_state_ready = constant:time_traveler_value.one }
+	}
+	if = {
+		limit = { check_variable = { time_traveler_state_ready = constant:time_traveler_value.zero } }
+		random_owned_controlled_state = {
+			limit = {
+				NOT = { has_state_flag = time_traveler_current_site }
+				is_core_of = event_target:time_traveler_scope_country
+				check_variable = { infrastructure_level > constant:time_traveler_objective.infrastructure_ceiling }
+				NOT = { any_neighbor_state = { controller = { has_war_with = event_target:time_traveler_scope_country } } }
+			}
+			save_event_target_as = time_traveler_arrival_site
+			set_temp_variable = { time_traveler_state_ready = constant:time_traveler_value.one }
+		}
+	}
+	if = {
+		limit = { check_variable = { time_traveler_state_ready = constant:time_traveler_value.zero } }
+		random_owned_controlled_state = {
+			limit = {
+				NOT = { has_state_flag = time_traveler_current_site }
+				is_core_of = event_target:time_traveler_scope_country
+			}
+			save_event_target_as = time_traveler_arrival_site
+			set_temp_variable = { time_traveler_state_ready = constant:time_traveler_value.one }
+		}
+	}
+	if = {
+		limit = { check_variable = { time_traveler_state_ready = constant:time_traveler_value.zero } }
+		random_controlled_state = {
+			limit = { NOT = { has_state_flag = time_traveler_current_site } }
+			save_event_target_as = time_traveler_arrival_site
+			set_temp_variable = { time_traveler_state_ready = constant:time_traveler_value.one }
+		}
+	}
+	if = {
+		limit = { check_variable = { time_traveler_state_ready = constant:time_traveler_value.one } }
+		set_variable = { time_traveler_arrival_state = event_target:time_traveler_arrival_site }
+	}
+}
+
+# GLOBAL result. Chooses the knowledge profile from the host. The weights are
+# rebuilt from the host so war favours the analyst, industry the engineer and
+# an unsettled country the historian.
+time_traveler_pick_profile = {
+	set_temp_variable = { time_traveler_weight_analyst = constant:time_traveler_value.two }
+	set_temp_variable = { time_traveler_weight_engineer = constant:time_traveler_value.two }
+	set_temp_variable = { time_traveler_weight_historian = constant:time_traveler_value.two }
+	if = {
+		limit = { has_war = yes }
+		add_to_temp_variable = { time_traveler_weight_analyst = constant:time_traveler_value.two }
+	}
+	if = {
+		limit = { check_variable = { num_of_civilian_factories > constant:time_traveler_cost.factories_per_step } }
+		add_to_temp_variable = { time_traveler_weight_engineer = constant:time_traveler_value.two }
+	}
+	if = {
+		limit = { has_stability < constant:time_traveler_ai.stability_low }
+		add_to_temp_variable = { time_traveler_weight_historian = constant:time_traveler_value.two }
+	}
+	set_temp_variable = { time_traveler_weight_total = time_traveler_weight_analyst }
+	add_to_temp_variable = { time_traveler_weight_total = time_traveler_weight_engineer }
+	add_to_temp_variable = { time_traveler_weight_total = time_traveler_weight_historian }
+	set_temp_variable_to_random = { var = time_traveler_roll }
+	multiply_temp_variable = { time_traveler_roll = time_traveler_weight_total }
+	set_variable = { global.time_traveler_profile = constant:time_traveler_profile.historian }
+	set_temp_variable = { time_traveler_weight_edge = time_traveler_weight_analyst }
+	if = {
+		limit = { check_variable = { time_traveler_roll < time_traveler_weight_edge } }
+		set_variable = { global.time_traveler_profile = constant:time_traveler_profile.analyst }
+	}
+	else = {
+		add_to_temp_variable = { time_traveler_weight_edge = time_traveler_weight_engineer }
+		if = {
+			limit = { check_variable = { time_traveler_roll < time_traveler_weight_edge } }
+			set_variable = { global.time_traveler_profile = constant:time_traveler_profile.engineer }
+		}
+	}
+}
+
+# COUNTRY (the host), called by chaosx.nr30.1. Starts the traveler, saves the
+# arrival state and the profile and schedules the opening report.
+time_traveler_begin = {
+	set_variable = { global.time_traveler_status = constant:time_traveler_status.arriving }
+	set_variable = { global.time_traveler_custodian = THIS }
+	set_variable = { global.time_traveler_divergence = constant:time_traveler_value.zero }
+	set_variable = { global.time_traveler_outcome = constant:time_traveler_outcome.none }
+	set_variable = { global.time_traveler_proofs = constant:time_traveler_value.zero }
+	set_global_flag = time_traveler_appeared
+	set_variable = { global.time_traveler_arrival_day = global.num_days }
+	set_variable = { global.time_traveler_fragments = constant:time_traveler_value.zero }
+	set_country_flag = time_traveler_custodian
+	set_variable = { time_traveler_credibility = constant:time_traveler_credibility.start_base }
+	set_variable = { time_traveler_exposure = constant:time_traveler_value.zero }
+	set_variable = { time_traveler_arrangement = constant:time_traveler_arrangement.none }
+	set_variable = { time_traveler_stage = constant:time_traveler_stage.none }
+	set_variable = { time_traveler_consults = constant:time_traveler_value.zero }
+	set_variable = { time_traveler_shareable = constant:time_traveler_value.zero }
+	set_variable = { time_traveler_c_kind = constant:time_traveler_kind.none }
+	time_traveler_pick_profile = yes
+	time_traveler_select_arrival_state = yes
+	time_traveler_refresh_costs = yes
+	if = {
+		limit = { check_variable = { global.chaos_meter_value > constant:chaos_meter_tier_range.tier_1.min } }
+		set_country_flag = time_traveler_compressed
+	}
+	country_event = { id = chaosx.nr30.2 days = constant:time_traveler_timing.report_delay_days }
+}
+
+# ---------------------------------------------------------------------------
+# The three public values
+# ---------------------------------------------------------------------------
+
+# GLOBAL. Records one cause at the head of the three-entry list. Input: temp
+# time_traveler_cause (constant:time_traveler_cause_id.*).
+time_traveler_record_cause = {
+	if = {
+		limit = { check_variable = { time_traveler_cause > constant:time_traveler_value.zero } }
+		add_to_array = { array = global.time_traveler_recent value = time_traveler_cause index = 0 }
+		if = {
+			limit = { check_variable = { global.time_traveler_recent^num > constant:time_traveler_value.three } }
+			remove_from_array = { array = global.time_traveler_recent index = constant:time_traveler_value.three }
+		}
+	}
+}
+
+# COUNTRY (custodian). Inputs: temp time_traveler_amount (positive) and
+# time_traveler_cause. Confinement halves every gain because the guards filter
+# the traveler's evidence.
+time_traveler_raise_credibility = {
+	if = {
+		limit = { time_traveler_arrangement_is_confinement = yes }
+		divide_temp_variable = { time_traveler_amount = constant:time_traveler_credibility.confinement_divisor }
+		round_temp_variable = time_traveler_amount
+	}
+	add_to_variable = { time_traveler_credibility = time_traveler_amount }
+	clamp_variable = { var = time_traveler_credibility min = constant:time_traveler_value.zero max = constant:time_traveler_value.percent_max }
+	time_traveler_record_cause = yes
+}
+
+time_traveler_lower_credibility = {
+	subtract_from_variable = { time_traveler_credibility = time_traveler_amount }
+	clamp_variable = { var = time_traveler_credibility min = constant:time_traveler_value.zero max = constant:time_traveler_value.percent_max }
+	time_traveler_record_cause = yes
+}
+
+# COUNTRY (custodian). Public Recognition and a confirmed public revelation set
+# a floor at the Public band.
+time_traveler_raise_exposure = {
+	add_to_variable = { time_traveler_exposure = time_traveler_amount }
+	time_traveler_apply_exposure_floor = yes
+	clamp_variable = { var = time_traveler_exposure min = constant:time_traveler_value.zero max = constant:time_traveler_value.percent_max }
+	if = {
+		limit = { time_traveler_exposure_is_public = yes }
+		set_global_flag = time_traveler_ever_public
+	}
+	time_traveler_record_cause = yes
+}
+
+time_traveler_lower_exposure = {
+	subtract_from_variable = { time_traveler_exposure = time_traveler_amount }
+	clamp_variable = { var = time_traveler_exposure min = constant:time_traveler_value.zero max = constant:time_traveler_value.percent_max }
+	time_traveler_apply_exposure_floor = yes
+	time_traveler_record_cause = yes
+}
+
+time_traveler_apply_exposure_floor = {
+	if = {
+		limit = {
+			has_global_flag = time_traveler_public_floor
+			check_variable = { time_traveler_exposure < constant:time_traveler_band.public_min }
+		}
+		set_variable = { time_traveler_exposure = constant:time_traveler_band.public_min }
+	}
+}
+
+# ANY scope. Divergence is global and survives the traveler. Input: temp
+# time_traveler_amount and time_traveler_cause.
+time_traveler_raise_divergence = {
+	add_to_variable = { global.time_traveler_divergence = time_traveler_amount }
+	clamp_variable = { var = global.time_traveler_divergence min = constant:time_traveler_value.zero max = constant:time_traveler_value.percent_max }
+	time_traveler_record_cause = yes
+}
+
+# ---------------------------------------------------------------------------
+# Institutional spirit
+# ---------------------------------------------------------------------------
+
+# COUNTRY. Removes every stage spirit before the right one is added.
+time_traveler_clear_spirits = {
+	remove_ideas = time_traveler_unverified_forecasts
+	remove_ideas = time_traveler_directed_analyst
+	remove_ideas = time_traveler_directed_engineer
+	remove_ideas = time_traveler_directed_historian
+	remove_ideas = time_traveler_distributed_analyst
+	remove_ideas = time_traveler_distributed_engineer
+	remove_ideas = time_traveler_distributed_historian
+	remove_ideas = time_traveler_scattered_forecasts
+	remove_ideas = time_traveler_scattered_forecasts_deep
+}
+
+# COUNTRY. Sets the spirit that matches time_traveler_stage and the profile.
+# One spirit at a time, never stacked.
+time_traveler_apply_spirit = {
+	time_traveler_clear_spirits = yes
+	if = {
+		limit = { check_variable = { time_traveler_stage = constant:time_traveler_stage.unverified } }
+		add_ideas = time_traveler_unverified_forecasts
+	}
+	else_if = {
+		limit = { check_variable = { time_traveler_stage = constant:time_traveler_stage.directed } }
+		if = {
+			limit = { check_variable = { global.time_traveler_profile = constant:time_traveler_profile.analyst } }
+			add_ideas = time_traveler_directed_analyst
+		}
+		else_if = {
+			limit = { check_variable = { global.time_traveler_profile = constant:time_traveler_profile.engineer } }
+			add_ideas = time_traveler_directed_engineer
+		}
+		else = { add_ideas = time_traveler_directed_historian }
+	}
+	else_if = {
+		limit = { check_variable = { time_traveler_stage = constant:time_traveler_stage.distributed } }
+		if = {
+			limit = { check_variable = { global.time_traveler_profile = constant:time_traveler_profile.analyst } }
+			add_ideas = time_traveler_distributed_analyst
+		}
+		else_if = {
+			limit = { check_variable = { global.time_traveler_profile = constant:time_traveler_profile.engineer } }
+			add_ideas = time_traveler_distributed_engineer
+		}
+		else = { add_ideas = time_traveler_distributed_historian }
+	}
+	else_if = {
+		limit = { check_variable = { time_traveler_stage = constant:time_traveler_stage.scattered } }
+		if = {
+			limit = { NOT = { check_variable = { time_traveler_consults < constant:time_traveler_consultation.legacy_deep_count } } }
+			add_ideas = time_traveler_scattered_forecasts_deep
+		}
+		else = { add_ideas = time_traveler_scattered_forecasts }
+	}
+}
+
+# COUNTRY. Sets a stage and applies its spirit. Input: temp time_traveler_new_stage.
+time_traveler_set_stage = {
+	set_variable = { time_traveler_stage = time_traveler_new_stage }
+	time_traveler_apply_spirit = yes
+}
+
+# COUNTRY. The single minor spirit a foreign country gains from stolen or
+# shared knowledge. It never stacks and a custodian never holds it.
+time_traveler_grant_fragment = {
+	if = {
+		limit = {
+			NOT = { has_idea = time_traveler_future_fragment }
+			NOT = { has_country_flag = time_traveler_custodian }
+		}
+		add_ideas = time_traveler_future_fragment
+		set_country_flag = time_traveler_fragment_holder
+		set_temp_variable = { time_traveler_cause = constant:time_traveler_cause_id.theft }
+		add_to_variable = { global.time_traveler_fragments = constant:time_traveler_value.one }
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Cached costs
+# ---------------------------------------------------------------------------
+
+# COUNTRY. Result: temp time_traveler_scale, 1 plus the factories divided by the
+# step, up to the maximum.
+time_traveler_compute_cost_scale = {
+	set_temp_variable = { time_traveler_scale = num_of_civilian_factories }
+	add_to_temp_variable = { time_traveler_scale = num_of_military_factories }
+	divide_temp_variable = { time_traveler_scale = constant:time_traveler_cost.factories_per_step }
+	add_to_temp_variable = { time_traveler_scale = constant:time_traveler_value.one }
+	clamp_temp_variable = { var = time_traveler_scale min = constant:time_traveler_value.one max = constant:time_traveler_cost.scale_max }
+}
+
+# COUNTRY. Refreshes every cached action quote of the custodian. Display,
+# availability and payment all read these variables, so they always agree.
+time_traveler_refresh_costs = {
+	time_traveler_compute_cost_scale = yes
+	set_variable = { time_traveler_cost_revise_political = constant:time_traveler_cost.revise_political }
+	multiply_variable = { time_traveler_cost_revise_political = time_traveler_scale }
+	round_variable = time_traveler_cost_revise_political
+	set_variable = { time_traveler_cost_relocate_command = constant:time_traveler_cost.relocate_command }
+	set_variable = { time_traveler_cost_relocate_support = constant:time_traveler_cost.relocate_support }
+	multiply_variable = { time_traveler_cost_relocate_support = time_traveler_scale }
+	round_variable = time_traveler_cost_relocate_support
+	set_variable = { time_traveler_cost_relocate_fuel = constant:time_traveler_cost.relocate_fuel }
+	multiply_variable = { time_traveler_cost_relocate_fuel = time_traveler_scale }
+	round_variable = time_traveler_cost_relocate_fuel
+	set_variable = { time_traveler_cost_guard_command = constant:time_traveler_cost.guard_command }
+	set_variable = { time_traveler_cost_guard_support = constant:time_traveler_cost.guard_support }
+	multiply_variable = { time_traveler_cost_guard_support = time_traveler_scale }
+	round_variable = time_traveler_cost_guard_support
+	set_variable = { time_traveler_cost_guard_manpower_k = constant:time_traveler_cost.guard_manpower_k }
+	multiply_variable = { time_traveler_cost_guard_manpower_k = time_traveler_scale }
+	round_variable = time_traveler_cost_guard_manpower_k
+	set_variable = { time_traveler_cost_sting_command = constant:time_traveler_cost.sting_command }
+	set_variable = { time_traveler_cost_sting_support = constant:time_traveler_cost.sting_support }
+	multiply_variable = { time_traveler_cost_sting_support = time_traveler_scale }
+	round_variable = time_traveler_cost_sting_support
+	set_variable = { time_traveler_cost_share_political = constant:time_traveler_cost.share_political }
+	multiply_variable = { time_traveler_cost_share_political = time_traveler_scale }
+	round_variable = time_traveler_cost_share_political
+}
+
+# COUNTRY (an interested country). The foreign operations cost the rival's own
+# quote, scaled the same way.
+time_traveler_refresh_rival_costs = {
+	time_traveler_compute_cost_scale = yes
+	set_variable = { time_traveler_cost_infiltrate_command = constant:time_traveler_cost.infiltrate_command }
+	set_variable = { time_traveler_cost_infiltrate_support = constant:time_traveler_cost.infiltrate_support }
+	multiply_variable = { time_traveler_cost_infiltrate_support = time_traveler_scale }
+	round_variable = time_traveler_cost_infiltrate_support
+	set_variable = { time_traveler_cost_forge_command = constant:time_traveler_cost.forge_command }
+	set_variable = { time_traveler_cost_forge_political = constant:time_traveler_cost.forge_political }
+	multiply_variable = { time_traveler_cost_forge_political = time_traveler_scale }
+	round_variable = time_traveler_cost_forge_political
+	set_variable = { time_traveler_cost_asylum_political = constant:time_traveler_cost.asylum_political }
+	multiply_variable = { time_traveler_cost_asylum_political = time_traveler_scale }
+	round_variable = time_traveler_cost_asylum_political
+	set_variable = { time_traveler_cost_seize_command = constant:time_traveler_cost.seize_command }
+	set_variable = { time_traveler_cost_seize_support = constant:time_traveler_cost.seize_support }
+	multiply_variable = { time_traveler_cost_seize_support = time_traveler_scale }
+	round_variable = time_traveler_cost_seize_support
+	set_variable = { time_traveler_cost_seize_manpower_k = constant:time_traveler_cost.seize_manpower_k }
+	multiply_variable = { time_traveler_cost_seize_manpower_k = time_traveler_scale }
+	round_variable = time_traveler_cost_seize_manpower_k
+}
+
+# ---------------------------------------------------------------------------
+# The character
+# ---------------------------------------------------------------------------
+
+# COUNTRY (custodian). Recruits the traveler once and gives him the advisor
+# role with the trait of his profile. The idea token is unique to the role.
+time_traveler_install_character = {
+	if = {
+		limit = { NOT = { has_global_flag = time_traveler_character_recruited } }
+		set_global_flag = time_traveler_character_recruited
+		recruit_character = time_traveler_visitor
+	}
+	else_if = {
+		limit = { NOT = { has_character = time_traveler_visitor } }
+		save_event_target_as = time_traveler_new_home
+		time_traveler_visitor = { set_nationality = event_target:time_traveler_new_home }
+	}
+	if = {
+		limit = { NOT = { has_idea = time_traveler_visitor_advisor } }
+		meta_effect = {
+			text = {
+				add_advisor_role = {
+					character = time_traveler_visitor
+					advisor = {
+						slot = political_advisor
+						idea_token = time_traveler_visitor_advisor
+						cost = 0
+						can_be_fired = no
+						traits = { time_traveler_trait_[PROFILE] }
+					}
+					activate = yes
+				}
+			}
+			PROFILE = "[GetTimeTravelerProfileToken]"
+		}
+	}
+}
+
+# COUNTRY (the former custodian). Removes the traveler from this roster.
+time_traveler_release_character = {
+	if = {
+		limit = { has_idea = time_traveler_visitor_advisor }
+		deactivate_advisor = time_traveler_visitor_advisor
+	}
+	if = {
+		limit = { has_character = time_traveler_visitor }
+		remove_advisor_role = { character = time_traveler_visitor slot = political_advisor }
+	}
 }
