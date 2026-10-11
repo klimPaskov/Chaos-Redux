@@ -396,6 +396,7 @@ malta_add_registry_claims = {
 	every_owned_state = {
 		limit = {
 			malta_state_is_campaign_pool = yes
+			malta_state_is_open_for_claims = yes
 			NOT = { is_claimed_by = event_target:malta_actor }
 		}
 		add_claim_by = event_target:malta_actor
@@ -457,6 +458,7 @@ malta_initialize_country_package = {
 		limit = { has_global_flag = malta_stage_3_active }
 		malta_apply_stage_3_standing = yes
 	}
+	load_focus_tree = { tree = malta_crusaders_focus_tree }
 	set_country_flag = malta_pulse_scheduled
 	country_event = { id = chaosx.nr38.5 days = 7 }
 	country_event = { id = chaosx.nr38.2 days = 1 }
@@ -524,7 +526,7 @@ malta_apply_opening_grants = {
 	set_temp_variable = { malta_grant_xp = malta_scale_level }
 	multiply_temp_variable = { malta_grant_xp = constant:malta_grant.army_experience_per_level }
 	add_to_temp_variable = { malta_grant_xp = constant:malta_grant.army_experience }
-	add_army_experience = malta_grant_xp
+	army_experience = malta_grant_xp
 
 	set_temp_variable = { malta_grant_infantry = malta_scale_level }
 	multiply_temp_variable = { malta_grant_infantry = constant:malta_grant.infantry_equipment_per_level }
@@ -733,7 +735,7 @@ malta_spawn_loop = {
 			text = {
 				create_unit = {
 					division = "name = \"[DIV_NAME]\" division_template = \"[TEMPLATE_NAME]\" start_experience_factor = [XP_FACTOR] start_equipment_factor = [EQ_FACTOR] start_manpower_factor = [MP_FACTOR]"
-					owner = MLT
+					owner = event_target:malta_spawn_owner
 					allow_spawning_on_enemy_provs = no
 				}
 			}
@@ -746,16 +748,21 @@ malta_spawn_loop = {
 	}
 }
 
-# COUNTRY (MLT). Spawns the division count in malta_spawn_count of template
-# malta_spawn_template in state $STATE$ when the actor owns it, in Malta
-# otherwise.
+# COUNTRY (MLT). Input: temp malta_spawn_in_state (state id). Spawns the division count in
+# malta_spawn_count of template malta_spawn_template in that state when the actor owns it, in
+# Malta otherwise.
 malta_spawn_in = {
-	if = {
-		limit = { owns_state = $STATE$ }
-		$STATE$ = { malta_spawn_loop = yes }
-	}
-	else = {
-		116 = { malta_spawn_loop = yes }
+	meta_effect = {
+		text = {
+			if = {
+				limit = { owns_state = [STATE] }
+				[STATE] = { malta_spawn_loop = yes }
+			}
+			else = {
+				116 = { malta_spawn_loop = yes }
+			}
+		}
+		STATE = "[?malta_spawn_in_state|.0]"
 	}
 }
 
@@ -778,6 +785,7 @@ malta_spawn_in_foothold = {
 # COUNTRY (MLT). The one-time opening force, scaled by the package level and
 # the footprint. Counts per template come from the malta_force constants.
 malta_spawn_opening_forces = {
+	save_event_target_as = malta_spawn_owner
 	set_variable = { global.malta_spawn_xp = constant:malta_force.experience_factor }
 	set_variable = { global.malta_spawn_equipment = constant:malta_force.equipment_factor }
 	set_variable = { global.malta_spawn_manpower = constant:malta_force.manpower_factor }
@@ -789,7 +797,8 @@ malta_spawn_opening_forces = {
 	# Fortress garrison.
 	set_variable = { global.malta_spawn_template = constant:malta_template.fortress }
 	set_temp_variable = { malta_spawn_count = constant:malta_force.fortress }
-	malta_spawn_in = { STATE = 116 }
+	set_temp_variable = { malta_spawn_in_state = 116 }
+	malta_spawn_in = yes
 
 	# Armored knights: one banner on the island, the rest in the Holy Land.
 	set_temp_variable = { malta_n_knights = malta_force_level }
@@ -797,10 +806,12 @@ malta_spawn_opening_forces = {
 	add_to_temp_variable = { malta_n_knights = constant:malta_force.knights }
 	set_variable = { global.malta_spawn_template = constant:malta_template.knight }
 	set_temp_variable = { malta_spawn_count = constant:malta_force.knights_on_malta }
-	malta_spawn_in = { STATE = 116 }
+	set_temp_variable = { malta_spawn_in_state = 116 }
+	malta_spawn_in = yes
 	set_temp_variable = { malta_spawn_count = malta_n_knights }
 	subtract_from_temp_variable = { malta_spawn_count = constant:malta_force.knights_on_malta }
-	malta_spawn_in = { STATE = 454 }
+	set_temp_variable = { malta_spawn_in_state = 454 }
+	malta_spawn_in = yes
 
 	# Mounted columns: the Holy Land, with the corridor taking the surplus.
 	set_temp_variable = { malta_n_mounted = malta_force_level }
@@ -808,10 +819,12 @@ malta_spawn_opening_forces = {
 	add_to_temp_variable = { malta_n_mounted = constant:malta_force.mounted }
 	set_variable = { global.malta_spawn_template = constant:malta_template.mounted }
 	set_temp_variable = { malta_spawn_count = constant:malta_force.mounted }
-	malta_spawn_in = { STATE = 454 }
+	set_temp_variable = { malta_spawn_in_state = 454 }
+	malta_spawn_in = yes
 	set_temp_variable = { malta_spawn_count = malta_n_mounted }
 	subtract_from_temp_variable = { malta_spawn_count = constant:malta_force.mounted }
-	malta_spawn_in = { STATE = 455 }
+	set_temp_variable = { malta_spawn_in_state = 455 }
+	malta_spawn_in = yes
 
 	# Crossbow levies: the Holy Land and the bridge.
 	set_temp_variable = { malta_n_ranged = malta_force_level }
@@ -819,10 +832,12 @@ malta_spawn_opening_forces = {
 	add_to_temp_variable = { malta_n_ranged = constant:malta_force.ranged }
 	set_variable = { global.malta_spawn_template = constant:malta_template.ranged }
 	set_temp_variable = { malta_spawn_count = constant:malta_force.ranged }
-	malta_spawn_in = { STATE = 454 }
+	set_temp_variable = { malta_spawn_in_state = 454 }
+	malta_spawn_in = yes
 	set_temp_variable = { malta_spawn_count = malta_n_ranged }
 	subtract_from_temp_variable = { malta_spawn_count = constant:malta_force.ranged }
-	malta_spawn_in = { STATE = 183 }
+	set_temp_variable = { malta_spawn_in_state = 183 }
+	malta_spawn_in = yes
 
 	# Siege hosts. Evolution I adds another when the stage is active.
 	set_variable = { global.malta_spawn_template = constant:malta_template.siege }
@@ -831,20 +846,25 @@ malta_spawn_opening_forces = {
 		limit = { has_global_flag = malta_stage_1_active }
 		add_to_temp_variable = { malta_spawn_count = constant:malta_force.siege_stage_1_bonus }
 	}
-	malta_spawn_in = { STATE = 454 }
+	set_temp_variable = { malta_spawn_in_state = 454 }
+	malta_spawn_in = yes
 
 	# Holy Land guards and militia: every held state takes one, the surplus
 	# goes to the Holy Land.
 	set_variable = { global.malta_spawn_template = constant:malta_template.guard }
 	set_temp_variable = { malta_spawn_count = constant:malta_force.guard_per_state }
-	malta_spawn_in = { STATE = 454 }
-	malta_spawn_in = { STATE = 455 }
-	malta_spawn_in = { STATE = 183 }
+	set_temp_variable = { malta_spawn_in_state = 454 }
+	malta_spawn_in = yes
+	set_temp_variable = { malta_spawn_in_state = 455 }
+	malta_spawn_in = yes
+	set_temp_variable = { malta_spawn_in_state = 183 }
+	malta_spawn_in = yes
 	malta_spawn_in_foothold = yes
 	set_temp_variable = { malta_spawn_count = malta_force_level }
 	multiply_temp_variable = { malta_spawn_count = constant:malta_force.guards_per_level }
 	add_to_temp_variable = { malta_spawn_count = malta_force_extra }
-	malta_spawn_in = { STATE = 454 }
+	set_temp_variable = { malta_spawn_in_state = 454 }
+	malta_spawn_in = yes
 }
 
 # ---------------------------------------------------------------------------
