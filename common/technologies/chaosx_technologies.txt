@@ -1,38 +1,33 @@
-@CBRN_INSTRUMENT_ROW = 10
+@CHAOS_CW_ROW = 12
+@CBRN_APPLIED_PROTECTION_ROW = 18
+@1940BW_BOMBS = 1
+@1938CW = 5
+@1938BW_BOMBS = 1
+@1936BW_BOMBS = 1
+@1918BW = 1
+@CBRN_INSTRUMENT_ROW = 16
 @CBRN_GAS_MASK_ROW = 8
-@CBRN_DECONTAMINATION_ROW = 12
-@1942CW = 8
-@1941CW = 7
-@1940CW_LIVENS = 6
-@1940CW = 6
-@1940BW = 6
-@1939CW = 5
-@1938BW = 4
-@1937CW = 3
-@1936CW_LIVENS = 2
-@1936CW = 2
-@1936BW = 2
+@CBRN_DECONTAMINATION_ROW = 14
+@1942CW = 13
+@1941CW = 11
+@1940CW_LIVENS = 9
+@1940CW = 8
+@1940BW = 8
+@1939CW = 7
+@1938BW = 5
+@1937CW = 4
+@1936CW_LIVENS = 5
+@1936CW = 3
+@1936BW = 3
 @1918CW_WIND_GASMASK = 0
 @1918CW_LATE = 1
-@1918CW = 0
+@1918CW = 1
 # CBRN research: visible equipment, agent, containment, and response paths.
 # Retired administrative IDs remain hidden so older consumers resolve after
 # their corresponding equipment research grants the alias.
 technologies = {
-	# Folder grid: 90x50 UP slots. A full-size equipment card is 183 pixels wide,
-	# so year columns are three slots (270 pixels) apart, as in the vanilla
-	# folders; column 1 keeps full cards clear of the branch labels.
-	@1936BW = 1
-	@1938BW = 4
-	@1940BW = 7
+	# Folder grid: 90x50 UP slots. The other year-column constants are declared above this block.
 	@1941BW = 10
-
-	@1918CW = 1
-	@1936CW = 4
-	@1939CW = 7
-	@1940CW = 10
-	@1941CW = 13
-	@1942CW = 16
 
 	# Technology ai_will_do values do not document script-constant support in the
 	# installed engine documentation. Keep this file-local mirror aligned with the
@@ -64,9 +59,6 @@ technologies = {
 	@CBRN_PROTECTION_YEAR_1940 = 1940
 	@CBRN_PROTECTION_YEAR_1941 = 1941
 	@CBRN_PROTECTION_YEAR_1942 = 1942
-	@CBRN_GAS_MASK_ROW = 8
-	@CBRN_DECONTAMINATION_ROW = 12
-	@CBRN_INSTRUMENT_ROW = 10
 	# Sub-unit combat stats are fractional bonuses; both projector tiers stack.
 	@CBRN_PROJECTOR_TECH_SOFT_ATTACK = 0.025
 	@CBRN_PROJECTOR_TECH_HARD_ATTACK = 0.13
@@ -105,7 +97,10 @@ technologies = {
 
 	# Bioweapon bomb technologies (special project unlocks)
 	anthrax_bomb_delivery_systems = {
-		force_use_small_tech_layout = yes
+		folder = {
+			name = biowarfare_folder
+			position = { x = @1918BW y = 0 }
+		}
 		research_cost = 1
 		start_year = 1936
 
@@ -130,7 +125,10 @@ technologies = {
 	}
 
 	plague_bomb_delivery_systems = {
-		force_use_small_tech_layout = yes
+		folder = {
+			name = biowarfare_folder
+			position = { x = @1936BW_BOMBS y = 0 }
+		}
 		research_cost = 1
 		start_year = 1938
 
@@ -155,7 +153,10 @@ technologies = {
 	}
 
 	tularemia_bomb_delivery_systems = {
-		force_use_small_tech_layout = yes
+		folder = {
+			name = biowarfare_folder
+			position = { x = @1938BW_BOMBS y = 0 }
+		}
 		research_cost = 1
 		start_year = 1940
 
@@ -180,7 +181,10 @@ technologies = {
 	}
 
 	smallpox_bomb_delivery_systems = {
-		force_use_small_tech_layout = yes
+		folder = {
+			name = biowarfare_folder
+			position = { x = @1940BW_BOMBS y = 0 }
+		}
 		research_cost = 1
 		start_year = 1941
 
@@ -207,6 +211,10 @@ technologies = {
 	# Doctrine-only Chaos Assault Battalion technologies. The public IDs are
 	# retained for compatibility, but none can be researched directly.
 	chaos_battalion_tech = {
+		folder = {
+			name = chemical_warfare_folder
+			position = { x = @1938CW y = @CHAOS_CW_ROW }
+		}
 		allow = { always = no }
 		research_cost = @CHAOS_ASSAULT_TECH_COST
 		start_year = @CHAOS_ASSAULT_BASE_YEAR
@@ -240,6 +248,10 @@ technologies = {
 	}
 
 	chaos_battalion_1942 = {
+		folder = {
+			name = chemical_warfare_folder
+			position = { x = @1942CW y = @CHAOS_CW_ROW }
+		}
 		allow = { always = no }
 		research_cost = @CHAOS_ASSAULT_TECH_COST
 		start_year = @CHAOS_ASSAULT_IMPROVED_YEAR
@@ -264,7 +276,6 @@ technologies = {
 
 	# Bioweapon stockpile safety technologies
 	pathogen_handling_protocols = {
-		force_use_small_tech_layout = yes
 		research_cost = @CBRN_TECH_COST_BASIC
 		start_year = 1936
 
@@ -293,7 +304,6 @@ technologies = {
 	}
 
 	sealed_containment_laboratories = {
-		force_use_small_tech_layout = yes
 		research_cost = @CBRN_PROTECTION_TECH_COST_STANDARD
 		start_year = 1938
 
@@ -326,7 +336,6 @@ technologies = {
 	}
 
 	fail_safe_containment_facilities = {
-		force_use_small_tech_layout = yes
 		research_cost = @CBRN_PROTECTION_TECH_COST_ADVANCED
 		start_year = 1940
 
@@ -355,7 +364,6 @@ technologies = {
 
 	# Outbreak prevention technologies
 	bio_surveillance_networks = {
-		force_use_small_tech_layout = yes
 		research_cost = @CBRN_TECH_COST_BASIC
 		start_year = 1936
 
@@ -374,7 +382,7 @@ technologies = {
 
 		folder = {
 			name = biowarfare_folder
-			position = { x = @1936BW y = 4 }
+			position = { x = @1936BW y = 2 }
 		}
 
 		ai_will_do = {
@@ -384,7 +392,6 @@ technologies = {
 	}
 
 	rapid_outbreak_response = {
-		force_use_small_tech_layout = yes
 		research_cost = @CBRN_PROTECTION_TECH_COST_STANDARD
 		start_year = 1938
 
@@ -407,7 +414,7 @@ technologies = {
 
 		folder = {
 			name = biowarfare_folder
-			position = { x = @1938BW y = 4 }
+			position = { x = @1938BW y = 2 }
 		}
 
 		ai_will_do = {
@@ -417,7 +424,6 @@ technologies = {
 	}
 
 	integrated_epidemic_control = {
-		force_use_small_tech_layout = yes
 		research_cost = @CBRN_PROTECTION_TECH_COST_ADVANCED
 		start_year = 1940
 
@@ -435,7 +441,7 @@ technologies = {
 
 		folder = {
 			name = biowarfare_folder
-			position = { x = @1940BW y = 4 }
+			position = { x = @1940BW y = 2 }
 		}
 
 		ai_will_do = {
@@ -460,7 +466,6 @@ technologies = {
 
 
 	livens_projector_tech = {
-		force_use_small_tech_layout = yes
 		research_cost = @CBRN_TECH_COST_BASIC
 		start_year = 1918
 
@@ -496,7 +501,6 @@ technologies = {
 
 	# Choking Agents - 1918 Technologies
 	chlorine_gas = {
-		force_use_small_tech_layout = yes
 		research_cost = @CBRN_TECH_COST_BASIC
 		start_year = 1918
 		on_research_complete = {
@@ -538,7 +542,6 @@ technologies = {
 	}
 
 	phosgene = {
-		force_use_small_tech_layout = yes
 		research_cost = @CBRN_PROTECTION_TECH_COST_STANDARD
 		start_year = 1936
 		on_research_complete = {
@@ -567,7 +570,7 @@ technologies = {
 
 		folder = {
 			name = chemical_warfare_folder
-			position = { x = @1918CW_LATE y = 0 }
+			position = { x = @1918CW y = 2 }
 		}
 
 		ai_will_do = {
@@ -578,7 +581,6 @@ technologies = {
 
 	# Blister Agents
 	mustard_gas = {
-		force_use_small_tech_layout = yes
 		research_cost = @CBRN_PROTECTION_TECH_COST_STANDARD
 		start_year = 1918
 		on_research_complete = {
@@ -619,7 +621,6 @@ technologies = {
 	}
 
 	lewisite = {
-		force_use_small_tech_layout = yes
 		research_cost = @CBRN_PROTECTION_TECH_COST_ADVANCED
 		start_year = 1936
 		on_research_complete = {
@@ -663,7 +664,6 @@ technologies = {
 	}
 
 	dimercaprol = {
-		force_use_small_tech_layout = yes
 		research_cost = @CBRN_PROTECTION_TECH_COST_STANDARD
 		start_year = 1939
 
@@ -729,7 +729,10 @@ technologies = {
 	}
 
 	sarin = {
-		force_use_small_tech_layout = yes
+		folder = {
+			name = chemical_warfare_folder
+			position = { x = @1939CW y = 2 }
+		}
 		research_cost = @CBRN_GRANTED_TECH_COST_ADVANCED
 		start_year = 1939
 		on_research_complete = {
@@ -774,7 +777,10 @@ technologies = {
 	}
 
 	soman = {
-		force_use_small_tech_layout = yes
+		folder = {
+			name = chemical_warfare_folder
+			position = { x = @1941CW y = 2 }
+		}
 		research_cost = @CBRN_GRANTED_TECH_COST_ADVANCED
 		start_year = 1941
 		on_research_complete = {
@@ -815,7 +821,6 @@ technologies = {
 
 	# Improved Livens Projector Technology
 	improved_livens_projector = {
-		force_use_small_tech_layout = yes
 		research_cost = @CBRN_PROTECTION_TECH_COST_STANDARD
 		start_year = 1936
 
@@ -856,7 +861,6 @@ technologies = {
 
 	# Advanced Livens Projector Technology
 	advanced_livens_projector = {
-		force_use_small_tech_layout = yes
 		research_cost = @CBRN_PROTECTION_TECH_COST_ADVANCED
 		start_year = 1940
 
@@ -1069,6 +1073,11 @@ technologies = {
 
 	# Applied Protective Systems
 	civil_defence_fitting_and_registration = {
+		force_use_small_tech_layout = yes
+		folder = {
+			name = chemical_warfare_folder
+			position = { x = @1936CW y = @CBRN_APPLIED_PROTECTION_ROW }
+		}
 		allow = { always = no }
 		research_cost = @CBRN_GRANTED_TECH_COST_BASIC
 		start_year = 1936
@@ -1076,6 +1085,11 @@ technologies = {
 	}
 
 	military_filter_standardization = {
+		force_use_small_tech_layout = yes
+		folder = {
+			name = chemical_warfare_folder
+			position = { x = @1938CW y = @CBRN_APPLIED_PROTECTION_ROW }
+		}
 		allow = { always = no }
 		research_cost = @CBRN_GRANTED_TECH_COST_BASIC
 		start_year = 1937
@@ -1083,6 +1097,11 @@ technologies = {
 	}
 
 	rapid_filter_replacement = {
+		force_use_small_tech_layout = yes
+		folder = {
+			name = chemical_warfare_folder
+			position = { x = @1940CW y = @CBRN_APPLIED_PROTECTION_ROW }
+		}
 		allow = { always = no }
 		research_cost = @CBRN_GRANTED_TECH_COST_BASIC
 		start_year = 1940
@@ -1090,6 +1109,11 @@ technologies = {
 	}
 
 	vehicle_overpressure_and_sealed_compartments = {
+		force_use_small_tech_layout = yes
+		folder = {
+			name = chemical_warfare_folder
+			position = { x = @1942CW y = @CBRN_APPLIED_PROTECTION_ROW }
+		}
 		allow = { always = no }
 		research_cost = @CBRN_GRANTED_TECH_COST_BASIC
 		start_year = 1942
@@ -1098,6 +1122,10 @@ technologies = {
 
 	# Wind Detection Technologies
 	portable_anemometer = {
+		folder = {
+			name = chemical_warfare_folder
+			position = { x = @1918CW_WIND_GASMASK y = 10 }
+		}
 		allow = { always = no }
 		research_cost = @CBRN_GRANTED_TECH_COST_BASIC
 		start_year = 1918
@@ -1106,6 +1134,10 @@ technologies = {
 	}
 
 	meteorological_stations = {
+		folder = {
+			name = chemical_warfare_folder
+			position = { x = @1936CW y = 10 }
+		}
 		allow = { always = no }
 		research_cost = @CBRN_GRANTED_TECH_COST_BASIC
 		start_year = 1936
@@ -1114,6 +1146,10 @@ technologies = {
 	}
 
 	upper_air_soundings = {
+		folder = {
+			name = chemical_warfare_folder
+			position = { x = @1940CW y = 10 }
+		}
 		allow = { always = no }
 		research_cost = @CBRN_GRANTED_TECH_COST_BASIC
 		start_year = 1940
