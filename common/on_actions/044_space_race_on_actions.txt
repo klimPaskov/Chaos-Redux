@@ -77,12 +77,14 @@ on_actions = {
 						limit = { NOT = { is_in_array = { array = global.space_race_contenders value = THIS } } }
 						add_to_array = { array = global.space_race_contenders value = THIS }
 					}
-					add_to_array = { global.space_race_array = space_race_points }
-					find_highest_in_array = { # might be affecting performance slightly. Anyways, computers are fast
-						array = global.space_race_array
-						value = temp_most_space_race_points
+					# Space race points only ever rise, so the highest total is a running maximum; an array that gained one entry per country per day would grow without bound.
+					if = { limit = { NOT = { has_global_flag = space_race_array_retired } }
+						clear_array = global.space_race_array # Releases the daily entries older saves accumulated
+						set_global_flag = space_race_array_retired
 					}
-					set_variable = { global.most_space_race_points = temp_most_space_race_points } # All values are considered within last country check only
+					if = { limit = { check_variable = { space_race_points > global.most_space_race_points } }
+						set_variable = { global.most_space_race_points = space_race_points }
+					}
 					if = { limit = { check_variable = { space_race_points = global.most_space_race_points } }
 						set_variable = { global.leading_space_race_country = THIS.id }
 						add_ideas = leading_space_race
