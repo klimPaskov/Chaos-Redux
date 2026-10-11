@@ -50,4 +50,9 @@ Render evidence after the second pass, from `hoi4.tech_render view = folder`: ch
 
 This correction supersedes the earlier art-redesign claims above: this repair preserves the original artwork, including the existing 64x64 gas-agent card art. The Livens projector equipment and technology sprite mappings in `interface/chaosx_equipment.gfx` point to the original `livens_projector.dds`, `livens_projector_improved.dds` and `livens_projector_advanced.dds` files. Geometry remains at 70x70 slots, regular-card size 183x84, offsets x=-56/y=-7, origin x=220, 210-pixel column pitch and 110-pixel row pitch.
 
-Both custom full-size templates now name the `instantTextBoxType` child `Name`, matching the vanilla case-sensitive binding (`interface/countrytechtreeview.gui`, vanilla line 4251). The prior lowercase `name` could prevent title text from binding. Parent live-game verification is pending; inspector and renderer geometry evidence do not verify native card drawing, title display, tooltips or scrolling.
+Both custom full-size templates now name the `instantTextBoxType` child `Name`, matching the vanilla case-sensitive binding (`interface/countrytechtreeview.gui`, vanilla line 4251). The prior lowercase `name` could prevent title text from binding. Native Linux HOI4 1.19.3.0.c01a (build 25205862), windowed 1920x1080 at UI scale 1, displays all 21 chemical and 12 biological cards without scrolling.
+Equipment cards use the full-size template with bound titles and original art; all branch labels and year headers are visible, and the Tabun-Sarin-Soman chain and service branches use continuous native links.
+The four biological bomb cards are independent project unlocks and retain their existing absence of prerequisite links.
+Long equipment names use vanilla title ellipsis; branch labels are not truncated.
+Evidence: `C:/Users/klimp/Videos/chaos_redux_trailer/records/gfx_review/after/live_2026-10-11/chemical_folder_live2.png` and `biological_folder_live.png`.
+Project tooltips were not part of these two clean layout captures.
