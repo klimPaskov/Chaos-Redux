@@ -327,7 +327,7 @@ The Kingdom slot reuses the independent federation image as a stand-in.
 
 ## Assets
 
-Reused existing art: report image of Lawrence (`GFX_report_event_lawrence`, provenance of the source photograph is not recorded in the repository and must be confirmed before release), arab congress report image and the decision category picture (`interface/040_lawrence_of_arabia.gfx`), news image `GFX_news_lawrence`. One decision icon row (client reinforcement) and four prompt-listed idea icons still use vanilla generic sprites. Fourteen current decision consumers and six idea consumers use dedicated aliases in `interface/040_lawrence_decision_icons.gfx` and `interface/040_lawrence_idea_icons.gfx`, with DDS files under `gfx/interface/decisions/040_lawrence_of_arabia/` and `gfx/interface/ideas/040_lawrence_of_arabia/`. Their existing vanilla stand-in sprites are unchanged.
+Reused existing art: report image of Lawrence (`GFX_report_event_lawrence`, provenance of the source photograph is not recorded in the repository and must be confirmed before release), arab congress report image and the decision category picture (`interface/040_lawrence_of_arabia.gfx`), news image `GFX_news_lawrence`. One decision icon row (client reinforcement) and four prompt-listed idea icons still use vanilla generic sprites. Fourteen current decision consumers, six idea consumers, and eight named focus nodes use dedicated aliases in their Event 040 `.gfx` files. Each focus icon has a matching `_shine` alias; the existing vanilla stand-in sprites and textures remain unchanged.
 
 ### Assets still needed
 
@@ -341,8 +341,20 @@ Reused existing art: report image of Lawrence (`GFX_report_event_lawrence`, prov
 | Flags of the three federation identities, normal, medium and small | tag files `LAWF_BRITISH`, `LAWF_ARAB`, `LAWF_KINGDOM` | none | `gfx/flags/`, `gfx/flags/medium/`, `gfx/flags/small/` |
 | Super-event scene of Lawrence's Kingdom (the slot reuses the independent federation image) | `GFX_super_event_040_lawrence_kingdom_formed` | `interface/040_lawrence_of_arabia.gfx` | `gfx/event_pictures/040_lawrence_of_arabia/` |
 | Super-event audio and a sourced quote for slots 140 to 142 | sound ids pending | pending | pending |
-| Eight focus icon families remain unwired until exact focus-node mappings are established | `GFX_focus_040_<name>` | no stable family-to-node mapping yet | `docs/assets/040_lawrence_of_arabia/focus_icons/alternative_for_review/` |
 | Achievement triplets for Gold Without Chains, Desert Conference and Rails, Ports and Promises; the Uncrowned Kingdom triplet is installed | `GFX_achievement_chaos_redux_040_<id>` and `_grey`, `_not_eligible` | filename-convention achievement textures | `gfx/achievements/` |
+
+### Focus icon registrations
+
+| Focus ID | Dedicated sprite aliases | `.gfx` file | Runtime texture |
+| --- | --- | --- | --- |
+| `lawrence_fed_ratify_the_imperial_compact` | `GFX_focus_040_lawrence_british_compact` and `GFX_focus_040_lawrence_british_compact_shine` | `interface/040_lawrence_focus_icons.gfx` | `gfx/interface/goals/040_lawrence_of_arabia/040_lawrence_focus_british_compact.dds` |
+| `lawrence_fed_convene_the_constituent_congress` | `GFX_focus_040_lawrence_sovereign_congress` and `GFX_focus_040_lawrence_sovereign_congress_shine` | `interface/040_lawrence_focus_icons.gfx` | `gfx/interface/goals/040_lawrence_of_arabia/040_lawrence_focus_sovereign_congress.dds` |
+| `lawrence_fed_the_personal_oath` | `GFX_focus_040_lawrence_personal_settlement` and `GFX_focus_040_lawrence_personal_settlement_shine` | `interface/040_lawrence_focus_icons.gfx` | `gfx/interface/goals/040_lawrence_of_arabia/040_lawrence_focus_personal_settlement.dds` |
+| `lawrence_fed_a_federal_cabinet` | `GFX_focus_040_lawrence_federal_administration` and `GFX_focus_040_lawrence_federal_administration_shine` | `interface/040_lawrence_focus_icons.gfx` | `gfx/interface/goals/040_lawrence_of_arabia/040_lawrence_focus_federal_administration.dds` |
+| `lawrence_fed_oil_and_transport_convention` | `GFX_focus_040_lawrence_oil_rail_port_air_routes` and `GFX_focus_040_lawrence_oil_rail_port_air_routes_shine` | `interface/040_lawrence_focus_icons.gfx` | `gfx/interface/goals/040_lawrence_of_arabia/040_lawrence_focus_oil_rail_port_air_routes.dds` |
+| `lawrence_fed_integrate_irregulars` | `GFX_focus_040_lawrence_army_irregular_integration` and `GFX_focus_040_lawrence_army_irregular_integration_shine` | `interface/040_lawrence_focus_icons.gfx` | `gfx/interface/goals/040_lawrence_of_arabia/040_lawrence_focus_army_irregular_integration.dds` |
+| `lawrence_fed_recognition_beyond_the_region` | `GFX_focus_040_lawrence_recognition_accession` and `GFX_focus_040_lawrence_recognition_accession_shine` | `interface/040_lawrence_focus_icons.gfx` | `gfx/interface/goals/040_lawrence_of_arabia/040_lawrence_focus_recognition_accession.dds` |
+| `lawrence_fed_an_arab_league` | `GFX_focus_040_lawrence_regional_order_capstones` and `GFX_focus_040_lawrence_regional_order_capstones_shine` | `interface/040_lawrence_focus_icons.gfx` | `gfx/interface/goals/040_lawrence_of_arabia/040_lawrence_focus_regional_order_capstones.dds` |
 
 ## Validation notes
 
