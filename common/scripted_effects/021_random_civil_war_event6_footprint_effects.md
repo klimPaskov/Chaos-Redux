@@ -46,5 +46,5 @@ It sets `random_civil_war_event6_opening_state_count` and `global.random_civil_w
 The collector and the proof are read-only.
 The reserve helper only edits the plan and reservation arrays and one host flag.
 No Event 006 fired state, weight, cap, evolution, league enrollment, country package or tree is touched.
-The adapter still sets the package territory level to its anchor opening, and a living original-tag carrier (AFX, AGX, AJX, ARX, ASX, HBX) is still not recognised by the release helper's existence check; both belong to Event 006 and are unchanged.
+The package territory level follows the number of states the carrier receives (one state is the anchor level, two is compact, three or more is extended), and the release helper and the footprint trigger treat a living dynamic country of an original-tag carrier's original tag (AFX, AGX, AJX, ARX, ASX, HBX) as the existing carrier.
 Native release behaviour itself is not modelled by the Python fixtures in `.tools/test_event021_native_release_footprint.py`.

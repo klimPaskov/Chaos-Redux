@@ -28,6 +28,7 @@ When a complete Event 006 package is added or removed, update this Event 006-own
 - Scope: Event 021 host country.
 - Input: `independence_wave_event021_adapter_package_id`.
 - Output: releases the registered static carrier only when that carrier does not already exist.
+  For the original-tag carriers (AFX, AGX, AJX, ARX, ASX, HBX) a living dynamic country of that original tag counts as the existing carrier.
 - Side effects: country release only; package setup, Event 006 history, evolution, league, and network state remain untouched.
 
 `independence_wave_collect_event021_native_release_footprint` owns the matching package-to-native-footprint mapping.

@@ -120,20 +120,22 @@ independence_wave_capture_event021_adapter_actor = {
 # COUNTRY scope on the Event 021 host. Input is the Event 006-owned adapter
 # package id. Releases only the registered static carrier when it does not
 # already exist; identity and release authority remain in this one crosswalk.
+# The original-tag carriers (AFX, AGX, AJX, ARX, ASX, HBX) also count as existing
+# when a dynamic country with that original tag is alive.
 independence_wave_release_event021_adapter_actor = {
 	if = { limit = { check_variable = { independence_wave_event021_adapter_package_id = constant:independence_wave_package_id.iw_001 } NOT = { SCO = { exists = yes } } } release = SCO }
 	if = { limit = { check_variable = { independence_wave_event021_adapter_package_id = constant:independence_wave_package_id.iw_002 } NOT = { WLS = { exists = yes } } } release = WLS }
 	if = { limit = { check_variable = { independence_wave_event021_adapter_package_id = constant:independence_wave_package_id.iw_004 } NOT = { BRI = { exists = yes } } } release = BRI }
-	if = { limit = { check_variable = { independence_wave_event021_adapter_package_id = constant:independence_wave_package_id.iw_006 } NOT = { AFX = { exists = yes } } } release = AFX }
-	if = { limit = { check_variable = { independence_wave_event021_adapter_package_id = constant:independence_wave_package_id.iw_007 } NOT = { AGX = { exists = yes } } } release = AGX }
+	if = { limit = { check_variable = { independence_wave_event021_adapter_package_id = constant:independence_wave_package_id.iw_006 } NOT = { OR = { country_exists = AFX any_country = { original_tag = AFX } } } } release = AFX }
+	if = { limit = { check_variable = { independence_wave_event021_adapter_package_id = constant:independence_wave_package_id.iw_007 } NOT = { OR = { country_exists = AGX any_country = { original_tag = AGX } } } } release = AGX }
 	if = { limit = { check_variable = { independence_wave_event021_adapter_package_id = constant:independence_wave_package_id.iw_008 } NOT = { RHI = { exists = yes } } } release = RHI }
 	if = { limit = { check_variable = { independence_wave_event021_adapter_package_id = constant:independence_wave_package_id.iw_009 } NOT = { BAY = { exists = yes } } } release = BAY }
-	if = { limit = { check_variable = { independence_wave_event021_adapter_package_id = constant:independence_wave_package_id.iw_010 } NOT = { AJX = { exists = yes } } } release = AJX }
+	if = { limit = { check_variable = { independence_wave_event021_adapter_package_id = constant:independence_wave_package_id.iw_010 } NOT = { OR = { country_exists = AJX any_country = { original_tag = AJX } } } } release = AJX }
 	if = { limit = { check_variable = { independence_wave_event021_adapter_package_id = constant:independence_wave_package_id.iw_012 } NOT = { ICE = { exists = yes } } } release = ICE }
 	if = { limit = { check_variable = { independence_wave_event021_adapter_package_id = constant:independence_wave_package_id.iw_014 } NOT = { CAT = { exists = yes } } } release = CAT }
 	if = { limit = { check_variable = { independence_wave_event021_adapter_package_id = constant:independence_wave_package_id.iw_017 } NOT = { COR = { exists = yes } } } release = COR }
-	if = { limit = { check_variable = { independence_wave_event021_adapter_package_id = constant:independence_wave_package_id.iw_018 } NOT = { ARX = { exists = yes } } } release = ARX }
-	if = { limit = { check_variable = { independence_wave_event021_adapter_package_id = constant:independence_wave_package_id.iw_019 } NOT = { ASX = { exists = yes } } } release = ASX }
+	if = { limit = { check_variable = { independence_wave_event021_adapter_package_id = constant:independence_wave_package_id.iw_018 } NOT = { OR = { country_exists = ARX any_country = { original_tag = ARX } } } } release = ARX }
+	if = { limit = { check_variable = { independence_wave_event021_adapter_package_id = constant:independence_wave_package_id.iw_019 } NOT = { OR = { country_exists = ASX any_country = { original_tag = ASX } } } } release = ASX }
 	if = { limit = { check_variable = { independence_wave_event021_adapter_package_id = constant:independence_wave_package_id.iw_023 } NOT = { TRA = { exists = yes } } } release = TRA }
 	if = { limit = { check_variable = { independence_wave_event021_adapter_package_id = constant:independence_wave_package_id.iw_024 } NOT = { AXX = { exists = yes } } } release = AXX }
 	if = { limit = { check_variable = { independence_wave_event021_adapter_package_id = constant:independence_wave_package_id.iw_026 } NOT = { MAC = { exists = yes } } } release = MAC }
@@ -152,7 +154,7 @@ independence_wave_release_event021_adapter_actor = {
 	if = { limit = { check_variable = { independence_wave_event021_adapter_package_id = constant:independence_wave_package_id.iw_071 } NOT = { GEO = { exists = yes } } } release = GEO }
 	if = { limit = { check_variable = { independence_wave_event021_adapter_package_id = constant:independence_wave_package_id.iw_072 } NOT = { AZR = { exists = yes } } } release = AZR }
 	if = { limit = { check_variable = { independence_wave_event021_adapter_package_id = constant:independence_wave_package_id.iw_173 } NOT = { HAW = { exists = yes } } } release = HAW }
-	if = { limit = { check_variable = { independence_wave_event021_adapter_package_id = constant:independence_wave_package_id.iw_184 } NOT = { HBX = { exists = yes } } } release = HBX }
+	if = { limit = { check_variable = { independence_wave_event021_adapter_package_id = constant:independence_wave_package_id.iw_184 } NOT = { OR = { country_exists = HBX any_country = { original_tag = HBX } } } } release = HBX }
 }
 
 # COUNTRY scope on the exact donor (the Event 021 host or reviewing government).
