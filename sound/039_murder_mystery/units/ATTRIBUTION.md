@@ -16,3 +16,16 @@ Installed `death_03.wav` SHA-256: `92a5251e7eb0d338c63d5c99afdeca0c37c792185a2f5
 This declared infantry-family pool is consumed by Assassin Cadre, Shadow Company, Master Assassin and Silent Guard through `sound/039_murder_mystery_units_sound.asset`.
 It does not install country-wide selection voices.
 The source index, mastering reports and hash-checked installation proofs are retained under `docs/plans/unit_fix_2026-10/wp4_audio_evidence/`.
+
+## Distinct recorded burst takes
+
+`attack_3shot_02.wav` derives from “Gunshot Sounds: cz.wav” by Vincent Svedberg; uploaded by Tabasco, CC BY 3.0, https://opengameart.org/content/gunshot-sounds.
+Immutable source SHA-256: `4a8594b3cf3f2bfe49497c4a9ae6301b5c7000f21c7cbcb6650df8f594fce713`; distinct report window 5.536757370–5.586757370 seconds.
+One distinct recorded report is repeated internally 3 times at 0.100000000-second spacing, with source entry/release fades, DC removal and PCM16 mono 44.1 kHz mastering.
+Internal repetitions are not counted as additional independently recorded takes.
+The natural burst length is 0.250000 seconds; no end padding or new tone/noise is added.
+Installed derivative SHA-256: `ac41ba71cd661c2149688c5e74ff3b1cac8465614a9b007d8a9e6bdd57ab3afd`.
+
+The first accepted take remains unchanged; Cadre/Guard and the inheriting Cadre variants share the declared infantry-family pool.
+Exact source windows, current comparison hashes, recipes and mastering checks are archived in `docs/assets/039_murder_mystery/models_3d/assassin_cadre/evidence/wp4_source_takeover/take_variants/review_packet.json` and `master_report.json`.
+No new download, synthesis, auditory review or live-game acceptance is asserted.

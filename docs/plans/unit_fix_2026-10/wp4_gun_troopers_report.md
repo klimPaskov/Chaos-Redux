@@ -17,6 +17,11 @@ These are emitter/mesh-source measurements, not rendered orange-pixel or in-game
 
 The reviewed archived three-transient gunshot and two death takes are wired through the Event 039 infantry-family sound definitions, with their CC BY 3.0 and CC0 notices shipped beside the WAVs.
 The three waveform hashes match the preserved accepted source receipts and pass fresh short-cue format/level checks.
+The shared attack pool contains two source-distinct composites with immediate repetition prevented.
+The original 0.3-second burst uses the first three recorded CZ reports; `attack_3shot_02.wav` uses the separate fourth report, repeated at 10 Hz into a naturally ending 0.25-second burst.
+Those three internal repetitions count as one additional variant, not three independent takes; no end padding or synthesized sound is used.
+The added variant measures -3 dBFS peak and -15.528 dBFS RMS and fits the 0.9-second minimum interval between this family's burst starts.
+Exact source windows, waveform comparisons, mastering checks and installed hashes are retained in `docs/assets/039_murder_mystery/models_3d/assassin_cadre/evidence/wp4_source_takeover/take_variants/`.
 No sound was downloaded or synthesized.
 The mechanized definitions are separated into their own Event 039 sound file without changing identifiers or category membership, so they can be reviewed and committed with that model.
 
@@ -34,7 +39,7 @@ Meshy credits spent on this firing tranche: 0.
 
 Attack, support attack and defend use two, two and one compact SMG burst emissions, each paired with one smoke event and the recorded infantry-family burst cue.
 The two-take death pool fires at 0.3 seconds.
-This model consumes the Cadre commit's shared 0.35-second particle and licensed audio definitions; its own changed runtime file is `gfx/entities/chaosx_silent_guard.asset`.
+This model consumes the Cadre family's shared 0.35-second particle and two-variant licensed burst pool; its own changed runtime file is `gfx/entities/chaosx_silent_guard.asset`.
 Source resolution and inherited timing checks are retained in the same WP4 event crosswalk and lint evidence.
 Coat deformation, low-ready idle, recoil, UVs/materials and topology remain open, with no model-byte replacement or live validation in this source tranche.
 Meshy credits spent: 0.
@@ -129,7 +134,7 @@ The implemented firing/audio tranche is documented in `wp4_firing_audio_tranche.
 
 | Model | Found in installed bytes | Implemented | Still required |
 |---|---|---|---|
-| Assassin Cadre | 9/12/9 flashes in attack/support/defend; no cartridge locator; fragment atlas and failed topology/action gates | 3/4/3 finite flash emissions, one smoke and dry recorded cue per burst; two recorded death takes at 0.3 s | Measured ejection locator, <60-island UV rebake with >90% coverage, holes/winding, class-specific specular, planted rear foot and recoil |
+| Assassin Cadre | 9/12/9 flashes in attack/support/defend; no cartridge locator; fragment atlas and failed topology/action gates | 3/4/3 finite flash emissions, one smoke and a two-variant sourced cue per burst; two recorded death takes at 0.3 s | Measured ejection locator, <60-island UV rebake with >90% coverage, holes/winding, class-specific specular, planted rear foot and recoil |
 | Shadow Company | Shares Cadre mesh/actions/events; slate-blue dye retains its fragment atlas | Inherits corrected bursts, death pool and timing | Derive the slate-blue diffuse after the Cadre rebake; verify occupied texels and inheritance |
 | Master Assassin | Shares Cadre mesh/actions/events; oxblood dye retains its fragment atlas | Inherits corrected bursts, death pool and timing | Derive the oxblood diffuse after the Cadre rebake; verify occupied texels and inheritance |
 | Silent Guard | 6/6/3 flashes; no cartridge locator; low-contrast diffuse and coat deformation | 2/2/1 finite flashes with smoke and sourced burst/death audio | UV/body/SMG rebake, holes/winding, wool/leather/steel masks, deliberate skirt weights, low-ready idle and recoil |
