@@ -945,8 +945,24 @@ cbrn_occupation_apply_coverup_permit_inspection = {
 # cbrn_occupation_coverup_payment_action selector. A failed record dispatch
 # refunds the exact Political Power paid; no second decision payment exists.
 cbrn_occupation_execute_paid_coverup = {
+	set_temp_variable = { cbrn_occupation_coverup_target = FROM }
+	set_temp_variable = { cbrn_occupation_coverup_recovery_only = constant:universal_cost_framework.zero }
+	if = {
+		limit = { has_variable = cbrn_occupation_coverup_open_receipt_@var:cbrn_occupation_coverup_target }
+		set_temp_variable = { cbrn_occupation_coverup_recovery_only = constant:universal_cost_framework.one }
+	}
+	# Recovery precedes route/target/affordability rejection and never replays
+	# an applied outcome. Only this payer's unresolved receipts are visited.
+	cbrn_occupation_recover_paid_coverups = yes
+	set_temp_variable = { cbrn_occupation_coverup_target = FROM }
+	set_temp_variable = { cbrn_occupation_coverup_pp_quote = constant:universal_cost_framework.zero }
+	set_temp_variable = { cbrn_occupation_coverup_pp_ordinary = constant:universal_cost_framework.zero }
+	set_temp_variable = { cbrn_occupation_coverup_pp_quote_valid = constant:universal_cost_framework.zero }
+	set_temp_variable = { cbrn_occupation_coverup_pp_source_id = constant:universal_cost_framework.zero }
 	if = {
 		limit = {
+			check_variable = { cbrn_occupation_coverup_recovery_only = constant:universal_cost_framework.zero }
+			NOT = { has_variable = cbrn_occupation_coverup_open_receipt_@var:cbrn_occupation_coverup_target }
 			FROM = { cbrn_occupation_state_can_start_coverup = yes }
 			check_variable = { var = cbrn_occupation_coverup_payment_action value = constant:cbrn_occupation_coverup_action.seal_state compare = equals }
 			cbrn_occupation_can_pay_seal_state_pp = yes
@@ -955,6 +971,8 @@ cbrn_occupation_execute_paid_coverup = {
 	}
 	else_if = {
 		limit = {
+			check_variable = { cbrn_occupation_coverup_recovery_only = constant:universal_cost_framework.zero }
+			NOT = { has_variable = cbrn_occupation_coverup_open_receipt_@var:cbrn_occupation_coverup_target }
 			FROM = { cbrn_occupation_state_can_start_coverup = yes }
 			check_variable = { var = cbrn_occupation_coverup_payment_action value = constant:cbrn_occupation_coverup_action.destroy_records compare = equals }
 			cbrn_occupation_can_pay_destroy_records_pp = yes
@@ -966,19 +984,82 @@ cbrn_occupation_execute_paid_coverup = {
 # COUNTRY scope with FROM as the selected STATE and an affordable, freshly
 # calculated cbrn_occupation_coverup_pp_quote from the gate above.
 cbrn_occupation_settle_paid_coverup = {
-	set_temp_variable = { cbrn_occupation_coverup_pp_debit = cbrn_occupation_coverup_pp_quote }
-	multiply_temp_variable = { cbrn_occupation_coverup_pp_debit = constant:cbrn_payload_math.negation_multiplier }
-	add_political_power = cbrn_occupation_coverup_pp_debit
-	FROM = {
-		set_variable = { cbrn_occupation_requested_coverup_action = cbrn_occupation_coverup_payment_action }
-		cbrn_occupation_apply_requested_coverup_action = yes
-		clear_variable = cbrn_occupation_requested_coverup_action
-	}
+	set_temp_variable = { black_friday_owner_transaction_id = constant:universal_cost_framework.zero }
+	black_friday_allocate_owner_transaction = yes
+	set_temp_variable = { cbrn_occupation_coverup_receipt_id = black_friday_owner_transaction_id }
+	# Eligibility belongs to this payment, not the payer's later control mode.
+	set_temp_variable = { cbrn_occupation_coverup_payment_achievement_eligible = constant:universal_cost_framework.zero }
 	if = {
 		limit = {
-			NOT = { check_variable = { var = cbrn_occupation_coverup_proof value = constant:cbrn_proof.supplied compare = equals } }
+			black_friday_achievement_is_valid_sale = yes
+			check_variable = { cbrn_occupation_coverup_pp_source_id = constant:universal_cost_framework.black_friday_source_id }
+			check_variable = { cbrn_occupation_coverup_pp_ordinary > constant:universal_cost_framework.zero }
+			check_variable = { cbrn_occupation_coverup_pp_quote > constant:universal_cost_framework.zero }
 		}
-		add_political_power = cbrn_occupation_coverup_pp_quote
+		set_temp_variable = { cbrn_occupation_coverup_payment_achievement_eligible = constant:universal_cost_framework.one }
+	}
+	set_temp_variable = { universal_cost_payment_resource_kind = constant:universal_cost_resource_kind.political_power }
+	set_temp_variable = { universal_cost_payment_amount = cbrn_occupation_coverup_pp_quote }
+	set_temp_variable = { universal_cost_payment_result = constant:universal_cost_framework.result_no_op }
+	universal_cost_pay_component = yes
+	if = {
+		limit = { check_variable = { universal_cost_payment_result = constant:universal_cost_framework.result_success } }
+		# Durable owner proof is written before record, state dispatch or refund.
+		add_to_array = { array = cbrn_occupation_coverup_pending_receipts value = cbrn_occupation_coverup_receipt_id }
+		if = {
+			limit = { check_variable = { cbrn_occupation_coverup_payment_achievement_eligible = constant:universal_cost_framework.one } }
+			add_to_array = { array = cbrn_occupation_coverup_achievement_eligible_receipts value = cbrn_occupation_coverup_receipt_id }
+		}
+		set_variable = { cbrn_occupation_coverup_open_receipt_@var:cbrn_occupation_coverup_target = cbrn_occupation_coverup_receipt_id }
+		set_variable = { cbrn_occupation_coverup_receipt_target_@var:cbrn_occupation_coverup_receipt_id = cbrn_occupation_coverup_target }
+		set_variable = { cbrn_occupation_coverup_receipt_action_@var:cbrn_occupation_coverup_receipt_id = cbrn_occupation_coverup_payment_action }
+		set_variable = { cbrn_occupation_coverup_receipt_ordinary_@var:cbrn_occupation_coverup_receipt_id = cbrn_occupation_coverup_pp_ordinary }
+		set_variable = { cbrn_occupation_coverup_receipt_paid_@var:cbrn_occupation_coverup_receipt_id = cbrn_occupation_coverup_pp_quote }
+		set_variable = { cbrn_occupation_coverup_receipt_source_@var:cbrn_occupation_coverup_receipt_id = cbrn_occupation_coverup_pp_source_id }
+		set_variable = { cbrn_occupation_coverup_receipt_sale_@var:cbrn_occupation_coverup_receipt_id = global.black_friday_sale_sequence }
+		set_variable = { cbrn_occupation_coverup_receipt_phase_@var:cbrn_occupation_coverup_receipt_id = constant:cbrn_occupation_coverup_receipt_phase.unrecorded_refund }
+		set_temp_variable = { universal_cost_transaction_id = cbrn_occupation_coverup_receipt_id }
+		set_temp_variable = { universal_cost_transaction_component_id = constant:black_friday_event.owner_component_political_power }
+		set_temp_variable = { universal_cost_transaction_resource_kind = constant:universal_cost_resource_kind.political_power }
+		set_temp_variable = { universal_cost_transaction_resource_id = constant:universal_cost_framework.zero }
+		set_temp_variable = { universal_cost_transaction_ordinary_cost = cbrn_occupation_coverup_pp_ordinary }
+		set_temp_variable = { universal_cost_transaction_quoted_cost = cbrn_occupation_coverup_pp_quote }
+		set_temp_variable = { universal_cost_transaction_actual_paid_cost = cbrn_occupation_coverup_pp_quote }
+		set_temp_variable = { universal_cost_transaction_source_id = cbrn_occupation_coverup_pp_source_id }
+		set_temp_variable = { universal_cost_transaction_primary_component = constant:black_friday_event.owner_component_political_power }
+		set_temp_variable = { universal_cost_transaction_achievement_family_id = constant:universal_cost_family.political_power }
+		set_temp_variable = { universal_cost_transaction_achievement_primary_component_id = constant:black_friday_event.owner_component_political_power }
+		set_temp_variable = { universal_cost_transaction_achievement_cost_basis = constant:universal_cost_achievement_basis.primary_component }
+		set_temp_variable = { universal_cost_transaction_achievement_primary_member = constant:universal_cost_framework.one }
+		set_temp_variable = { universal_cost_record_transaction_result = constant:universal_cost_framework.result_no_op }
+		set_temp_variable = { universal_cost_recorded_component_index = constant:universal_cost_framework.invalid_index }
+		universal_cost_record_transaction = yes
+		if = {
+			limit = { check_variable = { universal_cost_record_transaction_result = constant:universal_cost_framework.result_success } }
+			set_variable = { cbrn_occupation_coverup_receipt_phase_@var:cbrn_occupation_coverup_receipt_id = constant:cbrn_occupation_coverup_receipt_phase.recorded_refund }
+			# Exported proof and nested exact selector/suppression outputs must
+			# exist in this caller before traversing the unchanged STATE helpers.
+			set_temp_variable = { cbrn_occupation_coverup_proof = constant:cbrn_proof.missing }
+			set_temp_variable = { cbrn_occupation_exact_record_suppression_proof = constant:cbrn_proof.missing }
+			set_temp_variable = { cbrn_diplomacy_selected_chemical_row = constant:cbrn_diplomacy_index.invalid }
+			set_temp_variable = { cbrn_action_doctrine_condemnation_mult = constant:cbrn_math.one }
+			FROM = {
+				set_variable = { cbrn_occupation_requested_coverup_action = cbrn_occupation_coverup_payment_action }
+				cbrn_occupation_apply_requested_coverup_action = yes
+				clear_variable = cbrn_occupation_requested_coverup_action
+			}
+			if = {
+				limit = { check_variable = { cbrn_occupation_coverup_proof = constant:cbrn_proof.supplied } }
+				set_variable = { cbrn_occupation_coverup_receipt_phase_@var:cbrn_occupation_coverup_receipt_id = constant:cbrn_occupation_coverup_receipt_phase.applied_settlement }
+				# A completed outcome never holds the state payment gate hostage
+				# to receipt repair. The unique payer receipt still persists.
+				clear_variable = cbrn_occupation_coverup_open_receipt_@var:cbrn_occupation_coverup_target
+			}
+		}
+		cbrn_occupation_recover_paid_coverup_receipt = yes
+	}
+	else = {
+		clear_variable = universal_cost_allocated_transaction_id_@var:cbrn_occupation_coverup_receipt_id
 	}
 }
 

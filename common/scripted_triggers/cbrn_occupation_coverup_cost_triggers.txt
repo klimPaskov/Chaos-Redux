@@ -1,0 +1,18 @@
+# CBRN occupation coverup refund preflight. COUNTRY payer with FROM STATE.
+# Pure normal-state read. Only temporary target and receipt-ID outputs change.
+# See the matching markdown for caller-owned output storage and failure rules.
+cbrn_occupation_coverup_can_retry_refund = {
+	set_temp_variable = { cbrn_occupation_coverup_target = FROM }
+	set_temp_variable = { cbrn_occupation_coverup_receipt_id = constant:universal_cost_framework.zero }
+	check_variable = { cbrn_occupation_coverup_open_receipt_@var:cbrn_occupation_coverup_target > constant:universal_cost_framework.zero }
+	set_temp_variable = { cbrn_occupation_coverup_receipt_id = cbrn_occupation_coverup_open_receipt_@var:cbrn_occupation_coverup_target }
+	has_variable = cbrn_occupation_coverup_receipt_target_@var:cbrn_occupation_coverup_receipt_id
+	has_variable = cbrn_occupation_coverup_receipt_paid_@var:cbrn_occupation_coverup_receipt_id
+	has_variable = cbrn_occupation_coverup_receipt_phase_@var:cbrn_occupation_coverup_receipt_id
+	check_variable = { cbrn_occupation_coverup_receipt_target_@var:cbrn_occupation_coverup_receipt_id = cbrn_occupation_coverup_target }
+	check_variable = { cbrn_occupation_coverup_receipt_paid_@var:cbrn_occupation_coverup_receipt_id > constant:universal_cost_framework.zero }
+	OR = {
+		check_variable = { cbrn_occupation_coverup_receipt_phase_@var:cbrn_occupation_coverup_receipt_id = constant:cbrn_occupation_coverup_receipt_phase.unrecorded_refund }
+		check_variable = { cbrn_occupation_coverup_receipt_phase_@var:cbrn_occupation_coverup_receipt_id = constant:cbrn_occupation_coverup_receipt_phase.recorded_refund }
+	}
+}

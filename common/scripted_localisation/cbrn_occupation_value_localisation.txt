@@ -88,17 +88,147 @@ defined_text = {
 defined_text = {
 	name = GetCbrnOccupationSealStatePpQuote
 	text = {
-		trigger = { cbrn_occupation_prepare_seal_state_pp_quote = yes }
+		trigger = {
+			set_temp_variable = { cbrn_occupation_coverup_target = FROM }
+			set_temp_variable = { cbrn_occupation_coverup_receipt_id = constant:universal_cost_framework.zero }
+			cbrn_occupation_coverup_can_retry_refund = yes
+		}
+		localization_key = cbrn_occupation_coverup_recovery_pending
+	}
+	text = {
+		trigger = {
+			set_temp_variable = { cbrn_occupation_coverup_target = FROM }
+			NOT = { has_variable = cbrn_occupation_coverup_open_receipt_@var:cbrn_occupation_coverup_target }
+			set_temp_variable = { cbrn_occupation_coverup_pp_quote = constant:universal_cost_framework.zero }
+			set_temp_variable = { cbrn_occupation_coverup_pp_ordinary = constant:universal_cost_framework.zero }
+			set_temp_variable = { cbrn_occupation_coverup_pp_quote_valid = constant:universal_cost_framework.zero }
+			set_temp_variable = { cbrn_occupation_coverup_pp_source_id = constant:universal_cost_framework.zero }
+			cbrn_occupation_prepare_seal_state_pp_quote = yes
+			check_variable = { var = cbrn_occupation_coverup_pp_quote_valid value = constant:universal_cost_framework.one compare = equals }
+		}
 		localization_key = cbrn_occupation_seal_state_pp_quote_value
 	}
+	text = { localization_key = cbrn_occupation_coverup_price_unavailable }
 }
 
 defined_text = {
 	name = GetCbrnOccupationDestroyRecordsPpQuote
 	text = {
-		trigger = { cbrn_occupation_prepare_destroy_records_pp_quote = yes }
+		trigger = {
+			set_temp_variable = { cbrn_occupation_coverup_target = FROM }
+			set_temp_variable = { cbrn_occupation_coverup_receipt_id = constant:universal_cost_framework.zero }
+			cbrn_occupation_coverup_can_retry_refund = yes
+		}
+		localization_key = cbrn_occupation_coverup_recovery_pending
+	}
+	text = {
+		trigger = {
+			set_temp_variable = { cbrn_occupation_coverup_target = FROM }
+			NOT = { has_variable = cbrn_occupation_coverup_open_receipt_@var:cbrn_occupation_coverup_target }
+			set_temp_variable = { cbrn_occupation_coverup_pp_quote = constant:universal_cost_framework.zero }
+			set_temp_variable = { cbrn_occupation_coverup_pp_ordinary = constant:universal_cost_framework.zero }
+			set_temp_variable = { cbrn_occupation_coverup_pp_quote_valid = constant:universal_cost_framework.zero }
+			set_temp_variable = { cbrn_occupation_coverup_pp_source_id = constant:universal_cost_framework.zero }
+			cbrn_occupation_prepare_destroy_records_pp_quote = yes
+			check_variable = { var = cbrn_occupation_coverup_pp_quote_valid value = constant:universal_cost_framework.one compare = equals }
+		}
 		localization_key = cbrn_occupation_destroy_records_pp_quote_value
 	}
+	text = { localization_key = cbrn_occupation_coverup_price_unavailable }
+}
+
+# The selected detail key consumes this quote in the same text chain.
+defined_text = {
+	name = GetCbrnOccupationSealStateCostDetails
+	text = {
+		trigger = {
+			set_temp_variable = { cbrn_occupation_coverup_target = FROM }
+			set_temp_variable = { cbrn_occupation_coverup_receipt_id = constant:universal_cost_framework.zero }
+			cbrn_occupation_coverup_can_retry_refund = yes
+			set_temp_variable = { cbrn_occupation_coverup_recovery_paid_display = cbrn_occupation_coverup_receipt_paid_@var:cbrn_occupation_coverup_receipt_id }
+		}
+		localization_key = cbrn_occupation_coverup_recovery_details
+	}
+	text = {
+		trigger = {
+			set_temp_variable = { cbrn_occupation_coverup_target = FROM }
+			NOT = { has_variable = cbrn_occupation_coverup_open_receipt_@var:cbrn_occupation_coverup_target }
+			set_temp_variable = { cbrn_occupation_coverup_pp_quote = constant:universal_cost_framework.zero }
+			set_temp_variable = { cbrn_occupation_coverup_pp_ordinary = constant:universal_cost_framework.zero }
+			set_temp_variable = { cbrn_occupation_coverup_pp_quote_valid = constant:universal_cost_framework.zero }
+			set_temp_variable = { cbrn_occupation_coverup_pp_source_id = constant:universal_cost_framework.zero }
+			cbrn_occupation_prepare_seal_state_pp_quote = yes
+			check_variable = { var = cbrn_occupation_coverup_pp_quote_valid value = constant:universal_cost_framework.one compare = equals }
+		}
+		localization_key = cbrn_occupation_seal_state_cost_details
+	}
+	text = { localization_key = cbrn_occupation_coverup_price_unavailable }
+}
+
+defined_text = {
+	name = GetCbrnOccupationDestroyRecordsCostDetails
+	text = {
+		trigger = {
+			set_temp_variable = { cbrn_occupation_coverup_target = FROM }
+			set_temp_variable = { cbrn_occupation_coverup_receipt_id = constant:universal_cost_framework.zero }
+			cbrn_occupation_coverup_can_retry_refund = yes
+			set_temp_variable = { cbrn_occupation_coverup_recovery_paid_display = cbrn_occupation_coverup_receipt_paid_@var:cbrn_occupation_coverup_receipt_id }
+		}
+		localization_key = cbrn_occupation_coverup_recovery_details
+	}
+	text = {
+		trigger = {
+			set_temp_variable = { cbrn_occupation_coverup_target = FROM }
+			NOT = { has_variable = cbrn_occupation_coverup_open_receipt_@var:cbrn_occupation_coverup_target }
+			set_temp_variable = { cbrn_occupation_coverup_pp_quote = constant:universal_cost_framework.zero }
+			set_temp_variable = { cbrn_occupation_coverup_pp_ordinary = constant:universal_cost_framework.zero }
+			set_temp_variable = { cbrn_occupation_coverup_pp_quote_valid = constant:universal_cost_framework.zero }
+			set_temp_variable = { cbrn_occupation_coverup_pp_source_id = constant:universal_cost_framework.zero }
+			cbrn_occupation_prepare_destroy_records_pp_quote = yes
+			check_variable = { var = cbrn_occupation_coverup_pp_quote_valid value = constant:universal_cost_framework.one compare = equals }
+		}
+		localization_key = cbrn_occupation_destroy_records_cost_details
+	}
+	text = { localization_key = cbrn_occupation_coverup_price_unavailable }
+}
+
+defined_text = {
+	name = GetCbrnOccupationCoverupQuotedPpCost
+	text = {
+		trigger = {
+			set_temp_variable = { universal_cost_affordability_resource_kind = constant:universal_cost_resource_kind.political_power }
+			set_temp_variable = { universal_cost_affordability_amount = cbrn_occupation_coverup_pp_quote }
+			universal_cost_component_is_affordable = yes
+		}
+		localization_key = cbrn_occupation_coverup_pp_cost_ready
+	}
+	text = { localization_key = cbrn_occupation_coverup_pp_cost_blocked }
+}
+
+# Preserve represented fractional ordinary prices rather than rounding their
+# display to two decimals. Sale prices use the registered integer quantum.
+defined_text = {
+	name = GetCbrnOccupationCoverupPpAmount
+	text = {
+		trigger = {
+			set_temp_variable = { cbrn_occupation_coverup_pp_display_remainder = cbrn_occupation_coverup_pp_quote }
+			modulo_temp_variable = { cbrn_occupation_coverup_pp_display_remainder = constant:universal_cost_framework.one }
+			check_variable = { var = cbrn_occupation_coverup_pp_display_remainder value = constant:universal_cost_framework.zero compare = equals }
+		}
+		localization_key = cbrn_occupation_coverup_pp_amount_integer
+	}
+	text = { localization_key = cbrn_occupation_coverup_pp_amount_fractional }
+}
+
+defined_text = {
+	name = GetCbrnOccupationCoverupCostSource
+	text = {
+		trigger = {
+			check_variable = { var = cbrn_occupation_coverup_pp_source_id value = constant:universal_cost_framework.black_friday_source_id compare = equals }
+		}
+		localization_key = cbrn_occupation_coverup_source_black_friday
+	}
+	text = { localization_key = cbrn_occupation_coverup_source_none }
 }
 
 defined_text = {

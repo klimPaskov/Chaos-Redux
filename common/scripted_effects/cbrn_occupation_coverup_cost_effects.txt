@@ -1,0 +1,136 @@
+# CBRN occupation coverup cost recovery. COUNTRY payer scope only.
+# See the matching markdown contract. No outcome is dispatched here.
+# Failed record/refund/settlement retains normal payer proof until recovery.
+
+cbrn_occupation_clear_paid_coverup_receipt = {
+	if = {
+		limit = { is_in_array = { array = cbrn_occupation_coverup_achievement_eligible_receipts value = cbrn_occupation_coverup_receipt_id } }
+		remove_from_array = { array = cbrn_occupation_coverup_achievement_eligible_receipts value = cbrn_occupation_coverup_receipt_id }
+	}
+	set_temp_variable = { cbrn_occupation_coverup_receipt_target = cbrn_occupation_coverup_receipt_target_@var:cbrn_occupation_coverup_receipt_id }
+	if = {
+		limit = { check_variable = { cbrn_occupation_coverup_open_receipt_@var:cbrn_occupation_coverup_receipt_target = cbrn_occupation_coverup_receipt_id } }
+		clear_variable = cbrn_occupation_coverup_open_receipt_@var:cbrn_occupation_coverup_receipt_target
+	}
+	clear_variable = universal_cost_allocated_transaction_id_@var:cbrn_occupation_coverup_receipt_id
+	clear_variable = cbrn_occupation_coverup_receipt_target_@var:cbrn_occupation_coverup_receipt_id
+	clear_variable = cbrn_occupation_coverup_receipt_action_@var:cbrn_occupation_coverup_receipt_id
+	clear_variable = cbrn_occupation_coverup_receipt_ordinary_@var:cbrn_occupation_coverup_receipt_id
+	clear_variable = cbrn_occupation_coverup_receipt_paid_@var:cbrn_occupation_coverup_receipt_id
+	clear_variable = cbrn_occupation_coverup_receipt_source_@var:cbrn_occupation_coverup_receipt_id
+	clear_variable = cbrn_occupation_coverup_receipt_sale_@var:cbrn_occupation_coverup_receipt_id
+	clear_variable = cbrn_occupation_coverup_receipt_phase_@var:cbrn_occupation_coverup_receipt_id
+}
+
+# Input: temporary cbrn_occupation_coverup_receipt_id. No temporary output.
+cbrn_occupation_recover_paid_coverup_receipt = {
+	if = {
+		limit = {
+			check_variable = { cbrn_occupation_coverup_receipt_id > constant:universal_cost_framework.zero }
+			has_variable = cbrn_occupation_coverup_receipt_phase_@var:cbrn_occupation_coverup_receipt_id
+			has_variable = cbrn_occupation_coverup_receipt_target_@var:cbrn_occupation_coverup_receipt_id
+			has_variable = cbrn_occupation_coverup_receipt_paid_@var:cbrn_occupation_coverup_receipt_id
+			check_variable = { cbrn_occupation_coverup_receipt_target_@var:cbrn_occupation_coverup_receipt_id > constant:universal_cost_framework.zero }
+			check_variable = { cbrn_occupation_coverup_receipt_paid_@var:cbrn_occupation_coverup_receipt_id > constant:universal_cost_framework.zero }
+		}
+		set_temp_variable = { universal_cost_transaction_id = cbrn_occupation_coverup_receipt_id }
+		if = {
+			limit = { check_variable = { cbrn_occupation_coverup_receipt_phase_@var:cbrn_occupation_coverup_receipt_id = constant:cbrn_occupation_coverup_receipt_phase.unrecorded_refund } }
+			set_temp_variable = { universal_cost_payment_resource_kind = constant:universal_cost_resource_kind.political_power }
+			set_temp_variable = { universal_cost_payment_amount = cbrn_occupation_coverup_receipt_paid_@var:cbrn_occupation_coverup_receipt_id }
+			set_temp_variable = { universal_cost_credit_result = constant:universal_cost_framework.result_no_op }
+			universal_cost_credit_component = yes
+			if = {
+				limit = { check_variable = { universal_cost_credit_result = constant:universal_cost_framework.result_success } }
+				cbrn_occupation_clear_paid_coverup_receipt = yes
+			}
+		}
+		else_if = {
+			limit = { check_variable = { cbrn_occupation_coverup_receipt_phase_@var:cbrn_occupation_coverup_receipt_id = constant:cbrn_occupation_coverup_receipt_phase.recorded_refund } }
+			set_temp_variable = { universal_cost_refund_transaction_result = constant:universal_cost_framework.result_no_op }
+			set_temp_variable = { universal_cost_refund_total = constant:universal_cost_framework.zero }
+			set_temp_variable = { universal_cost_refund_unhandled_total = constant:universal_cost_framework.zero }
+			universal_cost_refund_transaction = yes
+			set_temp_variable = { universal_cost_transaction_lookup_id = cbrn_occupation_coverup_receipt_id }
+			set_temp_variable = { universal_cost_transaction_found_index = constant:universal_cost_framework.invalid_index }
+			set_temp_variable = { universal_cost_transaction_is_indexed = constant:universal_cost_framework.zero }
+			set_temp_variable = { universal_cost_transaction_lookup_result = constant:universal_cost_framework.result_no_op }
+			set_temp_variable = { universal_cost_transaction_pointer = constant:universal_cost_framework.zero }
+			universal_cost_find_transaction_row = yes
+			if = {
+				limit = {
+					OR = {
+						check_variable = { universal_cost_refund_transaction_result = constant:universal_cost_framework.result_success }
+						AND = {
+							check_variable = { universal_cost_transaction_lookup_result = constant:universal_cost_framework.result_success }
+							check_variable = { universal_cost_transaction_states^universal_cost_transaction_found_index = constant:universal_cost_framework.transaction_state_refunded }
+						}
+					}
+				}
+				cbrn_occupation_clear_paid_coverup_receipt = yes
+			}
+		}
+		else_if = {
+			limit = { check_variable = { cbrn_occupation_coverup_receipt_phase_@var:cbrn_occupation_coverup_receipt_id = constant:cbrn_occupation_coverup_receipt_phase.applied_settlement } }
+			set_temp_variable = { universal_cost_settle_transaction_result = constant:universal_cost_framework.result_no_op }
+			universal_cost_settle_transaction = yes
+			set_temp_variable = { universal_cost_transaction_lookup_id = cbrn_occupation_coverup_receipt_id }
+			set_temp_variable = { universal_cost_transaction_found_index = constant:universal_cost_framework.invalid_index }
+			set_temp_variable = { universal_cost_transaction_is_indexed = constant:universal_cost_framework.zero }
+			set_temp_variable = { universal_cost_transaction_lookup_result = constant:universal_cost_framework.result_no_op }
+			set_temp_variable = { universal_cost_transaction_pointer = constant:universal_cost_framework.zero }
+			universal_cost_find_transaction_row = yes
+			if = {
+				limit = {
+					OR = {
+						check_variable = { universal_cost_settle_transaction_result = constant:universal_cost_framework.result_success }
+						AND = {
+							check_variable = { universal_cost_transaction_lookup_result = constant:universal_cost_framework.result_success }
+							check_variable = { universal_cost_transaction_states^universal_cost_transaction_found_index = constant:universal_cost_framework.transaction_state_settled }
+						}
+					}
+				}
+				if = {
+					limit = {
+						is_in_array = { array = cbrn_occupation_coverup_achievement_eligible_receipts value = cbrn_occupation_coverup_receipt_id }
+						check_variable = { cbrn_occupation_coverup_receipt_source_@var:cbrn_occupation_coverup_receipt_id = constant:universal_cost_framework.black_friday_source_id }
+						check_variable = { cbrn_occupation_coverup_receipt_sale_@var:cbrn_occupation_coverup_receipt_id = global.black_friday_sale_sequence }
+					}
+					set_temp_variable = { black_friday_purchase_transaction_id = cbrn_occupation_coverup_receipt_id }
+					set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.political_power }
+					set_temp_variable = { black_friday_purchase_ordinary_cost = cbrn_occupation_coverup_receipt_ordinary_@var:cbrn_occupation_coverup_receipt_id }
+					set_temp_variable = { black_friday_purchase_actual_paid_cost = cbrn_occupation_coverup_receipt_paid_@var:cbrn_occupation_coverup_receipt_id }
+					set_temp_variable = { black_friday_purchase_is_refundable = constant:universal_cost_framework.zero }
+					set_temp_variable = { black_friday_purchase_allow_political_power_only = constant:universal_cost_framework.one }
+					set_temp_variable = { black_friday_purchase_allow_post_expiry_confirmation = constant:universal_cost_framework.zero }
+					set_temp_variable = { black_friday_purchase_receipt_proof_valid = constant:universal_cost_framework.zero }
+					set_temp_variable = { black_friday_purchase_has_non_political_paid_component = constant:universal_cost_framework.zero }
+					black_friday_record_achievement_transaction = yes
+					set_temp_variable = { black_friday_purchase_allow_political_power_only = constant:universal_cost_framework.zero }
+				}
+				cbrn_occupation_clear_paid_coverup_receipt = yes
+			}
+		}
+	}
+}
+
+# Bounded existing-click/owner recovery entry. Pop before recovery and rotate
+# unresolved IDs. The native loop stop leaves every unvisited ID untouched.
+cbrn_occupation_recover_paid_coverups = {
+	set_temp_variable = { cbrn_occupation_coverup_recovery_count = cbrn_occupation_coverup_pending_receipts^num }
+	set_temp_variable = { cbrn_occupation_coverup_recovery_index = constant:universal_cost_framework.zero }
+	while_loop_effect = {
+		limit = {
+			check_variable = { cbrn_occupation_coverup_recovery_index < cbrn_occupation_coverup_recovery_count }
+			check_variable = { cbrn_occupation_coverup_pending_receipts^num > constant:universal_cost_framework.zero }
+		}
+		set_temp_variable = { cbrn_occupation_coverup_receipt_id = cbrn_occupation_coverup_pending_receipts^0 }
+		remove_from_array = { array = cbrn_occupation_coverup_pending_receipts index = constant:universal_cost_framework.zero }
+		cbrn_occupation_recover_paid_coverup_receipt = yes
+		if = {
+			limit = { has_variable = cbrn_occupation_coverup_receipt_phase_@var:cbrn_occupation_coverup_receipt_id }
+			add_to_array = { array = cbrn_occupation_coverup_pending_receipts value = cbrn_occupation_coverup_receipt_id }
+		}
+		add_to_temp_variable = { cbrn_occupation_coverup_recovery_index = constant:universal_cost_framework.one }
+	}
+}
