@@ -1,6 +1,11 @@
 # Chaos Redux
 
 [![Discord](https://img.shields.io/badge/Discord-Join%20Community-7289da?logo=discord&logoColor=white)](https://discord.gg/rAXesGcT2t)
+[![YouTube](https://img.shields.io/badge/YouTube-Chaos%20Redux-ff0000?logo=youtube&logoColor=white)](https://www.youtube.com/@ChaosRedux)
+[![Ko-fi](https://img.shields.io/badge/Ko--fi-Support%20the%20Mod-ff5e5b?logo=kofi&logoColor=white)](https://ko-fi.com/klimpaskov)
+[![Event Catalog](https://img.shields.io/badge/Event%20Catalog-Spreadsheet-0f9d58?logo=googlesheets&logoColor=white)](https://docs.google.com/spreadsheets/d/1A-N5TvU9Ed_xDW4YFG75RvzTIhdA5Hc0f5YyO3qi0Ik/edit?usp=sharing)
+[![Event Guides](https://img.shields.io/badge/Event%20Guides-Docs-555555?logo=readthedocs&logoColor=white)](docs/README.md)
+[![Issues](https://img.shields.io/badge/Bugs%20%26%20Ideas-Issues-24292f?logo=github&logoColor=white)](https://github.com/klimPaskov/Chaos-Redux/issues)
 
 Chaos Redux presents the ultimate strategic challenge, forcing you to navigate an increasingly unstable and unpredictable world that actively resists your control.
 
