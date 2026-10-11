@@ -45,3 +45,9 @@ The first pass kept `force_use_small_tech_layout = yes` on every CBRN technology
 - Fillers resized to 1450x980 (chemical) and 1040x715 (biological).
 
 Render evidence after the second pass, from `hoi4.tech_render view = folder`: chemical columns at renderer x = 217, 427, 637, 847, 1057, 1267 and rows at y = 315, 425, 535, 645, 755, 865, 975; biological columns at 217, 427, 637, 847 and rows at 315, 425, 535, 645. Card boxes are 183x84 (full-size) and 72x72 (small), pairwise overlap count zero in both folders, no unresolved icon sprite, and the per-row maximum column gap is 420 pixels. `hoi4.gui_render` at 1920x1080 and 2560x1440 shows the six year headers and seven branch labels inside the window with no clipping.
+
+## Current correction: preserved artwork and card name binding (11 Oct 2026)
+
+This correction supersedes the earlier art-redesign claims above: this repair preserves the original artwork, including the existing 64x64 gas-agent card art. The Livens projector equipment and technology sprite mappings in `interface/chaosx_equipment.gfx` point to the original `livens_projector.dds`, `livens_projector_improved.dds` and `livens_projector_advanced.dds` files. Geometry remains at 70x70 slots, regular-card size 183x84, offsets x=-56/y=-7, origin x=220, 210-pixel column pitch and 110-pixel row pitch.
+
+Both custom full-size templates now name the `instantTextBoxType` child `Name`, matching the vanilla case-sensitive binding (`interface/countrytechtreeview.gui`, vanilla line 4251). The prior lowercase `name` could prevent title text from binding. Parent live-game verification is pending; inspector and renderer geometry evidence do not verify native card drawing, title display, tooltips or scrolling.
