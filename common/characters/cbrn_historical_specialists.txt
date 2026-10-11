@@ -5,10 +5,13 @@
 # - Promotes selected existing named scientists into dual-role static characters.
 # - Reuses their accepted scientist portraits and adds dedicated advisor cards.
 # - Scientist skill describes demonstrated expertise; advisor availability separately
-#   gates the dated appointment or offensive authorization represented by that card.
-# - Defensive medical and early interwar research roles remain available where the
-#   historical record supports them; no duplicate portrait or fictional appointment
-#   is introduced by the date gates below.
+#   gates the appointment or offensive authorization represented by that card on
+#   the country's own programme: a completed project, a researched agent
+#   technology, biological capability or a completed biological bomb project.
+#   Calendar dates never gate these cards.
+# - Defensive medical and early interwar research roles stay available through the
+#   project each card names; no duplicate portrait or fictional appointment is
+#   introduced by the availability gates below.
 # ============================================================================
 
 @CBRN_HISTORICAL_ADVISOR_COST = 100
@@ -68,7 +71,6 @@ characters = {
 			idea_token = ENG_norman_heatley
 			allowed = { original_tag = ENG }
 			available = {
-				date > 1939.12.31
 				custom_trigger_tooltip = {
 					tooltip = cbrn_advisor_field_antibiotics_required_tt
 					cbrn_project_has_field_antibiotics = yes
@@ -128,7 +130,6 @@ characters = {
 			idea_token = USA_stanhope_bayne_jones
 			allowed = { original_tag = USA }
 			available = {
-				date > 1941.12.31
 				custom_trigger_tooltip = {
 					tooltip = cbrn_advisor_mass_vaccines_required_tt
 					cbrn_project_has_vaccines = yes
@@ -165,7 +166,10 @@ characters = {
 				has_doctrine = chaos_warfare
 				# Porton Down's biological-warfare department was created for the
 				# wartime programme; Fildes remains a scientist before this appointment.
-				date > 1939.12.31
+				custom_trigger_tooltip = {
+					tooltip = cbrn_advisor_biological_programme_required_tt
+					cbrn_convention_has_biological_capability = yes
+				}
 			}
 			traits = { chaos_warfare_biological_theorist_trait }
 			ai_will_do = {
@@ -227,7 +231,10 @@ characters = {
 				# Schrader's tabun discovery belongs to late 1936; the appointment
 				# therefore unlocks after the 1936 bookmark rather than granting a
 				# January 1936 nerve-agent programme.
-				date > 1936.12.31
+				custom_trigger_tooltip = {
+					tooltip = cbrn_advisor_chemical_agent_required_tt
+					cbrn_chaos_warfare_has_agent_technology = yes
+				}
 			}
 			traits = { chaos_warfare_chemical_theorist_trait }
 			ai_will_do = {
@@ -260,7 +267,10 @@ characters = {
 				has_doctrine = chaos_warfare
 				# The Posen biological-program role is documented in 1943;
 				# scientific recruitment does not authorize offensive use.
-				date > 1943.06.30
+				custom_trigger_tooltip = {
+					tooltip = cbrn_advisor_biological_weaponization_required_tt
+					bio_battlefield_country_has_any_agent_project = yes
+				}
 			}
 			traits = { cbrn_biological_weaponization_director_trait }
 			ai_will_do = {
@@ -321,7 +331,10 @@ characters = {
 			available = {
 				has_doctrine = chaos_warfare
 				# Kitano's Unit 731 command belongs to the 1942-45 period.
-				date > 1942.01.01
+				custom_trigger_tooltip = {
+					tooltip = cbrn_advisor_biological_weaponization_required_tt
+					bio_battlefield_country_has_any_agent_project = yes
+				}
 			}
 			traits = { cbrn_biological_weaponization_director_trait }
 			ai_will_do = {
@@ -354,7 +367,10 @@ characters = {
 				has_doctrine = chaos_warfare
 				# Witaszek led the Poznan retaliation group by mid-1940;
 				# July 1 is a gameplay floor for that appointment.
-				date > 1940.06.30
+				custom_trigger_tooltip = {
+					tooltip = cbrn_advisor_biological_programme_required_tt
+					cbrn_convention_has_biological_capability = yes
+				}
 			}
 			traits = { cbrn_resistance_biological_sabotage_director_trait }
 			ai_will_do = {
@@ -387,7 +403,10 @@ characters = {
 				has_doctrine = chaos_warfare
 				# The secret toxicology laboratory is documented in 1938;
 				# Jan 1 is a year-level appointment floor.
-				date > 1937.12.31
+				custom_trigger_tooltip = {
+					tooltip = cbrn_advisor_chemical_agent_required_tt
+					cbrn_chaos_warfare_has_agent_technology = yes
+				}
 			}
 			traits = { cbrn_toxicological_weaponization_director_trait }
 			ai_will_do = {
@@ -450,7 +469,10 @@ characters = {
 				has_doctrine = chaos_warfare
 				# Olson joined the Detrick BW program in 1943; Jan 1 is a
 				# year-level research-role access floor, not an exact start day.
-				date > 1942.12.31
+				custom_trigger_tooltip = {
+					tooltip = cbrn_advisor_biological_programme_required_tt
+					cbrn_convention_has_biological_capability = yes
+				}
 			}
 			traits = { cbrn_aerobiology_specialist_trait }
 			ai_will_do = {
@@ -483,7 +505,10 @@ characters = {
 				has_doctrine = chaos_warfare
 				# Baldwin became scientific director of the Army BW programme on
 				# 21 December 1942, after his November CWS recruitment.
-				date > 1942.12.20
+				custom_trigger_tooltip = {
+					tooltip = cbrn_advisor_biological_programme_required_tt
+					cbrn_convention_has_biological_capability = yes
+				}
 			}
 			traits = { chaos_warfare_biological_theorist_trait }
 			ai_will_do = {
