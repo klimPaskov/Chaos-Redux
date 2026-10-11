@@ -275,7 +275,10 @@ lawrence_open_campaign = {
 		if = {
 			limit = { check_variable = { var = lawrence_open_target_ok value = constant:lawrence_event.zero compare = greater_than } }
 			lawrence_initialize_campaign_state = yes
-			event_target:lawrence_prefire_target = { lawrence_begin_target = yes }
+			event_target:lawrence_prefire_target = {
+				lawrence_begin_target = yes
+				lawrence_resolve_opening_evolution = yes
+			}
 		}
 	}
 }
@@ -301,6 +304,7 @@ lawrence_initialize_campaign_state = {
 # Used by the opening and by every later regional target.
 lawrence_begin_target = {
 	lawrence_clear_target_state = yes
+	clr_global_flag = lawrence_coup_report
 	add_to_variable = { global.lawrence_generation = constant:lawrence_event.one }
 	set_global_flag = lawrence_campaign_active
 	set_variable = { global.lawrence_target = THIS }
@@ -524,6 +528,7 @@ lawrence_update_ai_profile = {
 lawrence_refresh_costs = {
 	set_temp_variable = { lawrence_quote_base = num_of_factories }
 	lawrence_quote_target = yes
+	lawrence_quote_evolution_target = yes
 }
 
 # COUNTRY scoped to ENG. Quotes scale with the size of the live target.
@@ -626,6 +631,13 @@ lawrence_quote_british = {
 		max = constant:lawrence_cost.arms_support_maximum
 	}
 	round_variable = lawrence_cost_arms_support
+	if = {
+		limit = { has_global_flag = lawrence_inst_arms }
+		multiply_variable = { lawrence_cost_arms_infantry = constant:lawrence_system.arms_office_discount }
+		multiply_variable = { lawrence_cost_arms_support = constant:lawrence_system.arms_office_discount }
+		round_variable = lawrence_cost_arms_infantry
+		round_variable = lawrence_cost_arms_support
+	}
 	set_variable = { lawrence_cost_bases_infantry = lawrence_cost_arms_infantry }
 	multiply_variable = { lawrence_cost_bases_infantry = constant:lawrence_cost.bases_package_factor }
 	round_variable = lawrence_cost_bases_infantry
@@ -679,6 +691,7 @@ lawrence_quote_british = {
 	set_variable = { lawrence_cost_exchange_support = lawrence_cost_arms_support }
 	multiply_variable = { lawrence_cost_exchange_support = constant:lawrence_cost.exchange_package_factor }
 	round_variable = lawrence_cost_exchange_support
+	lawrence_quote_evolution_british = yes
 }
 
 # ---------------------------------------------------------------------------
@@ -717,6 +730,8 @@ lawrence_pulse = {
 		lawrence_track_leaving_opening = yes
 		lawrence_track_mission_holds = yes
 		lawrence_track_detention = yes
+		lawrence_track_cells = yes
+		lawrence_try_evolution = yes
 		lawrence_track_confirmation = yes
 		lawrence_track_incidents = yes
 		lawrence_track_deadline = yes
@@ -845,6 +860,15 @@ lawrence_compute_drift = {
 	if = {
 		limit = { check_variable = { var = global.lawrence_credibility value = constant:lawrence_drift.credibility_high compare = greater_than } }
 		add_to_temp_variable = { lawrence_d_britain = constant:lawrence_drift.credibility_bonus }
+	}
+	# The Regional Intelligence Office and the standing system press every target.
+	if = {
+		limit = { has_global_flag = lawrence_inst_intel }
+		add_to_temp_variable = { lawrence_d_network = constant:lawrence_system.intel_office_drift }
+	}
+	if = {
+		limit = { has_global_flag = lawrence_counter_bloc_active }
+		add_to_temp_variable = { lawrence_d_britain = constant:lawrence_system.bloc_drift }
 	}
 	# A detained Lawrence cannot run the network and it decays.
 	if = {

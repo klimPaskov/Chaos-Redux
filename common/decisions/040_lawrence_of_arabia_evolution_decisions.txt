@@ -1,0 +1,293 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 040 LAWRENCE OF ARABIA EVOLUTION DECISIONS
+# ============================================================================
+# Evolution I (the Arab Revolt Network): breaking the cells (target), funding
+# the network and backing a government replacement (Britain).
+# Evolution II (the British Arabian System): six institutions in a chain
+# (Britain), a node's demand for autonomy and the founding of a counter-bloc
+# (the regional category, visible to nodes and to independent candidates).
+# Institutions appear one stage at a time so the British category stays
+# readable. AI scores live in 040_lawrence_of_arabia_evolution_mtth.txt.
+# ============================================================================
+
+lawrence_target_category = {
+
+	lawrence_break_the_revolt_cells = {
+		icon = GFX_decision_generic_wreckers
+		priority = 101
+		visible = { lawrence_shows_break_cells = yes }
+		available = { hidden_trigger = { lawrence_can_pay_break_cells = yes } }
+		custom_cost_trigger = { lawrence_can_pay_break_cells = yes }
+		custom_cost_text = lawrence_cost_break
+		complete_effect = {
+			custom_effect_tooltip = lawrence_break_cells_tt
+			hidden_effect = { lawrence_start_break_cells_mission = yes }
+		}
+		ai_will_do = {
+			factor = 0
+			modifier = {
+				set_temp_variable = { lawrence_ai_weight = mtth:lawrence_ai_break_cells }
+				add = lawrence_ai_weight
+			}
+		}
+	}
+
+	lawrence_break_cells_mission = {
+		icon = GFX_decision_generic_wreckers
+		priority = 116
+		allowed = { always = yes }
+		activation = { always = no }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = lawrence_break_cells_hold_tt
+				hidden_trigger = {
+					check_variable = { var = lawrence_cells value = constant:lawrence_cells.break_target compare = less_than_or_equals }
+				}
+			}
+		}
+		days_mission_timeout = constant:lawrence_cells.break_days
+		cancel_trigger = { NOT = { lawrence_is_live_target = yes } }
+		complete_effect = {
+			custom_effect_tooltip = lawrence_break_cells_success_tt
+			hidden_effect = { lawrence_break_cells_success = yes }
+		}
+		timeout_effect = {
+			if = {
+				limit = { check_variable = { var = lawrence_cells value = constant:lawrence_cells.partial_floor compare = less_than_or_equals } }
+				custom_effect_tooltip = lawrence_break_cells_partial_tt
+				hidden_effect = { lawrence_break_cells_partial = yes }
+			}
+			else = {
+				custom_effect_tooltip = lawrence_break_cells_failure_tt
+				hidden_effect = { lawrence_break_cells_failure = yes }
+			}
+		}
+	}
+}
+
+lawrence_british_category = {
+
+	# ------------------------------------------------------------------------
+	# Evolution I
+	# ------------------------------------------------------------------------
+
+	lawrence_fund_the_revolt_network = {
+		icon = GFX_decision_generic_guerilla_base
+		priority = 102
+		visible = { lawrence_shows_fund_revolt = yes }
+		available = { hidden_trigger = { lawrence_can_pay_fund_revolt = yes } }
+		custom_cost_trigger = { lawrence_can_pay_fund_revolt = yes }
+		custom_cost_text = lawrence_cost_fund
+		days_re_enable = constant:lawrence_cells.fund_cooldown_days
+		complete_effect = {
+			custom_effect_tooltip = lawrence_fund_revolt_tt
+			hidden_effect = { lawrence_fund_revolt_network = yes }
+		}
+		ai_will_do = {
+			factor = 0
+			modifier = {
+				set_temp_variable = { lawrence_ai_weight = mtth:lawrence_ai_fund_revolt }
+				add = lawrence_ai_weight
+			}
+		}
+	}
+
+	lawrence_back_a_government_replacement = {
+		icon = GFX_decision_eng_support_imperialist_coup
+		priority = 101
+		visible = { lawrence_shows_replace_government = yes }
+		available = {
+			hidden_trigger = { lawrence_can_pay_replacement = yes }
+			custom_trigger_tooltip = {
+				tooltip = lawrence_replacement_valid_tt
+				hidden_trigger = { var:global.lawrence_target = { lawrence_replacement_is_valid = yes } }
+			}
+		}
+		custom_cost_trigger = { lawrence_can_pay_replacement = yes }
+		custom_cost_text = lawrence_cost_replace
+		complete_effect = {
+			custom_effect_tooltip = lawrence_replace_government_tt
+			hidden_effect = { lawrence_back_government_replacement = yes }
+		}
+		ai_will_do = {
+			factor = 0
+			modifier = {
+				set_temp_variable = { lawrence_ai_weight = mtth:lawrence_ai_replace }
+				add = lawrence_ai_weight
+			}
+		}
+	}
+
+	# ------------------------------------------------------------------------
+	# Evolution II: institutions, one stage at a time
+	# ------------------------------------------------------------------------
+
+	lawrence_convene_the_liaison_conference = {
+		icon = GFX_decision_generic_political_discourse
+		priority = 100
+		visible = { lawrence_shows_conference = yes }
+		available = { hidden_trigger = { lawrence_can_pay_conference = yes } }
+		custom_cost_trigger = { lawrence_can_pay_conference = yes }
+		custom_cost_text = lawrence_cost_conference
+		complete_effect = {
+			custom_effect_tooltip = lawrence_conference_tt
+			hidden_effect = { lawrence_convene_conference = yes }
+		}
+		ai_will_do = {
+			factor = 0
+			modifier = {
+				set_temp_variable = { lawrence_ai_weight = mtth:lawrence_ai_institution }
+				add = lawrence_ai_weight
+			}
+		}
+	}
+
+	lawrence_set_up_the_arms_standardization_office = {
+		icon = GFX_decision_generic_army_support
+		priority = 99
+		visible = { lawrence_shows_arms_office = yes }
+		available = { hidden_trigger = { lawrence_can_pay_arms_office = yes } }
+		custom_cost_trigger = { lawrence_can_pay_arms_office = yes }
+		custom_cost_text = lawrence_cost_arms_office
+		complete_effect = {
+			custom_effect_tooltip = lawrence_arms_office_tt
+			hidden_effect = { lawrence_set_up_arms_office = yes }
+		}
+		ai_will_do = {
+			factor = 0
+			modifier = {
+				set_temp_variable = { lawrence_ai_weight = mtth:lawrence_ai_institution }
+				add = lawrence_ai_weight
+			}
+		}
+	}
+
+	lawrence_sign_the_oil_and_transport_agreements = {
+		icon = GFX_decision_oil
+		priority = 98
+		visible = { lawrence_shows_oil_agreements = yes }
+		available = { hidden_trigger = { lawrence_can_pay_oil_agreements = yes } }
+		custom_cost_trigger = { lawrence_can_pay_oil_agreements = yes }
+		custom_cost_text = lawrence_cost_oil
+		complete_effect = {
+			custom_effect_tooltip = lawrence_oil_agreements_tt
+			hidden_effect = { lawrence_sign_oil_agreements = yes }
+		}
+		ai_will_do = {
+			factor = 0
+			modifier = {
+				set_temp_variable = { lawrence_ai_weight = mtth:lawrence_ai_institution }
+				add = lawrence_ai_weight
+			}
+		}
+	}
+
+	lawrence_open_the_regional_intelligence_office = {
+		icon = GFX_decision_generic_intelligence_operation
+		priority = 97
+		visible = { lawrence_shows_intelligence_office = yes }
+		available = { hidden_trigger = { lawrence_can_pay_intelligence_office = yes } }
+		custom_cost_trigger = { lawrence_can_pay_intelligence_office = yes }
+		custom_cost_text = lawrence_cost_intel
+		complete_effect = {
+			custom_effect_tooltip = lawrence_intel_office_tt
+			hidden_effect = { lawrence_set_up_intelligence_office = yes }
+		}
+		ai_will_do = {
+			factor = 0
+			modifier = {
+				set_temp_variable = { lawrence_ai_weight = mtth:lawrence_ai_institution }
+				add = lawrence_ai_weight
+			}
+		}
+	}
+
+	lawrence_open_the_desert_air_route = {
+		icon = GFX_decision_generic_air
+		priority = 96
+		visible = { lawrence_shows_air_route = yes }
+		available = {
+			hidden_trigger = { lawrence_can_pay_air_route = yes }
+			custom_trigger_tooltip = {
+				tooltip = lawrence_air_base_tt
+				hidden_trigger = { lawrence_air_base_available = yes }
+			}
+		}
+		custom_cost_trigger = { lawrence_can_pay_air_route = yes }
+		custom_cost_text = lawrence_cost_air
+		complete_effect = {
+			custom_effect_tooltip = lawrence_air_route_tt
+			hidden_effect = { lawrence_open_air_route = yes }
+		}
+		ai_will_do = {
+			factor = 0
+			modifier = {
+				set_temp_variable = { lawrence_ai_weight = mtth:lawrence_ai_institution }
+				add = lawrence_ai_weight
+			}
+		}
+	}
+
+	lawrence_sign_the_joint_defense_charter = {
+		icon = GFX_decision_generic_military
+		priority = 95
+		visible = { lawrence_shows_joint_charter = yes }
+		available = { hidden_trigger = { lawrence_can_pay_joint_charter = yes } }
+		custom_cost_trigger = { lawrence_can_pay_joint_charter = yes }
+		custom_cost_text = lawrence_cost_joint_charter
+		complete_effect = {
+			custom_effect_tooltip = lawrence_joint_charter_tt
+			hidden_effect = { lawrence_sign_joint_charter = yes }
+		}
+		ai_will_do = {
+			factor = 0
+			modifier = {
+				set_temp_variable = { lawrence_ai_weight = mtth:lawrence_ai_institution }
+				add = lawrence_ai_weight
+			}
+		}
+	}
+}
+
+lawrence_region_category = {
+
+	lawrence_demand_greater_autonomy = {
+		icon = GFX_decision_generic_independence
+		priority = 100
+		visible = { lawrence_shows_node_autonomy = yes }
+		available = { hidden_trigger = { lawrence_can_pay_node_autonomy = yes } }
+		custom_cost_trigger = { lawrence_can_pay_node_autonomy = yes }
+		custom_cost_text = lawrence_cost_node_autonomy
+		complete_effect = {
+			custom_effect_tooltip = lawrence_node_autonomy_tt
+			hidden_effect = { lawrence_node_demand_autonomy = yes }
+		}
+		ai_will_do = {
+			factor = 0
+			modifier = {
+				set_temp_variable = { lawrence_ai_weight = mtth:lawrence_ai_node_autonomy }
+				add = lawrence_ai_weight
+			}
+		}
+	}
+
+	lawrence_found_an_arab_counter_bloc = {
+		icon = GFX_decision_generic_form_nation
+		priority = 99
+		visible = { lawrence_shows_found_bloc = yes }
+		available = { hidden_trigger = { lawrence_can_pay_found_bloc = yes } }
+		custom_cost_trigger = { lawrence_can_pay_found_bloc = yes }
+		custom_cost_text = lawrence_cost_bloc
+		complete_effect = {
+			custom_effect_tooltip = lawrence_found_bloc_tt
+			hidden_effect = { lawrence_found_counter_bloc = yes }
+		}
+		ai_will_do = {
+			factor = 0
+			modifier = {
+				set_temp_variable = { lawrence_ai_weight = mtth:lawrence_ai_found_bloc }
+				add = lawrence_ai_weight
+			}
+		}
+	}
+}

@@ -1,0 +1,1113 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 040 LAWRENCE OF ARABIA EVOLUTION EFFECTS
+# ============================================================================
+# Evolution pacing and activation (active entry through the pulse, evolved
+# opening before the first target), Evolution I (the Arab Revolt Network:
+# cells, incidents, breaking the cells, funding, government replacement) and
+# Evolution II (the British Arabian System: regional nodes, six institutions,
+# the favoured partner, client autonomy and the counter-bloc).
+#
+# Evolution state is global: global.lawrence_evolution (0 to 3). An
+# evolution gives no Chaos itself. Each stage records one Event Log entry
+# through record_events_log_evolution_entry and only after
+# is_current_evolution_enabled passes, so a disabled stage never sets a
+# recorded flag or unlocks content. Stage 3 is added by the federation
+# phase.
+#
+# Scope: COUNTRY. The pulse hooks run in the live target; institutions,
+# funding and replacement are British actions in ENG.
+# ============================================================================
+
+# ---------------------------------------------------------------------------
+# Evolution pacing and activation
+# ---------------------------------------------------------------------------
+
+# COUNTRY, the live target. Called by the weekly pulse. MTTH pacing: a stage
+# that is ready and enabled waits about 90 days, then activates.
+lawrence_try_evolution = {
+	if = {
+		limit = {
+			lawrence_is_live_target = yes
+			check_variable = { var = global.lawrence_evolution value = constant:lawrence_evolution.highest_stage compare = less_than }
+		}
+		set_temp_variable = { lawrence_next_stage = global.lawrence_evolution }
+		add_to_temp_variable = { lawrence_next_stage = constant:lawrence_event.one }
+		set_temp_variable = { events_log_evolution_event_id = constant:lawrence_event.id }
+		set_temp_variable = { events_log_evolution_type = constant:lawrence_event.evolution_type }
+		set_temp_variable = { events_log_evolution_stage = lawrence_next_stage }
+		set_temp_variable = { events_log_evolution_tier = lawrence_next_stage }
+		if = {
+			limit = {
+				is_current_evolution_enabled = yes
+				lawrence_evolution_stage_ready = yes
+			}
+			if = {
+				limit = { NOT = { has_variable = global.lawrence_evolution_due_day } }
+				set_temp_variable = { lawrence_evolution_delay = mtth:lawrence_evolution_interval }
+				set_variable = { global.lawrence_evolution_due_day = global.num_days }
+				add_to_variable = { global.lawrence_evolution_due_day = lawrence_evolution_delay }
+			}
+			else_if = {
+				limit = { check_variable = { var = global.num_days value = global.lawrence_evolution_due_day compare = greater_than_or_equals } }
+				clear_variable = global.lawrence_evolution_due_day
+				lawrence_activate_evolution = yes
+			}
+		}
+		else = {
+			clear_variable = global.lawrence_evolution_due_day
+		}
+	}
+}
+
+# COUNTRY, the live target. Inputs: temporary lawrence_next_stage and the
+# shared evolution context (event id, type, stage, tier).
+lawrence_activate_evolution = {
+	set_variable = { global.lawrence_evolution = lawrence_next_stage }
+	set_temp_variable = { events_log_evolution_has_actor = constant:lawrence_event.one }
+	save_event_target_as = events_log_evolution_actor
+	record_events_log_evolution_entry = yes
+	lawrence_apply_evolution_entry = yes
+	set_temp_variable = { lawrence_report_delay = constant:lawrence_event.report_delay_days }
+	if = {
+		limit = { check_variable = { var = global.lawrence_evolution value = constant:lawrence_evolution.stage_1 compare = equals } }
+		country_event = { id = chaosx.nr40.96 days = lawrence_report_delay }
+		ENG = { country_event = { id = chaosx.nr40.96 days = lawrence_report_delay } }
+	}
+	else_if = {
+		limit = { check_variable = { var = global.lawrence_evolution value = constant:lawrence_evolution.stage_2 compare = equals } }
+		ENG = { country_event = { id = chaosx.nr40.97 days = lawrence_report_delay } }
+	}
+}
+
+# COUNTRY, the live target. What a freshly active stage unlocks in the
+# running campaign.
+lawrence_apply_evolution_entry = {
+	if = {
+		limit = { check_variable = { var = global.lawrence_evolution value = constant:lawrence_evolution.stage_1 compare = equals } }
+		lawrence_seed_cells = yes
+		set_temp_variable = { lawrence_cell_delay = constant:lawrence_cells.first_incident_days }
+		set_variable = { lawrence_next_cell_day = global.num_days }
+		add_to_variable = { lawrence_next_cell_day = lawrence_cell_delay }
+	}
+	else_if = {
+		limit = { check_variable = { var = global.lawrence_evolution value = constant:lawrence_evolution.stage_2 compare = equals } }
+		ENG = { lawrence_collect_nodes = yes }
+	}
+}
+
+# COUNTRY, scoped to the first target. Evolved opening: every enabled stage
+# whose Chaos tier is reached is already active at the first intervention.
+# Each stage records its own log entry. The opening stays contestable: it
+# raises starting reach and adds one immediate response, never a coup or a
+# civil war.
+lawrence_resolve_opening_evolution = {
+	set_variable = { global.lawrence_evolution = constant:lawrence_event.zero }
+	set_temp_variable = { events_log_evolution_event_id = constant:lawrence_event.id }
+	set_temp_variable = { events_log_evolution_type = constant:lawrence_event.evolution_type }
+	set_temp_variable = { events_log_evolution_stage = constant:lawrence_evolution.stage_1 }
+	set_temp_variable = { events_log_evolution_tier = constant:lawrence_evolution.stage_1 }
+	if = {
+		limit = { is_current_evolution_enabled = yes }
+		set_variable = { global.lawrence_evolution = constant:lawrence_evolution.stage_1 }
+		set_temp_variable = { events_log_evolution_has_actor = constant:lawrence_event.one }
+		save_event_target_as = events_log_evolution_actor
+		record_events_log_evolution_entry = yes
+		lawrence_apply_opening_evolution_1 = yes
+		# Evolution II recognises only relationships that already exist.
+		ENG = { lawrence_collect_nodes = yes }
+		set_temp_variable = { events_log_evolution_event_id = constant:lawrence_event.id }
+		set_temp_variable = { events_log_evolution_type = constant:lawrence_event.evolution_type }
+		set_temp_variable = { events_log_evolution_stage = constant:lawrence_evolution.stage_2 }
+		set_temp_variable = { events_log_evolution_tier = constant:lawrence_evolution.stage_2 }
+		if = {
+			limit = {
+				is_current_evolution_enabled = yes
+				check_variable = { var = global.lawrence_node_count value = constant:lawrence_system.minimum_nodes compare = greater_than_or_equals }
+			}
+			set_variable = { global.lawrence_evolution = constant:lawrence_evolution.stage_2 }
+			set_temp_variable = { events_log_evolution_has_actor = constant:lawrence_event.one }
+			save_event_target_as = events_log_evolution_actor
+			record_events_log_evolution_entry = yes
+			lawrence_apply_opening_evolution_2 = yes
+		}
+	}
+	lawrence_resolve_opening_evolution_extra = yes
+}
+
+# Opening with Evolution I: a larger footprint of contacts, a stronger first
+# British package, officers already approached and an immediate response.
+lawrence_apply_opening_evolution_1 = {
+	lawrence_seed_cells = yes
+	set_temp_variable = { lawrence_change = constant:lawrence_cells.opening_influence }
+	lawrence_add_influence = yes
+	set_temp_variable = { lawrence_officers_change = constant:lawrence_cells.opening_officers }
+	lawrence_add_officers = yes
+	set_variable = { lawrence_support_power = constant:lawrence_cells.opening_support_power }
+	set_variable = { lawrence_support_until = global.num_days }
+	add_to_variable = { lawrence_support_until = constant:lawrence_cells.opening_support_days }
+	set_temp_variable = { lawrence_evidence_change = constant:lawrence_cells.opening_evidence }
+	lawrence_add_evidence = yes
+	set_temp_variable = { lawrence_cell_delay = constant:lawrence_cells.opening_incident_days }
+	set_variable = { lawrence_next_cell_day = global.num_days }
+	add_to_variable = { lawrence_next_cell_day = lawrence_cell_delay }
+}
+
+# Opening with Evolution II: the first target feels the regional pressure of
+# the partners that already exist before Lawrence arrives.
+lawrence_apply_opening_evolution_2 = {
+	set_temp_variable = { lawrence_change = global.lawrence_node_count }
+	multiply_temp_variable = { lawrence_change = constant:lawrence_system.opening_influence_per_node }
+	lawrence_add_influence = yes
+	set_temp_variable = { lawrence_report_delay = constant:lawrence_event.report_delay_days }
+	country_event = { id = chaosx.nr40.101 days = lawrence_report_delay }
+}
+
+# Placeholder for the stage 3 opening added with the federation phase.
+lawrence_resolve_opening_evolution_extra = {
+}
+
+# ---------------------------------------------------------------------------
+# Evolution I: cells
+# ---------------------------------------------------------------------------
+
+# COUNTRY, the live target. Starts the hidden cell network from the access
+# that already exists.
+lawrence_seed_cells = {
+	if = {
+		limit = { NOT = { has_variable = lawrence_cells } }
+		set_variable = { lawrence_cells = constant:lawrence_cells.start }
+		if = {
+			limit = { has_country_flag = lawrence_delivery_pending }
+			add_to_variable = { lawrence_cells = constant:lawrence_cells.start_shipment }
+		}
+		if = {
+			limit = { check_variable = { var = lawrence_officers value = constant:lawrence_officers.capture_threshold compare = greater_than_or_equals } }
+			add_to_variable = { lawrence_cells = constant:lawrence_cells.start_officers }
+		}
+		if = {
+			limit = { check_variable = { var = lawrence_security value = constant:lawrence_cells.security_dampening compare = greater_than_or_equals } }
+			subtract_from_variable = { lawrence_cells = constant:lawrence_cells.start_security }
+		}
+		clamp_variable = { var = lawrence_cells min = constant:lawrence_event.zero max = constant:lawrence_influence.maximum }
+	}
+}
+
+# COUNTRY, the live target. Weekly: cells grow with Influence, British
+# funding and officers and shrink with security, secured nodes and exposure.
+lawrence_track_cells = {
+	if = {
+		limit = {
+			lawrence_cells_are_active = yes
+			lawrence_status_is_free = yes
+		}
+		set_temp_variable = { lawrence_cells_delta = lawrence_influence }
+		multiply_temp_variable = { lawrence_cells_delta = constant:lawrence_cells.influence_factor }
+		if = {
+			limit = { has_country_flag = lawrence_cells_funded }
+			add_to_temp_variable = { lawrence_cells_delta = constant:lawrence_cells.funded }
+		}
+		if = {
+			limit = { check_variable = { var = lawrence_officers value = constant:lawrence_officers.capture_threshold compare = greater_than_or_equals } }
+			add_to_temp_variable = { lawrence_cells_delta = constant:lawrence_cells.officers }
+		}
+		set_temp_variable = { lawrence_cells_security = lawrence_security }
+		multiply_temp_variable = { lawrence_cells_security = constant:lawrence_cells.security_factor }
+		subtract_from_temp_variable = { lawrence_cells_delta = lawrence_cells_security }
+		if = {
+			limit = { has_country_flag = lawrence_nodes_secured }
+			add_to_temp_variable = { lawrence_cells_delta = constant:lawrence_cells.nodes_secured }
+		}
+		if = {
+			limit = { has_country_flag = lawrence_exposed }
+			add_to_temp_variable = { lawrence_cells_delta = constant:lawrence_cells.exposed }
+		}
+		if = {
+			limit = { has_country_flag = lawrence_file }
+			add_to_temp_variable = { lawrence_cells_delta = constant:lawrence_cells.file }
+		}
+		if = {
+			limit = { has_active_mission = lawrence_break_cells_mission lawrence_all_nodes_garrisoned = yes }
+			add_to_temp_variable = { lawrence_cells_delta = constant:lawrence_cells.mission_rate }
+			if = {
+				limit = { has_country_flag = lawrence_file }
+				add_to_temp_variable = { lawrence_cells_delta = constant:lawrence_cells.mission_file_bonus }
+			}
+		}
+		clamp_temp_variable = {
+			var = lawrence_cells_delta
+			min = constant:lawrence_cells.weekly_minimum
+			max = constant:lawrence_cells.weekly_maximum
+		}
+		add_to_variable = { lawrence_cells = lawrence_cells_delta }
+		clamp_variable = { var = lawrence_cells min = constant:lawrence_event.zero max = constant:lawrence_influence.maximum }
+		lawrence_track_cell_incidents = yes
+	}
+}
+
+# COUNTRY, the live target. One incident per MTTH interval once the cells
+# are strong enough. The family follows geography and current access.
+lawrence_track_cell_incidents = {
+	if = {
+		limit = {
+			NOT = { has_country_flag = lawrence_cell_incident_open }
+			NOT = { has_country_flag = lawrence_final_pending }
+			lawrence_is_live_target_contest = yes
+			check_variable = { var = lawrence_cells value = constant:lawrence_cells.incident_floor compare = greater_than_or_equals }
+			check_variable = { var = global.num_days value = lawrence_next_cell_day compare = greater_than_or_equals }
+		}
+		set_temp_variable = { lawrence_cell_delay = mtth:lawrence_cell_incident_interval }
+		set_variable = { lawrence_next_cell_day = global.num_days }
+		add_to_variable = { lawrence_next_cell_day = lawrence_cell_delay }
+		set_country_flag = lawrence_cell_incident_open
+		lawrence_record_revolt_chaos = yes
+		random_list = {
+			20 = {
+				modifier = { add = 25 lawrence_target_is_coastal = yes }
+				modifier = { add = 15 has_country_flag = lawrence_delivery_pending }
+				modifier = { factor = 0.4 has_country_flag = lawrence_route_sea has_country_flag = lawrence_nodes_secured }
+				country_event = { id = chaosx.nr40.90 }
+			}
+			20 = {
+				modifier = { add = 30 has_variable = lawrence_node_route }
+				modifier = { factor = 0.4 NOT = { has_variable = lawrence_node_route } }
+				modifier = { factor = 0.5 has_country_flag = lawrence_nodes_secured }
+				country_event = { id = chaosx.nr40.91 }
+			}
+			20 = {
+				modifier = { add = 30 check_variable = { var = lawrence_officers value = constant:lawrence_cells.officer_incident_floor compare = greater_than_or_equals } }
+				modifier = { factor = 0.3 check_variable = { var = lawrence_officers value = constant:lawrence_officers.incident_floor compare = less_than } }
+				country_event = { id = chaosx.nr40.92 }
+			}
+			20 = {
+				modifier = { add = 15 NOT = { has_country_flag = lawrence_exposed } }
+				country_event = { id = chaosx.nr40.93 }
+			}
+			20 = {
+				modifier = { add = 25 has_country_flag = lawrence_press_active }
+				modifier = { add = 10 check_variable = { var = lawrence_influence value = constant:lawrence_influence.contested_edge compare = greater_than_or_equals } }
+				country_event = { id = chaosx.nr40.94 }
+			}
+		}
+	}
+}
+
+# Event-owned Chaos: the first time a revolt network produces an armed
+# incident, once per campaign.
+lawrence_record_revolt_chaos = {
+	if = {
+		limit = {
+			NOT = { has_global_flag = lawrence_revolt_chaos_recorded }
+			check_variable = { var = lawrence_cells value = constant:lawrence_cells.revolt_chaos_floor compare = greater_than_or_equals }
+		}
+		set_global_flag = lawrence_revolt_chaos_recorded
+		set_temp_variable = { chaos_change = constant:lawrence_chaos_evolution.revolt_network }
+		set_temp_variable = { chaos_history_reason = constant:chaos_meter_history_reason.special.lawrence_revolt_network }
+		set_temp_variable = { chaos_history_reason_custom = constant:lawrence_event.one }
+		add_chaos_meter_value = yes
+	}
+}
+
+# Cell incident responses (called by chaosx.nr40.90 to .94).
+# Arms and smuggling cells.
+lawrence_cell_arms_seize = {
+	clr_country_flag = lawrence_cell_incident_open
+	if = {
+		limit = { check_variable = { var = lawrence_security value = constant:lawrence_cells.seize_security compare = greater_than_or_equals } }
+		set_temp_variable = { lawrence_cells_change = constant:lawrence_cells.arms_seized }
+		lawrence_add_cells = yes
+		set_temp_variable = { lawrence_evidence_change = constant:lawrence_cells.arms_evidence }
+		lawrence_add_evidence = yes
+	}
+	else = {
+		set_temp_variable = { lawrence_cells_change = constant:lawrence_cells.arms_missed }
+		lawrence_add_cells = yes
+		set_temp_variable = { lawrence_change = constant:lawrence_cells.arms_missed_influence }
+		lawrence_add_influence = yes
+	}
+}
+
+lawrence_cell_arms_ignore = {
+	clr_country_flag = lawrence_cell_incident_open
+	set_temp_variable = { lawrence_cells_change = constant:lawrence_cells.arms_ignored }
+	lawrence_add_cells = yes
+	set_temp_variable = { lawrence_change = constant:lawrence_cells.arms_ignored_influence }
+	lawrence_add_influence = yes
+}
+
+# Railway and telegraph cells: a demolition in a named state.
+lawrence_cell_rail_garrison = {
+	clr_country_flag = lawrence_cell_incident_open
+	if = {
+		limit = { lawrence_route_garrisoned = yes lawrence_capital_garrisoned = yes }
+		set_temp_variable = { lawrence_cells_change = constant:lawrence_cells.rail_held }
+		lawrence_add_cells = yes
+	}
+	else = {
+		lawrence_cell_demolition = yes
+		set_temp_variable = { lawrence_cells_change = constant:lawrence_cells.rail_breached }
+		lawrence_add_cells = yes
+	}
+}
+
+lawrence_cell_rail_repair = {
+	clr_country_flag = lawrence_cell_incident_open
+	lawrence_cell_demolition = yes
+	set_temp_variable = { lawrence_stab = constant:lawrence_cells.rail_repair_stability }
+	add_stability = lawrence_stab
+	set_temp_variable = { lawrence_cells_change = constant:lawrence_cells.rail_repaired }
+	lawrence_add_cells = yes
+}
+
+# Damage in the route state, or the capital when there is no route state.
+lawrence_cell_demolition = {
+	if = {
+		limit = { has_variable = lawrence_node_route }
+		var:lawrence_node_route = { damage_building = { type = infrastructure damage = 1 } }
+	}
+	else = {
+		var:lawrence_node_capital = { damage_building = { type = infrastructure damage = 1 } }
+	}
+}
+
+# Officer cells.
+lawrence_cell_officers_arrest = {
+	clr_country_flag = lawrence_cell_incident_open
+	if = {
+		limit = { check_variable = { var = lawrence_security value = constant:lawrence_cells.seize_security compare = greater_than_or_equals } }
+		set_temp_variable = { lawrence_officers_change = constant:lawrence_cells.officers_arrested }
+		lawrence_add_officers = yes
+		set_temp_variable = { lawrence_cells_change = constant:lawrence_cells.officers_arrest_cells }
+		lawrence_add_cells = yes
+	}
+	else = {
+		set_temp_variable = { lawrence_officers_change = constant:lawrence_cells.officers_backfire }
+		lawrence_add_officers = yes
+		set_temp_variable = { lawrence_change = constant:lawrence_cells.officers_backfire_influence }
+		lawrence_add_influence = yes
+	}
+	set_temp_variable = { lawrence_stab = constant:lawrence_cells.officers_arrest_stability }
+	add_stability = lawrence_stab
+}
+
+lawrence_cell_officers_concede = {
+	clr_country_flag = lawrence_cell_incident_open
+	set_temp_variable = { lawrence_officers_change = constant:lawrence_cells.officers_conceded }
+	lawrence_add_officers = yes
+	set_temp_variable = { lawrence_cells_change = constant:lawrence_cells.officers_conceded_cells }
+	lawrence_add_cells = yes
+	set_temp_variable = { lawrence_change = constant:lawrence_cells.officers_conceded_influence }
+	lawrence_add_influence = yes
+}
+
+# Local-leader cells.
+lawrence_cell_local_recognize = {
+	clr_country_flag = lawrence_cell_incident_open
+	set_temp_variable = { lawrence_cells_change = constant:lawrence_cells.local_recognized }
+	lawrence_add_cells = yes
+	set_temp_variable = { lawrence_change = constant:lawrence_cells.local_recognized_influence }
+	lawrence_add_influence = yes
+	set_temp_variable = { lawrence_stab = constant:lawrence_cells.local_recognized_stability }
+	add_stability = lawrence_stab
+}
+
+lawrence_cell_local_refuse = {
+	clr_country_flag = lawrence_cell_incident_open
+	set_temp_variable = { lawrence_cells_change = constant:lawrence_cells.local_refused }
+	lawrence_add_cells = yes
+	set_temp_variable = { lawrence_stab = constant:lawrence_cells.local_refused_stability }
+	add_stability = lawrence_stab
+}
+
+# Political and press cells.
+lawrence_cell_press_ban = {
+	clr_country_flag = lawrence_cell_incident_open
+	set_temp_variable = { lawrence_cells_change = constant:lawrence_cells.press_banned }
+	lawrence_add_cells = yes
+	set_temp_variable = { lawrence_stab = constant:lawrence_cells.press_ban_stability }
+	add_stability = lawrence_stab
+}
+
+lawrence_cell_press_answer = {
+	clr_country_flag = lawrence_cell_incident_open
+	set_temp_variable = { lawrence_cells_change = constant:lawrence_cells.press_answered }
+	lawrence_add_cells = yes
+	set_temp_variable = { lawrence_charge = constant:lawrence_cells.press_answer_political_power }
+	lawrence_charge_political_power = yes
+}
+
+# Input: temporary lawrence_cells_change (signed). Cells stay 0 to 100.
+lawrence_add_cells = {
+	add_to_variable = { lawrence_cells = lawrence_cells_change }
+	clamp_variable = { var = lawrence_cells min = constant:lawrence_event.zero max = constant:lawrence_influence.maximum }
+}
+
+# Break the Revolt Cells (target decision and mission).
+lawrence_pay_break_cells = {
+	set_temp_variable = { lawrence_charge = constant:lawrence_cost_evolution.break_political_power }
+	lawrence_charge_political_power = yes
+	set_temp_variable = { lawrence_charge = constant:lawrence_cost_evolution.break_command_power }
+	lawrence_charge_command_power = yes
+	set_temp_variable = { lawrence_charge = lawrence_cost_break_support }
+	lawrence_charge_support_equipment = yes
+}
+
+lawrence_start_break_cells_mission = {
+	lawrence_pay_break_cells = yes
+	lawrence_set_garrison_need = yes
+	lawrence_mission_started = yes
+	activate_mission = lawrence_break_cells_mission
+}
+
+lawrence_break_cells_success = {
+	lawrence_mission_succeeded = yes
+	set_variable = { lawrence_cells = constant:lawrence_event.zero }
+	set_temp_variable = { lawrence_change = constant:lawrence_cells.break_influence }
+	lawrence_add_influence = yes
+	set_temp_variable = { lawrence_evidence_change = constant:lawrence_cells.break_evidence }
+	lawrence_add_evidence = yes
+	set_temp_variable = { lawrence_flag_days = constant:lawrence_cells.cooldown_days }
+	set_country_flag = { flag = lawrence_cells_cooldown days = lawrence_flag_days }
+}
+
+lawrence_break_cells_partial = {
+	lawrence_mission_closed = yes
+	set_variable = { lawrence_cells = constant:lawrence_cells.partial_remaining }
+	set_temp_variable = { lawrence_change = constant:lawrence_cells.partial_influence }
+	lawrence_add_influence = yes
+	set_temp_variable = { lawrence_flag_days = constant:lawrence_cells.cooldown_days }
+	set_country_flag = { flag = lawrence_cells_cooldown days = lawrence_flag_days }
+}
+
+lawrence_break_cells_failure = {
+	lawrence_mission_closed = yes
+	lawrence_cell_demolition = yes
+	set_temp_variable = { lawrence_cells_change = constant:lawrence_cells.failure_cells }
+	lawrence_add_cells = yes
+	set_temp_variable = { lawrence_officers_change = constant:lawrence_cells.failure_officers }
+	lawrence_add_officers = yes
+	set_temp_variable = { lawrence_change = constant:lawrence_cells.failure_influence }
+	lawrence_add_influence = yes
+	set_temp_variable = { lawrence_flag_days = constant:lawrence_cells.cooldown_days }
+	set_country_flag = { flag = lawrence_cells_cooldown days = lawrence_flag_days }
+}
+
+# ENG. Fund the Revolt Network.
+lawrence_pay_fund_revolt = {
+	set_temp_variable = { lawrence_charge = lawrence_cost_fund_infantry }
+	lawrence_charge_infantry_equipment = yes
+	set_temp_variable = { lawrence_charge = constant:lawrence_cost_evolution.fund_political_power }
+	lawrence_charge_political_power = yes
+	set_temp_variable = { lawrence_charge = constant:lawrence_cost_evolution.fund_command_power }
+	lawrence_charge_command_power = yes
+}
+
+lawrence_fund_revolt_network = {
+	lawrence_pay_fund_revolt = yes
+	var:global.lawrence_target = {
+		set_temp_variable = { lawrence_flag_days = constant:lawrence_cells.funded_days }
+		set_country_flag = { flag = lawrence_cells_funded days = lawrence_flag_days }
+		set_temp_variable = { lawrence_cells_change = constant:lawrence_cells.fund_cells }
+		lawrence_add_cells = yes
+		set_temp_variable = { lawrence_exposure_change = constant:lawrence_cells.fund_exposure }
+		lawrence_add_exposure = yes
+	}
+}
+
+# ENG. Back a Government Replacement: the officer coalition takes over and
+# the target becomes a provisional client.
+lawrence_pay_replacement = {
+	set_temp_variable = { lawrence_charge = constant:lawrence_cost_evolution.replace_political_power }
+	lawrence_charge_political_power = yes
+	set_temp_variable = { lawrence_charge = constant:lawrence_cost_evolution.replace_army_experience }
+	lawrence_charge_army_experience = yes
+	set_temp_variable = { lawrence_charge = constant:lawrence_cost_evolution.replace_command_power }
+	lawrence_charge_command_power = yes
+}
+
+lawrence_back_government_replacement = {
+	lawrence_pay_replacement = yes
+	var:global.lawrence_target = {
+		if = {
+			limit = { lawrence_replacement_is_valid = yes }
+			lawrence_replace_government = yes
+		}
+	}
+}
+
+# COUNTRY, the live target. Provisional client administration under an officer
+# coalition. No civil war and no unit loss: the armed forces stay as they are.
+lawrence_replace_government = {
+	set_country_flag = lawrence_government_replaced
+	set_global_flag = lawrence_coup_report
+	set_temp_variable = { lawrence_idea_days = constant:lawrence_cells.provisional_days }
+	add_timed_idea = { idea = lawrence_provisional_administration days = lawrence_idea_days }
+	if = {
+		limit = { NOT = { has_global_flag = lawrence_replacement_chaos_recorded } }
+		set_global_flag = lawrence_replacement_chaos_recorded
+		set_temp_variable = { chaos_change = constant:lawrence_chaos_evolution.government_replaced }
+		set_temp_variable = { chaos_history_reason = constant:chaos_meter_history_reason.special.lawrence_government_replaced }
+		set_temp_variable = { chaos_history_reason_custom = constant:lawrence_event.one }
+		add_chaos_meter_value = yes
+	}
+	set_temp_variable = { lawrence_settle_outcome = constant:lawrence_outcome.client }
+	lawrence_settle = yes
+}
+
+# ---------------------------------------------------------------------------
+# Evolution II: regional nodes
+# ---------------------------------------------------------------------------
+
+# ENG. Rebuilds the node array from settled clients and allies that still
+# count and from Britain's own subjects in the registry. Bounded by the
+# arrays: no world scan.
+lawrence_collect_nodes = {
+	clear_array = global.lawrence_nodes
+	for_each_scope_loop = {
+		array = global.lawrence_clients
+		if = {
+			limit = {
+				lawrence_node_is_valid = yes
+				NOT = { is_in_array = { array = global.lawrence_nodes value = THIS } }
+			}
+			add_to_array = { global.lawrence_nodes = THIS }
+		}
+	}
+	every_subject_country = {
+		limit = {
+			lawrence_is_registry_country = yes
+			lawrence_node_is_valid = yes
+			NOT = { is_in_array = { array = global.lawrence_nodes value = THIS } }
+		}
+		add_to_array = { global.lawrence_nodes = THIS }
+	}
+	set_variable = { global.lawrence_node_count = global.lawrence_nodes^num }
+}
+
+# ENG. Monthly health of the system (called by the watchdog). Nodes below
+# the minimum or a Britain that cannot act collapse the system.
+lawrence_check_system = {
+	if = {
+		limit = { has_global_flag = lawrence_system_established }
+		lawrence_collect_nodes = yes
+		if = {
+			limit = {
+				OR = {
+					check_variable = { var = global.lawrence_node_count value = constant:lawrence_system.minimum_nodes compare = less_than }
+					NOT = { lawrence_sponsor_can_act = yes }
+					check_variable = { var = global.lawrence_credibility value = constant:lawrence_system.collapse_credibility compare = less_than }
+				}
+			}
+			lawrence_system_collapses = yes
+		}
+	}
+}
+
+lawrence_system_collapses = {
+	clr_global_flag = lawrence_system_established
+	clr_global_flag = lawrence_inst_conference
+	clr_global_flag = lawrence_inst_arms
+	clr_global_flag = lawrence_inst_intel
+	clr_global_flag = lawrence_inst_air
+	clr_global_flag = lawrence_inst_oil
+	clr_global_flag = lawrence_inst_charter
+	set_global_flag = lawrence_system_failed
+	remove_ideas = lawrence_oil_agreements
+	for_each_scope_loop = {
+		array = global.lawrence_nodes
+		remove_ideas = lawrence_arms_standard
+		remove_ideas = lawrence_transport_compact
+		remove_ideas = lawrence_favoured_partner
+	}
+	set_temp_variable = { lawrence_report_delay = constant:lawrence_event.report_delay_days }
+	country_event = { id = chaosx.nr40.98 days = lawrence_report_delay }
+}
+
+# ENG. Counts the active institutions and formally establishes the system
+# once three of them stand on at least two nodes. Event-owned Chaos once.
+lawrence_check_system_established = {
+	set_temp_variable = { lawrence_institutions = constant:lawrence_event.zero }
+	if = { limit = { has_global_flag = lawrence_inst_conference } add_to_temp_variable = { lawrence_institutions = constant:lawrence_event.one } }
+	if = { limit = { has_global_flag = lawrence_inst_arms } add_to_temp_variable = { lawrence_institutions = constant:lawrence_event.one } }
+	if = { limit = { has_global_flag = lawrence_inst_intel } add_to_temp_variable = { lawrence_institutions = constant:lawrence_event.one } }
+	if = { limit = { has_global_flag = lawrence_inst_air } add_to_temp_variable = { lawrence_institutions = constant:lawrence_event.one } }
+	if = { limit = { has_global_flag = lawrence_inst_oil } add_to_temp_variable = { lawrence_institutions = constant:lawrence_event.one } }
+	if = { limit = { has_global_flag = lawrence_inst_charter } add_to_temp_variable = { lawrence_institutions = constant:lawrence_event.one } }
+	if = {
+		limit = {
+			NOT = { has_global_flag = lawrence_system_established }
+			check_variable = { var = lawrence_institutions value = constant:lawrence_system.established_institutions compare = greater_than_or_equals }
+			check_variable = { var = global.lawrence_node_count value = constant:lawrence_system.minimum_nodes compare = greater_than_or_equals }
+		}
+		set_global_flag = lawrence_system_established
+		clr_global_flag = lawrence_system_failed
+		set_country_flag = lawrence_ach_system_established
+		if = {
+			limit = { NOT = { has_global_flag = lawrence_system_chaos_recorded } }
+			set_global_flag = lawrence_system_chaos_recorded
+			set_temp_variable = { chaos_change = constant:lawrence_chaos_evolution.system_established }
+			set_temp_variable = { chaos_history_reason = constant:chaos_meter_history_reason.special.lawrence_system_established }
+			set_temp_variable = { chaos_history_reason_custom = constant:lawrence_event.one }
+			add_chaos_meter_value = yes
+		}
+		set_temp_variable = { lawrence_report_delay = constant:lawrence_event.report_delay_days }
+		country_event = { id = chaosx.nr40.99 days = lawrence_report_delay }
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Evolution II: institutions (ENG)
+# ---------------------------------------------------------------------------
+
+lawrence_pay_conference = {
+	set_temp_variable = { lawrence_charge = constant:lawrence_cost_evolution.conference_political_power }
+	lawrence_charge_political_power = yes
+}
+
+# Arabian Liaison Conference: every node answers. The favoured partner is
+# decided from the answers.
+lawrence_convene_conference = {
+	lawrence_pay_conference = yes
+	lawrence_collect_nodes = yes
+	set_temp_variable = { lawrence_flag_days = constant:lawrence_system.institution_days }
+	set_global_flag = { flag = lawrence_inst_conference days = lawrence_flag_days }
+	set_variable = { global.lawrence_conference_day = global.num_days }
+	for_each_scope_loop = {
+		array = global.lawrence_nodes
+		country_event = { id = chaosx.nr40.100 }
+	}
+	set_temp_variable = { lawrence_favour_delay = constant:lawrence_system.favour_days }
+	country_event = { id = chaosx.nr40.102 days = lawrence_favour_delay }
+	lawrence_check_system_established = yes
+}
+
+lawrence_pay_arms_office = {
+	set_temp_variable = { lawrence_charge = lawrence_cost_office_arms_infantry }
+	lawrence_charge_infantry_equipment = yes
+	set_temp_variable = { lawrence_charge = lawrence_cost_office_arms_support }
+	lawrence_charge_support_equipment = yes
+	set_temp_variable = { lawrence_charge = constant:lawrence_cost_evolution.arms_office_political_power }
+	lawrence_charge_political_power = yes
+}
+
+# Arms Standardization Office: nodes train to one standard and British arms
+# shipments cost less while it stands.
+lawrence_set_up_arms_office = {
+	lawrence_pay_arms_office = yes
+	set_temp_variable = { lawrence_flag_days = constant:lawrence_system.institution_days }
+	set_global_flag = { flag = lawrence_inst_arms days = lawrence_flag_days }
+	set_temp_variable = { lawrence_idea_days = constant:lawrence_system.institution_days }
+	for_each_scope_loop = {
+		array = global.lawrence_nodes
+		add_timed_idea = { idea = lawrence_arms_standard days = lawrence_idea_days }
+	}
+	lawrence_check_system_established = yes
+}
+
+lawrence_pay_oil_agreements = {
+	set_temp_variable = { lawrence_charge = constant:lawrence_cost_evolution.oil_political_power }
+	lawrence_charge_political_power = yes
+	set_temp_variable = { lawrence_charge = lawrence_cost_oil_trains }
+	lawrence_charge_trains = yes
+}
+
+# Oil and Transport Agreements: Britain gains fuel, every node gains
+# transport and loses a little autonomy.
+lawrence_sign_oil_agreements = {
+	lawrence_pay_oil_agreements = yes
+	set_temp_variable = { lawrence_flag_days = constant:lawrence_system.institution_days }
+	set_global_flag = { flag = lawrence_inst_oil days = lawrence_flag_days }
+	set_temp_variable = { lawrence_idea_days = constant:lawrence_system.institution_days }
+	add_timed_idea = { idea = lawrence_oil_agreements days = lawrence_idea_days }
+	for_each_scope_loop = {
+		array = global.lawrence_nodes
+		add_timed_idea = { idea = lawrence_transport_compact days = lawrence_idea_days }
+		if = {
+			limit = { is_subject = yes }
+			add_autonomy_ratio = {
+				value = constant:lawrence_system.oil_autonomy
+				localization = lawrence_autonomy_oil_dispute
+			}
+		}
+	}
+	lawrence_check_system_established = yes
+}
+
+lawrence_pay_intelligence_office = {
+	set_temp_variable = { lawrence_charge = constant:lawrence_cost_evolution.intel_political_power }
+	lawrence_charge_political_power = yes
+	set_temp_variable = { lawrence_charge = constant:lawrence_cost_evolution.intel_command_power }
+	lawrence_charge_command_power = yes
+}
+
+# Regional Intelligence Office: raises pressure on every target and is
+# exposed when a target publishes the network.
+lawrence_set_up_intelligence_office = {
+	lawrence_pay_intelligence_office = yes
+	set_temp_variable = { lawrence_flag_days = constant:lawrence_system.institution_days }
+	set_global_flag = { flag = lawrence_inst_intel days = lawrence_flag_days }
+	lawrence_check_system_established = yes
+}
+
+lawrence_pay_air_route = {
+	set_temp_variable = { lawrence_charge = lawrence_cost_air_fuel }
+	lawrence_charge_fuel = yes
+	set_temp_variable = { lawrence_charge = lawrence_cost_air_support }
+	lawrence_charge_support_equipment = yes
+	set_temp_variable = { lawrence_charge = constant:lawrence_cost_evolution.air_political_power }
+	lawrence_charge_political_power = yes
+}
+
+# Desert Air Route: shipments fly and cannot be seized while the bases stand.
+lawrence_open_air_route = {
+	lawrence_pay_air_route = yes
+	set_temp_variable = { lawrence_flag_days = constant:lawrence_system.air_route_days }
+	set_global_flag = { flag = lawrence_inst_air days = lawrence_flag_days }
+	lawrence_check_system_established = yes
+}
+
+lawrence_pay_joint_charter = {
+	set_temp_variable = { lawrence_charge = constant:lawrence_cost_evolution.charter_joint_political_power }
+	lawrence_charge_political_power = yes
+	set_temp_variable = { lawrence_charge = constant:lawrence_cost_evolution.charter_joint_command_power }
+	lawrence_charge_command_power = yes
+}
+
+# Joint Defense Charter: nodes join the existing British faction and trade
+# military access. No second faction is created.
+lawrence_sign_joint_charter = {
+	lawrence_pay_joint_charter = yes
+	set_temp_variable = { lawrence_flag_days = constant:lawrence_system.institution_days }
+	set_global_flag = { flag = lawrence_inst_charter days = lawrence_flag_days }
+	for_each_scope_loop = {
+		array = global.lawrence_nodes
+		if = {
+			limit = {
+				ENG = { is_faction_leader = yes }
+				NOT = { is_in_faction_with = ENG }
+				is_subject = no
+			}
+			ENG = { add_to_faction = PREV }
+		}
+		give_military_access = ENG
+		ENG = { give_military_access = PREV }
+	}
+	set_temp_variable = { lawrence_credibility_change = constant:lawrence_system.charter_credibility }
+	lawrence_add_credibility = yes
+	lawrence_check_system_established = yes
+}
+
+# ENG. The conference answers have arrived: the node that contributed most
+# becomes the favoured partner and the others grow resentful.
+lawrence_resolve_favoured_partner = {
+	set_temp_variable = { lawrence_best_favour = constant:lawrence_event.zero }
+	for_each_scope_loop = {
+		array = global.lawrence_nodes
+		if = {
+			limit = {
+				has_variable = lawrence_favour
+				check_variable = { var = lawrence_favour value = lawrence_best_favour compare = greater_than }
+			}
+			set_temp_variable = { lawrence_best_favour = lawrence_favour }
+		}
+	}
+	if = {
+		limit = { check_variable = { var = lawrence_best_favour value = constant:lawrence_event.zero compare = greater_than } }
+		set_temp_variable = { lawrence_idea_days = constant:lawrence_system.institution_days }
+		set_temp_variable = { lawrence_favour_assigned = constant:lawrence_event.zero }
+		for_each_scope_loop = {
+			array = global.lawrence_nodes
+			remove_ideas = lawrence_favoured_partner
+			if = {
+				limit = {
+					has_variable = lawrence_favour
+					check_variable = { var = lawrence_favour value = lawrence_best_favour compare = equals }
+					check_variable = { var = lawrence_favour_assigned value = constant:lawrence_event.zero compare = equals }
+				}
+				add_timed_idea = { idea = lawrence_favoured_partner days = lawrence_idea_days }
+				set_temp_variable = { lawrence_favour_assigned = constant:lawrence_event.one }
+				set_variable = { global.lawrence_favoured = THIS }
+			}
+			else = {
+				lawrence_node_dissent_up = yes
+			}
+			set_variable = { lawrence_favour = constant:lawrence_event.zero }
+		}
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Evolution II: nodes answer the conference (chaosx.nr40.100 options)
+# ---------------------------------------------------------------------------
+
+# COUNTRY, a node. Contributes officers and routes to the live target's pressure.
+lawrence_node_contributes = {
+	if = {
+		limit = { NOT = { has_variable = lawrence_favour } }
+		set_variable = { lawrence_favour = constant:lawrence_event.zero }
+	}
+	add_to_variable = { lawrence_favour = constant:lawrence_system.favour_contribute }
+	lawrence_node_adds_pressure = yes
+}
+
+# COUNTRY, a node. Demands compensation: Britain pays and the node
+# contributes half as much.
+lawrence_node_demands_compensation = {
+	if = {
+		limit = { NOT = { has_variable = lawrence_favour } }
+		set_variable = { lawrence_favour = constant:lawrence_event.zero }
+	}
+	add_to_variable = { lawrence_favour = constant:lawrence_system.favour_demand }
+	lawrence_node_dissent_up = yes
+	set_temp_variable = { lawrence_charge = constant:lawrence_system.compensation_political_power }
+	ENG = { lawrence_charge_political_power = yes }
+	if = {
+		limit = { is_subject = yes }
+		add_autonomy_ratio = {
+			value = constant:lawrence_system.compensation_autonomy
+			localization = lawrence_autonomy_compensation
+		}
+	}
+	set_temp_variable = { lawrence_pressure_scale = constant:lawrence_system.half }
+	lawrence_node_adds_pressure = yes
+}
+
+# COUNTRY, a node. Refuses the new obligation.
+lawrence_node_refuses = {
+	lawrence_node_dissent_up = yes
+	set_temp_variable = { lawrence_credibility_change = constant:lawrence_system.refusal_credibility }
+	lawrence_add_credibility = yes
+}
+
+lawrence_node_dissent_up = {
+	if = {
+		limit = { NOT = { has_variable = lawrence_dissent } }
+		set_variable = { lawrence_dissent = constant:lawrence_event.zero }
+	}
+	add_to_variable = { lawrence_dissent = constant:lawrence_event.one }
+	clamp_variable = { var = lawrence_dissent min = constant:lawrence_event.zero max = constant:lawrence_system.dissent_maximum }
+}
+
+# The live target feels the node's contribution.
+lawrence_node_adds_pressure = {
+	if = {
+		limit = {
+			has_global_flag = lawrence_campaign_active
+			has_variable = global.lawrence_target
+		}
+		set_temp_variable = { lawrence_change = constant:lawrence_system.contribution_influence }
+		if = {
+			limit = { check_variable = { var = lawrence_pressure_scale value = constant:lawrence_system.half compare = equals } }
+			multiply_temp_variable = { lawrence_change = constant:lawrence_system.half }
+		}
+		var:global.lawrence_target = { lawrence_add_influence = yes }
+	}
+	set_temp_variable = { lawrence_pressure_scale = constant:lawrence_event.one }
+}
+
+# COUNTRY, a node. A node demands more autonomy from Britain.
+lawrence_pay_node_autonomy = {
+	set_temp_variable = { lawrence_charge = constant:lawrence_cost_evolution.node_autonomy_political_power }
+	lawrence_charge_political_power = yes
+}
+
+lawrence_node_demand_autonomy = {
+	lawrence_pay_node_autonomy = yes
+	add_autonomy_ratio = {
+		value = constant:lawrence_system.autonomy_demand
+		localization = lawrence_autonomy_demand
+	}
+	set_temp_variable = { lawrence_credibility_change = constant:lawrence_system.autonomy_demand_credibility }
+	lawrence_add_credibility = yes
+	set_variable = { lawrence_dissent = constant:lawrence_event.zero }
+	set_temp_variable = { lawrence_flag_days = constant:lawrence_system.autonomy_cooldown_days }
+	set_country_flag = { flag = lawrence_autonomy_cooldown days = lawrence_flag_days }
+}
+
+# ---------------------------------------------------------------------------
+# Evolution II: the counter-bloc
+# ---------------------------------------------------------------------------
+
+lawrence_pay_found_bloc = {
+	set_temp_variable = { lawrence_charge = constant:lawrence_cost_evolution.bloc_political_power }
+	lawrence_charge_political_power = yes
+	set_temp_variable = { lawrence_charge = constant:lawrence_cost_evolution.bloc_command_power }
+	lawrence_charge_command_power = yes
+}
+
+# COUNTRY, the founder. Invites up to two other candidates. The answers
+# arrive over the next weeks and the formation is judged by chaosx.nr40.111.
+lawrence_found_counter_bloc = {
+	lawrence_pay_found_bloc = yes
+	set_global_flag = lawrence_bloc_forming
+	clear_array = global.lawrence_bloc_members
+	add_to_array = { global.lawrence_bloc_members = THIS }
+	set_country_flag = lawrence_bloc_member
+	set_variable = { global.lawrence_bloc_founder = THIS }
+	random_other_country = {
+		limit = { lawrence_is_bloc_candidate = yes }
+		country_event = { id = chaosx.nr40.110 }
+	}
+	random_other_country = {
+		limit = {
+			lawrence_is_bloc_candidate = yes
+			NOT = { has_country_flag = lawrence_bloc_invited }
+		}
+		country_event = { id = chaosx.nr40.110 }
+	}
+	set_temp_variable = { lawrence_bloc_delay = constant:lawrence_system.bloc_answer_days }
+	country_event = { id = chaosx.nr40.111 days = lawrence_bloc_delay }
+}
+
+# COUNTRY, an invitee. Joins the bloc.
+lawrence_join_counter_bloc = {
+	add_to_array = { global.lawrence_bloc_members = THIS }
+	set_country_flag = lawrence_bloc_member
+}
+
+# COUNTRY, the founder. The judgement: enough independent governments, or
+# the bloc fails and the founder pays for it.
+lawrence_judge_counter_bloc = {
+	clr_global_flag = lawrence_bloc_forming
+	if = {
+		limit = { check_variable = { var = global.lawrence_bloc_members^num value = constant:lawrence_system.bloc_minimum compare = greater_than_or_equals } }
+		set_global_flag = lawrence_counter_bloc_active
+		for_each_scope_loop = {
+			array = global.lawrence_bloc_members
+			add_ideas = lawrence_counter_bloc_member
+			set_temp_variable = { lawrence_preparedness_change = constant:lawrence_system.bloc_preparedness }
+			lawrence_add_preparedness = yes
+		}
+		set_temp_variable = { lawrence_credibility_change = constant:lawrence_system.bloc_credibility }
+		lawrence_add_credibility = yes
+		if = {
+			limit = { has_global_flag = lawrence_campaign_active has_variable = global.lawrence_target }
+			set_temp_variable = { lawrence_change = constant:lawrence_system.bloc_influence }
+			var:global.lawrence_target = { lawrence_add_influence = yes }
+		}
+		set_temp_variable = { lawrence_report_delay = constant:lawrence_event.report_delay_days }
+		ENG = { country_event = { id = chaosx.nr40.112 days = lawrence_report_delay } }
+	}
+	else = {
+		for_each_scope_loop = {
+			array = global.lawrence_bloc_members
+			clr_country_flag = lawrence_bloc_member
+			clr_country_flag = lawrence_bloc_invited
+		}
+		clear_array = global.lawrence_bloc_members
+		set_temp_variable = { lawrence_flag_days = constant:lawrence_system.bloc_cooldown_days }
+		set_country_flag = { flag = lawrence_bloc_cooldown days = lawrence_flag_days }
+	}
+}
+
+# ENG. The campaign ends through a negotiated settlement with the bloc.
+lawrence_recognise_counter_bloc = {
+	if = {
+		limit = { NOT = { has_global_flag = lawrence_bloc_chaos_recorded } }
+		set_global_flag = lawrence_bloc_chaos_recorded
+		set_temp_variable = { chaos_change = constant:lawrence_chaos_evolution.bloc_settlement }
+		set_temp_variable = { chaos_history_reason = constant:chaos_meter_history_reason.special.lawrence_counter_bloc_settlement }
+		set_temp_variable = { chaos_history_reason_custom = constant:lawrence_event.one }
+		add_chaos_meter_value = yes
+	}
+	for_each_scope_loop = {
+		array = global.lawrence_bloc_members
+		if = {
+			limit = { is_ai = no }
+			set_country_flag = lawrence_ach_desert_conference
+		}
+	}
+	lawrence_close_campaign = yes
+}
+
+# ENG. Monthly: a member can leave the bloc when Britain has credibility and
+# the member has no preparedness to hold it. The bloc fails below the minimum.
+lawrence_check_counter_bloc = {
+	if = {
+		limit = { has_global_flag = lawrence_counter_bloc_active }
+		clear_temp_array = lawrence_bloc_stay
+		for_each_scope_loop = {
+			array = global.lawrence_bloc_members
+			if = {
+				limit = {
+					OR = {
+						lawrence_node_is_valid = no
+						AND = {
+							check_variable = { var = global.lawrence_credibility value = constant:lawrence_system.bloc_exit_credibility compare = greater_than_or_equals }
+							NOT = { check_variable = { var = lawrence_preparedness value = constant:lawrence_system.bloc_hold_preparedness compare = greater_than_or_equals } }
+						}
+					}
+				}
+				clr_country_flag = lawrence_bloc_member
+				remove_ideas = lawrence_counter_bloc_member
+			}
+			else = {
+				add_to_temp_array = { lawrence_bloc_stay = THIS }
+			}
+		}
+		clear_array = global.lawrence_bloc_members
+		for_each_scope_loop = {
+			array = lawrence_bloc_stay
+			add_to_array = { global.lawrence_bloc_members = THIS }
+		}
+		clear_temp_array = lawrence_bloc_stay
+		if = {
+			limit = { check_variable = { var = global.lawrence_bloc_members^num value = constant:lawrence_system.bloc_minimum compare = less_than } }
+			clr_global_flag = lawrence_counter_bloc_active
+			for_each_scope_loop = {
+				array = global.lawrence_bloc_members
+				clr_country_flag = lawrence_bloc_member
+				remove_ideas = lawrence_counter_bloc_member
+			}
+			clear_array = global.lawrence_bloc_members
+		}
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Cost quotes of the evolution actions
+# ---------------------------------------------------------------------------
+
+# COUNTRY, the live target. Input: temporary lawrence_quote_base.
+lawrence_quote_evolution_target = {
+	set_variable = { lawrence_cost_break_political_power = constant:lawrence_cost_evolution.break_political_power }
+	set_variable = { lawrence_cost_break_command_power = constant:lawrence_cost_evolution.break_command_power }
+	set_variable = { lawrence_cost_break_support = lawrence_quote_base }
+	multiply_variable = { lawrence_cost_break_support = constant:lawrence_cost_evolution.break_support_per_factory }
+	clamp_variable = { var = lawrence_cost_break_support min = constant:lawrence_cost_evolution.break_support_minimum }
+	round_variable = lawrence_cost_break_support
+}
+
+# COUNTRY scoped to ENG. Runs after the British equipment quotes.
+lawrence_quote_evolution_british = {
+	set_variable = { lawrence_cost_fund_infantry = lawrence_cost_arms_infantry }
+	multiply_variable = { lawrence_cost_fund_infantry = constant:lawrence_cost_evolution.fund_package_factor }
+	round_variable = lawrence_cost_fund_infantry
+	set_variable = { lawrence_cost_fund_political_power = constant:lawrence_cost_evolution.fund_political_power }
+	set_variable = { lawrence_cost_fund_command_power = constant:lawrence_cost_evolution.fund_command_power }
+	set_variable = { lawrence_cost_replace_political_power = constant:lawrence_cost_evolution.replace_political_power }
+	set_variable = { lawrence_cost_replace_army_experience = constant:lawrence_cost_evolution.replace_army_experience }
+	set_variable = { lawrence_cost_replace_command_power = constant:lawrence_cost_evolution.replace_command_power }
+	set_variable = { lawrence_cost_conference_political_power = constant:lawrence_cost_evolution.conference_political_power }
+	set_variable = { lawrence_cost_office_arms_infantry = lawrence_cost_arms_infantry }
+	multiply_variable = { lawrence_cost_office_arms_infantry = constant:lawrence_cost_evolution.arms_office_package_factor }
+	round_variable = lawrence_cost_office_arms_infantry
+	set_variable = { lawrence_cost_office_arms_support = lawrence_cost_arms_support }
+	multiply_variable = { lawrence_cost_office_arms_support = constant:lawrence_cost_evolution.arms_office_package_factor }
+	round_variable = lawrence_cost_office_arms_support
+	set_variable = { lawrence_cost_arms_office_political_power = constant:lawrence_cost_evolution.arms_office_political_power }
+	set_variable = { lawrence_cost_oil_trains = lawrence_cost_rail_trains }
+	multiply_variable = { lawrence_cost_oil_trains = constant:lawrence_cost_evolution.oil_trains_factor }
+	round_variable = lawrence_cost_oil_trains
+	set_variable = { lawrence_cost_oil_political_power = constant:lawrence_cost_evolution.oil_political_power }
+	set_variable = { lawrence_cost_intel_political_power = constant:lawrence_cost_evolution.intel_political_power }
+	set_variable = { lawrence_cost_intel_command_power = constant:lawrence_cost_evolution.intel_command_power }
+	set_variable = { lawrence_cost_air_fuel = lawrence_cost_route_fuel }
+	multiply_variable = { lawrence_cost_air_fuel = constant:lawrence_cost_evolution.air_fuel_factor }
+	round_variable = lawrence_cost_air_fuel
+	set_variable = { lawrence_cost_air_support = lawrence_cost_arms_support }
+	multiply_variable = { lawrence_cost_air_support = constant:lawrence_cost_evolution.air_support_factor }
+	round_variable = lawrence_cost_air_support
+	set_variable = { lawrence_cost_air_political_power = constant:lawrence_cost_evolution.air_political_power }
+	set_variable = { lawrence_cost_charter_joint_political_power = constant:lawrence_cost_evolution.charter_joint_political_power }
+	set_variable = { lawrence_cost_charter_joint_command_power = constant:lawrence_cost_evolution.charter_joint_command_power }
+}

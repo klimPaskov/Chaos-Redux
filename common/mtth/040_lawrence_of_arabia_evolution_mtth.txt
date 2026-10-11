@@ -1,0 +1,107 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 040 LAWRENCE OF ARABIA EVOLUTION MTTH
+# ============================================================================
+# Pacing of the evolutions and of cell incidents, and the AI willingness
+# scores of the Evolution I and II decisions. Scores are weights, not click
+# chances. Each entry is read for the one country already being evaluated.
+# ============================================================================
+
+# Days from the moment a stage is ready and enabled until it activates.
+lawrence_evolution_interval = {
+	base = constant:lawrence_evolution.base_days
+	modifier = {
+		factor = constant:lawrence_evolution.fast_factor
+		ENG = { has_war_with_major = yes }
+	}
+	modifier = {
+		factor = constant:lawrence_evolution.fast_factor
+		check_variable = { var = global.chaos_meter_value value = constant:chaos_meter_tier_range.tier_3.min compare = greater_than_or_equals }
+	}
+	modifier = {
+		factor = constant:lawrence_evolution.slow_factor
+		check_variable = { var = global.lawrence_credibility value = constant:lawrence_drift.credibility_low compare = less_than }
+	}
+}
+
+# Days between cell incidents in a live target.
+lawrence_cell_incident_interval = {
+	base = constant:lawrence_cells.incident_base_days
+	modifier = {
+		factor = constant:lawrence_cells.incident_fast_factor
+		check_variable = { var = lawrence_cells value = constant:lawrence_cells.revolt_chaos_floor compare = greater_than_or_equals }
+	}
+	modifier = {
+		factor = constant:lawrence_cells.incident_slow_factor
+		check_variable = { var = lawrence_security value = constant:lawrence_cells.security_dampening compare = greater_than_or_equals }
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Target
+# ---------------------------------------------------------------------------
+
+lawrence_ai_break_cells = {
+	base = constant:lawrence_ai.blocked
+	modifier = { add = constant:lawrence_ai.urgent lawrence_ai_is_counterintelligence = yes }
+	modifier = { add = constant:lawrence_ai.strong lawrence_ai_is_challenger = yes }
+	modifier = { add = constant:lawrence_ai.strong lawrence_ai_is_pragmatist = yes }
+	modifier = { add = constant:lawrence_ai.standard lawrence_ai_is_double_gamer = yes }
+	modifier = { add = constant:lawrence_ai.low lawrence_ai_is_fractured = yes }
+	modifier = {
+		add = constant:lawrence_ai.standard
+		check_variable = { var = lawrence_cells value = constant:lawrence_cells.revolt_chaos_floor compare = greater_than_or_equals }
+	}
+}
+
+lawrence_ai_node_autonomy = {
+	base = constant:lawrence_ai.blocked
+	modifier = {
+		add = constant:lawrence_ai.standard
+		check_variable = { var = global.lawrence_credibility value = constant:lawrence_system.autonomy_credibility compare = less_than }
+	}
+	modifier = { add = constant:lawrence_ai.low check_variable = { var = lawrence_dissent value = constant:lawrence_system.dissent_for_autonomy compare = greater_than_or_equals } }
+}
+
+lawrence_ai_found_bloc = {
+	base = constant:lawrence_ai.blocked
+	modifier = {
+		add = constant:lawrence_ai.strong
+		check_variable = { var = lawrence_preparedness value = constant:lawrence_system.bloc_hold_preparedness compare = greater_than_or_equals }
+	}
+	modifier = { add = constant:lawrence_ai.standard has_government = communism }
+	modifier = { add = constant:lawrence_ai.standard has_government = fascism }
+	modifier = { add = constant:lawrence_ai.low has_war = yes }
+	modifier = { factor = 0.3 has_war = yes has_defensive_war = no }
+}
+
+# ---------------------------------------------------------------------------
+# Britain
+# ---------------------------------------------------------------------------
+
+lawrence_ai_fund_revolt = {
+	base = constant:lawrence_ai.blocked
+	modifier = {
+		add = constant:lawrence_ai.standard
+		var:global.lawrence_target = {
+			check_variable = { var = lawrence_influence value = constant:lawrence_influence.restricted_edge compare = greater_than_or_equals }
+			NOT = { check_variable = { var = lawrence_security value = constant:lawrence_cells.security_dampening compare = greater_than_or_equals } }
+		}
+	}
+	modifier = { add = constant:lawrence_ai.low var:global.lawrence_target = { lawrence_target_is_coastal = yes } }
+	modifier = { factor = 0.2 has_war_with_major = yes }
+	modifier = { factor = 0.4 check_variable = { var = global.lawrence_credibility value = constant:lawrence_drift.credibility_low compare = less_than } }
+}
+
+lawrence_ai_replace = {
+	base = constant:lawrence_ai.blocked
+	modifier = { add = constant:lawrence_ai.strong lawrence_status_is_active = yes }
+	modifier = { factor = 0.3 has_war_with_major = yes }
+	modifier = { factor = 0.5 check_variable = { var = global.lawrence_credibility value = constant:lawrence_drift.credibility_low compare = less_than } }
+}
+
+lawrence_ai_institution = {
+	base = constant:lawrence_ai.standard
+	modifier = { factor = 0.2 has_war_with_major = yes }
+	modifier = { factor = 0.3 convoy_threat > constant:lawrence_british.overextended_convoy_threat }
+	modifier = { add = constant:lawrence_ai.low check_variable = { var = global.lawrence_credibility value = constant:lawrence_drift.credibility_high compare = greater_than } }
+}

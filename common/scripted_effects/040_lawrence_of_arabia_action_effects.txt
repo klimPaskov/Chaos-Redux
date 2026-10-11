@@ -486,6 +486,12 @@ lawrence_expose_success = {
 	lawrence_add_exposure = yes
 	set_temp_variable = { lawrence_alert_kind = constant:lawrence_alert.alarm }
 	lawrence_alert_neighbour = yes
+	if = {
+		limit = { has_global_flag = lawrence_inst_intel }
+		clr_global_flag = lawrence_inst_intel
+		set_temp_variable = { lawrence_credibility_change = constant:lawrence_system.intel_exposed_credibility }
+		lawrence_add_credibility = yes
+	}
 	set_variable = { global.lawrence_news_kind = constant:lawrence_news.revealed }
 	set_temp_variable = { lawrence_report_delay = constant:lawrence_event.report_delay_days }
 	news_event = { id = chaosx.nr40.40 days = lawrence_report_delay }
@@ -723,6 +729,10 @@ lawrence_queue_shipment = {
 		subtract_from_temp_variable = { lawrence_travel = constant:lawrence_delivery.bases_days }
 	}
 	if = {
+		limit = { has_global_flag = lawrence_inst_air }
+		subtract_from_temp_variable = { lawrence_travel = constant:lawrence_delivery_evolution.air_route_days }
+	}
+	if = {
 		limit = {
 			NOT = { any_owned_state = { is_coastal = yes } }
 			NOT = { any_neighbor_country = { OR = { tag = ENG is_subject_of = ENG } } }
@@ -742,6 +752,7 @@ lawrence_queue_shipment = {
 		limit = {
 			NOT = { has_country_flag = lawrence_route_sea }
 			NOT = { has_country_flag = lawrence_rail_repaired }
+			NOT = { has_global_flag = lawrence_inst_air }
 			check_variable = { var = lawrence_security value = constant:lawrence_delivery.seizure_security compare = greater_than_or_equals }
 		}
 		random_list = {

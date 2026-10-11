@@ -16,7 +16,7 @@ Britain recalls T. E. Lawrence, reported dead after a motorcycle crash in 1935, 
 | Phase | Content | State |
 | --- | --- | --- |
 | 1 | Recall, target registry and weighting, Lawrence's Influence, decision and mission families, settlements, intelligence, AI, reports, Event Details, event log, achievements, ideas, character | implemented, never run in game |
-| 2 | Evolutions I and II, revolt cells, government replacement, British Arabian System, counter-bloc | see Phase 2 handoff |
+| 2 | Evolutions I and II: revolt cells, government replacement, British Arabian System, favoured partner, client autonomy, counter-bloc | implemented, never run in game |
 | 3 | Evolution III, federation transaction, country package, Federal Authority, focus tree, super-events | see Phase 3 handoff |
 
 ## Event map
@@ -145,11 +145,57 @@ One shipment pending at a time with a receipt serial per delivery, one detention
 - `chaos_redux_040_better_bargain`: as a player target, receive a shipment, keep Influence out of the Dominant band and finish as ally or armed partner.
 - `chaos_redux_040_every_ledger_has_a_name`: as a player target, turn a contact, expose the network and dismantle it without a civil war.
 
-Both are `is_ai = no` and track flags set at the outcome. The remaining spec achievements need Evolution II or III content and are listed in the later phase handoffs.
+Both are `is_ai = no` and track flags set at the outcome. Evolution achievements follow in the next section. Gold Without Chains and The Uncrowned Kingdom need the federation.
 
 ## Event-owned Chaos
 
-Phase 1 owns one change: Lawrence defects from Britain, +5, once (`chaos_meter_history_reason.special.lawrence_defection`, 240). Reasons 241 to 248 are reserved for the evolution and federation outcomes of Phases 2 and 3. Evolution activation never changes Chaos.
+Phase 1 owns one change: Lawrence defects from Britain, +5, once (`chaos_meter_history_reason.special.lawrence_defection`, 240). Phase 2 adds the first armed incident of a revolt network (5), the first government replacement (5), the established system (10), three networks dismantled (minus 10) and a recognised counter-bloc (minus 5). The federation outcomes use 244 to 246. Evolution activation never changes Chaos.
+
+## Evolutions
+
+Evolution state is global (`global.lawrence_evolution`, 0 to 3). Stage n needs the Chaos tier n (200, 400, 600). A stage records one Event Log entry (type 40, actor the live target) only when `is_current_evolution_enabled` passes, so a disabled stage never sets state. Activation gives no Chaos.
+
+- Active entry: the pulse of a live target calls `lawrence_try_evolution`. A ready and enabled stage waits an MTTH interval (base 90 days, faster in a British war or at high Chaos, slower when British credibility is low) and then activates.
+- Evolved opening: before the first target, `lawrence_resolve_opening_evolution` activates every enabled stage whose requirements hold, each with its own log entry. Evolution I raises the starting Influence, officers and British support, adds one piece of evidence and schedules an incident ten days in. Evolution II recognises only existing partners and sends the first target a letter event that raises Influence by two for each partner. Nothing is conjured: with fewer than two nodes the stage waits.
+
+### Evolution I: the Arab Revolt Network
+
+Hidden `lawrence_cells` (0 to 100) grow with Influence, British funding and pro-British officers and shrink with security, held nodes, a counterintelligence file and exposure. From cells 25 an MTTH interval (base 100 days) opens one incident: arms and smuggling cache (`.90`), railway demolition (`.91`), officer clique (`.92`), local leaders (`.93`) or press (`.94`), weighted by coast, route state, officer share and press. Each has two answers with distinct costs. Demolition damages real infrastructure in the route state or the capital.
+
+- Break the Revolt Cells (target decision and 180-day mission): hold the capital, the port and the route state, and cells fall by 3 a week, 5 with a file. Success collapses the cells, partial leaves cells at 30, failure sabotages a line.
+- Fund the Revolt Network (Britain): cells plus 15 and faster growth for 90 days, exposure plus 10.
+- Back a Government Replacement (Britain): Influence at least 80, cells at least 45, at least 55 officers in 100 following the mission, three divisions. The target becomes a British client under a 270-day provisional administration, no civil war and no unit loss, Chaos plus 5 once.
+- A reckless expulsion with cells at 50 or more also fires a provincial revolt that damages infrastructure in two nodes.
+- The first armed incident above cells 50 raises Chaos by 5 once.
+
+A civil war split is not implemented. The spec requires a proven territorial and military split with capitals, forces and rollback, and the replacement route stays political.
+
+### Evolution II: the British Arabian System
+
+Nodes are settled clients and allies that still count plus Britain's own subjects in the registry (`global.lawrence_nodes`, rebuilt from the two arrays and Britain's subjects, never from a world scan). Six British institutions appear one stage at a time: Liaison Conference, then Arms Standardization Office and Oil and Transport Agreements, then Regional Intelligence Office, Desert Air Route and Joint Defense Charter. Each has a real effect:
+
+| Institution | Effect |
+| --- | --- |
+| Liaison Conference | every node answers (contribute, name a price, refuse), the strongest contributor becomes the favoured partner and the rest grow resentful |
+| Arms Standardization Office | nodes train faster, British arms shipments cost 20 percent less |
+| Oil and Transport Agreements | Britain gains fuel, nodes build faster, subject nodes gain autonomy |
+| Regional Intelligence Office | extra pressure on every target, closed when a target exposes the network in public |
+| Desert Air Route | shipments arrive 20 days sooner and cannot be seized, needs an airbase |
+| Joint Defense Charter | nodes join the existing British faction, military access in both directions |
+
+Three institutions on at least two nodes establish the system (Chaos plus 10 once). The system collapses when nodes fall below two, Britain cannot act or credibility falls below 15. Nodes press for autonomy through Demand Greater Autonomy in the regional category.
+
+The counter-bloc is founded by an independent registry government through Found an Arab Counter-Bloc. Up to two other candidates are invited and decide by their own AI, and with three members the bloc forms: members gain counterintelligence and preparedness, are no longer valid targets, and Britain decides through `.112` whether to recognise it and end the campaign (Chaos minus 5 once) or continue. Members may leave over time when Britain is credible and the member has no preparedness to hold it.
+
+### Evolution log
+
+Rows, titles, bodies and the summary are wired in the main Evolutions tab, the History details, Event Details and the selected view. Stage 3 is added with the federation.
+
+## Evolution achievements
+
+- `chaos_redux_040_promises_kept`: Britain with a registered guarantee, the system established, three partners and no broken guarantee when the campaign closes.
+- `chaos_redux_040_desert_conference`: an independent player government in a bloc of three that Britain recognises.
+- `chaos_redux_040_rails_ports_promises`: a sea route, a repaired rail link and the Desert Air Route together while a later target settles.
 
 ## Assets
 
@@ -162,7 +208,7 @@ Reused existing art: report image of Lawrence (`GFX_report_event_lawrence`, prov
 | Grounded portrait of T. E. Lawrence (corps commander and later roles), user-supplied HOI4-style final | `GFX_portrait_t_e_lawrence` | `interface/040_lawrence_of_arabia.gfx` | `gfx/leaders/` through the portrait workflow |
 | Decision category icon (headcloth, field notes, liaison seal) | `GFX_decision_category_040_lawrence` | `interface/040_lawrence_of_arabia.gfx` | `gfx/interface/decisions/040_lawrence_of_arabia/` |
 | Target and British decision icons (custody of arms, ledger audit, guarded travel, turned contact, exposure, expulsion, charter, gold and arms package, officer cadres, Red Sea route, base agreement, recovery) | `GFX_decision_040_<name>` | same | same |
-| Idea icons (British mission, independent partnership, exposed network, protectorate) | `GFX_idea_040_<name>` | same | `gfx/interface/ideas/040_lawrence_of_arabia/` |
+| Idea icons (British mission, independent partnership, exposed network, protectorate, arms standard, transport compact, oil agreements, favoured partner, counter-bloc member, provisional administration) | `GFX_idea_040_<name>` | same | `gfx/interface/ideas/040_lawrence_of_arabia/` |
 | Achievement triplets for `chaos_redux_040_better_bargain` (rifle crate under a national lock) and `chaos_redux_040_every_ledger_has_a_name` (open ledger, marked payments, lens) | `GFX_achievement_chaos_redux_040_<id>` and `_grey`, `_not_eligible` | `interface/040_lawrence_of_arabia.gfx` | `gfx/achievements/` |
 | Report images for the recall, a sabotage scene and the settlement reports | `GFX_report_event_040_<name>` | same | `gfx/event_pictures/040_lawrence_of_arabia/` |
 

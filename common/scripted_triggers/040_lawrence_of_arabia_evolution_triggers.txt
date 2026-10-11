@@ -1,0 +1,267 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 040 LAWRENCE OF ARABIA EVOLUTION TRIGGERS
+# ============================================================================
+# Evolution I (the Arab Revolt Network) and Evolution II (the British Arabian
+# System): stage readiness, revolt-network visibility, institution
+# visibility, regional nodes, the counter-bloc and their affordability.
+# Scope: COUNTRY unless noted. Evolution state is global and lives in
+# global.lawrence_evolution (0 to 3).
+# ============================================================================
+
+lawrence_evolution_at_least_1 = {
+	check_variable = { var = global.lawrence_evolution value = constant:lawrence_evolution.stage_1 compare = greater_than_or_equals }
+}
+
+lawrence_evolution_at_least_2 = {
+	check_variable = { var = global.lawrence_evolution value = constant:lawrence_evolution.stage_2 compare = greater_than_or_equals }
+}
+
+# Stage readiness. Input: temporary lawrence_next_stage. Evolution II needs
+# real participants: at least two regional nodes (settled partners and
+# British subjects in the registry).
+lawrence_evolution_stage_ready = {
+	OR = {
+		check_variable = { var = lawrence_next_stage value = constant:lawrence_evolution.stage_1 compare = equals }
+		AND = {
+			check_variable = { var = lawrence_next_stage value = constant:lawrence_evolution.stage_2 compare = equals }
+			check_variable = { var = global.lawrence_node_count value = constant:lawrence_system.minimum_nodes compare = greater_than_or_equals }
+		}
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Regional nodes
+# ---------------------------------------------------------------------------
+
+# COUNTRY. This country is a British regional node.
+lawrence_is_node = {
+	is_in_array = { array = global.lawrence_nodes value = THIS }
+}
+
+# COUNTRY. A node that still counts: it exists, is independent of any rival
+# patron and is not at war with Britain.
+lawrence_node_is_valid = {
+	exists = yes
+	has_capitulated = no
+	NOT = { has_war_with = ENG }
+	is_actual_nonhuman_country = no
+}
+
+# ---------------------------------------------------------------------------
+# Evolution I: the revolt network (target scope unless noted)
+# ---------------------------------------------------------------------------
+
+lawrence_cells_are_active = {
+	lawrence_is_live_target = yes
+	lawrence_evolution_at_least_1 = yes
+	has_variable = lawrence_cells
+}
+
+lawrence_shows_break_cells = {
+	lawrence_is_live_target_contest = yes
+	lawrence_evolution_at_least_1 = yes
+	lawrence_status_is_free = yes
+	NOT = { has_active_mission = lawrence_break_cells_mission }
+	NOT = { has_country_flag = lawrence_cells_cooldown }
+	lawrence_target_has_free_mission_slot = yes
+	check_variable = { var = lawrence_cells value = constant:lawrence_cells.mission_floor compare = greater_than_or_equals }
+}
+
+lawrence_can_pay_break_cells = {
+	NOT = { has_political_power < constant:lawrence_cost_evolution.break_political_power }
+	NOT = { command_power < constant:lawrence_cost_evolution.break_command_power }
+	NOT = { has_equipment = { support_equipment < lawrence_cost_break_support } }
+}
+
+# A coup needs an officer coalition, a weak government and enough units.
+lawrence_replacement_is_valid = {
+	lawrence_cells_are_active = yes
+	lawrence_is_live_target_contest = yes
+	lawrence_status_is_free = yes
+	NOT = { has_country_flag = lawrence_final_pending }
+	NOT = { has_country_flag = lawrence_government_replaced }
+	check_variable = { var = lawrence_influence value = constant:lawrence_influence.ascendant_edge compare = greater_than_or_equals }
+	check_variable = { var = lawrence_cells value = constant:lawrence_cells.replacement_floor compare = greater_than_or_equals }
+	check_variable = { var = lawrence_officers value = constant:lawrence_cells.replacement_officers compare = greater_than_or_equals }
+	NOT = { num_divisions < constant:lawrence_cells.replacement_divisions }
+	NOT = { is_in_array = { array = global.lawrence_bloc_members value = THIS } }
+}
+
+# ENG. Evolution I actions.
+lawrence_shows_fund_revolt = {
+	lawrence_shows_british_category = yes
+	lawrence_british_personal_actions_open = yes
+	lawrence_evolution_at_least_1 = yes
+	var:global.lawrence_target = {
+		lawrence_is_live_target_contest = yes
+		lawrence_cells_are_active = yes
+		NOT = { has_country_flag = lawrence_cells_funded }
+	}
+}
+
+lawrence_shows_replace_government = {
+	lawrence_shows_british_category = yes
+	lawrence_british_personal_actions_open = yes
+	lawrence_evolution_at_least_1 = yes
+	var:global.lawrence_target = { lawrence_replacement_is_valid = yes }
+}
+
+lawrence_can_pay_fund_revolt = {
+	NOT = { has_equipment = { infantry_equipment < lawrence_cost_fund_infantry } }
+	NOT = { has_political_power < constant:lawrence_cost_evolution.fund_political_power }
+	NOT = { command_power < constant:lawrence_cost_evolution.fund_command_power }
+}
+
+lawrence_can_pay_replacement = {
+	NOT = { has_political_power < constant:lawrence_cost_evolution.replace_political_power }
+	NOT = { has_army_experience < constant:lawrence_cost_evolution.replace_army_experience }
+	NOT = { command_power < constant:lawrence_cost_evolution.replace_command_power }
+}
+
+# ---------------------------------------------------------------------------
+# Evolution II: the British Arabian System (scope ENG unless noted)
+# ---------------------------------------------------------------------------
+
+lawrence_system_is_possible = {
+	lawrence_evolution_at_least_2 = yes
+	lawrence_sponsor_can_act = yes
+	check_variable = { var = global.lawrence_node_count value = constant:lawrence_system.minimum_nodes compare = greater_than_or_equals }
+}
+
+# ENG or a node owns a state in the registry with an airbase.
+lawrence_air_base_available = {
+	OR = {
+		any_owned_state = { air_base > 0 }
+		any_of_scopes = {
+			array = global.lawrence_nodes
+			any_owned_state = { air_base > 0 }
+		}
+	}
+}
+
+lawrence_shows_conference = {
+	lawrence_system_is_possible = yes
+	NOT = { has_global_flag = lawrence_inst_conference }
+}
+
+lawrence_shows_arms_office = {
+	lawrence_system_is_possible = yes
+	has_global_flag = lawrence_inst_conference
+	NOT = { has_global_flag = lawrence_inst_arms }
+}
+
+lawrence_shows_oil_agreements = {
+	lawrence_system_is_possible = yes
+	has_global_flag = lawrence_inst_conference
+	NOT = { has_global_flag = lawrence_inst_oil }
+}
+
+lawrence_shows_intelligence_office = {
+	lawrence_system_is_possible = yes
+	has_global_flag = lawrence_inst_arms
+	NOT = { has_global_flag = lawrence_inst_intel }
+}
+
+lawrence_shows_air_route = {
+	lawrence_system_is_possible = yes
+	has_global_flag = lawrence_inst_intel
+	NOT = { has_global_flag = lawrence_inst_air }
+}
+
+lawrence_shows_joint_charter = {
+	lawrence_system_is_possible = yes
+	has_global_flag = lawrence_inst_oil
+	NOT = { has_global_flag = lawrence_inst_charter }
+}
+
+lawrence_can_pay_conference = {
+	NOT = { has_political_power < constant:lawrence_cost_evolution.conference_political_power }
+}
+
+lawrence_can_pay_arms_office = {
+	NOT = { has_equipment = { infantry_equipment < lawrence_cost_office_arms_infantry } }
+	NOT = { has_equipment = { support_equipment < lawrence_cost_office_arms_support } }
+	NOT = { has_political_power < constant:lawrence_cost_evolution.arms_office_political_power }
+}
+
+lawrence_can_pay_oil_agreements = {
+	NOT = { has_political_power < constant:lawrence_cost_evolution.oil_political_power }
+	NOT = { has_equipment = { train_equipment < lawrence_cost_oil_trains } }
+}
+
+lawrence_can_pay_intelligence_office = {
+	NOT = { has_political_power < constant:lawrence_cost_evolution.intel_political_power }
+	NOT = { command_power < constant:lawrence_cost_evolution.intel_command_power }
+}
+
+lawrence_can_pay_air_route = {
+	NOT = { has_fuel < lawrence_cost_air_fuel }
+	NOT = { has_equipment = { support_equipment < lawrence_cost_air_support } }
+	NOT = { has_political_power < constant:lawrence_cost_evolution.air_political_power }
+}
+
+lawrence_can_pay_joint_charter = {
+	NOT = { has_political_power < constant:lawrence_cost_evolution.charter_joint_political_power }
+	NOT = { command_power < constant:lawrence_cost_evolution.charter_joint_command_power }
+}
+
+# COUNTRY. A node with grievances may demand autonomy.
+lawrence_shows_node_autonomy = {
+	lawrence_evolution_at_least_2 = yes
+	lawrence_is_node = yes
+	is_subject = yes
+	NOT = { has_country_flag = lawrence_autonomy_cooldown }
+	OR = {
+		check_variable = { var = lawrence_dissent value = constant:lawrence_system.dissent_for_autonomy compare = greater_than_or_equals }
+		check_variable = { var = global.lawrence_credibility value = constant:lawrence_system.autonomy_credibility compare = less_than }
+	}
+}
+
+lawrence_can_pay_node_autonomy = {
+	NOT = { has_political_power < constant:lawrence_cost_evolution.node_autonomy_political_power }
+}
+
+# ---------------------------------------------------------------------------
+# The counter-bloc
+# ---------------------------------------------------------------------------
+
+# COUNTRY. An independent registry government that could join a bloc against
+# British encirclement.
+lawrence_is_bloc_candidate = {
+	exists = yes
+	has_capitulated = no
+	is_subject = no
+	is_special_chaos_country = no
+	is_actual_nonhuman_country = no
+	lawrence_is_registry_country = yes
+	NOT = { tag = ENG }
+	NOT = { is_in_faction_with = ENG }
+	NOT = { has_war_with = ENG }
+	NOT = { lawrence_is_node = yes }
+	NOT = { is_in_array = { array = global.lawrence_bloc_members value = THIS } }
+}
+
+lawrence_shows_found_bloc = {
+	lawrence_evolution_at_least_2 = yes
+	lawrence_is_bloc_candidate = yes
+	NOT = { has_global_flag = lawrence_counter_bloc_active }
+	NOT = { has_global_flag = lawrence_bloc_forming }
+	NOT = { has_country_flag = lawrence_bloc_cooldown }
+	any_other_country = { lawrence_is_bloc_candidate = yes }
+}
+
+lawrence_can_pay_found_bloc = {
+	NOT = { has_political_power < constant:lawrence_cost_evolution.bloc_political_power }
+	NOT = { command_power < constant:lawrence_cost_evolution.bloc_command_power }
+}
+
+# COUNTRY. The regional category shows to nodes, bloc candidates and bloc
+# members while Evolution II is active.
+lawrence_shows_region_category = {
+	lawrence_evolution_at_least_2 = yes
+	OR = {
+		lawrence_is_node = yes
+		lawrence_is_bloc_candidate = yes
+		has_country_flag = lawrence_bloc_member
+	}
+}

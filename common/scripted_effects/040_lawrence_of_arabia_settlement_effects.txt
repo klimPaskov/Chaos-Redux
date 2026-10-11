@@ -212,12 +212,48 @@ lawrence_settle = {
 		else = {
 			lawrence_outcome_restricted = yes
 		}
+		lawrence_award_route_achievement = yes
 		lawrence_fire_outcome_reports = yes
 		add_to_variable = { global.lawrence_resolved = constant:lawrence_event.one }
 		add_to_array = { global.lawrence_settled_countries = THIS }
 		set_country_flag = lawrence_settled
 		lawrence_clear_target_state = yes
 		lawrence_schedule_next_target = yes
+	}
+}
+
+# Rails, Ports, and Promises: Britain kept a sea route, a rail link and the air
+# route on a target that settled in a later intervention.
+lawrence_award_route_achievement = {
+	if = {
+		limit = {
+			check_variable = { var = global.lawrence_resolved value = constant:lawrence_event.zero compare = greater_than }
+			NOT = { check_variable = { var = lawrence_final_outcome value = constant:lawrence_outcome.restricted compare = equals } }
+			has_country_flag = lawrence_route_sea
+			has_country_flag = lawrence_rail_repaired
+			has_global_flag = lawrence_inst_air
+		}
+		ENG = {
+			if = {
+				limit = { is_ai = no }
+				set_country_flag = lawrence_ach_rails_ports
+			}
+		}
+	}
+}
+
+# Promises Kept: the system stands, three durable partners exist and no
+# registered guarantee was broken when the campaign closes.
+lawrence_award_promises_kept = {
+	if = {
+		limit = {
+			is_ai = no
+			has_global_flag = lawrence_system_established
+			check_variable = { var = global.lawrence_node_count value = constant:lawrence_system.promises_nodes compare = greater_than_or_equals }
+			check_variable = { var = global.lawrence_promises_made value = constant:lawrence_event.one compare = greater_than_or_equals }
+			check_variable = { var = global.lawrence_promises_broken value = constant:lawrence_event.zero compare = equals }
+		}
+		set_country_flag = lawrence_ach_promises_kept
 	}
 }
 
@@ -333,6 +369,13 @@ lawrence_outcome_expelled = {
 		set_temp_variable = { lawrence_idea_days = constant:lawrence_outcome_effect.disorder_days }
 		add_timed_idea = { idea = lawrence_expulsion_disorder days = lawrence_idea_days }
 		set_country_flag = { flag = lawrence_disorder days = lawrence_idea_days }
+		if = {
+			limit = {
+				lawrence_cells_are_active = yes
+				check_variable = { var = lawrence_cells value = constant:lawrence_cells.revolt_chaos_floor compare = greater_than_or_equals }
+			}
+			country_event = { id = chaosx.nr40.95 }
+		}
 	}
 	set_temp_variable = { lawrence_alert_kind = constant:lawrence_alert.alarm }
 	lawrence_alert_neighbour = yes
@@ -354,6 +397,17 @@ lawrence_outcome_dismantled = {
 		set_country_flag = lawrence_ach_every_ledger
 	}
 	add_to_variable = { global.lawrence_dismantled_count = constant:lawrence_event.one }
+	if = {
+		limit = {
+			NOT = { has_global_flag = lawrence_dismantled_chaos_recorded }
+			check_variable = { var = global.lawrence_dismantled_count value = constant:lawrence_chaos_evolution.dismantled_networks_count compare = greater_than_or_equals }
+		}
+		set_global_flag = lawrence_dismantled_chaos_recorded
+		set_temp_variable = { chaos_change = constant:lawrence_chaos_evolution.networks_dismantled }
+		set_temp_variable = { chaos_history_reason = constant:chaos_meter_history_reason.special.lawrence_networks_dismantled }
+		set_temp_variable = { chaos_history_reason_custom = constant:lawrence_event.one }
+		add_chaos_meter_value = yes
+	}
 	set_temp_variable = { lawrence_credibility_change = constant:lawrence_outcome_effect.dismantled_credibility }
 	lawrence_add_credibility = yes
 	if = {
@@ -444,6 +498,15 @@ lawrence_clear_target_state = {
 	clr_country_flag = lawrence_band_report_cooldown
 	clr_country_flag = lawrence_terms_refused_recently
 	clr_country_flag = lawrence_requested_protection
+	clr_country_flag = lawrence_cell_incident_open
+	clr_country_flag = lawrence_cells_funded
+	clr_country_flag = lawrence_government_replaced
+	if = {
+		limit = { has_active_mission = lawrence_break_cells_mission }
+		remove_mission = lawrence_break_cells_mission
+	}
+	clear_variable = lawrence_cells
+	clear_variable = lawrence_next_cell_day
 	remove_ideas = lawrence_british_mission
 	remove_ideas = lawrence_embedded_mission
 	remove_ideas = lawrence_liaison_office
@@ -624,6 +687,8 @@ lawrence_watchdog = {
 				}
 			}
 		}
+		lawrence_check_system = yes
+		lawrence_check_counter_bloc = yes
 		if = {
 			limit = { NOT = { lawrence_sponsor_can_act = yes } }
 			add_to_variable = { global.lawrence_pause_count = constant:lawrence_event.one }
@@ -679,6 +744,7 @@ lawrence_close_campaign = {
 		ENG = { lawrence_leave_british_roster = yes }
 	}
 	ENG = {
+		lawrence_award_promises_kept = yes
 		remove_ideas = lawrence_cadre_commitment
 		set_temp_variable = { lawrence_report_delay = constant:lawrence_event.report_delay_days }
 		country_event = { id = chaosx.nr40.28 days = lawrence_report_delay }

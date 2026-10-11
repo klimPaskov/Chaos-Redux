@@ -1,0 +1,199 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 040 LAWRENCE OF ARABIA EVOLUTION TUNING
+# ============================================================================
+# Evolution pacing, the revolt-network cells of Evolution I, the British
+# Arabian System of Evolution II and their prices. The prices and Chaos values
+# below extend the lawrence_cost and lawrence_chaos groups of
+# 040_lawrence_of_arabia_constants.txt. Constant groups merge by name only
+# inside one file, so the extension groups use their own names and the
+# scripts read them as constant:lawrence_cost_evolution.<key> and
+# constant:lawrence_chaos_evolution.<key>.
+# ============================================================================
+
+# Evolution stages, tiers and pacing. A stage needs the Chaos tier of the same number.
+lawrence_evolution = {
+	schema = { any_key = yes data = fixed_point }
+
+	stage_1 = 1
+	stage_2 = 2
+	stage_3 = 3
+	highest_stage = 2
+	base_days = 90
+	fast_factor = 0.8
+	slow_factor = 1.2
+}
+
+# Evolution I: the hidden revolt cells (0 to 100), their growth, incidents, the breaking mission, funding and the government replacement.
+lawrence_cells = {
+	schema = { any_key = yes data = fixed_point }
+
+	start = 15
+	start_shipment = 6
+	start_officers = 8
+	start_security = 6
+	security_dampening = 60
+	influence_factor = 0.02
+	funded = 1.5
+	officers = 0.5
+	security_factor = 0.02
+	nodes_secured = -0.7
+	exposed = -0.5
+	file = -0.3
+	mission_rate = -3
+	mission_file_bonus = -2
+	weekly_minimum = -5
+	weekly_maximum = 4
+	first_incident_days = 21
+	incident_floor = 25
+	incident_base_days = 100
+	incident_fast_factor = 0.8
+	incident_slow_factor = 1.3
+	officer_incident_floor = 45
+	revolt_chaos_floor = 50
+	mission_floor = 20
+	opening_influence = 8
+	opening_officers = 15
+	opening_support_power = 2
+	opening_support_days = 90
+	opening_evidence = 1
+	opening_incident_days = 10
+	seize_security = 40
+	arms_seized = -15
+	arms_evidence = 1
+	arms_missed = 6
+	arms_missed_influence = 4
+	arms_ignored = 6
+	arms_ignored_influence = 3
+	rail_held = -8
+	rail_breached = 5
+	rail_repaired = -3
+	rail_repair_stability = -0.01
+	officers_arrested = -10
+	officers_arrest_cells = -12
+	officers_arrest_stability = -0.03
+	officers_backfire = 5
+	officers_backfire_influence = 4
+	officers_conceded = 10
+	officers_conceded_cells = 8
+	officers_conceded_influence = 4
+	local_recognized = 10
+	local_recognized_influence = 5
+	local_recognized_stability = 0.02
+	local_refused = -4
+	local_refused_stability = -0.01
+	press_banned = -10
+	press_ban_stability = -0.03
+	press_answered = -6
+	press_answer_political_power = 30
+	revolt_stability = -0.04
+	break_days = 180
+	break_target = 15
+	partial_floor = 35
+	partial_remaining = 30
+	cooldown_days = 120
+	break_influence = -10
+	break_evidence = 1
+	partial_influence = -4
+	failure_cells = 10
+	failure_officers = 5
+	failure_influence = 6
+	fund_cells = 15
+	fund_exposure = 10
+	funded_days = 90
+	fund_cooldown_days = 90
+	replacement_floor = 45
+	replacement_officers = 55
+	replacement_divisions = 3
+	provisional_days = 270
+}
+
+# Evolution II: regional nodes, institutions, the favoured partner, client autonomy and the counter-bloc.
+lawrence_system = {
+	schema = { any_key = yes data = fixed_point }
+
+	minimum_nodes = 2
+	established_institutions = 3
+	promises_nodes = 3
+	institution_days = 540
+	air_route_days = 180
+	favour_days = 45
+	favour_contribute = 2
+	favour_demand = 1
+	half = 0.5
+	contribution_influence = 3
+	compensation_political_power = 30
+	compensation_autonomy = 0.05
+	refusal_credibility = -2
+	dissent_for_autonomy = 2
+	dissent_maximum = 5
+	autonomy_credibility = 40
+	autonomy_demand = 0.1
+	autonomy_demand_credibility = -3
+	autonomy_cooldown_days = 120
+	oil_autonomy = 0.03
+	charter_credibility = 5
+	arms_office_discount = 0.8
+	intel_office_drift = 0.4
+	opening_influence_per_node = 2
+	collapse_credibility = 15
+	intel_exposed_credibility = -10
+	bloc_minimum = 3
+	bloc_answer_days = 30
+	bloc_cooldown_days = 180
+	bloc_credibility = -10
+	bloc_influence = -8
+	bloc_preparedness = 1
+	bloc_drift = -0.3
+	bloc_exit_credibility = 75
+	bloc_hold_preparedness = 1
+}
+
+# Evolution II shipment time.
+lawrence_delivery_evolution = {
+	schema = { any_key = yes data = fixed_point }
+
+	air_route_days = 20
+}
+
+# Prices of the evolution actions.
+lawrence_cost_evolution = {
+	schema = { any_key = yes data = fixed_point }
+
+	break_political_power = 30
+	break_command_power = 25
+	break_support_per_factory = 1.5
+	break_support_minimum = 25
+	fund_package_factor = 0.6
+	fund_political_power = 40
+	fund_command_power = 25
+	replace_political_power = 100
+	replace_army_experience = 40
+	replace_command_power = 40
+	conference_political_power = 50
+	arms_office_package_factor = 0.75
+	arms_office_political_power = 40
+	oil_trains_factor = 1.5
+	oil_political_power = 60
+	intel_political_power = 50
+	intel_command_power = 30
+	air_fuel_factor = 1.2
+	air_support_factor = 0.8
+	air_political_power = 30
+	charter_joint_political_power = 50
+	charter_joint_command_power = 30
+	node_autonomy_political_power = 50
+	bloc_political_power = 80
+	bloc_command_power = 30
+}
+
+# Event-owned Chaos of the evolutions. Activation gives none.
+lawrence_chaos_evolution = {
+	schema = { any_key = yes data = fixed_point }
+
+	revolt_network = 5
+	government_replaced = 5
+	system_established = 10
+	networks_dismantled = -10
+	dismantled_networks_count = 3
+	bloc_settlement = -5
+}
