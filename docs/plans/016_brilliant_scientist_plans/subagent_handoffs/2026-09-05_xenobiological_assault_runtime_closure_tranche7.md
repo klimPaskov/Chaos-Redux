@@ -1,5 +1,18 @@
 # Event 016 Xenobiological Assault Organism Runtime Closure
 
+## Current runtime source, 11 October 2026
+
+The historical rig, scale, action and capability claims below are superseded for the active runtime by `docs/plans/unit_fix_2026-10/wp5_models_handoff.md`.
+The active `xenobiological_assault_organism.mesh` has 30 bones and source height 8.087006569, with entity scale 0.8 and effective height 6.469605255; all eight registered actions run at 30 FPS.
+Decoded geometry, normals, UVs, weights and skeleton match `export/v3/xenobiological_assault_organism.mesh`, and its source checkpoint is `blender/working/v3/blender/checkpoints/24_export_batches.blend`.
+Exact source/current-runtime hashes and all-role correspondence are recorded in `.tmp/wp5_models/evidence/source_export_comparison.json`.
+The current thorax/head topology and seven action roles fail their numerical delivery checks; training passes those checks, which do not prove role or contact acceptance.
+The insectoid sound set remains unresolved, and current rat-family bindings do not satisfy that requirement.
+Missing historical `author_creature_rig` or `author_creature_action` operations are superseded by the verified live Blender authoring route.
+Xenobiological repair is queued for exclusive WP5/WP6 native production; the available Lab session/build/socket must be verified when that window is acquired.
+
+## Historical tranche
+
 Status: blocked_partial_runtime_closure.
 
 Subtask: Event 016 Final Completion Plan tranche 7.
