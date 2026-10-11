@@ -35,3 +35,26 @@ The archived HQ preview has SHA-256 `03ede4462a6657fdd181fa65f9aab9d6fcc181be6cd
 Changes retain a two-second excerpt, remove DC/subsonic bias, apply an 8 ms entry fade and 50 ms release, and master to -3 dBFS in mono PCM16 at 44.1 kHz.
 Installed SHA-256: `85806914dfbf0a60eeda78f446938d808cc94e82febbe5432fb4f854983addc5`.
 The preserved transformation and install receipts are `docs/plans/unit_fix_2026-10/wp4_audio_evidence/reports/robot_blast_batch.json` and `install/accepted_tranche4.json`.
+
+## Complete existing-source cue repairs
+
+`autonomous_robot_hydraulic_release.wav` uses “Hydraulic Truck Brakes by Filmscore” by Filmscore (CC0 1.0, https://freesound.org/people/Filmscore/sounds/823069/).
+Verified immutable source SHA-256: `29537bae2513c8448b1076189bb005a0c37a4f3ea8f202f7dfb5b897e32a90e5`.
+Mechanical source trimming where applicable, entry/release fades, level mastering and mono PCM16 at 44.1 kHz preserve the declared sound identity.
+Installed derivative SHA-256: `da0c5f6c8c5bbcec8934a6b5146307996e6986f426de28b43e48e26c18f1fd33`.
+Original sources, selected candidates, exact transformations and measured receipts are retained in `docs/assets/shared_robot_system/models_3d/autonomous_robot/evidence/wp4_audio_takeover/receipt.json` while the model repair remains active.
+
+`autonomous_robot_gun_heave.wav` uses “080223-002-freight-elevator.wav by joshs” by joshs (CC0 1.0, https://freesound.org/people/joshs/sounds/203392/).
+Verified immutable source SHA-256: `4b472a619f344d0377e99e997a4c1630c17f0015356b954b9be93dfb8effb68b`.
+Mechanical source trimming where applicable, entry/release fades, level mastering and mono PCM16 at 44.1 kHz preserve the declared sound identity.
+Installed derivative SHA-256: `f1852b729f8b18a61a5c9292a01de201f908e49daae99a301db3f66fd6970e0a`.
+Original sources, selected candidates, exact transformations and measured receipts are retained in `docs/assets/shared_robot_system/models_3d/autonomous_robot/evidence/wp4_audio_takeover/receipt.json` while the model repair remains active.
+
+`autonomous_robot_idle_loop.wav` uses “Cordless Screwdriver” by Maximilian Schönherr (CC BY-SA 4.0, https://commons.wikimedia.org/wiki/File:Akkuschrauber_%E2%80%93_Cordless_Screwdriver.ogg).
+Verified immutable source SHA-256: `a53525ce339297e1536a6efe0c0d7a6d867e53567e40edc2b8e2ff1376d112cb`.
+Mechanical processing selects the original motor recording at 10–14 seconds, fades/masters the loop to −20 LUFS and converts to mono PCM16 at 44.1 kHz; measured loudness rises 6.2 LU relative to the retained runtime loop.
+This adapted motor recording remains licensed under CC BY-SA 4.0: https://creativecommons.org/licenses/by-sa/4.0/.
+Installed derivative SHA-256: `1a2b54b595bd7363e4fc90924767b5610e035f8a976524060bf0434595694070`.
+Original sources, selected candidates, exact transformations and measured receipts are retained in `docs/assets/shared_robot_system/models_3d/autonomous_robot/evidence/wp4_audio_takeover/receipt.json` while the model repair remains active.
+
+No audio was downloaded, synthesized or recorded by the agent; no auditory, spoken-word or live playback acceptance is asserted.

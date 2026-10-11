@@ -100,7 +100,12 @@ The source-approved footfall is 0.2 seconds, or 0.20833 seconds at the slowest c
 The second casing take is shortened to 0.7 seconds, below its 0.75-second gap.
 Both destination hashes match the reviewed candidates; source licenses, transformations and hashes ship in the robot's `WP4_ATTRIBUTION.md`.
 The final source lint clears those specific overlaps while retaining the intentional paired-gun polyphony and the generic lint's smoke-classification limitations.
+The existing hydraulic-release and gun-heave sources have edge fades, and the four-second idle loop is rederived from the archived cordless-screwdriver recording at -20 LUFS, approximately 6.2 LUFS above the captured preimage.
+The idle derivative retains its CC BY-SA 4.0 license and source attribution.
+Exact source transformations, waveforms, destination hashes and rate checks are retained in `docs/assets/shared_robot_system/models_3d/autonomous_robot/evidence/wp4_audio_takeover/`.
 No model, skeleton, weights, actions or maps changed in this source tranche; topology, materials, sensor/servo motion and anatomical contacts remain required.
+The selected provider normal itself has masked X/Y standard deviations of only 3.65/3.84; an unamplified 512-pixel repack measures 2.03/2.09 and cannot satisfy the 15-35 detail gate.
+The source-to-current UV triangle comparison matches 24,430 of 26,206 triangles; modified regions and a meaningful detail-bake source still require native review.
 Rendered smoke size, orange-pixel area and in-game playback are unmeasured.
 Meshy credits spent on this source tranche: 0.
 
@@ -132,7 +137,7 @@ The implemented firing/audio tranche is documented in `wp4_firing_audio_tranche.
 | Clone Infantry | No particles; silent defend; obsolete firing times; inherited simulated rifle cue | Timed shots/casings and defend chaining; recorded rifle report, full source shout, level-preserving voice fades and frame-37 landing cue | Aim/grip/shoulder pocket, entry/recovery and idle, rifle UV/normal/materials, sleeve values and physical-contact review |
 | Portal Raider | Dark diffuse, weak normal detail, stale rejected-candidate docs and one-shot idle | Finite laser effects, electrical idle/guard loop, 0.6-second ray, faded six-take footsteps and human-layered death | Missing selected provider maps; source-to-current-UV proof, recoil/second attack, low-ready idle and rifle normals |
 | Alien Infantry | Frozen idle, weak normals/flat pistol maps, one-shot vehicle hum and overlapping 1.2 s laser | Finite laser particles; permitted hum removal; 0.9 s source-layered tonal laser, licensed boot step and faded impact | Body grade/normal and proper pistol UV/materials; breathing/scan/recoil; modified UV/tangent review |
-| Autonomous Robot | 22 flash/smoke/report emissions in attack/support, 8 in defend; 28 non-manifold edges; faceting/flat gun maps and long audio tails | Two finite gun emissions/cues per burst cycle; 2.6 s sustained and 0.6 s braced recorded bursts at volume 0.36/max two; 2 s wreck blast | Winding/topology/smooth normals and weapon material rebake; sensor/servo idle; short footfall and casing fades/tail fixes |
+| Autonomous Robot | 22 flash/smoke/report emissions in attack/support, 8 in defend; 28 non-manifold edges; faceting/flat gun maps and long audio tails | Two finite gun emissions/cues per burst cycle; quieter paired bursts; 2 s wreck blast; short footfall/casing, hydraulic/heave fades and -20 LUFS source-derived idle | Winding/topology/smooth normals and weapon material rebake; sensor/servo idle; modified UV/tangent review |
 
 The four 039 infantry consumers share a declared recorded burst/death pool.
 The two robot guns share a declared recorded weapon pool and retain their first-discharge offsets.
