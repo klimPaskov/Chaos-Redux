@@ -161,6 +161,17 @@ class VM {
         const limit = this.field(v, 'limit', []), body = v.filter(n => n.key !== 'limit');
         let iterations = 0;
         while (iterations < 1000 && this.eval(limit)) { if (!this.eval(body)) return false; iterations++; }
+      } else if (k === 'all_of') {
+        // Numeric iteration retains THIS and allows replacing existing slots.
+        // Array length stays fixed throughout the token-fill pass.
+        const name = this.field(v, 'array'), a = this.array(name), length = a.length;
+        const valueName = this.field(v, 'value', 'v'), indexName = this.field(v, 'index', 'i');
+        const body = v.filter(n => !['array', 'value', 'index'].includes(n.key));
+        for (let index = 0; index < length; index++) {
+          this.write(valueName, a[index]); this.write(indexName, BigInt(index) * S);
+          if (!this.eval(body)) return false;
+          assert.equal(a.length, length, 'fill must preserve array length');
+        }
       } else if (k === 'all_of_scopes') {
         const name = this.field(v, 'array'), a = this.array(name);
         const snapshot = [...a]; // arrays are ordered and preserve repeated scope values
@@ -175,7 +186,7 @@ class VM {
       }
       else if (k === 'resize_temp_array' || k === 'resize_array') {
 		const arrayStore = k === 'resize_temp_array' ? this.tempArrays : this.arrays;
-        const name = this.field(v, 'array'), size = this.value(this.field(v, 'size'));
+        const name = this.field(v, 'array', v[0].key), size = this.value(this.field(v, 'size', v[0].value));
         assert.equal(size % S, 0n); const n = Number(size / S); assert(n >= 0);
         const a = arrayStore.get(name) || [], value = this.value(this.field(v, 'value', '0'));
         while (a.length < n) a.push(value); a.length = n; arrayStore.set(name, a);

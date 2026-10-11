@@ -129,14 +129,30 @@ Installed `common/scripted_effects/00_scripted_effects.txt` lines 498-520 uses `
 
 Each loop here creates an array filled with the current `THIS` pointer and uses its entries only as iteration tokens.
 The cursor is temporary, so these loops neither reinterpret numeric digits as scopes nor scan the world.
-Nested loops use separate token arrays and never modify the array being traversed.
+Nested scope loops use separate token arrays and never modify the array being traversed.
 Loop bodies contain producer arithmetic and conditional assignments only, and remain true.
 They do not use `while_loop_effect` or `for_loop_effect`, whose documented 1,000-iteration limit would otherwise truncate source or digit traversal.
 No localisation-generated text, recursive meta trigger, meta effect, dynamic effect key, or undocumented trigger-loop command is required.
 
+Trigger-side array resizing uses the installed documented short form `resize_temp_array = { array_name = dynamic_size }`.
+Numeric limb and caller-storage arrays retain the default zero fill.
+Scope-token arrays are first resized with zero fill, then a numeric `all_of` pass stores `THIS` in each existing indexed slot through `set_temp_variable`.
+That fill pass retains the current object scope, changes neither array length nor any arithmetic cursor, and completes before the original `all_of_scopes` traversal begins.
+`uc_exact_fill_value` and `uc_exact_fill_index` are temporary scratch values overwritten by each fill pass and carry no public output contract.
+Empty token arrays execute no fill or scope iteration, and sizes still come from the original variable, array length, or script constant.
+The fill is inline so each array remains in the same scripted caller frame.
+Installed trigger documentation lines 1036-1051 documents `all_of`, lines 7414-7428 documents short resize and zero fill, and lines 7482-7488 documents temporary assignment.
+Offline Data structures lines 1071-1076 documents existing indexed temporary elements as variables, and line 1150 documents that `all_of` retains scope.
+This syntax avoids the long-form resize reader implicated by the captured native `CResizeTempArrayTrigger` self-jump at the `array` key in Linux build 25205862.
+Linux HOI4 1.19.3 (build 25205862) parsed the short-form predicates and reached the main menu after this repair.
+Native arithmetic and indexed scope filling have not yet been exercised by a controlled quote call, and Windows behavior was not tested in this run.
+
 This documented route is implemented and source-tested, not native engine evidence.
 Repeated scope entries, native confirmation of the conservative temporary-lifetime model, dynamic resize sizes, engine arithmetic internals, and consumer performance still need returned MCP/native acceptance evidence.
 The local interpreter intentionally assumes ordered, duplicate-preserving array iteration and the documented fixed-point operations; it cannot establish those engine facts itself.
+The existing source VM supports both resize forms and numeric `all_of` token filling.
+The parser-compatibility comparison used preserved before-source and candidate-source with identical documented VM handlers.
+Both passed 434 quote scenarios, 56 quantizer scenarios, source mutation and caller-lifetime checks, and the 1,005-limb multiplication case, with identical stored quote results.
 
 ## Internal helper map
 

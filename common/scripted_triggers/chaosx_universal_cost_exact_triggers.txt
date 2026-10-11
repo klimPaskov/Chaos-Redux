@@ -28,7 +28,13 @@ universal_cost_exact_scalar_to_ticks = {
 	clear_temp_array = uc_exact_extract_tokens
 	set_temp_variable = { uc_exact_extract_count = constant:universal_cost_exact.scalar_limbs }
 	subtract_from_temp_variable = { uc_exact_extract_count = constant:universal_cost_framework.two }
-	resize_temp_array = { array = uc_exact_extract_tokens size = uc_exact_extract_count value = THIS }
+	resize_temp_array = { uc_exact_extract_tokens = uc_exact_extract_count }
+	all_of = {
+		array = uc_exact_extract_tokens
+		value = uc_exact_fill_value
+		index = uc_exact_fill_index
+		set_temp_variable = { uc_exact_extract_tokens^uc_exact_fill_index = THIS }
+	}
 	all_of_scopes = {
 		array = uc_exact_extract_tokens
 		set_temp_variable = { uc_exact_digit = uc_exact_whole }
@@ -39,7 +45,13 @@ universal_cost_exact_scalar_to_ticks = {
 	}
 	# Fixed-size traversal removes leading zeros, leaving one limb for zero.
 	clear_temp_array = uc_exact_trim_factor_tokens
-	resize_temp_array = { array = uc_exact_trim_factor_tokens size = uc_exact_factor^num value = THIS }
+	resize_temp_array = { uc_exact_trim_factor_tokens = uc_exact_factor^num }
+	all_of = {
+		array = uc_exact_trim_factor_tokens
+		value = uc_exact_fill_value
+		index = uc_exact_fill_index
+		set_temp_variable = { uc_exact_trim_factor_tokens^uc_exact_fill_index = THIS }
+	}
 	all_of_scopes = {
 		array = uc_exact_trim_factor_tokens
 		set_temp_variable = { uc_exact_top = uc_exact_factor^num }
@@ -60,11 +72,23 @@ universal_cost_exact_multiply = {
 	clear_temp_array = uc_exact_multiply_result
 	set_temp_variable = { uc_exact_result_size = uc_exact_product^num }
 	add_to_temp_variable = { uc_exact_result_size = uc_exact_factor^num }
-	resize_temp_array = { array = uc_exact_multiply_result size = uc_exact_result_size }
+	resize_temp_array = { uc_exact_multiply_result = uc_exact_result_size }
 	clear_temp_array = uc_exact_multiply_outer_tokens
-	resize_temp_array = { array = uc_exact_multiply_outer_tokens size = uc_exact_product^num value = THIS }
+	resize_temp_array = { uc_exact_multiply_outer_tokens = uc_exact_product^num }
+	all_of = {
+		array = uc_exact_multiply_outer_tokens
+		value = uc_exact_fill_value
+		index = uc_exact_fill_index
+		set_temp_variable = { uc_exact_multiply_outer_tokens^uc_exact_fill_index = THIS }
+	}
 	clear_temp_array = uc_exact_multiply_inner_tokens
-	resize_temp_array = { array = uc_exact_multiply_inner_tokens size = uc_exact_factor^num value = THIS }
+	resize_temp_array = { uc_exact_multiply_inner_tokens = uc_exact_factor^num }
+	all_of = {
+		array = uc_exact_multiply_inner_tokens
+		value = uc_exact_fill_value
+		index = uc_exact_fill_index
+		set_temp_variable = { uc_exact_multiply_inner_tokens^uc_exact_fill_index = THIS }
+	}
 	set_temp_variable = { uc_exact_i = constant:universal_cost_framework.zero }
 	all_of_scopes = {
 		array = uc_exact_multiply_outer_tokens
@@ -93,7 +117,13 @@ universal_cost_exact_multiply = {
 	}
 	clear_temp_array = uc_exact_product
 	clear_temp_array = uc_exact_copy_tokens
-	resize_temp_array = { array = uc_exact_copy_tokens size = uc_exact_multiply_result^num value = THIS }
+	resize_temp_array = { uc_exact_copy_tokens = uc_exact_multiply_result^num }
+	all_of = {
+		array = uc_exact_copy_tokens
+		value = uc_exact_fill_value
+		index = uc_exact_fill_index
+		set_temp_variable = { uc_exact_copy_tokens^uc_exact_fill_index = THIS }
+	}
 	set_temp_variable = { uc_exact_copy_index = constant:universal_cost_framework.zero }
 	all_of_scopes = {
 		array = uc_exact_copy_tokens
@@ -105,7 +135,13 @@ universal_cost_exact_multiply = {
 
 universal_cost_exact_trim_product = {
 	clear_temp_array = uc_exact_trim_tokens
-	resize_temp_array = { array = uc_exact_trim_tokens size = uc_exact_product^num value = THIS }
+	resize_temp_array = { uc_exact_trim_tokens = uc_exact_product^num }
+	all_of = {
+		array = uc_exact_trim_tokens
+		value = uc_exact_fill_value
+		index = uc_exact_fill_index
+		set_temp_variable = { uc_exact_trim_tokens^uc_exact_fill_index = THIS }
+	}
 	all_of_scopes = {
 		array = uc_exact_trim_tokens
 		set_temp_variable = { uc_exact_top = uc_exact_product^num }
@@ -132,7 +168,13 @@ universal_cost_exact_match_family = {
 		set_temp_variable = { uc_exact_source_mask_work = universal_cost_source_mask }
 		set_temp_variable = { uc_exact_quote_mask_work = universal_cost_quote_family_mask }
 		clear_temp_array = uc_exact_mask_tokens
-		resize_temp_array = { array = uc_exact_mask_tokens size = constant:universal_cost_framework.eligibility_bit_count value = THIS }
+		resize_temp_array = { uc_exact_mask_tokens = constant:universal_cost_framework.eligibility_bit_count }
+		all_of = {
+			array = uc_exact_mask_tokens
+			value = uc_exact_fill_value
+			index = uc_exact_fill_index
+			set_temp_variable = { uc_exact_mask_tokens^uc_exact_fill_index = THIS }
+		}
 		all_of_scopes = {
 			array = uc_exact_mask_tokens
 			set_temp_variable = { uc_exact_source_bit = uc_exact_source_mask_work }
@@ -160,7 +202,13 @@ universal_cost_exact_find_source = {
 	set_temp_variable = { universal_cost_source_found_index = constant:universal_cost_framework.invalid_index }
 	set_temp_variable = { uc_exact_find_index = constant:universal_cost_framework.zero }
 	clear_temp_array = uc_exact_find_tokens
-	resize_temp_array = { array = uc_exact_find_tokens size = global.universal_cost_source_ids^num value = THIS }
+	resize_temp_array = { uc_exact_find_tokens = global.universal_cost_source_ids^num }
+	all_of = {
+		array = uc_exact_find_tokens
+		value = uc_exact_fill_value
+		index = uc_exact_fill_index
+		set_temp_variable = { uc_exact_find_tokens^uc_exact_fill_index = THIS }
+	}
 	all_of_scopes = {
 		array = uc_exact_find_tokens
 		if = {
@@ -178,7 +226,7 @@ universal_cost_exact_find_source = {
 # The divisor has at most five limbs; trial is an integer in [0,999].
 universal_cost_exact_division_trial = {
 	clear_temp_array = uc_exact_trial_product
-	resize_temp_array = { array = uc_exact_trial_product size = constant:universal_cost_exact.division_limbs }
+	resize_temp_array = { uc_exact_trial_product = constant:universal_cost_exact.division_limbs }
 	set_temp_variable = { uc_exact_trial_index = constant:universal_cost_framework.zero }
 	set_temp_variable = { uc_exact_trial_carry = constant:universal_cost_framework.zero }
 	all_of_scopes = {
@@ -220,7 +268,13 @@ universal_cost_exact_division_trial = {
 universal_cost_exact_quantize_product = {
 	clear_temp_array = uc_exact_high
 	clear_temp_array = uc_exact_shift_tokens
-	resize_temp_array = { array = uc_exact_shift_tokens size = uc_exact_product^num value = THIS }
+	resize_temp_array = { uc_exact_shift_tokens = uc_exact_product^num }
+	all_of = {
+		array = uc_exact_shift_tokens
+		value = uc_exact_fill_value
+		index = uc_exact_fill_index
+		set_temp_variable = { uc_exact_shift_tokens^uc_exact_fill_index = THIS }
+	}
 	set_temp_variable = { uc_exact_shift_index = constant:universal_cost_framework.zero }
 	set_temp_variable = { uc_exact_sticky = constant:universal_cost_framework.zero }
 	all_of_scopes = {
@@ -241,11 +295,17 @@ universal_cost_exact_quantize_product = {
 	}
 	set_temp_variable = { uc_exact_scalar = uc_exact_quantum_scalar }
 	# Output storage belongs to this caller, not the extraction helper's frame.
-	resize_temp_array = { array = uc_exact_factor size = constant:universal_cost_framework.one }
+	resize_temp_array = { uc_exact_factor = constant:universal_cost_framework.one }
 	universal_cost_exact_scalar_to_ticks = yes
 	clear_temp_array = uc_exact_quantum
 	clear_temp_array = uc_exact_quantum_tokens
-	resize_temp_array = { array = uc_exact_quantum_tokens size = uc_exact_factor^num value = THIS }
+	resize_temp_array = { uc_exact_quantum_tokens = uc_exact_factor^num }
+	all_of = {
+		array = uc_exact_quantum_tokens
+		value = uc_exact_fill_value
+		index = uc_exact_fill_index
+		set_temp_variable = { uc_exact_quantum_tokens^uc_exact_fill_index = THIS }
+	}
 	set_temp_variable = { uc_exact_copy_index = constant:universal_cost_framework.zero }
 	all_of_scopes = {
 		array = uc_exact_quantum_tokens
@@ -253,15 +313,33 @@ universal_cost_exact_quantize_product = {
 		add_to_temp_variable = { uc_exact_copy_index = constant:universal_cost_framework.one }
 	}
 	clear_temp_array = uc_exact_remainder
-	resize_temp_array = { array = uc_exact_remainder size = constant:universal_cost_exact.division_limbs }
+	resize_temp_array = { uc_exact_remainder = constant:universal_cost_exact.division_limbs }
 	clear_temp_array = uc_exact_division_tokens
-	resize_temp_array = { array = uc_exact_division_tokens size = constant:universal_cost_exact.division_limbs value = THIS }
+	resize_temp_array = { uc_exact_division_tokens = constant:universal_cost_exact.division_limbs }
+	all_of = {
+		array = uc_exact_division_tokens
+		value = uc_exact_fill_value
+		index = uc_exact_fill_index
+		set_temp_variable = { uc_exact_division_tokens^uc_exact_fill_index = THIS }
+	}
 	clear_temp_array = uc_exact_search_tokens
-	resize_temp_array = { array = uc_exact_search_tokens size = constant:universal_cost_exact.search_steps value = THIS }
+	resize_temp_array = { uc_exact_search_tokens = constant:universal_cost_exact.search_steps }
+	all_of = {
+		array = uc_exact_search_tokens
+		value = uc_exact_fill_value
+		index = uc_exact_fill_index
+		set_temp_variable = { uc_exact_search_tokens^uc_exact_fill_index = THIS }
+	}
 	clear_temp_array = uc_exact_high_tokens
-	resize_temp_array = { array = uc_exact_high_tokens size = uc_exact_high^num value = THIS }
+	resize_temp_array = { uc_exact_high_tokens = uc_exact_high^num }
+	all_of = {
+		array = uc_exact_high_tokens
+		value = uc_exact_fill_value
+		index = uc_exact_fill_index
+		set_temp_variable = { uc_exact_high_tokens^uc_exact_fill_index = THIS }
+	}
 	clear_temp_array = uc_exact_units
-	resize_temp_array = { array = uc_exact_units size = uc_exact_high^num }
+	resize_temp_array = { uc_exact_units = uc_exact_high^num }
 	set_temp_variable = { uc_exact_high_index = uc_exact_high^num }
 	all_of_scopes = {
 		array = uc_exact_high_tokens
@@ -294,7 +372,7 @@ universal_cost_exact_quantize_product = {
 				subtract_from_temp_variable = { uc_exact_trial = uc_exact_parity }
 				divide_temp_variable = { uc_exact_trial = constant:universal_cost_framework.two }
 				set_temp_variable = { uc_exact_comparison = constant:universal_cost_framework.zero }
-				resize_temp_array = { array = uc_exact_trial_product size = constant:universal_cost_framework.one }
+				resize_temp_array = { uc_exact_trial_product = constant:universal_cost_framework.one }
 				universal_cost_exact_division_trial = yes
 				if = {
 					limit = { check_variable = { uc_exact_comparison = constant:universal_cost_framework.one } }
@@ -310,7 +388,7 @@ universal_cost_exact_quantize_product = {
 		}
 		set_temp_variable = { uc_exact_trial = uc_exact_best }
 		set_temp_variable = { uc_exact_comparison = constant:universal_cost_framework.zero }
-		resize_temp_array = { array = uc_exact_trial_product size = constant:universal_cost_framework.one }
+		resize_temp_array = { uc_exact_trial_product = constant:universal_cost_framework.one }
 		universal_cost_exact_division_trial = yes
 		set_temp_variable = { uc_exact_units^uc_exact_high_index = uc_exact_best }
 		set_temp_variable = { uc_exact_subtract_index = constant:universal_cost_framework.zero }
@@ -359,7 +437,13 @@ universal_cost_exact_quantize_product = {
 	}
 	clear_temp_array = uc_exact_product
 	clear_temp_array = uc_exact_units_tokens
-	resize_temp_array = { array = uc_exact_units_tokens size = uc_exact_units^num value = THIS }
+	resize_temp_array = { uc_exact_units_tokens = uc_exact_units^num }
+	all_of = {
+		array = uc_exact_units_tokens
+		value = uc_exact_fill_value
+		index = uc_exact_fill_index
+		set_temp_variable = { uc_exact_units_tokens^uc_exact_fill_index = THIS }
+	}
 	set_temp_variable = { uc_exact_copy_index = constant:universal_cost_framework.zero }
 	all_of_scopes = {
 		array = uc_exact_units_tokens
@@ -390,9 +474,15 @@ universal_cost_exact_ticks_to_scalar = {
 	}
 	else = {
 		# Padding happens after trimming; every following indexed read exists.
-		resize_temp_array = { array = uc_exact_product size = constant:universal_cost_exact.scalar_limbs }
+		resize_temp_array = { uc_exact_product = constant:universal_cost_exact.scalar_limbs }
 		clear_temp_array = uc_exact_scalar_tokens
-		resize_temp_array = { array = uc_exact_scalar_tokens size = constant:universal_cost_exact.scalar_limbs value = THIS }
+		resize_temp_array = { uc_exact_scalar_tokens = constant:universal_cost_exact.scalar_limbs }
+		all_of = {
+			array = uc_exact_scalar_tokens
+			value = uc_exact_fill_value
+			index = uc_exact_fill_index
+			set_temp_variable = { uc_exact_scalar_tokens^uc_exact_fill_index = THIS }
+		}
 		set_temp_variable = { uc_exact_decode_index = constant:universal_cost_exact.scalar_limbs }
 		set_temp_variable = { uc_exact_envelope_comparison = constant:universal_cost_framework.zero }
 		all_of_scopes = {
@@ -451,7 +541,7 @@ universal_cost_exact_quantize_scalar = {
 	set_temp_variable = { universal_cost_quantize_units_valid = constant:universal_cost_framework.one }
 	# Publish a zero unit count even for zero/reward inputs and warm callers.
 	clear_temp_array = uc_exact_units
-	resize_temp_array = { array = uc_exact_units size = constant:universal_cost_framework.one }
+	resize_temp_array = { uc_exact_units = constant:universal_cost_framework.one }
 	if = {
 		limit = { NOT = { has_variable = universal_cost_quantize_quantum } }
 		set_temp_variable = { universal_cost_quantize_quantum = constant:universal_cost_framework.default_rounding_quantum }
@@ -463,11 +553,17 @@ universal_cost_exact_quantize_scalar = {
 	if = {
 		limit = { check_variable = { universal_cost_quantize_amount > constant:universal_cost_framework.zero } }
 		set_temp_variable = { uc_exact_scalar = universal_cost_quantize_amount }
-		resize_temp_array = { array = uc_exact_factor size = constant:universal_cost_framework.one }
+		resize_temp_array = { uc_exact_factor = constant:universal_cost_framework.one }
 		universal_cost_exact_scalar_to_ticks = yes
 		clear_temp_array = uc_exact_product
 		clear_temp_array = uc_exact_scalar_price_tokens
-		resize_temp_array = { array = uc_exact_scalar_price_tokens size = uc_exact_factor^num value = THIS }
+		resize_temp_array = { uc_exact_scalar_price_tokens = uc_exact_factor^num }
+		all_of = {
+			array = uc_exact_scalar_price_tokens
+			value = uc_exact_fill_value
+			index = uc_exact_fill_index
+			set_temp_variable = { uc_exact_scalar_price_tokens^uc_exact_fill_index = THIS }
+		}
 		set_temp_variable = { uc_exact_copy_index = constant:universal_cost_framework.zero }
 		all_of_scopes = {
 			array = uc_exact_scalar_price_tokens
@@ -478,8 +574,8 @@ universal_cost_exact_quantize_scalar = {
 		set_temp_variable = { uc_exact_quantum_scalar = universal_cost_quantize_quantum }
 		set_temp_variable = { uc_exact_scalar_result = constant:universal_cost_framework.zero }
 		set_temp_variable = { uc_exact_scalar_valid = constant:universal_cost_framework.zero }
-		resize_temp_array = { array = uc_exact_units size = constant:universal_cost_framework.one }
-		resize_temp_array = { array = uc_exact_units_tokens size = constant:universal_cost_framework.one }
+		resize_temp_array = { uc_exact_units = constant:universal_cost_framework.one }
+		resize_temp_array = { uc_exact_units_tokens = constant:universal_cost_framework.one }
 		universal_cost_exact_quantize_product = yes
 		set_temp_variable = { universal_cost_quantize_valid = uc_exact_scalar_valid }
 		if = {
@@ -495,7 +591,7 @@ universal_cost_exact_quantize_scalar = {
 			add_to_temp_variable = { uc_exact_copy_index = constant:universal_cost_framework.one }
 		}
 		set_temp_variable = { uc_exact_scalar = constant:universal_cost_framework.one }
-		resize_temp_array = { array = uc_exact_factor size = constant:universal_cost_framework.one }
+		resize_temp_array = { uc_exact_factor = constant:universal_cost_framework.one }
 		universal_cost_exact_scalar_to_ticks = yes
 		universal_cost_exact_multiply = yes
 		set_temp_variable = { uc_exact_scalar_result = constant:universal_cost_framework.zero }
@@ -547,11 +643,17 @@ universal_cost_quote_exact = {
 			check_variable = { universal_cost_quote_family_mask > constant:universal_cost_framework.zero }
 		}
 		set_temp_variable = { uc_exact_scalar = universal_cost_quote_ordinary_cost }
-		resize_temp_array = { array = uc_exact_factor size = constant:universal_cost_framework.one }
+		resize_temp_array = { uc_exact_factor = constant:universal_cost_framework.one }
 		universal_cost_exact_scalar_to_ticks = yes
 		clear_temp_array = uc_exact_product
 		clear_temp_array = uc_exact_price_tokens
-		resize_temp_array = { array = uc_exact_price_tokens size = uc_exact_factor^num value = THIS }
+		resize_temp_array = { uc_exact_price_tokens = uc_exact_factor^num }
+		all_of = {
+			array = uc_exact_price_tokens
+			value = uc_exact_fill_value
+			index = uc_exact_fill_index
+			set_temp_variable = { uc_exact_price_tokens^uc_exact_fill_index = THIS }
+		}
 		set_temp_variable = { uc_exact_copy_index = constant:universal_cost_framework.zero }
 		all_of_scopes = {
 			array = uc_exact_price_tokens
@@ -559,7 +661,13 @@ universal_cost_quote_exact = {
 			add_to_temp_variable = { uc_exact_copy_index = constant:universal_cost_framework.one }
 		}
 		clear_temp_array = uc_exact_source_tokens
-		resize_temp_array = { array = uc_exact_source_tokens size = global.universal_cost_source_ids^num value = THIS }
+		resize_temp_array = { uc_exact_source_tokens = global.universal_cost_source_ids^num }
+		all_of = {
+			array = uc_exact_source_tokens
+			value = uc_exact_fill_value
+			index = uc_exact_fill_index
+			set_temp_variable = { uc_exact_source_tokens^uc_exact_fill_index = THIS }
+		}
 		set_temp_variable = { uc_exact_source_index = constant:universal_cost_framework.zero }
 		set_temp_variable = { uc_exact_primary_priority = constant:universal_cost_framework.priority_sentinel }
 		all_of_scopes = {
@@ -587,7 +695,7 @@ universal_cost_quote_exact = {
 					if = {
 						limit = { check_variable = { var = uc_exact_source_ratio value = constant:universal_cost_framework.basis compare = less_than } }
 						set_temp_variable = { uc_exact_scalar = uc_exact_source_ratio }
-						resize_temp_array = { array = uc_exact_factor size = constant:universal_cost_framework.one }
+						resize_temp_array = { uc_exact_factor = constant:universal_cost_framework.one }
 						universal_cost_exact_scalar_to_ticks = yes
 						universal_cost_exact_multiply = yes
 						add_to_temp_variable = { uc_exact_denominator_shift = constant:universal_cost_exact.ratio_denominator_limbs }
@@ -603,8 +711,8 @@ universal_cost_quote_exact = {
 			set_temp_variable = { uc_exact_quantum_scalar = universal_cost_quote_rounding_quantum }
 			set_temp_variable = { uc_exact_scalar_result = constant:universal_cost_framework.zero }
 			set_temp_variable = { uc_exact_scalar_valid = constant:universal_cost_framework.zero }
-			resize_temp_array = { array = uc_exact_units size = constant:universal_cost_framework.one }
-			resize_temp_array = { array = uc_exact_units_tokens size = constant:universal_cost_framework.one }
+			resize_temp_array = { uc_exact_units = constant:universal_cost_framework.one }
+			resize_temp_array = { uc_exact_units_tokens = constant:universal_cost_framework.one }
 			universal_cost_exact_quantize_product = yes
 			set_temp_variable = { universal_cost_quote_valid = uc_exact_scalar_valid }
 			if = {
