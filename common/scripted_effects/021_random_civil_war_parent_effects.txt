@@ -4972,25 +4972,13 @@ event021_parent_prepare_event6_adapter_actor = {
 			set_variable = { independence_wave_setup_force_level = constant:liberation_force_level.high_chaos }
 			set_variable = { independence_wave_setup_chaos_band = constant:independence_wave_chaos_band.world_collapse }
 		}
+		# Territory level follows the states the carrier actually receives; severity only drives force and chaos band.
 		if = {
-			limit = {
-				check_variable = { random_civil_war_opening_state_count = constant:random_civil_war_value.two }
-				OR = {
-					check_variable = { random_civil_war_opening_severity = constant:random_civil_war_severity.severe }
-					check_variable = { random_civil_war_opening_severity = constant:random_civil_war_severity.critical }
-				}
-			}
+			limit = { check_variable = { random_civil_war_opening_state_count > constant:random_civil_war_value.one } }
 			set_variable = { independence_wave_setup_territory_level = constant:liberation_territory_level.compact }
 		}
 		if = {
-			limit = {
-				check_variable = {
-					var = random_civil_war_opening_state_count
-					value = constant:random_civil_war_value.two
-					compare = greater_than
-				}
-				check_variable = { random_civil_war_opening_severity = constant:random_civil_war_severity.critical }
-			}
+			limit = { check_variable = { random_civil_war_opening_state_count > constant:random_civil_war_value.two } }
 			set_variable = { independence_wave_setup_territory_level = constant:liberation_territory_level.extended }
 		}
 		set_variable = { independence_wave_territory_level = independence_wave_setup_territory_level }
