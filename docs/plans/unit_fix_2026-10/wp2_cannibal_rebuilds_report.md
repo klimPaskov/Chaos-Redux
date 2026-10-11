@@ -204,3 +204,34 @@ Remaining defects and limits for this model:
 - The move, defend and retreat actions still report 39, 13 and 23 world-speed transitions (up to 0.58 u per frame, 27.4 degrees per frame in the move against the 15 degree limit), the attack, support_attack, training and death gates pass only through declared windows (training covers 8-102 of 166 frames), and move has one measured plant (right foot, 0.0 s) with the second footstep a half-cycle estimate.
 - The in-game re-film with locked crop was not done (capture work).
 
+
+## WP2 gripping hands and floor clearance (11 Oct 2026, second pass)
+
+Disposition: `implemented` for the four units below; in-game appearance remains the user's validation.
+
+**What changed for all four units**
+
+- Both hands of every unit now carry twelve finger bones (thumb 2, index 3, middle 3, ring 2, pinky 2), so each skeleton has 48 bones, inside the 50-bone limit of the engine's bone array (`matBones[50]` in `pdxmesh.shader`).
+- The fingers are found on the hand mesh itself (four finger tips by component growth along the hand axis, the thumb as the component that stays separate at a lower threshold) and skinned over the hand's own weights with smooth hat weights along each finger.
+- Every item sits against the palm instead of passing through it: the item is moved rigidly to the palm-side grip (diagonal grip axis 20 degrees from the lateral axis, on the palm surface at the item's measured shaft radius), and the hand rotation keys of all eight actions are counter-rotated by the same rotation, so each item keeps its world orientation in every action.
+- The fingers are curled onto the shaft by measured contact with the item surface, and all twelve bones are keyed on every frame of every action; the off hand of a two-hand item follows its station on the shaft and its measured radius.
+- The Feast Guard and Feast Cohort items previously ran along the finger direction of the hand (the handle parallel to the fingers); they now lie across the palm.
+- The exported bytes pass the delivery gates for all eight roles of each unit with reimport proofs.
+  The gate gained one exemption for this: finger leaf bones are not held to the per-frame world translation limit (their head moves with the wrist and the finger length lever), while their rotation and local limits still apply (`animation_delivery_checks.py`, with a regression test).
+- The entity events were not changed: the item tip speed peaks of the attack and support attack sit within 0.04 seconds of where they were before.
+
+| Unit | Item floor clearance after (lowest point of every item, every frame of every action) | Contact evidence |
+|---|---|---|
+| `cannibal_scavenger_warband` | defend 0.02 u, support attack 0.02 u, death 0.02 u, all others above 0.5 u (the butt of the 2.3 m polearm went 21 to 24 cm below the floor before) | off hand within 0.07 u of the shaft in idle, move, attack, retreat, training and death (retreat exactly on it); mean 0.065 u and worst 0.33 u in the low defend, worst 0.22 u in the support attack |
+| `cannibal_feast_guard` | 0.02 u in the spinning support attack (tilting each cleaver about its wrist), above 0.2 u elsewhere | each cleaver rigid in its own hand |
+| `cannibal_feast_cohort` | 0.02 u in the support attack and training, above 0.05 u elsewhere | spear and chain hook each rigid in their own hand |
+| `cannibal_island_reavers` | 0.03 u in support attack and death (the harpoon is turned about the wrist; the off hand is not aligned in the death) | off hand on the shaft through the actions |
+
+The per-frame evidence is in each job's `blender/checkpoints/wp2d_04_keyed.blend`, the hold chain logs and `evidence/wp2c/` (overview and grip contact sheets before and after).
+
+**Remaining and limits**
+
+- The right thumb of the Scavenger Warband still overlaps the shaft slightly at rest-pose curl (measured gap -0.055 u); the other fingers touch the shaft surface with gaps below 0.01 u.
+- The finger curl is constant per hand over an action (the off hand varies with the shaft radius); there is no extra squeeze on the strikes.
+- The hold keeps the item at its previous world orientation but moves it by up to the palm offset (about 0.4 u) toward the palm, so the weapon sits slightly differently against the body than before.
+- Provider hands have no finger articulation and their finger geometry is coarse (about 45 vertices per finger tip), so the grip reads at gameplay distance and is only approximate in a close-up.

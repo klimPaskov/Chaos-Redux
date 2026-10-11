@@ -253,3 +253,34 @@ Expected recovery result: stone grinding/settling, without the old shared worksh
 No showcase clip or video was recorded, rendered or published by WP1.
 - Per-model metrics `docs/plans/unit_fix_2026-10/per_model_delivery_metrics.json` - SHA-256 `89c6d0d0954719a09a8f9dd66eafbd5f3f42e3d2a28b4c29ff29b6f067b9e365`.
 - Package held-source report `docs/plans/unit_fix_2026-10/wp1_africa_audio_needs.md` - SHA-256 `01e1d7a045c1f48228934a39f05f433600b0d4fa0726f21336b3c3a74e6a6a12`.
+
+
+## WP1 actions and specular maps (11 Oct 2026)
+
+Disposition: `implemented` for the action and specular parts below; geometry, prop islands and the props themselves remain open (see each unit).
+
+Route: the seven installed meshes were kept byte for byte (their bodies are split PDX meshes that fail the mesh manifold gate, so no mesh could be re-exported); the eight installed actions of each unit were imported from the reimport proof blends into a working scene with the installed mesh, repaired, exported through the adapter, gated on the exported bytes with reimport proofs and installed with hash parity.
+The repair of every role is the same gate pass: sign continuity, speed-limited re-timing (each over-limit stretch gets as many output frames as it exceeds the joint step limits instead of being smoothed away), residual deglitch, loop closure for every state that loops or chains into itself, and floor grounding.
+Moves are declared as in-place cycles because the provider-derived walks slide their planted foot at ground speed, so soles cannot be measured (the same declaration the WP2 and WP3 units use).
+The entity events of every re-timed action follow the stretched time axis (the old event frame is mapped through the re-timing).
+
+| Unit | Authored changes | Frames (idle, move, attack, defend, support, retreat, training, death) before to after |
+|---|---|---|
+| `gorilla_heavy_infantry` | Support attack hips rotation soft-limited to 55 degrees from the standing hunch and eased over frames 70 to 82 (it folded 100 degrees in four frames and stayed folded 25 frames with the head at the floor); attack and training pops (3 u hand jump at attack frame 32) re-timed instead of smoothed; idle gains a 2.2 degree breathing cycle, shoulder roll, weight shift and hammer tap; specular regraded to matte organic with metal only where it was present | 264/29/120/52/120/53/56/99 to 264/35/171/55/149/53/89/135 |
+| `pan_sappers` | Re-timed attack, support attack and death; idle gains breathing, two weight shifts, shoulder roll and an over-shoulder glance | 237/87/120/44/120/39/232/81 to 237/87/120/44/90/39/235/108 |
+| `stone_cohorts` | Training (285 over-limit steps), attack, support attack and death re-timed; specular rebuilt (stone gloss alpha 38 to 72, metal only on the halberd island) | 51/53/120/42/120/42/111/106 to 51/61/145/42/140/42/240/108 |
+| `riverborn` | Hips rotation soft-limited to 32 degrees from forward in attack and support attack (41 and 105 degrees before); all actions re-timed; specular regraded | 300/34/120/73/120/39/91/67 to 300/36/117/90/136/39/117/85 |
+| `forest_giants` | Attack authored with a 38 degree forward bend and 20 degree hip turn on the wind-up, a six-frame hold and a 20 degree follow-through the other way; other actions re-timed; specular regraded | 340/166/120/46/120/28/91/106 to 340/169/135/44/152/35/133/107 |
+| `oracle_recon` | Move cut from the 715-frame pausing walk to a 40-frame two-plant stride (events at the half-cycles); idle hips soft-limited to 22 degrees with the look-around on neck and head; specular regraded | 281/715/120/81/120/50/91/68 to 281/40/115/91/104/51/119/69 |
+| `plague_carriers` | Attack pitches and shifts the body (up to 12 degrees) with the neck dropped 20 degrees and ears pinned; idle gains neck bob, breath, hip shift, tail and ear cycles; move and retreat leg flips (47 degrees) re-timed; root motion measured on the root bone | 80/41/60/50/70/41/80/70 to 80/63/60/50/70/68/80/58 |
+
+The exported bytes of all seven units pass the delivery gates for all eight roles with reimport proofs; the sound files and sound-effect variants of the same day come from the separate audio rework recorded in `wp1_sound_attribution.md`.
+
+**Remaining and limits**
+
+- Geometry: none of the seven meshes passes the manifold gate (boundary edges 88 to 322 at 0.0005), so the planned weld, repack and prop-island repaint were not done; the pan sappers' flask, charge, shovel and cleaver and the riverborn spear through the torso need rebuilt geometry with separate rigid props (the props are fused into the body shell).
+- Attack lengths grew where a strike had been a one-frame pop (gorilla attack 5.7 s, support attack 5 s, stone training 8 s); a shorter attack needs hand-authored strikes or declared strike windows.
+- The gorilla move still has the provider's two left plants, the pan sappers move was not cut to a two-plant loop and the stone cohorts have no left-hand grip on the halberd shaft.
+- The forest giant axe head and haft were not enlarged, the oracle staff point and light event were not added, the plague carriers' normal map and joint weights were not rebuilt.
+- Specular regrades use the existing metal channel as the metal mask because no class masks exist for these maps; they were applied to the delivered BC3 maps and re-encoded with ten mips.
+- The installed-mesh audit over the delivered files reports 7 of 8 roles passing and the move role as needs-review (foot contacts unmeasured) for gorilla, pan sappers, stone cohorts, riverborn, forest giants and oracle recon; the audit has no in-place declaration, and the per-action exported-byte gates with the declaration passed. The plague carriers pass all eight roles. The four WP2 cannibal units and the five WP3 zombie units pass all eight roles.

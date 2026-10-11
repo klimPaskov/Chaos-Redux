@@ -373,3 +373,29 @@ The parent owns package-manifest/handoff integration and final acceptance report
 - `docs/plans/unit_fix_2026-10/audio_evidence/recovery_batch.json` - SHA-256 `148ffb5a39ce96a1ee6cd532b72dc5426ff5d3abbeccb4afe5a7eba734e533d8`.
 - Per-model metrics `docs/plans/unit_fix_2026-10/per_model_delivery_metrics.json` - SHA-256 `89c6d0d0954719a09a8f9dd66eafbd5f3f42e3d2a28b4c29ff29b6f067b9e365`.
 - Package held-source report `docs/plans/unit_fix_2026-10/wp3_zombies_audio_needs.md` - SHA-256 `933b5634ee0c60871a9bb1d8a9788d6413042d537b4e14aaae1a4ad07da48b0e`.
+
+
+## WP3 remainder (11 Oct 2026, second pass)
+
+Disposition: `implemented` for the items below; skeletons and actions of the weight repairs are unchanged, so only the meshes were re-exported (geometry gate pass and reimport proofs for the worst roles).
+
+**demonic_zombies**: the wing membranes were skinned hard to separate struts and to the arm, so the edges across the shoulder and wing root stretched up to two units.
+The weights across that junction are now blended over neighbouring bones in two rounds of region smoothing driven by the measured edge growth.
+Edges growing more than 0.3 units: death frame 46 from 234 to 12 (acceptance under 50), training frame 25 from 111 to 1, support attack frame 43 from 132 to 1, move frame 16 from 78 to 0; the worst frame left anywhere is 19 edges (death frames 29, 63 and 65).
+
+**infected_zombies, undead_zombies, necrotic_zombies**: the stretched edges were the junctions between the coat or rag strips and the arms, spine and hips.
+The same region smoothing was applied (infected: idle frame 46 from 50 to 20 edges, attack frame 75 from 37 to 6, defend frame 64 from 39 to 3, support attack frame 27 from 44 to 9; undead: attack frame 45 from 25 to 5, death frame 13 from 18 to 13; necrotic: attack frame 42 from 12 to 4, support attack frame 24 from 7 to 2).
+The coat hem, armpit and rag weights are therefore repaired by measured edge growth rather than by moving a fixed fraction of weight onto the thighs.
+
+**parasitic_zombies**: the tentacle tubes around the shoulders and back were skinned to the shoulder, arm and spine bones and moved as one lump.
+The thin flesh structures (flesh colour from the delivered diffuse and a measured wall thickness under 6 cm by inward ray casts) are split into eight bundles by direction from their root hub; each bundle has its own three-bone chain placed at the centroids of its tube slices and parented to the body bone that carried its root, and the bundle vertices are skinned over the chain with their original weights fading out along the first segment.
+The skeleton grows from 24 to 48 bones.
+Every action carries follow-through on the 24 chain bones: each segment trails the body bone that carries it through a first-order low-pass of that bone's real rotation (segment lags 0.5, 0.32 and 0.22 per frame, overshoot 1.8), so the tentacles lag behind every whip and lunge by three to five frames, plus a slow per-bundle writhe (8 to 11 degrees in the idle, half of that in the other actions) whose cycle count divides the action length so the loops close.
+The weights were then blended until no frame has more than 40 edges growing over 0.3 units (attack frame 55 from 728 to 11, support attack frame 23 from 696 to 21, death frame 25 from 462 to 23).
+The exported bytes pass the delivery gates for all eight roles with reimport proofs (loop seams of the tentacle bones under 2 degrees).
+
+**Remaining and limits**
+
+- The tubes were not cut out of the host mesh: they remain fused to the shell and move as eight bundles, not as individual tentacles, and the tube vertices in small components (about 1,000 of the 5,100 tube vertices) and the vertices within 0.35 units of the root hub are not in any bundle.
+- The infected idle still has 20 edges over 0.3 units at frame 46 (the scratch lifting the arm to the head), against the target of 12.
+- The other WP3 items listed as open in the 11 Oct section above (mutant attack, wrist weights of the parasite, the demonic elbow placement, the sourced creature and cough sounds) are unchanged by this pass.
