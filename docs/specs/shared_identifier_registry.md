@@ -35,7 +35,7 @@ SCN-020 through SCN-033 are reserved for the named proposed designs below; they 
 | SCN-015 | Missile Age | Event 032 | implemented collision incumbent |
 | SCN-016 | Global Jihad | Event 031 | implemented |
 | SCN-017 | None | None | reserved by comment owner undocumented |
-| SCN-018 | The Fracture Cascade | Event 021 | implemented alias |
+| SCN-018 | Unregistered | None | Fracture Cascade removed by user direction on 2026-10-13 |
 | SCN-019 | Assassin Network | Event 039 | implemented |
 | SCN-020 | All Times at Once | Event 030 | Reserved for proposed design |
 | SCN-021 | Believers vs Nonbelievers | Event 038 | Reserved for proposed design |

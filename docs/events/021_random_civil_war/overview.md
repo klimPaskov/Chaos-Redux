@@ -1,12 +1,14 @@
 # Event 021 Random Civil War
 
+Current scope, 2026-10-13: the user directed removal of Fracture Cascade events because interface fracturing is cosmetic. SCN-018, its launcher, the cascade report/news, broad random-country registration, and Critical new-war dispatch are absent. Ordinary civil-war mechanics and registered-crisis reviews remain. Dated scenario and cascade acceptance notes below and in `acceptance_evidence.md` describe historical source, superseded for those removed surfaces.
+
 Current source status, 2026-10-06: the takeover authority, pressure, exposure, campaign response and history-selection repairs are implemented.
 The authoritative pass report is `docs/plans/021_random_civil_war_plans/takeover_status_2026-10-06.md`.
 State Authority changes once per control transition and follows territorial losses, while temporary pressure relief is bounded and fades.
 Neighbour containment lowers exposure, live sides can specialize their campaign, and governments can challenge opposition sponsors.
 The country category keeps six selectable actions and uses its existing static presentation.
 Historical crisis entries show their own outcome summary rather than current live values.
-The event and SCN-018 remain `Needs Testing`, with live acceptance and incomplete MCP visual and probability evidence reported separately.
+The event remains `Needs Testing`, with live acceptance and incomplete MCP visual and probability evidence reported separately.
 
 This document is the canonical implementation summary for Event 021 Random Civil War.
 
@@ -30,13 +32,13 @@ The active-war Evolution I review is implemented in source on 2026-10-04 and doc
 
 Event 021 is a Minor Repeatable event with chaos level 1, the root `chaosx.nr21.1`, and the stable event id `21`.
 
-The automatic event and The Fracture Cascade are enabled for the `Needs Testing` phase after the one-time runtime initializer seeds `random_civil_war_rework_ready`. Event 021 is included in `event_log_event_is_reworked_default_enabled`, so new settings initialization does not place it in the default-disabled rework queue. This test release does not certify the final acceptance gates.
+The automatic event is enabled for the `Needs Testing` phase after the one-time runtime initializer seeds `random_civil_war_rework_ready`. Event 021 is included in `event_log_event_is_reworked_default_enabled`, so new settings initialization does not place it in the default-disabled rework queue. This test release does not certify the final acceptance gates.
 
 The target pool is fail-closed, so an empty or invalid target pool renders `N/A`, records a skip reason, and contributes no live automatic weight.
 
 Event 021 is a normal event-system package and does not add a custom GUI, animated asset, super-event, 3D model, or whole-world daily, weekly, or monthly loop.
 
-The package uses the normal Event Log, Event Details, Settings, decision, mission, on-action, and scenario surfaces already shared by Chaos Redux.
+The package uses the normal Event Log, Event Details, Settings, decision, mission, and on-action surfaces already shared by Chaos Redux.
 
 The parent transaction is in `common/scripted_effects/021_random_civil_war_parent_effects.txt` and the reusable state layer is in `common/scripted_effects/021_random_civil_war_effects.txt`.
 
@@ -68,9 +70,9 @@ The state refresh publishes the current pressure band, authority band, summary, 
 
 The bounded scheduler is entered from the existing Chaos global-host pulse through `event021_parent_global_scheduler_pulse`.
 
-The scheduler registers only a bounded sample of normal human countries, reviews the persistent registered array, and launches a bounded critical queue.
+The scheduler reviews the persistent array of countries already registered by explicit civil-war paths.
 
-Broad registration, due-country openings, Critical queue admission, and Critical launches require active Evolution III. Earlier stages use the host pulse only to maintain countries already registered by an explicit live crisis, and disabling Global Fracture empties the Critical queue.
+Evolution III retains the due-date, capacity, war-ended, and reconstruction review state for registered crises. The host pulse does not register random countries or launch new civil wars from the Critical queue.
 
 Each country carries its own due date, pressure memory, recurrence memory, and generation information, so review work does not require an unrestricted world scan.
 
@@ -134,7 +136,7 @@ Before the opening engine call, Event 021 creates an aligned front-plan receipt 
 
 The bounded review reads the durable actor registry by crisis ID when deciding whether internal fronts have resolved. Ordinary secondary closure stages all eligible registered actors before any one actor unregisters, then rebuilds the host's secondary receipt from surviving sibling fronts. Event 006 secondary review and finalization likewise stage registered package actors, retain their package identity, and rebuild the host's live-front receipt.
 
-Registration and priority binding consume the matching plan row by front id. Optional starters mark their row rejected when a frozen receipt cannot materialise, and settlement review does not report all internal fronts resolved while a plan row remains pending. Rollback and final cleanup clear the complete plan ledger. Fracture Cascade freezes the same variable-length optional-row ledger per selected country, reserves mandatory fronts before target selection, and replays only the stored candidates without post-mutation rerolls.
+Registration and priority binding consume the matching plan row by front id. Optional starters mark their row rejected when a frozen receipt cannot materialise, and settlement review does not report all internal fronts resolved while a plan row remains pending. Rollback and final cleanup clear the complete plan ledger.
 
 The Event 006-owned `independence_wave_initialize_event021_adapter_registry` and `independence_wave_capture_event021_adapter_actor` effects publish the complete package allowlist and matching carrier identity consumed by Event 021.
 
@@ -174,7 +176,7 @@ When a primary or additional Event 006 front resolves, Event 021 closes only its
 
 ## Evolution records and Global Fracture
 
-The Event 021 evolution records are `Gathering Fronts`, `Regional Exposure`, and `Global Fracture`.
+The public Event 021 evolution records are `Gathering Fronts` and `Regional Exposure`.
 
 The parent transition wrappers write each record once through the shared Event Log and Event Details evolution registry.
 
@@ -196,7 +198,7 @@ Evolution III is the nonterminal Global Fracture state.
 
 Global Fracture moves countries through Stable, Exposed, Fractured, and Critical pressure bands.
 
-Due-country reviews, the bounded Critical queue, active-theater caps, front caps, nested-crisis checks, successor grace, recurrence memory, and generation caps remain authoritative. Automatic, queue, and manual-scenario targets all fail closed during successor grace; a human Event 006 country becomes eligible again only after grace expires and another valid route exists.
+Due-country reviews, active-theater caps, front caps, nested-crisis checks, successor grace, recurrence memory, and generation caps remain authoritative. Ordinary automatic targets fail closed during successor grace. A human Event 006 country becomes eligible again only after grace expires and another valid route exists.
 
 Global Fracture does not set `world_end` and does not turn the scheduler into an unrestricted world iteration.
 
@@ -285,33 +287,11 @@ The Wars cluster retains one pacing event and does not give Event 021 a second u
 
 Manual forcing bypasses cluster-only roll gates but still requires Event 021’s normal fireability, reservation, plan, route, and cleanup checks.
 
-## The Fracture Cascade scenario
-
-The manual scenario is The Fracture Cascade with verified raw id 18 and public catalog id `SCN-018`.
-
-The four types are Political Fracture, Independence Cascade, Command Collapse, and Universal Fragmentation.
-
-The four intensities are Low, Medium, High, and Maximum.
-
-Low, Medium, and High use bounded shares of eligible normal human countries with intensity-specific target tickets, route, and force limits. Low favours minors, Medium is neutral, and High makes majors common; the ladder is centralized in `random_civil_war_scenario_target_weight` before shared crisis-load adjustment.
-
-After a country is drawn, the scenario removes all of its remaining tickets by scanning the current pool length, so its major and load weighting applies to the initial draw without allowing it to occupy multiple country slots in one run.
-
-Maximum freezes every country that passes the normal-human, topology, route-type, individual-crisis-load, bespoke-route, and opening-state preflight into one confirmation-time pool and visits every frozen row exactly once, while still excluding actual nonhuman countries. Mandatory-front reservations are sized from that complete roster and its same-tag versus ordinary topology, plus any normal front capacity that remains; this scenario-local envelope does not change the shared normal front cap. The run records eligible, requested, preflight-selected, frozen commit-eligible, and preflight-skipped counts separately; it never replaces an unavailable plan after preparation. Countries created by an earlier launch cannot join that same scenario run.
-
-Scenario setup is immediate and uses the same reservation, connected-state, force, actor, front, settlement, and cleanup transaction as ordinary play.
-
-No measured one-frame performance failure exists, so the implementation does not add a delayed seven-day fallback.
-
-Scenario setup marks its origin and disqualifies achievements without changing Event 006 fired state, evolution state, league state, or ordinary automatic weights.
-
-Scenario cleanup clears bypass, target, reservation, front, theater, mission, idea, and temporary registry state even when a setup attempt rolls back.
-
 ## Event Log and Event Details
 
-The entry, opening, multi-front, exposure, settlement, reconstruction, Event 006, same-tag, cleanup, evolution, and scenario callback events are rooted in `events/021_random_civil_war.txt`.
+The entry, opening, multi-front, exposure, settlement, reconstruction, Event 006, same-tag, cleanup, and evolution callback events are rooted in `events/021_random_civil_war.txt`.
 
-Event 021 has an Event Log actor mapping, type/name/stage localisation, payload detail text, and three evolution records in the shared log effects and scripted localisation.
+Event 021 has an Event Log actor mapping, type/name/stage localisation, payload detail text, and two public evolution records. Evolution III retains only its hidden lifecycle and capacity state.
 
 Event Details uses the same current phase, severity, authority, pressure, target, front, and settlement payloads as the decision surface.
 
@@ -331,11 +311,11 @@ Event 021 uses static art only.
 
 The opening report picture is `gfx/event_pictures/021_random_civil_war/report_event_021_random_civil_war_opening.dds`.
 
-The multi-front and Global Fracture news pictures are `news_event_021_multi_front_war.dds` and `news_event_021_global_fracture.dds` in the same folder.
+The multi-front news picture is `news_event_021_multi_front_war.dds` in the same folder. The original Global Fracture art and sprite remain archived in place without an event consumer.
 
 The category picture and icon, decision sprites, mission sprites, idea sprites, and achievement triplets are registered in `interface/021_random_civil_war.gfx`.
 
-The current GFX file contains 40 unique Event021-owned texture references, and the owned runtime audit resolves and visually inspects all 40. Ordinary country events use the report-event family, while the two news events retain their dedicated news-event pictures. The strict DDS, source-equivalence, consumer, and orphan evidence for those owned textures is recorded in `docs/assets/021_random_civil_war/validation/visual_asset_audit_2026-09-01.md`.
+The current GFX file contains 40 unique Event021-owned texture references, and the owned runtime audit resolves and visually inspects all 40. Ordinary country events use the report-event family, while the multi-front news event retains its dedicated news-event picture. The strict DDS, source-equivalence, consumer, and orphan evidence for those owned textures is recorded in `docs/assets/021_random_civil_war/validation/visual_asset_audit_2026-09-01.md`.
 
 Decision sprites are `decision_021_secure_arsenals`, `decision_021_capital_defense`, `decision_021_loyalty_review`, `decision_021_opposition_depot`, `decision_021_relief_corridor`, `decision_021_emergency_settlement`, and `decision_021_reconstruction`.
 
@@ -347,7 +327,7 @@ The six achievement triplets are `hold_the_center`, `no_state_left_behind`, `a_f
 
 The current GFX consumer reads the achievement states from root `gfx/achievements/021_random_civil_war_*.dds`; the older interface-achievement path remains only as historical handoff provenance.
 
-All player-facing strings are in `localisation/english/021_random_civil_war_l_english.yml`, including the N/A fallback, category summaries, decisions, missions, event details, evolution records, scenario labels, and achievement text.
+All player-facing strings are in `localisation/english/021_random_civil_war_l_english.yml`, including the N/A fallback, category summaries, decisions, missions, event details, evolution records and achievement text.
 
 The static art handoff records generated event art and DDS round-trip evidence.
 
@@ -397,7 +377,7 @@ No Event 021-owned character package, custom GUI, animation, super-event, or 3D 
 The requested inherited Event 006 asset audit includes grounded portraits, flags, and formable assets; unresolved identity, provenance, style, wiring, and package-reachability rows are not completed assets.
 The missing KUB Ivanis full-size portrait is routed through the required portrait workflow, and a sourced placeholder cannot be certified as a styled final.
 
-No delayed scenario setup fallback was added because no measured performance failure justified it.
+
 
 The MCP event graph is selected-event evidence rather than a claim that every unrelated workspace helper has been fully projected. A current focus inspection and render successfully parsed and rendered all 184 Event 006 focuses with zero tree-local diagnostics at revision `55a900cb833aadee310a6c5b0f480af8cf0ea73522de74cef01f334788f351ae`; its sole warning concerns vanilla `continuous_restrict_freedom_desc` and is outside Event 021 ownership.
 

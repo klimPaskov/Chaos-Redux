@@ -232,48 +232,11 @@ The fictional jihadist branch exists only through Event 31's Evolution IV and la
 
 The public scenario and status text is owned by `localisation/english/031_terrorist_attack_l_english.yml`. The shared registry, sort orders, type controls, launch gate, and dispatcher are in `common/script_constants/chaosx_triggerable_scenarios_constants.txt`, `common/scripted_effects/chaosx_triggerable_scenarios_effects.txt`, `common/scripted_triggers/chaosx_triggerable_scenarios_triggers.txt`, and `common/scripted_localisation/chaosx_scripted_localisation_scenarios.txt`.
 
-### SCN-018: The Fracture Cascade
-
-The Fracture Cascade owns raw scenario id `18`, the verified free public catalog row `SCN-018`, and the Event 021 manual scenario adapter.
-
-The scenario exposes four types: Political Fracture, Independence Cascade, Command Collapse, and Universal Fragmentation.
-
-Each type exposes Low, Medium, High, and Maximum intensity.
-
-Political Fracture prioritizes ideological uprisings, rival legal governments, coalition breakdowns, constitutional disputes, and seizures of central authority.
-
-Independence Cascade prioritizes established independence movements, regional secessions, recognition disputes, and wars of separation.
-
-Command Collapse prioritizes command schisms, military districts, arsenal seizures, officer disloyalty, and military seizures of central authority.
-
-Universal Fragmentation combines the supported political, legal, military, regional, independence, and successor-state routes wherever each target can sustain a conflict.
-
-Low, Medium, and High commit bounded shares of eligible normal human countries with intensity-specific severity, front, force, and exposure limits.
-
-Maximum commits every eligible normal human country through the explicit scenario-owned all-country pass required by the Event 021 specification.
-
-Actual nonhuman countries remain outside every intensity.
-
-The scenario setup is immediate and reuses Event 021’s target reservation, connected-state plan, viable capital or remnant, dynamic force allocation, actor adapter, front registry, settlement, reconstruction, and cleanup contracts.
-
-The scenario does not set `world_end`, alter Event 006 fired or league state, advance Event 006 evolutions, or enroll a generated package in Event 006 league systems.
-
-Scenario setup records a scenario origin and disqualifies normal-campaign achievement receipts.
-
-The launch adapter has no delayed fallback because no measured one-frame performance failure justified a seven-day setup window.
-
-The public name, four type labels, four type descriptions, four intensity impact strings, `SCN-018` label, confirmation text, unavailable text, and setup status text are in `localisation/english/021_random_civil_war_l_english.yml`.
-
-The source implementation is in `common/script_constants/chaosx_triggerable_scenarios_constants.txt` and `common/scripted_effects/chaosx_triggerable_scenarios_effects.txt`, with the Event 021 commit path in `common/scripted_effects/021_random_civil_war_parent_effects.txt`.
-
-The implementation is source- and MCP-inspection-backed.
-No live HOI4 launch or save-state acceptance is claimed by the agent.
-
 ### SCN-019: Assassin Network
 
 The authoritative workbook reserves `SCN-019` for Assassin Network at `Scenarios!A14`.
 The user authorized the next verified free shared ID on 2026-10-03 after live QA found the scenario missing and its provisional label colliding with Fallout.
-Raw ID 14 remains Fallout, 17 remains reserved, and 18 remains The Fracture Cascade.
+Raw ID 14 remains Fallout, 17 remains reserved, and 18 is unregistered.
 
 Assassin Network registers in the shared global ID and name-sort arrays and in all four sortable views.
 The shared entry click selects ID 19; existing type, intensity, confirmation, cancel, and launch controls remain the entry path.

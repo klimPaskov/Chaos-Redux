@@ -2,15 +2,18 @@
 
 This file documents the parent execution effects in `021_random_civil_war_parent_effects.txt`.
 
-The parent layer is the only owner of target-to-actor planning, route selection, connected-region planning, Event 006 and same-tag adapters, front publication, scheduler dispatch, evolution record dispatch, settlement callbacks, scenario commits, and final cleanup.
+Current scope, 2026-10-13: SCN-018 and its manual launcher, callbacks `.15`/`.19`, cascade report/news, broad random-country registration, and Critical new-war callback `.18` are removed by user direction. The scheduler still maintains registered civil wars and reconstruction. Evolution III state, hidden `.13`, capacity calculation, and ordinary opening weights remain. Internal scenario receipt and cleanup helpers are dormant compatibility code with no public launcher. Historical scenario contracts below do not describe an available scenario.
+
+
+The parent layer is the only owner of target-to-actor planning, route selection, connected-region planning, Event 006 and same-tag adapters, front publication, scheduler dispatch, evolution record dispatch, settlement callbacks, and final cleanup.
 
 ## Runtime contract
 
 `event021_parent_initialize_global_runtime` seeds the global arrays from a bounded existing-country scope and initializes the rework-ready release gate fail-closed exactly once per runtime generation. The owner can deliberately publish the ready flag only after final certification; routine registration and scheduler calls do not revoke that publication.
 
-`event021_parent_global_scheduler_pulse` runs only from the existing Chaos global host pulse. Evolution III gates its capped broad-country registration, due-country openings, and Critical queue launches; earlier stages use the same bounded review only for countries explicitly registered by live crisis paths.
+`event021_parent_global_scheduler_pulse` runs only from the existing Chaos global host pulse. It visits only countries explicitly registered by live crisis paths and does not launch new wars from the Critical queue.
 
-Critical queue admission is independent from current theater capacity. A launch claims the queue row with a global lock and `random_civil_war_critical_launch_pending`; hidden callback `chaosx.nr21.18` owns the immediate opening attempt and records `launched`, `stabilized`, or `invalidated` before dequeueing. A still-valid Critical target remains queued after a failed preflight, while stale or recovered rows are removed with an exit receipt. Separate centralized admission and launch budgets bound both operations in one pulse.
+Critical queue receipts remain internal review state. The scheduler removes invalid rows and retains registered-crisis lifecycle work without claiming or dispatching a new opening.
 
 `event021_parent_process_evolution_schedule` calls each evolution wrapper once when its shared unlock is present and its record is not yet written.
 Before any sample or dispatch it builds each stage's Events Log context through `event021_parent_prepare_stage_evolution_context` and checks `is_current_evolution_enabled` for that stage.
@@ -20,7 +23,7 @@ Evolution II needs Evolution I to be recorded or switched off, and Evolution III
 Re-enabling a stage returns it to normal scheduling: it samples a due date and fires through its own wrapper even if a later stage already ran.
 This follows Event 004's independent per-stage `is_current_evolution_enabled` checks in `common/scripted_effects/004_random_war_effects.txt`.
 
-The schedule uses hidden callback events `chaosx.nr21.11`, `.12`, and `.13`, while the bounded registered-country review and scenario loops use `.14`, `.15`, and the host-bound preparation callback `.19`. Same-tag dispatch uses `.16`, Critical launch dispatch uses `.18`, and reconstruction cleanup uses `.10`, so the event file remains the callback boundary for these scoped transactions.
+The schedule uses hidden callback events `chaosx.nr21.11`, `.12`, and `.13`. The bounded registered-country review uses `.14`, same-tag dispatch uses `.16`, and reconstruction cleanup uses `.10`, so the event file remains the callback boundary for these scoped transactions.
 
 `event021_global_review_current_country` performs one country review, removes stale neighboring-exposure receipts when their source crisis is no longer usable, closes due same-tag contests, reviews fronts, and applies settlement or reconstruction when due. Critical queueing and bounded launch claims are additionally gated by active Evolution III; review itself never opens a due country outside the Critical queue.
 
@@ -46,7 +49,7 @@ See [`021_random_civil_war_front_ledger_effects.md`](021_random_civil_war_front_
 
 `event021_parent_review_event6_secondary_front` snapshots same-crisis registered Event 006 secondary actors whose host war has ended, records their independence outcome, and clears only those actors' active secondary role. Its temporary snapshot is separate from the durable registry, so settlement and cleanup may remove registry rows without changing the array under iteration. `event021_parent_refresh_event6_secondary_presence` then rebuilds the host's presence flag and compatibility pointer from still-warring registered package actors. `event021_parent_finalize_event6_secondary_actor` snapshots all same-crisis actors with the durable secondary-package origin role and finalizes each independently at host cleanup. These helpers require the host crisis ID, use no fixed package count, and do not initialize, alter, or duplicate Event 006 packages. Example: two complete package fronts can have independent war outcomes while the host keeps a pointer to a surviving one, and both receive their own cleanup receipts after the host reconstructs.
 
-The same review gives a country opened after Evolution II the bounded neighboring-exposure and strange-incident pass, and emits the multi-front presentation once per crisis when its host is known. The Evolution III record emits the country report and the nonterminal Global Fracture news presentation once, subject to the shared Event Log setting.
+The same review gives a country opened after Evolution II the bounded neighboring-exposure and strange-incident pass, and emits the multi-front presentation once per crisis when its host is known. The Evolution III wrapper marks its hidden lifecycle state without emitting a public evolution row, cascade report, or news event.
 
 ## Opening transaction
 
@@ -215,7 +218,7 @@ The subsequent lifecycle helper owns surviving-front pointer transfer. The ordin
 
 `event021_parent_cleanup_crisis` removes temporary ideas, missions, flags, targets, registry entries, scenario bypass, and front state while retaining settlement, recurrence, achievement, and Event 006 history.
 
-## Scenario contract
+## Historical scenario contract
 
 `random_civil_war_trigger_manual_scenario` and `event021_parent_prepare_scenario_country` consume the selected SCN-018 type and intensity.
 
@@ -225,7 +228,7 @@ The Maximum intensity caller owns the explicit all-eligible-country selection re
 
 No delayed fallback is present because the implementation has no measured performance failure that would justify one.
 
-## Manual scenario draw validity
+## Historical manual scenario draw validity
 
 The manual picker clears `random_civil_war_scenario_target_draw_succeeded` on the calling country before every draw.
 The `random_scope_in_array` success body saves the real selected-country target and sets that flag through PREV, which is the picker country.

@@ -474,8 +474,8 @@ event021_parent_prepare_maximum_scenario_front_envelope = {
 }
 
 # COUNTRY scope. Runs from the existing Chaos global-host pulse. One pulse
-# opens one review budget, visits only the registered array, and launches only
-# the bounded critical queue. The nested loops are capped by constants and do
+# opens one review budget and visits only the registered array. The nested
+# review loops are capped by constants and do
 # not iterate every country in the world.
 event021_parent_global_scheduler_pulse = {
 	if = {
@@ -496,26 +496,6 @@ event021_parent_global_scheduler_pulse = {
 		event021_sync_evolution_state = yes
 		event021_refresh_global_capacity = yes
 		event021_parent_process_evolution_schedule = yes
-		# Evolution III owns broad Global Fracture registration. Earlier stages
-		# retain only countries explicitly registered by their live crisis paths.
-		if = {
-			limit = { has_global_flag = random_civil_war_evolution_iii_active }
-			# Add only a bounded sample each host pulse. Registered countries retain
-			# their own review date, so this remains a persistent queue rather than a
-			# hidden every-country daily loop.
-			for_loop_effect = {
-				start = constant:random_civil_war_value.zero
-				end = constant:event021_parent_tuning.scheduler_registration_samples
-				value = event021_parent_registration_sample_index
-				random_country = {
-					limit = {
-						random_civil_war_is_normal_human_country = yes
-						NOT = { has_country_flag = random_civil_war_global_registered }
-					}
-					event021_register_global_country = yes
-				}
-			}
-		}
 		if = {
 			limit = { NOT = { has_global_flag = random_civil_war_review_batch_active } }
 			event021_global_review_batch = yes
@@ -609,37 +589,6 @@ event021_parent_global_scheduler_pulse = {
 					event021_parent_record_critical_exit = yes
 					event021_dequeue_critical_country = yes
 					set_temp_variable = { event021_parent_queue_row_removed = constant:random_civil_war_value.one }
-				}
-				else_if = {
-					limit = {
-						has_global_flag = random_civil_war_evolution_iii_active
-						check_variable = {
-							var = global.random_civil_war_critical_launch_budget
-							value = constant:random_civil_war_value.zero
-							compare = greater_than
-						}
-						event021_parent_global_capacity_ready = yes
-					}
-					event021_launch_critical_country = yes
-					if = {
-						limit = {
-							has_country_flag = random_civil_war_critical_launch_pending
-							has_event_target = random_civil_war_launch_target
-						}
-						event_target:random_civil_war_launch_target = { country_event = { id = chaosx.nr21.18 } }
-						if = {
-							limit = { NOT = { has_country_flag = random_civil_war_critical_queued } }
-							set_temp_variable = { event021_parent_queue_row_removed = constant:random_civil_war_value.one }
-						}
-					}
-					else = {
-						set_temp_variable = { event021_critical_exit_reason = constant:event021_critical_queue_exit.invalidated }
-						event021_parent_record_critical_exit = yes
-						event021_dequeue_critical_country = yes
-						clr_country_flag = random_civil_war_critical_launch_pending
-						event021_finish_critical_launch = yes
-						set_temp_variable = { event021_parent_queue_row_removed = constant:random_civil_war_value.one }
-					}
 				}
 			}
 			add_to_temp_variable = { event021_parent_queue_scanned = constant:random_civil_war_value.one }
@@ -8011,278 +7960,6 @@ event021_parent_prepare_scenario_country = {
 # transaction. Lower intensities build their eligible pool in the same explicit
 # one-shot manual request and then consume a bounded share. No recurring review
 # or country-wide loop is left running after the launch request returns.
-random_civil_war_trigger_manual_scenario = {
-	event021_parent_initialize_global_runtime = yes
-	if = {
-		limit = {
-			has_global_flag = random_civil_war_rework_ready
-			NOT = { has_global_flag = world_end }
-			NOT = { has_global_flag = random_civil_war_manual_scenario_launch_in_progress }
-		}
-		if = {
-			limit = { NOT = { has_variable = triggerable_scenarios_random_civil_war_type } }
-			set_variable = { triggerable_scenarios_random_civil_war_type = constant:random_civil_war_scenario_type.political_fracture }
-		}
-		if = {
-			limit = { NOT = { has_variable = triggerable_scenarios_intensity } }
-			set_variable = { triggerable_scenarios_intensity = constant:random_civil_war_scenario_intensity.low }
-		}
-		set_variable = { global.random_civil_war_manual_scenario_type = triggerable_scenarios_random_civil_war_type }
-		set_variable = { global.random_civil_war_manual_scenario_intensity = triggerable_scenarios_intensity }
-		set_variable = { global.random_civil_war_scenario_last_type = triggerable_scenarios_random_civil_war_type }
-		set_variable = { global.random_civil_war_scenario_last_intensity = triggerable_scenarios_intensity }
-		set_variable = { global.random_civil_war_scenario_eligible_count = constant:random_civil_war_value.zero }
-		set_variable = { global.random_civil_war_scenario_requested_count = constant:random_civil_war_value.zero }
-		set_variable = { global.random_civil_war_scenario_committed_count = constant:random_civil_war_value.zero }
-		set_variable = { global.random_civil_war_scenario_skipped_count = constant:random_civil_war_value.zero }
-		set_variable = { global.random_civil_war_scenario_preflight_count = constant:random_civil_war_value.zero }
-		set_variable = { global.random_civil_war_scenario_plan_eligible_count = constant:random_civil_war_value.zero }
-		set_variable = { global.random_civil_war_scenario_preflight_skipped_count = constant:random_civil_war_value.zero }
-		clear_variable = global.random_civil_war_scenario_front_cap
-		clear_variable = global.random_civil_war_scenario_mandatory_front_count
-		set_variable = { global.random_civil_war_scenario_last_skip_reason = constant:random_civil_war_cluster_skip_reason.none }
-		set_global_flag = random_civil_war_manual_scenario_launch_in_progress
-		set_variable = { global.random_civil_war_scenario_available_front_count = global.random_civil_war_max_active_fronts }
-		if = {
-			limit = { has_variable = global.random_civil_war_active_front_count }
-			subtract_from_variable = { global.random_civil_war_scenario_available_front_count = global.random_civil_war_active_front_count }
-		}
-		if = {
-			limit = { check_variable = { var = global.random_civil_war_scenario_available_front_count value = constant:random_civil_war_value.zero compare = less_than } }
-			set_variable = { global.random_civil_war_scenario_available_front_count = constant:random_civil_war_value.zero }
-		}
-		clear_array = global.random_civil_war_scenario_reserved_states
-		clear_array = global.random_civil_war_scenario_reserved_event6_packages
-		set_variable = { global.random_civil_war_scenario_reserved_front_count = constant:random_civil_war_value.zero }
-		set_variable = { global.random_civil_war_scenario_reserved_dynamic_tags = constant:random_civil_war_value.zero }
-		clear_temp_array = event021_parent_scenario_selected_targets
-		clear_temp_array = event021_parent_scenario_commit_targets
-		clear_temp_array = event021_parent_scenario_unavailable_targets
-		if = {
-			limit = { check_variable = { triggerable_scenarios_intensity = constant:random_civil_war_scenario_intensity.maximum } }
-			set_global_flag = random_civil_war_scenario_maximum_mode
-			clr_country_flag = random_civil_war_scenario_target_draw_succeeded
-			clear_temp_array = event021_parent_scenario_target_pool
-			set_variable = { global.random_civil_war_scenario_mandatory_front_count = constant:random_civil_war_value.zero }
-			every_country = {
-				limit = { event021_parent_scenario_country_eligible = yes }
-				add_to_temp_array = { event021_parent_scenario_target_pool = THIS }
-				if = {
-					limit = { event021_parent_scenario_requires_same_tag = yes }
-					add_to_variable = { global.random_civil_war_scenario_mandatory_front_count = constant:random_civil_war_value.one }
-				}
-				else = {
-					add_to_variable = { global.random_civil_war_scenario_mandatory_front_count = constant:random_civil_war_value.two }
-				}
-			}
-			set_variable = { global.random_civil_war_scenario_eligible_count = event021_parent_scenario_target_pool^num }
-			set_variable = { global.random_civil_war_scenario_requested_count = global.random_civil_war_scenario_eligible_count }
-			# Maximum gets a scenario-local front envelope sized from the complete
-			# eligible roster plus the normal spare capacity. This preserves every
-			# mandatory country opening without changing the shared normal cap.
-			event021_parent_prepare_maximum_scenario_front_envelope = yes
-			for_each_scope_loop = {
-				array = event021_parent_scenario_target_pool
-				event021_parent_scenario_reserve_base_front_capacity = yes
-				if = {
-					limit = { has_country_flag = random_civil_war_scenario_base_front_reserved }
-					add_to_temp_array = { array = event021_parent_scenario_selected_targets value = THIS }
-				}
-			}
-			if = {
-				limit = { check_variable = { var = global.random_civil_war_scenario_eligible_count value = constant:random_civil_war_value.zero compare = equals } }
-				set_variable = { global.random_civil_war_scenario_last_skip_reason = constant:random_civil_war_cluster_skip_reason.no_eligible_target }
-			}
-			clr_country_flag = random_civil_war_scenario_target_draw_succeeded
-			clear_temp_array = event021_parent_scenario_target_pool
-		}
-		else = {
-			clr_country_flag = random_civil_war_scenario_target_draw_succeeded
-			clear_temp_array = event021_parent_scenario_target_pool
-			every_country = {
-				limit = { event021_parent_scenario_country_eligible = yes }
-				event021_parent_add_scenario_target_to_weighted_pool = yes
-			}
-			set_variable = { global.random_civil_war_manual_target_budget = global.random_civil_war_scenario_eligible_count }
-			if = {
-				limit = { check_variable = { triggerable_scenarios_intensity = constant:random_civil_war_scenario_intensity.low } }
-				multiply_variable = { global.random_civil_war_manual_target_budget = constant:random_civil_war_scenario.low_share }
-			}
-			if = {
-				limit = { check_variable = { triggerable_scenarios_intensity = constant:random_civil_war_scenario_intensity.medium } }
-				multiply_variable = { global.random_civil_war_manual_target_budget = constant:random_civil_war_scenario.medium_share }
-			}
-			if = {
-				limit = { check_variable = { triggerable_scenarios_intensity = constant:random_civil_war_scenario_intensity.high } }
-				multiply_variable = { global.random_civil_war_manual_target_budget = constant:random_civil_war_scenario.high_share }
-			}
-			round_variable = global.random_civil_war_manual_target_budget
-			if = {
-				limit = {
-					check_variable = {
-						var = global.random_civil_war_scenario_eligible_count
-						value = constant:random_civil_war_value.zero
-						compare = greater_than
-					}
-					check_variable = {
-						var = global.random_civil_war_manual_target_budget
-						value = constant:random_civil_war_value.one
-						compare = less_than
-					}
-				}
-				set_variable = { global.random_civil_war_manual_target_budget = constant:random_civil_war_value.one }
-			}
-			if = {
-				limit = {
-					check_variable = {
-						var = global.random_civil_war_manual_target_budget
-						value = global.random_civil_war_scenario_eligible_count
-						compare = greater_than
-					}
-				}
-				set_variable = { global.random_civil_war_manual_target_budget = global.random_civil_war_scenario_eligible_count }
-			}
-			set_variable = { global.random_civil_war_scenario_requested_count = global.random_civil_war_manual_target_budget }
-			set_temp_variable = { event021_parent_scenario_selected_count = constant:random_civil_war_value.zero }
-			while_loop_effect = {
-				limit = {
-					check_variable = {
-						var = event021_parent_scenario_selected_count
-						value = global.random_civil_war_manual_target_budget
-						compare = less_than
-					}
-					check_variable = {
-						var = event021_parent_scenario_target_pool^num
-						value = constant:random_civil_war_value.zero
-						compare = greater_than
-					}
-				}
-				clr_country_flag = random_civil_war_scenario_target_draw_succeeded
-				random_scope_in_array = {
-					array = event021_parent_scenario_target_pool
-					limit = { event021_parent_scenario_country_capacity_eligible = yes }
-					save_event_target_as = random_civil_war_scenario_selected_target
-					event021_parent_scenario_reserve_base_front_capacity = yes
-					PREV = { set_country_flag = random_civil_war_scenario_target_draw_succeeded }
-				}
-				if = {
-					limit = {
-						has_country_flag = random_civil_war_scenario_target_draw_succeeded
-					has_event_target = random_civil_war_scenario_selected_target
-					event_target:random_civil_war_scenario_selected_target = { has_country_flag = random_civil_war_scenario_base_front_reserved }
-				}
-					add_to_temp_array = { array = event021_parent_scenario_selected_targets value = event_target:random_civil_war_scenario_selected_target }
-					event021_parent_remove_scenario_target_tickets = yes
-					add_to_temp_variable = { event021_parent_scenario_selected_count = constant:random_civil_war_value.one }
-				}
-				else = {
-					set_temp_variable = { event021_parent_scenario_selected_count = global.random_civil_war_manual_target_budget }
-				}
-			}
-			clr_country_flag = random_civil_war_scenario_target_draw_succeeded
-			clear_temp_array = event021_parent_scenario_target_pool
-		}
-		if = {
-			limit = {
-				check_variable = {
-					var = global.random_civil_war_scenario_eligible_count
-					value = constant:random_civil_war_value.zero
-					compare = equals
-				}
-			}
-			set_variable = { global.random_civil_war_scenario_last_skip_reason = constant:random_civil_war_cluster_skip_reason.no_eligible_target }
-		}
-		if = {
-			limit = {
-				check_variable = {
-					var = event021_parent_scenario_selected_targets^num
-					value = global.random_civil_war_scenario_requested_count
-					compare = less_than
-				}
-			}
-			set_variable = { global.random_civil_war_scenario_last_skip_reason = constant:random_civil_war_cluster_skip_reason.cap_reached }
-		}
-		# This is the immutable snapshot of countries requested by the scenario
-		# controller. Maximum begins with every preflight-eligible country; lower
-		# intensities contain only their bounded weighted draw.
-		set_variable = { global.random_civil_war_scenario_preflight_count = event021_parent_scenario_selected_targets^num }
-		# Preparation is deliberately separate from commitment. Each hidden
-		# preparation callback executes in the selected country's event scope, so
-		# ROOT in the scenario freezer is the plan host rather than the scenario
-		# controller. No ownership, actor, or force mutation occurs in this phase.
-		for_each_scope_loop = {
-			array = event021_parent_scenario_selected_targets
-			set_variable = { random_civil_war_scenario_type = global.random_civil_war_manual_scenario_type }
-			set_variable = { random_civil_war_scenario_intensity = global.random_civil_war_manual_scenario_intensity }
-			set_country_flag = random_civil_war_scenario_target_confirmed
-			country_event = { id = chaosx.nr21.19 }
-		}
-		# Convert the prepared snapshot into a second, explicit commit set before
-		# any opening can mutate ownership, fronts, packages, or capacity. A plan
-		# that cannot freeze is not silently rerolled; it is retained only in the
-		# unavailable receipt for accounting and skip diagnostics.
-		for_each_scope_loop = {
-			array = event021_parent_scenario_selected_targets
-			if = {
-				limit = { has_country_flag = random_civil_war_scenario_plan_frozen }
-				add_to_temp_array = { array = event021_parent_scenario_commit_targets value = THIS }
-			}
-			else = { add_to_temp_array = { array = event021_parent_scenario_unavailable_targets value = THIS } }
-		}
-		set_variable = { global.random_civil_war_scenario_plan_eligible_count = event021_parent_scenario_commit_targets^num }
-		set_variable = { global.random_civil_war_scenario_preflight_skipped_count = global.random_civil_war_scenario_preflight_count }
-		subtract_from_variable = { global.random_civil_war_scenario_preflight_skipped_count = global.random_civil_war_scenario_plan_eligible_count }
-		if = {
-			limit = {
-				check_variable = {
-					var = global.random_civil_war_scenario_preflight_skipped_count
-					value = constant:random_civil_war_value.zero
-					compare = greater_than
-				}
-				check_variable = {
-					var = global.random_civil_war_scenario_last_skip_reason
-					value = constant:random_civil_war_cluster_skip_reason.none
-					compare = equals
-				}
-			}
-			set_variable = { global.random_civil_war_scenario_last_skip_reason = constant:random_civil_war_cluster_skip_reason.no_eligible_target }
-		}
-		# Commit only immutable receipts produced by the preparation phase. A
-		# failed or invalidated receipt is recorded as skipped and cannot reroll
-		# its country, package, anchor, route, or territory here.
-		for_each_scope_loop = {
-			array = event021_parent_scenario_commit_targets
-			set_country_flag = random_civil_war_scenario_target_confirmed
-			country_event = { id = chaosx.nr21.15 }
-			event021_parent_record_scenario_result = yes
-			event021_release_scenario_dynamic_tags = yes
-			clr_country_flag = random_civil_war_scenario_target_confirmed
-		}
-		clear_temp_array = event021_parent_scenario_selected_targets
-		clear_temp_array = event021_parent_scenario_commit_targets
-		clear_temp_array = event021_parent_scenario_unavailable_targets
-		set_variable = { global.random_civil_war_scenario_skipped_count = global.random_civil_war_scenario_requested_count }
-		subtract_from_variable = { global.random_civil_war_scenario_skipped_count = global.random_civil_war_scenario_committed_count }
-		set_variable = { global.random_civil_war_scenario_last_run_date = global.date }
-		clr_global_flag = random_civil_war_scenario_maximum_mode
-		if = {
-			limit = { has_global_flag = random_civil_war_scenario_bypass_active }
-			event021_clear_scenario_bypass = yes
-		}
-		clr_global_flag = random_civil_war_manual_scenario_launch_in_progress
-		clear_variable = global.random_civil_war_manual_target_budget
-		clear_variable = global.random_civil_war_manual_scenario_type
-		clear_variable = global.random_civil_war_manual_scenario_intensity
-		clear_array = global.random_civil_war_scenario_reserved_states
-		clear_array = global.random_civil_war_scenario_reserved_event6_packages
-		clear_variable = global.random_civil_war_scenario_reserved_front_count
-		clear_variable = global.random_civil_war_scenario_reserved_dynamic_tags
-		clear_variable = global.random_civil_war_scenario_available_front_count
-		clear_variable = global.random_civil_war_scenario_front_cap
-		clear_variable = global.random_civil_war_scenario_mandatory_front_count
-		event021_refresh_global_capacity = yes
-	}
-}
 
 # COUNTRY scope. Records the terminal result of a Critical queue claim while
 # preserving the country-side receipt for Event Details and recurrence review.
@@ -8338,8 +8015,8 @@ event021_parent_commit_critical_country = {
 	event021_finish_critical_launch = yes
 }
 
-# COUNTRY scope. Single public launch dispatcher used by the hidden entry,
-# the bounded global queue, the manual scenario, and the Wars cluster. A
+# COUNTRY scope. Single public launch dispatcher used by the hidden entry
+# and the Wars cluster. A
 # cluster-owned reservation is consumed without asking the ordinary target
 # predicate to re-reserve the same country.
 event021_parent_dispatch_opening = {
@@ -8774,8 +8451,8 @@ event021_parent_apply_evolution_ii = {
 }
 
 # ANY scope. Evolution III is the nonterminal Global Fracture state. It only
-# updates the shared bands/caps and leaves all country launches to the due
-# registry and critical queue. Disabled earlier stages neither block it nor
+# updates the shared bands/caps and retains due review of registered crises.
+# Disabled earlier stages neither block it nor
 # become active through it.
 event021_parent_apply_evolution_iii = {
 	event021_parent_apply_evolution_ii = yes
@@ -8801,14 +8478,6 @@ event021_parent_apply_evolution_iii = {
 			limit = {
 				has_global_flag = random_civil_war_evolution_iii_active
 				NOT = { has_global_flag = random_civil_war_evolution_iii_recorded }
-			}
-			set_temp_variable = { events_log_evolution_has_actor = constant:random_civil_war_value.zero }
-			event021_select_verified_evolution_log_actor = yes
-			record_events_log_evolution_entry = yes
-			if = {
-				limit = { NOT = { has_global_flag = events_log_disabled_evolution_21_21_3 } }
-				country_event = { id = chaosx.nr21.6 }
-				news_event = { id = chaosx.news.212 }
 			}
 			set_global_flag = random_civil_war_evolution_iii_recorded
 		}
