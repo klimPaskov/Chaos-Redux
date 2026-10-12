@@ -30,7 +30,7 @@ A6. **Q** Portraits that were replaced: restore the previous ones.
 A7. **Q** Unit and decision text icons: some are flat green with no detail (for example the truck). Use the normal truck icon and restore the earlier detailed versions so the set is consistent.
 A8. **Q** Chaos Meter history alignment: restore the earlier layout. — implemented in `1fca4df6a7`.
 A9. **Q** Condemnation description: restore. Deaths entries spacing: restore. — implemented in `1fca4df6a7`.
-A10. **Q** Cluster entries in the event log: restore the earlier entry layout and alignment; remove the available/unavailable text on the right. — implemented in `360245b7ff`.
+A10. **Q** Cluster entries in the event log: restore the earlier entry layout and alignment; remove the available/unavailable text on the right. — implemented in `360245b7ff`. Alignment: `13aea99060`.
 A11. Scientists: restore the balance that was changed (everyone became level 3 with no traits). Find the hidden biowarfare and chemical scientists and make them available again. Completed: `d2f7111d16e84b6b9a8fadf4b9967af12d165d15`.
 A12. Biological warfare deployment and containment: restore the simpler year-old flow (deploy field hospitals and similar direct actions; easy and fast policy change; a raid must be doable without friction). The Disease Containment Board in its current form is rejected. Compare with the old implementation in git history before deciding what to keep.
 
@@ -47,7 +47,7 @@ B6. **Q** Event history logging: entries show only the event name, never the ful
 B7. **Q** Air contamination idea "no longer fulfilled" message spam: hide it.
 B8. **Q** Trait description shows broken scripted localisation: fix.
 B9. Camps UI: buttons do not work and throw errors (latest lines of error.log): fix (Sol).
-B10. Migration UI: empty area on the left; the image goes inside the box.
+B10. Migration UI: empty area on the left; the image goes inside the box. — implemented in `76c7815224`.
 B11. Decisions for outbreak responses appear on the map only, not listed in the decision category.
 B12. Technology folders: fix overlaps, disconnected techs and bloat. Bring back the consolidation that removed the excess techs, but leave the upper part of the chemical warfare tree exactly as it is.
 
