@@ -75,7 +75,7 @@ D1. Japan, the United Kingdom, the United States and the Soviet Union start with
 D2. Starting technologies and stockpiles: audit for accuracy. Germany should start with tabun (GA) researched.
 D3. Japan uses CBRN unrestricted from the start.
 D4. Traits: bonuses are generic and weak. Make them chaos-warfare focused; CBRN Operations Specialist gets strong, specialised CBRN bonuses.
-D5. Remove the "Last Fury Standing" focus and merge its purpose into another focus.
+D5. Remove the "Last Fury Standing" focus and merge its purpose into another focus. (commit: b5caeb8fb82351164a0849378c2791d3f998c4b6)
 
 ## E. Outside the mod
 
