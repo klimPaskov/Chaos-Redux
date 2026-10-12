@@ -113,13 +113,42 @@ The following requested A5 outputs remain incomplete, without a substituted imag
 
 - 36 visible Event 016 ideas have no historical own-id sprite or corresponding original asset: 24 in `common/ideas/016_brilliant_scientist_aftermath_ideas.txt` and 12 in `common/ideas/016_brilliant_scientist_focus_ideas.txt`.
 - `mysterious_people_select_hotspot` and `mysterious_people_close_hotspot` use the original 52×40 category sprite; their new-mechanic history supplies no previous decision-family binding to restore.
-- `THR_begin_concentration_sequence`, `THR_hold_intention`, `THR_hold_energy`, `THR_hold_mind`, and `THR_hold_investigation` use the original 96×96 Dhyana seal; no resizing or replacement was authorized by the exact-original rule.
+- `THR_begin_concentration_sequence`, `THR_hold_intention`, `THR_hold_energy`, `THR_hold_mind`, and `THR_hold_investigation` reference the restored original 12-frame animated Dhyana seal; each frame remains 96×96, so the native-size warning persists without an authorized resize or substitution.
 - `doomsday` references the original vanilla `GFX_idea_FRA_matignon_agreements` alias, but its DDS is absent from the examined installed loose files and local DLC archive, and no original mod binary exists to restore.
 
 The exact missing idea IDs and their history are retained in `.tmp/restore_assets_audio/icons/historical_missing_idea_icon_audit.json` and the consolidated handoff.
 Original Event 014 idea files at 68×68 and native vanilla size variants remain byte-exact; an unusual size is recorded separately from a wrong asset family.
 The new unwired alternatives, genuinely new mechanic artwork, and new art replacing vanilla placeholders remain intact.
 A5 is not marked fully complete because its missing-art and decision-family/size outputs are unfinished.
+
+### A5-only resumed check — 12 October 2026
+
+The resumed work was explicitly limited to these unfinished A5 outputs; the completed A3/A4/A6/A7 work and the original 935-file restoration were not repeated.
+Commit `e5a528fc7df3bd789fced175c62a29f95d7ddda1` had changed the five Holy Realm decision icon fields from `GFX_decision_holy_realm_dhyana_seal_animated` to the static seal.
+Commit `f501fbddf4d60efb96febacc99c49d926fc128e9` restores those exact five values from its parent `b25b185892761d98980bad32b5300a101fdd7d14`.
+No other decision field, cost, trigger, effect, or AI weight changed.
+The existing animation DDS equals that source parent's LFS OID `9f28334cf717a293085ee4dea9fae524606768d3d8f9f15daf9703f606e8cd37`; its unchanged 1152×96 sheet contains twelve 96×96 frames at the original eight frames per second.
+The existing sprite registration matches the source parent exactly, and all twelve native frames were inspected from a review-only decode without altering runtime art.
+Its recovered binding resolves the missed historical reroute but does not convert the inherited animation into a decision-sized texture.
+
+The 36 Event 016 ideas were rechecked at source snapshot `f501fbddf4d60efb96febacc99c49d926fc128e9`.
+The 24 aftermath definitions first appear in `5ca199ffbb6c836459ec27b423de7196be9e6554`, and the twelve focus definitions first appear in `008fc6000f914e0e9c1a6b3f67297973e217dff9`.
+Their introduction and current blocks have no picture field; no verified former-name link, historical own-id sprite, exact original DDS path, or matching local source artifact was found.
+The scoped definitions and registrations have no later changes since the earlier audit, and same-folder alternatives lack an original binding or provenance for these slots.
+Per-ID introduction commits, definition hashes, examined paths, and exclusions are retained in `.tmp/restore_assets_audio/resume_a5/ideas/idea_history_provenance.json`.
+
+The two Event 037 hotspot decisions first appear with the category icon in `afad1de2b842a11fa108a451a84386f7dd94a082`; the decision and GFX files do not exist in its parent.
+No older decision-family binding exists to restore for either selector.
+The vanilla `FRA_matignon_agreements` binding is already present in the initial legacy idea history and is unchanged by the July event-file split `5f00dbea7a44080a981f47d71eec9e52245fc36d`.
+Case-insensitive all-history texture-path searches and the installed game, mod, and local asset-cache scans found no recoverable original DDS.
+The only local matches are previous inventories and audit references, not original artwork.
+Generated 34×34 Holy Realm alternatives under `docs/assets/gfx_fix_holy_resume` remain unbound and untouched because they are replacement candidates rather than the original pre-change artwork.
+
+Current evidence is grouped under `.tmp/restore_assets_audio/resume_a5/`, including the offending binding diff, original sheet hash/header, original native-frame review, and the remaining-family source snapshot.
+The resume used the connected MCP decision-icon section at offline `Decision modding - Hearts of Iron 4 Wiki.md`, lines 111–127, revision `7713b9bcee5f3818d63aafbd45d18e812a9173a7c59ab238384b57db60db6162`, graphical `frameAnimatedSpriteType` section, lines 101–140, revision `f8e3d4ad382f4e5f8e170492a484d090bad62e3711cabfb5d3bf84e58ab32dd9`, and installed decision documentation, lines 1–46, revision `5e7e686b5582f32c38d898d805e17171e88f3bfeee4a030deb1884f9726de019`.
+MCP source lookup confirms the unchanged animated registration at `interface/003_holy_realm.gfx`, lines 277–286, source revision `53ebe7d933ccbd3d4b8ad0e58a02209d0f0af8ae8afec271af242642b72ca747`; reference coverage was not complete and was supplemented by direct consumer reads.
+Installed vanilla `interface/alerts.gfx`, lines 3–13, supplies the matching frame-animation structure.
+No new artwork, resizing, substitution, game launch, or push was used on resume.
 
 ## A7 truck — unchanged original vanilla bytes
 
@@ -209,6 +238,6 @@ This current selection record supersedes runtime-selection claims in the histori
 The Black Plague binding repair used offline `Decision modding - Hearts of Iron 4 Wiki.md`, lines 111–125, SHA-256 `7713b9bcee5f3818d63aafbd45d18e812a9173a7c59ab238384b57db60db6162`, installed `common/decisions/_documentation.md`, lines 1–45, SHA-256 `5e7e686b5582f32c38d898d805e17171e88f3bfeee4a030deb1884f9726de019`, and the vanilla decision sprite precedent in `interface/decisions.gfx`, lines 1102–1105.
 Its exact prior binding is in `3deac2d4d^:common/decisions/biowarfare_disease_containment_decisions.txt`; no gameplay body was changed.
 
-Skills used: `chaos-redux-event-assets`, `chaos-redux-super-events`, `chaos-redux-decisions-missions`, `chaos-redux-subagents`, and `chaos-redux-shared-git-commit`, with specialist system skills used by the icon worker where consumers require them.
+Skills used: `chaos-redux-event-assets`, `chaos-redux-super-events`, `chaos-redux-decisions-missions`, `chaos-redux-frame-animation`, `chaos-redux-subagents`, and `chaos-redux-shared-git-commit`, with specialist system skills used by the icon worker where consumers require them.
 No skills were created or updated.
 No restoration was simplified, and no replacement artwork was invented; the incomplete requested A5 outputs are explicitly listed above.
