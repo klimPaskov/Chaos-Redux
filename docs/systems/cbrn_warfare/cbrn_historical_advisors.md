@@ -39,7 +39,33 @@ Political advisors provide strong research, project, production, stability, resi
 Operational effects are conditional on the character occupying the relevant advisor slot.
 They are applied through `common/scripted_effects/cbrn_historical_advisor_effects.txt` and called only from the shared chemical exposure and biological lifecycle systems.
 
-The accepted combined CBRN balance cap is evaluated by one legally appointable country, not by multiplying every advisor in the roster. `common/characters/cbrn_historical_specialists.txt` restricts Gerhard Schrader's chemical theorist appointment to GER and Grigory Mairanovsky's toxicological director appointment to SOV, so their 1.03 dose and 1.02 contamination factors cannot stack in one country. Neither specialist changes the derived readiness value. JAP's Ishii and Kitano can supply two compatible 1.02 biological potency factors after Kitano's date gate, as can the USA's Baldwin and Olson after Olson's date gate. The doctrine guide records separately legal conditional source scenarios. These are source appointment bounds, not engine or probability evidence.
+Operational factors are evaluated within one legally appointable country, not by multiplying every advisor in the roster.
+Gerhard Schrader's chemical theorist appointment is GER-only and Grigory Mairanovsky's toxicological director appointment is SOV-only; their dose and contamination factors cannot stack legally.
+Neither specialist changes the derived readiness value.
+JAP can combine Ishii and Kitano when Kitano's doctrine and project requirements are met: initial potency, spread, and death multipliers are 1.82, growth 1.6875, and medical saturation 1.30 before doctrine and environmental factors.
+USA can combine Baldwin and Olson when the doctrine and biological capability requirements are met: potency 1.56, growth 1.20, spread/deaths 1.25, and unchanged medical saturation.
+Olson affects initial potency only.
+These are source appointment bounds; final intensity/exposed-share and spread-chance clamps remain in the lifecycle consumer.
+
+| Appointment | Operational bonus |
+| --- | --- |
+| Chemical Warfare Theorist | +30% delivered dose, +25% contamination, 18% less resulting Condemnation |
+| Toxicological Weaponization Director | +30% dose, +25% deaths, +30% contamination, 22% less resulting Condemnation |
+| Biological Warfare Theorist | +30% initial potency, +20% growth, +25% spread/deaths, 18% less resulting Condemnation |
+| Chaos Weaponization Theorist | +40% initial potency/spread/deaths, +35% growth, +30% medical saturation, 30% less resulting Condemnation |
+| Aerobiology Specialist | +20% initial potency only |
+| Biological Weaponization Director | +30% initial potency/spread/deaths, +25% growth, 22% less resulting Condemnation |
+| Resistance Biological Saboteur | +25% initial potency/spread, 15% less resulting Condemnation |
+| Medical Countermeasure Pioneer | 30% fewer chemical/biological deaths and chemical medical saturation; 35% less biological medical saturation; +15 detection |
+| Activated-Carbon Protection | 25% fewer military chemical casualties with issued respirators |
+| Antibiotic Production Coordinator | 25% less medical saturation with an active qualifying antibiotic course |
+| Epidemiological Survey Director | 25% less outbreak growth with an active Surveillance Network |
+
+The historical multipliers still used by the current helpers match `33b6946dd^`; retired readiness and biological-program-director entries are absent.
+The aerobiology and three later defensive appointments keep their distinct current consumers and use the table above.
+Active CBRN Operations High Command ranks additionally protect the controller's affected states by 20%, 30%, or 40% against chemical/biological deaths and medical saturation, selecting the highest rank once.
+The existing combined hazard-response floor retains at least half the relevant baseline after protection.
+Chemical contamination and medical-saturation temporaries are initialized in `cbrn_calculate_chemical_action_outputs` before their nested advisor helpers, so the returned factors remain available to the later output calculation.
 
 Chemical specialists increase delivered dose, deaths, or contamination according to their appointment, while reducing resulting Condemnation without erasing evidence.
 Biological specialists can increase seed potency, growth, spread, deaths, or medical saturation according to their role. Olson's aerobiology appointment affects only initial potency and does not reduce Condemnation.

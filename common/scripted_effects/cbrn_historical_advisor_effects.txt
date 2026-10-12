@@ -8,6 +8,25 @@
 # - Never modifies payload debit, evidence, attribution, or death recording.
 # ============================================================================
 
+# Country scope. Caller initializes cbrn_operations_staff_protection_mult.
+# Output: highest active rank's multiplier, or one without an appointed officer.
+# No persistent state; used only by the current target exposure/response receipt.
+cbrn_get_operations_staff_protection_multiplier = {
+	set_temp_variable = { cbrn_operations_staff_protection_mult = constant:cbrn_math.one }
+	if = {
+		limit = { has_idea_with_trait = cbrn_operations_high_command_3 }
+		subtract_from_temp_variable = { cbrn_operations_staff_protection_mult = constant:cbrn_commander_progression.high_command_genius_bonus }
+	}
+	else_if = {
+		limit = { has_idea_with_trait = cbrn_operations_high_command_2 }
+		subtract_from_temp_variable = { cbrn_operations_staff_protection_mult = constant:cbrn_commander_progression.high_command_expert_bonus }
+	}
+	else_if = {
+		limit = { has_idea_with_trait = cbrn_operations_high_command_1 }
+		subtract_from_temp_variable = { cbrn_operations_staff_protection_mult = constant:cbrn_commander_progression.high_command_specialist_bonus }
+	}
+}
+
 # Country scope. Inputs/outputs are temporary chemical action variables.
 cbrn_apply_historical_actor_chemical_advisor_modifiers = {
 	set_temp_variable = { cbrn_action_historical_contamination_mult = constant:cbrn_math.one }
@@ -53,6 +72,17 @@ cbrn_apply_historical_target_chemical_advisor_modifiers = {
 		}
 		multiply_temp_variable = { cbrn_action_military_casualty_mult = constant:cbrn_historical_advisor.zelinsky_protected_military_casualty_mult }
 	}
+	set_temp_variable = { cbrn_operations_staff_protection_mult = constant:cbrn_math.one }
+	if = {
+		limit = { has_event_target = cbrn_action_target_state }
+		event_target:cbrn_action_target_state = {
+			CONTROLLER = { cbrn_get_operations_staff_protection_multiplier = yes }
+		}
+	}
+	multiply_temp_variable = { cbrn_action_military_casualty_mult = cbrn_operations_staff_protection_mult }
+	multiply_temp_variable = { cbrn_action_civilian_casualty_mult = cbrn_operations_staff_protection_mult }
+	multiply_temp_variable = { cbrn_action_historical_medical_saturation_mult = cbrn_operations_staff_protection_mult }
+
 }
 
 # State scope. Reads the exact seed actor and modifies only operational snapshots.
@@ -151,4 +181,9 @@ bio_lifecycle_apply_historical_target_advisor_modifiers = {
 		}
 		multiply_temp_variable = { bio_growth_countermeasure_mult = constant:cbrn_historical_advisor.bayne_jones_active_surveillance_growth_mult }
 	}
+	set_temp_variable = { cbrn_operations_staff_protection_mult = constant:cbrn_math.one }
+	CONTROLLER = { cbrn_get_operations_staff_protection_multiplier = yes }
+	multiply_temp_variable = { bio_death_countermeasure_mult = cbrn_operations_staff_protection_mult }
+	multiply_temp_variable = { bio_medical_countermeasure_mult = cbrn_operations_staff_protection_mult }
+
 }

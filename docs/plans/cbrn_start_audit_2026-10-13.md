@@ -23,6 +23,7 @@ No completed anthrax project or biological payload stockpile is inferred from a 
 
 ## D2: historical knowledge and staff corrections
 
+Implemented in `06854613105439614eb6111e1e91a51096e9e808`.
 Germany's unconditional `tabun = 1` line is restored from `33b6946dd^`.
 The offending commit is `33b6946dd`, which removed that line and substituted a date-gated grant.
 The owner's explicit request takes precedence over the discovery date: this grants knowledge at January 1936 even though the [Max Planck Institute history](https://www.mpiwg-berlin.mpg.de/KWG/projects.htm) places discovery in late 1936.
@@ -80,6 +81,63 @@ The battlefield, strategic and extreme-use policy triggers therefore all pass fo
 No earlier Japan-specific unrestricted initialization was found in the startup-helper history.
 This is D3's requested addition, rather than a claimed restoration.
 Other countries retain their existing initial authorization.
+
+## D4: CBRN traits
+
+The offending historical balance commit is `33b6946dd923b9fc90fbf29bc5798dce3c76a76f`.
+All 31 current constants that exist in its parent `4efc01fc87f1137e98c864f928dd5603e6b7d2f1` match that parent exactly, including the stronger offensive and medical factors.
+The comparison includes unchanged condemnation/detection constants as well as the restored values; it does not describe 31 separate balance changes.
+Five biological/medical operational tooltip bodies also match the parent exactly.
+The two chemical tooltips retain their accurate current wording with the restored numbers because the old bodies advertised retired readiness-gain and readiness-expenditure mechanics.
+Those readiness clauses and the retired generic programme-director office are not restored: they have no current operational consumer, and rebuilding those retired systems is outside this trait correction.
+This is a limit on full historical restoration, not a claim of byte-exact whole-file restoration.
+The newer aerobiology and three defensive appointments had no stronger earlier version; their own CBRN consumers receive stronger values under D4's explicit authorization.
+
+| Trait | Earlier/current weak bonus | Implemented CBRN bonus |
+| --- | --- | --- |
+| Operations Specialist / Expert / Genius | 1% / 3% / 4% general planning speed | 20% / 30% / 40% less chemical/biological death and medical saturation in controlled states, and less preparation for all five HQ orders |
+| Chemical Operations Commander | Four cylinder abilities and 30% HQ preparation reduction | Same abilities/preparation, plus Chemical Projector Battery +25% soft attack and breakthrough |
+| Biological Operations Veteran | One generic defence skill level | Medical Countermeasure and Biosecurity Assault Detachments +30% organisation and defence |
+| Hazard Warfare Veteran | One generic logistics skill level | Ten CBRN regimental components consume 25% less supply |
+| Protected Assault Expert | 5% less general out-of-supply penalty | Chaos Battalion and Biosecurity Assault Detachment +25% soft attack and breakthrough |
+| Theatre Containment Organizer | One army-group command slot | Same slot, plus Mask/Decontamination and Medical Detachments +25% defence |
+
+Only the highest appointed Operations rank applies; hiring multiple ranks or duplicate rank-3 officers does not multiply these staff bonuses.
+The existing preparation and response floors remain in the consumers.
+The new staff tooltip percentages read the same three shared constants that drive gameplay.
+The stat bonuses name existing consolidated CBRN sub-unit tokens, with no new unit, technology, icon, country package or periodic hook.
+Unchanged native AI blocks retain their former appointment scores.
+The [commander guide](../systems/cbrn_warfare/cbrn_commander_progression.md), [historical advisor guide](../systems/cbrn_warfare/cbrn_historical_advisors.md), [doctrine guide](../systems/cbrn_warfare/chaos_warfare_doctrine.md), and existing [CBRN effect registry](../../common/scripted_effects/cbrn_scripted_effects.md) describe the consumers and tooltip bindings.
+Chemical contamination and medical-saturation outputs are initialized in their caller so the nested advisor effects return into the later action calculation.
+
+The architect's 21 actual-source subset scenarios checked no staff, each rank, mixed ranks, duplicate ranks, removal/defaults, controller routing and nested temporary outputs.
+An unadjusted ten-day HQ preparation resolves to seven days with the commander alone, then six/five/five days with specialist/expert/genius under the existing floor.
+Genius plus Medical Pioneer produces raw chemical 0.42 and biological medical 0.39 factors before the combined response floor.
+The existing chemical receipt regression passed 43 tests across 89 production helpers in the specialist's review.
+The parent additionally checked every named unit modifier against the unique consolidated definition and rechecked the historical constants and five exact tooltip bodies against Git.
+These are source checks; native modifier aggregation, field-marshal inheritance and tooltip rendering were not observed in game.
+
+The independent probability auditor checked the restored spread factors against both source revisions and the actual lifecycle formula.
+The scenarios hold environment, countermeasures and containment neutral, use no repeated-seed bonus, and condition on an eligible target already selected for an attempt.
+The two weights sum to 100, so the normalized share equals the spread weight; this is not an unconditional state-selection or campaign forecast.
+
+| Named scenario | Before spread / no spread | After spread / no spread |
+| --- | --- | --- |
+| JAP 1936, Ishii, fictional game anthrax intensity 50 | 28.05 / 71.95 | 38.50 / 61.50 |
+| JAP 1943, Ishii + Kitano, same intensity | 28.611 / 71.389 | 50.05 / 49.95 |
+| USA 1943, Baldwin + Olson, same intensity | 28.05 / 71.95 | 34.375 / 65.625 |
+| JAP 1943, Ishii + Kitano, fictional plague intensity 100 | 80 / 20 | 80 / 20 |
+| No hired offensive advisor control | 27.5 / 72.5 | 27.5 / 72.5 |
+
+The paired Japanese stack is 1.40 × 1.30 = 1.82, restoring a meaningful strength increase; the existing 80% cap retains a positive no-spread branch.
+Scenario dates do not grant or hire advisors: doctrine, capability and project appointment requirements must also be satisfied.
+The immutable before/current fixture hashes were checked by the independent auditor; the probability fixture SHA-256 is `79bbe8aefae55db727c226056038e2dafc7a70ae019030cbb0e9ea92117bb260`.
+The baseline is `aa75244feb4062279c64e4d89f725481f414011b`, and the historical restoration source remains `33b6946dd^`.
+
+The probability inspector's initial `direct_random` discovery found no surface; its one corrected `random_list` inventory found the four dynamic lifecycle entries and reported `poolComplete = false` with unresolved runtime weights.
+The calculations above come from the actual source, not an MCP scenario evaluation.
+The corrected inventory artifact is `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/19ddbc55b21a597a6e013e8dd3f82b74100f3354164890f329f3f7b3cb8975f0/66aa00cab9b7aedef15f8add684b5b5c240fd2e5295b6792473731c16fe82e1f/probability-inspect-4c1ad9bf8864.json`, source revision `dffe1506fb7e112e23372e9861187d0594249143d99072c34437a2fa930b3ea6`.
+No further analyzer retry was attempted against those unchanged unresolved inputs.
 
 ## Complete country coverage
 
@@ -200,6 +258,21 @@ The local D1/D3 checks evaluated both selected dates, confirmed all seven specia
 The D2 checks compare starting technology grants against the actual equipment unlock definitions and verify the dated staff exclusions, without assuming discovery grants create finished stock.
 No game was launched and no runtime behavior is claimed.
 
+
+D4-specific engine reference evidence retained from the architect:
+
+- `paradox_wiki/Character modding - Hearts of Iron 4 Wiki.md`, lines `[589, 630]`, revision `8ef3d5f9923026dd81f239944710b7331a8d06ad42e4345b32fce4e86dd95d98`; MCP search/read.
+- `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/script_concept_documentation.md`, lines `[216, 222]`, revision `884bfe9f9207ea4b25b36b5129d0f77d11d4b2f7eb0592587767ec58d24930c7`; MCP search/read.
+- `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/common/script_constants/documentation.md`, lines `[1, 34]`, revision `e2812efbddc7961038e1f1f2b6dd6b059bdc70704ec87d1fe530835d9141be1c`; MCP search/read.
+- `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/effects_documentation.md`, lines `[[5012, 5018], [7820, 7827]]`, revision `2cdc93d26775990468eed167442f7a416b13059fb8fe07d139b54250b79209af`; MCP search/read.
+- `paradox_wiki/Triggers - Hearts of Iron 4 Wiki.md`, lines `[911, 911]`, revision `abc51ad18a2c46e46d47baa795c5a840ebaf7c4ae3e777426c64a9f4c0c0ce06`; MCP search/read.
+- `paradox_wiki/Scopes - Hearts of Iron 4 Wiki.md`, lines `[266, 267]`, revision `18ef5249e4991f5427eca9ec4a2f66dd47f51e26a491c730adc622f1f5db1b49`; Direct local source; SHA-256 revision.
+- `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/common/unit_leader/00_traits.txt`, lines `[[1, 55], [2258, 2264]]`, revision `249ce6ee645cbd0270a8834ddc251c1f53ac981c979ac2a7c1852f929d850035`; Direct local source; SHA-256 revision.
+- `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/common/country_leader/00_traits.txt`, lines `[411, 425]`, revision `b629d44fde5fa93d176a1db04bdac83c53e51f55dd789359dca7a96ab4d25dc5`; Direct local source; SHA-256 revision.
+
+The probability auditor read offline Effects lines 4516-4550 and installed effects documentation lines 5413-5430 for weighted `random_list` selection.
+The D4 file-mode validation of `cbrn_hq_effects.txt` also timed out after one 600-second attempt, with no useful unchanged retry.
+
 ## Limits and unrequested changes
 
 Exact historical quantities for every national stockpile are unavailable in the cited record, and the mod's abstract lots do not encode an archival mass conversion.
@@ -210,3 +283,9 @@ The A11 research pool represents available alternate-history scientific potentia
 No art, audio, portrait, UI layout, report-event option count, unrelated event text, push or game launch is part of this change.
 No restored wording was restyled.
 The requested gameplay corrections are distinguished above from exact parent-content restoration.
+
+No design fallback or reduced requested gameplay was introduced.
+Historical inventory certainty, shipment provenance, the two retired readiness tooltip clauses, and unavailable engine observations remain explicitly limited as described above.
+The parent reviewed D1–D4 integration; the country specialist reviewed D2 sources, the scripted-system architect implemented D4, and the independent probability auditor reviewed its changed spread surface.
+Skills used: `chaos-redux-technology-doctrines`, `chaos-redux-characters-leaders`, `chaos-redux-equipment`, `chaos-redux-units-divisions`, `chaos-redux-ideas-modifiers`, `chaos-redux-events`, `chaos-redux-ai-strategies`, `chaos-redux-subagents`, and `chaos-redux-shared-git-commit`.
+No skills were created or updated.

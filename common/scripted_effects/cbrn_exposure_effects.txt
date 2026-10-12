@@ -494,11 +494,14 @@ cbrn_calculate_chemical_action_outputs = {
 		}
 		multiply_temp_variable = { cbrn_action_dose_mult = constant:cbrn_munitions_designer_effect.stable_choking_dose_mult }
 	}
+	# Caller-owned outputs survive the nested historical advisor helper frame.
+	set_temp_variable = { cbrn_action_historical_contamination_mult = constant:cbrn_math.one }
 	cbrn_apply_historical_actor_chemical_advisor_modifiers = yes
 	# Anchor the combined hazard budget to the same actual mask issue after
 	# attacker modifiers, before target support, treatment, and shelter effects.
 	set_temp_variable = { cbrn_action_military_mask_only_before_treatment = cbrn_action_military_mask_only_casualty_mult }
 	set_temp_variable = { cbrn_action_civilian_mask_only_before_treatment = cbrn_action_civilian_mask_only_casualty_mult }
+	set_temp_variable = { cbrn_action_historical_medical_saturation_mult = constant:cbrn_math.one }
 	cbrn_apply_historical_target_chemical_advisor_modifiers = yes
 	clamp_temp_variable = { var = cbrn_action_dose_mult min = constant:cbrn_action_input_bounds.dose_mult_min max = constant:cbrn_action_input_bounds.dose_mult_max }
 	clamp_temp_variable = { var = cbrn_action_doctrine_condemnation_mult_local min = constant:cbrn_doctrine_condemnation.minimum_mult max = constant:cbrn_doctrine_condemnation.maximum_mult }

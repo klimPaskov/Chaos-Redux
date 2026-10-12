@@ -16,10 +16,19 @@ Its source regression exercises final paid and failed upkeep, one-time receipts 
 Two won combats while the general commands a fielded protected CBRN detachment satisfy Protected Assault Expert's service prerequisite; the player still assigns that general trait through the native trait menu.
 Two completed containment orders plus Hazard Warfare Veteran satisfy Theatre Containment Organizer's field marshal trait prerequisite.
 The battle callback proves that the named commander won combat and had a protected detachment under command; it does not identify which division participated in that battle.
-Protected Assault Expert reduces the commanded army's out-of-supply penalty by five percent; Theatre Containment Organizer adds one army-group command slot.
+Chemical Operations Commander gives the Chemical Projector Battery +25% soft attack and breakthrough, as well as its cylinder abilities and 30% HQ preparation reduction.
+Biological Operations Veteran gives Medical Countermeasure and Biosecurity Assault Detachments +30% organisation and defence.
+Hazard Warfare Veteran reduces supply consumption by 25% for the ten regimental CBRN units, including the Chaos Assault Battalion.
+Protected Assault Expert gives Chaos Assault Battalions and Biosecurity Assault Detachments +25% soft attack and breakthrough.
+Theatre Containment Organizer adds one army-group command slot and gives Gas Mask and Decontamination and Medical Countermeasure Detachments +25% defence.
+Sub-unit bonuses apply to the named components, so a conventional division without those components receives none of these stat bonuses.
 
 The native Chemical Operations Commander trait also offers a native High Command officer role with specialist, expert, and genius ranks.
-Its planning-speed values are one, three, and four percent, respectively; the former generic CBRN Operations Director office is retired.
+Specialist, expert, and genius ranks reduce deaths and medical saturation from chemical attacks and biological outbreaks in controlled states by 20%, 30%, and 40%, respectively.
+The strongest active rank applies once, and the shared hazard-response floor retains at least half the baseline consequence after combined protection.
+They also reduce preparation time for all five HQ orders by 20%, 30%, and 40%, while retaining the existing +5/+10/+15 maximum Command Power and +10/+20/+30 command-cap increases.
+Only the highest active rank discounts preparation; the staff discount compounds with the commander's 30% reduction and readiness before the existing 50% base-time floor and operation-specific bounds.
+The former generic CBRN Operations Director office is retired.
 Civil Defence Coordinator, Chemical Logistics Inspector, and Biological Security Director remain distinct institutional High Command options.
 The native officer role uses that commander's existing portrait.
 

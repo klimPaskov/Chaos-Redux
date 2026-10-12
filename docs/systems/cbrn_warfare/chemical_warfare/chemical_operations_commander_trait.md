@@ -8,7 +8,10 @@ The trait is the source for a native CBRN High Command advisor role at specialis
 
 ## Cylinder abilities and support bonuses
 
-The trait unlocks all four `chemical_<agent>_attack` cylinder abilities through their historical `enable_ability` entries. Each ability also requires the trait, its gas technology, a corps commander outside border combat, and no other active cylinder barrage. Native CBRN raids and operation adapters remain a second delivery route. The current trait definition contains no direct +20% Livens or agent-tank support-company modifiers, and the eighteen agent-specific tank companies are inactive compatibility definitions under the consolidated unit design.
+The trait unlocks all four `chemical_<agent>_attack` cylinder abilities through their historical `enable_ability` entries. Each ability also requires the trait, its gas technology, a corps commander outside border combat, and no other active cylinder barrage. Native CBRN raids and operation adapters remain a second delivery route. The trait gives the active consolidated Chemical Projector Battery +25% soft attack and breakthrough; the eighteen agent-specific tank companies remain inactive compatibility definitions under the consolidated unit design.
+The native effect list displays the projector bonus, with the existing ability and preparation text appended.
+Its national High Command ranks provide chemical/biological casualty and medical-saturation reductions and HQ preparation reductions of 20%, 30%, and 40%, bounded by the shared hazard-response and preparation floors.
+Only the strongest appointed rank contributes to either operational multiplier.
 
 The earlier historical candidate review considered Soviet, Japanese, Italian, Spanish, French, Canadian, British, German, and American commanders as research provenance. A search of current `history/countries/` found no `chemical_operations_commander` preassignment, so those names are not a current starting-roster claim. Any historically preassigned commander or new trait icon requires separate source and asset evidence before this guide can present it as active.
 
