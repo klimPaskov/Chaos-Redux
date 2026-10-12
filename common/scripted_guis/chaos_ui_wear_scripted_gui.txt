@@ -7,10 +7,10 @@
 # common/scripted_triggers/chaos_ui_wear_triggers.txt, so a tier change, a
 # settings or debug tier change, a load and the world-end colour switch all
 # show on the next interface update with no stored copy to go stale. Tier 0
-# shows nothing. The chaos_ui_wear_disabled global flag (Settings >
+# shows nothing unless world end is active. The chaos_ui_wear_disabled flag (Settings >
 # Miscellaneous) hides every overlay. No dirty variable is set, so the GUIs
 # refresh every tick, which is what makes the live flag reads effective.
-# Generated from docs/assets/chaos_ui_wear/gen_gui.py.
+# Border masks and red variants are documented in docs/systems/chaos_ui_wear.md.
 # ============================================================================
 
 scripted_gui = {
@@ -25,46 +25,31 @@ scripted_gui = {
 		}
 
 		triggers = {
+			wear_topbar_world_end_extra_visible = { chaos_ui_wear_world_end = yes }
 			wear_flag_corner_t1_visible = { chaos_ui_wear_dark_tier_1 = yes }
 			wear_flag_corner_t2_visible = { chaos_ui_wear_dark_tier_2 = yes }
 			wear_flag_corner_t3_visible = { chaos_ui_wear_dark_tier_3 = yes }
 			wear_flag_corner_t4_visible = { chaos_ui_wear_dark_tier_4 = yes }
 			wear_flag_corner_t5_visible = { chaos_ui_wear_dark_tier_5 = yes }
-			wear_flag_corner_t1_purple_visible = { chaos_ui_wear_purple_tier_1 = yes }
-			wear_flag_corner_t2_purple_visible = { chaos_ui_wear_purple_tier_2 = yes }
-			wear_flag_corner_t3_purple_visible = { chaos_ui_wear_purple_tier_3 = yes }
-			wear_flag_corner_t4_purple_visible = { chaos_ui_wear_purple_tier_4 = yes }
-			wear_flag_corner_t5_purple_visible = { chaos_ui_wear_purple_tier_5 = yes }
+			wear_flag_corner_world_end_visible = { chaos_ui_wear_world_end = yes }
 			wear_topbar_lip_t1_visible = { chaos_ui_wear_dark_tier_1 = yes }
 			wear_topbar_lip_t2_visible = { chaos_ui_wear_dark_tier_2 = yes }
 			wear_topbar_lip_t3_visible = { chaos_ui_wear_dark_tier_3 = yes }
 			wear_topbar_lip_t4_visible = { chaos_ui_wear_dark_tier_4 = yes }
 			wear_topbar_lip_t5_visible = { chaos_ui_wear_dark_tier_5 = yes }
-			wear_topbar_lip_t1_purple_visible = { chaos_ui_wear_purple_tier_1 = yes }
-			wear_topbar_lip_t2_purple_visible = { chaos_ui_wear_purple_tier_2 = yes }
-			wear_topbar_lip_t3_purple_visible = { chaos_ui_wear_purple_tier_3 = yes }
-			wear_topbar_lip_t4_purple_visible = { chaos_ui_wear_purple_tier_4 = yes }
-			wear_topbar_lip_t5_purple_visible = { chaos_ui_wear_purple_tier_5 = yes }
+			wear_topbar_lip_world_end_visible = { chaos_ui_wear_world_end = yes }
 			wear_topbar_center_t1_visible = { chaos_ui_wear_dark_tier_1 = yes }
 			wear_topbar_center_t2_visible = { chaos_ui_wear_dark_tier_2 = yes }
 			wear_topbar_center_t3_visible = { chaos_ui_wear_dark_tier_3 = yes }
 			wear_topbar_center_t4_visible = { chaos_ui_wear_dark_tier_4 = yes }
 			wear_topbar_center_t5_visible = { chaos_ui_wear_dark_tier_5 = yes }
-			wear_topbar_center_t1_purple_visible = { chaos_ui_wear_purple_tier_1 = yes }
-			wear_topbar_center_t2_purple_visible = { chaos_ui_wear_purple_tier_2 = yes }
-			wear_topbar_center_t3_purple_visible = { chaos_ui_wear_purple_tier_3 = yes }
-			wear_topbar_center_t4_purple_visible = { chaos_ui_wear_purple_tier_4 = yes }
-			wear_topbar_center_t5_purple_visible = { chaos_ui_wear_purple_tier_5 = yes }
+			wear_topbar_center_world_end_visible = { chaos_ui_wear_world_end = yes }
 			wear_date_frame_t1_visible = { chaos_ui_wear_dark_tier_1 = yes }
 			wear_date_frame_t2_visible = { chaos_ui_wear_dark_tier_2 = yes }
 			wear_date_frame_t3_visible = { chaos_ui_wear_dark_tier_3 = yes }
 			wear_date_frame_t4_visible = { chaos_ui_wear_dark_tier_4 = yes }
 			wear_date_frame_t5_visible = { chaos_ui_wear_dark_tier_5 = yes }
-			wear_date_frame_t1_purple_visible = { chaos_ui_wear_purple_tier_1 = yes }
-			wear_date_frame_t2_purple_visible = { chaos_ui_wear_purple_tier_2 = yes }
-			wear_date_frame_t3_purple_visible = { chaos_ui_wear_purple_tier_3 = yes }
-			wear_date_frame_t4_purple_visible = { chaos_ui_wear_purple_tier_4 = yes }
-			wear_date_frame_t5_purple_visible = { chaos_ui_wear_purple_tier_5 = yes }
+			wear_date_frame_world_end_visible = { chaos_ui_wear_world_end = yes }
 		}
 
 		ai_enabled = { always = no }
@@ -73,7 +58,7 @@ scripted_gui = {
 	chaos_ui_wear_minimap_gui = {
 		context_type = player_context
 		window_name = "chaos_ui_wear_minimap_window"
-		parent_window_name = mini_map_interface
+		parent_window_window = "mini_map_interface"
 
 		visible = {
 			chaos_ui_wear_enabled = yes
@@ -85,11 +70,7 @@ scripted_gui = {
 			wear_minimap_corner_t3_visible = { chaos_ui_wear_dark_tier_3 = yes }
 			wear_minimap_corner_t4_visible = { chaos_ui_wear_dark_tier_4 = yes }
 			wear_minimap_corner_t5_visible = { chaos_ui_wear_dark_tier_5 = yes }
-			wear_minimap_corner_t1_purple_visible = { chaos_ui_wear_purple_tier_1 = yes }
-			wear_minimap_corner_t2_purple_visible = { chaos_ui_wear_purple_tier_2 = yes }
-			wear_minimap_corner_t3_purple_visible = { chaos_ui_wear_purple_tier_3 = yes }
-			wear_minimap_corner_t4_purple_visible = { chaos_ui_wear_purple_tier_4 = yes }
-			wear_minimap_corner_t5_purple_visible = { chaos_ui_wear_purple_tier_5 = yes }
+			wear_minimap_corner_world_end_visible = { chaos_ui_wear_world_end = yes }
 		}
 
 		ai_enabled = { always = no }
@@ -110,21 +91,13 @@ scripted_gui = {
 			wear_politics_header_t3_visible = { chaos_ui_wear_dark_tier_3 = yes }
 			wear_politics_header_t4_visible = { chaos_ui_wear_dark_tier_4 = yes }
 			wear_politics_header_t5_visible = { chaos_ui_wear_dark_tier_5 = yes }
-			wear_politics_header_t1_purple_visible = { chaos_ui_wear_purple_tier_1 = yes }
-			wear_politics_header_t2_purple_visible = { chaos_ui_wear_purple_tier_2 = yes }
-			wear_politics_header_t3_purple_visible = { chaos_ui_wear_purple_tier_3 = yes }
-			wear_politics_header_t4_purple_visible = { chaos_ui_wear_purple_tier_4 = yes }
-			wear_politics_header_t5_purple_visible = { chaos_ui_wear_purple_tier_5 = yes }
+			wear_politics_header_world_end_visible = { chaos_ui_wear_world_end = yes }
 			wear_politics_frame_t1_visible = { chaos_ui_wear_dark_tier_1 = yes }
 			wear_politics_frame_t2_visible = { chaos_ui_wear_dark_tier_2 = yes }
 			wear_politics_frame_t3_visible = { chaos_ui_wear_dark_tier_3 = yes }
 			wear_politics_frame_t4_visible = { chaos_ui_wear_dark_tier_4 = yes }
 			wear_politics_frame_t5_visible = { chaos_ui_wear_dark_tier_5 = yes }
-			wear_politics_frame_t1_purple_visible = { chaos_ui_wear_purple_tier_1 = yes }
-			wear_politics_frame_t2_purple_visible = { chaos_ui_wear_purple_tier_2 = yes }
-			wear_politics_frame_t3_purple_visible = { chaos_ui_wear_purple_tier_3 = yes }
-			wear_politics_frame_t4_purple_visible = { chaos_ui_wear_purple_tier_4 = yes }
-			wear_politics_frame_t5_purple_visible = { chaos_ui_wear_purple_tier_5 = yes }
+			wear_politics_frame_world_end_visible = { chaos_ui_wear_world_end = yes }
 		}
 
 		ai_enabled = { always = no }
@@ -145,21 +118,13 @@ scripted_gui = {
 			wear_decisions_header_t3_visible = { chaos_ui_wear_dark_tier_3 = yes }
 			wear_decisions_header_t4_visible = { chaos_ui_wear_dark_tier_4 = yes }
 			wear_decisions_header_t5_visible = { chaos_ui_wear_dark_tier_5 = yes }
-			wear_decisions_header_t1_purple_visible = { chaos_ui_wear_purple_tier_1 = yes }
-			wear_decisions_header_t2_purple_visible = { chaos_ui_wear_purple_tier_2 = yes }
-			wear_decisions_header_t3_purple_visible = { chaos_ui_wear_purple_tier_3 = yes }
-			wear_decisions_header_t4_purple_visible = { chaos_ui_wear_purple_tier_4 = yes }
-			wear_decisions_header_t5_purple_visible = { chaos_ui_wear_purple_tier_5 = yes }
+			wear_decisions_header_world_end_visible = { chaos_ui_wear_world_end = yes }
 			wear_decisions_frame_t1_visible = { chaos_ui_wear_dark_tier_1 = yes }
 			wear_decisions_frame_t2_visible = { chaos_ui_wear_dark_tier_2 = yes }
 			wear_decisions_frame_t3_visible = { chaos_ui_wear_dark_tier_3 = yes }
 			wear_decisions_frame_t4_visible = { chaos_ui_wear_dark_tier_4 = yes }
 			wear_decisions_frame_t5_visible = { chaos_ui_wear_dark_tier_5 = yes }
-			wear_decisions_frame_t1_purple_visible = { chaos_ui_wear_purple_tier_1 = yes }
-			wear_decisions_frame_t2_purple_visible = { chaos_ui_wear_purple_tier_2 = yes }
-			wear_decisions_frame_t3_purple_visible = { chaos_ui_wear_purple_tier_3 = yes }
-			wear_decisions_frame_t4_purple_visible = { chaos_ui_wear_purple_tier_4 = yes }
-			wear_decisions_frame_t5_purple_visible = { chaos_ui_wear_purple_tier_5 = yes }
+			wear_decisions_frame_world_end_visible = { chaos_ui_wear_world_end = yes }
 		}
 
 		ai_enabled = { always = no }
@@ -180,11 +145,7 @@ scripted_gui = {
 			wear_research_frame_t3_visible = { chaos_ui_wear_dark_tier_3 = yes }
 			wear_research_frame_t4_visible = { chaos_ui_wear_dark_tier_4 = yes }
 			wear_research_frame_t5_visible = { chaos_ui_wear_dark_tier_5 = yes }
-			wear_research_frame_t1_purple_visible = { chaos_ui_wear_purple_tier_1 = yes }
-			wear_research_frame_t2_purple_visible = { chaos_ui_wear_purple_tier_2 = yes }
-			wear_research_frame_t3_purple_visible = { chaos_ui_wear_purple_tier_3 = yes }
-			wear_research_frame_t4_purple_visible = { chaos_ui_wear_purple_tier_4 = yes }
-			wear_research_frame_t5_purple_visible = { chaos_ui_wear_purple_tier_5 = yes }
+			wear_research_frame_world_end_visible = { chaos_ui_wear_world_end = yes }
 		}
 
 		ai_enabled = { always = no }
@@ -205,21 +166,13 @@ scripted_gui = {
 			wear_production_header_t3_visible = { chaos_ui_wear_dark_tier_3 = yes }
 			wear_production_header_t4_visible = { chaos_ui_wear_dark_tier_4 = yes }
 			wear_production_header_t5_visible = { chaos_ui_wear_dark_tier_5 = yes }
-			wear_production_header_t1_purple_visible = { chaos_ui_wear_purple_tier_1 = yes }
-			wear_production_header_t2_purple_visible = { chaos_ui_wear_purple_tier_2 = yes }
-			wear_production_header_t3_purple_visible = { chaos_ui_wear_purple_tier_3 = yes }
-			wear_production_header_t4_purple_visible = { chaos_ui_wear_purple_tier_4 = yes }
-			wear_production_header_t5_purple_visible = { chaos_ui_wear_purple_tier_5 = yes }
+			wear_production_header_world_end_visible = { chaos_ui_wear_world_end = yes }
 			wear_production_frame_t1_visible = { chaos_ui_wear_dark_tier_1 = yes }
 			wear_production_frame_t2_visible = { chaos_ui_wear_dark_tier_2 = yes }
 			wear_production_frame_t3_visible = { chaos_ui_wear_dark_tier_3 = yes }
 			wear_production_frame_t4_visible = { chaos_ui_wear_dark_tier_4 = yes }
 			wear_production_frame_t5_visible = { chaos_ui_wear_dark_tier_5 = yes }
-			wear_production_frame_t1_purple_visible = { chaos_ui_wear_purple_tier_1 = yes }
-			wear_production_frame_t2_purple_visible = { chaos_ui_wear_purple_tier_2 = yes }
-			wear_production_frame_t3_purple_visible = { chaos_ui_wear_purple_tier_3 = yes }
-			wear_production_frame_t4_purple_visible = { chaos_ui_wear_purple_tier_4 = yes }
-			wear_production_frame_t5_purple_visible = { chaos_ui_wear_purple_tier_5 = yes }
+			wear_production_frame_world_end_visible = { chaos_ui_wear_world_end = yes }
 		}
 
 		ai_enabled = { always = no }
@@ -240,21 +193,13 @@ scripted_gui = {
 			wear_construction_header_t3_visible = { chaos_ui_wear_dark_tier_3 = yes }
 			wear_construction_header_t4_visible = { chaos_ui_wear_dark_tier_4 = yes }
 			wear_construction_header_t5_visible = { chaos_ui_wear_dark_tier_5 = yes }
-			wear_construction_header_t1_purple_visible = { chaos_ui_wear_purple_tier_1 = yes }
-			wear_construction_header_t2_purple_visible = { chaos_ui_wear_purple_tier_2 = yes }
-			wear_construction_header_t3_purple_visible = { chaos_ui_wear_purple_tier_3 = yes }
-			wear_construction_header_t4_purple_visible = { chaos_ui_wear_purple_tier_4 = yes }
-			wear_construction_header_t5_purple_visible = { chaos_ui_wear_purple_tier_5 = yes }
+			wear_construction_header_world_end_visible = { chaos_ui_wear_world_end = yes }
 			wear_construction_frame_t1_visible = { chaos_ui_wear_dark_tier_1 = yes }
 			wear_construction_frame_t2_visible = { chaos_ui_wear_dark_tier_2 = yes }
 			wear_construction_frame_t3_visible = { chaos_ui_wear_dark_tier_3 = yes }
 			wear_construction_frame_t4_visible = { chaos_ui_wear_dark_tier_4 = yes }
 			wear_construction_frame_t5_visible = { chaos_ui_wear_dark_tier_5 = yes }
-			wear_construction_frame_t1_purple_visible = { chaos_ui_wear_purple_tier_1 = yes }
-			wear_construction_frame_t2_purple_visible = { chaos_ui_wear_purple_tier_2 = yes }
-			wear_construction_frame_t3_purple_visible = { chaos_ui_wear_purple_tier_3 = yes }
-			wear_construction_frame_t4_purple_visible = { chaos_ui_wear_purple_tier_4 = yes }
-			wear_construction_frame_t5_purple_visible = { chaos_ui_wear_purple_tier_5 = yes }
+			wear_construction_frame_world_end_visible = { chaos_ui_wear_world_end = yes }
 		}
 
 		ai_enabled = { always = no }
@@ -275,21 +220,13 @@ scripted_gui = {
 			wear_trade_header_t3_visible = { chaos_ui_wear_dark_tier_3 = yes }
 			wear_trade_header_t4_visible = { chaos_ui_wear_dark_tier_4 = yes }
 			wear_trade_header_t5_visible = { chaos_ui_wear_dark_tier_5 = yes }
-			wear_trade_header_t1_purple_visible = { chaos_ui_wear_purple_tier_1 = yes }
-			wear_trade_header_t2_purple_visible = { chaos_ui_wear_purple_tier_2 = yes }
-			wear_trade_header_t3_purple_visible = { chaos_ui_wear_purple_tier_3 = yes }
-			wear_trade_header_t4_purple_visible = { chaos_ui_wear_purple_tier_4 = yes }
-			wear_trade_header_t5_purple_visible = { chaos_ui_wear_purple_tier_5 = yes }
+			wear_trade_header_world_end_visible = { chaos_ui_wear_world_end = yes }
 			wear_trade_frame_t1_visible = { chaos_ui_wear_dark_tier_1 = yes }
 			wear_trade_frame_t2_visible = { chaos_ui_wear_dark_tier_2 = yes }
 			wear_trade_frame_t3_visible = { chaos_ui_wear_dark_tier_3 = yes }
 			wear_trade_frame_t4_visible = { chaos_ui_wear_dark_tier_4 = yes }
 			wear_trade_frame_t5_visible = { chaos_ui_wear_dark_tier_5 = yes }
-			wear_trade_frame_t1_purple_visible = { chaos_ui_wear_purple_tier_1 = yes }
-			wear_trade_frame_t2_purple_visible = { chaos_ui_wear_purple_tier_2 = yes }
-			wear_trade_frame_t3_purple_visible = { chaos_ui_wear_purple_tier_3 = yes }
-			wear_trade_frame_t4_purple_visible = { chaos_ui_wear_purple_tier_4 = yes }
-			wear_trade_frame_t5_purple_visible = { chaos_ui_wear_purple_tier_5 = yes }
+			wear_trade_frame_world_end_visible = { chaos_ui_wear_world_end = yes }
 		}
 
 		ai_enabled = { always = no }
@@ -310,21 +247,13 @@ scripted_gui = {
 			wear_deployment_header_t3_visible = { chaos_ui_wear_dark_tier_3 = yes }
 			wear_deployment_header_t4_visible = { chaos_ui_wear_dark_tier_4 = yes }
 			wear_deployment_header_t5_visible = { chaos_ui_wear_dark_tier_5 = yes }
-			wear_deployment_header_t1_purple_visible = { chaos_ui_wear_purple_tier_1 = yes }
-			wear_deployment_header_t2_purple_visible = { chaos_ui_wear_purple_tier_2 = yes }
-			wear_deployment_header_t3_purple_visible = { chaos_ui_wear_purple_tier_3 = yes }
-			wear_deployment_header_t4_purple_visible = { chaos_ui_wear_purple_tier_4 = yes }
-			wear_deployment_header_t5_purple_visible = { chaos_ui_wear_purple_tier_5 = yes }
+			wear_deployment_header_world_end_visible = { chaos_ui_wear_world_end = yes }
 			wear_deployment_frame_t1_visible = { chaos_ui_wear_dark_tier_1 = yes }
 			wear_deployment_frame_t2_visible = { chaos_ui_wear_dark_tier_2 = yes }
 			wear_deployment_frame_t3_visible = { chaos_ui_wear_dark_tier_3 = yes }
 			wear_deployment_frame_t4_visible = { chaos_ui_wear_dark_tier_4 = yes }
 			wear_deployment_frame_t5_visible = { chaos_ui_wear_dark_tier_5 = yes }
-			wear_deployment_frame_t1_purple_visible = { chaos_ui_wear_purple_tier_1 = yes }
-			wear_deployment_frame_t2_purple_visible = { chaos_ui_wear_purple_tier_2 = yes }
-			wear_deployment_frame_t3_purple_visible = { chaos_ui_wear_purple_tier_3 = yes }
-			wear_deployment_frame_t4_purple_visible = { chaos_ui_wear_purple_tier_4 = yes }
-			wear_deployment_frame_t5_purple_visible = { chaos_ui_wear_purple_tier_5 = yes }
+			wear_deployment_frame_world_end_visible = { chaos_ui_wear_world_end = yes }
 		}
 
 		ai_enabled = { always = no }
@@ -345,21 +274,13 @@ scripted_gui = {
 			wear_logistics_header_t3_visible = { chaos_ui_wear_dark_tier_3 = yes }
 			wear_logistics_header_t4_visible = { chaos_ui_wear_dark_tier_4 = yes }
 			wear_logistics_header_t5_visible = { chaos_ui_wear_dark_tier_5 = yes }
-			wear_logistics_header_t1_purple_visible = { chaos_ui_wear_purple_tier_1 = yes }
-			wear_logistics_header_t2_purple_visible = { chaos_ui_wear_purple_tier_2 = yes }
-			wear_logistics_header_t3_purple_visible = { chaos_ui_wear_purple_tier_3 = yes }
-			wear_logistics_header_t4_purple_visible = { chaos_ui_wear_purple_tier_4 = yes }
-			wear_logistics_header_t5_purple_visible = { chaos_ui_wear_purple_tier_5 = yes }
+			wear_logistics_header_world_end_visible = { chaos_ui_wear_world_end = yes }
 			wear_logistics_frame_t1_visible = { chaos_ui_wear_dark_tier_1 = yes }
 			wear_logistics_frame_t2_visible = { chaos_ui_wear_dark_tier_2 = yes }
 			wear_logistics_frame_t3_visible = { chaos_ui_wear_dark_tier_3 = yes }
 			wear_logistics_frame_t4_visible = { chaos_ui_wear_dark_tier_4 = yes }
 			wear_logistics_frame_t5_visible = { chaos_ui_wear_dark_tier_5 = yes }
-			wear_logistics_frame_t1_purple_visible = { chaos_ui_wear_purple_tier_1 = yes }
-			wear_logistics_frame_t2_purple_visible = { chaos_ui_wear_purple_tier_2 = yes }
-			wear_logistics_frame_t3_purple_visible = { chaos_ui_wear_purple_tier_3 = yes }
-			wear_logistics_frame_t4_purple_visible = { chaos_ui_wear_purple_tier_4 = yes }
-			wear_logistics_frame_t5_purple_visible = { chaos_ui_wear_purple_tier_5 = yes }
+			wear_logistics_frame_world_end_visible = { chaos_ui_wear_world_end = yes }
 		}
 
 		ai_enabled = { always = no }
