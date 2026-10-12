@@ -107,11 +107,10 @@ A resolved figure never arrives again. Resolving the three packages without a de
 
 ## Assets
 
-Wired in `interface/030_time_traveler.gfx`: the main category icon and the foreign intelligence category icon, the consultation category picture, 14 decision icons, six idea icons (the sixth is the Traveler Government spirit), the baseline arrival report image and the achievement triplets of the four implemented achievements (The Future Refused, No One Owns Tomorrow, I Have Seen This Office Before, Nine Lives of History). The generated DDS files live under `gfx/interface/decisions/030_time_traveler/`, `gfx/interface/ideas/030_time_traveler/`, `gfx/event_pictures/030_time_traveler/` and `gfx/achievements/`.
+Wired in `interface/030_time_traveler.gfx`: the main category icon and the foreign intelligence category icon, the consultation category picture, 14 decision icons, six idea icons (the sixth is the Traveler Government spirit), the baseline arrival report image, separate Jonas Calder country-leader and advisor portraits, and the achievement triplets of the four implemented achievements (The Future Refused, No One Owns Tomorrow, I Have Seen This Office Before, Nine Lives of History). The generated DDS files live under `gfx/interface/decisions/030_time_traveler/`, `gfx/interface/ideas/030_time_traveler/`, `gfx/event_pictures/030_time_traveler/`, `gfx/achievements/`, and `gfx/leaders/030_time_traveler/`.
 
 ### Assets still needed
 
-- Portrait for Jonas Calder (fictional): advisor portrait and later the country-leader portrait, through the portrait worker. The character has no portrait wired and shows the engine silhouette.
 - Baseline super-event: the image `gfx/super_events/030_time_traveler/super_event_030_time_traveler_baseline_arrival.dds` exists, the sourced quote and the licensed audio do not, so the super-event is not wired.
 - High divergence category picture variant `decision_category_030_time_traveler_high_divergence.dds` exists and is not wired yet.
 - The GUI value icons (`gfx/interface/scripted_guis/030_time_traveler/`) are unused because the header is text.
