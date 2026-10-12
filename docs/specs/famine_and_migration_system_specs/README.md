@@ -111,3 +111,9 @@ The original planning environment did not expose the Windows Chaos Redux reposit
 - Part 1 records the famine country registry; Part 2 adds the national food crisis and the bounded Conceal Hunger and Continue Requisitions shocks; Part 3 states the single evacuation decision; Part 7 records the Hunger Lines launch-day stage commit, special Chaos front flight, and the queued Condemnation donor link.
 - Maritime evacuation, abandoning a state, prioritized entry and internment reception are listed in Part 6 as unresolved source proposals outside the current inventory.
 - The decision and mission prompt's family list matches the merged decisions; pass 2 design changes were not applied because another agent's rework owns the current design.
+
+## Current C11 authority
+
+The owner’s 13 October instruction restores the removed decision roles exactly from `839850b0d^` and supersedes the merged-action descriptions recorded in the dated 10 October alignment above.
+The restored roles use the requested local-pressure gates and fuel/conditional-convoy costs, retaining genuinely added famine mechanics and original equipment requirements.
+Current evidence and limits are in [the C11 history report](../../plans/migration_famine_history_2026-10-13.md).
