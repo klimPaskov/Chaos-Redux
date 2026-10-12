@@ -466,7 +466,8 @@ The visible Deaths reason is `From forced displacement` for coercive or route-ex
 
 The country selects a valid destination, assigns transport, and moves a bounded cohort.
 
-The action can prioritize vulnerable civilians, industrial workers, administrative staff, or the general population.
+One Evacuate Civilians decision covers organization and movement; it is blocked only when national reception is already over capacity.
+Cohort priority is not a separate choice while every priority would move the same people through the same transfer (see [Part 1](famine_and_migration_system_spec_part_1_core.md)).
 
 ### Support spontaneous flight
 
