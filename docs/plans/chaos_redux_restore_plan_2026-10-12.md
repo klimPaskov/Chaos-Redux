@@ -36,6 +36,8 @@ A12. Biological warfare deployment and containment: restore the simpler year-old
 
 A13. Chemical release abilities: re-add the army-leader chemical release abilities (chlorine, phosgene and the others in `common/abilities/chemical_abilities.txt`) as working abilities, restored from the last version in git history where they were active, with their traits, icons, localisation and AI. They are currently disabled with `allowed = { always = no }`. Raids stay as a second delivery route. Completed: `d640c653cb864864df84a8432acf8ab8d9f092fa`. Localisation follow-up: `0e2814d61b981479c82a9a2348534e717ddd4cb9`.
 
+A-INTERFACE. Mass restoration audit of interface GUI/GFX and scripted GUIs since 1 August 2026. Completed audit: `21da983e24d367bad0505e3d3bc4b73598078b0e` (417 commits, 764 commit-path pairs; protected restores preserved; no additional engine changes). The 36 uncertain or conflicting restoration choices remain unresolved under the owner's do-not-restore-if-unclear rule; exact parent sources and before/after evidence: `docs/plans/interface_restore_audit_2026-10-13.md`.
+
 ## B. UI fixes
 
 B1. **Q** Super-event volume multiplier arrows: tooltip saying which volume they change (Luna). (commit: f5b8f4a61a5dc09e88692fd623b83d87e8314dae)
