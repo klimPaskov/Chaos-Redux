@@ -22,6 +22,8 @@ The opening builds a weighted ticket pool for each founder selection. Candidates
 
 Later recruitment uses a dynamic cap. The evolution ceiling is reduced against a weak minor target and against a target that has generated little tension, then clamped to the valid range and to the actual remaining candidate pool. That pool ceiling counts eligible AI minors and eligible human minors. Human capacity is therefore preserved without treating an unanswered invitation as consent.
 
+The first incident is drawn between Orders from Unknown Hands and the existing weighted operation pool with equal opening weights.
+The operation pool records its actor, surface, risk, and evidence class before the report appears, and keeps the same family and surface eligibility used by later concealed operations.
 Normal openings begin at baseline. If evolution settings already make later stages available before the event fires, the event records the open stages and starts with their corresponding membership, readiness, counter-network, and warning package. A pre-fire Evolution III opening first creates the Evolution II package and then gives the pact a short real preparation interval before the public-war stage opens.
 
 ## Concealed pact
