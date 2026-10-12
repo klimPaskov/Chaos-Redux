@@ -28,9 +28,9 @@ A4. **Q** Chemical warfare cylinder tech icons: restore the originals (asked sev
 A5. **Q** Icons changed in bulk: restore. Decisions must use decision icons, categories category icons, ideas idea-size icons. Keep only new icons that replaced vanilla placeholders. Wire the event ideas that are missing icons.
 A6. **Q** Portraits that were replaced: restore the previous ones.
 A7. **Q** Unit and decision text icons: some are flat green with no detail (for example the truck). Use the normal truck icon and restore the earlier detailed versions so the set is consistent.
-A8. **Q** Chaos Meter history alignment: restore the earlier layout.
-A9. **Q** Condemnation description: restore. Deaths entries spacing: restore.
-A10. **Q** Cluster entries in the event log: restore the earlier entry layout and alignment; remove the available/unavailable text on the right.
+A8. **Q** Chaos Meter history alignment: restore the earlier layout. — implemented in `1fca4df6a7`.
+A9. **Q** Condemnation description: restore. Deaths entries spacing: restore. — implemented in `1fca4df6a7`.
+A10. **Q** Cluster entries in the event log: restore the earlier entry layout and alignment; remove the available/unavailable text on the right. — implemented in `360245b7ff`.
 A11. Scientists: restore the balance that was changed (everyone became level 3 with no traits). Find the hidden biowarfare and chemical scientists and make them available again. Completed: `d2f7111d16e84b6b9a8fadf4b9967af12d165d15`.
 A12. Biological warfare deployment and containment: restore the simpler year-old flow (deploy field hospitals and similar direct actions; easy and fast policy change; a raid must be doable without friction). The Disease Containment Board in its current form is rejected. Compare with the old implementation in git history before deciding what to keep.
 
@@ -40,7 +40,7 @@ A13. Chemical release abilities: re-add the army-leader chemical release abiliti
 
 B1. **Q** Super-event volume multiplier arrows: tooltip saying which volume they change (Luna).
 B2. **Q** Event log clusters view: remove the "show" control and the cluster, status and auto subheaders. In cluster details every member gets an enable/disable checkbox. Fix the "fires automatically" text overlapping the checkbox.
-B3. **Q** World-end scenario details view: fix the positioning.
+B3. **Q** World-end scenario details view: fix the positioning. — implemented in `7ea7d51f5b`.
 B4. **Q** Event history flag hover shows "Japanese Empire" instead of the country the click pans to: fix.
 B5. **Q** Move the auto event logs setting to the Miscellaneous view.
 B6. **Q** Event history logging: entries show only the event name, never the full description.
