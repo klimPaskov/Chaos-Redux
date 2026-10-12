@@ -327,7 +327,7 @@ The super-event is skipped when another super-event is already visible, and the 
 
 ## Assets
 
-Reused existing art: report image of Lawrence (`GFX_report_event_lawrence`, provenance of the source photograph is not recorded in the repository and must be confirmed before release), arab congress report image and the decision category picture (`interface/040_lawrence_of_arabia.gfx`), news image `GFX_news_lawrence`. The Kingdom super-event now has its own dedicated scene and sprite; the previous sprite and federation texture remain unchanged. British Mission and Exposed Network use dedicated idea sprites; their shared vanilla sprites and textures remain untouched. Independent Partner and British Arabian System have no exact current idea IDs and remain unwired. Fourteen current decision consumers, eight idea consumers, and eight named focus nodes use dedicated aliases in their Event 040 `.gfx` files. Each focus icon has a matching `_shine` alias; the existing vanilla stand-in sprites and textures remain unchanged.
+Reused existing art: report image of Lawrence (`GFX_report_event_lawrence`, provenance of the source photograph is not recorded in the repository and must be confirmed before release), arab congress report image and the decision category picture (`interface/040_lawrence_of_arabia.gfx`), news image `GFX_news_lawrence`. The Kingdom super-event now has its own dedicated scene and sprite; the previous sprite and federation texture remain unchanged. British Mission and Exposed Network use dedicated idea sprites; their shared vanilla sprites and textures remain untouched. Independent Partner and British Arabian System have no exact current idea IDs and remain unwired. All seven Event 040 achievements have dedicated completed, grey and not-eligible DDS triplets under `gfx/achievements/`. Fourteen current decision consumers, eight idea consumers, and eight named focus nodes use dedicated aliases in their Event 040 `.gfx` files. Each focus icon has a matching `_shine` alias; the existing vanilla stand-in sprites and textures remain unchanged.
 
 ### Assets still needed
 
@@ -340,7 +340,6 @@ Reused existing art: report image of Lawrence (`GFX_report_event_lawrence`, prov
 | Report images for the recall, a sabotage scene and the settlement reports | `GFX_report_event_040_<name>` | same | `gfx/event_pictures/040_lawrence_of_arabia/` |
 | Flags of the three federation identities, normal, medium and small | tag files `LAWF_BRITISH`, `LAWF_ARAB`, `LAWF_KINGDOM` | none | `gfx/flags/`, `gfx/flags/medium/`, `gfx/flags/small/` |
 | Super-event audio and a sourced quote for slots 140 to 142 | sound ids pending | pending | pending |
-| Achievement triplets for Gold Without Chains, Desert Conference and Rails, Ports and Promises; the Uncrowned Kingdom triplet is installed | `GFX_achievement_chaos_redux_040_<id>` and `_grey`, `_not_eligible` | filename-convention achievement textures | `gfx/achievements/` |
 
 ### Focus icon registrations
 
