@@ -61,8 +61,15 @@ on_actions = {
 			FROM.FROM = {
 				humanitarian_corridor_handle_state_control_change = yes
 				humanitarian_handle_state_control_change = yes
+				# When a live outbreak takes this state, civilians in eligible
+				# neighboring states receive bounded migration pressure.
+				migration_pressure_apply_outbreak_neighbor_flight = yes
 				humanitarian_handle_hostile_capture = yes
 				humanitarian_handle_special_front_capture = yes
+				# A changed front can place the adjacent owned states under direct
+				# threat. The state helper checks the actual neighboring controller,
+				# war relation, and its own cooldown before requesting any flight.
+				every_neighbor_state = { migration_pressure_apply_war_front_flight = yes }
 			}
 		}
 	}
@@ -85,10 +92,12 @@ on_actions = {
 			ROOT = {
 				humanitarian_mark_country_war_reassessment = yes
 				humanitarian_corridor_revalidate_sparse_country = yes
+				every_owned_state = { migration_pressure_apply_war_front_flight = yes }
 			}
 			FROM = {
 				humanitarian_mark_country_war_reassessment = yes
 				humanitarian_corridor_revalidate_sparse_country = yes
+				every_owned_state = { migration_pressure_apply_war_front_flight = yes }
 			}
 		}
 	}

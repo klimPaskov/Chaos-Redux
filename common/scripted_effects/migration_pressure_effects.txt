@@ -1,0 +1,142 @@
+# State-local departure pressure adapters. They set pressure only through the
+# migration owner and never alter population, record deaths, or create cohorts.
+
+# STATE scope: an active outbreak source state. Its immediate neighbors receive
+# bounded flight pressure only when they use the normal civilian system and
+# their per-state outbreak receipt is off cooldown.
+migration_pressure_apply_outbreak_neighbor_flight = {
+	if = {
+		limit = {
+			OR = {
+				black_plague_state_is_established = yes
+				OR = {
+					CONTROLLER = { is_live_standard_zombie_outbreak_country = yes }
+					CONTROLLER = { is_live_weaponized_zombie_profile_country = yes }
+				}
+			}
+		}
+		every_neighbor_state = {
+			limit = {
+				humanitarian_state_is_valid = yes
+				OWNER = { humanitarian_country_is_valid = yes }
+				is_owned_and_controlled_by = OWNER
+				state_population_k > constant:humanitarian_capture_pressure.minimum_state_population_k
+				OR = {
+					NOT = { has_variable = migration_pressure_outbreak_cooldown_until_date }
+					check_variable = { var = migration_pressure_outbreak_cooldown_until_date value = global.date compare = less_than_or_equals }
+				}
+				OR = {
+					NOT = { has_variable = humanitarian_capture_cooldown_until_date }
+					check_variable = { var = humanitarian_capture_cooldown_until_date value = global.date compare = less_than_or_equals }
+				}
+				migration_state_has_live_departure_pressure = yes
+			}
+			# The active outbreak adjacency is itself the proof. A local receipt
+			# date prevents repeated mortality callbacks from stacking requests.
+			set_temp_variable = { migration_pressure_neighbor_has_outbreak = constant:humanitarian_runtime.zero }
+			if = {
+				limit = {
+					any_neighbor_state = { black_plague_state_is_established = yes }
+				}
+				set_temp_variable = { migration_pressure_neighbor_has_outbreak = constant:humanitarian_runtime.one }
+			}
+			if = {
+				limit = {
+					any_neighbor_state = {
+						CONTROLLER = { is_live_standard_zombie_outbreak_country = yes }
+					}
+				}
+				set_temp_variable = { migration_pressure_neighbor_has_outbreak = constant:humanitarian_runtime.one }
+			}
+			if = {
+				limit = {
+					any_neighbor_state = {
+						CONTROLLER = { is_live_weaponized_zombie_profile_country = yes }
+					}
+				}
+				set_temp_variable = { migration_pressure_neighbor_has_outbreak = constant:humanitarian_runtime.one }
+			}
+			if = {
+				limit = { check_variable = { var = migration_pressure_neighbor_has_outbreak value = constant:humanitarian_runtime.one compare = equals } }
+				set_temp_variable = { migration_pressure_adapter_share = constant:migration_pressure_runtime.outbreak_neighbor_population_fraction }
+				set_temp_variable = { migration_pressure_request_amount = constant:humanitarian_population.zero }
+				migration_pressure_build_local_flight_request = yes
+				if = {
+					limit = { check_variable = { var = migration_pressure_request_amount value = constant:migration_pressure_runtime.minimum_request_people compare = greater_than_or_equals } }
+					set_temp_variable = { migration_pressure_request_proven = constant:humanitarian_runtime.one }
+					set_temp_variable = { migration_pressure_request_actor_proven = constant:humanitarian_runtime.one }
+					set_temp_variable = { migration_pressure_request_result = constant:humanitarian_runtime.zero }
+					migration_request_outbreak_pressure = yes
+					if = {
+						limit = { check_variable = { var = migration_pressure_request_result value = constant:humanitarian_runtime.one compare = equals } }
+						set_temp_variable = { chaosx_date_days = constant:migration_pressure_runtime.outbreak_cooldown_days }
+						set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
+						chaosx_convert_days_to_date_offset = yes
+						set_variable = { migration_pressure_outbreak_cooldown_until_date = global.date }
+						add_to_variable = { migration_pressure_outbreak_cooldown_until_date = chaosx_date_offset }
+					}
+				}
+			}
+			set_temp_variable = { migration_pressure_request_amount = constant:humanitarian_population.zero }
+			set_temp_variable = { migration_pressure_request_proven = constant:humanitarian_runtime.zero }
+			set_temp_variable = { migration_pressure_request_actor_proven = constant:humanitarian_runtime.zero }
+		}
+	}
+}
+
+# STATE scope: one state owned and controlled by a country which has just
+# entered war. A neighboring state's actual controller must belong to an
+# enemy at war with this state's owner, so islands and rear regions are skipped.
+migration_pressure_apply_war_front_flight = {
+	if = {
+		limit = {
+			humanitarian_state_is_valid = yes
+			OWNER = { humanitarian_country_is_valid = yes has_war = yes }
+			is_owned_and_controlled_by = OWNER
+			migration_state_has_live_departure_pressure = yes
+			any_neighbor_state = { CONTROLLER = { has_war_with = PREV.PREV.CONTROLLER } }
+			OR = {
+				NOT = { has_variable = humanitarian_capture_cooldown_until_date }
+				check_variable = { var = humanitarian_capture_cooldown_until_date value = global.date compare = less_than_or_equals }
+			}
+		}
+		set_temp_variable = { migration_pressure_adapter_share = constant:migration_pressure_runtime.front_population_fraction }
+		set_temp_variable = { migration_pressure_request_amount = constant:humanitarian_population.zero }
+		migration_pressure_build_local_flight_request = yes
+		if = {
+			limit = { check_variable = { var = migration_pressure_request_amount value = constant:migration_pressure_runtime.minimum_request_people compare = greater_than_or_equals } }
+			set_temp_variable = { migration_pressure_request_proven = constant:humanitarian_runtime.one }
+			set_temp_variable = { migration_pressure_request_actor_proven = constant:humanitarian_runtime.one }
+			set_temp_variable = { migration_pressure_request_result = constant:humanitarian_runtime.zero }
+			migration_request_war_pressure = yes
+			if = {
+				limit = { check_variable = { var = migration_pressure_request_result value = constant:humanitarian_runtime.one compare = equals } }
+				set_temp_variable = { chaosx_date_days = constant:humanitarian_capture_pressure.cooldown_days }
+				set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
+				chaosx_convert_days_to_date_offset = yes
+				set_variable = { humanitarian_capture_cooldown_until_date = global.date }
+				add_to_variable = { humanitarian_capture_cooldown_until_date = chaosx_date_offset }
+			}
+		}
+	}
+	set_temp_variable = { migration_pressure_request_amount = constant:humanitarian_population.zero }
+	set_temp_variable = { migration_pressure_request_proven = constant:humanitarian_runtime.zero }
+	set_temp_variable = { migration_pressure_request_actor_proven = constant:humanitarian_runtime.zero }
+}
+
+# STATE scope. Build a people-unit request from the live population while
+# preserving the migration protected-origin floor. This helper is shared by
+# outbreak and front adapters; its source is selected by the caller.
+migration_pressure_build_local_flight_request = {
+	set_temp_variable = { migration_pressure_request_amount = state_population_k }
+	multiply_temp_variable = { migration_pressure_request_amount = constant:humanitarian_population.people_per_k }
+	set_temp_variable = { migration_pressure_request_movable = migration_pressure_request_amount }
+	set_temp_variable = { migration_pressure_request_floor = migration_pressure_request_amount }
+	multiply_temp_variable = { migration_pressure_request_floor = constant:migration_pressure_runtime.protected_origin_share }
+	round_temp_variable = migration_pressure_request_floor
+	subtract_from_temp_variable = { migration_pressure_request_movable = migration_pressure_request_floor }
+	multiply_temp_variable = { migration_pressure_request_amount = migration_pressure_adapter_share }
+	clamp_temp_variable = { var = migration_pressure_request_amount min = constant:humanitarian_population.zero max = migration_pressure_request_movable }
+	round_temp_variable = migration_pressure_request_amount
+	clear_temp_variable = migration_pressure_adapter_share
+}

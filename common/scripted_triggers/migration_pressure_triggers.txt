@@ -1,0 +1,73 @@
+# STATE-scope gates shared by the migration decision surface and bounded
+# crisis adapters. These predicates inspect only current state-local proof and
+# immediate neighbors; they do not scan the global migration registries.
+
+migration_state_has_live_departure_pressure = {
+	hidden_trigger = {
+		humanitarian_state_is_valid = yes
+		OR = {
+			AND = {
+				famine_to_migration_food_safety_is_valid = yes
+				OR = {
+					check_variable = { var = famine_to_migration_food_stage value = constant:famine_food_stage.acute_shortage compare = greater_than_or_equals }
+					AND = {
+						check_variable = { var = famine_to_migration_food_stage value = constant:famine_food_stage.supply_strain compare = equals }
+						OR = {
+							check_variable = { var = famine_to_migration_food_exposure_days value = constant:migration_decision_threshold.category_food_exposure_days compare = greater_than_or_equals }
+							check_variable = { var = famine_to_migration_food_incident_count value = constant:migration_decision_threshold.category_food_incidents compare = greater_than_or_equals }
+						}
+					}
+				}
+			}
+			famine_blockade_proof = yes
+			has_state_flag = migration_persecution_active
+			has_state_flag = migration_bombing_active
+			OR = {
+				mapmode_state_has_chemical_contamination = yes
+				is_biowarfare_contaminated_state = yes
+			}
+			AND = {
+				has_state_flag = natural_disaster_aftermath_active
+				OR = {
+					has_state_flag = natural_disaster_supply_collapse
+					has_state_flag = natural_disaster_refugee_pressure
+					has_state_flag = natural_disaster_disease_pressure
+				}
+			}
+			any_neighbor_state = {
+				OR = {
+					CONTROLLER = { is_live_standard_zombie_outbreak_country = yes }
+					CONTROLLER = { is_live_weaponized_zombie_profile_country = yes }
+					black_plague_state_is_established = yes
+				}
+			}
+			any_neighbor_state = {
+				CONTROLLER = { has_war_with = PREV.PREV.CONTROLLER }
+			}
+		}
+	}
+}
+
+# STATE scope. A real issue is either a current danger or measured live
+# migration load. Durable history and unvalidated projection flags do not
+# qualify. A receiver-front intent qualifies only through its full identity
+# and current-origin/current-front contract.
+migration_state_has_real_migration_issue = {
+	hidden_trigger = {
+		humanitarian_state_is_valid = yes
+		OR = {
+			migration_state_has_live_departure_pressure = yes
+			AND = { has_variable = migration_flight_pressure check_variable = { var = migration_flight_pressure value = constant:humanitarian_population.zero compare = greater_than } }
+			AND = { has_variable = migration_trapped_population check_variable = { var = migration_trapped_population value = constant:humanitarian_population.zero compare = greater_than } }
+			AND = { has_variable = migration_state_reception_load check_variable = { var = migration_state_reception_load value = constant:humanitarian_population.zero compare = greater_than } }
+			AND = {
+				migration_cohort_arrays_are_aligned = yes
+				NOT = { has_state_flag = migration_cohort_selection_ambiguous }
+				NOT = { has_state_flag = migration_cohort_registry_misaligned }
+				has_variable = migration_state_live_cohort_amount
+				check_variable = { var = migration_state_live_cohort_amount value = constant:humanitarian_population.zero compare = greater_than }
+			}
+			migration_reception_front_intent_cached_identity_is_current = yes
+		}
+	}
+}

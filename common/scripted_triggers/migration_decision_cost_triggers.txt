@@ -1,0 +1,212 @@
+# Migration and famine decision fee bundles. Country payer; FROM is the selected state.
+# The physical transport receipt and original equipment fees share an inclusive gate.
+
+migration_open_departure_routes_cost_is_affordable = {
+	hidden_trigger = {
+		migration_transport_policy_cost_is_affordable = { PROFILE = light }
+		NOT = { migration_transport_policy_receipt_is_paid = { RECEIPT = migration_open_departure_routes } }
+		humanitarian_cost_train_light_is_affordable = yes
+	}
+}
+
+migration_restrict_departure_cost_is_affordable = {
+	hidden_trigger = {
+		migration_transport_policy_cost_is_affordable = { PROFILE = light }
+		NOT = { migration_transport_policy_receipt_is_paid = { RECEIPT = migration_restrict_departure } }
+		humanitarian_cost_infantry_light_is_affordable = yes
+	}
+}
+
+migration_close_border_cost_is_affordable = {
+	hidden_trigger = {
+		migration_transport_state_cost_is_affordable = { PROFILE = standard TARGET = FROM }
+		NOT = { migration_transport_state_receipt_is_paid = { TARGET = FROM RECEIPT = migration_close_border } }
+		humanitarian_cost_infantry_heavy_is_affordable = yes
+	}
+}
+
+migration_prepare_evacuation_cost_is_affordable = {
+	hidden_trigger = {
+		migration_transport_state_cost_is_affordable = { PROFILE = light TARGET = FROM }
+		NOT = { migration_transport_state_receipt_is_paid = { TARGET = FROM RECEIPT = migration_prepare_evacuation } }
+		humanitarian_cost_train_light_is_affordable = yes
+	}
+}
+
+migration_evacuate_vulnerable_cost_is_affordable = {
+	hidden_trigger = {
+		migration_transport_state_cost_is_affordable = { PROFILE = standard TARGET = FROM }
+		NOT = { migration_transport_state_receipt_is_paid = { TARGET = FROM RECEIPT = migration_evacuate_vulnerable } }
+		humanitarian_cost_train_light_is_affordable = yes
+	}
+}
+
+migration_evacuate_workers_cost_is_affordable = {
+	hidden_trigger = {
+		migration_transport_state_cost_is_affordable = { PROFILE = heavy TARGET = FROM }
+		NOT = { migration_transport_state_receipt_is_paid = { TARGET = FROM RECEIPT = migration_evacuate_workers } }
+		humanitarian_cost_train_heavy_is_affordable = yes
+	}
+}
+
+migration_negotiate_corridor_cost_is_affordable = {
+	hidden_trigger = {
+		migration_transport_state_cost_is_affordable = { PROFILE = heavy TARGET = FROM }
+		NOT = { migration_transport_state_receipt_is_paid = { TARGET = FROM RECEIPT = migration_negotiate_corridor } }
+		humanitarian_cost_infantry_light_is_affordable = yes
+	}
+}
+
+migration_controlled_medical_reception_cost_is_affordable = {
+	hidden_trigger = {
+		migration_transport_policy_cost_is_affordable = { PROFILE = standard }
+		NOT = { migration_transport_policy_receipt_is_paid = { RECEIPT = migration_controlled_medical_reception } }
+		humanitarian_cost_support_heavy_is_affordable = yes
+		humanitarian_cost_infantry_light_is_affordable = yes
+	}
+}
+
+migration_distribute_arrivals_cost_is_affordable = {
+	hidden_trigger = {
+		migration_transport_state_cost_is_affordable = { PROFILE = light TARGET = FROM }
+		NOT = { migration_transport_state_receipt_is_paid = { TARGET = FROM RECEIPT = migration_distribute_arrivals } }
+		humanitarian_cost_train_light_is_affordable = yes
+	}
+}
+
+migration_transit_only_cost_is_affordable = {
+	hidden_trigger = {
+		migration_transport_state_cost_is_affordable = { PROFILE = light TARGET = FROM }
+		NOT = { migration_transport_state_receipt_is_paid = { TARGET = FROM RECEIPT = migration_transit_only } }
+	}
+}
+
+migration_enforce_closure_cost_is_affordable = {
+	hidden_trigger = {
+		migration_transport_state_cost_is_affordable = { PROFILE = standard TARGET = FROM }
+		NOT = { migration_transport_state_receipt_is_paid = { TARGET = FROM RECEIPT = migration_enforce_closure } }
+		humanitarian_cost_infantry_heavy_is_affordable = yes
+	}
+}
+
+migration_local_integration_cost_is_affordable = {
+	hidden_trigger = {
+		migration_transport_state_cost_is_affordable = { PROFILE = standard TARGET = FROM }
+		NOT = { migration_transport_state_receipt_is_paid = { TARGET = FROM RECEIPT = migration_local_integration } }
+		humanitarian_cost_support_heavy_is_affordable = yes
+	}
+}
+
+migration_third_country_resettlement_cost_is_affordable = {
+	hidden_trigger = {
+		migration_transport_state_cost_is_affordable = { PROFILE = heavy TARGET = FROM }
+		NOT = { migration_transport_state_receipt_is_paid = { TARGET = FROM RECEIPT = migration_third_country_resettlement } }
+		humanitarian_cost_train_light_is_affordable = yes
+	}
+}
+
+migration_voluntary_return_cost_is_affordable = {
+	hidden_trigger = {
+		migration_transport_state_cost_is_affordable = { PROFILE = standard TARGET = FROM }
+		NOT = { migration_transport_state_receipt_is_paid = { TARGET = FROM RECEIPT = migration_voluntary_return } }
+		humanitarian_cost_train_light_is_affordable = yes
+	}
+}
+
+migration_forced_repatriation_cost_is_affordable = {
+	hidden_trigger = {
+		migration_transport_state_cost_is_affordable = { PROFILE = heavy TARGET = FROM }
+		NOT = { migration_transport_state_receipt_is_paid = { TARGET = FROM RECEIPT = migration_forced_repatriation } }
+		humanitarian_cost_train_heavy_is_affordable = yes
+	}
+}
+
+famine_release_reserves_cost_is_affordable = {
+	hidden_trigger = {
+		migration_transport_state_cost_is_affordable = { PROFILE = standard TARGET = FROM }
+		NOT = { migration_transport_state_receipt_is_paid = { TARGET = FROM RECEIPT = famine_release_reserves } }
+		humanitarian_cost_support_light_is_affordable = yes
+	}
+}
+
+famine_emergency_imports_cost_is_affordable = {
+	hidden_trigger = {
+		migration_transport_state_cost_is_affordable = { PROFILE = standard TARGET = FROM }
+		NOT = { migration_transport_state_receipt_is_paid = { TARGET = FROM RECEIPT = famine_emergency_imports } }
+	}
+}
+
+famine_repair_relief_route_cost_is_affordable = {
+	hidden_trigger = {
+		migration_transport_state_cost_is_affordable = { PROFILE = light TARGET = FROM }
+		NOT = { migration_transport_state_receipt_is_paid = { TARGET = FROM RECEIPT = famine_repair_relief_route } }
+		humanitarian_cost_train_light_is_affordable = yes
+	}
+}
+
+famine_escorted_relief_convoy_cost_is_affordable = {
+	hidden_trigger = {
+		migration_transport_state_cost_is_affordable = { PROFILE = standard TARGET = FROM }
+		NOT = { migration_transport_state_receipt_is_paid = { TARGET = FROM RECEIPT = famine_escorted_relief_convoy } }
+		humanitarian_cost_support_light_is_affordable = yes
+	}
+}
+
+famine_emergency_airlift_cost_is_affordable = {
+	hidden_trigger = {
+		migration_transport_air_cost_is_affordable = { PROFILE = standard TARGET = FROM }
+		NOT = { migration_transport_state_receipt_is_paid = { TARGET = FROM RECEIPT = famine_emergency_airlift } }
+		humanitarian_cost_transport_planes_is_affordable = yes
+		humanitarian_cost_air_xp_is_affordable = yes
+	}
+}
+
+famine_invite_relief_cost_is_affordable = {
+	hidden_trigger = {
+		migration_transport_state_cost_is_affordable = { PROFILE = standard TARGET = FROM }
+		NOT = { migration_transport_state_receipt_is_paid = { TARGET = FROM RECEIPT = famine_invite_relief } }
+	}
+}
+
+famine_evacuation_cost_is_affordable = {
+	hidden_trigger = {
+		migration_transport_state_cost_is_affordable = { PROFILE = heavy TARGET = FROM }
+		NOT = { migration_transport_state_receipt_is_paid = { TARGET = FROM RECEIPT = famine_evacuation } }
+		humanitarian_cost_train_heavy_is_affordable = yes
+	}
+}
+
+famine_requisition_safer_state_cost_is_affordable = {
+	hidden_trigger = {
+		migration_transport_state_cost_is_affordable = { PROFILE = standard TARGET = FROM }
+		NOT = { migration_transport_state_receipt_is_paid = { TARGET = FROM RECEIPT = famine_requisition_safer_state } }
+		humanitarian_cost_train_light_is_affordable = yes
+	}
+}
+
+famine_conceal_crisis_cost_is_affordable = {
+	hidden_trigger = {
+		migration_transport_state_cost_is_affordable = { PROFILE = light TARGET = FROM }
+		NOT = { migration_transport_state_receipt_is_paid = { TARGET = FROM RECEIPT = famine_conceal_crisis } }
+		humanitarian_cost_infantry_light_is_affordable = yes
+	}
+}
+
+famine_maintain_extraction_cost_is_affordable = {
+	hidden_trigger = {
+		migration_transport_state_cost_is_affordable = { PROFILE = light TARGET = FROM }
+		NOT = { migration_transport_state_receipt_is_paid = { TARGET = FROM RECEIPT = famine_maintain_extraction } }
+		humanitarian_cost_train_light_is_affordable = yes
+	}
+}
+
+
+migration_country_has_real_migration_issue = {
+	hidden_trigger = {
+		humanitarian_country_is_valid = yes
+		OR = {
+			migration_pending_reception_issue_is_valid = yes
+			any_controlled_state = { migration_state_has_real_migration_issue = yes }
+		}
+	}
+}

@@ -186,6 +186,43 @@ migration_decision_execute_hosted_transfer = {
 migration_clear_stale_paid_decision_receipts = {
 	if = {
 		limit = {
+			has_state_flag = migration_prepare_evacuation_cost_paid
+			OR = {
+				NOT = { has_variable = migration_prepare_evacuation_cost_payer }
+				AND = { has_variable = migration_prepare_evacuation_cost_payer NOT = { var:migration_prepare_evacuation_cost_payer = { exists = yes } } }
+				AND = { has_variable = migration_prepare_evacuation_cost_payer NOT = { is_controlled_by = var:migration_prepare_evacuation_cost_payer } }
+			}
+		}
+		clr_state_flag = migration_prepare_evacuation_cost_paid
+		clear_variable = migration_prepare_evacuation_cost_payer
+	}
+	if = {
+		limit = {
+			has_state_flag = migration_evacuate_vulnerable_cost_paid
+			OR = {
+				NOT = { has_variable = migration_evacuate_vulnerable_cost_payer }
+				AND = { has_variable = migration_evacuate_vulnerable_cost_payer NOT = { var:migration_evacuate_vulnerable_cost_payer = { exists = yes } } }
+				AND = { has_variable = migration_evacuate_vulnerable_cost_payer NOT = { is_controlled_by = var:migration_evacuate_vulnerable_cost_payer } }
+			}
+		}
+		clr_state_flag = migration_evacuate_vulnerable_cost_paid
+		clear_variable = migration_evacuate_vulnerable_cost_payer
+	}
+	if = {
+		limit = {
+			has_state_flag = migration_evacuate_workers_cost_paid
+			OR = {
+				NOT = { has_variable = migration_evacuate_workers_cost_payer }
+				AND = { has_variable = migration_evacuate_workers_cost_payer NOT = { var:migration_evacuate_workers_cost_payer = { exists = yes } } }
+				AND = { has_variable = migration_evacuate_workers_cost_payer NOT = { is_controlled_by = var:migration_evacuate_workers_cost_payer } }
+			}
+		}
+		clr_state_flag = migration_evacuate_workers_cost_paid
+		clear_variable = migration_evacuate_workers_cost_payer
+	}
+
+	if = {
+		limit = {
 			has_state_flag = migration_close_border_cost_paid
 			OR = {
 				NOT = { has_variable = migration_close_border_cost_payer }

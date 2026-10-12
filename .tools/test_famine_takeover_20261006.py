@@ -28,11 +28,13 @@ EFFECT_FILES = (
     r"common\scripted_effects\famine_core_effects.txt",
     r"common\scripted_effects\famine_adapter_effects.txt",
     r"common\scripted_effects\famine_relief_effects.txt",
+    r"common\scripted_effects\migration_transport_cost_effects.txt",
 )
 TRIGGER_FILES = (
     r"common\scripted_triggers\famine_core_triggers.txt",
     r"common\scripted_triggers\humanitarian_validation_triggers.txt",
     r"common\scripted_triggers\famine_decision_owner_triggers.txt",
+    r"common\scripted_triggers\migration_transport_cost_triggers.txt",
 )
 CONSTANT_GROUPS = {
     "chaos_meter_deaths", "chaosx_date_units", "civilian_transfer_route_result",
@@ -46,6 +48,7 @@ CONSTANT_GROUPS = {
     "humanitarian_pressure_source", "humanitarian_runtime", "migration_border_policy",
     "humanitarian_achievement_value", "famine_national_crisis", "famine_hunger_lines_scenario", "famine_food_shock", "famine_mortality",
     "triggerable_scenario_intensity",
+    "migration_transport_cost",
 }
 CONSTANT_FILES = (
     "chaos_meter_constants.txt", "chaosx_date_units_constants.txt", "civilian_transfer_constants.txt",
@@ -54,6 +57,7 @@ CONSTANT_FILES = (
     "humanitarian_achievement_constants.txt",
     "humanitarian_runtime_constants.txt", "migration_core_constants.txt",
     "famine_adapter_constants.txt", "chaosx_triggerable_scenarios_constants.txt",
+    "migration_transport_cost_constants.txt",
 )
 SCOPE_NAMES = {"OWNER": "event_target:__famine_owner__", "CONTROLLER": "event_target:__famine_controller__", "FROM": "event_target:__famine_from__"}
 HEADER = re.compile(r"(?m)^([A-Za-z_][A-Za-z0-9_]*)[ \t]*=[ \t]*\{")
@@ -149,6 +153,10 @@ class FamineRuntime(_PARSER.Event35Runtime):
             _PARSER.EFFECT_FILES, _PARSER.TRIGGER_FILES, _PARSER.read_definitions = saved
         self.effect_defs["chaosx_convert_days_to_date_offset"] = read_one(
             r"common\scripted_effects\chaosx_dynamic_effects.txt", "chaosx_convert_days_to_date_offset")
+        # Surface context calls this real alias predicate. Its only native
+        # dependencies are dynamic-modifier facts already modeled by the fixture.
+        self.trigger_defs["mapmode_state_has_chemical_contamination"] = read_one(
+            r"common\scripted_triggers\cbw_triggers.txt", "mapmode_state_has_chemical_contamination")
         self.effects, self.triggers = self.effect_defs, self.trigger_defs
         self.globals["date"] = Decimal(0)
         self.calendar_date = (1936, 1, 1)
@@ -171,10 +179,49 @@ class FamineRuntime(_PARSER.Event35Runtime):
 
     def _variable(self, token):
         if token == "id": return self.current.id
-        return super()._variable(token)
+        return super()._variable(self._targeted_variable_name(token))
+
+    def _targeted_variable_name(self, token):
+        return re.sub(r"@var:([A-Za-z_][A-Za-z0-9_]*)",
+                      lambda match: str(int(self._value(match.group(1)))), token)
+
+    def _path_container(self, path):
+        return super()._path_container(self._targeted_variable_name(path))
+
+    def _parameterized_transport_call(self, node, scope, effect):
+        """Substitute source macros, then execute the real helper in its usual frame."""
+        definitions = self.effect_defs if effect else self.trigger_defs
+        original = definitions[node.key]
+        parameters = {child.key: child.value for child in node.value}
+
+        def substitute(token):
+            for key, value in parameters.items():
+                token = token.replace("$" + key + "$", value)
+            if re.search(r"\$[A-Za-z_][A-Za-z0-9_]*\$", token):
+                raise SourceContractError(f"unbound transport parameter in {token}")
+            return token
+
+        def expand(nodes):
+            return [Node(substitute(child.key), child.op,
+                         expand(child.value) if isinstance(child.value, list) else substitute(child.value),
+                         child.line) for child in nodes]
+
+        definitions[node.key] = Definition(original.name, original.path, original.line, expand(original.body))
+        try:
+            if effect:
+                return self._call_effect(node.key, scope)
+            return self._run_trigger(node.key, scope)
+        finally:
+            definitions[node.key] = original
 
     def _condition(self, node, scope):
         key, op, value = node.key, node.op, node.value
+        if key.startswith("migration_transport_") and key in self.trigger_defs and isinstance(value, list):
+            return self._parameterized_transport_call(node, scope, effect=False)
+        if key == "check_variable" and len(value) == 1 and value[0].op == "=":
+            return self._same(self._variable(value[0].key), self._value(value[0].value))
+        if key == "is_in_home_area":
+            return scope.kind == "state" and scope.values["is_in_home_area"] == (value == "yes")
         if op in ("<", ">") and key in scope.values:
             return scope.values[key] < self._value(value) if op == "<" else scope.values[key] > self._value(value)
         if op in ("<", ">") and key == "gulag_labor_camp_network":
@@ -226,7 +273,9 @@ class FamineRuntime(_PARSER.Event35Runtime):
                 end = i + 1
                 while end < len(nodes) and nodes[end].key in ("else_if", "else"): end += 1
                 super()._effects(nodes[i:end], scope); i = end; continue
-            if node.key == "force_update_dynamic_modifier":
+            if node.key.startswith("migration_transport_") and node.key in self.effect_defs and isinstance(node.value, list):
+                self._parameterized_transport_call(node, scope, effect=True)
+            elif node.key == "force_update_dynamic_modifier":
                 self.native_calls.append((node.key, scope.id))
             elif node.key in ("add_dynamic_modifier", "remove_dynamic_modifier"):
                 # Modifier names are database tokens, not famine variables.
@@ -577,27 +626,50 @@ class FamineTakeoverRegressions(unittest.TestCase):
     def test_decision_refunds_zero_consumption_only_for_its_receipt(self):
         decision = read_one(r"common\decisions\famine_decisions.txt", "famine_release_reserves")
         remove_effect = next(node for node in decision.body if node.key == "remove_effect")
-        receipt = next(index for index, node in enumerate(remove_effect.value) if node.key == "if")
-        receipt_branch = remove_effect.value[receipt:receipt + 2]
-        owner = country("BRA")
-        target = state(935, owner, population_k=100)
-        target.values.update(
-            famine_food_reserve_amount=Decimal(1000), famine_food_reserve_relief=Decimal(35),
-            famine_food_reserve_daily_need=Decimal(100), famine_food_reserve_initialized=Decimal(1),
-            infrastructure_level=5, famine_release_reserves_cost_payer=owner,
-        )
-        target.flags.update({"famine_food_reserve_initialized", "famine_release_reserves_cost_paid"})
-        owner.resources.update(political_power=Decimal(0), support_equipment=Decimal(0), fuel=Decimal(0))
-        rt = self.runtime
-        rt.run_nodes(receipt_branch, owner, root=owner, from_scope=target)
-        self.assertGreater(owner.resources["political_power"], Decimal(0))
-        self.assertGreater(owner.resources["support_equipment"], Decimal(0))
-        self.assertGreater(owner.resources["fuel"], Decimal(0))
-        self.assertEqual(target.values["famine_food_reserve_amount"], Decimal(1000))
-        self.assertNotIn("famine_release_reserves_cost_paid", target.flags)
-        refunded = dict(owner.resources)
-        rt.run_nodes(receipt_branch, owner, root=owner, from_scope=target)
-        self.assertEqual(owner.resources, refunded)
+        receipt_branch = remove_effect.value
+        payment = next(node for node in decision.body if node.key == "complete_effect")
+        activation = next(node for node in payment.value if node.key == "if")
+        # Run the real transport payment, result guard, equipment debit and
+        # state work-receipt publication after the decision's start preflight.
+        paid_activation = [node for node in activation.value if node.key != "limit"]
+        for home_area in (True, False):
+            with self.subTest(home_area=home_area):
+                rt = FamineRuntime()
+                owner = country("BRA")
+                target = state(935, owner, population_k=100)
+                target.values.update(
+                    famine_food_reserve_amount=Decimal(1000), famine_food_reserve_relief=Decimal(35),
+                    famine_food_reserve_daily_need=Decimal(100), famine_food_reserve_initialized=Decimal(1),
+                    infrastructure_level=5, is_in_home_area=home_area,
+                )
+                target.flags.add("famine_food_reserve_initialized")
+                mode = "land" if home_area else "sea"
+                fuel = rt.constants[f"constant:migration_transport_cost.standard_fuel_{mode}"]
+                convoys = Decimal(0) if home_area else rt.constants["constant:migration_transport_cost.standard_convoys_sea"]
+                support = rt.constants["constant:humanitarian_legacy_cost.support_light"]
+                owner.resources.update(political_power=Decimal(0), support_equipment=support,
+                                       fuel=fuel, convoy=convoys, convoy_1=convoys)
+                rt.run_nodes(paid_activation, owner, root=owner, from_scope=target)
+                self.assertEqual(owner.resources["fuel"], Decimal(0))
+                self.assertEqual(owner.resources["convoy_1"], Decimal(0))
+                self.assertEqual(owner.resources["support_equipment"], Decimal(0))
+                self.assertEqual(owner.values["famine_release_reserves_fuel_paid_935"], fuel)
+                self.assertEqual(owner.values["famine_release_reserves_convoys_paid_935"], convoys)
+                self.assertIn("famine_release_reserves_cost_paid", target.flags)
+                # Refund must use the saved quote even if geography changes.
+                target.values["is_in_home_area"] = not home_area
+                rt.run_nodes(receipt_branch, owner, root=owner, from_scope=target)
+                self.assertEqual(owner.resources["political_power"], Decimal(0))
+                self.assertEqual(owner.resources["support_equipment"], support)
+                self.assertEqual(owner.resources["fuel"], fuel)
+                self.assertEqual(owner.resources["convoy_1"], convoys)
+                self.assertEqual(target.values["famine_food_reserve_amount"], Decimal(1000))
+                self.assertNotIn("famine_release_reserves_cost_paid", target.flags)
+                self.assertNotIn("famine_release_reserves_fuel_paid_935", owner.values)
+                self.assertNotIn("famine_release_reserves_convoys_paid_935", owner.values)
+                refunded = dict(owner.resources)
+                rt.run_nodes(receipt_branch, owner, root=owner, from_scope=target)
+                self.assertEqual(owner.resources, refunded)
 
     def test_relief_delivery_copies_transfer_outputs_across_scopes(self):
         rt = self.runtime

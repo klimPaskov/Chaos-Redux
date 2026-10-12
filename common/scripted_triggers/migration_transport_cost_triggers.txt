@@ -1,0 +1,101 @@
+# Pure inclusive physical transport affordability in COUNTRY payer scope.
+# PROFILE is light/standard/heavy. TARGET is an exact STATE scope.
+# Geography is shared by quoting, affordability and display in payer scope.
+
+migration_transport_state_has_mainland_connection = {
+	hidden_trigger = {
+		OR = {
+			$TARGET$ = {
+				is_owned_by = PREV
+				is_in_home_area = yes
+			}
+			AND = {
+				$TARGET$ = { NOT = { is_owned_by = PREV } }
+				# Native railway pathing starts at the paying country's capital.
+				# An existing maximum-level route still qualifies if no further
+				# construction can be requested on it.
+				OR = {
+					has_railway_connection = {
+						start_state = THIS.capital
+						target_state = $TARGET$
+						build_only_on_allied = no
+					}
+					can_build_railway = {
+						start_state = THIS.capital
+						target_state = $TARGET$
+						build_only_on_allied = no
+					}
+				}
+			}
+		}
+	}
+}
+
+migration_transport_state_fuel_is_affordable = {
+	hidden_trigger = {
+		OR = {
+			AND = {
+				migration_transport_state_has_mainland_connection = { TARGET = $TARGET$ }
+				NOT = { has_fuel < constant:migration_transport_cost.$PROFILE$_fuel_land }
+			}
+			AND = {
+				NOT = { migration_transport_state_has_mainland_connection = { TARGET = $TARGET$ } }
+				NOT = { has_fuel < constant:migration_transport_cost.$PROFILE$_fuel_sea }
+			}
+		}
+	}
+}
+
+migration_transport_state_convoys_are_affordable = {
+	hidden_trigger = {
+		OR = {
+			migration_transport_state_has_mainland_connection = { TARGET = $TARGET$ }
+			AND = {
+				NOT = { migration_transport_state_has_mainland_connection = { TARGET = $TARGET$ } }
+				NOT = { has_equipment = { convoy < constant:migration_transport_cost.$PROFILE$_convoys_sea } }
+			}
+		}
+	}
+}
+
+migration_transport_state_cost_is_affordable = {
+	hidden_trigger = {
+		$TARGET$ = { state_population_k > constant:migration_transport_cost.zero }
+		migration_transport_state_fuel_is_affordable = { PROFILE = $PROFILE$ TARGET = $TARGET$ }
+		migration_transport_state_convoys_are_affordable = { PROFILE = $PROFILE$ TARGET = $TARGET$ }
+	}
+}
+
+migration_transport_policy_cost_is_affordable = {
+	hidden_trigger = { NOT = { has_fuel < constant:migration_transport_cost.$PROFILE$_fuel_land } }
+}
+
+# COUNTRY payer with exact STATE target. Aircraft carry this shipment, so
+# the state-keyed payment uses fuel without a sea-convoy requirement.
+migration_transport_air_cost_is_affordable = {
+	hidden_trigger = {
+		$TARGET$ = { state_population_k > constant:migration_transport_cost.zero }
+		migration_transport_policy_cost_is_affordable = { PROFILE = $PROFILE$ }
+	}
+}
+
+# Positive quantities establish an actual payment, rather than a Boolean variable.
+migration_transport_state_receipt_is_paid = {
+	hidden_trigger = {
+		set_temp_variable = { migration_transport_target_id = constant:migration_transport_cost.zero }
+		$TARGET$ = { set_temp_variable = { migration_transport_target_id = id } }
+		check_variable = { migration_transport_target_id > constant:migration_transport_cost.zero }
+		has_variable = $RECEIPT$_fuel_paid_@var:migration_transport_target_id
+		check_variable = { $RECEIPT$_fuel_paid_@var:migration_transport_target_id > constant:migration_transport_cost.zero }
+		has_variable = $RECEIPT$_convoys_paid_@var:migration_transport_target_id
+		NOT = { check_variable = { $RECEIPT$_convoys_paid_@var:migration_transport_target_id < constant:migration_transport_cost.zero } }
+	}
+}
+
+migration_transport_policy_receipt_is_paid = {
+	hidden_trigger = {
+		has_country_flag = $RECEIPT$_transport_paid
+		has_variable = $RECEIPT$_fuel_paid
+		check_variable = { $RECEIPT$_fuel_paid > constant:migration_transport_cost.zero }
+	}
+}

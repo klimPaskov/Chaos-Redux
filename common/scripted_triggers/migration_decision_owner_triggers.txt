@@ -314,6 +314,7 @@ migration_decision_voluntary_return_destination_is_valid = {
 
 
 migration_open_departure_routes_can_start = {
+	hidden_trigger = { migration_country_has_real_migration_issue = yes }
 	hidden_trigger = {
 		NOT = { has_country_flag = humanitarian_corridor_offer_pending }
 		uses_normal_civilian_systems = yes
@@ -328,11 +329,12 @@ migration_open_departure_routes_can_start = {
 				check_variable = { var = migration_trapped_population value = constant:migration_decision_threshold.category_trapped_people compare = greater_than_or_equals }
 			}
 		}
-		humanitarian_cost_pp10_train5_fuel500_is_affordable = yes
+		migration_open_departure_routes_cost_is_affordable = yes
 	}
 }
 
 migration_restrict_departure_can_start = {
+	hidden_trigger = { migration_country_has_real_migration_issue = yes }
 	hidden_trigger = {
 		NOT = { has_country_flag = humanitarian_corridor_offer_pending }
 		uses_normal_civilian_systems = yes
@@ -347,11 +349,12 @@ migration_restrict_departure_can_start = {
 				check_variable = { var = migration_trapped_population value = constant:migration_decision_threshold.category_trapped_people compare = greater_than_or_equals }
 			}
 		}
-		humanitarian_cost_pp10_infantry100_fuel500_is_affordable = yes
+		migration_restrict_departure_cost_is_affordable = yes
 	}
 }
 
 migration_close_border_can_start = {
+	hidden_trigger = { FROM = { is_controlled_by = ROOT migration_state_has_real_migration_issue = yes } }
 	hidden_trigger = {
 		NOT = { has_country_flag = humanitarian_corridor_offer_pending }
 		OR = {
@@ -364,29 +367,99 @@ migration_close_border_can_start = {
 			is_controlled_by = ROOT
 			migration_decision_reception_state_load_is_valid = yes
 		}
-		humanitarian_cost_pp20_infantry250_fuel1000_is_affordable = yes
+		migration_close_border_cost_is_affordable = yes
 		NOT = { FROM = { has_state_flag = migration_close_border_cost_paid } }
 	}
 }
 
-migration_evacuate_civilians_can_start = {
+migration_prepare_evacuation_can_start = {
+	hidden_trigger = { FROM = { NOT = { has_state_flag = migration_evacuation_prepared } } }
+	hidden_trigger = { FROM = { is_controlled_by = ROOT migration_state_has_real_migration_issue = yes } }
+	hidden_trigger = {
+		NOT = { has_country_flag = humanitarian_corridor_offer_pending }
+		FROM = {
+			is_controlled_by = ROOT
+			humanitarian_state_is_valid = yes
+			OR = {
+				AND = {
+					famine_to_migration_food_safety_is_valid = yes
+					check_variable = { var = famine_to_migration_food_stage value = constant:famine_food_stage.supply_strain compare = greater_than_or_equals }
+					OR = {
+						check_variable = { var = famine_to_migration_food_exposure_days value = constant:migration_decision_threshold.category_food_exposure_days compare = greater_than_or_equals }
+						check_variable = { var = famine_to_migration_food_incident_count value = constant:migration_decision_threshold.category_food_incidents compare = greater_than_or_equals }
+					}
+				}
+				AND = {
+					has_state_flag = migration_displacement_active
+					OR = {
+						check_variable = { var = migration_flight_pressure value = constant:migration_decision_threshold.category_flight_people compare = greater_than_or_equals }
+						check_variable = { var = migration_trapped_population value = constant:migration_decision_threshold.category_trapped_people compare = greater_than_or_equals }
+					}
+				}
+			}
+		}
+		migration_prepare_evacuation_cost_is_affordable = yes
+		NOT = { FROM = { has_state_flag = migration_prepare_evacuation_cost_paid } }
+	}
+}
+
+migration_evacuate_vulnerable_can_start = {
+	hidden_trigger = { FROM = { is_controlled_by = ROOT migration_state_has_real_migration_issue = yes } }
 	hidden_trigger = {
 		NOT = { has_country_flag = humanitarian_corridor_offer_pending }
 		migration_reception_has_room_for_evacuation = yes
 		FROM = {
 			is_controlled_by = ROOT
 			humanitarian_state_is_valid = yes
-			migration_state_needs_organized_evacuation = yes
+			has_state_flag = migration_displacement_active
+			has_state_flag = migration_evacuation_prepared
 		}
 		humanitarian_cost_train_light_is_affordable = yes
-		humanitarian_cost_pp20_train5_fuel500_is_affordable = yes
-		NOT = { FROM = { has_state_flag = migration_evacuate_civilians_cost_paid } }
-		NOT = { FROM = { has_state_flag = famine_evacuation_cost_paid } }
+		migration_evacuate_vulnerable_cost_is_affordable = yes
+		NOT = { FROM = { has_state_flag = migration_evacuate_vulnerable_cost_paid } }
+	}
+}
+
+migration_evacuate_workers_can_start = {
+	hidden_trigger = { FROM = { is_controlled_by = ROOT migration_state_has_real_migration_issue = yes } }
+	hidden_trigger = {
+		NOT = { has_country_flag = humanitarian_corridor_offer_pending }
+		migration_reception_has_room_for_evacuation = yes
+		FROM = {
+			is_controlled_by = ROOT
+			humanitarian_state_is_valid = yes
+			has_state_flag = migration_displacement_active
+			has_state_flag = migration_evacuation_prepared
+		}
+		humanitarian_cost_train_heavy_is_affordable = yes
+		has_equipment = { support_equipment > constant:migration_decision_threshold.worker_support_stock }
+		migration_evacuate_workers_cost_is_affordable = yes
+		NOT = { FROM = { has_state_flag = migration_evacuate_workers_cost_paid } }
+	}
+}
+
+migration_prepare_evacuation_cost_receipt_is_valid = {
+	hidden_trigger = {
+		FROM = { humanitarian_state_is_valid = yes is_controlled_by = ROOT has_state_flag = migration_prepare_evacuation_cost_paid has_variable = migration_prepare_evacuation_cost_payer var:migration_prepare_evacuation_cost_payer = { exists = yes tag = ROOT } }
+	}
+}
+
+migration_evacuate_vulnerable_cost_receipt_is_valid = {
+	hidden_trigger = {
+		FROM = { humanitarian_state_is_valid = yes is_controlled_by = ROOT has_state_flag = migration_evacuate_vulnerable_cost_paid has_variable = migration_evacuate_vulnerable_cost_payer var:migration_evacuate_vulnerable_cost_payer = { exists = yes tag = ROOT } }
+	}
+}
+
+migration_evacuate_workers_cost_receipt_is_valid = {
+	hidden_trigger = {
+		FROM = { humanitarian_state_is_valid = yes is_controlled_by = ROOT has_state_flag = migration_evacuate_workers_cost_paid has_variable = migration_evacuate_workers_cost_payer var:migration_evacuate_workers_cost_payer = { exists = yes tag = ROOT } }
 	}
 }
 
 
+
 migration_negotiate_corridor_can_start = {
+	hidden_trigger = { FROM = { is_controlled_by = ROOT migration_state_has_real_migration_issue = yes } }
 	hidden_trigger = {
 		NOT = { has_country_flag = humanitarian_corridor_offer_pending }
 		OR = {
@@ -403,11 +476,12 @@ migration_negotiate_corridor_can_start = {
 				CONTROLLER = { has_war_with = ROOT }
 			}
 		}
-		humanitarian_cost_pp35_infantry100_fuel500_is_affordable = yes
+		migration_negotiate_corridor_cost_is_affordable = yes
 	}
 }
 
 migration_controlled_medical_reception_can_start = {
+	hidden_trigger = { migration_country_has_real_migration_issue = yes }
 	hidden_trigger = {
 		NOT = { has_country_flag = humanitarian_corridor_offer_pending }
 		NOT = { has_country_flag = migration_medical_reception_active }
@@ -422,11 +496,12 @@ migration_controlled_medical_reception_can_start = {
 		uses_normal_civilian_systems = yes
 		num_of_civilian_factories > constant:humanitarian_population.zero
 		migration_country_has_free_mission_slot = yes
-		humanitarian_cost_pp20_support100_infantry100_is_affordable = yes
+		migration_controlled_medical_reception_cost_is_affordable = yes
 	}
 }
 
 migration_distribute_arrivals_can_start = {
+	hidden_trigger = { FROM = { is_controlled_by = ROOT migration_state_has_real_migration_issue = yes } }
 	hidden_trigger = {
 		NOT = { FROM = { has_state_flag = migration_evacuation_prepared } }
 		NOT = { has_country_flag = humanitarian_corridor_offer_pending }
@@ -458,12 +533,13 @@ migration_distribute_arrivals_can_start = {
 		uses_normal_civilian_systems = yes
 		num_of_civilian_factories > constant:humanitarian_population.zero
 		humanitarian_cost_train_light_is_affordable = yes
-		humanitarian_cost_pp10_train5_fuel500_is_affordable = yes
+		migration_distribute_arrivals_cost_is_affordable = yes
 		NOT = { FROM = { has_state_flag = migration_distribute_arrivals_cost_paid } }
 	}
 }
 
 migration_transit_only_can_start = {
+	hidden_trigger = { FROM = { is_controlled_by = ROOT migration_state_has_real_migration_issue = yes } }
 	hidden_trigger = {
 		NOT = { FROM = { has_state_flag = migration_evacuation_prepared } }
 		NOT = { has_country_flag = humanitarian_corridor_offer_pending }
@@ -496,12 +572,13 @@ migration_transit_only_can_start = {
 			}
 		}
 		uses_normal_civilian_systems = yes
-		humanitarian_cost_pp10_convoy5_fuel500_is_affordable = yes
+		migration_transit_only_cost_is_affordable = yes
 		NOT = { FROM = { has_state_flag = migration_transit_only_cost_paid } }
 	}
 }
 
 migration_enforce_closure_can_start = {
+	hidden_trigger = { FROM = { is_controlled_by = ROOT migration_state_has_real_migration_issue = yes } }
 	hidden_trigger = {
 		NOT = { FROM = { has_state_flag = migration_evacuation_prepared } }
 		NOT = { has_country_flag = humanitarian_corridor_offer_pending }
@@ -511,12 +588,13 @@ migration_enforce_closure_can_start = {
 		FROM = { is_controlled_by = ROOT migration_decision_reception_state_load_is_valid = yes }
 		uses_normal_civilian_systems = yes
 		OR = { has_government = fascism has_government = communism has_government = neutrality }
-		humanitarian_cost_pp20_infantry250_fuel1000_is_affordable = yes
+		migration_enforce_closure_cost_is_affordable = yes
 		NOT = { FROM = { has_state_flag = migration_enforce_closure_cost_paid } }
 	}
 }
 
 migration_local_integration_can_start = {
+	hidden_trigger = { FROM = { is_controlled_by = ROOT migration_state_has_real_migration_issue = yes } }
 	hidden_trigger = {
 		NOT = { FROM = { has_state_flag = migration_evacuation_prepared } }
 		NOT = { has_country_flag = humanitarian_corridor_offer_pending }
@@ -533,7 +611,7 @@ migration_local_integration_can_start = {
 			has_variable = migration_current_cohort_id
 			NOT = { has_state_flag = migration_cohort_selection_ambiguous }
 		}
-		humanitarian_cost_pp20_support100_fuel500_is_affordable = yes
+		migration_local_integration_cost_is_affordable = yes
 	}
 }
 
@@ -555,6 +633,7 @@ migration_local_integration_host_can_settle = {
 }
 
 migration_third_country_resettlement_can_start = {
+	hidden_trigger = { FROM = { is_controlled_by = ROOT migration_state_has_real_migration_issue = yes } }
 	hidden_trigger = {
 		NOT = { has_country_flag = humanitarian_corridor_offer_pending }
 		migration_decision_reception_load_is_valid = yes
@@ -584,12 +663,13 @@ migration_third_country_resettlement_can_start = {
 				NOT = { black_plague_state_is_infected_or_worse = yes }
 			}
 		}
-		humanitarian_cost_pp35_train5_convoy5_fuel500_is_affordable = yes
+		migration_third_country_resettlement_cost_is_affordable = yes
 		NOT = { FROM = { has_state_flag = migration_third_country_resettlement_cost_paid } }
 	}
 }
 
 migration_voluntary_return_can_start = {
+	hidden_trigger = { FROM = { is_controlled_by = ROOT migration_state_has_real_migration_issue = yes } }
 	hidden_trigger = {
 		NOT = { FROM = { has_state_flag = migration_evacuation_prepared } }
 		NOT = { has_country_flag = humanitarian_corridor_offer_pending }
@@ -598,12 +678,13 @@ migration_voluntary_return_can_start = {
 			is_controlled_by = ROOT
 			migration_decision_reception_state_load_is_valid = yes
 		}
-		humanitarian_cost_pp20_train5_fuel500_is_affordable = yes
+		migration_voluntary_return_cost_is_affordable = yes
 		NOT = { FROM = { has_state_flag = migration_voluntary_return_cost_paid } }
 	}
 }
 
 migration_forced_repatriation_can_start = {
+	hidden_trigger = { FROM = { is_controlled_by = ROOT migration_state_has_real_migration_issue = yes } }
 	hidden_trigger = {
 		NOT = { FROM = { has_state_flag = migration_evacuation_prepared } }
 		NOT = { has_country_flag = humanitarian_corridor_offer_pending }
@@ -614,7 +695,7 @@ migration_forced_repatriation_can_start = {
 		}
 		uses_normal_civilian_systems = yes
 		OR = { has_government = fascism has_government = communism has_government = neutrality }
-		humanitarian_cost_pp35_train10_fuel1000_is_affordable = yes
+		migration_forced_repatriation_cost_is_affordable = yes
 		NOT = { FROM = { has_state_flag = migration_forced_repatriation_cost_paid } }
 	}
 }
@@ -626,11 +707,6 @@ migration_close_border_cost_receipt_is_valid = {
 	}
 }
 
-migration_evacuate_civilians_cost_receipt_is_valid = {
-	hidden_trigger = {
-		FROM = { humanitarian_state_is_valid = yes is_controlled_by = ROOT has_state_flag = migration_evacuate_civilians_cost_paid has_variable = migration_evacuate_civilians_cost_payer var:migration_evacuate_civilians_cost_payer = { exists = yes tag = ROOT } }
-	}
-}
 
 
 migration_distribute_arrivals_cost_receipt_is_valid = {

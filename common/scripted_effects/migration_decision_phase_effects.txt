@@ -4,11 +4,13 @@
 # reception/origin proofs from the shared scheduler, but no longer reads food
 # stages or writes famine lifecycle flags.
 migration_project_reception_preparation_cost_quote = {
-	# Display-only cost projection. Fresh constants, never these cached values,
-	# govern affordability and payment in the reception preparation owner.
-	set_variable = { migration_reception_preparation_quote_political_power = constant:migration_reception_preparation_cost.political_power }
-	set_variable = { migration_reception_preparation_quote_support_equipment = constant:migration_reception_preparation_cost.support_equipment }
-	set_variable = { migration_reception_preparation_quote_fuel = constant:migration_reception_preparation_cost.fuel }
+	migration_transport_project_cost_quotes = yes
+	# Retire obsolete reception display caches. Selected-state getters choose
+	# the central fuel projection with live home-area facts, while readiness
+	# and payment read the raw constants directly.
+	clear_variable = migration_reception_preparation_quote_political_power
+	clear_variable = migration_reception_preparation_quote_support_equipment
+	clear_variable = migration_reception_preparation_quote_fuel
 }
 
 # COUNTRY scope. Fills migration_header_states with the visible states this

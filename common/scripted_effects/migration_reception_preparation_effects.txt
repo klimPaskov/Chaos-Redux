@@ -17,12 +17,19 @@ migration_prepare_reception_services = {
 	set_temp_variable = { migration_reception_candidate_result = constant:migration_capacity.zero }
 	set_temp_variable = { migration_decision_policy_result = constant:civilian_transfer_route_result.invalid }
 	save_event_target_as = migration_reception_preparation_receiver
+	set_temp_variable = { migration_transport_target_id = constant:migration_transport_cost.zero }
+	if = {
+		limit = { has_event_target = migration_reception_preparation_state }
+		event_target:migration_reception_preparation_state = { set_temp_variable = { migration_transport_target_id = id } }
+	}
 	if = {
 		limit = {
 			has_event_target = migration_reception_preparation_state
 			migration_reception_preparation_is_visible = yes
-			migration_reception_preparation_is_affordable = yes
+			migration_reception_preparation_target_cost_is_affordable = { TARGET = event_target:migration_reception_preparation_state }
 			num_of_civilian_factories > constant:humanitarian_population.zero
+			NOT = { has_variable = migration_reception_preparation_fuel_paid_@var:migration_transport_target_id }
+			NOT = { has_variable = migration_reception_preparation_convoys_paid_@var:migration_transport_target_id }
 		}
 		event_target:migration_reception_preparation_state = {
 			set_temp_variable = { migration_famine_food_safety_result = constant:humanitarian_runtime.zero }
@@ -31,6 +38,7 @@ migration_prepare_reception_services = {
 				limit = {
 					is_owned_and_controlled_by = event_target:migration_reception_preparation_receiver
 					migration_reception_preparation_state_is_safe = yes
+					migration_reception_preparation_state_has_local_issue = yes
 					migration_reception_preparation_can_change_state = yes
 					event_target:migration_reception_preparation_receiver = {
 						OR = {
@@ -84,151 +92,151 @@ migration_prepare_reception_services = {
 				multiply_temp_variable = { migration_reception_preparation_medical = constant:migration_reception_bootstrap.medical_population_share }
 				round_temp_variable = migration_reception_preparation_medical
 			}
-			set_temp_variable = { migration_reception_preparation_pp_payment = constant:migration_reception_preparation_cost.political_power }
-			multiply_temp_variable = { migration_reception_preparation_pp_payment = constant:migration_reception_preparation_cost.debit_sign }
-			set_temp_variable = { migration_reception_preparation_support_payment = constant:migration_reception_preparation_cost.support_equipment }
-			multiply_temp_variable = { migration_reception_preparation_support_payment = constant:migration_reception_preparation_cost.debit_sign }
-			set_temp_variable = { migration_reception_preparation_fuel_payment = constant:migration_reception_preparation_cost.fuel }
-			multiply_temp_variable = { migration_reception_preparation_fuel_payment = constant:migration_reception_preparation_cost.debit_sign }
-			add_political_power = migration_reception_preparation_pp_payment
-			add_equipment_to_stockpile = { type = support_equipment amount = migration_reception_preparation_support_payment }
-			add_fuel = migration_reception_preparation_fuel_payment
-			event_target:migration_reception_preparation_state = {
-				if = {
-					limit = {
-						OR = {
-							NOT = { has_variable = migration_reception_shelter_capacity }
-							NOT = { check_variable = { migration_reception_shelter_service_proven = constant:migration_capacity.one } }
-							check_variable = { migration_reception_shelter_capacity < migration_reception_preparation_shelter }
-						}
-					}
-					set_temp_variable = { migration_reception_shelter_service_request = migration_reception_preparation_shelter }
-					set_temp_variable = { migration_reception_preparation_shelter_attempted = constant:humanitarian_runtime.one }
-					set_temp_variable = { migration_reception_shelter_service_request_proven = constant:migration_capacity.one }
-					migration_set_reception_shelter_service = yes
-					if = { limit = { check_variable = { migration_reception_shelter_service_result = constant:migration_capacity.one } } set_temp_variable = { migration_reception_preparation_shelter_changed = constant:humanitarian_runtime.one } }
-				}
-				if = {
-					limit = {
-						OR = {
-							NOT = { has_variable = migration_reception_medical_capacity }
-							NOT = { check_variable = { migration_reception_medical_service_proven = constant:migration_capacity.one } }
-							check_variable = { migration_reception_medical_capacity < migration_reception_preparation_medical }
-						}
-					}
-					set_temp_variable = { migration_reception_medical_service_request = migration_reception_preparation_medical }
-					set_temp_variable = { migration_reception_preparation_medical_attempted = constant:humanitarian_runtime.one }
-					set_temp_variable = { migration_reception_medical_service_request_proven = constant:migration_capacity.one }
-					migration_set_reception_medical_service = yes
-					if = { limit = { check_variable = { migration_reception_medical_service_result = constant:migration_capacity.one } } set_temp_variable = { migration_reception_preparation_medical_changed = constant:humanitarian_runtime.one } }
-				}
-			}
+			set_temp_variable = { migration_transport_payment_result = constant:migration_transport_cost.zero }
+			migration_transport_pay_state_cost = { PROFILE = standard TARGET = event_target:migration_reception_preparation_state RECEIPT = migration_reception_preparation }
 			if = {
-				limit = { NOT = { check_variable = { migration_reception_policy = constant:migration_border_policy.humanitarian_open } } }
-				set_temp_variable = { migration_reception_policy_request = constant:migration_border_policy.humanitarian_open }
-				set_temp_variable = { migration_departure_policy_request = constant:humanitarian_runtime.zero }
-				set_temp_variable = { migration_reception_preparation_policy_attempted = constant:humanitarian_runtime.one }
-				set_temp_variable = { migration_border_policy_result = constant:humanitarian_runtime.zero }
-				migration_decision_set_policy = yes
-				if = { limit = { check_variable = { migration_decision_policy_result = constant:civilian_transfer_route_result.valid } } set_temp_variable = { migration_reception_preparation_policy_changed = constant:humanitarian_runtime.one } }
-			}
-			migration_mark_reception_capacity_dirty = yes
-			migration_recalculate_reception_capacity = yes
-			if = {
-				limit = {
-					OR = {
-						check_variable = { migration_reception_preparation_shelter_changed = constant:humanitarian_runtime.one }
-						check_variable = { migration_reception_preparation_medical_changed = constant:humanitarian_runtime.one }
-						check_variable = { migration_reception_preparation_policy_changed = constant:humanitarian_runtime.one }
-					}
-					migration_reception_capacity_is_valid = yes
-					OR = { check_variable = { migration_reception_preparation_policy_attempted = constant:humanitarian_runtime.zero } check_variable = { migration_decision_policy_result = constant:civilian_transfer_route_result.valid } }
-					OR = { check_variable = { migration_reception_preparation_shelter_attempted = constant:humanitarian_runtime.zero } check_variable = { migration_reception_shelter_service_result = constant:migration_capacity.one } }
-					OR = { check_variable = { migration_reception_preparation_medical_attempted = constant:humanitarian_runtime.zero } check_variable = { migration_reception_medical_service_result = constant:migration_capacity.one } }
-					event_target:migration_reception_preparation_state = {
-						is_owned_and_controlled_by = event_target:migration_reception_preparation_receiver
-						migration_reception_preparation_state_is_safe = yes
-						migration_reception_candidate_is_valid = yes
-					}
-					OR = {
-						check_variable = { migration_reception_preparation_pending = constant:humanitarian_runtime.zero }
-						AND = {
-							humanitarian_corridor_offer_can_be_accepted = yes
-							check_variable = { humanitarian_corridor_offer_route_generation = migration_reception_preparation_generation }
-						}
-					}
-				}
-				# Pending success also re-resolves the entire live row before publication.
-				set_temp_variable = { migration_reception_preparation_result = constant:humanitarian_runtime.one }
-				if = {
-					limit = { check_variable = { migration_reception_preparation_pending = constant:humanitarian_runtime.one } }
-					var:humanitarian_corridor_offer_origin_state_id = {
-						set_temp_variable = { humanitarian_corridor_live_cohort_result = constant:humanitarian_runtime.zero }
-						humanitarian_corridor_resolve_live_cohort = yes
-						if = {
-							limit = { NOT = { check_variable = { humanitarian_corridor_live_cohort_result = constant:humanitarian_runtime.one } } }
-							set_temp_variable = { migration_reception_preparation_result = constant:humanitarian_runtime.zero }
-						}
-					}
-				}
-			}
-			# Qualitative intent advances only after genuine, fully revalidated
-			# paid success. Projection failure cannot charge/refund or reject setup.
-			if = {
-				limit = {
-					check_variable = { migration_reception_preparation_result = constant:humanitarian_runtime.one }
-					check_variable = { migration_reception_preparation_pending = constant:humanitarian_runtime.one }
-					migration_pending_reception_issue_is_valid = yes
-				}
-				set_temp_variable = { migration_reception_front_intent_record_result = constant:migration_reception_front_intent.zero }
-				set_temp_variable = { migration_reception_front_intent_reveal_proven = constant:migration_reception_front_intent.one }
-				set_temp_variable = { migration_reception_front_intent_setup_proven = constant:migration_reception_front_intent.one }
-				set_temp_variable = { migration_reception_front_intent_phase_request = constant:migration_reception_front_intent.prepared }
-				var:humanitarian_corridor_offer_origin_state_id = { migration_publish_reception_front_intent_from_contract = yes }
-			}
-			if = {
-				limit = { check_variable = { migration_reception_preparation_result = constant:humanitarian_runtime.zero } }
+				limit = { check_variable = { migration_transport_payment_result = constant:migration_transport_cost.one } }
+				set_temp_variable = { migration_reception_preparation_support_paid = constant:migration_reception_preparation_cost.support_equipment }
+				set_temp_variable = { migration_reception_preparation_support_payment = migration_reception_preparation_support_paid }
+				multiply_temp_variable = { migration_reception_preparation_support_payment = constant:migration_reception_preparation_cost.debit_sign }
+				add_equipment_to_stockpile = { type = support_equipment amount = migration_reception_preparation_support_payment }
 				event_target:migration_reception_preparation_state = {
 					if = {
-						limit = { check_variable = { migration_reception_preparation_shelter_changed = constant:humanitarian_runtime.one } check_variable = { migration_reception_shelter_capacity = migration_reception_preparation_shelter } check_variable = { migration_reception_shelter_service_proven = constant:migration_capacity.one } }
-						if = { limit = { check_variable = { migration_reception_shelter_capacity_prep_had = constant:humanitarian_runtime.one } } set_variable = { migration_reception_shelter_capacity = migration_reception_shelter_capacity_prep_before } }
-						else = { clear_variable = migration_reception_shelter_capacity }
-						if = { limit = { check_variable = { migration_reception_shelter_service_proven_prep_had = constant:humanitarian_runtime.one } } set_variable = { migration_reception_shelter_service_proven = migration_reception_shelter_service_proven_prep_before } }
-						else = { clear_variable = migration_reception_shelter_service_proven }
+						limit = {
+							OR = {
+								NOT = { has_variable = migration_reception_shelter_capacity }
+								NOT = { check_variable = { migration_reception_shelter_service_proven = constant:migration_capacity.one } }
+								check_variable = { migration_reception_shelter_capacity < migration_reception_preparation_shelter }
+							}
+						}
+						set_temp_variable = { migration_reception_shelter_service_request = migration_reception_preparation_shelter }
+						set_temp_variable = { migration_reception_preparation_shelter_attempted = constant:humanitarian_runtime.one }
+						set_temp_variable = { migration_reception_shelter_service_request_proven = constant:migration_capacity.one }
+						migration_set_reception_shelter_service = yes
+						if = { limit = { check_variable = { migration_reception_shelter_service_result = constant:migration_capacity.one } } set_temp_variable = { migration_reception_preparation_shelter_changed = constant:humanitarian_runtime.one } }
 					}
 					if = {
-						limit = { check_variable = { migration_reception_preparation_medical_changed = constant:humanitarian_runtime.one } check_variable = { migration_reception_medical_capacity = migration_reception_preparation_medical } check_variable = { migration_reception_medical_service_proven = constant:migration_capacity.one } }
-						if = { limit = { check_variable = { migration_reception_medical_capacity_prep_had = constant:humanitarian_runtime.one } } set_variable = { migration_reception_medical_capacity = migration_reception_medical_capacity_prep_before } }
-						else = { clear_variable = migration_reception_medical_capacity }
-						if = { limit = { check_variable = { migration_reception_medical_service_proven_prep_had = constant:humanitarian_runtime.one } } set_variable = { migration_reception_medical_service_proven = migration_reception_medical_service_proven_prep_before } }
-						else = { clear_variable = migration_reception_medical_service_proven }
+						limit = {
+							OR = {
+								NOT = { has_variable = migration_reception_medical_capacity }
+								NOT = { check_variable = { migration_reception_medical_service_proven = constant:migration_capacity.one } }
+								check_variable = { migration_reception_medical_capacity < migration_reception_preparation_medical }
+							}
+						}
+						set_temp_variable = { migration_reception_medical_service_request = migration_reception_preparation_medical }
+						set_temp_variable = { migration_reception_preparation_medical_attempted = constant:humanitarian_runtime.one }
+						set_temp_variable = { migration_reception_medical_service_request_proven = constant:migration_capacity.one }
+						migration_set_reception_medical_service = yes
+						if = { limit = { check_variable = { migration_reception_medical_service_result = constant:migration_capacity.one } } set_temp_variable = { migration_reception_preparation_medical_changed = constant:humanitarian_runtime.one } }
 					}
-					if = { limit = { check_variable = { migration_reception_preparation_candidate_before = constant:humanitarian_runtime.zero } } clr_state_flag = migration_reception_candidate_active }
-					else = { set_state_flag = migration_reception_candidate_active }
-					if = { limit = { check_variable = { migration_reception_preparation_array_before = constant:humanitarian_runtime.zero } } remove_from_array = { array = global.migration_reception_candidate_states value = THIS } }
-					else_if = { limit = { NOT = { is_in_array = { array = global.migration_reception_candidate_states value = THIS } } } add_to_array = { array = global.migration_reception_candidate_states value = THIS } }
-					set_variable = { global.migration_reception_candidate_states_count = global.migration_reception_candidate_states^num }
-					if = { limit = { check_variable = { migration_reception_preparation_candidate_revision_had = constant:humanitarian_runtime.one } } set_variable = { migration_reception_candidate_revision = migration_reception_preparation_candidate_revision_before } }
-					else = { clear_variable = migration_reception_candidate_revision }
 				}
 				if = {
-					limit = { check_variable = { migration_reception_preparation_policy_attempted = constant:humanitarian_runtime.one } check_variable = { migration_reception_policy = constant:migration_border_policy.humanitarian_open } }
-					if = { limit = { check_variable = { migration_reception_policy_prep_had = constant:humanitarian_runtime.one } } set_variable = { migration_reception_policy = migration_reception_policy_prep_before } }
-					else = { clear_variable = migration_reception_policy }
-					if = { limit = { check_variable = { migration_departure_policy_prep_had = constant:humanitarian_runtime.one } } set_variable = { migration_departure_policy = migration_departure_policy_prep_before } }
-					else = { clear_variable = migration_departure_policy }
-					if = { limit = { check_variable = { migration_border_policy_prep_had = constant:humanitarian_runtime.one } } set_variable = { migration_border_policy = migration_border_policy_prep_before } }
-					else = { clear_variable = migration_border_policy }
-					if = { limit = { check_variable = { migration_reception_preparation_border_flag_before = constant:humanitarian_runtime.zero } } clr_country_flag = migration_border_policy_active }
+					limit = { NOT = { check_variable = { migration_reception_policy = constant:migration_border_policy.humanitarian_open } } }
+					set_temp_variable = { migration_reception_policy_request = constant:migration_border_policy.humanitarian_open }
+					set_temp_variable = { migration_departure_policy_request = constant:humanitarian_runtime.zero }
+					set_temp_variable = { migration_reception_preparation_policy_attempted = constant:humanitarian_runtime.one }
+					set_temp_variable = { migration_border_policy_result = constant:humanitarian_runtime.zero }
+					migration_decision_set_policy = yes
+					if = { limit = { check_variable = { migration_decision_policy_result = constant:civilian_transfer_route_result.valid } } set_temp_variable = { migration_reception_preparation_policy_changed = constant:humanitarian_runtime.one } }
 				}
 				migration_mark_reception_capacity_dirty = yes
 				migration_recalculate_reception_capacity = yes
-				set_temp_variable = { migration_reception_preparation_pp_refund = constant:migration_reception_preparation_cost.political_power }
-				set_temp_variable = { migration_reception_preparation_support_refund = constant:migration_reception_preparation_cost.support_equipment }
-				set_temp_variable = { migration_reception_preparation_fuel_refund = constant:migration_reception_preparation_cost.fuel }
-				add_political_power = migration_reception_preparation_pp_refund
-				add_equipment_to_stockpile = { type = support_equipment amount = migration_reception_preparation_support_refund }
-				add_fuel = migration_reception_preparation_fuel_refund
+				if = {
+					limit = {
+						OR = {
+							check_variable = { migration_reception_preparation_shelter_changed = constant:humanitarian_runtime.one }
+							check_variable = { migration_reception_preparation_medical_changed = constant:humanitarian_runtime.one }
+							check_variable = { migration_reception_preparation_policy_changed = constant:humanitarian_runtime.one }
+						}
+						migration_reception_capacity_is_valid = yes
+						OR = { check_variable = { migration_reception_preparation_policy_attempted = constant:humanitarian_runtime.zero } check_variable = { migration_decision_policy_result = constant:civilian_transfer_route_result.valid } }
+						OR = { check_variable = { migration_reception_preparation_shelter_attempted = constant:humanitarian_runtime.zero } check_variable = { migration_reception_shelter_service_result = constant:migration_capacity.one } }
+						OR = { check_variable = { migration_reception_preparation_medical_attempted = constant:humanitarian_runtime.zero } check_variable = { migration_reception_medical_service_result = constant:migration_capacity.one } }
+						event_target:migration_reception_preparation_state = {
+							is_owned_and_controlled_by = event_target:migration_reception_preparation_receiver
+							migration_reception_preparation_state_is_safe = yes
+							migration_reception_candidate_is_valid = yes
+						}
+						OR = {
+							check_variable = { migration_reception_preparation_pending = constant:humanitarian_runtime.zero }
+							AND = {
+								humanitarian_corridor_offer_can_be_accepted = yes
+								check_variable = { humanitarian_corridor_offer_route_generation = migration_reception_preparation_generation }
+							}
+						}
+					}
+					# Pending success also re-resolves the entire live row before publication.
+					set_temp_variable = { migration_reception_preparation_result = constant:humanitarian_runtime.one }
+					if = {
+						limit = { check_variable = { migration_reception_preparation_pending = constant:humanitarian_runtime.one } }
+						var:humanitarian_corridor_offer_origin_state_id = {
+							set_temp_variable = { humanitarian_corridor_live_cohort_result = constant:humanitarian_runtime.zero }
+							humanitarian_corridor_resolve_live_cohort = yes
+							if = {
+								limit = { NOT = { check_variable = { humanitarian_corridor_live_cohort_result = constant:humanitarian_runtime.one } } }
+								set_temp_variable = { migration_reception_preparation_result = constant:humanitarian_runtime.zero }
+							}
+						}
+					}
+				}
+				# Qualitative intent advances only after genuine, fully revalidated
+				# paid success. Projection failure cannot charge/refund or reject setup.
+				if = {
+					limit = {
+						check_variable = { migration_reception_preparation_result = constant:humanitarian_runtime.one }
+						check_variable = { migration_reception_preparation_pending = constant:humanitarian_runtime.one }
+						migration_pending_reception_issue_is_valid = yes
+					}
+					set_temp_variable = { migration_reception_front_intent_record_result = constant:migration_reception_front_intent.zero }
+					set_temp_variable = { migration_reception_front_intent_reveal_proven = constant:migration_reception_front_intent.one }
+					set_temp_variable = { migration_reception_front_intent_setup_proven = constant:migration_reception_front_intent.one }
+					set_temp_variable = { migration_reception_front_intent_phase_request = constant:migration_reception_front_intent.prepared }
+					var:humanitarian_corridor_offer_origin_state_id = { migration_publish_reception_front_intent_from_contract = yes }
+				}
+				if = {
+					limit = { check_variable = { migration_reception_preparation_result = constant:humanitarian_runtime.zero } }
+					event_target:migration_reception_preparation_state = {
+						if = {
+							limit = { check_variable = { migration_reception_preparation_shelter_changed = constant:humanitarian_runtime.one } check_variable = { migration_reception_shelter_capacity = migration_reception_preparation_shelter } check_variable = { migration_reception_shelter_service_proven = constant:migration_capacity.one } }
+							if = { limit = { check_variable = { migration_reception_shelter_capacity_prep_had = constant:humanitarian_runtime.one } } set_variable = { migration_reception_shelter_capacity = migration_reception_shelter_capacity_prep_before } }
+							else = { clear_variable = migration_reception_shelter_capacity }
+							if = { limit = { check_variable = { migration_reception_shelter_service_proven_prep_had = constant:humanitarian_runtime.one } } set_variable = { migration_reception_shelter_service_proven = migration_reception_shelter_service_proven_prep_before } }
+							else = { clear_variable = migration_reception_shelter_service_proven }
+						}
+						if = {
+							limit = { check_variable = { migration_reception_preparation_medical_changed = constant:humanitarian_runtime.one } check_variable = { migration_reception_medical_capacity = migration_reception_preparation_medical } check_variable = { migration_reception_medical_service_proven = constant:migration_capacity.one } }
+							if = { limit = { check_variable = { migration_reception_medical_capacity_prep_had = constant:humanitarian_runtime.one } } set_variable = { migration_reception_medical_capacity = migration_reception_medical_capacity_prep_before } }
+							else = { clear_variable = migration_reception_medical_capacity }
+							if = { limit = { check_variable = { migration_reception_medical_service_proven_prep_had = constant:humanitarian_runtime.one } } set_variable = { migration_reception_medical_service_proven = migration_reception_medical_service_proven_prep_before } }
+							else = { clear_variable = migration_reception_medical_service_proven }
+						}
+						if = { limit = { check_variable = { migration_reception_preparation_candidate_before = constant:humanitarian_runtime.zero } } clr_state_flag = migration_reception_candidate_active }
+						else = { set_state_flag = migration_reception_candidate_active }
+						if = { limit = { check_variable = { migration_reception_preparation_array_before = constant:humanitarian_runtime.zero } } remove_from_array = { array = global.migration_reception_candidate_states value = THIS } }
+						else_if = { limit = { NOT = { is_in_array = { array = global.migration_reception_candidate_states value = THIS } } } add_to_array = { array = global.migration_reception_candidate_states value = THIS } }
+						set_variable = { global.migration_reception_candidate_states_count = global.migration_reception_candidate_states^num }
+						if = { limit = { check_variable = { migration_reception_preparation_candidate_revision_had = constant:humanitarian_runtime.one } } set_variable = { migration_reception_candidate_revision = migration_reception_preparation_candidate_revision_before } }
+						else = { clear_variable = migration_reception_candidate_revision }
+					}
+					if = {
+						limit = { check_variable = { migration_reception_preparation_policy_attempted = constant:humanitarian_runtime.one } check_variable = { migration_reception_policy = constant:migration_border_policy.humanitarian_open } }
+						if = { limit = { check_variable = { migration_reception_policy_prep_had = constant:humanitarian_runtime.one } } set_variable = { migration_reception_policy = migration_reception_policy_prep_before } }
+						else = { clear_variable = migration_reception_policy }
+						if = { limit = { check_variable = { migration_departure_policy_prep_had = constant:humanitarian_runtime.one } } set_variable = { migration_departure_policy = migration_departure_policy_prep_before } }
+						else = { clear_variable = migration_departure_policy }
+						if = { limit = { check_variable = { migration_border_policy_prep_had = constant:humanitarian_runtime.one } } set_variable = { migration_border_policy = migration_border_policy_prep_before } }
+						else = { clear_variable = migration_border_policy }
+						if = { limit = { check_variable = { migration_reception_preparation_border_flag_before = constant:humanitarian_runtime.zero } } clr_country_flag = migration_border_policy_active }
+					}
+					migration_mark_reception_capacity_dirty = yes
+					migration_recalculate_reception_capacity = yes
+					add_equipment_to_stockpile = { type = support_equipment amount = migration_reception_preparation_support_paid }
+					migration_transport_refund_state_cost = { TARGET = event_target:migration_reception_preparation_state RECEIPT = migration_reception_preparation }
+				}
+				if = {
+					limit = { check_variable = { migration_reception_preparation_result = constant:humanitarian_runtime.one } }
+					migration_transport_forget_state_cost = { TARGET = event_target:migration_reception_preparation_state RECEIPT = migration_reception_preparation }
+				}
 			}
 		}
 	}

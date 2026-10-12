@@ -1,12 +1,16 @@
 # Paid, exact-state reception preparation contracts. These triggers are
 # read-only and never install services, admit a cohort or modify population.
 
+# UI wrapper. FROM remains the exact selected receiving state.
 migration_reception_preparation_is_affordable = {
+	migration_reception_preparation_target_cost_is_affordable = { TARGET = FROM }
+}
+
+migration_reception_preparation_target_cost_is_affordable = {
 	hidden_trigger = {
 		humanitarian_country_is_valid = yes
-		NOT = { has_political_power < constant:migration_reception_preparation_cost.political_power }
 		NOT = { has_equipment = { support_equipment < constant:migration_reception_preparation_cost.support_equipment } }
-		NOT = { has_fuel < constant:migration_reception_preparation_cost.fuel }
+		migration_transport_state_cost_is_affordable = { PROFILE = standard TARGET = $TARGET$ }
 	}
 }
 
@@ -90,7 +94,18 @@ migration_reception_preparation_can_change_state = {
 }
 
 # STATE scope. ROOT is the ordinary decision's receiving country.
+migration_reception_preparation_state_has_local_issue = {
+	hidden_trigger = {
+		OR = {
+			migration_state_has_real_migration_issue = yes
+			any_neighbor_state = { is_controlled_by = ROOT migration_state_has_real_migration_issue = yes }
+			ROOT = { migration_pending_reception_issue_is_valid = yes check_variable = { humanitarian_corridor_offer_front_state_id = PREV.id } }
+		}
+	}
+}
+
 migration_reception_preparation_target_is_valid = {
+	migration_reception_preparation_state_has_local_issue = yes
 	hidden_trigger = {
 		is_owned_and_controlled_by = ROOT
 		migration_reception_preparation_state_is_safe = yes
