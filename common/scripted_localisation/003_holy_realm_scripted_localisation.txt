@@ -622,3 +622,38 @@ defined_text = {
 		localization_key = THR_party_refuge_long
 	}
 }
+
+
+defined_text = {
+	name = GetHolyRealmPeaceLetterAcceptanceChance
+
+	text = {
+		trigger = { is_major = yes }
+		localization_key = holy_realm_peace_letter_chance_never_major
+	}
+	text = {
+		trigger = { is_in_faction = yes }
+		localization_key = holy_realm_peace_letter_chance_never_faction
+	}
+	text = {
+		trigger = {
+			holy_realm_peace_letter_acceptance_possible = yes
+			has_war = yes
+			has_stability < 0.25
+			FROM = {
+				has_country_flag = holy_realm_peace_by_submission_unlocked
+				check_variable = { mandala_reach > 75 }
+				num_divisions > 24
+			}
+		}
+		localization_key = holy_realm_peace_letter_chance_low
+	}
+	text = {
+		trigger = { holy_realm_peace_letter_acceptance_possible = yes }
+		localization_key = holy_realm_peace_letter_chance_very_low
+	}
+	text = {
+		trigger = { always = yes }
+		localization_key = holy_realm_peace_letter_chance_none
+	}
+}

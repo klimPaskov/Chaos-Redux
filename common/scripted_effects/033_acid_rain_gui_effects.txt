@@ -131,7 +131,12 @@ acid_rain_gui_refresh_read_only = {
 	set_variable = { acid_rain_gui_projection_generation = global.acid_rain_generation_id }
 
 	set_variable = { global.acid_rain_gui_phase = global.acid_rain_phase }
+	set_variable = { global.acid_rain_gui_current_air_contamination_bp = global.air_contamination_bp }
 	set_variable = { global.acid_rain_gui_lifetime_air_added_bp = global.acid_rain_air_lifetime_added_bp }
+	set_temp_variable = { acid_rain_gui_air_allowance = constant:acid_rain_air.lifetime_allowance_bp }
+	subtract_from_temp_variable = { acid_rain_gui_air_allowance = global.acid_rain_air_lifetime_added_bp }
+	clamp_temp_variable = { var = acid_rain_gui_air_allowance min = constant:acid_rain_runtime.zero }
+	set_variable = { global.acid_rain_gui_air_allowance_remaining_bp = acid_rain_gui_air_allowance }
 	# Players read Air Contamination as a percentage, as in the Chaos Meter.
 	set_variable = { global.acid_rain_gui_lifetime_air_added_percent = global.acid_rain_gui_lifetime_air_added_bp }
 	divide_variable = { global.acid_rain_gui_lifetime_air_added_percent = constant:acid_rain_runtime.percentage_divisor }
