@@ -45,7 +45,7 @@ B4. **Q** Event history flag hover shows "Japanese Empire" instead of the countr
 B5. **Q** Move the auto event logs setting to the Miscellaneous view. (commit: f5b8f4a61a5dc09e88692fd623b83d87e8314dae)
 B6. **Q** Event history logging: entries show only the event name, never the full description. Completed: 78e6554affd48ebcce7191ccded8c564353ac447. Parent-exact selector verified in `442c8a9e1d09271dd0f5c8919010c502d1364911`. Audit: `c65be58abe8323c8a06969a5f8c4a9bacdebafd1`.
 B7. **Q** Air contamination idea "no longer fulfilled" message spam: hide it. (commit: 48255b6781aef430ac7e1fd332ba180fa2b0c491)
-B8. **Q** Trait description shows broken scripted localisation: fix.
+B8. **Q** Trait description shows broken scripted localisation: fix. (commit: 567ff94cd6ec1069fdfc391732af469d5a99f311)
 B9. Camps UI: buttons do not work and throw errors (latest lines of error.log): fix (Sol).
 B10. Migration UI: empty area on the left; the image goes inside the box. — implemented in `76c7815224`.
 B11. Decisions for outbreak responses appear on the map only, not listed in the decision category. Completed: `3deac2d4da401de6e47c04f3170a409833ddffa4`.
