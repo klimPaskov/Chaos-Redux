@@ -327,16 +327,17 @@ The Kingdom slot reuses the independent federation image as a stand-in.
 
 ## Assets
 
-Reused existing art: report image of Lawrence (`GFX_report_event_lawrence`, provenance of the source photograph is not recorded in the repository and must be confirmed before release), arab congress report image and the decision category picture (`interface/040_lawrence_of_arabia.gfx`), news image `GFX_news_lawrence`. One decision icon row (client reinforcement) and four prompt-listed idea icons still use vanilla generic sprites. Fourteen current decision consumers, six idea consumers, and eight named focus nodes use dedicated aliases in their Event 040 `.gfx` files. Each focus icon has a matching `_shine` alias; the existing vanilla stand-in sprites and textures remain unchanged.
+Reused existing art: report image of Lawrence (`GFX_report_event_lawrence`, provenance of the source photograph is not recorded in the repository and must be confirmed before release), arab congress report image and the decision category picture (`interface/040_lawrence_of_arabia.gfx`), news image `GFX_news_lawrence`. The client-reinforcement decision icon has no exact current decision mapping. Of the four remaining prompt-listed idea-icon subjects, British Mission and Exposed Network match live ideas that currently use generic art; Independent Partner and British Arabian System do not resolve to exact idea IDs in the Event 040 idea files. Fourteen current decision consumers, six idea consumers, and eight named focus nodes use dedicated aliases in their Event 040 `.gfx` files. Each focus icon has a matching `_shine` alias; the existing vanilla stand-in sprites and textures remain unchanged.
 
 ### Assets still needed
 
 | Asset | Sprite name | gfx file | Where the DDS lives |
 | --- | --- | --- | --- |
 | Grounded portrait of T. E. Lawrence (corps commander and later roles), user-supplied HOI4-style final | `GFX_portrait_t_e_lawrence` | `interface/040_lawrence_of_arabia.gfx` | `gfx/leaders/` through the portrait workflow |
-| Decision category icon (headcloth, field notes, liaison seal) | `GFX_decision_category_040_lawrence` | `interface/040_lawrence_of_arabia.gfx` | `gfx/interface/decisions/040_lawrence_of_arabia/` |
+| Distinct 32x32 category icon (field notes, headcloth and liaison seal), separate from the installed category picture | Proposed `GFX_decision_category_040_lawrence`; no current category-icon consumer | No `.gfx` until an icon consumer exists | Proposed only: `gfx/interface/decisions/040_lawrence_of_arabia/decision_category_040_lawrence_category.dds` |
 | Client reinforcement decision icon candidate | `GFX_decision_040_lawrence_client_reinforcement` | `alternative_for_review`; no exact live decision mapping | `docs/assets/040_lawrence_of_arabia/icons/alternative_for_review/decisions_20261011_s2/` |
-| Remaining prompt-listed idea icons (British mission, independent partner, exposed network and British Arabian system) | `GFX_idea_040_<name>` | `interface/040_lawrence_idea_icons.gfx` | `gfx/interface/ideas/040_lawrence_of_arabia/` |
+| British Mission and Exposed Network idea icon candidates | Proposed aliases `GFX_idea_040_lawrence_british_mission` and `GFX_idea_040_lawrence_exposed_network`; wire only after dedicated art sample review | `interface/040_lawrence_idea_icons.gfx` | `gfx/interface/ideas/040_lawrence_of_arabia/` |
+| Independent Partner and British Arabian System idea icon candidates | No exact current idea IDs; remain unwired pending mapping | None | `docs/assets/040_lawrence_of_arabia/ideas/alternative_for_review/` |
 | Report images for the recall, a sabotage scene and the settlement reports | `GFX_report_event_040_<name>` | same | `gfx/event_pictures/040_lawrence_of_arabia/` |
 | Flags of the three federation identities, normal, medium and small | tag files `LAWF_BRITISH`, `LAWF_ARAB`, `LAWF_KINGDOM` | none | `gfx/flags/`, `gfx/flags/medium/`, `gfx/flags/small/` |
 | Super-event scene of Lawrence's Kingdom (the slot reuses the independent federation image) | `GFX_super_event_040_lawrence_kingdom_formed` | `interface/040_lawrence_of_arabia.gfx` | `gfx/event_pictures/040_lawrence_of_arabia/` |
