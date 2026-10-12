@@ -63,7 +63,7 @@ C4. Performance: the game becomes very slow after some events fire. Profile and 
 C5. Random terror event is broken one year in: fix.
 C6. Non-human countries must never be affected by systems meant for humans.
 C7. A super event's audio stops as soon as the next super event fires; only one plays at a time.
-C8. Report events: audit for more than 4 options and fix.
+C8. Report events: audit for more than 4 options and fix. (commit: 212a23bca2e1fcac6668e0a69bc80aba4532e824)
 C9. Events must not hand out strong bonuses casually (for example Orders from Unknown Hands). Audit every event for this, for tooltips showing internal details, and for duplicate ideas being granted.
 C10. Orders from Unknown Hands: rewrite plainly and concretely. Confirm Event 11's first incident varies.
 C11. Migration: decisions must not appear on arbitrary owned islands. They appear only under real pressure: famine, blockade, states next to outbreaks, special chaos countries at war, states near the front. Remove political power costs; use fuel, and convoys for islands not connected to the mainland. Check whether the migration and famine systems were simplified and restore depth from history if so.
