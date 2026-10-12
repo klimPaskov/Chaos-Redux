@@ -43,7 +43,7 @@ B2. **Q** Event log clusters view: remove the "show" control and the cluster, st
 B3. **Q** World-end scenario details view: fix the positioning. — implemented in `7ea7d51f5b`.
 B4. **Q** Event history flag hover shows "Japanese Empire" instead of the country the click pans to: fix.
 B5. **Q** Move the auto event logs setting to the Miscellaneous view.
-B6. **Q** Event history logging: entries show only the event name, never the full description.
+B6. **Q** Event history logging: entries show only the event name, never the full description. Completed: 78e6554affd48ebcce7191ccded8c564353ac447.
 B7. **Q** Air contamination idea "no longer fulfilled" message spam: hide it.
 B8. **Q** Trait description shows broken scripted localisation: fix.
 B9. Camps UI: buttons do not work and throw errors (latest lines of error.log): fix (Sol).
