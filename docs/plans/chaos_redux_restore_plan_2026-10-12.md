@@ -38,11 +38,11 @@ A13. Chemical release abilities: re-add the army-leader chemical release abiliti
 
 ## B. UI fixes
 
-B1. **Q** Super-event volume multiplier arrows: tooltip saying which volume they change (Luna).
+B1. **Q** Super-event volume multiplier arrows: tooltip saying which volume they change (Luna). (commit: f5b8f4a61a5dc09e88692fd623b83d87e8314dae)
 B2. **Q** Event log clusters view: remove the "show" control and the cluster, status and auto subheaders. In cluster details every member gets an enable/disable checkbox. Fix the "fires automatically" text overlapping the checkbox.
 B3. **Q** World-end scenario details view: fix the positioning. — implemented in `7ea7d51f5b`.
 B4. **Q** Event history flag hover shows "Japanese Empire" instead of the country the click pans to: fix.
-B5. **Q** Move the auto event logs setting to the Miscellaneous view.
+B5. **Q** Move the auto event logs setting to the Miscellaneous view. (commit: f5b8f4a61a5dc09e88692fd623b83d87e8314dae)
 B6. **Q** Event history logging: entries show only the event name, never the full description. Completed: 78e6554affd48ebcce7191ccded8c564353ac447.
 B7. **Q** Air contamination idea "no longer fulfilled" message spam: hide it.
 B8. **Q** Trait description shows broken scripted localisation: fix.
