@@ -6,6 +6,17 @@ Random Terror is Event `31`, enters through `chaosx.nr31.1`, remains a Minor Rep
 
 The hidden entry event calls `random_terror_run_global_wave`, refreshes the global ledgers, schedules eligible evolution or world-end work, and sends local report callbacks without allowing those callbacks to increment pacing again.
 
+Global evolution and revelation clocks retain their original country target and absolute deadline.
+The existing global-host coordinator calls `random_terror_reconcile_pending_callbacks` once per daily host pass, delivering an overdue hidden callback on its original country only while that country is absent.
+Living recipients retain their native delayed callbacks and the original delay values, including fractional MTTH results.
+Callback triggers validate the current pending receipt and original recipient, with an earliest-native date that admits native fractional-day rounding without changing the queued delay.
+Dispatch cleanup and terminal commit keep their own deadlines, and processing, withdrawal, invalidation or defeat removes the corresponding receipts.
+A vanished final command reaches the existing defeat predicate, which still preserves the crisis while another actor, active cell or affected-country pressure survives.
+Helper inputs, outputs and cleanup are documented in `common/scripted_effects/031_random_terror_effects.md`.
+
+Priority-state selection declares its returned temporary pointer in the caller before inspecting candidate states.
+The selection retains the highest stage, then highest activity, and the existing recovery fallback.
+
 The accepted evolution names are Organized Cells, Transnational Terror Network, Territorial Insurgency, The Jihadist International, and The Final Jihad.
 
 Each evolution has one presentation guarded by a one-time global flag (`random_terror_emit_evolution_report`): Evolution II sends report `chaosx.nr31.3` and news `chaosx.news.311`, Evolution III sends report `chaosx.nr31.4` once a territorial actor exists (deferred to the first actor otherwise), Evolution IV sends report `chaosx.nr31.5`, and Evolution V sends news `chaosx.news.313`.

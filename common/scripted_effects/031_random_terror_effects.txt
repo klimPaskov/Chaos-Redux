@@ -562,6 +562,8 @@ random_terror_refresh_priority_state = {
 	}
 	set_temp_variable = { random_terror_priority_best_stage = constant:random_terror_value.zero }
 	set_temp_variable = { random_terror_priority_best_activity = constant:random_terror_value.zero }
+	# Own the selected state output before the nested candidate helper writes it.
+	set_temp_variable = { random_terror_priority_candidate = constant:random_terror_value.zero }
 	# The response category header shows how many crisis states it holds.
 	set_variable = { random_terror_active_state_count = constant:random_terror_value.zero }
 	every_controlled_state = {
@@ -2061,7 +2063,12 @@ random_terror_schedule_next_evolution = {
 			chaosx_convert_days_to_date_offset = yes
 			set_variable = { global.random_terror_evolution_candidate_due_date = global.date }
 			add_to_variable = { global.random_terror_evolution_candidate_due_date = chaosx_date_offset }
+			set_temp_variable = { random_terror_callback_delay_days = random_terror_evolution_delay_days }
+			set_temp_variable = { random_terror_callback_earliest_due_date = global.date }
+			random_terror_get_callback_earliest_due = yes
+			set_variable = { global.random_terror_evolution_native_earliest_due_date = random_terror_callback_earliest_due_date }
 			set_global_flag = random_terror_evolution_candidate_pending
+			save_global_event_target_as = random_terror_evolution_clock_host
 			country_event = { id = chaosx.nr31.92 days = random_terror_evolution_delay_days }
 		}
 	}
@@ -2073,6 +2080,8 @@ random_terror_process_evolution_candidate = {
 	clr_global_flag = random_terror_evolution_candidate_pending
 	clear_variable = global.random_terror_evolution_candidate_stage
 	clear_variable = global.random_terror_evolution_candidate_due_date
+	clear_variable = global.random_terror_evolution_native_earliest_due_date
+	clear_global_event_target = random_terror_evolution_clock_host
 	set_temp_variable = { random_terror_evolution_transition_authorized = constant:random_terror_value.zero }
 	if = {
 		limit = {
@@ -5274,7 +5283,12 @@ random_terror_actor_accelerate_revelation = {
 			chaosx_convert_days_to_date_offset = yes
 			set_variable = { global.random_terror_false_revelation_candidate_due_date = global.date }
 			add_to_variable = { global.random_terror_false_revelation_candidate_due_date = chaosx_date_offset }
+			set_temp_variable = { random_terror_callback_delay_days = random_terror_false_revelation_delay_days }
+			set_temp_variable = { random_terror_callback_earliest_due_date = global.date }
+			random_terror_get_callback_earliest_due = yes
+			set_variable = { global.random_terror_revelation_native_earliest_due_date = random_terror_callback_earliest_due_date }
 			set_global_flag = random_terror_false_revelation_candidate_accelerated
+			save_global_event_target_as = random_terror_revelation_clock_host
 			country_event = { id = chaosx.nr31.94 days = random_terror_false_revelation_delay_days }
 		}
 		else = {
@@ -5802,7 +5816,92 @@ random_terror_prepare_dispatch = {
 random_terror_dispatch_cleanup = {
 	clr_global_flag = random_terror_dispatch_armed
 	clr_global_flag = random_terror_global_lock
+	clear_variable = global.random_terror_dispatch_cleanup_due_date
 	clear_global_event_target = random_terror_dispatch_host
+}
+
+# Any scope. Input: caller-owned temp random_terror_callback_delay_days.
+# Output: caller-owned temp random_terror_callback_earliest_due_date.
+# A native fractional-day parser may truncate whole days, so its rejection
+# guard starts at floor(days). This never changes the actual queued delay.
+random_terror_get_callback_earliest_due = {
+	set_temp_variable = { random_terror_callback_day_fraction = random_terror_callback_delay_days }
+	modulo_temp_variable = { var = random_terror_callback_day_fraction value = constant:random_terror_value.one }
+	set_temp_variable = { chaosx_date_days = random_terror_callback_delay_days }
+	subtract_from_temp_variable = { chaosx_date_days = random_terror_callback_day_fraction }
+	set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
+	chaosx_convert_days_to_date_offset = yes
+	set_temp_variable = { random_terror_callback_earliest_due_date = global.date }
+	add_to_temp_variable = { random_terror_callback_earliest_due_date = chaosx_date_offset }
+}
+
+# COUNTRY scope: the existing single global host coordinator. Delayed events
+# pause on absent recipients, so settle overdue global clocks by an immediate
+# event on their original country. Native callbacks validate the current host,
+# pending receipt and earliest-date bound, leaving the original delay intact.
+random_terror_reconcile_pending_callbacks = {
+	if = {
+		limit = {
+			OR = {
+				has_global_flag = random_terror_global_lock
+				has_global_flag = random_terror_evolution_candidate_pending
+				has_global_flag = random_terror_false_revelation_candidate_pending
+				has_global_flag = random_terror_false_revelation_pending
+				has_global_flag = random_terror_terminal_active
+			}
+		}
+		if = {
+			limit = {
+				has_global_flag = random_terror_global_lock
+				has_variable = global.random_terror_dispatch_cleanup_due_date
+				check_variable = { var = global.random_terror_dispatch_cleanup_due_date value = global.date compare = less_than_or_equals }
+				has_event_target = random_terror_dispatch_host
+				event_target:random_terror_dispatch_host = { exists = no }
+			}
+			event_target:random_terror_dispatch_host = { country_event = { id = chaosx.nr31.99 } }
+		}
+		if = {
+			limit = {
+				has_global_flag = random_terror_evolution_candidate_pending
+				has_variable = global.random_terror_evolution_candidate_due_date
+				check_variable = { var = global.random_terror_evolution_candidate_due_date value = global.date compare = less_than_or_equals }
+				has_event_target = random_terror_evolution_clock_host
+				event_target:random_terror_evolution_clock_host = { exists = no }
+			}
+			event_target:random_terror_evolution_clock_host = { country_event = { id = chaosx.nr31.92 } }
+		}
+		if = {
+			limit = {
+				has_global_flag = random_terror_false_revelation_candidate_pending
+				has_variable = global.random_terror_false_revelation_candidate_due_date
+				check_variable = { var = global.random_terror_false_revelation_candidate_due_date value = global.date compare = less_than_or_equals }
+				has_event_target = random_terror_revelation_clock_host
+				event_target:random_terror_revelation_clock_host = { exists = no }
+			}
+			event_target:random_terror_revelation_clock_host = { country_event = { id = chaosx.nr31.94 } }
+		}
+		if = {
+			limit = {
+				has_global_flag = random_terror_false_revelation_pending
+				has_variable = global.random_terror_revelation_commit_due_date
+				check_variable = { var = global.random_terror_revelation_commit_due_date value = global.date compare = less_than_or_equals }
+				has_event_target = random_terror_final_actor
+				event_target:random_terror_final_actor = { exists = no }
+			}
+			event_target:random_terror_final_actor = { country_event = { id = chaosx.nr31.95 } }
+		}
+		# A vanished final command cannot receive its terminal pulse. Preserve
+		# the existing defeat predicate: surviving actors, cells or pressure
+		# keep the network unresolved.
+		if = {
+			limit = {
+				has_global_flag = random_terror_terminal_active
+				has_event_target = random_terror_final_actor
+				event_target:random_terror_final_actor = { exists = no }
+			}
+			random_terror_check_for_defeat = yes
+		}
+	}
 }
 
 random_terror_scenario_cleanup = {
@@ -7933,8 +8032,13 @@ random_terror_schedule_false_revelation = {
 		chaosx_convert_days_to_date_offset = yes
 		set_variable = { global.random_terror_false_revelation_candidate_due_date = global.date }
 		add_to_variable = { global.random_terror_false_revelation_candidate_due_date = chaosx_date_offset }
+		set_temp_variable = { random_terror_callback_delay_days = random_terror_false_revelation_delay_days }
+		set_temp_variable = { random_terror_callback_earliest_due_date = global.date }
+		random_terror_get_callback_earliest_due = yes
+		set_variable = { global.random_terror_revelation_native_earliest_due_date = random_terror_callback_earliest_due_date }
 		set_global_flag = random_terror_false_revelation_candidate_pending
 		clr_global_flag = random_terror_false_revelation_candidate_lapsed
+		save_global_event_target_as = random_terror_revelation_clock_host
 		country_event = { id = chaosx.nr31.94 days = random_terror_false_revelation_delay_days }
 	}
 	else_if = {
@@ -7946,6 +8050,8 @@ random_terror_schedule_false_revelation = {
 		clr_global_flag = random_terror_false_revelation_candidate_accelerated
 		set_global_flag = random_terror_false_revelation_candidate_lapsed
 		clear_variable = global.random_terror_false_revelation_candidate_due_date
+		clear_variable = global.random_terror_revelation_native_earliest_due_date
+		clear_global_event_target = random_terror_revelation_clock_host
 	}
 }
 
@@ -7953,6 +8059,8 @@ random_terror_process_false_revelation_candidate = {
 	clr_global_flag = random_terror_false_revelation_candidate_pending
 	clr_global_flag = random_terror_false_revelation_candidate_accelerated
 	clear_variable = global.random_terror_false_revelation_candidate_due_date
+	clear_variable = global.random_terror_revelation_native_earliest_due_date
+	clear_global_event_target = random_terror_revelation_clock_host
 	random_terror_refresh_global_values = yes
 	if = {
 		limit = { random_terror_can_begin_false_revelation = yes }
@@ -8263,7 +8371,7 @@ random_terror_promote_final_command = {
 		set_global_flag = random_terror_false_revelation_enabled
 		set_variable = { global.random_terror_terminal_start_date = global.date }
 		set_temp_variable = { random_terror_world_end_delay = constant:random_terror_tuning.world_end_delay_days }
-		event_target:random_terror_final_actor = { country_event = { id = chaosx.nr31.95 days = random_terror_world_end_delay } }
+		random_terror_schedule_revelation_commit = yes
 		every_country = { limit = { is_ai = no exists = yes } country_event = { id = chaosx.nr31.7 } }
 	}
 }
@@ -8286,6 +8394,17 @@ random_terror_begin_false_revelation = {
 	}
 }
 
+# Any scope. Input: caller-owned temp random_terror_world_end_delay. Keeps the
+# original final-command recipient and the exact initial or recheck delay.
+random_terror_schedule_revelation_commit = {
+	set_temp_variable = { chaosx_date_days = random_terror_world_end_delay }
+	set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
+	chaosx_convert_days_to_date_offset = yes
+	set_variable = { global.random_terror_revelation_commit_due_date = global.date }
+	add_to_variable = { global.random_terror_revelation_commit_due_date = chaosx_date_offset }
+	event_target:random_terror_final_actor = { country_event = { id = chaosx.nr31.95 days = random_terror_world_end_delay } }
+}
+
 # The delayed commit repeats the gate that opened the revelation.  A branch
 # that was disabled, a world that ended another way or a final command that
 # no longer exists withdraws the revelation without any world-end change.
@@ -8296,6 +8415,7 @@ random_terror_finalize_false_revelation = {
 			has_global_flag = random_terror_terminal_active
 			has_global_flag = random_terror_false_revelation_pending
 		}
+		clear_variable = global.random_terror_revelation_commit_due_date
 		if = {
 			limit = {
 				random_terror_false_revelation_commit_possible = yes
@@ -8305,7 +8425,7 @@ random_terror_finalize_false_revelation = {
 			if = {
 				limit = { NOT = { random_terror_false_revelation_chaos_held = yes } }
 				set_temp_variable = { random_terror_world_end_delay = constant:random_terror_tuning.world_end_recheck_days }
-				event_target:random_terror_final_actor = { country_event = { id = chaosx.nr31.95 days = random_terror_world_end_delay } }
+				random_terror_schedule_revelation_commit = yes
 			}
 			else = {
 				random_terror_commit_false_revelation = yes
@@ -8320,6 +8440,7 @@ random_terror_finalize_false_revelation = {
 # A revelation that can no longer commit: the final command is dissolved and
 # the crisis resolves through the ordinary defeat path.
 random_terror_withdraw_false_revelation = {
+	clear_variable = global.random_terror_revelation_commit_due_date
 	set_global_flag = random_terror_false_revelation_denied
 	clr_global_flag = random_terror_false_revelation_pending
 	clr_global_flag = random_terror_terminal_active
@@ -8349,6 +8470,7 @@ random_terror_commit_false_revelation = {
 		set_global_flag = world_end_random_terror_false_revelation
 		set_global_flag = random_terror_false_revelation_resolved
 		clr_global_flag = random_terror_false_revelation_pending
+		clear_variable = global.random_terror_revelation_commit_due_date
 		event_target:random_terror_final_actor = {
 			set_country_flag = random_terror_terminal_world_order
 			random_terror_create_final_jihad_command_faction = yes
@@ -9197,6 +9319,8 @@ random_terror_reset_repeatable_cycle = {
 		clr_global_flag = random_terror_false_revelation_candidate_accelerated
 		clr_global_flag = random_terror_false_revelation_candidate_lapsed
 		clear_variable = global.random_terror_false_revelation_candidate_due_date
+		clear_variable = global.random_terror_revelation_native_earliest_due_date
+		clear_global_event_target = random_terror_revelation_clock_host
 		clear_variable = global.random_terror_terminal_counteroffensive_contributions
 		clear_global_event_target = random_terror_final_actor
 		clear_global_event_target = random_terror_final_capital
@@ -9235,6 +9359,8 @@ random_terror_resolve_defeat = {
 		}
 		set_global_flag = random_terror_defeat_resolved
 		clr_global_flag = random_terror_terminal_active
+		clr_global_flag = random_terror_false_revelation_pending
+		clear_variable = global.random_terror_revelation_commit_due_date
 		clr_global_flag = random_terror_global_jihad_active
 		clr_global_flag = random_terror_final_jihad_active
 		clear_variable = global.random_terror_presence_score

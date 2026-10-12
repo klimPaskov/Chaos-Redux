@@ -36,6 +36,8 @@ The source inventory finds 118 active periodic hook blocks in `common/on_actions
 Commented hooks are excluded.
 The fifty identical independence carrier hook names are grouped below but remain individually present in the inventory.
 Helper expansion follows every referenced scripted effect, including guarded branches.
+C5 integration adds one early-out callback-reconciliation call to each of the same three mutually exclusive host branches, without adding a hook or another country pass.
+Its absent-recipient and terminal cleanup evidence is in `docs/plans/031_random_terror_plans/subagent_handoffs/c5_bug_fix_2026-10-13.md`.
 Such reachability is an upper bound on possible work, not a claim that all branches run every day.
 In particular, event selection can reach one-shot country creation and world-end transitions that must not be counted as unconditional daily loops.
 
@@ -295,7 +297,8 @@ Reference tools were confirmed exposed before use.
 `reference_context`, `reference_search`, `reference_read` and `source_lookup` were requested for relevant installed/offline rules and precedents.
 Slow or unavailable optional checks do not establish runtime validation.
 The C4 file-mode `script_validate` request timed out after 600 seconds, as did the C5 file-mode request.
-The C5 worker owns the single corrected retry against its narrow country-scope reconciliation body.
+The C5 worker's single corrected retry against its narrow country-scope reconciliation body returned `SCRIPT_CHECK_PARTIAL`, `valid = null`, with syntax, command-kind and declared-scope checks but native argument blocks unchecked.
+It is not a C4 full-file pass or an engine check.
 The C4 effect/source-lookup request and the optional array-trigger search also timed out after 600 seconds.
 The global-target wiki section read timed out, so its relevant local lines were read directly.
 Installed target/controlled-state sections and both periodic-hook source kinds did return through reference reads.
