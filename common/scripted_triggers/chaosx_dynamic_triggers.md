@@ -50,6 +50,18 @@ Purpose: return true when the country is not currently classified by `is_actual_
 
 This inverse classifier is also hidden from generated tooltips. Player-facing systems that need to explain an exclusion must provide their own concise tooltip instead of exposing the shared registry.
 
+## state_uses_normal_civilian_systems
+
+Scope: state.
+
+Purpose: permit human civilian systems only when the current owner and controller both exist and pass `uses_normal_civilian_systems`.
+Inputs: current state holders, with no parameters or cached classification.
+Output: a hidden boolean with no side effects.
+Human special countries remain human under this predicate, including the Holy Realm, while nonhuman ownership or occupation rejects the state.
+Callers include exact civilian losses, state casualty accounting, ordinary disease admission and retirement, camp operation, and inherited famine, migration, disease, camp, chemical and air-illness modifier enable blocks.
+
+Example: `state_uses_normal_civilian_systems = yes` inside a state effect's `limit`.
+
 ## shared_classifier_ownership
 
 The special-country and actual-nonhuman classifiers are intentionally centralized because famine, migration, population, occupation, event, and provider systems use them as shared exclusion and routing contracts.

@@ -2810,6 +2810,15 @@ chaos_meter_register_deaths = {
 		set_temp_variable = { chaos_deaths_record_state_ledger = constant:chaos_meter_deaths.zero }
 	}
 	round_temp_variable = chaos_deaths_change
+	# The human deaths ledger does not count nonhuman country casualties.
+	# Native war damage and the country's own reinforcement model are unchanged.
+	if = {
+		limit = {
+			check_variable = { chaos_deaths_has_target_country > constant:chaos_meter_deaths.zero }
+			var:chaos_deaths_target_country = { exists = yes uses_normal_civilian_systems = no }
+		}
+		set_temp_variable = { chaos_deaths_change = constant:chaos_meter_deaths.zero }
+	}
 
 	if = {
 		limit = {
@@ -3490,6 +3499,7 @@ chaos_meter_register_nuclear_condemnation = {
 chaos_meter_register_combat_civilian_deaths_to_state = {
 	if = {
 		limit = {
+			state_uses_normal_civilian_systems = yes
 			check_variable = { state_population_k > 0 }
 			check_variable = { chaos_deaths_change > 0 }
 		}
@@ -3605,6 +3615,7 @@ chaos_meter_register_combat_civilian_deaths_to_state = {
 chaos_meter_register_state_civilian_deaths_percent = {
 	if = {
 		limit = {
+			state_uses_normal_civilian_systems = yes
 			NOT = { has_global_flag = settings_chaos_deaths_disabled }
 			check_variable = { state_population_k > 0 }
 			has_variable = chaos_state_deaths_percent

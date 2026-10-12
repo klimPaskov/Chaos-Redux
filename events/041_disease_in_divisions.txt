@@ -27,9 +27,10 @@ country_event = {
 	is_triggered_only = yes
 
 	immediate = {
-		if = { limit = { any_country = { has_war = yes num_divisions > 10 } }
+		if = { limit = { any_country = { uses_normal_civilian_systems = yes has_war = yes num_divisions > 10 } }
 		random_country = {
 			limit = {
+				uses_normal_civilian_systems = yes
 				has_war = yes
 				num_divisions > 10
 			}
@@ -52,7 +53,8 @@ country_event = {
 			}
 			country_event = { id = chaosx.nr41.2 days = 1 }
 		}
-	} else = {
+	} else_if = {
+		limit = { uses_normal_civilian_systems = yes }
 		every_owned_state = {
 			limit = { has_ROOT_at_least_1_div_in_current_state_scope = yes } # Probably unnecessary
 			damage_units = {

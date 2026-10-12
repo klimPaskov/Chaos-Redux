@@ -911,6 +911,7 @@ bio_lifecycle_dispatch_seed = {
 }
 
 bio_lifecycle_activate_current_agent = {
+	bio_lifecycle_retire_current_agent_for_nonhuman_state = yes
 	meta_effect = {
 		text = {
 			if = {
@@ -2850,7 +2851,37 @@ bio_lifecycle_cleanup_state_response_if_no_ordinary_episode = {
 	}
 }
 
+# State scope. Retire the current ordinary episode after a nonhuman takeover.
+# Historical use and casualty records remain intact. This grants no recovery credit.
+bio_lifecycle_retire_current_agent_for_nonhuman_state = {
+	if = {
+		limit = { state_uses_normal_civilian_systems = no }
+		meta_effect = {
+			text = {
+				clr_state_flag = bio_agent_[BIO_AGENT]_incubating
+				clr_state_flag = bio_agent_[BIO_AGENT]_active
+				clr_state_flag = bio_agent_[BIO_AGENT]_detected
+				clr_state_flag = bio_agent_[BIO_AGENT]_incubation_scheduled
+				clr_state_flag = bio_agent_[BIO_AGENT]_tick_scheduled
+				clr_state_flag = bio_agent_[BIO_AGENT]_force_detection_on_activation
+				clear_variable = bio_agent_[BIO_AGENT]_incubation_due_day
+				clear_variable = bio_agent_[BIO_AGENT]_tick_due_day
+				set_variable = { bio_agent_[BIO_AGENT]_intensity = constant:bio_lifecycle_math.zero }
+				set_variable = { bio_agent_[BIO_AGENT]_exposed_share = constant:bio_lifecycle_math.zero }
+				set_variable = { bio_agent_[BIO_AGENT]_medical_saturation = constant:bio_lifecycle_math.zero }
+			}
+			BIO_AGENT = "[?bio_active_agent|.0]"
+		}
+		bio_lifecycle_update_current_agent_air_contribution_from_slot = yes
+		bio_countermeasure_cleanup_current_agent_antibiotic_service = yes
+		bio_lifecycle_remove_detected_modifier_for_current_agent = yes
+		bio_lifecycle_refresh_state_modifiers = yes
+		bio_lifecycle_cleanup_state_response_if_no_ordinary_episode = yes
+	}
+}
+
 bio_lifecycle_process_current_agent_tick = {
+	bio_lifecycle_retire_current_agent_for_nonhuman_state = yes
 	bio_countermeasure_cleanup_orphaned_containment_mission = yes
 	set_temp_variable = { bio_agent_base_growth = constant:bio_lifecycle_math.zero }
 	set_temp_variable = { bio_agent_base_decline = constant:bio_lifecycle_math.zero }

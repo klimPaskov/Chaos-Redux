@@ -304,6 +304,9 @@ Callers must initialize both output temporary variables before invoking the help
 
 Defaults: missing contract inputs produce a zero-value request with the unknown Deaths reason, no valid target, and a zero population floor.
 
+A state whose owner or controller is nonhuman also produces the same zero-value transaction through `state_uses_normal_civilian_systems`.
+Both outputs remain zero, the shared casualty ledger receives no record, and public inputs are cleared normally.
+
 Side effects: applies one state-scope population transaction, reconciles observed recruitable-manpower credit, reads back the state population, optionally registers only the observed positive loss through `chaos_meter_register_deaths`, and clears all public inputs before return.
 Deaths registration uses `chaos_deaths_apply_state_pop = 0` and `chaos_deaths_record_state_ledger = 1`, so the state ledger, global ledger, cause history, and normal shared Chaos progression use the measured amount without another population mutation.
 An engine transaction that removes zero population returns zero and creates no death record.

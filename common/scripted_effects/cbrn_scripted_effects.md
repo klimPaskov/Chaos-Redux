@@ -1,5 +1,22 @@
 # CBRN scripted effects reference
 
+## Human-system boundaries
+
+`cbrn_dispatch_apply_unit_damage` checks `uses_normal_civilian_systems` on each unit-owning country for both hostile and friendly chemical casualty limits.
+Its caller-owned `cbrn_action_human_military_death_fraction` output is zero when no eligible human army is present, and otherwise records the strongest applicable hostile or bounded friendly casualty fraction for the unified action record.
+This remains a normalized native damage receipt rather than an estimated headcount.
+`cbrn_dispatch_apply_first_exposure_shock` rejects a nonhuman victim and state medical saturation requires `state_uses_normal_civilian_systems`.
+Chemical evidence, physical contamination, payload debit and history retain their existing contracts.
+
+`bio_lifecycle_retire_current_agent_for_nonhuman_state` is a state-scoped cleanup helper called at the start of `bio_lifecycle_activate_current_agent` and `bio_lifecycle_process_current_agent_tick`.
+Input: the existing `bio_active_agent` enum supplied by the scheduled callback.
+It does nothing for a human state, otherwise clears that agent's live, detected and scheduled flags, deadlines, intensity, exposed share and medical saturation, reconciles its air contribution, and invokes existing modifier and medical-service cleanup.
+It grants no recovery achievement and preserves all prior episode, use and death history.
+There are no new event targets, constants or polling hooks.
+
+Native state modifiers with `attacker_modifier = yes` can still affect a nonhuman attacker fighting into a human-held state because the engine exposes no per-unit owner filter for that field.
+The state-holder guards do not claim to solve that distinct combat-area limitation.
+
 This file documents reusable effects owned by the CBRN, protective-equipment, chemical-delivery, Chaos Warfare doctrine, and CBRN headquarters subsystems. They are intentionally excluded from the shared `chaosx_dynamic_effects` registry because their call sites remain inside the CBRN architecture.
 
 ## Placement rule

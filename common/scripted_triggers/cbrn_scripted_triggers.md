@@ -1,5 +1,11 @@
 # CBRN scripted triggers reference
 
+## Ordinary disease human-state gate
+
+`bio_lifecycle_state_is_eligible_ordinary_pathogen_target` requires `state_uses_normal_civilian_systems` in addition to its original non-zombie, non-wasteland and positive-population conditions.
+The current owner and controller must both exist and be human.
+This shared predicate covers lifecycle seed validation and the existing battlefield, facility-capture, stockpile-accident, sabotage, raid, campaign and doomsday state selectors without copying actor classifications into them.
+
 This file documents reusable triggers owned by the CBRN, protective-equipment, chemical-delivery, Chaos Warfare doctrine, regimental-support, and CBRN headquarters subsystems. They are intentionally excluded from the shared `chaosx_dynamic_triggers` registry because their call sites remain inside the CBRN architecture.
 
 ## Placement rule

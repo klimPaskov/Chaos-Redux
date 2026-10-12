@@ -101,6 +101,7 @@ cbrn_dispatch_apply_first_exposure_shock = {
 		limit = {
 			has_event_target = cbrn_action_victim_country
 			event_target:cbrn_action_victim_country = {
+				uses_normal_civilian_systems = yes
 				NOT = { has_country_flag = cbrn_chemical_exposure_awareness }
 			}
 		}
@@ -150,6 +151,17 @@ cbrn_dispatch_apply_first_exposure_shock = {
 }
 
 cbrn_dispatch_apply_unit_damage = {
+	set_temp_variable = { cbrn_action_human_military_death_fraction = constant:cbrn_math.zero }
+	if = {
+		limit = {
+			event_target:cbrn_action_target_state = {
+				any_state_division = {
+					OWNER = { uses_normal_civilian_systems = yes has_war_with = event_target:cbrn_action_actor }
+				}
+			}
+		}
+		set_temp_variable = { cbrn_action_human_military_death_fraction = cbrn_action_military_death_fraction }
+	}
 	if = {
 		limit = {
 			OR = {
@@ -160,7 +172,7 @@ cbrn_dispatch_apply_unit_damage = {
 		event_target:cbrn_action_target_state = {
 			damage_units = {
 				state = THIS
-				limit = { has_war_with = event_target:cbrn_action_actor }
+				limit = { uses_normal_civilian_systems = yes has_war_with = event_target:cbrn_action_actor }
 				org_damage = cbrn_action_disruption
 				str_damage = cbrn_action_military_death_fraction
 				ratio = yes
@@ -178,6 +190,20 @@ cbrn_dispatch_apply_unit_damage = {
 	multiply_temp_variable = { cbrn_friendly_strength_damage = cbrn_action_friendly_exposure_risk }
 	multiply_temp_variable = { cbrn_friendly_strength_damage = constant:cbrn_chemical_dispatch.friendly_strength_damage_mult }
 	clamp_temp_variable = { var = cbrn_friendly_strength_damage min = constant:cbrn_math.zero max = constant:cbrn_chemical_dispatch.friendly_damage_max }
+	if = {
+		limit = {
+			check_variable = { cbrn_friendly_strength_damage > cbrn_action_human_military_death_fraction }
+			event_target:cbrn_action_target_state = {
+				any_state_division = {
+					OWNER = {
+						uses_normal_civilian_systems = yes
+						OR = { tag = event_target:cbrn_action_actor is_in_faction_with = event_target:cbrn_action_actor }
+					}
+				}
+			}
+		}
+		set_temp_variable = { cbrn_action_human_military_death_fraction = cbrn_friendly_strength_damage }
+	}
 
 	if = {
 		limit = {
@@ -190,6 +216,7 @@ cbrn_dispatch_apply_unit_damage = {
 			damage_units = {
 				state = THIS
 				limit = {
+					uses_normal_civilian_systems = yes
 					OR = {
 						tag = event_target:cbrn_action_actor
 						is_in_faction_with = event_target:cbrn_action_actor
@@ -307,7 +334,7 @@ cbrn_dispatch_apply_state_consequences = {
 		}
 
 		if = {
-			limit = { check_variable = { cbrn_action_medical_saturation_points > constant:cbrn_math.zero } }
+			limit = { state_uses_normal_civilian_systems = yes check_variable = { cbrn_action_medical_saturation_points > constant:cbrn_math.zero } }
 			if = {
 				limit = { NOT = { has_variable = cbrn_medical_saturation } }
 				set_variable = { cbrn_medical_saturation = constant:cbrn_math.zero }
@@ -563,7 +590,7 @@ cbrn_dispatch_record_actor_history = {
 	# The native unit-damage effect exposes this resolved casualty fraction,
 	# rather than a direct killed-person count. The unified ledger records that
 	# exact receipt without inventing a headcount.
-	set_temp_variable = { cbrn_unified_record_military_deaths = cbrn_action_military_death_fraction }
+	set_temp_variable = { cbrn_unified_record_military_deaths = cbrn_action_human_military_death_fraction }
 	set_temp_variable = { cbrn_unified_record_contamination_change = cbrn_action_contamination_points }
 	set_temp_variable = { cbrn_unified_record_outbreak_change = constant:cbrn_math.zero }
 	set_temp_variable = { cbrn_unified_record_evidence_quality = cbrn_action_evidence_points }
@@ -626,6 +653,7 @@ cbrn_dispatch_chemical_action_record = {
 		set_temp_variable = { cbrn_action_condemnation_context = constant:cbrn_math.zero }
 		set_temp_variable = { cbrn_action_evidence_floor = constant:cbrn_math.zero }
 		set_temp_variable = { cbrn_action_civilian_deaths = constant:cbrn_math.zero }
+		set_temp_variable = { cbrn_action_human_military_death_fraction = constant:cbrn_math.zero }
 		cbrn_dispatch_set_source_and_context = yes
 		cbrn_dispatch_apply_first_exposure_shock = yes
 		cbrn_dispatch_apply_unit_damage = yes
