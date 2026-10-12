@@ -34,7 +34,7 @@ A10. **Q** Cluster entries in the event log: restore the earlier entry layout an
 A11. Scientists: restore the balance that was changed (everyone became level 3 with no traits). Find the hidden biowarfare and chemical scientists and make them available again. Completed: `d2f7111d16e84b6b9a8fadf4b9967af12d165d15`.
 A12. Biological warfare deployment and containment: restore the simpler year-old flow (deploy field hospitals and similar direct actions; easy and fast policy change; a raid must be doable without friction). The Disease Containment Board in its current form is rejected. Compare with the old implementation in git history before deciding what to keep.
 
-A13. Chemical release abilities: re-add the army-leader chemical release abilities (chlorine, phosgene and the others in `common/abilities/chemical_abilities.txt`) as working abilities, restored from the last version in git history where they were active, with their traits, icons, localisation and AI. They are currently disabled with `allowed = { always = no }`. Raids stay as a second delivery route.
+A13. Chemical release abilities: re-add the army-leader chemical release abilities (chlorine, phosgene and the others in `common/abilities/chemical_abilities.txt`) as working abilities, restored from the last version in git history where they were active, with their traits, icons, localisation and AI. They are currently disabled with `allowed = { always = no }`. Raids stay as a second delivery route. Completed: `d640c653cb864864df84a8432acf8ab8d9f092fa`.
 
 ## B. UI fixes
 
