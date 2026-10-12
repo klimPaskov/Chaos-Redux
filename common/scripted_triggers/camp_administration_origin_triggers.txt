@@ -89,7 +89,7 @@ camp_origin_host_rows_valid = {
 		limit = {
 			OR = {
 				has_state_flag = camp_admin_initialized
-				has_state_flag = camp_admin_rows_initialized
+				hidden_trigger = { has_state_flag = camp_admin_rows_initialized }
 				has_variable = camp_admin_responsible_country
 				check_variable = { camp_admin_detainees_k > constant:camp_admin_value.zero }
 			}
@@ -98,7 +98,7 @@ camp_origin_host_rows_valid = {
 		add_to_temp_variable = { camp_origin_expected_custody_next_id = constant:camp_admin_value.one }
 		if = {
 			limit = {
-				has_state_flag = camp_admin_rows_initialized
+				hidden_trigger = { has_state_flag = camp_admin_rows_initialized }
 				has_variable = camp_admin_responsible_country
 				var:camp_admin_responsible_country = { exists = yes }
 				check_variable = { camp_admin_row_count = camp_admin_row_ids^num }
@@ -180,7 +180,7 @@ camp_origin_host_rows_valid = {
 	}
 	if = {
 		limit = {
-			OR = { has_state_flag = camp_occ_registered has_variable = camp_occ_responsible_country check_variable = { camp_occ_remaining_k > constant:camp_admin_value.zero } check_variable = { camp_origin_scan_occupation_owner > constant:camp_admin_value.zero } }
+			OR = { hidden_trigger = { has_state_flag = camp_occ_registered } has_variable = camp_occ_responsible_country check_variable = { camp_occ_remaining_k > constant:camp_admin_value.zero } check_variable = { camp_origin_scan_occupation_owner > constant:camp_admin_value.zero } }
 		}
 		if = {
 			limit = { check_variable = { camp_origin_scan_occupation_owner > constant:camp_admin_value.zero } }
@@ -190,7 +190,7 @@ camp_origin_host_rows_valid = {
 				if = {
 					limit = {
 						exists = yes
-						has_country_flag = camp_occ_rows_initialized
+						hidden_trigger = { has_country_flag = camp_occ_rows_initialized }
 						check_variable = { camp_occ_row_count = camp_occ_row_ids^num }
 						check_variable = { camp_occ_next_row_id = camp_origin_expected_occupation_next_id }
 						check_variable = { var = camp_occ_row_ids^num value = constant:camp_origin_value.maximum_row_scan compare = less_than_or_equals }
@@ -326,12 +326,12 @@ camp_origin_occupation_host_ready_for_reform = {
 # STATE. Pure fresh action preview. Even one unique row with a pending outside
 # signal waits for the observer and the caller's conservative retirement path.
 camp_origin_host_provenance_ready = {
-	has_state_flag = camp_origin_observation_initialized
-	NOT = { has_state_flag = camp_origin_ambiguous }
-	NOT = { has_state_flag = camp_origin_baseline_unverified }
-	NOT = { has_state_flag = camp_origin_single_origin_reconciliation_pending }
-	NOT = { has_state_flag = camp_occ_transfer_rollback_failed }
-	NOT = { has_state_flag = camp_occ_custody_rollback_failed }
+	hidden_trigger = { has_state_flag = camp_origin_observation_initialized }
+	NOT = { hidden_trigger = { has_state_flag = camp_origin_ambiguous } }
+	NOT = { hidden_trigger = { has_state_flag = camp_origin_baseline_unverified } }
+	NOT = { hidden_trigger = { has_state_flag = camp_origin_single_origin_reconciliation_pending } }
+	NOT = { hidden_trigger = { has_state_flag = camp_occ_transfer_rollback_failed } }
+	NOT = { hidden_trigger = { has_state_flag = camp_occ_custody_rollback_failed } }
 	camp_origin_host_rows_valid = yes
 	check_variable = { var = state_population_k value = camp_origin_observed_population_k compare = greater_than_or_equals }
 	check_variable = { chaos_state_civilian_deaths_total = camp_origin_observed_state_deaths_people }
@@ -343,9 +343,9 @@ camp_origin_host_provenance_ready = {
 # records instead (no survivor claim, population change or death attribution).
 camp_origin_host_records_incomplete = {
 	OR = {
-		has_state_flag = camp_origin_ambiguous
-		has_state_flag = camp_origin_baseline_unverified
-		has_state_flag = camp_origin_transaction_unresolved
-		has_state_flag = camp_origin_counter_regressed
+		hidden_trigger = { has_state_flag = camp_origin_ambiguous }
+		hidden_trigger = { has_state_flag = camp_origin_baseline_unverified }
+		hidden_trigger = { has_state_flag = camp_origin_transaction_unresolved }
+		hidden_trigger = { has_state_flag = camp_origin_counter_regressed }
 	}
 }

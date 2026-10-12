@@ -41,7 +41,7 @@ africa_diaspora_owner_request_surface_is_valid = {
 	OR = {
 		AND = {
 			check_variable = { africa_requested_action_id = constant:africa_action.charter_passage_programme }
-			has_country_flag = africa_voluntary_return_registry_open
+			hidden_trigger = { has_country_flag = africa_voluntary_return_registry_open }
 			has_event_target = africa_action_target
 			event_target:africa_action_target = { africa_action_target_is_usable = yes }
 			check_variable = { africa_selected_diaspora_origin_group > constant:africa_achievement_origin_group.none }
@@ -49,7 +49,7 @@ africa_diaspora_owner_request_surface_is_valid = {
 		}
 		AND = {
 			check_variable = { africa_requested_action_id = constant:africa_action.build_returnee_housing }
-			has_country_flag = africa_voluntary_return_registry_open
+			hidden_trigger = { has_country_flag = africa_voluntary_return_registry_open }
 			has_event_target = africa_action_target
 			event_target:africa_action_target = {
 				africa_action_target_is_usable = yes
@@ -64,7 +64,7 @@ africa_diaspora_owner_request_surface_is_valid = {
 				check_variable = { africa_requested_action_id = constant:africa_action.citizenship_and_representation_convention }
 				check_variable = { africa_requested_action_id = constant:africa_action.diaspora_emergency_evacuation }
 			}
-			has_country_flag = africa_voluntary_return_registry_open
+			hidden_trigger = { has_country_flag = africa_voluntary_return_registry_open }
 			has_event_target = africa_action_target
 			event_target:africa_action_target = { africa_action_target_is_usable = yes }
 		}
@@ -80,13 +80,13 @@ africa_diaspora_request_is_emergency = {
 # registry programmes; refusal and withdrawal flags are evidence, not implicit
 # disqualifiers, and are cleared only by a later owner acceptance.
 africa_diaspora_target_consent_is_current = {
-	has_country_flag = africa_diaspora_return_consent
+	hidden_trigger = { has_country_flag = africa_diaspora_return_consent }
 }
 
 # COUNTRY scope on a target. Emergency action requires a fresh active emergency
 # flag, even when the standing registry consent remains valid.
 africa_diaspora_target_emergency_is_active = {
-	has_country_flag = africa_diaspora_emergency_active
+	hidden_trigger = { has_country_flag = africa_diaspora_emergency_active }
 }
 
 # COUNTRY scope on a prospective housing target. Returnee housing is opened
@@ -94,11 +94,11 @@ africa_diaspora_target_emergency_is_active = {
 # will have a livelihood beyond the construction project itself.
 africa_diaspora_target_has_jobs_or_education = {
 	OR = {
-		has_country_flag = africa_local_processing_chain_active
-		has_country_flag = africa_development_fund_member
-		has_country_flag = africa_continental_industrial_plan_member
-		has_country_flag = africa_diaspora_technical_mission_completed
-		has_country_flag = africa_diaspora_technical_mission_partial
+		hidden_trigger = { has_country_flag = africa_local_processing_chain_active }
+		hidden_trigger = { has_country_flag = africa_development_fund_member }
+		hidden_trigger = { has_country_flag = africa_continental_industrial_plan_member }
+		hidden_trigger = { has_country_flag = africa_diaspora_technical_mission_completed }
+		hidden_trigger = { has_country_flag = africa_diaspora_technical_mission_partial }
 	}
 }
 
@@ -154,5 +154,5 @@ africa_diaspora_active_action_is_target_owned = {
 
 africa_diaspora_target_can_withdraw = {
 	africa_diaspora_active_action_is_target_owned = yes
-	NOT = { has_country_flag = africa_diaspora_withdrawal_review_resolved }
+	NOT = { hidden_trigger = { has_country_flag = africa_diaspora_withdrawal_review_resolved } }
 }

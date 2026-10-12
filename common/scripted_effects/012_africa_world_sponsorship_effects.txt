@@ -107,7 +107,7 @@ africa_world_sponsorship_accept_offer = {
 		clr_country_flag = africa_world_sponsorship_counterterms_pending
 		set_country_flag = africa_world_sponsorship_accepted
 		if = {
-			limit = { has_country_flag = africa_world_sponsorship_counterterms_accepted }
+			limit = { hidden_trigger = { has_country_flag = africa_world_sponsorship_counterterms_accepted } }
 			set_country_flag = africa_world_sponsorship_safeguards_active
 		}
 		set_temp_variable = { africa_world_install_status = constant:africa_world_package_status.sponsored }
@@ -212,7 +212,7 @@ africa_world_sponsorship_close_offer = {
 		limit = {
 			OR = {
 				has_country_flag = africa_world_sponsorship_offer_pending
-				has_country_flag = africa_world_sponsorship_counterterms_pending
+				hidden_trigger = { has_country_flag = africa_world_sponsorship_counterterms_pending }
 			}
 		}
 		clr_country_flag = africa_world_sponsorship_offer_pending
@@ -303,7 +303,7 @@ africa_world_sponsorship_fulfil_current_mode = {
 				set_country_flag = africa_world_sponsorship_military_fulfilled
 				set_country_flag = africa_world_military_deterrence_active
 				if = {
-					limit = { has_country_flag = africa_world_sponsorship_guarantee_active }
+					limit = { hidden_trigger = { has_country_flag = africa_world_sponsorship_guarantee_active } }
 					event_target:africa_host = {
 						diplomatic_relation = { country = PREV relation = guarantee active = no }
 					}
@@ -374,7 +374,7 @@ africa_world_sponsorship_default_current_mode = {
 				set_country_flag = africa_world_sponsorship_military_defaulted
 				set_country_flag = africa_world_sponsorship_union_blocked
 				if = {
-					limit = { has_country_flag = africa_world_sponsorship_guarantee_active }
+					limit = { hidden_trigger = { has_country_flag = africa_world_sponsorship_guarantee_active } }
 					event_target:africa_host = {
 						diplomatic_relation = { country = PREV relation = guarantee active = no }
 					}
@@ -470,7 +470,7 @@ africa_world_sponsorship_cleanup_active_state = {
 		clr_country_flag = africa_world_sponsorship_ideological_duty_active
 		clr_country_flag = africa_world_sponsorship_military_defence_call_pending
 		if = {
-			limit = { has_country_flag = africa_world_sponsorship_guarantee_active }
+			limit = { hidden_trigger = { has_country_flag = africa_world_sponsorship_guarantee_active } }
 			event_target:africa_host = {
 				diplomatic_relation = { country = PREV relation = guarantee active = no }
 			}

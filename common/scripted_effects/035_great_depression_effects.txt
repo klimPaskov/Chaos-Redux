@@ -7653,7 +7653,7 @@ great_depression_activate_social_collapse = {
 
 great_depression_resolve_social_collapse = {
 	if = {
-		limit = { has_country_flag = great_depression_social_incident_open }
+		limit = { hidden_trigger = { has_country_flag = great_depression_social_incident_open } }
 		clr_country_flag = great_depression_social_incident_open
 		clr_country_flag = great_depression_organized_strike
 		clr_country_flag = great_depression_social_sector_conflict
@@ -7822,13 +7822,13 @@ great_depression_register_factory_occupation = {
 great_depression_apply_social_outcome_consequence = {
 	if = {
 		limit = {
-			NOT = { has_country_flag = great_depression_social_outcome_chaos_receipt }
+			NOT = { hidden_trigger = { has_country_flag = great_depression_social_outcome_chaos_receipt } }
 			OR = {
-				has_country_flag = great_depression_social_coup_successful
-				has_country_flag = great_depression_social_regional_autonomy_rejected
-				has_country_flag = great_depression_social_civil_conflict_started
-				has_country_flag = great_depression_social_nonwar_breakdown
-				has_country_flag = great_depression_social_response_failed
+				hidden_trigger = { has_country_flag = great_depression_social_coup_successful }
+				hidden_trigger = { has_country_flag = great_depression_social_regional_autonomy_rejected }
+				hidden_trigger = { has_country_flag = great_depression_social_civil_conflict_started }
+				hidden_trigger = { has_country_flag = great_depression_social_nonwar_breakdown }
+				hidden_trigger = { has_country_flag = great_depression_social_response_failed }
 			}
 		}
 		great_depression_allocate_receipt = yes
@@ -7842,7 +7842,7 @@ great_depression_apply_social_outcome_consequence = {
 
 great_depression_apply_civil_conflict_consequence = {
 	if = {
-		limit = { NOT = { has_country_flag = great_depression_civil_conflict_chaos_receipt } }
+		limit = { NOT = { hidden_trigger = { has_country_flag = great_depression_civil_conflict_chaos_receipt } } }
 		great_depression_allocate_receipt = yes
 		set_variable = { great_depression_civil_conflict_receipt_id = great_depression_last_receipt_id }
 		set_country_flag = great_depression_civil_conflict_chaos_receipt
@@ -8064,8 +8064,8 @@ great_depression_queue_social_extreme_outcome = {
 great_depression_execute_social_coup = {
 	if = {
 		limit = {
-			has_country_flag = great_depression_coup_crisis
-			has_country_flag = great_depression_social_coup_attempted
+			hidden_trigger = { has_country_flag = great_depression_coup_crisis }
+			hidden_trigger = { has_country_flag = great_depression_social_coup_attempted }
 			NOT = { has_civil_war = yes }
 		}
 		if = { limit = { has_government = democratic } set_politics = { ruling_party = democratic elections_allowed = no } }
@@ -8088,7 +8088,7 @@ great_depression_execute_social_coup = {
 
 great_depression_stand_down_social_coup = {
 	if = {
-		limit = { has_country_flag = great_depression_coup_crisis }
+		limit = { hidden_trigger = { has_country_flag = great_depression_coup_crisis } }
 		clr_country_flag = great_depression_coup_crisis
 		set_country_flag = great_depression_social_coup_stood_down
 		add_stability = constant:great_depression_action.social_resolution_stability_relief
@@ -8099,7 +8099,7 @@ great_depression_stand_down_social_coup = {
 
 great_depression_recognize_regional_autonomy = {
 	if = {
-		limit = { has_country_flag = great_depression_separatist_crisis }
+		limit = { hidden_trigger = { has_country_flag = great_depression_separatist_crisis } }
 		clr_country_flag = great_depression_separatist_crisis
 		set_country_flag = great_depression_social_regional_autonomy_recognized
 		add_stability = constant:great_depression_action.social_resolution_stability_relief
@@ -8110,7 +8110,7 @@ great_depression_recognize_regional_autonomy = {
 
 great_depression_integrate_regional_autonomy = {
 	if = {
-		limit = { has_country_flag = great_depression_separatist_crisis }
+		limit = { hidden_trigger = { has_country_flag = great_depression_separatist_crisis } }
 		clr_country_flag = great_depression_separatist_crisis
 		set_country_flag = great_depression_social_regional_autonomy_rejected
 		add_stability = constant:great_depression_action.social_regional_stability_delta
@@ -8255,7 +8255,7 @@ great_depression_apply_political_aftermath_pressure = {
 
 great_depression_apply_national_breakdown_consequence = {
 	if = {
-		limit = { NOT = { has_country_flag = great_depression_national_breakdown_chaos_receipt } }
+		limit = { NOT = { hidden_trigger = { has_country_flag = great_depression_national_breakdown_chaos_receipt } } }
 		great_depression_allocate_receipt = yes
 		set_variable = { great_depression_national_breakdown_receipt_id = great_depression_last_receipt_id }
 		set_country_flag = great_depression_national_breakdown_chaos_receipt
@@ -8271,8 +8271,8 @@ great_depression_apply_national_breakdown_consequence = {
 great_depression_resolve_national_breakdown_emergency_settlement = {
 	if = {
 		limit = {
-			has_country_flag = great_depression_national_breakdown_resolution_queued
-			NOT = { has_country_flag = great_depression_national_breakdown_resolved }
+			hidden_trigger = { has_country_flag = great_depression_national_breakdown_resolution_queued }
+			NOT = { hidden_trigger = { has_country_flag = great_depression_national_breakdown_resolved } }
 		}
 		clr_country_flag = great_depression_national_breakdown_resolution_queued
 		clr_country_flag = great_depression_national_breakdown_chain_open
@@ -8289,8 +8289,8 @@ great_depression_resolve_national_breakdown_emergency_settlement = {
 great_depression_resolve_national_breakdown_cabinet_replacement = {
 	if = {
 		limit = {
-			has_country_flag = great_depression_national_breakdown_resolution_queued
-			NOT = { has_country_flag = great_depression_national_breakdown_resolved }
+			hidden_trigger = { has_country_flag = great_depression_national_breakdown_resolution_queued }
+			NOT = { hidden_trigger = { has_country_flag = great_depression_national_breakdown_resolved } }
 		}
 		clr_country_flag = great_depression_national_breakdown_resolution_queued
 		clr_country_flag = great_depression_national_breakdown_chain_open
@@ -8308,8 +8308,8 @@ great_depression_resolve_national_breakdown_cabinet_replacement = {
 great_depression_resolve_national_breakdown_civil_conflict = {
 	if = {
 		limit = {
-			has_country_flag = great_depression_national_breakdown_resolution_queued
-			NOT = { has_country_flag = great_depression_national_breakdown_resolved }
+			hidden_trigger = { has_country_flag = great_depression_national_breakdown_resolution_queued }
+			NOT = { hidden_trigger = { has_country_flag = great_depression_national_breakdown_resolved } }
 			great_depression_baseline_breakdown_civil_conflict_gate = yes
 		}
 		clr_country_flag = great_depression_national_breakdown_resolution_queued
@@ -8319,7 +8319,7 @@ great_depression_resolve_national_breakdown_civil_conflict = {
 		set_variable = { great_depression_national_breakdown_resolution_day = global.num_days }
 		great_depression_start_shared_civil_conflict = yes
 		if = {
-			limit = { has_country_flag = random_civil_war_active }
+			limit = { hidden_trigger = { has_country_flag = random_civil_war_active } }
 			set_country_flag = great_depression_national_breakdown_civil_conflict_started
 			great_depression_apply_civil_conflict_consequence = yes
 		}

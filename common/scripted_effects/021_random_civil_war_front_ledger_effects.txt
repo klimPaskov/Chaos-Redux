@@ -9,10 +9,10 @@ event021_parent_release_completed_front_plan = {
 	set_temp_variable = { event021_completed_plan_release_ready = constant:random_civil_war_value.zero }
 	if = {
 		limit = {
-			has_global_flag = random_civil_war_front_plan_ready
-			has_country_flag = random_civil_war_active
-			has_country_flag = random_civil_war_plan_committed
-			has_country_flag = random_civil_war_front_registered
+			hidden_trigger = { has_global_flag = random_civil_war_front_plan_ready }
+			hidden_trigger = { has_country_flag = random_civil_war_active }
+			hidden_trigger = { has_country_flag = random_civil_war_plan_committed }
+			hidden_trigger = { has_country_flag = random_civil_war_front_registered }
 			has_variable = random_civil_war_front_id
 			has_variable = random_civil_war_crisis_id
 			has_variable = random_civil_war_opening_evolution_stage
@@ -23,16 +23,16 @@ event021_parent_release_completed_front_plan = {
 			check_variable = { var = global.random_civil_war_planned_front_ids^0 value = random_civil_war_front_id compare = equals }
 			check_variable = { var = global.random_civil_war_planned_front_status_entries^0 value = constant:random_civil_war_planned_front_status.consumed compare = equals }
 			check_variable = { var = global.random_civil_war_planned_front_status_entries^num value = global.random_civil_war_planned_front_count compare = equals }
-			NOT = { has_country_flag = random_civil_war_opening_transfer_pending }
-			NOT = { has_global_flag = random_civil_war_plan_active }
-			NOT = { has_global_flag = random_civil_war_planning_lock }
-			NOT = { has_global_flag = random_civil_war_secondary_front_pending }
-			NOT = { has_global_flag = random_civil_war_event6_secondary_front_pending }
-			NOT = { has_global_flag = random_civil_war_dynamic_front_activation_active }
+			NOT = { hidden_trigger = { has_country_flag = random_civil_war_opening_transfer_pending } }
+			NOT = { hidden_trigger = { has_global_flag = random_civil_war_plan_active } }
+			NOT = { hidden_trigger = { has_global_flag = random_civil_war_planning_lock } }
+			NOT = { hidden_trigger = { has_global_flag = random_civil_war_secondary_front_pending } }
+			NOT = { hidden_trigger = { has_global_flag = random_civil_war_event6_secondary_front_pending } }
+			NOT = { hidden_trigger = { has_global_flag = random_civil_war_dynamic_front_activation_active } }
 		}
 		set_temp_variable = { event021_completed_plan_release_ready = constant:random_civil_war_value.one }
 		if = {
-			limit = { NOT = { has_country_flag = random_civil_war_same_tag_route_active } }
+			limit = { NOT = { hidden_trigger = { has_country_flag = random_civil_war_same_tag_route_active } } }
 			if = {
 				limit = {
 					NOT = {
@@ -40,8 +40,8 @@ event021_parent_release_completed_front_plan = {
 							has_variable = random_civil_war_opposition_actor_scope
 							var:random_civil_war_opposition_actor_scope = {
 								exists = yes
-								has_country_flag = random_civil_war_front_registered
-								has_country_flag = random_civil_war_opposition_actor
+								hidden_trigger = { has_country_flag = random_civil_war_front_registered }
+								hidden_trigger = { has_country_flag = random_civil_war_opposition_actor }
 								has_variable = random_civil_war_front_id
 								has_variable = random_civil_war_crisis_id
 								has_variable = random_civil_war_opening_evolution_stage
@@ -86,7 +86,7 @@ event021_parent_validate_secondary_transfer_receipt = {
 	set_temp_variable = { event021_secondary_marker_count = constant:random_civil_war_value.zero }
 	save_event_target_as = event021_secondary_receipt_source
 	every_controlled_state = {
-		limit = { has_state_flag = random_civil_war_secondary_transfer_state }
+		limit = { hidden_trigger = { has_state_flag = random_civil_war_secondary_transfer_state } }
 		add_to_temp_variable = { event021_secondary_marker_count = constant:random_civil_war_value.one }
 	}
 	set_temp_variable = { event021_secondary_receipt_row_break = constant:random_civil_war_value.zero }
@@ -94,14 +94,14 @@ event021_parent_validate_secondary_transfer_receipt = {
 	# An Evolution I review reads the reviewing government's own receipt rows.
 	if = {
 		limit = {
-			has_global_flag = random_civil_war_active_front_commit_in_progress
+			hidden_trigger = { has_global_flag = random_civil_war_active_front_commit_in_progress }
 			has_event_target = random_civil_war_active_front_commit_owner
 			has_variable = global.random_civil_war_pending_secondary_front_id
 		}
 		event021_parent_validate_active_secondary_transfer_receipt = yes
 	}
 	else_if = {
-		limit = { has_global_flag = random_civil_war_front_plan_ready has_variable = global.random_civil_war_pending_secondary_front_id has_variable = random_civil_war_front_id }
+		limit = { hidden_trigger = { has_global_flag = random_civil_war_front_plan_ready } has_variable = global.random_civil_war_pending_secondary_front_id has_variable = random_civil_war_front_id }
 		for_each_loop = {
 			array = global.random_civil_war_planned_front_ids
 			value = event021_secondary_receipt_id
@@ -129,7 +129,7 @@ event021_parent_validate_secondary_transfer_receipt = {
 						}
 						var:event021_secondary_receipt_state = {
 							if = {
-								limit = { is_owned_by = event_target:event021_secondary_receipt_source is_controlled_by = event_target:event021_secondary_receipt_source has_state_flag = random_civil_war_secondary_transfer_state }
+								limit = { is_owned_by = event_target:event021_secondary_receipt_source is_controlled_by = event_target:event021_secondary_receipt_source hidden_trigger = { has_state_flag = random_civil_war_secondary_transfer_state } }
 								add_to_temp_variable = { event021_secondary_receipt_verified_count = constant:random_civil_war_value.one }
 							}
 						}
@@ -162,9 +162,9 @@ event021_parent_validate_secondary_transfer_receipt = {
 event021_parent_refresh_retained_front_receipt = {
 	if = {
 		limit = {
-			has_global_flag = random_civil_war_front_plan_ready
-			has_country_flag = random_civil_war_front_registered
-			has_country_flag = random_civil_war_active
+			hidden_trigger = { has_global_flag = random_civil_war_front_plan_ready }
+			hidden_trigger = { has_country_flag = random_civil_war_front_registered }
+			hidden_trigger = { has_country_flag = random_civil_war_active }
 			has_variable = random_civil_war_crisis_id
 			has_variable = global.random_civil_war_pending_crisis_id
 			check_variable = { var = random_civil_war_crisis_id value = global.random_civil_war_pending_crisis_id compare = equals }

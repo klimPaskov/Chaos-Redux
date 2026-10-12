@@ -105,8 +105,8 @@ count_white_peace_minor_candidates = {
 			OR = {
 				is_special_chaos_country = yes
 				is_actual_nonhuman_country = yes
-				has_country_flag = white_peace_protected_country
-				has_country_flag = white_peace_protected_war_actor
+				hidden_trigger = { has_country_flag = white_peace_protected_country }
+				hidden_trigger = { has_country_flag = white_peace_protected_war_actor }
 			}
 		}
 		add_to_variable = { global.white_peace_protected_war_actor_count = 1 }
@@ -116,8 +116,8 @@ count_white_peace_minor_candidates = {
 		limit = {
 			has_war = yes
 			OR = {
-				has_country_flag = recent_white_peace_country
-				has_country_flag = recent_major_white_peace_country
+				hidden_trigger = { has_country_flag = recent_white_peace_country }
+				hidden_trigger = { has_country_flag = recent_major_white_peace_country }
 			}
 		}
 		add_to_variable = { global.white_peace_recent_memory_actor_count = 1 }
@@ -145,8 +145,8 @@ count_white_peace_minor_candidates = {
 			has_war = yes
 			NOT = { is_special_chaos_country = yes }
 			NOT = { is_actual_nonhuman_country = yes }
-			NOT = { has_country_flag = white_peace_protected_country }
-			NOT = { has_country_flag = white_peace_protected_war_actor }
+			NOT = { hidden_trigger = { has_country_flag = white_peace_protected_country } }
+			NOT = { hidden_trigger = { has_country_flag = white_peace_protected_war_actor } }
 		}
 		add_to_variable = { global.white_peace_raw_active_war_country_count = 1 }
 	}
@@ -211,28 +211,28 @@ determine_white_peace_stage = {
 
 	if = {
 		limit = {
-			has_global_flag = white_peace_multi_branch_enabled
-			has_global_flag = white_peace_stage_1_unlocked
+			hidden_trigger = { has_global_flag = white_peace_multi_branch_enabled }
+			hidden_trigger = { has_global_flag = white_peace_stage_1_unlocked }
 		}
 		set_temp_variable = { white_peace_stage = constant:white_peace_event_log.stage_repeated_minor }
 	}
 	if = {
 		limit = {
-			has_global_flag = white_peace_major_branch_enabled
-			has_global_flag = white_peace_stage_2_unlocked
+			hidden_trigger = { has_global_flag = white_peace_major_branch_enabled }
+			hidden_trigger = { has_global_flag = white_peace_stage_2_unlocked }
 		}
 		set_temp_variable = { white_peace_stage = constant:white_peace_event_log.stage_major_country }
 	}
 	if = {
 		limit = {
-			has_global_flag = white_peace_broad_branch_enabled
-			has_global_flag = white_peace_stage_3_unlocked
+			hidden_trigger = { has_global_flag = white_peace_broad_branch_enabled }
+			hidden_trigger = { has_global_flag = white_peace_stage_3_unlocked }
 		}
 		set_temp_variable = { white_peace_stage = constant:white_peace_event_log.stage_broad_settlement }
 	}
 	if = {
 		limit = {
-			has_global_flag = white_peace_multi_branch_enabled
+			hidden_trigger = { has_global_flag = white_peace_multi_branch_enabled }
 			check_variable = { white_peace_stage < constant:white_peace_event_log.stage_repeated_minor }
 			check_variable = {
 				var = global.white_peace_active_war_count
@@ -249,7 +249,7 @@ determine_white_peace_stage = {
 	}
 	if = {
 		limit = {
-			has_global_flag = white_peace_major_branch_enabled
+			hidden_trigger = { has_global_flag = white_peace_major_branch_enabled }
 			check_variable = { white_peace_stage < constant:white_peace_event_log.stage_major_country }
 			check_variable = {
 				var = global.white_peace_active_war_count
@@ -266,7 +266,7 @@ determine_white_peace_stage = {
 	}
 	if = {
 		limit = {
-			has_global_flag = white_peace_broad_branch_enabled
+			hidden_trigger = { has_global_flag = white_peace_broad_branch_enabled }
 			check_variable = { white_peace_stage < constant:white_peace_event_log.stage_broad_settlement }
 			check_variable = {
 				var = global.white_peace_active_war_count
@@ -468,7 +468,7 @@ calculate_white_peace_dynamic_cap = {
 		}
 
 		if = {
-			limit = { has_global_flag = recent_broad_white_peace }
+			limit = { hidden_trigger = { has_global_flag = recent_broad_white_peace } }
 			multiply_temp_variable = { white_peace_effective_cap = constant:white_peace_weight.recent_global_penalty }
 		}
 		round_temp_variable = white_peace_effective_cap

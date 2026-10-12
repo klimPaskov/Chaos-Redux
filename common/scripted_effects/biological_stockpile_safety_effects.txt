@@ -117,7 +117,7 @@ bio_stockpile_safety_capture_handling_state = {
 		if = {
 			limit = {
 				var:bio_stockpile_safety_arsenal_state = {
-					has_state_flag = bio_stockpile_safety_recent_handling_active
+					hidden_trigger = { has_state_flag = bio_stockpile_safety_recent_handling_active }
 				}
 			}
 			set_variable = { bio_stockpile_safety_recent_handling_active_value = constant:bio_lifecycle_math.one }
@@ -193,7 +193,7 @@ bio_stockpile_safety_refresh_risk_band = {
 		}
 		if = {
 			limit = {
-				has_country_flag = bio_stockpile_safety_accident_history
+				hidden_trigger = { has_country_flag = bio_stockpile_safety_accident_history }
 				check_variable = {
 					var = bio_stockpile_safety_effective_safety
 					value = constant:cbrn_achievement_threshold.maximum_biosecurity
@@ -760,7 +760,7 @@ bio_stockpile_safety_start_monitor = {
 	if = {
 		limit = {
 			bio_stockpile_safety_arsenal_pointer_is_valid = yes
-			NOT = { has_country_flag = bio_stockpile_safety_monitor_scheduled }
+			NOT = { hidden_trigger = { has_country_flag = bio_stockpile_safety_monitor_scheduled } }
 		}
 		set_country_flag = bio_stockpile_safety_monitor_scheduled
 		set_variable = { bio_stockpile_safety_monitor_due_day = global.num_days }

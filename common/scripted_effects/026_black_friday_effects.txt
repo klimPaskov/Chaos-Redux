@@ -28,7 +28,7 @@ black_friday_update_calendar_flag = {
 
 black_friday_initialize_runtime = {
 	if = {
-		limit = { NOT = { has_global_flag = black_friday_runtime_initialized } }
+		limit = { NOT = { hidden_trigger = { has_global_flag = black_friday_runtime_initialized } } }
 		set_variable = { global.black_friday_state = constant:black_friday_event.state_unavailable }
 		set_variable = { global.black_friday_discount_ratio = constant:black_friday_event.baseline_payment_ratio }
 		set_variable = { global.black_friday_discount_percent = constant:black_friday_event.baseline_discount_percent }
@@ -644,10 +644,10 @@ black_friday_remove_committed_achievement_family = {
 			limit = {
 				check_variable = { var = black_friday_achievement_family_committed_count_@var:black_friday_purchase_family_id value = constant:black_friday_event.zero_date compare = equals }
 				is_in_array = { array = black_friday_achievement_family_ids value = black_friday_purchase_family_id }
-				NOT = { has_country_flag = black_friday_achievement_awarded }
+				NOT = { hidden_trigger = { has_country_flag = black_friday_achievement_awarded } }
 				NOT = {
 					AND = {
-						has_country_flag = black_friday_achievement_native_non_political_payment
+						hidden_trigger = { has_country_flag = black_friday_achievement_native_non_political_payment }
 						check_variable = { var = black_friday_purchase_family_id value = constant:universal_cost_family.equipment compare = equals }
 					}
 				}
@@ -2408,7 +2408,7 @@ black_friday_terminal_cleanup = {
 black_friday_record_evolution_i = {
 	if = {
 		limit = {
-			NOT = { has_global_flag = black_friday_evolution_i_recorded }
+			NOT = { hidden_trigger = { has_global_flag = black_friday_evolution_i_recorded } }
 			check_variable = {
 				global.black_friday_discount_ratio = constant:black_friday_event.evolution_payment_ratio
 			}
@@ -2425,7 +2425,7 @@ black_friday_record_evolution_i = {
 
 black_friday_record_activation_history = {
 	if = {
-		limit = { NOT = { has_global_flag = black_friday_history_recorded } }
+		limit = { NOT = { hidden_trigger = { has_global_flag = black_friday_history_recorded } } }
 		set_variable = { global.last_fired_event_id = constant:black_friday_event.id }
 		if = {
 			limit = { NOT = { is_in_array = { global.fired_events = constant:black_friday_event.id } } }
@@ -4206,7 +4206,7 @@ black_friday_activate_sale = {
 			set_global_flag = black_friday_natural_activation
 		}
 		else_if = {
-			limit = { has_global_flag = black_friday_natural_reservation }
+			limit = { hidden_trigger = { has_global_flag = black_friday_natural_reservation } }
 			set_global_flag = black_friday_natural_activation
 		}
 		else = {

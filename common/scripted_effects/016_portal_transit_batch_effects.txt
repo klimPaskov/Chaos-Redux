@@ -337,7 +337,7 @@ brilliant_scientist_krg_recover_portal_transit_batch_refund = {
 			limit = { check_variable = { var = krg_portal_batch_recovery_records_valid value = constant:portal_transit_batch.one compare = equals } }
 			set_temp_variable = { krg_portal_batch_first_shared_refund = constant:portal_transit_batch.zero }
 			if = {
-				limit = { NOT = { has_country_flag = krg_portal_batch_shared_refund_attempted } }
+				limit = { NOT = { hidden_trigger = { has_country_flag = krg_portal_batch_shared_refund_attempted } } }
 				set_country_flag = krg_portal_batch_shared_refund_attempted
 				set_temp_variable = { krg_portal_batch_first_shared_refund = constant:portal_transit_batch.one }
 				set_temp_variable = { krg_portal_batch_component_balance = constant:portal_transit_batch.zero }
@@ -483,11 +483,11 @@ brilliant_scientist_krg_cancel_portal_transit_batch = {
 		clr_country_flag = krg_portal_batch_active
 		if = {
 			limit = { OR = {
-				has_country_flag = krg_portal_batch_delivery_committed
+				hidden_trigger = { has_country_flag = krg_portal_batch_delivery_committed }
 				check_variable = { krg_portal_batch_output_delivered > constant:portal_transit_batch.zero }
 			} }
 			# Never delete partially delivered equipment or refund its whole payment.
-			if = { limit = { NOT = { has_country_flag = krg_portal_batch_delivery_committed } } set_country_flag = krg_portal_batch_output_pending }
+			if = { limit = { NOT = { hidden_trigger = { has_country_flag = krg_portal_batch_delivery_committed } } } set_country_flag = krg_portal_batch_output_pending }
 			set_temp_variable = { krg_portal_batch_cancel_result = constant:universal_cost_framework.result_partial }
 		}
 		else = {
@@ -611,7 +611,7 @@ brilliant_scientist_krg_cleanup_portal_transit_batch = {
 	remove_decision = brilliant_scientist_krg_fabricate_portal_transit_batch
 	if = {
 		limit = {
-			has_country_flag = krg_portal_batch_closed
+			hidden_trigger = { has_country_flag = krg_portal_batch_closed }
 			check_variable = { var = krg_portal_batch_transaction_id value = krg_portal_batch_cleanup_transaction compare = equals }
 		}
 		set_temp_variable = { krg_portal_batch_cleanup_result = constant:universal_cost_framework.result_success }

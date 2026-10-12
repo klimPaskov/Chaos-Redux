@@ -11,7 +11,7 @@
 # the Event 021 origin adapter. Additions and removals belong to Event 006.
 independence_wave_initialize_event021_adapter_registry = {
 	if = {
-		limit = { NOT = { has_global_flag = independence_wave_event021_adapter_registry_initialized } }
+		limit = { NOT = { hidden_trigger = { has_global_flag = independence_wave_event021_adapter_registry_initialized } } }
 		clear_array = global.independence_wave_event021_complete_package_ids
 		add_to_array = { array = global.independence_wave_event021_complete_package_ids value = constant:independence_wave_package_id.iw_001 }
 		add_to_array = { array = global.independence_wave_event021_complete_package_ids value = constant:independence_wave_package_id.iw_002 }
@@ -92,7 +92,7 @@ independence_wave_capture_event021_adapter_actor = {
 	# A captured static Event 021 carrier remains authoritative.
 	if = {
 		limit = {
-			NOT = { has_country_flag = random_civil_war_event6_selected_actor_valid }
+			NOT = { hidden_trigger = { has_country_flag = random_civil_war_event6_selected_actor_valid } }
 			independence_wave_active_country_arrays_are_aligned = yes
 		}
 		for_each_scope_loop = {
@@ -100,7 +100,7 @@ independence_wave_capture_event021_adapter_actor = {
 			if = {
 				limit = {
 					is_independence_wave_active_country = yes
-					event_target:random_civil_war_event6_selection_owner = { NOT = { has_country_flag = random_civil_war_event6_selected_actor_valid } }
+					event_target:random_civil_war_event6_selection_owner = { NOT = { hidden_trigger = { has_country_flag = random_civil_war_event6_selected_actor_valid } } }
 					OR = {
 						AND = { original_tag = AFX event_target:random_civil_war_event6_selection_owner = { check_variable = { independence_wave_event021_adapter_package_id = constant:independence_wave_package_id.iw_006 } } }
 						AND = { original_tag = AGX event_target:random_civil_war_event6_selection_owner = { check_variable = { independence_wave_event021_adapter_package_id = constant:independence_wave_package_id.iw_007 } } }

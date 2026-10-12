@@ -114,7 +114,7 @@ event021_parent_append_dynamic_event6_front_candidate = {
 			add_to_temp_array = { array = event021_parent_dynamic_optional_front_state_weights value = event021_dynamic_candidate_anchor_weight }
 			add_to_temp_array = { array = event021_parent_dynamic_optional_front_selected_routes value = constant:random_civil_war_archetype.event006 }
 			if = {
-				limit = { has_global_flag = random_civil_war_manual_scenario_launch_in_progress }
+				limit = { hidden_trigger = { has_global_flag = random_civil_war_manual_scenario_launch_in_progress } }
 				event_target:random_civil_war_event6_selected_anchor = {
 					if = {
 						limit = { NOT = { is_in_array = { array = global.random_civil_war_scenario_reserved_states value = THIS } } }
@@ -156,7 +156,7 @@ event021_parent_clear_scenario_optional_front_receipt = {
 	}
 	if = {
 		limit = {
-			has_country_flag = random_civil_war_scenario_optional_front_plan_frozen
+			hidden_trigger = { has_country_flag = random_civil_war_scenario_optional_front_plan_frozen }
 			has_variable = global.random_civil_war_scenario_reserved_front_count
 			has_variable = random_civil_war_scenario_frozen_front_reservation
 		}
@@ -569,12 +569,12 @@ event021_parent_clear_dynamic_optional_front_candidate_reservations = {
 		array = event021_parent_dynamic_optional_front_selected_states
 		clr_state_flag = random_civil_war_secondary_transfer_state
 		if = {
-			limit = { has_global_flag = random_civil_war_manual_scenario_launch_in_progress }
+			limit = { hidden_trigger = { has_global_flag = random_civil_war_manual_scenario_launch_in_progress } }
 			remove_from_array = { array = global.random_civil_war_scenario_reserved_states value = THIS }
 		}
 	}
 	if = {
-		limit = { has_global_flag = random_civil_war_manual_scenario_launch_in_progress }
+		limit = { hidden_trigger = { has_global_flag = random_civil_war_manual_scenario_launch_in_progress } }
 		set_temp_variable = { event021_scenario_candidate_package_index = constant:random_civil_war_value.zero }
 		set_temp_variable = { event021_scenario_candidate_package_break = constant:random_civil_war_value.zero }
 		for_each_loop = {
@@ -715,7 +715,7 @@ event021_parent_grow_dynamic_ordinary_front_regions = {
 								array = event021_parent_dynamic_region_source_states
 								if = {
 									limit = {
-										NOT = { has_state_flag = random_civil_war_secondary_transfer_state }
+										NOT = { hidden_trigger = { has_state_flag = random_civil_war_secondary_transfer_state } }
 										NOT = { is_in_array = { array = event021_parent_dynamic_candidate_region_states value = THIS } }
 										any_neighbor_state = { is_in_array = { array = event021_parent_dynamic_candidate_region_states value = THIS } }
 									}
@@ -916,7 +916,7 @@ event021_parent_collect_dynamic_optional_front_candidates = {
 		set_temp_variable = { event021_parent_dynamic_optional_front_capacity = global.random_civil_war_max_active_fronts }
 		if = {
 			limit = {
-				has_global_flag = random_civil_war_scenario_maximum_mode
+				hidden_trigger = { has_global_flag = random_civil_war_scenario_maximum_mode }
 				has_variable = global.random_civil_war_scenario_front_cap
 			}
 			set_temp_variable = { event021_parent_dynamic_optional_front_capacity = global.random_civil_war_scenario_front_cap }
@@ -926,7 +926,7 @@ event021_parent_collect_dynamic_optional_front_candidates = {
 			subtract_from_temp_variable = { event021_parent_dynamic_optional_front_capacity = global.random_civil_war_active_front_count }
 		}
 		if = {
-			limit = { has_global_flag = random_civil_war_manual_scenario_launch_in_progress }
+			limit = { hidden_trigger = { has_global_flag = random_civil_war_manual_scenario_launch_in_progress } }
 			if = {
 				limit = { has_variable = global.random_civil_war_scenario_reserved_front_count }
 				subtract_from_temp_variable = { event021_parent_dynamic_optional_front_capacity = global.random_civil_war_scenario_reserved_front_count }
@@ -946,7 +946,7 @@ event021_parent_collect_dynamic_optional_front_candidates = {
 			}
 			if = {
 				limit = {
-					has_global_flag = random_civil_war_manual_scenario_launch_in_progress
+					hidden_trigger = { has_global_flag = random_civil_war_manual_scenario_launch_in_progress }
 					has_variable = random_civil_war_scenario_frozen_belligerent_cap
 				}
 				set_temp_variable = { event021_parent_dynamic_belligerent_capacity = random_civil_war_scenario_frozen_belligerent_cap }
@@ -997,8 +997,8 @@ event021_parent_collect_dynamic_optional_front_candidates = {
 		}
 		if = {
 			limit = {
-				has_global_flag = random_civil_war_manual_scenario_launch_in_progress
-				has_country_flag = random_civil_war_scenario_bypass_active
+				hidden_trigger = { has_global_flag = random_civil_war_manual_scenario_launch_in_progress }
+				hidden_trigger = { has_country_flag = random_civil_war_scenario_bypass_active }
 			}
 			for_each_scope_loop = {
 				array = random_civil_war_scenario_frozen_states
@@ -1019,7 +1019,7 @@ event021_parent_collect_dynamic_optional_front_candidates = {
 			limit = {
 				random_civil_war_regional_route_valid = yes
 				OR = {
-					NOT = { has_global_flag = random_civil_war_manual_scenario_launch_in_progress }
+					NOT = { hidden_trigger = { has_global_flag = random_civil_war_manual_scenario_launch_in_progress } }
 					check_variable = { var = random_civil_war_scenario_type value = constant:random_civil_war_scenario_type.universal_fragmentation compare = equals }
 				}
 			}
@@ -1029,7 +1029,7 @@ event021_parent_collect_dynamic_optional_front_candidates = {
 			limit = {
 				random_civil_war_command_route_valid = yes
 				OR = {
-					NOT = { has_global_flag = random_civil_war_manual_scenario_launch_in_progress }
+					NOT = { hidden_trigger = { has_global_flag = random_civil_war_manual_scenario_launch_in_progress } }
 					check_variable = { var = random_civil_war_scenario_type value = constant:random_civil_war_scenario_type.command_collapse compare = equals }
 					check_variable = { var = random_civil_war_scenario_type value = constant:random_civil_war_scenario_type.universal_fragmentation compare = equals }
 				}
@@ -1040,7 +1040,7 @@ event021_parent_collect_dynamic_optional_front_candidates = {
 			limit = {
 				random_civil_war_legal_route_valid = yes
 				OR = {
-					NOT = { has_global_flag = random_civil_war_manual_scenario_launch_in_progress }
+					NOT = { hidden_trigger = { has_global_flag = random_civil_war_manual_scenario_launch_in_progress } }
 					check_variable = { var = random_civil_war_scenario_type value = constant:random_civil_war_scenario_type.political_fracture compare = equals }
 					check_variable = { var = random_civil_war_scenario_type value = constant:random_civil_war_scenario_type.universal_fragmentation compare = equals }
 				}
@@ -1051,7 +1051,7 @@ event021_parent_collect_dynamic_optional_front_candidates = {
 			limit = {
 				random_civil_war_ideological_route_valid = yes
 				OR = {
-					NOT = { has_global_flag = random_civil_war_manual_scenario_launch_in_progress }
+					NOT = { hidden_trigger = { has_global_flag = random_civil_war_manual_scenario_launch_in_progress } }
 					check_variable = { var = random_civil_war_scenario_type value = constant:random_civil_war_scenario_type.political_fracture compare = equals }
 					check_variable = { var = random_civil_war_scenario_type value = constant:random_civil_war_scenario_type.universal_fragmentation compare = equals }
 				}
@@ -1088,7 +1088,7 @@ event021_parent_collect_dynamic_optional_front_candidates = {
 				NOT = { check_variable = { var = random_civil_war_archetype value = constant:random_civil_war_archetype.same_tag compare = equals } }
 				has_variable = event021_parent_event6_package_count
 				OR = {
-					NOT = { has_global_flag = random_civil_war_manual_scenario_launch_in_progress }
+					NOT = { hidden_trigger = { has_global_flag = random_civil_war_manual_scenario_launch_in_progress } }
 					check_variable = { var = random_civil_war_scenario_type value = constant:random_civil_war_scenario_type.independence_cascade compare = equals }
 					check_variable = { var = random_civil_war_scenario_type value = constant:random_civil_war_scenario_type.universal_fragmentation compare = equals }
 				}

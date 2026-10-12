@@ -55,13 +55,13 @@ cbrn_convention_is_suspended = {
 # Member with voting rights.
 cbrn_convention_is_voting_member = {
 	cbrn_convention_is_member = yes
-	NOT = { has_country_flag = cbrn_convention_suspended }
+	NOT = { hidden_trigger = { has_country_flag = cbrn_convention_suspended } }
 }
 
 # COUNTRY scope. Treaty ratification. Input: temp cbrn_convention_family_id.
 cbrn_convention_has_ratified_family = {
 	meta_trigger = {
-		text = { has_country_flag = cbrn_convention_ratified_[FAMILY] }
+		text = { hidden_trigger = { has_country_flag = cbrn_convention_ratified_[FAMILY] } }
 		FAMILY = "[?cbrn_convention_family_id|0]"
 	}
 }
@@ -69,7 +69,7 @@ cbrn_convention_has_ratified_family = {
 # COUNTRY scope. Posture permits ratifying the family (or its reservation
 # clause) and the country can vote. Input: temp cbrn_convention_family_id.
 cbrn_convention_posture_allows_family = {
-	NOT = { has_country_flag = cbrn_convention_suspended }
+	NOT = { hidden_trigger = { has_country_flag = cbrn_convention_suspended } }
 	cbrn_convention_posture_holds_family = yes
 }
 
@@ -218,7 +218,7 @@ cbrn_convention_family_capability_gate = {
 
 # Global. The current agenda family can still resolve.
 cbrn_convention_agenda_is_open = {
-	has_global_flag = cbrn_convention_agenda_open
+	hidden_trigger = { has_global_flag = cbrn_convention_agenda_open }
 }
 
 # COUNTRY scope. Can respond to the current agenda.

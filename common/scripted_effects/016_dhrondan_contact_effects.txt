@@ -119,7 +119,7 @@ dhrondan_restore_kruger_after_expedition = {
 	if = {
 		limit = {
 			has_character = KRG_warren_kruger
-			KRG_warren_kruger = { has_character_flag = dhrondan_kruger_expedition_obligation }
+			KRG_warren_kruger = { hidden_trigger = { has_character_flag = dhrondan_kruger_expedition_obligation } }
 		}
 		set_global_flag = brilliant_scientist_character_transaction_lock
 		set_country_flag = brilliant_scientist_character_transaction_lock
@@ -128,9 +128,9 @@ dhrondan_restore_kruger_after_expedition = {
 			limit = {
 				brilliant_scientist_is_current_host = yes
 				KRG_warren_kruger = {
-					has_character_flag = brilliant_scientist_personal_active
-					NOT = { has_character_flag = brilliant_scientist_personal_injured }
-					NOT = { has_character_flag = brilliant_scientist_personal_confined }
+					hidden_trigger = { has_character_flag = brilliant_scientist_personal_active }
+					NOT = { hidden_trigger = { has_character_flag = brilliant_scientist_personal_injured } }
+					NOT = { hidden_trigger = { has_character_flag = brilliant_scientist_personal_confined } }
 				}
 			}
 			brilliant_scientist_add_kruger_roles = yes
@@ -286,9 +286,9 @@ dhrondan_authorize_pact_and_return = {
 # pact state, or successful-return Directorate changes.
 dhrondan_fail_expedition = {
 	if = {
-		limit = { has_country_flag = dhrondan_expedition_in_progress }
+		limit = { hidden_trigger = { has_country_flag = dhrondan_expedition_in_progress } }
 		if = {
-			limit = { has_country_flag = dhrondan_kruger_expedition_in_progress }
+			limit = { hidden_trigger = { has_country_flag = dhrondan_kruger_expedition_in_progress } }
 			set_country_flag = dhrondan_kruger_failure_report_pending
 			clr_country_flag = dhrondan_mengele_failure_report_pending
 		}

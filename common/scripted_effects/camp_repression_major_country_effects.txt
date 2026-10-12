@@ -52,7 +52,7 @@ camp_rework_germany_refresh_values = {
 		set_country_flag = camp_rework_germany_had_poland_priority_pool
 	}
 	else_if = {
-		limit = { has_country_flag = camp_rework_germany_had_poland_priority_pool }
+		limit = { hidden_trigger = { has_country_flag = camp_rework_germany_had_poland_priority_pool } }
 		clr_country_flag = camp_rework_germany_had_poland_priority_pool
 		if = {
 			limit = {
@@ -143,7 +143,7 @@ camp_rework_japan_refresh_values = {
 				var:genocide_responsible_country = { tag = ROOT }
 				OR = {
 					is_japan_china_manchuria_pool_state = yes
-					has_state_flag = camp_rework_pingfang_anchor
+					hidden_trigger = { has_state_flag = camp_rework_pingfang_anchor }
 				}
 			}
 			if = {
@@ -305,7 +305,7 @@ camp_rework_copy_major_country_display_values = {
 		set_variable = { display_foreign_clone_network_strength = foreign_clone_network_strength }
 		set_variable = { display_internal_overwrite_pressure = internal_overwrite_pressure }
 		set_variable = { display_world_threat_source_mengele = 0 }
-		if = { limit = { has_global_flag = world_threat_source_mengele } set_variable = { display_world_threat_source_mengele = 1 } }
+		if = { limit = { hidden_trigger = { has_global_flag = world_threat_source_mengele } } set_variable = { display_world_threat_source_mengele = 1 } }
 	}
 	else_if = {
 		limit = { original_tag = JAP }
@@ -736,8 +736,8 @@ germany_mengele_add_cloning_project_progress = {
 				germany_mengele_program_active = yes
 				germany_mengele_restricted_program_active = yes
 			}
-			NOT = { has_country_flag = germany_mengele_cloning_project_available }
-			NOT = { has_country_flag = germany_mengele_cloning_project_completed }
+			NOT = { hidden_trigger = { has_country_flag = germany_mengele_cloning_project_available } }
+			NOT = { hidden_trigger = { has_country_flag = germany_mengele_cloning_project_completed } }
 		}
 		set_country_flag = germany_mengele_cloning_unlock_pending
 	}
@@ -745,10 +745,10 @@ germany_mengele_add_cloning_project_progress = {
 		limit = {
 			OR = {
 				has_country_flag = germany_mengele_program_closed
-				has_country_flag = germany_mengele_program_rejected
+				hidden_trigger = { has_country_flag = germany_mengele_program_rejected }
 				has_country_flag = germany_mengele_coup_fired
-				has_country_flag = germany_mengele_cloning_project_available
-				has_country_flag = germany_mengele_cloning_project_completed
+				hidden_trigger = { has_country_flag = germany_mengele_cloning_project_available }
+				hidden_trigger = { has_country_flag = germany_mengele_cloning_project_completed }
 			}
 		}
 		clr_country_flag = germany_mengele_cloning_unlock_pending
@@ -796,7 +796,7 @@ camp_rework_germany_register_auschwitz_layers = {
 			set_temp_variable = { genocide_requested_concentration_level = constant:genocide_camp_level.auschwitz }
 			genocide_ensure_concentration_camp_level = yes
 			if = {
-				limit = { NOT = { has_state_flag = camp_rework_mengele_extermination_upgrade_applied } }
+				limit = { NOT = { hidden_trigger = { has_state_flag = camp_rework_mengele_extermination_upgrade_applied } } }
 				genocide_register_extermination_site_for_root = yes
 				if = {
 					limit = { check_variable = { genocide_camp_conversion_succeeded > 0 } }
@@ -1454,7 +1454,7 @@ camp_rework_soviet_refresh_current_famine_state = {
 			is_valid_camp_active_site_state = yes
 			OR = {
 				has_state_flag = genocide_soviet_famine_pressure_site
-				has_state_flag = camp_rework_soviet_famine_pressure
+				hidden_trigger = { has_state_flag = camp_rework_soviet_famine_pressure }
 				has_state_flag = camp_rework_soviet_industrial_pool
 			}
 			ROOT = { check_variable = { famine_pressure > 0 } }

@@ -2546,7 +2546,7 @@ chaos_meter_sync_open_deaths_view_country_entry = {
 
 			if = {
 				limit = {
-					has_country_flag = chaos_meter_deaths_details_open
+					hidden_trigger = { has_country_flag = chaos_meter_deaths_details_open }
 					check_variable = {
 						var = chaos_meter_deaths_selected_country
 						value = chaos_deaths_log_country
@@ -2562,8 +2562,8 @@ chaos_meter_sync_open_deaths_view_country_entry = {
 refresh_chaos_meter_deaths_view_if_open = {
 	every_country = {
 		limit = {
-			has_country_flag = chaos_meter_window_open
-			has_country_flag = chaos_meter_deaths_tab
+			hidden_trigger = { has_country_flag = chaos_meter_window_open }
+			hidden_trigger = { has_country_flag = chaos_meter_deaths_tab }
 		}
 		chaos_meter_sync_open_deaths_view_country_entry = yes
 	}
@@ -2823,13 +2823,13 @@ chaos_meter_register_deaths = {
 	if = {
 		limit = {
 			OR = {
-				NOT = { has_global_flag = settings_chaos_deaths_disabled }
+				NOT = { hidden_trigger = { has_global_flag = settings_chaos_deaths_disabled } }
 				has_global_flag = fallout_air_cleanliness_disabled
 				has_global_flag = fallout_transition_active
 				has_global_flag = fallout_active
-				has_global_flag = fallout_manual_scenario_active
-				has_global_flag = fallout_manual_sweep_active
-				has_global_flag = fallout_manual_countdown_active
+				hidden_trigger = { has_global_flag = fallout_manual_scenario_active }
+				hidden_trigger = { has_global_flag = fallout_manual_sweep_active }
+				hidden_trigger = { has_global_flag = fallout_manual_countdown_active }
 			}
 			check_variable = { chaos_deaths_change > 0 }
 		}
@@ -2875,7 +2875,7 @@ chaos_meter_register_deaths = {
 		refresh_chaos_meter_deaths_view_if_open = yes
 	}
 	else_if = {
-		limit = { has_global_flag = settings_chaos_deaths_disabled }
+		limit = { hidden_trigger = { has_global_flag = settings_chaos_deaths_disabled } }
 		set_variable = { global.chaos_meter_deaths_last_change = 0 }
 	}
 
@@ -3616,7 +3616,7 @@ chaos_meter_register_state_civilian_deaths_percent = {
 	if = {
 		limit = {
 			state_uses_normal_civilian_systems = yes
-			NOT = { has_global_flag = settings_chaos_deaths_disabled }
+			NOT = { hidden_trigger = { has_global_flag = settings_chaos_deaths_disabled } }
 			check_variable = { state_population_k > 0 }
 			has_variable = chaos_state_deaths_percent
 			check_variable = { chaos_state_deaths_percent > 0 }
@@ -3944,7 +3944,7 @@ chaos_meter_history_append_rows_by_actor_sort = {
 		limit = { check_variable = { temp_chaos_history_unique_actors^num > 0 } }
 
 		if = {
-			limit = { has_country_flag = chaos_meter_history_sort_descending }
+			limit = { hidden_trigger = { has_country_flag = chaos_meter_history_sort_descending } }
 			find_highest_in_array = {
 				array = temp_chaos_history_unique_actors
 				value = chaos_history_actor_sort_target
@@ -3958,7 +3958,7 @@ chaos_meter_history_append_rows_by_actor_sort = {
 		}
 
 		if = {
-			limit = { has_country_flag = chaos_meter_history_sort_descending }
+			limit = { hidden_trigger = { has_country_flag = chaos_meter_history_sort_descending } }
 			set_temp_variable = { chaos_history_actor_member_index = 0 }
 			while_loop_effect = {
 				limit = { check_variable = { chaos_history_actor_member_index < chaos_history_source_count } }
@@ -4021,7 +4021,7 @@ chaos_meter_history_append_rows_by_actor_sort = {
 
 	# Non-actor rows are always appended after actor rows.
 	if = {
-		limit = { has_country_flag = chaos_meter_history_sort_descending }
+		limit = { hidden_trigger = { has_country_flag = chaos_meter_history_sort_descending } }
 		set_temp_variable = { chaos_history_source_index = 0 }
 		while_loop_effect = {
 			limit = { check_variable = { chaos_history_source_index < chaos_history_source_count } }
@@ -4109,7 +4109,7 @@ rebuild_chaos_meter_history_view = {
 		if = {
 			limit = { check_variable = { settings_chaos_history_sort_mode = 0 } }
 			if = {
-				limit = { has_country_flag = chaos_meter_history_sort_descending }
+				limit = { hidden_trigger = { has_country_flag = chaos_meter_history_sort_descending } }
 				for_loop_effect = {
 					start = 0
 					end = chaos_history_source_count
@@ -4142,7 +4142,7 @@ rebuild_chaos_meter_history_view = {
 		}
 		else = {
 			if = {
-				limit = { has_country_flag = chaos_meter_history_sort_descending }
+				limit = { hidden_trigger = { has_country_flag = chaos_meter_history_sort_descending } }
 				set_temp_variable = { chaos_history_sort_delta = 200 }
 				while_loop_effect = {
 					limit = { check_variable = { chaos_history_sort_delta > -201 } }
@@ -4402,8 +4402,8 @@ record_chaos_meter_history_entry = {
 	every_country = {
 		limit = {
 			is_ai = no
-			has_country_flag = chaos_meter_window_open
-			has_country_flag = chaos_meter_history_tab
+			hidden_trigger = { has_country_flag = chaos_meter_window_open }
+			hidden_trigger = { has_country_flag = chaos_meter_history_tab }
 		}
 		rebuild_chaos_meter_history_view = yes
 	}
@@ -4663,7 +4663,7 @@ air_contamination_prepare_source_ledger_arrays = {
 	}
 
 	if = {
-		limit = { NOT = { has_global_flag = air_contamination_source_ledger_initialized } }
+		limit = { NOT = { hidden_trigger = { has_global_flag = air_contamination_source_ledger_initialized } } }
 		set_global_flag = air_contamination_source_ledger_initialized
 		set_variable = { global.air_contamination_ledger_last_total_bp = global.air_contamination_bp }
 	}
@@ -4921,7 +4921,7 @@ air_contamination_update_threshold_flags = {
 		set_global_flag = air_contamination_threshold_25
 		if = {
 			limit = {
-				NOT = { has_global_flag = air_contamination_news_25_fired }
+				NOT = { hidden_trigger = { has_global_flag = air_contamination_news_25_fired } }
 				NOT = { has_global_flag = fallout_air_contamination_permanent_99 }
 			}
 			set_global_flag = air_contamination_news_25_fired
@@ -4943,7 +4943,7 @@ air_contamination_update_threshold_flags = {
 		set_global_flag = air_contamination_threshold_50
 		if = {
 			limit = {
-				NOT = { has_global_flag = air_contamination_news_50_fired }
+				NOT = { hidden_trigger = { has_global_flag = air_contamination_news_50_fired } }
 				NOT = { has_global_flag = fallout_air_contamination_permanent_99 }
 			}
 			set_global_flag = air_contamination_news_50_fired
@@ -4965,7 +4965,7 @@ air_contamination_update_threshold_flags = {
 		set_global_flag = air_contamination_threshold_75
 		if = {
 			limit = {
-				NOT = { has_global_flag = air_contamination_news_75_fired }
+				NOT = { hidden_trigger = { has_global_flag = air_contamination_news_75_fired } }
 				NOT = { has_global_flag = fallout_air_contamination_permanent_99 }
 			}
 			set_global_flag = air_contamination_news_75_fired
@@ -4987,7 +4987,7 @@ air_contamination_update_threshold_flags = {
 		set_global_flag = air_contamination_threshold_100
 		if = {
 			limit = {
-				NOT = { has_global_flag = air_contamination_news_100_fired }
+				NOT = { hidden_trigger = { has_global_flag = air_contamination_news_100_fired } }
 				NOT = { has_global_flag = fallout_air_contamination_permanent_99 }
 			}
 			set_global_flag = air_contamination_news_100_fired

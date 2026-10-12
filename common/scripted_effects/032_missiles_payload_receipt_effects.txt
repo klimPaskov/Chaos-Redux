@@ -83,7 +83,7 @@ missiles_consume_chemical_payload_receipt = {
 # participant is distinguished from the operation's exact payload-custody site.
 missiles_release_chemical_payload_receipt = {
 	if = {
-		limit = { has_country_flag = missiles_operation_chemical_receipt_active }
+		limit = { hidden_trigger = { has_country_flag = missiles_operation_chemical_receipt_active } }
 		set_variable = { cbrn_payload_request_consumer = constant:cbrn_payload_receipt_consumer.missiles }
 		set_variable = { cbrn_payload_request_nonce = missiles_active_operation_id }
 		set_variable = { cbrn_payload_request_handle = missiles_operation_chemical_receipt }
@@ -92,7 +92,7 @@ missiles_release_chemical_payload_receipt = {
 		set_temp_variable = { cbrn_payload_loss_proof = constant:cbrn_proof.missing }
 		if = {
 			limit = {
-				has_country_flag = missiles_site_settlement_in_progress
+				hidden_trigger = { has_country_flag = missiles_site_settlement_in_progress }
 				has_event_target = missiles_lost_allocation_site
 				event_target:missiles_lost_allocation_site = { check_variable = { var = id value = PREV.missiles_operation_launch_site_id compare = equals } }
 			}

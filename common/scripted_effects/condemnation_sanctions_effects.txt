@@ -386,7 +386,7 @@ condemnation_start_targeted_pulse = {
 
 condemnation_start_targeted_pulse_apply = {
 	if = {
-		limit = { NOT = { has_country_flag = condemnation_targeted_pulse_active } }
+		limit = { NOT = { hidden_trigger = { has_country_flag = condemnation_targeted_pulse_active } } }
 		set_country_flag = condemnation_targeted_pulse_active
 		set_temp_variable = { condemnation_pulse_days = constant:condemnation_duration_days.pulse }
 		country_event = {
@@ -621,7 +621,7 @@ condemnation_add_human_source_internal = {
 		set_temp_variable = { condemnation_repeat_gain = 0 }
 		if = {
 			limit = {
-				has_country_flag = condemnation_recent_use
+				hidden_trigger = { has_country_flag = condemnation_recent_use }
 				check_variable = { condemnation_source_is_weapon_use > constant:condemnation_tier.normal }
 			}
 			set_temp_variable = { condemnation_repeat_gain = condemnation_gain_final }
@@ -632,7 +632,7 @@ condemnation_add_human_source_internal = {
 		set_temp_variable = { condemnation_compliance_breach_applied = constant:condemnation_tier.normal }
 		if = {
 			limit = {
-				has_country_flag = condemnation_non_use_pledge
+				hidden_trigger = { has_country_flag = condemnation_non_use_pledge }
 				check_variable = { condemnation_source_is_weapon_use > constant:condemnation_tier.normal }
 			}
 			clr_country_flag = condemnation_non_use_pledge
@@ -645,7 +645,7 @@ condemnation_add_human_source_internal = {
 			}
 			clr_country_flag = condemnation_chemical_stockpiles_destroyed
 			if = {
-				limit = { has_country_flag = condemnation_chemical_stockpile_restriction }
+				limit = { hidden_trigger = { has_country_flag = condemnation_chemical_stockpile_restriction } }
 				clr_country_flag = condemnation_chemical_stockpile_restriction
 				set_temp_variable = { condemnation_compliance_breach_applied = constant:condemnation_tier.concern }
 			}
@@ -657,7 +657,7 @@ condemnation_add_human_source_internal = {
 			}
 			clr_country_flag = condemnation_biological_stockpiles_destroyed
 			if = {
-				limit = { has_country_flag = condemnation_biological_stockpile_restriction }
+				limit = { hidden_trigger = { has_country_flag = condemnation_biological_stockpile_restriction } }
 				clr_country_flag = condemnation_biological_stockpile_restriction
 				set_temp_variable = { condemnation_compliance_breach_applied = constant:condemnation_tier.concern }
 			}
@@ -672,7 +672,7 @@ condemnation_add_human_source_internal = {
 		if = {
 			limit = { check_variable = { condemnation_compliance_breach_applied > constant:condemnation_tier.normal } }
 			if = {
-				limit = { NOT = { has_country_flag = condemnation_pledge_broken } }
+				limit = { NOT = { hidden_trigger = { has_country_flag = condemnation_pledge_broken } } }
 				set_temp_variable = { condemnation_pledge_break_days = constant:condemnation_duration_days.pledge_break_memory }
 				set_country_flag = { flag = condemnation_pledge_broken days = var:condemnation_pledge_break_days }
 				add_to_variable = { condemnation_coverup = constant:condemnation_gain.pledge_break_coverup }
@@ -755,7 +755,7 @@ condemnation_add_human_source_internal = {
 		if = {
 			limit = {
 				OR = {
-					has_country_flag = condemnation_tier_changed
+					hidden_trigger = { has_country_flag = condemnation_tier_changed }
 					check_variable = { condemnation_participant_refresh_credit > constant:condemnation_threshold.participant_refresh_gain }
 				}
 			}
@@ -1116,7 +1116,7 @@ condemnation_calculate_pair_score = {
 	if = { limit = { check_variable = { var = condemnation_last_source_severity value = constant:condemnation_severity.major compare = equals } } add_to_temp_variable = { condemnation_pair_moral_pressure = constant:condemnation_participant_score.recent_major_source } }
 	else_if = { limit = { check_variable = { var = condemnation_last_source_severity value = constant:condemnation_severity.mass_death compare = equals } } add_to_temp_variable = { condemnation_pair_moral_pressure = constant:condemnation_participant_score.recent_mass_death_source } }
 	else_if = { limit = { check_variable = { var = condemnation_last_source_severity value = constant:condemnation_severity.doomsday compare = equals } } add_to_temp_variable = { condemnation_pair_moral_pressure = constant:condemnation_participant_score.recent_doomsday_source } }
-	if = { limit = { has_country_flag = condemnation_domestic_propaganda_active } add_to_temp_variable = { condemnation_pair_moral_pressure = constant:condemnation_participant_score.defiant_propaganda } }
+	if = { limit = { hidden_trigger = { has_country_flag = condemnation_domestic_propaganda_active } } add_to_temp_variable = { condemnation_pair_moral_pressure = constant:condemnation_participant_score.defiant_propaganda } }
 	subtract_from_temp_variable = { condemnation_pair_moral_pressure = condemnation_retaliation_pressure_relief }
 	clamp_temp_variable = {
 		var = condemnation_pair_moral_pressure
@@ -2168,7 +2168,7 @@ condemnation_recalculate_participants_apply = {
 					limit = {
 						var:condemnation_recalculation_target = {
 							OR = {
-								has_country_flag = condemnation_evasion_exposed
+								hidden_trigger = { has_country_flag = condemnation_evasion_exposed }
 								check_variable = { condemnation_evasion_pressure > 0 }
 							}
 						}
@@ -2737,9 +2737,9 @@ condemnation_refresh_target_modifiers = {
 	clamp_variable = { var = condemnation_black_market_route_strength min = 0 max = 1 }
 	set_variable = { condemnation_compliance_credibility = condemnation_decay_credit }
 	divide_variable = { condemnation_compliance_credibility = constant:condemnation_compliance_credit.maximum }
-	if = { limit = { has_country_flag = condemnation_inspections_active } add_to_variable = { condemnation_compliance_credibility = constant:condemnation_compliance_credibility.inspections } }
-	if = { limit = { has_country_flag = condemnation_observers_active } add_to_variable = { condemnation_compliance_credibility = constant:condemnation_compliance_credibility.observers } }
-	if = { limit = { has_country_flag = condemnation_verified_non_use } add_to_variable = { condemnation_compliance_credibility = constant:condemnation_compliance_credibility.verified_non_use } }
+	if = { limit = { hidden_trigger = { has_country_flag = condemnation_inspections_active } } add_to_variable = { condemnation_compliance_credibility = constant:condemnation_compliance_credibility.inspections } }
+	if = { limit = { hidden_trigger = { has_country_flag = condemnation_observers_active } } add_to_variable = { condemnation_compliance_credibility = constant:condemnation_compliance_credibility.observers } }
+	if = { limit = { hidden_trigger = { has_country_flag = condemnation_verified_non_use } } add_to_variable = { condemnation_compliance_credibility = constant:condemnation_compliance_credibility.verified_non_use } }
 	if = {
 		limit = { cbrn_designer_has_international_medical_mission = yes }
 		multiply_variable = { condemnation_compliance_credibility = constant:cbrn_medical_designer_effect.international_mission_compliance_mult }
@@ -2763,12 +2763,12 @@ condemnation_refresh_target_modifiers = {
 	multiply_temp_variable = { condemnation_evasion_relief = constant:condemnation_pair.quiet_breach_relief }
 	add_to_temp_variable = { condemnation_relief_factor = condemnation_evasion_relief }
 	set_temp_variable = { condemnation_route_relief = 0 }
-	if = { limit = { has_country_flag = condemnation_autarky_active } add_to_temp_variable = { condemnation_route_relief = constant:condemnation_route.autarky_relief } }
-	if = { limit = { has_country_flag = condemnation_forced_extraction_active } add_to_temp_variable = { condemnation_route_relief = constant:condemnation_route.forced_extraction_relief } }
-	if = { limit = { has_country_flag = condemnation_substitute_materials_active } add_to_temp_variable = { condemnation_route_relief = constant:condemnation_route.substitute_materials_relief } }
-	if = { limit = { has_country_flag = condemnation_military_rationing_active } add_to_temp_variable = { condemnation_route_relief = constant:condemnation_route.rationing_relief } }
-	if = { limit = { has_country_flag = condemnation_subject_pressure_active } add_to_temp_variable = { condemnation_route_relief = constant:condemnation_route.subject_pressure_relief } }
-	if = { limit = { has_country_flag = condemnation_controlled_shipping_active } add_to_temp_variable = { condemnation_route_relief = constant:condemnation_route.controlled_shipping_relief } }
+	if = { limit = { hidden_trigger = { has_country_flag = condemnation_autarky_active } } add_to_temp_variable = { condemnation_route_relief = constant:condemnation_route.autarky_relief } }
+	if = { limit = { hidden_trigger = { has_country_flag = condemnation_forced_extraction_active } } add_to_temp_variable = { condemnation_route_relief = constant:condemnation_route.forced_extraction_relief } }
+	if = { limit = { hidden_trigger = { has_country_flag = condemnation_substitute_materials_active } } add_to_temp_variable = { condemnation_route_relief = constant:condemnation_route.substitute_materials_relief } }
+	if = { limit = { hidden_trigger = { has_country_flag = condemnation_military_rationing_active } } add_to_temp_variable = { condemnation_route_relief = constant:condemnation_route.rationing_relief } }
+	if = { limit = { hidden_trigger = { has_country_flag = condemnation_subject_pressure_active } } add_to_temp_variable = { condemnation_route_relief = constant:condemnation_route.subject_pressure_relief } }
+	if = { limit = { hidden_trigger = { has_country_flag = condemnation_controlled_shipping_active } } add_to_temp_variable = { condemnation_route_relief = constant:condemnation_route.controlled_shipping_relief } }
 	add_to_temp_variable = { condemnation_relief_factor = condemnation_route_relief }
 	set_temp_variable = { condemnation_enforcement_bonus = condemnation_tight_enforcement_count }
 	if = {

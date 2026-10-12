@@ -37,7 +37,7 @@ sov_nuclear_bombs_reconcile_production_reactor_capacity = {
 		if = {
 			limit = { is_owned_by = SOV is_controlled_by = SOV nuclear_reactor > 0 }
 			if = {
-				limit = { NOT = { has_state_flag = sov_nuclear_bombs_production_reactor_counted } }
+				limit = { NOT = { hidden_trigger = { has_state_flag = sov_nuclear_bombs_production_reactor_counted } } }
 				set_state_flag = sov_nuclear_bombs_production_reactor_counted
 				SOV = {
 					if = {
@@ -53,11 +53,11 @@ sov_nuclear_bombs_reconcile_production_reactor_capacity = {
 			clr_state_flag = sov_nuclear_bombs_production_reactor_lost
 		}
 		else_if = {
-			limit = { has_state_flag = sov_nuclear_bombs_production_reactor_counted }
+			limit = { hidden_trigger = { has_state_flag = sov_nuclear_bombs_production_reactor_counted } }
 			clr_state_flag = sov_nuclear_bombs_production_reactor_counted
 			SOV = { subtract_from_variable = { sov_nuclear_bombs_controlled_reactor_count = constant:sov_nuclear_bombs_ledger.one } }
 			if = {
-				limit = { NOT = { has_state_flag = sov_nuclear_bombs_production_reactor_lost } }
+				limit = { NOT = { hidden_trigger = { has_state_flag = sov_nuclear_bombs_production_reactor_lost } } }
 				set_state_flag = sov_nuclear_bombs_production_reactor_lost
 				SOV = {
 					subtract_from_variable = { sov_nuclear_bombs_readiness = constant:sov_nuclear_bombs_reactor_capacity.site_loss_readiness }

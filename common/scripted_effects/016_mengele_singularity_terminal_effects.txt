@@ -68,11 +68,11 @@ brilliant_scientist_mengele_apply_singularity_terminal_consequences = {
 brilliant_scientist_mengele_schedule_singularity_fallout_retry = {
 	if = {
 		limit = {
-			has_country_flag = mengele_event016_singularity_terminal_committed
-			has_country_flag = mengele_event016_singularity_prelock_chaos_recorded
+			hidden_trigger = { has_country_flag = mengele_event016_singularity_terminal_committed }
+			hidden_trigger = { has_country_flag = mengele_event016_singularity_prelock_chaos_recorded }
 			brilliant_scientist_mengele_singularity_terminal_commit_state_is_ready = yes
-			NOT = { has_country_flag = mengele_event016_singularity_fallout_request_submitted }
-			NOT = { has_country_flag = mengele_event016_singularity_fallout_retry_pending }
+			NOT = { hidden_trigger = { has_country_flag = mengele_event016_singularity_fallout_request_submitted } }
+			NOT = { hidden_trigger = { has_country_flag = mengele_event016_singularity_fallout_retry_pending } }
 			NOT = { has_global_flag = world_end }
 		}
 		set_country_flag = mengele_event016_singularity_fallout_retry_pending
@@ -84,8 +84,8 @@ brilliant_scientist_mengele_schedule_singularity_fallout_retry = {
 brilliant_scientist_mengele_recover_rejected_singularity_fallout_request = {
 	if = {
 		limit = {
-			has_country_flag = mengele_event016_singularity_fallout_request_submitted
-			NOT = { has_country_flag = mengele_event016_singularity_terminal_fired }
+			hidden_trigger = { has_country_flag = mengele_event016_singularity_fallout_request_submitted }
+			NOT = { hidden_trigger = { has_country_flag = mengele_event016_singularity_terminal_fired } }
 		}
 		clr_country_flag = mengele_event016_singularity_fallout_request_submitted
 		set_country_flag = mengele_event016_singularity_fallout_request_rejected
@@ -164,7 +164,7 @@ brilliant_scientist_mengele_finalize_singularity_after_fallout_lock = {
 			limit = { has_event_target = brilliant_scientist_world_threat_actor }
 			event_target:brilliant_scientist_world_threat_actor = {
 				if = {
-					limit = { has_country_flag = brilliant_scientist_world_threat_active }
+					limit = { hidden_trigger = { has_country_flag = brilliant_scientist_world_threat_active } }
 					brilliant_scientist_close_world_threat_interval = yes
 					clr_country_flag = brilliant_scientist_world_threat_active
 					brilliant_scientist_refresh_directorate_idea_lifecycle = yes

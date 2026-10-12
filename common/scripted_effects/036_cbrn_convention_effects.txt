@@ -297,9 +297,9 @@ cbrn_convention_set_posture = {
 cbrn_convention_award_opposition_route = {
 	if = {
 		limit = {
-			has_country_flag = cbrn_convention_achv_opposition_track
+			hidden_trigger = { has_country_flag = cbrn_convention_achv_opposition_track }
 			cbrn_convention_is_opponent = yes
-			NOT = { has_country_flag = cbrn_convention_ran_covert_program }
+			NOT = { hidden_trigger = { has_country_flag = cbrn_convention_ran_covert_program } }
 			NOT = { check_variable = { condemnation_tier > constant:condemnation_tier.concern } }
 		}
 		set_country_flag = cbrn_convention_achv_opposition_proven
@@ -334,15 +334,15 @@ cbrn_convention_track_achievement_routes = {
 		limit = { cbrn_convention_is_reservation = yes }
 		if = {
 			limit = {
-				NOT = { has_global_flag = cbrn_convention_evolution_1_recorded }
-				NOT = { has_country_flag = cbrn_convention_achv_reservation_lost }
+				NOT = { hidden_trigger = { has_global_flag = cbrn_convention_evolution_1_recorded } }
+				NOT = { hidden_trigger = { has_country_flag = cbrn_convention_achv_reservation_lost } }
 			}
 			set_country_flag = cbrn_convention_achv_reservation_track
 		}
 	}
 	else = {
 		if = {
-			limit = { has_country_flag = cbrn_convention_achv_reservation_track }
+			limit = { hidden_trigger = { has_country_flag = cbrn_convention_achv_reservation_track } }
 			clr_country_flag = cbrn_convention_achv_reservation_track
 		}
 		set_country_flag = cbrn_convention_achv_reservation_lost
@@ -379,11 +379,11 @@ cbrn_convention_drop_disallowed_ratifications = {
 		}
 	}
 	if = {
-		limit = { has_country_flag = cbrn_convention_reserved_5 }
+		limit = { hidden_trigger = { has_country_flag = cbrn_convention_reserved_5 } }
 		clr_country_flag = cbrn_convention_clause_biological
 	}
 	if = {
-		limit = { NOT = { has_country_flag = cbrn_convention_ratified_5 } }
+		limit = { NOT = { hidden_trigger = { has_country_flag = cbrn_convention_ratified_5 } } }
 		clr_country_flag = cbrn_convention_clause_chemical
 		clr_country_flag = cbrn_convention_clause_biological
 	}
@@ -560,7 +560,7 @@ cbrn_convention_recalculate_standing = {
 		set_variable = { global.cbrn_convention_reconstruction_day = global.num_days }
 		add_to_variable = { global.cbrn_convention_reconstruction_day = constant:cbrn_convention_timing.reconstruction_days }
 		if = {
-			limit = { NOT = { has_global_flag = cbrn_convention_collapse_chaos_applied } }
+			limit = { NOT = { hidden_trigger = { has_global_flag = cbrn_convention_collapse_chaos_applied } } }
 			set_global_flag = cbrn_convention_collapse_chaos_applied
 			set_temp_variable = { cbrn_convention_chaos_delta = constant:cbrn_convention_chaos.collapse }
 			cbrn_convention_add_chaos = yes
@@ -568,15 +568,15 @@ cbrn_convention_recalculate_standing = {
 		}
 		if = {
 			limit = {
-				has_global_flag = cbrn_convention_has_opposition_leader
-				has_global_flag = cbrn_convention_evolution_2_recorded
+				hidden_trigger = { has_global_flag = cbrn_convention_has_opposition_leader }
+				hidden_trigger = { has_global_flag = cbrn_convention_evolution_2_recorded }
 			}
 			event_target:cbrn_convention_opposition_leader = { cbrn_convention_award_opposition_route = yes }
 		}
 	}
 	cbrn_convention_refresh_program_quorum = yes
 	if = {
-		limit = { has_global_flag = cbrn_convention_started }
+		limit = { hidden_trigger = { has_global_flag = cbrn_convention_started } }
 		cbrn_convention_start_pulse = yes
 	}
 }
@@ -599,14 +599,14 @@ cbrn_convention_start_pulse = {
 	# membership transaction once it is overdue.
 	if = {
 		limit = {
-			has_global_flag = cbrn_convention_pulse_pending
+			hidden_trigger = { has_global_flag = cbrn_convention_pulse_pending }
 			has_variable = global.cbrn_convention_pulse_due
 			check_variable = { global.cbrn_convention_pulse_due < global.num_days }
 		}
 		clr_global_flag = cbrn_convention_pulse_pending
 	}
 	if = {
-		limit = { NOT = { has_global_flag = cbrn_convention_pulse_pending } }
+		limit = { NOT = { hidden_trigger = { has_global_flag = cbrn_convention_pulse_pending } } }
 		set_global_flag = cbrn_convention_pulse_pending
 		# One pulse interval of grace beyond the scheduled day, so a pulse that
 		# is merely arriving is never restarted as lost.
@@ -1565,7 +1565,7 @@ cbrn_convention_suspend = {
 	if = {
 		limit = { cbrn_convention_is_member = yes }
 		if = {
-			limit = { has_country_flag = cbrn_convention_suspension_memory }
+			limit = { hidden_trigger = { has_country_flag = cbrn_convention_suspension_memory } }
 			cbrn_convention_expel = yes
 		}
 		else = {
@@ -1597,7 +1597,7 @@ cbrn_convention_refresh_doctrine = {
 			has_country_flag = cbrn_convention_integrated_doctrine
 			OR = {
 				NOT = { cbrn_convention_is_member = yes }
-				NOT = { has_country_flag = cbrn_convention_ratified_7 }
+				NOT = { hidden_trigger = { has_country_flag = cbrn_convention_ratified_7 } }
 				NOT = { cbrn_convention_has_two_usable_families = yes }
 			}
 		}
@@ -1696,7 +1696,7 @@ cbrn_convention_apply_condemnation_relief = {
 	set_temp_variable = { cbrn_convention_reservation_breach = constant:cbrn_convention.zero }
 	if = {
 		limit = {
-			has_global_flag = cbrn_convention_active
+			hidden_trigger = { has_global_flag = cbrn_convention_active }
 			cbrn_convention_is_member = yes
 			check_variable = { condemnation_source_is_weapon_use > constant:condemnation_tier.normal }
 			check_variable = { condemnation_base_gain > constant:cbrn_convention.zero }
@@ -1750,16 +1750,16 @@ cbrn_convention_apply_condemnation_relief = {
 				OR = {
 					check_variable = { cbrn_convention_is_retaliation > constant:cbrn_convention.zero }
 					AND = {
-						has_country_flag = cbrn_convention_ratified_9
-						NOT = { has_country_flag = cbrn_convention_reserved_9 }
+						hidden_trigger = { has_country_flag = cbrn_convention_ratified_9 }
+						NOT = { hidden_trigger = { has_country_flag = cbrn_convention_reserved_9 } }
 					}
 					AND = {
 						check_variable = { cbrn_convention_weapon_family = constant:cbrn_convention.one }
-						has_country_flag = cbrn_convention_clause_chemical
+						hidden_trigger = { has_country_flag = cbrn_convention_clause_chemical }
 					}
 					AND = {
 						check_variable = { cbrn_convention_weapon_family = constant:cbrn_convention.two }
-						has_country_flag = cbrn_convention_clause_biological
+						hidden_trigger = { has_country_flag = cbrn_convention_clause_biological }
 					}
 				}
 			}
@@ -1821,8 +1821,8 @@ cbrn_convention_lookup_relief = {
 	set_temp_variable = { cbrn_convention_stage = constant:cbrn_convention.zero }
 	if = {
 		limit = {
-			has_country_flag = cbrn_convention_ratified_9
-			NOT = { has_country_flag = cbrn_convention_reserved_9 }
+			hidden_trigger = { has_country_flag = cbrn_convention_ratified_9 }
+			NOT = { hidden_trigger = { has_country_flag = cbrn_convention_reserved_9 } }
 		}
 		set_temp_variable = { cbrn_convention_stage = constant:cbrn_convention.three }
 	}
@@ -1835,7 +1835,7 @@ cbrn_convention_lookup_relief = {
 				}
 				AND = {
 					check_variable = { cbrn_convention_weapon_family = constant:cbrn_convention.three }
-					has_country_flag = cbrn_convention_ratified_8
+					hidden_trigger = { has_country_flag = cbrn_convention_ratified_8 }
 				}
 			}
 		}
@@ -1846,11 +1846,11 @@ cbrn_convention_lookup_relief = {
 			OR = {
 				AND = {
 					check_variable = { cbrn_convention_weapon_family = constant:cbrn_convention.one }
-					has_country_flag = cbrn_convention_clause_chemical
+					hidden_trigger = { has_country_flag = cbrn_convention_clause_chemical }
 				}
 				AND = {
 					check_variable = { cbrn_convention_weapon_family = constant:cbrn_convention.two }
-					has_country_flag = cbrn_convention_clause_biological
+					hidden_trigger = { has_country_flag = cbrn_convention_clause_biological }
 				}
 			}
 		}
@@ -1861,7 +1861,7 @@ cbrn_convention_lookup_relief = {
 	if = {
 		limit = {
 			cbrn_convention_is_reservation = yes
-			has_country_flag = cbrn_convention_ratified_9
+			hidden_trigger = { has_country_flag = cbrn_convention_ratified_9 }
 		}
 		set_temp_variable = { cbrn_convention_stage = constant:cbrn_convention.three }
 	}
@@ -1980,7 +1980,7 @@ cbrn_convention_record_reservation_breach = {
 	# The consequences fall once. Later uses by a broken reservation only
 	# stay at ordinary Condemnation.
 	if = {
-		limit = { NOT = { has_country_flag = cbrn_convention_reservation_broken } }
+		limit = { NOT = { hidden_trigger = { has_country_flag = cbrn_convention_reservation_broken } } }
 		set_country_flag = cbrn_convention_reservation_broken
 		clr_country_flag = cbrn_convention_achv_reservation_track
 		set_country_flag = cbrn_convention_achv_reservation_lost
@@ -1995,7 +1995,7 @@ cbrn_convention_record_reservation_breach = {
 # gain. It is not applied again while the memory is still running.
 cbrn_convention_apply_reservation_pledge_breach = {
 	if = {
-		limit = { NOT = { has_country_flag = condemnation_pledge_broken } }
+		limit = { NOT = { hidden_trigger = { has_country_flag = condemnation_pledge_broken } } }
 		condemnation_initialize_country = yes
 		condemnation_apply_pledge_breach_consequence = yes
 		condemnation_recalculate_total = yes
@@ -2019,7 +2019,7 @@ cbrn_convention_on_use_policy_broadened = {
 cbrn_convention_add_participant_score_term = {
 	if = {
 		limit = {
-			has_global_flag = cbrn_convention_active
+			hidden_trigger = { has_global_flag = cbrn_convention_active }
 			has_variable = cbrn_convention_last_use_day
 			has_variable = cbrn_convention_last_use_class
 		}
@@ -2064,7 +2064,7 @@ cbrn_convention_add_participant_score_term = {
 # and calls an emergency agenda.
 cbrn_convention_on_member_attacked = {
 	if = {
-		limit = { has_global_flag = cbrn_convention_active }
+		limit = { hidden_trigger = { has_global_flag = cbrn_convention_active } }
 		set_temp_variable = { cbrn_convention_cooldown_days = constant:cbrn_convention_timing.recent_use_days }
 		set_country_flag = { flag = cbrn_convention_recent_cbrn_victim days = cbrn_convention_cooldown_days }
 		if = {
@@ -2073,7 +2073,7 @@ cbrn_convention_on_member_attacked = {
 			cbrn_convention_request_emergency_agenda = yes
 		}
 		if = {
-			limit = { has_country_flag = cbrn_convention_ratified_1 }
+			limit = { hidden_trigger = { has_country_flag = cbrn_convention_ratified_1 } }
 			set_country_flag = cbrn_convention_attacked_while_compact
 			save_event_target_as = cbrn_convention_assisted_country
 			for_each_scope_loop = {
@@ -2081,9 +2081,9 @@ cbrn_convention_on_member_attacked = {
 				if = {
 					limit = {
 						NOT = { tag = event_target:cbrn_convention_assisted_country }
-						has_country_flag = cbrn_convention_ratified_1
+						hidden_trigger = { has_country_flag = cbrn_convention_ratified_1 }
 						NOT = { has_war_with = event_target:cbrn_convention_assisted_country }
-						NOT = { has_country_flag = cbrn_convention_assistance_owed }
+						NOT = { hidden_trigger = { has_country_flag = cbrn_convention_assistance_owed } }
 					}
 					set_country_flag = cbrn_convention_assistance_owed
 					set_variable = { cbrn_convention_assistance_target = event_target:cbrn_convention_assisted_country }
@@ -2318,7 +2318,7 @@ cbrn_convention_pulse_program = {
 cbrn_convention_refresh_program_quorum = {
 	if = {
 		limit = {
-			has_global_flag = cbrn_convention_treaty_10_in_force
+			hidden_trigger = { has_global_flag = cbrn_convention_treaty_10_in_force }
 			OR = {
 				check_variable = { global.cbrn_convention_program_state = constant:cbrn_convention_program_state.active }
 				check_variable = { global.cbrn_convention_program_state = constant:cbrn_convention_program_state.paused }
@@ -2330,7 +2330,7 @@ cbrn_convention_refresh_program_quorum = {
 			array = global.cbrn_convention_members
 			if = {
 				limit = {
-					has_country_flag = cbrn_convention_ratified_10
+					hidden_trigger = { has_country_flag = cbrn_convention_ratified_10 }
 					cbrn_convention_is_voting_member = yes
 				}
 				add_to_temp_variable = { cbrn_convention_charter_ratifiers = constant:cbrn_convention.one }

@@ -94,7 +94,7 @@ sov_nuclear_bombs_book_native_stockpile_use = {
 			tag = SOV
 			exists = yes
 			has_global_flag = sov_nuclear_bombs_ledger_active
-			has_country_flag = sov_nuclear_bombs_actor_registered
+			hidden_trigger = { has_country_flag = sov_nuclear_bombs_actor_registered }
 			NOT = { has_country_flag = sov_nuclear_bombs_native_delivery_pending }
 		}
 		sov_nuclear_bombs_initialize_actor_ledger = yes
@@ -196,8 +196,8 @@ sov_nuclear_bombs_refresh_ledger_reconciliation = {
 	if = {
 		limit = {
 			OR = {
-				has_global_flag = sov_nuclear_bombs_event5_snapshot_bucket_mismatch
-				has_global_flag = sov_nuclear_bombs_native_custody_reconciliation_disputed
+				hidden_trigger = { has_global_flag = sov_nuclear_bombs_event5_snapshot_bucket_mismatch }
+				hidden_trigger = { has_global_flag = sov_nuclear_bombs_native_custody_reconciliation_disputed }
 				SOV = { has_country_flag = sov_nuclear_bombs_action_reservation_disputed }
 				check_variable = { var = global.sov_nuclear_bombs_ledger_operational value = constant:sov_nuclear_bombs_ledger.zero compare = less_than }
 				check_variable = { var = global.sov_nuclear_bombs_ledger_assigned value = constant:sov_nuclear_bombs_ledger.zero compare = less_than }
@@ -388,7 +388,7 @@ sov_nuclear_bombs_register_event_owned_devices = {
 	sov_nuclear_bombs_initialize_actor_ledger = yes
 	if = {
 		limit = {
-			NOT = { has_country_flag = sov_nuclear_bombs_event_registration_complete }
+			NOT = { hidden_trigger = { has_country_flag = sov_nuclear_bombs_event_registration_complete } }
 			has_variable = sov_nuclear_bombs_registration_amount
 			check_variable = { var = sov_nuclear_bombs_registration_amount value = constant:sov_nuclear_bombs_ledger.zero compare = greater_than }
 		}
@@ -1150,7 +1150,7 @@ sov_nuclear_bombs_clear_action_context = {
 			if = {
 				limit = { has_variable = sov_nuclear_bombs_action_source_state }
 				var:sov_nuclear_bombs_action_source_state = {
-					if = { limit = { has_state_flag = sov_nuclear_bombs_dispersed_transfer_risk_pending } sov_nuclear_bombs_apply_doctrine_transfer_risk = yes }
+					if = { limit = { hidden_trigger = { has_state_flag = sov_nuclear_bombs_dispersed_transfer_risk_pending } } sov_nuclear_bombs_apply_doctrine_transfer_risk = yes }
 				}
 			}
 			clear_variable = sov_nuclear_bombs_action_source_state
@@ -1341,7 +1341,7 @@ sov_nuclear_bombs_mark_site_transferred = {
 		set_variable = { sov_nuclear_bombs_site_assigned = constant:sov_nuclear_bombs_ledger.zero }
 		set_variable = { sov_nuclear_bombs_native_transfer_amount = sov_nuclear_bombs_transfer_total }
 		if = {
-			limit = { has_state_flag = sov_nuclear_bombs_native_custody_with_holder }
+			limit = { hidden_trigger = { has_state_flag = sov_nuclear_bombs_native_custody_with_holder } }
 			if = {
 				limit = {
 					has_variable = sov_nuclear_bombs_native_transfer_amount
@@ -1412,7 +1412,7 @@ sov_nuclear_bombs_mark_site_transferred = {
 				add_to_variable = { sov_nuclear_bombs_actor_transferred = sov_nuclear_bombs_transfer_operational }
 				if = {
 					limit = {
-						has_country_flag = sov_nuclear_bombs_breakaway_nuclear_operational
+						hidden_trigger = { has_country_flag = sov_nuclear_bombs_breakaway_nuclear_operational }
 						NOT = { check_variable = { var = sov_nuclear_bombs_actor_operational value = constant:sov_nuclear_bombs_ledger.zero compare = greater_than } }
 					}
 					clr_country_flag = sov_nuclear_bombs_breakaway_nuclear_operational
@@ -1526,7 +1526,7 @@ sov_nuclear_bombs_return_site_custody_to_soviet = {
 	if = {
 		limit = {
 			sov_nuclear_bombs_state_is_registered = yes
-			NOT = { has_state_flag = sov_nuclear_bombs_site_native_custody_disputed }
+			NOT = { hidden_trigger = { has_state_flag = sov_nuclear_bombs_site_native_custody_disputed } }
 			OR = {
 				check_variable = { var = sov_nuclear_bombs_site_transferred value = constant:sov_nuclear_bombs_ledger.zero compare = greater_than }
 				check_variable = { var = sov_nuclear_bombs_site_operational value = constant:sov_nuclear_bombs_ledger.zero compare = greater_than }
@@ -1535,9 +1535,9 @@ sov_nuclear_bombs_return_site_custody_to_soviet = {
 			NOT = { has_state_flag = sov_nuclear_bombs_site_missing }
 			SOV = { exists = yes }
 			OR = {
-				NOT = { has_state_flag = sov_nuclear_bombs_native_custody_with_holder }
+				NOT = { hidden_trigger = { has_state_flag = sov_nuclear_bombs_native_custody_with_holder } }
 				AND = {
-					has_state_flag = sov_nuclear_bombs_native_custody_with_holder
+					hidden_trigger = { has_state_flag = sov_nuclear_bombs_native_custody_with_holder }
 					has_variable = sov_nuclear_bombs_site_holder
 					has_variable = sov_nuclear_bombs_native_transfer_amount
 					check_variable = { var = sov_nuclear_bombs_native_transfer_amount value = constant:sov_nuclear_bombs_ledger.zero compare = greater_than }
@@ -1564,7 +1564,7 @@ sov_nuclear_bombs_return_site_custody_to_soviet = {
 				if = { limit = { check_variable = { var = sov_nuclear_bombs_return_transferred value = constant:sov_nuclear_bombs_ledger.zero compare = greater_than } } subtract_from_variable = { sov_nuclear_bombs_actor_transferred = sov_nuclear_bombs_return_transferred } }
 				if = {
 					limit = {
-						has_country_flag = sov_nuclear_bombs_breakaway_nuclear_operational
+						hidden_trigger = { has_country_flag = sov_nuclear_bombs_breakaway_nuclear_operational }
 						NOT = { check_variable = { var = sov_nuclear_bombs_actor_operational value = constant:sov_nuclear_bombs_ledger.zero compare = greater_than } }
 					}
 					clr_country_flag = sov_nuclear_bombs_breakaway_nuclear_operational
@@ -1576,7 +1576,7 @@ sov_nuclear_bombs_return_site_custody_to_soviet = {
 			}
 		}
 		if = {
-			limit = { has_state_flag = sov_nuclear_bombs_native_custody_with_holder }
+			limit = { hidden_trigger = { has_state_flag = sov_nuclear_bombs_native_custody_with_holder } }
 			var:sov_nuclear_bombs_site_holder = {
 				set_temp_variable = { sov_nuclear_bombs_native_return_delta = sov_nuclear_bombs_return_total }
 				multiply_temp_variable = { sov_nuclear_bombs_native_return_delta = -1 }
@@ -1597,7 +1597,7 @@ sov_nuclear_bombs_return_site_custody_to_soviet = {
 		clr_state_flag = sov_nuclear_bombs_native_custody_with_holder
 		set_variable = { sov_nuclear_bombs_site_custody_state = constant:sov_nuclear_bombs_custody.central_soviet }
 		if = {
-			limit = { has_state_flag = sov_nuclear_bombs_site_native_custody_disputed }
+			limit = { hidden_trigger = { has_state_flag = sov_nuclear_bombs_site_native_custody_disputed } }
 			set_variable = { sov_nuclear_bombs_site_reconciliation_state = constant:sov_nuclear_bombs_custody.disputed }
 		}
 		else = { set_variable = { sov_nuclear_bombs_site_reconciliation_state = constant:sov_nuclear_bombs_custody.reconciled } }
@@ -1613,7 +1613,7 @@ sov_nuclear_bombs_return_site_custody_to_soviet = {
 	else_if = {
 		limit = {
 			sov_nuclear_bombs_state_is_registered = yes
-			has_state_flag = sov_nuclear_bombs_native_custody_with_holder
+			hidden_trigger = { has_state_flag = sov_nuclear_bombs_native_custody_with_holder }
 		}
 		set_variable = { sov_nuclear_bombs_site_reconciliation_state = constant:sov_nuclear_bombs_custody.disputed }
 		set_global_flag = sov_nuclear_bombs_native_custody_reconciliation_disputed
@@ -1642,7 +1642,7 @@ sov_nuclear_bombs_restore_site_to_soviet = {
 		}
 		sov_nuclear_bombs_return_site_custody_to_soviet = yes
 		if = {
-			limit = { has_state_flag = sov_nuclear_bombs_site_returned_to_soviet }
+			limit = { hidden_trigger = { has_state_flag = sov_nuclear_bombs_site_returned_to_soviet } }
 			set_variable = { sov_nuclear_bombs_site_recorded_owner = SOV }
 			set_variable = { sov_nuclear_bombs_site_recorded_controller = SOV }
 			clr_state_flag = sov_nuclear_bombs_site_technical_denial
@@ -1829,7 +1829,7 @@ sov_nuclear_bombs_mark_site_missing = {
 				if = {
 					limit = {
 						PREV = { has_state_flag = sov_nuclear_bombs_breakaway_site_operationalized }
-						has_country_flag = sov_nuclear_bombs_breakaway_nuclear_operational
+						hidden_trigger = { has_country_flag = sov_nuclear_bombs_breakaway_nuclear_operational }
 						NOT = { check_variable = { var = sov_nuclear_bombs_actor_operational value = constant:sov_nuclear_bombs_ledger.zero compare = greater_than } }
 					}
 					clr_country_flag = sov_nuclear_bombs_breakaway_nuclear_operational
@@ -1936,14 +1936,14 @@ sov_nuclear_bombs_close_assembly_receipt = {
 			var:sov_nuclear_bombs_assembly_state = {
 				check_variable = { var = THIS.id value = PREV.sov_nuclear_bombs_assembly_state_id compare = equals }
 				OR = {
-					AND = { has_state_flag = sov_nuclear_bombs_assembly_batch_active check_variable = { var = sov_nuclear_bombs_assembly_batch_nonce value = PREV.sov_nuclear_bombs_assembly_nonce compare = equals } }
-					AND = { NOT = { has_state_flag = sov_nuclear_bombs_assembly_batch_active } has_variable = sov_nuclear_bombs_assembly_closed_nonce check_variable = { var = sov_nuclear_bombs_assembly_closed_nonce value = PREV.sov_nuclear_bombs_assembly_nonce compare = equals } }
+					AND = { hidden_trigger = { has_state_flag = sov_nuclear_bombs_assembly_batch_active } check_variable = { var = sov_nuclear_bombs_assembly_batch_nonce value = PREV.sov_nuclear_bombs_assembly_nonce compare = equals } }
+					AND = { NOT = { hidden_trigger = { has_state_flag = sov_nuclear_bombs_assembly_batch_active } } has_variable = sov_nuclear_bombs_assembly_closed_nonce check_variable = { var = sov_nuclear_bombs_assembly_closed_nonce value = PREV.sov_nuclear_bombs_assembly_nonce compare = equals } }
 				}
 			}
 		}
 		var:sov_nuclear_bombs_assembly_state = {
 			if = {
-				limit = { has_state_flag = sov_nuclear_bombs_assembly_batch_active check_variable = { var = sov_nuclear_bombs_assembly_batch_nonce value = PREV.sov_nuclear_bombs_assembly_nonce compare = equals } }
+				limit = { hidden_trigger = { has_state_flag = sov_nuclear_bombs_assembly_batch_active } check_variable = { var = sov_nuclear_bombs_assembly_batch_nonce value = PREV.sov_nuclear_bombs_assembly_nonce compare = equals } }
 				set_variable = { sov_nuclear_bombs_assembly_closed_nonce = sov_nuclear_bombs_assembly_batch_nonce }
 				clr_state_flag = sov_nuclear_bombs_assembly_batch_active
 				clear_variable = sov_nuclear_bombs_assembly_batch_nonce
@@ -2085,7 +2085,7 @@ sov_nuclear_bombs_refresh_transit_registry = {
 		set_variable = { global.sov_nuclear_bombs_ledger_reconciliation = constant:sov_nuclear_bombs_ledger.disputed }
 	}
 	if = {
-		limit = { SOV = { exists = yes has_country_flag = sov_nuclear_bombs_transit_active } }
+		limit = { SOV = { exists = yes hidden_trigger = { has_country_flag = sov_nuclear_bombs_transit_active } } }
 		SOV = {
 			if = {
 				limit = {
@@ -2106,13 +2106,13 @@ sov_nuclear_bombs_refresh_transit_registry = {
 # Callers first place the conserved device into its arrival or return bucket.
 sov_nuclear_bombs_close_transit_receipt = {
 	if = {
-		limit = { has_state_flag = sov_nuclear_bombs_transit_source_active has_variable = sov_nuclear_bombs_site_transit_nonce }
+		limit = { hidden_trigger = { has_state_flag = sov_nuclear_bombs_transit_source_active } has_variable = sov_nuclear_bombs_site_transit_nonce }
 		set_variable = { sov_nuclear_bombs_site_transit_closed_nonce = sov_nuclear_bombs_site_transit_nonce }
 		if = {
 			limit = { has_variable = sov_nuclear_bombs_site_transit_destination }
 			var:sov_nuclear_bombs_site_transit_destination = {
 				if = {
-					limit = { has_state_flag = sov_nuclear_bombs_transit_destination_pending check_variable = { var = sov_nuclear_bombs_site_transit_nonce value = PREV.sov_nuclear_bombs_site_transit_nonce compare = equals } }
+					limit = { hidden_trigger = { has_state_flag = sov_nuclear_bombs_transit_destination_pending } check_variable = { var = sov_nuclear_bombs_site_transit_nonce value = PREV.sov_nuclear_bombs_site_transit_nonce compare = equals } }
 					clr_state_flag = sov_nuclear_bombs_transit_destination_pending
 					clear_variable = sov_nuclear_bombs_site_transit_source
 					clear_variable = sov_nuclear_bombs_site_transit_source_id
@@ -2149,7 +2149,7 @@ sov_nuclear_bombs_close_transit_receipt = {
 # the existing native-aware transfer helper, or records an unresolved loss.
 sov_nuclear_bombs_settle_transit_source = {
 	if = {
-		limit = { has_state_flag = sov_nuclear_bombs_transit_source_active check_variable = { var = sov_nuclear_bombs_site_in_transit value = constant:sov_nuclear_bombs_ledger.one compare = equals } }
+		limit = { hidden_trigger = { has_state_flag = sov_nuclear_bombs_transit_source_active } check_variable = { var = sov_nuclear_bombs_site_in_transit value = constant:sov_nuclear_bombs_ledger.one compare = equals } }
 		add_to_variable = { sov_nuclear_bombs_site_assigned = constant:sov_nuclear_bombs_ledger.one }
 		if = {
 			limit = { OR = { has_state_flag = sov_nuclear_bombs_site_missing has_state_flag = sov_nuclear_bombs_site_dismantled NOT = { OR = { owner = { exists = yes } controller = { exists = yes } } } } }
@@ -2239,7 +2239,7 @@ sov_nuclear_bombs_cancel_transit = {
 sov_nuclear_bombs_reconcile_transit_state_change = {
 	if = {
 		limit = {
-			has_state_flag = sov_nuclear_bombs_transit_source_active
+			hidden_trigger = { has_state_flag = sov_nuclear_bombs_transit_source_active }
 			OR = {
 				NOT = { AND = { is_owned_by = SOV is_controlled_by = SOV } }
 				AND = { has_variable = sov_nuclear_bombs_site_transit_destination var:sov_nuclear_bombs_site_transit_destination = { NOT = { AND = { is_owned_by = SOV is_controlled_by = SOV } } } }
@@ -2248,7 +2248,7 @@ sov_nuclear_bombs_reconcile_transit_state_change = {
 		sov_nuclear_bombs_settle_transit_source = yes
 	}
 	if = {
-		limit = { has_state_flag = sov_nuclear_bombs_transit_destination_pending has_variable = sov_nuclear_bombs_site_transit_source }
+		limit = { hidden_trigger = { has_state_flag = sov_nuclear_bombs_transit_destination_pending } has_variable = sov_nuclear_bombs_site_transit_source }
 		var:sov_nuclear_bombs_site_transit_source = {
 			if = { limit = { NOT = { has_state_flag = sov_nuclear_bombs_event5_snapshot_pending } } sov_nuclear_bombs_settle_transit_source = yes }
 		}
@@ -2312,13 +2312,13 @@ sov_nuclear_bombs_refresh_dismantlement_registry = {
 sov_nuclear_bombs_close_active_dismantlement = {
 	if = {
 		limit = {
-			has_country_flag = sov_nuclear_bombs_dismantlement_registry_active
+			hidden_trigger = { has_country_flag = sov_nuclear_bombs_dismantlement_registry_active }
 			has_variable = sov_nuclear_bombs_dismantlement_source_state
-			var:sov_nuclear_bombs_dismantlement_source_state = { has_state_flag = sov_nuclear_bombs_active_dismantlement_site check_variable = { var = sov_nuclear_bombs_site_active_dismantlement_nonce value = PREV.sov_nuclear_bombs_dismantlement_nonce compare = equals } }
+			var:sov_nuclear_bombs_dismantlement_source_state = { hidden_trigger = { has_state_flag = sov_nuclear_bombs_active_dismantlement_site } check_variable = { var = sov_nuclear_bombs_site_active_dismantlement_nonce value = PREV.sov_nuclear_bombs_dismantlement_nonce compare = equals } }
 		}
 		var:sov_nuclear_bombs_dismantlement_source_state = {
 			if = {
-				limit = { has_state_flag = sov_nuclear_bombs_active_dismantlement_site check_variable = { var = sov_nuclear_bombs_site_active_dismantlement_nonce value = PREV.sov_nuclear_bombs_dismantlement_nonce compare = equals } }
+				limit = { hidden_trigger = { has_state_flag = sov_nuclear_bombs_active_dismantlement_site } check_variable = { var = sov_nuclear_bombs_site_active_dismantlement_nonce value = PREV.sov_nuclear_bombs_dismantlement_nonce compare = equals } }
 				set_variable = { sov_nuclear_bombs_site_dismantlement_closed_nonce = sov_nuclear_bombs_site_active_dismantlement_nonce }
 				clr_state_flag = sov_nuclear_bombs_active_dismantlement_site
 				clear_variable = sov_nuclear_bombs_site_active_dismantlement_nonce
@@ -2335,7 +2335,7 @@ sov_nuclear_bombs_close_active_dismantlement = {
 		clear_variable = sov_nuclear_bombs_dismantlement_action_nonce
 		sov_nuclear_bombs_refresh_dismantlement_registry = yes
 	}
-	else_if = { limit = { has_country_flag = sov_nuclear_bombs_dismantlement_registry_active } set_global_flag = sov_nuclear_bombs_event5_snapshot_bucket_mismatch }
+	else_if = { limit = { hidden_trigger = { has_country_flag = sov_nuclear_bombs_dismantlement_registry_active } } set_global_flag = sov_nuclear_bombs_event5_snapshot_bucket_mismatch }
 }
 
 # State scope, observed after an Event 005 transfer. The cancellation path
@@ -2343,9 +2343,9 @@ sov_nuclear_bombs_close_active_dismantlement = {
 sov_nuclear_bombs_reconcile_dismantlement_state_change = {
 	if = {
 		limit = {
-			has_state_flag = sov_nuclear_bombs_active_dismantlement_site
+			hidden_trigger = { has_state_flag = sov_nuclear_bombs_active_dismantlement_site }
 			NOT = { AND = { is_owned_by = SOV is_controlled_by = SOV } }
-			SOV = { exists = yes has_country_flag = sov_nuclear_bombs_dismantlement_registry_active }
+			SOV = { exists = yes hidden_trigger = { has_country_flag = sov_nuclear_bombs_dismantlement_registry_active } }
 		}
 		SOV = { sov_nuclear_bombs_cancel_dismantlement = yes }
 		if = {
@@ -2356,7 +2356,7 @@ sov_nuclear_bombs_reconcile_dismantlement_state_change = {
 		else_if = { limit = { check_variable = { var = sov_nuclear_bombs_site_assigned value = constant:sov_nuclear_bombs_ledger.one compare = greater_than_or_equals } } sov_nuclear_bombs_mark_site_missing = yes }
 	}
 	else_if = {
-		limit = { has_state_flag = sov_nuclear_bombs_active_dismantlement_site SOV = { exists = no } }
+		limit = { hidden_trigger = { has_state_flag = sov_nuclear_bombs_active_dismantlement_site } SOV = { exists = no } }
 		set_state_flag = sov_nuclear_bombs_site_native_custody_disputed
 		set_global_flag = sov_nuclear_bombs_native_custody_reconciliation_disputed
 	}
@@ -2365,26 +2365,26 @@ sov_nuclear_bombs_reconcile_dismantlement_state_change = {
 # Exact state scope. Territorial change marks existing roles contested but
 # never transfers command, institutional access, or delivery capability.
 sov_nuclear_bombs_reconcile_registry_state_change = {
-	if = { limit = { has_state_flag = sov_nuclear_bombs_dispersed_transfer_risk_pending } sov_nuclear_bombs_apply_doctrine_transfer_risk = yes }
+	if = { limit = { hidden_trigger = { has_state_flag = sov_nuclear_bombs_dispersed_transfer_risk_pending } } sov_nuclear_bombs_apply_doctrine_transfer_risk = yes }
 	sov_nuclear_bombs_reconcile_production_reactor_capacity = yes
 	if = {
-		limit = { has_state_flag = sov_nuclear_bombs_assembly_site NOT = { AND = { is_owned_by = SOV is_controlled_by = SOV } } }
+		limit = { hidden_trigger = { has_state_flag = sov_nuclear_bombs_assembly_site } NOT = { AND = { is_owned_by = SOV is_controlled_by = SOV } } }
 		set_state_flag = sov_nuclear_bombs_assembly_site_contested
 		if = {
-			limit = { has_state_flag = sov_nuclear_bombs_assembly_batch_active SOV = { has_country_flag = sov_nuclear_bombs_production_mission_active has_variable = sov_nuclear_bombs_assembly_state_id check_variable = { var = sov_nuclear_bombs_assembly_state_id value = PREV.id compare = equals } } }
+			limit = { hidden_trigger = { has_state_flag = sov_nuclear_bombs_assembly_batch_active } SOV = { has_country_flag = sov_nuclear_bombs_production_mission_active has_variable = sov_nuclear_bombs_assembly_state_id check_variable = { var = sov_nuclear_bombs_assembly_state_id value = PREV.id compare = equals } } }
 			SOV = { sov_nuclear_bombs_cancel_production_mission = yes }
 		}
 	}
 	if = {
 		limit = {
-			OR = { has_state_flag = sov_nuclear_bombs_central_command_site has_state_flag = sov_nuclear_bombs_backup_command_site has_state_flag = sov_nuclear_bombs_production_reactor_site }
+			OR = { hidden_trigger = { has_state_flag = sov_nuclear_bombs_central_command_site } hidden_trigger = { has_state_flag = sov_nuclear_bombs_backup_command_site } has_state_flag = sov_nuclear_bombs_production_reactor_site }
 			NOT = { AND = { is_owned_by = SOV is_controlled_by = SOV } }
 		}
 		set_state_flag = sov_nuclear_bombs_soviet_registry_site_contested
 	}
 	if = {
 		limit = {
-			has_state_flag = sov_nuclear_bombs_backup_command_site
+			hidden_trigger = { has_state_flag = sov_nuclear_bombs_backup_command_site }
 			NOT = { AND = { is_owned_by = SOV is_controlled_by = SOV } }
 			SOV = {
 				exists = yes
@@ -2398,7 +2398,7 @@ sov_nuclear_bombs_reconcile_registry_state_change = {
 	}
 	if = {
 		limit = {
-			has_state_flag = sov_nuclear_bombs_institutional_access_site
+			hidden_trigger = { has_state_flag = sov_nuclear_bombs_institutional_access_site }
 			OR = {
 				NOT = { has_variable = sov_nuclear_bombs_site_holder }
 				NOT = { check_variable = { var = sov_nuclear_bombs_site_holder value = sov_nuclear_bombs_institutional_access_actor compare = equals } }
@@ -2408,7 +2408,7 @@ sov_nuclear_bombs_reconcile_registry_state_change = {
 	}
 	if = {
 		limit = {
-			has_state_flag = sov_nuclear_bombs_breakaway_custody_secured
+			hidden_trigger = { has_state_flag = sov_nuclear_bombs_breakaway_custody_secured }
 			OR = {
 				NOT = { has_variable = sov_nuclear_bombs_site_holder }
 				NOT = { has_variable = sov_nuclear_bombs_local_custody_actor }
@@ -2419,7 +2419,7 @@ sov_nuclear_bombs_reconcile_registry_state_change = {
 	}
 	if = {
 		limit = {
-			has_state_flag = sov_nuclear_bombs_breakaway_command_site
+			hidden_trigger = { has_state_flag = sov_nuclear_bombs_breakaway_command_site }
 			OR = {
 				NOT = { has_variable = sov_nuclear_bombs_site_holder }
 				NOT = { check_variable = { var = sov_nuclear_bombs_site_holder value = sov_nuclear_bombs_breakaway_command_actor compare = equals } }
@@ -2429,7 +2429,7 @@ sov_nuclear_bombs_reconcile_registry_state_change = {
 	}
 	if = {
 		limit = {
-			has_state_flag = sov_nuclear_bombs_delivery_force_site
+			hidden_trigger = { has_state_flag = sov_nuclear_bombs_delivery_force_site }
 			OR = {
 				NOT = { has_variable = sov_nuclear_bombs_site_holder }
 				NOT = { check_variable = { var = sov_nuclear_bombs_site_holder value = sov_nuclear_bombs_site_delivery_force_owner compare = equals } }
@@ -2552,58 +2552,58 @@ sov_nuclear_bombs_capture_event5_context_before = {
 	if = { limit = { SOV = { exists = yes has_country_flag = sov_nuclear_bombs_collapse_active } } set_state_flag = sov_nuclear_bombs_event5_before_sov_collapse_active } else = { clr_state_flag = sov_nuclear_bombs_event5_before_sov_collapse_active }
 	if = { limit = { SOV = { exists = yes has_country_flag = sov_nuclear_bombs_custody_doctrine_unselected } } set_state_flag = sov_nuclear_bombs_event5_before_sov_custody_doctrine_unselected } else = { clr_state_flag = sov_nuclear_bombs_event5_before_sov_custody_doctrine_unselected }
 	if = { limit = { SOV = { exists = yes has_country_flag = sov_nuclear_bombs_doctrine_reform_pending } } set_state_flag = sov_nuclear_bombs_event5_before_sov_doctrine_reform_pending } else = { clr_state_flag = sov_nuclear_bombs_event5_before_sov_doctrine_reform_pending }
-	if = { limit = { SOV = { exists = yes has_country_flag = sov_nuclear_bombs_doctrine_reform_completed } } set_state_flag = sov_nuclear_bombs_event5_before_sov_doctrine_reform_completed } else = { clr_state_flag = sov_nuclear_bombs_event5_before_sov_doctrine_reform_completed }
+	if = { limit = { SOV = { exists = yes hidden_trigger = { has_country_flag = sov_nuclear_bombs_doctrine_reform_completed } } } set_state_flag = sov_nuclear_bombs_event5_before_sov_doctrine_reform_completed } else = { clr_state_flag = sov_nuclear_bombs_event5_before_sov_doctrine_reform_completed }
 	if = { limit = { SOV = { exists = yes has_country_flag = sov_nuclear_bombs_evolution_i_active } } set_state_flag = sov_nuclear_bombs_event5_before_sov_evolution_i_active } else = { clr_state_flag = sov_nuclear_bombs_event5_before_sov_evolution_i_active }
 	if = { limit = { SOV = { exists = yes has_country_flag = sov_nuclear_bombs_evolution_ii_active } } set_state_flag = sov_nuclear_bombs_event5_before_sov_evolution_ii_active } else = { clr_state_flag = sov_nuclear_bombs_event5_before_sov_evolution_ii_active }
 	if = { limit = { SOV = { exists = yes has_country_flag = sov_nuclear_bombs_evolution_iii_active } } set_state_flag = sov_nuclear_bombs_event5_before_sov_evolution_iii_active } else = { clr_state_flag = sov_nuclear_bombs_event5_before_sov_evolution_iii_active }
 	if = { limit = { SOV = { exists = yes has_country_flag = sov_nuclear_bombs_evolution_iv_active } } set_state_flag = sov_nuclear_bombs_event5_before_sov_evolution_iv_active } else = { clr_state_flag = sov_nuclear_bombs_event5_before_sov_evolution_iv_active }
 	if = { limit = { SOV = { exists = yes has_country_flag = sov_nuclear_bombs_production_mission_active } } set_state_flag = sov_nuclear_bombs_event5_before_sov_production_mission_active } else = { clr_state_flag = sov_nuclear_bombs_event5_before_sov_production_mission_active }
 	if = { limit = { SOV = { exists = yes has_country_flag = sov_nuclear_bombs_reactor_construction_pending } } set_state_flag = sov_nuclear_bombs_event5_before_sov_reactor_construction_pending } else = { clr_state_flag = sov_nuclear_bombs_event5_before_sov_reactor_construction_pending }
-	if = { limit = { SOV = { exists = yes has_country_flag = sov_nuclear_bombs_reactor_opening_pending } } set_state_flag = sov_nuclear_bombs_event5_before_sov_reactor_opening_pending } else = { clr_state_flag = sov_nuclear_bombs_event5_before_sov_reactor_opening_pending }
-	if = { limit = { SOV = { exists = yes has_country_flag = sov_nuclear_bombs_reactor_production_completion_pending } } set_state_flag = sov_nuclear_bombs_event5_before_sov_reactor_production_completion_pending } else = { clr_state_flag = sov_nuclear_bombs_event5_before_sov_reactor_production_completion_pending }
-	if = { limit = { SOV = { exists = yes has_country_flag = sov_nuclear_bombs_fissile_production_completed } } set_state_flag = sov_nuclear_bombs_event5_before_sov_fissile_production_completed } else = { clr_state_flag = sov_nuclear_bombs_event5_before_sov_fissile_production_completed }
+	if = { limit = { SOV = { exists = yes hidden_trigger = { has_country_flag = sov_nuclear_bombs_reactor_opening_pending } } } set_state_flag = sov_nuclear_bombs_event5_before_sov_reactor_opening_pending } else = { clr_state_flag = sov_nuclear_bombs_event5_before_sov_reactor_opening_pending }
+	if = { limit = { SOV = { exists = yes hidden_trigger = { has_country_flag = sov_nuclear_bombs_reactor_production_completion_pending } } } set_state_flag = sov_nuclear_bombs_event5_before_sov_reactor_production_completion_pending } else = { clr_state_flag = sov_nuclear_bombs_event5_before_sov_reactor_production_completion_pending }
+	if = { limit = { SOV = { exists = yes hidden_trigger = { has_country_flag = sov_nuclear_bombs_fissile_production_completed } } } set_state_flag = sov_nuclear_bombs_event5_before_sov_fissile_production_completed } else = { clr_state_flag = sov_nuclear_bombs_event5_before_sov_fissile_production_completed }
 	if = { limit = { SOV = { exists = yes has_country_flag = sov_nuclear_bombs_test_mission_active } } set_state_flag = sov_nuclear_bombs_event5_before_sov_test_mission_active } else = { clr_state_flag = sov_nuclear_bombs_event5_before_sov_test_mission_active }
-	if = { limit = { SOV = { exists = yes has_country_flag = sov_nuclear_bombs_test_accident_no_yield_recorded } } set_state_flag = sov_nuclear_bombs_event5_before_sov_test_accident_no_yield_recorded } else = { clr_state_flag = sov_nuclear_bombs_event5_before_sov_test_accident_no_yield_recorded }
-	if = { limit = { SOV = { exists = yes has_country_flag = sov_nuclear_bombs_test_accident_true_yield_recorded } } set_state_flag = sov_nuclear_bombs_event5_before_sov_test_accident_true_yield_recorded } else = { clr_state_flag = sov_nuclear_bombs_event5_before_sov_test_accident_true_yield_recorded }
+	if = { limit = { SOV = { exists = yes hidden_trigger = { has_country_flag = sov_nuclear_bombs_test_accident_no_yield_recorded } } } set_state_flag = sov_nuclear_bombs_event5_before_sov_test_accident_no_yield_recorded } else = { clr_state_flag = sov_nuclear_bombs_event5_before_sov_test_accident_no_yield_recorded }
+	if = { limit = { SOV = { exists = yes hidden_trigger = { has_country_flag = sov_nuclear_bombs_test_accident_true_yield_recorded } } } set_state_flag = sov_nuclear_bombs_event5_before_sov_test_accident_true_yield_recorded } else = { clr_state_flag = sov_nuclear_bombs_event5_before_sov_test_accident_true_yield_recorded }
 	if = { limit = { SOV = { exists = yes has_country_flag = sov_nuclear_bombs_test_prepared } } set_state_flag = sov_nuclear_bombs_event5_before_sov_test_prepared } else = { clr_state_flag = sov_nuclear_bombs_event5_before_sov_test_prepared }
-	if = { limit = { SOV = { exists = yes has_country_flag = sov_nuclear_bombs_test_site_surveyed } } set_state_flag = sov_nuclear_bombs_event5_before_sov_test_site_surveyed } else = { clr_state_flag = sov_nuclear_bombs_event5_before_sov_test_site_surveyed }
+	if = { limit = { SOV = { exists = yes hidden_trigger = { has_country_flag = sov_nuclear_bombs_test_site_surveyed } } } set_state_flag = sov_nuclear_bombs_event5_before_sov_test_site_surveyed } else = { clr_state_flag = sov_nuclear_bombs_event5_before_sov_test_site_surveyed }
 	if = { limit = { SOV = { exists = yes has_country_flag = sov_nuclear_bombs_test_evacuation_pending } } set_state_flag = sov_nuclear_bombs_event5_before_sov_test_evacuation_pending } else = { clr_state_flag = sov_nuclear_bombs_event5_before_sov_test_evacuation_pending }
-	if = { limit = { SOV = { exists = yes has_country_flag = sov_nuclear_bombs_command_locked } } set_state_flag = sov_nuclear_bombs_event5_before_sov_command_locked } else = { clr_state_flag = sov_nuclear_bombs_event5_before_sov_command_locked }
+	if = { limit = { SOV = { exists = yes hidden_trigger = { has_country_flag = sov_nuclear_bombs_command_locked } } } set_state_flag = sov_nuclear_bombs_event5_before_sov_command_locked } else = { clr_state_flag = sov_nuclear_bombs_event5_before_sov_command_locked }
 	if = { limit = { SOV = { exists = yes has_country_flag = sov_nuclear_bombs_command_exercise_mission_active } } set_state_flag = sov_nuclear_bombs_event5_before_sov_command_exercise_mission_active } else = { clr_state_flag = sov_nuclear_bombs_event5_before_sov_command_exercise_mission_active }
-	if = { limit = { SOV = { exists = yes has_country_flag = sov_nuclear_bombs_command_exercise_complete } } set_state_flag = sov_nuclear_bombs_event5_before_sov_command_exercise_complete } else = { clr_state_flag = sov_nuclear_bombs_event5_before_sov_command_exercise_complete }
+	if = { limit = { SOV = { exists = yes hidden_trigger = { has_country_flag = sov_nuclear_bombs_command_exercise_complete } } } set_state_flag = sov_nuclear_bombs_event5_before_sov_command_exercise_complete } else = { clr_state_flag = sov_nuclear_bombs_event5_before_sov_command_exercise_complete }
 	if = { limit = { SOV = { exists = yes has_country_flag = sov_nuclear_bombs_delivery_crews_mission_active } } set_state_flag = sov_nuclear_bombs_event5_before_sov_delivery_crews_mission_active } else = { clr_state_flag = sov_nuclear_bombs_event5_before_sov_delivery_crews_mission_active }
 	if = { limit = { SOV = { exists = yes has_country_flag = sov_nuclear_bombs_delivery_crews_ready } } set_state_flag = sov_nuclear_bombs_event5_before_sov_delivery_crews_ready } else = { clr_state_flag = sov_nuclear_bombs_event5_before_sov_delivery_crews_ready }
 	if = { limit = { SOV = { exists = yes has_country_flag = sov_nuclear_bombs_delivery_crews_certified } } set_state_flag = sov_nuclear_bombs_event5_before_sov_delivery_crews_certified } else = { clr_state_flag = sov_nuclear_bombs_event5_before_sov_delivery_crews_certified }
 	if = { limit = { SOV = { exists = yes has_country_flag = sov_nuclear_bombs_native_delivery_pending } } set_state_flag = sov_nuclear_bombs_event5_before_sov_native_delivery_pending } else = { clr_state_flag = sov_nuclear_bombs_event5_before_sov_native_delivery_pending }
 	if = { limit = { SOV = { exists = yes has_country_flag = sov_nuclear_bombs_action_reservation_active } } set_state_flag = sov_nuclear_bombs_event5_before_sov_action_reservation_active } else = { clr_state_flag = sov_nuclear_bombs_event5_before_sov_action_reservation_active }
 	if = { limit = { has_state_flag = sov_nuclear_bombs_registered_storage_site } set_state_flag = sov_nuclear_bombs_event5_before_site_registered_storage_site } else = { clr_state_flag = sov_nuclear_bombs_event5_before_site_registered_storage_site }
-	if = { limit = { has_state_flag = sov_nuclear_bombs_reactor_site_pending } set_state_flag = sov_nuclear_bombs_event5_before_site_reactor_site_pending } else = { clr_state_flag = sov_nuclear_bombs_event5_before_site_reactor_site_pending }
-	if = { limit = { has_state_flag = sov_nuclear_bombs_reactor_event_owned } set_state_flag = sov_nuclear_bombs_event5_before_site_reactor_event_owned } else = { clr_state_flag = sov_nuclear_bombs_event5_before_site_reactor_event_owned }
-	if = { limit = { has_state_flag = sov_nuclear_bombs_native_delivery_state_pending } set_state_flag = sov_nuclear_bombs_event5_before_site_native_delivery_state_pending } else = { clr_state_flag = sov_nuclear_bombs_event5_before_site_native_delivery_state_pending }
-	if = { limit = { has_state_flag = sov_nuclear_bombs_disperse_source } set_state_flag = sov_nuclear_bombs_event5_before_site_disperse_source } else = { clr_state_flag = sov_nuclear_bombs_event5_before_site_disperse_source }
-	if = { limit = { has_state_flag = sov_nuclear_bombs_disperse_destination } set_state_flag = sov_nuclear_bombs_event5_before_site_disperse_destination } else = { clr_state_flag = sov_nuclear_bombs_event5_before_site_disperse_destination }
+	if = { limit = { hidden_trigger = { has_state_flag = sov_nuclear_bombs_reactor_site_pending } } set_state_flag = sov_nuclear_bombs_event5_before_site_reactor_site_pending } else = { clr_state_flag = sov_nuclear_bombs_event5_before_site_reactor_site_pending }
+	if = { limit = { hidden_trigger = { has_state_flag = sov_nuclear_bombs_reactor_event_owned } } set_state_flag = sov_nuclear_bombs_event5_before_site_reactor_event_owned } else = { clr_state_flag = sov_nuclear_bombs_event5_before_site_reactor_event_owned }
+	if = { limit = { hidden_trigger = { has_state_flag = sov_nuclear_bombs_native_delivery_state_pending } } set_state_flag = sov_nuclear_bombs_event5_before_site_native_delivery_state_pending } else = { clr_state_flag = sov_nuclear_bombs_event5_before_site_native_delivery_state_pending }
+	if = { limit = { hidden_trigger = { has_state_flag = sov_nuclear_bombs_disperse_source } } set_state_flag = sov_nuclear_bombs_event5_before_site_disperse_source } else = { clr_state_flag = sov_nuclear_bombs_event5_before_site_disperse_source }
+	if = { limit = { hidden_trigger = { has_state_flag = sov_nuclear_bombs_disperse_destination } } set_state_flag = sov_nuclear_bombs_event5_before_site_disperse_destination } else = { clr_state_flag = sov_nuclear_bombs_event5_before_site_disperse_destination }
 	if = { limit = { has_state_flag = sov_nuclear_bombs_site_technical_denial } set_state_flag = sov_nuclear_bombs_event5_before_site_site_technical_denial } else = { clr_state_flag = sov_nuclear_bombs_event5_before_site_site_technical_denial }
-	if = { limit = { has_state_flag = sov_nuclear_bombs_site_joint_custody } set_state_flag = sov_nuclear_bombs_event5_before_site_site_joint_custody } else = { clr_state_flag = sov_nuclear_bombs_event5_before_site_site_joint_custody }
+	if = { limit = { hidden_trigger = { has_state_flag = sov_nuclear_bombs_site_joint_custody } } set_state_flag = sov_nuclear_bombs_event5_before_site_site_joint_custody } else = { clr_state_flag = sov_nuclear_bombs_event5_before_site_site_joint_custody }
 	if = { limit = { has_state_flag = sov_nuclear_bombs_site_missing } set_state_flag = sov_nuclear_bombs_event5_before_site_site_missing } else = { clr_state_flag = sov_nuclear_bombs_event5_before_site_site_missing }
 	if = { limit = { has_state_flag = sov_nuclear_bombs_site_dismantled } set_state_flag = sov_nuclear_bombs_event5_before_site_site_dismantled } else = { clr_state_flag = sov_nuclear_bombs_event5_before_site_site_dismantled }
-	if = { limit = { has_state_flag = sov_nuclear_bombs_site_native_custody_disputed } set_state_flag = sov_nuclear_bombs_event5_before_site_site_native_custody_disputed } else = { clr_state_flag = sov_nuclear_bombs_event5_before_site_site_native_custody_disputed }
+	if = { limit = { hidden_trigger = { has_state_flag = sov_nuclear_bombs_site_native_custody_disputed } } set_state_flag = sov_nuclear_bombs_event5_before_site_site_native_custody_disputed } else = { clr_state_flag = sov_nuclear_bombs_event5_before_site_site_native_custody_disputed }
 	if = { limit = { has_state_flag = sov_nuclear_bombs_breakaway_site_operationalized } set_state_flag = sov_nuclear_bombs_event5_before_site_breakaway_site_operationalized } else = { clr_state_flag = sov_nuclear_bombs_event5_before_site_breakaway_site_operationalized }
 	if = { limit = { has_variable = sov_nuclear_bombs_site_holder } set_state_flag = sov_nuclear_bombs_event5_before_holder_present } else = { clr_state_flag = sov_nuclear_bombs_event5_before_holder_present }
-	if = { limit = { has_variable = sov_nuclear_bombs_site_holder var:sov_nuclear_bombs_site_holder = { exists = yes has_country_flag = sov_nuclear_bombs_breakaway_custody_secured } } set_state_flag = sov_nuclear_bombs_event5_before_holder_breakaway_custody_secured } else = { clr_state_flag = sov_nuclear_bombs_event5_before_holder_breakaway_custody_secured }
-	if = { limit = { has_variable = sov_nuclear_bombs_site_holder var:sov_nuclear_bombs_site_holder = { exists = yes has_country_flag = sov_nuclear_bombs_breakaway_technical_access } } set_state_flag = sov_nuclear_bombs_event5_before_holder_breakaway_technical_access } else = { clr_state_flag = sov_nuclear_bombs_event5_before_holder_breakaway_technical_access }
-	if = { limit = { has_variable = sov_nuclear_bombs_site_holder var:sov_nuclear_bombs_site_holder = { exists = yes has_country_flag = sov_nuclear_bombs_breakaway_command_formed } } set_state_flag = sov_nuclear_bombs_event5_before_holder_breakaway_command_formed } else = { clr_state_flag = sov_nuclear_bombs_event5_before_holder_breakaway_command_formed }
-	if = { limit = { has_variable = sov_nuclear_bombs_site_holder var:sov_nuclear_bombs_site_holder = { exists = yes has_country_flag = sov_nuclear_bombs_breakaway_delivery_integrated } } set_state_flag = sov_nuclear_bombs_event5_before_holder_breakaway_delivery_integrated } else = { clr_state_flag = sov_nuclear_bombs_event5_before_holder_breakaway_delivery_integrated }
-	if = { limit = { has_variable = sov_nuclear_bombs_site_holder var:sov_nuclear_bombs_site_holder = { exists = yes has_country_flag = sov_nuclear_bombs_breakaway_nuclear_operational } } set_state_flag = sov_nuclear_bombs_event5_before_holder_breakaway_nuclear_operational } else = { clr_state_flag = sov_nuclear_bombs_event5_before_holder_breakaway_nuclear_operational }
-	if = { limit = { OWNER = { exists = yes has_country_flag = sov_nuclear_bombs_breakaway_custody_secured } } set_state_flag = sov_nuclear_bombs_event5_before_owner_breakaway_custody_secured } else = { clr_state_flag = sov_nuclear_bombs_event5_before_owner_breakaway_custody_secured }
-	if = { limit = { OWNER = { exists = yes has_country_flag = sov_nuclear_bombs_breakaway_technical_access } } set_state_flag = sov_nuclear_bombs_event5_before_owner_breakaway_technical_access } else = { clr_state_flag = sov_nuclear_bombs_event5_before_owner_breakaway_technical_access }
-	if = { limit = { OWNER = { exists = yes has_country_flag = sov_nuclear_bombs_breakaway_command_formed } } set_state_flag = sov_nuclear_bombs_event5_before_owner_breakaway_command_formed } else = { clr_state_flag = sov_nuclear_bombs_event5_before_owner_breakaway_command_formed }
-	if = { limit = { OWNER = { exists = yes has_country_flag = sov_nuclear_bombs_breakaway_delivery_integrated } } set_state_flag = sov_nuclear_bombs_event5_before_owner_breakaway_delivery_integrated } else = { clr_state_flag = sov_nuclear_bombs_event5_before_owner_breakaway_delivery_integrated }
-	if = { limit = { OWNER = { exists = yes has_country_flag = sov_nuclear_bombs_breakaway_nuclear_operational } } set_state_flag = sov_nuclear_bombs_event5_before_owner_breakaway_nuclear_operational } else = { clr_state_flag = sov_nuclear_bombs_event5_before_owner_breakaway_nuclear_operational }
-	if = { limit = { CONTROLLER = { exists = yes has_country_flag = sov_nuclear_bombs_breakaway_custody_secured } } set_state_flag = sov_nuclear_bombs_event5_before_controller_breakaway_custody_secured } else = { clr_state_flag = sov_nuclear_bombs_event5_before_controller_breakaway_custody_secured }
-	if = { limit = { CONTROLLER = { exists = yes has_country_flag = sov_nuclear_bombs_breakaway_technical_access } } set_state_flag = sov_nuclear_bombs_event5_before_controller_breakaway_technical_access } else = { clr_state_flag = sov_nuclear_bombs_event5_before_controller_breakaway_technical_access }
-	if = { limit = { CONTROLLER = { exists = yes has_country_flag = sov_nuclear_bombs_breakaway_command_formed } } set_state_flag = sov_nuclear_bombs_event5_before_controller_breakaway_command_formed } else = { clr_state_flag = sov_nuclear_bombs_event5_before_controller_breakaway_command_formed }
-	if = { limit = { CONTROLLER = { exists = yes has_country_flag = sov_nuclear_bombs_breakaway_delivery_integrated } } set_state_flag = sov_nuclear_bombs_event5_before_controller_breakaway_delivery_integrated } else = { clr_state_flag = sov_nuclear_bombs_event5_before_controller_breakaway_delivery_integrated }
-	if = { limit = { CONTROLLER = { exists = yes has_country_flag = sov_nuclear_bombs_breakaway_nuclear_operational } } set_state_flag = sov_nuclear_bombs_event5_before_controller_breakaway_nuclear_operational } else = { clr_state_flag = sov_nuclear_bombs_event5_before_controller_breakaway_nuclear_operational }
+	if = { limit = { has_variable = sov_nuclear_bombs_site_holder var:sov_nuclear_bombs_site_holder = { exists = yes hidden_trigger = { has_country_flag = sov_nuclear_bombs_breakaway_custody_secured } } } set_state_flag = sov_nuclear_bombs_event5_before_holder_breakaway_custody_secured } else = { clr_state_flag = sov_nuclear_bombs_event5_before_holder_breakaway_custody_secured }
+	if = { limit = { has_variable = sov_nuclear_bombs_site_holder var:sov_nuclear_bombs_site_holder = { exists = yes hidden_trigger = { has_country_flag = sov_nuclear_bombs_breakaway_technical_access } } } set_state_flag = sov_nuclear_bombs_event5_before_holder_breakaway_technical_access } else = { clr_state_flag = sov_nuclear_bombs_event5_before_holder_breakaway_technical_access }
+	if = { limit = { has_variable = sov_nuclear_bombs_site_holder var:sov_nuclear_bombs_site_holder = { exists = yes hidden_trigger = { has_country_flag = sov_nuclear_bombs_breakaway_command_formed } } } set_state_flag = sov_nuclear_bombs_event5_before_holder_breakaway_command_formed } else = { clr_state_flag = sov_nuclear_bombs_event5_before_holder_breakaway_command_formed }
+	if = { limit = { has_variable = sov_nuclear_bombs_site_holder var:sov_nuclear_bombs_site_holder = { exists = yes hidden_trigger = { has_country_flag = sov_nuclear_bombs_breakaway_delivery_integrated } } } set_state_flag = sov_nuclear_bombs_event5_before_holder_breakaway_delivery_integrated } else = { clr_state_flag = sov_nuclear_bombs_event5_before_holder_breakaway_delivery_integrated }
+	if = { limit = { has_variable = sov_nuclear_bombs_site_holder var:sov_nuclear_bombs_site_holder = { exists = yes hidden_trigger = { has_country_flag = sov_nuclear_bombs_breakaway_nuclear_operational } } } set_state_flag = sov_nuclear_bombs_event5_before_holder_breakaway_nuclear_operational } else = { clr_state_flag = sov_nuclear_bombs_event5_before_holder_breakaway_nuclear_operational }
+	if = { limit = { OWNER = { exists = yes hidden_trigger = { has_country_flag = sov_nuclear_bombs_breakaway_custody_secured } } } set_state_flag = sov_nuclear_bombs_event5_before_owner_breakaway_custody_secured } else = { clr_state_flag = sov_nuclear_bombs_event5_before_owner_breakaway_custody_secured }
+	if = { limit = { OWNER = { exists = yes hidden_trigger = { has_country_flag = sov_nuclear_bombs_breakaway_technical_access } } } set_state_flag = sov_nuclear_bombs_event5_before_owner_breakaway_technical_access } else = { clr_state_flag = sov_nuclear_bombs_event5_before_owner_breakaway_technical_access }
+	if = { limit = { OWNER = { exists = yes hidden_trigger = { has_country_flag = sov_nuclear_bombs_breakaway_command_formed } } } set_state_flag = sov_nuclear_bombs_event5_before_owner_breakaway_command_formed } else = { clr_state_flag = sov_nuclear_bombs_event5_before_owner_breakaway_command_formed }
+	if = { limit = { OWNER = { exists = yes hidden_trigger = { has_country_flag = sov_nuclear_bombs_breakaway_delivery_integrated } } } set_state_flag = sov_nuclear_bombs_event5_before_owner_breakaway_delivery_integrated } else = { clr_state_flag = sov_nuclear_bombs_event5_before_owner_breakaway_delivery_integrated }
+	if = { limit = { OWNER = { exists = yes hidden_trigger = { has_country_flag = sov_nuclear_bombs_breakaway_nuclear_operational } } } set_state_flag = sov_nuclear_bombs_event5_before_owner_breakaway_nuclear_operational } else = { clr_state_flag = sov_nuclear_bombs_event5_before_owner_breakaway_nuclear_operational }
+	if = { limit = { CONTROLLER = { exists = yes hidden_trigger = { has_country_flag = sov_nuclear_bombs_breakaway_custody_secured } } } set_state_flag = sov_nuclear_bombs_event5_before_controller_breakaway_custody_secured } else = { clr_state_flag = sov_nuclear_bombs_event5_before_controller_breakaway_custody_secured }
+	if = { limit = { CONTROLLER = { exists = yes hidden_trigger = { has_country_flag = sov_nuclear_bombs_breakaway_technical_access } } } set_state_flag = sov_nuclear_bombs_event5_before_controller_breakaway_technical_access } else = { clr_state_flag = sov_nuclear_bombs_event5_before_controller_breakaway_technical_access }
+	if = { limit = { CONTROLLER = { exists = yes hidden_trigger = { has_country_flag = sov_nuclear_bombs_breakaway_command_formed } } } set_state_flag = sov_nuclear_bombs_event5_before_controller_breakaway_command_formed } else = { clr_state_flag = sov_nuclear_bombs_event5_before_controller_breakaway_command_formed }
+	if = { limit = { CONTROLLER = { exists = yes hidden_trigger = { has_country_flag = sov_nuclear_bombs_breakaway_delivery_integrated } } } set_state_flag = sov_nuclear_bombs_event5_before_controller_breakaway_delivery_integrated } else = { clr_state_flag = sov_nuclear_bombs_event5_before_controller_breakaway_delivery_integrated }
+	if = { limit = { CONTROLLER = { exists = yes hidden_trigger = { has_country_flag = sov_nuclear_bombs_breakaway_nuclear_operational } } } set_state_flag = sov_nuclear_bombs_event5_before_controller_breakaway_nuclear_operational } else = { clr_state_flag = sov_nuclear_bombs_event5_before_controller_breakaway_nuclear_operational }
 	if = {
 		limit = { has_event_target = sov_nuclear_bombs_test_state }
 		set_variable = { sov_nuclear_bombs_event5_before_target_test_state = event_target:sov_nuclear_bombs_test_state }
@@ -2715,58 +2715,58 @@ sov_nuclear_bombs_capture_event5_context_after = {
 	if = { limit = { SOV = { exists = yes has_country_flag = sov_nuclear_bombs_collapse_active } } set_state_flag = sov_nuclear_bombs_event5_after_sov_collapse_active } else = { clr_state_flag = sov_nuclear_bombs_event5_after_sov_collapse_active }
 	if = { limit = { SOV = { exists = yes has_country_flag = sov_nuclear_bombs_custody_doctrine_unselected } } set_state_flag = sov_nuclear_bombs_event5_after_sov_custody_doctrine_unselected } else = { clr_state_flag = sov_nuclear_bombs_event5_after_sov_custody_doctrine_unselected }
 	if = { limit = { SOV = { exists = yes has_country_flag = sov_nuclear_bombs_doctrine_reform_pending } } set_state_flag = sov_nuclear_bombs_event5_after_sov_doctrine_reform_pending } else = { clr_state_flag = sov_nuclear_bombs_event5_after_sov_doctrine_reform_pending }
-	if = { limit = { SOV = { exists = yes has_country_flag = sov_nuclear_bombs_doctrine_reform_completed } } set_state_flag = sov_nuclear_bombs_event5_after_sov_doctrine_reform_completed } else = { clr_state_flag = sov_nuclear_bombs_event5_after_sov_doctrine_reform_completed }
+	if = { limit = { SOV = { exists = yes hidden_trigger = { has_country_flag = sov_nuclear_bombs_doctrine_reform_completed } } } set_state_flag = sov_nuclear_bombs_event5_after_sov_doctrine_reform_completed } else = { clr_state_flag = sov_nuclear_bombs_event5_after_sov_doctrine_reform_completed }
 	if = { limit = { SOV = { exists = yes has_country_flag = sov_nuclear_bombs_evolution_i_active } } set_state_flag = sov_nuclear_bombs_event5_after_sov_evolution_i_active } else = { clr_state_flag = sov_nuclear_bombs_event5_after_sov_evolution_i_active }
 	if = { limit = { SOV = { exists = yes has_country_flag = sov_nuclear_bombs_evolution_ii_active } } set_state_flag = sov_nuclear_bombs_event5_after_sov_evolution_ii_active } else = { clr_state_flag = sov_nuclear_bombs_event5_after_sov_evolution_ii_active }
 	if = { limit = { SOV = { exists = yes has_country_flag = sov_nuclear_bombs_evolution_iii_active } } set_state_flag = sov_nuclear_bombs_event5_after_sov_evolution_iii_active } else = { clr_state_flag = sov_nuclear_bombs_event5_after_sov_evolution_iii_active }
 	if = { limit = { SOV = { exists = yes has_country_flag = sov_nuclear_bombs_evolution_iv_active } } set_state_flag = sov_nuclear_bombs_event5_after_sov_evolution_iv_active } else = { clr_state_flag = sov_nuclear_bombs_event5_after_sov_evolution_iv_active }
 	if = { limit = { SOV = { exists = yes has_country_flag = sov_nuclear_bombs_production_mission_active } } set_state_flag = sov_nuclear_bombs_event5_after_sov_production_mission_active } else = { clr_state_flag = sov_nuclear_bombs_event5_after_sov_production_mission_active }
 	if = { limit = { SOV = { exists = yes has_country_flag = sov_nuclear_bombs_reactor_construction_pending } } set_state_flag = sov_nuclear_bombs_event5_after_sov_reactor_construction_pending } else = { clr_state_flag = sov_nuclear_bombs_event5_after_sov_reactor_construction_pending }
-	if = { limit = { SOV = { exists = yes has_country_flag = sov_nuclear_bombs_reactor_opening_pending } } set_state_flag = sov_nuclear_bombs_event5_after_sov_reactor_opening_pending } else = { clr_state_flag = sov_nuclear_bombs_event5_after_sov_reactor_opening_pending }
-	if = { limit = { SOV = { exists = yes has_country_flag = sov_nuclear_bombs_reactor_production_completion_pending } } set_state_flag = sov_nuclear_bombs_event5_after_sov_reactor_production_completion_pending } else = { clr_state_flag = sov_nuclear_bombs_event5_after_sov_reactor_production_completion_pending }
-	if = { limit = { SOV = { exists = yes has_country_flag = sov_nuclear_bombs_fissile_production_completed } } set_state_flag = sov_nuclear_bombs_event5_after_sov_fissile_production_completed } else = { clr_state_flag = sov_nuclear_bombs_event5_after_sov_fissile_production_completed }
+	if = { limit = { SOV = { exists = yes hidden_trigger = { has_country_flag = sov_nuclear_bombs_reactor_opening_pending } } } set_state_flag = sov_nuclear_bombs_event5_after_sov_reactor_opening_pending } else = { clr_state_flag = sov_nuclear_bombs_event5_after_sov_reactor_opening_pending }
+	if = { limit = { SOV = { exists = yes hidden_trigger = { has_country_flag = sov_nuclear_bombs_reactor_production_completion_pending } } } set_state_flag = sov_nuclear_bombs_event5_after_sov_reactor_production_completion_pending } else = { clr_state_flag = sov_nuclear_bombs_event5_after_sov_reactor_production_completion_pending }
+	if = { limit = { SOV = { exists = yes hidden_trigger = { has_country_flag = sov_nuclear_bombs_fissile_production_completed } } } set_state_flag = sov_nuclear_bombs_event5_after_sov_fissile_production_completed } else = { clr_state_flag = sov_nuclear_bombs_event5_after_sov_fissile_production_completed }
 	if = { limit = { SOV = { exists = yes has_country_flag = sov_nuclear_bombs_test_mission_active } } set_state_flag = sov_nuclear_bombs_event5_after_sov_test_mission_active } else = { clr_state_flag = sov_nuclear_bombs_event5_after_sov_test_mission_active }
-	if = { limit = { SOV = { exists = yes has_country_flag = sov_nuclear_bombs_test_accident_no_yield_recorded } } set_state_flag = sov_nuclear_bombs_event5_after_sov_test_accident_no_yield_recorded } else = { clr_state_flag = sov_nuclear_bombs_event5_after_sov_test_accident_no_yield_recorded }
-	if = { limit = { SOV = { exists = yes has_country_flag = sov_nuclear_bombs_test_accident_true_yield_recorded } } set_state_flag = sov_nuclear_bombs_event5_after_sov_test_accident_true_yield_recorded } else = { clr_state_flag = sov_nuclear_bombs_event5_after_sov_test_accident_true_yield_recorded }
+	if = { limit = { SOV = { exists = yes hidden_trigger = { has_country_flag = sov_nuclear_bombs_test_accident_no_yield_recorded } } } set_state_flag = sov_nuclear_bombs_event5_after_sov_test_accident_no_yield_recorded } else = { clr_state_flag = sov_nuclear_bombs_event5_after_sov_test_accident_no_yield_recorded }
+	if = { limit = { SOV = { exists = yes hidden_trigger = { has_country_flag = sov_nuclear_bombs_test_accident_true_yield_recorded } } } set_state_flag = sov_nuclear_bombs_event5_after_sov_test_accident_true_yield_recorded } else = { clr_state_flag = sov_nuclear_bombs_event5_after_sov_test_accident_true_yield_recorded }
 	if = { limit = { SOV = { exists = yes has_country_flag = sov_nuclear_bombs_test_prepared } } set_state_flag = sov_nuclear_bombs_event5_after_sov_test_prepared } else = { clr_state_flag = sov_nuclear_bombs_event5_after_sov_test_prepared }
-	if = { limit = { SOV = { exists = yes has_country_flag = sov_nuclear_bombs_test_site_surveyed } } set_state_flag = sov_nuclear_bombs_event5_after_sov_test_site_surveyed } else = { clr_state_flag = sov_nuclear_bombs_event5_after_sov_test_site_surveyed }
+	if = { limit = { SOV = { exists = yes hidden_trigger = { has_country_flag = sov_nuclear_bombs_test_site_surveyed } } } set_state_flag = sov_nuclear_bombs_event5_after_sov_test_site_surveyed } else = { clr_state_flag = sov_nuclear_bombs_event5_after_sov_test_site_surveyed }
 	if = { limit = { SOV = { exists = yes has_country_flag = sov_nuclear_bombs_test_evacuation_pending } } set_state_flag = sov_nuclear_bombs_event5_after_sov_test_evacuation_pending } else = { clr_state_flag = sov_nuclear_bombs_event5_after_sov_test_evacuation_pending }
-	if = { limit = { SOV = { exists = yes has_country_flag = sov_nuclear_bombs_command_locked } } set_state_flag = sov_nuclear_bombs_event5_after_sov_command_locked } else = { clr_state_flag = sov_nuclear_bombs_event5_after_sov_command_locked }
+	if = { limit = { SOV = { exists = yes hidden_trigger = { has_country_flag = sov_nuclear_bombs_command_locked } } } set_state_flag = sov_nuclear_bombs_event5_after_sov_command_locked } else = { clr_state_flag = sov_nuclear_bombs_event5_after_sov_command_locked }
 	if = { limit = { SOV = { exists = yes has_country_flag = sov_nuclear_bombs_command_exercise_mission_active } } set_state_flag = sov_nuclear_bombs_event5_after_sov_command_exercise_mission_active } else = { clr_state_flag = sov_nuclear_bombs_event5_after_sov_command_exercise_mission_active }
-	if = { limit = { SOV = { exists = yes has_country_flag = sov_nuclear_bombs_command_exercise_complete } } set_state_flag = sov_nuclear_bombs_event5_after_sov_command_exercise_complete } else = { clr_state_flag = sov_nuclear_bombs_event5_after_sov_command_exercise_complete }
+	if = { limit = { SOV = { exists = yes hidden_trigger = { has_country_flag = sov_nuclear_bombs_command_exercise_complete } } } set_state_flag = sov_nuclear_bombs_event5_after_sov_command_exercise_complete } else = { clr_state_flag = sov_nuclear_bombs_event5_after_sov_command_exercise_complete }
 	if = { limit = { SOV = { exists = yes has_country_flag = sov_nuclear_bombs_delivery_crews_mission_active } } set_state_flag = sov_nuclear_bombs_event5_after_sov_delivery_crews_mission_active } else = { clr_state_flag = sov_nuclear_bombs_event5_after_sov_delivery_crews_mission_active }
 	if = { limit = { SOV = { exists = yes has_country_flag = sov_nuclear_bombs_delivery_crews_ready } } set_state_flag = sov_nuclear_bombs_event5_after_sov_delivery_crews_ready } else = { clr_state_flag = sov_nuclear_bombs_event5_after_sov_delivery_crews_ready }
 	if = { limit = { SOV = { exists = yes has_country_flag = sov_nuclear_bombs_delivery_crews_certified } } set_state_flag = sov_nuclear_bombs_event5_after_sov_delivery_crews_certified } else = { clr_state_flag = sov_nuclear_bombs_event5_after_sov_delivery_crews_certified }
 	if = { limit = { SOV = { exists = yes has_country_flag = sov_nuclear_bombs_native_delivery_pending } } set_state_flag = sov_nuclear_bombs_event5_after_sov_native_delivery_pending } else = { clr_state_flag = sov_nuclear_bombs_event5_after_sov_native_delivery_pending }
 	if = { limit = { SOV = { exists = yes has_country_flag = sov_nuclear_bombs_action_reservation_active } } set_state_flag = sov_nuclear_bombs_event5_after_sov_action_reservation_active } else = { clr_state_flag = sov_nuclear_bombs_event5_after_sov_action_reservation_active }
 	if = { limit = { has_state_flag = sov_nuclear_bombs_registered_storage_site } set_state_flag = sov_nuclear_bombs_event5_after_site_registered_storage_site } else = { clr_state_flag = sov_nuclear_bombs_event5_after_site_registered_storage_site }
-	if = { limit = { has_state_flag = sov_nuclear_bombs_reactor_site_pending } set_state_flag = sov_nuclear_bombs_event5_after_site_reactor_site_pending } else = { clr_state_flag = sov_nuclear_bombs_event5_after_site_reactor_site_pending }
-	if = { limit = { has_state_flag = sov_nuclear_bombs_reactor_event_owned } set_state_flag = sov_nuclear_bombs_event5_after_site_reactor_event_owned } else = { clr_state_flag = sov_nuclear_bombs_event5_after_site_reactor_event_owned }
-	if = { limit = { has_state_flag = sov_nuclear_bombs_native_delivery_state_pending } set_state_flag = sov_nuclear_bombs_event5_after_site_native_delivery_state_pending } else = { clr_state_flag = sov_nuclear_bombs_event5_after_site_native_delivery_state_pending }
-	if = { limit = { has_state_flag = sov_nuclear_bombs_disperse_source } set_state_flag = sov_nuclear_bombs_event5_after_site_disperse_source } else = { clr_state_flag = sov_nuclear_bombs_event5_after_site_disperse_source }
-	if = { limit = { has_state_flag = sov_nuclear_bombs_disperse_destination } set_state_flag = sov_nuclear_bombs_event5_after_site_disperse_destination } else = { clr_state_flag = sov_nuclear_bombs_event5_after_site_disperse_destination }
+	if = { limit = { hidden_trigger = { has_state_flag = sov_nuclear_bombs_reactor_site_pending } } set_state_flag = sov_nuclear_bombs_event5_after_site_reactor_site_pending } else = { clr_state_flag = sov_nuclear_bombs_event5_after_site_reactor_site_pending }
+	if = { limit = { hidden_trigger = { has_state_flag = sov_nuclear_bombs_reactor_event_owned } } set_state_flag = sov_nuclear_bombs_event5_after_site_reactor_event_owned } else = { clr_state_flag = sov_nuclear_bombs_event5_after_site_reactor_event_owned }
+	if = { limit = { hidden_trigger = { has_state_flag = sov_nuclear_bombs_native_delivery_state_pending } } set_state_flag = sov_nuclear_bombs_event5_after_site_native_delivery_state_pending } else = { clr_state_flag = sov_nuclear_bombs_event5_after_site_native_delivery_state_pending }
+	if = { limit = { hidden_trigger = { has_state_flag = sov_nuclear_bombs_disperse_source } } set_state_flag = sov_nuclear_bombs_event5_after_site_disperse_source } else = { clr_state_flag = sov_nuclear_bombs_event5_after_site_disperse_source }
+	if = { limit = { hidden_trigger = { has_state_flag = sov_nuclear_bombs_disperse_destination } } set_state_flag = sov_nuclear_bombs_event5_after_site_disperse_destination } else = { clr_state_flag = sov_nuclear_bombs_event5_after_site_disperse_destination }
 	if = { limit = { has_state_flag = sov_nuclear_bombs_site_technical_denial } set_state_flag = sov_nuclear_bombs_event5_after_site_site_technical_denial } else = { clr_state_flag = sov_nuclear_bombs_event5_after_site_site_technical_denial }
-	if = { limit = { has_state_flag = sov_nuclear_bombs_site_joint_custody } set_state_flag = sov_nuclear_bombs_event5_after_site_site_joint_custody } else = { clr_state_flag = sov_nuclear_bombs_event5_after_site_site_joint_custody }
+	if = { limit = { hidden_trigger = { has_state_flag = sov_nuclear_bombs_site_joint_custody } } set_state_flag = sov_nuclear_bombs_event5_after_site_site_joint_custody } else = { clr_state_flag = sov_nuclear_bombs_event5_after_site_site_joint_custody }
 	if = { limit = { has_state_flag = sov_nuclear_bombs_site_missing } set_state_flag = sov_nuclear_bombs_event5_after_site_site_missing } else = { clr_state_flag = sov_nuclear_bombs_event5_after_site_site_missing }
 	if = { limit = { has_state_flag = sov_nuclear_bombs_site_dismantled } set_state_flag = sov_nuclear_bombs_event5_after_site_site_dismantled } else = { clr_state_flag = sov_nuclear_bombs_event5_after_site_site_dismantled }
-	if = { limit = { has_state_flag = sov_nuclear_bombs_site_native_custody_disputed } set_state_flag = sov_nuclear_bombs_event5_after_site_site_native_custody_disputed } else = { clr_state_flag = sov_nuclear_bombs_event5_after_site_site_native_custody_disputed }
+	if = { limit = { hidden_trigger = { has_state_flag = sov_nuclear_bombs_site_native_custody_disputed } } set_state_flag = sov_nuclear_bombs_event5_after_site_site_native_custody_disputed } else = { clr_state_flag = sov_nuclear_bombs_event5_after_site_site_native_custody_disputed }
 	if = { limit = { has_state_flag = sov_nuclear_bombs_breakaway_site_operationalized } set_state_flag = sov_nuclear_bombs_event5_after_site_breakaway_site_operationalized } else = { clr_state_flag = sov_nuclear_bombs_event5_after_site_breakaway_site_operationalized }
 	if = { limit = { has_variable = sov_nuclear_bombs_site_holder } set_state_flag = sov_nuclear_bombs_event5_after_holder_present } else = { clr_state_flag = sov_nuclear_bombs_event5_after_holder_present }
-	if = { limit = { has_variable = sov_nuclear_bombs_site_holder var:sov_nuclear_bombs_site_holder = { exists = yes has_country_flag = sov_nuclear_bombs_breakaway_custody_secured } } set_state_flag = sov_nuclear_bombs_event5_after_holder_breakaway_custody_secured } else = { clr_state_flag = sov_nuclear_bombs_event5_after_holder_breakaway_custody_secured }
-	if = { limit = { has_variable = sov_nuclear_bombs_site_holder var:sov_nuclear_bombs_site_holder = { exists = yes has_country_flag = sov_nuclear_bombs_breakaway_technical_access } } set_state_flag = sov_nuclear_bombs_event5_after_holder_breakaway_technical_access } else = { clr_state_flag = sov_nuclear_bombs_event5_after_holder_breakaway_technical_access }
-	if = { limit = { has_variable = sov_nuclear_bombs_site_holder var:sov_nuclear_bombs_site_holder = { exists = yes has_country_flag = sov_nuclear_bombs_breakaway_command_formed } } set_state_flag = sov_nuclear_bombs_event5_after_holder_breakaway_command_formed } else = { clr_state_flag = sov_nuclear_bombs_event5_after_holder_breakaway_command_formed }
-	if = { limit = { has_variable = sov_nuclear_bombs_site_holder var:sov_nuclear_bombs_site_holder = { exists = yes has_country_flag = sov_nuclear_bombs_breakaway_delivery_integrated } } set_state_flag = sov_nuclear_bombs_event5_after_holder_breakaway_delivery_integrated } else = { clr_state_flag = sov_nuclear_bombs_event5_after_holder_breakaway_delivery_integrated }
-	if = { limit = { has_variable = sov_nuclear_bombs_site_holder var:sov_nuclear_bombs_site_holder = { exists = yes has_country_flag = sov_nuclear_bombs_breakaway_nuclear_operational } } set_state_flag = sov_nuclear_bombs_event5_after_holder_breakaway_nuclear_operational } else = { clr_state_flag = sov_nuclear_bombs_event5_after_holder_breakaway_nuclear_operational }
-	if = { limit = { OWNER = { exists = yes has_country_flag = sov_nuclear_bombs_breakaway_custody_secured } } set_state_flag = sov_nuclear_bombs_event5_after_owner_breakaway_custody_secured } else = { clr_state_flag = sov_nuclear_bombs_event5_after_owner_breakaway_custody_secured }
-	if = { limit = { OWNER = { exists = yes has_country_flag = sov_nuclear_bombs_breakaway_technical_access } } set_state_flag = sov_nuclear_bombs_event5_after_owner_breakaway_technical_access } else = { clr_state_flag = sov_nuclear_bombs_event5_after_owner_breakaway_technical_access }
-	if = { limit = { OWNER = { exists = yes has_country_flag = sov_nuclear_bombs_breakaway_command_formed } } set_state_flag = sov_nuclear_bombs_event5_after_owner_breakaway_command_formed } else = { clr_state_flag = sov_nuclear_bombs_event5_after_owner_breakaway_command_formed }
-	if = { limit = { OWNER = { exists = yes has_country_flag = sov_nuclear_bombs_breakaway_delivery_integrated } } set_state_flag = sov_nuclear_bombs_event5_after_owner_breakaway_delivery_integrated } else = { clr_state_flag = sov_nuclear_bombs_event5_after_owner_breakaway_delivery_integrated }
-	if = { limit = { OWNER = { exists = yes has_country_flag = sov_nuclear_bombs_breakaway_nuclear_operational } } set_state_flag = sov_nuclear_bombs_event5_after_owner_breakaway_nuclear_operational } else = { clr_state_flag = sov_nuclear_bombs_event5_after_owner_breakaway_nuclear_operational }
-	if = { limit = { CONTROLLER = { exists = yes has_country_flag = sov_nuclear_bombs_breakaway_custody_secured } } set_state_flag = sov_nuclear_bombs_event5_after_controller_breakaway_custody_secured } else = { clr_state_flag = sov_nuclear_bombs_event5_after_controller_breakaway_custody_secured }
-	if = { limit = { CONTROLLER = { exists = yes has_country_flag = sov_nuclear_bombs_breakaway_technical_access } } set_state_flag = sov_nuclear_bombs_event5_after_controller_breakaway_technical_access } else = { clr_state_flag = sov_nuclear_bombs_event5_after_controller_breakaway_technical_access }
-	if = { limit = { CONTROLLER = { exists = yes has_country_flag = sov_nuclear_bombs_breakaway_command_formed } } set_state_flag = sov_nuclear_bombs_event5_after_controller_breakaway_command_formed } else = { clr_state_flag = sov_nuclear_bombs_event5_after_controller_breakaway_command_formed }
-	if = { limit = { CONTROLLER = { exists = yes has_country_flag = sov_nuclear_bombs_breakaway_delivery_integrated } } set_state_flag = sov_nuclear_bombs_event5_after_controller_breakaway_delivery_integrated } else = { clr_state_flag = sov_nuclear_bombs_event5_after_controller_breakaway_delivery_integrated }
-	if = { limit = { CONTROLLER = { exists = yes has_country_flag = sov_nuclear_bombs_breakaway_nuclear_operational } } set_state_flag = sov_nuclear_bombs_event5_after_controller_breakaway_nuclear_operational } else = { clr_state_flag = sov_nuclear_bombs_event5_after_controller_breakaway_nuclear_operational }
+	if = { limit = { has_variable = sov_nuclear_bombs_site_holder var:sov_nuclear_bombs_site_holder = { exists = yes hidden_trigger = { has_country_flag = sov_nuclear_bombs_breakaway_custody_secured } } } set_state_flag = sov_nuclear_bombs_event5_after_holder_breakaway_custody_secured } else = { clr_state_flag = sov_nuclear_bombs_event5_after_holder_breakaway_custody_secured }
+	if = { limit = { has_variable = sov_nuclear_bombs_site_holder var:sov_nuclear_bombs_site_holder = { exists = yes hidden_trigger = { has_country_flag = sov_nuclear_bombs_breakaway_technical_access } } } set_state_flag = sov_nuclear_bombs_event5_after_holder_breakaway_technical_access } else = { clr_state_flag = sov_nuclear_bombs_event5_after_holder_breakaway_technical_access }
+	if = { limit = { has_variable = sov_nuclear_bombs_site_holder var:sov_nuclear_bombs_site_holder = { exists = yes hidden_trigger = { has_country_flag = sov_nuclear_bombs_breakaway_command_formed } } } set_state_flag = sov_nuclear_bombs_event5_after_holder_breakaway_command_formed } else = { clr_state_flag = sov_nuclear_bombs_event5_after_holder_breakaway_command_formed }
+	if = { limit = { has_variable = sov_nuclear_bombs_site_holder var:sov_nuclear_bombs_site_holder = { exists = yes hidden_trigger = { has_country_flag = sov_nuclear_bombs_breakaway_delivery_integrated } } } set_state_flag = sov_nuclear_bombs_event5_after_holder_breakaway_delivery_integrated } else = { clr_state_flag = sov_nuclear_bombs_event5_after_holder_breakaway_delivery_integrated }
+	if = { limit = { has_variable = sov_nuclear_bombs_site_holder var:sov_nuclear_bombs_site_holder = { exists = yes hidden_trigger = { has_country_flag = sov_nuclear_bombs_breakaway_nuclear_operational } } } set_state_flag = sov_nuclear_bombs_event5_after_holder_breakaway_nuclear_operational } else = { clr_state_flag = sov_nuclear_bombs_event5_after_holder_breakaway_nuclear_operational }
+	if = { limit = { OWNER = { exists = yes hidden_trigger = { has_country_flag = sov_nuclear_bombs_breakaway_custody_secured } } } set_state_flag = sov_nuclear_bombs_event5_after_owner_breakaway_custody_secured } else = { clr_state_flag = sov_nuclear_bombs_event5_after_owner_breakaway_custody_secured }
+	if = { limit = { OWNER = { exists = yes hidden_trigger = { has_country_flag = sov_nuclear_bombs_breakaway_technical_access } } } set_state_flag = sov_nuclear_bombs_event5_after_owner_breakaway_technical_access } else = { clr_state_flag = sov_nuclear_bombs_event5_after_owner_breakaway_technical_access }
+	if = { limit = { OWNER = { exists = yes hidden_trigger = { has_country_flag = sov_nuclear_bombs_breakaway_command_formed } } } set_state_flag = sov_nuclear_bombs_event5_after_owner_breakaway_command_formed } else = { clr_state_flag = sov_nuclear_bombs_event5_after_owner_breakaway_command_formed }
+	if = { limit = { OWNER = { exists = yes hidden_trigger = { has_country_flag = sov_nuclear_bombs_breakaway_delivery_integrated } } } set_state_flag = sov_nuclear_bombs_event5_after_owner_breakaway_delivery_integrated } else = { clr_state_flag = sov_nuclear_bombs_event5_after_owner_breakaway_delivery_integrated }
+	if = { limit = { OWNER = { exists = yes hidden_trigger = { has_country_flag = sov_nuclear_bombs_breakaway_nuclear_operational } } } set_state_flag = sov_nuclear_bombs_event5_after_owner_breakaway_nuclear_operational } else = { clr_state_flag = sov_nuclear_bombs_event5_after_owner_breakaway_nuclear_operational }
+	if = { limit = { CONTROLLER = { exists = yes hidden_trigger = { has_country_flag = sov_nuclear_bombs_breakaway_custody_secured } } } set_state_flag = sov_nuclear_bombs_event5_after_controller_breakaway_custody_secured } else = { clr_state_flag = sov_nuclear_bombs_event5_after_controller_breakaway_custody_secured }
+	if = { limit = { CONTROLLER = { exists = yes hidden_trigger = { has_country_flag = sov_nuclear_bombs_breakaway_technical_access } } } set_state_flag = sov_nuclear_bombs_event5_after_controller_breakaway_technical_access } else = { clr_state_flag = sov_nuclear_bombs_event5_after_controller_breakaway_technical_access }
+	if = { limit = { CONTROLLER = { exists = yes hidden_trigger = { has_country_flag = sov_nuclear_bombs_breakaway_command_formed } } } set_state_flag = sov_nuclear_bombs_event5_after_controller_breakaway_command_formed } else = { clr_state_flag = sov_nuclear_bombs_event5_after_controller_breakaway_command_formed }
+	if = { limit = { CONTROLLER = { exists = yes hidden_trigger = { has_country_flag = sov_nuclear_bombs_breakaway_delivery_integrated } } } set_state_flag = sov_nuclear_bombs_event5_after_controller_breakaway_delivery_integrated } else = { clr_state_flag = sov_nuclear_bombs_event5_after_controller_breakaway_delivery_integrated }
+	if = { limit = { CONTROLLER = { exists = yes hidden_trigger = { has_country_flag = sov_nuclear_bombs_breakaway_nuclear_operational } } } set_state_flag = sov_nuclear_bombs_event5_after_controller_breakaway_nuclear_operational } else = { clr_state_flag = sov_nuclear_bombs_event5_after_controller_breakaway_nuclear_operational }
 	if = {
 		limit = { has_event_target = sov_nuclear_bombs_test_state }
 		set_variable = { sov_nuclear_bombs_event5_after_target_test_state = event_target:sov_nuclear_bombs_test_state }
@@ -2835,8 +2835,8 @@ sov_nuclear_bombs_capture_event5_registry_before = {
 			if = { limit = { has_country_flag = sov_nuclear_bombs_breakaway_operationalization_mission_active } PREV = { set_state_flag = sov_nuclear_bombs_event5_before_holder_local_stage_active } }
 		}
 	}
-	if = { limit = { has_state_flag = sov_nuclear_bombs_assembly_site } set_state_flag = sov_nuclear_bombs_event5_before_registry_assembly_site } else = { clr_state_flag = sov_nuclear_bombs_event5_before_registry_assembly_site }
-	if = { limit = { has_state_flag = sov_nuclear_bombs_assembly_batch_active } set_state_flag = sov_nuclear_bombs_event5_before_registry_assembly_batch_active } else = { clr_state_flag = sov_nuclear_bombs_event5_before_registry_assembly_batch_active }
+	if = { limit = { hidden_trigger = { has_state_flag = sov_nuclear_bombs_assembly_site } } set_state_flag = sov_nuclear_bombs_event5_before_registry_assembly_site } else = { clr_state_flag = sov_nuclear_bombs_event5_before_registry_assembly_site }
+	if = { limit = { hidden_trigger = { has_state_flag = sov_nuclear_bombs_assembly_batch_active } } set_state_flag = sov_nuclear_bombs_event5_before_registry_assembly_batch_active } else = { clr_state_flag = sov_nuclear_bombs_event5_before_registry_assembly_batch_active }
 	if = { limit = { has_variable = sov_nuclear_bombs_assembly_site_owner } set_variable = { sov_nuclear_bombs_event5_before_registry_assembly_owner = sov_nuclear_bombs_assembly_site_owner } } else = { clear_variable = sov_nuclear_bombs_event5_before_registry_assembly_owner }
 	if = { limit = { has_variable = sov_nuclear_bombs_assembly_batch_nonce } set_variable = { sov_nuclear_bombs_event5_before_registry_assembly_nonce = sov_nuclear_bombs_assembly_batch_nonce } } else = { clear_variable = sov_nuclear_bombs_event5_before_registry_assembly_nonce }
 	if = { limit = { SOV = { has_variable = sov_nuclear_bombs_assembly_state } } set_variable = { sov_nuclear_bombs_event5_before_registry_sov_assembly_state = SOV.sov_nuclear_bombs_assembly_state } } else = { clear_variable = sov_nuclear_bombs_event5_before_registry_sov_assembly_state }
@@ -2859,9 +2859,9 @@ sov_nuclear_bombs_capture_event5_registry_before = {
 	if = { limit = { SOV = { exists = yes has_variable = sov_nuclear_bombs_transit_source_state } } set_variable = { sov_nuclear_bombs_event5_before_registry_sov_transit_source_state = SOV.sov_nuclear_bombs_transit_source_state } } else = { clear_variable = sov_nuclear_bombs_event5_before_registry_sov_transit_source_state }
 	if = { limit = { SOV = { exists = yes has_variable = sov_nuclear_bombs_transit_destination_state } } set_variable = { sov_nuclear_bombs_event5_before_registry_sov_transit_destination_state = SOV.sov_nuclear_bombs_transit_destination_state } } else = { clear_variable = sov_nuclear_bombs_event5_before_registry_sov_transit_destination_state }
 	if = { limit = { SOV = { exists = yes has_variable = sov_nuclear_bombs_dismantlement_source_state } } set_variable = { sov_nuclear_bombs_event5_before_registry_sov_dismantlement_source_state = SOV.sov_nuclear_bombs_dismantlement_source_state } } else = { clear_variable = sov_nuclear_bombs_event5_before_registry_sov_dismantlement_source_state }
-	if = { limit = { SOV = { exists = yes has_country_flag = sov_nuclear_bombs_transit_active } } set_state_flag = sov_nuclear_bombs_event5_before_registry_sov_transit_active } else = { clr_state_flag = sov_nuclear_bombs_event5_before_registry_sov_transit_active }
-	if = { limit = { SOV = { exists = yes has_country_flag = sov_nuclear_bombs_dismantlement_registry_active } } set_state_flag = sov_nuclear_bombs_event5_before_registry_sov_dismantlement_registry_active } else = { clr_state_flag = sov_nuclear_bombs_event5_before_registry_sov_dismantlement_registry_active }
-	if = { limit = { SOV = { exists = yes has_country_flag = sov_nuclear_bombs_delivery_force_registered } } set_state_flag = sov_nuclear_bombs_event5_before_registry_sov_delivery_force_registered } else = { clr_state_flag = sov_nuclear_bombs_event5_before_registry_sov_delivery_force_registered }
+	if = { limit = { SOV = { exists = yes hidden_trigger = { has_country_flag = sov_nuclear_bombs_transit_active } } } set_state_flag = sov_nuclear_bombs_event5_before_registry_sov_transit_active } else = { clr_state_flag = sov_nuclear_bombs_event5_before_registry_sov_transit_active }
+	if = { limit = { SOV = { exists = yes hidden_trigger = { has_country_flag = sov_nuclear_bombs_dismantlement_registry_active } } } set_state_flag = sov_nuclear_bombs_event5_before_registry_sov_dismantlement_registry_active } else = { clr_state_flag = sov_nuclear_bombs_event5_before_registry_sov_dismantlement_registry_active }
+	if = { limit = { SOV = { exists = yes hidden_trigger = { has_country_flag = sov_nuclear_bombs_delivery_force_registered } } } set_state_flag = sov_nuclear_bombs_event5_before_registry_sov_delivery_force_registered } else = { clr_state_flag = sov_nuclear_bombs_event5_before_registry_sov_delivery_force_registered }
 	if = { limit = { has_variable = sov_nuclear_bombs_site_in_transit } set_variable = { sov_nuclear_bombs_event5_before_registry_site_site_in_transit = sov_nuclear_bombs_site_in_transit } } else = { clear_variable = sov_nuclear_bombs_event5_before_registry_site_site_in_transit }
 	if = { limit = { has_variable = sov_nuclear_bombs_site_transit_nonce } set_variable = { sov_nuclear_bombs_event5_before_registry_site_site_transit_nonce = sov_nuclear_bombs_site_transit_nonce } } else = { clear_variable = sov_nuclear_bombs_event5_before_registry_site_site_transit_nonce }
 	if = { limit = { has_variable = sov_nuclear_bombs_site_transit_destination } set_variable = { sov_nuclear_bombs_event5_before_registry_site_site_transit_destination = sov_nuclear_bombs_site_transit_destination } } else = { clear_variable = sov_nuclear_bombs_event5_before_registry_site_site_transit_destination }
@@ -2878,22 +2878,22 @@ sov_nuclear_bombs_capture_event5_registry_before = {
 	if = { limit = { has_variable = sov_nuclear_bombs_local_custody_actor } set_variable = { sov_nuclear_bombs_event5_before_registry_site_local_custody_actor = sov_nuclear_bombs_local_custody_actor } } else = { clear_variable = sov_nuclear_bombs_event5_before_registry_site_local_custody_actor }
 	if = { limit = { has_variable = sov_nuclear_bombs_breakaway_command_actor } set_variable = { sov_nuclear_bombs_event5_before_registry_site_breakaway_command_actor = sov_nuclear_bombs_breakaway_command_actor } } else = { clear_variable = sov_nuclear_bombs_event5_before_registry_site_breakaway_command_actor }
 	if = { limit = { has_variable = sov_nuclear_bombs_site_delivery_force_owner } set_variable = { sov_nuclear_bombs_event5_before_registry_site_site_delivery_force_owner = sov_nuclear_bombs_site_delivery_force_owner } } else = { clear_variable = sov_nuclear_bombs_event5_before_registry_site_site_delivery_force_owner }
-	if = { limit = { has_state_flag = sov_nuclear_bombs_transit_source_active } set_state_flag = sov_nuclear_bombs_event5_before_registry_site_transit_source_active } else = { clr_state_flag = sov_nuclear_bombs_event5_before_registry_site_transit_source_active }
-	if = { limit = { has_state_flag = sov_nuclear_bombs_transit_destination_pending } set_state_flag = sov_nuclear_bombs_event5_before_registry_site_transit_destination_pending } else = { clr_state_flag = sov_nuclear_bombs_event5_before_registry_site_transit_destination_pending }
-	if = { limit = { has_state_flag = sov_nuclear_bombs_transit_arrived } set_state_flag = sov_nuclear_bombs_event5_before_registry_site_transit_arrived } else = { clr_state_flag = sov_nuclear_bombs_event5_before_registry_site_transit_arrived }
-	if = { limit = { has_state_flag = sov_nuclear_bombs_transit_returned } set_state_flag = sov_nuclear_bombs_event5_before_registry_site_transit_returned } else = { clr_state_flag = sov_nuclear_bombs_event5_before_registry_site_transit_returned }
-	if = { limit = { has_state_flag = sov_nuclear_bombs_transit_captured } set_state_flag = sov_nuclear_bombs_event5_before_registry_site_transit_captured } else = { clr_state_flag = sov_nuclear_bombs_event5_before_registry_site_transit_captured }
-	if = { limit = { has_state_flag = sov_nuclear_bombs_transit_lost } set_state_flag = sov_nuclear_bombs_event5_before_registry_site_transit_lost } else = { clr_state_flag = sov_nuclear_bombs_event5_before_registry_site_transit_lost }
-	if = { limit = { has_state_flag = sov_nuclear_bombs_active_dismantlement_site } set_state_flag = sov_nuclear_bombs_event5_before_registry_site_active_dismantlement_site } else = { clr_state_flag = sov_nuclear_bombs_event5_before_registry_site_active_dismantlement_site }
+	if = { limit = { hidden_trigger = { has_state_flag = sov_nuclear_bombs_transit_source_active } } set_state_flag = sov_nuclear_bombs_event5_before_registry_site_transit_source_active } else = { clr_state_flag = sov_nuclear_bombs_event5_before_registry_site_transit_source_active }
+	if = { limit = { hidden_trigger = { has_state_flag = sov_nuclear_bombs_transit_destination_pending } } set_state_flag = sov_nuclear_bombs_event5_before_registry_site_transit_destination_pending } else = { clr_state_flag = sov_nuclear_bombs_event5_before_registry_site_transit_destination_pending }
+	if = { limit = { hidden_trigger = { has_state_flag = sov_nuclear_bombs_transit_arrived } } set_state_flag = sov_nuclear_bombs_event5_before_registry_site_transit_arrived } else = { clr_state_flag = sov_nuclear_bombs_event5_before_registry_site_transit_arrived }
+	if = { limit = { hidden_trigger = { has_state_flag = sov_nuclear_bombs_transit_returned } } set_state_flag = sov_nuclear_bombs_event5_before_registry_site_transit_returned } else = { clr_state_flag = sov_nuclear_bombs_event5_before_registry_site_transit_returned }
+	if = { limit = { hidden_trigger = { has_state_flag = sov_nuclear_bombs_transit_captured } } set_state_flag = sov_nuclear_bombs_event5_before_registry_site_transit_captured } else = { clr_state_flag = sov_nuclear_bombs_event5_before_registry_site_transit_captured }
+	if = { limit = { hidden_trigger = { has_state_flag = sov_nuclear_bombs_transit_lost } } set_state_flag = sov_nuclear_bombs_event5_before_registry_site_transit_lost } else = { clr_state_flag = sov_nuclear_bombs_event5_before_registry_site_transit_lost }
+	if = { limit = { hidden_trigger = { has_state_flag = sov_nuclear_bombs_active_dismantlement_site } } set_state_flag = sov_nuclear_bombs_event5_before_registry_site_active_dismantlement_site } else = { clr_state_flag = sov_nuclear_bombs_event5_before_registry_site_active_dismantlement_site }
 	if = { limit = { has_state_flag = sov_nuclear_bombs_production_reactor_site } set_state_flag = sov_nuclear_bombs_event5_before_registry_site_production_reactor_site } else = { clr_state_flag = sov_nuclear_bombs_event5_before_registry_site_production_reactor_site }
-	if = { limit = { has_state_flag = sov_nuclear_bombs_central_command_site } set_state_flag = sov_nuclear_bombs_event5_before_registry_site_central_command_site } else = { clr_state_flag = sov_nuclear_bombs_event5_before_registry_site_central_command_site }
-	if = { limit = { has_state_flag = sov_nuclear_bombs_backup_command_site } set_state_flag = sov_nuclear_bombs_event5_before_registry_site_backup_command_site } else = { clr_state_flag = sov_nuclear_bombs_event5_before_registry_site_backup_command_site }
-	if = { limit = { has_state_flag = sov_nuclear_bombs_institutional_access_site } set_state_flag = sov_nuclear_bombs_event5_before_registry_site_institutional_access_site } else = { clr_state_flag = sov_nuclear_bombs_event5_before_registry_site_institutional_access_site }
-	if = { limit = { has_state_flag = sov_nuclear_bombs_breakaway_command_site } set_state_flag = sov_nuclear_bombs_event5_before_registry_site_breakaway_command_site } else = { clr_state_flag = sov_nuclear_bombs_event5_before_registry_site_breakaway_command_site }
-	if = { limit = { has_state_flag = sov_nuclear_bombs_breakaway_custody_secured } set_state_flag = sov_nuclear_bombs_event5_before_registry_site_breakaway_custody_secured } else = { clr_state_flag = sov_nuclear_bombs_event5_before_registry_site_breakaway_custody_secured }
-	if = { limit = { has_state_flag = sov_nuclear_bombs_breakaway_command_site_contested } set_state_flag = sov_nuclear_bombs_event5_before_registry_site_breakaway_command_site_contested } else = { clr_state_flag = sov_nuclear_bombs_event5_before_registry_site_breakaway_command_site_contested }
-	if = { limit = { has_state_flag = sov_nuclear_bombs_institutional_access_contested } set_state_flag = sov_nuclear_bombs_event5_before_registry_site_institutional_access_contested } else = { clr_state_flag = sov_nuclear_bombs_event5_before_registry_site_institutional_access_contested }
-	if = { limit = { has_state_flag = sov_nuclear_bombs_delivery_force_site } set_state_flag = sov_nuclear_bombs_event5_before_registry_site_delivery_force_site } else = { clr_state_flag = sov_nuclear_bombs_event5_before_registry_site_delivery_force_site }
+	if = { limit = { hidden_trigger = { has_state_flag = sov_nuclear_bombs_central_command_site } } set_state_flag = sov_nuclear_bombs_event5_before_registry_site_central_command_site } else = { clr_state_flag = sov_nuclear_bombs_event5_before_registry_site_central_command_site }
+	if = { limit = { hidden_trigger = { has_state_flag = sov_nuclear_bombs_backup_command_site } } set_state_flag = sov_nuclear_bombs_event5_before_registry_site_backup_command_site } else = { clr_state_flag = sov_nuclear_bombs_event5_before_registry_site_backup_command_site }
+	if = { limit = { hidden_trigger = { has_state_flag = sov_nuclear_bombs_institutional_access_site } } set_state_flag = sov_nuclear_bombs_event5_before_registry_site_institutional_access_site } else = { clr_state_flag = sov_nuclear_bombs_event5_before_registry_site_institutional_access_site }
+	if = { limit = { hidden_trigger = { has_state_flag = sov_nuclear_bombs_breakaway_command_site } } set_state_flag = sov_nuclear_bombs_event5_before_registry_site_breakaway_command_site } else = { clr_state_flag = sov_nuclear_bombs_event5_before_registry_site_breakaway_command_site }
+	if = { limit = { hidden_trigger = { has_state_flag = sov_nuclear_bombs_breakaway_custody_secured } } set_state_flag = sov_nuclear_bombs_event5_before_registry_site_breakaway_custody_secured } else = { clr_state_flag = sov_nuclear_bombs_event5_before_registry_site_breakaway_custody_secured }
+	if = { limit = { hidden_trigger = { has_state_flag = sov_nuclear_bombs_breakaway_command_site_contested } } set_state_flag = sov_nuclear_bombs_event5_before_registry_site_breakaway_command_site_contested } else = { clr_state_flag = sov_nuclear_bombs_event5_before_registry_site_breakaway_command_site_contested }
+	if = { limit = { hidden_trigger = { has_state_flag = sov_nuclear_bombs_institutional_access_contested } } set_state_flag = sov_nuclear_bombs_event5_before_registry_site_institutional_access_contested } else = { clr_state_flag = sov_nuclear_bombs_event5_before_registry_site_institutional_access_contested }
+	if = { limit = { hidden_trigger = { has_state_flag = sov_nuclear_bombs_delivery_force_site } } set_state_flag = sov_nuclear_bombs_event5_before_registry_site_delivery_force_site } else = { clr_state_flag = sov_nuclear_bombs_event5_before_registry_site_delivery_force_site }
 }
 
 sov_nuclear_bombs_capture_event5_registry_after = {
@@ -2910,12 +2910,12 @@ sov_nuclear_bombs_capture_event5_registry_after = {
 			if = { limit = { has_country_flag = sov_nuclear_bombs_breakaway_operationalization_mission_active } PREV = { set_state_flag = sov_nuclear_bombs_event5_after_holder_local_stage_active } }
 		}
 	}
-	if = { limit = { has_state_flag = sov_nuclear_bombs_assembly_site } set_state_flag = sov_nuclear_bombs_event5_after_registry_assembly_site } else = { clr_state_flag = sov_nuclear_bombs_event5_after_registry_assembly_site }
-	if = { limit = { has_state_flag = sov_nuclear_bombs_assembly_batch_active } set_state_flag = sov_nuclear_bombs_event5_after_registry_assembly_batch_active } else = { clr_state_flag = sov_nuclear_bombs_event5_after_registry_assembly_batch_active }
+	if = { limit = { hidden_trigger = { has_state_flag = sov_nuclear_bombs_assembly_site } } set_state_flag = sov_nuclear_bombs_event5_after_registry_assembly_site } else = { clr_state_flag = sov_nuclear_bombs_event5_after_registry_assembly_site }
+	if = { limit = { hidden_trigger = { has_state_flag = sov_nuclear_bombs_assembly_batch_active } } set_state_flag = sov_nuclear_bombs_event5_after_registry_assembly_batch_active } else = { clr_state_flag = sov_nuclear_bombs_event5_after_registry_assembly_batch_active }
 	if = { limit = { has_variable = sov_nuclear_bombs_assembly_site_owner } set_variable = { sov_nuclear_bombs_event5_after_registry_assembly_owner = sov_nuclear_bombs_assembly_site_owner } } else = { clear_variable = sov_nuclear_bombs_event5_after_registry_assembly_owner }
 	if = { limit = { has_variable = sov_nuclear_bombs_assembly_batch_nonce } set_variable = { sov_nuclear_bombs_event5_after_registry_assembly_nonce = sov_nuclear_bombs_assembly_batch_nonce } } else = { clear_variable = sov_nuclear_bombs_event5_after_registry_assembly_nonce }
 	if = { limit = { has_variable = sov_nuclear_bombs_assembly_closed_nonce } set_variable = { sov_nuclear_bombs_event5_after_registry_assembly_closed_nonce = sov_nuclear_bombs_assembly_closed_nonce } } else = { clear_variable = sov_nuclear_bombs_event5_after_registry_assembly_closed_nonce }
-	if = { limit = { has_state_flag = sov_nuclear_bombs_assembly_site_contested } set_state_flag = sov_nuclear_bombs_event5_after_registry_assembly_site_contested } else = { clr_state_flag = sov_nuclear_bombs_event5_after_registry_assembly_site_contested }
+	if = { limit = { hidden_trigger = { has_state_flag = sov_nuclear_bombs_assembly_site_contested } } set_state_flag = sov_nuclear_bombs_event5_after_registry_assembly_site_contested } else = { clr_state_flag = sov_nuclear_bombs_event5_after_registry_assembly_site_contested }
 	if = { limit = { SOV = { has_variable = sov_nuclear_bombs_assembly_state } } set_variable = { sov_nuclear_bombs_event5_after_registry_sov_assembly_state = SOV.sov_nuclear_bombs_assembly_state } } else = { clear_variable = sov_nuclear_bombs_event5_after_registry_sov_assembly_state }
 	if = { limit = { SOV = { has_variable = sov_nuclear_bombs_assembly_state_id } } set_variable = { sov_nuclear_bombs_event5_after_registry_sov_assembly_state_id = SOV.sov_nuclear_bombs_assembly_state_id } } else = { clear_variable = sov_nuclear_bombs_event5_after_registry_sov_assembly_state_id }
 	if = { limit = { SOV = { has_variable = sov_nuclear_bombs_assembly_nonce } } set_variable = { sov_nuclear_bombs_event5_after_registry_sov_assembly_nonce = SOV.sov_nuclear_bombs_assembly_nonce } } else = { clear_variable = sov_nuclear_bombs_event5_after_registry_sov_assembly_nonce }
@@ -2936,9 +2936,9 @@ sov_nuclear_bombs_capture_event5_registry_after = {
 	if = { limit = { SOV = { exists = yes has_variable = sov_nuclear_bombs_transit_source_state } } set_variable = { sov_nuclear_bombs_event5_after_registry_sov_transit_source_state = SOV.sov_nuclear_bombs_transit_source_state } } else = { clear_variable = sov_nuclear_bombs_event5_after_registry_sov_transit_source_state }
 	if = { limit = { SOV = { exists = yes has_variable = sov_nuclear_bombs_transit_destination_state } } set_variable = { sov_nuclear_bombs_event5_after_registry_sov_transit_destination_state = SOV.sov_nuclear_bombs_transit_destination_state } } else = { clear_variable = sov_nuclear_bombs_event5_after_registry_sov_transit_destination_state }
 	if = { limit = { SOV = { exists = yes has_variable = sov_nuclear_bombs_dismantlement_source_state } } set_variable = { sov_nuclear_bombs_event5_after_registry_sov_dismantlement_source_state = SOV.sov_nuclear_bombs_dismantlement_source_state } } else = { clear_variable = sov_nuclear_bombs_event5_after_registry_sov_dismantlement_source_state }
-	if = { limit = { SOV = { exists = yes has_country_flag = sov_nuclear_bombs_transit_active } } set_state_flag = sov_nuclear_bombs_event5_after_registry_sov_transit_active } else = { clr_state_flag = sov_nuclear_bombs_event5_after_registry_sov_transit_active }
-	if = { limit = { SOV = { exists = yes has_country_flag = sov_nuclear_bombs_dismantlement_registry_active } } set_state_flag = sov_nuclear_bombs_event5_after_registry_sov_dismantlement_registry_active } else = { clr_state_flag = sov_nuclear_bombs_event5_after_registry_sov_dismantlement_registry_active }
-	if = { limit = { SOV = { exists = yes has_country_flag = sov_nuclear_bombs_delivery_force_registered } } set_state_flag = sov_nuclear_bombs_event5_after_registry_sov_delivery_force_registered } else = { clr_state_flag = sov_nuclear_bombs_event5_after_registry_sov_delivery_force_registered }
+	if = { limit = { SOV = { exists = yes hidden_trigger = { has_country_flag = sov_nuclear_bombs_transit_active } } } set_state_flag = sov_nuclear_bombs_event5_after_registry_sov_transit_active } else = { clr_state_flag = sov_nuclear_bombs_event5_after_registry_sov_transit_active }
+	if = { limit = { SOV = { exists = yes hidden_trigger = { has_country_flag = sov_nuclear_bombs_dismantlement_registry_active } } } set_state_flag = sov_nuclear_bombs_event5_after_registry_sov_dismantlement_registry_active } else = { clr_state_flag = sov_nuclear_bombs_event5_after_registry_sov_dismantlement_registry_active }
+	if = { limit = { SOV = { exists = yes hidden_trigger = { has_country_flag = sov_nuclear_bombs_delivery_force_registered } } } set_state_flag = sov_nuclear_bombs_event5_after_registry_sov_delivery_force_registered } else = { clr_state_flag = sov_nuclear_bombs_event5_after_registry_sov_delivery_force_registered }
 	if = { limit = { has_variable = sov_nuclear_bombs_site_in_transit } set_variable = { sov_nuclear_bombs_event5_after_registry_site_site_in_transit = sov_nuclear_bombs_site_in_transit } } else = { clear_variable = sov_nuclear_bombs_event5_after_registry_site_site_in_transit }
 	if = { limit = { has_variable = sov_nuclear_bombs_site_transit_nonce } set_variable = { sov_nuclear_bombs_event5_after_registry_site_site_transit_nonce = sov_nuclear_bombs_site_transit_nonce } } else = { clear_variable = sov_nuclear_bombs_event5_after_registry_site_site_transit_nonce }
 	if = { limit = { has_variable = sov_nuclear_bombs_site_transit_destination } set_variable = { sov_nuclear_bombs_event5_after_registry_site_site_transit_destination = sov_nuclear_bombs_site_transit_destination } } else = { clear_variable = sov_nuclear_bombs_event5_after_registry_site_site_transit_destination }
@@ -2955,22 +2955,22 @@ sov_nuclear_bombs_capture_event5_registry_after = {
 	if = { limit = { has_variable = sov_nuclear_bombs_local_custody_actor } set_variable = { sov_nuclear_bombs_event5_after_registry_site_local_custody_actor = sov_nuclear_bombs_local_custody_actor } } else = { clear_variable = sov_nuclear_bombs_event5_after_registry_site_local_custody_actor }
 	if = { limit = { has_variable = sov_nuclear_bombs_breakaway_command_actor } set_variable = { sov_nuclear_bombs_event5_after_registry_site_breakaway_command_actor = sov_nuclear_bombs_breakaway_command_actor } } else = { clear_variable = sov_nuclear_bombs_event5_after_registry_site_breakaway_command_actor }
 	if = { limit = { has_variable = sov_nuclear_bombs_site_delivery_force_owner } set_variable = { sov_nuclear_bombs_event5_after_registry_site_site_delivery_force_owner = sov_nuclear_bombs_site_delivery_force_owner } } else = { clear_variable = sov_nuclear_bombs_event5_after_registry_site_site_delivery_force_owner }
-	if = { limit = { has_state_flag = sov_nuclear_bombs_transit_source_active } set_state_flag = sov_nuclear_bombs_event5_after_registry_site_transit_source_active } else = { clr_state_flag = sov_nuclear_bombs_event5_after_registry_site_transit_source_active }
-	if = { limit = { has_state_flag = sov_nuclear_bombs_transit_destination_pending } set_state_flag = sov_nuclear_bombs_event5_after_registry_site_transit_destination_pending } else = { clr_state_flag = sov_nuclear_bombs_event5_after_registry_site_transit_destination_pending }
-	if = { limit = { has_state_flag = sov_nuclear_bombs_transit_arrived } set_state_flag = sov_nuclear_bombs_event5_after_registry_site_transit_arrived } else = { clr_state_flag = sov_nuclear_bombs_event5_after_registry_site_transit_arrived }
-	if = { limit = { has_state_flag = sov_nuclear_bombs_transit_returned } set_state_flag = sov_nuclear_bombs_event5_after_registry_site_transit_returned } else = { clr_state_flag = sov_nuclear_bombs_event5_after_registry_site_transit_returned }
-	if = { limit = { has_state_flag = sov_nuclear_bombs_transit_captured } set_state_flag = sov_nuclear_bombs_event5_after_registry_site_transit_captured } else = { clr_state_flag = sov_nuclear_bombs_event5_after_registry_site_transit_captured }
-	if = { limit = { has_state_flag = sov_nuclear_bombs_transit_lost } set_state_flag = sov_nuclear_bombs_event5_after_registry_site_transit_lost } else = { clr_state_flag = sov_nuclear_bombs_event5_after_registry_site_transit_lost }
-	if = { limit = { has_state_flag = sov_nuclear_bombs_active_dismantlement_site } set_state_flag = sov_nuclear_bombs_event5_after_registry_site_active_dismantlement_site } else = { clr_state_flag = sov_nuclear_bombs_event5_after_registry_site_active_dismantlement_site }
+	if = { limit = { hidden_trigger = { has_state_flag = sov_nuclear_bombs_transit_source_active } } set_state_flag = sov_nuclear_bombs_event5_after_registry_site_transit_source_active } else = { clr_state_flag = sov_nuclear_bombs_event5_after_registry_site_transit_source_active }
+	if = { limit = { hidden_trigger = { has_state_flag = sov_nuclear_bombs_transit_destination_pending } } set_state_flag = sov_nuclear_bombs_event5_after_registry_site_transit_destination_pending } else = { clr_state_flag = sov_nuclear_bombs_event5_after_registry_site_transit_destination_pending }
+	if = { limit = { hidden_trigger = { has_state_flag = sov_nuclear_bombs_transit_arrived } } set_state_flag = sov_nuclear_bombs_event5_after_registry_site_transit_arrived } else = { clr_state_flag = sov_nuclear_bombs_event5_after_registry_site_transit_arrived }
+	if = { limit = { hidden_trigger = { has_state_flag = sov_nuclear_bombs_transit_returned } } set_state_flag = sov_nuclear_bombs_event5_after_registry_site_transit_returned } else = { clr_state_flag = sov_nuclear_bombs_event5_after_registry_site_transit_returned }
+	if = { limit = { hidden_trigger = { has_state_flag = sov_nuclear_bombs_transit_captured } } set_state_flag = sov_nuclear_bombs_event5_after_registry_site_transit_captured } else = { clr_state_flag = sov_nuclear_bombs_event5_after_registry_site_transit_captured }
+	if = { limit = { hidden_trigger = { has_state_flag = sov_nuclear_bombs_transit_lost } } set_state_flag = sov_nuclear_bombs_event5_after_registry_site_transit_lost } else = { clr_state_flag = sov_nuclear_bombs_event5_after_registry_site_transit_lost }
+	if = { limit = { hidden_trigger = { has_state_flag = sov_nuclear_bombs_active_dismantlement_site } } set_state_flag = sov_nuclear_bombs_event5_after_registry_site_active_dismantlement_site } else = { clr_state_flag = sov_nuclear_bombs_event5_after_registry_site_active_dismantlement_site }
 	if = { limit = { has_state_flag = sov_nuclear_bombs_production_reactor_site } set_state_flag = sov_nuclear_bombs_event5_after_registry_site_production_reactor_site } else = { clr_state_flag = sov_nuclear_bombs_event5_after_registry_site_production_reactor_site }
-	if = { limit = { has_state_flag = sov_nuclear_bombs_central_command_site } set_state_flag = sov_nuclear_bombs_event5_after_registry_site_central_command_site } else = { clr_state_flag = sov_nuclear_bombs_event5_after_registry_site_central_command_site }
-	if = { limit = { has_state_flag = sov_nuclear_bombs_backup_command_site } set_state_flag = sov_nuclear_bombs_event5_after_registry_site_backup_command_site } else = { clr_state_flag = sov_nuclear_bombs_event5_after_registry_site_backup_command_site }
-	if = { limit = { has_state_flag = sov_nuclear_bombs_institutional_access_site } set_state_flag = sov_nuclear_bombs_event5_after_registry_site_institutional_access_site } else = { clr_state_flag = sov_nuclear_bombs_event5_after_registry_site_institutional_access_site }
-	if = { limit = { has_state_flag = sov_nuclear_bombs_breakaway_command_site } set_state_flag = sov_nuclear_bombs_event5_after_registry_site_breakaway_command_site } else = { clr_state_flag = sov_nuclear_bombs_event5_after_registry_site_breakaway_command_site }
-	if = { limit = { has_state_flag = sov_nuclear_bombs_breakaway_custody_secured } set_state_flag = sov_nuclear_bombs_event5_after_registry_site_breakaway_custody_secured } else = { clr_state_flag = sov_nuclear_bombs_event5_after_registry_site_breakaway_custody_secured }
-	if = { limit = { has_state_flag = sov_nuclear_bombs_breakaway_command_site_contested } set_state_flag = sov_nuclear_bombs_event5_after_registry_site_breakaway_command_site_contested } else = { clr_state_flag = sov_nuclear_bombs_event5_after_registry_site_breakaway_command_site_contested }
-	if = { limit = { has_state_flag = sov_nuclear_bombs_institutional_access_contested } set_state_flag = sov_nuclear_bombs_event5_after_registry_site_institutional_access_contested } else = { clr_state_flag = sov_nuclear_bombs_event5_after_registry_site_institutional_access_contested }
-	if = { limit = { has_state_flag = sov_nuclear_bombs_delivery_force_site } set_state_flag = sov_nuclear_bombs_event5_after_registry_site_delivery_force_site } else = { clr_state_flag = sov_nuclear_bombs_event5_after_registry_site_delivery_force_site }
+	if = { limit = { hidden_trigger = { has_state_flag = sov_nuclear_bombs_central_command_site } } set_state_flag = sov_nuclear_bombs_event5_after_registry_site_central_command_site } else = { clr_state_flag = sov_nuclear_bombs_event5_after_registry_site_central_command_site }
+	if = { limit = { hidden_trigger = { has_state_flag = sov_nuclear_bombs_backup_command_site } } set_state_flag = sov_nuclear_bombs_event5_after_registry_site_backup_command_site } else = { clr_state_flag = sov_nuclear_bombs_event5_after_registry_site_backup_command_site }
+	if = { limit = { hidden_trigger = { has_state_flag = sov_nuclear_bombs_institutional_access_site } } set_state_flag = sov_nuclear_bombs_event5_after_registry_site_institutional_access_site } else = { clr_state_flag = sov_nuclear_bombs_event5_after_registry_site_institutional_access_site }
+	if = { limit = { hidden_trigger = { has_state_flag = sov_nuclear_bombs_breakaway_command_site } } set_state_flag = sov_nuclear_bombs_event5_after_registry_site_breakaway_command_site } else = { clr_state_flag = sov_nuclear_bombs_event5_after_registry_site_breakaway_command_site }
+	if = { limit = { hidden_trigger = { has_state_flag = sov_nuclear_bombs_breakaway_custody_secured } } set_state_flag = sov_nuclear_bombs_event5_after_registry_site_breakaway_custody_secured } else = { clr_state_flag = sov_nuclear_bombs_event5_after_registry_site_breakaway_custody_secured }
+	if = { limit = { hidden_trigger = { has_state_flag = sov_nuclear_bombs_breakaway_command_site_contested } } set_state_flag = sov_nuclear_bombs_event5_after_registry_site_breakaway_command_site_contested } else = { clr_state_flag = sov_nuclear_bombs_event5_after_registry_site_breakaway_command_site_contested }
+	if = { limit = { hidden_trigger = { has_state_flag = sov_nuclear_bombs_institutional_access_contested } } set_state_flag = sov_nuclear_bombs_event5_after_registry_site_institutional_access_contested } else = { clr_state_flag = sov_nuclear_bombs_event5_after_registry_site_institutional_access_contested }
+	if = { limit = { hidden_trigger = { has_state_flag = sov_nuclear_bombs_delivery_force_site } } set_state_flag = sov_nuclear_bombs_event5_after_registry_site_delivery_force_site } else = { clr_state_flag = sov_nuclear_bombs_event5_after_registry_site_delivery_force_site }
 }
 # State scope. This stores exact owner/controller pointers, current site
 # buckets where registered, and the represented wider Event 23 context before
@@ -2981,21 +2981,21 @@ sov_nuclear_bombs_snapshot_event5_state = {
 			NOT = { sov_nuclear_bombs_state_has_pending_event5_snapshot = yes }
 			OR = {
 				sov_nuclear_bombs_state_is_registered = yes
-				has_state_flag = sov_nuclear_bombs_reactor_site_pending
-				has_state_flag = sov_nuclear_bombs_reactor_event_owned
+				hidden_trigger = { has_state_flag = sov_nuclear_bombs_reactor_site_pending }
+				hidden_trigger = { has_state_flag = sov_nuclear_bombs_reactor_event_owned }
 				has_state_flag = sov_nuclear_bombs_production_reactor_site
-				has_state_flag = sov_nuclear_bombs_assembly_site
-				has_state_flag = sov_nuclear_bombs_central_command_site
-				has_state_flag = sov_nuclear_bombs_backup_command_site
-				has_state_flag = sov_nuclear_bombs_institutional_access_site
-				has_state_flag = sov_nuclear_bombs_breakaway_command_site
-				has_state_flag = sov_nuclear_bombs_delivery_force_site
-				has_state_flag = sov_nuclear_bombs_transit_source_active
-				has_state_flag = sov_nuclear_bombs_transit_destination_pending
-				has_state_flag = sov_nuclear_bombs_active_dismantlement_site
-				has_state_flag = sov_nuclear_bombs_disperse_source
-				has_state_flag = sov_nuclear_bombs_disperse_destination
-				has_state_flag = sov_nuclear_bombs_native_delivery_state_pending
+				hidden_trigger = { has_state_flag = sov_nuclear_bombs_assembly_site }
+				hidden_trigger = { has_state_flag = sov_nuclear_bombs_central_command_site }
+				hidden_trigger = { has_state_flag = sov_nuclear_bombs_backup_command_site }
+				hidden_trigger = { has_state_flag = sov_nuclear_bombs_institutional_access_site }
+				hidden_trigger = { has_state_flag = sov_nuclear_bombs_breakaway_command_site }
+				hidden_trigger = { has_state_flag = sov_nuclear_bombs_delivery_force_site }
+				hidden_trigger = { has_state_flag = sov_nuclear_bombs_transit_source_active }
+				hidden_trigger = { has_state_flag = sov_nuclear_bombs_transit_destination_pending }
+				hidden_trigger = { has_state_flag = sov_nuclear_bombs_active_dismantlement_site }
+				hidden_trigger = { has_state_flag = sov_nuclear_bombs_disperse_source }
+				hidden_trigger = { has_state_flag = sov_nuclear_bombs_disperse_destination }
+				hidden_trigger = { has_state_flag = sov_nuclear_bombs_native_delivery_state_pending }
 				AND = { has_event_target = sov_nuclear_bombs_test_state check_variable = { var = THIS.id value = event_target:sov_nuclear_bombs_test_state.id compare = equals } }
 				AND = { has_event_target = sov_nuclear_bombs_selected_test_state check_variable = { var = THIS.id value = event_target:sov_nuclear_bombs_selected_test_state.id compare = equals } }
 				AND = { has_event_target = sov_nuclear_bombs_selected_state check_variable = { var = THIS.id value = event_target:sov_nuclear_bombs_selected_state.id compare = equals } }
@@ -3094,7 +3094,7 @@ sov_nuclear_bombs_reconcile_event5_state = {
 	if = {
 		limit = {
 			sov_nuclear_bombs_state_has_pending_event5_snapshot = yes
-			NOT = { has_state_flag = sov_nuclear_bombs_event5_transfer_in_progress }
+			NOT = { hidden_trigger = { has_state_flag = sov_nuclear_bombs_event5_transfer_in_progress } }
 		}
 		if = {
 			limit = {
@@ -3122,7 +3122,7 @@ sov_nuclear_bombs_reconcile_event5_state = {
 					NOT = { OR = { owner = { exists = yes } controller = { exists = yes } } }
 					NOT = { has_state_flag = sov_nuclear_bombs_site_dismantled }
 					NOT = { has_state_flag = sov_nuclear_bombs_site_missing }
-					NOT = { has_state_flag = sov_nuclear_bombs_native_delivery_state_pending }
+					NOT = { hidden_trigger = { has_state_flag = sov_nuclear_bombs_native_delivery_state_pending } }
 				}
 				sov_nuclear_bombs_mark_site_missing = yes
 			}
@@ -3223,8 +3223,8 @@ sov_nuclear_bombs_reconcile_event5_state = {
 			if = {
 				limit = {
 					OR = {
-						has_state_flag = sov_nuclear_bombs_site_native_custody_disputed
-						has_state_flag = sov_nuclear_bombs_event5_snapshot_bucket_mismatch
+						hidden_trigger = { has_state_flag = sov_nuclear_bombs_site_native_custody_disputed }
+						hidden_trigger = { has_state_flag = sov_nuclear_bombs_event5_snapshot_bucket_mismatch }
 					}
 				}
 				set_variable = { sov_nuclear_bombs_site_reconciliation_state = constant:sov_nuclear_bombs_custody.disputed }

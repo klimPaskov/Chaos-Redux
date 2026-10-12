@@ -15,7 +15,7 @@ camp_origin_inspect_host_rows = {
 # STATE. First transition only, preserving the first ambiguous observation epoch.
 camp_origin_mark_ambiguous = {
 	if = {
-		limit = { NOT = { has_state_flag = camp_origin_ambiguous } }
+		limit = { NOT = { hidden_trigger = { has_state_flag = camp_origin_ambiguous } } }
 		set_variable = { camp_origin_ambiguity_sequence = camp_origin_observation_sequence }
 		set_state_flag = camp_origin_ambiguous
 	}
@@ -26,7 +26,7 @@ camp_origin_mark_ambiguous = {
 # after the caller has preserved the measured partial transaction receipts.
 camp_origin_quarantine_transaction = {
 	if = {
-		limit = { NOT = { has_state_flag = camp_origin_transaction_unresolved } }
+		limit = { NOT = { hidden_trigger = { has_state_flag = camp_origin_transaction_unresolved } } }
 		set_variable = { camp_origin_transaction_observed_population_k = state_population_k }
 		set_variable = { camp_origin_transaction_observed_state_deaths_people = chaos_state_civilian_deaths_total }
 		set_state_flag = camp_origin_transaction_unresolved
@@ -41,7 +41,7 @@ camp_origin_reconcile_host_membership = {
 	set_temp_variable = { camp_origin_reconciled_occupation_k = constant:camp_admin_value.zero }
 	camp_origin_observe_host = yes
 	if = {
-		limit = { has_state_flag = camp_origin_single_origin_reconciliation_pending NOT = { has_state_flag = camp_origin_ambiguous } }
+		limit = { hidden_trigger = { has_state_flag = camp_origin_single_origin_reconciliation_pending } NOT = { hidden_trigger = { has_state_flag = camp_origin_ambiguous } } }
 		if = {
 			limit = { check_variable = { camp_origin_pending_single_family = constant:camp_origin_family.custody } }
 			camp_admin_consume_outside_rows = yes
@@ -86,7 +86,7 @@ camp_origin_commit_endpoint_observation = {
 # baseline reason, with no invented outside-loss receipt or origin estimate.
 camp_origin_initialize_host = {
 	if = {
-		limit = { NOT = { has_state_flag = camp_origin_observation_initialized } }
+		limit = { NOT = { hidden_trigger = { has_state_flag = camp_origin_observation_initialized } } }
 		set_state_flag = camp_origin_observation_initialized
 		set_variable = { camp_origin_observation_sequence = constant:camp_admin_value.zero }
 		set_variable = { camp_origin_observed_population_k = state_population_k }
@@ -108,8 +108,8 @@ camp_origin_initialize_host = {
 		if = {
 			limit = {
 				OR = {
-					has_state_flag = camp_occ_origin_estimated
-					has_state_flag = camp_admin_origin_estimated
+					hidden_trigger = { has_state_flag = camp_occ_origin_estimated }
+					hidden_trigger = { has_state_flag = camp_admin_origin_estimated }
 					check_variable = { camp_occ_unknown_origin_removed_k > constant:camp_admin_value.zero }
 					check_variable = { camp_admin_unknown_origin_removed_k > constant:camp_admin_value.zero }
 				}
@@ -121,7 +121,7 @@ camp_origin_initialize_host = {
 			limit = {
 				check_variable = { camp_origin_rows_valid = constant:camp_admin_value.one }
 				check_variable = { camp_origin_live_row_count > constant:camp_admin_value.zero }
-				NOT = { has_state_flag = camp_origin_baseline_unverified }
+				NOT = { hidden_trigger = { has_state_flag = camp_origin_baseline_unverified } }
 			}
 			if = {
 				limit = {
@@ -139,7 +139,7 @@ camp_origin_initialize_host = {
 			}
 		}
 		if = {
-			limit = { NOT = { has_state_flag = camp_origin_ambiguous } check_variable = { camp_origin_rows_valid = constant:camp_admin_value.one } }
+			limit = { NOT = { hidden_trigger = { has_state_flag = camp_origin_ambiguous } } check_variable = { camp_origin_rows_valid = constant:camp_admin_value.one } }
 			set_variable = { camp_origin_last_verified_occupation_k = camp_origin_inspect_occupation_k }
 			set_variable = { camp_origin_last_verified_custody_k = camp_origin_inspect_custody_k }
 		}
@@ -157,14 +157,14 @@ camp_origin_observe_host = {
 	set_temp_variable = { camp_origin_observed_counter_regression_people = constant:camp_admin_value.zero }
 	camp_origin_initialize_host = yes
 	if = {
-		limit = { OR = { has_state_flag = camp_occ_transfer_rollback_failed has_state_flag = camp_occ_custody_rollback_failed } }
+		limit = { OR = { hidden_trigger = { has_state_flag = camp_occ_transfer_rollback_failed } hidden_trigger = { has_state_flag = camp_occ_custody_rollback_failed } } }
 		camp_origin_quarantine_transaction = yes
 	}
 	camp_origin_inspect_host_rows = yes
 	set_temp_variable = { camp_origin_observation_population_basis_k = camp_origin_observed_population_k }
 	set_temp_variable = { camp_origin_observation_deaths_basis_people = camp_origin_observed_state_deaths_people }
 	if = {
-		limit = { has_state_flag = camp_origin_transaction_unresolved }
+		limit = { hidden_trigger = { has_state_flag = camp_origin_transaction_unresolved } }
 		set_temp_variable = { camp_origin_observation_population_basis_k = camp_origin_transaction_observed_population_k }
 		set_temp_variable = { camp_origin_observation_deaths_basis_people = camp_origin_transaction_observed_state_deaths_people }
 	}
@@ -199,13 +199,13 @@ camp_origin_observe_host = {
 		}
 	}
 	if = {
-		limit = { check_variable = { camp_origin_rows_valid = constant:camp_admin_value.one } NOT = { has_state_flag = camp_origin_ambiguous } }
+		limit = { check_variable = { camp_origin_rows_valid = constant:camp_admin_value.one } NOT = { hidden_trigger = { has_state_flag = camp_origin_ambiguous } } }
 		clr_state_flag = camp_origin_records_unresolved
 	}
 	if = {
 		limit = { check_variable = { camp_origin_observed_counter_regression_people > constant:camp_admin_value.zero } }
 		if = {
-			limit = { NOT = { has_state_flag = camp_origin_counter_regressed } }
+			limit = { NOT = { hidden_trigger = { has_state_flag = camp_origin_counter_regressed } } }
 			set_variable = { camp_origin_regressed_from_state_deaths_people = camp_origin_observed_state_deaths_people }
 		}
 		set_state_flag = camp_origin_counter_regressed
@@ -223,13 +223,13 @@ camp_origin_observe_host = {
 	# Repeating observation cannot discard an unconsumed retirement request.
 	if = {
 		limit = {
-			NOT = { has_state_flag = camp_origin_ambiguous }
+			NOT = { hidden_trigger = { has_state_flag = camp_origin_ambiguous } }
 			check_variable = { camp_origin_rows_valid = constant:camp_admin_value.one }
 			check_variable = { camp_origin_live_row_count = constant:camp_admin_value.one }
 			OR = { check_variable = { camp_origin_observed_outside_signal_k > constant:camp_admin_value.zero } check_variable = { camp_origin_inspect_shortfall_k > constant:camp_admin_value.zero } }
 		}
 		if = {
-			limit = { NOT = { has_state_flag = camp_origin_single_origin_reconciliation_pending } }
+			limit = { NOT = { hidden_trigger = { has_state_flag = camp_origin_single_origin_reconciliation_pending } } }
 			set_state_flag = camp_origin_single_origin_reconciliation_pending
 			set_variable = { camp_origin_pending_single_family = camp_origin_first_family }
 			set_variable = { camp_origin_pending_single_origin = camp_origin_first_origin }
@@ -248,12 +248,12 @@ camp_origin_observe_host = {
 	add_to_variable = { camp_origin_total_observed_net_decline_k = camp_origin_observed_net_decline_k }
 	add_to_variable = { camp_origin_total_observed_shared_loss_k = camp_origin_observed_shared_loss_k }
 	if = {
-		limit = { has_state_flag = camp_origin_ambiguous }
+		limit = { hidden_trigger = { has_state_flag = camp_origin_ambiguous } }
 		add_to_variable = { camp_origin_unresolved_net_decline_k = camp_origin_observed_net_decline_k }
 		add_to_variable = { camp_origin_unresolved_shared_loss_k = camp_origin_observed_shared_loss_k }
 	}
 	if = {
-		limit = { NOT = { has_state_flag = camp_origin_ambiguous } NOT = { has_state_flag = camp_origin_single_origin_reconciliation_pending } check_variable = { camp_origin_rows_valid = constant:camp_admin_value.one } }
+		limit = { NOT = { hidden_trigger = { has_state_flag = camp_origin_ambiguous } } NOT = { hidden_trigger = { has_state_flag = camp_origin_single_origin_reconciliation_pending } } check_variable = { camp_origin_rows_valid = constant:camp_admin_value.one } }
 		set_variable = { camp_origin_last_verified_occupation_k = camp_origin_inspect_occupation_k }
 		set_variable = { camp_origin_last_verified_custody_k = camp_origin_inspect_custody_k }
 		if = {
@@ -263,7 +263,7 @@ camp_origin_observe_host = {
 	}
 	set_variable = { camp_origin_current_shortfall_k = camp_origin_inspect_shortfall_k }
 	if = {
-		limit = { has_state_flag = camp_origin_transaction_unresolved }
+		limit = { hidden_trigger = { has_state_flag = camp_origin_transaction_unresolved } }
 		set_variable = { camp_origin_transaction_observed_population_k = state_population_k }
 		set_variable = { camp_origin_transaction_observed_state_deaths_people = chaos_state_civilian_deaths_total }
 	}
@@ -281,8 +281,8 @@ camp_origin_acknowledge_single_origin_reconciliation = {
 	set_temp_variable = { camp_origin_single_reconciliation_accepted = constant:camp_admin_value.zero }
 	if = {
 		limit = {
-			has_state_flag = camp_origin_single_origin_reconciliation_pending
-			NOT = { has_state_flag = camp_origin_ambiguous }
+			hidden_trigger = { has_state_flag = camp_origin_single_origin_reconciliation_pending }
+			NOT = { hidden_trigger = { has_state_flag = camp_origin_ambiguous } }
 			has_variable = camp_origin_single_reconcile_contract
 			has_variable = camp_origin_single_reconcile_sequence
 			has_variable = camp_origin_single_reconcile_amount_k

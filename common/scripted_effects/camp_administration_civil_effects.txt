@@ -12,7 +12,7 @@ camp_administration_civil_initialize = {
 	set_variable = { camp_admin_civil_review_months = constant:camp_admin_civil.review_months }
 	set_variable = { camp_admin_civil_claims_months = constant:camp_admin_civil.claims_months }
 	if = {
-		limit = { camp_administration_civil_country_supported = yes NOT = { has_country_flag = camp_admin_civil_initialized } }
+		limit = { camp_administration_civil_country_supported = yes NOT = { hidden_trigger = { has_country_flag = camp_admin_civil_initialized } } }
 		set_country_flag = camp_admin_civil_initialized
 		set_variable = { camp_admin_civil_admitted_k = constant:camp_admin_civil.zero }
 		set_variable = { camp_admin_civil_review_progress = constant:camp_admin_civil.zero }
@@ -381,7 +381,7 @@ camp_administration_civil_refresh_pressures = {
 # Legacy elapsed time proves no paid months and grants no foundation progress.
 camp_administration_civil_migrate_projects = {
 	if = {
-		limit = { NOT = { has_country_flag = camp_admin_economy_slot_active } }
+		limit = { NOT = { hidden_trigger = { has_country_flag = camp_admin_economy_slot_active } } }
 		if = { limit = { has_variable = uk_raj_military_works_state_id } set_variable = { camp_admin_economy_state_id = uk_raj_military_works_state_id } }
 		else_if = { limit = { has_variable = fr_north_africa_project_state_id } set_variable = { camp_admin_economy_state_id = fr_north_africa_project_state_id } }
 		else_if = { limit = { has_variable = ita_desert_road_project_state_id } set_variable = { camp_admin_economy_state_id = ita_desert_road_project_state_id } }

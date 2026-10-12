@@ -68,7 +68,7 @@ chaosx_nr25_enroll_event036_recoverers = {
 # COUNTRY scope. One outstanding watch pulse per holder.
 chaosx_nr25_schedule_holder_pulse = {
 	if = {
-		limit = { NOT = { has_country_flag = chaosx_nr25_holder_pulse_pending } }
+		limit = { NOT = { hidden_trigger = { has_country_flag = chaosx_nr25_holder_pulse_pending } } }
 		set_country_flag = chaosx_nr25_holder_pulse_pending
 		country_event = { id = chaosx.nr25.281 days = constant:chaosx_nr25_holder.pulse_days }
 	}
@@ -462,7 +462,7 @@ chaosx_nr25_sync_outcome_idea = {
 	if = {
 		limit = {
 			check_variable = { var = chaosx_nr25_outcome value = constant:chaosx_nr25_outcome.none compare = equals }
-			has_country_flag = chaosx_nr25_dependence_started
+			hidden_trigger = { has_country_flag = chaosx_nr25_dependence_started }
 			check_variable = { var = chaosx_nr25_dependence value = constant:chaosx_nr25_value.zero compare = greater_than }
 			NOT = { has_idea = chaosx_nr25_alien_dependence }
 		}

@@ -30,7 +30,7 @@
 event021_refresh_target_pool_membership = {
 	set_temp_variable = { event021_lifecycle_target_was_member = constant:random_civil_war_value.zero }
 	if = {
-		limit = { has_country_flag = random_civil_war_target_pool_candidate }
+		limit = { hidden_trigger = { has_country_flag = random_civil_war_target_pool_candidate } }
 		set_temp_variable = { event021_lifecycle_target_was_member = constant:random_civil_war_value.one }
 	}
 	if = {
@@ -48,13 +48,13 @@ event021_refresh_target_pool_membership = {
 	if = {
 		limit = {
 			random_civil_war_is_normal_human_country = yes
-			has_country_flag = random_civil_war_global_registered
+			hidden_trigger = { has_country_flag = random_civil_war_global_registered }
 			is_in_array = {
 				array = global.random_civil_war_registered_countries
 				value = THIS
 			}
 			random_civil_war_country_can_be_automatic_target = yes
-			has_country_flag = random_civil_war_target_pool_candidate
+			hidden_trigger = { has_country_flag = random_civil_war_target_pool_candidate }
 			check_variable = {
 				var = random_civil_war_target_weight
 				value = constant:random_civil_war_target_weight.minimum

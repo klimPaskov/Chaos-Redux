@@ -18,7 +18,7 @@ apply_zombie_decontamination_state_modifier = {
 
 initialize_weaponized_zombie_tracking = {
 	if = {
-		limit = { NOT = { has_country_flag = weaponized_zombies_started } }
+		limit = { NOT = { hidden_trigger = { has_country_flag = weaponized_zombies_started } } }
 		clear_weaponized_zombie_research_step_flags = yes
 	}
 	if = {
@@ -126,12 +126,12 @@ initialize_cxt_weaponized_zombie_profile = {
 			tag = CXT
 			NOT = {
 				AND = {
-					has_country_flag = weaponized_zombie_step_strength_done
-					has_country_flag = weaponized_zombie_step_infectiousness_done
-					has_country_flag = weaponized_zombie_step_speed_done
-					has_country_flag = weaponized_zombie_step_durability_done
-					has_country_flag = weaponized_zombie_step_cure_done
-					has_country_flag = weaponized_zombie_step_friendliness_done
+					hidden_trigger = { has_country_flag = weaponized_zombie_step_strength_done }
+					hidden_trigger = { has_country_flag = weaponized_zombie_step_infectiousness_done }
+					hidden_trigger = { has_country_flag = weaponized_zombie_step_speed_done }
+					hidden_trigger = { has_country_flag = weaponized_zombie_step_durability_done }
+					hidden_trigger = { has_country_flag = weaponized_zombie_step_cure_done }
+					hidden_trigger = { has_country_flag = weaponized_zombie_step_friendliness_done }
 					has_variable = weaponized_zombie_strength
 					has_variable = weaponized_zombie_infectiousness
 					has_variable = weaponized_zombie_speed
@@ -755,12 +755,12 @@ weaponized_zombie_sanitize_random_command_profile = {
 	if = {
 		limit = {
 			OR = {
-				has_country_flag = weaponized_zombie_nature_demonic
-				has_country_flag = weaponized_zombie_nature_necrotic
+				hidden_trigger = { has_country_flag = weaponized_zombie_nature_demonic }
+				hidden_trigger = { has_country_flag = weaponized_zombie_nature_necrotic }
 			}
 			OR = {
-				has_country_flag = weaponized_zombie_life_dead
-				has_country_flag = weaponized_zombie_life_transformed
+				hidden_trigger = { has_country_flag = weaponized_zombie_life_dead }
+				hidden_trigger = { has_country_flag = weaponized_zombie_life_transformed }
 			}
 			check_variable = {
 				var = weaponized_zombie_mutation_extremes
@@ -1240,11 +1240,11 @@ weaponized_zombie_calculate_world_pressure = {
 	}
 
 	if = {
-		limit = { has_country_flag = weaponized_zombie_life_transformed }
+		limit = { hidden_trigger = { has_country_flag = weaponized_zombie_life_transformed } }
 		add_to_temp_variable = { weaponized_zombie_disaster_pressure = constant:weaponized_zombies.world_pressure_transformed }
 	}
 	if = {
-		limit = { has_country_flag = weaponized_zombie_forbidden_branch }
+		limit = { hidden_trigger = { has_country_flag = weaponized_zombie_forbidden_branch } }
 		add_to_temp_variable = { weaponized_zombie_disaster_pressure = constant:weaponized_zombies.world_pressure_forbidden }
 	}
 	if = {
@@ -1261,23 +1261,23 @@ weaponized_zombie_calculate_world_pressure = {
 
 weaponized_zombie_resolve_base_type = {
 	if = {
-		limit = { has_country_flag = weaponized_zombie_nature_demonic }
+		limit = { hidden_trigger = { has_country_flag = weaponized_zombie_nature_demonic } }
 		weaponized_zombie_set_type_demonic = yes
 	}
 	else_if = {
-		limit = { has_country_flag = weaponized_zombie_nature_necrotic }
+		limit = { hidden_trigger = { has_country_flag = weaponized_zombie_nature_necrotic } }
 		weaponized_zombie_set_type_necrotic = yes
 	}
 	else_if = {
-		limit = { has_country_flag = weaponized_zombie_life_dead }
+		limit = { hidden_trigger = { has_country_flag = weaponized_zombie_life_dead } }
 		weaponized_zombie_set_type_undead = yes
 	}
 	else_if = {
-		limit = { has_country_flag = weaponized_zombie_nature_parasitic }
+		limit = { hidden_trigger = { has_country_flag = weaponized_zombie_nature_parasitic } }
 		weaponized_zombie_set_type_parasitic = yes
 	}
 	else_if = {
-		limit = { has_country_flag = weaponized_zombie_nature_rage }
+		limit = { hidden_trigger = { has_country_flag = weaponized_zombie_nature_rage } }
 		weaponized_zombie_set_type_rabid = yes
 	}
 	else = {
@@ -1438,14 +1438,14 @@ weaponized_zombie_apply_type_pressure = {
 			NOT = { has_country_flag = weaponized_zombie_type_wendigo }
 			NOT = { has_country_flag = weaponized_zombie_type_demonic }
 			OR = {
-				has_country_flag = weaponized_zombie_life_transformed
+				hidden_trigger = { has_country_flag = weaponized_zombie_life_transformed }
 				AND = {
-					has_country_flag = weaponized_zombie_life_dead
-					has_country_flag = weaponized_zombie_nature_necrotic
+					hidden_trigger = { has_country_flag = weaponized_zombie_life_dead }
+					hidden_trigger = { has_country_flag = weaponized_zombie_nature_necrotic }
 				}
 			}
 			OR = {
-				has_country_flag = weaponized_zombie_forbidden_branch
+				hidden_trigger = { has_country_flag = weaponized_zombie_forbidden_branch }
 				check_variable = {
 					var = weaponized_zombie_mutation_extremes
 					value = 4
@@ -1458,7 +1458,7 @@ weaponized_zombie_apply_type_pressure = {
 
 	if = {
 		limit = {
-			has_country_flag = weaponized_zombie_life_transformed
+			hidden_trigger = { has_country_flag = weaponized_zombie_life_transformed }
 			NOT = { has_country_flag = weaponized_zombie_type_wendigo }
 			NOT = { has_country_flag = weaponized_zombie_type_demonic }
 			NOT = { has_country_flag = weaponized_zombie_type_mutant }
@@ -1472,14 +1472,14 @@ weaponized_zombie_check_completion_wendigo_failure = {
 
 	if = {
 		limit = {
-			NOT = { has_global_flag = weaponized_zombie_wendigo_exists }
+			NOT = { hidden_trigger = { has_global_flag = weaponized_zombie_wendigo_exists } }
 			OR = {
-				has_country_flag = weaponized_zombie_nature_demonic
-				has_country_flag = weaponized_zombie_nature_necrotic
+				hidden_trigger = { has_country_flag = weaponized_zombie_nature_demonic }
+				hidden_trigger = { has_country_flag = weaponized_zombie_nature_necrotic }
 			}
 			OR = {
-				has_country_flag = weaponized_zombie_life_dead
-				has_country_flag = weaponized_zombie_life_transformed
+				hidden_trigger = { has_country_flag = weaponized_zombie_life_dead }
+				hidden_trigger = { has_country_flag = weaponized_zombie_life_transformed }
 			}
 			check_variable = {
 				var = weaponized_zombie_mutation_extremes
@@ -1570,19 +1570,19 @@ resolve_weaponized_zombie_profile = {
 	add_to_variable = { weaponized_zombie_cost_score = weaponized_zombie_friendliness }
 
 	if = {
-		limit = { has_country_flag = weaponized_zombie_nature_parasitic }
+		limit = { hidden_trigger = { has_country_flag = weaponized_zombie_nature_parasitic } }
 		add_to_variable = { weaponized_zombie_cost_score = 1 }
 	}
 	if = {
-		limit = { has_country_flag = weaponized_zombie_nature_demonic }
+		limit = { hidden_trigger = { has_country_flag = weaponized_zombie_nature_demonic } }
 		add_to_variable = { weaponized_zombie_cost_score = 3 }
 	}
 	if = {
-		limit = { has_country_flag = weaponized_zombie_forbidden_branch }
+		limit = { hidden_trigger = { has_country_flag = weaponized_zombie_forbidden_branch } }
 		add_to_variable = { weaponized_zombie_cost_score = 2 }
 	}
 	if = {
-		limit = { has_country_flag = weaponized_zombie_field_tested }
+		limit = { hidden_trigger = { has_country_flag = weaponized_zombie_field_tested } }
 		add_to_variable = { weaponized_zombie_cost_score = 1 }
 	}
 
@@ -1635,14 +1635,14 @@ resolve_weaponized_zombie_profile = {
 		limit = {
 			check_variable = { var = weaponized_zombie_friendliness value > 2 }
 			OR = {
-				has_country_flag = weaponized_zombie_life_fragmented
-				has_country_flag = weaponized_zombie_life_alive
-				has_country_flag = weaponized_zombie_life_transformed
+				hidden_trigger = { has_country_flag = weaponized_zombie_life_fragmented }
+				hidden_trigger = { has_country_flag = weaponized_zombie_life_alive }
+				hidden_trigger = { has_country_flag = weaponized_zombie_life_transformed }
 			}
-			NOT = { has_country_flag = weaponized_zombie_nature_rage }
-			NOT = { has_country_flag = weaponized_zombie_nature_demonic }
-			NOT = { has_country_flag = weaponized_zombie_nature_necrotic }
-			NOT = { has_country_flag = weaponized_zombie_life_dead }
+			NOT = { hidden_trigger = { has_country_flag = weaponized_zombie_nature_rage } }
+			NOT = { hidden_trigger = { has_country_flag = weaponized_zombie_nature_demonic } }
+			NOT = { hidden_trigger = { has_country_flag = weaponized_zombie_nature_necrotic } }
+			NOT = { hidden_trigger = { has_country_flag = weaponized_zombie_life_dead } }
 			check_variable = { var = weaponized_zombie_strength value < 3 }
 			check_variable = { var = weaponized_zombie_speed value < 3 }
 			check_variable = { var = weaponized_zombie_durability value < 3 }
@@ -1653,14 +1653,14 @@ resolve_weaponized_zombie_profile = {
 		limit = {
 			check_variable = { var = weaponized_zombie_friendliness value > 1 }
 			OR = {
-				has_country_flag = weaponized_zombie_life_fragmented
-				has_country_flag = weaponized_zombie_life_transformed
+				hidden_trigger = { has_country_flag = weaponized_zombie_life_fragmented }
+				hidden_trigger = { has_country_flag = weaponized_zombie_life_transformed }
 			}
 			OR = {
-				has_country_flag = weaponized_zombie_nature_neurobiological
-				has_country_flag = weaponized_zombie_nature_parasitic
+				hidden_trigger = { has_country_flag = weaponized_zombie_nature_neurobiological }
+				hidden_trigger = { has_country_flag = weaponized_zombie_nature_parasitic }
 			}
-			NOT = { has_country_flag = weaponized_zombie_life_dead }
+			NOT = { hidden_trigger = { has_country_flag = weaponized_zombie_life_dead } }
 			check_variable = { var = weaponized_zombie_speed value < 3 }
 			check_variable = { var = weaponized_zombie_strength value < 3 }
 		}
@@ -1670,41 +1670,41 @@ resolve_weaponized_zombie_profile = {
 		limit = {
 			check_variable = { var = weaponized_zombie_friendliness value > 2 }
 			OR = {
-				has_country_flag = weaponized_zombie_life_fragmented
-				has_country_flag = weaponized_zombie_life_alive
-				has_country_flag = weaponized_zombie_life_transformed
+				hidden_trigger = { has_country_flag = weaponized_zombie_life_fragmented }
+				hidden_trigger = { has_country_flag = weaponized_zombie_life_alive }
+				hidden_trigger = { has_country_flag = weaponized_zombie_life_transformed }
 			}
 			OR = {
-				has_country_flag = weaponized_zombie_nature_neurobiological
-				has_country_flag = weaponized_zombie_nature_parasitic
+				hidden_trigger = { has_country_flag = weaponized_zombie_nature_neurobiological }
+				hidden_trigger = { has_country_flag = weaponized_zombie_nature_parasitic }
 			}
-			NOT = { has_country_flag = weaponized_zombie_life_dead }
+			NOT = { hidden_trigger = { has_country_flag = weaponized_zombie_life_dead } }
 		}
 		set_country_flag = weaponized_zombie_archetype_controlled_loyalty
 	}
 	else_if = {
 		limit = {
 			check_variable = { var = weaponized_zombie_friendliness value > 1 }
-			has_country_flag = weaponized_zombie_nature_parasitic
-			NOT = { has_country_flag = weaponized_zombie_life_dead }
+			hidden_trigger = { has_country_flag = weaponized_zombie_nature_parasitic }
+			NOT = { hidden_trigger = { has_country_flag = weaponized_zombie_life_dead } }
 		}
 		set_country_flag = weaponized_zombie_archetype_parasitic_directed
 	}
 	else_if = {
 		limit = {
 			check_variable = { var = weaponized_zombie_friendliness value > 1 }
-			has_country_flag = weaponized_zombie_nature_rage
-			NOT = { has_country_flag = weaponized_zombie_life_dead }
+			hidden_trigger = { has_country_flag = weaponized_zombie_nature_rage }
+			NOT = { hidden_trigger = { has_country_flag = weaponized_zombie_life_dead } }
 		}
 		set_country_flag = weaponized_zombie_archetype_creator_betrayer
 	}
 	else_if = {
 		limit = {
 			OR = {
-				has_country_flag = weaponized_zombie_nature_necrotic
-				has_country_flag = weaponized_zombie_nature_demonic
+				hidden_trigger = { has_country_flag = weaponized_zombie_nature_necrotic }
+				hidden_trigger = { has_country_flag = weaponized_zombie_nature_demonic }
 			}
-			has_country_flag = weaponized_zombie_life_dead
+			hidden_trigger = { has_country_flag = weaponized_zombie_life_dead }
 			check_variable = { var = weaponized_zombie_durability value > 1 }
 			check_variable = { var = weaponized_zombie_speed value < 3 }
 		}
@@ -1723,16 +1723,16 @@ resolve_weaponized_zombie_profile = {
 
 	if = {
 		limit = {
-			NOT = { has_country_flag = weaponized_zombie_archetype_canonical_convergence }
+			NOT = { hidden_trigger = { has_country_flag = weaponized_zombie_archetype_canonical_convergence } }
 		}
 		set_country_flag = weaponized_zombie_attack_other_zombies
 	}
 	if = {
 		limit = {
 			OR = {
-				has_country_flag = weaponized_zombie_archetype_controlled_loyalty
-				has_country_flag = weaponized_zombie_archetype_creator_betrayer
-				has_country_flag = weaponized_zombie_archetype_parasitic_directed
+				hidden_trigger = { has_country_flag = weaponized_zombie_archetype_controlled_loyalty }
+				hidden_trigger = { has_country_flag = weaponized_zombie_archetype_creator_betrayer }
+				hidden_trigger = { has_country_flag = weaponized_zombie_archetype_parasitic_directed }
 			}
 		}
 		set_country_flag = weaponized_zombie_friendly_to_creator
@@ -1740,8 +1740,8 @@ resolve_weaponized_zombie_profile = {
 	if = {
 		limit = {
 			OR = {
-				has_country_flag = weaponized_zombie_archetype_purifier
-				has_country_flag = weaponized_zombie_archetype_semi_sapient
+				hidden_trigger = { has_country_flag = weaponized_zombie_archetype_purifier }
+				hidden_trigger = { has_country_flag = weaponized_zombie_archetype_semi_sapient }
 			}
 		}
 		set_country_flag = weaponized_zombie_friendly_to_humans
@@ -2095,8 +2095,8 @@ ensure_weaponized_zombie_initial_stockpile = {
 	if = {
 		limit = {
 			has_country_flag = weaponized_zombies_completed
-			NOT = { has_country_flag = weaponized_zombie_archetype_wendigo }
-			NOT = { has_country_flag = weaponized_zombie_initial_stockpile_granted }
+			NOT = { hidden_trigger = { has_country_flag = weaponized_zombie_archetype_wendigo } }
+			NOT = { hidden_trigger = { has_country_flag = weaponized_zombie_initial_stockpile_granted } }
 		}
 		add_equipment_to_stockpile = {
 			type = zombie_disease_bomb_1
@@ -2388,7 +2388,7 @@ apply_weaponized_zombie_completed_bonuses = {
 
 	if = {
 		limit = {
-			NOT = { has_country_flag = bioweapon_available }
+			NOT = { hidden_trigger = { has_country_flag = bioweapon_available } }
 		}
 		set_country_flag = bioweapon_available
 	}
@@ -2402,7 +2402,7 @@ apply_weaponized_zombie_completed_bonuses = {
 
 	if = {
 		limit = {
-			NOT = { has_country_flag = weaponized_zombie_archetype_wendigo }
+			NOT = { hidden_trigger = { has_country_flag = weaponized_zombie_archetype_wendigo } }
 		}
 		meta_effect = {
 			text = {
@@ -2420,14 +2420,14 @@ apply_weaponized_zombie_completed_bonuses = {
 		set_country_flag = achievement_we_made_a_cure_then_made_it_worse
 	}
 	if = {
-		limit = { has_country_flag = weaponized_zombie_archetype_controlled_loyalty }
+		limit = { hidden_trigger = { has_country_flag = weaponized_zombie_archetype_controlled_loyalty } }
 		set_country_flag = achievement_only_obeys_us
 	}
 	if = {
 		limit = {
 			OR = {
-				has_country_flag = weaponized_zombie_archetype_purifier
-				has_country_flag = weaponized_zombie_archetype_semi_sapient
+				hidden_trigger = { has_country_flag = weaponized_zombie_archetype_purifier }
+				hidden_trigger = { has_country_flag = weaponized_zombie_archetype_semi_sapient }
 			}
 		}
 		set_country_flag = achievement_a_friend_to_mankind
@@ -2555,7 +2555,7 @@ complete_weaponized_zombie_project = {
 	weaponized_zombie_check_completion_wendigo_failure = yes
 
 	if = {
-		limit = { has_country_flag = weaponized_zombie_completion_wendigo_failure }
+		limit = { hidden_trigger = { has_country_flag = weaponized_zombie_completion_wendigo_failure } }
 		random_controlled_state = {
 			limit = {
 				can_host_zombie_outbreak_state = yes

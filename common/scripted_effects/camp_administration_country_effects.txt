@@ -67,7 +67,7 @@ camp_admin_country_ai_krakow_killing_role = {
 camp_admin_country_initialize = {
 	if = { limit = { camp_administration_civil_country_supported = yes } camp_administration_civil_initialize = yes camp_admin_country_refresh_civil_institution_display = yes }
 	if = {
-		limit = { camp_admin_country_is_major_kit = yes NOT = { has_country_flag = camp_admin_country_initialized } }
+		limit = { camp_admin_country_is_major_kit = yes NOT = { hidden_trigger = { has_country_flag = camp_admin_country_initialized } } }
 		set_country_flag = camp_admin_country_initialized
 		set_variable = { camp_admin_country_sponsor = constant:camp_admin_country.sponsor_economic }
 		set_variable = { camp_admin_country_authority_pressure = 0 }
@@ -81,11 +81,11 @@ camp_admin_country_initialize = {
 		else_if = { limit = { original_tag = JAP } set_variable = { camp_admin_priority = constant:camp_admin_priority.works } }
 		else_if = { limit = { original_tag = SOV } set_variable = { camp_admin_priority = constant:camp_admin_priority.extraction } }
 		if = {
-			limit = { OR = { has_active_camp_network = yes has_country_flag = germany_mengele_program_authorized has_country_flag = japan_ishii_authority_route } }
+			limit = { OR = { has_active_camp_network = yes has_country_flag = germany_mengele_program_authorized hidden_trigger = { has_country_flag = japan_ishii_authority_route } } }
 			set_country_flag = camp_admin_country_legacy_active
 		}
 		if = {
-			limit = { OR = { has_country_flag = germany_mengele_program_authorized has_country_flag = germany_mengele_program_restricted has_country_flag = japan_ishii_authority_route } }
+			limit = { OR = { has_country_flag = germany_mengele_program_authorized has_country_flag = germany_mengele_program_restricted hidden_trigger = { has_country_flag = japan_ishii_authority_route } } }
 			set_country_flag = camp_admin_country_programs_authorized
 		}
 	}

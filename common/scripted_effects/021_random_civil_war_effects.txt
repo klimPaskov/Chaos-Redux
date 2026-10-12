@@ -103,23 +103,23 @@ event021_refresh_country_state = {
 		add_to_temp_variable = { event021_pressure_recalculated = constant:random_civil_war_pressure.active_war }
 	}
 	if = {
-		limit = { has_country_flag = random_civil_war_political_competition_active }
+		limit = { hidden_trigger = { has_country_flag = random_civil_war_political_competition_active } }
 		add_to_temp_variable = { event021_pressure_recalculated = constant:random_civil_war_pressure.political_grievance }
 	}
 	if = {
-		limit = { has_country_flag = random_civil_war_military_loyalty_low }
+		limit = { hidden_trigger = { has_country_flag = random_civil_war_military_loyalty_low } }
 		add_to_temp_variable = { event021_pressure_recalculated = constant:random_civil_war_pressure.military_disloyalty }
 	}
 	if = {
-		limit = { has_country_flag = random_civil_war_regional_grievance_active }
+		limit = { hidden_trigger = { has_country_flag = random_civil_war_regional_grievance_active } }
 		add_to_temp_variable = { event021_pressure_recalculated = constant:random_civil_war_pressure.regional_identity }
 	}
 	if = {
-		limit = { has_country_flag = random_civil_war_state_capacity_low }
+		limit = { hidden_trigger = { has_country_flag = random_civil_war_state_capacity_low } }
 		add_to_temp_variable = { event021_pressure_recalculated = constant:random_civil_war_pressure.state_capacity_loss }
 	}
 	if = {
-		limit = { has_country_flag = random_civil_war_nearby_conflict_exposure }
+		limit = { hidden_trigger = { has_country_flag = random_civil_war_nearby_conflict_exposure } }
 		add_to_temp_variable = { event021_pressure_recalculated = constant:random_civil_war_pressure.nearby_conflict }
 	}
 	if = {
@@ -127,27 +127,27 @@ event021_refresh_country_state = {
 		add_to_temp_variable = { event021_pressure_recalculated = constant:event021_regional_response.mobilizing_pressure }
 	}
 	if = {
-		limit = { has_country_flag = random_civil_war_recent_civil_war_memory }
+		limit = { hidden_trigger = { has_country_flag = random_civil_war_recent_civil_war_memory } }
 		add_to_temp_variable = { event021_pressure_recalculated = constant:random_civil_war_pressure.event_memory }
 	}
 	if = {
-		limit = { has_country_flag = random_civil_war_contested_territory }
+		limit = { hidden_trigger = { has_country_flag = random_civil_war_contested_territory } }
 		add_to_temp_variable = { event021_pressure_recalculated = constant:random_civil_war_pressure.territorial_loss }
 	}
 	if = {
-		limit = { has_country_flag = random_civil_war_key_state_lost }
+		limit = { hidden_trigger = { has_country_flag = random_civil_war_key_state_lost } }
 		add_to_temp_variable = { event021_pressure_recalculated = constant:random_civil_war_pressure.territorial_loss }
 	}
 	if = {
-		limit = { has_country_flag = random_civil_war_reconstruction_active }
+		limit = { hidden_trigger = { has_country_flag = random_civil_war_reconstruction_active } }
 		add_to_temp_variable = { event021_pressure_recalculated = constant:random_civil_war_pressure.reconstruction_relief }
 	}
 	if = {
-		limit = { has_country_flag = random_civil_war_authority_failing }
+		limit = { hidden_trigger = { has_country_flag = random_civil_war_authority_failing } }
 		add_to_temp_variable = { event021_pressure_recalculated = constant:random_civil_war_pressure.authority_failing }
 	}
 	if = {
-		limit = { has_country_flag = random_civil_war_authority_collapse }
+		limit = { hidden_trigger = { has_country_flag = random_civil_war_authority_collapse } }
 		add_to_temp_variable = { event021_pressure_recalculated = constant:random_civil_war_pressure.authority_collapse }
 	}
 	set_temp_variable = { event021_pressure_chaos_tier = constant:chaos_meter_tier_id.tier_0 }
@@ -181,7 +181,7 @@ event021_refresh_country_state = {
 	set_variable = { random_civil_war_pressure_snapshot_date = global.date }
 	if = {
 		limit = {
-			has_country_flag = random_civil_war_recent_civil_war_memory
+			hidden_trigger = { has_country_flag = random_civil_war_recent_civil_war_memory }
 			has_variable = random_civil_war_memory_until
 			check_variable = { var = global.date value = random_civil_war_memory_until compare = greater_than_or_equals }
 		}
@@ -189,7 +189,7 @@ event021_refresh_country_state = {
 	}
 	if = {
 		limit = {
-			has_country_flag = random_civil_war_recent_target
+			hidden_trigger = { has_country_flag = random_civil_war_recent_target }
 			has_variable = random_civil_war_recent_target_until
 			check_variable = { var = global.date value = random_civil_war_recent_target_until compare = greater_than_or_equals }
 		}
@@ -407,8 +407,8 @@ event021_apply_claimant_opening_authority = {
 	if = {
 		limit = {
 			OR = {
-				has_country_flag = random_civil_war_event6_front_active
-				has_country_flag = random_civil_war_event6_origin
+				hidden_trigger = { has_country_flag = random_civil_war_event6_front_active }
+				hidden_trigger = { has_country_flag = random_civil_war_event6_origin }
 			}
 		}
 		set_variable = { random_civil_war_state_authority = constant:random_civil_war_authority.independence_front_opening }
@@ -680,9 +680,9 @@ event021_update_authority_band = {
 	}
 	if = {
 		limit = {
-			has_country_flag = random_civil_war_active
-			has_country_flag = random_civil_war_achievement_history_started
-			NOT = { has_country_flag = random_civil_war_internal_fronts_resolved }
+			hidden_trigger = { has_country_flag = random_civil_war_active }
+			hidden_trigger = { has_country_flag = random_civil_war_achievement_history_started }
+			NOT = { hidden_trigger = { has_country_flag = random_civil_war_internal_fronts_resolved } }
 			OR = {
 				NOT = { has_variable = random_civil_war_minimum_authority }
 				check_variable = { var = random_civil_war_state_authority value = random_civil_war_minimum_authority compare = less_than }
@@ -743,8 +743,8 @@ event021_update_authority_band = {
 		set_country_flag = random_civil_war_authority_collapse
 		if = {
 			limit = {
-				has_country_flag = random_civil_war_active
-				NOT = { has_country_flag = random_civil_war_internal_fronts_resolved }
+				hidden_trigger = { has_country_flag = random_civil_war_active }
+				NOT = { hidden_trigger = { has_country_flag = random_civil_war_internal_fronts_resolved } }
 			}
 			set_country_flag = random_civil_war_authority_ever_collapsed
 		}
@@ -850,11 +850,11 @@ event021_random_civil_war_prepare_target = {
 			add_to_temp_variable = { event021_target_weight = constant:random_civil_war_target_weight.major_stage }
 		}
 		if = {
-			limit = { has_country_flag = random_civil_war_nearby_conflict_exposure }
+			limit = { hidden_trigger = { has_country_flag = random_civil_war_nearby_conflict_exposure } }
 			add_to_temp_variable = { event021_target_weight = constant:random_civil_war_target_weight.nearby_exposure }
 		}
 		if = {
-			limit = { has_country_flag = random_civil_war_recent_civil_war_memory }
+			limit = { hidden_trigger = { has_country_flag = random_civil_war_recent_civil_war_memory } }
 			add_to_temp_variable = { event021_target_weight = constant:random_civil_war_target_weight.recent_memory }
 		}
 		if = {
@@ -862,7 +862,7 @@ event021_random_civil_war_prepare_target = {
 			add_to_temp_variable = { event021_target_weight = constant:random_civil_war_target_weight.subject }
 		}
 		if = {
-			limit = { has_country_flag = random_civil_war_player_target }
+			limit = { hidden_trigger = { has_country_flag = random_civil_war_player_target } }
 			add_to_temp_variable = { event021_target_weight = constant:random_civil_war_target_weight.player }
 		}
 		if = {
@@ -874,7 +874,7 @@ event021_random_civil_war_prepare_target = {
 		set_temp_variable = { event021_target_weight = constant:random_civil_war_target_weight.minimum }
 	}
 	if = {
-		limit = { has_country_flag = random_civil_war_target_reserved }
+		limit = { hidden_trigger = { has_country_flag = random_civil_war_target_reserved } }
 		set_temp_variable = { event021_target_weight = constant:random_civil_war_target_weight.minimum }
 	}
 	clamp_temp_variable = {
@@ -943,7 +943,7 @@ event021_prepare_opening_severity = {
 		limit = {
 			OR = {
 				random_civil_war_pressure_is_exposed = yes
-				has_country_flag = random_civil_war_serious_opening_ready
+				hidden_trigger = { has_country_flag = random_civil_war_serious_opening_ready }
 			}
 		}
 		set_temp_variable = { event021_opening_severity = constant:random_civil_war_severity.serious }
@@ -990,7 +990,7 @@ event021_reserve_target = {
 event021_begin_opening_transaction = {
 	if = {
 		limit = {
-			NOT = { has_global_flag = random_civil_war_plan_active }
+			NOT = { hidden_trigger = { has_global_flag = random_civil_war_plan_active } }
 			NOT = { event021_external_queue_blocks_new_crisis = yes }
 		}
 		set_global_flag = random_civil_war_plan_active
@@ -1113,7 +1113,7 @@ event021_random_civil_war_commit_opening = {
 		event021_commit_opening_evolution_provenance = yes
 		if = {
 			limit = {
-				has_country_flag = random_civil_war_scenario_bypass_active
+				hidden_trigger = { has_country_flag = random_civil_war_scenario_bypass_active }
 				has_variable = random_civil_war_crisis_id
 				NOT = { is_in_array = { array = global.random_civil_war_scenario_crisis_ids value = random_civil_war_crisis_id } }
 			}
@@ -1168,11 +1168,11 @@ event021_rollback_opening = {
 # calls this once after the opening transaction is committed.
 event021_register_active_theater = {
 	if = {
-		limit = { NOT = { has_country_flag = random_civil_war_theater_registered } }
+		limit = { NOT = { hidden_trigger = { has_country_flag = random_civil_war_theater_registered } } }
 		set_country_flag = random_civil_war_theater_registered
 		add_to_array = { array = global.random_civil_war_active_theaters }
 		if = {
-			limit = { NOT = { has_global_flag = random_civil_war_capacity_initialized } }
+			limit = { NOT = { hidden_trigger = { has_global_flag = random_civil_war_capacity_initialized } } }
 			event021_refresh_global_capacity = yes
 		}
 		add_to_variable = { global.random_civil_war_active_theater_count = constant:random_civil_war_value.one }
@@ -1182,7 +1182,7 @@ event021_register_active_theater = {
 # COUNTRY scope. Removes the current host from the active-theater registry.
 event021_unregister_active_theater = {
 	if = {
-		limit = { has_country_flag = random_civil_war_theater_registered }
+		limit = { hidden_trigger = { has_country_flag = random_civil_war_theater_registered } }
 		remove_from_array = { array = global.random_civil_war_active_theaters value = THIS }
 		clr_country_flag = random_civil_war_theater_registered
 		if = {
@@ -1278,7 +1278,7 @@ event021_register_front = {
 		set_country_flag = random_civil_war_front_registered
 		set_variable = { random_civil_war_front_registered_date = global.date }
 		if = {
-			limit = { NOT = { has_global_flag = random_civil_war_capacity_initialized } }
+			limit = { NOT = { hidden_trigger = { has_global_flag = random_civil_war_capacity_initialized } } }
 			event021_refresh_global_capacity = yes
 		}
 		add_to_variable = { global.random_civil_war_active_front_count = constant:random_civil_war_value.one }
@@ -1290,7 +1290,7 @@ event021_register_front = {
 # per actor/front, not from a world-wide periodic loop.
 event021_unregister_front = {
 	if = {
-		limit = { has_country_flag = random_civil_war_front_registered }
+		limit = { hidden_trigger = { has_country_flag = random_civil_war_front_registered } }
 		if = {
 			limit = { has_variable = random_civil_war_front_id }
 			set_temp_variable = { event021_front_unregister_found = constant:random_civil_war_value.zero }
@@ -1373,7 +1373,7 @@ event021_bind_front_plan_row = {
 	# The bound receipt is replaced only by a published row; a later call with
 	# no published plan, such as a priority-front decision, keeps it intact.
 	if = {
-		limit = { has_global_flag = random_civil_war_active_front_commit_in_progress }
+		limit = { hidden_trigger = { has_global_flag = random_civil_war_active_front_commit_in_progress } }
 		if = {
 			limit = { has_event_target = random_civil_war_active_front_commit_owner }
 			event021_bind_active_front_row = yes
@@ -1381,7 +1381,7 @@ event021_bind_front_plan_row = {
 	}
 	else_if = {
 		limit = {
-			has_global_flag = random_civil_war_front_plan_ready
+			hidden_trigger = { has_global_flag = random_civil_war_front_plan_ready }
 		}
 		clr_country_flag = random_civil_war_front_plan_row_bound
 		for_each_loop = {
@@ -1437,7 +1437,7 @@ event021_reject_pending_front_plan_row = {
 	set_temp_variable = { event021_planned_front_status_to_mark = constant:random_civil_war_planned_front_status.rejected }
 	set_temp_variable = { event021_front_plan_reject_index = constant:random_civil_war_value.zero }
 	if = {
-		limit = { has_global_flag = random_civil_war_active_front_commit_in_progress }
+		limit = { hidden_trigger = { has_global_flag = random_civil_war_active_front_commit_in_progress } }
 		if = {
 			limit = { has_event_target = random_civil_war_active_front_commit_owner }
 			event_target:random_civil_war_active_front_commit_owner = {
@@ -1584,9 +1584,9 @@ event021_prepare_event6_admission = {
 event021_confirm_event6_identity = {
 	if = {
 		limit = {
-			has_country_flag = random_civil_war_event6_package_admission_ready
-			has_country_flag = random_civil_war_event6_identity_candidate_ready
-			NOT = { has_country_flag = random_civil_war_event6_identity_collision }
+			hidden_trigger = { has_country_flag = random_civil_war_event6_package_admission_ready }
+			hidden_trigger = { has_country_flag = random_civil_war_event6_identity_candidate_ready }
+			NOT = { hidden_trigger = { has_country_flag = random_civil_war_event6_identity_collision } }
 			random_civil_war_is_normal_human_country = yes
 		}
 		set_country_flag = random_civil_war_event6_identity_ready
@@ -1600,8 +1600,8 @@ event021_confirm_event6_identity = {
 event021_record_event6_origin = {
 	if = {
 		limit = {
-			has_country_flag = random_civil_war_event6_package_admission_ready
-			has_country_flag = random_civil_war_event6_identity_ready
+			hidden_trigger = { has_country_flag = random_civil_war_event6_package_admission_ready }
+			hidden_trigger = { has_country_flag = random_civil_war_event6_identity_ready }
 			random_civil_war_is_normal_human_country = yes
 		}
 		set_country_flag = random_civil_war_event6_origin_recorded
@@ -1984,38 +1984,38 @@ event021_refresh_global_capacity = {
 	set_variable = { global.random_civil_war_max_active_theaters = constant:random_civil_war_capacity.active_theaters_baseline }
 	set_variable = { global.random_civil_war_max_active_fronts = constant:random_civil_war_capacity.active_fronts_baseline }
 	if = {
-		limit = { has_global_flag = random_civil_war_evolution_i_active }
+		limit = { hidden_trigger = { has_global_flag = random_civil_war_evolution_i_active } }
 		set_variable = { global.random_civil_war_max_active_theaters = constant:random_civil_war_capacity.active_theaters_evolution_i }
 		set_variable = { global.random_civil_war_max_active_fronts = constant:random_civil_war_capacity.active_fronts_evolution_i }
 	}
 	if = {
-		limit = { has_global_flag = random_civil_war_evolution_ii_active }
+		limit = { hidden_trigger = { has_global_flag = random_civil_war_evolution_ii_active } }
 		set_variable = { global.random_civil_war_max_active_theaters = constant:random_civil_war_capacity.active_theaters_evolution_ii }
 		set_variable = { global.random_civil_war_max_active_fronts = constant:random_civil_war_capacity.active_fronts_evolution_ii }
 	}
 	if = {
-		limit = { has_global_flag = random_civil_war_evolution_iii_active }
+		limit = { hidden_trigger = { has_global_flag = random_civil_war_evolution_iii_active } }
 		set_variable = { global.random_civil_war_max_active_theaters = constant:random_civil_war_capacity.active_theaters_evolution_iii }
 		set_variable = { global.random_civil_war_max_active_fronts = constant:random_civil_war_capacity.active_fronts_evolution_iii }
 	}
 	if = {
-		limit = { has_global_flag = random_civil_war_stage_totalen_chaos }
+		limit = { hidden_trigger = { has_global_flag = random_civil_war_stage_totalen_chaos } }
 		set_variable = { global.random_civil_war_max_active_theaters = constant:random_civil_war_capacity.active_theaters_totalen }
 		set_variable = { global.random_civil_war_max_active_fronts = constant:random_civil_war_capacity.active_fronts_totalen }
 	}
 	if = {
-		limit = { has_global_flag = random_civil_war_stage_world_collapse }
+		limit = { hidden_trigger = { has_global_flag = random_civil_war_stage_world_collapse } }
 		set_variable = { global.random_civil_war_max_active_theaters = constant:random_civil_war_capacity.active_theaters_world_collapse }
 		set_variable = { global.random_civil_war_max_active_fronts = constant:random_civil_war_capacity.active_fronts_world_collapse }
 	}
 	if = {
-		limit = { NOT = { has_global_flag = random_civil_war_capacity_initialized } }
+		limit = { NOT = { hidden_trigger = { has_global_flag = random_civil_war_capacity_initialized } } }
 		set_variable = { global.random_civil_war_active_theater_count = constant:random_civil_war_value.zero }
 		set_variable = { global.random_civil_war_active_front_count = constant:random_civil_war_value.zero }
 	}
 	set_global_flag = random_civil_war_capacity_initialized
 	if = {
-		limit = { NOT = { has_global_flag = random_civil_war_manual_scenario_launch_in_progress } }
+		limit = { NOT = { hidden_trigger = { has_global_flag = random_civil_war_manual_scenario_launch_in_progress } } }
 		set_variable = { global.random_civil_war_scenario_available_front_count = global.random_civil_war_max_active_fronts }
 		if = {
 			limit = { has_variable = global.random_civil_war_active_front_count }
@@ -2034,7 +2034,7 @@ event021_register_global_country = {
 	if = {
 		limit = {
 			random_civil_war_is_normal_human_country = yes
-			NOT = { has_country_flag = random_civil_war_global_registered }
+			NOT = { hidden_trigger = { has_country_flag = random_civil_war_global_registered } }
 		}
 		set_country_flag = random_civil_war_global_registered
 		add_to_array = { array = global.random_civil_war_registered_countries value = THIS }
@@ -2082,7 +2082,7 @@ event021_register_cxt_extension = {
 	if = {
 		limit = {
 			random_civil_war_is_normal_human_country = yes
-			NOT = { has_country_flag = random_civil_war_cxt_extension_registered }
+			NOT = { hidden_trigger = { has_country_flag = random_civil_war_cxt_extension_registered } }
 		}
 		set_country_flag = random_civil_war_cxt_extension_registered
 		set_country_flag = random_civil_war_setup_carrier_pending

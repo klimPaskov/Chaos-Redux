@@ -143,7 +143,7 @@ camp_rework_register_country_for_monthly_pulse = {
 # One delayed country event is outstanding until it either reschedules or clears its flag.
 camp_rework_ensure_country_timer = {
 	if = {
-		limit = { NOT = { has_country_flag = camp_admin_dispatch_timer_active } }
+		limit = { NOT = { hidden_trigger = { has_country_flag = camp_admin_dispatch_timer_active } } }
 		set_country_flag = camp_admin_dispatch_timer_active
 		camp_rework_schedule_country_timer = yes
 	}
@@ -174,7 +174,7 @@ camp_rework_exclude_special_country = {
 	if = {
 		limit = {
 			is_special_chaos_country = yes
-			NOT = { has_country_flag = camp_rework_special_cleanup_in_progress }
+			NOT = { hidden_trigger = { has_country_flag = camp_rework_special_cleanup_in_progress } }
 		}
 		set_country_flag = camp_rework_special_cleanup_in_progress
 		camp_rework_clear_legacy_closure_attempt = yes
@@ -353,7 +353,7 @@ camp_rework_refresh_state_site_profile = {
 		limit = {
 			OR = {
 				has_state_flag = camp_rework_radicalized_site
-				has_state_flag = genocide_extermination_site
+				hidden_trigger = { has_state_flag = genocide_extermination_site }
 				extermination_camp > 0
 			}
 		}
@@ -373,7 +373,7 @@ camp_rework_refresh_state_site_profile = {
 	else_if = {
 		limit = {
 			OR = {
-				has_state_flag = genocide_gulag_site
+				hidden_trigger = { has_state_flag = genocide_gulag_site }
 				has_state_flag = genocide_soviet_mass_repression_site
 				has_state_flag = genocide_soviet_famine_pressure_site
 				gulag_labor_camp_network > 0
@@ -388,7 +388,7 @@ camp_rework_refresh_state_site_profile = {
 	else_if = {
 		limit = {
 			OR = {
-				has_state_flag = genocide_concentration_site
+				hidden_trigger = { has_state_flag = genocide_concentration_site }
 				concentration_camp > 0
 			}
 		}
@@ -565,7 +565,7 @@ camp_rework_refresh_state_site_profile = {
 		set_variable = { camp_state_phase = constant:camp_rework_phase.discovered }
 	}
 	if = {
-		limit = { has_state_flag = camp_rework_site_reforming }
+		limit = { hidden_trigger = { has_state_flag = camp_rework_site_reforming } }
 		set_variable = { camp_state_phase = constant:camp_rework_phase.reform }
 	}
 	if = {
@@ -593,7 +593,7 @@ camp_rework_register_active_site = {
 				camp_rework_country_is_eligible = yes
 			}
 			OR = {
-				has_global_flag = camp_rework_migration_in_progress
+				hidden_trigger = { has_global_flag = camp_rework_migration_in_progress }
 				AND = {
 					country_exists = ROOT
 					var:genocide_responsible_country = { tag = ROOT }
@@ -643,8 +643,8 @@ camp_rework_register_active_site = {
 		}
 		if = {
 			limit = {
-				NOT = { has_global_flag = camp_rework_migration_in_progress }
-				NOT = { has_state_flag = camp_rework_historical_baseline_registration }
+				NOT = { hidden_trigger = { has_global_flag = camp_rework_migration_in_progress } }
+				NOT = { hidden_trigger = { has_state_flag = camp_rework_historical_baseline_registration } }
 			}
 			camp_rework_apply_core_fallback_penalty = yes
 		}
@@ -698,7 +698,7 @@ camp_rework_register_active_site = {
 			}
 			camp_rework_register_country_for_monthly_pulse = yes
 			if = {
-				limit = { NOT = { has_global_flag = camp_rework_migration_in_progress } }
+				limit = { NOT = { hidden_trigger = { has_global_flag = camp_rework_migration_in_progress } } }
 				camp_rework_recalculate_country_values = yes
 			}
 		}
@@ -748,8 +748,8 @@ camp_rework_unregister_inactive_site = {
 			camp_rework_recalculate_country_values = yes
 			if = {
 				limit = {
-					has_country_flag = camp_repression_ledger_open
-					NOT = { has_country_flag = camp_rework_display_rebuild_in_progress }
+					hidden_trigger = { has_country_flag = camp_repression_ledger_open }
+					NOT = { hidden_trigger = { has_country_flag = camp_rework_display_rebuild_in_progress } }
 				}
 				camp_rework_rebuild_display_values = yes
 			}
@@ -2211,7 +2211,7 @@ camp_rework_validate_selected_state = {
 
 camp_rework_rebuild_display_values = {
 	if = {
-		limit = { NOT = { has_country_flag = camp_rework_display_rebuild_in_progress } }
+		limit = { NOT = { hidden_trigger = { has_country_flag = camp_rework_display_rebuild_in_progress } } }
 		set_country_flag = camp_rework_display_rebuild_in_progress
 		camp_rework_clean_invalid_active_sites = yes
 		camp_rework_recalculate_country_values = yes
@@ -2475,7 +2475,7 @@ camp_rework_apply_core_fallback_penalty = {
 	if = {
 		limit = {
 			check_variable = { camp_state_pool_type = constant:camp_rework_pool_type.core_fallback }
-			NOT = { has_state_flag = camp_rework_core_fallback_penalty_applied }
+			NOT = { hidden_trigger = { has_state_flag = camp_rework_core_fallback_penalty_applied } }
 			has_variable = genocide_responsible_country
 		}
 		set_state_flag = camp_rework_core_fallback_penalty_applied
@@ -2502,9 +2502,9 @@ camp_rework_clear_dismantlement_progress_if_idle = {
 	if = {
 		limit = {
 			NOT = { has_country_flag = camp_rework_gui_dismantlement_active }
-			NOT = { has_country_flag = camp_rework_legacy_closure_active }
-			NOT = { any_of_scopes = { array = camp_active_site_states has_state_flag = camp_rework_site_reforming } }
-			NOT = { any_of_scopes = { array = camp_active_site_states has_state_flag = camp_rework_site_dismantlement_in_progress } }
+			NOT = { hidden_trigger = { has_country_flag = camp_rework_legacy_closure_active } }
+			NOT = { any_of_scopes = { array = camp_active_site_states hidden_trigger = { has_state_flag = camp_rework_site_reforming } } }
+			NOT = { any_of_scopes = { array = camp_active_site_states hidden_trigger = { has_state_flag = camp_rework_site_dismantlement_in_progress } } }
 		}
 		clr_country_flag = camp_rework_dismantlement_in_progress
 	}
@@ -2599,7 +2599,7 @@ camp_rework_complete_dismantlement = {
 		if = {
 			limit = {
 				has_state_flag = camp_rework_inherited_site_origin
-				NOT = { has_state_flag = camp_rework_inherited_site_dismantlement_credited }
+				NOT = { hidden_trigger = { has_state_flag = camp_rework_inherited_site_dismantlement_credited } }
 				has_variable = genocide_responsible_country
 				var:genocide_responsible_country = { exists = yes }
 				NOT = { check_variable = { camp_rework_enemy_liberation > 0 } }

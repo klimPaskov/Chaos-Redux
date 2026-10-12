@@ -112,14 +112,14 @@ africa_world_union_protocol_record_host_acceptance = {
 	if = {
 		limit = {
 			has_global_flag = africa_world_union_protocol_open
-			has_country_flag = africa_world_union_protocol_host
+			hidden_trigger = { has_country_flag = africa_world_union_protocol_host }
 			OR = {
-				has_country_flag = africa_world_union_protocol_partner_accepted
-				event_target:africa_world_union_protocol_partner = { has_country_flag = africa_world_union_protocol_partner_counterterms }
+				hidden_trigger = { has_country_flag = africa_world_union_protocol_partner_accepted }
+				event_target:africa_world_union_protocol_partner = { hidden_trigger = { has_country_flag = africa_world_union_protocol_partner_counterterms } }
 			}
 		}
 		if = {
-			limit = { event_target:africa_world_union_protocol_partner = { has_country_flag = africa_world_union_protocol_partner_counterterms } }
+			limit = { event_target:africa_world_union_protocol_partner = { hidden_trigger = { has_country_flag = africa_world_union_protocol_partner_counterterms } } }
 			set_country_flag = africa_world_union_protocol_partner_accepted
 			event_target:africa_world_union_protocol_partner = {
 				clr_country_flag = africa_world_union_protocol_partner_counterterms
@@ -157,7 +157,7 @@ africa_world_union_protocol_dispatch_constituent_ballots = {
 	if = {
 		limit = {
 			has_global_flag = africa_world_union_protocol_open
-			has_country_flag = africa_world_union_protocol_host_approved
+			hidden_trigger = { has_country_flag = africa_world_union_protocol_host_approved }
 		}
 		set_country_flag = africa_world_union_protocol_ballot_dispatch_pending
 		set_variable = { africa_world_union_host_yes_count = constant:africa_value.zero }
@@ -191,9 +191,9 @@ africa_world_union_protocol_dispatch_constituent_ballots = {
 				array = africa_world_constituent_countries
 				if = {
 					limit = {
-						has_country_flag = africa_world_constituent_consented
-						NOT = { has_country_flag = africa_world_constituent_coerced }
-						NOT = { has_country_flag = africa_world_constituent_withdrawn }
+						hidden_trigger = { has_country_flag = africa_world_constituent_consented }
+						NOT = { hidden_trigger = { has_country_flag = africa_world_constituent_coerced } }
+						NOT = { hidden_trigger = { has_country_flag = africa_world_constituent_withdrawn } }
 						NOT = { is_subject = yes }
 					}
 					set_country_flag = africa_world_union_ballot_pending_host
@@ -208,9 +208,9 @@ africa_world_union_protocol_dispatch_constituent_ballots = {
 				array = africa_world_constituent_countries
 				if = {
 					limit = {
-						has_country_flag = africa_world_constituent_consented
-						NOT = { has_country_flag = africa_world_constituent_coerced }
-						NOT = { has_country_flag = africa_world_constituent_withdrawn }
+						hidden_trigger = { has_country_flag = africa_world_constituent_consented }
+						NOT = { hidden_trigger = { has_country_flag = africa_world_constituent_coerced } }
+						NOT = { hidden_trigger = { has_country_flag = africa_world_constituent_withdrawn } }
 						NOT = { is_subject = yes }
 					}
 					set_country_flag = africa_world_union_ballot_pending_partner
@@ -323,8 +323,8 @@ africa_world_union_protocol_try_finalize_ballots = {
 		}
 		if = {
 			limit = {
-				event_target:africa_world_union_protocol_host = { has_country_flag = africa_world_union_protocol_host_ballot_proven }
-				event_target:africa_world_union_protocol_partner = { has_country_flag = africa_world_union_protocol_partner_ballot_proven }
+				event_target:africa_world_union_protocol_host = { hidden_trigger = { has_country_flag = africa_world_union_protocol_host_ballot_proven } }
+				event_target:africa_world_union_protocol_partner = { hidden_trigger = { has_country_flag = africa_world_union_protocol_partner_ballot_proven } }
 			}
 			event_target:africa_world_union_protocol_host = { set_country_flag = africa_world_union_protocol_ballots_complete }
 			event_target:africa_world_union_protocol_partner = { set_country_flag = africa_world_union_protocol_ballots_complete }
@@ -337,8 +337,8 @@ africa_world_union_protocol_ratify_constitution = {
 	if = {
 		limit = {
 			has_global_flag = africa_world_union_protocol_open
-			event_target:africa_world_union_protocol_host = { has_country_flag = africa_world_union_protocol_host_ballot_proven }
-			event_target:africa_world_union_protocol_partner = { has_country_flag = africa_world_union_protocol_partner_ballot_proven }
+			event_target:africa_world_union_protocol_host = { hidden_trigger = { has_country_flag = africa_world_union_protocol_host_ballot_proven } }
+			event_target:africa_world_union_protocol_partner = { hidden_trigger = { has_country_flag = africa_world_union_protocol_partner_ballot_proven } }
 		}
 		set_country_flag = africa_world_union_protocol_constitution_ratified
 		set_country_flag = africa_world_union_protocol_distributed_government
@@ -497,7 +497,7 @@ africa_world_union_protocol_refresh_confidence_proof = {
 			set_global_flag = africa_achievement_two_continent_both_medium_confidence
 		}
 		else_if = {
-			limit = { has_global_flag = africa_achievement_two_continent_both_medium_confidence }
+			limit = { hidden_trigger = { has_global_flag = africa_achievement_two_continent_both_medium_confidence } }
 			clr_global_flag = africa_achievement_two_continent_both_medium_confidence
 			set_global_flag = africa_achievement_two_continent_confidence_collapse
 			africa_world_union_protocol_apply_strain = yes
@@ -534,7 +534,7 @@ africa_world_union_protocol_defer_strain_review = {
 	if = {
 		limit = {
 			africa_world_union_protocol_can_review_strain = yes
-			NOT = { has_country_flag = africa_world_union_strain_deferral_used }
+			NOT = { hidden_trigger = { has_country_flag = africa_world_union_strain_deferral_used } }
 		}
 		africa_world_union_protocol_record_strain = yes
 		set_country_flag = africa_world_union_strain_deferral_used
@@ -583,13 +583,13 @@ africa_world_union_protocol_dissolve_by_treaty = {
 	if = {
 		limit = {
 			has_global_flag = africa_world_union_protocol_open
-			has_country_flag = africa_world_union_protocol_dissolution_host_approved
-			event_target:africa_world_union_protocol_partner = { has_country_flag = africa_world_union_protocol_dissolution_partner_approved }
+			hidden_trigger = { has_country_flag = africa_world_union_protocol_dissolution_host_approved }
+			event_target:africa_world_union_protocol_partner = { hidden_trigger = { has_country_flag = africa_world_union_protocol_dissolution_partner_approved } }
 		}
 		set_country_flag = africa_world_union_protocol_dissolved
 		set_country_flag = africa_world_union_dissolution_recorded
 		if = {
-			limit = { has_global_flag = africa_achievement_two_continent_both_medium_confidence }
+			limit = { hidden_trigger = { has_global_flag = africa_achievement_two_continent_both_medium_confidence } }
 			set_global_flag = africa_achievement_two_continent_confidence_collapse
 			clr_global_flag = africa_achievement_two_continent_both_medium_confidence
 		}
@@ -639,7 +639,7 @@ africa_world_union_protocol_open_contested_dissolution_war = {
 			has_event_target = africa_world_union_protocol_partner
 			event_target:africa_world_union_protocol_host = {
 				exists = yes
-				has_country_flag = africa_world_union_protocol_host
+				hidden_trigger = { has_country_flag = africa_world_union_protocol_host }
 			}
 			event_target:africa_world_union_protocol_partner = {
 				exists = yes
@@ -688,7 +688,7 @@ africa_world_union_protocol_restore_host_identity = {
 		else_if = { limit = { has_country_flag = africa_middle_east_plural_crossroads_route } set_cosmetic_tag = CROSSROADS_FEDERATION }
 		else_if = { limit = { has_country_flag = africa_middle_east_royal_concert_route } set_cosmetic_tag = MIDDLE_EASTERN_CONCERT }
 		else_if = { limit = { has_country_flag = africa_middle_east_socialist_republics_route } set_cosmetic_tag = MIDDLE_EASTERN_REPUBLICS }
-		else_if = { limit = { has_country_flag = africa_middle_east_desert_covenant_route } set_cosmetic_tag = DESERT_COVENANT }
+		else_if = { limit = { hidden_trigger = { has_country_flag = africa_middle_east_desert_covenant_route } } set_cosmetic_tag = DESERT_COVENANT }
 	}
 	else_if = {
 		limit = { has_country_flag = africa_world_europe_package }
@@ -697,7 +697,7 @@ africa_world_union_protocol_restore_host_identity = {
 		else_if = { limit = { has_country_flag = africa_europe_royal_concert_route } set_cosmetic_tag = EUROPEAN_CONCERT }
 		else_if = { limit = { has_country_flag = africa_europe_continental_command_route } set_cosmetic_tag = EUROPEAN_CONTINENTAL_COMMAND }
 		else_if = { limit = { has_country_flag = africa_europe_neutral_confederation_route } set_cosmetic_tag = EUROPEAN_CONFEDERATION }
-		else_if = { limit = { has_country_flag = africa_europe_mythic_compact_route } set_cosmetic_tag = EUROPEAN_MYTHIC_COMPACT }
+		else_if = { limit = { hidden_trigger = { has_country_flag = africa_europe_mythic_compact_route } } set_cosmetic_tag = EUROPEAN_MYTHIC_COMPACT }
 	}
 	else_if = {
 		limit = { has_country_flag = africa_world_asia_package }
@@ -705,7 +705,7 @@ africa_world_union_protocol_restore_host_identity = {
 		else_if = { limit = { has_country_flag = africa_asia_revolutionary_union_route } set_cosmetic_tag = ASIAN_REVOLUTIONARY_UNION }
 		else_if = { limit = { has_country_flag = africa_asia_imperial_congress_route } set_cosmetic_tag = ASIAN_IMPERIAL_CONGRESS }
 		else_if = { limit = { has_country_flag = africa_asia_anti_colonial_front_route } set_cosmetic_tag = ASIAN_ANTI_COLONIAL_FRONT }
-		else_if = { limit = { has_country_flag = africa_asia_celestial_covenant_route } set_cosmetic_tag = ASIAN_CELESTIAL_COVENANT }
+		else_if = { limit = { hidden_trigger = { has_country_flag = africa_asia_celestial_covenant_route } } set_cosmetic_tag = ASIAN_CELESTIAL_COVENANT }
 	}
 	else_if = {
 		limit = { has_country_flag = africa_world_north_america_package }
@@ -713,7 +713,7 @@ africa_world_union_protocol_restore_host_identity = {
 		else_if = { limit = { has_country_flag = africa_north_america_commonwealth_route } set_cosmetic_tag = NORTH_AMERICAN_COMMONWEALTH }
 		else_if = { limit = { has_country_flag = africa_north_america_command_route } set_cosmetic_tag = NORTH_AMERICAN_COMMAND }
 		else_if = { limit = { has_country_flag = africa_north_america_socialist_union_route } set_cosmetic_tag = NORTH_AMERICAN_SOCIALIST_UNION }
-		else_if = { limit = { has_country_flag = africa_north_america_storm_compact_route } set_cosmetic_tag = NORTH_AMERICAN_STORM_COMPACT }
+		else_if = { limit = { hidden_trigger = { has_country_flag = africa_north_america_storm_compact_route } } set_cosmetic_tag = NORTH_AMERICAN_STORM_COMPACT }
 	}
 	else_if = {
 		limit = { has_country_flag = africa_world_south_america_package }
@@ -722,7 +722,7 @@ africa_world_union_protocol_restore_host_identity = {
 		else_if = { limit = { has_country_flag = africa_south_america_socialist_union_route } set_cosmetic_tag = SOUTH_AMERICAN_SOCIALIST_UNION }
 		else_if = { limit = { has_country_flag = africa_south_america_command_route } set_cosmetic_tag = SOUTH_AMERICAN_COMMAND }
 		else_if = { limit = { has_country_flag = africa_south_america_royal_concert_route } set_cosmetic_tag = SOUTH_AMERICAN_CONCERT }
-		else_if = { limit = { has_country_flag = africa_south_america_sun_covenant_route } set_cosmetic_tag = SOUTH_AMERICAN_SUN_COVENANT }
+		else_if = { limit = { hidden_trigger = { has_country_flag = africa_south_america_sun_covenant_route } } set_cosmetic_tag = SOUTH_AMERICAN_SUN_COVENANT }
 	}
 	else_if = {
 		limit = { has_country_flag = africa_world_oceania_package }
@@ -730,7 +730,7 @@ africa_world_union_protocol_restore_host_identity = {
 		else_if = { limit = { has_country_flag = africa_oceania_dominion_route } set_cosmetic_tag = OCEANIAN_DOMINION }
 		else_if = { limit = { has_country_flag = africa_oceania_indigenous_union_route } set_cosmetic_tag = OCEANIAN_PEOPLES_UNION }
 		else_if = { limit = { has_country_flag = africa_oceania_socialist_commonwealth_route } set_cosmetic_tag = OCEANIAN_MARITIME_COMMONWEALTH }
-		else_if = { limit = { has_country_flag = africa_oceania_deep_sea_covenant_route } set_cosmetic_tag = OCEANIAN_DEEP_SEA_COVENANT }
+		else_if = { limit = { hidden_trigger = { has_country_flag = africa_oceania_deep_sea_covenant_route } } set_cosmetic_tag = OCEANIAN_DEEP_SEA_COVENANT }
 	}
 }
 
@@ -832,8 +832,8 @@ africa_world_continental_war_protocol_start_war = {
 	if = {
 		limit = {
 			has_global_flag = africa_world_continental_war_protocol_open
-			has_country_flag = africa_world_continental_war_protocol_attacker
-			event_target:africa_world_continental_war_protocol_defender = { has_country_flag = africa_world_continental_war_protocol_defender }
+			hidden_trigger = { has_country_flag = africa_world_continental_war_protocol_attacker }
+			event_target:africa_world_continental_war_protocol_defender = { hidden_trigger = { has_country_flag = africa_world_continental_war_protocol_defender } }
 		}
 		set_variable = { africa_world_continental_war_status = constant:africa_world_war_protocol.status.active }
 		set_country_flag = africa_world_continental_war_protocol_active
@@ -906,11 +906,11 @@ africa_world_continental_war_protocol_call_registered_partners = {
 
 africa_world_continental_war_protocol_record_partner_join = {
 	if = {
-		limit = { has_country_flag = africa_world_war_call_pending }
+		limit = { hidden_trigger = { has_country_flag = africa_world_war_call_pending } }
 		clr_country_flag = africa_world_war_call_pending
 		set_country_flag = africa_world_war_call_joined
 		if = {
-			limit = { has_country_flag = africa_world_war_call_for_attacker }
+			limit = { hidden_trigger = { has_country_flag = africa_world_war_call_for_attacker } }
 			add_to_war = {
 				targeted_alliance = event_target:africa_world_continental_war_protocol_attacker
 				enemy = event_target:africa_world_continental_war_protocol_defender
@@ -920,7 +920,7 @@ africa_world_continental_war_protocol_record_partner_join = {
 			event_target:africa_world_continental_war_protocol_attacker = { add_to_array = { array = africa_world_war_joined_partners value = PREV } }
 		}
 		else_if = {
-			limit = { has_country_flag = africa_world_war_call_for_defender }
+			limit = { hidden_trigger = { has_country_flag = africa_world_war_call_for_defender } }
 			add_to_war = {
 				targeted_alliance = event_target:africa_world_continental_war_protocol_defender
 				enemy = event_target:africa_world_continental_war_protocol_attacker
@@ -937,11 +937,11 @@ africa_world_continental_war_protocol_record_partner_join = {
 
 africa_world_continental_war_protocol_record_partner_support = {
 	if = {
-		limit = { has_country_flag = africa_world_war_call_pending }
+		limit = { hidden_trigger = { has_country_flag = africa_world_war_call_pending } }
 		clr_country_flag = africa_world_war_call_pending
 		set_country_flag = africa_world_war_call_supporting
 		if = {
-			limit = { has_country_flag = africa_world_war_call_for_attacker }
+			limit = { hidden_trigger = { has_country_flag = africa_world_war_call_for_attacker } }
 			event_target:africa_world_continental_war_protocol_attacker = {
 					add_equipment_to_stockpile = { type = infantry_equipment amount = constant:africa_world_war_protocol.tuning.support_infantry_equipment }
 					add_equipment_to_stockpile = { type = support_equipment amount = constant:africa_world_war_protocol.tuning.support_equipment }
@@ -949,7 +949,7 @@ africa_world_continental_war_protocol_record_partner_support = {
 			}
 		}
 		else_if = {
-			limit = { has_country_flag = africa_world_war_call_for_defender }
+			limit = { hidden_trigger = { has_country_flag = africa_world_war_call_for_defender } }
 			event_target:africa_world_continental_war_protocol_defender = {
 				add_equipment_to_stockpile = { type = infantry_equipment amount = constant:africa_world_war_protocol.tuning.support_infantry_equipment }
 				add_equipment_to_stockpile = { type = support_equipment amount = constant:africa_world_war_protocol.tuning.support_equipment }
@@ -964,11 +964,11 @@ africa_world_continental_war_protocol_record_partner_support = {
 
 africa_world_continental_war_protocol_record_partner_neutral = {
 	if = {
-		limit = { has_country_flag = africa_world_war_call_pending }
+		limit = { hidden_trigger = { has_country_flag = africa_world_war_call_pending } }
 		clr_country_flag = africa_world_war_call_pending
 		set_country_flag = africa_world_war_call_neutral
-		if = { limit = { has_country_flag = africa_world_war_call_for_attacker } event_target:africa_world_continental_war_protocol_attacker = { add_to_variable = { africa_world_war_neutral_responses = constant:africa_value.one } } }
-		else_if = { limit = { has_country_flag = africa_world_war_call_for_defender } event_target:africa_world_continental_war_protocol_defender = { add_to_variable = { africa_world_war_neutral_responses = constant:africa_value.one } } }
+		if = { limit = { hidden_trigger = { has_country_flag = africa_world_war_call_for_attacker } } event_target:africa_world_continental_war_protocol_attacker = { add_to_variable = { africa_world_war_neutral_responses = constant:africa_value.one } } }
+		else_if = { limit = { hidden_trigger = { has_country_flag = africa_world_war_call_for_defender } } event_target:africa_world_continental_war_protocol_defender = { add_to_variable = { africa_world_war_neutral_responses = constant:africa_value.one } } }
 		clr_country_flag = africa_world_war_call_for_attacker
 		clr_country_flag = africa_world_war_call_for_defender
 		country_event = { id = africa_world_package.722 }
@@ -1086,7 +1086,7 @@ africa_world_continental_war_protocol_release_constituents = {
 		for_each_scope_loop = {
 			array = africa_world_constituent_countries
 			if = {
-				limit = { has_country_flag = africa_world_constituent_member }
+				limit = { hidden_trigger = { has_country_flag = africa_world_constituent_member } }
 				africa_world_record_constituent_withdrawal = yes
 				set_country_flag = africa_world_world_war_constituent_released
 				country_event = { id = africa_world_package.737 }
@@ -1382,7 +1382,7 @@ africa_world_terminal_protocol_record_unanimous_actor_approval = {
 	if = {
 		limit = {
 			has_global_flag = africa_world_terminal_protocol_unanimous_union
-			has_country_flag = africa_world_terminal_union_actor_pending
+			hidden_trigger = { has_country_flag = africa_world_terminal_union_actor_pending }
 			africa_world_union_protocol_constituent_quorum_is_proven = yes
 		}
 		clr_country_flag = africa_world_terminal_union_actor_pending
@@ -1406,7 +1406,7 @@ africa_world_terminal_protocol_try_finalize_unanimous = {
 	if = {
 		limit = {
 			africa_world_terminal_protocol_unanimous_union_is_proven = yes
-			NOT = { has_global_flag = africa_world_terminal_protocol_review_sent }
+			NOT = { hidden_trigger = { has_global_flag = africa_world_terminal_protocol_review_sent } }
 		}
 		set_global_flag = africa_world_terminal_protocol_review_sent
 		event_target:africa_world_terminal_protocol_host = { country_event = { id = africa_world_package.752 } }
@@ -1442,7 +1442,7 @@ africa_world_terminal_protocol_record_actor_terminal_proof = {
 	if = {
 		limit = {
 			has_global_flag = africa_world_terminal_protocol_last_standing
-			has_country_flag = africa_world_terminal_actor_proof_pending
+			hidden_trigger = { has_country_flag = africa_world_terminal_actor_proof_pending }
 			africa_world_terminal_protocol_actor_disposition_is_proven = yes
 		}
 		clr_country_flag = africa_world_terminal_actor_proof_pending
@@ -1467,7 +1467,7 @@ africa_world_terminal_protocol_try_finalize_last_standing = {
 	if = {
 		limit = {
 			africa_world_terminal_protocol_last_standing_is_proven = yes
-			NOT = { has_global_flag = africa_world_terminal_protocol_review_sent }
+			NOT = { hidden_trigger = { has_global_flag = africa_world_terminal_protocol_review_sent } }
 		}
 		set_global_flag = africa_world_terminal_protocol_review_sent
 		event_target:africa_world_terminal_protocol_host = { country_event = { id = africa_world_package.755 } }

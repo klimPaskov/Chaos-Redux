@@ -98,7 +98,7 @@ missiles_set_program_phases = {
 			limit = {
 				OR = {
 					has_country_flag = missiles_incident_active
-					has_country_flag = missiles_captured_site_unresolved
+					hidden_trigger = { has_country_flag = missiles_captured_site_unresolved }
 				}
 			}
 			set_country_flag = missiles_program_phase_incident
@@ -110,7 +110,7 @@ missiles_set_program_phases = {
 		else_if = {
 			limit = {
 				OR = {
-					has_country_flag = missiles_program_capture_shell
+					hidden_trigger = { has_country_flag = missiles_program_capture_shell }
 					NOT = { has_country_flag = missiles_command_control_secure }
 					NOT = { missiles_country_has_active_site = yes }
 				}
@@ -144,7 +144,7 @@ missiles_refresh_program_status_idea = {
 	if = {
 		limit = {
 			OR = {
-				has_country_flag = missiles_site_compromise_active
+				hidden_trigger = { has_country_flag = missiles_site_compromise_active }
 				has_country_flag = missiles_rogue_command_active
 				has_country_flag = missiles_retaliation_network_severed
 			}
@@ -585,7 +585,7 @@ missiles_reserve_for_operation = {
 missiles_refund_operation_reserve = {
 	if = {
 		limit = {
-			has_country_flag = missiles_operation_reserve_receipt_active
+			hidden_trigger = { has_country_flag = missiles_operation_reserve_receipt_active }
 			has_variable = missiles_operation_missile_cost
 		check_variable = { var = missiles_reserved_reserve value = missiles_operation_missile_cost compare = greater_than_or_equals }
 		}
@@ -948,7 +948,7 @@ missiles_refresh_site_flags = {
 			check_variable = { var = missiles_site_security value = constant:missiles_reserve.site_secure_security_threshold compare = greater_than_or_equals }
 			NOT = { has_state_flag = missiles_site_captured }
 			NOT = { has_state_flag = missiles_site_rogue }
-			NOT = { has_state_flag = missiles_site_suspended }
+			NOT = { hidden_trigger = { has_state_flag = missiles_site_suspended } }
 			NOT = { has_state_flag = missiles_site_isolated }
 		}
 		set_state_flag = missiles_site_hardened

@@ -59,16 +59,16 @@ utopia_manifesto_candidate_has_active_event_package = {
 
 utopia_manifesto_candidate_has_protected_package = {
 	OR = {
-		has_country_flag = utopia_manifesto_tree_replacement_protected
-		has_country_flag = utopia_manifesto_transformation_active
-		has_country_flag = utopia_manifesto_transformation_recent
-		has_country_flag = soviet_collapse_regional_focus_tree_loaded
+		hidden_trigger = { has_country_flag = utopia_manifesto_tree_replacement_protected }
+		hidden_trigger = { has_country_flag = utopia_manifesto_transformation_active }
+		hidden_trigger = { has_country_flag = utopia_manifesto_transformation_recent }
+		hidden_trigger = { has_country_flag = soviet_collapse_regional_focus_tree_loaded }
 	}
 }
 
 utopia_manifesto_candidate_has_mature_generic_tree = {
 	OR = {
-		has_country_flag = utopia_manifesto_tree_replacement_mature
+		hidden_trigger = { has_country_flag = utopia_manifesto_tree_replacement_mature }
 		has_completed_focus = military_youth
 		has_completed_focus = deterrence
 		has_completed_focus = volunteer_corps
@@ -144,8 +144,8 @@ utopia_manifesto_candidate_passes_absolute_automatic_gates = {
 	NOT = { utopia_manifesto_candidate_has_protected_package = yes }
 	NOT = { utopia_manifesto_candidate_has_mature_generic_tree = yes }
 	NOT = { has_country_flag = utopia_manifesto_accepted }
-	NOT = { has_country_flag = utopia_manifesto_rejected }
-	NOT = { has_country_flag = utopia_manifesto_focus_tree_loaded }
+	NOT = { hidden_trigger = { has_country_flag = utopia_manifesto_rejected } }
+	NOT = { hidden_trigger = { has_country_flag = utopia_manifesto_focus_tree_loaded } }
 	NOT = { num_of_factories > constant:utopia_manifesto_candidate_limits.maximum_total_factories }
 	num_subjects < constant:utopia_manifesto_candidate_limits.extensive_subject_count
 	num_occupied_states < constant:utopia_manifesto_candidate_limits.extensive_occupation_count

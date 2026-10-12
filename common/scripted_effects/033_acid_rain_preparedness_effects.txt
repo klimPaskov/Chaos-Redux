@@ -1354,7 +1354,7 @@ acid_rain_release_state_operation = {
 		limit = {
 			has_variable = acid_rain_selected_action_state
 			var:acid_rain_selected_action_state = {
-				has_state_flag = acid_rain_action_lock
+				hidden_trigger = { has_state_flag = acid_rain_action_lock }
 				check_variable = { var = acid_rain_action_owner_country_id value = PREV.id compare = equals }
 			}
 		}
@@ -1368,7 +1368,7 @@ acid_rain_release_state_operation = {
 			# A failed evacuation ends its disruption now; a finished one keeps
 			# it until the severe episode closes.
 			if = {
-				limit = { NOT = { has_state_flag = acid_rain_evacuated } }
+				limit = { NOT = { hidden_trigger = { has_state_flag = acid_rain_evacuated } } }
 				remove_dynamic_modifier = { modifier = acid_rain_evacuation_disruption }
 			}
 			clear_variable = acid_rain_evacuation_partial_day
@@ -1478,7 +1478,7 @@ acid_rain_interrupt_state_operation = {
 acid_rain_enter_country_recovery_tail = {
 	acid_rain_release_running_operations = yes
 	if = {
-		limit = { any_controlled_state = { has_state_flag = acid_rain_aftercare_unresolved } }
+		limit = { any_controlled_state = { hidden_trigger = { has_state_flag = acid_rain_aftercare_unresolved } } }
 		set_country_flag = acid_rain_recovery_tail_active
 	}
 	else = { clr_country_flag = acid_rain_recovery_tail_active }

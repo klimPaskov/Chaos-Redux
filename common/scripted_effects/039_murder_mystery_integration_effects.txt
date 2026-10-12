@@ -77,7 +77,7 @@ murder_mystery_evaluate_event_pool_unavailability = {
 		limit = {
 			OR = {
 				has_global_flag = murder_mystery_runtime_active
-				has_global_flag = murder_mystery_scenario_launch_in_progress
+				hidden_trigger = { has_global_flag = murder_mystery_scenario_launch_in_progress }
 			}
 		}
 		set_temp_variable = { event_pool_candidate_unavailability_reason = constant:event_system_event_unavailability_reason.murder_mystery_active }
@@ -676,7 +676,7 @@ murder_mystery_set_government_response_profile = {
 			has_variable = murder_mystery_response_profile_input
 			check_variable = { var = murder_mystery_response_profile_input value = constant:murder_mystery_response_profile.rule_bound compare = greater_than_or_equals }
 			check_variable = { var = murder_mystery_response_profile_input value = constant:murder_mystery_response_profile.maximum compare = less_than_or_equals }
-			NOT = { has_country_flag = murder_mystery_response_profile_locked }
+			NOT = { hidden_trigger = { has_country_flag = murder_mystery_response_profile_locked } }
 		}
 		murder_mystery_set_action_deltas_zero = yes
 		set_variable = { murder_mystery_response_profile = murder_mystery_response_profile_input }

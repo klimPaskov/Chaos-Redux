@@ -321,13 +321,13 @@ acid_rain_033_achievement_initialize_country = {
 		limit = {
 			has_variable = global.acid_rain_generation_id
 			OR = {
-				NOT = { has_country_flag = acid_rain_033_achievement_tracking_initialized }
+				NOT = { hidden_trigger = { has_country_flag = acid_rain_033_achievement_tracking_initialized } }
 				NOT = { check_variable = { var = acid_rain_033_achievement_generation_id value = global.acid_rain_generation_id compare = equals } }
 				NOT = { check_variable = { var = acid_rain_033_achievement_schema_version value = @acid_rain_033_achievement_schema_version compare = equals } }
 			}
 		}
 		if = {
-			limit = { has_country_flag = acid_rain_033_achievement_tracking_initialized check_variable = { var = acid_rain_033_achievement_generation_id value = global.acid_rain_generation_id compare = equals } }
+			limit = { hidden_trigger = { has_country_flag = acid_rain_033_achievement_tracking_initialized } check_variable = { var = acid_rain_033_achievement_generation_id value = global.acid_rain_generation_id compare = equals } }
 			acid_rain_033_achievement_mark_migration_disqualified = yes
 		}
 		acid_rain_033_achievement_clear_generation_records = yes
@@ -381,7 +381,7 @@ acid_rain_033_achievement_initialize_country = {
 		set_variable = { acid_rain_033_achievement_closure_baseline_valid = @acid_rain_033_achievement_zero }
 	}
 	# Late participants inherit the durable generation origin without a world scan.
-	if = { limit = { has_global_flag = acid_rain_forced_generation } acid_rain_033_achievement_mark_force_disqualified = yes }
+	if = { limit = { hidden_trigger = { has_global_flag = acid_rain_forced_generation } } acid_rain_033_achievement_mark_force_disqualified = yes }
 }
 
 # COUNTRY SCOPE. Starts a generation and freezes the immutable national facts.
@@ -882,7 +882,7 @@ acid_rain_033_achievement_record_preparedness_snapshot = {
 # The state retains its original credit country even if control later changes.
 acid_rain_033_achievement_record_dissipation_state_snapshot = {
 	if = {
-		limit = { NOT = { has_state_flag = acid_rain_033_achievement_state_recovery_snapshot } }
+		limit = { NOT = { hidden_trigger = { has_state_flag = acid_rain_033_achievement_state_recovery_snapshot } } }
 		if = {
 			limit = {
 				acid_rain_033_achievement_input_generation_is_current = yes
@@ -896,7 +896,7 @@ acid_rain_033_achievement_record_dissipation_state_snapshot = {
 				check_variable = { var = acid_rain_033_input_snapshot_day value = @acid_rain_033_achievement_zero compare = greater_than }
 				check_variable = { var = acid_rain_033_input_owned_core_valid value = @acid_rain_033_achievement_one compare = equals }
 				check_variable = { var = acid_rain_033_input_snapshot_aftermath_tier value = @acid_rain_033_achievement_zero compare = greater_than }
-				NOT = { has_state_flag = acid_rain_033_achievement_state_recovery_snapshot }
+				NOT = { hidden_trigger = { has_state_flag = acid_rain_033_achievement_state_recovery_snapshot } }
 				OWNER = { exists = yes }
 				is_core_of = OWNER
 			}
@@ -2039,11 +2039,11 @@ acid_rain_033_achievement_close_runtime_episode = {
 	set_temp_variable = { acid_rain_033_input_severe_episode_pulse_count = acid_rain_033_achievement_state_severe_pulse_count }
 	set_temp_variable = { acid_rain_033_input_severe_episode_closed_valid = @acid_rain_033_achievement_one }
 	if = {
-		limit = { has_state_flag = acid_rain_severe_cell_target check_variable = { var = global.date value = acid_rain_severe_forecast_end_day compare = less_than } }
+		limit = { hidden_trigger = { has_state_flag = acid_rain_severe_cell_target } check_variable = { var = global.date value = acid_rain_severe_forecast_end_day compare = less_than } }
 		set_temp_variable = { acid_rain_033_input_severe_episode_closed_valid = @acid_rain_033_achievement_zero }
 	}
 	if = {
-		limit = { has_state_flag = acid_rain_superstorm_target check_variable = { var = global.date value = acid_rain_superstorm_forecast_end_day compare = less_than } }
+		limit = { hidden_trigger = { has_state_flag = acid_rain_superstorm_target } check_variable = { var = global.date value = acid_rain_superstorm_forecast_end_day compare = less_than } }
 		set_temp_variable = { acid_rain_033_input_severe_episode_closed_valid = @acid_rain_033_achievement_zero }
 	}
 	var:acid_rain_033_achievement_state_severe_credit_country = {
@@ -2098,7 +2098,7 @@ acid_rain_033_achievement_record_aftermath_tier = {
 	if = {
 		limit = {
 			check_variable = { var = acid_rain_state_aftermath_tier value = @acid_rain_033_achievement_tier3 compare = greater_than_or_equals }
-			NOT = { has_state_flag = acid_rain_033_achievement_state_tier3_active }
+			NOT = { hidden_trigger = { has_state_flag = acid_rain_033_achievement_state_tier3_active } }
 		}
 		set_state_flag = acid_rain_033_achievement_state_tier3_active
 		set_variable = { acid_rain_033_achievement_state_tier3_entry_day = global.date }
@@ -2229,16 +2229,16 @@ acid_rain_033_achievement_record_acute_closure = {
 # The root-only registry observes these flags through the completion triggers.
 acid_rain_033_achievement_evaluate = {
 	set_temp_variable = { acid_rain_033_input_generation = global.acid_rain_generation_id }
-	if = { limit = { acid_rain_033_before_the_first_drop_criteria = yes NOT = { has_country_flag = acid_rain_033_before_the_first_drop_receipt } } set_country_flag = acid_rain_033_before_the_first_drop_receipt }
-	if = { limit = { acid_rain_033_shelters_held_criteria = yes NOT = { has_country_flag = acid_rain_033_shelters_held_receipt } } set_country_flag = acid_rain_033_shelters_held_receipt }
-	if = { limit = { acid_rain_033_three_evacuations_criteria = yes NOT = { has_country_flag = acid_rain_033_three_evacuations_receipt } } set_country_flag = acid_rain_033_three_evacuations_receipt }
-	if = { limit = { acid_rain_033_railways_still_run_criteria = yes NOT = { has_country_flag = acid_rain_033_railways_still_run_receipt } } set_country_flag = acid_rain_033_railways_still_run_receipt }
-	if = { limit = { acid_rain_033_under_one_sky_criteria = yes NOT = { has_country_flag = acid_rain_033_under_one_sky_receipt } } set_country_flag = acid_rain_033_under_one_sky_receipt }
-	if = { limit = { acid_rain_033_after_the_clouds_criteria = yes NOT = { has_country_flag = acid_rain_033_after_the_clouds_receipt } } set_country_flag = acid_rain_033_after_the_clouds_receipt }
-	if = { limit = { acid_rain_033_five_states_few_dead_criteria = yes NOT = { has_country_flag = acid_rain_033_five_states_few_dead_receipt } } set_country_flag = acid_rain_033_five_states_few_dead_receipt }
-	if = { limit = { acid_rain_033_small_state_civil_defense_criteria = yes NOT = { has_country_flag = acid_rain_033_small_state_civil_defense_receipt } } set_country_flag = acid_rain_033_small_state_civil_defense_receipt }
-	if = { limit = { acid_rain_033_two_regions_ready_criteria = yes NOT = { has_country_flag = acid_rain_033_two_regions_ready_receipt } } set_country_flag = acid_rain_033_two_regions_ready_receipt }
-	if = { limit = { acid_rain_033_no_severe_ruins_criteria = yes NOT = { has_country_flag = acid_rain_033_no_severe_ruins_receipt } } set_country_flag = acid_rain_033_no_severe_ruins_receipt }
+	if = { limit = { acid_rain_033_before_the_first_drop_criteria = yes NOT = { hidden_trigger = { has_country_flag = acid_rain_033_before_the_first_drop_receipt } } } set_country_flag = acid_rain_033_before_the_first_drop_receipt }
+	if = { limit = { acid_rain_033_shelters_held_criteria = yes NOT = { hidden_trigger = { has_country_flag = acid_rain_033_shelters_held_receipt } } } set_country_flag = acid_rain_033_shelters_held_receipt }
+	if = { limit = { acid_rain_033_three_evacuations_criteria = yes NOT = { hidden_trigger = { has_country_flag = acid_rain_033_three_evacuations_receipt } } } set_country_flag = acid_rain_033_three_evacuations_receipt }
+	if = { limit = { acid_rain_033_railways_still_run_criteria = yes NOT = { hidden_trigger = { has_country_flag = acid_rain_033_railways_still_run_receipt } } } set_country_flag = acid_rain_033_railways_still_run_receipt }
+	if = { limit = { acid_rain_033_under_one_sky_criteria = yes NOT = { hidden_trigger = { has_country_flag = acid_rain_033_under_one_sky_receipt } } } set_country_flag = acid_rain_033_under_one_sky_receipt }
+	if = { limit = { acid_rain_033_after_the_clouds_criteria = yes NOT = { hidden_trigger = { has_country_flag = acid_rain_033_after_the_clouds_receipt } } } set_country_flag = acid_rain_033_after_the_clouds_receipt }
+	if = { limit = { acid_rain_033_five_states_few_dead_criteria = yes NOT = { hidden_trigger = { has_country_flag = acid_rain_033_five_states_few_dead_receipt } } } set_country_flag = acid_rain_033_five_states_few_dead_receipt }
+	if = { limit = { acid_rain_033_small_state_civil_defense_criteria = yes NOT = { hidden_trigger = { has_country_flag = acid_rain_033_small_state_civil_defense_receipt } } } set_country_flag = acid_rain_033_small_state_civil_defense_receipt }
+	if = { limit = { acid_rain_033_two_regions_ready_criteria = yes NOT = { hidden_trigger = { has_country_flag = acid_rain_033_two_regions_ready_receipt } } } set_country_flag = acid_rain_033_two_regions_ready_receipt }
+	if = { limit = { acid_rain_033_no_severe_ruins_criteria = yes NOT = { hidden_trigger = { has_country_flag = acid_rain_033_no_severe_ruins_receipt } } } set_country_flag = acid_rain_033_no_severe_ruins_receipt }
 }
 
 # COUNTRY SCOPE. Native engine rail connectivity to the current capital.
@@ -2536,7 +2536,7 @@ acid_rain_033_achievement_schedule_deadline = {
 		break = acid_rain_033_achievement_schedule_deadline_loop_1_break
 		array = acid_rain_033_achievement_recovery_state_scopes
 		if = {
-			limit = { NOT = { has_state_flag = acid_rain_033_achievement_state_recovery_resolved } }
+			limit = { NOT = { hidden_trigger = { has_state_flag = acid_rain_033_achievement_state_recovery_resolved } } }
 			set_temp_variable = { acid_rain_033_deadline_state_day = acid_rain_033_achievement_state_recovery_deadline_day }
 			set_temp_variable = { chaosx_date_days = @acid_rain_033_achievement_one }
 			set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
@@ -2569,7 +2569,7 @@ acid_rain_033_achievement_schedule_deadline = {
 			exists = yes
 			check_variable = { var = acid_rain_033_achievement_generation_id value = global.acid_rain_generation_id compare = equals }
 			check_variable = { var = acid_rain_033_deadline_candidate value = global.date compare = greater_than }
-			OR = { NOT = { has_country_flag = acid_rain_033_achievement_deadline_scheduled } check_variable = { var = acid_rain_033_deadline_candidate value = acid_rain_033_achievement_deadline_due_day compare = less_than } }
+			OR = { NOT = { hidden_trigger = { has_country_flag = acid_rain_033_achievement_deadline_scheduled } } check_variable = { var = acid_rain_033_deadline_candidate value = acid_rain_033_achievement_deadline_due_day compare = less_than } }
 		}
 		set_country_flag = acid_rain_033_achievement_deadline_scheduled
 		set_variable = { acid_rain_033_achievement_deadline_generation = global.acid_rain_generation_id }

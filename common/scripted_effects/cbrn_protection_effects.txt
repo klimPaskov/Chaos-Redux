@@ -219,7 +219,7 @@ cbrn_initialize_country_data = {
 	clamp_variable = { var = cbrn_protective_aid_received_crates min = constant:cbrn_math.zero }
 	if = {
 		limit = {
-			NOT = { has_country_flag = cbrn_protection_maintenance_active }
+			NOT = { hidden_trigger = { has_country_flag = cbrn_protection_maintenance_active } }
 			OR = {
 				has_tech = basic_gas_masks
 				has_equipment = { gas_mask_equipment > constant:cbrn_math.zero }
@@ -2477,7 +2477,7 @@ cbrn_run_protection_maintenance_cycle = {
 
 cbrn_start_protection_maintenance_job = {
 	if = {
-		limit = { NOT = { has_country_flag = cbrn_protection_maintenance_active } }
+		limit = { NOT = { hidden_trigger = { has_country_flag = cbrn_protection_maintenance_active } } }
 		set_country_flag = cbrn_protection_maintenance_active
 		set_temp_variable = { cbrn_protection_maintenance_delay = constant:cbrn_scheduler.protection_maintenance_days }
 		country_event = { id = cbrn_protection.1 days = cbrn_protection_maintenance_delay }

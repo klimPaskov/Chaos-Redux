@@ -833,7 +833,7 @@ air_cleanliness_treaty_unregister_member = {
 
 		event_target:air_cleanliness_treaty_departing_member = {
 			if = {
-				limit = { has_country_flag = air_cleanliness_treaty_cleaning_day_sponsor }
+				limit = { hidden_trigger = { has_country_flag = air_cleanliness_treaty_cleaning_day_sponsor } }
 				air_cleanliness_treaty_cancel_cleaning_day_project = yes
 			}
 			air_cleanliness_treaty_cancel_verification_transactions_for_country = yes
@@ -958,8 +958,8 @@ air_cleanliness_treaty_handle_violation = {
 		event_target:air_cleanliness_treaty_violating_member = {
 			if = {
 				limit = {
-					NOT = { has_country_flag = air_cleanliness_treaty_inspection_refusal_violation_context }
-					NOT = { has_country_flag = air_cleanliness_treaty_violation_news_fired }
+					NOT = { hidden_trigger = { has_country_flag = air_cleanliness_treaty_inspection_refusal_violation_context } }
+					NOT = { hidden_trigger = { has_country_flag = air_cleanliness_treaty_violation_news_fired } }
 				}
 				set_country_flag = air_cleanliness_treaty_violation_news_fired
 				news_event = { id = chaosx_contamination.8 }
@@ -1272,7 +1272,7 @@ air_cleanliness_treaty_accept_invitation = {
 # Supported scope: COUNTRY
 air_cleanliness_treaty_decline_invitation = {
 	if = {
-		limit = { has_country_flag = air_cleanliness_treaty_invitation_open }
+		limit = { hidden_trigger = { has_country_flag = air_cleanliness_treaty_invitation_open } }
 		set_variable = { air_cleanliness_treaty_invitation_declined_generation = air_cleanliness_treaty_invitation_generation }
 	}
 	clr_country_flag = air_cleanliness_treaty_invitation_pending
@@ -1861,7 +1861,7 @@ air_cleanliness_treaty_cancel_cleaning_day_project = {
 	if = {
 		limit = {
 			exists = yes
-			has_country_flag = air_cleanliness_treaty_cleaning_day_sponsor
+			hidden_trigger = { has_country_flag = air_cleanliness_treaty_cleaning_day_sponsor }
 			NOT = { has_global_flag = fallout_transition_active }
 			NOT = { has_global_flag = fallout_active }
 		}
@@ -3270,7 +3270,7 @@ air_winter_refresh_presentation_class = {
 air_winter_initialize_presentation_water_profile = {
 	if = {
 		limit = {
-			NOT = { has_state_flag = air_winter_water_profile_initialized }
+			NOT = { hidden_trigger = { has_state_flag = air_winter_water_profile_initialized } }
 			NOT = { air_winter_presentation_is_unclassified = yes }
 		}
 		if = { limit = { air_winter_presentation_is_boreal = yes } set_variable = { air_winter_water_security = constant:air_winter_presentation_water.boreal_continental } }
@@ -3446,7 +3446,7 @@ air_winter_begin_fallout_snapshot_production = {
 # Supported scope: STATE
 air_winter_record_original_category = {
 	if = {
-		limit = { NOT = { has_state_flag = air_winter_original_category_recorded } }
+		limit = { NOT = { hidden_trigger = { has_state_flag = air_winter_original_category_recorded } } }
 		if = { limit = { has_state_category = megalopolis } set_variable = { air_winter_original_category = constant:air_winter_state_category.megalopolis } set_state_flag = air_winter_original_category_recorded }
 		else_if = { limit = { has_state_category = metropolis } set_variable = { air_winter_original_category = constant:air_winter_state_category.metropolis } set_state_flag = air_winter_original_category_recorded }
 		else_if = { limit = { has_state_category = large_city } set_variable = { air_winter_original_category = constant:air_winter_state_category.large_city } set_state_flag = air_winter_original_category_recorded }
@@ -3466,7 +3466,7 @@ air_winter_record_original_category = {
 # Supported scope: STATE
 air_winter_initialize_state = {
 	if = {
-		limit = { NOT = { has_state_flag = air_winter_initialized } }
+		limit = { NOT = { hidden_trigger = { has_state_flag = air_winter_initialized } } }
 		air_winter_record_original_category = yes
 		air_winter_refresh_presentation_class = yes
 
@@ -3584,7 +3584,7 @@ air_winter_normalize_state_ledger = {
 	air_winter_initialize_presentation_water_profile = yes
 	if = {
 		limit = {
-			has_state_flag = air_winter_sampling_stations
+			hidden_trigger = { has_state_flag = air_winter_sampling_stations }
 			OWNER = { exists = yes }
 		}
 		OWNER = { set_country_flag = air_winter_atmospheric_office }
@@ -19815,7 +19815,7 @@ fallout_nzl_grant_foreign_basing_concession = {
 	if = {
 		limit = {
 			fallout_nzl_external_transaction_is_current = yes
-			NOT = { has_country_flag = fallout_nzl_foreign_basing_ever_granted }
+			NOT = { hidden_trigger = { has_country_flag = fallout_nzl_foreign_basing_ever_granted } }
 		}
 		give_military_access = var:fallout_nzl_external_partner
 		set_country_flag = fallout_nzl_foreign_basing_ever_granted
@@ -41115,10 +41115,10 @@ fallout_request_aftermath = {
 	}
 
 	if = {
-		limit = { any_country = { has_country_flag = is_global_host } }
+		limit = { any_country = { hidden_trigger = { has_country_flag = is_global_host } } }
 		every_country = {
 			limit = {
-				has_country_flag = is_global_host
+				hidden_trigger = { has_country_flag = is_global_host }
 				fallout_request_ledger_is_free = yes
 			}
 			set_variable = { global.fallout_request_source = fallout_request_dispatch_source }
@@ -41179,9 +41179,9 @@ fallout_queue_request_envelope = {
 fallout_clear_pending_request_envelope = {
 	if = {
 		limit = {
-			has_global_flag = fallout_air_cleanliness_request_paused
-			NOT = { has_global_flag = fallout_request_locked }
-			NOT = { has_global_flag = world_end_fallout }
+			hidden_trigger = { has_global_flag = fallout_air_cleanliness_request_paused }
+			NOT = { hidden_trigger = { has_global_flag = fallout_request_locked } }
+			NOT = { hidden_trigger = { has_global_flag = world_end_fallout } }
 		}
 		clr_global_flag = fallout_air_cleanliness_request_paused
 		clr_global_flag = fallout_air_cleanliness_disabled
@@ -41194,7 +41194,7 @@ fallout_clear_pending_request_envelope = {
 		}
 		event_target:fallout_request_actor = {
 			if = {
-				limit = { has_country_flag = mengele_event016_singularity_fallout_request_submitted }
+				limit = { hidden_trigger = { has_country_flag = mengele_event016_singularity_fallout_request_submitted } }
 				brilliant_scientist_mengele_recover_rejected_singularity_fallout_request = yes
 			}
 			else = { brilliant_scientist_recover_rejected_singularity_fallout_request = yes }
@@ -41249,14 +41249,14 @@ fallout_lock_air_cleanliness_after_fallout_admission = {
 fallout_validate_pending_request = {
 	if = {
 		limit = {
-			has_global_flag = fallout_request_pending
+			hidden_trigger = { has_global_flag = fallout_request_pending }
 			fallout_current_country_is_coordinator = yes
 			fallout_pending_request_is_valid = yes
 		}
 		fallout_lock_transition = yes
 	}
 	else_if = {
-		limit = { has_global_flag = fallout_request_pending }
+		limit = { hidden_trigger = { has_global_flag = fallout_request_pending } }
 		fallout_clear_pending_request_envelope = yes
 	}
 }
@@ -41333,7 +41333,7 @@ fallout_lock_transition = {
 	fallout_clear_recoverable_player_snapshot_error = yes
 	fallout_clear_recoverable_snapshot_error = yes
 	if = {
-		limit = { NOT = { has_global_flag = fallout_transition_error } }
+		limit = { NOT = { hidden_trigger = { has_global_flag = fallout_transition_error } } }
 		set_variable = { global.fallout_transition_error_count = @CR_SC_FALLOUT_RUNTIME_ZERO }
 		set_variable = { global.fallout_transition_error_code = constant:fallout_transition_error_code.none }
 	}
@@ -41367,11 +41367,11 @@ fallout_lock_transition = {
 			}
 			event_target:fallout_request_actor = {
 				if = {
-					limit = { has_country_flag = mengele_event016_singularity_fallout_request_submitted }
+					limit = { hidden_trigger = { has_country_flag = mengele_event016_singularity_fallout_request_submitted } }
 					brilliant_scientist_mengele_finalize_singularity_after_fallout_lock = yes
 				}
 				else_if = {
-					limit = { has_country_flag = brilliant_scientist_singularity_fallout_request_submitted }
+					limit = { hidden_trigger = { has_country_flag = brilliant_scientist_singularity_fallout_request_submitted } }
 					brilliant_scientist_finalize_singularity_after_fallout_lock = yes
 				}
 			}
@@ -41445,8 +41445,8 @@ fallout_retire_legacy_final_silence_runtime = {
 		limit = {
 			OR = {
 				has_global_flag = world_end_final_silence
-				has_global_flag = world_end_final_silence_thermonuclear
-				has_global_flag = world_end_final_silence_interrupted
+				hidden_trigger = { has_global_flag = world_end_final_silence_thermonuclear }
+				hidden_trigger = { has_global_flag = world_end_final_silence_interrupted }
 			}
 		}
 		clr_global_flag = world_end_final_silence
@@ -41854,7 +41854,7 @@ fallout_schedule_current_transition_phase = {
 	if = {
 		limit = {
 			has_global_flag = fallout_transition_active
-			NOT = { has_global_flag = fallout_transition_schema_migration_blocked }
+			NOT = { hidden_trigger = { has_global_flag = fallout_transition_schema_migration_blocked } }
 		}
 		set_temp_variable = { fallout_transition_event_delay_hours = constant:fallout_transition_timing.beat_hours }
 		set_global_flag = {
@@ -41907,7 +41907,7 @@ fallout_schedule_current_transition_phase = {
 fallout_capture_player_countries = {
 	fallout_clear_recoverable_player_snapshot_error = yes
 	if = {
-		limit = { NOT = { has_global_flag = fallout_player_snapshot_complete } }
+		limit = { NOT = { hidden_trigger = { has_global_flag = fallout_player_snapshot_complete } } }
 		clr_global_flag = fallout_player_allocation_reservation_ledger_complete
 		clr_global_flag = fallout_player_continuation_planning_initialized
 		clr_global_flag = fallout_player_continuation_planning_blocked
@@ -42076,7 +42076,7 @@ fallout_capture_pretransition_state_category = {
 fallout_take_world_snapshot = {
 	fallout_clear_recoverable_snapshot_error = yes
 	if = {
-		limit = { NOT = { has_global_flag = fallout_world_snapshot_complete } }
+		limit = { NOT = { hidden_trigger = { has_global_flag = fallout_world_snapshot_complete } } }
 		every_possible_country = {
 			clr_country_flag = fallout_pretransition_country
 			clr_country_flag = fallout_pretransition_had_war
@@ -42119,9 +42119,9 @@ fallout_take_world_snapshot = {
 			else_if = { limit = { has_government = communism } set_country_flag = fallout_pretransition_government_communism }
 			else_if = { limit = { has_government = fascism } set_country_flag = fallout_pretransition_government_fascism }
 			else = { set_country_flag = fallout_pretransition_government_neutrality }
-			if = { limit = { has_country_flag = brilliant_scientist_kruger_continuity_machine } set_country_flag = fallout_pretransition_machine_continuity }
+			if = { limit = { hidden_trigger = { has_country_flag = brilliant_scientist_kruger_continuity_machine } } set_country_flag = fallout_pretransition_machine_continuity }
 			if = { limit = { brilliant_scientist_singularity_site_has_minimum_live_network = yes } set_country_flag = fallout_pretransition_machine_command_network }
-			if = { limit = { has_country_flag = fallout_machine_emp_survival_verified } set_country_flag = fallout_pretransition_machine_emp_survival }
+			if = { limit = { hidden_trigger = { has_country_flag = fallout_machine_emp_survival_verified } } set_country_flag = fallout_pretransition_machine_emp_survival }
 			if = { limit = { is_holy_realm_country = yes } set_country_flag = fallout_pretransition_religious_refuge_identity }
 		}
 		every_country = {
@@ -42348,7 +42348,7 @@ fallout_take_world_snapshot = {
 					set_variable = { fallout_pretransition_air_winter_water_security = air_winter_water_security }
 					set_variable = { fallout_pretransition_air_winter_original_category = air_winter_original_category }
 					if = {
-						limit = { has_state_flag = air_winter_greenhouse_refuge }
+						limit = { hidden_trigger = { has_state_flag = air_winter_greenhouse_refuge } }
 						set_variable = { fallout_pretransition_air_winter_greenhouse_generation = global.fallout_snapshot_epoch_generation }
 						set_state_flag = fallout_pretransition_air_winter_greenhouse_provenance_recorded
 					}
@@ -42358,7 +42358,7 @@ fallout_take_world_snapshot = {
 			else = {
 				if = {
 					limit = {
-						has_state_flag = air_winter_original_category_recorded
+						hidden_trigger = { has_state_flag = air_winter_original_category_recorded }
 						has_variable = air_winter_original_category
 						has_variable = global.fallout_pretransition_air_winter_ledger_schema_version
 						has_variable = global.fallout_pretransition_air_winter_ledger_generation
@@ -42394,11 +42394,11 @@ fallout_take_world_snapshot = {
 			if = {
 				limit = {
 					OR = {
-						has_state_flag = bioweapon_contaminated
-						has_state_flag = bio_agent_1_active
-						has_state_flag = bio_agent_2_active
-						has_state_flag = bio_agent_3_active
-						has_state_flag = bio_agent_4_active
+						hidden_trigger = { has_state_flag = bioweapon_contaminated }
+						hidden_trigger = { has_state_flag = bio_agent_1_active }
+						hidden_trigger = { has_state_flag = bio_agent_2_active }
+						hidden_trigger = { has_state_flag = bio_agent_3_active }
+						hidden_trigger = { has_state_flag = bio_agent_4_active }
 					}
 				}
 				set_state_flag = fallout_pretransition_biological_contamination
@@ -43533,7 +43533,7 @@ fallout_reconcile_state_category_receipt = {
 # global code and count until its exact recovery contract clears it.
 fallout_register_transition_error_if_unowned = {
 	if = {
-		limit = { NOT = { has_global_flag = fallout_transition_error } }
+		limit = { NOT = { hidden_trigger = { has_global_flag = fallout_transition_error } } }
 		set_global_flag = fallout_transition_error
 		set_variable = { global.fallout_transition_error_code = fallout_transition_error_to_register }
 		set_variable = { global.fallout_transition_error_count = constant:fallout_runtime.one }
@@ -43630,7 +43630,7 @@ fallout_stop_old_world_wars_at_admission = {
 	if = {
 		limit = {
 			OR = {
-				NOT = { has_global_flag = fallout_transition_wars_stopped_at_admission }
+				NOT = { hidden_trigger = { has_global_flag = fallout_transition_wars_stopped_at_admission } }
 				NOT = {
 					check_variable = {
 						var = global.fallout_transition_wars_stopped_at_admission_generation
@@ -140538,7 +140538,7 @@ air_cleanliness_treaty_record_clean_day_betrayal = {
 		set_country_flag = air_cleanliness_treaty_clean_day_betrayer
 		air_cleanliness_treaty_revoke_relief_routes_for_country = yes
 		if = {
-			limit = { NOT = { has_country_flag = air_cleanliness_treaty_clean_day_betrayal_recent } }
+			limit = { NOT = { hidden_trigger = { has_country_flag = air_cleanliness_treaty_clean_day_betrayal_recent } } }
 			set_temp_variable = { air_cleanliness_treaty_operation_lock_days = constant:air_cleanliness_treaty_joint_action.betrayal_condemnation_window_days }
 			meta_effect = { text = { set_country_flag = { flag = air_cleanliness_treaty_clean_day_betrayal_recent days = [LOCK_DAYS] } } LOCK_DAYS = "[?air_cleanliness_treaty_operation_lock_days|.0]" }
 			set_temp_variable = { condemnation_source_type = constant:condemnation_source.mixed }

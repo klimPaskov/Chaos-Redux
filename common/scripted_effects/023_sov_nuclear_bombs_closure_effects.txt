@@ -123,15 +123,15 @@ sov_nuclear_bombs_apply_doctrine_transfer_risk = {
 	if = {
 		limit = {
 			SOV = { sov_nuclear_bombs_event_doctrine_is_dispersed = yes }
-			NOT = { has_state_flag = sov_nuclear_bombs_dispersed_transfer_risk_resolved }
+			NOT = { hidden_trigger = { has_state_flag = sov_nuclear_bombs_dispersed_transfer_risk_resolved } }
 			NOT = { has_state_flag = sov_nuclear_bombs_site_missing }
 			check_variable = { var = sov_nuclear_bombs_site_transferred value = constant:sov_nuclear_bombs_ledger.zero compare = greater_than }
 		}
 		set_state_flag = sov_nuclear_bombs_dispersed_transfer_risk_pending
 		if = {
 			limit = {
-				NOT = { has_state_flag = sov_nuclear_bombs_native_delivery_state_pending }
-				NOT = { has_state_flag = sov_nuclear_bombs_active_dismantlement_site }
+				NOT = { hidden_trigger = { has_state_flag = sov_nuclear_bombs_native_delivery_state_pending } }
+				NOT = { hidden_trigger = { has_state_flag = sov_nuclear_bombs_active_dismantlement_site } }
 				check_variable = { var = sov_nuclear_bombs_site_reserved value = constant:sov_nuclear_bombs_ledger.zero compare = equals }
 			}
 			clr_state_flag = sov_nuclear_bombs_dispersed_transfer_risk_pending

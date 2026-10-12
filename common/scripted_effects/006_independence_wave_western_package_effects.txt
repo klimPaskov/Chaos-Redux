@@ -1178,8 +1178,8 @@ independence_wave_ice_apply_host_ai = {
 	if = {
 		limit = {
 			is_independence_wave_ice_package = yes
-			has_country_flag = independence_wave_ice_ai_profile
-			NOT = { has_country_flag = independence_wave_ice_host_ai_applied }
+			hidden_trigger = { has_country_flag = independence_wave_ice_ai_profile }
+			NOT = { hidden_trigger = { has_country_flag = independence_wave_ice_host_ai_applied } }
 			has_event_target = independence_wave_setup_former_host
 		}
 		add_ai_strategy = { type = befriend id = event_target:independence_wave_setup_former_host value = @CR_SC_INDEPENDENCE_WAVE_ICE_AI_TRADE }
@@ -1205,15 +1205,15 @@ independence_wave_ice_apply_host_ai = {
 # contains a Denmark-specific entry that could survive the cleanup.
 independence_wave_ice_clear_host_ai = {
 	if = {
-		limit = { has_country_flag = independence_wave_ice_host_ai_trade_applied has_event_target = independence_wave_setup_former_host }
+		limit = { hidden_trigger = { has_country_flag = independence_wave_ice_host_ai_trade_applied } has_event_target = independence_wave_setup_former_host }
 		add_ai_strategy = { type = befriend id = event_target:independence_wave_setup_former_host value = @CR_SC_INDEPENDENCE_WAVE_ICE_AI_TRADE_CLEANUP }
 		if = {
-			limit = { has_country_flag = independence_wave_ice_host_ai_charter_applied }
+			limit = { hidden_trigger = { has_country_flag = independence_wave_ice_host_ai_charter_applied } }
 			add_ai_strategy = { type = befriend id = event_target:independence_wave_setup_former_host value = @CR_SC_INDEPENDENCE_WAVE_ICE_AI_DIPLOMACY_CLEANUP }
 			add_ai_strategy = { type = prepare_for_war id = event_target:independence_wave_setup_former_host value = @CR_SC_INDEPENDENCE_WAVE_ICE_AI_WAR_PREPARATION_CLEANUP }
 		}
 		if = {
-			limit = { has_country_flag = independence_wave_ice_compact_ai_applied }
+			limit = { hidden_trigger = { has_country_flag = independence_wave_ice_compact_ai_applied } }
 			add_ai_strategy = { type = befriend id = event_target:independence_wave_setup_former_host value = @CR_SC_INDEPENDENCE_WAVE_ICE_AI_COMPACT_DIPLOMACY_CLEANUP }
 			add_ai_strategy = { type = befriend id = event_target:independence_wave_setup_former_host value = @CR_SC_INDEPENDENCE_WAVE_ICE_AI_COMPACT_RELATIONS_CLEANUP }
 		}

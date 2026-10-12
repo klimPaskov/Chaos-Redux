@@ -105,7 +105,7 @@ camp_admin_initialize_site = {
 # State-owned sparse custody rows. IDs stay stable; a zero-live row retains history.
 camp_admin_initialize_rows = {
 	if = {
-		limit = { NOT = { has_state_flag = camp_admin_rows_initialized } }
+		limit = { NOT = { hidden_trigger = { has_state_flag = camp_admin_rows_initialized } } }
 		set_state_flag = camp_admin_rows_initialized
 		clear_array = camp_admin_row_ids
 		clear_array = camp_admin_row_origins
@@ -151,7 +151,7 @@ camp_admin_check_rows = {
 	add_to_temp_variable = { camp_admin_expected_next_row_id = constant:camp_admin_value.one }
 	if = {
 		limit = {
-			has_state_flag = camp_admin_rows_initialized
+			hidden_trigger = { has_state_flag = camp_admin_rows_initialized }
 			check_variable = { camp_admin_next_row_id = camp_admin_expected_next_row_id }
 			check_variable = { camp_admin_row_count = camp_admin_row_ids^num }
 			check_variable = { camp_admin_row_origins^num = camp_admin_row_count }
@@ -201,15 +201,15 @@ camp_admin_consume_rows = {
 	if = {
 		limit = {
 			OR = {
-				has_state_flag = camp_origin_ambiguous
+				hidden_trigger = { has_state_flag = camp_origin_ambiguous }
 				AND = {
-					has_state_flag = camp_origin_single_origin_reconciliation_pending
+					hidden_trigger = { has_state_flag = camp_origin_single_origin_reconciliation_pending }
 					NOT = { check_variable = { camp_admin_row_consume_kind = @CAMP_ADMIN_ROW_OUTSIDE } }
 				}
 				AND = {
 					check_variable = { camp_admin_row_consume_kind = @CAMP_ADMIN_ROW_OUTSIDE }
 					OR = {
-						NOT = { has_state_flag = camp_origin_single_origin_reconciliation_pending }
+						NOT = { hidden_trigger = { has_state_flag = camp_origin_single_origin_reconciliation_pending } }
 						NOT = { check_variable = { camp_origin_pending_single_family = constant:camp_origin_family.custody } }
 						NOT = { check_variable = { camp_admin_selected_row_id = camp_origin_pending_single_row_id } }
 					}
@@ -269,8 +269,8 @@ camp_admin_consume_outside_rows = {
 	set_temp_variable = { camp_origin_single_reconciliation_accepted = constant:camp_admin_value.zero }
 	if = {
 		limit = {
-			has_state_flag = camp_origin_single_origin_reconciliation_pending
-			NOT = { has_state_flag = camp_origin_ambiguous }
+			hidden_trigger = { has_state_flag = camp_origin_single_origin_reconciliation_pending }
+			NOT = { hidden_trigger = { has_state_flag = camp_origin_ambiguous } }
 			check_variable = { camp_origin_pending_single_family = constant:camp_origin_family.custody }
 			camp_origin_host_rows_valid = yes
 		}
@@ -744,7 +744,7 @@ camp_admin_refresh_state_economy = {
 	if = {
 		limit = {
 			camp_admin_has_supported_workforce = yes
-			NOT = { has_state_flag = camp_admin_site_suspended }
+			NOT = { hidden_trigger = { has_state_flag = camp_admin_site_suspended } }
 			OR = {
 				check_variable = { camp_admin_role = constant:camp_admin_role.labor }
 				check_variable = { camp_admin_role = constant:camp_admin_role.penal }
@@ -759,7 +759,7 @@ camp_admin_refresh_state_economy = {
 	}
 	else_if = {
 		limit = {
-			has_state_flag = camp_admin_civilian_converted
+			hidden_trigger = { has_state_flag = camp_admin_civilian_converted }
 			camp_admin_site_authority_is_valid = yes
 		}
 		set_variable = { camp_admin_workforce_k = camp_admin_civilian_workforce_k }
@@ -799,7 +799,7 @@ camp_admin_refresh_state_economy = {
 			if = {
 				limit = {
 					var:camp_admin_responsible_country = {
-						has_country_flag = camp_admin_economy_slot_active
+						hidden_trigger = { has_country_flag = camp_admin_economy_slot_active }
 						check_variable = { camp_admin_economy_state_id = PREV.id }
 						check_variable = { camp_admin_economy_project_type = constant:camp_admin_priority.works }
 					}
@@ -1012,7 +1012,7 @@ camp_admin_close_site = {
 		}
 		else_if = {
 			limit = {
-				OR = { has_state_flag = camp_origin_ambiguous has_state_flag = camp_origin_single_origin_reconciliation_pending has_state_flag = camp_origin_records_unresolved camp_origin_host_records_incomplete = yes }
+				OR = { hidden_trigger = { has_state_flag = camp_origin_ambiguous } hidden_trigger = { has_state_flag = camp_origin_single_origin_reconciliation_pending } hidden_trigger = { has_state_flag = camp_origin_records_unresolved } camp_origin_host_records_incomplete = yes }
 				OR = {
 					check_variable = { camp_origin_terminal_close_contract = constant:camp_admin_value.one }
 					NOT = { camp_admin_site_authority_is_valid = yes }
@@ -1050,8 +1050,8 @@ camp_admin_reopen_site = {
 	if = {
 		limit = {
 			has_state_flag = camp_admin_closed
-			NOT = { has_state_flag = camp_admin_civilian_converted }
-			NOT = { has_state_flag = camp_admin_civilian_conversion_pending }
+			NOT = { hidden_trigger = { has_state_flag = camp_admin_civilian_converted } }
+			NOT = { hidden_trigger = { has_state_flag = camp_admin_civilian_conversion_pending } }
 			has_variable = genocide_responsible_country
 			check_variable = { genocide_responsible_country = camp_admin_responsible_country }
 			camp_admin_site_authority_is_valid = yes
@@ -1099,7 +1099,7 @@ camp_admin_reform_site = {
 			set_temp_variable = { camp_origin_terminal_close_contract = constant:camp_admin_value.one }
 			camp_admin_close_site = yes
 			if = {
-				limit = { has_state_flag = camp_admin_closed NOT = { has_state_flag = camp_admin_closed_records_incomplete } }
+				limit = { has_state_flag = camp_admin_closed NOT = { hidden_trigger = { has_state_flag = camp_admin_closed_records_incomplete } } }
 				set_state_flag = camp_admin_closed_records_incomplete
 				set_temp_variable = { camp_admin_history_kind_input = constant:camp_admin_history_kind.records_incomplete_closure }
 				camp_admin_integration_record_site_history = yes

@@ -220,7 +220,7 @@ germany_mengele_refresh_world_threat = {
 
 germany_mengele_show_angel_coup_super_event = {
 	if = {
-		limit = { NOT = { has_global_flag = camp_rework_super_event_angel_directorate_fired } }
+		limit = { NOT = { hidden_trigger = { has_global_flag = camp_rework_super_event_angel_directorate_fired } } }
 		set_global_flag = camp_rework_super_event_angel_directorate_fired
 		set_global_flag = {
 			flag = super_event_visible
@@ -359,7 +359,7 @@ germany_mengele_add_requested_biowarfare_facility = {
 		set_country_flag = germany_mengele_facility_built_from_demand
 	}
 	if = {
-		limit = { has_country_flag = germany_mengele_facility_built_from_demand }
+		limit = { hidden_trigger = { has_country_flag = germany_mengele_facility_built_from_demand } }
 		set_temp_variable = { mengele_autonomy_delta = constant:germany_mengele_permission.facility_demand_autonomy }
 		germany_mengele_add_autonomy = yes
 		set_temp_variable = { mengele_condemnation_add = constant:germany_mengele_permission.facility_demand_condemnation }
@@ -1639,11 +1639,11 @@ germany_mengele_roll_facility_project_unlock = {
 	set_temp_variable = { mengele_project_roll_zombie = constant:germany_mengele_random_weight.facility_project_zombie }
 	set_temp_variable = { mengele_project_roll_cloning = constant:germany_mengele_random_weight.facility_project_cloning }
 	if = {
-		limit = { has_country_flag = directorate_special_project_weaponized_zombies_available }
+		limit = { hidden_trigger = { has_country_flag = directorate_special_project_weaponized_zombies_available } }
 		set_temp_variable = { mengele_project_roll_zombie = 0 }
 	}
 	if = {
-		limit = { has_country_flag = directorate_special_project_cloning_available }
+		limit = { hidden_trigger = { has_country_flag = directorate_special_project_cloning_available } }
 		set_temp_variable = { mengele_project_roll_cloning = 0 }
 	}
 	random_list = {
@@ -1757,7 +1757,7 @@ germany_mengele_expire_program = {
 
 germany_mengele_spawn_laboratory_units = {
 	if = {
-		limit = { has_country_flag = germany_master_race_claim_established }
+		limit = { hidden_trigger = { has_country_flag = germany_master_race_claim_established } }
 		clone_select_mengele_aryan_refinement = yes
 		division_template = {
 			name = "Aryan Experimental Twin Formation"
@@ -1811,7 +1811,7 @@ germany_mengele_spawn_laboratory_units = {
 		add_to_temp_variable = { mengele_unit_count = mengele_permission_unit_add }
 	}
 	if = {
-		limit = { has_country_flag = germany_master_race_claim_established }
+		limit = { hidden_trigger = { has_country_flag = germany_master_race_claim_established } }
 		add_to_temp_variable = { mengele_unit_count = constant:germany_mengele_units.perfect_aryan_bonus_units }
 	}
 	clamp_temp_variable = {
@@ -1826,7 +1826,7 @@ germany_mengele_spawn_laboratory_units = {
 	add_equipment_to_stockpile = { type = clone_equipment_1 amount = mengele_laboratory_clone_equipment producer = ROOT }
 	set_temp_variable = { mengele_unit_experience = constant:germany_mengele_civil_war.unit_experience }
 	if = {
-		limit = { has_country_flag = germany_master_race_claim_established }
+		limit = { hidden_trigger = { has_country_flag = germany_master_race_claim_established } }
 		meta_effect = {
 			text = {
 				capital_scope = {
@@ -1906,20 +1906,20 @@ germany_mengele_setup_faction = {
 
 germany_mengele_apply_master_claim_formations = {
 	if = {
-		limit = { has_country_flag = germany_master_race_claim_established }
+		limit = { hidden_trigger = { has_country_flag = germany_master_race_claim_established } }
 		clone_select_mengele_aryan_refinement = yes
 	}
 	if = {
 		limit = {
-			has_country_flag = germany_master_race_claim_established
+			hidden_trigger = { has_country_flag = germany_master_race_claim_established }
 			NOT = { has_idea = germany_mengele_perfect_aryan_formations }
 		}
 		add_ideas = germany_mengele_perfect_aryan_formations
 	}
 	if = {
 		limit = {
-			has_country_flag = germany_master_race_claim_established
-			NOT = { has_country_flag = germany_mengele_perfect_aryans_overthrew_mengele }
+			hidden_trigger = { has_country_flag = germany_master_race_claim_established }
+			NOT = { hidden_trigger = { has_country_flag = germany_mengele_perfect_aryans_overthrew_mengele } }
 		}
 		set_temp_variable = { mengele_perfect_formations_remain = constant:germany_mengele_random_weight.perfect_formations_remain }
 		set_temp_variable = { mengele_perfect_formations_overthrow = constant:germany_mengele_random_weight.perfect_formations_overthrow }
@@ -1995,8 +1995,8 @@ germany_mengele_start_coup_internal = {
 				limit = {
 					event_target:germany_mengele_loyalist = {
 						OR = {
-							has_country_flag = germany_mengele_cloning_project_available
-							has_country_flag = directorate_special_project_cloning_available
+							hidden_trigger = { has_country_flag = germany_mengele_cloning_project_available }
+							hidden_trigger = { has_country_flag = directorate_special_project_cloning_available }
 						}
 					}
 				}
@@ -2005,7 +2005,7 @@ germany_mengele_start_coup_internal = {
 			if = {
 				limit = {
 					event_target:germany_mengele_loyalist = {
-						has_country_flag = germany_mengele_cloning_project_completed
+						hidden_trigger = { has_country_flag = germany_mengele_cloning_project_completed }
 					}
 				}
 				set_country_flag = germany_mengele_cloning_project_completed
@@ -2018,7 +2018,7 @@ germany_mengele_start_coup_internal = {
 				limit = {
 					event_target:germany_mengele_loyalist = {
 						OR = {
-							has_country_flag = germany_master_race_claim_established
+							hidden_trigger = { has_country_flag = germany_master_race_claim_established }
 							has_country_flag = germany_tibet_expedition_active
 						}
 					}

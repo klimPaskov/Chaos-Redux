@@ -126,7 +126,7 @@ brilliant_scientist_krg_portal_batch_identity_is_valid = {
 	check_variable = { krg_portal_batch_transaction_id > constant:portal_transit_batch.zero }
 	check_variable = { var = krg_portal_batch_receipt_serial value = krg_portal_batch_serial compare = equals }
 	check_variable = { krg_portal_batch_receipt_serial > constant:portal_transit_batch.zero }
-	NOT = { has_country_flag = krg_portal_batch_closed }
+	NOT = { hidden_trigger = { has_country_flag = krg_portal_batch_closed } }
 }
 brilliant_scientist_krg_portal_batch_shape_is_valid = {
 	check_variable = { var = krg_portal_batch_nominal^num value = constant:portal_transit_batch.component_count compare = equals }
@@ -255,12 +255,12 @@ brilliant_scientist_krg_portal_batch_can_recover_output = {
 	}
 }
 brilliant_scientist_krg_portal_batch_can_recover_refund = {
-	has_country_flag = krg_portal_batch_refund_pending
+	hidden_trigger = { has_country_flag = krg_portal_batch_refund_pending }
 	brilliant_scientist_krg_portal_batch_identity_is_valid = yes
 	brilliant_scientist_krg_portal_batch_shape_is_valid = yes
-	NOT = { has_country_flag = krg_portal_batch_active }
-	NOT = { has_country_flag = krg_portal_batch_funded }
-	NOT = { has_country_flag = krg_portal_batch_delivery_committed }
+	NOT = { hidden_trigger = { has_country_flag = krg_portal_batch_active } }
+	NOT = { hidden_trigger = { has_country_flag = krg_portal_batch_funded } }
+	NOT = { hidden_trigger = { has_country_flag = krg_portal_batch_delivery_committed } }
 	check_variable = { var = krg_portal_batch_output_delivered value = constant:portal_transit_batch.zero compare = equals }
 }
 # Pending predicates deliberately expose malformed retained work as a blocked row.

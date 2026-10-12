@@ -16,11 +16,11 @@ missiles_notify_evolution_change = {
 	if = { limit = { has_global_flag = world_end } missiles_cancel_all_evolution_clocks = yes }
 	else_if = {
 		limit = {
-			has_global_flag = missiles_program_ever_initialized
-			NOT = { has_global_flag = missiles_evolution_observing }
+			hidden_trigger = { has_global_flag = missiles_program_ever_initialized }
+			NOT = { hidden_trigger = { has_global_flag = missiles_evolution_observing } }
 			NOT = { has_global_flag = world_end }
 			OR = {
-				NOT = { has_global_flag = missiles_evolution_first_pulse_done }
+				NOT = { hidden_trigger = { has_global_flag = missiles_evolution_first_pulse_done } }
 				missiles_evolution_track_awaits_unlock = yes
 			}
 		}
@@ -29,7 +29,7 @@ missiles_notify_evolution_change = {
 			limit = {
 				has_variable = global.missiles_evolution_host
 				OR = {
-					NOT = { has_global_flag = missiles_evolution_observation_queued }
+					NOT = { hidden_trigger = { has_global_flag = missiles_evolution_observation_queued } }
 					NOT = { check_variable = { var = global.missiles_evolution_observation_host_id value = global.missiles_evolution_host_id compare = equals } }
 				}
 			}
@@ -174,7 +174,7 @@ missiles_notify_program_numbers_changed = {
 			NOT = { has_country_flag = missiles_system_carrier }
 			NOT = { has_country_flag = missiles_temporary_actor }
 			OR = {
-				NOT = { has_country_flag = missiles_evolution_numbers_known }
+				NOT = { hidden_trigger = { has_country_flag = missiles_evolution_numbers_known } }
 				NOT = { check_variable = { var = missiles_program_stage value = missiles_evolution_noted_program_stage compare = equals } }
 				NOT = { check_variable = { var = missiles_operational_reserve value = missiles_evolution_noted_operational_reserve compare = equals } }
 				NOT = { check_variable = { var = missiles_launch_readiness value = missiles_evolution_noted_launch_readiness compare = equals } }
@@ -203,7 +203,7 @@ missiles_notify_program_numbers_changed = {
 # do not cause registry observations.
 missiles_note_chaos_threshold_change = {
 	if = {
-		limit = { has_global_flag = missiles_program_ever_initialized }
+		limit = { hidden_trigger = { has_global_flag = missiles_program_ever_initialized } }
 		set_temp_variable = { missiles_evolution_new_chaos_band = constant:missiles_program_value.zero }
 		if = { limit = { check_variable = { var = global.chaos_meter_value value = constant:missiles_evolution_pressure.minimum_chaos_rogue compare = greater_than_or_equals } } add_to_temp_variable = { missiles_evolution_new_chaos_band = constant:missiles_program_value.one } }
 		if = { limit = { check_variable = { var = global.chaos_meter_value value = constant:missiles_evolution_pressure.minimum_chaos_guidance compare = greater_than_or_equals } } add_to_temp_variable = { missiles_evolution_new_chaos_band = constant:missiles_program_value.one } }

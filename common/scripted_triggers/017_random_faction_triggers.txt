@@ -26,7 +26,7 @@ is_random_faction_eligible_country = {
 	NOT = { is_in_faction = yes }
 	NOT = { has_war = yes }
 	NOT = { has_country_flag = random_faction_recent_alignment }
-	NOT = { has_country_flag = random_faction_selection_cooldown }
+	NOT = { hidden_trigger = { has_country_flag = random_faction_selection_cooldown } }
 	NOT = { has_country_flag = random_faction_selection_pending }
 	any_country = {
 		random_faction_is_valid_faction_leader_for_prev_target = yes
@@ -39,7 +39,7 @@ is_random_faction_wartime_candidate = {
 	NOT = { is_subject = yes }
 	NOT = { is_in_faction = yes }
 	NOT = { has_country_flag = random_faction_recent_alignment }
-	NOT = { has_country_flag = random_faction_selection_cooldown }
+	NOT = { hidden_trigger = { has_country_flag = random_faction_selection_cooldown } }
 	NOT = { has_country_flag = random_faction_selection_pending }
 	OR = {
 		has_war = yes
@@ -59,7 +59,7 @@ random_faction_has_valid_target_available = {
 		OR = {
 			is_random_faction_eligible_country = yes
 			AND = {
-				has_global_flag = random_faction_evolution_ii_unlocked
+				hidden_trigger = { has_global_flag = random_faction_evolution_ii_unlocked }
 				is_random_faction_wartime_candidate = yes
 			}
 		}
@@ -99,7 +99,7 @@ is_random_faction_allowed_faction_leader = {
 }
 
 random_faction_target_requires_wartime_reach = {
-	has_global_flag = random_faction_evolution_ii_unlocked
+	hidden_trigger = { has_global_flag = random_faction_evolution_ii_unlocked }
 	OR = {
 		has_war = yes
 		any_neighbor_country = {
@@ -215,7 +215,7 @@ random_faction_is_valid_faction_leader_for_prev_target = {
 		NOT = { is_in_faction = yes }
 	}
 	OR = {
-		NOT = { has_global_flag = random_faction_evolution_ii_unlocked }
+		NOT = { hidden_trigger = { has_global_flag = random_faction_evolution_ii_unlocked } }
 		AND = {
 			NOT = { has_war = yes }
 			PREV = { NOT = { random_faction_target_requires_wartime_reach = yes } }
@@ -518,8 +518,8 @@ random_faction_current_region_has_neutral_survivor = {
 
 random_faction_has_active_pressure = {
 	OR = {
-		has_country_flag = random_faction_under_pressure
-		has_country_flag = random_faction_border_posts_active
+		hidden_trigger = { has_country_flag = random_faction_under_pressure }
+		hidden_trigger = { has_country_flag = random_faction_border_posts_active }
 		has_idea = random_faction_border_pressure
 		has_idea = random_faction_bloc_polarization
 		has_idea = random_faction_neutrality_exhaustion

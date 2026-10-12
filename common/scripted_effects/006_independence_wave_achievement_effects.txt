@@ -104,7 +104,7 @@ independence_wave_achievement_refresh_country_state = {
 		independence_wave_iw058_record_client_capture = yes
 		if = {
 			limit = {
-				has_country_flag = independence_wave_anchor_opening
+				hidden_trigger = { has_country_flag = independence_wave_anchor_opening }
 				is_major = yes
 				NOT = { has_country_flag = independence_wave_formable_active }
 			}
@@ -113,11 +113,11 @@ independence_wave_achievement_refresh_country_state = {
 		if = {
 			limit = {
 				has_independence_wave_living_former_host = yes
-				has_country_flag = independence_wave_host_recognized_separation
-				has_country_flag = independence_wave_dm25_property_settled
-				has_country_flag = independence_wave_dm26_citizenship_settled
-				NOT = { has_country_flag = independence_wave_achievement_host_war_ever }
-				NOT = { has_country_flag = independence_wave_achievement_forced_host_settlement }
+				hidden_trigger = { has_country_flag = independence_wave_host_recognized_separation }
+				hidden_trigger = { has_country_flag = independence_wave_dm25_property_settled }
+				hidden_trigger = { has_country_flag = independence_wave_dm26_citizenship_settled }
+				NOT = { hidden_trigger = { has_country_flag = independence_wave_achievement_host_war_ever } }
+				NOT = { hidden_trigger = { has_country_flag = independence_wave_achievement_forced_host_settlement } }
 				var:independence_wave_former_host = { NOT = { has_war_with = PREV } }
 			}
 			if = {
@@ -125,7 +125,7 @@ independence_wave_achievement_refresh_country_state = {
 				set_variable = { independence_wave_achievement_peace_settlement_date = global.date }
 			}
 			if = {
-				limit = { NOT = { has_country_flag = independence_wave_achievement_host_settlement_counted } }
+				limit = { NOT = { hidden_trigger = { has_country_flag = independence_wave_achievement_host_settlement_counted } } }
 				set_country_flag = independence_wave_achievement_host_settlement_counted
 				var:independence_wave_former_host = {
 					if = {
@@ -177,18 +177,18 @@ independence_wave_achievement_refresh_cross_regional_clock = {
 			check_variable = { var = global.independence_wave_league_region_count value = constant:independence_wave_achievement.cross_regional_regions compare = greater_than_or_equals }
 			check_variable = { var = global.independence_wave_league_cohesion value = constant:independence_wave_achievement.cross_regional_cohesion compare = greater_than_or_equals }
 			NOT = { check_variable = { global.independence_wave_league_route = constant:independence_wave_league_route.radical_revisionist } }
-			NOT = { has_global_flag = independence_wave_achievement_scenario_preformed_league }
+			NOT = { hidden_trigger = { has_global_flag = independence_wave_achievement_scenario_preformed_league } }
 		}
 		for_each_scope_loop = {
 			array = global.independence_wave_league_member_country_entries
 			if = {
 				limit = {
 					is_independence_wave_active_country = yes
-					NOT = { has_country_flag = independence_wave_scenario_common_congress }
-					NOT = { has_country_flag = independence_wave_radical_charter_member }
+					NOT = { hidden_trigger = { has_country_flag = independence_wave_scenario_common_congress } }
+					NOT = { hidden_trigger = { has_country_flag = independence_wave_radical_charter_member } }
 				}
 				if = {
-					limit = { NOT = { has_country_flag = independence_wave_achievement_cross_regional_clock_active } }
+					limit = { NOT = { hidden_trigger = { has_country_flag = independence_wave_achievement_cross_regional_clock_active } } }
 					set_country_flag = independence_wave_achievement_cross_regional_clock_active
 					set_variable = { independence_wave_achievement_cross_regional_start_date = global.date }
 				}
@@ -320,13 +320,13 @@ independence_wave_achievement_record_rescue = {
 # only when the first qualifying external containment war begins.
 independence_wave_achievement_begin_radical_containment = {
 	if = {
-		limit = { NOT = { has_country_flag = independence_wave_achievement_radical_bloc_qualified } }
+		limit = { NOT = { hidden_trigger = { has_country_flag = independence_wave_achievement_radical_bloc_qualified } } }
 		set_country_flag = independence_wave_achievement_radical_bloc_qualified
 		clr_country_flag = independence_wave_achievement_containment_engaged
 		clear_variable = independence_wave_achievement_containment_start_date
 	}
 	if = {
-		limit = { has_global_flag = independence_wave_scenario_application_open }
+		limit = { hidden_trigger = { has_global_flag = independence_wave_scenario_application_open } }
 		set_country_flag = independence_wave_achievement_scenario_forced_danger
 	}
 }

@@ -11,14 +11,14 @@ event021_inherit_achievement_disqualification = {
 		limit = {
 			OR = {
 				is_debug = yes
-				has_country_flag = force_trigger_mode_enabled
-				ROOT = { has_country_flag = force_trigger_mode_enabled }
-				has_country_flag = random_civil_war_scenario_bypass_active
-				has_global_flag = random_civil_war_manual_scenario_launch_in_progress
+				hidden_trigger = { has_country_flag = force_trigger_mode_enabled }
+				ROOT = { hidden_trigger = { has_country_flag = force_trigger_mode_enabled } }
+				hidden_trigger = { has_country_flag = random_civil_war_scenario_bypass_active }
+				hidden_trigger = { has_global_flag = random_civil_war_manual_scenario_launch_in_progress }
 				AND = {
 					has_event_target = random_civil_war_global_host_country
 					event_target:random_civil_war_global_host_country = {
-						has_country_flag = random_civil_war_achievement_disqualified
+						hidden_trigger = { has_country_flag = random_civil_war_achievement_disqualified }
 					}
 				}
 			}
@@ -160,9 +160,9 @@ event021_begin_achievement_history = {
 event021_record_capital_continuity = {
 	if = {
 		limit = {
-			has_country_flag = random_civil_war_active
-			has_country_flag = random_civil_war_achievement_history_started
-			NOT = { has_country_flag = random_civil_war_internal_fronts_resolved }
+			hidden_trigger = { has_country_flag = random_civil_war_active }
+			hidden_trigger = { has_country_flag = random_civil_war_achievement_history_started }
+			NOT = { hidden_trigger = { has_country_flag = random_civil_war_internal_fronts_resolved } }
 		}
 		save_event_target_as = random_civil_war_history_country
 		if = {

@@ -14,10 +14,10 @@ is_independence_wave_candidate_anchor_available = {
 		# During automatic allocation the first weight pass has already reserved
 		# each ready anchor's host. An unprotectable host leaves this pool.
 		OR = {
-			NOT = { has_global_flag = independence_wave_hosts_preselected }
+			NOT = { hidden_trigger = { has_global_flag = independence_wave_hosts_preselected } }
 			AND = {
 				is_in_array = { array = global.liberation_plan_hosts value = THIS }
-				has_country_flag = liberation_release_plan_host
+				hidden_trigger = { has_country_flag = liberation_release_plan_host }
 				check_variable = { var = liberation_release_plan_id value = global.liberation_plan_id compare = equals }
 			}
 		}
@@ -83,7 +83,7 @@ is_independence_wave_candidate_origin_available = {
 	# identity trigger, while rejecting a stale reservation marker from another
 	# plan. The reservation effect still rejects duplicate array entries.
 	OR = {
-		NOT = { has_country_flag = liberation_release_reserved_country }
+		NOT = { hidden_trigger = { has_country_flag = liberation_release_reserved_country } }
 		is_liberation_release_current_reserved_country = yes
 	}
 	NOT = {

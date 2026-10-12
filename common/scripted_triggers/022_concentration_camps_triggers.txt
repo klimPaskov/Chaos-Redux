@@ -42,7 +42,7 @@ concentration_camps_state_is_eligible = {
 	check_variable = { state_population_k > constant:concentration_camps_state.minimum_population_k }
 	NOT = { has_state_flag = camp_rework_liberated_evidence }
 	NOT = { has_state_flag = camp_rework_site_dismantled }
-	NOT = { has_state_flag = concentration_camps_relief_protected }
+	NOT = { hidden_trigger = { has_state_flag = concentration_camps_relief_protected } }
 }
 
 # STATE, PREV is the country. The campaign marker that supplies people for a
@@ -126,7 +126,7 @@ concentration_camps_state_has_labor_base = {
 
 # COUNTRY. The country runs, or inherited, an Event 22 network.
 concentration_camps_network_is_live = {
-	has_country_flag = concentration_camps_network_active
+	hidden_trigger = { has_country_flag = concentration_camps_network_active }
 	camp_rework_country_is_eligible = yes
 }
 
@@ -180,12 +180,12 @@ concentration_camps_has_hungry_site = {
 # COUNTRY. Something an incident can answer, and the incident cooldown is over.
 concentration_camps_has_incident_ready = {
 	concentration_camps_network_is_live = yes
-	NOT = { has_country_flag = concentration_camps_incident_cooldown }
+	NOT = { hidden_trigger = { has_country_flag = concentration_camps_incident_cooldown } }
 	OR = {
 		concentration_camps_resistance_is_escaping = yes
 		AND = {
 			concentration_camps_exposure_is_leaking = yes
-			NOT = { has_country_flag = concentration_camps_leak_cooldown }
+			NOT = { hidden_trigger = { has_country_flag = concentration_camps_leak_cooldown } }
 		}
 		concentration_camps_has_hungry_site = yes
 	}
@@ -201,7 +201,7 @@ concentration_camps_target_basics = {
 	exists = yes
 	camp_rework_country_uses_generic_kit = yes
 	has_capitulated = no
-	NOT = { has_country_flag = concentration_camps_protected }
+	NOT = { hidden_trigger = { has_country_flag = concentration_camps_protected } }
 	NOT = { has_country_flag = camp_admin_reforming }
 }
 
@@ -210,8 +210,8 @@ concentration_camps_is_valid_target = {
 	concentration_camps_target_basics = yes
 	OR = {
 		AND = {
-			NOT = { has_country_flag = concentration_camps_network_active }
-			NOT = { has_country_flag = concentration_camps_recent_firing }
+			NOT = { hidden_trigger = { has_country_flag = concentration_camps_network_active } }
+			NOT = { hidden_trigger = { has_country_flag = concentration_camps_recent_firing } }
 			any_controlled_state = { concentration_camps_state_is_candidate = yes }
 		}
 		concentration_camps_has_incident_ready = yes

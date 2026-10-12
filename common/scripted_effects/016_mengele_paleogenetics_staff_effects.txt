@@ -95,7 +95,7 @@ brilliant_scientist_mengele_paleogenetics_staff_cleanup_native = {
 	if = {
 		limit = { brilliant_scientist_mengele_paleogenetics_staff_identity_is_visible = yes }
 		if = {
-			limit = { NOT = { has_country_flag = mengele_event016_paleogenetics_staff_fee_consumed } }
+			limit = { NOT = { hidden_trigger = { has_country_flag = mengele_event016_paleogenetics_staff_fee_consumed } } }
 			set_temp_variable = { black_friday_purchase_transaction_id = mengele_event016_paleogenetics_staff_transaction }
 			black_friday_retract_achievement_transaction = yes
 		}
@@ -304,7 +304,7 @@ brilliant_scientist_mengele_paleogenetics_staff_recover_training = {
 # A release retires qualification/timer before any native credit; original actor only.
 brilliant_scientist_mengele_paleogenetics_staff_request_release = {
 	if = {
-		limit = { brilliant_scientist_mengele_paleogenetics_staff_receipt_is_current = yes NOT = { has_country_flag = mengele_event016_paleogenetics_staff_busy } }
+		limit = { brilliant_scientist_mengele_paleogenetics_staff_receipt_is_current = yes NOT = { hidden_trigger = { has_country_flag = mengele_event016_paleogenetics_staff_busy } } }
 		clr_country_flag = mengele_event016_paleogenetics_staff_trained
 		set_variable = { mengele_event016_paleogenetics_staff_handlers = constant:mengele_paleogenetics_staff.zero }
 		set_variable = { mengele_event016_paleogenetics_staff_veterinary_staff = constant:mengele_paleogenetics_staff.zero }
@@ -351,8 +351,8 @@ brilliant_scientist_mengele_paleogenetics_staff_acknowledge_crew_credit = {
 	if = {
 		limit = {
 			brilliant_scientist_mengele_paleogenetics_staff_receipt_is_current = yes
-			has_country_flag = mengele_event016_paleogenetics_staff_release_pending
-			has_country_flag = mengele_event016_paleogenetics_staff_crew_credit_inflight
+			hidden_trigger = { has_country_flag = mengele_event016_paleogenetics_staff_release_pending }
+			hidden_trigger = { has_country_flag = mengele_event016_paleogenetics_staff_crew_credit_inflight }
 			check_variable = { var = paleo_staff_ack_verified_saved value = constant:mengele_paleogenetics_staff.one compare = equals }
 			check_variable = { var = paleo_staff_ack_actor_saved value = mengele_event016_paleogenetics_staff_actor compare = equals }
 			check_variable = { var = paleo_staff_ack_serial_saved value = mengele_event016_paleogenetics_staff_receipt_serial compare = equals }
@@ -375,7 +375,7 @@ brilliant_scientist_mengele_paleogenetics_staff_credit_crew_remainder = {
 	set_temp_variable = { universal_cost_credit_result = constant:universal_cost_framework.result_no_op }
 	set_temp_variable = { paleo_staff_ack_result = constant:universal_cost_framework.result_no_op }
 	if = {
-		limit = { brilliant_scientist_mengele_paleogenetics_staff_receipt_is_current = yes has_country_flag = mengele_event016_paleogenetics_staff_busy has_country_flag = mengele_event016_paleogenetics_staff_release_pending NOT = { has_country_flag = mengele_event016_paleogenetics_staff_crew_credit_inflight } check_variable = { mengele_event016_paleogenetics_staff_crew_held > constant:mengele_paleogenetics_staff.zero } }
+		limit = { brilliant_scientist_mengele_paleogenetics_staff_receipt_is_current = yes hidden_trigger = { has_country_flag = mengele_event016_paleogenetics_staff_busy } hidden_trigger = { has_country_flag = mengele_event016_paleogenetics_staff_release_pending } NOT = { hidden_trigger = { has_country_flag = mengele_event016_paleogenetics_staff_crew_credit_inflight } } check_variable = { mengele_event016_paleogenetics_staff_crew_held > constant:mengele_paleogenetics_staff.zero } }
 		set_temp_variable = { paleo_staff_credit_before = manpower_k }
 		set_variable = { mengele_event016_paleogenetics_staff_crew_credit_before = paleo_staff_credit_before }
 		set_variable = { mengele_event016_paleogenetics_staff_crew_credit_requested = mengele_event016_paleogenetics_staff_crew_held }
@@ -419,8 +419,8 @@ brilliant_scientist_mengele_paleogenetics_staff_acknowledge_support_credit = {
 	if = {
 		limit = {
 			brilliant_scientist_mengele_paleogenetics_staff_receipt_is_current = yes
-			has_country_flag = mengele_event016_paleogenetics_staff_release_pending
-			has_country_flag = mengele_event016_paleogenetics_staff_support_credit_inflight
+			hidden_trigger = { has_country_flag = mengele_event016_paleogenetics_staff_release_pending }
+			hidden_trigger = { has_country_flag = mengele_event016_paleogenetics_staff_support_credit_inflight }
 			check_variable = { var = paleo_staff_ack_verified_saved value = constant:mengele_paleogenetics_staff.one compare = equals }
 			check_variable = { var = paleo_staff_ack_actor_saved value = mengele_event016_paleogenetics_staff_actor compare = equals }
 			check_variable = { var = paleo_staff_ack_serial_saved value = mengele_event016_paleogenetics_staff_receipt_serial compare = equals }
@@ -443,10 +443,10 @@ brilliant_scientist_mengele_paleogenetics_staff_credit_support_remainder = {
 	set_temp_variable = { universal_cost_credit_result = constant:universal_cost_framework.result_no_op }
 	set_temp_variable = { paleo_staff_ack_result = constant:universal_cost_framework.result_no_op }
 	if = {
-		limit = { brilliant_scientist_mengele_paleogenetics_staff_receipt_is_current = yes has_country_flag = mengele_event016_paleogenetics_staff_busy has_country_flag = mengele_event016_paleogenetics_staff_release_pending NOT = { has_country_flag = mengele_event016_paleogenetics_staff_support_credit_inflight } check_variable = { mengele_event016_paleogenetics_staff_support_due > constant:mengele_paleogenetics_staff.zero } }
+		limit = { brilliant_scientist_mengele_paleogenetics_staff_receipt_is_current = yes hidden_trigger = { has_country_flag = mengele_event016_paleogenetics_staff_busy } hidden_trigger = { has_country_flag = mengele_event016_paleogenetics_staff_release_pending } NOT = { hidden_trigger = { has_country_flag = mengele_event016_paleogenetics_staff_support_credit_inflight } } check_variable = { mengele_event016_paleogenetics_staff_support_due > constant:mengele_paleogenetics_staff.zero } }
 		# A recorded native fee must still be refundable; foreign/refunded rows cannot credit twice.
 		if = {
-			limit = { OR = { NOT = { has_country_flag = mengele_event016_paleogenetics_staff_support_recorded } brilliant_scientist_mengele_paleogenetics_staff_ledger_is_recorded = yes } }
+			limit = { OR = { NOT = { hidden_trigger = { has_country_flag = mengele_event016_paleogenetics_staff_support_recorded } } brilliant_scientist_mengele_paleogenetics_staff_ledger_is_recorded = yes } }
 		set_temp_variable = { paleo_staff_credit_before = num_equipment@support_equipment_1 }
 		set_variable = { mengele_event016_paleogenetics_staff_support_credit_before = paleo_staff_credit_before }
 		set_variable = { mengele_event016_paleogenetics_staff_support_credit_requested = mengele_event016_paleogenetics_staff_support_due }
@@ -538,15 +538,15 @@ brilliant_scientist_mengele_paleogenetics_staff_finalize_release = {
 	if = {
 		limit = {
 			brilliant_scientist_mengele_paleogenetics_staff_receipt_is_current = yes
-			has_country_flag = mengele_event016_paleogenetics_staff_release_pending
+			hidden_trigger = { has_country_flag = mengele_event016_paleogenetics_staff_release_pending }
 			check_variable = { var = mengele_event016_paleogenetics_staff_crew_held value = constant:mengele_paleogenetics_staff.zero compare = equals }
 			check_variable = { var = mengele_event016_paleogenetics_staff_support_due value = constant:mengele_paleogenetics_staff.zero compare = equals }
-			NOT = { has_country_flag = mengele_event016_paleogenetics_staff_debit_unverified }
-			NOT = { has_country_flag = mengele_event016_paleogenetics_staff_crew_credit_inflight }
-			NOT = { has_country_flag = mengele_event016_paleogenetics_staff_support_credit_inflight }
+			NOT = { hidden_trigger = { has_country_flag = mengele_event016_paleogenetics_staff_debit_unverified } }
+			NOT = { hidden_trigger = { has_country_flag = mengele_event016_paleogenetics_staff_crew_credit_inflight } }
+			NOT = { hidden_trigger = { has_country_flag = mengele_event016_paleogenetics_staff_support_credit_inflight } }
 		}
 		if = {
-			limit = { has_country_flag = mengele_event016_paleogenetics_staff_fee_consumed brilliant_scientist_mengele_paleogenetics_staff_support_record_is_valid = yes }
+			limit = { hidden_trigger = { has_country_flag = mengele_event016_paleogenetics_staff_fee_consumed } brilliant_scientist_mengele_paleogenetics_staff_support_record_is_valid = yes }
 			set_temp_variable = { universal_cost_transaction_id = mengele_event016_paleogenetics_staff_transaction }
 			universal_cost_settle_transaction = yes
 			if = { limit = { brilliant_scientist_mengele_paleogenetics_staff_ledger_is_settled = yes } set_temp_variable = { paleo_staff_fee_closed = constant:mengele_paleogenetics_staff.one } }
@@ -564,7 +564,7 @@ brilliant_scientist_mengele_paleogenetics_staff_finalize_release = {
 			if = { limit = { brilliant_scientist_mengele_paleogenetics_staff_ledger_is_refunded = yes } set_temp_variable = { paleo_staff_fee_closed = constant:mengele_paleogenetics_staff.one } }
 		}
 		else_if = {
-			limit = { NOT = { has_country_flag = mengele_event016_paleogenetics_staff_support_recorded } check_variable = { var = mengele_event016_paleogenetics_staff_support_refunded value = mengele_event016_paleogenetics_staff_support_actual compare = equals } }
+			limit = { NOT = { hidden_trigger = { has_country_flag = mengele_event016_paleogenetics_staff_support_recorded } } check_variable = { var = mengele_event016_paleogenetics_staff_support_refunded value = mengele_event016_paleogenetics_staff_support_actual compare = equals } }
 			set_temp_variable = { universal_cost_transaction_lookup_id = mengele_event016_paleogenetics_staff_transaction }
 			set_temp_variable = { universal_cost_transaction_found_index = constant:universal_cost_framework.invalid_index }
 			set_temp_variable = { universal_cost_transaction_is_indexed = constant:mengele_paleogenetics_staff.zero }

@@ -72,9 +72,9 @@ brilliant_scientist_try_fire_foreign_reaction = {
 				check_variable = { brilliant_scientist_foreign_last_operation_detected > constant:brilliant_scientist_value.zero }
 				NOT = { check_variable = { brilliant_scientist_foreign_live_operation = constant:brilliant_scientist_foreign_operation.counter_program } }
 			}
-			NOT = { has_country_flag = brilliant_scientist_reaction_foreign_pending }
-			NOT = { has_country_flag = brilliant_scientist_reaction_foreign_resolved }
-			KRG_warren_kruger = { NOT = { has_character_flag = brilliant_scientist_personal_reaction_foreign_resolved } }
+			NOT = { hidden_trigger = { has_country_flag = brilliant_scientist_reaction_foreign_pending } }
+			NOT = { hidden_trigger = { has_country_flag = brilliant_scientist_reaction_foreign_resolved } }
+			KRG_warren_kruger = { NOT = { hidden_trigger = { has_character_flag = brilliant_scientist_personal_reaction_foreign_resolved } } }
 		}
 		set_variable = { brilliant_scientist_reaction_foreign_operation = event_target:brilliant_scientist_foreign_operation_actor.brilliant_scientist_foreign_live_operation }
 		set_country_flag = brilliant_scientist_reaction_foreign_pending
@@ -120,7 +120,7 @@ brilliant_scientist_copy_host_reaction_history_to_recipient = {
 	if = {
 		limit = {
 			event_target:brilliant_scientist_transfer_old_host = {
-				has_country_flag = brilliant_scientist_reaction_custody_pending
+				hidden_trigger = { has_country_flag = brilliant_scientist_reaction_custody_pending }
 				has_variable = brilliant_scientist_reaction_custody_family
 			}
 		}
@@ -128,9 +128,9 @@ brilliant_scientist_copy_host_reaction_history_to_recipient = {
 	}
 	if = {
 		limit = {
-			event_target:brilliant_scientist_transfer_old_host = { has_country_flag = brilliant_scientist_reaction_facility_pending }
-			NOT = { has_country_flag = brilliant_scientist_reaction_facility_resolved }
-			KRG_warren_kruger = { NOT = { has_character_flag = brilliant_scientist_personal_reaction_facility_resolved } }
+			event_target:brilliant_scientist_transfer_old_host = { hidden_trigger = { has_country_flag = brilliant_scientist_reaction_facility_pending } }
+			NOT = { hidden_trigger = { has_country_flag = brilliant_scientist_reaction_facility_resolved } }
+			KRG_warren_kruger = { NOT = { hidden_trigger = { has_character_flag = brilliant_scientist_personal_reaction_facility_resolved } } }
 			has_event_target = brilliant_scientist_primary_facility
 			event_target:brilliant_scientist_primary_facility = { is_owned_by = ROOT has_state_flag = brilliant_scientist_primary_facility }
 		}
@@ -140,9 +140,9 @@ brilliant_scientist_copy_host_reaction_history_to_recipient = {
 	}
 	if = {
 		limit = {
-			event_target:brilliant_scientist_transfer_old_host = { has_country_flag = brilliant_scientist_reaction_custody_pending }
-			NOT = { has_country_flag = brilliant_scientist_reaction_custody_resolved }
-			KRG_warren_kruger = { NOT = { has_character_flag = brilliant_scientist_personal_reaction_custody_resolved } }
+			event_target:brilliant_scientist_transfer_old_host = { hidden_trigger = { has_country_flag = brilliant_scientist_reaction_custody_pending } }
+			NOT = { hidden_trigger = { has_country_flag = brilliant_scientist_reaction_custody_resolved } }
+			KRG_warren_kruger = { NOT = { hidden_trigger = { has_character_flag = brilliant_scientist_personal_reaction_custody_resolved } } }
 			has_variable = brilliant_scientist_reaction_custody_family
 		}
 		set_country_flag = brilliant_scientist_reaction_custody_pending

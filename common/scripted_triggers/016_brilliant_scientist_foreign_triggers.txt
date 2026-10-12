@@ -441,7 +441,7 @@ brilliant_scientist_foreign_start_is_valid = {
 # Private actor receipt. A stored country scope is paired with the original id;
 # country existence is not required for post-annex history and slot settlement.
 brilliant_scientist_foreign_owned_receipt_is_valid = {
-	has_country_flag = brilliant_scientist_foreign_operation_live
+	hidden_trigger = { has_country_flag = brilliant_scientist_foreign_operation_live }
 	has_variable = brilliant_scientist_foreign_live_operation
 	has_variable = brilliant_scientist_foreign_operation_host_id
 	has_variable = brilliant_scientist_foreign_operation_host_scope
@@ -466,7 +466,7 @@ brilliant_scientist_foreign_event_receipt_matches_active_operation = {
 	has_event_target = brilliant_scientist_foreign_operation_actor
 	has_event_target = brilliant_scientist_foreign_operation_host
 	event_target:brilliant_scientist_foreign_operation_actor = {
-		has_country_flag = brilliant_scientist_foreign_operation_live
+		hidden_trigger = { has_country_flag = brilliant_scientist_foreign_operation_live }
 		has_variable = brilliant_scientist_foreign_live_operation
 		has_variable = brilliant_scientist_foreign_operation_host_id
 		check_variable = { brilliant_scientist_foreign_live_operation = brilliant_scientist_foreign_expected_operation }
@@ -479,7 +479,7 @@ brilliant_scientist_foreign_host_response_is_pending = {
 	brilliant_scientist_foreign_event_receipt_matches_active_operation = yes
 	tag = event_target:brilliant_scientist_foreign_operation_host
 	event_target:brilliant_scientist_foreign_operation_actor = {
-		has_country_flag = brilliant_scientist_foreign_host_response_pending
+		hidden_trigger = { has_country_flag = brilliant_scientist_foreign_host_response_pending }
 		OR = {
 			AND = {
 				OR = {
@@ -487,7 +487,7 @@ brilliant_scientist_foreign_host_response_is_pending = {
 					check_variable = { brilliant_scientist_foreign_live_operation = constant:brilliant_scientist_foreign_operation.protection_offer }
 					check_variable = { brilliant_scientist_foreign_live_operation = constant:brilliant_scientist_foreign_operation.public_challenge }
 				}
-				NOT = { has_country_flag = brilliant_scientist_foreign_operation_resolution_recorded }
+				NOT = { hidden_trigger = { has_country_flag = brilliant_scientist_foreign_operation_resolution_recorded } }
 			}
 			AND = {
 				NOT = {
@@ -497,7 +497,7 @@ brilliant_scientist_foreign_host_response_is_pending = {
 						check_variable = { brilliant_scientist_foreign_live_operation = constant:brilliant_scientist_foreign_operation.public_challenge }
 					}
 				}
-				has_country_flag = brilliant_scientist_foreign_operation_resolution_recorded
+				hidden_trigger = { has_country_flag = brilliant_scientist_foreign_operation_resolution_recorded }
 			}
 		}
 	}
@@ -517,15 +517,15 @@ brilliant_scientist_foreign_diplomatic_response_context_is_valid = {
 	brilliant_scientist_foreign_response_context_is_valid = yes
 	brilliant_scientist_is_current_host = yes
 	NOT = { has_country_flag = brilliant_scientist_kruger_confirmed_dead }
-	NOT = { has_global_flag = brilliant_scientist_character_transaction_lock }
+	NOT = { hidden_trigger = { has_global_flag = brilliant_scientist_character_transaction_lock } }
 }
 
 # Actor report scope. A stale report must not consume another active operation.
 brilliant_scientist_foreign_actor_report_is_ready = {
 	brilliant_scientist_foreign_event_receipt_matches_active_operation = yes
 	tag = event_target:brilliant_scientist_foreign_operation_actor
-	has_country_flag = brilliant_scientist_foreign_operation_resolution_recorded
-	NOT = { has_country_flag = brilliant_scientist_foreign_host_response_pending }
+	hidden_trigger = { has_country_flag = brilliant_scientist_foreign_operation_resolution_recorded }
+	NOT = { hidden_trigger = { has_country_flag = brilliant_scientist_foreign_host_response_pending } }
 }
 
 # Targeted decision cancellation contract. ROOT actor, FROM original host.

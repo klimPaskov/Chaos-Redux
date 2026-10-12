@@ -113,8 +113,8 @@ sov_nuclear_bombs_action_reservation_is_valid = {
 			has_variable = sov_nuclear_bombs_action_source_state
 			var:sov_nuclear_bombs_action_source_state = { sov_nuclear_bombs_state_is_registered = yes check_variable = { var = sov_nuclear_bombs_site_reserved value = constant:sov_nuclear_bombs_ledger.one compare = greater_than_or_equals } }
 			OR = {
-				AND = { NOT = { has_country_flag = sov_nuclear_bombs_action_remote_recovery_authorized } NOT = { has_variable = sov_nuclear_bombs_action_reservation_holder } check_variable = { var = sov_nuclear_bombs_actor_reserved value = constant:sov_nuclear_bombs_ledger.one compare = greater_than_or_equals } }
-				AND = { has_country_flag = sov_nuclear_bombs_action_remote_recovery_authorized has_variable = sov_nuclear_bombs_action_reservation_holder var:sov_nuclear_bombs_action_reservation_holder = { exists = yes check_variable = { var = sov_nuclear_bombs_actor_reserved value = constant:sov_nuclear_bombs_ledger.one compare = greater_than_or_equals } } }
+				AND = { NOT = { hidden_trigger = { has_country_flag = sov_nuclear_bombs_action_remote_recovery_authorized } } NOT = { has_variable = sov_nuclear_bombs_action_reservation_holder } check_variable = { var = sov_nuclear_bombs_actor_reserved value = constant:sov_nuclear_bombs_ledger.one compare = greater_than_or_equals } }
+				AND = { hidden_trigger = { has_country_flag = sov_nuclear_bombs_action_remote_recovery_authorized } has_variable = sov_nuclear_bombs_action_reservation_holder var:sov_nuclear_bombs_action_reservation_holder = { exists = yes check_variable = { var = sov_nuclear_bombs_actor_reserved value = constant:sov_nuclear_bombs_ledger.one compare = greater_than_or_equals } } }
 			}
 		}
 	}

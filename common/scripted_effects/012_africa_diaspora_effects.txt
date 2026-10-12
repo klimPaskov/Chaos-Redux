@@ -13,7 +13,7 @@
 # and remains attached to the current Event 012 host.
 africa_diaspora_initialize_host_ledger = {
 	if = {
-		limit = { NOT = { has_country_flag = africa_diaspora_host_ledger_initialized } }
+		limit = { NOT = { hidden_trigger = { has_country_flag = africa_diaspora_host_ledger_initialized } } }
 		set_variable = { africa_diaspora_passage_capacity = constant:africa_diaspora_capacity.initial_passage }
 		set_variable = { africa_diaspora_housing_capacity = constant:africa_diaspora_capacity.initial_housing }
 		set_variable = { africa_diaspora_investment_capacity = constant:africa_diaspora_capacity.initial_investment }
@@ -36,7 +36,7 @@ africa_diaspora_initialize_host_ledger = {
 # existence never satisfies an action requirement by itself.
 africa_diaspora_initialize_target_ledger = {
 	if = {
-		limit = { NOT = { has_country_flag = africa_diaspora_target_ledger_initialized } }
+		limit = { NOT = { hidden_trigger = { has_country_flag = africa_diaspora_target_ledger_initialized } } }
 		set_variable = { africa_diaspora_return_waves_received = constant:africa_diaspora_change.zero }
 		set_variable = { africa_diaspora_skill_programmes_received = constant:africa_diaspora_change.zero }
 		set_variable = { africa_diaspora_projects_received = constant:africa_diaspora_change.zero }
@@ -73,7 +73,7 @@ africa_diaspora_prepare_target_response = {
 			africa_diaspora_action_requires_owner_response = yes
 			africa_diaspora_owner_request_surface_is_valid = yes
 			check_variable = { africa_diaspora_capacity_validation_result > constant:africa_value.zero }
-			NOT = { has_country_flag = africa_diaspora_request_pending }
+			NOT = { hidden_trigger = { has_country_flag = africa_diaspora_request_pending } }
 			has_event_target = africa_action_target
 		}
 		if = {

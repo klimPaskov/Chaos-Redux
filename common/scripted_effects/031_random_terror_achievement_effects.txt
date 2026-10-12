@@ -49,7 +49,7 @@ random_terror_achievement_register_reaction_country = {
 
 random_terror_achievement_initialize_country = {
 	if = {
-		limit = { NOT = { has_country_flag = random_terror_achievement_ledger_initialized } }
+		limit = { NOT = { hidden_trigger = { has_country_flag = random_terror_achievement_ledger_initialized } } }
 		set_country_flag = random_terror_achievement_ledger_initialized
 		set_variable = { random_terror_achievement_automatic_firings = constant:random_terror_value.zero }
 		set_variable = { random_terror_achievement_cleared_firings = constant:random_terror_value.zero }
@@ -208,8 +208,8 @@ random_terror_achievement_record_state_stage = {
 		OWNER = {
 			if = {
 				limit = {
-					has_country_flag = random_terror_achievement_short_crisis_tracking
-					PREV = { NOT = { has_state_flag = random_terror_achievement_short_crisis_initial_state } }
+					hidden_trigger = { has_country_flag = random_terror_achievement_short_crisis_tracking }
+					PREV = { NOT = { hidden_trigger = { has_state_flag = random_terror_achievement_short_crisis_initial_state } } }
 				}
 				set_country_flag = random_terror_achievement_short_crisis_disqualified
 			}
@@ -277,10 +277,10 @@ random_terror_achievement_record_movement_restrictions = {
 random_terror_achievement_refresh_victim_state = {
 	if = {
 		limit = {
-			has_state_flag = random_terror_major_civilian_loss_recorded
-			has_state_flag = random_terror_achievement_victim_support_complete
-			has_state_flag = random_terror_achievement_transport_restored
-			has_state_flag = random_terror_achievement_relief_protected
+			hidden_trigger = { has_state_flag = random_terror_major_civilian_loss_recorded }
+			hidden_trigger = { has_state_flag = random_terror_achievement_victim_support_complete }
+			hidden_trigger = { has_state_flag = random_terror_achievement_transport_restored }
+			hidden_trigger = { has_state_flag = random_terror_achievement_relief_protected }
 		}
 		set_state_flag = random_terror_achievement_victim_chain_complete
 	}
@@ -465,11 +465,11 @@ random_terror_achievement_record_event31_actor_defeat_contribution = {
 	if = {
 		limit = {
 			OR = {
-				has_country_flag = random_terror_retake_mission_success
-				has_country_flag = random_terror_corridor_mission_success
-				has_country_flag = random_terror_sponsor_exposure_resolved
-				has_country_flag = random_terror_uprising_mission_success
-				has_country_flag = random_terror_terminal_counteroffensive_recorded
+				hidden_trigger = { has_country_flag = random_terror_retake_mission_success }
+				hidden_trigger = { has_country_flag = random_terror_corridor_mission_success }
+				hidden_trigger = { has_country_flag = random_terror_sponsor_exposure_resolved }
+				hidden_trigger = { has_country_flag = random_terror_uprising_mission_success }
+				hidden_trigger = { has_country_flag = random_terror_terminal_counteroffensive_recorded }
 			}
 		}
 		set_country_flag = random_terror_achievement_event31_material_contribution
@@ -478,7 +478,7 @@ random_terror_achievement_record_event31_actor_defeat_contribution = {
 		if = {
 			limit = {
 				has_event_target = random_terror_achievement_defeated_actor
-				event_target:random_terror_achievement_defeated_actor = { has_country_flag = random_terror_final_actor }
+				event_target:random_terror_achievement_defeated_actor = { hidden_trigger = { has_country_flag = random_terror_final_actor } }
 			}
 			set_country_flag = random_terror_achievement_terminal_final_defeat
 		}
@@ -488,7 +488,7 @@ random_terror_achievement_record_event31_actor_defeat_contribution = {
 				event_target:random_terror_achievement_defeated_actor = {
 					OR = {
 						original_tag = JLX
-						has_country_flag = random_terror_network_leader
+						hidden_trigger = { has_country_flag = random_terror_network_leader }
 						check_variable = { random_terror_actor_profile = constant:random_terror_actor_profile.jihadist }
 					}
 				}
@@ -525,8 +525,8 @@ random_terror_achievement_reset_connected_route = {
 random_terror_achievement_record_terminal_cleanup = {
 	if = {
 		limit = {
-			has_country_flag = random_terror_achievement_route_crisis_tracking
-			NOT = { has_country_flag = random_terror_achievement_cut_every_route }
+			hidden_trigger = { has_country_flag = random_terror_achievement_route_crisis_tracking }
+			NOT = { hidden_trigger = { has_country_flag = random_terror_achievement_cut_every_route } }
 			OR = {
 				NOT = { has_variable = random_terror_achievement_corridors_broken }
 				check_variable = {
@@ -534,8 +534,8 @@ random_terror_achievement_record_terminal_cleanup = {
 					value = constant:random_terror_tuning.achievement_network_corridors
 					compare = less_than
 				}
-				NOT = { has_country_flag = random_terror_achievement_sponsor_neutralized }
-				NOT = { has_country_flag = random_terror_achievement_safe_haven_eliminated }
+				NOT = { hidden_trigger = { has_country_flag = random_terror_achievement_sponsor_neutralized } }
+				NOT = { hidden_trigger = { has_country_flag = random_terror_achievement_safe_haven_eliminated } }
 				NOT = { has_variable = random_terror_achievement_network_reach_target }
 				NOT = { has_variable = global.random_terror_network_reach }
 				check_variable = {
@@ -553,11 +553,11 @@ random_terror_achievement_finalize_country = {
 	# No Second Blast.
 	if = {
 		limit = {
-			has_country_flag = random_terror_achievement_short_crisis_tracking
-			NOT = { has_country_flag = random_terror_achievement_short_crisis_disqualified }
-			NOT = { has_country_flag = random_terror_achievement_actor_formed_against_country }
-			NOT = { has_country_flag = random_terror_achievement_government_civilian_death }
-			NOT = { has_country_flag = random_terror_achievement_abusive_failure }
+			hidden_trigger = { has_country_flag = random_terror_achievement_short_crisis_tracking }
+			NOT = { hidden_trigger = { has_country_flag = random_terror_achievement_short_crisis_disqualified } }
+			NOT = { hidden_trigger = { has_country_flag = random_terror_achievement_actor_formed_against_country } }
+			NOT = { hidden_trigger = { has_country_flag = random_terror_achievement_government_civilian_death } }
+			NOT = { hidden_trigger = { has_country_flag = random_terror_achievement_abusive_failure } }
 			check_variable = { var = global.date value = random_terror_achievement_short_crisis_deadline compare = less_than_or_equals }
 			check_variable = { random_terror_pressure = constant:random_terror_value.zero }
 			NOT = { random_terror_country_has_active_state = yes }
@@ -570,7 +570,7 @@ random_terror_achievement_finalize_country = {
 	# The Long Watch.
 	if = {
 		limit = {
-			has_country_flag = random_terror_achievement_automatic_crisis_open
+			hidden_trigger = { has_country_flag = random_terror_achievement_automatic_crisis_open }
 			check_variable = { random_terror_pressure = constant:random_terror_value.zero }
 			NOT = { random_terror_country_has_active_state = yes }
 		}
@@ -582,9 +582,9 @@ random_terror_achievement_finalize_country = {
 			check_variable = { var = random_terror_achievement_automatic_firings value = constant:random_terror_tuning.achievement_long_watch_firings compare = greater_than_or_equals }
 			check_variable = { var = random_terror_achievement_cleared_firings value = constant:random_terror_tuning.achievement_long_watch_firings compare = greater_than_or_equals }
 			check_variable = { random_terror_pressure = constant:random_terror_value.zero }
-			NOT = { has_country_flag = random_terror_achievement_long_watch_disqualified }
-			NOT = { has_country_flag = random_terror_achievement_state_lost_to_actor }
-			NOT = { has_country_flag = random_terror_achievement_successful_coup }
+			NOT = { hidden_trigger = { has_country_flag = random_terror_achievement_long_watch_disqualified } }
+			NOT = { hidden_trigger = { has_country_flag = random_terror_achievement_state_lost_to_actor } }
+			NOT = { hidden_trigger = { has_country_flag = random_terror_achievement_successful_coup } }
 		}
 		set_country_flag = random_terror_achievement_the_long_watch
 	}
@@ -592,13 +592,13 @@ random_terror_achievement_finalize_country = {
 	# The City Still Stands.
 	if = {
 		limit = {
-			has_country_flag = random_terror_achievement_city_mission_succeeded
+			hidden_trigger = { has_country_flag = random_terror_achievement_city_mission_succeeded }
 			check_variable = { var = global.date value = random_terror_achievement_city_recovery_deadline compare = less_than_or_equals }
 			check_variable = { random_terror_pressure < constant:random_terror_tuning.achievement_city_pressure_recovery }
 			has_variable = random_terror_achievement_original_capital_state
 			check_variable = { var = random_terror_achievement_original_capital_state value = capital compare = equals }
 			var:random_terror_achievement_original_capital_state = { is_owned_and_controlled_by = PREV }
-			NOT = { has_country_flag = random_terror_achievement_city_disqualified }
+			NOT = { hidden_trigger = { has_country_flag = random_terror_achievement_city_disqualified } }
 		}
 		set_country_flag = random_terror_achievement_the_city_still_stands
 	}
@@ -606,17 +606,17 @@ random_terror_achievement_finalize_country = {
 	# Cut Every Route.
 	if = {
 		limit = {
-			has_country_flag = random_terror_achievement_route_crisis_tracking
+			hidden_trigger = { has_country_flag = random_terror_achievement_route_crisis_tracking }
 			check_variable = { var = random_terror_achievement_corridors_broken value = constant:random_terror_tuning.achievement_network_corridors compare = greater_than_or_equals }
-			has_country_flag = random_terror_achievement_sponsor_neutralized
-			has_country_flag = random_terror_achievement_safe_haven_eliminated
+			hidden_trigger = { has_country_flag = random_terror_achievement_sponsor_neutralized }
+			hidden_trigger = { has_country_flag = random_terror_achievement_safe_haven_eliminated }
 			check_variable = {
 				var = global.random_terror_network_reach
 				value = random_terror_achievement_network_reach_target
 				compare = less_than_or_equals
 			}
 			NOT = { random_terror_country_has_active_state = yes }
-			NOT = { has_country_flag = random_terror_achievement_route_cleanup_only }
+			NOT = { hidden_trigger = { has_country_flag = random_terror_achievement_route_cleanup_only } }
 		}
 		set_country_flag = random_terror_achievement_cut_every_route
 	}
@@ -625,25 +625,25 @@ random_terror_achievement_finalize_country = {
 	if = {
 		limit = {
 			has_global_flag = random_terror_evolution_4_unlocked
-			has_country_flag = random_terror_muslim_majority_reaction_registry
-			has_country_flag = random_terror_muslim_government_opposition_recorded
-			has_country_flag = random_terror_achievement_public_rejection_complete
+			hidden_trigger = { has_country_flag = random_terror_muslim_majority_reaction_registry }
+			hidden_trigger = { has_country_flag = random_terror_muslim_government_opposition_recorded }
+			hidden_trigger = { has_country_flag = random_terror_achievement_public_rejection_complete }
 			check_variable = { var = random_terror_response_legitimacy value = constant:random_terror_tuning.achievement_legitimacy_no_collective compare = greater_than_or_equals }
 			NOT = {
 				any_owned_state = {
 					OR = {
-						has_state_flag = random_terror_community_rejection_recorded
-						has_state_flag = random_terror_muslim_community_opposition_recorded
+						hidden_trigger = { has_state_flag = random_terror_community_rejection_recorded }
+						hidden_trigger = { has_state_flag = random_terror_muslim_community_opposition_recorded }
 					}
-					NOT = { has_state_flag = random_terror_achievement_community_objective_protected }
+					NOT = { hidden_trigger = { has_state_flag = random_terror_achievement_community_objective_protected } }
 				}
 			}
-			has_country_flag = random_terror_achievement_jihadist_leader_defeated
+			hidden_trigger = { has_country_flag = random_terror_achievement_jihadist_leader_defeated }
 			is_subject = no
-			NOT = { has_country_flag = random_terror_achievement_joined_jihadists }
-			NOT = { has_country_flag = random_terror_achievement_hostile_cooperation }
-			NOT = { has_country_flag = random_terror_achievement_collective_punishment }
-			NOT = { has_country_flag = random_terror_government_takeover_recorded }
+			NOT = { hidden_trigger = { has_country_flag = random_terror_achievement_joined_jihadists } }
+			NOT = { hidden_trigger = { has_country_flag = random_terror_achievement_hostile_cooperation } }
+			NOT = { hidden_trigger = { has_country_flag = random_terror_achievement_collective_punishment } }
+			NOT = { hidden_trigger = { has_country_flag = random_terror_government_takeover_recorded } }
 		}
 		set_country_flag = random_terror_achievement_false_claim_rejected
 	}
@@ -651,14 +651,14 @@ random_terror_achievement_finalize_country = {
 	# No Collective Punishment.
 	if = {
 		limit = {
-			has_country_flag = random_terror_achievement_event31_material_contribution
-			has_country_flag = random_terror_achievement_actor_war_resolved
-			NOT = { has_country_flag = random_terror_achievement_no_collective_disqualified }
-			NOT = { has_country_flag = random_terror_achievement_abusive_failure }
-			NOT = { has_country_flag = random_terror_achievement_atrocity_or_coverup }
+			hidden_trigger = { has_country_flag = random_terror_achievement_event31_material_contribution }
+			hidden_trigger = { has_country_flag = random_terror_achievement_actor_war_resolved }
+			NOT = { hidden_trigger = { has_country_flag = random_terror_achievement_no_collective_disqualified } }
+			NOT = { hidden_trigger = { has_country_flag = random_terror_achievement_abusive_failure } }
+			NOT = { hidden_trigger = { has_country_flag = random_terror_achievement_atrocity_or_coverup } }
 			NOT = {
 				any_owned_state = {
-					has_state_flag = random_terror_achievement_state_lost_to_actor
+					hidden_trigger = { has_state_flag = random_terror_achievement_state_lost_to_actor }
 					NOT = { has_state_flag = random_terror_civil_authority_restored }
 				}
 			}
@@ -669,10 +669,10 @@ random_terror_achievement_finalize_country = {
 	# The Enemy of My Enemy Is Still My Enemy.
 	if = {
 		limit = {
-			has_country_flag = random_terror_achievement_event31_material_contribution
-			has_country_flag = random_terror_achievement_event14_material_contribution
-			has_country_flag = random_terror_achievement_event14_rivalry_proof
-			NOT = { has_country_flag = random_terror_achievement_hostile_cooperation }
+			hidden_trigger = { has_country_flag = random_terror_achievement_event31_material_contribution }
+			hidden_trigger = { has_country_flag = random_terror_achievement_event14_material_contribution }
+			hidden_trigger = { has_country_flag = random_terror_achievement_event14_rivalry_proof }
+			NOT = { hidden_trigger = { has_country_flag = random_terror_achievement_hostile_cooperation } }
 		}
 		set_country_flag = random_terror_achievement_enemy_of_my_enemy
 	}
@@ -682,13 +682,13 @@ random_terror_achievement_finalize_country = {
 		limit = {
 			is_ai = no
 			has_global_flag = random_terror_evolution_4_unlocked
-			has_country_flag = random_terror_achievement_actor_jihad_route
-			has_country_flag = random_terror_achievement_actor_rejected_leader
-			has_country_flag = random_terror_achievement_fracture_proven
+			hidden_trigger = { has_country_flag = random_terror_achievement_actor_jihad_route }
+			hidden_trigger = { has_country_flag = random_terror_achievement_actor_rejected_leader }
+			hidden_trigger = { has_country_flag = random_terror_achievement_fracture_proven }
 			is_subject = no
 			NOT = { has_global_flag = world_end }
-			NOT = { has_country_flag = random_terror_final_actor }
-			NOT = { has_country_flag = random_terror_achievement_submitted_to_final }
+			NOT = { hidden_trigger = { has_country_flag = random_terror_final_actor } }
+			NOT = { hidden_trigger = { has_country_flag = random_terror_achievement_submitted_to_final } }
 		}
 		set_country_flag = random_terror_achievement_fracture_from_within
 	}
@@ -696,13 +696,13 @@ random_terror_achievement_finalize_country = {
 	# Maximum Survivor.
 	if = {
 		limit = {
-			has_country_flag = random_terror_achievement_maximum_player
-			has_country_flag = random_terror_achievement_maximum_ui_launch
+			hidden_trigger = { has_country_flag = random_terror_achievement_maximum_player }
+			hidden_trigger = { has_country_flag = random_terror_achievement_maximum_ui_launch }
 			check_variable = { random_terror_achievement_maximum_launch_intensity = constant:random_terror_intensity.maximum }
 			check_variable = { random_terror_pressure = constant:random_terror_value.zero }
-			NOT = { has_country_flag = random_terror_achievement_maximum_disqualified }
+			NOT = { hidden_trigger = { has_country_flag = random_terror_achievement_maximum_disqualified } }
 			NOT = { random_terror_has_unresolved_actor = yes }
-			has_global_flag = random_terror_defeat_resolved
+			hidden_trigger = { has_global_flag = random_terror_defeat_resolved }
 			has_variable = random_terror_achievement_maximum_original_capital_state
 			var:random_terror_achievement_maximum_original_capital_state = { is_owned_and_controlled_by = PREV }
 		}
@@ -713,13 +713,13 @@ random_terror_achievement_finalize_country = {
 	if = {
 		limit = {
 			has_global_flag = random_terror_false_revelation_denied
-			has_global_flag = random_terror_defeat_resolved
-			has_country_flag = random_terror_achievement_terminal_command_capital
-			has_country_flag = random_terror_achievement_terminal_corridor
-			has_country_flag = random_terror_achievement_terminal_restoration
-			has_country_flag = random_terror_achievement_terminal_final_defeat
-			has_country_flag = random_terror_achievement_terminal_material_contribution
-			NOT = { has_country_flag = random_terror_achievement_false_revelation_disqualified }
+			hidden_trigger = { has_global_flag = random_terror_defeat_resolved }
+			hidden_trigger = { has_country_flag = random_terror_achievement_terminal_command_capital }
+			hidden_trigger = { has_country_flag = random_terror_achievement_terminal_corridor }
+			hidden_trigger = { has_country_flag = random_terror_achievement_terminal_restoration }
+			hidden_trigger = { has_country_flag = random_terror_achievement_terminal_final_defeat }
+			hidden_trigger = { has_country_flag = random_terror_achievement_terminal_material_contribution }
+			NOT = { hidden_trigger = { has_country_flag = random_terror_achievement_false_revelation_disqualified } }
 			NOT = { has_capitulated = yes }
 		}
 		set_country_flag = random_terror_achievement_false_revelation_denied
@@ -728,14 +728,14 @@ random_terror_achievement_finalize_country = {
 	# Victims Before Victory.
 	if = {
 		limit = {
-			has_country_flag = random_terror_major_civilian_loss_recorded
-			has_country_flag = random_terror_achievement_actor_war_resolved
+			hidden_trigger = { has_country_flag = random_terror_major_civilian_loss_recorded }
+			hidden_trigger = { has_country_flag = random_terror_achievement_actor_war_resolved }
 			check_variable = { var = random_terror_response_legitimacy value = constant:random_terror_tuning.achievement_legitimacy_victims compare = greater_than_or_equals }
-			NOT = { has_country_flag = random_terror_achievement_victims_disqualified }
+			NOT = { hidden_trigger = { has_country_flag = random_terror_achievement_victims_disqualified } }
 			NOT = {
 				any_owned_state = {
-					has_state_flag = random_terror_major_civilian_loss_recorded
-					NOT = { has_state_flag = random_terror_achievement_victim_chain_complete }
+					hidden_trigger = { has_state_flag = random_terror_major_civilian_loss_recorded }
+					NOT = { hidden_trigger = { has_state_flag = random_terror_achievement_victim_chain_complete } }
 				}
 			}
 		}
@@ -745,16 +745,16 @@ random_terror_achievement_finalize_country = {
 	# War Without a Capital.
 	if = {
 		limit = {
-			has_country_flag = random_terror_achievement_original_capital_lost
-			has_country_flag = random_terror_achievement_backup_capital_established
-			has_country_flag = random_terror_achievement_continued_capital_war
-			has_country_flag = random_terror_achievement_original_capital_retaken
-			has_country_flag = random_terror_achievement_original_capital_restored
+			hidden_trigger = { has_country_flag = random_terror_achievement_original_capital_lost }
+			hidden_trigger = { has_country_flag = random_terror_achievement_backup_capital_established }
+			hidden_trigger = { has_country_flag = random_terror_achievement_continued_capital_war }
+			hidden_trigger = { has_country_flag = random_terror_achievement_original_capital_retaken }
+			hidden_trigger = { has_country_flag = random_terror_achievement_original_capital_restored }
 			has_variable = random_terror_achievement_original_capital_state
 			var:random_terror_achievement_original_capital_state = { is_owned_and_controlled_by = PREV }
 			check_variable = { var = global.date value = random_terror_achievement_capital_restore_deadline compare = less_than_or_equals }
 			check_variable = { random_terror_pressure < constant:random_terror_tuning.achievement_capital_pressure_recovery }
-			NOT = { has_country_flag = random_terror_achievement_war_without_capital_disqualified }
+			NOT = { hidden_trigger = { has_country_flag = random_terror_achievement_war_without_capital_disqualified } }
 			NOT = { has_capitulated = yes }
 		}
 		set_country_flag = random_terror_achievement_war_without_a_capital

@@ -17,9 +17,9 @@ brilliant_scientist_mengele_singularity_terminal_physical_state_is_ready = {
 	brilliant_scientist_has_required_singularity_facilities = yes
 	brilliant_scientist_mengele_singularity_site_has_minimum_live_network = yes
 	brilliant_scientist_mengele_singularity_terminal_components_are_ready = yes
-	has_country_flag = mengele_event016_singularity_weaponization_completed
+	hidden_trigger = { has_country_flag = mengele_event016_singularity_weaponization_completed }
 	NOT = { brilliant_scientist_mengele_singularity_incident_is_active = yes }
-	NOT = { has_country_flag = mengele_event016_singularity_terminal_fired }
+	NOT = { hidden_trigger = { has_country_flag = mengele_event016_singularity_terminal_fired } }
 	NOT = { has_global_flag = brilliant_scientist_singularity_terminal_fired }
 	NOT = { has_global_flag = brilliant_scientist_lab_world_terminal_fired }
 	NOT = { has_global_flag = settings_chaos_meter_disabled }
@@ -29,7 +29,7 @@ brilliant_scientist_mengele_singularity_terminal_physical_state_is_ready = {
 
 brilliant_scientist_mengele_singularity_terminal_commit_state_is_ready = {
 	brilliant_scientist_mengele_singularity_terminal_physical_state_is_ready = yes
-	NOT = { has_country_flag = mengele_event016_singularity_fallout_request_submitted }
+	NOT = { hidden_trigger = { has_country_flag = mengele_event016_singularity_fallout_request_submitted } }
 }
 
 brilliant_scientist_mengele_singularity_terminal_is_ready = {
@@ -40,28 +40,28 @@ brilliant_scientist_mengele_singularity_terminal_is_ready = {
 # The shared request coordinator must use this before writing the world-end lock.
 brilliant_scientist_mengele_singularity_request_actor_is_valid = {
 	brilliant_scientist_mengele_singularity_terminal_physical_state_is_ready = yes
-	has_country_flag = mengele_event016_singularity_terminal_committed
-	has_country_flag = mengele_event016_singularity_prelock_chaos_recorded
-	has_country_flag = mengele_event016_singularity_consequences_recorded
-	has_country_flag = mengele_event016_singularity_fallout_request_submitted
+	hidden_trigger = { has_country_flag = mengele_event016_singularity_terminal_committed }
+	hidden_trigger = { has_country_flag = mengele_event016_singularity_prelock_chaos_recorded }
+	hidden_trigger = { has_country_flag = mengele_event016_singularity_consequences_recorded }
+	hidden_trigger = { has_country_flag = mengele_event016_singularity_fallout_request_submitted }
 	has_variable = mengele_event016_singularity_detonation_date
-	NOT = { has_country_flag = mengele_event016_singularity_terminal_fired }
+	NOT = { hidden_trigger = { has_country_flag = mengele_event016_singularity_terminal_fired } }
 }
 
 # After lock, the ordinary provider-valid trigger is false because world_end is set.
 # The actor and submitted receipt remain authoritative for this one callback.
 brilliant_scientist_mengele_singularity_fallout_finalize_is_ready = {
-	has_country_flag = mengele_event016_singularity_terminal_committed
-	has_country_flag = mengele_event016_singularity_prelock_chaos_recorded
-	has_country_flag = mengele_event016_singularity_consequences_recorded
-	has_country_flag = mengele_event016_singularity_fallout_request_submitted
+	hidden_trigger = { has_country_flag = mengele_event016_singularity_terminal_committed }
+	hidden_trigger = { has_country_flag = mengele_event016_singularity_prelock_chaos_recorded }
+	hidden_trigger = { has_country_flag = mengele_event016_singularity_consequences_recorded }
+	hidden_trigger = { has_country_flag = mengele_event016_singularity_fallout_request_submitted }
 	has_variable = mengele_event016_singularity_detonation_date
-	has_global_flag = fallout_request_locked
+	hidden_trigger = { has_global_flag = fallout_request_locked }
 	has_global_flag = fallout_transition_active
 	has_global_flag = world_end
-	has_global_flag = world_end_fallout
+	hidden_trigger = { has_global_flag = world_end_fallout }
 	fallout_request_source_is_strategic_singularity = yes
 	has_event_target = fallout_request_actor
 	tag = event_target:fallout_request_actor
-	NOT = { has_country_flag = mengele_event016_singularity_terminal_fired }
+	NOT = { hidden_trigger = { has_country_flag = mengele_event016_singularity_terminal_fired } }
 }

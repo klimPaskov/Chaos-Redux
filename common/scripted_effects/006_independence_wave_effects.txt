@@ -166,7 +166,7 @@ independence_wave_refresh_status_frame_state = {
 			set_variable = { independence_wave_gui_formable_frame = constant:independence_wave_gui_frame.formable_discovered }
 		}
 		if = {
-			limit = { has_country_flag = independence_wave_formable_all_required_initial_integration_complete }
+			limit = { hidden_trigger = { has_country_flag = independence_wave_formable_all_required_initial_integration_complete } }
 			set_variable = { independence_wave_gui_formable_frame = constant:independence_wave_gui_frame.formable_eligible }
 		}
 		if = {
@@ -1275,7 +1275,7 @@ independence_wave_refresh_government_idea = {
 	if = {
 		limit = {
 			OR = {
-				has_country_flag = independence_wave_government_failure
+				hidden_trigger = { has_country_flag = independence_wave_government_failure }
 				AND = {
 					has_independence_wave_critical_instability = yes
 					check_variable = { var = independence_wave_capacity value = constant:independence_wave_capacity_band.functioning compare = less_than }
@@ -1299,7 +1299,7 @@ independence_wave_refresh_government_idea = {
 		set_variable = { independence_wave_government_lifecycle = constant:independence_wave_lifecycle_stage.mature }
 	}
 	else_if = {
-		limit = { has_country_flag = independence_wave_dm01_capital_administration_ready }
+		limit = { hidden_trigger = { has_country_flag = independence_wave_dm01_capital_administration_ready } }
 		if = {
 			limit = { NOT = { has_idea = independence_wave_functioning_administration } }
 			independence_wave_remove_government_ideas = yes
@@ -1328,7 +1328,7 @@ independence_wave_refresh_government_idea = {
 
 independence_wave_refresh_recognition_idea = {
 	if = {
-		limit = { has_country_flag = independence_wave_recognition_blockade_active }
+		limit = { hidden_trigger = { has_country_flag = independence_wave_recognition_blockade_active } }
 		if = {
 			limit = { NOT = { has_idea = independence_wave_recognition_blockade } }
 			independence_wave_remove_recognition_ideas = yes
@@ -1366,7 +1366,7 @@ independence_wave_refresh_recognition_idea = {
 
 independence_wave_refresh_command_idea = {
 	if = {
-		limit = { has_country_flag = independence_wave_warlord_command_failure }
+		limit = { hidden_trigger = { has_country_flag = independence_wave_warlord_command_failure } }
 		if = {
 			limit = { NOT = { has_idea = independence_wave_warlord_commands } }
 			independence_wave_remove_command_ideas = yes
@@ -1406,7 +1406,7 @@ independence_wave_refresh_border_idea = {
 	if = {
 		limit = {
 			OR = {
-				has_country_flag = independence_wave_permanent_border_war_active
+				hidden_trigger = { has_country_flag = independence_wave_permanent_border_war_active }
 				check_variable = { independence_wave_host_outcome = constant:independence_wave_host_outcome.reclamation_conflict }
 			}
 		}
@@ -1459,7 +1459,7 @@ independence_wave_refresh_patron_idea = {
 		set_variable = { independence_wave_patron_lifecycle = constant:independence_wave_lifecycle_stage.failure }
 	}
 	else_if = {
-		limit = { has_country_flag = independence_wave_independent_foreign_policy_achieved }
+		limit = { hidden_trigger = { has_country_flag = independence_wave_independent_foreign_policy_achieved } }
 		if = {
 			limit = { NOT = { has_idea = independence_wave_independent_foreign_policy } }
 			independence_wave_remove_patron_ideas = yes
@@ -1537,7 +1537,7 @@ independence_wave_refresh_instability_idea = {
 
 independence_wave_refresh_league_idea = {
 	if = {
-		limit = { has_country_flag = independence_wave_league_member_discredited }
+		limit = { hidden_trigger = { has_country_flag = independence_wave_league_member_discredited } }
 		if = {
 			limit = { NOT = { has_idea = independence_wave_discredited_league_member } }
 			independence_wave_remove_league_ideas = yes
@@ -1577,7 +1577,7 @@ independence_wave_refresh_identity_idea = {
 		limit = {
 			has_valid_independence_wave_region = yes
 			OR = {
-				NOT = { has_country_flag = independence_wave_identity_idea_applied }
+				NOT = { hidden_trigger = { has_country_flag = independence_wave_identity_idea_applied } }
 				NOT = { has_variable = independence_wave_identity_idea_region }
 				NOT = { check_variable = { var = independence_wave_identity_idea_region value = independence_wave_region compare = equals } }
 				NOT = { has_current_independence_wave_identity_idea = yes }
@@ -2618,7 +2618,7 @@ independence_wave_cleanup_reclamation_front_operation = {
 independence_wave_revalidate_reclamation_front_operation = {
 	if = {
 		limit = {
-			has_global_flag = independence_wave_reclamation_fronts_coordinated
+			hidden_trigger = { has_global_flag = independence_wave_reclamation_fronts_coordinated }
 			OR = {
 				NOT = {
 					check_variable = {
@@ -3343,7 +3343,7 @@ independence_wave_apply_roster_checkpoint = {
 		}
 		set_country_flag = independence_wave_bsk_roster_checkpoint
 		if = {
-			limit = { NOT = { has_country_flag = independence_wave_bsk_portrait_override } }
+			limit = { NOT = { hidden_trigger = { has_country_flag = independence_wave_bsk_portrait_override } } }
 			set_portraits = {
 				character = BSK_yakov_bykin
 				civilian = {
@@ -3419,7 +3419,7 @@ independence_wave_apply_roster_checkpoint = {
 			has_independence_wave_glc_command_roster = yes
 		}
 		if = {
-			limit = { NOT = { has_country_flag = independence_wave_glc_portrait_override } }
+			limit = { NOT = { hidden_trigger = { has_country_flag = independence_wave_glc_portrait_override } } }
 			# Reuse vanilla GLC's existing Castelao country-leader role. This
 			# keeps the supplied Event 006 portrait scoped to the active package
 			# without creating a duplicate real-person character.

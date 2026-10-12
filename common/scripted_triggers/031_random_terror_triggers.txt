@@ -1035,7 +1035,7 @@ random_terror_has_unresolved_actor = {
 			random_terror_country_has_active_state = yes
 		}
 		any_country = {
-			has_country_flag = random_terror_affected_country
+			hidden_trigger = { has_country_flag = random_terror_affected_country }
 			check_variable = { random_terror_pressure > constant:random_terror_value.zero }
 		}
 	}
@@ -1048,16 +1048,16 @@ random_terror_has_unresolved_actor = {
 # International leader controls at least random_terror_world_threat.leader_states
 # states.
 random_terror_world_threat_qualifies = {
-	NOT = { has_global_flag = random_terror_defeat_resolved }
+	NOT = { hidden_trigger = { has_global_flag = random_terror_defeat_resolved } }
 	OR = {
 		has_global_flag = random_terror_terminal_active
 		AND = {
-			has_global_flag = random_terror_final_jihad_active
+			hidden_trigger = { has_global_flag = random_terror_final_jihad_active }
 			any_country = { random_terror_is_actor = yes }
 		}
 		any_country = {
 			random_terror_is_actor = yes
-			has_country_flag = random_terror_network_leader
+			hidden_trigger = { has_country_flag = random_terror_network_leader }
 			NOT = { num_of_controlled_states < constant:random_terror_world_threat.leader_states }
 		}
 	}

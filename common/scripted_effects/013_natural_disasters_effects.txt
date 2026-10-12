@@ -1052,7 +1052,7 @@ natural_disaster_record_reached_evolutions = {
 			NOT = { check_variable = { natural_disaster_call_internal_chain_override > 0 } }
 			NOT = { check_variable = { natural_disaster_call_manual_evolution_bypass > 0 } }
 			NOT = { check_variable = { natural_disaster_call_manual_abnormal_bypass > 0 } }
-			NOT = { has_global_flag = natural_disaster_evolution_i_logged }
+			NOT = { hidden_trigger = { has_global_flag = natural_disaster_evolution_i_logged } }
 		}
 		set_global_flag = natural_disaster_evolution_i_logged
 		set_temp_variable = { events_log_evolution_event_id = constant:natural_disaster_event.id }
@@ -1074,7 +1074,7 @@ natural_disaster_record_reached_evolutions = {
 			NOT = { check_variable = { natural_disaster_call_internal_chain_override > 0 } }
 			NOT = { check_variable = { natural_disaster_call_manual_evolution_bypass > 0 } }
 			NOT = { check_variable = { natural_disaster_call_manual_abnormal_bypass > 0 } }
-			NOT = { has_global_flag = natural_disaster_evolution_ii_logged }
+			NOT = { hidden_trigger = { has_global_flag = natural_disaster_evolution_ii_logged } }
 		}
 		set_global_flag = natural_disaster_evolution_ii_logged
 		set_temp_variable = { events_log_evolution_event_id = constant:natural_disaster_event.id }
@@ -1097,7 +1097,7 @@ natural_disaster_record_reached_evolutions = {
 			NOT = { check_variable = { natural_disaster_call_internal_chain_override > 0 } }
 			NOT = { check_variable = { natural_disaster_call_manual_evolution_bypass > 0 } }
 			NOT = { check_variable = { natural_disaster_call_manual_abnormal_bypass > 0 } }
-			NOT = { has_global_flag = natural_disaster_evolution_iii_logged }
+			NOT = { hidden_trigger = { has_global_flag = natural_disaster_evolution_iii_logged } }
 		}
 		set_global_flag = natural_disaster_evolution_iii_logged
 		set_temp_variable = { events_log_evolution_event_id = constant:natural_disaster_event.id }
@@ -1127,14 +1127,14 @@ natural_disaster_sync_open_card_to_evolution_ii = {
 				value = constant:natural_disaster_severity.severe
 				compare = greater_than_or_equals
 			}
-			NOT = { has_state_flag = natural_disaster_evolution_ii_card_sync_applied }
+			NOT = { hidden_trigger = { has_state_flag = natural_disaster_evolution_ii_card_sync_applied } }
 			NOT = { has_state_flag = natural_disaster_chain_only_card }
-			NOT = { has_state_flag = natural_disaster_terminal_failure_consequence }
-			NOT = { has_state_flag = natural_disaster_phase_failed }
-			NOT = { has_state_flag = natural_disaster_chain_arrived }
-			NOT = { has_state_flag = natural_disaster_chain_prevented }
-			NOT = { has_state_flag = natural_disaster_physical_chain_skipped }
-			NOT = { has_state_flag = natural_disaster_reconstruction_success }
+			NOT = { hidden_trigger = { has_state_flag = natural_disaster_terminal_failure_consequence } }
+			NOT = { hidden_trigger = { has_state_flag = natural_disaster_phase_failed } }
+			NOT = { hidden_trigger = { has_state_flag = natural_disaster_chain_arrived } }
+			NOT = { hidden_trigger = { has_state_flag = natural_disaster_chain_prevented } }
+			NOT = { hidden_trigger = { has_state_flag = natural_disaster_physical_chain_skipped } }
+			NOT = { hidden_trigger = { has_state_flag = natural_disaster_reconstruction_success } }
 			controller = { exists = yes }
 		}
 		set_variable = { natural_disaster_evolution = constant:natural_disaster_event.evolution_ii_stage }
@@ -1152,8 +1152,8 @@ natural_disaster_sync_open_card_to_evolution_ii = {
 				}
 				check_variable = { natural_disaster_followup_route = constant:natural_disaster_followup_route.none }
 				check_variable = { natural_disaster_chain_risk = constant:natural_disaster_chain.none }
-				NOT = { has_state_flag = natural_disaster_chain_arrived }
-				NOT = { has_state_flag = natural_disaster_terminal_failure_consequence }
+				NOT = { hidden_trigger = { has_state_flag = natural_disaster_chain_arrived } }
+				NOT = { hidden_trigger = { has_state_flag = natural_disaster_terminal_failure_consequence } }
 			}
 			natural_disaster_resolve_chain_risk = yes
 			if = {
@@ -1238,7 +1238,7 @@ natural_disaster_emit_super_event = {
 # queued milestone behind an occupied shared super-event window.
 natural_disaster_schedule_super_event_retry = {
 	if = {
-		limit = { NOT = { has_global_flag = natural_disaster_super_event_queue_retry_pending } }
+		limit = { NOT = { hidden_trigger = { has_global_flag = natural_disaster_super_event_queue_retry_pending } } }
 		set_global_flag = natural_disaster_super_event_queue_retry_pending
 		every_country = {
 			limit = { is_ai = no }
@@ -1253,7 +1253,7 @@ natural_disaster_schedule_super_event_retry = {
 natural_disaster_dispatch_queued_super_event = {
 	if = {
 		limit = {
-			NOT = { has_global_flag = super_event_visible }
+			NOT = { hidden_trigger = { has_global_flag = super_event_visible } }
 			check_variable = { global.natural_disaster_super_event_queue_slot_entries^num > 0 }
 		}
 		set_temp_variable = { natural_disaster_super_event_dispatch_slot = global.natural_disaster_super_event_queue_slot_entries^0 }
@@ -1321,7 +1321,7 @@ natural_disaster_maybe_emit_abnormal_age = {
 			NOT = { check_variable = { natural_disaster_call_internal_chain_override > 0 } }
 			NOT = { check_variable = { natural_disaster_call_manual_evolution_bypass > 0 } }
 			NOT = { check_variable = { natural_disaster_call_manual_abnormal_bypass > 0 } }
-			NOT = { has_global_flag = natural_disaster_super_event_abnormal_age_fired }
+			NOT = { hidden_trigger = { has_global_flag = natural_disaster_super_event_abnormal_age_fired } }
 		}
 		set_variable = { global.natural_disaster_abnormal_reveal_sequence_id = global.natural_disaster_sequence_id }
 		set_temp_variable = { natural_disaster_super_event_slot = constant:natural_disaster_abnormal.super_event_abnormal_disaster_age }
@@ -1595,7 +1595,7 @@ natural_disaster_score_priority_state = {
 			check_variable = { natural_disaster_priority_variant = constant:natural_disaster_relief_variant.medical }
 			OR = {
 				natural_disaster_state_has_dense_population = yes
-				has_state_flag = natural_disaster_disease_pressure
+				hidden_trigger = { has_state_flag = natural_disaster_disease_pressure }
 			}
 		}
 		add_to_temp_variable = { natural_disaster_priority_score = constant:natural_disaster_priority.variant_match_bonus }
@@ -1908,7 +1908,7 @@ natural_disaster_enqueue_state_job = {
 	if = {
 		limit = {
 			check_variable = { natural_disaster_job_type = constant:natural_disaster_job_type.impact }
-			has_state_flag = natural_disaster_repeat_impact_scheduled
+			hidden_trigger = { has_state_flag = natural_disaster_repeat_impact_scheduled }
 			has_variable = natural_disaster_repeat_sequence_id
 		}
 		set_temp_variable = { natural_disaster_job_sequence_id = natural_disaster_repeat_sequence_id }
@@ -1922,7 +1922,7 @@ natural_disaster_enqueue_state_job = {
 			}
 		NOT = {
 			meta_trigger = {
-				text = { has_global_flag = natural_disaster_report_sequence_finalized_[SEQUENCE_ID] }
+				text = { hidden_trigger = { has_global_flag = natural_disaster_report_sequence_finalized_[SEQUENCE_ID] } }
 				SEQUENCE_ID = "[?natural_disaster_job_sequence_id|.0]"
 			}
 		}
@@ -1959,7 +1959,7 @@ natural_disaster_enqueue_state_job = {
 	if = {
 		limit = {
 			check_variable = { natural_disaster_job_type = constant:natural_disaster_job_type.impact }
-			has_state_flag = natural_disaster_repeat_impact_scheduled
+			hidden_trigger = { has_state_flag = natural_disaster_repeat_impact_scheduled }
 			has_variable = natural_disaster_repeat_sequence_id
 		}
 		set_temp_variable = { natural_disaster_job_family_snapshot = natural_disaster_repeat_family }
@@ -4297,7 +4297,7 @@ natural_disaster_call = {
 						OWNER = {
 							OR = {
 								has_idea = heat_wave
-								has_country_flag = natural_disaster_heat_exclusion
+								hidden_trigger = { has_country_flag = natural_disaster_heat_exclusion }
 							}
 						}
 					}
@@ -6792,7 +6792,7 @@ natural_disaster_fill_open_aftermath_capacity = {
 natural_disaster_activate_family_chain_mission = {
 	if = {
 		limit = {
-			NOT = { has_country_flag = natural_disaster_chain_mission_active }
+			NOT = { hidden_trigger = { has_country_flag = natural_disaster_chain_mission_active } }
 			PREV = {
 				OR = {
 					check_variable = { natural_disaster_chain_risk = constant:natural_disaster_chain.tsunami }
@@ -7441,7 +7441,7 @@ natural_disaster_refresh_category_display_family = {
 		set_temp_variable = { natural_disaster_priority_score = 0 }
 		natural_disaster_score_priority_state = yes
 		if = {
-			limit = { has_state_flag = natural_disaster_warning_active }
+			limit = { hidden_trigger = { has_state_flag = natural_disaster_warning_active } }
 			add_to_temp_variable = { natural_disaster_priority_score = constant:natural_disaster_priority.presentation_warning_bonus }
 		}
 		if = {
@@ -8868,8 +8868,8 @@ natural_disaster_schedule_report_dispatch = {
 			exists = yes
 			exists = yes
 			check_variable = { natural_disaster_report_pending_sequence_entries^num > 0 }
-			NOT = { has_country_flag = natural_disaster_report_popup_open }
-			NOT = { has_country_flag = natural_disaster_report_dispatch_scheduled }
+			NOT = { hidden_trigger = { has_country_flag = natural_disaster_report_popup_open } }
+			NOT = { hidden_trigger = { has_country_flag = natural_disaster_report_dispatch_scheduled } }
 		}
 		set_country_flag = natural_disaster_report_dispatch_scheduled
 		set_temp_variable = { natural_disaster_report_dispatch_delay = constant:natural_disaster_report_aggregation.dispatch_delay_days }
@@ -11066,10 +11066,10 @@ natural_disaster_achievement_begin_sequence = {
 				compare = greater_than_or_equals
 			}
 			OR = {
-				NOT = { has_country_flag = achievement_nd_severe_season_started }
-				has_country_flag = achievement_nd_severe_recovery_closed
-				has_country_flag = achievement_nd_severe_recovery_deadline_failed
-				has_country_flag = achievement_nd_severe_aftermath_abandoned
+				NOT = { hidden_trigger = { has_country_flag = achievement_nd_severe_season_started } }
+				hidden_trigger = { has_country_flag = achievement_nd_severe_recovery_closed }
+				hidden_trigger = { has_country_flag = achievement_nd_severe_recovery_deadline_failed }
+				hidden_trigger = { has_country_flag = achievement_nd_severe_aftermath_abandoned }
 			}
 		}
 		clr_country_flag = achievement_nd_severe_season_ended
@@ -11085,11 +11085,11 @@ natural_disaster_achievement_begin_sequence = {
 		limit = {
 			check_variable = { natural_disaster_planned_origin_family = constant:natural_disaster_family.meteor_shower }
 			OR = {
-				NOT = { has_country_flag = achievement_nd_meteor_shower_started }
-				has_country_flag = achievement_nd_meteor_shower_ended
-				has_country_flag = achievement_nd_skyfall_capital_failed
-				has_country_flag = achievement_nd_skyfall_supply_route_failed
-				has_country_flag = achievement_nd_skyfall_airfield_network_failed
+				NOT = { hidden_trigger = { has_country_flag = achievement_nd_meteor_shower_started } }
+				hidden_trigger = { has_country_flag = achievement_nd_meteor_shower_ended }
+				hidden_trigger = { has_country_flag = achievement_nd_skyfall_capital_failed }
+				hidden_trigger = { has_country_flag = achievement_nd_skyfall_supply_route_failed }
+				hidden_trigger = { has_country_flag = achievement_nd_skyfall_airfield_network_failed }
 			}
 		}
 		clr_country_flag = achievement_nd_meteor_shower_ended
@@ -11107,11 +11107,11 @@ natural_disaster_achievement_begin_sequence = {
 		limit = {
 			check_variable = { natural_disaster_planned_origin_family = constant:natural_disaster_family.whole_earth_rupture }
 			OR = {
-				NOT = { has_country_flag = achievement_nd_rupture_recovery_started }
-				has_country_flag = achievement_nd_rupture_recovery_closed
-				has_country_flag = achievement_nd_rupture_attempt_failed
-				has_country_flag = achievement_nd_rupture_aftershock_matured
-				has_country_flag = achievement_nd_rupture_tsunami_matured
+				NOT = { hidden_trigger = { has_country_flag = achievement_nd_rupture_recovery_started } }
+				hidden_trigger = { has_country_flag = achievement_nd_rupture_recovery_closed }
+				hidden_trigger = { has_country_flag = achievement_nd_rupture_attempt_failed }
+				hidden_trigger = { has_country_flag = achievement_nd_rupture_aftershock_matured }
+				hidden_trigger = { has_country_flag = achievement_nd_rupture_tsunami_matured }
 			}
 		}
 		clr_country_flag = achievement_nd_rupture_recovery_closed
@@ -11364,7 +11364,7 @@ natural_disaster_achievement_track_chain_schedule = {
 			if = {
 				limit = {
 					OR = {
-						NOT = { has_country_flag = achievement_nd_tsunami_prevention_started }
+						NOT = { hidden_trigger = { has_country_flag = achievement_nd_tsunami_prevention_started } }
 						NOT = {
 							check_variable = {
 								var = achievement_nd_tsunami_sequence_id
@@ -11994,8 +11994,8 @@ natural_disaster_achievement_finalize_country_recovery = {
 natural_disaster_achievement_check_operational_state = {
 	if = {
 		limit = {
-			has_country_flag = achievement_nd_meteor_shower_started
-			NOT = { has_country_flag = achievement_nd_meteor_shower_ended }
+			hidden_trigger = { has_country_flag = achievement_nd_meteor_shower_started }
+			NOT = { hidden_trigger = { has_country_flag = achievement_nd_meteor_shower_ended } }
 		}
 		clr_country_flag = achievement_nd_skyfall_capital_operational
 		clr_country_flag = achievement_nd_skyfall_supply_route_operational
@@ -12032,8 +12032,8 @@ natural_disaster_achievement_check_operational_state = {
 	}
 	if = {
 		limit = {
-			has_country_flag = achievement_nd_transport_recovery_started
-			NOT = { has_country_flag = achievement_nd_transport_sequence_ended }
+			hidden_trigger = { has_country_flag = achievement_nd_transport_recovery_started }
+			NOT = { hidden_trigger = { has_country_flag = achievement_nd_transport_sequence_ended } }
 			OR = {
 				NOT = { natural_disaster_country_has_operational_capital_route = yes }
 				NOT = { natural_disaster_country_has_operational_supply_route = yes }
@@ -12043,30 +12043,30 @@ natural_disaster_achievement_check_operational_state = {
 	}
 	if = {
 		limit = {
-			has_country_flag = achievement_nd_barrage_maximum_started
-			NOT = { has_country_flag = achievement_nd_barrage_maximum_ended }
-			NOT = { has_country_flag = achievement_nd_barrage_aftermath_unresolved }
-			has_country_flag = achievement_nd_barrage_capital_route_preserved
+			hidden_trigger = { has_country_flag = achievement_nd_barrage_maximum_started }
+			NOT = { hidden_trigger = { has_country_flag = achievement_nd_barrage_maximum_ended } }
+			NOT = { hidden_trigger = { has_country_flag = achievement_nd_barrage_aftermath_unresolved } }
+			hidden_trigger = { has_country_flag = achievement_nd_barrage_capital_route_preserved }
 			NOT = { natural_disaster_country_has_operational_capital_route = yes }
 		}
 		clr_country_flag = achievement_nd_barrage_capital_route_preserved
 	}
 	if = {
 		limit = {
-			has_country_flag = achievement_nd_barrage_maximum_started
-			NOT = { has_country_flag = achievement_nd_barrage_maximum_ended }
-			NOT = { has_country_flag = achievement_nd_barrage_aftermath_unresolved }
-			has_country_flag = achievement_nd_barrage_port_corridor_preserved
+			hidden_trigger = { has_country_flag = achievement_nd_barrage_maximum_started }
+			NOT = { hidden_trigger = { has_country_flag = achievement_nd_barrage_maximum_ended } }
+			NOT = { hidden_trigger = { has_country_flag = achievement_nd_barrage_aftermath_unresolved } }
+			hidden_trigger = { has_country_flag = achievement_nd_barrage_port_corridor_preserved }
 			NOT = { natural_disaster_country_has_operational_port_corridor = yes }
 		}
 		clr_country_flag = achievement_nd_barrage_port_corridor_preserved
 	}
 	if = {
 		limit = {
-			has_country_flag = achievement_nd_barrage_maximum_started
-			NOT = { has_country_flag = achievement_nd_barrage_maximum_ended }
-			NOT = { has_country_flag = achievement_nd_barrage_aftermath_unresolved }
-			has_country_flag = achievement_nd_barrage_rail_corridor_preserved
+			hidden_trigger = { has_country_flag = achievement_nd_barrage_maximum_started }
+			NOT = { hidden_trigger = { has_country_flag = achievement_nd_barrage_maximum_ended } }
+			NOT = { hidden_trigger = { has_country_flag = achievement_nd_barrage_aftermath_unresolved } }
+			hidden_trigger = { has_country_flag = achievement_nd_barrage_rail_corridor_preserved }
 			NOT = { natural_disaster_country_has_operational_rail_corridor = yes }
 		}
 		clr_country_flag = achievement_nd_barrage_rail_corridor_preserved
@@ -12452,15 +12452,15 @@ natural_disaster_prepare_abnormal_history_record = {
 		set_temp_variable = { natural_disaster_history_has_chain_target = 1 }
 	}
 	if = {
-		limit = { has_state_flag = natural_disaster_warning_active }
+		limit = { hidden_trigger = { has_state_flag = natural_disaster_warning_active } }
 		set_temp_variable = { natural_disaster_history_record_status = constant:natural_disaster_gui_record_status.warning_active }
 	}
 	else_if = {
-		limit = { has_state_flag = natural_disaster_warning_scheduled }
+		limit = { hidden_trigger = { has_state_flag = natural_disaster_warning_scheduled } }
 		set_temp_variable = { natural_disaster_history_record_status = constant:natural_disaster_gui_record_status.warning_scheduled }
 	}
 	else_if = {
-		limit = { has_state_flag = natural_disaster_impact_scheduled }
+		limit = { hidden_trigger = { has_state_flag = natural_disaster_impact_scheduled } }
 		set_temp_variable = { natural_disaster_history_record_status = constant:natural_disaster_gui_record_status.impact_scheduled }
 	}
 	else_if = {
@@ -12468,43 +12468,43 @@ natural_disaster_prepare_abnormal_history_record = {
 		set_temp_variable = { natural_disaster_history_record_status = constant:natural_disaster_gui_record_status.recovery }
 	}
 	if = {
-		limit = { has_state_flag = natural_disaster_reconstruction_partial }
+		limit = { hidden_trigger = { has_state_flag = natural_disaster_reconstruction_partial } }
 		set_temp_variable = { natural_disaster_history_record_result = constant:natural_disaster_gui_record_result.partial }
 	}
 	if = {
-		limit = { has_state_flag = natural_disaster_phase_failed }
+		limit = { hidden_trigger = { has_state_flag = natural_disaster_phase_failed } }
 		set_temp_variable = { natural_disaster_history_record_result = constant:natural_disaster_gui_record_result.failed }
 	}
 	if = {
-		limit = { has_state_flag = natural_disaster_recovery_unresolved_territory }
+		limit = { hidden_trigger = { has_state_flag = natural_disaster_recovery_unresolved_territory } }
 		set_temp_variable = { natural_disaster_history_record_result = constant:natural_disaster_gui_record_result.unresolved }
 	}
 	if = { limit = { has_variable = natural_disaster_foreign_relief_status } set_temp_variable = { natural_disaster_history_relief_status = natural_disaster_foreign_relief_status } }
 	if = {
 		limit = {
 			check_variable = { natural_disaster_history_relief_status = constant:natural_disaster_relief_status.none }
-			has_state_flag = natural_disaster_inbound_relief_arrived
+			hidden_trigger = { has_state_flag = natural_disaster_inbound_relief_arrived }
 		}
 		set_temp_variable = { natural_disaster_history_relief_status = constant:natural_disaster_relief_status.arrived }
 	}
 	else_if = {
 		limit = {
 			check_variable = { natural_disaster_history_relief_status = constant:natural_disaster_relief_status.none }
-			has_state_flag = natural_disaster_relief_misdirected
+			hidden_trigger = { has_state_flag = natural_disaster_relief_misdirected }
 		}
 		set_temp_variable = { natural_disaster_history_relief_status = constant:natural_disaster_relief_status.misdirected }
 	}
 	else_if = {
 		limit = {
 			check_variable = { natural_disaster_history_relief_status = constant:natural_disaster_relief_status.none }
-			has_state_flag = natural_disaster_relief_refused
+			hidden_trigger = { has_state_flag = natural_disaster_relief_refused }
 		}
 		set_temp_variable = { natural_disaster_history_relief_status = constant:natural_disaster_relief_status.refused }
 	}
 	else_if = {
 		limit = {
 			check_variable = { natural_disaster_history_relief_status = constant:natural_disaster_relief_status.none }
-			has_state_flag = natural_disaster_inbound_relief_active
+			hidden_trigger = { has_state_flag = natural_disaster_inbound_relief_active }
 		}
 		set_temp_variable = { natural_disaster_history_relief_status = constant:natural_disaster_relief_status.pledged }
 	}
@@ -12755,7 +12755,7 @@ natural_disaster_register_abnormal_gui_card = {
 			if = {
 				limit = {
 					is_ai = no
-					NOT = { has_country_flag = natural_disaster_abnormal_notice_cooldown }
+					NOT = { hidden_trigger = { has_country_flag = natural_disaster_abnormal_notice_cooldown } }
 				}
 				set_country_flag = {
 					flag = natural_disaster_abnormal_notice_cooldown
@@ -12960,7 +12960,7 @@ natural_disaster_rebuild_abnormal_gui_view = {
 	set_temp_variable = { natural_disaster_gui_current_rebuild_id = global.natural_disaster_gui_rebuild_id }
 
 	if = {
-		limit = { has_country_flag = natural_disaster_abnormal_history_view }
+		limit = { hidden_trigger = { has_country_flag = natural_disaster_abnormal_history_view } }
 		for_loop_effect = {
 			start = 0
 			end = global.natural_disaster_abnormal_history_state_entries^num
@@ -12968,7 +12968,7 @@ natural_disaster_rebuild_abnormal_gui_view = {
 			var:global.natural_disaster_abnormal_history_state_entries^natural_disaster_gui_candidate_index = {
 				if = {
 					limit = {
-						has_state_flag = natural_disaster_abnormal_gui_card
+						hidden_trigger = { has_state_flag = natural_disaster_abnormal_gui_card }
 						check_variable = {
 							var = natural_disaster_abnormal_history_record_index
 							value = natural_disaster_gui_candidate_index
@@ -12989,11 +12989,11 @@ natural_disaster_rebuild_abnormal_gui_view = {
 			var:natural_disaster_abnormal_states^natural_disaster_gui_candidate_index = {
 				if = {
 					limit = {
-						has_state_flag = natural_disaster_abnormal_gui_card
+						hidden_trigger = { has_state_flag = natural_disaster_abnormal_gui_card }
 						OR = {
-							has_state_flag = natural_disaster_warning_scheduled
-							has_state_flag = natural_disaster_warning_active
-							has_state_flag = natural_disaster_impact_scheduled
+							hidden_trigger = { has_state_flag = natural_disaster_warning_scheduled }
+							hidden_trigger = { has_state_flag = natural_disaster_warning_active }
+							hidden_trigger = { has_state_flag = natural_disaster_impact_scheduled }
 							natural_disaster_state_has_open_card = yes
 						}
 					}
@@ -13138,7 +13138,7 @@ natural_disaster_rebuild_abnormal_gui_view = {
 		limit = { check_variable = { natural_disaster_gui_state_entries^num < 1 } }
 		set_country_flag = natural_disaster_abnormal_map_dormant
 		if = {
-			limit = { NOT = { has_country_flag = natural_disaster_abnormal_history_view } }
+			limit = { NOT = { hidden_trigger = { has_country_flag = natural_disaster_abnormal_history_view } } }
 			clr_country_flag = natural_disaster_abnormal_map_available
 		}
 		set_variable = { natural_disaster_gui_selected_index = 0 }
@@ -13146,7 +13146,7 @@ natural_disaster_rebuild_abnormal_gui_view = {
 	else = {
 		clr_country_flag = natural_disaster_abnormal_map_dormant
 		if = {
-			limit = { NOT = { has_country_flag = natural_disaster_abnormal_history_view } }
+			limit = { NOT = { hidden_trigger = { has_country_flag = natural_disaster_abnormal_history_view } } }
 			set_country_flag = natural_disaster_abnormal_map_available
 		}
 		if = {

@@ -1256,7 +1256,7 @@ country_event = {
 			limit = {
 				has_country_flag = sov_nuclear_bombs_moratorium_verification_pending
 				sov_nuclear_bombs_event_complete_accounting = yes
-				NOT = { has_country_flag = sov_nuclear_bombs_moratorium_violation }
+				NOT = { hidden_trigger = { has_country_flag = sov_nuclear_bombs_moratorium_violation } }
 			}
 			set_country_flag = sov_nuclear_bombs_moratorium_verified
 			set_country_flag = sov_nuclear_bombs_world_threat_source_suppressed
@@ -1284,20 +1284,20 @@ country_event = {
 		if = {
 			limit = {
 				has_country_flag = sov_nuclear_bombs_standdown_verification_pending
-				has_country_flag = sov_nuclear_bombs_stand_down_recorded
+				hidden_trigger = { has_country_flag = sov_nuclear_bombs_stand_down_recorded }
 				has_event_target = sov_nuclear_bombs_standdown_partner
 				event_target:sov_nuclear_bombs_standdown_partner = {
 					exists = yes
 					is_major = yes
 					has_tech = nukes
-					has_country_flag = sov_nuclear_bombs_standdown_offer_accepted
-					has_country_flag = sov_nuclear_bombs_release_orders_suspended
-					NOT = { has_country_flag = sov_nuclear_bombs_standdown_violated }
+					hidden_trigger = { has_country_flag = sov_nuclear_bombs_standdown_offer_accepted }
+					hidden_trigger = { has_country_flag = sov_nuclear_bombs_release_orders_suspended }
+					NOT = { hidden_trigger = { has_country_flag = sov_nuclear_bombs_standdown_violated } }
 					check_variable = { var = sov_nuclear_bombs_standdown_offer_nonce value = ROOT.sov_nuclear_bombs_standdown_nonce compare = equals }
 				}
-				NOT = { has_country_flag = sov_nuclear_bombs_standdown_violated }
+				NOT = { hidden_trigger = { has_country_flag = sov_nuclear_bombs_standdown_violated } }
 				NOT = { has_global_flag = soviet_collapse_terminal_collapse }
-				NOT = { has_global_flag = soviet_collapse_terminal_collapse_in_progress }
+				NOT = { hidden_trigger = { has_global_flag = soviet_collapse_terminal_collapse_in_progress } }
 			}
 			set_country_flag = sov_nuclear_bombs_hotline_standdown_verified
 			set_country_flag = sov_nuclear_bombs_major_exchange_stood_down
@@ -1397,7 +1397,7 @@ country_event = {
 			limit = {
 				has_country_flag = sov_nuclear_bombs_settlement_verification_pending
 				sov_nuclear_bombs_event_settlement_terms_are_valid = yes
-				NOT = { has_country_flag = sov_nuclear_bombs_settlement_verification_failed }
+				NOT = { hidden_trigger = { has_country_flag = sov_nuclear_bombs_settlement_verification_failed } }
 			}
 			set_country_flag = sov_nuclear_bombs_settlement_verified
 			set_country_flag = sov_nuclear_bombs_world_threat_source_suppressed

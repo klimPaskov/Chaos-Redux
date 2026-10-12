@@ -323,7 +323,7 @@ africa_focus_ai_retry_pending_route_action = {
 	if = {
 		limit = {
 			is_ai = yes
-			has_country_flag = africa_focus_route_action_ai_contract_pending
+			hidden_trigger = { has_country_flag = africa_focus_route_action_ai_contract_pending }
 			africa_focus_pending_route_action_is_unresolved = yes
 			africa_has_open_action_capacity = yes
 		}
@@ -344,11 +344,11 @@ africa_focus_ai_retry_pending_route_action = {
 					africa_action_target_is_usable = yes
 					OR = {
 						AND = { ROOT = { check_variable = { africa_focus_pending_route_action = constant:africa_action.convene_federal_deadlock_conference } } }
-						AND = { ROOT = { check_variable = { africa_focus_pending_route_action = constant:africa_action.arbitrate_continental_succession } } has_country_flag = africa_succession_dispute_active }
-						AND = { ROOT = { check_variable = { africa_focus_pending_route_action = constant:africa_action.balance_food_and_industrial_plan } } has_country_flag = africa_plan_balance_crisis_active }
-						AND = { ROOT = { check_variable = { africa_focus_pending_route_action = constant:africa_action.review_victorious_commander_loyalty } } has_country_flag = africa_commander_loyalty_review_target }
-						AND = { ROOT = { check_variable = { africa_focus_pending_route_action = constant:africa_action.ratify_confederal_emergency_action } } has_country_flag = africa_confederal_emergency_ratification_target }
-						AND = { ROOT = { check_variable = { africa_focus_pending_route_action = constant:africa_action.review_covenant_obligation } } has_country_flag = africa_covenant_obligation_target }
+						AND = { ROOT = { check_variable = { africa_focus_pending_route_action = constant:africa_action.arbitrate_continental_succession } } hidden_trigger = { has_country_flag = africa_succession_dispute_active } }
+						AND = { ROOT = { check_variable = { africa_focus_pending_route_action = constant:africa_action.balance_food_and_industrial_plan } } hidden_trigger = { has_country_flag = africa_plan_balance_crisis_active } }
+						AND = { ROOT = { check_variable = { africa_focus_pending_route_action = constant:africa_action.review_victorious_commander_loyalty } } hidden_trigger = { has_country_flag = africa_commander_loyalty_review_target } }
+						AND = { ROOT = { check_variable = { africa_focus_pending_route_action = constant:africa_action.ratify_confederal_emergency_action } } hidden_trigger = { has_country_flag = africa_confederal_emergency_ratification_target } }
+						AND = { ROOT = { check_variable = { africa_focus_pending_route_action = constant:africa_action.review_covenant_obligation } } hidden_trigger = { has_country_flag = africa_covenant_obligation_target } }
 					}
 				}
 				save_event_target_as = africa_focus_route_action_target
@@ -568,7 +568,7 @@ africa_apply_constitutional_axis_progression = {
 # constitutional axes turn focus choices into family-specific dynamic prices.
 africa_apply_constitutional_action_cost_adjustment = {
 	if = {
-		limit = { has_country_flag = africa_constitutional_payoff_axes_active }
+		limit = { hidden_trigger = { has_country_flag = africa_constitutional_payoff_axes_active } }
 		set_temp_variable = { africa_action_axis_discount = constant:africa_value.zero }
 		set_temp_variable = { africa_action_axis_surcharge = constant:africa_value.zero }
 		if = {
@@ -652,7 +652,7 @@ africa_apply_constitutional_action_risk_adjustment = {
 	if = {
 		limit = {
 			has_event_target = africa_host
-			event_target:africa_host = { has_country_flag = africa_constitutional_payoff_axes_active }
+			event_target:africa_host = { hidden_trigger = { has_country_flag = africa_constitutional_payoff_axes_active } }
 		}
 		set_temp_variable = { africa_action_axis_fitness = constant:africa_value.zero }
 		event_target:africa_host = {
@@ -1921,7 +1921,7 @@ africa_focus_ai_retry_overlay_corridor_action = {
 	if = {
 		limit = {
 			is_ai = yes
-			has_country_flag = africa_overlay_corridor_ai_contract_pending
+			hidden_trigger = { has_country_flag = africa_overlay_corridor_ai_contract_pending }
 			africa_has_open_action_capacity = yes
 		}
 		africa_clear_selected_country_target = yes
@@ -2005,7 +2005,7 @@ africa_focus_ai_retry_overlay_corridor_action = {
 africa_focus_reconcile_overlay_corridor_action_result = {
 	if = {
 		limit = {
-			has_country_flag = africa_overlay_corridor_action_pending
+			hidden_trigger = { has_country_flag = africa_overlay_corridor_action_pending }
 			africa_focus_overlay_corridor_evidence_ready = yes
 		}
 		set_country_flag = africa_overlay_corridor_project_completed

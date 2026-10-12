@@ -253,7 +253,7 @@ events_log_set_default_actor_for_current_event = {
 	else_if = {
 		limit = {
 			check_variable = { event_id = constant:independence_wave_event.id }
-			has_global_flag = independence_wave_event_log_actor_ready
+			hidden_trigger = { has_global_flag = independence_wave_event_log_actor_ready }
 			has_event_target = independence_wave_latest_actor
 			event_target:independence_wave_latest_actor = { exists = yes }
 		}
@@ -298,7 +298,7 @@ events_log_set_default_actor_for_current_event = {
 	else_if = {
 		limit = {
 			check_variable = { event_id = constant:africa_event.id }
-			has_global_flag = africa_rsa_branch_used
+			hidden_trigger = { has_global_flag = africa_rsa_branch_used }
 			has_event_target = africa_host
 			event_target:africa_host = { exists = yes }
 		}
@@ -713,18 +713,18 @@ refresh_events_log_system_history_views = {
 	every_country = {
 		limit = {
 			is_ai = no
-			has_country_flag = events_log_window_open
+			hidden_trigger = { has_country_flag = events_log_window_open }
 		}
 		if = {
-			limit = { has_country_flag = events_log_history_tab }
+			limit = { hidden_trigger = { has_country_flag = events_log_history_tab } }
 			rebuild_events_log_history_view = yes
 		}
 		if = {
-			limit = { has_country_flag = events_log_events_tab }
+			limit = { hidden_trigger = { has_country_flag = events_log_events_tab } }
 			rebuild_events_log_events_view = yes
 		}
 		if = {
-			limit = { has_country_flag = events_log_event_details_open }
+			limit = { hidden_trigger = { has_country_flag = events_log_event_details_open } }
 			events_log_rebuild_open_event_details_view = yes
 		}
 	}
@@ -884,18 +884,18 @@ record_events_log_history_entry = {
 	every_country = {
 		limit = {
 			is_ai = no
-			has_country_flag = events_log_window_open
+			hidden_trigger = { has_country_flag = events_log_window_open }
 		}
 		if = {
-			limit = { has_country_flag = events_log_history_tab }
+			limit = { hidden_trigger = { has_country_flag = events_log_history_tab } }
 			rebuild_events_log_history_view = yes
 		}
 		if = {
-			limit = { has_country_flag = events_log_events_tab }
+			limit = { hidden_trigger = { has_country_flag = events_log_events_tab } }
 			rebuild_events_log_events_view = yes
 		}
 		if = {
-			limit = { has_country_flag = events_log_event_details_open }
+			limit = { hidden_trigger = { has_country_flag = events_log_event_details_open } }
 			events_log_rebuild_open_event_details_view = yes
 		}
 	}
@@ -1178,8 +1178,8 @@ record_events_log_evolution_entry = {
 	every_country = {
 		limit = {
 			is_ai = no
-			has_country_flag = events_log_window_open
-			has_country_flag = events_log_evolutions_tab
+			hidden_trigger = { has_country_flag = events_log_window_open }
+			hidden_trigger = { has_country_flag = events_log_evolutions_tab }
 		}
 		rebuild_events_log_evolution_view = yes
 	}
@@ -1420,43 +1420,43 @@ events_log_evaluate_world_end_scenario_active = {
 		set_temp_variable = { events_log_world_end_scenario_active = 1 }
 	}
 	else_if = {
-		limit = { check_variable = { events_log_world_end_scenario_flag = constant:world_end_scenario_id.zombie_apocalypse } has_global_flag = world_end_zombies }
+		limit = { check_variable = { events_log_world_end_scenario_flag = constant:world_end_scenario_id.zombie_apocalypse } hidden_trigger = { has_global_flag = world_end_zombies } }
 		set_temp_variable = { events_log_world_end_scenario_active = 1 }
 	}
 	else_if = {
-		limit = { check_variable = { events_log_world_end_scenario_flag = constant:world_end_scenario_id.weaponized_wendigo_ascendancy } has_global_flag = world_end_wendigo }
+		limit = { check_variable = { events_log_world_end_scenario_flag = constant:world_end_scenario_id.weaponized_wendigo_ascendancy } hidden_trigger = { has_global_flag = world_end_wendigo } }
 		set_temp_variable = { events_log_world_end_scenario_active = 1 }
 	}
 	else_if = {
-		limit = { check_variable = { events_log_world_end_scenario_flag = constant:world_end_scenario_id.world_in_fury } has_global_flag = world_end_fury }
+		limit = { check_variable = { events_log_world_end_scenario_flag = constant:world_end_scenario_id.world_in_fury } hidden_trigger = { has_global_flag = world_end_fury } }
 		set_temp_variable = { events_log_world_end_scenario_active = 1 }
 	}
 	else_if = {
-		limit = { check_variable = { events_log_world_end_scenario_flag = constant:world_end_scenario_id.last_shores } has_global_flag = world_end_death }
+		limit = { check_variable = { events_log_world_end_scenario_flag = constant:world_end_scenario_id.last_shores } hidden_trigger = { has_global_flag = world_end_death } }
 		set_temp_variable = { events_log_world_end_scenario_active = 1 }
 	}
 	else_if = {
-		limit = { check_variable = { events_log_world_end_scenario_flag = constant:world_end_scenario_id.world_is_the_larder } has_global_flag = cannibalism_world_end_ordinary }
+		limit = { check_variable = { events_log_world_end_scenario_flag = constant:world_end_scenario_id.world_is_the_larder } hidden_trigger = { has_global_flag = cannibalism_world_end_ordinary } }
 		set_temp_variable = { events_log_world_end_scenario_active = 1 }
 	}
 	else_if = {
-		limit = { check_variable = { events_log_world_end_scenario_flag = constant:world_end_scenario_id.no_thaw_will_come } has_global_flag = cannibalism_world_end_wendigo }
+		limit = { check_variable = { events_log_world_end_scenario_flag = constant:world_end_scenario_id.no_thaw_will_come } hidden_trigger = { has_global_flag = cannibalism_world_end_wendigo } }
 		set_temp_variable = { events_log_world_end_scenario_active = 1 }
 	}
 	else_if = {
-		limit = { check_variable = { events_log_world_end_scenario_flag = constant:world_end_scenario_id.world_opens_below } has_global_flag = world_end_resources_found_caves }
+		limit = { check_variable = { events_log_world_end_scenario_flag = constant:world_end_scenario_id.world_opens_below } hidden_trigger = { has_global_flag = world_end_resources_found_caves } }
 		set_temp_variable = { events_log_world_end_scenario_active = 1 }
 	}
 	else_if = {
-		limit = { check_variable = { events_log_world_end_scenario_flag = constant:world_end_scenario_id.laboratory_world } has_global_flag = world_end_brilliant_scientist_laboratory_world }
+		limit = { check_variable = { events_log_world_end_scenario_flag = constant:world_end_scenario_id.laboratory_world } hidden_trigger = { has_global_flag = world_end_brilliant_scientist_laboratory_world } }
 		set_temp_variable = { events_log_world_end_scenario_active = 1 }
 	}
 	else_if = {
-		limit = { check_variable = { events_log_world_end_scenario_flag = constant:world_end_scenario_id.strategic_singularity } has_global_flag = world_end_brilliant_scientist_singularity }
+		limit = { check_variable = { events_log_world_end_scenario_flag = constant:world_end_scenario_id.strategic_singularity } hidden_trigger = { has_global_flag = world_end_brilliant_scientist_singularity } }
 		set_temp_variable = { events_log_world_end_scenario_active = 1 }
 	}
 	else_if = {
-		limit = { check_variable = { events_log_world_end_scenario_flag = constant:world_end_scenario_id.black_plague } has_global_flag = world_end_black_plague }
+		limit = { check_variable = { events_log_world_end_scenario_flag = constant:world_end_scenario_id.black_plague } hidden_trigger = { has_global_flag = world_end_black_plague } }
 		set_temp_variable = { events_log_world_end_scenario_active = 1 }
 	}
 	else_if = {
@@ -1464,11 +1464,11 @@ events_log_evaluate_world_end_scenario_active = {
 		set_temp_variable = { events_log_world_end_scenario_active = 1 }
 	}
 	else_if = {
-		limit = { check_variable = { events_log_world_end_scenario_flag = constant:world_end_scenario_id.global_jihad } has_global_flag = world_end_random_terror_false_revelation }
+		limit = { check_variable = { events_log_world_end_scenario_flag = constant:world_end_scenario_id.global_jihad } hidden_trigger = { has_global_flag = world_end_random_terror_false_revelation } }
 		set_temp_variable = { events_log_world_end_scenario_active = 1 }
 	}
 	else_if = {
-		limit = { check_variable = { events_log_world_end_scenario_flag = constant:world_end_scenario_id.world_of_anarchy } has_global_flag = world_end_murder_mystery }
+		limit = { check_variable = { events_log_world_end_scenario_flag = constant:world_end_scenario_id.world_of_anarchy } hidden_trigger = { has_global_flag = world_end_murder_mystery } }
 		set_temp_variable = { events_log_world_end_scenario_active = 1 }
 	}
 }
@@ -2168,7 +2168,7 @@ events_log_rebuild_open_event_details_view = {
 		set_temp_variable = { events_log_open_detail_use_history_context = 0 }
 		if = {
 			limit = {
-				has_country_flag = events_log_detail_use_history_context
+				hidden_trigger = { has_country_flag = events_log_detail_use_history_context }
 				check_variable = {
 					var = events_log_history_selected_event_id
 					value = event_id
@@ -3695,7 +3695,7 @@ events_log_append_cluster_history_rows = {
 			check_variable = { global.events_log_cluster_id_entries^num > 0 }
 		}
 		if = {
-			limit = { has_country_flag = events_log_sort_descending }
+			limit = { hidden_trigger = { has_country_flag = events_log_sort_descending } }
 			for_loop_effect = {
 				start = 0
 				end = global.events_log_cluster_id_entries^num
@@ -3747,7 +3747,7 @@ events_log_history_append_rows_by_event_id_sort = {
 	while_loop_effect = {
 		limit = { check_variable = { temp_events_log_history_unique_event_ids^num > 0 } }
 		if = {
-			limit = { has_country_flag = events_log_sort_descending }
+			limit = { hidden_trigger = { has_country_flag = events_log_sort_descending } }
 			find_highest_in_array = {
 				array = temp_events_log_history_unique_event_ids
 				value = events_log_sort_id
@@ -3821,7 +3821,7 @@ events_log_history_append_rows_by_actor_sort = {
 		limit = { check_variable = { temp_events_log_history_unique_actors^num > 0 } }
 
 		if = {
-			limit = { has_country_flag = events_log_sort_descending }
+			limit = { hidden_trigger = { has_country_flag = events_log_sort_descending } }
 			find_highest_in_array = {
 				array = temp_events_log_history_unique_actors
 				value = events_log_actor_sort_target
@@ -3835,7 +3835,7 @@ events_log_history_append_rows_by_actor_sort = {
 		}
 
 		if = {
-			limit = { has_country_flag = events_log_sort_descending }
+			limit = { hidden_trigger = { has_country_flag = events_log_sort_descending } }
 			set_temp_variable = { events_log_actor_member_index = 0 }
 			while_loop_effect = {
 				limit = { check_variable = { events_log_actor_member_index < events_log_source_count } }
@@ -3898,7 +3898,7 @@ events_log_history_append_rows_by_actor_sort = {
 
 	# Non-actor rows are always appended after actor rows.
 	if = {
-		limit = { has_country_flag = events_log_sort_descending }
+		limit = { hidden_trigger = { has_country_flag = events_log_sort_descending } }
 		set_temp_variable = { events_log_source_index = 0 }
 		while_loop_effect = {
 			limit = { check_variable = { events_log_source_index < events_log_source_count } }
@@ -3990,7 +3990,7 @@ rebuild_events_log_history_view = {
 		if = {
 			limit = { check_variable = { settings_events_log_sort_mode = 0 } }
 			if = {
-				limit = { has_country_flag = events_log_sort_descending }
+				limit = { hidden_trigger = { has_country_flag = events_log_sort_descending } }
 				for_loop_effect = {
 					start = 0
 					end = events_log_source_count
@@ -4209,7 +4209,7 @@ events_log_evolution_append_rows_by_actor_sort = {
 		limit = { check_variable = { temp_events_log_evolution_unique_actors^num > 0 } }
 
 		if = {
-			limit = { has_country_flag = events_log_evolution_sort_descending }
+			limit = { hidden_trigger = { has_country_flag = events_log_evolution_sort_descending } }
 			find_highest_in_array = {
 				array = temp_events_log_evolution_unique_actors
 				value = events_log_evolution_actor_sort_target
@@ -4223,7 +4223,7 @@ events_log_evolution_append_rows_by_actor_sort = {
 		}
 
 		if = {
-			limit = { has_country_flag = events_log_evolution_sort_descending }
+			limit = { hidden_trigger = { has_country_flag = events_log_evolution_sort_descending } }
 			set_temp_variable = { events_log_evolution_actor_member_index = 0 }
 			while_loop_effect = {
 				limit = { check_variable = { events_log_evolution_actor_member_index < events_log_evolution_source_count } }
@@ -4286,7 +4286,7 @@ events_log_evolution_append_rows_by_actor_sort = {
 
 	# Non-actor rows are always appended after actor rows.
 	if = {
-		limit = { has_country_flag = events_log_evolution_sort_descending }
+		limit = { hidden_trigger = { has_country_flag = events_log_evolution_sort_descending } }
 		set_temp_variable = { events_log_evolution_source_index = 0 }
 		while_loop_effect = {
 			limit = { check_variable = { events_log_evolution_source_index < events_log_evolution_source_count } }
@@ -4377,7 +4377,7 @@ rebuild_events_log_evolution_view = {
 		if = {
 			limit = { check_variable = { settings_events_log_evolution_sort_mode = 0 } }
 			if = {
-				limit = { has_country_flag = events_log_evolution_sort_descending }
+				limit = { hidden_trigger = { has_country_flag = events_log_evolution_sort_descending } }
 				for_loop_effect = {
 					start = 0
 					end = events_log_evolution_source_count
@@ -4407,7 +4407,7 @@ rebuild_events_log_evolution_view = {
 		else_if = {
 			limit = { check_variable = { settings_events_log_evolution_sort_mode = 1 } }
 			if = {
-				limit = { has_country_flag = events_log_evolution_sort_descending }
+				limit = { hidden_trigger = { has_country_flag = events_log_evolution_sort_descending } }
 				find_highest_in_array = {
 					array = global.events_log_evolution_tier_entries
 					value = events_log_evolution_sort_tier
@@ -4476,7 +4476,7 @@ rebuild_events_log_evolution_view = {
 		else_if = {
 			limit = { check_variable = { settings_events_log_evolution_sort_mode = 2 } }
 			if = {
-				limit = { has_country_flag = events_log_evolution_sort_descending }
+				limit = { hidden_trigger = { has_country_flag = events_log_evolution_sort_descending } }
 				find_highest_in_array = {
 					array = global.events_log_evolution_stage_entries
 					value = events_log_evolution_sort_stage
@@ -5065,7 +5065,7 @@ rebuild_events_log_events_view = {
 				}
 				else_if = {
 					limit = {
-						has_country_flag = events_log_events_sort_descending
+						hidden_trigger = { has_country_flag = events_log_events_sort_descending }
 						check_variable = { events_log_events_candidate_metric > events_log_events_best_metric }
 					}
 					set_temp_variable = { events_log_events_best_index = events_log_events_scan_index }
@@ -5074,7 +5074,7 @@ rebuild_events_log_events_view = {
 				}
 				else_if = {
 					limit = {
-						NOT = { has_country_flag = events_log_events_sort_descending }
+						NOT = { hidden_trigger = { has_country_flag = events_log_events_sort_descending } }
 						check_variable = { events_log_events_candidate_metric < events_log_events_best_metric }
 					}
 					set_temp_variable = { events_log_events_best_index = events_log_events_scan_index }
@@ -5085,7 +5085,7 @@ rebuild_events_log_events_view = {
 					limit = { check_variable = { events_log_events_candidate_metric = events_log_events_best_metric } }
 					if = {
 						limit = {
-							has_country_flag = events_log_events_sort_descending
+							hidden_trigger = { has_country_flag = events_log_events_sort_descending }
 							check_variable = {
 								var = temp_events_log_events_source_event_id_entries^events_log_events_scan_index
 								value = events_log_events_best_event_id
@@ -5098,7 +5098,7 @@ rebuild_events_log_events_view = {
 					}
 					else_if = {
 						limit = {
-							NOT = { has_country_flag = events_log_events_sort_descending }
+							NOT = { hidden_trigger = { has_country_flag = events_log_events_sort_descending } }
 							check_variable = {
 								var = temp_events_log_events_source_event_id_entries^events_log_events_scan_index
 								value = events_log_events_best_event_id

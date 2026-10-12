@@ -91,7 +91,7 @@ air_cleanliness_treaty_pending_invitation_is_valid = {
 air_cleanliness_treaty_can_accept_invitation = {
 	NOT = { has_global_flag = fallout_transition_active }
 	NOT = { has_global_flag = fallout_active }
-	has_country_flag = air_cleanliness_treaty_invitation_open
+	hidden_trigger = { has_country_flag = air_cleanliness_treaty_invitation_open }
 	air_cleanliness_treaty_country_can_be_invited = yes
 	has_variable = air_cleanliness_treaty_invitation_generation
 	check_variable = {
@@ -909,8 +909,8 @@ air_winter_fallout_snapshot_generation_is_open = {
 # contract. A state receives a producer receipt only after every field passes.
 air_winter_fallout_snapshot_payload_is_canonical = {
 	air_winter_state_is_valid = yes
-	has_state_flag = air_winter_initialized
-	has_state_flag = air_winter_original_category_recorded
+	hidden_trigger = { has_state_flag = air_winter_initialized }
+	hidden_trigger = { has_state_flag = air_winter_original_category_recorded }
 	has_variable = air_winter_original_category
 	has_variable = air_winter_phase
 	has_variable = air_winter_exposure
@@ -1017,7 +1017,7 @@ air_winter_fallout_snapshot_payload_is_canonical = {
 air_winter_fallout_snapshot_source_receipt_is_current = {
 	air_winter_fallout_snapshot_generation_is_open = yes
 	air_winter_fallout_snapshot_payload_is_canonical = yes
-	has_state_flag = air_winter_fallout_snapshot_produced
+	hidden_trigger = { has_state_flag = air_winter_fallout_snapshot_produced }
 	has_variable = air_winter_fallout_snapshot_producer_schema_version
 	has_variable = air_winter_fallout_snapshot_producer_generation
 	check_variable = {
@@ -4887,7 +4887,7 @@ fallout_nzl_has_two_current_relief_partners = {
 }
 
 fallout_nzl_external_transaction_is_current = {
-	has_country_flag = fallout_nzl_external_transaction_active
+	hidden_trigger = { has_country_flag = fallout_nzl_external_transaction_active }
 	has_variable = fallout_nzl_external_transaction_generation
 	has_variable = fallout_nzl_external_partner
 	check_variable = {
@@ -29314,13 +29314,13 @@ fallout_event_175_cleanup_can_enter = {
 
 # Supported scope: COUNTRY
 fallout_request_ledger_is_free = {
-	NOT = { has_global_flag = fallout_manual_scenario_active }
-	NOT = { has_global_flag = fallout_manual_sweep_active }
-	NOT = { has_global_flag = fallout_manual_countdown_active }
-	NOT = { has_global_flag = fallout_request_pending }
+	NOT = { hidden_trigger = { has_global_flag = fallout_manual_scenario_active } }
+	NOT = { hidden_trigger = { has_global_flag = fallout_manual_sweep_active } }
+	NOT = { hidden_trigger = { has_global_flag = fallout_manual_countdown_active } }
+	NOT = { hidden_trigger = { has_global_flag = fallout_request_pending } }
 	NOT = { has_global_flag = fallout_transition_active }
 	NOT = { has_global_flag = fallout_active }
-	NOT = { has_global_flag = fallout_transition_complete }
+	NOT = { hidden_trigger = { has_global_flag = fallout_transition_complete } }
 }
 
 # Supported scope: COUNTRY
@@ -29417,7 +29417,7 @@ fallout_air_request_is_valid = {
 	NOT = { has_global_flag = world_end_disabled }
 	OR = {
 		NOT = { has_global_flag = fallout_air_cleanliness_disabled }
-		has_global_flag = fallout_air_cleanliness_request_paused
+		hidden_trigger = { has_global_flag = fallout_air_cleanliness_request_paused }
 	}
 	fallout_consequence_enabled = yes
 	check_variable = {
@@ -29444,11 +29444,11 @@ fallout_final_silence_request_is_valid = {
 			has_global_flag = world_end_final_silence_completed
 		}
 	}
-	NOT = { has_global_flag = world_end_zombies }
-	NOT = { has_global_flag = world_end_fury }
-	NOT = { has_global_flag = world_end_death }
-	NOT = { has_global_flag = world_end_cannibalism }
-	NOT = { has_global_flag = world_end_cannibalism_wendigo }
+	NOT = { hidden_trigger = { has_global_flag = world_end_zombies } }
+	NOT = { hidden_trigger = { has_global_flag = world_end_fury } }
+	NOT = { hidden_trigger = { has_global_flag = world_end_death } }
+	NOT = { hidden_trigger = { has_global_flag = world_end_cannibalism } }
+	NOT = { hidden_trigger = { has_global_flag = world_end_cannibalism_wendigo } }
 }
 
 # Supported scope: COUNTRY. Explicit terminal sources do not require an Air
@@ -29475,10 +29475,10 @@ fallout_strategic_singularity_request_actor_is_valid = {
 		OR = {
 			AND = {
 				has_country_flag = brilliant_scientist_kruger_state
-				has_country_flag = brilliant_scientist_terminal_commitment_singularity
-				has_country_flag = brilliant_scientist_singularity_prelock_chaos_recorded
-				has_country_flag = brilliant_scientist_singularity_consequences_recorded
-				has_country_flag = brilliant_scientist_singularity_fallout_request_submitted
+				hidden_trigger = { has_country_flag = brilliant_scientist_terminal_commitment_singularity }
+				hidden_trigger = { has_country_flag = brilliant_scientist_singularity_prelock_chaos_recorded }
+				hidden_trigger = { has_country_flag = brilliant_scientist_singularity_consequences_recorded }
+				hidden_trigger = { has_country_flag = brilliant_scientist_singularity_fallout_request_submitted }
 			}
 			brilliant_scientist_mengele_singularity_request_actor_is_valid = yes
 		}
@@ -29490,7 +29490,7 @@ fallout_strategic_singularity_request_actor_is_valid = {
 fallout_manual_request_is_valid = {
 	fallout_request_source_is_manual = yes
 	NOT = { has_global_flag = world_end }
-	has_global_flag = fallout_manual_native_sweep_complete
+	hidden_trigger = { has_global_flag = fallout_manual_native_sweep_complete }
 }
 
 # Supported scope: COUNTRY
@@ -29505,7 +29505,7 @@ fallout_pending_request_is_valid = {
 
 # Supported scope: STATE
 fallout_state_is_direct_manual_target = {
-	has_state_flag = fallout_manual_native_struck
+	hidden_trigger = { has_state_flag = fallout_manual_native_struck }
 }
 
 # Supported scope: STATE
@@ -29519,7 +29519,7 @@ fallout_state_has_live_nuclear_fallout = {
 fallout_pretransition_air_winter_source_is_structurally_current = {
 	has_variable = global.fallout_pretransition_air_winter_ledger_schema_version
 	has_variable = global.fallout_pretransition_air_winter_ledger_generation
-	has_state_flag = fallout_pretransition_air_winter_provenance_recorded
+	hidden_trigger = { has_state_flag = fallout_pretransition_air_winter_provenance_recorded }
 	has_variable = fallout_pretransition_air_winter_source_kind
 	has_variable = fallout_pretransition_air_winter_source_schema_version
 	has_variable = fallout_pretransition_air_winter_source_generation
@@ -29548,9 +29548,9 @@ fallout_pretransition_air_winter_source_is_structurally_current = {
 		compare = equals
 	}
 	OR = {
-		NOT = { has_state_flag = fallout_pretransition_air_winter_greenhouse_provenance_recorded }
+		NOT = { hidden_trigger = { has_state_flag = fallout_pretransition_air_winter_greenhouse_provenance_recorded } }
 		AND = {
-			has_state_flag = fallout_pretransition_air_winter_greenhouse_provenance_recorded
+			hidden_trigger = { has_state_flag = fallout_pretransition_air_winter_greenhouse_provenance_recorded }
 			has_variable = fallout_pretransition_air_winter_greenhouse_generation
 			check_variable = {
 				var = fallout_pretransition_air_winter_greenhouse_generation
@@ -29735,7 +29735,7 @@ fallout_state_category_matches_conversion_target = {
 
 # Supported scope: COUNTRY
 fallout_pretransition_country_snapshot_row_is_current = {
-	has_country_flag = fallout_pretransition_country
+	hidden_trigger = { has_country_flag = fallout_pretransition_country }
 	has_variable = fallout_pretransition_country_scope
 	has_variable = fallout_pretransition_snapshot_generation
 	var:fallout_pretransition_country_scope = { tag = PREV }
@@ -29747,28 +29747,28 @@ fallout_pretransition_country_snapshot_row_is_current = {
 	is_in_array = { array = global.fallout_pretransition_countries value = THIS }
 	OR = {
 		AND = {
-			has_country_flag = fallout_pretransition_government_democratic
-			NOT = { has_country_flag = fallout_pretransition_government_communism }
-			NOT = { has_country_flag = fallout_pretransition_government_fascism }
-			NOT = { has_country_flag = fallout_pretransition_government_neutrality }
+			hidden_trigger = { has_country_flag = fallout_pretransition_government_democratic }
+			NOT = { hidden_trigger = { has_country_flag = fallout_pretransition_government_communism } }
+			NOT = { hidden_trigger = { has_country_flag = fallout_pretransition_government_fascism } }
+			NOT = { hidden_trigger = { has_country_flag = fallout_pretransition_government_neutrality } }
 		}
 		AND = {
-			has_country_flag = fallout_pretransition_government_communism
-			NOT = { has_country_flag = fallout_pretransition_government_democratic }
-			NOT = { has_country_flag = fallout_pretransition_government_fascism }
-			NOT = { has_country_flag = fallout_pretransition_government_neutrality }
+			hidden_trigger = { has_country_flag = fallout_pretransition_government_communism }
+			NOT = { hidden_trigger = { has_country_flag = fallout_pretransition_government_democratic } }
+			NOT = { hidden_trigger = { has_country_flag = fallout_pretransition_government_fascism } }
+			NOT = { hidden_trigger = { has_country_flag = fallout_pretransition_government_neutrality } }
 		}
 		AND = {
-			has_country_flag = fallout_pretransition_government_fascism
-			NOT = { has_country_flag = fallout_pretransition_government_democratic }
-			NOT = { has_country_flag = fallout_pretransition_government_communism }
-			NOT = { has_country_flag = fallout_pretransition_government_neutrality }
+			hidden_trigger = { has_country_flag = fallout_pretransition_government_fascism }
+			NOT = { hidden_trigger = { has_country_flag = fallout_pretransition_government_democratic } }
+			NOT = { hidden_trigger = { has_country_flag = fallout_pretransition_government_communism } }
+			NOT = { hidden_trigger = { has_country_flag = fallout_pretransition_government_neutrality } }
 		}
 		AND = {
-			has_country_flag = fallout_pretransition_government_neutrality
-			NOT = { has_country_flag = fallout_pretransition_government_democratic }
-			NOT = { has_country_flag = fallout_pretransition_government_communism }
-			NOT = { has_country_flag = fallout_pretransition_government_fascism }
+			hidden_trigger = { has_country_flag = fallout_pretransition_government_neutrality }
+			NOT = { hidden_trigger = { has_country_flag = fallout_pretransition_government_democratic } }
+			NOT = { hidden_trigger = { has_country_flag = fallout_pretransition_government_communism } }
+			NOT = { hidden_trigger = { has_country_flag = fallout_pretransition_government_fascism } }
 		}
 	}
 }
@@ -29776,9 +29776,9 @@ fallout_pretransition_country_snapshot_row_is_current = {
 # Supported scope: STATE. This durable row validates the frozen payload after
 # ownership and control have changed during successor allocation.
 fallout_pretransition_state_snapshot_row_is_structurally_current = {
-	has_state_flag = fallout_original_owner_recorded
-	has_state_flag = fallout_original_controller_recorded
-	has_state_flag = fallout_pretransition_state_category_recorded
+	hidden_trigger = { has_state_flag = fallout_original_owner_recorded }
+	hidden_trigger = { has_state_flag = fallout_original_controller_recorded }
+	hidden_trigger = { has_state_flag = fallout_pretransition_state_category_recorded }
 	has_variable = fallout_original_owner_scope
 	has_variable = fallout_original_controller_scope
 	has_variable = fallout_pretransition_snapshot_generation
@@ -30002,8 +30002,8 @@ fallout_pretransition_tags_are_preserved = {
 # Supported scope: COUNTRY. A rebuild is legal only inside the short pre-lock
 # transaction or while an active current-schema transition remains in phase 1.
 fallout_snapshot_epoch_rebuild_is_allowed = {
-	NOT = { has_global_flag = fallout_transition_snapshot_applied }
-	NOT = { has_global_flag = fallout_transition_destructive_started }
+	NOT = { hidden_trigger = { has_global_flag = fallout_transition_snapshot_applied } }
+	NOT = { hidden_trigger = { has_global_flag = fallout_transition_destructive_started } }
 	has_variable = global.fallout_transition_schema_version
 	has_variable = global.fallout_transition_phase
 	check_variable = {
@@ -30018,13 +30018,13 @@ fallout_snapshot_epoch_rebuild_is_allowed = {
 	}
 	OR = {
 		AND = {
-			has_global_flag = fallout_snapshot_prelock_capture_authorized
-			has_global_flag = fallout_request_pending
+			hidden_trigger = { has_global_flag = fallout_snapshot_prelock_capture_authorized }
+			hidden_trigger = { has_global_flag = fallout_request_pending }
 			NOT = { has_global_flag = fallout_transition_active }
 			fallout_current_country_is_coordinator = yes
 		}
 		AND = {
-			has_global_flag = world_end_fallout
+			hidden_trigger = { has_global_flag = world_end_fallout }
 			has_global_flag = fallout_transition_active
 			fallout_current_country_is_coordinator = yes
 		}
@@ -30034,10 +30034,10 @@ fallout_snapshot_epoch_rebuild_is_allowed = {
 # Supported scope: COUNTRY. Blackout and world-end ownership may be committed
 # only after both halves of the shared snapshot epoch pass their full proofs.
 fallout_snapshot_epoch_is_ready_to_lock = {
-	has_global_flag = fallout_request_pending
-	NOT = { has_global_flag = fallout_request_locked }
+	hidden_trigger = { has_global_flag = fallout_request_pending }
+	NOT = { hidden_trigger = { has_global_flag = fallout_request_locked } }
 	NOT = { has_global_flag = fallout_transition_active }
-	NOT = { has_global_flag = fallout_transition_error }
+	NOT = { hidden_trigger = { has_global_flag = fallout_transition_error } }
 	fallout_current_country_is_coordinator = yes
 	check_variable = {
 		var = global.fallout_transition_schema_version
@@ -30049,9 +30049,9 @@ fallout_snapshot_epoch_is_ready_to_lock = {
 		value = constant:fallout_transition_phase.snapshot
 		compare = equals
 	}
-	has_global_flag = fallout_player_snapshot_complete
+	hidden_trigger = { has_global_flag = fallout_player_snapshot_complete }
 	fallout_player_snapshot_ledger_is_current = yes
-	has_global_flag = fallout_world_snapshot_complete
+	hidden_trigger = { has_global_flag = fallout_world_snapshot_complete }
 	fallout_world_snapshot_capture_rows_are_current = yes
 }
 
@@ -30950,7 +30950,7 @@ fallout_pretransition_player_snapshot_row_is_current = {
 	NOT = {
 		any_owned_state = {
 			OR = {
-				NOT = { has_state_flag = fallout_player_origin_state }
+				NOT = { hidden_trigger = { has_state_flag = fallout_player_origin_state } }
 				NOT = { has_variable = fallout_player_origin_scope }
 				NOT = { has_variable = fallout_player_origin_id }
 				NOT = { has_variable = fallout_player_origin_generation }
@@ -30974,7 +30974,7 @@ fallout_pretransition_player_snapshot_row_is_current = {
 	}
 	NOT = {
 		any_state = {
-			has_state_flag = fallout_player_origin_state
+			hidden_trigger = { has_state_flag = fallout_player_origin_state }
 			has_variable = fallout_player_origin_scope
 			var:fallout_player_origin_scope = { tag = PREV.PREV }
 			NOT = { is_owned_by = PREV }
@@ -30982,13 +30982,13 @@ fallout_pretransition_player_snapshot_row_is_current = {
 	}
 	OR = {
 		AND = {
-			has_country_flag = fallout_player_source_anchor_preserved
-			NOT = { has_country_flag = fallout_player_source_landless }
+			hidden_trigger = { has_country_flag = fallout_player_source_anchor_preserved }
+			NOT = { hidden_trigger = { has_country_flag = fallout_player_source_landless } }
 			has_variable = fallout_player_source_anchor_state
 			var:fallout_player_source_anchor_state = {
 				is_owned_by = PREV
-				has_state_flag = fallout_player_source_anchor
-				has_state_flag = fallout_player_origin_state
+				hidden_trigger = { has_state_flag = fallout_player_source_anchor }
+				hidden_trigger = { has_state_flag = fallout_player_origin_state }
 				has_variable = fallout_player_origin_scope
 				has_variable = fallout_player_origin_generation
 				check_variable = {
@@ -31000,8 +31000,8 @@ fallout_pretransition_player_snapshot_row_is_current = {
 			}
 		}
 		AND = {
-			has_country_flag = fallout_player_source_landless
-			NOT = { has_country_flag = fallout_player_source_anchor_preserved }
+			hidden_trigger = { has_country_flag = fallout_player_source_landless }
+			NOT = { hidden_trigger = { has_country_flag = fallout_player_source_anchor_preserved } }
 			NOT = { has_variable = fallout_player_source_anchor_state }
 			NOT = { any_owned_state = { always = yes } }
 		}
@@ -31725,8 +31725,8 @@ fallout_recoverable_peace_conference_error_is_active = {
 # Supported scope: any. Snapshot recovery is legal only before destructive
 # state mutation and only when this exact one-error signature owns the ledger.
 fallout_recoverable_snapshot_error_is_active = {
-	has_global_flag = fallout_transition_error
-	NOT = { has_global_flag = fallout_transition_destructive_started }
+	hidden_trigger = { has_global_flag = fallout_transition_error }
+	NOT = { hidden_trigger = { has_global_flag = fallout_transition_destructive_started } }
 	check_variable = {
 		var = global.fallout_transition_error_code
 		value = constant:fallout_transition_error_code.snapshot_incomplete
@@ -31741,8 +31741,8 @@ fallout_recoverable_snapshot_error_is_active = {
 
 # Supported scope: any
 fallout_recoverable_player_snapshot_error_is_active = {
-	has_global_flag = fallout_transition_error
-	NOT = { has_global_flag = fallout_transition_destructive_started }
+	hidden_trigger = { has_global_flag = fallout_transition_error }
+	NOT = { hidden_trigger = { has_global_flag = fallout_transition_destructive_started } }
 	check_variable = {
 		var = global.fallout_transition_error_code
 		value = constant:fallout_transition_error_code.player_snapshot_incomplete

@@ -411,10 +411,10 @@ africa_world_constituent_invitation_is_available = {
 
 africa_world_constituent_invitation_is_open = {
 	has_country_flag = africa_world_constituent_invitation_pending
-	has_country_flag = africa_world_constituent_registered
-	NOT = { has_country_flag = africa_world_constituent_consented }
-	NOT = { has_country_flag = africa_world_constituent_refused }
-	NOT = { has_country_flag = africa_world_constituent_withdrawn }
+	hidden_trigger = { has_country_flag = africa_world_constituent_registered }
+	NOT = { hidden_trigger = { has_country_flag = africa_world_constituent_consented } }
+	NOT = { hidden_trigger = { has_country_flag = africa_world_constituent_refused } }
+	NOT = { hidden_trigger = { has_country_flag = africa_world_constituent_withdrawn } }
 }
 
 africa_world_constituent_counterterms_are_open = {
@@ -659,7 +659,7 @@ africa_world_package_successor_candidate_is_valid = {
 	NOT = { is_special_chaos_country = yes }
 	OR = {
 		has_focus_tree = generic_focus
-		has_country_flag = africa_world_package_focus_replacement_approved
+		hidden_trigger = { has_country_flag = africa_world_package_focus_replacement_approved }
 	}
 	capital_scope = { is_controlled_by = PREV }
 	OR = {
@@ -718,11 +718,11 @@ africa_world_constituent_can_coerce = {
 }
 
 africa_world_constituent_can_withdraw = {
-	has_country_flag = africa_world_constituent_member
+	hidden_trigger = { has_country_flag = africa_world_constituent_member }
 	NOT = { has_country_flag = africa_world_package_actor }
-	NOT = { has_country_flag = africa_world_constituent_withdrawn }
+	NOT = { hidden_trigger = { has_country_flag = africa_world_constituent_withdrawn } }
 	NOT = { has_country_flag = africa_world_constituent_withdrawal_notice }
-	NOT = { has_country_flag = africa_world_constituent_withdrawal_contested }
+	NOT = { hidden_trigger = { has_country_flag = africa_world_constituent_withdrawal_contested } }
 	is_subject = no
 }
 
@@ -735,10 +735,10 @@ africa_world_constituent_can_record_refusal = {
 }
 
 africa_world_constituent_can_complete_orderly_withdrawal = {
-	has_country_flag = africa_world_constituent_member
+	hidden_trigger = { has_country_flag = africa_world_constituent_member }
 	has_country_flag = africa_world_constituent_withdrawal_notice
-	NOT = { has_country_flag = africa_world_constituent_withdrawal_contested }
-	NOT = { has_country_flag = africa_world_constituent_withdrawn }
+	NOT = { hidden_trigger = { has_country_flag = africa_world_constituent_withdrawal_contested } }
+	NOT = { hidden_trigger = { has_country_flag = africa_world_constituent_withdrawn } }
 	is_subject = no
 	has_capitulated = no
 }
@@ -849,7 +849,7 @@ africa_scramble_coalition_has_room = {
 africa_world_package_sponsorship_gate_is_open = {
 	africa_is_current_host = yes
 	has_global_flag = africa_is_one
-	has_global_flag = africa_scramble_response_active
+	hidden_trigger = { has_global_flag = africa_scramble_response_active }
 	NOT = { has_global_flag = world_end }
 	check_variable = {
 		var = global.chaos_meter_value
@@ -1021,10 +1021,10 @@ africa_world_continental_war_target_is_eligible = {
 
 africa_world_defeated_continent_is_eligible = {
 	africa_world_package_is_installed = yes
-	has_country_flag = africa_continental_war_opponent
+	hidden_trigger = { has_country_flag = africa_continental_war_opponent }
 	OR = {
 		has_capitulated = yes
-		has_country_flag = africa_defeated_continent_power
+		hidden_trigger = { has_country_flag = africa_defeated_continent_power }
 	}
 	NOT = { has_country_flag = africa_world_submission_settlement }
 }
@@ -1070,7 +1070,7 @@ africa_world_terminal_super_event_runtime_surfaces_are_registered = {
 # COUNTRY scope on the host.
 africa_terminal_world_identity_can_commit = {
 	africa_is_current_host = yes
-	has_global_flag = africa_the_world_super_event_package_ready
+	hidden_trigger = { has_global_flag = africa_the_world_super_event_package_ready }
 	has_global_flag = africa_world_order_open
 	has_global_flag = africa_continental_wars_active
 	has_global_flag = africa_is_one
@@ -1100,7 +1100,7 @@ africa_terminal_world_identity_can_commit = {
 	}
 	NOT = { has_global_flag = world_end }
 	NOT = { has_global_flag = world_end_disabled }
-	NOT = { has_country_flag = africa_postwar_constitutional_review_pending }
+	NOT = { hidden_trigger = { has_country_flag = africa_postwar_constitutional_review_pending } }
 	NOT = {
 		any_of_scopes = {
 			array = africa_world_package_actors
@@ -1114,8 +1114,8 @@ africa_world_region_target_is_eligible = {
 	has_country_flag = africa_world_package_actor
 	has_country_flag = africa_world_package_installed
 	africa_world_package_has_valid_identifier = yes
-	has_country_flag = africa_world_order_resolved_under_africa
-	NOT = { has_country_flag = africa_world_region_administration_complete }
+	hidden_trigger = { has_country_flag = africa_world_order_resolved_under_africa }
+	NOT = { hidden_trigger = { has_country_flag = africa_world_region_administration_complete } }
 	has_global_flag = world_end_africa_the_world
 }
 # COUNTRY scope on the installed North American package actor. The final

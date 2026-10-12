@@ -23,15 +23,15 @@ brilliant_scientist_is_eligible_host = {
 	capital_scope = { is_controlled_by = ROOT }
 	NOT = { is_special_chaos_country = yes }
 	NOT = { is_actual_nonhuman_country = yes }
-	NOT = { has_country_flag = brilliant_scientist_host_rejected_permanently }
-	NOT = { has_country_flag = brilliant_scientist_host_history }
-	NOT = { has_country_flag = brilliant_scientist_former_host }
-	NOT = { has_country_flag = brilliant_scientist_kruger_expelled }
-	NOT = { has_country_flag = brilliant_scientist_kruger_killed }
-	NOT = { has_country_flag = brilliant_scientist_kruger_transferred_away }
-	NOT = { has_country_flag = brilliant_scientist_kruger_lost }
-	NOT = { has_country_flag = brilliant_scientist_kruger_departed }
-	NOT = { has_country_flag = brilliant_scientist_kruger_received_by_transfer }
+	NOT = { hidden_trigger = { has_country_flag = brilliant_scientist_host_rejected_permanently } }
+	NOT = { hidden_trigger = { has_country_flag = brilliant_scientist_host_history } }
+	NOT = { hidden_trigger = { has_country_flag = brilliant_scientist_former_host } }
+	NOT = { hidden_trigger = { has_country_flag = brilliant_scientist_kruger_expelled } }
+	NOT = { hidden_trigger = { has_country_flag = brilliant_scientist_kruger_killed } }
+	NOT = { hidden_trigger = { has_country_flag = brilliant_scientist_kruger_transferred_away } }
+	NOT = { hidden_trigger = { has_country_flag = brilliant_scientist_kruger_lost } }
+	NOT = { hidden_trigger = { has_country_flag = brilliant_scientist_kruger_departed } }
+	NOT = { hidden_trigger = { has_country_flag = brilliant_scientist_kruger_received_by_transfer } }
 	NOT = { has_country_flag = brilliant_scientist_kruger_state }
 	NOT = { has_global_flag = world_end }
 	any_owned_state = {
@@ -70,8 +70,8 @@ brilliant_scientist_has_non_dormant_kruger_holder = {
 brilliant_scientist_has_pending_opening_transaction = {
 	any_country = {
 		OR = {
-			has_country_flag = brilliant_scientist_opening_chain_active
-			has_country_flag = brilliant_scientist_prefire_opening_pending
+			hidden_trigger = { has_country_flag = brilliant_scientist_opening_chain_active }
+			hidden_trigger = { has_country_flag = brilliant_scientist_prefire_opening_pending }
 		}
 	}
 }
@@ -125,10 +125,10 @@ brilliant_scientist_is_transfer_ready = {
 		is_active_scientist = no
 	}
 	NOT = { has_country_flag = brilliant_scientist_kruger_confirmed_dead }
-	NOT = { has_country_flag = brilliant_scientist_kruger_confined }
-	NOT = { has_country_flag = brilliant_scientist_evolution_delivery_active }
-	NOT = { has_country_flag = brilliant_scientist_character_transaction_lock }
-	NOT = { has_global_flag = brilliant_scientist_character_transaction_lock }
+	NOT = { hidden_trigger = { has_country_flag = brilliant_scientist_kruger_confined } }
+	NOT = { hidden_trigger = { has_country_flag = brilliant_scientist_evolution_delivery_active } }
+	NOT = { hidden_trigger = { has_country_flag = brilliant_scientist_character_transaction_lock } }
+	NOT = { hidden_trigger = { has_global_flag = brilliant_scientist_character_transaction_lock } }
 	NOT = { has_global_flag = world_end }
 }
 
@@ -136,7 +136,7 @@ brilliant_scientist_is_transfer_ready = {
 brilliant_scientist_is_valid_transfer_recipient = {
 	brilliant_scientist_is_eligible_host = yes
 	NOT = { has_country_flag = brilliant_scientist_current_host }
-	NOT = { has_country_flag = brilliant_scientist_character_transaction_lock }
+	NOT = { hidden_trigger = { has_country_flag = brilliant_scientist_character_transaction_lock } }
 }
 
 # COUNTRY scope, called while the rejecting player is saved as the regular
@@ -487,7 +487,7 @@ brilliant_scientist_project_can_advance = {
 # ---------------------------------------------------------------------------
 
 brilliant_scientist_is_evolution_i_enabled = {
-	NOT = { has_global_flag = events_log_disabled_evolution_16_16_1 }
+	NOT = { hidden_trigger = { has_global_flag = events_log_disabled_evolution_16_16_1 } }
 	check_variable = {
 		var = global.chaos_meter_value
 		value = constant:chaos_meter_tier_range.tier_1.min
@@ -496,7 +496,7 @@ brilliant_scientist_is_evolution_i_enabled = {
 }
 
 brilliant_scientist_is_evolution_ii_enabled = {
-	NOT = { has_global_flag = events_log_disabled_evolution_16_16_2 }
+	NOT = { hidden_trigger = { has_global_flag = events_log_disabled_evolution_16_16_2 } }
 	check_variable = {
 		var = global.chaos_meter_value
 		value = constant:chaos_meter_tier_range.tier_2.min
@@ -505,7 +505,7 @@ brilliant_scientist_is_evolution_ii_enabled = {
 }
 
 brilliant_scientist_is_evolution_iii_enabled = {
-	NOT = { has_global_flag = events_log_disabled_evolution_16_16_3 }
+	NOT = { hidden_trigger = { has_global_flag = events_log_disabled_evolution_16_16_3 } }
 	check_variable = {
 		var = global.chaos_meter_value
 		value = constant:chaos_meter_tier_range.tier_3.min
@@ -514,7 +514,7 @@ brilliant_scientist_is_evolution_iii_enabled = {
 }
 
 brilliant_scientist_is_evolution_iv_enabled = {
-	NOT = { has_global_flag = events_log_disabled_evolution_16_16_4 }
+	NOT = { hidden_trigger = { has_global_flag = events_log_disabled_evolution_16_16_4 } }
 	check_variable = {
 		var = global.chaos_meter_value
 		value = constant:chaos_meter_tier_range.tier_4.min
@@ -890,7 +890,7 @@ brilliant_scientist_can_begin_temporal_stabilization = {
 }
 
 brilliant_scientist_origin_conclusion_is_unlocked = {
-	has_country_flag = brilliant_scientist_origin_conclusion_locked
+	hidden_trigger = { has_country_flag = brilliant_scientist_origin_conclusion_locked }
 }
 
 brilliant_scientist_origin_evidence_is_sufficient = {
@@ -913,7 +913,7 @@ brilliant_scientist_origin_public_proof_is_ready = {
 		value = constant:brilliant_scientist_origin.public_proof_minimum
 		compare = greater_than_or_equals
 	}
-	has_country_flag = brilliant_scientist_origin_evidence_authenticated
+	hidden_trigger = { has_country_flag = brilliant_scientist_origin_evidence_authenticated }
 }
 
 # ---------------------------------------------------------------------------

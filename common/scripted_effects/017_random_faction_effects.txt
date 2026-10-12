@@ -1070,7 +1070,7 @@ random_faction_record_current_evolution = {
 
 random_faction_bind_history_sequence = {
 	if = {
-		limit = { has_country_flag = random_faction_history_result_pending }
+		limit = { hidden_trigger = { has_country_flag = random_faction_history_result_pending } }
 		set_variable = { random_faction_pending_history_sequence = global.events_log_history_sequence }
 		if = {
 			limit = { has_variable = random_faction_pending_history_leader }
@@ -1127,10 +1127,10 @@ random_faction_finalize_history_result = {
 		every_country = {
 			limit = {
 				is_ai = no
-				has_country_flag = events_log_window_open
+				hidden_trigger = { has_country_flag = events_log_window_open }
 			}
-			if = { limit = { has_country_flag = events_log_history_tab } rebuild_events_log_history_view = yes }
-			if = { limit = { has_country_flag = events_log_event_details_open } events_log_rebuild_open_event_details_view = yes }
+			if = { limit = { hidden_trigger = { has_country_flag = events_log_history_tab } } rebuild_events_log_history_view = yes }
+			if = { limit = { hidden_trigger = { has_country_flag = events_log_event_details_open } } events_log_rebuild_open_event_details_view = yes }
 		}
 	}
 }

@@ -8,7 +8,7 @@
 
 camp_occ_initialize_country = {
 	if = {
-		limit = { NOT = { has_country_flag = camp_occ_initialized } }
+		limit = { NOT = { hidden_trigger = { has_country_flag = camp_occ_initialized } } }
 		set_country_flag = camp_occ_initialized
 		clear_array = camp_occ_states
 		clear_array = camp_occ_eligible_states
@@ -34,7 +34,7 @@ camp_occ_initialize_records = {
 # State camp_occ_remaining_k remains the aggregate live reservation read by custody admission.
 camp_occ_initialize_rows = {
 	if = {
-		limit = { NOT = { has_country_flag = camp_occ_rows_initialized } }
+		limit = { NOT = { hidden_trigger = { has_country_flag = camp_occ_rows_initialized } } }
 		set_country_flag = camp_occ_rows_initialized
 		clear_array = camp_occ_row_ids
 		clear_array = camp_occ_row_root_ids
@@ -79,7 +79,7 @@ camp_occ_append_row = {
 camp_occ_adopt_legacy_state_row = {
 	camp_occ_backfill_cohort_origin = yes
 	if = {
-		limit = { has_state_flag = camp_occ_registered NOT = { has_variable = camp_occ_native_row_id } }
+		limit = { hidden_trigger = { has_state_flag = camp_occ_registered } NOT = { has_variable = camp_occ_native_row_id } }
 		set_temp_variable = { camp_occ_append_origin = camp_occ_cohort_origin_state }
 		set_temp_variable = { camp_occ_append_host = THIS }
 		set_temp_variable = { camp_occ_append_profile = camp_occ_profile_id }
@@ -89,7 +89,7 @@ camp_occ_adopt_legacy_state_row = {
 		set_temp_variable = { camp_occ_legacy_removed_k = camp_occ_total_exposure_removed_k }
 		set_temp_variable = { camp_occ_legacy_released_k = camp_occ_total_released_k }
 		set_temp_variable = { camp_occ_legacy_closed = 0 }
-		if = { limit = { has_state_flag = camp_occ_closed } set_temp_variable = { camp_occ_legacy_closed = 1 } }
+		if = { limit = { hidden_trigger = { has_state_flag = camp_occ_closed } } set_temp_variable = { camp_occ_legacy_closed = 1 } }
 		var:camp_occ_responsible_country = {
 			camp_occ_append_row = yes
 			set_temp_variable = { camp_occ_legacy_row_index = camp_occ_row_count }
@@ -197,7 +197,7 @@ camp_occ_register_cohort = {
 # Backfill only those rows; never overwrite a recorded origin or infer one from current control.
 camp_occ_backfill_cohort_origin = {
 	if = {
-		limit = { has_state_flag = camp_occ_registered NOT = { has_variable = camp_occ_cohort_origin_state } }
+		limit = { hidden_trigger = { has_state_flag = camp_occ_registered } NOT = { has_variable = camp_occ_cohort_origin_state } }
 		set_variable = { camp_occ_cohort_origin_state = THIS }
 	}
 }
@@ -223,8 +223,8 @@ camp_occ_distribute_known_origin_removal = {
 	set_temp_variable = { camp_origin_single_reconciliation_accepted = constant:camp_admin_value.zero }
 	if = {
 		limit = {
-			has_state_flag = camp_origin_single_origin_reconciliation_pending
-			NOT = { has_state_flag = camp_origin_ambiguous }
+			hidden_trigger = { has_state_flag = camp_origin_single_origin_reconciliation_pending }
+			NOT = { hidden_trigger = { has_state_flag = camp_origin_ambiguous } }
 			check_variable = { camp_origin_pending_single_family = constant:camp_origin_family.occupation }
 			camp_origin_host_rows_valid = yes
 		}
@@ -1560,8 +1560,8 @@ camp_occ_partner_comply_with_order = {
 camp_occ_partner_obstruct_deportations = {
 	if = {
 		limit = {
-			NOT = { has_country_flag = camp_occ_partner_deportations_halted }
-			NOT = { has_country_flag = camp_occ_partner_deportations_obstructed }
+			NOT = { hidden_trigger = { has_country_flag = camp_occ_partner_deportations_halted } }
+			NOT = { hidden_trigger = { has_country_flag = camp_occ_partner_deportations_obstructed } }
 		}
 		set_country_flag = camp_occ_partner_deportations_obstructed
 		if = {
@@ -1580,7 +1580,7 @@ camp_occ_partner_obstruct_deportations = {
 # Records entry. A repeated call does nothing.
 camp_occ_partner_halt_deportations = {
 	if = {
-		limit = { NOT = { has_country_flag = camp_occ_partner_deportations_halted } }
+		limit = { NOT = { hidden_trigger = { has_country_flag = camp_occ_partner_deportations_halted } } }
 		set_country_flag = camp_occ_partner_deportations_halted
 		clr_country_flag = camp_occ_partner_deportations_obstructed
 		add_stability = constant:camp_occ_partner_response.halt_stability
@@ -1608,7 +1608,7 @@ camp_occ_partner_halt_deportations = {
 camp_occ_close_state = {
 	camp_occ_backfill_cohort_origin = yes
 	if = {
-		limit = { has_state_flag = camp_occ_registered NOT = { has_state_flag = camp_occ_closed } }
+		limit = { hidden_trigger = { has_state_flag = camp_occ_registered } NOT = { hidden_trigger = { has_state_flag = camp_occ_closed } } }
 		camp_occ_reconcile_external_population = yes
 		if = {
 			limit = { camp_origin_host_provenance_ready = yes }

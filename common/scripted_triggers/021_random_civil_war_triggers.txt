@@ -43,8 +43,8 @@ random_civil_war_has_terminal_lock = {
 	OR = {
 		has_capitulated = yes
 		has_global_flag = world_end
-		has_country_flag = random_civil_war_terminal_lock
-		has_country_flag = random_civil_war_cleanup_lock
+		hidden_trigger = { has_country_flag = random_civil_war_terminal_lock }
+		hidden_trigger = { has_country_flag = random_civil_war_cleanup_lock }
 	}
 }
 
@@ -53,7 +53,7 @@ random_civil_war_has_terminal_lock = {
 # keeps a bounded target review from depending on a separate maintenance tick.
 random_civil_war_successor_grace_clear = {
 	OR = {
-		NOT = { has_country_flag = random_civil_war_successor_grace }
+		NOT = { hidden_trigger = { has_country_flag = random_civil_war_successor_grace } }
 		AND = {
 			has_variable = random_civil_war_successor_grace_until
 			check_variable = {
@@ -67,37 +67,37 @@ random_civil_war_successor_grace_clear = {
 
 random_civil_war_has_incompatible_bespoke_route = {
 	OR = {
-		has_country_flag = random_civil_war_incompatible_bespoke_route
-		has_country_flag = random_civil_war_excluded_by_owner_event
-		has_country_flag = random_civil_war_active_external_war_lock
+		hidden_trigger = { has_country_flag = random_civil_war_incompatible_bespoke_route }
+		hidden_trigger = { has_country_flag = random_civil_war_excluded_by_owner_event }
+		hidden_trigger = { has_country_flag = random_civil_war_active_external_war_lock }
 	}
 }
 
 random_civil_war_ideological_route_valid = {
-	has_country_flag = random_civil_war_ideological_route_ready
+	hidden_trigger = { has_country_flag = random_civil_war_ideological_route_ready }
 }
 
 random_civil_war_legal_route_valid = {
-	has_country_flag = random_civil_war_legal_route_ready
+	hidden_trigger = { has_country_flag = random_civil_war_legal_route_ready }
 }
 
 random_civil_war_regional_route_valid = {
-	has_country_flag = random_civil_war_regional_route_ready
+	hidden_trigger = { has_country_flag = random_civil_war_regional_route_ready }
 }
 
 random_civil_war_command_route_valid = {
-	has_country_flag = random_civil_war_command_route_ready
+	hidden_trigger = { has_country_flag = random_civil_war_command_route_ready }
 }
 
 # COUNTRY scope. The same-tag path is limited to a one-state or explicitly
 # proven all-island plan. The caller must prove the loyalty contest or armed-
 # cell route before setting `random_civil_war_same_tag_route_ready`.
 random_civil_war_same_tag_route_valid = {
-	has_country_flag = random_civil_war_same_tag_route_ready
+	hidden_trigger = { has_country_flag = random_civil_war_same_tag_route_ready }
 	OR = {
 		NOT = { num_of_controlled_states > constant:random_civil_war_capacity.maximum_one_state_route_states }
-		has_country_flag = random_civil_war_all_island_route_ready
-		has_country_flag = random_civil_war_same_tag_loyalty_contest_ready
+		hidden_trigger = { has_country_flag = random_civil_war_all_island_route_ready }
+		hidden_trigger = { has_country_flag = random_civil_war_same_tag_loyalty_contest_ready }
 	}
 }
 
@@ -120,8 +120,8 @@ random_civil_war_event6_identity_adapter_valid = {
 	random_civil_war_is_normal_human_country = yes
 	has_variable = random_civil_war_event6_package_id
 	has_variable = random_civil_war_event6_anchor_state
-	has_country_flag = random_civil_war_event6_identity_ready
-	NOT = { has_country_flag = random_civil_war_event6_identity_collision }
+	hidden_trigger = { has_country_flag = random_civil_war_event6_identity_ready }
+	NOT = { hidden_trigger = { has_country_flag = random_civil_war_event6_identity_collision } }
 }
 
 random_civil_war_event6_origin_adapter_valid = {
@@ -134,7 +134,7 @@ random_civil_war_event6_origin_adapter_valid = {
 
 random_civil_war_event6_route_valid = {
 	OR = {
-		has_country_flag = random_civil_war_event6_route_ready
+		hidden_trigger = { has_country_flag = random_civil_war_event6_route_ready }
 		AND = {
 			random_civil_war_event6_package_admission_valid = yes
 			random_civil_war_event6_identity_adapter_valid = yes
@@ -155,7 +155,7 @@ random_civil_war_has_valid_actor_route = {
 
 random_civil_war_has_valid_opposition_route = {
 	random_civil_war_has_valid_actor_route = yes
-	NOT = { has_country_flag = random_civil_war_no_valid_opposition }
+	NOT = { hidden_trigger = { has_country_flag = random_civil_war_no_valid_opposition } }
 }
 
 # COUNTRY scope. Baseline automatic selection uses this predicate. Subject
@@ -165,7 +165,7 @@ random_civil_war_country_can_be_target = {
 	random_civil_war_is_normal_human_country = yes
 	# The public automatic target receipt must remain empty until the owner
 	# deliberately publishes the rework-ready flag.
-	has_global_flag = random_civil_war_rework_ready
+	hidden_trigger = { has_global_flag = random_civil_war_rework_ready }
 	# Event 021 is a bounded individual crisis. Do not admit a country that is
 	# already carrying the shared package cap, even when its own route remains
 	# otherwise valid.
@@ -176,10 +176,10 @@ random_civil_war_country_can_be_target = {
 	random_civil_war_successor_grace_clear = yes
 	NOT = { event021_external_queue_blocks_new_crisis = yes }
 	NOT = { random_civil_war_has_incompatible_bespoke_route = yes }
-	NOT = { has_country_flag = random_civil_war_active }
-	NOT = { has_country_flag = random_civil_war_target_reserved }
+	NOT = { hidden_trigger = { has_country_flag = random_civil_war_active } }
+	NOT = { hidden_trigger = { has_country_flag = random_civil_war_target_reserved } }
 	OR = {
-		NOT = { has_country_flag = random_civil_war_recent_target }
+		NOT = { hidden_trigger = { has_country_flag = random_civil_war_recent_target } }
 		AND = {
 			has_variable = random_civil_war_recent_target_until
 			check_variable = {
@@ -194,8 +194,8 @@ random_civil_war_country_can_be_target = {
 
 random_civil_war_country_can_be_automatic_target = {
 	random_civil_war_country_can_be_target = yes
-	NOT = { has_global_flag = random_civil_war_scenario_bypass_active }
-	NOT = { has_country_flag = random_civil_war_scenario_bypass_active }
+	NOT = { hidden_trigger = { has_global_flag = random_civil_war_scenario_bypass_active } }
+	NOT = { hidden_trigger = { has_country_flag = random_civil_war_scenario_bypass_active } }
 }
 
 random_civil_war_country_can_be_scenario_target = {
@@ -206,8 +206,8 @@ random_civil_war_country_can_be_scenario_target = {
 	random_civil_war_successor_grace_clear = yes
 	NOT = { event021_external_queue_blocks_new_crisis = yes }
 	NOT = { random_civil_war_has_incompatible_bespoke_route = yes }
-	NOT = { has_country_flag = random_civil_war_active }
-	NOT = { has_country_flag = random_civil_war_target_reserved }
+	NOT = { hidden_trigger = { has_country_flag = random_civil_war_active } }
+	NOT = { hidden_trigger = { has_country_flag = random_civil_war_target_reserved } }
 	random_civil_war_has_valid_opposition_route = yes
 }
 
@@ -217,7 +217,7 @@ event021_country_can_be_target = {
 }
 
 random_civil_war_event_pool_available = {
-	has_global_flag = random_civil_war_rework_ready
+	hidden_trigger = { has_global_flag = random_civil_war_rework_ready }
 	has_variable = global.random_civil_war_live_target_count
 	check_variable = {
 		var = global.random_civil_war_live_target_count
@@ -244,10 +244,10 @@ event021_country_can_manage_crisis = {
 
 random_civil_war_major_severity_allowed = {
 	OR = {
-		has_global_flag = random_civil_war_evolution_i_active
-		has_global_flag = random_civil_war_evolution_ii_active
-		has_global_flag = random_civil_war_evolution_iii_active
-		has_global_flag = random_civil_war_scenario_bypass_active
+		hidden_trigger = { has_global_flag = random_civil_war_evolution_i_active }
+		hidden_trigger = { has_global_flag = random_civil_war_evolution_ii_active }
+		hidden_trigger = { has_global_flag = random_civil_war_evolution_iii_active }
+		hidden_trigger = { has_global_flag = random_civil_war_scenario_bypass_active }
 	}
 }
 
@@ -370,8 +370,8 @@ random_civil_war_state_can_be_reserved = {
 	NOT = { is_in_array = { array = global.random_civil_war_reserved_states value = THIS } }
 	NOT = { is_in_array = { array = global.random_civil_war_plan_states value = THIS } }
 	OR = {
-		has_global_flag = random_civil_war_plan_seed_pending
-		event_target:random_civil_war_host_country = { has_country_flag = random_civil_war_all_island_route_ready }
+		hidden_trigger = { has_global_flag = random_civil_war_plan_seed_pending }
+		event_target:random_civil_war_host_country = { hidden_trigger = { has_country_flag = random_civil_war_all_island_route_ready } }
 		any_neighbor_state = {
 			is_in_array = { array = global.random_civil_war_plan_states value = THIS }
 		}
@@ -393,7 +393,7 @@ random_civil_war_parent_remnant_valid = {
 	num_of_controlled_states > constant:random_civil_war_value.zero
 	NOT = { has_capitulated = yes }
 	OR = {
-		NOT = { has_country_flag = random_civil_war_parent_capital_lost }
+		NOT = { hidden_trigger = { has_country_flag = random_civil_war_parent_capital_lost } }
 		capital_scope = {
 			is_owned_by = ROOT
 			is_controlled_by = ROOT
@@ -404,7 +404,7 @@ random_civil_war_parent_remnant_valid = {
 }
 
 random_civil_war_opening_plan_valid = {
-	has_global_flag = random_civil_war_plan_active
+	hidden_trigger = { has_global_flag = random_civil_war_plan_active }
 	has_event_target = random_civil_war_host_country
 	has_event_target = random_civil_war_anchor_state
 	event_target:random_civil_war_host_country = {
@@ -417,13 +417,13 @@ random_civil_war_opening_plan_valid = {
 	}
 	event_target:random_civil_war_host_country = {
 		random_civil_war_parent_remnant_valid = yes
-		NOT = { has_country_flag = random_civil_war_event6_footprint_blocked }
+		NOT = { hidden_trigger = { has_country_flag = random_civil_war_event6_footprint_blocked } }
 	}
 }
 
 random_civil_war_theater_capacity_available = {
 	OR = {
-		NOT = { has_global_flag = random_civil_war_capacity_initialized }
+		NOT = { hidden_trigger = { has_global_flag = random_civil_war_capacity_initialized } }
 		NOT = {
 			check_variable = {
 				var = global.random_civil_war_active_theater_count
@@ -433,7 +433,7 @@ random_civil_war_theater_capacity_available = {
 		}
 	}
 	OR = {
-		NOT = { has_global_flag = random_civil_war_capacity_initialized }
+		NOT = { hidden_trigger = { has_global_flag = random_civil_war_capacity_initialized } }
 		NOT = {
 			check_variable = {
 				var = global.random_civil_war_active_front_count
@@ -540,12 +540,12 @@ random_civil_war_scenario_launch_valid = {
 		}
 	}
 	OR = {
-		has_global_flag = random_civil_war_scenario_maximum_mode
+		hidden_trigger = { has_global_flag = random_civil_war_scenario_maximum_mode }
 		random_civil_war_theater_capacity_available = yes
 	}
 	OR = {
-		has_country_flag = random_civil_war_scenario_target_confirmed
-		has_global_flag = random_civil_war_scenario_target_confirmed
+		hidden_trigger = { has_country_flag = random_civil_war_scenario_target_confirmed }
+		hidden_trigger = { has_global_flag = random_civil_war_scenario_target_confirmed }
 	}
 }
 

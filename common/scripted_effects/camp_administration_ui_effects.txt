@@ -296,7 +296,7 @@ camp_admin_project_institution_progress = {
 		set_variable = { camp_admin_gui_institution_target = constant:camp_admin_country.archive_months }
 	}
 	else_if = {
-		limit = { has_country_flag = camp_admin_country_oversight_active }
+		limit = { hidden_trigger = { has_country_flag = camp_admin_country_oversight_active } }
 		set_variable = { camp_admin_gui_institution_progress = camp_admin_country_review_progress }
 		set_variable = { camp_admin_gui_institution_target = constant:camp_admin_country.oversight_months }
 	}
@@ -307,7 +307,7 @@ camp_admin_project_institution_progress = {
 			OR = {
 				has_country_flag = camp_admin_institution_slot_active
 				AND = {
-					has_country_flag = camp_admin_country_institution_paused
+					hidden_trigger = { has_country_flag = camp_admin_country_institution_paused }
 					check_variable = { camp_admin_institution_progress > constant:camp_admin_value.zero }
 				}
 			}
@@ -372,7 +372,7 @@ camp_admin_refresh_interface = {
 					}
 					AND = {
 						event_target:camp_admin_ui_actor = { check_variable = { camp_admin_location_filter = constant:camp_admin_filter.attention } }
-						OR = { camp_admin_gui_host_records_uncertain = yes has_state_flag = camp_admin_site_suspended check_variable = { camp_admin_support_ratio < constant:camp_admin_value.one } }
+						OR = { camp_admin_gui_host_records_uncertain = yes hidden_trigger = { has_state_flag = camp_admin_site_suspended } check_variable = { camp_admin_support_ratio < constant:camp_admin_value.one } }
 					}
 				}
 			}

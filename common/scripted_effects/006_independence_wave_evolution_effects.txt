@@ -52,8 +52,8 @@ independence_wave_record_evolution_failure_feedback = {
 	if = {
 		limit = {
 			is_independence_wave_active_country = yes
-			has_country_flag = independence_wave_government_failure
-			NOT = { has_country_flag = independence_wave_evolution_feedback_copied_institutions_recorded }
+			hidden_trigger = { has_country_flag = independence_wave_government_failure }
+			NOT = { hidden_trigger = { has_country_flag = independence_wave_evolution_feedback_copied_institutions_recorded } }
 		}
 		set_country_flag = independence_wave_evolution_feedback_copied_institutions_recorded
 		set_temp_variable = { independence_wave_evolution_feedback_delta = constant:independence_wave_evolution_feedback.opening_confidence_copied_institutions_failure }
@@ -63,8 +63,8 @@ independence_wave_record_evolution_failure_feedback = {
 	if = {
 		limit = {
 			is_independence_wave_active_country = yes
-			has_country_flag = independence_wave_recognition_blockade_active
-			NOT = { has_country_flag = independence_wave_evolution_feedback_dormant_identity_recorded }
+			hidden_trigger = { has_country_flag = independence_wave_recognition_blockade_active }
+			NOT = { hidden_trigger = { has_country_flag = independence_wave_evolution_feedback_dormant_identity_recorded } }
 		}
 		set_country_flag = independence_wave_evolution_feedback_dormant_identity_recorded
 		set_temp_variable = { independence_wave_evolution_feedback_delta = constant:independence_wave_evolution_feedback.opening_confidence_dormant_identity_failure }
@@ -75,11 +75,11 @@ independence_wave_record_evolution_failure_feedback = {
 		limit = {
 			is_independence_wave_active_country = yes
 			OR = {
-				has_country_flag = independence_wave_warlord_command_failure
-				has_country_flag = independence_wave_permanent_border_war_active
-				has_country_flag = independence_wave_host_reclamation_conflict
+				hidden_trigger = { has_country_flag = independence_wave_warlord_command_failure }
+				hidden_trigger = { has_country_flag = independence_wave_permanent_border_war_active }
+				hidden_trigger = { has_country_flag = independence_wave_host_reclamation_conflict }
 			}
-			NOT = { has_country_flag = independence_wave_evolution_feedback_armed_border_recorded }
+			NOT = { hidden_trigger = { has_country_flag = independence_wave_evolution_feedback_armed_border_recorded } }
 		}
 		set_country_flag = independence_wave_evolution_feedback_armed_border_recorded
 		set_temp_variable = { independence_wave_evolution_feedback_delta = constant:independence_wave_evolution_feedback.opening_confidence_armed_border_failure }
@@ -90,10 +90,10 @@ independence_wave_record_evolution_failure_feedback = {
 		limit = {
 			is_independence_wave_active_country = yes
 			OR = {
-				has_country_flag = independence_wave_league_member_discredited
+				hidden_trigger = { has_country_flag = independence_wave_league_member_discredited }
 				check_variable = { global.independence_wave_league_phase = constant:independence_wave_league_phase.congress_failed }
 			}
-			NOT = { has_global_flag = independence_wave_evolution_feedback_congress_recorded }
+			NOT = { hidden_trigger = { has_global_flag = independence_wave_evolution_feedback_congress_recorded } }
 		}
 		set_global_flag = independence_wave_evolution_feedback_congress_recorded
 		set_temp_variable = { independence_wave_evolution_feedback_delta = constant:independence_wave_evolution_feedback.opening_confidence_congress_failure }
@@ -103,15 +103,15 @@ independence_wave_record_evolution_failure_feedback = {
 	if = {
 		limit = {
 			is_independence_wave_active_country = yes
-			has_country_flag = independence_wave_open_sovereignty_applied
+			hidden_trigger = { has_country_flag = independence_wave_open_sovereignty_applied }
 			OR = {
 				check_variable = { global.independence_wave_league_phase = constant:independence_wave_league_phase.league_crisis }
 				AND = {
-					has_country_flag = independence_wave_host_reclamation_conflict
+					hidden_trigger = { has_country_flag = independence_wave_host_reclamation_conflict }
 					has_independence_wave_critical_instability = yes
 				}
 			}
-			NOT = { has_country_flag = independence_wave_evolution_feedback_sovereignty_recorded }
+			NOT = { hidden_trigger = { has_country_flag = independence_wave_evolution_feedback_sovereignty_recorded } }
 		}
 		set_country_flag = independence_wave_evolution_feedback_sovereignty_recorded
 		set_temp_variable = { independence_wave_evolution_feedback_delta = constant:independence_wave_evolution_feedback.opening_confidence_sovereignty_escalation }

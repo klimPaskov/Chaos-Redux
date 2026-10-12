@@ -23,7 +23,7 @@ brilliant_scientist_foreign_initialize_contest = {
 	if = {
 		limit = {
 			brilliant_scientist_is_current_host = yes
-			has_country_flag = brilliant_scientist_evolution_ii_unlocked
+			hidden_trigger = { has_country_flag = brilliant_scientist_evolution_ii_unlocked }
 			NOT = { has_country_flag = brilliant_scientist_kruger_confirmed_dead }
 			NOT = { has_country_flag = brilliant_scientist_all_actions_locked_after_world_end }
 			NOT = { has_global_flag = world_end }
@@ -268,7 +268,7 @@ brilliant_scientist_foreign_reconcile_knowledge_runtime = {
 # knowledge, or states that the family was already held.
 brilliant_scientist_foreign_show_theory_grant_tooltip = {
 	if = {
-		limit = { has_country_flag = brilliant_scientist_foreign_gained_new_family_knowledge }
+		limit = { hidden_trigger = { has_country_flag = brilliant_scientist_foreign_gained_new_family_knowledge } }
 		custom_effect_tooltip = brilliant_scientist_foreign_theory_gained_tt
 		effect_tooltip = {
 			if = { limit = { check_variable = { brilliant_scientist_foreign_selected_project_family = constant:brilliant_scientist_project_family.computation } } add_dynamic_modifier = { modifier = brilliant_scientist_computation_theory } }
@@ -289,7 +289,7 @@ brilliant_scientist_foreign_show_theory_grant_tooltip = {
 		}
 	}
 	else_if = {
-		limit = { has_country_flag = brilliant_scientist_foreign_family_knowledge_already_held }
+		limit = { hidden_trigger = { has_country_flag = brilliant_scientist_foreign_family_knowledge_already_held } }
 		custom_effect_tooltip = brilliant_scientist_foreign_theory_already_held_tt
 	}
 }
@@ -337,7 +337,7 @@ brilliant_scientist_foreign_record_owned_resolution = {
 	if = {
 		limit = {
 			brilliant_scientist_foreign_owned_receipt_is_valid = yes
-			NOT = { has_country_flag = brilliant_scientist_foreign_operation_resolution_recorded }
+			NOT = { hidden_trigger = { has_country_flag = brilliant_scientist_foreign_operation_resolution_recorded } }
 		}
 		brilliant_scientist_foreign_align_history_metadata = yes
 		set_country_flag = brilliant_scientist_foreign_operation_resolution_recorded
@@ -394,7 +394,7 @@ brilliant_scientist_foreign_record_resolution = {
 			brilliant_scientist_foreign_event_receipt_matches_active_operation = yes
 			event_target:brilliant_scientist_foreign_operation_actor = {
 				brilliant_scientist_foreign_owned_receipt_is_valid = yes
-				NOT = { has_country_flag = brilliant_scientist_foreign_operation_resolution_recorded }
+				NOT = { hidden_trigger = { has_country_flag = brilliant_scientist_foreign_operation_resolution_recorded } }
 			}
 		}
 		event_target:brilliant_scientist_foreign_operation_actor = { brilliant_scientist_foreign_record_owned_resolution = yes }
@@ -446,8 +446,8 @@ brilliant_scientist_foreign_finish_owned_operation = {
 	if = {
 		limit = {
 			brilliant_scientist_foreign_owned_receipt_is_valid = yes
-			has_country_flag = brilliant_scientist_foreign_operation_resolution_recorded
-			NOT = { has_country_flag = brilliant_scientist_foreign_host_response_pending }
+			hidden_trigger = { has_country_flag = brilliant_scientist_foreign_operation_resolution_recorded }
+			NOT = { hidden_trigger = { has_country_flag = brilliant_scientist_foreign_host_response_pending } }
 		}
 		if = {
 			limit = { check_variable = { brilliant_scientist_foreign_live_operation = constant:brilliant_scientist_foreign_operation.observation } }
@@ -522,7 +522,7 @@ brilliant_scientist_foreign_cancel_owned_operation = {
 		limit = { brilliant_scientist_foreign_owned_receipt_is_valid = yes }
 		clr_country_flag = brilliant_scientist_foreign_host_response_pending
 		if = {
-			limit = { NOT = { has_country_flag = brilliant_scientist_foreign_operation_resolution_recorded } }
+			limit = { NOT = { hidden_trigger = { has_country_flag = brilliant_scientist_foreign_operation_resolution_recorded } } }
 			set_variable = { brilliant_scientist_foreign_last_operation_result = constant:brilliant_scientist_foreign_result.cancelled }
 			set_variable = { brilliant_scientist_foreign_last_operation_detected = constant:brilliant_scientist_value.zero }
 		}
@@ -736,12 +736,12 @@ brilliant_scientist_foreign_calculate_operation_outcome = {
 	}
 
 	if = {
-		limit = { has_country_flag = brilliant_scientist_controlled_research_access_partner }
+		limit = { hidden_trigger = { has_country_flag = brilliant_scientist_controlled_research_access_partner } }
 		add_to_temp_variable = { brilliant_scientist_foreign_success_score = constant:brilliant_scientist_foreign_score.controlled_access }
 		add_to_temp_variable = { brilliant_scientist_foreign_detection_score = constant:brilliant_scientist_foreign_detection.controlled_access }
 	}
 	if = {
-		limit = { has_country_flag = brilliant_scientist_joint_laboratory_partner }
+		limit = { hidden_trigger = { has_country_flag = brilliant_scientist_joint_laboratory_partner } }
 		add_to_temp_variable = { brilliant_scientist_foreign_success_score = constant:brilliant_scientist_foreign_score.joint_laboratory_access }
 		add_to_temp_variable = { brilliant_scientist_foreign_detection_score = constant:brilliant_scientist_foreign_detection.joint_laboratory_access }
 	}
@@ -758,7 +758,7 @@ brilliant_scientist_foreign_calculate_operation_outcome = {
 		add_to_temp_variable = { brilliant_scientist_foreign_success_score = constant:brilliant_scientist_foreign_score.countermeasure_previous }
 	}
 	if = {
-		limit = { has_country_flag = brilliant_scientist_foreign_prior_operation_failed }
+		limit = { hidden_trigger = { has_country_flag = brilliant_scientist_foreign_prior_operation_failed } }
 		add_to_temp_variable = { brilliant_scientist_foreign_success_score = constant:brilliant_scientist_foreign_score.failed_predecessor }
 	}
 
@@ -800,17 +800,17 @@ brilliant_scientist_foreign_calculate_operation_outcome = {
 		}
 
 		if = {
-			limit = { has_country_flag = brilliant_scientist_internal_security_section_established }
+			limit = { hidden_trigger = { has_country_flag = brilliant_scientist_internal_security_section_established } }
 			add_to_temp_variable = { brilliant_scientist_foreign_success_score = constant:brilliant_scientist_foreign_score.internal_security }
 			add_to_temp_variable = { brilliant_scientist_foreign_detection_score = constant:brilliant_scientist_foreign_detection.internal_security }
 		}
 		if = {
-			limit = { has_country_flag = brilliant_scientist_compartmentalized_military_office_established }
+			limit = { hidden_trigger = { has_country_flag = brilliant_scientist_compartmentalized_military_office_established } }
 			add_to_temp_variable = { brilliant_scientist_foreign_success_score = constant:brilliant_scientist_foreign_score.compartmentalized_office }
 			add_to_temp_variable = { brilliant_scientist_foreign_detection_score = constant:brilliant_scientist_foreign_detection.compartmentalized_office }
 		}
 		if = {
-			limit = { has_country_flag = brilliant_scientist_primary_laboratory_hardened }
+			limit = { hidden_trigger = { has_country_flag = brilliant_scientist_primary_laboratory_hardened } }
 			add_to_temp_variable = { brilliant_scientist_foreign_success_score = constant:brilliant_scientist_foreign_score.hardened_laboratory }
 			add_to_temp_variable = { brilliant_scientist_foreign_detection_score = constant:brilliant_scientist_foreign_detection.hardened_laboratory }
 		}
@@ -832,7 +832,7 @@ brilliant_scientist_foreign_calculate_operation_outcome = {
 		if = {
 			limit = {
 				has_event_target = brilliant_scientist_primary_facility
-				event_target:brilliant_scientist_primary_facility = { has_state_flag = brilliant_scientist_primary_facility_restricted_district }
+				event_target:brilliant_scientist_primary_facility = { hidden_trigger = { has_state_flag = brilliant_scientist_primary_facility_restricted_district } }
 			}
 			subtract_from_temp_variable = { brilliant_scientist_foreign_success_score = constant:brilliant_scientist_host_reaction_delta.foreign_success_penalty }
 		}
@@ -1687,7 +1687,7 @@ brilliant_scientist_foreign_host_secure_response = {
 	if = {
 		limit = {
 			brilliant_scientist_foreign_host_response_is_pending = yes
-			event_target:brilliant_scientist_foreign_operation_actor = { has_country_flag = brilliant_scientist_foreign_operation_resolution_recorded }
+			event_target:brilliant_scientist_foreign_operation_actor = { hidden_trigger = { has_country_flag = brilliant_scientist_foreign_operation_resolution_recorded } }
 		}
 		event_target:brilliant_scientist_foreign_operation_actor = { clr_country_flag = brilliant_scientist_foreign_host_response_pending }
 		if = {
@@ -1717,7 +1717,7 @@ brilliant_scientist_foreign_host_diplomatic_response = {
 	if = {
 		limit = {
 			brilliant_scientist_foreign_host_response_is_pending = yes
-			event_target:brilliant_scientist_foreign_operation_actor = { has_country_flag = brilliant_scientist_foreign_operation_resolution_recorded }
+			event_target:brilliant_scientist_foreign_operation_actor = { hidden_trigger = { has_country_flag = brilliant_scientist_foreign_operation_resolution_recorded } }
 		}
 		event_target:brilliant_scientist_foreign_operation_actor = { clr_country_flag = brilliant_scientist_foreign_host_response_pending }
 		if = {
@@ -1956,8 +1956,8 @@ brilliant_scientist_foreign_continue_to_actor_report = {
 		limit = {
 			brilliant_scientist_foreign_event_receipt_matches_active_operation = yes
 			event_target:brilliant_scientist_foreign_operation_actor = {
-				has_country_flag = brilliant_scientist_foreign_operation_resolution_recorded
-				NOT = { has_country_flag = brilliant_scientist_foreign_host_response_pending }
+				hidden_trigger = { has_country_flag = brilliant_scientist_foreign_operation_resolution_recorded }
+				NOT = { hidden_trigger = { has_country_flag = brilliant_scientist_foreign_host_response_pending } }
 			}
 		}
 		event_target:brilliant_scientist_foreign_operation_actor = { brilliant_scientist_foreign_fire_actor_report = yes }

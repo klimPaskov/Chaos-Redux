@@ -1286,7 +1286,7 @@ missiles_rebalance_site_custody = {
 				set_temp_variable = { missiles_custody_room = missiles_site_capacity }
 				if = {
 					limit = {
-						PREV = { has_country_flag = missiles_operation_reserve_receipt_active has_variable = missiles_active_operation_id }
+						PREV = { hidden_trigger = { has_country_flag = missiles_operation_reserve_receipt_active } has_variable = missiles_active_operation_id }
 						has_variable = missiles_site_operation_id
 						check_variable = { var = missiles_site_operation_id value = PREV.missiles_active_operation_id compare = equals }
 						has_variable = missiles_site_operation_allocation
@@ -4265,7 +4265,7 @@ missiles_reserve_operation_payload = {
 missiles_release_operation_payload = {
 	missiles_release_chemical_payload_receipt = yes
 	if = {
-		limit = { has_country_flag = missiles_operation_payload_escrow_active }
+		limit = { hidden_trigger = { has_country_flag = missiles_operation_payload_escrow_active } }
 		if = {
 			limit = {
 				OR = {
@@ -6199,7 +6199,7 @@ missiles_commit_operation = {
 
 missiles_abort_operation = {
 	if = {
-		limit = { missiles_operation_receipt_is_active = yes NOT = { has_country_flag = missiles_operation_committed } has_country_flag = missiles_operation_reserve_receipt_active }
+		limit = { missiles_operation_receipt_is_active = yes NOT = { hidden_trigger = { has_country_flag = missiles_operation_committed } } hidden_trigger = { has_country_flag = missiles_operation_reserve_receipt_active } }
 		missiles_refund_operation_reserve = yes
 	}
 	if = { limit = { missiles_operation_receipt_is_active = yes } set_variable = { missiles_operation_result = constant:missiles_result.aborted } set_variable = { missiles_operation_state = constant:missiles_operation_state.aborted } }
@@ -6291,7 +6291,7 @@ missiles_cleanup_operation = {
 		set_variable = { missiles_reserved_reserve = constant:missiles_program_value.zero }
 		clr_country_flag = missiles_operation_reserve_receipt_active
 		if = {
-			limit = { NOT = { has_country_flag = missiles_site_settlement_in_progress } }
+			limit = { NOT = { hidden_trigger = { has_country_flag = missiles_site_settlement_in_progress } } }
 			missiles_recalculate_network = yes
 			missiles_rebalance_site_custody = yes
 			missiles_set_program_phases = yes
@@ -6854,7 +6854,7 @@ missiles_preflight_country_split = {
 		limit = {
 			has_country_flag = missiles_program_initialized
 			has_variable = missiles_operational_reserve
-			NOT = { has_country_flag = missiles_civil_war_split_transaction_active }
+			NOT = { hidden_trigger = { has_country_flag = missiles_civil_war_split_transaction_active } }
 		}
 		if = {
 			limit = { has_country_flag = missiles_operation_active }
@@ -6902,7 +6902,7 @@ missiles_finalize_civil_war_split_child = {
 		limit = {
 			has_event_target = missiles_civil_war_parent
 			event_target:missiles_civil_war_parent = {
-				has_country_flag = missiles_civil_war_split_transaction_active
+				hidden_trigger = { has_country_flag = missiles_civil_war_split_transaction_active }
 				check_variable = { var = missiles_split_preflight_result value = constant:missiles_result.accepted compare = equals }
 			}
 		}
@@ -6925,7 +6925,7 @@ missiles_finalize_civil_war_split_child = {
 		set_variable = { missiles_civil_war_received_capacity = constant:missiles_program_value.zero }
 		every_controlled_state = {
 			limit = {
-				has_state_flag = missiles_site_civil_war_split_pending
+				hidden_trigger = { has_state_flag = missiles_site_civil_war_split_pending }
 				has_variable = missiles_site_civil_war_split_receipt_id
 				check_variable = { var = missiles_site_civil_war_split_receipt_id value = event_target:missiles_civil_war_parent.missiles_civil_war_split_receipt_id compare = equals }
 			}
@@ -6978,12 +6978,12 @@ missiles_finalize_civil_war_split_child = {
 		set_country_flag = missiles_civil_war_command_split
 		set_country_flag = missiles_site_compromise_active
 		set_country_flag = missiles_civil_war_emergency_actions
-		if = { limit = { event_target:missiles_civil_war_parent = { has_country_flag = missiles_evolution_saturation_arsenals } } set_country_flag = missiles_evolution_saturation_arsenals }
-		if = { limit = { event_target:missiles_civil_war_parent = { has_country_flag = missiles_saturation_doctrine_adopted } } set_country_flag = missiles_saturation_doctrine_adopted }
-		if = { limit = { event_target:missiles_civil_war_parent = { has_country_flag = missiles_evolution_unreliable_guidance } } set_country_flag = missiles_evolution_unreliable_guidance }
-		if = { limit = { event_target:missiles_civil_war_parent = { has_country_flag = missiles_evolution_special_warheads } } set_country_flag = missiles_evolution_special_warheads }
-		if = { limit = { event_target:missiles_civil_war_parent = { has_country_flag = missiles_evolution_rogue_launch_commands } } set_country_flag = missiles_evolution_rogue_launch_commands }
-		if = { limit = { event_target:missiles_civil_war_parent = { has_country_flag = missiles_evolution_automatic_retaliation } } set_country_flag = missiles_evolution_automatic_retaliation }
+		if = { limit = { event_target:missiles_civil_war_parent = { hidden_trigger = { has_country_flag = missiles_evolution_saturation_arsenals } } } set_country_flag = missiles_evolution_saturation_arsenals }
+		if = { limit = { event_target:missiles_civil_war_parent = { hidden_trigger = { has_country_flag = missiles_saturation_doctrine_adopted } } } set_country_flag = missiles_saturation_doctrine_adopted }
+		if = { limit = { event_target:missiles_civil_war_parent = { hidden_trigger = { has_country_flag = missiles_evolution_unreliable_guidance } } } set_country_flag = missiles_evolution_unreliable_guidance }
+		if = { limit = { event_target:missiles_civil_war_parent = { hidden_trigger = { has_country_flag = missiles_evolution_special_warheads } } } set_country_flag = missiles_evolution_special_warheads }
+		if = { limit = { event_target:missiles_civil_war_parent = { hidden_trigger = { has_country_flag = missiles_evolution_rogue_launch_commands } } } set_country_flag = missiles_evolution_rogue_launch_commands }
+		if = { limit = { event_target:missiles_civil_war_parent = { hidden_trigger = { has_country_flag = missiles_evolution_automatic_retaliation } } } set_country_flag = missiles_evolution_automatic_retaliation }
 		event_target:missiles_civil_war_parent = {
 			set_variable = { missiles_civil_war_split_child_capacity = PREV.missiles_civil_war_received_capacity }
 			set_variable = { missiles_civil_war_split_child_reserve = missiles_civil_war_child_reserve }
@@ -7007,7 +7007,7 @@ missiles_finalize_civil_war_split_child = {
 missiles_finalize_civil_war_split_parent = {
 	if = {
 		limit = {
-			has_country_flag = missiles_civil_war_split_transaction_active
+			hidden_trigger = { has_country_flag = missiles_civil_war_split_transaction_active }
 			OR = {
 				NOT = { has_variable = missiles_civil_war_split_finalized_receipt_id }
 				NOT = { check_variable = { var = missiles_civil_war_split_finalized_receipt_id value = missiles_civil_war_split_receipt_id compare = equals } }
@@ -7021,7 +7021,7 @@ missiles_finalize_civil_war_split_parent = {
 		clear_array = missiles_launch_site_states
 		every_controlled_state = {
 			limit = {
-				has_state_flag = missiles_site_civil_war_split_pending
+				hidden_trigger = { has_state_flag = missiles_site_civil_war_split_pending }
 				has_variable = missiles_site_civil_war_split_receipt_id
 				check_variable = { var = missiles_site_civil_war_split_receipt_id value = PREV.missiles_civil_war_split_receipt_id compare = equals }
 			}

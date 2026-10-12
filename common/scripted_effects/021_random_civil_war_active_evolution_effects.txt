@@ -7,15 +7,15 @@
 event021_capture_pending_opening_evolution_stage = {
 	set_variable = { global.random_civil_war_pending_opening_evolution_stage = constant:random_civil_war_value.zero }
 	if = {
-		limit = { has_global_flag = random_civil_war_evolution_i_active }
+		limit = { hidden_trigger = { has_global_flag = random_civil_war_evolution_i_active } }
 		set_variable = { global.random_civil_war_pending_opening_evolution_stage = constant:random_civil_war_event.evolution_i_stage }
 	}
 	if = {
-		limit = { has_global_flag = random_civil_war_evolution_ii_active }
+		limit = { hidden_trigger = { has_global_flag = random_civil_war_evolution_ii_active } }
 		set_variable = { global.random_civil_war_pending_opening_evolution_stage = constant:random_civil_war_event.evolution_ii_stage }
 	}
 	if = {
-		limit = { has_global_flag = random_civil_war_evolution_iii_active }
+		limit = { hidden_trigger = { has_global_flag = random_civil_war_evolution_iii_active } }
 		set_variable = { global.random_civil_war_pending_opening_evolution_stage = constant:random_civil_war_event.evolution_iii_stage }
 	}
 }
@@ -701,10 +701,10 @@ event021_parent_measure_active_source_remnant = {
 			set_temp_variable = { event021_active_remnant_growth = constant:random_civil_war_value.zero }
 			every_owned_state = {
 				limit = {
-					NOT = { has_state_flag = event021_active_remnant_reach }
+					NOT = { hidden_trigger = { has_state_flag = event021_active_remnant_reach } }
 					is_controlled_by = event_target:random_civil_war_active_review_source
 					NOT = { is_in_array = { array = event021_active_excluded_states value = THIS } }
-					any_neighbor_state = { has_state_flag = event021_active_remnant_reach }
+					any_neighbor_state = { hidden_trigger = { has_state_flag = event021_active_remnant_reach } }
 				}
 				set_state_flag = event021_active_remnant_reach
 				add_to_temp_array = { array = event021_active_remnant_reach value = THIS }
@@ -1205,7 +1205,7 @@ event021_parent_validate_active_source_remnant_now = {
 							NOT = { is_owned_by = event_target:random_civil_war_active_review_source }
 							NOT = { is_controlled_by = event_target:random_civil_war_active_review_source }
 							AND = {
-								has_state_flag = random_civil_war_secondary_transfer_state
+								hidden_trigger = { has_state_flag = random_civil_war_secondary_transfer_state }
 								NOT = { check_variable = { var = event021_active_commit_markers_expected value = constant:random_civil_war_value.one compare = equals } }
 							}
 						}
@@ -1526,7 +1526,7 @@ event021_parent_validate_active_secondary_transfer_receipt = {
 							check_variable = { var = event021_active_receipt_state_index value = event021_secondary_receipt_end compare = less_than }
 							is_owned_by = event_target:event021_secondary_receipt_source
 							is_controlled_by = event_target:event021_secondary_receipt_source
-							has_state_flag = random_civil_war_secondary_transfer_state
+							hidden_trigger = { has_state_flag = random_civil_war_secondary_transfer_state }
 						}
 						add_to_temp_variable = { event021_secondary_receipt_verified_count = constant:random_civil_war_value.one }
 					}

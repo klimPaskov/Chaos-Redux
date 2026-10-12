@@ -276,7 +276,7 @@ sov_nuclear_bombs_event_state_is_valid_reactor_site = {
 	is_controlled_by = ROOT
 	NOT = { has_state_flag = sov_nuclear_bombs_site_missing }
 	NOT = { has_state_flag = sov_nuclear_bombs_site_dismantled }
-	NOT = { has_state_flag = sov_nuclear_bombs_reactor_site_pending }
+	NOT = { hidden_trigger = { has_state_flag = sov_nuclear_bombs_reactor_site_pending } }
 	NOT = { has_state_flag = sov_nuclear_bombs_event5_snapshot_pending }
 	NOT = { has_state_flag = sov_nuclear_bombs_site_technical_denial }
 	NOT = { is_capital = yes }
@@ -313,7 +313,7 @@ sov_nuclear_bombs_event_pending_reactor_completion_is_valid = {
 
 sov_nuclear_bombs_event_pending_reactor_site_is_valid = {
 	scope_exists = yes
-	has_state_flag = sov_nuclear_bombs_reactor_site_pending
+	hidden_trigger = { has_state_flag = sov_nuclear_bombs_reactor_site_pending }
 	is_owned_by = ROOT
 	is_controlled_by = ROOT
 	NOT = { has_state_flag = sov_nuclear_bombs_site_missing }
@@ -699,7 +699,7 @@ sov_nuclear_bombs_event_major_exchange_receipt_gate = {
 sov_nuclear_bombs_event_evolution_iii_world_gate = {
 	sov_nuclear_bombs_event_has_other_nuclear_major = yes
 	OR = {
-		has_global_flag = sov_nuclear_bombs_evolution_iii_world_gate_opened
+		hidden_trigger = { has_global_flag = sov_nuclear_bombs_evolution_iii_world_gate_opened }
 		has_global_flag = sov_nuclear_bombs_major_exchange_active
 		has_country_flag = sov_nuclear_bombs_confirmed_enemy_nuclear_use
 		sov_nuclear_bombs_event_has_two_operational_nuclear_majors = yes
@@ -710,7 +710,7 @@ sov_nuclear_bombs_event_evolution_iv_world_gate = {
 	sov_nuclear_bombs_event_has_other_nuclear_major = yes
 	OR = {
 		has_global_flag = sov_nuclear_bombs_major_exchange_active
-		has_global_flag = sov_nuclear_bombs_evolution_iv_world_gate_opened
+		hidden_trigger = { has_global_flag = sov_nuclear_bombs_evolution_iv_world_gate_opened }
 		sov_nuclear_bombs_event_has_two_operational_nuclear_majors = yes
 		AND = {
 			has_war = yes
@@ -918,11 +918,11 @@ sov_nuclear_bombs_event_has_ultimatum_device_backing = {
 }
 
 sov_nuclear_bombs_event_has_public_threat_surface = {
-	NOT = { has_country_flag = sov_nuclear_bombs_world_threat_source_suppressed }
+	NOT = { hidden_trigger = { has_country_flag = sov_nuclear_bombs_world_threat_source_suppressed } }
 	OR = {
-		has_country_flag = sov_nuclear_bombs_public_demonstration_completed
-		has_country_flag = sov_nuclear_bombs_public_ultimatum_recorded
-		has_country_flag = sov_nuclear_bombs_confirmed_use_recorded
+		hidden_trigger = { has_country_flag = sov_nuclear_bombs_public_demonstration_completed }
+		hidden_trigger = { has_country_flag = sov_nuclear_bombs_public_ultimatum_recorded }
+		hidden_trigger = { has_country_flag = sov_nuclear_bombs_confirmed_use_recorded }
 		has_country_flag = sov_nuclear_bombs_collapse_crisis_recorded
 		has_global_flag = sov_nuclear_bombs_major_exchange_active
 	}
@@ -1206,7 +1206,7 @@ sov_nuclear_bombs_event_target_is_collapsing_in_war = {
 # named term in the world before it can be recorded as durable compliance.
 sov_nuclear_bombs_event_settlement_terms_are_valid = {
 	sov_nuclear_bombs_event_actor_is_valid = yes
-	has_country_flag = sov_nuclear_bombs_settlement_terms_applied
+	hidden_trigger = { has_country_flag = sov_nuclear_bombs_settlement_terms_applied }
 	has_variable = sov_nuclear_bombs_demand_kind
 	has_variable = sov_nuclear_bombs_demand_state_id
 	has_event_target = sov_nuclear_bombs_coercion_target
@@ -1228,32 +1228,32 @@ sov_nuclear_bombs_event_settlement_terms_are_valid = {
 					check_variable = { var = sov_nuclear_bombs_demand_kind value = constant:sov_nuclear_bombs_demand.cease_hostilities compare = equals }
 					check_variable = { var = sov_nuclear_bombs_demand_kind value = constant:sov_nuclear_bombs_demand.surrender_collapsing_war compare = equals }
 				}
-				has_country_flag = sov_nuclear_bombs_settlement_ceasefire_recorded
+				hidden_trigger = { has_country_flag = sov_nuclear_bombs_settlement_ceasefire_recorded }
 				event_target:sov_nuclear_bombs_coercion_target = { NOT = { has_war_with = SOV } }
 				OR = {
 					NOT = { check_variable = { var = sov_nuclear_bombs_demand_kind value = constant:sov_nuclear_bombs_demand.surrender_collapsing_war compare = equals } }
-					has_country_flag = sov_nuclear_bombs_settlement_surrender_recorded
+					hidden_trigger = { has_country_flag = sov_nuclear_bombs_settlement_surrender_recorded }
 				}
 			}
 			AND = {
 				check_variable = { var = sov_nuclear_bombs_demand_kind value = constant:sov_nuclear_bombs_demand.withdraw_territory compare = equals }
-				has_country_flag = sov_nuclear_bombs_settlement_withdrawal_recorded
-				event_target:sov_nuclear_bombs_selected_state = { has_state_flag = sov_nuclear_bombs_demilitarized_zone }
+				hidden_trigger = { has_country_flag = sov_nuclear_bombs_settlement_withdrawal_recorded }
+				event_target:sov_nuclear_bombs_selected_state = { hidden_trigger = { has_state_flag = sov_nuclear_bombs_demilitarized_zone } }
 			}
 			AND = {
 				check_variable = { var = sov_nuclear_bombs_demand_kind value = constant:sov_nuclear_bombs_demand.return_devices compare = equals }
-				has_country_flag = sov_nuclear_bombs_settlement_return_recorded
-				event_target:sov_nuclear_bombs_selected_state = { has_state_flag = sov_nuclear_bombs_site_joint_custody }
+				hidden_trigger = { has_country_flag = sov_nuclear_bombs_settlement_return_recorded }
+				event_target:sov_nuclear_bombs_selected_state = { hidden_trigger = { has_state_flag = sov_nuclear_bombs_site_joint_custody } }
 			}
 			AND = {
 				check_variable = { var = sov_nuclear_bombs_demand_kind value = constant:sov_nuclear_bombs_demand.soviet_protection compare = equals }
-				has_country_flag = sov_nuclear_bombs_settlement_protection_recorded
+				hidden_trigger = { has_country_flag = sov_nuclear_bombs_settlement_protection_recorded }
 				has_guaranteed = event_target:sov_nuclear_bombs_coercion_target
 			}
 			AND = {
 				check_variable = { var = sov_nuclear_bombs_demand_kind value = constant:sov_nuclear_bombs_demand.demilitarize_zone compare = equals }
-				has_country_flag = sov_nuclear_bombs_settlement_demilitarization_recorded
-				event_target:sov_nuclear_bombs_selected_state = { has_state_flag = sov_nuclear_bombs_demilitarized_zone }
+				hidden_trigger = { has_country_flag = sov_nuclear_bombs_settlement_demilitarization_recorded }
+				event_target:sov_nuclear_bombs_selected_state = { hidden_trigger = { has_state_flag = sov_nuclear_bombs_demilitarized_zone } }
 			}
 		}
 	}
@@ -1264,34 +1264,34 @@ sov_nuclear_bombs_event_settlement_terms_are_valid = {
 					check_variable = { var = sov_nuclear_bombs_demand_kind value = constant:sov_nuclear_bombs_demand.cease_hostilities compare = equals }
 					check_variable = { var = sov_nuclear_bombs_demand_kind value = constant:sov_nuclear_bombs_demand.surrender_collapsing_war compare = equals }
 				}
-				has_country_flag = sov_nuclear_bombs_settlement_ceasefire_recorded
+				hidden_trigger = { has_country_flag = sov_nuclear_bombs_settlement_ceasefire_recorded }
 				event_target:sov_nuclear_bombs_coercion_target = { NOT = { has_war_with = SOV } }
 				OR = {
 					NOT = { check_variable = { var = sov_nuclear_bombs_demand_kind value = constant:sov_nuclear_bombs_demand.surrender_collapsing_war compare = equals } }
-					has_country_flag = sov_nuclear_bombs_settlement_surrender_recorded
+					hidden_trigger = { has_country_flag = sov_nuclear_bombs_settlement_surrender_recorded }
 				}
 			}
 			AND = {
 				check_variable = { var = sov_nuclear_bombs_demand_kind value = constant:sov_nuclear_bombs_demand.withdraw_territory compare = equals }
-				has_country_flag = sov_nuclear_bombs_settlement_withdrawal_recorded
+				hidden_trigger = { has_country_flag = sov_nuclear_bombs_settlement_withdrawal_recorded }
 				event_target:sov_nuclear_bombs_selected_state = { OR = { is_owned_by = SOV is_controlled_by = SOV } }
 			}
 			AND = {
 				check_variable = { var = sov_nuclear_bombs_demand_kind value = constant:sov_nuclear_bombs_demand.return_devices compare = equals }
-				has_country_flag = sov_nuclear_bombs_settlement_return_recorded
-				event_target:sov_nuclear_bombs_selected_state = { has_state_flag = sov_nuclear_bombs_site_returned_to_soviet }
+				hidden_trigger = { has_country_flag = sov_nuclear_bombs_settlement_return_recorded }
+				event_target:sov_nuclear_bombs_selected_state = { hidden_trigger = { has_state_flag = sov_nuclear_bombs_site_returned_to_soviet } }
 			}
 			AND = {
 				check_variable = { var = sov_nuclear_bombs_demand_kind value = constant:sov_nuclear_bombs_demand.soviet_protection compare = equals }
-				has_country_flag = sov_nuclear_bombs_settlement_protection_recorded
+				hidden_trigger = { has_country_flag = sov_nuclear_bombs_settlement_protection_recorded }
 				has_guaranteed = event_target:sov_nuclear_bombs_coercion_target
 				has_non_aggression_pact_with = event_target:sov_nuclear_bombs_coercion_target
 				has_military_access_to = event_target:sov_nuclear_bombs_coercion_target
 			}
 			AND = {
 				check_variable = { var = sov_nuclear_bombs_demand_kind value = constant:sov_nuclear_bombs_demand.demilitarize_zone compare = equals }
-				has_country_flag = sov_nuclear_bombs_settlement_demilitarization_recorded
-				event_target:sov_nuclear_bombs_selected_state = { has_state_flag = sov_nuclear_bombs_demilitarized_zone }
+				hidden_trigger = { has_country_flag = sov_nuclear_bombs_settlement_demilitarization_recorded }
+				event_target:sov_nuclear_bombs_selected_state = { hidden_trigger = { has_state_flag = sov_nuclear_bombs_demilitarized_zone } }
 			}
 		}
 	}
@@ -2070,7 +2070,7 @@ sov_nuclear_bombs_event_country_is_under_soviet_pressure = {
 	OR = {
 		has_war_with = SOV
 		has_country_flag = sov_nuclear_bombs_ultimatum_pending
-		has_country_flag = sov_nuclear_bombs_coercion_cooldown
+		hidden_trigger = { has_country_flag = sov_nuclear_bombs_coercion_cooldown }
 	}
 }
 

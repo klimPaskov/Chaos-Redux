@@ -66,7 +66,7 @@ africa_world_emit_continental_wars_super_event = {
 
 africa_world_emit_the_world_super_event = {
 	if = {
-		limit = { NOT = { has_global_flag = africa_super_event_104_emitted } }
+		limit = { NOT = { hidden_trigger = { has_global_flag = africa_super_event_104_emitted } } }
 		set_global_flag = africa_super_event_104_emitted
 		set_variable = { africa_world_super_event_slot = constant:africa_world_super_event.the_world_slot }
 		set_variable = { africa_world_super_event_audio = constant:africa_world_super_event.the_world_audio }
@@ -1026,7 +1026,7 @@ africa_scramble_remove_coalition_member = {
 # integration burden instead of leaving classes as tooltip-only flags.
 africa_scramble_apply_class_response_consequences = {
 	if = {
-		limit = { has_country_flag = africa_scramble_former_colonial_relationship }
+		limit = { hidden_trigger = { has_country_flag = africa_scramble_former_colonial_relationship } }
 		set_country_flag = africa_scramble_former_colonial_response_active
 		event_target:africa_host = {
 			set_country_flag = africa_scramble_former_colonial_response_active
@@ -1035,7 +1035,7 @@ africa_scramble_apply_class_response_consequences = {
 		}
 	}
 	if = {
-		limit = { has_country_flag = africa_scramble_ideological_rival }
+		limit = { hidden_trigger = { has_country_flag = africa_scramble_ideological_rival } }
 		set_country_flag = africa_scramble_ideological_rival_response_active
 		event_target:africa_host = {
 			set_country_flag = africa_scramble_ideological_rival_response_active
@@ -1044,7 +1044,7 @@ africa_scramble_apply_class_response_consequences = {
 		}
 	}
 	if = {
-		limit = { has_country_flag = africa_scramble_resource_nationalisation_exposure }
+		limit = { hidden_trigger = { has_country_flag = africa_scramble_resource_nationalisation_exposure } }
 		set_country_flag = africa_scramble_resource_nationalisation_response_active
 		event_target:africa_host = {
 			set_country_flag = africa_scramble_resource_nationalisation_response_active
@@ -1053,7 +1053,7 @@ africa_scramble_apply_class_response_consequences = {
 		}
 	}
 	if = {
-		limit = { has_country_flag = africa_scramble_continent_unifier_fear }
+		limit = { hidden_trigger = { has_country_flag = africa_scramble_continent_unifier_fear } }
 		set_country_flag = africa_scramble_continent_unifier_response_active
 		event_target:africa_host = {
 			set_country_flag = africa_scramble_continent_unifier_response_active
@@ -1062,7 +1062,7 @@ africa_scramble_apply_class_response_consequences = {
 		}
 	}
 	if = {
-		limit = { has_country_flag = africa_scramble_south_africa_allied_relationship }
+		limit = { hidden_trigger = { has_country_flag = africa_scramble_south_africa_allied_relationship } }
 		set_country_flag = africa_scramble_south_africa_allied_response_active
 		event_target:africa_host = {
 			set_country_flag = africa_scramble_south_africa_allied_response_active
@@ -1151,7 +1151,7 @@ africa_scramble_cleanup_response_roster = {
 # COUNTRY scope on a participant.
 africa_scramble_choose_recognition = {
 	if = {
-		limit = { NOT = { has_country_flag = africa_scramble_recognised_africa } }
+		limit = { NOT = { hidden_trigger = { has_country_flag = africa_scramble_recognised_africa } } }
 		clear_global_event_target = africa_scramble_last_response_actor
 		save_global_event_target_as = africa_scramble_last_response_actor
 		set_country_flag = africa_scramble_recognised_africa
@@ -1181,7 +1181,7 @@ africa_scramble_choose_recognition = {
 # COUNTRY scope on a participant.
 africa_scramble_choose_conditional_recognition = {
 	if = {
-		limit = { NOT = { has_country_flag = africa_scramble_conditional_recognition } }
+		limit = { NOT = { hidden_trigger = { has_country_flag = africa_scramble_conditional_recognition } } }
 		clear_global_event_target = africa_scramble_last_response_actor
 		save_global_event_target_as = africa_scramble_last_response_actor
 		set_country_flag = africa_scramble_conditional_recognition
@@ -1206,7 +1206,7 @@ africa_scramble_choose_conditional_recognition = {
 # COUNTRY scope on a participant.
 africa_scramble_choose_sanctions = {
 	if = {
-		limit = { NOT = { has_country_flag = africa_scramble_sanctions_active } }
+		limit = { NOT = { hidden_trigger = { has_country_flag = africa_scramble_sanctions_active } } }
 		clear_global_event_target = africa_scramble_last_response_actor
 		save_global_event_target_as = africa_scramble_last_response_actor
 		set_country_flag = africa_scramble_sanctions_active
@@ -1233,7 +1233,7 @@ africa_scramble_choose_sanctions = {
 # COUNTRY scope on a participant.
 africa_scramble_choose_ultimatum = {
 	if = {
-		limit = { NOT = { has_country_flag = africa_scramble_ultimatum_issuer } }
+		limit = { NOT = { hidden_trigger = { has_country_flag = africa_scramble_ultimatum_issuer } } }
 		clear_global_event_target = africa_scramble_last_response_actor
 		save_global_event_target_as = africa_scramble_last_response_actor
 		set_country_flag = africa_scramble_ultimatum_issuer
@@ -1251,7 +1251,7 @@ africa_scramble_choose_ultimatum = {
 			add_war_support = constant:africa_scramble_response.expedition_host_war_support_loss
 			africa_scramble_clamp_values = yes
 			if = {
-				limit = { NOT = { has_country_flag = africa_scramble_first_ultimatum_logged } }
+				limit = { NOT = { hidden_trigger = { has_country_flag = africa_scramble_first_ultimatum_logged } } }
 				set_country_flag = africa_scramble_first_ultimatum_logged
 				country_event = { id = africa_world_order.3 }
 			}
@@ -1314,7 +1314,7 @@ africa_scramble_launch_expedition_if_unresolved = {
 			array = africa_scramble_coalition_members
 			if = {
 				limit = {
-					has_country_flag = africa_scramble_expedition_planner
+					hidden_trigger = { has_country_flag = africa_scramble_expedition_planner }
 					has_country_flag = africa_scramble_coalition_member
 					has_capitulated = no
 					NOT = { has_war_with = event_target:africa_host }
@@ -1339,7 +1339,7 @@ africa_scramble_launch_expedition_if_unresolved = {
 				set_global_flag = africa_scramble_intervention_war_active
 				event_target:africa_host = {
 					if = {
-						limit = { NOT = { has_country_flag = africa_achievement_scramble_core_snapshot_ready } }
+						limit = { NOT = { hidden_trigger = { has_country_flag = africa_achievement_scramble_core_snapshot_ready } } }
 						africa_achievement_capture_scramble_core_snapshot = yes
 					}
 				}
@@ -1356,18 +1356,18 @@ africa_scramble_launch_expedition_if_unresolved = {
 					set_country_flag = africa_scramble_expedition_launched
 					set_country_flag = africa_scramble_defensive_war_active
 					if = {
-						limit = { NOT = { has_country_flag = africa_scramble_expedition_host_cost_applied } }
+						limit = { NOT = { hidden_trigger = { has_country_flag = africa_scramble_expedition_host_cost_applied } } }
 						set_country_flag = africa_scramble_expedition_host_cost_applied
 						add_war_support = constant:africa_scramble_response.expedition_host_war_support_loss
 						set_country_flag = africa_scramble_defence_material_demanded
 					}
 					if = {
-						limit = { NOT = { has_country_flag = africa_scramble_expedition_coalition_logged } }
+						limit = { NOT = { hidden_trigger = { has_country_flag = africa_scramble_expedition_coalition_logged } } }
 						set_country_flag = africa_scramble_expedition_coalition_logged
 						country_event = { id = africa_world_order.8 }
 					}
 					if = {
-						limit = { NOT = { has_country_flag = africa_scramble_war_news_sent } }
+						limit = { NOT = { hidden_trigger = { has_country_flag = africa_scramble_war_news_sent } } }
 						set_country_flag = africa_scramble_war_news_sent
 						news_event = { id = africa_world_order.101 }
 					}
@@ -2161,7 +2161,7 @@ africa_world_record_sponsored_movement_collapse = {
 	if = {
 		limit = {
 			has_global_flag = africa_is_one
-			has_country_flag = africa_world_package_sponsored
+			hidden_trigger = { has_country_flag = africa_world_package_sponsored }
 		}
 		set_global_flag = africa_achievement_sponsored_movement_collapsed
 	}
@@ -2249,7 +2249,7 @@ africa_world_create_package_leader = {
 	if = {
 		limit = {
 			africa_world_package_is_installed = yes
-			NOT = { has_country_flag = africa_world_package_leader_created }
+			NOT = { hidden_trigger = { has_country_flag = africa_world_package_leader_created } }
 		}
 		if = {
 			limit = { check_variable = { africa_world_continent_id = constant:africa_world_continent.middle_east } }
@@ -2332,7 +2332,7 @@ africa_world_commit_package_successor = {
 			}
 		}
 		if = {
-			limit = { has_country_flag = africa_world_terminal_resolution_counted }
+			limit = { hidden_trigger = { has_country_flag = africa_world_terminal_resolution_counted } }
 			event_target:africa_host = {
 				subtract_from_variable = { africa_world_terminal_resolved_count = constant:africa_value.one }
 				clamp_variable = { var = africa_world_terminal_resolved_count min = constant:africa_value.zero max = constant:africa_world_order.required_package_count }
@@ -2488,7 +2488,7 @@ africa_world_record_package_breakup = {
 		for_each_scope_loop = {
 			array = africa_world_constituent_countries
 			if = {
-				limit = { has_country_flag = africa_world_constituent_member }
+				limit = { hidden_trigger = { has_country_flag = africa_world_constituent_member } }
 				clr_country_flag = africa_world_constituent_member
 				clr_country_flag = africa_world_constituent_consented
 				clr_country_flag = africa_world_constituent_coerced
@@ -2592,7 +2592,7 @@ africa_world_install_current_package = {
 			clamp_variable = { var = africa_world_package_pending_count min = constant:africa_value.zero max = constant:africa_world_order.required_package_count }
 			set_country_flag = africa_world_package_roster_documented
 			if = {
-				limit = { PREV = { has_country_flag = africa_world_package_sponsored } }
+				limit = { PREV = { hidden_trigger = { has_country_flag = africa_world_package_sponsored } } }
 				add_to_variable = { africa_world_sponsorship_overextension = constant:africa_world_order.sponsorship_overextension_per_package }
 				add_to_array = { array = africa_world_sponsorship_targets value = PREV }
 				activate_targeted_decision = { target = PREV decision = africa_world_sponsorship_obligation }
@@ -2775,7 +2775,7 @@ africa_world_complete_sovereign_package = {
 # initialized once and are later moved by that package's dedicated focus tree.
 africa_world_initialise_distinct_package_mechanic = {
 	if = {
-		limit = { NOT = { has_country_flag = africa_world_package_mechanic_initialised } }
+		limit = { NOT = { hidden_trigger = { has_country_flag = africa_world_package_mechanic_initialised } } }
 		set_country_flag = africa_world_package_mechanic_initialised
 		if = {
 			limit = { has_country_flag = africa_world_middle_east_package }
@@ -3886,7 +3886,7 @@ africa_world_order_apply_failure_result = {
 africa_world_record_region_revolt = {
 	if = {
 		limit = {
-			NOT = { has_country_flag = africa_world_region_revolt }
+			NOT = { hidden_trigger = { has_country_flag = africa_world_region_revolt } }
 			has_event_target = africa_host
 		}
 		set_country_flag = africa_world_region_revolt
@@ -3900,7 +3900,7 @@ africa_world_record_region_revolt = {
 						value = constant:africa_world_order.world_region_revolt_threshold
 						compare = greater_than_or_equals
 					}
-					NOT = { has_global_flag = africa_world_global_revolt_active }
+					NOT = { hidden_trigger = { has_global_flag = africa_world_global_revolt_active } }
 				}
 				set_global_flag = africa_world_global_revolt_active
 				set_global_flag = africa_achievement_global_revolt_threshold_reached
@@ -3909,7 +3909,7 @@ africa_world_record_region_revolt = {
 					if = {
 						limit = {
 							exists = yes
-							has_country_flag = africa_world_region_revolt
+							hidden_trigger = { has_country_flag = africa_world_region_revolt }
 							NOT = { has_war_with = event_target:africa_host }
 							can_declare_war_on = event_target:africa_host
 						}
@@ -3926,8 +3926,8 @@ africa_world_record_region_revolt = {
 africa_world_resolve_region_revolt = {
 	if = {
 		limit = {
-			has_country_flag = africa_world_region_revolt
-			NOT = { has_global_flag = africa_world_global_revolt_active }
+			hidden_trigger = { has_country_flag = africa_world_region_revolt }
+			NOT = { hidden_trigger = { has_global_flag = africa_world_global_revolt_active } }
 			has_event_target = africa_host
 		}
 		clr_country_flag = africa_world_region_revolt
@@ -3944,7 +3944,7 @@ africa_world_record_terminal_resolution = {
 	if = {
 		limit = {
 			africa_world_package_terminal_resolution_is_proven = yes
-			NOT = { has_country_flag = africa_world_terminal_resolution_counted }
+			NOT = { hidden_trigger = { has_country_flag = africa_world_terminal_resolution_counted } }
 		}
 		if = {
 			limit = { africa_world_sponsorship_active_cleanup_is_needed = yes }
@@ -4010,7 +4010,7 @@ africa_form_terminal_world_identity = {
 	if = {
 		limit = {
 			africa_terminal_world_identity_can_commit = yes
-			has_global_flag = africa_the_world_super_event_package_ready
+			hidden_trigger = { has_global_flag = africa_the_world_super_event_package_ready }
 		}
 		set_global_flag = world_end
 		acid_rain_interrupt_for_world_end = yes

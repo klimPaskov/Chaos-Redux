@@ -86,7 +86,7 @@ missiles_measure_survey_resource = {
 # account. Outputs are caller-owned; an uncertain delta never becomes money.
 missiles_quarantine_survey_observation = {
 	if = {
-		limit = { NOT = { has_country_flag = missiles_survey_native_accounting_quarantined } }
+		limit = { NOT = { hidden_trigger = { has_country_flag = missiles_survey_native_accounting_quarantined } } }
 		set_variable = { missiles_survey_anomaly_before = missiles_survey_component_before }
 		set_variable = { missiles_survey_anomaly_after = missiles_survey_resource_observation }
 		set_variable = { missiles_survey_anomaly_requested = universal_cost_payment_amount }
@@ -143,7 +143,7 @@ missiles_credit_survey_component = {
 		set_temp_variable = { missiles_survey_component_before = missiles_survey_resource_observation }
 		if = {
 			limit = {
-				NOT = { has_country_flag = missiles_survey_native_accounting_quarantined }
+				NOT = { hidden_trigger = { has_country_flag = missiles_survey_native_accounting_quarantined } }
 				check_variable = { var = missiles_survey_component_before value = constant:missiles_program_value.zero compare = greater_than_or_equals }
 			}
 			universal_cost_credit_component = yes

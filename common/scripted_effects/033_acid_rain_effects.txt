@@ -919,9 +919,9 @@ acid_rain_refresh_country_forecast_status = {
 acid_rain_close_state_evacuation = {
 	if = {
 		limit = {
-			has_state_flag = acid_rain_evacuated
-			NOT = { has_state_flag = acid_rain_severe_cell_target }
-			NOT = { has_state_flag = acid_rain_superstorm_target }
+			hidden_trigger = { has_state_flag = acid_rain_evacuated }
+			NOT = { hidden_trigger = { has_state_flag = acid_rain_severe_cell_target } }
+			NOT = { hidden_trigger = { has_state_flag = acid_rain_superstorm_target } }
 		}
 		clr_state_flag = acid_rain_evacuated
 		remove_dynamic_modifier = { modifier = acid_rain_evacuation_disruption }
@@ -6036,7 +6036,7 @@ acid_rain_finish_runtime = {
 			array = global.acid_rain_frozen_states
 			acid_rain_advance_consequence_interval = yes
 			acid_rain_assess_window_aftermath = yes
-			if = { limit = { OR = { has_state_flag = acid_rain_severe_cell_target has_state_flag = acid_rain_superstorm_target } } acid_rain_033_achievement_close_runtime_episode = yes }
+			if = { limit = { OR = { hidden_trigger = { has_state_flag = acid_rain_severe_cell_target } hidden_trigger = { has_state_flag = acid_rain_superstorm_target } } } acid_rain_033_achievement_close_runtime_episode = yes }
 			clr_state_flag = acid_rain_front_target
 			clr_state_flag = acid_rain_severe_cell_target
 			clr_state_flag = acid_rain_superstorm_target
@@ -6056,7 +6056,7 @@ acid_rain_finish_runtime = {
 				acid_rain_033_achievement_record_dissipation_state_snapshot = yes
 			}
 			acid_rain_close_state_evacuation = yes
-			if = { limit = { has_state_flag = acid_rain_aftercare_unresolved } add_to_temp_variable = { acid_rain_unresolved_aftermath_count = constant:acid_rain_runtime.loop_increment } }
+			if = { limit = { hidden_trigger = { has_state_flag = acid_rain_aftercare_unresolved } } add_to_temp_variable = { acid_rain_unresolved_aftermath_count = constant:acid_rain_runtime.loop_increment } }
 		}
 		clear_array = global.acid_rain_ordinary_target_states
 		clear_array = global.acid_rain_severe_target_states
@@ -6078,12 +6078,12 @@ acid_rain_finish_runtime = {
 			acid_rain_enter_country_recovery_tail = yes
 		}
 		if = {
-			limit = { NOT = { has_global_flag = acid_rain_final_dissipation_receipt } }
+			limit = { NOT = { hidden_trigger = { has_global_flag = acid_rain_final_dissipation_receipt } } }
 			set_global_flag = acid_rain_final_dissipation_receipt
 			if = {
 				limit = { check_variable = { var = acid_rain_033_natural_closure value = constant:acid_rain_runtime.one compare = equals } }
 				if = {
-					limit = { has_global_flag = acid_rain_global_layer_receipt }
+					limit = { hidden_trigger = { has_global_flag = acid_rain_global_layer_receipt } }
 					set_temp_variable = { chaos_change = constant:acid_rain_evolution.global_final_chaos_loss }
 				}
 				else = { set_temp_variable = { chaos_change = constant:acid_rain_evolution.ordinary_final_chaos_loss } }

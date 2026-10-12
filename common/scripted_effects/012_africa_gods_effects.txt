@@ -785,7 +785,7 @@ gods_of_africa_refresh_strength = {
 				subtract_from_temp_variable = { gods_of_africa_strength_target = constant:gods_of_africa_strength_sustain.capital_loss_penalty }
 				# The fall is felt at once the first time the capital is lost.
 				if = {
-					limit = { NOT = { has_country_flag = gods_of_africa_strength_capital_loss_recorded } }
+					limit = { NOT = { hidden_trigger = { has_country_flag = gods_of_africa_strength_capital_loss_recorded } } }
 					set_country_flag = gods_of_africa_strength_capital_loss_recorded
 					set_country_flag = gods_of_africa_strength_immediate
 				}
@@ -811,7 +811,7 @@ gods_of_africa_refresh_strength = {
 			if = {
 				limit = {
 					OR = {
-						has_country_flag = gods_of_africa_strength_immediate
+						hidden_trigger = { has_country_flag = gods_of_africa_strength_immediate }
 						NOT = { has_variable = gods_of_africa_strength }
 					}
 				}
@@ -4921,7 +4921,7 @@ gods_of_africa_emit_global_credibility_super_event = {
 	if = {
 		limit = {
 			gods_of_africa_active_host_is_valid = yes
-			NOT = { has_global_flag = gods_of_africa_global_credibility_super_event_emitted }
+			NOT = { hidden_trigger = { has_global_flag = gods_of_africa_global_credibility_super_event_emitted } }
 			has_variable = gods_of_africa_strength_band
 			check_variable = { gods_of_africa_strength_band > constant:gods_of_africa_band.continental }
 		}
