@@ -71,6 +71,8 @@ C10. Orders from Unknown Hands: rewrite plainly and concretely. Confirm Event 11
 C11. Migration: decisions must not appear on arbitrary owned islands. They appear only under real pressure: famine, blockade, states next to outbreaks, special chaos countries at war, states near the front. Remove political power costs; use fuel, and convoys for islands not connected to the mainland. Check whether the migration and famine systems were simplified and restore depth from history if so.
 C12. Outbreak response: many distinct actions, not one generic decision, but not bloated.
 
+C-SYSTEMS-AUDIT. Mass restoration audit of gameplay systems (chemical warfare, deaths, condemnation, air contamination, camps, raids, Chaos Meter, event selection and timers, clusters, triggerable scenarios). Audit completed: 6dfa63b8bdceb0e06741329861706e29e2d562da. Exact historical candidates and remaining owner decisions: docs/plans/systems_restore_audit_2026-10-13.md. No gameplay restoration was applied by this audit.
+
 ## D. Balance and content
 
 D1. Japan, the United Kingdom, the United States and the Soviet Union start with the level 1 biowarfare breakthrough. Germany, the United Kingdom and France start with the chemical warfare breakthrough. Completed: `aa75244feb4062279c64e4d89f725481f414011b`.
