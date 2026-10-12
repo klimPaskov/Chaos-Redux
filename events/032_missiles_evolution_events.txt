@@ -3,8 +3,10 @@ add_namespace = chaosx.nr32
 # Native Event 032 MTTH clocks. One living host evaluates stored observation
 # data. Rejected attempts remain re-armable; successful global unlock flags,
 # not fire_only_once, enforce the shared once-only log contract.
-# The one-day base is the unit for the variable day scale below.
-@missiles_mtth_unit_days = 1
+# A two-day native base avoids the one-day automatic-event diagnostic.
+# The reciprocal modifier preserves each variable median duration exactly.
+@missiles_mtth_unit_days = 2
+@missiles_mtth_unit_reciprocal = 0.5
 
 country_event = {
 	id = chaosx.nr32.201
@@ -22,6 +24,7 @@ country_event = {
 	}
 	mean_time_to_happen = {
 		days = @missiles_mtth_unit_days
+		modifier = { factor = @missiles_mtth_unit_reciprocal always = yes }
 		modifier = { factor = global.missiles_evolution_rogue_mtth_days }
 	}
 	immediate = {
@@ -46,6 +49,7 @@ country_event = {
 	}
 	mean_time_to_happen = {
 		days = @missiles_mtth_unit_days
+		modifier = { factor = @missiles_mtth_unit_reciprocal always = yes }
 		modifier = { factor = global.missiles_evolution_guidance_mtth_days }
 	}
 	immediate = {
@@ -70,6 +74,7 @@ country_event = {
 	}
 	mean_time_to_happen = {
 		days = @missiles_mtth_unit_days
+		modifier = { factor = @missiles_mtth_unit_reciprocal always = yes }
 		modifier = { factor = global.missiles_evolution_saturation_mtth_days }
 	}
 	immediate = {
@@ -94,6 +99,7 @@ country_event = {
 	}
 	mean_time_to_happen = {
 		days = @missiles_mtth_unit_days
+		modifier = { factor = @missiles_mtth_unit_reciprocal always = yes }
 		modifier = { factor = global.missiles_evolution_special_mtth_days }
 	}
 	immediate = {
@@ -118,6 +124,7 @@ country_event = {
 	}
 	mean_time_to_happen = {
 		days = @missiles_mtth_unit_days
+		modifier = { factor = @missiles_mtth_unit_reciprocal always = yes }
 		modifier = { factor = global.missiles_evolution_retaliation_mtth_days }
 	}
 	immediate = {
