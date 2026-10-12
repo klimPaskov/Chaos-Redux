@@ -740,31 +740,12 @@ focus_tree = {
 	focus = {
 		id = fury_absorb_the_rival_fire
 		icon = GFX_goal_fury_rivalry
-		search_filters = { FOCUS_FILTER_WAR_SUPPORT FOCUS_FILTER_MANPOWER }
-		x = 21
-		y = 7
-		cost = @fury_focus_medium
-		prerequisite = { focus = fury_no_second_fury }
-		completion_reward = {
-			add_to_variable = { fury_momentum = constant:fury_focus_reward.momentum_large }
-			add_manpower = constant:fury_focus_reward.manpower_medium
-			add_to_variable = { fury_overextension = constant:fury_focus_reward.overextension_small }
-		}
-		ai_will_do = {
-			base = 8
-			modifier = { factor = 1.5 has_war = yes }
-		}
-	}
-
-	focus = {
-		id = fury_last_fury_standing
-		icon = GFX_goal_generic_major_war
-		search_filters = { FOCUS_FILTER_WAR_SUPPORT FOCUS_FILTER_ANNEXATION }
+		search_filters = { FOCUS_FILTER_WAR_SUPPORT FOCUS_FILTER_MANPOWER FOCUS_FILTER_ANNEXATION }
 		x = 17
 		y = 11
-		cost = @fury_focus_long
+		cost = @fury_focus_medium
+		prerequisite = { focus = fury_no_second_fury }
 		prerequisite = { focus = fury_claim_the_same_map }
-		prerequisite = { focus = fury_absorb_the_rival_fire }
 		available = {
 			custom_trigger_tooltip = {
 				tooltip = fury_no_other_fury_actors_tt
@@ -773,11 +754,14 @@ focus_tree = {
 		}
 		completion_reward = {
 			add_to_variable = { fury_momentum = constant:fury_focus_reward.momentum_large }
+			add_manpower = constant:fury_focus_reward.manpower_medium
+			add_to_variable = { fury_overextension = constant:fury_focus_reward.overextension_small }
+			add_to_variable = { fury_momentum = constant:fury_focus_reward.momentum_large }
 			add_to_variable = { fury_target_preparation = constant:fury_focus_reward.target_preparation_large }
 		}
 		ai_will_do = {
-			base = 7
-			modifier = { factor = 0 has_country_flag = fury_cooperation_route }
+			base = 8
+			modifier = { factor = 1.5 has_war = yes }
 		}
 	}
 
@@ -979,8 +963,8 @@ focus_tree = {
 		x = 9
 		y = 11
 		cost = @fury_focus_long
-		prerequisite = { focus = fury_the_next_neighbor focus = fury_last_fury_standing }
-		prerequisite = { focus = fury_core_by_administration focus = fury_core_by_march focus = fury_last_fury_standing }
+		prerequisite = { focus = fury_the_next_neighbor focus = fury_absorb_the_rival_fire }
+		prerequisite = { focus = fury_core_by_administration focus = fury_core_by_march focus = fury_absorb_the_rival_fire }
 		available = {
 			OR = {
 				has_country_flag = fury_no_valid_neighbors
