@@ -52,7 +52,7 @@ B11. Decisions for outbreak responses appear on the map only, not listed in the 
 B12. Technology folders: fix overlaps, disconnected techs and bloat. Bring back the consolidation that removed the excess techs, but leave the upper part of the chemical warfare tree exactly as it is. — implemented in `30ac00fb03`.
 
 B13. Biowarfare folder: fix disconnected techs (started 12 Oct, Sol job `sol_bio_folder_links`).
-B14. **Q** Rule for all UI text: large numbers are never shown plainly; shorten with k (48.2k).
+B14. **Q** Rule for all UI text: large numbers are never shown plainly; shorten with k (48.2k). (commit: f41b58e6c34ae9f47598033d03d0e0aa459b6a2d)
 
 ## C. Systems (Sol unless noted)
 
