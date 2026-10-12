@@ -78,7 +78,7 @@ C-SYSTEMS-AUDIT. Mass restoration audit of gameplay systems (chemical warfare, d
 D1. Japan, the United Kingdom, the United States and the Soviet Union start with the level 1 biowarfare breakthrough. Germany, the United Kingdom and France start with the chemical warfare breakthrough. Completed: `aa75244feb4062279c64e4d89f725481f414011b`.
 D2. Starting technologies and stockpiles: audit for accuracy. Germany should start with tabun (GA) researched. Completed: `06854613105439614eb6111e1e91a51096e9e808`; sourced audit: `docs/plans/cbrn_start_audit_2026-10-13.md` (historical quantity limits documented).
 D3. Japan uses CBRN unrestricted from the start. Completed: `aa75244feb4062279c64e4d89f725481f414011b`.
-D4. Traits: bonuses are generic and weak. Make them chaos-warfare focused; CBRN Operations Specialist gets strong, specialised CBRN bonuses.
+D4. Traits: bonuses are generic and weak. Make them chaos-warfare focused; CBRN Operations Specialist gets strong, specialised CBRN bonuses. Completed: `f4508e021165aa5b2f4d5e549fc9a34a740b933e`; historical restoration and specialised staff bonuses audited in `docs/plans/cbrn_start_audit_2026-10-13.md` (retired readiness clauses not restored).
 D5. Remove the "Last Fury Standing" focus and merge its purpose into another focus. (commit: b5caeb8fb82351164a0849378c2791d3f998c4b6)
 
 ## E. Outside the mod

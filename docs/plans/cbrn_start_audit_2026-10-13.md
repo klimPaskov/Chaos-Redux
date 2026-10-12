@@ -84,6 +84,7 @@ Other countries retain their existing initial authorization.
 
 ## D4: CBRN traits
 
+Implemented in `f4508e021165aa5b2f4d5e549fc9a34a740b933e`.
 The offending historical balance commit is `33b6946dd923b9fc90fbf29bc5798dce3c76a76f`.
 All 31 current constants that exist in its parent `4efc01fc87f1137e98c864f928dd5603e6b7d2f1` match that parent exactly, including the stronger offensive and medical factors.
 The comparison includes unchanged condemnation/detection constants as well as the restored values; it does not describe 31 separate balance changes.
@@ -289,3 +290,25 @@ Historical inventory certainty, shipment provenance, the two retired readiness t
 The parent reviewed D1–D4 integration; the country specialist reviewed D2 sources, the scripted-system architect implemented D4, and the independent probability auditor reviewed its changed spread surface.
 Skills used: `chaos-redux-technology-doctrines`, `chaos-redux-characters-leaders`, `chaos-redux-equipment`, `chaos-redux-units-divisions`, `chaos-redux-ideas-modifiers`, `chaos-redux-events`, `chaos-redux-ai-strategies`, `chaos-redux-subagents`, and `chaos-redux-shared-git-commit`.
 No skills were created or updated.
+
+## Changed implementation files
+
+D1/D3: `common/scripted_effects/chaosx_startup_history_effects.txt`, `common/script_constants/startup_history_constants.txt`, `docs/systems/startup_history_compatibility.md`, and `docs/systems/cbrn_warfare/cbrn_historical_scientists.md`.
+D2: the startup effects and those two maintained system documents, plus this requested audit.
+D4 source and localisation:
+
+- `common/country_leader/cbrn_high_command_traits.txt`
+- `common/unit_leader/chaosx_traits.txt`
+- `common/script_constants/cbrn_commander_progression_constants.txt`
+- `common/script_constants/cbrn_historical_advisor_constants.txt`
+- `common/scripted_effects/cbrn_hq_effects.txt`
+- `common/scripted_effects/cbrn_historical_advisor_effects.txt`
+- `common/scripted_effects/cbrn_exposure_effects.txt`
+- `common/scripted_effects/cbrn_scripted_effects.md`, only the HQ-discount row and staff-protection section
+- `localisation/english/chaosx_characters_l_english.yml`
+- `localisation/english/cbrn_commander_progression_l_english.yml`
+
+D4 maintained documents are the commander, historical advisor, doctrine and chemical operations commander guides linked above.
+The restoration plan changes are confined to D1-D4 item lines, preserving other agents' edits and staged state through the temporary-index compare-and-swap workflow.
+Existing portrait/trait icons and native unit presentation are reused; no art was replaced or repointed.
+One-off inventories, immutable comparison snapshots and commit preparation remain in ignored `.tmp/d1_d4/`.
