@@ -255,7 +255,10 @@ bio_border_closure_relation_target = {
 
 
 mapmode_state_has_chemical_contamination = {
-	has_dynamic_modifier = { modifier = chem_state_contamination }
+	OR = {
+		has_dynamic_modifier = { modifier = chem_state_contamination }
+		has_dynamic_modifier = { modifier = cbrn_chemical_state_contamination }
+	}
 }
 
 mapmode_state_has_legacy_disease_contamination = {
@@ -312,4 +315,86 @@ mapmode_state_has_tracked_contamination = {
 mapmode_state_has_civilian_death_history = {
 	has_variable = chaos_state_civilian_deaths_total
 	check_variable = { chaos_state_civilian_deaths_total > 0 }
+}
+
+has_enemy_chemical_condemnation_considerable = {
+	any_enemy_country = {
+		check_variable = {
+			var = condemnation_chemical
+			value = constant:chem_ability_ai.retaliate_threshold.considerable
+			compare = greater_than
+		}
+	}
+}
+
+has_enemy_chemical_condemnation_very_high = {
+	any_enemy_country = {
+		check_variable = {
+			var = condemnation_chemical
+			value = constant:chem_ability_ai.retaliate_threshold.very_high
+			compare = greater_than
+		}
+	}
+}
+
+chem_active_cylinder_type_is_chlorine = {
+    OR = {
+        AND = {
+            has_variable = chem_active_type
+            check_variable = {
+                var = chem_active_type
+                value = constant:chem_type.chlorine
+                compare = equals
+            }
+        }
+        has_trait = chemical_cylinder_active_chlorine
+    }
+}
+
+chem_active_cylinder_type_is_phosgene = {
+    OR = {
+        AND = {
+            has_variable = chem_active_type
+            check_variable = {
+                var = chem_active_type
+                value = constant:chem_type.phosgene
+                compare = equals
+            }
+        }
+        has_trait = chemical_cylinder_active_phosgene
+    }
+}
+
+chem_active_cylinder_type_is_mustard = {
+    OR = {
+        AND = {
+            has_variable = chem_active_type
+            check_variable = {
+                var = chem_active_type
+                value = constant:chem_type.mustard
+                compare = equals
+            }
+        }
+        has_trait = chemical_cylinder_active_mustard
+    }
+}
+
+chem_active_cylinder_type_is_lewisite = {
+    OR = {
+        AND = {
+            has_variable = chem_active_type
+            check_variable = {
+                var = chem_active_type
+                value = constant:chem_type.lewisite
+                compare = equals
+            }
+        }
+        has_trait = chemical_cylinder_active_lewisite
+    }
+}
+
+chem_cylinders_enemy_has_used_chemical_weapons = {
+	any_enemy_country = {
+		check_variable = { condemnation_chemical > 0 }
+	}
 }

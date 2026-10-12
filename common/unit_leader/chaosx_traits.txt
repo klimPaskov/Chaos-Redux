@@ -1,3 +1,5 @@
+@CR_SC_CBRN_DOCTRINE_LEADER_OPERATIONS_COMMANDER_TRAIT_COST = 500
+
 # CBRN earned traits are credited by completed commander-scoped operations and
 # combat callbacks in cbrn_commander_progression_effects.txt.
 # Static trait costs use file-scoped values because this database field does not
@@ -20,32 +22,35 @@ leader_traits = {
 		planning_skill = -3
 	}
 
+	skilled_staffer = {
+		gui_row = 16
+	}
+
+	expert_delegator = {
+		gui_row = 16
+	}
+
 	chemical_operations_commander = {
 		type = corps_commander
+		trait_type = assignable_trait
 		override_effect_tooltip = chemical_operations_commander_tt
-		gain_xp = { always = no }
+		gain_xp = {
+			always = no
+		}
+		cost = @CR_SC_CBRN_DOCTRINE_LEADER_OPERATIONS_COMMANDER_TRAIT_COST
+		enable_ability = chemical_chlorine_attack
+		enable_ability = chemical_phosgene_attack
+		enable_ability = chemical_mustard_attack
+		enable_ability = chemical_lewisite_attack
 		custom_gain_xp_trigger_tooltip = chemical_operations_commander_earned_tt
-		cost = @CBRN_EARNED_TRAIT_COST
 		slot = high_command
 		specialist_advisor_trait = cbrn_operations_high_command_1
 		expert_advisor_trait = cbrn_operations_high_command_2
 		genius_advisor_trait = cbrn_operations_high_command_3
 		ai_will_do = {
-			factor = @CR_SC_CBRN_DOCTRINE_AI_HIGH_COMMAND_BASE
-			modifier = {
-				factor = constant:cbrn_doctrine_ai.nonhuman_factor
-				FROM = { is_actual_nonhuman_country = yes }
-			}
-			modifier = {
-				factor = constant:cbrn_doctrine_ai.prepared_profile_factor
-				FROM = { cbrn_profile_is_prepared_power = yes }
-			}
-			modifier = {
-				factor = constant:cbrn_doctrine_ai.military_profile_factor
-				FROM = { cbrn_profile_is_military_first = yes }
-			}
+			factor = 0.5
 		}
-		gui_row = 16
+		gui_row = 15
 	}
 
 	biological_operations_veteran = {

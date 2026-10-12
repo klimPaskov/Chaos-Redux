@@ -1,0 +1,468 @@
+# Chemical cylinder ability presentation.
+
+defined_text = {
+	name = ChemGasMaskProtection
+	text = {
+		trigger = { OWNER = { cbrn_country_has_military_choking_protection_high = yes } }
+		localization_key = CHEM_ABILITY_GAS_MASK_HIGH
+	}
+	text = {
+		trigger = { OWNER = { cbrn_country_has_military_choking_protection_medium = yes } }
+		localization_key = CHEM_ABILITY_GAS_MASK_MEDIUM
+	}
+	text = {
+		trigger = { OWNER = { cbrn_country_has_military_choking_protection_low = yes } }
+		localization_key = CHEM_ABILITY_GAS_MASK_LOW
+	}
+	text = {
+		trigger = { always = yes }
+		localization_key = CHEM_ABILITY_GAS_MASK_NEGLIGIBLE
+	}
+}
+
+defined_text = {
+	name = ChemMedicalCountermeasure
+	text = {
+		trigger = { OWNER = { has_tech = dimercaprol } }
+		localization_key = CHEM_ABILITY_DIMERCAPROL_AVAILABLE
+	}
+	text = {
+		trigger = { always = yes }
+		localization_key = CHEM_ABILITY_DIMERCAPROL_UNAVAILABLE
+	}
+}
+
+defined_text = {
+	name = ChemWindTechStatus
+	text = {
+		trigger = { OWNER = { has_tech = upper_air_soundings } }
+		localization_key = CHEM_ABILITY_WIND_TECH_SOUNDINGS
+	}
+	text = {
+		trigger = { OWNER = { has_tech = meteorological_stations } }
+		localization_key = CHEM_ABILITY_WIND_TECH_STATIONS
+	}
+	text = {
+		trigger = { OWNER = { has_tech = portable_anemometer } }
+		localization_key = CHEM_ABILITY_WIND_TECH_VANES
+	}
+	text = {
+		trigger = { always = yes }
+		localization_key = CHEM_ABILITY_WIND_TECH_NONE
+	}
+}
+
+defined_text = {
+	name = ChemWindStatus
+	text = {
+		trigger = {
+			OR = {
+				check_variable = { var = chem_wind_state value = constant:chem_wind_state.strong_favor compare = greater_than_or_equals }
+				OWNER = { check_variable = { var = chem_wind_state value = constant:chem_wind_state.strong_favor compare = greater_than_or_equals } }
+			}
+		}
+		localization_key = CHEM_ABILITY_WIND_STRONG_FAVORABLE
+	}
+	text = {
+		trigger = {
+			OR = {
+				check_variable = { var = chem_wind_state value = constant:chem_wind_state.favor compare = greater_than_or_equals }
+				OWNER = { check_variable = { var = chem_wind_state value = constant:chem_wind_state.favor compare = greater_than_or_equals } }
+			}
+		}
+		localization_key = CHEM_ABILITY_WIND_FAVORABLE
+	}
+	text = {
+		trigger = {
+			OR = {
+				check_variable = { var = chem_wind_state value = constant:chem_wind_state.against compare = less_than_or_equals }
+				OWNER = { check_variable = { var = chem_wind_state value = constant:chem_wind_state.against compare = less_than_or_equals } }
+			}
+		}
+		localization_key = CHEM_ABILITY_WIND_AGAINST
+	}
+	text = {
+		trigger = { always = yes }
+		localization_key = CHEM_ABILITY_WIND_NEUTRAL
+	}
+}
+
+defined_text = {
+	name = ChemCylinderStatus
+	text = {
+		trigger = {
+			check_variable = { var = chem_ratio_loc value = constant:chem_cylinder_ratio.empty compare = less_than_or_equals }
+		}
+		localization_key = CHEM_ABILITY_CYLINDER_STATUS_EMPTY
+	}
+	text = {
+		trigger = {
+			check_variable = { var = chem_ratio_loc value = constant:chem_cylinder_ratio.very_low compare = less_than }
+		}
+		localization_key = CHEM_ABILITY_CYLINDER_STATUS_VERY_LOW
+	}
+	text = {
+		trigger = {
+			check_variable = { var = chem_ratio_loc value = constant:chem_cylinder_ratio.low compare = less_than }
+		}
+		localization_key = CHEM_ABILITY_CYLINDER_STATUS_LOW
+	}
+	text = {
+		trigger = {
+			check_variable = { var = chem_ratio_loc value = constant:chem_cylinder_ratio.lacking compare = less_than }
+		}
+		localization_key = CHEM_ABILITY_CYLINDER_STATUS_LACKING
+	}
+	text = {
+		trigger = {
+			check_variable = { var = chem_ratio_loc value = constant:chem_cylinder_ratio.missing compare = less_than }
+		}
+		localization_key = CHEM_ABILITY_CYLINDER_STATUS_MISSING
+	}
+	text = {
+		trigger = {
+			check_variable = { var = chem_ratio_loc value = constant:chem_cylinder_ratio.almost compare = less_than }
+		}
+		localization_key = CHEM_ABILITY_CYLINDER_STATUS_ALMOST
+	}
+	text = {
+		trigger = { always = yes }
+		localization_key = CHEM_ABILITY_CYLINDER_STATUS_READY
+	}
+}
+
+defined_text = {
+	name = ChemCylinderStatusChlorine
+	text = {
+		trigger = {
+			ROOT = { check_variable = { var = chem_ratio_loc_chlorine value = constant:chem_cylinder_ratio.empty compare = less_than_or_equals } }
+		}
+		localization_key = CHEM_ABILITY_CYLINDER_STATUS_EMPTY
+	}
+	text = {
+		trigger = {
+			ROOT = { check_variable = { var = chem_ratio_loc_chlorine value = constant:chem_cylinder_ratio.very_low compare = less_than } }
+		}
+		localization_key = CHEM_ABILITY_CYLINDER_STATUS_VERY_LOW
+	}
+	text = {
+		trigger = {
+			ROOT = { check_variable = { var = chem_ratio_loc_chlorine value = constant:chem_cylinder_ratio.low compare = less_than } }
+		}
+		localization_key = CHEM_ABILITY_CYLINDER_STATUS_LOW
+	}
+	text = {
+		trigger = {
+			ROOT = { check_variable = { var = chem_ratio_loc_chlorine value = constant:chem_cylinder_ratio.lacking compare = less_than } }
+		}
+		localization_key = CHEM_ABILITY_CYLINDER_STATUS_LACKING
+	}
+	text = {
+		trigger = {
+			ROOT = { check_variable = { var = chem_ratio_loc_chlorine value = constant:chem_cylinder_ratio.missing compare = less_than } }
+		}
+		localization_key = CHEM_ABILITY_CYLINDER_STATUS_MISSING
+	}
+	text = {
+		trigger = {
+			ROOT = { check_variable = { var = chem_ratio_loc_chlorine value = constant:chem_cylinder_ratio.almost compare = less_than } }
+		}
+		localization_key = CHEM_ABILITY_CYLINDER_STATUS_ALMOST
+	}
+	text = {
+		trigger = { always = yes }
+		localization_key = CHEM_ABILITY_CYLINDER_STATUS_READY
+	}
+}
+
+defined_text = {
+	name = ChemCylinderStatusPhosgene
+	text = {
+		trigger = {
+			ROOT = { check_variable = { var = chem_ratio_loc_phosgene value = constant:chem_cylinder_ratio.empty compare = less_than_or_equals } }
+		}
+		localization_key = CHEM_ABILITY_CYLINDER_STATUS_EMPTY
+	}
+	text = {
+		trigger = {
+			ROOT = { check_variable = { var = chem_ratio_loc_phosgene value = constant:chem_cylinder_ratio.very_low compare = less_than } }
+		}
+		localization_key = CHEM_ABILITY_CYLINDER_STATUS_VERY_LOW
+	}
+	text = {
+		trigger = {
+			ROOT = { check_variable = { var = chem_ratio_loc_phosgene value = constant:chem_cylinder_ratio.low compare = less_than } }
+		}
+		localization_key = CHEM_ABILITY_CYLINDER_STATUS_LOW
+	}
+	text = {
+		trigger = {
+			ROOT = { check_variable = { var = chem_ratio_loc_phosgene value = constant:chem_cylinder_ratio.lacking compare = less_than } }
+		}
+		localization_key = CHEM_ABILITY_CYLINDER_STATUS_LACKING
+	}
+	text = {
+		trigger = {
+			ROOT = { check_variable = { var = chem_ratio_loc_phosgene value = constant:chem_cylinder_ratio.missing compare = less_than } }
+		}
+		localization_key = CHEM_ABILITY_CYLINDER_STATUS_MISSING
+	}
+	text = {
+		trigger = {
+			ROOT = { check_variable = { var = chem_ratio_loc_phosgene value = constant:chem_cylinder_ratio.almost compare = less_than } }
+		}
+		localization_key = CHEM_ABILITY_CYLINDER_STATUS_ALMOST
+	}
+	text = {
+		trigger = { always = yes }
+		localization_key = CHEM_ABILITY_CYLINDER_STATUS_READY
+	}
+}
+
+defined_text = {
+	name = ChemCylinderStatusMustard
+	text = {
+		trigger = {
+			ROOT = { check_variable = { var = chem_ratio_loc_mustard value = constant:chem_cylinder_ratio.empty compare = less_than_or_equals } }
+		}
+		localization_key = CHEM_ABILITY_CYLINDER_STATUS_EMPTY
+	}
+	text = {
+		trigger = {
+			ROOT = { check_variable = { var = chem_ratio_loc_mustard value = constant:chem_cylinder_ratio.very_low compare = less_than } }
+		}
+		localization_key = CHEM_ABILITY_CYLINDER_STATUS_VERY_LOW
+	}
+	text = {
+		trigger = {
+			ROOT = { check_variable = { var = chem_ratio_loc_mustard value = constant:chem_cylinder_ratio.low compare = less_than } }
+		}
+		localization_key = CHEM_ABILITY_CYLINDER_STATUS_LOW
+	}
+	text = {
+		trigger = {
+			ROOT = { check_variable = { var = chem_ratio_loc_mustard value = constant:chem_cylinder_ratio.lacking compare = less_than } }
+		}
+		localization_key = CHEM_ABILITY_CYLINDER_STATUS_LACKING
+	}
+	text = {
+		trigger = {
+			ROOT = { check_variable = { var = chem_ratio_loc_mustard value = constant:chem_cylinder_ratio.missing compare = less_than } }
+		}
+		localization_key = CHEM_ABILITY_CYLINDER_STATUS_MISSING
+	}
+	text = {
+		trigger = {
+			ROOT = { check_variable = { var = chem_ratio_loc_mustard value = constant:chem_cylinder_ratio.almost compare = less_than } }
+		}
+		localization_key = CHEM_ABILITY_CYLINDER_STATUS_ALMOST
+	}
+	text = {
+		trigger = { always = yes }
+		localization_key = CHEM_ABILITY_CYLINDER_STATUS_READY
+	}
+}
+
+defined_text = {
+	name = ChemCylinderStatusLewisite
+	text = {
+		trigger = {
+			ROOT = { check_variable = { var = chem_ratio_loc_lewisite value = constant:chem_cylinder_ratio.empty compare = less_than_or_equals } }
+		}
+		localization_key = CHEM_ABILITY_CYLINDER_STATUS_EMPTY
+	}
+	text = {
+		trigger = {
+			ROOT = { check_variable = { var = chem_ratio_loc_lewisite value = constant:chem_cylinder_ratio.very_low compare = less_than } }
+		}
+		localization_key = CHEM_ABILITY_CYLINDER_STATUS_VERY_LOW
+	}
+	text = {
+		trigger = {
+			ROOT = { check_variable = { var = chem_ratio_loc_lewisite value = constant:chem_cylinder_ratio.low compare = less_than } }
+		}
+		localization_key = CHEM_ABILITY_CYLINDER_STATUS_LOW
+	}
+	text = {
+		trigger = {
+			ROOT = { check_variable = { var = chem_ratio_loc_lewisite value = constant:chem_cylinder_ratio.lacking compare = less_than } }
+		}
+		localization_key = CHEM_ABILITY_CYLINDER_STATUS_LACKING
+	}
+	text = {
+		trigger = {
+			ROOT = { check_variable = { var = chem_ratio_loc_lewisite value = constant:chem_cylinder_ratio.missing compare = less_than } }
+		}
+		localization_key = CHEM_ABILITY_CYLINDER_STATUS_MISSING
+	}
+	text = {
+		trigger = {
+			ROOT = { check_variable = { var = chem_ratio_loc_lewisite value = constant:chem_cylinder_ratio.almost compare = less_than } }
+		}
+		localization_key = CHEM_ABILITY_CYLINDER_STATUS_ALMOST
+	}
+	text = {
+		trigger = { always = yes }
+		localization_key = CHEM_ABILITY_CYLINDER_STATUS_READY
+	}
+}
+
+defined_text = {
+	name = ChemCylinderCountAvailable
+	text = {
+		trigger = {
+			check_variable = { var = chem_available value = constant:chem_ability_ui_number.thousand compare = greater_than_or_equals }
+			set_temp_variable = { chem_cylinder_ui_count = chem_available }
+			divide_temp_variable = { chem_cylinder_ui_count = constant:chem_ability_ui_number.thousand }
+		}
+		localization_key = chem_cylinder_ui_count_k
+	}
+	text = {
+		trigger = { set_temp_variable = { chem_cylinder_ui_count = chem_available } }
+		localization_key = chem_cylinder_ui_count_plain
+	}
+}
+
+defined_text = {
+	name = ChemCylinderCountRequired
+	text = {
+		trigger = {
+			check_variable = { var = chem_required value = constant:chem_ability_ui_number.thousand compare = greater_than_or_equals }
+			set_temp_variable = { chem_cylinder_ui_count = chem_required }
+			divide_temp_variable = { chem_cylinder_ui_count = constant:chem_ability_ui_number.thousand }
+		}
+		localization_key = chem_cylinder_ui_count_k
+	}
+	text = {
+		trigger = { set_temp_variable = { chem_cylinder_ui_count = chem_required } }
+		localization_key = chem_cylinder_ui_count_plain
+	}
+}
+
+defined_text = {
+	name = ChemCylinderCountAvailableChlorine
+	text = {
+		trigger = {
+			check_variable = { var = chem_available_chlorine value = constant:chem_ability_ui_number.thousand compare = greater_than_or_equals }
+			set_temp_variable = { chem_cylinder_ui_count = chem_available_chlorine }
+			divide_temp_variable = { chem_cylinder_ui_count = constant:chem_ability_ui_number.thousand }
+		}
+		localization_key = chem_cylinder_ui_count_k
+	}
+	text = {
+		trigger = { set_temp_variable = { chem_cylinder_ui_count = chem_available_chlorine } }
+		localization_key = chem_cylinder_ui_count_plain
+	}
+}
+
+defined_text = {
+	name = ChemCylinderCountRequiredChlorine
+	text = {
+		trigger = {
+			check_variable = { var = chem_required_chlorine value = constant:chem_ability_ui_number.thousand compare = greater_than_or_equals }
+			set_temp_variable = { chem_cylinder_ui_count = chem_required_chlorine }
+			divide_temp_variable = { chem_cylinder_ui_count = constant:chem_ability_ui_number.thousand }
+		}
+		localization_key = chem_cylinder_ui_count_k
+	}
+	text = {
+		trigger = { set_temp_variable = { chem_cylinder_ui_count = chem_required_chlorine } }
+		localization_key = chem_cylinder_ui_count_plain
+	}
+}
+
+defined_text = {
+	name = ChemCylinderCountAvailablePhosgene
+	text = {
+		trigger = {
+			check_variable = { var = chem_available_phosgene value = constant:chem_ability_ui_number.thousand compare = greater_than_or_equals }
+			set_temp_variable = { chem_cylinder_ui_count = chem_available_phosgene }
+			divide_temp_variable = { chem_cylinder_ui_count = constant:chem_ability_ui_number.thousand }
+		}
+		localization_key = chem_cylinder_ui_count_k
+	}
+	text = {
+		trigger = { set_temp_variable = { chem_cylinder_ui_count = chem_available_phosgene } }
+		localization_key = chem_cylinder_ui_count_plain
+	}
+}
+
+defined_text = {
+	name = ChemCylinderCountRequiredPhosgene
+	text = {
+		trigger = {
+			check_variable = { var = chem_required_phosgene value = constant:chem_ability_ui_number.thousand compare = greater_than_or_equals }
+			set_temp_variable = { chem_cylinder_ui_count = chem_required_phosgene }
+			divide_temp_variable = { chem_cylinder_ui_count = constant:chem_ability_ui_number.thousand }
+		}
+		localization_key = chem_cylinder_ui_count_k
+	}
+	text = {
+		trigger = { set_temp_variable = { chem_cylinder_ui_count = chem_required_phosgene } }
+		localization_key = chem_cylinder_ui_count_plain
+	}
+}
+
+defined_text = {
+	name = ChemCylinderCountAvailableMustard
+	text = {
+		trigger = {
+			check_variable = { var = chem_available_mustard value = constant:chem_ability_ui_number.thousand compare = greater_than_or_equals }
+			set_temp_variable = { chem_cylinder_ui_count = chem_available_mustard }
+			divide_temp_variable = { chem_cylinder_ui_count = constant:chem_ability_ui_number.thousand }
+		}
+		localization_key = chem_cylinder_ui_count_k
+	}
+	text = {
+		trigger = { set_temp_variable = { chem_cylinder_ui_count = chem_available_mustard } }
+		localization_key = chem_cylinder_ui_count_plain
+	}
+}
+
+defined_text = {
+	name = ChemCylinderCountRequiredMustard
+	text = {
+		trigger = {
+			check_variable = { var = chem_required_mustard value = constant:chem_ability_ui_number.thousand compare = greater_than_or_equals }
+			set_temp_variable = { chem_cylinder_ui_count = chem_required_mustard }
+			divide_temp_variable = { chem_cylinder_ui_count = constant:chem_ability_ui_number.thousand }
+		}
+		localization_key = chem_cylinder_ui_count_k
+	}
+	text = {
+		trigger = { set_temp_variable = { chem_cylinder_ui_count = chem_required_mustard } }
+		localization_key = chem_cylinder_ui_count_plain
+	}
+}
+
+defined_text = {
+	name = ChemCylinderCountAvailableLewisite
+	text = {
+		trigger = {
+			check_variable = { var = chem_available_lewisite value = constant:chem_ability_ui_number.thousand compare = greater_than_or_equals }
+			set_temp_variable = { chem_cylinder_ui_count = chem_available_lewisite }
+			divide_temp_variable = { chem_cylinder_ui_count = constant:chem_ability_ui_number.thousand }
+		}
+		localization_key = chem_cylinder_ui_count_k
+	}
+	text = {
+		trigger = { set_temp_variable = { chem_cylinder_ui_count = chem_available_lewisite } }
+		localization_key = chem_cylinder_ui_count_plain
+	}
+}
+
+defined_text = {
+	name = ChemCylinderCountRequiredLewisite
+	text = {
+		trigger = {
+			check_variable = { var = chem_required_lewisite value = constant:chem_ability_ui_number.thousand compare = greater_than_or_equals }
+			set_temp_variable = { chem_cylinder_ui_count = chem_required_lewisite }
+			divide_temp_variable = { chem_cylinder_ui_count = constant:chem_ability_ui_number.thousand }
+		}
+		localization_key = chem_cylinder_ui_count_k
+	}
+	text = {
+		trigger = { set_temp_variable = { chem_cylinder_ui_count = chem_required_lewisite } }
+		localization_key = chem_cylinder_ui_count_plain
+	}
+}

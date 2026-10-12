@@ -215,20 +215,20 @@ cbrn_chemical_refresh_state_modifier = {
 			add_to_temp_variable = { cbrn_chemical_modifier_days_left = cbrn_chemical_modifier_current_day_negative }
 			clamp_temp_variable = { var = cbrn_chemical_modifier_days_left min = constant:cbrn_scheduler.contamination_minimum_days max = constant:cbrn_scheduler.contamination_maximum_days }
 			if = {
-				limit = { has_dynamic_modifier = { modifier = chem_state_contamination } }
-				remove_dynamic_modifier = { modifier = chem_state_contamination }
+				limit = { has_dynamic_modifier = { modifier = cbrn_chemical_state_contamination } }
+				remove_dynamic_modifier = { modifier = cbrn_chemical_state_contamination }
 			}
-			add_dynamic_modifier = { modifier = chem_state_contamination days = cbrn_chemical_modifier_days_left }
+			add_dynamic_modifier = { modifier = cbrn_chemical_state_contamination days = cbrn_chemical_modifier_days_left }
 			force_update_dynamic_modifier = yes
 		}
 		else_if = {
-			limit = { has_dynamic_modifier = { modifier = chem_state_contamination } }
-			remove_dynamic_modifier = { modifier = chem_state_contamination }
+			limit = { has_dynamic_modifier = { modifier = cbrn_chemical_state_contamination } }
+			remove_dynamic_modifier = { modifier = cbrn_chemical_state_contamination }
 		}
 		cbrn_designer_refresh_contaminated_state_vehicle_attrition = yes
 	}
 	else = {
-		if = { limit = { has_dynamic_modifier = { modifier = chem_state_contamination } } remove_dynamic_modifier = { modifier = chem_state_contamination } }
+		if = { limit = { has_dynamic_modifier = { modifier = cbrn_chemical_state_contamination } } remove_dynamic_modifier = { modifier = cbrn_chemical_state_contamination } }
 		cbrn_air_cleanliness_clear_chemical_state_contribution = yes
 		clear_variable = cbrn_chemical_effective_strength
 		clear_variable = cbrn_chemical_supplies

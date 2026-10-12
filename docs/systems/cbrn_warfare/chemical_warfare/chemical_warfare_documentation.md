@@ -1,5 +1,7 @@
 # Chemical Warfare System
 
+The four historical army-leader cylinder abilities in `common/abilities/chemical_abilities.txt` are also active, with their original commander trait, stock consumption, wind preview and combat/state effects. They operate alongside the newer exact-state raid core and require no invented target receipt. See [the commander contract](chemical_operations_commander_trait.md).
+
 ## Gameplay identity
 
 Chemical warfare is an equipment-backed exact-state system. The player researches an agent, produces its real payload and protective equipment, establishes Chemical Readiness and a use policy, selects a supported delivery route, and receives disruption and area-denial power in exchange for deaths, contamination, medical load, evidence, attribution, Condemnation, treaty response, and sanctions risk.

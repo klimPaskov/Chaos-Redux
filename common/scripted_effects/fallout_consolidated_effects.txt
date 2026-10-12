@@ -3664,7 +3664,7 @@ air_winter_calculate_state_pressure = {
 		}
 	}
 	if = {
-		limit = { has_dynamic_modifier = { modifier = chem_state_contamination } }
+		limit = { mapmode_state_has_chemical_contamination = yes }
 		add_to_variable = { air_winter_pressure = constant:air_winter_pressure.chemical_contamination }
 	}
 
@@ -4072,7 +4072,7 @@ air_winter_update_survival_ledgers = {
 			add_to_temp_variable = { air_winter_exposure_delta = constant:air_winter_ledger.nuclear_exposure }
 		}
 		if = {
-			limit = { has_dynamic_modifier = { modifier = chem_state_contamination } }
+			limit = { mapmode_state_has_chemical_contamination = yes }
 			add_to_temp_variable = { air_winter_exposure_delta = constant:air_winter_ledger.chemical_exposure }
 		}
 		subtract_from_temp_variable = { air_winter_exposure_delta = air_winter_exposure_reclamation }
@@ -42390,7 +42390,7 @@ fallout_take_world_snapshot = {
 			}
 			if = { limit = { fallout_state_is_direct_manual_target = yes } set_state_flag = fallout_pretransition_direct_manual_target }
 			if = { limit = { is_coastal = yes } set_state_flag = fallout_pretransition_coastal }
-			if = { limit = { has_dynamic_modifier = { modifier = chem_state_contamination } } set_state_flag = fallout_pretransition_chemical_contamination }
+			if = { limit = { mapmode_state_has_chemical_contamination = yes } set_state_flag = fallout_pretransition_chemical_contamination }
 			if = {
 				limit = {
 					OR = {

@@ -2,7 +2,7 @@
 
 ## Overview
 
-Chemical first-use surprise belongs to the defender's adaptation state. A validated chemical release can magnify the immediate disruption and casualties in its exact target state when the victim has no prior chemical-exposure awareness. It does not grant a national combat buff to the attacker.
+The shared chemical first-exposure adaptation belongs to the defender's adaptation state. A validated chemical release can magnify the immediate disruption and casualties in its exact target state when the victim has no prior chemical-exposure awareness. That shared route does not grant a national combat buff to the attacker.
 
 The canonical implementation is `cbrn_dispatch_apply_first_exposure_shock` in `common/scripted_effects/cbrn_consequence_effects.txt`. Every supported chemical route reaches it only through `cbrn_dispatch_chemical_consequences` after target, payload, protection, and route receipts have been accepted.
 
@@ -32,8 +32,26 @@ Protective equipment and the target country's readiness remain active inputs. He
 - idea: `cbrn_first_chemical_shock_idea` in `common/ideas/cbw_ideas.txt`;
 - localisation: `localisation/english/cbrn_chemical_delivery_l_english.yml`.
 
-No attacker-side first-use idea or icon is active.
+The historical cylinder-ability route separately uses `chemical_first_use_surprise_idea` and its original icon.
 
 ## Future extensions
 
 If a current-version native warning-sharing hook exposes exact participating allies, chemical awareness could be shared through that proven relationship. It must not be approximated with a world pulse or faction-wide estimator.
+
+## Historical cylinder first use
+
+This mechanic adds a one-time, temporary combat spike when a country first uses chemical weapons in real combat.
+
+- On first eligible chemical combat use, the country gains `chemical_first_use_surprise_idea` for 30 days.
+- The idea grants:
+  - `+5%` `army_attack_factor`
+  - `+5%` `breakthrough_factor`
+- While the idea is active:
+  - Cylinder ability final values are multiplied by `1.5` (offense, breakthrough, defense, org damage, str damage, war support damage).
+  - Cylinder preview values are multiplied by the same `1.5` so UI matches actual behavior.
+  - Chemical tank-shell and Livens support profile values are multiplied by `1.5` (dose, duration, condemnation base, condemnation per-unit).
+- The effect is strictly one-time per country and can never be earned again after expiration.
+
+
+The restored `chem_grant_first_use_surprise` and leader combat callbacks set the permanent `chem_first_use_surprise_consumed` flag once.
+The current tank-shell and Livens raid paths retain their newer accounting; the historical paragraph above records the original mechanic, while the restored A13 callback ownership is the cylinder ability route.

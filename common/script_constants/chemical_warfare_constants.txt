@@ -38,6 +38,28 @@ chem_state = {
 		attack = 0.80
 		breakthrough = 1.00
 	}
+
+    core = {
+        strength_scale = 4
+        duration_scale = 4
+
+        max_strength_base = -0.20
+        max_duration_days_base = 21
+    }
+
+    dose_per_div = {
+        chlorine = -0.0006
+        phosgene = -0.0009
+        mustard = -0.0004
+        lewisite = -0.0005
+    }
+
+    duration_add = {
+        chlorine = 2
+        phosgene = 2
+        mustard = 4
+        lewisite = 5
+    }
 }
 
 chem_contaminant_firebases = {
@@ -116,6 +138,8 @@ chem_dimercaprol_mitigation = {
 	generic_death_mult = 0.85
 	blister_additional_death_mult = 0.80
 	medical_saturation_mult = 0.85
+    generic = 0.05
+    blister_bonus = 0.15
 }
 
 chem_doom_ai = {
@@ -190,4 +214,505 @@ chem_japan_campaign_ai = {
 		attack_add_core_state = 2
 		treaty_member_factor = 0.30
 	}
+}
+
+chem_cylinder_ratio = {
+    schema = {
+        any_key = yes
+        data = fixed_point
+    }
+
+    empty = 0.05
+    very_low = 0.25
+    low = 0.50
+    lacking = 0.75
+    missing = 0.90
+    almost = 0.99
+}
+
+chem_wind_state = {
+    schema = {
+        any_key = yes
+        data = int
+    }
+
+    strong_favor = 2
+    favor = 1
+    neutral = 0
+    against = -1
+}
+
+chem_unit_modifier = {
+    schema = {
+        any_key = yes
+        data = fixed_point
+    }
+
+    speed_factor = -0.05
+    urban_attack = 0.10
+}
+
+chem_weather_effect = {
+    schema = {
+        any_key = yes
+        data = {
+            {
+                any_key = yes
+                data = fixed_point
+            }
+        }
+    }
+
+    blizzard = {
+        offense = -0.005
+        breakthrough = -0.005
+        org_damage = 0.008
+    }
+
+    sandstorm = {
+        offense = -0.005
+        str_damage = 0.01
+        org_damage = 0.008
+    }
+
+    extreme_cold = {
+        offense = -0.005
+        breakthrough = -0.005
+        org_damage = 0.01
+    }
+
+    extreme_heat = {
+        offense = -0.005
+        str_damage = 0.01
+        org_damage = 0.008
+    }
+}
+
+chem_weather_threshold = {
+    schema = {
+        any_key = yes
+        data = fixed_point
+    }
+
+    extreme = 0.6
+}
+
+chem_wind = {
+    schema = {
+        any_key = yes
+        data = {
+            {
+                any_key = yes
+                data = fixed_point
+            }
+        }
+    }
+
+    core = {
+        chance_scale = 100
+        severe_threshold = 0.35
+        forecast_days = 7
+    }
+
+    favor = {
+        base = 8
+        clear_bonus = 6
+        open_bonus = 6
+        rough_penalty = -6
+        severe_penalty = -7
+        extreme_penalty = -5
+        urban_penalty = -4
+        highland_penalty = -3
+    }
+
+    against = {
+        base = 8
+        clear_penalty = -5
+        severe_bonus = 24
+        extreme_bonus = 12
+        extreme_bonus_extra = 8
+        rough_bonus = 8
+        urban_bonus = 6
+        highland_bonus = 5
+    }
+
+    tech = {
+        favor_vanes = 12
+        favor_stations = 20
+        favor_soundings = 28
+        strong_favor_stations = 10
+        strong_favor_soundings = 18
+        against_vanes = -4
+        against_stations = -8
+        against_soundings = -12
+    }
+
+    mult = {
+        positive_favor = 1.30
+        negative_favor = 0.70
+        positive_strong_favor = 1.60
+        negative_strong_favor = 0.50
+        positive_neutral = 1.0
+        negative_neutral = 1.0
+        positive_against = 0.70
+        negative_against = 1.25
+    }
+
+    miscalc = {
+        base = 0.15
+        vanes = 0.10
+        stations = 0.05
+        soundings = 0.02
+    }
+}
+
+chem_ability_core = {
+    schema = {
+        any_key = yes
+        data = fixed_point
+    }
+
+    # Shared ability tuning values used by both:
+    # - `common/abilities/chemical_abilities.txt` (live ability definitions)
+    # - `common/scripted_effects/chemical_ability_effects.txt` (preview/UI math)
+    duration_hours = 168
+    duration_days = 7
+    ratio_min = 0.10
+}
+
+chem_ability_cylinders_per_battalion = {
+    schema = {
+        any_key = yes
+        data = fixed_point
+    }
+
+    # Cylinders required per battalion for each gas type.
+    chlorine = 30
+    phosgene = 30
+    mustard = 30
+    lewisite = 30
+}
+
+chem_ability_stat = {
+    schema = {
+        any_key = yes
+        data = {
+            {
+                any_key = yes
+                data = fixed_point
+            }
+        }
+    }
+
+    chlorine = {
+        offense = 0.24
+        breakthrough = 0.24
+        defense = 0.06
+        org_damage = 0.18
+        str_damage = 0.08
+        war_support = 0.14
+    }
+
+    phosgene = {
+        offense = 0.34
+        breakthrough = 0.32
+        defense = 0.09
+        org_damage = 0.26
+        str_damage = 0.13
+        war_support = 0.19
+    }
+
+    mustard = {
+        offense = 0.42
+        breakthrough = 0.38
+        defense = 0.11
+        org_damage = 0.32
+        str_damage = 0.16
+        war_support = 0.22
+    }
+
+    lewisite = {
+        offense = 0.48
+        breakthrough = 0.48
+        defense = 0.12
+        org_damage = 0.36
+        str_damage = 0.18
+        war_support = 0.24
+    }
+}
+
+chem_chaos_warfare_doctrine = {
+    schema = {
+        any_key = yes
+        data = {
+            {
+                any_key = yes
+                data = fixed_point
+            }
+        }
+    }
+
+    cylinder_ability = {
+        mult = 1.00
+    }
+
+    air_bomb = {
+        dose_mult = 1.00
+        duration_base_mult = 1.00
+        duration_per_pressure_mult = 1.00
+    }
+}
+
+chem_ability_command_power_cost = {
+    schema = {
+        any_key = yes
+        data = fixed_point
+    }
+
+    chlorine = 0.20
+    phosgene = 0.30
+    mustard = 0.35
+    lewisite = 0.40
+}
+
+chem_ability_condemnation_base = {
+    schema = {
+        any_key = yes
+        data = fixed_point
+    }
+
+    chlorine = 0.35
+    phosgene = 0.55
+    mustard = 0.65
+    lewisite = 0.85
+}
+
+chem_ability_condemnation_per_unit = {
+    schema = {
+        any_key = yes
+        data = fixed_point
+    }
+
+    chlorine = 0.0015
+    phosgene = 0.0022
+    mustard = 0.0027
+    lewisite = 0.0032
+}
+
+chem_ability_condemnation_affected_unit_scale = {
+    schema = {
+        any_key = yes
+        data = fixed_point
+    }
+
+    chlorine = 4.0
+    phosgene = 4.0
+    mustard = 4.0
+    lewisite = 4.0
+}
+
+chem_ability_ai = {
+    schema = {
+        any_key = yes
+        data = {
+            {
+                any_key = yes
+                data = fixed_point
+            }
+        }
+    }
+
+    retaliate_threshold = {
+        considerable = 14
+        very_high = 24
+    }
+    retaliate_add = {
+        considerable = 2.5
+        very_high = 4.0
+    }
+
+    min_command_power = {
+        chlorine = 0.8
+        phosgene = 1.0
+        mustard = 1.0
+        lewisite = 1.25
+    }
+    min_war_support = {
+        chlorine = 0.10
+        phosgene = 0.20
+        mustard = 0.20
+        lewisite = 0.30
+    }
+
+    pressure = {
+        offensive_low = 4
+        offensive_high = 8
+        defensive_low = 6
+        offensive_status_min = 0.45
+        defensive_status_max = 0.35
+        terrain_pressure = 3
+        climate_pressure = 6
+    }
+    pressure_add = {
+        high = 2
+        med = 1
+    }
+    terrain_pressure_add = {
+        value = 0.5
+    }
+    climate_penalty_add = {
+        value = -0.5
+    }
+
+    gas_mask_add = {
+        high = 0.6
+        medium = 0.4
+        low = 0.2
+    }
+
+    ideology_add = {
+        democratic = -1.0
+        communist = 0.3
+        fascist = 0.6
+        neutral = 0.1
+    }
+    wind_add = {
+        strong_favor = 0.8
+        favor = 0.4
+        against = -0.8
+    }
+    country_add = {
+        japan_china_campaign = 2.5
+    }
+    trait_weight = {
+        academy_spirit = 0.2
+    }
+    condemnation_mult = {
+        japan_china_campaign = 0.20
+    }
+}
+
+chem_terrain_effect = {
+    schema = {
+        any_key = yes
+        data = {
+            {
+                any_key = yes
+                data = fixed_point
+            }
+        }
+    }
+
+    woods = {
+        offense = -0.005
+        breakthrough = -0.005
+        org_damage = 0.01
+    }
+
+    hills = {
+        breakthrough = -0.006
+        org_damage = 0.01
+    }
+
+    urban = {
+        org_damage = 0.012
+        str_damage = 0.015
+    }
+
+    marsh = {
+        breakthrough = -0.005
+        org_damage = 0.01
+    }
+
+    plains = {
+        offense = -0.004
+        breakthrough = -0.004
+        org_damage = 0.008
+        str_damage = 0.005
+    }
+
+    desert = {
+        offense = -0.005
+        breakthrough = -0.005
+        org_damage = 0.01
+        str_damage = 0.008
+    }
+}
+
+chem_mask_reduction = {
+    schema = {
+        any_key = yes
+        data = fixed_point
+    }
+
+    # Legacy combat-ability mitigation is fed by the shared protective-
+    # equipment snapshot. A fully effective issued set retains the former
+    # 75-percent ceiling; partial issue, worn filters, and weaker models scale
+    # beneath it.
+    maximum = 0.75
+}
+
+chem_livens = {
+    schema = {
+        any_key = yes
+        data = {
+            {
+                any_key = yes
+                data = fixed_point
+            }
+        }
+    }
+
+    cylinder_mult = {
+        base = 0.95
+        improved = 0.90
+        advanced = 0.85
+    }
+
+    condemnation_mult = {
+        base = 1.05
+        improved = 1.10
+        advanced = 1.15
+    }
+
+    combat_condemnation = {
+        won = 0.12
+        lost = 0.08
+    }
+
+    state_dose_mult = {
+        base = 1.18
+        improved = 1.24
+        advanced = 1.30
+    }
+
+    state_duration_mult = {
+        base = 1.10
+        improved = 1.15
+        advanced = 1.20
+    }
+
+	combat_state = {
+		min_units_in_combat = 1
+		dose_mult = 0.30
+		duration_mult = 0.90
+		max_duration_days = 8
+	}
+}
+
+chem_ai_cylinder_retaliate_threshold = {
+    schema = {
+        any_key = yes
+        data = fixed_point
+    }
+
+    low = 2
+    med = 5
+    high = 10
+}
+
+# UI count unit for the restored cylinder stock and requirement values.
+chem_ability_ui_number = {
+	schema = { any_key = yes data = fixed_point }
+	thousand = 1000
 }
