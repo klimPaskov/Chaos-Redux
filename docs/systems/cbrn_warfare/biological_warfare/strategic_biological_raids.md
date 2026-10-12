@@ -8,17 +8,14 @@ Weaponized-zombie strikes and the anti-zombie cure raid are separate systems. Th
 
 ## Preparing an Operation
 
-The attacker must:
+The attacker completes the matching biological special project and supplies the native aircraft, Command Power and exact payload requirements.
+Preparation can begin before war; launch requires war with the target.
+No policy change or staging-selection decision is required by the ordinary raid flow.
+The genuinely newer Event 016 authority condition remains for that event's variants.
 
-1. Complete the matching biological special project.
-2. Hold a CBRN Use Policy that authorizes strategic release, or possess valid retaliation authority.
-3. Designate a Biological Raid Staging Complex through `bio_designate_strategic_raid_staging_state`.
-4. Remain at war with the target country and select an inhabited, non-wasteland, non-zombie state controlled by that enemy.
-5. Supply the required tactical-bomber or strategic-bomber formation, Command Power, and exact payload stockpile.
-
-The staging decision costs 25 Political Power and normally has a 90-day relocation cooldown. An exact-state control-change hook clears the lost complex marker and the former controller's matching state pointer immediately. A lost or otherwise invalid complex can be replaced without waiting for the relocation cooldown.
-
-The designated state is a secured handling, storage, inspection, and loading complex. It is the only state eligible for an attacker handling accident. It is not presented as the actual launch airbase because the current raid API does not expose that state to outcome script.
+The retained outcome accounting automatically selects an owned, controlled handling state with an air base or supply node and functioning infrastructure for attacker accidents and history.
+That automatic state is not represented as the native launch airbase.
+Exact target, actor, victim and completed-project checks remain at outcome resolution.
 
 ## Agent Profiles
 
@@ -39,13 +36,9 @@ Each selected state has a 120-day raid cooldown through the native state-target 
 
 `essential_equipment` is the exact native reservation debit made when the raid is created. The resolver never creates an alternate payload and never estimates a debit.
 
-- Failed delivery consumes a bounded 40-80 percent of the reservation.
-- Partial contamination consumes 75-100 percent.
-- Hidden contamination, detected seed, successful seed, and attacker accident consume the full reservation.
-- Only unused units of the exact reserved equipment model are refunded.
-- If the hostile relationship, native target, policy, project, or staging context becomes invalid after creation, the already-collected exact reservation is recorded as physically lost. This rejection creates no release, contamination, deaths, evidence, attribution, biological-use history, retaliation, or Condemnation.
-- The raid result panel evaluates that same current context. Invalid operations show the no-release result for both countries instead of displaying an outcome that the resolver rejects.
-- A lifecycle dispatch failure loses the full collected reservation. It does not refund material or invent contamination, evidence, or a substitute state.
+Every completed outcome consumes the full native reservation; the script neither debits it a second time nor refunds a percentage.
+If the hostile relationship, exact target, project or automatically selected handling context becomes invalid after creation, the already-collected reservation is recorded as lost and creates no release.
+Outcome tooltips evaluate the same final context.
 
 Chaos Warfare doctrine may refund part of the Command Power cost after a resolved operation. It never refunds or erases payload consumption, release history, deaths, contamination, medical saturation, evidence, attribution, or confirmed-use history.
 

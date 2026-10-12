@@ -1,5 +1,7 @@
 # Biological Countermeasures
 
+Disposition: the decision-flow expansion below is superseded by the owner's A12 restoration of direct field hospitals, quarantine, separate antibiotic actions and vaccination. New underlying outbreak accounting remains, with treatment integrated automatically behind that flow. See [the restoration comparison](../../../plans/biowarfare_restore_comparison_2026-10-12.md) for active decision ownership and source evidence.
+
 ## Purpose
 
 The biological countermeasure system turns surveillance, containment, treatment, vaccination, and international assistance into resource-backed national and exact-state actions.

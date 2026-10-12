@@ -1648,6 +1648,30 @@ bio_lifecycle_prepare_environment_and_countermeasure_multipliers = {
 	set_temp_variable = { bio_medical_countermeasure_mult = constant:bio_lifecycle_math.one }
 	set_temp_variable = { bio_susceptibility_countermeasure_mult = constant:bio_lifecycle_math.one }
 	set_temp_variable = { bio_recovery_countermeasure_mult = constant:bio_lifecycle_math.one }
+	# National antibiotic programmes from the direct historical decisions apply
+	# automatically to every active state episode; no second distribution click
+	# is required for outbreaks already active or detected later.
+	if = {
+		limit = {
+			check_variable = { var = bio_active_agent value = constant:bio_lifecycle_agent.anthrax compare = equals }
+			CONTROLLER = { has_idea = anthrax_antibiotics_mass_production_idea }
+		}
+		set_state_flag = bio_anthrax_antibiotics_active
+	}
+	else_if = {
+		limit = {
+			check_variable = { var = bio_active_agent value = constant:bio_lifecycle_agent.plague compare = equals }
+			CONTROLLER = { has_idea = plague_antibiotics_mass_production_idea }
+		}
+		set_state_flag = bio_plague_antibiotics_active
+	}
+	else_if = {
+		limit = {
+			check_variable = { var = bio_active_agent value = constant:bio_lifecycle_agent.tularemia compare = equals }
+			CONTROLLER = { has_idea = tularemia_antibiotics_mass_production_idea }
+		}
+		set_state_flag = bio_tularemia_antibiotics_active
+	}
 
 	if = { limit = { has_state_category = pastoral } multiply_temp_variable = { bio_growth_environment_mult = constant:bio_lifecycle_environment.pastoral_growth_mult } }
 	else_if = { limit = { has_state_category = rural } multiply_temp_variable = { bio_growth_environment_mult = constant:bio_lifecycle_environment.rural_growth_mult } }
@@ -2055,6 +2079,158 @@ bio_lifecycle_register_current_agent_weekly_deaths = {
 	}
 }
 
+# Historical state-modifier reduction and its zombie-prevention input.
+# Invoked after lifecycle modifiers are rebuilt from their baselines.
+
+reduce_contamination_effects = {
+    set_temp_variable = { total_reduction = 0 }
+
+    # Check for field hospital effectiveness
+    if = {
+        limit = { has_state_flag = field_hospitals_deployed }
+        if = {
+            limit = { has_variable = field_hospital_effectiveness }
+            add_to_temp_variable = { total_reduction = field_hospital_effectiveness }
+        }
+        else = {
+            add_to_temp_variable = { total_reduction = 0.2 }
+        }
+    }
+
+    # Check for quarantine effectiveness
+    if = {
+        limit = { has_state_flag = quarantine_measures_active }
+        if = {
+            limit = { has_variable = quarantine_effectiveness }
+            add_to_temp_variable = { total_reduction = quarantine_effectiveness }
+        }
+        else = {
+            add_to_temp_variable = { total_reduction = 0.2 }
+        }
+    }
+
+    # Check for antibiotics protection
+    if = {
+        limit = { has_state_flag = anthrax_antibiotics_protection_active }
+        if = {
+            limit = { has_variable = anthrax_antibiotics_protection_effectiveness }
+            add_to_temp_variable = { total_reduction = anthrax_antibiotics_protection_effectiveness }
+        }
+    }
+
+    # Check for plague antibiotics protection
+    if = {
+        limit = { has_state_flag = plague_antibiotics_protection_active }
+        if = {
+            limit = { has_variable = plague_antibiotics_protection_effectiveness }
+            add_to_temp_variable = { total_reduction = plague_antibiotics_protection_effectiveness }
+        }
+    }
+
+    # Check for tularemia antibiotics protection
+    if = {
+        limit = { has_state_flag = tularemia_antibiotics_protection_active }
+        if = {
+            limit = { has_variable = tularemia_antibiotics_protection_effectiveness }
+            add_to_temp_variable = { total_reduction = tularemia_antibiotics_protection_effectiveness }
+        }
+    }
+
+    # Check for smallpox vaccination protection
+    if = {
+        limit = { has_state_flag = smallpox_vaccination_protection_active }
+        if = {
+            limit = { has_variable = smallpox_vaccination_protection_effectiveness }
+            add_to_temp_variable = { total_reduction = smallpox_vaccination_protection_effectiveness }
+        }
+    }
+
+	calculate_zombie_prevention_contamination_reduction = yes
+	add_to_temp_variable = { total_reduction = zombie_prevention_contamination_reduction }
+
+    # Apply reduced contamination effects based on measures taken
+    if = {
+        limit = { check_variable = { var:total_reduction > 0 } }
+
+        # Apply the reduction percentage
+        set_temp_variable = { total_reduction_in_percentage = 1 }
+        subtract_from_temp_variable = { total_reduction_in_percentage = total_reduction }
+
+        # Anthrax
+        multiply_variable = { anthrax_manpower_modifier = total_reduction_in_percentage }
+        multiply_variable = { anthrax_resources_modifier = total_reduction_in_percentage }
+        multiply_variable = { anthrax_supplies_modifier = total_reduction_in_percentage }
+        multiply_variable = { anthrax_production_modifier = total_reduction_in_percentage }
+        multiply_variable = { anthrax_attrition_modifier = total_reduction_in_percentage }
+        multiply_variable = { anthrax_speed_modifier = total_reduction_in_percentage }
+
+        # Plague
+        multiply_variable = { plague_manpower_modifier = total_reduction_in_percentage }
+        multiply_variable = { plague_resources_modifier = total_reduction_in_percentage }
+        multiply_variable = { plague_supplies_modifier = total_reduction_in_percentage }
+        multiply_variable = { plague_production_modifier = total_reduction_in_percentage }
+        multiply_variable = { plague_attrition_modifier = total_reduction_in_percentage }
+        multiply_variable = { plague_speed_modifier = total_reduction_in_percentage }
+
+        # Tularemia - update variable names for consistency
+        multiply_variable = { tularemia_manpower_modifier = total_reduction_in_percentage }
+        multiply_variable = { tularemia_resources_modifier = total_reduction_in_percentage }
+        multiply_variable = { tularemia_supplies_modifier = total_reduction_in_percentage }
+        multiply_variable = { tularemia_production_modifier = total_reduction_in_percentage }
+        multiply_variable = { tularemia_attrition_modifier = total_reduction_in_percentage }
+        multiply_variable = { tularemia_speed_modifier = total_reduction_in_percentage }
+        multiply_variable = { tularemia_org_modifier = total_reduction_in_percentage }
+
+        # Smallpox - strategic weapon effects reduction
+        multiply_variable = { smallpox_manpower_modifier = total_reduction_in_percentage }
+        multiply_variable = { smallpox_resources_modifier = total_reduction_in_percentage }
+        multiply_variable = { smallpox_supplies_modifier = total_reduction_in_percentage }
+        multiply_variable = { smallpox_production_modifier = total_reduction_in_percentage }
+        multiply_variable = { smallpox_attrition_modifier = total_reduction_in_percentage }
+        multiply_variable = { smallpox_speed_modifier = total_reduction_in_percentage }
+    }
+}
+
+calculate_zombie_prevention_contamination_reduction = {
+	set_temp_variable = { zombie_prevention_contamination_reduction = 0 }
+
+	if = {
+		limit = { controller = { has_country_flag = hygiene_measures_enforced } }
+		add_to_temp_variable = { zombie_prevention_contamination_reduction = constant:bio_zombie_prevention_containment.hygiene }
+	}
+
+	if = {
+		limit = { controller = { has_country_flag = migration_restricted } }
+		add_to_temp_variable = { zombie_prevention_contamination_reduction = constant:bio_zombie_prevention_containment.migration }
+	}
+
+	if = {
+		limit = { controller = { has_country_flag = quarantine_protocols_active } }
+		add_to_temp_variable = { zombie_prevention_contamination_reduction = constant:bio_zombie_prevention_containment.quarantine_protocols }
+	}
+
+	if = {
+		limit = { controller = { has_country_flag = borders_completely_closed } }
+		add_to_temp_variable = { zombie_prevention_contamination_reduction = constant:bio_zombie_prevention_containment.borders_closed }
+	}
+
+	if = {
+		limit = { controller = { has_country_flag = extreme_martial_law_active } }
+		add_to_temp_variable = { zombie_prevention_contamination_reduction = constant:bio_zombie_prevention_containment.extreme_martial_law }
+	}
+
+	if = {
+		limit = {
+			check_variable = {
+				var = zombie_prevention_contamination_reduction
+				value = constant:bio_zombie_prevention_containment.country_measure_cap
+				compare = greater_than_or_equals
+			}
+		}
+		set_temp_variable = { zombie_prevention_contamination_reduction = constant:bio_zombie_prevention_containment.country_measure_cap }
+	}
+}
+
 bio_lifecycle_prepare_detected_modifier_scale = {
 	set_temp_variable = { bio_modifier_scale = bio_current_intensity }
 	divide_temp_variable = { bio_modifier_scale = constant:bio_lifecycle_effect.intensity_effect_divisor }
@@ -2072,6 +2248,79 @@ bio_lifecycle_prepare_detected_modifier_scale = {
 	clamp_temp_variable = { var = bio_modifier_scale min = constant:bio_lifecycle_bounds.effect_scale_min max = constant:bio_lifecycle_bounds.effect_scale_max }
 	set_temp_variable = { bio_modifier_days = constant:bio_lifecycle_schedule.active_modifier_days }
 	round_temp_variable = bio_modifier_days
+}
+
+bio_lifecycle_prepare_legacy_antibiotic_protection = {
+	set_temp_variable = { bio_legacy_antibiotic_factory_bonus = constant:bio_lifecycle_math.zero }
+	if = {
+		limit = { check_variable = { var = bio_active_agent value = constant:bio_lifecycle_agent.anthrax compare = equals } }
+		if = {
+			limit = { CONTROLLER = { has_idea = anthrax_antibiotics_mass_production_idea } }
+			set_state_flag = anthrax_antibiotics_protection_active
+			CONTROLLER = {
+				if = {
+					limit = { num_of_civilian_factories > constant:bio_lifecycle_math.zero }
+					set_temp_variable = { bio_legacy_antibiotic_factory_bonus = num_of_civilian_factories }
+					multiply_temp_variable = { bio_legacy_antibiotic_factory_bonus = constant:bio_antibiotics.anthrax.rate }
+					if = {
+						limit = { check_variable = { var = bio_legacy_antibiotic_factory_bonus value = constant:bio_antibiotics.anthrax.cap compare = greater_than } }
+						set_temp_variable = { bio_legacy_antibiotic_factory_bonus = constant:bio_antibiotics.anthrax.cap }
+					}
+				}
+			}
+			set_variable = { anthrax_antibiotics_protection_effectiveness = bio_legacy_antibiotic_factory_bonus }
+		}
+		else = {
+			clr_state_flag = anthrax_antibiotics_protection_active
+			clear_variable = anthrax_antibiotics_protection_effectiveness
+		}
+	}
+	else_if = {
+		limit = { check_variable = { var = bio_active_agent value = constant:bio_lifecycle_agent.plague compare = equals } }
+		if = {
+			limit = { CONTROLLER = { has_idea = plague_antibiotics_mass_production_idea } }
+			set_state_flag = plague_antibiotics_protection_active
+			CONTROLLER = {
+				if = {
+					limit = { num_of_civilian_factories > constant:bio_lifecycle_math.zero }
+					set_temp_variable = { bio_legacy_antibiotic_factory_bonus = num_of_civilian_factories }
+					multiply_temp_variable = { bio_legacy_antibiotic_factory_bonus = constant:bio_antibiotics.plague.rate }
+					if = {
+						limit = { check_variable = { var = bio_legacy_antibiotic_factory_bonus value = constant:bio_antibiotics.plague.cap compare = greater_than } }
+						set_temp_variable = { bio_legacy_antibiotic_factory_bonus = constant:bio_antibiotics.plague.cap }
+					}
+				}
+			}
+			set_variable = { plague_antibiotics_protection_effectiveness = bio_legacy_antibiotic_factory_bonus }
+		}
+		else = {
+			clr_state_flag = plague_antibiotics_protection_active
+			clear_variable = plague_antibiotics_protection_effectiveness
+		}
+	}
+	else_if = {
+		limit = { check_variable = { var = bio_active_agent value = constant:bio_lifecycle_agent.tularemia compare = equals } }
+		if = {
+			limit = { CONTROLLER = { has_idea = tularemia_antibiotics_mass_production_idea } }
+			set_state_flag = tularemia_antibiotics_protection_active
+			CONTROLLER = {
+				if = {
+					limit = { num_of_civilian_factories > constant:bio_lifecycle_math.zero }
+					set_temp_variable = { bio_legacy_antibiotic_factory_bonus = num_of_civilian_factories }
+					multiply_temp_variable = { bio_legacy_antibiotic_factory_bonus = constant:bio_antibiotics.tularemia.rate }
+					if = {
+						limit = { check_variable = { var = bio_legacy_antibiotic_factory_bonus value = constant:bio_antibiotics.tularemia.cap compare = greater_than } }
+						set_temp_variable = { bio_legacy_antibiotic_factory_bonus = constant:bio_antibiotics.tularemia.cap }
+					}
+				}
+			}
+			set_variable = { tularemia_antibiotics_protection_effectiveness = bio_legacy_antibiotic_factory_bonus }
+		}
+		else = {
+			clr_state_flag = tularemia_antibiotics_protection_active
+			clear_variable = tularemia_antibiotics_protection_effectiveness
+		}
+	}
 }
 
 bio_lifecycle_refresh_detected_modifier_for_current_agent = {
@@ -2142,6 +2391,7 @@ bio_lifecycle_refresh_detected_modifier_for_current_agent = {
 		multiply_variable = { smallpox_speed_modifier = bio_modifier_scale }
 		add_dynamic_modifier = { modifier = smallpox_contaminated_state days = bio_modifier_days }
 	}
+	bio_lifecycle_prepare_legacy_antibiotic_protection = yes
 	force_update_dynamic_modifier = yes
 }
 
@@ -2158,6 +2408,8 @@ bio_lifecycle_remove_detected_modifier_for_current_agent = {
 		clear_variable = anthrax_production_modifier
 		clear_variable = anthrax_attrition_modifier
 		clear_variable = anthrax_speed_modifier
+		clr_state_flag = anthrax_antibiotics_protection_active
+		clear_variable = anthrax_antibiotics_protection_effectiveness
 	}
 	else_if = {
 		limit = { check_variable = { var = bio_active_agent value = constant:bio_lifecycle_agent.plague compare = equals } }
@@ -2171,6 +2423,8 @@ bio_lifecycle_remove_detected_modifier_for_current_agent = {
 		clear_variable = plague_production_modifier
 		clear_variable = plague_attrition_modifier
 		clear_variable = plague_speed_modifier
+		clr_state_flag = plague_antibiotics_protection_active
+		clear_variable = plague_antibiotics_protection_effectiveness
 	}
 	else_if = {
 		limit = { check_variable = { var = bio_active_agent value = constant:bio_lifecycle_agent.tularemia compare = equals } }
@@ -2185,6 +2439,8 @@ bio_lifecycle_remove_detected_modifier_for_current_agent = {
 		clear_variable = tularemia_attrition_modifier
 		clear_variable = tularemia_speed_modifier
 		clear_variable = tularemia_org_modifier
+		clr_state_flag = tularemia_antibiotics_protection_active
+		clear_variable = tularemia_antibiotics_protection_effectiveness
 	}
 	else_if = {
 		limit = { check_variable = { var = bio_active_agent value = constant:bio_lifecycle_agent.smallpox compare = equals } }
@@ -2276,8 +2532,34 @@ bio_lifecycle_refresh_state_modifiers = {
 		}
 		add_to_temp_variable = { bio_refresh_agent = constant:bio_lifecycle_math.one }
 	}
+	if = {
+		limit = {
+			OR = {
+				AND = { has_state_flag = bio_agent_1_active has_state_flag = bio_agent_1_detected }
+				AND = { has_state_flag = bio_agent_2_active has_state_flag = bio_agent_2_detected }
+				AND = { has_state_flag = bio_agent_3_active has_state_flag = bio_agent_3_detected }
+				AND = { has_state_flag = bio_agent_4_active has_state_flag = bio_agent_4_detected }
+			}
+		}
+		reduce_contamination_effects = yes
+		force_update_dynamic_modifier = yes
+	}
 	bio_lifecycle_refresh_ambiguous_modifier = yes
 	set_temp_variable = { bio_active_agent = bio_refresh_original_agent }
+}
+
+bio_lifecycle_refresh_contaminated_states_for_country = {
+	every_controlled_state = {
+		limit = {
+			OR = {
+				AND = { has_state_flag = bio_agent_1_active has_state_flag = bio_agent_1_detected }
+				AND = { has_state_flag = bio_agent_2_active has_state_flag = bio_agent_2_detected }
+				AND = { has_state_flag = bio_agent_3_active has_state_flag = bio_agent_3_detected }
+				AND = { has_state_flag = bio_agent_4_active has_state_flag = bio_agent_4_detected }
+			}
+		}
+		bio_lifecycle_refresh_state_modifiers = yes
+	}
 }
 
 bio_lifecycle_select_spread_target = {

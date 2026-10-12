@@ -156,17 +156,17 @@ Chemical Air Interdiction is an eligibility marker only in this stage. It create
 
 ## Use policy
 
-Policy changes are decisions with a 90-day reassessment lock and a five-Command-Power cost. The current decisions have zero native Political Power cost and call the shared policy effect after their exact availability gates pass. Doctrine progression does not change national policy automatically.
+Policy changes take effect immediately at the existing five-Command-Power price, with no reassessment lock or terminal-command prerequisite. The current decisions have zero native Political Power cost and call the shared policy effect after their exact availability gates pass. Doctrine progression does not change national policy automatically.
 
-One `cbrn_doctrine_policy_command_power_cost.policy_change` constant supplies the inclusive affordability gate, all three hidden click payments, and the scripted-localisation cost quote. The reassessment text reads the same `cbrn_doctrine_timing.policy_reassessment_days` constant used by the timed flag. The click effect checks affordability again before accepting the requested policy, so a failed payment cannot change authority.
+One `cbrn_doctrine_policy_command_power_cost.policy_change` constant supplies the inclusive affordability gate, all three hidden click payments, and the scripted-localisation cost quote. The click effect checks affordability again before accepting the requested policy, so a failed payment cannot change authority.
 
 | Policy | Command Power | Reassessment | Source decision |
 | --- | ---: | --- | --- |
-| Retaliation Only | 5 | 90 days | `cbrn_choose_retaliation_only` |
-| Battlefield Authorization | 5 | 90 days | `cbrn_choose_battlefield_authorization` |
-| Unrestricted Authorization | 5 | 90 days | `cbrn_choose_unrestricted_authorization` |
+| Retaliation Only | 5 | None | `cbrn_choose_retaliation_only` |
+| Battlefield Authorization | 5 | None | `cbrn_choose_battlefield_authorization` |
+| Unrestricted Authorization | 5 | None | `cbrn_choose_unrestricted_authorization` |
 
-Policy permits delivery adapters to pass authorization checks. It never spends a payload or creates exposure by itself. The inactive selected-state coercive-security operation retains its separate authorization gate for compatibility, but it is not the accepted camp implementation. Gas-Chamber Saturation Drills use the camp network directly and require no Chaos Warfare doctrine or occupation-policy prerequisite beyond the researched and stocked nerve agent.
+Policy permits the newer delivery adapters to pass authorization checks. The restored ordinary biological air raids retain their earlier policy-independent research, native aircraft and payload requirements. It never spends a payload or creates exposure by itself. The inactive selected-state coercive-security operation retains its separate authorization gate for compatibility, but it is not the accepted camp implementation. Gas-Chamber Saturation Drills use the camp network directly and require no Chaos Warfare doctrine or occupation-policy prerequisite beyond the researched and stocked nerve agent.
 
 ## Condemnation-only doctrine mitigation
 

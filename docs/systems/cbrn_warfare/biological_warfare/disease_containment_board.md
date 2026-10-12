@@ -1,5 +1,7 @@
 # Disease Containment Board
 
+Disposition: rejected by the owner on 12 October 2026 and unhooked under A12. The GUI files remain on disk; the layout and registry notes below describe the historical board. The active response flow is documented in [the restoration comparison](../../../plans/biowarfare_restore_comparison_2026-10-12.md).
+
 The board is one information view of the country's outbreak situation.
 It has no per-disease selector, tabs or filters.
 Disease-specific measures are decisions in the Biological Outbreak Response category, state-targeted where they act on one state.
