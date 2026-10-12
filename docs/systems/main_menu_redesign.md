@@ -8,6 +8,21 @@ This is the temporary restoration explicitly authorized by the user's fallback i
 The accepted reference was corrected by the user to the original May layout, before `13b8fabb9e`; `d6d0087de4` is not the accepted reference.
 The user authorized isolated Linux captures, changes to both Linux settings files with byte-exact restoration, and a shared-index-safe commit.
 
+## Resumed constraint audit — 12 October 2026
+
+The resumed instruction permits further implementation only when it can satisfy the original targets without changing the agreed artwork or protected controls and layout; the fallback must remain until a better candidate has actual verification.
+The working frontend GUI is byte-identical to `9e43b45002` (Git blob `004525461a4ae7f105099f479740afa6eb6270ef`), and the logo DDS and GFX definition have no changes from that restoration.
+There are no concurrent edits in the owned GUI, GFX, or report paths.
+The current source still declares a 355 px bottom-anchored panel, while the original reference declares 410 px with the same -10 offset, retaining the measured 55 px occlusion difference.
+The original 1440 pose fixes the artwork's position and sampling; changing position or size to conceal the additional wrist changes the required reference pixels.
+Clipping alone cannot recreate the reference's translucent foreground border and would leave a cut wrist above the protected current panel.
+The recorded alternative still meets the current 1080 size but relaxes the 1440 appearance, so it remains unaccepted and uninstalled.
+No new candidate satisfying the complete allowed target was identified, and no new GUI, artwork, settings-control, or panel modification was made.
+The earlier native measurements were reused because their source and asset inputs are unchanged; no game was launched and no lease or settings file was touched in this audit.
+The current MCP definition lookup again returned the same mod window and vanilla precedent, workspace-index revision `53ebe7d933ccbd3d4b8ad0e58a02209d0f0af8ae8afec271af242642b72ca747`; the documentation revisions are unchanged from the recorded reads below.
+The strict goal remains incomplete under the unchanged constraints; this finding does not assert that every undocumented engine capability is impossible.
+Skills used for this resumed audit: `chaos-redux-scripted-gui` and `chaos-redux-shared-git-commit`.
+
 ## Implementation
 
 Only `interface/frontendmainview.gui` and this document change.
