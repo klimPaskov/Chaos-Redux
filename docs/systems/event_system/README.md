@@ -16,6 +16,7 @@ These pages separate source descriptions and retained historical reports from ac
 - [`events_log_window.md`](events_log_window.md) defines the main Event Logs window, tabs, history records, actor state, and shared navigation behavior.
 - [`events_log_evolutions_and_clusters.md`](events_log_evolutions_and_clusters.md) defines evolution records, event-detail projections, and the cluster-facing log and sorting contract.
 - [`events_log_world_end_scenarios.md`](events_log_world_end_scenarios.md) defines the public world-end scenario catalog, persistent branch toggles, and shared detail data.
+- [`report_event_choice_pages.md`](report_event_choice_pages.md) defines how report events keep four or fewer direct options while preserving every player and AI choice.
 
 Event-framework mechanics belong here when they apply across event chains. Event-specific prerequisites, routes, outcomes, log rows, detail text, and evolution content remain in the owning event package.
 

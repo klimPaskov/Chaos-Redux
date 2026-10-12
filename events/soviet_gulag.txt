@@ -19,6 +19,225 @@ country_event = {
 	picture = GFX_report_event_soviet_famine_warning
 	is_triggered_only = yes
 
+
+	option = {
+		name = soviet_gulag.1.a
+		trigger = { camp_rework_soviet_relief_order_ready = yes  is_ai = no }
+		set_country_flag = sov_famine_warning_fired
+		if = {
+			limit = { camp_rework_soviet_relief_order_ready = yes }
+			custom_effect_tooltip = soviet_gulag_relief_funded_tt
+			hidden_effect = {
+				camp_rework_soviet_emergency_famine_relief = yes
+				# The relief columns are bought at the current price: one sale purchase when they set out.
+				if = {
+					limit = { has_country_flag = camp_rework_soviet_relief_order_accepted }
+					camp_rework_credit_sale_order = yes
+				}
+			}
+		}
+		else_if = {
+			limit = { camp_rework_soviet_relief_mobilization_pending = yes }
+			custom_effect_tooltip = soviet_gulag_relief_shortfall_tt
+			hidden_effect = { camp_rework_soviet_relief_mobilization_failed = yes }
+		}
+		else_if = {
+			limit = { camp_rework_soviet_relief_underway = yes }
+			custom_effect_tooltip = soviet_gulag_relief_underway_tt
+		}
+		else = { custom_effect_tooltip = soviet_gulag_famine_eased_tt }
+		clr_country_flag = camp_rework_soviet_relief_order_accepted
+		clear_variable = sov_famine_warning_state_id
+	}
+	option = {
+		name = soviet_gulag.1.c
+		trigger = {
+			camp_rework_soviet_relief_mobilization_pending = yes
+			NOT = { camp_rework_soviet_relief_resources_ready = yes }
+		
+			is_ai = no}
+		set_country_flag = sov_famine_warning_fired
+		custom_effect_tooltip = soviet_gulag_relief_shortfall_tt
+		camp_rework_soviet_relief_mobilization_failed = yes
+		clear_variable = sov_famine_warning_state_id
+	}
+	option = {
+		name = chaosx_event_more_options
+		trigger = {
+			is_ai = no
+		
+			OR = {
+				AND = {
+					camp_rework_soviet_relief_underway = yes
+				}
+				AND = {
+					camp_rework_soviet_famine_eased = yes
+				}
+				AND = {
+					has_variable = sov_famine_warning_state_id
+					var:sov_famine_warning_state_id = {
+						camp_rework_state_is_actor_responsible_controlled = yes
+						has_state_flag = genocide_soviet_famine_pressure_site
+						NOT = { has_state_flag = camp_rework_soviet_records_concealed }
+					}
+				}
+			}
+		}nt_more_options
+		trigger = {
+			is_ai = no
+		}
+		custom_effect_tooltip = chaosx_event_more_options_tt
+		hidden_effect = { country_event = { id = soviet_gulag.97121 } }
+	}
+	option = {
+		name = chaosx_event_ai_resolution
+		trigger = {
+			is_ai = yes
+		}
+		hidden_effect = { country_event = { id = soviet_gulag.97199 } }
+	}
+
+}
+
+country_event = {
+	id = soviet_gulag.97101
+	title = soviet_gulag.1.t
+	desc = soviet_gulag.1.d
+	picture = GFX_report_event_soviet_famine_warning
+	is_triggered_only = yes
+	trigger = {
+		is_ai = no
+	}
+	option = {
+		name = soviet_gulag.1.a
+		trigger = { camp_rework_soviet_relief_order_ready = yes  is_ai = no }
+		set_country_flag = sov_famine_warning_fired
+		if = {
+			limit = { camp_rework_soviet_relief_order_ready = yes }
+			custom_effect_tooltip = soviet_gulag_relief_funded_tt
+			hidden_effect = {
+				camp_rework_soviet_emergency_famine_relief = yes
+				# The relief columns are bought at the current price: one sale purchase when they set out.
+				if = {
+					limit = { has_country_flag = camp_rework_soviet_relief_order_accepted }
+					camp_rework_credit_sale_order = yes
+				}
+			}
+		}
+		else_if = {
+			limit = { camp_rework_soviet_relief_mobilization_pending = yes }
+			custom_effect_tooltip = soviet_gulag_relief_shortfall_tt
+			hidden_effect = { camp_rework_soviet_relief_mobilization_failed = yes }
+		}
+		else_if = {
+			limit = { camp_rework_soviet_relief_underway = yes }
+			custom_effect_tooltip = soviet_gulag_relief_underway_tt
+		}
+		else = { custom_effect_tooltip = soviet_gulag_famine_eased_tt }
+		clr_country_flag = camp_rework_soviet_relief_order_accepted
+		clear_variable = sov_famine_warning_state_id
+	}
+	option = {
+		name = soviet_gulag.1.c
+		trigger = {
+			camp_rework_soviet_relief_mobilization_pending = yes
+			NOT = { camp_rework_soviet_relief_resources_ready = yes }
+		
+			is_ai = no}
+		set_country_flag = sov_famine_warning_fired
+		custom_effect_tooltip = soviet_gulag_relief_shortfall_tt
+		camp_rework_soviet_relief_mobilization_failed = yes
+		clear_variable = sov_famine_warning_state_id
+	}
+	option = {
+		trigger = {
+			OR = {
+				AND = {
+					camp_rework_soviet_relief_underway = yes
+				}
+				AND = {
+					camp_rework_soviet_famine_eased = yes
+				}
+				AND = {
+					has_variable = sov_famine_warning_state_id
+					var:sov_famine_warning_state_id = {
+						camp_rework_state_is_actor_responsible_controlled = yes
+						has_state_flag = genocide_soviet_famine_pressure_site
+						NOT = { has_state_flag = camp_rework_soviet_records_concealed }
+					}
+				}
+			}
+		}
+		name = chaosx_event_more_options
+		custom_effect_tooltip = chaosx_event_more_options_tt
+		hidden_effect = { country_event = { id = soviet_gulag.97121 } }
+	}
+}
+
+country_event = {
+	id = soviet_gulag.97102
+	title = soviet_gulag.1.t
+	desc = soviet_gulag.1.d
+	picture = GFX_report_event_soviet_famine_warning
+	is_triggered_only = yes
+	trigger = {
+		is_ai = no
+	}
+	option = {
+		name = soviet_gulag.1.relief_underway
+		trigger = { camp_rework_soviet_relief_underway = yes }
+		custom_effect_tooltip = soviet_gulag_relief_underway_tt
+		clear_variable = sov_famine_warning_state_id
+	}
+	option = {
+		name = soviet_gulag.1.famine_eased
+		trigger = { camp_rework_soviet_famine_eased = yes }
+		custom_effect_tooltip = soviet_gulag_famine_eased_tt
+		clear_variable = sov_famine_warning_state_id
+	}
+	option = {
+		name = soviet_gulag.1.b
+		trigger = {
+			has_variable = sov_famine_warning_state_id
+			var:sov_famine_warning_state_id = {
+				camp_rework_state_is_actor_responsible_controlled = yes
+				has_state_flag = genocide_soviet_famine_pressure_site
+				NOT = { has_state_flag = camp_rework_soviet_records_concealed }
+			}
+		}
+		set_country_flag = sov_famine_warning_fired
+		set_variable = { sov_famine_event_state_id = sov_famine_warning_state_id }
+		camp_rework_soviet_conceal_famine_mortality = yes
+		clear_variable = sov_famine_event_state_id
+		clear_variable = sov_famine_warning_state_id
+	}
+	option = {
+		trigger = {
+			OR = {
+				AND = {
+					camp_rework_soviet_relief_order_ready = yes  is_ai = no
+				}
+				AND = {
+					camp_rework_soviet_relief_mobilization_pending = yes
+					NOT = { camp_rework_soviet_relief_resources_ready = yes }
+					is_ai = no
+				}
+			}
+		}
+		name = chaosx_event_back_to_choices
+		custom_effect_tooltip = chaosx_event_back_to_choices_tt
+		hidden_effect = { country_event = { id = soviet_gulag.97142 } }
+	}
+}
+
+country_event = {
+	id = soviet_gulag.97199
+	title = soviet_gulag.1.t
+	desc = soviet_gulag.1.d
+	is_triggered_only = yes
+	trigger = {
+		is_ai = yes
+	}
 	option = {
 		name = soviet_gulag.1.a
 		trigger = { camp_rework_soviet_relief_order_ready = yes }
@@ -107,6 +326,311 @@ country_event = {
 				set_country_flag = sov_famine_critical_fired
 			}
 		}
+	}
+
+	option = {
+		name = soviet_gulag.2.a
+		trigger = { camp_rework_soviet_relief_order_ready = yes  is_ai = no }
+		if = {
+			limit = { camp_rework_soviet_relief_order_ready = yes }
+			custom_effect_tooltip = soviet_gulag_relief_funded_tt
+			hidden_effect = {
+				camp_rework_soviet_emergency_famine_relief = yes
+				# The relief columns are bought at the current price: one sale purchase when they set out.
+				if = {
+					limit = { has_country_flag = camp_rework_soviet_relief_order_accepted }
+					camp_rework_credit_sale_order = yes
+				}
+			}
+		}
+		else_if = {
+			limit = { camp_rework_soviet_relief_mobilization_pending = yes }
+			custom_effect_tooltip = soviet_gulag_relief_crisis_shortfall_tt
+			hidden_effect = { camp_rework_soviet_relief_crisis_mobilization_failed = yes }
+		}
+		else_if = {
+			limit = { camp_rework_soviet_relief_underway = yes }
+			custom_effect_tooltip = soviet_gulag_relief_underway_tt
+		}
+		else = { custom_effect_tooltip = soviet_gulag_famine_eased_tt }
+		clr_country_flag = camp_rework_soviet_relief_order_accepted
+		clear_variable = sov_famine_crisis_state_id
+	}
+	option = {
+		name = soviet_gulag.2.shortfall
+		trigger = {
+			camp_rework_soviet_relief_mobilization_pending = yes
+			NOT = { camp_rework_soviet_relief_resources_ready = yes }
+		
+			is_ai = no}
+		custom_effect_tooltip = soviet_gulag_relief_crisis_shortfall_tt
+		camp_rework_soviet_relief_crisis_mobilization_failed = yes
+		clear_variable = sov_famine_crisis_state_id
+	}
+	option = {
+		name = chaosx_event_more_options
+		trigger = {
+			is_ai = no
+		
+			OR = {
+				AND = {
+					camp_rework_soviet_relief_underway = yes
+				}
+				AND = {
+					camp_rework_soviet_famine_eased = yes
+				}
+				AND = {
+					has_variable = sov_famine_crisis_state_id
+					var:sov_famine_crisis_state_id = {
+						camp_rework_state_is_actor_responsible_controlled = yes
+						has_state_flag = genocide_soviet_famine_pressure_site
+						NOT = { has_state_flag = camp_rework_soviet_records_concealed }
+					}
+				}
+				AND = {
+					has_variable = sov_famine_crisis_state_id
+					var:sov_famine_crisis_state_id = {
+						camp_rework_state_is_actor_responsible_controlled = yes
+						has_state_flag = genocide_soviet_famine_pressure_site
+						NOT = { has_state_flag = genocide_site_discovered }
+					}
+				}
+			}
+		}nt_more_options
+		trigger = {
+			is_ai = no
+		}
+		custom_effect_tooltip = chaosx_event_more_options_tt
+		hidden_effect = { country_event = { id = soviet_gulag.97221 } }
+	}
+	option = {
+		name = chaosx_event_ai_resolution
+		trigger = {
+			is_ai = yes
+		}
+		hidden_effect = { country_event = { id = soviet_gulag.97299 } }
+	}
+
+}
+
+country_event = {
+	id = soviet_gulag.97201
+	title = soviet_gulag.2.t
+	desc = soviet_gulag.2.d
+	picture = GFX_report_event_soviet_famine_crisis
+	is_triggered_only = yes
+	trigger = {
+		is_ai = no
+	}
+	option = {
+		name = soviet_gulag.2.a
+		trigger = { camp_rework_soviet_relief_order_ready = yes  is_ai = no }
+		if = {
+			limit = { camp_rework_soviet_relief_order_ready = yes }
+			custom_effect_tooltip = soviet_gulag_relief_funded_tt
+			hidden_effect = {
+				camp_rework_soviet_emergency_famine_relief = yes
+				# The relief columns are bought at the current price: one sale purchase when they set out.
+				if = {
+					limit = { has_country_flag = camp_rework_soviet_relief_order_accepted }
+					camp_rework_credit_sale_order = yes
+				}
+			}
+		}
+		else_if = {
+			limit = { camp_rework_soviet_relief_mobilization_pending = yes }
+			custom_effect_tooltip = soviet_gulag_relief_crisis_shortfall_tt
+			hidden_effect = { camp_rework_soviet_relief_crisis_mobilization_failed = yes }
+		}
+		else_if = {
+			limit = { camp_rework_soviet_relief_underway = yes }
+			custom_effect_tooltip = soviet_gulag_relief_underway_tt
+		}
+		else = { custom_effect_tooltip = soviet_gulag_famine_eased_tt }
+		clr_country_flag = camp_rework_soviet_relief_order_accepted
+		clear_variable = sov_famine_crisis_state_id
+	}
+	option = {
+		name = soviet_gulag.2.shortfall
+		trigger = {
+			camp_rework_soviet_relief_mobilization_pending = yes
+			NOT = { camp_rework_soviet_relief_resources_ready = yes }
+		
+			is_ai = no}
+		custom_effect_tooltip = soviet_gulag_relief_crisis_shortfall_tt
+		camp_rework_soviet_relief_crisis_mobilization_failed = yes
+		clear_variable = sov_famine_crisis_state_id
+	}
+	option = {
+		trigger = {
+			OR = {
+				AND = {
+					camp_rework_soviet_relief_underway = yes
+				}
+				AND = {
+					camp_rework_soviet_famine_eased = yes
+				}
+				AND = {
+					has_variable = sov_famine_crisis_state_id
+					var:sov_famine_crisis_state_id = {
+						camp_rework_state_is_actor_responsible_controlled = yes
+						has_state_flag = genocide_soviet_famine_pressure_site
+						NOT = { has_state_flag = camp_rework_soviet_records_concealed }
+					}
+				}
+				AND = {
+					has_variable = sov_famine_crisis_state_id
+					var:sov_famine_crisis_state_id = {
+						camp_rework_state_is_actor_responsible_controlled = yes
+						has_state_flag = genocide_soviet_famine_pressure_site
+						NOT = { has_state_flag = genocide_site_discovered }
+					}
+				}
+			}
+		}
+		name = chaosx_event_more_options
+		custom_effect_tooltip = chaosx_event_more_options_tt
+		hidden_effect = { country_event = { id = soviet_gulag.97221 } }
+	}
+}
+
+country_event = {
+	id = soviet_gulag.97202
+	title = soviet_gulag.2.t
+	desc = soviet_gulag.2.d
+	picture = GFX_report_event_soviet_famine_crisis
+	is_triggered_only = yes
+	trigger = {
+		is_ai = no
+	}
+	option = {
+		name = soviet_gulag.2.relief_underway
+		trigger = { camp_rework_soviet_relief_underway = yes }
+		custom_effect_tooltip = soviet_gulag_relief_underway_tt
+		clear_variable = sov_famine_crisis_state_id
+	}
+	option = {
+		name = soviet_gulag.2.famine_eased
+		trigger = { camp_rework_soviet_famine_eased = yes }
+		custom_effect_tooltip = soviet_gulag_famine_eased_tt
+		clr_country_flag = sov_famine_crisis_active
+		clear_variable = sov_famine_crisis_state_id
+	}
+	option = {
+		trigger = {
+			OR = {
+				AND = {
+					camp_rework_soviet_relief_order_ready = yes  is_ai = no
+				}
+				AND = {
+					camp_rework_soviet_relief_mobilization_pending = yes
+					NOT = { camp_rework_soviet_relief_resources_ready = yes }
+					is_ai = no
+				}
+			}
+		}
+		name = chaosx_event_back_to_choices
+		custom_effect_tooltip = chaosx_event_back_to_choices_tt
+		hidden_effect = { country_event = { id = soviet_gulag.97242 } }
+	}
+	option = {
+		trigger = {
+			OR = {
+				AND = {
+					has_variable = sov_famine_crisis_state_id
+					var:sov_famine_crisis_state_id = {
+						camp_rework_state_is_actor_responsible_controlled = yes
+						has_state_flag = genocide_soviet_famine_pressure_site
+						NOT = { has_state_flag = camp_rework_soviet_records_concealed }
+					}
+				}
+				AND = {
+					has_variable = sov_famine_crisis_state_id
+					var:sov_famine_crisis_state_id = {
+						camp_rework_state_is_actor_responsible_controlled = yes
+						has_state_flag = genocide_soviet_famine_pressure_site
+						NOT = { has_state_flag = genocide_site_discovered }
+					}
+				}
+			}
+		}
+		name = chaosx_event_more_options
+		custom_effect_tooltip = chaosx_event_more_options_tt
+		hidden_effect = { country_event = { id = soviet_gulag.97222 } }
+	}
+}
+
+country_event = {
+	id = soviet_gulag.97203
+	title = soviet_gulag.2.t
+	desc = soviet_gulag.2.d
+	picture = GFX_report_event_soviet_famine_crisis
+	is_triggered_only = yes
+	trigger = {
+		is_ai = no
+	}
+	option = {
+		name = soviet_gulag.2.b
+		trigger = {
+			has_variable = sov_famine_crisis_state_id
+			var:sov_famine_crisis_state_id = {
+				camp_rework_state_is_actor_responsible_controlled = yes
+				has_state_flag = genocide_soviet_famine_pressure_site
+				NOT = { has_state_flag = camp_rework_soviet_records_concealed }
+			}
+		}
+		set_variable = { sov_famine_event_state_id = sov_famine_crisis_state_id }
+		camp_rework_soviet_conceal_famine_mortality = yes
+		clear_variable = sov_famine_event_state_id
+		clear_variable = sov_famine_crisis_state_id
+	}
+	option = {
+		name = soviet_gulag.2.c
+		trigger = {
+			has_variable = sov_famine_crisis_state_id
+			var:sov_famine_crisis_state_id = {
+				camp_rework_state_is_actor_responsible_controlled = yes
+				has_state_flag = genocide_soviet_famine_pressure_site
+				NOT = { has_state_flag = genocide_site_discovered }
+			}
+		}
+		set_variable = { sov_famine_event_state_id = sov_famine_crisis_state_id }
+		camp_rework_soviet_admit_administrative_collapse = yes
+		clear_variable = sov_famine_event_state_id
+		clear_variable = sov_famine_crisis_state_id
+	}
+	option = {
+		trigger = {
+			OR = {
+				AND = {
+					camp_rework_soviet_relief_order_ready = yes  is_ai = no
+				}
+				AND = {
+					camp_rework_soviet_relief_mobilization_pending = yes
+					NOT = { camp_rework_soviet_relief_resources_ready = yes }
+					is_ai = no
+				}
+				AND = {
+					camp_rework_soviet_relief_underway = yes
+				}
+				AND = {
+					camp_rework_soviet_famine_eased = yes
+				}
+			}
+		}
+		name = chaosx_event_back_to_choices
+		custom_effect_tooltip = chaosx_event_back_to_choices_tt
+		hidden_effect = { country_event = { id = soviet_gulag.97243 } }
+	}
+}
+
+country_event = {
+	id = soviet_gulag.97299
+	title = soviet_gulag.2.t
+	desc = soviet_gulag.2.d
+	is_triggered_only = yes
+	trigger = {
+		is_ai = yes
 	}
 	option = {
 		name = soviet_gulag.2.a
@@ -252,5 +776,210 @@ country_event = {
 		add_to_variable = { camp_policy_tribunal = constant:camp_rework_country_value.tribunal_major }
 		add_to_variable = { camp_policy_reform = constant:camp_rework_country_value.reform_major }
 		camp_rework_expose_network_crisis = yes
+	}
+}
+
+
+country_event = {
+	id = soviet_gulag.97221
+	hidden = yes
+	is_triggered_only = yes
+	trigger = {
+		is_ai = no
+	}
+	immediate = {
+		if = {
+			limit = {
+				OR = {
+					AND = {
+						camp_rework_soviet_relief_underway = yes
+					}
+					AND = {
+						camp_rework_soviet_famine_eased = yes
+					}
+				}
+			}
+			country_event = { id = soviet_gulag.97202 }
+		}
+		else_if = {
+			limit = {
+				OR = {
+					AND = {
+						has_variable = sov_famine_crisis_state_id
+						var:sov_famine_crisis_state_id = {
+							camp_rework_state_is_actor_responsible_controlled = yes
+							has_state_flag = genocide_soviet_famine_pressure_site
+							NOT = { has_state_flag = camp_rework_soviet_records_concealed }
+						}
+					}
+					AND = {
+						has_variable = sov_famine_crisis_state_id
+						var:sov_famine_crisis_state_id = {
+							camp_rework_state_is_actor_responsible_controlled = yes
+							has_state_flag = genocide_soviet_famine_pressure_site
+							NOT = { has_state_flag = genocide_site_discovered }
+						}
+					}
+				}
+			}
+			country_event = { id = soviet_gulag.97203 }
+		}
+	}
+}
+
+country_event = {
+	id = soviet_gulag.97222
+	hidden = yes
+	is_triggered_only = yes
+	trigger = {
+		is_ai = no
+	}
+	immediate = {
+		if = {
+			limit = {
+				OR = {
+					AND = {
+						has_variable = sov_famine_crisis_state_id
+						var:sov_famine_crisis_state_id = {
+							camp_rework_state_is_actor_responsible_controlled = yes
+							has_state_flag = genocide_soviet_famine_pressure_site
+							NOT = { has_state_flag = camp_rework_soviet_records_concealed }
+						}
+					}
+					AND = {
+						has_variable = sov_famine_crisis_state_id
+						var:sov_famine_crisis_state_id = {
+							camp_rework_state_is_actor_responsible_controlled = yes
+							has_state_flag = genocide_soviet_famine_pressure_site
+							NOT = { has_state_flag = genocide_site_discovered }
+						}
+					}
+				}
+			}
+			country_event = { id = soviet_gulag.97203 }
+		}
+	}
+}
+
+country_event = {
+	id = soviet_gulag.97242
+	hidden = yes
+	is_triggered_only = yes
+	trigger = {
+		is_ai = no
+	}
+	immediate = {
+		if = {
+			limit = {
+				OR = {
+					AND = {
+						camp_rework_soviet_relief_order_ready = yes  is_ai = no
+					}
+					AND = {
+						camp_rework_soviet_relief_mobilization_pending = yes
+						NOT = { camp_rework_soviet_relief_resources_ready = yes }
+						is_ai = no
+					}
+				}
+			}
+			country_event = { id = soviet_gulag.97201 }
+		}
+	}
+}
+
+country_event = {
+	id = soviet_gulag.97243
+	hidden = yes
+	is_triggered_only = yes
+	trigger = {
+		is_ai = no
+	}
+	immediate = {
+		if = {
+			limit = {
+				OR = {
+					AND = {
+						camp_rework_soviet_relief_underway = yes
+					}
+					AND = {
+						camp_rework_soviet_famine_eased = yes
+					}
+				}
+			}
+			country_event = { id = soviet_gulag.97202 }
+		}
+		else_if = {
+			limit = {
+				OR = {
+					AND = {
+						camp_rework_soviet_relief_order_ready = yes  is_ai = no
+					}
+					AND = {
+						camp_rework_soviet_relief_mobilization_pending = yes
+						NOT = { camp_rework_soviet_relief_resources_ready = yes }
+						is_ai = no
+					}
+				}
+			}
+			country_event = { id = soviet_gulag.97201 }
+		}
+	}
+}
+
+country_event = {
+	id = soviet_gulag.97121
+	hidden = yes
+	is_triggered_only = yes
+	trigger = {
+		is_ai = no
+	}
+	immediate = {
+		if = {
+			limit = {
+				OR = {
+					AND = {
+						camp_rework_soviet_relief_underway = yes
+					}
+					AND = {
+						camp_rework_soviet_famine_eased = yes
+					}
+					AND = {
+						has_variable = sov_famine_warning_state_id
+						var:sov_famine_warning_state_id = {
+							camp_rework_state_is_actor_responsible_controlled = yes
+							has_state_flag = genocide_soviet_famine_pressure_site
+							NOT = { has_state_flag = camp_rework_soviet_records_concealed }
+						}
+					}
+				}
+			}
+			country_event = { id = soviet_gulag.97102 }
+		}
+	}
+}
+
+country_event = {
+	id = soviet_gulag.97142
+	hidden = yes
+	is_triggered_only = yes
+	trigger = {
+		is_ai = no
+	}
+	immediate = {
+		if = {
+			limit = {
+				OR = {
+					AND = {
+						camp_rework_soviet_relief_order_ready = yes  is_ai = no
+					}
+					AND = {
+						camp_rework_soviet_relief_mobilization_pending = yes
+						NOT = { camp_rework_soviet_relief_resources_ready = yes }
+						is_ai = no
+					}
+				}
+			}
+			country_event = { id = soviet_gulag.97101 }
+		}
 	}
 }

@@ -36,6 +36,150 @@ country_event = {
 	picture = GFX_report_event_random_faction_cabinet
 	is_triggered_only = yes
 
+
+	option = {
+		name = chaosx.nr17.10.a
+		trigger = { random_faction_option_1_valid = yes  is_ai = no }
+		custom_effect_tooltip = random_faction_option_1_join_tt
+		if = { limit = { event_target:random_faction_option_1_leader = { has_war = yes } } custom_effect_tooltip = random_faction_option_1_war_warning_tt }
+		hidden_effect = { random_faction_choose_option_1_and_join = yes }
+	}
+	option = {
+		name = chaosx.nr17.10.b
+		trigger = { random_faction_option_2_valid = yes  is_ai = no }
+		custom_effect_tooltip = random_faction_option_2_join_tt
+		if = { limit = { event_target:random_faction_option_2_leader = { has_war = yes } } custom_effect_tooltip = random_faction_option_2_war_warning_tt }
+		hidden_effect = { random_faction_choose_option_2_and_join = yes }
+	}
+	option = {
+		name = chaosx_event_more_options
+		trigger = {
+			is_ai = no
+		
+			OR = {
+				AND = {
+					random_faction_option_3_valid = yes
+				}
+				AND = {
+					random_faction_option_4_valid = yes
+				}
+				AND = {
+					NOT = { random_faction_has_saved_valid_option = yes }
+				}
+			}
+		}nt_more_options
+		trigger = {
+			is_ai = no
+		}
+		custom_effect_tooltip = chaosx_event_more_options_tt
+		hidden_effect = { country_event = { id = chaosx.nr17.91721 } }
+	}
+	option = {
+		name = chaosx_event_ai_resolution
+		trigger = {
+			is_ai = yes
+		}
+		hidden_effect = { country_event = { id = chaosx.nr17.91799 } }
+	}
+
+}
+
+country_event = {
+	id = chaosx.nr17.91701
+	title = chaosx.nr17.10.t
+	desc = chaosx.nr17.10.d
+	picture = GFX_report_event_random_faction_cabinet
+	is_triggered_only = yes
+	trigger = {
+		is_ai = no
+	}
+	option = {
+		name = chaosx.nr17.10.a
+		trigger = { random_faction_option_1_valid = yes  is_ai = no }
+		custom_effect_tooltip = random_faction_option_1_join_tt
+		if = { limit = { event_target:random_faction_option_1_leader = { has_war = yes } } custom_effect_tooltip = random_faction_option_1_war_warning_tt }
+		hidden_effect = { random_faction_choose_option_1_and_join = yes }
+	}
+	option = {
+		name = chaosx.nr17.10.b
+		trigger = { random_faction_option_2_valid = yes  is_ai = no }
+		custom_effect_tooltip = random_faction_option_2_join_tt
+		if = { limit = { event_target:random_faction_option_2_leader = { has_war = yes } } custom_effect_tooltip = random_faction_option_2_war_warning_tt }
+		hidden_effect = { random_faction_choose_option_2_and_join = yes }
+	}
+	option = {
+		trigger = {
+			OR = {
+				AND = {
+					random_faction_option_3_valid = yes
+				}
+				AND = {
+					random_faction_option_4_valid = yes
+				}
+				AND = {
+					NOT = { random_faction_has_saved_valid_option = yes }
+				}
+			}
+		}
+		name = chaosx_event_more_options
+		custom_effect_tooltip = chaosx_event_more_options_tt
+		hidden_effect = { country_event = { id = chaosx.nr17.91721 } }
+	}
+}
+
+country_event = {
+	id = chaosx.nr17.91702
+	title = chaosx.nr17.10.t
+	desc = chaosx.nr17.10.d
+	picture = GFX_report_event_random_faction_cabinet
+	is_triggered_only = yes
+	trigger = {
+		is_ai = no
+	}
+	option = {
+		name = chaosx.nr17.10.c
+		trigger = { random_faction_option_3_valid = yes }
+		custom_effect_tooltip = random_faction_option_3_join_tt
+		if = { limit = { event_target:random_faction_option_3_leader = { has_war = yes } } custom_effect_tooltip = random_faction_option_3_war_warning_tt }
+		hidden_effect = { random_faction_choose_option_3_and_join = yes }
+	}
+	option = {
+		name = chaosx.nr17.10.e
+		trigger = { random_faction_option_4_valid = yes }
+		custom_effect_tooltip = random_faction_option_4_join_tt
+		if = { limit = { event_target:random_faction_option_4_leader = { has_war = yes } } custom_effect_tooltip = random_faction_option_4_war_warning_tt }
+		hidden_effect = { random_faction_choose_option_4_and_join = yes }
+	}
+	option = {
+		name = chaosx.nr17.10.f
+		trigger = { NOT = { random_faction_has_saved_valid_option = yes } }
+		hidden_effect = { random_faction_reopen_dead_faction_file = yes }
+	}
+	option = {
+		trigger = {
+			OR = {
+				AND = {
+					random_faction_option_1_valid = yes  is_ai = no
+				}
+				AND = {
+					random_faction_option_2_valid = yes  is_ai = no
+				}
+			}
+		}
+		name = chaosx_event_back_to_choices
+		custom_effect_tooltip = chaosx_event_back_to_choices_tt
+		hidden_effect = { country_event = { id = chaosx.nr17.91742 } }
+	}
+}
+
+country_event = {
+	id = chaosx.nr17.91799
+	title = chaosx.nr17.10.t
+	desc = chaosx.nr17.10.d
+	is_triggered_only = yes
+	trigger = {
+		is_ai = yes
+	}
 	option = {
 		name = chaosx.nr17.10.a
 		trigger = { random_faction_option_1_valid = yes }
@@ -432,5 +576,57 @@ country_event = {
 	immediate = {
 		random_faction_check_not_everyone_achievement = yes
 		random_faction_cleanup_expired_current_country_state = yes
+	}
+}
+
+
+country_event = {
+	id = chaosx.nr17.91721
+	hidden = yes
+	is_triggered_only = yes
+	trigger = {
+		is_ai = no
+	}
+	immediate = {
+		if = {
+			limit = {
+				OR = {
+					AND = {
+						random_faction_option_3_valid = yes
+					}
+					AND = {
+						random_faction_option_4_valid = yes
+					}
+					AND = {
+						NOT = { random_faction_has_saved_valid_option = yes }
+					}
+				}
+			}
+			country_event = { id = chaosx.nr17.91702 }
+		}
+	}
+}
+
+country_event = {
+	id = chaosx.nr17.91742
+	hidden = yes
+	is_triggered_only = yes
+	trigger = {
+		is_ai = no
+	}
+	immediate = {
+		if = {
+			limit = {
+				OR = {
+					AND = {
+						random_faction_option_1_valid = yes  is_ai = no
+					}
+					AND = {
+						random_faction_option_2_valid = yes  is_ai = no
+					}
+				}
+			}
+			country_event = { id = chaosx.nr17.91701 }
+		}
 	}
 }

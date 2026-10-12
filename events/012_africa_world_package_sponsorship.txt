@@ -434,6 +434,7 @@ country_event = {
 		event_target:africa_world_sponsorship_candidate = { africa_world_sponsorship_candidate_is_offerable = yes }
 	}
 
+
 	option = {
 		name = africa_world_package.32.a
 		trigger = {
@@ -441,7 +442,8 @@ country_event = {
 				tooltip = africa_world_package.32.a.req
 				africa_world_sponsorship_host_can_pay_diplomatic = yes
 			}
-		}
+		
+			is_ai = no}
 		custom_effect_tooltip = africa_world_package.32.a.tt
 		ai_chance = { base = constant:africa_world_sponsorship_mode.ai_offer_diplomatic_base }
 		event_target:africa_world_sponsorship_candidate = {
@@ -449,7 +451,6 @@ country_event = {
 			africa_world_sponsorship_prepare_offer = yes
 		}
 	}
-
 	option = {
 		name = africa_world_package.32.b
 		trigger = {
@@ -457,7 +458,8 @@ country_event = {
 				tooltip = africa_world_package.32.b.req
 				africa_world_sponsorship_host_can_pay_material = yes
 			}
-		}
+		
+			is_ai = no}
 		custom_effect_tooltip = africa_world_package.32.b.tt
 		ai_chance = { base = constant:africa_world_sponsorship_mode.ai_offer_material_base }
 		event_target:africa_world_sponsorship_candidate = {
@@ -465,7 +467,121 @@ country_event = {
 			africa_world_sponsorship_prepare_offer = yes
 		}
 	}
+	option = {
+		name = chaosx_event_more_options
+		trigger = {
+			is_ai = no
+		
+			OR = {
+				AND = {
+					custom_trigger_tooltip = {
+						tooltip = africa_world_package.32.c.req
+						africa_world_sponsorship_host_can_pay_military = yes
+					}
+				}
+				AND = {
+					custom_trigger_tooltip = {
+						tooltip = africa_world_package.32.e.req
+						africa_world_sponsorship_host_can_pay_ideological = yes
+					}
+				}
+				AND = {
+					always = yes
+				}
+			}
+		}nt_more_options
+		trigger = {
+			is_ai = no
+		}
+		custom_effect_tooltip = chaosx_event_more_options_tt
+		hidden_effect = { country_event = { id = africa_world_package.90421 } }
+	}
+	option = {
+		name = chaosx_event_ai_resolution
+		trigger = {
+			is_ai = yes
+		}
+		hidden_effect = { country_event = { id = africa_world_package.90499 } }
+	}
 
+}
+
+country_event = {
+	id = africa_world_package.90401
+	title = africa_world_package.32.t
+	desc = africa_world_package.32.d
+	picture = GFX_report_event_generic_conference
+	is_triggered_only = yes
+	trigger = {
+		is_ai = no
+	}
+	option = {
+		name = africa_world_package.32.a
+		trigger = {
+			custom_trigger_tooltip = {
+				tooltip = africa_world_package.32.a.req
+				africa_world_sponsorship_host_can_pay_diplomatic = yes
+			}
+		
+			is_ai = no}
+		custom_effect_tooltip = africa_world_package.32.a.tt
+		ai_chance = { base = constant:africa_world_sponsorship_mode.ai_offer_diplomatic_base }
+		event_target:africa_world_sponsorship_candidate = {
+			set_variable = { africa_world_requested_sponsorship_mode = constant:africa_world_sponsorship_mode.diplomatic }
+			africa_world_sponsorship_prepare_offer = yes
+		}
+	}
+	option = {
+		name = africa_world_package.32.b
+		trigger = {
+			custom_trigger_tooltip = {
+				tooltip = africa_world_package.32.b.req
+				africa_world_sponsorship_host_can_pay_material = yes
+			}
+		
+			is_ai = no}
+		custom_effect_tooltip = africa_world_package.32.b.tt
+		ai_chance = { base = constant:africa_world_sponsorship_mode.ai_offer_material_base }
+		event_target:africa_world_sponsorship_candidate = {
+			set_variable = { africa_world_requested_sponsorship_mode = constant:africa_world_sponsorship_mode.material }
+			africa_world_sponsorship_prepare_offer = yes
+		}
+	}
+	option = {
+		trigger = {
+			OR = {
+				AND = {
+					custom_trigger_tooltip = {
+						tooltip = africa_world_package.32.c.req
+						africa_world_sponsorship_host_can_pay_military = yes
+					}
+				}
+				AND = {
+					custom_trigger_tooltip = {
+						tooltip = africa_world_package.32.e.req
+						africa_world_sponsorship_host_can_pay_ideological = yes
+					}
+				}
+				AND = {
+					always = yes
+				}
+			}
+		}
+		name = chaosx_event_more_options
+		custom_effect_tooltip = chaosx_event_more_options_tt
+		hidden_effect = { country_event = { id = africa_world_package.90421 } }
+	}
+}
+
+country_event = {
+	id = africa_world_package.90402
+	title = africa_world_package.32.t
+	desc = africa_world_package.32.d
+	picture = GFX_report_event_generic_conference
+	is_triggered_only = yes
+	trigger = {
+		is_ai = no
+	}
 	option = {
 		name = africa_world_package.32.c
 		trigger = {
@@ -481,7 +597,6 @@ country_event = {
 			africa_world_sponsorship_prepare_offer = yes
 		}
 	}
-
 	option = {
 		name = africa_world_package.32.e
 		trigger = {
@@ -497,10 +612,173 @@ country_event = {
 			africa_world_sponsorship_prepare_offer = yes
 		}
 	}
-
 	option = {
 		name = africa_world_package.32.f
 		custom_effect_tooltip = africa_world_package.32.f.tt
 		ai_chance = { base = 0 }
+	}
+	option = {
+		trigger = {
+			OR = {
+				AND = {
+					custom_trigger_tooltip = {
+						tooltip = africa_world_package.32.a.req
+						africa_world_sponsorship_host_can_pay_diplomatic = yes
+					}
+					is_ai = no
+				}
+				AND = {
+					custom_trigger_tooltip = {
+						tooltip = africa_world_package.32.b.req
+						africa_world_sponsorship_host_can_pay_material = yes
+					}
+					is_ai = no
+				}
+			}
+		}
+		name = chaosx_event_back_to_choices
+		custom_effect_tooltip = chaosx_event_back_to_choices_tt
+		hidden_effect = { country_event = { id = africa_world_package.90442 } }
+	}
+}
+
+country_event = {
+	id = africa_world_package.90499
+	title = africa_world_package.32.t
+	desc = africa_world_package.32.d
+	is_triggered_only = yes
+	trigger = {
+		is_ai = yes
+	}
+	option = {
+		name = africa_world_package.32.a
+		trigger = {
+			custom_trigger_tooltip = {
+				tooltip = africa_world_package.32.a.req
+				africa_world_sponsorship_host_can_pay_diplomatic = yes
+			}
+		}
+		custom_effect_tooltip = africa_world_package.32.a.tt
+		ai_chance = { base = constant:africa_world_sponsorship_mode.ai_offer_diplomatic_base }
+		event_target:africa_world_sponsorship_candidate = {
+			set_variable = { africa_world_requested_sponsorship_mode = constant:africa_world_sponsorship_mode.diplomatic }
+			africa_world_sponsorship_prepare_offer = yes
+		}
+	}
+	option = {
+		name = africa_world_package.32.b
+		trigger = {
+			custom_trigger_tooltip = {
+				tooltip = africa_world_package.32.b.req
+				africa_world_sponsorship_host_can_pay_material = yes
+			}
+		}
+		custom_effect_tooltip = africa_world_package.32.b.tt
+		ai_chance = { base = constant:africa_world_sponsorship_mode.ai_offer_material_base }
+		event_target:africa_world_sponsorship_candidate = {
+			set_variable = { africa_world_requested_sponsorship_mode = constant:africa_world_sponsorship_mode.material }
+			africa_world_sponsorship_prepare_offer = yes
+		}
+	}
+	option = {
+		name = africa_world_package.32.c
+		trigger = {
+			custom_trigger_tooltip = {
+				tooltip = africa_world_package.32.c.req
+				africa_world_sponsorship_host_can_pay_military = yes
+			}
+		}
+		custom_effect_tooltip = africa_world_package.32.c.tt
+		ai_chance = { base = constant:africa_world_sponsorship_mode.ai_offer_military_base }
+		event_target:africa_world_sponsorship_candidate = {
+			set_variable = { africa_world_requested_sponsorship_mode = constant:africa_world_sponsorship_mode.military }
+			africa_world_sponsorship_prepare_offer = yes
+		}
+	}
+	option = {
+		name = africa_world_package.32.e
+		trigger = {
+			custom_trigger_tooltip = {
+				tooltip = africa_world_package.32.e.req
+				africa_world_sponsorship_host_can_pay_ideological = yes
+			}
+		}
+		custom_effect_tooltip = africa_world_package.32.e.tt
+		ai_chance = { base = constant:africa_world_sponsorship_mode.ai_offer_ideological_base }
+		event_target:africa_world_sponsorship_candidate = {
+			set_variable = { africa_world_requested_sponsorship_mode = constant:africa_world_sponsorship_mode.ideological }
+			africa_world_sponsorship_prepare_offer = yes
+		}
+	}
+	option = {
+		name = africa_world_package.32.f
+		custom_effect_tooltip = africa_world_package.32.f.tt
+		ai_chance = { base = 0 }
+	}
+}
+
+
+country_event = {
+	id = africa_world_package.90421
+	hidden = yes
+	is_triggered_only = yes
+	trigger = {
+		is_ai = no
+	}
+	immediate = {
+		if = {
+			limit = {
+				OR = {
+					AND = {
+						custom_trigger_tooltip = {
+							tooltip = africa_world_package.32.c.req
+							africa_world_sponsorship_host_can_pay_military = yes
+						}
+					}
+					AND = {
+						custom_trigger_tooltip = {
+							tooltip = africa_world_package.32.e.req
+							africa_world_sponsorship_host_can_pay_ideological = yes
+						}
+					}
+					AND = {
+						always = yes
+					}
+				}
+			}
+			country_event = { id = africa_world_package.90402 }
+		}
+	}
+}
+
+country_event = {
+	id = africa_world_package.90442
+	hidden = yes
+	is_triggered_only = yes
+	trigger = {
+		is_ai = no
+	}
+	immediate = {
+		if = {
+			limit = {
+				OR = {
+					AND = {
+						custom_trigger_tooltip = {
+							tooltip = africa_world_package.32.a.req
+							africa_world_sponsorship_host_can_pay_diplomatic = yes
+						}
+						is_ai = no
+					}
+					AND = {
+						custom_trigger_tooltip = {
+							tooltip = africa_world_package.32.b.req
+							africa_world_sponsorship_host_can_pay_material = yes
+						}
+						is_ai = no
+					}
+				}
+			}
+			country_event = { id = africa_world_package.90401 }
+		}
 	}
 }

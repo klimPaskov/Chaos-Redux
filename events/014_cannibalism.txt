@@ -519,9 +519,10 @@ country_event = {
 		cannibalism_has_valid_unification_destination = yes
 	}
 
+
 	option = {
 		name = chaosx.nr14.71.a
-		trigger = { cannibalism_current_warlord_can_submit_without_displacing_player = yes }
+		trigger = { cannibalism_current_warlord_can_submit_without_displacing_player = yes  is_ai = no }
 		ai_chance = {
 			base = constant:cannibalism_unification_ai.submit_command_base
 			modifier = { factor = constant:cannibalism_unification_ai.aligned_factor check_variable = { cannibalism_network_alignment > constant:cannibalism_unification.submission_alignment_threshold } }
@@ -535,10 +536,9 @@ country_event = {
 		}
 		custom_effect_tooltip = cannibalism_submit_retain_command_effect_tt
 	}
-
 	option = {
 		name = chaosx.nr14.71.b
-		trigger = { cannibalism_current_warlord_can_submit_without_displacing_player = yes }
+		trigger = { cannibalism_current_warlord_can_submit_without_displacing_player = yes  is_ai = no }
 		ai_chance = {
 			base = constant:cannibalism_unification_ai.surrender_base
 			modifier = { factor = constant:cannibalism_unification_ai.weak_resistance_factor num_divisions > constant:cannibalism_unification.strong_warlord_divisions }
@@ -550,7 +550,107 @@ country_event = {
 		}
 		custom_effect_tooltip = cannibalism_submit_surrender_warband_effect_tt
 	}
+	option = {
+		name = chaosx_event_more_options
+		trigger = {
+			is_ai = no
+		
+			OR = {
+				AND = {
+					always = yes
+				}
+				AND = {
+					always = yes
+				}
+				AND = {
+					cannibalism_current_warlord_can_challenge_active_unifier = yes
+				}
+			}
+		}nt_more_options
+		trigger = {
+			is_ai = no
+		}
+		custom_effect_tooltip = chaosx_event_more_options_tt
+		hidden_effect = { country_event = { id = chaosx.nr14.90621 } }
+	}
+	option = {
+		name = chaosx_event_ai_resolution
+		trigger = {
+			is_ai = yes
+		}
+		hidden_effect = { country_event = { id = chaosx.nr14.90699 } }
+	}
 
+}
+
+country_event = {
+	id = chaosx.nr14.90601
+	title = chaosx.nr14.71.t
+	desc = chaosx.nr14.71.desc
+	picture = GFX_report_event_cannibalism_warlord_submission
+	is_triggered_only = yes
+	trigger = {
+		is_ai = no
+	}
+	option = {
+		name = chaosx.nr14.71.a
+		trigger = { cannibalism_current_warlord_can_submit_without_displacing_player = yes  is_ai = no }
+		ai_chance = {
+			base = constant:cannibalism_unification_ai.submit_command_base
+			modifier = { factor = constant:cannibalism_unification_ai.aligned_factor check_variable = { cannibalism_network_alignment > constant:cannibalism_unification.submission_alignment_threshold } }
+			modifier = { factor = constant:cannibalism_unification_ai.network_route_factor has_country_flag = cannibalism_network_route_alignment }
+			modifier = { factor = constant:cannibalism_unification_ai.aligned_factor has_country_flag = cannibalism_warlord_submission_preparation_open }
+			modifier = { factor = constant:cannibalism_unification_ai.aligned_factor has_country_flag = cannibalism_network_submission_prepared }
+		}
+		hidden_effect = {
+			cannibalism_clear_network_preparation_flags = yes
+			cannibalism_submit_current_warlord_and_retain_command = yes
+		}
+		custom_effect_tooltip = cannibalism_submit_retain_command_effect_tt
+	}
+	option = {
+		name = chaosx.nr14.71.b
+		trigger = { cannibalism_current_warlord_can_submit_without_displacing_player = yes  is_ai = no }
+		ai_chance = {
+			base = constant:cannibalism_unification_ai.surrender_base
+			modifier = { factor = constant:cannibalism_unification_ai.weak_resistance_factor num_divisions > constant:cannibalism_unification.strong_warlord_divisions }
+			modifier = { factor = constant:cannibalism_unification_ai.aligned_factor check_variable = { cannibalism_larder < constant:cannibalism_consumption.larder_low } }
+		}
+		hidden_effect = {
+			cannibalism_clear_network_preparation_flags = yes
+			cannibalism_submit_current_warlord_and_surrender_warband = yes
+		}
+		custom_effect_tooltip = cannibalism_submit_surrender_warband_effect_tt
+	}
+	option = {
+		trigger = {
+			OR = {
+				AND = {
+					always = yes
+				}
+				AND = {
+					always = yes
+				}
+				AND = {
+					cannibalism_current_warlord_can_challenge_active_unifier = yes
+				}
+			}
+		}
+		name = chaosx_event_more_options
+		custom_effect_tooltip = chaosx_event_more_options_tt
+		hidden_effect = { country_event = { id = chaosx.nr14.90621 } }
+	}
+}
+
+country_event = {
+	id = chaosx.nr14.90602
+	title = chaosx.nr14.71.t
+	desc = chaosx.nr14.71.desc
+	picture = GFX_report_event_cannibalism_warlord_submission
+	is_triggered_only = yes
+	trigger = {
+		is_ai = no
+	}
 	option = {
 		name = chaosx.nr14.71.c
 		ai_chance = {
@@ -566,7 +666,6 @@ country_event = {
 		}
 		custom_effect_tooltip = cannibalism_bargain_autonomy_effect_tt
 	}
-
 	option = {
 		name = chaosx.nr14.71.d
 		ai_chance = {
@@ -585,7 +684,108 @@ country_event = {
 		}
 		custom_effect_tooltip = cannibalism_resist_unification_effect_tt
 	}
+	option = {
+		name = chaosx.nr14.71.e
+		trigger = { cannibalism_current_warlord_can_challenge_active_unifier = yes }
+		ai_chance = {
+			base = constant:cannibalism_unification_ai.challenge_base
+			modifier = { factor = constant:cannibalism_unification_ai.tyrant_challenge_factor has_country_flag = cannibalism_hierarchy_personal_tyranny }
+			modifier = { factor = constant:cannibalism_unification_ai.strong_resistance_factor has_country_flag = cannibalism_network_route_defiance }
+		}
+		hidden_effect = {
+			cannibalism_clear_network_preparation_flags = yes
+			cannibalism_challenge_unified_host = yes
+		}
+		custom_effect_tooltip = cannibalism_challenge_unification_effect_tt
+	}
+	option = {
+		trigger = {
+			OR = {
+				AND = {
+					cannibalism_current_warlord_can_submit_without_displacing_player = yes  is_ai = no
+				}
+				AND = {
+					cannibalism_current_warlord_can_submit_without_displacing_player = yes  is_ai = no
+				}
+			}
+		}
+		name = chaosx_event_back_to_choices
+		custom_effect_tooltip = chaosx_event_back_to_choices_tt
+		hidden_effect = { country_event = { id = chaosx.nr14.90642 } }
+	}
+}
 
+country_event = {
+	id = chaosx.nr14.90699
+	title = chaosx.nr14.71.t
+	desc = chaosx.nr14.71.desc
+	is_triggered_only = yes
+	trigger = {
+		is_ai = yes
+	}
+	option = {
+		name = chaosx.nr14.71.a
+		trigger = { cannibalism_current_warlord_can_submit_without_displacing_player = yes }
+		ai_chance = {
+			base = constant:cannibalism_unification_ai.submit_command_base
+			modifier = { factor = constant:cannibalism_unification_ai.aligned_factor check_variable = { cannibalism_network_alignment > constant:cannibalism_unification.submission_alignment_threshold } }
+			modifier = { factor = constant:cannibalism_unification_ai.network_route_factor has_country_flag = cannibalism_network_route_alignment }
+			modifier = { factor = constant:cannibalism_unification_ai.aligned_factor has_country_flag = cannibalism_warlord_submission_preparation_open }
+			modifier = { factor = constant:cannibalism_unification_ai.aligned_factor has_country_flag = cannibalism_network_submission_prepared }
+		}
+		hidden_effect = {
+			cannibalism_clear_network_preparation_flags = yes
+			cannibalism_submit_current_warlord_and_retain_command = yes
+		}
+		custom_effect_tooltip = cannibalism_submit_retain_command_effect_tt
+	}
+	option = {
+		name = chaosx.nr14.71.b
+		trigger = { cannibalism_current_warlord_can_submit_without_displacing_player = yes }
+		ai_chance = {
+			base = constant:cannibalism_unification_ai.surrender_base
+			modifier = { factor = constant:cannibalism_unification_ai.weak_resistance_factor num_divisions > constant:cannibalism_unification.strong_warlord_divisions }
+			modifier = { factor = constant:cannibalism_unification_ai.aligned_factor check_variable = { cannibalism_larder < constant:cannibalism_consumption.larder_low } }
+		}
+		hidden_effect = {
+			cannibalism_clear_network_preparation_flags = yes
+			cannibalism_submit_current_warlord_and_surrender_warband = yes
+		}
+		custom_effect_tooltip = cannibalism_submit_surrender_warband_effect_tt
+	}
+	option = {
+		name = chaosx.nr14.71.c
+		ai_chance = {
+			base = constant:cannibalism_unification_ai.autonomy_base
+			modifier = { factor = constant:cannibalism_unification_ai.confederate_factor has_country_flag = cannibalism_hierarchy_pack_confederacy }
+			modifier = { factor = constant:cannibalism_unification_ai.confederate_factor has_country_flag = cannibalism_network_route_manipulation }
+			modifier = { factor = constant:cannibalism_unification_ai.confederate_factor has_country_flag = cannibalism_warlord_manipulation_endgame_open }
+			modifier = { factor = constant:cannibalism_unification_ai.confederate_factor has_country_flag = cannibalism_warlord_convergence_leverage_open }
+		}
+		hidden_effect = {
+			cannibalism_clear_network_preparation_flags = yes
+			cannibalism_bargain_current_warlord_autonomy = yes
+		}
+		custom_effect_tooltip = cannibalism_bargain_autonomy_effect_tt
+	}
+	option = {
+		name = chaosx.nr14.71.d
+		ai_chance = {
+			base = constant:cannibalism_unification_ai.resist_base
+			modifier = { factor = constant:cannibalism_unification_ai.defiance_factor has_country_flag = cannibalism_network_route_defiance }
+			modifier = { factor = constant:cannibalism_unification_ai.defiance_factor has_country_flag = cannibalism_warlord_anti_absorption_open }
+			modifier = { factor = constant:cannibalism_unification_ai.defiance_factor has_country_flag = cannibalism_warlord_independent_fortification_open }
+			modifier = { factor = constant:cannibalism_unification_ai.defiance_factor has_country_flag = cannibalism_warlord_defiance_endgame_open }
+			modifier = { factor = constant:cannibalism_unification_ai.strong_resistance_factor num_divisions > constant:cannibalism_unification.strong_warlord_divisions }
+			modifier = { factor = constant:cannibalism_unification_ai.strong_resistance_factor check_variable = { cannibalism_network_alignment < constant:cannibalism_unification.resistance_alignment_threshold } }
+			modifier = { factor = constant:cannibalism_unification_ai.defiance_factor has_country_flag = cannibalism_network_resistance_prepared }
+		}
+		hidden_effect = {
+			cannibalism_clear_network_preparation_flags = yes
+			cannibalism_resist_unified_host = yes
+		}
+		custom_effect_tooltip = cannibalism_resist_unification_effect_tt
+	}
 	option = {
 		name = chaosx.nr14.71.e
 		trigger = { cannibalism_current_warlord_can_challenge_active_unifier = yes }
@@ -757,13 +957,15 @@ country_event = {
 		}
 	}
 
+
 	option = {
 		name = chaosx.nr14.80.f
 		trigger = {
 			event_target:cannibalism_captured_warlord = {
 				has_country_flag = cannibalism_warlord_anti_decapitation_open
 			}
-		}
+		
+			is_ai = no}
 		ai_chance = { base = constant:cannibalism_international_response_cost.ai_critical }
 		hidden_effect = {
 			set_temp_variable = { cannibalism_character_outcome_selection = constant:cannibalism_character_outcome.escape }
@@ -771,10 +973,9 @@ country_event = {
 		}
 		custom_effect_tooltip = cannibalism_captured_warlord_anti_decapitation_escape_tt
 	}
-
 	option = {
 		name = chaosx.nr14.80.a
-		trigger = { event_target:cannibalism_captured_warlord = { NOT = { has_country_flag = cannibalism_warlord_anti_decapitation_open } } }
+		trigger = { event_target:cannibalism_captured_warlord = { NOT = { has_country_flag = cannibalism_warlord_anti_decapitation_open } }  is_ai = no }
 		ai_chance = {
 			base = constant:cannibalism_international_response_cost.ai_high
 			modifier = { factor = constant:cannibalism_international_response_cost.ai_urgent_factor has_government = democratic }
@@ -785,7 +986,111 @@ country_event = {
 		}
 		custom_effect_tooltip = cannibalism_captured_warlord_public_trial_tt
 	}
+	option = {
+		name = chaosx_event_more_options
+		trigger = {
+			is_ai = no
+		
+			OR = {
+				AND = {
+					event_target:cannibalism_captured_warlord = { NOT = { has_country_flag = cannibalism_warlord_anti_decapitation_open } }
+				}
+				AND = {
+					event_target:cannibalism_captured_warlord = { NOT = { has_country_flag = cannibalism_warlord_anti_decapitation_open } }
+				}
+				AND = {
+					event_target:cannibalism_captured_warlord = { NOT = { has_country_flag = cannibalism_warlord_anti_decapitation_open } }
+				}
+				AND = {
+					event_target:cannibalism_captured_warlord = { NOT = { has_country_flag = cannibalism_warlord_anti_decapitation_open } }
+				}
+			}
+		}nt_more_options
+		trigger = {
+			is_ai = no
+		}
+		custom_effect_tooltip = chaosx_event_more_options_tt
+		hidden_effect = { country_event = { id = chaosx.nr14.90721 } }
+	}
+	option = {
+		name = chaosx_event_ai_resolution
+		trigger = {
+			is_ai = yes
+		}
+		hidden_effect = { country_event = { id = chaosx.nr14.90799 } }
+	}
 
+}
+
+country_event = {
+	id = chaosx.nr14.90701
+	title = chaosx.nr14.80.t
+	desc = chaosx.nr14.80.desc
+	picture = GFX_report_event_cannibalism_captured_warlord
+	is_triggered_only = yes
+	trigger = {
+		is_ai = no
+	}
+	option = {
+		name = chaosx.nr14.80.f
+		trigger = {
+			event_target:cannibalism_captured_warlord = {
+				has_country_flag = cannibalism_warlord_anti_decapitation_open
+			}
+		
+			is_ai = no}
+		ai_chance = { base = constant:cannibalism_international_response_cost.ai_critical }
+		hidden_effect = {
+			set_temp_variable = { cannibalism_character_outcome_selection = constant:cannibalism_character_outcome.escape }
+			cannibalism_resolve_captured_warlord_outcome = yes
+		}
+		custom_effect_tooltip = cannibalism_captured_warlord_anti_decapitation_escape_tt
+	}
+	option = {
+		name = chaosx.nr14.80.a
+		trigger = { event_target:cannibalism_captured_warlord = { NOT = { has_country_flag = cannibalism_warlord_anti_decapitation_open } }  is_ai = no }
+		ai_chance = {
+			base = constant:cannibalism_international_response_cost.ai_high
+			modifier = { factor = constant:cannibalism_international_response_cost.ai_urgent_factor has_government = democratic }
+		}
+		hidden_effect = {
+			set_temp_variable = { cannibalism_character_outcome_selection = constant:cannibalism_character_outcome.public_trial }
+			cannibalism_resolve_captured_warlord_outcome = yes
+		}
+		custom_effect_tooltip = cannibalism_captured_warlord_public_trial_tt
+	}
+	option = {
+		trigger = {
+			OR = {
+				AND = {
+					event_target:cannibalism_captured_warlord = { NOT = { has_country_flag = cannibalism_warlord_anti_decapitation_open } }
+				}
+				AND = {
+					event_target:cannibalism_captured_warlord = { NOT = { has_country_flag = cannibalism_warlord_anti_decapitation_open } }
+				}
+				AND = {
+					event_target:cannibalism_captured_warlord = { NOT = { has_country_flag = cannibalism_warlord_anti_decapitation_open } }
+				}
+				AND = {
+					event_target:cannibalism_captured_warlord = { NOT = { has_country_flag = cannibalism_warlord_anti_decapitation_open } }
+				}
+			}
+		}
+		name = chaosx_event_more_options
+		custom_effect_tooltip = chaosx_event_more_options_tt
+		hidden_effect = { country_event = { id = chaosx.nr14.90721 } }
+	}
+}
+
+country_event = {
+	id = chaosx.nr14.90702
+	title = chaosx.nr14.80.t
+	desc = chaosx.nr14.80.desc
+	picture = GFX_report_event_cannibalism_captured_warlord
+	is_triggered_only = yes
+	trigger = {
+		is_ai = no
+	}
 	option = {
 		name = chaosx.nr14.80.b
 		trigger = { event_target:cannibalism_captured_warlord = { NOT = { has_country_flag = cannibalism_warlord_anti_decapitation_open } } }
@@ -799,7 +1104,6 @@ country_event = {
 		}
 		custom_effect_tooltip = cannibalism_captured_warlord_tribunal_tt
 	}
-
 	option = {
 		name = chaosx.nr14.80.c
 		trigger = { event_target:cannibalism_captured_warlord = { NOT = { has_country_flag = cannibalism_warlord_anti_decapitation_open } } }
@@ -810,7 +1114,50 @@ country_event = {
 		}
 		custom_effect_tooltip = cannibalism_captured_warlord_local_prosecution_tt
 	}
+	option = {
+		trigger = {
+			OR = {
+				AND = {
+					event_target:cannibalism_captured_warlord = {
+						has_country_flag = cannibalism_warlord_anti_decapitation_open
+					}
+					is_ai = no
+				}
+				AND = {
+					event_target:cannibalism_captured_warlord = { NOT = { has_country_flag = cannibalism_warlord_anti_decapitation_open } }  is_ai = no
+				}
+			}
+		}
+		name = chaosx_event_back_to_choices
+		custom_effect_tooltip = chaosx_event_back_to_choices_tt
+		hidden_effect = { country_event = { id = chaosx.nr14.90742 } }
+	}
+	option = {
+		trigger = {
+			OR = {
+				AND = {
+					event_target:cannibalism_captured_warlord = { NOT = { has_country_flag = cannibalism_warlord_anti_decapitation_open } }
+				}
+				AND = {
+					event_target:cannibalism_captured_warlord = { NOT = { has_country_flag = cannibalism_warlord_anti_decapitation_open } }
+				}
+			}
+		}
+		name = chaosx_event_more_options
+		custom_effect_tooltip = chaosx_event_more_options_tt
+		hidden_effect = { country_event = { id = chaosx.nr14.90722 } }
+	}
+}
 
+country_event = {
+	id = chaosx.nr14.90703
+	title = chaosx.nr14.80.t
+	desc = chaosx.nr14.80.desc
+	picture = GFX_report_event_cannibalism_captured_warlord
+	is_triggered_only = yes
+	trigger = {
+		is_ai = no
+	}
 	option = {
 		name = chaosx.nr14.80.d
 		trigger = { event_target:cannibalism_captured_warlord = { NOT = { has_country_flag = cannibalism_warlord_anti_decapitation_open } } }
@@ -834,7 +1181,126 @@ country_event = {
 		}
 		custom_effect_tooltip = cannibalism_captured_warlord_cooperation_tt
 	}
+	option = {
+		name = chaosx.nr14.80.e
+		trigger = { event_target:cannibalism_captured_warlord = { NOT = { has_country_flag = cannibalism_warlord_anti_decapitation_open } } }
+		ai_chance = {
+			base = constant:cannibalism_international_response_cost.ai_low
+			modifier = { factor = constant:cannibalism_international_response_cost.ai_urgent_factor has_government = fascism }
+		}
+		hidden_effect = {
+			set_temp_variable = { cannibalism_character_outcome_selection = constant:cannibalism_character_outcome.execution }
+			cannibalism_resolve_captured_warlord_outcome = yes
+		}
+		custom_effect_tooltip = cannibalism_captured_warlord_execution_tt
+	}
+	option = {
+		trigger = {
+			OR = {
+				AND = {
+					event_target:cannibalism_captured_warlord = {
+						has_country_flag = cannibalism_warlord_anti_decapitation_open
+					}
+					is_ai = no
+				}
+				AND = {
+					event_target:cannibalism_captured_warlord = { NOT = { has_country_flag = cannibalism_warlord_anti_decapitation_open } }  is_ai = no
+				}
+				AND = {
+					event_target:cannibalism_captured_warlord = { NOT = { has_country_flag = cannibalism_warlord_anti_decapitation_open } }
+				}
+				AND = {
+					event_target:cannibalism_captured_warlord = { NOT = { has_country_flag = cannibalism_warlord_anti_decapitation_open } }
+				}
+			}
+		}
+		name = chaosx_event_back_to_choices
+		custom_effect_tooltip = chaosx_event_back_to_choices_tt
+		hidden_effect = { country_event = { id = chaosx.nr14.90743 } }
+	}
+}
 
+country_event = {
+	id = chaosx.nr14.90799
+	title = chaosx.nr14.80.t
+	desc = chaosx.nr14.80.desc
+	is_triggered_only = yes
+	trigger = {
+		is_ai = yes
+	}
+	option = {
+		name = chaosx.nr14.80.f
+		trigger = {
+			event_target:cannibalism_captured_warlord = {
+				has_country_flag = cannibalism_warlord_anti_decapitation_open
+			}
+		}
+		ai_chance = { base = constant:cannibalism_international_response_cost.ai_critical }
+		hidden_effect = {
+			set_temp_variable = { cannibalism_character_outcome_selection = constant:cannibalism_character_outcome.escape }
+			cannibalism_resolve_captured_warlord_outcome = yes
+		}
+		custom_effect_tooltip = cannibalism_captured_warlord_anti_decapitation_escape_tt
+	}
+	option = {
+		name = chaosx.nr14.80.a
+		trigger = { event_target:cannibalism_captured_warlord = { NOT = { has_country_flag = cannibalism_warlord_anti_decapitation_open } } }
+		ai_chance = {
+			base = constant:cannibalism_international_response_cost.ai_high
+			modifier = { factor = constant:cannibalism_international_response_cost.ai_urgent_factor has_government = democratic }
+		}
+		hidden_effect = {
+			set_temp_variable = { cannibalism_character_outcome_selection = constant:cannibalism_character_outcome.public_trial }
+			cannibalism_resolve_captured_warlord_outcome = yes
+		}
+		custom_effect_tooltip = cannibalism_captured_warlord_public_trial_tt
+	}
+	option = {
+		name = chaosx.nr14.80.b
+		trigger = { event_target:cannibalism_captured_warlord = { NOT = { has_country_flag = cannibalism_warlord_anti_decapitation_open } } }
+		ai_chance = {
+			base = constant:cannibalism_international_response_cost.ai_medium
+			modifier = { factor = constant:cannibalism_international_response_cost.ai_urgent_factor is_major = yes }
+		}
+		hidden_effect = {
+			set_temp_variable = { cannibalism_character_outcome_selection = constant:cannibalism_character_outcome.international_tribunal }
+			cannibalism_resolve_captured_warlord_outcome = yes
+		}
+		custom_effect_tooltip = cannibalism_captured_warlord_tribunal_tt
+	}
+	option = {
+		name = chaosx.nr14.80.c
+		trigger = { event_target:cannibalism_captured_warlord = { NOT = { has_country_flag = cannibalism_warlord_anti_decapitation_open } } }
+		ai_chance = { base = constant:cannibalism_international_response_cost.ai_medium }
+		hidden_effect = {
+			set_temp_variable = { cannibalism_character_outcome_selection = constant:cannibalism_character_outcome.local_prosecution }
+			cannibalism_resolve_captured_warlord_outcome = yes
+		}
+		custom_effect_tooltip = cannibalism_captured_warlord_local_prosecution_tt
+	}
+	option = {
+		name = chaosx.nr14.80.d
+		trigger = { event_target:cannibalism_captured_warlord = { NOT = { has_country_flag = cannibalism_warlord_anti_decapitation_open } } }
+		ai_chance = {
+			base = constant:cannibalism_international_response_cost.ai_medium
+			modifier = { factor = constant:cannibalism_international_response_cost.ai_urgent_factor has_war = yes }
+		}
+		hidden_effect = {
+			random_list = {
+				1 = {
+					modifier = { factor = @CANNIBALISM_CAPTURE_COOPERATION_WEIGHT always = yes }
+					set_temp_variable = { cannibalism_character_outcome_selection = constant:cannibalism_character_outcome.intelligence_cooperation }
+					cannibalism_resolve_captured_warlord_outcome = yes
+				}
+				1 = {
+					modifier = { factor = @CANNIBALISM_CAPTURE_ESCAPE_WEIGHT always = yes }
+					set_temp_variable = { cannibalism_character_outcome_selection = constant:cannibalism_character_outcome.escape }
+					cannibalism_resolve_captured_warlord_outcome = yes
+				}
+			}
+		}
+		custom_effect_tooltip = cannibalism_captured_warlord_cooperation_tt
+	}
 	option = {
 		name = chaosx.nr14.80.e
 		trigger = { event_target:cannibalism_captured_warlord = { NOT = { has_country_flag = cannibalism_warlord_anti_decapitation_open } } }
@@ -988,5 +1454,185 @@ country_event = {
 		ai_chance = { base = constant:cannibalism_unified_decision_ai.standard }
 		custom_effect_tooltip = cannibalism_hoard_review_lost_tt
 		hidden_effect = { cannibalism_write_off_reviewed_hoard = yes }
+	}
+}
+
+
+country_event = {
+	id = chaosx.nr14.90721
+	hidden = yes
+	is_triggered_only = yes
+	trigger = {
+		is_ai = no
+	}
+	immediate = {
+		if = {
+			limit = {
+				OR = {
+					AND = {
+						event_target:cannibalism_captured_warlord = { NOT = { has_country_flag = cannibalism_warlord_anti_decapitation_open } }
+					}
+					AND = {
+						event_target:cannibalism_captured_warlord = { NOT = { has_country_flag = cannibalism_warlord_anti_decapitation_open } }
+					}
+				}
+			}
+			country_event = { id = chaosx.nr14.90702 }
+		}
+		else_if = {
+			limit = {
+				OR = {
+					AND = {
+						event_target:cannibalism_captured_warlord = { NOT = { has_country_flag = cannibalism_warlord_anti_decapitation_open } }
+					}
+					AND = {
+						event_target:cannibalism_captured_warlord = { NOT = { has_country_flag = cannibalism_warlord_anti_decapitation_open } }
+					}
+				}
+			}
+			country_event = { id = chaosx.nr14.90703 }
+		}
+	}
+}
+
+country_event = {
+	id = chaosx.nr14.90722
+	hidden = yes
+	is_triggered_only = yes
+	trigger = {
+		is_ai = no
+	}
+	immediate = {
+		if = {
+			limit = {
+				OR = {
+					AND = {
+						event_target:cannibalism_captured_warlord = { NOT = { has_country_flag = cannibalism_warlord_anti_decapitation_open } }
+					}
+					AND = {
+						event_target:cannibalism_captured_warlord = { NOT = { has_country_flag = cannibalism_warlord_anti_decapitation_open } }
+					}
+				}
+			}
+			country_event = { id = chaosx.nr14.90703 }
+		}
+	}
+}
+
+country_event = {
+	id = chaosx.nr14.90742
+	hidden = yes
+	is_triggered_only = yes
+	trigger = {
+		is_ai = no
+	}
+	immediate = {
+		if = {
+			limit = {
+				OR = {
+					AND = {
+						event_target:cannibalism_captured_warlord = {
+							has_country_flag = cannibalism_warlord_anti_decapitation_open
+						}
+						is_ai = no
+					}
+					AND = {
+						event_target:cannibalism_captured_warlord = { NOT = { has_country_flag = cannibalism_warlord_anti_decapitation_open } }  is_ai = no
+					}
+				}
+			}
+			country_event = { id = chaosx.nr14.90701 }
+		}
+	}
+}
+
+country_event = {
+	id = chaosx.nr14.90743
+	hidden = yes
+	is_triggered_only = yes
+	trigger = {
+		is_ai = no
+	}
+	immediate = {
+		if = {
+			limit = {
+				OR = {
+					AND = {
+						event_target:cannibalism_captured_warlord = { NOT = { has_country_flag = cannibalism_warlord_anti_decapitation_open } }
+					}
+					AND = {
+						event_target:cannibalism_captured_warlord = { NOT = { has_country_flag = cannibalism_warlord_anti_decapitation_open } }
+					}
+				}
+			}
+			country_event = { id = chaosx.nr14.90702 }
+		}
+		else_if = {
+			limit = {
+				OR = {
+					AND = {
+						event_target:cannibalism_captured_warlord = {
+							has_country_flag = cannibalism_warlord_anti_decapitation_open
+						}
+						is_ai = no
+					}
+					AND = {
+						event_target:cannibalism_captured_warlord = { NOT = { has_country_flag = cannibalism_warlord_anti_decapitation_open } }  is_ai = no
+					}
+				}
+			}
+			country_event = { id = chaosx.nr14.90701 }
+		}
+	}
+}
+
+country_event = {
+	id = chaosx.nr14.90621
+	hidden = yes
+	is_triggered_only = yes
+	trigger = {
+		is_ai = no
+	}
+	immediate = {
+		if = {
+			limit = {
+				OR = {
+					AND = {
+						always = yes
+					}
+					AND = {
+						always = yes
+					}
+					AND = {
+						cannibalism_current_warlord_can_challenge_active_unifier = yes
+					}
+				}
+			}
+			country_event = { id = chaosx.nr14.90602 }
+		}
+	}
+}
+
+country_event = {
+	id = chaosx.nr14.90642
+	hidden = yes
+	is_triggered_only = yes
+	trigger = {
+		is_ai = no
+	}
+	immediate = {
+		if = {
+			limit = {
+				OR = {
+					AND = {
+						cannibalism_current_warlord_can_submit_without_displacing_player = yes  is_ai = no
+					}
+					AND = {
+						cannibalism_current_warlord_can_submit_without_displacing_player = yes  is_ai = no
+					}
+				}
+			}
+			country_event = { id = chaosx.nr14.90601 }
+		}
 	}
 }

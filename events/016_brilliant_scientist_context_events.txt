@@ -173,6 +173,7 @@ country_event = {
 		NOT = { has_country_flag = brilliant_scientist_assistant_conflict_resolved }
 	}
 
+
 	option = {
 		name = chaosx.nr16.5.a
 		trigger = {
@@ -180,7 +181,8 @@ country_event = {
 				has_country_flag = brilliant_scientist_context_public_science
 				has_country_flag = brilliant_scientist_context_distributed_research
 			}
-		}
+		
+			is_ai = no}
 		ai_chance = {
 			base = constant:brilliant_scientist_evolution_ai.base
 			modifier = { factor = constant:brilliant_scientist_evolution_ai.preferred has_government = democratic }
@@ -196,7 +198,6 @@ country_event = {
 			brilliant_scientist_try_schedule_impossible_lecture = yes
 		}
 	}
-
 	option = {
 		name = chaosx.nr16.5.b
 		trigger = {
@@ -204,7 +205,8 @@ country_event = {
 				has_country_flag = brilliant_scientist_context_strategic_security
 				has_country_flag = brilliant_scientist_context_industrial_mobilization
 			}
-		}
+		
+			is_ai = no}
 		ai_chance = {
 			base = constant:brilliant_scientist_evolution_ai.base
 			modifier = { factor = constant:brilliant_scientist_evolution_ai.preferred has_war = yes }
@@ -220,7 +222,299 @@ country_event = {
 			brilliant_scientist_try_schedule_impossible_lecture = yes
 		}
 	}
+	option = {
+		name = chaosx_event_more_options
+		trigger = {
+			is_ai = no
+		
+			OR = {
+				AND = {
+					always = yes
+				}
+				AND = {
+					tag = ENG
+					OR = {
+						has_country_flag = brilliant_scientist_context_public_science
+						has_country_flag = brilliant_scientist_context_distributed_research
+					}
+				}
+				AND = {
+					tag = USA
+					OR = {
+						has_country_flag = brilliant_scientist_context_industrial_mobilization
+						has_country_flag = brilliant_scientist_context_distributed_research
+					}
+				}
+				AND = {
+					tag = SOV
+					OR = {
+						has_country_flag = brilliant_scientist_context_strategic_security
+						has_country_flag = brilliant_scientist_context_industrial_mobilization
+					}
+				}
+				AND = {
+					tag = JAP
+					OR = {
+						has_country_flag = brilliant_scientist_context_strategic_security
+						has_country_flag = brilliant_scientist_context_industrial_mobilization
+					}
+				}
+				AND = {
+					tag = GER
+					OR = {
+						has_country_flag = brilliant_scientist_context_strategic_security
+						has_country_flag = brilliant_scientist_context_industrial_mobilization
+					}
+				}
+				AND = {
+					tag = FRA
+					OR = {
+						has_country_flag = brilliant_scientist_context_public_science
+						has_country_flag = brilliant_scientist_context_distributed_research
+					}
+				}
+				AND = {
+					tag = ITA
+					OR = {
+						has_country_flag = brilliant_scientist_context_strategic_security
+						has_country_flag = brilliant_scientist_context_industrial_mobilization
+					}
+				}
+				AND = {
+					tag = CHI
+					OR = {
+						has_country_flag = brilliant_scientist_context_strategic_security
+						has_country_flag = brilliant_scientist_context_industrial_mobilization
+					}
+				}
+				AND = {
+					tag = POL
+					OR = {
+						has_country_flag = brilliant_scientist_context_public_science
+						has_country_flag = brilliant_scientist_context_distributed_research
+						has_country_flag = brilliant_scientist_context_strategic_security
+					}
+				}
+				AND = {
+					tag = CZE
+					OR = {
+						has_country_flag = brilliant_scientist_context_industrial_mobilization
+						has_country_flag = brilliant_scientist_context_distributed_research
+					}
+				}
+			}
+		}nt_more_options
+		trigger = {
+			is_ai = no
+		}
+		custom_effect_tooltip = chaosx_event_more_options_tt
+		hidden_effect = { country_event = { id = chaosx.nr16.91321 } }
+	}
+	option = {
+		name = chaosx_event_ai_resolution
+		trigger = {
+			is_ai = yes
+		}
+		hidden_effect = { country_event = { id = chaosx.nr16.91399 } }
+	}
 
+}
+
+country_event = {
+	id = chaosx.nr16.91301
+	title = chaosx.nr16.5.t
+	desc = {
+		trigger = {
+			OR = {
+				has_country_flag = brilliant_scientist_context_public_science
+				has_country_flag = brilliant_scientist_context_distributed_research
+			}
+		}
+		text = chaosx.nr16.5.school.d
+	}
+	desc = {
+		trigger = {
+			OR = {
+				has_country_flag = brilliant_scientist_context_strategic_security
+				has_country_flag = brilliant_scientist_assistant_service_bound
+			}
+		}
+		text = chaosx.nr16.5.security.d
+	}
+	desc = {
+		trigger = { has_country_flag = brilliant_scientist_context_industrial_mobilization }
+		text = chaosx.nr16.5.industrial.d
+	}
+	desc = { text = chaosx.nr16.5.default.d }
+	picture = GFX_report_event_016_brilliant_scientist_university_competition
+	is_triggered_only = yes
+	trigger = {
+		is_ai = no
+	}
+	option = {
+		name = chaosx.nr16.5.a
+		trigger = {
+			OR = {
+				has_country_flag = brilliant_scientist_context_public_science
+				has_country_flag = brilliant_scientist_context_distributed_research
+			}
+		
+			is_ai = no}
+		ai_chance = {
+			base = constant:brilliant_scientist_evolution_ai.base
+			modifier = { factor = constant:brilliant_scientist_evolution_ai.preferred has_government = democratic }
+			modifier = { factor = constant:brilliant_scientist_evolution_ai.preferred brilliant_scientist_has_high_independent_capacity = yes }
+			modifier = { factor = constant:brilliant_scientist_host_flavor_ai.university has_country_flag = brilliant_scientist_host_archetype_university }
+			modifier = { factor = constant:brilliant_scientist_host_flavor_ai.refugee has_country_flag = brilliant_scientist_host_archetype_refugee }
+		}
+		custom_effect_tooltip = brilliant_scientist_context_recognize_assistant_school_tt
+		hidden_effect = {
+			clr_country_flag = brilliant_scientist_context_assistant_conflict_pending
+			set_country_flag = brilliant_scientist_assistant_conflict_resolved
+			brilliant_scientist_context_recognize_assistant_school = yes
+			brilliant_scientist_try_schedule_impossible_lecture = yes
+		}
+	}
+	option = {
+		name = chaosx.nr16.5.b
+		trigger = {
+			OR = {
+				has_country_flag = brilliant_scientist_context_strategic_security
+				has_country_flag = brilliant_scientist_context_industrial_mobilization
+			}
+		
+			is_ai = no}
+		ai_chance = {
+			base = constant:brilliant_scientist_evolution_ai.base
+			modifier = { factor = constant:brilliant_scientist_evolution_ai.preferred has_war = yes }
+			modifier = { factor = constant:brilliant_scientist_evolution_ai.preferred has_country_flag = brilliant_scientist_secret_directorate }
+			modifier = { factor = constant:brilliant_scientist_host_flavor_ai.militarized has_country_flag = brilliant_scientist_host_archetype_militarized }
+			modifier = { factor = constant:brilliant_scientist_host_flavor_ai.industrial has_country_flag = brilliant_scientist_host_archetype_industrial }
+		}
+		custom_effect_tooltip = brilliant_scientist_context_bind_assistant_service_tt
+		hidden_effect = {
+			clr_country_flag = brilliant_scientist_context_assistant_conflict_pending
+			set_country_flag = brilliant_scientist_assistant_conflict_resolved
+			brilliant_scientist_context_bind_assistant_service = yes
+			brilliant_scientist_try_schedule_impossible_lecture = yes
+		}
+	}
+	option = {
+		trigger = {
+			OR = {
+				AND = {
+					always = yes
+				}
+				AND = {
+					tag = ENG
+					OR = {
+						has_country_flag = brilliant_scientist_context_public_science
+						has_country_flag = brilliant_scientist_context_distributed_research
+					}
+				}
+				AND = {
+					tag = USA
+					OR = {
+						has_country_flag = brilliant_scientist_context_industrial_mobilization
+						has_country_flag = brilliant_scientist_context_distributed_research
+					}
+				}
+				AND = {
+					tag = SOV
+					OR = {
+						has_country_flag = brilliant_scientist_context_strategic_security
+						has_country_flag = brilliant_scientist_context_industrial_mobilization
+					}
+				}
+				AND = {
+					tag = JAP
+					OR = {
+						has_country_flag = brilliant_scientist_context_strategic_security
+						has_country_flag = brilliant_scientist_context_industrial_mobilization
+					}
+				}
+				AND = {
+					tag = GER
+					OR = {
+						has_country_flag = brilliant_scientist_context_strategic_security
+						has_country_flag = brilliant_scientist_context_industrial_mobilization
+					}
+				}
+				AND = {
+					tag = FRA
+					OR = {
+						has_country_flag = brilliant_scientist_context_public_science
+						has_country_flag = brilliant_scientist_context_distributed_research
+					}
+				}
+				AND = {
+					tag = ITA
+					OR = {
+						has_country_flag = brilliant_scientist_context_strategic_security
+						has_country_flag = brilliant_scientist_context_industrial_mobilization
+					}
+				}
+				AND = {
+					tag = CHI
+					OR = {
+						has_country_flag = brilliant_scientist_context_strategic_security
+						has_country_flag = brilliant_scientist_context_industrial_mobilization
+					}
+				}
+				AND = {
+					tag = POL
+					OR = {
+						has_country_flag = brilliant_scientist_context_public_science
+						has_country_flag = brilliant_scientist_context_distributed_research
+						has_country_flag = brilliant_scientist_context_strategic_security
+					}
+				}
+				AND = {
+					tag = CZE
+					OR = {
+						has_country_flag = brilliant_scientist_context_industrial_mobilization
+						has_country_flag = brilliant_scientist_context_distributed_research
+					}
+				}
+			}
+		}
+		name = chaosx_event_more_options
+		custom_effect_tooltip = chaosx_event_more_options_tt
+		hidden_effect = { country_event = { id = chaosx.nr16.91321 } }
+	}
+}
+
+country_event = {
+	id = chaosx.nr16.91302
+	title = chaosx.nr16.5.t
+	desc = {
+		trigger = {
+			OR = {
+				has_country_flag = brilliant_scientist_context_public_science
+				has_country_flag = brilliant_scientist_context_distributed_research
+			}
+		}
+		text = chaosx.nr16.5.school.d
+	}
+	desc = {
+		trigger = {
+			OR = {
+				has_country_flag = brilliant_scientist_context_strategic_security
+				has_country_flag = brilliant_scientist_assistant_service_bound
+			}
+		}
+		text = chaosx.nr16.5.security.d
+	}
+	desc = {
+		trigger = { has_country_flag = brilliant_scientist_context_industrial_mobilization }
+		text = chaosx.nr16.5.industrial.d
+	}
+	desc = { text = chaosx.nr16.5.default.d }
+	picture = GFX_report_event_016_brilliant_scientist_university_competition
+	is_triggered_only = yes
+	trigger = {
+		is_ai = no
+	}
 	option = {
 		name = chaosx.nr16.5.c
 		ai_chance = {
@@ -238,7 +532,6 @@ country_event = {
 			brilliant_scientist_try_schedule_impossible_lecture = yes
 		}
 	}
-
 	option = {
 		name = chaosx.nr16.5.d_eng
 		trigger = {
@@ -269,7 +562,135 @@ country_event = {
 			brilliant_scientist_try_schedule_impossible_lecture = yes
 		}
 	}
+	option = {
+		trigger = {
+			OR = {
+				AND = {
+					OR = {
+						has_country_flag = brilliant_scientist_context_public_science
+						has_country_flag = brilliant_scientist_context_distributed_research
+					}
+					is_ai = no
+				}
+				AND = {
+					OR = {
+						has_country_flag = brilliant_scientist_context_strategic_security
+						has_country_flag = brilliant_scientist_context_industrial_mobilization
+					}
+					is_ai = no
+				}
+			}
+		}
+		name = chaosx_event_back_to_choices
+		custom_effect_tooltip = chaosx_event_back_to_choices_tt
+		hidden_effect = { country_event = { id = chaosx.nr16.91342 } }
+	}
+	option = {
+		trigger = {
+			OR = {
+				AND = {
+					tag = USA
+					OR = {
+						has_country_flag = brilliant_scientist_context_industrial_mobilization
+						has_country_flag = brilliant_scientist_context_distributed_research
+					}
+				}
+				AND = {
+					tag = SOV
+					OR = {
+						has_country_flag = brilliant_scientist_context_strategic_security
+						has_country_flag = brilliant_scientist_context_industrial_mobilization
+					}
+				}
+				AND = {
+					tag = JAP
+					OR = {
+						has_country_flag = brilliant_scientist_context_strategic_security
+						has_country_flag = brilliant_scientist_context_industrial_mobilization
+					}
+				}
+				AND = {
+					tag = GER
+					OR = {
+						has_country_flag = brilliant_scientist_context_strategic_security
+						has_country_flag = brilliant_scientist_context_industrial_mobilization
+					}
+				}
+				AND = {
+					tag = FRA
+					OR = {
+						has_country_flag = brilliant_scientist_context_public_science
+						has_country_flag = brilliant_scientist_context_distributed_research
+					}
+				}
+				AND = {
+					tag = ITA
+					OR = {
+						has_country_flag = brilliant_scientist_context_strategic_security
+						has_country_flag = brilliant_scientist_context_industrial_mobilization
+					}
+				}
+				AND = {
+					tag = CHI
+					OR = {
+						has_country_flag = brilliant_scientist_context_strategic_security
+						has_country_flag = brilliant_scientist_context_industrial_mobilization
+					}
+				}
+				AND = {
+					tag = POL
+					OR = {
+						has_country_flag = brilliant_scientist_context_public_science
+						has_country_flag = brilliant_scientist_context_distributed_research
+						has_country_flag = brilliant_scientist_context_strategic_security
+					}
+				}
+				AND = {
+					tag = CZE
+					OR = {
+						has_country_flag = brilliant_scientist_context_industrial_mobilization
+						has_country_flag = brilliant_scientist_context_distributed_research
+					}
+				}
+			}
+		}
+		name = chaosx_event_more_options
+		custom_effect_tooltip = chaosx_event_more_options_tt
+		hidden_effect = { country_event = { id = chaosx.nr16.91322 } }
+	}
+}
 
+country_event = {
+	id = chaosx.nr16.91303
+	title = chaosx.nr16.5.t
+	desc = {
+		trigger = {
+			OR = {
+				has_country_flag = brilliant_scientist_context_public_science
+				has_country_flag = brilliant_scientist_context_distributed_research
+			}
+		}
+		text = chaosx.nr16.5.school.d
+	}
+	desc = {
+		trigger = {
+			OR = {
+				has_country_flag = brilliant_scientist_context_strategic_security
+				has_country_flag = brilliant_scientist_assistant_service_bound
+			}
+		}
+		text = chaosx.nr16.5.security.d
+	}
+	desc = {
+		trigger = { has_country_flag = brilliant_scientist_context_industrial_mobilization }
+		text = chaosx.nr16.5.industrial.d
+	}
+	desc = { text = chaosx.nr16.5.default.d }
+	picture = GFX_report_event_016_brilliant_scientist_university_competition
+	is_triggered_only = yes
+	trigger = {
+		is_ai = no
+	}
 	option = {
 		name = chaosx.nr16.5.e_usa
 		trigger = {
@@ -300,7 +721,6 @@ country_event = {
 			brilliant_scientist_try_schedule_impossible_lecture = yes
 		}
 	}
-
 	option = {
 		name = chaosx.nr16.5.f_sov
 		trigger = {
@@ -331,7 +751,131 @@ country_event = {
 			brilliant_scientist_try_schedule_impossible_lecture = yes
 		}
 	}
+	option = {
+		trigger = {
+			OR = {
+				AND = {
+					OR = {
+						has_country_flag = brilliant_scientist_context_public_science
+						has_country_flag = brilliant_scientist_context_distributed_research
+					}
+					is_ai = no
+				}
+				AND = {
+					OR = {
+						has_country_flag = brilliant_scientist_context_strategic_security
+						has_country_flag = brilliant_scientist_context_industrial_mobilization
+					}
+					is_ai = no
+				}
+				AND = {
+					always = yes
+				}
+				AND = {
+					tag = ENG
+					OR = {
+						has_country_flag = brilliant_scientist_context_public_science
+						has_country_flag = brilliant_scientist_context_distributed_research
+					}
+				}
+			}
+		}
+		name = chaosx_event_back_to_choices
+		custom_effect_tooltip = chaosx_event_back_to_choices_tt
+		hidden_effect = { country_event = { id = chaosx.nr16.91343 } }
+	}
+	option = {
+		trigger = {
+			OR = {
+				AND = {
+					tag = JAP
+					OR = {
+						has_country_flag = brilliant_scientist_context_strategic_security
+						has_country_flag = brilliant_scientist_context_industrial_mobilization
+					}
+				}
+				AND = {
+					tag = GER
+					OR = {
+						has_country_flag = brilliant_scientist_context_strategic_security
+						has_country_flag = brilliant_scientist_context_industrial_mobilization
+					}
+				}
+				AND = {
+					tag = FRA
+					OR = {
+						has_country_flag = brilliant_scientist_context_public_science
+						has_country_flag = brilliant_scientist_context_distributed_research
+					}
+				}
+				AND = {
+					tag = ITA
+					OR = {
+						has_country_flag = brilliant_scientist_context_strategic_security
+						has_country_flag = brilliant_scientist_context_industrial_mobilization
+					}
+				}
+				AND = {
+					tag = CHI
+					OR = {
+						has_country_flag = brilliant_scientist_context_strategic_security
+						has_country_flag = brilliant_scientist_context_industrial_mobilization
+					}
+				}
+				AND = {
+					tag = POL
+					OR = {
+						has_country_flag = brilliant_scientist_context_public_science
+						has_country_flag = brilliant_scientist_context_distributed_research
+						has_country_flag = brilliant_scientist_context_strategic_security
+					}
+				}
+				AND = {
+					tag = CZE
+					OR = {
+						has_country_flag = brilliant_scientist_context_industrial_mobilization
+						has_country_flag = brilliant_scientist_context_distributed_research
+					}
+				}
+			}
+		}
+		name = chaosx_event_more_options
+		custom_effect_tooltip = chaosx_event_more_options_tt
+		hidden_effect = { country_event = { id = chaosx.nr16.91323 } }
+	}
+}
 
+country_event = {
+	id = chaosx.nr16.91304
+	title = chaosx.nr16.5.t
+	desc = {
+		trigger = {
+			OR = {
+				has_country_flag = brilliant_scientist_context_public_science
+				has_country_flag = brilliant_scientist_context_distributed_research
+			}
+		}
+		text = chaosx.nr16.5.school.d
+	}
+	desc = {
+		trigger = {
+			OR = {
+				has_country_flag = brilliant_scientist_context_strategic_security
+				has_country_flag = brilliant_scientist_assistant_service_bound
+			}
+		}
+		text = chaosx.nr16.5.security.d
+	}
+	desc = {
+		trigger = { has_country_flag = brilliant_scientist_context_industrial_mobilization }
+		text = chaosx.nr16.5.industrial.d
+	}
+	desc = { text = chaosx.nr16.5.default.d }
+	picture = GFX_report_event_016_brilliant_scientist_university_competition
+	is_triggered_only = yes
+	trigger = {
+		is_ai = no
+	}
 	option = {
 		name = chaosx.nr16.5.g_jap
 		trigger = {
@@ -363,7 +907,6 @@ country_event = {
 			brilliant_scientist_try_schedule_impossible_lecture = yes
 		}
 	}
-
 	option = {
 		name = chaosx.nr16.5.h_ger
 		trigger = {
@@ -388,7 +931,131 @@ country_event = {
 			brilliant_scientist_try_schedule_impossible_lecture = yes
 		}
 	}
+	option = {
+		trigger = {
+			OR = {
+				AND = {
+					OR = {
+						has_country_flag = brilliant_scientist_context_public_science
+						has_country_flag = brilliant_scientist_context_distributed_research
+					}
+					is_ai = no
+				}
+				AND = {
+					OR = {
+						has_country_flag = brilliant_scientist_context_strategic_security
+						has_country_flag = brilliant_scientist_context_industrial_mobilization
+					}
+					is_ai = no
+				}
+				AND = {
+					always = yes
+				}
+				AND = {
+					tag = ENG
+					OR = {
+						has_country_flag = brilliant_scientist_context_public_science
+						has_country_flag = brilliant_scientist_context_distributed_research
+					}
+				}
+				AND = {
+					tag = USA
+					OR = {
+						has_country_flag = brilliant_scientist_context_industrial_mobilization
+						has_country_flag = brilliant_scientist_context_distributed_research
+					}
+				}
+				AND = {
+					tag = SOV
+					OR = {
+						has_country_flag = brilliant_scientist_context_strategic_security
+						has_country_flag = brilliant_scientist_context_industrial_mobilization
+					}
+				}
+			}
+		}
+		name = chaosx_event_back_to_choices
+		custom_effect_tooltip = chaosx_event_back_to_choices_tt
+		hidden_effect = { country_event = { id = chaosx.nr16.91344 } }
+	}
+	option = {
+		trigger = {
+			OR = {
+				AND = {
+					tag = FRA
+					OR = {
+						has_country_flag = brilliant_scientist_context_public_science
+						has_country_flag = brilliant_scientist_context_distributed_research
+					}
+				}
+				AND = {
+					tag = ITA
+					OR = {
+						has_country_flag = brilliant_scientist_context_strategic_security
+						has_country_flag = brilliant_scientist_context_industrial_mobilization
+					}
+				}
+				AND = {
+					tag = CHI
+					OR = {
+						has_country_flag = brilliant_scientist_context_strategic_security
+						has_country_flag = brilliant_scientist_context_industrial_mobilization
+					}
+				}
+				AND = {
+					tag = POL
+					OR = {
+						has_country_flag = brilliant_scientist_context_public_science
+						has_country_flag = brilliant_scientist_context_distributed_research
+						has_country_flag = brilliant_scientist_context_strategic_security
+					}
+				}
+				AND = {
+					tag = CZE
+					OR = {
+						has_country_flag = brilliant_scientist_context_industrial_mobilization
+						has_country_flag = brilliant_scientist_context_distributed_research
+					}
+				}
+			}
+		}
+		name = chaosx_event_more_options
+		custom_effect_tooltip = chaosx_event_more_options_tt
+		hidden_effect = { country_event = { id = chaosx.nr16.91324 } }
+	}
+}
 
+country_event = {
+	id = chaosx.nr16.91305
+	title = chaosx.nr16.5.t
+	desc = {
+		trigger = {
+			OR = {
+				has_country_flag = brilliant_scientist_context_public_science
+				has_country_flag = brilliant_scientist_context_distributed_research
+			}
+		}
+		text = chaosx.nr16.5.school.d
+	}
+	desc = {
+		trigger = {
+			OR = {
+				has_country_flag = brilliant_scientist_context_strategic_security
+				has_country_flag = brilliant_scientist_assistant_service_bound
+			}
+		}
+		text = chaosx.nr16.5.security.d
+	}
+	desc = {
+		trigger = { has_country_flag = brilliant_scientist_context_industrial_mobilization }
+		text = chaosx.nr16.5.industrial.d
+	}
+	desc = { text = chaosx.nr16.5.default.d }
+	picture = GFX_report_event_016_brilliant_scientist_university_competition
+	is_triggered_only = yes
+	trigger = {
+		is_ai = no
+	}
 	option = {
 		name = chaosx.nr16.5.i_fra
 		trigger = {
@@ -412,7 +1079,6 @@ country_event = {
 			brilliant_scientist_try_schedule_impossible_lecture = yes
 		}
 	}
-
 	option = {
 		name = chaosx.nr16.5.j_ita
 		trigger = {
@@ -437,7 +1103,131 @@ country_event = {
 			brilliant_scientist_try_schedule_impossible_lecture = yes
 		}
 	}
+	option = {
+		trigger = {
+			OR = {
+				AND = {
+					OR = {
+						has_country_flag = brilliant_scientist_context_public_science
+						has_country_flag = brilliant_scientist_context_distributed_research
+					}
+					is_ai = no
+				}
+				AND = {
+					OR = {
+						has_country_flag = brilliant_scientist_context_strategic_security
+						has_country_flag = brilliant_scientist_context_industrial_mobilization
+					}
+					is_ai = no
+				}
+				AND = {
+					always = yes
+				}
+				AND = {
+					tag = ENG
+					OR = {
+						has_country_flag = brilliant_scientist_context_public_science
+						has_country_flag = brilliant_scientist_context_distributed_research
+					}
+				}
+				AND = {
+					tag = USA
+					OR = {
+						has_country_flag = brilliant_scientist_context_industrial_mobilization
+						has_country_flag = brilliant_scientist_context_distributed_research
+					}
+				}
+				AND = {
+					tag = SOV
+					OR = {
+						has_country_flag = brilliant_scientist_context_strategic_security
+						has_country_flag = brilliant_scientist_context_industrial_mobilization
+					}
+				}
+				AND = {
+					tag = JAP
+					OR = {
+						has_country_flag = brilliant_scientist_context_strategic_security
+						has_country_flag = brilliant_scientist_context_industrial_mobilization
+					}
+				}
+				AND = {
+					tag = GER
+					OR = {
+						has_country_flag = brilliant_scientist_context_strategic_security
+						has_country_flag = brilliant_scientist_context_industrial_mobilization
+					}
+				}
+			}
+		}
+		name = chaosx_event_back_to_choices
+		custom_effect_tooltip = chaosx_event_back_to_choices_tt
+		hidden_effect = { country_event = { id = chaosx.nr16.91345 } }
+	}
+	option = {
+		trigger = {
+			OR = {
+				AND = {
+					tag = CHI
+					OR = {
+						has_country_flag = brilliant_scientist_context_strategic_security
+						has_country_flag = brilliant_scientist_context_industrial_mobilization
+					}
+				}
+				AND = {
+					tag = POL
+					OR = {
+						has_country_flag = brilliant_scientist_context_public_science
+						has_country_flag = brilliant_scientist_context_distributed_research
+						has_country_flag = brilliant_scientist_context_strategic_security
+					}
+				}
+				AND = {
+					tag = CZE
+					OR = {
+						has_country_flag = brilliant_scientist_context_industrial_mobilization
+						has_country_flag = brilliant_scientist_context_distributed_research
+					}
+				}
+			}
+		}
+		name = chaosx_event_more_options
+		custom_effect_tooltip = chaosx_event_more_options_tt
+		hidden_effect = { country_event = { id = chaosx.nr16.91325 } }
+	}
+}
 
+country_event = {
+	id = chaosx.nr16.91306
+	title = chaosx.nr16.5.t
+	desc = {
+		trigger = {
+			OR = {
+				has_country_flag = brilliant_scientist_context_public_science
+				has_country_flag = brilliant_scientist_context_distributed_research
+			}
+		}
+		text = chaosx.nr16.5.school.d
+	}
+	desc = {
+		trigger = {
+			OR = {
+				has_country_flag = brilliant_scientist_context_strategic_security
+				has_country_flag = brilliant_scientist_assistant_service_bound
+			}
+		}
+		text = chaosx.nr16.5.security.d
+	}
+	desc = {
+		trigger = { has_country_flag = brilliant_scientist_context_industrial_mobilization }
+		text = chaosx.nr16.5.industrial.d
+	}
+	desc = { text = chaosx.nr16.5.default.d }
+	picture = GFX_report_event_016_brilliant_scientist_university_competition
+	is_triggered_only = yes
+	trigger = {
+		is_ai = no
+	}
 	option = {
 		name = chaosx.nr16.5.k_chi
 		trigger = {
@@ -462,7 +1252,6 @@ country_event = {
 			brilliant_scientist_try_schedule_impossible_lecture = yes
 		}
 	}
-
 	option = {
 		name = chaosx.nr16.5.l_pol
 		trigger = {
@@ -488,7 +1277,441 @@ country_event = {
 			brilliant_scientist_try_schedule_impossible_lecture = yes
 		}
 	}
+	option = {
+		name = chaosx.nr16.5.m_cze
+		trigger = {
+			tag = CZE
+			OR = {
+				has_country_flag = brilliant_scientist_context_industrial_mobilization
+				has_country_flag = brilliant_scientist_context_distributed_research
+			}
+		}
+		ai_chance = {
+			base = constant:brilliant_scientist_country_settlement_ai.option_base
+			modifier = { factor = constant:brilliant_scientist_country_settlement_ai.option_preferred_factor has_country_flag = brilliant_scientist_context_industrial_mobilization }
+			modifier = { factor = constant:brilliant_scientist_host_flavor_ai.industrial has_country_flag = brilliant_scientist_host_archetype_industrial }
+			modifier = { factor = constant:brilliant_scientist_host_flavor_ai.university has_country_flag = brilliant_scientist_host_archetype_university }
+			modifier = { factor = constant:brilliant_scientist_country_settlement_ai.option_cautious_factor brilliant_scientist_has_high_dependence = yes }
+		}
+		custom_effect_tooltip = brilliant_scientist_country_settlement_czechoslovak_tt
+		hidden_effect = {
+			clr_country_flag = brilliant_scientist_context_assistant_conflict_pending
+			set_country_flag = brilliant_scientist_assistant_conflict_resolved
+			brilliant_scientist_context_settle_czechoslovak_research_charter = yes
+			brilliant_scientist_try_schedule_impossible_lecture = yes
+		}
+	}
+	option = {
+		trigger = {
+			OR = {
+				AND = {
+					OR = {
+						has_country_flag = brilliant_scientist_context_public_science
+						has_country_flag = brilliant_scientist_context_distributed_research
+					}
+					is_ai = no
+				}
+				AND = {
+					OR = {
+						has_country_flag = brilliant_scientist_context_strategic_security
+						has_country_flag = brilliant_scientist_context_industrial_mobilization
+					}
+					is_ai = no
+				}
+				AND = {
+					always = yes
+				}
+				AND = {
+					tag = ENG
+					OR = {
+						has_country_flag = brilliant_scientist_context_public_science
+						has_country_flag = brilliant_scientist_context_distributed_research
+					}
+				}
+				AND = {
+					tag = USA
+					OR = {
+						has_country_flag = brilliant_scientist_context_industrial_mobilization
+						has_country_flag = brilliant_scientist_context_distributed_research
+					}
+				}
+				AND = {
+					tag = SOV
+					OR = {
+						has_country_flag = brilliant_scientist_context_strategic_security
+						has_country_flag = brilliant_scientist_context_industrial_mobilization
+					}
+				}
+				AND = {
+					tag = JAP
+					OR = {
+						has_country_flag = brilliant_scientist_context_strategic_security
+						has_country_flag = brilliant_scientist_context_industrial_mobilization
+					}
+				}
+				AND = {
+					tag = GER
+					OR = {
+						has_country_flag = brilliant_scientist_context_strategic_security
+						has_country_flag = brilliant_scientist_context_industrial_mobilization
+					}
+				}
+				AND = {
+					tag = FRA
+					OR = {
+						has_country_flag = brilliant_scientist_context_public_science
+						has_country_flag = brilliant_scientist_context_distributed_research
+					}
+				}
+				AND = {
+					tag = ITA
+					OR = {
+						has_country_flag = brilliant_scientist_context_strategic_security
+						has_country_flag = brilliant_scientist_context_industrial_mobilization
+					}
+				}
+			}
+		}
+		name = chaosx_event_back_to_choices
+		custom_effect_tooltip = chaosx_event_back_to_choices_tt
+		hidden_effect = { country_event = { id = chaosx.nr16.91346 } }
+	}
+}
 
+country_event = {
+	id = chaosx.nr16.91399
+	title = chaosx.nr16.5.t
+	desc = {
+		trigger = {
+			OR = {
+				has_country_flag = brilliant_scientist_context_public_science
+				has_country_flag = brilliant_scientist_context_distributed_research
+			}
+		}
+		text = chaosx.nr16.5.school.d
+	}
+	desc = {
+		trigger = {
+			OR = {
+				has_country_flag = brilliant_scientist_context_strategic_security
+				has_country_flag = brilliant_scientist_assistant_service_bound
+			}
+		}
+		text = chaosx.nr16.5.security.d
+	}
+	desc = {
+		trigger = { has_country_flag = brilliant_scientist_context_industrial_mobilization }
+		text = chaosx.nr16.5.industrial.d
+	}
+	desc = { text = chaosx.nr16.5.default.d }
+	is_triggered_only = yes
+	trigger = {
+		is_ai = yes
+	}
+	option = {
+		name = chaosx.nr16.5.a
+		trigger = {
+			OR = {
+				has_country_flag = brilliant_scientist_context_public_science
+				has_country_flag = brilliant_scientist_context_distributed_research
+			}
+		}
+		ai_chance = {
+			base = constant:brilliant_scientist_evolution_ai.base
+			modifier = { factor = constant:brilliant_scientist_evolution_ai.preferred has_government = democratic }
+			modifier = { factor = constant:brilliant_scientist_evolution_ai.preferred brilliant_scientist_has_high_independent_capacity = yes }
+			modifier = { factor = constant:brilliant_scientist_host_flavor_ai.university has_country_flag = brilliant_scientist_host_archetype_university }
+			modifier = { factor = constant:brilliant_scientist_host_flavor_ai.refugee has_country_flag = brilliant_scientist_host_archetype_refugee }
+		}
+		custom_effect_tooltip = brilliant_scientist_context_recognize_assistant_school_tt
+		hidden_effect = {
+			clr_country_flag = brilliant_scientist_context_assistant_conflict_pending
+			set_country_flag = brilliant_scientist_assistant_conflict_resolved
+			brilliant_scientist_context_recognize_assistant_school = yes
+			brilliant_scientist_try_schedule_impossible_lecture = yes
+		}
+	}
+	option = {
+		name = chaosx.nr16.5.b
+		trigger = {
+			OR = {
+				has_country_flag = brilliant_scientist_context_strategic_security
+				has_country_flag = brilliant_scientist_context_industrial_mobilization
+			}
+		}
+		ai_chance = {
+			base = constant:brilliant_scientist_evolution_ai.base
+			modifier = { factor = constant:brilliant_scientist_evolution_ai.preferred has_war = yes }
+			modifier = { factor = constant:brilliant_scientist_evolution_ai.preferred has_country_flag = brilliant_scientist_secret_directorate }
+			modifier = { factor = constant:brilliant_scientist_host_flavor_ai.militarized has_country_flag = brilliant_scientist_host_archetype_militarized }
+			modifier = { factor = constant:brilliant_scientist_host_flavor_ai.industrial has_country_flag = brilliant_scientist_host_archetype_industrial }
+		}
+		custom_effect_tooltip = brilliant_scientist_context_bind_assistant_service_tt
+		hidden_effect = {
+			clr_country_flag = brilliant_scientist_context_assistant_conflict_pending
+			set_country_flag = brilliant_scientist_assistant_conflict_resolved
+			brilliant_scientist_context_bind_assistant_service = yes
+			brilliant_scientist_try_schedule_impossible_lecture = yes
+		}
+	}
+	option = {
+		name = chaosx.nr16.5.c
+		ai_chance = {
+			base = constant:brilliant_scientist_evolution_ai.base
+			modifier = { factor = constant:brilliant_scientist_evolution_ai.preferred has_government = democratic }
+			modifier = { factor = constant:brilliant_scientist_evolution_ai.cautious has_war = yes }
+			modifier = { factor = constant:brilliant_scientist_host_flavor_ai.threatened has_country_flag = brilliant_scientist_host_archetype_threatened }
+			modifier = { factor = constant:brilliant_scientist_host_flavor_ai.colonial has_country_flag = brilliant_scientist_host_archetype_colonial }
+		}
+		custom_effect_tooltip = brilliant_scientist_context_mediate_assistant_conflict_tt
+		hidden_effect = {
+			clr_country_flag = brilliant_scientist_context_assistant_conflict_pending
+			set_country_flag = brilliant_scientist_assistant_conflict_resolved
+			brilliant_scientist_context_mediate_assistant_conflict = yes
+			brilliant_scientist_try_schedule_impossible_lecture = yes
+		}
+	}
+	option = {
+		name = chaosx.nr16.5.d_eng
+		trigger = {
+			tag = ENG
+			OR = {
+				has_country_flag = brilliant_scientist_context_public_science
+				has_country_flag = brilliant_scientist_context_distributed_research
+			}
+		}
+		ai_chance = {
+			base = constant:brilliant_scientist_country_settlement_ai.option_base
+			modifier = {
+				factor = constant:brilliant_scientist_country_settlement_ai.option_preferred_factor
+				OR = {
+					has_country_flag = brilliant_scientist_context_public_science
+					has_country_flag = brilliant_scientist_context_distributed_research
+				}
+			}
+			modifier = { factor = constant:brilliant_scientist_host_flavor_ai.university has_country_flag = brilliant_scientist_host_archetype_university }
+			modifier = { factor = constant:brilliant_scientist_country_settlement_ai.option_cautious_factor has_war = yes }
+			modifier = { factor = constant:brilliant_scientist_country_settlement_ai.option_cautious_factor brilliant_scientist_has_high_exposure = yes }
+		}
+		custom_effect_tooltip = brilliant_scientist_country_settlement_british_tt
+		hidden_effect = {
+			clr_country_flag = brilliant_scientist_context_assistant_conflict_pending
+			set_country_flag = brilliant_scientist_assistant_conflict_resolved
+			brilliant_scientist_context_settle_british_research_associations = yes
+			brilliant_scientist_try_schedule_impossible_lecture = yes
+		}
+	}
+	option = {
+		name = chaosx.nr16.5.e_usa
+		trigger = {
+			tag = USA
+			OR = {
+				has_country_flag = brilliant_scientist_context_industrial_mobilization
+				has_country_flag = brilliant_scientist_context_distributed_research
+			}
+		}
+		ai_chance = {
+			base = constant:brilliant_scientist_country_settlement_ai.option_base
+			modifier = {
+				factor = constant:brilliant_scientist_country_settlement_ai.option_preferred_factor
+				OR = {
+					has_country_flag = brilliant_scientist_context_industrial_mobilization
+					has_country_flag = brilliant_scientist_context_distributed_research
+				}
+			}
+			modifier = { factor = constant:brilliant_scientist_host_flavor_ai.industrial has_country_flag = brilliant_scientist_host_archetype_industrial }
+			modifier = { factor = constant:brilliant_scientist_country_settlement_ai.option_cautious_factor brilliant_scientist_has_high_dependence = yes }
+			modifier = { factor = constant:brilliant_scientist_country_settlement_ai.option_cautious_factor brilliant_scientist_has_high_exposure = yes }
+		}
+		custom_effect_tooltip = brilliant_scientist_country_settlement_american_tt
+		hidden_effect = {
+			clr_country_flag = brilliant_scientist_context_assistant_conflict_pending
+			set_country_flag = brilliant_scientist_assistant_conflict_resolved
+			brilliant_scientist_context_settle_american_federal_contracts = yes
+			brilliant_scientist_try_schedule_impossible_lecture = yes
+		}
+	}
+	option = {
+		name = chaosx.nr16.5.f_sov
+		trigger = {
+			tag = SOV
+			OR = {
+				has_country_flag = brilliant_scientist_context_strategic_security
+				has_country_flag = brilliant_scientist_context_industrial_mobilization
+			}
+		}
+		ai_chance = {
+			base = constant:brilliant_scientist_country_settlement_ai.option_base
+			modifier = {
+				factor = constant:brilliant_scientist_country_settlement_ai.option_preferred_factor
+				OR = {
+					has_country_flag = brilliant_scientist_context_strategic_security
+					has_country_flag = brilliant_scientist_context_industrial_mobilization
+				}
+			}
+			modifier = { factor = constant:brilliant_scientist_host_flavor_ai.militarized has_country_flag = brilliant_scientist_host_archetype_militarized }
+			modifier = { factor = constant:brilliant_scientist_country_settlement_ai.option_cautious_factor brilliant_scientist_has_high_dependence = yes }
+			modifier = { factor = constant:brilliant_scientist_country_settlement_ai.option_cautious_factor brilliant_scientist_has_high_grievance = yes }
+		}
+		custom_effect_tooltip = brilliant_scientist_country_settlement_soviet_tt
+		hidden_effect = {
+			clr_country_flag = brilliant_scientist_context_assistant_conflict_pending
+			set_country_flag = brilliant_scientist_assistant_conflict_resolved
+			brilliant_scientist_context_settle_soviet_academy_plan = yes
+			brilliant_scientist_try_schedule_impossible_lecture = yes
+		}
+	}
+	option = {
+		name = chaosx.nr16.5.g_jap
+		trigger = {
+			tag = JAP
+			OR = {
+				has_country_flag = brilliant_scientist_context_strategic_security
+				has_country_flag = brilliant_scientist_context_industrial_mobilization
+			}
+		}
+		ai_chance = {
+			base = constant:brilliant_scientist_country_settlement_ai.option_base
+			modifier = {
+				factor = constant:brilliant_scientist_country_settlement_ai.option_preferred_factor
+				OR = {
+					has_country_flag = brilliant_scientist_context_strategic_security
+					has_country_flag = brilliant_scientist_context_industrial_mobilization
+				}
+			}
+			modifier = { factor = constant:brilliant_scientist_host_flavor_ai.industrial has_country_flag = brilliant_scientist_host_archetype_industrial }
+			modifier = { factor = constant:brilliant_scientist_host_flavor_ai.militarized has_country_flag = brilliant_scientist_host_archetype_militarized }
+			modifier = { factor = constant:brilliant_scientist_country_settlement_ai.option_cautious_factor brilliant_scientist_has_high_dependence = yes }
+			modifier = { factor = constant:brilliant_scientist_country_settlement_ai.option_cautious_factor brilliant_scientist_has_high_grievance = yes }
+		}
+		custom_effect_tooltip = brilliant_scientist_country_settlement_japanese_tt
+		hidden_effect = {
+			clr_country_flag = brilliant_scientist_context_assistant_conflict_pending
+			set_country_flag = brilliant_scientist_assistant_conflict_resolved
+			brilliant_scientist_context_settle_japanese_riken_council = yes
+			brilliant_scientist_try_schedule_impossible_lecture = yes
+		}
+	}
+	option = {
+		name = chaosx.nr16.5.h_ger
+		trigger = {
+			tag = GER
+			OR = {
+				has_country_flag = brilliant_scientist_context_strategic_security
+				has_country_flag = brilliant_scientist_context_industrial_mobilization
+			}
+		}
+		ai_chance = {
+			base = constant:brilliant_scientist_country_settlement_ai.option_base
+			modifier = { factor = constant:brilliant_scientist_country_settlement_ai.option_preferred_factor has_country_flag = brilliant_scientist_context_strategic_security }
+			modifier = { factor = constant:brilliant_scientist_host_flavor_ai.militarized has_country_flag = brilliant_scientist_host_archetype_militarized }
+			modifier = { factor = constant:brilliant_scientist_host_flavor_ai.industrial has_country_flag = brilliant_scientist_host_archetype_industrial }
+			modifier = { factor = constant:brilliant_scientist_country_settlement_ai.option_cautious_factor brilliant_scientist_has_high_exposure = yes }
+		}
+		custom_effect_tooltip = brilliant_scientist_country_settlement_german_tt
+		hidden_effect = {
+			clr_country_flag = brilliant_scientist_context_assistant_conflict_pending
+			set_country_flag = brilliant_scientist_assistant_conflict_resolved
+			brilliant_scientist_context_settle_german_research_board = yes
+			brilliant_scientist_try_schedule_impossible_lecture = yes
+		}
+	}
+	option = {
+		name = chaosx.nr16.5.i_fra
+		trigger = {
+			tag = FRA
+			OR = {
+				has_country_flag = brilliant_scientist_context_public_science
+				has_country_flag = brilliant_scientist_context_distributed_research
+			}
+		}
+		ai_chance = {
+			base = constant:brilliant_scientist_country_settlement_ai.option_base
+			modifier = { factor = constant:brilliant_scientist_country_settlement_ai.option_preferred_factor has_country_flag = brilliant_scientist_context_public_science }
+			modifier = { factor = constant:brilliant_scientist_host_flavor_ai.university has_country_flag = brilliant_scientist_host_archetype_university }
+			modifier = { factor = constant:brilliant_scientist_country_settlement_ai.option_cautious_factor brilliant_scientist_has_high_exposure = yes }
+		}
+		custom_effect_tooltip = brilliant_scientist_country_settlement_french_tt
+		hidden_effect = {
+			clr_country_flag = brilliant_scientist_context_assistant_conflict_pending
+			set_country_flag = brilliant_scientist_assistant_conflict_resolved
+			brilliant_scientist_context_settle_french_laboratories = yes
+			brilliant_scientist_try_schedule_impossible_lecture = yes
+		}
+	}
+	option = {
+		name = chaosx.nr16.5.j_ita
+		trigger = {
+			tag = ITA
+			OR = {
+				has_country_flag = brilliant_scientist_context_strategic_security
+				has_country_flag = brilliant_scientist_context_industrial_mobilization
+			}
+		}
+		ai_chance = {
+			base = constant:brilliant_scientist_country_settlement_ai.option_base
+			modifier = { factor = constant:brilliant_scientist_country_settlement_ai.option_preferred_factor has_country_flag = brilliant_scientist_context_industrial_mobilization }
+			modifier = { factor = constant:brilliant_scientist_host_flavor_ai.industrial has_country_flag = brilliant_scientist_host_archetype_industrial }
+			modifier = { factor = constant:brilliant_scientist_host_flavor_ai.militarized has_country_flag = brilliant_scientist_host_archetype_militarized }
+			modifier = { factor = constant:brilliant_scientist_country_settlement_ai.option_cautious_factor brilliant_scientist_has_high_dependence = yes }
+		}
+		custom_effect_tooltip = brilliant_scientist_country_settlement_italian_tt
+		hidden_effect = {
+			clr_country_flag = brilliant_scientist_context_assistant_conflict_pending
+			set_country_flag = brilliant_scientist_assistant_conflict_resolved
+			brilliant_scientist_context_settle_italian_procurement_compact = yes
+			brilliant_scientist_try_schedule_impossible_lecture = yes
+		}
+	}
+	option = {
+		name = chaosx.nr16.5.k_chi
+		trigger = {
+			tag = CHI
+			OR = {
+				has_country_flag = brilliant_scientist_context_strategic_security
+				has_country_flag = brilliant_scientist_context_industrial_mobilization
+			}
+		}
+		ai_chance = {
+			base = constant:brilliant_scientist_country_settlement_ai.option_base
+			modifier = { factor = constant:brilliant_scientist_country_settlement_ai.option_preferred_factor has_country_flag = brilliant_scientist_context_strategic_security }
+			modifier = { factor = constant:brilliant_scientist_host_flavor_ai.militarized has_country_flag = brilliant_scientist_host_archetype_militarized }
+			modifier = { factor = constant:brilliant_scientist_host_flavor_ai.threatened has_country_flag = brilliant_scientist_host_archetype_threatened }
+			modifier = { factor = constant:brilliant_scientist_country_settlement_ai.option_cautious_factor brilliant_scientist_has_high_exposure = yes }
+		}
+		custom_effect_tooltip = brilliant_scientist_country_settlement_chinese_tt
+		hidden_effect = {
+			clr_country_flag = brilliant_scientist_context_assistant_conflict_pending
+			set_country_flag = brilliant_scientist_assistant_conflict_resolved
+			brilliant_scientist_context_settle_chinese_technical_bureau = yes
+			brilliant_scientist_try_schedule_impossible_lecture = yes
+		}
+	}
+	option = {
+		name = chaosx.nr16.5.l_pol
+		trigger = {
+			tag = POL
+			OR = {
+				has_country_flag = brilliant_scientist_context_public_science
+				has_country_flag = brilliant_scientist_context_distributed_research
+				has_country_flag = brilliant_scientist_context_strategic_security
+			}
+		}
+		ai_chance = {
+			base = constant:brilliant_scientist_country_settlement_ai.option_base
+			modifier = { factor = constant:brilliant_scientist_country_settlement_ai.option_preferred_factor has_country_flag = brilliant_scientist_context_distributed_research }
+			modifier = { factor = constant:brilliant_scientist_host_flavor_ai.refugee has_country_flag = brilliant_scientist_host_archetype_refugee }
+			modifier = { factor = constant:brilliant_scientist_host_flavor_ai.threatened has_country_flag = brilliant_scientist_host_archetype_threatened }
+			modifier = { factor = constant:brilliant_scientist_country_settlement_ai.option_cautious_factor brilliant_scientist_has_high_grievance = yes }
+		}
+		custom_effect_tooltip = brilliant_scientist_country_settlement_polish_tt
+		hidden_effect = {
+			clr_country_flag = brilliant_scientist_context_assistant_conflict_pending
+			set_country_flag = brilliant_scientist_assistant_conflict_resolved
+			brilliant_scientist_context_settle_polish_university_shelter = yes
+			brilliant_scientist_try_schedule_impossible_lecture = yes
+		}
+	}
 	option = {
 		name = chaosx.nr16.5.m_cze
 		trigger = {
@@ -658,6 +1881,767 @@ country_event = {
 		hidden_effect = {
 			set_country_flag = brilliant_scientist_impossible_lecture_interrupted
 			brilliant_scientist_resolve_impossible_lecture = yes
+		}
+	}
+}
+
+
+country_event = {
+	id = chaosx.nr16.91321
+	hidden = yes
+	is_triggered_only = yes
+	trigger = {
+		is_ai = no
+	}
+	immediate = {
+		if = {
+			limit = {
+				OR = {
+					AND = {
+						always = yes
+					}
+					AND = {
+						tag = ENG
+						OR = {
+							has_country_flag = brilliant_scientist_context_public_science
+							has_country_flag = brilliant_scientist_context_distributed_research
+						}
+					}
+				}
+			}
+			country_event = { id = chaosx.nr16.91302 }
+		}
+		else_if = {
+			limit = {
+				OR = {
+					AND = {
+						tag = USA
+						OR = {
+							has_country_flag = brilliant_scientist_context_industrial_mobilization
+							has_country_flag = brilliant_scientist_context_distributed_research
+						}
+					}
+					AND = {
+						tag = SOV
+						OR = {
+							has_country_flag = brilliant_scientist_context_strategic_security
+							has_country_flag = brilliant_scientist_context_industrial_mobilization
+						}
+					}
+				}
+			}
+			country_event = { id = chaosx.nr16.91303 }
+		}
+		else_if = {
+			limit = {
+				OR = {
+					AND = {
+						tag = JAP
+						OR = {
+							has_country_flag = brilliant_scientist_context_strategic_security
+							has_country_flag = brilliant_scientist_context_industrial_mobilization
+						}
+					}
+					AND = {
+						tag = GER
+						OR = {
+							has_country_flag = brilliant_scientist_context_strategic_security
+							has_country_flag = brilliant_scientist_context_industrial_mobilization
+						}
+					}
+				}
+			}
+			country_event = { id = chaosx.nr16.91304 }
+		}
+		else_if = {
+			limit = {
+				OR = {
+					AND = {
+						tag = FRA
+						OR = {
+							has_country_flag = brilliant_scientist_context_public_science
+							has_country_flag = brilliant_scientist_context_distributed_research
+						}
+					}
+					AND = {
+						tag = ITA
+						OR = {
+							has_country_flag = brilliant_scientist_context_strategic_security
+							has_country_flag = brilliant_scientist_context_industrial_mobilization
+						}
+					}
+				}
+			}
+			country_event = { id = chaosx.nr16.91305 }
+		}
+		else_if = {
+			limit = {
+				OR = {
+					AND = {
+						tag = CHI
+						OR = {
+							has_country_flag = brilliant_scientist_context_strategic_security
+							has_country_flag = brilliant_scientist_context_industrial_mobilization
+						}
+					}
+					AND = {
+						tag = POL
+						OR = {
+							has_country_flag = brilliant_scientist_context_public_science
+							has_country_flag = brilliant_scientist_context_distributed_research
+							has_country_flag = brilliant_scientist_context_strategic_security
+						}
+					}
+					AND = {
+						tag = CZE
+						OR = {
+							has_country_flag = brilliant_scientist_context_industrial_mobilization
+							has_country_flag = brilliant_scientist_context_distributed_research
+						}
+					}
+				}
+			}
+			country_event = { id = chaosx.nr16.91306 }
+		}
+	}
+}
+
+country_event = {
+	id = chaosx.nr16.91322
+	hidden = yes
+	is_triggered_only = yes
+	trigger = {
+		is_ai = no
+	}
+	immediate = {
+		if = {
+			limit = {
+				OR = {
+					AND = {
+						tag = USA
+						OR = {
+							has_country_flag = brilliant_scientist_context_industrial_mobilization
+							has_country_flag = brilliant_scientist_context_distributed_research
+						}
+					}
+					AND = {
+						tag = SOV
+						OR = {
+							has_country_flag = brilliant_scientist_context_strategic_security
+							has_country_flag = brilliant_scientist_context_industrial_mobilization
+						}
+					}
+				}
+			}
+			country_event = { id = chaosx.nr16.91303 }
+		}
+		else_if = {
+			limit = {
+				OR = {
+					AND = {
+						tag = JAP
+						OR = {
+							has_country_flag = brilliant_scientist_context_strategic_security
+							has_country_flag = brilliant_scientist_context_industrial_mobilization
+						}
+					}
+					AND = {
+						tag = GER
+						OR = {
+							has_country_flag = brilliant_scientist_context_strategic_security
+							has_country_flag = brilliant_scientist_context_industrial_mobilization
+						}
+					}
+				}
+			}
+			country_event = { id = chaosx.nr16.91304 }
+		}
+		else_if = {
+			limit = {
+				OR = {
+					AND = {
+						tag = FRA
+						OR = {
+							has_country_flag = brilliant_scientist_context_public_science
+							has_country_flag = brilliant_scientist_context_distributed_research
+						}
+					}
+					AND = {
+						tag = ITA
+						OR = {
+							has_country_flag = brilliant_scientist_context_strategic_security
+							has_country_flag = brilliant_scientist_context_industrial_mobilization
+						}
+					}
+				}
+			}
+			country_event = { id = chaosx.nr16.91305 }
+		}
+		else_if = {
+			limit = {
+				OR = {
+					AND = {
+						tag = CHI
+						OR = {
+							has_country_flag = brilliant_scientist_context_strategic_security
+							has_country_flag = brilliant_scientist_context_industrial_mobilization
+						}
+					}
+					AND = {
+						tag = POL
+						OR = {
+							has_country_flag = brilliant_scientist_context_public_science
+							has_country_flag = brilliant_scientist_context_distributed_research
+							has_country_flag = brilliant_scientist_context_strategic_security
+						}
+					}
+					AND = {
+						tag = CZE
+						OR = {
+							has_country_flag = brilliant_scientist_context_industrial_mobilization
+							has_country_flag = brilliant_scientist_context_distributed_research
+						}
+					}
+				}
+			}
+			country_event = { id = chaosx.nr16.91306 }
+		}
+	}
+}
+
+country_event = {
+	id = chaosx.nr16.91323
+	hidden = yes
+	is_triggered_only = yes
+	trigger = {
+		is_ai = no
+	}
+	immediate = {
+		if = {
+			limit = {
+				OR = {
+					AND = {
+						tag = JAP
+						OR = {
+							has_country_flag = brilliant_scientist_context_strategic_security
+							has_country_flag = brilliant_scientist_context_industrial_mobilization
+						}
+					}
+					AND = {
+						tag = GER
+						OR = {
+							has_country_flag = brilliant_scientist_context_strategic_security
+							has_country_flag = brilliant_scientist_context_industrial_mobilization
+						}
+					}
+				}
+			}
+			country_event = { id = chaosx.nr16.91304 }
+		}
+		else_if = {
+			limit = {
+				OR = {
+					AND = {
+						tag = FRA
+						OR = {
+							has_country_flag = brilliant_scientist_context_public_science
+							has_country_flag = brilliant_scientist_context_distributed_research
+						}
+					}
+					AND = {
+						tag = ITA
+						OR = {
+							has_country_flag = brilliant_scientist_context_strategic_security
+							has_country_flag = brilliant_scientist_context_industrial_mobilization
+						}
+					}
+				}
+			}
+			country_event = { id = chaosx.nr16.91305 }
+		}
+		else_if = {
+			limit = {
+				OR = {
+					AND = {
+						tag = CHI
+						OR = {
+							has_country_flag = brilliant_scientist_context_strategic_security
+							has_country_flag = brilliant_scientist_context_industrial_mobilization
+						}
+					}
+					AND = {
+						tag = POL
+						OR = {
+							has_country_flag = brilliant_scientist_context_public_science
+							has_country_flag = brilliant_scientist_context_distributed_research
+							has_country_flag = brilliant_scientist_context_strategic_security
+						}
+					}
+					AND = {
+						tag = CZE
+						OR = {
+							has_country_flag = brilliant_scientist_context_industrial_mobilization
+							has_country_flag = brilliant_scientist_context_distributed_research
+						}
+					}
+				}
+			}
+			country_event = { id = chaosx.nr16.91306 }
+		}
+	}
+}
+
+country_event = {
+	id = chaosx.nr16.91324
+	hidden = yes
+	is_triggered_only = yes
+	trigger = {
+		is_ai = no
+	}
+	immediate = {
+		if = {
+			limit = {
+				OR = {
+					AND = {
+						tag = FRA
+						OR = {
+							has_country_flag = brilliant_scientist_context_public_science
+							has_country_flag = brilliant_scientist_context_distributed_research
+						}
+					}
+					AND = {
+						tag = ITA
+						OR = {
+							has_country_flag = brilliant_scientist_context_strategic_security
+							has_country_flag = brilliant_scientist_context_industrial_mobilization
+						}
+					}
+				}
+			}
+			country_event = { id = chaosx.nr16.91305 }
+		}
+		else_if = {
+			limit = {
+				OR = {
+					AND = {
+						tag = CHI
+						OR = {
+							has_country_flag = brilliant_scientist_context_strategic_security
+							has_country_flag = brilliant_scientist_context_industrial_mobilization
+						}
+					}
+					AND = {
+						tag = POL
+						OR = {
+							has_country_flag = brilliant_scientist_context_public_science
+							has_country_flag = brilliant_scientist_context_distributed_research
+							has_country_flag = brilliant_scientist_context_strategic_security
+						}
+					}
+					AND = {
+						tag = CZE
+						OR = {
+							has_country_flag = brilliant_scientist_context_industrial_mobilization
+							has_country_flag = brilliant_scientist_context_distributed_research
+						}
+					}
+				}
+			}
+			country_event = { id = chaosx.nr16.91306 }
+		}
+	}
+}
+
+country_event = {
+	id = chaosx.nr16.91325
+	hidden = yes
+	is_triggered_only = yes
+	trigger = {
+		is_ai = no
+	}
+	immediate = {
+		if = {
+			limit = {
+				OR = {
+					AND = {
+						tag = CHI
+						OR = {
+							has_country_flag = brilliant_scientist_context_strategic_security
+							has_country_flag = brilliant_scientist_context_industrial_mobilization
+						}
+					}
+					AND = {
+						tag = POL
+						OR = {
+							has_country_flag = brilliant_scientist_context_public_science
+							has_country_flag = brilliant_scientist_context_distributed_research
+							has_country_flag = brilliant_scientist_context_strategic_security
+						}
+					}
+					AND = {
+						tag = CZE
+						OR = {
+							has_country_flag = brilliant_scientist_context_industrial_mobilization
+							has_country_flag = brilliant_scientist_context_distributed_research
+						}
+					}
+				}
+			}
+			country_event = { id = chaosx.nr16.91306 }
+		}
+	}
+}
+
+country_event = {
+	id = chaosx.nr16.91342
+	hidden = yes
+	is_triggered_only = yes
+	trigger = {
+		is_ai = no
+	}
+	immediate = {
+		if = {
+			limit = {
+				OR = {
+					AND = {
+						OR = {
+							has_country_flag = brilliant_scientist_context_public_science
+							has_country_flag = brilliant_scientist_context_distributed_research
+						}
+						is_ai = no
+					}
+					AND = {
+						OR = {
+							has_country_flag = brilliant_scientist_context_strategic_security
+							has_country_flag = brilliant_scientist_context_industrial_mobilization
+						}
+						is_ai = no
+					}
+				}
+			}
+			country_event = { id = chaosx.nr16.91301 }
+		}
+	}
+}
+
+country_event = {
+	id = chaosx.nr16.91343
+	hidden = yes
+	is_triggered_only = yes
+	trigger = {
+		is_ai = no
+	}
+	immediate = {
+		if = {
+			limit = {
+				OR = {
+					AND = {
+						always = yes
+					}
+					AND = {
+						tag = ENG
+						OR = {
+							has_country_flag = brilliant_scientist_context_public_science
+							has_country_flag = brilliant_scientist_context_distributed_research
+						}
+					}
+				}
+			}
+			country_event = { id = chaosx.nr16.91302 }
+		}
+		else_if = {
+			limit = {
+				OR = {
+					AND = {
+						OR = {
+							has_country_flag = brilliant_scientist_context_public_science
+							has_country_flag = brilliant_scientist_context_distributed_research
+						}
+						is_ai = no
+					}
+					AND = {
+						OR = {
+							has_country_flag = brilliant_scientist_context_strategic_security
+							has_country_flag = brilliant_scientist_context_industrial_mobilization
+						}
+						is_ai = no
+					}
+				}
+			}
+			country_event = { id = chaosx.nr16.91301 }
+		}
+	}
+}
+
+country_event = {
+	id = chaosx.nr16.91344
+	hidden = yes
+	is_triggered_only = yes
+	trigger = {
+		is_ai = no
+	}
+	immediate = {
+		if = {
+			limit = {
+				OR = {
+					AND = {
+						tag = USA
+						OR = {
+							has_country_flag = brilliant_scientist_context_industrial_mobilization
+							has_country_flag = brilliant_scientist_context_distributed_research
+						}
+					}
+					AND = {
+						tag = SOV
+						OR = {
+							has_country_flag = brilliant_scientist_context_strategic_security
+							has_country_flag = brilliant_scientist_context_industrial_mobilization
+						}
+					}
+				}
+			}
+			country_event = { id = chaosx.nr16.91303 }
+		}
+		else_if = {
+			limit = {
+				OR = {
+					AND = {
+						always = yes
+					}
+					AND = {
+						tag = ENG
+						OR = {
+							has_country_flag = brilliant_scientist_context_public_science
+							has_country_flag = brilliant_scientist_context_distributed_research
+						}
+					}
+				}
+			}
+			country_event = { id = chaosx.nr16.91302 }
+		}
+		else_if = {
+			limit = {
+				OR = {
+					AND = {
+						OR = {
+							has_country_flag = brilliant_scientist_context_public_science
+							has_country_flag = brilliant_scientist_context_distributed_research
+						}
+						is_ai = no
+					}
+					AND = {
+						OR = {
+							has_country_flag = brilliant_scientist_context_strategic_security
+							has_country_flag = brilliant_scientist_context_industrial_mobilization
+						}
+						is_ai = no
+					}
+				}
+			}
+			country_event = { id = chaosx.nr16.91301 }
+		}
+	}
+}
+
+country_event = {
+	id = chaosx.nr16.91345
+	hidden = yes
+	is_triggered_only = yes
+	trigger = {
+		is_ai = no
+	}
+	immediate = {
+		if = {
+			limit = {
+				OR = {
+					AND = {
+						tag = JAP
+						OR = {
+							has_country_flag = brilliant_scientist_context_strategic_security
+							has_country_flag = brilliant_scientist_context_industrial_mobilization
+						}
+					}
+					AND = {
+						tag = GER
+						OR = {
+							has_country_flag = brilliant_scientist_context_strategic_security
+							has_country_flag = brilliant_scientist_context_industrial_mobilization
+						}
+					}
+				}
+			}
+			country_event = { id = chaosx.nr16.91304 }
+		}
+		else_if = {
+			limit = {
+				OR = {
+					AND = {
+						tag = USA
+						OR = {
+							has_country_flag = brilliant_scientist_context_industrial_mobilization
+							has_country_flag = brilliant_scientist_context_distributed_research
+						}
+					}
+					AND = {
+						tag = SOV
+						OR = {
+							has_country_flag = brilliant_scientist_context_strategic_security
+							has_country_flag = brilliant_scientist_context_industrial_mobilization
+						}
+					}
+				}
+			}
+			country_event = { id = chaosx.nr16.91303 }
+		}
+		else_if = {
+			limit = {
+				OR = {
+					AND = {
+						always = yes
+					}
+					AND = {
+						tag = ENG
+						OR = {
+							has_country_flag = brilliant_scientist_context_public_science
+							has_country_flag = brilliant_scientist_context_distributed_research
+						}
+					}
+				}
+			}
+			country_event = { id = chaosx.nr16.91302 }
+		}
+		else_if = {
+			limit = {
+				OR = {
+					AND = {
+						OR = {
+							has_country_flag = brilliant_scientist_context_public_science
+							has_country_flag = brilliant_scientist_context_distributed_research
+						}
+						is_ai = no
+					}
+					AND = {
+						OR = {
+							has_country_flag = brilliant_scientist_context_strategic_security
+							has_country_flag = brilliant_scientist_context_industrial_mobilization
+						}
+						is_ai = no
+					}
+				}
+			}
+			country_event = { id = chaosx.nr16.91301 }
+		}
+	}
+}
+
+country_event = {
+	id = chaosx.nr16.91346
+	hidden = yes
+	is_triggered_only = yes
+	trigger = {
+		is_ai = no
+	}
+	immediate = {
+		if = {
+			limit = {
+				OR = {
+					AND = {
+						tag = FRA
+						OR = {
+							has_country_flag = brilliant_scientist_context_public_science
+							has_country_flag = brilliant_scientist_context_distributed_research
+						}
+					}
+					AND = {
+						tag = ITA
+						OR = {
+							has_country_flag = brilliant_scientist_context_strategic_security
+							has_country_flag = brilliant_scientist_context_industrial_mobilization
+						}
+					}
+				}
+			}
+			country_event = { id = chaosx.nr16.91305 }
+		}
+		else_if = {
+			limit = {
+				OR = {
+					AND = {
+						tag = JAP
+						OR = {
+							has_country_flag = brilliant_scientist_context_strategic_security
+							has_country_flag = brilliant_scientist_context_industrial_mobilization
+						}
+					}
+					AND = {
+						tag = GER
+						OR = {
+							has_country_flag = brilliant_scientist_context_strategic_security
+							has_country_flag = brilliant_scientist_context_industrial_mobilization
+						}
+					}
+				}
+			}
+			country_event = { id = chaosx.nr16.91304 }
+		}
+		else_if = {
+			limit = {
+				OR = {
+					AND = {
+						tag = USA
+						OR = {
+							has_country_flag = brilliant_scientist_context_industrial_mobilization
+							has_country_flag = brilliant_scientist_context_distributed_research
+						}
+					}
+					AND = {
+						tag = SOV
+						OR = {
+							has_country_flag = brilliant_scientist_context_strategic_security
+							has_country_flag = brilliant_scientist_context_industrial_mobilization
+						}
+					}
+				}
+			}
+			country_event = { id = chaosx.nr16.91303 }
+		}
+		else_if = {
+			limit = {
+				OR = {
+					AND = {
+						always = yes
+					}
+					AND = {
+						tag = ENG
+						OR = {
+							has_country_flag = brilliant_scientist_context_public_science
+							has_country_flag = brilliant_scientist_context_distributed_research
+						}
+					}
+				}
+			}
+			country_event = { id = chaosx.nr16.91302 }
+		}
+		else_if = {
+			limit = {
+				OR = {
+					AND = {
+						OR = {
+							has_country_flag = brilliant_scientist_context_public_science
+							has_country_flag = brilliant_scientist_context_distributed_research
+						}
+						is_ai = no
+					}
+					AND = {
+						OR = {
+							has_country_flag = brilliant_scientist_context_strategic_security
+							has_country_flag = brilliant_scientist_context_industrial_mobilization
+						}
+						is_ai = no
+					}
+				}
+			}
+			country_event = { id = chaosx.nr16.91301 }
 		}
 	}
 }

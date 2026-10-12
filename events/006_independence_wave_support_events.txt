@@ -1737,12 +1737,14 @@ country_event = {
 	is_triggered_only = yes
 	trigger = { is_independence_wave_iw043_country = yes }
 
+
 	option = {
 		name = chaosx.nr006.4302.a
 		trigger = {
 			NOT = { has_country_flag = iw043_pending_tatar_bashkir_representation }
 			NOT = { has_country_flag = iw043_pending_resident_civic_and_religious_equality }
-		}
+		
+			is_ai = no}
 		set_country_flag = iw043_congress_seat_formula_selected
 		set_country_flag = iw043_congress_seat_formula_parity
 		add_to_variable = { iw043_coalition_balance = constant:independence_wave_iw_package_delta.standard }
@@ -1751,13 +1753,13 @@ country_event = {
 		custom_effect_tooltip = chaosx.nr006.4302.a.tt
 		ai_chance = { base = constant:independence_wave_decision_ai.high }
 	}
-
 	option = {
 		name = chaosx.nr006.4302.b
 		trigger = {
 			NOT = { has_country_flag = iw043_pending_tatar_bashkir_representation }
 			NOT = { has_country_flag = iw043_pending_resident_civic_and_religious_equality }
-		}
+		
+			is_ai = no}
 		set_country_flag = iw043_congress_seat_formula_selected
 		set_country_flag = iw043_congress_seat_formula_historic_delegations
 		subtract_from_variable = { iw043_coalition_balance = constant:independence_wave_iw_package_delta.standard }
@@ -1766,7 +1768,175 @@ country_event = {
 		custom_effect_tooltip = chaosx.nr006.4302.b.tt
 		ai_chance = { base = constant:independence_wave_decision_ai.standard }
 	}
+	option = {
+		name = chaosx_event_more_options
+		trigger = {
+			is_ai = no
+		
+			OR = {
+				AND = {
+					has_country_flag = iw043_pending_tatar_bashkir_representation
+				}
+				AND = {
+					has_country_flag = iw043_pending_tatar_bashkir_representation
+				}
+				AND = {
+					has_country_flag = iw043_pending_tatar_bashkir_representation
+				}
+				AND = {
+					has_country_flag = iw043_pending_resident_civic_and_religious_equality
+				}
+				AND = {
+					has_country_flag = iw043_pending_resident_civic_and_religious_equality
+				}
+			}
+		}nt_more_options
+		trigger = {
+			is_ai = no
+		}
+		custom_effect_tooltip = chaosx_event_more_options_tt
+		hidden_effect = { country_event = { id = chaosx.nr006.90121 } }
+	}
+	option = {
+		name = chaosx_event_ai_resolution
+		trigger = {
+			is_ai = yes
+		}
+		hidden_effect = { country_event = { id = chaosx.nr006.90199 } }
+	}
 
+}
+
+country_event = {
+	id = chaosx.nr006.90101
+	title = {
+		text = chaosx.nr006.4302.tatar.t
+		trigger = { has_country_flag = iw043_pending_tatar_bashkir_representation }
+	}
+	title = {
+		text = chaosx.nr006.4302.resident.t
+		trigger = { has_country_flag = iw043_pending_resident_civic_and_religious_equality }
+	}
+	title = {
+		text = chaosx.nr006.4302.t
+		trigger = {
+			NOT = { has_country_flag = iw043_pending_tatar_bashkir_representation }
+			NOT = { has_country_flag = iw043_pending_resident_civic_and_religious_equality }
+		}
+	}
+	desc = {
+		text = chaosx.nr006.4302.tatar.desc
+		trigger = { has_country_flag = iw043_pending_tatar_bashkir_representation }
+	}
+	desc = {
+		text = chaosx.nr006.4302.resident.desc
+		trigger = { has_country_flag = iw043_pending_resident_civic_and_religious_equality }
+	}
+	desc = {
+		text = chaosx.nr006.4302.desc
+		trigger = {
+			NOT = { has_country_flag = iw043_pending_tatar_bashkir_representation }
+			NOT = { has_country_flag = iw043_pending_resident_civic_and_religious_equality }
+		}
+	}
+	picture = GFX_report_event_independence_wave_iw043
+	is_triggered_only = yes
+	trigger = {
+		is_ai = no
+	}
+	option = {
+		name = chaosx.nr006.4302.a
+		trigger = {
+			NOT = { has_country_flag = iw043_pending_tatar_bashkir_representation }
+			NOT = { has_country_flag = iw043_pending_resident_civic_and_religious_equality }
+		
+			is_ai = no}
+		set_country_flag = iw043_congress_seat_formula_selected
+		set_country_flag = iw043_congress_seat_formula_parity
+		add_to_variable = { iw043_coalition_balance = constant:independence_wave_iw_package_delta.standard }
+		add_to_variable = { iw043_congress_authority = constant:independence_wave_iw_package_delta.small }
+		independence_wave_clamp_iw043_package_values = yes
+		custom_effect_tooltip = chaosx.nr006.4302.a.tt
+		ai_chance = { base = constant:independence_wave_decision_ai.high }
+	}
+	option = {
+		name = chaosx.nr006.4302.b
+		trigger = {
+			NOT = { has_country_flag = iw043_pending_tatar_bashkir_representation }
+			NOT = { has_country_flag = iw043_pending_resident_civic_and_religious_equality }
+		
+			is_ai = no}
+		set_country_flag = iw043_congress_seat_formula_selected
+		set_country_flag = iw043_congress_seat_formula_historic_delegations
+		subtract_from_variable = { iw043_coalition_balance = constant:independence_wave_iw_package_delta.standard }
+		add_to_variable = { iw043_congress_authority = constant:independence_wave_iw_package_delta.standard }
+		independence_wave_clamp_iw043_package_values = yes
+		custom_effect_tooltip = chaosx.nr006.4302.b.tt
+		ai_chance = { base = constant:independence_wave_decision_ai.standard }
+	}
+	option = {
+		trigger = {
+			OR = {
+				AND = {
+					has_country_flag = iw043_pending_tatar_bashkir_representation
+				}
+				AND = {
+					has_country_flag = iw043_pending_tatar_bashkir_representation
+				}
+				AND = {
+					has_country_flag = iw043_pending_tatar_bashkir_representation
+				}
+				AND = {
+					has_country_flag = iw043_pending_resident_civic_and_religious_equality
+				}
+				AND = {
+					has_country_flag = iw043_pending_resident_civic_and_religious_equality
+				}
+			}
+		}
+		name = chaosx_event_more_options
+		custom_effect_tooltip = chaosx_event_more_options_tt
+		hidden_effect = { country_event = { id = chaosx.nr006.90121 } }
+	}
+}
+
+country_event = {
+	id = chaosx.nr006.90102
+	title = {
+		text = chaosx.nr006.4302.tatar.t
+		trigger = { has_country_flag = iw043_pending_tatar_bashkir_representation }
+	}
+	title = {
+		text = chaosx.nr006.4302.resident.t
+		trigger = { has_country_flag = iw043_pending_resident_civic_and_religious_equality }
+	}
+	title = {
+		text = chaosx.nr006.4302.t
+		trigger = {
+			NOT = { has_country_flag = iw043_pending_tatar_bashkir_representation }
+			NOT = { has_country_flag = iw043_pending_resident_civic_and_religious_equality }
+		}
+	}
+	desc = {
+		text = chaosx.nr006.4302.tatar.desc
+		trigger = { has_country_flag = iw043_pending_tatar_bashkir_representation }
+	}
+	desc = {
+		text = chaosx.nr006.4302.resident.desc
+		trigger = { has_country_flag = iw043_pending_resident_civic_and_religious_equality }
+	}
+	desc = {
+		text = chaosx.nr006.4302.desc
+		trigger = {
+			NOT = { has_country_flag = iw043_pending_tatar_bashkir_representation }
+			NOT = { has_country_flag = iw043_pending_resident_civic_and_religious_equality }
+		}
+	}
+	picture = GFX_report_event_independence_wave_iw043
+	is_triggered_only = yes
+	trigger = {
+		is_ai = no
+	}
 	option = {
 		name = chaosx.nr006.4302.tatar.a
 		trigger = { has_country_flag = iw043_pending_tatar_bashkir_representation }
@@ -1791,7 +1961,6 @@ country_event = {
 			modifier = { factor = constant:independence_wave_decision_ai.modifier_double has_country_flag = independence_wave_iw043_route_federal }
 		}
 	}
-
 	option = {
 		name = chaosx.nr006.4302.tatar.b
 		trigger = { has_country_flag = iw043_pending_tatar_bashkir_representation }
@@ -1816,7 +1985,82 @@ country_event = {
 			modifier = { factor = constant:independence_wave_decision_ai.modifier_double has_country_flag = independence_wave_iw043_route_restoration }
 		}
 	}
+	option = {
+		trigger = {
+			OR = {
+				AND = {
+					NOT = { has_country_flag = iw043_pending_tatar_bashkir_representation }
+					NOT = { has_country_flag = iw043_pending_resident_civic_and_religious_equality }
+					is_ai = no
+				}
+				AND = {
+					NOT = { has_country_flag = iw043_pending_tatar_bashkir_representation }
+					NOT = { has_country_flag = iw043_pending_resident_civic_and_religious_equality }
+					is_ai = no
+				}
+			}
+		}
+		name = chaosx_event_back_to_choices
+		custom_effect_tooltip = chaosx_event_back_to_choices_tt
+		hidden_effect = { country_event = { id = chaosx.nr006.90142 } }
+	}
+	option = {
+		trigger = {
+			OR = {
+				AND = {
+					has_country_flag = iw043_pending_tatar_bashkir_representation
+				}
+				AND = {
+					has_country_flag = iw043_pending_resident_civic_and_religious_equality
+				}
+				AND = {
+					has_country_flag = iw043_pending_resident_civic_and_religious_equality
+				}
+			}
+		}
+		name = chaosx_event_more_options
+		custom_effect_tooltip = chaosx_event_more_options_tt
+		hidden_effect = { country_event = { id = chaosx.nr006.90122 } }
+	}
+}
 
+country_event = {
+	id = chaosx.nr006.90103
+	title = {
+		text = chaosx.nr006.4302.tatar.t
+		trigger = { has_country_flag = iw043_pending_tatar_bashkir_representation }
+	}
+	title = {
+		text = chaosx.nr006.4302.resident.t
+		trigger = { has_country_flag = iw043_pending_resident_civic_and_religious_equality }
+	}
+	title = {
+		text = chaosx.nr006.4302.t
+		trigger = {
+			NOT = { has_country_flag = iw043_pending_tatar_bashkir_representation }
+			NOT = { has_country_flag = iw043_pending_resident_civic_and_religious_equality }
+		}
+	}
+	desc = {
+		text = chaosx.nr006.4302.tatar.desc
+		trigger = { has_country_flag = iw043_pending_tatar_bashkir_representation }
+	}
+	desc = {
+		text = chaosx.nr006.4302.resident.desc
+		trigger = { has_country_flag = iw043_pending_resident_civic_and_religious_equality }
+	}
+	desc = {
+		text = chaosx.nr006.4302.desc
+		trigger = {
+			NOT = { has_country_flag = iw043_pending_tatar_bashkir_representation }
+			NOT = { has_country_flag = iw043_pending_resident_civic_and_religious_equality }
+		}
+	}
+	picture = GFX_report_event_independence_wave_iw043
+	is_triggered_only = yes
+	trigger = {
+		is_ai = no
+	}
 	option = {
 		name = chaosx.nr006.4302.tatar.c
 		trigger = { has_country_flag = iw043_pending_tatar_bashkir_representation }
@@ -1835,7 +2079,6 @@ country_event = {
 		custom_effect_tooltip = chaosx.nr006.4302.tatar.c.tt
 		ai_chance = { base = constant:independence_wave_decision_ai.very_low }
 	}
-
 	option = {
 		name = chaosx.nr006.4302.resident.a
 		trigger = { has_country_flag = iw043_pending_resident_civic_and_religious_equality }
@@ -1856,7 +2099,203 @@ country_event = {
 		custom_effect_tooltip = chaosx.nr006.4302.resident.a.tt
 		ai_chance = { base = constant:independence_wave_decision_ai.urgent }
 	}
+	option = {
+		name = chaosx.nr006.4302.resident.b
+		trigger = { has_country_flag = iw043_pending_resident_civic_and_religious_equality }
+		if = {
+			limit = { has_country_flag = iw043_reconciling_resident_civic_and_religious_equality }
+			set_temp_variable = { independence_wave_iw043_transaction_id = constant:independence_wave_iw043_transaction.reopen_congress_clause }
+		}
+		else = { set_temp_variable = { independence_wave_iw043_transaction_id = constant:independence_wave_iw043_transaction.ratify_resident_civic_and_religious_equality } }
+		independence_wave_iw043_rollback_paid_transaction = yes
+		set_country_flag = iw043_clause_resident_civic_and_religious_equality_rejected
+		set_country_flag = iw043_security_crisis_active
+		subtract_from_variable = { iw043_rights_compact = constant:independence_wave_iw_package_delta.standard }
+		add_to_variable = { iw043_congress_authority = constant:independence_wave_iw_package_delta.standard }
+		independence_wave_clamp_iw043_package_values = yes
+		clr_country_flag = iw043_pending_resident_civic_and_religious_equality
+		clr_country_flag = iw043_reconciling_resident_civic_and_religious_equality
+		clr_country_flag = iw043_clause_reconciliation_active
+		custom_effect_tooltip = chaosx.nr006.4302.resident.b.tt
+		ai_chance = { base = constant:independence_wave_decision_ai.very_low }
+	}
+	option = {
+		trigger = {
+			OR = {
+				AND = {
+					NOT = { has_country_flag = iw043_pending_tatar_bashkir_representation }
+					NOT = { has_country_flag = iw043_pending_resident_civic_and_religious_equality }
+					is_ai = no
+				}
+				AND = {
+					NOT = { has_country_flag = iw043_pending_tatar_bashkir_representation }
+					NOT = { has_country_flag = iw043_pending_resident_civic_and_religious_equality }
+					is_ai = no
+				}
+				AND = {
+					has_country_flag = iw043_pending_tatar_bashkir_representation
+				}
+				AND = {
+					has_country_flag = iw043_pending_tatar_bashkir_representation
+				}
+			}
+		}
+		name = chaosx_event_back_to_choices
+		custom_effect_tooltip = chaosx_event_back_to_choices_tt
+		hidden_effect = { country_event = { id = chaosx.nr006.90143 } }
+	}
+}
 
+country_event = {
+	id = chaosx.nr006.90199
+	title = {
+		text = chaosx.nr006.4302.tatar.t
+		trigger = { has_country_flag = iw043_pending_tatar_bashkir_representation }
+	}
+	title = {
+		text = chaosx.nr006.4302.resident.t
+		trigger = { has_country_flag = iw043_pending_resident_civic_and_religious_equality }
+	}
+	title = {
+		text = chaosx.nr006.4302.t
+		trigger = {
+			NOT = { has_country_flag = iw043_pending_tatar_bashkir_representation }
+			NOT = { has_country_flag = iw043_pending_resident_civic_and_religious_equality }
+		}
+	}
+	desc = {
+		text = chaosx.nr006.4302.tatar.desc
+		trigger = { has_country_flag = iw043_pending_tatar_bashkir_representation }
+	}
+	desc = {
+		text = chaosx.nr006.4302.resident.desc
+		trigger = { has_country_flag = iw043_pending_resident_civic_and_religious_equality }
+	}
+	desc = {
+		text = chaosx.nr006.4302.desc
+		trigger = {
+			NOT = { has_country_flag = iw043_pending_tatar_bashkir_representation }
+			NOT = { has_country_flag = iw043_pending_resident_civic_and_religious_equality }
+		}
+	}
+	is_triggered_only = yes
+	trigger = {
+		is_ai = yes
+	}
+	option = {
+		name = chaosx.nr006.4302.a
+		trigger = {
+			NOT = { has_country_flag = iw043_pending_tatar_bashkir_representation }
+			NOT = { has_country_flag = iw043_pending_resident_civic_and_religious_equality }
+		}
+		set_country_flag = iw043_congress_seat_formula_selected
+		set_country_flag = iw043_congress_seat_formula_parity
+		add_to_variable = { iw043_coalition_balance = constant:independence_wave_iw_package_delta.standard }
+		add_to_variable = { iw043_congress_authority = constant:independence_wave_iw_package_delta.small }
+		independence_wave_clamp_iw043_package_values = yes
+		custom_effect_tooltip = chaosx.nr006.4302.a.tt
+		ai_chance = { base = constant:independence_wave_decision_ai.high }
+	}
+	option = {
+		name = chaosx.nr006.4302.b
+		trigger = {
+			NOT = { has_country_flag = iw043_pending_tatar_bashkir_representation }
+			NOT = { has_country_flag = iw043_pending_resident_civic_and_religious_equality }
+		}
+		set_country_flag = iw043_congress_seat_formula_selected
+		set_country_flag = iw043_congress_seat_formula_historic_delegations
+		subtract_from_variable = { iw043_coalition_balance = constant:independence_wave_iw_package_delta.standard }
+		add_to_variable = { iw043_congress_authority = constant:independence_wave_iw_package_delta.standard }
+		independence_wave_clamp_iw043_package_values = yes
+		custom_effect_tooltip = chaosx.nr006.4302.b.tt
+		ai_chance = { base = constant:independence_wave_decision_ai.standard }
+	}
+	option = {
+		name = chaosx.nr006.4302.tatar.a
+		trigger = { has_country_flag = iw043_pending_tatar_bashkir_representation }
+		if = {
+			limit = { has_country_flag = iw043_reconciling_tatar_bashkir_representation }
+			set_temp_variable = { independence_wave_iw043_transaction_id = constant:independence_wave_iw043_transaction.reopen_congress_clause }
+		}
+		else = { set_temp_variable = { independence_wave_iw043_transaction_id = constant:independence_wave_iw043_transaction.ratify_tatar_bashkir_representation } }
+		independence_wave_iw043_commit_paid_transaction = yes
+		set_country_flag = iw043_clause_tatar_bashkir_representation
+		clr_country_flag = iw043_clause_tatar_bashkir_representation_rejected
+		add_to_variable = { iw043_coalition_balance = constant:independence_wave_iw_package_delta.standard }
+		add_to_variable = { iw043_congress_authority = constant:independence_wave_iw_package_delta.small }
+		independence_wave_recalculate_iw043_rights_compact = yes
+		independence_wave_clamp_iw043_package_values = yes
+		clr_country_flag = iw043_pending_tatar_bashkir_representation
+		clr_country_flag = iw043_reconciling_tatar_bashkir_representation
+		clr_country_flag = iw043_clause_reconciliation_active
+		custom_effect_tooltip = chaosx.nr006.4302.tatar.a.tt
+		ai_chance = {
+			base = constant:independence_wave_decision_ai.high
+			modifier = { factor = constant:independence_wave_decision_ai.modifier_double has_country_flag = independence_wave_iw043_route_federal }
+		}
+	}
+	option = {
+		name = chaosx.nr006.4302.tatar.b
+		trigger = { has_country_flag = iw043_pending_tatar_bashkir_representation }
+		if = {
+			limit = { has_country_flag = iw043_reconciling_tatar_bashkir_representation }
+			set_temp_variable = { independence_wave_iw043_transaction_id = constant:independence_wave_iw043_transaction.reopen_congress_clause }
+		}
+		else = { set_temp_variable = { independence_wave_iw043_transaction_id = constant:independence_wave_iw043_transaction.ratify_tatar_bashkir_representation } }
+		independence_wave_iw043_commit_paid_transaction = yes
+		set_country_flag = iw043_clause_tatar_bashkir_representation
+		clr_country_flag = iw043_clause_tatar_bashkir_representation_rejected
+		subtract_from_variable = { iw043_coalition_balance = constant:independence_wave_iw_package_delta.standard }
+		add_to_variable = { iw043_congress_authority = constant:independence_wave_iw_package_delta.standard }
+		independence_wave_recalculate_iw043_rights_compact = yes
+		independence_wave_clamp_iw043_package_values = yes
+		clr_country_flag = iw043_pending_tatar_bashkir_representation
+		clr_country_flag = iw043_reconciling_tatar_bashkir_representation
+		clr_country_flag = iw043_clause_reconciliation_active
+		custom_effect_tooltip = chaosx.nr006.4302.tatar.b.tt
+		ai_chance = {
+			base = constant:independence_wave_decision_ai.standard
+			modifier = { factor = constant:independence_wave_decision_ai.modifier_double has_country_flag = independence_wave_iw043_route_restoration }
+		}
+	}
+	option = {
+		name = chaosx.nr006.4302.tatar.c
+		trigger = { has_country_flag = iw043_pending_tatar_bashkir_representation }
+		if = {
+			limit = { has_country_flag = iw043_reconciling_tatar_bashkir_representation }
+			set_temp_variable = { independence_wave_iw043_transaction_id = constant:independence_wave_iw043_transaction.reopen_congress_clause }
+		}
+		else = { set_temp_variable = { independence_wave_iw043_transaction_id = constant:independence_wave_iw043_transaction.ratify_tatar_bashkir_representation } }
+		independence_wave_iw043_rollback_paid_transaction = yes
+		set_country_flag = iw043_clause_tatar_bashkir_representation_rejected
+		subtract_from_variable = { iw043_congress_authority = constant:independence_wave_iw_package_delta.standard }
+		independence_wave_clamp_iw043_package_values = yes
+		clr_country_flag = iw043_pending_tatar_bashkir_representation
+		clr_country_flag = iw043_reconciling_tatar_bashkir_representation
+		clr_country_flag = iw043_clause_reconciliation_active
+		custom_effect_tooltip = chaosx.nr006.4302.tatar.c.tt
+		ai_chance = { base = constant:independence_wave_decision_ai.very_low }
+	}
+	option = {
+		name = chaosx.nr006.4302.resident.a
+		trigger = { has_country_flag = iw043_pending_resident_civic_and_religious_equality }
+		if = {
+			limit = { has_country_flag = iw043_reconciling_resident_civic_and_religious_equality }
+			set_temp_variable = { independence_wave_iw043_transaction_id = constant:independence_wave_iw043_transaction.reopen_congress_clause }
+		}
+		else = { set_temp_variable = { independence_wave_iw043_transaction_id = constant:independence_wave_iw043_transaction.ratify_resident_civic_and_religious_equality } }
+		independence_wave_iw043_commit_paid_transaction = yes
+		set_country_flag = iw043_clause_resident_civic_and_religious_equality
+		clr_country_flag = iw043_clause_resident_civic_and_religious_equality_rejected
+		add_to_variable = { iw043_congress_authority = constant:independence_wave_iw_package_delta.small }
+		independence_wave_recalculate_iw043_rights_compact = yes
+		independence_wave_clamp_iw043_package_values = yes
+		clr_country_flag = iw043_pending_resident_civic_and_religious_equality
+		clr_country_flag = iw043_reconciling_resident_civic_and_religious_equality
+		clr_country_flag = iw043_clause_reconciliation_active
+		custom_effect_tooltip = chaosx.nr006.4302.resident.a.tt
+		ai_chance = { base = constant:independence_wave_decision_ai.urgent }
+	}
 	option = {
 		name = chaosx.nr006.4302.resident.b
 		trigger = { has_country_flag = iw043_pending_resident_civic_and_religious_equality }
@@ -2311,6 +2750,7 @@ country_event = {
 	is_triggered_only = yes
 	trigger = { is_independence_wave_iw058_country = yes }
 
+
 	option = {
 		name = chaosx.nr006.5802.a
 		trigger = {
@@ -2318,7 +2758,8 @@ country_event = {
 			NOT = { has_country_flag = iw058_pending_chaldean_self_identification }
 			NOT = { has_country_flag = iw058_pending_syriac_self_identification }
 			NOT = { has_country_flag = iw058_pending_aramean_self_identification }
-		}
+		
+			is_ai = no}
 		set_country_flag = iw058_church_synod_seated
 		set_country_flag = iw058_secular_committee_seated
 		set_country_flag = iw058_village_municipal_delegation_seated
@@ -2329,7 +2770,6 @@ country_event = {
 		custom_effect_tooltip = chaosx.nr006.5802.a.tt
 		ai_chance = { base = constant:independence_wave_decision_ai.high }
 	}
-
 	option = {
 		name = chaosx.nr006.5802.b
 		trigger = {
@@ -2337,7 +2777,8 @@ country_event = {
 			NOT = { has_country_flag = iw058_pending_chaldean_self_identification }
 			NOT = { has_country_flag = iw058_pending_syriac_self_identification }
 			NOT = { has_country_flag = iw058_pending_aramean_self_identification }
-		}
+		
+			is_ai = no}
 		set_country_flag = iw058_church_synod_seated
 		set_country_flag = iw058_secular_committee_seated
 		set_country_flag = iw058_village_municipal_delegation_seated
@@ -2349,7 +2790,242 @@ country_event = {
 		custom_effect_tooltip = chaosx.nr006.5802.b.tt
 		ai_chance = { base = constant:independence_wave_decision_ai.standard }
 	}
+	option = {
+		name = chaosx_event_more_options
+		trigger = {
+			is_ai = no
+		
+			OR = {
+				AND = {
+					has_country_flag = iw058_pending_assyrian_self_identification
+				}
+				AND = {
+					has_country_flag = iw058_pending_assyrian_self_identification
+				}
+				AND = {
+					has_country_flag = iw058_pending_chaldean_self_identification
+				}
+				AND = {
+					has_country_flag = iw058_pending_chaldean_self_identification
+				}
+				AND = {
+					has_country_flag = iw058_pending_syriac_self_identification
+				}
+				AND = {
+					has_country_flag = iw058_pending_syriac_self_identification
+				}
+				AND = {
+					has_country_flag = iw058_pending_aramean_self_identification
+				}
+				AND = {
+					has_country_flag = iw058_pending_aramean_self_identification
+				}
+			}
+		}nt_more_options
+		trigger = {
+			is_ai = no
+		}
+		custom_effect_tooltip = chaosx_event_more_options_tt
+		hidden_effect = { country_event = { id = chaosx.nr006.90221 } }
+	}
+	option = {
+		name = chaosx_event_ai_resolution
+		trigger = {
+			is_ai = yes
+		}
+		hidden_effect = { country_event = { id = chaosx.nr006.90299 } }
+	}
 
+}
+
+country_event = {
+	id = chaosx.nr006.90201
+	title = {
+		text = chaosx.nr006.5802.assyrian.t
+		trigger = { has_country_flag = iw058_pending_assyrian_self_identification }
+	}
+	title = {
+		text = chaosx.nr006.5802.chaldean.t
+		trigger = { has_country_flag = iw058_pending_chaldean_self_identification }
+	}
+	title = {
+		text = chaosx.nr006.5802.syriac.t
+		trigger = { has_country_flag = iw058_pending_syriac_self_identification }
+	}
+	title = {
+		text = chaosx.nr006.5802.aramean.t
+		trigger = { has_country_flag = iw058_pending_aramean_self_identification }
+	}
+	title = {
+		text = chaosx.nr006.5802.t
+		trigger = {
+			NOT = { has_country_flag = iw058_pending_assyrian_self_identification }
+			NOT = { has_country_flag = iw058_pending_chaldean_self_identification }
+			NOT = { has_country_flag = iw058_pending_syriac_self_identification }
+			NOT = { has_country_flag = iw058_pending_aramean_self_identification }
+		}
+	}
+	desc = {
+		text = chaosx.nr006.5802.assyrian.desc
+		trigger = { has_country_flag = iw058_pending_assyrian_self_identification }
+	}
+	desc = {
+		text = chaosx.nr006.5802.chaldean.desc
+		trigger = { has_country_flag = iw058_pending_chaldean_self_identification }
+	}
+	desc = {
+		text = chaosx.nr006.5802.syriac.desc
+		trigger = { has_country_flag = iw058_pending_syriac_self_identification }
+	}
+	desc = {
+		text = chaosx.nr006.5802.aramean.desc
+		trigger = { has_country_flag = iw058_pending_aramean_self_identification }
+	}
+	desc = {
+		text = chaosx.nr006.5802.desc
+		trigger = {
+			NOT = { has_country_flag = iw058_pending_assyrian_self_identification }
+			NOT = { has_country_flag = iw058_pending_chaldean_self_identification }
+			NOT = { has_country_flag = iw058_pending_syriac_self_identification }
+			NOT = { has_country_flag = iw058_pending_aramean_self_identification }
+		}
+	}
+	picture = GFX_report_event_independence_wave_iw058
+	is_triggered_only = yes
+	trigger = {
+		is_ai = no
+	}
+	option = {
+		name = chaosx.nr006.5802.a
+		trigger = {
+			NOT = { has_country_flag = iw058_pending_assyrian_self_identification }
+			NOT = { has_country_flag = iw058_pending_chaldean_self_identification }
+			NOT = { has_country_flag = iw058_pending_syriac_self_identification }
+			NOT = { has_country_flag = iw058_pending_aramean_self_identification }
+		
+			is_ai = no}
+		set_country_flag = iw058_church_synod_seated
+		set_country_flag = iw058_secular_committee_seated
+		set_country_flag = iw058_village_municipal_delegation_seated
+		set_country_flag = iw058_levies_veterans_delegation_seated
+		set_country_flag = iw058_balanced_institution_seat_formula
+		add_to_variable = { iw058_council_cohesion = constant:independence_wave_iw_package_delta.large }
+		independence_wave_clamp_iw058_package_values = yes
+		custom_effect_tooltip = chaosx.nr006.5802.a.tt
+		ai_chance = { base = constant:independence_wave_decision_ai.high }
+	}
+	option = {
+		name = chaosx.nr006.5802.b
+		trigger = {
+			NOT = { has_country_flag = iw058_pending_assyrian_self_identification }
+			NOT = { has_country_flag = iw058_pending_chaldean_self_identification }
+			NOT = { has_country_flag = iw058_pending_syriac_self_identification }
+			NOT = { has_country_flag = iw058_pending_aramean_self_identification }
+		
+			is_ai = no}
+		set_country_flag = iw058_church_synod_seated
+		set_country_flag = iw058_secular_committee_seated
+		set_country_flag = iw058_village_municipal_delegation_seated
+		set_country_flag = iw058_levies_veterans_delegation_seated
+		set_country_flag = iw058_dual_church_civic_seat_formula
+		subtract_from_variable = { iw058_church_secular_balance = constant:independence_wave_iw_package_delta.standard }
+		add_to_variable = { iw058_council_cohesion = constant:independence_wave_iw_package_delta.standard }
+		independence_wave_clamp_iw058_package_values = yes
+		custom_effect_tooltip = chaosx.nr006.5802.b.tt
+		ai_chance = { base = constant:independence_wave_decision_ai.standard }
+	}
+	option = {
+		trigger = {
+			OR = {
+				AND = {
+					has_country_flag = iw058_pending_assyrian_self_identification
+				}
+				AND = {
+					has_country_flag = iw058_pending_assyrian_self_identification
+				}
+				AND = {
+					has_country_flag = iw058_pending_chaldean_self_identification
+				}
+				AND = {
+					has_country_flag = iw058_pending_chaldean_self_identification
+				}
+				AND = {
+					has_country_flag = iw058_pending_syriac_self_identification
+				}
+				AND = {
+					has_country_flag = iw058_pending_syriac_self_identification
+				}
+				AND = {
+					has_country_flag = iw058_pending_aramean_self_identification
+				}
+				AND = {
+					has_country_flag = iw058_pending_aramean_self_identification
+				}
+			}
+		}
+		name = chaosx_event_more_options
+		custom_effect_tooltip = chaosx_event_more_options_tt
+		hidden_effect = { country_event = { id = chaosx.nr006.90221 } }
+	}
+}
+
+country_event = {
+	id = chaosx.nr006.90202
+	title = {
+		text = chaosx.nr006.5802.assyrian.t
+		trigger = { has_country_flag = iw058_pending_assyrian_self_identification }
+	}
+	title = {
+		text = chaosx.nr006.5802.chaldean.t
+		trigger = { has_country_flag = iw058_pending_chaldean_self_identification }
+	}
+	title = {
+		text = chaosx.nr006.5802.syriac.t
+		trigger = { has_country_flag = iw058_pending_syriac_self_identification }
+	}
+	title = {
+		text = chaosx.nr006.5802.aramean.t
+		trigger = { has_country_flag = iw058_pending_aramean_self_identification }
+	}
+	title = {
+		text = chaosx.nr006.5802.t
+		trigger = {
+			NOT = { has_country_flag = iw058_pending_assyrian_self_identification }
+			NOT = { has_country_flag = iw058_pending_chaldean_self_identification }
+			NOT = { has_country_flag = iw058_pending_syriac_self_identification }
+			NOT = { has_country_flag = iw058_pending_aramean_self_identification }
+		}
+	}
+	desc = {
+		text = chaosx.nr006.5802.assyrian.desc
+		trigger = { has_country_flag = iw058_pending_assyrian_self_identification }
+	}
+	desc = {
+		text = chaosx.nr006.5802.chaldean.desc
+		trigger = { has_country_flag = iw058_pending_chaldean_self_identification }
+	}
+	desc = {
+		text = chaosx.nr006.5802.syriac.desc
+		trigger = { has_country_flag = iw058_pending_syriac_self_identification }
+	}
+	desc = {
+		text = chaosx.nr006.5802.aramean.desc
+		trigger = { has_country_flag = iw058_pending_aramean_self_identification }
+	}
+	desc = {
+		text = chaosx.nr006.5802.desc
+		trigger = {
+			NOT = { has_country_flag = iw058_pending_assyrian_self_identification }
+			NOT = { has_country_flag = iw058_pending_chaldean_self_identification }
+			NOT = { has_country_flag = iw058_pending_syriac_self_identification }
+			NOT = { has_country_flag = iw058_pending_aramean_self_identification }
+		}
+	}
+	picture = GFX_report_event_independence_wave_iw058
+	is_triggered_only = yes
+	trigger = {
+		is_ai = no
+	}
 	option = {
 		name = chaosx.nr006.5802.assyrian.a
 		trigger = { has_country_flag = iw058_pending_assyrian_self_identification }
@@ -2369,7 +3045,6 @@ country_event = {
 		custom_effect_tooltip = chaosx.nr006.5802.assyrian.a.tt
 		ai_chance = { base = constant:independence_wave_decision_ai.urgent }
 	}
-
 	option = {
 		name = chaosx.nr006.5802.assyrian.b
 		trigger = { has_country_flag = iw058_pending_assyrian_self_identification }
@@ -2386,7 +3061,115 @@ country_event = {
 		custom_effect_tooltip = chaosx.nr006.5802.assyrian.b.tt
 		ai_chance = { base = constant:independence_wave_decision_ai.very_low }
 	}
+	option = {
+		trigger = {
+			OR = {
+				AND = {
+					NOT = { has_country_flag = iw058_pending_assyrian_self_identification }
+					NOT = { has_country_flag = iw058_pending_chaldean_self_identification }
+					NOT = { has_country_flag = iw058_pending_syriac_self_identification }
+					NOT = { has_country_flag = iw058_pending_aramean_self_identification }
+					is_ai = no
+				}
+				AND = {
+					NOT = { has_country_flag = iw058_pending_assyrian_self_identification }
+					NOT = { has_country_flag = iw058_pending_chaldean_self_identification }
+					NOT = { has_country_flag = iw058_pending_syriac_self_identification }
+					NOT = { has_country_flag = iw058_pending_aramean_self_identification }
+					is_ai = no
+				}
+			}
+		}
+		name = chaosx_event_back_to_choices
+		custom_effect_tooltip = chaosx_event_back_to_choices_tt
+		hidden_effect = { country_event = { id = chaosx.nr006.90242 } }
+	}
+	option = {
+		trigger = {
+			OR = {
+				AND = {
+					has_country_flag = iw058_pending_chaldean_self_identification
+				}
+				AND = {
+					has_country_flag = iw058_pending_chaldean_self_identification
+				}
+				AND = {
+					has_country_flag = iw058_pending_syriac_self_identification
+				}
+				AND = {
+					has_country_flag = iw058_pending_syriac_self_identification
+				}
+				AND = {
+					has_country_flag = iw058_pending_aramean_self_identification
+				}
+				AND = {
+					has_country_flag = iw058_pending_aramean_self_identification
+				}
+			}
+		}
+		name = chaosx_event_more_options
+		custom_effect_tooltip = chaosx_event_more_options_tt
+		hidden_effect = { country_event = { id = chaosx.nr006.90222 } }
+	}
+}
 
+country_event = {
+	id = chaosx.nr006.90203
+	title = {
+		text = chaosx.nr006.5802.assyrian.t
+		trigger = { has_country_flag = iw058_pending_assyrian_self_identification }
+	}
+	title = {
+		text = chaosx.nr006.5802.chaldean.t
+		trigger = { has_country_flag = iw058_pending_chaldean_self_identification }
+	}
+	title = {
+		text = chaosx.nr006.5802.syriac.t
+		trigger = { has_country_flag = iw058_pending_syriac_self_identification }
+	}
+	title = {
+		text = chaosx.nr006.5802.aramean.t
+		trigger = { has_country_flag = iw058_pending_aramean_self_identification }
+	}
+	title = {
+		text = chaosx.nr006.5802.t
+		trigger = {
+			NOT = { has_country_flag = iw058_pending_assyrian_self_identification }
+			NOT = { has_country_flag = iw058_pending_chaldean_self_identification }
+			NOT = { has_country_flag = iw058_pending_syriac_self_identification }
+			NOT = { has_country_flag = iw058_pending_aramean_self_identification }
+		}
+	}
+	desc = {
+		text = chaosx.nr006.5802.assyrian.desc
+		trigger = { has_country_flag = iw058_pending_assyrian_self_identification }
+	}
+	desc = {
+		text = chaosx.nr006.5802.chaldean.desc
+		trigger = { has_country_flag = iw058_pending_chaldean_self_identification }
+	}
+	desc = {
+		text = chaosx.nr006.5802.syriac.desc
+		trigger = { has_country_flag = iw058_pending_syriac_self_identification }
+	}
+	desc = {
+		text = chaosx.nr006.5802.aramean.desc
+		trigger = { has_country_flag = iw058_pending_aramean_self_identification }
+	}
+	desc = {
+		text = chaosx.nr006.5802.desc
+		trigger = {
+			NOT = { has_country_flag = iw058_pending_assyrian_self_identification }
+			NOT = { has_country_flag = iw058_pending_chaldean_self_identification }
+			NOT = { has_country_flag = iw058_pending_syriac_self_identification }
+			NOT = { has_country_flag = iw058_pending_aramean_self_identification }
+		}
+	}
+	picture = GFX_report_event_independence_wave_iw058
+	is_triggered_only = yes
+	trigger = {
+		is_ai = no
+	}
 	option = {
 		name = chaosx.nr006.5802.chaldean.a
 		trigger = { has_country_flag = iw058_pending_chaldean_self_identification }
@@ -2407,7 +3190,6 @@ country_event = {
 		custom_effect_tooltip = chaosx.nr006.5802.chaldean.a.tt
 		ai_chance = { base = constant:independence_wave_decision_ai.urgent }
 	}
-
 	option = {
 		name = chaosx.nr006.5802.chaldean.b
 		trigger = { has_country_flag = iw058_pending_chaldean_self_identification }
@@ -2424,7 +3206,115 @@ country_event = {
 		custom_effect_tooltip = chaosx.nr006.5802.chaldean.b.tt
 		ai_chance = { base = constant:independence_wave_decision_ai.very_low }
 	}
+	option = {
+		trigger = {
+			OR = {
+				AND = {
+					NOT = { has_country_flag = iw058_pending_assyrian_self_identification }
+					NOT = { has_country_flag = iw058_pending_chaldean_self_identification }
+					NOT = { has_country_flag = iw058_pending_syriac_self_identification }
+					NOT = { has_country_flag = iw058_pending_aramean_self_identification }
+					is_ai = no
+				}
+				AND = {
+					NOT = { has_country_flag = iw058_pending_assyrian_self_identification }
+					NOT = { has_country_flag = iw058_pending_chaldean_self_identification }
+					NOT = { has_country_flag = iw058_pending_syriac_self_identification }
+					NOT = { has_country_flag = iw058_pending_aramean_self_identification }
+					is_ai = no
+				}
+				AND = {
+					has_country_flag = iw058_pending_assyrian_self_identification
+				}
+				AND = {
+					has_country_flag = iw058_pending_assyrian_self_identification
+				}
+			}
+		}
+		name = chaosx_event_back_to_choices
+		custom_effect_tooltip = chaosx_event_back_to_choices_tt
+		hidden_effect = { country_event = { id = chaosx.nr006.90243 } }
+	}
+	option = {
+		trigger = {
+			OR = {
+				AND = {
+					has_country_flag = iw058_pending_syriac_self_identification
+				}
+				AND = {
+					has_country_flag = iw058_pending_syriac_self_identification
+				}
+				AND = {
+					has_country_flag = iw058_pending_aramean_self_identification
+				}
+				AND = {
+					has_country_flag = iw058_pending_aramean_self_identification
+				}
+			}
+		}
+		name = chaosx_event_more_options
+		custom_effect_tooltip = chaosx_event_more_options_tt
+		hidden_effect = { country_event = { id = chaosx.nr006.90223 } }
+	}
+}
 
+country_event = {
+	id = chaosx.nr006.90204
+	title = {
+		text = chaosx.nr006.5802.assyrian.t
+		trigger = { has_country_flag = iw058_pending_assyrian_self_identification }
+	}
+	title = {
+		text = chaosx.nr006.5802.chaldean.t
+		trigger = { has_country_flag = iw058_pending_chaldean_self_identification }
+	}
+	title = {
+		text = chaosx.nr006.5802.syriac.t
+		trigger = { has_country_flag = iw058_pending_syriac_self_identification }
+	}
+	title = {
+		text = chaosx.nr006.5802.aramean.t
+		trigger = { has_country_flag = iw058_pending_aramean_self_identification }
+	}
+	title = {
+		text = chaosx.nr006.5802.t
+		trigger = {
+			NOT = { has_country_flag = iw058_pending_assyrian_self_identification }
+			NOT = { has_country_flag = iw058_pending_chaldean_self_identification }
+			NOT = { has_country_flag = iw058_pending_syriac_self_identification }
+			NOT = { has_country_flag = iw058_pending_aramean_self_identification }
+		}
+	}
+	desc = {
+		text = chaosx.nr006.5802.assyrian.desc
+		trigger = { has_country_flag = iw058_pending_assyrian_self_identification }
+	}
+	desc = {
+		text = chaosx.nr006.5802.chaldean.desc
+		trigger = { has_country_flag = iw058_pending_chaldean_self_identification }
+	}
+	desc = {
+		text = chaosx.nr006.5802.syriac.desc
+		trigger = { has_country_flag = iw058_pending_syriac_self_identification }
+	}
+	desc = {
+		text = chaosx.nr006.5802.aramean.desc
+		trigger = { has_country_flag = iw058_pending_aramean_self_identification }
+	}
+	desc = {
+		text = chaosx.nr006.5802.desc
+		trigger = {
+			NOT = { has_country_flag = iw058_pending_assyrian_self_identification }
+			NOT = { has_country_flag = iw058_pending_chaldean_self_identification }
+			NOT = { has_country_flag = iw058_pending_syriac_self_identification }
+			NOT = { has_country_flag = iw058_pending_aramean_self_identification }
+		}
+	}
+	picture = GFX_report_event_independence_wave_iw058
+	is_triggered_only = yes
+	trigger = {
+		is_ai = no
+	}
 	option = {
 		name = chaosx.nr006.5802.syriac.a
 		trigger = { has_country_flag = iw058_pending_syriac_self_identification }
@@ -2444,7 +3334,6 @@ country_event = {
 		custom_effect_tooltip = chaosx.nr006.5802.syriac.a.tt
 		ai_chance = { base = constant:independence_wave_decision_ai.urgent }
 	}
-
 	option = {
 		name = chaosx.nr006.5802.syriac.b
 		trigger = { has_country_flag = iw058_pending_syriac_self_identification }
@@ -2461,7 +3350,115 @@ country_event = {
 		custom_effect_tooltip = chaosx.nr006.5802.syriac.b.tt
 		ai_chance = { base = constant:independence_wave_decision_ai.very_low }
 	}
+	option = {
+		trigger = {
+			OR = {
+				AND = {
+					NOT = { has_country_flag = iw058_pending_assyrian_self_identification }
+					NOT = { has_country_flag = iw058_pending_chaldean_self_identification }
+					NOT = { has_country_flag = iw058_pending_syriac_self_identification }
+					NOT = { has_country_flag = iw058_pending_aramean_self_identification }
+					is_ai = no
+				}
+				AND = {
+					NOT = { has_country_flag = iw058_pending_assyrian_self_identification }
+					NOT = { has_country_flag = iw058_pending_chaldean_self_identification }
+					NOT = { has_country_flag = iw058_pending_syriac_self_identification }
+					NOT = { has_country_flag = iw058_pending_aramean_self_identification }
+					is_ai = no
+				}
+				AND = {
+					has_country_flag = iw058_pending_assyrian_self_identification
+				}
+				AND = {
+					has_country_flag = iw058_pending_assyrian_self_identification
+				}
+				AND = {
+					has_country_flag = iw058_pending_chaldean_self_identification
+				}
+				AND = {
+					has_country_flag = iw058_pending_chaldean_self_identification
+				}
+			}
+		}
+		name = chaosx_event_back_to_choices
+		custom_effect_tooltip = chaosx_event_back_to_choices_tt
+		hidden_effect = { country_event = { id = chaosx.nr006.90244 } }
+	}
+	option = {
+		trigger = {
+			OR = {
+				AND = {
+					has_country_flag = iw058_pending_aramean_self_identification
+				}
+				AND = {
+					has_country_flag = iw058_pending_aramean_self_identification
+				}
+			}
+		}
+		name = chaosx_event_more_options
+		custom_effect_tooltip = chaosx_event_more_options_tt
+		hidden_effect = { country_event = { id = chaosx.nr006.90224 } }
+	}
+}
 
+country_event = {
+	id = chaosx.nr006.90205
+	title = {
+		text = chaosx.nr006.5802.assyrian.t
+		trigger = { has_country_flag = iw058_pending_assyrian_self_identification }
+	}
+	title = {
+		text = chaosx.nr006.5802.chaldean.t
+		trigger = { has_country_flag = iw058_pending_chaldean_self_identification }
+	}
+	title = {
+		text = chaosx.nr006.5802.syriac.t
+		trigger = { has_country_flag = iw058_pending_syriac_self_identification }
+	}
+	title = {
+		text = chaosx.nr006.5802.aramean.t
+		trigger = { has_country_flag = iw058_pending_aramean_self_identification }
+	}
+	title = {
+		text = chaosx.nr006.5802.t
+		trigger = {
+			NOT = { has_country_flag = iw058_pending_assyrian_self_identification }
+			NOT = { has_country_flag = iw058_pending_chaldean_self_identification }
+			NOT = { has_country_flag = iw058_pending_syriac_self_identification }
+			NOT = { has_country_flag = iw058_pending_aramean_self_identification }
+		}
+	}
+	desc = {
+		text = chaosx.nr006.5802.assyrian.desc
+		trigger = { has_country_flag = iw058_pending_assyrian_self_identification }
+	}
+	desc = {
+		text = chaosx.nr006.5802.chaldean.desc
+		trigger = { has_country_flag = iw058_pending_chaldean_self_identification }
+	}
+	desc = {
+		text = chaosx.nr006.5802.syriac.desc
+		trigger = { has_country_flag = iw058_pending_syriac_self_identification }
+	}
+	desc = {
+		text = chaosx.nr006.5802.aramean.desc
+		trigger = { has_country_flag = iw058_pending_aramean_self_identification }
+	}
+	desc = {
+		text = chaosx.nr006.5802.desc
+		trigger = {
+			NOT = { has_country_flag = iw058_pending_assyrian_self_identification }
+			NOT = { has_country_flag = iw058_pending_chaldean_self_identification }
+			NOT = { has_country_flag = iw058_pending_syriac_self_identification }
+			NOT = { has_country_flag = iw058_pending_aramean_self_identification }
+		}
+	}
+	picture = GFX_report_event_independence_wave_iw058
+	is_triggered_only = yes
+	trigger = {
+		is_ai = no
+	}
 	option = {
 		name = chaosx.nr006.5802.aramean.a
 		trigger = { has_country_flag = iw058_pending_aramean_self_identification }
@@ -2482,7 +3479,285 @@ country_event = {
 		custom_effect_tooltip = chaosx.nr006.5802.aramean.a.tt
 		ai_chance = { base = constant:independence_wave_decision_ai.urgent }
 	}
+	option = {
+		name = chaosx.nr006.5802.aramean.b
+		trigger = { has_country_flag = iw058_pending_aramean_self_identification }
+		if = { limit = { has_country_flag = iw058_reconciling_aramean_self_identification } set_temp_variable = { independence_wave_iw058_transaction_id = constant:independence_wave_iw058_transaction.reopen_community_guarantee } }
+		else = { set_temp_variable = { independence_wave_iw058_transaction_id = constant:independence_wave_iw058_transaction.ratify_aramean_self_identification } }
+		independence_wave_iw058_rollback_paid_transaction = yes
+		set_country_flag = iw058_guarantee_aramean_self_identification_rejected
+		set_country_flag = iw058_aramean_civic_settlement_damaged
+		subtract_from_variable = { iw058_council_cohesion = constant:independence_wave_iw_package_delta.large }
+		add_to_variable = { iw058_church_secular_balance = constant:independence_wave_iw_package_delta.standard }
+		independence_wave_clamp_iw058_package_values = yes
+		clr_country_flag = iw058_pending_aramean_self_identification
+		clr_country_flag = iw058_reconciling_aramean_self_identification
+		clr_country_flag = iw058_guarantee_reconciliation_active
+		custom_effect_tooltip = chaosx.nr006.5802.aramean.b.tt
+		ai_chance = { base = constant:independence_wave_decision_ai.very_low }
+	}
+	option = {
+		trigger = {
+			OR = {
+				AND = {
+					NOT = { has_country_flag = iw058_pending_assyrian_self_identification }
+					NOT = { has_country_flag = iw058_pending_chaldean_self_identification }
+					NOT = { has_country_flag = iw058_pending_syriac_self_identification }
+					NOT = { has_country_flag = iw058_pending_aramean_self_identification }
+					is_ai = no
+				}
+				AND = {
+					NOT = { has_country_flag = iw058_pending_assyrian_self_identification }
+					NOT = { has_country_flag = iw058_pending_chaldean_self_identification }
+					NOT = { has_country_flag = iw058_pending_syriac_self_identification }
+					NOT = { has_country_flag = iw058_pending_aramean_self_identification }
+					is_ai = no
+				}
+				AND = {
+					has_country_flag = iw058_pending_assyrian_self_identification
+				}
+				AND = {
+					has_country_flag = iw058_pending_assyrian_self_identification
+				}
+				AND = {
+					has_country_flag = iw058_pending_chaldean_self_identification
+				}
+				AND = {
+					has_country_flag = iw058_pending_chaldean_self_identification
+				}
+				AND = {
+					has_country_flag = iw058_pending_syriac_self_identification
+				}
+				AND = {
+					has_country_flag = iw058_pending_syriac_self_identification
+				}
+			}
+		}
+		name = chaosx_event_back_to_choices
+		custom_effect_tooltip = chaosx_event_back_to_choices_tt
+		hidden_effect = { country_event = { id = chaosx.nr006.90245 } }
+	}
+}
 
+country_event = {
+	id = chaosx.nr006.90299
+	title = {
+		text = chaosx.nr006.5802.assyrian.t
+		trigger = { has_country_flag = iw058_pending_assyrian_self_identification }
+	}
+	title = {
+		text = chaosx.nr006.5802.chaldean.t
+		trigger = { has_country_flag = iw058_pending_chaldean_self_identification }
+	}
+	title = {
+		text = chaosx.nr006.5802.syriac.t
+		trigger = { has_country_flag = iw058_pending_syriac_self_identification }
+	}
+	title = {
+		text = chaosx.nr006.5802.aramean.t
+		trigger = { has_country_flag = iw058_pending_aramean_self_identification }
+	}
+	title = {
+		text = chaosx.nr006.5802.t
+		trigger = {
+			NOT = { has_country_flag = iw058_pending_assyrian_self_identification }
+			NOT = { has_country_flag = iw058_pending_chaldean_self_identification }
+			NOT = { has_country_flag = iw058_pending_syriac_self_identification }
+			NOT = { has_country_flag = iw058_pending_aramean_self_identification }
+		}
+	}
+	desc = {
+		text = chaosx.nr006.5802.assyrian.desc
+		trigger = { has_country_flag = iw058_pending_assyrian_self_identification }
+	}
+	desc = {
+		text = chaosx.nr006.5802.chaldean.desc
+		trigger = { has_country_flag = iw058_pending_chaldean_self_identification }
+	}
+	desc = {
+		text = chaosx.nr006.5802.syriac.desc
+		trigger = { has_country_flag = iw058_pending_syriac_self_identification }
+	}
+	desc = {
+		text = chaosx.nr006.5802.aramean.desc
+		trigger = { has_country_flag = iw058_pending_aramean_self_identification }
+	}
+	desc = {
+		text = chaosx.nr006.5802.desc
+		trigger = {
+			NOT = { has_country_flag = iw058_pending_assyrian_self_identification }
+			NOT = { has_country_flag = iw058_pending_chaldean_self_identification }
+			NOT = { has_country_flag = iw058_pending_syriac_self_identification }
+			NOT = { has_country_flag = iw058_pending_aramean_self_identification }
+		}
+	}
+	is_triggered_only = yes
+	trigger = {
+		is_ai = yes
+	}
+	option = {
+		name = chaosx.nr006.5802.a
+		trigger = {
+			NOT = { has_country_flag = iw058_pending_assyrian_self_identification }
+			NOT = { has_country_flag = iw058_pending_chaldean_self_identification }
+			NOT = { has_country_flag = iw058_pending_syriac_self_identification }
+			NOT = { has_country_flag = iw058_pending_aramean_self_identification }
+		}
+		set_country_flag = iw058_church_synod_seated
+		set_country_flag = iw058_secular_committee_seated
+		set_country_flag = iw058_village_municipal_delegation_seated
+		set_country_flag = iw058_levies_veterans_delegation_seated
+		set_country_flag = iw058_balanced_institution_seat_formula
+		add_to_variable = { iw058_council_cohesion = constant:independence_wave_iw_package_delta.large }
+		independence_wave_clamp_iw058_package_values = yes
+		custom_effect_tooltip = chaosx.nr006.5802.a.tt
+		ai_chance = { base = constant:independence_wave_decision_ai.high }
+	}
+	option = {
+		name = chaosx.nr006.5802.b
+		trigger = {
+			NOT = { has_country_flag = iw058_pending_assyrian_self_identification }
+			NOT = { has_country_flag = iw058_pending_chaldean_self_identification }
+			NOT = { has_country_flag = iw058_pending_syriac_self_identification }
+			NOT = { has_country_flag = iw058_pending_aramean_self_identification }
+		}
+		set_country_flag = iw058_church_synod_seated
+		set_country_flag = iw058_secular_committee_seated
+		set_country_flag = iw058_village_municipal_delegation_seated
+		set_country_flag = iw058_levies_veterans_delegation_seated
+		set_country_flag = iw058_dual_church_civic_seat_formula
+		subtract_from_variable = { iw058_church_secular_balance = constant:independence_wave_iw_package_delta.standard }
+		add_to_variable = { iw058_council_cohesion = constant:independence_wave_iw_package_delta.standard }
+		independence_wave_clamp_iw058_package_values = yes
+		custom_effect_tooltip = chaosx.nr006.5802.b.tt
+		ai_chance = { base = constant:independence_wave_decision_ai.standard }
+	}
+	option = {
+		name = chaosx.nr006.5802.assyrian.a
+		trigger = { has_country_flag = iw058_pending_assyrian_self_identification }
+		if = { limit = { has_country_flag = iw058_reconciling_assyrian_self_identification } set_temp_variable = { independence_wave_iw058_transaction_id = constant:independence_wave_iw058_transaction.reopen_community_guarantee } }
+		else = { set_temp_variable = { independence_wave_iw058_transaction_id = constant:independence_wave_iw058_transaction.ratify_assyrian_self_identification } }
+		independence_wave_iw058_commit_paid_transaction = yes
+		set_country_flag = iw058_guarantee_assyrian_self_identification
+		set_country_flag = iw058_assyrian_national_council_petition_right
+		clr_country_flag = iw058_guarantee_assyrian_self_identification_rejected
+		add_to_variable = { iw058_council_cohesion = constant:independence_wave_iw_package_delta.standard }
+		independence_wave_recalculate_iw058_guarantee_count = yes
+		independence_wave_clamp_iw058_package_values = yes
+		independence_wave_write_iw058_anchor_population_protected = yes
+		clr_country_flag = iw058_pending_assyrian_self_identification
+		clr_country_flag = iw058_reconciling_assyrian_self_identification
+		clr_country_flag = iw058_guarantee_reconciliation_active
+		custom_effect_tooltip = chaosx.nr006.5802.assyrian.a.tt
+		ai_chance = { base = constant:independence_wave_decision_ai.urgent }
+	}
+	option = {
+		name = chaosx.nr006.5802.assyrian.b
+		trigger = { has_country_flag = iw058_pending_assyrian_self_identification }
+		if = { limit = { has_country_flag = iw058_reconciling_assyrian_self_identification } set_temp_variable = { independence_wave_iw058_transaction_id = constant:independence_wave_iw058_transaction.reopen_community_guarantee } }
+		else = { set_temp_variable = { independence_wave_iw058_transaction_id = constant:independence_wave_iw058_transaction.ratify_assyrian_self_identification } }
+		independence_wave_iw058_rollback_paid_transaction = yes
+		set_country_flag = iw058_guarantee_assyrian_self_identification_rejected
+		set_country_flag = iw058_assyrian_national_opposition
+		subtract_from_variable = { iw058_council_cohesion = constant:independence_wave_iw_package_delta.large }
+		independence_wave_clamp_iw058_package_values = yes
+		clr_country_flag = iw058_pending_assyrian_self_identification
+		clr_country_flag = iw058_reconciling_assyrian_self_identification
+		clr_country_flag = iw058_guarantee_reconciliation_active
+		custom_effect_tooltip = chaosx.nr006.5802.assyrian.b.tt
+		ai_chance = { base = constant:independence_wave_decision_ai.very_low }
+	}
+	option = {
+		name = chaosx.nr006.5802.chaldean.a
+		trigger = { has_country_flag = iw058_pending_chaldean_self_identification }
+		if = { limit = { has_country_flag = iw058_reconciling_chaldean_self_identification } set_temp_variable = { independence_wave_iw058_transaction_id = constant:independence_wave_iw058_transaction.reopen_community_guarantee } }
+		else = { set_temp_variable = { independence_wave_iw058_transaction_id = constant:independence_wave_iw058_transaction.ratify_chaldean_self_identification } }
+		independence_wave_iw058_commit_paid_transaction = yes
+		set_country_flag = iw058_guarantee_chaldean_self_identification
+		set_country_flag = iw058_chaldean_church_municipal_petition_right
+		clr_country_flag = iw058_guarantee_chaldean_self_identification_rejected
+		subtract_from_variable = { iw058_church_secular_balance = constant:independence_wave_iw_package_delta.standard }
+		add_to_variable = { iw058_council_cohesion = constant:independence_wave_iw_package_delta.small }
+		independence_wave_recalculate_iw058_guarantee_count = yes
+		independence_wave_clamp_iw058_package_values = yes
+		independence_wave_write_iw058_anchor_population_protected = yes
+		clr_country_flag = iw058_pending_chaldean_self_identification
+		clr_country_flag = iw058_reconciling_chaldean_self_identification
+		clr_country_flag = iw058_guarantee_reconciliation_active
+		custom_effect_tooltip = chaosx.nr006.5802.chaldean.a.tt
+		ai_chance = { base = constant:independence_wave_decision_ai.urgent }
+	}
+	option = {
+		name = chaosx.nr006.5802.chaldean.b
+		trigger = { has_country_flag = iw058_pending_chaldean_self_identification }
+		if = { limit = { has_country_flag = iw058_reconciling_chaldean_self_identification } set_temp_variable = { independence_wave_iw058_transaction_id = constant:independence_wave_iw058_transaction.reopen_community_guarantee } }
+		else = { set_temp_variable = { independence_wave_iw058_transaction_id = constant:independence_wave_iw058_transaction.ratify_chaldean_self_identification } }
+		independence_wave_iw058_rollback_paid_transaction = yes
+		set_country_flag = iw058_guarantee_chaldean_self_identification_rejected
+		set_country_flag = iw058_chaldean_church_settlement_damaged
+		subtract_from_variable = { iw058_council_cohesion = constant:independence_wave_iw_package_delta.large }
+		independence_wave_clamp_iw058_package_values = yes
+		clr_country_flag = iw058_pending_chaldean_self_identification
+		clr_country_flag = iw058_reconciling_chaldean_self_identification
+		clr_country_flag = iw058_guarantee_reconciliation_active
+		custom_effect_tooltip = chaosx.nr006.5802.chaldean.b.tt
+		ai_chance = { base = constant:independence_wave_decision_ai.very_low }
+	}
+	option = {
+		name = chaosx.nr006.5802.syriac.a
+		trigger = { has_country_flag = iw058_pending_syriac_self_identification }
+		if = { limit = { has_country_flag = iw058_reconciling_syriac_self_identification } set_temp_variable = { independence_wave_iw058_transaction_id = constant:independence_wave_iw058_transaction.reopen_community_guarantee } }
+		else = { set_temp_variable = { independence_wave_iw058_transaction_id = constant:independence_wave_iw058_transaction.ratify_syriac_self_identification } }
+		independence_wave_iw058_commit_paid_transaction = yes
+		set_country_flag = iw058_guarantee_syriac_self_identification
+		set_country_flag = iw058_syriac_language_school_petition_right
+		clr_country_flag = iw058_guarantee_syriac_self_identification_rejected
+		add_to_variable = { iw058_external_guarantee_credibility = constant:independence_wave_iw_package_delta.standard }
+		independence_wave_recalculate_iw058_guarantee_count = yes
+		independence_wave_clamp_iw058_package_values = yes
+		independence_wave_write_iw058_anchor_population_protected = yes
+		clr_country_flag = iw058_pending_syriac_self_identification
+		clr_country_flag = iw058_reconciling_syriac_self_identification
+		clr_country_flag = iw058_guarantee_reconciliation_active
+		custom_effect_tooltip = chaosx.nr006.5802.syriac.a.tt
+		ai_chance = { base = constant:independence_wave_decision_ai.urgent }
+	}
+	option = {
+		name = chaosx.nr006.5802.syriac.b
+		trigger = { has_country_flag = iw058_pending_syriac_self_identification }
+		if = { limit = { has_country_flag = iw058_reconciling_syriac_self_identification } set_temp_variable = { independence_wave_iw058_transaction_id = constant:independence_wave_iw058_transaction.reopen_community_guarantee } }
+		else = { set_temp_variable = { independence_wave_iw058_transaction_id = constant:independence_wave_iw058_transaction.ratify_syriac_self_identification } }
+		independence_wave_iw058_rollback_paid_transaction = yes
+		set_country_flag = iw058_guarantee_syriac_self_identification_rejected
+		set_country_flag = iw058_syriac_language_settlement_damaged
+		subtract_from_variable = { iw058_external_guarantee_credibility = constant:independence_wave_iw_package_delta.standard }
+		independence_wave_clamp_iw058_package_values = yes
+		clr_country_flag = iw058_pending_syriac_self_identification
+		clr_country_flag = iw058_reconciling_syriac_self_identification
+		clr_country_flag = iw058_guarantee_reconciliation_active
+		custom_effect_tooltip = chaosx.nr006.5802.syriac.b.tt
+		ai_chance = { base = constant:independence_wave_decision_ai.very_low }
+	}
+	option = {
+		name = chaosx.nr006.5802.aramean.a
+		trigger = { has_country_flag = iw058_pending_aramean_self_identification }
+		if = { limit = { has_country_flag = iw058_reconciling_aramean_self_identification } set_temp_variable = { independence_wave_iw058_transaction_id = constant:independence_wave_iw058_transaction.reopen_community_guarantee } }
+		else = { set_temp_variable = { independence_wave_iw058_transaction_id = constant:independence_wave_iw058_transaction.ratify_aramean_self_identification } }
+		independence_wave_iw058_commit_paid_transaction = yes
+		set_country_flag = iw058_guarantee_aramean_self_identification
+		set_country_flag = iw058_aramean_civic_self_description_petition_right
+		clr_country_flag = iw058_guarantee_aramean_self_identification_rejected
+		add_to_variable = { iw058_church_secular_balance = constant:independence_wave_iw_package_delta.standard }
+		add_to_variable = { iw058_council_cohesion = constant:independence_wave_iw_package_delta.small }
+		independence_wave_recalculate_iw058_guarantee_count = yes
+		independence_wave_clamp_iw058_package_values = yes
+		independence_wave_write_iw058_anchor_population_protected = yes
+		clr_country_flag = iw058_pending_aramean_self_identification
+		clr_country_flag = iw058_reconciling_aramean_self_identification
+		clr_country_flag = iw058_guarantee_reconciliation_active
+		custom_effect_tooltip = chaosx.nr006.5802.aramean.a.tt
+		ai_chance = { base = constant:independence_wave_decision_ai.urgent }
+	}
 	option = {
 		name = chaosx.nr006.5802.aramean.b
 		trigger = { has_country_flag = iw058_pending_aramean_self_identification }
@@ -3062,5 +4337,522 @@ country_event = {
 		set_country_flag = iw058_form18_foundation_presented
 		custom_effect_tooltip = chaosx.nr006.5812.a.tt
 		ai_chance = { base = constant:independence_wave_decision_ai.urgent }
+	}
+}
+
+
+country_event = {
+	id = chaosx.nr006.90221
+	hidden = yes
+	is_triggered_only = yes
+	trigger = {
+		is_ai = no
+	}
+	immediate = {
+		if = {
+			limit = {
+				OR = {
+					AND = {
+						has_country_flag = iw058_pending_assyrian_self_identification
+					}
+					AND = {
+						has_country_flag = iw058_pending_assyrian_self_identification
+					}
+				}
+			}
+			country_event = { id = chaosx.nr006.90202 }
+		}
+		else_if = {
+			limit = {
+				OR = {
+					AND = {
+						has_country_flag = iw058_pending_chaldean_self_identification
+					}
+					AND = {
+						has_country_flag = iw058_pending_chaldean_self_identification
+					}
+				}
+			}
+			country_event = { id = chaosx.nr006.90203 }
+		}
+		else_if = {
+			limit = {
+				OR = {
+					AND = {
+						has_country_flag = iw058_pending_syriac_self_identification
+					}
+					AND = {
+						has_country_flag = iw058_pending_syriac_self_identification
+					}
+				}
+			}
+			country_event = { id = chaosx.nr006.90204 }
+		}
+		else_if = {
+			limit = {
+				OR = {
+					AND = {
+						has_country_flag = iw058_pending_aramean_self_identification
+					}
+					AND = {
+						has_country_flag = iw058_pending_aramean_self_identification
+					}
+				}
+			}
+			country_event = { id = chaosx.nr006.90205 }
+		}
+	}
+}
+
+country_event = {
+	id = chaosx.nr006.90222
+	hidden = yes
+	is_triggered_only = yes
+	trigger = {
+		is_ai = no
+	}
+	immediate = {
+		if = {
+			limit = {
+				OR = {
+					AND = {
+						has_country_flag = iw058_pending_chaldean_self_identification
+					}
+					AND = {
+						has_country_flag = iw058_pending_chaldean_self_identification
+					}
+				}
+			}
+			country_event = { id = chaosx.nr006.90203 }
+		}
+		else_if = {
+			limit = {
+				OR = {
+					AND = {
+						has_country_flag = iw058_pending_syriac_self_identification
+					}
+					AND = {
+						has_country_flag = iw058_pending_syriac_self_identification
+					}
+				}
+			}
+			country_event = { id = chaosx.nr006.90204 }
+		}
+		else_if = {
+			limit = {
+				OR = {
+					AND = {
+						has_country_flag = iw058_pending_aramean_self_identification
+					}
+					AND = {
+						has_country_flag = iw058_pending_aramean_self_identification
+					}
+				}
+			}
+			country_event = { id = chaosx.nr006.90205 }
+		}
+	}
+}
+
+country_event = {
+	id = chaosx.nr006.90223
+	hidden = yes
+	is_triggered_only = yes
+	trigger = {
+		is_ai = no
+	}
+	immediate = {
+		if = {
+			limit = {
+				OR = {
+					AND = {
+						has_country_flag = iw058_pending_syriac_self_identification
+					}
+					AND = {
+						has_country_flag = iw058_pending_syriac_self_identification
+					}
+				}
+			}
+			country_event = { id = chaosx.nr006.90204 }
+		}
+		else_if = {
+			limit = {
+				OR = {
+					AND = {
+						has_country_flag = iw058_pending_aramean_self_identification
+					}
+					AND = {
+						has_country_flag = iw058_pending_aramean_self_identification
+					}
+				}
+			}
+			country_event = { id = chaosx.nr006.90205 }
+		}
+	}
+}
+
+country_event = {
+	id = chaosx.nr006.90224
+	hidden = yes
+	is_triggered_only = yes
+	trigger = {
+		is_ai = no
+	}
+	immediate = {
+		if = {
+			limit = {
+				OR = {
+					AND = {
+						has_country_flag = iw058_pending_aramean_self_identification
+					}
+					AND = {
+						has_country_flag = iw058_pending_aramean_self_identification
+					}
+				}
+			}
+			country_event = { id = chaosx.nr006.90205 }
+		}
+	}
+}
+
+country_event = {
+	id = chaosx.nr006.90242
+	hidden = yes
+	is_triggered_only = yes
+	trigger = {
+		is_ai = no
+	}
+	immediate = {
+		if = {
+			limit = {
+				OR = {
+					AND = {
+						NOT = { has_country_flag = iw058_pending_assyrian_self_identification }
+						NOT = { has_country_flag = iw058_pending_chaldean_self_identification }
+						NOT = { has_country_flag = iw058_pending_syriac_self_identification }
+						NOT = { has_country_flag = iw058_pending_aramean_self_identification }
+						is_ai = no
+					}
+					AND = {
+						NOT = { has_country_flag = iw058_pending_assyrian_self_identification }
+						NOT = { has_country_flag = iw058_pending_chaldean_self_identification }
+						NOT = { has_country_flag = iw058_pending_syriac_self_identification }
+						NOT = { has_country_flag = iw058_pending_aramean_self_identification }
+						is_ai = no
+					}
+				}
+			}
+			country_event = { id = chaosx.nr006.90201 }
+		}
+	}
+}
+
+country_event = {
+	id = chaosx.nr006.90243
+	hidden = yes
+	is_triggered_only = yes
+	trigger = {
+		is_ai = no
+	}
+	immediate = {
+		if = {
+			limit = {
+				OR = {
+					AND = {
+						has_country_flag = iw058_pending_assyrian_self_identification
+					}
+					AND = {
+						has_country_flag = iw058_pending_assyrian_self_identification
+					}
+				}
+			}
+			country_event = { id = chaosx.nr006.90202 }
+		}
+		else_if = {
+			limit = {
+				OR = {
+					AND = {
+						NOT = { has_country_flag = iw058_pending_assyrian_self_identification }
+						NOT = { has_country_flag = iw058_pending_chaldean_self_identification }
+						NOT = { has_country_flag = iw058_pending_syriac_self_identification }
+						NOT = { has_country_flag = iw058_pending_aramean_self_identification }
+						is_ai = no
+					}
+					AND = {
+						NOT = { has_country_flag = iw058_pending_assyrian_self_identification }
+						NOT = { has_country_flag = iw058_pending_chaldean_self_identification }
+						NOT = { has_country_flag = iw058_pending_syriac_self_identification }
+						NOT = { has_country_flag = iw058_pending_aramean_self_identification }
+						is_ai = no
+					}
+				}
+			}
+			country_event = { id = chaosx.nr006.90201 }
+		}
+	}
+}
+
+country_event = {
+	id = chaosx.nr006.90244
+	hidden = yes
+	is_triggered_only = yes
+	trigger = {
+		is_ai = no
+	}
+	immediate = {
+		if = {
+			limit = {
+				OR = {
+					AND = {
+						has_country_flag = iw058_pending_chaldean_self_identification
+					}
+					AND = {
+						has_country_flag = iw058_pending_chaldean_self_identification
+					}
+				}
+			}
+			country_event = { id = chaosx.nr006.90203 }
+		}
+		else_if = {
+			limit = {
+				OR = {
+					AND = {
+						has_country_flag = iw058_pending_assyrian_self_identification
+					}
+					AND = {
+						has_country_flag = iw058_pending_assyrian_self_identification
+					}
+				}
+			}
+			country_event = { id = chaosx.nr006.90202 }
+		}
+		else_if = {
+			limit = {
+				OR = {
+					AND = {
+						NOT = { has_country_flag = iw058_pending_assyrian_self_identification }
+						NOT = { has_country_flag = iw058_pending_chaldean_self_identification }
+						NOT = { has_country_flag = iw058_pending_syriac_self_identification }
+						NOT = { has_country_flag = iw058_pending_aramean_self_identification }
+						is_ai = no
+					}
+					AND = {
+						NOT = { has_country_flag = iw058_pending_assyrian_self_identification }
+						NOT = { has_country_flag = iw058_pending_chaldean_self_identification }
+						NOT = { has_country_flag = iw058_pending_syriac_self_identification }
+						NOT = { has_country_flag = iw058_pending_aramean_self_identification }
+						is_ai = no
+					}
+				}
+			}
+			country_event = { id = chaosx.nr006.90201 }
+		}
+	}
+}
+
+country_event = {
+	id = chaosx.nr006.90245
+	hidden = yes
+	is_triggered_only = yes
+	trigger = {
+		is_ai = no
+	}
+	immediate = {
+		if = {
+			limit = {
+				OR = {
+					AND = {
+						has_country_flag = iw058_pending_syriac_self_identification
+					}
+					AND = {
+						has_country_flag = iw058_pending_syriac_self_identification
+					}
+				}
+			}
+			country_event = { id = chaosx.nr006.90204 }
+		}
+		else_if = {
+			limit = {
+				OR = {
+					AND = {
+						has_country_flag = iw058_pending_chaldean_self_identification
+					}
+					AND = {
+						has_country_flag = iw058_pending_chaldean_self_identification
+					}
+				}
+			}
+			country_event = { id = chaosx.nr006.90203 }
+		}
+		else_if = {
+			limit = {
+				OR = {
+					AND = {
+						has_country_flag = iw058_pending_assyrian_self_identification
+					}
+					AND = {
+						has_country_flag = iw058_pending_assyrian_self_identification
+					}
+				}
+			}
+			country_event = { id = chaosx.nr006.90202 }
+		}
+		else_if = {
+			limit = {
+				OR = {
+					AND = {
+						NOT = { has_country_flag = iw058_pending_assyrian_self_identification }
+						NOT = { has_country_flag = iw058_pending_chaldean_self_identification }
+						NOT = { has_country_flag = iw058_pending_syriac_self_identification }
+						NOT = { has_country_flag = iw058_pending_aramean_self_identification }
+						is_ai = no
+					}
+					AND = {
+						NOT = { has_country_flag = iw058_pending_assyrian_self_identification }
+						NOT = { has_country_flag = iw058_pending_chaldean_self_identification }
+						NOT = { has_country_flag = iw058_pending_syriac_self_identification }
+						NOT = { has_country_flag = iw058_pending_aramean_self_identification }
+						is_ai = no
+					}
+				}
+			}
+			country_event = { id = chaosx.nr006.90201 }
+		}
+	}
+}
+
+country_event = {
+	id = chaosx.nr006.90121
+	hidden = yes
+	is_triggered_only = yes
+	trigger = {
+		is_ai = no
+	}
+	immediate = {
+		if = {
+			limit = {
+				OR = {
+					AND = {
+						has_country_flag = iw043_pending_tatar_bashkir_representation
+					}
+					AND = {
+						has_country_flag = iw043_pending_tatar_bashkir_representation
+					}
+				}
+			}
+			country_event = { id = chaosx.nr006.90102 }
+		}
+		else_if = {
+			limit = {
+				OR = {
+					AND = {
+						has_country_flag = iw043_pending_tatar_bashkir_representation
+					}
+					AND = {
+						has_country_flag = iw043_pending_resident_civic_and_religious_equality
+					}
+					AND = {
+						has_country_flag = iw043_pending_resident_civic_and_religious_equality
+					}
+				}
+			}
+			country_event = { id = chaosx.nr006.90103 }
+		}
+	}
+}
+
+country_event = {
+	id = chaosx.nr006.90122
+	hidden = yes
+	is_triggered_only = yes
+	trigger = {
+		is_ai = no
+	}
+	immediate = {
+		if = {
+			limit = {
+				OR = {
+					AND = {
+						has_country_flag = iw043_pending_tatar_bashkir_representation
+					}
+					AND = {
+						has_country_flag = iw043_pending_resident_civic_and_religious_equality
+					}
+					AND = {
+						has_country_flag = iw043_pending_resident_civic_and_religious_equality
+					}
+				}
+			}
+			country_event = { id = chaosx.nr006.90103 }
+		}
+	}
+}
+
+country_event = {
+	id = chaosx.nr006.90142
+	hidden = yes
+	is_triggered_only = yes
+	trigger = {
+		is_ai = no
+	}
+	immediate = {
+		if = {
+			limit = {
+				OR = {
+					AND = {
+						NOT = { has_country_flag = iw043_pending_tatar_bashkir_representation }
+						NOT = { has_country_flag = iw043_pending_resident_civic_and_religious_equality }
+						is_ai = no
+					}
+					AND = {
+						NOT = { has_country_flag = iw043_pending_tatar_bashkir_representation }
+						NOT = { has_country_flag = iw043_pending_resident_civic_and_religious_equality }
+						is_ai = no
+					}
+				}
+			}
+			country_event = { id = chaosx.nr006.90101 }
+		}
+	}
+}
+
+country_event = {
+	id = chaosx.nr006.90143
+	hidden = yes
+	is_triggered_only = yes
+	trigger = {
+		is_ai = no
+	}
+	immediate = {
+		if = {
+			limit = {
+				OR = {
+					AND = {
+						has_country_flag = iw043_pending_tatar_bashkir_representation
+					}
+					AND = {
+						has_country_flag = iw043_pending_tatar_bashkir_representation
+					}
+				}
+			}
+			country_event = { id = chaosx.nr006.90102 }
+		}
+		else_if = {
+			limit = {
+				OR = {
+					AND = {
+						NOT = { has_country_flag = iw043_pending_tatar_bashkir_representation }
+						NOT = { has_country_flag = iw043_pending_resident_civic_and_religious_equality }
+						is_ai = no
+					}
+					AND = {
+						NOT = { has_country_flag = iw043_pending_tatar_bashkir_representation }
+						NOT = { has_country_flag = iw043_pending_resident_civic_and_religious_equality }
+						is_ai = no
+					}
+				}
+			}
+			country_event = { id = chaosx.nr006.90101 }
+		}
 	}
 }

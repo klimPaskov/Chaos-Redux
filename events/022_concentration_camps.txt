@@ -83,9 +83,10 @@ country_event = {
 		}
 	}
 
+
 	option = {
 		name = chaosx.nr22.2.a
-		trigger = { camp_admin_generic_reform_available = yes }
+		trigger = { camp_admin_generic_reform_available = yes  is_ai = no }
 		custom_effect_tooltip = chaosx.nr22.2.a_tt
 		hidden_effect = { concentration_camps_policy_closure = yes }
 		ai_chance = {
@@ -97,8 +98,8 @@ country_event = {
 			modifier = { add = constant:concentration_camps_open_weight.collapse_close has_stability < constant:concentration_camps_open_weight.collapse_stability }
 		}
 	}
-
 	option = {
+		trigger = { is_ai = no }
 		name = chaosx.nr22.2.b
 		custom_effect_tooltip = chaosx.nr22.2.b_tt
 		hidden_effect = { concentration_camps_policy_review = yes }
@@ -111,7 +112,129 @@ country_event = {
 			modifier = { add = constant:concentration_camps_open_weight.collapse_review has_stability < constant:concentration_camps_open_weight.collapse_stability }
 		}
 	}
+	option = {
+		name = chaosx_event_more_options
+		trigger = {
+			is_ai = no
+		
+			OR = {
+				AND = {
+					concentration_camps_has_labor_site = yes
+				}
+				AND = {
+					camp_admin_can_use_radical_mandate = yes
+					check_variable = { concentration_camps_stage_converted > constant:concentration_camps_value.zero }
+				}
+				AND = {
+					concentration_camps_government_permits_expansion = yes
+					any_controlled_state = { concentration_camps_state_is_candidate = yes }
+				}
+			}
+		}nt_more_options
+		trigger = {
+			is_ai = no
+		}
+		custom_effect_tooltip = chaosx_event_more_options_tt
+		hidden_effect = { country_event = { id = chaosx.nr22.92021 } }
+	}
+	option = {
+		name = chaosx_event_ai_resolution
+		trigger = {
+			is_ai = yes
+		}
+		hidden_effect = { country_event = { id = chaosx.nr22.92099 } }
+	}
 
+}
+
+country_event = {
+	id = chaosx.nr22.92001
+	title = chaosx.nr22.2.t
+	desc = {
+		trigger = { check_variable = { var = concentration_camps_opening_kind value = constant:concentration_camps_source_kind.occupied compare = equals } }
+		text = chaosx.nr22.2.d_occupied
+	}
+	desc = {
+		trigger = { check_variable = { var = concentration_camps_opening_kind value = constant:concentration_camps_source_kind.resistance compare = equals } }
+		text = chaosx.nr22.2.d_resistance
+	}
+	desc = {
+		text = chaosx.nr22.2.d_political
+	}
+	picture = GFX_report_event_SWE_internment_camp
+	is_triggered_only = yes
+	trigger = {
+		is_ai = no
+	}
+	option = {
+		name = chaosx.nr22.2.a
+		trigger = { camp_admin_generic_reform_available = yes  is_ai = no }
+		custom_effect_tooltip = chaosx.nr22.2.a_tt
+		hidden_effect = { concentration_camps_policy_closure = yes }
+		ai_chance = {
+			base = 0
+			modifier = { add = constant:concentration_camps_open_weight.close_p1 has_government = democratic has_war = no }
+			modifier = { add = constant:concentration_camps_open_weight.close_p2 has_government = democratic has_war = yes }
+			modifier = { add = constant:concentration_camps_open_weight.close_p3 NOT = { has_government = democratic } has_war = yes }
+			modifier = { add = constant:concentration_camps_open_weight.close_p4 NOT = { has_government = democratic } has_war = no }
+			modifier = { add = constant:concentration_camps_open_weight.collapse_close has_stability < constant:concentration_camps_open_weight.collapse_stability }
+		}
+	}
+	option = {
+		trigger = { is_ai = no }
+		name = chaosx.nr22.2.b
+		custom_effect_tooltip = chaosx.nr22.2.b_tt
+		hidden_effect = { concentration_camps_policy_review = yes }
+		ai_chance = {
+			base = 0
+			modifier = { add = constant:concentration_camps_open_weight.review_p1 has_government = democratic has_war = no }
+			modifier = { add = constant:concentration_camps_open_weight.review_p2 has_government = democratic has_war = yes }
+			modifier = { add = constant:concentration_camps_open_weight.review_p3 NOT = { has_government = democratic } has_war = yes }
+			modifier = { add = constant:concentration_camps_open_weight.review_p4 NOT = { has_government = democratic } has_war = no }
+			modifier = { add = constant:concentration_camps_open_weight.collapse_review has_stability < constant:concentration_camps_open_weight.collapse_stability }
+		}
+	}
+	option = {
+		trigger = {
+			OR = {
+				AND = {
+					concentration_camps_has_labor_site = yes
+				}
+				AND = {
+					camp_admin_can_use_radical_mandate = yes
+					check_variable = { concentration_camps_stage_converted > constant:concentration_camps_value.zero }
+				}
+				AND = {
+					concentration_camps_government_permits_expansion = yes
+					any_controlled_state = { concentration_camps_state_is_candidate = yes }
+				}
+			}
+		}
+		name = chaosx_event_more_options
+		custom_effect_tooltip = chaosx_event_more_options_tt
+		hidden_effect = { country_event = { id = chaosx.nr22.92021 } }
+	}
+}
+
+country_event = {
+	id = chaosx.nr22.92002
+	title = chaosx.nr22.2.t
+	desc = {
+		trigger = { check_variable = { var = concentration_camps_opening_kind value = constant:concentration_camps_source_kind.occupied compare = equals } }
+		text = chaosx.nr22.2.d_occupied
+	}
+	desc = {
+		trigger = { check_variable = { var = concentration_camps_opening_kind value = constant:concentration_camps_source_kind.resistance compare = equals } }
+		text = chaosx.nr22.2.d_resistance
+	}
+	desc = {
+		text = chaosx.nr22.2.d_political
+	}
+	picture = GFX_report_event_SWE_internment_camp
+	is_triggered_only = yes
+	trigger = {
+		is_ai = no
+	}
 	option = {
 		name = chaosx.nr22.2.c
 		trigger = { concentration_camps_has_labor_site = yes }
@@ -126,7 +249,6 @@ country_event = {
 			modifier = { factor = constant:concentration_camps_ai.blocked has_equipment = { support_equipment < constant:concentration_camps_ai.support_floor } }
 		}
 	}
-
 	option = {
 		name = chaosx.nr22.2.e
 		trigger = {
@@ -143,7 +265,115 @@ country_event = {
 			modifier = { factor = constant:concentration_camps_ai.blocked has_stability < constant:concentration_camps_open_weight.collapse_stability }
 		}
 	}
+	option = {
+		name = chaosx.nr22.2.d
+		trigger = {
+			concentration_camps_government_permits_expansion = yes
+			any_controlled_state = { concentration_camps_state_is_candidate = yes }
+		}
+		custom_effect_tooltip = chaosx.nr22.2.d_tt
+		hidden_effect = { concentration_camps_policy_expansion = yes }
+		ai_chance = {
+			base = 0
+			modifier = { add = constant:concentration_camps_open_weight.expand_p1 has_government = democratic has_war = no }
+			modifier = { add = constant:concentration_camps_open_weight.expand_p2 has_government = democratic has_war = yes }
+			modifier = { add = constant:concentration_camps_open_weight.expand_p3 NOT = { has_government = democratic } has_war = yes }
+			modifier = { add = constant:concentration_camps_open_weight.expand_p4 NOT = { has_government = democratic } has_war = no }
+			modifier = { factor = constant:concentration_camps_ai.blocked has_equipment = { support_equipment < constant:concentration_camps_ai.support_floor } }
+		}
+	}
+	option = {
+		trigger = {
+			OR = {
+				AND = {
+					camp_admin_generic_reform_available = yes  is_ai = no
+				}
+				AND = {
+					is_ai = no
+				}
+			}
+		}
+		name = chaosx_event_back_to_choices
+		custom_effect_tooltip = chaosx_event_back_to_choices_tt
+		hidden_effect = { country_event = { id = chaosx.nr22.92042 } }
+	}
+}
 
+country_event = {
+	id = chaosx.nr22.92099
+	title = chaosx.nr22.2.t
+	desc = {
+		trigger = { check_variable = { var = concentration_camps_opening_kind value = constant:concentration_camps_source_kind.occupied compare = equals } }
+		text = chaosx.nr22.2.d_occupied
+	}
+	desc = {
+		trigger = { check_variable = { var = concentration_camps_opening_kind value = constant:concentration_camps_source_kind.resistance compare = equals } }
+		text = chaosx.nr22.2.d_resistance
+	}
+	desc = {
+		text = chaosx.nr22.2.d_political
+	}
+	is_triggered_only = yes
+	trigger = {
+		is_ai = yes
+	}
+	option = {
+		name = chaosx.nr22.2.a
+		trigger = { camp_admin_generic_reform_available = yes }
+		custom_effect_tooltip = chaosx.nr22.2.a_tt
+		hidden_effect = { concentration_camps_policy_closure = yes }
+		ai_chance = {
+			base = 0
+			modifier = { add = constant:concentration_camps_open_weight.close_p1 has_government = democratic has_war = no }
+			modifier = { add = constant:concentration_camps_open_weight.close_p2 has_government = democratic has_war = yes }
+			modifier = { add = constant:concentration_camps_open_weight.close_p3 NOT = { has_government = democratic } has_war = yes }
+			modifier = { add = constant:concentration_camps_open_weight.close_p4 NOT = { has_government = democratic } has_war = no }
+			modifier = { add = constant:concentration_camps_open_weight.collapse_close has_stability < constant:concentration_camps_open_weight.collapse_stability }
+		}
+	}
+	option = {
+		name = chaosx.nr22.2.b
+		custom_effect_tooltip = chaosx.nr22.2.b_tt
+		hidden_effect = { concentration_camps_policy_review = yes }
+		ai_chance = {
+			base = 0
+			modifier = { add = constant:concentration_camps_open_weight.review_p1 has_government = democratic has_war = no }
+			modifier = { add = constant:concentration_camps_open_weight.review_p2 has_government = democratic has_war = yes }
+			modifier = { add = constant:concentration_camps_open_weight.review_p3 NOT = { has_government = democratic } has_war = yes }
+			modifier = { add = constant:concentration_camps_open_weight.review_p4 NOT = { has_government = democratic } has_war = no }
+			modifier = { add = constant:concentration_camps_open_weight.collapse_review has_stability < constant:concentration_camps_open_weight.collapse_stability }
+		}
+	}
+	option = {
+		name = chaosx.nr22.2.c
+		trigger = { concentration_camps_has_labor_site = yes }
+		custom_effect_tooltip = chaosx.nr22.2.c_tt
+		hidden_effect = { concentration_camps_policy_labor = yes }
+		ai_chance = {
+			base = 0
+			modifier = { add = constant:concentration_camps_open_weight.labor_p1 has_government = democratic has_war = no }
+			modifier = { add = constant:concentration_camps_open_weight.labor_p2 has_government = democratic has_war = yes }
+			modifier = { add = constant:concentration_camps_open_weight.labor_p3 NOT = { has_government = democratic } has_war = yes }
+			modifier = { add = constant:concentration_camps_open_weight.labor_p4 NOT = { has_government = democratic } has_war = no }
+			modifier = { factor = constant:concentration_camps_ai.blocked has_equipment = { support_equipment < constant:concentration_camps_ai.support_floor } }
+		}
+	}
+	option = {
+		name = chaosx.nr22.2.e
+		trigger = {
+			camp_admin_can_use_radical_mandate = yes
+			check_variable = { concentration_camps_stage_converted > constant:concentration_camps_value.zero }
+		}
+		custom_effect_tooltip = chaosx.nr22.2.e_tt
+		hidden_effect = { concentration_camps_accept_killing_orders = yes }
+		ai_chance = {
+			base = constant:concentration_camps_ai.low
+			modifier = { add = constant:concentration_camps_ai.dominant has_government = fascism has_war = yes }
+			modifier = { add = constant:concentration_camps_ai.strong has_government = communism has_war = yes }
+			modifier = { add = constant:concentration_camps_ai.moderate has_civil_war = yes }
+			modifier = { factor = constant:concentration_camps_ai.blocked has_stability < constant:concentration_camps_open_weight.collapse_stability }
+		}
+	}
 	option = {
 		name = chaosx.nr22.2.d
 		trigger = {
@@ -783,7 +1013,9 @@ country_event = {
 		set_variable = { concentration_camps_front_delay_days = constant:concentration_camps_timing.retreat_delay_days }
 	}
 
+
 	option = {
+		trigger = { is_ai = no }
 		name = chaosx.nr22.511.a
 		custom_effect_tooltip = chaosx.nr22.511.a_tt
 		hidden_effect = { concentration_camps_retreat_open_gates = yes }
@@ -793,8 +1025,8 @@ country_event = {
 			modifier = { add = constant:concentration_camps_ai.moderate has_stability < constant:concentration_camps_target_weight.unstable_threshold }
 		}
 	}
-
 	option = {
+		trigger = { is_ai = no }
 		name = chaosx.nr22.511.b
 		custom_effect_tooltip = chaosx.nr22.511.b_tt
 		hidden_effect = { concentration_camps_answer_front_march = yes }
@@ -805,7 +1037,100 @@ country_event = {
 			modifier = { factor = constant:concentration_camps_ai.blocked has_government = democratic }
 		}
 	}
+	option = {
+		name = chaosx_event_more_options
+		trigger = {
+			is_ai = no
+		
+			OR = {
+				AND = {
+					camp_admin_can_use_radical_mandate = yes
+				}
+				AND = {
+					always = yes
+				}
+				AND = {
+					always = yes
+				}
+			}
+		}nt_more_options
+		trigger = {
+			is_ai = no
+		}
+		custom_effect_tooltip = chaosx_event_more_options_tt
+		hidden_effect = { country_event = { id = chaosx.nr22.92121 } }
+	}
+	option = {
+		name = chaosx_event_ai_resolution
+		trigger = {
+			is_ai = yes
+		}
+		hidden_effect = { country_event = { id = chaosx.nr22.92199 } }
+	}
 
+}
+
+country_event = {
+	id = chaosx.nr22.92101
+	title = chaosx.nr22.511.t
+	desc = chaosx.nr22.511.d
+	picture = GFX_report_event_generic_ruins
+	is_triggered_only = yes
+	trigger = {
+		is_ai = no
+	}
+	option = {
+		trigger = { is_ai = no }
+		name = chaosx.nr22.511.a
+		custom_effect_tooltip = chaosx.nr22.511.a_tt
+		hidden_effect = { concentration_camps_retreat_open_gates = yes }
+		ai_chance = {
+			base = constant:concentration_camps_ai.low
+			modifier = { add = constant:concentration_camps_ai.strong has_government = democratic }
+			modifier = { add = constant:concentration_camps_ai.moderate has_stability < constant:concentration_camps_target_weight.unstable_threshold }
+		}
+	}
+	option = {
+		trigger = { is_ai = no }
+		name = chaosx.nr22.511.b
+		custom_effect_tooltip = chaosx.nr22.511.b_tt
+		hidden_effect = { concentration_camps_answer_front_march = yes }
+		ai_chance = {
+			base = constant:concentration_camps_ai.low
+			modifier = { add = constant:concentration_camps_ai.standard OR = { has_government = fascism has_government = communism } }
+			modifier = { add = constant:concentration_camps_ai.moderate has_government = neutrality }
+			modifier = { factor = constant:concentration_camps_ai.blocked has_government = democratic }
+		}
+	}
+	option = {
+		trigger = {
+			OR = {
+				AND = {
+					camp_admin_can_use_radical_mandate = yes
+				}
+				AND = {
+					always = yes
+				}
+				AND = {
+					always = yes
+				}
+			}
+		}
+		name = chaosx_event_more_options
+		custom_effect_tooltip = chaosx_event_more_options_tt
+		hidden_effect = { country_event = { id = chaosx.nr22.92121 } }
+	}
+}
+
+country_event = {
+	id = chaosx.nr22.92102
+	title = chaosx.nr22.511.t
+	desc = chaosx.nr22.511.d
+	picture = GFX_report_event_generic_ruins
+	is_triggered_only = yes
+	trigger = {
+		is_ai = no
+	}
 	option = {
 		name = chaosx.nr22.511.c
 		trigger = { camp_admin_can_use_radical_mandate = yes }
@@ -818,7 +1143,6 @@ country_event = {
 			modifier = { factor = constant:concentration_camps_ai.blocked has_stability > constant:concentration_camps_target_weight.stable_threshold }
 		}
 	}
-
 	option = {
 		name = chaosx.nr22.511.f
 		custom_effect_tooltip = chaosx.nr22.511.f_tt
@@ -828,7 +1152,80 @@ country_event = {
 			modifier = { add = constant:concentration_camps_ai.moderate NOT = { has_government = democratic } }
 		}
 	}
+	option = {
+		name = chaosx.nr22.511.e
+		custom_effect_tooltip = chaosx.nr22.511.e_tt
+		ai_chance = {
+			base = constant:concentration_camps_ai.moderate
+		}
+	}
+	option = {
+		trigger = {
+			OR = {
+				AND = {
+					is_ai = no
+				}
+				AND = {
+					is_ai = no
+				}
+			}
+		}
+		name = chaosx_event_back_to_choices
+		custom_effect_tooltip = chaosx_event_back_to_choices_tt
+		hidden_effect = { country_event = { id = chaosx.nr22.92142 } }
+	}
+}
 
+country_event = {
+	id = chaosx.nr22.92199
+	title = chaosx.nr22.511.t
+	desc = chaosx.nr22.511.d
+	is_triggered_only = yes
+	trigger = {
+		is_ai = yes
+	}
+	option = {
+		name = chaosx.nr22.511.a
+		custom_effect_tooltip = chaosx.nr22.511.a_tt
+		hidden_effect = { concentration_camps_retreat_open_gates = yes }
+		ai_chance = {
+			base = constant:concentration_camps_ai.low
+			modifier = { add = constant:concentration_camps_ai.strong has_government = democratic }
+			modifier = { add = constant:concentration_camps_ai.moderate has_stability < constant:concentration_camps_target_weight.unstable_threshold }
+		}
+	}
+	option = {
+		name = chaosx.nr22.511.b
+		custom_effect_tooltip = chaosx.nr22.511.b_tt
+		hidden_effect = { concentration_camps_answer_front_march = yes }
+		ai_chance = {
+			base = constant:concentration_camps_ai.low
+			modifier = { add = constant:concentration_camps_ai.standard OR = { has_government = fascism has_government = communism } }
+			modifier = { add = constant:concentration_camps_ai.moderate has_government = neutrality }
+			modifier = { factor = constant:concentration_camps_ai.blocked has_government = democratic }
+		}
+	}
+	option = {
+		name = chaosx.nr22.511.c
+		trigger = { camp_admin_can_use_radical_mandate = yes }
+		custom_effect_tooltip = chaosx.nr22.511.c_tt
+		hidden_effect = { concentration_camps_answer_front_liquidate = yes }
+		ai_chance = {
+			base = constant:concentration_camps_ai.blocked
+			modifier = { add = constant:concentration_camps_ai.standard has_government = fascism }
+			modifier = { add = constant:concentration_camps_ai.moderate has_government = communism }
+			modifier = { factor = constant:concentration_camps_ai.blocked has_stability > constant:concentration_camps_target_weight.stable_threshold }
+		}
+	}
+	option = {
+		name = chaosx.nr22.511.f
+		custom_effect_tooltip = chaosx.nr22.511.f_tt
+		hidden_effect = { concentration_camps_retreat_burn_records = yes }
+		ai_chance = {
+			base = constant:concentration_camps_ai.moderate
+			modifier = { add = constant:concentration_camps_ai.moderate NOT = { has_government = democratic } }
+		}
+	}
 	option = {
 		name = chaosx.nr22.511.e
 		custom_effect_tooltip = chaosx.nr22.511.e_tt
@@ -929,5 +1326,110 @@ country_event = {
 
 	immediate = {
 		concentration_camps_resolve_evidence_proof = yes
+	}
+}
+
+
+country_event = {
+	id = chaosx.nr22.92121
+	hidden = yes
+	is_triggered_only = yes
+	trigger = {
+		is_ai = no
+	}
+	immediate = {
+		if = {
+			limit = {
+				OR = {
+					AND = {
+						camp_admin_can_use_radical_mandate = yes
+					}
+					AND = {
+						always = yes
+					}
+					AND = {
+						always = yes
+					}
+				}
+			}
+			country_event = { id = chaosx.nr22.92102 }
+		}
+	}
+}
+
+country_event = {
+	id = chaosx.nr22.92142
+	hidden = yes
+	is_triggered_only = yes
+	trigger = {
+		is_ai = no
+	}
+	immediate = {
+		if = {
+			limit = {
+				OR = {
+					AND = {
+						is_ai = no
+					}
+					AND = {
+						is_ai = no
+					}
+				}
+			}
+			country_event = { id = chaosx.nr22.92101 }
+		}
+	}
+}
+
+country_event = {
+	id = chaosx.nr22.92021
+	hidden = yes
+	is_triggered_only = yes
+	trigger = {
+		is_ai = no
+	}
+	immediate = {
+		if = {
+			limit = {
+				OR = {
+					AND = {
+						concentration_camps_has_labor_site = yes
+					}
+					AND = {
+						camp_admin_can_use_radical_mandate = yes
+						check_variable = { concentration_camps_stage_converted > constant:concentration_camps_value.zero }
+					}
+					AND = {
+						concentration_camps_government_permits_expansion = yes
+						any_controlled_state = { concentration_camps_state_is_candidate = yes }
+					}
+				}
+			}
+			country_event = { id = chaosx.nr22.92002 }
+		}
+	}
+}
+
+country_event = {
+	id = chaosx.nr22.92042
+	hidden = yes
+	is_triggered_only = yes
+	trigger = {
+		is_ai = no
+	}
+	immediate = {
+		if = {
+			limit = {
+				OR = {
+					AND = {
+						camp_admin_generic_reform_available = yes  is_ai = no
+					}
+					AND = {
+						is_ai = no
+					}
+				}
+			}
+			country_event = { id = chaosx.nr22.92001 }
+		}
 	}
 }

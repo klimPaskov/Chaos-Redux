@@ -217,6 +217,227 @@ country_event = {
 	# an AI government takes the direction of its profile. Reform is offered
 	# only to a government that can pay for it; a consolidator that cannot
 	# offers amnesty instead.
+
+	option = {
+		name = chaosx.nr21.9.a
+		trigger = { NOT = { has_country_flag = random_civil_war_postwar_direction_pending }  is_ai = no }
+		custom_effect_tooltip = chaosx.nr21.9.a.tt
+		hidden_effect = {
+			set_country_flag = random_civil_war_reconstruction_phase
+			event021_parent_reconstruction_tick = yes
+		}
+	}
+	option = {
+		name = chaosx.nr21.9.amnesty
+		trigger = { has_country_flag = random_civil_war_postwar_direction_pending  is_ai = no }
+		custom_effect_tooltip = chaosx.nr21.9.amnesty.tt
+		hidden_effect = {
+			event021_postwar_direction_amnesty = yes
+			set_country_flag = random_civil_war_reconstruction_phase
+			event021_parent_reconstruction_tick = yes
+		}
+		ai_chance = {
+			base = constant:random_civil_war_value.one
+			modifier = { factor = constant:random_civil_war_value.zero has_country_flag = random_civil_war_hardliner_profile }
+			modifier = {
+				factor = constant:random_civil_war_value.zero
+				has_country_flag = random_civil_war_consolidator_profile
+				event021_postwar_reform_affordable = yes
+			}
+		}
+	}
+	option = {
+		name = chaosx_event_more_options
+		trigger = {
+			is_ai = no
+		
+			OR = {
+				AND = {
+					has_country_flag = random_civil_war_postwar_direction_pending
+					event021_postwar_reform_affordable = yes
+				}
+				AND = {
+					has_country_flag = random_civil_war_postwar_direction_pending
+				}
+				AND = {
+					has_country_flag = random_civil_war_postwar_direction_pending
+				}
+			}
+		}nt_more_options
+		trigger = {
+			is_ai = no
+		}
+		custom_effect_tooltip = chaosx_event_more_options_tt
+		hidden_effect = { country_event = { id = chaosx.nr21.91921 } }
+	}
+	option = {
+		name = chaosx_event_ai_resolution
+		trigger = {
+			is_ai = yes
+		}
+		hidden_effect = { country_event = { id = chaosx.nr21.91999 } }
+	}
+
+}
+
+country_event = {
+	id = chaosx.nr21.91901
+	title = chaosx.nr21.9.t
+	desc = {
+		trigger = { has_country_flag = random_civil_war_postwar_direction_pending }
+		text = chaosx.nr21.9.d_victory
+	}
+	desc = {
+		trigger = { NOT = { has_country_flag = random_civil_war_postwar_direction_pending } }
+		text = chaosx.nr21.9.d
+	}
+	picture = GFX_report_event_021_random_civil_war_opening
+	is_triggered_only = yes
+	trigger = {
+		is_ai = no
+	}
+	option = {
+		name = chaosx.nr21.9.a
+		trigger = { NOT = { has_country_flag = random_civil_war_postwar_direction_pending }  is_ai = no }
+		custom_effect_tooltip = chaosx.nr21.9.a.tt
+		hidden_effect = {
+			set_country_flag = random_civil_war_reconstruction_phase
+			event021_parent_reconstruction_tick = yes
+		}
+	}
+	option = {
+		name = chaosx.nr21.9.amnesty
+		trigger = { has_country_flag = random_civil_war_postwar_direction_pending  is_ai = no }
+		custom_effect_tooltip = chaosx.nr21.9.amnesty.tt
+		hidden_effect = {
+			event021_postwar_direction_amnesty = yes
+			set_country_flag = random_civil_war_reconstruction_phase
+			event021_parent_reconstruction_tick = yes
+		}
+		ai_chance = {
+			base = constant:random_civil_war_value.one
+			modifier = { factor = constant:random_civil_war_value.zero has_country_flag = random_civil_war_hardliner_profile }
+			modifier = {
+				factor = constant:random_civil_war_value.zero
+				has_country_flag = random_civil_war_consolidator_profile
+				event021_postwar_reform_affordable = yes
+			}
+		}
+	}
+	option = {
+		trigger = {
+			OR = {
+				AND = {
+					has_country_flag = random_civil_war_postwar_direction_pending
+					event021_postwar_reform_affordable = yes
+				}
+				AND = {
+					has_country_flag = random_civil_war_postwar_direction_pending
+				}
+				AND = {
+					has_country_flag = random_civil_war_postwar_direction_pending
+				}
+			}
+		}
+		name = chaosx_event_more_options
+		custom_effect_tooltip = chaosx_event_more_options_tt
+		hidden_effect = { country_event = { id = chaosx.nr21.91921 } }
+	}
+}
+
+country_event = {
+	id = chaosx.nr21.91902
+	title = chaosx.nr21.9.t
+	desc = {
+		trigger = { has_country_flag = random_civil_war_postwar_direction_pending }
+		text = chaosx.nr21.9.d_victory
+	}
+	desc = {
+		trigger = { NOT = { has_country_flag = random_civil_war_postwar_direction_pending } }
+		text = chaosx.nr21.9.d
+	}
+	picture = GFX_report_event_021_random_civil_war_opening
+	is_triggered_only = yes
+	trigger = {
+		is_ai = no
+	}
+	option = {
+		name = chaosx.nr21.9.reform
+		trigger = {
+			has_country_flag = random_civil_war_postwar_direction_pending
+			event021_postwar_reform_affordable = yes
+		}
+		add_political_power = constant:event021_postwar_direction.reform_political_power_cost
+		custom_effect_tooltip = chaosx.nr21.9.reform.tt
+		hidden_effect = {
+			event021_postwar_direction_reform = yes
+			set_country_flag = random_civil_war_reconstruction_phase
+			event021_parent_reconstruction_tick = yes
+		}
+		ai_chance = {
+			base = constant:random_civil_war_value.one
+			modifier = { factor = constant:random_civil_war_value.zero has_country_flag = random_civil_war_hardliner_profile }
+			modifier = { factor = constant:random_civil_war_value.zero has_country_flag = random_civil_war_negotiator_profile }
+		}
+	}
+	option = {
+		name = chaosx.nr21.9.harsh
+		trigger = { has_country_flag = random_civil_war_postwar_direction_pending }
+		custom_effect_tooltip = chaosx.nr21.9.harsh.tt
+		hidden_effect = {
+			event021_postwar_direction_harsh = yes
+			set_country_flag = random_civil_war_reconstruction_phase
+			event021_parent_reconstruction_tick = yes
+		}
+		ai_chance = {
+			base = constant:random_civil_war_value.one
+			modifier = { factor = constant:random_civil_war_value.zero has_country_flag = random_civil_war_negotiator_profile }
+			modifier = { factor = constant:random_civil_war_value.zero has_country_flag = random_civil_war_consolidator_profile }
+		}
+	}
+	option = {
+		name = chaosx.nr21.9.emergency
+		trigger = { has_country_flag = random_civil_war_postwar_direction_pending }
+		custom_effect_tooltip = chaosx.nr21.9.emergency.tt
+		hidden_effect = {
+			event021_postwar_direction_emergency = yes
+			set_country_flag = random_civil_war_reconstruction_phase
+			event021_parent_reconstruction_tick = yes
+		}
+		ai_chance = { base = constant:random_civil_war_value.zero }
+	}
+	option = {
+		trigger = {
+			OR = {
+				AND = {
+					NOT = { has_country_flag = random_civil_war_postwar_direction_pending }  is_ai = no
+				}
+				AND = {
+					has_country_flag = random_civil_war_postwar_direction_pending  is_ai = no
+				}
+			}
+		}
+		name = chaosx_event_back_to_choices
+		custom_effect_tooltip = chaosx_event_back_to_choices_tt
+		hidden_effect = { country_event = { id = chaosx.nr21.91942 } }
+	}
+}
+
+country_event = {
+	id = chaosx.nr21.91999
+	title = chaosx.nr21.9.t
+	desc = {
+		trigger = { has_country_flag = random_civil_war_postwar_direction_pending }
+		text = chaosx.nr21.9.d_victory
+	}
+	desc = {
+		trigger = { NOT = { has_country_flag = random_civil_war_postwar_direction_pending } }
+		text = chaosx.nr21.9.d
+	}
+	is_triggered_only = yes
+	trigger = {
+		is_ai = yes
+	}
 	option = {
 		name = chaosx.nr21.9.a
 		trigger = { NOT = { has_country_flag = random_civil_war_postwar_direction_pending } }
@@ -490,4 +711,57 @@ news_event = {
 	major = no
 	is_triggered_only = yes
 	option = { name = news_event_021_global_fracture.a }
+}
+
+
+country_event = {
+	id = chaosx.nr21.91921
+	hidden = yes
+	is_triggered_only = yes
+	trigger = {
+		is_ai = no
+	}
+	immediate = {
+		if = {
+			limit = {
+				OR = {
+					AND = {
+						has_country_flag = random_civil_war_postwar_direction_pending
+						event021_postwar_reform_affordable = yes
+					}
+					AND = {
+						has_country_flag = random_civil_war_postwar_direction_pending
+					}
+					AND = {
+						has_country_flag = random_civil_war_postwar_direction_pending
+					}
+				}
+			}
+			country_event = { id = chaosx.nr21.91902 }
+		}
+	}
+}
+
+country_event = {
+	id = chaosx.nr21.91942
+	hidden = yes
+	is_triggered_only = yes
+	trigger = {
+		is_ai = no
+	}
+	immediate = {
+		if = {
+			limit = {
+				OR = {
+					AND = {
+						NOT = { has_country_flag = random_civil_war_postwar_direction_pending }  is_ai = no
+					}
+					AND = {
+						has_country_flag = random_civil_war_postwar_direction_pending  is_ai = no
+					}
+				}
+			}
+			country_event = { id = chaosx.nr21.91901 }
+		}
+	}
 }

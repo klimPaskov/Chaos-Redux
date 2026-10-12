@@ -134,6 +134,281 @@ country_event = {
 	is_triggered_only = yes
 	trigger = { check_variable = { global.time_traveler_fig_state^1 = constant:time_traveler_figure_state.movement } }
 
+
+	option = {
+		trigger = { is_ai = no }
+		name = chaosx.nr30.213.adviser
+		ai_chance = { base = 40 modifier = { add = 20 has_war = yes } }
+		custom_effect_tooltip = chaosx.nr30.213.adviser_tt
+		hidden_effect = {
+			set_temp_variable = { time_traveler_fig = 1 }
+			set_temp_variable = { time_traveler_route = 1 }
+			time_traveler_figure_power = yes
+		}
+	}
+	option = {
+		trigger = { is_ai = no }
+		name = chaosx.nr30.213.symbol
+		ai_chance = { base = 25 }
+		custom_effect_tooltip = chaosx.nr30.213.symbol_tt
+		hidden_effect = {
+			set_temp_variable = { time_traveler_fig = 1 }
+			set_temp_variable = { time_traveler_route = 2 }
+			time_traveler_figure_power = yes
+		}
+	}
+	option = {
+		name = chaosx_event_more_options
+		trigger = {
+			is_ai = no
+		
+			OR = {
+				AND = {
+					NOT = { check_variable = { global.time_traveler_fig_support^1 < constant:time_traveler_figure_value.office_min } }
+				}
+				AND = {
+					always = yes
+				}
+				AND = {
+					always = yes
+				}
+				AND = {
+					always = yes
+				}
+			}
+		}nt_more_options
+		trigger = {
+			is_ai = no
+		}
+		custom_effect_tooltip = chaosx_event_more_options_tt
+		hidden_effect = { country_event = { id = chaosx.nr30.95321 } }
+	}
+	option = {
+		name = chaosx_event_ai_resolution
+		trigger = {
+			is_ai = yes
+		}
+		hidden_effect = { country_event = { id = chaosx.nr30.95399 } }
+	}
+
+}
+
+country_event = {
+	id = chaosx.nr30.95301
+	title = chaosx.nr30.213.t
+	desc = {
+		trigger = { NOT = { check_variable = { global.time_traveler_fig_support^1 < constant:time_traveler_figure_value.high_edge } } }
+		text = chaosx.nr30.213.d_high
+	}
+	desc = {
+		trigger = { NOT = { check_variable = { global.time_traveler_fig_support^1 < constant:time_traveler_figure_value.low_edge } } }
+		text = chaosx.nr30.213.d_mid
+	}
+	desc = {
+		text = chaosx.nr30.213.d_low
+	}
+	picture = GFX_report_event_generic_military_parade
+	is_triggered_only = yes
+	trigger = {
+		is_ai = no
+	}
+	option = {
+		trigger = { is_ai = no }
+		name = chaosx.nr30.213.adviser
+		ai_chance = { base = 40 modifier = { add = 20 has_war = yes } }
+		custom_effect_tooltip = chaosx.nr30.213.adviser_tt
+		hidden_effect = {
+			set_temp_variable = { time_traveler_fig = 1 }
+			set_temp_variable = { time_traveler_route = 1 }
+			time_traveler_figure_power = yes
+		}
+	}
+	option = {
+		trigger = { is_ai = no }
+		name = chaosx.nr30.213.symbol
+		ai_chance = { base = 25 }
+		custom_effect_tooltip = chaosx.nr30.213.symbol_tt
+		hidden_effect = {
+			set_temp_variable = { time_traveler_fig = 1 }
+			set_temp_variable = { time_traveler_route = 2 }
+			time_traveler_figure_power = yes
+		}
+	}
+	option = {
+		trigger = {
+			OR = {
+				AND = {
+					NOT = { check_variable = { global.time_traveler_fig_support^1 < constant:time_traveler_figure_value.office_min } }
+				}
+				AND = {
+					always = yes
+				}
+				AND = {
+					always = yes
+				}
+				AND = {
+					always = yes
+				}
+			}
+		}
+		name = chaosx_event_more_options
+		custom_effect_tooltip = chaosx_event_more_options_tt
+		hidden_effect = { country_event = { id = chaosx.nr30.95321 } }
+	}
+}
+
+country_event = {
+	id = chaosx.nr30.95302
+	title = chaosx.nr30.213.t
+	desc = {
+		trigger = { NOT = { check_variable = { global.time_traveler_fig_support^1 < constant:time_traveler_figure_value.high_edge } } }
+		text = chaosx.nr30.213.d_high
+	}
+	desc = {
+		trigger = { NOT = { check_variable = { global.time_traveler_fig_support^1 < constant:time_traveler_figure_value.low_edge } } }
+		text = chaosx.nr30.213.d_mid
+	}
+	desc = {
+		text = chaosx.nr30.213.d_low
+	}
+	picture = GFX_report_event_generic_military_parade
+	is_triggered_only = yes
+	trigger = {
+		is_ai = no
+	}
+	option = {
+		name = chaosx.nr30.213.office
+		trigger = { NOT = { check_variable = { global.time_traveler_fig_support^1 < constant:time_traveler_figure_value.office_min } } }
+		ai_chance = { base = 5 modifier = { add = 30 NOT = { check_variable = { global.time_traveler_fig_support^1 < constant:time_traveler_figure_value.high_edge } } has_stability < constant:time_traveler_ai.stability_low } }
+		custom_effect_tooltip = chaosx.nr30.213.office_tt
+		hidden_effect = {
+			set_temp_variable = { time_traveler_fig = 1 }
+			set_temp_variable = { time_traveler_route = 3 }
+			time_traveler_figure_power = yes
+		}
+	}
+	option = {
+		name = chaosx.nr30.213.suppress
+		ai_chance = { base = 15 modifier = { add = 20 has_government = fascism } modifier = { add = 15 has_government = communism } }
+		custom_effect_tooltip = chaosx.nr30.213.suppress_tt
+		hidden_effect = {
+			set_temp_variable = { time_traveler_fig = 1 }
+			set_temp_variable = { time_traveler_route = 4 }
+			time_traveler_figure_power = yes
+		}
+	}
+	option = {
+		trigger = {
+			OR = {
+				AND = {
+					is_ai = no
+				}
+				AND = {
+					is_ai = no
+				}
+			}
+		}
+		name = chaosx_event_back_to_choices
+		custom_effect_tooltip = chaosx_event_back_to_choices_tt
+		hidden_effect = { country_event = { id = chaosx.nr30.95342 } }
+	}
+	option = {
+		trigger = {
+			OR = {
+				AND = {
+					always = yes
+				}
+				AND = {
+					always = yes
+				}
+			}
+		}
+		name = chaosx_event_more_options
+		custom_effect_tooltip = chaosx_event_more_options_tt
+		hidden_effect = { country_event = { id = chaosx.nr30.95322 } }
+	}
+}
+
+country_event = {
+	id = chaosx.nr30.95303
+	title = chaosx.nr30.213.t
+	desc = {
+		trigger = { NOT = { check_variable = { global.time_traveler_fig_support^1 < constant:time_traveler_figure_value.high_edge } } }
+		text = chaosx.nr30.213.d_high
+	}
+	desc = {
+		trigger = { NOT = { check_variable = { global.time_traveler_fig_support^1 < constant:time_traveler_figure_value.low_edge } } }
+		text = chaosx.nr30.213.d_mid
+	}
+	desc = {
+		text = chaosx.nr30.213.d_low
+	}
+	picture = GFX_report_event_generic_military_parade
+	is_triggered_only = yes
+	trigger = {
+		is_ai = no
+	}
+	option = {
+		name = chaosx.nr30.213.exile
+		ai_chance = { base = 8 }
+		custom_effect_tooltip = chaosx.nr30.213.exile_tt
+		hidden_effect = {
+			set_temp_variable = { time_traveler_fig = 1 }
+			set_temp_variable = { time_traveler_route = 5 }
+			time_traveler_figure_power = yes
+		}
+	}
+	option = {
+		name = chaosx.nr30.213.claim
+		ai_chance = { base = 0 }
+		custom_effect_tooltip = chaosx.nr30.213.claim_tt
+		hidden_effect = {
+			set_temp_variable = { time_traveler_fig = 1 }
+			set_temp_variable = { time_traveler_route = 6 }
+			time_traveler_figure_power = yes
+		}
+	}
+	option = {
+		trigger = {
+			OR = {
+				AND = {
+					is_ai = no
+				}
+				AND = {
+					is_ai = no
+				}
+				AND = {
+					NOT = { check_variable = { global.time_traveler_fig_support^1 < constant:time_traveler_figure_value.office_min } }
+				}
+				AND = {
+					always = yes
+				}
+			}
+		}
+		name = chaosx_event_back_to_choices
+		custom_effect_tooltip = chaosx_event_back_to_choices_tt
+		hidden_effect = { country_event = { id = chaosx.nr30.95343 } }
+	}
+}
+
+country_event = {
+	id = chaosx.nr30.95399
+	title = chaosx.nr30.213.t
+	desc = {
+		trigger = { NOT = { check_variable = { global.time_traveler_fig_support^1 < constant:time_traveler_figure_value.high_edge } } }
+		text = chaosx.nr30.213.d_high
+	}
+	desc = {
+		trigger = { NOT = { check_variable = { global.time_traveler_fig_support^1 < constant:time_traveler_figure_value.low_edge } } }
+		text = chaosx.nr30.213.d_mid
+	}
+	desc = {
+		text = chaosx.nr30.213.d_low
+	}
+	is_triggered_only = yes
+	trigger = {
+		is_ai = yes
+	}
 	option = {
 		name = chaosx.nr30.213.adviser
 		ai_chance = { base = 40 modifier = { add = 20 has_war = yes } }
@@ -353,6 +628,281 @@ country_event = {
 	is_triggered_only = yes
 	trigger = { check_variable = { global.time_traveler_fig_state^2 = constant:time_traveler_figure_state.movement } }
 
+
+	option = {
+		trigger = { is_ai = no }
+		name = chaosx.nr30.223.adviser
+		ai_chance = { base = 40 modifier = { add = 20 has_war = yes } }
+		custom_effect_tooltip = chaosx.nr30.223.adviser_tt
+		hidden_effect = {
+			set_temp_variable = { time_traveler_fig = 2 }
+			set_temp_variable = { time_traveler_route = 1 }
+			time_traveler_figure_power = yes
+		}
+	}
+	option = {
+		trigger = { is_ai = no }
+		name = chaosx.nr30.223.symbol
+		ai_chance = { base = 35 }
+		custom_effect_tooltip = chaosx.nr30.223.symbol_tt
+		hidden_effect = {
+			set_temp_variable = { time_traveler_fig = 2 }
+			set_temp_variable = { time_traveler_route = 2 }
+			time_traveler_figure_power = yes
+		}
+	}
+	option = {
+		name = chaosx_event_more_options
+		trigger = {
+			is_ai = no
+		
+			OR = {
+				AND = {
+					NOT = { check_variable = { global.time_traveler_fig_support^2 < constant:time_traveler_figure_value.office_min } }
+				}
+				AND = {
+					always = yes
+				}
+				AND = {
+					always = yes
+				}
+				AND = {
+					always = yes
+				}
+			}
+		}nt_more_options
+		trigger = {
+			is_ai = no
+		}
+		custom_effect_tooltip = chaosx_event_more_options_tt
+		hidden_effect = { country_event = { id = chaosx.nr30.95421 } }
+	}
+	option = {
+		name = chaosx_event_ai_resolution
+		trigger = {
+			is_ai = yes
+		}
+		hidden_effect = { country_event = { id = chaosx.nr30.95499 } }
+	}
+
+}
+
+country_event = {
+	id = chaosx.nr30.95401
+	title = chaosx.nr30.223.t
+	desc = {
+		trigger = { NOT = { check_variable = { global.time_traveler_fig_support^2 < constant:time_traveler_figure_value.high_edge } } }
+		text = chaosx.nr30.223.d_high
+	}
+	desc = {
+		trigger = { NOT = { check_variable = { global.time_traveler_fig_support^2 < constant:time_traveler_figure_value.low_edge } } }
+		text = chaosx.nr30.223.d_mid
+	}
+	desc = {
+		text = chaosx.nr30.223.d_low
+	}
+	picture = GFX_report_event_generic_rally
+	is_triggered_only = yes
+	trigger = {
+		is_ai = no
+	}
+	option = {
+		trigger = { is_ai = no }
+		name = chaosx.nr30.223.adviser
+		ai_chance = { base = 40 modifier = { add = 20 has_war = yes } }
+		custom_effect_tooltip = chaosx.nr30.223.adviser_tt
+		hidden_effect = {
+			set_temp_variable = { time_traveler_fig = 2 }
+			set_temp_variable = { time_traveler_route = 1 }
+			time_traveler_figure_power = yes
+		}
+	}
+	option = {
+		trigger = { is_ai = no }
+		name = chaosx.nr30.223.symbol
+		ai_chance = { base = 35 }
+		custom_effect_tooltip = chaosx.nr30.223.symbol_tt
+		hidden_effect = {
+			set_temp_variable = { time_traveler_fig = 2 }
+			set_temp_variable = { time_traveler_route = 2 }
+			time_traveler_figure_power = yes
+		}
+	}
+	option = {
+		trigger = {
+			OR = {
+				AND = {
+					NOT = { check_variable = { global.time_traveler_fig_support^2 < constant:time_traveler_figure_value.office_min } }
+				}
+				AND = {
+					always = yes
+				}
+				AND = {
+					always = yes
+				}
+				AND = {
+					always = yes
+				}
+			}
+		}
+		name = chaosx_event_more_options
+		custom_effect_tooltip = chaosx_event_more_options_tt
+		hidden_effect = { country_event = { id = chaosx.nr30.95421 } }
+	}
+}
+
+country_event = {
+	id = chaosx.nr30.95402
+	title = chaosx.nr30.223.t
+	desc = {
+		trigger = { NOT = { check_variable = { global.time_traveler_fig_support^2 < constant:time_traveler_figure_value.high_edge } } }
+		text = chaosx.nr30.223.d_high
+	}
+	desc = {
+		trigger = { NOT = { check_variable = { global.time_traveler_fig_support^2 < constant:time_traveler_figure_value.low_edge } } }
+		text = chaosx.nr30.223.d_mid
+	}
+	desc = {
+		text = chaosx.nr30.223.d_low
+	}
+	picture = GFX_report_event_generic_rally
+	is_triggered_only = yes
+	trigger = {
+		is_ai = no
+	}
+	option = {
+		name = chaosx.nr30.223.office
+		trigger = { NOT = { check_variable = { global.time_traveler_fig_support^2 < constant:time_traveler_figure_value.office_min } } }
+		ai_chance = { base = 3 modifier = { add = 30 NOT = { check_variable = { global.time_traveler_fig_support^2 < constant:time_traveler_figure_value.high_edge } } has_stability < constant:time_traveler_ai.stability_low } }
+		custom_effect_tooltip = chaosx.nr30.223.office_tt
+		hidden_effect = {
+			set_temp_variable = { time_traveler_fig = 2 }
+			set_temp_variable = { time_traveler_route = 3 }
+			time_traveler_figure_power = yes
+		}
+	}
+	option = {
+		name = chaosx.nr30.223.suppress
+		ai_chance = { base = 8 modifier = { add = 20 has_government = fascism } modifier = { add = 15 has_government = communism } }
+		custom_effect_tooltip = chaosx.nr30.223.suppress_tt
+		hidden_effect = {
+			set_temp_variable = { time_traveler_fig = 2 }
+			set_temp_variable = { time_traveler_route = 4 }
+			time_traveler_figure_power = yes
+		}
+	}
+	option = {
+		trigger = {
+			OR = {
+				AND = {
+					is_ai = no
+				}
+				AND = {
+					is_ai = no
+				}
+			}
+		}
+		name = chaosx_event_back_to_choices
+		custom_effect_tooltip = chaosx_event_back_to_choices_tt
+		hidden_effect = { country_event = { id = chaosx.nr30.95442 } }
+	}
+	option = {
+		trigger = {
+			OR = {
+				AND = {
+					always = yes
+				}
+				AND = {
+					always = yes
+				}
+			}
+		}
+		name = chaosx_event_more_options
+		custom_effect_tooltip = chaosx_event_more_options_tt
+		hidden_effect = { country_event = { id = chaosx.nr30.95422 } }
+	}
+}
+
+country_event = {
+	id = chaosx.nr30.95403
+	title = chaosx.nr30.223.t
+	desc = {
+		trigger = { NOT = { check_variable = { global.time_traveler_fig_support^2 < constant:time_traveler_figure_value.high_edge } } }
+		text = chaosx.nr30.223.d_high
+	}
+	desc = {
+		trigger = { NOT = { check_variable = { global.time_traveler_fig_support^2 < constant:time_traveler_figure_value.low_edge } } }
+		text = chaosx.nr30.223.d_mid
+	}
+	desc = {
+		text = chaosx.nr30.223.d_low
+	}
+	picture = GFX_report_event_generic_rally
+	is_triggered_only = yes
+	trigger = {
+		is_ai = no
+	}
+	option = {
+		name = chaosx.nr30.223.exile
+		ai_chance = { base = 8 }
+		custom_effect_tooltip = chaosx.nr30.223.exile_tt
+		hidden_effect = {
+			set_temp_variable = { time_traveler_fig = 2 }
+			set_temp_variable = { time_traveler_route = 5 }
+			time_traveler_figure_power = yes
+		}
+	}
+	option = {
+		name = chaosx.nr30.223.claim
+		ai_chance = { base = 0 }
+		custom_effect_tooltip = chaosx.nr30.223.claim_tt
+		hidden_effect = {
+			set_temp_variable = { time_traveler_fig = 2 }
+			set_temp_variable = { time_traveler_route = 6 }
+			time_traveler_figure_power = yes
+		}
+	}
+	option = {
+		trigger = {
+			OR = {
+				AND = {
+					is_ai = no
+				}
+				AND = {
+					is_ai = no
+				}
+				AND = {
+					NOT = { check_variable = { global.time_traveler_fig_support^2 < constant:time_traveler_figure_value.office_min } }
+				}
+				AND = {
+					always = yes
+				}
+			}
+		}
+		name = chaosx_event_back_to_choices
+		custom_effect_tooltip = chaosx_event_back_to_choices_tt
+		hidden_effect = { country_event = { id = chaosx.nr30.95443 } }
+	}
+}
+
+country_event = {
+	id = chaosx.nr30.95499
+	title = chaosx.nr30.223.t
+	desc = {
+		trigger = { NOT = { check_variable = { global.time_traveler_fig_support^2 < constant:time_traveler_figure_value.high_edge } } }
+		text = chaosx.nr30.223.d_high
+	}
+	desc = {
+		trigger = { NOT = { check_variable = { global.time_traveler_fig_support^2 < constant:time_traveler_figure_value.low_edge } } }
+		text = chaosx.nr30.223.d_mid
+	}
+	desc = {
+		text = chaosx.nr30.223.d_low
+	}
+	is_triggered_only = yes
+	trigger = {
+		is_ai = yes
+	}
 	option = {
 		name = chaosx.nr30.223.adviser
 		ai_chance = { base = 40 modifier = { add = 20 has_war = yes } }
@@ -572,6 +1122,281 @@ country_event = {
 	is_triggered_only = yes
 	trigger = { check_variable = { global.time_traveler_fig_state^3 = constant:time_traveler_figure_state.movement } }
 
+
+	option = {
+		trigger = { is_ai = no }
+		name = chaosx.nr30.233.adviser
+		ai_chance = { base = 40 modifier = { add = 20 has_war = yes } }
+		custom_effect_tooltip = chaosx.nr30.233.adviser_tt
+		hidden_effect = {
+			set_temp_variable = { time_traveler_fig = 3 }
+			set_temp_variable = { time_traveler_route = 1 }
+			time_traveler_figure_power = yes
+		}
+	}
+	option = {
+		trigger = { is_ai = no }
+		name = chaosx.nr30.233.symbol
+		ai_chance = { base = 25 }
+		custom_effect_tooltip = chaosx.nr30.233.symbol_tt
+		hidden_effect = {
+			set_temp_variable = { time_traveler_fig = 3 }
+			set_temp_variable = { time_traveler_route = 2 }
+			time_traveler_figure_power = yes
+		}
+	}
+	option = {
+		name = chaosx_event_more_options
+		trigger = {
+			is_ai = no
+		
+			OR = {
+				AND = {
+					NOT = { check_variable = { global.time_traveler_fig_support^3 < constant:time_traveler_figure_value.office_min } }
+				}
+				AND = {
+					always = yes
+				}
+				AND = {
+					always = yes
+				}
+				AND = {
+					always = yes
+				}
+			}
+		}nt_more_options
+		trigger = {
+			is_ai = no
+		}
+		custom_effect_tooltip = chaosx_event_more_options_tt
+		hidden_effect = { country_event = { id = chaosx.nr30.95521 } }
+	}
+	option = {
+		name = chaosx_event_ai_resolution
+		trigger = {
+			is_ai = yes
+		}
+		hidden_effect = { country_event = { id = chaosx.nr30.95599 } }
+	}
+
+}
+
+country_event = {
+	id = chaosx.nr30.95501
+	title = chaosx.nr30.233.t
+	desc = {
+		trigger = { NOT = { check_variable = { global.time_traveler_fig_support^3 < constant:time_traveler_figure_value.high_edge } } }
+		text = chaosx.nr30.233.d_high
+	}
+	desc = {
+		trigger = { NOT = { check_variable = { global.time_traveler_fig_support^3 < constant:time_traveler_figure_value.low_edge } } }
+		text = chaosx.nr30.233.d_mid
+	}
+	desc = {
+		text = chaosx.nr30.233.d_low
+	}
+	picture = GFX_report_event_generic_conference
+	is_triggered_only = yes
+	trigger = {
+		is_ai = no
+	}
+	option = {
+		trigger = { is_ai = no }
+		name = chaosx.nr30.233.adviser
+		ai_chance = { base = 40 modifier = { add = 20 has_war = yes } }
+		custom_effect_tooltip = chaosx.nr30.233.adviser_tt
+		hidden_effect = {
+			set_temp_variable = { time_traveler_fig = 3 }
+			set_temp_variable = { time_traveler_route = 1 }
+			time_traveler_figure_power = yes
+		}
+	}
+	option = {
+		trigger = { is_ai = no }
+		name = chaosx.nr30.233.symbol
+		ai_chance = { base = 25 }
+		custom_effect_tooltip = chaosx.nr30.233.symbol_tt
+		hidden_effect = {
+			set_temp_variable = { time_traveler_fig = 3 }
+			set_temp_variable = { time_traveler_route = 2 }
+			time_traveler_figure_power = yes
+		}
+	}
+	option = {
+		trigger = {
+			OR = {
+				AND = {
+					NOT = { check_variable = { global.time_traveler_fig_support^3 < constant:time_traveler_figure_value.office_min } }
+				}
+				AND = {
+					always = yes
+				}
+				AND = {
+					always = yes
+				}
+				AND = {
+					always = yes
+				}
+			}
+		}
+		name = chaosx_event_more_options
+		custom_effect_tooltip = chaosx_event_more_options_tt
+		hidden_effect = { country_event = { id = chaosx.nr30.95521 } }
+	}
+}
+
+country_event = {
+	id = chaosx.nr30.95502
+	title = chaosx.nr30.233.t
+	desc = {
+		trigger = { NOT = { check_variable = { global.time_traveler_fig_support^3 < constant:time_traveler_figure_value.high_edge } } }
+		text = chaosx.nr30.233.d_high
+	}
+	desc = {
+		trigger = { NOT = { check_variable = { global.time_traveler_fig_support^3 < constant:time_traveler_figure_value.low_edge } } }
+		text = chaosx.nr30.233.d_mid
+	}
+	desc = {
+		text = chaosx.nr30.233.d_low
+	}
+	picture = GFX_report_event_generic_conference
+	is_triggered_only = yes
+	trigger = {
+		is_ai = no
+	}
+	option = {
+		name = chaosx.nr30.233.office
+		trigger = { NOT = { check_variable = { global.time_traveler_fig_support^3 < constant:time_traveler_figure_value.office_min } } }
+		ai_chance = { base = 5 modifier = { add = 30 NOT = { check_variable = { global.time_traveler_fig_support^3 < constant:time_traveler_figure_value.high_edge } } has_stability < constant:time_traveler_ai.stability_low } }
+		custom_effect_tooltip = chaosx.nr30.233.office_tt
+		hidden_effect = {
+			set_temp_variable = { time_traveler_fig = 3 }
+			set_temp_variable = { time_traveler_route = 3 }
+			time_traveler_figure_power = yes
+		}
+	}
+	option = {
+		name = chaosx.nr30.233.suppress
+		ai_chance = { base = 15 modifier = { add = 20 has_government = fascism } modifier = { add = 15 has_government = communism } }
+		custom_effect_tooltip = chaosx.nr30.233.suppress_tt
+		hidden_effect = {
+			set_temp_variable = { time_traveler_fig = 3 }
+			set_temp_variable = { time_traveler_route = 4 }
+			time_traveler_figure_power = yes
+		}
+	}
+	option = {
+		trigger = {
+			OR = {
+				AND = {
+					is_ai = no
+				}
+				AND = {
+					is_ai = no
+				}
+			}
+		}
+		name = chaosx_event_back_to_choices
+		custom_effect_tooltip = chaosx_event_back_to_choices_tt
+		hidden_effect = { country_event = { id = chaosx.nr30.95542 } }
+	}
+	option = {
+		trigger = {
+			OR = {
+				AND = {
+					always = yes
+				}
+				AND = {
+					always = yes
+				}
+			}
+		}
+		name = chaosx_event_more_options
+		custom_effect_tooltip = chaosx_event_more_options_tt
+		hidden_effect = { country_event = { id = chaosx.nr30.95522 } }
+	}
+}
+
+country_event = {
+	id = chaosx.nr30.95503
+	title = chaosx.nr30.233.t
+	desc = {
+		trigger = { NOT = { check_variable = { global.time_traveler_fig_support^3 < constant:time_traveler_figure_value.high_edge } } }
+		text = chaosx.nr30.233.d_high
+	}
+	desc = {
+		trigger = { NOT = { check_variable = { global.time_traveler_fig_support^3 < constant:time_traveler_figure_value.low_edge } } }
+		text = chaosx.nr30.233.d_mid
+	}
+	desc = {
+		text = chaosx.nr30.233.d_low
+	}
+	picture = GFX_report_event_generic_conference
+	is_triggered_only = yes
+	trigger = {
+		is_ai = no
+	}
+	option = {
+		name = chaosx.nr30.233.exile
+		ai_chance = { base = 8 }
+		custom_effect_tooltip = chaosx.nr30.233.exile_tt
+		hidden_effect = {
+			set_temp_variable = { time_traveler_fig = 3 }
+			set_temp_variable = { time_traveler_route = 5 }
+			time_traveler_figure_power = yes
+		}
+	}
+	option = {
+		name = chaosx.nr30.233.claim
+		ai_chance = { base = 0 }
+		custom_effect_tooltip = chaosx.nr30.233.claim_tt
+		hidden_effect = {
+			set_temp_variable = { time_traveler_fig = 3 }
+			set_temp_variable = { time_traveler_route = 6 }
+			time_traveler_figure_power = yes
+		}
+	}
+	option = {
+		trigger = {
+			OR = {
+				AND = {
+					is_ai = no
+				}
+				AND = {
+					is_ai = no
+				}
+				AND = {
+					NOT = { check_variable = { global.time_traveler_fig_support^3 < constant:time_traveler_figure_value.office_min } }
+				}
+				AND = {
+					always = yes
+				}
+			}
+		}
+		name = chaosx_event_back_to_choices
+		custom_effect_tooltip = chaosx_event_back_to_choices_tt
+		hidden_effect = { country_event = { id = chaosx.nr30.95543 } }
+	}
+}
+
+country_event = {
+	id = chaosx.nr30.95599
+	title = chaosx.nr30.233.t
+	desc = {
+		trigger = { NOT = { check_variable = { global.time_traveler_fig_support^3 < constant:time_traveler_figure_value.high_edge } } }
+		text = chaosx.nr30.233.d_high
+	}
+	desc = {
+		trigger = { NOT = { check_variable = { global.time_traveler_fig_support^3 < constant:time_traveler_figure_value.low_edge } } }
+		text = chaosx.nr30.233.d_mid
+	}
+	desc = {
+		text = chaosx.nr30.233.d_low
+	}
+	is_triggered_only = yes
+	trigger = {
+		is_ai = yes
+	}
 	option = {
 		name = chaosx.nr30.233.adviser
 		ai_chance = { base = 40 modifier = { add = 20 has_war = yes } }
@@ -680,3 +1505,370 @@ country_event = {
 	}
 }
 
+
+
+country_event = {
+	id = chaosx.nr30.95521
+	hidden = yes
+	is_triggered_only = yes
+	trigger = {
+		is_ai = no
+	}
+	immediate = {
+		if = {
+			limit = {
+				OR = {
+					AND = {
+						NOT = { check_variable = { global.time_traveler_fig_support^3 < constant:time_traveler_figure_value.office_min } }
+					}
+					AND = {
+						always = yes
+					}
+				}
+			}
+			country_event = { id = chaosx.nr30.95502 }
+		}
+		else_if = {
+			limit = {
+				OR = {
+					AND = {
+						always = yes
+					}
+					AND = {
+						always = yes
+					}
+				}
+			}
+			country_event = { id = chaosx.nr30.95503 }
+		}
+	}
+}
+
+country_event = {
+	id = chaosx.nr30.95522
+	hidden = yes
+	is_triggered_only = yes
+	trigger = {
+		is_ai = no
+	}
+	immediate = {
+		if = {
+			limit = {
+				OR = {
+					AND = {
+						always = yes
+					}
+					AND = {
+						always = yes
+					}
+				}
+			}
+			country_event = { id = chaosx.nr30.95503 }
+		}
+	}
+}
+
+country_event = {
+	id = chaosx.nr30.95542
+	hidden = yes
+	is_triggered_only = yes
+	trigger = {
+		is_ai = no
+	}
+	immediate = {
+		if = {
+			limit = {
+				OR = {
+					AND = {
+						is_ai = no
+					}
+					AND = {
+						is_ai = no
+					}
+				}
+			}
+			country_event = { id = chaosx.nr30.95501 }
+		}
+	}
+}
+
+country_event = {
+	id = chaosx.nr30.95543
+	hidden = yes
+	is_triggered_only = yes
+	trigger = {
+		is_ai = no
+	}
+	immediate = {
+		if = {
+			limit = {
+				OR = {
+					AND = {
+						NOT = { check_variable = { global.time_traveler_fig_support^3 < constant:time_traveler_figure_value.office_min } }
+					}
+					AND = {
+						always = yes
+					}
+				}
+			}
+			country_event = { id = chaosx.nr30.95502 }
+		}
+		else_if = {
+			limit = {
+				OR = {
+					AND = {
+						is_ai = no
+					}
+					AND = {
+						is_ai = no
+					}
+				}
+			}
+			country_event = { id = chaosx.nr30.95501 }
+		}
+	}
+}
+
+country_event = {
+	id = chaosx.nr30.95421
+	hidden = yes
+	is_triggered_only = yes
+	trigger = {
+		is_ai = no
+	}
+	immediate = {
+		if = {
+			limit = {
+				OR = {
+					AND = {
+						NOT = { check_variable = { global.time_traveler_fig_support^2 < constant:time_traveler_figure_value.office_min } }
+					}
+					AND = {
+						always = yes
+					}
+				}
+			}
+			country_event = { id = chaosx.nr30.95402 }
+		}
+		else_if = {
+			limit = {
+				OR = {
+					AND = {
+						always = yes
+					}
+					AND = {
+						always = yes
+					}
+				}
+			}
+			country_event = { id = chaosx.nr30.95403 }
+		}
+	}
+}
+
+country_event = {
+	id = chaosx.nr30.95422
+	hidden = yes
+	is_triggered_only = yes
+	trigger = {
+		is_ai = no
+	}
+	immediate = {
+		if = {
+			limit = {
+				OR = {
+					AND = {
+						always = yes
+					}
+					AND = {
+						always = yes
+					}
+				}
+			}
+			country_event = { id = chaosx.nr30.95403 }
+		}
+	}
+}
+
+country_event = {
+	id = chaosx.nr30.95442
+	hidden = yes
+	is_triggered_only = yes
+	trigger = {
+		is_ai = no
+	}
+	immediate = {
+		if = {
+			limit = {
+				OR = {
+					AND = {
+						is_ai = no
+					}
+					AND = {
+						is_ai = no
+					}
+				}
+			}
+			country_event = { id = chaosx.nr30.95401 }
+		}
+	}
+}
+
+country_event = {
+	id = chaosx.nr30.95443
+	hidden = yes
+	is_triggered_only = yes
+	trigger = {
+		is_ai = no
+	}
+	immediate = {
+		if = {
+			limit = {
+				OR = {
+					AND = {
+						NOT = { check_variable = { global.time_traveler_fig_support^2 < constant:time_traveler_figure_value.office_min } }
+					}
+					AND = {
+						always = yes
+					}
+				}
+			}
+			country_event = { id = chaosx.nr30.95402 }
+		}
+		else_if = {
+			limit = {
+				OR = {
+					AND = {
+						is_ai = no
+					}
+					AND = {
+						is_ai = no
+					}
+				}
+			}
+			country_event = { id = chaosx.nr30.95401 }
+		}
+	}
+}
+
+country_event = {
+	id = chaosx.nr30.95321
+	hidden = yes
+	is_triggered_only = yes
+	trigger = {
+		is_ai = no
+	}
+	immediate = {
+		if = {
+			limit = {
+				OR = {
+					AND = {
+						NOT = { check_variable = { global.time_traveler_fig_support^1 < constant:time_traveler_figure_value.office_min } }
+					}
+					AND = {
+						always = yes
+					}
+				}
+			}
+			country_event = { id = chaosx.nr30.95302 }
+		}
+		else_if = {
+			limit = {
+				OR = {
+					AND = {
+						always = yes
+					}
+					AND = {
+						always = yes
+					}
+				}
+			}
+			country_event = { id = chaosx.nr30.95303 }
+		}
+	}
+}
+
+country_event = {
+	id = chaosx.nr30.95322
+	hidden = yes
+	is_triggered_only = yes
+	trigger = {
+		is_ai = no
+	}
+	immediate = {
+		if = {
+			limit = {
+				OR = {
+					AND = {
+						always = yes
+					}
+					AND = {
+						always = yes
+					}
+				}
+			}
+			country_event = { id = chaosx.nr30.95303 }
+		}
+	}
+}
+
+country_event = {
+	id = chaosx.nr30.95342
+	hidden = yes
+	is_triggered_only = yes
+	trigger = {
+		is_ai = no
+	}
+	immediate = {
+		if = {
+			limit = {
+				OR = {
+					AND = {
+						is_ai = no
+					}
+					AND = {
+						is_ai = no
+					}
+				}
+			}
+			country_event = { id = chaosx.nr30.95301 }
+		}
+	}
+}
+
+country_event = {
+	id = chaosx.nr30.95343
+	hidden = yes
+	is_triggered_only = yes
+	trigger = {
+		is_ai = no
+	}
+	immediate = {
+		if = {
+			limit = {
+				OR = {
+					AND = {
+						NOT = { check_variable = { global.time_traveler_fig_support^1 < constant:time_traveler_figure_value.office_min } }
+					}
+					AND = {
+						always = yes
+					}
+				}
+			}
+			country_event = { id = chaosx.nr30.95302 }
+		}
+		else_if = {
+			limit = {
+				OR = {
+					AND = {
+						is_ai = no
+					}
+					AND = {
+						is_ai = no
+					}
+				}
+			}
+			country_event = { id = chaosx.nr30.95301 }
+		}
+	}
+}
