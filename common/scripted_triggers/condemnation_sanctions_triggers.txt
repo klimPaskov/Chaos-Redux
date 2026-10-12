@@ -7,35 +7,43 @@
 # ============================================================================
 
 condemnation_has_public_record = {
+	uses_normal_civilian_systems = yes
 	has_variable = condemnation_total
 	check_variable = { condemnation_total > constant:condemnation_decay.minimum_total }
 }
 
 condemnation_is_concern = {
+	uses_normal_civilian_systems = yes
 	check_variable = { condemnation_tier > constant:condemnation_tier.normal }
 }
 
 condemnation_is_formally_censured = {
+	uses_normal_civilian_systems = yes
 	check_variable = { condemnation_tier > constant:condemnation_tier.concern }
 }
 
 condemnation_is_arms_embargo_tier = {
+	uses_normal_civilian_systems = yes
 	check_variable = { condemnation_tier > constant:condemnation_tier.formal_censure }
 }
 
 condemnation_is_strategic_embargo_tier = {
+	uses_normal_civilian_systems = yes
 	check_variable = { condemnation_tier > constant:condemnation_tier.arms_embargo }
 }
 
 condemnation_is_total_embargo_tier = {
+	uses_normal_civilian_systems = yes
 	check_variable = { condemnation_tier > constant:condemnation_tier.strategic_embargo }
 }
 
 condemnation_is_pariah_state = {
+	uses_normal_civilian_systems = yes
 	check_variable = { condemnation_tier > constant:condemnation_tier.total_embargo }
 }
 
 condemnation_has_active_sanctions = {
+	uses_normal_civilian_systems = yes
 	has_variable = condemnation_active_sanctions
 	check_variable = { condemnation_active_sanctions > 0 }
 }
@@ -58,6 +66,7 @@ condemnation_has_severe_recent_source = {
 }
 
 condemnation_has_compliance_path = {
+	uses_normal_civilian_systems = yes
 	OR = {
 		has_country_flag = condemnation_inspections_active
 		has_country_flag = condemnation_observers_active
@@ -70,6 +79,7 @@ condemnation_has_compliance_path = {
 }
 
 condemnation_has_defiance_path = {
+	uses_normal_civilian_systems = yes
 	OR = {
 		has_country_flag = condemnation_refused_inspection
 		has_country_flag = condemnation_domestic_propaganda_active
@@ -84,6 +94,7 @@ condemnation_has_defiance_path = {
 }
 
 condemnation_has_evasion_path = {
+	uses_normal_civilian_systems = yes
 	OR = {
 		has_country_flag = condemnation_black_market_active
 		has_country_flag = condemnation_false_manifest_active
@@ -451,8 +462,10 @@ condemnation_pair_is_not_active_against_from = {
 }
 
 condemnation_pair_is_valid_against_from = {
+	uses_normal_civilian_systems = yes
 	FROM = {
 		exists = yes
+		uses_normal_civilian_systems = yes
 		NOT = { tag = ROOT }
 		NOT = { is_subject_of = ROOT }
 		ROOT = { NOT = { is_subject_of = PREV } }
@@ -462,8 +475,10 @@ condemnation_pair_is_valid_against_from = {
 }
 
 condemnation_pair_can_shield_from = {
+	uses_normal_civilian_systems = yes
 	FROM = {
 		exists = yes
+		uses_normal_civilian_systems = yes
 		NOT = { tag = ROOT }
 		OR = {
 			is_in_faction_with = ROOT

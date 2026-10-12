@@ -1,5 +1,19 @@
 # Condemnation and Sanctions
 
+## Human country boundary
+
+Nonhuman countries cannot receive a fresh source, qualify as a sanction target or participant, or apply the human response modifiers and ideas.
+`condemnation_add_source` forwards human requests to `condemnation_add_human_source_internal` with the existing inputs and arithmetic, and returns zero public and hidden gains for nonhuman actors.
+`condemnation_monthly_pulse` forwards human maintenance to `condemnation_monthly_human_pulse_internal`, while a nonhuman holder runs exact participant reconciliation and ends its targeted timer without further disclosure or decay actions.
+
+Participant reconciliation first snapshots sanction participants whose current actor or target is nonhuman into `condemnation_nonhuman_cleanup_participants`, then invokes `condemnation_clear_sanction_pair` for each frozen entry and clears the snapshot.
+That existing teardown removes only the system-owned embargo claim, directional opinion penalties, relation restrictions and AI strategy deltas, and reconciles enforcement burden.
+The earlier likely-participant loop removes its old monitoring opinions and restores its recorded watch-tier AI deltas before the human candidate pool is rebuilt.
+No extra polling is added, so inherited native relation cleanup occurs at the existing reconciliation or scheduled target pulse, and historical source entries remain intact.
+
+The cleanup snapshot is country-owned, lasts only for one reconciliation call, and is always cleared after use.
+No constants or global event targets are added by the boundary helpers.
+
 ## Purpose
 
 Condemnation is the shared consequence layer for publicly known unconventional warfare and exposed atrocity systems. It records why a country is condemned, converts the public total into seven tiers, scores potential sanction participants, creates native embargo relations where the engine supports them, applies scalable economic and diplomatic restrictions, and gives targets and participants concrete response choices.

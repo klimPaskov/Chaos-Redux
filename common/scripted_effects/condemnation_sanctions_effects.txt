@@ -432,7 +432,20 @@ condemnation_apply_pledge_breach_consequence = {
 	set_temp_variable = { condemnation_compliance_breach_applied = constant:condemnation_tier.concern }
 }
 
+# Public country boundary. Nonhuman actors receive no human diplomatic liability.
 condemnation_add_source = {
+	set_temp_variable = { condemnation_gain_final = constant:cbrn_math.zero }
+	set_temp_variable = { condemnation_gain_hidden = constant:cbrn_math.zero }
+	if = {
+		limit = { uses_normal_civilian_systems = yes }
+		condemnation_add_human_source_internal = yes
+	}
+	set_temp_variable = { condemnation_source_is_no_release_attempt = constant:condemnation_tier.normal }
+	set_temp_variable = { condemnation_participant_pressure_mult = constant:cbrn_math.one }
+}
+
+# Existing source arithmetic, called only through the public human boundary.
+condemnation_add_human_source_internal = {
 	condemnation_initialize_country = yes
 	if = { limit = { NOT = { has_variable = condemnation_source_type } } set_temp_variable = { condemnation_source_type = constant:condemnation_source.mixed } }
 	if = { limit = { NOT = { has_variable = condemnation_base_gain } } set_temp_variable = { condemnation_base_gain = 0 } }
@@ -1363,7 +1376,7 @@ condemnation_apply_sanction_pair = {
 	set_temp_variable = { condemnation_pair_target_scope = THIS }
 	save_event_target_as = condemnation_pair_target_scope
 	if = {
-		limit = { var:condemnation_pair_participant = { exists = yes } }
+		limit = { uses_normal_civilian_systems = yes var:condemnation_pair_participant = { exists = yes uses_normal_civilian_systems = yes } }
 		var:condemnation_pair_participant = {
 			set_temp_variable = { condemnation_embargo_target = var:condemnation_pair_target_scope }
 			set_temp_variable = { condemnation_embargo_source = constant:condemnation_embargo_source.condemnation }
@@ -1929,8 +1942,32 @@ condemnation_recalculate_participants_apply = {
 	set_variable = { condemnation_candidate_industry_weight = 0 }
 	set_variable = { condemnation_candidate_trade_weight = 0 }
 	clear_array = condemnation_likely_participants
+	# Freeze invalid owned pairs before clearing so array removal cannot skip rows.
+	clear_array = condemnation_nonhuman_cleanup_participants
+	for_each_scope_loop = {
+		array = condemnation_sanction_participants
+		if = {
+			limit = {
+				exists = yes
+				OR = {
+					uses_normal_civilian_systems = no
+					var:condemnation_recalculation_target = { uses_normal_civilian_systems = no }
+				}
+			}
+			set_temp_variable = { condemnation_pair_participant = THIS }
+			var:condemnation_recalculation_target = {
+				add_to_array = { array = condemnation_nonhuman_cleanup_participants value = condemnation_pair_participant }
+			}
+		}
+	}
+	for_each_scope_loop = {
+		array = condemnation_nonhuman_cleanup_participants
+		set_temp_variable = { condemnation_pair_participant = THIS }
+		var:condemnation_recalculation_target = { condemnation_clear_sanction_pair = yes }
+	}
+	clear_array = condemnation_nonhuman_cleanup_participants
 	every_other_country = {
-		limit = { exists = yes }
+		limit = { exists = yes uses_normal_civilian_systems = yes }
 		set_temp_variable = { condemnation_pair_participant = THIS }
 		set_temp_variable = { condemnation_pair_target = var:condemnation_recalculation_target }
 		# Affordability must quote the target's score, as the payment effects do.
@@ -2402,6 +2439,19 @@ condemnation_refresh_compliance_state = {
 }
 
 condemnation_monthly_pulse = {
+	if = {
+		limit = { uses_normal_civilian_systems = yes }
+		condemnation_monthly_human_pulse_internal = yes
+	}
+	else = {
+		# Reuse exact pair teardown for an inherited human record.
+		condemnation_recalculate_participants = yes
+		clr_country_flag = condemnation_targeted_pulse_active
+		condemnation_unregister_target_if_inactive = yes
+	}
+}
+
+condemnation_monthly_human_pulse_internal = {
 	condemnation_initialize_country = yes
 	condemnation_cleanup_participant_arrays = yes
 	if = {
@@ -2787,22 +2837,22 @@ condemnation_refresh_target_modifiers = {
 	}
 	else = { if = { limit = { has_dynamic_modifier = { modifier = condemnation_censure_pressure } } remove_dynamic_modifier = { modifier = condemnation_censure_pressure } } }
 	if = {
-		limit = { check_variable = { condemnation_arms_participant_count > 0 } }
+		limit = { uses_normal_civilian_systems = yes check_variable = { condemnation_arms_participant_count > 0 } }
 		if = { limit = { NOT = { has_dynamic_modifier = { modifier = condemnation_arms_import_bottleneck } } } add_dynamic_modifier = { modifier = condemnation_arms_import_bottleneck } }
 	}
 	else = { if = { limit = { has_dynamic_modifier = { modifier = condemnation_arms_import_bottleneck } } remove_dynamic_modifier = { modifier = condemnation_arms_import_bottleneck } } }
 	if = {
-		limit = { check_variable = { condemnation_strategic_participant_count > 0 } }
+		limit = { uses_normal_civilian_systems = yes check_variable = { condemnation_strategic_participant_count > 0 } }
 		if = { limit = { NOT = { has_dynamic_modifier = { modifier = condemnation_strategic_shortage } } } add_dynamic_modifier = { modifier = condemnation_strategic_shortage } }
 	}
 	else = { if = { limit = { has_dynamic_modifier = { modifier = condemnation_strategic_shortage } } remove_dynamic_modifier = { modifier = condemnation_strategic_shortage } } }
 	if = {
-		limit = { check_variable = { condemnation_total_participant_count > 0 } }
+		limit = { uses_normal_civilian_systems = yes check_variable = { condemnation_total_participant_count > 0 } }
 		if = { limit = { NOT = { has_dynamic_modifier = { modifier = condemnation_isolation_economy } } } add_dynamic_modifier = { modifier = condemnation_isolation_economy } }
 	}
 	else = { if = { limit = { has_dynamic_modifier = { modifier = condemnation_isolation_economy } } remove_dynamic_modifier = { modifier = condemnation_isolation_economy } } }
 	if = {
-		limit = { check_variable = { condemnation_pariah_participant_count > 0 } }
+		limit = { uses_normal_civilian_systems = yes check_variable = { condemnation_pariah_participant_count > 0 } }
 		if = { limit = { NOT = { has_dynamic_modifier = { modifier = condemnation_pariah_pressure } } } add_dynamic_modifier = { modifier = condemnation_pariah_pressure } }
 	}
 	else = { if = { limit = { has_dynamic_modifier = { modifier = condemnation_pariah_pressure } } remove_dynamic_modifier = { modifier = condemnation_pariah_pressure } } }
