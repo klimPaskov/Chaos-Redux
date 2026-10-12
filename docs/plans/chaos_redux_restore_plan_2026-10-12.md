@@ -71,9 +71,9 @@ C12. Outbreak response: many distinct actions, not one generic decision, but not
 
 ## D. Balance and content
 
-D1. Japan, the United Kingdom, the United States and the Soviet Union start with the level 1 biowarfare breakthrough. Germany, the United Kingdom and France start with the chemical warfare breakthrough.
+D1. Japan, the United Kingdom, the United States and the Soviet Union start with the level 1 biowarfare breakthrough. Germany, the United Kingdom and France start with the chemical warfare breakthrough. Completed: `aa75244feb4062279c64e4d89f725481f414011b`.
 D2. Starting technologies and stockpiles: audit for accuracy. Germany should start with tabun (GA) researched.
-D3. Japan uses CBRN unrestricted from the start.
+D3. Japan uses CBRN unrestricted from the start. Completed: `aa75244feb4062279c64e4d89f725481f414011b`.
 D4. Traits: bonuses are generic and weak. Make them chaos-warfare focused; CBRN Operations Specialist gets strong, specialised CBRN bonuses.
 D5. Remove the "Last Fury Standing" focus and merge its purpose into another focus. (commit: b5caeb8fb82351164a0849378c2791d3f998c4b6)
 
