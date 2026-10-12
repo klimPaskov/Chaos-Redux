@@ -70,7 +70,12 @@ An independent read-only reviewer checked all 42 hashes against the historical L
 The parent reviewed the before/original contact sheet and the complete intended diff.
 The row-level binary sources, hashes, and alias sources are retained in `.tmp/restore_assets_audio/parent/texticon_restore_manifest.json` and `texticon_wiring.json`.
 The additional inline unit aliases in `interface/chaosx_missing_unit_texticons.gfx` reference small counter textures directly.
-Their changed existing texture history is being restored separately; the aliases and genuinely new textures remain.
+Commit `753397bb5b9212931eed16b63a8236cc892174d3` restores 23 of those existing textures from the first replacement parents since 1 September 2026.
+The offending commits are `6d3dc8283`, `f0f2ea3aa`, `cf6e7a637`, `ba4dc3e98`, `37e369007`, `001014065`, `bc3a45d86`, `d6280f69c`, and `65b1bb762`; every source is that commit's parent.
+The source/byte reviewer verified all 23 historical LFS hashes and the 28 unchanged aliases consuming those files, each with two frames on a 60×12 DDS.
+The parent reviewed the complete commit diff and the before/original contact sheet.
+The full source and hash matrix is `.tmp/restore_assets_audio/parent/counter_texticon_manifest.json`; the offending pointer diffs are retained in `counter_texticon_offending_diffs.patch`.
+The aliases and genuinely new textures remain.
 
 ## Reference evidence and scope
 
@@ -81,6 +86,9 @@ Installed `common/scripted_guis/_documentation.md`, lines 30–69, revision `43c
 The installed documentation search contains no `texturefile` section; the actual installed `interface/texticons.gfx` and motorized DDS provide the vanilla precedent.
 MCP source lookup confirmed the sole mod motorized sprite at `interface/chaosx_texticons.gfx`, lines 95–100, source revision `a2301aa9219ccce460b5efd3994c88604804c3e4b1ab9c84df46fc0e988ed20c`.
 This evidence establishes source routing and binary identity; Hearts of Iron IV was not launched.
+The late MCP idea-picture reference search returned `Transport closed` once.
+No retry was useful for that transport failure; the relevant offline wiki `Idea modding - Hearts of Iron 4 Wiki.md`, lines 93–98, SHA-256 `a6405eb98a02a9de4689b7c0ef80b5a887b6c6c747d3907f68c109ed3fd099ac`, and installed `common/ideas/italy.txt` picture fields were read directly for prefix and idea-id sprite precedence.
+This current selection record supersedes runtime-selection claims in the historical repaint handoffs for the restored paths; their historical sources and review results are retained unchanged.
 
 Skills used: `chaos-redux-event-assets`, `chaos-redux-super-events`, `chaos-redux-subagents`, and `chaos-redux-shared-git-commit`, with specialist system skills used by the icon worker where consumers require them.
 No skills were created or updated.
