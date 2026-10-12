@@ -24,6 +24,11 @@ Skill-local `assets/` holds the reference and component libraries, and `tools/` 
 
 This skill owns the image-generation route for the whole repository. Claude Code generates images with the `generate_image` tool of the gptimage MCP server (parameters: `prompt`, `out`, `quality` low|medium|high|auto, `size` WIDTHxHEIGHT, `reference_images`). Codex uses native ImageGen instead. Everywhere else, "image generation" means this route.
 
+Before generation, inspect the active tool's actual output-path capabilities, including automatic local writes; a repository working directory or a returned data URL does not prove where the tool stores files.
+When repo-only storage is required, never call a tool that automatically writes generated images outside the Chaos Redux repository, including user-profile or `CODEX_HOME` folders; copying afterward or later cleanup does not satisfy this requirement.
+If no authorized route can write directly to an absolute in-repo destination or return bytes without outside writes, pause production and ask the parent for a destination-capable route.
+Require child workers to set their working directory to the repo root, use absolute in-repo destinations under `docs/assets/<owner>/...`, `.tmp/`, or `gfx/` as appropriate, and verify after production that no output was created in user-profile folders outside the repo.
+
 - Make one image per call. Existing output paths are auto-versioned, so name the final `out` path explicitly and use the path the tool reports.
 - State each reference image's role in the prompt, for example "Image 1 is the vanilla style reference, Image 2 the subject to keep".
 - For alpha-backed families, request a genuinely transparent background in the prompt and set `transparent_background = true` with Codex native ImageGen; the gptimage MCP route has no explicit alpha parameter. Verify the alpha channel of the saved PNG, and fall back to the documented [background-removal fallback](#native-transparency-and-background-removal-fallback) only when the saved PNG has no usable alpha.
@@ -32,7 +37,7 @@ This skill owns the image-generation route for the whole repository. Claude Code
 For Codex native ImageGen, save the exact argument record before the call under [Candidate lineage and review](references/manifest-and-lineage.md#candidate-lineage-and-review); never claim an unavailable historical request was saved before its call.
 In `functions.exec`, retain the returned result with `store()` and recover it with `load()` when persistence spans calls.
 Print only small metadata such as result keys and `output_hint`, never base64 or a sliced serialization of the huge result, which can hide the saved-path hint.
-When `output_hint` reports a saved local PNG under `CODEX_HOME/generated_images`, copy from that actual reported path into the source workspace and verify the copied SHA-256 matches the original.
+Only when outside-repo output storage is authorized, if `output_hint` reports a saved local PNG under `CODEX_HOME/generated_images`, copy from that actual reported path into the source workspace and verify the copied SHA-256 matches the original.
 If persistence fails after successful generation, recover the existing output from the reported session folder and timestamp and inspect its subject before selecting it; do not repeat a successful generation merely to save its output.
 
 When Codex native `image_gen__imagegen` returns `result.image_url` as a `data:image/png;base64,...` URL with no reported local path, save the returned bytes before processing.
