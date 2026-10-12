@@ -46,7 +46,7 @@ B5. **Q** Move the auto event logs setting to the Miscellaneous view. (commit: f
 B6. **Q** Event history logging: entries show only the event name, never the full description. Completed: 78e6554affd48ebcce7191ccded8c564353ac447. Parent-exact selector verified in `442c8a9e1d09271dd0f5c8919010c502d1364911`. Audit: `c65be58abe8323c8a06969a5f8c4a9bacdebafd1`.
 B7. **Q** Air contamination idea "no longer fulfilled" message spam: hide it. (commit: 48255b6781aef430ac7e1fd332ba180fa2b0c491)
 B8. **Q** Trait description shows broken scripted localisation: fix. (commit: 567ff94cd6ec1069fdfc391732af469d5a99f311)
-B9. Camps UI: buttons do not work and throw errors (latest lines of error.log): fix (Sol).
+B9. Camps UI: buttons do not work and throw errors (latest lines of error.log): fix (Sol). Source repair and independent button audit: `4b0967bd7ad2d8386a2ec137146af8b0cd225ad5`; state scopes retained; layout and art preserved; rendering timed out and no game was launched. Evidence: `docs/plans/chaos_redux_load_camps_repair_2026-10-13.md`.
 B10. Migration UI: empty area on the left; the image goes inside the box. — implemented in `76c7815224`.
 B11. Decisions for outbreak responses appear on the map only, not listed in the decision category. Completed: `3deac2d4da401de6e47c04f3170a409833ddffa4`.
 B12. Technology folders: fix overlaps, disconnected techs and bloat. Bring back the consolidation that removed the excess techs, but leave the upper part of the chemical warfare tree exactly as it is. — implemented in `30ac00fb03`.
@@ -56,7 +56,7 @@ B14. **Q** Rule for all UI text: large numbers are never shown plainly; shorten 
 
 ## C. Systems (Sol unless noted)
 
-C1. All load errors in error.log.
+C1. All load errors in error.log. Partial source fixes: `3c098421e86f16eece355d268c2ea75c19d765db`, `f64ef507a2717e7c15239243ce41c373f71d7ce1`, `e0f807c1d492165a29b252bc55929f94ec2bba54`, `6cf5d0120866354fbc023bcb2c119bc4f2357e1e`; zero current localisation collisions. Incomplete: five never-tracked flag ladders and unlocated font diagnostics; no Linux launch loop under the explicit no-launch instruction. Evidence: `docs/plans/chaos_redux_load_camps_repair_2026-10-13.md`.
 C2. Crisis pressure setting: worded as applying to any event, made dynamic so other events use it, a slight effect only, disabled by default.
 C3. UI fractures: remove the fracture cascade events, keep the setting. Cracks follow the Chaos Meter tier: none at calm, very slight at the next tier, larger, more visible and redder with each tier. Never over main buttons, only in free space. At world end more cracks, without the dim purple glow.
 C4. Performance: the game becomes very slow after some events fire. Profile and fix.
