@@ -43,6 +43,35 @@ Its current bytes equal both the original Git blob and installed vanilla `gfx/te
 The only mod sprite definition points to this file, with two frames and `legacy_lazy_load = no`.
 No alternate truck was invented.
 
+## A6 portraits — historical restore batches
+
+Restore commit `59267b7c8` restores 49 existing DDS files from the exact parents of five repaint commits.
+The 45 Event 031 portraits comprise 12 clandestine/criminal portraits from `e8a307393a^`, 14 jihadist/military portraits from `9aaeb596a0^`, 12 millenarian/revolutionary portraits from `2f506bc816^`, and seven council/entity portraits from `ad741f951f^`.
+The remaining four portraits are Hannibal Wendigo and its sheet, Ilyr Ren, and Kruger stage 0, restored from `34559caed6^`.
+The exact source parents are `29b582d0d6`, `e8a307393a`, `9aaeb596a0`, `2f506bc816`, and `569e22ca6f`, respectively.
+Existing portrait sprite paths and character references remain bound to these original filenames.
+At the first batch, the parent rechecked all 49 file hashes against the historical LFS OIDs, with no mismatches, and reviewed the restored contact sheet.
+The row-level paths, source pointers, repaint pointers, dimensions, and hashes are retained in `.tmp/restore_assets_audio/portraits/restore_evidence.json`.
+Follow-up commit `85594b997` restores five Random Terror files changed earlier in `3098ed9d2`, using `3098ed9d2^` rather than their later October parents.
+Four of these files overlap the first batch; jihadist 08 is the fifth.
+The wider currently consumed portrait history is being completed before A6 is marked finished.
+
+## A7 other texticons — restored
+
+Restore commit `b23e41257f78895546fcbb2843756610ba2875f2` restores 42 DDS files and 32 earlier texture/frame bindings in `interface/chaosx_texticons.gfx`.
+The restored families are support equipment, CBRN instruments, chemical support/category artwork, the Chaos Battalion, Livens projectors, nine Cannibalism unit glyphs, the Independence Wave reserve glyph, famine/migration/medical resource glyphs, zombie variants, Death Ghost, and Murder Mystery operations kits.
+The offending redraw chains are `1a4af3a4d`, `37e369007`, `1cb4d061f`, `07e229d3d`, `b0dcc9f5b`/`1e42516fe`, and `baaf0c041`.
+Each binary comes from the parent of its first unwanted redraw; the later Murder Mystery and famine/migration redraws do not become the restore baseline.
+The 23 CBRN bindings repointed by `f7fa11b52` return to their exact earlier custom aliases from its parent.
+The nine support-equipment, armored-category, and agent-specific Livens binding/frame changes return to `1a4af3a4d^`.
+Eleven deleted original DDS targets required by those aliases were reinstated from the cited pre-change versions; the corresponding retired gameplay units were not reinstated.
+Genuine new resource glyphs remain, and the replacement files under new names remain on disk when unbound.
+An independent read-only reviewer checked all 42 hashes against the historical LFS OIDs, all 32 aliases against their historical bindings, target existence, and frame declarations, and found no concrete defect.
+The parent reviewed the before/original contact sheet and the complete intended diff.
+The row-level binary sources, hashes, and alias sources are retained in `.tmp/restore_assets_audio/parent/texticon_restore_manifest.json` and `texticon_wiring.json`.
+The additional inline unit aliases in `interface/chaosx_missing_unit_texticons.gfx` reference small counter textures directly.
+Their changed existing texture history is being restored separately; the aliases and genuinely new textures remain.
+
 ## Reference evidence and scope
 
 The connected MCP reference routes were exposed and used.
