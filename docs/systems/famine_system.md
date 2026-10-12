@@ -90,8 +90,9 @@ Local supply is inadequate when the reserve covers fewer than 7 days, or fewer t
 
 ## Decisions and missions
 
-Famine owns its own category and nine actions: Release Food Stores, Import Food (arranges a foreign land donor and delivers in one paid action), Restore Relief, Escort Relief and Airlift Relief for blockaded islands, Requisition Food from a safe neighbouring state, Evacuate, Conceal Hunger and Continue Requisitions.
-Each is offered only by its own selected-state conditions; no action hides another country-wide.
+Famine owns its own category and ten actions: Release Food Stores, Import Food (arranges a foreign land donor and delivers in one paid action), Restore Relief, Escort Relief and Airlift Relief for blockaded islands, Request Relief from a foreign overland donor, Requisition Food from a safe neighbouring state, Evacuate, Conceal Hunger and Continue Requisitions.
+Each is offered only for a real food problem in its selected state.
+Request Relief also keeps its historical reserve-first role: it appears once no reserve-release target remains.
 
 Reserve release targets any registered state at supply strain or worse, or under a live food shock, that holds stock to release (`famine_state_can_release_reserves`). Released food keeps counting as covered days for reserve exhaustion and decays more slowly than stock drawn by a famine, so releasing early protects a state's food rather than shortening it.
 
@@ -101,7 +102,11 @@ Conceal Hunger hides one state's crisis from the public for `famine_national_cri
 
 Famine missions own relief-route security and reserve-failure deadlines. Migration missions are never counted in famine mission slots or presented as famine actions.
 
-Legacy action fees use `humanitarian_legacy_cost_constants.txt` and the exact inclusive country-payer bundle predicates documented in `humanitarian_legacy_cost_triggers.md`.
+Action fees retain their real equipment requirements from `humanitarian_legacy_cost_constants.txt` and use the physical fuel/conditional-convoy transport contract in `common/scripted_effects/migration_transport_cost_effects.md`.
+No famine action charges political power.
+Each selected state must have a genuine visible food problem; stable historical or island monitoring alone reveals no action.
+Airlift consumes aircraft, air experience and fuel and uses no sea convoy.
+Saved payer/action/state transport quantities supply exact refunds after rejected unmoved work, independent of later geography.
 The stable cost getters and texticons display country-local quote values refreshed at existing phase and exact active-state registration boundaries; cached display values do not authorize payment or refunds.
 Delayed work requires its own action/state/payer paid receipt, and relief actions additionally bind the exact paid contract generation, mode and donor before continuation.
 Rejected uncharged setup cannot deliver reserves or claim a refund; funded work keeps its existing risks, and famine evacuation refunds only its matching paid tuple when measured origin debit is zero.

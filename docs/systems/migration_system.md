@@ -87,14 +87,17 @@ Large or sustained issue facts, or distinct valid incoming evacuation generation
 Preparation and rejection precede acceptance; these are phased uses of existing controls, not an additional category, mission, GUI, or headline value.
 The pending-request priority text explains the current choice without calling the people arrivals.
 
-Reception preparation costs live in `common/script_constants/migration_reception_preparation_constants.txt`.
+Reception medical-supply costs live in `common/script_constants/migration_reception_preparation_constants.txt`; fuel and convoy fees live in `migration_transport_cost_constants.txt`.
 The existing active-country registration and country phase provider share a display-only cost projector for `common/scripted_localisation/migration_reception_preparation_cost_scripted_localisation.txt`; fresh constants, not cached text values, govern affordability and payment.
-`localisation/english/migration_l_english.yml` owns the six ready/blocked cost labels and request wording, reusing the existing `£pol_power`, `£support_equipment_text_icon`, and `£GFX_fuel_texticon` consumers.
+`localisation/english/migration_l_english.yml` owns the six ready/blocked cost labels and request wording, reusing the existing `£support_equipment_text_icon`, `£GFX_fuel_texticon`, and `£convoy_text_icon` consumers.
 The action retains `GFX_migration_decision_open_border`; no new art or sprite consumer is required.
 
 ## Paid decision work
 
-The 13 legacy migration actions share neutral central fee tuning and pure inclusive cost components/profiles with the famine decision owner, without sharing a category or mechanic lifecycle.
+The migration actions use the physical transport fee contract in `common/scripted_effects/migration_transport_cost_effects.md`, with their original train, support and security-equipment costs where those actions consume them.
+Political power is not charged.
+Fuel fees are 5k, 10k or 20k for connected states, doubled for states without a land connection to the payer’s capital, with 5, 10 or 20 convoys for those sea routes.
+Airlift relief uses aircraft and fuel rather than sea convoys.
 Availability, the native custom-cost branch, resource colors and final payment use the same exact country-payer bundle; display-only quotes are not payment authority.
 Immediate actions validate their whole activation before writes, while delayed paid work uses independent action/state/payer receipts before its existing continuation.
 Corridor negotiation preserves deferred payment after a successful offer and rechecks its full fee before preparation, submission and debit.
@@ -111,9 +114,16 @@ Violent pushback and unsafe forced return can create route deaths under `constan
 
 ## Decisions and missions
 
-Migration owns its own category: Open and Restrict Departure, Evacuate Civilians, Request Passage with Accept and Refuse Passage for the receiver, Open Emergency Reception, Screen Incoming Civilians, Distribute Arrivals, Permit Transit, Close the Border, Enforce the Closure, Local Integration, Resettle Abroad, Help Families Return and Force Repatriation.
+Every action target must have a current local threat, measured displaced or sheltered civilians, or an exact incoming corridor request.
+Reception preparation is limited to that state, an adjacent displacement origin, or the requested receiving front; an unrelated national crisis does not expose preparations on arbitrary owned islands.
+Famine, proven blockade, active persecution/bombing/disaster/contamination, neighboring established outbreaks, and enemy-controlled front states can create that local need.
+War and state-control callbacks and accepted outbreak receipts request bounded neighboring flight through the existing migration owner, with population shares and cooldowns in `migration_pressure_constants.txt`.
 
-Evacuate Civilians is one paid action for any state with sustained flight or trapped people; it organizes the departure points itself, so there is no separate preparation step, and it is blocked only while national reception is already over capacity.
+Migration owns its own category: Open and Restrict Departure, Prepare Evacuation, Evacuate the Vulnerable, Evacuate Workers, Request Passage with Accept and Refuse Passage for the receiver, Open Emergency Reception, Screen Incoming Civilians, Distribute Arrivals, Permit Transit, Close the Border, Enforce the Closure, Local Integration, Resettle Abroad, Help Families Return and Force Repatriation.
+
+Preparation reserves the selected state’s departure points before vulnerable-person or worker evacuation can start.
+Worker evacuation retains its distinct support-stock prerequisite and heavier train requirement.
+Both evacuation actions use the existing exact movement, corridor, population floor and reception contracts and are blocked while national reception is already over capacity.
 The emerging, active and resolution phases are presentation for the category header and the missions; they lock no ordinary decision. Departure policy can be reversed during a crisis, and every action that relieves a host (closing the border, distribution, transit, integration, return, resettlement) stays available when the host is overloaded, while actions that admit more people need spare capacity.
 
 Migration missions own corridor, evacuation-transport, reception-observation, and safe-return deadlines. Famine missions are never counted in migration mission slots or presented as migration actions.

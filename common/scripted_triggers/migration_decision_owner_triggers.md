@@ -13,7 +13,7 @@ The predicate changes presentation and response eligibility only; it does not cr
 
 `migration_decision_reception_host_is_valid` is country-scoped and requires a valid current capacity revision, a positive load, and remaining effective people capacity; actions that admit more people use it. `migration_decision_reception_load_is_valid` keeps the same revision proof while allowing an overloaded host, so every action that relieves the burden (Close the Border, Enforce the Closure, Distribute Arrivals, Permit Transit, Local Integration, Help Families Return, Force Repatriation) stays available when the host is over capacity. `migration_decision_reception_state_load_is_valid` is its state-scoped companion over the exact hosted cohort. Those host actions also refuse a state whose own people are being evacuated (`migration_evacuation_prepared`), so one state's people are never moved by two actions at once.
 
-`migration_reception_has_room_for_evacuation` (COUNTRY) holds while the country hosts nobody or its measured load is below capacity; Evacuate Civilians and the famine evacuation seam use it. `migration_state_needs_organized_evacuation` (STATE) holds for active displacement whose flight pressure or trapped population has reached the sustained-issue threshold.
+`migration_reception_has_room_for_evacuation` (COUNTRY) holds while the country hosts nobody or its measured load is below capacity; the vulnerable and worker evacuation actions and the famine evacuation seam use it. `migration_state_needs_organized_evacuation` (STATE) holds for active displacement whose flight pressure or trapped population has reached the sustained-issue threshold.
 
 `migration_decision_reception_capacity_exhausted_is_valid` derives the AI warning from the current valid effective-capacity comparison and does not consume the orphan exhausted flag.
 
@@ -36,7 +36,9 @@ The following COUNTRY-scope hidden Boolean helpers are decision-owner preflights
 | `migration_open_departure_routes_can_start` | `migration_open_departure_routes` |
 | `migration_restrict_departure_can_start` | `migration_restrict_departure` |
 | `migration_close_border_can_start` | `migration_close_border` |
-| `migration_evacuate_civilians_can_start` | `migration_evacuate_civilians` |
+| `migration_prepare_evacuation_can_start` | `migration_prepare_evacuation` |
+| `migration_evacuate_vulnerable_can_start` | `migration_evacuate_vulnerable` |
+| `migration_evacuate_workers_can_start` | `migration_evacuate_workers` |
 | `migration_negotiate_corridor_can_start` | `migration_negotiate_corridor` |
 | `migration_controlled_medical_reception_can_start` | `migration_controlled_medical_reception` |
 | `migration_distribute_arrivals_can_start` | `migration_distribute_arrivals` |
@@ -51,13 +53,13 @@ The four decisions whose full gameplay remains in `complete_effect`—open depar
 
 `migration_local_integration_host_can_settle` is STATE-scoped on the integration host with ROOT as the integrating country. It requires ROOT to own and control the host, and both the state reception load and the owner's national reception load to cover the hosted group (`migration_state_live_cohort_amount`). Local integration uses it in `visible`, `available`, `target_trigger` and its start preflight, so the fee is never charged for a settlement that the owner-ledger debit would reject, such as a hosted group in an occupied state that ROOT controls but does not own.
 
-The other eight upfront paid continuations use `<decision>_cost_paid` as a state flag and `<decision>_cost_payer` as a state-scoped country pointer. Their receipt guards are `migration_<decision>_cost_receipt_is_valid`, except corridor negotiation, which uses `migration_negotiate_corridor_cost_pending_is_valid` for its unpaid deferred request boundary. A valid receipt requires the exact selected state, the recorded payer to exist and equal callback ROOT, and that payer to remain the current controller. Each `remove_effect` consumes its matching flag before the entire existing continuation; it never rechecks already-spent stock.
+The state-targeted upfront paid continuations use `<decision>_cost_paid` as a state flag and `<decision>_cost_payer` as a state-scoped country pointer. Their receipt guards are `migration_<decision>_cost_receipt_is_valid`, except corridor negotiation, which uses `migration_negotiate_corridor_cost_pending_is_valid` for its unpaid deferred request boundary. A valid receipt requires the exact selected state, the recorded payer to exist and equal callback ROOT, and that payer to remain the current controller. Each `remove_effect` consumes its matching flag before the entire existing continuation; it never rechecks already-spent stock.
 
 `migration_negotiate_corridor` remains deferred-payment: `complete_effect` records only its own state-local pending flag/payer when the entire start and cost preflight passes. Its removal rechecks that pending receipt and the fresh full cost before preparation/submission, then rechecks immediately before the existing successful-offer debit. It does not use a paid flag and does not charge a rejected setup.
 
 `migration_clear_stale_paid_decision_receipts` is STATE-scoped and enumerates only migration-owned paid/pending fields. It clears a receipt only when its payer is missing, invalid, or no longer controls this exact state. It does not clear another action/state/payer receipt, erase still-controlled funded work when the issue phase recovers, or invoke generic cohort/route cleanup.
 
-Every delayed `remove_effect` consumes the exact state/payer receipt before entering its existing continuation. Receipt ownership does not add new route, cohort, phase, or movement-success gates around the four measured-zero-origin refund paths (famine evacuation, civilian evacuation, voluntary return, and forced repatriation). Their original route execution and zero-debit test still decide whether the original refund occurs; a valid paid actor can therefore resolve that outcome when the later movement preflight fails. Cancellation clears only that action's receipt for the matching recorded payer, then runs the action's existing cancellation cleanup without refunding or cancelling another action's work.
+Every delayed `remove_effect` consumes the exact state/payer receipt before entering its existing continuation. Receipt ownership does not add new route, cohort, phase, or movement-success gates around the measured-zero-origin refund paths (famine evacuation, vulnerable/worker evacuation, voluntary return, and forced repatriation). Their original route execution and zero-debit test still decide whether the original refund occurs; a valid paid actor can therefore resolve that outcome when the later movement preflight fails. Cancellation clears only that action's receipt for the matching recorded payer, then runs the action's existing cancellation cleanup without refunding or cancelling another action's work.
 
 Corridor negotiation is the exception to upfront paid receipts. Its pending contract is private to the selected state and recorded requester; the pending remove requires a current owner callback, unchanged original action requirements, and a fresh full inclusive fee before preparation/submission. Only a newly submitted valid offer reaches the single final pre-debit check. If that final check fails, the exact just-created offer is cleared through the existing corridor owner cleanup; a failed setup is never charged. Cancellation clears only the matching pending requester receipt.
 
@@ -65,4 +67,15 @@ When a delayed receipt guard fails at removal because the selected state is no l
 
 The decision `available` blocks keep private receipt flags inside `hidden_trigger`. Player-facing requirements that rely on hidden scripted triggers are wrapped in `custom_trigger_tooltip` blocks with plain keys in `localisation/english/migration_l_english.yml`, shared where the requirement is the same: `migration_reception_load_tt`, `migration_reception_state_host_tt` and `migration_free_mission_slot_tt`, plus one target, policy or mission key per action.
 
-Evacuate Civilians sets `migration_evacuation_prepared` on the origin when it is paid, so the map shows the departure points, the famine evacuation seam does not book the same state twice, and host actions leave that state alone; it is refused while a famine evacuation of the state is paid. The flag clears when the transfer succeeds or fails, when the paid receipt is lost with the state, and on cancel.
+Prepare Evacuation publishes `migration_evacuation_prepared` after its matching paid state work expires.
+Vulnerable and worker evacuation require that state-local preparation and spare national reception room.
+The existing transfer and cancellation owners retain their preparation-flag cleanup; receipt, route and cohort checks remain with the exact movement owner.
+
+## Physical transport and local issue guards
+
+Every start revalidates the selected state’s live pressure or measured migration obligations through `migration_state_has_real_migration_issue`, and uses its action-owned cost bundle from `migration_decision_cost_triggers.txt`.
+The bundle combines original equipment requirements with the inclusive fuel and conditional-convoy quote; payment must return `migration_transport_payment_result = one` before any equipment debit, work marker or action effect.
+Prepare Evacuation uses a state-local unprepared check and publishes preparation for that state at expiry.
+The restored evacuation lanes require that preparation and retain the current not-overloaded-host seam.
+Worker support stock is a non-consumed prerequisite tuned in `migration_decision_threshold.worker_support_stock`.
+Saved transport quantities remain on the original payer until the action’s matching refund or completion consumes them.

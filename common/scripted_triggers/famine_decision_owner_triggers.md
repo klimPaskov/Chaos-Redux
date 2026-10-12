@@ -50,3 +50,10 @@ The exact-work guards compare the saved donor with the live contract donor from 
 The decision `available` blocks keep these private flags inside `hidden_trigger`. Each player-facing requirement that relies on a hidden scripted trigger is wrapped in a `custom_trigger_tooltip` with a plain `famine_<action>_target_tt` or mission `_available_tt` key in `localisation/english/famine_l_english.yml`.
 
 No receipt guard claims protection against an arbitrary same-payer ABA callback because the current decision callback surface exposes no activation UID. The action/state/payer contract is bounded to the native one-pending-action lifecycle and repeated callbacks before a new activation.
+
+## Request Relief and physical transport
+
+`famine_invite_relief_can_start`, `famine_invite_relief_cost_receipt_is_valid`, and `famine_invite_relief_cost_contract_is_current` retain the separate overland invitation’s exact state, payer, donor and generation contract.
+Each famine start requires a visible food problem in its selected state.
+The action-owned cost bundle combines genuine equipment with fuel and conditional sea convoys, charges no political power, and guards all following work on the successful transport payment receipt.
+The API is documented in `common/scripted_effects/migration_transport_cost_effects.md`.

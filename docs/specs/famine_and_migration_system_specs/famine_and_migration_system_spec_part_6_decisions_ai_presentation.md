@@ -139,21 +139,57 @@ The [decision map](famine_and_migration_system_decision_map.csv) is the canonica
 | Conceal Hunger | Hide one state's crisis from the public for 90 days | The state stops counting toward the national food crisis but its food shock rises by 10; the first famine deaths there are condemned as a cover-up |
 | Continue Requisitions | Keep extracting from a hungry state | Adds 15 extraction pressure for war support and supply at the cost of deeper famine; available only where a real extraction policy exists |
 
-Costs use the shared humanitarian cost profiles recorded in the [famine system document](../../systems/famine_system.md).
-Foreign relief is not a separate request: Import Food arranges and delivers the shipment.
-Decisions are never hidden country-wide by an unrelated state's condition; each one checks the selected state.
+Costs use the physical transport contract and preserved equipment requirements recorded in the [famine system document](../../systems/famine_system.md); political power is not charged.
+Request Relief retains the separate foreign-donor invitation, while Import Food remains the delivery action.
+
+### Invite international relief
+
+Narrative role:
+
+The government accepts foreign aid, observers, and logistical access.
+
+Tradeoffs:
+
+- lower mortality
+- improved diplomacy
+- reduced concealment
+- possible exposure of camps, requisition, or corruption
+- foreign influence or inspection pressure
+Each decision checks the selected state.
+Request Relief retains its historical reserve-first country role and waits until no reserve-release target remains.
 
 ## Migration origin decision family
 
 | Decision | Role |
 | --- | --- |
-| Evacuate Civilians | Organize departure and move civilians from a state with sustained flight, trapped people or food insecurity to a safe destination; route deaths occur only on a dangerous route |
 | Open Departure | Permit and support spontaneous flight; lowers trapped pressure with less control over destinations |
 | Restrict Departure | Hold the population in place; preserves labor and secrecy, raises trapped pressure while danger remains |
 | Request Passage | Ask an enemy, neutral, partner or neighbour for a humanitarian corridor; the counterpart answers with Accept or Refuse Passage, and rejecting a corridor it could have received is condemned through the famine owner |
 
-Evacuate Civilians is one decision.
-Preparation, vulnerable-civilian and worker evacuation were merged because they moved the same people through the same transfer and differed only in price; a priority choice returns only if a real production-recovery consumer for worker cohorts is added.
+### Prepare an evacuation plan
+
+The country selects priority states, destination capacity, and transport reserves before the crisis peaks.
+
+Preparation reduces later route deaths and congestion.
+
+### Evacuate vulnerable civilians
+
+The country moves a smaller, high-need cohort.
+
+Costs can include trains or convoys, support equipment, fuel, and reception capacity.
+
+### Evacuate industrial workers and machinery support staff
+
+The country preserves critical labor and production knowledge.
+
+Tradeoff:
+
+- lower origin production
+- better destination production recovery
+- vulnerable civilians receive less transport priority
+
+The decision should not physically move factories unless a separate industry relocation system supports that action.
+
 Evacuation is blocked only when national reception is already over capacity.
 
 ## Migration destination decision family
@@ -500,3 +536,11 @@ This part is complete only when:
 - weighted pools receive probability audits
 - player-facing text explains cause and response without exposing hidden calculations
 - the system uses ordinary UI layers unless implementation evidence proves that a compact attached display is needed
+
+## C11 acceptance and implementation boundary
+
+The owner’s 13 October restore request supersedes the merged-action restriction in `e40587520` and accepts recovery of the three evacuation lanes and separate relief invitation from `839850b0d^`.
+Their recovered source wording is preserved above.
+The current source implements their historical preparation, stock requirements, equipment fees and exact movement/relief contracts, plus the owner’s local-pressure and fuel/convoy rules.
+The earlier demographic-priority and worker-recovery narratives did not have distinct cohort-selection or machinery-transfer code in that parent; no absent implementation is claimed to have been recovered.
+Unimplemented maritime evacuation, abandonment, entry-priority and internment proposals remain unresolved outside C11.
