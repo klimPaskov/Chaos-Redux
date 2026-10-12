@@ -1,5 +1,7 @@
 # Biological warfare restore comparison — 12 October 2026
 
+A12 and B11 are implemented in `3deac2d4da401de6e47c04f3170a409833ddffa4`.
+
 Acceptance basis: the owner's A12 and B11 instructions of 12 October 2026 require the earlier direct deployment and containment flow, fast policy changes, and removal of Disease Containment Board entry points.
 History was traced with `git log -S/-G`, `git show`, and the offending changes' parent blobs.
 

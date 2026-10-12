@@ -32,9 +32,9 @@ A8. **Q** Chaos Meter history alignment: restore the earlier layout. — impleme
 A9. **Q** Condemnation description: restore. Deaths entries spacing: restore. — implemented in `1fca4df6a7`.
 A10. **Q** Cluster entries in the event log: restore the earlier entry layout and alignment; remove the available/unavailable text on the right. — implemented in `360245b7ff`. Alignment: `13aea99060`.
 A11. Scientists: restore the balance that was changed (everyone became level 3 with no traits). Find the hidden biowarfare and chemical scientists and make them available again. Completed: `d2f7111d16e84b6b9a8fadf4b9967af12d165d15`.
-A12. Biological warfare deployment and containment: restore the simpler year-old flow (deploy field hospitals and similar direct actions; easy and fast policy change; a raid must be doable without friction). The Disease Containment Board in its current form is rejected. Compare with the old implementation in git history before deciding what to keep.
+A12. Biological warfare deployment and containment: restore the simpler year-old flow (deploy field hospitals and similar direct actions; easy and fast policy change; a raid must be doable without friction). The Disease Containment Board in its current form is rejected. Compare with the old implementation in git history before deciding what to keep. Completed: `3deac2d4da401de6e47c04f3170a409833ddffa4`.
 
-A13. Chemical release abilities: re-add the army-leader chemical release abilities (chlorine, phosgene and the others in `common/abilities/chemical_abilities.txt`) as working abilities, restored from the last version in git history where they were active, with their traits, icons, localisation and AI. They are currently disabled with `allowed = { always = no }`. Raids stay as a second delivery route. Completed: `d640c653cb864864df84a8432acf8ab8d9f092fa`.
+A13. Chemical release abilities: re-add the army-leader chemical release abilities (chlorine, phosgene and the others in `common/abilities/chemical_abilities.txt`) as working abilities, restored from the last version in git history where they were active, with their traits, icons, localisation and AI. They are currently disabled with `allowed = { always = no }`. Raids stay as a second delivery route. Completed: `d640c653cb864864df84a8432acf8ab8d9f092fa`. Localisation follow-up: `0e2814d61b981479c82a9a2348534e717ddd4cb9`.
 
 ## B. UI fixes
 
@@ -48,7 +48,7 @@ B7. **Q** Air contamination idea "no longer fulfilled" message spam: hide it.
 B8. **Q** Trait description shows broken scripted localisation: fix.
 B9. Camps UI: buttons do not work and throw errors (latest lines of error.log): fix (Sol).
 B10. Migration UI: empty area on the left; the image goes inside the box. — implemented in `76c7815224`.
-B11. Decisions for outbreak responses appear on the map only, not listed in the decision category.
+B11. Decisions for outbreak responses appear on the map only, not listed in the decision category. Completed: `3deac2d4da401de6e47c04f3170a409833ddffa4`.
 B12. Technology folders: fix overlaps, disconnected techs and bloat. Bring back the consolidation that removed the excess techs, but leave the upper part of the chemical warfare tree exactly as it is. — implemented in `30ac00fb03`.
 
 B13. Biowarfare folder: fix disconnected techs (started 12 Oct, Sol job `sol_bio_folder_links`).
