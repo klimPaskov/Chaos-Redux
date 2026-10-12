@@ -1,19 +1,23 @@
 guiTypes = {
 
 	# Main menu layout.
-	# The lower panel is anchored to the bottom edge. The logo area is the free screen above
-	# it: the margins below keep the logo clear of the screen top and of the panel.
+	# The lower panel is anchored to the bottom edge; the logo uses a native icon
+	# inside a centred reserve. Layout values are shared within this file.
 	@chaosx_menu_panel_width = 1070
 	@chaosx_menu_panel_height = 355
 	@chaosx_menu_panel_y = -10
 	@chaosx_menu_panel_start_y = 430
 	@chaosx_menu_panel_anim_time = 1200
 	@chaosx_menu_panel_fade_time = 900
-	@chaosx_menu_logo_margin_top = 26
-	@chaosx_menu_logo_margin_bottom = 389
-	@chaosx_menu_logo_reserve_height = 789 # 669 + twice the 60 px inset
-	@chaosx_menu_logo_inset_y = 60
-	@chaosx_menu_logo_start_y = 120
+	@chaosx_menu_logo_y = -422
+	@chaosx_menu_logo_start_y = -182
+	@chaosx_menu_logo_canvas_height = 160%
+	@chaosx_menu_logo_canvas_min_height = 1600
+	@chaosx_menu_logo_width = 592
+	@chaosx_menu_logo_height = 669
+	@chaosx_menu_logo_icon_x = -15
+	@chaosx_menu_logo_icon_y = -17
+	@chaosx_menu_logo_scale = 1.05
 	@chaosx_menu_column_width = 300
 	@chaosx_menu_about_x = 30
 	@chaosx_menu_community_x = 740
@@ -289,66 +293,47 @@ guiTypes = {
 	}
 
 	### MAIN MENU PANEL (upperleft)
-	# The container covers the free area above the lower panel: the whole screen minus a top
-	# margin and minus the panel height, its bottom margin and a gap.
-	# A centred 789 px reserve balances the 60 px logo inset at full size.
-	# When the reserve clamps to the free height, the inset lowers the hand behind
-	# the lower panel without reducing the logo's existing 592x669 size constraint.
+	# The native icon preserves the original 1440p fractional scale and texture sampling.
+	# A centred reserve returns its original anchor at 1440p and lowers it behind the
+	# panel at 1080p. The minimum canvas height keeps the settled artwork above y=27.
 	containerWindowType = {
-		name  ="mainmenu_panel_upperleft"
+		name = "mainmenu_panel_upperleft"
 		position = { x = 0 y = @chaosx_menu_logo_start_y }
-		show_position = { x = 0 y = 0 }
-		hide_position = { x = 0 y = 0 }
+		show_position = { x = 0 y = @chaosx_menu_logo_y }
+		hide_position = { x = 0 y = @chaosx_menu_logo_y }
 		animation_type = decelerated
 		animation_time = @chaosx_menu_panel_anim_time
 		fade_time = @chaosx_menu_panel_fade_time
-		size = { width = 100% height = 100% }
-		margin = { top = @chaosx_menu_logo_margin_top bottom = @chaosx_menu_logo_margin_bottom }
-		Orientation = upper_left
-		Origo = upper_left
+		size = {
+			width = @chaosx_menu_logo_width
+			height = @chaosx_menu_logo_canvas_height
+			min = { width = @chaosx_menu_logo_width height = @chaosx_menu_logo_canvas_min_height }
+		}
+		Orientation = center_up
+		Origo = center_up
 		clipping = no
 
 		containerWindowType = {
 			name = "logo_reserve"
 			position = { x = 0 y = 0 }
-			size = {
-				width = 100%
-				height = @chaosx_menu_logo_reserve_height
-				max = { width = 100% height = 100% }
-			}
+			size = { width = @chaosx_menu_logo_width height = @chaosx_menu_logo_height }
 			Orientation = center
 			Origo = center
 			clipping = no
 
-			containerWindowType = {
+			iconType = {
 				name = "logo_art"
-				position = { x = 0 y = @chaosx_menu_logo_inset_y }
-				size = {
-					width = 592
-					height = 669
-					max = { width = 100% height = 100% }
-					preserve_aspect_ratio = yes
-				}
-				Orientation = center_up
-				Origo = center_up
-				clipping = no
-
-				background = {
-					name = "Background"
-					quadTextureSprite = "GFX_chaos_redux_logo_scaled"
-					alwaystransparent = yes
-				}
+				spriteType = "GFX_chaos_redux_logo"
+				position = { x = @chaosx_menu_logo_icon_x y = @chaosx_menu_logo_icon_y }
+				scale = @chaosx_menu_logo_scale
 			}
 		}
 
-		# Kept by name for the frontend controller; the scaled background draws the logo.
-		iconType =
-		{
-			name ="frontend_game_logo"
+		iconType = {
+			name = "frontend_game_logo"
 			spriteType = "GFX_chaos_redux_logo"
 			position = { x = @chaosx_menu_hidden_x y = @chaosx_menu_hidden_y }
 		}
-
 	}
 
 	#containerWindowType = {

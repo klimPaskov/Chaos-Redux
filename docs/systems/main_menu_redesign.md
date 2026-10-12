@@ -1,119 +1,122 @@
-# Main Menu Redesign
+# Main Menu Layout and Native Logo Restoration
 
-## Overview
+## Result and acceptance
 
-The main menu is implemented through `interface/frontendmainview.gui` with assets registered in `interface/frontendmainviewbg.gfx` and `interface/frontendmainviewbg_basic.gfx`.
-The layout is a full-screen Chaos Redux painting, a large centred mod logo, and a lower menu panel with the about text on the left, main navigation in the middle, and community links on the right.
+The original 2560×1440 logo anchor and native rendering from `06e4c5aaa7` are restored.
+The exact combined request remains incomplete: the current foreground panel exposes more of the wrist than the original reference, and the native icon is larger than the requested current-size 1080 logo.
+This is the temporary restoration explicitly authorized by the user's fallback instruction, not acceptance of either deviation as a finished design.
+The accepted reference was corrected by the user to the original May layout, before `13b8fabb9e`; `d6d0087de4` is not the accepted reference.
+The user authorized isolated Linux captures, changes to both Linux settings files with byte-exact restoration, and a shared-index-safe commit.
 
-## Structure
+## Implementation
 
-1. `frontend_background` keeps the vanilla anchoring: centred, 100% wide, height from the 4:3 aspect ratio, so the painting covers the screen and is cropped evenly at the top and bottom.
-2. `mainmenu_panel_bottom` is anchored to the bottom centre (`center_down`), 1070x355, 10 px above the bottom edge.
-3. `mainmenu_panel_upperleft` covers the screen with a 26 px top margin and a 389 px bottom margin, reserving the lower panel, its 10 px bottom offset, and a 24 px gap.
-4. Its centred `logo_reserve` child is 741 px high, capped to the available height, and spans the available width.
-The `logo_art` child uses `center_up` for both orientation and origo, with a 36 px vertical inset.
-It holds the 592x669 painting at natural size and clamps both dimensions to the reserve with `preserve_aspect_ratio = yes`.
-The reserve's 72 px of extra height balances the inset when it fits; when it clamps, the inset lowers the logo while preserving its size.
-The `GFX_chaos_redux_logo_scaled` background fills that child, preserving the original artwork and its aspect ratio.
-5. `mainmenu_single_player` uses the same lower panel placement so the single-player submenu opens in the same visual area.
-6. Vanilla social links, subscription widgets, the credits and nudge buttons, and the `frontend_game_logo` icon are kept by name for the frontend controller but moved out of the visible area.
-7. The about text uses `chaosx_welcome_intro_loc` with `chaosx_left_standardtext_slider`, whose offsets follow the 300 px column width so the scrollbar sits left of the text.
+Only `interface/frontendmainview.gui` and this document change.
+All non-logo frontend definitions and tuning are preserved.
+The 1070×355 lower panel, its bottom offset of 10 px, navigation buttons, about/community columns, background selection behavior, and single-player submenu remain unchanged.
+The native `logo_art` icon uses the unchanged `GFX_chaos_redux_logo`, texture `gfx/interface/chaos_redux_logo.dds`, original local offset (-15,-17), and original scale 1.05.
+Its 592×669 `logo_reserve` is centred inside a canvas with height 160% of the virtual screen, minimum height 1600, and settled y offset -422.
+At 1440 this gives the original top-left (969,379) and native 622 px painted width.
+At 1080 it gives top-left (649,91), keeps REDUX visible, and places the entire cut edge behind the foreground panel.
+The native icon retains its original size at both targets; it is 622 px wide at 1080 instead of the requested 588 px.
+The minimum canvas yields a settled native top of 27 virtual pixels for shorter canvases; this bound is source-derived, while the two target resolutions were observed in the engine.
+Animation starts 240 px below the settled logo position and rises over the existing 1200 ms, so its entrance does not cross above its settled top.
+The hidden direct child `frontend_game_logo` remains available to the hard-coded frontend controller.
+The decorative icon remains in `mainmenu_panel_upperleft/logo_reserve/logo_art`.
+No artwork, localisation, gameplay, country setup, or shared settings-control file was changed.
 
-Shared layout tuning uses the `@chaosx_menu_*` constants at the top of `interface/frontendmainview.gui`.
+`frontend_background` retains the existing centred, aspect-preserving 4:3 cover layout and registered `chaosx_main_menu` background.
+`mainmenu_single_player` retains the current lower-panel placement.
+Navigation buttons remain direct children of their hard-coded menu windows.
+Commit `baaeb00fc5` superseded the All Settings implementation introduced by `13b8fabb9e` with System Settings.
+The current `system_settings_button`, its click binding, `interface/chaosx_system_settings.gui`, and related effects remain untouched; preservation is verified by change scope, not a campaign click test.
 
-## Background registration
+## Real screenshot evidence
 
-The background manager replaces the texture of `GFX_frontend_bg` with the selected entry from `common/frontend/backgrounds`.
-Chaos Redux overrides `common/frontend/backgrounds/base_backgrounds.txt` with the single entry `chaosx_main_menu`, keeps the texture at `gfx/loadingscreens/chaosx_main_menu.dds` as the manager requires, and points both `GFX_frontend_bg` and `GFX_frontend_bg_basic` at it.
-With one background the vanilla background picker has nothing to offer, so `change_background_button` is hidden, following the Kaiserreich precedent.
+Captures are native Linux HOI4 1.19.3 on private Xvfb :95, UI scale 1.0, using a separate test mod tree.
+No screenshot was simulated from geometry or resized to stand in for another resolution.
+The original reference used the complete exact `06e4c5aaa7:interface/frontendmainview.gui` in the Linux test copy only.
+The Windows repository file was not rolled back wholesale.
+Artifacts are ignored files under `.tmp/menu_logo/evidence/`.
 
-## Resolution and UI-scale coverage
+| State | Native screenshot |
+| --- | --- |
+| Original 2560×1440 reference | `reference_06e4c5aaa7_2560x1440.png` |
+| Before, 2560×1440 | `before_2560x1440.png` |
+| Native restoration, 2560×1440 | `after_restored_2560x1440.png` |
+| Before, 1920×1080 | `before_fresh_1920x1080.png` |
+| Native restoration, 1920×1080 | `after_restored_1920x1080.png` |
+| Proposed panel anchor, 1920×1080 | `proposal_panel_anchor_1920x1080.png` |
 
-HOI4 UI scale divides the physical resolution into the virtual GUI canvas.
-The logo height is the smaller of its natural 669 px and the virtual canvas height minus 415 px.
-The following dimensions are calculated in virtual GUI pixels, with the two scale-1 target resolutions also checked in game:
+Matched native no-logo fixtures isolate the actual painted pixels from the scene and foreground panels.
+The reference's visible logo bounds are [969,379,1591,1025); the restored native logo has the same unoccluded rendering and continues to y=1080 because the current panel is lower.
+All 247,888 reference-painted pixels above y=1020 match exactly, with zero channel differences.
+The original panel's translucent border changes 351 logo pixels at [1228,1021,1317,1025), and the current panel exposes 3,773 additional wrist pixels at [1215,1024,1315,1080).
+The original panel's logical/opaque tops are 1020/1025; the current panel's are 1075/1080.
+These differences prevent a claim that the complete visible logo matches the reference pixel-for-pixel while the current panel stays unchanged.
+`occlusion_comparison.json` and the paired comparison JSON files retain counts, bounds, and screenshot hashes.
 
-| Resolution | UI scale | Virtual canvas | Logo (px) | Free area above panel |
-| --- | --- | --- | --- | --- |
-| 1920x1080 | 1.0 | 1920x1080 | 588x665 | 715 |
-| 1920x1080 | 1.5 | 1280x720 | 270x305 | 355 |
-| 2560x1440 | 1.0 | 2560x1440 | 592x669 | 1075 |
-| 3840x2160 | 1.5 | 2560x1440 | 592x669 | 1075 |
-| 1366x768 | 1.0 | 1366x768 | 312x353 | 403 |
-| 1366x768 | 1.25 | 1093x614 | 176x199 | 249 |
+At 1080 the current background-rendered logo is 588×665, with painted top y=86 and foreground coverage at y=720.
+The restored native icon is 622 px wide, with painted top y=91; native inspection confirms the full diagonal bottom edge is covered and the top is clear.
+The size requirement is therefore not met by this temporary restoration.
 
-At 1366x768 with UI scale 1.5 (911x512) the 1070 px panel is wider than the screen; the vanilla main menu does not fit that canvas either.
-The 2560x1440 composition retains the lower panel from the user-selected `13b8fabb9` reference and places the logo centre within two pixels of that revision's vertical anchor.
-The natural-size ceiling preserves space around the painting at that resolution.
-At 1920x1080 the painting keeps its 665 px height and starts at y=62, placing its bottom at y=727, 12 px behind the lower panel's logical top at y=715.
-The lower panel is declared after the decorative logo window and supplies the covering foreground.
+## Iteration findings and limits
 
-### Small-height logo placement
+The current layout was captured before each target's restoration.
+GUI file-watcher reloads worked; eight-second settling waits were used after the first reload capture caught the entrance animation.
+That transient `candidate_c_2560x1440.png` was rejected; the later settled capture was used for analysis.
+Integer background sizes (622×703 and 622×702) and fractional size declarations (621.6×702.45) did not reproduce the original 1.05-scaled native icon's sampling.
+The fractional declaration rendered a 621 px width, not the original 622 px painted width.
+Background `scale = 1.05` did not enlarge either the tiled or simple background consumer; both tests rendered at 592×669 and produced identical screenshots.
+The native-icon control restored the original unoccluded pixels exactly.
+These tests establish the limitations of the supported paths examined; they are not an exhaustive proof about every undocumented engine capability.
+No supported route meeting the full strict pair was demonstrated.
+Cropping the wrist to the old panel boundary would create a detached flat cut above the current panel, so it was not used to manufacture a pixel-match claim.
+The optional 1920×1200 and 2560×1080 captures were not taken because each resolution requires another native launch.
+No campaign, All Settings/System Settings runtime test, or Windows-renderer pixel comparison was performed.
 
-Acceptance basis: the user's 1920x1080 screenshot `C:/Users/klimp/AppData/Local/Temp/claude/C--Users-klimp-OneDrive-Documents-Paradox-Interactive-Hearts-of-Iron-IV-mod-chaos-redux/b61fc2d1-fe9b-40e4-933a-f2accfc459e6/images/20.webp` and explicit instructions to lower the hand by 25–40 px, retain the current 1080 size, and preserve the 1440 placement exactly.
-The reference maps the decorative painting to `mainmenu_panel_upperleft/logo_reserve/logo_art` and the covering panel to `mainmenu_panel_bottom`; controls, their hit regions, animation timing, and artwork retain their existing definitions.
-At the settled animation position and UI scale 1, let `A = screen height - 415`, `L = min(669, A)`, and `R = min(741, A)` for the requested widths, none of which constrain the logo horizontally.
-The old top is `26 + (A - L) / 2`; the settled top is `26 + (A - R) / 2 + 36`.
-The shift is 36 px at heights through 1084, tapers continuously to zero between 1084 and 1156, and is zero at larger heights.
-This avoids a resolution-specific percentage-position formula and preserves the natural-size composition above the reserve's clamp threshold.
+Both Linux `settings.txt` and `pdx_settings.txt` were backed up before the first launch and restored byte-for-byte after the owned game and helpers stopped.
+`settings_restoration.json` records the restored hashes.
+The lease was released immediately after those native checks; the shared Windows settings and other displays were untouched.
 
-| Resolution, UI scale 1 | Logo size, unchanged | Before top–bottom | Settled top–bottom | Shift | Lower panel top |
-| --- | --- | --- | --- | --- | --- |
-| 1920x1080 | 588.46x665 | 26–691 | 62–727 | +36 | 715 |
-| 2560x1440 | 592x669 | 204–873 | 204–873 | 0 | 1075 |
-| 1920x1200 | 592x669 | 84–753 | 84–753 | 0 | 835 |
-| 1366x768 | 312.37x353 | 26–379 | 62–415 | +36 | 403 |
+## Proposed alternative — unresolved
 
-The source-derived previews and exact geometry are in `.tmp/menu_logo_clamp_20261011/`, with `before_<width>x<height>.png`, `after_<width>x<height>.png`, and `geometry.json`.
-They decode the unchanged artwork and draw a labelled opaque guide for panel coverage; they omit controls and are calculated layout illustrations, not native or MCP renders.
-The 1440 and 1200 preview content is byte-identical above the phase caption, and the check asserts the unchanged 665 px logo height and 36 px shift at 1080.
-The top is clear at every requested resolution.
-The 12 px logical overlap is source evidence; the exact textured panel-edge occlusion remains unobserved in the engine.
+Anchor the aspect-preserving background-rendered logo to the lower panel instead of preserving the original 1440p pixel rendering.
+The prototype is `proposal_panel_anchor.gui`, retained only in ignored scratch.
+Its native 1080 capture is byte-for-byte identical to the current 1080 before image, preserving the 588×665 size, top clearance, and complete hand-edge coverage.
+It uses bottom-centred orientation/origo, the existing 26/389 margins, and a 60 px inset; its 1440 placement is source-derived and has not been captured in the engine.
+It accepts a different 1440 look and texture sampling, so it requires the user's selection before installation.
+Another design choice is to restore the original panel's 1440 occlusion as well, which changes a protected non-logo surface and also needs approval.
+Neither alternative is accepted or wired into the repository.
 
-Reference evidence: `hoi4.reference_context(surface=gui)` and `hoi4.reference_search` succeeded and returned the offline Interface modding revision `b74afc86be4e5dbb3b0fc600820d73a8340f7dc1821fc5ef02c9ee1f028c0b1c` and installed scripted-GUI documentation revision `43ce647fc5fde27488855b060b5463c790e5e356149fceb010d36b960b40f838`.
-The read request starting before its selected section was rejected; its corrected request stalled together with the installed-documentation read and source lookup, so the relevant local sections were read directly.
-Interface modding lines 77–98 document nested containers, parent-relative percentage sizes, orientation, origo, and clipping; lines 369–386 document orientation-relative positioning.
-Installed `common/scripted_guis/_documentation.md` lines 1–40 document attachment, but do not specify percentage-position semantics; no installed prose documentation for that behavior was found.
-Vanilla `interface/combatlogview.gui` lines 393–429 places the nested `lower` container at `y=50%%` below its half-height `upper` sibling, supporting a parent-relative interpretation rather than a screen-relative one; this is precedent-derived inference, not an explicit prose rule.
-That file's SHA-256 is `2a0f4a8679891835068de10c125731b369205eade41497304a4f3ba3a38f5a5f`.
-Vanilla `interface/frontendmainview.gui` lines 1–12 demonstrates capped, aspect-preserving container size, revision `17e5f3cde42d170b9e4ac40bb2312cd2d505767920b6e995c5c58b48c38efd1b`; `interface/AST_cabinet_trust_scripted_gui.gui` lines 16–21 demonstrates `center_up` placement.
+## Assets and references
 
-The four-resolution `hoi4.gui_render` baseline request stalled without artifacts and was stopped.
-The narrower 1080 retry first rejected `uiScale` inside `scenario.resolution`; the corrected schema request timed out at 90 seconds without artifacts.
-No MCP before/after paths, visual verdict, or engine test is claimed; no further renderer retry is justified unless service health changes or new input addresses the stall.
-The source implementation and calculated comparison are present with no design simplifications; the explicitly requested MCP before/after render output remains unavailable.
-Skills used: `chaos-redux-scripted-gui` and `chaos-redux-shared-git-commit`.
-
-Live evidence from Linux HOI4 1.19.3, windowed at UI scale 1, is under `C:/Users/klimp/Videos/chaos_redux_trailer/records/gfx_review/after/live_2026-10-11/`: `main_menu_1920x1080.png` and `main_menu_2560x1440.png`.
-The other rows are source geometry, not live checks.
-The offline preview did not faithfully apply the margins or hidden controller-icon placement, so it was not used for visual acceptance.
-
-## Animation
-
-1. `mainmenu_panel_bottom` starts below the screen at `@chaosx_menu_panel_start_y` and settles at `@chaosx_menu_panel_y` over `@chaosx_menu_panel_anim_time`. Its `hide_position` is also `@chaosx_menu_panel_y`, so switching away from the first menu has no slide-out movement.
-2. `mainmenu_panel_upperleft` starts 120 px lower at `@chaosx_menu_logo_start_y` and rises to its zero offset over the same beat, fading in.
-Its margins place the painting within the free area, and its `hide_position` equals the settled position.
-3. Main menu and single-player menu buttons remain direct children of their hard-coded parent windows. The frontend controller searches those parent windows directly by button name, so nesting these buttons inside helper containers breaks menu binding.
-4. `mainmenu_single_player` uses the final panel position directly and has no animation attributes.
-
-## Assets
-
-| Asset | GFX token | File |
+| Consumer | Sprite | Asset and definition |
 | --- | --- | --- |
-| Main menu background | `GFX_frontend_bg`, `GFX_frontend_bg_basic` | `gfx/loadingscreens/chaosx_main_menu.dds` |
-| Main logo (stretched) | `GFX_chaos_redux_logo_scaled` | `gfx/interface/chaos_redux_logo.dds` |
-| Main logo (hidden controller icon) | `GFX_chaos_redux_logo` | `gfx/interface/chaos_redux_logo.dds` |
-| Community buttons | `GFX_discord_button`, `GFX_donation_button`, `GFX_homepage_button`, `GFX_github_button`, `GFX_documentation_button`, `GFX_chaosx_youtube_button` | `gfx/interface/*.dds`, registered in `interface/chaosx.gfx` |
+| Visible native logo | `GFX_chaos_redux_logo` | `gfx/interface/chaos_redux_logo.dds`; `interface/frontendmainviewbg.gfx` |
+| Retained adaptive-logo definition/prototype | `GFX_chaos_redux_logo_scaled` | Same unchanged DDS and GFX file |
+| Scene background | `GFX_frontend_bg`, `GFX_frontend_bg_basic` | `gfx/loadingscreens/chaosx_main_menu.dds`; frontend GFX files and `common/frontend/backgrounds/base_backgrounds.txt` |
+| About/community and navigation | Existing menu sprites and text | Existing frontend GUI, `interface/chaosx.gfx`, and `localisation/english/chaosx_gui_l_english.yml` |
+| Community buttons | `GFX_discord_button`, `GFX_donation_button`, `GFX_homepage_button`, `GFX_github_button`, `GFX_documentation_button`, `GFX_chaosx_youtube_button` | `gfx/interface/*.dds`; `interface/chaosx.gfx` |
 
-## Localisation
+The background manager selects the single `chaosx_main_menu` entry in `common/frontend/backgrounds/base_backgrounds.txt` and substitutes its texture for `GFX_frontend_bg`.
+The existing background picker remains hidden because there is only one registered painting.
+Visible custom menu text retains `chaosx_main_menu_about`, `chaosx_welcome_intro_loc`, `chaosx_main_menu_community`, and `chaosx_main_menu_version` in `localisation/english/chaosx_gui_l_english.yml`.
+The existing unresolved future proposal to provide a small picker thumbnail if several menu paintings are introduced is retained; it is outside this restoration.
 
-Visible custom menu text lives in `localisation/english/chaosx_gui_l_english.yml`:
-
-- `chaosx_main_menu_about`
-- `chaosx_welcome_intro_loc`
-- `chaosx_main_menu_community`
-- `chaosx_main_menu_version`
-
-## Future plans
-
-- A dedicated small thumbnail would let the background picker return if Chaos Redux ever ships several menu paintings.
+Earlier rounds had no exposed coding reference/source/GUI routes and used direct local reads.
+During final review the routes became available, and `reference_context`, targeted `reference_search`, `reference_read`, and `source_lookup` returned the same cited documentation revisions and the current mod/vanilla window definitions.
+The context reported no missing required wiki/game-documentation sources, no omitted source kinds, and no known-mistake findings.
+The first source-lookup request combined symbol and path and was rejected; its single corrected symbol-only request succeeded.
+No MCP GUI render or script-validation pass is claimed; visual evidence comes from the native captures.
+The complete returned reference data is retained in `.tmp/menu_logo/evidence/mcp_reference_evidence.json`.
+Offline `paradox_wiki/Interface modding - Hearts of Iron 4 Wiki.md`, lines 75–105 and 124, covers containers, percentage sizes, orientation/origo, animation positions and margins; SHA-256 `b74afc86be4e5dbb3b0fc600820d73a8340f7dc1821fc5ef02c9ee1f028c0b1c`.
+Installed `common/scripted_guis/_documentation.md`, lines 1–40, covers attachment; SHA-256 `43ce647fc5fde27488855b060b5463c790e5e356149fceb010d36b960b40f838`.
+Installed `interface/frontendmainview.gui`, lines 1–18 and its native `mainmenu_panel_upperleft`, supplies the frontend precedent; SHA-256 `17e5f3cde42d170b9e4ac40bb2312cd2d505767920b6e995c5c58b48c38efd1b`.
+Installed `interface/AST_cabinet_trust_scripted_gui.gui`, lines 16–21, supplies centre-up placement; SHA-256 `ef072fb932861d32f189d40365f82c07caf74ee069a806cc23b5d7081936b6f4`.
+Installed `interface/combatlogview.gui`, lines 393–429, supplies nested percentage layout; SHA-256 `2a0f4a8679891835068de10c125731b369205eade41497304a4f3ba3a38f5a5f`.
+Native screenshots, rather than inferred geometry, determine the measured positions and renderer comparisons above.
+The final MCP reads covered Interface modding Arguments lines 81–109 and Position/orientation lines 369–386, and installed scripted-GUI documentation lines 1–40.
+The definition lookup returned current `mod:interface/frontendmainview.gui` lines 299–337 and overridden `game:interface/frontendmainview.gui` lines 210–225, workspace-index revision `ef07ca5fcc9cdae7692bfc61e910f697625c8ba02696417e157c2efcc7be148e`.
+The parent performed the source and visual review because this shared frontend is outside the named-event GUI worker's scope.
+Skills used: `chaos-redux-scripted-gui`, `chaos-redux-debug-playtest` under the explicit Linux launcher/capture authorization, and `chaos-redux-shared-git-commit`.
+No skill was created or changed.
