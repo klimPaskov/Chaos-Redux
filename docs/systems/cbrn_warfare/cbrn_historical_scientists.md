@@ -131,7 +131,7 @@ The nine formerly generated named scientists are now static characters, so the t
 
 The original identity flags are written after recruitment for Howard Florey, Paul Fildes, Alexander Fleming, Ernst Chain, Gerhard Schrader, Kurt Blome, Walter Schreiber, Erich Traub, Kurt Gutzeit, Sigmund Rascher, Josef Mengele, Shiro Ishii, Masaji Kitano, Chikahiko Koizumi, Franciszek Witaszek, Grigory Mairanovsky, Ivan Velikanov, Lavrentiy Beria, Frank Olson, Ira Baldwin, and Murray Sanders.
 
-The 1936 startup grants do not complete Britain's anthrax special project or add British or American biological breakthrough progress, and Germany's tabun technology is withheld until after the late-1936 discovery while no tabun stockpile is granted.
+The historical bookmarks grant level 1 biological breakthrough progress to Japan, Britain, the United States, and the Soviet Union, and level 1 chemical breakthrough progress to Germany, Britain, and France, following the owner's D1 instruction. Britain's anthrax special project remains on its project route, and Germany's tabun technology is withheld until after the late-1936 discovery while no tabun stockpile is granted.
 
 ## Localisation
 

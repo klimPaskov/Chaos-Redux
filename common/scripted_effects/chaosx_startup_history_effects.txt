@@ -483,6 +483,10 @@ chaosx_startup_grant_eng = {
 				popup = no
 			}
 			chaosx_startup_sync_chemical_technology_unlocks = yes
+			add_breakthrough_progress = {
+				specialization = specialization_cw
+				value = constant:startup_history_breakthrough.britain_chemical
+			}
 			ENG_paul_fildes = {
 				set_character_flag = chaosx_scientist_eng_paul_fildes
 			}
@@ -501,9 +505,10 @@ chaosx_startup_grant_eng = {
 			cbrn_initialize_payload_logistics = yes
 			set_variable = { cbrn_shell_filling_agent = constant:cbrn_agent.phosgene }
 			set_variable = { cbrn_air_payload_agent = constant:cbrn_agent.mustard }
-			# Britain starts with defensive chemical and biological research only.
-			# The offensive biological programme and anthrax project remain
-			# reachable through later doctrine, policy, and project routes.
+			add_breakthrough_progress = {
+				specialization = specialization_biowarfare
+				value = constant:startup_history_breakthrough.britain_biowarfare
+			}
 			if = {
 				limit = { date > 1938.12.31 }
 				# The prewar civilian issue came from an operating procurement
@@ -558,6 +563,10 @@ chaosx_startup_grant_fra = {
 				popup = no
 			}
 			chaosx_startup_sync_chemical_technology_unlocks = yes
+			add_breakthrough_progress = {
+				specialization = specialization_cw
+				value = constant:startup_history_breakthrough.france_chemical
+			}
 			set_temp_variable = { var = startup_history_stockpile_amount value = constant:startup_history_stockpile.fra_chlorine_agent_lots }
 			add_equipment_to_stockpile = { type = chlorine_agent_lot_1 amount = startup_history_stockpile_amount }
 			set_temp_variable = { var = startup_history_stockpile_amount value = constant:startup_history_stockpile.fra_phosgene_agent_lots }
@@ -607,6 +616,10 @@ chaosx_startup_grant_ger = {
 				popup = no
 			}
 			chaosx_startup_sync_chemical_technology_unlocks = yes
+			add_breakthrough_progress = {
+				specialization = specialization_cw
+				value = constant:startup_history_breakthrough.germany_chemical
+			}
 			GER_gerhard_schrader = {
 				set_character_flag = chaosx_scientist_ger_gerhard_schrader
 			}
@@ -791,6 +804,10 @@ chaosx_startup_grant_jap = {
 			cbrn_initialize_payload_logistics = yes
 			set_variable = { cbrn_shell_filling_agent = constant:cbrn_agent.mustard }
 			set_variable = { cbrn_air_payload_agent = constant:cbrn_agent.mustard }
+			set_temp_variable = { cbrn_requested_use_policy = constant:cbrn_use_policy.unrestricted_authorization }
+			cbrn_set_use_policy = yes
+			set_variable = { cbrn_peak_use_policy = cbrn_use_policy }
+			set_country_flag = cbrn_policy_history_unrestricted_chaos_warfare
 			add_breakthrough_progress = {
 				specialization = specialization_biowarfare
 				value = constant:startup_history_breakthrough.japan_biowarfare
@@ -1061,6 +1078,10 @@ chaosx_startup_grant_usa = {
 			cbrn_initialize_payload_logistics = yes
 			set_variable = { cbrn_shell_filling_agent = constant:cbrn_agent.lewisite }
 			set_variable = { cbrn_air_payload_agent = constant:cbrn_agent.lewisite }
+			add_breakthrough_progress = {
+				specialization = specialization_biowarfare
+				value = constant:startup_history_breakthrough.usa_biowarfare
+			}
 			if = {
 				limit = { 361 = { is_owned_by = USA } }
 				361 = { chaosx_add_startup_cw_facility_9758 = yes }

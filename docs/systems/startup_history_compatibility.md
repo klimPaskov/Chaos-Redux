@@ -12,6 +12,8 @@ The tuning values live in `common/script_constants/startup_history_constants.txt
 
 The master effect sets `chaosx_startup_history_grants_applied` so startup setup cannot apply twice.
 
+Japan starts with `cbrn_use_policy = constant:cbrn_use_policy.unrestricted_authorization` through the shared `cbrn_set_use_policy` helper, with the peak-policy value and unrestricted-policy history receipt recorded at startup. The starting-mask initializer preserves this valid policy. Other countries retain their existing initial policy.
+
 The historical 1936 mask reconciliation runs after the common profile snapshot. It applies 75% active military issue to ENG, FRA, GER, SOV, and USA, 100% to ITA, 50% to JAP, and 25% to every other starting-mask profile tag, with a separate 25% replacement reserve and no fixed civilian issue. The 1939 British civilian receipt is separate: startup passes the sourced 40,000-crate target to the ENG-root `cbrn_protection.3` event, which debits real warehouse stock once. Core-owned Civil Defence visibility must consume the one-time historical receipt after that event so routine issue returns to threat-driven conditions.
 
 ## What belongs here
@@ -63,7 +65,7 @@ The scientist helpers are internal to startup generation. Event chains should us
 The startup effect currently replaces copied vanilla overrides for:
 
 - existing-country Chaos Redux technology, stockpile, static scientist identity, trait, breakthrough, special-project, and delayed-event grants
-- prepared-country starting chemistry/biology setup is preserved, while Britain's anthrax special project and British/US early biological breakthrough are deferred to later routes; Germany's `tabun` technology opens only after the late-1936 discovery and no startup tabun stockpile is granted
+- prepared-country starting chemistry/biology setup is preserved; JAP, ENG, USA, and SOV receive one biological breakthrough, and GER, ENG, and FRA receive one chemical breakthrough; Britain's anthrax special project remains on its project route
 - chemical warfare facility placement in states 16, 59, 122, 158, 239, 361, and 530
 - biowarfare facility placement in states 247, 282, 328, 338, 440, 609, 816, and 823, with the British 338 site gated after 31 December 1939 and the American 816 site gated after 1 January 1943
 - the Australia citizen-army tuning variables
