@@ -59,8 +59,8 @@ B14. **Q** Rule for all UI text: large numbers are never shown plainly; shorten 
 ## C. Systems (Sol unless noted)
 
 C1. All load errors in error.log. Partial source fixes: `3c098421e86f16eece355d268c2ea75c19d765db`, `f64ef507a2717e7c15239243ce41c373f71d7ce1`, `e0f807c1d492165a29b252bc55929f94ec2bba54`, `6cf5d0120866354fbc023bcb2c119bc4f2357e1e`; zero current localisation collisions. Incomplete: five never-tracked flag ladders and unlocated font diagnostics; no Linux launch loop under the explicit no-launch instruction. Evidence: `docs/plans/chaos_redux_load_camps_repair_2026-10-13.md`.
-C2. Crisis pressure setting: worded as applying to any event, made dynamic so other events use it, a slight effect only, disabled by default.
-C3. UI fractures: remove the fracture cascade events, keep the setting. Cracks follow the Chaos Meter tier: none at calm, very slight at the next tier, larger, more visible and redder with each tier. Never over main buttons, only in free space. At world end more cracks, without the dim purple glow.
+C2. Crisis pressure setting: worded as applying to any event, made dynamic so other events use it, a slight effect only, disabled by default. Completed: `d9ad38c307309ca4422eb99d2456c9e4f318e2c3`.
+C3. UI fractures: remove the fracture cascade events, keep the setting. Cracks follow the Chaos Meter tier: none at calm, very slight at the next tier, larger, more visible and redder with each tier. Never over main buttons, only in free space. At world end more cracks, without the dim purple glow. Completed: `4b054623c79d08f07e953c03ffe45de089903c87`, `1938e23f0c5ebab07ef45228520d1b2f5b9d97ad`.
 C4. Performance: the game becomes very slow after some events fire. Profile and fix.
 C5. Random terror event is broken one year in: fix.
 C6. Non-human countries must never be affected by systems meant for humans.
