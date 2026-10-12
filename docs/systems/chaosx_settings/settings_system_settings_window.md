@@ -25,14 +25,14 @@ Left click on an arrow uses the small step and right click the large step (`sett
 | --- | --- | --- | --- | --- | --- |
 | Base event weight | `global.settings_event_weight` (staged), copied to `global.default_event_weight` | Crisis rescue weight floor (`apply_crisis_rescue_event_weight_adjustments`, twice this value), White Peace repeatable decay (`global.event_max_caps` over this value, clamped to 1), fallback cap in `get_event_cap` and `update_repeatable_event_weights`, welcome screen values | 1000 | 100 to 5000, step 100, large step 500 | Arrows, then Apply |
 | Event interval scale | `global.settings_timer_modifier` (staged), copied to `global.chaos_timer_modifier_calm` by `update_all_timer_modifiers`, which also rescales the five higher tier modifiers | `calculate_next_timer_value` multiplies every timer by `global.chaos_timer_modifier` (the tier's modifier), the timer window range | 100% | 10% to 200%, step 5%, large step 25% | Arrows, then Apply |
-| Crisis pressure on you | country flag `chaosx_setting_non_ai_crisis_pressure_enabled` | `chaosx_is_non_ai_crisis_pressure_active`, read by the communist spread, escalation and sabotage chance and cooldown helpers in `001_communism_spread_effects.txt` | On | On or off | Checkbox |
+| Crisis pressure on you | country flag `chaosx_setting_non_ai_crisis_pressure_enabled` | `chaosx_is_non_ai_crisis_pressure_active`, read by the shared event timer in `chaosx_logic_effects.txt` and communist spread, escalation and sabotage helpers in `001_communism_spread_effects.txt` | Off | On or off | Checkbox |
 
 The two staged values follow the Event Weights page: arrows change the staged value, the value box shows it, `Active:` shows the live value, and `Apply` runs `apply_system_settings`, which copies both and refreshes the welcome screen values.
 The base event weight does not rewrite the stored `global.event_weights` or `global.event_max_caps` arrays initialized at startup.
 The interval scale applies to future timer calculations and does not reroll an interval already in progress.
 `Reset` stages the defaults of both pacing values (`reset_system_pacing_to_defaults`).
-`Reset All` runs `reset_system_settings_to_defaults`: it stages and applies both pacing values and turns crisis pressure on.
-The global `Reset All Settings` button of the settings window calls `reset_system_pacing_to_defaults` before its existing `update_advanced_settings_values`, and `reset_miscellaneous_to_defaults` already sets the crisis pressure flag, so it restores this window too.
+`Reset All` runs `reset_system_settings_to_defaults`: it stages and applies both pacing values and turns crisis pressure off.
+The global `Reset All Settings` button of the settings window calls `reset_system_pacing_to_defaults` before its existing `update_advanced_settings_values`, and `reset_miscellaneous_to_defaults` clears the crisis pressure flag, so it restores this window too.
 
 The settings system keeps no multiplayer host restriction; these controls behave like the other settings pages.
 
@@ -61,7 +61,7 @@ The `settings_system_steps` constants are UI click sizes introduced by the windo
 | --- | --- | --- | --- | --- |
 | `event_weight` | Base event weight | Sets fallback event caps, the crisis rescue weight floor and White Peace decay. Default: 1000 (100–5000). | Global staged and live variables | `adjust_system_event_weight`, required signed temporary `system_settings_delta`, then `apply_system_settings`. Reset through `reset_system_pacing_to_defaults` and Apply. |
 | `timer_modifier` | Event interval scale | Scales future event intervals across all Chaos tiers. Default: 100% (10–200%). | Global staged and live variables | `adjust_system_timer_modifier`, required signed temporary `system_settings_delta`, then `apply_system_settings`. Reset through `reset_system_pacing_to_defaults` and Apply. |
-| `non_ai_crisis_pressure` | Crisis pressure on you | Intensifies communist spread, escalation and sabotage in your country. Default: On. | Player-country flag | `toggle_non_ai_crisis_pressure`. `reset_system_settings_to_defaults` restores the flag and applies the numeric defaults. |
+| `non_ai_crisis_pressure` | Crisis pressure on you | Slightly shortens intervals for every scheduled event as Chaos rises and increases pressure from ongoing crises in your country. Default: Off. | Player-country flag | `toggle_non_ai_crisis_pressure`. `reset_system_settings_to_defaults` clears the flag and applies the numeric defaults. |
 
 | Candidate | Existing definition/default | Existing runtime consumer | Qualification |
 | --- | --- | --- | --- |
@@ -160,3 +160,8 @@ The Fallout consequence toggle lives in the Air Cleanliness tab of the Chaos Met
 
 - A host-only restriction for multiplayer if the settings system gains one.
 - A per-row marker for values that differ from their default.
+
+C2 acceptance (13 October 2026): the owner requested event-wide, slight pressure, disabled by default.
+`chaosx_apply_non_ai_crisis_pressure_to_next_timer` reads the current tier and multiplies only the player country's next shared timer by 0.98, 0.974, 0.968, 0.962, 0.956 or 0.95 before rounding and the existing minimum-day clamp.
+All existing event categories use that timer; manually fired events are immediate and receive no artificial delay.
+Historical default-On evidence above describes the prior source, not the current preference.

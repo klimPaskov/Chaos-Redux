@@ -562,3 +562,14 @@ Add a helper here only when its contract is neutral and its callers cross subsys
 Keep one-event orchestration, event-specific selectors, lifecycle state, and private adapters in the owning source file. A cross-event public gateway may remain in this registry while delegating its owner-specific runtime to the owning source file.
 
 When a shared helper changes, update its contract here and audit every call site. When an owner API changes, update the owner documentation and keep its index row limited to source and reference links.
+
+## chaosx_apply_non_ai_crisis_pressure_to_next_timer
+
+Purpose: apply optional, slight player crisis pressure to the shared event interval for every scheduled event.
+Owner: `chaosx_crisis_pressure_effects.txt`; tuning: `crisis_pressure_constants.txt`.
+Scope: country.
+Input/output: normal `event_timer_days`; temporary scratch output `crisis_pressure_timer_factor`.
+Defaults: unchanged when the acting country is AI or its crisis-pressure flag is absent.
+Side effects: multiplies the current next-event interval by the live Chaos tier's 0.98–0.95 factor; no targets, flags, costs or periodic hooks.
+The caller retains rounding and its minimum interval clamp.
+Usage: `chaosx_apply_non_ai_crisis_pressure_to_next_timer = yes` after ordinary timer scaling in `calculate_next_timer_value`.

@@ -39,3 +39,34 @@ chaosx_apply_non_ai_crisis_pressure_extreme_factor = {
 		add_to_temp_variable = { non_ai_crisis_pressure_cooldown_reduction = constant:non_ai_crisis_pressure.extreme_cooldown_reduction }
 	}
 }
+
+# Country scope. Applies to every event using the shared next-event timer.
+# No effect for AI countries or while the setting is off. Reads the live tier.
+# Input/output: event_timer_days. No flags, targets or periodic hooks.
+chaosx_apply_non_ai_crisis_pressure_to_next_timer = {
+	if = {
+		limit = { chaosx_is_non_ai_crisis_pressure_active = yes }
+		set_temp_variable = { crisis_pressure_timer_factor = constant:non_ai_crisis_pressure.timer_factor_calm }
+		if = {
+			limit = { has_global_flag = { flag = chaos_tier value = 1 } }
+			set_temp_variable = { crisis_pressure_timer_factor = constant:non_ai_crisis_pressure.timer_factor_gathering }
+		}
+		else_if = {
+			limit = { has_global_flag = { flag = chaos_tier value = 2 } }
+			set_temp_variable = { crisis_pressure_timer_factor = constant:non_ai_crisis_pressure.timer_factor_rising }
+		}
+		else_if = {
+			limit = { has_global_flag = { flag = chaos_tier value = 3 } }
+			set_temp_variable = { crisis_pressure_timer_factor = constant:non_ai_crisis_pressure.timer_factor_chaos }
+		}
+		else_if = {
+			limit = { has_global_flag = { flag = chaos_tier value = 4 } }
+			set_temp_variable = { crisis_pressure_timer_factor = constant:non_ai_crisis_pressure.timer_factor_critical }
+		}
+		else_if = {
+			limit = { has_global_flag = { flag = chaos_tier value = 5 } }
+			set_temp_variable = { crisis_pressure_timer_factor = constant:non_ai_crisis_pressure.timer_factor_collapse }
+		}
+		multiply_variable = { event_timer_days = crisis_pressure_timer_factor }
+	}
+}

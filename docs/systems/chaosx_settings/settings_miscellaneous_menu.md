@@ -31,13 +31,14 @@ The Fallout consequence toggle lives in the Air Cleanliness tab of the Chaos Met
 These defaults are applied in both `initialize_miscellaneous_settings` and `reset_miscellaneous_to_defaults`.
 
 ## Non-AI Crisis Pressure
-The settings defaults set `chaosx_setting_non_ai_crisis_pressure_enabled` on the player country; the toggle lives in the System Settings window, see [settings_system_settings_window.md](settings_system_settings_window.md). The reusable trigger `chaosx_is_non_ai_crisis_pressure_active` is true only for non-AI countries with that flag.
+The settings defaults clear `chaosx_setting_non_ai_crisis_pressure_enabled` on the player country; the toggle lives in the System Settings window, see [settings_system_settings_window.md](settings_system_settings_window.md). The reusable trigger `chaosx_is_non_ai_crisis_pressure_active` is true only for non-AI countries with that flag.
 
 The shared pressure helpers live in:
 - `common/script_constants/crisis_pressure_constants.txt`
 - `common/scripted_effects/chaosx_crisis_pressure_effects.txt`
 
-Communist spread now uses the setting when a player-controlled country has active communist state control, intervention targets, emergency pressure, or a communist rebel war. While active, spread, escalation, and sabotage receive higher chance weights and shorter cooldowns. AI-only crisis fronts continue to use normal tuning.
+The shared event timer uses the setting for every scheduled event, shortening the next interval by 2% at Calm World through 5% at World Collapse.
+Communist spread uses the setting when a player-controlled country has active communist state control, intervention targets, emergency pressure, or a communist rebel war. While active, spread, escalation, and sabotage receive 1–4 additional chance points and cooldown reductions of 1–2 days. AI-only crisis fronts continue to use normal tuning.
 
 ## Super-event audio behavior
 Super-event playback is routed through the settings-aware sound helper in:
