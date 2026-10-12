@@ -30,7 +30,7 @@ import re
 import sys
 from collections import defaultdict
 from pathlib import Path
-from typing import Dict, List, Set
+from typing import Dict, Iterable, List, Set
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 VANILLA_ROOT = Path(
@@ -115,12 +115,24 @@ def read_text(path: Path) -> str:
 	return raw.decode("utf-8", errors="replace")
 
 
+def iter_source_files(root: Path, excluded: Set[str], pattern: str) -> Iterable[Path]:
+	"""Skip excluded top-level trees before descending into their contents."""
+	for entry in root.iterdir():
+		if entry.name in excluded:
+			continue
+		if entry.is_file():
+			if entry.match(pattern):
+				yield entry
+		else:
+			yield from entry.rglob(pattern)
+
+
 def collect_registered(root: Path, excluded: Set[str]) -> Dict[str, List[str]]:
 	"""Return GFX names registered by `.gfx` files under root."""
 	registered: Dict[str, List[str]] = defaultdict(list)
 	if not root.is_dir():
 		return registered
-	for path in root.rglob("*.gfx"):
+	for path in iter_source_files(root, excluded, "*.gfx"):
 		parts = path.relative_to(root).parts
 		if parts and parts[0] in excluded:
 			continue
@@ -148,7 +160,7 @@ def collect_references() -> Tuple[Dict[str, Set[str]], Set[str]]:
 	"""
 	references: Dict[str, Set[str]] = defaultdict(set)
 	defined_in: Dict[str, Set[str]] = defaultdict(set)
-	for path in REPO_ROOT.rglob("*"):
+	for path in iter_source_files(REPO_ROOT, EXCLUDED_TOP_LEVEL, "*"):
 		if not path.is_file():
 			continue
 		parts = path.relative_to(REPO_ROOT).parts
@@ -171,7 +183,7 @@ def collect_references() -> Tuple[Dict[str, Set[str]], Set[str]]:
 
 def audit_definitions(findings: Findings) -> None:
 	"""Check that every texture or sprite file reference exists on disk."""
-	for path in REPO_ROOT.rglob("*.gfx"):
+	for path in iter_source_files(REPO_ROOT, EXCLUDED_TOP_LEVEL, "*.gfx"):
 		parts = path.relative_to(REPO_ROOT).parts
 		if parts and parts[0] in EXCLUDED_TOP_LEVEL:
 			continue
@@ -191,7 +203,7 @@ def audit_definitions(findings: Findings) -> None:
 
 def audit_entities(findings: Findings) -> None:
 	"""Check `.gfx` entity blocks for mesh and texture files that are absent."""
-	for path in REPO_ROOT.rglob("*.gfx"):
+	for path in iter_source_files(REPO_ROOT, EXCLUDED_TOP_LEVEL, "*.gfx"):
 		parts = path.relative_to(REPO_ROOT).parts
 		if parts and parts[0] in EXCLUDED_TOP_LEVEL:
 			continue

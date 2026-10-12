@@ -400,7 +400,6 @@ When implementing any new mechanic, follow this checklist:
     Keep one current task report, avoid duplicate instruction copies outside the established generators, and review new files for unnecessary scaffolding before completion.
     Control bloat by removing duplication and keeping temporary work out of maintained paths, not by deleting specific requirements or shortening them into generic advice.
 
-Follow these rules and your changes will be easier to review, safer to merge and more consistent with the rest of the project.
 If an indispensable design choice or input is missing, finish independent work and ask a focused question.
 An unavailable check alone calls for source review and useful local checks, not another design request.
 

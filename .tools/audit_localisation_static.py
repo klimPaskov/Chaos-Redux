@@ -95,15 +95,13 @@ class Findings:
 
 def iter_script_files() -> Iterable[Path]:
 	"""Yield engine-parsed mod files that can reference a localisation key."""
-	for path in REPO_ROOT.rglob("*"):
-		if not path.is_file():
+	for entry in REPO_ROOT.iterdir():
+		if entry.name in EXCLUDED_TOP_LEVEL:
 			continue
-		parts = path.relative_to(REPO_ROOT).parts
-		if not parts or parts[0] in EXCLUDED_TOP_LEVEL:
-			continue
-		if path.suffix.lower() not in SCRIPT_SUFFIXES:
-			continue
-		yield path
+		paths = (entry,) if entry.is_file() else entry.rglob("*")
+		for path in paths:
+			if path.is_file() and path.suffix.lower() in SCRIPT_SUFFIXES:
+				yield path
 
 
 def read_text(path: Path) -> str:
