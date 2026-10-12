@@ -22,7 +22,7 @@ When an event implementation creates broad visible text, spawn `chaosx_localisat
 Read a reference file only when the work touches its topic. Each root section that points to a reference keeps its mandatory gate and links to the full requirements.
 
 - [references/scripted-systems-and-country-integration.md](references/scripted-systems-and-country-integration.md): owner-side unit-family coverage, supporting gameplay systems, duration fields, world threat, formables, 3D model and entity integration, and loop break isolation.
-- [references/event-text-formatting-and-details.md](references/event-text-formatting-and-details.md): parchment colour rules, Event Details text, integer and `defined_text` formatting, and safe localisation writes.
+- [references/event-text-formatting-and-details.md](references/event-text-formatting-and-details.md): parchment colour rules, tooltip display audits, Event Details text, integer and `defined_text` formatting, and safe localisation writes.
 - [references/event-log-evolutions-and-clusters.md](references/event-log-evolutions-and-clusters.md): evolution implementation, event-log UI surfaces, event log integration, and event cluster integration.
 - [references/world-end-triggerable-scenarios-and-aftermath.md](references/world-end-triggerable-scenarios-and-aftermath.md): world-end scenario implementation, triggerable scenarios, and major-event defeat aftermath.
 
