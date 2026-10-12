@@ -125,13 +125,13 @@ Future work can give operational logistics a distinct appointment once a non-dup
 
 Both historical bookmarks mark every country in the starting mask matrix for force-scaled reconciliation: established majors use a 75% military issue target, Italy 100%, Japan 50%, and all remaining profile tags 25%, with a separate 25% replacement reserve and zero fixed civilian distribution. Each bookmark measures its own deployed force. The common profile retains knowledge and program identity but suppresses archival fixed stock and civilian issue; the startup effect snapshots pre-existing mask models and issues the active band from real stock, with ENG using the shared core helper for the same transaction. The 1939 British startup writes `cbrn_historical_civilian_mask_issue` and `cbrn_uk_1939_mass_respirator_issue`, passes the 40,000-crate civilian respirator assumption to the core CBRN profile owner, and queues ENG-root `cbrn_protection.3` so the inclusive target is reconciled against real stock above the military reserve once. The shared percentages are a gameplay calibration accepted by the user on 2026-09-25, not claims about exact historical inventory.
 
-The U.S. 1939 startup also knows `phosgene`, reflecting Edgewood's 1937 plant upgrade and standardization documented by the [U.S. defence history](https://www.denix.osd.mil/rcwmprogram/history/). Its 1936 bookmark does not receive that research. The same source records renewed mustard production in 1937; the [accepted gameplay calibration](../../specs/chaos_warfare_system_specs/corrections/2026-09-25_usa_1939_mustard_starting_stock.md) raises the U.S. 1939 mustard reserve from 240 to 320 abstract lots while leaving 1936 at 240. It grants no phosgene lots or factory line, and does not convert historical tons into lots.
+The U.S. starts with `phosgene` and `livens_projector_tech` at both historical bookmarks, reflecting First World War phosgene knowledge and the 1924 Livens standardization documented by the [U.S. defence history](https://www.denix.osd.mil/rcwmprogram/history/). The same source records renewed mustard production in 1937; the [accepted gameplay calibration](../../specs/chaos_warfare_system_specs/corrections/2026-09-25_usa_1939_mustard_starting_stock.md) raises the U.S. 1939 mustard reserve from 240 to 320 abstract lots while leaving 1936 at 240. It grants no phosgene lots or factory line, and does not convert historical tons into lots.
 
 The nine formerly generated named scientists are now static characters, so the temporary generated-scientist marking helpers and portrait reassignment blocks are no longer needed.
 
 The original identity flags are written after recruitment for Howard Florey, Paul Fildes, Alexander Fleming, Ernst Chain, Gerhard Schrader, Kurt Blome, Walter Schreiber, Erich Traub, Kurt Gutzeit, Sigmund Rascher, Josef Mengele, Shiro Ishii, Masaji Kitano, Chikahiko Koizumi, Franciszek Witaszek, Grigory Mairanovsky, Ivan Velikanov, Lavrentiy Beria, Frank Olson, Ira Baldwin, and Murray Sanders.
 
-The historical bookmarks grant level 1 biological breakthrough progress to Japan, Britain, the United States, and the Soviet Union, and level 1 chemical breakthrough progress to Germany, Britain, and France, following the owner's D1 instruction. Britain's anthrax special project remains on its project route, and Germany's tabun technology is withheld until after the late-1936 discovery while no tabun stockpile is granted.
+The historical bookmarks grant level 1 biological breakthrough progress to Japan, Britain, the United States, and the Soviet Union, and level 1 chemical breakthrough progress to Germany, Britain, and France, following the owner's D1 instruction. Britain's anthrax special project remains on its project route, and Germany starts with tabun knowledge at both bookmarks under the owner's D2 instruction, and sarin knowledge at the 1939 bookmark; no nerve-agent stockpile is granted.
 
 ## Localisation
 
@@ -169,7 +169,7 @@ The user identified `6925d2612b927.image_00001.dds` as Erich Traub, so it replac
 
 The second anonymous file, `s-l1200_00001.dds`, is intentionally ignored and retained only as `not_needed` archive evidence.
 
-All 67 scientist identities are available from scenario start. Advisor cards retain their programme requirements.
+All 67 scientist identities are recruited in history. The January 1936 bookmark retains all 67; the August 1939 bookmark retires John Scott Haldane and Ivan Velikanov, who died in 1936 and 1938, leaving 65 available scientists. Advisor cards retain their programme requirements.
 
 ## A11 restore evidence
 

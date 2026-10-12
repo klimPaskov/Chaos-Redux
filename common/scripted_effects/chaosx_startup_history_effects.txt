@@ -303,9 +303,20 @@ chaosx_apply_historical_1936_force_scaled_profile = {
 		add_to_temp_variable = {
 			cbrn_historical_1936_basic_target = cbrn_historical_1936_replacement_reserve
 		}
-		add_equipment_to_stockpile = {
-			type = gas_mask_equipment_1
-			amount = cbrn_historical_1936_basic_target
+		if = {
+			limit = { has_tech = basic_gas_masks }
+			add_equipment_to_stockpile = {
+				type = gas_mask_equipment_1
+				amount = cbrn_historical_1936_basic_target
+			}
+		}
+		else = {
+			# Imported crates need an unlocked producer, without granting domestic research.
+			add_equipment_to_stockpile = {
+				type = gas_mask_equipment_1
+				amount = cbrn_historical_1936_basic_target
+				producer = ENG
+			}
 		}
 		add_equipment_to_stockpile = {
 			type = gas_mask_equipment_reconditioned
@@ -370,9 +381,20 @@ chaosx_apply_historical_1936_force_scaled_profile = {
 		round_temp_variable = cbrn_historical_1936_stock_grant
 		if = {
 			limit = { check_variable = { cbrn_historical_1936_stock_grant > constant:cbrn_math.zero } }
-			add_equipment_to_stockpile = {
-				type = gas_mask_equipment_1
-				amount = cbrn_historical_1936_stock_grant
+			if = {
+				limit = { has_tech = basic_gas_masks }
+				add_equipment_to_stockpile = {
+					type = gas_mask_equipment_1
+					amount = cbrn_historical_1936_stock_grant
+				}
+			}
+			else = {
+				# Imported crates need an unlocked producer, without granting domestic research.
+				add_equipment_to_stockpile = {
+					type = gas_mask_equipment_1
+					amount = cbrn_historical_1936_stock_grant
+					producer = ENG
+				}
 			}
 		}
 		set_temp_variable = { cbrn_mask_issue_requested_crates = cbrn_historical_1936_issue_shortfall }
@@ -470,6 +492,10 @@ chaosx_startup_grant_eng = {
 		if = {
 			limit = { exists = yes }
 			chaosx_startup_mark_historical_1939_cbrn_setup = yes
+			if = {
+				limit = { date > 1936.3.14 has_character = ENG_john_scott_haldane }
+				retire_character = ENG_john_scott_haldane
+			}
 			set_technology = {
 				basic_gas_masks = 1
 				portable_anemometer = 1
@@ -613,7 +639,12 @@ chaosx_startup_grant_ger = {
 				chlorine_gas = 1
 				phosgene = 1
 				mustard_gas = 1
+				tabun = 1
 				popup = no
+			}
+			if = {
+				limit = { date > 1938.12.31 }
+				set_technology = { sarin = 1 popup = no }
 			}
 			chaosx_startup_sync_chemical_technology_unlocks = yes
 			add_breakthrough_progress = {
@@ -640,16 +671,6 @@ chaosx_startup_grant_ger = {
 			}
 			GER_josef_mengele = {
 				set_character_flag = chaosx_scientist_ger_josef_mengele
-			}
-			# Schrader discovered tabun in late 1936. The 1936 bookmark has
-			# no nerve-agent stockpile or tabun technology; later bookmarks get
-			# the discovery while production remains a separate route.
-			if = {
-				limit = { date > 1936.12.31 }
-				set_technology = {
-					tabun = 1
-					popup = no
-				}
 			}
 			set_temp_variable = { var = startup_history_stockpile_amount value = constant:startup_history_stockpile.ger_chlorine_agent_lots }
 			add_equipment_to_stockpile = { type = chlorine_agent_lot_1 amount = startup_history_stockpile_amount }
@@ -785,7 +806,12 @@ chaosx_startup_grant_jap = {
 				livens_projector_tech = 1
 				chlorine_gas = 1
 				mustard_gas = 1
+				lewisite = 1
 				popup = no
+			}
+			if = {
+				limit = { date > 1938.12.31 }
+				set_technology = { phosgene = 1 popup = no }
 			}
 			chaosx_startup_sync_chemical_technology_unlocks = yes
 			JAP_shiro_ishii = {
@@ -882,6 +908,7 @@ chaosx_startup_grant_pol = {
 			set_technology = {
 				basic_gas_masks = 1
 				portable_anemometer = 1
+				mustard_gas = 1
 				popup = no
 			}
 			chaosx_startup_sync_chemical_technology_unlocks = yes
@@ -951,6 +978,10 @@ chaosx_startup_grant_sov = {
 		if = {
 			limit = { exists = yes }
 			chaosx_startup_mark_historical_1939_cbrn_setup = yes
+			if = {
+				limit = { date > 1938.4.7 has_character = SOV_ivan_mikhailovich_velikanov }
+				retire_character = SOV_ivan_mikhailovich_velikanov
+			}
 			set_technology = {
 				basic_gas_masks = 1
 				portable_anemometer = 1
@@ -969,8 +1000,11 @@ chaosx_startup_grant_sov = {
 			SOV_grigory_mairanovsky = {
 				set_character_flag = chaosx_scientist_sov_grigory_mairanovsky
 			}
-			SOV_ivan_mikhailovich_velikanov = {
-				set_character_flag = chaosx_scientist_sov_ivan_mikhailovich_velikanov
+			if = {
+				limit = { has_character = SOV_ivan_mikhailovich_velikanov }
+				SOV_ivan_mikhailovich_velikanov = {
+					set_character_flag = chaosx_scientist_sov_ivan_mikhailovich_velikanov
+				}
 			}
 			set_temp_variable = { var = startup_history_stockpile_amount value = constant:startup_history_stockpile.sov_chlorine_agent_lots }
 			add_equipment_to_stockpile = { type = chlorine_agent_lot_1 amount = startup_history_stockpile_amount }
@@ -1044,16 +1078,12 @@ chaosx_startup_grant_usa = {
 				pathogen_handling_protocols = 1
 				bio_surveillance_networks = 1
 				meteorological_stations = 1
+				livens_projector_tech = 1
 				chlorine_gas = 1
+				phosgene = 1
 				mustard_gas = 1
 				lewisite = 1
 				popup = no
-			}
-			# Edgewood upgraded and standardized its phosgene plant in 1937.
-			# The later bookmark knows the process; no unsourced lot is granted.
-			if = {
-				limit = { date > 1936.12.31 }
-				set_technology = { phosgene = 1 popup = no }
 			}
 			chaosx_startup_sync_chemical_technology_unlocks = yes
 			USA_frank_olson = {

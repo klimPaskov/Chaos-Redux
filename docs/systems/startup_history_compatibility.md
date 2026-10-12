@@ -10,6 +10,8 @@ The implementation lives in `common/scripted_effects/chaosx_startup_history_effe
 
 The tuning values live in `common/script_constants/startup_history_constants.txt`.
 
+The [13 October 2026 start audit](../plans/cbrn_start_audit_2026-10-13.md) records all starting country entitlements, historical sources, explicit owner overrides and inventory limits. Germany knows tabun at both starts and sarin in 1939; the United States knows phosgene and Livens projectors at both starts; Japan knows lewisite at both starts and phosgene in 1939; Poland knows mustard. These are knowledge grants without extra agent stocks. The 1939 start retires the deceased Haldane and Velikanov while retaining their 1936 roles. Imported basic-mask receipts use an already researched British producer without granting the recipient domestic manufacturing knowledge; this is stockpile provenance for the existing imported profile, not an archival claim that every shipment came from Britain.
+
 The master effect sets `chaosx_startup_history_grants_applied` so startup setup cannot apply twice.
 
 Japan starts with `cbrn_use_policy = constant:cbrn_use_policy.unrestricted_authorization` through the shared `cbrn_set_use_policy` helper, with the peak-policy value and unrestricted-policy history receipt recorded at startup. The starting-mask initializer preserves this valid policy. Other countries retain their existing initial policy.
