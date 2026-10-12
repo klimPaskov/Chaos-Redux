@@ -27,7 +27,11 @@ This skill owns the image-generation route for the whole repository. Claude Code
 Before generation, inspect the active tool's actual output-path capabilities, including automatic local writes; a repository working directory or a returned data URL does not prove where the tool stores files.
 When repo-only storage is required, never call a tool that automatically writes generated images outside the Chaos Redux repository, including user-profile or `CODEX_HOME` folders; copying afterward or later cleanup does not satisfy this requirement.
 If no authorized route can write directly to an absolute in-repo destination or return bytes without outside writes, pause production and ask the parent for a destination-capable route.
-Require child workers to set their working directory to the repo root, use absolute in-repo destinations under `docs/assets/<owner>/...`, `.tmp/`, or `gfx/` as appropriate, and verify after production that no output was created in user-profile folders outside the repo.
+Require every worker command to use the Chaos Redux repo root as its explicit working directory and absolute in-repo paths for repo inputs and all outputs.
+Keep sources, prompts, previews, contact sheets, and manifests under `docs/assets/<owner>/...`, scratch under `.tmp/`, and runtime art only under `gfx/`; never write worker outputs to the user profile, Home, Desktop, or Downloads outside the repo.
+If a generation tool unexpectedly creates an external cache file, identify only this worker's exact reported output, move it into the assigned repo source folder before finishing, verify its hash and that the old path is absent, and record the containment failure in the handoff; never move unknown or other-shard cache files.
+This recovery does not authorize another outside-writing call or relax the generation preflight above.
+Obey the current task's disk-space floor before production and moves; do not substitute a remembered or hardcoded threshold.
 
 - Make one image per call. Existing output paths are auto-versioned, so name the final `out` path explicitly and use the path the tool reports.
 - State each reference image's role in the prompt, for example "Image 1 is the vanilla style reference, Image 2 the subject to keep".
