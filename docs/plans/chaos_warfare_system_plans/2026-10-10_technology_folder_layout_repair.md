@@ -65,3 +65,28 @@ Disposition: implemented; supersedes the geometry and card-size sections above. 
 - Six biological service icons and the dimercaprol icon are the baseline DDS blobs.
 - Technologies the baseline left hidden are placed by the baseline rule (column = year column, row = branch): anthrax, plague, tularemia and smallpox bomb delivery on the new munitions row (y = 0) at columns 1, 4, 7 and 10 with a gutter label and one gridbox each; sarin at column 7 and soman at column 13 on the nerve row. All are full-size equipment cards.
 - Source overlap count is zero across the 33 cards. The technology renderer failed with `JOB_WORKER_EXIT`, so native drawing was not rendered.
+
+## Biological prerequisite links (12 Oct 2026)
+
+The user authorized a biological-folder connection repair, preserving gameplay, the folder design, chemical research, icons, art and localisation.
+Two cards had biological prerequisites expressed only through `dependencies`: `field_epidemiology_teams` required `integrated_epidemic_control`, and `biological_security_assault_formation` required both `field_epidemiology_teams` and `sealed_containment_laboratories`.
+These three prerequisite relationships have matching `path` links; the containment-to-security link uses `ignore_for_layout = yes`, leaving the surveillance root as the layout owner.
+Existing AND dependencies remain intact, and every added path parent was already mandatory, so the additional OR path requirement and unit research-cost coefficients do not change research eligibility or costs.
+The two connected cards inherit the surveillance grid origin at `(102, 350)` rather than their independent origin at `(102, 210)`.
+Their shared biological row changes from 6 to 4, compensating for that 140-pixel origin shift and preserving screen positions: Field Epidemiology Teams `(662, 630)` and Biological Security Assault Formation `(872, 630)`.
+The four bomb technologies remain independent project roots with their own gridboxes and no prerequisite links; inventing a chain between them would alter gameplay.
+
+The parent reviewed all 12 biological cards against the current GUI gridboxes, including root reachability, biological prerequisite coverage and other-card clearance along the documented UP routing pattern.
+The source check in `.tmp/bio_folder_links/check_links.py` records before/after coordinates in `before_grid_review.json` and `after_grid_review.json`: every screen position is preserved, every biological prerequisite has a line, all roots resolve to gridboxes, and there are no card overlaps or source-derived connector intersections with other cards.
+Gameplay fields and all chemical technology definitions are unchanged; chemical prerequisites that have no common biological folder intentionally remain cross-folder requirements without biological lines.
+No implementation simplification was used.
+
+Reference evidence: offline `paradox_wiki/Technology modding - Hearts of Iron 4 Wiki.md`, lines 254–292 (paths, inherited gridboxes, AND dependencies) and 715–722 (UP routing); installed vanilla `common/technologies/infantry.txt`, lines 27–38 (unit-coefficient path), `common/technologies/naval.txt`, lines 152–160 (secondary layout path), and `interface/countrytechtreeview.gui`, lines 246–274 (70x70 root gridboxes).
+Installed paths are relative to `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/`; file hashes and source spans are retained in `.tmp/bio_folder_links/reference_evidence.json`.
+No installed technology-path schema was found in the installed documentation or technology directory; the installed vanilla definitions provide the direct precedent.
+Skills used: `chaos-redux-technology-doctrines` and `chaos-redux-shared-git-commit`.
+
+Verification limit: `hoi4_tech_inspect`, `hoi4_tech_render`, `hoi4.reference_context`, `hoi4.reference_search`, `hoi4.reference_read` and `hoi4.source_lookup` were absent from the connected tool inventory.
+No tool call or retry could be made, and neither requested PNG exists under `.tmp/bio_folder_links/`; source grid review was used as the user-authorized fallback.
+Native connector routing and appearance remain unverified, and HOI4 was not launched.
+Retry would be justified only by exposing the missing connected MCP tools.
