@@ -313,9 +313,9 @@ The opening is the Charter shortcut.
 ### Super-events
 
 Slots 140 (British Arabia), 141 (Independent Arab Federation) and 142 (Lawrence's Kingdom) are wired in the shared getters for image, title, text and the button label.
+The Kingdom image getter selects the dedicated `GFX_super_event_040_lawrence_kingdom_formed_dedicated` sprite; the legacy kingdom sprite remains registered against its prior shared federation texture.
 There is no quote and no audio: the spec forbids an invented quote and no sourced quote or licensed audio exists yet.
 The super-event is skipped when another super-event is already visible, and the news and report events still fire.
-The Kingdom slot reuses the independent federation image as a stand-in.
 
 ### Not implemented
 
@@ -327,7 +327,7 @@ The Kingdom slot reuses the independent federation image as a stand-in.
 
 ## Assets
 
-Reused existing art: report image of Lawrence (`GFX_report_event_lawrence`, provenance of the source photograph is not recorded in the repository and must be confirmed before release), arab congress report image and the decision category picture (`interface/040_lawrence_of_arabia.gfx`), news image `GFX_news_lawrence`. The client-reinforcement decision icon has no exact current decision mapping. Of the four remaining prompt-listed idea-icon subjects, British Mission and Exposed Network match live ideas that currently use generic art; Independent Partner and British Arabian System do not resolve to exact idea IDs in the Event 040 idea files. Fourteen current decision consumers, six idea consumers, and eight named focus nodes use dedicated aliases in their Event 040 `.gfx` files. Each focus icon has a matching `_shine` alias; the existing vanilla stand-in sprites and textures remain unchanged.
+Reused existing art: report image of Lawrence (`GFX_report_event_lawrence`, provenance of the source photograph is not recorded in the repository and must be confirmed before release), arab congress report image and the decision category picture (`interface/040_lawrence_of_arabia.gfx`), news image `GFX_news_lawrence`. The Kingdom super-event now has its own dedicated scene and sprite; the previous sprite and federation texture remain unchanged. The client-reinforcement decision icon has no exact current decision mapping. Of the four remaining prompt-listed idea-icon subjects, British Mission and Exposed Network match live ideas that currently use generic art; Independent Partner and British Arabian System do not resolve to exact idea IDs in the Event 040 idea files. Fourteen current decision consumers, six idea consumers, and eight named focus nodes use dedicated aliases in their Event 040 `.gfx` files. Each focus icon has a matching `_shine` alias; the existing vanilla stand-in sprites and textures remain unchanged.
 
 ### Assets still needed
 
@@ -340,7 +340,6 @@ Reused existing art: report image of Lawrence (`GFX_report_event_lawrence`, prov
 | Independent Partner and British Arabian System idea icon candidates | No exact current idea IDs; remain unwired pending mapping | None | `docs/assets/040_lawrence_of_arabia/ideas/alternative_for_review/` |
 | Report images for the recall, a sabotage scene and the settlement reports | `GFX_report_event_040_<name>` | same | `gfx/event_pictures/040_lawrence_of_arabia/` |
 | Flags of the three federation identities, normal, medium and small | tag files `LAWF_BRITISH`, `LAWF_ARAB`, `LAWF_KINGDOM` | none | `gfx/flags/`, `gfx/flags/medium/`, `gfx/flags/small/` |
-| Super-event scene of Lawrence's Kingdom (the slot reuses the independent federation image) | `GFX_super_event_040_lawrence_kingdom_formed` | `interface/040_lawrence_of_arabia.gfx` | `gfx/event_pictures/040_lawrence_of_arabia/` |
 | Super-event audio and a sourced quote for slots 140 to 142 | sound ids pending | pending | pending |
 | Achievement triplets for Gold Without Chains, Desert Conference and Rails, Ports and Promises; the Uncrowned Kingdom triplet is installed | `GFX_achievement_chaos_redux_040_<id>` and `_grey`, `_not_eligible` | filename-convention achievement textures | `gfx/achievements/` |
 
