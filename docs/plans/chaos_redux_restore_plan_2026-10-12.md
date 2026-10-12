@@ -67,7 +67,7 @@ C6. Non-human countries must never be affected by systems meant for humans.
 C7. A super event's audio stops as soon as the next super event fires; only one plays at a time.
 C8. Report events: audit for more than 4 options and fix. (commit: 212a23bca2e1fcac6668e0a69bc80aba4532e824)
 C9. Events must not hand out strong bonuses casually (for example Orders from Unknown Hands). Audit every event for this, for tooltips showing internal details, and for duplicate ideas being granted.
-C10. Orders from Unknown Hands: rewrite plainly and concretely. Confirm Event 11's first incident varies.
+C10. Orders from Unknown Hands: rewrite plainly and concretely. Confirm Event 11's first incident varies. First-incident variation implemented and independently audited: `04bd73d68238718675d2a5db1ad77400674349a2` (Orders 50%, existing operation pool 50%). Historical text restoration is preserved. Source/history/scenario evidence: `docs/plans/chaos_redux_c10_first_incident_2026-10-13.md`.
 C11. Migration: decisions must not appear on arbitrary owned islands. They appear only under real pressure: famine, blockade, states next to outbreaks, special chaos countries at war, states near the front. Remove political power costs; use fuel, and convoys for islands not connected to the mainland. Check whether the migration and famine systems were simplified and restore depth from history if so.
 C12. Outbreak response: many distinct actions, not one generic decision, but not bloated.
 
