@@ -231,7 +231,7 @@ For support registrations it uses an explicit registered combat anchor and the a
 An anchor must be processed before the support builder runs.
 The processed-unit arrays track coverage, while separate successful-dispatch arrays track initial showcase deployment; template existence never suppresses a still-missing initial spawn.
 The player-triggered deployment pass bypasses initial-spawn receipts deliberately.
-All registry loops have private initialized break variables and stay below the native 1,000-entry loop limit.
+The registered project-completion and equipment-grant passes reset their private temporary break variables before each traversal, so a nonzero break value left by an earlier callback cannot truncate either pass.
 
 Before registering related units, the package supplies a real family token:
 
