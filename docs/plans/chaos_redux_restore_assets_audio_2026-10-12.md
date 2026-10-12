@@ -24,6 +24,10 @@ All seven current files were compared byte-for-byte with hydrated `38ae4996e^` b
 `interface/chaosx_techtree.gfx` still maps chlorine, phosgene, mustard, lewisite, tabun, sarin, and soman research sprites to those exact original paths.
 The comparison and SHA-256 values are retained in `.tmp/restore_assets_audio/parent/original_audit.json` and `originals_comparison.png`.
 No speculative replacement was made to already restored files.
+Offender `d3c613a2c5c445a4eb4c1bad5a9e5b8d83176bd0` also repointed 21 established cylinder equipment sprite aliases to newly named wide paintings.
+Those 21 texture fields in `interface/chaosx_equipment.gfx` were restored from `d3c613a2c^` to the same original seven research DDS files.
+The wide DDS alternatives remain on disk with no deletion or repaint, and tank-shell icons that replaced vanilla flamethrower placeholders are retained.
+Per-alias paths and restored target hashes are retained in `.tmp/restore_assets_audio/parent/cylinder_aliases_restore.json`.
 
 ## Inhumane scientist trait — original already present, independently verified
 
