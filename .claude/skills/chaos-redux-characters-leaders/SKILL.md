@@ -306,7 +306,7 @@ The `CLAUDE.md` coding, constants, dynamic-effect, and localisation rules apply 
 
 - `common/characters/` has one file per owner (`<event>_characters.txt`, `cbrn_historical_scientists.txt`, `cbrn_historical_specialists.txt`, `chaosx_test_country_characters.txt`, plus country files such as `DTH.txt`). Character ids are unique across all files.
 - Traits: scientist traits in `common/scientist_traits/`, unit leader traits in `common/unit_leader/` (`cbrn_hq_traits.txt`, `chaosx_traits.txt`, event files). Portrait sprites live in `interface/*.gfx` with art under `gfx/leaders/<owner>/`.
-- Startup recruitment: the 67-person historical CBRN roster (15 dual-role specialists, 52 scientist-only) is recruited by `history/general/chaosx_startup_character_recruitment.txt`; country grants only apply the persistent `chaosx_scientist_*` identity flags and dated setup. Date-gated identities start on the stateless holder `CSH` and move to their home tag through country-scoped `set_nationality` from bounded country callbacks, never runtime recruitment; each career date is the latest arrival and a wartime or matching-programme condition (`cbrn_scientist_*_programme_running`) opens it earlier (`docs/systems/cbrn_warfare/cbrn_dated_scientist_transfers.md`).
+- Startup recruitment: the 67-person historical CBRN roster (15 dual-role specialists, 52 scientist-only) is recruited directly into its home countries by `history/general/chaosx_startup_character_recruitment.txt`; country grants apply the persistent `chaosx_scientist_*` identity flags. Scientist skills and traits follow `docs/systems/cbrn_warfare/cbrn_historical_scientists.md`. The dated CSH transfer contract is historical and superseded.
 
 **Rules that recur**
 

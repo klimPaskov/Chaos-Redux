@@ -11,9 +11,6 @@
 # Every `date` check in this file is structural: it detects the bookmark the
 # campaign began on (1936 or 1939) for one-time setup, or places a real person's
 # documented career dates. No check here gates a player action or mechanic.
-# Dated scientist arrivals treat the career date as the default fallback: a
-# country receives a held identity earlier when it is at war or already runs the
-# matching programme (cbrn_scientist_arrival_triggers.txt).
 # ============================================================================
 
 @eng_1939_respirator_factories = 1
@@ -53,14 +50,6 @@ chaosx_apply_startup_history_grants = {
 		chaosx_startup_grant_tur = yes
 		chaosx_startup_grant_usa = yes
 		chaosx_startup_grant_yug = yes
-		AST = { chaosx_startup_recruit_dated_ast_cbrn_characters = yes }
-		CAN = { chaosx_startup_recruit_dated_can_cbrn_characters = yes }
-		ENG = { chaosx_startup_recruit_dated_eng_cbrn_characters = yes }
-		GER = { chaosx_startup_recruit_dated_ger_cbrn_characters = yes }
-		JAP = { chaosx_startup_recruit_dated_jap_cbrn_characters = yes }
-		POL = { chaosx_startup_recruit_dated_pol_cbrn_characters = yes }
-		SOV = { chaosx_startup_recruit_dated_sov_cbrn_characters = yes }
-		USA = { chaosx_startup_recruit_dated_usa_cbrn_characters = yes }
 		# Both historical bookmarks use the same military coverage bands, sized
 		# against the deployed force at the selected start date.
 		every_country = {
@@ -393,733 +382,6 @@ chaosx_apply_historical_1936_force_scaled_profile = {
 	}
 }
 
-# Date-gated identities are attached to stateless CSH during history loading.
-# These existing startup and bounded tag-specific callbacks transfer each held
-# identity to its fixed home country on the documented date, or earlier when the
-# gameplay condition beside that date is met:
-# - wartime access: at war, or running the matching chemical or biological
-#   programme (laboratory and field scientists mobilised for the war effort);
-# - conduct-bound access (human-experiment perpetrators): at war and running the
-#   matching programme together;
-# - programme-only access: running the matching programme, war not required
-#   (secret-police toxicology and administration).
-# The inhumane conduct traits follow the same condition as the arrival of the
-# person who earns them (cbrn_scientist_conduct_*_access), so a trait never
-# lags behind an early arrival; its documented date remains the latest award.
-# Haldane, Fishman, and Velikanov keep their upper date limits, which end a
-# career rather than open one. The same date, retirement, trait, and
-# identity-flag gates apply at either bookmark. A missing holder identity fails
-# closed; runtime recruitment is never attempted.
-chaosx_startup_recruit_dated_ast_cbrn_characters = {
-	if = {
-		limit = {
-			# Kellaway's chemical-defence service belongs to the wartime
-			# pathology and scientific-liaison period; Jan 1 is a 1942 floor.
-			OR = {
-				date > 1941.12.31
-				has_war = yes
-				cbrn_scientist_chemical_programme_running = yes
-			}
-			NOT = { has_character = AST_charles_kellaway }
-			CSH = { has_character = AST_charles_kellaway }
-		}
-		CSH = {
-			set_nationality = {
-				target_country = AST
-				character = AST_charles_kellaway
-			}
-		}
-	}
-}
-
-chaosx_startup_recruit_dated_can_cbrn_characters = {
-	if = {
-		limit = {
-			# Banting's chemical-injury research followed wartime
-			# mobilization; Jan 1 is a conservative 1940 access floor.
-			OR = {
-				date > 1939.12.31
-				has_war = yes
-				cbrn_scientist_chemical_programme_running = yes
-			}
-			NOT = { has_character = CAN_frederick_banting }
-			CSH = { has_character = CAN_frederick_banting }
-		}
-		CSH = {
-			set_nationality = {
-				target_country = CAN
-				character = CAN_frederick_banting
-			}
-		}
-	}
-}
-
-chaosx_startup_recruit_dated_eng_cbrn_characters = {
-	if = {
-		limit = {
-			# Contemporary obituaries place Haldane's death in mid-March 1936.
-			date < 1936.03.14
-			NOT = { has_character = ENG_john_scott_haldane }
-			CSH = { has_character = ENG_john_scott_haldane }
-		}
-		CSH = {
-			set_nationality = {
-				target_country = ENG
-				character = ENG_john_scott_haldane
-			}
-		}
-	}
-	if = {
-		limit = {
-			date > 1936.03.13
-			has_character = ENG_john_scott_haldane
-		}
-		retire_character = ENG_john_scott_haldane
-	}
-	if = {
-		limit = {
-			OR = {
-				date > 1938.12.31
-				has_war = yes
-				cbrn_scientist_biological_programme_running = yes
-			}
-			NOT = { has_character = ENG_paul_fildes }
-			CSH = { has_character = ENG_paul_fildes }
-		}
-		CSH = {
-			set_nationality = {
-				target_country = ENG
-				character = ENG_paul_fildes
-			}
-		}
-	}
-	if = {
-		limit = {
-			# Henderson's Porton aerosol appointment is documented in
-			# early summer 1940; June 1 is a month-level gameplay floor.
-			OR = {
-				date > 1940.05.31
-				has_war = yes
-				cbrn_scientist_biological_programme_running = yes
-			}
-			NOT = { has_character = ENG_david_w_w_henderson }
-			CSH = { has_character = ENG_david_w_w_henderson }
-		}
-		CSH = {
-			set_nationality = {
-				target_country = ENG
-				character = ENG_david_w_w_henderson
-			}
-		}
-	}
-	if = {
-		limit = { has_character = ENG_paul_fildes }
-		ENG_paul_fildes = { set_character_flag = chaosx_scientist_eng_paul_fildes }
-	}
-	if = {
-		limit = { has_character = ENG_alexander_fleming }
-		ENG_alexander_fleming = { set_character_flag = chaosx_scientist_eng_alexander_fleming }
-	}
-	if = {
-		limit = { has_character = ENG_ernst_chain }
-		ENG_ernst_chain = { set_character_flag = chaosx_scientist_eng_ernst_chain }
-	}
-}
-
-chaosx_startup_recruit_dated_ger_cbrn_characters = {
-	if = {
-		limit = {
-			# ETH-Bibliothek dates Kuhn's chemical-weapons research to 1940.
-			# Jan 1 is a year-level scientist-access floor, not an exact appointment date.
-			OR = {
-				date > 1939.12.31
-				has_war = yes
-				cbrn_scientist_chemical_programme_running = yes
-			}
-			NOT = { has_character = GER_richard_kuhn }
-			CSH = { has_character = GER_richard_kuhn }
-		}
-		CSH = {
-			set_nationality = {
-				target_country = GER
-				character = GER_richard_kuhn
-			}
-		}
-	}
-	if = {
-		limit = {
-			OR = {
-				date > 1936.12.31
-				has_war = yes
-				cbrn_scientist_chemical_programme_running = yes
-			}
-			NOT = { has_character = GER_gerhard_schrader }
-			CSH = { has_character = GER_gerhard_schrader }
-		}
-		CSH = {
-			set_nationality = {
-				target_country = GER
-				character = GER_gerhard_schrader
-			}
-		}
-	}
-	if = {
-		limit = {
-			# Blome's documented biological-program assignment followed
-			# the June-July 1943 institute correspondence and conference.
-			OR = {
-				date > 1943.06.30
-				has_war = yes
-				cbrn_scientist_biological_programme_running = yes
-			}
-			NOT = { has_character = GER_kurt_blome }
-			CSH = { has_character = GER_kurt_blome }
-		}
-		CSH = {
-			set_nationality = {
-				target_country = GER
-				character = GER_kurt_blome
-			}
-		}
-	}
-	if = {
-		limit = {
-			# Gutzeit's documented wartime hepatitis research begins in 1941.
-			# Jan 1 is a gameplay access floor, not an exact appointment date.
-			OR = {
-				date > 1940.12.31
-				cbrn_scientist_conduct_biological_access = yes
-			}
-			NOT = { has_character = GER_kurt_gutzeit }
-			CSH = { has_character = GER_kurt_gutzeit }
-		}
-		CSH = {
-			set_nationality = {
-				target_country = GER
-				character = GER_kurt_gutzeit
-			}
-		}
-	}
-	if = {
-		limit = {
-			OR = {
-				date > 1940.12.31
-				cbrn_scientist_conduct_biological_access = yes
-			}
-			NOT = { has_character = GER_sigmund_rascher }
-			CSH = { has_character = GER_sigmund_rascher }
-		}
-		CSH = {
-			set_nationality = {
-				target_country = GER
-				character = GER_sigmund_rascher
-			}
-		}
-	}
-	if = {
-		limit = {
-			OR = {
-				date > 1942.12.31
-				cbrn_scientist_conduct_biological_access = yes
-			}
-			NOT = { has_character = GER_josef_mengele }
-			CSH = { has_character = GER_josef_mengele }
-		}
-		CSH = {
-			set_nationality = {
-				target_country = GER
-				character = GER_josef_mengele
-			}
-		}
-	}
-	if = {
-		limit = {
-			# NARA Special List 38 dates Rascher's documented request to 15 May 1941.
-			OR = {
-				date > 1941.05.14
-				cbrn_scientist_conduct_biological_access = yes
-			}
-			has_character = GER_sigmund_rascher
-			NOT = { has_country_flag = rascher_inhumane_trait_awarded }
-		}
-		GER_sigmund_rascher = { add_scientist_trait = scientist_trait_inhumane }
-		set_country_flag = rascher_inhumane_trait_awarded
-	}
-	if = {
-		limit = {
-			# USHMM dates Mengele's Auschwitz assignment to 30 May 1943.
-			OR = {
-				date > 1943.05.29
-				cbrn_scientist_conduct_biological_access = yes
-			}
-			has_character = GER_josef_mengele
-			NOT = { has_country_flag = mengele_inhumane_trait_awarded }
-		}
-		GER_josef_mengele = { add_scientist_trait = scientist_trait_inhumane }
-		set_country_flag = mengele_inhumane_trait_awarded
-	}
-	if = {
-		limit = {
-			# Hirt's first documented mustard-agent prisoner experiment was
-			# 25 November 1942; his chemical scientist role opens then.
-			OR = {
-				date > 1942.11.24
-				cbrn_scientist_conduct_chemical_access = yes
-			}
-			NOT = { has_character = GER_august_hirt }
-			CSH = { has_character = GER_august_hirt }
-		}
-		CSH = {
-			set_nationality = {
-				target_country = GER
-				character = GER_august_hirt
-			}
-		}
-	}
-	if = {
-		limit = {
-			OR = {
-				date > 1941.12.31
-				cbrn_scientist_conduct_chemical_access = yes
-			}
-			NOT = { has_character = GER_otto_bickenbach }
-			CSH = { has_character = GER_otto_bickenbach }
-		}
-		CSH = {
-			set_nationality = {
-				target_country = GER
-				character = GER_otto_bickenbach
-			}
-		}
-	}
-	if = {
-		limit = {
-			# The Medical Case judgment records Mrugowsky attending the
-			# prisoner-test authorization conference by 29 December 1941.
-			OR = {
-				date > 1941.12.28
-				cbrn_scientist_conduct_biological_access = yes
-			}
-			has_character = GER_joachim_mrugowsky
-			NOT = { has_country_flag = mrugowsky_inhumane_trait_awarded }
-		}
-		GER_joachim_mrugowsky = { add_scientist_trait = scientist_trait_inhumane }
-		set_country_flag = mrugowsky_inhumane_trait_awarded
-	}
-	if = {
-		limit = {
-			# Rose's support of the Dachau malaria experiments is
-			# documented by his 17 April 1942 endorsement.
-			OR = {
-				date > 1942.04.16
-				cbrn_scientist_conduct_biological_access = yes
-			}
-			has_character = GER_gerhard_rose
-			NOT = { has_country_flag = rose_inhumane_trait_awarded }
-		}
-		GER_gerhard_rose = { add_scientist_trait = scientist_trait_inhumane }
-		set_country_flag = rose_inhumane_trait_awarded
-	}
-	if = {
-		limit = {
-			# Hirt's first documented prisoner mustard-agent experiment was
-			# conducted on 25 November 1942.
-			OR = {
-				date > 1942.11.24
-				cbrn_scientist_conduct_chemical_access = yes
-			}
-			has_character = GER_august_hirt
-			NOT = { has_country_flag = hirt_inhumane_cw_trait_awarded }
-		}
-		GER_august_hirt = { add_scientist_trait = scientist_trait_inhumane_cw }
-		set_country_flag = hirt_inhumane_cw_trait_awarded
-	}
-	if = {
-		limit = {
-			# Bickenbach's first documented prisoner phosgene experiments
-			# occurred in June 1943; June 1 is a month-level gameplay floor.
-			OR = {
-				date > 1943.05.31
-				cbrn_scientist_conduct_chemical_access = yes
-			}
-			has_character = GER_otto_bickenbach
-			NOT = { has_country_flag = bickenbach_inhumane_cw_trait_awarded }
-		}
-		GER_otto_bickenbach = { add_scientist_trait = scientist_trait_inhumane_cw }
-		set_country_flag = bickenbach_inhumane_cw_trait_awarded
-	}
-	if = {
-		limit = {
-			OR = {
-				date > 1939.08.31
-				cbrn_scientist_conduct_biological_access = yes
-			}
-			NOT = { has_character = GER_joachim_mrugowsky }
-			CSH = { has_character = GER_joachim_mrugowsky }
-		}
-		CSH = {
-			set_nationality = {
-				target_country = GER
-				character = GER_joachim_mrugowsky
-			}
-		}
-	}
-	if = {
-		limit = {
-			# The Buchenwald typhus research station began experiments in January
-			# 1942; Jan 1 is a gameplay floor, not an exact appointment date.
-			OR = {
-				date > 1941.12.31
-				cbrn_scientist_conduct_biological_access = yes
-			}
-			NOT = { has_character = GER_erwin_ding_schuler }
-			CSH = { has_character = GER_erwin_ding_schuler }
-		}
-		CSH = {
-			set_nationality = {
-				target_country = GER
-				character = GER_erwin_ding_schuler
-			}
-		}
-	}
-	if = {
-		limit = { has_character = GER_gerhard_schrader }
-		GER_gerhard_schrader = { set_character_flag = chaosx_scientist_ger_gerhard_schrader }
-	}
-	if = {
-		limit = { has_character = GER_kurt_blome }
-		GER_kurt_blome = { set_character_flag = chaosx_scientist_ger_kurt_blome }
-	}
-	if = {
-		limit = { has_character = GER_walter_schreiber }
-		GER_walter_schreiber = { set_character_flag = chaosx_scientist_ger_walter_schreiber }
-	}
-	if = {
-		limit = { has_character = GER_erich_traub }
-		GER_erich_traub = { set_character_flag = chaosx_scientist_ger_erich_traub }
-	}
-	if = {
-		limit = { has_character = GER_kurt_gutzeit }
-		GER_kurt_gutzeit = { set_character_flag = chaosx_scientist_ger_kurt_gutzeit }
-	}
-	if = {
-		limit = { has_character = GER_sigmund_rascher }
-		GER_sigmund_rascher = { set_character_flag = chaosx_scientist_ger_sigmund_rascher }
-	}
-	if = {
-		limit = { has_character = GER_josef_mengele }
-		GER_josef_mengele = { set_character_flag = chaosx_scientist_ger_josef_mengele }
-	}
-}
-
-chaosx_startup_recruit_dated_jap_cbrn_characters = {
-	if = {
-		limit = {
-			OR = {
-				date > 1942.01.01
-				has_war = yes
-				cbrn_scientist_biological_programme_running = yes
-			}
-			NOT = { has_character = JAP_masaji_kitano }
-			CSH = { has_character = JAP_masaji_kitano }
-		}
-		CSH = {
-			set_nationality = {
-				target_country = JAP
-				character = JAP_masaji_kitano
-			}
-		}
-	}
-	if = {
-		limit = { has_character = JAP_shiro_ishii }
-		JAP_shiro_ishii = { set_character_flag = chaosx_scientist_jap_shiro_ishii }
-	}
-	if = {
-		limit = { has_character = JAP_masaji_kitano }
-		JAP_masaji_kitano = { set_character_flag = chaosx_scientist_jap_masaji_kitano }
-	}
-	if = {
-		limit = { has_character = JAP_chikahiko_koizumi }
-		JAP_chikahiko_koizumi = { set_character_flag = chaosx_scientist_jap_chikahiko_koizumi }
-	}
-}
-
-chaosx_startup_recruit_dated_pol_cbrn_characters = {
-	if = {
-		limit = {
-			OR = {
-				date > 1939.09.01
-				has_war = yes
-				cbrn_scientist_biological_programme_running = yes
-			}
-			NOT = { has_character = POL_franciszek_witaszek }
-			CSH = { has_character = POL_franciszek_witaszek }
-		}
-		CSH = {
-			set_nationality = {
-				target_country = POL
-				character = POL_franciszek_witaszek
-			}
-		}
-	}
-	if = {
-		limit = { has_character = POL_franciszek_witaszek }
-		POL_franciszek_witaszek = { set_character_flag = chaosx_scientist_pol_franciszek_witaszek }
-	}
-}
-
-chaosx_startup_recruit_dated_sov_cbrn_characters = {
-	if = {
-		limit = {
-			# Velikanov is absent from the later historical bookmark after
-			# his documented 8 April 1938 execution; a 1936 campaign may diverge.
-			date < 1938.04.08
-			NOT = { has_character = SOV_ivan_mikhailovich_velikanov }
-			CSH = { has_character = SOV_ivan_mikhailovich_velikanov }
-		}
-		CSH = {
-			set_nationality = {
-				target_country = SOV
-				character = SOV_ivan_mikhailovich_velikanov
-			}
-		}
-	}
-	if = {
-		limit = {
-			# Fishman is absent from the later historical bookmark after his
-			# documented 5 June 1937 arrest; a 1936 campaign may diverge.
-			date < 1937.06.05
-			NOT = { has_character = SOV_yakov_fishman }
-			CSH = { has_character = SOV_yakov_fishman }
-		}
-		CSH = {
-			set_nationality = {
-				target_country = SOV
-				character = SOV_yakov_fishman
-			}
-		}
-	}
-	if = {
-		limit = {
-			# Beria became Soviet NKVD People's Commissar on 25 November 1938.
-			OR = {
-				date > 1938.11.24
-				cbrn_scientist_biological_programme_running = yes
-			}
-			NOT = { has_character = SOV_lavrentiy_pavlovich_beria }
-			CSH = { has_character = SOV_lavrentiy_pavlovich_beria }
-		}
-		CSH = {
-			set_nationality = {
-				target_country = SOV
-				character = SOV_lavrentiy_pavlovich_beria
-			}
-		}
-	}
-	if = {
-		limit = {
-			OR = {
-				date > 1937.01.01
-				cbrn_scientist_chemical_programme_running = yes
-			}
-			NOT = { has_character = SOV_grigory_mairanovsky }
-			CSH = { has_character = SOV_grigory_mairanovsky }
-		}
-		CSH = {
-			set_nationality = {
-				target_country = SOV
-				character = SOV_grigory_mairanovsky
-			}
-		}
-	}
-	if = {
-		limit = {
-			# The secret toxicology laboratory and prisoner poison tests
-			# are documented in 1938; Jan 1 is a year-level access floor.
-			OR = {
-				date > 1937.12.31
-				cbrn_scientist_chemical_programme_running = yes
-			}
-			has_character = SOV_grigory_mairanovsky
-			NOT = { has_country_flag = mairanovsky_inhumane_cw_trait_awarded }
-		}
-		SOV_grigory_mairanovsky = { add_scientist_trait = scientist_trait_inhumane_cw }
-		set_country_flag = mairanovsky_inhumane_cw_trait_awarded
-	}
-	if = {
-		limit = { has_character = SOV_lavrentiy_pavlovich_beria }
-		SOV_lavrentiy_pavlovich_beria = { set_character_flag = chaosx_scientist_sov_lavrentiy_pavlovich_beria }
-	}
-	if = {
-		limit = { has_character = SOV_grigory_mairanovsky }
-		SOV_grigory_mairanovsky = { set_character_flag = chaosx_scientist_sov_grigory_mairanovsky }
-	}
-	if = {
-		limit = { has_character = SOV_ivan_mikhailovich_velikanov }
-		SOV_ivan_mikhailovich_velikanov = { set_character_flag = chaosx_scientist_sov_ivan_mikhailovich_velikanov }
-	}
-}
-
-chaosx_startup_recruit_dated_usa_cbrn_characters = {
-	if = {
-		limit = {
-			# Olson's 1943 Detrick arrival is year-level evidence.
-			OR = {
-				date > 1942.12.31
-				has_war = yes
-				cbrn_scientist_biological_programme_running = yes
-			}
-			NOT = { has_character = USA_frank_olson }
-			CSH = { has_character = USA_frank_olson }
-		}
-		CSH = {
-			set_nationality = {
-				target_country = USA
-				character = USA_frank_olson
-			}
-		}
-	}
-	if = {
-		limit = {
-			# Baldwin became scientific director of the Army BW programme on
-			# 21 December 1942, after his November CWS recruitment.
-			OR = {
-				date > 1942.12.20
-				has_war = yes
-				cbrn_scientist_biological_programme_running = yes
-			}
-			NOT = { has_character = USA_ira_baldwin }
-			CSH = { has_character = USA_ira_baldwin }
-		}
-		CSH = {
-			set_nationality = {
-				target_country = USA
-				character = USA_ira_baldwin
-			}
-		}
-	}
-	if = {
-		limit = {
-			OR = {
-				date > 1942.12.31
-				has_war = yes
-				cbrn_scientist_biological_programme_running = yes
-			}
-			NOT = { has_character = USA_murray_sanders }
-			CSH = { has_character = USA_murray_sanders }
-		}
-		CSH = {
-			set_nationality = {
-				target_country = USA
-				character = USA_murray_sanders
-			}
-		}
-	}
-	if = {
-		limit = {
-			OR = {
-				date > 1941.12.31
-				has_war = yes
-				cbrn_scientist_biological_programme_running = yes
-			}
-			NOT = { has_character = USA_william_a_hagan }
-			CSH = { has_character = USA_william_a_hagan }
-		}
-		CSH = {
-			set_nationality = {
-				target_country = USA
-				character = USA_william_a_hagan
-			}
-		}
-	}
-	if = {
-		limit = {
-			# The National Academies history dates Merck's WRS agency to 15 May 1942.
-			OR = {
-				date > 1942.05.14
-				has_war = yes
-				cbrn_scientist_biological_programme_running = yes
-			}
-			NOT = { has_character = USA_george_w_merck }
-			CSH = { has_character = USA_george_w_merck }
-		}
-		CSH = {
-			set_nationality = {
-				target_country = USA
-				character = USA_george_w_merck
-			}
-		}
-	}
-	if = {
-		limit = {
-			# Rhoads's CWS Medical Division role follows the documented
-			# 30 March 1943 responsibilities agreement.
-			OR = {
-				date > 1943.03.29
-				has_war = yes
-				cbrn_scientist_chemical_programme_running = yes
-			}
-			NOT = { has_character = USA_cornelius_p_rhoads }
-			CSH = { has_character = USA_cornelius_p_rhoads }
-		}
-		CSH = {
-			set_nationality = {
-				target_country = USA
-				character = USA_cornelius_p_rhoads
-			}
-		}
-	}
-	if = {
-		limit = {
-			# Tarbell's toxic-agent detection contracts follow US entry
-			# into the war; Jan 1 is a year-level 1942 access floor.
-			OR = {
-				date > 1941.12.31
-				has_war = yes
-				cbrn_scientist_chemical_programme_running = yes
-			}
-			NOT = { has_character = USA_dean_s_tarbell }
-			CSH = { has_character = USA_dean_s_tarbell }
-		}
-		CSH = {
-			set_nationality = {
-				target_country = USA
-				character = USA_dean_s_tarbell
-			}
-		}
-	}
-	if = {
-		limit = {
-			# The NDRC was established on 27 June 1940, with Conant as a member.
-			OR = {
-				date > 1940.06.26
-				has_war = yes
-				cbrn_scientist_chemical_programme_running = yes
-			}
-			NOT = { has_character = USA_james_b_conant }
-			CSH = { has_character = USA_james_b_conant }
-		}
-		CSH = {
-			set_nationality = {
-				target_country = USA
-				character = USA_james_b_conant
-			}
-		}
-	}
-	if = {
-		limit = { has_character = USA_frank_olson }
-		USA_frank_olson = { set_character_flag = chaosx_scientist_usa_frank_olson }
-	}
-	if = {
-		limit = { has_character = USA_ira_baldwin }
-		USA_ira_baldwin = { set_character_flag = chaosx_scientist_usa_ira_baldwin }
-	}
-	if = {
-		limit = { has_character = USA_murray_sanders }
-		USA_murray_sanders = { set_character_flag = chaosx_scientist_usa_murray_sanders }
-	}
-}
-
 chaosx_startup_grant_ast = {
 	AST = {
 		if = {
@@ -1221,6 +483,15 @@ chaosx_startup_grant_eng = {
 				popup = no
 			}
 			chaosx_startup_sync_chemical_technology_unlocks = yes
+			ENG_paul_fildes = {
+				set_character_flag = chaosx_scientist_eng_paul_fildes
+			}
+			ENG_alexander_fleming = {
+				set_character_flag = chaosx_scientist_eng_alexander_fleming
+			}
+			ENG_ernst_chain = {
+				set_character_flag = chaosx_scientist_eng_ernst_chain
+			}
 			set_temp_variable = { var = startup_history_stockpile_amount value = constant:startup_history_stockpile.eng_chlorine_agent_lots }
 			add_equipment_to_stockpile = { type = chlorine_agent_lot_1 amount = startup_history_stockpile_amount }
 			set_temp_variable = { var = startup_history_stockpile_amount value = constant:startup_history_stockpile.eng_phosgene_agent_lots }
@@ -1336,6 +607,27 @@ chaosx_startup_grant_ger = {
 				popup = no
 			}
 			chaosx_startup_sync_chemical_technology_unlocks = yes
+			GER_gerhard_schrader = {
+				set_character_flag = chaosx_scientist_ger_gerhard_schrader
+			}
+			GER_kurt_blome = {
+				set_character_flag = chaosx_scientist_ger_kurt_blome
+			}
+			GER_walter_schreiber = {
+				set_character_flag = chaosx_scientist_ger_walter_schreiber
+			}
+			GER_erich_traub = {
+				set_character_flag = chaosx_scientist_ger_erich_traub
+			}
+			GER_kurt_gutzeit = {
+				set_character_flag = chaosx_scientist_ger_kurt_gutzeit
+			}
+			GER_sigmund_rascher = {
+				set_character_flag = chaosx_scientist_ger_sigmund_rascher
+			}
+			GER_josef_mengele = {
+				set_character_flag = chaosx_scientist_ger_josef_mengele
+			}
 			# Schrader discovered tabun in late 1936. The 1936 bookmark has
 			# no nerve-agent stockpile or tabun technology; later bookmarks get
 			# the discovery while production remains a separate route.
@@ -1483,6 +775,15 @@ chaosx_startup_grant_jap = {
 				popup = no
 			}
 			chaosx_startup_sync_chemical_technology_unlocks = yes
+			JAP_shiro_ishii = {
+				set_character_flag = chaosx_scientist_jap_shiro_ishii
+			}
+			JAP_masaji_kitano = {
+				set_character_flag = chaosx_scientist_jap_masaji_kitano
+			}
+			JAP_chikahiko_koizumi = {
+				set_character_flag = chaosx_scientist_jap_chikahiko_koizumi
+			}
 			set_temp_variable = { var = startup_history_stockpile_amount value = constant:startup_history_stockpile.jap_chlorine_agent_lots }
 			add_equipment_to_stockpile = { type = chlorine_agent_lot_1 amount = startup_history_stockpile_amount }
 			set_temp_variable = { var = startup_history_stockpile_amount value = constant:startup_history_stockpile.jap_mustard_agent_lots }
@@ -1567,6 +868,9 @@ chaosx_startup_grant_pol = {
 				popup = no
 			}
 			chaosx_startup_sync_chemical_technology_unlocks = yes
+			POL_franciszek_witaszek = {
+				set_character_flag = chaosx_scientist_pol_franciszek_witaszek
+			}
 			set_temp_variable = { var = startup_history_event_days value = constant:startup_history_event_delay.poland_biowarfare_days }
 			set_temp_variable = { var = startup_history_event_random_days value = constant:startup_history_event_delay.poland_biowarfare_random_days }
 			country_event = { id = biowarfare.3 days = startup_history_event_days random_days = startup_history_event_random_days }
@@ -1642,6 +946,15 @@ chaosx_startup_grant_sov = {
 				popup = no
 			}
 			chaosx_startup_sync_chemical_technology_unlocks = yes
+			SOV_lavrentiy_pavlovich_beria = {
+				set_character_flag = chaosx_scientist_sov_lavrentiy_pavlovich_beria
+			}
+			SOV_grigory_mairanovsky = {
+				set_character_flag = chaosx_scientist_sov_grigory_mairanovsky
+			}
+			SOV_ivan_mikhailovich_velikanov = {
+				set_character_flag = chaosx_scientist_sov_ivan_mikhailovich_velikanov
+			}
 			set_temp_variable = { var = startup_history_stockpile_amount value = constant:startup_history_stockpile.sov_chlorine_agent_lots }
 			add_equipment_to_stockpile = { type = chlorine_agent_lot_1 amount = startup_history_stockpile_amount }
 			set_temp_variable = { var = startup_history_stockpile_amount value = constant:startup_history_stockpile.sov_phosgene_agent_lots }
@@ -1726,6 +1039,15 @@ chaosx_startup_grant_usa = {
 				set_technology = { phosgene = 1 popup = no }
 			}
 			chaosx_startup_sync_chemical_technology_unlocks = yes
+			USA_frank_olson = {
+				set_character_flag = chaosx_scientist_usa_frank_olson
+			}
+			USA_ira_baldwin = {
+				set_character_flag = chaosx_scientist_usa_ira_baldwin
+			}
+			USA_murray_sanders = {
+				set_character_flag = chaosx_scientist_usa_murray_sanders
+			}
 			set_temp_variable = { var = startup_history_stockpile_amount value = constant:startup_history_stockpile.usa_chlorine_agent_lots }
 			add_equipment_to_stockpile = { type = chlorine_agent_lot_1 amount = startup_history_stockpile_amount }
 			set_temp_variable = { var = startup_history_stockpile_amount value = constant:startup_history_stockpile.usa_mustard_agent_lots }

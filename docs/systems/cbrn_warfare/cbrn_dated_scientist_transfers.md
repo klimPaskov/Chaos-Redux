@@ -1,6 +1,6 @@
 # Dated CBRN scientist ownership
 
-Disposition: implemented in source; the dedicated-holder route awaits fresh live-QA evidence.
+Disposition: superseded by the A11 restoration in `cbrn_historical_scientists.md`; all 67 identities are recruited directly into their home countries. The following records the historical holder implementation.
 
 The historical roster has 67 static identities: 38 are attached to their home countries during history loading and 29 pass through the existing date-gated country callbacks. History loading attaches the latter group to the stateless `CSH` holder. The callbacks then transfer each identity from CSH to its fixed home tag with country-scoped `set_nationality` when its original date window passes. The callback names remain stable for their existing startup and tag-specific on-action callers.
 

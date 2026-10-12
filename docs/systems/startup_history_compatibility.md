@@ -51,10 +51,10 @@ Current intentional vanilla-history exceptions:
 
 The complete startup API lives in `common/scripted_effects/chaosx_startup_history_effects.txt` rather than the cross-system dynamic-effect registry.
 
-The dated CBRN personnel repair lives in `common/on_actions/cbrn_historical_startup_on_actions.txt` and uses only tag-specific daily callbacks. It does not add a world-wide periodic scan.
+The CBRN roster is recruited directly into its home countries in `history/general/chaosx_startup_character_recruitment.txt`.
 
 - `chaosx_apply_startup_history_grants` is the idempotent startup entry point and dispatches the country-specific additive grants.
-- The historical scientist helper flags are no longer generated-character selectors; prewar identities retain their stable ids and portraits from history initialization, while dated wartime identities are recruited by `chaosx_startup_recruit_dated_*_cbrn_characters` and their bounded country callbacks, on the documented date or earlier when the country is at war or runs the matching CBRN programme.
+- The historical scientist identity flags retain their stable ids and portraits from history initialization; all 67 scientists are recruited into their home countries at scenario start.
 
 The scientist helpers are internal to startup generation. Event chains should use their own event-owned character transactions instead of calling these helpers.
 

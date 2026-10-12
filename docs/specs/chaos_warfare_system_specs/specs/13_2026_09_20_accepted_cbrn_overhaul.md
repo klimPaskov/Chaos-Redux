@@ -93,6 +93,8 @@ The [six-date scientist availability correction](../corrections/2026-09-27_scien
 
 The [scientist lifecycle and field correction](../corrections/2026-09-27_scientist_lifecycle_and_field.md) resolves further source-supported roster mismatches while preserving unresolved individual skill and trait questions as proposals.
 
+
+Scientist ownership, skill calibration and delayed conduct-trait claims below are superseded by the owner's explicit A11 restoration decision of 12 October 2026: the 67 scientist roles and home-country recruitment use `33b6946dd^`, with no dated transfers or retirement callbacks.
 The [Allied scientist recruitment correction](../corrections/2026-09-27_allied_scientist_wartime_recruitment.md) dates Kellaway, Banting, and Henderson to their wartime research roles and calibrates Maass's prewar chemical skill, using only country-specific dated hooks.
 
 The [German, Soviet, and American scientist calibration](../corrections/2026-09-27_german_american_scientist_calibration.md) aligns Hirt, Rhoads, and Tarbell with documented CBRN work; distinguishes Rosebury's and Fred's prewar competence from later wartime roles; and removes Muromtsev's unsupported inhumane trait. Other person-specific audit proposals remain unresolved.
