@@ -49,7 +49,7 @@ B8. **Q** Trait description shows broken scripted localisation: fix.
 B9. Camps UI: buttons do not work and throw errors (latest lines of error.log): fix (Sol).
 B10. Migration UI: empty area on the left; the image goes inside the box. — implemented in `76c7815224`.
 B11. Decisions for outbreak responses appear on the map only, not listed in the decision category.
-B12. Technology folders: fix overlaps, disconnected techs and bloat. Bring back the consolidation that removed the excess techs, but leave the upper part of the chemical warfare tree exactly as it is.
+B12. Technology folders: fix overlaps, disconnected techs and bloat. Bring back the consolidation that removed the excess techs, but leave the upper part of the chemical warfare tree exactly as it is. — implemented in `30ac00fb03`.
 
 B13. Biowarfare folder: fix disconnected techs (started 12 Oct, Sol job `sol_bio_folder_links`).
 B14. **Q** Rule for all UI text: large numbers are never shown plainly; shorten with k (48.2k).
