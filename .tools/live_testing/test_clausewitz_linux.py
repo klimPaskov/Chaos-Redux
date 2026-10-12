@@ -1,5 +1,6 @@
 """Guard regressions. Run in WSL with unittest; never attach to a real game."""
 import importlib.util
+import json
 from pathlib import Path
 import tempfile
 import unittest
@@ -11,6 +12,29 @@ SPEC.loader.exec_module(bridge)
 
 
 class GuardTests(unittest.TestCase):
+    def test_unknown_build_has_no_profile(self):
+        self.assertIsNone(bridge.build_profile('unknown-build'))
+
+    def test_target_build_requires_matching_build_id_table(self):
+        with tempfile.TemporaryDirectory() as temp:
+            table = Path(temp) / 'runtime_table_1193.json'
+            table.write_text(json.dumps({
+                'build_id': bridge.TARGET_BUILD,
+                'version': '1.19.3',
+                'status': 'partial-static-table',
+            }), encoding='utf-8')
+            with patch.object(bridge, 'TARGET_TABLE', table):
+                profile = bridge.build_profile(bridge.TARGET_BUILD)
+                self.assertEqual(profile['table']['build_id'], bridge.TARGET_BUILD)
+
+    def test_mismatched_target_table_is_refused(self):
+        with tempfile.TemporaryDirectory() as temp:
+            table = Path(temp) / 'runtime_table_1193.json'
+            table.write_text(json.dumps({'build_id': 'wrong', 'version': '1.19.3'}), encoding='utf-8')
+            with patch.object(bridge, 'TARGET_TABLE', table):
+                with self.assertRaisesRegex(RuntimeError, 'table identity'):
+                    bridge.build_profile(bridge.TARGET_BUILD)
+
     def test_wrong_build_refuses_launch_before_lease_or_prctl(self):
         with patch.object(bridge, 'check_checkout'), patch.object(bridge, 'build_id', return_value='wrong'), \
              patch.object(bridge, 'require_lease') as lease, patch.object(bridge.ctypes, 'CDLL') as native, \
@@ -50,7 +74,7 @@ class GuardTests(unittest.TestCase):
             pid.assert_not_called()
 
     def test_capture_failure_has_no_desktop_fallback(self):
-        with patch.object(bridge, 'owned_pid', return_value=123), \
+        with patch.object(bridge, 'require_build'), patch.object(bridge, 'owned_pid', return_value=123), \
              patch.object(bridge.subprocess, 'check_output', return_value='456\n'), \
              patch.object(bridge.subprocess, 'run', side_effect=bridge.subprocess.TimeoutExpired('import', 45)) as run:
             with self.assertRaises(bridge.subprocess.TimeoutExpired):

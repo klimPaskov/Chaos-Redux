@@ -1,19 +1,23 @@
 # Clausewitz-MCP for the isolated Linux game
 
-The pinned server is installed and project configuration is present but disabled.
-**Live gameplay verification is incomplete:** the reviewed upstream offsets target HOI4 1.19.2, while the installed Linux executable is a different build.
-The adapter deliberately refuses memory reads, native calls, and event execution on that binary.
-Do not remove this check, substitute the installed build ID for the expected one, change the shared game without explicit authorization and its exclusive lease, or interpret upstream `doctor` reporting `ready` as build compatibility.
+Clausewitz-MCP is the preferred live route for the Linux HOI4 process; HOI4 Live Tools is a fallback only when it reaches that same WSL process.
+The adapter selects a reviewed table by ELF GNU Build ID, refuses unknown builds before memory access, and requires the job's exclusive `/tmp/hoi4_wsl.lock` lease for live tools.
+The 1.19.3 table is partial: tools outside its per-build allowlist are blocked and must remain unverified until their addresses and calling conventions are derived.
 
-## Current 1.19.3 port status (2026-10-11)
+## Current 1.19.3 port status (2026-10-12)
 
-The installed Linux game remains on ELF build `a4971c9e8ac9a6f2487dea109e01f9839ee59db7`, SHA-256 `56fc2945cdbf2475a316db3285eb3458ae5d577db149db6dfdba6f004de3a88a`.
-Upstream remains at `97c85437081904d5ad07bae1623ec58d1c0a5b9e`; it has no 1.19.3 branch or issue describing support.
-The offline port has verified the target RTTI, function-boundary and command-table candidates, including 358/358 command addresses and 357/358 command sizes; `CReadyAfterHotJoinCommand` size remains unresolved, and `CDisengageFromNavalCombatCommand` has a target field-layout change.
-Target evidence also identifies a `CCountry` serializer at `0xd1a660`, the CGameState root at `0x44086a8`, country lookup at `0xd784a0`, and the `CDeclareWarAction` / `CGenerateWarGoalAction` constructors at `0xa50fa0` / `0xa57600`.
-Those findings do not constitute a complete 1.19.3 runtime table: console dispatch, the variable resolver, several state getters and globals, and other call surfaces remain unresolved.
-The 1.19.2 build gate is unchanged and continues to refuse this ELF before memory access; no native call, attach, screenshot, event, or register/thread-recovery test was made.
-The current derivation and evidence are in `/home/klim/tools/Clausewitz-MCP-ports/1.19.3/PORT_STATUS.md`.
+The installed Linux game is ELF build `a4971c9e8ac9a6f2487dea109e01f9839ee59db7`, SHA-256 `56fc2945cdbf2475a316db3285eb3458ae5d577db149db6dfdba6f004de3a88a`; it was not downgraded or otherwise modified.
+Upstream remains pinned at `97c85437081904d5ad07bae1623ec58d1c0a5b9e` and still has no 1.19.3 branch or issue.
+The target-only evidence derives the console manager/dispatcher and allocator, the game-state country/tag map, the idler, and all 358 command addresses; 357 command sizes are resolved and one command field layout differs from 1.19.2.
+The selector now recognizes 1.19.2 and 1.19.3 separately and continues to refuse every unknown ELF Build ID.
+The per-tool status map contains 109 entries (107 upstream tools plus preflight and status): 6 are verified, 103 unverified, and none are marked broken. Verified tools are `clausewitz_linux_preflight`, `clausewitz_linux_tool_status`, `hoi4_status`, `hoi4_debug_read_memory`, `hoi4_debug_list_commands`, and `hoi4_screenshot`.
+The `version` operation also returned successfully through `hoi4_debug_console`, but that tool remains unverified overall because its front-end `get_var` probe faulted before a campaign loaded.
+The game was launched through WSL, but remained in the front-end/checksum-loading state with no active idler. State mapping, `version`, a long-argument allocator call, and screenshot capture worked, and all 72 attached threads' registers restored after the injected calls.
+The front-end `get_var global.chaos_meter_value` probe faulted inside the command handler; the game stayed alive and the bridge now blocks console calls while no active campaign is loaded.
+The required active-campaign Chaos Redux variable, Chaos Meter, and event checks remain incomplete because Clausewitz-MCP has no save-load/new-game tool and HOI4 Live Tools did not reach this private WSL process.
+The plain-text comparison save `hoi4live_wsl_capture_day0.hoi4` is 1.19.3 USA at 1936.1.1.12 and records `variables/chaos_meter_value = 0`, but it was not loaded into the live process.
+The launcher stopped the owned game, restored `settings.txt` and `pdx_settings.txt` byte-exactly, and released the WSL lease; the Linux executable and mod symlinks were unchanged.
+Derivation scripts, target tables, call-recovery records, and screenshots are under `/home/klim/tools/Clausewitz-MCP-ports/1.19.3/`.
 
 Clausewitz-MCP is preferred for the Linux process only when its exact ELF build has a reviewed table and this job holds the WSL lease.
 HOI4 Live Tools is the fallback only when it reaches that same Linux process; a Windows session does not verify Linux gameplay.
@@ -146,8 +150,7 @@ The adapter supplies build/PID/lease checks, Linux documentation paths, private-
 
 ## Project configuration
 
-Codex's `.codex/config.toml` contains `[mcp_servers.clausewitz_linux]` with `enabled = false`.
-Claude Code's `.mcp.json` contains the same server command; `.claude/settings.json` lists `clausewitz_linux` in `disabledMcpjsonServers` because `.mcp.json` has no corresponding portable `enabled` field.
+Codex's `.codex/config.toml` enables `[mcp_servers.clausewitz_linux]`; Claude Code's `.mcp.json` registers the same WSL stdio command and `.claude/settings.json` no longer disables it.
 These are project-local controls; no global configuration was changed.
 The supported settings are documented in [Codex MCP configuration](https://learn.chatgpt.com/docs/extend/mcp?surface=cli) and [Claude Code project-server approvals](https://code.claude.com/docs/en/mcp#project-server-approvals-and-workspace-trust).
 
@@ -157,18 +160,16 @@ The exact stdio command is:
 wsl.exe -d Ubuntu-24.04 -u klim --exec /home/klim/tools/Clausewitz-MCP/.venv/bin/python -B /home/klim/tools/Clausewitz-MCP/chaosx_bridge.py --job clausewitz_linux serve
 ```
 
-An authorized testing session may set Codex's entry to `enabled = true`, or remove just this server's name from Claude's project rejection list, then reconnect its MCP client.
-Keep it disabled after the test session.
-Client enablement does not bypass the adapter's independent build and lease checks.
-The adapter's `clausewitz_linux_preflight` tool can report installation, compatibility, and lease metadata without attaching to a game.
+Client enablement does not bypass the adapter's independent Build-ID and lease checks.
+`clausewitz_linux_preflight` reports the selected table profile without attaching, while `clausewitz_linux_tool_status` returns the status of every upstream tool on the selected build.
+The 1.19.3 adapter blocks tools that are not in its explicitly eligible set; future calls should check `clausewitz_linux_tool_status` and use only tools marked `verified`.
 Use this server's qualified tool names: it overlaps `hoi4-live` on names such as `hoi4_status` and `hoi4_screenshot`.
 
 ## Launch and lease workflow
 
 Live work requires explicit user authorization, as with `chaos-redux-debug-playtest`.
 Read the capture board before acting and append the job's intended work and result.
-The integration session observed another owner, `astra_live_cr`, and never acquired, removed, or impersonated its lease.
-The observed running Linux process was PID 35812; it was not attached to or controlled.
+Acquire the WSL lease only when it is free, and never overwrite or release another job's lease.
 
 Read-only preflight from Windows:
 
@@ -176,7 +177,7 @@ Read-only preflight from Windows:
 wsl.exe -d Ubuntu-24.04 -u klim --exec /home/klim/tools/Clausewitz-MCP/.venv/bin/python -B /home/klim/tools/Clausewitz-MCP/chaosx_bridge.py preflight
 ```
 
-After a reviewed compatible upstream/build pair is available, acquire the lease exclusively inside WSL before launch:
+For the 1.19.3 profile, acquire the lease exclusively inside WSL before launch:
 
 ```bash
 python3 - <<'PY'
@@ -192,12 +193,13 @@ bash /mnt/c/Users/klimp/Videos/chaos_redux_trailer/records/cx/wsl_hoi4_launcher.
 
 An existing lease is a stop condition; wait for its owner to finish rather than overwriting it.
 Plain `start` remains the default game launch and does not change process tracing permissions.
-`clausewitz-start` checks compatibility before starting helpers or editing Linux profile settings, then execs the normal launcher with opt-in integration.
+`clausewitz-start` checks the installed Build ID against the selected table before starting helpers or editing Linux profile settings, then execs the normal launcher with opt-in integration.
 For the existing cache/mount-namespace launch procedure, pass `HOI4_WSL_JOB=clausewitz_linux HOI4_CLAUSEWITZ=1` into `cached-start` along with its existing environment.
 The launcher forwards those values when dropping to `klim`; refresh the runtime mod cache using the existing `wsl_hoi4_setup.md` instructions when testing edited content.
 The attached mode uses `PR_SET_PTRACER_ANY` only on the game process before exec, allowing same-user tracing subject to ordinary Linux permission checks.
 It does not use `LD_PRELOAD`, run the MCP as root, or change `kernel.yama.ptrace_scope`, which was observed as `1` before and after installation.
 This per-process permission ends with the process; use a plain restart to remove it from a surviving integration session.
+The upstream Clausewitz MCP has no save-load or new-game UI tool. If it starts at the front end, console commands are blocked until the target idler indicates an active campaign; an available save must be loaded through a supported route that reaches this same Linux process before testing events or script variables.
 
 Stop only the game owned by this lease and release only the matching lease:
 
@@ -217,33 +219,25 @@ Never run that cleanup on another job's session.
 
 | Capability | Result on this installation |
 | --- | --- |
-| Upstream installation doctor | Finds the Linux install and running Linux process; reports `ready`, but does not check ELF compatibility |
-| MCP initialization and tools/list | Passed: 107 upstream tools plus `clausewitz_linux_preflight` |
-| Adapter preflight | Reports the exact incompatible ELF builds, private display, current lease, and unchanged ptrace scope |
-| Game-state read (`hoi4_status`) | Refused before memory access because the build is incompatible |
-| Script-variable read (`hoi4_script_variable`) | Not exercised in game; uses native function calls and is build-gated |
-| Chaos Redux event (`hoi4_debug_console`) | Not fired; native console dispatch is build-gated |
-| Chaos Meter | Not read or visually verified in this session |
-| Screenshot (`hoi4_screenshot`) | Lease refusal verified; actual capture not attempted against the other job's game |
-| Guard regression tests | Eight passed, including incompatible-build launch refusal and no desktop-capture fallback |
-| Windows stdio bridge | Exact `.mcp.json` command tested separately; evidence in `records/cx/clausewitz_mcp_windows_stdio.json` |
+| Upstream branch/issue review | Verified: latest upstream remains `97c85437081904d5ad07bae1623ec58d1c0a5b9e`; only `main`, no public issues or 1.19.3 table found |
+| Build-ID selection and unknown-build refusal | Verified: 1.19.3 ELF `a4971c9e8ac9a6f2487dea109e01f9839ee59db7` selects the separate partial table; unknown IDs are refused before memory access or injection |
+| MCP initialization and tool discovery | Verified over stdio: 109 tools (107 upstream plus preflight and per-tool status) |
+| Per-tool status inventory | Verified: `clausewitz_linux_tool_status` reports every upstream tool; only the tool scopes listed below are marked verified |
+| State-root read | Verified for startup state: 618 countries, player tag index 0, country index 0, and a valid `CCountry*`; `G_IDLER` was null, so this was not an active campaign |
+| Raw memory reads | Verified: live reads of the game-state, console-manager, and idler pointer slots succeeded |
+| Console command catalog | Verified: the live registry listed `version` and `get_var`; it had no save-load or new-game console command |
+| Console dispatcher (`hoi4_debug_console`) | Unverified overall: `version` returned `Operation Postern v1.19.3.0.c01a`, but `get_var global.chaos_meter_value` faulted inside the handler before a campaign was loaded; the game survived and all injected-call registers were restored |
+| Operator allocation and ptrace recovery | Verified: the target `operator new` returned; the console call and allocator call each restored registers for all 72 attached threads, and detach resumed them |
+| Private-window screenshot | Verified: screenshots were captured from the owned game window on `:91`; loading-screen evidence is under `/home/klim/tools/Clausewitz-MCP-ports/1.19.3/evidence/` |
+| Script-variable tool (`hoi4_script_variable`) | Unverified and blocked: the target dynamic-variable resolver address is not derived |
+| Chaos Meter in an active campaign and event firing | Unverified: no active test campaign was loaded, no event was fired, and no live meter value was read |
+| Candidate save | Read-only inspection found a compatible text save, USA, 1936.1.1.12, with saved `chaos_meter_value = 0`; it was not loaded into the game |
+| Cleanup | Verified: the owned game was stopped, `settings.txt` and `pdx_settings.txt` were restored byte-exactly, and `/tmp/hoi4_wsl.lock` was released |
 
-The game was already running under another job's lease, and a compatible build is independently missing.
-No launch, campaign control, game-memory read/write, ptrace attachment, event firing, or screenshot of that session was performed.
-There is no claim of live Chaos Redux acceptance.
-The requested real-game verification remains blocked until version-compatible offsets/calling conventions have been reviewed and an exclusive test slot is available.
-Do not merely relabel the old offsets or regenerate a few tables: addresses are embedded across multiple modules, and upstream save tokens and map caches also carry version/vanilla assumptions.
-
-When those prerequisites are met, use a dedicated paused non-Ironman Chaos Redux test game and record the active mod/cache revision.
-List tools and retain their live schemas, call `hoi4_status` and `hoi4_session_info`, and compare country/date values with a private-window screenshot.
-Read one known native dynamic variable using `hoi4_script_variable` and compare it with visible or save-backed state before treating that resolver as supporting custom/global mod variables.
-Choose the event from its actual source and invoke `hoi4_debug_console` with `event <verified-event-id> <country-tag>` once; verify its effects and event history rather than treating a successful dispatch as proof of gameplay.
-Read the Chaos Meter's actual scoped variable from source, obtain a value using a supported resolver or a dedicated save, and compare the meter before and after the event.
-The upstream resolver's custom/global-variable support is unverified; do not assume it behaves like `hoi4_eval_effect` or the dedicated save inspector.
-Use `chaos-redux-save-inspection` when a save is needed, and distinguish save snapshots from live memory.
-Capture the event and meter through `hoi4_screenshot`, which this adapter restricts to the recorded game PID on `:91` and never falls back to WSLg or the Windows desktop.
-The game launch, menu navigation, popup handling, and save/load workflow are not supplied by this MCP as equivalents of the HOI4 Live Tools workflow.
-Continuous micro/order loops and arbitrary native function calls have not been accepted for this installation.
+The successful state, catalog, memory, screenshot, and version calls establish only the listed 1.19.3 tool scopes; every other upstream tool remains unverified and is blocked by the target allowlist.
+The `get_var` error occurred while the game had no active idler; the bridge now blocks console calls until an active campaign is loaded.
+The active-campaign variable, Chaos Meter, and event checks remain incomplete because Clausewitz-MCP has no save-load/new-game UI tool, and HOI4 Live Tools does not reach this private WSL process.
+Do not use a Windows game result as evidence for Linux, and do not use arbitrary native function calls or order loops until their target entries are derived and reviewed.
 
 ## Difference from HOI4 Live Tools
 
@@ -255,7 +249,7 @@ Continuous micro/order loops and arbitrary native function calls have not been a
 | Compatibility | Exact executable layout and embedded offsets | Its own documented capabilities; Clausewitz tests do not validate it |
 | Lock | `/tmp/hoi4_wsl.lock` and capture board | `hoi4_lock` |
 | Screenshot | Private X11 game window only via this adapter | `hoi4_screenshot` through that server's capture route |
-| Current acceptance | Blocked on 1.19.3; no native capabilities verified | Windows default and fallback only when it reaches the intended process |
+| Current acceptance | Partial 1.19.3 core state reads, command catalog, screenshot, and console `version`; active-campaign event/meter checks incomplete | Fallback only when it reaches the same Linux process; the configured Windows route does not reach private display `:91` |
 
 Use HOI4 Live Tools as fallback only if it controls the intended game process; a Windows game result does not validate the Linux game.
 

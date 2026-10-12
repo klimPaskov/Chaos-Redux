@@ -7,7 +7,7 @@ description: Explicit-invocation-only Chaos Redux live QA workflow. Use only whe
 
 Use this skill only after the user explicitly invokes it or explicitly asks for autonomous Chaos Redux live testing. Windows runs use the HOI4 Live Tools MCP server (`hoi4-live`). Linux runs prefer Clausewitz-MCP for the Linux game when its exact ELF build is covered by a reviewed table and the matching WSL lease is owned.
 
-For an explicitly requested isolated Linux/WSL run, follow [Clausewitz-MCP Linux testing](../../../docs/testing/clausewitz_mcp_linux.md) before using the disabled-by-default `clausewitz_linux` server or its opt-in launcher.
+For an explicitly requested isolated Linux/WSL run, follow [Clausewitz-MCP Linux testing](../../../docs/testing/clausewitz_mcp_linux.md) before using the project-local `clausewitz_linux` adapter or its opt-in launcher.
 That route requires the matching WSL game lease and a verified compatible ELF build; an exposed tool list or successful installation does not establish memory-layout compatibility.
 If Clausewitz-MCP is unavailable or fails its build gate, HOI4 Live Tools is the fallback only when it can reach the intended game process; a Windows installation result does not validate Linux gameplay.
 For an explicitly authorized Linux version change, first check Steam's advertised branches; a version named in native offsets does not establish that a matching beta is available.
@@ -21,16 +21,35 @@ Do not add this skill to `AGENTS.md`, `chaos-redux-subagents`, completion-audit 
 
 ### 1. Capability gate and live-tool routing
 
-Route live work by the intended game process. On Linux, use Clausewitz-MCP when the exact ELF build is covered by a reviewed table and the matching lease is held; its scope includes direct state reads, guarded console dispatch, supported command-queue actions, and adapter-restricted game-window captures. On Windows, HOI4 Live Tools remains the default. It is also the Linux fallback only when its connected route actually reaches the intended Linux process; otherwise report that live access is unavailable.
+Route live work by the intended game process. On Linux, use Clausewitz-MCP when the exact ELF build is covered by a reviewed table and the matching lease is held, using only tools currently marked `verified` by `clausewitz_linux_tool_status`. On Windows, HOI4 Live Tools remains the default. It is also the Linux fallback only when its connected route actually reaches the intended Linux process; otherwise report that live access is unavailable.
 HOI4 Live Tools is registered in this repository's `.mcp.json` (Claude Code) and `.codex/config.toml` as `hoi4-live`; its tools appear as `hoi4_status`, `hoi4_launch`, `hoi4_load`, and so on (Claude Code lists them as `mcp__hoi4-live__*`). Its source and docs are at `C:\Users\klimp\Documents\Projects\hoi4-live-tools` (`docs/tools.md` lists every argument); a machine without that checkout installs the release with HOI4 Mod Setup or `python install.py`.
 
 Before starting, verify the chosen route:
 
 - For HOI4 Live Tools, confirm its tools are listed and `hoi4_status` answers with the intended process, window, playset, mode, lock holder, recent saves, and date; confirm the repository is editable and logs are readable through `hoi4_logs`.
-- For Clausewitz-MCP, confirm `clausewitz_linux_preflight` reports the exact ELF build as supported, the matching WSL lease belongs to this job, and the planned operations are within the reviewed call surface.
+- For Clausewitz-MCP, follow the Linux sequence below; build support alone does not verify every tool or campaign operation.
 - For either route, confirm the loaded playset contains the Chaos Redux build under test; a frozen QA snapshot (`Chaos Redux QA`) does not show the repository's edits, so record which one is loaded and never edit `dlc_load.json` yourself (only `hoi4_telemetry` does, with a backup).
 
-If the preferred route is unavailable, try the fallback only if it reaches the same intended game process and has the needed capability. If neither route is connected to that process, stop with a blocked report that says which route is unavailable. Fall back to direct desktop control only when the user asks for it, and record the fallback. Do not claim the skill controlled the computer when it did not.
+If the preferred route is unavailable, try the fallback only if it reaches the same intended game process and has the needed capability. If neither route is connected to that process, stop with a blocked report that says which route is unavailable. Do not use raw desktop automation under this skill.
+
+#### Linux launch and per-tool gate
+
+1. Read the Linux testing document's current port status and launch/lease procedure, distinguishing historical results from current evidence.
+2. Run `clausewitz_linux_preflight` and record the exact ELF Build ID, selected table, adapter/upstream revision, and intended process; unknown builds must be refused before memory access.
+3. Read the capture board and acquire the free WSL lease exclusively for this job, following the document; never replace another job's lease.
+4. Launch through `records/cx/wsl_hoi4_launcher.sh clausewitz-start` on the private display, with the documented job environment and content/cache revision, or reuse this job's matching running process.
+5. Inspect `clausewitz_linux_tool_status` for the selected build and retain its result and live schemas; call only tools marked `verified`, within their evidenced scope and prerequisites, using server-qualified names because `hoi4_status` and `hoi4_screenshot` overlap other servers.
+6. Confirm an active campaign through a supported route connected to that same Linux process before campaign tests; Clausewitz-MCP has no save-load/new-game UI tool.
+7. If an active campaign cannot be loaded through that route or a supported same-process HOI4 Live Tools fallback, stop and record campaign, variable, event, and UI results as unverified with the blocker; another Windows game or an inspected but unloaded save does not validate Linux gameplay.
+8. On exit or failure, stop only the owned Linux process through the launcher, verify settings restoration, and release only this job's matching lease after the process stops, following the document.
+
+The 1.19.3 profile for ELF Build ID `a4971c9e8ac9a6f2487dea109e01f9839ee59db7` uses `/home/klim/tools/Clausewitz-MCP-ports/1.19.3/runtime_table_1193.json`, with upstream pinned at `97c85437081904d5ad07bae1623ec58d1c0a5b9e`.
+Its bounded live evidence covers `hoi4_status`, `hoi4_debug_read_memory`, `hoi4_debug_list_commands`, and `hoi4_screenshot`.
+`hoi4_debug_console` returned `version`, but a front-end `get_var` probe faulted without an active campaign; campaign variable/event dispatch remains unverified, as do `hoi4_script_variable` and other untested game tools.
+Use the current tool-status endpoint rather than treating this evidence summary as an allowlist or permission to retry an unverified call.
+
+The Windows sequences and feature protocols below apply on Linux only through verified equivalents that reach the owned Linux process.
+Do not infer a Linux capability from the HOI4 Live Tools map or bypass the tool-status gate to complete a protocol.
 
 The following tool map covers HOI4 Live Tools on Windows and any explicitly selected fallback session:
 
@@ -46,14 +65,14 @@ The following tool map covers HOI4 Live Tools on Windows and any explicitly sele
 | Checkpoints, persistence, before and after | `hoi4_save name=<step>` (written as `hoi4live_<step>`), `hoi4_save_query`, then `chaos-redux-save-inspection` for deep reads |
 | Pure player-path tests without the console | `hoi4_lock action=set_mode mode=campaign`; the campaign tools act through the interface |
 
-Rules for every call:
+Rules for HOI4 Live Tools calls:
 
 - Hold the desktop lock for the run (`hoi4_lock action=acquire purpose=<run_id>`) and release it at the end or on failure. Other sessions share the screen; never break a live holder's lock, never type outside the game window, never launch another window in front of the game.
 - On the user's PC the AMD Radeon overlay intercepts Ctrl+Shift chords. Open Chaos Redux windows with their top-bar buttons (`hoi4_click`) or with the plain keys that do not use the chord (Chaos Meter `M`, Event Logs `E`, Scenarios `S`); do not send Ctrl+Shift+C for Settings.
 - A slow call is not a failed call: the tools wait and re-read on a busy machine. Retry a failed call once, then change the plan.
 - The server writes only `hoi4live_*` saves and never edits `settings.txt`.
 - Verify the rendered viewport before labeling a resolution capture: external X11 window geometry alone can change while the game keeps its old viewport; native Video-option resolution changes require the indicated restart.
-- For an explicitly authorized alternate input route, use a bounded held mouse press followed by release when instant synthetic clicks are not registered, and allow the actual transition animation to finish before capturing.
+- When a supported same-process input tool offers held mouse presses, use a bounded press followed by release if instant clicks are not registered, and allow the actual transition animation to finish before capturing.
 
 #### Efficiency
 
@@ -69,7 +88,7 @@ Loading a save costs one to three minutes, saving about one, a restart several. 
 
 ### 2. Default Chaos Redux configuration
 
-Use these defaults:
+Use these Windows defaults; Linux launch, logs, settings restoration, and lease cleanup follow the Linux document and sequence above:
 
 ```text
 logs (read through hoi4_logs; the server resolves the active folder):
@@ -158,7 +177,7 @@ Preserve unrelated uncommitted changes. Do not reset or clean the repository. Be
 
 ### 6. Launch and clean-start gate
 
-Use this startup sequence:
+Use this Windows startup sequence; Linux uses the launch and per-tool gate above, followed by only the supported same-process checks:
 
 1. Record the current repository commit, branch, changed files, and test scope.
 2. `hoi4_status`. A game that is already running with the right playset and was started after the last change to launch-read content is reused: its launch-time errors are `hoi4_logs since=launch`. Otherwise `hoi4_shutdown confirm=true` (when running) and continue.
@@ -254,6 +273,8 @@ A cold-start `error.log` with thousands of lines usually has a few roots. Fix th
 ### 8. Repair loop
 
 For each batch of attributable errors from one launch:
+
+Use the following Windows calls on Windows; on Linux, stop/relaunch through the owned WSL launcher and perform only checks supported by verified same-process tools.
 
 1. Save the full fresh lines, repeated counts, file paths, line numbers when present, and the screenshot state.
 2. Close HOI4 with `hoi4_shutdown confirm=true`.
@@ -682,7 +703,7 @@ A Chaos Redux fix passes only when:
 - the original issue reproduces before the fix or has direct fresh-log proof
 - the owning source-of-truth and relevant implementation rules were read
 - the patch is bounded and does not use an unapproved fallback
-- the game restarts through `hoi4_launch debug=true` (or the user's debug shortcut)
+- the game restarts through the OS-appropriate launch route above
 - the original fresh error is absent
 - the original visible sequence now passes
 - one nearby regression check passes
@@ -720,9 +741,9 @@ Never convert `not_implemented` or `not_covered_single_country` into `pass` to i
 
 A scoped Chaos Redux autonomous run is complete only when:
 
-- the game was launched through `hoi4_launch debug=true` or the exact supplied shortcut, and the playset and build loaded were recorded
+- the game was launched through the OS-appropriate launch route above, and the playset and build loaded were recorded
 - the active log directory was verified by freshness
-- the desktop lock was released and the game was left paused on the map
+- Windows: the desktop lock was released and the game was left paused on the map; Linux: the owned process was stopped, settings restoration verified, and its matching WSL lease released
 - Chaos Redux was visibly loaded
 - startup and country-map entry produced no new attributable blocking error
 - the primary country and test mode were recorded
