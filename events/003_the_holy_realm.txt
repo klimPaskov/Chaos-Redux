@@ -1068,20 +1068,27 @@ country_event = {
 
 	immediate = {
 		set_temp_variable = { holy_realm_final_visual_strikes_left = constant:holy_realm_final_silence.visual_strikes_per_pulse }
+		# Count the pending set once. Each selected strike clears exactly one flag.
+		set_temp_variable = { holy_realm_final_visual_pending_count = 0 }
+		every_state = {
+			limit = { has_state_flag = holy_realm_final_silence_visual_pending }
+			add_to_temp_variable = { holy_realm_final_visual_pending_count = 1 }
+		}
 		while_loop_effect = {
 			limit = {
 				check_variable = { holy_realm_final_visual_strikes_left > 0 }
-				any_state = { has_state_flag = holy_realm_final_silence_visual_pending }
+				check_variable = { holy_realm_final_visual_pending_count > 0 }
 			}
 			random_state = {
 				limit = { has_state_flag = holy_realm_final_silence_visual_pending }
 				holy_realm_launch_final_silence_visual_strike_on_state = yes
 			}
 			subtract_from_temp_variable = { holy_realm_final_visual_strikes_left = 1 }
+			subtract_from_temp_variable = { holy_realm_final_visual_pending_count = 1 }
 		}
 		if = {
 			limit = {
-				any_state = { has_state_flag = holy_realm_final_silence_visual_pending }
+				check_variable = { holy_realm_final_visual_pending_count > 0 }
 			}
 			country_event = { id = chaosx.nr3.84 hours = 1 }
 		}
