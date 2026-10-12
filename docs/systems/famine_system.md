@@ -175,6 +175,8 @@ Selecting an entry centres the map on that state.
 Until a crisis state exists the header falls back to the scene summary.
 The category description keeps Food Security, Food Reserves, Relief Access and Priority.
 The dynamic list inside a decision-category scripted GUI has not been confirmed in a running game.
+Every famine action is a state-targeted decision (`state_target = any_controlled_state` with `target_trigger` filtering on the live state flags), so the targets come from live state data and no decision, GUI entry or text names a fixed state.
+The named historical profiles (for example Henan or Bengal) are labels a state earns from its live food proof, not fixed UI entries.
 
 ## Assets and mapmode
 

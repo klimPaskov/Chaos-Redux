@@ -1,28 +1,29 @@
 # ============================================================================
 # CHAOS REDUX - SHARED DISEASE CONTAINMENT BOARD TRIGGERS
 # ============================================================================
-# Country and state predicates for the shared disease switcher, crisis phase,
-# filtered state list, persistent Black Plague response target, and public
-# inspection view. ROOT is the viewing/responding country for state predicates.
+# Country and state predicates for the shared disease board: the country
+# outbreak phase, the one list of affected states, the persistent Black Plague
+# response target, and the public inspection view. ROOT is the viewing or
+# responding country for state predicates.
 # ============================================================================
 
-# A selected disease is valid only once the country has identified it.
-disease_containment_board_has_valid_selected_disease = {
-	has_variable = disease_containment_selected_disease
-	NOT = { check_variable = { disease_containment_selected_disease = constant:disease_containment_agent.none } }
-	is_in_array = {
-		array = disease_containment_known_diseases
-		value = disease_containment_selected_disease
+# COUNTRY scope. Whether a Black Plague state is visible to this player, which is
+# the discovery rule for listing Black Plague states and for its response decisions.
+disease_containment_board_knows_black_plague = {
+	OR = {
+		has_country_flag = black_plague_crisis_board_available
+		any_state_in = {
+			array = global.black_plague_active_states
+			black_plague_state_is_tracked = yes
+			black_plague_state_is_visible_to_mapmode_player = yes
+		}
 	}
 }
 
-disease_containment_board_disease_entry_is_selected = {
-	has_variable = disease_containment_selected_disease
-	check_variable = { disease_containment_board_disease_id = disease_containment_selected_disease }
-}
-
-disease_containment_board_is_black_plague_selected = {
-	check_variable = { disease_containment_selected_disease = constant:disease_containment_agent.black_plague }
+# STATE scope. Black Plague states listed on the board.
+disease_containment_board_state_is_listed_black_plague = {
+	black_plague_state_is_tracked = yes
+	black_plague_state_is_visible_to_mapmode_player = yes
 }
 
 disease_containment_board_category_is_visible = {
@@ -51,12 +52,6 @@ disease_containment_state_has_probed_disease = {
 	}
 }
 
-# STATE scope. Matches the disease selected on the viewing country's board.
-disease_containment_board_state_matches_selected_ordinary_disease = {
-	set_temp_variable = { disease_containment_probe_id = ROOT.disease_containment_selected_disease }
-	disease_containment_state_has_probed_disease = yes
-}
-
 # STATE scope. Whether the viewing country can see this state's outbreak: its own
 # states and the states directly across its borders.
 disease_containment_state_is_observable_by_root = {
@@ -67,72 +62,6 @@ disease_containment_state_is_observable_by_root = {
 			OR = {
 				is_owned_by = ROOT
 				is_controlled_by = ROOT
-			}
-		}
-	}
-}
-
-disease_containment_board_state_matches_ownership_filter = {
-	OR = {
-		ROOT = {
-			check_variable = {
-				var = disease_containment_board_ownership_filter
-				value = constant:disease_containment_ownership_filter.all_visible
-				compare = equals
-			}
-		}
-		AND = {
-			ROOT = {
-				check_variable = {
-					var = disease_containment_board_ownership_filter
-					value = constant:disease_containment_ownership_filter.controlled
-					compare = equals
-				}
-			}
-			OR = {
-				is_owned_by = ROOT
-				is_controlled_by = ROOT
-			}
-		}
-		AND = {
-			ROOT = {
-				check_variable = {
-					var = disease_containment_board_ownership_filter
-					value = constant:disease_containment_ownership_filter.public_foreign
-					compare = equals
-				}
-			}
-			NOT = {
-				OR = {
-					is_owned_by = ROOT
-					is_controlled_by = ROOT
-				}
-			}
-		}
-	}
-}
-
-disease_containment_board_state_matches_region_filter = {
-	OR = {
-		ROOT = {
-			check_variable = {
-				var = disease_containment_board_region_filter
-				value = constant:disease_containment_region_filter.all
-				compare = equals
-			}
-		}
-		AND = {
-			ROOT = {
-				check_variable = {
-					var = disease_containment_board_region_filter
-					value = constant:disease_containment_region_filter.selected_region
-					compare = equals
-				}
-				has_variable = disease_containment_board_selected_region_id
-			}
-			meta_trigger = {
-				text = { region = [REGION_ID] }
-				REGION_ID = "[?ROOT.disease_containment_board_selected_region_id|.0]"
 			}
 		}
 	}
@@ -182,76 +111,6 @@ black_plague_crisis_board_state_is_high_urgency = {
 	}
 }
 
-black_plague_crisis_board_state_matches_status_filter = {
-	OR = {
-		ROOT = {
-			check_variable = {
-				var = disease_containment_board_status_filter
-				value = constant:disease_containment_status_filter.all
-				compare = equals
-			}
-		}
-		AND = {
-			ROOT = { check_variable = { disease_containment_board_status_filter = constant:disease_containment_status_filter.critical } }
-			black_plague_crisis_board_state_is_critical = yes
-		}
-		AND = {
-			ROOT = { check_variable = { disease_containment_board_status_filter = constant:disease_containment_status_filter.active } }
-			OR = {
-				black_plague_state_is_incubating = yes
-				black_plague_state_is_infected = yes
-				black_plague_state_is_severe = yes
-				black_plague_state_is_collapsed = yes
-				black_plague_state_is_rat_controlled = yes
-			}
-		}
-		AND = {
-			ROOT = { check_variable = { disease_containment_board_status_filter = constant:disease_containment_status_filter.containment } }
-			OR = {
-				black_plague_state_is_contained = yes
-				black_plague_state_is_recovering = yes
-			}
-		}
-		AND = {
-			ROOT = { check_variable = { disease_containment_board_status_filter = constant:disease_containment_status_filter.monitoring } }
-			OR = {
-				black_plague_state_is_threatened = yes
-				black_plague_state_is_cured = yes
-				has_state_flag = black_plague_monitoring_memory
-			}
-		}
-	}
-}
-
-black_plague_crisis_board_state_matches_urgency_filter = {
-	OR = {
-		ROOT = {
-			check_variable = {
-				var = disease_containment_board_urgency_filter
-				value = constant:disease_containment_urgency_filter.all
-				compare = equals
-			}
-		}
-		AND = {
-			ROOT = { check_variable = { disease_containment_board_urgency_filter = constant:disease_containment_urgency_filter.high_or_worse } }
-			black_plague_crisis_board_state_is_high_urgency = yes
-		}
-		AND = {
-			ROOT = { check_variable = { disease_containment_board_urgency_filter = constant:disease_containment_urgency_filter.critical_only } }
-			black_plague_crisis_board_state_is_critical = yes
-		}
-	}
-}
-
-black_plague_crisis_board_state_matches_filters = {
-	black_plague_state_is_tracked = yes
-	black_plague_state_is_visible_to_mapmode_player = yes
-	disease_containment_board_state_matches_ownership_filter = yes
-	disease_containment_board_state_matches_region_filter = yes
-	black_plague_crisis_board_state_matches_status_filter = yes
-	black_plague_crisis_board_state_matches_urgency_filter = yes
-}
-
 black_plague_response_state_is_selectable = {
 	black_plague_state_is_tracked = yes
 	black_plague_state_is_visible_to_mapmode_player = yes
@@ -278,33 +137,29 @@ black_plague_country_has_valid_response_state = {
 	}
 }
 
+# COUNTRY scope. The inspected state must still be on the listed entries.
 disease_containment_board_has_valid_view_state = {
 	has_variable = disease_containment_board_view_state
+	is_in_array = {
+		array = disease_containment_board_state_entries
+		value = disease_containment_board_view_state
+	}
+}
+
+# COUNTRY scope. The inspected state's recorded outbreak is the Black Plague.
+disease_containment_board_view_state_is_black_plague = {
+	disease_containment_board_has_valid_view_state = yes
 	var:disease_containment_board_view_state = {
-		OR = {
-			AND = {
-				ROOT = { disease_containment_board_is_black_plague_selected = yes }
-				black_plague_crisis_board_state_matches_filters = yes
-			}
-			AND = {
-				ROOT = { NOT = { disease_containment_board_is_black_plague_selected = yes } }
-				disease_containment_board_state_matches_selected_ordinary_disease = yes
-				disease_containment_board_state_matches_ownership_filter = yes
-				disease_containment_board_state_matches_region_filter = yes
-			}
-		}
+		check_variable = { disease_containment_board_state_disease = constant:disease_containment_agent.black_plague }
 	}
 }
 
 disease_containment_board_view_state_is_black_plague_crisis = {
-	AND = {
-		disease_containment_board_is_black_plague_selected = yes
-		disease_containment_board_has_valid_view_state = yes
-		var:disease_containment_board_view_state = {
-			OR = {
-				black_plague_state_is_severe = yes
-				black_plague_state_is_collapsed = yes
-			}
+	disease_containment_board_view_state_is_black_plague = yes
+	var:disease_containment_board_view_state = {
+		OR = {
+			black_plague_state_is_severe = yes
+			black_plague_state_is_collapsed = yes
 		}
 	}
 }

@@ -1,33 +1,52 @@
 # Disease Containment Board
 
-The shared board opens from the Disease Containment category header and lists only the diseases the country has identified.
-A disease is identified when its outbreak is in a state the country owns or controls or in a state directly across its border, or when a Black Plague state is visible to the player.
-Identified ids persist in the country array `disease_containment_known_diseases`.
-A country with no identified disease sees an empty selector and the line "No outbreak has been identified."
+The board is one information view of the country's outbreak situation.
+It has no per-disease selector, tabs or filters.
+Disease-specific measures are decisions in the Biological Outbreak Response category, state-targeted where they act on one state.
 
 ## Layout
 
-Top to bottom: the disease selector (a grid of one button per identified disease, scrollable), national readiness (Preparedness, Medical capacity, Outbreak status), the four list filters, the state list, and the selected state's report beside it.
-The selected disease and the inspected state are picked out by colour, and the response target is marked in the state's detail line.
-Go to State, Refresh and Close keep their original behaviour.
+Top to bottom: title with Refresh and Close, the overall status line (outbreak status, affected states, critical states), national readiness (Preparedness and Medical capacity), then the affected-state list with the selected state's report beside it.
+The list is ordered worst first: dangerous Black Plague states, ordinary outbreaks, then Black Plague states that are threatened, contained or recovering.
+Each entry names the state and the outbreak it carries as data, with its status.
+The state report shows owner and controller, the outbreak, its detailed records where they exist, the Black Plague response target when one is set, and Go to State.
+The category header shows the outbreak status and the number of affected states, with an Open Board button.
+
+## Which states are listed
+
+- Black Plague states from `global.black_plague_active_states` that are tracked and visible to the player.
+- States the country owns, controls or borders that carry an ordinary disease (`<key>_contaminated_state` dynamic modifier).
+
+Each listed state records its outbreak in the state variable `disease_containment_board_state_disease` (a `disease_containment_agent` id), read by `GetDiseaseContainmentStateOutbreakName`.
 
 ## Registry
 
-Disease ids are `disease_containment_agent` constants.
-Ordinary diseases are the contiguous range `ordinary_first` to `ordinary_last`.
-Their contaminated state modifier must be named `<key>_contaminated_state`.
-Black Plague is the one registry-backed disease and is discovered from `global.black_plague_active_states`.
-
+Ordinary diseases are the contiguous ids `ordinary_first` to `ordinary_last` in `disease_containment_agent`.
 Adding an ordinary disease:
 
-1. Add its id to `disease_containment_agent` and move `ordinary_last`.
-2. Add a name key `disease_containment_agent_<name>` and a modifier-key line `disease_containment_modifier_key_<name>` in the board localisation.
-3. Add one line each to `GetDiseaseContainmentModifierKey`, `GetDiseaseContainmentEntryName` and `GetDiseaseContainmentSelectedDiseaseName`.
+1. Add its id and move `ordinary_last`.
+2. Add a name key `disease_containment_agent_<name>` and a modifier-key line `disease_containment_modifier_key_<name>`.
+3. Add one line each to `GetDiseaseContainmentModifierKey` and `GetDiseaseContainmentStateOutbreakName`.
 
-Discovery and the state list then include the new disease with no other change.
+The new disease is then scanned and listed with no other change.
 
 ## Scans
 
-Opening or refreshing the board runs one state scan per ordinary disease id (`disease_containment_board_discover_ordinary_diseases`).
-Selecting a disease or changing a filter rebuilds only the state list.
-No recurring on action calls these scans.
+Opening or refreshing the board runs one state scan per ordinary disease id and stores the result in `disease_containment_board_ordinary_entries`.
+Black Plague driven rebuilds of an open board reuse that stored result and never rescan.
+No recurring on action runs the scan.
+
+## Response target
+
+Clicking a state only inspects it.
+The Black Plague response state used by its local decisions is chosen with the state-targeted decision Select Black Plague Response State, and the board shows it as information.
+That decision is visible once a Black Plague outbreak is identified (`disease_containment_board_knows_black_plague`).
+
+## Icons
+
+No new art. Existing sprites: `GFX_decision_bio_expand_biosecurity_capacity`, `GFX_decision_bio_expand_medical_capacity`, `GFX_black_plague_crisis_seal_static` and `_animated`, `GFX_chaosx_button_123x34`, `GFX_tiled_window`, `GFX_tiled_window_transparent`, all registered in existing `.gfx` files.
+
+## Future plans
+
+An ordinary-disease state registry would remove the observable-state scan.
+The Black Plague local response decisions could become individually state-targeted instead of using the designated response state.

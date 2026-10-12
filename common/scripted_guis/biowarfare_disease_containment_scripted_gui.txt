@@ -1,8 +1,10 @@
 # ============================================================================
 # CHAOS REDUX - SHARED DISEASE CONTAINMENT SCRIPTED GUI
 # ============================================================================
-# The category header and popup are human presentation surfaces. Disease
-# actions remain decisions, and AI evaluates disease-owned targets directly.
+# The category header and popup are human presentation surfaces. The board is one
+# information view of the country's outbreak situation: readiness, an overall
+# status line and one worst-first list of affected states. Disease actions remain
+# decisions, and AI evaluates disease-owned targets directly.
 # Event targets are deliberately absent from this interface contract.
 # ============================================================================
 
@@ -23,9 +25,6 @@ scripted_gui = {
 
 		triggers = {
 			disease_containment_board_open_click_enabled = { disease_containment_board_category_is_visible = yes }
-			disease_containment_header_black_plague_visible = { disease_containment_board_is_black_plague_selected = yes }
-			disease_containment_header_black_plague_infestation_visible = { disease_containment_board_is_black_plague_selected = yes }
-			disease_containment_header_black_plague_infestation_animated_visible = { disease_containment_board_is_black_plague_selected = yes }
 		}
 
 		ai_enabled = { always = no }
@@ -48,11 +47,6 @@ scripted_gui = {
 			disease_containment_board_close_click = { disease_containment_board_close = yes }
 			disease_containment_board_refresh_click = { disease_containment_board_refresh = yes }
 			disease_containment_board_goto_click = { disease_containment_board_goto_view_state = yes }
-			disease_containment_board_disease_entry_select_click = { ROOT = { disease_containment_board_select_disease_entry = yes } }
-			disease_containment_board_status_filter_click = { disease_containment_board_cycle_status_filter = yes }
-			disease_containment_board_ownership_filter_click = { disease_containment_board_cycle_ownership_filter = yes }
-			disease_containment_board_region_filter_click = { disease_containment_board_toggle_region_filter = yes }
-			disease_containment_board_urgency_filter_click = { disease_containment_board_cycle_urgency_filter = yes }
 			disease_containment_board_state_entry_select_click = { ROOT = { disease_containment_board_select_state_entry = yes } }
 		}
 
@@ -64,24 +58,18 @@ scripted_gui = {
 			disease_containment_board_selected_card_private_values_visible = {
 				AND = {
 					disease_containment_board_view_state_has_private_access = yes
-					NOT = { disease_containment_board_is_black_plague_selected = yes }
+					NOT = { disease_containment_board_view_state_is_black_plague = yes }
 				}
 			}
 			disease_containment_board_selected_card_public_values_visible = {
 				AND = {
 					disease_containment_board_view_state_is_public_foreign = yes
-					NOT = { disease_containment_board_is_black_plague_selected = yes }
+					NOT = { disease_containment_board_view_state_is_black_plague = yes }
 				}
 			}
 			disease_containment_board_response_target_visible = { black_plague_country_has_valid_response_state = yes }
-			disease_containment_board_black_plague_metrics_visible = { disease_containment_board_is_black_plague_selected = yes }
+			disease_containment_board_black_plague_metrics_visible = { disease_containment_board_view_state_is_black_plague = yes }
 			disease_containment_board_goto_click_enabled = { disease_containment_board_has_valid_view_state = yes }
-			disease_containment_board_region_filter_click_enabled = {
-				OR = {
-					check_variable = { disease_containment_board_region_filter = constant:disease_containment_region_filter.selected_region }
-					disease_containment_board_has_valid_view_state = yes
-				}
-			}
 			disease_containment_board_state_entry_select_click_enabled = {
 				ROOT = {
 					AND = {
@@ -90,20 +78,12 @@ scripted_gui = {
 					}
 				}
 			}
-			disease_containment_board_disease_entry_select_click_enabled = { ROOT = { disease_containment_board_category_is_visible = yes } }
 			disease_containment_board_no_states_visible = {
 				check_variable = { disease_containment_board_state_count = constant:disease_containment_board_value.zero }
 			}
 		}
 
 		dynamic_lists = {
-			disease_containment_board_disease_dynamic_list = {
-				array = disease_containment_known_diseases
-				value = disease_containment_board_disease_id
-				index = disease_containment_board_disease_index
-				change_scope = no
-				entry_container = "disease_containment_board_disease_entry"
-			}
 			disease_containment_board_state_dynamic_list = {
 				array = disease_containment_board_state_entries
 				value = disease_containment_board_state_entry

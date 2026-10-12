@@ -2,111 +2,26 @@
 # CHAOS REDUX - SHARED DISEASE CONTAINMENT BOARD EFFECTS
 # ============================================================================
 # Player-facing view construction for the existing disease containment
-# category. Gameplay remains in decisions and disease-owned effects. The board
-# keeps a public inspection state separate from the persistent, controlled
-# Black Plague response state used by paid actions.
+# category. The board is one information view: national readiness, the outbreak
+# phase, and one worst-first list of affected states. Each listed state records
+# the outbreak it carries as data (disease_containment_board_state_disease).
+# Gameplay remains in decisions and disease-owned effects; the board only informs.
 #
-# The board lists only diseases the country has identified: present in a state it
-# owns or controls or one directly across its border, or visible through the
-# Black Plague registry. Identified ids persist in disease_containment_known_diseases.
-# The only all-state scans in this file are explicit player actions (opening or
-# refreshing the board, selecting a disease), for the ordinary diseases, which
-# have no state registries. Black Plague views always use Event 20's bounded
-# registry. No recurring on_action calls these scans.
+# Black Plague states come from Event 20's bounded registry. Ordinary diseases
+# have no state registries, so opening or refreshing the board scans the states
+# the country can observe once per ordinary disease id and stores the result.
+# Those scans are explicit player actions. No recurring on_action calls them.
 # ============================================================================
 
 disease_containment_board_initialize_country = {
 	cbrn_initialize_country_data = yes
 
-	disease_containment_board_discover_black_plague = yes
-	if = {
-		limit = { NOT = { disease_containment_board_has_valid_selected_disease = yes } }
-		set_variable = { disease_containment_selected_disease = constant:disease_containment_agent.none }
-		set_temp_variable = { disease_containment_probe_id = constant:disease_containment_agent.black_plague }
-		if = {
-			limit = { is_in_array = { array = disease_containment_known_diseases value = disease_containment_probe_id } }
-			set_variable = { disease_containment_selected_disease = constant:disease_containment_agent.black_plague }
-		}
-		else_if = {
-			limit = { check_variable = { disease_containment_known_diseases^num > constant:disease_containment_board_value.zero } }
-			set_variable = { disease_containment_selected_disease = disease_containment_known_diseases^0 }
-		}
-	}
-
-	if = { limit = { NOT = { has_variable = disease_containment_board_status_filter } } set_variable = { disease_containment_board_status_filter = constant:disease_containment_status_filter.all } }
-	if = { limit = { NOT = { has_variable = disease_containment_board_ownership_filter } } set_variable = { disease_containment_board_ownership_filter = constant:disease_containment_ownership_filter.all_visible } }
-	if = { limit = { NOT = { has_variable = disease_containment_board_region_filter } } set_variable = { disease_containment_board_region_filter = constant:disease_containment_region_filter.all } }
-	if = { limit = { NOT = { has_variable = disease_containment_board_urgency_filter } } set_variable = { disease_containment_board_urgency_filter = constant:disease_containment_urgency_filter.all } }
 	if = { limit = { NOT = { has_variable = disease_containment_board_dirty } } set_variable = { disease_containment_board_dirty = constant:disease_containment_board_value.zero } }
 
 	if = { limit = { NOT = { has_variable = black_plague_countermeasure_progress } } set_variable = { black_plague_countermeasure_progress = constant:disease_containment_board_value.minimum } }
 	if = { limit = { NOT = { has_variable = black_plague_response_burden } } set_variable = { black_plague_response_burden = constant:disease_containment_board_value.minimum } }
 	clamp_variable = { var = black_plague_countermeasure_progress min = constant:disease_containment_board_value.minimum max = constant:disease_containment_board_value.maximum }
 	clamp_variable = { var = black_plague_response_burden min = constant:disease_containment_board_value.minimum max = constant:disease_containment_board_value.maximum }
-}
-
-# COUNTRY scope. Records Black Plague once the player can see one of its states.
-disease_containment_board_discover_black_plague = {
-	set_temp_variable = { disease_containment_probe_id = constant:disease_containment_agent.black_plague }
-	if = {
-		limit = {
-			NOT = { is_in_array = { array = disease_containment_known_diseases value = disease_containment_probe_id } }
-			OR = {
-				has_country_flag = black_plague_crisis_board_available
-				any_state_in = {
-					array = global.black_plague_active_states
-					black_plague_state_is_tracked = yes
-					black_plague_state_is_visible_to_mapmode_player = yes
-				}
-			}
-		}
-		add_to_array = { array = disease_containment_known_diseases value = disease_containment_probe_id }
-	}
-}
-
-# COUNTRY scope. One state scan per ordinary disease id; explicit player action only.
-disease_containment_board_discover_ordinary_diseases = {
-	set_temp_variable = { disease_containment_probe_first = constant:disease_containment_agent.ordinary_first }
-	set_temp_variable = { disease_containment_probe_last = constant:disease_containment_agent.ordinary_last }
-	for_loop_effect = {
-		start = disease_containment_probe_first
-		end = disease_containment_probe_last
-		compare = less_than_or_equals
-		value = disease_containment_probe_id
-		if = {
-			limit = {
-				NOT = { is_in_array = { array = disease_containment_known_diseases value = disease_containment_probe_id } }
-				any_state = {
-					disease_containment_state_is_observable_by_root = yes
-					disease_containment_state_has_probed_disease = yes
-				}
-			}
-			add_to_array = { array = disease_containment_known_diseases value = disease_containment_probe_id }
-		}
-	}
-}
-
-disease_containment_board_refresh_known_diseases = {
-	disease_containment_board_discover_ordinary_diseases = yes
-	disease_containment_board_discover_black_plague = yes
-}
-
-# COUNTRY scope, from the disease selector entry. The entry index addresses
-# disease_containment_known_diseases.
-disease_containment_board_select_disease_entry = {
-	if = {
-		limit = {
-			check_variable = { disease_containment_board_disease_index > constant:disease_containment_board_value.negative_one }
-			check_variable = {
-				var = disease_containment_board_disease_index
-				value = disease_containment_known_diseases^num
-				compare = less_than
-			}
-		}
-		set_variable = { disease_containment_selected_disease = disease_containment_known_diseases^disease_containment_board_disease_index }
-		clear_variable = disease_containment_board_view_state
-		disease_containment_board_rebuild_state_entries = yes
-	}
 }
 
 disease_containment_board_refresh_country_capacity = {
@@ -174,6 +89,31 @@ disease_containment_board_refresh_country_phase = {
 	else_if = {
 		limit = { black_plague_country_has_monitored_state = yes }
 		set_variable = { disease_containment_board_country_phase = constant:disease_containment_country_phase.recovered }
+	}
+	# Ordinary outbreaks: listed states we hold are infected, listed states abroad are exposure.
+	if = {
+		limit = {
+			check_variable = { disease_containment_board_country_phase = constant:disease_containment_country_phase.prepared }
+			any_state_in = {
+				array = disease_containment_board_state_entries
+				NOT = { black_plague_state_is_tracked = yes }
+				OR = {
+					is_owned_by = ROOT
+					is_controlled_by = ROOT
+				}
+			}
+		}
+		set_variable = { disease_containment_board_country_phase = constant:disease_containment_country_phase.infected }
+	}
+	else_if = {
+		limit = {
+			check_variable = { disease_containment_board_country_phase = constant:disease_containment_country_phase.prepared }
+			any_state_in = {
+				array = disease_containment_board_state_entries
+				NOT = { black_plague_state_is_tracked = yes }
+			}
+		}
+		set_variable = { disease_containment_board_country_phase = constant:disease_containment_country_phase.exposed }
 	}
 }
 
@@ -281,10 +221,11 @@ black_plague_crisis_board_append_current_state_for_phase = {
 				value = disease_containment_board_phase_pass
 				compare = equals
 			}
-			black_plague_crisis_board_state_matches_filters = yes
+			disease_containment_board_state_is_listed_black_plague = yes
 			ROOT = { NOT = { is_in_array = { array = disease_containment_board_state_entries value = PREV } } }
 		}
 		black_plague_crisis_board_set_current_state_urgency = yes
+		set_variable = { disease_containment_board_state_disease = constant:disease_containment_agent.black_plague }
 		ROOT = { add_to_array = { array = disease_containment_board_state_entries value = PREV } }
 	}
 }
@@ -296,7 +237,8 @@ black_plague_crisis_board_append_phase_pass = {
 	}
 }
 
-disease_containment_board_rebuild_black_plague_state_entries = {
+# COUNTRY scope. Black Plague states that are spreading or dangerous, worst first.
+disease_containment_board_rebuild_active_black_plague_state_entries = {
 	set_temp_variable = { disease_containment_board_phase_pass = constant:black_plague_phase.rat_controlled }
 	black_plague_crisis_board_append_phase_pass = yes
 	set_temp_variable = { disease_containment_board_phase_pass = constant:black_plague_phase.collapsed }
@@ -307,6 +249,10 @@ disease_containment_board_rebuild_black_plague_state_entries = {
 	black_plague_crisis_board_append_phase_pass = yes
 	set_temp_variable = { disease_containment_board_phase_pass = constant:black_plague_phase.incubating }
 	black_plague_crisis_board_append_phase_pass = yes
+}
+
+# COUNTRY scope. Black Plague states that are threatened, contained or recovering.
+disease_containment_board_rebuild_settled_black_plague_state_entries = {
 	set_temp_variable = { disease_containment_board_phase_pass = constant:black_plague_phase.threatened }
 	black_plague_crisis_board_append_phase_pass = yes
 	set_temp_variable = { disease_containment_board_phase_pass = constant:black_plague_phase.contained }
@@ -317,15 +263,46 @@ disease_containment_board_rebuild_black_plague_state_entries = {
 	black_plague_crisis_board_append_phase_pass = yes
 }
 
-disease_containment_board_rebuild_ordinary_state_entries = {
-	# Explicit UI refresh only. Legacy diseases have no bounded state registry.
-	every_state = {
+# COUNTRY scope. One scan of all states per ordinary disease id, limited to the
+# states the country can observe, stored in disease_containment_board_ordinary_entries.
+# A state keeps the first disease found. Explicit UI action only (open and refresh);
+# Black Plague driven rebuilds reuse the stored result and never rescan.
+disease_containment_board_scan_ordinary_states = {
+	clear_array = disease_containment_board_ordinary_entries
+	set_temp_variable = { disease_containment_probe_first = constant:disease_containment_agent.ordinary_first }
+	set_temp_variable = { disease_containment_probe_last = constant:disease_containment_agent.ordinary_last }
+	for_loop_effect = {
+		start = disease_containment_probe_first
+		end = disease_containment_probe_last
+		compare = less_than_or_equals
+		value = disease_containment_probe_id
+		every_state = {
+			limit = {
+				disease_containment_state_has_probed_disease = yes
+				disease_containment_state_is_observable_by_root = yes
+				ROOT = { NOT = { is_in_array = { array = disease_containment_board_ordinary_entries value = PREV } } }
+			}
+			set_variable = { disease_containment_board_state_disease = disease_containment_probe_id }
+			ROOT = { add_to_array = { array = disease_containment_board_ordinary_entries value = PREV } }
+		}
+	}
+}
+
+# STATE scope, from the stored ordinary scan. Lists the state unless a Black Plague
+# pass already listed it.
+disease_containment_board_append_current_ordinary_state = {
+	if = {
 		limit = {
-			disease_containment_board_state_matches_selected_ordinary_disease = yes
-			disease_containment_board_state_matches_ownership_filter = yes
-			disease_containment_board_state_matches_region_filter = yes
+			ROOT = { NOT = { is_in_array = { array = disease_containment_board_state_entries value = PREV } } }
 		}
 		ROOT = { add_to_array = { array = disease_containment_board_state_entries value = PREV } }
+	}
+}
+
+disease_containment_board_rebuild_ordinary_state_entries = {
+	for_each_scope_loop = {
+		array = disease_containment_board_ordinary_entries
+		disease_containment_board_append_current_ordinary_state = yes
 	}
 }
 
@@ -411,24 +388,21 @@ disease_containment_board_reconcile_view_state = {
 	black_plague_reconcile_response_state = yes
 }
 
+# COUNTRY scope. Rebuilds the one list of affected states: dangerous Black Plague
+# states, ordinary outbreaks, then settled Black Plague states.
 disease_containment_board_rebuild_state_entries = {
 	disease_containment_board_initialize_country = yes
 	clear_array = disease_containment_board_state_entries
 	if = {
-		limit = { disease_containment_board_is_black_plague_selected = yes }
-		if = {
-			limit = {
-				has_global_flag = black_plague_system_started
-				black_plague_country_is_human_host = yes
-			}
-			black_plague_recompute_country_response_capacity = yes
+		limit = {
+			has_global_flag = black_plague_system_started
+			black_plague_country_is_human_host = yes
 		}
-		disease_containment_board_rebuild_black_plague_state_entries = yes
+		black_plague_recompute_country_response_capacity = yes
 	}
-	else_if = {
-		limit = { disease_containment_board_has_valid_selected_disease = yes }
-		disease_containment_board_rebuild_ordinary_state_entries = yes
-	}
+	disease_containment_board_rebuild_active_black_plague_state_entries = yes
+	disease_containment_board_rebuild_ordinary_state_entries = yes
+	disease_containment_board_rebuild_settled_black_plague_state_entries = yes
 	set_variable = { disease_containment_board_state_count = disease_containment_board_state_entries^num }
 	disease_containment_board_reconcile_view_state = yes
 	if = {
@@ -443,8 +417,8 @@ disease_containment_board_rebuild_state_entries = {
 }
 
 disease_containment_board_open = {
-	disease_containment_board_refresh_known_diseases = yes
 	disease_containment_board_initialize_country = yes
+	disease_containment_board_scan_ordinary_states = yes
 	set_country_flag = disease_containment_board_open
 	if = {
 		limit = { NOT = { is_in_array = { array = global.disease_containment_board_open_countries value = THIS } } }
@@ -461,13 +435,14 @@ disease_containment_board_close = {
 	clr_country_flag = disease_containment_board_open
 	remove_from_array = { array = global.disease_containment_board_open_countries value = THIS }
 	clear_array = disease_containment_board_state_entries
+	clear_array = disease_containment_board_ordinary_entries
 	clear_array = disease_containment_board_active_country_entries
 	clear_variable = disease_containment_board_view_state
 	add_to_variable = { disease_containment_board_dirty = constant:disease_containment_board_value.one }
 }
 
 disease_containment_board_refresh = {
-	disease_containment_board_refresh_known_diseases = yes
+	disease_containment_board_scan_ordinary_states = yes
 	disease_containment_board_rebuild_state_entries = yes
 	force_update_map_mode = {
 		limit = { always = yes }
@@ -475,54 +450,8 @@ disease_containment_board_refresh = {
 	}
 }
 
-disease_containment_board_cycle_status_filter = {
-	add_to_variable = { disease_containment_board_status_filter = constant:disease_containment_board_value.one }
-	if = {
-		limit = { check_variable = { disease_containment_board_status_filter > constant:disease_containment_status_filter.monitoring } }
-		set_variable = { disease_containment_board_status_filter = constant:disease_containment_status_filter.all }
-	}
-	disease_containment_board_rebuild_state_entries = yes
-}
-
-disease_containment_board_cycle_ownership_filter = {
-	add_to_variable = { disease_containment_board_ownership_filter = constant:disease_containment_board_value.one }
-	if = {
-		limit = { check_variable = { disease_containment_board_ownership_filter > constant:disease_containment_ownership_filter.public_foreign } }
-		set_variable = { disease_containment_board_ownership_filter = constant:disease_containment_ownership_filter.all_visible }
-	}
-	disease_containment_board_rebuild_state_entries = yes
-}
-
-disease_containment_board_toggle_region_filter = {
-	if = {
-		limit = {
-			check_variable = { disease_containment_board_region_filter = constant:disease_containment_region_filter.all }
-			disease_containment_board_has_valid_view_state = yes
-		}
-		clear_variable = disease_containment_board_selected_region_id
-		var:disease_containment_board_view_state = { disease_containment_board_capture_current_state_region = yes }
-		if = {
-			limit = { has_variable = disease_containment_board_selected_region_id }
-			set_variable = { disease_containment_board_region_filter = constant:disease_containment_region_filter.selected_region }
-		}
-	}
-	else_if = {
-		limit = { check_variable = { disease_containment_board_region_filter = constant:disease_containment_region_filter.selected_region } }
-		set_variable = { disease_containment_board_region_filter = constant:disease_containment_region_filter.all }
-		clear_variable = disease_containment_board_selected_region_id
-	}
-	disease_containment_board_rebuild_state_entries = yes
-}
-
-disease_containment_board_cycle_urgency_filter = {
-	add_to_variable = { disease_containment_board_urgency_filter = constant:disease_containment_board_value.one }
-	if = {
-		limit = { check_variable = { disease_containment_board_urgency_filter > constant:disease_containment_urgency_filter.critical_only } }
-		set_variable = { disease_containment_board_urgency_filter = constant:disease_containment_urgency_filter.all }
-	}
-	disease_containment_board_rebuild_state_entries = yes
-}
-
+# COUNTRY scope, from a state entry. Inspecting a state never changes a response
+# target. The Black Plague response state is chosen by its own decision.
 disease_containment_board_select_state_entry = {
 	if = {
 		limit = {
@@ -534,19 +463,6 @@ disease_containment_board_select_state_entry = {
 			}
 		}
 		set_variable = { disease_containment_board_view_state = disease_containment_board_state_entries^disease_containment_board_state_entry_index }
-		if = {
-			limit = { disease_containment_board_is_black_plague_selected = yes }
-			var:disease_containment_board_view_state = {
-				if = {
-					limit = { black_plague_response_state_is_selectable = yes }
-					ROOT = {
-						set_variable = { black_plague_response_state_candidate = PREV }
-						black_plague_designate_response_state = yes
-					}
-				}
-				else = { ROOT = { black_plague_clear_response_state = yes } }
-			}
-		}
 		add_to_variable = { disease_containment_board_dirty = constant:disease_containment_board_value.one }
 	}
 }
