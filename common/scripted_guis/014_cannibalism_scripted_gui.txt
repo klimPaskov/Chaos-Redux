@@ -26,6 +26,7 @@ scripted_gui = {
 		}
 
 		effects = {
+			cannibalism_early_animation_toggle_click = { cannibalism_gui_toggle_animations = yes }
 			cannibalism_network_open_click = { cannibalism_gui_open_network_view = yes }
 		}
 
@@ -40,16 +41,27 @@ scripted_gui = {
 			}
 			cannibalism_network_open_click_enabled = { has_global_flag = cannibalism_evolution_ii_active }
 			cannibalism_early_warning_animated_visible = {
+				NOT = { has_country_flag = cannibalism_gui_animations_disabled }
 				OR = {
 					check_variable = { cannibalism_field_hunger > constant:cannibalism_meter.severe }
 					check_variable = { cannibalism_command_integrity < constant:cannibalism_meter.quiet }
 				}
 			}
-			cannibalism_early_warning_static_visible = { always = no }
+			cannibalism_early_warning_static_visible = {
+				has_country_flag = cannibalism_gui_animations_disabled
+				OR = {
+					check_variable = { cannibalism_field_hunger > constant:cannibalism_meter.severe }
+					check_variable = { cannibalism_command_integrity < constant:cannibalism_meter.quiet }
+				}
+			}
 			cannibalism_cult_emblem_animated_visible = {
 				has_global_flag = cannibalism_evolution_i_active
+				NOT = { has_country_flag = cannibalism_gui_animations_disabled }
 			}
-			cannibalism_cult_emblem_static_visible = { always = no }
+			cannibalism_cult_emblem_static_visible = {
+				has_global_flag = cannibalism_evolution_i_active
+				has_country_flag = cannibalism_gui_animations_disabled
+			}
 		}
 
 		ai_enabled = { always = no }
@@ -71,6 +83,7 @@ scripted_gui = {
 		}
 
 		effects = {
+			cannibalism_network_animation_toggle_click = { cannibalism_gui_toggle_animations = yes }
 			cannibalism_network_close_click = { cannibalism_gui_close_network_view = yes }
 			cannibalism_network_refresh_click = { cannibalism_gui_rebuild_network_view = yes }
 			cannibalism_network_sort_click = { cannibalism_gui_toggle_network_sort = yes }
@@ -99,21 +112,38 @@ scripted_gui = {
 		}
 
 		triggers = {
-			cannibalism_network_threads_animated_visible = { always = yes }
-			cannibalism_network_threads_static_visible = { always = no }
+			cannibalism_network_threads_animated_visible = {
+				NOT = { has_country_flag = cannibalism_gui_animations_disabled }
+			}
+			cannibalism_network_threads_static_visible = {
+				has_country_flag = cannibalism_gui_animations_disabled
+			}
 			cannibalism_island_alert_animated_visible = {
+				NOT = { has_country_flag = cannibalism_gui_animations_disabled }
 				check_variable = { cannibalism_network_gui_tab = constant:cannibalism_gui_tab.islands_and_communes }
 				check_variable = { global.cannibalism_independent_node_count > constant:cannibalism_gui_value.zero }
 			}
-			cannibalism_island_alert_static_visible = { always = no }
+			cannibalism_island_alert_static_visible = {
+				has_country_flag = cannibalism_gui_animations_disabled
+				check_variable = { cannibalism_network_gui_tab = constant:cannibalism_gui_tab.islands_and_communes }
+				check_variable = { global.cannibalism_independent_node_count > constant:cannibalism_gui_value.zero }
+			}
 			cannibalism_network_detail_prompt_visible = {
 				NOT = { has_variable = cannibalism_network_gui_selected_country }
 				NOT = { has_variable = cannibalism_network_gui_selected_state }
 			}
-			cannibalism_selected_country_overlay_animated_visible = { always = yes }
-			cannibalism_selected_country_overlay_static_visible = { always = no }
-			cannibalism_selected_state_overlay_animated_visible = { always = yes }
-			cannibalism_selected_state_overlay_static_visible = { always = no }
+			cannibalism_selected_country_overlay_animated_visible = {
+				NOT = { has_country_flag = cannibalism_gui_animations_disabled }
+			}
+			cannibalism_selected_country_overlay_static_visible = {
+				has_country_flag = cannibalism_gui_animations_disabled
+			}
+			cannibalism_selected_state_overlay_animated_visible = {
+				NOT = { has_country_flag = cannibalism_gui_animations_disabled }
+			}
+			cannibalism_selected_state_overlay_static_visible = {
+				has_country_flag = cannibalism_gui_animations_disabled
+			}
 			cannibalism_network_country_entry_select_click_enabled = { always = yes }
 			cannibalism_network_state_entry_select_click_enabled = { always = yes }
 		}
@@ -175,6 +205,7 @@ scripted_gui = {
 		}
 		# Page flags are view state only; no gameplay check reads them.
 		effects = {
+			cannibalism_warlord_animation_toggle_click = { cannibalism_gui_toggle_animations = yes }
 			cannibalism_warlord_tab_overview_click = { clr_country_flag = cannibalism_warlord_gui_states_view }
 			cannibalism_warlord_tab_states_click = {
 				set_country_flag = cannibalism_warlord_gui_states_view
@@ -196,8 +227,15 @@ scripted_gui = {
 				has_global_flag = cannibalism_evolution_ii_active
 				NOT = { has_country_flag = cannibalism_warlord_gui_states_view }
 			}
-			cannibalism_controlled_state_card_visible = { NOT = { has_country_flag = cannibalism_warlord_gui_states_view } }
-			cannibalism_warlord_capacity_visible = { NOT = { has_country_flag = cannibalism_warlord_gui_states_view } }
+			cannibalism_controlled_state_card_visible = {
+				NOT = { has_country_flag = cannibalism_warlord_gui_states_view }
+			}
+			cannibalism_controlled_state_text_visible = {
+				NOT = { has_country_flag = cannibalism_warlord_gui_states_view }
+			}
+			cannibalism_warlord_capacity_visible = {
+				NOT = { has_country_flag = cannibalism_warlord_gui_states_view }
+			}
 			cannibalism_controlled_state_list_panel_visible = { has_country_flag = cannibalism_warlord_gui_states_view }
 			cannibalism_controlled_state_empty_text_visible = {
 				has_country_flag = cannibalism_warlord_gui_states_view
@@ -205,19 +243,38 @@ scripted_gui = {
 			}
 			cannibalism_raid_target_card_visible = { has_country_flag = cannibalism_warlord_gui_states_view }
 			cannibalism_raid_target_text_visible = { has_country_flag = cannibalism_warlord_gui_states_view }
-			cannibalism_warlord_route_animated_visible = { always = yes }
-			cannibalism_warlord_route_static_visible = { always = no }
+			cannibalism_warlord_route_animated_visible = {
+				NOT = { has_country_flag = cannibalism_gui_animations_disabled }
+			}
+			cannibalism_warlord_route_static_visible = {
+				has_country_flag = cannibalism_gui_animations_disabled
+			}
 			cannibalism_larder_glow_animated_visible = {
+				NOT = { has_country_flag = cannibalism_warlord_gui_states_view }
+				NOT = { has_country_flag = cannibalism_gui_animations_disabled }
 				OR = {
 					check_variable = { cannibalism_larder < constant:cannibalism_consumption.larder_low }
 					check_variable = { cannibalism_larder > constant:cannibalism_consumption.larder_abundant }
 				}
 			}
-			cannibalism_larder_glow_static_visible = { always = no }
+			cannibalism_larder_glow_static_visible = {
+				NOT = { has_country_flag = cannibalism_warlord_gui_states_view }
+				has_country_flag = cannibalism_gui_animations_disabled
+				OR = {
+					check_variable = { cannibalism_larder < constant:cannibalism_consumption.larder_low }
+					check_variable = { cannibalism_larder > constant:cannibalism_consumption.larder_abundant }
+				}
+			}
 			cannibalism_frenzy_border_animated_visible = {
+				NOT = { has_country_flag = cannibalism_warlord_gui_states_view }
+				NOT = { has_country_flag = cannibalism_gui_animations_disabled }
 				check_variable = { cannibalism_frenzy > constant:cannibalism_meter.severe }
 			}
-			cannibalism_frenzy_border_static_visible = { always = no }
+			cannibalism_frenzy_border_static_visible = {
+				NOT = { has_country_flag = cannibalism_warlord_gui_states_view }
+				has_country_flag = cannibalism_gui_animations_disabled
+				check_variable = { cannibalism_frenzy > constant:cannibalism_meter.severe }
+			}
 		}
 		dynamic_lists = {
 			cannibalism_controlled_state_dynamic_list = {
@@ -247,6 +304,7 @@ scripted_gui = {
 		}
 		# Page flags are view state only; no gameplay check reads them.
 		effects = {
+			cannibalism_revealed_animation_toggle_click = { cannibalism_gui_toggle_animations = yes }
 			cannibalism_revealed_tab_overview_click = {
 				clr_country_flag = cannibalism_revealed_gui_loyalty_view
 				clr_country_flag = cannibalism_revealed_gui_targets_view
@@ -265,21 +323,42 @@ scripted_gui = {
 			cannibalism_revealed_tab_overview_click_enabled = { always = yes }
 			cannibalism_revealed_tab_loyalty_click_enabled = { always = yes }
 			cannibalism_revealed_tab_targets_click_enabled = { always = yes }
-			cannibalism_revealed_portrait_animated_visible = { always = yes }
-			cannibalism_revealed_portrait_static_visible = { always = no }
+			cannibalism_revealed_portrait_animated_visible = {
+				NOT = { has_country_flag = cannibalism_gui_animations_disabled }
+			}
+			cannibalism_revealed_portrait_static_visible = {
+				has_country_flag = cannibalism_gui_animations_disabled
+			}
 			cannibalism_global_larder_meter_visible = { cannibalism_ui_revealed_overview_page_is_open = yes }
 			cannibalism_global_larder_value_visible = { cannibalism_ui_revealed_overview_page_is_open = yes }
 			cannibalism_global_network_meter_visible = { cannibalism_ui_revealed_overview_page_is_open = yes }
 			cannibalism_global_network_value_visible = { cannibalism_ui_revealed_overview_page_is_open = yes }
 			cannibalism_warlord_loyalty_card_visible = { cannibalism_ui_revealed_overview_page_is_open = yes }
 			cannibalism_warlord_loyalty_text_visible = { cannibalism_ui_revealed_overview_page_is_open = yes }
-			cannibalism_unification_seal_animated_visible = { cannibalism_ui_revealed_overview_page_is_open = yes }
-			cannibalism_unification_seal_static_visible = { always = no }
-			cannibalism_ordinary_terminal_frame_animated_visible = {
-				has_country_flag = cannibalism_terminal_route_ready
+			cannibalism_continental_target_card_visible = {
 				cannibalism_ui_revealed_overview_page_is_open = yes
 			}
-			cannibalism_ordinary_terminal_frame_static_visible = { always = no }
+			cannibalism_continental_target_text_visible = {
+				cannibalism_ui_revealed_overview_page_is_open = yes
+			}
+			cannibalism_unification_seal_animated_visible = {
+				cannibalism_ui_revealed_overview_page_is_open = yes
+				NOT = { has_country_flag = cannibalism_gui_animations_disabled }
+			}
+			cannibalism_unification_seal_static_visible = {
+				cannibalism_ui_revealed_overview_page_is_open = yes
+				has_country_flag = cannibalism_gui_animations_disabled
+			}
+			cannibalism_ordinary_terminal_frame_animated_visible = {
+				cannibalism_ui_revealed_overview_page_is_open = yes
+				has_country_flag = cannibalism_terminal_route_ready
+				NOT = { has_country_flag = cannibalism_gui_animations_disabled }
+			}
+			cannibalism_ordinary_terminal_frame_static_visible = {
+				cannibalism_ui_revealed_overview_page_is_open = yes
+				has_country_flag = cannibalism_terminal_route_ready
+				has_country_flag = cannibalism_gui_animations_disabled
+			}
 			cannibalism_terminal_progress_text_visible = {
 				has_country_flag = cannibalism_terminal_route_ready
 				cannibalism_ui_revealed_overview_page_is_open = yes
@@ -361,25 +440,41 @@ scripted_gui = {
 		}
 		# The page flag is view state only; no gameplay check reads it.
 		effects = {
+			cannibalism_wendigo_animation_toggle_click = { cannibalism_gui_toggle_animations = yes }
 			cannibalism_wendigo_tab_overview_click = { clr_country_flag = cannibalism_wendigo_gui_anchors_view }
 			cannibalism_wendigo_tab_anchors_click = { set_country_flag = cannibalism_wendigo_gui_anchors_view }
 		}
 		triggers = {
 			cannibalism_wendigo_tab_overview_click_enabled = { always = yes }
 			cannibalism_wendigo_tab_anchors_click_enabled = { always = yes }
-			cannibalism_wendigo_portrait_animated_visible = { always = yes }
-			cannibalism_wendigo_portrait_static_visible = { always = no }
+			cannibalism_wendigo_portrait_animated_visible = {
+				NOT = { has_country_flag = cannibalism_gui_animations_disabled }
+			}
+			cannibalism_wendigo_portrait_static_visible = {
+				has_country_flag = cannibalism_gui_animations_disabled
+			}
 			cannibalism_anchor_card_visible = { NOT = { has_country_flag = cannibalism_wendigo_gui_anchors_view } }
 			cannibalism_anchor_text_visible = { NOT = { has_country_flag = cannibalism_wendigo_gui_anchors_view } }
 			cannibalism_countdown_frame_visible = { NOT = { has_country_flag = cannibalism_wendigo_gui_anchors_view } }
 			cannibalism_countdown_text_visible = { NOT = { has_country_flag = cannibalism_wendigo_gui_anchors_view } }
 			cannibalism_wendigo_capacity_frame_visible = { NOT = { has_country_flag = cannibalism_wendigo_gui_anchors_view } }
 			cannibalism_wendigo_capacity_text_visible = { NOT = { has_country_flag = cannibalism_wendigo_gui_anchors_view } }
+			cannibalism_winter_hunger_meter_visible = {
+				NOT = { has_country_flag = cannibalism_wendigo_gui_anchors_view }
+			}
+			cannibalism_winter_hunger_text_visible = {
+				NOT = { has_country_flag = cannibalism_wendigo_gui_anchors_view }
+			}
 			cannibalism_wendigo_anchor_pulse_animated_visible = {
 				NOT = { has_country_flag = cannibalism_wendigo_gui_anchors_view }
+				NOT = { has_country_flag = cannibalism_gui_animations_disabled }
 				check_variable = { global.cannibalism_wendigo_active_anchor_count > constant:cannibalism_gui_value.zero }
 			}
-			cannibalism_wendigo_anchor_pulse_static_visible = { always = no }
+			cannibalism_wendigo_anchor_pulse_static_visible = {
+				NOT = { has_country_flag = cannibalism_wendigo_gui_anchors_view }
+				has_country_flag = cannibalism_gui_animations_disabled
+				check_variable = { global.cannibalism_wendigo_active_anchor_count > constant:cannibalism_gui_value.zero }
+			}
 			cannibalism_wendigo_anchor_list_panel_visible = { has_country_flag = cannibalism_wendigo_gui_anchors_view }
 			cannibalism_wendigo_anchor_empty_card_visible = {
 				has_country_flag = cannibalism_wendigo_gui_anchors_view
@@ -391,8 +486,12 @@ scripted_gui = {
 			}
 			cannibalism_wendigo_terminal_frame_animated_visible = {
 				has_country_flag = cannibalism_wendigo_countdown_active
+				NOT = { has_country_flag = cannibalism_gui_animations_disabled }
 			}
-			cannibalism_wendigo_terminal_frame_static_visible = { always = no }
+			cannibalism_wendigo_terminal_frame_static_visible = {
+				has_country_flag = cannibalism_wendigo_countdown_active
+				has_country_flag = cannibalism_gui_animations_disabled
+			}
 			cannibalism_wendigo_terminal_text_visible = { has_country_flag = cannibalism_wendigo_countdown_active }
 		}
 		dynamic_lists = {

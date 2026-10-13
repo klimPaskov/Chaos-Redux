@@ -20,6 +20,14 @@ scripted_gui = {
 		}
 
 		effects = {
+			africa_charter_toggle_animation_click = {
+				if = {
+					limit = { has_country_flag = africa_charter_gui_show_animation }
+					clr_country_flag = africa_charter_gui_show_animation
+				}
+				else = { set_country_flag = africa_charter_gui_show_animation }
+			}
+
 			africa_charter_overlay_1_click = { set_variable = { africa_charter_gui_selected_overlay = constant:africa_overlay.maghreb_sahara } }
 			africa_charter_overlay_2_click = { set_variable = { africa_charter_gui_selected_overlay = constant:africa_overlay.west_atlantic } }
 			africa_charter_overlay_3_click = { set_variable = { africa_charter_gui_selected_overlay = constant:africa_overlay.sahel_lake_chad } }
@@ -207,6 +215,7 @@ scripted_gui = {
 		}
 
 		triggers = {
+			africa_charter_toggle_animation_click_enabled = { always = yes }
 			africa_charter_overlay_1_click_enabled = { always = yes }
 			africa_charter_overlay_2_click_enabled = { always = yes }
 			africa_charter_overlay_3_click_enabled = { always = yes }
@@ -314,9 +323,18 @@ scripted_gui = {
 			africa_charter_selected_member_name_visible = { check_variable = { africa_selected_country_targets^num > constant:africa_value.zero } }
 			africa_charter_selected_member_detail_visible = { check_variable = { africa_selected_country_targets^num > constant:africa_value.zero } }
 			africa_charter_no_member_visible = { check_variable = { africa_selected_country_targets^num = constant:africa_value.zero } }
-			africa_charter_seal_activation_animated_visible = { has_country_flag = africa_charter_league_formation_complete }
-			africa_charter_seal_activation_static_visible = { NOT = { has_country_flag = africa_charter_league_formation_complete } }
+			africa_charter_seal_activation_animated_visible = {
+				has_country_flag = africa_charter_gui_show_animation
+				has_country_flag = africa_charter_league_formation_complete
+			}
+			africa_charter_seal_activation_static_visible = {
+				OR = {
+					NOT = { has_country_flag = africa_charter_gui_show_animation }
+					NOT = { has_country_flag = africa_charter_league_formation_complete }
+				}
+			}
 			africa_charter_authority_ring_animated_visible = {
+				has_country_flag = africa_charter_gui_show_animation
 				check_variable = {
 					var = africa_charter_authority
 					value = constant:africa_measure.medium
@@ -324,11 +342,14 @@ scripted_gui = {
 				}
 			}
 			africa_charter_authority_ring_static_visible = {
-				NOT = {
-					check_variable = {
-						var = africa_charter_authority
-						value = constant:africa_measure.medium
-						compare = greater_than_or_equals
+				OR = {
+					NOT = { has_country_flag = africa_charter_gui_show_animation }
+					NOT = {
+						check_variable = {
+							var = africa_charter_authority
+							value = constant:africa_measure.medium
+							compare = greater_than_or_equals
+						}
 					}
 				}
 			}

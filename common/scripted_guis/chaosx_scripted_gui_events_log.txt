@@ -1638,6 +1638,38 @@ scripted_gui = {
 			events_log_world_end_toggle_disabled_button_click_enabled = {
 				check_variable = { var = global.events_log_event_detail_world_end_active_entries^events_log_event_detail_world_end_index value = 1 compare = less_than }
 			}
+
+			events_log_event_detail_actor_flag_visible = {
+				AND = {
+					var:global.events_log_open_event_detail_actor_entries^events_log_open_event_detail_index = { exists = yes }
+					check_variable = {
+						var = global.events_log_open_event_detail_has_actor_entries^events_log_open_event_detail_index
+						value = 0
+						compare = greater_than
+					}
+					check_variable = {
+						var = global.events_log_open_event_detail_fired_entries^events_log_open_event_detail_index
+						value = 0
+						compare = greater_than
+					}
+				}
+			}
+
+			events_log_event_detail_actor_flag_frame_visible = {
+				AND = {
+					var:global.events_log_open_event_detail_actor_entries^events_log_open_event_detail_index = { exists = yes }
+					check_variable = {
+						var = global.events_log_open_event_detail_has_actor_entries^events_log_open_event_detail_index
+						value = 0
+						compare = greater_than
+					}
+					check_variable = {
+						var = global.events_log_open_event_detail_fired_entries^events_log_open_event_detail_index
+						value = 0
+						compare = greater_than
+					}
+				}
+			}
 		}
 
 		dynamic_lists = {
@@ -1665,6 +1697,12 @@ scripted_gui = {
 
 		ai_enabled = {
 			always = no
+		}
+	
+		properties = {
+			events_log_event_detail_actor_flag = {
+				image = "[?global.events_log_open_event_detail_actor_entries^events_log_open_event_detail_index.GetFlag]"
+			}
 		}
 	}
 

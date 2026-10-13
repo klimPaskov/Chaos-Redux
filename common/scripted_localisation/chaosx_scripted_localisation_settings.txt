@@ -10489,3 +10489,21 @@ defined_text = {
 	text = { trigger = { check_variable = { settings_selected_cluster_id = constant:event_cluster_id.random_stuff } } localization_key = chaosx.trigger_events.cluster_members.tt.random_stuff }
 	text = { trigger = { always = yes } localization_key = chaosx.trigger_events.cluster_members.tt.fixed }
 }
+
+defined_text = {
+	name = GetFalloutSystemScenarioDisabledCheckboxSprite
+	text = {
+		trigger = {
+			OR = {
+				is_in_array = { global.disabled_world_end_scenarios = constant:fallout_consequence_id.settings_ledger }
+				is_in_array = { global.disabled_world_end_scenarios = constant:world_end_scenario_id.fallout }
+				has_global_flag = fallout_air_contamination_permanent_99
+			}
+		}
+		localization_key = "GFX_chaosx_checkbox_checked"
+	}
+	text = {
+		trigger = { always = yes }
+		localization_key = "GFX_chaosx_checkbox_unchecked"
+	}
+}
