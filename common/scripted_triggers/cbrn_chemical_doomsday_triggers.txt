@@ -11,6 +11,7 @@
 
 # State scope with the releasing country as ROOT.
 cbrn_chemical_doomsday_state_is_eligible = {
+	state_uses_normal_civilian_systems = yes
 	is_controlled_by = ROOT
 	state_population_k > constant:cbrn_chemical_doomsday_target.minimum_population_k
 }
@@ -25,11 +26,13 @@ cbrn_chemical_doomsday_actor_has_target = {
 # Raid outcome uses an explicit actor pointer because ROOT is the native raid
 # instance while the country resolver iterates controlled states.
 cbrn_chemical_doomsday_raid_state_is_eligible = {
+	state_uses_normal_civilian_systems = yes
 	is_controlled_by = event_target:cbrn_doomsday_raid_actor
 	state_population_k > constant:cbrn_chemical_doomsday_target.minimum_population_k
 }
 
 cbrn_chemical_doomsday_native_is_visible = {
+	uses_normal_civilian_systems = yes
 	has_government = fascism
 	has_war = yes
 	NOT = { has_capitulated = yes }
@@ -62,6 +65,7 @@ cbrn_chemical_doomsday_actor_has_any_stockpile = {
 }
 
 cbrn_chemical_doomsday_actor_can_pay_and_has_stock = {
+	uses_normal_civilian_systems = yes
 	NOT = { has_political_power < constant:cbw_doom_decision.defaults.pp_cost }
 	cbrn_chemical_doomsday_actor_has_any_stockpile = yes
 }

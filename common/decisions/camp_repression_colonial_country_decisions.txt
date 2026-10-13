@@ -289,4 +289,41 @@ camp_repression_network_category = {
 		ai_will_do = { base = constant:camp_rework_ai_weight.belgium_reform }
 	}
 
+	fr_refugee_pressure_response = {
+		icon = GFX_decision_fr_camp_legacy_review
+		allowed = { OR = { original_tag = FRA tag = VIC } }
+		activation = { always = no }
+		visible = { has_country_flag = camp_rework_france_refugee_response_pending }
+		available = { hidden_trigger = { always = no } }
+		days_mission_timeout = constant:camp_rework_timing.fr_refugee_pressure_response_days
+		is_good = yes
+		timeout_effect = {
+			if = {
+				limit = {
+					OR = {
+						has_country_flag = camp_rework_france_refugee_route_aid
+						has_country_flag = camp_rework_france_refugee_route_reform
+					}
+					NOT = { has_country_flag = camp_rework_france_refugee_route_suppression }
+				}
+				custom_effect_tooltip = fr_refugee_pressure_response_success_tt
+			}
+			else = { custom_effect_tooltip = fr_refugee_pressure_response_failure_tt }
+			camp_rework_complete_france_refugee_response = yes
+		}
+		cancel_trigger = {
+			OR = {
+				NOT = { has_variable = fr_refugee_response_state_id }
+				var:fr_refugee_response_state_id = {
+					OR = {
+						NOT = { is_valid_camp_active_site_state = yes }
+						NOT = { camp_rework_state_is_actor_responsible_controlled = yes }
+					}
+				}
+			}
+		}
+		cancel_effect = { camp_rework_complete_france_refugee_response = yes }
+		ai_will_do = { base = constant:camp_rework_ai_weight.blocked }
+	}
+
 }

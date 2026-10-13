@@ -1139,6 +1139,46 @@ camp_rework_begin_france_refugee_response = {
 	else = { clear_variable = camp_selected_state_id }
 	clear_variable = camp_colonial_saved_selection_id
 }
+
+camp_rework_complete_france_refugee_response = {
+	if = {
+		limit = { has_country_flag = camp_rework_france_refugee_route_aid }
+		add_to_variable = { refugee_pressure = constant:camp_rework_country_value.inspection_evidence_relief }
+		add_to_variable = { camp_policy_visibility = constant:camp_rework_country_value.inspection_evidence_relief }
+		add_to_variable = { free_french_reform_credit = constant:camp_rework_colonial.reform_credit }
+	}
+	else_if = {
+		limit = { has_country_flag = camp_rework_france_refugee_route_reform }
+		add_to_variable = { refugee_pressure = constant:camp_rework_country_value.inspection_evidence_relief }
+		add_to_variable = { camp_policy_visibility = constant:camp_rework_country_value.inspection_evidence_relief }
+		add_to_variable = { camp_policy_reform = constant:camp_rework_country_value.reform_major }
+	}
+	else_if = {
+		limit = { has_country_flag = camp_rework_france_refugee_route_suppression }
+		add_to_variable = { refugee_pressure = constant:camp_rework_colonial.accountability_minor }
+		add_to_variable = { camp_policy_visibility = constant:camp_rework_country_value.visibility_major }
+		add_to_variable = { camp_policy_evidence = constant:camp_rework_country_value.evidence_major }
+		add_to_variable = { camp_policy_tribunal = constant:camp_rework_country_value.tribunal_major }
+	}
+	else = {
+		add_to_variable = { refugee_pressure = constant:camp_rework_colonial.accountability_major }
+		add_to_variable = { camp_policy_visibility = constant:camp_rework_country_value.visibility_major }
+		add_to_variable = { camp_policy_resistance_pressure = constant:camp_rework_country_value.resistance_major }
+		camp_rework_expose_first_french_inherited_evidence = yes
+	}
+	set_temp_variable = { camp_colonial_response_cooldown_days = constant:camp_rework_timing.response_cooldown_days }
+	set_country_flag = {
+		flag = camp_rework_france_refugee_response_cooldown
+		days = camp_colonial_response_cooldown_days
+	}
+	clr_country_flag = camp_rework_france_refugee_response_pending
+	clr_country_flag = camp_rework_france_refugee_route_aid
+	clr_country_flag = camp_rework_france_refugee_route_reform
+	clr_country_flag = camp_rework_france_refugee_route_suppression
+	clear_variable = fr_refugee_response_state_id
+	camp_rework_update_colonial_country_monthly_bridge = yes
+}
+
 camp_rework_expose_first_french_inherited_evidence = {
 	set_temp_variable = { camp_colonial_discovery_processed = 0 }
 	every_controlled_state = {

@@ -57,12 +57,33 @@ chaosx_cbw_doom_category = {
 		complete_effect = {
 			custom_effect_tooltip = chem_unleash_stockpiled_cylinders_tt
 			hidden_effect = {
+				set_temp_variable = { cbrn_doomsday_release_status = constant:cbrn_proof.missing }
+				set_temp_variable = { cbrn_doomsday_stockpile_debit_proof = constant:cbrn_proof.missing }
 				if = {
 					limit = { cbrn_chemical_doomsday_actor_can_pay_and_has_stock = yes }
 					set_temp_variable = { chem_unleash_stockpile_pp_debit = constant:cbw_doom_decision.defaults.pp_cost }
 					multiply_temp_variable = { chem_unleash_stockpile_pp_debit = constant:cbrn_payload_math.negation_multiplier }
 					add_political_power = chem_unleash_stockpile_pp_debit
 					chem_unleash_stockpile_doomsday = yes
+					if = {
+						limit = {
+							NOT = {
+								check_variable = {
+									var = cbrn_doomsday_release_status
+									value = constant:cbrn_proof.supplied
+									compare = equals
+								}
+							}
+							check_variable = {
+								var = cbrn_doomsday_stockpile_debit_proof
+								value = constant:cbrn_proof.missing
+								compare = equals
+							}
+						}
+						# Reverse only the exact debit after a no-release, no-stock-debit rejection.
+						multiply_temp_variable = { chem_unleash_stockpile_pp_debit = constant:cbrn_payload_math.negation_multiplier }
+						add_political_power = chem_unleash_stockpile_pp_debit
+					}
 				}
 			}
 			if = {

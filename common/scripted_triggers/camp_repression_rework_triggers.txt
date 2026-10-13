@@ -2001,6 +2001,34 @@ camp_rework_soviet_famine_eased = {
 }
 
 
+# The legacy colonial orders remain payable until the civil cutover. Bound
+# every start to its actual registered target rows before any country cost.
+camp_rework_colonial_responsible_active_site = {
+	is_valid_camp_active_site_state = yes
+	has_variable = genocide_responsible_country
+	var:genocide_responsible_country = { tag = ROOT }
+}
+
+camp_rework_french_inherited_responsible_active_site = {
+	is_valid_camp_active_site_state = yes
+	has_variable = genocide_responsible_country
+	var:genocide_responsible_country = { OR = { original_tag = FRA tag = VIC } }
+	OR = {
+		has_state_flag = camp_rework_france_camp_legacy
+		state = 21
+		state = 31
+		state = 32
+		is_core_of = ALG
+		is_core_of = MOR
+		is_core_of = TUN
+		AND = {
+			NOT = { is_core_of = ROOT }
+			NOT = { OR = { is_core_of = ALG is_core_of = MOR is_core_of = TUN } }
+			OR = { has_resistance = yes has_state_flag = camp_rework_france_colonial_labor_pool }
+		}
+	}
+}
+
 camp_rework_french_inherited_dismantlement_sites_ready = {
 	NOT = { has_country_flag = camp_rework_legacy_closure_active }
 	all_of_scopes = {
