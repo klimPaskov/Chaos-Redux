@@ -190,7 +190,7 @@ Use:
 ```
 add_dynamic_modifier = { modifier = my_dynamic_modifier }
 add_dynamic_modifier = { modifier = my_dynamic_modifier days = 30 }                  # temporary, may be a variable
-add_dynamic_modifier = { modifier = my_dynamic_modifier scope = POL }                # applied here, variables read from POL
+add_dynamic_modifier = { modifier = my_dynamic_modifier scope = POL }                # applied here, bound to POL; see state-beneficiary rule below
 remove_dynamic_modifier = { modifier = my_dynamic_modifier }                          # repeat scope = if used on add
 force_update_dynamic_modifier = yes                                                   # refresh now
 has_dynamic_modifier = my_dynamic_modifier                                            # or { modifier = x scope = GER }
@@ -198,8 +198,16 @@ has_dynamic_modifier = my_dynamic_modifier                                      
 
 - Allowed scopes: country, state, character (unit leader), special project. The same definition can be added anywhere; the scope of the `add_dynamic_modifier` call decides where it applies and where variables are read.
 - Variables come from the scope the modifier is attached to: for a state modifier, the state's variable, not the owner's. Use `scope =` to read another scope's variable.
-- Daily refresh: at the start of each day every variable-valued modifier resets to 0, then dynamic modifiers evaluate in the order they were added, each treated as 0 until its variables resolve. Changes take effect at most one day later unless you call `force_update_dynamic_modifier = yes` in the same scope. Re-adding an existing modifier updates its timer instead of stacking a second copy.
+- Daily refresh: at the start of each day every variable-valued modifier resets to 0, then dynamic modifiers evaluate in the order they were added, each treated as 0 until its variables resolve. Changes take effect at most one day later unless you call `force_update_dynamic_modifier = yes` in the same scope. Re-adding an existing binding with the same holder, id, and optional scope updates its timer instead of stacking a second copy.
 - Inside `enable` and `remove_trigger` for state modifiers, `ROOT` is the state and `OWNER` reaches the owner (vanilla `sabotaged_resources` and `autonomous_state` in `0_dynamic_modifiers.txt`).
+- A state-side `add_dynamic_modifier = { modifier = my_dynamic_modifier scope = GER }` restricts the beneficiary to GER; it does not move the holder off the state (`GAME/documentation/effects_documentation.md`, lines 1153–1173).
+  For country-bound views of state data, anchor values to `ROOT.my_state_variable` and state conditions in `enable` / `remove_trigger` to `ROOT = { ... }`, since the optional scope changes the default variable base while `ROOT` remains the containing effect scope (`GAME/common/dynamic_modifiers/0_dynamic_modifiers.txt`, lines 19–26; `WIKI/Modifiers`, lines 149–181).
+  Compute severity and duration once in the source state, then bind eligible country views to those results; do not repeat the arithmetic for each beneficiary.
+- Match holder, modifier id, and optional `scope` in every add, presence check, and removal (`GAME/documentation/triggers_documentation.md`, lines 3775–3794; `effects_documentation.md`, lines 5978–5991).
+  The documented targeting supports intended keying by distinct bound scopes; source review alone does not establish that same-id bindings coexist in the running engine.
+  Keep that distinction in the handoff without making user game testing a completion gate.
+- Binding lifecycle includes country creation, release, retirement, and changes of eligibility, as well as state cleanup and expiry; register newly eligible countries through the owning lifecycle path and remove stale bindings with the original scope.
+  When registration uses a country flag receipt, set and test `my_flag_@THIS` in that country's scope so a copied receipt for another tag does not suppress registration of a released or cloned tag (`WIKI/Data structures`, line 125, targeted flags).
 - Dynamic modifiers accept modifiers only. They reject `research_bonus`, `equipment_bonus`, `rule`, and other idea attributes.
 - Definitions cannot be hot-reloaded; any change to a dynamic modifier file needs a game restart. Ideas can be reloaded.
 - The `add_dynamic_modifier` tooltip does not list variable-valued modifiers (it lists constants). Add a `custom_effect_tooltip` line and hide the add with `hidden_effect`; the vanilla pattern is a `_tt` key: `"Modify §Y$ETH_state_development_dynamic_modifier$§! by: \n$MODIFIER_STATE_PRODUCTION_SPEED_BUILDINGS_FACTOR$: §G+10%§!"` (`GAME/localisation/english/bba_decisions_l_english.yml`).
