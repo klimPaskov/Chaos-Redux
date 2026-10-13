@@ -16,7 +16,7 @@ Read the reference that matches the asset family before producing it:
 - [references/portrait-production.md](references/portrait-production.md): every character portrait, portrait icon, source placeholder, and user-supplied final.
 - [references/event-images-and-flags.md](references/event-images-and-flags.md): report, news, and super-event images and every flag.
 - [references/unit-visuals.md](references/unit-visuals.md): equipment and technology art, counters, division-template emblems, and the 3D model package handoff.
-- [references/manifest-and-lineage.md](references/manifest-and-lineage.md): the asset manifest fields and generated-candidate lineage and review.
+- [references/manifest-and-lineage.md](references/manifest-and-lineage.md): pre-generation inventory reconciliation, asset manifest fields, and generated-candidate lineage and review. Read before declaring a source gap or requesting fresh art.
 
 Skill-local `assets/` holds the reference and component libraries, and `tools/` holds the bundled converters and processors.
 
@@ -83,7 +83,7 @@ For one-person country-leader or officeholder portraits, the parent prompt must 
 
 ### Production sequence
 
-1. Read the accepted spec or brief, enumerate requirements, classify each asset surface, and record the requirement-to-runtime crosswalk.
+1. Read the accepted spec or brief and current owning inventory, enumerate requirements, classify each asset surface, and reconcile existing packages through [Pre-generation inventory reconciliation](references/manifest-and-lineage.md#pre-generation-inventory-reconciliation) before recording source gaps in the requirement-to-runtime crosswalk.
 2. Inspect the exact reference family and consumer, then assign stable names, sprites, sizes, and paths before requesting art.
 3. Select the authorized source mode and specialist, apply portrait identity/ownership gates, and prepare the workspace and manifest.
 4. Produce source art under the applicable family contract; for animation, plan and obtain real frames and a static fallback before normalization.

@@ -1,6 +1,19 @@
 # Asset manifest and candidate lineage
 
-Read this reference when creating or updating an event asset workspace manifest, and whenever generated candidates are produced, edited, reviewed, or selected. The main skill keeps contact sheets, the requirement-to-runtime coverage audit, and completion rules.
+Read this reference before declaring an asset source gap or requesting fresh art, when creating or updating an event asset workspace manifest, and whenever generated candidates are produced, edited, reviewed, or selected. The main skill keeps contact sheets, the requirement-to-runtime coverage audit, and completion rules.
+
+## Pre-generation inventory reconciliation
+
+Read and extend the current owning semantic inventory before running a fresh scan or assigning production.
+Treat dated `missing` statuses as historical findings and reconcile each proposed production row against current receipts and files; a path-only scan is discovery evidence, not a source-gap verdict.
+
+- Search the full owning event or system workspace, including earlier shards, retries, alternative subfolders, manifests, prompts, and handoffs; compare requirement meaning and subject/state aliases as well as exact filenames.
+- Resolve registered aliases and legacy or non-scoped runtime filenames through the owning definitions and consumers. Absence of the proposed exact runtime path does not establish missing source art.
+- Link any matching retained source, saved prompt, processed PNG, and candidate or runtime final into the existing inventory row. A complete candidate package calls for reuse, review, conversion if needed, or parent integration under the existing gates; do not regenerate it solely because it is unbound or differently named.
+- Request fresh generation only after recording the bounded row-level source gap: accepted requirement, searched owners/receipts/aliases, existing candidates and their disposition, and why none can satisfy the row. A rejected candidate or explicitly requested alternative may justify fresh art with its recorded reason; missing wiring, review, or conversion alone does not.
+
+Preserve historical receipt results and distinguish source presence, review state, conversion, runtime binding, and final acceptance in the current conclusion.
+This reconciliation does not authorize runtime replacement or bypass family, lineage, independent-review, or parent-promotion requirements.
 
 ## Evidence and completion
 
