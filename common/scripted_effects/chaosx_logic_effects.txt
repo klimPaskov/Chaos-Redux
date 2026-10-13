@@ -1022,73 +1022,50 @@ count_dynamic_major_weight_pool_events = {
 }
 
 calculate_dynamic_major_weight_gain = {
+	# Retain the status consumers while gain follows the configured flat value.
 	count_dynamic_major_weight_pool_events = yes
-	set_variable = { global.current_dynamic_major_weight_gain = 0 }
-
-	if = {
-		limit = { check_variable = { global.current_dynamic_major_active_major_count < 1 } }
-		set_variable = { global.current_major_event_weight = 0 }
-	}
-
-	if = {
-		limit = {
-			check_variable = { global.current_dynamic_major_active_major_count > 0 }
-			check_variable = { global.current_dynamic_major_active_non_major_count > 0 }
-		}
-		set_temp_variable = { dynamic_major_gain = global.major_event_weight_per_minor }
-		multiply_temp_variable = { dynamic_major_gain = global.current_dynamic_major_active_non_major_count }
-		divide_temp_variable = { dynamic_major_gain = global.current_dynamic_major_active_major_count }
-		multiply_temp_variable = { dynamic_major_gain = constant:event_system_dynamic_major_gain.baseline_major_events }
-		divide_temp_variable = { dynamic_major_gain = constant:event_system_dynamic_major_gain.baseline_non_major_events }
-		round_temp_variable = dynamic_major_gain
-		clamp_temp_variable = {
-			var = dynamic_major_gain
-			min = constant:settings_advanced_bounds.major_weight_per_minor.min
-			max = constant:settings_advanced_bounds.major_weight_per_minor.max
-		}
-		set_variable = { global.current_dynamic_major_weight_gain = dynamic_major_gain }
-	}
+	set_variable = { global.current_dynamic_major_weight_gain = global.major_event_weight_per_minor }
 }
 
 apply_dynamic_major_weight_gain_after_minor = {
-	calculate_dynamic_major_weight_gain = yes
-
-	if = {
-		limit = { check_variable = { global.current_dynamic_major_weight_gain > 0 } }
-		for_loop_effect = {
-			start = 0
-			end = global.major_events^num
-			value = i
-			set_temp_variable = { event_id = global.major_events^i }
-			evaluate_random_event_active_pool_candidate = yes
-			if = {
-				limit = { check_variable = { event_active_pool_candidate_is_valid > 0 } }
-				get_event_weight = yes
-				if = {
-					limit = { check_variable = { event_weight < 2 } }
-					set_temp_variable = { event_weight = 0 }
-				}
-				add_to_temp_variable = { event_weight = global.current_dynamic_major_weight_gain }
-				round_temp_variable = event_weight
-				set_temp_variable = { new_weight = event_weight }
-				set_event_weight = yes
-				set_variable = { global.current_major_event_weight = event_weight }
-			}
-			else_if = {
-				limit = {
-					check_variable = { event_id = constant:communism_spread_event_log.event_id }
-					NOT = { hidden_trigger = { has_global_flag = communism_spread_world_revolution_unlocked } }
-				}
-				set_temp_variable = { new_weight = 0 }
-				set_event_weight = yes
-			}
-		}
-	}
+	update_major_event_weights = yes
 }
 
 # Apply dynamic major gain after a minor pacing event
 update_major_event_weights = {
-	apply_dynamic_major_weight_gain_after_minor = yes
+	# Calculate new weight for major events
+	set_temp_variable = { major_weight = global.minor_events_since_major }
+	multiply_temp_variable = { major_weight = global.major_event_weight_per_minor }
+	set_variable = { global.current_major_event_weight = major_weight }
+
+	# Update all unfired major event weights
+	for_loop_effect = {
+		start = 0
+		end = global.major_events^num
+		value = i
+		set_temp_variable = { event_id = global.major_events^i }
+		if = {
+			limit = {
+				NOT = { is_in_array = { global.fired_events = event_id } }
+				NOT = {
+					AND = {
+						check_variable = { event_id = constant:communism_spread_event_log.event_id }
+						NOT = { has_global_flag = communism_spread_world_revolution_unlocked }
+					}
+				}
+			}
+			set_temp_variable = { new_weight = major_weight }
+			set_event_weight = yes
+		}
+		else_if = {
+			limit = {
+				check_variable = { event_id = constant:communism_spread_event_log.event_id }
+				NOT = { has_global_flag = communism_spread_world_revolution_unlocked }
+			}
+			set_temp_variable = { new_weight = 0 }
+			set_event_weight = yes
+		}
+	}
 }
 
 # Update for repeatable event weights
@@ -1181,36 +1158,14 @@ reset_major_event_pacing_state = {
 }
 
 on_event_cluster_global_pacing_update = {
-	set_temp_variable = { event_cluster_effective_pacing_type = constant:event_cluster_type.repeatable }
-	set_temp_variable = { event_cluster_acid_rain_pacing_row_index = constant:acid_rain_runtime.negative_one }
+	set_temp_variable = { event_cluster_type_value = constant:event_cluster_type.repeatable }
 	event_cluster_get_effective_pacing_type = yes
-	# A delayed Acid Rain row retains a country/batch receipt across reloads.
-	# An already committed batch never redraws the shared timer a second time.
 	if = {
-		limit = {
-			NOT = {
-				AND = {
-					has_variable = acid_rain_cluster_pacing_type_@var:event_cluster_pending_batch_id
-					check_variable = { var = acid_rain_cluster_pacing_type_@var:event_cluster_pending_batch_id value = constant:event_cluster_type.major compare = equals }
-				}
-			}
-		}
-		if = {
-			limit = {
-				OR = {
-					has_country_flag = event_cluster_initial_major_dispatched
-					check_variable = { var = event_cluster_effective_pacing_type value = constant:event_cluster_type.major compare = equals }
-				}
-			}
-			on_major_event_global_pacing_update = yes
-			if = {
-				limit = { check_variable = { var = event_cluster_acid_rain_pacing_row_index value = constant:acid_rain_runtime.first_array_index compare = greater_than } }
-				set_variable = { acid_rain_cluster_pacing_type_@var:event_cluster_pending_batch_id = constant:event_cluster_type.major }
-			}
-		}
-		else = {
-			on_minor_event_global_pacing_update = yes
-		}
+		limit = { check_variable = { event_cluster_type_value = constant:event_cluster_type.major } }
+		on_major_event_global_pacing_update = yes
+	}
+	else = {
+		on_minor_event_global_pacing_update = yes
 	}
 	clr_country_flag = event_cluster_initial_major_dispatched
 }
@@ -1311,30 +1266,16 @@ on_major_event_fired = {
 	set_temp_variable = { new_weight = 1 } # Can't set to zero, because cause undefined 'event_weight' error.
 	set_event_weight = yes
 
-	# Reset system state
+	# Cluster members use their batch's declared pacing type.
 	if = {
-		limit = { has_country_flag = event_cluster_member_fire_context }
-		if = {
-			limit = { has_country_flag = event_cluster_initial_trigger_dispatch }
-			set_country_flag = event_cluster_initial_major_dispatched
-		}
-		else = {
-			if = {
-				limit = {
-					NOT = {
-						AND = {
-							check_variable = { event_id = constant:acid_rain_event.id }
-							has_variable = acid_rain_cluster_pacing_type_@var:event_cluster_pending_batch_id
-							check_variable = { var = acid_rain_cluster_pacing_type_@var:event_cluster_pending_batch_id value = constant:event_cluster_type.major compare = equals }
-						}
-					}
-				}
-				reset_major_event_pacing_state = yes
-			}
-		}
-	}
-	else = {
+		limit = { NOT = { has_country_flag = event_cluster_member_fire_context } }
 		on_major_event_global_pacing_update = yes
+	}
+
+	else_if = {
+		# Random Stuff is a later whole-pool mechanic with its own bulk context.
+		limit = { check_variable = { event_cluster_id = constant:event_cluster_id.random_stuff } }
+		reset_major_event_pacing_state = yes
 	}
 
 	# Update unfired events counts for GUI button logic

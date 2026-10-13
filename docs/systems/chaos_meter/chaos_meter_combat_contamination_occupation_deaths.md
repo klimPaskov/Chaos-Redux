@@ -10,38 +10,35 @@ This update expands the `Deaths` system so civilian losses are now tracked from 
 
 These losses are added into the same global death toll and continue to feed chaos through the existing rule:
 
-- every `1,000,000` tracked deaths adds `+1` chaos.
+- every `1,000,000` weighted civilian deaths adds `+1` chaos, with military losses using their direct casualty scale.
 
 ## Combat Civilian Casualties
 
-Combat now generates civilian deaths while fighting is active.
+The existing `on_army_leader_daily` callback calls `chaos_meter_on_combat_civilian_casualties` when the Chaos Meter and Deaths systems are enabled.
+The army leader must have offensive combat and a valid human owner at war.
+The complete pre-6c266388b callback evaluates ideology, Chaos Warfare doctrine, and Chaos tier, then draws its historical trigger chance.
+A successful roll scans the leader's units in controlled frontline states through the supported `num_units_in_state@state` value, gathers their valid enemy neighbors, and chooses one candidate-array entry uniformly.
+The original candidate-array multiplicity is preserved, with one aligned originating unit-count entry per candidate.
+The source-country event target identifies the owner while ROOT remains the army leader.
+The selected entry carries its originating frontline unit count into the rate calculation.
+The old `num_units_offensive_combats_against@state` token is invalid because the current installed API targets terrain, such as `@plains`, rather than states.
+The parent accepted the supported frontline-state adapter on 13 October within the owner's restore-and-fix instruction.
+It identifies enemy neighbors of formations belonging to an actively attacking leader and does not claim exact observed per-state combat identification.
 
-Behavior:
+The shared combat tuning uses the pre-6c266388b rates, trigger chances, tier bonuses, unit divisor, and unit-factor bounds.
+The population rate entries are stored multiplied by `chaos_meter_combat_civilian_deaths.scale` to preserve all original fractional digits.
+`chaos_state_deaths_percent_divisor` converts the scaled value after multiplication by state population, and the shared helper consumes that divisor.
+Combat cap and random multipliers retain their pre-April values.
+The current state-population transaction, human-country filtering, death causes, UI, and attribution remain in place.
 
-1. The system now starts from each country's real daily military casualty increase, using the existing deaths tracker instead of army-leader combat scope.
-2. If that country is at war, it converts part of that daily casualty delta into civilian collateral pressure using ideology, `chaos_warfare`, and chaos-tier scaling.
-3. It resolves valid enemy frontline states directly by iterating enemy-controlled states that border the source country's currently controlled territory, and only keeps states that still have population to lose.
-4. The collateral total is split across every valid frontline state instead of only one random state, so all affected frontier states on that front can register deaths on the same day.
-5. Each frontline state first gets a dynamic distribution weight from density, population, and inverse infrastructure, then the full daily collateral pool is divided across those states by their share of the total weight.
-6. The distribution pass keeps its running allocation totals in global scratch variables for the duration of the country pass, so the state loop no longer depends on fragile inline cross-scope variable reads.
-7. This means combat civilian deaths no longer depend on unit-leader state lookups or daily combat-scope edge cases. They piggyback on the military casualty stream that is already working.
-8. The death rate is ideology-based:
-   - fascist: highest baseline,
-   - communist: lower,
-   - non-aligned: very low,
-   - democratic: extremely low.
-9. If the country has `chaos_warfare`, an additional combat civilian-death rate and collateral-pressure bonus are added on top.
-10. Higher chaos tiers now scale the combat death rate upward.
+Historical correction: `b45c83d41^` contains a broad controlled-state/neighbor helper but its entry effect is empty.
+Its original chemical leader-daily on-action calls that empty entry and does not call the broad helper.
+The file history establishes no earlier working broad callback, so that orphan helper is not activated.
+The restored source model is the complete callable pre-6c266388b single-state model.
 
-Result:
-
-- `chaos_warfare` + ideology rates stack additively.
-- The deaths are registered as civilian and reduce state population directly.
-- Border states are only considered once per pass, so multi-neighbor frontlines no longer get extra random-weight just from adjacency duplication.
-- Frontline states are now all eligible to take part of the same day's collateral losses instead of combat deaths concentrating into one random state.
-- The overall daily collateral pool is preserved, but denser, more populous, and less developed frontline states receive a larger share of it.
-- This pass is tied to real tracked combat losses rather than inferred leader placement, and the deaths map highlights the states that actually receive those registered civilian combat deaths through the shared state-population death pipeline.
-- The current tuning pass raises combat, bombing, contamination, fallout, nuclear, and occupation civilian losses again so every source hits harder than before, while outbreaks receive the largest increase.
+Military casualties remain recorded in Deaths.
+Their direct Chaos scaling follows the cumulative pre-1b2cd634a threshold of 250k casualties per point and does not also add a one-per-million military contribution.
+Civilian causes retain their existing Deaths-to-Chaos conversion and cause weights.
 
 ## Contaminated-State Monthly Death Ticks
 

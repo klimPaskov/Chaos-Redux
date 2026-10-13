@@ -1,92 +1,41 @@
-# Dynamic Major Event Weights
+# Major Event Weights
 
-## Overview
+Major event weights use the configured gain in `global.major_event_weight_per_minor`.
+The default is `constant:event_system_defaults.major_event_weight_per_minor`, and Advanced Settings can change the configured value.
 
-Major events gain weight after minor global pacing events, but the per-minor gain is calculated from the current active random-event pool instead of using a fixed value. The configured setting remains the baseline gain. With the default baseline of `150`, 90 active non-major events and 10 active major events produce a current gain of `150`.
+## Accumulation and eligibility
 
-This page records the source formula and documented consumers, but it does not certify current probability outcomes or engine execution.
+`update_major_event_weights` assigns `global.minor_events_since_major × global.major_event_weight_per_minor` to every unfired major event.
+Disabled or temporarily unavailable majors retain that progress and receive it when they become eligible.
+Locked Event 91 remains the historical exception until `communism_spread_world_revolution_unlocked` is set.
+Ordinary event eligibility still controls selection, so stored weight does not bypass a Chaos-level, target, disabled, fired, or world-state gate.
+Fired and reset major entries retain the engine-safe inactive floor.
 
-## Formula
+`calculate_dynamic_major_weight_gain` retains its name for existing status, settings, and welcome-screen callers.
+It publishes the configured gain in `global.current_dynamic_major_weight_gain` and refreshes active pool counts for diagnostics.
+The counts do not change the gain or accumulated weight.
+`apply_dynamic_major_weight_gain_after_minor` is a compatibility entry to the same accumulation helper.
 
-```text
-dynamic_major_gain = baseline_major_gain * (current_non_major_count / current_major_count) / (baseline_non_major_count / baseline_major_count)
-```
+## Cluster pacing
 
-The script uses the equivalent order:
+Each successful fixed-member cluster contributes one global event count and one repeatable recovery update.
+Pacing follows the registered cluster type.
+One-time and repeatable clusters apply one minor update even when their initial or delayed member is a major.
+A registered major cluster applies one major reset.
+Member dispatch records fired state and history without another batch pacing update.
+Acid Rain reservation and delayed-queue cleanup remain independent of pacing.
+Random Stuff remains a post-minor batch and contributes no second aggregate update.
+Its actually dispatched major draws retain their own major reset as part of the later whole-pool mechanic.
 
-```text
-dynamic_major_gain = baseline_major_gain * current_non_major_count / current_major_count * baseline_major_count / baseline_non_major_count
-```
+## Tuning and scope
 
-Baseline constants live in `common/script_constants/event_system_constants.txt` under `event_system_dynamic_major_gain`:
+The country-scope helpers read the shared major-event registry, fired-event registry, minor count, configured gain, and Event 91 unlock flag.
+Their outputs are the major weights and `global.current_major_event_weight`.
+No persistent event target is required.
+Major resets clear accumulated progress, and delayed queue cleanup removes any historical Acid Rain pacing receipt.
 
-- `baseline_total_events = 100`
-- `baseline_major_events = 10`
-- `baseline_non_major_events = 90`
+## Icons and future work
 
-The baseline gain is `global.major_event_weight_per_minor`, which is staged by the Advanced Settings value `global.settings_major_weight_per_minor` and defaults to `event_system_defaults.major_event_weight_per_minor`.
-
-## Active Pool Counts
-
-The active pool count only includes entries that can still participate in automatic random selection, before current weight is considered.
-
-Excluded entries:
-
-- disabled events in `global.disabled_events`
-- fired non-repeatable events
-- fired major events
-- events whose shared automatic-pool availability resolver returns a dynamic unavailability reason, including locked Event 91, Holy Realm without a refuge host, Fury without a selectable country, unavailable Tensions Rising or White Peace, and unavailable Utopia, Brilliant Scientist, Secret Alliance, Cannibalism, Random Faction, Resources Found, Independence Wave, Africa Is One, or Black Plague states
-- hidden helper, news, follow-up, bootstrap, scenario wrapper, or permanent-unavailable entries because they are not registered in the random-pool arrays
-
-Repeatable events remain in the non-major count after firing while they remain active.
-
-## Script Helpers
-
-The event-system helpers live in `common/scripted_effects/chaosx_logic_effects.txt`. Their behavior and ownership are documented in this system file because they are private to random-event selection and major-weight pacing.
-
-- `evaluate_random_event_active_pool_candidate`
-- `evaluate_event_pool_candidate_unavailability`
-- `count_dynamic_major_weight_pool_events`
-- `calculate_dynamic_major_weight_gain`
-- `apply_dynamic_major_weight_gain_after_minor`
-
-`calculate_dynamic_major_weight_gain` stores the live result in `global.current_dynamic_major_weight_gain` and stores the counts in `global.current_dynamic_major_active_major_count` and `global.current_dynamic_major_active_non_major_count`. If either count is zero, the gain is set to `0`, so the script never divides by zero. The result is rounded with `round_temp_variable` and clamped to `settings_advanced_bounds.major_weight_per_minor`.
-
-`update_major_event_weights` calls `apply_dynamic_major_weight_gain_after_minor`, which adds the calculated gain to active, unfired major events after one minor global pacing event. Major weights reset to `1` for engine safety, so the helper treats values below `2` as `0` before adding the gain.
-
-## Cluster Pacing
-
-Each successful cluster activation contributes one global event count and one repeatable-event recovery update for the complete batch. A one-time or repeatable cluster whose first dispatched member is not Major starts with Minor pacing, so `apply_dynamic_major_weight_gain_after_minor` runs once regardless of the number of members. A Major trigger takes Major pacing instead.
-
-Member events fire in `event_cluster_member_fire_context`. When a delayed Major member actually dispatches, it resets unfired major weights, the minor-since-major count, and the event timer. This does not add a second global event count or repeatable-event recovery update. A delayed member that becomes unavailable does not reset the weights.
-
-When one selected event succeeds in several cluster activation rolls, uniform arbitration selects one winning cluster before dispatch. Losing successful candidates apply no pacing, while the winner still contributes exactly one aggregate pacing update.
-
-Random Stuff is a post-minor-event exception: the ordinary minor event that opens its attempt has already applied that one pacing update, so the bonus batch does not add a second aggregate gain. A Major event actually dispatched by the bulk batch still resets major weights and the timer.
-
-An intentionally registered major cluster uses the major pacing path and resets major weights once for the cluster.
-
-A valid failed cluster activation roll returns to ordinary standalone handling and does not apply cluster pacing or a cluster cooldown update.
-
-Gated attempts and failed preflight do not change cluster automatic-memory state, and manual cluster forcing does not seed or consume automatic activation memory.
-
-## UI And Localisation
-
-The Advanced Settings field is labelled as the baseline major gain. The Event Logs Status tab shows current calculated major gain and baseline major gain as separate lines, followed by accumulated major weight. Welcome-screen text describes both the configured baseline and the live calculated gain.
-
-UI variables:
-
-- `global.current_dynamic_major_weight_gain`
-- `global.current_dynamic_major_active_major_count`
-- `global.current_dynamic_major_active_non_major_count`
-- `global.current_major_event_weight`
-- `global.major_event_weight_per_minor`
-
-## Icons And Assets
-
-No new icons or sprites are required. Existing settings and event-log controls are reused.
-
-## Future Plans
-
-- Add a compact tooltip showing the active major and non-major counts directly in the Event Logs Status tab if the layout receives more space.
-- Consider exposing the dynamic formula in a debug-only detail line for balancing sessions.
+Existing settings, welcome-screen, and Event Logs assets are reused.
+No new icon is required.
+Future balance work can compare the current weighted pool under declared scenarios without changing these accumulation rules.

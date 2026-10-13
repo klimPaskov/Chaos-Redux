@@ -57,7 +57,8 @@ An event-system rejection therefore blocks dispatch even when cluster-only gates
 
 Event Chaos Levels remain independent from cluster member severity.
 
-The severity floor is a separate minimum for cluster participation.
+The original pre-4c1513475 member rows use their declared minimum and original participation override.
+Severity floors and escalation support apply to later member rows.
 
 | Member severity | Severity floor | Existing tier name |
 | --- | --- | --- |
@@ -73,7 +74,8 @@ The effective minimum is:
 When this cluster-only minimum or the escalation-support rule blocks a row after the event system accepted it, the row uses a cluster-specific status and leaves the canonical event-system reason empty.
 The UI must not describe that outcome as failure of the event's independent Chaos Level.
 
-High and Severe non-trigger rows need another base-eligible member.
+Later High and Severe non-trigger rows need another base-eligible member.
+Original rows are exempt from this additional support gate.
 
 The trigger row is exempt from that support check.
 
@@ -100,54 +102,17 @@ Activation chance is evaluated only for an eligible automatic trigger and an eli
 | T4 Totalen Chaos | 35 |
 | T5 World Collapse | 50 |
 
-| Trigger severity | Factor |
-| --- | ---: |
-| Low | 1.35 |
-| Medium | 1.15 |
-| High | 0.85 |
-| Severe | 0.65 |
-
-| Eligible logical rows | Factor |
-| --- | ---: |
-| 1 | 1.40 |
-| 2 | 1.30 |
-| 3 | 1.20 |
-| 4 | 1.10 |
-| 5 or more | 1.00 |
-
-Fatigue is clamped to a score of 0 through 4, and its factor is 0.90 raised to that score.
-
-| Previous optional participation ratio | Factor |
-| --- | ---: |
-| 25 percent or less | 1.40 |
-| More than 25 percent through 50 percent | 1.30 |
-| More than 50 percent through 75 percent | 1.15 |
-| More than 75 percent | 1.00 |
-| Zero optional denominator | 1.00 |
-
-The previous ratio excludes trigger and required rows and uses actually dispatched eligible optional rows from the last completed automatic batch.
-
-The activation formula is:
-
-    activation_chance = clamp(round(base × trigger_severity_factor × eligible_count_factor × fatigue_factor × previous_participation_factor), 1, 90)
-
-Fatigue increases by one after a successful automatic activation.
-
-Fatigue decreases by one after a valid failed automatic activation roll.
-
-Gated attempts, failed preflight, and manual forcing leave fatigue unchanged.
-
+Activation chance equals the tier base above.
+Trigger severity, eligible-member count, fatigue, prior optional participation, and matching duplicate rows do not multiply that chance.
+The existing fatigue and participation history fields remain for compatible queue and history bookkeeping.
 A valid failed roll returns to ordinary standalone handling and does not apply cluster pacing or a cluster cooldown update.
 
 ### Duplicate triggers and multiple memberships
 
 Membership discovery scans every registered fixed-member cluster instead of stopping at the first match. Automatic candidacy requires the selected event to own a configured primary-trigger row in that cluster.
 
-Within each candidate cluster, every currently eligible logical row carrying the selected trigger event strengthens that cluster's trigger-specific chance:
-
-    multiplicity_factor = 1 + 0.15 × (eligible_matching_rows - 1)
-
-Every extra eligible matching row guarantees at least one additional percentage point before the ordinary 90 percent activation ceiling. Duplicate rows never dispatch the selected trigger more than once.
+Duplicate logical rows remain distinct in the queue and history, but do not strengthen activation chance.
+Duplicate rows never dispatch the selected trigger more than once.
 
 Each eligible cluster calculates and rolls its final chance independently. If several clusters succeed, one successful cluster is selected uniformly.
 The selected event therefore opens no more than one cluster batch.
@@ -213,26 +178,23 @@ The remaining batches select one random boundary between adjacent severity bands
 
 A batch containing only one optional severity band cannot form a cross-severity inversion and remains randomized within that band.
 
-Participation decay follows the resulting order, so a higher-severity member can receive an earlier optional roll during an inversion batch.
+Participation chances remain fixed through the resulting order.
 
-The optional participation table is:
+The compact participation table is defined in `event_cluster_member_participation`.
 
-| Current tier | Low | Medium | High | Severe |
-| --- | ---: | ---: | ---: | ---: |
-| Calm World | 70 | 35 | 15 | 5 |
-| Gathering Storm | 80 | 40 | 20 | 10 |
-| Rising Chaos | 90 | 45 | 25 | 15 |
-| Chaos Tier | 95 | 50 | 30 | 20 |
-| Totalen Chaos | 99 | 60 | 40 | 25 |
-| World Collapse | 100 | 75 | 50 | 30 |
+| Entry | Chance |
+| --- | ---: |
+| Required | 100 |
+| Default optional | 50 |
+| High | 85 |
+| Medium | 60 |
+| Low | 35 |
 
-Each eligible optional row uses:
-
-    optional_member_chance = clamp(round(table_value × eligible_count_factor × 0.95^(accepted_optional_rows)), 1, 100)
-
-The accepted optional count increases only after an optional row is accepted in the current batch.
-
-Ineligible, rejected, or invalidated optional rows do not increase that count.
+Original rows keep their overrides: Fury 70, Independence Wave 35, Soviet Collapse 100, Random Faction 65, White Peace follow-up 60, Natural Disasters repeats 85/60/60/35, and Zombie Outbreak 60.
+Required opening rows remain 100.
+Acid Rain retains its event-owned tier participation curve as a later member.
+Required and selected trigger rows are guaranteed after eligibility.
+Eligible-member count and accepted optional order do not alter member chances.
 
 ## Stable rows, batches, and delayed state
 
@@ -292,24 +254,13 @@ A manual force bypasses only cluster-only gates, checks the equivalent event-sys
 ## Pacing, cooldown, and history
 
 Each successful cluster activation applies one aggregate event-count and repeatable-recovery update, plus one cluster cooldown update for the complete batch.
-A Natural Disasters queue containing prevalidated Acid Rain uses effective Major pacing at launch.
-Its delayed Acid Rain member reads a country-owned batch receipt and does not reset Major pacing again.
-Other delayed Major members retain their ordinary dispatch behavior.
-
-Member count does not multiply either update.
-
-Repeatable and one-time clusters count once for global event totals and repeatable-event recovery.
-A batch whose first dispatched member is Major takes Major pacing immediately.
-A Natural Disasters batch containing selected Acid Rain also takes Major pacing at launch.
-Other batches start with Minor pacing.
-
-If a later member dispatches as Major without the matching Acid Rain launch receipt, that firing resets the major-event weights, the minor-since-major count, and the event timer.
-It does not add another global event count or another repeatable-event recovery update.
-A skipped Acid Rain member releases its reservation, and batch cleanup removes its receipt without rewinding committed launch history.
-
-Random Stuff has already received the opening minor event's pacing update. Its bulk members add no event count or repeatable recovery, while any Major draw that actually dispatches resets major-event weights and the timer.
-
-An intentionally registered major cluster uses its major pacing path once and resets major-event weights once.
+Pacing follows the registered cluster type once for the batch.
+One-time and repeatable clusters apply Minor pacing even when an initial or delayed member is Major.
+Registered Major clusters apply Major pacing once.
+Member count and delayed dispatch do not multiply the event count, recovery, timer update, or major reset.
+Acid Rain reservations and queue cleanup remain active without a launch pacing promotion.
+Random Stuff remains a post-minor whole-pool batch and adds no second aggregate pacing update.
+Its actually dispatched major draws retain their own major reset.
 
 Each dispatched member still uses its ordinary fired-state, fire-once, repeatable recovery, and event-history behavior.
 
@@ -341,7 +292,7 @@ The v2 fixed catalogue is reproduced exactly below so that cluster IDs, names, p
 | 2 | Liberations | Liberation shocks create independent countries, break subjects and unions apart, and connect newly freed states through wider liberation crises. | 5, 6, 6, 6, 63 | Severe, Low, Medium, High, Medium | Minor Repeatable | 1 | In progress |
 | 3 | Diplomacy | International relations destabilize through diplomatic crises, faction pressure, treaties, strategic alignment, aggressive posturing, and intervention. | 8, 17, 36, 59 | Medium, Medium, High, High | Minor Repeatable | 1 | In progress |
 | 4 | Peace | Peace shocks reduce or reverse conflict through settlements, ceasefires, demobilization, exhaustion, negotiations, and forced returns toward peacetime. | 9, 9, 9, 9, 61 | Low, Low, Medium, High, High | Minor Repeatable | 1 | In progress |
-| 5 | Natural Disasters | Natural and environmental catastrophes strike states or regions through five distinct Natural Disasters slots, followed by optional Acid Rain and Heat Wave crises. A validated queue containing Acid Rain commits Major pacing at launch. | 13, 13, 13, 13, 13, 33, 51 | Low, Low, Low, Low, Medium, Severe, High | Minor Repeatable | 1 | In progress |
+| 5 | Natural Disasters | Natural and environmental catastrophes strike states or regions through five distinct Natural Disasters slots, followed by optional Acid Rain and Heat Wave crises. | 13, 13, 13, 13, 13, 33, 51 | Low, Low, Low, Low, Medium, Severe, High | Minor Repeatable | 1 | In progress |
 | 6 | Formables | Countries revive, construct, or transform into major historical, religious, imperial, or alternative political formations. | 3, 12, 38, 48 | High, Severe, High, Medium | Minor Repeatable | 3 | In progress |
 | 7 | Positive Economy | Beneficial economic shocks create sudden growth, wealth, industry, infrastructure, construction, cheaper activity, or profitable underground markets. | 18, 26, 29, 34, 55, 57, 58 | Medium, Medium, Medium, Low, Medium, High, Medium | Minor Repeatable | 1 | In progress |
 | 8 | Intelligence | Espionage, leaks, investigations, covert information, and intelligence failures expose or manipulate states through hidden information. | 39, 52 | Medium, Low | Minor Fire-Once | 1 | New |

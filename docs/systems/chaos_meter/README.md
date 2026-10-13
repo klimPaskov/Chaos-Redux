@@ -8,7 +8,7 @@ This directory documents the shared Chaos Meter, deaths accounting, war-declarat
 - [`chaos_meter_deaths_mechanic.md`](chaos_meter_deaths_mechanic.md) defines the deaths accounting model and its Chaos conversion.
 - [`chaos_meter_combat_contamination_occupation_deaths.md`](chaos_meter_combat_contamination_occupation_deaths.md) defines combat, contamination, and occupation death sources.
 - [`chaos_meter_deaths_and_events_log_ui.md`](chaos_meter_deaths_and_events_log_ui.md) defines the deaths data exposed to the Chaos Meter and Event Logs surfaces.
-- [`chaos_meter_war_declaration_counting.md`](chaos_meter_war_declaration_counting.md) defines war-declaration source registration and duplicate suppression.
+- [`chaos_meter_war_declaration_counting.md`](chaos_meter_war_declaration_counting.md) defines the qualifying war-relation contributions.
 - [`nuclear_chaos_ladder.md`](nuclear_chaos_ladder.md) defines direct Chaos gains, escalation tiers, and the shared non-yield Event 23 test-accident consequence endpoint.
 
 Atmospheric contamination belongs in [air_cleanliness/](../air_cleanliness/README.md).
@@ -21,3 +21,13 @@ The [popup contract](chaos_meter_popup_window.md) and [deaths mechanic](chaos_me
 These are conflicting recorded interface states, and this documentation pass does not select either as current behavior.
 Reconcile the linked GUI consumers and matching MCP state fixtures before promoting one description or superseding the other.
 The pass record retains its historical cache, sorting, and selection findings.
+
+## Meter contributions
+
+Major war-justification pulses contribute +1, and major elections contribute -1.
+Ruling-party changes contribute the configured democratic or non-democratic value on every change, including changes between two non-democratic governments.
+Puppeting contributes +3, release as free contributes -5, subject freedom contributes -3, and a major leaving a non-democratic faction contributes -5.
+These values remain centralized in `common/script_constants/chaos_meter_constants.txt`.
+Justification and election contributions use the existing engine on-actions and record actor-attributed history.
+Military casualty contributions use the pre-March direct scaling while Deaths keeps military accounting without double conversion.
+The nuclear ladder, Event 23 distinctions, missile integrations, slight disabled-default crisis pressure, and tier-based UI fractures keep their separate behavior.

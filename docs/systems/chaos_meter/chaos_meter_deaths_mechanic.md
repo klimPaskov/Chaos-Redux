@@ -13,7 +13,8 @@ It tracks:
 
 The deaths total contributes directly to chaos:
 
-- every `1,000,000` additional tracked deaths adds `+1` chaos.
+- every `1,000,000` weighted additional civilian deaths adds `+1` chaos.
+- military casualties remain in the ledger and use the direct cumulative 250k casualty scale, without a second one-per-million contribution.
 
 ## Sources of Deaths
 

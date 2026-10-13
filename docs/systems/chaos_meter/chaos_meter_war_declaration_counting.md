@@ -6,14 +6,11 @@ The chaos meter counts new war relations from `on_war_relation_added`, where `RO
 
 ## Counting Rules
 
-Faction follow-up war relations are ignored when another member of the attacker's faction is already at war with the same defender. This keeps a faction-wide declaration against many targets from multiplying chaos by every faction member that joins or repeats the same target war.
-
-Minor war declarations use `constant:chaos_meter_delta.war.minor`, but each attacking country can only add up to `constant:chaos_meter_war_cap.minor_same_day` chaos from minor war relations on the same day. The actor stores:
-
-- `chaos_meter_minor_war_declaration_day`
-- `chaos_meter_minor_war_chaos_today`
-
-When the day changes, the stored total resets on the next minor war relation handled for that country.
+Major-on-major war relations contribute `constant:chaos_meter_delta.war.major`.
+Other qualifying relations contribute `constant:chaos_meter_delta.war.minor` when the attacker is independent or outside a faction and the defender is independent.
+Zombie outbreak attackers retain their exclusion.
+Faction follow-up relations use the same historical qualification rather than a separate duplicate suppression rule.
+Each qualifying relation contributes its full value without an actor-wide daily minor-war cap.
 
 ## Icons
 

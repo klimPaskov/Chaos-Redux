@@ -1,5 +1,9 @@
 # Chaos Redux Event Cluster System Contract
 
+Current probability and pacing authority: the owner's 13 October restoration direction supersedes the replacement-model formula and pacing claims below.
+Use [event_clusters.md](event_clusters.md) and [dynamic_major_event_weights.md](dynamic_major_event_weights.md) for the implemented compact participation, tier activation, and declared-type fixed-cluster pacing.
+Later members, stable rows, context, queues, and the distinct Random Stuff whole-pool mechanic remain in place.
+
 ## Unresolved cross-document claims
 
 The source contract remains subject to the acceptance boundary below.
