@@ -95,9 +95,16 @@ camp_repression_network_category = {
 	fr_gurs_legacy_review = {
 		icon = GFX_decision_fr_camp_legacy_review
 		modifier = { consumer_goods_factor = @CR_SC_CAMP_REWORK_IDEA_MODIFIER_REFORM_CONSUMER_GOODS }
-		allowed = { OR = { original_tag = FRA tag = VIC } }
+		allowed = { uses_normal_civilian_systems = yes OR = { original_tag = FRA tag = VIC } }
 		activation = { always = no }
-		visible = { has_country_flag = camp_rework_france_legacy_inspected }
+		cancel_trigger = {
+			OR = { uses_normal_civilian_systems = no has_country_flag = camp_admin_initialized }
+		}
+		visible = {
+			uses_normal_civilian_systems = yes
+			has_country_flag = camp_rework_france_legacy_inspected
+			NOT = { has_country_flag = camp_admin_initialized }
+		}
 		available = { hidden_trigger = { always = no } }
 		days_mission_timeout = constant:camp_rework_timing.fr_gurs_legacy_review_days
 		days_remove = constant:camp_rework_timing.fr_gurs_legacy_review_days
@@ -115,9 +122,16 @@ camp_repression_network_category = {
 	bel_concession_reform_mandate = {
 		icon = GFX_decision_bel_colonial_inspection
 		modifier = { consumer_goods_factor = @CR_SC_CAMP_REWORK_IDEA_MODIFIER_REFORM_CONSUMER_GOODS }
-		allowed = { original_tag = BEL }
+		allowed = { original_tag = BEL uses_normal_civilian_systems = yes }
 		activation = { always = no }
-		visible = { has_country_flag = camp_rework_belgium_inspection_open }
+		cancel_trigger = {
+			OR = { uses_normal_civilian_systems = no has_country_flag = camp_admin_initialized }
+		}
+		visible = {
+			uses_normal_civilian_systems = yes
+			has_country_flag = camp_rework_belgium_inspection_open
+			NOT = { has_country_flag = camp_admin_initialized }
+		}
 		available = { hidden_trigger = { always = no } }
 		days_mission_timeout = constant:camp_rework_timing.bel_concession_reform_mandate_days
 		days_remove = constant:camp_rework_timing.bel_concession_reform_mandate_days
@@ -326,4 +340,397 @@ camp_repression_network_category = {
 		ai_will_do = { base = constant:camp_rework_ai_weight.blocked }
 	}
 
+
+
+	bel_expand_concession_labor_quotas = {
+		icon = GFX_decision_bel_congo_concession_quota
+		cost = global.black_friday_price_camp_rework_cost_activation_pp
+		days_re_enable = constant:camp_rework_timing.decision_cooldown_days
+		allowed = { original_tag = BEL uses_normal_civilian_systems = yes }
+		visible = {
+			uses_normal_civilian_systems = yes
+			NOT = { has_country_flag = camp_admin_initialized }
+			NOT = { has_country_flag = camp_rework_expansion_frozen }
+			OR = {
+				has_war = yes
+				has_country_flag = bel_focus_congo_resource_office
+				has_country_flag = bel_focus_exile_economy_congo
+				check_variable = { colonial_resource_output < constant:camp_rework_threshold.band_medium }
+			}
+			OR = {
+				any_controlled_state = { OR = { is_bel_congo_concession_pool_state = yes is_bel_colonial_emergency_pool_state = yes has_state_flag = camp_rework_bel_colonial_emergency_site } NOT = { is_core_of = BEL } }
+				any_subject_country = { any_controlled_state = { OR = { is_bel_congo_concession_pool_state = yes is_bel_colonial_emergency_pool_state = yes has_state_flag = camp_rework_bel_colonial_emergency_site } NOT = { is_core_of = BEL } } }
+			}
+		}
+		available = {
+			uses_normal_civilian_systems = yes
+			hidden_trigger = { NOT = { has_country_flag = camp_admin_initialized } }
+			NOT = { has_decision = bel_congo_resource_quota_cycle }
+			OR = { is_ai = no camp_rework_country_under_ai_site_cap = yes }
+			camp_rework_can_pay_activation_manpower = yes
+			camp_rework_can_pay_activation_command = yes
+			camp_rework_can_pay_support_equipment = yes
+			has_equipment = { motorized_equipment_1 > constant:camp_rework_mission_equipment_reserve.motorized_equipment }
+			has_equipment = { train_equipment_1 > constant:camp_rework_mission_equipment_reserve.trains }
+			has_equipment = { convoy_1 > constant:camp_rework_mission_equipment_reserve.convoys }
+			OR = {
+				AND = {
+					is_ai = no
+					has_variable = camp_selected_state_id
+					var:camp_selected_state_id = {
+						OR = {
+							is_bel_congo_concession_pool_state = yes
+							is_bel_colonial_emergency_pool_state = yes
+							has_state_flag = camp_rework_bel_colonial_emergency_site
+						}
+						camp_rework_state_can_accept_responsibility_from_root = yes
+						NOT = { is_core_of = BEL }
+						OR = {
+							NOT = { is_valid_camp_active_site_state = yes }
+							var:genocide_responsible_country = { tag = ROOT }
+						}
+					}
+				}
+				AND = {
+					is_ai = yes
+					OR = {
+						any_controlled_state = { OR = { is_bel_congo_concession_pool_state = yes is_bel_colonial_emergency_pool_state = yes has_state_flag = camp_rework_bel_colonial_emergency_site } camp_rework_state_can_accept_responsibility_from_root = yes NOT = { is_core_of = BEL } }
+						any_subject_country = { any_controlled_state = { OR = { is_bel_congo_concession_pool_state = yes is_bel_colonial_emergency_pool_state = yes has_state_flag = camp_rework_bel_colonial_emergency_site } camp_rework_state_can_accept_responsibility_from_root = yes NOT = { is_core_of = BEL } } }
+					}
+				}
+			}
+		}
+		complete_effect = {
+			custom_effect_tooltip = bel_expand_concession_labor_quotas_effect_tt
+			camp_rework_prepare_selected_action_state = yes
+			set_temp_variable = { camp_rework_action_id = constant:camp_rework_action.bel_expand_concession_labor_quotas }
+			camp_rework_route_country_specific_action = yes
+			hidden_effect = { camp_rework_credit_sale_order = yes }
+		}
+		ai_will_do = {
+			base = constant:camp_rework_ai_weight.blocked
+			modifier = {
+				add = constant:camp_rework_ai_weight.belgium_high_chaos_expansion
+				NOT = { has_government = democratic }
+				OR = {
+					has_global_flag = { flag = chaos_tier value = 4 }
+					has_global_flag = { flag = chaos_tier value = 5 }
+				}
+				NOT = { has_country_flag = camp_rework_crisis_exposed }
+			}
+			modifier = {
+				add = constant:camp_rework_ai_weight.belgium_war_expansion
+				OR = { has_war = yes has_capitulated = yes }
+				NOT = { has_country_flag = camp_rework_crisis_exposed }
+				NOT = {
+					AND = {
+						NOT = { has_government = democratic }
+						OR = {
+							has_global_flag = { flag = chaos_tier value = 4 }
+							has_global_flag = { flag = chaos_tier value = 5 }
+						}
+					}
+				}
+			}
+			modifier = {
+				add = constant:camp_rework_ai_weight.belgium_foreign_pressure_expansion
+				has_government = democratic
+				check_variable = { genocide_foreign_pressure > constant:camp_rework_threshold.band_medium }
+				has_war = no
+				NOT = { has_capitulated = yes }
+				NOT = { has_country_flag = camp_rework_crisis_exposed }
+			}
+			modifier = {
+				add = constant:camp_rework_ai_weight.belgium_peace_expansion
+				has_war = no
+				NOT = { has_capitulated = yes }
+				check_variable = { genocide_foreign_pressure < constant:camp_rework_threshold.band_medium }
+				NOT = { has_country_flag = camp_rework_crisis_exposed }
+			}
+		}
+	}
+
+
+	bel_route_labor_to_rubber_and_minerals = {
+		icon = GFX_decision_bel_congo_concession_quota
+		cost = global.black_friday_price_camp_rework_cost_labor_project_pp
+		days_re_enable = constant:camp_rework_timing.standard_action_days
+		allowed = { original_tag = BEL uses_normal_civilian_systems = yes }
+		visible = {
+			uses_normal_civilian_systems = yes
+			NOT = { has_country_flag = camp_admin_initialized }
+			has_active_camp_network = yes
+			NOT = { has_country_flag = camp_rework_expansion_frozen }
+			OR = { has_country_flag = bel_focus_congo_resource_office has_country_flag = bel_focus_exile_economy_congo has_war = yes }
+			OR = {
+				any_controlled_state = {
+					is_bel_congo_concession_pool_state = yes
+					OR = { has_resources_amount = { resource = rubber amount > 0 } has_resources_amount = { resource = tungsten amount > 0 } has_resources_amount = { resource = coal amount > 0 } }
+				}
+				any_subject_country = {
+					any_controlled_state = {
+						is_bel_congo_concession_pool_state = yes
+						OR = { has_resources_amount = { resource = rubber amount > 0 } has_resources_amount = { resource = tungsten amount > 0 } has_resources_amount = { resource = coal amount > 0 } }
+					}
+				}
+			}
+		}
+		available = {
+			uses_normal_civilian_systems = yes
+			hidden_trigger = { NOT = { has_country_flag = camp_admin_initialized } }
+			NOT = { has_decision = bel_congo_resource_quota_cycle }
+			camp_rework_can_start_motorized_equipment = yes
+			camp_rework_can_start_trains = yes
+			camp_rework_can_start_convoys = yes
+			OR = {
+				AND = {
+					is_ai = no
+					has_variable = camp_selected_state_id
+					var:camp_selected_state_id = {
+						is_valid_camp_active_site_state = yes
+						is_bel_congo_concession_pool_state = yes
+						var:genocide_responsible_country = { tag = ROOT }
+						OR = {
+							has_resources_amount = { resource = rubber amount > 0 }
+							has_resources_amount = { resource = tungsten amount > 0 }
+							has_resources_amount = { resource = coal amount > 0 }
+						}
+					}
+				}
+				AND = {
+					is_ai = yes
+					OR = {
+						any_controlled_state = { is_valid_camp_active_site_state = yes is_bel_congo_concession_pool_state = yes var:genocide_responsible_country = { tag = ROOT } OR = { has_resources_amount = { resource = rubber amount > 0 } has_resources_amount = { resource = tungsten amount > 0 } has_resources_amount = { resource = coal amount > 0 } } }
+						any_subject_country = { any_controlled_state = { is_valid_camp_active_site_state = yes is_bel_congo_concession_pool_state = yes var:genocide_responsible_country = { tag = ROOT } OR = { has_resources_amount = { resource = rubber amount > 0 } has_resources_amount = { resource = tungsten amount > 0 } has_resources_amount = { resource = coal amount > 0 } } } }
+					}
+				}
+			}
+		}
+		complete_effect = {
+			custom_effect_tooltip = bel_route_labor_to_rubber_and_minerals_effect_tt
+			camp_rework_prepare_selected_action_state = yes
+			set_temp_variable = { camp_rework_action_id = constant:camp_rework_action.bel_route_labor_to_rubber_and_minerals }
+			camp_rework_route_country_specific_action = yes
+			hidden_effect = { camp_rework_credit_sale_order = yes }
+		}
+		ai_will_do = {
+			base = constant:camp_rework_ai_weight.belgium_expansion
+			modifier = { factor = 0 NOT = { camp_rework_country_under_ai_project_cap = yes } }
+		}
+	}
+
+
+	bel_build_congo_transport_corridors = {
+		icon = GFX_decision_bel_congo_transport_corridor
+		cost = global.black_friday_price_camp_rework_cost_labor_project_pp
+		days_re_enable = constant:camp_rework_timing.construction_days
+		allowed = { original_tag = BEL uses_normal_civilian_systems = yes }
+		visible = {
+			uses_normal_civilian_systems = yes
+			NOT = { has_country_flag = camp_admin_initialized }
+			has_active_camp_network = yes
+			NOT = { has_country_flag = camp_rework_expansion_frozen }
+			OR = { any_controlled_state = { is_bel_congo_transport_project_state = yes } any_subject_country = { any_controlled_state = { is_bel_congo_transport_project_state = yes } } }
+		}
+		available = {
+			uses_normal_civilian_systems = yes
+			hidden_trigger = { NOT = { has_country_flag = camp_admin_initialized } }
+			NOT = { has_decision = bel_congo_transport_corridor_project }
+			camp_rework_can_start_motorized_equipment = yes
+			camp_rework_can_start_trains = yes
+			camp_rework_can_start_convoys = yes
+			num_of_civilian_factories_available_for_projects > constant:camp_rework_mission_capacity.civilian_factory_floor
+			OR = {
+				AND = { is_ai = no has_variable = camp_selected_state_id var:camp_selected_state_id = { is_valid_camp_active_site_state = yes is_bel_congo_transport_project_state = yes var:genocide_responsible_country = { tag = ROOT } } }
+				AND = { is_ai = yes OR = { any_controlled_state = { is_valid_camp_active_site_state = yes is_bel_congo_transport_project_state = yes var:genocide_responsible_country = { tag = ROOT } } any_subject_country = { any_controlled_state = { is_valid_camp_active_site_state = yes is_bel_congo_transport_project_state = yes var:genocide_responsible_country = { tag = ROOT } } } } }
+			}
+		}
+		complete_effect = {
+			custom_effect_tooltip = bel_build_congo_transport_corridors_effect_tt
+			camp_rework_prepare_selected_action_state = yes
+			set_temp_variable = { camp_rework_action_id = constant:camp_rework_action.bel_build_congo_transport_corridors }
+			camp_rework_route_country_specific_action = yes
+			hidden_effect = { camp_rework_credit_sale_order = yes }
+		}
+		ai_will_do = {
+			base = constant:camp_rework_ai_weight.belgium_expansion
+			modifier = { factor = 0 NOT = { camp_rework_country_under_ai_project_cap = yes } }
+		}
+	}
+
+
+	bel_suppress_colonial_strikes = {
+		icon = GFX_decision_bel_congo_concession_quota
+		cost = global.black_friday_price_camp_rework_cost_expansion_pp
+		days_re_enable = constant:camp_rework_timing.suppression_days
+		allowed = { original_tag = BEL uses_normal_civilian_systems = yes }
+		visible = {
+			NOT = { has_country_flag = camp_admin_initialized }
+			uses_normal_civilian_systems = yes
+			has_country_flag = camp_rework_belgium_strike_response_pending
+		}
+		available = {
+			NOT = { has_country_flag = camp_admin_initialized }
+			uses_normal_civilian_systems = yes
+			has_active_mission = bel_colonial_strike_response
+			NOT = {
+				OR = {
+					has_country_flag = camp_rework_belgium_strike_route_negotiation
+					has_country_flag = camp_rework_belgium_strike_route_reform
+					has_country_flag = camp_rework_belgium_strike_route_suppression
+				}
+			}
+			camp_rework_can_pay_expansion_command = yes
+			camp_rework_can_pay_infantry_equipment = yes
+			camp_rework_can_pay_support_equipment = yes
+			has_variable = bel_colonial_strike_state_id
+			var:bel_colonial_strike_state_id = { camp_rework_state_is_actor_responsible_controlled = yes is_valid_camp_active_site_state = yes }
+		}
+		complete_effect = {
+			custom_effect_tooltip = bel_suppress_colonial_strikes_effect_tt
+			set_temp_variable = { camp_rework_action_id = constant:camp_rework_action.bel_suppress_colonial_strikes }
+			camp_rework_route_country_specific_action = yes
+			hidden_effect = { camp_rework_credit_sale_order = yes }
+		}
+		ai_will_do = { base = constant:camp_rework_ai_weight.belgium_expansion }
+	}
+
+
+	bel_negotiate_colonial_strike_settlement = {
+		icon = GFX_decision_bel_colonial_inspection
+		cost = global.black_friday_price_camp_rework_cost_review_pp
+		days_re_enable = constant:camp_rework_timing.suppression_days
+		allowed = { original_tag = BEL uses_normal_civilian_systems = yes }
+		visible = {
+			NOT = { has_country_flag = camp_admin_initialized }
+			uses_normal_civilian_systems = yes
+			has_country_flag = camp_rework_belgium_strike_response_pending
+			OR = {
+				has_government = democratic
+				has_government = neutrality
+				has_country_flag = bel_focus_colonial_inspection_mandate
+			}
+		}
+		available = {
+			NOT = { has_country_flag = camp_admin_initialized }
+			uses_normal_civilian_systems = yes
+			NOT = { has_country_flag = camp_gui_country_action_4_cooldown }
+			has_active_mission = bel_colonial_strike_response
+			NOT = {
+				OR = {
+					has_country_flag = camp_rework_belgium_strike_route_negotiation
+					has_country_flag = camp_rework_belgium_strike_route_reform
+					has_country_flag = camp_rework_belgium_strike_route_suppression
+				}
+			}
+			num_of_civilian_factories_available_for_projects > constant:camp_rework_mission_capacity.civilian_factory_floor
+		}
+		complete_effect = {
+			custom_effect_tooltip = bel_negotiate_colonial_strike_settlement_effect_tt
+			set_temp_variable = { camp_rework_action_id = constant:camp_rework_action.bel_negotiate_colonial_strike_settlement }
+			camp_rework_route_country_specific_action = yes
+			hidden_effect = { camp_rework_credit_sale_order = yes }
+		}
+		ai_will_do = { base = constant:camp_rework_ai_weight.belgium_reform }
+	}
+
+
+	bel_congo_resource_quota_cycle = {
+		icon = GFX_decision_bel_congo_concession_quota
+		modifier = { consumer_goods_factor = @CR_SC_CAMP_REWORK_IDEA_MODIFIER_GENERIC_BASE_RESOURCES }
+		allowed = { original_tag = BEL uses_normal_civilian_systems = yes }
+		activation = { always = no }
+		visible = {
+			NOT = { has_country_flag = camp_admin_initialized }
+			uses_normal_civilian_systems = yes
+			has_variable = bel_congo_quota_state_id
+		}
+		available = { hidden_trigger = { always = no } }
+		days_mission_timeout = constant:camp_rework_timing.bel_congo_resource_quota_cycle_days
+		days_remove = constant:camp_rework_timing.bel_congo_resource_quota_cycle_days
+		is_good = yes
+		timeout_effect = {
+			if = {
+				limit = { camp_rework_belgium_quota_requirements_met = yes }
+				custom_effect_tooltip = bel_congo_resource_quota_cycle_success_tt
+			}
+			else = { custom_effect_tooltip = bel_congo_resource_quota_cycle_failure_tt }
+			camp_rework_complete_belgium_quota_cycle = yes
+		}
+		cancel_trigger = { NOT = { camp_rework_belgium_quota_requirements_met = yes } }
+		cancel_effect = { if = { limit = { NOT = { has_country_flag = camp_admin_initialized } } camp_rework_complete_belgium_quota_cycle = yes } }
+		ai_will_do = { base = constant:camp_rework_ai_weight.blocked }
+	}
+
+
+	bel_congo_transport_corridor_project = {
+		icon = GFX_decision_bel_congo_transport_corridor
+		modifier = { consumer_goods_factor = @CR_SC_CAMP_REWORK_IDEA_MODIFIER_REFORM_CONSUMER_GOODS }
+		allowed = { original_tag = BEL uses_normal_civilian_systems = yes }
+		activation = { always = no }
+		visible = {
+			NOT = { has_country_flag = camp_admin_initialized }
+			uses_normal_civilian_systems = yes
+			has_variable = bel_congo_corridor_state_id
+		}
+		available = { hidden_trigger = { always = no } }
+		days_mission_timeout = constant:camp_rework_timing.bel_congo_transport_corridor_project_days
+		days_remove = constant:camp_rework_timing.bel_congo_transport_corridor_project_days
+		is_good = yes
+		timeout_effect = {
+			if = {
+				limit = { camp_rework_belgium_corridor_requirements_met = yes }
+				custom_effect_tooltip = bel_congo_transport_corridor_project_success_tt
+			}
+			else = { custom_effect_tooltip = bel_congo_transport_corridor_project_failure_tt }
+			camp_rework_complete_belgium_transport_corridor = yes
+		}
+		cancel_trigger = { NOT = { camp_rework_belgium_corridor_requirements_met = yes } }
+		cancel_effect = { if = { limit = { NOT = { has_country_flag = camp_admin_initialized } } camp_rework_complete_belgium_transport_corridor = yes } }
+		ai_will_do = { base = constant:camp_rework_ai_weight.blocked }
+	}
+
+
+	bel_colonial_strike_response = {
+		icon = GFX_decision_bel_congo_concession_quota
+		allowed = { original_tag = BEL uses_normal_civilian_systems = yes }
+		activation = { always = no }
+		visible = {
+			NOT = { has_country_flag = camp_admin_initialized }
+			uses_normal_civilian_systems = yes
+			has_country_flag = camp_rework_belgium_strike_response_pending
+		}
+		available = { hidden_trigger = { always = no } }
+		days_mission_timeout = constant:camp_rework_timing.bel_colonial_strike_response_days
+		is_good = yes
+		timeout_effect = {
+			if = {
+				limit = {
+					OR = {
+						has_country_flag = camp_rework_belgium_strike_route_negotiation
+						has_country_flag = camp_rework_belgium_strike_route_reform
+						has_country_flag = camp_rework_belgium_strike_route_suppression
+					}
+				}
+				custom_effect_tooltip = bel_colonial_strike_response_success_tt
+			}
+			else = { custom_effect_tooltip = bel_colonial_strike_response_failure_tt }
+			camp_rework_complete_belgium_strike_response = yes
+		}
+		cancel_trigger = {
+			OR = {
+				uses_normal_civilian_systems = no
+				has_country_flag = camp_admin_initialized
+				NOT = { has_variable = bel_colonial_strike_state_id }
+				var:bel_colonial_strike_state_id = {
+					OR = {
+						NOT = { is_valid_camp_active_site_state = yes }
+						NOT = { camp_rework_state_is_actor_responsible_controlled = yes }
+					}
+				}
+			}
+		}
+		cancel_effect = { camp_rework_complete_belgium_strike_response = yes }
+		ai_will_do = { base = constant:camp_rework_ai_weight.blocked }
+	}
 }

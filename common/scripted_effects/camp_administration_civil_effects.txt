@@ -446,3 +446,14 @@ camp_administration_civil_cleanup = {
 	set_variable = { camp_admin_civil_review_progress = constant:camp_admin_civil.zero }
 	set_variable = { camp_admin_civil_claims_progress = constant:camp_admin_civil.zero }
 }
+
+camp_administration_civil_record_legacy_violence = {
+	if = {
+		limit = { camp_admin_site_is_operational = yes ROOT = { camp_administration_civil_custody_authority = yes } }
+		set_temp_variable = { camp_admin_death_requested_k = camp_admin_detainees_k }
+		multiply_temp_variable = { camp_admin_death_requested_k = constant:camp_admin_civil.violence_fraction }
+		set_temp_variable = { camp_admin_death_cause = constant:camp_admin_cause.violence }
+		set_temp_variable = { camp_admin_death_contract = constant:camp_admin_civil.one }
+		camp_admin_record_deaths = yes
+	}
+}

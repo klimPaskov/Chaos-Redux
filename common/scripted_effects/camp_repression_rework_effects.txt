@@ -1056,6 +1056,8 @@ camp_rework_apply_ai_cap = {
 	set_variable = { camp_ai_restricted_site_cap = constant:camp_rework_ai_cap.generic_restricted_sites }
 	set_variable = { camp_ai_active_project_cap = constant:camp_rework_ai_cap.generic_active_projects }
 	set_variable = { camp_ai_active_project_count = 0 }
+	if = { limit = { has_active_mission = bel_congo_resource_quota_cycle } add_to_variable = { camp_ai_active_project_count = 1 } }
+	if = { limit = { has_active_mission = bel_congo_transport_corridor_project } add_to_variable = { camp_ai_active_project_count = 1 } }
 
 	if = {
 		limit = { original_tag = GER }
@@ -3658,4 +3660,11 @@ camp_rework_expose_network_crisis = {
 	genocide_register_public_condemnation_source = yes
 	genocide_apply_condemnation_thresholds = yes
 	camp_rework_recalculate_country_values = yes
+}
+
+camp_rework_mark_sale_stock_convoys = {
+	if = {
+		limit = { NOT = { check_variable = { camp_rework_sale_stock_family > 0 } } }
+		set_temp_variable = { camp_rework_sale_stock_family = constant:universal_cost_family.convoys }
+	}
 }

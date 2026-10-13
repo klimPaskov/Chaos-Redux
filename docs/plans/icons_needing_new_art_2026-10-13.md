@@ -24,6 +24,4 @@ Base flags satisfy the engine's missing-ideology fallback; this table does not a
 The original `FRA_matignon_agreements` DDS remains unrecovered as described above.
 Its current authorized existing-icon substitution produces no missing-texture line in handoff 1's first Linux launch, but does not establish recovery of the original.
 
-The historical Belgian strike-response mission also references `GFX_decision_bel_congo_concession_quota`, whose current registration and texture are unrecovered.
-Handoff 4 owns recovery/production of that decision/mission icon after inspecting the historical consumer family.
-The corresponding Belgian launch, selection, completion and quota/corridor contracts remain incomplete in handoff 1, so artwork alone does not close that route.
+The Belgian quota/strike-response and transport-corridor sprites have been recovered from the original LFS-backed historical assets and their sprite registrations restored: `GFX_decision_bel_congo_concession_quota` (`a9039badf667f5ac51a197fa6f500598dc2020f5bfd1faf31b8cd3af5bf8a3c9`) and `GFX_decision_bel_congo_transport_corridor` (`d333d0fdabd024087a82203a5f97dc52f94f8463871a7f6a3350086287318e22`). The Belgian decision, mission, bridge, selector and completion contracts are restored from `1850d88c3^` in the camps/sanctions follow-up; no new artwork production or substitute binding is needed for these entries.

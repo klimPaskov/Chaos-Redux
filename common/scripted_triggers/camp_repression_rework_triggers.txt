@@ -2094,3 +2094,51 @@ camp_rework_french_legacy_closure_ready = {
 # ---------------------------------------------------------------------------
 # Timed mission completion contracts
 # ---------------------------------------------------------------------------
+
+
+camp_rework_belgium_quota_requirements_met = {
+	NOT = { has_country_flag = camp_admin_initialized }
+	uses_normal_civilian_systems = yes
+	has_equipment = { motorized_equipment_1 > constant:camp_rework_mission_equipment_reserve.motorized_equipment }
+	has_equipment = { train_equipment_1 > constant:camp_rework_mission_equipment_reserve.trains }
+	has_equipment = { convoy_1 > constant:camp_rework_mission_equipment_reserve.convoys }
+	has_variable = bel_congo_quota_state_id
+	var:bel_congo_quota_state_id = {
+		camp_rework_state_is_actor_responsible_controlled = yes
+		is_valid_camp_active_site_state = yes
+		is_bel_congo_concession_pool_state = yes
+		OR = {
+			has_resources_amount = { resource = rubber amount > 0 }
+			has_resources_amount = { resource = tungsten amount > 0 }
+			has_resources_amount = { resource = coal amount > 0 }
+		}
+	}
+}
+
+
+camp_rework_belgium_corridor_requirements_met = {
+	NOT = { has_country_flag = camp_admin_initialized }
+	uses_normal_civilian_systems = yes
+	has_equipment = { motorized_equipment_1 > constant:camp_rework_mission_equipment_reserve.motorized_equipment }
+	has_equipment = { train_equipment_1 > constant:camp_rework_mission_equipment_reserve.trains }
+	has_equipment = { convoy_1 > constant:camp_rework_mission_equipment_reserve.convoys }
+	num_of_civilian_factories_available_for_projects > constant:camp_rework_mission_capacity.civilian_factory_floor
+	has_variable = bel_congo_corridor_state_id
+	var:bel_congo_corridor_state_id = {
+		camp_rework_state_is_actor_responsible_controlled = yes
+		is_valid_camp_active_site_state = yes
+		is_bel_congo_transport_project_state = yes
+	}
+}
+
+
+camp_rework_country_under_ai_project_cap = {
+	has_variable = camp_ai_active_project_cap
+	has_variable = camp_ai_active_project_count
+	check_variable = { camp_ai_active_project_cap > 0 }
+	check_variable = {
+		var = camp_ai_active_project_count
+		value = camp_ai_active_project_cap
+		compare = less_than
+	}
+}
