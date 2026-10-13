@@ -71,7 +71,7 @@ Use `chaosx_3d_model_pipeline` for bounded Meshy 7 custom HOI4 3D model work cov
 
 Use `chaosx_super_event_text_researcher` for super-event main quotes, exact wording checks, attribution confidence, source comparison, button text, cultural remarks, slogans, allusions, and short references.
 
-Use `chaosx_super_event_audio_researcher` for licensed or public domain audio research, source verification, download, final `.wav` preparation, and audio handoff notes.
+Use `chaosx_super_event_audio_researcher` for licensed or public domain audio research, source verification, download, final `.ogg` preparation with original recordings preserved, and audio handoff notes.
 
 Use `chaosx_focus_tree_auditor` for focus tree audits and active small patches covering branch depth, route coverage, icons, localisation, rewards, prerequisites, mutual exclusions, AI, focus-formable links, and simplification.
 
@@ -384,7 +384,7 @@ Use separate research agents when the super-event package has enough work to jus
 
 Use `chaosx_super_event_text_researcher` for quotes, exact wording, attribution confidence, button text, cultural remarks, slogans, allusions, and short references.
 
-Use `chaosx_super_event_audio_researcher` for audio research, license verification, download, final `.wav` preparation, and audio handoff notes.
+Use `chaosx_super_event_audio_researcher` for audio research, license verification, download, final `.ogg` preparation with original recordings preserved, and audio handoff notes.
 
 Use `chaosx_portrait_creator` for every character portrait. Use `chaosx_asset_source_researcher` or `chaosx_generated_event_art` only for non-portrait image work according to the source mode required by `chaos-redux-event-assets`.
 

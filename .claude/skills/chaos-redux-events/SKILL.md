@@ -344,9 +344,9 @@ If the event shows or drives a super event, wire the whole package:
 - choose the slot intentionally
 - set `super_event_visible`
 - set `global.current_super_event_audio_id`. Every super-event has a unique audio id and unique final track.
-- register the final cue as a game-ready WAV under `sound/<event_id>_<event_slug>/...`
-- add the base sound definition and required settings-volume soundeffect wrappers to `sound/chaosx_sound.asset`
-- play the cue with `play_current_super_event_sound = yes`, the settings-aware sound helper
+- register the final cue as a game-ready OGG under `music/`, preserving the original recording and existing WAV sources
+- add music song definitions and every settings-volume variant, including silent `0`, with matching music-list and station registrations under the `chaos-redux-super-events` contract
+- play the cue with `play_current_super_event_audio = yes`, the settings-aware music helper, so each new cue replaces the prior super-event cue even when muted
 - update scripted localisation in `common/scripted_localisation/chaosx_scripted_localisation_super_events.txt`
 - update image wiring in `interface/chaosx_super_events.gfx`
 - update player-facing localisation in the correct `.yml` files

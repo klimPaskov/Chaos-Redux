@@ -42,7 +42,7 @@ News images are `397x153` black-and-white documentary photographs or period pres
 
 Super-event images are `457x328` scenes with strong central composition, a dramatic theme, readable subjects, enough contrast for HOI4 UI, and no generated text or small-detail clutter. Apply Asset source rules for archival versus fictional imagery and era fit, and Generate and refine source art for scene-art requirements and documented user exceptions.
 
-If a super-event needs an audio cue, use `chaos-redux-super-events` and research a suitable public domain or clearly licensed recording. Register the final cue as sound from the event-scoped `sound/<event_id>_<event_slug>/` folder. Never create event or super-event audio from generated test tones, primitive waveforms, beeps, noise beds, or local oscillator output, including sine, square, triangle, and sawtooth waveforms.
+If a super-event needs an audio cue, use `chaos-redux-super-events` and research a suitable public domain or clearly licensed recording. Register the final OGG cue as music under `music/` following that skill's song, volume-variant, station, and replacement-playback contract, preserving original recordings and existing WAV sources. Never create event or super-event audio from generated test tones, primitive waveforms, beeps, noise beds, or local oscillator output, including sine, square, triangle, and sawtooth waveforms.
 
 Document each track's title, composer, performer or recording source where relevant, checked license or public-domain status, source link, thematic fit, suggested in-game use, and editing notes. Do not claim public-domain status without checking; mark an unclear license uncertain or unsuitable.
 
