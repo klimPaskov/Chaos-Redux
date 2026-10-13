@@ -6,7 +6,7 @@ This page records an integration description whose current acceptance remains un
 The [retained goal prompt](../../plans/world_end_scenarios_plans/world_end_entries_goal_prompt.md) excludes hidden terminal entries, while this page and the [registry repair record](../../plans/world_end_scenarios_plans/registry_repairs_handoff.md) describe registered hidden rows.
 The intervening decision is not established by those records.
 
-This page lists Final Silence as an Event Details world-end row, while [triggerable_scenarios.md](triggerable_scenarios.md#retired-final-silence-compatibility) describes that identity as retired from Event Details and retained only as cause memory.
+Final Silence is an independent manual terminal route with its own public Event Details row, restored under the owner’s 13 October direction from the pre-`3b5312c87` implementation.
 [events_log_window.md](events_log_window.md) also describes hidden visibility as metadata-controlled, while this page says the owner-only rebuild inserts every registered identity.
 These statements need a common acceptance record, current consumer inspection, and matching GUI scenarios.
 No scenario is added, removed, renumbered, or selected as the approved visibility contract by this review.

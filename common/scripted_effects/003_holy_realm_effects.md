@@ -90,3 +90,19 @@ Containment is also the effect of `THR_build_mountain_containment` and raises th
 The envoy lowers the Realm's pressure, moves its balance toward the Vow and earns its goodwill.
 Evacuation submits a flight request through `migration_request_flight_pressure` for the capital and the large-city states (`holy_realm_foreign_marked_city_state`), using the share in `holy_realm_event.evacuation_population_share`.
 A disruption of the final network lowers Final Silence Pressure further for a country that prepared containment.
+
+## Manual Final Silence terminal sequence
+
+`trigger_final_silence_scenario` in `chaosx_triggerable_scenarios_effects.txt` calls `holy_realm_prepare_final_silence` and the existing state-wave helpers in country scope.
+This manual route is separate from `holy_realm_complete_terminal_final_silence`, whose natural ritual still requests Fallout.
+
+- Inputs: the launcher country and `triggerable_scenarios_final_silence_type`, defaulting to the nuclear type through scenario initialization.
+- Setup: the wrapper establishes Holy Realm identity, armed doctrine, doctrine memories, Pressure and Mandala Reach from `triggerable_scenario_final_silence` constants, and the temporary thermonuclear selection flag.
+- Outputs and side effects: preparation sets `world_end`, `world_end_final_silence`, the variant flag, zeroes the global wave counter, invokes existing world-end faction cleanup, records Chaos and condemnation, reports unconventional use, locks contamination at `100%`, refreshes threat, and presents terminal super-event slot `9` through the shared audio route.
+- State processing: the four regional waves use the existing `holy_realm_final_silence` tuning. Nuclear losses are `75%` and thermonuclear losses are `95%`. Non-Realm target states receive Deaths, fallout, building removal, wasteland and strike receipts. Realm states receive visual strikes and fallout without the lethal wave processing.
+- Callbacks: `.nr3.73` supplies foreign witness reports, `.nr3.82` advances the wave after `wave_days`, `.nr3.84` drains visual strikes, `.nr3.90` reports completion, and `chaosx.triggerable_scenarios.5` acknowledges the manual launch.
+- Cleanup: a fresh manual launch clears stale completed/interrupted terminal receipts before preparation, including the receipt left by a superseded natural Fallout request. The temporary scenario thermonuclear flag is cleared after scheduling. Strike and visual-queue state flags retain their original duplicate-processing guards. `holy_realm_interrupt_final_silence` retains the original interruption cleanup. No new event target is introduced.
+- Fallout coexistence: its legacy migration excludes `air_contamination_final_silence_locked`, preserving this sequence across recovery. The gradual-air Fallout evaluator also excludes this lock, including after the original interruption path clears `world_end`. The manual wrapper cancels an uncommitted Fallout envelope and retires preterminal sweep/countdown callbacks before preparing the old terminal sequence. Normal Fallout completion and its own manual scenario remain unchanged.
+
+Example: choose scenario `4` and the nuclear or thermonuclear type, then confirm the launch through `trigger_selected_chaosx_scenario`.
+The intensity slider does not alter the canonical Final Silence sequence.

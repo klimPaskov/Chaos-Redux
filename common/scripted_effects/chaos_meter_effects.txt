@@ -5010,6 +5010,28 @@ air_contamination_update_threshold_flags = {
 	}
 }
 
+air_contamination_lock_final_silence = {
+	set_global_flag = air_contamination_final_silence_locked
+
+	if = {
+		limit = { NOT = { has_variable = global.air_contamination_bp } }
+		set_variable = { global.air_contamination_bp = 0 }
+	}
+
+	set_temp_variable = { air_contamination_delta_bp = constant:air_contamination_threshold_bp.irreversible_100 }
+	subtract_from_temp_variable = { air_contamination_delta_bp = global.air_contamination_bp }
+	set_temp_variable = { air_chaos_reason_increase = constant:chaos_meter_history_reason.world_state.air_contamination_rise }
+	set_temp_variable = { air_chaos_reason_decrease = constant:chaos_meter_history_reason.world_state.air_contamination_fall }
+	air_contamination_apply_delta_bp = yes
+
+	set_variable = { global.air_contamination_bp = constant:air_contamination_threshold_bp.irreversible_100 }
+	set_variable = { global.air_contamination_last_delta_bp = air_contamination_delta_bp }
+	set_variable = { global.air_contamination_decay_bp = 0 }
+	air_contamination_refresh_values = yes
+	air_contamination_update_threshold_flags = yes
+	air_contamination_apply_state_modifier = yes
+}
+
 air_contamination_sync_chaos_from_delta = {
 	if = {
 		limit = {
@@ -5098,6 +5120,11 @@ air_contamination_apply_delta_bp = {
 	clamp_variable = {
 		var = global.air_contamination_bp
 		min = 0
+	}
+
+	if = {
+		limit = { has_global_flag = air_contamination_final_silence_locked }
+		set_variable = { global.air_contamination_bp = constant:air_contamination_threshold_bp.irreversible_100 }
 	}
 
 	if = {
@@ -5190,6 +5217,7 @@ air_contamination_apply_state_modifier = {
 	else_if = {
 		limit = {
 			has_global_flag = settings_air_cleanliness_disabled
+			NOT = { has_global_flag = air_contamination_final_silence_locked }
 			NOT = { has_global_flag = fallout_air_contamination_permanent_99 }
 		}
 		air_contamination_clear_country_pressure_ideas = yes
@@ -5486,6 +5514,14 @@ air_contamination_monthly_update = {
 			NOT = { has_global_flag = fallout_air_contamination_permanent_99 }
 		}
 		set_temp_variable = { air_cleanliness_system_enabled = 0 }
+	}
+
+	if = {
+		limit = {
+			has_global_flag = air_contamination_final_silence_locked
+			NOT = { has_global_flag = fallout_air_cleanliness_disabled }
+		}
+		set_temp_variable = { air_cleanliness_system_enabled = 1 }
 	}
 
 	every_state = {

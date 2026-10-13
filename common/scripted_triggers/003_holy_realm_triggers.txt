@@ -1078,3 +1078,22 @@ holy_realm_schism_response_unresolved = {
 	NOT = { has_completed_focus = THR_break_false_mandala }
 	NOT = { has_completed_focus = THR_absorb_the_shadow }
 }
+
+holy_realm_uses_thermonuclear_final_silence = {
+	OR = {
+		has_country_flag = holy_realm_triggerable_final_silence_thermonuclear
+		AND = {
+			date > 1946.12.31
+			holy_realm_has_final_silence_thermonuclear_stockpile = yes
+			OR = {
+				has_tech = thermonuclear_bombs
+				has_country_flag = holy_realm_thermonuclear_doctrine
+			}
+		}
+	}
+}
+
+holy_realm_has_final_silence_thermonuclear_stockpile = {
+	num_of_nukes > constant:holy_realm_final_silence.thermonuclear_total_stockpile_gate
+	check_variable = { holy_realm_thermonuclear_payloads_prepared > constant:holy_realm_final_silence.thermonuclear_payload_gate }
+}
