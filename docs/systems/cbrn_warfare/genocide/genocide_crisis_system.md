@@ -171,7 +171,13 @@ All country actions use `camp_rework_route_country_specific_action`. State actio
 
 Restricted chemical, biological, radicalized, and extermination routes use the strict helper family in `common/scripted_triggers/camp_repression_rework_triggers.txt`: `camp_rework_country_can_use_radicalized_route`, `camp_rework_germany_can_use_restricted_method_route`, `camp_rework_japan_can_use_restricted_method_route`, `camp_rework_country_can_use_restricted_method_route`, `camp_rework_country_has_explicit_extreme_doctrine_route`, and `camp_rework_fixed_country_can_use_extermination_route`. Fixed country packages require their own program or explicit doctrine route; the generic ideology shortcut cannot unlock them. Chemical and biological actions also require their actual technology, facility, and stockpile capacity.
 
-The Command Power, Army Experience, and Political Power that the pre-administration decisions in `common/decisions/genocide_crisis_decisions.txt` pay come from `genocide_decision_cost` and are read through the Black Friday price table (`global.black_friday_price_genocide_decision_cost_<key>`), so their requirement, payment, and `genocide_requires_*_tt` text show and charge the Black Friday sale price while Event 026 is active and the ordinary amount otherwise. Their requirements accept a country holding exactly the shown amount.
+Most Command Power, Army Experience, and Political Power costs on the pre-administration decisions in `common/decisions/genocide_crisis_decisions.txt` come from `genocide_decision_cost` and use the Black Friday price table (`global.black_friday_price_genocide_decision_cost_<key>`), so their requirement, payment, and `genocide_requires_*_tt` text show and charge the sale price while Event 026 is active and the ordinary amount otherwise.
+The restored `genocide_enact_sanctions` action is a separate immediate foreign response with a 60 political-power cost and 60-day cooldown.
+Each eligible use applies `genocide_sanctions_pressure` and adds 12 `genocide_foreign_pressure`, while `genocide_international_sanctions` is granted only when the target does not already have it.
+This direct response does not create or change source-aware condemnation pair records, their sanction tiers, or their compliance and defiance state.
+When the sanctioned target leaves normal human systems, C6 cleanup removes the direct sanctions idea and directed opinion modifier.
+Withdrawing a source-aware pair leaves this independent direct response intact.
+The direct sanction cost is not routed through the Black Friday price table.
 
 ## AI and Performance
 

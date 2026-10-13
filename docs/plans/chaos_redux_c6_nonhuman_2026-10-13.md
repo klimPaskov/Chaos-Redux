@@ -313,4 +313,8 @@ The restored actions and delayed helpers retain runtime human eligibility checks
 Source scenarios cover eligible humans, invalid targets, nonhuman conversion, full-administration ownership and repeated cleanup; the decision-file validator passed, while the larger helper files had unresolved coverage rather than a complete validation result.
 Installed effects documentation lines 6083–6092 and offline Effects line 1916 establish that country-scoped `remove_mission` skips completion and timeout effects.
 No native conversion observation is claimed.
+The preservation review additionally retires the active timed `fr_close_camp_legacy_sites` decision synchronously with `remove_decision`, preventing its native consumer-goods penalty from surviving nonhuman conversion.
+Its cancellation predicate rejects nonhuman countries, and both delayed French closure and Gurs review helpers require normal civilian eligibility.
+The current Civil Administration record and paid-progress contracts remain authoritative without starting or processing human reviews for a nonhuman country.
+Installed effects lines 5959–5967 and offline Effects line 1868 establish that removing the timed decision skips its removal outcome and cooldown.
 The final source commit and dependency inventory are recorded in [the current restoration audit](systems_restore_audit_2026-10-13.md).

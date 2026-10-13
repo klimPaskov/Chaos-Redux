@@ -651,7 +651,10 @@ The boundary settles only the final prior-human military loss interval through t
 Immediately after that settlement and before setting the cleanup receipt, it calls `camp_rework_retire_nonhuman_country_missions` in `camp_repression_colonial_country_effects.txt`.
 This private COUNTRY-scoped helper accepts no inputs or defaults, returns no value, and is called only after the transition owner has established the nonhuman classification.
 It removes active `fr_gurs_legacy_review`, `bel_concession_reform_mandate`, `fr_refugee_pressure_response`, `bel_congo_resource_quota_cycle`, `bel_congo_transport_corridor_project`, and `bel_colonial_strike_response` missions with `remove_mission`, which does not run completion or timeout outcomes.
-It also clears their private refugee/strike routes and target IDs, retires the settlement commitment idea, and clears the legacy closure attempt; repeating it finds no active mission and leaves the same cleared state.
+It also removes the active timed `fr_close_camp_legacy_sites` decision with `remove_decision`, which skips its removal outcome and retires its native consumer-goods modifier immediately.
+It clears private refugee/strike routes and target IDs, retires the settlement commitment idea, and clears the legacy closure attempt.
+Repeated cleanup finds no active mission or closure decision and leaves the same cleared state.
+Stored Civil Administration review progress is preserved, while nonhuman eligibility prevents its monthly work and new settlement.
 The intended use is the existing transition call `clear_nonhuman_country_human_systems = yes` immediately after an identity-marker write; callers should not invoke the normal mission outcome helpers for cleanup.
 It does not create population loss, current nonhuman death accounting, gameplay costs, recovery achievements or refunds.
 The receipt and return-snapshot contract is documented in [Military casualty eligibility lifecycle](../../docs/systems/chaos_meter/chaos_meter_deaths_mechanic.md#military-casualty-eligibility-lifecycle).

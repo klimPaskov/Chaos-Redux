@@ -28,6 +28,21 @@ Its one-time existing-startup bootstrap retains original actors for Records, fil
 No core registry or recurring world hook is added by that metadata contract, and native iteration/ceased-country setter behavior remains unproved.
 No shared Chaos Meter hook or registry definition is changed by this timer.
 
+## Restored colonial decisions and Civil Administration
+
+When a French or Belgian country has `camp_admin_initialized`, its restored inspection and reform decisions hand settlement into `camp_administration_civil_action_two` only after `camp_admin_country_sites_ready_for_reform` and `camp_administration_civil_action_two_available` both pass.
+This is the existing Civil Administration review entry point, so the country continues through the existing monthly payment and completion contract rather than receiving a second legacy closure settlement.
+The monthly review charges 15 support equipment and 8 political power for each accepted month, and its three-month target pauses when the shared payment helper cannot pay.
+France's initialized `fr_inspect_camp_legacy` reads the current site and evidence registries without replacing their responsibility or evidence fields.
+Its 180-day Gurs mission retains the limited historical pressure and reform-credit outcome, then starts the current paid review only when that review remains eligible.
+The initialized `fr_close_camp_legacy_sites` path consumes its existing support-equipment order and starts the same review. Its delayed removal callback cannot perform a second site settlement.
+The decision leaves the list when the Civil Administration review completes or when its existing 270-day timer ends, while the legacy pre-initialization closure path retains its existing per-site behavior.
+Belgium's `bel_concession_reform_mandate` keeps its 365-day historical mandate period, but the initialized path does not start legacy per-site closure timers.
+At mandate completion, a current full-record preflight and an available Civil Administration review start one paid review. An already active or completed review is treated as the existing outcome and is never started again.
+The legacy pre-initialization Belgian mandate retains its previous dismantlement outcome.
+When a country becomes nonhuman before the legacy mission completes, its mission, active French timed closure decision, and pending route flags are retired without running success or delayed removal callbacks.
+This cleanup preserves an already active or completed Civil Administration review and its paid progress.
+
 The timer is triggered-only and hidden, so it creates no notification or choice.
 Its registration flag is an internal true/false state, while the period is a shared script constant.
 The package UI uses existing `gfx/interface/camp_repression/` sprites and `interface/camp_repression_rework.gfx`; this dispatch feature needs no new icon or sprite name.
