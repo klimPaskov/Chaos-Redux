@@ -1,71 +1,71 @@
 
 bio_ambiguous_health_pressure_state = {
-	enable = { state_uses_normal_civilian_systems = yes }
-	local_manpower = var:bio_ambiguous_manpower_modifier
-	local_supplies = var:bio_ambiguous_supplies_modifier
-	state_production_speed_buildings_factor = var:bio_ambiguous_production_modifier
-	local_org_regain = var:bio_ambiguous_recovery_modifier
+	enable = { ROOT = { state_uses_normal_civilian_systems = yes } }
+	local_manpower = ROOT.bio_ambiguous_manpower_modifier
+	local_supplies = ROOT.bio_ambiguous_supplies_modifier
+	state_production_speed_buildings_factor = ROOT.bio_ambiguous_production_modifier
+	local_org_regain = ROOT.bio_ambiguous_recovery_modifier
 }
 
 anthrax_contaminated_state = {
-	enable = { state_uses_normal_civilian_systems = yes }
+	enable = { ROOT = { state_uses_normal_civilian_systems = yes } }
 	icon = GFX_idea_anthrax_contamination
 	attacker_modifier = yes
 
-	local_manpower = var:anthrax_manpower_modifier
-	local_resources = var:anthrax_resources_modifier
-	local_supplies = var:anthrax_supplies_modifier
-	state_production_speed_buildings_factor = var:anthrax_production_modifier
-	attrition_for_controller = var:anthrax_attrition_modifier
-	army_speed_factor_for_controller = var:anthrax_speed_modifier
+	local_manpower = ROOT.anthrax_manpower_modifier
+	local_resources = ROOT.anthrax_resources_modifier
+	local_supplies = ROOT.anthrax_supplies_modifier
+	state_production_speed_buildings_factor = ROOT.anthrax_production_modifier
+	attrition_for_controller = ROOT.anthrax_attrition_modifier
+	army_speed_factor_for_controller = ROOT.anthrax_speed_modifier
 }
 
 plague_contaminated_state = {
-	enable = { state_uses_normal_civilian_systems = yes }
+	enable = { ROOT = { state_uses_normal_civilian_systems = yes } }
 	icon = GFX_idea_plague_contamination
 	attacker_modifier = yes
 
-	local_manpower = var:plague_manpower_modifier
-	local_resources = var:plague_resources_modifier
-	local_supplies = var:plague_supplies_modifier
-	state_production_speed_buildings_factor = var:plague_production_modifier
-	attrition_for_controller = var:plague_attrition_modifier
-	army_speed_factor_for_controller = var:plague_speed_modifier
+	local_manpower = ROOT.plague_manpower_modifier
+	local_resources = ROOT.plague_resources_modifier
+	local_supplies = ROOT.plague_supplies_modifier
+	state_production_speed_buildings_factor = ROOT.plague_production_modifier
+	attrition_for_controller = ROOT.plague_attrition_modifier
+	army_speed_factor_for_controller = ROOT.plague_speed_modifier
 }
 
 tularemia_contaminated_state = {
-	enable = { state_uses_normal_civilian_systems = yes }
+	enable = { ROOT = { state_uses_normal_civilian_systems = yes } }
 	icon = GFX_idea_tularemia_contamination
 	attacker_modifier = yes
 
 	# Tularemia focuses on tactical debuffs - consistent variable naming with other bioweapons
-	local_manpower = var:tularemia_manpower_modifier
-	local_resources = var:tularemia_resources_modifier
-	local_supplies = var:tularemia_supplies_modifier
-	state_production_speed_buildings_factor = var:tularemia_production_modifier
-	attrition_for_controller = var:tularemia_attrition_modifier
-	army_speed_factor_for_controller = var:tularemia_speed_modifier
-	local_org_regain = var:tularemia_org_modifier
+	local_manpower = ROOT.tularemia_manpower_modifier
+	local_resources = ROOT.tularemia_resources_modifier
+	local_supplies = ROOT.tularemia_supplies_modifier
+	state_production_speed_buildings_factor = ROOT.tularemia_production_modifier
+	attrition_for_controller = ROOT.tularemia_attrition_modifier
+	army_speed_factor_for_controller = ROOT.tularemia_speed_modifier
+	local_org_regain = ROOT.tularemia_org_modifier
 }
 
 smallpox_contaminated_state = {
-	enable = { state_uses_normal_civilian_systems = yes }
+	enable = { ROOT = { state_uses_normal_civilian_systems = yes } }
 	icon = GFX_idea_smallpox_contamination
 	attacker_modifier = yes
 
 	# Smallpox is a strategic weapon causing devastating effects across all sectors
-	local_manpower = var:smallpox_manpower_modifier
-	local_resources = var:smallpox_resources_modifier
-	local_supplies = var:smallpox_supplies_modifier
-	state_production_speed_buildings_factor = var:smallpox_production_modifier
-	attrition_for_controller = var:smallpox_attrition_modifier
-	army_speed_factor_for_controller = var:smallpox_speed_modifier
+	local_manpower = ROOT.smallpox_manpower_modifier
+	local_resources = ROOT.smallpox_resources_modifier
+	local_supplies = ROOT.smallpox_supplies_modifier
+	state_production_speed_buildings_factor = ROOT.smallpox_production_modifier
+	attrition_for_controller = ROOT.smallpox_attrition_modifier
+	army_speed_factor_for_controller = ROOT.smallpox_speed_modifier
 	# Growth over time (outbreak burden increases if untreated)
 	# Note: This will be handled by events that modify the variables
 }
 
 quarantined_contaminated_state = {
-	enable = { state_uses_normal_civilian_systems = yes }
+	enable = { ROOT = { state_uses_normal_civilian_systems = yes } }
 	icon = GFX_idea_quarantine_contamination
 
 	state_production_speed_buildings_factor = constant:bio_countermeasure_quarantine.state_construction
@@ -74,7 +74,5 @@ quarantined_contaminated_state = {
 	local_supplies = constant:bio_countermeasure_quarantine.local_supplies
 	resistance_growth = constant:bio_countermeasure_quarantine.resistance_growth
 
-	remove_trigger = {
-		NOT = { has_state_flag = quarantine_measures_active }
-	}
+	remove_trigger = { ROOT = { NOT = { has_state_flag = quarantine_measures_active } } }
 }

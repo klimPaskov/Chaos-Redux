@@ -579,15 +579,15 @@ black_plague_set_current_state_phase = {
 			limit = { black_plague_state_is_established = yes }
 			set_state_flag = black_plague_established_infection
 			if = {
-				limit = { NOT = { has_dynamic_modifier = { modifier = black_plague_affected_state } } }
-				add_dynamic_modifier = { modifier = black_plague_affected_state }
+				limit = { NOT = { has_dynamic_modifier = { modifier = black_plague_affected_state scope = OWNER } } }
+				set_temp_variable = { human_state_modifier_request = token:black_plague_affected_state } set_temp_variable = { human_state_modifier_requested_days = 0 } add_human_state_dynamic_modifier = yes
 			}
 		}
 		else = {
 			clr_state_flag = black_plague_established_infection
 			if = {
-				limit = { has_dynamic_modifier = { modifier = black_plague_affected_state } }
-				remove_dynamic_modifier = { modifier = black_plague_affected_state }
+				limit = { has_dynamic_modifier = { modifier = black_plague_affected_state scope = OWNER } }
+				set_temp_variable = { human_state_modifier_request = token:black_plague_affected_state } remove_human_state_dynamic_modifier = yes
 			}
 		}
 
@@ -667,6 +667,7 @@ black_plague_set_current_state_phase = {
 	}
 	black_plague_register_current_state = yes
 	if = { limit = { black_plague_state_is_established = yes } set_global_flag = black_plague_state_was_established }
+	black_plague_refresh_current_state_modifier = yes
 }
 
 # STATE scope. Reports are deliberately global one-shot notices. The scenario
@@ -1039,11 +1040,19 @@ black_plague_refresh_current_state_modifier = {
 	if = {
 		limit = { black_plague_state_is_established = yes }
 		if = {
-			limit = { NOT = { has_dynamic_modifier = { modifier = black_plague_affected_state } } }
-			add_dynamic_modifier = { modifier = black_plague_affected_state }
+			limit = { NOT = { has_dynamic_modifier = { modifier = black_plague_affected_state scope = OWNER } } }
+			set_temp_variable = { human_state_modifier_request = token:black_plague_affected_state } set_temp_variable = { human_state_modifier_requested_days = 0 } add_human_state_dynamic_modifier = yes
 		}
 		force_update_dynamic_modifier = yes
 	}
+	if = {
+		limit = { black_plague_state_is_rat_controlled = yes }
+		if = { limit = { NOT = { has_dynamic_modifier = { modifier = black_plague_rat_control_state } } } add_dynamic_modifier = { modifier = black_plague_rat_control_state } }
+	}
+	else = {
+		if = { limit = { has_dynamic_modifier = { modifier = black_plague_rat_control_state } } remove_dynamic_modifier = { modifier = black_plague_rat_control_state } }
+	}
+	force_update_dynamic_modifier = yes
 }
 
 # ---------------------------------------------------------------------------

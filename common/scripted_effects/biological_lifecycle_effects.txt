@@ -2340,7 +2340,7 @@ bio_lifecycle_refresh_detected_modifier_for_current_agent = {
 		multiply_variable = { anthrax_production_modifier = bio_modifier_scale }
 		multiply_variable = { anthrax_attrition_modifier = bio_modifier_scale }
 		multiply_variable = { anthrax_speed_modifier = bio_modifier_scale }
-		add_dynamic_modifier = { modifier = anthrax_contaminated_state days = bio_modifier_days }
+		set_temp_variable = { human_state_modifier_request = token:anthrax_contaminated_state } set_temp_variable = { human_state_modifier_requested_days = bio_modifier_days } add_human_state_dynamic_modifier = yes
 	}
 	else_if = {
 		limit = { check_variable = { var = bio_active_agent value = constant:bio_lifecycle_agent.plague compare = equals } }
@@ -2356,7 +2356,7 @@ bio_lifecycle_refresh_detected_modifier_for_current_agent = {
 		multiply_variable = { plague_production_modifier = bio_modifier_scale }
 		multiply_variable = { plague_attrition_modifier = bio_modifier_scale }
 		multiply_variable = { plague_speed_modifier = bio_modifier_scale }
-		add_dynamic_modifier = { modifier = plague_contaminated_state days = bio_modifier_days }
+		set_temp_variable = { human_state_modifier_request = token:plague_contaminated_state } set_temp_variable = { human_state_modifier_requested_days = bio_modifier_days } add_human_state_dynamic_modifier = yes
 	}
 	else_if = {
 		limit = { check_variable = { var = bio_active_agent value = constant:bio_lifecycle_agent.tularemia compare = equals } }
@@ -2374,7 +2374,7 @@ bio_lifecycle_refresh_detected_modifier_for_current_agent = {
 		multiply_variable = { tularemia_attrition_modifier = bio_modifier_scale }
 		multiply_variable = { tularemia_speed_modifier = bio_modifier_scale }
 		multiply_variable = { tularemia_org_modifier = bio_modifier_scale }
-		add_dynamic_modifier = { modifier = tularemia_contaminated_state days = bio_modifier_days }
+		set_temp_variable = { human_state_modifier_request = token:tularemia_contaminated_state } set_temp_variable = { human_state_modifier_requested_days = bio_modifier_days } add_human_state_dynamic_modifier = yes
 	}
 	else_if = {
 		limit = { check_variable = { var = bio_active_agent value = constant:bio_lifecycle_agent.smallpox compare = equals } }
@@ -2390,7 +2390,7 @@ bio_lifecycle_refresh_detected_modifier_for_current_agent = {
 		multiply_variable = { smallpox_production_modifier = bio_modifier_scale }
 		multiply_variable = { smallpox_attrition_modifier = bio_modifier_scale }
 		multiply_variable = { smallpox_speed_modifier = bio_modifier_scale }
-		add_dynamic_modifier = { modifier = smallpox_contaminated_state days = bio_modifier_days }
+		set_temp_variable = { human_state_modifier_request = token:smallpox_contaminated_state } set_temp_variable = { human_state_modifier_requested_days = bio_modifier_days } add_human_state_dynamic_modifier = yes
 	}
 	bio_lifecycle_prepare_legacy_antibiotic_protection = yes
 	force_update_dynamic_modifier = yes
@@ -2400,8 +2400,8 @@ bio_lifecycle_remove_detected_modifier_for_current_agent = {
 	if = {
 		limit = { check_variable = { var = bio_active_agent value = constant:bio_lifecycle_agent.anthrax compare = equals } }
 		if = {
-			limit = { has_dynamic_modifier = { modifier = anthrax_contaminated_state } }
-			remove_dynamic_modifier = { modifier = anthrax_contaminated_state }
+			limit = { has_dynamic_modifier = { modifier = anthrax_contaminated_state scope = OWNER } }
+			set_temp_variable = { human_state_modifier_request = token:anthrax_contaminated_state } remove_human_state_dynamic_modifier = yes
 		}
 		clear_variable = anthrax_manpower_modifier
 		clear_variable = anthrax_resources_modifier
@@ -2415,8 +2415,8 @@ bio_lifecycle_remove_detected_modifier_for_current_agent = {
 	else_if = {
 		limit = { check_variable = { var = bio_active_agent value = constant:bio_lifecycle_agent.plague compare = equals } }
 		if = {
-			limit = { has_dynamic_modifier = { modifier = plague_contaminated_state } }
-			remove_dynamic_modifier = { modifier = plague_contaminated_state }
+			limit = { has_dynamic_modifier = { modifier = plague_contaminated_state scope = OWNER } }
+			set_temp_variable = { human_state_modifier_request = token:plague_contaminated_state } remove_human_state_dynamic_modifier = yes
 		}
 		clear_variable = plague_manpower_modifier
 		clear_variable = plague_resources_modifier
@@ -2430,8 +2430,8 @@ bio_lifecycle_remove_detected_modifier_for_current_agent = {
 	else_if = {
 		limit = { check_variable = { var = bio_active_agent value = constant:bio_lifecycle_agent.tularemia compare = equals } }
 		if = {
-			limit = { has_dynamic_modifier = { modifier = tularemia_contaminated_state } }
-			remove_dynamic_modifier = { modifier = tularemia_contaminated_state }
+			limit = { has_dynamic_modifier = { modifier = tularemia_contaminated_state scope = OWNER } }
+			set_temp_variable = { human_state_modifier_request = token:tularemia_contaminated_state } remove_human_state_dynamic_modifier = yes
 		}
 		clear_variable = tularemia_manpower_modifier
 		clear_variable = tularemia_resources_modifier
@@ -2446,8 +2446,8 @@ bio_lifecycle_remove_detected_modifier_for_current_agent = {
 	else_if = {
 		limit = { check_variable = { var = bio_active_agent value = constant:bio_lifecycle_agent.smallpox compare = equals } }
 		if = {
-			limit = { has_dynamic_modifier = { modifier = smallpox_contaminated_state } }
-			remove_dynamic_modifier = { modifier = smallpox_contaminated_state }
+			limit = { has_dynamic_modifier = { modifier = smallpox_contaminated_state scope = OWNER } }
+			set_temp_variable = { human_state_modifier_request = token:smallpox_contaminated_state } remove_human_state_dynamic_modifier = yes
 		}
 		clear_variable = smallpox_manpower_modifier
 		clear_variable = smallpox_resources_modifier
@@ -2491,13 +2491,13 @@ bio_lifecycle_refresh_ambiguous_modifier = {
 		multiply_variable = { bio_ambiguous_recovery_modifier = bio_ambiguous_scale }
 		set_temp_variable = { bio_modifier_days = constant:bio_lifecycle_schedule.active_modifier_days }
 		round_temp_variable = bio_modifier_days
-		add_dynamic_modifier = { modifier = bio_ambiguous_health_pressure_state days = bio_modifier_days }
+		set_temp_variable = { human_state_modifier_request = token:bio_ambiguous_health_pressure_state } set_temp_variable = { human_state_modifier_requested_days = bio_modifier_days } add_human_state_dynamic_modifier = yes
 		force_update_dynamic_modifier = yes
 	}
 	else = {
 		if = {
-			limit = { has_dynamic_modifier = { modifier = bio_ambiguous_health_pressure_state } }
-			remove_dynamic_modifier = { modifier = bio_ambiguous_health_pressure_state }
+			limit = { has_dynamic_modifier = { modifier = bio_ambiguous_health_pressure_state scope = OWNER } }
+			set_temp_variable = { human_state_modifier_request = token:bio_ambiguous_health_pressure_state } remove_human_state_dynamic_modifier = yes
 		}
 		clear_variable = bio_ambiguous_manpower_modifier
 		clear_variable = bio_ambiguous_supplies_modifier
@@ -2815,8 +2815,8 @@ bio_lifecycle_cleanup_state_response_if_no_ordinary_episode = {
 			clear_variable = quarantine_effectiveness
 		}
 		if = {
-			limit = { has_dynamic_modifier = { modifier = quarantined_contaminated_state } }
-			remove_dynamic_modifier = { modifier = quarantined_contaminated_state }
+			limit = { has_dynamic_modifier = { modifier = quarantined_contaminated_state scope = OWNER } }
+			set_temp_variable = { human_state_modifier_request = token:quarantined_contaminated_state } remove_human_state_dynamic_modifier = yes
 		}
 		if = {
 			limit = { has_state_flag = anthrax_antibiotics_protection_active }

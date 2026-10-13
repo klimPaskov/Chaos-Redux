@@ -577,3 +577,88 @@ Defaults: unchanged when the acting country is AI or its crisis-pressure flag is
 Side effects: multiplies the current next-event interval by the live Chaos tier's 0.98–0.95 factor; no targets, flags, costs or periodic hooks.
 The caller retains rounding and its minimum interval clamp.
 Usage: `chaosx_apply_non_ai_crisis_pressure_to_next_timer = yes` after ordinary timer scaling in `calculate_next_timer_value`.
+
+## Human-country state modifier API
+
+Purpose: apply existing human-system state modifiers as native country-targeted state instances, so every currently existing country that uses normal civilian systems keeps its intended value and nonhuman countries receive no instance.
+The helper bodies live in this registry because their callers cross famine, migration, health-pressure and other state-system boundaries.
+The modifier definitions, values, icons and lifecycle decisions remain with their existing owners.
+
+| Helper | Scope | Inputs | Outputs and side effects |
+| --- | --- | --- | --- |
+| `add_human_state_dynamic_modifier` | STATE | Caller-owned temporary `human_state_modifier_request`, a synchronized token of the existing native modifier ID, and numeric `human_state_modifier_requested_days` | Removes the old exact instances, then applies that modifier to existing normal-civilian countries if this state uses normal civilian systems. Records the unchanged per-modifier expiry and deduplicated state/country arrays, then forces the state modifier refresh. |
+| `remove_human_state_dynamic_modifier` | STATE | Caller-owned temporary `human_state_modifier_request` | Removes the exact legacy unbound instance and exact views for every recorded country, then clears only this modifier's expiry field. |
+| `human_state_modifier_bind_existing_country` | STATE | Caller-owned temporary `human_state_modifier_request` and existing regular country target `human_state_modifier_new_country` | Binds that exact new country only while the state's saved modifier expiry is permanent or still in the future, using the unchanged remaining native days. Adds the country to the state's existing deduplicated recipient array. |
+| `refresh_human_state_modifier_country` | COUNTRY | Current existing normal-civilian country and the existing global state registry | Publishes the existing registration/cleanup flags and regular new-country target, then invokes the binding helper for all 23 existing modifier IDs on registered states and forces their modifier refresh. |
+
+All public calls use `= yes`.
+The caller passes a modifier token with `set_temp_variable = { human_state_modifier_request = token:<modifier_id> }` rather than a dollar parameter block.
+Dynamic names use native `meta_effect`, with `[MODIFIER]` bound through `GetTokenKey` to a helper-local frozen token.
+The modifier IDs must be present in `common/synchronized_dynamic_tokens/chaosx_tokens.txt` before these runtime token reads are consumed.
+No dummy idea or alternative modifier definition is created.
+
+Defaults: there is no default modifier or duration.
+An absent or zero modifier request performs no native modifier operation and consumes the input envelope.
+For an add call, zero or a negative supplied day count retains the existing permanent branch, while a positive count retains the existing native timed branch.
+Every direct caller initializes the exact token and, for add, the existing numeric duration source in the caller's current chain.
+The add helper freezes both inputs before invoking removal, so nested cleanup cannot erase its chosen token or duration.
+Add, remove and bind reset both temporary request fields to the shared zero constant on success and rejection.
+There is no persistent public result, and these input fields end with their current effect chain.
+
+The saved state variable remains `human_state_modifier_<modifier_id>_until`, with zero for a permanent instance and otherwise the original date-unit expiry.
+The add helper predeclares `chaosx_date_offset` before the existing conversion helper, allowing its output to survive a child return and retaining the requested expiry rather than a stale value.
+Conversion rounds a partial hour upward under the shared date API, while the native timed modifier receives the original positive day count.
+`human_state_modifier_countries` remains a shared, deduplicated state array of recorded recipients across modifier families.
+`global.human_state_modifier_states` remains the existing deduplicated registry.
+Removing one modifier retains these shared arrays and every other modifier's expiry or bound view.
+Recorded-country cleanup resets and explicitly binds its private `human_state_modifier_cleanup_break`, so an inherited nonzero `break` cannot truncate removal.
+The refresh traversal preserves its existing state-registry membership filter and does not admit unrelated states.
+No periodic hook, CXT grant, world iterator or modifier value is introduced by this API contract.
+
+Scope targets: `human_state_modifier_state`, `human_state_modifier_cleanup_state` and `human_state_modifier_new_country` remain regular event targets confined to their originating effect chain.
+Native `scope =` on add, presence and removal uses the same exact country pointer.
+The add gate remains `state_uses_normal_civilian_systems`, recipient enumeration remains `exists` plus `uses_normal_civilian_systems`, and country refresh retains those same country requirements.
+The internal bind helper assumes the existing validated regular new-country target supplied by refresh and grants no independent country eligibility.
+
+```text
+# In the existing state effect, preserve its existing duration source.
+set_temp_variable = { human_state_modifier_request = token:famine_state_famine }
+set_temp_variable = { human_state_modifier_requested_days = 0 }
+add_human_state_dynamic_modifier = yes
+
+# A separate state cleanup chain initializes its own exact modifier input.
+set_temp_variable = { human_state_modifier_request = token:famine_state_famine }
+remove_human_state_dynamic_modifier = yes
+
+# In an existing validated country birth/identity hook.
+refresh_human_state_modifier_country = yes
+```
+
+References: installed `effects_documentation.md` sections `add_dynamic_modifier`, `remove_dynamic_modifier`, `meta_effect`, `for_each_scope_loop` and `set_temp_variable`, installed `triggers_documentation.md` section `has_dynamic_modifier`, offline Data structures temporary-variable and token sections, and offline Modifiers' dynamic-modifier section.
+Installed documentation's country-targeted state semantics remain authoritative where the offline description of `scope =` differs.
+The current scratch handoff records exact source lines/revisions, token IDs, pre-edit/index snapshots, 89 literal consumer migrations and meaningful source cases.
+Source cases model native recipient facts, token resolution and modifier primitives, and do not establish native rendering or engine timing.
+Future extension should reuse the exact modifier token, expiry field and shared registries rather than introducing a second lifetime or country-view owner.
+
+## Synchronous human-system retirement
+
+`clear_nonhuman_country_human_systems` is COUNTRY-scoped and accepts no numeric inputs.
+It reads the actual nonhuman classifier, requires an existing country and uses `human_system_nonhuman_cleanup_current_@THIS` as a cheap idempotent receipt.
+The receipt is country-targeted so another tag cannot inherit its completed transition state.
+It returns no value and preserves immutable event and casualty history.
+Its side effects retire human health, custody, social-pressure and office-investigation spirits and current clinical traits, clear live medical progress flags and genocide foreign pressure, retire owned bilateral human sanction/camp relations, revoke inherited human CBRN occupation policy, detach every recorded human state-modifier view for this country, and force affected state/country modifier refresh.
+No gameplay cost, death, recovery achievement or refund is created by this boundary.
+The declaration lists the exact affected ideas and country modifiers rather than suppressing every political or military spirit.
+
+Direct call sites follow classifier marker writes in the Zombie, weaponized-zombie, Death, cave, nonhuman derivative, Kruger population and Rat Nation/King owner packages and triggerable scenarios.
+Human return marker removal calls `refresh_human_state_modifier_country`, which clears the nonhuman receipt and publishes `human_state_modifier_registered_@THIS`.
+The event-style startup, release, liberation, puppet, government-change and state-control hooks are in `common/on_actions/human_system_boundaries_on_actions.txt`.
+Country birth uses the existing registered-state membership filter, existing expiry and exact native country scope.
+No periodic world-country hook is introduced.
+
+`condemnation_clear_nonhuman_country_relations`, `condemnation_retire_nonhuman_relation_pair` and `condemnation_clear_monitoring_pair` remain with their owner in [condemnation_sanctions_effects.txt](condemnation_sanctions_effects.txt) and [system contract](../../docs/systems/cbrn_warfare/condemnation/condemnation_sanctions.md).
+The occupation-specific cleanup remains with [cbrn_occupation_effects.txt](cbrn_occupation_effects.txt) and [occupation contract](../../docs/systems/cbrn_warfare/cbrn_occupation_and_nerve_suppression.md#human-holder-boundaries).
+Every new global registry entry, per-modifier expiry and recorded country view remains owned by the state-modifier API above.
+Its targets are regular chain-lifetime event targets and there is no new global event target to clear.
+The shared registry is retained when one modifier ends because other families can still own views on the same state.
+Future human-system extensions should reuse this transition boundary and add only their exact owned cleanup fields.

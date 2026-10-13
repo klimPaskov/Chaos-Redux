@@ -2,13 +2,10 @@
 
 ## Current conclusion
 
-C6 is partial and must not be marked complete.
-The safe source changes below protect country and state entry boundaries, direct chemical unit damage, civilian population loss and inherited human modifiers.
-Native state combat modifiers with `attacker_modifier = yes` still affect nonhuman attackers fighting into eligible human-held states.
-Installed documentation exposes that setting as a fixed boolean without a per-unit country filter.
-Replacing human suppression with another mechanic would require a design decision and is outside this narrow repair.
+C6 source closure is implemented for the audited human-system boundaries, including native country-targeted attacker protection and synchronous inherited sanction cleanup.
+The first two repair commits are preserved.
+The third-round closure below records the broadened inherited/legacy audit, accepted parser repair, matching helper contracts, meaningful checks and native-engine verification limits.
 
-The reviewed C6 boundary repairs are committed, while the absolute requirement remains partial.
 No push or game launch occurred.
 
 - `b3946629cfdade087cfa4204e1c4efa053489bc1`: human casualty, disease, camp, inherited modifier, pollution, panic and legacy population boundaries, 27 paths.
@@ -127,7 +124,8 @@ The reviewed human entry boundaries cover the following families:
 | Event 41 inherited disease idea | Event 41 grants no idea and only dispatches native damage plus popup/news. No Event 41 idea grant consumer was found. |
 | Heat Wave and Half Gone | Heat Wave modifies physical heat attrition/acclimatization. Half Gone halves equipment, with no population debit. Both remain unchanged. |
 
-Broader country setup, every national spirit in every event, every occupation-law modifier, and all post-30 legacy event designs were not semantically audited in this bounded pass.
+The first two-commit pass did not semantically audit broader country setup, every national spirit, occupation-law modifiers or all post-30 legacy event designs.
+The third-round closure below records the additional human-spirit, occupation-law and post-30 hazard inventory and its exact limits.
 The source inventory supports future targeted review without presenting that remaining scope as completed.
 
 ## References and tool evidence
@@ -185,7 +183,7 @@ The parent reviewed the human and condemnation patches and accepted the independ
 The committed diffs exclude the other owner's positive population helper, crisis-pressure documentation, D4 advisor changes, Event 41 report art, A5 picture binding, unrelated trailing-line cleanup and the parent restore-plan edit.
 The airship decision retained its original CRLF bytes and was staged as an exact reviewed one-line-change blob.
 
-## Simplifications, omissions and blockers
+## Historical first-pass remaining items
 
 No alternate mechanics or design simplifications were introduced, and all existing human tuning, costs and ordinary warfare remain intact in the reviewed patches.
 The absolute C6 requirement remains unmet for native combat-area modifiers affecting nonhuman attackers in human-held states.
@@ -198,3 +196,109 @@ No assets or player-facing text were required by these hidden classification gua
 
 Skills used: canonical `chaos-redux-events`, `chaos-redux-subagents`, `chaos-redux-map-states`, `chaos-redux-decisions-missions`, `chaos-redux-diplomacy-war`, `chaos-redux-ideas-modifiers` and `chaos-redux-shared-git-commit`.
 No skill was created or updated.
+
+## Third-round closure and acceptance
+
+The parent assigned closure of every remaining C6 human-system path and explicitly accepted the native country-targeted state pattern after reviewing the installed add/presence/removal contract.
+The parent also accepted the exact concurrent load-repair hunks from `.tmp/live_verification_2026-10-13/human_modifier_load_repair.md` into this C6 source theme.
+The parent additionally accepted the two C6-only fixes in `.tmp/live_verification_2026-10-13/final_parser_repair.md`, converting the remaining chemical delivery event call and correcting optional FROM presence to the native nested `FROM = { scope_exists = yes }` trigger.
+Other migration enum and combat-constant fixes in that batch are excluded from C6 publication.
+That external worker corrected the unsupported parameter-call draft to the supported caller-owned token/day temporary inputs and native meta text, initialized the date-converter return before the child call, and retained the existing modifier state/country registries and native duration sources.
+This report records the external provenance and does not claim authorship of that repair.
+Only its C6 helper/caller/documentation regions and the 23 required synchronized modifier tokens belong to this publication.
+Other live-repair, migration, sanctions restoration, duplicate-grant, transport, audio and unrelated staged or unstaged changes remain separate.
+
+| Remaining or inherited path | Current disposition and source evidence |
+| --- | --- |
+| Nonhuman attackers in human-held states | Implemented through native country-targeted instances for 23 human-system modifier IDs, with exact matching scope on presence/removal. Existing state variables and enable/remove stage checks are rooted to the containing ROOT state. Human values and attacker settings remain unchanged. |
+| Country birth, annexed/released tags and conversion | Implemented by the registered-state remaining-lifetime binder and event-style birth/control hooks. Tag-targeted registration and cleanup receipts prevent another tag inheriting a completed receipt. A transition is scanned once, and adjacent classification writes take the cheap idempotent branch. |
+| Immediate inherited sanctions and human camp relations | Implemented synchronously in both directed pair roles. Recorded watch/active AI inverses retain their exact values. All owned source claims are removed, while a native relation is broken only when it is system-created and has no external claim. Historical condemnation entries remain. |
+| CBRN occupation laws and inherited authority | Both occupier and occupied scope admission are human-only, current state actions require human holders, and both AI score blocks have the matching final zero factor. Only matching CBRN default/country/state overrides are reset through the documented PREV occupier context. Ordinary occupation is preserved. |
+| Human health, outbreak controls, chemical shock and physician roles | Human `do_effect` gates and synchronous removal cover the audited surveillance, vaccination, antibiotic, outbreak-control, first-exposure shock and physician ideas. Country health callbacks reject nonhuman actors and live progress flags are retired. |
+| Human camp/custody and genocide spirits | All audited active camp idea groups and the inspection burden receive current human gates and exact transition removal. Genocide political/discovery callbacks and delayed events require human recipients, with current responsible/foreign target checks. The historical restored sanctions helper remains separate and retains its original numbers and effect package. |
+| Event 31 human terror | Eligible incident sites require human holders. Five state stages, the four human government-emphasis modifiers, famine spirit and sky-shock recipients are guarded. The final entity, conventional offensive, presence/revolt/ruin and military route mechanics remain. |
+| Event 33 evacuation and physical acid effects | The explicitly civilian evacuation disruption receives the state gate. Physical corrosion, truck/army/supply degradation and building damage remain as reviewed physical effects. |
+| Events 34 and 35 human labour and economic panic | Delayed labour-dispute execution and labour settlement, human depression-country overlays, active district administration and labour scars are guarded. Permanent physical recovered/scarred district outcomes retain the original complete definitions. |
+| Event 37 newcomer workforce | All five inherited newcomer/project/unrest/calm/shift modifier definitions are human-only and are removed on transformation. Existing manifestation and humanitarian admission remain. |
+| Event 39 office harm and investigation | Incident selection, retained government authority, generic casualty callbacks and fresh selected-owner action predicates require current human classification. Four human office/protection/investigation spirits are guarded and retired. |
+| Event 40 retained hostile mission | The live-target predicate repeats human classification after transformation, and the two active hostile institutional-pressure spirits are guarded and retired. Military, licensing and physical settlement outcomes remain. |
+| Event 65 clinical-named traits | Only trauma, stammer and the two paranoia rows gain the human eligibility zero factor. The full 949-row human pool is unchanged, the remaining 945 nonhuman outcomes retain weight one, and existing current-leader clinical traits are removed at transition. The classification is clinical human assignment, not a claim that their native PP/AI modifiers implement physiological damage. |
+| Native population, ordinary disease, famine, migration, direct chemical casualties and ledger gateways | Earlier b3946629c/22802baa3 boundaries are preserved and remain the common exact rejection paths. No further native civilian-loss bypass was found in the completed numbered-event hazard inventory. |
+| Broader country setup and inherited ideas | The independent inherited-spirit review covered the human health, camp/custody, pressure and physician families and all Chaos Redux occupation-law definitions. Their runtime/history grant paths were inspected, and nonhuman DHO/Death/Rat bespoke starting ideas remain. |
+| Post-30 legacy event scope | All 72 present numbered event files for IDs 31-69 and 71-100 were scanned for native harm and human modifier/helper/selector paths. A namespace search found no implemented 101-113 event definitions, and no Event 70 filename exists. The 193 companion paths were a relevant-operation inventory, rather than a complete design audit of every line. |
+| Physical and bespoke nonhuman paths | Conventional war/unit/equipment damage and costs, flood buildings, heat, acid corrosion, landing logistics, ZIN divine warfare, cave/Death/Rat bespoke systems and anti-zombie military/technology bonuses retain their reviewed behavior. No missing system was invented. |
+
+### Helper, constants, targets and cleanup ownership
+
+`add_human_state_dynamic_modifier`, `remove_human_state_dynamic_modifier`, `human_state_modifier_bind_existing_country` and `refresh_human_state_modifier_country` are documented in `common/scripted_effects/chaosx_dynamic_effects.md` with their real temporary-input contracts.
+All direct calls use `= yes`, with a synchronized exact modifier token and original supplied duration for addition.
+The global state registry, per-state recorded country array and per-modifier expiry belong to this API and are retained across other active modifier families.
+Regular chain-lifetime targets are used for state, cleanup, new-country and relation pointers.
+No new global event target is introduced.
+`clear_nonhuman_country_human_systems` is the idempotent country transition owner, with exact idea/flag/modifier/trait retirement and calls to the sanctions and CBRN occupation cleanup owners.
+The owning sanctions document records the pair helper inputs, exact inverse use, native external claim preservation and containing-target pointer correction.
+The owning occupation document records the country/state reset contexts and existing default-law cleanup.
+
+The only added tuning literal is file-scoped `@HUMAN_TRAIT_DISABLED_WEIGHT = 0` in Event 65, used as the four clinical eligibility zero factors.
+All other thresholds, weights, original human values and durations retain their existing sources.
+The law AI gate uses the existing disabled-score constant, and the state binding uses the existing date-unit constants and converter.
+The physical Rat-control alias `black_plague_rat_control_state` contains the original complete Rat-phase values with its phase-specific enable/removal conditions.
+It reuses `GFX_idea_black_death` in `interface/chaosx_ideas.gfx` alongside the human disease modifier.
+The two localization keys are `black_plague_affected_state` and `black_plague_rat_control_state`.
+No new art, GUI geometry, portrait, focus tree, equipment, country package, event log, event-detail premise or spreadsheet row is introduced.
+
+### Meaningful verification and limits
+
+`python .tmp/handoff3/nonhuman/check_source.py` completed 103 original idea-body comparisons, 70 modifier-body comparisons, 13 preserved helper-body comparisons, 142 exact-target native operation checks, six binding/lifetime/physical-preservation source scenarios and all 23 genocide-event human gates.
+It confirmed unchanged human fields and stage conditions after the ROOT qualification, preserved the monitoring inverse and native human embargo-registration body, and found the duplicate root-trigger insertion on a preconditioned genocide event.
+That defect was corrected by merging the human gate with the existing event condition before the passing run.
+The same scope review separated actual Great Depression state definitions from country definitions and corrected their classifier before acceptance.
+The scenario model assumes the installed native keyed-scope contract and does not emulate combat.
+
+The accepted external repair's `test_contract.py` was rerun against the actual current helper bodies and passed 16 production-body cases.
+It covers permanent/timed/fractional/negative durations, consumed input envelopes, nested cleanup, correct date return, invalid states, eligible recipients, deduplicated registries, exact family removal and missing/current/expired birth bindings with conservative caller-owned temporary frames.
+Only native scope/token/modifier/array facts are mocked.
+This is source execution of the authored helpers, not native engine observation.
+
+The read-only AI auditor compared all existing condemnation apply/inverse deltas and all 30 file-scoped AI constants with the captured baseline.
+Concern watch remains -60/-50/-40 and censure remains -200/-175/-150 for lend-lease/volunteers/access, with exact sign-opposite cleanup.
+Arms, strategic, total and pariah authored strategy deltas also retain exact inverses.
+Ordinary human and Holy Realm occupation examples keep 1000/1000 raw scores under the declared eligible contaminated/high-resistance/defensive assumptions.
+Nonhuman occupiers and nonhuman state holders score 0/0 after the eligibility factors.
+The law inspector found no occupation-law adapter, so those results are source-derived scores and do not imply selection probabilities.
+
+The Event 65 pool comparison preserves all 949 ordered rows and weight-one human cases, with each human row at 1/949.
+For a nonhuman DHO case, exactly four clinical rows have zero weight and all 945 remaining rows have probability 1/945.
+The MCP inventory found the complete pool and confirmed the nonhuman share.
+Human/Holy Realm scenarios remained unresolved in that adapter due missing classifier inputs, so their exact conditional shares come from the actual source comparison.
+The Event 34 option adapter likewise does not enforce the outer human event trigger and had unresolved affordability/profile inputs, so it was not used as nonhuman admission proof.
+No campaign firing probability, cumulative AI timing or native strategy stacking behavior is claimed.
+
+Reference context/search/read succeeded for the modifier contract and offline arguments.
+The vanilla MUN Czechoslovakia state application at lines 805-821 provides a native scoped precedent.
+Installed add/presence/remove documentation at 1153-1173, 3775-3795 and 5978-5992 provides exact matching country scopes, with ROOT anchored by the installed modifier header at lines 19-26.
+Occupation availability and reset scopes were read from installed `common/occupation_laws/occupation_laws.txt` header, effects 7434-7465 and triggers 6918-6935.
+The offline token/targeted-flag sections at Data structures 125 and 955-975 support the token and tag-specific receipt API.
+The parser repair records exact meta/temporary references and their revisions in its named handoff.
+Previous exhausted full-file validator and source-inspector failures were not repeated.
+The interrupted narrow occupation/context and scoped-native validation calls produced no completed result and are recorded as unverified attempts, with direct source/reference review used instead.
+There is no native gameplay, rendering, multiplayer token-loader, country-transition or combat-area observation in this source closure.
+Native coexistence, targeted combat consumption and repeated strategy accumulation remain verification limits, rather than unimplemented alternate mechanics.
+No game or push was performed by this C6 owner.
+
+### Publication, dispositions and scope limits
+
+The previously open native attacker and immediate relation items are implemented in the source above.
+The broadened inherited-spirit/occupation and post-30 hazard findings are implemented, and their concrete exact gates were rechecked.
+The parent owns the central restoration plan and final overall completion claim.
+The semantic review is an audit of human harm, health, labour/custody/office pressure and their inherited paths, rather than a redesign or complete revalidation of every political, physical, focus or country package.
+No confirmed C6 defect remains at the source boundary and no design fallback, weaker mechanic or requested route omission was introduced.
+No simplifications were made.
+The preserved physical/bespoke exclusions are the accepted C6 boundary, and all unobserved native results remain explicitly limited above.
+
+The current owned path list, exact baselines, hashes, source check results and commit/index evidence are retained under `.tmp/handoff3/nonhuman/`.
+The independent legacy inventory is `.tmp/handoff3/nonhuman/legacy_review/legacy_human_effects.md`.
+The first two C6 commits remain unchanged, and this closure is published through the temporary-index/CAS shared Git workflow.
+The small generic native-binding skill update is independently committed as `e523ac97e4f505aa0a82a2d399b0701d51446646` in the canonical ideas/modifiers skill.
+Skills used for closure are events, subagents, ideas/modifiers, decisions/missions, diplomacy/war, AI strategies, characters/leaders and shared Git commit.
+No event-specific context was added to a skill.

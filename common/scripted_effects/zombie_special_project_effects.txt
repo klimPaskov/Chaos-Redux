@@ -862,7 +862,7 @@ clear_weaponized_zombie_resolution_flags = {
 	clr_country_flag = weaponized_zombie_archetype_semi_sapient
 	clr_country_flag = weaponized_zombie_archetype_creator_betrayer
 	clr_country_flag = weaponized_zombie_archetype_canonical_convergence
-	clr_country_flag = weaponized_zombie_archetype_wendigo
+	clr_country_flag = weaponized_zombie_archetype_wendigo refresh_human_state_modifier_country = yes
 	clr_country_flag = weaponized_zombie_profile_hardened
 
 	clr_country_flag = weaponized_zombie_targets_zombies_only
@@ -879,7 +879,7 @@ clear_weaponized_zombie_type_flags = {
 	clr_country_flag = weaponized_zombie_type_undead
 	clr_country_flag = weaponized_zombie_type_necrotic
 	clr_country_flag = weaponized_zombie_type_demonic
-	clr_country_flag = weaponized_zombie_type_wendigo
+	clr_country_flag = weaponized_zombie_type_wendigo refresh_human_state_modifier_country = yes
 }
 
 weaponized_zombie_set_type_infected = {
@@ -919,7 +919,7 @@ weaponized_zombie_set_type_demonic = {
 
 weaponized_zombie_set_type_wendigo = {
 	clear_weaponized_zombie_type_flags = yes
-	set_country_flag = weaponized_zombie_type_wendigo
+	set_country_flag = weaponized_zombie_type_wendigo clear_nonhuman_country_human_systems = yes
 }
 
 clear_wendigo_world_end_continent_flags = {
@@ -1629,7 +1629,7 @@ resolve_weaponized_zombie_profile = {
 
 	if = {
 		limit = { has_country_flag = weaponized_zombie_type_wendigo }
-		set_country_flag = weaponized_zombie_archetype_wendigo
+		set_country_flag = weaponized_zombie_archetype_wendigo clear_nonhuman_country_human_systems = yes
 	}
 	else_if = {
 		limit = {
@@ -1850,7 +1850,7 @@ weaponized_zombie_apply_type_cosmetic_tag = {
 	else_if = { limit = { has_country_flag = weaponized_zombie_type_undead } set_cosmetic_tag = ZZZ_weaponized_undead }
 	else_if = { limit = { has_country_flag = weaponized_zombie_type_necrotic } set_cosmetic_tag = ZZZ_weaponized_necrotic }
 	else_if = { limit = { has_country_flag = weaponized_zombie_type_demonic } set_cosmetic_tag = ZZZ_weaponized_demonic }
-	else_if = { limit = { has_country_flag = weaponized_zombie_type_wendigo } set_cosmetic_tag = ZZZ_weaponized_wendigo }
+	else_if = { limit = { has_country_flag = weaponized_zombie_type_wendigo } set_cosmetic_tag = ZZZ_weaponized_wendigo clear_nonhuman_country_human_systems = yes }
 }
 
 weaponized_zombie_apply_training_ai = {
@@ -2471,12 +2471,12 @@ calculate_wendigo_incident_spawn_values = {
 }
 
 initialize_wendigo_incident_outbreak_country = {
-	set_country_flag = zombie_outbreak_dynamic_country
+	set_country_flag = zombie_outbreak_dynamic_country clear_nonhuman_country_human_systems = yes
 	set_country_flag = chaos_unit_family_parent_actor
-	set_country_flag = weaponized_zombie_outbreak_country
+	set_country_flag = weaponized_zombie_outbreak_country clear_nonhuman_country_human_systems = yes
 	set_country_flag = weaponized_zombie_created_by_@ROOT
-	set_country_flag = weaponized_zombie_type_wendigo
-	set_country_flag = weaponized_zombie_archetype_wendigo
+	set_country_flag = weaponized_zombie_type_wendigo clear_nonhuman_country_human_systems = yes
+	set_country_flag = weaponized_zombie_archetype_wendigo clear_nonhuman_country_human_systems = yes
 	set_country_flag = weaponized_zombie_attack_other_zombies
 	set_country_flag = weaponized_zombie_independent_outbreak
 
@@ -3009,9 +3009,9 @@ weaponized_zombie_create_profiled_units = {
 
 weaponized_zombie_copy_profile_to_outbreak = {
 	var:weaponized_zombie_new_country = {
-		set_country_flag = zombie_outbreak_dynamic_country
+		set_country_flag = zombie_outbreak_dynamic_country clear_nonhuman_country_human_systems = yes
 		set_country_flag = chaos_unit_family_parent_actor
-		set_country_flag = weaponized_zombie_outbreak_country
+		set_country_flag = weaponized_zombie_outbreak_country clear_nonhuman_country_human_systems = yes
 		set_country_flag = weaponized_zombie_created_by_@PREV
 		if = {
 			limit = { PREV = { has_country_flag = weaponized_zombie_has_successful_deployment } }
@@ -3054,7 +3054,7 @@ weaponized_zombie_copy_profile_to_outbreak = {
 		if = { limit = { PREV = { has_country_flag = weaponized_zombie_type_undead } } set_country_flag = weaponized_zombie_type_undead }
 		if = { limit = { PREV = { has_country_flag = weaponized_zombie_type_necrotic } } set_country_flag = weaponized_zombie_type_necrotic }
 		if = { limit = { PREV = { has_country_flag = weaponized_zombie_type_demonic } } set_country_flag = weaponized_zombie_type_demonic }
-		if = { limit = { PREV = { has_country_flag = weaponized_zombie_type_wendigo } } set_country_flag = weaponized_zombie_type_wendigo }
+		if = { limit = { PREV = { has_country_flag = weaponized_zombie_type_wendigo } } set_country_flag = weaponized_zombie_type_wendigo clear_nonhuman_country_human_systems = yes }
 
 		if = { limit = { PREV = { has_country_flag = weaponized_zombie_archetype_rabid_horde } } set_country_flag = weaponized_zombie_archetype_rabid_horde }
 		if = { limit = { PREV = { has_country_flag = weaponized_zombie_archetype_necrotic_siege } } set_country_flag = weaponized_zombie_archetype_necrotic_siege }
@@ -3064,7 +3064,7 @@ weaponized_zombie_copy_profile_to_outbreak = {
 		if = { limit = { PREV = { has_country_flag = weaponized_zombie_archetype_semi_sapient } } set_country_flag = weaponized_zombie_archetype_semi_sapient }
 		if = { limit = { PREV = { has_country_flag = weaponized_zombie_archetype_creator_betrayer } } set_country_flag = weaponized_zombie_archetype_creator_betrayer }
 		if = { limit = { PREV = { has_country_flag = weaponized_zombie_archetype_canonical_convergence } } set_country_flag = weaponized_zombie_archetype_canonical_convergence }
-		if = { limit = { PREV = { has_country_flag = weaponized_zombie_archetype_wendigo } } set_country_flag = weaponized_zombie_archetype_wendigo }
+		if = { limit = { PREV = { has_country_flag = weaponized_zombie_archetype_wendigo } } set_country_flag = weaponized_zombie_archetype_wendigo clear_nonhuman_country_human_systems = yes }
 
 		if = { limit = { PREV = { has_country_flag = weaponized_zombie_attack_other_zombies } } set_country_flag = weaponized_zombie_attack_other_zombies }
 		if = { limit = { PREV = { has_country_flag = weaponized_zombie_friendly_to_creator } } set_country_flag = weaponized_zombie_friendly_to_creator }

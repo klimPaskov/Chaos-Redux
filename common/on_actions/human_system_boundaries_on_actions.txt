@@ -1,0 +1,38 @@
+# Chaos Redux human-system country lifecycle boundaries.
+# Birth/control hooks bind native penalties to existing human beneficiaries.
+# Nonhuman transitions call the same synchronous teardown as owner packages.
+# No periodic country iteration is introduced.
+on_actions = {
+	on_startup = {
+		effect = {
+			GER = {
+				every_country = {
+					clear_nonhuman_country_human_systems = yes
+					refresh_human_state_modifier_country = yes
+				}
+			}
+		}
+	}
+	on_release_as_free = {
+		effect = { clear_nonhuman_country_human_systems = yes refresh_human_state_modifier_country = yes }
+	}
+	on_release_as_puppet = {
+		effect = { clear_nonhuman_country_human_systems = yes refresh_human_state_modifier_country = yes }
+	}
+	on_liberate = {
+		effect = { clear_nonhuman_country_human_systems = yes refresh_human_state_modifier_country = yes }
+	}
+	on_puppet = {
+		effect = { clear_nonhuman_country_human_systems = yes refresh_human_state_modifier_country = yes }
+	}
+	on_government_change = {
+		effect = { clear_nonhuman_country_human_systems = yes refresh_human_state_modifier_country = yes }
+	}
+	on_state_control_changed = {
+		effect = {
+			clear_nonhuman_country_human_systems = yes
+			if = { limit = { NOT = { has_country_flag = human_state_modifier_registered_@THIS } } refresh_human_state_modifier_country = yes }
+			FROM.FROM = { cbrn_occupation_clear_nonhuman_state_policy = yes force_update_dynamic_modifier = yes }
+		}
+	}
+}

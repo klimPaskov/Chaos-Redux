@@ -52,3 +52,18 @@ The native chemical land and air raid types remain the battlefield chemical atta
 The 2026-09-25 occupation probability baseline fixture at `docs/plans/chaos_warfare_system_plans/2026-09-25_cbrn_occupation_probability_baseline_fixture.json` is an unbound, partial score result for the former Sarin and Soman decision candidates: 96 inputs were unresolved, and it established no normalized choice. Its post-edit comparison and any surviving weighted-surface scenario review belong to the parent and the probability auditor. Source presence and exposed MCP tool names alone do not prove service health or a completed read-only scenario audit.
 
 The parent must review final raid categories, retained law and aid AI, localisation, assets, exact-record consumers, and any required MCP evidence before an integration claim. No live-game result is asserted here.
+
+## Human holder boundaries
+
+The two CBRN occupation laws require a human occupier and, when present, a human occupied-country scope in their native availability blocks.
+Their state action gate requires existing human OWNER and CONTROLLER.
+Both native AI score blocks retain their original human formulas and end with a zero factor when the state holders or occupier are nonhuman.
+
+`cbrn_occupation_clear_nonhuman_state_policy` is STATE-scoped, has no input variables or outputs, and clears only a CBRN law or recorded CBRN policy in an ineligible state.
+It enters CONTROLLER then PREV so the native law reset receives the actual occupier as PREV, as required by installed `set_occupation_law` documentation.
+The existing `default_law` reset removes the CBRN override and preserves ordinary occupation rules.
+`cbrn_occupation_clear_nonhuman_country_policy` is COUNTRY-scoped, has no inputs or outputs, revokes inherited CBRN authorization and clears only matching country/default/state CBRN policies.
+It is called by the shared synchronous nonhuman transition helper, and the state helper is also called by `on_state_control_changed` for FROM.FROM.
+Human actors keep their existing law values, costs and policy choices.
+No sprite, icon, asset, event target, periodic hook or new tuning table is required.
+Future extensions should use the same current-holder gate and exact owner policy teardown.

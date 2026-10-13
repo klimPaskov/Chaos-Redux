@@ -59,10 +59,10 @@ chaosx_disease_containment_category = {
         target_trigger = {
             FROM = {
                 OR = {
-                    has_dynamic_modifier = { modifier = anthrax_contaminated_state }
-                    has_dynamic_modifier = { modifier = plague_contaminated_state }
-                    has_dynamic_modifier = { modifier = tularemia_contaminated_state }
-                    has_dynamic_modifier = { modifier = smallpox_contaminated_state }
+                    has_dynamic_modifier = { modifier = anthrax_contaminated_state scope = OWNER }
+                    has_dynamic_modifier = { modifier = plague_contaminated_state scope = OWNER }
+                    has_dynamic_modifier = { modifier = tularemia_contaminated_state scope = OWNER }
+                    has_dynamic_modifier = { modifier = smallpox_contaminated_state scope = OWNER }
                 }
             }
         }
@@ -77,10 +77,10 @@ chaosx_disease_containment_category = {
             hidden_trigger = {
                 FROM = {
                     OR = {
-                        has_dynamic_modifier = { modifier = anthrax_contaminated_state }
-                        has_dynamic_modifier = { modifier = plague_contaminated_state }
-                        has_dynamic_modifier = { modifier = tularemia_contaminated_state }
-                        has_dynamic_modifier = { modifier = smallpox_contaminated_state }
+                        has_dynamic_modifier = { modifier = anthrax_contaminated_state scope = OWNER }
+                        has_dynamic_modifier = { modifier = plague_contaminated_state scope = OWNER }
+                        has_dynamic_modifier = { modifier = tularemia_contaminated_state scope = OWNER }
+                        has_dynamic_modifier = { modifier = smallpox_contaminated_state scope = OWNER }
                     }
                 }
             }
@@ -170,10 +170,10 @@ chaosx_disease_containment_category = {
         target_trigger = {
             FROM = {
                 OR = {
-                    has_dynamic_modifier = { modifier = anthrax_contaminated_state }
-                    has_dynamic_modifier = { modifier = plague_contaminated_state }
-                    has_dynamic_modifier = { modifier = tularemia_contaminated_state }
-                    has_dynamic_modifier = { modifier = smallpox_contaminated_state }
+                    has_dynamic_modifier = { modifier = anthrax_contaminated_state scope = OWNER }
+                    has_dynamic_modifier = { modifier = plague_contaminated_state scope = OWNER }
+                    has_dynamic_modifier = { modifier = tularemia_contaminated_state scope = OWNER }
+                    has_dynamic_modifier = { modifier = smallpox_contaminated_state scope = OWNER }
                 }
             }
         }
@@ -185,10 +185,10 @@ chaosx_disease_containment_category = {
             # Must have the state selected and contaminated
             FROM = {
                 OR = {
-                    has_dynamic_modifier = { modifier = anthrax_contaminated_state }
-                    has_dynamic_modifier = { modifier = plague_contaminated_state }
-                    has_dynamic_modifier = { modifier = tularemia_contaminated_state }
-                    has_dynamic_modifier = { modifier = smallpox_contaminated_state }
+                    has_dynamic_modifier = { modifier = anthrax_contaminated_state scope = OWNER }
+                    has_dynamic_modifier = { modifier = plague_contaminated_state scope = OWNER }
+                    has_dynamic_modifier = { modifier = tularemia_contaminated_state scope = OWNER }
+                    has_dynamic_modifier = { modifier = smallpox_contaminated_state scope = OWNER }
                 }
             }
 
@@ -212,7 +212,7 @@ chaosx_disease_containment_category = {
             # Apply to the targeted state
             FROM = {
                 set_state_flag = quarantine_measures_active
-                add_dynamic_modifier = { modifier = quarantined_contaminated_state }
+                set_temp_variable = { human_state_modifier_request = token:quarantined_contaminated_state } set_temp_variable = { human_state_modifier_requested_days = 0 } add_human_state_dynamic_modifier = yes
 
                 # Store contamination reduction value
                 set_variable = { quarantine_effectiveness = 0.2 }
@@ -362,7 +362,7 @@ chaosx_disease_containment_category = {
         visible = {
             is_special_project_completed = sp:anthrax_bomb
             any_controlled_state = {
-                has_dynamic_modifier = { modifier = anthrax_contaminated_state }
+                has_dynamic_modifier = { modifier = anthrax_contaminated_state scope = OWNER }
             }
             has_country_flag = anthrax_antibiotics_research_started
         }
@@ -411,7 +411,7 @@ chaosx_disease_containment_category = {
             # Always visible once anthrax bomb is researched
             NOT = { has_country_flag = anthrax_antibiotics_research_started }
             any_controlled_state = {
-                has_dynamic_modifier = { modifier = anthrax_contaminated_state }
+                has_dynamic_modifier = { modifier = anthrax_contaminated_state scope = OWNER }
             }
         }
 
@@ -461,7 +461,7 @@ chaosx_disease_containment_category = {
             modifier = {
                 factor = 0
                 any_controlled_state = {
-                    has_dynamic_modifier = { modifier = anthrax_contaminated_state }
+                    has_dynamic_modifier = { modifier = anthrax_contaminated_state scope = OWNER }
                 }
             }
             modifier = {
@@ -512,7 +512,7 @@ chaosx_disease_containment_category = {
 
         visible = {
             any_controlled_state = {
-                has_dynamic_modifier = { modifier = plague_contaminated_state }
+                has_dynamic_modifier = { modifier = plague_contaminated_state scope = OWNER }
             }
             has_country_flag = plague_antibiotics_research_started
         }
@@ -561,7 +561,7 @@ chaosx_disease_containment_category = {
             # Always visible once plague bomb is researched
             NOT = { has_country_flag = plague_antibiotics_research_started }
             any_controlled_state = {
-                has_dynamic_modifier = { modifier = plague_contaminated_state }
+                has_dynamic_modifier = { modifier = plague_contaminated_state scope = OWNER }
             }
         }
 
@@ -611,7 +611,7 @@ chaosx_disease_containment_category = {
             modifier = {
                 factor = 0
                 any_controlled_state = {
-                    has_dynamic_modifier = { modifier = plague_contaminated_state }
+                    has_dynamic_modifier = { modifier = plague_contaminated_state scope = OWNER }
                 }
             }
             modifier = {
@@ -655,7 +655,7 @@ chaosx_disease_containment_category = {
             # Must have tularemia bioweapon available and contamination present or potential threat
             OR = {
                 any_controlled_state = {
-                    has_dynamic_modifier = { modifier = tularemia_contaminated_state }
+                    has_dynamic_modifier = { modifier = tularemia_contaminated_state scope = OWNER }
                 }
                 any_enemy_country = { has_country_flag = used_tularemia_weapon }
             }
@@ -669,7 +669,7 @@ chaosx_disease_containment_category = {
             modifier = {
                 factor = 10
                 any_controlled_state = {
-                    has_dynamic_modifier = { modifier = tularemia_contaminated_state }
+                    has_dynamic_modifier = { modifier = tularemia_contaminated_state scope = OWNER }
                 }
             }
             modifier = {
@@ -716,7 +716,7 @@ chaosx_disease_containment_category = {
             modifier = {
                 factor = 5
                 any_controlled_state = {
-                    has_dynamic_modifier = { modifier = tularemia_contaminated_state }
+                    has_dynamic_modifier = { modifier = tularemia_contaminated_state scope = OWNER }
                 }
             }
             modifier = {
@@ -766,7 +766,7 @@ chaosx_disease_containment_category = {
             modifier = {
                 factor = 0
                 any_controlled_state = {
-                    has_dynamic_modifier = { modifier = tularemia_contaminated_state }
+                    has_dynamic_modifier = { modifier = tularemia_contaminated_state scope = OWNER }
                 }
             }
             modifier = {
@@ -805,12 +805,12 @@ chaosx_disease_containment_category = {
             # Must have smallpox threat or contamination present
             OR = {
                 any_controlled_state = {
-                    has_dynamic_modifier = { modifier = smallpox_contaminated_state }
+                    has_dynamic_modifier = { modifier = smallpox_contaminated_state scope = OWNER }
                 }
                 any_enemy_country = { has_country_flag = used_smallpox_weapon }
                 any_allied_country = {
                     any_controlled_state = {
-                        has_dynamic_modifier = { modifier = smallpox_contaminated_state }
+                        has_dynamic_modifier = { modifier = smallpox_contaminated_state scope = OWNER }
                     }
                 }
             }
@@ -825,7 +825,7 @@ chaosx_disease_containment_category = {
             modifier = {
                 factor = @BIO_SMALLPOX_VACCINATION_AI_FACTOR_CONTAMINATED
                 any_controlled_state = {
-                    has_dynamic_modifier = { modifier = smallpox_contaminated_state }
+                    has_dynamic_modifier = { modifier = smallpox_contaminated_state scope = OWNER }
                 }
             }
             modifier = {
@@ -873,7 +873,7 @@ chaosx_disease_containment_category = {
             modifier = {
                 factor = @BIO_SMALLPOX_VACCINATION_AI_FACTOR_REVOKE_CONTAMINATED
                 any_controlled_state = {
-                    has_dynamic_modifier = { modifier = smallpox_contaminated_state }
+                    has_dynamic_modifier = { modifier = smallpox_contaminated_state scope = OWNER }
                 }
             }
             modifier = {
@@ -898,7 +898,7 @@ chaosx_disease_containment_category = {
                 factor = @BIO_SMALLPOX_VACCINATION_AI_FACTOR_REVOKE_SAFE
                 NOT = {
                     any_controlled_state = {
-                        has_dynamic_modifier = { modifier = smallpox_contaminated_state }
+                        has_dynamic_modifier = { modifier = smallpox_contaminated_state scope = OWNER }
                     }
                 }
             }

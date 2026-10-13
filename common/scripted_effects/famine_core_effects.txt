@@ -1000,10 +1000,10 @@ famine_mark_relief_access = {
 # clear is used before guarded state retirement; the complete clear remains
 # reserved for a state with no migration obligations.
 famine_clear_dynamic_modifiers = {
-	if = { limit = { has_dynamic_modifier = { modifier = famine_state_supply_strain } } remove_dynamic_modifier = { modifier = famine_state_supply_strain } }
-	if = { limit = { has_dynamic_modifier = { modifier = famine_state_acute_shortage } } remove_dynamic_modifier = { modifier = famine_state_acute_shortage } }
-	if = { limit = { has_dynamic_modifier = { modifier = famine_state_famine } } remove_dynamic_modifier = { modifier = famine_state_famine } }
-	if = { limit = { has_dynamic_modifier = { modifier = famine_state_catastrophic_famine } } remove_dynamic_modifier = { modifier = famine_state_catastrophic_famine } }
+	if = { limit = { has_dynamic_modifier = { modifier = famine_state_supply_strain scope = OWNER } } set_temp_variable = { human_state_modifier_request = token:famine_state_supply_strain } remove_human_state_dynamic_modifier = yes }
+	if = { limit = { has_dynamic_modifier = { modifier = famine_state_acute_shortage scope = OWNER } } set_temp_variable = { human_state_modifier_request = token:famine_state_acute_shortage } remove_human_state_dynamic_modifier = yes }
+	if = { limit = { has_dynamic_modifier = { modifier = famine_state_famine scope = OWNER } } set_temp_variable = { human_state_modifier_request = token:famine_state_famine } remove_human_state_dynamic_modifier = yes }
+	if = { limit = { has_dynamic_modifier = { modifier = famine_state_catastrophic_famine scope = OWNER } } set_temp_variable = { human_state_modifier_request = token:famine_state_catastrophic_famine } remove_human_state_dynamic_modifier = yes }
 	force_update_dynamic_modifier = yes
 }
 
@@ -3266,19 +3266,19 @@ famine_refresh_dynamic_modifiers = {
 		famine_clear_dynamic_modifiers = yes
 		if = {
 			limit = { has_state_flag = famine_food_stage_supply_strain }
-			add_dynamic_modifier = { modifier = famine_state_supply_strain }
+			set_temp_variable = { human_state_modifier_request = token:famine_state_supply_strain } set_temp_variable = { human_state_modifier_requested_days = 0 } add_human_state_dynamic_modifier = yes
 		}
 		if = {
 			limit = { has_state_flag = famine_food_stage_acute_shortage }
-			add_dynamic_modifier = { modifier = famine_state_acute_shortage }
+			set_temp_variable = { human_state_modifier_request = token:famine_state_acute_shortage } set_temp_variable = { human_state_modifier_requested_days = 0 } add_human_state_dynamic_modifier = yes
 		}
 		if = {
 			limit = { has_state_flag = famine_food_stage_famine }
-			add_dynamic_modifier = { modifier = famine_state_famine }
+			set_temp_variable = { human_state_modifier_request = token:famine_state_famine } set_temp_variable = { human_state_modifier_requested_days = 0 } add_human_state_dynamic_modifier = yes
 		}
 		if = {
 			limit = { has_state_flag = famine_food_stage_catastrophic }
-			add_dynamic_modifier = { modifier = famine_state_catastrophic_famine }
+			set_temp_variable = { human_state_modifier_request = token:famine_state_catastrophic_famine } set_temp_variable = { human_state_modifier_requested_days = 0 } add_human_state_dynamic_modifier = yes
 		}
 		force_update_dynamic_modifier = yes
 	}

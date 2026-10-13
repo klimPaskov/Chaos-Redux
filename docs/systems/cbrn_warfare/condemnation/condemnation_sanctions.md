@@ -9,7 +9,13 @@ Nonhuman countries cannot receive a fresh source, qualify as a sanction target o
 Participant reconciliation first snapshots sanction participants whose current actor or target is nonhuman into `condemnation_nonhuman_cleanup_participants`, then invokes `condemnation_clear_sanction_pair` for each frozen entry and clears the snapshot.
 That existing teardown removes only the system-owned embargo claim, directional opinion penalties, relation restrictions and AI strategy deltas, and reconciles enforcement burden.
 The earlier likely-participant loop removes its old monitoring opinions and restores its recorded watch-tier AI deltas before the human candidate pool is rebuilt.
-No extra polling is added, so inherited native relation cleanup occurs at the existing reconciliation or scheduled target pulse, and historical source entries remain intact.
+`clear_nonhuman_country_human_systems` invokes `condemnation_clear_nonhuman_country_relations` synchronously after each actual nonhuman identity transition.
+That helper retires both directed country roles, restores the recorded watch and active sanction AI deltas, clears human condemnation and camp opinions, and removes only system-created native embargo relations whose source claims have all ended.
+External or manual embargo ownership remains intact.
+`condemnation_clear_monitoring_pair` contains the existing concern/censure inverse without changing any numeric values.
+`condemnation_refresh_target_modifiers` uses its containing target pointer during nested cleanup instead of an unrelated caller ROOT.
+The existing reconciliation path remains an additional idempotent repair boundary, and historical source entries remain intact.
+No periodic country poll is introduced.
 
 The cleanup snapshot is country-owned, lasts only for one reconciliation call, and is always cleared after use.
 No constants or global event targets are added by the boundary helpers.

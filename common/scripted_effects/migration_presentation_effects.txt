@@ -15,16 +15,16 @@
 migration_presentation_clear_state = {
 	if = {
 		limit = { humanitarian_state_is_valid = yes }
-		if = { limit = { has_dynamic_modifier = { modifier = migration_state_preparing_to_leave } } remove_dynamic_modifier = { modifier = migration_state_preparing_to_leave } }
-		if = { limit = { has_dynamic_modifier = { modifier = migration_state_exodus } } remove_dynamic_modifier = { modifier = migration_state_exodus } }
-		if = { limit = { has_dynamic_modifier = { modifier = migration_state_organized_evacuation } } remove_dynamic_modifier = { modifier = migration_state_organized_evacuation } }
-		if = { limit = { has_dynamic_modifier = { modifier = migration_state_depopulated_districts } } remove_dynamic_modifier = { modifier = migration_state_depopulated_districts } }
-		if = { limit = { has_dynamic_modifier = { modifier = migration_state_reception } } remove_dynamic_modifier = { modifier = migration_state_reception } }
-		if = { limit = { has_dynamic_modifier = { modifier = migration_state_overcrowded } } remove_dynamic_modifier = { modifier = migration_state_overcrowded } }
-		if = { limit = { has_dynamic_modifier = { modifier = migration_state_trapped_border } } remove_dynamic_modifier = { modifier = migration_state_trapped_border } }
-		if = { limit = { has_dynamic_modifier = { modifier = migration_state_transit } } remove_dynamic_modifier = { modifier = migration_state_transit } }
-		if = { limit = { has_dynamic_modifier = { modifier = migration_state_return_readiness } } remove_dynamic_modifier = { modifier = migration_state_return_readiness } }
-		if = { limit = { has_dynamic_modifier = { modifier = migration_state_return } } remove_dynamic_modifier = { modifier = migration_state_return } }
+		if = { limit = { has_dynamic_modifier = { modifier = migration_state_preparing_to_leave scope = OWNER } } set_temp_variable = { human_state_modifier_request = token:migration_state_preparing_to_leave } remove_human_state_dynamic_modifier = yes }
+		if = { limit = { has_dynamic_modifier = { modifier = migration_state_exodus scope = OWNER } } set_temp_variable = { human_state_modifier_request = token:migration_state_exodus } remove_human_state_dynamic_modifier = yes }
+		if = { limit = { has_dynamic_modifier = { modifier = migration_state_organized_evacuation scope = OWNER } } set_temp_variable = { human_state_modifier_request = token:migration_state_organized_evacuation } remove_human_state_dynamic_modifier = yes }
+		if = { limit = { has_dynamic_modifier = { modifier = migration_state_depopulated_districts scope = OWNER } } set_temp_variable = { human_state_modifier_request = token:migration_state_depopulated_districts } remove_human_state_dynamic_modifier = yes }
+		if = { limit = { has_dynamic_modifier = { modifier = migration_state_reception scope = OWNER } } set_temp_variable = { human_state_modifier_request = token:migration_state_reception } remove_human_state_dynamic_modifier = yes }
+		if = { limit = { has_dynamic_modifier = { modifier = migration_state_overcrowded scope = OWNER } } set_temp_variable = { human_state_modifier_request = token:migration_state_overcrowded } remove_human_state_dynamic_modifier = yes }
+		if = { limit = { has_dynamic_modifier = { modifier = migration_state_trapped_border scope = OWNER } } set_temp_variable = { human_state_modifier_request = token:migration_state_trapped_border } remove_human_state_dynamic_modifier = yes }
+		if = { limit = { has_dynamic_modifier = { modifier = migration_state_transit scope = OWNER } } set_temp_variable = { human_state_modifier_request = token:migration_state_transit } remove_human_state_dynamic_modifier = yes }
+		if = { limit = { has_dynamic_modifier = { modifier = migration_state_return_readiness scope = OWNER } } set_temp_variable = { human_state_modifier_request = token:migration_state_return_readiness } remove_human_state_dynamic_modifier = yes }
+		if = { limit = { has_dynamic_modifier = { modifier = migration_state_return scope = OWNER } } set_temp_variable = { human_state_modifier_request = token:migration_state_return } remove_human_state_dynamic_modifier = yes }
 
 		clr_state_flag = migration_presentation_preparing_to_leave
 		clr_state_flag = migration_presentation_active_exodus
@@ -954,16 +954,16 @@ migration_presentation_refresh_state = {
 			clamp_variable = { var = migration_presentation_resettlement_return_speed min = constant:migration_presentation.modifier_min max = constant:migration_presentation.modifier_max }
 		}
 
-		if = { limit = { has_state_flag = migration_presentation_preparing_to_leave } add_dynamic_modifier = { modifier = migration_state_preparing_to_leave } }
-		if = { limit = { has_state_flag = migration_presentation_active_exodus } add_dynamic_modifier = { modifier = migration_state_exodus } }
-		if = { limit = { has_state_flag = migration_presentation_organized_evacuation } add_dynamic_modifier = { modifier = migration_state_organized_evacuation } }
-		if = { limit = { has_state_flag = migration_presentation_depopulated_districts } add_dynamic_modifier = { modifier = migration_state_depopulated_districts } }
-		if = { limit = { has_state_flag = migration_presentation_reception } add_dynamic_modifier = { modifier = migration_state_reception } }
-		if = { limit = { has_state_flag = migration_presentation_overcrowded } add_dynamic_modifier = { modifier = migration_state_overcrowded } }
-		if = { limit = { has_state_flag = migration_presentation_trapped_population } add_dynamic_modifier = { modifier = migration_state_trapped_border } }
-		if = { limit = { has_state_flag = migration_presentation_transit } add_dynamic_modifier = { modifier = migration_state_transit } }
-		if = { limit = { has_state_flag = migration_presentation_return_readiness } add_dynamic_modifier = { modifier = migration_state_return_readiness } }
-		if = { limit = { has_state_flag = migration_presentation_resettlement_return } add_dynamic_modifier = { modifier = migration_state_return } }
+		if = { limit = { has_state_flag = migration_presentation_preparing_to_leave } set_temp_variable = { human_state_modifier_request = token:migration_state_preparing_to_leave } set_temp_variable = { human_state_modifier_requested_days = 0 } add_human_state_dynamic_modifier = yes }
+		if = { limit = { has_state_flag = migration_presentation_active_exodus } set_temp_variable = { human_state_modifier_request = token:migration_state_exodus } set_temp_variable = { human_state_modifier_requested_days = 0 } add_human_state_dynamic_modifier = yes }
+		if = { limit = { has_state_flag = migration_presentation_organized_evacuation } set_temp_variable = { human_state_modifier_request = token:migration_state_organized_evacuation } set_temp_variable = { human_state_modifier_requested_days = 0 } add_human_state_dynamic_modifier = yes }
+		if = { limit = { has_state_flag = migration_presentation_depopulated_districts } set_temp_variable = { human_state_modifier_request = token:migration_state_depopulated_districts } set_temp_variable = { human_state_modifier_requested_days = 0 } add_human_state_dynamic_modifier = yes }
+		if = { limit = { has_state_flag = migration_presentation_reception } set_temp_variable = { human_state_modifier_request = token:migration_state_reception } set_temp_variable = { human_state_modifier_requested_days = 0 } add_human_state_dynamic_modifier = yes }
+		if = { limit = { has_state_flag = migration_presentation_overcrowded } set_temp_variable = { human_state_modifier_request = token:migration_state_overcrowded } set_temp_variable = { human_state_modifier_requested_days = 0 } add_human_state_dynamic_modifier = yes }
+		if = { limit = { has_state_flag = migration_presentation_trapped_population } set_temp_variable = { human_state_modifier_request = token:migration_state_trapped_border } set_temp_variable = { human_state_modifier_requested_days = 0 } add_human_state_dynamic_modifier = yes }
+		if = { limit = { has_state_flag = migration_presentation_transit } set_temp_variable = { human_state_modifier_request = token:migration_state_transit } set_temp_variable = { human_state_modifier_requested_days = 0 } add_human_state_dynamic_modifier = yes }
+		if = { limit = { has_state_flag = migration_presentation_return_readiness } set_temp_variable = { human_state_modifier_request = token:migration_state_return_readiness } set_temp_variable = { human_state_modifier_requested_days = 0 } add_human_state_dynamic_modifier = yes }
+		if = { limit = { has_state_flag = migration_presentation_resettlement_return } set_temp_variable = { human_state_modifier_request = token:migration_state_return } set_temp_variable = { human_state_modifier_requested_days = 0 } add_human_state_dynamic_modifier = yes }
 		force_update_dynamic_modifier = yes
 		set_temp_variable = { migration_presentation_refresh_result = constant:migration_presentation.one }
 

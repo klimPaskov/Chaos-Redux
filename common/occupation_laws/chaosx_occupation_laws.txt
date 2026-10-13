@@ -69,10 +69,13 @@ cbrn_coercive_security_occupation = {
 	fallback_law = military_governor_occupation
 
 	visible = {
+		uses_normal_civilian_systems = yes
 		has_country_flag = cbrn_occupation_coercive_security_authorized
 	}
 
 	available = {
+		uses_normal_civilian_systems = yes
+		if = { limit = { FROM = { scope_exists = yes } } FROM = { uses_normal_civilian_systems = yes } }
 		has_country_flag = cbrn_occupation_coercive_security_authorized
 	}
 
@@ -112,6 +115,13 @@ cbrn_coercive_security_occupation = {
 			}
 			factor = constant:cbrn_occupation_law_ai.disabled
 		}
+		modifier = {
+			OR = {
+				state_uses_normal_civilian_systems = no
+				FROM = { uses_normal_civilian_systems = no }
+			}
+			factor = constant:cbrn_occupation_law_ai.disabled
+		}
 	}
 }
 
@@ -122,10 +132,13 @@ cbrn_protected_occupation_administration = {
 	fallback_law = military_governor_occupation
 
 	visible = {
+		uses_normal_civilian_systems = yes
 		has_country_flag = cbrn_occupation_protected_administration_authorized
 	}
 
 	available = {
+		uses_normal_civilian_systems = yes
+		if = { limit = { FROM = { scope_exists = yes } } FROM = { uses_normal_civilian_systems = yes } }
 		has_country_flag = cbrn_occupation_protected_administration_authorized
 	}
 
@@ -165,6 +178,13 @@ cbrn_protected_occupation_administration = {
 				}
 			}
 			add = constant:cbrn_occupation_law_ai.protected_defensive_add
+		}
+		modifier = {
+			OR = {
+				state_uses_normal_civilian_systems = no
+				FROM = { uses_normal_civilian_systems = no }
+			}
+			factor = constant:cbrn_occupation_law_ai.disabled
 		}
 	}
 }

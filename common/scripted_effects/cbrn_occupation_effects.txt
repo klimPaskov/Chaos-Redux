@@ -1294,3 +1294,42 @@ cbrn_occupation_cleanup_expired_state_records = {
 		migration_persecution_clear_owner_state = yes
 	}
 }
+
+# State scope. Preserve ordinary occupation and clear only invalid CBRN policy.
+cbrn_occupation_clear_nonhuman_state_policy = {
+	if = {
+		limit = { state_uses_normal_civilian_systems = no CONTROLLER = { exists = yes } }
+		CONTROLLER = {
+			PREV = {
+				if = {
+					limit = { OR = { occupation_law = cbrn_coercive_security_occupation occupation_law = cbrn_protected_occupation_administration has_variable = cbrn_occupation_policy_state } }
+					cbrn_occupation_clear_state_policy = yes
+				}
+			}
+		}
+	}
+}
+
+# Country scope. Retire inherited human CBRN authority without altering other laws.
+cbrn_occupation_clear_nonhuman_country_policy = {
+	if = {
+		limit = { uses_normal_civilian_systems = no }
+		THIS = {
+			if = {
+				limit = { OR = { occupation_law = cbrn_coercive_security_occupation occupation_law = cbrn_protected_occupation_administration } }
+				set_occupation_law = default_law
+			}
+		}
+		every_occupied_country = {
+			if = {
+				limit = { OR = { occupation_law = cbrn_coercive_security_occupation occupation_law = cbrn_protected_occupation_administration } }
+				set_occupation_law = default_law
+			}
+		}
+		clr_country_flag = cbrn_occupation_coercive_security_authorized
+		clr_country_flag = cbrn_occupation_protected_administration_authorized
+		clr_country_flag = cbrn_nerve_suppression_policy_authorized
+		every_owned_state = { cbrn_occupation_clear_nonhuman_state_policy = yes }
+		every_controlled_state = { cbrn_occupation_clear_nonhuman_state_policy = yes }
+	}
+}

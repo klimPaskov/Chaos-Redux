@@ -839,6 +839,14 @@ condemnation_refresh_tier = {
 condemnation_register_native_embargo_source = {
 	set_temp_variable = { condemnation_native_claim_succeeded = constant:condemnation_tier.normal }
 	if = {
+		limit = { uses_normal_civilian_systems = yes var:condemnation_embargo_target = { exists = yes uses_normal_civilian_systems = yes } }
+		condemnation_register_human_native_embargo_source_internal = yes
+	}
+}
+
+condemnation_register_human_native_embargo_source_internal = {
+	set_temp_variable = { condemnation_native_claim_succeeded = constant:condemnation_tier.normal }
+	if = {
 		limit = { NOT = { has_dlc = "By Blood Alone" } }
 		set_temp_variable = { condemnation_native_claim_succeeded = constant:condemnation_tier.concern }
 	}
@@ -1909,34 +1917,7 @@ condemnation_recalculate_participants_apply = {
 		array = condemnation_likely_participants
 		if = {
 			limit = { exists = yes }
-			var:condemnation_recalculation_target = { set_temp_variable = { condemnation_pair_target_id = id } }
-			set_temp_variable = { condemnation_watch_tier = constant:condemnation_tier.formal_censure }
-			meta_effect = {
-				text = {
-					if = {
-						limit = { has_variable = condemnation_pair_[TARGET_ID]_watch_tier }
-						set_temp_variable = { condemnation_watch_tier = condemnation_pair_[TARGET_ID]_watch_tier }
-					}
-					clear_variable = condemnation_pair_[TARGET_ID]_watch_tier
-				}
-				TARGET_ID = "[?condemnation_pair_target_id|.0]"
-			}
-			if = {
-				limit = {
-					is_ai = yes
-					check_variable = { var = condemnation_watch_tier value = constant:condemnation_tier.concern compare = equals }
-				}
-				add_ai_strategy = { type = send_lend_lease_desire id = event_target:condemnation_recalculation_target value = @COND_AI_CONCERN_LEND_LEASE_RESTORE }
-				add_ai_strategy = { type = send_volunteers_desire id = event_target:condemnation_recalculation_target value = @COND_AI_CONCERN_VOLUNTEERS_RESTORE }
-				add_ai_strategy = { type = diplo_action_acceptance id = event_target:condemnation_recalculation_target target = military_access value = @COND_AI_CONCERN_MILITARY_ACCESS_RESTORE }
-			}
-			else_if = {
-				limit = { is_ai = yes }
-				add_ai_strategy = { type = send_lend_lease_desire id = event_target:condemnation_recalculation_target value = @COND_AI_CENSURE_LEND_LEASE_RESTORE }
-				add_ai_strategy = { type = send_volunteers_desire id = event_target:condemnation_recalculation_target value = @COND_AI_CENSURE_VOLUNTEERS_RESTORE }
-				add_ai_strategy = { type = diplo_action_acceptance id = event_target:condemnation_recalculation_target target = military_access value = @COND_AI_CENSURE_MILITARY_ACCESS_RESTORE }
-			}
-			remove_opinion_modifier = { target = event_target:condemnation_recalculation_target modifier = condemnation_monitoring_target }
+			condemnation_clear_monitoring_pair = yes
 		}
 	}
 	set_variable = { condemnation_candidate_industry_weight = 0 }
@@ -2609,6 +2590,7 @@ condemnation_refresh_participant_burden = {
 
 condemnation_refresh_target_modifiers = {
 	condemnation_initialize_country = yes
+	set_temp_variable = { condemnation_modifier_target = THIS }
 	set_variable = { condemnation_active_sanctions = condemnation_sanction_participants^num }
 	set_variable = { condemnation_arms_participant_count = condemnation_arms_embargo_participants^num }
 	set_variable = { condemnation_strategic_participant_count = condemnation_strategic_embargo_participants^num }
@@ -2685,21 +2667,21 @@ condemnation_refresh_target_modifiers = {
 			add_to_temp_variable = { condemnation_participant_fatigue_total = condemnation_sanction_fatigue }
 			set_temp_variable = { condemnation_current_tier_weight = constant:condemnation_pair.arms_tier_weight }
 			if = {
-				limit = { ROOT = { is_in_array = { array = condemnation_strategic_embargo_participants value = PREV } } }
+				limit = { var:condemnation_modifier_target = { is_in_array = { array = condemnation_strategic_embargo_participants value = PREV } } }
 				set_temp_variable = { condemnation_current_tier_weight = constant:condemnation_pair.strategic_tier_weight }
 			}
 			if = {
-				limit = { ROOT = { is_in_array = { array = condemnation_total_embargo_participants value = PREV } } }
+				limit = { var:condemnation_modifier_target = { is_in_array = { array = condemnation_total_embargo_participants value = PREV } } }
 				set_temp_variable = { condemnation_current_tier_weight = constant:condemnation_pair.total_tier_weight }
 			}
 			if = {
-				limit = { ROOT = { is_in_array = { array = condemnation_pariah_embargo_participants value = PREV } } }
+				limit = { var:condemnation_modifier_target = { is_in_array = { array = condemnation_pariah_embargo_participants value = PREV } } }
 				set_temp_variable = { condemnation_current_tier_weight = constant:condemnation_pair.pariah_tier_weight }
 			}
 			multiply_temp_variable = { condemnation_current_tier_weight = condemnation_current_participant_weight }
 			add_to_temp_variable = { condemnation_raw_isolation_severity = condemnation_current_tier_weight }
 			if = {
-				limit = { has_dlc = "By Blood Alone" is_embargoing = ROOT }
+				limit = { has_dlc = "By Blood Alone" is_embargoing = var:condemnation_modifier_target }
 				add_to_temp_variable = { condemnation_native_embargo_count_temp = 1 }
 			}
 		}
@@ -2857,4 +2839,159 @@ condemnation_refresh_target_modifiers = {
 	}
 	else = { if = { limit = { has_dynamic_modifier = { modifier = condemnation_pariah_pressure } } remove_dynamic_modifier = { modifier = condemnation_pariah_pressure } } }
 	force_update_dynamic_modifier = yes
+}
+
+# Participant country scope. Existing inverse, target in condemnation_recalculation_target.
+condemnation_clear_monitoring_pair = {
+	var:condemnation_recalculation_target = { set_temp_variable = { condemnation_pair_target_id = id } }
+	set_temp_variable = { condemnation_watch_tier = constant:condemnation_tier.formal_censure }
+	meta_effect = {
+		text = {
+			if = {
+				limit = { has_variable = condemnation_pair_[TARGET_ID]_watch_tier }
+				set_temp_variable = { condemnation_watch_tier = condemnation_pair_[TARGET_ID]_watch_tier }
+			}
+			clear_variable = condemnation_pair_[TARGET_ID]_watch_tier
+		}
+		TARGET_ID = "[?condemnation_pair_target_id|.0]"
+	}
+	if = {
+		limit = {
+			is_ai = yes
+			check_variable = { var = condemnation_watch_tier value = constant:condemnation_tier.concern compare = equals }
+		}
+		add_ai_strategy = { type = send_lend_lease_desire id = event_target:condemnation_recalculation_target value = @COND_AI_CONCERN_LEND_LEASE_RESTORE }
+		add_ai_strategy = { type = send_volunteers_desire id = event_target:condemnation_recalculation_target value = @COND_AI_CONCERN_VOLUNTEERS_RESTORE }
+		add_ai_strategy = { type = diplo_action_acceptance id = event_target:condemnation_recalculation_target target = military_access value = @COND_AI_CONCERN_MILITARY_ACCESS_RESTORE }
+	}
+	else_if = {
+		limit = { is_ai = yes }
+		add_ai_strategy = { type = send_lend_lease_desire id = event_target:condemnation_recalculation_target value = @COND_AI_CENSURE_LEND_LEASE_RESTORE }
+		add_ai_strategy = { type = send_volunteers_desire id = event_target:condemnation_recalculation_target value = @COND_AI_CENSURE_VOLUNTEERS_RESTORE }
+		add_ai_strategy = { type = diplo_action_acceptance id = event_target:condemnation_recalculation_target target = military_access value = @COND_AI_CENSURE_MILITARY_ACCESS_RESTORE }
+	}
+	remove_opinion_modifier = { target = event_target:condemnation_recalculation_target modifier = condemnation_monitoring_target }
+}
+
+# Target country scope. Retire only owned effects for one nonhuman pair.
+condemnation_retire_nonhuman_relation_pair = {
+	save_event_target_as = condemnation_nonhuman_pair_target
+	var:condemnation_pair_participant = { save_event_target_as = condemnation_nonhuman_pair_participant }
+	set_temp_variable = { condemnation_nonhuman_pair_changed = 0 }
+	if = {
+		limit = { OR = {
+			is_in_array = { array = condemnation_sanction_participants value = event_target:condemnation_nonhuman_pair_participant }
+			is_in_array = { array = condemnation_likely_participants value = event_target:condemnation_nonhuman_pair_participant }
+			is_in_array = { array = condemnation_humanitarian_carveout_participants value = event_target:condemnation_nonhuman_pair_participant }
+			is_in_array = { array = condemnation_quiet_breach_participants value = event_target:condemnation_nonhuman_pair_participant }
+			is_in_array = { array = condemnation_tight_enforcement_participants value = event_target:condemnation_nonhuman_pair_participant }
+			is_in_array = { array = condemnation_abstaining_participants value = event_target:condemnation_nonhuman_pair_participant }
+			is_in_array = { array = condemnation_shielding_participants value = event_target:condemnation_nonhuman_pair_participant }
+		} }
+		set_temp_variable = { condemnation_nonhuman_pair_changed = 1 }
+	}
+	set_temp_variable = { condemnation_nonhuman_pair_participant = event_target:condemnation_nonhuman_pair_participant }
+	set_temp_variable = { condemnation_pair_participant = event_target:condemnation_nonhuman_pair_participant }
+	set_temp_variable = { condemnation_recalculation_target = THIS }
+	save_event_target_as = condemnation_recalculation_target
+	var:condemnation_pair_participant = {
+		var:condemnation_recalculation_target = { set_temp_variable = { condemnation_pair_target_id = id } }
+		if = {
+			limit = {
+				OR = {
+					var:condemnation_recalculation_target = { is_in_array = { array = condemnation_likely_participants value = PREV } }
+					meta_trigger = { text = { has_variable = condemnation_pair_[TARGET_ID]_watch_tier } TARGET_ID = "[?condemnation_pair_target_id|.0]" }
+				}
+			}
+			condemnation_clear_monitoring_pair = yes
+		}
+	}
+	if = {
+		limit = { is_in_array = { array = condemnation_sanction_participants value = condemnation_pair_participant } }
+		condemnation_clear_sanction_pair = yes
+	}
+	var:condemnation_pair_participant = {
+		var:condemnation_recalculation_target = { set_temp_variable = { condemnation_pair_target_id = id } }
+
+		remove_opinion_modifier = { target = event_target:condemnation_nonhuman_pair_target modifier = condemnation_sanctioning_target }
+		remove_opinion_modifier = { target = event_target:condemnation_nonhuman_pair_target modifier = condemnation_monitoring_target }
+		remove_opinion_modifier = { target = event_target:condemnation_nonhuman_pair_target modifier = condemnation_targeted_by_sanctions }
+		remove_opinion_modifier = { target = event_target:condemnation_nonhuman_pair_target modifier = condemnation_abstained_from_sanctions }
+		remove_opinion_modifier = { target = event_target:condemnation_nonhuman_pair_target modifier = condemnation_abstention_condemned }
+		remove_opinion_modifier = { target = event_target:condemnation_nonhuman_pair_target modifier = condemnation_shielding_target }
+		remove_opinion_modifier = { target = event_target:condemnation_nonhuman_pair_target modifier = condemnation_breach_exposed }
+		remove_opinion_modifier = { target = event_target:condemnation_nonhuman_pair_target modifier = condemnation_compensation_received }
+		remove_opinion_modifier = { target = event_target:condemnation_nonhuman_pair_target modifier = genocide_atrocity_condemned }
+		remove_opinion_modifier = { target = event_target:condemnation_nonhuman_pair_target modifier = genocide_sanctions_pressure }
+		remove_opinion_modifier = { target = event_target:condemnation_nonhuman_pair_target modifier = genocide_tribunal_records_prepared }
+		remove_opinion_modifier = { target = event_target:condemnation_nonhuman_pair_target modifier = genocide_refugee_aid_respect }
+		remove_opinion_modifier = { target = event_target:condemnation_nonhuman_pair_target modifier = camp_occ_partner_obstructed_transports }
+		remove_opinion_modifier = { target = event_target:condemnation_nonhuman_pair_target modifier = camp_occ_partner_halted_transports }
+		remove_opinion_modifier = { target = event_target:condemnation_nonhuman_pair_target modifier = camp_occ_hungary_obstructed_deportations }
+		remove_opinion_modifier = { target = event_target:condemnation_nonhuman_pair_target modifier = camp_occ_hungary_halted_deportations }
+		set_temp_variable = { condemnation_embargo_target = event_target:condemnation_nonhuman_pair_target }
+		set_temp_variable = { condemnation_embargo_source = constant:condemnation_embargo_source.condemnation }
+		condemnation_unregister_native_embargo_source = yes
+		set_temp_variable = { condemnation_embargo_source = constant:condemnation_embargo_source.air_cleanliness_treaty }
+		condemnation_unregister_native_embargo_source = yes
+		set_temp_variable = { condemnation_embargo_source = constant:condemnation_embargo_source.great_embargo_event }
+		condemnation_unregister_native_embargo_source = yes
+		# Native diplomatic_relation works in the actual enforcer scope, including
+		# nested callers. Drop only a system-created relation with no external claim.
+		if = {
+			limit = {
+				has_dlc = "By Blood Alone"
+				is_embargoing = event_target:condemnation_nonhuman_pair_target
+				is_in_array = { array = condemnation_native_system_created_targets value = condemnation_embargo_target }
+				NOT = { is_in_array = { array = condemnation_native_external_targets value = condemnation_embargo_target } }
+			}
+			diplomatic_relation = { country = event_target:condemnation_nonhuman_pair_target relation = embargo active = no }
+			remove_from_array = { array = condemnation_native_system_created_targets value = condemnation_embargo_target }
+		}
+		event_target:condemnation_nonhuman_pair_target = { set_temp_variable = { condemnation_pair_target_id = id } }
+		meta_effect = {
+			text = {
+				clear_variable = condemnation_pair_[TARGET_ID]_carveout_expires
+				clear_variable = condemnation_pair_[TARGET_ID]_quiet_breach_expires
+				clear_variable = condemnation_pair_[TARGET_ID]_tight_enforcement_expires
+				clear_variable = condemnation_pair_[TARGET_ID]_tight_cost
+				clear_variable = condemnation_pair_[TARGET_ID]_abstention_expires
+				clear_variable = condemnation_pair_[TARGET_ID]_shield_expires
+				clear_variable = condemnation_pair_[TARGET_ID]_watch_tier
+			}
+			TARGET_ID = "[?condemnation_pair_target_id|.0]"
+		}
+	}
+	if = { limit = { is_in_array = { array = condemnation_likely_participants value = condemnation_nonhuman_pair_participant } } remove_from_array = { array = condemnation_likely_participants value = condemnation_nonhuman_pair_participant } }
+	if = { limit = { is_in_array = { array = condemnation_humanitarian_carveout_participants value = condemnation_nonhuman_pair_participant } } remove_from_array = { array = condemnation_humanitarian_carveout_participants value = condemnation_nonhuman_pair_participant } }
+	if = { limit = { is_in_array = { array = condemnation_quiet_breach_participants value = condemnation_nonhuman_pair_participant } } remove_from_array = { array = condemnation_quiet_breach_participants value = condemnation_nonhuman_pair_participant } }
+	if = { limit = { is_in_array = { array = condemnation_tight_enforcement_participants value = condemnation_nonhuman_pair_participant } } remove_from_array = { array = condemnation_tight_enforcement_participants value = condemnation_nonhuman_pair_participant } }
+	if = { limit = { is_in_array = { array = condemnation_abstaining_participants value = condemnation_nonhuman_pair_participant } } remove_from_array = { array = condemnation_abstaining_participants value = condemnation_nonhuman_pair_participant } }
+	if = { limit = { is_in_array = { array = condemnation_shielding_participants value = condemnation_nonhuman_pair_participant } } remove_from_array = { array = condemnation_shielding_participants value = condemnation_nonhuman_pair_participant } }
+	if = { limit = { check_variable = { condemnation_nonhuman_pair_changed > 0 } } condemnation_refresh_target_modifiers = yes }
+}
+
+# Country scope. Synchronous transition cleanup in both directed pair roles.
+condemnation_clear_nonhuman_country_relations = {
+	if = {
+		limit = { uses_normal_civilian_systems = no }
+		save_event_target_as = condemnation_nonhuman_country
+		every_other_country = {
+			limit = { exists = yes }
+			save_event_target_as = condemnation_nonhuman_relation_peer
+			set_temp_variable = { condemnation_pair_participant = event_target:condemnation_nonhuman_country }
+			condemnation_retire_nonhuman_relation_pair = yes
+			event_target:condemnation_nonhuman_country = {
+				set_temp_variable = { condemnation_pair_participant = event_target:condemnation_nonhuman_relation_peer }
+				condemnation_retire_nonhuman_relation_pair = yes
+			}
+		}
+		clr_country_flag = condemnation_targeted_pulse_active
+		clr_country_flag = condemnation_participant_refresh_pending
+		if = { limit = { is_in_array = { array = global.condemnation_targets value = THIS } } remove_from_array = { array = global.condemnation_targets value = THIS } }
+		condemnation_refresh_target_modifiers = yes
+		condemnation_refresh_participant_burden = yes
+		remove_ideas = genocide_international_sanctions
+		force_update_dynamic_modifier = yes
+	}
 }

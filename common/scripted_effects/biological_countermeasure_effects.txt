@@ -127,8 +127,11 @@ bio_countermeasure_pay_surveillance_network = {
 }
 
 bio_countermeasure_activate_surveillance_network = {
-	add_ideas = bio_surveillance_network_idea
-	clr_country_flag = bio_surveillance_network_activation_in_progress
+	if = {
+		limit = { uses_normal_civilian_systems = yes }
+			add_ideas = bio_surveillance_network_idea
+			clr_country_flag = bio_surveillance_network_activation_in_progress
+	}
 }
 
 bio_countermeasure_stand_down_surveillance_network = {
@@ -216,7 +219,7 @@ bio_countermeasure_apply_quarantine = {
 	clr_state_flag = bio_quarantine_deployment_pending
 	clear_variable = bio_quarantine_order_provider
 	clear_variable = bio_quarantine_order_cycle
-	add_dynamic_modifier = { modifier = quarantined_contaminated_state }
+	set_temp_variable = { human_state_modifier_request = token:quarantined_contaminated_state } set_temp_variable = { human_state_modifier_requested_days = 0 } add_human_state_dynamic_modifier = yes
 }
 
 bio_countermeasure_record_quarantine_order = {
@@ -468,8 +471,11 @@ bio_countermeasure_pay_vaccination_program = {
 }
 
 bio_countermeasure_activate_vaccination_program = {
-	add_ideas = smallpox_vaccination_program_idea
-	clr_country_flag = smallpox_vaccination_program_in_progress
+	if = {
+		limit = { uses_normal_civilian_systems = yes }
+			add_ideas = smallpox_vaccination_program_idea
+			clr_country_flag = smallpox_vaccination_program_in_progress
+	}
 }
 
 bio_countermeasure_revoke_vaccination_program = {
@@ -978,8 +984,8 @@ bio_countermeasure_cleanup_state_commitments = {
 	clr_state_flag = bio_international_medical_mission_active
 	clr_state_flag = bio_international_medical_mission_pending
 	if = {
-		limit = { has_dynamic_modifier = { modifier = quarantined_contaminated_state } }
-		remove_dynamic_modifier = { modifier = quarantined_contaminated_state }
+		limit = { has_dynamic_modifier = { modifier = quarantined_contaminated_state scope = OWNER } }
+		set_temp_variable = { human_state_modifier_request = token:quarantined_contaminated_state } remove_human_state_dynamic_modifier = yes
 	}
 
 	clear_variable = bio_field_hospital_medical_provider
@@ -1005,73 +1011,85 @@ bio_countermeasure_cleanup_state_commitments = {
 # ----------------------------------------------------------------------------
 bio_countermeasure_start_antibiotic_research = {
 	if = {
-		limit = { bio_countermeasure_antibiotic_research_pick_plague = yes }
-		set_country_flag = developing_plague_antibiotics_retroactively
-		add_ideas = developing_plague_antibiotics_research_slowdown
-	}
-	else_if = {
-		limit = { bio_countermeasure_antibiotic_research_pick_anthrax = yes }
-		set_country_flag = developing_anthrax_antibiotics_retroactively
-		add_ideas = developing_anthrax_antibiotics_research_slowdown
-	}
-	else_if = {
-		limit = { bio_countermeasure_antibiotic_research_pick_tularemia = yes }
-		set_country_flag = developing_tularemia_antibiotics_retroactively
-		add_ideas = developing_tularemia_antibiotics_research_slowdown
+		limit = { uses_normal_civilian_systems = yes }
+			if = {
+				limit = { bio_countermeasure_antibiotic_research_pick_plague = yes }
+				set_country_flag = developing_plague_antibiotics_retroactively
+				add_ideas = developing_plague_antibiotics_research_slowdown
+			}
+			else_if = {
+				limit = { bio_countermeasure_antibiotic_research_pick_anthrax = yes }
+				set_country_flag = developing_anthrax_antibiotics_retroactively
+				add_ideas = developing_anthrax_antibiotics_research_slowdown
+			}
+			else_if = {
+				limit = { bio_countermeasure_antibiotic_research_pick_tularemia = yes }
+				set_country_flag = developing_tularemia_antibiotics_retroactively
+				add_ideas = developing_tularemia_antibiotics_research_slowdown
+			}
 	}
 }
 
 bio_countermeasure_finish_antibiotic_research = {
 	if = {
-		limit = { has_country_flag = developing_plague_antibiotics_retroactively }
-		set_country_flag = plague_antibiotics_research_started
-		clr_country_flag = developing_plague_antibiotics_retroactively
-		remove_ideas = developing_plague_antibiotics_research_slowdown
-	}
-	if = {
-		limit = { has_country_flag = developing_anthrax_antibiotics_retroactively }
-		set_country_flag = anthrax_antibiotics_research_started
-		clr_country_flag = developing_anthrax_antibiotics_retroactively
-		remove_ideas = developing_anthrax_antibiotics_research_slowdown
-	}
-	if = {
-		limit = { has_country_flag = developing_tularemia_antibiotics_retroactively }
-		set_country_flag = tularemia_antibiotics_research_started
-		clr_country_flag = developing_tularemia_antibiotics_retroactively
-		remove_ideas = developing_tularemia_antibiotics_research_slowdown
+		limit = { uses_normal_civilian_systems = yes }
+			if = {
+				limit = { has_country_flag = developing_plague_antibiotics_retroactively }
+				set_country_flag = plague_antibiotics_research_started
+				clr_country_flag = developing_plague_antibiotics_retroactively
+				remove_ideas = developing_plague_antibiotics_research_slowdown
+			}
+			if = {
+				limit = { has_country_flag = developing_anthrax_antibiotics_retroactively }
+				set_country_flag = anthrax_antibiotics_research_started
+				clr_country_flag = developing_anthrax_antibiotics_retroactively
+				remove_ideas = developing_anthrax_antibiotics_research_slowdown
+			}
+			if = {
+				limit = { has_country_flag = developing_tularemia_antibiotics_retroactively }
+				set_country_flag = tularemia_antibiotics_research_started
+				clr_country_flag = developing_tularemia_antibiotics_retroactively
+				remove_ideas = developing_tularemia_antibiotics_research_slowdown
+			}
 	}
 }
 
 bio_countermeasure_start_antibiotic_production = {
 	if = {
-		limit = { bio_countermeasure_antibiotic_production_pick_plague = yes }
-		set_country_flag = plague_antibiotics_production_in_progress
-	}
-	else_if = {
-		limit = { bio_countermeasure_antibiotic_production_pick_anthrax = yes }
-		set_country_flag = anthrax_antibiotics_production_in_progress
-	}
-	else_if = {
-		limit = { bio_countermeasure_antibiotic_production_pick_tularemia = yes }
-		set_country_flag = tularemia_antibiotics_production_in_progress
+		limit = { uses_normal_civilian_systems = yes }
+			if = {
+				limit = { bio_countermeasure_antibiotic_production_pick_plague = yes }
+				set_country_flag = plague_antibiotics_production_in_progress
+			}
+			else_if = {
+				limit = { bio_countermeasure_antibiotic_production_pick_anthrax = yes }
+				set_country_flag = anthrax_antibiotics_production_in_progress
+			}
+			else_if = {
+				limit = { bio_countermeasure_antibiotic_production_pick_tularemia = yes }
+				set_country_flag = tularemia_antibiotics_production_in_progress
+			}
 	}
 }
 
 bio_countermeasure_finish_antibiotic_production = {
 	if = {
-		limit = { has_country_flag = plague_antibiotics_production_in_progress }
-		add_ideas = plague_antibiotics_mass_production_idea
-		clr_country_flag = plague_antibiotics_production_in_progress
-	}
-	if = {
-		limit = { has_country_flag = anthrax_antibiotics_production_in_progress }
-		add_ideas = anthrax_antibiotics_mass_production_idea
-		clr_country_flag = anthrax_antibiotics_production_in_progress
-	}
-	if = {
-		limit = { has_country_flag = tularemia_antibiotics_production_in_progress }
-		add_ideas = tularemia_antibiotics_mass_production_idea
-		clr_country_flag = tularemia_antibiotics_production_in_progress
+		limit = { uses_normal_civilian_systems = yes }
+			if = {
+				limit = { has_country_flag = plague_antibiotics_production_in_progress }
+				add_ideas = plague_antibiotics_mass_production_idea
+				clr_country_flag = plague_antibiotics_production_in_progress
+			}
+			if = {
+				limit = { has_country_flag = anthrax_antibiotics_production_in_progress }
+				add_ideas = anthrax_antibiotics_mass_production_idea
+				clr_country_flag = anthrax_antibiotics_production_in_progress
+			}
+			if = {
+				limit = { has_country_flag = tularemia_antibiotics_production_in_progress }
+				add_ideas = tularemia_antibiotics_mass_production_idea
+				clr_country_flag = tularemia_antibiotics_production_in_progress
+			}
 	}
 }
 

@@ -539,10 +539,10 @@ chem_apply_state_contamination = {
     add_to_temp_variable = { var = chem_days_left value = chem_current_day_neg }
     clamp_temp_variable = { var = chem_days_left min = 1 max = chem_max_duration_days }
     if = {
-        limit = { has_dynamic_modifier = { modifier = chem_state_contamination } }
-        remove_dynamic_modifier = { modifier = chem_state_contamination }
+        limit = { has_dynamic_modifier = { modifier = chem_state_contamination scope = OWNER } }
+        set_temp_variable = { human_state_modifier_request = token:chem_state_contamination } remove_human_state_dynamic_modifier = yes
     }
-    add_dynamic_modifier = { modifier = chem_state_contamination days = chem_days_left }
+    set_temp_variable = { human_state_modifier_request = token:chem_state_contamination } set_temp_variable = { human_state_modifier_requested_days = chem_days_left } add_human_state_dynamic_modifier = yes
     force_update_dynamic_modifier = yes
 
 	if = {

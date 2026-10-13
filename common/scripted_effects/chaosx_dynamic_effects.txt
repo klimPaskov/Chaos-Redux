@@ -866,3 +866,394 @@ chaosx_convert_date_offset_to_days = {
 }
 
 # ============================================================================
+
+# State scope. Native country-targeted application preserves every human value.
+# Temporary inputs: human_state_modifier_request (modifier token) and
+# human_state_modifier_requested_days (zero for permanent).
+add_human_state_dynamic_modifier = {
+	set_temp_variable = { human_state_modifier_active = human_state_modifier_request }
+	set_temp_variable = { human_state_modifier_days = human_state_modifier_requested_days }
+	if = {
+		limit = { NOT = { check_variable = { human_state_modifier_active = constant:chaosx_date_units.zero } } }
+		remove_human_state_dynamic_modifier = yes
+		meta_effect = {
+			text = {
+				if = {
+					limit = { state_uses_normal_civilian_systems = yes }
+					set_variable = { human_state_modifier_[MODIFIER]_until = 0 }
+					if = {
+						limit = { check_variable = { human_state_modifier_days > 0 } }
+						set_temp_variable = { chaosx_date_days = human_state_modifier_days }
+						set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
+						chaosx_convert_days_to_date_offset = yes
+						set_variable = { human_state_modifier_[MODIFIER]_until = global.date }
+						add_to_variable = { human_state_modifier_[MODIFIER]_until = chaosx_date_offset }
+					}
+					if = {
+						limit = { NOT = { is_in_array = { array = global.human_state_modifier_states value = THIS } } }
+						add_to_array = { array = global.human_state_modifier_states value = THIS }
+					}
+					save_event_target_as = human_state_modifier_state
+					every_country = {
+						limit = { exists = yes uses_normal_civilian_systems = yes }
+						set_temp_variable = { human_state_modifier_country = THIS }
+						event_target:human_state_modifier_state = {
+							if = {
+								limit = { NOT = { is_in_array = { array = human_state_modifier_countries value = human_state_modifier_country } } }
+								add_to_array = { array = human_state_modifier_countries value = human_state_modifier_country }
+							}
+							if = {
+								limit = { check_variable = { human_state_modifier_days > 0 } }
+								add_dynamic_modifier = { modifier = [MODIFIER] scope = var:human_state_modifier_country days = human_state_modifier_days }
+							}
+							else = { add_dynamic_modifier = { modifier = [MODIFIER] scope = var:human_state_modifier_country } }
+						}
+					}
+					force_update_dynamic_modifier = yes
+				}
+			}
+			MODIFIER = "[?human_state_modifier_active.GetTokenKey]"
+		}
+	}
+	set_temp_variable = { human_state_modifier_request = constant:chaosx_date_units.zero }
+	set_temp_variable = { human_state_modifier_requested_days = constant:chaosx_date_units.zero }
+}
+
+# State scope. Remove both the legacy unbound instance and all recorded views.
+remove_human_state_dynamic_modifier = {
+	set_temp_variable = { human_state_modifier_cleanup = human_state_modifier_request }
+	if = {
+		limit = { NOT = { check_variable = { human_state_modifier_cleanup = constant:chaosx_date_units.zero } } }
+		meta_effect = {
+			text = {
+				if = {
+					limit = { has_dynamic_modifier = { modifier = [MODIFIER] } }
+					remove_dynamic_modifier = { modifier = [MODIFIER] }
+				}
+				save_event_target_as = human_state_modifier_cleanup_state
+				set_temp_variable = { human_state_modifier_cleanup_break = constant:chaosx_date_units.zero }
+				for_each_scope_loop = {
+					array = human_state_modifier_countries
+					break = human_state_modifier_cleanup_break
+					set_temp_variable = { human_state_modifier_cleanup_country = THIS }
+					event_target:human_state_modifier_cleanup_state = {
+						if = {
+							limit = { has_dynamic_modifier = { modifier = [MODIFIER] scope = var:human_state_modifier_cleanup_country } }
+							remove_dynamic_modifier = { modifier = [MODIFIER] scope = var:human_state_modifier_cleanup_country }
+						}
+					}
+				}
+				clear_variable = human_state_modifier_[MODIFIER]_until
+			}
+			MODIFIER = "[?human_state_modifier_cleanup.GetTokenKey]"
+		}
+	}
+	set_temp_variable = { human_state_modifier_request = constant:chaosx_date_units.zero }
+	set_temp_variable = { human_state_modifier_requested_days = constant:chaosx_date_units.zero }
+}
+
+# State scope. Bind a newly existing human country for the remaining lifetime.
+human_state_modifier_bind_existing_country = {
+	set_temp_variable = { human_state_modifier_binding = human_state_modifier_request }
+	if = {
+		limit = { NOT = { check_variable = { human_state_modifier_binding = constant:chaosx_date_units.zero } } }
+		meta_effect = {
+			text = {
+				if = {
+					limit = {
+						has_variable = human_state_modifier_[MODIFIER]_until
+						OR = {
+							check_variable = { human_state_modifier_[MODIFIER]_until = 0 }
+							check_variable = { var = human_state_modifier_[MODIFIER]_until value = global.date compare = greater_than }
+						}
+					}
+					if = {
+						limit = { NOT = { is_in_array = { array = human_state_modifier_countries value = event_target:human_state_modifier_new_country } } }
+						add_to_array = { array = human_state_modifier_countries value = event_target:human_state_modifier_new_country }
+					}
+					if = {
+						limit = { check_variable = { human_state_modifier_[MODIFIER]_until = 0 } }
+						add_dynamic_modifier = { modifier = [MODIFIER] scope = event_target:human_state_modifier_new_country }
+					}
+					else = {
+						set_temp_variable = { human_state_modifier_remaining_days = human_state_modifier_[MODIFIER]_until }
+						subtract_from_temp_variable = { human_state_modifier_remaining_days = global.date }
+						multiply_temp_variable = { human_state_modifier_remaining_days = constant:chaosx_date_units.hours_per_date_unit }
+						divide_temp_variable = { human_state_modifier_remaining_days = constant:chaosx_date_units.hours_per_day }
+						add_dynamic_modifier = { modifier = [MODIFIER] scope = event_target:human_state_modifier_new_country days = human_state_modifier_remaining_days }
+					}
+				}
+			}
+			MODIFIER = "[?human_state_modifier_binding.GetTokenKey]"
+		}
+	}
+	set_temp_variable = { human_state_modifier_request = constant:chaosx_date_units.zero }
+	set_temp_variable = { human_state_modifier_requested_days = constant:chaosx_date_units.zero }
+}
+
+# Country scope. Event-style birth/transition hooks only, never periodic polling.
+refresh_human_state_modifier_country = {
+	if = {
+		limit = { exists = yes uses_normal_civilian_systems = yes }
+		set_country_flag = human_state_modifier_registered_@THIS
+		clr_country_flag = human_system_nonhuman_cleanup_current_@THIS
+		save_event_target_as = human_state_modifier_new_country
+		every_state = {
+			limit = { is_in_array = { array = global.human_state_modifier_states value = THIS } }
+			set_temp_variable = { human_state_modifier_request = token:bio_ambiguous_health_pressure_state } human_state_modifier_bind_existing_country = yes
+			set_temp_variable = { human_state_modifier_request = token:anthrax_contaminated_state } human_state_modifier_bind_existing_country = yes
+			set_temp_variable = { human_state_modifier_request = token:plague_contaminated_state } human_state_modifier_bind_existing_country = yes
+			set_temp_variable = { human_state_modifier_request = token:tularemia_contaminated_state } human_state_modifier_bind_existing_country = yes
+			set_temp_variable = { human_state_modifier_request = token:smallpox_contaminated_state } human_state_modifier_bind_existing_country = yes
+			set_temp_variable = { human_state_modifier_request = token:quarantined_contaminated_state } human_state_modifier_bind_existing_country = yes
+			set_temp_variable = { human_state_modifier_request = token:chem_state_contamination } human_state_modifier_bind_existing_country = yes
+			set_temp_variable = { human_state_modifier_request = token:cbrn_chemical_state_contamination } human_state_modifier_bind_existing_country = yes
+			set_temp_variable = { human_state_modifier_request = token:famine_state_supply_strain } human_state_modifier_bind_existing_country = yes
+			set_temp_variable = { human_state_modifier_request = token:famine_state_acute_shortage } human_state_modifier_bind_existing_country = yes
+			set_temp_variable = { human_state_modifier_request = token:famine_state_famine } human_state_modifier_bind_existing_country = yes
+			set_temp_variable = { human_state_modifier_request = token:famine_state_catastrophic_famine } human_state_modifier_bind_existing_country = yes
+			set_temp_variable = { human_state_modifier_request = token:migration_state_preparing_to_leave } human_state_modifier_bind_existing_country = yes
+			set_temp_variable = { human_state_modifier_request = token:migration_state_exodus } human_state_modifier_bind_existing_country = yes
+			set_temp_variable = { human_state_modifier_request = token:migration_state_organized_evacuation } human_state_modifier_bind_existing_country = yes
+			set_temp_variable = { human_state_modifier_request = token:migration_state_depopulated_districts } human_state_modifier_bind_existing_country = yes
+			set_temp_variable = { human_state_modifier_request = token:migration_state_reception } human_state_modifier_bind_existing_country = yes
+			set_temp_variable = { human_state_modifier_request = token:migration_state_overcrowded } human_state_modifier_bind_existing_country = yes
+			set_temp_variable = { human_state_modifier_request = token:migration_state_trapped_border } human_state_modifier_bind_existing_country = yes
+			set_temp_variable = { human_state_modifier_request = token:migration_state_transit } human_state_modifier_bind_existing_country = yes
+			set_temp_variable = { human_state_modifier_request = token:migration_state_return_readiness } human_state_modifier_bind_existing_country = yes
+			set_temp_variable = { human_state_modifier_request = token:migration_state_return } human_state_modifier_bind_existing_country = yes
+			set_temp_variable = { human_state_modifier_request = token:black_plague_affected_state } human_state_modifier_bind_existing_country = yes
+			force_update_dynamic_modifier = yes
+		}
+	}
+}
+
+# Country scope. Called synchronously after every nonhuman identity write.
+clear_nonhuman_country_human_systems = {
+	if = {
+		limit = { exists = yes is_actual_nonhuman_country = yes NOT = { has_country_flag = human_system_nonhuman_cleanup_current_@THIS } }
+		set_country_flag = human_system_nonhuman_cleanup_current_@THIS
+		clr_country_flag = human_state_modifier_registered_@THIS
+		save_event_target_as = human_system_nonhuman_country
+		condemnation_clear_nonhuman_country_relations = yes
+		if = { limit = { has_country_leader_with_trait = ww_one_trauma } remove_country_leader_trait = ww_one_trauma }
+		if = { limit = { has_country_leader_with_trait = stammer } remove_country_leader_trait = stammer }
+		if = { limit = { has_country_leader_with_trait = stalin_political_paranoia } remove_country_leader_trait = stalin_political_paranoia }
+		if = { limit = { has_country_leader_with_trait = stalin_political_paranoia_advanced } remove_country_leader_trait = stalin_political_paranoia_advanced }
+		if = { limit = { has_idea = lawrence_british_mission } remove_ideas = lawrence_british_mission }
+		if = { limit = { has_idea = lawrence_embedded_mission } remove_ideas = lawrence_embedded_mission }
+		if = { limit = { has_dynamic_modifier = { modifier = mysterious_people_newcomers } } remove_dynamic_modifier = { modifier = mysterious_people_newcomers } }
+		if = { limit = { has_dynamic_modifier = { modifier = mysterious_people_projects } } remove_dynamic_modifier = { modifier = mysterious_people_projects } }
+		if = { limit = { has_dynamic_modifier = { modifier = mysterious_people_unrest } } remove_dynamic_modifier = { modifier = mysterious_people_unrest } }
+		if = { limit = { has_dynamic_modifier = { modifier = mysterious_people_calm } } remove_dynamic_modifier = { modifier = mysterious_people_calm } }
+		if = { limit = { has_dynamic_modifier = { modifier = mysterious_people_shift } } remove_dynamic_modifier = { modifier = mysterious_people_shift } }
+		if = { limit = { has_dynamic_modifier = { modifier = random_terror_sky_fracture_shock } } remove_dynamic_modifier = { modifier = random_terror_sky_fracture_shock } }
+		if = { limit = { has_dynamic_modifier = { modifier = random_terror_emphasis_protection } } remove_dynamic_modifier = { modifier = random_terror_emphasis_protection } }
+		if = { limit = { has_dynamic_modifier = { modifier = random_terror_emphasis_intelligence } } remove_dynamic_modifier = { modifier = random_terror_emphasis_intelligence } }
+		if = { limit = { has_dynamic_modifier = { modifier = random_terror_emphasis_victims } } remove_dynamic_modifier = { modifier = random_terror_emphasis_victims } }
+		if = { limit = { has_dynamic_modifier = { modifier = random_terror_emphasis_coercion } } remove_dynamic_modifier = { modifier = random_terror_emphasis_coercion } }
+		if = { limit = { has_dynamic_modifier = { modifier = industrial_boom_labor_settlement } } remove_dynamic_modifier = { modifier = industrial_boom_labor_settlement } }
+		if = { limit = { has_dynamic_modifier = { modifier = great_depression_civilian_commitment } } remove_dynamic_modifier = { modifier = great_depression_civilian_commitment } }
+		if = { limit = { has_dynamic_modifier = { modifier = great_depression_bank_holiday } } remove_dynamic_modifier = { modifier = great_depression_bank_holiday } }
+		if = { limit = { has_dynamic_modifier = { modifier = great_depression_civilian_commitment_major } } remove_dynamic_modifier = { modifier = great_depression_civilian_commitment_major } }
+		if = { limit = { has_dynamic_modifier = { modifier = great_depression_national_panic } } remove_dynamic_modifier = { modifier = great_depression_national_panic } }
+		if = { limit = { has_dynamic_modifier = { modifier = great_depression_national_depression } } remove_dynamic_modifier = { modifier = great_depression_national_depression } }
+		if = { limit = { has_dynamic_modifier = { modifier = great_depression_national_deep } } remove_dynamic_modifier = { modifier = great_depression_national_deep } }
+		if = { limit = { has_dynamic_modifier = { modifier = great_depression_national_systemic } } remove_dynamic_modifier = { modifier = great_depression_national_systemic } }
+		if = { limit = { has_dynamic_modifier = { modifier = great_depression_national_paralysis } } remove_dynamic_modifier = { modifier = great_depression_national_paralysis } }
+		if = { limit = { has_dynamic_modifier = { modifier = great_depression_national_stabilizing } } remove_dynamic_modifier = { modifier = great_depression_national_stabilizing } }
+		if = { limit = { has_dynamic_modifier = { modifier = great_depression_national_recovery } } remove_dynamic_modifier = { modifier = great_depression_national_recovery } }
+		if = { limit = { has_dynamic_modifier = { modifier = great_depression_opening_shock } } remove_dynamic_modifier = { modifier = great_depression_opening_shock } }
+		if = { limit = { has_dynamic_modifier = { modifier = great_depression_policy_whiplash } } remove_dynamic_modifier = { modifier = great_depression_policy_whiplash } }
+		if = { limit = { has_dynamic_modifier = { modifier = great_depression_financial_contagion } } remove_dynamic_modifier = { modifier = great_depression_financial_contagion } }
+		if = { limit = { has_dynamic_modifier = { modifier = great_depression_social_collapse_pressure } } remove_dynamic_modifier = { modifier = great_depression_social_collapse_pressure } }
+		if = { limit = { has_dynamic_modifier = { modifier = great_depression_global_contraction } } remove_dynamic_modifier = { modifier = great_depression_global_contraction } }
+		if = { limit = { has_dynamic_modifier = { modifier = great_depression_global_contraction_light } } remove_dynamic_modifier = { modifier = great_depression_global_contraction_light } }
+		if = { limit = { has_dynamic_modifier = { modifier = great_depression_global_contraction_severe } } remove_dynamic_modifier = { modifier = great_depression_global_contraction_severe } }
+		if = { limit = { has_dynamic_modifier = { modifier = great_depression_recovery_conference_dividend } } remove_dynamic_modifier = { modifier = great_depression_recovery_conference_dividend } }
+		if = { limit = { has_dynamic_modifier = { modifier = great_depression_clearing_bloc_membership } } remove_dynamic_modifier = { modifier = great_depression_clearing_bloc_membership } }
+		if = { limit = { has_dynamic_modifier = { modifier = great_depression_protectionist_bloc_membership } } remove_dynamic_modifier = { modifier = great_depression_protectionist_bloc_membership } }
+		clear_variable = genocide_foreign_pressure
+		clr_country_flag = mass_panic
+		clr_country_flag = hygiene_measures_enforced
+		clr_country_flag = migration_restricted
+		clr_country_flag = quarantine_protocols_active
+		clr_country_flag = borders_completely_closed
+		clr_country_flag = extreme_martial_law_active
+		clr_country_flag = developing_plague_antibiotics_retroactively
+		clr_country_flag = developing_anthrax_antibiotics_retroactively
+		clr_country_flag = developing_tularemia_antibiotics_retroactively
+		clr_country_flag = plague_antibiotics_production_in_progress
+		clr_country_flag = anthrax_antibiotics_production_in_progress
+		clr_country_flag = tularemia_antibiotics_production_in_progress
+		clr_country_flag = bio_surveillance_network_activation_in_progress
+		clr_country_flag = smallpox_vaccination_program_in_progress
+		if = { limit = { has_idea = cbrn_first_chemical_shock_idea } remove_ideas = cbrn_first_chemical_shock_idea }
+		if = { limit = { has_idea = murder_mystery_case_dossier } remove_ideas = murder_mystery_case_dossier }
+		if = { limit = { has_idea = murder_mystery_succession_crisis } remove_ideas = murder_mystery_succession_crisis }
+		if = { limit = { has_idea = murder_mystery_protected_leadership_system } remove_ideas = murder_mystery_protected_leadership_system }
+		if = { limit = { has_idea = murder_mystery_institutional_memory_after_capture } remove_ideas = murder_mystery_institutional_memory_after_capture }
+		cbrn_occupation_clear_nonhuman_country_policy = yes
+		if = { limit = { has_idea = outbreak_prevention_hygiene_measures } remove_ideas = outbreak_prevention_hygiene_measures }
+		if = { limit = { has_idea = outbreak_prevention_migration_restricted } remove_ideas = outbreak_prevention_migration_restricted }
+		if = { limit = { has_idea = outbreak_prevention_quarantine_protocols } remove_ideas = outbreak_prevention_quarantine_protocols }
+		if = { limit = { has_idea = outbreak_prevention_borders_closed } remove_ideas = outbreak_prevention_borders_closed }
+		if = { limit = { has_idea = outbreak_prevention_extreme_martial_law } remove_ideas = outbreak_prevention_extreme_martial_law }
+		if = { limit = { has_idea = zombie_postwar_global_vigilance } remove_ideas = zombie_postwar_global_vigilance }
+		if = { limit = { has_idea = bio_surveillance_network_idea } remove_ideas = bio_surveillance_network_idea }
+		if = { limit = { has_idea = smallpox_vaccination_program_idea } remove_ideas = smallpox_vaccination_program_idea }
+		if = { limit = { has_idea = anthrax_antibiotics_mass_production_idea } remove_ideas = anthrax_antibiotics_mass_production_idea }
+		if = { limit = { has_idea = plague_antibiotics_mass_production_idea } remove_ideas = plague_antibiotics_mass_production_idea }
+		if = { limit = { has_idea = tularemia_antibiotics_mass_production_idea } remove_ideas = tularemia_antibiotics_mass_production_idea }
+		if = { limit = { has_idea = developing_anthrax_antibiotics_research_slowdown } remove_ideas = developing_anthrax_antibiotics_research_slowdown }
+		if = { limit = { has_idea = developing_plague_antibiotics_research_slowdown } remove_ideas = developing_plague_antibiotics_research_slowdown }
+		if = { limit = { has_idea = developing_tularemia_antibiotics_research_slowdown } remove_ideas = developing_tularemia_antibiotics_research_slowdown }
+		if = { limit = { has_idea = radical_hardliner_support } remove_ideas = radical_hardliner_support }
+		if = { limit = { has_idea = genocide_rail_deportation_priority } remove_ideas = genocide_rail_deportation_priority }
+		if = { limit = { has_idea = genocide_tribunal_preparation } remove_ideas = genocide_tribunal_preparation }
+		if = { limit = { has_idea = genocide_military_objections_suppressed } remove_ideas = genocide_military_objections_suppressed }
+		if = { limit = { has_idea = random_terror_famine } remove_ideas = random_terror_famine }
+		if = { limit = { has_idea = fallout_office_physician } remove_ideas = fallout_office_physician }
+		if = { limit = { has_idea = fallout_institution_physician_civic } remove_ideas = fallout_institution_physician_civic }
+		if = { limit = { has_idea = fallout_institution_physician_command } remove_ideas = fallout_institution_physician_command }
+		if = { limit = { has_idea = black_death } remove_ideas = black_death }
+		if = { limit = { has_idea = great_depression_scar_labor_bitterness } remove_ideas = great_depression_scar_labor_bitterness }
+		if = { limit = { has_idea = great_depression_aftermath_labor_scar } remove_ideas = great_depression_aftermath_labor_scar }
+		if = { limit = { has_idea = camp_repression_network_overstretch } remove_ideas = camp_repression_network_overstretch }
+		if = { limit = { has_idea = camp_democratic_legitimacy_crisis } remove_ideas = camp_democratic_legitimacy_crisis }
+		if = { limit = { has_idea = camp_repression_reform_pressure } remove_ideas = camp_repression_reform_pressure }
+		if = { limit = { has_idea = camp_rework_site_inspection_burden } remove_ideas = camp_rework_site_inspection_burden }
+		if = { limit = { has_idea = generic_detention_network_administration } remove_ideas = generic_detention_network_administration }
+		if = { limit = { has_idea = generic_expanded_labor_network } remove_ideas = generic_expanded_labor_network }
+		if = { limit = { has_idea = generic_overextended_repression_network } remove_ideas = generic_overextended_repression_network }
+		if = { limit = { has_idea = generic_radicalized_atrocity_policy } remove_ideas = generic_radicalized_atrocity_policy }
+		if = { limit = { has_idea = generic_reform_pressure } remove_ideas = generic_reform_pressure }
+		if = { limit = { has_idea = generic_reformed_legacy } remove_ideas = generic_reformed_legacy }
+		if = { limit = { has_idea = germany_dormant_ss_camp_legacy } remove_ideas = germany_dormant_ss_camp_legacy }
+		if = { limit = { has_idea = germany_ss_camp_administration } remove_ideas = germany_ss_camp_administration }
+		if = { limit = { has_idea = germany_occupied_labor_network } remove_ideas = germany_occupied_labor_network }
+		if = { limit = { has_idea = germany_ss_camp_overextension } remove_ideas = germany_ss_camp_overextension }
+		if = { limit = { has_idea = germany_auschwitz_evidence_pressure } remove_ideas = germany_auschwitz_evidence_pressure }
+		if = { limit = { has_idea = germany_camp_reform_pressure } remove_ideas = germany_camp_reform_pressure }
+		if = { limit = { has_idea = germany_post_regime_camp_reckoning } remove_ideas = germany_post_regime_camp_reckoning }
+		if = { limit = { has_idea = japan_dormant_occupation_apparatus } remove_ideas = japan_dormant_occupation_apparatus }
+		if = { limit = { has_idea = japan_imperial_occupation_repression } remove_ideas = japan_imperial_occupation_repression }
+		if = { limit = { has_idea = japan_forced_labor_experiment_network } remove_ideas = japan_forced_labor_experiment_network }
+		if = { limit = { has_idea = japan_ishii_program_authority } remove_ideas = japan_ishii_program_authority }
+		if = { limit = { has_idea = japan_kwantung_medical_autonomy } remove_ideas = japan_kwantung_medical_autonomy }
+		if = { limit = { has_idea = japan_biowarfare_outbreak_pressure } remove_ideas = japan_biowarfare_outbreak_pressure }
+		if = { limit = { has_idea = japan_imperial_army_review } remove_ideas = japan_imperial_army_review }
+		if = { limit = { has_idea = japan_pingfang_exposure_pressure } remove_ideas = japan_pingfang_exposure_pressure }
+		if = { limit = { has_idea = japan_biowarfare_program_overextension } remove_ideas = japan_biowarfare_program_overextension }
+		if = { limit = { has_idea = japan_reformed_biowarfare_legacy } remove_ideas = japan_reformed_biowarfare_legacy }
+		if = { limit = { has_idea = sov_dormant_gulag_legacy } remove_ideas = sov_dormant_gulag_legacy }
+		if = { limit = { has_idea = sov_gulag_network_administration } remove_ideas = sov_gulag_network_administration }
+		if = { limit = { has_idea = sov_nkvd_repression_authority } remove_ideas = sov_nkvd_repression_authority }
+		if = { limit = { has_idea = sov_forced_labor_output } remove_ideas = sov_forced_labor_output }
+		if = { limit = { has_idea = sov_gulag_corruption_and_overextension } remove_ideas = sov_gulag_corruption_and_overextension }
+		if = { limit = { has_idea = sov_famine_pressure } remove_ideas = sov_famine_pressure }
+		if = { limit = { has_idea = sov_republic_fear_and_grievance } remove_ideas = sov_republic_fear_and_grievance }
+		if = { limit = { has_idea = sov_gulag_reform_pressure } remove_ideas = sov_gulag_reform_pressure }
+		if = { limit = { has_idea = sov_post_collapse_repression_legacy } remove_ideas = sov_post_collapse_repression_legacy }
+		if = { limit = { has_idea = camp_admin_civil_british_custody } remove_ideas = camp_admin_civil_british_custody }
+		if = { limit = { has_idea = camp_admin_civil_british_review } remove_ideas = camp_admin_civil_british_review }
+		if = { limit = { has_idea = camp_admin_civil_congo_strike } remove_ideas = camp_admin_civil_congo_strike }
+		if = { limit = { has_idea = uk_imperial_detention_legacy } remove_ideas = uk_imperial_detention_legacy }
+		if = { limit = { has_idea = uk_imperial_detention_administration } remove_ideas = uk_imperial_detention_administration }
+		if = { limit = { has_idea = uk_overextended_imperial_detention } remove_ideas = uk_overextended_imperial_detention }
+		if = { limit = { has_idea = raj_colonial_labor_burden } remove_ideas = raj_colonial_labor_burden }
+		if = { limit = { has_idea = uk_imperial_reform_credit } remove_ideas = uk_imperial_reform_credit }
+		if = { limit = { has_idea = uk_colonial_reckoning_pressure } remove_ideas = uk_colonial_reckoning_pressure }
+		if = { limit = { has_idea = usa_wartime_security_authority } remove_ideas = usa_wartime_security_authority }
+		if = { limit = { has_idea = usa_contested_relocation_authority } remove_ideas = usa_contested_relocation_authority }
+		if = { limit = { has_idea = usa_civil_liberties_damage } remove_ideas = usa_civil_liberties_damage }
+		if = { limit = { has_idea = usa_relocation_population_disruption } remove_ideas = usa_relocation_population_disruption }
+		if = { limit = { has_idea = usa_redress_pressure } remove_ideas = usa_redress_pressure }
+		if = { limit = { has_idea = usa_reform_credit } remove_ideas = usa_reform_credit }
+		if = { limit = { has_idea = fr_camp_legacy } remove_ideas = fr_camp_legacy }
+		if = { limit = { has_idea = vichy_collaboration_repression } remove_ideas = vichy_collaboration_repression }
+		if = { limit = { has_idea = fr_north_africa_labor_burden } remove_ideas = fr_north_africa_labor_burden }
+		if = { limit = { has_idea = fr_refugee_pressure } remove_ideas = fr_refugee_pressure }
+		if = { limit = { has_idea = fr_refugee_aid_commitment } remove_ideas = fr_refugee_aid_commitment }
+		if = { limit = { has_idea = free_france_reform_credit } remove_ideas = free_france_reform_credit }
+		if = { limit = { has_idea = fr_post_liberation_reckoning } remove_ideas = fr_post_liberation_reckoning }
+		if = { limit = { has_idea = ita_colonial_repression_legacy } remove_ideas = ita_colonial_repression_legacy }
+		if = { limit = { has_idea = ita_desert_camp_administration } remove_ideas = ita_desert_camp_administration }
+		if = { limit = { has_idea = ita_libyan_resistance_pressure } remove_ideas = ita_libyan_resistance_pressure }
+		if = { limit = { has_idea = ita_colonial_logistics_output } remove_ideas = ita_colonial_logistics_output }
+		if = { limit = { has_idea = ita_postwar_colonial_claim_damage } remove_ideas = ita_postwar_colonial_claim_damage }
+		if = { limit = { has_idea = ita_colonial_reform_credit } remove_ideas = ita_colonial_reform_credit }
+		if = { limit = { has_idea = bel_congo_concession_labor_system } remove_ideas = bel_congo_concession_labor_system }
+		if = { limit = { has_idea = bel_congo_extraction_pressure } remove_ideas = bel_congo_extraction_pressure }
+		if = { limit = { has_idea = congo_concession_labor_burden } remove_ideas = congo_concession_labor_burden }
+		if = { limit = { has_idea = bel_colonial_resource_output } remove_ideas = bel_colonial_resource_output }
+		if = { limit = { has_idea = bel_postwar_accountability_pressure } remove_ideas = bel_postwar_accountability_pressure }
+		if = { limit = { has_idea = bel_strike_settlement_commitment } remove_ideas = bel_strike_settlement_commitment }
+		if = { limit = { has_idea = bel_congo_reform_credit } remove_ideas = bel_congo_reform_credit }
+		if = { limit = { has_idea = condemnation_inspection_burden } remove_ideas = condemnation_inspection_burden }
+		if = { limit = { has_idea = condemnation_observer_access } remove_ideas = condemnation_observer_access }
+		if = { limit = { has_idea = condemnation_compensation_program } remove_ideas = condemnation_compensation_program }
+		if = { limit = { has_idea = condemnation_non_use_pledge_idea } remove_ideas = condemnation_non_use_pledge_idea }
+		if = { limit = { has_idea = condemnation_command_reform } remove_ideas = condemnation_command_reform }
+		if = { limit = { has_idea = condemnation_domestic_propaganda } remove_ideas = condemnation_domestic_propaganda }
+		if = { limit = { has_idea = condemnation_autarky_program } remove_ideas = condemnation_autarky_program }
+		if = { limit = { has_idea = condemnation_forced_extraction } remove_ideas = condemnation_forced_extraction }
+		if = { limit = { has_idea = condemnation_substitute_materials } remove_ideas = condemnation_substitute_materials }
+		if = { limit = { has_idea = condemnation_military_rationing } remove_ideas = condemnation_military_rationing }
+		if = { limit = { has_idea = condemnation_subject_pressure } remove_ideas = condemnation_subject_pressure }
+		if = { limit = { has_idea = condemnation_controlled_shipping } remove_ideas = condemnation_controlled_shipping }
+		if = { limit = { has_idea = condemnation_hardline_mobilization } remove_ideas = condemnation_hardline_mobilization }
+		if = { limit = { has_idea = condemnation_black_market_network } remove_ideas = condemnation_black_market_network }
+		if = { limit = { has_idea = condemnation_false_manifests } remove_ideas = condemnation_false_manifests }
+		if = { limit = { has_idea = condemnation_neutral_intermediaries } remove_ideas = condemnation_neutral_intermediaries }
+		if = { limit = { has_idea = condemnation_subject_front } remove_ideas = condemnation_subject_front }
+		if = { limit = { has_idea = condemnation_covert_fuel_route } remove_ideas = condemnation_covert_fuel_route }
+		if = { limit = { has_idea = condemnation_reflagged_shipping } remove_ideas = condemnation_reflagged_shipping }
+		if = { limit = { has_idea = condemnation_stolen_license } remove_ideas = condemnation_stolen_license }
+		if = { limit = { has_idea = condemnation_smuggled_laboratory } remove_ideas = condemnation_smuggled_laboratory }
+		if = { limit = { has_idea = galaxies_mix } remove_ideas = galaxies_mix }
+		if = { limit = { has_idea = galaxies_mix_good_1 } remove_ideas = galaxies_mix_good_1 }
+		if = { limit = { has_idea = galaxies_mix_good_2 } remove_ideas = galaxies_mix_good_2 }
+		if = { limit = { has_idea = galaxies_mix_good_3 } remove_ideas = galaxies_mix_good_3 }
+		if = { limit = { has_idea = galaxies_mix_bad_1 } remove_ideas = galaxies_mix_bad_1 }
+		if = { limit = { has_idea = galaxies_mix_bad_2 } remove_ideas = galaxies_mix_bad_2 }
+		if = { limit = { has_idea = galaxies_mix_failed } remove_ideas = galaxies_mix_failed }
+		if = { limit = { has_idea = doomsday } remove_ideas = doomsday }
+		if = { limit = { has_idea = calming_people } remove_ideas = calming_people }
+		if = { limit = { has_idea = air_contamination_country_pressure_tier_1 } remove_ideas = air_contamination_country_pressure_tier_1 }
+		if = { limit = { has_idea = air_contamination_country_pressure_tier_2 } remove_ideas = air_contamination_country_pressure_tier_2 }
+		if = { limit = { has_idea = air_contamination_country_pressure_tier_3 } remove_ideas = air_contamination_country_pressure_tier_3 }
+		if = { limit = { has_idea = air_contamination_country_pressure_tier_4 } remove_ideas = air_contamination_country_pressure_tier_4 }
+		if = { limit = { has_idea = air_contamination_country_pressure_tier_5 } remove_ideas = air_contamination_country_pressure_tier_5 }
+		every_owned_state = { force_update_dynamic_modifier = yes }
+		every_controlled_state = { force_update_dynamic_modifier = yes }
+		every_state = {
+			limit = { is_in_array = { array = global.human_state_modifier_states value = THIS } }
+			if = { limit = { has_dynamic_modifier = { modifier = bio_ambiguous_health_pressure_state scope = event_target:human_system_nonhuman_country } } remove_dynamic_modifier = { modifier = bio_ambiguous_health_pressure_state scope = event_target:human_system_nonhuman_country } }
+			if = { limit = { has_dynamic_modifier = { modifier = anthrax_contaminated_state scope = event_target:human_system_nonhuman_country } } remove_dynamic_modifier = { modifier = anthrax_contaminated_state scope = event_target:human_system_nonhuman_country } }
+			if = { limit = { has_dynamic_modifier = { modifier = plague_contaminated_state scope = event_target:human_system_nonhuman_country } } remove_dynamic_modifier = { modifier = plague_contaminated_state scope = event_target:human_system_nonhuman_country } }
+			if = { limit = { has_dynamic_modifier = { modifier = tularemia_contaminated_state scope = event_target:human_system_nonhuman_country } } remove_dynamic_modifier = { modifier = tularemia_contaminated_state scope = event_target:human_system_nonhuman_country } }
+			if = { limit = { has_dynamic_modifier = { modifier = smallpox_contaminated_state scope = event_target:human_system_nonhuman_country } } remove_dynamic_modifier = { modifier = smallpox_contaminated_state scope = event_target:human_system_nonhuman_country } }
+			if = { limit = { has_dynamic_modifier = { modifier = quarantined_contaminated_state scope = event_target:human_system_nonhuman_country } } remove_dynamic_modifier = { modifier = quarantined_contaminated_state scope = event_target:human_system_nonhuman_country } }
+			if = { limit = { has_dynamic_modifier = { modifier = chem_state_contamination scope = event_target:human_system_nonhuman_country } } remove_dynamic_modifier = { modifier = chem_state_contamination scope = event_target:human_system_nonhuman_country } }
+			if = { limit = { has_dynamic_modifier = { modifier = cbrn_chemical_state_contamination scope = event_target:human_system_nonhuman_country } } remove_dynamic_modifier = { modifier = cbrn_chemical_state_contamination scope = event_target:human_system_nonhuman_country } }
+			if = { limit = { has_dynamic_modifier = { modifier = famine_state_supply_strain scope = event_target:human_system_nonhuman_country } } remove_dynamic_modifier = { modifier = famine_state_supply_strain scope = event_target:human_system_nonhuman_country } }
+			if = { limit = { has_dynamic_modifier = { modifier = famine_state_acute_shortage scope = event_target:human_system_nonhuman_country } } remove_dynamic_modifier = { modifier = famine_state_acute_shortage scope = event_target:human_system_nonhuman_country } }
+			if = { limit = { has_dynamic_modifier = { modifier = famine_state_famine scope = event_target:human_system_nonhuman_country } } remove_dynamic_modifier = { modifier = famine_state_famine scope = event_target:human_system_nonhuman_country } }
+			if = { limit = { has_dynamic_modifier = { modifier = famine_state_catastrophic_famine scope = event_target:human_system_nonhuman_country } } remove_dynamic_modifier = { modifier = famine_state_catastrophic_famine scope = event_target:human_system_nonhuman_country } }
+			if = { limit = { has_dynamic_modifier = { modifier = migration_state_preparing_to_leave scope = event_target:human_system_nonhuman_country } } remove_dynamic_modifier = { modifier = migration_state_preparing_to_leave scope = event_target:human_system_nonhuman_country } }
+			if = { limit = { has_dynamic_modifier = { modifier = migration_state_exodus scope = event_target:human_system_nonhuman_country } } remove_dynamic_modifier = { modifier = migration_state_exodus scope = event_target:human_system_nonhuman_country } }
+			if = { limit = { has_dynamic_modifier = { modifier = migration_state_organized_evacuation scope = event_target:human_system_nonhuman_country } } remove_dynamic_modifier = { modifier = migration_state_organized_evacuation scope = event_target:human_system_nonhuman_country } }
+			if = { limit = { has_dynamic_modifier = { modifier = migration_state_depopulated_districts scope = event_target:human_system_nonhuman_country } } remove_dynamic_modifier = { modifier = migration_state_depopulated_districts scope = event_target:human_system_nonhuman_country } }
+			if = { limit = { has_dynamic_modifier = { modifier = migration_state_reception scope = event_target:human_system_nonhuman_country } } remove_dynamic_modifier = { modifier = migration_state_reception scope = event_target:human_system_nonhuman_country } }
+			if = { limit = { has_dynamic_modifier = { modifier = migration_state_overcrowded scope = event_target:human_system_nonhuman_country } } remove_dynamic_modifier = { modifier = migration_state_overcrowded scope = event_target:human_system_nonhuman_country } }
+			if = { limit = { has_dynamic_modifier = { modifier = migration_state_trapped_border scope = event_target:human_system_nonhuman_country } } remove_dynamic_modifier = { modifier = migration_state_trapped_border scope = event_target:human_system_nonhuman_country } }
+			if = { limit = { has_dynamic_modifier = { modifier = migration_state_transit scope = event_target:human_system_nonhuman_country } } remove_dynamic_modifier = { modifier = migration_state_transit scope = event_target:human_system_nonhuman_country } }
+			if = { limit = { has_dynamic_modifier = { modifier = migration_state_return_readiness scope = event_target:human_system_nonhuman_country } } remove_dynamic_modifier = { modifier = migration_state_return_readiness scope = event_target:human_system_nonhuman_country } }
+			if = { limit = { has_dynamic_modifier = { modifier = migration_state_return scope = event_target:human_system_nonhuman_country } } remove_dynamic_modifier = { modifier = migration_state_return scope = event_target:human_system_nonhuman_country } }
+			if = { limit = { has_dynamic_modifier = { modifier = black_plague_affected_state scope = event_target:human_system_nonhuman_country } } remove_dynamic_modifier = { modifier = black_plague_affected_state scope = event_target:human_system_nonhuman_country } }
+			force_update_dynamic_modifier = yes
+		}
+		force_update_dynamic_modifier = yes
+	}
+}
