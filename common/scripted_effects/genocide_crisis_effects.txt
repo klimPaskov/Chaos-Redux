@@ -1736,7 +1736,10 @@ genocide_foreign_sanction_target = {
 		modifier = genocide_sanctions_pressure
 	}
 	FROM = {
-		add_ideas = genocide_international_sanctions
+		if = {
+			limit = { NOT = { has_idea = genocide_international_sanctions } }
+			add_ideas = genocide_international_sanctions
+		}
 		add_to_variable = { genocide_foreign_pressure = constant:genocide_crisis_value.discovery_foreign_pressure }
 	}
 	}
