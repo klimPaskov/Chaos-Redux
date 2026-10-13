@@ -147,6 +147,10 @@ focus_tree = {
 				every_owned_state = {
 					limit = { is_controlled_by = ROOT }
 					add_building_construction = { type = industrial_complex level = 1 instant_build = yes }
+					if = {
+						limit = { infrastructure < 5 }
+						add_building_construction = { type = infrastructure level = 1 instant_build = yes }
+					}
 				}
 				set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.small_gain }
 				holy_realm_add_spiritual_legitimacy = yes
@@ -189,6 +193,10 @@ focus_tree = {
 						}
 					}
 					add_building_construction = { type = anti_air_building level = 2 instant_build = yes }
+					if = {
+						limit = { infrastructure < 5 }
+						add_building_construction = { type = infrastructure level = 1 instant_build = yes }
+					}
 				}
 		}
 	}
@@ -858,6 +866,10 @@ focus_tree = {
 				limit = {
 					is_controlled_by = ROOT
 					is_core_of = ROOT
+				}
+				if = {
+					limit = { infrastructure < 5 }
+					add_building_construction = { type = infrastructure level = 1 instant_build = yes }
 				}
 				add_building_construction = { type = industrial_complex level = 1 instant_build = yes }
 			}
@@ -2443,6 +2455,10 @@ focus_tree = {
 			every_owned_state = {
 				limit = { is_controlled_by = ROOT }
 				set_state_flag = holy_realm_protected_state
+				if = {
+					limit = { infrastructure < 5 }
+					add_building_construction = { type = infrastructure level = 1 instant_build = yes }
+				}
 				add_building_construction = { type = industrial_complex level = 1 instant_build = yes }
 			}
 			set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.medium_gain }
@@ -2599,6 +2615,10 @@ focus_tree = {
 			every_owned_state = {
 				limit = { is_controlled_by = ROOT }
 				add_building_construction = { type = industrial_complex level = 1 instant_build = yes }
+				if = {
+					limit = { infrastructure < 5 }
+					add_building_construction = { type = infrastructure level = 1 instant_build = yes }
+				}
 			}
 			set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.small_gain }
 			holy_realm_add_compassion_drift = yes
@@ -2625,6 +2645,13 @@ focus_tree = {
 		completion_reward = {
 			set_country_flag = holy_realm_focus_mountain_granaries
 			set_country_flag = holy_realm_memory_mountain_granaries
+			every_owned_state = {
+				limit = { is_controlled_by = ROOT }
+				if = {
+					limit = { infrastructure < 5 }
+					add_building_construction = { type = infrastructure level = 1 instant_build = yes }
+				}
+			}
 			random_owned_state = {
 				limit = { is_controlled_by = ROOT }
 				add_building_construction = { type = supply_node level = 1 instant_build = yes }
@@ -2655,6 +2682,13 @@ focus_tree = {
 			add_equipment_to_stockpile = {
 				type = support_equipment
 				amount = constant:holy_realm_focus_reward.sanctuary_clinic_support_equipment
+			}
+			every_owned_state = {
+				limit = { is_controlled_by = ROOT }
+				if = {
+					limit = { infrastructure < 5 }
+					add_building_construction = { type = infrastructure level = 1 instant_build = yes }
+				}
 			}
 			add_stability = constant:holy_realm_focus_reward.sanctuary_logistics_stability
 			set_temp_variable = { holy_realm_delta = constant:holy_realm_buddhahood.teaching_drift_loss }
