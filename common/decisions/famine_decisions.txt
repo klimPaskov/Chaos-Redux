@@ -200,7 +200,7 @@ famine_decision_category = {
 			if = {
 				limit = { famine_release_reserves_can_start = yes }
 				set_temp_variable = { migration_transport_payment_result = constant:migration_transport_cost.zero }
-				migration_transport_pay_state_cost = { PROFILE = standard TARGET = FROM RECEIPT = famine_release_reserves }
+				set_temp_variable = { migration_transport_fuel_land = constant:migration_transport_cost.standard_fuel_land } set_temp_variable = { migration_transport_fuel_sea = constant:migration_transport_cost.standard_fuel_sea } set_temp_variable = { migration_transport_convoys_sea = constant:migration_transport_cost.standard_convoys_sea } set_temp_variable = { migration_transport_target = FROM } set_temp_variable = { migration_transport_receipt = token:famine_release_reserves } migration_transport_pay_state_cost = yes
 				if = {
 					limit = { check_variable = { migration_transport_payment_result = constant:migration_transport_cost.one } }
 					add_equipment_to_stockpile = { type = support_equipment amount = constant:humanitarian_legacy_cost.support_light_debit }
@@ -232,7 +232,7 @@ famine_decision_category = {
 					if = {
 						limit = { check_variable = { var = famine_food_reserve_consumed_output value = constant:famine_food_reserve.zero compare = equals } }
 						ROOT = {
-							migration_transport_refund_state_cost = { TARGET = FROM RECEIPT = famine_release_reserves }
+							set_temp_variable = { migration_transport_target = FROM } set_temp_variable = { migration_transport_receipt = token:famine_release_reserves } migration_transport_refund_state_cost = yes
 							add_equipment_to_stockpile = { type = support_equipment amount = constant:humanitarian_legacy_cost.support_light }
 						}
 					}
@@ -313,7 +313,7 @@ famine_decision_category = {
 					clear_variable = famine_release_reserves_cost_payer
 				}
 			}
-			migration_transport_forget_state_cost = { TARGET = FROM RECEIPT = famine_release_reserves }
+			set_temp_variable = { migration_transport_target = FROM } set_temp_variable = { migration_transport_receipt = token:famine_release_reserves } migration_transport_forget_state_cost = yes
 		}
 		cancel_if_not_visible = no
 		cancel_effect = {
@@ -324,7 +324,7 @@ famine_decision_category = {
 					clear_variable = famine_release_reserves_cost_payer
 				}
 			}
-			migration_transport_forget_state_cost = { TARGET = FROM RECEIPT = famine_release_reserves }
+			set_temp_variable = { migration_transport_target = FROM } set_temp_variable = { migration_transport_receipt = token:famine_release_reserves } migration_transport_forget_state_cost = yes
 		}
 	}
 	famine_emergency_imports = {
@@ -459,7 +459,7 @@ famine_decision_category = {
 						}
 					}
 					set_temp_variable = { migration_transport_payment_result = constant:migration_transport_cost.zero }
-					migration_transport_pay_state_cost = { PROFILE = standard TARGET = FROM RECEIPT = famine_emergency_imports }
+					set_temp_variable = { migration_transport_fuel_land = constant:migration_transport_cost.standard_fuel_land } set_temp_variable = { migration_transport_fuel_sea = constant:migration_transport_cost.standard_fuel_sea } set_temp_variable = { migration_transport_convoys_sea = constant:migration_transport_cost.standard_convoys_sea } set_temp_variable = { migration_transport_target = FROM } set_temp_variable = { migration_transport_receipt = token:famine_emergency_imports } migration_transport_pay_state_cost = yes
 					if = {
 						limit = { check_variable = { migration_transport_payment_result = constant:migration_transport_cost.one } }
 						FROM = {
@@ -560,7 +560,7 @@ famine_decision_category = {
 					clear_variable = famine_emergency_imports_cost_donor_state
 				}
 			}
-			migration_transport_forget_state_cost = { TARGET = FROM RECEIPT = famine_emergency_imports }
+			set_temp_variable = { migration_transport_target = FROM } set_temp_variable = { migration_transport_receipt = token:famine_emergency_imports } migration_transport_forget_state_cost = yes
 		}
 		cancel_if_not_visible = no
 		cancel_effect = {
@@ -573,7 +573,7 @@ famine_decision_category = {
 					clear_variable = famine_emergency_imports_cost_donor_state
 				}
 			}
-			migration_transport_forget_state_cost = { TARGET = FROM RECEIPT = famine_emergency_imports }
+			set_temp_variable = { migration_transport_target = FROM } set_temp_variable = { migration_transport_receipt = token:famine_emergency_imports } migration_transport_forget_state_cost = yes
 		}
 	}
 	famine_repair_relief_route = {
@@ -628,7 +628,7 @@ famine_decision_category = {
 			if = {
 				limit = { famine_repair_relief_route_can_start = yes }
 				set_temp_variable = { migration_transport_payment_result = constant:migration_transport_cost.zero }
-				migration_transport_pay_state_cost = { PROFILE = light TARGET = FROM RECEIPT = famine_repair_relief_route }
+				set_temp_variable = { migration_transport_fuel_land = constant:migration_transport_cost.light_fuel_land } set_temp_variable = { migration_transport_fuel_sea = constant:migration_transport_cost.light_fuel_sea } set_temp_variable = { migration_transport_convoys_sea = constant:migration_transport_cost.light_convoys_sea } set_temp_variable = { migration_transport_target = FROM } set_temp_variable = { migration_transport_receipt = token:famine_repair_relief_route } migration_transport_pay_state_cost = yes
 				if = {
 					limit = { check_variable = { migration_transport_payment_result = constant:migration_transport_cost.one } }
 					add_equipment_to_stockpile = { type = train_equipment amount = constant:humanitarian_legacy_cost.train_light_debit }
@@ -681,7 +681,7 @@ famine_decision_category = {
 					clear_variable = famine_repair_relief_route_cost_payer
 				}
 			}
-			migration_transport_forget_state_cost = { TARGET = FROM RECEIPT = famine_repair_relief_route }
+			set_temp_variable = { migration_transport_target = FROM } set_temp_variable = { migration_transport_receipt = token:famine_repair_relief_route } migration_transport_forget_state_cost = yes
 		}
 		cancel_if_not_visible = no
 		cancel_effect = {
@@ -692,7 +692,7 @@ famine_decision_category = {
 					clear_variable = famine_repair_relief_route_cost_payer
 				}
 			}
-			migration_transport_forget_state_cost = { TARGET = FROM RECEIPT = famine_repair_relief_route }
+			set_temp_variable = { migration_transport_target = FROM } set_temp_variable = { migration_transport_receipt = token:famine_repair_relief_route } migration_transport_forget_state_cost = yes
 		}
 	}
 	famine_escorted_relief_convoy = {
@@ -831,7 +831,7 @@ famine_decision_category = {
 						}
 					}
 					set_temp_variable = { migration_transport_payment_result = constant:migration_transport_cost.zero }
-					migration_transport_pay_state_cost = { PROFILE = standard TARGET = FROM RECEIPT = famine_escorted_relief_convoy }
+					set_temp_variable = { migration_transport_fuel_land = constant:migration_transport_cost.standard_fuel_land } set_temp_variable = { migration_transport_fuel_sea = constant:migration_transport_cost.standard_fuel_sea } set_temp_variable = { migration_transport_convoys_sea = constant:migration_transport_cost.standard_convoys_sea } set_temp_variable = { migration_transport_target = FROM } set_temp_variable = { migration_transport_receipt = token:famine_escorted_relief_convoy } migration_transport_pay_state_cost = yes
 					if = {
 						limit = { check_variable = { migration_transport_payment_result = constant:migration_transport_cost.one } }
 						add_equipment_to_stockpile = { type = support_equipment amount = constant:humanitarian_legacy_cost.support_light_debit }
@@ -934,7 +934,7 @@ famine_decision_category = {
 					clear_variable = famine_escorted_relief_convoy_cost_donor_state
 				}
 			}
-			migration_transport_forget_state_cost = { TARGET = FROM RECEIPT = famine_escorted_relief_convoy }
+			set_temp_variable = { migration_transport_target = FROM } set_temp_variable = { migration_transport_receipt = token:famine_escorted_relief_convoy } migration_transport_forget_state_cost = yes
 		}
 		cancel_if_not_visible = no
 		cancel_effect = {
@@ -947,7 +947,7 @@ famine_decision_category = {
 					clear_variable = famine_escorted_relief_convoy_cost_donor_state
 				}
 			}
-			migration_transport_forget_state_cost = { TARGET = FROM RECEIPT = famine_escorted_relief_convoy }
+			set_temp_variable = { migration_transport_target = FROM } set_temp_variable = { migration_transport_receipt = token:famine_escorted_relief_convoy } migration_transport_forget_state_cost = yes
 		}
 	}
 	famine_emergency_airlift = {
@@ -1089,7 +1089,7 @@ famine_decision_category = {
 						}
 					}
 					set_temp_variable = { migration_transport_payment_result = constant:migration_transport_cost.zero }
-					migration_transport_pay_air_cost = { PROFILE = standard TARGET = FROM RECEIPT = famine_emergency_airlift }
+					set_temp_variable = { migration_transport_fuel_land = constant:migration_transport_cost.standard_fuel_land } set_temp_variable = { migration_transport_fuel_sea = constant:migration_transport_cost.standard_fuel_sea } set_temp_variable = { migration_transport_convoys_sea = constant:migration_transport_cost.standard_convoys_sea } set_temp_variable = { migration_transport_target = FROM } set_temp_variable = { migration_transport_receipt = token:famine_emergency_airlift } migration_transport_pay_air_cost = yes
 					if = {
 						limit = { check_variable = { migration_transport_payment_result = constant:migration_transport_cost.one } }
 						add_equipment_to_stockpile = { type = transport_plane_equipment amount = constant:humanitarian_legacy_cost.transport_planes_debit }
@@ -1193,7 +1193,7 @@ famine_decision_category = {
 					clear_variable = famine_emergency_airlift_cost_donor_state
 				}
 			}
-			migration_transport_forget_state_cost = { TARGET = FROM RECEIPT = famine_emergency_airlift }
+			set_temp_variable = { migration_transport_target = FROM } set_temp_variable = { migration_transport_receipt = token:famine_emergency_airlift } migration_transport_forget_state_cost = yes
 		}
 		cancel_if_not_visible = no
 		cancel_effect = {
@@ -1206,7 +1206,7 @@ famine_decision_category = {
 					clear_variable = famine_emergency_airlift_cost_donor_state
 				}
 			}
-			migration_transport_forget_state_cost = { TARGET = FROM RECEIPT = famine_emergency_airlift }
+			set_temp_variable = { migration_transport_target = FROM } set_temp_variable = { migration_transport_receipt = token:famine_emergency_airlift } migration_transport_forget_state_cost = yes
 		}
 	}
 	famine_invite_relief = {
@@ -1300,7 +1300,7 @@ famine_decision_category = {
 						}
 					}
 					set_temp_variable = { migration_transport_payment_result = constant:migration_transport_cost.zero }
-					migration_transport_pay_state_cost = { PROFILE = standard TARGET = FROM RECEIPT = famine_invite_relief }
+					set_temp_variable = { migration_transport_fuel_land = constant:migration_transport_cost.standard_fuel_land } set_temp_variable = { migration_transport_fuel_sea = constant:migration_transport_cost.standard_fuel_sea } set_temp_variable = { migration_transport_convoys_sea = constant:migration_transport_cost.standard_convoys_sea } set_temp_variable = { migration_transport_target = FROM } set_temp_variable = { migration_transport_receipt = token:famine_invite_relief } migration_transport_pay_state_cost = yes
 					if = {
 						limit = { check_variable = { migration_transport_payment_result = constant:migration_transport_cost.one } }
 						FROM = {
@@ -1373,7 +1373,7 @@ famine_decision_category = {
 					clear_variable = famine_invite_relief_cost_donor_state
 				}
 			}
-			migration_transport_forget_state_cost = { TARGET = FROM RECEIPT = famine_invite_relief }
+			set_temp_variable = { migration_transport_target = FROM } set_temp_variable = { migration_transport_receipt = token:famine_invite_relief } migration_transport_forget_state_cost = yes
 		}
 		cancel_if_not_visible = no
 		cancel_effect = {
@@ -1386,7 +1386,7 @@ famine_decision_category = {
 					clear_variable = famine_invite_relief_cost_donor_state
 				}
 			}
-			migration_transport_forget_state_cost = { TARGET = FROM RECEIPT = famine_invite_relief }
+			set_temp_variable = { migration_transport_target = FROM } set_temp_variable = { migration_transport_receipt = token:famine_invite_relief } migration_transport_forget_state_cost = yes
 		}
 	}
 
@@ -1446,7 +1446,7 @@ famine_decision_category = {
 			if = {
 				limit = { famine_evacuation_can_start = yes }
 				set_temp_variable = { migration_transport_payment_result = constant:migration_transport_cost.zero }
-				migration_transport_pay_state_cost = { PROFILE = heavy TARGET = FROM RECEIPT = famine_evacuation }
+				set_temp_variable = { migration_transport_fuel_land = constant:migration_transport_cost.heavy_fuel_land } set_temp_variable = { migration_transport_fuel_sea = constant:migration_transport_cost.heavy_fuel_sea } set_temp_variable = { migration_transport_convoys_sea = constant:migration_transport_cost.heavy_convoys_sea } set_temp_variable = { migration_transport_target = FROM } set_temp_variable = { migration_transport_receipt = token:famine_evacuation } migration_transport_pay_state_cost = yes
 				if = {
 					limit = { check_variable = { migration_transport_payment_result = constant:migration_transport_cost.one } }
 					add_equipment_to_stockpile = { type = train_equipment amount = constant:humanitarian_legacy_cost.train_heavy_debit }
@@ -1608,7 +1608,7 @@ famine_decision_category = {
 					limit = {
 						NOT = { check_variable = { var = civilian_transfer_actual_origin_debit value = constant:humanitarian_population.zero compare = greater_than } }
 					}
-					migration_transport_refund_state_cost = { TARGET = FROM RECEIPT = famine_evacuation }
+					set_temp_variable = { migration_transport_target = FROM } set_temp_variable = { migration_transport_receipt = token:famine_evacuation } migration_transport_refund_state_cost = yes
 					add_equipment_to_stockpile = { type = train_equipment amount = constant:humanitarian_legacy_cost.train_heavy }
 				}
 			}
@@ -1625,7 +1625,7 @@ famine_decision_category = {
 					clear_variable = famine_evacuation_cost_payer
 				}
 			}
-			migration_transport_forget_state_cost = { TARGET = FROM RECEIPT = famine_evacuation }
+			set_temp_variable = { migration_transport_target = FROM } set_temp_variable = { migration_transport_receipt = token:famine_evacuation } migration_transport_forget_state_cost = yes
 		}
 		cancel_if_not_visible = no
 		cancel_effect = {
@@ -1637,7 +1637,7 @@ famine_decision_category = {
 				}
 				civilian_transfer_cleanup_request = yes
 			}
-			migration_transport_forget_state_cost = { TARGET = FROM RECEIPT = famine_evacuation }
+			set_temp_variable = { migration_transport_target = FROM } set_temp_variable = { migration_transport_receipt = token:famine_evacuation } migration_transport_forget_state_cost = yes
 		}
 	}
 	famine_requisition_safer_state = {
@@ -1712,7 +1712,7 @@ famine_decision_category = {
 			if = {
 				limit = { famine_requisition_safer_state_can_start = yes }
 				set_temp_variable = { migration_transport_payment_result = constant:migration_transport_cost.zero }
-				migration_transport_pay_state_cost = { PROFILE = standard TARGET = FROM RECEIPT = famine_requisition_safer_state }
+				set_temp_variable = { migration_transport_fuel_land = constant:migration_transport_cost.standard_fuel_land } set_temp_variable = { migration_transport_fuel_sea = constant:migration_transport_cost.standard_fuel_sea } set_temp_variable = { migration_transport_convoys_sea = constant:migration_transport_cost.standard_convoys_sea } set_temp_variable = { migration_transport_target = FROM } set_temp_variable = { migration_transport_receipt = token:famine_requisition_safer_state } migration_transport_pay_state_cost = yes
 				if = {
 					limit = { check_variable = { migration_transport_payment_result = constant:migration_transport_cost.one } }
 					add_equipment_to_stockpile = { type = train_equipment amount = constant:humanitarian_legacy_cost.train_light_debit }
@@ -1802,7 +1802,7 @@ famine_decision_category = {
 					clear_variable = famine_requisition_safer_state_cost_payer
 				}
 			}
-			migration_transport_forget_state_cost = { TARGET = FROM RECEIPT = famine_requisition_safer_state }
+			set_temp_variable = { migration_transport_target = FROM } set_temp_variable = { migration_transport_receipt = token:famine_requisition_safer_state } migration_transport_forget_state_cost = yes
 		}
 		cancel_if_not_visible = no
 		cancel_effect = {
@@ -1813,7 +1813,7 @@ famine_decision_category = {
 					clear_variable = famine_requisition_safer_state_cost_payer
 				}
 			}
-			migration_transport_forget_state_cost = { TARGET = FROM RECEIPT = famine_requisition_safer_state }
+			set_temp_variable = { migration_transport_target = FROM } set_temp_variable = { migration_transport_receipt = token:famine_requisition_safer_state } migration_transport_forget_state_cost = yes
 		}
 	}
 	famine_conceal_crisis = {
@@ -1886,7 +1886,7 @@ famine_decision_category = {
 			if = {
 				limit = { famine_conceal_crisis_can_start = yes }
 				set_temp_variable = { migration_transport_payment_result = constant:migration_transport_cost.zero }
-				migration_transport_pay_state_cost = { PROFILE = light TARGET = FROM RECEIPT = famine_conceal_crisis }
+				set_temp_variable = { migration_transport_fuel_land = constant:migration_transport_cost.light_fuel_land } set_temp_variable = { migration_transport_fuel_sea = constant:migration_transport_cost.light_fuel_sea } set_temp_variable = { migration_transport_convoys_sea = constant:migration_transport_cost.light_convoys_sea } set_temp_variable = { migration_transport_target = FROM } set_temp_variable = { migration_transport_receipt = token:famine_conceal_crisis } migration_transport_pay_state_cost = yes
 				if = {
 					limit = { check_variable = { migration_transport_payment_result = constant:migration_transport_cost.one } }
 					add_equipment_to_stockpile = { type = infantry_equipment amount = constant:humanitarian_legacy_cost.infantry_light_debit }
@@ -1929,7 +1929,7 @@ famine_decision_category = {
 					clear_variable = famine_conceal_crisis_cost_payer
 				}
 			}
-			migration_transport_forget_state_cost = { TARGET = FROM RECEIPT = famine_conceal_crisis }
+			set_temp_variable = { migration_transport_target = FROM } set_temp_variable = { migration_transport_receipt = token:famine_conceal_crisis } migration_transport_forget_state_cost = yes
 		}
 		cancel_if_not_visible = no
 		cancel_effect = {
@@ -1940,7 +1940,7 @@ famine_decision_category = {
 					clear_variable = famine_conceal_crisis_cost_payer
 				}
 			}
-			migration_transport_forget_state_cost = { TARGET = FROM RECEIPT = famine_conceal_crisis }
+			set_temp_variable = { migration_transport_target = FROM } set_temp_variable = { migration_transport_receipt = token:famine_conceal_crisis } migration_transport_forget_state_cost = yes
 		}
 	}
 	famine_maintain_extraction = {
@@ -2002,7 +2002,7 @@ famine_decision_category = {
 			if = {
 				limit = { famine_maintain_extraction_can_start = yes }
 				set_temp_variable = { migration_transport_payment_result = constant:migration_transport_cost.zero }
-				migration_transport_pay_state_cost = { PROFILE = light TARGET = FROM RECEIPT = famine_maintain_extraction }
+				set_temp_variable = { migration_transport_fuel_land = constant:migration_transport_cost.light_fuel_land } set_temp_variable = { migration_transport_fuel_sea = constant:migration_transport_cost.light_fuel_sea } set_temp_variable = { migration_transport_convoys_sea = constant:migration_transport_cost.light_convoys_sea } set_temp_variable = { migration_transport_target = FROM } set_temp_variable = { migration_transport_receipt = token:famine_maintain_extraction } migration_transport_pay_state_cost = yes
 				if = {
 					limit = { check_variable = { migration_transport_payment_result = constant:migration_transport_cost.one } }
 					add_equipment_to_stockpile = { type = train_equipment amount = constant:humanitarian_legacy_cost.train_light_debit }
@@ -2044,7 +2044,7 @@ famine_decision_category = {
 					clear_variable = famine_maintain_extraction_cost_payer
 				}
 			}
-			migration_transport_forget_state_cost = { TARGET = FROM RECEIPT = famine_maintain_extraction }
+			set_temp_variable = { migration_transport_target = FROM } set_temp_variable = { migration_transport_receipt = token:famine_maintain_extraction } migration_transport_forget_state_cost = yes
 		}
 		cancel_if_not_visible = no
 		cancel_effect = {
@@ -2055,7 +2055,7 @@ famine_decision_category = {
 					clear_variable = famine_maintain_extraction_cost_payer
 				}
 			}
-			migration_transport_forget_state_cost = { TARGET = FROM RECEIPT = famine_maintain_extraction }
+			set_temp_variable = { migration_transport_target = FROM } set_temp_variable = { migration_transport_receipt = token:famine_maintain_extraction } migration_transport_forget_state_cost = yes
 		}
 	}
 }

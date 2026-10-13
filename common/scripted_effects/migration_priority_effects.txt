@@ -1,0 +1,271 @@
+# Cohort-priority and industrial-output projections for organized evacuation.
+# The industrial delta follows each exact cohort between states; it changes no
+# population, route-death receipt, factory ownership, or cohort amount.
+
+# Called by the sole cohort host updater after a finalized transfer. A priority
+# request is present only when the player explicitly selects a class; transit,
+# integration, and return keep the persisted class and use the same generation.
+migration_priority_reconcile_industrial_transfer = {
+	set_temp_variable = { migration_priority_old_class = global.migration_cohort_priority_@var:migration_cohort_row_id }
+	set_temp_variable = { migration_priority_new_class = migration_priority_old_class }
+	set_temp_variable = { migration_priority_generation_unseen = constant:humanitarian_runtime.zero }
+	if = {
+		limit = {
+			check_variable = { var = global.civilian_transfer_generation value = constant:humanitarian_runtime.zero compare = greater_than }
+			OR = {
+				NOT = { has_variable = global.migration_cohort_priority_last_generation_@var:migration_cohort_row_id }
+				check_variable = { var = global.civilian_transfer_generation value = global.migration_cohort_priority_last_generation_@var:migration_cohort_row_id compare = greater_than }
+			}
+		}
+		set_variable = { global.migration_cohort_priority_last_generation_@var:migration_cohort_row_id = global.civilian_transfer_generation }
+		set_temp_variable = { migration_priority_generation_unseen = constant:humanitarian_runtime.one }
+	}
+	if = {
+		limit = { check_variable = { var = migration_priority_generation_unseen value = constant:humanitarian_runtime.one compare = equals } }
+		if = {
+			limit = { has_variable = migration_cohort_priority_request }
+			set_temp_variable = { migration_priority_new_class = migration_cohort_priority_request }
+			set_variable = { global.migration_cohort_priority_@var:migration_cohort_row_id = migration_priority_new_class }
+		}
+		if = {
+			limit = {
+				OR = {
+					check_variable = { var = migration_priority_old_class value = constant:migration_cohort_priority.industrial compare = equals }
+					check_variable = { var = migration_priority_new_class value = constant:migration_cohort_priority.industrial compare = equals }
+				}
+			check_variable = { var = civilian_transfer_actual_origin_debit value = constant:humanitarian_population.zero compare = greater_than }
+				has_event_target = civilian_transfer_physical_origin
+			}
+			set_temp_variable = { migration_priority_workforce_delta = civilian_transfer_actual_origin_debit }
+			multiply_temp_variable = { migration_priority_workforce_delta = constant:migration_cohort_priority_effect.negative_one }
+			event_target:civilian_transfer_physical_origin = { migration_priority_apply_workforce_delta = yes }
+		}
+		if = {
+			limit = {
+				check_variable = { var = migration_priority_new_class value = constant:migration_cohort_priority.industrial compare = equals }
+				has_event_target = civilian_transfer_route_destination
+				check_variable = { var = civilian_transfer_survivor_credit value = constant:humanitarian_population.zero compare = greater_than }
+			}
+			set_temp_variable = { migration_priority_workforce_delta = civilian_transfer_survivor_credit }
+			event_target:civilian_transfer_route_destination = { migration_priority_apply_workforce_delta = yes }
+		}
+	}
+	clear_variable = migration_cohort_priority_request
+}
+
+# STATE scope. Retain nonzero industrial workforces in the existing sparse
+# state coordinator without marking them as an active displacement.
+migration_priority_register_workforce_state = {
+	humanitarian_initialize_runtime = yes
+	if = {
+		limit = {
+			humanitarian_state_is_valid = yes
+			NOT = { is_in_array = { array = global.migration_active_states value = THIS } }
+		}
+		add_to_array = { array = global.migration_active_states value = THIS }
+		set_variable = { global.migration_active_states_count = global.migration_active_states^num }
+	}
+}
+
+
+# STATE scope. Apply the signed exact-cohort delta, refresh local construction
+# and factory repair effects, and reconcile the weighted country output share.
+migration_priority_apply_workforce_delta = {
+	if = {
+		limit = { NOT = { has_variable = migration_industrial_workforce_delta } }
+		set_variable = { migration_industrial_workforce_delta = constant:humanitarian_population.zero }
+	}
+	add_to_variable = { migration_industrial_workforce_delta = migration_priority_workforce_delta }
+	if = {
+		limit = { NOT = { check_variable = { var = migration_industrial_workforce_delta value = constant:humanitarian_population.zero compare = equals } } }
+		migration_priority_register_workforce_state = yes
+	}
+	migration_priority_refresh_state_industrial_projection = yes
+}
+
+# STATE scope. `migration_industrial_workforce_delta` is the signed sum of
+# player-selected industrial cohorts that left or arrived; route losses are
+# already represented by debit versus survivor credit. Factory and dockyard
+# contributions follow the current valid controller's factory base.
+migration_priority_refresh_state_industrial_projection = {
+	set_temp_variable = { migration_priority_state_population = state_population_k }
+	multiply_temp_variable = { migration_priority_state_population = constant:chaos_meter_deaths.people_per_k }
+	set_temp_variable = { migration_priority_worker_share = constant:humanitarian_population.zero }
+	if = {
+		limit = { check_variable = { var = migration_priority_state_population value = constant:humanitarian_population.zero compare = greater_than } }
+		set_temp_variable = { migration_priority_worker_share = migration_industrial_workforce_delta }
+		divide_temp_variable = { migration_priority_worker_share = migration_priority_state_population }
+		clamp_temp_variable = {
+			var = migration_priority_worker_share
+			min = constant:migration_cohort_priority_effect.industrial_output_min
+			max = constant:migration_cohort_priority_effect.industrial_output_max
+		}
+	}
+	set_variable = { migration_industrial_state_modifier = migration_priority_worker_share }
+	multiply_variable = { migration_industrial_state_modifier = constant:migration_cohort_priority_effect.industrial_state_construction_per_share }
+	clamp_variable = {
+		var = migration_industrial_state_modifier
+		min = constant:migration_cohort_priority_effect.industrial_state_modifier_min
+		max = constant:migration_cohort_priority_effect.industrial_state_modifier_max
+	}
+	if = {
+		limit = { check_variable = { var = migration_industrial_state_modifier value = constant:humanitarian_population.zero compare = not_equals } }
+		set_state_flag = migration_industrial_workforce_effect_active
+		if = {
+			limit = { NOT = { has_dynamic_modifier = { modifier = migration_state_industrial_recovery } } }
+			add_dynamic_modifier = { modifier = migration_state_industrial_recovery }
+		}
+		else = { force_update_dynamic_modifier = yes }
+	}
+	else = {
+		clr_state_flag = migration_industrial_workforce_effect_active
+		if = { limit = { has_dynamic_modifier = { modifier = migration_state_industrial_recovery } } remove_dynamic_modifier = { modifier = migration_state_industrial_recovery } }
+	}
+
+	set_temp_variable = { migration_priority_state_factory_count = building_level@industrial_complex }
+	add_to_temp_variable = { migration_priority_state_factory_count = building_level@arms_factory }
+	set_temp_variable = { migration_priority_state_dockyard_count = building_level@dockyard }
+	set_temp_variable = { migration_priority_controller_factory_count = constant:humanitarian_population.zero }
+	if = {
+		limit = { humanitarian_state_is_valid = yes }
+		CONTROLLER = {
+			if = {
+				limit = { humanitarian_country_is_valid = yes }
+				set_temp_variable = { migration_priority_controller_factory_count = num_of_factories }
+			}
+		}
+	}
+	set_temp_variable = { migration_priority_state_factory_contribution = constant:humanitarian_population.zero }
+	set_temp_variable = { migration_priority_state_dockyard_contribution = constant:humanitarian_population.zero }
+	if = {
+		limit = {
+			check_variable = { var = migration_priority_state_population value = constant:humanitarian_population.zero compare = greater_than }
+			check_variable = { var = migration_priority_controller_factory_count value = constant:humanitarian_population.zero compare = greater_than }
+		}
+		if = {
+			limit = { check_variable = { var = migration_priority_state_factory_count value = constant:humanitarian_population.zero compare = greater_than } }
+			set_temp_variable = { migration_priority_factory_base_share = migration_priority_state_factory_count }
+			divide_temp_variable = { migration_priority_factory_base_share = migration_priority_controller_factory_count }
+			clamp_temp_variable = { var = migration_priority_factory_base_share min = constant:humanitarian_population.zero max = constant:humanitarian_population.one }
+			set_temp_variable = { migration_priority_state_factory_contribution = migration_priority_worker_share }
+			multiply_temp_variable = { migration_priority_state_factory_contribution = migration_priority_factory_base_share }
+		}
+		if = {
+			limit = { check_variable = { var = migration_priority_state_dockyard_count value = constant:humanitarian_population.zero compare = greater_than } }
+			set_temp_variable = { migration_priority_dockyard_base_share = migration_priority_state_dockyard_count }
+			divide_temp_variable = { migration_priority_dockyard_base_share = migration_priority_controller_factory_count }
+			clamp_temp_variable = { var = migration_priority_dockyard_base_share min = constant:humanitarian_population.zero max = constant:humanitarian_population.one }
+			set_temp_variable = { migration_priority_state_dockyard_contribution = migration_priority_worker_share }
+			multiply_temp_variable = { migration_priority_state_dockyard_contribution = migration_priority_dockyard_base_share }
+		}
+	}
+
+	set_temp_variable = { migration_priority_previous_factory_contribution = constant:humanitarian_population.zero }
+	if = { limit = { has_variable = migration_industrial_output_factory_state_contribution } set_temp_variable = { migration_priority_previous_factory_contribution = migration_industrial_output_factory_state_contribution } }
+	set_temp_variable = { migration_priority_previous_dockyard_contribution = constant:humanitarian_population.zero }
+	if = { limit = { has_variable = migration_industrial_output_dockyard_state_contribution } set_temp_variable = { migration_priority_previous_dockyard_contribution = migration_industrial_output_dockyard_state_contribution } }
+	if = {
+		limit = { has_variable = migration_industrial_output_producer var:migration_industrial_output_producer = { humanitarian_country_is_valid = yes } }
+		set_temp_variable = { migration_priority_country_output_delta = migration_priority_previous_factory_contribution }
+		multiply_temp_variable = { migration_priority_country_output_delta = constant:migration_cohort_priority_effect.negative_one }
+		var:migration_industrial_output_producer = {
+			if = { limit = { NOT = { has_variable = migration_priority_country_industrial_output } } set_variable = { migration_priority_country_industrial_output = constant:humanitarian_population.zero } }
+			add_to_variable = { migration_priority_country_industrial_output = migration_priority_country_output_delta }
+			set_temp_variable = { migration_priority_country_output_delta = migration_priority_previous_dockyard_contribution }
+			multiply_temp_variable = { migration_priority_country_output_delta = constant:migration_cohort_priority_effect.negative_one }
+			if = { limit = { NOT = { has_variable = migration_priority_country_industrial_dockyard_output } } set_variable = { migration_priority_country_industrial_dockyard_output = constant:humanitarian_population.zero } }
+			add_to_variable = { migration_priority_country_industrial_dockyard_output = migration_priority_country_output_delta }
+			migration_priority_refresh_country_industrial_output = yes
+		}
+	}
+	set_variable = { migration_industrial_output_factory_state_contribution = migration_priority_state_factory_contribution }
+	set_variable = { migration_industrial_output_dockyard_state_contribution = migration_priority_state_dockyard_contribution }
+	clear_variable = migration_industrial_output_producer
+	if = {
+		limit = { humanitarian_state_is_valid = yes }
+		set_variable = { migration_industrial_output_producer = CONTROLLER }
+		CONTROLLER = {
+			if = {
+				limit = { humanitarian_country_is_valid = yes }
+				if = { limit = { NOT = { has_variable = migration_priority_country_industrial_output } } set_variable = { migration_priority_country_industrial_output = constant:humanitarian_population.zero } }
+				add_to_variable = { migration_priority_country_industrial_output = migration_priority_state_factory_contribution }
+				if = { limit = { NOT = { has_variable = migration_priority_country_industrial_dockyard_output } } set_variable = { migration_priority_country_industrial_dockyard_output = constant:humanitarian_population.zero } }
+				add_to_variable = { migration_priority_country_industrial_dockyard_output = migration_priority_state_dockyard_contribution }
+				migration_priority_refresh_country_industrial_output = yes
+			}
+		}
+	}
+}
+
+# COUNTRY scope. Factory and dockyard contributions follow the current controller.
+migration_priority_refresh_country_industrial_output = {
+	set_temp_variable = { migration_priority_has_industrial_output = constant:humanitarian_runtime.zero }
+	if = { limit = { has_variable = migration_priority_country_industrial_output check_variable = { var = migration_priority_country_industrial_output value = constant:humanitarian_population.zero compare = not_equals } } set_temp_variable = { migration_priority_has_industrial_output = constant:humanitarian_runtime.one } }
+	if = { limit = { has_variable = migration_priority_country_industrial_dockyard_output NOT = { check_variable = { var = migration_priority_country_industrial_dockyard_output value = constant:humanitarian_population.zero compare = equals } } } set_temp_variable = { migration_priority_has_industrial_output = constant:humanitarian_runtime.one } }
+	if = {
+		limit = { check_variable = { var = migration_priority_has_industrial_output value = constant:humanitarian_runtime.one compare = equals } }
+		set_country_flag = migration_priority_industrial_output_active
+		if = {
+			limit = { NOT = { has_dynamic_modifier = { modifier = migration_country_industrial_workforce } } }
+			add_dynamic_modifier = { modifier = migration_country_industrial_workforce }
+		}
+		else = { force_update_dynamic_modifier = yes }
+	}
+	else = {
+		clr_country_flag = migration_priority_industrial_output_active
+		if = { limit = { has_dynamic_modifier = { modifier = migration_country_industrial_workforce } } remove_dynamic_modifier = { modifier = migration_country_industrial_workforce } }
+	}
+}
+
+# STATE scope. Clear both output contributions from the exact previous producer.
+migration_priority_clear_state_industrial_projection = {
+	if = {
+		limit = {
+			has_variable = migration_industrial_output_producer
+			var:migration_industrial_output_producer = { humanitarian_country_is_valid = yes }
+		}
+		set_temp_variable = { migration_priority_previous_factory_contribution = constant:humanitarian_population.zero }
+		if = { limit = { has_variable = migration_industrial_output_factory_state_contribution } set_temp_variable = { migration_priority_previous_factory_contribution = migration_industrial_output_factory_state_contribution } }
+		set_temp_variable = { migration_priority_previous_dockyard_contribution = constant:humanitarian_population.zero }
+		if = { limit = { has_variable = migration_industrial_output_dockyard_state_contribution } set_temp_variable = { migration_priority_previous_dockyard_contribution = migration_industrial_output_dockyard_state_contribution } }
+		set_temp_variable = { migration_priority_country_output_delta = migration_priority_previous_factory_contribution }
+		multiply_temp_variable = { migration_priority_country_output_delta = constant:migration_cohort_priority_effect.negative_one }
+		var:migration_industrial_output_producer = {
+			if = { limit = { NOT = { has_variable = migration_priority_country_industrial_output } } set_variable = { migration_priority_country_industrial_output = constant:humanitarian_population.zero } }
+			add_to_variable = { migration_priority_country_industrial_output = migration_priority_country_output_delta }
+			set_temp_variable = { migration_priority_country_output_delta = migration_priority_previous_dockyard_contribution }
+			multiply_temp_variable = { migration_priority_country_output_delta = constant:migration_cohort_priority_effect.negative_one }
+			if = { limit = { NOT = { has_variable = migration_priority_country_industrial_dockyard_output } } set_variable = { migration_priority_country_industrial_dockyard_output = constant:humanitarian_population.zero } }
+			add_to_variable = { migration_priority_country_industrial_dockyard_output = migration_priority_country_output_delta }
+			migration_priority_refresh_country_industrial_output = yes
+		}
+	}
+	set_variable = { migration_industrial_workforce_delta = constant:humanitarian_population.zero }
+	set_variable = { migration_industrial_output_factory_state_contribution = constant:humanitarian_population.zero }
+	set_variable = { migration_industrial_output_dockyard_state_contribution = constant:humanitarian_population.zero }
+	clear_variable = migration_industrial_output_producer
+	set_variable = { migration_industrial_state_modifier = constant:humanitarian_population.zero }
+	clr_state_flag = migration_industrial_workforce_effect_active
+	if = { limit = { has_dynamic_modifier = { modifier = migration_state_industrial_recovery } } remove_dynamic_modifier = { modifier = migration_state_industrial_recovery } }
+}
+
+migration_priority_record_corridor_origin_loss = {
+	if = {
+		limit = {
+			check_variable = { var = civilian_transfer_role_request value = constant:migration_core_reconciliation.transfer_projection_role_organized_evacuation compare = equals }
+			check_variable = { var = civilian_transfer_finalize_result value = constant:migration_core_reconciliation.transfer_finalize_valid compare = equals }
+			check_variable = { var = civilian_transfer_actual_origin_debit value = constant:humanitarian_population.zero compare = greater_than }
+			check_variable = { var = civilian_transfer_survivor_credit value = constant:humanitarian_population.zero compare = greater_than }
+			check_variable = { var = civilian_transfer_origin_population_before value = constant:humanitarian_population.zero compare = greater_than }
+		}
+		set_temp_variable = { migration_presentation_input_organized_evacuation_proven = constant:migration_presentation.one }
+		set_temp_variable = { migration_presentation_input_organized_evacuation_people = civilian_transfer_actual_origin_debit }
+		set_temp_variable = { migration_presentation_input_organized_evacuation_denominator = civilian_transfer_origin_population_before }
+		set_temp_variable = { migration_presentation_input_cohort_id = humanitarian_corridor_cohort_id }
+		set_temp_variable = { migration_presentation_input_generation = global.civilian_transfer_generation }
+		set_temp_variable = { migration_presentation_input_role = constant:migration_core_reconciliation.transfer_projection_role_organized_evacuation }
+		migration_presentation_record_organized_evacuation_projection = yes
+		migration_refresh_dynamic_modifiers = yes
+		migration_presentation_refresh_state = yes
+	}
+}

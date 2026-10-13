@@ -26,7 +26,7 @@ migration_prepare_reception_services = {
 		limit = {
 			has_event_target = migration_reception_preparation_state
 			migration_reception_preparation_is_visible = yes
-			migration_reception_preparation_target_cost_is_affordable = { TARGET = event_target:migration_reception_preparation_state }
+			set_temp_variable = { migration_transport_target = event_target:migration_reception_preparation_state } migration_reception_preparation_target_cost_is_affordable = yes
 			num_of_civilian_factories > constant:humanitarian_population.zero
 			NOT = { has_variable = migration_reception_preparation_fuel_paid_@var:migration_transport_target_id }
 			NOT = { has_variable = migration_reception_preparation_convoys_paid_@var:migration_transport_target_id }
@@ -93,7 +93,7 @@ migration_prepare_reception_services = {
 				round_temp_variable = migration_reception_preparation_medical
 			}
 			set_temp_variable = { migration_transport_payment_result = constant:migration_transport_cost.zero }
-			migration_transport_pay_state_cost = { PROFILE = standard TARGET = event_target:migration_reception_preparation_state RECEIPT = migration_reception_preparation }
+			set_temp_variable = { migration_transport_fuel_land = constant:migration_transport_cost.standard_fuel_land } set_temp_variable = { migration_transport_fuel_sea = constant:migration_transport_cost.standard_fuel_sea } set_temp_variable = { migration_transport_convoys_sea = constant:migration_transport_cost.standard_convoys_sea } set_temp_variable = { migration_transport_target = event_target:migration_reception_preparation_state } set_temp_variable = { migration_transport_receipt = token:migration_open_reception } migration_transport_pay_state_cost = yes
 			if = {
 				limit = { check_variable = { migration_transport_payment_result = constant:migration_transport_cost.one } }
 				set_temp_variable = { migration_reception_preparation_support_paid = constant:migration_reception_preparation_cost.support_equipment }
@@ -231,11 +231,11 @@ migration_prepare_reception_services = {
 					migration_mark_reception_capacity_dirty = yes
 					migration_recalculate_reception_capacity = yes
 					add_equipment_to_stockpile = { type = support_equipment amount = migration_reception_preparation_support_paid }
-					migration_transport_refund_state_cost = { TARGET = event_target:migration_reception_preparation_state RECEIPT = migration_reception_preparation }
+					set_temp_variable = { migration_transport_target = event_target:migration_reception_preparation_state } set_temp_variable = { migration_transport_receipt = token:migration_open_reception } migration_transport_refund_state_cost = yes
 				}
 				if = {
 					limit = { check_variable = { migration_reception_preparation_result = constant:humanitarian_runtime.one } }
-					migration_transport_forget_state_cost = { TARGET = event_target:migration_reception_preparation_state RECEIPT = migration_reception_preparation }
+					set_temp_variable = { migration_transport_target = event_target:migration_reception_preparation_state } set_temp_variable = { migration_transport_receipt = token:migration_open_reception } migration_transport_forget_state_cost = yes
 				}
 			}
 		}

@@ -1,5 +1,7 @@
 # Exact country-payer transport payments and saved-quantity refunds.
-# State receipt variables are keyed by action RECEIPT and selected TARGET id.
+# State receipts keep their action prefix and selected target id.
+# Temporary inputs: migration_transport_target STATE, migration_transport_receipt
+# decision token, and migration_transport_fuel_land/fuel_sea/convoys_sea.
 # Caller predeclares migration_transport_payment_result before using its output.
 # Refund/forget must run on the original payer, with the same action/target.
 
@@ -19,32 +21,30 @@ migration_transport_project_cost_quotes = {
 }
 
 migration_transport_quote_state_cost = {
-	set_temp_variable = { migration_transport_fuel_quote = constant:migration_transport_cost.$PROFILE$_fuel_land }
+	set_temp_variable = { migration_transport_fuel_quote = migration_transport_fuel_land }
 	set_temp_variable = { migration_transport_convoys_quote = constant:migration_transport_cost.zero }
 	if = {
-		limit = { NOT = { migration_transport_state_has_mainland_connection = { TARGET = $TARGET$ } } }
-		set_temp_variable = { migration_transport_fuel_quote = constant:migration_transport_cost.$PROFILE$_fuel_sea }
-		set_temp_variable = { migration_transport_convoys_quote = constant:migration_transport_cost.$PROFILE$_convoys_sea }
+		limit = { NOT = { migration_transport_state_has_mainland_connection = yes } }
+		set_temp_variable = { migration_transport_fuel_quote = migration_transport_fuel_sea }
+		set_temp_variable = { migration_transport_convoys_quote = migration_transport_convoys_sea }
 	}
 }
 
 migration_transport_pay_state_cost = {
 	set_temp_variable = { migration_transport_payment_result = constant:migration_transport_cost.zero }
 	set_temp_variable = { migration_transport_target_id = constant:migration_transport_cost.zero }
-	$TARGET$ = { set_temp_variable = { migration_transport_target_id = id } }
+	var:migration_transport_target = { set_temp_variable = { migration_transport_target_id = id } }
 	if = {
 		limit = {
-			migration_transport_state_cost_is_affordable = { PROFILE = $PROFILE$ TARGET = $TARGET$ }
+			migration_transport_state_cost_is_affordable = yes
 			check_variable = { migration_transport_target_id > constant:migration_transport_cost.zero }
-			NOT = { has_variable = $RECEIPT$_fuel_paid_@var:migration_transport_target_id }
-			NOT = { has_variable = $RECEIPT$_convoys_paid_@var:migration_transport_target_id }
+			migration_transport_state_receipt_is_clear = yes
 		}
 		set_temp_variable = { migration_transport_fuel_quote = constant:migration_transport_cost.zero }
 		set_temp_variable = { migration_transport_convoys_quote = constant:migration_transport_cost.zero }
-		migration_transport_quote_state_cost = { PROFILE = $PROFILE$ TARGET = $TARGET$ }
+		migration_transport_quote_state_cost = yes
 		# Publish both actual-paid quantities on the payer before the single debit.
-		set_variable = { $RECEIPT$_fuel_paid_@var:migration_transport_target_id = migration_transport_fuel_quote }
-		set_variable = { $RECEIPT$_convoys_paid_@var:migration_transport_target_id = migration_transport_convoys_quote }
+		migration_transport_publish_state_receipt = yes
 		multiply_temp_variable = { migration_transport_fuel_quote = constant:migration_transport_cost.debit_sign }
 		multiply_temp_variable = { migration_transport_convoys_quote = constant:migration_transport_cost.debit_sign }
 		add_fuel = migration_transport_fuel_quote
@@ -55,11 +55,10 @@ migration_transport_pay_state_cost = {
 
 migration_transport_forget_state_cost = {
 	set_temp_variable = { migration_transport_target_id = constant:migration_transport_cost.zero }
-	$TARGET$ = { set_temp_variable = { migration_transport_target_id = id } }
+	var:migration_transport_target = { set_temp_variable = { migration_transport_target_id = id } }
 	if = {
 		limit = { check_variable = { migration_transport_target_id > constant:migration_transport_cost.zero } }
-		clear_variable = $RECEIPT$_fuel_paid_@var:migration_transport_target_id
-		clear_variable = $RECEIPT$_convoys_paid_@var:migration_transport_target_id
+		migration_transport_clear_state_receipt = yes
 	}
 }
 
@@ -68,17 +67,17 @@ migration_transport_forget_state_cost = {
 migration_transport_pay_air_cost = {
 	set_temp_variable = { migration_transport_payment_result = constant:migration_transport_cost.zero }
 	set_temp_variable = { migration_transport_target_id = constant:migration_transport_cost.zero }
-	$TARGET$ = { set_temp_variable = { migration_transport_target_id = id } }
+	var:migration_transport_target = { set_temp_variable = { migration_transport_target_id = id } }
 	if = {
 		limit = {
-			migration_transport_air_cost_is_affordable = { PROFILE = $PROFILE$ TARGET = $TARGET$ }
+			migration_transport_air_cost_is_affordable = yes
 			check_variable = { migration_transport_target_id > constant:migration_transport_cost.zero }
-			NOT = { has_variable = $RECEIPT$_fuel_paid_@var:migration_transport_target_id }
-			NOT = { has_variable = $RECEIPT$_convoys_paid_@var:migration_transport_target_id }
+			migration_transport_state_receipt_is_clear = yes
 		}
-		set_variable = { $RECEIPT$_fuel_paid_@var:migration_transport_target_id = constant:migration_transport_cost.$PROFILE$_fuel_land }
-		set_variable = { $RECEIPT$_convoys_paid_@var:migration_transport_target_id = constant:migration_transport_cost.zero }
-		set_temp_variable = { migration_transport_fuel_payment = $RECEIPT$_fuel_paid_@var:migration_transport_target_id }
+		set_temp_variable = { migration_transport_fuel_quote = migration_transport_fuel_land }
+		set_temp_variable = { migration_transport_convoys_quote = constant:migration_transport_cost.zero }
+		migration_transport_publish_state_receipt = yes
+		set_temp_variable = { migration_transport_fuel_payment = migration_transport_fuel_quote }
 		multiply_temp_variable = { migration_transport_fuel_payment = constant:migration_transport_cost.debit_sign }
 		add_fuel = migration_transport_fuel_payment
 		set_temp_variable = { migration_transport_payment_result = constant:migration_transport_cost.one }
@@ -87,13 +86,14 @@ migration_transport_pay_air_cost = {
 
 migration_transport_refund_state_cost = {
 	set_temp_variable = { migration_transport_target_id = constant:migration_transport_cost.zero }
-	$TARGET$ = { set_temp_variable = { migration_transport_target_id = id } }
+	var:migration_transport_target = { set_temp_variable = { migration_transport_target_id = id } }
 	if = {
-		limit = { migration_transport_state_receipt_is_paid = { TARGET = $TARGET$ RECEIPT = $RECEIPT$ } }
-		set_temp_variable = { migration_transport_fuel_refund = $RECEIPT$_fuel_paid_@var:migration_transport_target_id }
-		set_temp_variable = { migration_transport_convoys_refund = $RECEIPT$_convoys_paid_@var:migration_transport_target_id }
+		limit = { migration_transport_state_receipt_is_paid = yes }
+		set_temp_variable = { migration_transport_fuel_refund = constant:migration_transport_cost.zero }
+		set_temp_variable = { migration_transport_convoys_refund = constant:migration_transport_cost.zero }
+		migration_transport_read_state_receipt = yes
 		# Consume the receipt first. Repeated cancellation cannot refund twice.
-		migration_transport_forget_state_cost = { TARGET = $TARGET$ RECEIPT = $RECEIPT$ }
+		migration_transport_forget_state_cost = yes
 		add_fuel = migration_transport_fuel_refund
 		add_equipment_to_stockpile = { type = convoy_1 amount = migration_transport_convoys_refund }
 	}
@@ -103,13 +103,17 @@ migration_transport_pay_policy_cost = {
 	set_temp_variable = { migration_transport_payment_result = constant:migration_transport_cost.zero }
 	if = {
 		limit = {
-			migration_transport_policy_cost_is_affordable = { PROFILE = $PROFILE$ }
-			NOT = { has_country_flag = $RECEIPT$_transport_paid }
-			NOT = { has_variable = $RECEIPT$_fuel_paid }
+			migration_transport_policy_cost_is_affordable = yes
+			migration_transport_policy_receipt_is_clear = yes
 		}
-		set_country_flag = $RECEIPT$_transport_paid
-		set_variable = { $RECEIPT$_fuel_paid = constant:migration_transport_cost.$PROFILE$_fuel_land }
-		set_temp_variable = { migration_transport_fuel_payment = $RECEIPT$_fuel_paid }
+		meta_effect = {
+			text = {
+				set_country_flag = [RECEIPT]_transport_paid
+				set_variable = { [RECEIPT]_fuel_paid = migration_transport_fuel_land }
+			}
+			RECEIPT = "[?migration_transport_receipt.GetTokenKey]"
+		}
+		set_temp_variable = { migration_transport_fuel_payment = migration_transport_fuel_land }
 		multiply_temp_variable = { migration_transport_fuel_payment = constant:migration_transport_cost.debit_sign }
 		add_fuel = migration_transport_fuel_payment
 		set_temp_variable = { migration_transport_payment_result = constant:migration_transport_cost.one }
@@ -117,15 +121,77 @@ migration_transport_pay_policy_cost = {
 }
 
 migration_transport_forget_policy_cost = {
-	clr_country_flag = $RECEIPT$_transport_paid
-	clear_variable = $RECEIPT$_fuel_paid
+	meta_effect = {
+		text = {
+			clr_country_flag = [RECEIPT]_transport_paid
+			clear_variable = [RECEIPT]_fuel_paid
+		}
+		RECEIPT = "[?migration_transport_receipt.GetTokenKey]"
+	}
 }
 
 migration_transport_refund_policy_cost = {
 	if = {
-		limit = { migration_transport_policy_receipt_is_paid = { RECEIPT = $RECEIPT$ } }
-		set_temp_variable = { migration_transport_fuel_refund = $RECEIPT$_fuel_paid }
-		migration_transport_forget_policy_cost = { RECEIPT = $RECEIPT$ }
+		limit = { migration_transport_policy_receipt_is_paid = yes }
+		set_temp_variable = { migration_transport_fuel_refund = constant:migration_transport_cost.zero }
+		meta_effect = {
+			text = {
+				set_temp_variable = { migration_transport_fuel_refund = [RECEIPT]_fuel_paid }
+			}
+			RECEIPT = "[?migration_transport_receipt.GetTokenKey]"
+		}
+		migration_transport_forget_policy_cost = yes
 		add_fuel = migration_transport_fuel_refund
 	}
 }
+migration_transport_publish_state_receipt = {
+	if = {
+		limit = { check_variable = { migration_transport_receipt = token:migration_open_reception } }
+		set_variable = { migration_reception_preparation_fuel_paid_@var:migration_transport_target_id = migration_transport_fuel_quote }
+		set_variable = { migration_reception_preparation_convoys_paid_@var:migration_transport_target_id = migration_transport_convoys_quote }
+	}
+	else = {
+		meta_effect = {
+			text = {
+				set_variable = { [RECEIPT]_fuel_paid_@var:migration_transport_target_id = migration_transport_fuel_quote }
+				set_variable = { [RECEIPT]_convoys_paid_@var:migration_transport_target_id = migration_transport_convoys_quote }
+			}
+			RECEIPT = "[?migration_transport_receipt.GetTokenKey]"
+		}
+	}
+}
+
+migration_transport_clear_state_receipt = {
+	if = {
+		limit = { check_variable = { migration_transport_receipt = token:migration_open_reception } }
+		clear_variable = migration_reception_preparation_fuel_paid_@var:migration_transport_target_id
+		clear_variable = migration_reception_preparation_convoys_paid_@var:migration_transport_target_id
+	}
+	else = {
+		meta_effect = {
+			text = {
+				clear_variable = [RECEIPT]_fuel_paid_@var:migration_transport_target_id
+				clear_variable = [RECEIPT]_convoys_paid_@var:migration_transport_target_id
+			}
+			RECEIPT = "[?migration_transport_receipt.GetTokenKey]"
+		}
+	}
+}
+
+migration_transport_read_state_receipt = {
+	if = {
+		limit = { check_variable = { migration_transport_receipt = token:migration_open_reception } }
+		set_temp_variable = { migration_transport_fuel_refund = migration_reception_preparation_fuel_paid_@var:migration_transport_target_id }
+		set_temp_variable = { migration_transport_convoys_refund = migration_reception_preparation_convoys_paid_@var:migration_transport_target_id }
+	}
+	else = {
+		meta_effect = {
+			text = {
+				set_temp_variable = { migration_transport_fuel_refund = [RECEIPT]_fuel_paid_@var:migration_transport_target_id }
+				set_temp_variable = { migration_transport_convoys_refund = [RECEIPT]_convoys_paid_@var:migration_transport_target_id }
+			}
+			RECEIPT = "[?migration_transport_receipt.GetTokenKey]"
+		}
+	}
+}
+

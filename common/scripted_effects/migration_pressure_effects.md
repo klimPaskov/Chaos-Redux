@@ -6,7 +6,9 @@
 
 `migration_pressure_apply_war_front_flight` runs in one owned state during war relation or state-control callbacks. An adjacent state's actual controller must be at war with the current state's owner. It requests 2% of live population above the same protected floor through `migration_request_war_pressure` and shares the existing `humanitarian_capture_cooldown_until_date` receipt to prevent stacking with hostile-capture and special-front adapters.
 
-`migration_pressure_build_local_flight_request` converts `state_population_k` to people, calculates the movable amount above the protected floor, multiplies by the caller's fixed-point share, and rounds the final request. The existing migration flight validator and `migration_apply_flight_request` remain authoritative for accepted requests and state registration.
+`migration_pressure_build_local_flight_request` converts `state_population_k` to people, calculates the movable amount above the protected floor, multiplies by the caller's fixed-point share, and rounds the final request. The builder resets `migration_pressure_adapter_share` to the existing zero constant after calculating its output because HOI4 exposes no `clear_temp_variable` effect.
+The caller owns the `migration_pressure_request_amount` output storage before the call.
+The existing migration flight validator and `migration_apply_flight_request` remain authoritative for accepted requests and state registration.
 
 The shared tuning block is `migration_pressure_runtime` in `common/script_constants/migration_pressure_constants.txt`. The outbreak cooldown is state-local and does not use a global scheduler. War and front work is bounded to the two countries in `on_war_relation_added`, the changed state's immediate neighbors, or the outbreak state's immediate neighbors.
 

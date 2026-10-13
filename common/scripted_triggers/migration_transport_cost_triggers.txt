@@ -1,28 +1,29 @@
 # Pure inclusive physical transport affordability in COUNTRY payer scope.
-# PROFILE is light/standard/heavy. TARGET is an exact STATE scope.
+# Inputs: temporary migration_transport_target STATE pointer and the three
+# migration_transport_fuel_land/fuel_sea/convoys_sea amounts from constants.
 # Geography is shared by quoting, affordability and display in payer scope.
 
 migration_transport_state_has_mainland_connection = {
 	hidden_trigger = {
 		OR = {
-			$TARGET$ = {
+			var:migration_transport_target = {
 				is_owned_by = PREV
 				is_in_home_area = yes
 			}
 			AND = {
-				$TARGET$ = { NOT = { is_owned_by = PREV } }
+				var:migration_transport_target = { NOT = { is_owned_by = PREV } }
 				# Native railway pathing starts at the paying country's capital.
 				# An existing maximum-level route still qualifies if no further
 				# construction can be requested on it.
 				OR = {
 					has_railway_connection = {
 						start_state = THIS.capital
-						target_state = $TARGET$
+						target_state = var:migration_transport_target
 						build_only_on_allied = no
 					}
 					can_build_railway = {
 						start_state = THIS.capital
-						target_state = $TARGET$
+						target_state = var:migration_transport_target
 						build_only_on_allied = no
 					}
 				}
@@ -35,12 +36,12 @@ migration_transport_state_fuel_is_affordable = {
 	hidden_trigger = {
 		OR = {
 			AND = {
-				migration_transport_state_has_mainland_connection = { TARGET = $TARGET$ }
-				NOT = { has_fuel < constant:migration_transport_cost.$PROFILE$_fuel_land }
+				migration_transport_state_has_mainland_connection = yes
+				NOT = { has_fuel < migration_transport_fuel_land }
 			}
 			AND = {
-				NOT = { migration_transport_state_has_mainland_connection = { TARGET = $TARGET$ } }
-				NOT = { has_fuel < constant:migration_transport_cost.$PROFILE$_fuel_sea }
+				NOT = { migration_transport_state_has_mainland_connection = yes }
+				NOT = { has_fuel < migration_transport_fuel_sea }
 			}
 		}
 	}
@@ -49,10 +50,10 @@ migration_transport_state_fuel_is_affordable = {
 migration_transport_state_convoys_are_affordable = {
 	hidden_trigger = {
 		OR = {
-			migration_transport_state_has_mainland_connection = { TARGET = $TARGET$ }
+			migration_transport_state_has_mainland_connection = yes
 			AND = {
-				NOT = { migration_transport_state_has_mainland_connection = { TARGET = $TARGET$ } }
-				NOT = { has_equipment = { convoy < constant:migration_transport_cost.$PROFILE$_convoys_sea } }
+				NOT = { migration_transport_state_has_mainland_connection = yes }
+				NOT = { has_equipment = { convoy < migration_transport_convoys_sea } }
 			}
 		}
 	}
@@ -60,42 +61,98 @@ migration_transport_state_convoys_are_affordable = {
 
 migration_transport_state_cost_is_affordable = {
 	hidden_trigger = {
-		$TARGET$ = { state_population_k > constant:migration_transport_cost.zero }
-		migration_transport_state_fuel_is_affordable = { PROFILE = $PROFILE$ TARGET = $TARGET$ }
-		migration_transport_state_convoys_are_affordable = { PROFILE = $PROFILE$ TARGET = $TARGET$ }
+		var:migration_transport_target = { state_population_k > constant:migration_transport_cost.zero }
+		migration_transport_state_fuel_is_affordable = yes
+		migration_transport_state_convoys_are_affordable = yes
 	}
 }
 
 migration_transport_policy_cost_is_affordable = {
-	hidden_trigger = { NOT = { has_fuel < constant:migration_transport_cost.$PROFILE$_fuel_land } }
+	hidden_trigger = { NOT = { has_fuel < migration_transport_fuel_land } }
 }
 
 # COUNTRY payer with exact STATE target. Aircraft carry this shipment, so
 # the state-keyed payment uses fuel without a sea-convoy requirement.
 migration_transport_air_cost_is_affordable = {
 	hidden_trigger = {
-		$TARGET$ = { state_population_k > constant:migration_transport_cost.zero }
-		migration_transport_policy_cost_is_affordable = { PROFILE = $PROFILE$ }
+		var:migration_transport_target = { state_population_k > constant:migration_transport_cost.zero }
+		migration_transport_policy_cost_is_affordable = yes
 	}
 }
 
-# Positive quantities establish an actual payment, rather than a Boolean variable.
 migration_transport_state_receipt_is_paid = {
 	hidden_trigger = {
 		set_temp_variable = { migration_transport_target_id = constant:migration_transport_cost.zero }
-		$TARGET$ = { set_temp_variable = { migration_transport_target_id = id } }
+		var:migration_transport_target = { set_temp_variable = { migration_transport_target_id = id } }
 		check_variable = { migration_transport_target_id > constant:migration_transport_cost.zero }
-		has_variable = $RECEIPT$_fuel_paid_@var:migration_transport_target_id
-		check_variable = { $RECEIPT$_fuel_paid_@var:migration_transport_target_id > constant:migration_transport_cost.zero }
-		has_variable = $RECEIPT$_convoys_paid_@var:migration_transport_target_id
-		NOT = { check_variable = { $RECEIPT$_convoys_paid_@var:migration_transport_target_id < constant:migration_transport_cost.zero } }
+		OR = {
+			AND = {
+				check_variable = { migration_transport_receipt = token:migration_open_reception }
+				has_variable = migration_reception_preparation_fuel_paid_@var:migration_transport_target_id
+				check_variable = { migration_reception_preparation_fuel_paid_@var:migration_transport_target_id > constant:migration_transport_cost.zero }
+				has_variable = migration_reception_preparation_convoys_paid_@var:migration_transport_target_id
+				NOT = { check_variable = { migration_reception_preparation_convoys_paid_@var:migration_transport_target_id < constant:migration_transport_cost.zero } }
+			}
+			AND = {
+				NOT = { check_variable = { migration_transport_receipt = token:migration_open_reception } }
+				meta_trigger = {
+					text = {
+						has_variable = [RECEIPT]_fuel_paid_@var:migration_transport_target_id
+						check_variable = { [RECEIPT]_fuel_paid_@var:migration_transport_target_id > constant:migration_transport_cost.zero }
+						has_variable = [RECEIPT]_convoys_paid_@var:migration_transport_target_id
+						NOT = { check_variable = { [RECEIPT]_convoys_paid_@var:migration_transport_target_id < constant:migration_transport_cost.zero } }
+					}
+					RECEIPT = "[?migration_transport_receipt.GetTokenKey]"
+				}
+			}
+		}
+	}
+}
+
+migration_transport_state_receipt_is_clear = {
+	hidden_trigger = {
+		OR = {
+			AND = {
+				check_variable = { migration_transport_receipt = token:migration_open_reception }
+				NOT = { has_variable = migration_reception_preparation_fuel_paid_@var:migration_transport_target_id }
+				NOT = { has_variable = migration_reception_preparation_convoys_paid_@var:migration_transport_target_id }
+			}
+			AND = {
+				NOT = { check_variable = { migration_transport_receipt = token:migration_open_reception } }
+				meta_trigger = {
+					text = {
+						NOT = { has_variable = [RECEIPT]_fuel_paid_@var:migration_transport_target_id }
+						NOT = { has_variable = [RECEIPT]_convoys_paid_@var:migration_transport_target_id }
+					}
+					RECEIPT = "[?migration_transport_receipt.GetTokenKey]"
+				}
+			}
+		}
 	}
 }
 
 migration_transport_policy_receipt_is_paid = {
 	hidden_trigger = {
-		has_country_flag = $RECEIPT$_transport_paid
-		has_variable = $RECEIPT$_fuel_paid
-		check_variable = { $RECEIPT$_fuel_paid > constant:migration_transport_cost.zero }
+		meta_trigger = {
+			text = {
+				has_country_flag = [RECEIPT]_transport_paid
+				has_variable = [RECEIPT]_fuel_paid
+				check_variable = { [RECEIPT]_fuel_paid > constant:migration_transport_cost.zero }
+			}
+			RECEIPT = "[?migration_transport_receipt.GetTokenKey]"
+		}
 	}
 }
+
+migration_transport_policy_receipt_is_clear = {
+	hidden_trigger = {
+		meta_trigger = {
+			text = {
+				NOT = { has_country_flag = [RECEIPT]_transport_paid }
+				NOT = { has_variable = [RECEIPT]_fuel_paid }
+			}
+			RECEIPT = "[?migration_transport_receipt.GetTokenKey]"
+		}
+	}
+}
+

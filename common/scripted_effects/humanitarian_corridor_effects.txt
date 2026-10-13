@@ -743,6 +743,14 @@ humanitarian_corridor_execute_evacuation = {
 			set_temp_variable = { civilian_transfer_log_deaths = constant:humanitarian_corridor_runtime.one }
 			set_temp_variable = { civilian_transfer_role_request = constant:migration_core_reconciliation.transfer_projection_role_organized_evacuation }
 			if = { limit = { check_variable = { migration_spontaneous_reception_cohort_id = humanitarian_corridor_cohort_id } } set_temp_variable = { civilian_transfer_role_request = constant:migration_core_reconciliation.transfer_projection_role_spontaneous_exodus } }
+			if = {
+				limit = {
+					check_variable = { var = migration_cohort_priority_request value = constant:migration_cohort_priority.vulnerable compare = equals }
+					check_variable = { var = civilian_transfer_role_request value = constant:migration_core_reconciliation.transfer_projection_role_organized_evacuation compare = equals }
+				}
+				multiply_temp_variable = { civilian_transfer_people = constant:migration_cohort_priority_effect.vulnerable_batch_factor }
+				round_temp_variable = civilian_transfer_people
+			}
 			set_temp_variable = { civilian_transfer_bind_mode = constant:migration_core_reconciliation.transfer_bind_safe }
 			set_temp_variable = { civilian_transfer_source_reception_required = constant:migration_core_reconciliation.transfer_source_reception_not_required }
 			set_temp_variable = { civilian_transfer_flight_obligation_proven = constant:humanitarian_runtime.one }

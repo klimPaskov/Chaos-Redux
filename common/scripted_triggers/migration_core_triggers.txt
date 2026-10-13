@@ -150,7 +150,7 @@ migration_staged_cohort_abort_request_is_valid = {
 # State retirement remains migration-owned until every migration obligation is absent.
 # The live-row counters are refreshed by the bounded selector reconciler; they
 # are not discovered by a world scan in this trigger.
-migration_state_has_obligations = {
+migration_state_has_nonworkforce_obligations = {
 	hidden_trigger = {
 		OR = {
 			has_global_flag = migration_runtime_needs_repair
@@ -197,6 +197,20 @@ migration_state_has_obligations = {
 		}
 	}
 }
+
+
+migration_state_has_obligations = {
+	hidden_trigger = {
+		OR = {
+			migration_state_has_nonworkforce_obligations = yes
+			AND = {
+				has_variable = migration_industrial_workforce_delta
+				NOT = { check_variable = { var = migration_industrial_workforce_delta value = constant:humanitarian_population.zero compare = equals } }
+			}
+		}
+	}
+}
+
 
 
 migration_terminal_state_references_clear = {
@@ -373,6 +387,7 @@ migration_cohort_record_request_is_valid = {
 		check_variable = { var = migration_cohort_record_amount value = constant:humanitarian_population.zero compare = greater_than }
 		check_variable = { var = migration_cohort_record_owner_proven value = constant:humanitarian_runtime.zero compare = greater_than }
 		check_variable = { var = migration_cohort_record_source value = constant:humanitarian_pressure_source.unknown compare = greater_than }
+		migration_cohort_priority_is_valid = yes
 	}
 }
 

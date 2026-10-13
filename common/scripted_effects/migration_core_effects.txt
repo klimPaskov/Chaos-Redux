@@ -19,6 +19,11 @@ migration_record_displaced_cohort = {
 	# The live alignment check below includes the history ledger, so its zero
 	# count must exist before the first cohort can be written.
 	migration_initialize_cohort_history = yes
+	set_temp_variable = { migration_cohort_record_priority = constant:migration_cohort_priority.general }
+	if = {
+		limit = { has_variable = migration_cohort_priority_request }
+		set_temp_variable = { migration_cohort_record_priority = migration_cohort_priority_request }
+	}
 	set_temp_variable = { migration_cohort_record_result = constant:civilian_transfer_route_result.invalid }
 	set_temp_variable = { migration_cohort_id_result = constant:humanitarian_runtime.zero }
 	if = {
@@ -38,6 +43,7 @@ migration_record_displaced_cohort = {
 		add_to_array = { array = global.migration_cohort_amounts value = migration_cohort_record_amount }
 		add_to_array = { array = global.migration_cohort_sources value = migration_cohort_record_source }
 		add_to_array = { array = global.migration_cohort_statuses value = constant:migration_cohort_status.active }
+		set_variable = { global.migration_cohort_priority_@var:migration_cohort_new_id = migration_cohort_record_priority }
 		add_to_variable = { global.migration_next_cohort_id = constant:humanitarian_runtime.array_index_increment }
 		set_variable = { global.migration_cohort_count = global.migration_cohort_ids^num }
 		set_temp_variable = { migration_cohort_id_result = migration_cohort_new_id }
@@ -51,6 +57,8 @@ migration_record_displaced_cohort = {
 	set_temp_variable = { migration_cohort_record_amount = constant:humanitarian_population.zero }
 	set_temp_variable = { migration_cohort_record_owner_proven = constant:humanitarian_runtime.zero }
 	set_temp_variable = { migration_cohort_record_source = constant:humanitarian_pressure_source.unknown }
+	set_temp_variable = { migration_cohort_record_priority = constant:migration_cohort_priority.general }
+	clear_variable = migration_cohort_priority_request
 }
 
 
@@ -468,6 +476,8 @@ migration_abort_staged_cohort_record = {
 			}
 			set_temp_variable = { migration_cohort_history_id_request = migration_cohort_id_request }
 			migration_cleanup_cohort_visit_history = yes
+			clear_variable = global.migration_cohort_priority_@var:migration_cohort_id_request
+			clear_variable = global.migration_cohort_priority_last_generation_@var:migration_cohort_id_request
 			remove_from_array = { array = global.migration_cohort_ids index = migration_staged_cohort_abort_match_index }
 			remove_from_array = { array = global.migration_cohort_origins index = migration_staged_cohort_abort_match_index }
 			remove_from_array = { array = global.migration_cohort_hosts index = migration_staged_cohort_abort_match_index }
@@ -899,6 +909,7 @@ migration_update_cohort_host_after_transfer = {
 			set_temp_variable = { migration_cohort_row_id = global.migration_cohort_ids^migration_cohort_host_update_index }
 			if = {
 				limit = { check_variable = { var = migration_cohort_row_id value = civilian_transfer_finalize_cohort_id compare = equals } }
+				migration_priority_reconcile_industrial_transfer = yes
 				if = {
 					limit = { check_variable = { var = civilian_transfer_survivor_credit value = constant:humanitarian_population.zero compare = greater_than } }
 					remove_from_array = { array = global.migration_cohort_destinations index = migration_cohort_host_update_index }
@@ -1766,6 +1777,14 @@ migration_process_registered_state = {
 			humanitarian_cleanup_state_registration = yes
 		}
 	}
+	if = {
+		limit = {
+			humanitarian_state_is_valid = yes
+			has_variable = migration_industrial_workforce_delta
+			NOT = { check_variable = { var = migration_industrial_workforce_delta value = constant:humanitarian_population.zero compare = equals } }
+		}
+		migration_refresh_dynamic_modifiers = yes
+	}
 }
 
 
@@ -2078,6 +2097,13 @@ migration_refresh_dynamic_modifiers = {
 			set_temp_variable = { human_state_modifier_request = token:migration_state_return } set_temp_variable = { human_state_modifier_requested_days = 0 } add_human_state_dynamic_modifier = yes
 		}
 		if = { limit = { has_state_flag = migration_reception_candidate_active } OWNER = { migration_mark_reception_capacity_dirty = yes } }
+		if = {
+			limit = {
+				has_variable = migration_industrial_workforce_delta
+				NOT = { check_variable = { var = migration_industrial_workforce_delta value = constant:humanitarian_population.zero compare = equals } }
+			}
+			migration_priority_refresh_state_industrial_projection = yes
+		}
 		force_update_dynamic_modifier = yes
 	}
 }
@@ -2117,6 +2143,25 @@ migration_cleanup_state_registration = {
 		clear_variable = migration_projection_last_cohort_id
 		clear_variable = migration_projection_last_generation
 		clear_variable = migration_projection_last_role
+	}
+	else_if = {
+		limit = {
+			humanitarian_state_is_valid = yes
+			has_variable = migration_industrial_workforce_delta
+			NOT = { check_variable = { var = migration_industrial_workforce_delta value = constant:humanitarian_population.zero compare = equals } }
+			NOT = { migration_state_has_nonworkforce_obligations = yes }
+		}
+		# Retain the sparse array entry for industrial work, while retiring
+		# unrelated displacement and reception presentation state.
+		clr_state_flag = migration_displacement_active
+		clr_state_flag = migration_population_trapped
+		clr_state_flag = migration_reception_context_active
+		clr_state_flag = migration_overcrowded_context_active
+		clr_state_flag = migration_return_context_active
+		clr_state_flag = migration_state_resettlement_context_active
+		migration_unregister_reception_candidate_state = yes
+		migration_presentation_clear_state = yes
+		migration_presentation_clear_all_projections = yes
 	}
 	else = {
 		if = { limit = { humanitarian_state_is_valid = yes } migration_register_active_state = yes }
@@ -2195,6 +2240,7 @@ migration_handle_state_control_change = {
 		migration_presentation_refresh_state = yes
 	}
 	else = {
+		migration_priority_clear_state_industrial_projection = yes
 		migration_cleanup_cohort_records_for_state = yes
 		migration_cleanup_state_registration = yes
 	}

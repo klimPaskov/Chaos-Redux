@@ -3,14 +3,14 @@
 
 # UI wrapper. FROM remains the exact selected receiving state.
 migration_reception_preparation_is_affordable = {
-	migration_reception_preparation_target_cost_is_affordable = { TARGET = FROM }
+	set_temp_variable = { migration_transport_target = FROM } migration_reception_preparation_target_cost_is_affordable = yes
 }
 
 migration_reception_preparation_target_cost_is_affordable = {
 	hidden_trigger = {
 		humanitarian_country_is_valid = yes
 		NOT = { has_equipment = { support_equipment < constant:migration_reception_preparation_cost.support_equipment } }
-		migration_transport_state_cost_is_affordable = { PROFILE = standard TARGET = $TARGET$ }
+		set_temp_variable = { migration_transport_fuel_land = constant:migration_transport_cost.standard_fuel_land } set_temp_variable = { migration_transport_fuel_sea = constant:migration_transport_cost.standard_fuel_sea } set_temp_variable = { migration_transport_convoys_sea = constant:migration_transport_cost.standard_convoys_sea } migration_transport_state_cost_is_affordable = yes
 	}
 }
 

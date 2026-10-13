@@ -40,3 +40,8 @@ Displayed support equipment reads its own central constant directly.
 The display cache never governs payment.
 No icon, GUI, mapmode, event, or new public value is introduced.
 The current implementation evidence and source-case limits are in `docs/plans/famine_and_migration_system_plans/subagent_handoffs/prospective_reception_implementation_20261003.md`.
+
+The transport calls initialize temporary numeric profile inputs, the exact saved state pointer and `token:migration_open_reception` before bare `= yes` calls.
+The transport receipt helpers retain the `migration_reception_preparation` prefix for this token, so existing exact paid-field reads and failure compensation remain aligned.
+Rollback and success each reinitialize their own target and receipt input after service/capacity helpers return.
+No input survives beyond its current effect chain.
