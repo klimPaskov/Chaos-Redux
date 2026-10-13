@@ -1,6 +1,6 @@
 # 12. Asset manifest and consumers
 
-All asset identifiers in this manifest are proposed stable identifiers. Descriptive labels are working labels, not final localisation. Every row is planned, not generated or validated.
+All asset identifiers in this manifest are proposed stable identifiers. Descriptive labels are working labels, not final localisation. Current source, candidate, review, and consumer status is recorded in the Event 079 asset handoffs under `docs/assets/079_the_master/`; a candidate is not a shipped or wired asset.
 
 ## Required assets
 
@@ -10,18 +10,20 @@ All asset identifiers in this manifest are proposed stable identifiers. Descript
 | `the_master_report_alignment` | 1 | 210×176 | `gfx/event_pictures/079_the_master/the_master_report_alignment.dds` | Government realignment report, institutional change without a fabricated identifiable leader |
 | `the_master_report_takeover` | 1 | 210×176 | `gfx/event_pictures/079_the_master/the_master_report_takeover.dds` | Winner and target reports, establishment of a dependent government |
 | `the_master_news_takeover` | 1 | 397×153 | `gfx/news_event_pictures/079_the_master/the_master_news_takeover.dds` | Black-and-white international diplomatic news |
-| `the_master_category` | 1 | Native category consumer size to verify | `gfx/decisions/079_the_master/the_master_category.dds` | Category emblem distinct from the action icons |
-| `the_master_propaganda` | 1 | 32×32 | `gfx/decisions/079_the_master/the_master_propaganda.dds` | Public political persuasion |
-| `the_master_investment` | 1 | 32×32 | `gfx/decisions/079_the_master/the_master_investment.dds` | Factory or public-works commitment |
-| `the_master_military_aid` | 1 | 32×32 | `gfx/decisions/079_the_master/the_master_military_aid.dds` | Material and advisory military assistance |
-| `the_master_government` | 1 | 32×32 | `gfx/decisions/079_the_master/the_master_government.dds` | Incumbent support |
-| `the_master_opposition` | 1 | 32×32 | `gfx/decisions/079_the_master/the_master_opposition.dds` | Opposition organization |
-| `the_master_interference` | 1 | 32×32 | `gfx/decisions/079_the_master/the_master_interference.dds` | Targeted rival operation |
-| `the_master_foreign_campaigns` | 1 | 64×64 | `gfx/ideas/079_the_master/the_master_foreign_campaigns.dds` | One consolidated target campaign spirit where an idea is actually needed |
+| `the_master_category` | 1 | Native category consumer size to verify | `gfx/interface/decisions/079_the_master/the_master_category.dds` | Category emblem distinct from the action icons |
+| `the_master_propaganda` | 1 | 32×32 | `gfx/interface/decisions/079_the_master/the_master_propaganda.dds` | Public political persuasion |
+| `the_master_investment` | 1 | 32×32 | `gfx/interface/decisions/079_the_master/the_master_investment.dds` | Factory or public-works commitment |
+| `the_master_military_aid` | 1 | 32×32 | `gfx/interface/decisions/079_the_master/the_master_military_aid.dds` | Material and advisory military assistance |
+| `the_master_government` | 1 | 32×32 | `gfx/interface/decisions/079_the_master/the_master_government.dds` | Incumbent support |
+| `the_master_opposition` | 1 | 32×32 | `gfx/interface/decisions/079_the_master/the_master_opposition.dds` | Opposition organization |
+| `the_master_interference` | 1 | 32×32 | `gfx/interface/decisions/079_the_master/the_master_interference.dds` | Targeted rival operation |
+| `the_master_foreign_campaigns` | 1 | 64×64 | `gfx/interface/ideas/079_the_master/the_master_foreign_campaigns.dds` | One consolidated target campaign spirit where an idea is actually needed |
 | Event-owned board decorative elements | Native pieces only as needed | Fit actual UI consumer | `gfx/interface/079_the_master/` | Reuse native bars, frames, flags, and buttons before adding new textures |
 | Six achievement subjects | 6 source subjects, 18 runtime states | 64×64 final | `gfx/achievements/<achievement_id>.dds`, `_grey.dds`, `_not_eligible.dds` | Shared achievement registry and eligibility display |
 
 A sponsor's factory commitment can use an event-owned dynamic modifier if the installed consumer supports the required reservation. It must be visible in the payment UI. Do not add one visible national spirit per target and another per action. Consolidate event-owned visible status to stay within the project's three-spirit ceiling for a package on a country.
+
+The six decision-icon and one idea-icon DDS candidates exist under `docs/assets/079_the_master/shard6_20261011/production_5/candidate_dds/` and use the event-scoped `gfx/interface/` destinations above. They remain unbound because their action-level consumers are not implemented. The six achievement subjects and their 18 triplet DDS candidates also exist in the Event 079 asset workspace and remain unbound; this asset note does not assert achievement registration or gameplay implementation. The category row's canvas remains unresolved: the current category picture consumer is registered at 114×101, while the existing `the_master_category` candidate is a 52×40 category icon. Keep the category picture and small icon as separate surfaces until the intended row is confirmed.
 
 ## Source and production modes
 
