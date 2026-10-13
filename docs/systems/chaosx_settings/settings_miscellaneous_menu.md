@@ -41,21 +41,23 @@ The shared event timer uses the setting for every scheduled event, shortening th
 Communist spread uses the setting when a player-controlled country has active communist state control, intervention targets, emergency pressure, or a communist rebel war. While active, spread, escalation, and sabotage receive 1–4 additional chance points and cooldown reductions of 1–2 days. AI-only crisis fronts continue to use normal tuning.
 
 ## Super-event audio behavior
-Super-event playback is routed through the settings-aware sound helper in:
+Super-event playback is routed through the settings-aware music helper in:
 - `common/scripted_effects/chaosx_settings_effects.txt`
 
 Behavior:
-- Super-event runtime audio uses the sound output only.
-- The dispatcher assigns `global.current_super_event_audio_id` and resolves the matching sound definition from `sound/chaosx_sound.asset`.
-- Each super-event has one final WAV under `sound/<event_id>_<event_slug>/...`.
-- `0x` mutes super-event playback entirely.
+- Super-event runtime audio uses the music channel, so each new track replaces the previous track.
+- The dispatcher assigns `global.current_super_event_audio_id` and resolves `chaosx_super_event_<audio_id>_<volume_suffix>` in `music/chaosx_super_event_music.asset`.
+- Each super-event keeps its source WAV under `sound/<event_id>_<event_slug>/...` and uses its matching OGG recording under `music/`.
+- `0x` plays the current track at zero volume, replacing any previous audible super-event track.
 - `1.5x` preserves the previous loudness as the default volume tier.
 
-The Fallout blackout is not an ordinary super-event audio ID. Its dedicated playback documentation remains separate from the super-event sound-only contract.
+The Fallout blackout is not an ordinary super-event audio ID.
+Its dedicated `fallout_world_end_blackout_<volume_suffix>` track uses the same music channel and replacement behavior.
 
-Current sound routing:
-- The dispatcher builds the sound-side reference for the assigned audio ID through the existing settings-aware helper.
-- Sound-side registration is maintained in `sound/chaosx_sound.asset`.
+Current music routing:
+- The dispatcher builds the music reference for the assigned audio ID through `play_current_super_event_music` and `play_dynamic_super_event_music`.
+- Music definitions are maintained in `music/chaosx_super_event_music.asset` and registered with zero random-playback weight in `music/chaosx_super_event_music.txt`.
+- The historical sound-named helper entry points delegate to music playback so existing callers share the same channel.
 - Current audio ID `1` uses the initial outbreak track definitions.
 - Current audio ID `2` uses the Alliance of Man track definitions.
 - Current audio ID `3` uses the zombie apocalypse track definitions.
@@ -233,5 +235,5 @@ If custom art is later desired for the Miscellaneous menu or sync controls:
 
 ## Future plans
 - Replace the selected-country/state sync buttons with a true automatic map-selection hook if Paradox exposes a documented callback for selection changes in scripted GUI.
-- Document each newly-added super-event WAV, sound definition, audio ID, and catalogue row together with its presentation wiring.
+- Document each super-event source WAV, runtime OGG, music definition, station registration, audio ID, and catalogue row together with its presentation wiring.
 - Add a live preview button for super-event sound cues and loudness testing inside the Miscellaneous panel.

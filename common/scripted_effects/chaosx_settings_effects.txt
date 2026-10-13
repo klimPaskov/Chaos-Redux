@@ -4768,23 +4768,28 @@ play_current_super_event_audio = {
 		}
 	}
 	else = {
-		play_current_super_event_sound = yes
+		play_current_super_event_music = yes
 	}
 }
 
+play_current_super_event_music = {
+	# The zero-volume track also replaces any preceding super-event track.
+	play_dynamic_super_event_music = yes
+}
+
+# Compatibility entry points share the single music channel.
 play_current_super_event_sound = {
-	if = {
-		limit = { check_variable = { settings_super_event_audio_volume = constant:settings_super_event_audio_volume.x0 } }
-	}
-	else = {
-		play_dynamic_super_event_sound = yes
-	}
+	play_current_super_event_music = yes
 }
 
 play_dynamic_super_event_sound = {
+	play_dynamic_super_event_music = yes
+}
+
+play_dynamic_super_event_music = {
 	meta_effect = {
 		text = {
-			scoped_sound_effect = "chaosx_super_event_[SUPER_EVENT_ID]_sound_[VOLUME_SUFFIX]"
+			scoped_play_song = "chaosx_super_event_[SUPER_EVENT_ID]_[VOLUME_SUFFIX]"
 		}
 		SUPER_EVENT_ID = "[?global.current_super_event_audio_id|.0]"
 		VOLUME_SUFFIX = "[GetSuperEventAudioVolumeToken]"
