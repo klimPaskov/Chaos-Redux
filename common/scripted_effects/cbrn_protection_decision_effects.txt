@@ -162,7 +162,76 @@ cbrn_complete_occupied_state_distribution = {
 		add_compliance = constant:cbrn_protection_program_effect.occupied_compliance_change
 	}
 	controller = { cbrn_start_protection_maintenance_job = yes }
-	# This national program owns only its occupied target marker and escrow.
+	# Country and direct-state callers own separate target markers; both use the
+	# same concrete state escrow and distributor without sharing project closure.
+}
+
+# COUNTRY. Reserve only the selected FROM state. The PP cost is charged only
+# after a valid native mask receipt and state-project lock are established.
+cbrn_begin_direct_occupied_state_distribution = {
+	set_temp_variable = { cbrn_occupied_direct_state_start_status = constant:cbrn_math.zero }
+	if = {
+		limit = { cbrn_occupied_direct_state_payment_ready = yes }
+		cbrn_occupied_targeted_state_mask_quote = yes
+		FROM = {
+			set_temp_variable = { cbrn_mask_escrow_requested = cbrn_mask_reservation_quote }
+			set_temp_variable = { cbrn_mask_escrow_external = constant:cbrn_math.zero }
+			set_temp_variable = { cbrn_mask_escrow_completed = constant:cbrn_math.zero }
+			cbrn_reserve_requested_masks_to_state = yes
+			if = {
+				limit = {
+					has_state_flag = cbrn_occupied_mask_escrow_active
+				}
+				set_state_flag = cbrn_occupied_direct_state_project_target
+				if = {
+					limit = {
+						check_variable = { cbrn_mask_escrow_completed > constant:cbrn_math.zero }
+						NOT = { has_state_flag = cbrn_occupied_mask_escrow_native_mismatch }
+						NOT = { has_state_flag = cbrn_occupied_mask_escrow_recovery }
+					}
+					set_temp_variable = { cbrn_project_duration_days = constant:cbrn_protection_decision_timing.occupied_distribution_days }
+					cbrn_begin_state_protection_project = yes
+					ROOT = { set_temp_variable = { cbrn_occupied_direct_state_start_status = constant:cbrn_math.one } }
+				}
+				else = {
+					set_temp_variable = { cbrn_mask_escrow_refunded = constant:cbrn_math.zero }
+					set_temp_variable = { cbrn_mask_escrow_refund_blocked = constant:cbrn_math.zero }
+					cbrn_refund_occupied_state_mask_reservation = yes
+				}
+			}
+		}
+		if = {
+			limit = {
+				check_variable = { cbrn_occupied_direct_state_start_status = constant:cbrn_math.one }
+			}
+			set_temp_variable = { cbrn_protection_pp_debit_requested = constant:cbrn_protection_decision_cost.occupied_distribution_pp }
+			cbrn_debit_protection_political_power = yes
+		}
+	}
+}
+
+# State-targeted expiry shares the current receipt-based distributor but owns
+# its own marker, so the parallel country programme cannot close this project.
+cbrn_complete_direct_occupied_state_distribution = {
+	FROM = {
+		if = {
+			limit = { cbrn_occupied_direct_state_can_continue = yes }
+			cbrn_complete_occupied_state_distribution = yes
+		}
+		cbrn_end_state_protection_project = yes
+	}
+}
+
+cbrn_cancel_direct_occupied_state_distribution = {
+	FROM = {
+		if = {
+			limit = { has_state_flag = cbrn_occupied_mask_escrow_active }
+			set_temp_variable = { cbrn_mask_escrow_refunded = constant:cbrn_math.zero }
+			set_temp_variable = { cbrn_mask_escrow_refund_blocked = constant:cbrn_math.zero }
+			cbrn_refund_occupied_state_mask_reservation = yes
+		}
+		cbrn_end_state_protection_project = yes
+	}
 }
 
 cbrn_complete_state_filter_replacement = {

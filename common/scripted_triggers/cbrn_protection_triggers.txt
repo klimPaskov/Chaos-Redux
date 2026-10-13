@@ -480,9 +480,37 @@ cbrn_state_can_receive_priority_masks = {
 	ROOT = { has_country_flag = cbrn_national_respirator_reserve }
 }
 
+# Timed targeted projects must not reuse the start predicate because the
+# project lock intentionally makes that predicate false after selection.
+cbrn_state_priority_project_can_continue = {
+	has_state_flag = cbrn_protection_project_active
+	is_controlled_by = ROOT
+	is_core_of = ROOT
+	state_population_k > constant:cbrn_math.zero
+	ROOT = { has_country_flag = cbrn_national_respirator_reserve }
+	OR = {
+		cbrn_state_has_current_chemical_need = yes
+		cbrn_state_has_priority_protection_value = yes
+	}
+	cbrn_state_has_priority_distribution_gap = yes
+}
+
 cbrn_state_can_receive_full_distribution = {
 	cbrn_state_is_valid_distribution_target = yes
 	ROOT = { has_country_flag = cbrn_population_registered_and_fitted }
+	is_core_of = ROOT
+	infrastructure > constant:cbrn_mask_distribution.full_distribution_minimum_infrastructure
+	cbrn_state_has_full_distribution_gap = yes
+}
+
+cbrn_state_full_distribution_project_can_continue = {
+	has_state_flag = cbrn_protection_project_active
+	is_controlled_by = ROOT
+	state_population_k > constant:cbrn_math.zero
+	ROOT = {
+		has_country_flag = cbrn_national_respirator_reserve
+		has_country_flag = cbrn_population_registered_and_fitted
+	}
 	is_core_of = ROOT
 	infrastructure > constant:cbrn_mask_distribution.full_distribution_minimum_infrastructure
 	cbrn_state_has_full_distribution_gap = yes
@@ -524,6 +552,18 @@ cbrn_state_can_receive_occupied_masks = {
 
 cbrn_state_can_replace_civilian_filters = {
 	cbrn_state_is_valid_distribution_target = yes
+	NOT = { has_state_flag = cbrn_protection_project_active }
+	has_variable = cbrn_civilian_mask_crates
+	check_variable = { cbrn_civilian_mask_crates > constant:cbrn_math.zero }
+	has_variable = cbrn_civilian_mask_filter_condition
+	check_variable = { cbrn_civilian_mask_filter_condition < constant:cbrn_mask_filters.condition_full }
+}
+
+cbrn_state_filter_replacement_project_can_continue = {
+	has_state_flag = cbrn_protection_project_active
+	is_controlled_by = ROOT
+	state_population_k > constant:cbrn_math.zero
+	ROOT = { has_country_flag = cbrn_national_respirator_reserve }
 	has_variable = cbrn_civilian_mask_crates
 	check_variable = { cbrn_civilian_mask_crates > constant:cbrn_math.zero }
 	has_variable = cbrn_civilian_mask_filter_condition
@@ -538,7 +578,14 @@ cbrn_country_has_priority_distribution_work = {
 cbrn_country_has_full_distribution_work = {
 	has_country_flag = cbrn_national_respirator_reserve
 	has_country_flag = cbrn_population_registered_and_fitted
+	NOT = { any_controlled_state = { has_state_flag = cbrn_protection_project_active } }
 	any_controlled_state = { cbrn_state_can_receive_full_distribution = yes }
+}
+
+cbrn_country_can_start_state_protection_project = {
+	NOT = { has_country_flag = cbrn_civilian_distribution_program_active }
+	NOT = { has_country_flag = cbrn_occupied_transaction_active }
+	NOT = { has_country_flag = cbrn_occupied_transaction_recovery_pending }
 }
 
 cbrn_country_has_filter_replacement_work = {

@@ -11,6 +11,7 @@ This overview describes the current source loop and does not certify the complet
 1. Research ordinary protection, medical and delivery technologies and produce their real equipment and payloads.
 2. Choose Retaliation Only, Battlefield Authorization or Unrestricted Authorization through the three direct policy decisions, each costing 5 Command Power with a 90-day reassessment interval.
 3. Let stock-backed maintenance derive readiness, service military filters and issue military masks before threatened civilian filter service/issue and remaining civilian work.
+   Targeted map decisions remain available for a player-directed priority issue, full-coverage state distribution, civilian filter replacement, or occupied-state supply; national programs and automatic maintenance remain separate.
 4. Equip the available support and Army HQ roles, with Chaos Warfare adoption and mastery providing specialization without separate establishment, claim, training-purchase or commission cards.
 5. Use the direct Japan-China cylinder decision or a native Chemical Raids/Biological Raids route. Native raids retain their exact target, origin, assigned-force, intelligence, preparation, policy, protection and real-payload requirements.
 6. Resolve source-recorded consequences and respond through applicable treatment, protection, containment, decontamination, evidence and diplomatic actions.

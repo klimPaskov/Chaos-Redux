@@ -313,6 +313,8 @@ For the other distribution gaps, absent `cbrn_civilian_mask_effective_coverage` 
 - `cbrn_state_can_receive_occupied_masks`: valid non-core controlled state with an exact alert or contamination and an occupied gap.
 - `cbrn_state_can_replace_civilian_filters`: valid state with distributed masks and worn filters.
 
+The restored player-selected state decisions reuse the priority, full-distribution and filter guards above. `cbrn_occupied_direct_state_can_start` checks the two-factory threshold before a direct occupied order begins its native reservation; `cbrn_occupied_direct_state_payment_ready` rechecks PP, the exact `FROM` state and its live mask quote during the start effect without counting that order's own reserved factories. The focused occupied receipt remains state-scoped and separate from the national programme target marker.
+
 Compatibility example for the declared full-distribution gate; it does not establish an active routine programme:
 
 ```txt

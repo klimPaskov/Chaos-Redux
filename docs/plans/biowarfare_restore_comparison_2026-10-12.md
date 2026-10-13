@@ -73,3 +73,11 @@ No restored wording was restyled; exceptions are live dynamic values, necessary 
 
 Skills used: shared Git commit, characters/leaders, decisions/missions, native raids, scripted GUI, event assets, subagents and the probability auditors' AI-strategies skill.
 The canonical characters/leaders skill was updated only to reflect direct recruitment of the restored roster.
+
+## Civilian mask state-choice restoration
+
+13 October follow-up: `d4a27b58facddf55def7f13dffb7de94eac3429` removed the player's exact-state choices for priority issue, full distribution, filter replacement, and occupied supply. The current source restores those four original IDs as state-targeted decisions with their historical costs, project durations, decision cooldowns, and `FROM` completion scopes: `cbrn_priority_state_mask_issue`, `cbrn_full_state_mask_distribution`, `cbrn_replace_state_mask_filters`, and `cbrn_supply_occupied_population`.
+
+The three standard state actions use the current shared state-target guards and debit helpers; the occupied action uses the selected state's live mask quote, reserves actual model stock through the existing state escrow, charges its historical 25 PP only after a valid reservation, and refunds unused escrow on cancellation. Each target owns its project lock and target receipt, so multiple states can run in parallel. The national full distribution and sale-aware national occupied programs remain distinct optional routes, while stock-backed automatic maintenance continues independently.
+
+The four state decision definitions use `state_target = any_controlled_state` and `map_and_decisions_view`, preserving the controlled-state `FROM` pool while limiting entries to eligible controlled targets. The direct occupied custom-cost display covers PP, the selected state's actual available mask quantity, and the two native-reserved civilian factories. Its pre-click affordability gate checks factory capacity before the native reservation starts, while the complete effect rechecks PP and the selected-state receipt without rejecting the order against its own two-factory reservation. The transaction ledger remains owned by the national sale-aware pair; the direct historical route uses state escrow only and does not claim a Black Friday discount.

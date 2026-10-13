@@ -14,8 +14,12 @@ It does nothing for a human state, otherwise clears that agent's live, detected 
 It grants no recovery achievement and preserves all prior episode, use and death history.
 There are no new event targets, constants or polling hooks.
 
-Native state modifiers with `attacker_modifier = yes` can still affect a nonhuman attacker fighting into a human-held state because the engine exposes no per-unit owner filter for that field.
-The state-holder guards do not claim to solve that distinct combat-area limitation.
+Human-system state modifiers use `add_human_state_dynamic_modifier` and its matching cleanup and birth binder.
+Native `scope =` binds each existing modifier to an eligible human country, while `ROOT` keeps its state variables and stage conditions anchored to the state that holds it.
+The original `attacker_modifier` setting and all human severity values remain intact, and nonhuman armies receive no bound instance even when entering a human-held state.
+Country transitions synchronously remove that country's recorded views, and new human countries receive only the remaining existing lifetime.
+The API is documented in [chaosx_dynamic_effects.md](chaosx_dynamic_effects.md#human-country-state-modifier-api).
+Native coexistence and combat consumption of bound instances are supported by the installed add/presence/removal contract and remain unobserved in game.
 
 This file documents reusable effects owned by the CBRN, protective-equipment, chemical-delivery, Chaos Warfare doctrine, and CBRN headquarters subsystems. They are intentionally excluded from the shared `chaosx_dynamic_effects` registry because their call sites remain inside the CBRN architecture.
 
@@ -831,7 +835,8 @@ The ordinary 25 PP fee canonically quotes 13/7 at the sale tiers; one national c
 The two IDs share one 90-day reassessment guard and one active programme, preventing duplicate national starts.
 Country continuation and finish use STATE `cbrn_occupied_state_can_complete_reserved_distribution`: the programme owns that state's receipt, ROOT still controls a noncore populated state, the national reserve remains, emergency context remains, and current issue need is positive.
 They do not reuse the start-only generic busy exclusion or clear an unrelated state project's busy flag.
-`cbrn_complete_occupied_state_distribution` is reached only from the new finish callback; existing fitting, filter, wastage, resistance/compliance, and model accounting remain with that STATE handler.
+`cbrn_complete_occupied_state_distribution` is reached from either the national programme's finish callback or the restored selected-state decision callback; existing fitting, filter, wastage, resistance/compliance, and model accounting remain with that STATE handler.
+The restored map decision `cbrn_supply_occupied_population` uses the separate STATE `cbrn_occupied_direct_state_project_target` receipt, the exact selected-state quote, and the same concrete-mask escrow/debit/refund/distributor helpers. Its direct start debits the historical PP fee only after a valid state reservation, holds the native factory slot, and owns the state project lock. Its receipt stays outside the national programme target array, so separate state projects can run concurrently without the national finish callback consuming their escrow.
 Completion confirms service achievement credit only after positive consumed and usable protection; accepted cancellation retains the fee and refunds only unused original models.
 Failed fee recording, credit, settlement, or model recovery retains keyed evidence and blocks duplicate execution; it does not fabricate success.
 The national begin callback additionally rejects fee publication when any later STATE reservation sets country recovery, even if an earlier state supplied a positive aggregate.
