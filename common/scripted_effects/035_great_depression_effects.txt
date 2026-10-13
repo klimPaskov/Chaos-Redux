@@ -623,8 +623,8 @@ great_depression_pay_action_cost = {
 		}
 		# Freeze the accepted quote. Cost refreshes must not resize a paid commitment.
 		set_variable = { great_depression_committed_civilian = great_depression_cost_civilian }
-		remove_dynamic_modifier = { modifier = great_depression_civilian_commitment }
-		remove_dynamic_modifier = { modifier = great_depression_civilian_commitment_major }
+		if = { limit = { has_dynamic_modifier = { modifier = great_depression_civilian_commitment } } remove_dynamic_modifier = { modifier = great_depression_civilian_commitment } }
+		if = { limit = { has_dynamic_modifier = { modifier = great_depression_civilian_commitment_major } } remove_dynamic_modifier = { modifier = great_depression_civilian_commitment_major } }
 		if = {
 			limit = { check_variable = { great_depression_cost_civilian > constant:great_depression_cost.civilian_commitment_major_threshold } }
 			add_dynamic_modifier = { modifier = great_depression_civilian_commitment_major }
@@ -2319,18 +2319,18 @@ great_depression_set_phase_from_severity = {
 }
 
 great_depression_refresh_national_modifier = {
-	remove_dynamic_modifier = { modifier = great_depression_national_panic }
-	remove_dynamic_modifier = { modifier = great_depression_national_depression }
-	remove_dynamic_modifier = { modifier = great_depression_national_deep }
-	remove_dynamic_modifier = { modifier = great_depression_national_systemic }
-	remove_dynamic_modifier = { modifier = great_depression_national_paralysis }
-	remove_dynamic_modifier = { modifier = great_depression_national_stabilizing }
-	remove_dynamic_modifier = { modifier = great_depression_national_recovery }
-	remove_dynamic_modifier = { modifier = great_depression_financial_contagion }
-	remove_dynamic_modifier = { modifier = great_depression_social_collapse_pressure }
-	remove_dynamic_modifier = { modifier = great_depression_global_contraction }
-	remove_dynamic_modifier = { modifier = great_depression_global_contraction_light }
-	remove_dynamic_modifier = { modifier = great_depression_global_contraction_severe }
+	if = { limit = { has_dynamic_modifier = { modifier = great_depression_national_panic } } remove_dynamic_modifier = { modifier = great_depression_national_panic } }
+	if = { limit = { has_dynamic_modifier = { modifier = great_depression_national_depression } } remove_dynamic_modifier = { modifier = great_depression_national_depression } }
+	if = { limit = { has_dynamic_modifier = { modifier = great_depression_national_deep } } remove_dynamic_modifier = { modifier = great_depression_national_deep } }
+	if = { limit = { has_dynamic_modifier = { modifier = great_depression_national_systemic } } remove_dynamic_modifier = { modifier = great_depression_national_systemic } }
+	if = { limit = { has_dynamic_modifier = { modifier = great_depression_national_paralysis } } remove_dynamic_modifier = { modifier = great_depression_national_paralysis } }
+	if = { limit = { has_dynamic_modifier = { modifier = great_depression_national_stabilizing } } remove_dynamic_modifier = { modifier = great_depression_national_stabilizing } }
+	if = { limit = { has_dynamic_modifier = { modifier = great_depression_national_recovery } } remove_dynamic_modifier = { modifier = great_depression_national_recovery } }
+	if = { limit = { has_dynamic_modifier = { modifier = great_depression_financial_contagion } } remove_dynamic_modifier = { modifier = great_depression_financial_contagion } }
+	if = { limit = { has_dynamic_modifier = { modifier = great_depression_social_collapse_pressure } } remove_dynamic_modifier = { modifier = great_depression_social_collapse_pressure } }
+	if = { limit = { has_dynamic_modifier = { modifier = great_depression_global_contraction } } remove_dynamic_modifier = { modifier = great_depression_global_contraction } }
+	if = { limit = { has_dynamic_modifier = { modifier = great_depression_global_contraction_light } } remove_dynamic_modifier = { modifier = great_depression_global_contraction_light } }
+	if = { limit = { has_dynamic_modifier = { modifier = great_depression_global_contraction_severe } } remove_dynamic_modifier = { modifier = great_depression_global_contraction_severe } }
 	if = {
 		limit = { check_variable = { var = great_depression_phase value = constant:great_depression_phase.panic_and_contraction compare = equals } }
 		add_dynamic_modifier = { modifier = great_depression_national_panic }
@@ -2408,8 +2408,8 @@ great_depression_release_idle_civilian_commitment = {
 
 # COUNTRY scope. Clear only Event 35's replaceable commitment family.
 great_depression_clear_civilian_commitment = {
-	remove_dynamic_modifier = { modifier = great_depression_civilian_commitment }
-	remove_dynamic_modifier = { modifier = great_depression_civilian_commitment_major }
+	if = { limit = { has_dynamic_modifier = { modifier = great_depression_civilian_commitment } } remove_dynamic_modifier = { modifier = great_depression_civilian_commitment } }
+	if = { limit = { has_dynamic_modifier = { modifier = great_depression_civilian_commitment_major } } remove_dynamic_modifier = { modifier = great_depression_civilian_commitment_major } }
 	clear_variable = great_depression_committed_civilian
 }
 
@@ -2420,20 +2420,20 @@ great_depression_clear_dynamic_state = {
 	great_depression_clear_episode_action_flags = yes
 	great_depression_clear_outgoing_contagion_network = yes
 	great_depression_clear_civilian_commitment = yes
-	remove_dynamic_modifier = { modifier = great_depression_national_panic }
-	remove_dynamic_modifier = { modifier = great_depression_national_depression }
-	remove_dynamic_modifier = { modifier = great_depression_national_deep }
-	remove_dynamic_modifier = { modifier = great_depression_national_systemic }
-	remove_dynamic_modifier = { modifier = great_depression_national_paralysis }
-	remove_dynamic_modifier = { modifier = great_depression_national_stabilizing }
-	remove_dynamic_modifier = { modifier = great_depression_national_recovery }
+	if = { limit = { has_dynamic_modifier = { modifier = great_depression_national_panic } } remove_dynamic_modifier = { modifier = great_depression_national_panic } }
+	if = { limit = { has_dynamic_modifier = { modifier = great_depression_national_depression } } remove_dynamic_modifier = { modifier = great_depression_national_depression } }
+	if = { limit = { has_dynamic_modifier = { modifier = great_depression_national_deep } } remove_dynamic_modifier = { modifier = great_depression_national_deep } }
+	if = { limit = { has_dynamic_modifier = { modifier = great_depression_national_systemic } } remove_dynamic_modifier = { modifier = great_depression_national_systemic } }
+	if = { limit = { has_dynamic_modifier = { modifier = great_depression_national_paralysis } } remove_dynamic_modifier = { modifier = great_depression_national_paralysis } }
+	if = { limit = { has_dynamic_modifier = { modifier = great_depression_national_stabilizing } } remove_dynamic_modifier = { modifier = great_depression_national_stabilizing } }
+	if = { limit = { has_dynamic_modifier = { modifier = great_depression_national_recovery } } remove_dynamic_modifier = { modifier = great_depression_national_recovery } }
 	remove_dynamic_modifier = { modifier = great_depression_opening_shock }
 	remove_dynamic_modifier = { modifier = great_depression_policy_whiplash }
-	remove_dynamic_modifier = { modifier = great_depression_financial_contagion }
-	remove_dynamic_modifier = { modifier = great_depression_social_collapse_pressure }
-	remove_dynamic_modifier = { modifier = great_depression_global_contraction }
-	remove_dynamic_modifier = { modifier = great_depression_global_contraction_light }
-	remove_dynamic_modifier = { modifier = great_depression_global_contraction_severe }
+	if = { limit = { has_dynamic_modifier = { modifier = great_depression_financial_contagion } } remove_dynamic_modifier = { modifier = great_depression_financial_contagion } }
+	if = { limit = { has_dynamic_modifier = { modifier = great_depression_social_collapse_pressure } } remove_dynamic_modifier = { modifier = great_depression_social_collapse_pressure } }
+	if = { limit = { has_dynamic_modifier = { modifier = great_depression_global_contraction } } remove_dynamic_modifier = { modifier = great_depression_global_contraction } }
+	if = { limit = { has_dynamic_modifier = { modifier = great_depression_global_contraction_light } } remove_dynamic_modifier = { modifier = great_depression_global_contraction_light } }
+	if = { limit = { has_dynamic_modifier = { modifier = great_depression_global_contraction_severe } } remove_dynamic_modifier = { modifier = great_depression_global_contraction_severe } }
 	remove_ideas = great_depression_active
 	remove_ideas = great_depression_economic_contagion
 	remove_ideas = great_depression_global_contraction
@@ -6668,9 +6668,9 @@ great_depression_classify_worldwide_pressure = {
 }
 
 great_depression_apply_worldwide_pressure_modifier = {
-	remove_dynamic_modifier = { modifier = great_depression_global_contraction_light }
-	remove_dynamic_modifier = { modifier = great_depression_global_contraction }
-	remove_dynamic_modifier = { modifier = great_depression_global_contraction_severe }
+	if = { limit = { has_dynamic_modifier = { modifier = great_depression_global_contraction_light } } remove_dynamic_modifier = { modifier = great_depression_global_contraction_light } }
+	if = { limit = { has_dynamic_modifier = { modifier = great_depression_global_contraction } } remove_dynamic_modifier = { modifier = great_depression_global_contraction } }
+	if = { limit = { has_dynamic_modifier = { modifier = great_depression_global_contraction_severe } } remove_dynamic_modifier = { modifier = great_depression_global_contraction_severe } }
 	if = {
 		limit = { check_variable = { var = great_depression_worldwide_pressure_stage value = constant:great_depression_exposure_stage.dependent compare = greater_than_or_equals } }
 		add_dynamic_modifier = { modifier = great_depression_global_contraction_severe }
@@ -6802,9 +6802,9 @@ great_depression_clear_global_pressure_registry = {
 			value = great_depression_global_pressure_clear_index
 			var:global.great_depression_global_pressure_countries^great_depression_global_pressure_clear_index = {
 				clr_country_flag = great_depression_worldwide_pressure_active
-				remove_dynamic_modifier = { modifier = great_depression_global_contraction_light }
-				remove_dynamic_modifier = { modifier = great_depression_global_contraction }
-				remove_dynamic_modifier = { modifier = great_depression_global_contraction_severe }
+				if = { limit = { has_dynamic_modifier = { modifier = great_depression_global_contraction_light } } remove_dynamic_modifier = { modifier = great_depression_global_contraction_light } }
+				if = { limit = { has_dynamic_modifier = { modifier = great_depression_global_contraction } } remove_dynamic_modifier = { modifier = great_depression_global_contraction } }
+				if = { limit = { has_dynamic_modifier = { modifier = great_depression_global_contraction_severe } } remove_dynamic_modifier = { modifier = great_depression_global_contraction_severe } }
 				remove_ideas = great_depression_global_contraction
 				clear_variable = great_depression_worldwide_pressure_episode_id
 				clear_variable = great_depression_worldwide_pressure_stage
@@ -6833,9 +6833,9 @@ great_depression_update_global_pressure = {
 			}
 		}
 		clr_country_flag = great_depression_worldwide_pressure_active
-		remove_dynamic_modifier = { modifier = great_depression_global_contraction_light }
-		remove_dynamic_modifier = { modifier = great_depression_global_contraction }
-		remove_dynamic_modifier = { modifier = great_depression_global_contraction_severe }
+		if = { limit = { has_dynamic_modifier = { modifier = great_depression_global_contraction_light } } remove_dynamic_modifier = { modifier = great_depression_global_contraction_light } }
+		if = { limit = { has_dynamic_modifier = { modifier = great_depression_global_contraction } } remove_dynamic_modifier = { modifier = great_depression_global_contraction } }
+		if = { limit = { has_dynamic_modifier = { modifier = great_depression_global_contraction_severe } } remove_dynamic_modifier = { modifier = great_depression_global_contraction_severe } }
 		remove_ideas = great_depression_global_contraction
 		clear_variable = great_depression_worldwide_pressure_episode_id
 		clear_variable = great_depression_worldwide_pressure_stage
@@ -7120,7 +7120,7 @@ great_depression_clear_outgoing_contagion_network = {
 					clr_country_flag = great_depression_contagion_exposure_open
 					clr_country_flag = great_depression_contagion_contained
 					clr_country_flag = great_depression_contagion_support_counted
-					remove_dynamic_modifier = { modifier = great_depression_financial_contagion }
+					if = { limit = { has_dynamic_modifier = { modifier = great_depression_financial_contagion } } remove_dynamic_modifier = { modifier = great_depression_financial_contagion } }
 					clear_array = great_depression_contagion_source_countries
 					clear_array = great_depression_contagion_source_episode_entries
 					clear_array = great_depression_contagion_source_receipt_entries
@@ -8460,9 +8460,9 @@ great_depression_run_worldwide_conversion = {
 					set_variable = { great_depression_worldwide_conversion_episode_id = global.great_depression_global_episode_id }
 					set_country_flag = great_depression_worldwide_pressure_target
 					clr_country_flag = great_depression_worldwide_pressure_active
-					remove_dynamic_modifier = { modifier = great_depression_global_contraction_light }
-					remove_dynamic_modifier = { modifier = great_depression_global_contraction }
-					remove_dynamic_modifier = { modifier = great_depression_global_contraction_severe }
+					if = { limit = { has_dynamic_modifier = { modifier = great_depression_global_contraction_light } } remove_dynamic_modifier = { modifier = great_depression_global_contraction_light } }
+					if = { limit = { has_dynamic_modifier = { modifier = great_depression_global_contraction } } remove_dynamic_modifier = { modifier = great_depression_global_contraction } }
+					if = { limit = { has_dynamic_modifier = { modifier = great_depression_global_contraction_severe } } remove_dynamic_modifier = { modifier = great_depression_global_contraction_severe } }
 					remove_ideas = great_depression_global_contraction
 					if = {
 						limit = { has_variable = global.great_depression_global_conversion_count }

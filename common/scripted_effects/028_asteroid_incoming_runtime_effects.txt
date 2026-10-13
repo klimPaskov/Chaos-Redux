@@ -1473,9 +1473,9 @@ asteroid_incoming_apply_state_profile = {
 			set_state_flag = asteroid_incoming_state_transaction_applied
 			set_state_category = wasteland
 			save_global_event_target_as = asteroid_incoming_main_crater_state
-			remove_dynamic_modifier = { modifier = asteroid_incoming_catastrophic_impact_zone }
-			remove_dynamic_modifier = { modifier = asteroid_incoming_major_impact_zone }
-			remove_dynamic_modifier = { modifier = asteroid_incoming_outer_shock_zone }
+			if = { limit = { has_dynamic_modifier = { modifier = asteroid_incoming_catastrophic_impact_zone } } remove_dynamic_modifier = { modifier = asteroid_incoming_catastrophic_impact_zone } }
+			if = { limit = { has_dynamic_modifier = { modifier = asteroid_incoming_major_impact_zone } } remove_dynamic_modifier = { modifier = asteroid_incoming_major_impact_zone } }
+			if = { limit = { has_dynamic_modifier = { modifier = asteroid_incoming_outer_shock_zone } } remove_dynamic_modifier = { modifier = asteroid_incoming_outer_shock_zone } }
 			add_dynamic_modifier = { modifier = asteroid_incoming_main_crater }
 			set_global_flag = asteroid_incoming_main_crater_registered
 			asteroid_incoming_assign_crater_site_profile = yes
@@ -1810,7 +1810,7 @@ asteroid_incoming_refresh_national_dust_protection = {
 		}
 		force_update_dynamic_modifier = yes
 	}
-	else = { remove_dynamic_modifier = { modifier = asteroid_incoming_national_dust_protection } }
+	else = { if = { limit = { has_dynamic_modifier = { modifier = asteroid_incoming_national_dust_protection } } remove_dynamic_modifier = { modifier = asteroid_incoming_national_dust_protection } } }
 }
 
 asteroid_incoming_refresh_country_effects = {

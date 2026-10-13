@@ -19,7 +19,7 @@ The GUIs set no `dirty` variable, so they refresh every tick and the live flag r
 | Scripted GUI | Parent | Decals (position in the parent) |
 | --- | --- | --- |
 | `chaos_ui_wear_topbar_gui` | `parent_window_token = top_bar` | flag frame corner (`corner_tl_red_tiers`, 0,0, scale 0.6); resource/menu divider (`strip_h_red_tiers`, 96,31); war-status divider (`strip_short_red_tiers`, 780,31); top edge above the date controls (`strip_short_red_tiers`, UPPER_RIGHT -330,0); an additional world-end-only divider network at 608,31 |
-| `chaos_ui_wear_minimap_gui` | `parent_window_window = "mini_map_interface"` | upper-left corner of the minimap frame (`corner_tl_red_tiers`, -6,-6, scale 0.7; painted border arms stay outside the minimap core) |
+| `chaos_ui_wear_minimap_gui` | `parent_window_name = "mini_map_interface"` | upper-left corner of the minimap frame (`corner_tl_red_tiers`, -6,-6, scale 0.7; painted border arms stay outside the minimap core) |
 | `chaos_ui_wear_<panel>_gui` | `politics_tab`, `decision_tab`, `production_tab`, `construction_tab`, `trade_tab`, `deployment_tab`, `logistics_tab` | header plate seam between the title and the close button (`strip_short_red_tiers`, width-184,34); right frame column (`strip_v_red_tiers`, width-7,60) |
 | `chaos_ui_wear_research_gui` | `technology_tab` | right frame column only; the Research and Facilities tabs sit on the header seam |
 
@@ -69,7 +69,8 @@ Tier variants preserve the original cumulative networks and increase their alpha
 Corner alpha is restricted to x below 6 or y below 6; horizontal long strips to y below 4; short strips to y below 7; vertical strips to x below 6.
 World end widens the same networks by one pixel inside those masks and uses stronger red, without a purple glow.
 All decals remain click-through; no control hitbox changes.
-The minimap attachment uses the documented `parent_window_window` field, correcting the earlier unsupported `parent_window_name` field.
+The minimap attachment uses `parent_window_name` for the root `mini_map_interface` container.
+The installed scripted-GUI documentation's `parent_window_window` example is rejected by the isolated 1.19.3 engine; the offline Scripted GUI modding attachment section uses `parent_window_name`.
 Reference selection: `.tmp/restore_c2_c3/gui_reference/intended_topbar_world_end_1920.png`, a composite of the installed vanilla topbar texture and the derived cracks; parent selection follows the explicit C3 border-only direction.
 Asset provenance, strict DDS roundtrip, source/output hashes, native contact sheets and zero-outside-mask measurements are in `.tmp/restore_c2_c3/crack_variants/evidence.json`.
 Current source/state review covers Calm, all five tiers, disabled wear and world end at every tier, plus anchors at 1920x1080, 1366x768 and 2560x1440 at scale 1.

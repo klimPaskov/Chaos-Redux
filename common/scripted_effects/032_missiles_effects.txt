@@ -916,11 +916,11 @@ missiles_recalculate_network = {
 
 missiles_refresh_site_flags = {
 	# STATE scope. The physical state, not an old owner array, is authoritative.
-	remove_dynamic_modifier = { modifier = missiles_launch_site_active }
-	remove_dynamic_modifier = { modifier = missiles_launch_site_hardened }
-	remove_dynamic_modifier = { modifier = missiles_launch_site_damaged }
-	remove_dynamic_modifier = { modifier = missiles_launch_site_compromised }
-	remove_dynamic_modifier = { modifier = missiles_launch_site_rogue }
+	if = { limit = { has_dynamic_modifier = { modifier = missiles_launch_site_active } } remove_dynamic_modifier = { modifier = missiles_launch_site_active } }
+	if = { limit = { has_dynamic_modifier = { modifier = missiles_launch_site_hardened } } remove_dynamic_modifier = { modifier = missiles_launch_site_hardened } }
+	if = { limit = { has_dynamic_modifier = { modifier = missiles_launch_site_damaged } } remove_dynamic_modifier = { modifier = missiles_launch_site_damaged } }
+	if = { limit = { has_dynamic_modifier = { modifier = missiles_launch_site_compromised } } remove_dynamic_modifier = { modifier = missiles_launch_site_compromised } }
+	if = { limit = { has_dynamic_modifier = { modifier = missiles_launch_site_rogue } } remove_dynamic_modifier = { modifier = missiles_launch_site_rogue } }
 	if = {
 		limit = {
 			has_variable = missiles_site_damage

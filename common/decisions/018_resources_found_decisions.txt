@@ -460,7 +460,7 @@ resources_found_trade_and_security_category = {
 		custom_cost_trigger = { resources_found_decision_has_base_containment_inputs = yes }
 		custom_cost_text = resources_found_project_estimate_c8_d3
 		complete_effect = { custom_effect_tooltip = resources_found_prepare_controlled_demolition_tt hidden_effect = { set_temp_variable = { resources_found_project_kind = constant:resources_found_decision_project.prepare_demolition } set_temp_variable = { resources_found_project_profile = constant:resources_found_decision_profile.containment } set_temp_variable = { resources_found_project_base_days = constant:resources_found_decision_duration.security } set_temp_variable = { resources_found_project_family = constant:resources_found_decision_family.trade } resources_found_start_decision_project = yes } }
-		ai_will_do = { base = constant:resources_found_decision_ai.low modifier = { add = constant:resources_found_decision_ai.critical var:resources_found_selected_field = { NOT = { is_controlled_by = ROOT } } } }
+		ai_will_do = { base = constant:resources_found_decision_ai.low modifier = { add = constant:resources_found_decision_ai.critical resources_found_decision_has_selected_field = yes var:resources_found_selected_field = { NOT = { is_controlled_by = ROOT } } } }
 	}
 
 	resources_found_review_transferred_field = {
@@ -470,7 +470,7 @@ resources_found_trade_and_security_category = {
 		custom_cost_trigger = { resources_found_decision_has_base_administration_inputs = yes }
 		custom_cost_text = resources_found_project_estimate_c1_d3
 		complete_effect = { custom_effect_tooltip = resources_found_review_transferred_field_tt hidden_effect = { resources_found_remove_active_field_resource_rights = yes set_temp_variable = { resources_found_project_kind = constant:resources_found_decision_project.transfer_review } set_temp_variable = { resources_found_project_profile = constant:resources_found_decision_profile.administration } set_temp_variable = { resources_found_project_base_days = constant:resources_found_decision_duration.administration } set_temp_variable = { resources_found_project_family = constant:resources_found_decision_family.trade } resources_found_start_decision_project = yes } }
-		ai_will_do = { base = constant:resources_found_decision_ai.high modifier = { add = constant:resources_found_decision_ai.high var:resources_found_selected_field = { has_state_flag = resources_found_field_contract_active } } }
+		ai_will_do = { base = constant:resources_found_decision_ai.high modifier = { add = constant:resources_found_decision_ai.high resources_found_decision_has_selected_field = yes var:resources_found_selected_field = { has_state_flag = resources_found_field_contract_active } } }
 	}
 
 	resources_found_complete_contract_review = {
@@ -678,7 +678,7 @@ resources_found_trade_and_security_category = {
 		visible = { has_country_flag = resources_found_foreign_field_actor }
 		available = { always = yes }
 		complete_effect = { custom_effect_tooltip = resources_found_foreign_withdraw_interest_tt hidden_effect = { resources_found_foreign_withdraw_field_interest = yes } }
-		ai_will_do = { base = constant:resources_found_decision_ai.low modifier = { add = constant:resources_found_decision_ai.urgent var:resources_found_foreign_interest_field = { has_state_flag = resources_found_field_suspended } } }
+		ai_will_do = { base = constant:resources_found_decision_ai.low modifier = { add = constant:resources_found_decision_ai.urgent has_variable = resources_found_foreign_interest_field var:resources_found_foreign_interest_field = { has_state_flag = resources_found_field_suspended } } }
 	}
 
 	resources_found_trade_project_mission = {
@@ -813,7 +813,7 @@ resources_found_containment_category = {
 		custom_cost_trigger = { resources_found_decision_has_base_containment_inputs = yes }
 		custom_cost_text = resources_found_project_estimate_c8_d3
 		complete_effect = { custom_effect_tooltip = resources_found_armed_underground_sweep_tt hidden_effect = { set_temp_variable = { resources_found_project_kind = constant:resources_found_decision_project.underground_sweep } set_temp_variable = { resources_found_project_profile = constant:resources_found_decision_profile.containment } set_temp_variable = { resources_found_project_base_days = constant:resources_found_decision_duration.security } set_temp_variable = { resources_found_project_family = constant:resources_found_decision_family.containment } resources_found_start_decision_project = yes } }
-		ai_will_do = { base = constant:resources_found_decision_ai.low modifier = { add = constant:resources_found_decision_ai.urgent var:resources_found_selected_field = { has_state_flag = resources_found_countermeasure_research } } modifier = { add = constant:resources_found_decision_ai.never var:resources_found_selected_field = { check_variable = { resources_found_workforce_safety < constant:resources_found_field_value.band_3 } } } }
+		ai_will_do = { base = constant:resources_found_decision_ai.low modifier = { add = constant:resources_found_decision_ai.urgent resources_found_decision_has_selected_field = yes var:resources_found_selected_field = { has_state_flag = resources_found_countermeasure_research } } modifier = { add = constant:resources_found_decision_ai.never resources_found_decision_has_selected_field = yes var:resources_found_selected_field = { check_variable = { resources_found_workforce_safety < constant:resources_found_field_value.band_3 } } } }
 	}
 
 	resources_found_scientific_military_survey = {
@@ -843,7 +843,7 @@ resources_found_containment_category = {
 		custom_cost_trigger = { resources_found_decision_has_base_transport_inputs = yes }
 		custom_cost_text = resources_found_project_estimate_c4_d4
 		complete_effect = { custom_effect_tooltip = resources_found_secure_transport_corridor_tt hidden_effect = { set_temp_variable = { resources_found_project_kind = constant:resources_found_decision_project.secure_transport_corridor } set_temp_variable = { resources_found_project_profile = constant:resources_found_decision_profile.transport } set_temp_variable = { resources_found_project_base_days = constant:resources_found_decision_duration.containment } set_temp_variable = { resources_found_project_family = constant:resources_found_decision_family.containment } resources_found_start_decision_project = yes } }
-		ai_will_do = { base = constant:resources_found_decision_ai.urgent modifier = { add = constant:resources_found_decision_ai.critical var:resources_found_selected_field = { has_state_flag = resources_found_evacuation_prepared } } }
+		ai_will_do = { base = constant:resources_found_decision_ai.urgent modifier = { add = constant:resources_found_decision_ai.critical resources_found_decision_has_selected_field = yes var:resources_found_selected_field = { has_state_flag = resources_found_evacuation_prepared } } }
 	}
 
 	resources_found_reinforce_perimeter = {
@@ -863,7 +863,7 @@ resources_found_containment_category = {
 		custom_cost_trigger = { resources_found_decision_has_base_containment_inputs = yes }
 		custom_cost_text = resources_found_project_estimate_c8_d3
 		complete_effect = { custom_effect_tooltip = resources_found_hunt_surface_packs_tt hidden_effect = { set_temp_variable = { resources_found_project_kind = constant:resources_found_decision_project.hunt_surface_packs } set_temp_variable = { resources_found_project_profile = constant:resources_found_decision_profile.containment } set_temp_variable = { resources_found_project_base_days = constant:resources_found_decision_duration.security } set_temp_variable = { resources_found_project_family = constant:resources_found_decision_family.containment } resources_found_start_decision_project = yes } }
-		ai_will_do = { base = constant:resources_found_decision_ai.medium modifier = { add = constant:resources_found_decision_ai.urgent var:resources_found_selected_field = { has_state_flag = resources_found_countermeasure_research } } modifier = { add = constant:resources_found_decision_ai.never var:resources_found_selected_field = { check_variable = { resources_found_breach_pressure > constant:resources_found_field_value.band_5 } NOT = { has_state_flag = resources_found_perimeter_reinforced } } } }
+		ai_will_do = { base = constant:resources_found_decision_ai.medium modifier = { add = constant:resources_found_decision_ai.urgent resources_found_decision_has_selected_field = yes var:resources_found_selected_field = { has_state_flag = resources_found_countermeasure_research } } modifier = { add = constant:resources_found_decision_ai.never resources_found_decision_has_selected_field = yes var:resources_found_selected_field = { check_variable = { resources_found_breach_pressure > constant:resources_found_field_value.band_5 } NOT = { has_state_flag = resources_found_perimeter_reinforced } } } }
 	}
 
 	resources_found_clear_urban_district = {
@@ -877,6 +877,7 @@ resources_found_containment_category = {
 			base = constant:resources_found_decision_ai.urgent
 			modifier = {
 				add = constant:resources_found_decision_ai.critical
+				resources_found_decision_has_selected_field = yes
 				var:resources_found_selected_field = { is_capital = yes }
 			}
 		}
