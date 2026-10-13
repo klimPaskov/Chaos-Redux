@@ -1,22 +1,22 @@
 # CBRN chemical doomsday effects reference
 
-This file documents the country-scoped chemical doomsday resolver, its restored decision compatibility wrapper, and its native raid callback in `common/scripted_effects/cbrn_chemical_doomsday_effects.txt`. The restored `chem_unleash_stockpiled_cylinders` decision and native raid are two separate routes through this shared resolver. The raid definition is `chemical_stockpile_doomsday_raid` in `common/raids/cbrn_doomsday_raids.txt`, under the existing `chemical_raids` category.
+This file documents the country-scoped chemical doomsday resolver, its restored decision compatibility wrapper, and its native raid callback in `common/scripted_effects/cbrn_chemical_doomsday_effects.txt`. The restored `chem_unleash_stockpiled_cylinders` decision and native raid are two separate routes through this shared resolver. The decision resolves all eligible controlled states from the actor's real cylinder stock; a raid resolves from its explicit raid actor and selected-state receipt and includes the cylinder lots reserved by the raid. The raid definition is `chemical_stockpile_doomsday_raid` in `common/raids/cbrn_doomsday_raids.txt`, under the existing `chemical_raids` category.
 
 ## `cbrn_chemical_doomsday_release`
 
-Scope: country scope, called only by `cbrn_chemical_doomsday_native_raid_outcome` after a successful or critical native raid result.
+Scope: country scope, called by `chem_unleash_stockpile_doomsday` for the direct decision and by `cbrn_chemical_doomsday_native_raid_outcome` after a successful or critical native raid result.
 
-Inputs: the country must satisfy extreme-use authority, the last-resort and selected-state gates, and the native raid must have reserved at least one each of the Chlorine, Phosgene, Mustard, and Lewisite cylinder archetypes. The selected state authenticates the raid; it does not restrict the catastrophe to that state.
+Inputs: both routes require extreme-use authority, a last-resort threshold, and at least one eligible controlled state. The direct decision uses its PP and any-stock preflight; the raid also requires a valid selected state and one reserved lot of each supported cylinder archetype.
 
 Outputs: every exact eligible controlled state receives an allocation from the real debited cylinder stock through `cbrn_prepare_chemical_action_record` and `cbrn_dispatch_chemical_action_record`.
 
-Native `essential_equipment` reserves one lot of each supported cylinder archetype during fourteen days of preparation. On a valid successful callback, the resolver debits only the remaining national stock and includes the four reserved lots in its accounting before distributing each agent's real total across the exact controlled-state array. It refuses to create an action when the stock debit, target array, protection receipt, victim country, release receipt, or shared action record is missing.
+The direct route debits the actual remaining national stock once and distributes those lots across every eligible controlled state. Native `essential_equipment` reserves one lot of each supported cylinder archetype during fourteen days of preparation; on a valid successful callback, the resolver debits only remaining national stock and includes those four reserved lots in its accounting. Both modes refuse to create an action when the stock debit, target array, protection receipt, victim country, release receipt, or shared action record is missing.
 
 The committed terminal release order supplies release efficiency only. The engine does not expose live weather, terrain, density, forecast, command, or friendly-risk inputs for this route, so those optional modifiers remain absent rather than receiving a fixed or neutral receipt.
 
 Accepted dispatches use the shared chemical exposure pipeline for disruption, protection-adjusted deaths, contamination, medical saturation, evidence, attribution, history, treaty response, and Condemnation. The adapter supplies one bounded batch Condemnation amount, prorated across agent lots and attached to the first accepted state for each agent.
 
-The decision wrapper `chem_unleash_stockpile_doomsday` delegates directly to `cbrn_chemical_doomsday_release`; the decision pays its PP cost and the shared resolver consumes the remaining national cylinder stock. The native raid independently accounts for its reserved cylinders before using the same resolver. The original identifier `chem_apply_state_contamination_doomsday` remains inert for compatibility. A valid callback sets `cbrn_chemical_doomsday_raid_committed` before any irreversible dispatch so a second prepared raid cannot repeat a partial release.
+The decision wrapper `chem_unleash_stockpile_doomsday` marks the direct-decision mode, saves its country as the actor, and delegates to `cbrn_chemical_doomsday_release`. This mode iterates eligible controlled states, consumes the available cylinder stock, and leaves the native raid completion flag untouched. The raid route keeps its explicit selected-state receipt, reserved-cylinder accounting, and one-raid guard. The original identifier `chem_apply_state_contamination_doomsday` remains inert for compatibility. A valid raid callback sets `cbrn_chemical_doomsday_raid_committed` before any irreversible dispatch so a second prepared raid cannot repeat a partial release.
 
 ## Private helpers
 
