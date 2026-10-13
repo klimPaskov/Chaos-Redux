@@ -455,27 +455,24 @@ Super-event art:
 
 Super-event audio:
 
+Runtime playback uses `play_current_super_event_audio` and the volume-selected `chaosx_super_event_<id>_<suffix>` music song, so each new cue replaces the previous one.
+The listed WAVs remain the preserved source recordings.
+Both independent manual Final Silence types use terminal slot/audio `9`, with their historical description selected separately from the natural Fallout aftermath.
+
 - The Buddha Mandate, audio ID `7`:
-  - music file: `sound/003_holy_realm/super_event_7_buddha_mandate.wav`
-  - sound definition: `chaosx_super_event_buddha_mandate_track`
+  - source recording: `sound/003_holy_realm/super_event_7_buddha_mandate.wav`
 - Final Silence, audio ID `8`:
-  - music file: `sound/003_holy_realm/super_event_8_final_silence.wav`
-  - sound definition: `chaosx_super_event_final_silence_track`
+  - source recording: `sound/003_holy_realm/super_event_8_final_silence.wav`
 - Thermonuclear Final Silence, audio ID `9`:
-  - music file: `sound/003_holy_realm/super_event_9_final_silence_thermonuclear.wav`
-  - sound definition: `chaosx_super_event_final_silence_thermonuclear_track`
+  - source recording: `sound/003_holy_realm/super_event_9_final_silence_thermonuclear.wav`
 - The Mandala Breaks, audio ID `10`:
-  - music file: `sound/003_holy_realm/super_event_10_mandala_breaks.wav`
-  - sound definition: `chaosx_super_event_mandala_breaks_track`
+  - source recording: `sound/003_holy_realm/super_event_10_mandala_breaks.wav`
 - Divine Sovereignty, audio ID `11`:
-  - music file: `sound/003_holy_realm/super_event_11_divine_sovereignty.wav`
-  - sound definition: `chaosx_super_event_divine_sovereignty_track`
+  - source recording: `sound/003_holy_realm/super_event_11_divine_sovereignty.wav`
 - Mandala of Nations, audio ID `28`:
-  - music file: `sound/003_holy_realm/super_event_28_mandala_of_nations.wav`
-  - sound definition: `chaosx_super_event_mandala_of_nations_track`
+  - source recording: `sound/003_holy_realm/super_event_28_mandala_of_nations.wav`
 - Powers of the Awakened, audio ID `31`:
-  - music file: `sound/003_holy_realm/super_event_31_powers_of_the_awakened.wav`
-  - sound definition: `chaosx_super_event_powers_of_the_awakened_track`
+  - source recording: `sound/003_holy_realm/super_event_31_powers_of_the_awakened.wav`
   - image: `gfx/super_events/003_holy_realm/super_event_powers_of_the_awakened.dds`
 - Audio sources, licenses, durations, and conversion notes are recorded in `docs/super_events/super_event_audio_packages.md`.
 
