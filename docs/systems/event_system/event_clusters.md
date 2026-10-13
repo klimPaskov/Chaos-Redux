@@ -102,16 +102,23 @@ Activation chance is evaluated only for an eligible automatic trigger and an eli
 | T4 Totalen Chaos | 35 |
 | T5 World Collapse | 50 |
 
-Activation chance equals the tier base above.
-Trigger severity, eligible-member count, fatigue, prior optional participation, and matching duplicate rows do not multiply that chance.
-The existing fatigue and participation history fields remain for compatible queue and history bookkeeping.
+The tier bases above are the historical activation anchors.
+The live activation helper adjusts them for trigger severity, eligible logical-row count, bounded success fatigue, and the previous completed automatic batch's optional participation.
+The existing tuning tables provide severity factors 1.35/1.15/0.85/0.65 and eligible-count factors 1.40/1.30/1.20/1.10/1.00 for one/two/three/four/five-plus rows.
+Fatigue scores zero through four use 1/0.90/0.81/0.729/0.6561.
+A completed batch with optional participation up to 25/50/75 percent or above 75 percent uses 1.40/1.30/1.15/1.00.
+No prior eligible optional rows means neutral memory.
+The result is rounded and bounded to 1 through 90 percent.
+Only a selected successful automatic batch increases fatigue, and only a valid failed automatic roll reduces it.
+Manual forcing neither borrows nor changes automatic memory.
 A valid failed roll returns to ordinary standalone handling and does not apply cluster pacing or a cluster cooldown update.
 
 ### Duplicate triggers and multiple memberships
 
 Membership discovery scans every registered fixed-member cluster instead of stopping at the first match. Automatic candidacy requires the selected event to own a configured primary-trigger row in that cluster.
 
-Duplicate logical rows remain distinct in the queue and history, but do not strengthen activation chance.
+Duplicate logical rows remain distinct in the queue and history.
+Each additional eligible row carrying the selected trigger multiplies its cluster chance by an additional 0.15 above the neutral factor, with at least one percentage point per extra row and the shared 90 percent ceiling.
 Duplicate rows never dispatch the selected trigger more than once.
 
 Each eligible cluster calculates and rolls its final chance independently. If several clusters succeed, one successful cluster is selected uniformly.
@@ -178,9 +185,13 @@ The remaining batches select one random boundary between adjacent severity bands
 
 A batch containing only one optional severity band cannot form a cross-severity inversion and remains randomized within that band.
 
-Participation chances remain fixed through the resulting order.
+The accepted optional order determines participation decay.
+Each earlier eligible optional row consumes one 0.95 decay step.
+Required rows and the selected trigger remain guaranteed and consume no decay step.
 
-The compact participation table is defined in `event_cluster_member_participation`.
+Original logical rows keep the compact base participation table in `event_cluster_member_participation`.
+Later generic rows use the tier/severity matrix in `event_cluster_member_participation_matrix`.
+The same eligible-count factor and optional-order decay apply to non-guaranteed rows after their base is resolved.
 
 | Entry | Chance |
 | --- | ---: |
@@ -194,7 +205,7 @@ Original rows keep their overrides: Fury 70, Independence Wave 35, Soviet Collap
 Required opening rows remain 100.
 Acid Rain retains its event-owned tier participation curve as a later member.
 Required and selected trigger rows are guaranteed after eligibility.
-Eligible-member count and accepted optional order do not alter member chances.
+A non-guaranteed row's final chance is `round(base × eligible_count_factor × 0.95^earlier_eligible_optional_rows)`, bounded to 1 through 100 percent.
 
 ## Stable rows, batches, and delayed state
 
@@ -343,7 +354,7 @@ It retains the supplied v2 matrix outside the explicitly revised Wars and Natura
 | 5 | Natural Disasters | 3 | 13 | Natural Disasters | Low | Logical Natural Disasters slot 3 of 5. |
 | 5 | Natural Disasters | 4 | 13 | Natural Disasters | Low | Logical Natural Disasters slot 4 of 5. |
 | 5 | Natural Disasters | 5 | 13 | Natural Disasters | Medium | Logical Natural Disasters slot 5 of 5. |
-| 5 | Natural Disasters | 6 | 33 | Acid Rain | Severe | Optional Severe member. A selected queue commits Major pacing once at launch. |
+| 5 | Natural Disasters | 6 | 33 | Acid Rain | Severe | Optional Severe member. The queue commits its declared cluster pacing once at launch. |
 | 5 | Natural Disasters | 7 | 51 | Heat Wave | High | Optional High member after Acid Rain. |
 | 6 | Formables | 1 | 3 | The Holy Realm | High |  |
 | 6 | Formables | 2 | 12 | Africa Is One | Severe |  |
@@ -400,8 +411,8 @@ If several cluster rolls succeed, winner selection is uniform across the success
 The repeated slots remain separate within their cluster and increase that event's trigger-specific chance through the cluster multiplicity rule.
 
 Acid Rain is an optional Severe member from Gathering Storm onward.
-Its tier-aware participation stays subject to the cluster cap.
-A prepared queue reserves Event 33 against competing dispatches and commits effective Major pacing once at successful launch.
+Its tier-aware participation stays subject to the member probability bound.
+A prepared queue reserves Event 33 against competing dispatches and commits the declared cluster pacing once at successful launch.
 The delayed member records its firing and history without a second reset.
 If it becomes invalid, the reservation and batch receipt are cleaned up without rewinding launch history.
 

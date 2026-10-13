@@ -1022,9 +1022,29 @@ count_dynamic_major_weight_pool_events = {
 }
 
 calculate_dynamic_major_weight_gain = {
-	# Retain the status consumers while gain follows the configured flat value.
+	# Keep a configured gain when the pool is closed so late eligibility retains
+	# progress. A live pool uses the existing population-ratio tuning anchors.
 	count_dynamic_major_weight_pool_events = yes
 	set_variable = { global.current_dynamic_major_weight_gain = global.major_event_weight_per_minor }
+
+	if = {
+		limit = {
+			check_variable = { global.current_dynamic_major_active_major_count > 0 }
+			check_variable = { global.current_dynamic_major_active_non_major_count > 0 }
+		}
+		set_temp_variable = { dynamic_major_gain = global.major_event_weight_per_minor }
+		multiply_temp_variable = { dynamic_major_gain = global.current_dynamic_major_active_non_major_count }
+		divide_temp_variable = { dynamic_major_gain = global.current_dynamic_major_active_major_count }
+		divide_temp_variable = { dynamic_major_gain = constant:event_system_dynamic_major_gain.baseline_non_major_events }
+		multiply_temp_variable = { dynamic_major_gain = constant:event_system_dynamic_major_gain.baseline_major_events }
+		round_temp_variable = dynamic_major_gain
+		clamp_temp_variable = {
+			var = dynamic_major_gain
+			min = constant:settings_advanced_bounds.major_weight_per_minor.min
+			max = constant:settings_advanced_bounds.major_weight_per_minor.max
+		}
+		set_variable = { global.current_dynamic_major_weight_gain = dynamic_major_gain }
+	}
 }
 
 apply_dynamic_major_weight_gain_after_minor = {
@@ -1033,10 +1053,9 @@ apply_dynamic_major_weight_gain_after_minor = {
 
 # Apply dynamic major gain after a minor pacing event
 update_major_event_weights = {
-	# Calculate new weight for major events
-	set_temp_variable = { major_weight = global.minor_events_since_major }
-	multiply_temp_variable = { major_weight = global.major_event_weight_per_minor }
-	set_variable = { global.current_major_event_weight = major_weight }
+	calculate_dynamic_major_weight_gain = yes
+	# Preserve earned progress when the live pool or configured gain changes.
+	add_to_variable = { global.current_major_event_weight = global.current_dynamic_major_weight_gain }
 
 	# Update all unfired major event weights
 	for_loop_effect = {
@@ -1054,7 +1073,14 @@ update_major_event_weights = {
 					}
 				}
 			}
-			set_temp_variable = { new_weight = major_weight }
+			get_event_weight = yes
+			if = {
+				limit = { check_variable = { event_weight < 2 } }
+				set_temp_variable = { event_weight = 0 }
+			}
+			add_to_temp_variable = { event_weight = global.current_dynamic_major_weight_gain }
+			round_temp_variable = event_weight
+			set_temp_variable = { new_weight = event_weight }
 			set_event_weight = yes
 		}
 		else_if = {

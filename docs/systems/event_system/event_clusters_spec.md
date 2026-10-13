@@ -1,7 +1,9 @@
 # Chaos Redux Event Cluster System Contract
 
-Current probability and pacing authority: the owner's 13 October restoration direction supersedes the replacement-model formula and pacing claims below.
-Use [event_clusters.md](event_clusters.md) and [dynamic_major_event_weights.md](dynamic_major_event_weights.md) for the implemented compact participation, tier activation, and declared-type fixed-cluster pacing.
+Current probability and pacing authority: the owner's latest 13 October preservation direction retains useful recent dynamic depth around the historical activation and original-row participation anchors.
+The parent accepted restoring contextual cluster factors, optional-row decay and pool-sensitive accumulated major progress while keeping declared-type single cluster pacing, C2/C3 behavior and C6 immunity.
+Use [event_clusters.md](event_clusters.md) and [dynamic_major_event_weights.md](dynamic_major_event_weights.md) for the current implementation.
+The original contract below remains historical design evidence wherever it conflicts with those current runtime pages.
 Later members, stable rows, context, queues, and the distinct Random Stuff whole-pool mechanic remain in place.
 
 ## Unresolved cross-document claims
@@ -11,7 +13,8 @@ Its completed checklist items are retained source-implementation claims, not ind
 
 - In the captured working-tree documents, this file's catalogue gives Negative Economy Chaos level 2, while the catalogue in [event_clusters.md](event_clusters.md) gives level 1.
 - The common Severe-member floor is T3. Acid Rain is an accepted exception that joins Natural Disasters from Gathering Storm, T1, onward (Event 033 README open question 4, parent acceptance 2026-10-10); `event_cluster_get_member_effective_min_tier` uses its declared row minimum instead of the floor.
-- The 2026-09-26 user decision requires major-event weights to reset when a Major member actually fires in any cluster. Runtime pacing follows that decision. The other unresolved inputs below remain separate.
+- The historical 2026-09-26 member-major pacing claim is superseded by the 13 October declared-type single-batch boundary documented in the runtime pages.
+It does not authorize a second reset from a delayed member.
 - The worked small-cluster example starts with two eligible logical rows but subsequently describes a trigger, a required row, and optional rows.
 The optional-decay example continues that setup with another optional row.
 - The High-severity support example says no other row is base-eligible while also describing an eligible trigger.
