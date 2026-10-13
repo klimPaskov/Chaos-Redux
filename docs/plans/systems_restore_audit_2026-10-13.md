@@ -1,6 +1,87 @@
 # Gameplay systems restoration audit — 13 October 2026
 
-## Handoff 3 restoration follow-up
+## Preservation review after Handoff 3
+
+The owner's latest instruction is to keep recent content, adapted where it adds depth, dynamic behavior and meaningful choices without bloat.
+This supersedes the earlier blanket choice to restore old behavior wherever the systems audit left a judgement call.
+The Handoff 3 implementation account below is retained as a historical snapshot, including its original calculations and limitations.
+The current behavior and acceptance decisions are recorded here.
+
+### Action taken per system
+
+| Surface | Current preservation outcome | Commit |
+| --- | --- | --- |
+| French and Belgian camp actions | Keep the restored actions and their pre-administration outcomes. Initialized countries hand review and settlement to existing Civil Administration, preserve current evidence and custody records, revalidate readiness at execution, and never run a second legacy settlement. Retire the active French closure decision as well as the six missions on nonhuman conversion. | `62b3c606dcb07282ebb21b21eb31ac46d6db0718` |
+| Immediate sanctions | Keep the immediate opinion, guarded idea and pressure action alongside source-aware condemnation pairs, tiers, compliance and defiance. Document their separate withdrawal ownership and C6 cleanup. No newer sanction-pair system was replaced. | `62b3c606dcb07282ebb21b21eb31ac46d6db0718` |
+| Cluster probabilities | Keep historical activation bases 5/10/15/25/35/50 and original member overrides. Recover live severity, eligible-row count, fatigue, completed-batch memory, trigger multiplicity and optional-order decay. Later generic members use their tier/severity matrix. New membership, stable rows, queues, history, user controls and Acid Rain reservations survive. | `16f6f22d9839761b45ef81e9eba6f0c8e03af025` |
+| Major progress and cluster pacing | Recover pool-sensitive gain while adding to saved progress for every unfired major, including ordinary late-eligible or disabled majors. Preserve the Event 91 unlock exception and one pacing update per declared cluster batch. Closed-pool inspection cannot erase earned progress. | `16f6f22d9839761b45ef81e9eba6f0c8e03af025` |
+| Other Chaos Meter judgement entries | Retain the earlier war-justification, election, ideology, territorial/faction, minor-war and strict military-loss contribution values as centralized tuning. C2's slight default-off pressure, C3 tier-driven fractures, attributable history, nuclear integrations and C6 human-interval accounting remain. No further source rollback was needed. | Reviewed current implementation |
+| Combat Deaths | Keep the human-filtered offensive-leader/frontline adapter with actual State pointers, originating unit counts, population, density/infrastructure factors and exact shared loss accounting. The pre-restore broad allocator was callable, but attributed any country's casualty rise across border states without offensive-leader gates or comprehensive nonhuman filtering. Parent acceptance retains the more precise current adapter. | Reviewed current implementation |
+| Final Silence and Fallout | Keep the independent four-wave manual scenario and the newer natural Fallout request/sweep/countdown route. Manual Nuclear remains nuclear even after natural thermonuclear prerequisites pass. Its historical terminal description is selected separately, leaving the natural Fallout description intact. Holy Realm playback documentation identifies the current music dispatcher and preserved WAV sources. | `20a87c5cb7bacc8d1f08fbb86d3babc4f11e64c7` |
+| C7 audio | Keep all current cues, settings volumes, silent replacement, Fallout blackout and Event 13's presentation queue. The source review found no cue or queue loss. The nine original recordings remain preserved. | Reviewed current implementation |
+| C6 nonhuman immunity | Keep the newer country-targeted native bindings, exact removal ownership, directed-relation cleanup, inherited human-effect gates and casualty transition receipts. Close the additional timed French closure path found during this review. | `62b3c606dcb07282ebb21b21eb31ac46d6db0718` |
+| C9 repeated ideas | Keep the negative-presence guards while leaving other reward effects and intentional timed refreshes outside them. All 26 previously guarded grant sites remain present. No grant capability was lost. | Reviewed current implementation |
+| C11 migration and famine | Keep exact civilian transfer, demographic priorities, conserved industrial workforce, transport/payment/refund receipts, pressure, relief, reception, preparation, trapped cohorts, sparse scheduling and AI gates. The restoration did not replace these recent systems, so no source rewrite was needed. | Reviewed current implementation |
+| C12 outbreak responses | Keep all 15 historical response IDs and direct map hospitals/quarantine. Restore six useful optional preparedness/treatment rows removed with the board, including medical capacity, biological security, surveillance activation/stand-down, international medical aid and finite antibiotic courses. Restore hidden provider/episode checks for timed direct responses. Clamp the historical remaining-burden multiplier to 0–1, preserving every positive reduction without turning penalties into bonuses. | `f9484e8d622a4b17fdd409614df59669ed1cd00a` |
+| Chemical deployment, contamination, cylinders, projectors and masks | Keep direct releases and army-leader abilities alongside native raids, modern exact-state readers, payload accounting, stock escrow/refunds, national mask programs, automatic maintenance and service/High Command roles. No additional removed useful consumer was found in the reviewed restoration changes. | Reviewed current implementation |
+
+### Compatibility and balance evidence
+
+The cluster comparison changes a declared Wars T1, Low-trigger, two-row, zero-fatigue, 20%-prior-participation case from 10% to 25% activation.
+Fatigue 0–4 yields 25/22/20/18/16%, and three matching trigger rows yield 33% without dispatching the trigger three times.
+Historical Fury's 70% base gives 91% with the two-row factor and 86% after one optional decay step.
+Three minor updates with default gain 150 and 90 eligible non-majors give 900/450/225 stored score per unfired major for pools of 5/10/20.
+A 10→5→20 pool sequence preserves 525 accumulated score rather than recalculating it from the last pool.
+These are conditional direct-roll chances and raw selection scores, not measured campaign probabilities.
+Long-disabled majors can retain large weights when re-enabled, which is the accepted preserved-progress behavior.
+In the selection patch, only six helper bodies changed, leaving the other 93 cluster and 40 logic helpers identical to the starting working content.
+The isolated commit separately preserves unrelated concurrent source changes.
+
+The Final Silence review covers 16 manual type/date/stock/technology cases and 16 natural eligibility cases.
+The manual description equals the `3b5312c87^` value under its own key, and the natural description is unchanged.
+Camp integration retains the existing three paid months of 15 support equipment and 8 PP, pauses unpaid months and performs one settlement.
+Source review caught and corrected a misnamed review trigger, a legacy fallthrough after rejected modern preflight and the timed closure C6 leak before publication.
+
+Outbreak receipt cases cover valid completion, duplicate recording, later episodes, changed controllers, nonhuman controllers, recovery and another provider's pending order.
+International aid and antibiotic cleanup undo only their recorded provider's order.
+Field Hospital IV plus quarantine still leaves 30% of the rebuilt modifier burden.
+The maximum historical treatment stack formerly produced −65% remaining burden and now leaves zero, without changing its separate modern hazard budget.
+National antibiotic production automatically reduces rebuilt state-modifier burden, while optional finite state courses drive the modern growth/death treatment multipliers.
+No course or investment is required before the historical responses or raids.
+The six recovered optional rows retain their pre-`3deac2d4` costs, durations and AI bodies.
+The independent AI audit distinguishes those scores from probabilities and records unresolved target/resource scopes and unobserved surveillance cadence.
+
+The migration review preserves the 5,000-person industrial transfer example as 100 route deaths plus 4,900 survivors, with no second population debit or credit path.
+The old famine/cost interpreters still omit native `meta_trigger` and variable-scope support, so their stopped cases are not claimed as passed or as source regressions.
+Earlier adapted-runner results remain historical evidence and were not relabeled as fresh tests.
+
+### Scope, checks and remaining limits
+
+No additional simplifications were made, and no requested preservation item was knowingly omitted.
+The rejected containment board and four intensity-banded sustainment missions remain excluded under A12/C12.
+Consolidated antibiotic rows remain replaced by the distinct historical production/research actions, while the optional finite-course capability is recovered separately.
+The current precise combat adapter remains the accepted replacement for the broad border allocator.
+These are recorded compatibility choices, rather than claims of a byte-exact return to every old helper.
+No new category, mandatory setup step, art package, worldwide periodic hook or gameplay framework was introduced.
+Existing icons, sprites, recordings and queue consumers are reused.
+Event/scenario premises and catalogue rows remain unchanged, so no workbook rewrite was needed.
+
+The independent probability adapter did not model the dynamically assembled cluster helpers, so calculations come from the actual source.
+Timed optional-response evaluation remained partial because target, resource and country-state inputs were unresolved.
+Camp decision validation succeeded, while larger effect-file argument/scope coverage remained incomplete.
+The parent localisation reference context/search requests did not complete and were stopped, so the relevant local sections and vanilla precedent were read directly.
+Those sections are offline Localisation lines 656–683, revision `1a8f72362a34b4bb653186746b9fae0b98e463205cb02f12ccf2c3d9ccd3a064`, installed triggers lines 3624–3640 and 3991–4007, revision `7d27ed77dadaf3a213a4b3e2c624bf9c02dae495317abe8eee833b27c2d1de29`, and vanilla `common/scripted_localisation/00_war_propaganda_scripted_loc.txt` lines 1–24.
+The native timed-decision retirement contract is installed effects lines 5959–5967 and offline Effects line 1868, which state that `remove_decision` does not run removal effects.
+Detailed byte snapshots, scenario results, independent reviews and exact additional reference citations are under `.tmp/handoff3_preserve/`.
+This pass did not launch a game or push anything.
+The original requested back-to-back Linux audio test remains incomplete, and audible replacement, native combat bindings and live AI cadence remain unobserved.
+
+Skills used across the bounded work are events, subagents, decisions/missions, AI strategies, ideas/modifiers, diplomacy/war, map/states, equipment, native raids, super-events and shared Git commit.
+The events skill's reusable restoration-compatibility checklist was updated in `68554e664055fce7863f8d99114b4a157ab50a61` and its generated mirror synchronized.
+No new skill was created.
+
+
+## Handoff 3 restoration follow-up (historical snapshot)
 
 The owner explicitly authorized restoring the earlier state for every judgement call below, except an explicit conflicting item in the 12 October restore plan.
 That instruction supersedes the original audit's requirement to leave those choices undecided.
