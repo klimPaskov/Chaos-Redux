@@ -1,6 +1,6 @@
 # CBRN chemical doomsday effects reference
 
-This file documents the country-scoped chemical doomsday resolver and its native raid callback in `common/scripted_effects/cbrn_chemical_doomsday_effects.txt`. The raid definition is `chemical_stockpile_doomsday_raid` in `common/raids/cbrn_doomsday_raids.txt`, under the existing `chemical_raids` category.
+This file documents the country-scoped chemical doomsday resolver, its restored decision compatibility wrapper, and its native raid callback in `common/scripted_effects/cbrn_chemical_doomsday_effects.txt`. The restored `chem_unleash_stockpiled_cylinders` decision and native raid are two separate routes through this shared resolver. The raid definition is `chemical_stockpile_doomsday_raid` in `common/raids/cbrn_doomsday_raids.txt`, under the existing `chemical_raids` category.
 
 ## `cbrn_chemical_doomsday_release`
 
@@ -16,7 +16,7 @@ The committed terminal release order supplies release efficiency only. The engin
 
 Accepted dispatches use the shared chemical exposure pipeline for disruption, protection-adjusted deaths, contamination, medical saturation, evidence, attribution, history, treaty response, and Condemnation. The adapter supplies one bounded batch Condemnation amount, prorated across agent lots and attached to the first accepted state for each agent.
 
-The original identifier `chem_apply_state_contamination_doomsday` remains inert for compatibility. The former doomsday decision and category are retired; no alternate contamination or consequence path remains in that surface. A valid callback sets `cbrn_chemical_doomsday_raid_committed` before any irreversible dispatch so a second prepared raid cannot repeat a partial release.
+The decision wrapper `chem_unleash_stockpile_doomsday` delegates directly to `cbrn_chemical_doomsday_release`; the decision pays its PP cost and the shared resolver consumes the remaining national cylinder stock. The native raid independently accounts for its reserved cylinders before using the same resolver. The original identifier `chem_apply_state_contamination_doomsday` remains inert for compatibility. A valid callback sets `cbrn_chemical_doomsday_raid_committed` before any irreversible dispatch so a second prepared raid cannot repeat a partial release.
 
 ## Private helpers
 

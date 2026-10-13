@@ -362,6 +362,49 @@ cbrn_program_management_category = {
 cbrn_civil_defence_category = {
 
 
+	cbrn_full_state_mask_distribution = {
+		icon = GFX_decision_cbrn_full_state_mask_distribution
+		cost = constant:cbrn_protection_decision_cost.full_distribution_pp
+		days_remove = constant:cbrn_protection_decision_timing.full_distribution_days
+		days_re_enable = constant:cbrn_protection_decision_timing.state_distribution_reenable_days
+		modifier = { civilian_factory_use = @CR_SC_CBRN_PROTECTION_DECISION_COST_FULL_DISTRIBUTION_FACTORIES }
+		visible = { cbrn_country_has_full_distribution_work = yes }
+		available = {
+			cbrn_country_has_any_mask_stock = yes
+			cbrn_country_has_full_distribution_work = yes
+			NOT = { has_country_flag = cbrn_civilian_distribution_program_active }
+			NOT = { num_of_civilian_factories_available_for_projects < @CR_SC_CBRN_PROTECTION_DECISION_COST_FULL_DISTRIBUTION_FACTORIES }
+		}
+		complete_effect = {
+			custom_effect_tooltip = cbrn_full_state_mask_distribution_begin_tt
+			hidden_effect = { set_country_flag = cbrn_civilian_distribution_program_active }
+		}
+		remove_effect = {
+			custom_effect_tooltip = cbrn_full_state_mask_distribution_complete_tt
+			hidden_effect = {
+				clr_country_flag = cbrn_civilian_distribution_program_active
+				cbrn_complete_full_distribution_program = yes
+			}
+		}
+		cancel_trigger = {
+			OR = {
+				NOT = { exists = yes }
+				has_capitulated = yes
+				NOT = { cbrn_country_has_any_mask_stock = yes }
+				NOT = { cbrn_country_has_full_distribution_work = yes }
+			}
+		}
+		cancel_effect = { hidden_effect = { clr_country_flag = cbrn_civilian_distribution_program_active } }
+		ai_will_do = {
+			base = constant:cbrn_protection_ai.base_civilian
+			modifier = { factor = constant:cbrn_protection_ai.capital_factor any_controlled_state = { is_capital = yes cbrn_state_can_receive_full_distribution = yes } }
+			modifier = { factor = constant:cbrn_protection_ai.high_population_factor any_controlled_state = { cbrn_state_can_receive_full_distribution = yes state_population_k > constant:cbrn_protection_ai.high_population_k } }
+			modifier = { factor = constant:cbrn_protection_ai.mass_civil_defence_factor cbrn_profile_is_mass_civil_defence = yes }
+			modifier = { factor = constant:cbrn_protection_ai.home_shortage_factor cbrn_profile_is_military_first = yes }
+			modifier = { factor = constant:cbrn_math.zero cbrn_country_has_military_mask_shortage = yes }
+		}
+	}
+
 	cbrn_emergency_state_mask_distribution = {
 		icon = GFX_decision_cbrn_emergency_state_mask_distribution
 		state_target = yes

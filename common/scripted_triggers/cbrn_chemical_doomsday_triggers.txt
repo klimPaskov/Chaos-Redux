@@ -2,7 +2,7 @@
 # CHAOS REDUX - CHEMICAL DOOMSDAY ADAPTER TRIGGERS
 # ============================================================================
 # Overview:
-# - State-scoped eligibility for the native chemical doomsday raid.
+# - State-scoped native doomsday eligibility and country-scope gates for the restored all-stockpile decision.
 # - The target is always an exact controlled state with a positive native
 #   population value. Missing or non-controlled state context returns false.
 # - No trigger in this file searches for a target, estimates a mission, or
@@ -49,4 +49,19 @@ cbrn_chemical_doomsday_native_can_prepare = {
 	has_equipment = { chemical_phosgene_payload_cylinder_1 > constant:cbrn_math.zero }
 	has_equipment = { chemical_mustard_payload_cylinder_1 > constant:cbrn_math.zero }
 	has_equipment = { chemical_lewisite_payload_cylinder_1 > constant:cbrn_math.zero }
+}
+
+
+cbrn_chemical_doomsday_actor_has_any_stockpile = {
+	OR = {
+		has_equipment = { chemical_chlorine_payload_cylinder_1 > 0 }
+		has_equipment = { chemical_phosgene_payload_cylinder_1 > 0 }
+		has_equipment = { chemical_mustard_payload_cylinder_1 > 0 }
+		has_equipment = { chemical_lewisite_payload_cylinder_1 > 0 }
+	}
+}
+
+cbrn_chemical_doomsday_actor_can_pay_and_has_stock = {
+	NOT = { has_political_power < constant:cbw_doom_decision.defaults.pp_cost }
+	cbrn_chemical_doomsday_actor_has_any_stockpile = yes
 }

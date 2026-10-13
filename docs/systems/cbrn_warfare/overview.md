@@ -12,10 +12,10 @@ This overview describes the current source loop and does not certify the complet
 2. Choose Retaliation Only, Battlefield Authorization or Unrestricted Authorization through the three direct policy decisions, each costing 5 Command Power with a 90-day reassessment interval.
 3. Let stock-backed maintenance derive readiness, service military filters and issue military masks before threatened civilian filter service/issue and remaining civilian work.
 4. Equip the available support and Army HQ roles, with Chaos Warfare adoption and mastery providing specialization without separate establishment, claim, training-purchase or commission cards.
-5. Use the native Chemical Raids or Biological Raids interface, meeting the selected route's exact target, origin, assigned forces, intelligence, preparation, policy, protection and real payload requirements.
+5. Use the direct Japan-China cylinder decision or a native Chemical Raids/Biological Raids route. Native raids retain their exact target, origin, assigned-force, intelligence, preparation, policy, protection and real-payload requirements.
 6. Resolve source-recorded consequences and respond through applicable treatment, protection, containment, decontamination, evidence and diplomatic actions.
 
-Native land routes use assigned divisions and supply-node origins, while air routes retain their own aircraft requirements.
+Native chemical land raids use assigned divisions and supply-node origins, while air routes retain their own aircraft requirements. The restored Japan-China direct state decision is an optional cylinder route without an assigned division or native preparation timer.
 Doctrine never raises use policy automatically, and ordinary protected battlefield routes retain vanilla-doctrine access after their normal research, project and equipment gates.
 Chemical Readiness is derived from issued equipment, cleanup kits, training and specialization rather than purchased as a separate currency.
 Civil Defence responds to live alerts, contamination, active chemical responses or credible current-enemy capability/use, with separate biological-outbreak and active occupied-program visibility.

@@ -716,3 +716,11 @@ The exact target helpers are `cbrn_battlefield_cylinder_target_state`, `cbrn_bat
 The target family checks a real controlled state, a valid wartime relationship, and route-specific population, supply, fort, industry, or enemy-division evidence. Outcome resolution independently rechecks the exact actor, victim, state controller, policy, agent, and route before dispatch; an invalid context never causes a second equipment debit or a release.
 
 No battlefield trigger reads aircraft presence, continuous-air missions, a combat estimator, a global dynamic effect, or an all-country periodic event.
+
+### cbrn_chemical_doomsday_actor_has_any_stockpile
+
+Country-scope predicate used by the stockpile-cylinder decision availability and custom cost row. It requires a positive amount of at least one of the four cylinder models the decision consumes: chlorine, phosgene, mustard, or lewisite. It does not claim that every gas type is available or set a target.
+
+### cbrn_chemical_doomsday_actor_can_pay_and_has_stock
+
+Country-scope affordability predicate shared by the historical all-stockpile decision's `available`, custom-cost row, and completion preflight. It requires the exact configured Political Power amount and a positive amount of at least one consumed cylinder model. The completion effect deducts Political Power once and the stockpile release effect consumes the available cylinder models.

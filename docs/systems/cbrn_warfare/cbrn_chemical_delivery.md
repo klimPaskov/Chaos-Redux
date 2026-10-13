@@ -2,7 +2,7 @@
 
 ## Purpose
 
-This system provides the shared logistics and consequence contract used by the newer exact-state chemical delivery methods. A route in this core cannot create disruption, deaths, contamination, medical saturation, evidence, attribution, or Condemnation unless it first identifies an exact target state, validates an unlocked agent, and removes the required real payload equipment. The restored army-leader cylinder abilities retain their separate historical stock and battlefield-state flow.
+This system provides the shared logistics and consequence contract used by exact-state chemical delivery methods. A route in this core cannot create disruption, deaths, contamination, medical saturation, evidence, attribution, or Condemnation unless it first identifies an exact target state, validates an unlocked agent, and removes the required real payload equipment. Japan’s restored direct state decision and the native raids both enter this shared pipeline; the direct decision needs no assigned division or raid preparation. The restored army-leader cylinder abilities retain their separate historical stock and battlefield-state flow.
 
 Doctrine may reduce the Condemnation impact of an accepted action. That reduction applies only to Condemnation. It does not reduce payload expenditure, protection failure, disruption, deaths, contamination, medical saturation, mask loss, evidence, attribution, confirmed-use history, treaty response, or first-exposure adaptation. Confirmed strategic and mass-casualty actions retain public-harm floors after doctrine is applied.
 

@@ -12,7 +12,7 @@ History was traced with `git log -S/-G`, `git show`, and the offending changes' 
 | Native deployment | Research and native aircraft/payload requirements; preparation before war, launch during war | Policy authorization and handling-context gates in the July 2026 raid expansion | `3a3d61422^` for ordinary raid target, preparation and launch blocks |
 | Policy | No policy ladder in the year-old implementation | `3a3d61422` introduced the ladder, terminal milestone and 90-day reassessment lock | Remove those added delay/milestone requirements; retain immediate newer choices |
 | Board | No containment board | Board first added in `4732ed690`, expanded for Black Plague, and consolidated by `23c6e94c1` | Detach the category header and disable both visible bindings; retain files |
-| Decision list | The original field-hospital and quarantine definitions already used `map_only` | The same setting still hides responses from the category list | B11 is an explicit UI correction to `map_and_decisions_view`, not reversal of a later edit |
+| Decision list | The original field-hospital and quarantine definitions already used `map_only` | A12 temporarily exposed them in the decision list as well | B11/C12 restore `map_only`: both direct state responses remain on the map and out of the category list |
 
 The earlier flow has no policy step to restore.
 The closest reading of the owner's instruction keeps ordinary biological raids independent of the newer policy ladder and retains its three choices for other delivery systems as immediate actions with the existing dynamic five-Command-Power price.
@@ -20,6 +20,8 @@ New exact-state outbreak accounting, automatic handling, native payload collecti
 Live dynamic values remain in historical wording and effects where the owner expressly permits them.
 
 The Black Plague response selector is retained independently of the rejected board because newer Event 020 response decisions need its selected state.
+
+13 October follow-up: the year-old source `8307afb3c^:common/decisions/biowarfare_disease_containment_decisions.txt` and current source both contain the same 15 response IDs: field hospitals, quarantine, close/reopen borders, and pathogen-specific antibiotic production, research, vaccination, and withdrawal. The two map-targeted state actions use `map_only`; the retained Black Plague state selector is a separate Event 020 dependency. No category step, division assignment, or timed deployment preparation is required before either state response can be started.
 Response icon references follow the recovered decision definitions; no containment texture or GFX path is replaced.
 
 Field hospitals cost 10 Command Power and 150 support equipment and complete after 8 days; quarantine costs 10 Political Power and completes after 15 days.

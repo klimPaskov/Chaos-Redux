@@ -1,0 +1,81 @@
+# Tuning constants:
+# - `common/script_constants/chemical_warfare_constants.txt` (cbw_doom_decision / chem_doom_ai)
+# The AI hint is a fixed engine field; keep it synchronized with the scripted PP price.
+@CHEM_UNLEASH_STOCKPILE_PP_AI_HINT = 100
+
+chaosx_cbw_doom_category = {
+	chem_unleash_stockpiled_cylinders = {
+		icon = GFX_decision_chaos_doom
+		cost = 0
+		ai_hint_pp_cost = @CHEM_UNLEASH_STOCKPILE_PP_AI_HINT
+		custom_cost_trigger = { cbrn_chemical_doomsday_actor_can_pay_and_has_stock = yes }
+		custom_cost_text = chem_unleash_stockpiled_cylinders_cost
+		days_re_enable = constant:cbw_doom_decision.defaults.cooldown_days
+
+		available = {
+			has_government = fascism
+			has_war = yes
+			NOT = { has_capitulated = yes }
+			surrender_progress > constant:cbw_doom_decision.defaults.surrender_threshold
+			custom_trigger_tooltip = {
+				tooltip = cbrn_chemical_doomsday_policy_tt
+				cbrn_policy_allows_extreme_use = yes
+			}
+			custom_trigger_tooltip = {
+				tooltip = cbrn_chemical_doomsday_target_tt
+				cbrn_chemical_doomsday_actor_has_target = yes
+			}
+			cbrn_chemical_doomsday_actor_can_pay_and_has_stock = yes
+		}
+
+	        ai_will_do = {
+	            base = constant:chem_doom_ai.defaults.base
+	            modifier = {
+	                add = constant:chem_doom_ai.defaults.add_base
+	                is_ai = yes
+	            }
+			modifier = {
+				add = constant:chem_doom_ai.defaults.add_high_morale
+				check_variable = { stability > constant:chem_doom_ai.defaults.stability_threshold }
+				check_variable = { war_support > constant:chem_doom_ai.defaults.war_support_threshold }
+			}
+	            modifier = {
+	                add = constant:chem_doom_ai.defaults.add_big_stockpile
+	                OR = {
+	                    has_equipment = { chemical_chlorine_payload_cylinder_1 > constant:chem_doom_ai.defaults.stockpile_threshold }
+	                    has_equipment = { chemical_phosgene_payload_cylinder_1 > constant:chem_doom_ai.defaults.stockpile_threshold }
+	                    has_equipment = { chemical_mustard_payload_cylinder_1 > constant:chem_doom_ai.defaults.stockpile_threshold }
+	                    has_equipment = { chemical_lewisite_payload_cylinder_1 > constant:chem_doom_ai.defaults.stockpile_threshold }
+	                }
+	            }
+	            modifier = {
+	                has_country_flag = air_cleanliness_treaty_member
+	                factor = constant:air_cleanliness_treaty_ai.unconventional_use_factor_member
+	            }
+	        }
+
+		complete_effect = {
+			custom_effect_tooltip = chem_unleash_stockpiled_cylinders_tt
+			hidden_effect = {
+				if = {
+					limit = { cbrn_chemical_doomsday_actor_can_pay_and_has_stock = yes }
+					set_temp_variable = { chem_unleash_stockpile_pp_debit = constant:cbw_doom_decision.defaults.pp_cost }
+					multiply_temp_variable = { chem_unleash_stockpile_pp_debit = constant:cbrn_payload_math.negation_multiplier }
+					add_political_power = chem_unleash_stockpile_pp_debit
+					chem_unleash_stockpile_doomsday = yes
+				}
+			}
+			if = {
+				limit = {
+					check_variable = {
+						var = cbrn_doomsday_release_status
+						value = constant:cbrn_proof.supplied
+						compare = equals
+					}
+				}
+				news_event = { id = chaosx_cbw_doom.1 }
+			}
+		}
+	}
+
+}
