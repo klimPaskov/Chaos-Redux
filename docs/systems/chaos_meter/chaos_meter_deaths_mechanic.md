@@ -14,7 +14,7 @@ It tracks:
 The deaths total contributes directly to chaos:
 
 - every `1,000,000` weighted additional civilian deaths adds `+1` chaos.
-- military casualties remain in the ledger and use the direct cumulative 250k casualty scale, without a second one-per-million contribution.
+- military casualties remain in the ledger and use eligible-human positive loss intervals at the strict cumulative threshold above 250k, without a second one-per-million contribution.
 
 ## Sources of Deaths
 
@@ -130,3 +130,33 @@ and register names in:
 2. Add per-country attribution in the deaths log where source context is available.
 3. Add adjustable balancing constants for source-specific death curves by war phase.
 4. Add decision/event systems that can reduce civilian deaths at economic/political cost.
+
+
+## Military casualty eligibility lifecycle
+
+The existing meter pulse reads each country's `casualties_k` and tracks a per-country snapshot in thousands.
+Positive deltas contribute only when both the prior observation and current country classification are human.
+The global `chaos_meter_human_casualties_k` accumulates those eligible deltas monotonically, while `chaos_meter_human_casualty_pending_k` retains progress until it strictly exceeds `chaos_meter_scale.per.casualties`.
+Each threshold crossing dispatches the existing ratio and consumes that complete interval once.
+The central final-tier refusal policy remains in force, with the same consume-on-threshold-attempt behavior.
+Conversions, annexations, and native counter resets do not subtract already accumulated human losses or stall other countries' contributions.
+No all-time world total filtered by current classification is used.
+
+`chaos_meter_sync_casualty_eligibility_boundary` is a country-scope helper called by the existing synchronous C6 entry and human-return gateways.
+It reads the native counter and `chaos_meter_casualty_snapshot_human`, with no caller parameters.
+A human-to-nonhuman entry retains the final positive interval proven human by the prior observation flag in a military-only receipt.
+It rebases the native snapshot and retires human eligibility before any ledger side effect.
+`chaos_meter_commit_prior_human_military_receipt` requires that stored proof and positive value, consumes both before recording, and cannot replay the record.
+Its military cause, civilian false, and no-population-mutation inputs are fixed by `chaos_meter_prepare_human_military_casualty_record`.
+Return to human classification rebases the counter and ignores the nonhuman-period interval, so subsequent human losses contribute immediately without a catch-up award.
+Repeated same-classification refreshes preserve the existing snapshot and pending progress.
+
+The ordinary `chaos_meter_register_deaths` retains its current nonhuman-country rejection unchanged.
+Its already validated commit/cleanup tail is shared as private `chaos_meter_commit_recorded_deaths_transaction`, with exactly two caller routes: the ordinary validated gateway and the consumed historical military receipt.
+This receipt records human activity before conversion and never authorizes current nonhuman casualties or civilian deaths.
+Existing global/country cause totals, history, display-disable behavior, and UI refresh are preserved by that shared tail.
+No country identity is toggled, no new periodic hook is added, and no global target is created.
+Setup clears receipts, initializes native snapshots from `casualties_k`, and records the initial eligibility flags.
+
+Future work can inspect observed native counter resets and callback ordering while retaining these source contracts.
+The existing Deaths assets are reused and require no new icon.

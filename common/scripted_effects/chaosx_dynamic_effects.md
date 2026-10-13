@@ -647,7 +647,9 @@ It reads the actual nonhuman classifier, requires an existing country and uses `
 The receipt is country-targeted so another tag cannot inherit its completed transition state.
 It returns no value and preserves immutable event and casualty history.
 Its side effects retire human health, custody, social-pressure and office-investigation spirits and current clinical traits, clear live medical progress flags and genocide foreign pressure, retire owned bilateral human sanction/camp relations, revoke inherited human CBRN occupation policy, detach every recorded human state-modifier view for this country, and force affected state/country modifier refresh.
-No gameplay cost, death, recovery achievement or refund is created by this boundary.
+The boundary settles only the final prior-human military loss interval through the meter-owned consumed receipt, then rebases casualty eligibility.
+It does not create population loss, current nonhuman death accounting, gameplay costs, recovery achievements or refunds.
+The receipt and return-snapshot contract is documented in [Military casualty eligibility lifecycle](../../docs/systems/chaos_meter/chaos_meter_deaths_mechanic.md#military-casualty-eligibility-lifecycle).
 The declaration lists the exact affected ideas and country modifiers rather than suppressing every political or military spirit.
 
 Direct call sites follow classifier marker writes in the Zombie, weaponized-zombie, Death, cave, nonhuman derivative, Kruger population and Rat Nation/King owner packages and triggerable scenarios.

@@ -23,8 +23,10 @@ initialize_chaos_meter_system = {
 	clr_global_flag = settings_chaos_deaths_disabled
 
 	# Initialize tracking variables
-	set_variable = { global.last_casualty_count = 0 }
-	set_variable = { global.chaos_meter_direct_casualty_baseline = 0 }
+	clear_variable = global.last_casualty_count
+	clear_variable = global.chaos_meter_direct_casualty_baseline
+	set_variable = { global.chaos_meter_human_casualties_k = 0 }
+	set_variable = { global.chaos_meter_human_casualty_pending_k = 0 }
 	set_variable = { global.highest_world_tension_recorded = 0 }
 	set_variable = { global.current_world_tension = 0 }
 	set_variable = { global.last_total_mils = 0 }
@@ -189,7 +191,15 @@ initialize_chaos_meter_system = {
 		clr_country_flag = air_cleanliness_treaty_banned
 		clr_country_flag = chaos_meter_air_source_details_open
 		set_variable = { chaos_meter_air_selected_source = constant:air_contamination_source.negative_one }
-		set_variable = { chaos_meter_last_casualty_count = casualties }
+		clear_variable = chaos_meter_last_casualty_count
+		set_variable = { chaos_meter_last_casualty_count_k = casualties_k }
+		clr_country_flag = chaos_meter_casualty_snapshot_human
+		if = {
+			limit = { uses_normal_civilian_systems = yes }
+			set_country_flag = chaos_meter_casualty_snapshot_human
+		}
+		clear_variable = chaos_meter_prior_human_military_receipt_k
+		clr_country_flag = chaos_meter_prior_human_military_receipt_proven
 		set_variable = { chaos_meter_deaths_country_total = 0 }
 		set_variable = { chaos_meter_deaths_country_civilian_total = 0 }
 		set_variable = { chaos_meter_deaths_country_military_total = 0 }
@@ -2825,68 +2835,7 @@ chaos_meter_register_deaths = {
 		set_temp_variable = { chaos_deaths_change = constant:chaos_meter_deaths.zero }
 	}
 
-	if = {
-		limit = {
-			OR = {
-				NOT = { hidden_trigger = { has_global_flag = settings_chaos_deaths_disabled } }
-				has_global_flag = fallout_air_cleanliness_disabled
-				has_global_flag = fallout_transition_active
-				has_global_flag = fallout_active
-				hidden_trigger = { has_global_flag = fallout_manual_scenario_active }
-				hidden_trigger = { has_global_flag = fallout_manual_sweep_active }
-				hidden_trigger = { has_global_flag = fallout_manual_countdown_active }
-			}
-			check_variable = { chaos_deaths_change > 0 }
-		}
-		if = {
-			limit = { NOT = { has_variable = global.chaos_meter_deaths_previous_day_total } }
-			set_variable = { global.chaos_meter_deaths_previous_day_total = global.chaos_meter_deaths_total }
-		}
-		add_to_variable = { global.chaos_meter_deaths_total = chaos_deaths_change }
-		set_variable = { global.chaos_meter_deaths_last_change = global.chaos_meter_deaths_total }
-		subtract_from_variable = { global.chaos_meter_deaths_last_change = global.chaos_meter_deaths_previous_day_total }
-		clamp_variable = {
-			var = global.chaos_meter_deaths_last_change
-			min = 0
-			max = global.chaos_meter_deaths_total
-		}
-		set_variable = { global.chaos_meter_deaths_last_change_date = global.date }
-
-		if = {
-			limit = {
-				has_variable = chaos_deaths_is_civilian
-				check_variable = { chaos_deaths_is_civilian > 0 }
-			}
-			add_to_variable = { global.chaos_meter_deaths_civilian_total = chaos_deaths_change }
-
-			if = {
-				limit = {
-					has_variable = chaos_deaths_apply_state_pop
-					check_variable = { chaos_deaths_apply_state_pop > 0 }
-				}
-				chaos_meter_apply_state_civilian_pop_loss_from_deaths_change = yes
-			}
-			else_if = {
-				limit = { check_variable = { chaos_deaths_record_state_ledger > 0 } }
-				chaos_meter_record_state_civilian_deaths_from_deaths_change = yes
-			}
-		}
-		else = {
-			add_to_variable = { global.chaos_meter_deaths_military_total = chaos_deaths_change }
-		}
-
-		record_chaos_meter_deaths_log_entry = yes
-		chaos_meter_sync_chaos_from_deaths_delta = yes
-		refresh_chaos_meter_deaths_view_if_open = yes
-	}
-	else_if = {
-		limit = { hidden_trigger = { has_global_flag = settings_chaos_deaths_disabled } }
-		set_variable = { global.chaos_meter_deaths_last_change = 0 }
-	}
-
-	set_temp_variable = { chaos_deaths_target_country = 0 }
-	set_temp_variable = { chaos_deaths_has_target_country = 0 }
-	set_temp_variable = { chaos_deaths_record_state_ledger = constant:chaos_meter_deaths.zero }
+	chaos_meter_commit_recorded_deaths_transaction = yes
 }
 
 chaos_meter_apply_state_civilian_pop_loss_from_deaths_change = {
@@ -6380,47 +6329,48 @@ chaos_meter_update_world_tension = {
 }
 
 chaos_meter_update_casualties = {
-	set_temp_variable = { current_casualties = 0 }
 	every_country = {
+		set_temp_variable = { chaos_meter_current_casualties_k = casualties_k }
+		if = {
+			limit = { NOT = { has_variable = chaos_meter_last_casualty_count_k } }
+			set_variable = { chaos_meter_last_casualty_count_k = chaos_meter_current_casualties_k }
+		}
+		set_temp_variable = { chaos_meter_casualty_delta_k = 0 }
+		if = {
+			limit = {
+				uses_normal_civilian_systems = yes
+				has_country_flag = chaos_meter_casualty_snapshot_human
+			}
+			set_temp_variable = { chaos_meter_casualty_delta_k = chaos_meter_current_casualties_k }
+			subtract_from_temp_variable = { chaos_meter_casualty_delta_k = chaos_meter_last_casualty_count_k }
+			clamp_temp_variable = { var = chaos_meter_casualty_delta_k min = 0 }
+		}
+		# Advance the observation before ledger/UI effects, including nonhuman and
+		# reset counters. No country's disappearance retracts prior human losses.
+		set_variable = { chaos_meter_last_casualty_count_k = chaos_meter_current_casualties_k }
 		if = {
 			limit = { uses_normal_civilian_systems = yes }
-			add_to_temp_variable = { current_casualties = casualties }
+			set_country_flag = chaos_meter_casualty_snapshot_human
 		}
+		else = { clr_country_flag = chaos_meter_casualty_snapshot_human }
 		if = {
-			limit = { NOT = { has_variable = chaos_meter_last_casualty_count } }
-			set_variable = { chaos_meter_last_casualty_count = casualties }
-		}
-
-		set_temp_variable = { casualty_increase = casualties }
-		subtract_from_temp_variable = { casualty_increase = chaos_meter_last_casualty_count }
-
-		if = {
-			limit = { check_variable = { casualty_increase > 0 } }
-			set_temp_variable = { chaos_deaths_change = casualty_increase }
-			set_temp_variable = { chaos_deaths_reason = constant:chaos_meter_deaths_reason.military_casualties }
-			set_temp_variable = { chaos_deaths_is_civilian = 0 }
-			set_temp_variable = { chaos_deaths_target_country = THIS }
-			set_temp_variable = { chaos_deaths_has_target_country = 1 }
+			limit = { check_variable = { chaos_meter_casualty_delta_k > 0 } }
+			chaos_meter_prepare_human_military_casualty_record = yes
 			chaos_meter_register_deaths = yes
-			# log = "CHAOS METER: Military casualties increased for [This.GetNameDef] by [?casualty_increase|.0], total deaths now [?global.chaos_meter_deaths_total|.0]"
 		}
-
-		set_variable = { chaos_meter_last_casualty_count = casualties }
 	}
 
-	set_temp_variable = { chaos_military_casualty_increase = current_casualties }
-	subtract_from_temp_variable = { chaos_military_casualty_increase = global.chaos_meter_direct_casualty_baseline }
-	divide_temp_variable = { chaos_military_casualty_increase = constant:chaos_meter_deaths.people_per_k }
 	if = {
-		limit = { check_variable = { chaos_military_casualty_increase > constant:chaos_meter_scale.per.casualties } }
-		set_temp_variable = { chaos_change = chaos_military_casualty_increase }
+		limit = { check_variable = { global.chaos_meter_human_casualty_pending_k > constant:chaos_meter_scale.per.casualties } }
+		set_temp_variable = { chaos_change = global.chaos_meter_human_casualty_pending_k }
 		divide_temp_variable = { chaos_change = constant:chaos_meter_scale.per.casualties }
+		# Consume the full historically eligible interval once, retaining the
+		# original strict threshold and award arithmetic.
+		set_variable = { global.chaos_meter_human_casualty_pending_k = 0 }
 		set_temp_variable = { chaos_history_reason = constant:chaos_meter_history_reason.world_state.casualties_rise }
 		set_temp_variable = { chaos_history_reason_custom = 1 }
 		add_chaos_meter_value = yes
-		set_variable = { global.chaos_meter_direct_casualty_baseline = current_casualties }
 	}
-	set_variable = { global.last_casualty_count = current_casualties }
 }
 
 chaos_meter_update_factories = {
@@ -6778,4 +6728,143 @@ chaos_meter_apply_combat_civilian_deaths_to_state = {
 			chaos_meter_register_state_civilian_deaths_percent = yes
 		}
 	}
+}
+
+
+# Private commit tail. Called only after normal gateway validation or after
+# a consumed, prior-human, military-only boundary receipt.
+chaos_meter_commit_recorded_deaths_transaction = {
+	if = {
+		limit = {
+			OR = {
+				NOT = { hidden_trigger = { has_global_flag = settings_chaos_deaths_disabled } }
+				has_global_flag = fallout_air_cleanliness_disabled
+				has_global_flag = fallout_transition_active
+				has_global_flag = fallout_active
+				hidden_trigger = { has_global_flag = fallout_manual_scenario_active }
+				hidden_trigger = { has_global_flag = fallout_manual_sweep_active }
+				hidden_trigger = { has_global_flag = fallout_manual_countdown_active }
+			}
+			check_variable = { chaos_deaths_change > 0 }
+		}
+		if = {
+			limit = { NOT = { has_variable = global.chaos_meter_deaths_previous_day_total } }
+			set_variable = { global.chaos_meter_deaths_previous_day_total = global.chaos_meter_deaths_total }
+		}
+		add_to_variable = { global.chaos_meter_deaths_total = chaos_deaths_change }
+		set_variable = { global.chaos_meter_deaths_last_change = global.chaos_meter_deaths_total }
+		subtract_from_variable = { global.chaos_meter_deaths_last_change = global.chaos_meter_deaths_previous_day_total }
+		clamp_variable = {
+			var = global.chaos_meter_deaths_last_change
+			min = 0
+			max = global.chaos_meter_deaths_total
+		}
+		set_variable = { global.chaos_meter_deaths_last_change_date = global.date }
+
+		if = {
+			limit = {
+				has_variable = chaos_deaths_is_civilian
+				check_variable = { chaos_deaths_is_civilian > 0 }
+			}
+			add_to_variable = { global.chaos_meter_deaths_civilian_total = chaos_deaths_change }
+
+			if = {
+				limit = {
+					has_variable = chaos_deaths_apply_state_pop
+					check_variable = { chaos_deaths_apply_state_pop > 0 }
+				}
+				chaos_meter_apply_state_civilian_pop_loss_from_deaths_change = yes
+			}
+			else_if = {
+				limit = { check_variable = { chaos_deaths_record_state_ledger > 0 } }
+				chaos_meter_record_state_civilian_deaths_from_deaths_change = yes
+			}
+		}
+		else = {
+			add_to_variable = { global.chaos_meter_deaths_military_total = chaos_deaths_change }
+		}
+
+		record_chaos_meter_deaths_log_entry = yes
+		chaos_meter_sync_chaos_from_deaths_delta = yes
+		refresh_chaos_meter_deaths_view_if_open = yes
+	}
+	else_if = {
+		limit = { hidden_trigger = { has_global_flag = settings_chaos_deaths_disabled } }
+		set_variable = { global.chaos_meter_deaths_last_change = 0 }
+	}
+
+	set_temp_variable = { chaos_deaths_target_country = 0 }
+	set_temp_variable = { chaos_deaths_has_target_country = 0 }
+	set_temp_variable = { chaos_deaths_record_state_ledger = constant:chaos_meter_deaths.zero }
+}
+
+
+# Country scope. Positive, proven human loss interval in thousands. Both the
+# normal pulse and the historical boundary receipt prepare the same accounting.
+chaos_meter_prepare_human_military_casualty_record = {
+	add_to_variable = { global.chaos_meter_human_casualties_k = chaos_meter_casualty_delta_k }
+	add_to_variable = { global.chaos_meter_human_casualty_pending_k = chaos_meter_casualty_delta_k }
+	set_temp_variable = { chaos_deaths_change = chaos_meter_casualty_delta_k }
+	multiply_temp_variable = { chaos_deaths_change = constant:chaos_meter_deaths.people_per_k }
+	round_temp_variable = chaos_deaths_change
+	set_temp_variable = { chaos_deaths_reason = constant:chaos_meter_deaths_reason.military_casualties }
+	set_temp_variable = { chaos_deaths_is_civilian = 0 }
+	set_temp_variable = { chaos_deaths_apply_state_pop = 0 }
+	set_temp_variable = { chaos_deaths_record_state_ledger = constant:chaos_meter_deaths.zero }
+	set_temp_variable = { chaos_deaths_target_country = THIS }
+	set_temp_variable = { chaos_deaths_has_target_country = 1 }
+}
+
+# Country scope. C6 calls this immediately after classification writes. Entry
+# retains the final interval proven human by the previous observation flag.
+# Return discards the nonhuman interval by rebasing before future observations.
+chaos_meter_sync_casualty_eligibility_boundary = {
+	if = {
+		limit = { exists = yes }
+		if = {
+			limit = { uses_normal_civilian_systems = yes }
+			if = {
+				limit = { NOT = { has_country_flag = chaos_meter_casualty_snapshot_human } }
+				set_variable = { chaos_meter_last_casualty_count_k = casualties_k }
+				set_country_flag = chaos_meter_casualty_snapshot_human
+				clear_variable = chaos_meter_prior_human_military_receipt_k
+				clr_country_flag = chaos_meter_prior_human_military_receipt_proven
+			}
+		}
+		else_if = {
+			limit = { has_country_flag = chaos_meter_casualty_snapshot_human }
+			set_variable = { chaos_meter_prior_human_military_receipt_k = 0 }
+			if = {
+				limit = { has_variable = chaos_meter_last_casualty_count_k }
+				set_variable = { chaos_meter_prior_human_military_receipt_k = casualties_k }
+				subtract_from_variable = { chaos_meter_prior_human_military_receipt_k = chaos_meter_last_casualty_count_k }
+				clamp_variable = { var = chaos_meter_prior_human_military_receipt_k min = 0 }
+			}
+			# Rebaseline and retire prior eligibility before any ledger side effect.
+			set_variable = { chaos_meter_last_casualty_count_k = casualties_k }
+			clr_country_flag = chaos_meter_casualty_snapshot_human
+			set_country_flag = chaos_meter_prior_human_military_receipt_proven
+			chaos_meter_commit_prior_human_military_receipt = yes
+		}
+	}
+}
+
+# Private country-scope receipt. It cannot record civilian or nonhuman-period
+# deaths. Only the synchronous boundary can establish its stored proof/value.
+chaos_meter_commit_prior_human_military_receipt = {
+	if = {
+		limit = {
+			has_country_flag = chaos_meter_prior_human_military_receipt_proven
+			has_variable = chaos_meter_prior_human_military_receipt_k
+			check_variable = { chaos_meter_prior_human_military_receipt_k > 0 }
+		}
+		set_temp_variable = { chaos_meter_casualty_delta_k = chaos_meter_prior_human_military_receipt_k }
+		# Consume the provenance before recording, so replay cannot count it twice.
+		clear_variable = chaos_meter_prior_human_military_receipt_k
+		clr_country_flag = chaos_meter_prior_human_military_receipt_proven
+		chaos_meter_prepare_human_military_casualty_record = yes
+		chaos_meter_commit_recorded_deaths_transaction = yes
+	}
+	clear_variable = chaos_meter_prior_human_military_receipt_k
+	clr_country_flag = chaos_meter_prior_human_military_receipt_proven
 }
