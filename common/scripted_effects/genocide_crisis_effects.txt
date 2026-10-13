@@ -1728,6 +1728,20 @@ genocide_foreign_publicize_target = {
 	}
 }
 
+genocide_foreign_sanction_target = {
+	if = {
+		limit = { uses_normal_civilian_systems = yes FROM = { uses_normal_civilian_systems = yes } }
+	add_opinion_modifier = {
+		target = FROM
+		modifier = genocide_sanctions_pressure
+	}
+	FROM = {
+		add_ideas = genocide_international_sanctions
+		add_to_variable = { genocide_foreign_pressure = constant:genocide_crisis_value.discovery_foreign_pressure }
+	}
+	}
+}
+
 genocide_foreign_support_resistance_against_target = {
 	add_opinion_modifier = {
 		target = FROM

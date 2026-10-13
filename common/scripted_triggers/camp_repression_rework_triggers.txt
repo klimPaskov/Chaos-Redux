@@ -2000,6 +2000,69 @@ camp_rework_soviet_famine_eased = {
 	NOT = { camp_rework_soviet_relief_underway = yes }
 }
 
+
+camp_rework_french_inherited_dismantlement_sites_ready = {
+	NOT = { has_country_flag = camp_rework_legacy_closure_active }
+	all_of_scopes = {
+		array = camp_active_site_states
+		if = {
+			limit = { camp_rework_french_inherited_responsible_active_site = yes }
+			camp_rework_state_is_actor_or_subject_controlled = yes
+			camp_rework_legacy_closure_site_can_begin = yes
+		}
+	}
+}
+camp_rework_all_responsible_sites_currently_closable = {
+	check_variable = {
+		var = camp_closable_active_site_count
+		value = camp_active_site_count
+		compare = equals
+	}
+}
+
+camp_rework_colonial_dismantlement_target = {
+	camp_rework_colonial_responsible_active_site = yes
+	camp_rework_state_is_actor_or_subject_controlled = yes
+}
+camp_rework_colonial_dismantlement_sites_ready = {
+	NOT = { has_country_flag = camp_rework_legacy_closure_active }
+	all_of_scopes = {
+		array = camp_active_site_states
+		if = {
+			limit = { camp_rework_colonial_responsible_active_site = yes }
+			camp_rework_state_is_actor_or_subject_controlled = yes
+			camp_rework_legacy_closure_site_can_begin = yes
+		}
+	}
+}
+camp_rework_colonial_dismantlement_sites_completable = {
+	all_of_scopes = {
+		array = camp_active_site_states
+		if = {
+			limit = { camp_rework_colonial_responsible_active_site = yes }
+			camp_rework_state_is_actor_or_subject_controlled = yes
+			camp_rework_site_can_complete_dismantlement = yes
+		}
+	}
+}
+camp_rework_french_inherited_dismantlement_target = {
+	camp_rework_french_inherited_responsible_active_site = yes
+	camp_rework_state_is_actor_or_subject_controlled = yes
+}
+camp_rework_french_inherited_dismantlement_sites_completable = {
+	all_of_scopes = {
+		array = camp_active_site_states
+		if = {
+			limit = { camp_rework_french_inherited_responsible_active_site = yes }
+			camp_rework_state_is_actor_or_subject_controlled = yes
+			camp_rework_site_can_complete_dismantlement = yes
+		}
+	}
+}
+camp_rework_french_legacy_closure_ready = {
+	camp_rework_french_inherited_dismantlement_sites_ready = yes
+}
+
 # ---------------------------------------------------------------------------
 # Timed mission completion contracts
 # ---------------------------------------------------------------------------

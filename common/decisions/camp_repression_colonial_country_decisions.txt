@@ -26,6 +26,123 @@ camp_repression_network_category = {
 	# France, Vichy, and North Africa
 	# -----------------------------------------------------------------------
 
+
+	fr_inspect_camp_legacy = {
+		icon = GFX_decision_fr_camp_legacy_review
+		cost = constant:camp_rework_cost.review_pp
+		days_re_enable = constant:camp_rework_timing.reform_days
+		allowed = { OR = { original_tag = FRA tag = VIC } }
+		visible = {
+			OR = { is_ai = yes has_country_flag = camp_rework_managed_network_visible }
+			OR = {
+				has_government = democratic
+				has_country_flag = fr_focus_legacy_review_commission
+				has_country_flag = free_france_focus_republican_reckoning
+			}
+			NOT = { has_country_flag = camp_rework_france_legacy_inspected }
+			any_controlled_state = { is_france_camp_legacy_pool_state = yes }
+		}
+		available = {
+			NOT = { has_country_flag = camp_gui_country_action_1_cooldown }
+			NOT = { has_decision = fr_gurs_legacy_review }
+		}
+		complete_effect = {
+			custom_effect_tooltip = fr_inspect_camp_legacy_effect_tt
+			set_temp_variable = { camp_rework_action_id = constant:camp_rework_action.fr_inspect_legacy_camp_system }
+			camp_rework_route_country_specific_action = yes
+		}
+		ai_will_do = {
+			base = constant:camp_rework_ai_weight.blocked
+			modifier = {
+				add = constant:camp_rework_ai_weight.france_free_reform
+				has_country_flag = free_france_focus_republican_reckoning
+			}
+			modifier = {
+				add = constant:camp_rework_ai_weight.france_democratic_reform
+				has_government = democratic
+				NOT = { has_country_flag = free_france_focus_republican_reckoning }
+			}
+		}
+	}
+	fr_close_camp_legacy_sites = {
+		icon = GFX_decision_fr_camp_legacy_review
+		cost = constant:camp_rework_cost.dismantle_pp
+		days_remove = constant:camp_rework_timing.reform_days
+		allowed = { OR = { original_tag = FRA tag = VIC } }
+		visible = {
+			OR = { is_ai = yes has_country_flag = camp_rework_managed_network_visible }
+			has_country_flag = camp_rework_france_legacy_inspected
+			NOT = { has_country_flag = camp_rework_france_legacy_closed }
+			OR = {
+				has_government = democratic
+				has_country_flag = fr_focus_legacy_review_commission
+				has_country_flag = free_france_focus_republican_reckoning
+			}
+		}
+		available = {
+			NOT = { has_equipment = { support_equipment_1 < global.black_friday_price_camp_rework_equipment_cost_support_equipment } }
+		}
+		modifier = { consumer_goods_factor = @CR_SC_CAMP_REWORK_IDEA_MODIFIER_REFORM_CONSUMER_GOODS }
+		complete_effect = {
+			custom_effect_tooltip = fr_close_camp_legacy_sites_effect_tt
+			set_temp_variable = { camp_rework_action_id = constant:camp_rework_action.fr_close_legacy_camp_system }
+			camp_rework_route_country_specific_action = yes
+		}
+		remove_effect = { camp_rework_france_complete_legacy_closure = yes }
+		ai_will_do = { base = constant:camp_rework_ai_weight.france_reform }
+	}
+
+	fr_gurs_legacy_review = {
+		icon = GFX_decision_fr_camp_legacy_review
+		modifier = { consumer_goods_factor = @CR_SC_CAMP_REWORK_IDEA_MODIFIER_REFORM_CONSUMER_GOODS }
+		allowed = { OR = { original_tag = FRA tag = VIC } }
+		activation = { always = no }
+		visible = { has_country_flag = camp_rework_france_legacy_inspected }
+		available = { hidden_trigger = { always = no } }
+		days_mission_timeout = constant:camp_rework_timing.fr_gurs_legacy_review_days
+		days_remove = constant:camp_rework_timing.fr_gurs_legacy_review_days
+		is_good = yes
+		timeout_effect = {
+			if = {
+				limit = { has_country_flag = camp_rework_inspection_active NOT = { tag = VIC } NOT = { has_government = fascism } }
+				custom_effect_tooltip = fr_gurs_legacy_review_success_tt
+			}
+			else = { custom_effect_tooltip = fr_gurs_legacy_review_failure_tt }
+			camp_rework_complete_france_gurs_review = yes
+		}
+		ai_will_do = { base = constant:camp_rework_ai_weight.blocked }
+	}
+	bel_concession_reform_mandate = {
+		icon = GFX_decision_bel_colonial_inspection
+		modifier = { consumer_goods_factor = @CR_SC_CAMP_REWORK_IDEA_MODIFIER_REFORM_CONSUMER_GOODS }
+		allowed = { original_tag = BEL }
+		activation = { always = no }
+		visible = { has_country_flag = camp_rework_belgium_inspection_open }
+		available = { hidden_trigger = { always = no } }
+		days_mission_timeout = constant:camp_rework_timing.bel_concession_reform_mandate_days
+		days_remove = constant:camp_rework_timing.bel_concession_reform_mandate_days
+		is_good = yes
+		timeout_effect = {
+			if = {
+				limit = {
+					has_country_flag = camp_rework_expansion_frozen
+					has_country_flag = camp_rework_reform_route_open
+					camp_rework_all_responsible_sites_currently_closable = yes
+					camp_rework_colonial_dismantlement_sites_completable = yes
+					OR = {
+						any_controlled_state = { is_bel_congo_concession_pool_state = yes }
+						any_subject_country = { any_controlled_state = { is_bel_congo_concession_pool_state = yes } }
+					}
+				}
+				custom_effect_tooltip = bel_concession_reform_mandate_success_tt
+			}
+			else = { custom_effect_tooltip = bel_concession_reform_mandate_failure_tt }
+			camp_rework_complete_belgium_concession_reform = yes
+		}
+		ai_will_do = { base = constant:camp_rework_ai_weight.blocked }
+	}
+
+
 	fr_collaboration_transfer_records = {
 		icon = GFX_decision_vichy_internment_admin
 		cost = global.black_friday_price_camp_rework_cost_evidence_pp
@@ -65,6 +182,86 @@ camp_repression_network_category = {
 	# -----------------------------------------------------------------------
 	# Belgium and Congo
 	# -----------------------------------------------------------------------
+
+
+	bel_open_international_inspection = {
+		icon = GFX_decision_bel_colonial_inspection
+		cost = constant:camp_rework_cost.review_pp
+		days_remove = constant:camp_rework_timing.reform_days
+		days_re_enable = constant:camp_rework_timing.reform_days
+		modifier = { consumer_goods_factor = @CR_SC_CAMP_REWORK_IDEA_MODIFIER_REFORM_CONSUMER_GOODS }
+		allowed = { original_tag = BEL }
+		visible = {
+			OR = { is_ai = yes has_country_flag = camp_rework_managed_network_visible }
+			OR = { has_active_camp_network = yes check_variable = { postwar_accountability_pressure > 0 } }
+			OR = {
+				has_government = democratic
+				has_country_flag = camp_rework_crisis_exposed
+				has_country_flag = bel_focus_colonial_inspection_mandate
+				check_variable = { genocide_foreign_pressure > constant:camp_rework_threshold.band_medium }
+			}
+		}
+		available = {
+			NOT = { has_country_flag = camp_gui_country_action_1_cooldown }
+			NOT = { has_country_flag = camp_rework_belgium_inspection_open }
+		}
+		complete_effect = {
+			custom_effect_tooltip = bel_open_international_inspection_effect_tt
+			set_temp_variable = { camp_rework_action_id = constant:camp_rework_action.bel_open_international_inspection }
+			camp_rework_route_country_specific_action = yes
+		}
+		ai_will_do = {
+			base = constant:camp_rework_ai_weight.blocked
+			modifier = {
+				add = constant:camp_rework_ai_weight.belgium_exposure_reform
+				has_country_flag = camp_rework_crisis_exposed
+			}
+			modifier = {
+				add = constant:camp_rework_ai_weight.belgium_independence_reform
+				COG = { exists = yes NOT = { is_subject_of = ROOT } }
+				NOT = { has_country_flag = camp_rework_crisis_exposed }
+			}
+			modifier = {
+				add = constant:camp_rework_ai_weight.belgium_foreign_pressure_reform
+				has_government = democratic
+				check_variable = { genocide_foreign_pressure > constant:camp_rework_threshold.band_medium }
+				NOT = { has_country_flag = camp_rework_crisis_exposed }
+				NOT = { COG = { exists = yes NOT = { is_subject_of = ROOT } } }
+			}
+			modifier = {
+				add = constant:camp_rework_ai_weight.belgium_peace_reform
+				has_war = no
+				check_variable = { genocide_foreign_pressure < constant:camp_rework_threshold.band_medium }
+				NOT = { has_country_flag = camp_rework_crisis_exposed }
+				NOT = { COG = { exists = yes NOT = { is_subject_of = ROOT } } }
+			}
+		}
+	}
+	bel_reform_concession_system = {
+		icon = GFX_decision_bel_colonial_inspection
+		cost = constant:camp_rework_cost.dismantle_pp
+		days_re_enable = constant:camp_rework_timing.dismantle_days
+		allowed = { original_tag = BEL }
+		visible = {
+			OR = { is_ai = yes has_country_flag = camp_rework_managed_network_visible }
+			has_country_flag = camp_rework_belgium_inspection_open
+			OR = { has_active_camp_network = yes check_variable = { postwar_accountability_pressure > 0 } }
+			OR = { has_country_flag = bel_focus_reform_concession_system has_government = democratic has_country_flag = camp_rework_crisis_exposed }
+		}
+		available = {
+			NOT = { has_country_flag = camp_gui_country_action_2_cooldown }
+			NOT = { has_decision = bel_concession_reform_mandate }
+			NOT = { has_decision = bel_congo_resource_quota_cycle }
+			NOT = { has_decision = bel_congo_transport_corridor_project }
+			camp_rework_all_responsible_sites_currently_closable = yes
+		}
+		complete_effect = {
+			custom_effect_tooltip = bel_reform_concession_system_effect_tt
+			set_temp_variable = { camp_rework_action_id = constant:camp_rework_action.bel_reform_concession_companies }
+			camp_rework_route_country_specific_action = yes
+		}
+		ai_will_do = { base = constant:camp_rework_ai_weight.belgium_reform }
+	}
 
 	bel_recognize_local_administration = {
 		icon = GFX_decision_bel_colonial_inspection
