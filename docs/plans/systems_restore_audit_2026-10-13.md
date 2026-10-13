@@ -1,5 +1,231 @@
 # Gameplay systems restoration audit — 13 October 2026
 
+## Handoff 3 restoration follow-up
+
+The owner explicitly authorized restoring the earlier state for every judgement call below, except an explicit conflicting item in the 12 October restore plan.
+That instruction supersedes the original audit's requirement to leave those choices undecided.
+The original audit is retained below as historical evidence, rather than the current implementation conclusion.
+
+The requested source restorations and specification-based migration depth are implemented.
+Final integration review recovered the missing Belgian quota, corridor and strike-response dependencies in the restored bridge and closed their interaction with nonhuman mission cleanup.
+The final casualty-accounting transition correction is implemented and independently reviewed.
+The requested Linux back-to-back super-event test remains incomplete because the connected 1.19.3 adapter does not permit campaign/event dispatch.
+This handoff did not launch a Windows or Linux game or change an ordinary save or game setting, and nothing was pushed.
+The separate live-verification job's menu-load observations are retained in its own report; its related source repairs are attributed below.
+
+### Action taken per original judgement entry
+
+| Original entry | Current action and source | Commits |
+| --- | --- | --- |
+| Four French/Belgian camp actions | Restore `fr_inspect_camp_legacy`, `fr_close_camp_legacy_sites`, `bel_open_international_inspection`, and `bel_reform_concession_system` from `72aa7ba56^`, removing the later civil-initialization exclusion that otherwise hides them. Restore their two missions, colonial bridge, dispatch, closure predicates, constants, text, and original French icon from `1850d88c3^`. Recover the bridge's five additional Belgian actions, three missions and complete dependency chain, with original quota/corridor icons and current C6 cleanup. | `4ac3bafbdec8e449faf7ef71b9115ac76d46b23a`, `020a8600c03746a929fba15bbaeff6b2bcf9147c` |
+| Immediate sanctions | Restore the complete `fa1322b37^` decision/helper/idea/opinion package. Human actor/target guards remain. Repeated sanctions retain their opinion and pressure effects while the permanent idea is granted only when absent. | `4ac3bafbdec8e449faf7ef71b9115ac76d46b23a`, `3d71316b5f842942e3e0b8650c7c874691cf0db8` |
+| Cluster probabilities | Restore `4c1513475^` fixed tier activation values 5/10/15/25/35/50 and compact participation values, including original member overrides. Neutralize newer fatigue, memory, member-count, severity-boost, and multiplicity factors. Preserve later members, ordering, queue repairs, and separate Random Stuff/Acid Rain mechanics. | `e5b4a851de9f28541c1fde34abb81626cbcd1960` |
+| Major progress and late eligibility | Restore `0b0ddd625^` flat accumulation for every unfired major, including temporarily unavailable majors. Preserve the historical Event 91 unlock exception and current C2 pressure setting. | `e5b4a851de9f28541c1fde34abb81626cbcd1960` |
+| Major-containing cluster pacing | Remove the `44748907a` and `292847723` member-major promotions. Fixed clusters apply pacing once according to their registered type, including delayed Acid Rain batches. | `e5b4a851de9f28541c1fde34abb81626cbcd1960` |
+| War justifications and elections | Restore the `d6abbc6fd^` major justification pulse and `1b2cd634a^` major-election relief, with existing attributable history and nonhuman exclusions. | `e5b4a851de9f28541c1fde34abb81626cbcd1960` |
+| Ideology and early territorial/faction values | Restore the broader `6c266388b^` ideology contribution and `e9946ac16^` puppet, release, subject-freedom, and faction-leaving values through current constants. Preserve new nuclear/Event 23 integrations and C3 fracture behavior. | `e5b4a851de9f28541c1fde34abb81626cbcd1960` |
+| Minor-war cap | Restore `937943904^` qualification and full contributions, removing the later daily cap and faction-follow-up suppression. | `e5b4a851de9f28541c1fde34abb81626cbcd1960` |
+| Direct military-casualty scaling | Restore the strict cumulative increase above 250k from `1b2cd634a^`. Retain military Deaths records without also feeding those losses into the civilian Chaos conversion. Accumulate eligible human intervals monotonically, preserving history across nonhuman conversion and return. | `e5b4a851de9f28541c1fde34abb81626cbcd1960`, `5406d15f707137d39950d786906d810a41d68933` |
+| Combat Deaths placement/rates | Restore the coherent pre-`6c266388b` single-state model and earlier rates. Correct the original audit's broad-callback claim and the unsupported terrain/state lookup, as explained below. Preserve exact population accounting. | `e5b4a851de9f28541c1fde34abb81626cbcd1960` |
+| Final Silence manual scenario | Restore ID 4, Nuclear/Thermonuclear choices, registry, Details toggle, report, four waves, and terminal contamination lock from `5ca199ffbb6c836459ec27b423de7196be9e6554` (`3b5312c87^`). Retain Fallout ID 14 with the compatibility changes below. | `c4c884da0a39e23ab1717a8db83e6193128b83b0` |
+| Manually selected civilian protection | Restore all four state choices from `d4a27b58^`: priority issue, full distribution, filter replacement, and occupied-population supply, with selected-state completion and independent concurrent projects. Keep later national programs under distinct `_national` IDs and retain automatic maintenance. | `c130ce414a2f8147ad19a38c1d09f3dd17112fb7` |
+
+### C7 audio
+
+`d98234cdd615a00ccb97da448a7db471410f897f` restores the pre-`99f0b18dd` music assets and completes current cue coverage.
+`ac428fde69a2b155a417b49190cbc599404e229a` routes the shared dispatcher and its old sound-named compatibility helpers through `scoped_play_song`, including the separate Fallout blackout.
+`462d86cc2bd0b987dd1f26455691c4b84c2f1bbf` incorporates the concurrent parser repair removing station declarations from the two music `.asset` files.
+Station selection remains in the `.txt` registration file, where all volume keys are present exactly once.
+Each new cue uses the single music channel.
+The zero-volume variant also starts a replacement track, so muting a new cue does not leave the previous cue playing.
+
+There are 71 current super-event audio IDs and one dedicated Fallout cue, with all 504 volume/mute keys registered at zero random-playback weight.
+The checks decoded all 72 active OGG recordings, verified 59 historical OGG files byte-exact, and verified all nine WAVs against `10292700c` by SHA-256.
+The parent also compared the actual nine routed OGGs with those restored WAV recordings as decoded mono samples.
+All nine aligned without an offset and had correlation above 0.9989, confirming that the restored WAVs were not merely retained unused while different recordings played.
+This is file-level recording correspondence, not a Linux playback or cancellation test.
+Sixteen OGG derivatives were made from current WAV recordings for later routes.
+The historical ID 28 OGG was retained after confirming the same recording attribution despite a 0.681-second excerpt-length difference.
+The permanent source and conversion account is [the audio package documentation](../super_events/super_event_audio_packages.md), with the catalogue in `music/chaosx_music_track_list.html` and playback documentation in `docs/systems/chaosx_settings/settings_miscellaneous_menu.md`.
+
+Installed effects documentation at lines 6514–6522, revision `2cdc93d26775990468eed167442f7a416b13059fb8fe07d139b54250b79209af`, supports country-scoped song playback.
+Offline Effects line 350, revision `997ddb09bfd63efb41a425149c46bd812d5f8953217a403386b2f6c85196aa0c`, and Music modding lines 13–60 document music/station registration.
+The native calls for consecutive cues, mute, and Fallout passed the command-kind/scope check.
+The full settings-file check was partial, with unchecked argument blocks and unrelated constant-name warnings, so it is not a full engine pass.
+
+The Linux preflight identified ELF `a4971c9e8ac9a6f2487dea109e01f9839ee59db7` and the partial 1.19.3 table.
+The current tool-status check still marks console/event dispatch and script-variable operations unverified and blocked.
+There is no supported same-process campaign-loading route in the connected setup.
+No game was launched, no unverified native call was attempted, and no claim of audible replacement is made.
+The specifically requested back-to-back Linux test is therefore incomplete.
+
+### C9 repeated grants
+
+`0be58f9c2893536d880ef43ac5fe176d89bb2a54` guards 26 grant sites across 18 idea IDs in 15 files.
+The overlaps include Death/Oth-Kesh history and setup, Rat Nation/Rat King setup and focuses, Event 31 carriers, Event 16 event/decision rewards, Soviet posture/reintegration, and tribunal event/capitulation paths.
+The sanctions compatibility guard in `3d71316b5f842942e3e0b8650c7c874691cf0db8` adds one more protected grant without suppressing repeat sanctions pressure.
+Missing ideas and cleaned carriers can still receive their grants, and intentional timed refreshes remain intact.
+Source-derived complete/partial/repeated/cleaned-carrier cases and the independent focus review support the changes.
+The [existing C9 report](chaos_redux_c9_event_audit_2026-10-13.md) records paths, identifiers, and validation limits.
+
+### C6 nonhuman immunity
+
+`b3ca3d4930bdd08bce3751485ce09b2371c5a08a` closes the audited remaining paths across 72 owned files.
+Native state penalties are attached to eligible human countries through country-targeted state modifier instances, with matching application, presence and removal scopes.
+State values and conditions use the state `ROOT`, and severity/duration is computed once rather than once per recipient.
+Country creation, classification changes, expiry, and retirement maintain the bindings.
+Human-to-nonhuman transitions synchronously clear recorded sanctions, directed opinions, monitoring and exact owned AI deltas, including the restored immediate-sanctions package.
+
+The inherited and delayed-path audit additionally covered health/camp/labour spirits, clinical traits, occupation laws, stored government/victim roles, and the identified legacy event callbacks.
+Human tuning, ordinary physical effects, and bespoke nonhuman mechanics remain intact.
+Checks preserved 103 original idea bodies, 70 modifiers and 13 helper bodies, reviewed 142 targeted native operations and six lifecycle/physical cases, and exercised the actual helper/parser contracts.
+The independent comparisons retained human and Holy Realm occupation-law scores of 1000 while nonhuman cases score zero, verified exact sanctions inverses, and retained the 949-row human trait pool while excluding four clinical rows for nonhuman actors.
+These are source and contract results, not observed native combat or AI ranking.
+
+The concurrent parser repair recorded in `.tmp/live_verification_2026-10-13/human_modifier_load_repair.md` was accepted only for the C6-owned helper/caller regions and their required tokens.
+Unsupported dollar-parameter calls were replaced by explicit temporary token/day inputs, bare helper calls and native meta text.
+The C6 event and occupation-scope corrections from the concurrent final-parser batch were likewise integrated without unrelated changes.
+The [current C6 report](chaos_redux_c6_nonhuman_2026-10-13.md) records the exact boundaries, provenance, references, fixtures and files.
+Native coexistence of multiple country bindings, actual combat consumption, and strategy stacking remain unobserved.
+
+`5406d15f707137d39950d786906d810a41d68933` closes the casualty-accounting interaction between the restored military scale and C6 classification changes.
+Positive eligible intervals are accumulated in thousands using `casualties_k`, rather than re-summing all-time counters only from countries that are human at the moment.
+The two existing C6 transition boundaries preserve a final proven human interval through a military-only receipt, consume that proof before side effects, and rebaseline on human return without counting the intervening nonhuman losses.
+The ordinary nonhuman-target rejection remains unchanged, and the original validated Deaths transaction tail is shared without alteration.
+The independent fixture ends with 520k eligible human losses and 520k military Deaths, retains exactly 250k without an award, and produces two raw 1.04 awards rounded to one Chaos each when progress reaches 260k twice.
+Nonhuman intervals of 500k and 100k are excluded, and replay/counter-reset cases neither retract history nor duplicate an award.
+
+`020a8600c03746a929fba15bbaeff6b2bcf9147c` integrates the restored camp missions with that same transition boundary.
+After the casualty sync and before recording completed cleanup, `camp_rework_retire_nonhuman_country_missions` removes six active French/Belgian missions and clears their private pending routes, target IDs, settlement commitment and legacy closure attempt.
+Native `remove_mission` skips completion and timeout outcomes, so it retires the Gurs/concession consumer-goods penalties without running human success or failure effects.
+The six missions also include the French refugee response and Belgian quota, corridor and strike response.
+The parent reviewed the actual helper and call placement, and the existing C6 report and dynamic-effect contract describe this integration.
+
+### C11 historical recovery and specification implementation
+
+The wider search covered `master`, `origin/master`, all reachable history, an empty stash list, specifications and system docs, and the installed Workshop tree.
+Connectivity-only fsck enumerated 5,087 unreachable commits, 22,157 trees and 34,334 blobs without creating thousands of unnecessary lost-found copies.
+All 5,087 commit IDs were searched directly for changed migration/famine source paths, yielding 12 candidate commits whose trees were inspected for the missing priorities/recovery behavior.
+A second pickaxe across all `common/` and `events/` paths yielded 19 broader candidates, including other event machinery/readiness systems and the old generic evacuation decisions.
+No implementation of demographic priority records with migration workforce recovery was recovered.
+The Workshop root contained 23 mod directories and no Chaos Redux descriptor or matching migration implementation.
+The original interrupted full-fsck attempt is retained as historical evidence, not presented as a completed search.
+
+`20cf3fba1d47400b1b91d3b9e0d6f8f8aac8e6cb` therefore implements the accepted specification rather than claiming a historical restore of absent code.
+Its source is Parts 3 and 6 of `docs/specs/famine_and_migration_system_specs/`, including the explicit prohibition on moving factories without a separate relocation system.
+`4b4ebeb324bb4b7199d010ce8682a6be392e387a` corrects the documented post-arrival population denominator.
+
+General, vulnerable, industrial and administrative evacuation priorities are all selectable.
+Priority is attached to actual cohort identity and transaction generation, with smaller vulnerable batches and the existing exact population transfer, pressure, preparation, fuel/convoy, payment/refund, and reception contracts.
+Evacuation permits reception load equal to capacity and blocks only when it is already above capacity, with the existing missing-capacity safeguards preserved.
+There are no political-power fees.
+
+Industrial transfers debit actual people leaving an origin and credit only survivors at the destination.
+Signed state workforce balances drive local construction/repair and separate country factory/dockyard output projections weighted by the controlling producer's industrial footprint.
+Stored producer contributions are removed exactly on capture/release, and transit/return move the same workforce balance instead of stacking arrival bonuses at previous hosts.
+Integration retains resident workers.
+Nonzero workforce states remain in the existing sparse refresh path without being marked as an active displacement crisis, and zero/invalid projections retire through normal cleanup.
+No factory is moved and no new worldwide periodic hook is added.
+
+The conservation fixture is 5,000 people debited = 100 route deaths + 4,900 survivors.
+For an initially 100,000-person destination, the post-credit denominator is 104,900, giving an illustrative 4.6711% workforce share before native fixed-point rounding.
+Controller A→B→A cases preserve separate factory/dockyard contributions without residue, and below/equal/above-capacity cases produce the specified gates.
+The final source suites passed 29 parser cases, 50 transport cases, 11 famine regressions and the pressure contract.
+The previously limited transport/famine harness results were replaced by these final adapted-API checks.
+Read-only decision/AI reviews cover all four lanes and state their raw-score assumptions.
+
+The required transport/reception parser repair is integrated from `.tmp/live_verification_2026-10-13/migration_load_repair.md`, with only its actual API/caller/doc corrections accepted.
+Superseded in-flight priority hunks and unrelated Event 34/C6 changes were excluded.
+The [current migration history report](migration_famine_history_2026-10-13.md), migration system documentation, decision map and helper documents record the 32-file implementation, formulas and source limits.
+
+### C12 and chemical flow
+
+`587732e49e477fd77ebae0c874177105d7b1148d` preserves all 15 action IDs from `8307afb3c^`.
+Field hospitals and quarantine are map-only state responses.
+Historical country policy, research, production, and vaccination decisions remain country actions.
+No Disease Containment Board, division assignment, or added preparation step is required by those restored responses.
+
+The same commit restores the direct stockpile decision and Japanese selector/state attack with their complete cost, refund, trigger, localisation, and dispatch dependencies from `4337957b1f`.
+Native raids remain a separate route, and A13 army-leader abilities are preserved.
+`28f35789b097ff80aa9a7672a98e800a67562842` separates the direct and native-raid branches of the shared resolver.
+Direct release consumes actual stock across eligible controlled states without requiring a raid receipt or adding a reserved cylinder.
+The native raid keeps its selected-state and reserved-lot accounting.
+All original stockpile costs are retained, including political power plus four separate cylinder models.
+The final 59 source-contract checks caught and resolved the missing wrapper, payment/tooltip gaps, direct-versus-raid coupling, selected-state targeting, and a factory-reservation recheck that otherwise rejected an occupied-state order after it reserved its own factories.
+`c130ce414a2f8147ad19a38c1d09f3dd17112fb7` restores `cbrn_priority_state_mask_issue`, `cbrn_full_state_mask_distribution`, `cbrn_replace_state_mask_filters`, and `cbrn_supply_occupied_population` from `d4a27b58^`.
+Each retains the old state target, timing, cost and `FROM` outcome scope, with current stock quote/escrow/refund checks and C6 boundaries.
+The category contains 13 definitions after retaining the distinct later national programs.
+No native list render was available, so visual density is not claimed as verified.
+The equipment/projector comparison also used `46cafaedc005dbafa13d65c63d4337248a6bfd9b` for the approximately year-old source.
+No formerly usable equipment family was found missing, and uncalled passive helpers were not activated as invented mechanics.
+Detailed source comparisons remain in [the outbreak comparison](biowarfare_restore_comparison_2026-10-12.md) and the affected chemical-system documentation.
+
+The concurrent integration commit `1947065ccbd0947708c6c68308e27e905354ee5e` restores the chemical category, preserves occupied-state quote outputs across the supported trigger call, and refunds the exact direct-release PP debit when both release and stock debit were rejected.
+It also applies the audited C6 actor/state gates and restores the French 150-day response mission and responsible-site/evidence helpers alongside the separate historical Gurs mission.
+These related repairs are included in the current source conclusion with their external provenance; their publication does not establish successful campaign loading or live execution.
+
+### Corrections and coupled systems
+
+The original Deaths chronology overstated the pre-`b45c83d41` implementation.
+That parent has an empty combat entry effect and an uncalled broad placement helper, even though the daily leader hook calls the empty entry.
+The restored working model is the coherent pre-April single-state callback, not a hybrid activation of the orphan helper.
+Installed dynamic-variable documentation identifies `num_units_offensive_combats_against` as terrain-targeted, so passing a state ID to that legacy token was also invalid.
+The supported repair requires an offensively engaged leader, gathers enemy neighbors from its controlled frontline states using `num_units_in_state`, and retains the original random candidate multiplicity and associated originating unit count.
+Integer-per-million tuning preserves the older fractional rates without losing engine precision.
+`5bde8816a551e4c8d01ce67d41cf6e5a419d783f` also integrates the exact five infrastructure multiplier constants recovered by the concurrent parser repair from `15cdf416` (`76d2bc4a4^`), closing all surviving consumers.
+
+Final Silence takes precedence over newer uncommitted Fallout intake and manual sweep/countdown callbacks.
+Its launcher clears stale completion/interruption receipts and cancels those pending routes before preparation.
+The Fallout atmosphere evaluator and its two legacy migration branches respect Final Silence's persistent terminal lock.
+The original four-wave route remains independent while the natural Holy Realm Fallout consequence stays available.
+The parent rechecked the final cancellation prelude and separately defined report option after the independent review.
+
+French closure uses the same sale-adjusted Event 026 equipment quote for affordability, payment, and its displayed cost.
+The historical full-price amount remains 180 units.
+The boundary cases at full price and the 150-unit sale quote passed, and the changed camp decision file passed the supported script checks with parameter-block coverage explicitly limited.
+
+`020a8600c03746a929fba15bbaeff6b2bcf9147c` closes the Belgian dependency gaps subsequently identified by the separate menu-load repair report.
+It restores five actions, three missions, their selectors, dispatch branches, resource and subject-pressure helpers, completion requirements, missing constants and 27 historical localisation entries from `1850d88c3^`.
+The original quota and corridor DDS files were recovered from local LFS objects, each 4,224 bytes, with SHA-256 values `a9039badf667f5ac51a197fa6f500598dc2020f5bfd1faf31b8cd3af5bf8a3c9` and `d333d0fdabd024087a82203a5f97dc52f94f8463871a7f6a3350086287318e22` respectively.
+Their original names and sprite registrations remain intact, and the existing missing-art list records their recovery.
+The later civil-initialization gate is bypassed only for the restored human FRA/VIC/BEL bridge paths while full administration remains excluded; the other kits retain their existing cutoff.
+The Belgian project count is recomputed from its two active native missions, making the historical cap of two effective.
+The strike cancellation keeps the original invalid-target conditions as alternatives to nonhuman/full-administration cancellation, rather than accidentally requiring both.
+Source scenarios cover those boundaries, complete definition/constant closure, and the synchronous six-mission retirement.
+The decision validator passed; the larger helper files returned partial unresolved coverage with no diagnostics, not a full validation pass.
+The historical AI expressions are unchanged: project scores are 38 at counts zero or one and zero at count two; suppression/negotiation scores remain 38/75, with the original quota pressure/war/chaos branches and equality gap retained.
+The independent audit's tuning suggestions were not adopted under the owner's exact-restoration instruction.
+These later source corrections supersede the Belgian blocker for implementation; the separate report's historical native diagnostics remain unchanged, and no fresh native clearance is claimed.
+
+### Balance, catalogues, and limits
+
+Representative source calculations reproduce Wars activation 10% and optional Fury participation 70% under the declared tier-1 case.
+Three minor updates with configured gain 150 give score 450 to each unfired major for pools of 5, 10, or 20 and for a late-eligible major.
+Seven eligible minor wars contribute seven points rather than the later cap of five.
+The restored military rule gives zero at exactly 250k and four points at one million from a zero baseline.
+These are conditional chances, scores, or scripted deltas, not measured campaign probabilities.
+The restored frontline fixture preserves candidate multiplicity `[A,B,A]` with originating counts `[6,6,12]` and conditional entry shares 2/3 and 1/3.
+
+The workbook and generated exports retain Fallout and add the independent Final Silence row under `4830bc65aad2c97e9d8996efa7c14b3c24def083` and `c710d5abd45e99d6c54a308eb2b6a7427587105e`.
+The historical workbook LFS object was unavailable locally, so the row was rebuilt from restored in-game localisation and implementation facts without changing its Needs Testing status.
+The workbook/export comparison preserved the other XML parts, formatting, validation, and existing rows.
+
+No gameplay simplifications were made, and no requested source restoration remains knowingly omitted.
+The API/scope fixes, old/new system compatibility, and unavailable Linux test are explicitly distinguished from historical restoration.
+The source checks do not establish observed game behavior.
+Per-path change inventories are in the named commits, and transient before/after receipts and independent handoffs are under `.tmp/handoff3/`.
+The canonical super-event workflow was updated in `dcbd90a644aeb476000d4a16b5a44e64723a551e`, and the country-bound modifier guidance in `e523ac97e4f505aa0a82a2d399b0701d51446646`.
+
+Skills used for implementation and review: `chaos-redux-subagents`, `chaos-redux-events`, `chaos-redux-decisions-missions`, `chaos-redux-diplomacy-war`, `chaos-redux-ai-strategies`, `chaos-redux-ideas-modifiers`, `chaos-redux-map-states`, `chaos-redux-focus-trees`, `chaos-redux-super-events`, `chaos-redux-xlsx`, `chaos-redux-shared-git-commit`, and `chaos-redux-debug-playtest` for the explicitly requested Linux capability gate.
+The bounded legacy review also used the improvement-loop/event-planning checklists without adding an expansion plan.
+The existing super-event, events, event-assets, subagent and ideas/modifier skills were updated, together with the audio researcher definition and its owning reference.
+No new skill was created.
+
+## Original audit record
+
+The remainder records the original investigation before the owner's restore-all instruction.
+Its undecided dispositions are historical and are superseded by the follow-up table above where implementation is recorded.
+
 Owner assignment: audit chemical deployment, contamination, cylinders, projectors, deaths, condemnation, air contamination, camps, raids, Chaos Meter, event selection/timers, clusters, and triggerable scenarios over the last 14 months.
 The owner authorized exact historical restorations of clear regressions and required ambiguous changes to remain untouched.
 Biowarfare, migration, famine, scientists, and abilities were excluded as assigned to other jobs.

@@ -648,6 +648,11 @@ The receipt is country-targeted so another tag cannot inherit its completed tran
 It returns no value and preserves immutable event and casualty history.
 Its side effects retire human health, custody, social-pressure and office-investigation spirits and current clinical traits, clear live medical progress flags and genocide foreign pressure, retire owned bilateral human sanction/camp relations, revoke inherited human CBRN occupation policy, detach every recorded human state-modifier view for this country, and force affected state/country modifier refresh.
 The boundary settles only the final prior-human military loss interval through the meter-owned consumed receipt, then rebases casualty eligibility.
+Immediately after that settlement and before setting the cleanup receipt, it calls `camp_rework_retire_nonhuman_country_missions` in `camp_repression_colonial_country_effects.txt`.
+This private COUNTRY-scoped helper accepts no inputs or defaults, returns no value, and is called only after the transition owner has established the nonhuman classification.
+It removes active `fr_gurs_legacy_review`, `bel_concession_reform_mandate`, `fr_refugee_pressure_response`, `bel_congo_resource_quota_cycle`, `bel_congo_transport_corridor_project`, and `bel_colonial_strike_response` missions with `remove_mission`, which does not run completion or timeout outcomes.
+It also clears their private refugee/strike routes and target IDs, retires the settlement commitment idea, and clears the legacy closure attempt; repeating it finds no active mission and leaves the same cleared state.
+The intended use is the existing transition call `clear_nonhuman_country_human_systems = yes` immediately after an identity-marker write; callers should not invoke the normal mission outcome helpers for cleanup.
 It does not create population loss, current nonhuman death accounting, gameplay costs, recovery achievements or refunds.
 The receipt and return-snapshot contract is documented in [Military casualty eligibility lifecycle](../../docs/systems/chaos_meter/chaos_meter_deaths_mechanic.md#military-casualty-eligibility-lifecycle).
 The declaration lists the exact affected ideas and country modifiers rather than suppressing every political or military spirit.

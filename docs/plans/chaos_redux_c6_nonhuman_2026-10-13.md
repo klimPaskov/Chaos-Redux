@@ -302,3 +302,15 @@ The first two C6 commits remain unchanged, and this closure is published through
 The small generic native-binding skill update is independently committed as `e523ac97e4f505aa0a82a2d399b0701d51446646` in the canonical ideas/modifiers skill.
 Skills used for closure are events, subagents, ideas/modifiers, decisions/missions, diplomacy/war, AI strategies, characters/leaders and shared Git commit.
 No event-specific context was added to a skill.
+
+### Restored camp mission integration
+
+The later Handoff 3 camp dependency recovery adds synchronous retirement for six restored French and Belgian missions through `camp_rework_retire_nonhuman_country_missions`.
+The call follows `chaos_meter_sync_casualty_eligibility_boundary` inside `clear_nonhuman_country_human_systems` and precedes its idempotent cleanup receipt.
+It removes the active Gurs review, concession mandate, refugee response, resource quota, transport corridor and strike response missions, including the native consumer-goods modifiers on the first two, without running their normal completion or timeout outcomes.
+It explicitly clears private target IDs, pending routes, the settlement commitment and the legacy closure attempt.
+The restored actions and delayed helpers retain runtime human eligibility checks, and cancellation retains the original human invalid-target paths.
+Source scenarios cover eligible humans, invalid targets, nonhuman conversion, full-administration ownership and repeated cleanup; the decision-file validator passed, while the larger helper files had unresolved coverage rather than a complete validation result.
+Installed effects documentation lines 6083–6092 and offline Effects line 1916 establish that country-scoped `remove_mission` skips completion and timeout effects.
+No native conversion observation is claimed.
+The final source commit and dependency inventory are recorded in [the current restoration audit](systems_restore_audit_2026-10-13.md).
