@@ -1699,7 +1699,10 @@ genocide_try_trigger_tribunal_after_defeat = {
 			NOT = { has_country_flag = genocide_tribunal_event_fired }
 		}
 		set_country_flag = genocide_tribunal_event_fired
-		add_ideas = genocide_tribunal_preparation
+		if = {
+			limit = { NOT = { has_idea = genocide_tribunal_preparation } }
+			add_ideas = genocide_tribunal_preparation
+		}
 		add_stability = constant:genocide_political_effect.tribunal_stability
 		country_event = { id = chaosx_genocide.30 days = @GENOCIDE_EVENT_SHORT_DELAY_DAYS }
 		if = {

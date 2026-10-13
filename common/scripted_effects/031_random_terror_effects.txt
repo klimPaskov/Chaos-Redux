@@ -3221,10 +3221,17 @@ random_terror_initialize_actor = {
 		add_equipment_to_stockpile = { type = support_equipment amount = constant:random_terror_tuning.actor_support_equipment_start }
 		if = {
 			limit = { NOT = { has_country_flag = random_terror_starting_ideas_applied } }
-			add_ideas = {
-				random_terror_improvised_command
-				random_terror_captured_economy
-				random_terror_contested_legitimacy
+			if = {
+				limit = { NOT = { has_idea = random_terror_improvised_command } }
+				add_ideas = random_terror_improvised_command
+			}
+			if = {
+				limit = { NOT = { has_idea = random_terror_captured_economy } }
+				add_ideas = random_terror_captured_economy
+			}
+			if = {
+				limit = { NOT = { has_idea = random_terror_contested_legitimacy } }
+				add_ideas = random_terror_contested_legitimacy
 			}
 			set_country_flag = random_terror_starting_ideas_applied
 		}

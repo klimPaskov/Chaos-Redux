@@ -727,3 +727,45 @@ The table inventories grant paths rather than adding mutually exclusive effects 
 | `events/fallout_world_end_events.txt` | 41 | 0 | Display-only leaf isolation |
 | `localisation/english/chaosx_chaos_meter_l_english.yml` | 0 | 0 | One appended public tier label |
 | `localisation/english/chaosx_ideas_l_english.yml` | 0 | 0 | One appended requirement key |
+
+## Follow-up cross-path idea grant review
+
+Status: implemented source guards for confirmed cross-path regrants; this follow-up expands the earlier direct-event check across country history, scripted effects, focuses, decisions, events, and on_actions.
+
+The static inventory found 1,759 granted idea ids and 210 ids referenced from more than one grant path; repeated references alone were not treated as defects because many are mutually exclusive country packages, distinct scopes, display-only tooltips, or intentional timed refreshes.
+
+Same-country setup overlaps were confirmed for DTH (`death_country_without_breath`, `death_first_silence`), DHO (the five `cave_*` spirits), the RTA/RTX Event 20 carriers (`black_plague_rat_brood_instinct`, `black_plague_rat_king_dominion`, and `black_plague_rat_no_civilian_economy`), and the eight dormant Event 31 carriers (the three `random_terror_*` starting ideas). Each carrier's history already supplied the listed spirits before its first setup function ran.
+
+The history sources reviewed for those setup pairs are `history/countries/DTH - Death.txt`, `history/countries/DHO - Oth-Kesh Host.txt`, `history/countries/RTA - Rat Nation.txt`, `history/countries/RTX - Rat King.txt`, `history/countries/JHX - Local Cell.txt`, `history/countries/JIX - Regional Insurgent.txt`, `history/countries/JKX - Transnational Network.txt`, `history/countries/JLX - Jihadist International.txt`, `history/countries/JMX - Final Command.txt`, `history/countries/JNX - Local Cell II.txt`, `history/countries/JOX - Regional Insurgent II.txt`, and `history/countries/JPX - Transnational Network II.txt`.
+
+`common/scripted_effects/010_death_effects.txt`, `common/scripted_effects/018_resources_found_cave_effects.txt`, `common/scripted_effects/020_black_plague_rat_effects.txt`, `common/scripted_effects/020_black_plague_evolution_effects.txt`, `common/scripted_effects/031_random_terror_effects.txt`, `common/national_focus/020_black_plague_rat_focus_tree.txt`, and `common/national_focus/020_black_plague_rat_king_focus_tree.txt` now check each starting, focus, or terminal spirit before granting it. The Event 20 King Dominion terminal grant also checks for an existing spirit.
+
+The three Event 20 focus rewards reviewed are `black_plague_rat_feral_quarantine`, `black_plague_rat_no_human_rations`, and `black_plague_rat_king_first_royal_decree`; their flags and variable gains remain intact when the starting idea is already present.
+
+The bounded focus review found that `black_plague_rat_feral_quarantine` and `black_plague_rat_no_human_rations` are sibling focuses with the same prerequisite and no mutual exclusion, so both can be completed. The idea guards prevent regranting their shared spirits, but whether both focuses should remain available is an unresolved route-design question; no route lock was added within this duplicate-grant repair.
+
+Targeted `hoi4.focus_inspect` completed for both Event 20 trees; the Rat Nation tree has no blocking diagnostics, and the Rat King tree has three existing `FOCUS_LAYOUT_LINEAR_DETOUR` warnings for `black_plague_rat_council_selective_harvest`, `black_plague_rat_crown_road_tithe`, and `black_plague_rat_hierophant_flea_liturgy`. No focus coordinates, prerequisites, or branch structure changed, so no render was requested for these reward-only edits.
+
+Event 16's `.303` option in `events/016_brilliant_scientist_aftermath_events.txt` and the `brilliant_scientist_aftermath_exchange_countermeasures` decision in `common/decisions/016_brilliant_scientist_aftermath_decisions.txt` both grant `brilliant_scientist_aftermath_countermeasure_exchange`; both paths now check for the spirit, while their shared completion flag, stability, and treaty progress remain unchanged.
+
+The Event 5 posture and Moscow reintegration paths grant `soviet_collapse_emergency_union_authority` and `soviet_collapse_new_union_negotiations` on more than one later route. The event, decision, and reintegration effect grants in `events/005_soviet_collapse.txt`, `common/decisions/005_soviet_collapse_decisions.txt`, and `common/scripted_effects/005_soviet_collapse_effects.txt` now add those ideas only when missing.
+
+The Event 13 `.13` option and the capitulation fallback `genocide_try_trigger_tribunal_after_defeat` both grant `genocide_tribunal_preparation`; both paths now skip only the repeated grant, while the fallback's stability effect and delayed event remain unchanged.
+
+The setup functions still add any missing spirit, while a complete history setup receives no second grant and a repeat after the setup flag is set does not enter its setup block. Reused Event 31 and Event 20 carriers can receive the same ideas again after their cleanup removes them, because the new guards test current idea presence rather than only the lifetime marker.
+
+Representative overlapping-path checks retained existing protections: Event 1's immediate and state-control helper grants of `communism_spread_idea` are guarded, its option occurrence is tooltip-only, Event 18's `resources_found_threat_cooperation` grants are guarded, the Event 2 cure branches are mutually exclusive and tooltip-only, and Event 21 removes `event021_war_torn_administration` before its intentional timed refresh while its two permanent profile grants target the government and opposition countries separately.
+
+No zombie stage tier transition was changed; the `zombies_idea_0` through `_3` evolution chain continues to use explicit `swap_ideas` transitions, and the separate timed cure refresh remains intact.
+
+The source-derived repeated-call cases were checked for a complete history set, one missing idea, a subsequent repeated setup call, and a cleaned-and-reused carrier; complete sets add nothing, partial sets add only the missing idea, repeated setup adds nothing, and a cleaned carrier receives its removed starting set again. Event 2 zombie tier transitions still use their existing `swap_ideas` path, and the timed cure and recovery refreshes remain unchanged.
+
+The 26 guarded grant sites cover these 18 idea identifiers: `death_country_without_breath`, `death_first_silence`, `cave_mineral_carapaces`, `cave_slow_blood`, `cave_resource_born_broods`, `cave_surface_starvation`, `cave_untranslatable_command`, `black_plague_rat_brood_instinct`, `black_plague_rat_no_civilian_economy`, `black_plague_rat_fractured_instinct`, `black_plague_rat_king_dominion`, `random_terror_improvised_command`, `random_terror_captured_economy`, `random_terror_contested_legitimacy`, `brilliant_scientist_aftermath_countermeasure_exchange`, `soviet_collapse_emergency_union_authority`, `soviet_collapse_new_union_negotiations`, and `genocide_tribunal_preparation`.
+
+No country tags, state ids, parties, focus ids, localization keys, formable ids, idea modifiers, or timed idea durations changed; three existing focus reward bodies gained idea-presence guards.
+
+References used for this follow-up: installed `effects_documentation.md` `add_ideas` lines 1410-1418, revision `2cdc93d26775990468eed167442f7a416b13059fb8fe07d139b54250b79209af`; installed `triggers_documentation.md` `has_idea` lines 4034-4042, revision `7d27ed77dadaf3a213a4b3e2c624bf9c02dae495317abe8eee833b27c2d1de29`; offline `Effects - Hearts of Iron 4 Wiki.md` `add_ideas` line 1979, revision `997ddb09bfd63efb41a425149c46bd812d5f8953217a403386b2f6c85196aa0c`; `Idea modding - Hearts of Iron 4 Wiki.md` `Implementation` lines 102-129, revision `a6405eb98a02a9de4689b7c0ef80b5a887b6c6c747d3907f68c109ed3fd099ac`; `National focus modding - Hearts of Iron 4 Wiki.md` `Effects` lines 430-454, revision `bd989a13237c464f140a0aa671cc42c30a48e84a27dae791b8914654fb9c6203`; and vanilla `common/national_focus/austro_hungarian_releasable_shared.txt` lines 2156-2159, which guards a focus `add_ideas` reward with `has_idea`.
+
+The source-oriented `hoi4.script_validate` calls for the Death and Oth-Kesh scripted-effect files timed out after 600 seconds, as did the targeted `reference_read` and vanilla `source_lookup` calls. The standalone installed documentation folder has no national-focus page, so the installed effect/trigger documentation, offline focus-modelling section, and local vanilla focus example supplied the applicable guidance. Direct source review and `.tmp/handoff3/ideas/verify_scenarios.py` provide the checks for this follow-up; no live-game behavior was observed.
+
+The specific grant inventory and before-source snapshots are retained under `.tmp/handoff3/ideas/`.

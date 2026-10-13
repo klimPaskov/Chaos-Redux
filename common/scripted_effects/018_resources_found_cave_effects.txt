@@ -61,12 +61,25 @@ resources_found_cave_setup_country = {
 		}
 		resources_found_cave_load_templates = yes
 		load_focus_tree = { tree = 018_resources_found_cave_focus_tree keep_completed = no }
-		add_ideas = {
-			cave_mineral_carapaces
-			cave_slow_blood
-			cave_resource_born_broods
-			cave_surface_starvation
-			cave_untranslatable_command
+		if = {
+			limit = { NOT = { has_idea = cave_mineral_carapaces } }
+			add_ideas = cave_mineral_carapaces
+		}
+		if = {
+			limit = { NOT = { has_idea = cave_slow_blood } }
+			add_ideas = cave_slow_blood
+		}
+		if = {
+			limit = { NOT = { has_idea = cave_resource_born_broods } }
+			add_ideas = cave_resource_born_broods
+		}
+		if = {
+			limit = { NOT = { has_idea = cave_surface_starvation } }
+			add_ideas = cave_surface_starvation
+		}
+		if = {
+			limit = { NOT = { has_idea = cave_untranslatable_command } }
+			add_ideas = cave_untranslatable_command
 		}
 		set_variable = { resources_found_active_anchor_count = constant:resources_found_value.zero }
 		set_variable = { resources_found_total_anchor_capacity = constant:resources_found_value.zero }
