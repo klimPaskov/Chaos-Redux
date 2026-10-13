@@ -110,6 +110,15 @@ When an event needs a reusable country carrier, consult `common/collections/chao
 
 Do not reduce major spec effects to tiny decorative modifiers. Important effects must change incentives, unlock content, move visible mechanic values, alter army or economy behavior, create a real tradeoff, or connect to later outcomes.
 
+### Historical restoration compatibility
+
+When restoring an older direct or simple flow, apply this checklist within the existing integration and balance review:
+
+- Separate explicitly requested historical values and actions from later useful lifecycle, state, records, receipts, cleanup, context, and AI systems. Honor the explicit restore and keep its direct flow without adding mandatory gameplay steps. Avoid blanket restoration of whole recent files.
+- Compare the historical target, pre-restoration behavior, and edited behavior through actual runtime consumer call sites and their helper chains. A retained file or helper definition alone does not prove its dynamic logic still matters.
+- Preserve useful later additions with compatibility adaptations so their inputs, outputs, scaling, guards, and state transitions remain meaningful. Check whether a restored helper and retained lifecycle calculation both grant the same effect or charge the same cost, and assign each contribution to one owner.
+- Use named scenarios for the restored action alone, its interaction with retained lifecycle or context, repeated execution, and inverse cleanup where relevant. Calculate combined effects and costs from the actual calls, verify ownership and receipt handling during cleanup, and report behavior changes or unavailable historical evidence in the existing handoff. Follow existing weighted-AI review and verification limits.
+
 ## Event writing and player-facing text
 
 Event implementation owns final player-facing wording for event popups, news events, report events, Event Details, decision text, focus text, tooltips, GUI labels, scripted localisation, documentation summaries, and spreadsheet-facing fields that mirror in-game text. Convert direction into finished wording, but do not paste working labels, prompt fragments, route notes, placeholder text, or process notes into localisation.
