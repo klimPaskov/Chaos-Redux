@@ -2156,6 +2156,9 @@ reduce_contamination_effects = {
         # Apply the reduction percentage
         set_temp_variable = { total_reduction_in_percentage = 1 }
         subtract_from_temp_variable = { total_reduction_in_percentage = total_reduction }
+		# State penalties cannot become benefits when response measures stack.
+		# Preserve every positive historical reduction and its separate hazard budget.
+		clamp_temp_variable = { var = total_reduction_in_percentage min = constant:bio_lifecycle_math.zero max = constant:bio_lifecycle_math.one }
 
         # Anthrax
         multiply_variable = { anthrax_manpower_modifier = total_reduction_in_percentage }

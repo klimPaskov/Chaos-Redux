@@ -1,6 +1,70 @@
 # Biological Countermeasures
 
-Disposition: the decision-flow expansion below is superseded by the owner's A12 restoration of direct field hospitals, quarantine, separate antibiotic actions and vaccination. New underlying outbreak accounting remains, with treatment integrated automatically behind that flow. See [the restoration comparison](../../../plans/biowarfare_restore_comparison_2026-10-12.md) for active decision ownership and source evidence.
+The active flow combines the owner's A12 direct hospitals, quarantine, separate antibiotic actions, and vaccination with optional national preparedness, surveillance, international relief, and finite state treatment accepted under the later preservation instruction.
+The Disease Containment Board and intensity-banded sustainment missions have no active decision entry points.
+See [the restoration comparison](../../../plans/biowarfare_restore_comparison_2026-10-12.md) for historical restoration evidence.
+
+## Active direct-response contract
+
+The owner's preservation instruction retains recent exact-state lifecycle protections behind the restored direct decisions.
+Field hospitals remain one map action costing 10 Command Power and 150 Support Equipment, with an eight-day deployment.
+Quarantine remains one map action costing 10 Political Power, with a fifteen-day deployment.
+Neither requires Medical Capacity, an assigned division, a board, or another setup action.
+
+Selection records the ordering country and the state's current ordinary-outbreak cycle.
+Expiry checks that country, current controller, surviving ordinary episode, cycle, and normal civilian eligibility before applying the response.
+Canceled or stale orders clear only their original provider's receipt.
+Lifecycle cleanup also clears these receipts when the last ordinary episode ends, and a later outbreak receives a new cycle.
+The historical payment remains spent on cancellation, with no added fee or invented refund.
+
+State modifier burdens are rebuilt from intensity, medical saturation, and current response on every refresh, then the historical hospital, quarantine, national-treatment, vaccination, and zombie-prevention reductions apply once.
+Their remaining multiplier is `max(0, min(1, 1 - total_reduction))`.
+Field Hospital IV plus quarantine retains its historical 70% reduction, leaving 30% of the rebuilt burden.
+Overlapping measures can remove that remaining penalty but cannot reverse its sign into a state benefit.
+The modern growth, death, medical-load, detection, and spread multipliers retain their separate `cbrn_hazard_budget.residual_floor` of 50% after foundational agent treatment.
+That hazard floor does not replace the historical state-penalty reduction.
+
+### Private helper contracts
+
+| Helper | Scope and inputs | Output and side effects | Call sites and cleanup |
+| --- | --- | --- | --- |
+| `bio_countermeasure_record_direct_field_hospital_order` | State, `ROOT` is the ordering country. Requires a controlled eligible detected ordinary episode and its existing cycle, with no hospital or pending order. | Sets pending, provider, and cycle receipts. Writes temporary `bio_direct_field_hospital_order_recorded = one` only on success, so the caller initializes it to zero. Reserves no capacity or equipment. | `deploy_field_hospitals.complete_effect` records before the existing payment. |
+| `bio_countermeasure_direct_field_hospital_order_is_current` | State, same ordering country. Checks pending/provider/cycle, control, normal civilian eligibility, and an ordinary episode. | Read-only predicate. Rejects capacity-backed legacy receipts. | Hospital completion and cancellation. |
+| `bio_countermeasure_clear_direct_field_hospital_order` | State, same ordering country. No defaults. | Clears pending/provider/cycle only when the provider matches and no legacy capacity receipt exists. No refund or active-hospital removal. | Hospital expiry and cancellation. Last-episode lifecycle cleanup already owns the same fields. |
+| `bio_countermeasure_record_quarantine_order` | State, ordering country in `ROOT`, existing cycle. | Stores pending/provider/cycle without another payment. | Direct quarantine selection reuses this existing helper. |
+| `bio_countermeasure_quarantine_order_is_current` | State, ordering country in `ROOT`. | Existing episode/provider/controller check also requires normal civilian eligibility. | Direct quarantine expiry and cancellation. |
+| `bio_countermeasure_clear_owned_quarantine_order` | State, ordering country in `ROOT`. No defaults. | Calls the existing order cleanup only for that provider. No refund or removal of another active response. | Quarantine expiry and cancellation. |
+| `reduce_contamination_effects` | State, freshly rebuilt pathogen modifier variables and existing protection flags/effectiveness values. | Scales those variables once by the bounded historical remaining multiplier. No stock debit, persistent target, or lifecycle intensity change. | `bio_lifecycle_refresh_state_modifiers` after all four detected-agent baselines are rebuilt. |
+
+These helpers introduce no global event target, tuning constant, recurring hook, UI key, or asset.
+The restored decision IDs and sprites remain their consumers.
+Possible future response extensions should reuse these episode receipts without adding a required staging step.
+
+## Optional response depth
+
+These six decisions use the existing board-free category and never gate direct hospitals, quarantine, or raids.
+National preparedness remains limited by researched technology and room below the existing capacity ceiling.
+Surveillance start and stand-down replace one another according to the network's current state.
+International relief and antibiotics appear only on eligible outbreak states, with one combined treatment card rather than one card per pathogen.
+
+| Decision | Payment or commitment | Timing | Distinct result |
+| --- | --- | --- | --- |
+| `bio_expand_medical_capacity` | 50 PP, 120 Support Equipment, 40 Trucks, with the existing Black Friday quote where applicable | 90 days | +20 Medical Capacity for response and optional medical teams |
+| `bio_expand_biosecurity_capacity` | 50 PP, 80 CBRN Instruments, 80 Support Equipment | 90 days | +20 Biological Security for the lifecycle response |
+| `bio_activate_surveillance_network` | 40 PP, 80 CBRN Instruments, 60 Support Equipment, 10 Medical Capacity committed, and 20 Trucks on hand without consumption | 60 days | +25 Surveillance and +10 evidence when an outbreak is detected |
+| `bio_stand_down_surveillance_network` | No extra payment | 30 days | Removes the network and returns its 10 committed Medical Capacity once |
+| `bio_request_international_medical_mission` | 30 PP, 50 Support Equipment, 25 Trucks, 8 Medical Capacity committed, and 20 Instruments on hand without consumption | 14 days | +15 Surveillance, Containment, and Medical Response, with a public-evidence and hidden-program disclosure tradeoff |
+| `bio_distribute_antibiotics` | 10 PP, 50 Support Equipment, 20 Trucks, and 5 Medical Capacity committed once per state | 3 days | Agent-specific growth and mortality treatment, capped at three courses per episode with a 45-day cooldown and weaker courses after the first |
+
+The national antibiotic ideas provide factory-scaled state-burden protection automatically.
+The optional state courses separately activate the modern lifecycle growth and mortality multipliers.
+The national ideas do not establish a course receipt or consume a medical team's capacity on their own.
+
+National investment and surveillance selection recheck current affordability and normal civilian eligibility.
+Paid or activation receipts guard delayed completion, and canceled activation returns only its recorded capacity commitment.
+International and treatment orders retain the exact provider and outbreak or agent episode, so changed control, a later episode, or a nonhuman controller cannot turn an earlier payment into a new treatment.
+A canceled international order returns its own eight-point capacity reservation once, while consumed PP and equipment remain spent.
+Antibiotic cancellation clears only that provider's pending orders, preserves already active treatment, and returns its five-point team commitment only when no active or pending treatment remains.
 
 ## Purpose
 
@@ -67,41 +131,16 @@ The program's continuing national idea imposes 3% Consumer Goods and -5% Politic
 
 ## Exact-state field hospitals
 
-Field hospitals target one controlled state with a detected ordinary outbreak.
-
-The deployment consumes 10 Political Power, 120 Support Equipment, and 60 Trucks when ordered. It requires 20 CBRN Instruments on hand without consuming them.
-
-The order immediately reserves 8 Medical Capacity on the selected state so parallel deployments cannot spend the same response teams twice.
-
-The state stores the provider and the current ordinary-outbreak cycle when the order is placed.
-
-After seven days, the hospitals become active only if the provider, controller, and outbreak cycle still match the original order.
-
-An active field hospital reduces outbreak deaths and medical saturation through the shared lifecycle and adds the lifecycle's field-hospital Medical Response.
-
-The exact state stores the original provider country and exact committed amount.
-
-When the last ordinary episode in that state ends, cleanup restores the 8 Medical Capacity to that original provider if it still exists.
-
-If the deployment cannot arrive, the reserved Medical Capacity returns to its provider, but Political Power and equipment already spent do not.
+Field hospitals use the direct action and episode receipts in the active contract above.
+Their existing 20% to 50% hospital-grade reduction scales the rebuilt state burden, and the deployed flag adds the lifecycle's Medical Response and reduces deaths and medical load.
+No Medical Capacity reservation belongs to this direct route.
 
 ## Exact-state quarantine
 
-Quarantine targets one controlled state with a detected ordinary outbreak.
-
-The order consumes 25 Political Power, 10 Command Power, 40 Trucks, and 1,000 Manpower. It requires 80 Support Equipment and 200 Infantry Equipment on hand without consuming them.
-
-The state stores the ordering country and current ordinary-outbreak cycle.
-
-After ten days, the quarantine is established only if the provider, controller, and outbreak cycle still match the original order.
-
-An active quarantine reduces local pathogen growth and cross-state spread while improving detection.
-
-It simultaneously reduces state construction, local factories, resources, and supplies by 15–20% and increases resistance growth by 10%.
-
-These tradeoffs are state modifiers because national Political Power and Stability modifiers do not belong in state scope.
-
-The quarantine clears when no ordinary episode remains in the state.
+Quarantine uses the direct action and episode receipts in the active contract above.
+Its 20% state-burden reduction accompanies the lifecycle's improved containment, detection, and cross-state spread prevention.
+The existing quarantined-state modifier retains construction, factory, resource, supply, and resistance tradeoffs.
+The quarantine clears when no ordinary episode remains, while independent Black Plague measures retain their own ownership.
 
 ## Bilateral border controls
 
@@ -123,16 +162,10 @@ No all-country daily, weekly, or monthly pulse is used.
 
 ## Agent-specific antibiotics
 
-Anthrax, Plague, and Tularemia each keep a separate research penalty, production idea, and treatment-course record, but one decision per phase covers all three.
+Anthrax, Plague, and Tularemia retain separate research, production, withdrawal, national protection, and treatment-course records.
 
-Emergency Antibiotics, Antibiotics Production, and End Antibiotics Production take the most urgent pathogen first: a detected domestic outbreak before confirmed use elsewhere, and Plague, Anthrax, Tularemia on a tie.
-The decision title names the pathogen it will start, or the one already under way, and further threats follow one at a time at the same per-pathogen cost.
-End Antibiotics Production closes every line whose pathogen has no detected outbreak.
-Antibiotics for a state is one targeted decision that treats every detected outbreak in the state that has a production line, under one payment and one medical-team commitment.
-
-Emergency development does not require an offensive biological program.
-
-It becomes available when the country detects the matching agent or when confirmed public-use history records that the matching weapon has been used.
+The historical research, production, and withdrawal decisions retain their own pathogen prerequisites and timing.
+The optional Antibiotics for a state card treats every eligible detected outbreak in that state that has a production line, under one payment and one medical-team commitment.
 
 Confirmed attribution sets an agent-specific world-history flag, so threat availability does not repeatedly scan every country and does not reveal a secret foreign project.
 
@@ -144,11 +177,12 @@ The doomsday batch writes the same agent-specific public flag only for agents wh
 | Anthrax | -20% | 10% |
 | Plague | -25% | 15% |
 
-Development and production preparation each take 75 days for every pathogen.
+Production takes 100 days for Anthrax, 120 for Plague, and 50 for Tularemia.
+Retroactive research takes 120, 180, and 75 days respectively, and withdrawal takes 20, 30, and 20 days.
 
-Mass production creates national stores but does not protect every contaminated state automatically.
+Mass production automatically supplies the matching factory-scaled state-burden protection.
 
-A treatment course must be dispatched to one controlled state with a detected outbreak that has a production line.
+An optional treatment course supplies the separate lifecycle growth and mortality protection to one controlled state with an eligible detected outbreak.
 
 Each course consumes 10 Political Power, 50 Support Equipment, and 20 Trucks.
 
@@ -174,17 +208,9 @@ Courses after the first use weaker agent-specific growth and death multipliers, 
 
 ## Smallpox vaccination
 
-Smallpox vaccination requires Integrated Epidemic Control and a real Smallpox threat.
-
-The 180-day national program consumes 150 Political Power, 250 Support Equipment, and 50 CBRN Instruments. It requires 100 Trucks on hand without consuming them.
-
-It commits 10 Medical Capacity and imposes 25% Consumer Goods and -25% Political Power Gain while active.
-
-The shared lifecycle applies the vaccination only to Smallpox.
-
-It reduces Smallpox growth, spread, and deaths and does not alter the effects of Tularemia, Anthrax, or Plague.
-
-Ending the program takes 30 days and restores the committed 10 Medical Capacity.
+The historical Smallpox program consumes 150 Political Power and takes 180 days to begin, with its original live-threat visibility and 30-day withdrawal.
+It reserves no Medical Capacity and adds no equipment payment.
+Its national idea supplies the existing Consumer Goods and Political Power tradeoff, while the shared lifecycle applies vaccination to Smallpox growth, spread, and deaths.
 
 ## Biological special projects in the ordinary outbreak lifecycle
 
@@ -226,48 +252,10 @@ A country with a real biological stockpile loses attribution control and risks e
 
 The mission never fabricates an offensive program or a donor country.
 
-## Outbreak containment missions
+## Inactive sustainment mission backend
 
-An outbreak containment mission targets one controlled state that already has active quarantine and either a field hospital or an international medical mission.
-
-Starting the mission consumes 35 Political Power, 15 Command Power, and 150 Support Equipment. It requires 75 Trucks and 40 CBRN Instruments on hand without consuming them.
-
-It commits 10 Medical Capacity until resolution. Selection requires 15 available so 5 remain uncommitted for a continuing success or partial success.
-
-The reservation is guarded by an explicit capacity marker, and the mission stores the current ordinary-outbreak cycle.
-
-The selected state's maximum current ordinary-agent intensity fixes the mission duration at the moment the mission begins.
-
-| Maximum starting intensity | Duration |
-| --- | ---: |
-| Below 20 | 90 days |
-| 20 to 39.999 | 180 days |
-| 40 to 59.999 | 270 days |
-| 60 or higher | 365 days |
-
-The mission records the exact starting intensity and increments an exact state-owned spread counter only when that state successfully seeds a new connected outbreak during the mission.
-
-There is no country, state, or world scan for spread accounting.
-
-Full success requires the provider to retain at least 5 uncommitted Medical Capacity, preserve the quarantine and a field hospital or international mission, retain the final sustainment stocks, prevent new outbound spread, keep control of the state, and reduce every active agent below the recorded starting maximum.
-
-A full success consumes a final 75 Support Equipment and requires 30 Trucks and 10 CBRN Instruments still on hand without consuming them. It lowers active-agent intensity by 15, lowers exposed share by 0.05, lowers medical saturation by 15, and grants 1% Stability.
-
-Partial success requires the provider to retain the same Medical Capacity and final stores, keep control, prevent new outbound spread, keep at least one response measure active, and prevent every active agent from rising above the recorded starting maximum.
-
-A partial success consumes the final 75 Support Equipment and requires 30 Trucks and 10 CBRN Instruments still on hand without consuming them. It lowers active-agent intensity by 5, lowers exposed share by 0.01, and lowers medical saturation by 5.
-
-Failure raises active-agent intensity by 10, exposed share by 0.02, and medical saturation by 10 in the exact mission state.
-
-Losing control of the state during the same active outbreak cycle also follows this failure path at resolution. A later outbreak cycle or a state whose ordinary episode has already ended only clears the stale mission record and returns its committed medical teams.
-
-An outbreak that fully recovers before mission resolution counts as a full success without consuming unnecessary final sustainment stores.
-
-The original provider's 10 committed Medical Capacity is restored after success, partial success, or failure.
-
-A mission cannot resolve against a later outbreak cycle.
-
-If the original provider ceases to exist, the exact-state lifecycle removes the orphaned mission record without creating a replacement provider or refund.
+The four intensity-banded sustainment missions have no decision entry points.
+Their helper definitions and cleanup remain for source compatibility, but they do not establish a player prerequisite or an active mission ladder.
 
 ## Cleanup and ownership
 
@@ -298,6 +286,22 @@ Evidence added to connected spread, surveillance, or international transparency 
 Actor-independent public confirmed-use history is preserved even if the responsible country ceases to exist before confirmation.
 
 National surveillance and vaccination commitments are restored only by their own stand-down decisions because they are national continuing programs rather than outbreak-state commitments.
+
+
+The optional national medical investment uses the existing `black_friday_bio_medical_investment_paid` receipt, and the biosecurity investment uses `bio_biosecurity_investment_paid`.
+Both clear the receipt on expiry or cancellation and publish no capacity gain after loss of normal civilian eligibility.
+`bio_countermeasure_stand_down_surveillance_network` also clears a canceled activation's progress flag, returns committed capacity only while its commitment marker exists, and can be called repeatedly without another refund.
+
+`bio_countermeasure_release_owned_international_mission_order` is state scoped with the ordering country in `ROOT`.
+It has no optional inputs or defaults, checks the pending flag and matching provider, and then calls the existing reservation-release helper.
+It neither touches a completed active mission nor refunds another country's receipt.
+The international decision's stale-expiry and cancellation branches call it, while ordinary-episode cleanup owns the active mission's eventual capacity release.
+
+`bio_countermeasure_record_antibiotic_orders` writes temporary `bio_antibiotic_order_recorded = one` only after recording a current matching order, and its decision caller initializes that output to zero before selection.
+`bio_countermeasure_has_current_antibiotic_order` is a read-only state predicate over the three exact provider/agent-episode receipts and controls the one combined card's cancellation.
+`bio_countermeasure_resolve_antibiotic_orders` applies only current courses, then calls `bio_countermeasure_clear_owned_antibiotic_orders`.
+That state-scoped cleanup uses the ordering country in `ROOT`, clears only matching pending providers, and invokes the existing team-release helper only for the matching team provider.
+It leaves active treatment and another provider's pending orders intact.
 
 ## Designer integration
 
@@ -341,7 +345,7 @@ Unique decision DDS files live under `gfx/interface/decisions/biowarfare/counter
 
 Unique continuing-idea DDS files live under `gfx/interface/ideas/biowarfare/countermeasures/`.
 
-The runtime sprite names are:
+The registered package sprites include the active consumers and retained unused quarantine and sustainment artwork:
 
 - `GFX_decision_bio_expand_medical_capacity`
 - `GFX_decision_bio_expand_biosecurity_capacity`
@@ -380,4 +384,4 @@ Future extensions may add agent-specific vaccination technology for non-Smallpox
 
 Future international missions may gain named contributor records if a verified current-version engine hook can expose the actual contributing country without inference.
 
-Future treatment UI may display exact state commitments and remaining course counts through the existing disease-containment scripted GUI.
+Future treatment tooltips may display exact state commitments and remaining course counts without a required board or staging step.

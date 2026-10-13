@@ -93,6 +93,8 @@ bio_countermeasure_smallpox_threat_exists = {
 }
 
 bio_countermeasure_can_expand_medical_capacity_prerequisites = {
+	uses_normal_civilian_systems = yes
+	NOT = { has_country_flag = black_friday_bio_medical_investment_paid }
 	has_tech = tech_field_hospital
 	OR = {
 		NOT = { has_variable = cbrn_medical_capacity }
@@ -111,6 +113,8 @@ bio_countermeasure_can_expand_medical_capacity = {
 }
 
 bio_countermeasure_can_expand_biosecurity_capacity = {
+	uses_normal_civilian_systems = yes
+	NOT = { has_country_flag = bio_biosecurity_investment_paid }
 	NOT = { has_political_power < constant:bio_countermeasure_cost.expand_biosecurity_pp }
 	has_tech = chemical_detection_paper
 	OR = {
@@ -130,6 +134,7 @@ bio_countermeasure_can_expand_biosecurity_capacity = {
 }
 
 bio_countermeasure_can_activate_surveillance_network = {
+	uses_normal_civilian_systems = yes
 	has_tech = bio_surveillance_networks
 	NOT = { has_political_power < constant:bio_countermeasure_cost.surveillance_pp }
 	has_variable = cbrn_medical_capacity
@@ -161,6 +166,7 @@ bio_countermeasure_can_impose_quarantine = {
 }
 
 bio_countermeasure_can_distribute_antibiotics = {
+	uses_normal_civilian_systems = yes
 	NOT = { has_political_power < constant:bio_countermeasure_cost.antibiotic_distribution_pp }
 	NOT = { has_equipment = { support_equipment < constant:bio_countermeasure_cost.antibiotic_distribution_support } }
 	NOT = { has_equipment = { motorized_equipment < constant:bio_countermeasure_cost.antibiotic_distribution_trucks } }
@@ -284,6 +290,22 @@ bio_countermeasure_state_can_receive_tularemia_antibiotics = {
 	}
 }
 
+# STATE, ROOT = ordering country. The direct decision pays equipment and CP,
+# so it uses episode/provider proof without a Medical Capacity reservation.
+bio_countermeasure_direct_field_hospital_order_is_current = {
+	NOT = { has_state_flag = bio_field_hospital_capacity_committed }
+	has_state_flag = bio_field_hospital_deployment_pending
+	has_variable = bio_field_hospital_medical_provider
+	check_variable = { var = bio_field_hospital_medical_provider value = ROOT compare = equals }
+	has_variable = bio_field_hospital_order_cycle
+	has_variable = bio_ordinary_outbreak_cycle
+	check_variable = { var = bio_field_hospital_order_cycle value = bio_ordinary_outbreak_cycle compare = equals }
+	is_controlled_by = ROOT
+	state_uses_normal_civilian_systems = yes
+	bio_lifecycle_state_has_any_ordinary_episode = yes
+	NOT = { has_state_flag = field_hospitals_deployed }
+}
+
 bio_countermeasure_field_hospital_order_is_current = {
 	has_state_flag = bio_field_hospital_capacity_committed
 	has_state_flag = bio_field_hospital_deployment_pending
@@ -305,11 +327,13 @@ bio_countermeasure_quarantine_order_is_current = {
 	has_variable = bio_ordinary_outbreak_cycle
 	check_variable = { var = bio_quarantine_order_cycle value = bio_ordinary_outbreak_cycle compare = equals }
 	is_controlled_by = ROOT
+	state_uses_normal_civilian_systems = yes
 	bio_lifecycle_state_has_any_ordinary_episode = yes
 	NOT = { has_state_flag = bio_ordinary_quarantine_active }
 }
 
 bio_countermeasure_anthrax_antibiotic_order_is_current = {
+	state_uses_normal_civilian_systems = yes
 	has_state_flag = bio_anthrax_antibiotic_course_pending
 	has_variable = bio_anthrax_antibiotic_order_provider
 	check_variable = { var = bio_anthrax_antibiotic_order_provider value = ROOT compare = equals }
@@ -322,6 +346,7 @@ bio_countermeasure_anthrax_antibiotic_order_is_current = {
 }
 
 bio_countermeasure_plague_antibiotic_order_is_current = {
+	state_uses_normal_civilian_systems = yes
 	has_state_flag = bio_plague_antibiotic_course_pending
 	has_variable = bio_plague_antibiotic_order_provider
 	check_variable = { var = bio_plague_antibiotic_order_provider value = ROOT compare = equals }
@@ -334,6 +359,7 @@ bio_countermeasure_plague_antibiotic_order_is_current = {
 }
 
 bio_countermeasure_tularemia_antibiotic_order_is_current = {
+	state_uses_normal_civilian_systems = yes
 	has_state_flag = bio_tularemia_antibiotic_course_pending
 	has_variable = bio_tularemia_antibiotic_order_provider
 	check_variable = { var = bio_tularemia_antibiotic_order_provider value = ROOT compare = equals }
@@ -346,6 +372,7 @@ bio_countermeasure_tularemia_antibiotic_order_is_current = {
 }
 
 bio_countermeasure_international_mission_order_is_current = {
+	state_uses_normal_civilian_systems = yes
 	has_state_flag = bio_international_mission_capacity_committed
 	has_state_flag = bio_international_medical_mission_pending
 	has_variable = bio_international_medical_provider
@@ -387,6 +414,7 @@ bio_countermeasure_has_international_access = {
 }
 
 bio_countermeasure_can_request_international_mission = {
+	uses_normal_civilian_systems = yes
 	bio_countermeasure_has_international_access = yes
 	NOT = { has_political_power < constant:bio_countermeasure_cost.international_mission_pp }
 	has_variable = cbrn_medical_capacity
@@ -850,6 +878,7 @@ bio_countermeasure_can_dispatch_antibiotics = {
 }
 
 bio_countermeasure_state_can_receive_antibiotics = {
+	state_uses_normal_civilian_systems = yes
 	OR = {
 		AND = {
 			ROOT = { has_idea = anthrax_antibiotics_mass_production_idea }
@@ -863,5 +892,15 @@ bio_countermeasure_state_can_receive_antibiotics = {
 			ROOT = { has_idea = tularemia_antibiotics_mass_production_idea }
 			bio_countermeasure_state_can_receive_tularemia_antibiotics = yes
 		}
+	}
+}
+
+# STATE, ROOT = dispatching country. One state card can carry several agents
+# without adding another card or authorizing another provider's pending order.
+bio_countermeasure_has_current_antibiotic_order = {
+	OR = {
+		bio_countermeasure_anthrax_antibiotic_order_is_current = yes
+		bio_countermeasure_plague_antibiotic_order_is_current = yes
+		bio_countermeasure_tularemia_antibiotic_order_is_current = yes
 	}
 }

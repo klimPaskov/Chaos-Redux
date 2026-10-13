@@ -135,6 +135,7 @@ bio_countermeasure_activate_surveillance_network = {
 }
 
 bio_countermeasure_stand_down_surveillance_network = {
+	clr_country_flag = bio_surveillance_network_activation_in_progress
 	remove_ideas = bio_surveillance_network_idea
 	if = {
 		limit = { has_country_flag = bio_surveillance_capacity_committed }
@@ -149,6 +150,41 @@ bio_countermeasure_pay_field_hospital = {
 	bio_countermeasure_debit_support_equipment = yes
 	set_temp_variable = { bio_countermeasure_command_power_cost = constant:bio_countermeasure_cost.field_hospital_command_power }
 	bio_countermeasure_pay_command_power = yes
+}
+
+# STATE, ROOT = ordering country. Direct historical orders keep episode proof
+# without committing Medical Capacity or adding another setup action.
+bio_countermeasure_record_direct_field_hospital_order = {
+	if = {
+		limit = {
+			is_controlled_by = ROOT
+			state_uses_normal_civilian_systems = yes
+			bio_lifecycle_state_has_any_detected_outbreak = yes
+			has_variable = bio_ordinary_outbreak_cycle
+			NOT = { has_state_flag = bio_field_hospital_capacity_committed }
+			NOT = { has_state_flag = bio_field_hospital_deployment_pending }
+			NOT = { has_state_flag = field_hospitals_deployed }
+		}
+		set_state_flag = bio_field_hospital_deployment_pending
+		set_variable = { bio_field_hospital_medical_provider = ROOT }
+		set_variable = { bio_field_hospital_order_cycle = bio_ordinary_outbreak_cycle }
+		set_temp_variable = { bio_direct_field_hospital_order_recorded = constant:bio_lifecycle_math.one }
+	}
+}
+
+# STATE, ROOT = ordering country. A stale country's callback cannot clear
+# another provider's receipt or release the capacity-backed legacy order.
+bio_countermeasure_clear_direct_field_hospital_order = {
+	if = {
+		limit = {
+			NOT = { has_state_flag = bio_field_hospital_capacity_committed }
+			has_variable = bio_field_hospital_medical_provider
+			check_variable = { var = bio_field_hospital_medical_provider value = ROOT compare = equals }
+		}
+		clr_state_flag = bio_field_hospital_deployment_pending
+		clear_variable = bio_field_hospital_medical_provider
+		clear_variable = bio_field_hospital_order_cycle
+	}
 }
 
 bio_countermeasure_reserve_field_hospital_capacity = {
@@ -239,6 +275,17 @@ bio_countermeasure_clear_quarantine_order = {
 	clr_state_flag = bio_quarantine_deployment_pending
 	clear_variable = bio_quarantine_order_provider
 	clear_variable = bio_quarantine_order_cycle
+}
+
+# STATE, ROOT = ordering country. Clear only this country's pending order.
+bio_countermeasure_clear_owned_quarantine_order = {
+	if = {
+		limit = {
+			has_variable = bio_quarantine_order_provider
+			check_variable = { var = bio_quarantine_order_provider value = ROOT compare = equals }
+		}
+		bio_countermeasure_clear_quarantine_order = yes
+	}
 }
 
 bio_countermeasure_pay_antibiotic_distribution = {
@@ -539,6 +586,19 @@ bio_countermeasure_release_international_mission_reservation = {
 	clear_variable = bio_international_medical_commitment
 	clear_variable = bio_international_order_cycle
 	set_temp_variable = { bio_countermeasure_refund_value = 0 }
+}
+
+# STATE, ROOT = ordering country. A failed pending order returns its one
+# capacity reservation without touching a completed mission or another donor.
+bio_countermeasure_release_owned_international_mission_order = {
+	if = {
+		limit = {
+			has_state_flag = bio_international_medical_mission_pending
+			has_variable = bio_international_medical_provider
+			check_variable = { var = bio_international_medical_provider value = ROOT compare = equals }
+		}
+		bio_countermeasure_release_international_mission_reservation = yes
+	}
 }
 
 bio_countermeasure_add_international_transparency_to_agent = {
@@ -1125,6 +1185,7 @@ bio_countermeasure_record_antibiotic_orders = {
 			bio_countermeasure_state_can_receive_plague_antibiotics = yes
 		}
 		bio_countermeasure_record_plague_antibiotic_order = yes
+		if = { limit = { bio_countermeasure_plague_antibiotic_order_is_current = yes } set_temp_variable = { bio_antibiotic_order_recorded = constant:bio_lifecycle_math.one } }
 	}
 	if = {
 		limit = {
@@ -1132,6 +1193,7 @@ bio_countermeasure_record_antibiotic_orders = {
 			bio_countermeasure_state_can_receive_anthrax_antibiotics = yes
 		}
 		bio_countermeasure_record_anthrax_antibiotic_order = yes
+		if = { limit = { bio_countermeasure_anthrax_antibiotic_order_is_current = yes } set_temp_variable = { bio_antibiotic_order_recorded = constant:bio_lifecycle_math.one } }
 	}
 	if = {
 		limit = {
@@ -1139,6 +1201,7 @@ bio_countermeasure_record_antibiotic_orders = {
 			bio_countermeasure_state_can_receive_tularemia_antibiotics = yes
 		}
 		bio_countermeasure_record_tularemia_antibiotic_order = yes
+		if = { limit = { bio_countermeasure_tularemia_antibiotic_order_is_current = yes } set_temp_variable = { bio_antibiotic_order_recorded = constant:bio_lifecycle_math.one } }
 	}
 }
 
@@ -1148,25 +1211,34 @@ bio_countermeasure_resolve_antibiotic_orders = {
 		limit = { bio_countermeasure_plague_antibiotic_order_is_current = yes }
 		bio_countermeasure_apply_plague_antibiotic_course = yes
 	}
-	else_if = {
-		limit = { has_state_flag = bio_plague_antibiotic_course_pending }
-		bio_countermeasure_clear_plague_antibiotic_order = yes
-	}
 	if = {
 		limit = { bio_countermeasure_anthrax_antibiotic_order_is_current = yes }
 		bio_countermeasure_apply_anthrax_antibiotic_course = yes
-	}
-	else_if = {
-		limit = { has_state_flag = bio_anthrax_antibiotic_course_pending }
-		bio_countermeasure_clear_anthrax_antibiotic_order = yes
 	}
 	if = {
 		limit = { bio_countermeasure_tularemia_antibiotic_order_is_current = yes }
 		bio_countermeasure_apply_tularemia_antibiotic_course = yes
 	}
-	else_if = {
-		limit = { has_state_flag = bio_tularemia_antibiotic_course_pending }
+	bio_countermeasure_clear_owned_antibiotic_orders = yes
+}
+
+# STATE, ROOT = ordering country. Clears only this provider's pending courses.
+# Existing active treatment remains, so its capacity returns only when unused.
+bio_countermeasure_clear_owned_antibiotic_orders = {
+	if = {
+		limit = { has_variable = bio_plague_antibiotic_order_provider check_variable = { var = bio_plague_antibiotic_order_provider value = ROOT compare = equals } }
+		bio_countermeasure_clear_plague_antibiotic_order = yes
+	}
+	if = {
+		limit = { has_variable = bio_anthrax_antibiotic_order_provider check_variable = { var = bio_anthrax_antibiotic_order_provider value = ROOT compare = equals } }
+		bio_countermeasure_clear_anthrax_antibiotic_order = yes
+	}
+	if = {
+		limit = { has_variable = bio_tularemia_antibiotic_order_provider check_variable = { var = bio_tularemia_antibiotic_order_provider value = ROOT compare = equals } }
 		bio_countermeasure_clear_tularemia_antibiotic_order = yes
 	}
-	bio_countermeasure_release_antibiotic_service_if_unused = yes
+	if = {
+		limit = { has_variable = bio_antibiotic_medical_provider check_variable = { var = bio_antibiotic_medical_provider value = ROOT compare = equals } }
+		bio_countermeasure_release_antibiotic_service_if_unused = yes
+	}
 }
