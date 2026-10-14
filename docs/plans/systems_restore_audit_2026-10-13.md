@@ -1,11 +1,83 @@
 # Gameplay systems restoration audit — 13 October 2026
 
-## Preservation review after Handoff 3
+## Deeper preservation review, 14 October 2026
+
+The owner requested a more thorough search for useful recent mechanics displaced by the mass restoration and explicitly required keeping the recent camps UI.
+The current pass traces removed writers and their surviving consumers, paid outcomes across initialization, and actual helper outputs.
+The previous preservation review below remains historical evidence where this pass further changes its conclusions.
+All source changes in this section are committed in `05d06dc0e641ff192d998e321a14d968400e949b`.
+
+### Recovered behavior and preservation decisions
+
+| Surface | Finding and current result |
+| --- | --- |
+| War and diplomatic pressure | Recover faction-follow-up suppression and the existing five-point actor/day minor-war allowance around the unchanged +1/+5 anchors. Major justification pressure contributes +1 once per continuous observed actor-target interval, instead of on every daily pulse. Rejected or unqualified helper calls clear their outputs and cannot reuse another action's Chaos value. Election relief retains its human-major democratic qualification. |
+| Frontline civilian losses | Recover proportional distribution across the same validated human enemy frontage and the existing core-country attribution proxy. One original random entry determines the total budget. Deduplicated states receive capped shares weighted by originating units and existing density/infrastructure factors. Each state has one measured population debit and one state ledger write, and the country shares sum to that actual debit. Correct native temporary-array commands make the country/state data handoff functional. |
+| Chemical cleanup and civilian response | Restored abilities wrote a legacy burden that modern cleanup, serious-contamination, emergency, protection-priority and filter-cost readers ignored. Both live ledgers now feed those consumers. One cleanup budget removes modern burden first and only its remainder from legacy burden, with expiry and below-Trace handling. Current masks, medical protection, shelters and industrial-continuity choices affect the existing legacy civilian-loss registration without adding another release or casualty path. |
+| Chemical quantities and dynamic effects | Replace nominal producer-restricted payment with observed removal of the actor's held equipment, including foreign-produced stock. Repair caller-owned outputs for officer-spirit, Livens, weather, mask, state-count and final-effect calculations. Four previews and debits use the same cost multipliers. Effects and dose follow the actual paid fraction, including below 10% stock. Zero payment cannot produce buffs, dispersal, condemnation or a false wind-miscalculation report. Full-supply strengths, durations and existing native CP/cooldown behavior remain. |
+| Paid Belgian projects | Preserve quota and corridor orders through country-before-site initialization and a busy Administration works slot. Two distinct pending receipts retain the original paid targets under the existing monthly owner. Remove only the competing Belgian branch from generic civil-project migration. Same-state quota, corridor and unrelated works cannot consume one another's receipts. Starting a new project incurs no second upfront charge, while the existing funded-month support cost remains. |
+| Corridor relief | The old overextension relief is still meaningful, so it is preserved at completion of the corridor's own funded works order. A separate started receipt is written only after that order is accepted and is consumed at completion or cancellation. Quota completion, unrelated same-state work, replay, replacement, country closure and nonhuman conversion cannot claim it. |
+| Current camp pressures and ideas | Reconnect the existing USA, France/Vichy, Italy and Belgium idea resolver after current Civil Administration pressure updates. Those social, political and reform ideas follow current values again. The actual economy and custody projections retain their present owners, with no added flat production or labor payout. |
+| Recent camps UI | Keep all ten protected UI source/text paths byte-identical to the start of this pass. The six principal tab, summary and meter textures and three related icons match the October 10 source objects from `630c655e1c`, and the later actual-State selection fix remains. No layout, tab, control, category attachment or art was rolled back. Only the restored missions' new outcome tooltips outside these protected UI files were added. |
+| Assassin research | Restore the original `murder_mystery_clandestine_combat_training_tree` root from `19e5fa935^` at its original infantry-folder geometry. The seven existing Assassin technologies, gates, unlocks, AI weights and scripted grants were intact, but the missing display root hid the research branch. All other roots and the accepted chemical-tree consolidation remain unchanged. |
+| Scientists and startup | Confirm all 67 identities still recruit at home, all 20 marker setters survive, and the seven deleted dynamic trait awards are represented by the same characters' static traits. Ishii and Witaszek retain their actual downstream consumers. The discarded CSH transfer machinery adds no missing capability and would contradict A11, so it stays retired. Correct one stale roster summary and the historical transfer document's status. |
+| Migration and folded CBRN cards | The large reception-preparation replacement preserves shelter, medical, policy, generation, rollback and front-intent logic under state-specific paid transport receipts. The removed PP/fixed-fuel cache is an explicit C11 replacement. The seven folded protection/weather cards retain their effects through visible prerequisite cards and grant helpers. No redundant cards or old fees are reinstated. |
+
+### Meaningful checks
+
+The parent reran the 27 meter source-formula cases and 98 chemical actual-helper cases against the final source.
+The meter comparison preserves the original percentage rate, cap and random operations and 107 other existing helpers.
+Examples include a 120-person budget split 90/30, odd rounding of 101 into 34/34/33, measured 37-person victim attribution into 19/9/9, and a 2,100-entry duplicate pool reduced to two states sharing 15,000 as 6,000/9,000.
+The carried civilian Chaos buffer gives the same aggregate result for split shares as for the corresponding single measured debit, including the million-person boundary.
+Seven qualifying minor relations contribute 1/1/1/1/1/0/0 for one actor/day, and 180 contiguous justification pulses contribute one point in total.
+
+Chemical cases cover ability-only, native-only, mixed and expired burden, cleanup conservation at the Trace boundary, all four equipment models, foreign-produced held stock, full/short/failed native debit observations, zero-payment wind-report rejection and the preview-to-final path.
+Stocks of 0, 1, 30 and 299 against a 3,000-unit requirement retain their actual fractions through full payment and scale again only for a genuinely short observation.
+Synthetic 0.8 cost-multiplier cases verify equal preview/debit requirements without changing the actual 1.0 game tuning.
+Native inventory mutation and equipment-protection snapshots remain declared fixture boundaries.
+
+Independent weighted and integration reviewers checked the final affected source.
+The integration review caught a competing Belgian initialization path and the same-state receipt collision, which were corrected before publication.
+It also confirmed that the later corridor relief cannot be claimed by quota or unrelated work.
+Camps cases trace free/busy slots, uninitialized state ledgers, two orders sharing a state, cancellation, authority loss, closure, C6 conversion and replay.
+These camp cases are source traces, not executed native timers.
+The ten protected UI hashes and six principal DDS source-object matches were verified independently and by the parent.
+The parent additionally verified the three related icons against their October 10 objects.
+
+### Adaptations and verification limits
+
+No requested useful recovery was knowingly omitted and no additional mandatory player step, board, art replacement, stock migration or worldwide periodic hook was introduced.
+The existing native justification API exposes no reliable episode identity.
+The accepted continuity receipt re-arms after a full missing-day gap, so same-day restart and parallel goals against the same target remain one observed threat interval.
+Observation continues while contribution is disabled or the actor is unqualified, preventing false gaps from those states.
+This is an explicit adaptation, not a claim of exact native goal identity.
+
+The core-country civilian split remains a game proxy rather than demographic measurement.
+Native array-iterator caps, very large-front performance and superior/field-marshal overlap remain unobserved, despite the larger arithmetic fixture.
+The four chemical abilities retain configured durations while their magnitudes and dose scale with payment.
+Their native CP cost/cooldown can still apply when the native equipment debit fails, and no unsupported refund was invented.
+The camp bridge uses current responsibility, lifecycle and authority evidence because no separate site-incarnation counter exists.
+
+MCP command and scope checks remain partial where argument blocks and root scopes are unresolved.
+The technology inspector/renderer did not return usable results within the bounded attempts, so native card drawing and scrolling are not claimed verified.
+The archived root geometry, seven-tech chain and actual installed vanilla `tech_special_forces_tree` sibling at `interface/countrytechtreeview.gui:311–317` supplied the source comparison.
+No game or error-log inspection was performed and nothing was pushed.
+The original Linux two-super-event audio test remains outstanding and was not reopened by this source-preservation pass.
+
+Owner documents were updated for the meter, chemical helpers, camp dispatch and scientist roster.
+Existing icons, equipment, unit definitions, recordings and protected UI art were reused.
+No event premise or catalogue row changed, so no workbook edit was needed.
+Exact before/after data, references and independent findings are retained under `.tmp/handoff3_preserve_deep/` and the implementation commit lists all 29 owned paths.
+The map/states skill adds one reusable rule explaining that array storage comes from its native commands, not a `temp_` name prefix.
+Skills used across this pass were events, subagents, map/states, decisions/missions, diplomacy/war, ideas/modifiers, equipment, native raids, AI strategies, characters/leaders, technology/doctrines, scripted GUI and shared Git commit.
+No new skill was created.
+
+## Preservation review after Handoff 3 (first-pass historical snapshot)
 
 The owner's latest instruction is to keep recent content, adapted where it adds depth, dynamic behavior and meaningful choices without bloat.
 This supersedes the earlier blanket choice to restore old behavior wherever the systems audit left a judgement call.
 The Handoff 3 implementation account below is retained as a historical snapshot, including its original calculations and limitations.
-The current behavior and acceptance decisions are recorded here.
+The first-pass behavior and acceptance decisions are recorded here; the deeper review above supersedes its meter, chemical and camp-project conclusions.
 
 ### Action taken per system
 
