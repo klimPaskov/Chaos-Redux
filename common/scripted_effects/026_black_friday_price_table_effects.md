@@ -16,6 +16,11 @@ The CXT decision `chaosx_test_country_event026_price_probe_decision` is the live
 Before reading the quote after helper return, a caller initializes `black_friday_price_payable` to the ordinary amount and `black_friday_price_spend` to `constant:black_friday_event.zero` in its own block.
 `black_friday_price_table_refresh_entries` owns both outputs for its direct quotes and its nested owner-table calls.
 Version 18 rebuilds negative debit globals with retained caller storage, as recorded in Event 026 decision D43.
+Version 19 registers `genocide_decision_cost.foreign_sanctions` for the direct sanctions decision restored alongside the source-aware condemnation system.
+The restored French and Belgian review and reform decisions read the existing `camp_rework_cost_review_pp` and `camp_rework_cost_dismantle_pp` entries, initialize caller-owned `camp_rework_sale_stock_family` to zero before dispatch, and credit their retained purchase once through `camp_rework_credit_sale_order`.
+French closure pays the existing support-equipment quote and credits Equipment, while the other three restored colonial actions credit Political Power.
+Every native colonial purchase in the same decision file allocates the stock-family temporary before routing, so nested material payments retain their Equipment or Convoys family and clear it after credit.
+Their native political-power fees remain with the engine and these additions introduce no extra debit or gameplay step.
 
 | Effect | Scope | Inputs | Outputs and side effects |
 | --- | --- | --- | --- |
