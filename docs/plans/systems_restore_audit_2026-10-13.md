@@ -1,5 +1,40 @@
 # Gameplay systems restoration audit — 13 October 2026
 
+## Further consumer trace, 14 October 2026
+
+The owner requested another check for recent mechanics removed or disconnected by mass restoration, recovering useful depth through existing actions without extra steps.
+This is a cumulative follow-up to the two preservation passes below.
+Implementation: `a520c952284505da76ff71866d39d4123b9ad3b6`.
+
+| Examined surface | Action and evidence |
+| --- | --- |
+| Four French/Belgian review and reform actions | Reconnect native prices to the existing Black Friday review/dismantle globals and recover one purchase credit per retained payment. `adc0821d0` already wired these four actions to shared prices and credits; the older-source restoration disconnected them. Current Civil Administration outcomes and paid project continuity remain intact. |
+| Immediate sanctions | Register the restored 60 PP owner price in the existing sale table, use it for the native decision cost, and credit the purchase once. This adapts the restored action to the current cost contract without replacing the newer source-aware sanctions system or introducing a manual debit. Table version 19 refreshes the added price through existing initialization and sale lifecycle. |
+| Colonial payment categories | Allocate the stock-family temporary in all eleven native decision callers before dispatch. Nested Equipment/Convoys payments then survive helper return and cannot inherit another action's category. French closure credits its actual support-equipment payment; PP-only orders credit PP; Equipment takes precedence over Convoys when both are spent. Existing quantities, routes and nonrefundable-payment ownership remain. |
+| Direct chemical and state responses | Trace restored Japan attacks, exact-state mask allocation, emergency distribution, alarm, hospitals, shelter, continuity and direct doomsday into the current payment, protection-snapshot and consequence owners. No additional disconnected benefit was established, so these paths remain as implemented. The separate native raid receipts remain intact. |
+| Shared callbacks and event bonuses | Faction, justification, election and manual/natural Final Silence continuations remain wired. The commented civil-war meter helper was definition-only in the examined historical parent, so it is not evidence of a removed working callback. C9 grant guards retain other rewards outside their conditions; maintained-protection and wartime qualifications implement the owner's explicit plan and remain. |
+| Optional outbreak purchases | The recovered medical-capacity row already uses its transaction adapter and surveillance stand-down is free. Four other custom-cost rows had no historical sale adapter to recover; their existing quotes, payments and response effects remain unchanged. A new multi-resource adapter is outside this restoration finding. |
+
+The parent reran 25 source scenarios and independently compared all twelve quote results with the ceiling calculation.
+Review prices are 45/23/12 PP at ordinary/half/quarter price; closure and sanctions prices are 60/30/15; the existing support-equipment quote remains 180/90/45.
+The conservative helper-frame cases cover absent caller storage, stale prior category, one credit per order, post-credit clearing and Equipment/Convoys precedence.
+The scenario runner executes the actual quote and marker helpers; dispatch, native equipment mutation and the natural-sale eligibility predicate are mocked or separately source-reviewed.
+Native affordability, debit timing and campaign behavior are not claimed executed.
+
+Independent decision review found no duplicate debit, duplicate credit or missing refund receipt in these nonrefundable paths.
+It also reviewed all eleven final caller boundaries after the parent caught the missing temporary-storage initialization.
+Final colonial file validation returned `valid=true`, 595 documented commands and no findings, with 50 native argument blocks unchecked.
+The sanctions file result remained partial (`valid=null`, eleven unknown-scope roots and 45 unchecked argument blocks); no findings does not establish complete engine coverage.
+Exact reference citations, source snapshots, scenarios and inspection limits are retained in `.tmp/handoff3_preserve_third/cost/handoff.md` and its adjacent evidence.
+
+All ten protected camps UI source/text files match their starting hashes; no UI or artwork was edited.
+The five-path implementation updates the two decision files, the existing price-table entry and version, and the price-table owner documentation.
+No event premise, catalogue row, asset, AI weight, ordinary price, extra player step or worldwide periodic hook changed.
+No simplifications were introduced in this pass.
+No game or error logs were inspected and nothing was pushed; the earlier requested Linux audio test remains outstanding.
+Skills used: events, subagents, decisions/missions, ideas/modifiers, equipment, diplomacy/war and shared Git commit.
+Existing restoration and caller-storage guidance covered this repair; no skill was created or changed.
+
 ## Deeper preservation review, 14 October 2026
 
 The owner requested a more thorough search for useful recent mechanics displaced by the mass restoration and explicitly required keeping the recent camps UI.
