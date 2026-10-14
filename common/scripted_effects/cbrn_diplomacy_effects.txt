@@ -1216,7 +1216,10 @@ cbrn_diplomacy_complete_international_decon_mission = {
 		}
 		cbrn_convention_on_decontamination_completed = yes
 		set_temp_variable = { cbrn_state_contamination_class_output = constant:cbrn_contamination_class.none }
-		cbrn_refresh_state_contamination_class = yes
+		set_temp_variable = { cbrn_state_chemical_burden = constant:cbrn_math.zero }
+		set_temp_variable = { cbrn_state_chemical_burden_legacy = constant:cbrn_math.zero }
+		set_temp_variable = { cbrn_state_chemical_burden_modern = constant:cbrn_math.zero }
+		cbrn_read_state_chemical_burden = yes
 		set_temp_variable = { cbrn_diplomacy_cleanup_points = constant:cbrn_diplomacy_decon.trace_or_local_cleanup }
 		if = {
 			limit = {
@@ -1257,13 +1260,10 @@ cbrn_diplomacy_complete_international_decon_mission = {
 			multiply_temp_variable = { cbrn_diplomacy_cleanup_points = constant:cbrn_diplomacy_decon.international_medical_mission_mult }
 		}
 
-		set_temp_variable = { cbrn_state_contamination_delta = cbrn_diplomacy_cleanup_points }
-		multiply_temp_variable = { cbrn_state_contamination_delta = constant:cbrn_payload_math.negation_multiplier }
-		set_temp_variable = { cbrn_state_previous_contamination_value = constant:cbrn_math.zero }
-		set_temp_variable = { cbrn_state_new_contamination_value = constant:cbrn_math.zero }
-		cbrn_apply_state_contamination_delta_internal = yes
-		set_temp_variable = { cbrn_diplomacy_cleanup_completed = cbrn_state_previous_contamination_value }
-		subtract_from_temp_variable = { cbrn_diplomacy_cleanup_completed = cbrn_state_new_contamination_value }
+		set_temp_variable = { cbrn_state_chemical_cleanup_budget = cbrn_diplomacy_cleanup_points }
+		set_temp_variable = { cbrn_state_chemical_cleanup_completed = constant:cbrn_math.zero }
+		cbrn_apply_state_chemical_cleanup = yes
+		set_temp_variable = { cbrn_diplomacy_cleanup_completed = cbrn_state_chemical_cleanup_completed }
 
 		if = {
 			limit = { has_variable = cbrn_medical_saturation }

@@ -24,10 +24,19 @@ The pass record retains its historical cache, sorting, and selection findings.
 
 ## Meter contributions
 
-Major war-justification pulses contribute +1, and major elections contribute -1.
+The first qualified human-major pulse of an observed continuous justification against an existing human target contributes +1, and major human democratic elections contribute -1.
 Ruling-party changes contribute the configured democratic or non-democratic value on every change, including changes between two non-democratic governments.
 Puppeting contributes +3, release as free contributes -5, subject freedom contributes -3, and a major leaving a non-democratic faction contributes -5.
 These values remain centralized in `common/script_constants/chaos_meter_constants.txt`.
 Justification and election contributions use the existing engine on-actions and record actor-attributed history.
+Their helper boundaries revalidate those qualifications and clear temporary change/reason outputs on rejected calls, preventing a stale contribution from another callback.
+Justification observation continues during disabled, nonmajor and nonhuman intervals without contributing Chaos or history.
+Each actor-target pair stores its last native calendar pulse day and a counted flag; duplicate and contiguous daily pulses cannot contribute again, while a full day without an observed pulse rearms the pair.
+Immediate restarts and parallel goals against the same target are one observable threat signal because the native API exposes no justification identity or cancellation callback.
+The COUNTRY helper stores `chaos_meter_justification_last_seen_day_@FROM` and `chaos_meter_justification_counted_@FROM`; no event target or global registry is created for this receipt.
+It uses the native `num_days` calendar getter and `chaos_meter_justification.contiguous_gap_days = 1`, so a same-day duplicate or next-day pulse retains the receipt and a later pulse after a full missing day clears the counted flag before qualification.
+Cleanup is lazy at the next valid pair pulse: overwrite the last-seen day and rearm only on that observed gap.
+Observation-only calls leave temporary change/reason outputs at zero and make no actor history, Chaos contribution or human-penalty changes.
+War relation counting suppresses faction follow-ups and limits each actor's minor-war contribution to 5 per day while preserving the configured 1/5 minor/major anchors.
 Military casualty contributions use the pre-March direct scaling while Deaths keeps military accounting without double conversion.
 The nuclear ladder, Event 23 distinctions, missile integrations, slight disabled-default crisis pressure, and tier-based UI fractures keep their separate behavior.

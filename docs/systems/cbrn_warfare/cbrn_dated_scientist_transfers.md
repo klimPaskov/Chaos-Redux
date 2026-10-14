@@ -2,6 +2,11 @@
 
 Disposition: superseded by the A11 restoration in `cbrn_historical_scientists.md`; all 67 identities are recruited directly into their home countries. The following records the historical holder implementation.
 
+The implementation details below describe the retired CSH-holder version and are preserved as historical evidence.
+Current source directly recruits the roster in `history/general/chaosx_startup_character_recruitment.txt`.
+The file `common/on_actions/cbrn_historical_startup_on_actions.txt` and its eight dated transfer helpers are absent.
+The current bookmark setup still owns its separate country-grant behavior, including the sourced historical death handling recorded in `docs/plans/cbrn_start_audit_2026-10-13.md`.
+
 The historical roster has 67 static identities: 38 are attached to their home countries during history loading and 29 pass through the existing date-gated country callbacks. History loading attaches the latter group to the stateless `CSH` holder. The callbacks then transfer each identity from CSH to its fixed home tag with country-scoped `set_nationality` when its original date window passes. The callback names remain stable for their existing startup and tag-specific on-action callers.
 
 Each transfer date is the latest arrival. A country receives a held identity earlier when it is at war, runs the matching chemical or biological programme, or both, according to the identity's access class in [Dated arrivals](cbrn_historical_scientists.md#dated-arrivals). Haldane, Fishman, and Velikanov keep their upper date limits.

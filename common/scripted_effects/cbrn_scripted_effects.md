@@ -579,7 +579,7 @@ Side effects:
 - applies dynamic `damage_units` organisation and strength ratios only to armies in the exact selected state; hostile and bounded friendly/blowback limits are separate;
 - lets the existing country-casualty tracker record exact engine military losses instead of inventing an estimated death count;
 - removes civilian population and writes one immediate chemical Deaths record from the calculated exact fraction;
-- accumulates CBRN contamination and updates the canonical `chem_state_contamination` presentation modifier through the state-owned chemical helper; it does not call the retired legacy contamination or continuing-death helper;
+- accumulates CBRN contamination and updates the canonical `cbrn_chemical_state_contamination` presentation modifier through the state-owned chemical helper; it does not call the retired legacy contamination or continuing-death helper;
 - adds medical saturation, consumes civilian and military mask/filter stocks, applies cumulative evidence and attribution floors, and schedules state-scoped expiry/recovery/decay events;
 - applies Condemnation with cumulative visibility, raw civilian deaths, contamination, severity, victim, strategic/mass-casualty floors, sanctions, and confirmed treaty breach;
 - records permanent confirmed-use history. Doctrine can reduce only the Condemnation base before the public floor; it never changes the other outputs;
@@ -1326,7 +1326,10 @@ The state-owned chemical ledger is defined in `cbrn_chemical_state_effects.txt`.
 | `cbrn_chemical_refresh_state_modifier`, `cbrn_chemical_refresh_continuing_death_profile`, and `cbrn_chemical_schedule_continuing_deaths` | State scope. Derive the presentation modifier, raw scaled stage/class loss rate and schedule from the canonical contamination receipt. The current controller's terminal factor is applied at the continuing event's scaled-percentage step rather than stored in the rate. |
 | `cbrn_chemical_rebuild_air_cleanliness_contributions` | Any scope. Explicit settings-reenable repair for states with live canonical chemical receipts. It is called only from the bounded repair path and is not a recurring world scan. |
 
-`chem_state_contamination` is the presentation modifier for the canonical receipt. No legacy contamination writer or parallel state ledger remains. The canonical state receipt is the only source for chemical Air Cleanliness, expiry, and continuing deaths.
+`cbrn_chemical_state_contamination` presents the canonical raid receipt.
+Army-leader abilities separately own `chem_state_contamination`, its negative strength and absolute expiry.
+The canonical state receipt owns native chemical Air Cleanliness and continuing deaths.
+The compatibility reader and cleanup below share protection and recovery across the two burdens without dispatching another release or changing either deadline.
 
 ## Biological Air Cleanliness receipts
 
@@ -1452,3 +1455,61 @@ Both pipelines retain their existing combined 50% response floor.
 `cbrn_hq_apply_operations_commander_preparation_discount` also calls this helper through the commander's owner and consumes the same returned multiplier before the shared preparation floor.
 The three `cbrn_commander_progression.high_command_<rank>_bonus` constants supply protection, preparation, and the native trait tooltip percentages.
 Example: initialize `cbrn_operations_staff_protection_mult` to `constant:cbrn_math.one`, enter the target controller, call `cbrn_get_operations_staff_protection_multiplier = yes`, and consume the returned temporary in the same caller frame.
+
+## Chemical ability protection, payment, and dual-ledger recovery
+
+`cbrn_read_state_chemical_burden` runs in state scope and has no persistent side effects.
+Before calling it, create temporary output `cbrn_state_chemical_burden = 0` and any additional output consumed after return: `cbrn_state_chemical_burden_legacy = 0`, `cbrn_state_chemical_burden_modern = 0`, and `cbrn_state_contamination_class_output = constant:cbrn_contamination_class.none`.
+It sums the native meter with the unexpired negative legacy strength divided by `constant:cbrn_chemical_dispatch.legacy_contamination_strength_per_point`.
+The existing conversion is −0.008 strength per point, so −0.08 legacy strength contributes 10 points.
+Legacy expiry is checked against `global.num_days`, independent of a lingering native modifier binding.
+The summed burden selects the existing class thresholds and drives civilian filter replacement cost.
+The chemical-contamination predicate also admits live legacy burden, and the serious predicate uses documented trigger-side temporary arithmetic to compare the sum against the existing threshold.
+
+`cbrn_apply_state_chemical_cleanup` runs in state scope.
+Input `cbrn_state_chemical_cleanup_budget` is a positive number of normalized points.
+Create its temporary output `cbrn_state_chemical_cleanup_completed = 0` before each call.
+It debits modern contamination first through the existing native state-delta helper and applies only the unused budget to live legacy strength.
+It does not remove a positive modern residual below Trace for a budget that cannot afford that residual.
+It leaves at least Trace, uses any remaining budget on legacy burden, and reports only actual removal.
+For 10 modern plus 10 legacy points, a 15-point cleanup removes the 10 modern points and 5 legacy points, leaving 5 legacy points.
+Legacy cleanup refreshes the existing six modifier values through `chem_refresh_legacy_state_modifier_values`, removes only its own human-bound modifier when strength reaches zero, and never extends or copies a deadline.
+The theater assignment and completed international decontamination package call this wrapper after their existing payment and authority checks.
+Native cleanup retains ownership of native Air Cleanliness, ongoing death profiles and achievement callbacks.
+Legacy cleanup creates no modern release, casualty, shock, use-history or evidence receipt.
+
+`chem_apply_legacy_civilian_protection` runs in state scope and modifies caller-owned `chaos_state_deaths_mult`.
+Input `chem_legacy_agent_class` is supplied by the active cylinder dispersal route as the choking or blister game class.
+It requires ordinary human civilian eligibility, refreshes the existing real civilian equipment snapshot and applies the shared protection calculator.
+Issued masks, decontamination kits, medical preparation, paid hospital protection and alarms use the same snapshot inputs as native releases.
+Shelter and industrial-continuity choices modify the existing legacy death application inside the current shared hazard budget.
+It dispatches no additional death entry and does not touch the modern action record.
+Snapshot refreshes retain their existing protection bookkeeping side effects.
+
+The four `chem_consume_<agent>_cylinders` helpers run in the exact leader's character scope.
+Create temporary `chem_required_amount`, `chem_consumed_amount` and `chem_payment_preview_ratio`, all zero, before each call if reading them afterwards.
+The requirement uses the same battalion, Livens and officer-spirit values as the preview.
+Both the preview and debit create caller-owned cylinder-cost and Command Power refund outputs before the spirit helper.
+The existing officer-spirit cylinder-cost multiplier remains 1, and synthetic fixture tuning verifies that another multiplier changes both sides equally.
+The actor's country executes the existing `cbrn_state_escrow_measure_model_debit` with an exact cylinder equipment token and no producer filter.
+Eligibility, preview and payment consequently inspect the same actor-held stock, including foreign-produced equipment.
+The wrapper creates every primitive output before the native call and records only a sane observed debit as `chem_consumed_amount`.
+It stores `chem_ability_paid_ratio` for the current activation and `chem_ability_paid_ratio_<agent>` for that leader's matching active-state dispersal.
+A later ability activation cannot overwrite another agent's accepted payment ratio.
+Zero payment removes the just-added status trait and produces no unit buff, dispersal or condemnation.
+Forecast setup remains available before payment, while wind miscalculation and its blowback report require positive observed payment and run before final buff resolution.
+A failed stock debit therefore cannot change the forecast or report a release.
+Partial payment scales the six pre-debit preview effects through `chem_adapt_ability_effects_to_payment`, state burden, legacy civilian deaths and condemnation.
+The four stock-backed previews use the actual available fraction from zero to one, without a minimum free effect.
+Observed payment divided by that same quoted fraction adapts an already proportional preview only once.
+The separate historical `chem_ability_core.ratio_min` constant is retained unchanged, while these four payment-backed consumers do not apply it.
+Full-supply historical values, native cost, duration and cooldown remain unchanged.
+The ability caller must create all six final effect outputs before the final helper and adaptation calls.
+The status traits carry no modifiers and the ability definitions have no sibling static unit-modifier block.
+Native Command Power cost and cooldown remain the engine's payment, while the existing officer-spirit refund remains separate.
+A failed native stock debit does not invent another Command Power refund.
+
+Caller-owned output storage also preserves the restored wind forecast/miscalculation inputs, weather/terrain combinations, mask preview deltas, exact leader-state unit count, Livens values and officer-spirit cost/refund values across nested helpers.
+No tuning value, periodic hook, global event target, model, icon or unit is introduced by these compatibility helpers.
+The regular leader pointer and short-lived event targets retain the existing dispersal cleanup ownership.
+The ability path remains the historical direct release, and native raids retain their selected-state consequence records and first-exposure adaptation.

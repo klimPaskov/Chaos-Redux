@@ -8,6 +8,8 @@
 #   states, and the responsible country's registered state arrays.
 # - Preserves the primary responsible-country pointer and routes every burst
 #   of population harm through the shared camp Deaths adapter.
+# - Carries paid Belgian quota/corridor missions across administration only as
+#   exact-site receipts for the existing monthly works-project owner.
 # - Provides hook effects for the shared initialiser, display cache, idea
 #   dispatcher, and registered-country monthly pulse.
 # ============================================================================
@@ -1781,9 +1783,44 @@ camp_rework_belgium_negotiate_colonial_strike_settlement = {
 
 
 camp_rework_complete_belgium_quota_cycle = {
+	set_temp_variable = { camp_colonial_project_succeeded = constant:camp_admin_value.zero }
 	if = {
+		limit = { camp_rework_belgium_quota_current_handoff_ready = yes }
+		if = {
+			limit = { check_variable = { camp_colonial_project_succeeded = constant:camp_admin_value.zero } camp_admin_economy_slot_is_free = yes }
+			var:bel_congo_quota_state_id = { camp_rework_colonial_apply_minor_project_to_current_state = yes }
+			if = {
+				limit = {
+					has_country_flag = camp_admin_economy_slot_active
+					check_variable = { camp_admin_economy_state_id = bel_congo_quota_state_id }
+					check_variable = { camp_admin_economy_project_type = constant:camp_admin_priority.works }
+				}
+				set_temp_variable = { camp_colonial_project_succeeded = constant:camp_admin_value.one }
+				camp_admin_refresh_country_economy = yes
+			}
+		}
+		if = {
+			limit = { NOT = { check_variable = { camp_colonial_project_succeeded = constant:camp_admin_value.one } } }
+			set_country_flag = bel_congo_quota_economy_project_pending
+			custom_effect_tooltip = bel_congo_resource_quota_cycle_admin_waiting_tt
+		}
+		else = { custom_effect_tooltip = bel_congo_resource_quota_cycle_admin_started_tt }
+	}
+	else_if = {
+		limit = { camp_rework_belgium_quota_pending_handoff_ready = yes }
+		set_country_flag = bel_congo_quota_economy_project_pending
+		custom_effect_tooltip = bel_congo_resource_quota_cycle_admin_waiting_tt
+	}
+	else_if = {
+		limit = {
+			uses_normal_civilian_systems = yes
+			has_country_flag = camp_admin_initialized
+			has_country_flag = bel_congo_quota_economy_project_pending
+		}
+		custom_effect_tooltip = bel_congo_resource_quota_cycle_admin_waiting_tt
+	}
+	else_if = {
 		limit = { uses_normal_civilian_systems = yes NOT = { has_country_flag = camp_admin_initialized } }
-
 		set_temp_variable = { camp_colonial_project_succeeded = 0 }
 		if = {
 			limit = { camp_rework_belgium_quota_requirements_met = yes }
@@ -1814,14 +1851,52 @@ camp_rework_complete_belgium_quota_cycle = {
 			add_to_variable = { postwar_accountability_pressure = constant:camp_rework_colonial.accountability_minor }
 			add_to_variable = { camp_policy_evidence = constant:camp_rework_country_value.evidence_major }
 		}
-		}
-clear_variable = bel_congo_quota_state_id
+	}
+	if = { limit = { NOT = { has_country_flag = bel_congo_quota_economy_project_pending } } clear_variable = bel_congo_quota_state_id }
 	if = { limit = { uses_normal_civilian_systems = yes } camp_rework_update_colonial_country_monthly_bridge = yes }
 }
 
 
 camp_rework_complete_belgium_transport_corridor = {
+	set_temp_variable = { camp_colonial_project_succeeded = constant:camp_admin_value.zero }
 	if = {
+		limit = { camp_rework_belgium_corridor_current_handoff_ready = yes }
+		if = {
+			limit = { check_variable = { camp_colonial_project_succeeded = constant:camp_admin_value.zero } camp_admin_economy_slot_is_free = yes }
+			var:bel_congo_corridor_state_id = { camp_rework_colonial_apply_minor_project_to_current_state = yes }
+			if = {
+				limit = {
+					has_country_flag = camp_admin_economy_slot_active
+					check_variable = { camp_admin_economy_state_id = bel_congo_corridor_state_id }
+					check_variable = { camp_admin_economy_project_type = constant:camp_admin_priority.works }
+				}
+				set_temp_variable = { camp_colonial_project_succeeded = constant:camp_admin_value.one }
+				set_variable = { bel_congo_corridor_economy_project_started_state_id = bel_congo_corridor_state_id }
+				set_country_flag = bel_congo_corridor_economy_project_started
+				camp_admin_refresh_country_economy = yes
+			}
+		}
+		if = {
+			limit = { NOT = { check_variable = { camp_colonial_project_succeeded = constant:camp_admin_value.one } } }
+			set_country_flag = bel_congo_corridor_economy_project_pending
+			custom_effect_tooltip = bel_congo_transport_corridor_project_admin_waiting_tt
+		}
+		else = { custom_effect_tooltip = bel_congo_transport_corridor_project_admin_started_tt }
+	}
+	else_if = {
+		limit = { camp_rework_belgium_corridor_pending_handoff_ready = yes }
+		set_country_flag = bel_congo_corridor_economy_project_pending
+		custom_effect_tooltip = bel_congo_transport_corridor_project_admin_waiting_tt
+	}
+	else_if = {
+		limit = {
+			uses_normal_civilian_systems = yes
+			has_country_flag = camp_admin_initialized
+			has_country_flag = bel_congo_corridor_economy_project_pending
+		}
+		custom_effect_tooltip = bel_congo_transport_corridor_project_admin_waiting_tt
+	}
+	else_if = {
 		limit = { uses_normal_civilian_systems = yes NOT = { has_country_flag = camp_admin_initialized } }
 
 		set_temp_variable = { camp_colonial_project_succeeded = 0 }
@@ -1849,9 +1924,140 @@ camp_rework_complete_belgium_transport_corridor = {
 			add_to_variable = { camp_rail_burden = constant:camp_rework_country_value.overstretch_major }
 			add_to_variable = { camp_convoy_burden = constant:camp_rework_country_value.overstretch_major }
 		}
-		}
-clear_variable = bel_congo_corridor_state_id
+	}
+	if = { limit = { NOT = { has_country_flag = bel_congo_corridor_economy_project_pending } } clear_variable = bel_congo_corridor_state_id }
 	if = { limit = { uses_normal_civilian_systems = yes } camp_rework_update_colonial_country_monthly_bridge = yes }
+}
+
+
+# Country scope. In-flight paid Belgian mission receipts wait for the existing
+# Administration works slot, then clear only after that exact state/type order
+# is visible in the current economy ledger.
+camp_rework_process_belgium_pending_economy_projects = {
+	if = {
+		limit = {
+			uses_normal_civilian_systems = yes
+			has_country_flag = camp_admin_initialized
+		}
+		if = {
+			limit = { has_country_flag = bel_congo_quota_economy_project_pending }
+			set_temp_variable = { camp_belgium_pending_quota_site_valid = constant:camp_admin_value.zero }
+			set_temp_variable = { camp_belgium_pending_quota_site_waiting = constant:camp_admin_value.zero }
+			if = {
+				limit = { has_variable = bel_congo_quota_state_id }
+				var:bel_congo_quota_state_id = {
+					if = {
+						limit = {
+							camp_rework_state_is_actor_responsible_controlled = yes
+							is_valid_camp_active_site_state = yes
+							has_state_flag = camp_admin_initialized
+							NOT = { has_state_flag = camp_admin_closed }
+							camp_admin_site_authority_is_valid = yes
+							camp_admin_site_is_operational = yes
+							has_variable = camp_admin_responsible_country
+							var:camp_admin_responsible_country = { tag = ROOT }
+							is_bel_congo_concession_pool_state = yes
+						}
+						ROOT = { set_temp_variable = { camp_belgium_pending_quota_site_valid = constant:camp_admin_value.one } }
+					}
+					else_if = {
+						limit = {
+							camp_rework_state_is_actor_responsible_controlled = yes
+							is_valid_camp_active_site_state = yes
+							NOT = { has_state_flag = camp_admin_initialized }
+							is_bel_congo_concession_pool_state = yes
+						}
+						ROOT = { set_temp_variable = { camp_belgium_pending_quota_site_waiting = constant:camp_admin_value.one } }
+					}
+				}
+			}
+			if = {
+				limit = {
+					check_variable = { camp_belgium_pending_quota_site_valid = constant:camp_admin_value.one }
+					camp_admin_economy_slot_is_free = yes
+				}
+				var:bel_congo_quota_state_id = { camp_rework_colonial_apply_minor_project_to_current_state = yes }
+				if = {
+					limit = {
+						has_country_flag = camp_admin_economy_slot_active
+						check_variable = { camp_admin_economy_state_id = bel_congo_quota_state_id }
+						check_variable = { camp_admin_economy_project_type = constant:camp_admin_priority.works }
+					}
+					clr_country_flag = bel_congo_quota_economy_project_pending
+					clear_variable = bel_congo_quota_state_id
+					camp_admin_refresh_country_economy = yes
+				}
+			}
+			if = {
+				limit = { check_variable = { camp_belgium_pending_quota_site_valid = constant:camp_admin_value.zero } }
+				if = {
+					limit = { check_variable = { camp_belgium_pending_quota_site_waiting = constant:camp_admin_value.zero } }
+					clr_country_flag = bel_congo_quota_economy_project_pending
+					clear_variable = bel_congo_quota_state_id
+				}
+			}
+		}
+		if = {
+			limit = { has_country_flag = bel_congo_corridor_economy_project_pending }
+			set_temp_variable = { camp_belgium_pending_corridor_site_valid = constant:camp_admin_value.zero }
+			set_temp_variable = { camp_belgium_pending_corridor_site_waiting = constant:camp_admin_value.zero }
+			if = {
+				limit = { has_variable = bel_congo_corridor_state_id }
+				var:bel_congo_corridor_state_id = {
+					if = {
+						limit = {
+							camp_rework_state_is_actor_responsible_controlled = yes
+							is_valid_camp_active_site_state = yes
+							has_state_flag = camp_admin_initialized
+							NOT = { has_state_flag = camp_admin_closed }
+							camp_admin_site_authority_is_valid = yes
+							camp_admin_site_is_operational = yes
+							has_variable = camp_admin_responsible_country
+							var:camp_admin_responsible_country = { tag = ROOT }
+							is_bel_congo_transport_project_state = yes
+						}
+						ROOT = { set_temp_variable = { camp_belgium_pending_corridor_site_valid = constant:camp_admin_value.one } }
+					}
+					else_if = {
+						limit = {
+							camp_rework_state_is_actor_responsible_controlled = yes
+							is_valid_camp_active_site_state = yes
+							NOT = { has_state_flag = camp_admin_initialized }
+							is_bel_congo_transport_project_state = yes
+						}
+						ROOT = { set_temp_variable = { camp_belgium_pending_corridor_site_waiting = constant:camp_admin_value.one } }
+					}
+				}
+			}
+			if = {
+				limit = {
+					check_variable = { camp_belgium_pending_corridor_site_valid = constant:camp_admin_value.one }
+					camp_admin_economy_slot_is_free = yes
+				}
+				var:bel_congo_corridor_state_id = { camp_rework_colonial_apply_minor_project_to_current_state = yes }
+				if = {
+					limit = {
+						has_country_flag = camp_admin_economy_slot_active
+						check_variable = { camp_admin_economy_state_id = bel_congo_corridor_state_id }
+						check_variable = { camp_admin_economy_project_type = constant:camp_admin_priority.works }
+					}
+					clr_country_flag = bel_congo_corridor_economy_project_pending
+					set_variable = { bel_congo_corridor_economy_project_started_state_id = bel_congo_corridor_state_id }
+					set_country_flag = bel_congo_corridor_economy_project_started
+					clear_variable = bel_congo_corridor_state_id
+					camp_admin_refresh_country_economy = yes
+				}
+			}
+			if = {
+				limit = { check_variable = { camp_belgium_pending_corridor_site_valid = constant:camp_admin_value.zero } }
+				if = {
+					limit = { check_variable = { camp_belgium_pending_corridor_site_waiting = constant:camp_admin_value.zero } }
+					clr_country_flag = bel_congo_corridor_economy_project_pending
+					clear_variable = bel_congo_corridor_state_id
+				}
+			}
+		}
+	}
 }
 
 
@@ -2225,6 +2431,10 @@ camp_rework_retire_nonhuman_country_missions = {
 	clear_variable = fr_refugee_response_state_id
 	clear_variable = bel_congo_quota_state_id
 	clear_variable = bel_congo_corridor_state_id
+	clr_country_flag = bel_congo_quota_economy_project_pending
+	clr_country_flag = bel_congo_corridor_economy_project_pending
+	clr_country_flag = bel_congo_corridor_economy_project_started
+	clear_variable = bel_congo_corridor_economy_project_started_state_id
 	clr_country_flag = camp_rework_belgium_strike_response_pending
 	clr_country_flag = camp_rework_belgium_strike_route_negotiation
 	clr_country_flag = camp_rework_belgium_strike_route_reform

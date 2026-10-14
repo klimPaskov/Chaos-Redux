@@ -375,6 +375,17 @@ camp_administration_civil_refresh_pressures = {
 		if = { limit = { check_variable = { colonial_unrest_pressure > constant:camp_admin_civil.strike_pressure } } set_country_flag = camp_admin_civil_strike_active }
 		if = { limit = { has_country_flag = camp_admin_civil_review_complete } clr_country_flag = camp_admin_civil_strike_active set_variable = { colonial_unrest_pressure = constant:camp_admin_civil.zero } }
 	}
+	if = {
+		limit = {
+			OR = {
+				original_tag = USA
+				OR = { original_tag = FRA tag = VIC }
+				original_tag = ITA
+				original_tag = BEL
+			}
+		}
+		camp_rework_refresh_colonial_country_ideas = yes
+	}
 }
 
 # Move an existing authorized infrastructure target into the paid economy slot.
@@ -385,7 +396,6 @@ camp_administration_civil_migrate_projects = {
 		if = { limit = { has_variable = uk_raj_military_works_state_id } set_variable = { camp_admin_economy_state_id = uk_raj_military_works_state_id } }
 		else_if = { limit = { has_variable = fr_north_africa_project_state_id } set_variable = { camp_admin_economy_state_id = fr_north_africa_project_state_id } }
 		else_if = { limit = { has_variable = ita_desert_road_project_state_id } set_variable = { camp_admin_economy_state_id = ita_desert_road_project_state_id } }
-		else_if = { limit = { has_variable = bel_congo_corridor_state_id } set_variable = { camp_admin_economy_state_id = bel_congo_corridor_state_id } }
 		if = {
 			limit = { has_variable = camp_admin_economy_state_id var:camp_admin_economy_state_id = { camp_admin_site_is_operational = yes } }
 			set_country_flag = camp_admin_economy_slot_active

@@ -1,6 +1,8 @@
 # Camp administration integration: bounded legacy registry and lifecycle adapters.
 # Country defaults, institutional callbacks and civilian replacement remain owned
 # by their modules. No helper here creates population or logs a second debit.
+# The existing monthly recipient also drains verified paid Belgian project receipts
+# after ordinary works processing releases the single Administration project slot.
 
 # Existing startup migration entry calls this one native metadata-only pass.
 # It does not reconstruct active membership or infer a missing original actor.
@@ -53,6 +55,7 @@ camp_admin_integration_monthly_country_recipient = {
 		camp_admin_integration_record_completed_project = yes
 		camp_occ_monthly_country = yes
 		camp_admin_country_monthly = yes
+		camp_rework_process_belgium_pending_economy_projects = yes
 		camp_rework_apply_country_monthly_pressure = yes
 	}
 }
@@ -94,6 +97,12 @@ camp_admin_integration_seed_japan_labor_host = {
 camp_admin_integration_close_country = {
 	# A terminal country cannot complete an outstanding USA review or closure timer.
 	camp_rework_usa_cancel_security_sunset = yes
+	clr_country_flag = bel_congo_quota_economy_project_pending
+	clr_country_flag = bel_congo_corridor_economy_project_pending
+	clr_country_flag = bel_congo_corridor_economy_project_started
+	clear_variable = bel_congo_quota_state_id
+	clear_variable = bel_congo_corridor_state_id
+	clear_variable = bel_congo_corridor_economy_project_started_state_id
 	for_each_scope_loop = {
 		array = camp_active_site_states
 		set_temp_variable = { camp_origin_terminal_close_contract = constant:camp_admin_value.one }

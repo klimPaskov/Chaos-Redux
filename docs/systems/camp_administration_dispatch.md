@@ -20,7 +20,15 @@ A save whose timer predates the stored date treats that timer as current.
 
 The recipient calculates a calendar month key and records it before maintenance, economy, institution, territorial and country processing.
 The existing Chaos Meter dispatcher and this timer may both reach the recipient in an enabled month; the key allows only the first to pay or apply losses.
+After ordinary monthly work processing, the same recipient checks paid Belgian quota and corridor receipts left in flight by a country entering camp administration.
+Each receipt retains its original state ID and waits until the current site ledger establishes the same responsible country, eligible state type, current authority, and a free works slot.
+Quota receipts are considered before corridor receipts, so two simultaneous paid orders start one at a time and the second remains pending while the first project occupies the slot.
+The accepted order uses the existing Administration works project and its ordinary monthly funding; the original action is not charged again upfront.
+The receipt clears only after the country project slot records the matching state ID and `works` type, and current authority loss, site closure, or C6 conversion retires it without a legacy scalar grant or refund.
+
+A corridor receipt becomes a separate started receipt only after its own order passes the free-slot state/type postcondition. The central economy project completion path applies the original `guard_relief` pressure reduction only while that started receipt matches the exact active works slot, then consumes it before the shared cancellation helper clears the slot. Cancellation, replacement, invalid-site cleanup, country closure, and C6 cleanup clear an unfinished started receipt; quota and unrelated works never earn corridor relief.
 Every administration payment, reward and physical population debit remains in the existing package helpers.
+The Civil Administration pressure refresh also resynchronizes the existing USA, France/Vichy, Italy, and Belgium national idea sets from those updated values and policy flags; these ideas contain social, political, or reform modifiers, while factory, resource, and forced-labor output remains in the current state/country economy modifiers.
 Continuing institutional harm belongs to the guarded monthly state owner, while automatic Mengele reports `.10`–`.13` retain evidence-only compatibility calls and submit no additional casualty transaction or request-derived hidden atrocity under the parent's accepted single monthly processor contract.
 The [current institutional report handoff](../plans/system_camp_repression_rework_plans/administration_redesign_2026-09-06/occupation/mengele_exact_custody_adapter_2026-10-03.md) records 32 parsed-source cases and blocked MCP domain inspection without claiming engine scheduling or native receipt proof.
 Lasting closed-site metadata is separate from active monthly recipients, as recorded in the [closed-site archive handoff](../plans/system_camp_repression_rework_plans/administration_redesign_2026-09-06/occupation/origin_closed_site_archive_integration_2026-10-03.md).

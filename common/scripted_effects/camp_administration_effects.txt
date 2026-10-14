@@ -1065,6 +1065,8 @@ camp_admin_reopen_site = {
 camp_admin_cancel_economy_project = {
 	clr_country_flag = camp_admin_economy_slot_active
 	clr_country_flag = camp_admin_project_work_v2
+	clr_country_flag = bel_congo_corridor_economy_project_started
+	clear_variable = bel_congo_corridor_economy_project_started_state_id
 	set_variable = { camp_admin_economy_progress = 0 }
 	set_variable = { camp_admin_economy_target = 0 }
 	set_variable = { camp_admin_economy_work_rate = 0 }
@@ -1308,6 +1310,16 @@ camp_admin_progress_economy_project = {
 							clamp_variable = { var = camp_admin_development_level min = 0 max = constant:camp_admin_value.max_development }
 							if = { limit = { check_variable = { camp_admin_project_type = constant:camp_admin_priority.works } infrastructure < 5 } add_building_construction = { type = infrastructure level = 1 instant_build = yes } }
 						}
+					}
+					if = {
+						limit = {
+							has_country_flag = bel_congo_corridor_economy_project_started
+							check_variable = { camp_admin_economy_state_id = bel_congo_corridor_economy_project_started_state_id }
+							check_variable = { camp_admin_economy_project_type = constant:camp_admin_priority.works }
+						}
+						add_to_variable = { camp_policy_overstretch = constant:camp_rework_country_value.guard_relief }
+						clr_country_flag = bel_congo_corridor_economy_project_started
+						clear_variable = bel_congo_corridor_economy_project_started_state_id
 					}
 					camp_admin_cancel_economy_project = yes
 				}

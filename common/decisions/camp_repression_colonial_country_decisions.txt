@@ -710,14 +710,31 @@ camp_repression_network_category = {
 		is_good = yes
 		timeout_effect = {
 			if = {
+				limit = { has_country_flag = camp_admin_initialized }
+				if = {
+					limit = { camp_rework_belgium_quota_current_handoff_ready = yes }
+					if = {
+						limit = { camp_admin_economy_slot_is_free = yes }
+						custom_effect_tooltip = bel_congo_resource_quota_cycle_admin_started_tt
+					}
+					else = { custom_effect_tooltip = bel_congo_resource_quota_cycle_admin_waiting_tt }
+				}
+				else_if = {
+					limit = { camp_rework_belgium_quota_pending_handoff_ready = yes }
+					custom_effect_tooltip = bel_congo_resource_quota_cycle_admin_waiting_tt
+				}
+				else_if = { limit = { has_country_flag = bel_congo_quota_economy_project_pending } custom_effect_tooltip = bel_congo_resource_quota_cycle_admin_waiting_tt }
+				else = { custom_effect_tooltip = bel_congo_resource_quota_cycle_failure_tt }
+			}
+			else_if = {
 				limit = { camp_rework_belgium_quota_requirements_met = yes }
 				custom_effect_tooltip = bel_congo_resource_quota_cycle_success_tt
 			}
 			else = { custom_effect_tooltip = bel_congo_resource_quota_cycle_failure_tt }
-			camp_rework_complete_belgium_quota_cycle = yes
+			hidden_effect = { camp_rework_complete_belgium_quota_cycle = yes }
 		}
 		cancel_trigger = { NOT = { camp_rework_belgium_quota_requirements_met = yes } }
-		cancel_effect = { if = { limit = { NOT = { has_country_flag = camp_admin_initialized } } camp_rework_complete_belgium_quota_cycle = yes } }
+		cancel_effect = { camp_rework_complete_belgium_quota_cycle = yes }
 		ai_will_do = { base = constant:camp_rework_ai_weight.blocked }
 	}
 
@@ -738,14 +755,31 @@ camp_repression_network_category = {
 		is_good = yes
 		timeout_effect = {
 			if = {
+				limit = { has_country_flag = camp_admin_initialized }
+				if = {
+					limit = { camp_rework_belgium_corridor_current_handoff_ready = yes }
+					if = {
+						limit = { camp_admin_economy_slot_is_free = yes }
+						custom_effect_tooltip = bel_congo_transport_corridor_project_admin_started_tt
+					}
+					else = { custom_effect_tooltip = bel_congo_transport_corridor_project_admin_waiting_tt }
+				}
+				else_if = {
+					limit = { camp_rework_belgium_corridor_pending_handoff_ready = yes }
+					custom_effect_tooltip = bel_congo_transport_corridor_project_admin_waiting_tt
+				}
+				else_if = { limit = { has_country_flag = bel_congo_corridor_economy_project_pending } custom_effect_tooltip = bel_congo_transport_corridor_project_admin_waiting_tt }
+				else = { custom_effect_tooltip = bel_congo_transport_corridor_project_failure_tt }
+			}
+			else_if = {
 				limit = { camp_rework_belgium_corridor_requirements_met = yes }
 				custom_effect_tooltip = bel_congo_transport_corridor_project_success_tt
 			}
 			else = { custom_effect_tooltip = bel_congo_transport_corridor_project_failure_tt }
-			camp_rework_complete_belgium_transport_corridor = yes
+			hidden_effect = { camp_rework_complete_belgium_transport_corridor = yes }
 		}
 		cancel_trigger = { NOT = { camp_rework_belgium_corridor_requirements_met = yes } }
-		cancel_effect = { if = { limit = { NOT = { has_country_flag = camp_admin_initialized } } camp_rework_complete_belgium_transport_corridor = yes } }
+		cancel_effect = { camp_rework_complete_belgium_transport_corridor = yes }
 		ai_will_do = { base = constant:camp_rework_ai_weight.blocked }
 	}
 

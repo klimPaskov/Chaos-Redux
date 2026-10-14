@@ -2,8 +2,9 @@
 # CHAOS REDUX - CANONICAL CHEMICAL STATE EFFECTS
 # ============================================================================
 # Overview:
-# - Derives the legacy state-modifier presentation from the canonical CBRN
-#   contamination ledger without maintaining a second contamination ledger.
+# - Derives native state-modifier presentation from the canonical CBRN ledger.
+# - Shares protection and conserved cleanup with restored ability contamination
+#   while keeping native and legacy values, modifiers and deadlines independent.
 # - Owns threshold-transition contributions to the existing Air Cleanliness
 #   total and one exact-state continuing-death schedule.
 # - This file is CBRN-specific. It is not a generic dynamic-effects registry.
@@ -317,5 +318,123 @@ cbrn_chemical_schedule_continuing_deaths = {
 				CBRN_CONTINUING_DEATH_PERIOD = "[?cbrn_chemical_continuing_death_period|.0]"
 			}
 		}
+	}
+}
+
+# STATE. Caller-owned outputs: cbrn_state_chemical_burden, _legacy, _modern,
+# and cbrn_state_contamination_class_output, initialized to zero/none.
+# The existing presentation conversion is the normalization unit. No ledger,
+# deadline, exposure awareness, casualty, or Air Cleanliness write occurs here.
+cbrn_read_state_chemical_burden = {
+	set_temp_variable = { cbrn_state_chemical_burden_legacy = constant:cbrn_math.zero }
+	set_temp_variable = { cbrn_state_chemical_burden_modern = constant:cbrn_math.zero }
+	if = {
+		limit = { chem_state_has_live_legacy_contamination = yes }
+		set_temp_variable = { cbrn_state_chemical_burden_legacy = chem_state_contamination_strength }
+		divide_temp_variable = { cbrn_state_chemical_burden_legacy = constant:cbrn_chemical_dispatch.legacy_contamination_strength_per_point }
+		clamp_temp_variable = { var = cbrn_state_chemical_burden_legacy min = constant:cbrn_math.zero }
+	}
+	if = {
+		limit = { has_variable = cbrn_chemical_contamination }
+		set_temp_variable = { cbrn_state_chemical_burden_modern = cbrn_chemical_contamination }
+		clamp_temp_variable = { var = cbrn_state_chemical_burden_modern min = constant:cbrn_math.zero }
+	}
+	set_temp_variable = { cbrn_state_chemical_burden = cbrn_state_chemical_burden_modern }
+	add_to_temp_variable = { cbrn_state_chemical_burden = cbrn_state_chemical_burden_legacy }
+	set_temp_variable = { cbrn_state_contamination_class_output = constant:cbrn_contamination_class.none }
+	if = {
+		limit = { check_variable = { cbrn_state_chemical_burden > constant:cbrn_math.zero } }
+		set_temp_variable = { cbrn_state_contamination_class_output = constant:cbrn_contamination_class.trace }
+		if = { limit = { check_variable = { var = cbrn_state_chemical_burden value = constant:cbrn_contamination_threshold.catastrophic compare = greater_than_or_equals } } set_temp_variable = { cbrn_state_contamination_class_output = constant:cbrn_contamination_class.catastrophic } }
+		else_if = { limit = { check_variable = { var = cbrn_state_chemical_burden value = constant:cbrn_contamination_threshold.severe compare = greater_than_or_equals } } set_temp_variable = { cbrn_state_contamination_class_output = constant:cbrn_contamination_class.severe } }
+		else_if = { limit = { check_variable = { var = cbrn_state_chemical_burden value = constant:cbrn_contamination_threshold.serious compare = greater_than_or_equals } } set_temp_variable = { cbrn_state_contamination_class_output = constant:cbrn_contamination_class.serious } }
+		else_if = { limit = { check_variable = { var = cbrn_state_chemical_burden value = constant:cbrn_contamination_threshold.local compare = greater_than_or_equals } } set_temp_variable = { cbrn_state_contamination_class_output = constant:cbrn_contamination_class.local } }
+	}
+}
+
+# STATE. Input: positive cbrn_state_chemical_cleanup_budget.
+# Caller-owned output: cbrn_state_chemical_cleanup_completed, initialized zero.
+# One budget removes actual modern points first, then the remaining legacy
+# burden. Legacy cleanup changes strength only and never extends its deadline.
+cbrn_apply_state_chemical_cleanup = {
+	set_temp_variable = { cbrn_state_chemical_cleanup_completed = constant:cbrn_math.zero }
+	set_temp_variable = { cbrn_state_cleanup_remaining = cbrn_state_chemical_cleanup_budget }
+	clamp_temp_variable = { var = cbrn_state_cleanup_remaining min = constant:cbrn_math.zero }
+	if = {
+		limit = { check_variable = { cbrn_state_cleanup_remaining > constant:cbrn_math.zero } }
+		set_temp_variable = { cbrn_state_cleanup_modern_request = cbrn_state_cleanup_remaining }
+		set_temp_variable = { cbrn_state_cleanup_modern_available = constant:cbrn_math.zero }
+		if = { limit = { has_variable = cbrn_chemical_contamination } set_temp_variable = { cbrn_state_cleanup_modern_available = cbrn_chemical_contamination } }
+		clamp_temp_variable = { var = cbrn_state_cleanup_modern_request min = constant:cbrn_math.zero max = cbrn_state_cleanup_modern_available }
+		set_temp_variable = { cbrn_state_cleanup_modern_residual = cbrn_state_cleanup_modern_available }
+		subtract_from_temp_variable = { cbrn_state_cleanup_modern_residual = cbrn_state_cleanup_modern_request }
+		# Avoid native below-Trace retirement removing more points than this budget.
+		if = {
+			limit = { check_variable = { cbrn_state_cleanup_modern_residual > constant:cbrn_math.zero } check_variable = { cbrn_state_cleanup_modern_residual < constant:cbrn_contamination_threshold.trace } }
+			set_temp_variable = { cbrn_state_cleanup_modern_request = cbrn_state_cleanup_modern_available }
+			subtract_from_temp_variable = { cbrn_state_cleanup_modern_request = constant:cbrn_contamination_threshold.trace }
+			clamp_temp_variable = { var = cbrn_state_cleanup_modern_request min = constant:cbrn_math.zero }
+		}
+		set_temp_variable = { cbrn_state_contamination_delta = cbrn_state_cleanup_modern_request }
+		multiply_temp_variable = { cbrn_state_contamination_delta = constant:cbrn_math.negation_multiplier }
+		# A cleanup must not reuse a duration input left by a release in this chain.
+		set_temp_variable = { cbrn_state_contamination_duration_input = constant:cbrn_math.zero }
+		set_temp_variable = { cbrn_state_previous_contamination_value = constant:cbrn_math.zero }
+		set_temp_variable = { cbrn_state_new_contamination_value = constant:cbrn_math.zero }
+		cbrn_apply_state_contamination_delta_internal = yes
+		set_temp_variable = { cbrn_state_chemical_cleanup_completed = cbrn_state_previous_contamination_value }
+		subtract_from_temp_variable = { cbrn_state_chemical_cleanup_completed = cbrn_state_new_contamination_value }
+		subtract_from_temp_variable = { cbrn_state_cleanup_remaining = cbrn_state_chemical_cleanup_completed }
+		clamp_temp_variable = { var = cbrn_state_cleanup_remaining min = constant:cbrn_math.zero }
+	}
+	if = {
+		limit = { chem_state_has_live_legacy_contamination = yes check_variable = { cbrn_state_cleanup_remaining > constant:cbrn_math.zero } }
+		set_temp_variable = { cbrn_legacy_cleanup_available = chem_state_contamination_strength }
+		divide_temp_variable = { cbrn_legacy_cleanup_available = constant:cbrn_chemical_dispatch.legacy_contamination_strength_per_point }
+		set_temp_variable = { cbrn_legacy_cleanup_completed = cbrn_state_cleanup_remaining }
+		clamp_temp_variable = { var = cbrn_legacy_cleanup_completed min = constant:cbrn_math.zero max = cbrn_legacy_cleanup_available }
+		set_temp_variable = { cbrn_legacy_cleanup_strength_delta = cbrn_legacy_cleanup_completed }
+		multiply_temp_variable = { cbrn_legacy_cleanup_strength_delta = constant:cbrn_chemical_dispatch.legacy_contamination_strength_per_point }
+		subtract_from_variable = { chem_state_contamination_strength = cbrn_legacy_cleanup_strength_delta }
+		clamp_variable = { var = chem_state_contamination_strength max = constant:cbrn_math.zero }
+		chem_refresh_legacy_state_modifier_values = yes
+		if = {
+			limit = { check_variable = { chem_state_contamination_strength = constant:cbrn_math.zero } }
+			set_temp_variable = { human_state_modifier_request = token:chem_state_contamination }
+			remove_human_state_dynamic_modifier = yes
+			clear_variable = chem_state_contamination_expiry_day
+		}
+		add_to_temp_variable = { cbrn_state_chemical_cleanup_completed = cbrn_legacy_cleanup_completed }
+	}
+}
+
+# STATE. In/out caller-owned chaos_state_deaths_mult. Input chem_legacy_agent_class.
+# This protects the one existing legacy death registration without dispatching
+# a modern release, shock, use record, contamination, or second death entry.
+chem_apply_legacy_civilian_protection = {
+	if = {
+		limit = { state_uses_normal_civilian_systems = yes CONTROLLER = { exists = yes } }
+		CONTROLLER = { cbrn_refresh_country_civilian_decontamination_pool = yes }
+		cbrn_refresh_state_civilian_mask_snapshot = yes
+		set_temp_variable = { cbrn_action_agent_class = chem_legacy_agent_class }
+		set_temp_variable = { cbrn_protection_respiratory = cbrn_civilian_respiratory_protection }
+		set_temp_variable = { cbrn_protection_skin = cbrn_civilian_skin_protection }
+		set_temp_variable = { cbrn_protection_antidote = cbrn_civilian_antidote_protection }
+		set_temp_variable = { cbrn_protection_decontamination = cbrn_civilian_decontamination_protection }
+		set_temp_variable = { cbrn_protection_medical = cbrn_civilian_medical_protection }
+		set_temp_variable = { cbrn_protection_warning = cbrn_civilian_warning_protection }
+		set_temp_variable = { cbrn_action_casualty_mult = constant:cbrn_math.one }
+		set_temp_variable = { cbrn_action_mask_only_casualty_mult = constant:cbrn_math.one }
+		cbrn_calculate_action_protection = yes
+		set_temp_variable = { chem_legacy_civilian_protection_mult = cbrn_action_casualty_mult }
+		set_temp_variable = { chem_legacy_response_exposure_mult = constant:cbrn_math.one }
+		if = { limit = { has_state_flag = cbrn_civilians_moved_to_shelters } multiply_temp_variable = { chem_legacy_response_exposure_mult = constant:cbrn_protection_response.shelter_exposed_fraction_mult } }
+		if = { limit = { has_state_flag = cbrn_industry_ordered_to_continue } multiply_temp_variable = { chem_legacy_response_exposure_mult = constant:cbrn_protection_response.industry_exposed_fraction_mult } }
+		clamp_temp_variable = { var = chem_legacy_response_exposure_mult min = constant:cbrn_hazard_budget.residual_floor }
+		multiply_temp_variable = { chem_legacy_civilian_protection_mult = chem_legacy_response_exposure_mult }
+		set_temp_variable = { chem_legacy_civilian_protection_floor = cbrn_action_mask_only_casualty_mult }
+		multiply_temp_variable = { chem_legacy_civilian_protection_floor = constant:cbrn_hazard_budget.residual_floor }
+		clamp_temp_variable = { var = chem_legacy_civilian_protection_mult min = chem_legacy_civilian_protection_floor }
+		multiply_temp_variable = { chaos_state_deaths_mult = chem_legacy_civilian_protection_mult }
 	}
 }

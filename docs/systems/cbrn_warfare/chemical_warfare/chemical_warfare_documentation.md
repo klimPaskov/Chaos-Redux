@@ -49,7 +49,9 @@ AI adoption and escalation are profile-aware. Prepared, military-first, industri
 ## Fail-closed engine boundaries
 
 - Ordinary continuous air missions expose no verified current-version eligible-activity callback. Idle or merely deployed chemical-capable aircraft never contaminate a region, and no estimator is retained.
-- Army-leader abilities and ordinary combat tactics cannot prove an exact selected state, payload debit, and release-condition receipt. Their stable identifiers remain unavailable for compatibility; their old direct helpers and misleading preview localisation were removed.
+- Army-leader cylinder abilities remain a direct route with their restored forecasts, traits, previews and stock requirements.
+Their measured stock payment and state protection consumers share existing equipment and recovery helpers, while their historical state dispersal remains distinct from a native selected-state raid receipt.
+Ordinary combat tactics do not manufacture a native release receipt.
 - A generic active Army Headquarters-to-formation command relationship is not exposed in script. Unsupported ground release routes remain unavailable instead of choosing a nearby, border, capital, or random target.
 - The selected-state raid outcome scope does not expose verified live target weather or terrain. Active raids use native release efficiency and leave optional environmental inputs absent rather than assigning neutral or estimated values.
 
@@ -63,3 +65,25 @@ AI adoption and escalation are profile-aware. Prepared, military-first, industri
 - Protection and state recovery: `common/scripted_effects/cbrn_protection_effects.txt`, `common/scripted_effects/cbrn_chemical_state_effects.txt`, and `events/cbrn_chemical_delivery_events.txt`
 - Doctrine and officer corps: `common/doctrines/grand_doctrines/chaos_warfare_grand_doctrine.txt`, `common/doctrines/subdoctrines/land/chaos_warfare_*_subdoctrines.txt`, and `common/ideas/cbw_spirits.txt`
 - Consequences: `common/scripted_effects/condemnation_sanctions_effects.txt` and `docs/systems/cbrn_warfare/condemnation/condemnation_sanctions.md`
+
+## Direct abilities and current state protection
+
+Army-leader abilities use battalion-scaled cylinder stock, Livens technology and the reagent command spirit for their displayed requirement and actual measured payment.
+The exact actor's stockpile includes captured or imported equipment of the same cylinder model.
+Accepted payment scales the unit effect and the active state dispersal, and a zero debit creates no chemical effect.
+Stock-backed previews scale from zero by the actual available fraction, and the observed payment adjusts that preview once.
+A nearly empty stockpile cannot receive a minimum free chemical effect.
+Full-supply ability strength and timing retain their historical values.
+Wind miscalculation and its blowback report occur only after positive accepted payment, while forecast preparation remains available before payment.
+Wind, weather, terrain and equipment-backed mask values remain active across the preview and final effect helpers.
+
+Ability and raid contamination retain independent state values, modifiers and deadlines.
+Current emergency actions, civilian issue priority, hospital protection, filter service and decontamination recognize both burdens.
+Recovery normalizes legacy strength through the existing native presentation conversion, spends one cleanup budget on modern burden first and then legacy burden, and leaves the remaining deadline unchanged.
+An expired legacy deadline contributes no threat or service burden even if its old numeric state fields remain.
+Native raids retain their own selected-state casualty, first-exposure, evidence, treaty and use-history dispatcher.
+The direct route adds no second native release, first-exposure shock or casualty entry.
+
+The API and output lifetimes are documented in `common/scripted_effects/cbrn_scripted_effects.md` under Chemical ability protection, payment, and dual-ledger recovery.
+The existing ability, trait, decision and modifier icons remain registered in their current GFX files.
+No additional art is required.

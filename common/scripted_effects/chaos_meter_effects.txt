@@ -3275,123 +3275,97 @@ chaos_meter_register_nuclear_condemnation = {
 		}
 }
 
+# STATE: one measured population debit and exactly matching victim attribution.
+# Caller preinitializes chaos_combat_civ_state_applied; no output is assumed to
+# survive from a newly-created child temporary. Cores are game proxies only.
 chaos_meter_register_combat_civilian_deaths_to_state = {
+	set_temp_variable = { chaos_combat_civ_state_applied = constant:chaos_meter_deaths.zero }
 	if = {
 		limit = {
 			state_uses_normal_civilian_systems = yes
-			check_variable = { state_population_k > 0 }
+			NOT = { has_global_flag = settings_chaos_deaths_disabled }
 			check_variable = { chaos_deaths_change > 0 }
 		}
-		set_temp_variable = { chaos_combat_civ_state_pop_cap = state_population_k }
-		multiply_temp_variable = { chaos_combat_civ_state_pop_cap = constant:chaos_meter_deaths.people_per_k }
-		round_temp_variable = chaos_combat_civ_state_pop_cap
-		clamp_temp_variable = {
-			var = chaos_deaths_change
-			min = 0
-			max = chaos_combat_civ_state_pop_cap
-		}
-
+		set_temp_variable = { state_civilian_population_loss_requested = chaos_deaths_change }
+		set_temp_variable = { state_civilian_population_loss_minimum_remaining = constant:chaos_meter_deaths.zero }
+		set_temp_variable = { state_civilian_population_loss_reason = constant:chaos_meter_deaths_reason.civilian_combat }
+		set_temp_variable = { state_civilian_population_loss_log_deaths = constant:chaos_meter_deaths.zero }
+		set_temp_variable = { state_civilian_population_loss_target_country = OWNER }
+		set_temp_variable = { state_civilian_population_loss_has_target_country = constant:chaos_meter_deaths.one }
+		set_temp_variable = { state_civilian_population_loss_contract_supplied = constant:chaos_meter_deaths.one }
+		set_temp_variable = { state_civilian_population_loss_applied = constant:chaos_meter_deaths.zero }
+		set_temp_variable = { state_civilian_population_loss_result = constant:chaos_meter_deaths.zero }
+		apply_exact_state_civilian_population_loss = yes
+		set_temp_variable = { chaos_combat_civ_state_applied = state_civilian_population_loss_applied }
 		if = {
-			limit = { check_variable = { chaos_deaths_change > 0 } }
-			set_temp_variable = { chaos_combat_civ_original_state_deaths = chaos_deaths_change }
-			set_temp_variable = { chaos_deaths_reason = constant:chaos_meter_deaths_reason.civilian_combat }
-			set_temp_variable = { chaos_deaths_is_civilian = 1 }
-			set_temp_variable = { chaos_deaths_apply_state_pop = 0 }
-			set_temp_variable = { chaos_combat_civ_core_count = 0 }
-			every_country = {
-				limit = {
-					PREV = { is_core_of = PREV }
-				}
-				add_to_temp_variable = { chaos_combat_civ_core_count = 1 }
-			}
-
+			limit = { check_variable = { chaos_combat_civ_state_applied > 0 } }
+			set_temp_variable = { chaos_deaths_change = chaos_combat_civ_state_applied }
+			chaos_meter_record_state_civilian_deaths_from_deaths_change = yes
+			clear_temp_array = temp_chaos_combat_victim_countries
+			set_temp_variable = { chaos_combat_victim_owner_is_core = constant:chaos_meter_deaths.zero }
 			if = {
-				limit = {
-					OWNER = { PREV = { is_core_of = PREV } }
-				}
+				limit = { is_core_of = OWNER OWNER = { exists = yes uses_normal_civilian_systems = yes } }
+				add_to_temp_array = { array = temp_chaos_combat_victim_countries value = OWNER }
+				set_temp_variable = { chaos_combat_victim_owner_is_core = constant:chaos_meter_deaths.one }
+			}
+			set_temp_variable = { chaos_combat_victim_break = constant:chaos_meter_deaths.zero }
+			for_each_scope_loop = {
+				array = core_countries
+				break = chaos_combat_victim_break
 				if = {
-					limit = { check_variable = { chaos_combat_civ_core_count > 1 } }
-					set_temp_variable = { chaos_combat_civ_owner_share = chaos_combat_civ_original_state_deaths }
-					multiply_temp_variable = { chaos_combat_civ_owner_share = 0.5 }
-					round_temp_variable = chaos_combat_civ_owner_share
-					set_temp_variable = { chaos_combat_civ_other_core_count = chaos_combat_civ_core_count }
-					subtract_from_temp_variable = { chaos_combat_civ_other_core_count = 1 }
-					set_temp_variable = { chaos_combat_civ_other_share = chaos_combat_civ_original_state_deaths }
-					subtract_from_temp_variable = { chaos_combat_civ_other_share = chaos_combat_civ_owner_share }
-					divide_temp_variable = { chaos_combat_civ_other_share = chaos_combat_civ_other_core_count }
-					round_temp_variable = chaos_combat_civ_other_share
-
-					OWNER = {
-						set_temp_variable = { chaos_deaths_change = chaos_combat_civ_owner_share }
-						set_temp_variable = { chaos_deaths_reason = constant:chaos_meter_deaths_reason.civilian_combat }
-						set_temp_variable = { chaos_deaths_is_civilian = 1 }
-						set_temp_variable = { chaos_deaths_apply_state_pop = 0 }
-						set_temp_variable = { chaos_deaths_target_country = THIS }
-						set_temp_variable = { chaos_deaths_has_target_country = 1 }
-						chaos_meter_register_deaths = yes
-					}
-					every_country = {
-						limit = {
-							PREV = { is_core_of = PREV }
-							NOT = { owns_state = PREV }
-						}
-						set_temp_variable = { chaos_deaths_change = chaos_combat_civ_other_share }
-						set_temp_variable = { chaos_deaths_reason = constant:chaos_meter_deaths_reason.civilian_combat }
-						set_temp_variable = { chaos_deaths_is_civilian = 1 }
-						set_temp_variable = { chaos_deaths_apply_state_pop = 0 }
-						set_temp_variable = { chaos_deaths_target_country = THIS }
-						set_temp_variable = { chaos_deaths_has_target_country = 1 }
-						chaos_meter_register_deaths = yes
-					}
-				}
-				else = {
-					OWNER = {
-						set_temp_variable = { chaos_deaths_change = chaos_combat_civ_original_state_deaths }
-						set_temp_variable = { chaos_deaths_reason = constant:chaos_meter_deaths_reason.civilian_combat }
-						set_temp_variable = { chaos_deaths_is_civilian = 1 }
-						set_temp_variable = { chaos_deaths_apply_state_pop = 0 }
-						set_temp_variable = { chaos_deaths_target_country = THIS }
-						set_temp_variable = { chaos_deaths_has_target_country = 1 }
-						chaos_meter_register_deaths = yes
-					}
+					limit = { exists = yes uses_normal_civilian_systems = yes NOT = { is_in_array = { array = temp_chaos_combat_victim_countries value = THIS } } }
+					add_to_temp_array = { array = temp_chaos_combat_victim_countries value = THIS }
 				}
 			}
-			else_if = {
-				limit = { check_variable = { chaos_combat_civ_core_count > 0 } }
-				set_temp_variable = { chaos_combat_civ_core_share = chaos_combat_civ_original_state_deaths }
-				divide_temp_variable = { chaos_combat_civ_core_share = chaos_combat_civ_core_count }
-				round_temp_variable = chaos_combat_civ_core_share
-				every_country = {
-					limit = {
-						PREV = { is_core_of = PREV }
+			if = {
+				limit = { check_variable = { temp_chaos_combat_victim_countries^num = constant:chaos_meter_deaths.zero } }
+				if = {
+					limit = { OWNER = { exists = yes uses_normal_civilian_systems = yes } }
+					add_to_temp_array = { array = temp_chaos_combat_victim_countries value = OWNER }
+				}
+				else_if = {
+					limit = { CONTROLLER = { exists = yes uses_normal_civilian_systems = yes } }
+					add_to_temp_array = { array = temp_chaos_combat_victim_countries value = CONTROLLER }
+				}
+			}
+			set_temp_variable = { chaos_combat_victim_remaining = chaos_combat_civ_state_applied }
+			set_temp_variable = { chaos_combat_victim_count_remaining = temp_chaos_combat_victim_countries^num }
+			for_each_loop = {
+				array = temp_chaos_combat_victim_countries
+				value = chaos_combat_victim_country
+				index = chaos_combat_victim_index
+				break = chaos_combat_victim_break
+				set_temp_variable = { chaos_deaths_change = chaos_combat_victim_remaining }
+				if = {
+					limit = { check_variable = { chaos_combat_victim_count_remaining > 1 } }
+					if = {
+						limit = { check_variable = { chaos_combat_victim_index = 0 } check_variable = { chaos_combat_victim_owner_is_core > 0 } }
+						multiply_temp_variable = { chaos_deaths_change = constant:chaos_meter_deaths.combat_owner_core_share }
 					}
-					set_temp_variable = { chaos_deaths_change = chaos_combat_civ_core_share }
-					set_temp_variable = { chaos_deaths_reason = constant:chaos_meter_deaths_reason.civilian_combat }
-					set_temp_variable = { chaos_deaths_is_civilian = 1 }
-					set_temp_variable = { chaos_deaths_apply_state_pop = 0 }
-					set_temp_variable = { chaos_deaths_target_country = THIS }
-					set_temp_variable = { chaos_deaths_has_target_country = 1 }
-					chaos_meter_register_deaths = yes
+					else = { divide_temp_variable = { chaos_deaths_change = chaos_combat_victim_count_remaining } }
+					round_temp_variable = chaos_deaths_change
 				}
+				clamp_temp_variable = { var = chaos_deaths_change min = constant:chaos_meter_deaths.zero max = chaos_combat_victim_remaining }
+				subtract_from_temp_variable = { chaos_combat_victim_remaining = chaos_deaths_change }
+				subtract_from_temp_variable = { chaos_combat_victim_count_remaining = constant:chaos_meter_deaths.one }
+				set_temp_variable = { chaos_deaths_reason = constant:chaos_meter_deaths_reason.civilian_combat }
+				set_temp_variable = { chaos_deaths_is_civilian = constant:chaos_meter_deaths.one }
+				set_temp_variable = { chaos_deaths_apply_state_pop = constant:chaos_meter_deaths.zero }
+				set_temp_variable = { chaos_deaths_record_state_ledger = constant:chaos_meter_deaths.zero }
+				set_temp_variable = { chaos_deaths_target_country = chaos_combat_victim_country }
+				set_temp_variable = { chaos_deaths_has_target_country = constant:chaos_meter_deaths.one }
+				chaos_meter_register_deaths = yes
 			}
-			else = {
-				OWNER = {
-					set_temp_variable = { chaos_deaths_change = chaos_combat_civ_original_state_deaths }
-					set_temp_variable = { chaos_deaths_reason = constant:chaos_meter_deaths_reason.civilian_combat }
-					set_temp_variable = { chaos_deaths_is_civilian = 1 }
-					set_temp_variable = { chaos_deaths_apply_state_pop = 0 }
-					set_temp_variable = { chaos_deaths_target_country = THIS }
-					set_temp_variable = { chaos_deaths_has_target_country = 1 }
-					chaos_meter_register_deaths = yes
-				}
-			}
-			set_temp_variable = { chaos_deaths_change = chaos_combat_civ_original_state_deaths }
-			chaos_meter_apply_state_civilian_pop_loss_from_deaths_change = yes
+			clear_temp_array = temp_chaos_combat_victim_countries
 		}
 	}
+	set_temp_variable = { chaos_deaths_change = constant:chaos_meter_deaths.zero }
 }
 
-chaos_meter_register_state_civilian_deaths_percent = {
+# STATE calculator returns caller-preinitialized chaos_deaths_change; consumes
+# the same percent/multiplier/divisor envelope without mutating population.
+chaos_meter_calculate_state_civilian_deaths_percent = {
+	set_temp_variable = { chaos_deaths_change = constant:chaos_meter_deaths.zero }
 	if = {
 		limit = {
 			state_uses_normal_civilian_systems = yes
@@ -3503,14 +3477,6 @@ chaos_meter_register_state_civilian_deaths_percent = {
 			max = chaos_state_deaths_cap_local
 		}
 
-		if = {
-			limit = { check_variable = { chaos_deaths_change > 0 } }
-			set_temp_variable = { chaos_deaths_is_civilian = 1 }
-			set_temp_variable = { chaos_deaths_apply_state_pop = 1 }
-			set_temp_variable = { chaos_deaths_target_country = OWNER }
-			set_temp_variable = { chaos_deaths_has_target_country = 1 }
-			chaos_meter_register_deaths = yes
-		}
 
 		set_temp_variable = { chaos_state_deaths_percent = 0 }
 		set_temp_variable = { chaos_state_deaths_mult = 0 }
@@ -3524,6 +3490,19 @@ chaos_meter_register_state_civilian_deaths_percent = {
 	# Consumed even when no deaths apply, so a later caller in the same pass
 	# never inherits a divisor.
 	set_temp_variable = { chaos_state_deaths_percent_divisor = 0 }
+}
+
+chaos_meter_register_state_civilian_deaths_percent = {
+	set_temp_variable = { chaos_deaths_change = constant:chaos_meter_deaths.zero }
+	chaos_meter_calculate_state_civilian_deaths_percent = yes
+	if = {
+		limit = { check_variable = { chaos_deaths_change > 0 } }
+		set_temp_variable = { chaos_deaths_is_civilian = constant:chaos_meter_deaths.one }
+		set_temp_variable = { chaos_deaths_apply_state_pop = constant:chaos_meter_deaths.one }
+		set_temp_variable = { chaos_deaths_target_country = OWNER }
+		set_temp_variable = { chaos_deaths_has_target_country = constant:chaos_meter_deaths.one }
+		chaos_meter_register_deaths = yes
+	}
 }
 
 chaos_meter_history_row_matches_active_filter = {
@@ -5558,8 +5537,26 @@ world_end_scenario_triggered = {
 
 chaos_meter_on_war_relation_added = {
 	# on_war_relation_added: ROOT = attacker, FROM = defender
+	set_temp_variable = { chaos_change = constant:chaos_meter_deaths.zero }
+	set_temp_variable = { chaos_meter_skip_war_relation_for_faction = 0 }
 	if = {
 		limit = {
+			ROOT = {
+				is_in_faction = yes
+				any_allied_country = {
+					is_in_faction_with = ROOT
+					has_war_with = FROM
+				}
+			}
+		}
+		set_temp_variable = { chaos_meter_skip_war_relation_for_faction = 1 }
+	}
+
+	if = {
+		limit = {
+			ROOT = { exists = yes }
+			FROM = { exists = yes }
+			check_variable = { chaos_meter_skip_war_relation_for_faction < 1 }
 			NOT = {
 				ROOT = {
 					OR = {
@@ -5568,7 +5565,6 @@ chaos_meter_on_war_relation_added = {
 					}
 				}
 			}
-
 		}
 		if = {
 			limit = { ROOT = { is_major = yes } FROM = { is_major = yes } }
@@ -5581,14 +5577,56 @@ chaos_meter_on_war_relation_added = {
 		}
 		else_if = {
 			limit = { ROOT = { OR = { is_subject = no is_in_faction = no } } FROM = { is_subject = no } }
-			ROOT = { save_event_target_as = chaos_history_actor }
 			set_temp_variable = { chaos_change = constant:chaos_meter_delta.war.minor }
-			set_temp_variable = { chaos_history_reason = constant:chaos_meter_history_reason.war.minor }
-			set_temp_variable = { chaos_history_reason_custom = 1 }
-			log = "CHAOS METER: [ROOT.GetName] declared war on [FROM.GetName] ([?chaos_change|=] chaos)"
-			add_chaos_meter_value = yes
+			ROOT = {
+				if = {
+					limit = {
+						OR = {
+							NOT = { has_variable = chaos_meter_minor_war_declaration_day }
+							NOT = {
+								check_variable = {
+									var = chaos_meter_minor_war_declaration_day
+									value = global.num_days
+									compare = equals
+								}
+							}
+						}
+					}
+					set_variable = { chaos_meter_minor_war_declaration_day = global.num_days }
+					set_variable = { chaos_meter_minor_war_chaos_today = 0 }
+				}
+			}
+			set_temp_variable = { chaos_meter_minor_war_remaining_cap = constant:chaos_meter_war_cap.minor_same_day }
+			subtract_from_temp_variable = { chaos_meter_minor_war_remaining_cap = ROOT.chaos_meter_minor_war_chaos_today }
+			if = {
+				limit = { check_variable = { chaos_meter_minor_war_remaining_cap > 0 } }
+				if = {
+					limit = {
+						check_variable = {
+							var = chaos_change
+							value = chaos_meter_minor_war_remaining_cap
+							compare = greater_than
+						}
+					}
+					set_temp_variable = { chaos_change = chaos_meter_minor_war_remaining_cap }
+				}
+				ROOT = {
+					add_to_variable = { chaos_meter_minor_war_chaos_today = chaos_change }
+					save_event_target_as = chaos_history_actor
+				}
+				set_temp_variable = { chaos_history_reason = constant:chaos_meter_history_reason.war.minor }
+				set_temp_variable = { chaos_history_reason_custom = 1 }
+				log = "CHAOS METER: [ROOT.GetName] declared war on [FROM.GetName] ([?chaos_change|=] chaos)"
+				add_chaos_meter_value = yes
+			}
+			else = {
+				log = "CHAOS METER: [ROOT.GetName] declared war on [FROM.GetName] - minor same-day war chaos cap reached"
+			}
 		}
-
+	}
+	else_if = {
+		limit = { check_variable = { chaos_meter_skip_war_relation_for_faction > 0 } }
+		log = "CHAOS METER: [ROOT.GetName] entered war with [FROM.GetName] through an already-counted faction war relation - no chaos increase"
 	}
 	else = {
 		log = "CHAOS METER: Zombie [ROOT.GetName] declared war on [FROM.GetName] - no chaos increase from zombie wars"
@@ -6570,26 +6608,68 @@ chaos_meter_update_democracy = {
 
 
 chaos_meter_on_justifying_wargoal = {
+	set_temp_variable = { chaos_change = constant:chaos_meter_deaths.zero }
+	set_temp_variable = { chaos_history_reason = constant:chaos_meter_deaths_reason.unknown }
+	set_temp_variable = { chaos_history_reason_custom = constant:chaos_meter_deaths.zero }
 	if = {
-		limit = { is_major = yes }
-		set_temp_variable = { chaos_change = constant:chaos_meter_delta.diplomacy.justify_wargoal_major }
-		log = "CHAOS METER: Major power [THIS.GetName] is justifying war goal against [FROM.GetName] ([?chaos_change|=] chaos)"
+		limit = {
+			exists = yes
+			FROM = { exists = yes }
+			is_justifying_wargoal_against = FROM
+		}
+		# Observe native pair continuity even when no contribution is allowed.
+		# The native calendar getter advances independently of meter updates.
+		set_temp_variable = { chaos_meter_justification_gap_days = num_days }
+		if = {
+			limit = { has_variable = chaos_meter_justification_last_seen_day_@FROM }
+			subtract_from_temp_variable = { chaos_meter_justification_gap_days = chaos_meter_justification_last_seen_day_@FROM }
+		}
+		if = {
+			limit = {
+				OR = {
+					NOT = { has_variable = chaos_meter_justification_last_seen_day_@FROM }
+					check_variable = { chaos_meter_justification_gap_days > constant:chaos_meter_justification.contiguous_gap_days }
+				}
+			}
+			clr_country_flag = chaos_meter_justification_counted_@FROM
+		}
+		set_variable = { chaos_meter_justification_last_seen_day_@FROM = num_days }
+		if = {
+			limit = {
+				NOT = { has_global_flag = settings_chaos_meter_disabled }
+				uses_normal_civilian_systems = yes
+				is_major = yes
+				FROM = { uses_normal_civilian_systems = yes }
+				NOT = { has_country_flag = chaos_meter_justification_counted_@FROM }
+			}
+			set_country_flag = chaos_meter_justification_counted_@FROM
+			set_temp_variable = { chaos_change = constant:chaos_meter_delta.diplomacy.justify_wargoal_major }
+			save_event_target_as = chaos_history_actor
+			set_temp_variable = { chaos_history_reason = constant:chaos_meter_history_reason.diplomacy.justify_wargoal_major }
+			set_temp_variable = { chaos_history_reason_custom = constant:chaos_meter_deaths.one }
+			add_chaos_meter_value = yes
+		}
 	}
-
-	save_event_target_as = chaos_history_actor
-	set_temp_variable = { chaos_history_reason = constant:chaos_meter_history_reason.diplomacy.justify_wargoal_major }
-	set_temp_variable = { chaos_history_reason_custom = 1 }
-	add_chaos_meter_value = yes
 }
 
 
 chaos_meter_on_new_term_election = {
-	set_temp_variable = { chaos_change = constant:chaos_meter_delta.subtle.new_term_election }
-	log = "CHAOS METER: Major [THIS.GetName] held democratic elections ([?chaos_change|=] chaos)"
-	save_event_target_as = chaos_history_actor
-	set_temp_variable = { chaos_history_reason = constant:chaos_meter_history_reason.subtle.new_term_election }
-	set_temp_variable = { chaos_history_reason_custom = 1 }
-	add_chaos_meter_value = yes
+	set_temp_variable = { chaos_change = constant:chaos_meter_deaths.zero }
+	set_temp_variable = { chaos_history_reason = constant:chaos_meter_deaths_reason.unknown }
+	set_temp_variable = { chaos_history_reason_custom = constant:chaos_meter_deaths.zero }
+	if = {
+		limit = {
+			exists = yes
+			uses_normal_civilian_systems = yes
+			is_major = yes
+			has_government = democratic
+		}
+		set_temp_variable = { chaos_change = constant:chaos_meter_delta.subtle.new_term_election }
+		save_event_target_as = chaos_history_actor
+		set_temp_variable = { chaos_history_reason = constant:chaos_meter_history_reason.subtle.new_term_election }
+		set_temp_variable = { chaos_history_reason_custom = constant:chaos_meter_deaths.one }
+		add_chaos_meter_value = yes
+	}
 }
 
 chaos_meter_on_combat_civilian_casualties = {
@@ -6605,6 +6685,9 @@ chaos_meter_on_combat_civilian_casualties = {
 		save_event_target_as = chaos_combat_civ_leader
 		FROM = { save_event_target_as = chaos_combat_civ_source_country }
 		FROM = {
+			set_temp_variable = { chaos_combat_civ_percent = constant:chaos_meter_deaths.zero }
+			set_temp_variable = { chaos_combat_civ_trigger_chance = constant:chaos_meter_deaths.zero }
+			set_temp_variable = { chaos_combat_civ_chaos_mult = constant:chaos_meter_deaths.one }
 			chaos_meter_calculate_combat_civilian_death_profile = yes
 			if = {
 				limit = {
@@ -6628,8 +6711,8 @@ chaos_meter_on_combat_civilian_casualties = {
 }
 
 chaos_meter_apply_random_enemy_combat_civilian_deaths_from_leader = {
-	clear_array = temp_chaos_meter_combat_civ_candidate_states
-	clear_array = temp_chaos_meter_combat_civ_candidate_units
+	clear_temp_array = temp_chaos_meter_combat_civ_candidate_states
+	clear_temp_array = temp_chaos_meter_combat_civ_candidate_units
 
 	every_controlled_state = {
 		set_temp_variable = { chaos_combat_units_in_state = 0 }
@@ -6649,16 +6732,16 @@ chaos_meter_apply_random_enemy_combat_civilian_deaths_from_leader = {
 					CONTROLLER = { has_war_with = event_target:chaos_combat_civ_source_country }
 					NOT = { is_controlled_by = event_target:chaos_combat_civ_source_country }
 				}
-				add_to_array = { array = temp_chaos_meter_combat_civ_candidate_states value = THIS }
-				add_to_array = { array = temp_chaos_meter_combat_civ_candidate_units value = chaos_combat_units_in_state }
+				add_to_temp_array = { array = temp_chaos_meter_combat_civ_candidate_states value = THIS }
+				add_to_temp_array = { array = temp_chaos_meter_combat_civ_candidate_units value = chaos_combat_units_in_state }
 			}
 		}
 	}
 
 	if = {
 		limit = { check_variable = { temp_chaos_meter_combat_civ_candidate_states^num > 0 } }
-		# Uniformly choose one original array entry, retaining duplicate-state
-		# multiplicity and that entry's originating frontline unit count together.
+		# The original uniform entry draw determines one total budget. Its
+		# multiplicity and originating unit count retain the original rate input.
 		set_temp_variable_to_random = {
 			var = chaos_combat_civ_candidate_index
 			min = 0
@@ -6667,12 +6750,133 @@ chaos_meter_apply_random_enemy_combat_civilian_deaths_from_leader = {
 		}
 		set_temp_variable = { chaos_combat_units_in_state = temp_chaos_meter_combat_civ_candidate_units^chaos_combat_civ_candidate_index }
 		set_temp_variable = { chaos_combat_civ_selected_state = temp_chaos_meter_combat_civ_candidate_states^chaos_combat_civ_candidate_index }
+		set_temp_variable = { chaos_combat_civ_budget = constant:chaos_meter_deaths.zero }
 		var:chaos_combat_civ_selected_state = {
-			chaos_meter_apply_combat_civilian_deaths_to_state = yes
+			chaos_meter_calculate_combat_civilian_budget_to_state = yes
+		}
+		if = {
+			limit = { check_variable = { chaos_combat_civ_budget > 0 } }
+			chaos_meter_distribute_leader_combat_civilian_budget = yes
 		}
 	}
-	clear_array = temp_chaos_meter_combat_civ_candidate_states
-	clear_array = temp_chaos_meter_combat_civ_candidate_units
+	clear_temp_array = temp_chaos_meter_combat_civ_candidate_states
+	clear_temp_array = temp_chaos_meter_combat_civ_candidate_units
+}
+
+# COUNTRY: one selected-entry budget, shared over the same enemy frontage.
+# Actual state pointers are deduplicated; each origin contributes its units once.
+chaos_meter_distribute_leader_combat_civilian_budget = {
+	clear_temp_array = temp_chaos_combat_frontage_states
+	clear_temp_array = temp_chaos_combat_frontage_units
+	clear_temp_array = temp_chaos_combat_frontage_weights
+	clear_temp_array = temp_chaos_combat_frontage_capacities
+	clear_temp_array = temp_chaos_combat_frontage_allocations
+	set_temp_variable = { chaos_combat_frontage_break = constant:chaos_meter_deaths.zero }
+	for_each_loop = {
+		array = temp_chaos_meter_combat_civ_candidate_states
+		value = chaos_combat_frontage_state
+		index = chaos_combat_frontage_source_index
+		break = chaos_combat_frontage_break
+		set_temp_variable = { chaos_combat_frontage_found = constant:chaos_meter_deaths.zero }
+		set_temp_variable = { chaos_combat_frontage_match_break = constant:chaos_meter_deaths.zero }
+		for_each_loop = {
+			array = temp_chaos_combat_frontage_states
+			value = chaos_combat_frontage_existing_state
+			index = chaos_combat_frontage_existing_index
+			break = chaos_combat_frontage_match_break
+			if = {
+				limit = { check_variable = { chaos_combat_frontage_existing_state = chaos_combat_frontage_state } }
+				add_to_temp_variable = { temp_chaos_combat_frontage_units^chaos_combat_frontage_existing_index = temp_chaos_meter_combat_civ_candidate_units^chaos_combat_frontage_source_index }
+				set_temp_variable = { chaos_combat_frontage_found = constant:chaos_meter_deaths.one }
+				set_temp_variable = { chaos_combat_frontage_match_break = constant:chaos_meter_deaths.one }
+			}
+		}
+		if = {
+			limit = { check_variable = { chaos_combat_frontage_found = constant:chaos_meter_deaths.zero } }
+			add_to_temp_array = { array = temp_chaos_combat_frontage_states value = chaos_combat_frontage_state }
+			add_to_temp_array = { array = temp_chaos_combat_frontage_units value = temp_chaos_meter_combat_civ_candidate_units^chaos_combat_frontage_source_index }
+		}
+	}
+	set_temp_variable = { chaos_combat_frontage_weight_total = constant:chaos_meter_deaths.zero }
+	for_each_loop = {
+		array = temp_chaos_combat_frontage_states
+		value = chaos_combat_frontage_state
+		index = chaos_combat_frontage_index
+		break = chaos_combat_frontage_break
+		set_temp_variable = { chaos_state_deaths_mult = temp_chaos_combat_frontage_units^chaos_combat_frontage_index }
+		var:chaos_combat_frontage_state = {
+			chaos_meter_apply_combat_state_death_environment_multiplier = yes
+			set_temp_variable = { chaos_combat_frontage_capacity = state_population_k }
+			multiply_temp_variable = { chaos_combat_frontage_capacity = constant:chaos_meter_deaths.people_per_k }
+			set_temp_variable = { chaos_combat_frontage_capacity_unrounded = chaos_combat_frontage_capacity }
+			round_temp_variable = chaos_combat_frontage_capacity
+			if = {
+				limit = { check_variable = { chaos_combat_frontage_capacity > chaos_combat_frontage_capacity_unrounded } }
+				subtract_from_temp_variable = { chaos_combat_frontage_capacity = constant:chaos_meter_deaths.one }
+			}
+		}
+		add_to_temp_array = { array = temp_chaos_combat_frontage_weights value = chaos_state_deaths_mult }
+		add_to_temp_array = { array = temp_chaos_combat_frontage_capacities value = chaos_combat_frontage_capacity }
+		add_to_temp_array = { array = temp_chaos_combat_frontage_allocations value = constant:chaos_meter_deaths.zero }
+		add_to_temp_variable = { chaos_combat_frontage_weight_total = chaos_state_deaths_mult }
+	}
+	set_temp_variable = { chaos_combat_frontage_remaining = chaos_combat_civ_budget }
+	set_temp_variable = { chaos_combat_frontage_applied = constant:chaos_meter_deaths.zero }
+	for_each_loop = {
+		array = temp_chaos_combat_frontage_states
+		value = chaos_combat_frontage_state
+		index = chaos_combat_frontage_index
+		break = chaos_combat_frontage_break
+		if = {
+			limit = { check_variable = { chaos_combat_frontage_remaining > 0 } check_variable = { chaos_combat_frontage_weight_total > 0 } }
+			# Divide first so the intermediate never exceeds the original budget.
+			set_temp_variable = { chaos_combat_frontage_share = temp_chaos_combat_frontage_weights^chaos_combat_frontage_index }
+			divide_temp_variable = { chaos_combat_frontage_share = chaos_combat_frontage_weight_total }
+			set_temp_variable = { chaos_deaths_change = chaos_combat_frontage_remaining }
+			multiply_temp_variable = { chaos_deaths_change = chaos_combat_frontage_share }
+			round_temp_variable = chaos_deaths_change
+			clamp_temp_variable = { var = chaos_deaths_change min = constant:chaos_meter_deaths.zero max = chaos_combat_frontage_remaining }
+			clamp_temp_variable = { var = chaos_deaths_change min = constant:chaos_meter_deaths.zero max = temp_chaos_combat_frontage_capacities^chaos_combat_frontage_index }
+			set_temp_variable = { temp_chaos_combat_frontage_allocations^chaos_combat_frontage_index = chaos_deaths_change }
+			subtract_from_temp_variable = { chaos_combat_frontage_remaining = chaos_deaths_change }
+		}
+		subtract_from_temp_variable = { chaos_combat_frontage_weight_total = temp_chaos_combat_frontage_weights^chaos_combat_frontage_index }
+	}
+	# Resolve only the bounded clipping/rounding remainder, without another roll.
+	for_each_loop = {
+		array = temp_chaos_combat_frontage_states
+		value = chaos_combat_frontage_state
+		index = chaos_combat_frontage_index
+		break = chaos_combat_frontage_break
+		if = {
+			limit = { check_variable = { chaos_combat_frontage_remaining > 0 } }
+			set_temp_variable = { chaos_deaths_change = chaos_combat_frontage_remaining }
+			set_temp_variable = { chaos_combat_frontage_capacity = temp_chaos_combat_frontage_capacities^chaos_combat_frontage_index }
+			subtract_from_temp_variable = { chaos_combat_frontage_capacity = temp_chaos_combat_frontage_allocations^chaos_combat_frontage_index }
+			clamp_temp_variable = { var = chaos_deaths_change min = constant:chaos_meter_deaths.zero max = chaos_combat_frontage_capacity }
+			add_to_temp_variable = { temp_chaos_combat_frontage_allocations^chaos_combat_frontage_index = chaos_deaths_change }
+			subtract_from_temp_variable = { chaos_combat_frontage_remaining = chaos_deaths_change }
+		}
+	}
+	# The complete capacity-checked plan debits each actual state exactly once.
+	# Unobserved engine loss is retained as a residual, never logged as a death.
+	for_each_loop = {
+		array = temp_chaos_combat_frontage_states
+		value = chaos_combat_frontage_state
+		index = chaos_combat_frontage_index
+		break = chaos_combat_frontage_break
+		set_temp_variable = { chaos_deaths_change = temp_chaos_combat_frontage_allocations^chaos_combat_frontage_index }
+		set_temp_variable = { chaos_combat_civ_state_applied = constant:chaos_meter_deaths.zero }
+		var:chaos_combat_frontage_state = { chaos_meter_register_combat_civilian_deaths_to_state = yes }
+		add_to_temp_variable = { chaos_combat_frontage_applied = chaos_combat_civ_state_applied }
+	}
+	set_temp_variable = { chaos_combat_frontage_remaining = chaos_combat_civ_budget }
+	subtract_from_temp_variable = { chaos_combat_frontage_remaining = chaos_combat_frontage_applied }
+	clear_temp_array = temp_chaos_combat_frontage_states
+	clear_temp_array = temp_chaos_combat_frontage_units
+	clear_temp_array = temp_chaos_combat_frontage_weights
+	clear_temp_array = temp_chaos_combat_frontage_capacities
+	clear_temp_array = temp_chaos_combat_frontage_allocations
 }
 
 chaos_meter_apply_combat_state_death_environment_multiplier = {
@@ -6699,7 +6903,8 @@ chaos_meter_apply_combat_state_death_environment_multiplier = {
 	}
 }
 
-chaos_meter_apply_combat_civilian_deaths_to_state = {
+chaos_meter_calculate_combat_civilian_budget_to_state = {
+	set_temp_variable = { chaos_combat_civ_budget = constant:chaos_meter_deaths.zero }
 	if = {
 		limit = {
 			state_uses_normal_civilian_systems = yes
@@ -6725,7 +6930,19 @@ chaos_meter_apply_combat_civilian_deaths_to_state = {
 			set_temp_variable = { chaos_state_deaths_random_span = constant:chaos_meter_state_death_dynamic.combat_random_span }
 			set_temp_variable = { chaos_deaths_reason = constant:chaos_meter_deaths_reason.civilian_combat }
 			set_temp_variable = { chaos_state_deaths_percent_divisor = constant:chaos_meter_combat_civilian_deaths.scale }
-			chaos_meter_register_state_civilian_deaths_percent = yes
+			set_temp_variable = { chaos_deaths_change = constant:chaos_meter_deaths.zero }
+			chaos_meter_calculate_state_civilian_deaths_percent = yes
+			set_temp_variable = { chaos_combat_civ_budget = chaos_deaths_change }
+			set_temp_variable = { chaos_combat_civ_selected_population = state_population_k }
+			multiply_temp_variable = { chaos_combat_civ_selected_population = constant:chaos_meter_deaths.people_per_k }
+			set_temp_variable = { chaos_combat_civ_selected_population_unrounded = chaos_combat_civ_selected_population }
+			round_temp_variable = chaos_combat_civ_selected_population
+			if = {
+				limit = { check_variable = { chaos_combat_civ_selected_population > chaos_combat_civ_selected_population_unrounded } }
+				subtract_from_temp_variable = { chaos_combat_civ_selected_population = constant:chaos_meter_deaths.one }
+			}
+			clamp_temp_variable = { var = chaos_combat_civ_budget min = constant:chaos_meter_deaths.zero max = chaos_combat_civ_selected_population }
+			round_temp_variable = chaos_combat_civ_budget
 		}
 	}
 }

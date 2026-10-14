@@ -2054,9 +2054,11 @@ cbrn_replace_state_civilian_mask_filters = {
 		limit = { controller = { has_tech = rapid_filter_replacement } }
 		multiply_temp_variable = { cbrn_mask_stock_debit_requested = constant:cbrn_protection_technology_effect.rapid_filter_replacement_cost_mult }
 	}
+	set_temp_variable = { cbrn_state_chemical_burden = constant:cbrn_math.zero }
+	cbrn_read_state_chemical_burden = yes
 	if = {
-		limit = { has_variable = cbrn_chemical_contamination }
-		set_temp_variable = { cbrn_contamination_filter_cost_mult = cbrn_chemical_contamination }
+		limit = { check_variable = { cbrn_state_chemical_burden > constant:cbrn_math.zero } }
+		set_temp_variable = { cbrn_contamination_filter_cost_mult = cbrn_state_chemical_burden }
 		divide_temp_variable = { cbrn_contamination_filter_cost_mult = constant:cbrn_math.percent_divisor }
 		add_to_temp_variable = { cbrn_contamination_filter_cost_mult = constant:cbrn_math.one }
 		multiply_temp_variable = { cbrn_mask_stock_debit_requested = cbrn_contamination_filter_cost_mult }

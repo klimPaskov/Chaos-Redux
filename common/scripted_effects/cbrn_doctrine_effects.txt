@@ -116,7 +116,10 @@ cbrn_apply_theater_decontamination_assignment = {
 
 cbrn_apply_theater_decontamination_assignment_paid = {
 	set_temp_variable = { cbrn_state_contamination_class_output = constant:cbrn_contamination_class.none }
-	cbrn_refresh_state_contamination_class = yes
+	set_temp_variable = { cbrn_state_chemical_burden = constant:cbrn_math.zero }
+	set_temp_variable = { cbrn_state_chemical_burden_legacy = constant:cbrn_math.zero }
+	set_temp_variable = { cbrn_state_chemical_burden_modern = constant:cbrn_math.zero }
+	cbrn_read_state_chemical_burden = yes
 	set_temp_variable = { cbrn_doctrine_cleanup_points = constant:cbrn_doctrine_cleanup.trace_or_local_points }
 	if = {
 		limit = {
@@ -168,14 +171,10 @@ cbrn_apply_theater_decontamination_assignment_paid = {
 		multiply_temp_variable = { cbrn_doctrine_cleanup_points = constant:cbrn_decontamination_designer_effect.rapid_route_cleanup_mult }
 	}
 
-	set_temp_variable = { cbrn_state_contamination_delta = cbrn_doctrine_cleanup_points }
-	multiply_temp_variable = { cbrn_state_contamination_delta = constant:cbrn_doctrine_value.negation_multiplier }
-	set_temp_variable = { cbrn_state_previous_contamination_value = constant:cbrn_math.zero }
-	set_temp_variable = { cbrn_state_new_contamination_value = constant:cbrn_math.zero }
-	cbrn_apply_state_contamination_delta_internal = yes
-
-	set_temp_variable = { cbrn_doctrine_cleanup_completed = cbrn_state_previous_contamination_value }
-	subtract_from_temp_variable = { cbrn_doctrine_cleanup_completed = cbrn_state_new_contamination_value }
+	set_temp_variable = { cbrn_state_chemical_cleanup_budget = cbrn_doctrine_cleanup_points }
+	set_temp_variable = { cbrn_state_chemical_cleanup_completed = constant:cbrn_math.zero }
+	cbrn_apply_state_chemical_cleanup = yes
+	set_temp_variable = { cbrn_doctrine_cleanup_completed = cbrn_state_chemical_cleanup_completed }
 	CONTROLLER = {
 		add_to_variable = { cbrn_doctrine_cleanup_points_total = cbrn_doctrine_cleanup_completed }
 	}

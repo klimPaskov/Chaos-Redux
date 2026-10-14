@@ -61,10 +61,30 @@ ability = {
 			chem_update_chlorine_preview = yes
             set_temp_variable = { var = chem_wind_miscalc_happened value = 0 }
             hidden_effect = {
+				set_temp_variable = { chem_wind_state_roll = constant:cbrn_math.zero }
+				set_temp_variable = { chem_wind_positive_mult = constant:cbrn_math.zero }
+				set_temp_variable = { chem_wind_negative_mult = constant:cbrn_math.zero }
                 chem_use_wind_forecast = yes
-                chem_apply_wind_miscalculation = yes
             }
+			set_temp_variable = { chem_consumed_amount = constant:cbrn_math.zero }
+			set_temp_variable = { chem_required_amount = constant:cbrn_math.zero }
+			set_temp_variable = { chem_payment_preview_ratio = constant:cbrn_math.zero }
+			hidden_effect = { chem_consume_chlorine_cylinders = yes }
+			if = { limit = { NOT = { check_variable = { chem_ability_paid_ratio > constant:cbrn_math.zero } } } hidden_effect = { remove_unit_leader_trait = chemical_cylinder_active_chlorine clr_unit_leader_flag = chem_ability_calculating } }
+			hidden_effect = {
+				if = {
+					limit = { check_variable = { chem_ability_paid_ratio > constant:cbrn_math.zero } }
+					chem_apply_wind_miscalculation = yes
+				}
+			}
+			set_temp_variable = { chem_offense = constant:cbrn_math.zero }
+			set_temp_variable = { chem_breakthrough = constant:cbrn_math.zero }
+			set_temp_variable = { chem_defense = constant:cbrn_math.zero }
+			set_temp_variable = { chem_org_damage = constant:cbrn_math.zero }
+			set_temp_variable = { chem_str_damage = constant:cbrn_math.zero }
+			set_temp_variable = { chem_war_support = constant:cbrn_math.zero }
             chem_set_final_chlorine_effects = yes
+			chem_adapt_ability_effects_to_payment = yes
             set_temp_variable = { var = chem_duration_days value = constant:chem_ability_core.duration_days }
             if = {
                 limit = { has_unit_leader_flag = chem_ability_calculating }
@@ -91,11 +111,11 @@ ability = {
                     }
                 }
             }
-            set_temp_variable = { var = chem_consumed_amount value = 0 }
-            set_temp_variable = { var = chem_required_amount value = 0 }
-            hidden_effect = { chem_consume_chlorine_cylinders = yes }
+			set_temp_variable = { chem_condemnation_civilian_deaths = constant:cbrn_math.zero }
+			set_temp_variable = { chem_condemnation_contamination_value = constant:cbrn_math.zero }
+			set_temp_variable = { chem_condemnation_victim_country = constant:cbrn_math.zero }
             hidden_effect = { chem_apply_current_ability_state_dispersal = yes }
-            hidden_effect = { chem_register_current_ability_condemnation = yes }
+            hidden_effect = { if = { limit = { check_variable = { chem_ability_paid_ratio > constant:cbrn_math.zero } } chem_register_current_ability_condemnation = yes } }
             set_temp_variable = { var = chem_ability_cp_cost value = constant:chem_ability_command_power_cost.chlorine }
             hidden_effect = { chem_refund_chemical_ability_command_power = yes }
             custom_effect_tooltip = CHEM_ABILITY_SECTION_DIVIDER
@@ -281,10 +301,30 @@ ability = {
 			chem_update_phosgene_preview = yes
             set_temp_variable = { var = chem_wind_miscalc_happened value = 0 }
             hidden_effect = {
+				set_temp_variable = { chem_wind_state_roll = constant:cbrn_math.zero }
+				set_temp_variable = { chem_wind_positive_mult = constant:cbrn_math.zero }
+				set_temp_variable = { chem_wind_negative_mult = constant:cbrn_math.zero }
                 chem_use_wind_forecast = yes
-                chem_apply_wind_miscalculation = yes
             }
+			set_temp_variable = { chem_consumed_amount = constant:cbrn_math.zero }
+			set_temp_variable = { chem_required_amount = constant:cbrn_math.zero }
+			set_temp_variable = { chem_payment_preview_ratio = constant:cbrn_math.zero }
+			hidden_effect = { chem_consume_phosgene_cylinders = yes }
+			if = { limit = { NOT = { check_variable = { chem_ability_paid_ratio > constant:cbrn_math.zero } } } hidden_effect = { remove_unit_leader_trait = chemical_cylinder_active_phosgene clr_unit_leader_flag = chem_ability_calculating } }
+			hidden_effect = {
+				if = {
+					limit = { check_variable = { chem_ability_paid_ratio > constant:cbrn_math.zero } }
+					chem_apply_wind_miscalculation = yes
+				}
+			}
+			set_temp_variable = { chem_offense = constant:cbrn_math.zero }
+			set_temp_variable = { chem_breakthrough = constant:cbrn_math.zero }
+			set_temp_variable = { chem_defense = constant:cbrn_math.zero }
+			set_temp_variable = { chem_org_damage = constant:cbrn_math.zero }
+			set_temp_variable = { chem_str_damage = constant:cbrn_math.zero }
+			set_temp_variable = { chem_war_support = constant:cbrn_math.zero }
             chem_set_final_phosgene_effects = yes
+			chem_adapt_ability_effects_to_payment = yes
             set_temp_variable = { var = chem_duration_days value = constant:chem_ability_core.duration_days }
             if = {
                 limit = { has_unit_leader_flag = chem_ability_calculating }
@@ -311,11 +351,11 @@ ability = {
                     }
                 }
             }
-            set_temp_variable = { var = chem_consumed_amount value = 0 }
-            set_temp_variable = { var = chem_required_amount value = 0 }
-            hidden_effect = { chem_consume_phosgene_cylinders = yes }
+			set_temp_variable = { chem_condemnation_civilian_deaths = constant:cbrn_math.zero }
+			set_temp_variable = { chem_condemnation_contamination_value = constant:cbrn_math.zero }
+			set_temp_variable = { chem_condemnation_victim_country = constant:cbrn_math.zero }
             hidden_effect = { chem_apply_current_ability_state_dispersal = yes }
-            hidden_effect = { chem_register_current_ability_condemnation = yes }
+            hidden_effect = { if = { limit = { check_variable = { chem_ability_paid_ratio > constant:cbrn_math.zero } } chem_register_current_ability_condemnation = yes } }
             set_temp_variable = { var = chem_ability_cp_cost value = constant:chem_ability_command_power_cost.phosgene }
             hidden_effect = { chem_refund_chemical_ability_command_power = yes }
             custom_effect_tooltip = CHEM_ABILITY_SECTION_DIVIDER
@@ -497,10 +537,30 @@ ability = {
 			chem_update_mustard_preview = yes
             set_temp_variable = { var = chem_wind_miscalc_happened value = 0 }
             hidden_effect = {
+				set_temp_variable = { chem_wind_state_roll = constant:cbrn_math.zero }
+				set_temp_variable = { chem_wind_positive_mult = constant:cbrn_math.zero }
+				set_temp_variable = { chem_wind_negative_mult = constant:cbrn_math.zero }
                 chem_use_wind_forecast = yes
-                chem_apply_wind_miscalculation = yes
             }
+			set_temp_variable = { chem_consumed_amount = constant:cbrn_math.zero }
+			set_temp_variable = { chem_required_amount = constant:cbrn_math.zero }
+			set_temp_variable = { chem_payment_preview_ratio = constant:cbrn_math.zero }
+			hidden_effect = { chem_consume_mustard_cylinders = yes }
+			if = { limit = { NOT = { check_variable = { chem_ability_paid_ratio > constant:cbrn_math.zero } } } hidden_effect = { remove_unit_leader_trait = chemical_cylinder_active_mustard clr_unit_leader_flag = chem_ability_calculating } }
+			hidden_effect = {
+				if = {
+					limit = { check_variable = { chem_ability_paid_ratio > constant:cbrn_math.zero } }
+					chem_apply_wind_miscalculation = yes
+				}
+			}
+			set_temp_variable = { chem_offense = constant:cbrn_math.zero }
+			set_temp_variable = { chem_breakthrough = constant:cbrn_math.zero }
+			set_temp_variable = { chem_defense = constant:cbrn_math.zero }
+			set_temp_variable = { chem_org_damage = constant:cbrn_math.zero }
+			set_temp_variable = { chem_str_damage = constant:cbrn_math.zero }
+			set_temp_variable = { chem_war_support = constant:cbrn_math.zero }
             chem_set_final_mustard_effects = yes
+			chem_adapt_ability_effects_to_payment = yes
             set_temp_variable = { var = chem_duration_days value = constant:chem_ability_core.duration_days }
             if = {
                 limit = { has_unit_leader_flag = chem_ability_calculating }
@@ -527,11 +587,11 @@ ability = {
                     }
                 }
             }
-            set_temp_variable = { var = chem_consumed_amount value = 0 }
-            set_temp_variable = { var = chem_required_amount value = 0 }
-            hidden_effect = { chem_consume_mustard_cylinders = yes }
+			set_temp_variable = { chem_condemnation_civilian_deaths = constant:cbrn_math.zero }
+			set_temp_variable = { chem_condemnation_contamination_value = constant:cbrn_math.zero }
+			set_temp_variable = { chem_condemnation_victim_country = constant:cbrn_math.zero }
             hidden_effect = { chem_apply_current_ability_state_dispersal = yes }
-            hidden_effect = { chem_register_current_ability_condemnation = yes }
+            hidden_effect = { if = { limit = { check_variable = { chem_ability_paid_ratio > constant:cbrn_math.zero } } chem_register_current_ability_condemnation = yes } }
             set_temp_variable = { var = chem_ability_cp_cost value = constant:chem_ability_command_power_cost.mustard }
             hidden_effect = { chem_refund_chemical_ability_command_power = yes }
             custom_effect_tooltip = CHEM_ABILITY_SECTION_DIVIDER
@@ -720,10 +780,30 @@ ability = {
 			chem_update_lewisite_preview = yes
             set_temp_variable = { var = chem_wind_miscalc_happened value = 0 }
             hidden_effect = {
+				set_temp_variable = { chem_wind_state_roll = constant:cbrn_math.zero }
+				set_temp_variable = { chem_wind_positive_mult = constant:cbrn_math.zero }
+				set_temp_variable = { chem_wind_negative_mult = constant:cbrn_math.zero }
                 chem_use_wind_forecast = yes
-                chem_apply_wind_miscalculation = yes
             }
+			set_temp_variable = { chem_consumed_amount = constant:cbrn_math.zero }
+			set_temp_variable = { chem_required_amount = constant:cbrn_math.zero }
+			set_temp_variable = { chem_payment_preview_ratio = constant:cbrn_math.zero }
+			hidden_effect = { chem_consume_lewisite_cylinders = yes }
+			if = { limit = { NOT = { check_variable = { chem_ability_paid_ratio > constant:cbrn_math.zero } } } hidden_effect = { remove_unit_leader_trait = chemical_cylinder_active_lewisite clr_unit_leader_flag = chem_ability_calculating } }
+			hidden_effect = {
+				if = {
+					limit = { check_variable = { chem_ability_paid_ratio > constant:cbrn_math.zero } }
+					chem_apply_wind_miscalculation = yes
+				}
+			}
+			set_temp_variable = { chem_offense = constant:cbrn_math.zero }
+			set_temp_variable = { chem_breakthrough = constant:cbrn_math.zero }
+			set_temp_variable = { chem_defense = constant:cbrn_math.zero }
+			set_temp_variable = { chem_org_damage = constant:cbrn_math.zero }
+			set_temp_variable = { chem_str_damage = constant:cbrn_math.zero }
+			set_temp_variable = { chem_war_support = constant:cbrn_math.zero }
             chem_set_final_lewisite_effects = yes
+			chem_adapt_ability_effects_to_payment = yes
             set_temp_variable = { var = chem_duration_days value = constant:chem_ability_core.duration_days }
             if = {
                 limit = { has_unit_leader_flag = chem_ability_calculating }
@@ -750,11 +830,11 @@ ability = {
                     }
                 }
             }
-            set_temp_variable = { var = chem_consumed_amount value = 0 }
-            set_temp_variable = { var = chem_required_amount value = 0 }
-            hidden_effect = { chem_consume_lewisite_cylinders = yes }
+			set_temp_variable = { chem_condemnation_civilian_deaths = constant:cbrn_math.zero }
+			set_temp_variable = { chem_condemnation_contamination_value = constant:cbrn_math.zero }
+			set_temp_variable = { chem_condemnation_victim_country = constant:cbrn_math.zero }
             hidden_effect = { chem_apply_current_ability_state_dispersal = yes }
-            hidden_effect = { chem_register_current_ability_condemnation = yes }
+            hidden_effect = { if = { limit = { check_variable = { chem_ability_paid_ratio > constant:cbrn_math.zero } } chem_register_current_ability_condemnation = yes } }
             set_temp_variable = { var = chem_ability_cp_cost value = constant:chem_ability_command_power_cost.lewisite }
             hidden_effect = { chem_refund_chemical_ability_command_power = yes }
             custom_effect_tooltip = CHEM_ABILITY_SECTION_DIVIDER

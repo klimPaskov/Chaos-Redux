@@ -104,22 +104,35 @@ cbrn_policy_allows_extreme_use = {
 	}
 }
 
+chem_state_has_live_legacy_contamination = {
+	has_variable = chem_state_contamination_strength
+	check_variable = { chem_state_contamination_strength < constant:cbrn_math.zero }
+	has_variable = chem_state_contamination_expiry_day
+	check_variable = { chem_state_contamination_expiry_day > global.num_days }
+}
+
 cbrn_state_has_chemical_contamination = {
-	has_variable = cbrn_chemical_contamination
-	check_variable = {
-		var = cbrn_chemical_contamination
-		value = constant:cbrn_contamination_threshold.trace
-		compare = greater_than_or_equals
+	OR = {
+		chem_state_has_live_legacy_contamination = yes
+		AND = {
+			has_variable = cbrn_chemical_contamination
+			check_variable = { var = cbrn_chemical_contamination value = constant:cbrn_contamination_threshold.trace compare = greater_than_or_equals }
+		}
 	}
 }
 
+# STATE. Trigger-side arithmetic keeps mixed burden and expiry in the gate.
+# Uses the same installed presentation conversion as the cleanup reader.
 cbrn_state_has_serious_chemical_contamination = {
-	has_variable = cbrn_chemical_contamination
-	check_variable = {
-		var = cbrn_chemical_contamination
-		value = constant:cbrn_contamination_threshold.serious
-		compare = greater_than_or_equals
+	set_temp_variable = { cbrn_serious_state_burden = constant:cbrn_math.zero }
+	if = { limit = { has_variable = cbrn_chemical_contamination } set_temp_variable = { cbrn_serious_state_burden = cbrn_chemical_contamination } }
+	if = {
+		limit = { chem_state_has_live_legacy_contamination = yes }
+		set_temp_variable = { cbrn_serious_legacy_burden = chem_state_contamination_strength }
+		divide_temp_variable = { cbrn_serious_legacy_burden = constant:cbrn_chemical_dispatch.legacy_contamination_strength_per_point }
+		add_to_temp_variable = { cbrn_serious_state_burden = cbrn_serious_legacy_burden }
 	}
+	check_variable = { var = cbrn_serious_state_burden value = constant:cbrn_contamination_threshold.serious compare = greater_than_or_equals }
 }
 
 cbrn_state_has_severe_medical_saturation = {
