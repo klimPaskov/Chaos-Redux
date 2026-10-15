@@ -59,7 +59,7 @@ def native_token_registry():
     return enums,frozenset(decisions)
 
 class Runtime(F.FamineRuntime):
-    EXTERNAL_EFFECTS=F.FamineRuntime.EXTERNAL_EFFECTS|{'famine_initialize_state','famine_show_report_relief_arrival','famine_refresh_national_food_crisis','famine_refresh_decision_phase_from_country','famine_clear_national_food_crisis','humanitarian_initialize_runtime','humanitarian_project_legacy_cost_quote','migration_project_reception_preparation_cost_quote','migration_panel_refresh','famine_panel_refresh'}
+    EXTERNAL_EFFECTS=F.FamineRuntime.EXTERNAL_EFFECTS|{'famine_initialize_state','famine_show_report_relief_arrival','famine_refresh_national_food_crisis','famine_refresh_decision_phase_from_country','famine_clear_national_food_crisis','humanitarian_initialize_runtime','humanitarian_project_legacy_cost_quote','migration_project_reception_preparation_cost_quote','migration_panel_refresh','famine_panel_refresh','national_policy_panel_refresh_open'}
     EXTERNAL_FIXTURES=EXTERNAL_EFFECTS
     def __init__(self):
         self.enum_tokens,self.decision_tokens=native_token_registry()

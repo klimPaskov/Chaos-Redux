@@ -12,8 +12,6 @@ humanitarian_panel_invalidate_actor = {
 	clear_array = migration_panel_candidates
 	set_variable = { famine_panel_state_count = constant:humanitarian_panel.zero }
 	set_variable = { migration_panel_state_count = constant:humanitarian_panel.zero }
-	add_to_variable = { famine_panel_dirty = constant:humanitarian_panel.one }
-	add_to_variable = { migration_panel_dirty = constant:humanitarian_panel.one }
 }
 
 # STATE output temp, no state writes. Missing assessment stays a separate UI flag.
@@ -69,16 +67,16 @@ famine_panel_open_window = {
 	if = {
 		limit = { famine_panel_is_eligible = yes }
 		clr_country_flag = migration_panel_open
-		add_to_variable = { migration_panel_dirty = constant:humanitarian_panel.one }
 		set_country_flag = famine_panel_open
 		if = { limit = { NOT = { has_variable = famine_panel_view } } set_variable = { famine_panel_view = constant:humanitarian_panel.overview } }
 		if = { limit = { NOT = { has_variable = famine_panel_group } } set_variable = { famine_panel_group = constant:humanitarian_panel.group_first } }
 		famine_panel_refresh = yes
+		national_policy_panel_request_observer = yes
 	}
 	else = { humanitarian_panel_invalidate_actor = yes }
 }
 famine_panel_close_window = {
-	if = { limit = { famine_panel_is_eligible = yes } clr_country_flag = famine_panel_open add_to_variable = { famine_panel_dirty = constant:humanitarian_panel.one } }
+	if = { limit = { famine_panel_is_eligible = yes } clr_country_flag = famine_panel_open }
 	else = { humanitarian_panel_invalidate_actor = yes }
 }
 # STATE, called only from the actor-bounded native iteration after relevance qualification.
@@ -151,7 +149,6 @@ famine_panel_refresh = {
 		famine_panel_project_frames = yes
 		famine_panel_project_work = yes
 		famine_gui_refresh_selected_action_status = yes
-		add_to_variable = { famine_panel_dirty = constant:humanitarian_panel.one }
 	}
 	else = { humanitarian_panel_invalidate_actor = yes }
 }
@@ -160,16 +157,16 @@ migration_panel_open_window = {
 	if = {
 		limit = { migration_panel_is_eligible = yes }
 		clr_country_flag = famine_panel_open
-		add_to_variable = { famine_panel_dirty = constant:humanitarian_panel.one }
 		set_country_flag = migration_panel_open
 		if = { limit = { NOT = { has_variable = migration_panel_view } } set_variable = { migration_panel_view = constant:humanitarian_panel.overview } }
 		if = { limit = { NOT = { has_variable = migration_panel_group } } set_variable = { migration_panel_group = constant:humanitarian_panel.group_first } }
 		migration_panel_refresh = yes
+		national_policy_panel_request_observer = yes
 	}
 	else = { humanitarian_panel_invalidate_actor = yes }
 }
 migration_panel_close_window = {
-	if = { limit = { migration_panel_is_eligible = yes } clr_country_flag = migration_panel_open add_to_variable = { migration_panel_dirty = constant:humanitarian_panel.one } }
+	if = { limit = { migration_panel_is_eligible = yes } clr_country_flag = migration_panel_open }
 	else = { humanitarian_panel_invalidate_actor = yes }
 }
 # STATE, called only from the actor-bounded native iteration after relevance qualification.
@@ -209,7 +206,6 @@ migration_panel_refresh = {
 		migration_panel_project_frames = yes
 		migration_panel_project_work = yes
 		migration_gui_refresh_selected_action_status = yes
-		add_to_variable = { migration_panel_dirty = constant:humanitarian_panel.one }
 	}
 	else = { humanitarian_panel_invalidate_actor = yes }
 }

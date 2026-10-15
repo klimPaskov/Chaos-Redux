@@ -10,9 +10,9 @@ All public helpers and predicates below use the actual actor country.
 
 | API | Inputs and defaults | Outputs and side effects | Caller |
 | --- | --- | --- | --- |
-| `famine_panel_open_window`, `migration_panel_open_window` | Eligible actor, optional existing view/group | Sets its open flag, clears and dirties the other panel, defaults only missing view/group to overview/group 1, refreshes presentation | Parent category or GUI opener |
-| `famine_panel_close_window`, `migration_panel_close_window` | Actor | Eligible close clears its own open flag and advances its matching dirty counter, invalid actor invokes pointer invalidation | Parent close controls |
-| `famine_panel_refresh`, `migration_panel_refresh` | Actor, optional `*_panel_selected_state` | Rebuilds the bounded state list, validates selection, copies overview/selection/work presentation and increments `*_panel_dirty` | Opener, state click and existing registered-country processor while open |
+| `famine_panel_open_window`, `migration_panel_open_window` | Eligible actor, optional existing view/group | Sets its open flag, clears the other panel, defaults only missing view/group to overview/group 1, refreshes presentation | Parent category or GUI opener |
+| `famine_panel_close_window`, `migration_panel_close_window` | Actor | Eligible close clears its own open flag, invalid actor invokes pointer invalidation | Parent close controls |
+| `famine_panel_refresh`, `migration_panel_refresh` | Actor, optional `*_panel_selected_state` | Rebuilds the bounded state list, validates selection, copies overview/selection/work presentation | Opener, state click, existing owner publication and hourly open-human observer |
 | `famine_panel_is_eligible`, `migration_panel_is_eligible` | Actor | Existing human country using normal civilian systems, excluding special Chaos countries and AI | Parent visible/click guards and effects |
 | `famine_panel_has_selected_state`, `migration_panel_has_selected_state` | Actor and stored selection | Requires current list membership and exact current ownership or control in the actual state scope | Parent state/action surfaces and getters |
 
@@ -23,9 +23,10 @@ Rows use `This.GetName` and the existing state-stage/header selectors through th
 
 The panel eligibility boundary intentionally retains the original category presentation exclusion.
 It does not change the separate Holy Realm exception for native civilian laws or humanitarian simulation.
-Effect-time eligibility loss closes both panels, clears both selected pointers and clears both UI lists, then advances both dirty counters once.
-A normal close advances only the matching dirty counter once, while opening across panels advances the other counter once and its own counter through the existing refresh.
-These changes invalidate native GUI caches without changing gameplay or other presentation values.
+Effect-time eligibility loss closes both panels, clears both selected pointers and clears both UI lists.
+A normal close clears only its matching open flag, while opening across panels clears the other open flag and refreshes its own presentation.
+The management scripted GUIs omit their `dirty` gates so native getters, action triggers, affordability and tooltips reevaluate each GUI tick.
+The private `famine_panel_dirty` and `migration_panel_dirty` counters have no engine consumer and are retired, so refresh never increments them.
 No `scope_exists` test is used to validate a stored selection.
 
 ## State list and selection
@@ -135,3 +136,11 @@ No render or live game execution is claimed here.
 
 Future presentation fields should extend this package's UI prefixes and reuse published owner state.
 Opening or refreshing a panel must never become an initialization or simulation endpoint.
+
+## Automatic updates
+
+The two openers call `national_policy_panel_request_observer` after their initial projection.
+The shared [automatic panel contract](national_policy_panel_effects.md) owns coalescing, country identity, close/reopen retirement and the single hourly game-time presentation observer.
+Existing country processing and law publication retain their immediate refresh calls, and humanitarian action receivers publish open-panel projections after accounting and input cleanup.
+There is no manual Update reports action or dirty gate in either management scripted GUI.
+Quiet opening remains observation only and never enrolls a country or state in simulation.

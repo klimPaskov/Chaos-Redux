@@ -89,3 +89,11 @@ if = { limit = { camp_admin_gui_site_record_visible = yes } camp_admin_cache_sel
 
 The 2026-10-03 archive source scenarios and mandatory MCP route gaps are recorded in `docs/plans/system_camp_repression_rework_plans/administration_redesign_2026-09-06/occupation/origin_closed_site_archive_integration_2026-10-03.md`.
 Source list membership and enablement tests are not GUI pixel or native engine evidence.
+
+## Automatic open-window observation
+
+`camp_rework_open_ledger` requests the shared [automatic panel observer](national_policy_panel_effects.md) after its ordinary opening path.
+Each hourly open-human delivery invokes only `camp_admin_refresh_interface`, which reads published existing registry, policy, work and site data without invoking the opener, registration, initialization, population reconciliation or work advancement.
+Existing command and owner display callbacks retain their immediate refresh paths, while native controls and tooltips have no dirty gate.
+All seven UI foreach passes reset private break variables before traversal, and the two project quote outputs are initialized by the interface caller before consuming the helper result.
+Closed windows perform no projection, and the shared delivery retires when no eligible panel is open.

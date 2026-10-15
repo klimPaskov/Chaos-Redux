@@ -1,5 +1,17 @@
 # Camp administration monthly dispatch
 
+## Management-window presentation
+
+Camp Administration shares the native brass/olive management-window family with Migration and Famine.
+Its Administration, Locations, Records and policy pickers preserve existing actions and accounting, with status colors, complete scroll rows and concise text.
+There is no manual refresh control.
+Native GUI state reevaluates each tick; a separate [presentation-only observer](../../common/scripted_effects/national_policy_panel_effects.md) updates cached display fields automatically while a human window is open.
+That observer never calls this monthly processing path, changes population or advances funded work.
+It uses the existing annexation/terminal closure/release boundaries to retire stale UI reservations, with an earliest-hour guard for delayed callbacks.
+The shared [implementation report](../plans/famine_and_migration_system_plans/national_policy_panels_implementation.md#shared-camps-styling-and-automatic-updates-15-october-2026) records the source, visual, localisation and lifecycle checks.
+
+## Monthly gameplay dispatch
+
 The camp package registers eligible countries with an active camp, custody, institutional, aftermath or focus-hook responsibility.
 Registration stores the country in `global.camp_repression_active_countries` and starts one hidden `camp_administration_country.2` timer guarded by `camp_admin_dispatch_timer_active`.
 The focus-hook watch initializer uses the same timer-start helper when it is the first registry entry path.

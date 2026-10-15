@@ -8,6 +8,11 @@ The user's subsequent request for a less debug-like interface and more color aut
 This changes presentation only; controls, policy authority, exact operation contracts and quiet-access behavior remain as specified below.
 The current implementation report records its reference acceptance, asset provenance, visual review and verification limits.
 
+The user also explicitly required consistent Camp presentation and automatic updates without manual report buttons.
+All three management windows use the shared native visual family.
+Controls and dynamic text follow native GUI evaluation, while copied report projections update on their owners' publications and a bounded open-human game-hour observer; this observer must not initialize crises, alter population accounting or introduce a recurring world scan.
+Close/reopen, country retirement/release and stale delivery handling belong to that presentation observer contract.
+
 ## Accepted decisions
 
 - Keep famine and migration as independent mechanics with separate country panels. Each panel is a quiet-accessible, always-eligible 900×600 camps-style window with Overview and States tabs.

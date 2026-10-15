@@ -2,8 +2,8 @@
 
 Status: the accepted implementation and source/visual review are complete. All seven maintained source-contract suites also pass from the isolated commit candidate, excluding unrelated working-tree changes. No live-game run is claimed.
 
-The current presentation follows the user-requested visual refinement below.
-Earlier GUI v4 evidence remains the baseline record; the refinement supersedes its styling only.
+The current presentation and automatic-update contract follow the shared Camps/Migration/Famine refinement below.
+Earlier GUI v4 and manual-refresh previews remain historical baseline evidence.
 
 Acceptance basis: the user explicitly instructed “PLEASE IMPLEMENT THIS PLAN” on 2026-10-15. The accepted scope is recorded in [Part 9](../../specs/famine_and_migration_system_specs/national_policy_panels_part9.md). The [country matrix](../../specs/famine_and_migration_system_specs/national_policy_country_matrix.md) supplies the exact 1936/1939 tag inventory and profile evidence.
 
@@ -154,5 +154,46 @@ No controls, mechanics, assets or requested presentation states were omitted, an
 Reference basis: installed `common/scripted_guis/_documentation.md` lines 50–114, revision `43ce647fc5fde27488855b060b5463c790e5e356149fceb010d36b960b40f838`; offline Interface modding lines 196–226, revision `b74afc86be4e5dbb3b0fc600820d73a8340f7dc1821fc5ef02c9ee1f028c0b1c`; Data structures localisation lines 488–517, revision `62273f37ed30e5479acb331a8973f48dadc1867c4913c8a940e3e790e7af32d4`; and installed `interface/core.gfx` native tile, header and font definitions.
 Skills used: scripted GUI, event assets and UI-family references, subagents, player-facing event text guidance through the localisation worker, and shared Git commit isolation.
 No skill changes were required for this refinement.
+
+## Shared Camps styling and automatic updates: 15 October 2026
+
+Acceptance basis: the user required Camps to match the other management windows and explicitly rejected Update reports buttons in favor of automatic dynamic UI.
+Both manual report buttons, their localisation and click bindings, the humanitarian dirty gates and their obsolete producer counters are removed.
+Native visibility, affordability, enabled states and dynamic text reevaluate at the GUI tick.
+Copied totals, lists, selected-state details and progress frames update through existing owner publications and a single country-owned observer every elapsed game hour while at least one eligible human panel is open.
+The observer is presentation-only, enrolls no crisis and adds no recurring world scan.
+Ordinary close/reopen shares the pending delivery; closed or ineligible panels do not rebuild, and the chain retires when no eligible window remains open.
+Annexation, terminal Camp exclusion and release initialization clear old UI reservations; an earliest-hour guard rejects stale deliveries after a fresh reservation, including either ordering of old and fresh events at the same due hour.
+The existing Camp dispatch lifecycle supplied this recovery precedent.
+
+The authoritative helper contract is [national_policy_panel_effects.md](../../../common/scripted_effects/national_policy_panel_effects.md).
+Implementation includes the matching effects/triggers, hidden `national_policy_panel.1` event, humanitarian openers, the actual Camp opener, six actor-rooted action receiver tails, the existing state-control and annex callbacks, country initialization/release boundaries and terminal Camp cleanup.
+Camp cached projections also isolate their loop-break temporaries and initialize caller-owned quote outputs.
+No action cost, population accounting, mission, political law choice, AI weight, monthly Camp process or famine assessment rule was changed.
+Underlying reports remain as current as the subsystem that publishes them; while paused, direct getters and synchronous owner publications update, while an arbitrary external edit without a publication callback waits for a game-hour boundary or opening to rebuild copied projections.
+No live engine timing or event delivery was observed.
+
+Camps keeps Administration, Locations and Records in its existing 900×540 footprint, using the same native charcoal frame, olive panels, brass selections, gold headings and distinct enabled/locked buttons as the humanitarian family.
+The existing Camp icons, menus, command IDs, tooltips and outcome records remain intact.
+The history viewport shows five complete rows with scrolling instead of a clipped sixth row, and the selected state title accommodates long names.
+`GFX_humanitarian_panel_brass` in `interface/humanitarian_panels.gfx` aliases the existing `gfx/interface/humanitarian_panels/famine_accent_tile.dds` (SHA-256 `b25d960a835d3a45dd2ae4616fd04ea95de651179ff661c4dd0e5c54ab295cff`); there is no additional runtime texture or repointed shared sprite.
+The parent accepted the Camp composition reference (SHA-256 `cd558927df0b93bbecaf7ba0d940e8ca1af7737853ee41dd4dddfE0116bff9c4`, generated source `027c82f19480302b85c0fa2342a9d4ee5015318edc6d8156b3e67d8ed9c77b09`) within the user's requested visual direction.
+That reference is not runtime art; its source, prompt-capture limitations and native mapping are archived in `.tmp/national_policy_panels/consistency/reference_archive/` after retiring `docs/assets/camp_panel_consistency/`.
+
+The parent reviewed eleven Camp scenarios covering all three views, shortages, disabled actions, a role picker, the longest mandate, long state names and incomplete-record status, empty locations, scrolled history, 1366×768 and 1920×1080 at 1.25 scale.
+Final Camp matrix revision: `5ece616502dbeaba188bec763d55b57236145ed18dc3ef381a485cef6fe2c1f4`.
+The two button-free humanitarian overview previews use revisions `7e4101051f7848ee16ff890eababdd5acd171bbfc01f7001363c1404ebf3a154` and `1af1bec0d5c3656d0f0089b9e90b4e3d0d6f2140c167da40f1e2ab6ad84ba025`.
+Fixtures, authoritative artifacts, PNG hashes and native-size reviews are under `.tmp/national_policy_panels/consistency/`; values and enabled states are explicit layout assumptions, not campaign observations.
+MCP script/event checks remain partial, and GUI rendering retains unresolved game-state/representation findings; no universal tool pass is claimed.
+
+The scripted-system worker and independent decision auditor passed twelve focused observer/lifecycle tests and all eleven national-policy groups.
+The ten existing panel groups and nineteen action-contract cases also passed after the update seam was introduced.
+The localisation specialist reviewed 65 Camp UI keys, preserving dynamic tokens, costs and action meanings; the parent reviewed the final text in native previews.
+Exact file inventories, reference citations and test receipts are in `live_updates_handoff.md`, `live_audit_handoff.md`, `camp_localisation_handoff.md` and `skill_handoff.md` in the same ignored task directory.
+The canonical scripted-GUI skill now requires automatic management-panel updates, complete cache invalidation and lifecycle review; only that owned addition is included, preserving unrelated skill edits.
+Skills used: scripted GUI, event assets, decisions/missions, scripted-system/subagent routing, localisation prose guidance, skill maintenance and shared Git commit isolation.
+No requested functionality or controls were simplified or omitted; the manual controls were removed by explicit user direction.
+The final isolated candidate also passed all five selected suites: observer lifecycle, national policies, humanitarian panel projection, shared GUI actions and cost display.
+The exact tested tree and logs are recorded in `.tmp/national_policy_panels/consistency/candidate_tests.json`; subsequent reconciliation changes documentation only.
 
 The commit uses a separate Git index. Pre-existing Event 034 receipt work remains in the working tree at its relocated operation-body position, with its unrelated tuning change; unrelated Kruger, migration cleanup, Event 037 and CXT documentation hunks remain outside this commit. The converted decision file retains the necessary removal of an invalid root-level constant assignment; its canonical value already exists in the committed constants.

@@ -243,14 +243,18 @@ camp_admin_append_display_source = {
 # A co-located occupation/custody host contributes one warning location.
 camp_admin_project_origin_uncertainty = {
 	set_variable = { camp_admin_gui_uncertain_locations = constant:camp_admin_value.zero }
+	set_temp_variable = { camp_admin_ui_break_1 = constant:camp_admin_value.zero }
 	for_each_scope_loop = {
+		break = camp_admin_ui_break_1
 		array = camp_admin_known_site_states
 		if = {
 			limit = { camp_admin_site_is_original_record = yes camp_admin_gui_host_records_uncertain = yes }
 			PREV = { add_to_variable = { camp_admin_gui_uncertain_locations = constant:camp_admin_value.one } }
 		}
 	}
+	set_temp_variable = { camp_admin_ui_break_2 = constant:camp_admin_value.zero }
 	for_each_scope_loop = {
+		break = camp_admin_ui_break_2
 		array = camp_active_site_states
 		set_temp_variable = { camp_admin_origin_projection_host = THIS }
 		if = {
@@ -261,7 +265,9 @@ camp_admin_project_origin_uncertainty = {
 			PREV = { add_to_variable = { camp_admin_gui_uncertain_locations = constant:camp_admin_value.one } }
 		}
 	}
+	set_temp_variable = { camp_admin_ui_break_3 = constant:camp_admin_value.zero }
 	for_each_scope_loop = {
+		break = camp_admin_ui_break_3
 		array = camp_occ_states
 		set_temp_variable = { camp_admin_origin_projection_host = THIS }
 		if = {
@@ -336,10 +342,15 @@ camp_admin_refresh_interface = {
 	set_variable = { camp_admin_gui_extraction_factor = constant:camp_admin_value.zero }
 	save_event_target_as = camp_admin_ui_actor
 	clear_array = camp_admin_gui_source_states
-	for_each_scope_loop = { array = camp_active_site_states camp_admin_append_display_source = yes }
-	for_each_scope_loop = { array = camp_admin_civilian_states camp_admin_append_display_source = yes }
-	for_each_scope_loop = { array = camp_admin_known_site_states camp_admin_append_display_source = yes }
+	set_temp_variable = { camp_admin_ui_break_4 = constant:camp_admin_value.zero }
+	for_each_scope_loop = { break = camp_admin_ui_break_4 array = camp_active_site_states camp_admin_append_display_source = yes }
+	set_temp_variable = { camp_admin_ui_break_5 = constant:camp_admin_value.zero }
+	for_each_scope_loop = { break = camp_admin_ui_break_5 array = camp_admin_civilian_states camp_admin_append_display_source = yes }
+	set_temp_variable = { camp_admin_ui_break_6 = constant:camp_admin_value.zero }
+	for_each_scope_loop = { break = camp_admin_ui_break_6 array = camp_admin_known_site_states camp_admin_append_display_source = yes }
+	set_temp_variable = { camp_admin_ui_break_7 = constant:camp_admin_value.zero }
 	for_each_scope_loop = {
+		break = camp_admin_ui_break_7
 		array = camp_admin_gui_source_states
 		if = {
 			limit = { camp_admin_gui_site_has_current_output = yes check_variable = { camp_admin_construction_factor > constant:camp_admin_value.zero } }
@@ -422,6 +433,8 @@ camp_admin_refresh_interface = {
 	multiply_variable = { camp_admin_gui_country_support_pct = constant:camp_admin_value.display_percent_multiplier }
 	set_variable = { camp_admin_gui_total_deaths_k = camp_admin_total_deaths_k }
 	add_to_variable = { camp_admin_gui_total_deaths_k = camp_occ_total_deaths_k }
+	set_temp_variable = { camp_admin_quote_support = constant:camp_admin_value.zero }
+	set_temp_variable = { camp_admin_quote_pp = constant:camp_admin_value.zero }
 	camp_admin_prepare_project_quote = yes
 	set_variable = { camp_admin_gui_project_support = camp_admin_quote_support }
 	set_variable = { camp_admin_gui_project_pp = camp_admin_quote_pp }

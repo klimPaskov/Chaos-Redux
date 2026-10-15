@@ -39,6 +39,13 @@ Normally show three to five primary actions per visible phase, with six as the h
 
 Main explanations normally fit in one to three short lines. A tooltip for one value/action normally fits in two to four. Explain meaning, causes, relevant thresholds, consequences, and the player's response close to the affected element. Avoid vague text such as `Improves readiness`, duplicated instructions, raw triggers, and long mixed cost strings. Use the decision skill's cost and action-integrity rules for gameplay-changing controls, including correct texticons, at most four spendable cost types, shared validation/payment/effects, AI equivalence, and cleanup. Every button-like element must be interactive, visibly disabled with a reason, or unmistakably decorative.
 
+## Automatic management-panel updates
+
+Player-facing gameplay management panels must stay current automatically; do not make the player press Refresh or Update reports to obtain current information.
+Use native visibility, enabled-state, and tooltip bindings against live state, and use a dirty gate only when every dependency has a complete invalidation path.
+Refresh cached display data automatically through the owning state publishers or a bounded mechanism restricted to the human player's open panel; keep display refresh separate from gameplay assessment and registration, and do not add a world scan for presentation updates.
+Verify quiet periods, open and closed panels, capture-only bindings, and reopening after state changes, including price, affordability, availability, status, and tooltip updates without a manual refresh.
+
 ## MCP visual review and optional rewrite
 
 Use the installed `hoi4_agent_tools` service, registered in `.codex/config.toml` through `hoi4-agent-tools.cmd`. Discover the live schema before use. Tool exposure alone does not establish service health. The exposed GUI tools are `mcp__hoi4_agent_tools__hoi4_gui_inspect`, `mcp__hoi4_agent_tools__hoi4_gui_render`, and `mcp__hoi4_agent_tools__hoi4_gui_rewrite`. Inspection and rendering are read-only source operations. `gui_rewrite` is an optional applying/validation route.

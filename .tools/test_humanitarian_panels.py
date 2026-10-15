@@ -4,7 +4,7 @@ Usage: python .tools/test_humanitarian_panels.py
 Inputs: committed panel source, owner predicates, date conversion and localisation.
 Outputs: .tmp/national_policy_panels/panel_helpers_test_results.json.
 Asserts read-only gameplay state, bounded collection, selection, exact work progress
-and exact dirty-counter changes for close, cross-open and invalidation.
+and open-flag, list and selection behavior for close, cross-open and invalidation.
 The optional foreach cap is a stress assumption, not an observed HOI4 engine limit.
 The action-status presentation seam is recorded. GUI rendering and live gameplay are excluded.
 """
@@ -30,7 +30,7 @@ def read_named(path, name):
     return P.Definition(name, ROOT / path, 1, rows)
 
 class Runtime(P.Event35Runtime):
-    EXTERNAL_FIXTURES = {'famine_gui_refresh_selected_action_status', 'migration_gui_refresh_selected_action_status'}
+    EXTERNAL_FIXTURES = {'national_policy_panel_request_observer', 'famine_gui_refresh_selected_action_status', 'migration_gui_refresh_selected_action_status'}
 
     def __init__(self, states=(), foreach_cap=None):
         saved = (P.EFFECT_FILES, P.TRIGGER_FILES)
@@ -171,10 +171,10 @@ run_unchanged(r, c, 'migration_panel_open_window')
 assert 'migration_panel_open' in c.flags and 'famine_panel_open' not in c.flags and (c.values['migration_panel_view'] == 2) and (c.values['migration_panel_group'] == 3) and ('migration_panel_capacity_assessed' not in c.flags)
 before = copy.copy(c.values)
 run_unchanged(r, c, 'migration_panel_close_window')
-assert c.values == dict(before, migration_panel_dirty=before['migration_panel_dirty'] + 1) and 'migration_panel_open' not in c.flags
+assert c.values == before and 'migration_panel_open' not in c.flags
 checks.append('Quiet open/refresh/close changes only UI, preserves unassessed states and mutually exclusive windows, retains supplied view/group')
 
-# Cached windows must see exact dirty advances on close, cross-open and every invalid entry path.
+# Native per-tick windows follow open flags and actual list/selection invalidation.
 def panel_presentation(actor):
     return (dict(actor.values), set(actor.flags), {key: list(values) for key, values in actor.arrays.items()})
 
@@ -185,14 +185,11 @@ for system, other in [('famine', 'migration'), ('migration', 'famine')]:
     before_values, before_flags, before_arrays = panel_presentation(actor)
     run_unchanged(runtime, actor, system + '_panel_close_window')
     expected_values = dict(before_values)
-    expected_values[system + '_panel_dirty'] += 1
     assert panel_presentation(actor) == (expected_values, before_flags - {system + '_panel_open'}, before_arrays)
     run_unchanged(runtime, actor, other + '_panel_open_window')
     before_values, before_flags, before_arrays = panel_presentation(actor)
     run_unchanged(runtime, actor, system + '_panel_open_window')
     expected_values = dict(before_values)
-    expected_values[system + '_panel_dirty'] += 1
-    expected_values[other + '_panel_dirty'] += 1
     expected_flags = (before_flags - {other + '_panel_open'}) | {system + '_panel_open'}
     assert panel_presentation(actor) == (expected_values, expected_flags, before_arrays)
 
@@ -202,16 +199,16 @@ for entry in ['famine_panel_open_window', 'migration_panel_open_window', 'famine
     selected = state(500, actor)
     runtime = Runtime([selected])
     actor.flags.update({'famine_panel_open', 'migration_panel_open', 'famine_panel_food_assessed'})
-    actor.values.update({'famine_panel_selected_state': selected, 'migration_panel_selected_state': selected, 'famine_panel_state_count': 1, 'migration_panel_state_count': 1, 'famine_panel_dirty': 10, 'migration_panel_dirty': 20, 'famine_panel_view': 2, 'migration_panel_group': 3})
+    actor.values.update({'famine_panel_selected_state': selected, 'migration_panel_selected_state': selected, 'famine_panel_state_count': 1, 'migration_panel_state_count': 1, 'famine_panel_view': 2, 'migration_panel_group': 3})
     actor.arrays.update({key: [selected] for key in ['famine_panel_states', 'migration_panel_states', 'famine_panel_candidates', 'migration_panel_candidates']})
     before_values, before_flags, before_arrays = panel_presentation(actor)
     run_unchanged(runtime, actor, entry)
     expected_values = {key: value for key, value in before_values.items() if key not in {'famine_panel_selected_state', 'migration_panel_selected_state'}}
-    expected_values.update({'famine_panel_state_count': 0, 'migration_panel_state_count': 0, 'famine_panel_dirty': 11, 'migration_panel_dirty': 21})
+    expected_values.update({'famine_panel_state_count': 0, 'migration_panel_state_count': 0})
     expected_arrays = {key: [] for key in before_arrays}
     expected_flags = before_flags - {'famine_panel_open', 'migration_panel_open'}
     assert panel_presentation(actor) == (expected_values, expected_flags, expected_arrays), entry
-checks.append('Exact own-close dirty+1, cross-open both dirty+1 and all six invalid entry paths both dirty+1, with no additional presentation or gameplay mutation')
+checks.append('Own-close and cross-open flags update immediately, and all six invalid entry paths clear lists and selections without extra presentation or gameplay mutation')
 
 a = country()
 b = country('GER')
