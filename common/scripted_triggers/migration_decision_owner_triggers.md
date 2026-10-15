@@ -71,6 +71,12 @@ Prepare Evacuation publishes `migration_evacuation_prepared` after its matching 
 Vulnerable and worker evacuation require that state-local preparation and spare national reception room.
 The existing transfer and cancellation owners retain their preparation-flag cleanup; receipt, route and cohort checks remain with the exact movement owner.
 
+## Published reads for other systems
+
+`migration_state_has_recent_local_integration` is STATE-scoped and true for `constant:migration_decision_timing.local_integration_labor_days` days after a successful Local Integration settlement in that state, through the timed state flag `migration_recent_local_integration` set in the settlement branch of `migration_local_integration`.
+It is the only migration fact that Event 34 Industrial Boom reads: an integrated cohort in an Industrial Region lowers that boom's output pressure because the works gain settled labour.
+Migration keeps cohorts, reception load and Deaths, and readers move no population.
+
 ## Physical transport and local issue guards
 
 Every start revalidates the selected state’s live pressure or measured migration obligations through `migration_state_has_real_migration_issue`, and uses its action-owned cost bundle from `migration_decision_cost_triggers.txt`.
@@ -79,3 +85,13 @@ Prepare Evacuation uses a state-local unprepared check and publishes preparation
 The restored evacuation lanes require that preparation and retain the current not-overloaded-host seam.
 Worker support stock is a non-consumed prerequisite tuned in `migration_decision_threshold.worker_support_stock`.
 Saved transport quantities remain on the original payer until the action’s matching refund or completion consumes them.
+
+## Explicit action context
+
+Scope-sensitive bodies have one `_in_context` implementation reading the mandatory unscoped temporary COUNTRY pointer `humanitarian_action_actor` and STATE pointer `humanitarian_action_target`.
+The original helper name is a compatibility wrapper initializing those inputs from ROOT and FROM before a bare `= yes` call when no explicit context is proven.
+A caller that supplies an explicit envelope also initializes temporary `humanitarian_action_context_proven = 1`, so nested legacy wrappers retain that exact actor and target.
+Panel gates initialize the actor from their country context and the target from the exact selected state, and an immediate country event establishes the actor as ROOT for deep owner helpers.
+These helpers accept no named arguments, have no implicit scope defaults, and publish no additional gameplay output beyond their documented owner body.
+These adapters do not change tuning or create independent transaction owners.
+See [the shared action lifecycle](../scripted_effects/humanitarian_gui_action_effects.md) for caller, pending, and cleanup contracts.

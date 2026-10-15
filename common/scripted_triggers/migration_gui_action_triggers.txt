@@ -1,0 +1,2987 @@
+# Shared native/panel operation gates. Internal identity and phase checks stay hidden.
+# Visible requirement clauses retain the native decision custom tooltips.
+
+migration_prepare_evacuation_action_can_start = {
+	set_temp_variable = {
+		humanitarian_action_actor = ROOT
+	}
+	hidden_trigger = {
+		has_variable = humanitarian_action_target
+		var:humanitarian_action_target = {
+			humanitarian_state_is_valid = yes
+		}
+		set_temp_variable = {
+			humanitarian_action_target_id = constant:humanitarian_runtime.zero
+		}
+		var:humanitarian_action_target = {
+			set_temp_variable = {
+				humanitarian_action_target_id = id
+			}
+		}
+		NOT = {
+			has_variable = migration_action_due_prepare_evacuation_@var:humanitarian_action_target_id
+		}
+		OR = {
+			NOT = {
+				has_variable = migration_action_cooldown_prepare_evacuation_@var:humanitarian_action_target_id
+			}
+			check_variable = {
+				var = global.date
+				value = migration_action_cooldown_prepare_evacuation_@var:humanitarian_action_target_id
+				compare = greater_than_or_equals
+			}
+		}
+		var:humanitarian_action_target = {
+			NOT = {
+				has_state_flag = migration_evacuation_prepared
+			}
+		}
+		var:humanitarian_action_target = {
+			is_controlled_by = ROOT
+			migration_state_has_real_migration_issue = yes
+		}
+		NOT = {
+			has_country_flag = humanitarian_corridor_offer_pending
+		}
+		var:humanitarian_action_target = {
+			humanitarian_state_is_valid = yes
+			OR = {
+				AND = {
+					famine_to_migration_food_safety_is_valid = yes
+					check_variable = {
+						var = famine_to_migration_food_stage
+						value = constant:famine_food_stage.supply_strain
+						compare = greater_than_or_equals
+					}
+					OR = {
+						check_variable = {
+							var = famine_to_migration_food_exposure_days
+							value = constant:migration_decision_threshold.category_food_exposure_days
+							compare = greater_than_or_equals
+						}
+						check_variable = {
+							var = famine_to_migration_food_incident_count
+							value = constant:migration_decision_threshold.category_food_incidents
+							compare = greater_than_or_equals
+						}
+					}
+				}
+				AND = {
+					has_state_flag = migration_displacement_active
+					OR = {
+						check_variable = {
+							var = migration_flight_pressure
+							value = constant:migration_decision_threshold.category_flight_people
+							compare = greater_than_or_equals
+						}
+						check_variable = {
+							var = migration_trapped_population
+							value = constant:migration_decision_threshold.category_trapped_people
+							compare = greater_than_or_equals
+						}
+					}
+				}
+			}
+		}
+		OR = {
+			NOT = {
+				has_variable = migration_panel_selected_cohort_id
+			}
+			check_variable = {
+				migration_panel_selected_cohort_id = constant:humanitarian_runtime.zero
+			}
+			var:humanitarian_action_target = {
+				check_variable = {
+					migration_current_cohort_id = ROOT.migration_panel_selected_cohort_id
+				}
+			}
+		}
+	}
+	var:humanitarian_action_target = {
+		NOT = {
+			has_state_flag = migration_evacuation_prepared
+		}
+	}
+	custom_trigger_tooltip = {
+		tooltip = migration_real_pressure_tt
+		hidden_trigger = {
+			var:humanitarian_action_target = {
+				is_controlled_by = ROOT
+				migration_state_has_real_migration_issue = yes
+			}
+		}
+	}
+	custom_trigger_tooltip = {
+		tooltip = migration_prepare_evacuation_target_tt
+		var:humanitarian_action_target = {
+			humanitarian_state_is_valid = yes
+			OR = {
+				AND = {
+					famine_to_migration_food_safety_is_valid = yes
+					check_variable = {
+						var = famine_to_migration_food_stage
+						value = constant:famine_food_stage.supply_strain
+						compare = greater_than_or_equals
+					}
+					OR = {
+						check_variable = {
+							var = famine_to_migration_food_exposure_days
+							value = constant:migration_decision_threshold.category_food_exposure_days
+							compare = greater_than_or_equals
+						}
+						check_variable = {
+							var = famine_to_migration_food_incident_count
+							value = constant:migration_decision_threshold.category_food_incidents
+							compare = greater_than_or_equals
+						}
+					}
+				}
+				AND = {
+					has_state_flag = migration_displacement_active
+					OR = {
+						check_variable = {
+							var = migration_flight_pressure
+							value = constant:migration_decision_threshold.category_flight_people
+							compare = greater_than_or_equals
+						}
+						check_variable = {
+							var = migration_trapped_population
+							value = constant:migration_decision_threshold.category_trapped_people
+							compare = greater_than_or_equals
+						}
+					}
+				}
+			}
+		}
+	}
+	hidden_trigger = {
+		var:humanitarian_action_target = {
+			is_controlled_by = ROOT
+		}
+	}
+	hidden_trigger = {
+		migration_prepare_evacuation_cost_is_affordable_in_context = yes
+	}
+	hidden_trigger = {
+		NOT = {
+			var:humanitarian_action_target = {
+				has_state_flag = migration_prepare_evacuation_cost_paid
+			}
+		}
+	}
+}
+migration_prepare_evacuation_action_can_show = {
+	set_temp_variable = {
+		humanitarian_action_actor = ROOT
+	}
+	hidden_trigger = {
+		has_variable = humanitarian_action_target
+		var:humanitarian_action_target = {
+			humanitarian_state_is_valid = yes
+		}
+		var:humanitarian_action_target = {
+			NOT = {
+				has_state_flag = migration_evacuation_prepared
+			}
+		}
+		var:humanitarian_action_target = {
+			is_controlled_by = ROOT
+			migration_state_has_real_migration_issue = yes
+		}
+		NOT = {
+			has_country_flag = humanitarian_corridor_offer_pending
+		}
+		var:humanitarian_action_target = {
+			humanitarian_state_is_valid = yes
+			OR = {
+				AND = {
+					famine_to_migration_food_safety_is_valid = yes
+					check_variable = {
+						var = famine_to_migration_food_stage
+						value = constant:famine_food_stage.supply_strain
+						compare = greater_than_or_equals
+					}
+					OR = {
+						check_variable = {
+							var = famine_to_migration_food_exposure_days
+							value = constant:migration_decision_threshold.category_food_exposure_days
+							compare = greater_than_or_equals
+						}
+						check_variable = {
+							var = famine_to_migration_food_incident_count
+							value = constant:migration_decision_threshold.category_food_incidents
+							compare = greater_than_or_equals
+						}
+					}
+				}
+				AND = {
+					has_state_flag = migration_displacement_active
+					OR = {
+						check_variable = {
+							var = migration_flight_pressure
+							value = constant:migration_decision_threshold.category_flight_people
+							compare = greater_than_or_equals
+						}
+						check_variable = {
+							var = migration_trapped_population
+							value = constant:migration_decision_threshold.category_trapped_people
+							compare = greater_than_or_equals
+						}
+					}
+				}
+			}
+		}
+	}
+}
+migration_gui_can_start_prepare_evacuation = {
+	set_temp_variable = {
+		humanitarian_action_actor = ROOT
+	}
+	set_temp_variable = {
+		humanitarian_action_context_proven = constant:humanitarian_runtime.one
+	}
+	set_temp_variable = {
+		humanitarian_action_target = migration_panel_selected_state
+	}
+	migration_prepare_evacuation_action_can_start = yes
+}
+migration_gui_can_show_prepare_evacuation = {
+	set_temp_variable = {
+		humanitarian_action_actor = ROOT
+	}
+	set_temp_variable = {
+		humanitarian_action_context_proven = constant:humanitarian_runtime.one
+	}
+	set_temp_variable = {
+		humanitarian_action_target = migration_panel_selected_state
+	}
+	migration_prepare_evacuation_action_can_show = yes
+}
+migration_prepare_evacuation_action_begin_succeeded = {
+	var:humanitarian_action_target = {
+		has_state_flag = migration_prepare_evacuation_cost_paid
+		has_variable = migration_prepare_evacuation_cost_payer
+		var:migration_prepare_evacuation_cost_payer = {
+			tag = ROOT
+		}
+	}
+}
+migration_prepare_evacuation_action_pending_is_current = {
+	hidden_trigger = {
+		has_variable = migration_action_generation_prepare_evacuation_@var:humanitarian_action_target_id
+		check_variable = {
+			migration_action_generation_prepare_evacuation_@var:humanitarian_action_target_id = humanitarian_action_row_id
+		}
+		var:humanitarian_action_target = {
+			has_variable = migration_prepare_evacuation_operation_generation
+			check_variable = {
+				migration_prepare_evacuation_operation_generation = humanitarian_action_row_id
+			}
+			has_variable = migration_prepare_evacuation_operation_actor
+			var:migration_prepare_evacuation_operation_actor = {
+				exists = yes
+				tag = ROOT
+			}
+		}
+	}
+}
+migration_evacuate_vulnerable_action_can_start = {
+	set_temp_variable = {
+		humanitarian_action_actor = ROOT
+	}
+	hidden_trigger = {
+		has_variable = humanitarian_action_target
+		var:humanitarian_action_target = {
+			humanitarian_state_is_valid = yes
+		}
+		set_temp_variable = {
+			humanitarian_action_target_id = constant:humanitarian_runtime.zero
+		}
+		var:humanitarian_action_target = {
+			set_temp_variable = {
+				humanitarian_action_target_id = id
+			}
+		}
+		NOT = {
+			has_variable = migration_action_due_evacuate_vulnerable_@var:humanitarian_action_target_id
+		}
+		OR = {
+			NOT = {
+				has_variable = migration_action_cooldown_evacuate_vulnerable_@var:humanitarian_action_target_id
+			}
+			check_variable = {
+				var = global.date
+				value = migration_action_cooldown_evacuate_vulnerable_@var:humanitarian_action_target_id
+				compare = greater_than_or_equals
+			}
+		}
+		var:humanitarian_action_target = {
+			is_controlled_by = ROOT
+			migration_state_has_real_migration_issue = yes
+		}
+		NOT = {
+			has_country_flag = humanitarian_corridor_offer_pending
+		}
+		migration_reception_has_room_for_evacuation = yes
+		var:humanitarian_action_target = {
+			has_state_flag = migration_displacement_active
+			has_state_flag = migration_evacuation_prepared
+		}
+		OR = {
+			NOT = {
+				has_variable = migration_panel_selected_cohort_id
+			}
+			check_variable = {
+				migration_panel_selected_cohort_id = constant:humanitarian_runtime.zero
+			}
+			var:humanitarian_action_target = {
+				check_variable = {
+					migration_current_cohort_id = ROOT.migration_panel_selected_cohort_id
+				}
+			}
+		}
+	}
+	hidden_trigger = {
+		migration_reception_has_room_for_evacuation = yes
+	}
+	custom_trigger_tooltip = {
+		tooltip = migration_real_pressure_tt
+		hidden_trigger = {
+			var:humanitarian_action_target = {
+				is_controlled_by = ROOT
+				migration_state_has_real_migration_issue = yes
+			}
+		}
+	}
+	custom_trigger_tooltip = {
+		tooltip = migration_decision_target_available_tt
+		var:humanitarian_action_target = {
+			humanitarian_state_is_valid = yes
+		}
+	}
+	hidden_trigger = {
+		var:humanitarian_action_target = {
+			is_controlled_by = ROOT
+		}
+	}
+	hidden_trigger = {
+		migration_evacuate_vulnerable_cost_is_affordable_in_context = yes
+	}
+	hidden_trigger = {
+		NOT = {
+			var:humanitarian_action_target = {
+				has_state_flag = migration_evacuate_vulnerable_cost_paid
+			}
+		}
+	}
+}
+migration_evacuate_vulnerable_action_can_show = {
+	set_temp_variable = {
+		humanitarian_action_actor = ROOT
+	}
+	hidden_trigger = {
+		has_variable = humanitarian_action_target
+		var:humanitarian_action_target = {
+			humanitarian_state_is_valid = yes
+		}
+		var:humanitarian_action_target = {
+			is_controlled_by = ROOT
+			migration_state_has_real_migration_issue = yes
+		}
+		NOT = {
+			has_country_flag = humanitarian_corridor_offer_pending
+		}
+		migration_reception_has_room_for_evacuation = yes
+		var:humanitarian_action_target = {
+			has_state_flag = migration_displacement_active
+			has_state_flag = migration_evacuation_prepared
+		}
+	}
+}
+migration_gui_can_start_evacuate_vulnerable = {
+	set_temp_variable = {
+		humanitarian_action_actor = ROOT
+	}
+	set_temp_variable = {
+		humanitarian_action_context_proven = constant:humanitarian_runtime.one
+	}
+	set_temp_variable = {
+		humanitarian_action_target = migration_panel_selected_state
+	}
+	migration_evacuate_vulnerable_action_can_start = yes
+}
+migration_gui_can_show_evacuate_vulnerable = {
+	set_temp_variable = {
+		humanitarian_action_actor = ROOT
+	}
+	set_temp_variable = {
+		humanitarian_action_context_proven = constant:humanitarian_runtime.one
+	}
+	set_temp_variable = {
+		humanitarian_action_target = migration_panel_selected_state
+	}
+	migration_evacuate_vulnerable_action_can_show = yes
+}
+migration_evacuate_vulnerable_action_begin_succeeded = {
+	var:humanitarian_action_target = {
+		has_state_flag = migration_evacuate_vulnerable_cost_paid
+		has_variable = migration_evacuate_vulnerable_cost_payer
+		var:migration_evacuate_vulnerable_cost_payer = {
+			tag = ROOT
+		}
+	}
+}
+migration_evacuate_vulnerable_action_pending_is_current = {
+	hidden_trigger = {
+		has_variable = migration_action_generation_evacuate_vulnerable_@var:humanitarian_action_target_id
+		check_variable = {
+			migration_action_generation_evacuate_vulnerable_@var:humanitarian_action_target_id = humanitarian_action_row_id
+		}
+		var:humanitarian_action_target = {
+			has_variable = migration_evacuate_vulnerable_operation_generation
+			check_variable = {
+				migration_evacuate_vulnerable_operation_generation = humanitarian_action_row_id
+			}
+			has_variable = migration_evacuate_vulnerable_operation_actor
+			var:migration_evacuate_vulnerable_operation_actor = {
+				exists = yes
+				tag = ROOT
+			}
+		}
+	}
+}
+migration_evacuate_civilians_action_can_start = {
+	set_temp_variable = {
+		humanitarian_action_actor = ROOT
+	}
+	hidden_trigger = {
+		has_variable = humanitarian_action_target
+		var:humanitarian_action_target = {
+			humanitarian_state_is_valid = yes
+		}
+		set_temp_variable = {
+			humanitarian_action_target_id = constant:humanitarian_runtime.zero
+		}
+		var:humanitarian_action_target = {
+			set_temp_variable = {
+				humanitarian_action_target_id = id
+			}
+		}
+		NOT = {
+			has_variable = migration_action_due_evacuate_civilians_@var:humanitarian_action_target_id
+		}
+		OR = {
+			NOT = {
+				has_variable = migration_action_cooldown_evacuate_civilians_@var:humanitarian_action_target_id
+			}
+			check_variable = {
+				var = global.date
+				value = migration_action_cooldown_evacuate_civilians_@var:humanitarian_action_target_id
+				compare = greater_than_or_equals
+			}
+		}
+		var:humanitarian_action_target = {
+			is_controlled_by = ROOT
+			migration_state_has_real_migration_issue = yes
+		}
+		NOT = {
+			has_country_flag = humanitarian_corridor_offer_pending
+		}
+		migration_reception_has_room_for_evacuation = yes
+		var:humanitarian_action_target = {
+			has_state_flag = migration_displacement_active
+			has_state_flag = migration_evacuation_prepared
+		}
+		OR = {
+			NOT = {
+				has_variable = migration_panel_selected_cohort_id
+			}
+			check_variable = {
+				migration_panel_selected_cohort_id = constant:humanitarian_runtime.zero
+			}
+			var:humanitarian_action_target = {
+				check_variable = {
+					migration_current_cohort_id = ROOT.migration_panel_selected_cohort_id
+				}
+			}
+		}
+	}
+	hidden_trigger = {
+		migration_reception_has_room_for_evacuation = yes
+	}
+	custom_trigger_tooltip = {
+		tooltip = migration_real_pressure_tt
+		hidden_trigger = {
+			var:humanitarian_action_target = {
+				is_controlled_by = ROOT
+				migration_state_has_real_migration_issue = yes
+			}
+		}
+	}
+	custom_trigger_tooltip = {
+		tooltip = migration_decision_target_available_tt
+		var:humanitarian_action_target = {
+			humanitarian_state_is_valid = yes
+		}
+	}
+	hidden_trigger = {
+		var:humanitarian_action_target = {
+			is_controlled_by = ROOT
+		}
+	}
+	hidden_trigger = {
+		migration_evacuate_civilians_cost_is_affordable_in_context = yes
+	}
+	hidden_trigger = {
+		NOT = {
+			var:humanitarian_action_target = {
+				has_state_flag = migration_evacuate_civilians_cost_paid
+			}
+		}
+	}
+}
+migration_evacuate_civilians_action_can_show = {
+	set_temp_variable = {
+		humanitarian_action_actor = ROOT
+	}
+	hidden_trigger = {
+		has_variable = humanitarian_action_target
+		var:humanitarian_action_target = {
+			humanitarian_state_is_valid = yes
+		}
+		var:humanitarian_action_target = {
+			is_controlled_by = ROOT
+			migration_state_has_real_migration_issue = yes
+		}
+		NOT = {
+			has_country_flag = humanitarian_corridor_offer_pending
+		}
+		migration_reception_has_room_for_evacuation = yes
+		var:humanitarian_action_target = {
+			has_state_flag = migration_displacement_active
+			has_state_flag = migration_evacuation_prepared
+		}
+	}
+}
+migration_gui_can_start_evacuate_civilians = {
+	set_temp_variable = {
+		humanitarian_action_actor = ROOT
+	}
+	set_temp_variable = {
+		humanitarian_action_context_proven = constant:humanitarian_runtime.one
+	}
+	set_temp_variable = {
+		humanitarian_action_target = migration_panel_selected_state
+	}
+	migration_evacuate_civilians_action_can_start = yes
+}
+migration_gui_can_show_evacuate_civilians = {
+	set_temp_variable = {
+		humanitarian_action_actor = ROOT
+	}
+	set_temp_variable = {
+		humanitarian_action_context_proven = constant:humanitarian_runtime.one
+	}
+	set_temp_variable = {
+		humanitarian_action_target = migration_panel_selected_state
+	}
+	migration_evacuate_civilians_action_can_show = yes
+}
+migration_evacuate_civilians_action_begin_succeeded = {
+	var:humanitarian_action_target = {
+		has_state_flag = migration_evacuate_civilians_cost_paid
+		has_variable = migration_evacuate_civilians_cost_payer
+		var:migration_evacuate_civilians_cost_payer = {
+			tag = ROOT
+		}
+	}
+}
+migration_evacuate_civilians_action_pending_is_current = {
+	hidden_trigger = {
+		has_variable = migration_action_generation_evacuate_civilians_@var:humanitarian_action_target_id
+		check_variable = {
+			migration_action_generation_evacuate_civilians_@var:humanitarian_action_target_id = humanitarian_action_row_id
+		}
+		var:humanitarian_action_target = {
+			has_variable = migration_evacuate_civilians_operation_generation
+			check_variable = {
+				migration_evacuate_civilians_operation_generation = humanitarian_action_row_id
+			}
+			has_variable = migration_evacuate_civilians_operation_actor
+			var:migration_evacuate_civilians_operation_actor = {
+				exists = yes
+				tag = ROOT
+			}
+		}
+	}
+}
+migration_evacuate_administration_action_can_start = {
+	set_temp_variable = {
+		humanitarian_action_actor = ROOT
+	}
+	hidden_trigger = {
+		has_variable = humanitarian_action_target
+		var:humanitarian_action_target = {
+			humanitarian_state_is_valid = yes
+		}
+		set_temp_variable = {
+			humanitarian_action_target_id = constant:humanitarian_runtime.zero
+		}
+		var:humanitarian_action_target = {
+			set_temp_variable = {
+				humanitarian_action_target_id = id
+			}
+		}
+		NOT = {
+			has_variable = migration_action_due_evacuate_administration_@var:humanitarian_action_target_id
+		}
+		OR = {
+			NOT = {
+				has_variable = migration_action_cooldown_evacuate_administration_@var:humanitarian_action_target_id
+			}
+			check_variable = {
+				var = global.date
+				value = migration_action_cooldown_evacuate_administration_@var:humanitarian_action_target_id
+				compare = greater_than_or_equals
+			}
+		}
+		var:humanitarian_action_target = {
+			is_controlled_by = ROOT
+			migration_state_has_real_migration_issue = yes
+		}
+		NOT = {
+			has_country_flag = humanitarian_corridor_offer_pending
+		}
+		migration_reception_has_room_for_evacuation = yes
+		var:humanitarian_action_target = {
+			has_state_flag = migration_displacement_active
+			has_state_flag = migration_evacuation_prepared
+		}
+		OR = {
+			NOT = {
+				has_variable = migration_panel_selected_cohort_id
+			}
+			check_variable = {
+				migration_panel_selected_cohort_id = constant:humanitarian_runtime.zero
+			}
+			var:humanitarian_action_target = {
+				check_variable = {
+					migration_current_cohort_id = ROOT.migration_panel_selected_cohort_id
+				}
+			}
+		}
+	}
+	hidden_trigger = {
+		migration_reception_has_room_for_evacuation = yes
+	}
+	custom_trigger_tooltip = {
+		tooltip = migration_real_pressure_tt
+		hidden_trigger = {
+			var:humanitarian_action_target = {
+				is_controlled_by = ROOT
+				migration_state_has_real_migration_issue = yes
+			}
+		}
+	}
+	custom_trigger_tooltip = {
+		tooltip = migration_decision_target_available_tt
+		var:humanitarian_action_target = {
+			humanitarian_state_is_valid = yes
+		}
+	}
+	hidden_trigger = {
+		var:humanitarian_action_target = {
+			is_controlled_by = ROOT
+		}
+	}
+	hidden_trigger = {
+		migration_evacuate_administration_cost_is_affordable_in_context = yes
+	}
+	hidden_trigger = {
+		NOT = {
+			var:humanitarian_action_target = {
+				has_state_flag = migration_evacuate_administration_cost_paid
+			}
+		}
+	}
+}
+migration_evacuate_administration_action_can_show = {
+	set_temp_variable = {
+		humanitarian_action_actor = ROOT
+	}
+	hidden_trigger = {
+		has_variable = humanitarian_action_target
+		var:humanitarian_action_target = {
+			humanitarian_state_is_valid = yes
+		}
+		var:humanitarian_action_target = {
+			is_controlled_by = ROOT
+			migration_state_has_real_migration_issue = yes
+		}
+		NOT = {
+			has_country_flag = humanitarian_corridor_offer_pending
+		}
+		migration_reception_has_room_for_evacuation = yes
+		var:humanitarian_action_target = {
+			has_state_flag = migration_displacement_active
+			has_state_flag = migration_evacuation_prepared
+		}
+	}
+}
+migration_gui_can_start_evacuate_administration = {
+	set_temp_variable = {
+		humanitarian_action_actor = ROOT
+	}
+	set_temp_variable = {
+		humanitarian_action_context_proven = constant:humanitarian_runtime.one
+	}
+	set_temp_variable = {
+		humanitarian_action_target = migration_panel_selected_state
+	}
+	migration_evacuate_administration_action_can_start = yes
+}
+migration_gui_can_show_evacuate_administration = {
+	set_temp_variable = {
+		humanitarian_action_actor = ROOT
+	}
+	set_temp_variable = {
+		humanitarian_action_context_proven = constant:humanitarian_runtime.one
+	}
+	set_temp_variable = {
+		humanitarian_action_target = migration_panel_selected_state
+	}
+	migration_evacuate_administration_action_can_show = yes
+}
+migration_evacuate_administration_action_begin_succeeded = {
+	var:humanitarian_action_target = {
+		has_state_flag = migration_evacuate_administration_cost_paid
+		has_variable = migration_evacuate_administration_cost_payer
+		var:migration_evacuate_administration_cost_payer = {
+			tag = ROOT
+		}
+	}
+}
+migration_evacuate_administration_action_pending_is_current = {
+	hidden_trigger = {
+		has_variable = migration_action_generation_evacuate_administration_@var:humanitarian_action_target_id
+		check_variable = {
+			migration_action_generation_evacuate_administration_@var:humanitarian_action_target_id = humanitarian_action_row_id
+		}
+		var:humanitarian_action_target = {
+			has_variable = migration_evacuate_administration_operation_generation
+			check_variable = {
+				migration_evacuate_administration_operation_generation = humanitarian_action_row_id
+			}
+			has_variable = migration_evacuate_administration_operation_actor
+			var:migration_evacuate_administration_operation_actor = {
+				exists = yes
+				tag = ROOT
+			}
+		}
+	}
+}
+migration_evacuate_workers_action_can_start = {
+	set_temp_variable = {
+		humanitarian_action_actor = ROOT
+	}
+	hidden_trigger = {
+		has_variable = humanitarian_action_target
+		var:humanitarian_action_target = {
+			humanitarian_state_is_valid = yes
+		}
+		set_temp_variable = {
+			humanitarian_action_target_id = constant:humanitarian_runtime.zero
+		}
+		var:humanitarian_action_target = {
+			set_temp_variable = {
+				humanitarian_action_target_id = id
+			}
+		}
+		NOT = {
+			has_variable = migration_action_due_evacuate_workers_@var:humanitarian_action_target_id
+		}
+		OR = {
+			NOT = {
+				has_variable = migration_action_cooldown_evacuate_workers_@var:humanitarian_action_target_id
+			}
+			check_variable = {
+				var = global.date
+				value = migration_action_cooldown_evacuate_workers_@var:humanitarian_action_target_id
+				compare = greater_than_or_equals
+			}
+		}
+		var:humanitarian_action_target = {
+			is_controlled_by = ROOT
+			migration_state_has_real_migration_issue = yes
+		}
+		NOT = {
+			has_country_flag = humanitarian_corridor_offer_pending
+		}
+		migration_reception_has_room_for_evacuation = yes
+		var:humanitarian_action_target = {
+			has_state_flag = migration_displacement_active
+			has_state_flag = migration_evacuation_prepared
+		}
+		OR = {
+			NOT = {
+				has_variable = migration_panel_selected_cohort_id
+			}
+			check_variable = {
+				migration_panel_selected_cohort_id = constant:humanitarian_runtime.zero
+			}
+			var:humanitarian_action_target = {
+				check_variable = {
+					migration_current_cohort_id = ROOT.migration_panel_selected_cohort_id
+				}
+			}
+		}
+	}
+	hidden_trigger = {
+		migration_reception_has_room_for_evacuation = yes
+	}
+	custom_trigger_tooltip = {
+		tooltip = migration_real_pressure_tt
+		hidden_trigger = {
+			var:humanitarian_action_target = {
+				is_controlled_by = ROOT
+				migration_state_has_real_migration_issue = yes
+			}
+		}
+	}
+	custom_trigger_tooltip = {
+		tooltip = migration_decision_target_available_tt
+		var:humanitarian_action_target = {
+			humanitarian_state_is_valid = yes
+		}
+	}
+	custom_trigger_tooltip = {
+		tooltip = migration_evacuate_workers_support_requirement_tt
+		has_equipment = {
+			support_equipment > constant:migration_decision_threshold.worker_support_stock
+		}
+	}
+	hidden_trigger = {
+		var:humanitarian_action_target = {
+			is_controlled_by = ROOT
+		}
+	}
+	hidden_trigger = {
+		migration_evacuate_workers_cost_is_affordable_in_context = yes
+	}
+	hidden_trigger = {
+		NOT = {
+			var:humanitarian_action_target = {
+				has_state_flag = migration_evacuate_workers_cost_paid
+			}
+		}
+	}
+}
+migration_evacuate_workers_action_can_show = {
+	set_temp_variable = {
+		humanitarian_action_actor = ROOT
+	}
+	hidden_trigger = {
+		has_variable = humanitarian_action_target
+		var:humanitarian_action_target = {
+			humanitarian_state_is_valid = yes
+		}
+		var:humanitarian_action_target = {
+			is_controlled_by = ROOT
+			migration_state_has_real_migration_issue = yes
+		}
+		NOT = {
+			has_country_flag = humanitarian_corridor_offer_pending
+		}
+		migration_reception_has_room_for_evacuation = yes
+		var:humanitarian_action_target = {
+			has_state_flag = migration_displacement_active
+			has_state_flag = migration_evacuation_prepared
+		}
+	}
+}
+migration_gui_can_start_evacuate_workers = {
+	set_temp_variable = {
+		humanitarian_action_actor = ROOT
+	}
+	set_temp_variable = {
+		humanitarian_action_context_proven = constant:humanitarian_runtime.one
+	}
+	set_temp_variable = {
+		humanitarian_action_target = migration_panel_selected_state
+	}
+	migration_evacuate_workers_action_can_start = yes
+}
+migration_gui_can_show_evacuate_workers = {
+	set_temp_variable = {
+		humanitarian_action_actor = ROOT
+	}
+	set_temp_variable = {
+		humanitarian_action_context_proven = constant:humanitarian_runtime.one
+	}
+	set_temp_variable = {
+		humanitarian_action_target = migration_panel_selected_state
+	}
+	migration_evacuate_workers_action_can_show = yes
+}
+migration_evacuate_workers_action_begin_succeeded = {
+	var:humanitarian_action_target = {
+		has_state_flag = migration_evacuate_workers_cost_paid
+		has_variable = migration_evacuate_workers_cost_payer
+		var:migration_evacuate_workers_cost_payer = {
+			tag = ROOT
+		}
+	}
+}
+migration_evacuate_workers_action_pending_is_current = {
+	hidden_trigger = {
+		has_variable = migration_action_generation_evacuate_workers_@var:humanitarian_action_target_id
+		check_variable = {
+			migration_action_generation_evacuate_workers_@var:humanitarian_action_target_id = humanitarian_action_row_id
+		}
+		var:humanitarian_action_target = {
+			has_variable = migration_evacuate_workers_operation_generation
+			check_variable = {
+				migration_evacuate_workers_operation_generation = humanitarian_action_row_id
+			}
+			has_variable = migration_evacuate_workers_operation_actor
+			var:migration_evacuate_workers_operation_actor = {
+				exists = yes
+				tag = ROOT
+			}
+		}
+	}
+}
+migration_negotiate_corridor_action_can_start = {
+	set_temp_variable = {
+		humanitarian_action_actor = ROOT
+	}
+	hidden_trigger = {
+		has_variable = humanitarian_action_target
+		var:humanitarian_action_target = {
+			humanitarian_state_is_valid = yes
+		}
+		set_temp_variable = {
+			humanitarian_action_target_id = constant:humanitarian_runtime.zero
+		}
+		var:humanitarian_action_target = {
+			set_temp_variable = {
+				humanitarian_action_target_id = id
+			}
+		}
+		NOT = {
+			has_variable = migration_action_due_negotiate_corridor_@var:humanitarian_action_target_id
+		}
+		OR = {
+			NOT = {
+				has_variable = migration_action_cooldown_negotiate_corridor_@var:humanitarian_action_target_id
+			}
+			check_variable = {
+				var = global.date
+				value = migration_action_cooldown_negotiate_corridor_@var:humanitarian_action_target_id
+				compare = greater_than_or_equals
+			}
+		}
+		var:humanitarian_action_target = {
+			is_controlled_by = ROOT
+			migration_state_has_real_migration_issue = yes
+		}
+		NOT = {
+			has_country_flag = humanitarian_corridor_offer_pending
+		}
+		OR = {
+			NOT = {
+				has_variable = migration_reception_load
+			}
+			NOT = {
+				check_variable = {
+					var = migration_reception_load
+					value = constant:humanitarian_population.zero
+					compare = greater_than
+				}
+			}
+		}
+		var:humanitarian_action_target = {
+			humanitarian_corridor_origin_is_valid = yes
+		}
+		OR = {
+			NOT = {
+				has_variable = migration_panel_selected_cohort_id
+			}
+			check_variable = {
+				migration_panel_selected_cohort_id = constant:humanitarian_runtime.zero
+			}
+			var:humanitarian_action_target = {
+				check_variable = {
+					migration_current_cohort_id = ROOT.migration_panel_selected_cohort_id
+				}
+			}
+		}
+	}
+	custom_trigger_tooltip = {
+		tooltip = migration_real_pressure_tt
+		hidden_trigger = {
+			var:humanitarian_action_target = {
+				is_controlled_by = ROOT
+				migration_state_has_real_migration_issue = yes
+			}
+		}
+	}
+	custom_trigger_tooltip = {
+		tooltip = migration_negotiate_corridor_target_tt
+		var:humanitarian_action_target = {
+			humanitarian_corridor_origin_is_valid = yes
+			infrastructure > constant:humanitarian_population.zero
+			any_neighbor_state = {
+				humanitarian_state_is_valid = yes
+				infrastructure > constant:humanitarian_population.zero
+				CONTROLLER = {
+					has_war_with = ROOT
+				}
+			}
+		}
+	}
+	hidden_trigger = {
+		var:humanitarian_action_target = {
+			is_controlled_by = ROOT
+		}
+	}
+	hidden_trigger = {
+		migration_negotiate_corridor_cost_is_affordable_in_context = yes
+	}
+	hidden_trigger = {
+		NOT = {
+			var:humanitarian_action_target = {
+				has_state_flag = migration_negotiate_corridor_cost_pending
+			}
+		}
+	}
+}
+migration_negotiate_corridor_action_can_show = {
+	set_temp_variable = {
+		humanitarian_action_actor = ROOT
+	}
+	hidden_trigger = {
+		has_variable = humanitarian_action_target
+		var:humanitarian_action_target = {
+			humanitarian_state_is_valid = yes
+		}
+		var:humanitarian_action_target = {
+			is_controlled_by = ROOT
+			migration_state_has_real_migration_issue = yes
+		}
+		NOT = {
+			has_country_flag = humanitarian_corridor_offer_pending
+		}
+		OR = {
+			NOT = {
+				has_variable = migration_reception_load
+			}
+			NOT = {
+				check_variable = {
+					var = migration_reception_load
+					value = constant:humanitarian_population.zero
+					compare = greater_than
+				}
+			}
+		}
+		var:humanitarian_action_target = {
+			humanitarian_corridor_origin_is_valid = yes
+		}
+	}
+}
+migration_gui_can_start_negotiate_corridor = {
+	set_temp_variable = {
+		humanitarian_action_actor = ROOT
+	}
+	set_temp_variable = {
+		humanitarian_action_context_proven = constant:humanitarian_runtime.one
+	}
+	set_temp_variable = {
+		humanitarian_action_target = migration_panel_selected_state
+	}
+	migration_negotiate_corridor_action_can_start = yes
+}
+migration_gui_can_show_negotiate_corridor = {
+	set_temp_variable = {
+		humanitarian_action_actor = ROOT
+	}
+	set_temp_variable = {
+		humanitarian_action_context_proven = constant:humanitarian_runtime.one
+	}
+	set_temp_variable = {
+		humanitarian_action_target = migration_panel_selected_state
+	}
+	migration_negotiate_corridor_action_can_show = yes
+}
+migration_negotiate_corridor_action_begin_succeeded = {
+	var:humanitarian_action_target = {
+		has_state_flag = migration_negotiate_corridor_cost_pending
+		has_variable = migration_negotiate_corridor_cost_payer
+		var:migration_negotiate_corridor_cost_payer = {
+			tag = ROOT
+		}
+	}
+}
+migration_negotiate_corridor_action_pending_is_current = {
+	hidden_trigger = {
+		has_variable = migration_action_generation_negotiate_corridor_@var:humanitarian_action_target_id
+		check_variable = {
+			migration_action_generation_negotiate_corridor_@var:humanitarian_action_target_id = humanitarian_action_row_id
+		}
+		var:humanitarian_action_target = {
+			has_variable = migration_negotiate_corridor_operation_generation
+			check_variable = {
+				migration_negotiate_corridor_operation_generation = humanitarian_action_row_id
+			}
+			has_variable = migration_negotiate_corridor_operation_actor
+			var:migration_negotiate_corridor_operation_actor = {
+				exists = yes
+				tag = ROOT
+			}
+		}
+	}
+}
+migration_accept_corridor_offer_action_can_start = {
+	set_temp_variable = {
+		humanitarian_action_actor = ROOT
+	}
+	hidden_trigger = {
+		always = yes
+		set_temp_variable = {
+			humanitarian_action_target_id = constant:humanitarian_runtime.zero
+		}
+		NOT = {
+			has_variable = migration_action_due_accept_corridor_offer_@var:humanitarian_action_target_id
+		}
+		OR = {
+			NOT = {
+				has_variable = migration_action_cooldown_accept_corridor_offer_@var:humanitarian_action_target_id
+			}
+			check_variable = {
+				var = global.date
+				value = migration_action_cooldown_accept_corridor_offer_@var:humanitarian_action_target_id
+				compare = greater_than_or_equals
+			}
+		}
+		migration_country_has_real_migration_issue = yes
+		migration_pending_reception_issue_is_valid = yes
+		humanitarian_corridor_offer_can_be_accepted = yes
+	}
+	custom_trigger_tooltip = {
+		tooltip = migration_real_country_pressure_tt
+		hidden_trigger = {
+			migration_country_has_real_migration_issue = yes
+		}
+	}
+	custom_trigger_tooltip = {
+		tooltip = migration_accept_corridor_offer_available_tt
+		humanitarian_corridor_offer_can_be_accepted = yes
+		hidden_trigger = {
+			OR = {
+				NOT = {
+					has_variable = migration_panel_selected_offer_generation
+				}
+				check_variable = {
+					migration_panel_selected_offer_generation = constant:humanitarian_runtime.zero
+				}
+				check_variable = {
+					migration_panel_selected_offer_generation = humanitarian_corridor_offer_route_generation
+				}
+			}
+		}
+	}
+}
+migration_accept_corridor_offer_action_can_show = {
+	set_temp_variable = {
+		humanitarian_action_actor = ROOT
+	}
+	hidden_trigger = {
+		always = yes
+		migration_country_has_real_migration_issue = yes
+		migration_pending_reception_issue_is_valid = yes
+		humanitarian_corridor_offer_can_be_accepted = yes
+	}
+}
+migration_gui_can_start_accept_corridor_offer = {
+	set_temp_variable = {
+		humanitarian_action_actor = ROOT
+	}
+	set_temp_variable = {
+		humanitarian_action_context_proven = constant:humanitarian_runtime.one
+	}
+	set_temp_variable = {
+		humanitarian_action_target = migration_panel_selected_state
+	}
+	migration_accept_corridor_offer_action_can_start = yes
+}
+migration_gui_can_show_accept_corridor_offer = {
+	set_temp_variable = {
+		humanitarian_action_actor = ROOT
+	}
+	set_temp_variable = {
+		humanitarian_action_context_proven = constant:humanitarian_runtime.one
+	}
+	set_temp_variable = {
+		humanitarian_action_target = migration_panel_selected_state
+	}
+	migration_accept_corridor_offer_action_can_show = yes
+}
+migration_accept_corridor_offer_action_begin_succeeded = {
+	NOT = {
+		has_country_flag = humanitarian_corridor_offer_pending
+	}
+}
+migration_reject_corridor_offer_action_can_start = {
+	set_temp_variable = {
+		humanitarian_action_actor = ROOT
+	}
+	hidden_trigger = {
+		always = yes
+		set_temp_variable = {
+			humanitarian_action_target_id = constant:humanitarian_runtime.zero
+		}
+		NOT = {
+			has_variable = migration_action_due_reject_corridor_offer_@var:humanitarian_action_target_id
+		}
+		OR = {
+			NOT = {
+				has_variable = migration_action_cooldown_reject_corridor_offer_@var:humanitarian_action_target_id
+			}
+			check_variable = {
+				var = global.date
+				value = migration_action_cooldown_reject_corridor_offer_@var:humanitarian_action_target_id
+				compare = greater_than_or_equals
+			}
+		}
+		migration_country_has_real_migration_issue = yes
+		migration_pending_reception_issue_is_valid = yes
+	}
+	custom_trigger_tooltip = {
+		tooltip = migration_real_country_pressure_tt
+		hidden_trigger = {
+			migration_country_has_real_migration_issue = yes
+		}
+	}
+	custom_trigger_tooltip = {
+		tooltip = migration_reject_corridor_offer_available_tt
+		humanitarian_corridor_offer_is_valid = yes
+		hidden_trigger = {
+			OR = {
+				NOT = {
+					has_variable = migration_panel_selected_offer_generation
+				}
+				check_variable = {
+					migration_panel_selected_offer_generation = constant:humanitarian_runtime.zero
+				}
+				check_variable = {
+					migration_panel_selected_offer_generation = humanitarian_corridor_offer_route_generation
+				}
+			}
+		}
+	}
+}
+migration_reject_corridor_offer_action_can_show = {
+	set_temp_variable = {
+		humanitarian_action_actor = ROOT
+	}
+	hidden_trigger = {
+		always = yes
+		migration_country_has_real_migration_issue = yes
+		migration_pending_reception_issue_is_valid = yes
+	}
+}
+migration_gui_can_start_reject_corridor_offer = {
+	set_temp_variable = {
+		humanitarian_action_actor = ROOT
+	}
+	set_temp_variable = {
+		humanitarian_action_context_proven = constant:humanitarian_runtime.one
+	}
+	set_temp_variable = {
+		humanitarian_action_target = migration_panel_selected_state
+	}
+	migration_reject_corridor_offer_action_can_start = yes
+}
+migration_gui_can_show_reject_corridor_offer = {
+	set_temp_variable = {
+		humanitarian_action_actor = ROOT
+	}
+	set_temp_variable = {
+		humanitarian_action_context_proven = constant:humanitarian_runtime.one
+	}
+	set_temp_variable = {
+		humanitarian_action_target = migration_panel_selected_state
+	}
+	migration_reject_corridor_offer_action_can_show = yes
+}
+migration_reject_corridor_offer_action_begin_succeeded = {
+	NOT = {
+		has_country_flag = humanitarian_corridor_offer_pending
+	}
+}
+migration_open_reception_action_can_start = {
+	set_temp_variable = {
+		humanitarian_action_actor = ROOT
+	}
+	hidden_trigger = {
+		has_variable = humanitarian_action_target
+		var:humanitarian_action_target = {
+			humanitarian_state_is_valid = yes
+		}
+		set_temp_variable = {
+			humanitarian_action_target_id = constant:humanitarian_runtime.zero
+		}
+		var:humanitarian_action_target = {
+			set_temp_variable = {
+				humanitarian_action_target_id = id
+			}
+		}
+		NOT = {
+			has_variable = migration_action_due_open_reception_@var:humanitarian_action_target_id
+		}
+		OR = {
+			NOT = {
+				has_variable = migration_action_cooldown_open_reception_@var:humanitarian_action_target_id
+			}
+			check_variable = {
+				var = global.date
+				value = migration_action_cooldown_open_reception_@var:humanitarian_action_target_id
+				compare = greater_than_or_equals
+			}
+		}
+		migration_reception_preparation_is_visible = yes
+		OR = {
+			NOT = {
+				has_variable = migration_panel_selected_cohort_id
+			}
+			check_variable = {
+				migration_panel_selected_cohort_id = constant:humanitarian_runtime.zero
+			}
+			var:humanitarian_action_target = {
+				check_variable = {
+					migration_current_cohort_id = ROOT.migration_panel_selected_cohort_id
+				}
+			}
+		}
+	}
+	hidden_trigger = {
+		uses_normal_civilian_systems = yes
+	}
+	num_of_civilian_factories > constant:humanitarian_population.zero
+	hidden_trigger = {
+		migration_reception_preparation_is_affordable_in_context = yes
+	}
+	custom_trigger_tooltip = {
+		tooltip = migration_open_reception_target_tt
+		var:humanitarian_action_target = {
+			migration_reception_preparation_target_is_valid_in_context = yes
+		}
+	}
+	custom_trigger_tooltip = { tooltip = migration_reception_admission_policy_tt hidden_trigger = { migration_decision_reception_policy_allows_admission = yes } }
+}
+migration_open_reception_action_can_show = {
+	set_temp_variable = {
+		humanitarian_action_actor = ROOT
+	}
+	hidden_trigger = {
+		has_variable = humanitarian_action_target
+		var:humanitarian_action_target = {
+			humanitarian_state_is_valid = yes
+		}
+		migration_reception_preparation_is_visible = yes
+	}
+}
+migration_gui_can_start_open_reception = {
+	set_temp_variable = {
+		humanitarian_action_actor = ROOT
+	}
+	set_temp_variable = {
+		humanitarian_action_context_proven = constant:humanitarian_runtime.one
+	}
+	set_temp_variable = {
+		humanitarian_action_target = migration_panel_selected_state
+	}
+	migration_open_reception_action_can_start = yes
+}
+migration_gui_can_show_open_reception = {
+	set_temp_variable = {
+		humanitarian_action_actor = ROOT
+	}
+	set_temp_variable = {
+		humanitarian_action_context_proven = constant:humanitarian_runtime.one
+	}
+	set_temp_variable = {
+		humanitarian_action_target = migration_panel_selected_state
+	}
+	migration_open_reception_action_can_show = yes
+}
+migration_open_reception_action_begin_succeeded = {
+	check_variable = {
+		migration_reception_preparation_result = constant:humanitarian_runtime.one
+	}
+}
+migration_controlled_medical_reception_action_can_start = {
+	set_temp_variable = {
+		humanitarian_action_actor = ROOT
+	}
+	hidden_trigger = {
+		always = yes
+		set_temp_variable = {
+			humanitarian_action_target_id = constant:humanitarian_runtime.zero
+		}
+		NOT = {
+			has_variable = migration_action_due_controlled_medical_reception_@var:humanitarian_action_target_id
+		}
+		OR = {
+			NOT = {
+				has_variable = migration_action_cooldown_controlled_medical_reception_@var:humanitarian_action_target_id
+			}
+			check_variable = {
+				var = global.date
+				value = migration_action_cooldown_controlled_medical_reception_@var:humanitarian_action_target_id
+				compare = greater_than_or_equals
+			}
+		}
+		migration_country_has_real_migration_issue = yes
+		NOT = {
+			has_country_flag = humanitarian_corridor_offer_pending
+		}
+		NOT = {
+			has_country_flag = migration_medical_reception_active
+		}
+		has_country_flag = migration_displacement_country_active
+		check_variable = {
+			var = migration_reception_load
+			value = constant:humanitarian_population.zero
+			compare = greater_than
+		}
+		any_owned_state = {
+			migration_decision_reception_exposure_receipt_is_valid = yes
+		}
+		migration_country_has_free_mission_slot = yes
+		check_variable = {
+			migration_reception_policy = constant:migration_border_policy.quarantine
+		}
+	}
+	custom_trigger_tooltip = {
+		tooltip = migration_real_country_pressure_tt
+		hidden_trigger = {
+			migration_country_has_real_migration_issue = yes
+		}
+	}
+	hidden_trigger = {
+		uses_normal_civilian_systems = yes
+	}
+	num_of_civilian_factories > constant:humanitarian_population.zero
+	custom_trigger_tooltip = {
+		tooltip = migration_controlled_medical_reception_target_tt
+		any_owned_state = {
+			migration_decision_reception_exposure_receipt_is_valid = yes
+		}
+	}
+	custom_trigger_tooltip = {
+		tooltip = migration_free_mission_slot_tt
+		migration_country_has_free_mission_slot = yes
+	}
+	hidden_trigger = {
+		migration_controlled_medical_reception_cost_is_affordable = yes
+	}
+}
+migration_controlled_medical_reception_action_can_show = {
+	set_temp_variable = {
+		humanitarian_action_actor = ROOT
+	}
+	hidden_trigger = {
+		always = yes
+		migration_country_has_real_migration_issue = yes
+		NOT = {
+			has_country_flag = humanitarian_corridor_offer_pending
+		}
+		NOT = {
+			has_country_flag = migration_medical_reception_active
+		}
+		has_country_flag = migration_displacement_country_active
+		check_variable = {
+			var = migration_reception_load
+			value = constant:humanitarian_population.zero
+			compare = greater_than
+		}
+		any_owned_state = {
+			migration_decision_reception_exposure_receipt_is_valid = yes
+		}
+		migration_country_has_free_mission_slot = yes
+		check_variable = {
+			migration_reception_policy = constant:migration_border_policy.quarantine
+		}
+	}
+}
+migration_gui_can_start_controlled_medical_reception = {
+	set_temp_variable = {
+		humanitarian_action_actor = ROOT
+	}
+	set_temp_variable = {
+		humanitarian_action_context_proven = constant:humanitarian_runtime.one
+	}
+	set_temp_variable = {
+		humanitarian_action_target = migration_panel_selected_state
+	}
+	migration_controlled_medical_reception_action_can_start = yes
+}
+migration_gui_can_show_controlled_medical_reception = {
+	set_temp_variable = {
+		humanitarian_action_actor = ROOT
+	}
+	set_temp_variable = {
+		humanitarian_action_context_proven = constant:humanitarian_runtime.one
+	}
+	set_temp_variable = {
+		humanitarian_action_target = migration_panel_selected_state
+	}
+	migration_controlled_medical_reception_action_can_show = yes
+}
+migration_controlled_medical_reception_action_begin_succeeded = {
+	check_variable = {
+		migration_transport_payment_result = constant:migration_transport_cost.one
+	}
+}
+migration_distribute_arrivals_action_can_start = {
+	set_temp_variable = {
+		humanitarian_action_actor = ROOT
+	}
+	hidden_trigger = {
+		has_variable = humanitarian_action_target
+		var:humanitarian_action_target = {
+			humanitarian_state_is_valid = yes
+		}
+		set_temp_variable = {
+			humanitarian_action_target_id = constant:humanitarian_runtime.zero
+		}
+		var:humanitarian_action_target = {
+			set_temp_variable = {
+				humanitarian_action_target_id = id
+			}
+		}
+		NOT = {
+			has_variable = migration_action_due_distribute_arrivals_@var:humanitarian_action_target_id
+		}
+		OR = {
+			NOT = {
+				has_variable = migration_action_cooldown_distribute_arrivals_@var:humanitarian_action_target_id
+			}
+			check_variable = {
+				var = global.date
+				value = migration_action_cooldown_distribute_arrivals_@var:humanitarian_action_target_id
+				compare = greater_than_or_equals
+			}
+		}
+		var:humanitarian_action_target = {
+			is_controlled_by = ROOT
+			migration_state_has_real_migration_issue = yes
+		}
+		NOT = {
+			has_country_flag = humanitarian_corridor_offer_pending
+		}
+		migration_decision_reception_load_is_valid = yes
+		var:humanitarian_action_target = {
+			has_state_flag = migration_displacement_active
+			migration_decision_exact_hosted_cohort_is_valid = yes
+			has_variable = migration_state_reception_load
+			check_variable = {
+				var = migration_state_reception_load
+				value = constant:humanitarian_population.zero
+				compare = greater_than
+			}
+		}
+		OR = {
+			NOT = {
+				has_variable = migration_panel_selected_cohort_id
+			}
+			check_variable = {
+				migration_panel_selected_cohort_id = constant:humanitarian_runtime.zero
+			}
+			var:humanitarian_action_target = {
+				check_variable = {
+					migration_current_cohort_id = ROOT.migration_panel_selected_cohort_id
+				}
+			}
+		}
+	}
+	custom_trigger_tooltip = {
+		tooltip = migration_real_pressure_tt
+		hidden_trigger = {
+			var:humanitarian_action_target = {
+				is_controlled_by = ROOT
+				migration_state_has_real_migration_issue = yes
+			}
+		}
+	}
+	hidden_trigger = {
+		NOT = {
+			var:humanitarian_action_target = {
+				has_state_flag = migration_evacuation_prepared
+			}
+		}
+	}
+	hidden_trigger = {
+		uses_normal_civilian_systems = yes
+	}
+	num_of_civilian_factories > constant:humanitarian_population.zero
+	custom_trigger_tooltip = {
+		tooltip = migration_reception_load_tt
+		migration_decision_reception_load_is_valid = yes
+	}
+	custom_trigger_tooltip = {
+		tooltip = migration_reception_state_host_tt
+		var:humanitarian_action_target = {
+			migration_decision_exact_hosted_cohort_is_valid = yes
+			has_variable = migration_state_reception_load
+			check_variable = {
+				var = migration_state_reception_load
+				value = constant:humanitarian_population.zero
+				compare = greater_than
+			}
+		}
+	}
+	custom_trigger_tooltip = {
+		tooltip = migration_distribute_arrivals_destination_tt
+		var:humanitarian_action_target = {
+			any_neighbor_state = {
+				humanitarian_state_is_valid = yes
+				OWNER = {
+					tag = ROOT
+				}
+				is_controlled_by = OWNER
+				infrastructure > constant:migration_destination_selection_threshold.minimum_route_infrastructure
+				famine_to_migration_food_safety_is_valid = yes
+				check_variable = {
+					var = famine_to_migration_food_stage
+					value = constant:famine_food_stage.stable
+					compare = equals
+				}
+				NOT = {
+					has_state_flag = migration_persecution_active
+				}
+				NOT = {
+					has_state_flag = migration_bombing_active
+				}
+				NOT = {
+					has_state_flag = migration_population_trapped
+				}
+				NOT = {
+					genocide_state_has_active_camps = yes
+				}
+				NOT = {
+					is_valid_camp_active_site_state = yes
+				}
+				NOT = {
+					cbrn_state_has_chemical_contamination = yes
+				}
+				NOT = {
+					has_dynamic_modifier = {
+						modifier = nuclear_fallout_state
+					}
+				}
+				NOT = {
+					black_plague_state_is_infected_or_worse = yes
+				}
+				CONTROLLER = {
+					NOT = {
+						has_war_with = ROOT
+					}
+				}
+			}
+		}
+	}
+	hidden_trigger = {
+		var:humanitarian_action_target = {
+			is_controlled_by = ROOT
+		}
+	}
+	hidden_trigger = {
+		migration_distribute_arrivals_cost_is_affordable_in_context = yes
+	}
+	hidden_trigger = {
+		NOT = {
+			var:humanitarian_action_target = {
+				has_state_flag = migration_distribute_arrivals_cost_paid
+			}
+		}
+	}
+}
+migration_distribute_arrivals_action_can_show = {
+	set_temp_variable = {
+		humanitarian_action_actor = ROOT
+	}
+	hidden_trigger = {
+		has_variable = humanitarian_action_target
+		var:humanitarian_action_target = {
+			humanitarian_state_is_valid = yes
+		}
+		var:humanitarian_action_target = {
+			is_controlled_by = ROOT
+			migration_state_has_real_migration_issue = yes
+		}
+		NOT = {
+			has_country_flag = humanitarian_corridor_offer_pending
+		}
+		migration_decision_reception_load_is_valid = yes
+		var:humanitarian_action_target = {
+			has_state_flag = migration_displacement_active
+			migration_decision_exact_hosted_cohort_is_valid = yes
+			has_variable = migration_state_reception_load
+			check_variable = {
+				var = migration_state_reception_load
+				value = constant:humanitarian_population.zero
+				compare = greater_than
+			}
+		}
+	}
+}
+migration_gui_can_start_distribute_arrivals = {
+	set_temp_variable = {
+		humanitarian_action_actor = ROOT
+	}
+	set_temp_variable = {
+		humanitarian_action_context_proven = constant:humanitarian_runtime.one
+	}
+	set_temp_variable = {
+		humanitarian_action_target = migration_panel_selected_state
+	}
+	migration_distribute_arrivals_action_can_start = yes
+}
+migration_gui_can_show_distribute_arrivals = {
+	set_temp_variable = {
+		humanitarian_action_actor = ROOT
+	}
+	set_temp_variable = {
+		humanitarian_action_context_proven = constant:humanitarian_runtime.one
+	}
+	set_temp_variable = {
+		humanitarian_action_target = migration_panel_selected_state
+	}
+	migration_distribute_arrivals_action_can_show = yes
+}
+migration_distribute_arrivals_action_begin_succeeded = {
+	var:humanitarian_action_target = {
+		has_state_flag = migration_distribute_arrivals_cost_paid
+		has_variable = migration_distribute_arrivals_cost_payer
+		var:migration_distribute_arrivals_cost_payer = {
+			tag = ROOT
+		}
+	}
+}
+migration_distribute_arrivals_action_pending_is_current = {
+	hidden_trigger = {
+		has_variable = migration_action_generation_distribute_arrivals_@var:humanitarian_action_target_id
+		check_variable = {
+			migration_action_generation_distribute_arrivals_@var:humanitarian_action_target_id = humanitarian_action_row_id
+		}
+		var:humanitarian_action_target = {
+			has_variable = migration_distribute_arrivals_operation_generation
+			check_variable = {
+				migration_distribute_arrivals_operation_generation = humanitarian_action_row_id
+			}
+			has_variable = migration_distribute_arrivals_operation_actor
+			var:migration_distribute_arrivals_operation_actor = {
+				exists = yes
+				tag = ROOT
+			}
+		}
+	}
+}
+migration_transit_only_action_can_start = {
+	set_temp_variable = {
+		humanitarian_action_actor = ROOT
+	}
+	hidden_trigger = {
+		has_variable = humanitarian_action_target
+		var:humanitarian_action_target = {
+			humanitarian_state_is_valid = yes
+		}
+		set_temp_variable = {
+			humanitarian_action_target_id = constant:humanitarian_runtime.zero
+		}
+		var:humanitarian_action_target = {
+			set_temp_variable = {
+				humanitarian_action_target_id = id
+			}
+		}
+		NOT = {
+			has_variable = migration_action_due_transit_only_@var:humanitarian_action_target_id
+		}
+		OR = {
+			NOT = {
+				has_variable = migration_action_cooldown_transit_only_@var:humanitarian_action_target_id
+			}
+			check_variable = {
+				var = global.date
+				value = migration_action_cooldown_transit_only_@var:humanitarian_action_target_id
+				compare = greater_than_or_equals
+			}
+		}
+		var:humanitarian_action_target = {
+			is_controlled_by = ROOT
+			migration_state_has_real_migration_issue = yes
+		}
+		NOT = {
+			has_country_flag = humanitarian_corridor_offer_pending
+		}
+		check_variable = {
+			migration_reception_policy = constant:migration_border_policy.transit_only
+		}
+		migration_decision_reception_load_is_valid = yes
+		var:humanitarian_action_target = {
+			migration_decision_reception_state_load_is_valid = yes
+		}
+		OR = {
+			NOT = {
+				has_variable = migration_panel_selected_cohort_id
+			}
+			check_variable = {
+				migration_panel_selected_cohort_id = constant:humanitarian_runtime.zero
+			}
+			var:humanitarian_action_target = {
+				check_variable = {
+					migration_current_cohort_id = ROOT.migration_panel_selected_cohort_id
+				}
+			}
+		}
+	}
+	custom_trigger_tooltip = {
+		tooltip = migration_real_pressure_tt
+		hidden_trigger = {
+			var:humanitarian_action_target = {
+				is_controlled_by = ROOT
+				migration_state_has_real_migration_issue = yes
+			}
+		}
+	}
+	hidden_trigger = {
+		NOT = {
+			var:humanitarian_action_target = {
+				has_state_flag = migration_evacuation_prepared
+			}
+		}
+	}
+	hidden_trigger = {
+		uses_normal_civilian_systems = yes
+	}
+	custom_trigger_tooltip = {
+		tooltip = migration_transit_only_policy_tt
+		check_variable = {
+			migration_reception_policy = constant:migration_border_policy.transit_only
+		}
+	}
+	custom_trigger_tooltip = {
+		tooltip = migration_transit_only_target_tt
+		var:humanitarian_action_target = {
+			migration_decision_reception_state_load_is_valid = yes
+			any_neighbor_state = {
+				humanitarian_state_is_valid = yes
+				OWNER = {
+					NOT = {
+						tag = ROOT
+					}
+					humanitarian_country_is_valid = yes
+				}
+				OWNER = {
+					migration_reception_capacity_is_valid = yes
+				}
+				OWNER = {
+					migration_decision_reception_policy_allows_admission = yes
+				}
+				is_controlled_by = OWNER
+				infrastructure > constant:migration_destination_selection_threshold.minimum_route_infrastructure
+				famine_to_migration_food_safety_is_valid = yes
+				check_variable = {
+					var = famine_to_migration_food_stage
+					value = constant:famine_food_stage.stable
+					compare = equals
+				}
+				NOT = {
+					has_state_flag = migration_persecution_active
+				}
+				NOT = {
+					has_state_flag = migration_bombing_active
+				}
+				NOT = {
+					has_state_flag = migration_population_trapped
+				}
+				NOT = {
+					genocide_state_has_active_camps = yes
+				}
+				NOT = {
+					is_valid_camp_active_site_state = yes
+				}
+				NOT = {
+					cbrn_state_has_chemical_contamination = yes
+				}
+				NOT = {
+					has_dynamic_modifier = {
+						modifier = nuclear_fallout_state
+					}
+				}
+				NOT = {
+					black_plague_state_is_infected_or_worse = yes
+				}
+				CONTROLLER = {
+					NOT = {
+						has_war_with = ROOT
+					}
+				}
+			}
+		}
+	}
+	hidden_trigger = {
+		var:humanitarian_action_target = {
+			is_controlled_by = ROOT
+		}
+	}
+	hidden_trigger = {
+		migration_transit_only_cost_is_affordable_in_context = yes
+	}
+	hidden_trigger = {
+		NOT = {
+			var:humanitarian_action_target = {
+				has_state_flag = migration_transit_only_cost_paid
+			}
+		}
+	}
+}
+migration_transit_only_action_can_show = {
+	set_temp_variable = {
+		humanitarian_action_actor = ROOT
+	}
+	hidden_trigger = {
+		has_variable = humanitarian_action_target
+		var:humanitarian_action_target = {
+			humanitarian_state_is_valid = yes
+		}
+		var:humanitarian_action_target = {
+			is_controlled_by = ROOT
+			migration_state_has_real_migration_issue = yes
+		}
+		NOT = {
+			has_country_flag = humanitarian_corridor_offer_pending
+		}
+		check_variable = {
+			migration_reception_policy = constant:migration_border_policy.transit_only
+		}
+		migration_decision_reception_load_is_valid = yes
+		var:humanitarian_action_target = {
+			migration_decision_reception_state_load_is_valid = yes
+		}
+	}
+}
+migration_gui_can_start_transit_only = {
+	set_temp_variable = {
+		humanitarian_action_actor = ROOT
+	}
+	set_temp_variable = {
+		humanitarian_action_context_proven = constant:humanitarian_runtime.one
+	}
+	set_temp_variable = {
+		humanitarian_action_target = migration_panel_selected_state
+	}
+	migration_transit_only_action_can_start = yes
+}
+migration_gui_can_show_transit_only = {
+	set_temp_variable = {
+		humanitarian_action_actor = ROOT
+	}
+	set_temp_variable = {
+		humanitarian_action_context_proven = constant:humanitarian_runtime.one
+	}
+	set_temp_variable = {
+		humanitarian_action_target = migration_panel_selected_state
+	}
+	migration_transit_only_action_can_show = yes
+}
+migration_transit_only_action_begin_succeeded = {
+	var:humanitarian_action_target = {
+		has_state_flag = migration_transit_only_cost_paid
+		has_variable = migration_transit_only_cost_payer
+		var:migration_transit_only_cost_payer = {
+			tag = ROOT
+		}
+	}
+}
+migration_transit_only_action_pending_is_current = {
+	hidden_trigger = {
+		has_variable = migration_action_generation_transit_only_@var:humanitarian_action_target_id
+		check_variable = {
+			migration_action_generation_transit_only_@var:humanitarian_action_target_id = humanitarian_action_row_id
+		}
+		var:humanitarian_action_target = {
+			has_variable = migration_transit_only_operation_generation
+			check_variable = {
+				migration_transit_only_operation_generation = humanitarian_action_row_id
+			}
+			has_variable = migration_transit_only_operation_actor
+			var:migration_transit_only_operation_actor = {
+				exists = yes
+				tag = ROOT
+			}
+		}
+	}
+}
+migration_enforce_closure_action_can_start = {
+	set_temp_variable = {
+		humanitarian_action_actor = ROOT
+	}
+	hidden_trigger = {
+		has_variable = humanitarian_action_target
+		var:humanitarian_action_target = {
+			humanitarian_state_is_valid = yes
+		}
+		set_temp_variable = {
+			humanitarian_action_target_id = constant:humanitarian_runtime.zero
+		}
+		var:humanitarian_action_target = {
+			set_temp_variable = {
+				humanitarian_action_target_id = id
+			}
+		}
+		NOT = {
+			has_variable = migration_action_due_enforce_closure_@var:humanitarian_action_target_id
+		}
+		OR = {
+			NOT = {
+				has_variable = migration_action_cooldown_enforce_closure_@var:humanitarian_action_target_id
+			}
+			check_variable = {
+				var = global.date
+				value = migration_action_cooldown_enforce_closure_@var:humanitarian_action_target_id
+				compare = greater_than_or_equals
+			}
+		}
+		var:humanitarian_action_target = {
+			is_controlled_by = ROOT
+			migration_state_has_real_migration_issue = yes
+		}
+		NOT = {
+			has_country_flag = humanitarian_corridor_offer_pending
+		}
+		has_country_flag = migration_displacement_country_active
+		check_variable = {
+			var = migration_reception_policy
+			value = constant:migration_border_policy.violent
+			compare = equals
+		}
+		migration_decision_reception_load_is_valid = yes
+		var:humanitarian_action_target = {
+			migration_decision_reception_state_load_is_valid = yes
+		}
+		OR = {
+			NOT = {
+				has_variable = migration_panel_selected_cohort_id
+			}
+			check_variable = {
+				migration_panel_selected_cohort_id = constant:humanitarian_runtime.zero
+			}
+			var:humanitarian_action_target = {
+				check_variable = {
+					migration_current_cohort_id = ROOT.migration_panel_selected_cohort_id
+				}
+			}
+		}
+	}
+	custom_trigger_tooltip = {
+		tooltip = migration_real_pressure_tt
+		hidden_trigger = {
+			var:humanitarian_action_target = {
+				is_controlled_by = ROOT
+				migration_state_has_real_migration_issue = yes
+			}
+		}
+	}
+	hidden_trigger = {
+		NOT = {
+			var:humanitarian_action_target = {
+				has_state_flag = migration_evacuation_prepared
+			}
+		}
+	}
+	hidden_trigger = {
+		uses_normal_civilian_systems = yes
+	}
+	OR = {
+		has_government = fascism
+		has_government = communism
+		has_government = neutrality
+	}
+	custom_trigger_tooltip = {
+		tooltip = migration_reception_load_tt
+		migration_decision_reception_load_is_valid = yes
+	}
+	custom_trigger_tooltip = {
+		tooltip = migration_reception_state_host_tt
+		var:humanitarian_action_target = {
+			migration_decision_reception_state_load_is_valid = yes
+		}
+	}
+	hidden_trigger = {
+		var:humanitarian_action_target = {
+			is_controlled_by = ROOT
+		}
+	}
+	hidden_trigger = {
+		migration_enforce_closure_cost_is_affordable_in_context = yes
+	}
+	hidden_trigger = {
+		NOT = {
+			var:humanitarian_action_target = {
+				has_state_flag = migration_enforce_closure_cost_paid
+			}
+		}
+	}
+}
+migration_enforce_closure_action_can_show = {
+	set_temp_variable = {
+		humanitarian_action_actor = ROOT
+	}
+	hidden_trigger = {
+		has_variable = humanitarian_action_target
+		var:humanitarian_action_target = {
+			humanitarian_state_is_valid = yes
+		}
+		var:humanitarian_action_target = {
+			is_controlled_by = ROOT
+			migration_state_has_real_migration_issue = yes
+		}
+		NOT = {
+			has_country_flag = humanitarian_corridor_offer_pending
+		}
+		has_country_flag = migration_displacement_country_active
+		check_variable = {
+			var = migration_reception_policy
+			value = constant:migration_border_policy.violent
+			compare = equals
+		}
+		migration_decision_reception_load_is_valid = yes
+		var:humanitarian_action_target = {
+			migration_decision_reception_state_load_is_valid = yes
+		}
+	}
+}
+migration_gui_can_start_enforce_closure = {
+	set_temp_variable = {
+		humanitarian_action_actor = ROOT
+	}
+	set_temp_variable = {
+		humanitarian_action_context_proven = constant:humanitarian_runtime.one
+	}
+	set_temp_variable = {
+		humanitarian_action_target = migration_panel_selected_state
+	}
+	migration_enforce_closure_action_can_start = yes
+}
+migration_gui_can_show_enforce_closure = {
+	set_temp_variable = {
+		humanitarian_action_actor = ROOT
+	}
+	set_temp_variable = {
+		humanitarian_action_context_proven = constant:humanitarian_runtime.one
+	}
+	set_temp_variable = {
+		humanitarian_action_target = migration_panel_selected_state
+	}
+	migration_enforce_closure_action_can_show = yes
+}
+migration_enforce_closure_action_begin_succeeded = {
+	var:humanitarian_action_target = {
+		has_state_flag = migration_enforce_closure_cost_paid
+		has_variable = migration_enforce_closure_cost_payer
+		var:migration_enforce_closure_cost_payer = {
+			tag = ROOT
+		}
+	}
+}
+migration_enforce_closure_action_pending_is_current = {
+	hidden_trigger = {
+		has_variable = migration_action_generation_enforce_closure_@var:humanitarian_action_target_id
+		check_variable = {
+			migration_action_generation_enforce_closure_@var:humanitarian_action_target_id = humanitarian_action_row_id
+		}
+		var:humanitarian_action_target = {
+			has_variable = migration_enforce_closure_operation_generation
+			check_variable = {
+				migration_enforce_closure_operation_generation = humanitarian_action_row_id
+			}
+			has_variable = migration_enforce_closure_operation_actor
+			var:migration_enforce_closure_operation_actor = {
+				exists = yes
+				tag = ROOT
+			}
+		}
+	}
+}
+migration_local_integration_action_can_start = {
+	set_temp_variable = {
+		humanitarian_action_actor = ROOT
+	}
+	hidden_trigger = {
+		has_variable = humanitarian_action_target
+		var:humanitarian_action_target = {
+			humanitarian_state_is_valid = yes
+		}
+		set_temp_variable = {
+			humanitarian_action_target_id = constant:humanitarian_runtime.zero
+		}
+		var:humanitarian_action_target = {
+			set_temp_variable = {
+				humanitarian_action_target_id = id
+			}
+		}
+		NOT = {
+			has_variable = migration_action_due_local_integration_@var:humanitarian_action_target_id
+		}
+		OR = {
+			NOT = {
+				has_variable = migration_action_cooldown_local_integration_@var:humanitarian_action_target_id
+			}
+			check_variable = {
+				var = global.date
+				value = migration_action_cooldown_local_integration_@var:humanitarian_action_target_id
+				compare = greater_than_or_equals
+			}
+		}
+		var:humanitarian_action_target = {
+			is_controlled_by = ROOT
+			migration_state_has_real_migration_issue = yes
+		}
+		NOT = {
+			has_country_flag = humanitarian_corridor_offer_pending
+		}
+		migration_decision_reception_load_is_valid = yes
+		has_variable = migration_reception_load
+		has_variable = migration_reception_capacity
+		var:humanitarian_action_target = {
+			migration_local_integration_host_can_settle_in_context = yes
+			migration_decision_exact_hosted_cohort_is_valid = yes
+			has_variable = migration_state_reception_load
+			check_variable = {
+				var = migration_state_reception_load
+				value = constant:humanitarian_population.zero
+				compare = greater_than
+			}
+			has_variable = migration_current_cohort_id
+			NOT = {
+				has_state_flag = migration_cohort_selection_ambiguous
+			}
+		}
+		OR = {
+			NOT = {
+				has_variable = migration_panel_selected_cohort_id
+			}
+			check_variable = {
+				migration_panel_selected_cohort_id = constant:humanitarian_runtime.zero
+			}
+			var:humanitarian_action_target = {
+				check_variable = {
+					migration_current_cohort_id = ROOT.migration_panel_selected_cohort_id
+				}
+			}
+		}
+	}
+	custom_trigger_tooltip = {
+		tooltip = migration_real_pressure_tt
+		hidden_trigger = {
+			var:humanitarian_action_target = {
+				is_controlled_by = ROOT
+				migration_state_has_real_migration_issue = yes
+			}
+		}
+	}
+	hidden_trigger = {
+		NOT = {
+			var:humanitarian_action_target = {
+				has_state_flag = migration_evacuation_prepared
+			}
+		}
+	}
+	hidden_trigger = {
+		uses_normal_civilian_systems = yes
+	}
+	custom_trigger_tooltip = {
+		tooltip = migration_reception_load_tt
+		migration_decision_reception_load_is_valid = yes
+	}
+	num_of_civilian_factories > constant:humanitarian_population.zero
+	hidden_trigger = {
+		check_variable = {
+			var = migration_reception_load
+			value = constant:humanitarian_population.zero
+			compare = greater_than
+		}
+	}
+	custom_trigger_tooltip = {
+		tooltip = migration_reception_state_host_tt
+		var:humanitarian_action_target = {
+			migration_decision_exact_hosted_cohort_is_valid = yes
+			check_variable = {
+				var = migration_state_reception_load
+				value = constant:humanitarian_population.zero
+				compare = greater_than
+			}
+			has_variable = migration_current_cohort_id
+			NOT = {
+				has_state_flag = migration_cohort_selection_ambiguous
+			}
+		}
+	}
+	hidden_trigger = {
+		var:humanitarian_action_target = {
+			migration_local_integration_host_can_settle_in_context = yes
+		}
+	}
+	hidden_trigger = {
+		migration_local_integration_cost_is_affordable_in_context = yes
+	}
+}
+migration_local_integration_action_can_show = {
+	set_temp_variable = {
+		humanitarian_action_actor = ROOT
+	}
+	hidden_trigger = {
+		has_variable = humanitarian_action_target
+		var:humanitarian_action_target = {
+			humanitarian_state_is_valid = yes
+		}
+		var:humanitarian_action_target = {
+			is_controlled_by = ROOT
+			migration_state_has_real_migration_issue = yes
+		}
+		NOT = {
+			has_country_flag = humanitarian_corridor_offer_pending
+		}
+		migration_decision_reception_load_is_valid = yes
+		has_variable = migration_reception_load
+		has_variable = migration_reception_capacity
+		var:humanitarian_action_target = {
+			migration_local_integration_host_can_settle_in_context = yes
+			migration_decision_exact_hosted_cohort_is_valid = yes
+			has_variable = migration_state_reception_load
+			check_variable = {
+				var = migration_state_reception_load
+				value = constant:humanitarian_population.zero
+				compare = greater_than
+			}
+			has_variable = migration_current_cohort_id
+			NOT = {
+				has_state_flag = migration_cohort_selection_ambiguous
+			}
+		}
+	}
+}
+migration_gui_can_start_local_integration = {
+	set_temp_variable = {
+		humanitarian_action_actor = ROOT
+	}
+	set_temp_variable = {
+		humanitarian_action_context_proven = constant:humanitarian_runtime.one
+	}
+	set_temp_variable = {
+		humanitarian_action_target = migration_panel_selected_state
+	}
+	migration_local_integration_action_can_start = yes
+}
+migration_gui_can_show_local_integration = {
+	set_temp_variable = {
+		humanitarian_action_actor = ROOT
+	}
+	set_temp_variable = {
+		humanitarian_action_context_proven = constant:humanitarian_runtime.one
+	}
+	set_temp_variable = {
+		humanitarian_action_target = migration_panel_selected_state
+	}
+	migration_local_integration_action_can_show = yes
+}
+migration_local_integration_action_begin_succeeded = {
+	check_variable = {
+		migration_integration_settlement_result = constant:humanitarian_runtime.one
+	}
+}
+migration_third_country_resettlement_action_can_start = {
+	set_temp_variable = {
+		humanitarian_action_actor = ROOT
+	}
+	hidden_trigger = {
+		has_variable = humanitarian_action_target
+		var:humanitarian_action_target = {
+			humanitarian_state_is_valid = yes
+		}
+		set_temp_variable = {
+			humanitarian_action_target_id = constant:humanitarian_runtime.zero
+		}
+		var:humanitarian_action_target = {
+			set_temp_variable = {
+				humanitarian_action_target_id = id
+			}
+		}
+		NOT = {
+			has_variable = migration_action_due_third_country_resettlement_@var:humanitarian_action_target_id
+		}
+		OR = {
+			NOT = {
+				has_variable = migration_action_cooldown_third_country_resettlement_@var:humanitarian_action_target_id
+			}
+			check_variable = {
+				var = global.date
+				value = migration_action_cooldown_third_country_resettlement_@var:humanitarian_action_target_id
+				compare = greater_than_or_equals
+			}
+		}
+		var:humanitarian_action_target = {
+			is_controlled_by = ROOT
+			migration_state_has_real_migration_issue = yes
+		}
+		NOT = {
+			has_country_flag = humanitarian_corridor_offer_pending
+		}
+		migration_decision_reception_load_is_valid = yes
+		var:humanitarian_action_target = {
+			migration_decision_exact_hosted_cohort_is_valid = yes
+			has_variable = migration_state_reception_load
+			check_variable = {
+				var = migration_state_reception_load
+				value = constant:humanitarian_population.zero
+				compare = greater_than
+			}
+		}
+		OR = {
+			NOT = {
+				has_variable = migration_panel_selected_cohort_id
+			}
+			check_variable = {
+				migration_panel_selected_cohort_id = constant:humanitarian_runtime.zero
+			}
+			var:humanitarian_action_target = {
+				check_variable = {
+					migration_current_cohort_id = ROOT.migration_panel_selected_cohort_id
+				}
+			}
+		}
+	}
+	custom_trigger_tooltip = {
+		tooltip = migration_real_pressure_tt
+		hidden_trigger = {
+			var:humanitarian_action_target = {
+				is_controlled_by = ROOT
+				migration_state_has_real_migration_issue = yes
+			}
+		}
+	}
+	custom_trigger_tooltip = {
+		tooltip = migration_reception_load_tt
+		migration_decision_reception_load_is_valid = yes
+	}
+	custom_trigger_tooltip = {
+		tooltip = migration_third_country_resettlement_target_tt
+		var:humanitarian_action_target = {
+			migration_decision_exact_hosted_cohort_is_valid = yes
+			has_variable = migration_state_reception_load
+			check_variable = {
+				var = migration_state_reception_load
+				value = constant:humanitarian_population.zero
+				compare = greater_than
+			}
+			any_neighbor_state = {
+				OWNER = {
+					NOT = {
+						tag = ROOT
+					}
+					humanitarian_country_is_valid = yes
+					migration_reception_capacity_is_valid = yes
+					migration_decision_reception_policy_allows_admission = yes
+				}
+				is_controlled_by = OWNER
+				infrastructure > constant:migration_destination_selection_threshold.minimum_route_infrastructure
+				famine_to_migration_food_safety_is_valid = yes
+				check_variable = {
+					var = famine_to_migration_food_stage
+					value = constant:famine_food_stage.stable
+					compare = equals
+				}
+				NOT = {
+					has_state_flag = migration_persecution_active
+				}
+				NOT = {
+					has_state_flag = migration_bombing_active
+				}
+				NOT = {
+					has_state_flag = migration_population_trapped
+				}
+				NOT = {
+					genocide_state_has_active_camps = yes
+				}
+				NOT = {
+					is_valid_camp_active_site_state = yes
+				}
+				NOT = {
+					cbrn_state_has_chemical_contamination = yes
+				}
+				NOT = {
+					has_dynamic_modifier = {
+						modifier = nuclear_fallout_state
+					}
+				}
+				NOT = {
+					black_plague_state_is_infected_or_worse = yes
+				}
+			}
+		}
+	}
+	hidden_trigger = {
+		var:humanitarian_action_target = {
+			is_controlled_by = ROOT
+		}
+	}
+	hidden_trigger = {
+		migration_third_country_resettlement_cost_is_affordable_in_context = yes
+	}
+	hidden_trigger = {
+		NOT = {
+			var:humanitarian_action_target = {
+				has_state_flag = migration_third_country_resettlement_cost_paid
+			}
+		}
+	}
+}
+migration_third_country_resettlement_action_can_show = {
+	set_temp_variable = {
+		humanitarian_action_actor = ROOT
+	}
+	hidden_trigger = {
+		has_variable = humanitarian_action_target
+		var:humanitarian_action_target = {
+			humanitarian_state_is_valid = yes
+		}
+		var:humanitarian_action_target = {
+			is_controlled_by = ROOT
+			migration_state_has_real_migration_issue = yes
+		}
+		NOT = {
+			has_country_flag = humanitarian_corridor_offer_pending
+		}
+		migration_decision_reception_load_is_valid = yes
+		var:humanitarian_action_target = {
+			migration_decision_exact_hosted_cohort_is_valid = yes
+			has_variable = migration_state_reception_load
+			check_variable = {
+				var = migration_state_reception_load
+				value = constant:humanitarian_population.zero
+				compare = greater_than
+			}
+		}
+	}
+}
+migration_gui_can_start_third_country_resettlement = {
+	set_temp_variable = {
+		humanitarian_action_actor = ROOT
+	}
+	set_temp_variable = {
+		humanitarian_action_context_proven = constant:humanitarian_runtime.one
+	}
+	set_temp_variable = {
+		humanitarian_action_target = migration_panel_selected_state
+	}
+	migration_third_country_resettlement_action_can_start = yes
+}
+migration_gui_can_show_third_country_resettlement = {
+	set_temp_variable = {
+		humanitarian_action_actor = ROOT
+	}
+	set_temp_variable = {
+		humanitarian_action_context_proven = constant:humanitarian_runtime.one
+	}
+	set_temp_variable = {
+		humanitarian_action_target = migration_panel_selected_state
+	}
+	migration_third_country_resettlement_action_can_show = yes
+}
+migration_third_country_resettlement_action_begin_succeeded = {
+	var:humanitarian_action_target = {
+		has_state_flag = migration_third_country_resettlement_cost_paid
+		has_variable = migration_third_country_resettlement_cost_payer
+		var:migration_third_country_resettlement_cost_payer = {
+			tag = ROOT
+		}
+	}
+}
+migration_third_country_resettlement_action_pending_is_current = {
+	hidden_trigger = {
+		has_variable = migration_action_generation_third_country_resettlement_@var:humanitarian_action_target_id
+		check_variable = {
+			migration_action_generation_third_country_resettlement_@var:humanitarian_action_target_id = humanitarian_action_row_id
+		}
+		var:humanitarian_action_target = {
+			has_variable = migration_third_country_resettlement_operation_generation
+			check_variable = {
+				migration_third_country_resettlement_operation_generation = humanitarian_action_row_id
+			}
+			has_variable = migration_third_country_resettlement_operation_actor
+			var:migration_third_country_resettlement_operation_actor = {
+				exists = yes
+				tag = ROOT
+			}
+		}
+	}
+}
+migration_voluntary_return_action_can_start = {
+	set_temp_variable = {
+		humanitarian_action_actor = ROOT
+	}
+	hidden_trigger = {
+		has_variable = humanitarian_action_target
+		var:humanitarian_action_target = {
+			humanitarian_state_is_valid = yes
+		}
+		set_temp_variable = {
+			humanitarian_action_target_id = constant:humanitarian_runtime.zero
+		}
+		var:humanitarian_action_target = {
+			set_temp_variable = {
+				humanitarian_action_target_id = id
+			}
+		}
+		NOT = {
+			has_variable = migration_action_due_voluntary_return_@var:humanitarian_action_target_id
+		}
+		OR = {
+			NOT = {
+				has_variable = migration_action_cooldown_voluntary_return_@var:humanitarian_action_target_id
+			}
+			check_variable = {
+				var = global.date
+				value = migration_action_cooldown_voluntary_return_@var:humanitarian_action_target_id
+				compare = greater_than_or_equals
+			}
+		}
+		var:humanitarian_action_target = {
+			is_controlled_by = ROOT
+			migration_state_has_real_migration_issue = yes
+		}
+		NOT = {
+			has_country_flag = humanitarian_corridor_offer_pending
+		}
+		migration_decision_reception_load_is_valid = yes
+		var:humanitarian_action_target = {
+			migration_decision_reception_state_load_is_valid = yes
+		}
+		OR = {
+			NOT = {
+				has_variable = migration_panel_selected_cohort_id
+			}
+			check_variable = {
+				migration_panel_selected_cohort_id = constant:humanitarian_runtime.zero
+			}
+			var:humanitarian_action_target = {
+				check_variable = {
+					migration_current_cohort_id = ROOT.migration_panel_selected_cohort_id
+				}
+			}
+		}
+	}
+	custom_trigger_tooltip = {
+		tooltip = migration_real_pressure_tt
+		hidden_trigger = {
+			var:humanitarian_action_target = {
+				is_controlled_by = ROOT
+				migration_state_has_real_migration_issue = yes
+			}
+		}
+	}
+	hidden_trigger = {
+		NOT = {
+			var:humanitarian_action_target = {
+				has_state_flag = migration_evacuation_prepared
+			}
+		}
+	}
+	custom_trigger_tooltip = {
+		tooltip = migration_reception_load_tt
+		migration_decision_reception_load_is_valid = yes
+	}
+	custom_trigger_tooltip = {
+		tooltip = migration_reception_state_host_tt
+		var:humanitarian_action_target = {
+			migration_decision_reception_state_load_is_valid = yes
+		}
+	}
+	hidden_trigger = {
+		var:humanitarian_action_target = {
+			is_controlled_by = ROOT
+		}
+	}
+	hidden_trigger = {
+		migration_voluntary_return_cost_is_affordable_in_context = yes
+	}
+	hidden_trigger = {
+		NOT = {
+			var:humanitarian_action_target = {
+				has_state_flag = migration_voluntary_return_cost_paid
+			}
+		}
+	}
+}
+migration_voluntary_return_action_can_show = {
+	set_temp_variable = {
+		humanitarian_action_actor = ROOT
+	}
+	hidden_trigger = {
+		has_variable = humanitarian_action_target
+		var:humanitarian_action_target = {
+			humanitarian_state_is_valid = yes
+		}
+		var:humanitarian_action_target = {
+			is_controlled_by = ROOT
+			migration_state_has_real_migration_issue = yes
+		}
+		NOT = {
+			has_country_flag = humanitarian_corridor_offer_pending
+		}
+		migration_decision_reception_load_is_valid = yes
+		var:humanitarian_action_target = {
+			migration_decision_reception_state_load_is_valid = yes
+		}
+	}
+}
+migration_gui_can_start_voluntary_return = {
+	set_temp_variable = {
+		humanitarian_action_actor = ROOT
+	}
+	set_temp_variable = {
+		humanitarian_action_context_proven = constant:humanitarian_runtime.one
+	}
+	set_temp_variable = {
+		humanitarian_action_target = migration_panel_selected_state
+	}
+	migration_voluntary_return_action_can_start = yes
+}
+migration_gui_can_show_voluntary_return = {
+	set_temp_variable = {
+		humanitarian_action_actor = ROOT
+	}
+	set_temp_variable = {
+		humanitarian_action_context_proven = constant:humanitarian_runtime.one
+	}
+	set_temp_variable = {
+		humanitarian_action_target = migration_panel_selected_state
+	}
+	migration_voluntary_return_action_can_show = yes
+}
+migration_voluntary_return_action_begin_succeeded = {
+	var:humanitarian_action_target = {
+		has_state_flag = migration_voluntary_return_cost_paid
+		has_variable = migration_voluntary_return_cost_payer
+		var:migration_voluntary_return_cost_payer = {
+			tag = ROOT
+		}
+	}
+}
+migration_voluntary_return_action_pending_is_current = {
+	hidden_trigger = {
+		has_variable = migration_action_generation_voluntary_return_@var:humanitarian_action_target_id
+		check_variable = {
+			migration_action_generation_voluntary_return_@var:humanitarian_action_target_id = humanitarian_action_row_id
+		}
+		var:humanitarian_action_target = {
+			has_variable = migration_voluntary_return_operation_generation
+			check_variable = {
+				migration_voluntary_return_operation_generation = humanitarian_action_row_id
+			}
+			has_variable = migration_voluntary_return_operation_actor
+			var:migration_voluntary_return_operation_actor = {
+				exists = yes
+				tag = ROOT
+			}
+		}
+	}
+}
+migration_forced_repatriation_action_can_start = {
+	set_temp_variable = {
+		humanitarian_action_actor = ROOT
+	}
+	hidden_trigger = {
+		has_variable = humanitarian_action_target
+		var:humanitarian_action_target = {
+			humanitarian_state_is_valid = yes
+		}
+		set_temp_variable = {
+			humanitarian_action_target_id = constant:humanitarian_runtime.zero
+		}
+		var:humanitarian_action_target = {
+			set_temp_variable = {
+				humanitarian_action_target_id = id
+			}
+		}
+		NOT = {
+			has_variable = migration_action_due_forced_repatriation_@var:humanitarian_action_target_id
+		}
+		OR = {
+			NOT = {
+				has_variable = migration_action_cooldown_forced_repatriation_@var:humanitarian_action_target_id
+			}
+			check_variable = {
+				var = global.date
+				value = migration_action_cooldown_forced_repatriation_@var:humanitarian_action_target_id
+				compare = greater_than_or_equals
+			}
+		}
+		var:humanitarian_action_target = {
+			is_controlled_by = ROOT
+			migration_state_has_real_migration_issue = yes
+		}
+		NOT = {
+			has_country_flag = humanitarian_corridor_offer_pending
+		}
+		migration_decision_reception_load_is_valid = yes
+		var:humanitarian_action_target = {
+			migration_decision_reception_state_load_is_valid = yes
+		}
+		OR = {
+			NOT = {
+				has_variable = migration_panel_selected_cohort_id
+			}
+			check_variable = {
+				migration_panel_selected_cohort_id = constant:humanitarian_runtime.zero
+			}
+			var:humanitarian_action_target = {
+				check_variable = {
+					migration_current_cohort_id = ROOT.migration_panel_selected_cohort_id
+				}
+			}
+		}
+	}
+	custom_trigger_tooltip = {
+		tooltip = migration_real_pressure_tt
+		hidden_trigger = {
+			var:humanitarian_action_target = {
+				is_controlled_by = ROOT
+				migration_state_has_real_migration_issue = yes
+			}
+		}
+	}
+	hidden_trigger = {
+		NOT = {
+			var:humanitarian_action_target = {
+				has_state_flag = migration_evacuation_prepared
+			}
+		}
+	}
+	hidden_trigger = {
+		uses_normal_civilian_systems = yes
+	}
+	OR = {
+		has_government = fascism
+		has_government = communism
+		has_government = neutrality
+	}
+	custom_trigger_tooltip = {
+		tooltip = migration_reception_load_tt
+		migration_decision_reception_load_is_valid = yes
+	}
+	custom_trigger_tooltip = {
+		tooltip = migration_reception_state_host_tt
+		var:humanitarian_action_target = {
+			migration_decision_reception_state_load_is_valid = yes
+		}
+	}
+	hidden_trigger = {
+		var:humanitarian_action_target = {
+			is_controlled_by = ROOT
+		}
+	}
+	hidden_trigger = {
+		migration_forced_repatriation_cost_is_affordable_in_context = yes
+	}
+	hidden_trigger = {
+		NOT = {
+			var:humanitarian_action_target = {
+				has_state_flag = migration_forced_repatriation_cost_paid
+			}
+		}
+	}
+	custom_trigger_tooltip = {
+		tooltip = migration_forced_repatriation_policy_tt
+		hidden_trigger = { check_variable = {
+		migration_reception_policy = constant:migration_border_policy.forced_return
+	} }
+	}
+}
+migration_forced_repatriation_action_can_show = {
+	set_temp_variable = {
+		humanitarian_action_actor = ROOT
+	}
+	hidden_trigger = {
+		has_variable = humanitarian_action_target
+		var:humanitarian_action_target = {
+			humanitarian_state_is_valid = yes
+		}
+		var:humanitarian_action_target = {
+			is_controlled_by = ROOT
+			migration_state_has_real_migration_issue = yes
+		}
+		NOT = {
+			has_country_flag = humanitarian_corridor_offer_pending
+		}
+		migration_decision_reception_load_is_valid = yes
+		var:humanitarian_action_target = {
+			migration_decision_reception_state_load_is_valid = yes
+		}
+	}
+}
+migration_gui_can_start_forced_repatriation = {
+	set_temp_variable = {
+		humanitarian_action_actor = ROOT
+	}
+	set_temp_variable = {
+		humanitarian_action_context_proven = constant:humanitarian_runtime.one
+	}
+	set_temp_variable = {
+		humanitarian_action_target = migration_panel_selected_state
+	}
+	migration_forced_repatriation_action_can_start = yes
+}
+migration_gui_can_show_forced_repatriation = {
+	set_temp_variable = {
+		humanitarian_action_actor = ROOT
+	}
+	set_temp_variable = {
+		humanitarian_action_context_proven = constant:humanitarian_runtime.one
+	}
+	set_temp_variable = {
+		humanitarian_action_target = migration_panel_selected_state
+	}
+	migration_forced_repatriation_action_can_show = yes
+}
+migration_forced_repatriation_action_begin_succeeded = {
+	var:humanitarian_action_target = {
+		has_state_flag = migration_forced_repatriation_cost_paid
+		has_variable = migration_forced_repatriation_cost_payer
+		var:migration_forced_repatriation_cost_payer = {
+			tag = ROOT
+		}
+	}
+}
+migration_forced_repatriation_action_pending_is_current = {
+	hidden_trigger = {
+		has_variable = migration_action_generation_forced_repatriation_@var:humanitarian_action_target_id
+		check_variable = {
+			migration_action_generation_forced_repatriation_@var:humanitarian_action_target_id = humanitarian_action_row_id
+		}
+		var:humanitarian_action_target = {
+			has_variable = migration_forced_repatriation_operation_generation
+			check_variable = {
+				migration_forced_repatriation_operation_generation = humanitarian_action_row_id
+			}
+			has_variable = migration_forced_repatriation_operation_actor
+			var:migration_forced_repatriation_operation_actor = {
+				exists = yes
+				tag = ROOT
+			}
+		}
+	}
+}

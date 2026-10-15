@@ -2,20 +2,20 @@
 
 `migration_prepare_reception_services` runs in COUNTRY scope on the receiver.
 The caller must save the exact selected STATE as regular `migration_reception_preparation_state` and predeclare temporary `migration_reception_preparation_result = 0` before calling it.
-The result is reset to zero on entry and becomes one only after a meaningful successful service or reception-policy change; it remains available to the caller.
+The result is reset to zero on entry and becomes one only after a meaningful successful shelter or medical-service change; it remains available to the caller.
 
 The helper reobserves current famine-owned food facts, checks current actor/control/hazards and exact pending-front identity, then spends the standard selected-state transport quote once through `migration_transport_pay_state_cost`, plus support equipment from `migration_reception_preparation_cost`.
 It submits population-scaled shelter and medical services through the existing capacity-owner setters using `migration_reception_bootstrap.shelter_population_share` and `.medical_population_share`.
 It never supplies food reserves, native housing, free medical service, population, route authorization, or reception load.
-Policy-only success is allowed only for an actual transition to `humanitarian_open` with valid current service/capacity receipts.
-The departure-policy request is explicitly zeroed before a reception-only policy call.
-Every attempted service/policy setter must report valid; another state's valid capacity cannot mask a rejected selected-state setup.
+The current native reception law must allow admission.
+Preparation neither changes a national law nor snapshots or restores policy variables.
+Every attempted service setter must report valid, and another state's valid capacity cannot mask a rejected selected-state setup.
 
 For a pending evacuation, success additionally requires the same generation, exact whole live origin row, and current receiver load plus the full offered amount no greater than capacity.
-An already-installed identical open-policy/service configuration cannot be charged again.
+An already-installed identical service configuration cannot be charged again.
 A prepared but insufficient receiver fails and refunds the actual paid resources rather than shrinking or splitting the offer.
 
-Rollback restores only this click's changed shelter/medical fields and attempted policy fields, preserving previous valid receipts.
+Rollback restores only this click's changed shelter and medical fields, preserving previous valid receipts.
 Candidate flag, sparse array membership, and optional candidate revision are snapshotted and restored independently, and global candidate count is recomputed.
 Capacity is then recalculated from the restored current owner inputs; previously dirty capacity is not restored as a stale cache.
 Existing active-country registration belongs to the real origin/pending-request lifecycle and is not removed by a failed paid preparation.

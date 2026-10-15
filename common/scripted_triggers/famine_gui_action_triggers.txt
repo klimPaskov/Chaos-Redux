@@ -1,0 +1,1754 @@
+# Shared native/panel operation gates. Internal identity and phase checks stay hidden.
+# Visible requirement clauses retain the native decision custom tooltips.
+
+famine_release_reserves_action_can_start = {
+	set_temp_variable = { humanitarian_action_actor = ROOT }
+	hidden_trigger = {
+		has_variable = humanitarian_action_target
+		var:humanitarian_action_target = {
+			humanitarian_state_is_valid = yes
+		}
+		set_temp_variable = {
+			humanitarian_action_target_id = constant:humanitarian_runtime.zero
+		}
+		var:humanitarian_action_target = {
+			set_temp_variable = {
+				humanitarian_action_target_id = id
+			}
+		}
+		NOT = {
+			has_variable = famine_action_due_release_reserves_@var:humanitarian_action_target_id
+		}
+		OR = {
+			NOT = {
+				has_variable = famine_action_cooldown_release_reserves_@var:humanitarian_action_target_id
+			}
+			check_variable = {
+				var = global.date
+				value = famine_action_cooldown_release_reserves_@var:humanitarian_action_target_id
+				compare = greater_than_or_equals
+			}
+		}
+		var:humanitarian_action_target = {
+			is_controlled_by = ROOT
+			famine_state_has_visible_food_problem = yes
+		}
+		NOT = {
+			has_country_flag = humanitarian_corridor_offer_pending
+		}
+		famine_decision_problem_is_active = yes
+		OR = {
+			NOT = {
+				has_country_flag = famine_decision_resolution
+			}
+			famine_decision_problem_is_active = yes
+		}
+		var:humanitarian_action_target = {
+			famine_state_can_release_reserves = yes
+		}
+	}
+	hidden_trigger = {
+		var:humanitarian_action_target = {
+			is_controlled_by = ROOT
+			famine_state_has_visible_food_problem = yes
+		}
+	}
+	custom_trigger_tooltip = {
+		tooltip = famine_release_reserves_target_tt
+		var:humanitarian_action_target = {
+			famine_state_can_release_reserves = yes
+		}
+	}
+	hidden_trigger = {
+		var:humanitarian_action_target = {
+			is_controlled_by = ROOT
+		}
+	}
+	hidden_trigger = {
+		famine_release_reserves_cost_is_affordable_in_context = yes
+	}
+	hidden_trigger = {
+		NOT = {
+			var:humanitarian_action_target = {
+				has_state_flag = famine_release_reserves_cost_paid
+			}
+		}
+	}
+}
+famine_release_reserves_action_can_show = {
+	set_temp_variable = { humanitarian_action_actor = ROOT }
+	hidden_trigger = {
+		has_variable = humanitarian_action_target
+		var:humanitarian_action_target = {
+			humanitarian_state_is_valid = yes
+		}
+		var:humanitarian_action_target = {
+			is_controlled_by = ROOT
+			famine_state_has_visible_food_problem = yes
+		}
+		NOT = {
+			has_country_flag = humanitarian_corridor_offer_pending
+		}
+		famine_decision_problem_is_active = yes
+		OR = {
+			NOT = {
+				has_country_flag = famine_decision_resolution
+			}
+			famine_decision_problem_is_active = yes
+		}
+		var:humanitarian_action_target = {
+			famine_state_can_release_reserves = yes
+		}
+	}
+}
+famine_gui_can_start_release_reserves = {
+	set_temp_variable = { humanitarian_action_actor = ROOT }
+	set_temp_variable = { humanitarian_action_context_proven = constant:humanitarian_runtime.one }
+	set_temp_variable = {
+		humanitarian_action_target = famine_panel_selected_state
+	}
+	famine_release_reserves_action_can_start = yes
+}
+famine_gui_can_show_release_reserves = {
+	set_temp_variable = { humanitarian_action_actor = ROOT }
+	set_temp_variable = { humanitarian_action_context_proven = constant:humanitarian_runtime.one }
+	set_temp_variable = {
+		humanitarian_action_target = famine_panel_selected_state
+	}
+	famine_release_reserves_action_can_show = yes
+}
+famine_release_reserves_action_begin_succeeded = {
+	var:humanitarian_action_target = {
+		has_state_flag = famine_release_reserves_cost_paid
+		has_variable = famine_release_reserves_cost_payer
+		var:famine_release_reserves_cost_payer = {
+			tag = ROOT
+		}
+	}
+}
+famine_release_reserves_action_pending_is_current = {
+	hidden_trigger = {
+		has_variable = famine_action_generation_release_reserves_@var:humanitarian_action_target_id
+		check_variable = {
+			famine_action_generation_release_reserves_@var:humanitarian_action_target_id = humanitarian_action_row_id
+		}
+		var:humanitarian_action_target = {
+			has_variable = famine_release_reserves_operation_generation
+			check_variable = {
+				famine_release_reserves_operation_generation = humanitarian_action_row_id
+			}
+			has_variable = famine_release_reserves_operation_actor
+			var:famine_release_reserves_operation_actor = {
+				exists = yes
+				tag = ROOT
+			}
+		}
+	}
+}
+famine_emergency_imports_action_can_start = {
+	set_temp_variable = { humanitarian_action_actor = ROOT }
+	hidden_trigger = {
+		has_variable = humanitarian_action_target
+		var:humanitarian_action_target = {
+			humanitarian_state_is_valid = yes
+		}
+		set_temp_variable = {
+			humanitarian_action_target_id = constant:humanitarian_runtime.zero
+		}
+		var:humanitarian_action_target = {
+			set_temp_variable = {
+				humanitarian_action_target_id = id
+			}
+		}
+		NOT = {
+			has_variable = famine_action_due_emergency_imports_@var:humanitarian_action_target_id
+		}
+		OR = {
+			NOT = {
+				has_variable = famine_action_cooldown_emergency_imports_@var:humanitarian_action_target_id
+			}
+			check_variable = {
+				var = global.date
+				value = famine_action_cooldown_emergency_imports_@var:humanitarian_action_target_id
+				compare = greater_than_or_equals
+			}
+		}
+		var:humanitarian_action_target = {
+			is_controlled_by = ROOT
+			famine_state_has_visible_food_problem = yes
+		}
+		NOT = {
+			has_country_flag = humanitarian_corridor_offer_pending
+		}
+		famine_decision_problem_is_active = yes
+		OR = {
+			NOT = {
+				has_country_flag = famine_decision_resolution
+			}
+			famine_decision_problem_is_active = yes
+		}
+		var:humanitarian_action_target = {
+			humanitarian_state_is_valid = yes
+			has_state_flag = famine_food_security_active
+			OR = {
+				AND = {
+					famine_relief_contract_is_valid = yes
+					check_variable = {
+						var = famine_relief_route_mode
+						value = constant:famine_relief_route_mode.land
+						compare = equals
+					}
+				}
+				AND = {
+					NOT = {
+						has_state_flag = famine_relief_contract_active
+					}
+					famine_relief_has_land_candidate = yes
+				}
+			}
+		}
+	}
+	hidden_trigger = {
+		var:humanitarian_action_target = {
+			is_controlled_by = ROOT
+			famine_state_has_visible_food_problem = yes
+		}
+	}
+	custom_trigger_tooltip = {
+		tooltip = famine_emergency_imports_target_tt
+		var:humanitarian_action_target = {
+			OR = {
+				AND = {
+					famine_relief_contract_is_valid = yes
+					check_variable = {
+						var = famine_relief_route_mode
+						value = constant:famine_relief_route_mode.land
+						compare = equals
+					}
+				}
+				AND = {
+					NOT = {
+						has_state_flag = famine_relief_contract_active
+					}
+					famine_relief_has_land_candidate = yes
+				}
+			}
+		}
+	}
+	hidden_trigger = {
+		var:humanitarian_action_target = {
+			is_controlled_by = ROOT
+		}
+	}
+	hidden_trigger = {
+		famine_emergency_imports_cost_is_affordable_in_context = yes
+	}
+	hidden_trigger = {
+		NOT = {
+			var:humanitarian_action_target = {
+				has_state_flag = famine_emergency_imports_cost_paid
+			}
+		}
+	}
+}
+famine_emergency_imports_action_can_show = {
+	set_temp_variable = { humanitarian_action_actor = ROOT }
+	hidden_trigger = {
+		has_variable = humanitarian_action_target
+		var:humanitarian_action_target = {
+			humanitarian_state_is_valid = yes
+		}
+		var:humanitarian_action_target = {
+			is_controlled_by = ROOT
+			famine_state_has_visible_food_problem = yes
+		}
+		NOT = {
+			has_country_flag = humanitarian_corridor_offer_pending
+		}
+		famine_decision_problem_is_active = yes
+		OR = {
+			NOT = {
+				has_country_flag = famine_decision_resolution
+			}
+			famine_decision_problem_is_active = yes
+		}
+		var:humanitarian_action_target = {
+			humanitarian_state_is_valid = yes
+			has_state_flag = famine_food_security_active
+			OR = {
+				AND = {
+					famine_relief_contract_is_valid = yes
+					check_variable = {
+						var = famine_relief_route_mode
+						value = constant:famine_relief_route_mode.land
+						compare = equals
+					}
+				}
+				AND = {
+					NOT = {
+						has_state_flag = famine_relief_contract_active
+					}
+					famine_relief_has_land_candidate = yes
+				}
+			}
+		}
+	}
+}
+famine_gui_can_start_emergency_imports = {
+	set_temp_variable = { humanitarian_action_actor = ROOT }
+	set_temp_variable = { humanitarian_action_context_proven = constant:humanitarian_runtime.one }
+	set_temp_variable = {
+		humanitarian_action_target = famine_panel_selected_state
+	}
+	famine_emergency_imports_action_can_start = yes
+}
+famine_gui_can_show_emergency_imports = {
+	set_temp_variable = { humanitarian_action_actor = ROOT }
+	set_temp_variable = { humanitarian_action_context_proven = constant:humanitarian_runtime.one }
+	set_temp_variable = {
+		humanitarian_action_target = famine_panel_selected_state
+	}
+	famine_emergency_imports_action_can_show = yes
+}
+famine_emergency_imports_action_begin_succeeded = {
+	var:humanitarian_action_target = {
+		has_state_flag = famine_emergency_imports_cost_paid
+		has_variable = famine_emergency_imports_cost_payer
+		var:famine_emergency_imports_cost_payer = {
+			tag = ROOT
+		}
+	}
+}
+famine_emergency_imports_action_pending_is_current = {
+	hidden_trigger = {
+		has_variable = famine_action_generation_emergency_imports_@var:humanitarian_action_target_id
+		check_variable = {
+			famine_action_generation_emergency_imports_@var:humanitarian_action_target_id = humanitarian_action_row_id
+		}
+		var:humanitarian_action_target = {
+			has_variable = famine_emergency_imports_operation_generation
+			check_variable = {
+				famine_emergency_imports_operation_generation = humanitarian_action_row_id
+			}
+			has_variable = famine_emergency_imports_operation_actor
+			var:famine_emergency_imports_operation_actor = {
+				exists = yes
+				tag = ROOT
+			}
+		}
+	}
+}
+famine_repair_relief_route_action_can_start = {
+	set_temp_variable = { humanitarian_action_actor = ROOT }
+	hidden_trigger = {
+		has_variable = humanitarian_action_target
+		var:humanitarian_action_target = {
+			humanitarian_state_is_valid = yes
+		}
+		set_temp_variable = {
+			humanitarian_action_target_id = constant:humanitarian_runtime.zero
+		}
+		var:humanitarian_action_target = {
+			set_temp_variable = {
+				humanitarian_action_target_id = id
+			}
+		}
+		NOT = {
+			has_variable = famine_action_due_repair_relief_route_@var:humanitarian_action_target_id
+		}
+		OR = {
+			NOT = {
+				has_variable = famine_action_cooldown_repair_relief_route_@var:humanitarian_action_target_id
+			}
+			check_variable = {
+				var = global.date
+				value = famine_action_cooldown_repair_relief_route_@var:humanitarian_action_target_id
+				compare = greater_than_or_equals
+			}
+		}
+		var:humanitarian_action_target = {
+			is_controlled_by = ROOT
+			famine_state_has_visible_food_problem = yes
+		}
+		NOT = {
+			has_country_flag = humanitarian_corridor_offer_pending
+		}
+		famine_decision_problem_is_active = yes
+		OR = {
+			NOT = {
+				has_country_flag = famine_decision_resolution
+			}
+			famine_decision_problem_is_active = yes
+		}
+		var:humanitarian_action_target = {
+			humanitarian_state_is_valid = yes
+			has_state_flag = famine_food_security_active
+			has_state_flag = civilian_transfer_route_damaged
+		}
+	}
+	hidden_trigger = {
+		var:humanitarian_action_target = {
+			is_controlled_by = ROOT
+			famine_state_has_visible_food_problem = yes
+		}
+	}
+	custom_trigger_tooltip = {
+		tooltip = famine_repair_relief_route_target_tt
+		var:humanitarian_action_target = {
+			humanitarian_state_is_valid = yes
+			has_state_flag = civilian_transfer_route_damaged
+		}
+	}
+	hidden_trigger = {
+		var:humanitarian_action_target = {
+			is_controlled_by = ROOT
+		}
+	}
+	hidden_trigger = {
+		famine_repair_relief_route_cost_is_affordable_in_context = yes
+	}
+	hidden_trigger = {
+		NOT = {
+			var:humanitarian_action_target = {
+				has_state_flag = famine_repair_relief_route_cost_paid
+			}
+		}
+	}
+}
+famine_repair_relief_route_action_can_show = {
+	set_temp_variable = { humanitarian_action_actor = ROOT }
+	hidden_trigger = {
+		has_variable = humanitarian_action_target
+		var:humanitarian_action_target = {
+			humanitarian_state_is_valid = yes
+		}
+		var:humanitarian_action_target = {
+			is_controlled_by = ROOT
+			famine_state_has_visible_food_problem = yes
+		}
+		NOT = {
+			has_country_flag = humanitarian_corridor_offer_pending
+		}
+		famine_decision_problem_is_active = yes
+		OR = {
+			NOT = {
+				has_country_flag = famine_decision_resolution
+			}
+			famine_decision_problem_is_active = yes
+		}
+		var:humanitarian_action_target = {
+			humanitarian_state_is_valid = yes
+			has_state_flag = famine_food_security_active
+			has_state_flag = civilian_transfer_route_damaged
+		}
+	}
+}
+famine_gui_can_start_repair_relief_route = {
+	set_temp_variable = { humanitarian_action_actor = ROOT }
+	set_temp_variable = { humanitarian_action_context_proven = constant:humanitarian_runtime.one }
+	set_temp_variable = {
+		humanitarian_action_target = famine_panel_selected_state
+	}
+	famine_repair_relief_route_action_can_start = yes
+}
+famine_gui_can_show_repair_relief_route = {
+	set_temp_variable = { humanitarian_action_actor = ROOT }
+	set_temp_variable = { humanitarian_action_context_proven = constant:humanitarian_runtime.one }
+	set_temp_variable = {
+		humanitarian_action_target = famine_panel_selected_state
+	}
+	famine_repair_relief_route_action_can_show = yes
+}
+famine_repair_relief_route_action_begin_succeeded = {
+	var:humanitarian_action_target = {
+		has_state_flag = famine_repair_relief_route_cost_paid
+		has_variable = famine_repair_relief_route_cost_payer
+		var:famine_repair_relief_route_cost_payer = {
+			tag = ROOT
+		}
+	}
+}
+famine_repair_relief_route_action_pending_is_current = {
+	hidden_trigger = {
+		has_variable = famine_action_generation_repair_relief_route_@var:humanitarian_action_target_id
+		check_variable = {
+			famine_action_generation_repair_relief_route_@var:humanitarian_action_target_id = humanitarian_action_row_id
+		}
+		var:humanitarian_action_target = {
+			has_variable = famine_repair_relief_route_operation_generation
+			check_variable = {
+				famine_repair_relief_route_operation_generation = humanitarian_action_row_id
+			}
+			has_variable = famine_repair_relief_route_operation_actor
+			var:famine_repair_relief_route_operation_actor = {
+				exists = yes
+				tag = ROOT
+			}
+		}
+	}
+}
+famine_escorted_relief_convoy_action_can_start = {
+	set_temp_variable = { humanitarian_action_actor = ROOT }
+	hidden_trigger = {
+		has_variable = humanitarian_action_target
+		var:humanitarian_action_target = {
+			humanitarian_state_is_valid = yes
+		}
+		set_temp_variable = {
+			humanitarian_action_target_id = constant:humanitarian_runtime.zero
+		}
+		var:humanitarian_action_target = {
+			set_temp_variable = {
+				humanitarian_action_target_id = id
+			}
+		}
+		NOT = {
+			has_variable = famine_action_due_escorted_relief_convoy_@var:humanitarian_action_target_id
+		}
+		OR = {
+			NOT = {
+				has_variable = famine_action_cooldown_escorted_relief_convoy_@var:humanitarian_action_target_id
+			}
+			check_variable = {
+				var = global.date
+				value = famine_action_cooldown_escorted_relief_convoy_@var:humanitarian_action_target_id
+				compare = greater_than_or_equals
+			}
+		}
+		var:humanitarian_action_target = {
+			is_controlled_by = ROOT
+			famine_state_has_visible_food_problem = yes
+		}
+		NOT = {
+			has_country_flag = humanitarian_corridor_offer_pending
+		}
+		famine_decision_problem_is_active = yes
+		OR = {
+			NOT = {
+				has_country_flag = famine_decision_resolution
+			}
+			famine_decision_problem_is_active = yes
+		}
+		var:humanitarian_action_target = {
+			humanitarian_state_is_valid = yes
+			has_state_flag = famine_food_security_active
+			check_variable = {
+				var = famine_blockade_island_proven
+				value = constant:humanitarian_runtime.zero
+				compare = greater_than
+			}
+			famine_blockade_proof = yes
+			OR = {
+				AND = {
+					famine_relief_contract_is_valid = yes
+					check_variable = {
+						var = famine_relief_route_mode
+						value = constant:famine_relief_route_mode.sea
+						compare = equals
+					}
+				}
+				AND = {
+					NOT = {
+						has_state_flag = famine_relief_contract_active
+					}
+					famine_relief_has_sea_candidate = yes
+				}
+			}
+		}
+	}
+	hidden_trigger = {
+		var:humanitarian_action_target = {
+			is_controlled_by = ROOT
+			famine_state_has_visible_food_problem = yes
+		}
+	}
+	custom_trigger_tooltip = {
+		tooltip = famine_escorted_relief_convoy_target_tt
+		var:humanitarian_action_target = {
+			famine_blockade_proof = yes
+			OR = {
+				AND = {
+					famine_relief_contract_is_valid = yes
+					check_variable = {
+						var = famine_relief_route_mode
+						value = constant:famine_relief_route_mode.sea
+						compare = equals
+					}
+				}
+				AND = {
+					NOT = {
+						has_state_flag = famine_relief_contract_active
+					}
+					famine_relief_has_sea_candidate = yes
+				}
+			}
+		}
+	}
+	hidden_trigger = {
+		var:humanitarian_action_target = {
+			is_controlled_by = ROOT
+		}
+	}
+	hidden_trigger = {
+		famine_escorted_relief_convoy_cost_is_affordable_in_context = yes
+	}
+	hidden_trigger = {
+		NOT = {
+			var:humanitarian_action_target = {
+				has_state_flag = famine_escorted_relief_convoy_cost_paid
+			}
+		}
+	}
+}
+famine_escorted_relief_convoy_action_can_show = {
+	set_temp_variable = { humanitarian_action_actor = ROOT }
+	hidden_trigger = {
+		has_variable = humanitarian_action_target
+		var:humanitarian_action_target = {
+			humanitarian_state_is_valid = yes
+		}
+		var:humanitarian_action_target = {
+			is_controlled_by = ROOT
+			famine_state_has_visible_food_problem = yes
+		}
+		NOT = {
+			has_country_flag = humanitarian_corridor_offer_pending
+		}
+		famine_decision_problem_is_active = yes
+		OR = {
+			NOT = {
+				has_country_flag = famine_decision_resolution
+			}
+			famine_decision_problem_is_active = yes
+		}
+		var:humanitarian_action_target = {
+			humanitarian_state_is_valid = yes
+			has_state_flag = famine_food_security_active
+			check_variable = {
+				var = famine_blockade_island_proven
+				value = constant:humanitarian_runtime.zero
+				compare = greater_than
+			}
+			famine_blockade_proof = yes
+			OR = {
+				AND = {
+					famine_relief_contract_is_valid = yes
+					check_variable = {
+						var = famine_relief_route_mode
+						value = constant:famine_relief_route_mode.sea
+						compare = equals
+					}
+				}
+				AND = {
+					NOT = {
+						has_state_flag = famine_relief_contract_active
+					}
+					famine_relief_has_sea_candidate = yes
+				}
+			}
+		}
+	}
+}
+famine_gui_can_start_escorted_relief_convoy = {
+	set_temp_variable = { humanitarian_action_actor = ROOT }
+	set_temp_variable = { humanitarian_action_context_proven = constant:humanitarian_runtime.one }
+	set_temp_variable = {
+		humanitarian_action_target = famine_panel_selected_state
+	}
+	famine_escorted_relief_convoy_action_can_start = yes
+}
+famine_gui_can_show_escorted_relief_convoy = {
+	set_temp_variable = { humanitarian_action_actor = ROOT }
+	set_temp_variable = { humanitarian_action_context_proven = constant:humanitarian_runtime.one }
+	set_temp_variable = {
+		humanitarian_action_target = famine_panel_selected_state
+	}
+	famine_escorted_relief_convoy_action_can_show = yes
+}
+famine_escorted_relief_convoy_action_begin_succeeded = {
+	var:humanitarian_action_target = {
+		has_state_flag = famine_escorted_relief_convoy_cost_paid
+		has_variable = famine_escorted_relief_convoy_cost_payer
+		var:famine_escorted_relief_convoy_cost_payer = {
+			tag = ROOT
+		}
+	}
+}
+famine_escorted_relief_convoy_action_pending_is_current = {
+	hidden_trigger = {
+		has_variable = famine_action_generation_escorted_relief_convoy_@var:humanitarian_action_target_id
+		check_variable = {
+			famine_action_generation_escorted_relief_convoy_@var:humanitarian_action_target_id = humanitarian_action_row_id
+		}
+		var:humanitarian_action_target = {
+			has_variable = famine_escorted_relief_convoy_operation_generation
+			check_variable = {
+				famine_escorted_relief_convoy_operation_generation = humanitarian_action_row_id
+			}
+			has_variable = famine_escorted_relief_convoy_operation_actor
+			var:famine_escorted_relief_convoy_operation_actor = {
+				exists = yes
+				tag = ROOT
+			}
+		}
+	}
+}
+famine_emergency_airlift_action_can_start = {
+	set_temp_variable = { humanitarian_action_actor = ROOT }
+	hidden_trigger = {
+		has_variable = humanitarian_action_target
+		var:humanitarian_action_target = {
+			humanitarian_state_is_valid = yes
+		}
+		set_temp_variable = {
+			humanitarian_action_target_id = constant:humanitarian_runtime.zero
+		}
+		var:humanitarian_action_target = {
+			set_temp_variable = {
+				humanitarian_action_target_id = id
+			}
+		}
+		NOT = {
+			has_variable = famine_action_due_emergency_airlift_@var:humanitarian_action_target_id
+		}
+		OR = {
+			NOT = {
+				has_variable = famine_action_cooldown_emergency_airlift_@var:humanitarian_action_target_id
+			}
+			check_variable = {
+				var = global.date
+				value = famine_action_cooldown_emergency_airlift_@var:humanitarian_action_target_id
+				compare = greater_than_or_equals
+			}
+		}
+		var:humanitarian_action_target = {
+			is_controlled_by = ROOT
+			famine_state_has_visible_food_problem = yes
+		}
+		NOT = {
+			has_country_flag = humanitarian_corridor_offer_pending
+		}
+		famine_decision_problem_is_active = yes
+		OR = {
+			NOT = {
+				has_country_flag = famine_decision_resolution
+			}
+			famine_decision_problem_is_active = yes
+		}
+		var:humanitarian_action_target = {
+			humanitarian_state_is_valid = yes
+			has_state_flag = famine_food_security_active
+			check_variable = {
+				var = famine_blockade_island_proven
+				value = constant:humanitarian_runtime.zero
+				compare = greater_than
+			}
+			famine_blockade_proof = yes
+			OR = {
+				AND = {
+					famine_relief_contract_is_valid = yes
+					check_variable = {
+						var = famine_relief_route_mode
+						value = constant:famine_relief_route_mode.air
+						compare = equals
+					}
+				}
+				AND = {
+					NOT = {
+						has_state_flag = famine_relief_contract_active
+					}
+					famine_relief_has_air_candidate = yes
+				}
+			}
+		}
+	}
+	hidden_trigger = {
+		var:humanitarian_action_target = {
+			is_controlled_by = ROOT
+			famine_state_has_visible_food_problem = yes
+		}
+	}
+	custom_trigger_tooltip = {
+		tooltip = famine_emergency_airlift_target_tt
+		var:humanitarian_action_target = {
+			famine_blockade_proof = yes
+			OR = {
+				AND = {
+					famine_relief_contract_is_valid = yes
+					check_variable = {
+						var = famine_relief_route_mode
+						value = constant:famine_relief_route_mode.air
+						compare = equals
+					}
+				}
+				AND = {
+					NOT = {
+						has_state_flag = famine_relief_contract_active
+					}
+					famine_relief_has_air_candidate = yes
+				}
+			}
+		}
+	}
+	custom_trigger_tooltip = {
+		tooltip = famine_airlift_planes_requirement_tt
+		humanitarian_cost_transport_planes_is_affordable = yes
+	}
+	hidden_trigger = {
+		var:humanitarian_action_target = {
+			is_controlled_by = ROOT
+		}
+	}
+	hidden_trigger = {
+		famine_emergency_airlift_cost_is_affordable_in_context = yes
+	}
+	hidden_trigger = {
+		NOT = {
+			var:humanitarian_action_target = {
+				has_state_flag = famine_emergency_airlift_cost_paid
+			}
+		}
+	}
+}
+famine_emergency_airlift_action_can_show = {
+	set_temp_variable = { humanitarian_action_actor = ROOT }
+	hidden_trigger = {
+		has_variable = humanitarian_action_target
+		var:humanitarian_action_target = {
+			humanitarian_state_is_valid = yes
+		}
+		var:humanitarian_action_target = {
+			is_controlled_by = ROOT
+			famine_state_has_visible_food_problem = yes
+		}
+		NOT = {
+			has_country_flag = humanitarian_corridor_offer_pending
+		}
+		famine_decision_problem_is_active = yes
+		OR = {
+			NOT = {
+				has_country_flag = famine_decision_resolution
+			}
+			famine_decision_problem_is_active = yes
+		}
+		var:humanitarian_action_target = {
+			humanitarian_state_is_valid = yes
+			has_state_flag = famine_food_security_active
+			check_variable = {
+				var = famine_blockade_island_proven
+				value = constant:humanitarian_runtime.zero
+				compare = greater_than
+			}
+			famine_blockade_proof = yes
+			OR = {
+				AND = {
+					famine_relief_contract_is_valid = yes
+					check_variable = {
+						var = famine_relief_route_mode
+						value = constant:famine_relief_route_mode.air
+						compare = equals
+					}
+				}
+				AND = {
+					NOT = {
+						has_state_flag = famine_relief_contract_active
+					}
+					famine_relief_has_air_candidate = yes
+				}
+			}
+		}
+	}
+}
+famine_gui_can_start_emergency_airlift = {
+	set_temp_variable = { humanitarian_action_actor = ROOT }
+	set_temp_variable = { humanitarian_action_context_proven = constant:humanitarian_runtime.one }
+	set_temp_variable = {
+		humanitarian_action_target = famine_panel_selected_state
+	}
+	famine_emergency_airlift_action_can_start = yes
+}
+famine_gui_can_show_emergency_airlift = {
+	set_temp_variable = { humanitarian_action_actor = ROOT }
+	set_temp_variable = { humanitarian_action_context_proven = constant:humanitarian_runtime.one }
+	set_temp_variable = {
+		humanitarian_action_target = famine_panel_selected_state
+	}
+	famine_emergency_airlift_action_can_show = yes
+}
+famine_emergency_airlift_action_begin_succeeded = {
+	var:humanitarian_action_target = {
+		has_state_flag = famine_emergency_airlift_cost_paid
+		has_variable = famine_emergency_airlift_cost_payer
+		var:famine_emergency_airlift_cost_payer = {
+			tag = ROOT
+		}
+	}
+}
+famine_emergency_airlift_action_pending_is_current = {
+	hidden_trigger = {
+		has_variable = famine_action_generation_emergency_airlift_@var:humanitarian_action_target_id
+		check_variable = {
+			famine_action_generation_emergency_airlift_@var:humanitarian_action_target_id = humanitarian_action_row_id
+		}
+		var:humanitarian_action_target = {
+			has_variable = famine_emergency_airlift_operation_generation
+			check_variable = {
+				famine_emergency_airlift_operation_generation = humanitarian_action_row_id
+			}
+			has_variable = famine_emergency_airlift_operation_actor
+			var:famine_emergency_airlift_operation_actor = {
+				exists = yes
+				tag = ROOT
+			}
+		}
+	}
+}
+famine_invite_relief_action_can_start = {
+	set_temp_variable = { humanitarian_action_actor = ROOT }
+	hidden_trigger = {
+		has_variable = humanitarian_action_target
+		var:humanitarian_action_target = {
+			humanitarian_state_is_valid = yes
+		}
+		set_temp_variable = {
+			humanitarian_action_target_id = constant:humanitarian_runtime.zero
+		}
+		var:humanitarian_action_target = {
+			set_temp_variable = {
+				humanitarian_action_target_id = id
+			}
+		}
+		NOT = {
+			has_variable = famine_action_due_invite_relief_@var:humanitarian_action_target_id
+		}
+		OR = {
+			NOT = {
+				has_variable = famine_action_cooldown_invite_relief_@var:humanitarian_action_target_id
+			}
+			check_variable = {
+				var = global.date
+				value = famine_action_cooldown_invite_relief_@var:humanitarian_action_target_id
+				compare = greater_than_or_equals
+			}
+		}
+		var:humanitarian_action_target = {
+			is_controlled_by = ROOT
+			famine_state_has_visible_food_problem = yes
+		}
+		NOT = {
+			has_country_flag = humanitarian_corridor_offer_pending
+		}
+		famine_decision_problem_is_active = yes
+		NOT = {
+			famine_decision_has_reserve_response_target = yes
+		}
+		OR = {
+			NOT = {
+				has_country_flag = famine_decision_resolution
+			}
+			famine_decision_problem_is_active = yes
+		}
+		var:humanitarian_action_target = {
+			humanitarian_state_is_valid = yes
+			has_state_flag = famine_food_security_active
+			NOT = {
+				has_state_flag = famine_relief_contract_active
+			}
+			famine_relief_has_land_candidate = yes
+		}
+	}
+	hidden_trigger = {
+		var:humanitarian_action_target = {
+			is_controlled_by = ROOT
+			famine_state_has_visible_food_problem = yes
+		}
+	}
+	custom_trigger_tooltip = {
+		tooltip = famine_invite_relief_target_tt
+		var:humanitarian_action_target = {
+			humanitarian_state_is_valid = yes
+			NOT = {
+				has_state_flag = famine_relief_contract_active
+			}
+			famine_relief_has_land_candidate = yes
+		}
+	}
+	hidden_trigger = {
+		var:humanitarian_action_target = {
+			is_controlled_by = ROOT
+		}
+	}
+	hidden_trigger = {
+		famine_invite_relief_cost_is_affordable_in_context = yes
+	}
+	hidden_trigger = {
+		NOT = {
+			var:humanitarian_action_target = {
+				has_state_flag = famine_invite_relief_cost_paid
+			}
+		}
+	}
+}
+famine_invite_relief_action_can_show = {
+	set_temp_variable = { humanitarian_action_actor = ROOT }
+	hidden_trigger = {
+		has_variable = humanitarian_action_target
+		var:humanitarian_action_target = {
+			humanitarian_state_is_valid = yes
+		}
+		var:humanitarian_action_target = {
+			is_controlled_by = ROOT
+			famine_state_has_visible_food_problem = yes
+		}
+		NOT = {
+			has_country_flag = humanitarian_corridor_offer_pending
+		}
+		famine_decision_problem_is_active = yes
+		NOT = {
+			famine_decision_has_reserve_response_target = yes
+		}
+		OR = {
+			NOT = {
+				has_country_flag = famine_decision_resolution
+			}
+			famine_decision_problem_is_active = yes
+		}
+		var:humanitarian_action_target = {
+			humanitarian_state_is_valid = yes
+			has_state_flag = famine_food_security_active
+			NOT = {
+				has_state_flag = famine_relief_contract_active
+			}
+			famine_relief_has_land_candidate = yes
+		}
+	}
+}
+famine_gui_can_start_invite_relief = {
+	set_temp_variable = { humanitarian_action_actor = ROOT }
+	set_temp_variable = { humanitarian_action_context_proven = constant:humanitarian_runtime.one }
+	set_temp_variable = {
+		humanitarian_action_target = famine_panel_selected_state
+	}
+	famine_invite_relief_action_can_start = yes
+}
+famine_gui_can_show_invite_relief = {
+	set_temp_variable = { humanitarian_action_actor = ROOT }
+	set_temp_variable = { humanitarian_action_context_proven = constant:humanitarian_runtime.one }
+	set_temp_variable = {
+		humanitarian_action_target = famine_panel_selected_state
+	}
+	famine_invite_relief_action_can_show = yes
+}
+famine_invite_relief_action_begin_succeeded = {
+	var:humanitarian_action_target = {
+		has_state_flag = famine_invite_relief_cost_paid
+		has_variable = famine_invite_relief_cost_payer
+		var:famine_invite_relief_cost_payer = {
+			tag = ROOT
+		}
+	}
+}
+famine_invite_relief_action_pending_is_current = {
+	hidden_trigger = {
+		has_variable = famine_action_generation_invite_relief_@var:humanitarian_action_target_id
+		check_variable = {
+			famine_action_generation_invite_relief_@var:humanitarian_action_target_id = humanitarian_action_row_id
+		}
+		var:humanitarian_action_target = {
+			has_variable = famine_invite_relief_operation_generation
+			check_variable = {
+				famine_invite_relief_operation_generation = humanitarian_action_row_id
+			}
+			has_variable = famine_invite_relief_operation_actor
+			var:famine_invite_relief_operation_actor = {
+				exists = yes
+				tag = ROOT
+			}
+		}
+	}
+}
+famine_evacuation_action_can_start = {
+	set_temp_variable = { humanitarian_action_actor = ROOT }
+	hidden_trigger = {
+		has_variable = humanitarian_action_target
+		var:humanitarian_action_target = {
+			humanitarian_state_is_valid = yes
+		}
+		set_temp_variable = {
+			humanitarian_action_target_id = constant:humanitarian_runtime.zero
+		}
+		var:humanitarian_action_target = {
+			set_temp_variable = {
+				humanitarian_action_target_id = id
+			}
+		}
+		NOT = {
+			has_variable = famine_action_due_evacuation_@var:humanitarian_action_target_id
+		}
+		OR = {
+			NOT = {
+				has_variable = famine_action_cooldown_evacuation_@var:humanitarian_action_target_id
+			}
+			check_variable = {
+				var = global.date
+				value = famine_action_cooldown_evacuation_@var:humanitarian_action_target_id
+				compare = greater_than_or_equals
+			}
+		}
+		var:humanitarian_action_target = {
+			is_controlled_by = ROOT
+			famine_state_has_visible_food_problem = yes
+		}
+		NOT = {
+			has_country_flag = humanitarian_corridor_offer_pending
+		}
+		famine_decision_problem_is_active = yes
+		OR = {
+			NOT = {
+				has_country_flag = famine_decision_resolution
+			}
+			famine_decision_problem_is_active = yes
+		}
+		migration_decision_famine_evacuation_country_is_available = yes
+		var:humanitarian_action_target = {
+			has_state_flag = famine_food_security_active
+			migration_decision_famine_evacuation_state_is_available = yes
+		}
+	}
+	hidden_trigger = {
+		var:humanitarian_action_target = {
+			is_controlled_by = ROOT
+			famine_state_has_visible_food_problem = yes
+		}
+	}
+	custom_trigger_tooltip = {
+		tooltip = famine_evacuation_target_tt
+		var:humanitarian_action_target = {
+			has_state_flag = famine_food_security_active
+			migration_decision_famine_evacuation_state_is_available = yes
+		}
+	}
+	custom_trigger_tooltip = {
+		tooltip = migration_decision_target_available_tt
+		var:humanitarian_action_target = {
+			humanitarian_state_is_valid = yes
+		}
+	}
+	hidden_trigger = {
+		var:humanitarian_action_target = {
+			is_controlled_by = ROOT
+		}
+	}
+	hidden_trigger = {
+		famine_evacuation_cost_is_affordable_in_context = yes
+	}
+	hidden_trigger = {
+		NOT = {
+			var:humanitarian_action_target = {
+				has_state_flag = famine_evacuation_cost_paid
+			}
+		}
+	}
+}
+famine_evacuation_action_can_show = {
+	set_temp_variable = { humanitarian_action_actor = ROOT }
+	hidden_trigger = {
+		has_variable = humanitarian_action_target
+		var:humanitarian_action_target = {
+			humanitarian_state_is_valid = yes
+		}
+		var:humanitarian_action_target = {
+			is_controlled_by = ROOT
+			famine_state_has_visible_food_problem = yes
+		}
+		NOT = {
+			has_country_flag = humanitarian_corridor_offer_pending
+		}
+		famine_decision_problem_is_active = yes
+		OR = {
+			NOT = {
+				has_country_flag = famine_decision_resolution
+			}
+			famine_decision_problem_is_active = yes
+		}
+		migration_decision_famine_evacuation_country_is_available = yes
+		var:humanitarian_action_target = {
+			has_state_flag = famine_food_security_active
+			migration_decision_famine_evacuation_state_is_available = yes
+		}
+	}
+}
+famine_gui_can_start_evacuation = {
+	set_temp_variable = { humanitarian_action_actor = ROOT }
+	set_temp_variable = { humanitarian_action_context_proven = constant:humanitarian_runtime.one }
+	set_temp_variable = {
+		humanitarian_action_target = famine_panel_selected_state
+	}
+	famine_evacuation_action_can_start = yes
+}
+famine_gui_can_show_evacuation = {
+	set_temp_variable = { humanitarian_action_actor = ROOT }
+	set_temp_variable = { humanitarian_action_context_proven = constant:humanitarian_runtime.one }
+	set_temp_variable = {
+		humanitarian_action_target = famine_panel_selected_state
+	}
+	famine_evacuation_action_can_show = yes
+}
+famine_evacuation_action_begin_succeeded = {
+	var:humanitarian_action_target = {
+		has_state_flag = famine_evacuation_cost_paid
+		has_variable = famine_evacuation_cost_payer
+		var:famine_evacuation_cost_payer = {
+			tag = ROOT
+		}
+	}
+}
+famine_evacuation_action_pending_is_current = {
+	hidden_trigger = {
+		has_variable = famine_action_generation_evacuation_@var:humanitarian_action_target_id
+		check_variable = {
+			famine_action_generation_evacuation_@var:humanitarian_action_target_id = humanitarian_action_row_id
+		}
+		var:humanitarian_action_target = {
+			has_variable = famine_evacuation_operation_generation
+			check_variable = {
+				famine_evacuation_operation_generation = humanitarian_action_row_id
+			}
+			has_variable = famine_evacuation_operation_actor
+			var:famine_evacuation_operation_actor = {
+				exists = yes
+				tag = ROOT
+			}
+		}
+	}
+}
+famine_requisition_safer_state_action_can_start = {
+	set_temp_variable = { humanitarian_action_actor = ROOT }
+	hidden_trigger = {
+		has_variable = humanitarian_action_target
+		var:humanitarian_action_target = {
+			humanitarian_state_is_valid = yes
+		}
+		set_temp_variable = {
+			humanitarian_action_target_id = constant:humanitarian_runtime.zero
+		}
+		var:humanitarian_action_target = {
+			set_temp_variable = {
+				humanitarian_action_target_id = id
+			}
+		}
+		NOT = {
+			has_variable = famine_action_due_requisition_safer_state_@var:humanitarian_action_target_id
+		}
+		OR = {
+			NOT = {
+				has_variable = famine_action_cooldown_requisition_safer_state_@var:humanitarian_action_target_id
+			}
+			check_variable = {
+				var = global.date
+				value = famine_action_cooldown_requisition_safer_state_@var:humanitarian_action_target_id
+				compare = greater_than_or_equals
+			}
+		}
+		var:humanitarian_action_target = {
+			is_controlled_by = ROOT
+			famine_state_has_visible_food_problem = yes
+		}
+		NOT = {
+			has_country_flag = humanitarian_corridor_offer_pending
+		}
+		famine_decision_problem_is_active = yes
+		OR = {
+			NOT = {
+				has_country_flag = famine_decision_resolution
+			}
+			famine_decision_problem_is_active = yes
+		}
+		var:humanitarian_action_target = {
+			has_state_flag = famine_food_security_active
+			humanitarian_state_is_valid = yes
+		}
+	}
+	hidden_trigger = {
+		var:humanitarian_action_target = {
+			is_controlled_by = ROOT
+			famine_state_has_visible_food_problem = yes
+		}
+	}
+	custom_trigger_tooltip = {
+		tooltip = famine_requisition_safer_state_target_tt
+		var:humanitarian_action_target = {
+			any_neighbor_state = {
+				humanitarian_state_is_valid = yes
+				is_owned_and_controlled_by = ROOT
+				infrastructure > constant:famine_decision_threshold.minimum_route_infrastructure
+				NOT = {
+					has_state_flag = famine_food_security_active
+				}
+				migration_destination_native_hazards_are_safe = yes
+				NOT = {
+					cbrn_state_has_chemical_contamination = yes
+				}
+				NOT = {
+					has_dynamic_modifier = {
+						modifier = nuclear_fallout_state
+					}
+				}
+				NOT = {
+					black_plague_state_is_infected_or_worse = yes
+				}
+				is_controlled_by = OWNER
+				CONTROLLER = {
+					NOT = {
+						has_war_with = ROOT
+					}
+				}
+			}
+		}
+	}
+	hidden_trigger = {
+		var:humanitarian_action_target = {
+			is_controlled_by = ROOT
+		}
+	}
+	hidden_trigger = {
+		famine_requisition_safer_state_cost_is_affordable_in_context = yes
+	}
+	hidden_trigger = {
+		NOT = {
+			var:humanitarian_action_target = {
+				has_state_flag = famine_requisition_safer_state_cost_paid
+			}
+		}
+	}
+}
+famine_requisition_safer_state_action_can_show = {
+	set_temp_variable = { humanitarian_action_actor = ROOT }
+	hidden_trigger = {
+		has_variable = humanitarian_action_target
+		var:humanitarian_action_target = {
+			humanitarian_state_is_valid = yes
+		}
+		var:humanitarian_action_target = {
+			is_controlled_by = ROOT
+			famine_state_has_visible_food_problem = yes
+		}
+		NOT = {
+			has_country_flag = humanitarian_corridor_offer_pending
+		}
+		famine_decision_problem_is_active = yes
+		OR = {
+			NOT = {
+				has_country_flag = famine_decision_resolution
+			}
+			famine_decision_problem_is_active = yes
+		}
+		var:humanitarian_action_target = {
+			has_state_flag = famine_food_security_active
+			humanitarian_state_is_valid = yes
+		}
+	}
+}
+famine_gui_can_start_requisition_safer_state = {
+	set_temp_variable = { humanitarian_action_actor = ROOT }
+	set_temp_variable = { humanitarian_action_context_proven = constant:humanitarian_runtime.one }
+	set_temp_variable = {
+		humanitarian_action_target = famine_panel_selected_state
+	}
+	famine_requisition_safer_state_action_can_start = yes
+}
+famine_gui_can_show_requisition_safer_state = {
+	set_temp_variable = { humanitarian_action_actor = ROOT }
+	set_temp_variable = { humanitarian_action_context_proven = constant:humanitarian_runtime.one }
+	set_temp_variable = {
+		humanitarian_action_target = famine_panel_selected_state
+	}
+	famine_requisition_safer_state_action_can_show = yes
+}
+famine_requisition_safer_state_action_begin_succeeded = {
+	var:humanitarian_action_target = {
+		has_state_flag = famine_requisition_safer_state_cost_paid
+		has_variable = famine_requisition_safer_state_cost_payer
+		var:famine_requisition_safer_state_cost_payer = {
+			tag = ROOT
+		}
+	}
+}
+famine_requisition_safer_state_action_pending_is_current = {
+	hidden_trigger = {
+		has_variable = famine_action_generation_requisition_safer_state_@var:humanitarian_action_target_id
+		check_variable = {
+			famine_action_generation_requisition_safer_state_@var:humanitarian_action_target_id = humanitarian_action_row_id
+		}
+		var:humanitarian_action_target = {
+			has_variable = famine_requisition_safer_state_operation_generation
+			check_variable = {
+				famine_requisition_safer_state_operation_generation = humanitarian_action_row_id
+			}
+			has_variable = famine_requisition_safer_state_operation_actor
+			var:famine_requisition_safer_state_operation_actor = {
+				exists = yes
+				tag = ROOT
+			}
+		}
+	}
+}
+famine_conceal_crisis_action_can_start = {
+	set_temp_variable = { humanitarian_action_actor = ROOT }
+	hidden_trigger = {
+		has_variable = humanitarian_action_target
+		var:humanitarian_action_target = {
+			humanitarian_state_is_valid = yes
+		}
+		set_temp_variable = {
+			humanitarian_action_target_id = constant:humanitarian_runtime.zero
+		}
+		var:humanitarian_action_target = {
+			set_temp_variable = {
+				humanitarian_action_target_id = id
+			}
+		}
+		NOT = {
+			has_variable = famine_action_due_conceal_crisis_@var:humanitarian_action_target_id
+		}
+		OR = {
+			NOT = {
+				has_variable = famine_action_cooldown_conceal_crisis_@var:humanitarian_action_target_id
+			}
+			check_variable = {
+				var = global.date
+				value = famine_action_cooldown_conceal_crisis_@var:humanitarian_action_target_id
+				compare = greater_than_or_equals
+			}
+		}
+		var:humanitarian_action_target = {
+			is_controlled_by = ROOT
+			famine_state_has_visible_food_problem = yes
+		}
+		NOT = {
+			has_country_flag = humanitarian_corridor_offer_pending
+		}
+		famine_decision_problem_is_active = yes
+		OR = {
+			NOT = {
+				has_country_flag = famine_decision_resolution
+			}
+			famine_decision_problem_is_active = yes
+		}
+		OR = {
+			has_government = fascism
+			has_government = communism
+			has_government = neutrality
+		}
+		var:humanitarian_action_target = {
+			has_state_flag = famine_food_security_active
+			NOT = {
+				has_state_flag = famine_crisis_concealed
+			}
+			OR = {
+				NOT = {
+					has_variable = famine_profile_extraction
+				}
+				NOT = {
+					check_variable = {
+						var = famine_profile_extraction
+						value = constant:famine_food_component.zero
+						compare = greater_than
+					}
+				}
+			}
+		}
+	}
+	hidden_trigger = {
+		var:humanitarian_action_target = {
+			is_controlled_by = ROOT
+			famine_state_has_visible_food_problem = yes
+		}
+	}
+	custom_trigger_tooltip = {
+		tooltip = famine_conceal_crisis_target_tt
+		var:humanitarian_action_target = {
+			humanitarian_state_is_valid = yes
+			has_state_flag = famine_food_security_active
+			NOT = {
+				has_state_flag = famine_crisis_concealed
+			}
+		}
+	}
+	OR = {
+		has_government = fascism
+		has_government = communism
+		has_government = neutrality
+	}
+	hidden_trigger = {
+		var:humanitarian_action_target = {
+			is_controlled_by = ROOT
+		}
+	}
+	hidden_trigger = {
+		famine_conceal_crisis_cost_is_affordable_in_context = yes
+	}
+	hidden_trigger = {
+		NOT = {
+			var:humanitarian_action_target = {
+				has_state_flag = famine_conceal_crisis_cost_paid
+			}
+		}
+	}
+}
+famine_conceal_crisis_action_can_show = {
+	set_temp_variable = { humanitarian_action_actor = ROOT }
+	hidden_trigger = {
+		has_variable = humanitarian_action_target
+		var:humanitarian_action_target = {
+			humanitarian_state_is_valid = yes
+		}
+		var:humanitarian_action_target = {
+			is_controlled_by = ROOT
+			famine_state_has_visible_food_problem = yes
+		}
+		NOT = {
+			has_country_flag = humanitarian_corridor_offer_pending
+		}
+		famine_decision_problem_is_active = yes
+		OR = {
+			NOT = {
+				has_country_flag = famine_decision_resolution
+			}
+			famine_decision_problem_is_active = yes
+		}
+		OR = {
+			has_government = fascism
+			has_government = communism
+			has_government = neutrality
+		}
+		var:humanitarian_action_target = {
+			has_state_flag = famine_food_security_active
+			NOT = {
+				has_state_flag = famine_crisis_concealed
+			}
+			OR = {
+				NOT = {
+					has_variable = famine_profile_extraction
+				}
+				NOT = {
+					check_variable = {
+						var = famine_profile_extraction
+						value = constant:famine_food_component.zero
+						compare = greater_than
+					}
+				}
+			}
+		}
+	}
+}
+famine_gui_can_start_conceal_crisis = {
+	set_temp_variable = { humanitarian_action_actor = ROOT }
+	set_temp_variable = { humanitarian_action_context_proven = constant:humanitarian_runtime.one }
+	set_temp_variable = {
+		humanitarian_action_target = famine_panel_selected_state
+	}
+	famine_conceal_crisis_action_can_start = yes
+}
+famine_gui_can_show_conceal_crisis = {
+	set_temp_variable = { humanitarian_action_actor = ROOT }
+	set_temp_variable = { humanitarian_action_context_proven = constant:humanitarian_runtime.one }
+	set_temp_variable = {
+		humanitarian_action_target = famine_panel_selected_state
+	}
+	famine_conceal_crisis_action_can_show = yes
+}
+famine_conceal_crisis_action_begin_succeeded = {
+	var:humanitarian_action_target = {
+		has_state_flag = famine_conceal_crisis_cost_paid
+		has_variable = famine_conceal_crisis_cost_payer
+		var:famine_conceal_crisis_cost_payer = {
+			tag = ROOT
+		}
+	}
+}
+famine_conceal_crisis_action_pending_is_current = {
+	hidden_trigger = {
+		has_variable = famine_action_generation_conceal_crisis_@var:humanitarian_action_target_id
+		check_variable = {
+			famine_action_generation_conceal_crisis_@var:humanitarian_action_target_id = humanitarian_action_row_id
+		}
+		var:humanitarian_action_target = {
+			has_variable = famine_conceal_crisis_operation_generation
+			check_variable = {
+				famine_conceal_crisis_operation_generation = humanitarian_action_row_id
+			}
+			has_variable = famine_conceal_crisis_operation_actor
+			var:famine_conceal_crisis_operation_actor = {
+				exists = yes
+				tag = ROOT
+			}
+		}
+	}
+}
+famine_maintain_extraction_action_can_start = {
+	set_temp_variable = { humanitarian_action_actor = ROOT }
+	hidden_trigger = {
+		has_variable = humanitarian_action_target
+		var:humanitarian_action_target = {
+			humanitarian_state_is_valid = yes
+		}
+		set_temp_variable = {
+			humanitarian_action_target_id = constant:humanitarian_runtime.zero
+		}
+		var:humanitarian_action_target = {
+			set_temp_variable = {
+				humanitarian_action_target_id = id
+			}
+		}
+		NOT = {
+			has_variable = famine_action_due_maintain_extraction_@var:humanitarian_action_target_id
+		}
+		OR = {
+			NOT = {
+				has_variable = famine_action_cooldown_maintain_extraction_@var:humanitarian_action_target_id
+			}
+			check_variable = {
+				var = global.date
+				value = famine_action_cooldown_maintain_extraction_@var:humanitarian_action_target_id
+				compare = greater_than_or_equals
+			}
+		}
+		var:humanitarian_action_target = {
+			is_controlled_by = ROOT
+			famine_state_has_visible_food_problem = yes
+		}
+		NOT = {
+			has_country_flag = humanitarian_corridor_offer_pending
+		}
+		famine_decision_problem_is_active = yes
+		OR = {
+			NOT = {
+				has_country_flag = famine_decision_resolution
+			}
+			famine_decision_problem_is_active = yes
+		}
+		has_war = yes
+		var:humanitarian_action_target = {
+			has_state_flag = famine_food_security_active
+			NOT = {
+				has_state_flag = famine_extraction_active
+			}
+			check_variable = {
+				var = famine_profile_extraction
+				value = constant:famine_food_component.zero
+				compare = greater_than
+			}
+		}
+	}
+	hidden_trigger = {
+		var:humanitarian_action_target = {
+			is_controlled_by = ROOT
+			famine_state_has_visible_food_problem = yes
+		}
+	}
+	custom_trigger_tooltip = {
+		tooltip = famine_maintain_extraction_target_tt
+		var:humanitarian_action_target = {
+			humanitarian_state_is_valid = yes
+			has_state_flag = famine_food_security_active
+			NOT = {
+				has_state_flag = famine_extraction_active
+			}
+		}
+	}
+	hidden_trigger = {
+		var:humanitarian_action_target = {
+			is_controlled_by = ROOT
+		}
+	}
+	hidden_trigger = {
+		famine_maintain_extraction_cost_is_affordable_in_context = yes
+	}
+	hidden_trigger = {
+		NOT = {
+			var:humanitarian_action_target = {
+				has_state_flag = famine_maintain_extraction_cost_paid
+			}
+		}
+	}
+}
+famine_maintain_extraction_action_can_show = {
+	set_temp_variable = { humanitarian_action_actor = ROOT }
+	hidden_trigger = {
+		has_variable = humanitarian_action_target
+		var:humanitarian_action_target = {
+			humanitarian_state_is_valid = yes
+		}
+		var:humanitarian_action_target = {
+			is_controlled_by = ROOT
+			famine_state_has_visible_food_problem = yes
+		}
+		NOT = {
+			has_country_flag = humanitarian_corridor_offer_pending
+		}
+		famine_decision_problem_is_active = yes
+		OR = {
+			NOT = {
+				has_country_flag = famine_decision_resolution
+			}
+			famine_decision_problem_is_active = yes
+		}
+		has_war = yes
+		var:humanitarian_action_target = {
+			has_state_flag = famine_food_security_active
+			NOT = {
+				has_state_flag = famine_extraction_active
+			}
+			check_variable = {
+				var = famine_profile_extraction
+				value = constant:famine_food_component.zero
+				compare = greater_than
+			}
+		}
+	}
+}
+famine_gui_can_start_maintain_extraction = {
+	set_temp_variable = { humanitarian_action_actor = ROOT }
+	set_temp_variable = { humanitarian_action_context_proven = constant:humanitarian_runtime.one }
+	set_temp_variable = {
+		humanitarian_action_target = famine_panel_selected_state
+	}
+	famine_maintain_extraction_action_can_start = yes
+}
+famine_gui_can_show_maintain_extraction = {
+	set_temp_variable = { humanitarian_action_actor = ROOT }
+	set_temp_variable = { humanitarian_action_context_proven = constant:humanitarian_runtime.one }
+	set_temp_variable = {
+		humanitarian_action_target = famine_panel_selected_state
+	}
+	famine_maintain_extraction_action_can_show = yes
+}
+famine_maintain_extraction_action_begin_succeeded = {
+	var:humanitarian_action_target = {
+		has_state_flag = famine_maintain_extraction_cost_paid
+		has_variable = famine_maintain_extraction_cost_payer
+		var:famine_maintain_extraction_cost_payer = {
+			tag = ROOT
+		}
+	}
+}
+famine_maintain_extraction_action_pending_is_current = {
+	hidden_trigger = {
+		has_variable = famine_action_generation_maintain_extraction_@var:humanitarian_action_target_id
+		check_variable = {
+			famine_action_generation_maintain_extraction_@var:humanitarian_action_target_id = humanitarian_action_row_id
+		}
+		var:humanitarian_action_target = {
+			has_variable = famine_maintain_extraction_operation_generation
+			check_variable = {
+				famine_maintain_extraction_operation_generation = humanitarian_action_row_id
+			}
+			has_variable = famine_maintain_extraction_operation_actor
+			var:famine_maintain_extraction_operation_actor = {
+				exists = yes
+				tag = ROOT
+			}
+		}
+	}
+}

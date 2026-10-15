@@ -56,52 +56,30 @@ cbrn_country_has_full_readiness = {
 }
 
 cbrn_policy_is_defensive_preparation = {
-	# Legacy compatibility only; initialization migrates this value.
-	check_variable = { cbrn_use_policy = constant:cbrn_use_policy.defensive_preparation }
+	always = no # Retired policy value, retained only as a compatibility predicate.
 }
 
 cbrn_policy_is_retaliation_authority = {
-	check_variable = {
-		var = cbrn_use_policy
-			value = constant:cbrn_use_policy.retaliation_only
-		compare = equals
-	}
+	has_idea = national_policy_chemical_retaliation
 }
 
 cbrn_policy_allows_battlefield_use = {
 	OR = {
-		check_variable = {
-			var = cbrn_use_policy
-			value = constant:cbrn_use_policy.battlefield_authorization
-			compare = greater_than_or_equals
-		}
-		AND = {
-			cbrn_policy_is_retaliation_authority = yes
-			has_country_flag = cbrn_retaliation_authorized
-		}
+		has_idea = national_policy_chemical_battlefield
+		has_idea = national_policy_chemical_unrestricted
+		AND = { has_idea = national_policy_chemical_retaliation national_policy_ai_has_chemical_retaliation_right = yes }
 	}
 }
 
 cbrn_policy_allows_strategic_use = {
 	OR = {
-		check_variable = {
-			var = cbrn_use_policy
-			value = constant:cbrn_use_policy.unrestricted_authorization
-			compare = greater_than_or_equals
-		}
-		AND = {
-			cbrn_policy_is_retaliation_authority = yes
-			has_country_flag = cbrn_retaliation_authorized
-		}
+		has_idea = national_policy_chemical_unrestricted
+		AND = { has_idea = national_policy_chemical_retaliation national_policy_ai_has_chemical_retaliation_right = yes }
 	}
 }
 
 cbrn_policy_allows_extreme_use = {
-	check_variable = {
-		var = cbrn_use_policy
-		value = constant:cbrn_use_policy.unrestricted_authorization
-		compare = equals
-	}
+	has_idea = national_policy_chemical_unrestricted
 }
 
 chem_state_has_live_legacy_contamination = {

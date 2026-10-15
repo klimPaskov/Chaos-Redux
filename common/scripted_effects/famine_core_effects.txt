@@ -560,6 +560,7 @@ famine_unregister_active_country = {
 # COUNTRY scope. Daily registry job: refresh the famine decision phase and the
 # national food crisis, then leave the registry once nothing remains to manage.
 famine_process_registered_country = {
+	famine_action_process_pending = yes
 	if = {
 		limit = { humanitarian_country_is_valid = yes }
 		famine_refresh_decision_phase_from_country = yes
@@ -571,12 +572,14 @@ famine_process_registered_country = {
 				NOT = { has_country_flag = famine_decision_resolution }
 				NOT = { has_country_flag = famine_mission_route_active }
 				NOT = { has_country_flag = famine_mission_relief_active }
+				NOT = { check_variable = { famine_action_ids^num > constant:humanitarian_runtime.zero } }
 				NOT = { any_owned_state = { famine_state_has_visible_food_problem = yes } }
 			}
 			famine_unregister_active_country = yes
 		}
 	}
 	else = { famine_unregister_active_country = yes }
+	if = { limit = { has_country_flag = famine_panel_open } famine_panel_refresh = yes }
 }
 
 # COUNTRY scope. The public sees every acute, famine, and catastrophic state the

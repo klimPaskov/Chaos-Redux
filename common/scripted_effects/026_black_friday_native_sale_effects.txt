@@ -56,6 +56,7 @@ black_friday_native_sale_apply = {
 	black_friday_native_sale_read_linked_ordinaries = yes
 	black_friday_native_sale_store_contributions = yes
 	set_country_flag = black_friday_native_sale_stored
+	national_policy_refresh_sale_cost_modifiers = yes
 	if = {
 		limit = { NOT = { has_dynamic_modifier = black_friday_native_sale } }
 		add_dynamic_modifier = { modifier = black_friday_native_sale }
@@ -73,6 +74,7 @@ black_friday_native_sale_remove = {
 		black_friday_native_sale_clear_contributions = yes
 		clr_country_flag = black_friday_native_sale_stored
 	}
+	national_policy_remove_sale_cost_modifiers = yes
 }
 
 # Turns the ordinary factor in black_friday_native_cost into the sale
@@ -139,6 +141,14 @@ black_friday_native_sale_store_contributions = {
 	subtract_from_temp_variable = { black_friday_native_cost = black_friday_sale_trade_laws_cost_factor }
 	black_friday_native_sale_contribution = yes
 	set_variable = { black_friday_sale_trade_laws_cost_factor = black_friday_native_cost }
+	set_temp_variable = { black_friday_native_cost = modifier@refugee_reception_cost_factor }
+	subtract_from_temp_variable = { black_friday_native_cost = black_friday_sale_refugee_reception_cost_factor }
+	black_friday_native_sale_contribution = yes
+	set_variable = { black_friday_sale_refugee_reception_cost_factor = black_friday_native_cost }
+	set_temp_variable = { black_friday_native_cost = modifier@civilian_departure_cost_factor }
+	subtract_from_temp_variable = { black_friday_native_cost = black_friday_sale_civilian_departure_cost_factor }
+	black_friday_native_sale_contribution = yes
+	set_variable = { black_friday_sale_civilian_departure_cost_factor = black_friday_native_cost }
 
 	# Advisors, military staff, and designers
 	set_temp_variable = { black_friday_native_cost = modifier@political_advisor_cost_factor }
@@ -2484,6 +2494,8 @@ black_friday_native_sale_clear_contributions = {
 	clear_variable = black_friday_sale_economy_cost_factor
 	clear_variable = black_friday_sale_mobilization_laws_cost_factor
 	clear_variable = black_friday_sale_trade_laws_cost_factor
+	clear_variable = black_friday_sale_refugee_reception_cost_factor
+	clear_variable = black_friday_sale_civilian_departure_cost_factor
 
 	# Advisors, military staff, and designers
 	clear_variable = black_friday_sale_political_advisor_cost_factor

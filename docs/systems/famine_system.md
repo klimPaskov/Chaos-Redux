@@ -2,13 +2,15 @@
 
 Status: implemented; current status, balance arithmetic and evidence limits are in [the 10 October improvement plan](../plans/famine_and_migration_system_plans/improvement_plan_2026-10-10.md).
 
+Country-level reception/departure laws and their management window are documented in [National policies](national_policies.md). They do not add a food law or change famine's state-owned food-security model.
+
 ## Ownership
 
 Famine is an independent state mechanic. Its gameplay identifiers, variables, flags, effects, triggers, decisions, missions, localisation, sprites, and CXT fixture use the `famine_*` namespace.
 
 The mechanic may submit explicit displacement pressure to migration when hunger causes people to move, but migration does not own food security, food reserves, relief access, or famine mortality.
 
-The ordinary player surface is `famine_decision_category`. It is hidden while a country has no real food-security problem and appears for a genuine starting problem or supply strain and worse. Stable monitoring and migration activity alone do not reveal it.
+The Famine management panel is available to eligible human players during quiet conditions as well as crises. Its state inspection and operational actions use their own food-problem, state, cost, cooldown, and pending-work gates; opening or refreshing it does not initialize famine or register work. Native AI missions retain their existing decision path.
 
 `famine_register_initial_incident` is a famine accounting and presentation seam called from a proven upward state transition. It records the bounded state presentation and selects famine report context only; it does not create an event object, event ID, event-pool entry, event-log row, pacing pulse, random event, or population transaction.
 
@@ -88,11 +90,10 @@ Island blockade famine is not inferred from island status. The blockade branch r
 
 Local supply is inadequate when the reserve covers fewer than 7 days, or fewer than 14 days while local production pressure is at least 20. While every physical clause except local supply holds (`famine_blockade_isolation_proof`), the island's imports are cut and its reserve drains, so an ordinary island reaches the full proof once its stock runs low. A proven blockade adds transport, need and vulnerability pressure that grows by 0.5 a day up to 40.
 
-## Decisions and missions
+## Panel actions and missions
 
-Famine owns its own category and ten actions: Release Food Stores, Import Food (arranges a foreign land donor and delivers in one paid action), Restore Relief, Escort Relief and Airlift Relief for blockaded islands, Request Relief from a foreign overland donor, Requisition Food from a safe neighbouring state, Evacuate, Conceal Hunger and Continue Requisitions.
-Each is offered only for a real food problem in its selected state.
-Request Relief also keeps its historical reserve-first role: it appears once no reserve-release target remains.
+The Famine panel provides ten operational actions: Release Food Stores, Emergency Imports, Repair Relief Route, Escorted Relief Convoy, Emergency Airlift, Invite Relief, Evacuation, Requisition from a Safer State, Conceal Crisis, and Maintain Extraction. Each action uses the existing production begin, resolve, and cancel path shared with its native AI decision; its selected-state and cost requirements remain action-specific.
+Native AI missions remain active through their existing decisions. Opening, refreshing, or closing the human panel does not initialize famine, perform an action, or register a pending operation.
 
 Reserve release targets any registered state at supply strain or worse, or under a live food shock, that holds stock to release (`famine_state_can_release_reserves`). Released food keeps counting as covered days for reserve exhaustion and decays more slowly than stock drawn by a famine, so releasing early protects a state's food rather than shortening it.
 
@@ -172,16 +173,13 @@ The reverse connection uses `migration_to_famine_reception_demand_*`. Migration 
 
 Event 037 Mysterious People tops up a food-need shock in crowded states at Overpopulation Pressure 60 or more through `famine_request_event_pressure` (source `event`), raising the state's food need toward the pressure minus 40 (`mysterious_people_adapter` constants). Famine decides what the shock does to the food state.
 
-## Category header
+## Management panel and state list
 
-The famine category header shows the report scene art and title beside a live list of the country's crisis states (acute shortage or worse, concealed states excluded), catastrophic states first, each with its food stage.
-Selecting an entry centres the map on that state.
-`famine_refresh_national_food_crisis` rebuilds the country array `famine_header_states` and `famine_header_state_count` from the sparse active-state registry in the same pass that sets the national crisis penalties, and clears them when no crisis state remains.
-Until a crisis state exists the header falls back to the scene summary.
-The category description keeps Food Security, Food Reserves, Relief Access and Priority.
-The dynamic list inside a decision-category scripted GUI has not been confirmed in a running game.
-Every famine action is a state-targeted decision (`state_target = any_controlled_state` with `target_trigger` filtering on the live state flags), so the targets come from live state data and no decision, GUI entry or text names a fixed state.
-The named historical profiles (for example Henan or Bengal) are labels a state earns from its live food proof, not fixed UI entries.
+Refreshing the Famine panel rebuilds `famine_panel_states` directly from relevant owned and controlled states, then deduplicates and validates current ownership/control. Relevance includes published food activity and qualifying pending or mission work, not mere ownership or zero-filled fields. The list orders catastrophic famine, famine, acute shortage, supply strain, then stable or unassessed work. It does not use `famine_header_states` or the sparse active-state registry as the panel's list source. A selected row changes the panel's selected state; the separate Show on Map button centres the map on that selection.
+
+The overview shows Food Security, Food Reserves, and Relief Access. The selected-state view includes the live stage, reserve and relief details, dominant pressure cause, and eligible operational actions. Action status comes from the action owner's saved start date, due date, cooldown, and remaining-day values. The active-work meter uses the saved start and due timestamps and displays the exact operation's progress over eleven frames; it does not estimate duration from current tuning or advance the operation.
+
+Final panel renderer evidence is tracked in the [national policy panels implementation report](../plans/famine_and_migration_system_plans/national_policy_panels_implementation.md). The named historical profiles (for example Henan or Bengal) are labels a state earns from its live food proof, not fixed UI entries.
 
 ## Assets and mapmode
 

@@ -35,7 +35,7 @@ cbrn_diplomacy_classify_retaliation_action = {
 			set_temp_variable = { cbrn_retaliation_target_id = id }
 		}
 		if = {
-			limit = { cbrn_country_has_active_retaliation_right_against_target_id = yes }
+			limit = { has_idea = $POLICY$ cbrn_country_has_active_retaliation_right_against_target_id = yes }
 			set_temp_variable = { cbrn_action_retaliation_status = constant:cbrn_retaliation_status.authorized }
 			if = {
 				limit = {
@@ -91,7 +91,7 @@ cbrn_diplomacy_classify_biological_seed_retaliation = {
 		}
 		event_target:bio_seed_actor = {
 			set_temp_variable = { cbrn_action_retaliation_status = constant:cbrn_retaliation_status.none }
-			cbrn_diplomacy_classify_retaliation_action = yes
+			cbrn_diplomacy_classify_retaliation_action = { POLICY = national_policy_biological_retaliation }
 			set_temp_variable = { bio_seed_retaliation_status = cbrn_action_retaliation_status }
 		}
 	}
@@ -112,24 +112,40 @@ cbrn_diplomacy_revoke_retaliation_right_against_target_id = {
 # Country scope. The current country is the exact victim. Inputs are the
 # confirmed offender id, action date, and CBRN source.
 cbrn_diplomacy_grant_retaliation_right_against_offender = {
-	set_temp_variable = { cbrn_retaliation_expiry_day = global.num_days }
-	add_to_temp_variable = { cbrn_retaliation_expiry_day = constant:cbrn_diplomacy_duration.retaliation_window_days }
+	# The same exact offender/action day can be confirmed more than once.
+	# A repeated callback must not extend the permission window.
 	meta_effect = {
 		text = {
-			set_variable = { cbrn_retaliation_[OFFENDER_ID]_expiry_day = cbrn_retaliation_expiry_day }
-			set_variable = { cbrn_retaliation_[OFFENDER_ID]_first_use_date = cbrn_confirmed_use_action_date }
-			set_variable = { cbrn_retaliation_[OFFENDER_ID]_confirmed_day = global.num_days }
-			set_variable = { cbrn_retaliation_[OFFENDER_ID]_source = cbrn_retaliation_source_type }
+			if = {
+				limit = {
+					OR = {
+						NOT = { has_variable = cbrn_retaliation_[OFFENDER_ID]_owner }
+						NOT = { var:cbrn_retaliation_[OFFENDER_ID]_owner = { tag = PREV } }
+						NOT = { has_variable = cbrn_retaliation_[OFFENDER_ID]_latest_action_date }
+						check_variable = { var = cbrn_confirmed_use_action_date value = cbrn_retaliation_[OFFENDER_ID]_latest_action_date compare = greater_than }
+					}
+				}
+				set_temp_variable = { cbrn_retaliation_expiry_day = global.num_days }
+				add_to_temp_variable = { cbrn_retaliation_expiry_day = constant:cbrn_diplomacy_duration.retaliation_window_days }
+				set_variable = { cbrn_retaliation_[OFFENDER_ID]_expiry_day = cbrn_retaliation_expiry_day }
+				set_variable = { cbrn_retaliation_[OFFENDER_ID]_first_use_date = cbrn_pair_offender_first_action_date }
+				set_variable = { cbrn_retaliation_[OFFENDER_ID]_latest_action_date = cbrn_confirmed_use_action_date }
+				set_variable = { cbrn_retaliation_[OFFENDER_ID]_confirmed_day = global.num_days }
+				set_variable = { cbrn_retaliation_[OFFENDER_ID]_source = cbrn_retaliation_source_type }
+				set_variable = { cbrn_retaliation_[OFFENDER_ID]_owner = THIS }
+				set_variable = { cbrn_retaliation_[OFFENDER_ID]_offender = event_target:cbrn_retaliation_confirmed_offender }
+				set_temp_variable = { cbrn_retaliation_flag_days = constant:cbrn_diplomacy_duration.retaliation_window_days }
+				set_country_flag = { flag = cbrn_retaliation_authorized days = var:cbrn_retaliation_flag_days }
+				set_country_flag = cbrn_confirmed_cbrn_attack_victim_history
+				# The C/B convention has no nuclear membership-attack adapter.
+				if = {
+					limit = { NOT = { check_variable = { cbrn_retaliation_source_type = constant:cbrn_diplomacy_source.nuclear } } }
+					cbrn_convention_on_member_attacked = yes
+				}
+			}
 		}
 		OFFENDER_ID = "[?cbrn_retaliation_offender_id|.0]"
 	}
-	set_temp_variable = { cbrn_retaliation_flag_days = constant:cbrn_diplomacy_duration.retaliation_window_days }
-	set_country_flag = {
-		flag = cbrn_retaliation_authorized
-		days = var:cbrn_retaliation_flag_days
-	}
-	set_country_flag = cbrn_confirmed_cbrn_attack_victim_history
-	cbrn_convention_on_member_attacked = yes
 }
 
 # Country scope. Records the earliest confirmed action date in both directions
@@ -165,7 +181,19 @@ cbrn_diplomacy_record_confirmed_cbrn_use = {
 					}
 					set_variable = { cbrn_confirmed_use_against_[TARGET_ID]_first_action_date = cbrn_confirmed_use_action_date }
 				}
-				set_temp_variable = { cbrn_pair_offender_first_action_date = cbrn_confirmed_use_against_[TARGET_ID]_first_action_date }
+				if = {
+					limit = {
+						OR = {
+							NOT = { has_variable = cbrn_confirmed_use_against_[TARGET_ID]_authority_owner }
+							NOT = { var:cbrn_confirmed_use_against_[TARGET_ID]_authority_owner = { tag = PREV } }
+							NOT = { has_variable = cbrn_confirmed_use_against_[TARGET_ID]_authority_first_date }
+							check_variable = { var = cbrn_confirmed_use_action_date value = cbrn_confirmed_use_against_[TARGET_ID]_authority_first_date compare = less_than }
+						}
+					}
+					set_variable = { cbrn_confirmed_use_against_[TARGET_ID]_authority_first_date = cbrn_confirmed_use_action_date }
+					set_variable = { cbrn_confirmed_use_against_[TARGET_ID]_authority_owner = THIS }
+				}
+				set_temp_variable = { cbrn_pair_offender_first_action_date = cbrn_confirmed_use_against_[TARGET_ID]_authority_first_date }
 			}
 			TARGET_ID = "[?cbrn_retaliation_target_id|.0]"
 		}
@@ -175,9 +203,13 @@ cbrn_diplomacy_record_confirmed_cbrn_use = {
 			meta_effect = {
 				text = {
 					if = {
-						limit = { has_variable = cbrn_confirmed_use_against_[OFFENDER_ID]_first_action_date }
+						limit = {
+							has_variable = cbrn_confirmed_use_against_[OFFENDER_ID]_authority_first_date
+							has_variable = cbrn_confirmed_use_against_[OFFENDER_ID]_authority_owner
+							var:cbrn_confirmed_use_against_[OFFENDER_ID]_authority_owner = { tag = PREV }
+						}
 						set_temp_variable = { cbrn_pair_victim_has_confirmed_use = constant:cbrn_proof.supplied }
-						set_temp_variable = { cbrn_pair_victim_first_action_date = cbrn_confirmed_use_against_[OFFENDER_ID]_first_action_date }
+						set_temp_variable = { cbrn_pair_victim_first_action_date = cbrn_confirmed_use_against_[OFFENDER_ID]_authority_first_date }
 					}
 				}
 				OFFENDER_ID = "[?cbrn_retaliation_offender_id|.0]"

@@ -25,36 +25,98 @@ migration_close_border_cost_is_affordable = {
 	}
 }
 
+
+
 migration_prepare_evacuation_cost_is_affordable = {
-	hidden_trigger = {
-		set_temp_variable = { migration_transport_fuel_land = constant:migration_transport_cost.light_fuel_land } set_temp_variable = { migration_transport_fuel_sea = constant:migration_transport_cost.light_fuel_sea } set_temp_variable = { migration_transport_convoys_sea = constant:migration_transport_cost.light_convoys_sea } set_temp_variable = { migration_transport_target = FROM } migration_transport_state_cost_is_affordable = yes
-		NOT = { set_temp_variable = { migration_transport_target = FROM } set_temp_variable = { migration_transport_receipt = token:migration_prepare_evacuation } migration_transport_state_receipt_is_paid = yes }
-		humanitarian_cost_train_light_is_affordable = yes
+	OR = {
+		AND = {
+			check_variable = { humanitarian_action_context_proven = constant:humanitarian_runtime.one }
+			migration_prepare_evacuation_cost_is_affordable_in_context = yes
+		}
+		AND = {
+			NOT = { check_variable = { humanitarian_action_context_proven = constant:humanitarian_runtime.one } }
+			set_temp_variable = { humanitarian_action_actor = ROOT }
+			set_temp_variable = { humanitarian_action_target = FROM }
+			migration_prepare_evacuation_cost_is_affordable_in_context = yes
+		}
 	}
+}
+
+migration_prepare_evacuation_cost_is_affordable_in_context = {
+	hidden_trigger = {
+			set_temp_variable = { migration_transport_fuel_land = constant:migration_transport_cost.light_fuel_land } set_temp_variable = { migration_transport_fuel_sea = constant:migration_transport_cost.light_fuel_sea } set_temp_variable = { migration_transport_convoys_sea = constant:migration_transport_cost.light_convoys_sea } set_temp_variable = { migration_transport_target = var:humanitarian_action_target } migration_transport_state_cost_is_affordable = yes
+			NOT = { set_temp_variable = { migration_transport_target = var:humanitarian_action_target } set_temp_variable = { migration_transport_receipt = token:migration_prepare_evacuation } migration_transport_state_receipt_is_paid = yes }
+			humanitarian_cost_train_light_is_affordable = yes
+		}
 }
 
 migration_evacuate_vulnerable_cost_is_affordable = {
-	hidden_trigger = {
-		set_temp_variable = { migration_transport_fuel_land = constant:migration_transport_cost.standard_fuel_land } set_temp_variable = { migration_transport_fuel_sea = constant:migration_transport_cost.standard_fuel_sea } set_temp_variable = { migration_transport_convoys_sea = constant:migration_transport_cost.standard_convoys_sea } set_temp_variable = { migration_transport_target = FROM } migration_transport_state_cost_is_affordable = yes
-		NOT = { set_temp_variable = { migration_transport_target = FROM } set_temp_variable = { migration_transport_receipt = token:migration_evacuate_vulnerable } migration_transport_state_receipt_is_paid = yes }
-		humanitarian_cost_train_light_is_affordable = yes
+	OR = {
+		AND = {
+			check_variable = { humanitarian_action_context_proven = constant:humanitarian_runtime.one }
+			migration_evacuate_vulnerable_cost_is_affordable_in_context = yes
+		}
+		AND = {
+			NOT = { check_variable = { humanitarian_action_context_proven = constant:humanitarian_runtime.one } }
+			set_temp_variable = { humanitarian_action_actor = ROOT }
+			set_temp_variable = { humanitarian_action_target = FROM }
+			migration_evacuate_vulnerable_cost_is_affordable_in_context = yes
+		}
 	}
+}
+
+migration_evacuate_vulnerable_cost_is_affordable_in_context = {
+	hidden_trigger = {
+			set_temp_variable = { migration_transport_fuel_land = constant:migration_transport_cost.standard_fuel_land } set_temp_variable = { migration_transport_fuel_sea = constant:migration_transport_cost.standard_fuel_sea } set_temp_variable = { migration_transport_convoys_sea = constant:migration_transport_cost.standard_convoys_sea } set_temp_variable = { migration_transport_target = var:humanitarian_action_target } migration_transport_state_cost_is_affordable = yes
+			NOT = { set_temp_variable = { migration_transport_target = var:humanitarian_action_target } set_temp_variable = { migration_transport_receipt = token:migration_evacuate_vulnerable } migration_transport_state_receipt_is_paid = yes }
+			humanitarian_cost_train_light_is_affordable = yes
+		}
 }
 
 migration_evacuate_workers_cost_is_affordable = {
-	hidden_trigger = {
-		set_temp_variable = { migration_transport_fuel_land = constant:migration_transport_cost.heavy_fuel_land } set_temp_variable = { migration_transport_fuel_sea = constant:migration_transport_cost.heavy_fuel_sea } set_temp_variable = { migration_transport_convoys_sea = constant:migration_transport_cost.heavy_convoys_sea } set_temp_variable = { migration_transport_target = FROM } migration_transport_state_cost_is_affordable = yes
-		NOT = { set_temp_variable = { migration_transport_target = FROM } set_temp_variable = { migration_transport_receipt = token:migration_evacuate_workers } migration_transport_state_receipt_is_paid = yes }
-		humanitarian_cost_train_heavy_is_affordable = yes
+	OR = {
+		AND = {
+			check_variable = { humanitarian_action_context_proven = constant:humanitarian_runtime.one }
+			migration_evacuate_workers_cost_is_affordable_in_context = yes
+		}
+		AND = {
+			NOT = { check_variable = { humanitarian_action_context_proven = constant:humanitarian_runtime.one } }
+			set_temp_variable = { humanitarian_action_actor = ROOT }
+			set_temp_variable = { humanitarian_action_target = FROM }
+			migration_evacuate_workers_cost_is_affordable_in_context = yes
+		}
 	}
 }
 
-migration_negotiate_corridor_cost_is_affordable = {
+migration_evacuate_workers_cost_is_affordable_in_context = {
 	hidden_trigger = {
-		set_temp_variable = { migration_transport_fuel_land = constant:migration_transport_cost.heavy_fuel_land } set_temp_variable = { migration_transport_fuel_sea = constant:migration_transport_cost.heavy_fuel_sea } set_temp_variable = { migration_transport_convoys_sea = constant:migration_transport_cost.heavy_convoys_sea } set_temp_variable = { migration_transport_target = FROM } migration_transport_state_cost_is_affordable = yes
-		NOT = { set_temp_variable = { migration_transport_target = FROM } set_temp_variable = { migration_transport_receipt = token:migration_negotiate_corridor } migration_transport_state_receipt_is_paid = yes }
-		humanitarian_cost_infantry_light_is_affordable = yes
+			set_temp_variable = { migration_transport_fuel_land = constant:migration_transport_cost.heavy_fuel_land } set_temp_variable = { migration_transport_fuel_sea = constant:migration_transport_cost.heavy_fuel_sea } set_temp_variable = { migration_transport_convoys_sea = constant:migration_transport_cost.heavy_convoys_sea } set_temp_variable = { migration_transport_target = var:humanitarian_action_target } migration_transport_state_cost_is_affordable = yes
+			NOT = { set_temp_variable = { migration_transport_target = var:humanitarian_action_target } set_temp_variable = { migration_transport_receipt = token:migration_evacuate_workers } migration_transport_state_receipt_is_paid = yes }
+			humanitarian_cost_train_heavy_is_affordable = yes
+		}
+}
+
+migration_negotiate_corridor_cost_is_affordable = {
+	OR = {
+		AND = {
+			check_variable = { humanitarian_action_context_proven = constant:humanitarian_runtime.one }
+			migration_negotiate_corridor_cost_is_affordable_in_context = yes
+		}
+		AND = {
+			NOT = { check_variable = { humanitarian_action_context_proven = constant:humanitarian_runtime.one } }
+			set_temp_variable = { humanitarian_action_actor = ROOT }
+			set_temp_variable = { humanitarian_action_target = FROM }
+			migration_negotiate_corridor_cost_is_affordable_in_context = yes
+		}
 	}
+}
+
+migration_negotiate_corridor_cost_is_affordable_in_context = {
+	hidden_trigger = {
+			set_temp_variable = { migration_transport_fuel_land = constant:migration_transport_cost.heavy_fuel_land } set_temp_variable = { migration_transport_fuel_sea = constant:migration_transport_cost.heavy_fuel_sea } set_temp_variable = { migration_transport_convoys_sea = constant:migration_transport_cost.heavy_convoys_sea } set_temp_variable = { migration_transport_target = var:humanitarian_action_target } migration_transport_state_cost_is_affordable = yes
+			NOT = { set_temp_variable = { migration_transport_target = var:humanitarian_action_target } set_temp_variable = { migration_transport_receipt = token:migration_negotiate_corridor } migration_transport_state_receipt_is_paid = yes }
+			humanitarian_cost_infantry_light_is_affordable = yes
+		}
 }
 
 migration_controlled_medical_reception_cost_is_affordable = {
@@ -67,137 +129,392 @@ migration_controlled_medical_reception_cost_is_affordable = {
 }
 
 migration_distribute_arrivals_cost_is_affordable = {
-	hidden_trigger = {
-		set_temp_variable = { migration_transport_fuel_land = constant:migration_transport_cost.light_fuel_land } set_temp_variable = { migration_transport_fuel_sea = constant:migration_transport_cost.light_fuel_sea } set_temp_variable = { migration_transport_convoys_sea = constant:migration_transport_cost.light_convoys_sea } set_temp_variable = { migration_transport_target = FROM } migration_transport_state_cost_is_affordable = yes
-		NOT = { set_temp_variable = { migration_transport_target = FROM } set_temp_variable = { migration_transport_receipt = token:migration_distribute_arrivals } migration_transport_state_receipt_is_paid = yes }
-		humanitarian_cost_train_light_is_affordable = yes
+	OR = {
+		AND = {
+			check_variable = { humanitarian_action_context_proven = constant:humanitarian_runtime.one }
+			migration_distribute_arrivals_cost_is_affordable_in_context = yes
+		}
+		AND = {
+			NOT = { check_variable = { humanitarian_action_context_proven = constant:humanitarian_runtime.one } }
+			set_temp_variable = { humanitarian_action_actor = ROOT }
+			set_temp_variable = { humanitarian_action_target = FROM }
+			migration_distribute_arrivals_cost_is_affordable_in_context = yes
+		}
 	}
+}
+
+migration_distribute_arrivals_cost_is_affordable_in_context = {
+	hidden_trigger = {
+			set_temp_variable = { migration_transport_fuel_land = constant:migration_transport_cost.light_fuel_land } set_temp_variable = { migration_transport_fuel_sea = constant:migration_transport_cost.light_fuel_sea } set_temp_variable = { migration_transport_convoys_sea = constant:migration_transport_cost.light_convoys_sea } set_temp_variable = { migration_transport_target = var:humanitarian_action_target } migration_transport_state_cost_is_affordable = yes
+			NOT = { set_temp_variable = { migration_transport_target = var:humanitarian_action_target } set_temp_variable = { migration_transport_receipt = token:migration_distribute_arrivals } migration_transport_state_receipt_is_paid = yes }
+			humanitarian_cost_train_light_is_affordable = yes
+		}
 }
 
 migration_transit_only_cost_is_affordable = {
-	hidden_trigger = {
-		set_temp_variable = { migration_transport_fuel_land = constant:migration_transport_cost.light_fuel_land } set_temp_variable = { migration_transport_fuel_sea = constant:migration_transport_cost.light_fuel_sea } set_temp_variable = { migration_transport_convoys_sea = constant:migration_transport_cost.light_convoys_sea } set_temp_variable = { migration_transport_target = FROM } migration_transport_state_cost_is_affordable = yes
-		NOT = { set_temp_variable = { migration_transport_target = FROM } set_temp_variable = { migration_transport_receipt = token:migration_transit_only } migration_transport_state_receipt_is_paid = yes }
+	OR = {
+		AND = {
+			check_variable = { humanitarian_action_context_proven = constant:humanitarian_runtime.one }
+			migration_transit_only_cost_is_affordable_in_context = yes
+		}
+		AND = {
+			NOT = { check_variable = { humanitarian_action_context_proven = constant:humanitarian_runtime.one } }
+			set_temp_variable = { humanitarian_action_actor = ROOT }
+			set_temp_variable = { humanitarian_action_target = FROM }
+			migration_transit_only_cost_is_affordable_in_context = yes
+		}
 	}
+}
+
+migration_transit_only_cost_is_affordable_in_context = {
+	hidden_trigger = {
+			set_temp_variable = { migration_transport_fuel_land = constant:migration_transport_cost.light_fuel_land } set_temp_variable = { migration_transport_fuel_sea = constant:migration_transport_cost.light_fuel_sea } set_temp_variable = { migration_transport_convoys_sea = constant:migration_transport_cost.light_convoys_sea } set_temp_variable = { migration_transport_target = var:humanitarian_action_target } migration_transport_state_cost_is_affordable = yes
+			NOT = { set_temp_variable = { migration_transport_target = var:humanitarian_action_target } set_temp_variable = { migration_transport_receipt = token:migration_transit_only } migration_transport_state_receipt_is_paid = yes }
+		}
 }
 
 migration_enforce_closure_cost_is_affordable = {
-	hidden_trigger = {
-		set_temp_variable = { migration_transport_fuel_land = constant:migration_transport_cost.standard_fuel_land } set_temp_variable = { migration_transport_fuel_sea = constant:migration_transport_cost.standard_fuel_sea } set_temp_variable = { migration_transport_convoys_sea = constant:migration_transport_cost.standard_convoys_sea } set_temp_variable = { migration_transport_target = FROM } migration_transport_state_cost_is_affordable = yes
-		NOT = { set_temp_variable = { migration_transport_target = FROM } set_temp_variable = { migration_transport_receipt = token:migration_enforce_closure } migration_transport_state_receipt_is_paid = yes }
-		humanitarian_cost_infantry_heavy_is_affordable = yes
+	OR = {
+		AND = {
+			check_variable = { humanitarian_action_context_proven = constant:humanitarian_runtime.one }
+			migration_enforce_closure_cost_is_affordable_in_context = yes
+		}
+		AND = {
+			NOT = { check_variable = { humanitarian_action_context_proven = constant:humanitarian_runtime.one } }
+			set_temp_variable = { humanitarian_action_actor = ROOT }
+			set_temp_variable = { humanitarian_action_target = FROM }
+			migration_enforce_closure_cost_is_affordable_in_context = yes
+		}
 	}
+}
+
+migration_enforce_closure_cost_is_affordable_in_context = {
+	hidden_trigger = {
+			set_temp_variable = { migration_transport_fuel_land = constant:migration_transport_cost.standard_fuel_land } set_temp_variable = { migration_transport_fuel_sea = constant:migration_transport_cost.standard_fuel_sea } set_temp_variable = { migration_transport_convoys_sea = constant:migration_transport_cost.standard_convoys_sea } set_temp_variable = { migration_transport_target = var:humanitarian_action_target } migration_transport_state_cost_is_affordable = yes
+			NOT = { set_temp_variable = { migration_transport_target = var:humanitarian_action_target } set_temp_variable = { migration_transport_receipt = token:migration_enforce_closure } migration_transport_state_receipt_is_paid = yes }
+			humanitarian_cost_infantry_heavy_is_affordable = yes
+		}
 }
 
 migration_local_integration_cost_is_affordable = {
-	hidden_trigger = {
-		set_temp_variable = { migration_transport_fuel_land = constant:migration_transport_cost.standard_fuel_land } set_temp_variable = { migration_transport_fuel_sea = constant:migration_transport_cost.standard_fuel_sea } set_temp_variable = { migration_transport_convoys_sea = constant:migration_transport_cost.standard_convoys_sea } set_temp_variable = { migration_transport_target = FROM } migration_transport_state_cost_is_affordable = yes
-		NOT = { set_temp_variable = { migration_transport_target = FROM } set_temp_variable = { migration_transport_receipt = token:migration_local_integration } migration_transport_state_receipt_is_paid = yes }
-		humanitarian_cost_support_heavy_is_affordable = yes
+	OR = {
+		AND = {
+			check_variable = { humanitarian_action_context_proven = constant:humanitarian_runtime.one }
+			migration_local_integration_cost_is_affordable_in_context = yes
+		}
+		AND = {
+			NOT = { check_variable = { humanitarian_action_context_proven = constant:humanitarian_runtime.one } }
+			set_temp_variable = { humanitarian_action_actor = ROOT }
+			set_temp_variable = { humanitarian_action_target = FROM }
+			migration_local_integration_cost_is_affordable_in_context = yes
+		}
 	}
+}
+
+migration_local_integration_cost_is_affordable_in_context = {
+	hidden_trigger = {
+			set_temp_variable = { migration_transport_fuel_land = constant:migration_transport_cost.standard_fuel_land } set_temp_variable = { migration_transport_fuel_sea = constant:migration_transport_cost.standard_fuel_sea } set_temp_variable = { migration_transport_convoys_sea = constant:migration_transport_cost.standard_convoys_sea } set_temp_variable = { migration_transport_target = var:humanitarian_action_target } migration_transport_state_cost_is_affordable = yes
+			NOT = { set_temp_variable = { migration_transport_target = var:humanitarian_action_target } set_temp_variable = { migration_transport_receipt = token:migration_local_integration } migration_transport_state_receipt_is_paid = yes }
+			humanitarian_cost_support_heavy_is_affordable = yes
+		}
 }
 
 migration_third_country_resettlement_cost_is_affordable = {
-	hidden_trigger = {
-		set_temp_variable = { migration_transport_fuel_land = constant:migration_transport_cost.heavy_fuel_land } set_temp_variable = { migration_transport_fuel_sea = constant:migration_transport_cost.heavy_fuel_sea } set_temp_variable = { migration_transport_convoys_sea = constant:migration_transport_cost.heavy_convoys_sea } set_temp_variable = { migration_transport_target = FROM } migration_transport_state_cost_is_affordable = yes
-		NOT = { set_temp_variable = { migration_transport_target = FROM } set_temp_variable = { migration_transport_receipt = token:migration_third_country_resettlement } migration_transport_state_receipt_is_paid = yes }
-		humanitarian_cost_train_light_is_affordable = yes
+	OR = {
+		AND = {
+			check_variable = { humanitarian_action_context_proven = constant:humanitarian_runtime.one }
+			migration_third_country_resettlement_cost_is_affordable_in_context = yes
+		}
+		AND = {
+			NOT = { check_variable = { humanitarian_action_context_proven = constant:humanitarian_runtime.one } }
+			set_temp_variable = { humanitarian_action_actor = ROOT }
+			set_temp_variable = { humanitarian_action_target = FROM }
+			migration_third_country_resettlement_cost_is_affordable_in_context = yes
+		}
 	}
+}
+
+migration_third_country_resettlement_cost_is_affordable_in_context = {
+	hidden_trigger = {
+			set_temp_variable = { migration_transport_fuel_land = constant:migration_transport_cost.heavy_fuel_land } set_temp_variable = { migration_transport_fuel_sea = constant:migration_transport_cost.heavy_fuel_sea } set_temp_variable = { migration_transport_convoys_sea = constant:migration_transport_cost.heavy_convoys_sea } set_temp_variable = { migration_transport_target = var:humanitarian_action_target } migration_transport_state_cost_is_affordable = yes
+			NOT = { set_temp_variable = { migration_transport_target = var:humanitarian_action_target } set_temp_variable = { migration_transport_receipt = token:migration_third_country_resettlement } migration_transport_state_receipt_is_paid = yes }
+			humanitarian_cost_train_light_is_affordable = yes
+		}
 }
 
 migration_voluntary_return_cost_is_affordable = {
-	hidden_trigger = {
-		set_temp_variable = { migration_transport_fuel_land = constant:migration_transport_cost.standard_fuel_land } set_temp_variable = { migration_transport_fuel_sea = constant:migration_transport_cost.standard_fuel_sea } set_temp_variable = { migration_transport_convoys_sea = constant:migration_transport_cost.standard_convoys_sea } set_temp_variable = { migration_transport_target = FROM } migration_transport_state_cost_is_affordable = yes
-		NOT = { set_temp_variable = { migration_transport_target = FROM } set_temp_variable = { migration_transport_receipt = token:migration_voluntary_return } migration_transport_state_receipt_is_paid = yes }
-		humanitarian_cost_train_light_is_affordable = yes
+	OR = {
+		AND = {
+			check_variable = { humanitarian_action_context_proven = constant:humanitarian_runtime.one }
+			migration_voluntary_return_cost_is_affordable_in_context = yes
+		}
+		AND = {
+			NOT = { check_variable = { humanitarian_action_context_proven = constant:humanitarian_runtime.one } }
+			set_temp_variable = { humanitarian_action_actor = ROOT }
+			set_temp_variable = { humanitarian_action_target = FROM }
+			migration_voluntary_return_cost_is_affordable_in_context = yes
+		}
 	}
+}
+
+migration_voluntary_return_cost_is_affordable_in_context = {
+	hidden_trigger = {
+			set_temp_variable = { migration_transport_fuel_land = constant:migration_transport_cost.standard_fuel_land } set_temp_variable = { migration_transport_fuel_sea = constant:migration_transport_cost.standard_fuel_sea } set_temp_variable = { migration_transport_convoys_sea = constant:migration_transport_cost.standard_convoys_sea } set_temp_variable = { migration_transport_target = var:humanitarian_action_target } migration_transport_state_cost_is_affordable = yes
+			NOT = { set_temp_variable = { migration_transport_target = var:humanitarian_action_target } set_temp_variable = { migration_transport_receipt = token:migration_voluntary_return } migration_transport_state_receipt_is_paid = yes }
+			humanitarian_cost_train_light_is_affordable = yes
+		}
 }
 
 migration_forced_repatriation_cost_is_affordable = {
-	hidden_trigger = {
-		set_temp_variable = { migration_transport_fuel_land = constant:migration_transport_cost.heavy_fuel_land } set_temp_variable = { migration_transport_fuel_sea = constant:migration_transport_cost.heavy_fuel_sea } set_temp_variable = { migration_transport_convoys_sea = constant:migration_transport_cost.heavy_convoys_sea } set_temp_variable = { migration_transport_target = FROM } migration_transport_state_cost_is_affordable = yes
-		NOT = { set_temp_variable = { migration_transport_target = FROM } set_temp_variable = { migration_transport_receipt = token:migration_forced_repatriation } migration_transport_state_receipt_is_paid = yes }
-		humanitarian_cost_train_heavy_is_affordable = yes
+	OR = {
+		AND = {
+			check_variable = { humanitarian_action_context_proven = constant:humanitarian_runtime.one }
+			migration_forced_repatriation_cost_is_affordable_in_context = yes
+		}
+		AND = {
+			NOT = { check_variable = { humanitarian_action_context_proven = constant:humanitarian_runtime.one } }
+			set_temp_variable = { humanitarian_action_actor = ROOT }
+			set_temp_variable = { humanitarian_action_target = FROM }
+			migration_forced_repatriation_cost_is_affordable_in_context = yes
+		}
 	}
+}
+
+migration_forced_repatriation_cost_is_affordable_in_context = {
+	hidden_trigger = {
+			set_temp_variable = { migration_transport_fuel_land = constant:migration_transport_cost.heavy_fuel_land } set_temp_variable = { migration_transport_fuel_sea = constant:migration_transport_cost.heavy_fuel_sea } set_temp_variable = { migration_transport_convoys_sea = constant:migration_transport_cost.heavy_convoys_sea } set_temp_variable = { migration_transport_target = var:humanitarian_action_target } migration_transport_state_cost_is_affordable = yes
+			NOT = { set_temp_variable = { migration_transport_target = var:humanitarian_action_target } set_temp_variable = { migration_transport_receipt = token:migration_forced_repatriation } migration_transport_state_receipt_is_paid = yes }
+			humanitarian_cost_train_heavy_is_affordable = yes
+		}
 }
 
 famine_release_reserves_cost_is_affordable = {
-	hidden_trigger = {
-		set_temp_variable = { migration_transport_fuel_land = constant:migration_transport_cost.standard_fuel_land } set_temp_variable = { migration_transport_fuel_sea = constant:migration_transport_cost.standard_fuel_sea } set_temp_variable = { migration_transport_convoys_sea = constant:migration_transport_cost.standard_convoys_sea } set_temp_variable = { migration_transport_target = FROM } migration_transport_state_cost_is_affordable = yes
-		NOT = { set_temp_variable = { migration_transport_target = FROM } set_temp_variable = { migration_transport_receipt = token:famine_release_reserves } migration_transport_state_receipt_is_paid = yes }
-		humanitarian_cost_support_light_is_affordable = yes
+	OR = {
+		AND = {
+			check_variable = { humanitarian_action_context_proven = constant:humanitarian_runtime.one }
+			famine_release_reserves_cost_is_affordable_in_context = yes
+		}
+		AND = {
+			NOT = { check_variable = { humanitarian_action_context_proven = constant:humanitarian_runtime.one } }
+			set_temp_variable = { humanitarian_action_actor = ROOT }
+			set_temp_variable = { humanitarian_action_target = FROM }
+			famine_release_reserves_cost_is_affordable_in_context = yes
+		}
 	}
+}
+
+famine_release_reserves_cost_is_affordable_in_context = {
+	hidden_trigger = {
+			set_temp_variable = { migration_transport_fuel_land = constant:migration_transport_cost.standard_fuel_land } set_temp_variable = { migration_transport_fuel_sea = constant:migration_transport_cost.standard_fuel_sea } set_temp_variable = { migration_transport_convoys_sea = constant:migration_transport_cost.standard_convoys_sea } set_temp_variable = { migration_transport_target = var:humanitarian_action_target } migration_transport_state_cost_is_affordable = yes
+			NOT = { set_temp_variable = { migration_transport_target = var:humanitarian_action_target } set_temp_variable = { migration_transport_receipt = token:famine_release_reserves } migration_transport_state_receipt_is_paid = yes }
+			humanitarian_cost_support_light_is_affordable = yes
+		}
 }
 
 famine_emergency_imports_cost_is_affordable = {
-	hidden_trigger = {
-		set_temp_variable = { migration_transport_fuel_land = constant:migration_transport_cost.standard_fuel_land } set_temp_variable = { migration_transport_fuel_sea = constant:migration_transport_cost.standard_fuel_sea } set_temp_variable = { migration_transport_convoys_sea = constant:migration_transport_cost.standard_convoys_sea } set_temp_variable = { migration_transport_target = FROM } migration_transport_state_cost_is_affordable = yes
-		NOT = { set_temp_variable = { migration_transport_target = FROM } set_temp_variable = { migration_transport_receipt = token:famine_emergency_imports } migration_transport_state_receipt_is_paid = yes }
+	OR = {
+		AND = {
+			check_variable = { humanitarian_action_context_proven = constant:humanitarian_runtime.one }
+			famine_emergency_imports_cost_is_affordable_in_context = yes
+		}
+		AND = {
+			NOT = { check_variable = { humanitarian_action_context_proven = constant:humanitarian_runtime.one } }
+			set_temp_variable = { humanitarian_action_actor = ROOT }
+			set_temp_variable = { humanitarian_action_target = FROM }
+			famine_emergency_imports_cost_is_affordable_in_context = yes
+		}
 	}
+}
+
+famine_emergency_imports_cost_is_affordable_in_context = {
+	hidden_trigger = {
+			set_temp_variable = { migration_transport_fuel_land = constant:migration_transport_cost.standard_fuel_land } set_temp_variable = { migration_transport_fuel_sea = constant:migration_transport_cost.standard_fuel_sea } set_temp_variable = { migration_transport_convoys_sea = constant:migration_transport_cost.standard_convoys_sea } set_temp_variable = { migration_transport_target = var:humanitarian_action_target } migration_transport_state_cost_is_affordable = yes
+			NOT = { set_temp_variable = { migration_transport_target = var:humanitarian_action_target } set_temp_variable = { migration_transport_receipt = token:famine_emergency_imports } migration_transport_state_receipt_is_paid = yes }
+		}
 }
 
 famine_repair_relief_route_cost_is_affordable = {
-	hidden_trigger = {
-		set_temp_variable = { migration_transport_fuel_land = constant:migration_transport_cost.light_fuel_land } set_temp_variable = { migration_transport_fuel_sea = constant:migration_transport_cost.light_fuel_sea } set_temp_variable = { migration_transport_convoys_sea = constant:migration_transport_cost.light_convoys_sea } set_temp_variable = { migration_transport_target = FROM } migration_transport_state_cost_is_affordable = yes
-		NOT = { set_temp_variable = { migration_transport_target = FROM } set_temp_variable = { migration_transport_receipt = token:famine_repair_relief_route } migration_transport_state_receipt_is_paid = yes }
-		humanitarian_cost_train_light_is_affordable = yes
+	OR = {
+		AND = {
+			check_variable = { humanitarian_action_context_proven = constant:humanitarian_runtime.one }
+			famine_repair_relief_route_cost_is_affordable_in_context = yes
+		}
+		AND = {
+			NOT = { check_variable = { humanitarian_action_context_proven = constant:humanitarian_runtime.one } }
+			set_temp_variable = { humanitarian_action_actor = ROOT }
+			set_temp_variable = { humanitarian_action_target = FROM }
+			famine_repair_relief_route_cost_is_affordable_in_context = yes
+		}
 	}
+}
+
+famine_repair_relief_route_cost_is_affordable_in_context = {
+	hidden_trigger = {
+			set_temp_variable = { migration_transport_fuel_land = constant:migration_transport_cost.light_fuel_land } set_temp_variable = { migration_transport_fuel_sea = constant:migration_transport_cost.light_fuel_sea } set_temp_variable = { migration_transport_convoys_sea = constant:migration_transport_cost.light_convoys_sea } set_temp_variable = { migration_transport_target = var:humanitarian_action_target } migration_transport_state_cost_is_affordable = yes
+			NOT = { set_temp_variable = { migration_transport_target = var:humanitarian_action_target } set_temp_variable = { migration_transport_receipt = token:famine_repair_relief_route } migration_transport_state_receipt_is_paid = yes }
+			humanitarian_cost_train_light_is_affordable = yes
+		}
 }
 
 famine_escorted_relief_convoy_cost_is_affordable = {
-	hidden_trigger = {
-		set_temp_variable = { migration_transport_fuel_land = constant:migration_transport_cost.standard_fuel_land } set_temp_variable = { migration_transport_fuel_sea = constant:migration_transport_cost.standard_fuel_sea } set_temp_variable = { migration_transport_convoys_sea = constant:migration_transport_cost.standard_convoys_sea } set_temp_variable = { migration_transport_target = FROM } migration_transport_state_cost_is_affordable = yes
-		NOT = { set_temp_variable = { migration_transport_target = FROM } set_temp_variable = { migration_transport_receipt = token:famine_escorted_relief_convoy } migration_transport_state_receipt_is_paid = yes }
-		humanitarian_cost_support_light_is_affordable = yes
+	OR = {
+		AND = {
+			check_variable = { humanitarian_action_context_proven = constant:humanitarian_runtime.one }
+			famine_escorted_relief_convoy_cost_is_affordable_in_context = yes
+		}
+		AND = {
+			NOT = { check_variable = { humanitarian_action_context_proven = constant:humanitarian_runtime.one } }
+			set_temp_variable = { humanitarian_action_actor = ROOT }
+			set_temp_variable = { humanitarian_action_target = FROM }
+			famine_escorted_relief_convoy_cost_is_affordable_in_context = yes
+		}
 	}
+}
+
+famine_escorted_relief_convoy_cost_is_affordable_in_context = {
+	hidden_trigger = {
+			set_temp_variable = { migration_transport_fuel_land = constant:migration_transport_cost.standard_fuel_land } set_temp_variable = { migration_transport_fuel_sea = constant:migration_transport_cost.standard_fuel_sea } set_temp_variable = { migration_transport_convoys_sea = constant:migration_transport_cost.standard_convoys_sea } set_temp_variable = { migration_transport_target = var:humanitarian_action_target } migration_transport_state_cost_is_affordable = yes
+			NOT = { set_temp_variable = { migration_transport_target = var:humanitarian_action_target } set_temp_variable = { migration_transport_receipt = token:famine_escorted_relief_convoy } migration_transport_state_receipt_is_paid = yes }
+			humanitarian_cost_support_light_is_affordable = yes
+		}
 }
 
 famine_emergency_airlift_cost_is_affordable = {
-	hidden_trigger = {
-		set_temp_variable = { migration_transport_fuel_land = constant:migration_transport_cost.standard_fuel_land } set_temp_variable = { migration_transport_fuel_sea = constant:migration_transport_cost.standard_fuel_sea } set_temp_variable = { migration_transport_convoys_sea = constant:migration_transport_cost.standard_convoys_sea } set_temp_variable = { migration_transport_target = FROM } migration_transport_air_cost_is_affordable = yes
-		NOT = { set_temp_variable = { migration_transport_target = FROM } set_temp_variable = { migration_transport_receipt = token:famine_emergency_airlift } migration_transport_state_receipt_is_paid = yes }
-		humanitarian_cost_transport_planes_is_affordable = yes
-		humanitarian_cost_air_xp_is_affordable = yes
+	OR = {
+		AND = {
+			check_variable = { humanitarian_action_context_proven = constant:humanitarian_runtime.one }
+			famine_emergency_airlift_cost_is_affordable_in_context = yes
+		}
+		AND = {
+			NOT = { check_variable = { humanitarian_action_context_proven = constant:humanitarian_runtime.one } }
+			set_temp_variable = { humanitarian_action_actor = ROOT }
+			set_temp_variable = { humanitarian_action_target = FROM }
+			famine_emergency_airlift_cost_is_affordable_in_context = yes
+		}
 	}
+}
+
+famine_emergency_airlift_cost_is_affordable_in_context = {
+	hidden_trigger = {
+			set_temp_variable = { migration_transport_fuel_land = constant:migration_transport_cost.standard_fuel_land } set_temp_variable = { migration_transport_fuel_sea = constant:migration_transport_cost.standard_fuel_sea } set_temp_variable = { migration_transport_convoys_sea = constant:migration_transport_cost.standard_convoys_sea } set_temp_variable = { migration_transport_target = var:humanitarian_action_target } migration_transport_air_cost_is_affordable = yes
+			NOT = { set_temp_variable = { migration_transport_target = var:humanitarian_action_target } set_temp_variable = { migration_transport_receipt = token:famine_emergency_airlift } migration_transport_state_receipt_is_paid = yes }
+			humanitarian_cost_transport_planes_is_affordable = yes
+			humanitarian_cost_air_xp_is_affordable = yes
+		}
 }
 
 famine_invite_relief_cost_is_affordable = {
-	hidden_trigger = {
-		set_temp_variable = { migration_transport_fuel_land = constant:migration_transport_cost.standard_fuel_land } set_temp_variable = { migration_transport_fuel_sea = constant:migration_transport_cost.standard_fuel_sea } set_temp_variable = { migration_transport_convoys_sea = constant:migration_transport_cost.standard_convoys_sea } set_temp_variable = { migration_transport_target = FROM } migration_transport_state_cost_is_affordable = yes
-		NOT = { set_temp_variable = { migration_transport_target = FROM } set_temp_variable = { migration_transport_receipt = token:famine_invite_relief } migration_transport_state_receipt_is_paid = yes }
+	OR = {
+		AND = {
+			check_variable = { humanitarian_action_context_proven = constant:humanitarian_runtime.one }
+			famine_invite_relief_cost_is_affordable_in_context = yes
+		}
+		AND = {
+			NOT = { check_variable = { humanitarian_action_context_proven = constant:humanitarian_runtime.one } }
+			set_temp_variable = { humanitarian_action_actor = ROOT }
+			set_temp_variable = { humanitarian_action_target = FROM }
+			famine_invite_relief_cost_is_affordable_in_context = yes
+		}
 	}
+}
+
+famine_invite_relief_cost_is_affordable_in_context = {
+	hidden_trigger = {
+			set_temp_variable = { migration_transport_fuel_land = constant:migration_transport_cost.standard_fuel_land } set_temp_variable = { migration_transport_fuel_sea = constant:migration_transport_cost.standard_fuel_sea } set_temp_variable = { migration_transport_convoys_sea = constant:migration_transport_cost.standard_convoys_sea } set_temp_variable = { migration_transport_target = var:humanitarian_action_target } migration_transport_state_cost_is_affordable = yes
+			NOT = { set_temp_variable = { migration_transport_target = var:humanitarian_action_target } set_temp_variable = { migration_transport_receipt = token:famine_invite_relief } migration_transport_state_receipt_is_paid = yes }
+		}
 }
 
 famine_evacuation_cost_is_affordable = {
-	hidden_trigger = {
-		set_temp_variable = { migration_transport_fuel_land = constant:migration_transport_cost.heavy_fuel_land } set_temp_variable = { migration_transport_fuel_sea = constant:migration_transport_cost.heavy_fuel_sea } set_temp_variable = { migration_transport_convoys_sea = constant:migration_transport_cost.heavy_convoys_sea } set_temp_variable = { migration_transport_target = FROM } migration_transport_state_cost_is_affordable = yes
-		NOT = { set_temp_variable = { migration_transport_target = FROM } set_temp_variable = { migration_transport_receipt = token:famine_evacuation } migration_transport_state_receipt_is_paid = yes }
-		humanitarian_cost_train_heavy_is_affordable = yes
+	OR = {
+		AND = {
+			check_variable = { humanitarian_action_context_proven = constant:humanitarian_runtime.one }
+			famine_evacuation_cost_is_affordable_in_context = yes
+		}
+		AND = {
+			NOT = { check_variable = { humanitarian_action_context_proven = constant:humanitarian_runtime.one } }
+			set_temp_variable = { humanitarian_action_actor = ROOT }
+			set_temp_variable = { humanitarian_action_target = FROM }
+			famine_evacuation_cost_is_affordable_in_context = yes
+		}
 	}
+}
+
+famine_evacuation_cost_is_affordable_in_context = {
+	hidden_trigger = {
+			set_temp_variable = { migration_transport_fuel_land = constant:migration_transport_cost.heavy_fuel_land } set_temp_variable = { migration_transport_fuel_sea = constant:migration_transport_cost.heavy_fuel_sea } set_temp_variable = { migration_transport_convoys_sea = constant:migration_transport_cost.heavy_convoys_sea } set_temp_variable = { migration_transport_target = var:humanitarian_action_target } migration_transport_state_cost_is_affordable = yes
+			NOT = { set_temp_variable = { migration_transport_target = var:humanitarian_action_target } set_temp_variable = { migration_transport_receipt = token:famine_evacuation } migration_transport_state_receipt_is_paid = yes }
+			humanitarian_cost_train_heavy_is_affordable = yes
+		}
 }
 
 famine_requisition_safer_state_cost_is_affordable = {
-	hidden_trigger = {
-		set_temp_variable = { migration_transport_fuel_land = constant:migration_transport_cost.standard_fuel_land } set_temp_variable = { migration_transport_fuel_sea = constant:migration_transport_cost.standard_fuel_sea } set_temp_variable = { migration_transport_convoys_sea = constant:migration_transport_cost.standard_convoys_sea } set_temp_variable = { migration_transport_target = FROM } migration_transport_state_cost_is_affordable = yes
-		NOT = { set_temp_variable = { migration_transport_target = FROM } set_temp_variable = { migration_transport_receipt = token:famine_requisition_safer_state } migration_transport_state_receipt_is_paid = yes }
-		humanitarian_cost_train_light_is_affordable = yes
+	OR = {
+		AND = {
+			check_variable = { humanitarian_action_context_proven = constant:humanitarian_runtime.one }
+			famine_requisition_safer_state_cost_is_affordable_in_context = yes
+		}
+		AND = {
+			NOT = { check_variable = { humanitarian_action_context_proven = constant:humanitarian_runtime.one } }
+			set_temp_variable = { humanitarian_action_actor = ROOT }
+			set_temp_variable = { humanitarian_action_target = FROM }
+			famine_requisition_safer_state_cost_is_affordable_in_context = yes
+		}
 	}
+}
+
+famine_requisition_safer_state_cost_is_affordable_in_context = {
+	hidden_trigger = {
+			set_temp_variable = { migration_transport_fuel_land = constant:migration_transport_cost.standard_fuel_land } set_temp_variable = { migration_transport_fuel_sea = constant:migration_transport_cost.standard_fuel_sea } set_temp_variable = { migration_transport_convoys_sea = constant:migration_transport_cost.standard_convoys_sea } set_temp_variable = { migration_transport_target = var:humanitarian_action_target } migration_transport_state_cost_is_affordable = yes
+			NOT = { set_temp_variable = { migration_transport_target = var:humanitarian_action_target } set_temp_variable = { migration_transport_receipt = token:famine_requisition_safer_state } migration_transport_state_receipt_is_paid = yes }
+			humanitarian_cost_train_light_is_affordable = yes
+		}
 }
 
 famine_conceal_crisis_cost_is_affordable = {
-	hidden_trigger = {
-		set_temp_variable = { migration_transport_fuel_land = constant:migration_transport_cost.light_fuel_land } set_temp_variable = { migration_transport_fuel_sea = constant:migration_transport_cost.light_fuel_sea } set_temp_variable = { migration_transport_convoys_sea = constant:migration_transport_cost.light_convoys_sea } set_temp_variable = { migration_transport_target = FROM } migration_transport_state_cost_is_affordable = yes
-		NOT = { set_temp_variable = { migration_transport_target = FROM } set_temp_variable = { migration_transport_receipt = token:famine_conceal_crisis } migration_transport_state_receipt_is_paid = yes }
-		humanitarian_cost_infantry_light_is_affordable = yes
+	OR = {
+		AND = {
+			check_variable = { humanitarian_action_context_proven = constant:humanitarian_runtime.one }
+			famine_conceal_crisis_cost_is_affordable_in_context = yes
+		}
+		AND = {
+			NOT = { check_variable = { humanitarian_action_context_proven = constant:humanitarian_runtime.one } }
+			set_temp_variable = { humanitarian_action_actor = ROOT }
+			set_temp_variable = { humanitarian_action_target = FROM }
+			famine_conceal_crisis_cost_is_affordable_in_context = yes
+		}
 	}
 }
 
-famine_maintain_extraction_cost_is_affordable = {
+famine_conceal_crisis_cost_is_affordable_in_context = {
 	hidden_trigger = {
-		set_temp_variable = { migration_transport_fuel_land = constant:migration_transport_cost.light_fuel_land } set_temp_variable = { migration_transport_fuel_sea = constant:migration_transport_cost.light_fuel_sea } set_temp_variable = { migration_transport_convoys_sea = constant:migration_transport_cost.light_convoys_sea } set_temp_variable = { migration_transport_target = FROM } migration_transport_state_cost_is_affordable = yes
-		NOT = { set_temp_variable = { migration_transport_target = FROM } set_temp_variable = { migration_transport_receipt = token:famine_maintain_extraction } migration_transport_state_receipt_is_paid = yes }
-		humanitarian_cost_train_light_is_affordable = yes
+			set_temp_variable = { migration_transport_fuel_land = constant:migration_transport_cost.light_fuel_land } set_temp_variable = { migration_transport_fuel_sea = constant:migration_transport_cost.light_fuel_sea } set_temp_variable = { migration_transport_convoys_sea = constant:migration_transport_cost.light_convoys_sea } set_temp_variable = { migration_transport_target = var:humanitarian_action_target } migration_transport_state_cost_is_affordable = yes
+			NOT = { set_temp_variable = { migration_transport_target = var:humanitarian_action_target } set_temp_variable = { migration_transport_receipt = token:famine_conceal_crisis } migration_transport_state_receipt_is_paid = yes }
+			humanitarian_cost_infantry_light_is_affordable = yes
+		}
+}
+
+famine_maintain_extraction_cost_is_affordable = {
+	OR = {
+		AND = {
+			check_variable = { humanitarian_action_context_proven = constant:humanitarian_runtime.one }
+			famine_maintain_extraction_cost_is_affordable_in_context = yes
+		}
+		AND = {
+			NOT = { check_variable = { humanitarian_action_context_proven = constant:humanitarian_runtime.one } }
+			set_temp_variable = { humanitarian_action_actor = ROOT }
+			set_temp_variable = { humanitarian_action_target = FROM }
+			famine_maintain_extraction_cost_is_affordable_in_context = yes
+		}
 	}
+}
+
+famine_maintain_extraction_cost_is_affordable_in_context = {
+	hidden_trigger = {
+			set_temp_variable = { migration_transport_fuel_land = constant:migration_transport_cost.light_fuel_land } set_temp_variable = { migration_transport_fuel_sea = constant:migration_transport_cost.light_fuel_sea } set_temp_variable = { migration_transport_convoys_sea = constant:migration_transport_cost.light_convoys_sea } set_temp_variable = { migration_transport_target = var:humanitarian_action_target } migration_transport_state_cost_is_affordable = yes
+			NOT = { set_temp_variable = { migration_transport_target = var:humanitarian_action_target } set_temp_variable = { migration_transport_receipt = token:famine_maintain_extraction } migration_transport_state_receipt_is_paid = yes }
+			humanitarian_cost_train_light_is_affordable = yes
+		}
 }
 
 

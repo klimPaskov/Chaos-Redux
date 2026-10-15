@@ -624,32 +624,28 @@ class FamineTakeoverRegressions(unittest.TestCase):
         self.assertNotIn("famine_food_reserve_release_request_proven", rejected.values)
 
     def test_decision_refunds_zero_consumption_only_for_its_receipt(self):
-        decision = read_one(r"common\decisions\famine_decisions.txt", "famine_release_reserves")
-        remove_effect = next(node for node in decision.body if node.key == "remove_effect")
-        receipt_branch = remove_effect.value
-        payment = next(node for node in decision.body if node.key == "complete_effect")
-        activation = next(node for node in payment.value if node.key == "if")
-        # Run the real transport payment, result guard, equipment debit and
-        # state work-receipt publication after the decision's start preflight.
-        paid_activation = [node for node in activation.value if node.key != "limit"]
+        # The native decision delegates to the shared production operation.
+        # Reuse its model for real meta receipts, target binding and due work.
+        from test_humanitarian_gui_actions import Runtime, F as bridge_source
         for home_area in (True, False):
             with self.subTest(home_area=home_area):
-                rt = FamineRuntime()
-                owner = country("BRA")
-                target = state(935, owner, population_k=100)
+                rt = Runtime()
+                owner = bridge_source.country("BRA")
+                target = bridge_source.state(935, owner, population_k=100)
                 target.values.update(
                     famine_food_reserve_amount=Decimal(1000), famine_food_reserve_relief=Decimal(35),
                     famine_food_reserve_daily_need=Decimal(100), famine_food_reserve_initialized=Decimal(1),
                     infrastructure_level=5, is_in_home_area=home_area,
                 )
-                target.flags.add("famine_food_reserve_initialized")
+                target.flags.update({"famine_food_reserve_initialized", "famine_food_security_active", "famine_food_stage_famine"})
+                owner.values.update(famine_panel_selected_state=target, owned_states=[target])
                 mode = "land" if home_area else "sea"
                 fuel = rt.constants[f"constant:migration_transport_cost.standard_fuel_{mode}"]
                 convoys = Decimal(0) if home_area else rt.constants["constant:migration_transport_cost.standard_convoys_sea"]
                 support = rt.constants["constant:humanitarian_legacy_cost.support_light"]
                 owner.resources.update(political_power=Decimal(0), support_equipment=support,
                                        fuel=fuel, convoy=convoys, convoy_1=convoys)
-                rt.run_nodes(paid_activation, owner, root=owner, from_scope=target)
+                rt.run_effect("famine_gui_start_action", owner, caller_temps={"famine_gui_action": Decimal(1)})
                 self.assertEqual(owner.resources["fuel"], Decimal(0))
                 self.assertEqual(owner.resources["convoy_1"], Decimal(0))
                 self.assertEqual(owner.resources["support_equipment"], Decimal(0))
@@ -658,7 +654,8 @@ class FamineTakeoverRegressions(unittest.TestCase):
                 self.assertIn("famine_release_reserves_cost_paid", target.flags)
                 # Refund must use the saved quote even if geography changes.
                 target.values["is_in_home_area"] = not home_area
-                rt.run_nodes(receipt_branch, owner, root=owner, from_scope=target)
+                rt.advance_days(100)
+                rt.run_effect("famine_action_process_pending", owner)
                 self.assertEqual(owner.resources["political_power"], Decimal(0))
                 self.assertEqual(owner.resources["support_equipment"], support)
                 self.assertEqual(owner.resources["fuel"], fuel)
@@ -668,7 +665,7 @@ class FamineTakeoverRegressions(unittest.TestCase):
                 self.assertNotIn("famine_release_reserves_fuel_paid_935", owner.values)
                 self.assertNotIn("famine_release_reserves_convoys_paid_935", owner.values)
                 refunded = dict(owner.resources)
-                rt.run_nodes(receipt_branch, owner, root=owner, from_scope=target)
+                rt.run_effect("famine_action_process_pending", owner)
                 self.assertEqual(owner.resources, refunded)
 
     def test_relief_delivery_copies_transfer_outputs_across_scopes(self):

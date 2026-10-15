@@ -7,6 +7,7 @@ description: Use when creating, editing, auditing, or scripting Chaos Redux idea
 
 Guidance for applying lasting numeric effects in Hearts of Iron IV as used in Chaos Redux: choosing between an idea, a dynamic modifier, a static modifier, or a custom modifier definition, writing each with verified syntax, and avoiding the silent failures.
 Use `chaos-redux-map-states` for state-scoped effects that are not modifiers (ownership, buildings, categories), `chaos-redux-ai-strategies` for `ai_will_do` weights inside ideas, `chaos-redux-mtth` for MTTH variables that feed dynamic modifiers, and `chaos-redux-decisions-missions` for decisions that add or swap ideas.
+Before authoring reusable scripted effects or triggers, read and follow the [helper argument contract](../chaos-redux-events/references/scripted-systems-and-country-integration.md#duration-fields-and-constants) and [caller-owned temporary-output contract](../chaos-redux-events/references/scripted-systems-and-country-integration.md#helper-output-lifetime), including supported variable/token inputs, meta substitutions, and output initialization at each call boundary.
 
 ## Contents
 

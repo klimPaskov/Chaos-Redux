@@ -1,0 +1,36 @@
+# National policy native law prices.
+# Each warfare slot receives exactly one enabled total contribution.
+# Both sale variants are stored together so the live doctrine predicate can
+# switch them at the engine's daily refresh without a country scan.
+
+national_policy_warfare_cost = {
+	enable = {
+		has_doctrine = chaos_warfare
+		NOT = { has_global_flag = black_friday_active }
+	}
+	chemical_use_policy_cost_factor = national_policy_warfare_cost_factor
+	biological_use_policy_cost_factor = national_policy_warfare_cost_factor
+	nuclear_use_policy_cost_factor = national_policy_warfare_cost_factor
+}
+
+national_policy_warfare_sale_cost = {
+	enable = {
+		has_global_flag = black_friday_active
+		has_country_flag = black_friday_native_sale_stored
+		NOT = { has_doctrine = chaos_warfare }
+	}
+	chemical_use_policy_cost_factor = national_policy_sale_chemical_use_policy_factor
+	biological_use_policy_cost_factor = national_policy_sale_biological_use_policy_factor
+	nuclear_use_policy_cost_factor = national_policy_sale_nuclear_use_policy_factor
+}
+
+national_policy_warfare_doctrine_sale_cost = {
+	enable = {
+		has_global_flag = black_friday_active
+		has_country_flag = black_friday_native_sale_stored
+		has_doctrine = chaos_warfare
+	}
+	chemical_use_policy_cost_factor = national_policy_sale_doctrine_chemical_use_policy_factor
+	biological_use_policy_cost_factor = national_policy_sale_doctrine_biological_use_policy_factor
+	nuclear_use_policy_cost_factor = national_policy_sale_doctrine_nuclear_use_policy_factor
+}

@@ -59,11 +59,15 @@ cbrn_chaos_warfare_adopt = {
 	clr_country_flag = cbrn_doctrine_offensive_authority_closed
 	clr_country_flag = concentration_occupation_law_unlocked
 
-	set_variable = { cbrn_peak_use_policy = cbrn_use_policy }
+	if = {
+		limit = { OR = { NOT = { has_variable = cbrn_peak_use_policy } check_variable = { var = cbrn_use_policy value = cbrn_peak_use_policy compare = greater_than } } }
+		set_variable = { cbrn_peak_use_policy = cbrn_use_policy }
+	}
 
 	unlock_subunit = cbrn_hq_operations_section
 	unlock_subunit = cbrn_gas_mask_decon_detachment
 	cbrn_reconcile_doctrine_capabilities = yes
+	force_update_dynamic_modifier = yes
 }
 
 cbrn_pay_theater_decontamination_assignment = {
@@ -447,40 +451,8 @@ cbrn_record_native_operations_track_complete = {
 }
 
 cbrn_change_chaos_warfare_use_policy = {
+	# Native family laws own authorization and political-power payment.
 	set_temp_variable = { cbrn_policy_change_accepted = constant:cbrn_proof.missing }
-	if = {
-		limit = { cbrn_can_pay_policy_change = yes }
-		cbrn_set_use_policy = yes
-	}
-	if = {
-		limit = { check_variable = { var = cbrn_policy_change_accepted value = constant:cbrn_proof.supplied compare = equals } }
-		set_temp_variable = { cbrn_doctrine_command_power_cost = cbrn_policy_command_power_cost }
-		cbrn_doctrine_pay_command_power = yes
-
-		if = {
-			limit = {
-				OR = {
-					NOT = { has_variable = cbrn_peak_use_policy }
-					check_variable = { var = cbrn_use_policy value = cbrn_peak_use_policy compare = greater_than }
-				}
-			}
-			set_variable = { cbrn_peak_use_policy = cbrn_use_policy }
-		}
-		if = {
-			limit = { check_variable = { var = cbrn_use_policy value = constant:cbrn_use_policy.retaliation_authority compare = greater_than_or_equals } }
-			set_country_flag = cbrn_policy_history_retaliation_authority
-		}
-		if = {
-			limit = { check_variable = { var = cbrn_use_policy value = constant:cbrn_use_policy.limited_battlefield_authority compare = greater_than_or_equals } }
-			set_country_flag = cbrn_policy_history_limited_battlefield_authority
-		}
-		if = {
-			limit = { check_variable = { var = cbrn_use_policy value = constant:cbrn_use_policy.unrestricted_authorization compare = equals } }
-			set_country_flag = cbrn_policy_history_strategic_release_authority
-			set_country_flag = cbrn_policy_history_unrestricted_chaos_warfare
-		}
-		cbrn_convention_on_use_policy_broadened = yes
-	}
 }
 
 cbrn_set_doctrine_condemnation_mult_from_country = {

@@ -2,6 +2,8 @@
 
 Status: implemented; current status, balance arithmetic and evidence limits are in [the 10 October improvement plan](../plans/famine_and_migration_system_plans/improvement_plan_2026-10-10.md).
 
+Reception/departure laws and the migration management window are documented in [National policies](national_policies.md). The laws are country policy; cohorts, obligations, routes and reception capacity remain migration-owned ledgers.
+
 ## Ownership
 
 Migration is an independent cohort, route, reception, and settlement mechanic. Its gameplay identifiers, variables, flags, effects, triggers, decisions, missions, localisation, sprites, and CXT fixture use the `migration_*` namespace.
@@ -10,13 +12,13 @@ Famine can be one proven cause of movement, and migration can create trapped-pop
 
 Famine survivor displacement enters through `migration_accept_famine_survivor_request`; migration alone reconciles cohorts, reserves existing obligations, applies the protected population floor, caps the accepted amount, writes flight ledgers, and refreshes its category. Trapped-population food demand travels in the opposite direction through the versioned `migration_to_famine_reception_demand_*` receipt.
 
-When the famine category offers organized evacuation, migration-owned availability helpers expose only whether reception and preparation permit the request. Migration then stages the trapped obligation and cohort, runs the exact transfer, and owns mission subject, cohort, deadline, slot, report, and trapped-state cleanup. The famine surface receives only the neutral transaction receipt and never owns migration lifecycle data.
+When the Famine panel offers organized evacuation, migration-owned availability helpers expose only whether reception and preparation permit the request. Migration then stages the trapped obligation and cohort, runs the exact transfer, and owns mission subject, cohort, deadline, slot, report, and trapped-state cleanup. The famine surface receives only the neutral transaction receipt and never owns migration lifecycle data.
 
 Migration exposes narrow positive triggers for humanitarian-open reception policy, active persecution, and native destination safety. Famine relief and evacuation consumers use those seams rather than reading migration policy or hazard ledgers. Railway damage is a neutral physical projection refreshed independently by both sparse mechanics.
 
-The ordinary player surface is `migration_decision_category`. It is hidden at campaign start unless a country has a genuine starting displacement problem. Otherwise it appears only after a large incident, two distinct incident episodes, or sustained flight, trapped-population, corridor, or reception evidence reaches the centralized threshold.
+The Migration management panel is available to eligible human players during quiet conditions as well as crises. It provides state inspection and operational actions; individual actions remain gated by local displacement, reception, corridor, cost, cooldown, and pending-work requirements. Opening or refreshing the panel does not initialize migration or register work. Native AI missions retain their existing decision path.
 
-Durable resettled and returned population totals remain available to the mapmode, history, documentation, and achievement consumers, but they cannot reveal or reopen the decision category after the live migration problem has resolved.
+Durable resettled and returned population totals remain available to mapmode, history, documentation, and achievement consumers. They do not keep operational actions eligible after the live migration problem has resolved, and they do not control access to the quiet-accessible panel.
 
 The dedicated `migration_state_map_mode` remains available from campaign start.
 
@@ -26,17 +28,18 @@ The deleted `events/migration_incidents.txt` file and its incident constants are
 
 ## Player-facing values
 
-The migration surface presents one primary value and no more than two supporting values:
+The Migration panel presents four canonical status values:
 
-- Displacement Load: active people requiring movement, protection, reception, or resolution.
-- Reception Capacity: the current ability to receive and support arrivals.
-- Border Policy: humanitarian open, controlled, transit, closed, or violent enforcement as applicable.
+- Displacement: active people requiring movement, protection, reception, or resolution.
+- Reception Capacity: the validated ability to receive and support arrivals.
+- Reception Law: the current native reception law.
+- Departure Law: the current native departure law.
 
 Cohort IDs, generations, exact transfer proofs, and registry rows remain internal evidence, not player homework.
 
 ## Canonical player-facing value count
 
-Migration exposes exactly three canonical player-facing values: Displacement Load, Reception Capacity, and Border Policy.
+Migration exposes exactly four canonical panel values: Displacement, Reception Capacity, Reception Law, and Departure Law. Displacement and capacity describe movement pressure and receiving capacity; the two law fields show current national policy. Those law status fields add no separate pressure mechanic.
 
 Destination and reception safety consume the proven, versioned `famine_to_migration_*` food-safety projection. Migration does not initialize famine or read raw famine stage, pressure, transport, governance, production, exposure, or incident fields. Missing or invalid projection facts fail closed.
 
@@ -82,8 +85,7 @@ Once fresh live-cohort and full headroom checks pass, the host may accept the re
 Acceptance and transfer each revalidate the actual amount, route, capacity, policy, actor, cohort, and generation.
 Rejection or expiry preserves the origin obligations and can clear only matching mirrors.
 
-One tiny incoming request does not reveal the migration category.
-Large or sustained issue facts, or distinct valid incoming evacuation generations counted once in the existing incident count, use the existing reveal thresholds.
+One tiny incoming request does not create a sustained national migration issue. Large or sustained issue facts, or distinct valid incoming evacuation generations counted once in the existing incident count, still drive issue classification and action gates; they do not control quiet access to the management panel.
 Preparation and rejection precede acceptance; these are phased uses of existing controls, not an additional category, mission, GUI, or headline value.
 The pending-request priority text explains the current choice without calling the people arrivals.
 
@@ -112,14 +114,14 @@ Closed borders do not erase a cohort. A valid closure creates or maintains trapp
 
 Violent pushback and unsafe forced return can create route deaths under `constant:chaos_meter_deaths_reason.forced_displacement`, localized as `From forced displacement`. The exact transfer transaction logs those deaths without applying a second population debit.
 
-## Decisions and missions
+## Panel actions and missions
 
 Every action target must have a current local threat, measured displaced or sheltered civilians, or an exact incoming corridor request.
 Reception preparation is limited to that state, an adjacent displacement origin, or the requested receiving front; an unrelated national crisis does not expose preparations on arbitrary owned islands.
 Famine, proven blockade, active persecution/bombing/disaster/contamination, neighboring established outbreaks, and enemy-controlled front states can create that local need.
 War and state-control callbacks and accepted outbreak receipts request bounded neighboring flight through the existing migration owner, with population shares and cooldowns in `migration_pressure_constants.txt`.
 
-Migration owns its own category: Open and Restrict Departure, Prepare Evacuation, Evacuate Civilians, Evacuate the Vulnerable, Evacuate Civil Administrators, Evacuate Workers, Request Passage with Accept and Refuse Passage for the receiver, Open Emergency Reception, Screen Incoming Civilians, Distribute Arrivals, Permit Transit, Close the Border, Enforce the Closure, Local Integration, Resettle Abroad, Help Families Return and Force Repatriation.
+The Migration panel provides seventeen operational actions: Prepare Evacuation, Evacuate Vulnerable People, Evacuate Civilians, Evacuate Civil Administrators, Evacuate Workers, Negotiate a Corridor, Accept a Corridor Offer, Reject a Corridor Offer, Open Emergency Reception, Controlled Medical Reception, Distribute Arrivals, Transit Only, Enforce the Closure, Local Integration, Third-Country Resettlement, Voluntary Return, and Forced Repatriation. Departure and reception posture is selected through the native laws in [National policies](national_policies.md).
 
 Preparation reserves the selected state's departure points before general, vulnerable-person, administrative, or worker evacuation can start.
 Worker evacuation retains its distinct support-stock prerequisite and heavier train requirement.
@@ -131,7 +133,7 @@ Industrial cohorts carry a signed state workforce balance. The physical origin l
 The signed workforce share changes local building construction and industrial-complex repair by up to 50%. Factory output uses that share multiplied by the state's industrial-complex and arms-factory levels divided by the current valid controller's `num_of_factories`; dockyard output uses its dockyard levels over the same denominator. The contributions feed `industrial_capacity_factory` and `industrial_capacity_dockyard` on the current producer. Exact transfers, controller changes, and the existing sparse registered-state modifier refresh reweight each state; occupied industry follows the controller and a stored producer receipt removes the previous controller's share on capture or release.
 Civil Administrators is an explicit priority class with the standard movement contract; no separate administration or reception bonus is claimed because the source specification defines no distinct effect for it.
 No factory or machinery object changes owner or location.
-The emerging, active and resolution phases are presentation for the category header and the missions; they lock no ordinary decision. Departure policy can be reversed during a crisis, and every action that relieves a host (closing the border, distribution, transit, integration, return, resettlement) stays available when the host is overloaded, while actions that admit more people need spare capacity.
+The emerging, active and resolution phases remain presentation for the panel and native missions; they do not lock operational actions. Every action that relieves a host, such as distribution, transit, integration, return, and resettlement, stays available when the host is overloaded, while actions that admit more people need spare capacity.
 
 Migration missions own corridor, evacuation-transport, reception-observation, and safe-return deadlines. Famine missions are never counted in migration mission slots or presented as migration actions.
 
@@ -153,14 +155,13 @@ A minimum state size, a minimum request and a per-state cooldown keep the regist
 This covers wars created by event owners, such as civil wars and collapse wars, without editing their files.
 When a special Chaos Redux power that runs no civilian system (the walking dead, a rat swarm, ZIN, Death, a revolutionary or terror command) takes a state, that state leaves both mechanics, so `humanitarian_handle_special_front_capture` sends 2% (4% for a nonhuman captor) of each neighbouring state the former owner still holds into flight instead: people run from the advancing front.
 
-## Category header
+## Management panel and state list
 
-The migration category header shows the report scene art and title beside a live list of the visible states the country owns or controls that hold trapped, fleeing or sheltered civilians, trapped states first, each with its trapped, sheltered or fleeing count.
-Selecting an entry centres the map on that state.
-`migration_refresh_header_states` rebuilds the country array `migration_header_states` and `migration_header_state_count` from `global.migration_active_states` at the start of each decision-phase refresh.
-Until a state qualifies the header falls back to the scene summary.
-The category description keeps Displacement Load, Reception Capacity, Border Policy and Priority.
-The dynamic list inside a decision-category scripted GUI has not been confirmed in a running game.
+Refreshing the Migration panel rebuilds `migration_panel_states` directly from relevant owned and controlled states, then deduplicates and validates current ownership/control. Relevance includes published movement data and qualifying prepared, mission, corridor, workforce, or pending work, not mere ownership or zero-filled fields. States with trapped civilians appear first; other qualifying states retain native collection order. It does not use `migration_header_states` or `global.migration_active_states` as the panel's list source. A selected row changes the panel's selected state; the separate Show on Map button centres the map on that selection.
+
+The overview shows Displacement, Reception Capacity, Reception Law, and Departure Law. The selected-state view shows trapped, sheltered, and fleeing populations, prepared or active work, and eligible operational actions. Action status comes from the action owner's saved start date, due date, cooldown, and remaining-day values. The active-work meter uses the saved start and due timestamps and displays the exact operation's progress over eleven frames; it does not estimate duration from current tuning or advance the operation.
+
+Final panel renderer evidence is tracked in the [national policy panels implementation report](../plans/famine_and_migration_system_plans/national_policy_panels_implementation.md).
 
 ## Assets and mapmode
 

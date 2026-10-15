@@ -1,0 +1,163 @@
+# Famine management: native controls mapped to the accepted camps-style reference.
+# 900x600 logical pixels; 24px outer margin, 12px gutters, two exclusive views.
+guiTypes = {
+	containerWindowType = { name = "famine_panel_category_window" position = { x = 0 y = 0 } size = { width = 500 height = 100 } orientation = UPPER_LEFT
+		background = { name = "background" quadTextureSprite = "GFX_tiled_window_small" alwaysTransparent = yes }
+		iconType = { name = "famine_panel_category_icon" position = { x = 12 y = 6 } spriteType = "GFX_famine_category" alwaysTransparent = yes }
+		instantTextBoxType = { name = "famine_panel_category_title" position = { x = 76 y = 12 } font = "hoi_24header" text = "famine_panel_title" maxWidth = 408 maxHeight = 28 format = left fixedsize = yes alwaysTransparent = yes }
+		instantTextBoxType = { name = "famine_panel_category_summary" position = { x = 16 y = 56 } font = "hoi_16mbs" text = "famine_panel_category_summary" maxWidth = 300 maxHeight = 28 format = left fixedsize = yes alwaysTransparent = yes }
+		buttonType = { name = "famine_panel_open" position = { x = 328 y = 52 } size = { x = 156 y = 34 } quadTextureSprite = "GFX_tiled_window_small_selectable" buttonFont = "hoi_18b" buttonText = "humanitarian_panel_open_famine" clicksound = decisions_ui_button oversound = ui_menu_over pdx_tooltip = "famine_panel_open_tt" }
+	}
+	containerWindowType = { name = "famine_management_window" position = { x = -450 y = -300 } size = { width = 900 height = 600 } orientation = center moveable = yes click_to_front = yes clipping = yes
+		background = { name = "background" quadTextureSprite = "GFX_tiled_window_2b_border" alwaysTransparent = yes }
+		instantTextBoxType = { name = "famine_panel_title" position = { x = 24 y = 16 } font = "hoi_24header" text = "famine_panel_title" maxWidth = 672 maxHeight = 30 format = left fixedsize = yes alwaysTransparent = yes }
+		buttonType = { name = "famine_panel_refresh_button" position = { x = 716 y = 16 } size = { x = 116 y = 30 } quadTextureSprite = "GFX_tiled_window_small_selectable" buttonFont = "hoi_18b" buttonText = "humanitarian_panel_refresh" clicksound = decisions_ui_button oversound = ui_menu_over pdx_tooltip = "humanitarian_panel_refresh_tt" }
+		buttonType = { name = "famine_panel_close" position = { x = 856 y = 15 } spriteType = "GFX_closebutton" clicksound = decisions_ui_button pdx_tooltip = "humanitarian_panel_close_tt" }
+		buttonType = { name = "famine_panel_overview" position = { x = 24 y = 60 } size = { x = 420 y = 36 } quadTextureSprite = "GFX_tiled_window_small_selectable" buttonFont = "hoi_18b" buttonText = "humanitarian_panel_overview" clicksound = decisions_ui_button oversound = ui_menu_over }
+		buttonType = { name = "famine_panel_states" position = { x = 456 y = 60 } size = { x = 420 y = 36 } quadTextureSprite = "GFX_tiled_window_small_selectable" buttonFont = "hoi_18b" buttonText = "humanitarian_panel_states" clicksound = decisions_ui_button oversound = ui_menu_over }
+		containerWindowType = { name = "famine_panel_overview_mark" position = { x = 24 y = 98 } size = { width = 420 height = 3 } orientation = UPPER_LEFT
+			background = { name = "background" quadTextureSprite = "GFX_tiled_window_small_selectable" frame = 2 alwaysTransparent = yes }
+
+		}
+		containerWindowType = { name = "famine_panel_states_mark" position = { x = 456 y = 98 } size = { width = 420 height = 3 } orientation = UPPER_LEFT
+			background = { name = "background" quadTextureSprite = "GFX_tiled_window_small_selectable" frame = 2 alwaysTransparent = yes }
+
+		}
+		containerWindowType = { name = "famine_panel_overview_content" position = { x = 24 y = 116 } size = { width = 852 height = 448 } orientation = UPPER_LEFT
+			background = { name = "background" quadTextureSprite = "GFX_tiled_window_transparent" alwaysTransparent = yes }
+			containerWindowType = { name = "famine_panel_card_0" position = { x = 0 y = 0 } size = { width = 276 height = 88 } orientation = UPPER_LEFT
+				background = { name = "background" quadTextureSprite = "GFX_tiled_window_small" alwaysTransparent = yes }
+				instantTextBoxType = { name = "famine_panel_card_0_label" position = { x = 14 y = 10 } font = "hoi_18b" text = "famine_panel_card_0_label" maxWidth = 248 maxHeight = 24 format = left fixedsize = yes alwaysTransparent = yes }
+				instantTextBoxType = { name = "famine_panel_card_0_value" position = { x = 14 y = 40 } font = "hoi_16mbs" text = "famine_panel_card_0_value" maxWidth = 248 maxHeight = 36 format = left fixedsize = yes alwaysTransparent = yes }
+			}
+			containerWindowType = { name = "famine_panel_card_1" position = { x = 288 y = 0 } size = { width = 276 height = 88 } orientation = UPPER_LEFT
+				background = { name = "background" quadTextureSprite = "GFX_tiled_window_small" alwaysTransparent = yes }
+				instantTextBoxType = { name = "famine_panel_card_1_label" position = { x = 14 y = 10 } font = "hoi_18b" text = "famine_panel_card_1_label" maxWidth = 248 maxHeight = 24 format = left fixedsize = yes alwaysTransparent = yes }
+				instantTextBoxType = { name = "famine_panel_card_1_value" position = { x = 14 y = 40 } font = "hoi_16mbs" text = "famine_panel_card_1_value" maxWidth = 248 maxHeight = 36 format = left fixedsize = yes alwaysTransparent = yes }
+			}
+			containerWindowType = { name = "famine_panel_card_2" position = { x = 576 y = 0 } size = { width = 276 height = 88 } orientation = UPPER_LEFT
+				background = { name = "background" quadTextureSprite = "GFX_tiled_window_small" alwaysTransparent = yes }
+				instantTextBoxType = { name = "famine_panel_card_2_label" position = { x = 14 y = 10 } font = "hoi_18b" text = "famine_panel_card_2_label" maxWidth = 248 maxHeight = 24 format = left fixedsize = yes alwaysTransparent = yes }
+				instantTextBoxType = { name = "famine_panel_card_2_value" position = { x = 14 y = 40 } font = "hoi_16mbs" text = "famine_panel_card_2_value" maxWidth = 248 maxHeight = 36 format = left fixedsize = yes alwaysTransparent = yes }
+			}
+			containerWindowType = { name = "famine_panel_report" position = { x = 0 y = 104 } size = { width = 276 height = 276 } orientation = UPPER_LEFT
+				background = { name = "background" quadTextureSprite = "GFX_tiled_window_small" alwaysTransparent = yes }
+				iconType = { name = "famine_panel_report_generic" position = { x = 33 y = 28 } spriteType = "GFX_report_event_famine_generic" alwaysTransparent = yes }
+				iconType = { name = "famine_panel_report_island_blockade" position = { x = 33 y = 28 } spriteType = "GFX_report_event_famine_island_blockade" alwaysTransparent = yes }
+				iconType = { name = "famine_panel_report_relief_arrival" position = { x = 33 y = 28 } spriteType = "GFX_report_event_famine_relief_arrival" alwaysTransparent = yes }
+				instantTextBoxType = { name = "famine_panel_report_caption" position = { x = 16 y = 222 } font = "hoi_16mbs" text = "famine_panel_report_caption" maxWidth = 244 maxHeight = 42 format = left fixedsize = yes alwaysTransparent = yes }
+			}
+			containerWindowType = { name = "famine_panel_situation_box" position = { x = 288 y = 104 } size = { width = 564 height = 276 } orientation = UPPER_LEFT
+				background = { name = "background" quadTextureSprite = "GFX_tiled_window_small" alwaysTransparent = yes }
+				instantTextBoxType = { name = "famine_panel_situation_heading" position = { x = 18 y = 14 } font = "hoi_20b" text = "famine_panel_crisis_conditions" maxWidth = 526 maxHeight = 28 format = left fixedsize = yes alwaysTransparent = yes }
+				instantTextBoxType = { name = "famine_panel_situation" position = { x = 18 y = 54 } font = "hoi_16mbs" text = "famine_panel_situation" maxWidth = 526 maxHeight = 110 format = left fixedsize = yes alwaysTransparent = yes }
+				instantTextBoxType = { name = "famine_panel_mission_hint" position = { x = 18 y = 210 } font = "hoi_16mbs" text = "humanitarian_panel_mission_hint" maxWidth = 526 maxHeight = 40 format = left fixedsize = yes alwaysTransparent = yes }
+			}
+			buttonType = { name = "famine_panel_show_states" position = { x = 0 y = 396 } size = { x = 852 y = 44 } quadTextureSprite = "GFX_tiled_window_small_selectable" buttonFont = "hoi_18b" buttonText = "famine_panel_show_states" clicksound = decisions_ui_button oversound = ui_menu_over pdx_tooltip = "famine_panel_states_tt" }
+		}
+		containerWindowType = { name = "famine_panel_states_content" position = { x = 24 y = 116 } size = { width = 852 height = 448 } orientation = UPPER_LEFT
+			background = { name = "background" quadTextureSprite = "GFX_tiled_window_transparent" alwaysTransparent = yes }
+			containerWindowType = { name = "famine_panel_state_list_frame" position = { x = 0 y = 0 } size = { width = 260 height = 440 } orientation = UPPER_LEFT
+				background = { name = "background" quadTextureSprite = "GFX_tiled_window_small" alwaysTransparent = yes }
+				containerWindowType = { name = "famine_panel_state_list_box" position = { x = 6 y = 8 } size = { width = 248 height = 420 } orientation = UPPER_LEFT verticalScrollbar = "right_vertical_slider" clipping = yes scroll_wheel_factor = 60 smooth_scrolling = yes
+					background = { name = "background" quadTextureSprite = "GFX_tiled_window_transparent" alwaysTransparent = yes }
+					gridBoxType = { name = "famine_panel_state_list" position = { x = 0 y = 0 } size = { width = 216 height = 420 } slotsize = { width = 216 height = 60 } max_slots_horizontal = 1 format = "UPPER_LEFT" }
+					instantTextBoxType = { name = "famine_panel_no_states" position = { x = 8 y = 12 } font = "hoi_16mbs" text = "famine_panel_no_states" maxWidth = 202 maxHeight = 90 format = left fixedsize = yes alwaysTransparent = yes }
+				}
+			}
+			instantTextBoxType = { name = "famine_panel_select_prompt" position = { x = 286 y = 22 } font = "hoi_16mbs" text = "famine_panel_select_prompt" maxWidth = 560 maxHeight = 60 format = left fixedsize = yes alwaysTransparent = yes }
+			containerWindowType = { name = "famine_panel_selected_content" position = { x = 276 y = 0 } size = { width = 576 height = 440 } orientation = UPPER_LEFT
+				background = { name = "background" quadTextureSprite = "GFX_tiled_window_small" alwaysTransparent = yes }
+				instantTextBoxType = { name = "famine_panel_state_title" position = { x = 14 y = 8 } font = "hoi_20b" text = "famine_panel_state_title" maxWidth = 400 maxHeight = 44 format = left fixedsize = yes alwaysTransparent = yes }
+				buttonType = { name = "famine_panel_map" position = { x = 428 y = 8 } size = { x = 134 y = 30 } quadTextureSprite = "GFX_tiled_window_small_selectable" buttonFont = "hoi_18b" buttonText = "humanitarian_panel_map" clicksound = decisions_ui_button oversound = ui_menu_over pdx_tooltip = "humanitarian_panel_map_tt" }
+				instantTextBoxType = { name = "famine_panel_state_summary" position = { x = 14 y = 60 } font = "hoi_16mbs" text = "famine_panel_state_summary" maxWidth = 548 maxHeight = 62 format = left fixedsize = yes alwaysTransparent = yes }
+				instantTextBoxType = { name = "famine_panel_state_details" position = { x = 14 y = 128 } font = "hoi_16mbs" text = "famine_panel_state_details" maxWidth = 548 maxHeight = 38 format = left fixedsize = yes alwaysTransparent = yes }
+				buttonType = { name = "famine_panel_group_1" position = { x = 14 y = 176 } size = { x = 176 y = 32 } quadTextureSprite = "GFX_tiled_window_small_selectable" buttonFont = "hoi_18b" buttonText = "famine_panel_group_1" clicksound = decisions_ui_button oversound = ui_menu_over }
+				containerWindowType = { name = "famine_panel_group_1_mark" position = { x = 14 y = 210 } size = { width = 176 height = 3 } orientation = UPPER_LEFT
+					background = { name = "background" quadTextureSprite = "GFX_tiled_window_small_selectable" frame = 2 alwaysTransparent = yes }
+
+				}
+				containerWindowType = { name = "famine_panel_actions_1" position = { x = 14 y = 224 } size = { width = 548 height = 208 } orientation = UPPER_LEFT
+					background = { name = "background" quadTextureSprite = "GFX_tiled_window_transparent" alwaysTransparent = yes }
+					buttonType = { name = "famine_panel_action_release_reserves" position = { x = 0 y = 0 } size = { x = 268 y = 60 } quadTextureSprite = "GFX_tiled_window_small_selectable" buttonFont = "hoi_18b" buttonText = "humanitarian_panel_blank" clicksound = decisions_ui_button oversound = ui_menu_over pdx_tooltip = "famine_panel_action_release_reserves_tt" }
+					buttonType = { name = "famine_panel_action_release_reserves_locked" position = { x = 0 y = 0 } size = { x = 268 y = 60 } quadTextureSprite = "GFX_tiled_window_small" buttonFont = "hoi_18b" buttonText = "humanitarian_panel_blank" clicksound = decisions_ui_button oversound = ui_menu_over pdx_tooltip = "famine_panel_action_release_reserves_tt" }
+					instantTextBoxType = { name = "famine_panel_action_release_reserves_label" position = { x = 8 y = 7 } font = "hoi_18b" text = "famine_panel_action_release_reserves_label" maxWidth = 252 maxHeight = 22 format = center fixedsize = yes alwaysTransparent = yes }
+					instantTextBoxType = { name = "famine_panel_action_release_reserves_label_locked" position = { x = 8 y = 7 } font = "hoi_18b" text = "famine_panel_action_release_reserves_label_locked" maxWidth = 252 maxHeight = 22 format = center fixedsize = yes alwaysTransparent = yes }
+					instantTextBoxType = { name = "famine_panel_action_release_reserves_status" position = { x = 8 y = 33 } font = "hoi_16mbs" text = "famine_panel_action_release_reserves_status" maxWidth = 252 maxHeight = 22 format = center fixedsize = yes alwaysTransparent = yes }
+					buttonType = { name = "famine_panel_action_emergency_imports" position = { x = 280 y = 0 } size = { x = 268 y = 60 } quadTextureSprite = "GFX_tiled_window_small_selectable" buttonFont = "hoi_18b" buttonText = "humanitarian_panel_blank" clicksound = decisions_ui_button oversound = ui_menu_over pdx_tooltip = "famine_panel_action_emergency_imports_tt" }
+					buttonType = { name = "famine_panel_action_emergency_imports_locked" position = { x = 280 y = 0 } size = { x = 268 y = 60 } quadTextureSprite = "GFX_tiled_window_small" buttonFont = "hoi_18b" buttonText = "humanitarian_panel_blank" clicksound = decisions_ui_button oversound = ui_menu_over pdx_tooltip = "famine_panel_action_emergency_imports_tt" }
+					instantTextBoxType = { name = "famine_panel_action_emergency_imports_label" position = { x = 288 y = 7 } font = "hoi_18b" text = "famine_panel_action_emergency_imports_label" maxWidth = 252 maxHeight = 22 format = center fixedsize = yes alwaysTransparent = yes }
+					instantTextBoxType = { name = "famine_panel_action_emergency_imports_label_locked" position = { x = 288 y = 7 } font = "hoi_18b" text = "famine_panel_action_emergency_imports_label_locked" maxWidth = 252 maxHeight = 22 format = center fixedsize = yes alwaysTransparent = yes }
+					instantTextBoxType = { name = "famine_panel_action_emergency_imports_status" position = { x = 288 y = 33 } font = "hoi_16mbs" text = "famine_panel_action_emergency_imports_status" maxWidth = 252 maxHeight = 22 format = center fixedsize = yes alwaysTransparent = yes }
+					buttonType = { name = "famine_panel_action_invite_relief" position = { x = 0 y = 68 } size = { x = 268 y = 60 } quadTextureSprite = "GFX_tiled_window_small_selectable" buttonFont = "hoi_18b" buttonText = "humanitarian_panel_blank" clicksound = decisions_ui_button oversound = ui_menu_over pdx_tooltip = "famine_panel_action_invite_relief_tt" }
+					buttonType = { name = "famine_panel_action_invite_relief_locked" position = { x = 0 y = 68 } size = { x = 268 y = 60 } quadTextureSprite = "GFX_tiled_window_small" buttonFont = "hoi_18b" buttonText = "humanitarian_panel_blank" clicksound = decisions_ui_button oversound = ui_menu_over pdx_tooltip = "famine_panel_action_invite_relief_tt" }
+					instantTextBoxType = { name = "famine_panel_action_invite_relief_label" position = { x = 8 y = 75 } font = "hoi_18b" text = "famine_panel_action_invite_relief_label" maxWidth = 252 maxHeight = 22 format = center fixedsize = yes alwaysTransparent = yes }
+					instantTextBoxType = { name = "famine_panel_action_invite_relief_label_locked" position = { x = 8 y = 75 } font = "hoi_18b" text = "famine_panel_action_invite_relief_label_locked" maxWidth = 252 maxHeight = 22 format = center fixedsize = yes alwaysTransparent = yes }
+					instantTextBoxType = { name = "famine_panel_action_invite_relief_status" position = { x = 8 y = 101 } font = "hoi_16mbs" text = "famine_panel_action_invite_relief_status" maxWidth = 252 maxHeight = 22 format = center fixedsize = yes alwaysTransparent = yes }
+					buttonType = { name = "famine_panel_action_requisition_safer_state" position = { x = 280 y = 68 } size = { x = 268 y = 60 } quadTextureSprite = "GFX_tiled_window_small_selectable" buttonFont = "hoi_18b" buttonText = "humanitarian_panel_blank" clicksound = decisions_ui_button oversound = ui_menu_over pdx_tooltip = "famine_panel_action_requisition_safer_state_tt" }
+					buttonType = { name = "famine_panel_action_requisition_safer_state_locked" position = { x = 280 y = 68 } size = { x = 268 y = 60 } quadTextureSprite = "GFX_tiled_window_small" buttonFont = "hoi_18b" buttonText = "humanitarian_panel_blank" clicksound = decisions_ui_button oversound = ui_menu_over pdx_tooltip = "famine_panel_action_requisition_safer_state_tt" }
+					instantTextBoxType = { name = "famine_panel_action_requisition_safer_state_label" position = { x = 288 y = 75 } font = "hoi_18b" text = "famine_panel_action_requisition_safer_state_label" maxWidth = 252 maxHeight = 22 format = center fixedsize = yes alwaysTransparent = yes }
+					instantTextBoxType = { name = "famine_panel_action_requisition_safer_state_label_locked" position = { x = 288 y = 75 } font = "hoi_18b" text = "famine_panel_action_requisition_safer_state_label_locked" maxWidth = 252 maxHeight = 22 format = center fixedsize = yes alwaysTransparent = yes }
+					instantTextBoxType = { name = "famine_panel_action_requisition_safer_state_status" position = { x = 288 y = 101 } font = "hoi_16mbs" text = "famine_panel_action_requisition_safer_state_status" maxWidth = 252 maxHeight = 22 format = center fixedsize = yes alwaysTransparent = yes }
+				}
+				buttonType = { name = "famine_panel_group_2" position = { x = 198 y = 176 } size = { x = 176 y = 32 } quadTextureSprite = "GFX_tiled_window_small_selectable" buttonFont = "hoi_18b" buttonText = "famine_panel_group_2" clicksound = decisions_ui_button oversound = ui_menu_over }
+				containerWindowType = { name = "famine_panel_group_2_mark" position = { x = 198 y = 210 } size = { width = 176 height = 3 } orientation = UPPER_LEFT
+					background = { name = "background" quadTextureSprite = "GFX_tiled_window_small_selectable" frame = 2 alwaysTransparent = yes }
+
+				}
+				containerWindowType = { name = "famine_panel_actions_2" position = { x = 14 y = 224 } size = { width = 548 height = 208 } orientation = UPPER_LEFT
+					background = { name = "background" quadTextureSprite = "GFX_tiled_window_transparent" alwaysTransparent = yes }
+					buttonType = { name = "famine_panel_action_repair_relief_route" position = { x = 0 y = 0 } size = { x = 268 y = 60 } quadTextureSprite = "GFX_tiled_window_small_selectable" buttonFont = "hoi_18b" buttonText = "humanitarian_panel_blank" clicksound = decisions_ui_button oversound = ui_menu_over pdx_tooltip = "famine_panel_action_repair_relief_route_tt" }
+					buttonType = { name = "famine_panel_action_repair_relief_route_locked" position = { x = 0 y = 0 } size = { x = 268 y = 60 } quadTextureSprite = "GFX_tiled_window_small" buttonFont = "hoi_18b" buttonText = "humanitarian_panel_blank" clicksound = decisions_ui_button oversound = ui_menu_over pdx_tooltip = "famine_panel_action_repair_relief_route_tt" }
+					instantTextBoxType = { name = "famine_panel_action_repair_relief_route_label" position = { x = 8 y = 7 } font = "hoi_18b" text = "famine_panel_action_repair_relief_route_label" maxWidth = 252 maxHeight = 22 format = center fixedsize = yes alwaysTransparent = yes }
+					instantTextBoxType = { name = "famine_panel_action_repair_relief_route_label_locked" position = { x = 8 y = 7 } font = "hoi_18b" text = "famine_panel_action_repair_relief_route_label_locked" maxWidth = 252 maxHeight = 22 format = center fixedsize = yes alwaysTransparent = yes }
+					instantTextBoxType = { name = "famine_panel_action_repair_relief_route_status" position = { x = 8 y = 33 } font = "hoi_16mbs" text = "famine_panel_action_repair_relief_route_status" maxWidth = 252 maxHeight = 22 format = center fixedsize = yes alwaysTransparent = yes }
+					buttonType = { name = "famine_panel_action_escorted_relief_convoy" position = { x = 280 y = 0 } size = { x = 268 y = 60 } quadTextureSprite = "GFX_tiled_window_small_selectable" buttonFont = "hoi_18b" buttonText = "humanitarian_panel_blank" clicksound = decisions_ui_button oversound = ui_menu_over pdx_tooltip = "famine_panel_action_escorted_relief_convoy_tt" }
+					buttonType = { name = "famine_panel_action_escorted_relief_convoy_locked" position = { x = 280 y = 0 } size = { x = 268 y = 60 } quadTextureSprite = "GFX_tiled_window_small" buttonFont = "hoi_18b" buttonText = "humanitarian_panel_blank" clicksound = decisions_ui_button oversound = ui_menu_over pdx_tooltip = "famine_panel_action_escorted_relief_convoy_tt" }
+					instantTextBoxType = { name = "famine_panel_action_escorted_relief_convoy_label" position = { x = 288 y = 7 } font = "hoi_18b" text = "famine_panel_action_escorted_relief_convoy_label" maxWidth = 252 maxHeight = 22 format = center fixedsize = yes alwaysTransparent = yes }
+					instantTextBoxType = { name = "famine_panel_action_escorted_relief_convoy_label_locked" position = { x = 288 y = 7 } font = "hoi_18b" text = "famine_panel_action_escorted_relief_convoy_label_locked" maxWidth = 252 maxHeight = 22 format = center fixedsize = yes alwaysTransparent = yes }
+					instantTextBoxType = { name = "famine_panel_action_escorted_relief_convoy_status" position = { x = 288 y = 33 } font = "hoi_16mbs" text = "famine_panel_action_escorted_relief_convoy_status" maxWidth = 252 maxHeight = 22 format = center fixedsize = yes alwaysTransparent = yes }
+					buttonType = { name = "famine_panel_action_emergency_airlift" position = { x = 0 y = 68 } size = { x = 268 y = 60 } quadTextureSprite = "GFX_tiled_window_small_selectable" buttonFont = "hoi_18b" buttonText = "humanitarian_panel_blank" clicksound = decisions_ui_button oversound = ui_menu_over pdx_tooltip = "famine_panel_action_emergency_airlift_tt" }
+					buttonType = { name = "famine_panel_action_emergency_airlift_locked" position = { x = 0 y = 68 } size = { x = 268 y = 60 } quadTextureSprite = "GFX_tiled_window_small" buttonFont = "hoi_18b" buttonText = "humanitarian_panel_blank" clicksound = decisions_ui_button oversound = ui_menu_over pdx_tooltip = "famine_panel_action_emergency_airlift_tt" }
+					instantTextBoxType = { name = "famine_panel_action_emergency_airlift_label" position = { x = 8 y = 75 } font = "hoi_18b" text = "famine_panel_action_emergency_airlift_label" maxWidth = 252 maxHeight = 22 format = center fixedsize = yes alwaysTransparent = yes }
+					instantTextBoxType = { name = "famine_panel_action_emergency_airlift_label_locked" position = { x = 8 y = 75 } font = "hoi_18b" text = "famine_panel_action_emergency_airlift_label_locked" maxWidth = 252 maxHeight = 22 format = center fixedsize = yes alwaysTransparent = yes }
+					instantTextBoxType = { name = "famine_panel_action_emergency_airlift_status" position = { x = 8 y = 101 } font = "hoi_16mbs" text = "famine_panel_action_emergency_airlift_status" maxWidth = 252 maxHeight = 22 format = center fixedsize = yes alwaysTransparent = yes }
+				}
+				buttonType = { name = "famine_panel_group_3" position = { x = 382 y = 176 } size = { x = 176 y = 32 } quadTextureSprite = "GFX_tiled_window_small_selectable" buttonFont = "hoi_18b" buttonText = "famine_panel_group_3" clicksound = decisions_ui_button oversound = ui_menu_over }
+				containerWindowType = { name = "famine_panel_group_3_mark" position = { x = 382 y = 210 } size = { width = 176 height = 3 } orientation = UPPER_LEFT
+					background = { name = "background" quadTextureSprite = "GFX_tiled_window_small_selectable" frame = 2 alwaysTransparent = yes }
+
+				}
+				containerWindowType = { name = "famine_panel_actions_3" position = { x = 14 y = 224 } size = { width = 548 height = 208 } orientation = UPPER_LEFT
+					background = { name = "background" quadTextureSprite = "GFX_tiled_window_transparent" alwaysTransparent = yes }
+					buttonType = { name = "famine_panel_action_evacuation" position = { x = 0 y = 0 } size = { x = 268 y = 60 } quadTextureSprite = "GFX_tiled_window_small_selectable" buttonFont = "hoi_18b" buttonText = "humanitarian_panel_blank" clicksound = decisions_ui_button oversound = ui_menu_over pdx_tooltip = "famine_panel_action_evacuation_tt" }
+					buttonType = { name = "famine_panel_action_evacuation_locked" position = { x = 0 y = 0 } size = { x = 268 y = 60 } quadTextureSprite = "GFX_tiled_window_small" buttonFont = "hoi_18b" buttonText = "humanitarian_panel_blank" clicksound = decisions_ui_button oversound = ui_menu_over pdx_tooltip = "famine_panel_action_evacuation_tt" }
+					instantTextBoxType = { name = "famine_panel_action_evacuation_label" position = { x = 8 y = 7 } font = "hoi_18b" text = "famine_panel_action_evacuation_label" maxWidth = 252 maxHeight = 22 format = center fixedsize = yes alwaysTransparent = yes }
+					instantTextBoxType = { name = "famine_panel_action_evacuation_label_locked" position = { x = 8 y = 7 } font = "hoi_18b" text = "famine_panel_action_evacuation_label_locked" maxWidth = 252 maxHeight = 22 format = center fixedsize = yes alwaysTransparent = yes }
+					instantTextBoxType = { name = "famine_panel_action_evacuation_status" position = { x = 8 y = 33 } font = "hoi_16mbs" text = "famine_panel_action_evacuation_status" maxWidth = 252 maxHeight = 22 format = center fixedsize = yes alwaysTransparent = yes }
+					buttonType = { name = "famine_panel_action_conceal_crisis" position = { x = 280 y = 0 } size = { x = 268 y = 60 } quadTextureSprite = "GFX_tiled_window_small_selectable" buttonFont = "hoi_18b" buttonText = "humanitarian_panel_blank" clicksound = decisions_ui_button oversound = ui_menu_over pdx_tooltip = "famine_panel_action_conceal_crisis_tt" }
+					buttonType = { name = "famine_panel_action_conceal_crisis_locked" position = { x = 280 y = 0 } size = { x = 268 y = 60 } quadTextureSprite = "GFX_tiled_window_small" buttonFont = "hoi_18b" buttonText = "humanitarian_panel_blank" clicksound = decisions_ui_button oversound = ui_menu_over pdx_tooltip = "famine_panel_action_conceal_crisis_tt" }
+					instantTextBoxType = { name = "famine_panel_action_conceal_crisis_label" position = { x = 288 y = 7 } font = "hoi_18b" text = "famine_panel_action_conceal_crisis_label" maxWidth = 252 maxHeight = 22 format = center fixedsize = yes alwaysTransparent = yes }
+					instantTextBoxType = { name = "famine_panel_action_conceal_crisis_label_locked" position = { x = 288 y = 7 } font = "hoi_18b" text = "famine_panel_action_conceal_crisis_label_locked" maxWidth = 252 maxHeight = 22 format = center fixedsize = yes alwaysTransparent = yes }
+					instantTextBoxType = { name = "famine_panel_action_conceal_crisis_status" position = { x = 288 y = 33 } font = "hoi_16mbs" text = "famine_panel_action_conceal_crisis_status" maxWidth = 252 maxHeight = 22 format = center fixedsize = yes alwaysTransparent = yes }
+					buttonType = { name = "famine_panel_action_maintain_extraction" position = { x = 0 y = 68 } size = { x = 268 y = 60 } quadTextureSprite = "GFX_tiled_window_small_selectable" buttonFont = "hoi_18b" buttonText = "humanitarian_panel_blank" clicksound = decisions_ui_button oversound = ui_menu_over pdx_tooltip = "famine_panel_action_maintain_extraction_tt" }
+					buttonType = { name = "famine_panel_action_maintain_extraction_locked" position = { x = 0 y = 68 } size = { x = 268 y = 60 } quadTextureSprite = "GFX_tiled_window_small" buttonFont = "hoi_18b" buttonText = "humanitarian_panel_blank" clicksound = decisions_ui_button oversound = ui_menu_over pdx_tooltip = "famine_panel_action_maintain_extraction_tt" }
+					instantTextBoxType = { name = "famine_panel_action_maintain_extraction_label" position = { x = 8 y = 75 } font = "hoi_18b" text = "famine_panel_action_maintain_extraction_label" maxWidth = 252 maxHeight = 22 format = center fixedsize = yes alwaysTransparent = yes }
+					instantTextBoxType = { name = "famine_panel_action_maintain_extraction_label_locked" position = { x = 8 y = 75 } font = "hoi_18b" text = "famine_panel_action_maintain_extraction_label_locked" maxWidth = 252 maxHeight = 22 format = center fixedsize = yes alwaysTransparent = yes }
+					instantTextBoxType = { name = "famine_panel_action_maintain_extraction_status" position = { x = 8 y = 101 } font = "hoi_16mbs" text = "famine_panel_action_maintain_extraction_status" maxWidth = 252 maxHeight = 22 format = center fixedsize = yes alwaysTransparent = yes }
+				}
+				instantTextBoxType = { name = "famine_panel_active_work" position = { x = 14 y = 400 } font = "hoi_16mbs" text = "famine_panel_active_work" maxWidth = 548 maxHeight = 20 format = left fixedsize = yes alwaysTransparent = yes }
+				iconType = { name = "famine_panel_work_meter" position = { x = 14 y = 426 } spriteType = "GFX_camp_admin_meter" alwaysTransparent = yes }
+			}
+		}
+	}
+	containerWindowType = { name = "famine_panel_state_row" position = { x = 0 y = 0 } size = { width = 216 height = 60 } orientation = UPPER_LEFT
+		background = { name = "background" quadTextureSprite = "GFX_tiled_window_transparent" alwaysTransparent = yes }
+		buttonType = { name = "famine_panel_row_select" position = { x = 0 y = 0 } size = { x = 216 y = 58 } quadTextureSprite = "GFX_tiled_window_small_selectable" buttonFont = "hoi_18b" buttonText = "humanitarian_panel_blank" clicksound = decisions_ui_button oversound = ui_menu_over }
+		containerWindowType = { name = "famine_panel_row_selected" position = { x = 1 y = 1 } size = { width = 4 height = 56 } orientation = UPPER_LEFT
+			background = { name = "background" quadTextureSprite = "GFX_tiled_window_small_selectable" alwaysTransparent = yes }
+
+		}
+		instantTextBoxType = { name = "famine_panel_state_row_text" position = { x = 12 y = 4 } font = "hoi_16mbs" text = "famine_panel_state_row" maxWidth = 190 maxHeight = 52 format = left fixedsize = yes alwaysTransparent = yes }
+	}
+}

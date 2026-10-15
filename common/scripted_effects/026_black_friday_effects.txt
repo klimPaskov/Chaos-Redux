@@ -79,8 +79,9 @@ black_friday_prepare_achievement_progress = {
 # Same-day resource gains can conceal real spending.
 
 # COUNTRY scope. Outputs: temps black_friday_engine_economy_law,
-# black_friday_engine_trade_law, and black_friday_engine_mobilization_law, each
-# a constant:black_friday_engine_law id, or unknown for a law outside the table.
+# black_friday_engine_trade_law, black_friday_engine_mobilization_law and the five
+# black_friday_engine_<policy slot>_law values. Existing laws use
+# black_friday_engine_law ids, policy laws use their owner enums. Unknown is zero.
 black_friday_engine_purchase_read_laws = {
 	set_temp_variable = { black_friday_engine_economy_law = constant:black_friday_engine_law.unknown }
 	if = { limit = { has_idea = undisturbed_isolation } set_temp_variable = { black_friday_engine_economy_law = constant:black_friday_engine_law.undisturbed_isolation } }
@@ -118,6 +119,32 @@ black_friday_engine_purchase_read_laws = {
 	else_if = { limit = { has_idea = ETH_chitet_law_peace_time } set_temp_variable = { black_friday_engine_mobilization_law = constant:black_friday_engine_law.eth_chitet_law_peace_time } }
 	else_if = { limit = { has_idea = SWI_citizen_militia_1 } set_temp_variable = { black_friday_engine_mobilization_law = constant:black_friday_engine_law.swi_citizen_militia_1 } }
 	else_if = { limit = { has_idea = SWI_citizen_militia_2 } set_temp_variable = { black_friday_engine_mobilization_law = constant:black_friday_engine_law.swi_citizen_militia_2 } }
+	# National policy laws use native slot PP prices and the same law-family proof.
+	set_temp_variable = { black_friday_engine_refugee_reception_law = constant:black_friday_engine_law.unknown }
+	if = { limit = { has_idea = national_policy_reception_humanitarian } set_temp_variable = { black_friday_engine_refugee_reception_law = constant:migration_border_policy.humanitarian_open } }
+	else_if = { limit = { has_idea = national_policy_reception_controlled } set_temp_variable = { black_friday_engine_refugee_reception_law = constant:migration_border_policy.controlled } }
+	else_if = { limit = { has_idea = national_policy_reception_transit } set_temp_variable = { black_friday_engine_refugee_reception_law = constant:migration_border_policy.transit_only } }
+	else_if = { limit = { has_idea = national_policy_reception_quarantine } set_temp_variable = { black_friday_engine_refugee_reception_law = constant:migration_border_policy.quarantine } }
+	else_if = { limit = { has_idea = national_policy_reception_closed } set_temp_variable = { black_friday_engine_refugee_reception_law = constant:migration_border_policy.closed } }
+	else_if = { limit = { has_idea = national_policy_reception_violent } set_temp_variable = { black_friday_engine_refugee_reception_law = constant:migration_border_policy.violent } }
+	else_if = { limit = { has_idea = national_policy_reception_forced_return } set_temp_variable = { black_friday_engine_refugee_reception_law = constant:migration_border_policy.forced_return } }
+	set_temp_variable = { black_friday_engine_civilian_departure_law = constant:black_friday_engine_law.unknown }
+	if = { limit = { has_idea = national_policy_departure_free } set_temp_variable = { black_friday_engine_civilian_departure_law = constant:migration_border_policy.humanitarian_open } }
+	else_if = { limit = { has_idea = national_policy_departure_permit } set_temp_variable = { black_friday_engine_civilian_departure_law = constant:migration_border_policy.controlled } }
+	else_if = { limit = { has_idea = national_policy_departure_prohibited } set_temp_variable = { black_friday_engine_civilian_departure_law = constant:migration_border_policy.closed } }
+	set_temp_variable = { black_friday_engine_chemical_use_policy_law = constant:black_friday_engine_law.unknown }
+	if = { limit = { has_idea = national_policy_chemical_retaliation } set_temp_variable = { black_friday_engine_chemical_use_policy_law = constant:national_policy_permission.retaliation } }
+	else_if = { limit = { has_idea = national_policy_chemical_battlefield } set_temp_variable = { black_friday_engine_chemical_use_policy_law = constant:national_policy_permission.battlefield } }
+	else_if = { limit = { has_idea = national_policy_chemical_unrestricted } set_temp_variable = { black_friday_engine_chemical_use_policy_law = constant:national_policy_permission.unrestricted } }
+	set_temp_variable = { black_friday_engine_biological_use_policy_law = constant:black_friday_engine_law.unknown }
+	if = { limit = { has_idea = national_policy_biological_retaliation } set_temp_variable = { black_friday_engine_biological_use_policy_law = constant:national_policy_permission.retaliation } }
+	else_if = { limit = { has_idea = national_policy_biological_battlefield } set_temp_variable = { black_friday_engine_biological_use_policy_law = constant:national_policy_permission.battlefield } }
+	else_if = { limit = { has_idea = national_policy_biological_unrestricted } set_temp_variable = { black_friday_engine_biological_use_policy_law = constant:national_policy_permission.unrestricted } }
+	set_temp_variable = { black_friday_engine_nuclear_use_policy_law = constant:black_friday_engine_law.unknown }
+	if = { limit = { has_idea = national_policy_nuclear_none } set_temp_variable = { black_friday_engine_nuclear_use_policy_law = constant:national_policy_permission.none } }
+	else_if = { limit = { has_idea = national_policy_nuclear_retaliation } set_temp_variable = { black_friday_engine_nuclear_use_policy_law = constant:national_policy_permission.retaliation } }
+	else_if = { limit = { has_idea = national_policy_nuclear_unrestricted } set_temp_variable = { black_friday_engine_nuclear_use_policy_law = constant:national_policy_permission.unrestricted } }
+
 }
 
 # COUNTRY scope. Outputs: temps black_friday_engine_advisor_count (filled
@@ -159,10 +186,20 @@ black_friday_engine_purchase_snapshot = {
 		set_temp_variable = { black_friday_engine_economy_law = constant:black_friday_engine_law.unknown }
 		set_temp_variable = { black_friday_engine_trade_law = constant:black_friday_engine_law.unknown }
 		set_temp_variable = { black_friday_engine_mobilization_law = constant:black_friday_engine_law.unknown }
+		set_temp_variable = { black_friday_engine_refugee_reception_law = constant:black_friday_engine_law.unknown }
+		set_temp_variable = { black_friday_engine_civilian_departure_law = constant:black_friday_engine_law.unknown }
+		set_temp_variable = { black_friday_engine_chemical_use_policy_law = constant:black_friday_engine_law.unknown }
+		set_temp_variable = { black_friday_engine_biological_use_policy_law = constant:black_friday_engine_law.unknown }
+		set_temp_variable = { black_friday_engine_nuclear_use_policy_law = constant:black_friday_engine_law.unknown }
 		black_friday_engine_purchase_read_laws = yes
 		set_variable = { black_friday_engine_snapshot_economy_law = black_friday_engine_economy_law }
 		set_variable = { black_friday_engine_snapshot_trade_law = black_friday_engine_trade_law }
 		set_variable = { black_friday_engine_snapshot_mobilization_law = black_friday_engine_mobilization_law }
+		set_variable = { black_friday_engine_snapshot_refugee_reception_law = black_friday_engine_refugee_reception_law }
+		set_variable = { black_friday_engine_snapshot_civilian_departure_law = black_friday_engine_civilian_departure_law }
+		set_variable = { black_friday_engine_snapshot_chemical_use_policy_law = black_friday_engine_chemical_use_policy_law }
+		set_variable = { black_friday_engine_snapshot_biological_use_policy_law = black_friday_engine_biological_use_policy_law }
+		set_variable = { black_friday_engine_snapshot_nuclear_use_policy_law = black_friday_engine_nuclear_use_policy_law }
 		set_temp_variable = { black_friday_engine_advisor_count = constant:black_friday_event.zero }
 		set_temp_variable = { black_friday_engine_staff_count = constant:black_friday_event.zero }
 		black_friday_engine_purchase_count_slots = yes
@@ -190,6 +227,11 @@ black_friday_engine_purchase_credit = {
 		set_temp_variable = { black_friday_engine_economy_law = constant:black_friday_engine_law.unknown }
 		set_temp_variable = { black_friday_engine_trade_law = constant:black_friday_engine_law.unknown }
 		set_temp_variable = { black_friday_engine_mobilization_law = constant:black_friday_engine_law.unknown }
+		set_temp_variable = { black_friday_engine_refugee_reception_law = constant:black_friday_engine_law.unknown }
+		set_temp_variable = { black_friday_engine_civilian_departure_law = constant:black_friday_engine_law.unknown }
+		set_temp_variable = { black_friday_engine_chemical_use_policy_law = constant:black_friday_engine_law.unknown }
+		set_temp_variable = { black_friday_engine_biological_use_policy_law = constant:black_friday_engine_law.unknown }
+		set_temp_variable = { black_friday_engine_nuclear_use_policy_law = constant:black_friday_engine_law.unknown }
 		black_friday_engine_purchase_read_laws = yes
 		set_temp_variable = { black_friday_engine_pp_payment = constant:black_friday_event.zero }
 		set_temp_variable = { black_friday_engine_current_amount = political_power }
@@ -210,6 +252,11 @@ black_friday_engine_purchase_credit = {
 					NOT = { check_variable = { black_friday_engine_economy_law = black_friday_engine_snapshot_economy_law } }
 					NOT = { check_variable = { black_friday_engine_trade_law = black_friday_engine_snapshot_trade_law } }
 					NOT = { check_variable = { black_friday_engine_mobilization_law = black_friday_engine_snapshot_mobilization_law } }
+					NOT = { check_variable = { black_friday_engine_refugee_reception_law = black_friday_engine_snapshot_refugee_reception_law } }
+					NOT = { check_variable = { black_friday_engine_civilian_departure_law = black_friday_engine_snapshot_civilian_departure_law } }
+					NOT = { check_variable = { black_friday_engine_chemical_use_policy_law = black_friday_engine_snapshot_chemical_use_policy_law } }
+					NOT = { check_variable = { black_friday_engine_biological_use_policy_law = black_friday_engine_snapshot_biological_use_policy_law } }
+					NOT = { check_variable = { black_friday_engine_nuclear_use_policy_law = black_friday_engine_snapshot_nuclear_use_policy_law } }
 				}
 			}
 			set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.laws }
@@ -270,6 +317,11 @@ black_friday_engine_purchase_credit = {
 	clear_variable = black_friday_engine_snapshot_economy_law
 	clear_variable = black_friday_engine_snapshot_trade_law
 	clear_variable = black_friday_engine_snapshot_mobilization_law
+	clear_variable = black_friday_engine_snapshot_refugee_reception_law
+	clear_variable = black_friday_engine_snapshot_civilian_departure_law
+	clear_variable = black_friday_engine_snapshot_chemical_use_policy_law
+	clear_variable = black_friday_engine_snapshot_biological_use_policy_law
+	clear_variable = black_friday_engine_snapshot_nuclear_use_policy_law
 	clear_variable = black_friday_engine_snapshot_advisor_count
 	clear_variable = black_friday_engine_snapshot_staff_count
 	clear_variable = black_friday_engine_snapshot_political_power

@@ -1,0 +1,97 @@
+# National policy native law-cost bindings and Black Friday composition.
+# Country scope throughout. Native law selection owns affordability and PP debit.
+# The sale callbacks reuse existing activation, expiry and country lifecycle paths.
+# See national_policy_cost_effects.md for formulas, lifecycle and engine limits.
+
+national_policy_initialize_cost_modifiers = {
+	set_variable = { national_policy_warfare_cost_factor = constant:national_policy_cost.chaos_warfare_factor }
+	if = {
+		limit = { NOT = { has_dynamic_modifier = national_policy_warfare_cost } }
+		add_dynamic_modifier = { modifier = national_policy_warfare_cost }
+	}
+	if = {
+		limit = { has_global_flag = black_friday_active }
+		# Country initialization during the active sale must also install the
+		# ordinary civilian carrier and its receipt before enabling sale variants.
+		black_friday_native_sale_apply = yes
+	}
+	force_update_dynamic_modifier = yes
+}
+
+# Detaching before reading modifier@ prevents our old total contribution from
+# contaminating either ordinary external-factor snapshot, even after a doctrine change.
+national_policy_detach_cost_modifiers = {
+	if = {
+		limit = { has_dynamic_modifier = national_policy_warfare_cost }
+		remove_dynamic_modifier = { modifier = national_policy_warfare_cost }
+	}
+	if = {
+		limit = { has_dynamic_modifier = national_policy_warfare_sale_cost }
+		remove_dynamic_modifier = { modifier = national_policy_warfare_sale_cost }
+	}
+	if = {
+		limit = { has_dynamic_modifier = national_policy_warfare_doctrine_sale_cost }
+		remove_dynamic_modifier = { modifier = national_policy_warfare_doctrine_sale_cost }
+	}
+}
+
+# Numeric input: national_policy_external_cost, the unowned slot factor.
+# Caller initializes both temporary outputs before calling with = yes.
+national_policy_store_warfare_sale_cost = {
+	set_temp_variable = { national_policy_sale_offset = global.black_friday_discount_ratio }
+	divide_temp_variable = { national_policy_sale_offset = constant:black_friday_event.ratio_basis }
+	subtract_from_temp_variable = { national_policy_sale_offset = constant:black_friday_event.one }
+	set_temp_variable = { national_policy_ordinary_cost = national_policy_external_cost }
+	add_to_temp_variable = { national_policy_ordinary_cost = constant:black_friday_event.one }
+	set_temp_variable = { national_policy_sale_cost = national_policy_ordinary_cost }
+	clamp_temp_variable = { var = national_policy_sale_cost min = constant:black_friday_event.zero }
+	multiply_temp_variable = { national_policy_sale_cost = national_policy_sale_offset }
+	add_to_temp_variable = { national_policy_ordinary_cost = national_policy_warfare_cost_factor }
+	clamp_temp_variable = { var = national_policy_ordinary_cost min = constant:black_friday_event.zero }
+	multiply_temp_variable = { national_policy_ordinary_cost = national_policy_sale_offset }
+	add_to_temp_variable = { national_policy_ordinary_cost = national_policy_warfare_cost_factor }
+	set_temp_variable = { national_policy_sale_doctrine_cost = national_policy_ordinary_cost }
+}
+
+national_policy_refresh_sale_cost_modifiers = {
+	national_policy_detach_cost_modifiers = yes
+	force_update_dynamic_modifier = yes
+	set_variable = { national_policy_warfare_cost_factor = constant:national_policy_cost.chaos_warfare_factor }
+	# Outputs are created in this caller so helper-frame cleanup preserves them.
+	set_temp_variable = { national_policy_sale_cost = constant:black_friday_event.zero }
+	set_temp_variable = { national_policy_sale_doctrine_cost = constant:black_friday_event.zero }
+	set_temp_variable = { national_policy_external_cost = modifier@chemical_use_policy_cost_factor }
+	national_policy_store_warfare_sale_cost = yes
+	set_variable = { national_policy_sale_chemical_use_policy_factor = national_policy_sale_cost }
+	set_variable = { national_policy_sale_doctrine_chemical_use_policy_factor = national_policy_sale_doctrine_cost }
+	set_temp_variable = { national_policy_external_cost = modifier@biological_use_policy_cost_factor }
+	national_policy_store_warfare_sale_cost = yes
+	set_variable = { national_policy_sale_biological_use_policy_factor = national_policy_sale_cost }
+	set_variable = { national_policy_sale_doctrine_biological_use_policy_factor = national_policy_sale_doctrine_cost }
+	set_temp_variable = { national_policy_external_cost = modifier@nuclear_use_policy_cost_factor }
+	national_policy_store_warfare_sale_cost = yes
+	set_variable = { national_policy_sale_nuclear_use_policy_factor = national_policy_sale_cost }
+	set_variable = { national_policy_sale_doctrine_nuclear_use_policy_factor = national_policy_sale_doctrine_cost }
+	add_dynamic_modifier = { modifier = national_policy_warfare_cost }
+	add_dynamic_modifier = { modifier = national_policy_warfare_sale_cost }
+	add_dynamic_modifier = { modifier = national_policy_warfare_doctrine_sale_cost }
+	force_update_dynamic_modifier = yes
+}
+
+national_policy_remove_sale_cost_modifiers = {
+	if = {
+		limit = { has_dynamic_modifier = national_policy_warfare_sale_cost }
+		remove_dynamic_modifier = { modifier = national_policy_warfare_sale_cost }
+	}
+	if = {
+		limit = { has_dynamic_modifier = national_policy_warfare_doctrine_sale_cost }
+		remove_dynamic_modifier = { modifier = national_policy_warfare_doctrine_sale_cost }
+	}
+	clear_variable = national_policy_sale_chemical_use_policy_factor
+	clear_variable = national_policy_sale_biological_use_policy_factor
+	clear_variable = national_policy_sale_nuclear_use_policy_factor
+	clear_variable = national_policy_sale_doctrine_chemical_use_policy_factor
+	clear_variable = national_policy_sale_doctrine_biological_use_policy_factor
+	clear_variable = national_policy_sale_doctrine_nuclear_use_policy_factor
+	force_update_dynamic_modifier = yes
+}

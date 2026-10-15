@@ -1,0 +1,294 @@
+# Shared operation lifecycle for the famine and migration management panels.
+# Country scope in an immediate humanitarian_actions event. ROOT is the actor.
+# Each country owns aligned pending arrays. The row id is its monotonic generation.
+# Production work stays in the subsystem action bodies, including all refunds.
+
+humanitarian_action_begin = {
+	meta_effect = {
+		text = {
+			set_temp_variable = { humanitarian_action_start_result = constant:humanitarian_runtime.zero }
+			if = {
+				limit = { [NAME]_action_can_start = yes }
+				set_temp_variable = { humanitarian_action_target_id = constant:humanitarian_runtime.zero }
+				if = { limit = { check_variable = { humanitarian_action_targeted = constant:humanitarian_runtime.one } } var:humanitarian_action_target = { set_temp_variable = { humanitarian_action_target_id = id } } }
+				add_to_variable = { [SYSTEM]_action_sequence = constant:humanitarian_runtime.one }
+				set_temp_variable = { humanitarian_action_row_id = [SYSTEM]_action_sequence }
+				set_variable = { [SYSTEM]_action_generation_[SUFFIX]_@var:humanitarian_action_target_id = humanitarian_action_row_id }
+				# Publish the generation before any production payment can run.
+				set_variable = { [SYSTEM]_action_due_[SUFFIX]_@var:humanitarian_action_target_id = global.date }
+				set_variable = { [SYSTEM]_action_start_[SUFFIX]_@var:humanitarian_action_target_id = global.date }
+				set_temp_variable = { chaosx_date_days = humanitarian_action_duration_days }
+				set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
+				chaosx_convert_days_to_date_offset = yes
+				add_to_variable = { [SYSTEM]_action_due_[SUFFIX]_@var:humanitarian_action_target_id = chaosx_date_offset }
+				if = {
+					limit = { check_variable = { humanitarian_action_targeted = constant:humanitarian_runtime.one } }
+					var:humanitarian_action_target = {
+						set_variable = { [NAME]_operation_generation = humanitarian_action_row_id }
+						set_variable = { [NAME]_operation_actor = ROOT }
+						set_variable = { [NAME]_operation_cohort_id = constant:humanitarian_runtime.zero }
+						if = { limit = { has_variable = migration_current_cohort_id } set_variable = { [NAME]_operation_cohort_id = migration_current_cohort_id } }
+					}
+				}
+				set_temp_variable = { migration_transport_payment_result = constant:migration_transport_cost.zero }
+				set_temp_variable = { migration_reception_preparation_result = constant:humanitarian_runtime.zero }
+				set_temp_variable = { migration_integration_result = constant:civilian_transfer_route_result.invalid }
+				set_temp_variable = { migration_integration_settlement_result = constant:humanitarian_runtime.zero }
+				set_temp_variable = { humanitarian_action_refunded = constant:humanitarian_runtime.zero }
+				[NAME]_action_begin_work = yes
+				if = {
+					limit = { [NAME]_action_begin_succeeded = yes }
+					set_temp_variable = { humanitarian_action_start_result = constant:humanitarian_runtime.one }
+					set_temp_variable = { chaosx_date_days = humanitarian_action_cooldown_days }
+					set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
+					chaosx_convert_days_to_date_offset = yes
+					set_variable = { [SYSTEM]_action_cooldown_[SUFFIX]_@var:humanitarian_action_target_id = [SYSTEM]_action_due_[SUFFIX]_@var:humanitarian_action_target_id }
+					add_to_variable = { [SYSTEM]_action_cooldown_[SUFFIX]_@var:humanitarian_action_target_id = chaosx_date_offset }
+					if = {
+						limit = { check_variable = { humanitarian_action_timed = constant:humanitarian_runtime.one } }
+						add_to_array = { array = [SYSTEM]_action_ids value = humanitarian_action_row_id }
+						add_to_array = { array = [SYSTEM]_action_types value = humanitarian_action_kind }
+						add_to_array = { array = [SYSTEM]_action_states value = humanitarian_action_target }
+						add_to_array = { array = [SYSTEM]_action_dates value = [SYSTEM]_action_due_[SUFFIX]_@var:humanitarian_action_target_id }
+						add_to_array = { array = [SYSTEM]_action_starts value = [SYSTEM]_action_start_[SUFFIX]_@var:humanitarian_action_target_id }
+						if = {
+							limit = { has_country_flag = humanitarian_action_request_native }
+							set_variable = { humanitarian_native_generation_[NAME]_@var:humanitarian_action_target_id = humanitarian_action_row_id }
+						}
+						[SYSTEM]_register_active_country = yes
+					}
+				}
+				if = {
+					limit = { OR = { check_variable = { humanitarian_action_timed = constant:humanitarian_runtime.one } NOT = { check_variable = { humanitarian_action_start_result = constant:humanitarian_runtime.one } } } }
+					# A timed success retains its exact pending proof. Every other path clears it.
+					if = {
+						limit = { NOT = { check_variable = { humanitarian_action_start_result = constant:humanitarian_runtime.one } } }
+						humanitarian_action_clear_pending_proof = yes
+					}
+				}
+				else = { humanitarian_action_clear_pending_proof = yes }
+			}
+		}
+		SYSTEM = "[?humanitarian_action_system_token.GetTokenKey]"
+		NAME = "[?humanitarian_action_name_token.GetTokenKey]"
+		SUFFIX = "[?humanitarian_action_suffix_token.GetTokenKey]"
+	}
+}
+
+# Pure identity lookup apart from temporary outputs. A missing, mismatched or
+# nonpositive callback id cannot select the most recent pending operation.
+humanitarian_action_find_pending = {
+	meta_effect = {
+		text = {
+			set_temp_variable = { humanitarian_action_row_found = constant:humanitarian_runtime.zero }
+			set_temp_variable = { humanitarian_action_scan_index = [SYSTEM]_action_ids^num }
+			# The sparse owner already knows the exact index. Match its id before using
+			# that hint so an old native callback can never borrow another row.
+			if = {
+				limit = {
+					has_variable = humanitarian_action_callback_index
+					check_variable = { var = [SYSTEM]_action_ids^humanitarian_action_callback_index value = humanitarian_action_callback_id compare = equals }
+				}
+				set_temp_variable = { humanitarian_action_scan_index = humanitarian_action_callback_index }
+				add_to_temp_variable = { humanitarian_action_scan_index = constant:humanitarian_runtime.one }
+			}
+			if = {
+				limit = {
+					check_variable = { humanitarian_action_callback_id > constant:humanitarian_runtime.zero }
+					check_variable = { var = [SYSTEM]_action_ids^num value = [SYSTEM]_action_types^num compare = equals }
+					check_variable = { var = [SYSTEM]_action_ids^num value = [SYSTEM]_action_states^num compare = equals }
+					check_variable = { var = [SYSTEM]_action_ids^num value = [SYSTEM]_action_dates^num compare = equals }
+				check_variable = { var = [SYSTEM]_action_ids^num value = [SYSTEM]_action_starts^num compare = equals }
+				}
+				while_loop_effect = {
+					limit = {
+						check_variable = { humanitarian_action_scan_index > constant:humanitarian_runtime.zero }
+						check_variable = { humanitarian_action_row_found = constant:humanitarian_runtime.zero }
+					}
+					subtract_from_temp_variable = { humanitarian_action_scan_index = constant:humanitarian_runtime.one }
+					if = {
+						limit = { check_variable = { var = [SYSTEM]_action_ids^humanitarian_action_scan_index value = humanitarian_action_callback_id compare = equals } }
+						set_temp_variable = { humanitarian_action_row_index = humanitarian_action_scan_index }
+						set_temp_variable = { humanitarian_action_row_id = [SYSTEM]_action_ids^humanitarian_action_scan_index }
+						set_temp_variable = { humanitarian_action_row_action = [SYSTEM]_action_types^humanitarian_action_scan_index }
+						set_temp_variable = { humanitarian_action_target = [SYSTEM]_action_states^humanitarian_action_scan_index }
+						set_temp_variable = { humanitarian_action_row_due = [SYSTEM]_action_dates^humanitarian_action_scan_index }
+						set_temp_variable = { humanitarian_action_row_found = constant:humanitarian_runtime.one }
+					}
+				}
+			}
+		}
+		SYSTEM = "[?humanitarian_action_system_token.GetTokenKey]"
+	}
+}
+
+humanitarian_action_resolve = {
+	meta_effect = {
+		text = {
+			set_temp_variable = { humanitarian_action_target_id = constant:humanitarian_runtime.zero }
+			var:humanitarian_action_target = { set_temp_variable = { humanitarian_action_target_id = id } }
+			if = {
+				limit = {
+					[NAME]_action_pending_is_current = yes
+					var:humanitarian_action_target = { humanitarian_state_is_valid = yes is_controlled_by = ROOT }
+					var:humanitarian_action_target = {
+						OR = {
+							check_variable = { [NAME]_operation_cohort_id = constant:humanitarian_runtime.zero }
+							AND = { has_variable = migration_current_cohort_id check_variable = { [NAME]_operation_cohort_id = migration_current_cohort_id } }
+						}
+					}
+				}
+				if = {
+					limit = { check_variable = { var = global.date value = humanitarian_action_row_due compare = greater_than_or_equals } }
+					# Consume the row before running work. A replay cannot resolve/refund twice.
+					humanitarian_action_remove_pending_row = yes
+					set_temp_variable = { humanitarian_action_refunded = constant:humanitarian_runtime.zero }
+					[NAME]_action_resolve_work = yes
+					if = { limit = { check_variable = { humanitarian_action_refunded = constant:humanitarian_runtime.one } } clear_variable = [SYSTEM]_action_cooldown_[SUFFIX]_@var:humanitarian_action_target_id }
+					humanitarian_action_clear_pending_proof = yes
+				}
+			}
+			else = { humanitarian_action_cancel = yes }
+		}
+		SYSTEM = "[?humanitarian_action_system_token.GetTokenKey]"
+		NAME = "[?humanitarian_action_name_token.GetTokenKey]"
+		SUFFIX = "[?humanitarian_action_suffix_token.GetTokenKey]"
+	}
+}
+
+humanitarian_action_cancel = {
+	meta_effect = {
+		text = {
+			set_temp_variable = { humanitarian_action_target_id = constant:humanitarian_runtime.zero }
+			var:humanitarian_action_target = { set_temp_variable = { humanitarian_action_target_id = id } }
+			if = {
+				limit = { [NAME]_action_pending_is_current = yes }
+				humanitarian_action_remove_pending_row = yes
+				[NAME]_action_cancel_work = yes
+				humanitarian_action_clear_pending_proof = yes
+			}
+			else = {
+				# A stale row cannot clear another actor's or generation's proof.
+				humanitarian_action_remove_pending_row = yes
+				humanitarian_action_clear_country_proof = yes
+			}
+		}
+		NAME = "[?humanitarian_action_name_token.GetTokenKey]"
+	}
+}
+
+humanitarian_action_remove_pending_row = {
+	meta_effect = {
+		text = {
+			remove_from_array = { array = [SYSTEM]_action_ids index = humanitarian_action_row_index }
+			remove_from_array = { array = [SYSTEM]_action_types index = humanitarian_action_row_index }
+			remove_from_array = { array = [SYSTEM]_action_states index = humanitarian_action_row_index }
+			remove_from_array = { array = [SYSTEM]_action_dates index = humanitarian_action_row_index }
+			remove_from_array = { array = [SYSTEM]_action_starts index = humanitarian_action_row_index }
+		}
+		SYSTEM = "[?humanitarian_action_system_token.GetTokenKey]"
+	}
+}
+
+humanitarian_action_clear_pending_proof = {
+	meta_effect = {
+		text = {
+			humanitarian_action_clear_country_proof = yes
+			if = {
+				limit = { check_variable = { humanitarian_action_targeted = constant:humanitarian_runtime.one } }
+				var:humanitarian_action_target = {
+					if = {
+						limit = {
+							check_variable = { [NAME]_operation_generation = humanitarian_action_row_id }
+							var:[NAME]_operation_actor = { tag = ROOT }
+						}
+						clear_variable = [NAME]_operation_generation
+						clear_variable = [NAME]_operation_actor
+						clear_variable = [NAME]_operation_cohort_id
+					}
+				}
+			}
+		}
+		NAME = "[?humanitarian_action_name_token.GetTokenKey]"
+	}
+}
+
+humanitarian_action_clear_country_proof = {
+	meta_effect = {
+		text = {
+			if = {
+				limit = { check_variable = { [SYSTEM]_action_generation_[SUFFIX]_@var:humanitarian_action_target_id = humanitarian_action_row_id } }
+				clear_variable = [SYSTEM]_action_due_[SUFFIX]_@var:humanitarian_action_target_id
+				clear_variable = [SYSTEM]_action_start_[SUFFIX]_@var:humanitarian_action_target_id
+				clear_variable = [SYSTEM]_action_generation_[SUFFIX]_@var:humanitarian_action_target_id
+			}
+		}
+		SYSTEM = "[?humanitarian_action_system_token.GetTokenKey]"
+		SUFFIX = "[?humanitarian_action_suffix_token.GetTokenKey]"
+	}
+}
+
+# A country that no longer exists cannot receive the actor-country event.
+# Retire only its exact paid and operation proof, without refunds or rewards.
+humanitarian_action_abandon_dead_actor = {
+	meta_effect = {
+		text = {
+			set_temp_variable = { humanitarian_action_target_id = constant:humanitarian_runtime.zero }
+			var:humanitarian_action_target = {
+				set_temp_variable = { humanitarian_action_target_id = id }
+				if = {
+					limit = {
+						check_variable = { [NAME]_operation_generation = humanitarian_action_row_id }
+						var:humanitarian_action_actor = { check_variable = { [SYSTEM]_action_generation_[SUFFIX]_@var:humanitarian_action_target_id = humanitarian_action_row_id } }
+						has_variable = [NAME]_operation_actor
+						var:[NAME]_operation_actor = { NOT = { exists = yes } tag = var:humanitarian_action_actor }
+						OR = {
+							AND = { NOT = { has_state_flag = [NAME]_cost_paid } NOT = { has_state_flag = [NAME]_cost_pending } }
+							AND = { has_variable = [NAME]_cost_payer var:[NAME]_cost_payer = { tag = var:humanitarian_action_actor } }
+						}
+					}
+					clr_state_flag = [NAME]_cost_paid
+					clr_state_flag = [NAME]_cost_pending
+					clear_variable = [NAME]_cost_payer
+					clear_variable = [NAME]_cost_contract_generation
+					clear_variable = [NAME]_cost_donor_state
+					clear_variable = [NAME]_operation_generation
+					clear_variable = [NAME]_operation_actor
+					clear_variable = [NAME]_operation_cohort_id
+				}
+			}
+			if = {
+				limit = { check_variable = { [SYSTEM]_action_generation_[SUFFIX]_@var:humanitarian_action_target_id = humanitarian_action_row_id } }
+				set_temp_variable = { migration_transport_target = humanitarian_action_target }
+				set_temp_variable = { migration_transport_receipt = humanitarian_action_name_token }
+				migration_transport_forget_state_cost = yes
+			}
+			humanitarian_action_remove_pending_row = yes
+			humanitarian_action_clear_country_proof = yes
+		}
+		NAME = "[?humanitarian_action_name_token.GetTokenKey]"
+		SYSTEM = "[?humanitarian_action_system_token.GetTokenKey]"
+		SUFFIX = "[?humanitarian_action_suffix_token.GetTokenKey]"
+	}
+}
+
+# Called only after a native national-law transition, never by reconciliation.
+# Law publication owns the variables. This callback never enrolls a country.
+migration_national_policy_changed = {
+	if = {
+		limit = {
+			check_variable = { national_policy_changed_civilian_slot = constant:national_policy_civilian_family.reception }
+			check_variable = { national_policy_previous_value < constant:migration_border_policy.closed }
+			check_variable = { var = national_policy_new_value value = constant:migration_border_policy.closed compare = greater_than_or_equals }
+			migration_pending_reception_issue_is_valid = yes
+		}
+		add_stability = constant:migration_decision_outcome.decision_close_border_stability_negative
+		add_war_support = constant:migration_decision_outcome.decision_close_border_war_support_negative
+	}
+	if = {
+		limit = { is_in_array = { array = global.migration_active_countries value = THIS } }
+		migration_mark_reception_capacity_dirty = yes
+	}
+	if = { limit = { has_country_flag = migration_panel_open } migration_panel_refresh = yes }
+	if = { limit = { has_country_flag = famine_panel_open } famine_panel_refresh = yes }
+}

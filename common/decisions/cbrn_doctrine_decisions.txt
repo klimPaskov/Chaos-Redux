@@ -2,7 +2,7 @@
 # CHAOS REDUX - CBRN COMMAND DECISIONS
 # ============================================================================
 # Overview:
-# - Three deliberate release-policy choices share a five-Command-Power cost.
+# - Warfare policy is selected through the three native national law slots.
 # - Doctrine mastery grants capability without claim, training, or commission cards.
 # - Exact-state decontamination assignment remains a response action.
 # ============================================================================
@@ -57,87 +57,9 @@ cbrn_operations_category = {
 		}
 	}
 
-	cbrn_choose_retaliation_only = {
-		icon = GFX_decision_cbrn_set_retaliation_authority_policy
-		custom_cost_trigger = { hidden_trigger = { cbrn_can_pay_policy_change = yes } }
-		custom_cost_text = cbrn_policy_five_command_power_cost
-		visible = { cbrn_country_has_program = yes NOT = { cbrn_policy_is_retaliation_authority = yes } }
-		available = {
-			custom_trigger_tooltip = {
-				tooltip = cbrn_choose_retaliation_only_requirements_tt
-				hidden_trigger = { cbrn_can_set_retaliation_authority_policy = yes }
-			}
-		}
-		complete_effect = {
-			custom_effect_tooltip = cbrn_choose_retaliation_only_effect_tt
-			hidden_effect = {
-				set_temp_variable = { cbrn_requested_use_policy = constant:cbrn_use_policy.retaliation_only }
-				set_temp_variable = { cbrn_policy_command_power_cost = constant:cbrn_doctrine_policy_command_power_cost.policy_change }
-				cbrn_change_chaos_warfare_use_policy = yes
-			}
-		}
-		ai_will_do = {
-			base = constant:cbrn_doctrine_ai.retaliation_policy_base
-			modifier = { factor = constant:cbrn_doctrine_ai.retaliation_enemy_use_factor has_enemy_used_chemical_weapons = yes }
-			modifier = { factor = constant:cbrn_doctrine_ai.wartime_battlefield_retention_factor has_war = yes cbrn_ai_policy_authorizes_ordinary_battlefield_first_use = yes }
-		}
-	}
+	
 
-	cbrn_choose_battlefield_authorization = {
-		icon = GFX_decision_cbrn_set_limited_battlefield_policy
-		custom_cost_trigger = { hidden_trigger = { cbrn_can_pay_policy_change = yes } }
-		custom_cost_text = cbrn_policy_five_command_power_cost
-		visible = { cbrn_country_has_program = yes }
-		available = {
-			custom_trigger_tooltip = {
-				tooltip = cbrn_choose_battlefield_authorization_requirements_tt
-				hidden_trigger = { cbrn_can_set_limited_battlefield_policy = yes }
-			}
-		}
-		complete_effect = {
-			custom_effect_tooltip = cbrn_choose_battlefield_authorization_effect_tt
-			hidden_effect = {
-				set_temp_variable = { cbrn_requested_use_policy = constant:cbrn_use_policy.battlefield_authorization }
-				set_temp_variable = { cbrn_policy_command_power_cost = constant:cbrn_doctrine_policy_command_power_cost.policy_change }
-				cbrn_change_chaos_warfare_use_policy = yes
-			}
-		}
-		ai_will_do = {
-			base = constant:cbrn_doctrine_ai.limited_policy_base
-			modifier = { add = constant:cbrn_doctrine_ai.ordinary_battlefield_policy_add cbrn_ai_can_choose_ordinary_battlefield_policy = yes }
-			modifier = { add = constant:cbrn_doctrine_ai.aggressive_route_add cbrn_ai_route_allows_first_use = yes }
-			modifier = { add = constant:cbrn_doctrine_ai.theater_first_use_add has_idea = cbrn_theater_contamination_doctrine_spirit }
-			modifier = { factor = constant:cbrn_doctrine_ai.controlled_first_use_factor has_idea = chemical_command_reagent_optimization_spirit }
-			modifier = { factor = constant:cbrn_doctrine_ai.nonhuman_factor is_actual_nonhuman_country = yes }
-			modifier = { factor = constant:cbrn_doctrine_ai.unrestricted_policy_retention_factor cbrn_policy_allows_extreme_use = yes }
-		}
-	}
+	
 
-	cbrn_choose_unrestricted_authorization = {
-		icon = GFX_decision_cbrn_set_unrestricted_policy
-		custom_cost_trigger = { hidden_trigger = { cbrn_can_pay_policy_change = yes } }
-		custom_cost_text = cbrn_policy_five_command_power_cost
-		visible = { cbrn_country_has_program = yes }
-		available = {
-			custom_trigger_tooltip = {
-				tooltip = cbrn_choose_unrestricted_authorization_requirements_tt
-				hidden_trigger = { cbrn_can_set_unrestricted_policy = yes }
-			}
-		}
-		complete_effect = {
-			custom_effect_tooltip = cbrn_choose_unrestricted_authorization_effect_tt
-			hidden_effect = {
-				set_temp_variable = { cbrn_requested_use_policy = constant:cbrn_use_policy.unrestricted_authorization }
-				set_temp_variable = { cbrn_policy_command_power_cost = constant:cbrn_doctrine_policy_command_power_cost.policy_change }
-				cbrn_change_chaos_warfare_use_policy = yes
-			}
-		}
-		ai_will_do = {
-			base = constant:cbrn_doctrine_ai.unrestricted_policy_base
-			modifier = { add = constant:cbrn_doctrine_ai.unrestricted_route_add cbrn_ai_route_allows_unrestricted_use = yes }
-			modifier = { add = constant:cbrn_doctrine_ai.terminal_unrestricted_add has_idea = cbrn_terminal_hazard_doctrine_spirit }
-			modifier = { factor = constant:cbrn_doctrine_ai.controlled_first_use_factor has_idea = chemical_command_reagent_optimization_spirit }
-			modifier = { factor = constant:cbrn_doctrine_ai.nonhuman_factor is_actual_nonhuman_country = yes }
-		}
-	}
+	
 }

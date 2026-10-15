@@ -2,7 +2,6 @@
 # Movement uses the exact civilian-transfer transaction and never records movement as death.
 
 
-constant:migration_decision_threshold.worker_support_stock = 50
 
 migration_decision_category = {
 	migration_mission_hold_humanitarian_corridor = {
@@ -421,255 +420,15 @@ migration_decision_category = {
 			migration_recount_active_mission_slots = yes
 		}
 	}
-	migration_open_departure_routes = {
-		icon = GFX_migration_decision_open_border
-		visible = {
-			migration_country_has_real_migration_issue = yes
-			NOT = { has_country_flag = humanitarian_corridor_offer_pending }
-			any_owned_state = {
-				has_state_flag = migration_displacement_active
-				OR = {
-					check_variable = { var = migration_flight_pressure value = constant:migration_decision_threshold.category_flight_people compare = greater_than_or_equals }
-					check_variable = { var = migration_trapped_population value = constant:migration_decision_threshold.category_trapped_people compare = greater_than_or_equals }
-				}
-			}
-		}
-		available = {
-			custom_trigger_tooltip = { tooltip = migration_real_country_pressure_tt hidden_trigger = { migration_country_has_real_migration_issue = yes } }
-			hidden_trigger = { uses_normal_civilian_systems = yes }
-			custom_trigger_tooltip = {
-				tooltip = migration_open_departure_routes_policy_tt
-				OR = {
-					OR = {
-						NOT = { has_variable = migration_departure_policy }
-						check_variable = { var = migration_departure_policy value = constant:migration_border_policy.controlled compare = greater_than }
-					}
-				}
-			}
-			hidden_trigger = { migration_open_departure_routes_cost_is_affordable = yes }
-		}
-		custom_cost_text = migration_cost_open_departure_routes
-		custom_cost_trigger = {
-			migration_open_departure_routes_cost_is_affordable = yes
-		}
-		days_remove = constant:migration_decision_timing.decision_short
-		days_re_enable = constant:migration_decision_timing.decision_reenable_short
-		fire_only_once = no
-		ai_will_do = {
-			base = constant:migration_decision_ai.open_departure_base
-			modifier = { factor = constant:migration_decision_ai.open_departure_factor_1 has_war = yes }
-			modifier = { factor = constant:migration_decision_ai.open_departure_factor_2 has_country_flag = migration_displacement_country_active }
-		}
-		complete_effect = {
-			if = {
-				limit = { migration_open_departure_routes_can_start = yes }
-				set_temp_variable = { migration_transport_payment_result = constant:migration_transport_cost.zero }
-				set_temp_variable = { migration_transport_fuel_land = constant:migration_transport_cost.light_fuel_land } set_temp_variable = { migration_transport_fuel_sea = constant:migration_transport_cost.light_fuel_sea } set_temp_variable = { migration_transport_convoys_sea = constant:migration_transport_cost.light_convoys_sea } set_temp_variable = { migration_transport_receipt = token:migration_open_departure_routes } migration_transport_pay_policy_cost = yes
-				if = {
-					limit = { check_variable = { migration_transport_payment_result = constant:migration_transport_cost.one } }
-					add_equipment_to_stockpile = { type = train_equipment amount = constant:humanitarian_legacy_cost.train_light_debit }
-					set_temp_variable = { migration_departure_policy_request = constant:migration_border_policy.humanitarian_open }
-					migration_decision_set_policy = yes
-					set_country_flag = migration_decision_active
-					clr_country_flag = migration_decision_emerging
-					clr_country_flag = migration_decision_dormant
-					clr_country_flag = migration_decision_resolution
-				}
-			}
-			set_temp_variable = { migration_transport_receipt = token:migration_open_departure_routes } migration_transport_forget_policy_cost = yes
-		}
-	}
-	migration_restrict_departure = {
-		icon = GFX_migration_decision_close_border
-		visible = {
-			migration_country_has_real_migration_issue = yes
-			NOT = { has_country_flag = humanitarian_corridor_offer_pending }
-			any_owned_state = {
-				has_state_flag = migration_displacement_active
-				OR = {
-					check_variable = { var = migration_flight_pressure value = constant:migration_decision_threshold.category_flight_people compare = greater_than_or_equals }
-					check_variable = { var = migration_trapped_population value = constant:migration_decision_threshold.category_trapped_people compare = greater_than_or_equals }
-				}
-			}
-		}
-		available = {
-			custom_trigger_tooltip = { tooltip = migration_real_country_pressure_tt hidden_trigger = { migration_country_has_real_migration_issue = yes } }
-			hidden_trigger = { uses_normal_civilian_systems = yes }
-			custom_trigger_tooltip = {
-				tooltip = migration_restrict_departure_policy_tt
-				OR = {
-					OR = {
-						NOT = { has_variable = migration_departure_policy }
-						check_variable = { var = migration_departure_policy value = constant:migration_border_policy.controlled compare = less_than }
-					}
-				}
-			}
-			hidden_trigger = { migration_restrict_departure_cost_is_affordable = yes }
-		}
-		custom_cost_text = migration_cost_restrict_departure
-		custom_cost_trigger = {
-			migration_restrict_departure_cost_is_affordable = yes
-		}
-		days_remove = constant:migration_decision_timing.decision_short
-		days_re_enable = constant:migration_decision_timing.decision_reenable_short
-		fire_only_once = no
-		ai_will_do = {
-			base = constant:migration_decision_ai.restrict_departure_base
-			modifier = { factor = constant:migration_decision_ai.restrict_departure_factor_1 has_war = yes }
-			modifier = { factor = constant:migration_decision_ai.restrict_departure_factor_2 has_government = fascism }
-			modifier = { factor = constant:migration_decision_ai.restrict_departure_factor_3 has_government = communism }
-		}
-		complete_effect = {
-			if = {
-				limit = { migration_restrict_departure_can_start = yes }
-				set_temp_variable = { migration_transport_payment_result = constant:migration_transport_cost.zero }
-				set_temp_variable = { migration_transport_fuel_land = constant:migration_transport_cost.light_fuel_land } set_temp_variable = { migration_transport_fuel_sea = constant:migration_transport_cost.light_fuel_sea } set_temp_variable = { migration_transport_convoys_sea = constant:migration_transport_cost.light_convoys_sea } set_temp_variable = { migration_transport_receipt = token:migration_restrict_departure } migration_transport_pay_policy_cost = yes
-				if = {
-					limit = { check_variable = { migration_transport_payment_result = constant:migration_transport_cost.one } }
-					add_equipment_to_stockpile = { type = infantry_equipment amount = constant:humanitarian_legacy_cost.infantry_light_debit }
-					set_temp_variable = { migration_departure_policy_request = constant:migration_border_policy.controlled }
-					migration_decision_set_policy = yes
-					set_country_flag = migration_decision_active
-					clr_country_flag = migration_decision_emerging
-					clr_country_flag = migration_decision_dormant
-					clr_country_flag = migration_decision_resolution
-				}
-			}
-			set_temp_variable = { migration_transport_receipt = token:migration_restrict_departure } migration_transport_forget_policy_cost = yes
-		}
-	}
-	migration_close_border = {
-		icon = GFX_migration_decision_close_border
-		state_target = any_controlled_state
-		on_map_mode = map_and_decisions_view
-		visible = {
-			FROM = { is_controlled_by = ROOT migration_state_has_real_migration_issue = yes }
-			NOT = { has_country_flag = humanitarian_corridor_offer_pending }
-			OR = {
-				NOT = { has_variable = migration_reception_policy }
-				check_variable = { var = migration_reception_policy value = constant:migration_border_policy.closed compare = less_than }
-			}
-			migration_decision_reception_load_is_valid = yes
-			FROM = {
-				migration_decision_reception_state_load_is_valid = yes
-			}
-		}
-		available = {
-			custom_trigger_tooltip = { tooltip = migration_real_pressure_tt hidden_trigger = { FROM = { is_controlled_by = ROOT migration_state_has_real_migration_issue = yes } } }
-			hidden_trigger = { uses_normal_civilian_systems = yes }
-			custom_trigger_tooltip = {
-				tooltip = migration_reception_load_tt
-				migration_decision_reception_load_is_valid = yes
-			}
-			custom_trigger_tooltip = {
-				tooltip = migration_reception_state_host_tt
-				FROM = {
-					migration_decision_reception_state_load_is_valid = yes
-				}
-			}
-			custom_trigger_tooltip = {
-				tooltip = migration_close_border_policy_tt
-				OR = {
-					OR = {
-						NOT = { has_variable = migration_reception_policy }
-						check_variable = { var = migration_reception_policy value = constant:migration_border_policy.closed compare = less_than }
-					}
-				}
-			}
-			hidden_trigger = { FROM = { is_controlled_by = ROOT } }
-			hidden_trigger = { migration_close_border_cost_is_affordable = yes }
-			hidden_trigger = { NOT = { FROM = { has_state_flag = migration_close_border_cost_paid } } }
-		}
-		target_trigger = {
-			FROM = { is_controlled_by = ROOT migration_state_has_real_migration_issue = yes }
-			migration_decision_reception_load_is_valid = yes
-			FROM = {
-				migration_decision_reception_state_load_is_valid = yes
-			}
-		}
-		custom_cost_text = migration_cost_close_border
-		custom_cost_trigger = {
-			migration_close_border_cost_is_affordable = yes
-		}
-		days_remove = constant:migration_decision_timing.decision_brief
-		days_re_enable = constant:migration_decision_timing.decision_reenable_long
-		fire_only_once = no
-		ai_will_do = {
-			base = constant:migration_decision_ai.close_border_base
-			modifier = { factor = constant:migration_decision_ai.close_border_factor_1 has_war = yes }
-			modifier = { factor = constant:migration_decision_ai.close_border_factor_2 migration_decision_reception_capacity_exhausted_is_valid = yes }
-			modifier = { factor = constant:migration_decision_ai.close_border_factor_3 has_government = democratic }
-		}
-		complete_effect = {
-			if = {
-				limit = { migration_close_border_can_start = yes }
-				set_temp_variable = { migration_transport_payment_result = constant:migration_transport_cost.zero }
-				set_temp_variable = { migration_transport_fuel_land = constant:migration_transport_cost.standard_fuel_land } set_temp_variable = { migration_transport_fuel_sea = constant:migration_transport_cost.standard_fuel_sea } set_temp_variable = { migration_transport_convoys_sea = constant:migration_transport_cost.standard_convoys_sea } set_temp_variable = { migration_transport_target = FROM } set_temp_variable = { migration_transport_receipt = token:migration_close_border } migration_transport_pay_state_cost = yes
-				if = {
-					limit = { check_variable = { migration_transport_payment_result = constant:migration_transport_cost.one } }
-					add_equipment_to_stockpile = { type = infantry_equipment amount = constant:humanitarian_legacy_cost.infantry_heavy_debit }
-					FROM = {
-						set_state_flag = migration_close_border_cost_paid
-						set_variable = { migration_close_border_cost_payer = ROOT }
-					}
-					set_temp_variable = { migration_reception_policy_request = constant:migration_border_policy.closed }
-					migration_decision_set_policy = yes
-					set_country_flag = migration_decision_active
-					clr_country_flag = migration_decision_emerging
-					clr_country_flag = migration_decision_dormant
-					clr_country_flag = migration_decision_resolution
-				}
-			}
-		}
-		remove_effect = {
-			if = {
-				limit = { migration_close_border_cost_receipt_is_valid = yes }
-				FROM = {
-					clr_state_flag = migration_close_border_cost_paid
-					clear_variable = migration_close_border_cost_payer
-				}
-				# Policy toggles never manufacture trapped people. A later rejected
-				# movement transaction must register its own exact origin, cohort,
-				# counterpart, amount, and generation through the core rejection seam.
-				# This decision has no such callback in its owned surface.
-				# Closing reception carries a real political consequence, but no
-				# population or condemnation receipt is created without an exact
-				# rejected movement transaction.
-				add_stability = constant:migration_decision_outcome.decision_close_border_stability_negative
-				add_war_support = constant:migration_decision_outcome.decision_close_border_war_support_negative
-			}
-			else_if = {
-				limit = {
-					FROM = {
-						has_state_flag = migration_close_border_cost_paid
-						has_variable = migration_close_border_cost_payer
-						var:migration_close_border_cost_payer = { tag = ROOT }
-					}
-				}
-				FROM = {
-					clr_state_flag = migration_close_border_cost_paid
-					clear_variable = migration_close_border_cost_payer
-				}
-			}
-			set_temp_variable = { migration_transport_target = FROM } set_temp_variable = { migration_transport_receipt = token:migration_close_border } migration_transport_forget_state_cost = yes
-		}
-		cancel_if_not_visible = no
-		cancel_effect = {
-			FROM = {
-				if = {
-					limit = { has_state_flag = migration_close_border_cost_paid has_variable = migration_close_border_cost_payer var:migration_close_border_cost_payer = { tag = ROOT } }
-					clr_state_flag = migration_close_border_cost_paid
-					clear_variable = migration_close_border_cost_payer
-				}
-			}
-			set_temp_variable = { migration_transport_target = FROM } set_temp_variable = { migration_transport_receipt = token:migration_close_border } migration_transport_forget_state_cost = yes
-		}
-	}
+	
+	
+	
 	migration_prepare_evacuation = {
 		icon = GFX_migration_decision_evacuate
 		state_target = any_controlled_state
 		on_map_mode = map_and_decisions_view
 		visible = {
+			is_ai = yes
 			FROM = { NOT = { has_state_flag = migration_evacuation_prepared } }
 			FROM = { is_controlled_by = ROOT migration_state_has_real_migration_issue = yes }
 			NOT = { has_country_flag = humanitarian_corridor_offer_pending }
@@ -695,6 +454,8 @@ migration_decision_category = {
 			}
 		}
 		available = {
+			set_temp_variable = { humanitarian_action_target = FROM }
+			migration_prepare_evacuation_action_can_start = yes
 			FROM = { NOT = { has_state_flag = migration_evacuation_prepared } }
 			custom_trigger_tooltip = { tooltip = migration_real_pressure_tt hidden_trigger = { FROM = { is_controlled_by = ROOT migration_state_has_real_migration_issue = yes } } }
 			custom_trigger_tooltip = {
@@ -761,62 +522,29 @@ migration_decision_category = {
 			modifier = { factor = constant:migration_decision_ai.prepare_factor_2 has_war = yes }
 		}
 		complete_effect = {
-			if = {
-				limit = { migration_prepare_evacuation_can_start = yes }
-				set_temp_variable = { migration_transport_payment_result = constant:migration_transport_cost.zero }
-				set_temp_variable = { migration_transport_fuel_land = constant:migration_transport_cost.light_fuel_land } set_temp_variable = { migration_transport_fuel_sea = constant:migration_transport_cost.light_fuel_sea } set_temp_variable = { migration_transport_convoys_sea = constant:migration_transport_cost.light_convoys_sea } set_temp_variable = { migration_transport_target = FROM } set_temp_variable = { migration_transport_receipt = token:migration_prepare_evacuation } migration_transport_pay_state_cost = yes
-				if = {
-					limit = { check_variable = { migration_transport_payment_result = constant:migration_transport_cost.one } }
-					add_equipment_to_stockpile = { type = train_equipment amount = constant:humanitarian_legacy_cost.train_light_debit }
-					FROM = {
-						set_state_flag = migration_prepare_evacuation_cost_paid
-						set_variable = { migration_prepare_evacuation_cost_payer = ROOT }
-					}
-					set_country_flag = migration_decision_active
-					clr_country_flag = migration_decision_emerging
-					clr_country_flag = migration_decision_dormant
-					clr_country_flag = migration_decision_resolution
-				}
-			}
+			set_variable = { humanitarian_action_request_action = constant:migration_gui_action.prepare_evacuation }
+			set_variable = { humanitarian_action_request_state = FROM }
+			set_country_flag = humanitarian_action_request_native
+			migration_action_submit_request = yes
 		}
 		remove_effect = {
+			set_temp_variable = { humanitarian_action_target_id = FROM.id }
 			if = {
-				limit = { migration_prepare_evacuation_cost_receipt_is_valid = yes }
-				FROM = {
-					clr_state_flag = migration_prepare_evacuation_cost_paid
-					clear_variable = migration_prepare_evacuation_cost_payer
-				}
-				custom_effect_tooltip = migration_decision_effect_tt
-				FROM = {
-					set_state_flag = migration_evacuation_prepared
-				}
-				add_stability = constant:migration_decision_outcome.decision_minor_stability_negative
+			 limit = { has_variable = humanitarian_native_generation_migration_prepare_evacuation_@var:humanitarian_action_target_id }
+			 set_variable = { humanitarian_action_callback_id = humanitarian_native_generation_migration_prepare_evacuation_@var:humanitarian_action_target_id }
+			 clear_variable = humanitarian_native_generation_migration_prepare_evacuation_@var:humanitarian_action_target_id
+			 migration_action_resolve_callback = yes
 			}
-			else_if = {
-				limit = {
-					FROM = {
-						has_state_flag = migration_prepare_evacuation_cost_paid
-						has_variable = migration_prepare_evacuation_cost_payer
-						var:migration_prepare_evacuation_cost_payer = { tag = ROOT }
-					}
-				}
-				FROM = {
-					clr_state_flag = migration_prepare_evacuation_cost_paid
-					clear_variable = migration_prepare_evacuation_cost_payer
-				}
-			}
-			set_temp_variable = { migration_transport_target = FROM } set_temp_variable = { migration_transport_receipt = token:migration_prepare_evacuation } migration_transport_forget_state_cost = yes
 		}
 		cancel_if_not_visible = no
 		cancel_effect = {
-			FROM = {
-				if = {
-					limit = { has_state_flag = migration_prepare_evacuation_cost_paid has_variable = migration_prepare_evacuation_cost_payer var:migration_prepare_evacuation_cost_payer = { tag = ROOT } }
-					clr_state_flag = migration_prepare_evacuation_cost_paid
-					clear_variable = migration_prepare_evacuation_cost_payer
-				}
+			set_temp_variable = { humanitarian_action_target_id = FROM.id }
+			if = {
+			 limit = { has_variable = humanitarian_native_generation_migration_prepare_evacuation_@var:humanitarian_action_target_id }
+			 set_variable = { humanitarian_action_callback_id = humanitarian_native_generation_migration_prepare_evacuation_@var:humanitarian_action_target_id }
+			 clear_variable = humanitarian_native_generation_migration_prepare_evacuation_@var:humanitarian_action_target_id
+			 migration_action_cancel_callback = yes
 			}
-			set_temp_variable = { migration_transport_target = FROM } set_temp_variable = { migration_transport_receipt = token:migration_prepare_evacuation } migration_transport_forget_state_cost = yes
 		}
 	}
 
@@ -825,6 +553,7 @@ migration_decision_category = {
 		state_target = any_controlled_state
 		on_map_mode = map_and_decisions_view
 		visible = {
+			is_ai = yes
 			FROM = { is_controlled_by = ROOT migration_state_has_real_migration_issue = yes }
 			NOT = { has_country_flag = humanitarian_corridor_offer_pending }
 			migration_reception_has_room_for_evacuation = yes
@@ -834,6 +563,8 @@ migration_decision_category = {
 			}
 		}
 		available = {
+			set_temp_variable = { humanitarian_action_target = FROM }
+			migration_evacuate_vulnerable_action_can_start = yes
 			hidden_trigger = { migration_reception_has_room_for_evacuation = yes }
 			custom_trigger_tooltip = { tooltip = migration_real_pressure_tt hidden_trigger = { FROM = { is_controlled_by = ROOT migration_state_has_real_migration_issue = yes } } }
 			custom_trigger_tooltip = {
@@ -865,217 +596,29 @@ migration_decision_category = {
 			modifier = { factor = constant:migration_decision_ai.evacuate_vulnerable_factor_2 FROM = { check_variable = { var = migration_flight_pressure value = constant:humanitarian_population.zero compare = greater_than } } }
 		}
 		complete_effect = {
-			if = {
-				limit = { migration_evacuate_vulnerable_can_start = yes }
-				set_temp_variable = { migration_transport_payment_result = constant:migration_transport_cost.zero }
-				set_temp_variable = { migration_transport_fuel_land = constant:migration_transport_cost.standard_fuel_land } set_temp_variable = { migration_transport_fuel_sea = constant:migration_transport_cost.standard_fuel_sea } set_temp_variable = { migration_transport_convoys_sea = constant:migration_transport_cost.standard_convoys_sea } set_temp_variable = { migration_transport_target = FROM } set_temp_variable = { migration_transport_receipt = token:migration_evacuate_vulnerable } migration_transport_pay_state_cost = yes
-				if = {
-					limit = { check_variable = { migration_transport_payment_result = constant:migration_transport_cost.one } }
-					add_equipment_to_stockpile = { type = train_equipment amount = constant:humanitarian_legacy_cost.train_light_debit }
-					FROM = {
-						set_state_flag = migration_evacuate_vulnerable_cost_paid
-						set_variable = { migration_evacuate_vulnerable_cost_payer = ROOT }
-					}
-				}
-			}
+			set_variable = { humanitarian_action_request_action = constant:migration_gui_action.evacuate_vulnerable }
+			set_variable = { humanitarian_action_request_state = FROM }
+			set_country_flag = humanitarian_action_request_native
+			migration_action_submit_request = yes
 		}
 		remove_effect = {
+			set_temp_variable = { humanitarian_action_target_id = FROM.id }
 			if = {
-				limit = { migration_evacuate_vulnerable_cost_receipt_is_valid = yes }
-				FROM = {
-					clr_state_flag = migration_evacuate_vulnerable_cost_paid
-					clear_variable = migration_evacuate_vulnerable_cost_payer
-				}
-				FROM = {
-					if = {
-						limit = { has_state_flag = humanitarian_corridor_accepted }
-						if = {
-							limit = {
-								humanitarian_corridor_operation_is_valid = yes
-								check_variable = { var = humanitarian_corridor_operation value = constant:humanitarian_corridor_operation.evacuation compare = equals }
-								has_variable = humanitarian_corridor_route_generation
-								NOT = { has_variable = humanitarian_corridor_evacuation_proven }
-							}
-							set_temp_variable = { civilian_transfer_role_request = constant:migration_core_reconciliation.transfer_projection_role_organized_evacuation }
-							set_temp_variable = { civilian_transfer_flight_obligation_proven = constant:humanitarian_runtime.one }
-							set_temp_variable = { humanitarian_corridor_transaction_result = constant:humanitarian_corridor_result.invalid }
-							set_temp_variable = { civilian_transfer_result = constant:civilian_transfer_route_result.invalid }
-							set_temp_variable = { civilian_transfer_finalize_result = constant:migration_core_reconciliation.transfer_finalize_invalid }
-							set_temp_variable = { civilian_transfer_actual_origin_debit = constant:humanitarian_population.zero }
-							set_temp_variable = { civilian_transfer_survivor_credit = constant:humanitarian_population.zero }
-							set_temp_variable = { civilian_transfer_destination_actual_credit = constant:humanitarian_population.zero }
-							set_temp_variable = { civilian_transfer_route_deaths = constant:humanitarian_population.zero }
-							set_temp_variable = { civilian_transfer_conservation_ledger = constant:humanitarian_population.zero }
-							set_temp_variable = { civilian_transfer_projection_result = constant:migration_core_reconciliation.transfer_projection_invalid }
-							set_temp_variable = { migration_cohort_priority_request = constant:migration_cohort_priority.vulnerable }
-							humanitarian_corridor_execute_evacuation = yes
-							if = {
-								limit = {
-									check_variable = { var = humanitarian_corridor_transaction_result value = constant:humanitarian_corridor_result.valid compare = equals }
-									check_variable = { var = civilian_transfer_actual_origin_debit value = constant:humanitarian_population.zero compare = greater_than }
-									check_variable = { var = civilian_transfer_survivor_credit value = constant:humanitarian_population.zero compare = greater_than }
-								}
-								migration_priority_record_corridor_origin_loss = yes
-								custom_effect_tooltip = migration_effect_vulnerable_priority_tt
-								clr_state_flag = migration_evacuation_prepared
-								if = {
-									limit = { check_variable = { var = humanitarian_corridor_evacuation_route_deaths value = constant:humanitarian_population.zero compare = greater_than } }
-									ROOT = { add_stability = constant:migration_decision_outcome.decision_standard_stability_negative }
-								}
-								ROOT = {
-									if = { limit = { has_war = yes } migration_show_report_wartime_evacuation = yes }
-								}
-								if = {
-									limit = { check_variable = { var = humanitarian_corridor_evacuation_survivor_credit value = constant:migration_mission_contract.minimum_survivor_credit compare = greater_than } }
-									event_target:civilian_transfer_route_destination = {
-										OWNER = {
-											humanitarian_achievement_record_arrival = yes
-											if = {
-												limit = { has_country_flag = humanitarian_achievement_gate_major_crisis }
-												humanitarian_achievement_record_gate_protection = yes
-											}
-										}
-									}
-								}
-							}
-						}
-					}
-					else = {
-						save_event_target_as = civilian_transfer_origin
-						migration_select_general_safe_evacuation_destination = yes
-					}
-				}
-				if = {
-					limit = {
-						has_event_target = civilian_transfer_origin
-						event_target:civilian_transfer_origin = { NOT = { has_state_flag = humanitarian_corridor_accepted } }
-					}
-					event_target:civilian_transfer_origin = {
-						set_temp_variable = { migration_cohort_priority_request = constant:migration_cohort_priority.vulnerable }
-						set_temp_variable = { civilian_transfer_people = state_population_k }
-						multiply_temp_variable = { civilian_transfer_people = constant:chaos_meter_deaths.people_per_k }
-						multiply_temp_variable = { civilian_transfer_people = constant:migration_decision_threshold.transfer_share }
-						multiply_temp_variable = { civilian_transfer_people = constant:migration_cohort_priority_effect.vulnerable_batch_factor }
-						round_temp_variable = civilian_transfer_people
-						set_temp_variable = { civilian_transfer_request_proven = constant:humanitarian_runtime.one }
-						set_temp_variable = { civilian_transfer_route_border_proven = constant:humanitarian_runtime.one }
-						set_temp_variable = { civilian_transfer_route_transport_proven = constant:humanitarian_runtime.one }
-						set_temp_variable = { civilian_transfer_route_safety_proven = constant:humanitarian_runtime.zero }
-						migration_decision_prove_route_contract = yes
-						set_temp_variable = { civilian_transfer_route_actor_proven = constant:humanitarian_runtime.one }
-						set_temp_variable = { civilian_transfer_route_deaths_requested = constant:humanitarian_population.zero }
-						set_temp_variable = { civilian_transfer_log_deaths = constant:humanitarian_runtime.one }
-						set_temp_variable = { civilian_transfer_role_request = constant:migration_core_reconciliation.transfer_projection_role_organized_evacuation }
-						set_temp_variable = { civilian_transfer_flight_obligation_proven = constant:humanitarian_runtime.one }
-						if = { limit = { check_variable = { var = migration_trapped_population value = constant:humanitarian_population.zero compare = greater_than } } set_temp_variable = { civilian_transfer_trapped_obligation_proven = constant:humanitarian_runtime.one } }
-						set_temp_variable = { migration_cohort_record_result = constant:civilian_transfer_route_result.invalid }
-						set_temp_variable = { migration_cohort_id_result = constant:humanitarian_runtime.zero }
-						set_temp_variable = { migration_decision_atomic_transfer_result = constant:civilian_transfer_route_result.invalid }
-						set_temp_variable = { civilian_transfer_result = constant:civilian_transfer_route_result.invalid }
-						set_temp_variable = { civilian_transfer_finalize_result = constant:migration_core_reconciliation.transfer_finalize_invalid }
-						set_temp_variable = { civilian_transfer_actual_origin_debit = constant:humanitarian_population.zero }
-						set_temp_variable = { civilian_transfer_survivor_credit = constant:humanitarian_population.zero }
-						set_temp_variable = { civilian_transfer_destination_actual_credit = constant:humanitarian_population.zero }
-						set_temp_variable = { civilian_transfer_route_deaths = constant:humanitarian_population.zero }
-						set_temp_variable = { civilian_transfer_conservation_ledger = constant:humanitarian_population.zero }
-						set_temp_variable = { civilian_transfer_projection_result = constant:migration_core_reconciliation.transfer_projection_invalid }
-						migration_decision_execute_new_origin_organized_evacuation = yes
-						if = {
-							limit = {
-								check_variable = { var = civilian_transfer_finalize_result value = constant:migration_core_reconciliation.transfer_finalize_valid compare = equals }
-								check_variable = { var = civilian_transfer_actual_origin_debit value = constant:humanitarian_population.zero compare = greater_than }
-								check_variable = { var = civilian_transfer_survivor_credit value = constant:humanitarian_population.zero compare = greater_than }
-								check_variable = { var = civilian_transfer_projection_result value = constant:civilian_transfer_route_result.valid compare = equals }
-							}
-							custom_effect_tooltip = migration_effect_vulnerable_priority_tt
-						}
-					}
-				}
-				if = {
-					limit = {
-						has_event_target = civilian_transfer_origin
-						event_target:civilian_transfer_origin = { NOT = { has_state_flag = humanitarian_corridor_accepted } }
-					}
-					event_target:civilian_transfer_route_destination = {
-						if = {
-							limit = {
-								check_variable = { var = civilian_transfer_finalize_result value = constant:migration_core_reconciliation.transfer_finalize_valid compare = equals }
-								check_variable = { var = civilian_transfer_actual_origin_debit value = constant:humanitarian_population.zero compare = greater_than }
-								check_variable = { var = civilian_transfer_survivor_credit value = constant:humanitarian_population.zero compare = greater_than }
-								check_variable = { var = civilian_transfer_projection_result value = constant:civilian_transfer_route_result.valid compare = equals }
-							}
-							if = {
-								limit = { check_variable = { var = migration_decision_atomic_transfer_result value = constant:civilian_transfer_route_result.valid compare = equals } }
-								clr_state_flag = migration_evacuation_prepared
-								if = {
-									limit = {
-										check_variable = { var = migration_cohort_record_result value = constant:civilian_transfer_route_result.valid compare = equals }
-										check_variable = { var = civilian_transfer_survivor_credit value = constant:migration_mission_contract.minimum_survivor_credit compare = greater_than }
-										NOT = { ROOT = { has_country_flag = migration_mission_evacuation_active } }
-										ROOT = { migration_country_has_free_mission_slot = yes }
-									}
-									set_state_flag = migration_mission_evacuation_subject
-									set_variable = { migration_mission_evacuation_cohort_id = migration_cohort_id_result }
-									migration_set_mission_evacuation_deadline = yes
-									ROOT = {
-										migration_claim_mission_slot = yes
-										set_country_flag = migration_mission_evacuation_active
-										if = { limit = { has_war = yes } migration_show_report_wartime_evacuation = yes }
-									}
-								}
-								if = {
-									limit = { has_state_flag = humanitarian_corridor_mission_subject }
-									set_state_flag = humanitarian_corridor_mission_success_proven
-									if = { limit = { NOT = { check_variable = { var = migration_trapped_population value = constant:humanitarian_population.zero compare = greater_than } } } clr_state_flag = migration_population_trapped }
-								}
-								OWNER = {
-									humanitarian_achievement_record_arrival = yes
-									if = {
-										limit = { has_country_flag = humanitarian_achievement_gate_major_crisis }
-										humanitarian_achievement_record_gate_protection = yes
-									}
-								}
-							}
-						}
-					}
-				}
-				if = {
-					limit = {
-						NOT = { check_variable = { var = civilian_transfer_actual_origin_debit value = constant:humanitarian_population.zero compare = greater_than } }
-					}
-					set_temp_variable = { migration_transport_target = FROM } set_temp_variable = { migration_transport_receipt = token:migration_evacuate_vulnerable } migration_transport_refund_state_cost = yes
-					add_equipment_to_stockpile = { type = train_equipment amount = constant:humanitarian_legacy_cost.train_light }
-				}
+			 limit = { has_variable = humanitarian_native_generation_migration_evacuate_vulnerable_@var:humanitarian_action_target_id }
+			 set_variable = { humanitarian_action_callback_id = humanitarian_native_generation_migration_evacuate_vulnerable_@var:humanitarian_action_target_id }
+			 clear_variable = humanitarian_native_generation_migration_evacuate_vulnerable_@var:humanitarian_action_target_id
+			 migration_action_resolve_callback = yes
 			}
-			else_if = {
-				limit = {
-					FROM = {
-						has_state_flag = migration_evacuate_vulnerable_cost_paid
-						has_variable = migration_evacuate_vulnerable_cost_payer
-						var:migration_evacuate_vulnerable_cost_payer = { tag = ROOT }
-					}
-				}
-				FROM = {
-					clr_state_flag = migration_evacuate_vulnerable_cost_paid
-					clear_variable = migration_evacuate_vulnerable_cost_payer
-				}
-			}
-			set_temp_variable = { migration_transport_target = FROM } set_temp_variable = { migration_transport_receipt = token:migration_evacuate_vulnerable } migration_transport_forget_state_cost = yes
 		}
 		cancel_if_not_visible = no
 		cancel_effect = {
-			FROM = {
-				if = {
-					limit = { has_state_flag = migration_evacuate_vulnerable_cost_paid has_variable = migration_evacuate_vulnerable_cost_payer var:migration_evacuate_vulnerable_cost_payer = { tag = ROOT } }
-					clr_state_flag = migration_evacuate_vulnerable_cost_paid
-					clear_variable = migration_evacuate_vulnerable_cost_payer
-				}
+			set_temp_variable = { humanitarian_action_target_id = FROM.id }
+			if = {
+			 limit = { has_variable = humanitarian_native_generation_migration_evacuate_vulnerable_@var:humanitarian_action_target_id }
+			 set_variable = { humanitarian_action_callback_id = humanitarian_native_generation_migration_evacuate_vulnerable_@var:humanitarian_action_target_id }
+			 clear_variable = humanitarian_native_generation_migration_evacuate_vulnerable_@var:humanitarian_action_target_id
+			 migration_action_cancel_callback = yes
 			}
-			FROM = {
-				clr_state_flag = migration_evacuation_prepared
-				civilian_transfer_cleanup_request = yes
-			}
-			set_temp_variable = { migration_transport_target = FROM } set_temp_variable = { migration_transport_receipt = token:migration_evacuate_vulnerable } migration_transport_forget_state_cost = yes
 		}
 	}
 
@@ -1084,6 +627,7 @@ migration_decision_category = {
 		state_target = any_controlled_state
 		on_map_mode = map_and_decisions_view
 		visible = {
+			is_ai = yes
 			FROM = { is_controlled_by = ROOT migration_state_has_real_migration_issue = yes }
 			NOT = { has_country_flag = humanitarian_corridor_offer_pending }
 			migration_reception_has_room_for_evacuation = yes
@@ -1093,6 +637,8 @@ migration_decision_category = {
 			}
 		}
 		available = {
+			set_temp_variable = { humanitarian_action_target = FROM }
+			migration_evacuate_civilians_action_can_start = yes
 			hidden_trigger = { migration_reception_has_room_for_evacuation = yes }
 			custom_trigger_tooltip = { tooltip = migration_real_pressure_tt hidden_trigger = { FROM = { is_controlled_by = ROOT migration_state_has_real_migration_issue = yes } } }
 			custom_trigger_tooltip = {
@@ -1124,216 +670,29 @@ migration_decision_category = {
 			modifier = { factor = constant:migration_decision_ai.evacuate_civilians_factor_2 has_war = yes }
 		}
 		complete_effect = {
-			if = {
-				limit = { migration_evacuate_civilians_can_start = yes }
-				set_temp_variable = { migration_transport_payment_result = constant:migration_transport_cost.zero }
-				set_temp_variable = { migration_transport_fuel_land = constant:migration_transport_cost.standard_fuel_land } set_temp_variable = { migration_transport_fuel_sea = constant:migration_transport_cost.standard_fuel_sea } set_temp_variable = { migration_transport_convoys_sea = constant:migration_transport_cost.standard_convoys_sea } set_temp_variable = { migration_transport_target = FROM } set_temp_variable = { migration_transport_receipt = token:migration_evacuate_civilians } migration_transport_pay_state_cost = yes
-				if = {
-					limit = { check_variable = { migration_transport_payment_result = constant:migration_transport_cost.one } }
-					add_equipment_to_stockpile = { type = train_equipment amount = constant:humanitarian_legacy_cost.train_light_debit }
-					FROM = {
-						set_state_flag = migration_evacuate_civilians_cost_paid
-						set_variable = { migration_evacuate_civilians_cost_payer = ROOT }
-					}
-				}
-			}
+			set_variable = { humanitarian_action_request_action = constant:migration_gui_action.evacuate_civilians }
+			set_variable = { humanitarian_action_request_state = FROM }
+			set_country_flag = humanitarian_action_request_native
+			migration_action_submit_request = yes
 		}
 		remove_effect = {
+			set_temp_variable = { humanitarian_action_target_id = FROM.id }
 			if = {
-				limit = { migration_evacuate_civilians_cost_receipt_is_valid = yes }
-				FROM = {
-					clr_state_flag = migration_evacuate_civilians_cost_paid
-					clear_variable = migration_evacuate_civilians_cost_payer
-				}
-				FROM = {
-					if = {
-						limit = { has_state_flag = humanitarian_corridor_accepted }
-						if = {
-							limit = {
-								humanitarian_corridor_operation_is_valid = yes
-								check_variable = { var = humanitarian_corridor_operation value = constant:humanitarian_corridor_operation.evacuation compare = equals }
-								has_variable = humanitarian_corridor_route_generation
-								NOT = { has_variable = humanitarian_corridor_evacuation_proven }
-							}
-							set_temp_variable = { civilian_transfer_role_request = constant:migration_core_reconciliation.transfer_projection_role_organized_evacuation }
-							set_temp_variable = { civilian_transfer_flight_obligation_proven = constant:humanitarian_runtime.one }
-							set_temp_variable = { humanitarian_corridor_transaction_result = constant:humanitarian_corridor_result.invalid }
-							set_temp_variable = { civilian_transfer_result = constant:civilian_transfer_route_result.invalid }
-							set_temp_variable = { civilian_transfer_finalize_result = constant:migration_core_reconciliation.transfer_finalize_invalid }
-							set_temp_variable = { civilian_transfer_actual_origin_debit = constant:humanitarian_population.zero }
-							set_temp_variable = { civilian_transfer_survivor_credit = constant:humanitarian_population.zero }
-							set_temp_variable = { civilian_transfer_destination_actual_credit = constant:humanitarian_population.zero }
-							set_temp_variable = { civilian_transfer_route_deaths = constant:humanitarian_population.zero }
-							set_temp_variable = { civilian_transfer_conservation_ledger = constant:humanitarian_population.zero }
-							set_temp_variable = { civilian_transfer_projection_result = constant:migration_core_reconciliation.transfer_projection_invalid }
-							set_temp_variable = { migration_cohort_priority_request = constant:migration_cohort_priority.general }
-							humanitarian_corridor_execute_evacuation = yes
-							if = {
-								limit = {
-									check_variable = { var = humanitarian_corridor_transaction_result value = constant:humanitarian_corridor_result.valid compare = equals }
-									check_variable = { var = civilian_transfer_actual_origin_debit value = constant:humanitarian_population.zero compare = greater_than }
-									check_variable = { var = civilian_transfer_survivor_credit value = constant:humanitarian_population.zero compare = greater_than }
-								}
-								migration_priority_record_corridor_origin_loss = yes
-								custom_effect_tooltip = migration_decision_transfer_tt
-								clr_state_flag = migration_evacuation_prepared
-								if = {
-									limit = { check_variable = { var = humanitarian_corridor_evacuation_route_deaths value = constant:humanitarian_population.zero compare = greater_than } }
-									ROOT = { add_stability = constant:migration_decision_outcome.decision_standard_stability_negative }
-								}
-								ROOT = {
-									if = { limit = { has_war = yes } migration_show_report_wartime_evacuation = yes }
-								}
-								if = {
-									limit = { check_variable = { var = humanitarian_corridor_evacuation_survivor_credit value = constant:migration_mission_contract.minimum_survivor_credit compare = greater_than } }
-									event_target:civilian_transfer_route_destination = {
-										OWNER = {
-											humanitarian_achievement_record_arrival = yes
-											if = {
-												limit = { has_country_flag = humanitarian_achievement_gate_major_crisis }
-												humanitarian_achievement_record_gate_protection = yes
-											}
-										}
-									}
-								}
-							}
-						}
-					}
-					else = {
-						save_event_target_as = civilian_transfer_origin
-						migration_select_general_safe_evacuation_destination = yes
-					}
-				}
-				if = {
-					limit = {
-						has_event_target = civilian_transfer_origin
-						event_target:civilian_transfer_origin = { NOT = { has_state_flag = humanitarian_corridor_accepted } }
-					}
-					event_target:civilian_transfer_origin = {
-						set_temp_variable = { migration_cohort_priority_request = constant:migration_cohort_priority.general }
-						set_temp_variable = { civilian_transfer_people = state_population_k }
-						multiply_temp_variable = { civilian_transfer_people = constant:chaos_meter_deaths.people_per_k }
-						multiply_temp_variable = { civilian_transfer_people = constant:migration_decision_threshold.transfer_share }
-						round_temp_variable = civilian_transfer_people
-						set_temp_variable = { civilian_transfer_request_proven = constant:humanitarian_runtime.one }
-						set_temp_variable = { civilian_transfer_route_border_proven = constant:humanitarian_runtime.one }
-						set_temp_variable = { civilian_transfer_route_transport_proven = constant:humanitarian_runtime.one }
-						set_temp_variable = { civilian_transfer_route_safety_proven = constant:humanitarian_runtime.zero }
-						migration_decision_prove_route_contract = yes
-						set_temp_variable = { civilian_transfer_route_actor_proven = constant:humanitarian_runtime.one }
-						set_temp_variable = { civilian_transfer_route_deaths_requested = constant:humanitarian_population.zero }
-						set_temp_variable = { civilian_transfer_log_deaths = constant:humanitarian_runtime.one }
-						set_temp_variable = { civilian_transfer_role_request = constant:migration_core_reconciliation.transfer_projection_role_organized_evacuation }
-						set_temp_variable = { civilian_transfer_flight_obligation_proven = constant:humanitarian_runtime.one }
-						if = { limit = { check_variable = { var = migration_trapped_population value = constant:humanitarian_population.zero compare = greater_than } } set_temp_variable = { civilian_transfer_trapped_obligation_proven = constant:humanitarian_runtime.one } }
-						set_temp_variable = { migration_cohort_record_result = constant:civilian_transfer_route_result.invalid }
-						set_temp_variable = { migration_cohort_id_result = constant:humanitarian_runtime.zero }
-						set_temp_variable = { migration_decision_atomic_transfer_result = constant:civilian_transfer_route_result.invalid }
-						set_temp_variable = { civilian_transfer_result = constant:civilian_transfer_route_result.invalid }
-						set_temp_variable = { civilian_transfer_finalize_result = constant:migration_core_reconciliation.transfer_finalize_invalid }
-						set_temp_variable = { civilian_transfer_actual_origin_debit = constant:humanitarian_population.zero }
-						set_temp_variable = { civilian_transfer_survivor_credit = constant:humanitarian_population.zero }
-						set_temp_variable = { civilian_transfer_destination_actual_credit = constant:humanitarian_population.zero }
-						set_temp_variable = { civilian_transfer_route_deaths = constant:humanitarian_population.zero }
-						set_temp_variable = { civilian_transfer_conservation_ledger = constant:humanitarian_population.zero }
-						set_temp_variable = { civilian_transfer_projection_result = constant:migration_core_reconciliation.transfer_projection_invalid }
-						migration_decision_execute_new_origin_organized_evacuation = yes
-						if = {
-							limit = {
-								check_variable = { var = civilian_transfer_finalize_result value = constant:migration_core_reconciliation.transfer_finalize_valid compare = equals }
-								check_variable = { var = civilian_transfer_actual_origin_debit value = constant:humanitarian_population.zero compare = greater_than }
-								check_variable = { var = civilian_transfer_survivor_credit value = constant:humanitarian_population.zero compare = greater_than }
-								check_variable = { var = civilian_transfer_projection_result value = constant:civilian_transfer_route_result.valid compare = equals }
-							}
-							custom_effect_tooltip = migration_decision_transfer_tt
-						}
-					}
-				}
-				if = {
-					limit = {
-						has_event_target = civilian_transfer_origin
-						event_target:civilian_transfer_origin = { NOT = { has_state_flag = humanitarian_corridor_accepted } }
-					}
-					event_target:civilian_transfer_route_destination = {
-						if = {
-							limit = {
-								check_variable = { var = civilian_transfer_finalize_result value = constant:migration_core_reconciliation.transfer_finalize_valid compare = equals }
-								check_variable = { var = civilian_transfer_actual_origin_debit value = constant:humanitarian_population.zero compare = greater_than }
-								check_variable = { var = civilian_transfer_survivor_credit value = constant:humanitarian_population.zero compare = greater_than }
-								check_variable = { var = civilian_transfer_projection_result value = constant:civilian_transfer_route_result.valid compare = equals }
-							}
-							if = {
-								limit = { check_variable = { var = migration_decision_atomic_transfer_result value = constant:civilian_transfer_route_result.valid compare = equals } }
-								clr_state_flag = migration_evacuation_prepared
-								if = {
-									limit = {
-										check_variable = { var = migration_cohort_record_result value = constant:civilian_transfer_route_result.valid compare = equals }
-										check_variable = { var = civilian_transfer_survivor_credit value = constant:migration_mission_contract.minimum_survivor_credit compare = greater_than }
-										NOT = { ROOT = { has_country_flag = migration_mission_evacuation_active } }
-										ROOT = { migration_country_has_free_mission_slot = yes }
-									}
-									set_state_flag = migration_mission_evacuation_subject
-									set_variable = { migration_mission_evacuation_cohort_id = migration_cohort_id_result }
-									migration_set_mission_evacuation_deadline = yes
-									ROOT = {
-										migration_claim_mission_slot = yes
-										set_country_flag = migration_mission_evacuation_active
-										if = { limit = { has_war = yes } migration_show_report_wartime_evacuation = yes }
-									}
-								}
-								if = {
-									limit = { has_state_flag = humanitarian_corridor_mission_subject }
-									set_state_flag = humanitarian_corridor_mission_success_proven
-									if = { limit = { NOT = { check_variable = { var = migration_trapped_population value = constant:humanitarian_population.zero compare = greater_than } } } clr_state_flag = migration_population_trapped }
-								}
-								OWNER = {
-									humanitarian_achievement_record_arrival = yes
-									if = {
-										limit = { has_country_flag = humanitarian_achievement_gate_major_crisis }
-										humanitarian_achievement_record_gate_protection = yes
-									}
-								}
-							}
-						}
-					}
-				}
-				if = {
-					limit = {
-						NOT = { check_variable = { var = civilian_transfer_actual_origin_debit value = constant:humanitarian_population.zero compare = greater_than } }
-					}
-					set_temp_variable = { migration_transport_target = FROM } set_temp_variable = { migration_transport_receipt = token:migration_evacuate_civilians } migration_transport_refund_state_cost = yes
-					add_equipment_to_stockpile = { type = train_equipment amount = constant:humanitarian_legacy_cost.train_light }
-				}
+			 limit = { has_variable = humanitarian_native_generation_migration_evacuate_civilians_@var:humanitarian_action_target_id }
+			 set_variable = { humanitarian_action_callback_id = humanitarian_native_generation_migration_evacuate_civilians_@var:humanitarian_action_target_id }
+			 clear_variable = humanitarian_native_generation_migration_evacuate_civilians_@var:humanitarian_action_target_id
+			 migration_action_resolve_callback = yes
 			}
-			else_if = {
-				limit = {
-					FROM = {
-						has_state_flag = migration_evacuate_civilians_cost_paid
-						has_variable = migration_evacuate_civilians_cost_payer
-						var:migration_evacuate_civilians_cost_payer = { tag = ROOT }
-					}
-				}
-				FROM = {
-					clr_state_flag = migration_evacuate_civilians_cost_paid
-					clear_variable = migration_evacuate_civilians_cost_payer
-				}
-			}
-			set_temp_variable = { migration_transport_target = FROM } set_temp_variable = { migration_transport_receipt = token:migration_evacuate_civilians } migration_transport_forget_state_cost = yes
 		}
 		cancel_if_not_visible = no
 		cancel_effect = {
-			FROM = {
-				if = {
-					limit = { has_state_flag = migration_evacuate_civilians_cost_paid has_variable = migration_evacuate_civilians_cost_payer var:migration_evacuate_civilians_cost_payer = { tag = ROOT } }
-					clr_state_flag = migration_evacuate_civilians_cost_paid
-					clear_variable = migration_evacuate_civilians_cost_payer
-				}
+			set_temp_variable = { humanitarian_action_target_id = FROM.id }
+			if = {
+			 limit = { has_variable = humanitarian_native_generation_migration_evacuate_civilians_@var:humanitarian_action_target_id }
+			 set_variable = { humanitarian_action_callback_id = humanitarian_native_generation_migration_evacuate_civilians_@var:humanitarian_action_target_id }
+			 clear_variable = humanitarian_native_generation_migration_evacuate_civilians_@var:humanitarian_action_target_id
+			 migration_action_cancel_callback = yes
 			}
-			FROM = {
-				clr_state_flag = migration_evacuation_prepared
-				civilian_transfer_cleanup_request = yes
-			}
-			set_temp_variable = { migration_transport_target = FROM } set_temp_variable = { migration_transport_receipt = token:migration_evacuate_civilians } migration_transport_forget_state_cost = yes
 		}
 	}
 
@@ -1342,6 +701,7 @@ migration_evacuate_administration = {
 		state_target = any_controlled_state
 		on_map_mode = map_and_decisions_view
 		visible = {
+			is_ai = yes
 			FROM = { is_controlled_by = ROOT migration_state_has_real_migration_issue = yes }
 			NOT = { has_country_flag = humanitarian_corridor_offer_pending }
 			migration_reception_has_room_for_evacuation = yes
@@ -1351,6 +711,8 @@ migration_evacuate_administration = {
 			}
 		}
 		available = {
+			set_temp_variable = { humanitarian_action_target = FROM }
+			migration_evacuate_administration_action_can_start = yes
 			hidden_trigger = { migration_reception_has_room_for_evacuation = yes }
 			custom_trigger_tooltip = { tooltip = migration_real_pressure_tt hidden_trigger = { FROM = { is_controlled_by = ROOT migration_state_has_real_migration_issue = yes } } }
 			custom_trigger_tooltip = {
@@ -1382,216 +744,29 @@ migration_evacuate_administration = {
 			modifier = { factor = constant:migration_decision_ai.evacuate_vulnerable_factor_2 FROM = { check_variable = { var = migration_flight_pressure value = constant:humanitarian_population.zero compare = greater_than } } }
 		}
 		complete_effect = {
-			if = {
-				limit = { migration_evacuate_administration_can_start = yes }
-				set_temp_variable = { migration_transport_payment_result = constant:migration_transport_cost.zero }
-				set_temp_variable = { migration_transport_fuel_land = constant:migration_transport_cost.standard_fuel_land } set_temp_variable = { migration_transport_fuel_sea = constant:migration_transport_cost.standard_fuel_sea } set_temp_variable = { migration_transport_convoys_sea = constant:migration_transport_cost.standard_convoys_sea } set_temp_variable = { migration_transport_target = FROM } set_temp_variable = { migration_transport_receipt = token:migration_evacuate_administration } migration_transport_pay_state_cost = yes
-				if = {
-					limit = { check_variable = { migration_transport_payment_result = constant:migration_transport_cost.one } }
-					add_equipment_to_stockpile = { type = train_equipment amount = constant:humanitarian_legacy_cost.train_light_debit }
-					FROM = {
-						set_state_flag = migration_evacuate_administration_cost_paid
-						set_variable = { migration_evacuate_administration_cost_payer = ROOT }
-					}
-				}
-			}
+			set_variable = { humanitarian_action_request_action = constant:migration_gui_action.evacuate_administration }
+			set_variable = { humanitarian_action_request_state = FROM }
+			set_country_flag = humanitarian_action_request_native
+			migration_action_submit_request = yes
 		}
 		remove_effect = {
+			set_temp_variable = { humanitarian_action_target_id = FROM.id }
 			if = {
-				limit = { migration_evacuate_administration_cost_receipt_is_valid = yes }
-				FROM = {
-					clr_state_flag = migration_evacuate_administration_cost_paid
-					clear_variable = migration_evacuate_administration_cost_payer
-				}
-				FROM = {
-					if = {
-						limit = { has_state_flag = humanitarian_corridor_accepted }
-						if = {
-							limit = {
-								humanitarian_corridor_operation_is_valid = yes
-								check_variable = { var = humanitarian_corridor_operation value = constant:humanitarian_corridor_operation.evacuation compare = equals }
-								has_variable = humanitarian_corridor_route_generation
-								NOT = { has_variable = humanitarian_corridor_evacuation_proven }
-							}
-							set_temp_variable = { civilian_transfer_role_request = constant:migration_core_reconciliation.transfer_projection_role_organized_evacuation }
-							set_temp_variable = { civilian_transfer_flight_obligation_proven = constant:humanitarian_runtime.one }
-							set_temp_variable = { humanitarian_corridor_transaction_result = constant:humanitarian_corridor_result.invalid }
-							set_temp_variable = { civilian_transfer_result = constant:civilian_transfer_route_result.invalid }
-							set_temp_variable = { civilian_transfer_finalize_result = constant:migration_core_reconciliation.transfer_finalize_invalid }
-							set_temp_variable = { civilian_transfer_actual_origin_debit = constant:humanitarian_population.zero }
-							set_temp_variable = { civilian_transfer_survivor_credit = constant:humanitarian_population.zero }
-							set_temp_variable = { civilian_transfer_destination_actual_credit = constant:humanitarian_population.zero }
-							set_temp_variable = { civilian_transfer_route_deaths = constant:humanitarian_population.zero }
-							set_temp_variable = { civilian_transfer_conservation_ledger = constant:humanitarian_population.zero }
-							set_temp_variable = { civilian_transfer_projection_result = constant:migration_core_reconciliation.transfer_projection_invalid }
-							set_temp_variable = { migration_cohort_priority_request = constant:migration_cohort_priority.administrative }
-							humanitarian_corridor_execute_evacuation = yes
-							if = {
-								limit = {
-									check_variable = { var = humanitarian_corridor_transaction_result value = constant:humanitarian_corridor_result.valid compare = equals }
-									check_variable = { var = civilian_transfer_actual_origin_debit value = constant:humanitarian_population.zero compare = greater_than }
-									check_variable = { var = civilian_transfer_survivor_credit value = constant:humanitarian_population.zero compare = greater_than }
-								}
-								migration_priority_record_corridor_origin_loss = yes
-								custom_effect_tooltip = migration_effect_administration_priority_tt
-								clr_state_flag = migration_evacuation_prepared
-								if = {
-									limit = { check_variable = { var = humanitarian_corridor_evacuation_route_deaths value = constant:humanitarian_population.zero compare = greater_than } }
-									ROOT = { add_stability = constant:migration_decision_outcome.decision_standard_stability_negative }
-								}
-								ROOT = {
-									if = { limit = { has_war = yes } migration_show_report_wartime_evacuation = yes }
-								}
-								if = {
-									limit = { check_variable = { var = humanitarian_corridor_evacuation_survivor_credit value = constant:migration_mission_contract.minimum_survivor_credit compare = greater_than } }
-									event_target:civilian_transfer_route_destination = {
-										OWNER = {
-											humanitarian_achievement_record_arrival = yes
-											if = {
-												limit = { has_country_flag = humanitarian_achievement_gate_major_crisis }
-												humanitarian_achievement_record_gate_protection = yes
-											}
-										}
-									}
-								}
-							}
-						}
-					}
-					else = {
-						save_event_target_as = civilian_transfer_origin
-						migration_select_general_safe_evacuation_destination = yes
-					}
-				}
-				if = {
-					limit = {
-						has_event_target = civilian_transfer_origin
-						event_target:civilian_transfer_origin = { NOT = { has_state_flag = humanitarian_corridor_accepted } }
-					}
-					event_target:civilian_transfer_origin = {
-						set_temp_variable = { migration_cohort_priority_request = constant:migration_cohort_priority.administrative }
-						set_temp_variable = { civilian_transfer_people = state_population_k }
-						multiply_temp_variable = { civilian_transfer_people = constant:chaos_meter_deaths.people_per_k }
-						multiply_temp_variable = { civilian_transfer_people = constant:migration_decision_threshold.transfer_share }
-						round_temp_variable = civilian_transfer_people
-						set_temp_variable = { civilian_transfer_request_proven = constant:humanitarian_runtime.one }
-						set_temp_variable = { civilian_transfer_route_border_proven = constant:humanitarian_runtime.one }
-						set_temp_variable = { civilian_transfer_route_transport_proven = constant:humanitarian_runtime.one }
-						set_temp_variable = { civilian_transfer_route_safety_proven = constant:humanitarian_runtime.zero }
-						migration_decision_prove_route_contract = yes
-						set_temp_variable = { civilian_transfer_route_actor_proven = constant:humanitarian_runtime.one }
-						set_temp_variable = { civilian_transfer_route_deaths_requested = constant:humanitarian_population.zero }
-						set_temp_variable = { civilian_transfer_log_deaths = constant:humanitarian_runtime.one }
-						set_temp_variable = { civilian_transfer_role_request = constant:migration_core_reconciliation.transfer_projection_role_organized_evacuation }
-						set_temp_variable = { civilian_transfer_flight_obligation_proven = constant:humanitarian_runtime.one }
-						if = { limit = { check_variable = { var = migration_trapped_population value = constant:humanitarian_population.zero compare = greater_than } } set_temp_variable = { civilian_transfer_trapped_obligation_proven = constant:humanitarian_runtime.one } }
-						set_temp_variable = { migration_cohort_record_result = constant:civilian_transfer_route_result.invalid }
-						set_temp_variable = { migration_cohort_id_result = constant:humanitarian_runtime.zero }
-						set_temp_variable = { migration_decision_atomic_transfer_result = constant:civilian_transfer_route_result.invalid }
-						set_temp_variable = { civilian_transfer_result = constant:civilian_transfer_route_result.invalid }
-						set_temp_variable = { civilian_transfer_finalize_result = constant:migration_core_reconciliation.transfer_finalize_invalid }
-						set_temp_variable = { civilian_transfer_actual_origin_debit = constant:humanitarian_population.zero }
-						set_temp_variable = { civilian_transfer_survivor_credit = constant:humanitarian_population.zero }
-						set_temp_variable = { civilian_transfer_destination_actual_credit = constant:humanitarian_population.zero }
-						set_temp_variable = { civilian_transfer_route_deaths = constant:humanitarian_population.zero }
-						set_temp_variable = { civilian_transfer_conservation_ledger = constant:humanitarian_population.zero }
-						set_temp_variable = { civilian_transfer_projection_result = constant:migration_core_reconciliation.transfer_projection_invalid }
-						migration_decision_execute_new_origin_organized_evacuation = yes
-						if = {
-							limit = {
-								check_variable = { var = civilian_transfer_finalize_result value = constant:migration_core_reconciliation.transfer_finalize_valid compare = equals }
-								check_variable = { var = civilian_transfer_actual_origin_debit value = constant:humanitarian_population.zero compare = greater_than }
-								check_variable = { var = civilian_transfer_survivor_credit value = constant:humanitarian_population.zero compare = greater_than }
-								check_variable = { var = civilian_transfer_projection_result value = constant:civilian_transfer_route_result.valid compare = equals }
-							}
-							custom_effect_tooltip = migration_effect_administration_priority_tt
-						}
-					}
-				}
-				if = {
-					limit = {
-						has_event_target = civilian_transfer_origin
-						event_target:civilian_transfer_origin = { NOT = { has_state_flag = humanitarian_corridor_accepted } }
-					}
-					event_target:civilian_transfer_route_destination = {
-						if = {
-							limit = {
-								check_variable = { var = civilian_transfer_finalize_result value = constant:migration_core_reconciliation.transfer_finalize_valid compare = equals }
-								check_variable = { var = civilian_transfer_actual_origin_debit value = constant:humanitarian_population.zero compare = greater_than }
-								check_variable = { var = civilian_transfer_survivor_credit value = constant:humanitarian_population.zero compare = greater_than }
-								check_variable = { var = civilian_transfer_projection_result value = constant:civilian_transfer_route_result.valid compare = equals }
-							}
-							if = {
-								limit = { check_variable = { var = migration_decision_atomic_transfer_result value = constant:civilian_transfer_route_result.valid compare = equals } }
-								clr_state_flag = migration_evacuation_prepared
-								if = {
-									limit = {
-										check_variable = { var = migration_cohort_record_result value = constant:civilian_transfer_route_result.valid compare = equals }
-										check_variable = { var = civilian_transfer_survivor_credit value = constant:migration_mission_contract.minimum_survivor_credit compare = greater_than }
-										NOT = { ROOT = { has_country_flag = migration_mission_evacuation_active } }
-										ROOT = { migration_country_has_free_mission_slot = yes }
-									}
-									set_state_flag = migration_mission_evacuation_subject
-									set_variable = { migration_mission_evacuation_cohort_id = migration_cohort_id_result }
-									migration_set_mission_evacuation_deadline = yes
-									ROOT = {
-										migration_claim_mission_slot = yes
-										set_country_flag = migration_mission_evacuation_active
-										if = { limit = { has_war = yes } migration_show_report_wartime_evacuation = yes }
-									}
-								}
-								if = {
-									limit = { has_state_flag = humanitarian_corridor_mission_subject }
-									set_state_flag = humanitarian_corridor_mission_success_proven
-									if = { limit = { NOT = { check_variable = { var = migration_trapped_population value = constant:humanitarian_population.zero compare = greater_than } } } clr_state_flag = migration_population_trapped }
-								}
-								OWNER = {
-									humanitarian_achievement_record_arrival = yes
-									if = {
-										limit = { has_country_flag = humanitarian_achievement_gate_major_crisis }
-										humanitarian_achievement_record_gate_protection = yes
-									}
-								}
-							}
-						}
-					}
-				}
-				if = {
-					limit = {
-						NOT = { check_variable = { var = civilian_transfer_actual_origin_debit value = constant:humanitarian_population.zero compare = greater_than } }
-					}
-					set_temp_variable = { migration_transport_target = FROM } set_temp_variable = { migration_transport_receipt = token:migration_evacuate_administration } migration_transport_refund_state_cost = yes
-					add_equipment_to_stockpile = { type = train_equipment amount = constant:humanitarian_legacy_cost.train_light }
-				}
+			 limit = { has_variable = humanitarian_native_generation_migration_evacuate_administration_@var:humanitarian_action_target_id }
+			 set_variable = { humanitarian_action_callback_id = humanitarian_native_generation_migration_evacuate_administration_@var:humanitarian_action_target_id }
+			 clear_variable = humanitarian_native_generation_migration_evacuate_administration_@var:humanitarian_action_target_id
+			 migration_action_resolve_callback = yes
 			}
-			else_if = {
-				limit = {
-					FROM = {
-						has_state_flag = migration_evacuate_administration_cost_paid
-						has_variable = migration_evacuate_administration_cost_payer
-						var:migration_evacuate_administration_cost_payer = { tag = ROOT }
-					}
-				}
-				FROM = {
-					clr_state_flag = migration_evacuate_administration_cost_paid
-					clear_variable = migration_evacuate_administration_cost_payer
-				}
-			}
-			set_temp_variable = { migration_transport_target = FROM } set_temp_variable = { migration_transport_receipt = token:migration_evacuate_administration } migration_transport_forget_state_cost = yes
 		}
 		cancel_if_not_visible = no
 		cancel_effect = {
-			FROM = {
-				if = {
-					limit = { has_state_flag = migration_evacuate_administration_cost_paid has_variable = migration_evacuate_administration_cost_payer var:migration_evacuate_administration_cost_payer = { tag = ROOT } }
-					clr_state_flag = migration_evacuate_administration_cost_paid
-					clear_variable = migration_evacuate_administration_cost_payer
-				}
+			set_temp_variable = { humanitarian_action_target_id = FROM.id }
+			if = {
+			 limit = { has_variable = humanitarian_native_generation_migration_evacuate_administration_@var:humanitarian_action_target_id }
+			 set_variable = { humanitarian_action_callback_id = humanitarian_native_generation_migration_evacuate_administration_@var:humanitarian_action_target_id }
+			 clear_variable = humanitarian_native_generation_migration_evacuate_administration_@var:humanitarian_action_target_id
+			 migration_action_cancel_callback = yes
 			}
-			FROM = {
-				clr_state_flag = migration_evacuation_prepared
-				civilian_transfer_cleanup_request = yes
-			}
-			set_temp_variable = { migration_transport_target = FROM } set_temp_variable = { migration_transport_receipt = token:migration_evacuate_administration } migration_transport_forget_state_cost = yes
 		}
 	}
 
@@ -1601,6 +776,7 @@ migration_evacuate_administration = {
 		state_target = any_controlled_state
 		on_map_mode = map_and_decisions_view
 		visible = {
+			is_ai = yes
 			FROM = { is_controlled_by = ROOT migration_state_has_real_migration_issue = yes }
 			NOT = { has_country_flag = humanitarian_corridor_offer_pending }
 			migration_reception_has_room_for_evacuation = yes
@@ -1610,6 +786,8 @@ migration_evacuate_administration = {
 			}
 		}
 		available = {
+			set_temp_variable = { humanitarian_action_target = FROM }
+			migration_evacuate_workers_action_can_start = yes
 			hidden_trigger = { migration_reception_has_room_for_evacuation = yes }
 			custom_trigger_tooltip = { tooltip = migration_real_pressure_tt hidden_trigger = { FROM = { is_controlled_by = ROOT migration_state_has_real_migration_issue = yes } } }
 			custom_trigger_tooltip = {
@@ -1645,220 +823,29 @@ migration_evacuate_administration = {
 			modifier = { factor = constant:migration_decision_ai.evacuate_workers_factor_2 FROM = { OWNER = { num_of_civilian_factories > constant:humanitarian_population.zero } } }
 		}
 		complete_effect = {
-			if = {
-				limit = { migration_evacuate_workers_can_start = yes }
-				set_temp_variable = { migration_transport_payment_result = constant:migration_transport_cost.zero }
-				set_temp_variable = { migration_transport_fuel_land = constant:migration_transport_cost.heavy_fuel_land } set_temp_variable = { migration_transport_fuel_sea = constant:migration_transport_cost.heavy_fuel_sea } set_temp_variable = { migration_transport_convoys_sea = constant:migration_transport_cost.heavy_convoys_sea } set_temp_variable = { migration_transport_target = FROM } set_temp_variable = { migration_transport_receipt = token:migration_evacuate_workers } migration_transport_pay_state_cost = yes
-				if = {
-					limit = { check_variable = { migration_transport_payment_result = constant:migration_transport_cost.one } }
-					add_equipment_to_stockpile = { type = train_equipment amount = constant:humanitarian_legacy_cost.train_heavy_debit }
-					FROM = {
-						set_state_flag = migration_evacuate_workers_cost_paid
-						set_variable = { migration_evacuate_workers_cost_payer = ROOT }
-					}
-				}
-			}
+			set_variable = { humanitarian_action_request_action = constant:migration_gui_action.evacuate_workers }
+			set_variable = { humanitarian_action_request_state = FROM }
+			set_country_flag = humanitarian_action_request_native
+			migration_action_submit_request = yes
 		}
 		remove_effect = {
+			set_temp_variable = { humanitarian_action_target_id = FROM.id }
 			if = {
-				limit = { migration_evacuate_workers_cost_receipt_is_valid = yes }
-				FROM = {
-					clr_state_flag = migration_evacuate_workers_cost_paid
-					clear_variable = migration_evacuate_workers_cost_payer
-				}
-				FROM = {
-					if = {
-						limit = { has_state_flag = humanitarian_corridor_accepted }
-						if = {
-							limit = {
-								humanitarian_corridor_operation_is_valid = yes
-								check_variable = { var = humanitarian_corridor_operation value = constant:humanitarian_corridor_operation.evacuation compare = equals }
-								has_variable = humanitarian_corridor_route_generation
-								NOT = { has_variable = humanitarian_corridor_evacuation_proven }
-							}
-							set_temp_variable = { civilian_transfer_role_request = constant:migration_core_reconciliation.transfer_projection_role_organized_evacuation }
-							set_temp_variable = { civilian_transfer_flight_obligation_proven = constant:humanitarian_runtime.one }
-							set_temp_variable = { humanitarian_corridor_transaction_result = constant:humanitarian_corridor_result.invalid }
-							set_temp_variable = { civilian_transfer_result = constant:civilian_transfer_route_result.invalid }
-							set_temp_variable = { civilian_transfer_finalize_result = constant:migration_core_reconciliation.transfer_finalize_invalid }
-							set_temp_variable = { civilian_transfer_actual_origin_debit = constant:humanitarian_population.zero }
-							set_temp_variable = { civilian_transfer_survivor_credit = constant:humanitarian_population.zero }
-							set_temp_variable = { civilian_transfer_destination_actual_credit = constant:humanitarian_population.zero }
-							set_temp_variable = { civilian_transfer_route_deaths = constant:humanitarian_population.zero }
-							set_temp_variable = { civilian_transfer_conservation_ledger = constant:humanitarian_population.zero }
-							set_temp_variable = { civilian_transfer_projection_result = constant:migration_core_reconciliation.transfer_projection_invalid }
-								set_temp_variable = { migration_cohort_priority_request = constant:migration_cohort_priority.industrial }
-							humanitarian_corridor_execute_evacuation = yes
-							if = {
-								limit = {
-									check_variable = { var = humanitarian_corridor_transaction_result value = constant:humanitarian_corridor_result.valid compare = equals }
-									check_variable = { var = civilian_transfer_actual_origin_debit value = constant:humanitarian_population.zero compare = greater_than }
-									check_variable = { var = civilian_transfer_survivor_credit value = constant:humanitarian_population.zero compare = greater_than }
-								}
-								migration_priority_record_corridor_origin_loss = yes
-								custom_effect_tooltip = migration_effect_industrial_priority_tt
-								clr_state_flag = migration_evacuation_prepared
-								if = {
-									limit = { check_variable = { var = humanitarian_corridor_evacuation_route_deaths value = constant:humanitarian_population.zero compare = greater_than } }
-									ROOT = { add_stability = constant:migration_decision_outcome.decision_standard_stability_negative }
-								}
-								ROOT = {
-									if = { limit = { has_war = yes } migration_show_report_wartime_evacuation = yes }
-								}
-								if = {
-									limit = { check_variable = { var = humanitarian_corridor_evacuation_survivor_credit value = constant:migration_mission_contract.minimum_survivor_credit compare = greater_than } }
-									event_target:civilian_transfer_route_destination = {
-										OWNER = {
-											humanitarian_achievement_record_arrival = yes
-											if = {
-												limit = { has_country_flag = humanitarian_achievement_gate_major_crisis }
-												humanitarian_achievement_record_gate_protection = yes
-											}
-										}
-									}
-								}
-							}
-						}
-					}
-					else = {
-						save_event_target_as = civilian_transfer_origin
-						migration_select_general_safe_evacuation_destination = yes
-					}
-				}
-				if = {
-					limit = {
-						has_event_target = civilian_transfer_origin
-						event_target:civilian_transfer_origin = { NOT = { has_state_flag = humanitarian_corridor_accepted } }
-					}
-					event_target:civilian_transfer_origin = {
-						set_temp_variable = { migration_cohort_priority_request = constant:migration_cohort_priority.industrial }
-						set_temp_variable = { civilian_transfer_people = state_population_k }
-						multiply_temp_variable = { civilian_transfer_people = constant:chaos_meter_deaths.people_per_k }
-						multiply_temp_variable = { civilian_transfer_people = constant:migration_decision_threshold.transfer_share }
-						round_temp_variable = civilian_transfer_people
-						set_temp_variable = { civilian_transfer_minimum_origin_remaining = state_population_k }
-						multiply_temp_variable = { civilian_transfer_minimum_origin_remaining = constant:chaos_meter_deaths.people_per_k }
-						multiply_temp_variable = { civilian_transfer_minimum_origin_remaining = constant:migration_decision_threshold.transfer_minimum_origin_share }
-						round_temp_variable = civilian_transfer_minimum_origin_remaining
-						set_temp_variable = { civilian_transfer_request_proven = constant:humanitarian_runtime.one }
-						set_temp_variable = { civilian_transfer_route_border_proven = constant:humanitarian_runtime.one }
-						set_temp_variable = { civilian_transfer_route_transport_proven = constant:humanitarian_runtime.one }
-						set_temp_variable = { civilian_transfer_route_safety_proven = constant:humanitarian_runtime.zero }
-						migration_decision_prove_route_contract = yes
-						set_temp_variable = { civilian_transfer_route_actor_proven = constant:humanitarian_runtime.one }
-						set_temp_variable = { civilian_transfer_route_deaths_requested = constant:humanitarian_population.zero }
-						set_temp_variable = { civilian_transfer_log_deaths = constant:humanitarian_runtime.one }
-						set_temp_variable = { civilian_transfer_role_request = constant:migration_core_reconciliation.transfer_projection_role_organized_evacuation }
-						set_temp_variable = { civilian_transfer_flight_obligation_proven = constant:humanitarian_runtime.one }
-						if = { limit = { check_variable = { var = migration_trapped_population value = constant:humanitarian_population.zero compare = greater_than } } set_temp_variable = { civilian_transfer_trapped_obligation_proven = constant:humanitarian_runtime.one } }
-						set_temp_variable = { migration_cohort_record_result = constant:civilian_transfer_route_result.invalid }
-						set_temp_variable = { migration_cohort_id_result = constant:humanitarian_runtime.zero }
-						set_temp_variable = { migration_decision_atomic_transfer_result = constant:civilian_transfer_route_result.invalid }
-						set_temp_variable = { civilian_transfer_result = constant:civilian_transfer_route_result.invalid }
-						set_temp_variable = { civilian_transfer_finalize_result = constant:migration_core_reconciliation.transfer_finalize_invalid }
-						set_temp_variable = { civilian_transfer_actual_origin_debit = constant:humanitarian_population.zero }
-						set_temp_variable = { civilian_transfer_survivor_credit = constant:humanitarian_population.zero }
-						set_temp_variable = { civilian_transfer_destination_actual_credit = constant:humanitarian_population.zero }
-						set_temp_variable = { civilian_transfer_route_deaths = constant:humanitarian_population.zero }
-						set_temp_variable = { civilian_transfer_conservation_ledger = constant:humanitarian_population.zero }
-						set_temp_variable = { civilian_transfer_projection_result = constant:migration_core_reconciliation.transfer_projection_invalid }
-						migration_decision_execute_new_origin_organized_evacuation = yes
-						if = {
-							limit = {
-								check_variable = { var = civilian_transfer_finalize_result value = constant:migration_core_reconciliation.transfer_finalize_valid compare = equals }
-								check_variable = { var = civilian_transfer_actual_origin_debit value = constant:humanitarian_population.zero compare = greater_than }
-								check_variable = { var = civilian_transfer_survivor_credit value = constant:humanitarian_population.zero compare = greater_than }
-								check_variable = { var = civilian_transfer_projection_result value = constant:civilian_transfer_route_result.valid compare = equals }
-							}
-							clr_state_flag = migration_evacuation_prepared
-							if = {
-								limit = {
-									check_variable = { var = migration_cohort_record_result value = constant:civilian_transfer_route_result.valid compare = equals }
-									check_variable = { var = civilian_transfer_survivor_credit value = constant:migration_mission_contract.minimum_survivor_credit compare = greater_than }
-									NOT = { ROOT = { has_country_flag = migration_mission_evacuation_active } }
-									ROOT = { migration_country_has_free_mission_slot = yes }
-								}
-								set_state_flag = migration_mission_evacuation_subject
-								set_variable = { migration_mission_evacuation_cohort_id = migration_cohort_id_result }
-								migration_set_mission_evacuation_deadline = yes
-								ROOT = {
-									migration_claim_mission_slot = yes
-									set_country_flag = migration_mission_evacuation_active
-									if = { limit = { has_war = yes } migration_show_report_wartime_evacuation = yes }
-								}
-							}
-							if = {
-								limit = { has_state_flag = humanitarian_corridor_mission_subject }
-								set_state_flag = humanitarian_corridor_mission_success_proven
-								if = { limit = { NOT = { check_variable = { var = migration_trapped_population value = constant:humanitarian_population.zero compare = greater_than } } } clr_state_flag = migration_population_trapped }
-							}
-							custom_effect_tooltip = migration_effect_industrial_priority_tt
-						}
-					}
-				}
-				if = {
-					limit = {
-						has_event_target = civilian_transfer_origin
-						event_target:civilian_transfer_origin = { NOT = { has_state_flag = humanitarian_corridor_accepted } }
-					}
-					event_target:civilian_transfer_route_destination = {
-						if = {
-							limit = {
-								check_variable = { var = civilian_transfer_finalize_result value = constant:migration_core_reconciliation.transfer_finalize_valid compare = equals }
-								check_variable = { var = civilian_transfer_actual_origin_debit value = constant:humanitarian_population.zero compare = greater_than }
-								check_variable = { var = civilian_transfer_survivor_credit value = constant:humanitarian_population.zero compare = greater_than }
-								check_variable = { var = civilian_transfer_projection_result value = constant:civilian_transfer_route_result.valid compare = equals }
-							}
-							if = {
-								limit = { check_variable = { var = migration_decision_atomic_transfer_result value = constant:civilian_transfer_route_result.valid compare = equals } }
-								OWNER = {
-									humanitarian_achievement_record_arrival = yes
-									if = {
-										limit = { has_country_flag = humanitarian_achievement_gate_major_crisis }
-										humanitarian_achievement_record_gate_protection = yes
-									}
-								}
-							}
-						}
-					}
-				}
-				if = {
-					limit = {
-						NOT = { check_variable = { var = civilian_transfer_actual_origin_debit value = constant:humanitarian_population.zero compare = greater_than } }
-					}
-					set_temp_variable = { migration_transport_target = FROM } set_temp_variable = { migration_transport_receipt = token:migration_evacuate_workers } migration_transport_refund_state_cost = yes
-					add_equipment_to_stockpile = { type = train_equipment amount = constant:humanitarian_legacy_cost.train_heavy }
-				}
+			 limit = { has_variable = humanitarian_native_generation_migration_evacuate_workers_@var:humanitarian_action_target_id }
+			 set_variable = { humanitarian_action_callback_id = humanitarian_native_generation_migration_evacuate_workers_@var:humanitarian_action_target_id }
+			 clear_variable = humanitarian_native_generation_migration_evacuate_workers_@var:humanitarian_action_target_id
+			 migration_action_resolve_callback = yes
 			}
-			else_if = {
-				limit = {
-					FROM = {
-						has_state_flag = migration_evacuate_workers_cost_paid
-						has_variable = migration_evacuate_workers_cost_payer
-						var:migration_evacuate_workers_cost_payer = { tag = ROOT }
-					}
-				}
-				FROM = {
-					clr_state_flag = migration_evacuate_workers_cost_paid
-					clear_variable = migration_evacuate_workers_cost_payer
-				}
-			}
-			set_temp_variable = { migration_transport_target = FROM } set_temp_variable = { migration_transport_receipt = token:migration_evacuate_workers } migration_transport_forget_state_cost = yes
 		}
 		cancel_if_not_visible = no
 		cancel_effect = {
-			FROM = {
-				if = {
-					limit = { has_state_flag = migration_evacuate_workers_cost_paid has_variable = migration_evacuate_workers_cost_payer var:migration_evacuate_workers_cost_payer = { tag = ROOT } }
-					clr_state_flag = migration_evacuate_workers_cost_paid
-					clear_variable = migration_evacuate_workers_cost_payer
-				}
+			set_temp_variable = { humanitarian_action_target_id = FROM.id }
+			if = {
+			 limit = { has_variable = humanitarian_native_generation_migration_evacuate_workers_@var:humanitarian_action_target_id }
+			 set_variable = { humanitarian_action_callback_id = humanitarian_native_generation_migration_evacuate_workers_@var:humanitarian_action_target_id }
+			 clear_variable = humanitarian_native_generation_migration_evacuate_workers_@var:humanitarian_action_target_id
+			 migration_action_cancel_callback = yes
 			}
-			FROM = {
-				clr_state_flag = migration_evacuation_prepared
-				civilian_transfer_cleanup_request = yes
-			}
-			set_temp_variable = { migration_transport_target = FROM } set_temp_variable = { migration_transport_receipt = token:migration_evacuate_workers } migration_transport_forget_state_cost = yes
 		}
 	}
 
@@ -1867,6 +854,7 @@ migration_evacuate_administration = {
 		state_target = any_controlled_state
 		on_map_mode = map_and_decisions_view
 		visible = {
+			is_ai = yes
 			FROM = { is_controlled_by = ROOT migration_state_has_real_migration_issue = yes }
 			NOT = { has_country_flag = humanitarian_corridor_offer_pending }
 			OR = {
@@ -1878,6 +866,8 @@ migration_evacuate_administration = {
 			}
 		}
 		available = {
+			set_temp_variable = { humanitarian_action_target = FROM }
+			migration_negotiate_corridor_action_can_start = yes
 			custom_trigger_tooltip = { tooltip = migration_real_pressure_tt hidden_trigger = { FROM = { is_controlled_by = ROOT migration_state_has_real_migration_issue = yes } } }
 			custom_trigger_tooltip = {
 				tooltip = migration_negotiate_corridor_target_tt
@@ -1919,101 +909,47 @@ migration_evacuate_administration = {
 			modifier = { factor = constant:migration_decision_ai.negotiate_corridor_factor_2 has_government = democratic }
 		}
 		complete_effect = {
-			if = {
-				limit = {
-					migration_negotiate_corridor_can_start = yes
-					NOT = { FROM = { has_state_flag = migration_negotiate_corridor_cost_pending } }
-				}
-				FROM = {
-					set_state_flag = migration_negotiate_corridor_cost_pending
-					set_variable = { migration_negotiate_corridor_cost_payer = ROOT }
-				}
-			}
+			set_variable = { humanitarian_action_request_action = constant:migration_gui_action.negotiate_corridor }
+			set_variable = { humanitarian_action_request_state = FROM }
+			set_country_flag = humanitarian_action_request_native
+			migration_action_submit_request = yes
 		}
 		remove_effect = {
+			set_temp_variable = { humanitarian_action_target_id = FROM.id }
 			if = {
-				limit = {
-					migration_negotiate_corridor_cost_pending_is_valid = yes
-					migration_negotiate_corridor_can_start = yes
-					migration_negotiate_corridor_cost_is_affordable = yes
-				}
-				FROM = {
-					clr_state_flag = migration_negotiate_corridor_cost_pending
-					clear_variable = migration_negotiate_corridor_cost_payer
-				}
-				FROM = {
-					set_variable = { humanitarian_corridor_operation_request = constant:humanitarian_corridor_operation.evacuation }
-					set_variable = { humanitarian_corridor_relation_request = constant:humanitarian_corridor_relation.enemy_front }
-					set_variable = { humanitarian_corridor_cohort_id_request = migration_current_cohort_id }
-					set_variable = { humanitarian_corridor_transfer_people_request = migration_state_live_cohort_amount }
-					set_temp_variable = { humanitarian_corridor_request_result = constant:humanitarian_corridor_result.invalid }
-					humanitarian_corridor_prepare_contract = yes
-					if = {
-						limit = { check_variable = { var = humanitarian_corridor_request_result value = constant:humanitarian_corridor_result.valid compare = equals } }
-						set_temp_variable = { humanitarian_corridor_offer_result = constant:humanitarian_corridor_result.invalid }
-						humanitarian_corridor_submit_offer = yes
-						if = {
-							limit = { check_variable = { var = humanitarian_corridor_offer_result value = constant:humanitarian_corridor_result.valid compare = equals } }
-							set_temp_variable = { migration_negotiate_corridor_fee_paid = constant:humanitarian_runtime.zero }
-							ROOT = {
-								if = {
-									limit = { migration_negotiate_corridor_cost_is_affordable = yes }
-									set_temp_variable = { migration_transport_payment_result = constant:migration_transport_cost.zero }
-									set_temp_variable = { migration_transport_fuel_land = constant:migration_transport_cost.heavy_fuel_land } set_temp_variable = { migration_transport_fuel_sea = constant:migration_transport_cost.heavy_fuel_sea } set_temp_variable = { migration_transport_convoys_sea = constant:migration_transport_cost.heavy_convoys_sea } set_temp_variable = { migration_transport_target = FROM } set_temp_variable = { migration_transport_receipt = token:migration_negotiate_corridor } migration_transport_pay_state_cost = yes
-									if = {
-										limit = { check_variable = { migration_transport_payment_result = constant:migration_transport_cost.one } }
-										add_equipment_to_stockpile = { type = infantry_equipment amount = constant:humanitarian_legacy_cost.infantry_light_debit }
-										set_temp_variable = { migration_negotiate_corridor_fee_paid = constant:humanitarian_runtime.one }
-									}
-								}
-							}
-							if = {
-								limit = { check_variable = { var = migration_negotiate_corridor_fee_paid value = constant:humanitarian_runtime.zero compare = equals } }
-								humanitarian_corridor_cleanup = yes
-							}
-						}
-					}
-				}
+			 limit = { has_variable = humanitarian_native_generation_migration_negotiate_corridor_@var:humanitarian_action_target_id }
+			 set_variable = { humanitarian_action_callback_id = humanitarian_native_generation_migration_negotiate_corridor_@var:humanitarian_action_target_id }
+			 clear_variable = humanitarian_native_generation_migration_negotiate_corridor_@var:humanitarian_action_target_id
+			 migration_action_resolve_callback = yes
 			}
-			else_if = {
-				limit = {
-					FROM = {
-						has_state_flag = migration_negotiate_corridor_cost_pending
-						has_variable = migration_negotiate_corridor_cost_payer
-						var:migration_negotiate_corridor_cost_payer = { tag = ROOT }
-					}
-				}
-				FROM = {
-					clr_state_flag = migration_negotiate_corridor_cost_pending
-					clear_variable = migration_negotiate_corridor_cost_payer
-				}
-			}
-			set_temp_variable = { migration_transport_target = FROM } set_temp_variable = { migration_transport_receipt = token:migration_negotiate_corridor } migration_transport_forget_state_cost = yes
 		}
 		cancel_if_not_visible = no
 		cancel_effect = {
-			FROM = {
-				if = {
-					limit = { has_state_flag = migration_negotiate_corridor_cost_pending has_variable = migration_negotiate_corridor_cost_payer var:migration_negotiate_corridor_cost_payer = { tag = ROOT } }
-					clr_state_flag = migration_negotiate_corridor_cost_pending
-					clear_variable = migration_negotiate_corridor_cost_payer
-				}
+			set_temp_variable = { humanitarian_action_target_id = FROM.id }
+			if = {
+			 limit = { has_variable = humanitarian_native_generation_migration_negotiate_corridor_@var:humanitarian_action_target_id }
+			 set_variable = { humanitarian_action_callback_id = humanitarian_native_generation_migration_negotiate_corridor_@var:humanitarian_action_target_id }
+			 clear_variable = humanitarian_native_generation_migration_negotiate_corridor_@var:humanitarian_action_target_id
+			 migration_action_cancel_callback = yes
 			}
-			set_temp_variable = { migration_transport_target = FROM } set_temp_variable = { migration_transport_receipt = token:migration_negotiate_corridor } migration_transport_forget_state_cost = yes
 		}
 	}
 	migration_accept_corridor_offer = {
 		icon = GFX_migration_decision_open_border
 		visible = {
+			is_ai = yes
 			migration_country_has_real_migration_issue = yes
 			migration_pending_reception_issue_is_valid = yes
 			humanitarian_corridor_offer_can_be_accepted = yes
 		}
 		available = {
-			custom_trigger_tooltip = { tooltip = migration_real_pressure_tt hidden_trigger = { migration_country_has_real_migration_issue = yes } } custom_trigger_tooltip = {
+			set_temp_variable = { humanitarian_action_target = constant:humanitarian_runtime.zero }
+			migration_accept_corridor_offer_action_can_start = yes
+			custom_trigger_tooltip = { tooltip = migration_real_country_pressure_tt hidden_trigger = { migration_country_has_real_migration_issue = yes } } custom_trigger_tooltip = {
 				tooltip = migration_accept_corridor_offer_available_tt
 				humanitarian_corridor_offer_can_be_accepted = yes
-		} }
+		}
+		}
 		days_remove = constant:humanitarian_corridor_timing.response_decision_days
 		days_re_enable = constant:humanitarian_corridor_timing.response_reenable_days
 		fire_only_once = no
@@ -2026,20 +962,29 @@ migration_evacuate_administration = {
 				var:humanitarian_corridor_offer_requester_country_id = { has_war_with = ROOT }
 			}
 		}
-		complete_effect = { humanitarian_corridor_accept_offer = yes }
+		complete_effect = {
+			set_variable = { humanitarian_action_request_action = constant:migration_gui_action.accept_corridor_offer }
+			set_variable = { humanitarian_action_request_state = constant:humanitarian_runtime.zero }
+			set_country_flag = humanitarian_action_request_native
+			migration_action_submit_request = yes
+		}
 		cancel_if_not_visible = yes
 	}
 	migration_reject_corridor_offer = {
 		icon = GFX_migration_decision_close_border
 		visible = {
+			is_ai = yes
 			migration_country_has_real_migration_issue = yes
 			migration_pending_reception_issue_is_valid = yes
 		}
 		available = {
-			custom_trigger_tooltip = { tooltip = migration_real_pressure_tt hidden_trigger = { migration_country_has_real_migration_issue = yes } } custom_trigger_tooltip = {
+			set_temp_variable = { humanitarian_action_target = constant:humanitarian_runtime.zero }
+			migration_reject_corridor_offer_action_can_start = yes
+			custom_trigger_tooltip = { tooltip = migration_real_country_pressure_tt hidden_trigger = { migration_country_has_real_migration_issue = yes } } custom_trigger_tooltip = {
 				tooltip = migration_reject_corridor_offer_available_tt
 				humanitarian_corridor_offer_is_valid = yes
-		} }
+		}
+		}
 		days_remove = constant:humanitarian_corridor_timing.response_decision_days
 		days_re_enable = constant:humanitarian_corridor_timing.response_reenable_days
 		fire_only_once = no
@@ -2051,15 +996,25 @@ migration_evacuate_administration = {
 			}
 			modifier = { factor = constant:humanitarian_corridor_ai.reject_humanitarian_factor migration_reception_policy_is_humanitarian_open = yes }
 		}
-		complete_effect = { humanitarian_corridor_reject_offer = yes }
+		complete_effect = {
+			set_variable = { humanitarian_action_request_action = constant:migration_gui_action.reject_corridor_offer }
+			set_variable = { humanitarian_action_request_state = constant:humanitarian_runtime.zero }
+			set_country_flag = humanitarian_action_request_native
+			migration_action_submit_request = yes
+		}
 		cancel_if_not_visible = yes
 	}
 	migration_open_reception = {
 		icon = GFX_migration_decision_open_border
 		state_target = any_controlled_state
 		on_map_mode = map_and_decisions_view
-		visible = { migration_reception_preparation_is_visible = yes }
+		visible = {
+			is_ai = yes
+			migration_reception_preparation_is_visible = yes
+		}
 		available = {
+			set_temp_variable = { humanitarian_action_target = FROM }
+			migration_open_reception_action_can_start = yes
 			hidden_trigger = { uses_normal_civilian_systems = yes }
 			num_of_civilian_factories > constant:humanitarian_population.zero
 			hidden_trigger = { migration_reception_preparation_is_affordable = yes }
@@ -2083,17 +1038,16 @@ migration_evacuate_administration = {
 			modifier = { factor = constant:migration_decision_ai.open_reception_factor_3 has_war = yes }
 		}
 		complete_effect = {
-			custom_effect_tooltip = migration_reception_preparation_effect_tt
-			hidden_effect = {
-				FROM = { save_event_target_as = migration_reception_preparation_state }
-				set_temp_variable = { migration_reception_preparation_result = constant:migration_capacity.zero }
-				migration_prepare_reception_services = yes
-			}
+			set_variable = { humanitarian_action_request_action = constant:migration_gui_action.open_reception }
+			set_variable = { humanitarian_action_request_state = FROM }
+			set_country_flag = humanitarian_action_request_native
+			migration_action_submit_request = yes
 		}
 	}
 	migration_controlled_medical_reception = {
 		icon = GFX_migration_decision_quarantine
 		visible = {
+			is_ai = yes
 			migration_country_has_real_migration_issue = yes
 			NOT = { has_country_flag = humanitarian_corridor_offer_pending }
 			NOT = { has_country_flag = migration_medical_reception_active }
@@ -2107,6 +1061,8 @@ migration_evacuate_administration = {
 			}
 		}
 		available = {
+			set_temp_variable = { humanitarian_action_target = constant:humanitarian_runtime.zero }
+			migration_controlled_medical_reception_action_can_start = yes
 			custom_trigger_tooltip = { tooltip = migration_real_country_pressure_tt hidden_trigger = { migration_country_has_real_migration_issue = yes } }
 			hidden_trigger = { uses_normal_civilian_systems = yes }
 			num_of_civilian_factories > constant:humanitarian_population.zero
@@ -2134,56 +1090,10 @@ migration_evacuate_administration = {
 			modifier = { factor = constant:migration_decision_ai.controlled_medical_reception_factor_3 has_government = fascism }
 		}
 		complete_effect = {
-			if = {
-				limit = { migration_controlled_medical_reception_can_start = yes }
-				set_temp_variable = { migration_transport_payment_result = constant:migration_transport_cost.zero }
-				set_temp_variable = { migration_transport_fuel_land = constant:migration_transport_cost.standard_fuel_land } set_temp_variable = { migration_transport_fuel_sea = constant:migration_transport_cost.standard_fuel_sea } set_temp_variable = { migration_transport_convoys_sea = constant:migration_transport_cost.standard_convoys_sea } set_temp_variable = { migration_transport_receipt = token:migration_controlled_medical_reception } migration_transport_pay_policy_cost = yes
-				if = {
-					limit = { check_variable = { migration_transport_payment_result = constant:migration_transport_cost.one } }
-					add_equipment_to_stockpile = { type = support_equipment amount = constant:humanitarian_legacy_cost.support_heavy_debit }
-					add_equipment_to_stockpile = { type = infantry_equipment amount = constant:humanitarian_legacy_cost.infantry_light_debit }
-					set_temp_variable = { migration_reception_policy_request = constant:migration_border_policy.quarantine }
-					migration_decision_set_policy = yes
-					add_stability = constant:migration_decision_outcome.decision_minor_stability_negative
-					every_owned_state = {
-						limit = {
-							migration_decision_reception_exposure_receipt_is_valid = yes
-							NOT = { has_state_flag = migration_mission_reception_subject }
-							ROOT = { NOT = { has_country_flag = migration_mission_reception_active } }
-						}
-						# The exact exposed cohort supplies the service amount. The adapter
-						# records medical capacity and dirties the core revision; it does not
-						# assert that the route is immediately valid.
-						set_temp_variable = { migration_reception_medical_service_request = migration_state_reception_load }
-						set_temp_variable = { migration_reception_medical_service_request_proven = constant:migration_capacity.one }
-						set_temp_variable = { migration_reception_medical_service_result = constant:migration_capacity.zero }
-						migration_set_reception_medical_service = yes
-						if = {
-							limit = { check_variable = { var = migration_reception_medical_service_result value = constant:migration_capacity.one compare = equals } }
-							set_state_flag = migration_mission_reception_subject
-							set_state_flag = migration_mission_reception_observation_pending
-							set_variable = { migration_mission_reception_cohort_id = migration_mission_reception_receipt_cohort_id }
-							set_variable = { migration_mission_reception_attempt_generation = migration_mission_reception_receipt_generation }
-							migration_set_mission_reception_observation_deadline = yes
-							set_temp_variable = { migration_achievement_medical_cohort_id_request = migration_mission_reception_receipt_cohort_id }
-							set_temp_variable = { migration_achievement_medical_generation_request = migration_mission_reception_receipt_generation }
-							set_temp_variable = { migration_achievement_medical_origin_state_id_request = migration_mission_reception_receipt_origin_state_id }
-							set_temp_variable = { migration_achievement_medical_host_state_id_request = id }
-							ROOT = {
-								migration_achievement_start_medical_observation = yes
-								migration_claim_mission_slot = yes
-								set_country_flag = migration_medical_reception_active
-								set_country_flag = migration_mission_reception_active
-							}
-						}
-					}
-					# Capacity is recomputed only after the explicit state adapter succeeds.
-					# A failed service request leaves the old revision/validity untouched.
-					migration_mark_reception_capacity_dirty = yes
-					migration_recalculate_reception_capacity = yes
-				}
-			}
-			set_temp_variable = { migration_transport_receipt = token:migration_controlled_medical_reception } migration_transport_forget_policy_cost = yes
+			set_variable = { humanitarian_action_request_action = constant:migration_gui_action.controlled_medical_reception }
+			set_variable = { humanitarian_action_request_state = constant:humanitarian_runtime.zero }
+			set_country_flag = humanitarian_action_request_native
+			migration_action_submit_request = yes
 		}
 	}
 	migration_distribute_arrivals = {
@@ -2191,6 +1101,7 @@ migration_evacuate_administration = {
 		state_target = any_controlled_state
 		on_map_mode = map_and_decisions_view
 		visible = {
+			is_ai = yes
 			FROM = { is_controlled_by = ROOT migration_state_has_real_migration_issue = yes }
 			NOT = { has_country_flag = humanitarian_corridor_offer_pending }
 			migration_decision_reception_load_is_valid = yes
@@ -2202,6 +1113,8 @@ migration_evacuate_administration = {
 			}
 		}
 		available = {
+			set_temp_variable = { humanitarian_action_target = FROM }
+			migration_distribute_arrivals_action_can_start = yes
 			custom_trigger_tooltip = { tooltip = migration_real_pressure_tt hidden_trigger = { FROM = { is_controlled_by = ROOT migration_state_has_real_migration_issue = yes } } }
 			hidden_trigger = { NOT = { FROM = { has_state_flag = migration_evacuation_prepared } } }
 			hidden_trigger = { uses_normal_civilian_systems = yes }
@@ -2283,163 +1196,29 @@ migration_evacuate_administration = {
 			modifier = { factor = constant:migration_decision_ai.distribute_arrivals_factor_2 has_variable = migration_reception_capacity }
 		}
 		complete_effect = {
-			if = {
-				limit = { migration_distribute_arrivals_can_start = yes }
-				set_temp_variable = { migration_transport_payment_result = constant:migration_transport_cost.zero }
-				set_temp_variable = { migration_transport_fuel_land = constant:migration_transport_cost.light_fuel_land } set_temp_variable = { migration_transport_fuel_sea = constant:migration_transport_cost.light_fuel_sea } set_temp_variable = { migration_transport_convoys_sea = constant:migration_transport_cost.light_convoys_sea } set_temp_variable = { migration_transport_target = FROM } set_temp_variable = { migration_transport_receipt = token:migration_distribute_arrivals } migration_transport_pay_state_cost = yes
-				if = {
-					limit = { check_variable = { migration_transport_payment_result = constant:migration_transport_cost.one } }
-					add_equipment_to_stockpile = { type = train_equipment amount = constant:humanitarian_legacy_cost.train_light_debit }
-					FROM = {
-						set_state_flag = migration_distribute_arrivals_cost_paid
-						set_variable = { migration_distribute_arrivals_cost_payer = ROOT }
-					}
-					migration_mark_reception_capacity_dirty = yes
-					migration_recalculate_reception_capacity = yes
-				}
-			}
+			set_variable = { humanitarian_action_request_action = constant:migration_gui_action.distribute_arrivals }
+			set_variable = { humanitarian_action_request_state = FROM }
+			set_country_flag = humanitarian_action_request_native
+			migration_action_submit_request = yes
 		}
 		remove_effect = {
+			set_temp_variable = { humanitarian_action_target_id = FROM.id }
 			if = {
-				limit = { migration_distribute_arrivals_cost_receipt_is_valid = yes }
-				FROM = {
-					clr_state_flag = migration_distribute_arrivals_cost_paid
-					clear_variable = migration_distribute_arrivals_cost_payer
-				}
-				set_temp_variable = { civilian_transfer_distribution_origin_debit_proven = constant:humanitarian_runtime.zero }
-				FROM = {
-					save_event_target_as = civilian_transfer_origin
-					set_temp_variable = { migration_cohort_id_to_move = migration_current_cohort_id }
-					set_temp_variable = { migration_cohort_id_request = migration_current_cohort_id }
-				}
-				set_temp_variable = { migration_cohort_origin_resolution_result = constant:civilian_transfer_route_result.invalid }
-				set_temp_variable = { migration_cohort_destination_resolution_result = constant:civilian_transfer_route_result.invalid }
-				set_temp_variable = { migration_cohort_resolution_count = constant:humanitarian_runtime.zero }
-				set_temp_variable = { migration_cohort_resolved_amount = constant:humanitarian_population.zero }
-				set_temp_variable = { migration_cohort_resolved_source = constant:humanitarian_pressure_source.unknown }
-				set_temp_variable = { migration_cohort_resolved_status = constant:migration_cohort_status.none }
-				ROOT = { migration_resolve_cohort_origin = yes }
-				FROM = {
-					set_temp_variable = { migration_destination_selection_history_required = constant:migration_destination_selection_runtime.one }
-					migration_select_internal_safe_route_destination = yes
-					set_temp_variable = { migration_destination_selection_history_required = constant:migration_destination_selection_runtime.zero }
-				}
-				event_target:civilian_transfer_origin = {
-					if = {
-						limit = { migration_cohort_origin_resolution_is_valid = yes }
-						set_temp_variable = { civilian_transfer_people = migration_cohort_resolved_amount }
-						set_temp_variable = { civilian_transfer_request_proven = constant:humanitarian_runtime.one }
-						set_temp_variable = { civilian_transfer_route_border_proven = constant:humanitarian_runtime.one }
-						set_temp_variable = { civilian_transfer_route_transport_proven = constant:humanitarian_runtime.one }
-						set_temp_variable = { civilian_transfer_route_safety_proven = constant:humanitarian_runtime.zero }
-						migration_decision_prove_route_contract = yes
-						set_temp_variable = { civilian_transfer_route_actor_proven = constant:humanitarian_runtime.one }
-						set_temp_variable = { civilian_transfer_route_deaths_requested = constant:humanitarian_population.zero }
-						set_temp_variable = { civilian_transfer_log_deaths = constant:humanitarian_runtime.one }
-						set_temp_variable = { civilian_transfer_role_request = constant:migration_core_reconciliation.transfer_projection_role_organized_evacuation }
-						set_temp_variable = { civilian_transfer_flight_obligation_proven = constant:humanitarian_runtime.one }
-						if = { limit = { check_variable = { var = migration_trapped_population value = constant:humanitarian_population.zero compare = greater_than } } set_temp_variable = { civilian_transfer_trapped_obligation_proven = constant:humanitarian_runtime.one } }
-						set_temp_variable = { migration_decision_history_preflight_result = constant:civilian_transfer_route_result.invalid }
-						migration_decision_preflight_destination_history = yes
-						if = {
-							limit = { check_variable = { var = migration_decision_history_preflight_result value = constant:civilian_transfer_route_result.valid compare = equals } }
-							set_temp_variable = { migration_decision_atomic_transfer_result = constant:civilian_transfer_route_result.invalid }
-							set_temp_variable = { civilian_transfer_result = constant:civilian_transfer_route_result.invalid }
-							set_temp_variable = { civilian_transfer_finalize_result = constant:migration_core_reconciliation.transfer_finalize_invalid }
-							set_temp_variable = { civilian_transfer_actual_origin_debit = constant:humanitarian_population.zero }
-							set_temp_variable = { civilian_transfer_survivor_credit = constant:humanitarian_population.zero }
-							set_temp_variable = { civilian_transfer_destination_actual_credit = constant:humanitarian_population.zero }
-							set_temp_variable = { civilian_transfer_route_deaths = constant:humanitarian_population.zero }
-							set_temp_variable = { civilian_transfer_conservation_ledger = constant:humanitarian_population.zero }
-							set_temp_variable = { civilian_transfer_projection_result = constant:migration_core_reconciliation.transfer_projection_invalid }
-							migration_decision_execute_hosted_transfer = yes
-						}
-					}
-				}
-				# The destination branch is entered only after the measured source
-				# debit and source reception settlement have both returned valid.
-				event_target:civilian_transfer_route_destination = {
-					if = {
-						limit = {
-							check_variable = { var = civilian_transfer_finalize_result value = constant:migration_core_reconciliation.transfer_finalize_valid compare = equals }
-							check_variable = { var = civilian_transfer_actual_origin_debit value = constant:humanitarian_population.zero compare = greater_than }
-							check_variable = { var = civilian_transfer_survivor_credit value = constant:migration_mission_contract.minimum_survivor_credit compare = greater_than }
-						}
-						if = {
-							limit = { check_variable = { var = migration_decision_atomic_transfer_result value = constant:civilian_transfer_route_result.valid compare = equals } }
-							set_temp_variable = { migration_decision_reception_receipt_cohort_id_request = migration_cohort_id_to_move }
-							set_temp_variable = { migration_decision_reception_receipt_generation_request = migration_projection_last_generation }
-							set_temp_variable = { migration_decision_reception_receipt_result = constant:civilian_transfer_route_result.invalid }
-							migration_decision_record_medical_reception_receipt = yes
-							if = {
-								limit = { check_variable = { var = migration_decision_reception_receipt_result value = constant:civilian_transfer_route_result.valid compare = equals } }
-								event_target:migration_cohort_origin = {
-									if = {
-										limit = { has_state_flag = migration_mission_evacuation_subject }
-										set_state_flag = migration_mission_evacuation_success_proven
-									}
-								}
-								if = {
-									limit = {
-										OWNER = { has_country_flag = migration_medical_reception_active }
-										migration_decision_reception_exposure_receipt_is_valid = yes
-										NOT = { has_state_flag = migration_mission_reception_subject }
-										NOT = { OWNER = { has_country_flag = migration_mission_reception_active } }
-										OWNER = { migration_country_has_free_mission_slot = yes }
-									}
-									set_state_flag = migration_mission_reception_subject
-									set_state_flag = migration_mission_reception_observation_pending
-									set_variable = { migration_mission_reception_cohort_id = migration_cohort_id_to_move }
-									set_variable = { migration_mission_reception_attempt_generation = migration_mission_reception_receipt_generation }
-									migration_set_mission_reception_observation_deadline = yes
-									OWNER = {
-										migration_claim_mission_slot = yes
-										set_country_flag = migration_mission_reception_active
-									}
-								}
-							}
-							OWNER = {
-								humanitarian_achievement_record_arrival = yes
-								if = {
-									limit = { has_country_flag = humanitarian_achievement_gate_major_crisis }
-									humanitarian_achievement_record_gate_protection = yes
-								}
-							}
-							ROOT = { add_stability = constant:migration_decision_outcome.decision_minor_stability }
-						}
-						clear_variable = migration_destination_food_safe_proven
-						clear_variable = migration_destination_reception_proven
-					}
-					clear_variable = migration_destination_food_safe_proven
-					clear_variable = migration_destination_reception_proven
-				}
+			 limit = { has_variable = humanitarian_native_generation_migration_distribute_arrivals_@var:humanitarian_action_target_id }
+			 set_variable = { humanitarian_action_callback_id = humanitarian_native_generation_migration_distribute_arrivals_@var:humanitarian_action_target_id }
+			 clear_variable = humanitarian_native_generation_migration_distribute_arrivals_@var:humanitarian_action_target_id
+			 migration_action_resolve_callback = yes
 			}
-			else_if = {
-				limit = {
-					FROM = {
-						has_state_flag = migration_distribute_arrivals_cost_paid
-						has_variable = migration_distribute_arrivals_cost_payer
-						var:migration_distribute_arrivals_cost_payer = { tag = ROOT }
-					}
-				}
-				FROM = {
-					clr_state_flag = migration_distribute_arrivals_cost_paid
-					clear_variable = migration_distribute_arrivals_cost_payer
-				}
-			}
-			set_temp_variable = { migration_transport_target = FROM } set_temp_variable = { migration_transport_receipt = token:migration_distribute_arrivals } migration_transport_forget_state_cost = yes
 		}
 		cancel_if_not_visible = no
 		cancel_effect = {
-			FROM = {
-				if = {
-					limit = { has_state_flag = migration_distribute_arrivals_cost_paid has_variable = migration_distribute_arrivals_cost_payer var:migration_distribute_arrivals_cost_payer = { tag = ROOT } }
-					clr_state_flag = migration_distribute_arrivals_cost_paid
-					clear_variable = migration_distribute_arrivals_cost_payer
-				}
-				civilian_transfer_cleanup_request = yes
+			set_temp_variable = { humanitarian_action_target_id = FROM.id }
+			if = {
+			 limit = { has_variable = humanitarian_native_generation_migration_distribute_arrivals_@var:humanitarian_action_target_id }
+			 set_variable = { humanitarian_action_callback_id = humanitarian_native_generation_migration_distribute_arrivals_@var:humanitarian_action_target_id }
+			 clear_variable = humanitarian_native_generation_migration_distribute_arrivals_@var:humanitarian_action_target_id
+			 migration_action_cancel_callback = yes
 			}
-			set_temp_variable = { migration_transport_target = FROM } set_temp_variable = { migration_transport_receipt = token:migration_distribute_arrivals } migration_transport_forget_state_cost = yes
 		}
 	}
 	migration_transit_only = {
@@ -2447,27 +1226,24 @@ migration_evacuate_administration = {
 		state_target = any_controlled_state
 		on_map_mode = map_and_decisions_view
 		visible = {
+			is_ai = yes
 			FROM = { is_controlled_by = ROOT migration_state_has_real_migration_issue = yes }
 			NOT = { has_country_flag = humanitarian_corridor_offer_pending }
-			OR = {
-				check_variable = { var = migration_reception_policy value = constant:migration_border_policy.controlled compare = equals }
-				check_variable = { var = migration_reception_policy value = constant:migration_border_policy.humanitarian_open compare = equals }
-			}
+			check_variable = { migration_reception_policy = constant:migration_border_policy.transit_only }
 			migration_decision_reception_load_is_valid = yes
 			FROM = {
 				migration_decision_reception_state_load_is_valid = yes
 			}
 		}
 		available = {
+			set_temp_variable = { humanitarian_action_target = FROM }
+			migration_transit_only_action_can_start = yes
 			custom_trigger_tooltip = { tooltip = migration_real_pressure_tt hidden_trigger = { FROM = { is_controlled_by = ROOT migration_state_has_real_migration_issue = yes } } }
 			hidden_trigger = { NOT = { FROM = { has_state_flag = migration_evacuation_prepared } } }
 			hidden_trigger = { uses_normal_civilian_systems = yes }
 			custom_trigger_tooltip = {
 				tooltip = migration_transit_only_policy_tt
-				OR = {
-					check_variable = { var = migration_reception_policy value = constant:migration_border_policy.controlled compare = equals }
-					check_variable = { var = migration_reception_policy value = constant:migration_border_policy.humanitarian_open compare = equals }
-				}
+				check_variable = { migration_reception_policy = constant:migration_border_policy.transit_only }
 			}
 			custom_trigger_tooltip = {
 				tooltip = migration_transit_only_target_tt
@@ -2537,122 +1313,29 @@ migration_evacuate_administration = {
 			modifier = { factor = constant:migration_decision_ai.transit_only_factor_2 has_government = democratic }
 		}
 		complete_effect = {
-			if = {
-				limit = { migration_transit_only_can_start = yes }
-				set_temp_variable = { migration_transport_payment_result = constant:migration_transport_cost.zero }
-				set_temp_variable = { migration_transport_fuel_land = constant:migration_transport_cost.light_fuel_land } set_temp_variable = { migration_transport_fuel_sea = constant:migration_transport_cost.light_fuel_sea } set_temp_variable = { migration_transport_convoys_sea = constant:migration_transport_cost.light_convoys_sea } set_temp_variable = { migration_transport_target = FROM } set_temp_variable = { migration_transport_receipt = token:migration_transit_only } migration_transport_pay_state_cost = yes
-				if = {
-					limit = { check_variable = { migration_transport_payment_result = constant:migration_transport_cost.one } }
-					FROM = {
-						set_state_flag = migration_transit_only_cost_paid
-						set_variable = { migration_transit_only_cost_payer = ROOT }
-					}
-					set_temp_variable = { migration_reception_policy_request = constant:migration_border_policy.transit_only }
-					migration_decision_set_policy = yes
-				}
-			}
+			set_variable = { humanitarian_action_request_action = constant:migration_gui_action.transit_only }
+			set_variable = { humanitarian_action_request_state = FROM }
+			set_country_flag = humanitarian_action_request_native
+			migration_action_submit_request = yes
 		}
 		remove_effect = {
+			set_temp_variable = { humanitarian_action_target_id = FROM.id }
 			if = {
-				limit = { migration_transit_only_cost_receipt_is_valid = yes }
-				FROM = {
-					clr_state_flag = migration_transit_only_cost_paid
-					clear_variable = migration_transit_only_cost_payer
-				}
-				set_temp_variable = { migration_transit_origin_debit_proven = constant:humanitarian_runtime.zero }
-				FROM = {
-					save_event_target_as = civilian_transfer_origin
-					set_temp_variable = { migration_cohort_id_to_move = migration_current_cohort_id }
-					set_temp_variable = { migration_cohort_id_request = migration_current_cohort_id }
-					set_temp_variable = { migration_destination_selection_history_required = constant:migration_destination_selection_runtime.one }
-					migration_select_foreign_transit_destination = yes
-					set_temp_variable = { migration_destination_selection_history_required = constant:migration_destination_selection_runtime.zero }
-				}
-				set_temp_variable = { migration_cohort_origin_resolution_result = constant:civilian_transfer_route_result.invalid }
-				set_temp_variable = { migration_cohort_destination_resolution_result = constant:civilian_transfer_route_result.invalid }
-				set_temp_variable = { migration_cohort_resolution_count = constant:humanitarian_runtime.zero }
-				set_temp_variable = { migration_cohort_resolved_amount = constant:humanitarian_population.zero }
-				set_temp_variable = { migration_cohort_resolved_source = constant:humanitarian_pressure_source.unknown }
-				set_temp_variable = { migration_cohort_resolved_status = constant:migration_cohort_status.none }
-				ROOT = { migration_resolve_cohort_origin = yes }
-				event_target:civilian_transfer_origin = {
-					if = {
-						limit = { migration_cohort_origin_resolution_is_valid = yes }
-						set_temp_variable = { civilian_transfer_people = migration_cohort_resolved_amount }
-						set_temp_variable = { civilian_transfer_request_proven = constant:humanitarian_runtime.one }
-						set_temp_variable = { civilian_transfer_route_border_proven = constant:humanitarian_runtime.one }
-						set_temp_variable = { civilian_transfer_route_transport_proven = constant:humanitarian_runtime.one }
-						set_temp_variable = { civilian_transfer_route_safety_proven = constant:humanitarian_runtime.zero }
-						migration_decision_prove_route_contract = yes
-						set_temp_variable = { civilian_transfer_route_actor_proven = constant:humanitarian_runtime.one }
-						set_temp_variable = { civilian_transfer_route_deaths_requested = constant:humanitarian_population.zero }
-						set_temp_variable = { civilian_transfer_log_deaths = constant:humanitarian_runtime.one }
-						set_temp_variable = { civilian_transfer_role_request = constant:migration_core_reconciliation.transfer_projection_role_transit }
-						set_temp_variable = { civilian_transfer_flight_obligation_proven = constant:humanitarian_runtime.one }
-						if = { limit = { check_variable = { var = migration_trapped_population value = constant:humanitarian_population.zero compare = greater_than } } set_temp_variable = { civilian_transfer_trapped_obligation_proven = constant:humanitarian_runtime.one } }
-						set_temp_variable = { migration_decision_history_preflight_result = constant:civilian_transfer_route_result.invalid }
-						migration_decision_preflight_destination_history = yes
-						if = {
-							limit = { check_variable = { var = migration_decision_history_preflight_result value = constant:civilian_transfer_route_result.valid compare = equals } }
-							set_temp_variable = { migration_decision_atomic_transfer_result = constant:civilian_transfer_route_result.invalid }
-							set_temp_variable = { civilian_transfer_result = constant:civilian_transfer_route_result.invalid }
-							set_temp_variable = { civilian_transfer_finalize_result = constant:migration_core_reconciliation.transfer_finalize_invalid }
-							set_temp_variable = { civilian_transfer_actual_origin_debit = constant:humanitarian_population.zero }
-							set_temp_variable = { civilian_transfer_survivor_credit = constant:humanitarian_population.zero }
-							set_temp_variable = { civilian_transfer_destination_actual_credit = constant:humanitarian_population.zero }
-							set_temp_variable = { civilian_transfer_route_deaths = constant:humanitarian_population.zero }
-							set_temp_variable = { civilian_transfer_conservation_ledger = constant:humanitarian_population.zero }
-							set_temp_variable = { civilian_transfer_projection_result = constant:migration_core_reconciliation.transfer_projection_invalid }
-							migration_decision_execute_hosted_transfer = yes
-						}
-					}
-				}
-				event_target:civilian_transfer_route_destination = {
-					if = {
-						limit = {
-							check_variable = { var = civilian_transfer_finalize_result value = constant:migration_core_reconciliation.transfer_finalize_valid compare = equals }
-							check_variable = { var = civilian_transfer_actual_origin_debit value = constant:humanitarian_population.zero compare = greater_than }
-							check_variable = { var = civilian_transfer_survivor_credit value = constant:migration_mission_contract.minimum_survivor_credit compare = greater_than }
-						}
-						if = {
-							limit = { check_variable = { var = migration_decision_atomic_transfer_result value = constant:civilian_transfer_route_result.valid compare = equals } }
-							OWNER = {
-								humanitarian_achievement_record_arrival = yes
-								if = {
-									limit = { has_country_flag = humanitarian_achievement_gate_major_crisis }
-									humanitarian_achievement_record_gate_protection = yes
-								}
-							}
-						}
-					}
-				}
+			 limit = { has_variable = humanitarian_native_generation_migration_transit_only_@var:humanitarian_action_target_id }
+			 set_variable = { humanitarian_action_callback_id = humanitarian_native_generation_migration_transit_only_@var:humanitarian_action_target_id }
+			 clear_variable = humanitarian_native_generation_migration_transit_only_@var:humanitarian_action_target_id
+			 migration_action_resolve_callback = yes
 			}
-			else_if = {
-				limit = {
-					FROM = {
-						has_state_flag = migration_transit_only_cost_paid
-						has_variable = migration_transit_only_cost_payer
-						var:migration_transit_only_cost_payer = { tag = ROOT }
-					}
-				}
-				FROM = {
-					clr_state_flag = migration_transit_only_cost_paid
-					clear_variable = migration_transit_only_cost_payer
-				}
-			}
-			set_temp_variable = { migration_transport_target = FROM } set_temp_variable = { migration_transport_receipt = token:migration_transit_only } migration_transport_forget_state_cost = yes
 		}
 		cancel_if_not_visible = no
 		cancel_effect = {
-			FROM = {
-				if = {
-					limit = { has_state_flag = migration_transit_only_cost_paid has_variable = migration_transit_only_cost_payer var:migration_transit_only_cost_payer = { tag = ROOT } }
-					clr_state_flag = migration_transit_only_cost_paid
-					clear_variable = migration_transit_only_cost_payer
-				}
-				civilian_transfer_cleanup_request = yes
+			set_temp_variable = { humanitarian_action_target_id = FROM.id }
+			if = {
+			 limit = { has_variable = humanitarian_native_generation_migration_transit_only_@var:humanitarian_action_target_id }
+			 set_variable = { humanitarian_action_callback_id = humanitarian_native_generation_migration_transit_only_@var:humanitarian_action_target_id }
+			 clear_variable = humanitarian_native_generation_migration_transit_only_@var:humanitarian_action_target_id
+			 migration_action_cancel_callback = yes
 			}
-			set_temp_variable = { migration_transport_target = FROM } set_temp_variable = { migration_transport_receipt = token:migration_transit_only } migration_transport_forget_state_cost = yes
 		}
 	}
 	migration_enforce_closure = {
@@ -2660,16 +1343,19 @@ migration_evacuate_administration = {
 		state_target = any_controlled_state
 		on_map_mode = map_and_decisions_view
 		visible = {
+			is_ai = yes
 			FROM = { is_controlled_by = ROOT migration_state_has_real_migration_issue = yes }
 			NOT = { has_country_flag = humanitarian_corridor_offer_pending }
 			has_country_flag = migration_displacement_country_active
-			check_variable = { var = migration_reception_policy value = constant:migration_border_policy.closed compare = equals }
+			check_variable = { var = migration_reception_policy value = constant:migration_border_policy.violent compare = equals }
 			migration_decision_reception_load_is_valid = yes
 			FROM = {
 				migration_decision_reception_state_load_is_valid = yes
 			}
 		}
 		available = {
+			set_temp_variable = { humanitarian_action_target = FROM }
+			migration_enforce_closure_action_can_start = yes
 			custom_trigger_tooltip = { tooltip = migration_real_pressure_tt hidden_trigger = { FROM = { is_controlled_by = ROOT migration_state_has_real_migration_issue = yes } } }
 			hidden_trigger = { NOT = { FROM = { has_state_flag = migration_evacuation_prepared } } }
 			hidden_trigger = { uses_normal_civilian_systems = yes }
@@ -2713,145 +1399,29 @@ migration_evacuate_administration = {
 			modifier = { factor = constant:migration_decision_ai.enforce_closure_factor_3 has_war = yes }
 		}
 		complete_effect = {
-			if = {
-				limit = { migration_enforce_closure_can_start = yes }
-				set_temp_variable = { migration_transport_payment_result = constant:migration_transport_cost.zero }
-				set_temp_variable = { migration_transport_fuel_land = constant:migration_transport_cost.standard_fuel_land } set_temp_variable = { migration_transport_fuel_sea = constant:migration_transport_cost.standard_fuel_sea } set_temp_variable = { migration_transport_convoys_sea = constant:migration_transport_cost.standard_convoys_sea } set_temp_variable = { migration_transport_target = FROM } set_temp_variable = { migration_transport_receipt = token:migration_enforce_closure } migration_transport_pay_state_cost = yes
-				if = {
-					limit = { check_variable = { migration_transport_payment_result = constant:migration_transport_cost.one } }
-					add_equipment_to_stockpile = { type = infantry_equipment amount = constant:humanitarian_legacy_cost.infantry_heavy_debit }
-					FROM = {
-						set_state_flag = migration_enforce_closure_cost_paid
-						set_variable = { migration_enforce_closure_cost_payer = ROOT }
-					}
-					set_temp_variable = { migration_reception_policy_request = constant:migration_border_policy.violent }
-					migration_decision_set_policy = yes
-				}
-			}
+			set_variable = { humanitarian_action_request_action = constant:migration_gui_action.enforce_closure }
+			set_variable = { humanitarian_action_request_state = FROM }
+			set_country_flag = humanitarian_action_request_native
+			migration_action_submit_request = yes
 		}
 		remove_effect = {
+			set_temp_variable = { humanitarian_action_target_id = FROM.id }
 			if = {
-				limit = { migration_enforce_closure_cost_receipt_is_valid = yes }
-				FROM = {
-					clr_state_flag = migration_enforce_closure_cost_paid
-					clear_variable = migration_enforce_closure_cost_payer
-				}
-				FROM = {
-					save_event_target_as = civilian_transfer_origin
-					set_temp_variable = { migration_cohort_id_to_move = migration_current_cohort_id }
-					set_temp_variable = { migration_cohort_id_request = migration_current_cohort_id }
-				}
-				ROOT = {
-					set_temp_variable = { migration_cohort_origin_resolution_result = constant:civilian_transfer_route_result.invalid }
-					set_temp_variable = { migration_cohort_destination_resolution_result = constant:civilian_transfer_route_result.invalid }
-					set_temp_variable = { migration_cohort_resolution_count = constant:humanitarian_runtime.zero }
-					set_temp_variable = { migration_cohort_resolved_amount = constant:humanitarian_population.zero }
-					set_temp_variable = { migration_cohort_resolved_source = constant:humanitarian_pressure_source.unknown }
-					set_temp_variable = { migration_cohort_resolved_status = constant:migration_cohort_status.none }
-					migration_resolve_cohort_origin = yes
-					set_temp_variable = { migration_forced_return_result = constant:civilian_transfer_route_result.invalid }
-					if = {
-						limit = { migration_decision_forced_return_destination_is_valid = yes }
-						set_temp_variable = { migration_forced_return_request_proven = constant:humanitarian_runtime.one }
-						set_temp_variable = { migration_forced_return_unsafe_host_proven = constant:humanitarian_runtime.one }
-						set_temp_variable = { migration_forced_return_policy_proven = constant:humanitarian_runtime.one }
-						migration_force_return_cohort = yes
-					}
-				}
-				event_target:civilian_transfer_origin = {
-					if = {
-						limit = { check_variable = { var = migration_forced_return_result value = constant:civilian_transfer_route_result.valid compare = equals } }
-						event_target:civilian_transfer_route_destination = { migration_consume_famine_food_safety = yes }
-						set_temp_variable = { civilian_transfer_people = migration_cohort_resolved_amount }
-						set_temp_variable = { migration_forced_return_route_death_share = constant:migration_decision_threshold.forced_return_base_route_death_share }
-						if = { limit = { event_target:civilian_transfer_route_destination = { check_variable = { var = famine_to_migration_food_stage value = constant:famine_food_stage.famine compare = equals } } } add_to_temp_variable = { migration_forced_return_route_death_share = constant:migration_decision_threshold.forced_return_famine_route_death_share } }
-						if = { limit = { event_target:civilian_transfer_route_destination = { check_variable = { var = famine_to_migration_food_stage value = constant:famine_food_stage.catastrophic_famine compare = equals } } } add_to_temp_variable = { migration_forced_return_route_death_share = constant:migration_decision_threshold.forced_return_catastrophic_route_death_share } }
-						if = { limit = { event_target:civilian_transfer_route_destination = { has_state_flag = migration_persecution_active } } add_to_temp_variable = { migration_forced_return_route_death_share = constant:migration_decision_threshold.forced_return_persecution_route_death_share } }
-						if = { limit = { event_target:civilian_transfer_route_destination = { has_state_flag = migration_bombing_active } } add_to_temp_variable = { migration_forced_return_route_death_share = constant:migration_decision_threshold.forced_return_bombing_route_death_share } }
-						if = { limit = { event_target:civilian_transfer_route_destination = { cbrn_state_has_chemical_contamination = yes } } add_to_temp_variable = { migration_forced_return_route_death_share = constant:migration_decision_threshold.forced_return_contamination_route_death_share } }
-						clamp_temp_variable = { var = migration_forced_return_route_death_share min = constant:humanitarian_population.zero max = constant:migration_decision_threshold.forced_return_max_route_death_share }
-						set_temp_variable = { civilian_transfer_route_deaths_requested = civilian_transfer_people }
-						multiply_temp_variable = { civilian_transfer_route_deaths_requested = migration_forced_return_route_death_share }
-						round_temp_variable = civilian_transfer_route_deaths_requested
-						set_temp_variable = { civilian_transfer_request_proven = constant:humanitarian_runtime.one }
-						set_temp_variable = { civilian_transfer_route_border_proven = constant:humanitarian_runtime.one }
-						set_temp_variable = { civilian_transfer_route_transport_proven = constant:humanitarian_runtime.one }
-						set_temp_variable = { civilian_transfer_route_safety_proven = constant:humanitarian_runtime.zero }
-						migration_decision_prove_exact_return_route_contract = yes
-						set_temp_variable = { civilian_transfer_route_actor_proven = constant:humanitarian_runtime.one }
-						set_temp_variable = { civilian_transfer_route_death_reason = constant:chaos_meter_deaths_reason.forced_displacement }
-						set_temp_variable = { civilian_transfer_log_deaths = constant:humanitarian_runtime.one }
-						set_temp_variable = { civilian_transfer_role_request = constant:migration_core_reconciliation.transfer_projection_role_forced_return }
-						set_temp_variable = { civilian_transfer_flight_obligation_proven = constant:humanitarian_runtime.one }
-						if = { limit = { check_variable = { var = migration_trapped_population value = constant:humanitarian_population.zero compare = greater_than } } set_temp_variable = { civilian_transfer_trapped_obligation_proven = constant:humanitarian_runtime.one } }
-						set_temp_variable = { migration_decision_atomic_transfer_result = constant:civilian_transfer_route_result.invalid }
-						set_temp_variable = { civilian_transfer_result = constant:civilian_transfer_route_result.invalid }
-						set_temp_variable = { civilian_transfer_finalize_result = constant:migration_core_reconciliation.transfer_finalize_invalid }
-						set_temp_variable = { civilian_transfer_actual_origin_debit = constant:humanitarian_population.zero }
-						set_temp_variable = { civilian_transfer_survivor_credit = constant:humanitarian_population.zero }
-						set_temp_variable = { civilian_transfer_destination_actual_credit = constant:humanitarian_population.zero }
-						set_temp_variable = { civilian_transfer_route_deaths = constant:humanitarian_population.zero }
-						set_temp_variable = { civilian_transfer_conservation_ledger = constant:humanitarian_population.zero }
-						set_temp_variable = { civilian_transfer_projection_result = constant:migration_core_reconciliation.transfer_projection_invalid }
-						migration_decision_execute_hosted_transfer = yes
-						# The population primitive already registered these route deaths. The
-						# exact-transfer adapter adds only the Condemnation source.
-						if = {
-							limit = {
-								check_variable = { var = civilian_transfer_finalize_result value = constant:migration_core_reconciliation.transfer_finalize_valid compare = equals }
-								check_variable = { var = civilian_transfer_actual_origin_debit value = constant:humanitarian_population.zero compare = greater_than }
-								check_variable = { var = civilian_transfer_survivor_credit value = constant:humanitarian_population.zero compare = greater_than }
-							}
-							set_temp_variable = { migration_condemnation_decision_context = constant:condemnation_context.violent_pushback }
-							migration_record_exact_decision_condemnation = yes
-							ROOT = {
-								add_stability = constant:migration_decision_outcome.decision_standard_stability_negative
-								add_war_support = constant:migration_decision_outcome.decision_repatriation_war_support
-								humanitarian_achievement_record_violent_pushback = yes
-							}
-						}
-					}
-				}
-				event_target:civilian_transfer_route_destination = {
-					if = {
-						limit = {
-							check_variable = { var = civilian_transfer_finalize_result value = constant:migration_core_reconciliation.transfer_finalize_valid compare = equals }
-							check_variable = { var = civilian_transfer_actual_origin_debit value = constant:humanitarian_population.zero compare = greater_than }
-							check_variable = { var = civilian_transfer_survivor_credit value = constant:humanitarian_population.zero compare = greater_than }
-						}
-						set_temp_variable = { migration_state_return_projection_proven = constant:humanitarian_runtime.one }
-						set_temp_variable = { migration_state_return_people = civilian_transfer_survivor_credit }
-						set_temp_variable = { migration_state_return_projection_result = constant:civilian_transfer_route_result.invalid }
-						migration_record_state_return_projection = yes
-					}
-				}
+			 limit = { has_variable = humanitarian_native_generation_migration_enforce_closure_@var:humanitarian_action_target_id }
+			 set_variable = { humanitarian_action_callback_id = humanitarian_native_generation_migration_enforce_closure_@var:humanitarian_action_target_id }
+			 clear_variable = humanitarian_native_generation_migration_enforce_closure_@var:humanitarian_action_target_id
+			 migration_action_resolve_callback = yes
 			}
-			else_if = {
-				limit = {
-					FROM = {
-						has_state_flag = migration_enforce_closure_cost_paid
-						has_variable = migration_enforce_closure_cost_payer
-						var:migration_enforce_closure_cost_payer = { tag = ROOT }
-					}
-				}
-				FROM = {
-					clr_state_flag = migration_enforce_closure_cost_paid
-					clear_variable = migration_enforce_closure_cost_payer
-				}
-			}
-			set_temp_variable = { migration_transport_target = FROM } set_temp_variable = { migration_transport_receipt = token:migration_enforce_closure } migration_transport_forget_state_cost = yes
 		}
 		cancel_if_not_visible = no
 		cancel_effect = {
-			FROM = {
-				if = {
-					limit = { has_state_flag = migration_enforce_closure_cost_paid has_variable = migration_enforce_closure_cost_payer var:migration_enforce_closure_cost_payer = { tag = ROOT } }
-					clr_state_flag = migration_enforce_closure_cost_paid
-					clear_variable = migration_enforce_closure_cost_payer
-				}
-				civilian_transfer_cleanup_request = yes
+			set_temp_variable = { humanitarian_action_target_id = FROM.id }
+			if = {
+			 limit = { has_variable = humanitarian_native_generation_migration_enforce_closure_@var:humanitarian_action_target_id }
+			 set_variable = { humanitarian_action_callback_id = humanitarian_native_generation_migration_enforce_closure_@var:humanitarian_action_target_id }
+			 clear_variable = humanitarian_native_generation_migration_enforce_closure_@var:humanitarian_action_target_id
+			 migration_action_cancel_callback = yes
 			}
-			set_temp_variable = { migration_transport_target = FROM } set_temp_variable = { migration_transport_receipt = token:migration_enforce_closure } migration_transport_forget_state_cost = yes
 		}
 	}
 	migration_local_integration = {
@@ -2859,6 +1429,7 @@ migration_evacuate_administration = {
 		state_target = any_controlled_state
 		on_map_mode = map_and_decisions_view
 		visible = {
+			is_ai = yes
 			FROM = { is_controlled_by = ROOT migration_state_has_real_migration_issue = yes }
 			NOT = { has_country_flag = humanitarian_corridor_offer_pending }
 			migration_decision_reception_load_is_valid = yes
@@ -2874,6 +1445,8 @@ migration_evacuate_administration = {
 			}
 		}
 		available = {
+			set_temp_variable = { humanitarian_action_target = FROM }
+			migration_local_integration_action_can_start = yes
 			custom_trigger_tooltip = { tooltip = migration_real_pressure_tt hidden_trigger = { FROM = { is_controlled_by = ROOT migration_state_has_real_migration_issue = yes } } }
 			hidden_trigger = { NOT = { FROM = { has_state_flag = migration_evacuation_prepared } } }
 			hidden_trigger = { uses_normal_civilian_systems = yes }
@@ -2920,59 +1493,10 @@ migration_evacuate_administration = {
 			modifier = { factor = constant:migration_decision_ai.local_integration_factor_3 has_war = yes }
 		}
 		complete_effect = {
-			if = {
-				limit = { migration_local_integration_can_start = yes }
-				set_temp_variable = { migration_transport_payment_result = constant:migration_transport_cost.zero }
-				set_temp_variable = { migration_transport_fuel_land = constant:migration_transport_cost.standard_fuel_land } set_temp_variable = { migration_transport_fuel_sea = constant:migration_transport_cost.standard_fuel_sea } set_temp_variable = { migration_transport_convoys_sea = constant:migration_transport_cost.standard_convoys_sea } set_temp_variable = { migration_transport_target = FROM } set_temp_variable = { migration_transport_receipt = token:migration_local_integration } migration_transport_pay_state_cost = yes
-				if = {
-					limit = { check_variable = { migration_transport_payment_result = constant:migration_transport_cost.one } }
-					add_equipment_to_stockpile = { type = support_equipment amount = constant:humanitarian_legacy_cost.support_heavy_debit }
-					custom_effect_tooltip = migration_local_integration_effect_tt
-					# One whole-cohort settlement: both reception ledgers are debited once,
-					# the row becomes completed with zero people, and national integration
-					# is credited only after both succeed. Nobody moves.
-					set_temp_variable = { migration_integration_settlement_result = constant:humanitarian_runtime.zero }
-					set_temp_variable = { migration_integration_settlement_amount = constant:humanitarian_population.zero }
-					set_temp_variable = { migration_integration_result = constant:humanitarian_runtime.zero }
-					set_temp_variable = { migration_integration_settled_cohort_id = constant:humanitarian_runtime.zero }
-					save_event_target_as = migration_integration_settlement_actor
-					FROM = {
-						set_temp_variable = { migration_integration_settled_cohort_id = migration_current_cohort_id }
-						set_temp_variable = { migration_integration_settlement_cohort_id = migration_current_cohort_id }
-						set_temp_variable = { migration_integration_settlement_proven = constant:humanitarian_runtime.one }
-						migration_settle_integrated_cohort = yes
-						if = {
-							limit = { check_variable = { var = migration_integration_settlement_result value = constant:humanitarian_runtime.one compare = equals } }
-							set_temp_variable = { humanitarian_achievement_resolution_cohort_id = migration_integration_settled_cohort_id }
-							set_variable = { humanitarian_achievement_integration_cohort_id = migration_integration_settled_cohort_id }
-							humanitarian_achievement_record_integrated_receiving_state = yes
-						}
-					}
-					if = {
-						limit = { check_variable = { var = migration_integration_settlement_result value = constant:humanitarian_runtime.one compare = equals } }
-						# Remove the settled terminal row once nothing else references it.
-						set_temp_variable = { migration_cohort_id_request = migration_integration_settled_cohort_id }
-						set_temp_variable = { migration_cohort_cleanup_proven = constant:humanitarian_runtime.one }
-						migration_cleanup_cohort_record = yes
-						humanitarian_achievement_record_gate_cohort_resolution = yes
-						clr_country_flag = migration_decision_active
-						set_country_flag = migration_decision_resolution
-						if = {
-							limit = {
-								OR = {
-									NOT = { has_variable = migration_reception_load }
-									NOT = { check_variable = { var = migration_reception_load value = constant:humanitarian_population.zero compare = greater_than } }
-								}
-								NOT = { any_owned_state = { has_state_flag = migration_displacement_active } }
-							}
-							humanitarian_achievement_record_durable_outcome = yes
-							set_country_flag = migration_decision_dormant
-							clr_country_flag = migration_decision_resolution
-						}
-					}
-				}
-			}
-			set_temp_variable = { migration_transport_target = FROM } set_temp_variable = { migration_transport_receipt = token:migration_local_integration } migration_transport_forget_state_cost = yes
+			set_variable = { humanitarian_action_request_action = constant:migration_gui_action.local_integration }
+			set_variable = { humanitarian_action_request_state = FROM }
+			set_country_flag = humanitarian_action_request_native
+			migration_action_submit_request = yes
 		}
 	}
 	migration_third_country_resettlement = {
@@ -2980,6 +1504,7 @@ migration_evacuate_administration = {
 		state_target = any_controlled_state
 		on_map_mode = map_and_decisions_view
 		visible = {
+			is_ai = yes
 			FROM = { is_controlled_by = ROOT migration_state_has_real_migration_issue = yes }
 			NOT = { has_country_flag = humanitarian_corridor_offer_pending }
 			migration_decision_reception_load_is_valid = yes
@@ -2990,6 +1515,8 @@ migration_evacuate_administration = {
 			}
 		}
 		available = {
+			set_temp_variable = { humanitarian_action_target = FROM }
+			migration_third_country_resettlement_action_can_start = yes
 			custom_trigger_tooltip = { tooltip = migration_real_pressure_tt hidden_trigger = { FROM = { is_controlled_by = ROOT migration_state_has_real_migration_issue = yes } } }
 			custom_trigger_tooltip = {
 				tooltip = migration_reception_load_tt
@@ -3069,125 +1596,29 @@ migration_evacuate_administration = {
 			modifier = { factor = constant:migration_decision_ai.third_country_resettlement_factor_2 has_variable = migration_reception_load }
 		}
 		complete_effect = {
-			if = {
-				limit = { migration_third_country_resettlement_can_start = yes }
-				set_temp_variable = { migration_transport_payment_result = constant:migration_transport_cost.zero }
-				set_temp_variable = { migration_transport_fuel_land = constant:migration_transport_cost.heavy_fuel_land } set_temp_variable = { migration_transport_fuel_sea = constant:migration_transport_cost.heavy_fuel_sea } set_temp_variable = { migration_transport_convoys_sea = constant:migration_transport_cost.heavy_convoys_sea } set_temp_variable = { migration_transport_target = FROM } set_temp_variable = { migration_transport_receipt = token:migration_third_country_resettlement } migration_transport_pay_state_cost = yes
-				if = {
-					limit = { check_variable = { migration_transport_payment_result = constant:migration_transport_cost.one } }
-					add_equipment_to_stockpile = { type = train_equipment amount = constant:humanitarian_legacy_cost.train_light_debit }
-					FROM = {
-						set_state_flag = migration_third_country_resettlement_cost_paid
-						set_variable = { migration_third_country_resettlement_cost_payer = ROOT }
-					}
-				}
-			}
+			set_variable = { humanitarian_action_request_action = constant:migration_gui_action.third_country_resettlement }
+			set_variable = { humanitarian_action_request_state = FROM }
+			set_country_flag = humanitarian_action_request_native
+			migration_action_submit_request = yes
 		}
 		remove_effect = {
+			set_temp_variable = { humanitarian_action_target_id = FROM.id }
 			if = {
-				limit = { migration_third_country_resettlement_cost_receipt_is_valid = yes }
-				FROM = {
-					clr_state_flag = migration_third_country_resettlement_cost_paid
-					clear_variable = migration_third_country_resettlement_cost_payer
-				}
-				set_temp_variable = { migration_resettlement_origin_debit_proven = constant:humanitarian_runtime.zero }
-				ROOT = { save_event_target_as = migration_resettlement_actor }
-				FROM = {
-					save_event_target_as = civilian_transfer_origin
-					set_temp_variable = { migration_cohort_id_to_move = migration_current_cohort_id }
-					set_temp_variable = { migration_cohort_id_request = migration_current_cohort_id }
-					migration_select_third_country_resettlement_destination = yes
-				}
-				ROOT = {
-					set_temp_variable = { migration_cohort_origin_resolution_result = constant:civilian_transfer_route_result.invalid }
-					set_temp_variable = { migration_cohort_destination_resolution_result = constant:civilian_transfer_route_result.invalid }
-					set_temp_variable = { migration_cohort_resolution_count = constant:humanitarian_runtime.zero }
-					set_temp_variable = { migration_cohort_resolved_amount = constant:humanitarian_population.zero }
-					set_temp_variable = { migration_cohort_resolved_source = constant:humanitarian_pressure_source.unknown }
-					set_temp_variable = { migration_cohort_resolved_status = constant:migration_cohort_status.none }
-					migration_resolve_cohort_origin = yes
-				}
-				event_target:civilian_transfer_origin = {
-					event_target:civilian_transfer_route_destination = { migration_consume_famine_food_safety = yes }
-					set_temp_variable = { civilian_transfer_people = migration_cohort_resolved_amount }
-					set_temp_variable = { civilian_transfer_request_proven = constant:humanitarian_runtime.one }
-					set_temp_variable = { civilian_transfer_route_border_proven = constant:humanitarian_runtime.one }
-					set_temp_variable = { civilian_transfer_route_transport_proven = constant:humanitarian_runtime.one }
-					set_temp_variable = { civilian_transfer_route_safety_proven = constant:humanitarian_runtime.zero }
-					migration_decision_prove_route_contract = yes
-					set_temp_variable = { civilian_transfer_route_actor_proven = constant:humanitarian_runtime.one }
-					set_temp_variable = { civilian_transfer_route_deaths_requested = constant:humanitarian_population.zero }
-					set_temp_variable = { civilian_transfer_log_deaths = constant:humanitarian_runtime.one }
-					set_temp_variable = { civilian_transfer_role_request = constant:migration_core_reconciliation.transfer_projection_role_resettlement }
-					set_temp_variable = { civilian_transfer_flight_obligation_proven = constant:humanitarian_runtime.one }
-					if = { limit = { check_variable = { var = migration_trapped_population value = constant:humanitarian_population.zero compare = greater_than } } set_temp_variable = { civilian_transfer_trapped_obligation_proven = constant:humanitarian_runtime.one } }
-					set_temp_variable = { migration_decision_atomic_transfer_result = constant:civilian_transfer_route_result.invalid }
-					set_temp_variable = { civilian_transfer_result = constant:civilian_transfer_route_result.invalid }
-					set_temp_variable = { civilian_transfer_finalize_result = constant:migration_core_reconciliation.transfer_finalize_invalid }
-					set_temp_variable = { civilian_transfer_actual_origin_debit = constant:humanitarian_population.zero }
-					set_temp_variable = { civilian_transfer_survivor_credit = constant:humanitarian_population.zero }
-					set_temp_variable = { civilian_transfer_destination_actual_credit = constant:humanitarian_population.zero }
-					set_temp_variable = { civilian_transfer_route_deaths = constant:humanitarian_population.zero }
-					set_temp_variable = { civilian_transfer_conservation_ledger = constant:humanitarian_population.zero }
-					set_temp_variable = { civilian_transfer_projection_result = constant:migration_core_reconciliation.transfer_projection_invalid }
-					migration_decision_execute_hosted_transfer = yes
-				}
-				event_target:civilian_transfer_route_destination = {
-					if = {
-						limit = {
-							check_variable = { var = civilian_transfer_finalize_result value = constant:migration_core_reconciliation.transfer_finalize_valid compare = equals }
-							check_variable = { var = civilian_transfer_actual_origin_debit value = constant:humanitarian_population.zero compare = greater_than }
-							check_variable = { var = civilian_transfer_survivor_credit value = constant:migration_mission_contract.minimum_survivor_credit compare = greater_than }
-						}
-						set_temp_variable = { migration_state_resettlement_projection_proven = constant:humanitarian_runtime.one }
-						set_temp_variable = { migration_state_resettlement_people = civilian_transfer_survivor_credit }
-						set_temp_variable = { migration_state_resettlement_projection_result = constant:civilian_transfer_route_result.invalid }
-						migration_record_state_resettlement_projection = yes
-						if = {
-							limit = { check_variable = { var = migration_state_resettlement_projection_result value = constant:civilian_transfer_route_result.valid compare = equals } }
-							OWNER = {
-								humanitarian_achievement_record_arrival = yes
-								if = {
-									limit = { has_country_flag = humanitarian_achievement_gate_major_crisis }
-									humanitarian_achievement_record_gate_protection = yes
-								}
-								set_temp_variable = { humanitarian_achievement_resolution_cohort_id = migration_cohort_id_to_move }
-								humanitarian_achievement_record_gate_cohort_resolution = yes
-							}
-							event_target:migration_resettlement_actor = {
-								clr_country_flag = migration_decision_active
-								set_country_flag = migration_decision_resolution
-							}
-						}
-					}
-				}
+			 limit = { has_variable = humanitarian_native_generation_migration_third_country_resettlement_@var:humanitarian_action_target_id }
+			 set_variable = { humanitarian_action_callback_id = humanitarian_native_generation_migration_third_country_resettlement_@var:humanitarian_action_target_id }
+			 clear_variable = humanitarian_native_generation_migration_third_country_resettlement_@var:humanitarian_action_target_id
+			 migration_action_resolve_callback = yes
 			}
-			else_if = {
-				limit = {
-					FROM = {
-						has_state_flag = migration_third_country_resettlement_cost_paid
-						has_variable = migration_third_country_resettlement_cost_payer
-						var:migration_third_country_resettlement_cost_payer = { tag = ROOT }
-					}
-				}
-				FROM = {
-					clr_state_flag = migration_third_country_resettlement_cost_paid
-					clear_variable = migration_third_country_resettlement_cost_payer
-				}
-			}
-			set_temp_variable = { migration_transport_target = FROM } set_temp_variable = { migration_transport_receipt = token:migration_third_country_resettlement } migration_transport_forget_state_cost = yes
 		}
 		cancel_if_not_visible = no
 		cancel_effect = {
-			FROM = {
-				if = {
-					limit = { has_state_flag = migration_third_country_resettlement_cost_paid has_variable = migration_third_country_resettlement_cost_payer var:migration_third_country_resettlement_cost_payer = { tag = ROOT } }
-					clr_state_flag = migration_third_country_resettlement_cost_paid
-					clear_variable = migration_third_country_resettlement_cost_payer
-				}
-				civilian_transfer_cleanup_request = yes
+			set_temp_variable = { humanitarian_action_target_id = FROM.id }
+			if = {
+			 limit = { has_variable = humanitarian_native_generation_migration_third_country_resettlement_@var:humanitarian_action_target_id }
+			 set_variable = { humanitarian_action_callback_id = humanitarian_native_generation_migration_third_country_resettlement_@var:humanitarian_action_target_id }
+			 clear_variable = humanitarian_native_generation_migration_third_country_resettlement_@var:humanitarian_action_target_id
+			 migration_action_cancel_callback = yes
 			}
-			set_temp_variable = { migration_transport_target = FROM } set_temp_variable = { migration_transport_receipt = token:migration_third_country_resettlement } migration_transport_forget_state_cost = yes
 		}
 	}
 	migration_voluntary_return = {
@@ -3195,6 +1626,7 @@ migration_evacuate_administration = {
 		state_target = any_controlled_state
 		on_map_mode = map_and_decisions_view
 		visible = {
+			is_ai = yes
 			FROM = { is_controlled_by = ROOT migration_state_has_real_migration_issue = yes }
 			NOT = { has_country_flag = humanitarian_corridor_offer_pending }
 			migration_decision_reception_load_is_valid = yes
@@ -3203,6 +1635,8 @@ migration_evacuate_administration = {
 			}
 		}
 		available = {
+			set_temp_variable = { humanitarian_action_target = FROM }
+			migration_voluntary_return_action_can_start = yes
 			custom_trigger_tooltip = { tooltip = migration_real_pressure_tt hidden_trigger = { FROM = { is_controlled_by = ROOT migration_state_has_real_migration_issue = yes } } }
 			hidden_trigger = { NOT = { FROM = { has_state_flag = migration_evacuation_prepared } } }
 			custom_trigger_tooltip = {
@@ -3240,221 +1674,29 @@ migration_evacuate_administration = {
 			modifier = { factor = constant:migration_decision_ai.voluntary_return_factor_3 has_country_flag = migration_forced_return_pending }
 		}
 		complete_effect = {
-			if = {
-				limit = { migration_voluntary_return_can_start = yes }
-				set_temp_variable = { migration_transport_payment_result = constant:migration_transport_cost.zero }
-				set_temp_variable = { migration_transport_fuel_land = constant:migration_transport_cost.standard_fuel_land } set_temp_variable = { migration_transport_fuel_sea = constant:migration_transport_cost.standard_fuel_sea } set_temp_variable = { migration_transport_convoys_sea = constant:migration_transport_cost.standard_convoys_sea } set_temp_variable = { migration_transport_target = FROM } set_temp_variable = { migration_transport_receipt = token:migration_voluntary_return } migration_transport_pay_state_cost = yes
-				if = {
-					limit = { check_variable = { migration_transport_payment_result = constant:migration_transport_cost.one } }
-					add_equipment_to_stockpile = { type = train_equipment amount = constant:humanitarian_legacy_cost.train_light_debit }
-					FROM = {
-						set_state_flag = migration_voluntary_return_cost_paid
-						set_variable = { migration_voluntary_return_cost_payer = ROOT }
-					}
-				}
-			}
+			set_variable = { humanitarian_action_request_action = constant:migration_gui_action.voluntary_return }
+			set_variable = { humanitarian_action_request_state = FROM }
+			set_country_flag = humanitarian_action_request_native
+			migration_action_submit_request = yes
 		}
 		remove_effect = {
+			set_temp_variable = { humanitarian_action_target_id = FROM.id }
 			if = {
-				limit = { migration_voluntary_return_cost_receipt_is_valid = yes }
-				FROM = {
-					clr_state_flag = migration_voluntary_return_cost_paid
-					clear_variable = migration_voluntary_return_cost_payer
-				}
-				FROM = {
-					save_event_target_as = civilian_transfer_origin
-					set_temp_variable = { migration_cohort_id_to_move = migration_current_cohort_id }
-					set_temp_variable = { migration_cohort_id_request = migration_current_cohort_id }
-				}
-				ROOT = {
-					set_temp_variable = { migration_cohort_origin_resolution_result = constant:civilian_transfer_route_result.invalid }
-					set_temp_variable = { migration_cohort_destination_resolution_result = constant:civilian_transfer_route_result.invalid }
-					set_temp_variable = { migration_cohort_resolution_count = constant:humanitarian_runtime.zero }
-					set_temp_variable = { migration_cohort_resolved_amount = constant:humanitarian_population.zero }
-					set_temp_variable = { migration_cohort_resolved_source = constant:humanitarian_pressure_source.unknown }
-					set_temp_variable = { migration_cohort_resolved_status = constant:migration_cohort_status.none }
-					migration_resolve_cohort_origin = yes
-					if = {
-						limit = {
-							migration_cohort_origin_resolution_is_valid = yes
-							migration_decision_voluntary_return_destination_is_valid = yes
-							event_target:migration_cohort_origin = {
-								humanitarian_state_is_valid = yes
-								is_controlled_by = OWNER
-								infrastructure > constant:migration_destination_selection_threshold.minimum_route_infrastructure
-								famine_to_migration_food_safety_is_valid = yes
-								check_variable = { var = famine_to_migration_food_stage value = constant:famine_food_stage.stable compare = equals }
-								NOT = { has_state_flag = migration_persecution_active }
-								NOT = { has_state_flag = migration_bombing_active }
-								NOT = { has_state_flag = migration_population_trapped }
-								NOT = { genocide_state_has_active_camps = yes }
-								NOT = { is_valid_camp_active_site_state = yes }
-								NOT = { cbrn_state_has_chemical_contamination = yes }
-								NOT = { has_dynamic_modifier = { modifier = nuclear_fallout_state } }
-								NOT = { black_plague_state_is_infected_or_worse = yes }
-								OWNER = {
-									migration_reception_capacity_is_valid = yes
-									migration_decision_reception_policy_allows_admission = yes
-								}
-							}
-							event_target:civilian_transfer_origin = {
-								humanitarian_state_is_valid = yes
-								any_neighbor_state = { state = event_target:migration_cohort_origin }
-								is_controlled_by = OWNER
-								infrastructure > constant:migration_destination_selection_threshold.minimum_route_infrastructure
-								famine_to_migration_food_safety_is_valid = yes
-								check_variable = { var = famine_to_migration_food_stage value = constant:famine_food_stage.stable compare = equals }
-								NOT = { has_state_flag = migration_persecution_active }
-								NOT = { has_state_flag = migration_bombing_active }
-								NOT = { has_state_flag = migration_population_trapped }
-								NOT = { genocide_state_has_active_camps = yes }
-								NOT = { is_valid_camp_active_site_state = yes }
-								NOT = { cbrn_state_has_chemical_contamination = yes }
-								NOT = { has_dynamic_modifier = { modifier = nuclear_fallout_state } }
-								NOT = { black_plague_state_is_infected_or_worse = yes }
-								OWNER = {
-									OR = {
-										NOT = { has_variable = migration_departure_policy }
-										migration_decision_departure_policy_allows_outbound = yes
-									}
-								}
-							}
-						}
-						set_temp_variable = { migration_return_request_proven = constant:humanitarian_runtime.one }
-						set_temp_variable = { migration_return_origin_safe_proven = constant:humanitarian_runtime.one }
-						set_temp_variable = { migration_return_route_proven = constant:humanitarian_runtime.one }
-						set_temp_variable = { migration_return_food_safe_proven = constant:humanitarian_runtime.one }
-						set_temp_variable = { migration_return_housing_ready_proven = constant:humanitarian_runtime.one }
-						set_temp_variable = { migration_return_persecution_clear_proven = constant:humanitarian_runtime.one }
-						set_temp_variable = { migration_return_contamination_clear_proven = constant:humanitarian_runtime.one }
-						set_temp_variable = { migration_return_host_allows_proven = constant:humanitarian_runtime.one }
-						event_target:migration_cohort_origin = {
-							save_event_target_as = civilian_transfer_route_destination
-							set_variable = { migration_destination_food_safe_proven = constant:humanitarian_runtime.one }
-							set_variable = { migration_destination_reception_proven = constant:humanitarian_runtime.one }
-						}
-					}
-					set_temp_variable = { migration_return_result = constant:humanitarian_runtime.zero }
-					migration_evaluate_voluntary_return = yes
-				}
-				event_target:civilian_transfer_origin = {
-					if = {
-						limit = { check_variable = { var = migration_return_result value = constant:humanitarian_runtime.one compare = equals } }
-						set_temp_variable = { civilian_transfer_people = migration_cohort_resolved_amount }
-						set_temp_variable = { civilian_transfer_request_proven = constant:humanitarian_runtime.one }
-						set_temp_variable = { civilian_transfer_route_border_proven = constant:humanitarian_runtime.one }
-						set_temp_variable = { civilian_transfer_route_transport_proven = constant:humanitarian_runtime.one }
-						set_temp_variable = { civilian_transfer_route_safety_proven = constant:humanitarian_runtime.zero }
-						migration_decision_prove_exact_return_route_contract = yes
-						set_temp_variable = { civilian_transfer_route_actor_proven = constant:humanitarian_runtime.one }
-						set_temp_variable = { civilian_transfer_route_deaths_requested = constant:humanitarian_population.zero }
-						set_temp_variable = { civilian_transfer_log_deaths = constant:humanitarian_runtime.one }
-						set_temp_variable = { civilian_transfer_role_request = constant:migration_core_reconciliation.transfer_projection_role_voluntary_return }
-						set_temp_variable = { civilian_transfer_flight_obligation_proven = constant:humanitarian_runtime.one }
-						if = { limit = { check_variable = { var = migration_trapped_population value = constant:humanitarian_population.zero compare = greater_than } } set_temp_variable = { civilian_transfer_trapped_obligation_proven = constant:humanitarian_runtime.one } }
-						set_temp_variable = { migration_decision_atomic_transfer_result = constant:civilian_transfer_route_result.invalid }
-						set_temp_variable = { civilian_transfer_result = constant:civilian_transfer_route_result.invalid }
-						set_temp_variable = { civilian_transfer_finalize_result = constant:migration_core_reconciliation.transfer_finalize_invalid }
-						set_temp_variable = { civilian_transfer_actual_origin_debit = constant:humanitarian_population.zero }
-						set_temp_variable = { civilian_transfer_survivor_credit = constant:humanitarian_population.zero }
-						set_temp_variable = { civilian_transfer_destination_actual_credit = constant:humanitarian_population.zero }
-						set_temp_variable = { civilian_transfer_route_deaths = constant:humanitarian_population.zero }
-						set_temp_variable = { civilian_transfer_conservation_ledger = constant:humanitarian_population.zero }
-						set_temp_variable = { civilian_transfer_projection_result = constant:migration_core_reconciliation.transfer_projection_invalid }
-						migration_decision_execute_hosted_transfer = yes
-						if = {
-							limit = {
-								check_variable = { var = civilian_transfer_finalize_result value = constant:migration_core_reconciliation.transfer_finalize_valid compare = equals }
-								check_variable = { var = civilian_transfer_actual_origin_debit value = constant:humanitarian_population.zero compare = greater_than }
-								check_variable = { var = civilian_transfer_survivor_credit value = constant:humanitarian_population.zero compare = greater_than }
-							}
-							ROOT = {
-								clr_country_flag = migration_voluntary_return_eligible
-								set_temp_variable = { migration_return_eligible_people = civilian_transfer_survivor_credit }
-								set_temp_variable = { humanitarian_achievement_resolution_cohort_id = migration_cohort_id_to_move }
-								humanitarian_achievement_record_voluntary_return = yes
-								humanitarian_achievement_record_gate_cohort_resolution = yes
-								clr_country_flag = migration_decision_active
-								set_country_flag = migration_decision_resolution
-							}
-						}
-					}
-				}
-				event_target:civilian_transfer_route_destination = {
-					if = {
-						limit = {
-							check_variable = { var = civilian_transfer_finalize_result value = constant:migration_core_reconciliation.transfer_finalize_valid compare = equals }
-							check_variable = { var = civilian_transfer_actual_origin_debit value = constant:humanitarian_population.zero compare = greater_than }
-							check_variable = { var = civilian_transfer_survivor_credit value = constant:humanitarian_population.zero compare = greater_than }
-						}
-						set_temp_variable = { migration_state_return_projection_proven = constant:humanitarian_runtime.one }
-						set_temp_variable = { migration_state_return_people = civilian_transfer_survivor_credit }
-						set_temp_variable = { migration_state_return_projection_result = constant:civilian_transfer_route_result.invalid }
-						migration_record_state_return_projection = yes
-						OWNER = {
-							set_temp_variable = { humanitarian_achievement_resolution_cohort_id = migration_cohort_id_to_move }
-							humanitarian_achievement_record_voluntary_return = yes
-						}
-						if = {
-							limit = {
-								check_variable = { var = migration_state_return_projection_result value = constant:civilian_transfer_route_result.valid compare = equals }
-								check_variable = { var = civilian_transfer_survivor_credit value = constant:migration_mission_contract.minimum_survivor_credit compare = greater_than }
-								NOT = { ROOT = { has_country_flag = migration_mission_return_active } }
-								ROOT = { migration_country_has_free_mission_slot = yes }
-							}
-							set_state_flag = migration_mission_return_subject
-							migration_set_mission_return_deadline = yes
-							ROOT = {
-								migration_claim_mission_slot = yes
-								set_country_flag = migration_mission_return_active
-								migration_show_report_return = yes
-							}
-						}
-						clear_variable = migration_destination_food_safe_proven
-						clear_variable = migration_destination_reception_proven
-						if = {
-							limit = { check_variable = { var = migration_current_cohort_id value = migration_cohort_id_to_move compare = equals } }
-							clear_variable = migration_current_cohort_id
-							clr_state_flag = migration_cohort_selection_ambiguous
-						}
-					}
-					clear_variable = migration_destination_food_safe_proven
-					clear_variable = migration_destination_reception_proven
-				}
-				if = {
-					limit = {
-						NOT = { check_variable = { var = civilian_transfer_actual_origin_debit value = constant:humanitarian_population.zero compare = greater_than } }
-					}
-					set_temp_variable = { migration_transport_target = FROM } set_temp_variable = { migration_transport_receipt = token:migration_voluntary_return } migration_transport_refund_state_cost = yes
-					add_equipment_to_stockpile = { type = train_equipment amount = constant:humanitarian_legacy_cost.train_light }
-				}
+			 limit = { has_variable = humanitarian_native_generation_migration_voluntary_return_@var:humanitarian_action_target_id }
+			 set_variable = { humanitarian_action_callback_id = humanitarian_native_generation_migration_voluntary_return_@var:humanitarian_action_target_id }
+			 clear_variable = humanitarian_native_generation_migration_voluntary_return_@var:humanitarian_action_target_id
+			 migration_action_resolve_callback = yes
 			}
-			else_if = {
-				limit = {
-					FROM = {
-						has_state_flag = migration_voluntary_return_cost_paid
-						has_variable = migration_voluntary_return_cost_payer
-						var:migration_voluntary_return_cost_payer = { tag = ROOT }
-					}
-				}
-				FROM = {
-					clr_state_flag = migration_voluntary_return_cost_paid
-					clear_variable = migration_voluntary_return_cost_payer
-				}
-			}
-			set_temp_variable = { migration_transport_target = FROM } set_temp_variable = { migration_transport_receipt = token:migration_voluntary_return } migration_transport_forget_state_cost = yes
 		}
 		cancel_if_not_visible = no
 		cancel_effect = {
-			FROM = {
-				if = {
-					limit = { has_state_flag = migration_voluntary_return_cost_paid has_variable = migration_voluntary_return_cost_payer var:migration_voluntary_return_cost_payer = { tag = ROOT } }
-					clr_state_flag = migration_voluntary_return_cost_paid
-					clear_variable = migration_voluntary_return_cost_payer
-				}
-				civilian_transfer_cleanup_request = yes
+			set_temp_variable = { humanitarian_action_target_id = FROM.id }
+			if = {
+			 limit = { has_variable = humanitarian_native_generation_migration_voluntary_return_@var:humanitarian_action_target_id }
+			 set_variable = { humanitarian_action_callback_id = humanitarian_native_generation_migration_voluntary_return_@var:humanitarian_action_target_id }
+			 clear_variable = humanitarian_native_generation_migration_voluntary_return_@var:humanitarian_action_target_id
+			 migration_action_cancel_callback = yes
 			}
-			set_temp_variable = { migration_transport_target = FROM } set_temp_variable = { migration_transport_receipt = token:migration_voluntary_return } migration_transport_forget_state_cost = yes
 		}
 	}
 	migration_forced_repatriation = {
@@ -3462,6 +1704,7 @@ migration_evacuate_administration = {
 		state_target = any_controlled_state
 		on_map_mode = map_and_decisions_view
 		visible = {
+			is_ai = yes
 			FROM = { is_controlled_by = ROOT migration_state_has_real_migration_issue = yes }
 			NOT = { has_country_flag = humanitarian_corridor_offer_pending }
 			migration_decision_reception_load_is_valid = yes
@@ -3470,6 +1713,8 @@ migration_evacuate_administration = {
 			}
 		}
 		available = {
+			set_temp_variable = { humanitarian_action_target = FROM }
+			migration_forced_repatriation_action_can_start = yes
 			custom_trigger_tooltip = { tooltip = migration_real_pressure_tt hidden_trigger = { FROM = { is_controlled_by = ROOT migration_state_has_real_migration_issue = yes } } }
 			hidden_trigger = { NOT = { FROM = { has_state_flag = migration_evacuation_prepared } } }
 			hidden_trigger = { uses_normal_civilian_systems = yes }
@@ -3514,176 +1759,29 @@ migration_evacuate_administration = {
 			modifier = { factor = constant:migration_decision_ai.forced_repatriation_factor_4 FROM = { has_state_flag = migration_population_trapped } }
 		}
 		complete_effect = {
-			if = {
-				limit = { migration_forced_repatriation_can_start = yes }
-				set_temp_variable = { migration_transport_payment_result = constant:migration_transport_cost.zero }
-				set_temp_variable = { migration_transport_fuel_land = constant:migration_transport_cost.heavy_fuel_land } set_temp_variable = { migration_transport_fuel_sea = constant:migration_transport_cost.heavy_fuel_sea } set_temp_variable = { migration_transport_convoys_sea = constant:migration_transport_cost.heavy_convoys_sea } set_temp_variable = { migration_transport_target = FROM } set_temp_variable = { migration_transport_receipt = token:migration_forced_repatriation } migration_transport_pay_state_cost = yes
-				if = {
-					limit = { check_variable = { migration_transport_payment_result = constant:migration_transport_cost.one } }
-					add_equipment_to_stockpile = { type = train_equipment amount = constant:humanitarian_legacy_cost.train_heavy_debit }
-					FROM = {
-						set_state_flag = migration_forced_repatriation_cost_paid
-						set_variable = { migration_forced_repatriation_cost_payer = ROOT }
-					}
-				}
-			}
+			set_variable = { humanitarian_action_request_action = constant:migration_gui_action.forced_repatriation }
+			set_variable = { humanitarian_action_request_state = FROM }
+			set_country_flag = humanitarian_action_request_native
+			migration_action_submit_request = yes
 		}
 		remove_effect = {
+			set_temp_variable = { humanitarian_action_target_id = FROM.id }
 			if = {
-				limit = { migration_forced_repatriation_cost_receipt_is_valid = yes }
-				FROM = {
-					clr_state_flag = migration_forced_repatriation_cost_paid
-					clear_variable = migration_forced_repatriation_cost_payer
-				}
-				FROM = {
-					save_event_target_as = civilian_transfer_origin
-					set_temp_variable = { migration_cohort_id_to_move = migration_current_cohort_id }
-					set_temp_variable = { migration_cohort_id_request = migration_current_cohort_id }
-				}
-				ROOT = {
-					set_temp_variable = { migration_cohort_origin_resolution_result = constant:civilian_transfer_route_result.invalid }
-					set_temp_variable = { migration_cohort_destination_resolution_result = constant:civilian_transfer_route_result.invalid }
-					set_temp_variable = { migration_cohort_resolution_count = constant:humanitarian_runtime.zero }
-					set_temp_variable = { migration_cohort_resolved_amount = constant:humanitarian_population.zero }
-					set_temp_variable = { migration_cohort_resolved_source = constant:humanitarian_pressure_source.unknown }
-					set_temp_variable = { migration_cohort_resolved_status = constant:migration_cohort_status.none }
-					migration_resolve_cohort_origin = yes
-					set_temp_variable = { migration_forced_return_result = constant:civilian_transfer_route_result.invalid }
-					if = {
-						limit = { migration_decision_forced_return_destination_is_valid = yes }
-						set_temp_variable = { migration_forced_return_request_proven = constant:humanitarian_runtime.one }
-						set_temp_variable = { migration_forced_return_unsafe_host_proven = constant:humanitarian_runtime.one }
-						set_temp_variable = { migration_forced_return_policy_proven = constant:humanitarian_runtime.one }
-						migration_force_return_cohort = yes
-					}
-				}
-				event_target:civilian_transfer_origin = {
-					set_temp_variable = { civilian_transfer_people = migration_cohort_resolved_amount }
-					set_temp_variable = { migration_forced_return_route_death_share = constant:migration_decision_threshold.forced_return_base_route_death_share }
-					if = {
-						limit = { event_target:civilian_transfer_route_destination = { check_variable = { var = famine_to_migration_food_stage value = constant:famine_food_stage.famine compare = equals } } }
-						add_to_temp_variable = { migration_forced_return_route_death_share = constant:migration_decision_threshold.forced_return_famine_route_death_share }
-					}
-					if = {
-						limit = { event_target:civilian_transfer_route_destination = { check_variable = { var = famine_to_migration_food_stage value = constant:famine_food_stage.catastrophic_famine compare = equals } } }
-						add_to_temp_variable = { migration_forced_return_route_death_share = constant:migration_decision_threshold.forced_return_catastrophic_route_death_share }
-					}
-					if = {
-						limit = { event_target:civilian_transfer_route_destination = { has_state_flag = migration_persecution_active } }
-						add_to_temp_variable = { migration_forced_return_route_death_share = constant:migration_decision_threshold.forced_return_persecution_route_death_share }
-					}
-					if = {
-						limit = { event_target:civilian_transfer_route_destination = { cbrn_state_has_chemical_contamination = yes } }
-						add_to_temp_variable = { migration_forced_return_route_death_share = constant:migration_decision_threshold.forced_return_contamination_route_death_share }
-					}
-					if = {
-						limit = { event_target:civilian_transfer_route_destination = { has_state_flag = migration_bombing_active } }
-						add_to_temp_variable = { migration_forced_return_route_death_share = constant:migration_decision_threshold.forced_return_bombing_route_death_share }
-					}
-					if = {
-						limit = { event_target:civilian_transfer_route_destination = { check_variable = { var = global.air_contamination_bp value = constant:air_contamination_threshold_bp.spread_25 compare = greater_than } } }
-						add_to_temp_variable = { migration_forced_return_route_death_share = constant:migration_decision_threshold.forced_return_contamination_route_death_share }
-					}
-					clamp_temp_variable = {
-						var = migration_forced_return_route_death_share
-						min = constant:humanitarian_population.zero
-						max = constant:migration_decision_threshold.forced_return_max_route_death_share
-					}
-					set_temp_variable = { civilian_transfer_route_deaths_requested = civilian_transfer_people }
-					multiply_temp_variable = { civilian_transfer_route_deaths_requested = migration_forced_return_route_death_share }
-					round_temp_variable = civilian_transfer_route_deaths_requested
-					set_temp_variable = { civilian_transfer_request_proven = constant:humanitarian_runtime.one }
-					set_temp_variable = { civilian_transfer_route_border_proven = constant:humanitarian_runtime.one }
-					set_temp_variable = { civilian_transfer_route_transport_proven = constant:humanitarian_runtime.one }
-					set_temp_variable = { civilian_transfer_route_safety_proven = constant:humanitarian_runtime.zero }
-					migration_decision_prove_exact_return_route_contract = yes
-					set_temp_variable = { civilian_transfer_route_actor_proven = constant:humanitarian_runtime.one }
-					set_temp_variable = { civilian_transfer_route_death_reason = constant:chaos_meter_deaths_reason.forced_displacement }
-					set_temp_variable = { civilian_transfer_log_deaths = constant:humanitarian_runtime.one }
-					set_temp_variable = { civilian_transfer_role_request = constant:migration_core_reconciliation.transfer_projection_role_forced_return }
-					set_temp_variable = { civilian_transfer_flight_obligation_proven = constant:humanitarian_runtime.one }
-					if = { limit = { check_variable = { var = migration_trapped_population value = constant:humanitarian_population.zero compare = greater_than } } set_temp_variable = { civilian_transfer_trapped_obligation_proven = constant:humanitarian_runtime.one } }
-					set_temp_variable = { migration_decision_atomic_transfer_result = constant:civilian_transfer_route_result.invalid }
-					set_temp_variable = { civilian_transfer_result = constant:civilian_transfer_route_result.invalid }
-					set_temp_variable = { civilian_transfer_finalize_result = constant:migration_core_reconciliation.transfer_finalize_invalid }
-					set_temp_variable = { civilian_transfer_actual_origin_debit = constant:humanitarian_population.zero }
-					set_temp_variable = { civilian_transfer_survivor_credit = constant:humanitarian_population.zero }
-					set_temp_variable = { civilian_transfer_destination_actual_credit = constant:humanitarian_population.zero }
-					set_temp_variable = { civilian_transfer_route_deaths = constant:humanitarian_population.zero }
-					set_temp_variable = { civilian_transfer_conservation_ledger = constant:humanitarian_population.zero }
-					set_temp_variable = { civilian_transfer_projection_result = constant:migration_core_reconciliation.transfer_projection_invalid }
-					migration_decision_execute_hosted_transfer = yes
-					# Route deaths are already recorded by the population primitive. The
-					# exact-transfer adapter adds only the Condemnation source.
-					if = {
-						limit = {
-							check_variable = { var = civilian_transfer_finalize_result value = constant:migration_core_reconciliation.transfer_finalize_valid compare = equals }
-							check_variable = { var = civilian_transfer_actual_origin_debit value = constant:humanitarian_population.zero compare = greater_than }
-							check_variable = { var = civilian_transfer_survivor_credit value = constant:humanitarian_population.zero compare = greater_than }
-						}
-						set_temp_variable = { migration_condemnation_decision_context = constant:condemnation_context.forced_return }
-						migration_record_exact_decision_condemnation = yes
-						ROOT = {
-							clr_country_flag = migration_forced_return_pending
-							clr_country_flag = migration_decision_active
-							set_country_flag = migration_decision_resolution
-							add_stability = constant:migration_decision_outcome.decision_repatriation_stability_negative
-							humanitarian_achievement_record_forced_return = yes
-						}
-					}
-				}
-				event_target:civilian_transfer_route_destination = {
-					if = {
-						limit = {
-							check_variable = { var = civilian_transfer_finalize_result value = constant:migration_core_reconciliation.transfer_finalize_valid compare = equals }
-							check_variable = { var = civilian_transfer_actual_origin_debit value = constant:humanitarian_population.zero compare = greater_than }
-							check_variable = { var = civilian_transfer_survivor_credit value = constant:humanitarian_population.zero compare = greater_than }
-						}
-						set_temp_variable = { migration_state_return_projection_proven = constant:humanitarian_runtime.one }
-						set_temp_variable = { migration_state_return_people = civilian_transfer_survivor_credit }
-						set_temp_variable = { migration_state_return_projection_result = constant:civilian_transfer_route_result.invalid }
-						migration_record_state_return_projection = yes
-						clear_variable = migration_destination_food_safe_proven
-						clear_variable = migration_destination_reception_proven
-					}
-					clear_variable = migration_destination_food_safe_proven
-					clear_variable = migration_destination_reception_proven
-				}
-				if = {
-					limit = {
-						NOT = { check_variable = { var = civilian_transfer_actual_origin_debit value = constant:humanitarian_population.zero compare = greater_than } }
-					}
-					set_temp_variable = { migration_transport_target = FROM } set_temp_variable = { migration_transport_receipt = token:migration_forced_repatriation } migration_transport_refund_state_cost = yes
-					add_equipment_to_stockpile = { type = train_equipment amount = constant:humanitarian_legacy_cost.train_heavy }
-				}
+			 limit = { has_variable = humanitarian_native_generation_migration_forced_repatriation_@var:humanitarian_action_target_id }
+			 set_variable = { humanitarian_action_callback_id = humanitarian_native_generation_migration_forced_repatriation_@var:humanitarian_action_target_id }
+			 clear_variable = humanitarian_native_generation_migration_forced_repatriation_@var:humanitarian_action_target_id
+			 migration_action_resolve_callback = yes
 			}
-			else_if = {
-				limit = {
-					FROM = {
-						has_state_flag = migration_forced_repatriation_cost_paid
-						has_variable = migration_forced_repatriation_cost_payer
-						var:migration_forced_repatriation_cost_payer = { tag = ROOT }
-					}
-				}
-				FROM = {
-					clr_state_flag = migration_forced_repatriation_cost_paid
-					clear_variable = migration_forced_repatriation_cost_payer
-				}
-			}
-			set_temp_variable = { migration_transport_target = FROM } set_temp_variable = { migration_transport_receipt = token:migration_forced_repatriation } migration_transport_forget_state_cost = yes
 		}
 		cancel_if_not_visible = no
 		cancel_effect = {
-			FROM = {
-				if = {
-					limit = { has_state_flag = migration_forced_repatriation_cost_paid has_variable = migration_forced_repatriation_cost_payer var:migration_forced_repatriation_cost_payer = { tag = ROOT } }
-					clr_state_flag = migration_forced_repatriation_cost_paid
-					clear_variable = migration_forced_repatriation_cost_payer
-				}
-				civilian_transfer_cleanup_request = yes
+			set_temp_variable = { humanitarian_action_target_id = FROM.id }
+			if = {
+			 limit = { has_variable = humanitarian_native_generation_migration_forced_repatriation_@var:humanitarian_action_target_id }
+			 set_variable = { humanitarian_action_callback_id = humanitarian_native_generation_migration_forced_repatriation_@var:humanitarian_action_target_id }
+			 clear_variable = humanitarian_native_generation_migration_forced_repatriation_@var:humanitarian_action_target_id
+			 migration_action_cancel_callback = yes
 			}
-			clr_country_flag = migration_forced_return_pending
-			set_temp_variable = { migration_transport_target = FROM } set_temp_variable = { migration_transport_receipt = token:migration_forced_repatriation } migration_transport_forget_state_cost = yes
 		}
 	}
 }

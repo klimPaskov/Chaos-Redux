@@ -160,6 +160,7 @@ famine_decision_category = {
 		state_target = any_controlled_state
 		on_map_mode = map_and_decisions_view
 		visible = {
+			is_ai = yes
 			FROM = { is_controlled_by = ROOT famine_state_has_visible_food_problem = yes }
 			NOT = { has_country_flag = humanitarian_corridor_offer_pending }
 			famine_decision_problem_is_active = yes
@@ -167,6 +168,8 @@ famine_decision_category = {
 			FROM = { famine_state_can_release_reserves = yes }
 		}
 		available = {
+			set_temp_variable = { humanitarian_action_target = FROM }
+			famine_release_reserves_action_can_start = yes
 			hidden_trigger = { FROM = { is_controlled_by = ROOT famine_state_has_visible_food_problem = yes } }
 			custom_trigger_tooltip = {
 				tooltip = famine_release_reserves_target_tt
@@ -197,134 +200,29 @@ famine_decision_category = {
 			modifier = { factor = constant:famine_decision_ai.relief_catastrophic_factor FROM = { has_state_flag = famine_food_stage_catastrophic } }
 		}
 		complete_effect = {
-			if = {
-				limit = { famine_release_reserves_can_start = yes }
-				set_temp_variable = { migration_transport_payment_result = constant:migration_transport_cost.zero }
-				set_temp_variable = { migration_transport_fuel_land = constant:migration_transport_cost.standard_fuel_land } set_temp_variable = { migration_transport_fuel_sea = constant:migration_transport_cost.standard_fuel_sea } set_temp_variable = { migration_transport_convoys_sea = constant:migration_transport_cost.standard_convoys_sea } set_temp_variable = { migration_transport_target = FROM } set_temp_variable = { migration_transport_receipt = token:famine_release_reserves } migration_transport_pay_state_cost = yes
-				if = {
-					limit = { check_variable = { migration_transport_payment_result = constant:migration_transport_cost.one } }
-					add_equipment_to_stockpile = { type = support_equipment amount = constant:humanitarian_legacy_cost.support_light_debit }
-					FROM = {
-						set_state_flag = famine_release_reserves_cost_paid
-						set_variable = { famine_release_reserves_cost_payer = ROOT }
-					}
-					set_country_flag = famine_decision_active
-				}
-			}
+			set_variable = { humanitarian_action_request_action = constant:famine_gui_action.release_reserves }
+			set_variable = { humanitarian_action_request_state = FROM }
+			set_country_flag = humanitarian_action_request_native
+			famine_action_submit_request = yes
 		}
 		remove_effect = {
+			set_temp_variable = { humanitarian_action_target_id = FROM.id }
 			if = {
-				limit = { famine_release_reserves_cost_receipt_is_valid = yes }
-				FROM = {
-					clr_state_flag = famine_release_reserves_cost_paid
-					clear_variable = famine_release_reserves_cost_payer
-				}
-				FROM = {
-					famine_initialize_state = yes
-					set_temp_variable = { famine_food_reserve_release_amount = famine_food_reserve_daily_need }
-					multiply_temp_variable = { famine_food_reserve_release_amount = constant:famine_mission_contract.reserve_release_days }
-					set_temp_variable = { famine_food_reserve_release_request_proven = constant:humanitarian_runtime.one }
-					set_temp_variable = { famine_food_reserve_release_actor_proven = constant:humanitarian_runtime.one }
-					set_temp_variable = { famine_food_reserve_consume_result = constant:civilian_transfer_route_result.invalid }
-					set_temp_variable = { famine_food_reserve_consumed_output = constant:famine_food_reserve.zero }
-					set_temp_variable = { famine_food_reserve_relief_granted_output = constant:famine_food_reserve.zero }
-					famine_release_reserves = yes
-					if = {
-						limit = { check_variable = { var = famine_food_reserve_consumed_output value = constant:famine_food_reserve.zero compare = equals } }
-						ROOT = {
-							set_temp_variable = { migration_transport_target = FROM } set_temp_variable = { migration_transport_receipt = token:famine_release_reserves } migration_transport_refund_state_cost = yes
-							add_equipment_to_stockpile = { type = support_equipment amount = constant:humanitarian_legacy_cost.support_light }
-						}
-					}
-					if = {
-						limit = {
-							check_variable = { var = famine_food_reserve_consume_result value = constant:civilian_transfer_route_result.valid compare = equals }
-							check_variable = { var = famine_food_reserve_relief_granted_output value = constant:famine_mission_contract.minimum_relief_grant compare = greater_than }
-						}
-						set_temp_variable = { famine_reserve_requisition_protection_days = constant:famine_decision_threshold.reserve_requisition_protection_days }
-						set_state_flag = {
-							flag = famine_food_reserve_requisition_protected
-							value = 1
-							days = famine_reserve_requisition_protection_days
-						}
-						if = {
-							limit = {
-								has_state_flag = famine_extraction_active
-								NOT = { has_state_flag = famine_extraction_suspended }
-								NOT = { has_state_flag = famine_food_stage_catastrophic }
-								has_state_flag = humanitarian_achievement_extraction_shock_recorded
-								OR = {
-									has_state_flag = famine_food_stage_acute_shortage
-									has_state_flag = famine_food_stage_famine
-								}
-								check_variable = { var = famine_component_extraction value = constant:famine_food_component.zero compare = greater_than }
-								OR = {
-									check_variable = { var = famine_component_production value = constant:famine_food_component.zero compare = greater_than }
-									check_variable = { var = famine_component_transport value = constant:famine_food_component.zero compare = greater_than }
-								}
-								check_variable = { var = famine_extraction_generation value = constant:humanitarian_achievement_value.zero compare = greater_than }
-							}
-							set_state_flag = famine_extraction_suspended
-							clr_state_flag = famine_extraction_active
-							set_variable = { famine_input_extraction = constant:famine_food_component.zero }
-							set_variable = { famine_component_extraction = constant:famine_food_component.zero }
-							ROOT = {
-								humanitarian_achievement_record_extraction_suspended = yes
-								humanitarian_achievement_record_alternative_logistics = yes
-							}
-						}
-						if = {
-							limit = { has_state_flag = famine_mission_route_subject }
-							set_state_flag = famine_mission_route_success_proven
-						}
-						if = {
-							limit = { has_state_flag = famine_mission_relief_subject }
-							set_state_flag = famine_mission_relief_success_proven
-						}
-						else_if = {
-							limit = {
-								NOT = { ROOT = { has_country_flag = famine_mission_relief_active } }
-								ROOT = { famine_country_has_free_mission_slot = yes }
-							}
-							set_state_flag = famine_mission_relief_subject
-							famine_set_mission_relief_deadline = yes
-							ROOT = {
-								famine_claim_mission_slot = yes
-								set_country_flag = famine_mission_relief_active
-							}
-						}
-						ROOT = {
-							famine_show_report_relief_arrival = yes
-							add_stability = constant:famine_decision_outcome.decision_minor_stability_negative
-						}
-					}
-				}
+			 limit = { has_variable = humanitarian_native_generation_famine_release_reserves_@var:humanitarian_action_target_id }
+			 set_variable = { humanitarian_action_callback_id = humanitarian_native_generation_famine_release_reserves_@var:humanitarian_action_target_id }
+			 clear_variable = humanitarian_native_generation_famine_release_reserves_@var:humanitarian_action_target_id
+			 famine_action_resolve_callback = yes
 			}
-			else_if = {
-				limit = {
-					FROM = {
-						has_state_flag = famine_release_reserves_cost_paid
-						has_variable = famine_release_reserves_cost_payer
-						var:famine_release_reserves_cost_payer = { tag = ROOT }
-					}
-				}
-				FROM = {
-					clr_state_flag = famine_release_reserves_cost_paid
-					clear_variable = famine_release_reserves_cost_payer
-				}
-			}
-			set_temp_variable = { migration_transport_target = FROM } set_temp_variable = { migration_transport_receipt = token:famine_release_reserves } migration_transport_forget_state_cost = yes
 		}
 		cancel_if_not_visible = no
 		cancel_effect = {
-			FROM = {
-				if = {
-					limit = { has_state_flag = famine_release_reserves_cost_paid has_variable = famine_release_reserves_cost_payer var:famine_release_reserves_cost_payer = { tag = ROOT } }
-					clr_state_flag = famine_release_reserves_cost_paid
-					clear_variable = famine_release_reserves_cost_payer
-				}
+			set_temp_variable = { humanitarian_action_target_id = FROM.id }
+			if = {
+			 limit = { has_variable = humanitarian_native_generation_famine_release_reserves_@var:humanitarian_action_target_id }
+			 set_variable = { humanitarian_action_callback_id = humanitarian_native_generation_famine_release_reserves_@var:humanitarian_action_target_id }
+			 clear_variable = humanitarian_native_generation_famine_release_reserves_@var:humanitarian_action_target_id
+			 famine_action_cancel_callback = yes
 			}
-			set_temp_variable = { migration_transport_target = FROM } set_temp_variable = { migration_transport_receipt = token:famine_release_reserves } migration_transport_forget_state_cost = yes
 		}
 	}
 	famine_emergency_imports = {
@@ -332,6 +230,7 @@ famine_decision_category = {
 		state_target = any_controlled_state
 		on_map_mode = map_and_decisions_view
 		visible = {
+			is_ai = yes
 			FROM = { is_controlled_by = ROOT famine_state_has_visible_food_problem = yes }
 			NOT = { has_country_flag = humanitarian_corridor_offer_pending }
 			famine_decision_problem_is_active = yes
@@ -352,6 +251,8 @@ famine_decision_category = {
 			}
 		}
 		available = {
+			set_temp_variable = { humanitarian_action_target = FROM }
+			famine_emergency_imports_action_can_start = yes
 			hidden_trigger = { FROM = { is_controlled_by = ROOT famine_state_has_visible_food_problem = yes } }
 			custom_trigger_tooltip = {
 				tooltip = famine_emergency_imports_target_tt
@@ -417,163 +318,29 @@ famine_decision_category = {
 			modifier = { factor = constant:famine_decision_ai.relief_catastrophic_factor FROM = { has_state_flag = famine_food_stage_catastrophic } }
 		}
 		complete_effect = {
-			if = {
-				limit = { famine_emergency_imports_can_start = yes }
-				FROM = {
-					set_temp_variable = { famine_emergency_imports_contract_preexisting = constant:famine_relief_runtime.zero }
-					if = {
-						limit = {
-							famine_relief_contract_is_valid = yes
-							check_variable = { var = famine_relief_route_mode value = constant:famine_relief_route_mode.land compare = equals }
-							var:famine_relief_actor = { tag = ROOT }
-						}
-						set_temp_variable = { famine_emergency_imports_contract_preexisting = constant:famine_relief_runtime.one }
-					}
-					set_temp_variable = { famine_emergency_imports_attempt_generation = constant:famine_relief_runtime.zero }
-					if = {
-						limit = { NOT = { famine_relief_contract_is_valid = yes } }
-						famine_refresh_reserve_capacity = yes
-						set_variable = { famine_relief_route_mode = constant:famine_relief_route_mode.land }
-						set_variable = { famine_relief_requested_amount = famine_food_reserve_daily_need }
-						multiply_variable = { famine_relief_requested_amount = constant:famine_mission_contract.reserve_import_days }
-						round_variable = famine_relief_requested_amount
-						famine_relief_select_and_create_contract = yes
-					}
-					if = {
-						limit = {
-							check_variable = { var = famine_emergency_imports_contract_preexisting value = constant:famine_relief_runtime.zero compare = equals }
-							famine_relief_contract_is_valid = yes
-							check_variable = { var = famine_relief_route_mode value = constant:famine_relief_route_mode.land compare = equals }
-							var:famine_relief_actor = { tag = ROOT }
-						}
-						set_temp_variable = { famine_emergency_imports_attempt_generation = famine_relief_contract_generation }
-					}
-				}
-				if = {
-					limit = {
-						famine_emergency_imports_cost_is_affordable = yes
-						FROM = {
-							famine_relief_contract_is_valid = yes
-							check_variable = { var = famine_relief_route_mode value = constant:famine_relief_route_mode.land compare = equals }
-							var:famine_relief_actor = { tag = ROOT }
-						}
-					}
-					set_temp_variable = { migration_transport_payment_result = constant:migration_transport_cost.zero }
-					set_temp_variable = { migration_transport_fuel_land = constant:migration_transport_cost.standard_fuel_land } set_temp_variable = { migration_transport_fuel_sea = constant:migration_transport_cost.standard_fuel_sea } set_temp_variable = { migration_transport_convoys_sea = constant:migration_transport_cost.standard_convoys_sea } set_temp_variable = { migration_transport_target = FROM } set_temp_variable = { migration_transport_receipt = token:famine_emergency_imports } migration_transport_pay_state_cost = yes
-					if = {
-						limit = { check_variable = { migration_transport_payment_result = constant:migration_transport_cost.one } }
-						FROM = {
-							set_state_flag = famine_emergency_imports_cost_paid
-							set_variable = { famine_emergency_imports_cost_payer = ROOT }
-							set_variable = { famine_emergency_imports_cost_contract_generation = famine_relief_contract_generation }
-							set_variable = { famine_emergency_imports_cost_donor_state = famine_relief_donor_state }
-						}
-					}
-				}
-				else = {
-					FROM = {
-						if = {
-							limit = {
-								check_variable = { var = famine_emergency_imports_contract_preexisting value = constant:famine_relief_runtime.zero compare = equals }
-								famine_relief_contract_is_valid = yes
-								check_variable = { var = famine_relief_route_mode value = constant:famine_relief_route_mode.land compare = equals }
-								var:famine_relief_actor = { tag = ROOT }
-								check_variable = { var = famine_relief_contract_generation value = famine_emergency_imports_attempt_generation compare = equals }
-							}
-							famine_relief_cleanup_contract = yes
-						}
-					}
-				}
-			}
+			set_variable = { humanitarian_action_request_action = constant:famine_gui_action.emergency_imports }
+			set_variable = { humanitarian_action_request_state = FROM }
+			set_country_flag = humanitarian_action_request_native
+			famine_action_submit_request = yes
 		}
 		remove_effect = {
+			set_temp_variable = { humanitarian_action_target_id = FROM.id }
 			if = {
-				limit = { famine_emergency_imports_cost_receipt_is_valid = yes }
-				set_temp_variable = { famine_emergency_imports_cost_work_proven = constant:famine_relief_runtime.zero }
-				if = {
-					limit = { famine_emergency_imports_cost_contract_is_current = yes }
-					set_temp_variable = { famine_emergency_imports_cost_work_proven = constant:famine_relief_runtime.one }
-				}
-				FROM = {
-					clr_state_flag = famine_emergency_imports_cost_paid
-					clear_variable = famine_emergency_imports_cost_payer
-					clear_variable = famine_emergency_imports_cost_contract_generation
-					clear_variable = famine_emergency_imports_cost_donor_state
-				}
-				if = {
-					limit = { check_variable = { var = famine_emergency_imports_cost_work_proven value = constant:famine_relief_runtime.one compare = equals } }
-					FROM = {
-						set_temp_variable = { famine_relief_delivery_result = constant:famine_relief_result.invalid }
-						famine_relief_deliver_contract = yes
-						if = {
-							limit = {
-								OR = {
-									check_variable = { var = famine_relief_delivery_result value = constant:famine_relief_result.delivered compare = equals }
-									check_variable = { var = famine_relief_delivery_result value = constant:famine_relief_result.partial compare = equals }
-								}
-							}
-							if = {
-								limit = { has_state_flag = famine_mission_route_subject }
-								set_state_flag = famine_mission_route_success_proven
-							}
-							if = {
-								limit = { has_state_flag = famine_mission_relief_subject }
-								set_state_flag = famine_mission_relief_success_proven
-							}
-							else_if = {
-								limit = {
-									NOT = { ROOT = { has_country_flag = famine_mission_relief_active } }
-									ROOT = { famine_country_has_free_mission_slot = yes }
-								}
-								set_state_flag = famine_mission_relief_subject
-								famine_set_mission_relief_deadline = yes
-								ROOT = {
-									famine_claim_mission_slot = yes
-									set_country_flag = famine_mission_relief_active
-								}
-							}
-							ROOT = {
-								famine_show_report_relief_arrival = yes
-								humanitarian_achievement_record_alternative_logistics = yes
-							}
-						}
-					}
-				}
-				else = {
-					# A contract broken by an enemy capture of its donor is relief obstruction.
-					set_temp_variable = { famine_condemnation_result = constant:humanitarian_runtime.zero }
-					FROM = { famine_condemn_relief_contract_interruption = yes }
-				}
+			 limit = { has_variable = humanitarian_native_generation_famine_emergency_imports_@var:humanitarian_action_target_id }
+			 set_variable = { humanitarian_action_callback_id = humanitarian_native_generation_famine_emergency_imports_@var:humanitarian_action_target_id }
+			 clear_variable = humanitarian_native_generation_famine_emergency_imports_@var:humanitarian_action_target_id
+			 famine_action_resolve_callback = yes
 			}
-			else_if = {
-				limit = {
-					FROM = {
-						has_state_flag = famine_emergency_imports_cost_paid
-						has_variable = famine_emergency_imports_cost_payer
-						var:famine_emergency_imports_cost_payer = { tag = ROOT }
-					}
-				}
-				FROM = {
-					clr_state_flag = famine_emergency_imports_cost_paid
-					clear_variable = famine_emergency_imports_cost_payer
-					clear_variable = famine_emergency_imports_cost_contract_generation
-					clear_variable = famine_emergency_imports_cost_donor_state
-				}
-			}
-			set_temp_variable = { migration_transport_target = FROM } set_temp_variable = { migration_transport_receipt = token:famine_emergency_imports } migration_transport_forget_state_cost = yes
 		}
 		cancel_if_not_visible = no
 		cancel_effect = {
-			FROM = {
-				if = {
-					limit = { has_state_flag = famine_emergency_imports_cost_paid has_variable = famine_emergency_imports_cost_payer var:famine_emergency_imports_cost_payer = { tag = ROOT } }
-					clr_state_flag = famine_emergency_imports_cost_paid
-					clear_variable = famine_emergency_imports_cost_payer
-					clear_variable = famine_emergency_imports_cost_contract_generation
-					clear_variable = famine_emergency_imports_cost_donor_state
-				}
+			set_temp_variable = { humanitarian_action_target_id = FROM.id }
+			if = {
+			 limit = { has_variable = humanitarian_native_generation_famine_emergency_imports_@var:humanitarian_action_target_id }
+			 set_variable = { humanitarian_action_callback_id = humanitarian_native_generation_famine_emergency_imports_@var:humanitarian_action_target_id }
+			 clear_variable = humanitarian_native_generation_famine_emergency_imports_@var:humanitarian_action_target_id
+			 famine_action_cancel_callback = yes
 			}
-			set_temp_variable = { migration_transport_target = FROM } set_temp_variable = { migration_transport_receipt = token:famine_emergency_imports } migration_transport_forget_state_cost = yes
 		}
 	}
 	famine_repair_relief_route = {
@@ -581,6 +348,7 @@ famine_decision_category = {
 		state_target = any_controlled_state
 		on_map_mode = map_and_decisions_view
 		visible = {
+			is_ai = yes
 			FROM = { is_controlled_by = ROOT famine_state_has_visible_food_problem = yes }
 			NOT = { has_country_flag = humanitarian_corridor_offer_pending }
 			famine_decision_problem_is_active = yes
@@ -592,6 +360,8 @@ famine_decision_category = {
 			}
 		}
 		available = {
+			set_temp_variable = { humanitarian_action_target = FROM }
+			famine_repair_relief_route_action_can_start = yes
 			hidden_trigger = { FROM = { is_controlled_by = ROOT famine_state_has_visible_food_problem = yes } }
 			custom_trigger_tooltip = {
 				tooltip = famine_repair_relief_route_target_tt
@@ -625,74 +395,29 @@ famine_decision_category = {
 			modifier = { factor = constant:famine_decision_ai.repair_relief_route_factor_2 has_war = no }
 		}
 		complete_effect = {
-			if = {
-				limit = { famine_repair_relief_route_can_start = yes }
-				set_temp_variable = { migration_transport_payment_result = constant:migration_transport_cost.zero }
-				set_temp_variable = { migration_transport_fuel_land = constant:migration_transport_cost.light_fuel_land } set_temp_variable = { migration_transport_fuel_sea = constant:migration_transport_cost.light_fuel_sea } set_temp_variable = { migration_transport_convoys_sea = constant:migration_transport_cost.light_convoys_sea } set_temp_variable = { migration_transport_target = FROM } set_temp_variable = { migration_transport_receipt = token:famine_repair_relief_route } migration_transport_pay_state_cost = yes
-				if = {
-					limit = { check_variable = { migration_transport_payment_result = constant:migration_transport_cost.one } }
-					add_equipment_to_stockpile = { type = train_equipment amount = constant:humanitarian_legacy_cost.train_light_debit }
-					FROM = {
-						set_state_flag = famine_repair_relief_route_cost_paid
-						set_variable = { famine_repair_relief_route_cost_payer = ROOT }
-					}
-				}
-			}
+			set_variable = { humanitarian_action_request_action = constant:famine_gui_action.repair_relief_route }
+			set_variable = { humanitarian_action_request_state = FROM }
+			set_country_flag = humanitarian_action_request_native
+			famine_action_submit_request = yes
 		}
 		remove_effect = {
+			set_temp_variable = { humanitarian_action_target_id = FROM.id }
 			if = {
-				limit = { famine_repair_relief_route_cost_receipt_is_valid = yes }
-				FROM = {
-					clr_state_flag = famine_repair_relief_route_cost_paid
-					clear_variable = famine_repair_relief_route_cost_payer
-				}
-				FROM = {
-					if = {
-						limit = { has_state_flag = civilian_transfer_route_damaged }
-						clr_state_flag = civilian_transfer_route_damaged
-						famine_mark_relief_access = yes
-						if = {
-							limit = {
-								NOT = { ROOT = { has_country_flag = famine_mission_route_active } }
-								ROOT = { famine_country_has_free_mission_slot = yes }
-								NOT = { has_state_flag = civilian_transfer_route_damaged }
-							}
-							set_state_flag = famine_mission_route_subject
-							famine_set_mission_route_hold_deadline = yes
-							ROOT = {
-								famine_claim_mission_slot = yes
-								set_country_flag = famine_mission_route_active
-							}
-						}
-						ROOT = { humanitarian_achievement_record_alternative_logistics = yes }
-					}
-				}
+			 limit = { has_variable = humanitarian_native_generation_famine_repair_relief_route_@var:humanitarian_action_target_id }
+			 set_variable = { humanitarian_action_callback_id = humanitarian_native_generation_famine_repair_relief_route_@var:humanitarian_action_target_id }
+			 clear_variable = humanitarian_native_generation_famine_repair_relief_route_@var:humanitarian_action_target_id
+			 famine_action_resolve_callback = yes
 			}
-			else_if = {
-				limit = {
-					FROM = {
-						has_state_flag = famine_repair_relief_route_cost_paid
-						has_variable = famine_repair_relief_route_cost_payer
-						var:famine_repair_relief_route_cost_payer = { tag = ROOT }
-					}
-				}
-				FROM = {
-					clr_state_flag = famine_repair_relief_route_cost_paid
-					clear_variable = famine_repair_relief_route_cost_payer
-				}
-			}
-			set_temp_variable = { migration_transport_target = FROM } set_temp_variable = { migration_transport_receipt = token:famine_repair_relief_route } migration_transport_forget_state_cost = yes
 		}
 		cancel_if_not_visible = no
 		cancel_effect = {
-			FROM = {
-				if = {
-					limit = { has_state_flag = famine_repair_relief_route_cost_paid has_variable = famine_repair_relief_route_cost_payer var:famine_repair_relief_route_cost_payer = { tag = ROOT } }
-					clr_state_flag = famine_repair_relief_route_cost_paid
-					clear_variable = famine_repair_relief_route_cost_payer
-				}
+			set_temp_variable = { humanitarian_action_target_id = FROM.id }
+			if = {
+			 limit = { has_variable = humanitarian_native_generation_famine_repair_relief_route_@var:humanitarian_action_target_id }
+			 set_variable = { humanitarian_action_callback_id = humanitarian_native_generation_famine_repair_relief_route_@var:humanitarian_action_target_id }
+			 clear_variable = humanitarian_native_generation_famine_repair_relief_route_@var:humanitarian_action_target_id
+			 famine_action_cancel_callback = yes
 			}
-			set_temp_variable = { migration_transport_target = FROM } set_temp_variable = { migration_transport_receipt = token:famine_repair_relief_route } migration_transport_forget_state_cost = yes
 		}
 	}
 	famine_escorted_relief_convoy = {
@@ -700,6 +425,7 @@ famine_decision_category = {
 		state_target = any_controlled_state
 		on_map_mode = map_and_decisions_view
 		visible = {
+			is_ai = yes
 			FROM = { is_controlled_by = ROOT famine_state_has_visible_food_problem = yes }
 			NOT = { has_country_flag = humanitarian_corridor_offer_pending }
 			famine_decision_problem_is_active = yes
@@ -722,6 +448,8 @@ famine_decision_category = {
 			}
 		}
 		available = {
+			set_temp_variable = { humanitarian_action_target = FROM }
+			famine_escorted_relief_convoy_action_can_start = yes
 			hidden_trigger = { FROM = { is_controlled_by = ROOT famine_state_has_visible_food_problem = yes } }
 			custom_trigger_tooltip = {
 				tooltip = famine_escorted_relief_convoy_target_tt
@@ -789,165 +517,29 @@ famine_decision_category = {
 			modifier = { factor = constant:famine_decision_ai.relief_catastrophic_factor FROM = { has_state_flag = famine_food_stage_catastrophic } }
 		}
 		complete_effect = {
-			if = {
-				limit = { famine_escorted_relief_convoy_can_start = yes }
-				FROM = {
-					set_temp_variable = { famine_escorted_relief_convoy_contract_preexisting = constant:famine_relief_runtime.zero }
-					if = {
-						limit = {
-							famine_relief_contract_is_valid = yes
-							check_variable = { var = famine_relief_route_mode value = constant:famine_relief_route_mode.sea compare = equals }
-							var:famine_relief_actor = { tag = ROOT }
-						}
-						set_temp_variable = { famine_escorted_relief_convoy_contract_preexisting = constant:famine_relief_runtime.one }
-					}
-					set_temp_variable = { famine_escorted_relief_convoy_attempt_generation = constant:famine_relief_runtime.zero }
-					if = {
-						limit = { NOT = { famine_relief_contract_is_valid = yes } }
-						famine_refresh_reserve_capacity = yes
-						set_variable = { famine_relief_route_mode = constant:famine_relief_route_mode.sea }
-						set_variable = { famine_relief_requested_amount = famine_food_reserve_daily_need }
-						multiply_variable = { famine_relief_requested_amount = constant:famine_mission_contract.reserve_import_days }
-						round_variable = famine_relief_requested_amount
-						famine_relief_select_and_create_contract = yes
-					}
-					if = {
-						limit = {
-							check_variable = { var = famine_escorted_relief_convoy_contract_preexisting value = constant:famine_relief_runtime.zero compare = equals }
-							famine_relief_contract_is_valid = yes
-							check_variable = { var = famine_relief_route_mode value = constant:famine_relief_route_mode.sea compare = equals }
-							var:famine_relief_actor = { tag = ROOT }
-						}
-						set_temp_variable = { famine_escorted_relief_convoy_attempt_generation = famine_relief_contract_generation }
-					}
-				}
-				if = {
-					limit = {
-						famine_escorted_relief_convoy_cost_is_affordable = yes
-						FROM = {
-							famine_relief_contract_is_valid = yes
-							check_variable = { var = famine_relief_route_mode value = constant:famine_relief_route_mode.sea compare = equals }
-							var:famine_relief_actor = { tag = ROOT }
-						}
-					}
-					set_temp_variable = { migration_transport_payment_result = constant:migration_transport_cost.zero }
-					set_temp_variable = { migration_transport_fuel_land = constant:migration_transport_cost.standard_fuel_land } set_temp_variable = { migration_transport_fuel_sea = constant:migration_transport_cost.standard_fuel_sea } set_temp_variable = { migration_transport_convoys_sea = constant:migration_transport_cost.standard_convoys_sea } set_temp_variable = { migration_transport_target = FROM } set_temp_variable = { migration_transport_receipt = token:famine_escorted_relief_convoy } migration_transport_pay_state_cost = yes
-					if = {
-						limit = { check_variable = { migration_transport_payment_result = constant:migration_transport_cost.one } }
-						add_equipment_to_stockpile = { type = support_equipment amount = constant:humanitarian_legacy_cost.support_light_debit }
-						FROM = {
-							set_state_flag = famine_escorted_relief_convoy_cost_paid
-							set_variable = { famine_escorted_relief_convoy_cost_payer = ROOT }
-							set_variable = { famine_escorted_relief_convoy_cost_contract_generation = famine_relief_contract_generation }
-							set_variable = { famine_escorted_relief_convoy_cost_donor_state = famine_relief_donor_state }
-						}
-					}
-				}
-				else = {
-					FROM = {
-						if = {
-							limit = {
-								check_variable = { var = famine_escorted_relief_convoy_contract_preexisting value = constant:famine_relief_runtime.zero compare = equals }
-								famine_relief_contract_is_valid = yes
-								check_variable = { var = famine_relief_route_mode value = constant:famine_relief_route_mode.sea compare = equals }
-								var:famine_relief_actor = { tag = ROOT }
-								check_variable = { var = famine_relief_contract_generation value = famine_escorted_relief_convoy_attempt_generation compare = equals }
-							}
-							famine_relief_cleanup_contract = yes
-						}
-					}
-				}
-			}
+			set_variable = { humanitarian_action_request_action = constant:famine_gui_action.escorted_relief_convoy }
+			set_variable = { humanitarian_action_request_state = FROM }
+			set_country_flag = humanitarian_action_request_native
+			famine_action_submit_request = yes
 		}
 		remove_effect = {
+			set_temp_variable = { humanitarian_action_target_id = FROM.id }
 			if = {
-				limit = { famine_escorted_relief_convoy_cost_receipt_is_valid = yes }
-				set_temp_variable = { famine_escorted_relief_convoy_cost_work_proven = constant:famine_relief_runtime.zero }
-				if = {
-					limit = { famine_escorted_relief_convoy_cost_contract_is_current = yes }
-					set_temp_variable = { famine_escorted_relief_convoy_cost_work_proven = constant:famine_relief_runtime.one }
-				}
-				FROM = {
-					clr_state_flag = famine_escorted_relief_convoy_cost_paid
-					clear_variable = famine_escorted_relief_convoy_cost_payer
-					clear_variable = famine_escorted_relief_convoy_cost_contract_generation
-					clear_variable = famine_escorted_relief_convoy_cost_donor_state
-				}
-				if = {
-					limit = { check_variable = { var = famine_escorted_relief_convoy_cost_work_proven value = constant:famine_relief_runtime.one compare = equals } }
-					FROM = {
-						set_temp_variable = { famine_relief_delivery_result = constant:famine_relief_result.invalid }
-						famine_relief_deliver_contract = yes
-						if = {
-							limit = {
-								OR = {
-									check_variable = { var = famine_relief_delivery_result value = constant:famine_relief_result.delivered compare = equals }
-									check_variable = { var = famine_relief_delivery_result value = constant:famine_relief_result.partial compare = equals }
-								}
-							}
-							if = {
-								limit = { has_state_flag = famine_mission_route_subject }
-								set_state_flag = famine_mission_route_success_proven
-							}
-							if = {
-								limit = { has_state_flag = famine_mission_relief_subject }
-								set_state_flag = famine_mission_relief_success_proven
-							}
-							else_if = {
-								limit = {
-									NOT = { ROOT = { has_country_flag = famine_mission_relief_active } }
-									ROOT = { famine_country_has_free_mission_slot = yes }
-								}
-								set_state_flag = famine_mission_relief_subject
-								famine_set_mission_relief_deadline = yes
-								ROOT = {
-									famine_claim_mission_slot = yes
-									set_country_flag = famine_mission_relief_active
-								}
-							}
-							ROOT = {
-								famine_show_report_relief_arrival = yes
-								humanitarian_achievement_record_alternative_logistics = yes
-								humanitarian_achievement_record_blockade_relief = yes
-							}
-						}
-					}
-				}
-				else = {
-					# A contract broken by an enemy capture of its donor is relief obstruction.
-					set_temp_variable = { famine_condemnation_result = constant:humanitarian_runtime.zero }
-					FROM = { famine_condemn_relief_contract_interruption = yes }
-				}
+			 limit = { has_variable = humanitarian_native_generation_famine_escorted_relief_convoy_@var:humanitarian_action_target_id }
+			 set_variable = { humanitarian_action_callback_id = humanitarian_native_generation_famine_escorted_relief_convoy_@var:humanitarian_action_target_id }
+			 clear_variable = humanitarian_native_generation_famine_escorted_relief_convoy_@var:humanitarian_action_target_id
+			 famine_action_resolve_callback = yes
 			}
-			else_if = {
-				limit = {
-					FROM = {
-						has_state_flag = famine_escorted_relief_convoy_cost_paid
-						has_variable = famine_escorted_relief_convoy_cost_payer
-						var:famine_escorted_relief_convoy_cost_payer = { tag = ROOT }
-					}
-				}
-				FROM = {
-					clr_state_flag = famine_escorted_relief_convoy_cost_paid
-					clear_variable = famine_escorted_relief_convoy_cost_payer
-					clear_variable = famine_escorted_relief_convoy_cost_contract_generation
-					clear_variable = famine_escorted_relief_convoy_cost_donor_state
-				}
-			}
-			set_temp_variable = { migration_transport_target = FROM } set_temp_variable = { migration_transport_receipt = token:famine_escorted_relief_convoy } migration_transport_forget_state_cost = yes
 		}
 		cancel_if_not_visible = no
 		cancel_effect = {
-			FROM = {
-				if = {
-					limit = { has_state_flag = famine_escorted_relief_convoy_cost_paid has_variable = famine_escorted_relief_convoy_cost_payer var:famine_escorted_relief_convoy_cost_payer = { tag = ROOT } }
-					clr_state_flag = famine_escorted_relief_convoy_cost_paid
-					clear_variable = famine_escorted_relief_convoy_cost_payer
-					clear_variable = famine_escorted_relief_convoy_cost_contract_generation
-					clear_variable = famine_escorted_relief_convoy_cost_donor_state
-				}
+			set_temp_variable = { humanitarian_action_target_id = FROM.id }
+			if = {
+			 limit = { has_variable = humanitarian_native_generation_famine_escorted_relief_convoy_@var:humanitarian_action_target_id }
+			 set_variable = { humanitarian_action_callback_id = humanitarian_native_generation_famine_escorted_relief_convoy_@var:humanitarian_action_target_id }
+			 clear_variable = humanitarian_native_generation_famine_escorted_relief_convoy_@var:humanitarian_action_target_id
+			 famine_action_cancel_callback = yes
 			}
-			set_temp_variable = { migration_transport_target = FROM } set_temp_variable = { migration_transport_receipt = token:famine_escorted_relief_convoy } migration_transport_forget_state_cost = yes
 		}
 	}
 	famine_emergency_airlift = {
@@ -955,6 +547,7 @@ famine_decision_category = {
 		state_target = any_controlled_state
 		on_map_mode = map_and_decisions_view
 		visible = {
+			is_ai = yes
 			FROM = { is_controlled_by = ROOT famine_state_has_visible_food_problem = yes }
 			NOT = { has_country_flag = humanitarian_corridor_offer_pending }
 			famine_decision_problem_is_active = yes
@@ -977,6 +570,8 @@ famine_decision_category = {
 			}
 		}
 		available = {
+			set_temp_variable = { humanitarian_action_target = FROM }
+			famine_emergency_airlift_action_can_start = yes
 			hidden_trigger = { FROM = { is_controlled_by = ROOT famine_state_has_visible_food_problem = yes } }
 			custom_trigger_tooltip = {
 				tooltip = famine_emergency_airlift_target_tt
@@ -1047,166 +642,29 @@ famine_decision_category = {
 			modifier = { factor = constant:famine_decision_ai.relief_catastrophic_factor FROM = { has_state_flag = famine_food_stage_catastrophic } }
 		}
 		complete_effect = {
-			if = {
-				limit = { famine_emergency_airlift_can_start = yes }
-				FROM = {
-					set_temp_variable = { famine_emergency_airlift_contract_preexisting = constant:famine_relief_runtime.zero }
-					if = {
-						limit = {
-							famine_relief_contract_is_valid = yes
-							check_variable = { var = famine_relief_route_mode value = constant:famine_relief_route_mode.air compare = equals }
-							var:famine_relief_actor = { tag = ROOT }
-						}
-						set_temp_variable = { famine_emergency_airlift_contract_preexisting = constant:famine_relief_runtime.one }
-					}
-					set_temp_variable = { famine_emergency_airlift_attempt_generation = constant:famine_relief_runtime.zero }
-					if = {
-						limit = { NOT = { famine_relief_contract_is_valid = yes } }
-						famine_refresh_reserve_capacity = yes
-						set_variable = { famine_relief_route_mode = constant:famine_relief_route_mode.air }
-						set_variable = { famine_relief_requested_amount = famine_food_reserve_daily_need }
-						multiply_variable = { famine_relief_requested_amount = constant:famine_mission_contract.reserve_import_days }
-						round_variable = famine_relief_requested_amount
-						famine_relief_select_and_create_contract = yes
-					}
-					if = {
-						limit = {
-							check_variable = { var = famine_emergency_airlift_contract_preexisting value = constant:famine_relief_runtime.zero compare = equals }
-							famine_relief_contract_is_valid = yes
-							check_variable = { var = famine_relief_route_mode value = constant:famine_relief_route_mode.air compare = equals }
-							var:famine_relief_actor = { tag = ROOT }
-						}
-						set_temp_variable = { famine_emergency_airlift_attempt_generation = famine_relief_contract_generation }
-					}
-				}
-				if = {
-					limit = {
-						famine_emergency_airlift_cost_is_affordable = yes
-						FROM = {
-							famine_relief_contract_is_valid = yes
-							check_variable = { var = famine_relief_route_mode value = constant:famine_relief_route_mode.air compare = equals }
-							var:famine_relief_actor = { tag = ROOT }
-						}
-					}
-					set_temp_variable = { migration_transport_payment_result = constant:migration_transport_cost.zero }
-					set_temp_variable = { migration_transport_fuel_land = constant:migration_transport_cost.standard_fuel_land } set_temp_variable = { migration_transport_fuel_sea = constant:migration_transport_cost.standard_fuel_sea } set_temp_variable = { migration_transport_convoys_sea = constant:migration_transport_cost.standard_convoys_sea } set_temp_variable = { migration_transport_target = FROM } set_temp_variable = { migration_transport_receipt = token:famine_emergency_airlift } migration_transport_pay_air_cost = yes
-					if = {
-						limit = { check_variable = { migration_transport_payment_result = constant:migration_transport_cost.one } }
-						add_equipment_to_stockpile = { type = transport_plane_equipment amount = constant:humanitarian_legacy_cost.transport_planes_debit }
-						air_experience = constant:humanitarian_legacy_cost.air_xp_debit
-						FROM = {
-							set_state_flag = famine_emergency_airlift_cost_paid
-							set_variable = { famine_emergency_airlift_cost_payer = ROOT }
-							set_variable = { famine_emergency_airlift_cost_contract_generation = famine_relief_contract_generation }
-							set_variable = { famine_emergency_airlift_cost_donor_state = famine_relief_donor_state }
-						}
-					}
-				}
-				else = {
-					FROM = {
-						if = {
-							limit = {
-								check_variable = { var = famine_emergency_airlift_contract_preexisting value = constant:famine_relief_runtime.zero compare = equals }
-								famine_relief_contract_is_valid = yes
-								check_variable = { var = famine_relief_route_mode value = constant:famine_relief_route_mode.air compare = equals }
-								var:famine_relief_actor = { tag = ROOT }
-								check_variable = { var = famine_relief_contract_generation value = famine_emergency_airlift_attempt_generation compare = equals }
-							}
-							famine_relief_cleanup_contract = yes
-						}
-					}
-				}
-			}
+			set_variable = { humanitarian_action_request_action = constant:famine_gui_action.emergency_airlift }
+			set_variable = { humanitarian_action_request_state = FROM }
+			set_country_flag = humanitarian_action_request_native
+			famine_action_submit_request = yes
 		}
 		remove_effect = {
+			set_temp_variable = { humanitarian_action_target_id = FROM.id }
 			if = {
-				limit = { famine_emergency_airlift_cost_receipt_is_valid = yes }
-				set_temp_variable = { famine_emergency_airlift_cost_work_proven = constant:famine_relief_runtime.zero }
-				if = {
-					limit = { famine_emergency_airlift_cost_contract_is_current = yes }
-					set_temp_variable = { famine_emergency_airlift_cost_work_proven = constant:famine_relief_runtime.one }
-				}
-				FROM = {
-					clr_state_flag = famine_emergency_airlift_cost_paid
-					clear_variable = famine_emergency_airlift_cost_payer
-					clear_variable = famine_emergency_airlift_cost_contract_generation
-					clear_variable = famine_emergency_airlift_cost_donor_state
-				}
-				if = {
-					limit = { check_variable = { var = famine_emergency_airlift_cost_work_proven value = constant:famine_relief_runtime.one compare = equals } }
-					FROM = {
-						set_temp_variable = { famine_relief_delivery_result = constant:famine_relief_result.invalid }
-						famine_relief_deliver_contract = yes
-						if = {
-							limit = {
-								OR = {
-									check_variable = { var = famine_relief_delivery_result value = constant:famine_relief_result.delivered compare = equals }
-									check_variable = { var = famine_relief_delivery_result value = constant:famine_relief_result.partial compare = equals }
-								}
-							}
-							if = {
-								limit = { has_state_flag = famine_mission_route_subject }
-								set_state_flag = famine_mission_route_success_proven
-							}
-							if = {
-								limit = { has_state_flag = famine_mission_relief_subject }
-								set_state_flag = famine_mission_relief_success_proven
-							}
-							else_if = {
-								limit = {
-									NOT = { ROOT = { has_country_flag = famine_mission_relief_active } }
-									ROOT = { famine_country_has_free_mission_slot = yes }
-								}
-								set_state_flag = famine_mission_relief_subject
-								famine_set_mission_relief_deadline = yes
-								ROOT = {
-									famine_claim_mission_slot = yes
-									set_country_flag = famine_mission_relief_active
-								}
-							}
-							ROOT = {
-								famine_show_report_relief_arrival = yes
-								humanitarian_achievement_record_alternative_logistics = yes
-								humanitarian_achievement_record_blockade_relief = yes
-							}
-						}
-					}
-				}
-				else = {
-					# A contract broken by an enemy capture of its donor is relief obstruction.
-					set_temp_variable = { famine_condemnation_result = constant:humanitarian_runtime.zero }
-					FROM = { famine_condemn_relief_contract_interruption = yes }
-				}
+			 limit = { has_variable = humanitarian_native_generation_famine_emergency_airlift_@var:humanitarian_action_target_id }
+			 set_variable = { humanitarian_action_callback_id = humanitarian_native_generation_famine_emergency_airlift_@var:humanitarian_action_target_id }
+			 clear_variable = humanitarian_native_generation_famine_emergency_airlift_@var:humanitarian_action_target_id
+			 famine_action_resolve_callback = yes
 			}
-			else_if = {
-				limit = {
-					FROM = {
-						has_state_flag = famine_emergency_airlift_cost_paid
-						has_variable = famine_emergency_airlift_cost_payer
-						var:famine_emergency_airlift_cost_payer = { tag = ROOT }
-					}
-				}
-				FROM = {
-					clr_state_flag = famine_emergency_airlift_cost_paid
-					clear_variable = famine_emergency_airlift_cost_payer
-					clear_variable = famine_emergency_airlift_cost_contract_generation
-					clear_variable = famine_emergency_airlift_cost_donor_state
-				}
-			}
-			set_temp_variable = { migration_transport_target = FROM } set_temp_variable = { migration_transport_receipt = token:famine_emergency_airlift } migration_transport_forget_state_cost = yes
 		}
 		cancel_if_not_visible = no
 		cancel_effect = {
-			FROM = {
-				if = {
-					limit = { has_state_flag = famine_emergency_airlift_cost_paid has_variable = famine_emergency_airlift_cost_payer var:famine_emergency_airlift_cost_payer = { tag = ROOT } }
-					clr_state_flag = famine_emergency_airlift_cost_paid
-					clear_variable = famine_emergency_airlift_cost_payer
-					clear_variable = famine_emergency_airlift_cost_contract_generation
-					clear_variable = famine_emergency_airlift_cost_donor_state
-				}
+			set_temp_variable = { humanitarian_action_target_id = FROM.id }
+			if = {
+			 limit = { has_variable = humanitarian_native_generation_famine_emergency_airlift_@var:humanitarian_action_target_id }
+			 set_variable = { humanitarian_action_callback_id = humanitarian_native_generation_famine_emergency_airlift_@var:humanitarian_action_target_id }
+			 clear_variable = humanitarian_native_generation_famine_emergency_airlift_@var:humanitarian_action_target_id
+			 famine_action_cancel_callback = yes
 			}
-			set_temp_variable = { migration_transport_target = FROM } set_temp_variable = { migration_transport_receipt = token:famine_emergency_airlift } migration_transport_forget_state_cost = yes
 		}
 	}
 	famine_invite_relief = {
@@ -1214,6 +672,7 @@ famine_decision_category = {
 		state_target = any_controlled_state
 		on_map_mode = map_and_decisions_view
 		visible = {
+			is_ai = yes
 			FROM = { is_controlled_by = ROOT famine_state_has_visible_food_problem = yes }
 			NOT = { has_country_flag = humanitarian_corridor_offer_pending }
 			famine_decision_problem_is_active = yes
@@ -1229,6 +688,8 @@ famine_decision_category = {
 			}
 		}
 		available = {
+			set_temp_variable = { humanitarian_action_target = FROM }
+			famine_invite_relief_action_can_start = yes
 			hidden_trigger = { FROM = { is_controlled_by = ROOT famine_state_has_visible_food_problem = yes } }
 			custom_trigger_tooltip = {
 				tooltip = famine_invite_relief_target_tt
@@ -1271,122 +732,29 @@ famine_decision_category = {
 			modifier = { factor = constant:famine_decision_ai.relief_catastrophic_factor FROM = { has_state_flag = famine_food_stage_catastrophic } }
 		}
 		complete_effect = {
-			if = {
-				limit = { famine_invite_relief_can_start = yes }
-				FROM = {
-					set_temp_variable = { famine_invite_relief_attempt_generation = constant:famine_relief_runtime.zero }
-					famine_refresh_reserve_capacity = yes
-					set_variable = { famine_relief_route_mode = constant:famine_relief_route_mode.land }
-					set_variable = { famine_relief_requested_amount = famine_food_reserve_daily_need }
-					multiply_variable = { famine_relief_requested_amount = constant:famine_mission_contract.reserve_import_days }
-					round_variable = famine_relief_requested_amount
-					famine_relief_select_and_create_contract = yes
-					if = {
-						limit = {
-							famine_relief_contract_is_valid = yes
-							check_variable = { var = famine_relief_route_mode value = constant:famine_relief_route_mode.land compare = equals }
-							var:famine_relief_actor = { tag = ROOT }
-						}
-						set_temp_variable = { famine_invite_relief_attempt_generation = famine_relief_contract_generation }
-					}
-				}
-				if = {
-					limit = {
-						famine_invite_relief_cost_is_affordable = yes
-						FROM = {
-							famine_relief_contract_is_valid = yes
-							check_variable = { var = famine_relief_route_mode value = constant:famine_relief_route_mode.land compare = equals }
-							var:famine_relief_actor = { tag = ROOT }
-						}
-					}
-					set_temp_variable = { migration_transport_payment_result = constant:migration_transport_cost.zero }
-					set_temp_variable = { migration_transport_fuel_land = constant:migration_transport_cost.standard_fuel_land } set_temp_variable = { migration_transport_fuel_sea = constant:migration_transport_cost.standard_fuel_sea } set_temp_variable = { migration_transport_convoys_sea = constant:migration_transport_cost.standard_convoys_sea } set_temp_variable = { migration_transport_target = FROM } set_temp_variable = { migration_transport_receipt = token:famine_invite_relief } migration_transport_pay_state_cost = yes
-					if = {
-						limit = { check_variable = { migration_transport_payment_result = constant:migration_transport_cost.one } }
-						FROM = {
-							set_state_flag = famine_invite_relief_cost_paid
-							set_variable = { famine_invite_relief_cost_payer = ROOT }
-							set_variable = { famine_invite_relief_cost_contract_generation = famine_relief_contract_generation }
-							set_variable = { famine_invite_relief_cost_donor_state = famine_relief_donor_state }
-						}
-					}
-				}
-				else = {
-					FROM = {
-						if = {
-							limit = {
-								famine_relief_contract_is_valid = yes
-								check_variable = { var = famine_relief_route_mode value = constant:famine_relief_route_mode.land compare = equals }
-								var:famine_relief_actor = { tag = ROOT }
-								check_variable = { var = famine_relief_contract_generation value = famine_invite_relief_attempt_generation compare = equals }
-							}
-							famine_relief_cleanup_contract = yes
-						}
-					}
-				}
-			}
+			set_variable = { humanitarian_action_request_action = constant:famine_gui_action.invite_relief }
+			set_variable = { humanitarian_action_request_state = FROM }
+			set_country_flag = humanitarian_action_request_native
+			famine_action_submit_request = yes
 		}
 		remove_effect = {
+			set_temp_variable = { humanitarian_action_target_id = FROM.id }
 			if = {
-				limit = { famine_invite_relief_cost_receipt_is_valid = yes }
-				set_temp_variable = { famine_invite_relief_cost_work_proven = constant:famine_relief_runtime.zero }
-				if = {
-					limit = { famine_invite_relief_cost_contract_is_current = yes }
-					set_temp_variable = { famine_invite_relief_cost_work_proven = constant:famine_relief_runtime.one }
-				}
-				FROM = {
-					clr_state_flag = famine_invite_relief_cost_paid
-					clear_variable = famine_invite_relief_cost_payer
-					clear_variable = famine_invite_relief_cost_contract_generation
-					clear_variable = famine_invite_relief_cost_donor_state
-				}
-				if = {
-					limit = { check_variable = { var = famine_invite_relief_cost_work_proven value = constant:famine_relief_runtime.one compare = equals } }
-					FROM = {
-						if = {
-							limit = {
-								famine_relief_contract_is_valid = yes
-								check_variable = { var = famine_relief_route_mode value = constant:famine_relief_route_mode.land compare = equals }
-							}
-							ROOT = { add_stability = constant:famine_decision_outcome.decision_minor_stability }
-						}
-					}
-				}
-				else = {
-					# A contract broken by an enemy capture of its donor is relief obstruction.
-					set_temp_variable = { famine_condemnation_result = constant:humanitarian_runtime.zero }
-					FROM = { famine_condemn_relief_contract_interruption = yes }
-				}
+			 limit = { has_variable = humanitarian_native_generation_famine_invite_relief_@var:humanitarian_action_target_id }
+			 set_variable = { humanitarian_action_callback_id = humanitarian_native_generation_famine_invite_relief_@var:humanitarian_action_target_id }
+			 clear_variable = humanitarian_native_generation_famine_invite_relief_@var:humanitarian_action_target_id
+			 famine_action_resolve_callback = yes
 			}
-			else_if = {
-				limit = {
-					FROM = {
-						has_state_flag = famine_invite_relief_cost_paid
-						has_variable = famine_invite_relief_cost_payer
-						var:famine_invite_relief_cost_payer = { tag = ROOT }
-					}
-				}
-				FROM = {
-					clr_state_flag = famine_invite_relief_cost_paid
-					clear_variable = famine_invite_relief_cost_payer
-					clear_variable = famine_invite_relief_cost_contract_generation
-					clear_variable = famine_invite_relief_cost_donor_state
-				}
-			}
-			set_temp_variable = { migration_transport_target = FROM } set_temp_variable = { migration_transport_receipt = token:famine_invite_relief } migration_transport_forget_state_cost = yes
 		}
 		cancel_if_not_visible = no
 		cancel_effect = {
-			FROM = {
-				if = {
-					limit = { has_state_flag = famine_invite_relief_cost_paid has_variable = famine_invite_relief_cost_payer var:famine_invite_relief_cost_payer = { tag = ROOT } }
-					clr_state_flag = famine_invite_relief_cost_paid
-					clear_variable = famine_invite_relief_cost_payer
-					clear_variable = famine_invite_relief_cost_contract_generation
-					clear_variable = famine_invite_relief_cost_donor_state
-				}
+			set_temp_variable = { humanitarian_action_target_id = FROM.id }
+			if = {
+			 limit = { has_variable = humanitarian_native_generation_famine_invite_relief_@var:humanitarian_action_target_id }
+			 set_variable = { humanitarian_action_callback_id = humanitarian_native_generation_famine_invite_relief_@var:humanitarian_action_target_id }
+			 clear_variable = humanitarian_native_generation_famine_invite_relief_@var:humanitarian_action_target_id
+			 famine_action_cancel_callback = yes
 			}
-			set_temp_variable = { migration_transport_target = FROM } set_temp_variable = { migration_transport_receipt = token:famine_invite_relief } migration_transport_forget_state_cost = yes
 		}
 	}
 
@@ -1395,6 +763,7 @@ famine_decision_category = {
 		state_target = any_controlled_state
 		on_map_mode = map_and_decisions_view
 		visible = {
+			is_ai = yes
 			FROM = { is_controlled_by = ROOT famine_state_has_visible_food_problem = yes }
 			NOT = { has_country_flag = humanitarian_corridor_offer_pending }
 			famine_decision_problem_is_active = yes
@@ -1406,6 +775,8 @@ famine_decision_category = {
 			}
 		}
 		available = {
+			set_temp_variable = { humanitarian_action_target = FROM }
+			famine_evacuation_action_can_start = yes
 			hidden_trigger = { FROM = { is_controlled_by = ROOT famine_state_has_visible_food_problem = yes } }
 			custom_trigger_tooltip = {
 				tooltip = famine_evacuation_target_tt
@@ -1443,201 +814,29 @@ famine_decision_category = {
 			modifier = { factor = constant:famine_decision_ai.famine_evacuation_factor_3 has_war = yes }
 		}
 		complete_effect = {
-			if = {
-				limit = { famine_evacuation_can_start = yes }
-				set_temp_variable = { migration_transport_payment_result = constant:migration_transport_cost.zero }
-				set_temp_variable = { migration_transport_fuel_land = constant:migration_transport_cost.heavy_fuel_land } set_temp_variable = { migration_transport_fuel_sea = constant:migration_transport_cost.heavy_fuel_sea } set_temp_variable = { migration_transport_convoys_sea = constant:migration_transport_cost.heavy_convoys_sea } set_temp_variable = { migration_transport_target = FROM } set_temp_variable = { migration_transport_receipt = token:famine_evacuation } migration_transport_pay_state_cost = yes
-				if = {
-					limit = { check_variable = { migration_transport_payment_result = constant:migration_transport_cost.one } }
-					add_equipment_to_stockpile = { type = train_equipment amount = constant:humanitarian_legacy_cost.train_heavy_debit }
-					FROM = {
-						set_state_flag = famine_evacuation_cost_paid
-						set_variable = { famine_evacuation_cost_payer = ROOT }
-					}
-				}
-			}
+			set_variable = { humanitarian_action_request_action = constant:famine_gui_action.evacuation }
+			set_variable = { humanitarian_action_request_state = FROM }
+			set_country_flag = humanitarian_action_request_native
+			famine_action_submit_request = yes
 		}
 		remove_effect = {
+			set_temp_variable = { humanitarian_action_target_id = FROM.id }
 			if = {
-				limit = { famine_evacuation_cost_receipt_is_valid = yes }
-				FROM = {
-					clr_state_flag = famine_evacuation_cost_paid
-					clear_variable = famine_evacuation_cost_payer
-				}
-				custom_effect_tooltip = migration_decision_transfer_tt
-				FROM = {
-					if = {
-						limit = { has_state_flag = humanitarian_corridor_accepted }
-						if = {
-							limit = {
-								humanitarian_corridor_operation_is_valid = yes
-								check_variable = { var = humanitarian_corridor_operation value = constant:humanitarian_corridor_operation.evacuation compare = equals }
-								has_variable = humanitarian_corridor_route_generation
-								NOT = { has_variable = humanitarian_corridor_evacuation_proven }
-							}
-							set_temp_variable = { civilian_transfer_role_request = constant:migration_core_reconciliation.transfer_projection_role_organized_evacuation }
-							set_temp_variable = { civilian_transfer_flight_obligation_proven = constant:humanitarian_runtime.one }
-							set_temp_variable = { humanitarian_corridor_transaction_result = constant:humanitarian_corridor_result.invalid }
-							set_temp_variable = { civilian_transfer_result = constant:civilian_transfer_route_result.invalid }
-							set_temp_variable = { civilian_transfer_finalize_result = constant:migration_core_reconciliation.transfer_finalize_invalid }
-							set_temp_variable = { civilian_transfer_actual_origin_debit = constant:humanitarian_population.zero }
-							set_temp_variable = { civilian_transfer_survivor_credit = constant:humanitarian_population.zero }
-							set_temp_variable = { civilian_transfer_destination_actual_credit = constant:humanitarian_population.zero }
-							set_temp_variable = { civilian_transfer_route_deaths = constant:humanitarian_population.zero }
-							set_temp_variable = { civilian_transfer_conservation_ledger = constant:humanitarian_population.zero }
-							set_temp_variable = { civilian_transfer_projection_result = constant:migration_core_reconciliation.transfer_projection_invalid }
-							humanitarian_corridor_execute_evacuation = yes
-							if = {
-								limit = {
-									check_variable = { var = humanitarian_corridor_transaction_result value = constant:humanitarian_corridor_result.valid compare = equals }
-									check_variable = { var = civilian_transfer_actual_origin_debit value = constant:humanitarian_population.zero compare = greater_than }
-									check_variable = { var = civilian_transfer_survivor_credit value = constant:humanitarian_population.zero compare = greater_than }
-								}
-								if = {
-									limit = { check_variable = { var = humanitarian_corridor_evacuation_route_deaths value = constant:humanitarian_population.zero compare = greater_than } }
-									ROOT = { add_stability = constant:famine_decision_outcome.decision_standard_stability_negative }
-								}
-								ROOT = {
-									if = { limit = { has_war = yes } migration_show_report_wartime_evacuation = yes }
-								}
-								if = {
-									limit = { check_variable = { var = humanitarian_corridor_evacuation_survivor_credit value = constant:famine_mission_contract.minimum_survivor_credit compare = greater_than } }
-									event_target:civilian_transfer_route_destination = {
-										OWNER = {
-											humanitarian_achievement_record_arrival = yes
-											if = {
-												limit = { has_country_flag = humanitarian_achievement_gate_major_crisis }
-												humanitarian_achievement_record_gate_protection = yes
-											}
-										}
-									}
-								}
-							}
-						}
-					}
-					else = {
-						save_event_target_as = civilian_transfer_origin
-						migration_select_general_safe_evacuation_destination = yes
-					}
-				}
-				if = {
-					limit = {
-						has_event_target = civilian_transfer_origin
-						event_target:civilian_transfer_origin = { NOT = { has_state_flag = humanitarian_corridor_accepted } }
-					}
-					event_target:civilian_transfer_origin = {
-						set_temp_variable = { civilian_transfer_people = state_population_k }
-						multiply_temp_variable = { civilian_transfer_people = constant:chaos_meter_deaths.people_per_k }
-						multiply_temp_variable = { civilian_transfer_people = constant:famine_decision_threshold.transfer_share }
-						round_temp_variable = civilian_transfer_people
-						set_temp_variable = { civilian_transfer_minimum_origin_remaining = state_population_k }
-						multiply_temp_variable = { civilian_transfer_minimum_origin_remaining = constant:chaos_meter_deaths.people_per_k }
-						multiply_temp_variable = { civilian_transfer_minimum_origin_remaining = constant:famine_decision_threshold.transfer_minimum_origin_share }
-						round_temp_variable = civilian_transfer_minimum_origin_remaining
-						set_temp_variable = { civilian_transfer_request_proven = constant:humanitarian_runtime.one }
-						set_temp_variable = { civilian_transfer_route_border_proven = constant:humanitarian_runtime.one }
-						set_temp_variable = { civilian_transfer_route_transport_proven = constant:humanitarian_runtime.one }
-						set_temp_variable = { civilian_transfer_route_safety_proven = constant:humanitarian_runtime.zero }
-						famine_decision_prove_evacuation_route = yes
-						set_temp_variable = { civilian_transfer_route_actor_proven = constant:humanitarian_runtime.one }
-						set_temp_variable = { civilian_transfer_route_deaths_requested = constant:humanitarian_population.zero }
-						set_temp_variable = { civilian_transfer_log_deaths = constant:humanitarian_runtime.one }
-						set_temp_variable = { civilian_transfer_role_request = constant:migration_core_reconciliation.transfer_projection_role_organized_evacuation }
-						set_temp_variable = { civilian_transfer_flight_obligation_proven = constant:humanitarian_runtime.one }
-						set_temp_variable = { civilian_transfer_trapped_obligation_proven = constant:humanitarian_runtime.zero }
-						migration_decision_stage_trapped_obligation = yes
-						set_temp_variable = { migration_cohort_record_result = constant:civilian_transfer_route_result.invalid }
-						set_temp_variable = { migration_cohort_id_result = constant:humanitarian_runtime.zero }
-						set_temp_variable = { migration_decision_atomic_transfer_result = constant:civilian_transfer_route_result.invalid }
-						set_temp_variable = { civilian_transfer_result = constant:civilian_transfer_route_result.invalid }
-						set_temp_variable = { civilian_transfer_finalize_result = constant:migration_core_reconciliation.transfer_finalize_invalid }
-						set_temp_variable = { civilian_transfer_actual_origin_debit = constant:humanitarian_population.zero }
-						set_temp_variable = { civilian_transfer_survivor_credit = constant:humanitarian_population.zero }
-						set_temp_variable = { civilian_transfer_destination_actual_credit = constant:humanitarian_population.zero }
-						set_temp_variable = { civilian_transfer_route_deaths = constant:humanitarian_population.zero }
-						set_temp_variable = { civilian_transfer_conservation_ledger = constant:humanitarian_population.zero }
-						set_temp_variable = { civilian_transfer_projection_result = constant:migration_core_reconciliation.transfer_projection_invalid }
-						migration_decision_execute_new_origin_organized_evacuation = yes
-						if = {
-							limit = {
-								check_variable = { var = civilian_transfer_finalize_result value = constant:migration_core_reconciliation.transfer_finalize_valid compare = equals }
-								check_variable = { var = civilian_transfer_actual_origin_debit value = constant:humanitarian_population.zero compare = greater_than }
-								check_variable = { var = civilian_transfer_survivor_credit value = constant:humanitarian_population.zero compare = greater_than }
-								check_variable = { var = civilian_transfer_projection_result value = constant:civilian_transfer_route_result.valid compare = equals }
-							}
-							if = {
-								limit = { check_variable = { var = civilian_transfer_route_deaths value = constant:humanitarian_population.zero compare = greater_than } }
-								ROOT = { add_stability = constant:famine_decision_outcome.decision_standard_stability_negative }
-							}
-						}
-					}
-				}
-				if = {
-					limit = {
-						has_event_target = civilian_transfer_origin
-						event_target:civilian_transfer_origin = { NOT = { has_state_flag = humanitarian_corridor_accepted } }
-					}
-					event_target:civilian_transfer_route_destination = {
-						if = {
-							limit = {
-								check_variable = { var = civilian_transfer_finalize_result value = constant:migration_core_reconciliation.transfer_finalize_valid compare = equals }
-								check_variable = { var = civilian_transfer_actual_origin_debit value = constant:humanitarian_population.zero compare = greater_than }
-								check_variable = { var = civilian_transfer_survivor_credit value = constant:humanitarian_population.zero compare = greater_than }
-								check_variable = { var = civilian_transfer_projection_result value = constant:civilian_transfer_route_result.valid compare = equals }
-							}
-							set_temp_variable = { migration_decision_evacuation_finalize_result = constant:humanitarian_runtime.zero }
-							migration_decision_finalize_organized_evacuation = yes
-							if = {
-								limit = { check_variable = { var = migration_decision_evacuation_finalize_result value = constant:humanitarian_runtime.one compare = equals } }
-								OWNER = {
-									humanitarian_achievement_record_arrival = yes
-									if = {
-										limit = { has_country_flag = humanitarian_achievement_gate_major_crisis }
-										humanitarian_achievement_record_gate_protection = yes
-									}
-								}
-							}
-						}
-					}
-				}
-				# The route is revalidated when the delayed action resolves. If the
-				# exact transaction cannot debit any civilians, return the resources
-				# reserved at activation instead of turning changed conditions into a
-				# paid no-op.
-				if = {
-					limit = {
-						NOT = { check_variable = { var = civilian_transfer_actual_origin_debit value = constant:humanitarian_population.zero compare = greater_than } }
-					}
-					set_temp_variable = { migration_transport_target = FROM } set_temp_variable = { migration_transport_receipt = token:famine_evacuation } migration_transport_refund_state_cost = yes
-					add_equipment_to_stockpile = { type = train_equipment amount = constant:humanitarian_legacy_cost.train_heavy }
-				}
+			 limit = { has_variable = humanitarian_native_generation_famine_evacuation_@var:humanitarian_action_target_id }
+			 set_variable = { humanitarian_action_callback_id = humanitarian_native_generation_famine_evacuation_@var:humanitarian_action_target_id }
+			 clear_variable = humanitarian_native_generation_famine_evacuation_@var:humanitarian_action_target_id
+			 famine_action_resolve_callback = yes
 			}
-			else_if = {
-				limit = {
-					FROM = {
-						has_state_flag = famine_evacuation_cost_paid
-						has_variable = famine_evacuation_cost_payer
-						var:famine_evacuation_cost_payer = { tag = ROOT }
-					}
-				}
-				FROM = {
-					clr_state_flag = famine_evacuation_cost_paid
-					clear_variable = famine_evacuation_cost_payer
-				}
-			}
-			set_temp_variable = { migration_transport_target = FROM } set_temp_variable = { migration_transport_receipt = token:famine_evacuation } migration_transport_forget_state_cost = yes
 		}
 		cancel_if_not_visible = no
 		cancel_effect = {
-			FROM = {
-				if = {
-					limit = { has_state_flag = famine_evacuation_cost_paid has_variable = famine_evacuation_cost_payer var:famine_evacuation_cost_payer = { tag = ROOT } }
-					clr_state_flag = famine_evacuation_cost_paid
-					clear_variable = famine_evacuation_cost_payer
-				}
-				civilian_transfer_cleanup_request = yes
+			set_temp_variable = { humanitarian_action_target_id = FROM.id }
+			if = {
+			 limit = { has_variable = humanitarian_native_generation_famine_evacuation_@var:humanitarian_action_target_id }
+			 set_variable = { humanitarian_action_callback_id = humanitarian_native_generation_famine_evacuation_@var:humanitarian_action_target_id }
+			 clear_variable = humanitarian_native_generation_famine_evacuation_@var:humanitarian_action_target_id
+			 famine_action_cancel_callback = yes
 			}
-			set_temp_variable = { migration_transport_target = FROM } set_temp_variable = { migration_transport_receipt = token:famine_evacuation } migration_transport_forget_state_cost = yes
 		}
 	}
 	famine_requisition_safer_state = {
@@ -1645,6 +844,7 @@ famine_decision_category = {
 		state_target = any_controlled_state
 		on_map_mode = map_and_decisions_view
 		visible = {
+			is_ai = yes
 			FROM = { is_controlled_by = ROOT famine_state_has_visible_food_problem = yes }
 			NOT = { has_country_flag = humanitarian_corridor_offer_pending }
 			famine_decision_problem_is_active = yes
@@ -1655,6 +855,8 @@ famine_decision_category = {
 			}
 		}
 		available = {
+			set_temp_variable = { humanitarian_action_target = FROM }
+			famine_requisition_safer_state_action_can_start = yes
 			hidden_trigger = { FROM = { is_controlled_by = ROOT famine_state_has_visible_food_problem = yes } }
 			custom_trigger_tooltip = {
 				tooltip = famine_requisition_safer_state_target_tt
@@ -1709,111 +911,29 @@ famine_decision_category = {
 			modifier = { factor = constant:famine_decision_ai.requisition_safer_state_factor_2 FROM = { check_variable = { var = famine_reception_demand_population value = constant:humanitarian_population.zero compare = greater_than } } }
 		}
 		complete_effect = {
-			if = {
-				limit = { famine_requisition_safer_state_can_start = yes }
-				set_temp_variable = { migration_transport_payment_result = constant:migration_transport_cost.zero }
-				set_temp_variable = { migration_transport_fuel_land = constant:migration_transport_cost.standard_fuel_land } set_temp_variable = { migration_transport_fuel_sea = constant:migration_transport_cost.standard_fuel_sea } set_temp_variable = { migration_transport_convoys_sea = constant:migration_transport_cost.standard_convoys_sea } set_temp_variable = { migration_transport_target = FROM } set_temp_variable = { migration_transport_receipt = token:famine_requisition_safer_state } migration_transport_pay_state_cost = yes
-				if = {
-					limit = { check_variable = { migration_transport_payment_result = constant:migration_transport_cost.one } }
-					add_equipment_to_stockpile = { type = train_equipment amount = constant:humanitarian_legacy_cost.train_light_debit }
-					FROM = {
-						set_state_flag = famine_requisition_safer_state_cost_paid
-						set_variable = { famine_requisition_safer_state_cost_payer = ROOT }
-					}
-				}
-			}
+			set_variable = { humanitarian_action_request_action = constant:famine_gui_action.requisition_safer_state }
+			set_variable = { humanitarian_action_request_state = FROM }
+			set_country_flag = humanitarian_action_request_native
+			famine_action_submit_request = yes
 		}
 		remove_effect = {
+			set_temp_variable = { humanitarian_action_target_id = FROM.id }
 			if = {
-				limit = { famine_requisition_safer_state_cost_receipt_is_valid = yes }
-				FROM = {
-					clr_state_flag = famine_requisition_safer_state_cost_paid
-					clear_variable = famine_requisition_safer_state_cost_payer
-				}
-				FROM = {
-					famine_initialize_state = yes
-					save_event_target_as = famine_food_reserve_destination
-					set_temp_variable = { famine_requisition_donor_result = constant:humanitarian_runtime.zero }
-					famine_select_safe_food_reserve_donor = yes
-					if = {
-						limit = {
-							check_variable = { var = famine_requisition_donor_result value = constant:humanitarian_runtime.one compare = equals }
-							has_event_target = famine_requisition_donor_state
-						}
-						event_target:famine_requisition_donor_state = {
-							set_temp_variable = { famine_food_reserve_transfer_amount = event_target:famine_food_reserve_destination.famine_food_reserve_daily_need }
-							multiply_temp_variable = { famine_food_reserve_transfer_amount = constant:famine_mission_contract.reserve_requisition_days }
-							set_temp_variable = { famine_food_reserve_transfer_request_proven = constant:humanitarian_runtime.one }
-							set_temp_variable = { famine_food_reserve_transfer_route_proven = constant:humanitarian_runtime.one }
-							set_temp_variable = { famine_food_reserve_transfer_actor_proven = constant:humanitarian_runtime.one }
-							set_temp_variable = { famine_food_reserve_transfer_result = constant:civilian_transfer_route_result.invalid }
-							set_temp_variable = { famine_food_reserve_transfer_destination_credit_output = constant:famine_food_reserve.zero }
-							famine_requisition_reserves = yes
-							if = {
-								limit = {
-									check_variable = { var = famine_food_reserve_transfer_result value = constant:civilian_transfer_route_result.valid compare = equals }
-									check_variable = { var = famine_food_reserve_transfer_destination_credit_output value = constant:famine_mission_contract.minimum_relief_grant compare = greater_than }
-								}
-								event_target:famine_food_reserve_destination = {
-									famine_mark_relief_access = yes
-									if = {
-										limit = { has_state_flag = famine_mission_route_subject }
-										set_state_flag = famine_mission_route_success_proven
-									}
-									if = {
-										limit = { has_state_flag = famine_mission_relief_subject }
-										set_state_flag = famine_mission_relief_success_proven
-									}
-									else_if = {
-										limit = {
-											NOT = { ROOT = { has_country_flag = famine_mission_relief_active } }
-											ROOT = { famine_country_has_free_mission_slot = yes }
-										}
-										set_state_flag = famine_mission_relief_subject
-										famine_set_mission_relief_deadline = yes
-										ROOT = {
-											famine_claim_mission_slot = yes
-											set_country_flag = famine_mission_relief_active
-										}
-									}
-									famine_register_active_state = yes
-								}
-								ROOT = {
-									famine_show_report_relief_arrival = yes
-									add_stability = constant:famine_decision_outcome.decision_heavy_stability_negative
-									set_country_flag = humanitarian_achievement_requisitioned_strained_state
-									humanitarian_achievement_record_predatory_requisition = yes
-								}
-							}
-						}
-					}
-				}
+			 limit = { has_variable = humanitarian_native_generation_famine_requisition_safer_state_@var:humanitarian_action_target_id }
+			 set_variable = { humanitarian_action_callback_id = humanitarian_native_generation_famine_requisition_safer_state_@var:humanitarian_action_target_id }
+			 clear_variable = humanitarian_native_generation_famine_requisition_safer_state_@var:humanitarian_action_target_id
+			 famine_action_resolve_callback = yes
 			}
-			else_if = {
-				limit = {
-					FROM = {
-						has_state_flag = famine_requisition_safer_state_cost_paid
-						has_variable = famine_requisition_safer_state_cost_payer
-						var:famine_requisition_safer_state_cost_payer = { tag = ROOT }
-					}
-				}
-				FROM = {
-					clr_state_flag = famine_requisition_safer_state_cost_paid
-					clear_variable = famine_requisition_safer_state_cost_payer
-				}
-			}
-			set_temp_variable = { migration_transport_target = FROM } set_temp_variable = { migration_transport_receipt = token:famine_requisition_safer_state } migration_transport_forget_state_cost = yes
 		}
 		cancel_if_not_visible = no
 		cancel_effect = {
-			FROM = {
-				if = {
-					limit = { has_state_flag = famine_requisition_safer_state_cost_paid has_variable = famine_requisition_safer_state_cost_payer var:famine_requisition_safer_state_cost_payer = { tag = ROOT } }
-					clr_state_flag = famine_requisition_safer_state_cost_paid
-					clear_variable = famine_requisition_safer_state_cost_payer
-				}
+			set_temp_variable = { humanitarian_action_target_id = FROM.id }
+			if = {
+			 limit = { has_variable = humanitarian_native_generation_famine_requisition_safer_state_@var:humanitarian_action_target_id }
+			 set_variable = { humanitarian_action_callback_id = humanitarian_native_generation_famine_requisition_safer_state_@var:humanitarian_action_target_id }
+			 clear_variable = humanitarian_native_generation_famine_requisition_safer_state_@var:humanitarian_action_target_id
+			 famine_action_cancel_callback = yes
 			}
-			set_temp_variable = { migration_transport_target = FROM } set_temp_variable = { migration_transport_receipt = token:famine_requisition_safer_state } migration_transport_forget_state_cost = yes
 		}
 	}
 	famine_conceal_crisis = {
@@ -1821,6 +941,7 @@ famine_decision_category = {
 		state_target = any_controlled_state
 		on_map_mode = map_and_decisions_view
 		visible = {
+			is_ai = yes
 			FROM = { is_controlled_by = ROOT famine_state_has_visible_food_problem = yes }
 			NOT = { has_country_flag = humanitarian_corridor_offer_pending }
 			famine_decision_problem_is_active = yes
@@ -1840,6 +961,8 @@ famine_decision_category = {
 			}
 		}
 		available = {
+			set_temp_variable = { humanitarian_action_target = FROM }
+			famine_conceal_crisis_action_can_start = yes
 			hidden_trigger = { FROM = { is_controlled_by = ROOT famine_state_has_visible_food_problem = yes } }
 			custom_trigger_tooltip = {
 				tooltip = famine_conceal_crisis_target_tt
@@ -1883,64 +1006,29 @@ famine_decision_category = {
 			modifier = { factor = constant:famine_decision_ai.harmful_policy_catastrophic_factor FROM = { has_state_flag = famine_food_stage_catastrophic } }
 		}
 		complete_effect = {
-			if = {
-				limit = { famine_conceal_crisis_can_start = yes }
-				set_temp_variable = { migration_transport_payment_result = constant:migration_transport_cost.zero }
-				set_temp_variable = { migration_transport_fuel_land = constant:migration_transport_cost.light_fuel_land } set_temp_variable = { migration_transport_fuel_sea = constant:migration_transport_cost.light_fuel_sea } set_temp_variable = { migration_transport_convoys_sea = constant:migration_transport_cost.light_convoys_sea } set_temp_variable = { migration_transport_target = FROM } set_temp_variable = { migration_transport_receipt = token:famine_conceal_crisis } migration_transport_pay_state_cost = yes
-				if = {
-					limit = { check_variable = { migration_transport_payment_result = constant:migration_transport_cost.one } }
-					add_equipment_to_stockpile = { type = infantry_equipment amount = constant:humanitarian_legacy_cost.infantry_light_debit }
-					FROM = {
-						set_state_flag = famine_conceal_crisis_cost_paid
-						set_variable = { famine_conceal_crisis_cost_payer = ROOT }
-					}
-				}
-			}
+			set_variable = { humanitarian_action_request_action = constant:famine_gui_action.conceal_crisis }
+			set_variable = { humanitarian_action_request_state = FROM }
+			set_country_flag = humanitarian_action_request_native
+			famine_action_submit_request = yes
 		}
 		remove_effect = {
+			set_temp_variable = { humanitarian_action_target_id = FROM.id }
 			if = {
-				limit = { famine_conceal_crisis_cost_receipt_is_valid = yes }
-				FROM = {
-					clr_state_flag = famine_conceal_crisis_cost_paid
-					clear_variable = famine_conceal_crisis_cost_payer
-				}
-				FROM = {
-					# The crisis disappears from public view for a while: it stops
-					# counting toward the national food crisis, while hunger rises
-					# and the first deaths in it are condemned as concealment.
-					set_temp_variable = { famine_conceal_days = constant:famine_national_crisis.conceal_days }
-					set_state_flag = { flag = famine_crisis_concealed value = 1 days = famine_conceal_days }
-					add_to_variable = { famine_food_pressure = constant:famine_decision_threshold.conceal_pressure }
-					clamp_variable = { var = famine_food_pressure min = constant:famine_food_component.zero max = constant:famine_food_component.maximum }
-				}
-				# Condemnation is deferred until the proof-owning adapter receives its
-				# exact state, actor, policy, and receipt targets.
+			 limit = { has_variable = humanitarian_native_generation_famine_conceal_crisis_@var:humanitarian_action_target_id }
+			 set_variable = { humanitarian_action_callback_id = humanitarian_native_generation_famine_conceal_crisis_@var:humanitarian_action_target_id }
+			 clear_variable = humanitarian_native_generation_famine_conceal_crisis_@var:humanitarian_action_target_id
+			 famine_action_resolve_callback = yes
 			}
-			else_if = {
-				limit = {
-					FROM = {
-						has_state_flag = famine_conceal_crisis_cost_paid
-						has_variable = famine_conceal_crisis_cost_payer
-						var:famine_conceal_crisis_cost_payer = { tag = ROOT }
-					}
-				}
-				FROM = {
-					clr_state_flag = famine_conceal_crisis_cost_paid
-					clear_variable = famine_conceal_crisis_cost_payer
-				}
-			}
-			set_temp_variable = { migration_transport_target = FROM } set_temp_variable = { migration_transport_receipt = token:famine_conceal_crisis } migration_transport_forget_state_cost = yes
 		}
 		cancel_if_not_visible = no
 		cancel_effect = {
-			FROM = {
-				if = {
-					limit = { has_state_flag = famine_conceal_crisis_cost_paid has_variable = famine_conceal_crisis_cost_payer var:famine_conceal_crisis_cost_payer = { tag = ROOT } }
-					clr_state_flag = famine_conceal_crisis_cost_paid
-					clear_variable = famine_conceal_crisis_cost_payer
-				}
+			set_temp_variable = { humanitarian_action_target_id = FROM.id }
+			if = {
+			 limit = { has_variable = humanitarian_native_generation_famine_conceal_crisis_@var:humanitarian_action_target_id }
+			 set_variable = { humanitarian_action_callback_id = humanitarian_native_generation_famine_conceal_crisis_@var:humanitarian_action_target_id }
+			 clear_variable = humanitarian_native_generation_famine_conceal_crisis_@var:humanitarian_action_target_id
+			 famine_action_cancel_callback = yes
 			}
-			set_temp_variable = { migration_transport_target = FROM } set_temp_variable = { migration_transport_receipt = token:famine_conceal_crisis } migration_transport_forget_state_cost = yes
 		}
 	}
 	famine_maintain_extraction = {
@@ -1948,6 +1036,7 @@ famine_decision_category = {
 		state_target = any_controlled_state
 		on_map_mode = map_and_decisions_view
 		visible = {
+			is_ai = yes
 			FROM = { is_controlled_by = ROOT famine_state_has_visible_food_problem = yes }
 			NOT = { has_country_flag = humanitarian_corridor_offer_pending }
 			famine_decision_problem_is_active = yes
@@ -1960,6 +1049,8 @@ famine_decision_category = {
 			}
 		}
 		available = {
+			set_temp_variable = { humanitarian_action_target = FROM }
+			famine_maintain_extraction_action_can_start = yes
 			hidden_trigger = { FROM = { is_controlled_by = ROOT famine_state_has_visible_food_problem = yes } }
 			custom_trigger_tooltip = {
 				tooltip = famine_maintain_extraction_target_tt
@@ -1999,63 +1090,29 @@ famine_decision_category = {
 			modifier = { factor = constant:famine_decision_ai.harmful_policy_catastrophic_factor FROM = { has_state_flag = famine_food_stage_catastrophic } }
 		}
 		complete_effect = {
-			if = {
-				limit = { famine_maintain_extraction_can_start = yes }
-				set_temp_variable = { migration_transport_payment_result = constant:migration_transport_cost.zero }
-				set_temp_variable = { migration_transport_fuel_land = constant:migration_transport_cost.light_fuel_land } set_temp_variable = { migration_transport_fuel_sea = constant:migration_transport_cost.light_fuel_sea } set_temp_variable = { migration_transport_convoys_sea = constant:migration_transport_cost.light_convoys_sea } set_temp_variable = { migration_transport_target = FROM } set_temp_variable = { migration_transport_receipt = token:famine_maintain_extraction } migration_transport_pay_state_cost = yes
-				if = {
-					limit = { check_variable = { migration_transport_payment_result = constant:migration_transport_cost.one } }
-					add_equipment_to_stockpile = { type = train_equipment amount = constant:humanitarian_legacy_cost.train_light_debit }
-					FROM = {
-						set_state_flag = famine_maintain_extraction_cost_paid
-						set_variable = { famine_maintain_extraction_cost_payer = ROOT }
-					}
-				}
-			}
+			set_variable = { humanitarian_action_request_action = constant:famine_gui_action.maintain_extraction }
+			set_variable = { humanitarian_action_request_state = FROM }
+			set_country_flag = humanitarian_action_request_native
+			famine_action_submit_request = yes
 		}
 		remove_effect = {
+			set_temp_variable = { humanitarian_action_target_id = FROM.id }
 			if = {
-				limit = { famine_maintain_extraction_cost_receipt_is_valid = yes }
-				FROM = {
-					clr_state_flag = famine_maintain_extraction_cost_paid
-					clear_variable = famine_maintain_extraction_cost_payer
-				}
-				FROM = {
-					humanitarian_achievement_advance_generation = yes
-					set_variable = { famine_extraction_generation = global.humanitarian_achievement_generation_counter }
-					clr_state_flag = famine_extraction_suspended
-					clr_state_flag = humanitarian_achievement_extraction_shock_recorded
-					set_state_flag = famine_extraction_active
-					add_to_variable = { famine_food_pressure = constant:famine_decision_threshold.extraction_pressure }
-					clamp_variable = { var = famine_food_pressure min = constant:famine_food_component.zero max = constant:famine_food_component.maximum }
-					ROOT = { add_war_support = constant:famine_decision_outcome.decision_maintain_extraction_war_support }
-				}
+			 limit = { has_variable = humanitarian_native_generation_famine_maintain_extraction_@var:humanitarian_action_target_id }
+			 set_variable = { humanitarian_action_callback_id = humanitarian_native_generation_famine_maintain_extraction_@var:humanitarian_action_target_id }
+			 clear_variable = humanitarian_native_generation_famine_maintain_extraction_@var:humanitarian_action_target_id
+			 famine_action_resolve_callback = yes
 			}
-			else_if = {
-				limit = {
-					FROM = {
-						has_state_flag = famine_maintain_extraction_cost_paid
-						has_variable = famine_maintain_extraction_cost_payer
-						var:famine_maintain_extraction_cost_payer = { tag = ROOT }
-					}
-				}
-				FROM = {
-					clr_state_flag = famine_maintain_extraction_cost_paid
-					clear_variable = famine_maintain_extraction_cost_payer
-				}
-			}
-			set_temp_variable = { migration_transport_target = FROM } set_temp_variable = { migration_transport_receipt = token:famine_maintain_extraction } migration_transport_forget_state_cost = yes
 		}
 		cancel_if_not_visible = no
 		cancel_effect = {
-			FROM = {
-				if = {
-					limit = { has_state_flag = famine_maintain_extraction_cost_paid has_variable = famine_maintain_extraction_cost_payer var:famine_maintain_extraction_cost_payer = { tag = ROOT } }
-					clr_state_flag = famine_maintain_extraction_cost_paid
-					clear_variable = famine_maintain_extraction_cost_payer
-				}
+			set_temp_variable = { humanitarian_action_target_id = FROM.id }
+			if = {
+			 limit = { has_variable = humanitarian_native_generation_famine_maintain_extraction_@var:humanitarian_action_target_id }
+			 set_variable = { humanitarian_action_callback_id = humanitarian_native_generation_famine_maintain_extraction_@var:humanitarian_action_target_id }
+			 clear_variable = humanitarian_native_generation_famine_maintain_extraction_@var:humanitarian_action_target_id
+			 famine_action_cancel_callback = yes
 			}
-			set_temp_variable = { migration_transport_target = FROM } set_temp_variable = { migration_transport_receipt = token:famine_maintain_extraction } migration_transport_forget_state_cost = yes
 		}
 	}
 }

@@ -1,0 +1,29 @@
+# Country-payer transport display context for humanitarian action cost selectors.
+# Writes only temporary migration_transport_target, never quotes or gameplay state.
+# Open panels use their persistent valid selection; native decisions retain FROM.
+# Caller must initialize migration_transport_target to constant:migration_transport_cost.zero
+# immediately before this call so the selected STATE output survives helper return.
+# A false result leaves that caller-owned output at zero and must stop price evaluation.
+humanitarian_cost_display_resolve_target = {
+	hidden_trigger = {
+		OR = {
+			AND = {
+				has_country_flag = famine_panel_open
+				famine_panel_has_selected_state = yes
+				set_temp_variable = { migration_transport_target = famine_panel_selected_state }
+			}
+			AND = {
+				NOT = { has_country_flag = famine_panel_open }
+				has_country_flag = migration_panel_open
+				migration_panel_has_selected_state = yes
+				set_temp_variable = { migration_transport_target = migration_panel_selected_state }
+			}
+			AND = {
+				NOT = { has_country_flag = famine_panel_open }
+				NOT = { has_country_flag = migration_panel_open }
+				FROM = { state_population_k > constant:migration_transport_cost.zero }
+				set_temp_variable = { migration_transport_target = FROM }
+			}
+		}
+	}
+}

@@ -24,13 +24,14 @@ Skill-local `assets/` holds the reference and component libraries, and `tools/` 
 
 This skill owns the image-generation route for the whole repository. Claude Code generates images with the `generate_image` tool of the gptimage MCP server (parameters: `prompt`, `out`, `quality` low|medium|high|auto, `size` WIDTHxHEIGHT, `reference_images`). Codex uses native ImageGen instead. Everywhere else, "image generation" means this route.
 
-Before generation, inspect the active tool's actual output-path capabilities, including automatic local writes; a repository working directory or a returned data URL does not prove where the tool stores files.
-When repo-only storage is required, never call a tool that automatically writes generated images outside the Chaos Redux repository, including user-profile or `CODEX_HOME` folders; copying afterward or later cleanup does not satisfy this requirement.
-If no authorized route can write directly to an absolute in-repo destination or return bytes without outside writes, pause production and ask the parent for a destination-capable route.
-Require every worker command to use the Chaos Redux repo root as its explicit working directory and absolute in-repo paths for repo inputs and all outputs.
-Keep sources, prompts, previews, contact sheets, and manifests under `docs/assets/<owner>/...`, scratch under `.tmp/`, and runtime art only under `gfx/`; never write worker outputs to the user profile, Home, Desktop, or Downloads outside the repo.
-If a generation tool unexpectedly creates an external cache file, identify only this worker's exact reported output, move it into the assigned repo source folder before finishing, verify its hash and that the old path is absent, and record the containment failure in the handoff; never move unknown or other-shard cache files.
-This recovery does not authorize another outside-writing call or relax the generation preflight above.
+Inspect the active tool's exposed output-path capabilities and prefer an absolute in-repo destination when it offers one.
+Native ImageGen's automatic cache and service-managed temporary storage are allowed by default as generation implementation details; do not pause or ask for permission merely because it has no destination selector or cannot guarantee hidden-cache locations.
+Promptly copy any reported local output into the assigned repo source workspace, verify the copied SHA-256 against the original, and record the reported path and candidate lineage; do not speculate about unreported backend paths.
+Require every worker command to use the Chaos Redux repo root as its explicit working directory and absolute in-repo paths for repo inputs and agent-controlled outputs.
+Keep agent-controlled sources, prompts, processing outputs, previews, contact sheets, and manifests under `docs/assets/<owner>/...`, scratch under `.tmp/`, and runtime art only under `gfx/`; never choose arbitrary user-profile, Home, Desktop, or Downloads destinations outside the repo.
+If the user explicitly forbids all outside-repo writes, including automatic caches, honor that restriction: use a route verified to write directly in-repo or return bytes without outside writes, and report the unavailable route if none can satisfy it.
+If a tool unexpectedly violates that explicit restriction, identify only this worker's exact reported output, move it into the assigned repo source folder, verify its hash and that the old path is absent, and record the containment failure in the handoff; never move unknown or other-shard cache files.
+This recovery does not authorize another call that violates the explicit restriction.
 Obey the current task's disk-space floor before production and moves; do not substitute a remembered or hardcoded threshold.
 
 - Make one image per call. Existing output paths are auto-versioned, so name the final `out` path explicitly and use the path the tool reports.
@@ -41,7 +42,7 @@ Obey the current task's disk-space floor before production and moves; do not sub
 For Codex native ImageGen, save the exact argument record before the call under [Candidate lineage and review](references/manifest-and-lineage.md#candidate-lineage-and-review); never claim an unavailable historical request was saved before its call.
 In `functions.exec`, retain the returned result with `store()` and recover it with `load()` when persistence spans calls.
 Print only small metadata such as result keys and `output_hint`, never base64 or a sliced serialization of the huge result, which can hide the saved-path hint.
-Only when outside-repo output storage is authorized, if `output_hint` reports a saved local PNG under `CODEX_HOME/generated_images`, copy from that actual reported path into the source workspace and verify the copied SHA-256 matches the original.
+If `output_hint` reports a saved local PNG under `CODEX_HOME/generated_images`, copy from that actual reported path into the source workspace and verify the copied SHA-256 matches the original, subject to any explicit outside-write restriction above.
 If persistence fails after successful generation, recover the existing output from the reported session folder and timestamp and inspect its subject before selecting it; do not repeat a successful generation merely to save its output.
 
 When Codex native `image_gen__imagegen` returns `result.image_url` as a `data:image/png;base64,...` URL with no reported local path, save the returned bytes before processing.

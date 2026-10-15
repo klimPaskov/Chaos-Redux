@@ -1,0 +1,336 @@
+# Chaos Redux native national policies.
+# Native law ideas own policy; derived variables are compatibility views.
+# Timed flags require a literal macro. Keep this paired with national_policy_ai.hold_days.
+@national_policy_ai_hold_days = 180
+
+national_policy_publish_reception = {
+	if = {
+		limit = {
+			national_policy_country_uses_civilian_laws = yes
+			has_variable = national_policy_requested_value
+			OR = {
+				check_variable = { national_policy_requested_value = constant:migration_border_policy.humanitarian_open }
+				check_variable = { national_policy_requested_value = constant:migration_border_policy.controlled }
+				check_variable = { national_policy_requested_value = constant:migration_border_policy.transit_only }
+				check_variable = { national_policy_requested_value = constant:migration_border_policy.quarantine }
+				check_variable = { national_policy_requested_value = constant:migration_border_policy.closed }
+				check_variable = { national_policy_requested_value = constant:migration_border_policy.violent }
+				check_variable = { national_policy_requested_value = constant:migration_border_policy.forced_return }
+			}
+		}
+		set_temp_variable = { national_policy_previous_value = migration_reception_policy }
+		set_variable = { migration_reception_policy = national_policy_requested_value }
+		set_temp_variable = { national_policy_new_value = migration_reception_policy }
+		national_policy_publish_civilian_compatibility = yes
+		if = {
+			limit = { NOT = { has_country_flag = national_policy_initializing } NOT = { check_variable = { national_policy_previous_value = national_policy_new_value } } }
+			set_country_flag = { flag = national_policy_ai_hold_reception days = @national_policy_ai_hold_days }
+			set_temp_variable = { national_policy_changed_civilian_slot = constant:national_policy_civilian_family.reception }
+			migration_national_policy_changed = yes
+		}
+	}
+}
+
+national_policy_publish_departure = {
+	if = {
+		limit = {
+			national_policy_country_uses_civilian_laws = yes
+			has_variable = national_policy_requested_value
+			OR = {
+				check_variable = { national_policy_requested_value = constant:migration_border_policy.humanitarian_open }
+				check_variable = { national_policy_requested_value = constant:migration_border_policy.controlled }
+				check_variable = { national_policy_requested_value = constant:migration_border_policy.closed }
+			}
+		}
+		set_temp_variable = { national_policy_previous_value = migration_departure_policy }
+		set_variable = { migration_departure_policy = national_policy_requested_value }
+		set_temp_variable = { national_policy_new_value = migration_departure_policy }
+		national_policy_publish_civilian_compatibility = yes
+		if = {
+			limit = { NOT = { has_country_flag = national_policy_initializing } NOT = { check_variable = { national_policy_previous_value = national_policy_new_value } } }
+			set_country_flag = { flag = national_policy_ai_hold_departure days = @national_policy_ai_hold_days }
+			set_temp_variable = { national_policy_changed_civilian_slot = constant:national_policy_civilian_family.departure }
+			migration_national_policy_changed = yes
+		}
+	}
+}
+
+national_policy_publish_chemical = {
+	if = {
+		limit = {
+			national_policy_country_uses_warfare_laws = yes
+			has_variable = national_policy_requested_value
+			OR = {
+				check_variable = { national_policy_requested_value = constant:national_policy_permission.retaliation }
+				check_variable = { national_policy_requested_value = constant:national_policy_permission.battlefield }
+				check_variable = { national_policy_requested_value = constant:national_policy_permission.unrestricted }
+			}
+		}
+		set_temp_variable = { national_policy_previous_value = cbrn_chemical_use_policy }
+		set_variable = { cbrn_chemical_use_policy = national_policy_requested_value }
+		set_temp_variable = { national_policy_new_value = cbrn_chemical_use_policy }
+		national_policy_publish_warfare_compatibility = yes
+		if = {
+			limit = { NOT = { has_country_flag = national_policy_initializing } NOT = { check_variable = { national_policy_previous_value = national_policy_new_value } } }
+			set_country_flag = { flag = national_policy_ai_hold_chemical days = @national_policy_ai_hold_days }
+			set_temp_variable = { national_policy_changed_family = constant:national_policy_family.chemical }
+			national_policy_on_warfare_law_changed = yes
+		}
+	}
+}
+
+national_policy_publish_biological = {
+	if = {
+		limit = {
+			national_policy_country_uses_warfare_laws = yes
+			has_variable = national_policy_requested_value
+			OR = {
+				check_variable = { national_policy_requested_value = constant:national_policy_permission.retaliation }
+				check_variable = { national_policy_requested_value = constant:national_policy_permission.battlefield }
+				check_variable = { national_policy_requested_value = constant:national_policy_permission.unrestricted }
+			}
+		}
+		set_temp_variable = { national_policy_previous_value = cbrn_biological_use_policy }
+		set_variable = { cbrn_biological_use_policy = national_policy_requested_value }
+		set_temp_variable = { national_policy_new_value = cbrn_biological_use_policy }
+		national_policy_publish_warfare_compatibility = yes
+		if = {
+			limit = { NOT = { has_country_flag = national_policy_initializing } NOT = { check_variable = { national_policy_previous_value = national_policy_new_value } } }
+			set_country_flag = { flag = national_policy_ai_hold_biological days = @national_policy_ai_hold_days }
+			set_temp_variable = { national_policy_changed_family = constant:national_policy_family.biological }
+			national_policy_on_warfare_law_changed = yes
+		}
+	}
+}
+
+national_policy_publish_nuclear = {
+	if = {
+		limit = {
+			national_policy_country_uses_warfare_laws = yes
+			has_variable = national_policy_requested_value
+			OR = {
+				check_variable = { national_policy_requested_value = constant:national_policy_permission.none }
+				check_variable = { national_policy_requested_value = constant:national_policy_permission.retaliation }
+				check_variable = { national_policy_requested_value = constant:national_policy_permission.unrestricted }
+			}
+		}
+		set_temp_variable = { national_policy_previous_value = nuclear_use_policy }
+		set_variable = { nuclear_use_policy = national_policy_requested_value }
+		set_temp_variable = { national_policy_new_value = nuclear_use_policy }
+		national_policy_publish_warfare_compatibility = yes
+		if = {
+			limit = { NOT = { has_country_flag = national_policy_initializing } NOT = { check_variable = { national_policy_previous_value = national_policy_new_value } } }
+			set_country_flag = { flag = national_policy_ai_hold_nuclear days = @national_policy_ai_hold_days }
+			set_temp_variable = { national_policy_changed_family = constant:national_policy_family.nuclear }
+			national_policy_on_warfare_law_changed = yes
+		}
+	}
+}
+
+national_policy_publish_civilian_compatibility = {
+	set_variable = { migration_border_policy = migration_departure_policy }
+	if = {
+		limit = { check_variable = { migration_reception_policy > migration_border_policy } }
+		set_variable = { migration_border_policy = migration_reception_policy }
+	}
+	set_country_flag = migration_border_policy_active
+}
+national_policy_publish_warfare_compatibility = {
+	# Historical/treaty compatibility only; never an operation permission gate.
+	set_variable = { cbrn_use_policy = cbrn_chemical_use_policy }
+	if = {
+		limit = { check_variable = { cbrn_biological_use_policy > cbrn_use_policy } }
+		set_variable = { cbrn_use_policy = cbrn_biological_use_policy }
+	}
+}
+
+national_policy_reconcile_country = {
+	if = {
+		limit = { national_policy_country_uses_civilian_laws = yes }
+		if = { limit = { has_idea = national_policy_reception_humanitarian } set_variable = { migration_reception_policy = constant:migration_border_policy.humanitarian_open } }
+		else_if = { limit = { has_idea = national_policy_reception_controlled } set_variable = { migration_reception_policy = constant:migration_border_policy.controlled } }
+		else_if = { limit = { has_idea = national_policy_reception_transit } set_variable = { migration_reception_policy = constant:migration_border_policy.transit_only } }
+		else_if = { limit = { has_idea = national_policy_reception_quarantine } set_variable = { migration_reception_policy = constant:migration_border_policy.quarantine } }
+		else_if = { limit = { has_idea = national_policy_reception_closed } set_variable = { migration_reception_policy = constant:migration_border_policy.closed } }
+		else_if = { limit = { has_idea = national_policy_reception_violent } set_variable = { migration_reception_policy = constant:migration_border_policy.violent } }
+		else_if = { limit = { has_idea = national_policy_reception_forced_return } set_variable = { migration_reception_policy = constant:migration_border_policy.forced_return } }
+	}
+	else = {
+		if = { limit = { has_idea = national_policy_reception_humanitarian } remove_ideas = national_policy_reception_humanitarian }
+		if = { limit = { has_idea = national_policy_reception_controlled } remove_ideas = national_policy_reception_controlled }
+		if = { limit = { has_idea = national_policy_reception_transit } remove_ideas = national_policy_reception_transit }
+		if = { limit = { has_idea = national_policy_reception_quarantine } remove_ideas = national_policy_reception_quarantine }
+		if = { limit = { has_idea = national_policy_reception_closed } remove_ideas = national_policy_reception_closed }
+		if = { limit = { has_idea = national_policy_reception_violent } remove_ideas = national_policy_reception_violent }
+		if = { limit = { has_idea = national_policy_reception_forced_return } remove_ideas = national_policy_reception_forced_return }
+		clear_variable = migration_reception_policy
+		clr_country_flag = national_policy_ai_hold_reception
+	}
+	if = {
+		limit = { national_policy_country_uses_civilian_laws = yes }
+		if = { limit = { has_idea = national_policy_departure_free } set_variable = { migration_departure_policy = constant:migration_border_policy.humanitarian_open } }
+		else_if = { limit = { has_idea = national_policy_departure_permit } set_variable = { migration_departure_policy = constant:migration_border_policy.controlled } }
+		else_if = { limit = { has_idea = national_policy_departure_prohibited } set_variable = { migration_departure_policy = constant:migration_border_policy.closed } }
+	}
+	else = {
+		if = { limit = { has_idea = national_policy_departure_free } remove_ideas = national_policy_departure_free }
+		if = { limit = { has_idea = national_policy_departure_permit } remove_ideas = national_policy_departure_permit }
+		if = { limit = { has_idea = national_policy_departure_prohibited } remove_ideas = national_policy_departure_prohibited }
+		clear_variable = migration_departure_policy
+		clr_country_flag = national_policy_ai_hold_departure
+	}
+	if = {
+		limit = { national_policy_country_uses_warfare_laws = yes }
+		if = { limit = { has_idea = national_policy_chemical_retaliation } set_variable = { cbrn_chemical_use_policy = constant:national_policy_permission.retaliation } }
+		else_if = { limit = { has_idea = national_policy_chemical_battlefield } set_variable = { cbrn_chemical_use_policy = constant:national_policy_permission.battlefield } }
+		else_if = { limit = { has_idea = national_policy_chemical_unrestricted } set_variable = { cbrn_chemical_use_policy = constant:national_policy_permission.unrestricted } }
+	}
+	else = {
+		if = { limit = { has_idea = national_policy_chemical_retaliation } remove_ideas = national_policy_chemical_retaliation }
+		if = { limit = { has_idea = national_policy_chemical_battlefield } remove_ideas = national_policy_chemical_battlefield }
+		if = { limit = { has_idea = national_policy_chemical_unrestricted } remove_ideas = national_policy_chemical_unrestricted }
+		clear_variable = cbrn_chemical_use_policy
+	}
+	if = {
+		limit = { national_policy_country_uses_warfare_laws = yes }
+		if = { limit = { has_idea = national_policy_biological_retaliation } set_variable = { cbrn_biological_use_policy = constant:national_policy_permission.retaliation } }
+		else_if = { limit = { has_idea = national_policy_biological_battlefield } set_variable = { cbrn_biological_use_policy = constant:national_policy_permission.battlefield } }
+		else_if = { limit = { has_idea = national_policy_biological_unrestricted } set_variable = { cbrn_biological_use_policy = constant:national_policy_permission.unrestricted } }
+	}
+	else = {
+		if = { limit = { has_idea = national_policy_biological_retaliation } remove_ideas = national_policy_biological_retaliation }
+		if = { limit = { has_idea = national_policy_biological_battlefield } remove_ideas = national_policy_biological_battlefield }
+		if = { limit = { has_idea = national_policy_biological_unrestricted } remove_ideas = national_policy_biological_unrestricted }
+		clear_variable = cbrn_biological_use_policy
+	}
+	if = {
+		limit = { national_policy_country_uses_warfare_laws = yes }
+		if = { limit = { has_idea = national_policy_nuclear_none } set_variable = { nuclear_use_policy = constant:national_policy_permission.none } }
+		else_if = { limit = { has_idea = national_policy_nuclear_retaliation } set_variable = { nuclear_use_policy = constant:national_policy_permission.retaliation } }
+		else_if = { limit = { has_idea = national_policy_nuclear_unrestricted } set_variable = { nuclear_use_policy = constant:national_policy_permission.unrestricted } }
+	}
+	else = {
+		if = { limit = { has_idea = national_policy_nuclear_none } remove_ideas = national_policy_nuclear_none }
+		if = { limit = { has_idea = national_policy_nuclear_retaliation } remove_ideas = national_policy_nuclear_retaliation }
+		if = { limit = { has_idea = national_policy_nuclear_unrestricted } remove_ideas = national_policy_nuclear_unrestricted }
+		clear_variable = nuclear_use_policy
+	}
+	if = {
+		limit = { national_policy_country_uses_civilian_laws = yes }
+		national_policy_publish_civilian_compatibility = yes
+	}
+	else = { clear_variable = migration_border_policy clr_country_flag = migration_border_policy_active }
+	if = {
+		limit = { national_policy_country_uses_warfare_laws = yes }
+		national_policy_publish_warfare_compatibility = yes
+	}
+	else = { clear_variable = cbrn_use_policy }
+}
+
+national_policy_initialize_country = {
+	if = {
+		limit = { exists = yes }
+		set_country_flag = national_policy_initializing
+		if = {
+			limit = { national_policy_country_uses_civilian_laws = yes NOT = { national_policy_has_reception_law = yes } }
+			add_ideas = national_policy_reception_controlled
+		}
+		if = {
+			limit = { national_policy_country_uses_civilian_laws = yes NOT = { national_policy_has_departure_law = yes } }
+			add_ideas = national_policy_departure_free
+		}
+		if = {
+			limit = { national_policy_country_uses_warfare_laws = yes NOT = { national_policy_has_chemical_law = yes } }
+			add_ideas = national_policy_chemical_retaliation
+		}
+		if = {
+			limit = { national_policy_country_uses_warfare_laws = yes NOT = { national_policy_has_biological_law = yes } }
+			add_ideas = national_policy_biological_retaliation
+		}
+		if = {
+			limit = { national_policy_country_uses_warfare_laws = yes NOT = { national_policy_has_nuclear_law = yes } }
+			add_ideas = national_policy_nuclear_none
+		}
+		national_policy_reconcile_country = yes
+		national_policy_initialize_cost_modifiers = yes
+		set_country_flag = national_policy_initialized
+		clr_country_flag = national_policy_initializing
+	}
+}
+
+# Starting profiles apply only at campaign setup, after defaults and once per country.
+# Japan's prospective nuclear authorization is explicit user design, not a historical claim.
+national_policy_apply_starting_profile = {
+	national_policy_initialize_country = yes
+	if = {
+		limit = { NOT = { has_country_flag = national_policy_starting_profile_applied } }
+		set_country_flag = national_policy_initializing
+		if = {
+			limit = { national_policy_country_uses_civilian_laws = yes OR = { tag = GER tag = SOV } }
+			add_ideas = national_policy_departure_permit
+		}
+		if = {
+			limit = { national_policy_country_uses_warfare_laws = yes tag = JAP }
+			add_ideas = { national_policy_chemical_unrestricted national_policy_biological_unrestricted national_policy_nuclear_unrestricted }
+		}
+		else_if = {
+			limit = { national_policy_country_uses_warfare_laws = yes tag = ITA }
+			add_ideas = national_policy_chemical_unrestricted
+		}
+		# MAN and MEN deliberately retain ordinary defaults: no overlord law copying.
+		national_policy_reconcile_country = yes
+		set_country_flag = national_policy_starting_profile_applied
+		clr_country_flag = national_policy_initializing
+	}
+}
+
+national_policy_register_cxt_content = {
+	set_temp_variable = { chaosx_test_country_registration_extension_effect = token:national_policy_cxt_extension }
+	chaosx_test_country_register_extension_effect = yes
+}
+national_policy_cxt_extension_apply = {
+	if = {
+		limit = { tag = CXT has_country_flag = chaosx_test_country_initialized }
+		national_policy_initialize_country = yes
+		set_country_flag = national_policy_cxt_fixture_ready
+	}
+}
+
+# Release callbacks describe a newly independent polity, rather than a civil-war successor.
+national_policy_initialize_released_country = {
+	set_country_flag = national_policy_initializing
+	if = { limit = { has_idea = national_policy_reception_humanitarian } remove_ideas = national_policy_reception_humanitarian }
+	if = { limit = { has_idea = national_policy_reception_controlled } remove_ideas = national_policy_reception_controlled }
+	if = { limit = { has_idea = national_policy_reception_transit } remove_ideas = national_policy_reception_transit }
+	if = { limit = { has_idea = national_policy_reception_quarantine } remove_ideas = national_policy_reception_quarantine }
+	if = { limit = { has_idea = national_policy_reception_closed } remove_ideas = national_policy_reception_closed }
+	if = { limit = { has_idea = national_policy_reception_violent } remove_ideas = national_policy_reception_violent }
+	if = { limit = { has_idea = national_policy_reception_forced_return } remove_ideas = national_policy_reception_forced_return }
+	if = { limit = { has_idea = national_policy_departure_free } remove_ideas = national_policy_departure_free }
+	if = { limit = { has_idea = national_policy_departure_permit } remove_ideas = national_policy_departure_permit }
+	if = { limit = { has_idea = national_policy_departure_prohibited } remove_ideas = national_policy_departure_prohibited }
+	if = { limit = { has_idea = national_policy_chemical_retaliation } remove_ideas = national_policy_chemical_retaliation }
+	if = { limit = { has_idea = national_policy_chemical_battlefield } remove_ideas = national_policy_chemical_battlefield }
+	if = { limit = { has_idea = national_policy_chemical_unrestricted } remove_ideas = national_policy_chemical_unrestricted }
+	if = { limit = { has_idea = national_policy_biological_retaliation } remove_ideas = national_policy_biological_retaliation }
+	if = { limit = { has_idea = national_policy_biological_battlefield } remove_ideas = national_policy_biological_battlefield }
+	if = { limit = { has_idea = national_policy_biological_unrestricted } remove_ideas = national_policy_biological_unrestricted }
+	if = { limit = { has_idea = national_policy_nuclear_none } remove_ideas = national_policy_nuclear_none }
+	if = { limit = { has_idea = national_policy_nuclear_retaliation } remove_ideas = national_policy_nuclear_retaliation }
+	if = { limit = { has_idea = national_policy_nuclear_unrestricted } remove_ideas = national_policy_nuclear_unrestricted }
+	clr_country_flag = national_policy_starting_profile_applied
+	national_policy_apply_starting_profile = yes
+	clr_country_flag = national_policy_initializing
+}
+
+# The explicit player-triggered CXT warfare fixture retains its unrestricted debug authorization.
+national_policy_cxt_enable_unrestricted_warfare = {
+	if = {
+		limit = { tag = CXT }
+		national_policy_initialize_country = yes
+		set_country_flag = national_policy_initializing
+		add_ideas = { national_policy_chemical_unrestricted national_policy_biological_unrestricted national_policy_nuclear_unrestricted }
+		national_policy_reconcile_country = yes
+		clr_country_flag = national_policy_initializing
+	}
+}

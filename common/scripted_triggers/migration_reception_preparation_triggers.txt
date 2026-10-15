@@ -3,7 +3,22 @@
 
 # UI wrapper. FROM remains the exact selected receiving state.
 migration_reception_preparation_is_affordable = {
-	set_temp_variable = { migration_transport_target = FROM } migration_reception_preparation_target_cost_is_affordable = yes
+	OR = {
+		AND = {
+			check_variable = { humanitarian_action_context_proven = constant:humanitarian_runtime.one }
+			migration_reception_preparation_is_affordable_in_context = yes
+		}
+		AND = {
+			NOT = { check_variable = { humanitarian_action_context_proven = constant:humanitarian_runtime.one } }
+			set_temp_variable = { humanitarian_action_actor = ROOT }
+			set_temp_variable = { humanitarian_action_target = FROM }
+			migration_reception_preparation_is_affordable_in_context = yes
+		}
+	}
+}
+
+migration_reception_preparation_is_affordable_in_context = {
+	set_temp_variable = { migration_transport_target = var:humanitarian_action_target } migration_reception_preparation_target_cost_is_affordable = yes
 }
 
 migration_reception_preparation_target_cost_is_affordable = {
@@ -68,7 +83,7 @@ migration_reception_preparation_state_is_safe = {
 
 # Temporary quantities are used only inside this read-only predicate.
 migration_reception_preparation_can_change_state = {
-	hidden_trigger = {
+hidden_trigger = {
 		set_temp_variable = { migration_reception_preparation_population = state_population_k }
 		multiply_temp_variable = { migration_reception_preparation_population = constant:migration_capacity.people_per_k }
 		set_temp_variable = { migration_reception_preparation_shelter = migration_reception_preparation_population }
@@ -86,40 +101,68 @@ migration_reception_preparation_can_change_state = {
 			NOT = { has_variable = migration_reception_medical_capacity }
 			NOT = { check_variable = { migration_reception_medical_service_proven = constant:migration_capacity.one } }
 			check_variable = { migration_reception_medical_capacity < migration_reception_preparation_medical }
-			OWNER = {
-				NOT = { check_variable = { migration_reception_policy = constant:migration_border_policy.humanitarian_open } }
-			}
+			
 		}
 	}
 }
 
 # STATE scope. ROOT is the ordinary decision's receiving country.
 migration_reception_preparation_state_has_local_issue = {
-	hidden_trigger = {
-		OR = {
-			migration_state_has_real_migration_issue = yes
-			any_neighbor_state = { is_controlled_by = ROOT migration_state_has_real_migration_issue = yes }
-			ROOT = { migration_pending_reception_issue_is_valid = yes check_variable = { humanitarian_corridor_offer_front_state_id = PREV.id } }
+	OR = {
+		AND = {
+			check_variable = { humanitarian_action_context_proven = constant:humanitarian_runtime.one }
+			migration_reception_preparation_state_has_local_issue_in_context = yes
+		}
+		AND = {
+			NOT = { check_variable = { humanitarian_action_context_proven = constant:humanitarian_runtime.one } }
+			set_temp_variable = { humanitarian_action_actor = ROOT }
+			set_temp_variable = { humanitarian_action_target = FROM }
+			migration_reception_preparation_state_has_local_issue_in_context = yes
 		}
 	}
 }
 
-migration_reception_preparation_target_is_valid = {
-	migration_reception_preparation_state_has_local_issue = yes
+migration_reception_preparation_state_has_local_issue_in_context = {
 	hidden_trigger = {
-		is_owned_and_controlled_by = ROOT
-		migration_reception_preparation_state_is_safe = yes
-		migration_reception_preparation_can_change_state = yes
-		ROOT = {
-			migration_reception_preparation_is_visible = yes
-			num_of_civilian_factories > constant:humanitarian_population.zero
 			OR = {
-				NOT = { has_country_flag = humanitarian_corridor_offer_pending }
-				AND = {
-					migration_pending_reception_issue_is_valid = yes
-					check_variable = { humanitarian_corridor_offer_front_state_id = PREV.id }
+				migration_state_has_real_migration_issue = yes
+				any_neighbor_state = { is_controlled_by = var:humanitarian_action_actor migration_state_has_real_migration_issue = yes }
+				var:humanitarian_action_actor = { migration_pending_reception_issue_is_valid = yes check_variable = { humanitarian_corridor_offer_front_state_id = PREV.id } }
+			}
+		}
+}
+
+migration_reception_preparation_target_is_valid = {
+	OR = {
+		AND = {
+			check_variable = { humanitarian_action_context_proven = constant:humanitarian_runtime.one }
+			migration_reception_preparation_target_is_valid_in_context = yes
+		}
+		AND = {
+			NOT = { check_variable = { humanitarian_action_context_proven = constant:humanitarian_runtime.one } }
+			set_temp_variable = { humanitarian_action_actor = ROOT }
+			set_temp_variable = { humanitarian_action_target = FROM }
+			migration_reception_preparation_target_is_valid_in_context = yes
+		}
+	}
+}
+
+migration_reception_preparation_target_is_valid_in_context = {
+	migration_reception_preparation_state_has_local_issue_in_context = yes
+		hidden_trigger = {
+			is_owned_and_controlled_by = var:humanitarian_action_actor
+			migration_reception_preparation_state_is_safe = yes
+			migration_reception_preparation_can_change_state = yes
+			var:humanitarian_action_actor = {
+				migration_reception_preparation_is_visible = yes
+				num_of_civilian_factories > constant:humanitarian_population.zero
+				OR = {
+					NOT = { has_country_flag = humanitarian_corridor_offer_pending }
+					AND = {
+						migration_pending_reception_issue_is_valid = yes
+						check_variable = { humanitarian_corridor_offer_front_state_id = PREV.id }
+					}
 				}
 			}
 		}
-	}
 }

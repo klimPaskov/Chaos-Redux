@@ -374,7 +374,7 @@ cbrn_can_grant_theater_cbrn_headquarters = {
 }
 
 cbrn_can_pay_policy_change = {
-	NOT = { command_power < constant:cbrn_doctrine_policy_command_power_cost.policy_change }
+	always = no # Retired purchase surface.
 }
 
 cbrn_doctrine_policy_change_is_available = {
@@ -407,11 +407,7 @@ cbrn_can_set_unrestricted_policy = {
 # policy permits ordinary native battlefield AI first use. Legacy policy value
 # 4 is not a selectable authorization and does not qualify here.
 cbrn_ai_policy_authorizes_ordinary_battlefield_first_use = {
-	has_variable = cbrn_use_policy
-	OR = {
-		check_variable = { var = cbrn_use_policy value = constant:cbrn_use_policy.battlefield_authorization compare = equals }
-		check_variable = { var = cbrn_use_policy value = constant:cbrn_use_policy.unrestricted_authorization compare = equals }
-	}
+	OR = { has_idea = national_policy_chemical_battlefield has_idea = national_policy_chemical_unrestricted }
 }
 
 # Country scope. A vanilla-doctrine AI may deliberately choose ordinary

@@ -546,6 +546,7 @@ The following APIs are useful to other systems but are not declared in this regi
 | `project_bridge` | [`016_mengele_project_bridge_effects.txt`](016_mengele_project_bridge_effects.txt) and [`016_mengele_project_bridge_triggers.txt`](../scripted_triggers/016_mengele_project_bridge_triggers.txt) | [`project_system`](../../docs/events/016_brilliant_scientist/systems/projects.md) |
 | `universal_cost_framework` | [`chaosx_universal_cost_effects.txt`](chaosx_universal_cost_effects.txt), [`chaosx_universal_cost_triggers.txt`](../scripted_triggers/chaosx_universal_cost_triggers.txt), and [`chaosx_universal_cost_exact_triggers.txt`](../scripted_triggers/chaosx_universal_cost_exact_triggers.txt) | [`universal_cost_modifier`](../../docs/systems/universal_cost_modifier.md) and [exact quotation contracts](../scripted_triggers/chaosx_universal_cost_exact_triggers.md) |
 | `black_friday_sale_prices` | [`026_black_friday_price_table_effects.txt`](026_black_friday_price_table_effects.txt) | [`sale price table`](026_black_friday_price_table_effects.md) |
+| `national_policy_native_costs` | [`national_policy_cost_effects.txt`](national_policy_cost_effects.txt) and [`national_policy_cost_modifiers.txt`](../dynamic_modifiers/national_policy_cost_modifiers.txt) | [Native law PP ownership, live doctrine eligibility, mutually exclusive sale totals, initialization, cleanup, and law-family accounting](national_policy_cost_effects.md) |
 | `black_friday_simple_costs` | [`026_black_friday_triggers.txt`](../scripted_triggers/026_black_friday_triggers.txt), [`026_black_friday_effects.txt`](026_black_friday_effects.txt), and [`026_black_friday_scripted_localisation.txt`](../scripted_localisation/026_black_friday_scripted_localisation.txt) | [`simple custom-cost API`](026_black_friday_simple_cost_api.md) |
 | `unit_family_registry` | [`019_infantry_spawn_unit_registry_effects.txt`](019_infantry_spawn_unit_registry_effects.txt) | [`chaos_unit_family_registry`](../../docs/systems/cbrn_warfare/chaos_unit_family_registry.md) |
 | `famine_runtime` | [`famine_core_effects.txt`](famine_core_effects.txt) and [`famine_adapter_effects.txt`](famine_adapter_effects.txt) | [`famine_system`](../../docs/systems/famine_system.md) |
@@ -556,6 +557,7 @@ The following APIs are useful to other systems but are not declared in this regi
 | `humanitarian_validation` | [`humanitarian_validation_triggers.txt`](../scripted_triggers/humanitarian_validation_triggers.txt) | [`famine_system`](../../docs/systems/famine_system.md) and [`migration_system`](../../docs/systems/migration_system.md) |
 | `humanitarian_legacy_decision_costs` | [`humanitarian_legacy_cost_effects.txt`](humanitarian_legacy_cost_effects.txt) and [`humanitarian_legacy_cost_triggers.txt`](../scripted_triggers/humanitarian_legacy_cost_triggers.txt) | [display-only country quote contract](humanitarian_legacy_cost_effects.md) and [inclusive component/profile predicates](../scripted_triggers/humanitarian_legacy_cost_triggers.md) |
 | `humanitarian_physical_transport_costs` | [`migration_transport_cost_effects.txt`](migration_transport_cost_effects.txt) and [`migration_transport_cost_triggers.txt`](../scripted_triggers/migration_transport_cost_triggers.txt) | [payer/action/state payment, saved refund, geography and display contract](migration_transport_cost_effects.md) |
+| `humanitarian_panel_actions` | [`humanitarian_gui_action_effects.txt`](humanitarian_gui_action_effects.txt), [`famine_gui_action_effects.txt`](famine_gui_action_effects.txt), and [`migration_gui_action_effects.txt`](migration_gui_action_effects.txt) | [exact actor/state/action generation, shared native/GUI gates, sparse due work, cooldowns and production refunds](humanitarian_gui_action_effects.md) |
 | `great_depression_start_or_deepen` | [`035_great_depression_effects.txt`](035_great_depression_effects.txt) and [`035_great_depression_triggers.txt`](../scripted_triggers/035_great_depression_triggers.txt) | [`gateway contract`](035_great_depression_effects.md) and [`great_depression`](../../docs/events/035_great_depression.md) |
 | `great_depression_register_inherited_region` | [`035_great_depression_region_effects.txt`](035_great_depression_region_effects.txt) | [`regional companion`](035_great_depression_region_effects.md) |
 
@@ -672,3 +674,9 @@ Every new global registry entry, per-modifier expiry and recorded country view r
 Its targets are regular chain-lifetime event targets and there is no new global event target to clear.
 The shared registry is retained when one modifier ends because other families can still own views on the same state.
 Future human-system extensions should reuse this transition boundary and add only their exact owned cleanup fields.
+
+
+## Native warfare law integration
+
+The family permission, law-change callback, exact-pair confirmed-use receipt, Event 023 boundary and cleanup contracts are documented in [national_policy_warfare_effects.md](national_policy_warfare_effects.md).
+Native family laws are authoritative, and the combined C/B compatibility value grants no final permission.

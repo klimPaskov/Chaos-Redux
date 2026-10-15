@@ -248,17 +248,8 @@ cbrn_convention_action_is_retaliation = {
 	has_event_target = cbrn_convention_victim
 	event_target:cbrn_convention_victim = { exists = yes }
 	has_war_with = event_target:cbrn_convention_victim
-	meta_trigger = {
-		text = {
-			has_variable = cbrn_retaliation_[TARGET_ID]_expiry_day
-			check_variable = {
-				var = global.num_days
-				value = cbrn_retaliation_[TARGET_ID]_expiry_day
-				compare = less_than_or_equals
-			}
-		}
-		TARGET_ID = "[?cbrn_convention_victim_id|.0]"
-	}
+	set_temp_variable = { cbrn_retaliation_target_id = cbrn_convention_victim_id }
+	cbrn_country_has_active_retaliation_right_against_target_id = yes
 }
 
 # COUNTRY scope (target), ROOT is the demanding country. Inspection and

@@ -1,0 +1,116 @@
+# ============================================================================
+# CHAOS REDUX - NATIVE WARFARE LAW PERMISSION GATES
+# Native family laws authorize abstract game actions, never grant capability.
+# Exact-target retaliation reuses the bilateral confirmed-use evidence ledger.
+# ============================================================================
+
+national_policy_biological_allows_battlefield_use_against_target_id = {
+	OR = {
+		has_idea = national_policy_biological_unrestricted
+		has_idea = national_policy_biological_battlefield
+		AND = { has_idea = national_policy_biological_retaliation cbrn_country_has_active_retaliation_right_against_target_id = yes }
+	}
+}
+
+national_policy_biological_allows_battlefield_use_against_from = {
+	FROM = { exists = yes set_temp_variable = { cbrn_retaliation_target_id = id } }
+	has_war_with = FROM
+	national_policy_biological_allows_battlefield_use_against_target_id = yes
+}
+
+national_policy_biological_allows_battlefield_use = {
+	OR = {
+		has_idea = national_policy_biological_unrestricted
+		has_idea = national_policy_biological_battlefield
+		AND = { has_idea = national_policy_biological_retaliation national_policy_ai_has_biological_retaliation_right = yes }
+	}
+}
+
+national_policy_biological_allows_strategic_use_against_target_id = {
+	OR = {
+		has_idea = national_policy_biological_unrestricted
+		AND = { has_idea = national_policy_biological_retaliation cbrn_country_has_active_retaliation_right_against_target_id = yes }
+	}
+}
+
+national_policy_biological_allows_strategic_use_against_from = {
+	FROM = { exists = yes set_temp_variable = { cbrn_retaliation_target_id = id } }
+	has_war_with = FROM
+	national_policy_biological_allows_strategic_use_against_target_id = yes
+}
+
+national_policy_biological_allows_strategic_use = {
+	OR = {
+		has_idea = national_policy_biological_unrestricted
+		AND = { has_idea = national_policy_biological_retaliation national_policy_ai_has_biological_retaliation_right = yes }
+	}
+}
+
+national_policy_biological_allows_extreme_use = {
+	has_idea = national_policy_biological_unrestricted
+}
+
+national_policy_nuclear_allows_use_against_target_id = {
+	OR = {
+		has_idea = national_policy_nuclear_unrestricted
+		AND = { has_idea = national_policy_nuclear_retaliation cbrn_country_has_active_retaliation_right_against_target_id = yes }
+	}
+}
+
+national_policy_nuclear_allows_use_against_from = {
+	custom_trigger_tooltip = {
+		tooltip = national_policy_nuclear_use_against_from_tt
+		hidden_trigger = {
+			FROM = { exists = yes set_temp_variable = { cbrn_retaliation_target_id = id } }
+			has_war_with = FROM
+			national_policy_nuclear_allows_use_against_target_id = yes
+		}
+	}
+}
+
+national_policy_ai_has_chemical_retaliation_right = {
+	any_enemy_country = {
+		set_temp_variable = { cbrn_retaliation_target_id = id }
+		PREV = { cbrn_country_has_active_retaliation_right_against_target_id = yes }
+	}
+}
+
+national_policy_ai_has_biological_retaliation_right = {
+	any_enemy_country = {
+		set_temp_variable = { cbrn_retaliation_target_id = id }
+		PREV = { cbrn_country_has_active_retaliation_right_against_target_id = yes }
+	}
+}
+
+national_policy_ai_has_nuclear_retaliation_right = {
+	any_enemy_country = {
+		set_temp_variable = { cbrn_retaliation_target_id = id }
+		PREV = { cbrn_country_has_active_retaliation_right_against_target_id = yes }
+	}
+}
+
+# State scope, exact normalized biological record before its commit.
+national_policy_biological_seed_policy_is_valid = {
+	event_target:bio_seed_victim = { exists = yes set_temp_variable = { cbrn_retaliation_target_id = id } }
+	event_target:bio_seed_actor = {
+		exists = yes
+		has_war_with = event_target:bio_seed_victim
+		if = {
+			limit = { check_variable = { var = bio_seed_route value = constant:bio_lifecycle_route.battlefield_dissemination compare = equals } }
+			national_policy_biological_allows_battlefield_use_against_target_id = yes
+		}
+		else = { national_policy_biological_allows_strategic_use_against_target_id = yes }
+	}
+}
+
+# Event 023 country scope. Combat requests alone use foreign policy authority.
+# Tests, accidents, demonstrations and demolition retain their existing validators.
+national_policy_nuclear_event_action_policy_is_valid = {
+	if = {
+		limit = { check_variable = { var = sov_nuclear_bombs_action_type value = constant:sov_nuclear_bombs_action.combat_strike compare = equals } }
+		has_variable = sov_nuclear_bombs_action_target
+		var:sov_nuclear_bombs_action_target = { exists = yes set_temp_variable = { cbrn_retaliation_target_id = id } }
+		has_war_with = var:sov_nuclear_bombs_action_target
+		national_policy_nuclear_allows_use_against_target_id = yes
+	}
+}

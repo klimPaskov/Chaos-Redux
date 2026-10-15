@@ -70,7 +70,7 @@ The implementation is split across:
 - `common/doctrines/` for the grand doctrine and four mastery tracks
 - `common/script_constants/cbrn_doctrine_constants.txt` for shared gameplay tuning, with the existing `chem_integrated_operations.condemnation_mult` table retained as the single migration-safe 0.75/0.55/0.35 Condemnation ladder for chemical and biological callers
 - `common/scripted_triggers/cbrn_doctrine_triggers.txt` and `common/scripted_effects/cbrn_doctrine_effects.txt` for reusable gates and state changes
-- `common/decisions/cbrn_doctrine_decisions.txt` for the three use-policy choices and exact-state cleanup
+- `common/ideas/national_policy_laws.txt` for the five native policy groups; `common/decisions/cbrn_doctrine_decisions.txt` retains the exact-state cleanup action
 - `common/ideas/cbw_spirits.txt`, `common/ideas/cbrn_high_command.txt`, and the leader-trait files for officer-corps content
 - `interface/cbrn_doctrine.gfx` and `interface/chaosx_traits.gfx` for final runtime assets.
 
@@ -156,17 +156,9 @@ Chemical Air Interdiction is an eligibility marker only in this stage. It create
 
 ## Use policy
 
-Policy changes take effect immediately at the existing five-Command-Power price, with no reassessment lock or terminal-command prerequisite. The current decisions have zero native Political Power cost and call the shared policy effect after their exact availability gates pass. Doctrine progression does not change national policy automatically.
+National policy is selected through five native Political Power law groups. Reception has seven choices and departure has three, each at a 100 Political Power base cost. Chemical, biological and nuclear use each have three choices at a 150 Political Power base cost; an active Chaos Warfare doctrine reduces those three costs by 25%. The law definitions and exact retaliation boundary are documented in [National policies](../national_policies.md).
 
-One `cbrn_doctrine_policy_command_power_cost.policy_change` constant supplies the inclusive affordability gate, all three hidden click payments, and the scripted-localisation cost quote. The click effect checks affordability again before accepting the requested policy, so a failed payment cannot change authority.
-
-| Policy | Command Power | Reassessment | Source decision |
-| --- | ---: | --- | --- |
-| Retaliation Only | 5 | None | `cbrn_choose_retaliation_only` |
-| Battlefield Authorization | 5 | None | `cbrn_choose_battlefield_authorization` |
-| Unrestricted Authorization | 5 | None | `cbrn_choose_unrestricted_authorization` |
-
-Policy permits the newer delivery adapters to pass authorization checks. The restored ordinary biological air raids retain their earlier policy-independent research, native aircraft and payload requirements. It never spends a payload or creates exposure by itself. The inactive selected-state coercive-security operation retains its separate authorization gate for compatibility, but it is not the accepted camp implementation. Gas-Chamber Saturation Drills use the camp network directly and require no Chaos Warfare doctrine or occupation-policy prerequisite beyond the researched and stocked nerve agent.
+Doctrine adoption grants capability but does not set a law. The selected family law supplies operation permission, while each operation still requires its existing research, project, equipment, readiness, handling, delivery, valid target and event-specific checks. Retaliation requires current war with the exact confirmed offender. The legacy doctrine policy setter adapters fail closed without changing a law or charging Command Power. The inactive selected-state coercive-security gate remains a compatibility check, not the accepted camp implementation. Gas-Chamber Saturation Drills use the camp network directly and require no Chaos Warfare doctrine or occupation-policy prerequisite beyond the researched and stocked nerve agent.
 
 ## Condemnation-only doctrine mitigation
 
@@ -230,7 +222,7 @@ The `chemical_operations_commander` leader trait is awarded through completed se
 
 ## AI behavior
 
-The source weights for adoption and track preference use program profiles, industry, war, enemy chemical use, and explicit route flags. Battlefield Authorization and Unrestricted Authorization start at zero and gain source weight from route and spirit modifiers; availability and final choice remain separate questions. The current decision file gives only the three policy choices and exact-state cleanup an AI score. The August probability audit predates this narrowed roster, while the [September cleanup comparison](../../plans/chaos_warfare_system_plans/subagent_handoffs/2026-09-25_theater_three_cost_probability_compare.md) resolves a base cleanup score but leaves eligibility, modifiers, and final choice partial. No current scenario-specific probability proof is claimed for doctrine adoption, all three policy choices, or the full cleanup decision pool.
+The source weights for adoption, mastery-track preference, and native law ideas use program profiles, industry, war, enemy use, and explicit route flags. The law ideas' availability and conditional AI scores remain distinct from operation eligibility and campaign selection frequency. Current doctrine decisions cover exact-state cleanup; the 19 native law ideas are audited separately in the [country matrix and policy handoff](../../specs/famine_and_migration_system_specs/national_policy_country_matrix.md). The August probability audit predates this law roster, while the [September cleanup comparison](../../plans/chaos_warfare_system_plans/subagent_handoffs/2026-09-25_theater_three_cost_probability_compare.md) resolves a base cleanup score but leaves eligibility, modifiers, and final choice partial. No campaign selection-frequency claim is made.
 
 Officer-corps and high-command choices use the same defensive, battlefield, logistics, and outbreak profiles. Nonhuman AI receives zero selection weight for these institutional appointments and spirits. Every HQ ability retains the full player-equivalent composition, readiness, policy, stock, and Command Power gate. AI receives no hidden payload, readiness, or contamination shortcut.
 
@@ -303,13 +295,13 @@ Every decision icon below is an independent 32-by-32 concept in `gfx/interface/d
 | `GFX_decision_cbrn_set_unrestricted_policy` | `cbrn_set_unrestricted_policy.dds` |
 | `GFX_decision_cbrn_assign_decontamination_corridor` | `cbrn_assign_decontamination_corridor.dds` |
 
-The category icon is referenced by `common/decisions/categories/cbrn_doctrine_categories.txt`; the three policy icons and cleanup icon are referenced by the four active decisions in `common/decisions/cbrn_doctrine_decisions.txt`.
+The category icon is referenced by `common/decisions/categories/cbrn_doctrine_categories.txt`. The three `GFX_decision_cbrn_set_*_policy` sprites and their DDS files remain unreferenced legacy assets; they no longer represent active policy-purchase decisions. Exact-state cleanup owns the active decision icon in `common/decisions/cbrn_doctrine_decisions.txt`.
 
 ### Registered legacy sprites without a current doctrine consumer
 
 `interface/cbrn_doctrine.gfx` still registers the four milestone sprites `GFX_cbrn_doctrine_milestone_protective_foundation`, `GFX_cbrn_doctrine_milestone_delivery_integration`, `GFX_cbrn_doctrine_milestone_theater_exploitation`, and `GFX_cbrn_doctrine_milestone_terminal_command`. Current doctrine blocks do not reference them, and no dedicated command UI consumer was established by this source review.
 
-The same GFX file retains unreferenced decision sprites for `cbrn_convene_institutional_review`, `cbrn_chaos_warfare_establishment_mission`, `cbrn_complete_delayed_establishment`, the four `cbrn_claim_*` cards, `cbrn_hazard_assault_training`, `cbrn_set_defensive_preparation_policy`, `cbrn_set_strategic_release_policy`, and the four `cbrn_commission_*` cards. Their registered DDS files are legacy assets, not evidence that those decisions remain in the current menu. The old five-policy icon roster is therefore superseded by the three active policy icons above.
+The same GFX file retains unreferenced decision sprites for `cbrn_convene_institutional_review`, `cbrn_chaos_warfare_establishment_mission`, `cbrn_complete_delayed_establishment`, the four `cbrn_claim_*` cards, `cbrn_hazard_assault_training`, `cbrn_set_defensive_preparation_policy`, `cbrn_set_strategic_release_policy`, and the four `cbrn_commission_*` cards. Their registered DDS files are legacy assets, not evidence that those decisions remain in the current menu. The native national-law system owns five shared family icons registered in `interface/national_policy_laws.gfx`: reception, departure, chemical, biological, and nuclear. The three legacy `GFX_decision_cbrn_set_*_policy` sprites above are not active policy icons.
 
 ## Remaining validation and possible depth
 

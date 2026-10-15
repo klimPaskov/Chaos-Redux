@@ -14,7 +14,10 @@ The measured origin debit remains visible to the callback's existing refund guar
 
 `migration_decision_preflight_destination_history` is a read-only ordinary distribution/transit guard. It rejects a destination already visited by the exact cohort, requires the initialized positive history registry plus aligned history/live arrays and at least one matching history receipt, and fails closed on missing, invalid, or misaligned history. Multiple valid receipts for one cohort are expected because the ledger is append-only; the guard checks every matching receipt for the exact destination. It does not initialize or repair migrated saves, so a rejected A->B->A attempt has no global-history mutation. Terminal voluntary/forced return, local integration, and third-country resettlement remain explicit exceptions.
 
-`migration_decision_set_policy` persists separate departure and reception policies, derives the one displayed Border Policy compatibility value, and routes the public core policy setter through one result guard.
+`migration_decision_set_policy` adapts validated external subsystem policy requests to the authoritative native national laws, then reconciles the compatibility variables.
+It retains the result and request-reset contract for Event 003.
+Paid migration operations and reception-service preparation consume current law and never call this setter.
+The native-law mapping and publication contract is documented in [national_policy_effects.md](national_policy_effects.md).
 
 `migration_decision_record_medical_reception_receipt` records the durable exact arrival exposure receipt only after the transfer projection, destination bind, reception delta, and history result are valid and the persisted origin is outbreak-exposed at arrival. It does not create a route, cohort, ledger, or service by itself.
 
@@ -22,8 +25,18 @@ The measured origin debit remains visible to the callback's existing refund guar
 
 None of these adapters selects destinations, mutates flight/trapped ledgers, unregisters a positive row, or replaces the exact transfer core. The core remains responsible for measured origin debit, survivor credit, route deaths, cohort host/history, generation, and paired-obligation reconciliation.
 
-`migration_clear_stale_paid_decision_receipts` is STATE-scoped and is called by the existing bounded registration and state-control-change owners. It enumerates the ten upfront delayed action receipts plus `migration_negotiate_corridor_cost_pending`; it clears only missing/invalid payers or payers that no longer control this state. It never refunds, removes a still-controlled funded continuation because the issue phase recovered, or invokes generic route/cohort cleanup.
+`migration_clear_stale_paid_decision_receipts` is STATE-scoped and is called by the existing bounded registration and state-control-change owners. It enumerates the twelve upfront delayed action receipts plus `migration_negotiate_corridor_cost_pending`; it clears only missing/invalid payers or payers that no longer control this state. It never refunds, removes a still-controlled funded continuation because the issue phase recovered, or invokes generic route/cohort cleanup.
 
 The delayed migration decisions clear their own paid flag and payer before the full existing removal body, but the receipt guard adds no new route, cohort, phase, or movement-success condition. In particular, the original five measured-zero-origin refund branches remain reachable on a route/cohort failure when the paid actor still controls the selected state. Matching `cancel_effect` paths clear only their own receipt, then preserve the original action-specific cleanup; cancellation does not refund the upfront fee or clear another action's receipt.
 
 Corridor negotiation is deferred-payment. Its pending request is stored on the selected origin state with the exact requester country scope and is consumed before preparation. The existing `humanitarian_corridor_prepare_contract` and `humanitarian_corridor_submit_offer` owners remain authoritative. A fee is debited exactly once only after a valid new offer submission and a fresh full affordability check; an unpaid just-created offer is removed only on that same successful-submission/final-fee-failure branch. Rejected or invalid setup is not charged.
+
+## Explicit action context
+
+Scope-sensitive bodies have one `_in_context` implementation reading the mandatory unscoped temporary COUNTRY pointer `humanitarian_action_actor` and STATE pointer `humanitarian_action_target`.
+The original helper name is a compatibility wrapper initializing those inputs from ROOT and FROM before a bare `= yes` call when no explicit context is proven.
+A caller that supplies an explicit envelope also initializes temporary `humanitarian_action_context_proven = 1`, so nested legacy wrappers retain that exact actor and target.
+Panel gates initialize the actor from their country context and the target from the exact selected state, and an immediate country event establishes the actor as ROOT for deep owner helpers.
+These helpers accept no named arguments, have no implicit scope defaults, and publish no additional gameplay output beyond their documented owner body.
+These adapters do not change tuning or create independent transaction owners.
+See [the shared action lifecycle](../scripted_effects/humanitarian_gui_action_effects.md) for caller, pending, and cleanup contracts.

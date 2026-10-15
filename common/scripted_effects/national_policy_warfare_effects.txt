@@ -1,0 +1,99 @@
+# ============================================================================
+# CHAOS REDUX - NATIVE WARFARE LAW INTEGRATION
+# Country-scoped law history and exact confirmed-use permission evidence.
+# This file never grants capability, resolves damage, or debits population.
+# ============================================================================
+
+# COUNTRY. Inputs are the law-owner callback's temporary family, previous and
+# new values. All three values are supplied by native-law on_add, after sync.
+national_policy_on_warfare_law_changed = {
+	if = {
+		limit = {
+			OR = {
+				check_variable = { national_policy_changed_family = constant:cbrn_diplomacy_source.chemical }
+				check_variable = { national_policy_changed_family = constant:cbrn_diplomacy_source.biological }
+			}
+		}
+		if = {
+			limit = { OR = { NOT = { has_variable = cbrn_peak_use_policy } check_variable = { var = national_policy_new_value value = cbrn_peak_use_policy compare = greater_than } } }
+			set_variable = { cbrn_peak_use_policy = national_policy_new_value }
+		}
+		set_country_flag = cbrn_policy_history_retaliation_authority
+		if = {
+			limit = { check_variable = { var = national_policy_new_value value = constant:cbrn_use_policy.battlefield_authorization compare = greater_than_or_equals } }
+			set_country_flag = cbrn_policy_history_limited_battlefield_authority
+		}
+		if = {
+			limit = { check_variable = { national_policy_new_value = constant:cbrn_use_policy.unrestricted_authorization } }
+			set_country_flag = cbrn_policy_history_strategic_release_authority
+			set_country_flag = cbrn_policy_history_unrestricted_chaos_warfare
+		}
+		if = {
+			limit = { check_variable = { var = national_policy_new_value value = national_policy_previous_value compare = greater_than } }
+			cbrn_convention_on_use_policy_broadened = yes
+		}
+	}
+	# The Event 023 owner alone releases an uncommitted reservation. A native
+	# pending delivery is unresolved physical evidence and is never refunded.
+	if = {
+		limit = {
+			check_variable = { national_policy_changed_family = constant:cbrn_diplomacy_source.nuclear }
+			has_country_flag = sov_nuclear_bombs_action_reservation_active
+			NOT = { has_country_flag = sov_nuclear_bombs_native_delivery_pending }
+			check_variable = { sov_nuclear_bombs_action_type = constant:sov_nuclear_bombs_action.combat_strike }
+			# on_add can briefly see the removed law as well as its replacement.
+			# Use the published new value for cancellation inside this callback.
+			OR = {
+				check_variable = { national_policy_new_value = constant:cbrn_math.zero }
+				AND = {
+					check_variable = { national_policy_new_value = constant:cbrn_use_policy.retaliation_only }
+					NOT = {
+						has_variable = sov_nuclear_bombs_action_target
+						var:sov_nuclear_bombs_action_target = { exists = yes set_temp_variable = { cbrn_retaliation_target_id = id } }
+						cbrn_country_has_active_retaliation_right_against_target_id = yes
+					}
+				}
+			}
+		}
+		sov_nuclear_bombs_clear_action_context = yes
+	}
+}
+
+# ROOT country, FROM the exact native hit state. Call before Event 023 clears
+# its nonce/type context. Only a hostile current controller is the victim.
+national_policy_record_confirmed_nuclear_use = {
+	if = {
+		limit = {
+			ROOT = { exists = yes }
+			NOT = { has_global_flag = asteroid_incoming_visual_strike_active }
+			FROM = {
+				NOT = { has_state_flag = asteroid_incoming_visual_strike_state }
+				CONTROLLER = { exists = yes NOT = { tag = ROOT } has_war_with = ROOT }
+			}
+			# The matching Event 023 pending state owns classification. Invalid
+			# nonce/type data must never fall through as an ordinary native strike.
+			if = {
+				limit = { has_country_flag = sov_nuclear_bombs_native_delivery_pending }
+				has_variable = sov_nuclear_bombs_action_state_id
+			}
+			if = {
+				limit = {
+					has_country_flag = sov_nuclear_bombs_native_delivery_pending
+					has_variable = sov_nuclear_bombs_action_state_id
+					FROM = { check_variable = { var = id value = ROOT.sov_nuclear_bombs_action_state_id compare = equals } }
+				}
+				sov_nuclear_bombs_native_delivery_country_is_valid = yes
+				check_variable = { sov_nuclear_bombs_action_type = constant:sov_nuclear_bombs_action.combat_strike }
+				FROM = {
+					has_state_flag = sov_nuclear_bombs_native_delivery_state_pending
+					check_variable = { var = sov_nuclear_bombs_native_delivery_nonce value = ROOT.sov_nuclear_bombs_action_nonce compare = equals }
+				}
+			}
+		}
+		FROM = { CONTROLLER = { save_event_target_as = cbrn_retaliation_target_country } }
+		set_temp_variable = { cbrn_confirmed_use_action_date = global.num_days }
+		set_temp_variable = { cbrn_confirmed_use_retaliation_status = constant:cbrn_retaliation_status.none }
+		set_temp_variable = { cbrn_retaliation_source_type = constant:cbrn_diplomacy_source.nuclear }
+		cbrn_diplomacy_record_confirmed_cbrn_use = yes
+	}
+}

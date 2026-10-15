@@ -102,7 +102,7 @@ bio_battlefield_country_can_operate = {
 	has_war = yes
 	has_tech = pathogen_handling_protocols
 	cbrn_country_has_full_readiness = yes
-	cbrn_policy_allows_battlefield_use = yes
+	national_policy_biological_allows_battlefield_use = yes
 	bio_battlefield_country_has_any_agent_project = yes
 	bio_kruger_last_resort_authority_is_valid = yes
 }
@@ -140,7 +140,7 @@ bio_battlefield_target_from_is_valid = {
 bio_battlefield_can_prepare_against_from = {
 	bio_battlefield_country_can_operate = yes
 	bio_battlefield_target_from_is_valid = yes
-	cbrn_policy_allows_battlefield_use_against_from = yes
+	national_policy_biological_allows_battlefield_use_against_from = yes
 }
 
 # Actor-country event scope after the native callback saved exact targets.
@@ -160,7 +160,7 @@ bio_battlefield_native_context_is_valid = {
 		event_target:bio_battlefield_victim = {
 			set_temp_variable = { cbrn_retaliation_target_id = id }
 		}
-		cbrn_policy_allows_battlefield_use_against_target_id = yes
+		national_policy_biological_allows_battlefield_use_against_target_id = yes
 	}
 	event_target:bio_battlefield_victim = {
 		exists = yes
@@ -251,7 +251,7 @@ bio_battlefield_ai_has_safe_domestic_program = {
 
 bio_battlefield_ai_is_desperate_route = {
 	cbrn_ai_route_allows_unrestricted_use = yes
-	cbrn_policy_allows_extreme_use = yes
+	national_policy_biological_allows_extreme_use = yes
 	surrender_progress > constant:bio_battlefield_ai.desperate_surrender_threshold
 }
 
@@ -285,7 +285,7 @@ bio_battlefield_ai_may_target_from = {
 			FROM = { set_temp_variable = { cbrn_retaliation_target_id = id } }
 			cbrn_country_has_active_retaliation_right_against_target_id = yes
 		}
-		cbrn_ai_policy_authorizes_ordinary_battlefield_first_use = yes
+		OR = { has_idea = national_policy_biological_battlefield has_idea = national_policy_biological_unrestricted }
 		cbrn_ai_route_allows_first_use = yes
 		bio_battlefield_ai_is_desperate_route = yes
 	}

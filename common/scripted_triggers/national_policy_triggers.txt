@@ -1,0 +1,84 @@
+# Chaos Redux native national policies.
+# Native law ideas own policy; derived variables are compatibility views.
+national_policy_country_uses_civilian_laws = {
+	exists = yes
+	uses_normal_civilian_systems = yes
+	# Event 003 keeps its ordinary humanitarian systems despite its special-country classification.
+	OR = {
+		NOT = { is_special_chaos_country = yes }
+		is_holy_realm_country = yes
+	}
+}
+national_policy_country_uses_warfare_laws = {
+	cbrn_action_actor_is_valid = yes
+}
+national_policy_ai_has_chemical_capability = {
+	cbrn_country_has_operational_readiness = yes
+	OR = { has_tech = chlorine_gas has_tech = phosgene has_tech = mustard_gas has_tech = lewisite has_tech = sarin has_tech = soman }
+}
+national_policy_ai_has_biological_capability = {
+	bio_strategic_raid_ai_has_safe_domestic_program = yes
+	OR = { bio_strategic_raid_country_has_any_agent_project = yes bio_battlefield_country_has_any_agent_project = yes }
+}
+national_policy_ai_has_nuclear_capability = {
+	has_tech = nukes
+	num_of_nukes > 0
+}
+national_policy_ai_can_receive_arrivals = {
+	migration_pending_reception_issue_is_valid = yes
+	migration_reception_capacity_is_valid = yes
+	has_variable = migration_reception_load
+	has_variable = migration_reception_capacity
+	check_variable = { migration_reception_load < migration_reception_capacity }
+}
+national_policy_ai_needs_relief_departure = {
+	OR = {
+		migration_decision_reception_capacity_exhausted_is_valid = yes
+		check_variable = { migration_trapped_population > constant:humanitarian_population.zero }
+		check_variable = { migration_flight_pressure > constant:humanitarian_population.zero }
+	}
+}
+
+national_policy_has_reception_law = {
+	OR = {
+		has_idea = national_policy_reception_humanitarian
+		has_idea = national_policy_reception_controlled
+		has_idea = national_policy_reception_transit
+		has_idea = national_policy_reception_quarantine
+		has_idea = national_policy_reception_closed
+		has_idea = national_policy_reception_violent
+		has_idea = national_policy_reception_forced_return
+	}
+}
+
+national_policy_has_departure_law = {
+	OR = {
+		has_idea = national_policy_departure_free
+		has_idea = national_policy_departure_permit
+		has_idea = national_policy_departure_prohibited
+	}
+}
+
+national_policy_has_chemical_law = {
+	OR = {
+		has_idea = national_policy_chemical_retaliation
+		has_idea = national_policy_chemical_battlefield
+		has_idea = national_policy_chemical_unrestricted
+	}
+}
+
+national_policy_has_biological_law = {
+	OR = {
+		has_idea = national_policy_biological_retaliation
+		has_idea = national_policy_biological_battlefield
+		has_idea = national_policy_biological_unrestricted
+	}
+}
+
+national_policy_has_nuclear_law = {
+	OR = {
+		has_idea = national_policy_nuclear_none
+		has_idea = national_policy_nuclear_retaliation
+		has_idea = national_policy_nuclear_unrestricted
+	}
+}

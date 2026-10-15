@@ -1,0 +1,143 @@
+# Chaos Redux humanitarian panel presentation.
+# Read-only gameplay inputs. Writes are country UI state and temporary chain-local projections only.
+humanitarian_panel_is_eligible = {
+	exists = yes
+	uses_normal_civilian_systems = yes
+	NOT = { is_special_chaos_country = yes }
+	is_ai = no
+}
+# STATE, only inside a panel chain that saved the actual actor.
+humanitarian_panel_state_belongs_to_actor = {
+	check_variable = { id > constant:humanitarian_panel.zero }
+	OR = {
+		is_owned_by = event_target:humanitarian_panel_actor
+		is_controlled_by = event_target:humanitarian_panel_actor
+	}
+}
+famine_panel_state_has_relevant_work = {
+	OR = {
+		has_state_flag = famine_mission_route_subject
+		has_state_flag = famine_mission_relief_subject
+		has_state_flag = famine_relief_contract_active
+		has_state_flag = famine_release_reserves_cost_paid
+		has_state_flag = famine_emergency_imports_cost_paid
+		has_state_flag = famine_invite_relief_cost_paid
+		has_state_flag = famine_requisition_safer_state_cost_paid
+		has_state_flag = famine_repair_relief_route_cost_paid
+		has_state_flag = famine_escorted_relief_convoy_cost_paid
+		has_state_flag = famine_emergency_airlift_cost_paid
+		has_state_flag = famine_evacuation_cost_paid
+		has_state_flag = famine_conceal_crisis_cost_paid
+		has_state_flag = famine_maintain_extraction_cost_paid
+	}
+}
+migration_panel_state_has_relevant_work = {
+	OR = {
+		has_state_flag = migration_evacuation_prepared
+		has_state_flag = migration_mission_evacuation_subject
+		has_state_flag = migration_mission_reception_subject
+		has_state_flag = migration_mission_return_subject
+		has_state_flag = humanitarian_corridor_mission_subject
+		has_state_flag = migration_negotiate_corridor_cost_pending
+		has_state_flag = migration_prepare_evacuation_cost_paid
+		has_state_flag = migration_evacuate_civilians_cost_paid
+		has_state_flag = migration_evacuate_vulnerable_cost_paid
+		has_state_flag = migration_evacuate_administration_cost_paid
+		has_state_flag = migration_evacuate_workers_cost_paid
+		has_state_flag = migration_distribute_arrivals_cost_paid
+		has_state_flag = migration_transit_only_cost_paid
+		has_state_flag = migration_enforce_closure_cost_paid
+		has_state_flag = migration_third_country_resettlement_cost_paid
+		has_state_flag = migration_voluntary_return_cost_paid
+		has_state_flag = migration_forced_repatriation_cost_paid
+	}
+}
+
+famine_panel_is_eligible = { humanitarian_panel_is_eligible = yes }
+famine_panel_has_selected_state = {
+	humanitarian_panel_is_eligible = yes
+	has_variable = famine_panel_selected_state
+	is_in_array = { array = famine_panel_states value = famine_panel_selected_state }
+	var:famine_panel_selected_state = {
+		check_variable = { id > constant:humanitarian_panel.zero }
+		OR = { is_owned_by = PREV is_controlled_by = PREV }
+	}
+}
+
+migration_panel_is_eligible = { humanitarian_panel_is_eligible = yes }
+migration_panel_has_selected_state = {
+	humanitarian_panel_is_eligible = yes
+	has_variable = migration_panel_selected_state
+	is_in_array = { array = migration_panel_states value = migration_panel_selected_state }
+	var:migration_panel_selected_state = {
+		check_variable = { id > constant:humanitarian_panel.zero }
+		OR = { is_owned_by = PREV is_controlled_by = PREV }
+	}
+}
+
+# A pending first observation does not establish a completed food assessment.
+famine_panel_state_has_food_assessment = {
+	OR = {
+		has_state_flag = famine_food_security_active
+		AND = { has_variable = famine_food_stage NOT = { has_state_flag = famine_food_observation_pending_job } }
+	}
+}
+
+# STATE qualification for bounded native owned/controlled iteration.
+# Published active facts, positive balances or exact work make a state relevant.
+# Mere ownership and zero-filled/unassessed variables never qualify by themselves.
+famine_panel_state_is_relevant = {
+	OR = {
+		has_state_flag = famine_food_security_active
+		has_state_flag = famine_food_observation_pending_job
+		has_state_flag = famine_food_stage_supply_strain
+		has_state_flag = famine_food_stage_acute_shortage
+		has_state_flag = famine_food_stage_famine
+		has_state_flag = famine_food_stage_catastrophic
+		AND = { has_variable = famine_food_stage check_variable = { famine_food_stage > constant:famine_food_stage.stable } }
+		famine_panel_state_has_relevant_work = yes
+		event_target:humanitarian_panel_actor = { is_in_array = { array = famine_action_states value = PREV } }
+	}
+}
+migration_panel_state_is_relevant = {
+	OR = {
+		has_state_flag = migration_displacement_active
+		has_state_flag = migration_population_trapped
+		migration_state_has_header_trapped_people = yes
+		migration_state_has_header_sheltered_or_fleeing_people = yes
+		AND = { has_variable = migration_flight_pressure check_variable = { migration_flight_pressure > constant:humanitarian_panel.zero } }
+		AND = { has_variable = migration_trapped_population check_variable = { migration_trapped_population > constant:humanitarian_panel.zero } }
+		AND = { has_variable = migration_current_cohort_id check_variable = { migration_current_cohort_id > constant:humanitarian_panel.zero } }
+		AND = { has_variable = humanitarian_corridor_cohort_id check_variable = { humanitarian_corridor_cohort_id > constant:humanitarian_panel.zero } }
+		AND = { has_variable = humanitarian_corridor_origin_state_id check_variable = { humanitarian_corridor_origin_state_id > constant:humanitarian_panel.zero } }
+		AND = { has_variable = humanitarian_corridor_offer_origin_state_id check_variable = { humanitarian_corridor_offer_origin_state_id > constant:humanitarian_panel.zero } }
+		AND = { has_variable = migration_mission_evacuation_cohort_id check_variable = { migration_mission_evacuation_cohort_id > constant:humanitarian_panel.zero } }
+		AND = { has_variable = migration_mission_evacuation_deadline check_variable = { migration_mission_evacuation_deadline > constant:humanitarian_panel.zero } }
+		AND = { has_variable = migration_mission_reception_cohort_id check_variable = { migration_mission_reception_cohort_id > constant:humanitarian_panel.zero } }
+		AND = { has_variable = migration_mission_reception_observation_deadline check_variable = { migration_mission_reception_observation_deadline > constant:humanitarian_panel.zero } }
+		AND = { has_variable = migration_mission_return_deadline check_variable = { migration_mission_return_deadline > constant:humanitarian_panel.zero } }
+		has_state_flag = migration_presentation_preparing_projection_active
+		has_state_flag = migration_presentation_organized_projection_active
+		has_state_flag = migration_presentation_transit_projection_active
+		has_state_flag = migration_presentation_return_readiness_projection_active
+		has_state_flag = migration_cohort_selection_ambiguous
+		has_state_flag = humanitarian_corridor_contract_active
+		has_state_flag = humanitarian_corridor_preparation_pending
+		has_state_flag = humanitarian_corridor_offer_pending
+		has_state_flag = humanitarian_corridor_response_accepted
+		has_state_flag = humanitarian_corridor_operation_pending
+		has_state_flag = humanitarian_corridor_mission_armed
+		has_state_flag = humanitarian_corridor_mission_active
+		has_state_flag = humanitarian_corridor_accepted
+		has_state_flag = humanitarian_corridor_cleanup_pending
+		has_state_flag = humanitarian_corridor_selection_ambiguous
+		has_state_flag = humanitarian_corridor_attack_received
+		has_state_flag = humanitarian_corridor_attack_disqualified
+		has_state_flag = migration_mission_reception_observation_breach
+		AND = { has_variable = migration_state_live_cohort_count check_variable = { migration_state_live_cohort_count > constant:humanitarian_panel.zero } }
+		AND = { has_variable = migration_state_live_reference_count check_variable = { migration_state_live_reference_count > constant:humanitarian_panel.zero } }
+		AND = { has_variable = migration_industrial_workforce_delta NOT = { check_variable = { migration_industrial_workforce_delta = constant:humanitarian_panel.zero } } }
+		migration_panel_state_has_relevant_work = yes
+		event_target:humanitarian_panel_actor = { is_in_array = { array = migration_action_states value = PREV } }
+	}
+}

@@ -2008,7 +2008,12 @@ cbrn_convention_on_use_policy_broadened = {
 	if = {
 		limit = {
 			cbrn_convention_is_reservation = yes
-			check_variable = { cbrn_use_policy > constant:cbrn_use_policy.retaliation_only }
+			OR = {
+				AND = { check_variable = { national_policy_changed_family = constant:cbrn_diplomacy_source.chemical } has_idea = national_policy_chemical_battlefield }
+				AND = { check_variable = { national_policy_changed_family = constant:cbrn_diplomacy_source.chemical } has_idea = national_policy_chemical_unrestricted }
+				AND = { check_variable = { national_policy_changed_family = constant:cbrn_diplomacy_source.biological } has_idea = national_policy_biological_battlefield }
+				AND = { check_variable = { national_policy_changed_family = constant:cbrn_diplomacy_source.biological } has_idea = national_policy_biological_unrestricted }
+			}
 		}
 		cbrn_convention_record_reservation_breach = yes
 	}

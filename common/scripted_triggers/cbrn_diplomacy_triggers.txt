@@ -26,10 +26,13 @@ cbrn_country_can_pay_forensic_publication_cost = {
 cbrn_country_has_active_retaliation_right_against_target_id = {
 	has_variable = cbrn_retaliation_target_id
 	check_variable = { cbrn_retaliation_target_id > constant:cbrn_math.zero }
-	cbrn_policy_is_retaliation_authority = yes
 	meta_trigger = {
 		text = {
 			has_variable = cbrn_retaliation_[TARGET_ID]_expiry_day
+			has_variable = cbrn_retaliation_[TARGET_ID]_owner
+			var:cbrn_retaliation_[TARGET_ID]_owner = { tag = PREV }
+			has_variable = cbrn_retaliation_[TARGET_ID]_offender
+			var:cbrn_retaliation_[TARGET_ID]_offender = { exists = yes check_variable = { var = id value = cbrn_retaliation_target_id compare = equals } }
 			check_variable = {
 				var = global.num_days
 				value = cbrn_retaliation_[TARGET_ID]_expiry_day
@@ -42,59 +45,32 @@ cbrn_country_has_active_retaliation_right_against_target_id = {
 
 # Country scope with FROM as the exact proposed target.
 cbrn_policy_allows_battlefield_use_against_from = {
-	FROM = {
-		exists = yes
-		set_temp_variable = { cbrn_retaliation_target_id = id }
-	}
+	FROM = { exists = yes set_temp_variable = { cbrn_retaliation_target_id = id } }
 	has_war_with = FROM
-	OR = {
-		check_variable = {
-			var = cbrn_use_policy
-			value = constant:cbrn_use_policy.limited_battlefield_authority
-			compare = greater_than_or_equals
-		}
-		cbrn_country_has_active_retaliation_right_against_target_id = yes
-	}
+	cbrn_policy_allows_battlefield_use_against_target_id = yes
 }
 
 # Country scope with FROM as the exact proposed target.
 cbrn_policy_allows_strategic_use_against_from = {
-	FROM = {
-		exists = yes
-		set_temp_variable = { cbrn_retaliation_target_id = id }
-	}
+	FROM = { exists = yes set_temp_variable = { cbrn_retaliation_target_id = id } }
 	has_war_with = FROM
-	OR = {
-		check_variable = {
-			var = cbrn_use_policy
-			value = constant:cbrn_use_policy.unrestricted_authorization
-			compare = greater_than_or_equals
-		}
-		cbrn_country_has_active_retaliation_right_against_target_id = yes
-	}
+	cbrn_policy_allows_strategic_use_against_target_id = yes
 }
 
 # Country scope after an exact target country has already supplied
 # cbrn_retaliation_target_id.
 cbrn_policy_allows_battlefield_use_against_target_id = {
 	OR = {
-		check_variable = {
-			var = cbrn_use_policy
-			value = constant:cbrn_use_policy.limited_battlefield_authority
-			compare = greater_than_or_equals
-		}
-		cbrn_country_has_active_retaliation_right_against_target_id = yes
+		has_idea = national_policy_chemical_unrestricted
+		has_idea = national_policy_chemical_battlefield
+		AND = { has_idea = national_policy_chemical_retaliation cbrn_country_has_active_retaliation_right_against_target_id = yes }
 	}
 }
 
 cbrn_policy_allows_strategic_use_against_target_id = {
 	OR = {
-		check_variable = {
-			var = cbrn_use_policy
-			value = constant:cbrn_use_policy.unrestricted_authorization
-			compare = greater_than_or_equals
-		}
-		cbrn_country_has_active_retaliation_right_against_target_id = yes
+		has_idea = national_policy_chemical_unrestricted
+		AND = { has_idea = national_policy_chemical_retaliation cbrn_country_has_active_retaliation_right_against_target_id = yes }
 	}
 }
 
@@ -137,11 +113,7 @@ cbrn_chemical_action_policy_allows_exact_target = {
 						check_variable = { var = cbrn_action_delivery_route value = constant:cbrn_delivery_route.artillery_fire_plan compare = equals }
 						check_variable = { var = cbrn_action_delivery_route value = constant:cbrn_delivery_route.armored_delivery compare = equals }
 					}
-					check_variable = {
-						var = cbrn_use_policy
-						value = constant:cbrn_use_policy.limited_battlefield_authority
-						compare = greater_than_or_equals
-					}
+					OR = { has_idea = national_policy_chemical_battlefield has_idea = national_policy_chemical_unrestricted }
 				}
 				AND = {
 					OR = {
@@ -149,11 +121,7 @@ cbrn_chemical_action_policy_allows_exact_target = {
 						check_variable = { var = cbrn_action_delivery_route value = constant:cbrn_delivery_route.strategic_chemical_raid compare = equals }
 						check_variable = { var = cbrn_action_delivery_route value = constant:cbrn_delivery_route.covert_operation compare = equals }
 					}
-					check_variable = {
-						var = cbrn_use_policy
-						value = constant:cbrn_use_policy.unrestricted_authorization
-						compare = greater_than_or_equals
-					}
+					has_idea = national_policy_chemical_unrestricted
 				}
 				AND = {
 					OR = {
@@ -166,6 +134,7 @@ cbrn_chemical_action_policy_allows_exact_target = {
 					NOT = { check_variable = { var = cbrn_action_delivery_route value = constant:cbrn_delivery_route.nerve_suppression compare = equals } }
 					NOT = { check_variable = { var = cbrn_action_delivery_route value = constant:cbrn_delivery_route.doomsday_release compare = equals } }
 					NOT = { check_variable = { var = cbrn_action_severity value = constant:cbrn_operation_severity.doomsday compare = equals } }
+					has_idea = national_policy_chemical_retaliation
 					cbrn_country_has_active_retaliation_right_against_target_id = yes
 				}
 			}

@@ -1,5 +1,9 @@
 # Chaos Redux Test Country
 
+## National policy laws
+
+The package-owned carrier is the modifier-free hidden idea `national_policy_cxt_extension`; its idempotent setup effect is `national_policy_cxt_extension_apply`. The package registration token is registered by the bounded startup hook and the CXT-only fallback. The fallback may mark registration pending but does not grant laws. Initial CXT setup or a player-triggered package action consumes the registration and applies the fixture; unrestricted warfare is a separate explicit fixture action. See [National policies](../systems/national_policies.md) for the package's authority and [the current implementation report](../plans/famine_and_migration_system_plans/national_policy_panels_implementation.md) for source handoffs and outstanding evidence.
+
 ## Purpose
 
 The Chaos Redux Test Directorate is a landless dormant country tag that becomes a complete runtime test harness when invoked from the console.

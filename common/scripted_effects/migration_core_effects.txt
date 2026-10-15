@@ -625,6 +625,7 @@ migration_retire_inactive_country = {
 		limit = {
 			humanitarian_country_is_valid = yes
 			has_country_flag = migration_decision_dormant
+			NOT = { check_variable = { migration_action_ids^num > constant:humanitarian_runtime.zero } }
 			NOT = { migration_country_has_obligations = yes }
 			NOT = { has_country_flag = humanitarian_corridor_offer_pending }
 			NOT = { has_country_flag = humanitarian_corridor_request_pending }
@@ -1789,6 +1790,7 @@ migration_process_registered_state = {
 
 
 migration_process_registered_country = {
+	migration_action_process_pending = yes
 	if = {
 		limit = {
 			has_country_flag = migration_displacement_country_active
@@ -1834,6 +1836,7 @@ migration_process_registered_country = {
 		set_variable = { migration_cleanup_requested = constant:humanitarian_runtime.one }
 		migration_cleanup_country_registration = yes
 	}
+	if = { limit = { has_country_flag = migration_panel_open } migration_panel_refresh = yes }
 }
 
 

@@ -232,19 +232,8 @@ cbrn_initialize_country_data = {
 }
 
 cbrn_set_use_policy = {
+	# Retired combined-policy purchase adapter. Native law slots own changes.
 	set_temp_variable = { cbrn_policy_change_accepted = constant:cbrn_proof.missing }
-	if = {
-		limit = {
-			has_variable = cbrn_requested_use_policy
-			OR = {
-				check_variable = { cbrn_requested_use_policy = constant:cbrn_use_policy.retaliation_only }
-				check_variable = { cbrn_requested_use_policy = constant:cbrn_use_policy.battlefield_authorization }
-				check_variable = { cbrn_requested_use_policy = constant:cbrn_use_policy.unrestricted_authorization }
-			}
-		}
-		set_variable = { cbrn_use_policy = cbrn_requested_use_policy }
-		set_temp_variable = { cbrn_policy_change_accepted = constant:cbrn_proof.supplied }
-	}
 }
 
 cbrn_refresh_country_readiness_status = {
