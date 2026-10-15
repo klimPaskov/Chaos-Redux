@@ -59,7 +59,7 @@ def native_token_registry():
     return enums,frozenset(decisions)
 
 class Runtime(F.FamineRuntime):
-    EXTERNAL_EFFECTS=F.FamineRuntime.EXTERNAL_EFFECTS|{'famine_initialize_state','famine_show_report_relief_arrival','famine_refresh_national_food_crisis','famine_refresh_decision_phase_from_country','famine_clear_national_food_crisis','humanitarian_initialize_runtime','humanitarian_project_legacy_cost_quote','migration_project_reception_preparation_cost_quote','migration_panel_refresh','famine_panel_refresh','national_policy_panel_refresh_open'}
+    EXTERNAL_EFFECTS=F.FamineRuntime.EXTERNAL_EFFECTS|{'famine_initialize_state','famine_show_report_relief_arrival','famine_refresh_national_food_crisis','famine_refresh_decision_phase_from_country','famine_clear_national_food_crisis','humanitarian_initialize_runtime','humanitarian_project_legacy_cost_quote','migration_project_reception_preparation_cost_quote','migration_panel_refresh','famine_panel_refresh','national_policy_panel_refresh_open','national_policy_panel_begin_update','national_policy_panel_end_update','national_policy_panel_publish_state'}
     EXTERNAL_FIXTURES=EXTERNAL_EFFECTS
     def __init__(self):
         self.enum_tokens,self.decision_tokens=native_token_registry()
@@ -81,6 +81,8 @@ class Runtime(F.FamineRuntime):
         self.event_bodies={P.first(n.value,'id'):P.first(n.value,'immediate') for n in nodes if n.key=='country_event'}
         self.bridge_visits=[]
         self.panel_refresh_requests=[]
+        self.panel_update_depth={}
+        self.panel_update_pending=set()
         self.effects=self.effect_defs;self.triggers=self.trigger_defs
     def _value(self,t):
         if isinstance(t,ScriptToken):return t
@@ -171,7 +173,35 @@ class Runtime(F.FamineRuntime):
     def _call_effect(self,name,scope):
         if name in ['migration_panel_refresh','famine_panel_refresh']:
             self.panel_refresh_requests.append((name,scope.id))
+        if name=='national_policy_panel_begin_update':
+            if scope.kind=='country' and any(flag in scope.flags for flag in ('famine_panel_open','migration_panel_open')):
+                key=id(scope);self.panel_update_depth[key]=self.panel_update_depth.get(key,0)+1
+            return
+        if name=='national_policy_panel_end_update':
+            key=id(scope);depth=self.panel_update_depth.get(key,0)
+            if depth>0:
+                depth-=1
+                if depth==0:
+                    self.panel_update_depth.pop(key,None)
+                    if key in self.panel_update_pending:
+                        self.panel_update_pending.discard(key)
+                        self._refresh_open_panels(scope)
+                else:self.panel_update_depth[key]=depth
+            return
+        if name=='national_policy_panel_refresh_open':
+            if scope.kind=='country' and any(flag in scope.flags for flag in ('famine_panel_open','migration_panel_open')):
+                key=id(scope)
+                if self.panel_update_depth.get(key,0)>0:self.panel_update_pending.add(key)
+                else:self._refresh_open_panels(scope)
+            return
+        if name=='national_policy_panel_publish_state' and scope.kind=='state':
+            if scope.owner is not None:self._call_effect('national_policy_panel_refresh_open',scope.owner)
+            if scope.controller is not None and scope.controller is not scope.owner:self._call_effect('national_policy_panel_refresh_open',scope.controller)
+            return
         return super()._call_effect(name,scope)
+    def _refresh_open_panels(self,scope):
+        if 'migration_panel_open' in scope.flags:self._call_effect('migration_panel_refresh',scope)
+        if 'famine_panel_open' in scope.flags:self._call_effect('famine_panel_refresh',scope)
 
 def case():
     r=Runtime();a=F.country('FRA');host=F.country('ENG');s=F.state(42,a);s.values['is_in_home_area']=True

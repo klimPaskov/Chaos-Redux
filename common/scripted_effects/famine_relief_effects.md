@@ -89,3 +89,5 @@ The relief runtime is famine-owned and uses `famine_relief_*`. Its decision cons
 The only migration input is the bounded, already-valid reception-policy contract used for persecution and admission precedence. Relief does not read migration load, migration routes, or migration lifecycle state.
 
 The relief surface calls no `humanitarian_corridor_*` API. Its `famine_relief_*_corridor_*` fields are famine-owned delivery and wartime relief-route proofs.
+
+The registered donor-state pass publishes its reserve update after the existing date-gated helper commits. A successful exact delivery publishes the receiving state after relief-access and contract proofs settle; the core reserve transfer already publishes both measured endpoints after equal debit/credit.

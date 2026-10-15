@@ -166,9 +166,21 @@ scripted_gui = {
 			migration_panel_action_forced_repatriation_label_visible = { ROOT = { migration_gui_can_start_forced_repatriation = yes } }
 			migration_panel_action_forced_repatriation_label_locked_visible = { ROOT = { NOT = { migration_gui_can_start_forced_repatriation = yes } } }
 			migration_panel_actions_3_visible = { ROOT = { check_variable = { migration_panel_group = constant:humanitarian_panel.group_third } } }
-			migration_panel_work_meter_visible = { ROOT = { has_country_flag = migration_panel_has_active_work } }
+			migration_panel_work_meter_visible = { ROOT = {
+				has_country_flag = migration_panel_has_active_work
+				set_temp_variable = { migration_panel_live_work_frame = global.date }
+				subtract_from_temp_variable = { migration_panel_live_work_frame = migration_panel_work_start }
+				set_temp_variable = { migration_panel_live_work_duration = migration_panel_work_due }
+				subtract_from_temp_variable = { migration_panel_live_work_duration = migration_panel_work_start }
+				check_variable = { migration_panel_live_work_duration > constant:humanitarian_panel.zero }
+				divide_temp_variable = { migration_panel_live_work_frame = migration_panel_live_work_duration }
+				multiply_temp_variable = { migration_panel_live_work_frame = constant:humanitarian_panel.work_steps }
+				round_temp_variable = migration_panel_live_work_frame
+				clamp_temp_variable = { var = migration_panel_live_work_frame min = constant:humanitarian_panel.zero max = constant:humanitarian_panel.work_steps }
+				add_to_temp_variable = { migration_panel_live_work_frame = constant:humanitarian_panel.one }
+			} }
 		}
-		properties = { migration_panel_work_meter = { frame = ROOT.migration_panel_work_frame } }
+		properties = { migration_panel_work_meter = { frame = migration_panel_live_work_frame } }
 		dynamic_lists = { migration_panel_state_list = { array = migration_panel_states change_scope = yes entry_container = "migration_panel_state_row" } }
 	}
 }

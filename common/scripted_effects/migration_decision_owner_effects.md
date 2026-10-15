@@ -40,3 +40,5 @@ Panel gates initialize the actor from their country context and the target from 
 These helpers accept no named arguments, have no implicit scope defaults, and publish no additional gameplay output beyond their documented owner body.
 These adapters do not change tuning or create independent transaction owners.
 See [the shared action lifecycle](../scripted_effects/humanitarian_gui_action_effects.md) for caller, pending, and cleanup contracts.
+
+`migration_decision_finalize_organized_evacuation_in_context` publishes the destination state after its preparation, mission, and corridor-success tails settle from a valid transfer receipt.

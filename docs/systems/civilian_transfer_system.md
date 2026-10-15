@@ -37,3 +37,4 @@ The movement owner supplies the cohort and route meaning. The transfer primitive
 ## Scheduling
 
 The primitive executes only from an exact owner transaction. It has no recurring scan or independent pacing.
+After a valid finalize receipt, the transaction wrapper publishes both exact endpoint states to their current owners and distinct controllers; staged and rolled-back transfers do not publish a movement result.

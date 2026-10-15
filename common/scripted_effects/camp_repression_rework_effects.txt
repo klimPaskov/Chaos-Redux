@@ -576,6 +576,7 @@ camp_rework_refresh_state_site_profile = {
 }
 
 camp_rework_register_active_site = {
+	camp_admin_panel_begin_state_update = yes
 	# State scope. Missing responsibility may only default from a living country
 	# ROOT. Migration must supply its country pointer before calling this helper.
 	if = {
@@ -704,9 +705,11 @@ camp_rework_register_active_site = {
 		}
 	}
 	set_temp_variable = { camp_register_site_type = 0 }
+	camp_admin_panel_end_state_update = yes
 }
 
 camp_rework_unregister_inactive_site = {
+	camp_admin_panel_begin_state_update = yes
 	camp_admin_register_known_site = yes
 	set_temp_variable = { camp_origin_terminal_close_contract = constant:camp_admin_value.one }
 	camp_admin_integration_close_site = yes
@@ -756,9 +759,11 @@ camp_rework_unregister_inactive_site = {
 		}
 	}
 	migration_persecution_clear_owner_state = yes
+	camp_admin_panel_end_state_update = yes
 }
 
 camp_rework_resolve_site_evidence = {
+	camp_admin_panel_begin_state_update = yes
 	if = {
 		limit = {
 			has_variable = genocide_responsible_country
@@ -786,6 +791,7 @@ camp_rework_resolve_site_evidence = {
 	clr_state_flag = genocide_site_has_responsible_country
 	clear_variable = genocide_responsible_country
 	clear_variable = camp_site_secondary_responsible_country
+	camp_admin_panel_end_state_update = yes
 }
 
 camp_rework_clean_invalid_active_sites = {
@@ -1402,6 +1408,7 @@ camp_rework_recalculate_country_values = {
 }
 
 camp_rework_apply_country_monthly_pressure = {
+	national_policy_panel_begin_update = yes
 	camp_rework_decay_policy_pressures = yes
 	camp_rework_recalculate_country_values = yes
 	if = {
@@ -1422,9 +1429,12 @@ camp_rework_apply_country_monthly_pressure = {
 		limit = { has_country_flag = camp_repression_ledger_open }
 		camp_rework_rebuild_display_values = yes
 	}
+	national_policy_panel_refresh_open = yes
+	national_policy_panel_end_update = yes
 }
 
 camp_rework_on_country_annexed = {
+	national_policy_panel_begin_update = yes
 	camp_rework_clear_legacy_closure_attempt = yes
 	camp_admin_integration_close_country = yes
 	camp_rework_cancel_selected_dismantlement_on_terminal = yes
@@ -1538,6 +1548,8 @@ camp_rework_on_country_annexed = {
 	clr_country_flag = camp_ledger_tab_discovery
 	clear_variable = camp_selected_state_id
 	camp_rework_clear_ledger_arrays = yes
+	national_policy_panel_refresh_open = yes
+	national_policy_panel_end_update = yes
 }
 
 camp_rework_clean_inactive_countries = {
@@ -2276,7 +2288,7 @@ camp_rework_open_ledger = {
 		}
 		else = { camp_rework_rebuild_display_values = yes }
 		camp_admin_refresh_interface = yes
-		national_policy_panel_request_observer = yes
+		set_variable = { national_policy_panel_owner = THIS }
 	}
 }
 
@@ -2352,6 +2364,7 @@ camp_rework_record_country_gui_action_cooldown = {
 # id in camp_selected_state_id; the routed payload performs its own final
 # validation and country-kit checks before applying costs or effects.
 camp_rework_route_country_specific_action = {
+	national_policy_panel_begin_update = yes
 	if = {
 		limit = { check_variable = { camp_rework_action_id = constant:camp_rework_action.dismantle_selected_site } }
 		camp_rework_gui_begin_selected_dismantlement = yes
@@ -2406,6 +2419,8 @@ camp_rework_route_country_specific_action = {
 		limit = { has_country_flag = camp_repression_ledger_open }
 		camp_rework_rebuild_display_values = yes
 	}
+	national_policy_panel_refresh_open = yes
+	national_policy_panel_end_update = yes
 }
 
 camp_rework_gui_reveal_country_directives = {
@@ -2439,6 +2454,7 @@ camp_rework_apply_site_inspection_in_action_state = {
 }
 
 camp_rework_gui_begin_selected_dismantlement = {
+	national_policy_panel_begin_update = yes
 	if = {
 		limit = { camp_rework_can_dismantle_selected_site = yes }
 		set_temp_variable = { camp_site_cost_state_id = camp_selected_state_id }
@@ -2459,9 +2475,12 @@ camp_rework_gui_begin_selected_dismantlement = {
 		}
 		camp_rework_rebuild_display_values = yes
 	}
+	national_policy_panel_refresh_open = yes
+	national_policy_panel_end_update = yes
 }
 
 camp_rework_gui_complete_selected_dismantlement = {
+	national_policy_panel_begin_update = yes
 	if = {
 		limit = { has_variable = camp_gui_dismantlement_state_id }
 		var:camp_gui_dismantlement_state_id = {
@@ -2484,9 +2503,12 @@ camp_rework_gui_complete_selected_dismantlement = {
 	clear_variable = camp_gui_dismantlement_state_id
 	camp_rework_clear_dismantlement_progress_if_idle = yes
 	camp_rework_rebuild_display_values = yes
+	national_policy_panel_refresh_open = yes
+	national_policy_panel_end_update = yes
 }
 
 camp_rework_gui_cancel_selected_dismantlement = {
+	national_policy_panel_begin_update = yes
 	if = {
 		limit = { has_variable = camp_gui_dismantlement_state_id }
 		var:camp_gui_dismantlement_state_id = {
@@ -2498,6 +2520,8 @@ camp_rework_gui_cancel_selected_dismantlement = {
 	clear_variable = camp_gui_dismantlement_state_id
 	camp_rework_clear_dismantlement_progress_if_idle = yes
 	camp_rework_rebuild_display_values = yes
+	national_policy_panel_refresh_open = yes
+	national_policy_panel_end_update = yes
 }
 
 # ---------------------------------------------------------------------------
@@ -2544,6 +2568,7 @@ camp_rework_clear_dismantlement_progress_if_idle = {
 }
 
 camp_rework_start_dismantlement = {
+	camp_admin_panel_begin_state_update = yes
 	if = {
 		limit = { camp_rework_site_can_start_dismantlement = yes }
 		camp_admin_integration_reform_site = yes
@@ -2564,11 +2589,13 @@ camp_rework_start_dismantlement = {
 			}
 		}
 	}
+	camp_admin_panel_end_state_update = yes
 }
 
 # Dormant historical markers never enter the active registry and therefore
 # need a reform path that does not call the active-site dismantlement adapter.
 camp_rework_close_dormant_inherited_site = {
+	camp_admin_panel_begin_state_update = yes
 	if = {
 		limit = {
 			is_valid_camp_dormant_reform_state = yes
@@ -2612,9 +2639,11 @@ camp_rework_close_dormant_inherited_site = {
 		}
 		camp_rework_recalculate_country_values = yes
 	}
+	camp_admin_panel_end_state_update = yes
 }
 
 camp_rework_complete_dismantlement = {
+	camp_admin_panel_begin_state_update = yes
 	set_temp_variable = { camp_rework_dismantlement_completion_accepted = constant:camp_admin_value.zero }
 	if = {
 		limit = { camp_rework_site_can_complete_dismantlement = yes }
@@ -2725,9 +2754,11 @@ camp_rework_complete_dismantlement = {
 		}
 		set_temp_variable = { camp_rework_dismantlement_completion_accepted = constant:camp_admin_value.one }
 	}
+	camp_admin_panel_end_state_update = yes
 }
 
 camp_rework_destroy_evidence = {
+	camp_admin_panel_begin_state_update = yes
 	set_temp_variable = { camp_admin_history_kind_input = constant:camp_admin_history_kind.evidence } camp_admin_integration_record_site_history = yes
 	set_temp_variable = { camp_rework_death_burst_percent = constant:camp_rework_death_percent.evidence_destruction }
 	set_temp_variable = { camp_rework_death_burst_cap = constant:camp_rework_death_cap.evidence }
@@ -2771,13 +2802,16 @@ camp_rework_destroy_evidence = {
 		}
 	}
 	camp_rework_register_evidence_state = yes
+	camp_admin_panel_end_state_update = yes
 }
 
 # State scope. The control-change caller prepares the discovering-country
 # event target; the existing evidence pipeline resolves the stored responsible
 # country, condemnation, discoverer report, severe news, and secondary blame.
 camp_rework_apply_discovery = {
+	camp_admin_panel_begin_state_update = yes
 	genocide_try_discover_state_atrocity = yes
+	camp_admin_panel_end_state_update = yes
 }
 
 # ---------------------------------------------------------------------------
@@ -2785,6 +2819,7 @@ camp_rework_apply_discovery = {
 # ---------------------------------------------------------------------------
 
 camp_rework_run_versioned_migration = {
+	national_policy_panel_begin_update = yes
 	camp_admin_integration_bootstrap_known_sites = yes
 	if = {
 		limit = {
@@ -2913,6 +2948,8 @@ camp_rework_run_versioned_migration = {
 		set_variable = { global.camp_rework_schema_version = constant:camp_rework_schema.current }
 		clr_global_flag = camp_rework_migration_in_progress
 	}
+	national_policy_panel_refresh_open = yes
+	national_policy_panel_end_update = yes
 }
 
 # Country-specific idea and monthly bridge dispatchers are expanded by the
@@ -2996,7 +3033,10 @@ camp_rework_refresh_country_specific_ideas = {
 }
 
 camp_rework_update_country_specific_monthly_bridges = {
+	national_policy_panel_begin_update = yes
 	camp_rework_update_major_country_monthly_bridge = yes
+	national_policy_panel_refresh_open = yes
+	national_policy_panel_end_update = yes
 }
 
 # ---------------------------------------------------------------------------
@@ -3416,6 +3456,7 @@ camp_rework_mark_sale_stock_equipment = {
 # the stock mark, so every order credits exactly one family. Callers run it in a
 # hidden_effect after the order paid and was not refunded.
 camp_rework_credit_sale_order = {
+	national_policy_panel_begin_update = yes
 	if = {
 		limit = { check_variable = { camp_rework_sale_stock_family > 0 } }
 		set_temp_variable = { black_friday_purchase_family_id = camp_rework_sale_stock_family }
@@ -3424,6 +3465,8 @@ camp_rework_credit_sale_order = {
 	}
 	else = { black_friday_credit_political_power_purchase = yes }
 	set_temp_variable = { camp_rework_sale_stock_family = 0 }
+	national_policy_panel_refresh_open = yes
+	national_policy_panel_end_update = yes
 }
 
 camp_rework_consume_activation_resources = {
@@ -3603,6 +3646,7 @@ camp_rework_commit_exact_cohort_custody = {
 }
 
 camp_rework_activate_detention_in_action_state = {
+	national_policy_panel_begin_update = yes
 	genocide_activate_crisis = yes
 	camp_rework_consume_activation_resources = yes
 	add_to_variable = { camp_policy_coercive_control = constant:camp_rework_country_value.coercive_control_minor }
@@ -3640,9 +3684,12 @@ camp_rework_activate_detention_in_action_state = {
 	}
 	camp_rework_recalculate_country_values = yes
 	camp_rework_refresh_lifecycle_ideas = yes
+	national_policy_panel_refresh_open = yes
+	national_policy_panel_end_update = yes
 }
 
 camp_rework_expose_network_crisis = {
+	national_policy_panel_begin_update = yes
 	set_country_flag = camp_rework_crisis_exposed
 	set_country_flag = genocide_evidence_reached_foreign_observers
 	add_to_variable = { camp_policy_evidence = constant:camp_rework_country_value.evidence_major }
@@ -3661,6 +3708,8 @@ camp_rework_expose_network_crisis = {
 	genocide_register_public_condemnation_source = yes
 	genocide_apply_condemnation_thresholds = yes
 	camp_rework_recalculate_country_values = yes
+	national_policy_panel_refresh_open = yes
+	national_policy_panel_end_update = yes
 }
 
 camp_rework_mark_sale_stock_convoys = {

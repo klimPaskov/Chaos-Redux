@@ -43,3 +43,5 @@ The primary UI value remains Displacement Load. Reception Capacity, Border Polic
 ## Known limits
 
 The engine/source surface does not provide a safe generic route-geometry or route-throughput fact for arbitrary distant states. The transport component is therefore deliberately named availability and cannot authorize a movement by itself. Ordinary-bombing actor attribution, persecution attribution, and a generic `route_unsafe` fact remain fail-closed and are parent-owner follow-up work where consumers still reference them.
+
+Capacity invalidation synchronously republishes the dirty owner projection so an open panel can show the value as unvalidated; it never forces the sparse capacity recalculation. A completed recalculation publishes its validated aggregate after clearing the dirty marker.

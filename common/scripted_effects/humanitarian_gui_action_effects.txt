@@ -4,6 +4,7 @@
 # Production work stays in the subsystem action bodies, including all refunds.
 
 humanitarian_action_begin = {
+	national_policy_panel_begin_update = yes
 	meta_effect = {
 		text = {
 			set_temp_variable = { humanitarian_action_start_result = constant:humanitarian_runtime.zero }
@@ -73,6 +74,8 @@ humanitarian_action_begin = {
 		NAME = "[?humanitarian_action_name_token.GetTokenKey]"
 		SUFFIX = "[?humanitarian_action_suffix_token.GetTokenKey]"
 	}
+	national_policy_panel_refresh_open = yes
+	national_policy_panel_end_update = yes
 }
 
 # Pure identity lookup apart from temporary outputs. A missing, mismatched or
@@ -123,6 +126,7 @@ humanitarian_action_find_pending = {
 }
 
 humanitarian_action_resolve = {
+	national_policy_panel_begin_update = yes
 	meta_effect = {
 		text = {
 			set_temp_variable = { humanitarian_action_target_id = constant:humanitarian_runtime.zero }
@@ -154,9 +158,12 @@ humanitarian_action_resolve = {
 		NAME = "[?humanitarian_action_name_token.GetTokenKey]"
 		SUFFIX = "[?humanitarian_action_suffix_token.GetTokenKey]"
 	}
+	national_policy_panel_refresh_open = yes
+	national_policy_panel_end_update = yes
 }
 
 humanitarian_action_cancel = {
+	national_policy_panel_begin_update = yes
 	meta_effect = {
 		text = {
 			set_temp_variable = { humanitarian_action_target_id = constant:humanitarian_runtime.zero }
@@ -175,6 +182,8 @@ humanitarian_action_cancel = {
 		}
 		NAME = "[?humanitarian_action_name_token.GetTokenKey]"
 	}
+	national_policy_panel_refresh_open = yes
+	national_policy_panel_end_update = yes
 }
 
 humanitarian_action_remove_pending_row = {
@@ -275,6 +284,7 @@ humanitarian_action_abandon_dead_actor = {
 # Called only after a native national-law transition, never by reconciliation.
 # Law publication owns the variables. This callback never enrolls a country.
 migration_national_policy_changed = {
+	national_policy_panel_begin_update = yes
 	if = {
 		limit = {
 			check_variable = { national_policy_changed_civilian_slot = constant:national_policy_civilian_family.reception }
@@ -289,6 +299,6 @@ migration_national_policy_changed = {
 		limit = { is_in_array = { array = global.migration_active_countries value = THIS } }
 		migration_mark_reception_capacity_dirty = yes
 	}
-	if = { limit = { has_country_flag = migration_panel_open } migration_panel_refresh = yes }
-	if = { limit = { has_country_flag = famine_panel_open } famine_panel_refresh = yes }
+	national_policy_panel_refresh_open = yes
+	national_policy_panel_end_update = yes
 }

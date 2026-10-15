@@ -41,10 +41,10 @@ Main explanations normally fit in one to three short lines. A tooltip for one va
 
 ## Automatic management-panel updates
 
-Player-facing gameplay management panels must stay current automatically; do not make the player press Refresh or Update reports to obtain current information.
-Use native visibility, enabled-state, and tooltip bindings against live state, and use a dirty gate only when every dependency has a complete invalidation path.
-Refresh cached display data automatically through the owning state publishers or a bounded mechanism restricted to the human player's open panel; keep display refresh separate from gameplay assessment and registration, and do not add a world scan for presentation updates.
-Verify quiet periods, open and closed panels, capture-only bindings, and reopening after state changes, including price, affordability, availability, status, and tooltip updates without a manual refresh.
+Player-facing gameplay management panels must stay current automatically while paused; do not require Refresh or Update reports, unpausing, or elapsed game time to obtain current information.
+Use live read-only getters for display values and native visibility, enabled-state, and tooltip bindings, or publish cached projections synchronously after the owning state mutation; dirty gates need complete invalidation for every dependency.
+Batch publication at the end of a completed transaction so the panel reflects coherent final state, and keep display projection separate from gameplay assessment and registration: refreshing presentation must not advance simulation or add a world scan.
+Verify changes while paused, quiet periods, open and closed panels, capture-only bindings, and reopening after state changes, including price, affordability, availability, status, and tooltip updates without a manual refresh or time tick.
 
 ## MCP visual review and optional rewrite
 

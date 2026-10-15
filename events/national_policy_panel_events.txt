@@ -1,10 +1,17 @@
-# Bounded presentation clock. Scheduled only by an eligible human's open panel.
-# No random-event registration, player popup or gameplay dispatch.
+# Retired observer. An already queued delivery has no effect and cannot reschedule.
 add_namespace = national_policy_panel
-
 country_event = {
 	id = national_policy_panel.1
 	hidden = yes
 	is_triggered_only = yes
-	immediate = { national_policy_panel_observe = yes }
+	immediate = { }
+}
+
+# Immediate presentation context. No delay fields and no recurring schedule.
+# Temporary variables do not carry between events, isolating owner scratch outputs.
+country_event = {
+	id = national_policy_panel.2
+	hidden = yes
+	is_triggered_only = yes
+	immediate = { national_policy_panel_project_open = yes }
 }

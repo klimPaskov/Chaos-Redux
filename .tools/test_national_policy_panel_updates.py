@@ -1,9 +1,9 @@
 """Execute production open-panel observation and cache projection contracts.
 
 Usage: python .tools/test_national_policy_panel_updates.py
-Native event delivery is a deterministic queue with copied chain-local targets.
+All source publication scenarios retain the same game date; scheduling is rejected.
 Camp authority/provenance predicates and sale quote consumers are declared fixtures.
-Actual observer, panel collection, selection, work and camp cache bodies execute.
+Actual publisher, panel collection, selection, work and camp cache bodies execute.
 This verifies source contracts, not native GUI rendering or engine scheduling.
 """
 from pathlib import Path
@@ -18,7 +18,7 @@ P, Scope = H.P, H.Scope
 
 
 class Runtime(H.Runtime):
-    EXTERNAL_FIXTURES = (H.Runtime.EXTERNAL_FIXTURES - {'national_policy_panel_request_observer'}) | {
+    EXTERNAL_FIXTURES = H.Runtime.EXTERNAL_FIXTURES | {
         'camp_admin_refresh_command_quotes', 'camp_admin_generic_reform_refresh_quote',
         'national_policy_reconcile_country', 'national_policy_initialize_cost_modifiers',
         'national_policy_apply_starting_profile'
@@ -29,6 +29,7 @@ class Runtime(H.Runtime):
         self.queue, self.refreshes = [], []
         self.effect_defs.update(P.read_definitions('common/scripted_effects/national_policy_panel_effects.txt'))
         self.trigger_defs.update(P.read_definitions('common/scripted_triggers/national_policy_panel_triggers.txt'))
+        self.trigger_defs.update(P.read_definitions('common/scripted_triggers/camp_administration_ui_triggers.txt'))
         for name in ('national_policy_initialize_country', 'national_policy_initialize_released_country'):
             self.effect_defs[name] = H.read_named('common/scripted_effects/national_policy_effects.txt', name)
         for name in ('camp_admin_refresh_interface', 'camp_admin_project_origin_uncertainty',
@@ -42,8 +43,29 @@ class Runtime(H.Runtime):
                 for node in definition.body:
                     if isinstance(node.value, str) and P.NUMBER.fullmatch(node.value):
                         self.constants['constant:' + group + '.' + node.key] = H.Decimal(node.value)
-        raw = (ROOT / 'common/scripted_effects/national_policy_panel_effects.txt').read_text()
-        self.file_constants['national_policy_panel_refresh_hours'] = int(re.search(r'@national_policy_panel_refresh_hours = (\d+)', raw)[1])
+
+    def _run_trigger(self,name,scope):
+        # Same conservative lifetime used for effect helpers: outputs require caller storage.
+        self.temp_frames.append({})
+        try:return super()._run_trigger(name,scope)
+        finally:self.temp_frames.pop()
+
+    def _array_values(self,path):
+        if isinstance(path,str) and '.' not in path:
+            for frame in reversed(self.temp_frames):
+                if path in frame and isinstance(frame[path],list):return frame[path]
+        return super()._array_values(path)
+
+    def _array_value(self,container,path):
+        base,sep,index=path.partition('^')
+        for frame in reversed(self.temp_frames):
+            if base in frame and isinstance(frame[base],list):
+                values=frame[base]
+                if index=='num':return len(values)
+                if index:
+                    idx=int(self._value(index));return values[idx] if 0<=idx<len(values) else 0
+                return values
+        return super()._array_value(container,path)
 
     def _write_path(self, path, value, clear=False):
         country, field, global_scope = self._path_container(path)
@@ -53,11 +75,26 @@ class Runtime(H.Runtime):
 
     def _value(self, token):
         value = super()._value(token)
-        if isinstance(value, str) and token.startswith('camp_'):
+        if isinstance(value, str) and token.startswith(('camp_', 'national_policy_panel_')):
             return self._variable(token)
         return value
 
     def _condition(self, node, scope):
+        if node.key=='clear_temp_array':self._set_temp(node.value,[]);return True
+        if node.key=='add_to_temp_array':
+            name=P.first(node.value,'array');values=list(self._array_values(name))
+            values.append(self._value(P.first(node.value,'value','THIS')))
+            self._set_temp(name,values);return True
+        if node.key=='all_of_scopes':
+            for target in list(self._array_values(P.first(node.value,'array'))):
+                self.scope_stack.append(target)
+                try:
+                    if not self._conditions([n for n in node.value if n.key!='array'],target):return False
+                finally:self.scope_stack.pop()
+            return True
+        if node.key in ('add_to_temp_variable','multiply_temp_variable','divide_temp_variable','round_temp_variable','clamp_temp_variable','if'):
+            self._effects([node],scope)
+            return True
         if node.key == 'has_event_target':
             return node.value in self.targets
         if node.key == 'tag':
@@ -86,7 +123,20 @@ class Runtime(H.Runtime):
         # break variable before entering a foreach in the projection model.
         chunk = []
         for node in nodes:
-            if node.key in ('for_each_scope_loop', 'for_each_loop'):
+            if node.key in ('clear_temp_array','add_to_temp_array'):
+                if chunk:
+                    super()._effects(chunk,scope);chunk=[]
+                self._condition(node,scope)
+            elif node.key in ('owner','controller'):
+                if chunk:
+                    super()._effects(chunk,scope)
+                    chunk=[]
+                target=getattr(scope,node.key)
+                if target is not None:
+                    self.scope_stack.append(target)
+                    try:self._effects(node.value,target)
+                    finally:self.scope_stack.pop()
+            elif node.key in ('for_each_scope_loop', 'for_each_loop'):
                 if chunk:
                     super()._effects(chunk, scope)
                     chunk = []
@@ -100,25 +150,18 @@ class Runtime(H.Runtime):
 
     def _native_effect(self, key, value, scope, line):
         if key == 'country_event':
-            assert P.first(value, 'id') == 'national_policy_panel.1'
-            hours = self._value(P.first(value, 'hours'))
-            assert hours == 1
-            due = H.Decimal(str(self.globals['date'])) + H.Decimal(str(hours)) / H.Decimal(100000)
-            self.queue.append((scope, dict(self.targets), hours, due))
+            assert P.first(value,'id')=='national_policy_panel.2'
+            assert len(value)==1, 'Presentation event must have no delay or random fields'
+            # Documented event boundary: fresh temporaries, actor ROOT, copied regular targets.
+            old=self.temp_frames,self.root,self.scope_stack,self.targets
+            self.temp_frames=[{}];self.root=scope;self.scope_stack=[scope];self.targets=dict(self.targets)
+            try:
+                raw=(ROOT/'events/national_policy_panel_events.txt').read_text()
+                event=next(n for n in P.parse_nodes(P.lex(P.uncomment(raw)),0,'events')[0] if n.key=='country_event' and P.first(n.value,'id')=='national_policy_panel.2')
+                self._effects(P.first(event.value,'immediate'),scope)
+            finally:self.temp_frames,self.root,self.scope_stack,self.targets=old
             return
         return super()._native_effect(key, value, scope, line)
-
-    def deliver(self, advance=True):
-        actor, targets, hours, due = self.queue.pop(0)
-        if advance:
-            self.globals['date'] = max(H.Decimal(str(self.globals['date'])), due)
-        old = self.targets
-        self.targets = targets
-        try:
-            definition = H.read_named('events/national_policy_panel_events.txt', 'country_event')
-            self.run_nodes(P.first(definition.body, 'immediate'), actor)
-        finally:
-            self.targets = old
 
     def run_nodes(self, nodes, actor):
         old = self.root, self.scope_stack
@@ -129,231 +172,240 @@ class Runtime(H.Runtime):
             self.root, self.scope_stack = old
 
 
+class LiveCampRuntime(Runtime):
+    EXTERNAL_FIXTURES=Runtime.EXTERNAL_FIXTURES | {'apply_state_population_loss_without_recruitable_manpower_gain'}
+    # Native row-shape/authority facts are fixtures; freshness and UI projections execute source.
+    def __init__(self,states=()):
+        super().__init__(states)
+        for name in ('camp_origin_host_provenance_ready',):
+            self.trigger_defs[name]=H.read_named('common/scripted_triggers/camp_administration_origin_triggers.txt',name)
+        self.effect_defs['apply_exact_state_civilian_population_loss']=H.read_named('common/scripted_effects/chaosx_dynamic_effects.txt','apply_exact_state_civilian_population_loss')
+        for group in ('chaos_meter_deaths','chaos_meter_deaths_reason'):
+            definition=H.read_named('common/script_constants/chaos_meter_constants.txt',group)
+            for node in definition.body:
+                if isinstance(node.value,str) and P.NUMBER.fullmatch(node.value):self.constants['constant:'+group+'.'+node.key]=H.Decimal(node.value)
+
+    def _value(self,token):
+        if token=='state_population_k':return H.Decimal(str(self.current.population_k))
+        if token=='chaos_state_civilian_deaths_total':return self.current.values.get(token,0)
+        return super()._value(token)
+
+    def _variable(self,token):
+        if token in ('state_population_k','chaos_state_civilian_deaths_total'):return self._value(token)
+        return super()._variable(token)
+
+    def _condition(self,node,scope):
+        if node.key=='has_variable' and any(node.value in f for f in self.temp_frames):return True
+        if node.key in ('camp_admin_gui_host_records_uncertain','camp_admin_gui_site_record_visible'):
+            return self._run_trigger(node.key,scope)
+        if node.key=='camp_origin_host_rows_valid':
+            self._set_temp('camp_origin_inspect_shortfall_k',0);return True
+        if node.key=='camp_admin_known_site_ready_for_reform':return False
+        if node.key=='camp_admin_site_authority_is_valid':return True
+        if node.key=='state_uses_normal_civilian_systems':return node.value=='yes'
+        return super()._condition(node,scope)
+
+    def _call_effect(self,name,scope):
+        if name=='apply_state_population_loss_without_recruitable_manpower_gain':
+            scope.population_k-=self._variable('state_population_transaction_loss')/1000
+            return
+        return super()._call_effect(name,scope)
+
+    def live_rows(self,actor):
+        self.temp_frames[0]['camp_admin_live_location_sources']=[]
+        self.temp_frames[0]['camp_admin_live_location_states']=[]
+        self.test_trigger('camp_admin_gui_read_live_locations',actor)
+        return list(self.temp_frames[0]['camp_admin_live_location_states'])
+
+    def live_warning(self,actor):
+        self.temp_frames[0]['camp_admin_live_uncertain_locations']=0
+        self.test_trigger('camp_admin_gui_read_live_uncertainty',actor)
+        return self.temp_frames[0]['camp_admin_live_uncertain_locations']
+
+
 class UpdateTests(unittest.TestCase):
-    def test_native_gui_getters_are_not_dirty_gated_and_refresh_button_is_unbound(self):
-        for name in ('migration_management', 'famine_management', 'camp_repression_ledger'):
-            source = (ROOT / f'common/scripted_guis/{name}_scripted_gui.txt').read_text()
-            self.assertNotRegex(source, r'(?m)^\s*dirty\s*=')
-            self.assertNotIn('_panel_refresh_button_', source)
-
-    def test_quiet_open_close_reopen_reuses_one_delivery_and_closed_delivery_does_no_refresh(self):
-        actor = H.country()
-        runtime = Runtime()
-        runtime.run_effect('famine_panel_open_window', actor)
-        self.assertEqual(len(runtime.queue), 1)
-        runtime.run_effect('famine_panel_close_window', actor)
-        runtime.run_effect('migration_panel_open_window', actor)
-        self.assertEqual(len(runtime.queue), 1)
-        runtime.deliver()
-        self.assertEqual(len(runtime.queue), 1)
-        self.assertEqual(runtime.refreshes[-1], ('migration_panel_refresh', actor.id))
-        runtime.run_effect('migration_panel_close_window', actor)
-        before = H.gameplay(runtime, actor)
-        refreshes = list(runtime.refreshes)
-        runtime.deliver()
-        self.assertEqual(runtime.queue, [])
-        self.assertEqual(runtime.refreshes, refreshes)
-        self.assertEqual(H.gameplay(runtime, actor), before)
-        self.assertNotIn('national_policy_panel_observer_pending', actor.flags)
-        self.assertNotIn('national_policy_panel_observer_owner', actor.values)
-        self.assertEqual(runtime.global_arrays, {})
-
-    def test_hourly_delivery_reprojects_published_changes_capture_selection_and_real_progress(self):
-        actor, foreign = H.country(), H.country('GER')
-        first = H.state(1, actor, flags=['famine_food_security_active'], famine_food_stage=1)
-        second = H.state(2, actor, flags=['famine_food_security_active'], famine_food_stage=2)
-        runtime = Runtime([first, second])
-        runtime.run_effect('famine_panel_open_window', actor)
-        self.assertIs(actor.values['famine_panel_selected_state'], second)
-        second.owner = second.controller = foreign
-        first.values['famine_food_stage'] = 4
-        actor.arrays.update(famine_action_ids=[7], famine_action_types=[1], famine_action_states=[first], famine_action_starts=[0], famine_action_dates=[0.0048])
-        runtime.globals['date'] = 0.0024
-        before = H.gameplay(runtime, actor)
-        runtime.deliver()
-        self.assertEqual(actor.arrays['famine_panel_states'], [first])
-        self.assertIs(actor.values['famine_panel_selected_state'], first)
-        self.assertEqual(actor.values['famine_panel_food_stage'], 4)
-        self.assertEqual(actor.values['famine_panel_work_frame'], 6)
-        self.assertEqual(H.gameplay(runtime, actor), before)
-
-    def test_eligibility_loss_retires_chain_and_closes_the_window(self):
-        actor = H.country()
-        runtime = Runtime()
-        runtime.run_effect('famine_panel_open_window', actor)
-        actor.ai = True
-        runtime.deliver()
-        self.assertNotIn('famine_panel_open', actor.flags)
-        self.assertNotIn('national_policy_panel_observer_pending', actor.flags)
-        self.assertEqual(runtime.queue, [])
-
-    def test_migration_delivery_updates_live_amounts_capacity_proof_and_progress(self):
-        actor = H.country()
-        site = H.state(9, actor, migration_state_flight_population=100)
+    def test_paused_state_publication_updates_both_open_viewers_without_reopening(self):
+        actor, controller = H.country(), H.country('GER')
+        site = H.state(7, actor, controller=controller, flags=['migration_displacement_active'], migration_state_flight_population=20)
         runtime = Runtime([site])
         runtime.run_effect('migration_panel_open_window', actor)
-        site.values['migration_state_flight_population'] = 250
-        actor.values.update(migration_reception_capacity_schema_version=runtime.constants['constant:migration_capacity.schema_version'], migration_reception_capacity_valid=1, migration_reception_capacity_dirty=0, migration_reception_capacity_revision=1, migration_reception_capacity=300, migration_reception_load=250, migration_reception_candidate_count=1, migration_reception_safe_candidate_count=1, migration_reception_invalid_candidate_count=0)
-        actor.arrays.update(migration_action_ids=[8], migration_action_types=[2], migration_action_states=[site], migration_action_starts=[0], migration_action_dates=[0.0048])
-        runtime.globals['date'] = 0.0024
-        before = H.gameplay(runtime, actor)
-        runtime.deliver()
-        self.assertEqual(actor.values['migration_panel_fleeing'], 250)
-        self.assertEqual(actor.values['migration_panel_capacity'], 300)
-        self.assertIn('migration_panel_capacity_assessed', actor.flags)
-        self.assertEqual(actor.values['migration_panel_work_frame'], 6)
-        self.assertEqual(H.gameplay(runtime, actor), before)
-        actor.values['migration_reception_capacity_dirty'] = 1
-        runtime.deliver()
-        self.assertNotIn('migration_panel_capacity_assessed', actor.flags)
+        runtime.run_effect('migration_panel_open_window', controller)
+        before_date = runtime.globals['date']
+        self.assertEqual(actor.values['migration_panel_fleeing'],20)
+        self.assertEqual(controller.values['migration_panel_fleeing'],20)
+        # Actual authoritative state field changes; the publisher executes production source.
+        site.values['migration_state_flight_population']=80
+        site.values['migration_state_trapped_population']=9
+        runtime.run_effect('national_policy_panel_publish_state', site)
+        for viewer in (actor,controller):
+            self.assertEqual(viewer.values['migration_panel_fleeing'],80)
+            self.assertEqual(viewer.values['migration_panel_selected_trapped'],9)
+            self.assertEqual(viewer.arrays['migration_panel_states'],[site])
+        self.assertEqual(runtime.globals['date'],before_date)
+        self.assertEqual(runtime.queue,[])
 
-    def test_inherited_pending_owner_cannot_suppress_child_or_refresh_another_country(self):
-        actor, child = H.country(), H.country('D01')
-        runtime = Runtime()
-        runtime.run_effect('famine_panel_open_window', actor)
-        child.values['national_policy_panel_observer_owner'] = actor
-        child.flags.add('national_policy_panel_observer_pending')
-        runtime.run_effect('famine_panel_open_window', child)
-        self.assertEqual(len(runtime.queue), 2)
-        self.assertIs(child.values['national_policy_panel_observer_owner'], child)
-        runtime.targets['national_policy_panel_observer_actor'] = actor
-        count = len(runtime.refreshes)
-        runtime.run_effect('national_policy_panel_observe', child)
-        self.assertEqual(len(runtime.refreshes), count)
-        runtime.deliver()
-        runtime.deliver()
-        self.assertEqual(sorted(item[0].id for item in runtime.queue), ['D01', 'FRA'])
+    def test_nested_transaction_coalesces_until_final_synchronous_commit(self):
+        actor=H.country()
+        site=H.state(7,actor,flags=['migration_displacement_active'],migration_state_flight_population=2)
+        runtime=Runtime([site]);runtime.run_effect('migration_panel_open_window',actor)
+        runtime.refreshes.clear()
+        runtime.run_effect('national_policy_panel_begin_update',actor)
+        runtime.run_effect('national_policy_panel_begin_update',actor)
+        site.values['migration_state_flight_population']=9
+        for _ in range(3):runtime.run_effect('national_policy_panel_publish_state',site)
+        self.assertEqual(actor.values['migration_panel_fleeing'],2)
+        self.assertEqual(runtime.refreshes,[])
+        runtime.run_effect('national_policy_panel_end_update',actor)
+        self.assertEqual(runtime.refreshes,[])
+        runtime.run_effect('national_policy_panel_end_update',actor)
+        self.assertEqual(actor.values['migration_panel_fleeing'],9)
+        self.assertEqual(runtime.refreshes,[('migration_panel_refresh',actor.id)])
+        self.assertNotIn('national_policy_panel_publication_pending',actor.flags)
+        self.assertNotIn('national_policy_panel_update_depth',actor.values)
+        self.assertEqual(runtime.globals['date'],0)
 
-    def test_annex_cancellation_rerelease_and_old_delivery_cannot_consume_new_hour(self):
-        actor = H.country()
-        runtime = Runtime()
-        runtime.run_effect('famine_panel_open_window', actor)
-        old_event = runtime.queue.pop(0)  # The native queue may cancel it on annexation.
-        actor.exists = False
-        on_actions = H.read_named('common/on_actions/humanitarian_runtime_on_actions.txt', 'on_actions')
-        annex = P.first(P.first(on_actions.body, 'on_annex'), 'effect')
-        old_country_body = P.first(annex, 'FROM')
-        self.assertEqual(old_country_body[0].key, 'national_policy_panel_retire_country')
-        runtime.run_nodes([old_country_body[0]], actor)
-        self.assertNotIn('national_policy_panel_observer_pending', actor.flags)
-        self.assertNotIn('national_policy_panel_observer_earliest', actor.values)
-        self.assertNotIn('famine_panel_open', actor.flags)
-        actor.exists = True
-        runtime.globals['date'] = H.Decimal('0.00001')
-        runtime.run_effect('national_policy_initialize_released_country', actor)
-        runtime.run_effect('famine_panel_open_window', actor)
-        self.assertEqual(len(runtime.queue), 1)
-        self.assertEqual(actor.values['national_policy_panel_observer_earliest'], H.Decimal('0.00002'))
-        fresh_event = runtime.queue.pop(0)
-        runtime.queue = [old_event, fresh_event]
-        before = dict(actor.values), set(actor.flags), list(runtime.refreshes)
-        runtime.deliver(advance=False)  # An old chain arrives before the fresh reservation.
-        self.assertEqual((actor.values, actor.flags, runtime.refreshes), before)
-        self.assertEqual(len(runtime.queue), 1)
-        runtime.deliver()
-        self.assertEqual(len(runtime.queue), 1)
-        self.assertEqual(actor.values['national_policy_panel_observer_earliest'], H.Decimal('0.00003'))
-        # A duplicate old delivery at the same hour also cannot steal the next slot.
-        runtime.queue.insert(0, old_event)
-        count = len(runtime.refreshes)
-        runtime.deliver(advance=False)
-        self.assertEqual(len(runtime.refreshes), count)
-        self.assertEqual(len(runtime.queue), 1)
+    def test_closed_panel_publication_and_obsolete_delivery_are_idle(self):
+        actor=H.country();runtime=Runtime()
+        before=(dict(actor.values),set(actor.flags),dict(actor.arrays))
+        runtime.run_effect('national_policy_panel_begin_update',actor)
+        runtime.run_effect('national_policy_panel_refresh_open',actor)
+        runtime.run_effect('national_policy_panel_end_update',actor)
+        event=H.read_named('events/national_policy_panel_events.txt','country_event')
+        runtime.run_nodes(P.first(event.body,'immediate'),actor)
+        self.assertEqual((actor.values,actor.flags,actor.arrays),before)
+        self.assertEqual(runtime.refreshes,[])
+        self.assertEqual(runtime.queue,[])
 
-    def test_country_initialization_cleans_copied_identity_but_preserves_own_chain(self):
-        actor, child = H.country(), H.country('D01')
-        runtime = Runtime()
-        runtime.run_effect('famine_panel_open_window', actor)
-        pending = actor.values['national_policy_panel_observer_earliest']
-        runtime.run_effect('national_policy_initialize_country', actor)
-        self.assertEqual(actor.values['national_policy_panel_observer_earliest'], pending)
-        self.assertIn('famine_panel_open', actor.flags)
-        child.values.update(national_policy_panel_observer_owner=actor, national_policy_panel_observer_earliest=pending)
-        child.flags.update({'national_policy_panel_observer_pending', 'famine_panel_open', 'camp_repression_ledger_open'})
-        runtime.run_effect('national_policy_initialize_country', child)
-        self.assertNotIn('famine_panel_open', child.flags)
-        self.assertNotIn('camp_repression_ledger_open', child.flags)
-        self.assertNotIn('national_policy_panel_observer_pending', child.flags)
-        self.assertNotIn('national_policy_panel_observer_earliest', child.values)
-        runtime.run_effect('famine_panel_open_window', child)
-        self.assertEqual(len(runtime.queue), 2)
+    def test_capture_notifies_old_controller_and_new_controller_synchronously(self):
+        owner,old,new=H.country(),H.country('GER'),H.country('ENG')
+        site=H.state(7,owner,controller=old,flags=['migration_displacement_active'],migration_state_flight_population=8)
+        runtime=Runtime([site])
+        for viewer in (old,new):runtime.run_effect('migration_panel_open_window',viewer)
+        site.controller=new
+        runtime.run_effect('national_policy_panel_publish_state',site)
+        # The documented control callback separately publishes the former controller.
+        runtime.run_effect('national_policy_panel_refresh_open',old)
+        self.assertEqual(old.arrays['migration_panel_states'],[])
+        self.assertEqual(new.arrays['migration_panel_states'],[site])
+        self.assertEqual(runtime.globals['date'],0)
 
-    def test_old_and_fresh_delivery_at_same_due_hour_leave_one_successor(self):
-        for old_first in (False, True):
-            actor = H.country()
-            runtime = Runtime()
-            runtime.run_effect('famine_panel_open_window', actor)
-            old = runtime.queue.pop(0)
-            runtime.run_effect('national_policy_panel_retire_country', actor)
-            runtime.run_effect('famine_panel_open_window', actor)
-            fresh = runtime.queue.pop(0)
-            runtime.queue = [old, fresh] if old_first else [fresh, old]
-            count = len(runtime.refreshes)
-            runtime.deliver()
-            runtime.deliver()
-            self.assertEqual(len(runtime.refreshes), count + 1)
-            self.assertEqual(len(runtime.queue), 1)
-            self.assertEqual(actor.values['national_policy_panel_observer_earliest'], H.Decimal('0.00002'))
-
-    def test_camp_terminal_close_uses_same_pure_ui_retirement(self):
-        actor = H.country()
-        actor.values['fixture_camp_eligible'] = True
+    def test_camp_projection_reads_registered_records_without_progression(self):
+        actor=H.country();actor.values.update(fixture_camp_eligible=True,camp_admin_economy_progress=5,camp_admin_economy_target=10)
         actor.flags.add('camp_repression_ledger_open')
-        runtime = Runtime()
-        runtime.run_effect('national_policy_panel_request_observer', actor)
-        close = H.read_named('common/scripted_effects/camp_administration_integration_effects.txt', 'camp_admin_integration_close_country')
-        self.assertEqual(close.body[0].key, 'national_policy_panel_retire_country')
-        runtime.run_nodes([close.body[0]], actor)
-        self.assertNotIn('camp_repression_ledger_open', actor.flags)
-        self.assertNotIn('national_policy_panel_observer_pending', actor.flags)
-        refreshes = list(runtime.refreshes)
-        runtime.deliver()
-        self.assertEqual(runtime.refreshes, refreshes)
-        self.assertEqual(runtime.queue, [])
-
-    def test_camp_projection_reads_registered_records_and_never_initializes_or_ticks_them(self):
-        actor = H.country()
-        actor.values.update(fixture_camp_eligible=True, camp_admin_economy_progress=5, camp_admin_economy_target=10)
-        actor.flags.update({'camp_repression_ledger_open', 'camp_admin_civil_review_active'})
-        actor.values['camp_admin_civil_review_progress'] = 1
-        site = H.state(7, actor, flags=['camp_admin_initialized'], camp_admin_responsible_country=actor, camp_admin_capacity_k=2, camp_admin_detainees_k=1, camp_admin_support_ratio=1)
-        actor.arrays['camp_active_site_states'] = [site]
-        runtime = Runtime([site])
-        runtime.temp_frames[0]['break'] = 1
-        before_site = copy.deepcopy((site.flags, site.resources, site.population_k, {k: v for k, v in site.values.items() if k != 'camp_admin_responsible_country'}))
-        runtime.run_effect('national_policy_panel_refresh_open', actor)
-        self.assertEqual(actor.arrays['camp_admin_gui_states'], [site])
-        self.assertIs(actor.values['camp_selected_state_id'], site)
-        self.assertEqual(actor.values['camp_admin_gui_site_capacity_k'], 2)
-        self.assertEqual(actor.values['camp_admin_gui_economy_frame'], 6)
-        self.assertEqual(actor.values['camp_admin_gui_project_pp'], runtime.constants['constant:camp_admin_value.project_pp'])
-        site.values['camp_admin_capacity_k'] = 3
-        runtime.run_effect('national_policy_panel_refresh_open', actor)
-        self.assertEqual(actor.values['camp_admin_gui_site_capacity_k'], 3)
-        site.values['camp_admin_capacity_k'] = 2
-        self.assertEqual((site.flags, site.resources, site.population_k, {k: v for k, v in site.values.items() if k != 'camp_admin_responsible_country'}), before_site)
-        self.assertNotIn('camp_admin_monthly_country', [name for name, *_ in runtime.external_calls])
-        site.controller = H.country('GER')
-        runtime.run_effect('national_policy_panel_refresh_open', actor)
-        self.assertEqual(actor.arrays['camp_admin_gui_states'], [])
-        self.assertNotIn('camp_selected_state_id', actor.values)
+        site=H.state(7,actor,flags=['camp_admin_initialized'],camp_admin_responsible_country=actor,camp_admin_capacity_k=2,camp_admin_detainees_k=1,camp_admin_support_ratio=1)
+        actor.arrays['camp_active_site_states']=[site];runtime=Runtime([site])
+        runtime.run_effect('national_policy_panel_refresh_open',actor)
+        self.assertEqual(actor.arrays['camp_admin_gui_states'],[site])
+        self.assertEqual(actor.values['camp_admin_gui_site_capacity_k'],2)
+        site.values['camp_admin_capacity_k']=3
+        runtime.run_effect('national_policy_panel_publish_state',site)
+        self.assertEqual(actor.values['camp_admin_gui_site_capacity_k'],3)
+        self.assertEqual(actor.values['camp_admin_economy_progress'],5)
+        self.assertEqual(runtime.globals['date'],0)
+        self.assertNotIn('camp_admin_monthly_country',[name for name,*_ in runtime.external_calls])
         actor.flags.remove('camp_repression_ledger_open')
-        refreshes, values = list(runtime.refreshes), dict(actor.values)
-        runtime.run_effect('national_policy_panel_refresh_open', actor)
-        self.assertEqual(runtime.refreshes, refreshes)
-        self.assertEqual(actor.values, values)
+        calls=list(runtime.refreshes);values=dict(actor.values)
+        runtime.run_effect('national_policy_panel_publish_state',site)
+        self.assertEqual(runtime.refreshes,calls);self.assertEqual(actor.values,values)
 
-    def test_native_action_bridges_refresh_open_panels_after_accounting_while_paused(self):
-        import test_humanitarian_gui_actions as A
-        runtime, actor, site, host = A.case()
-        runtime.effect_defs['national_policy_panel_refresh_open'] = H.read_named('common/scripted_effects/national_policy_panel_effects.txt', 'national_policy_panel_refresh_open')
-        runtime.EXTERNAL_EFFECTS = runtime.EXTERNAL_EFFECTS - {'national_policy_panel_refresh_open'}
-        runtime.EXTERNAL_FIXTURES = runtime.EXTERNAL_FIXTURES - {'national_policy_panel_refresh_open'}
-        runtime.trigger_defs['humanitarian_panel_is_eligible'] = H.read_named('common/scripted_triggers/humanitarian_panel_triggers.txt', 'humanitarian_panel_is_eligible')
-        actor.flags.add('famine_panel_open')
-        A.start(runtime, actor, 1)
-        self.assertIn(('famine_panel_refresh', actor.id), runtime.panel_refresh_requests)
+    def test_retirement_and_inherited_actor_identity_clear_only_ui(self):
+        actor,child=H.country(),H.country('GER');runtime=Runtime()
+        child.flags.update({'migration_panel_open','camp_repression_ledger_open'})
+        child.values['national_policy_panel_owner']=actor
+        child.values['national_policy_panel_update_depth']=2
+        runtime.run_effect('national_policy_panel_reconcile_identity',child)
+        self.assertNotIn('migration_panel_open',child.flags)
+        self.assertNotIn('camp_repression_ledger_open',child.flags)
+        self.assertNotIn('national_policy_panel_update_depth',child.values)
+        self.assertEqual(runtime.queue,[])
 
+    def test_publication_preserves_caller_quote_date_origin_and_capacity_scratch(self):
+        actor=H.country();actor.values['fixture_camp_eligible']=True
+        actor.flags.add('camp_repression_ledger_open')
+        runtime=Runtime()
+        inherited={'camp_admin_quote_support':83,'camp_admin_quote_pp':29,'camp_admin_reform_quote_pp':51,'camp_sale_ratio':H.Decimal('0.9'),'black_friday_price_payable':17,'chaosx_date_days':73,'camp_origin_rows_valid':1,'camp_admin_reconcile_live_k':400,'migration_reception_preparation_population':22}
+        runtime.temp_frames[0].update(inherited)
+        runtime.run_effect('national_policy_panel_refresh_open',actor)
+        for name,value in inherited.items():self.assertEqual(runtime._variable(name),value,name)
 
-if __name__ == '__main__':
-    unittest.main(verbosity=2)
+    def test_live_meter_trigger_arithmetic_reads_changed_progress_without_publication(self):
+        actor=H.country();runtime=Runtime()
+        actor.flags.add('camp_admin_economy_slot_active')
+        actor.values.update(camp_admin_economy_progress=5,camp_admin_economy_target=10)
+        gui=P.read_definitions('common/scripted_guis/camp_repression_ledger_scripted_gui.txt')['scripted_gui']
+        definition=P.first(gui.body,'camp_repression_ledger_scripted_gui')
+        if definition is None:
+            definition=next(node.value for node in gui.body if P.first(node.value,'window_name')=='camp_repression_ledger_window')
+        trigger=P.first(P.first(definition,'triggers'),'camp_admin_economy_meter_visible')
+        runtime.root, runtime.scope_stack=actor,[actor]
+        self.assertTrue(runtime._conditions(trigger,actor))
+        self.assertEqual(runtime._variable('camp_admin_live_economy_frame'),6)
+        actor.values['camp_admin_economy_progress']=10
+        self.assertTrue(runtime._conditions(trigger,actor))
+        self.assertEqual(runtime._variable('camp_admin_live_economy_frame'),11)
+        self.assertEqual(runtime.globals['date'],0)
+        self.assertEqual(runtime.refreshes,[])
+
+    def test_external_exact_population_loss_updates_independent_record_authority_live_list(self):
+        owner,authority=H.country(),H.country('GER')
+        authority.flags.add('camp_repression_ledger_open')
+        authority.values['camp_admin_location_filter']=4
+        site=H.state(7,owner,flags=['camp_admin_initialized','camp_origin_observation_initialized'],camp_admin_responsible_country=authority,camp_admin_detainees_k=2,camp_admin_support_ratio=1,camp_origin_observed_population_k=100,camp_origin_observed_state_deaths_people=0)
+        authority.arrays['camp_active_site_states']=[site]
+        authority.arrays['camp_admin_known_site_states']=[site]
+        authority.arrays['camp_occ_states']=[site]
+        authority.arrays['camp_admin_gui_states']=[]
+        authority.values['camp_admin_gui_uncertain_locations']=0
+        runtime=LiveCampRuntime([site])
+        self.assertEqual(runtime.live_rows(authority),[])
+        self.assertEqual(runtime.live_warning(authority),0)
+        # Execute the real exact-loss boundary used by outside loss owners.
+        runtime.temp_frames[0].update(state_civilian_population_loss_contract_supplied=1,state_civilian_population_loss_requested=1000,state_civilian_population_loss_minimum_remaining=0,state_civilian_population_loss_reason=0,state_civilian_population_loss_log_deaths=0,state_civilian_population_loss_target_country=owner,state_civilian_population_loss_has_target_country=0,state_civilian_population_loss_applied=0,state_civilian_population_loss_result=0)
+        runtime.run_effect('apply_exact_state_civilian_population_loss',site)
+        self.assertEqual(site.population_k,99)
+        self.assertEqual(runtime.live_rows(authority),[site])
+        self.assertEqual(runtime.live_warning(authority),1) # co-located registries deduplicate
+        self.assertEqual(authority.arrays['camp_admin_gui_states'],[])
+        self.assertEqual(authority.values['camp_admin_gui_uncertain_locations'],0)
+        self.assertEqual(runtime.refreshes,[])
+        self.assertEqual(runtime.globals['date'],0)
+        # A fresh population value with a changed death observation also invalidates proof.
+        site.population_k=100;site.values['chaos_state_civilian_deaths_total']=1000
+        self.assertEqual(runtime.live_rows(authority),[site]);self.assertEqual(runtime.live_warning(authority),1)
+        site.values['chaos_state_civilian_deaths_total']=0
+        self.assertEqual(runtime.live_rows(authority),[]);self.assertEqual(runtime.live_warning(authority),0)
+
+    def test_live_location_filters_order_selection_and_empty_state_share_current_rows(self):
+        actor=H.country();actor.flags.add('camp_repression_ledger_open');actor.values['camp_admin_location_filter']=1
+        first=H.state(7,actor,flags=['camp_admin_initialized'],camp_admin_responsible_country=actor,camp_admin_role=2,camp_admin_support_ratio=1)
+        second=H.state(8,actor,flags=['camp_admin_initialized','camp_admin_site_suspended'],camp_admin_responsible_country=actor,camp_admin_role=1,camp_admin_support_ratio=1)
+        actor.arrays.update(camp_active_site_states=[first],camp_admin_civilian_states=[second],camp_admin_known_site_states=[first,second],camp_admin_gui_states=[first])
+        runtime=LiveCampRuntime([first,second])
+        self.assertEqual(runtime.live_rows(actor),[first,second])
+        actor.values['camp_admin_location_filter']=2;self.assertEqual(runtime.live_rows(actor),[first])
+        actor.values['camp_admin_location_filter']=3;self.assertEqual(runtime.live_rows(actor),[second])
+        actor.values['camp_admin_location_filter']=4;self.assertEqual(runtime.live_rows(actor),[second])
+        definition=P.first(P.read_definitions('common/scripted_guis/camp_repression_ledger_scripted_gui.txt')['scripted_gui'].body,'camp_repression_ledger_scripted_gui')
+        effects=P.first(definition,'effects');triggers=P.first(definition,'triggers')
+        runtime.root=actor;runtime.scope_stack=[actor,second]
+        runtime._effects(P.first(effects,'camp_admin_location_select_click'),second)
+        self.assertIs(actor.values['camp_selected_state_id'],second)
+        self.assertTrue(runtime._conditions(P.first(triggers,'camp_admin_location_selected_visible'),second))
+        runtime.scope_stack=[actor]
+        self.assertTrue(runtime._conditions(P.first(triggers,'camp_admin_selected_panel_visible'),actor))
+        second.flags.remove('camp_admin_site_suspended')
+        self.assertTrue(runtime._conditions(P.first(triggers,'camp_admin_location_empty_visible'),actor))
+        self.assertFalse(runtime._conditions(P.first(triggers,'camp_admin_selected_panel_visible'),actor))
+        self.assertEqual(runtime.globals['date'],0)
+
+    def test_live_native_bindings_have_no_dirty_or_clock_dependency(self):
+        for name in ('migration_management','famine_management','camp_repression_ledger'):
+            source=(ROOT/f'common/scripted_guis/{name}_scripted_gui.txt').read_text()
+            self.assertNotRegex(source,r'(?m)^\s*dirty\s*=')
+        effects=(ROOT/'common/scripted_effects/national_policy_panel_effects.txt').read_text()
+        self.assertIn('country_event = { id = national_policy_panel.2 }',effects)
+        self.assertNotRegex(effects,r'\b(hours|days|months|random_hours|random_days)\s*=')
+        self.assertNotIn('global.date',effects)
+        self.assertNotIn('national_policy_panel_request_observer',effects)
+
+if __name__=='__main__':unittest.main(verbosity=2)

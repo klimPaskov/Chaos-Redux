@@ -6,6 +6,7 @@
 @CAMP_OCC_PARTNER_HALT_AUTONOMY = -0.2
 
 camp_occ_extended_partner_register_source = {
+	camp_admin_panel_begin_state_update = yes
 	set_temp_variable = { camp_occ_source_authority = camp_occ_extended_authority }
 	camp_occ_stage_german_origin_request = yes
 	multiply_temp_variable = { camp_occ_source_requested_k = camp_occ_order_share }
@@ -14,12 +15,14 @@ camp_occ_extended_partner_register_source = {
 	set_temp_variable = { camp_occ_source_partner = constant:camp_occ_value.transfer_valid }
 	set_temp_variable = { camp_occ_source_proven = 1 }
 	camp_occ_register_cohort = yes
+	camp_admin_panel_end_state_update = yes
 }
 
 # Country, partner. One enrolled order spans all its provinces and Croatian waves.
 # The first transport waits for the government answer. The monthly pass remains
 # quiet after that answer, including a shortage or a temporarily invalid destination.
 camp_occ_extended_partner_process = {
+	national_policy_panel_begin_update = yes
 	set_temp_variable = { camp_occ_order_share = 0 }
 	# A previously unused district needs its physical baseline before preflight.
 	# Reconciliation preserves ambiguity and never creates a living origin row.
@@ -72,12 +75,15 @@ camp_occ_extended_partner_process = {
 			}
 		}
 	}
+	national_policy_panel_refresh_open = yes
+	national_policy_panel_end_update = yes
 }
 
 # State. One request, bounded by the source's living row and physical population.
 # Successful transfer appends a new row at the actual receiving district. Only
 # that row can receive arrival losses, before the ordinary monthly campaign.
 camp_occ_extended_partner_move_source = {
+	camp_admin_panel_begin_state_update = yes
 	set_temp_variable = { camp_occ_extended_requested_people = camp_occ_remaining_k }
 	multiply_temp_variable = { camp_occ_extended_requested_people = constant:camp_occ_value.people_per_k }
 	if = {
@@ -134,10 +140,12 @@ camp_occ_extended_partner_move_source = {
 			var:camp_occ_extended_destination = { camp_occ_record_deaths = yes }
 		}
 	}
+	camp_admin_panel_end_state_update = yes
 }
 
 # Country, Germany. Five explicit country scopes, never a world iterator.
 camp_occ_try_extended_partner_orders = {
+	national_policy_panel_begin_update = yes
 	if = {
 		limit = { original_tag = GER camp_occ_authority_has_campaign = yes }
 		set_temp_variable = { camp_occ_extended_authority = THIS }
@@ -148,17 +156,23 @@ camp_occ_try_extended_partner_orders = {
 		VIC = { if = { limit = { exists = yes } camp_occ_extended_partner_process = yes } }
 		FRA = { if = { limit = { exists = yes has_cosmetic_tag = FRA_VICHY } camp_occ_extended_partner_process = yes } }
 	}
+	national_policy_panel_refresh_open = yes
+	national_policy_panel_end_update = yes
 }
 
 # Country answers are single-use, and a late report cannot restart a halted order.
 camp_occ_extended_partner_comply = {
+	national_policy_panel_begin_update = yes
 	if = {
 		limit = { camp_occ_extended_partner_order_stands = yes NOT = { has_country_flag = camp_occ_extended_order_answered } }
 		set_country_flag = camp_occ_extended_order_answered
 		camp_occ_extended_partner_dispatch_answer = yes
 	}
+	national_policy_panel_refresh_open = yes
+	national_policy_panel_end_update = yes
 }
 camp_occ_extended_partner_delay = {
+	national_policy_panel_begin_update = yes
 	if = {
 		limit = { camp_occ_extended_partner_order_stands = yes NOT = { has_country_flag = camp_occ_extended_order_answered } }
 		set_country_flag = camp_occ_extended_order_answered
@@ -166,19 +180,25 @@ camp_occ_extended_partner_delay = {
 		reverse_add_opinion_modifier = { target = GER modifier = camp_occ_partner_obstructed_transports }
 		camp_occ_extended_partner_dispatch_answer = yes
 	}
+	national_policy_panel_refresh_open = yes
+	national_policy_panel_end_update = yes
 }
 
 # The government answer dispatches this month's transport immediately. Waiting
 # for another calendar month would make a March-only Bulgarian order impossible.
 # The successful transport month marker in process prevents a second wave.
 camp_occ_extended_partner_dispatch_answer = {
+	national_policy_panel_begin_update = yes
 	GER = {
 		set_temp_variable = { camp_occ_extended_authority = THIS }
 		set_temp_variable = { camp_occ_extended_destination = constant:camp_occ_partner_table.reception_state }
 		PREV = { camp_occ_extended_partner_process = yes }
 	}
+	national_policy_panel_refresh_open = yes
+	national_policy_panel_end_update = yes
 }
 camp_occ_extended_partner_halt = {
+	national_policy_panel_begin_update = yes
 	if = {
 		limit = { camp_occ_extended_partner_order_stands = yes }
 		set_country_flag = camp_occ_extended_order_answered
@@ -201,4 +221,6 @@ camp_occ_extended_partner_halt = {
 		}
 		GER = { country_event = { id = camp_occ_partner.4 } }
 	}
+	national_policy_panel_refresh_open = yes
+	national_policy_panel_end_update = yes
 }

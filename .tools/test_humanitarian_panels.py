@@ -30,7 +30,7 @@ def read_named(path, name):
     return P.Definition(name, ROOT / path, 1, rows)
 
 class Runtime(P.Event35Runtime):
-    EXTERNAL_FIXTURES = {'national_policy_panel_request_observer', 'famine_gui_refresh_selected_action_status', 'migration_gui_refresh_selected_action_status'}
+    EXTERNAL_FIXTURES = {'famine_gui_refresh_selected_action_status', 'migration_gui_refresh_selected_action_status'}
 
     def __init__(self, states=(), foreach_cap=None):
         saved = (P.EFFECT_FILES, P.TRIGGER_FILES)
@@ -73,7 +73,7 @@ class Runtime(P.Event35Runtime):
 
     def _write_path(self, path, value, clear=False):
         (c, rest, glob) = self._path_container(path)
-        assert not glob and c.kind == 'country' and rest.startswith(('famine_panel_', 'migration_panel_')), ('Gameplay write', path)
+        assert not glob and c.kind == 'country' and rest.startswith(('famine_panel_', 'migration_panel_', 'national_policy_panel_')), ('Gameplay write', path)
         super()._write_path(path, value, clear)
 
     def _condition(self, n, scope):

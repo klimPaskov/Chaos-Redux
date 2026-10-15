@@ -14,17 +14,20 @@ camp_origin_inspect_host_rows = {
 
 # STATE. First transition only, preserving the first ambiguous observation epoch.
 camp_origin_mark_ambiguous = {
+	camp_admin_panel_begin_state_update = yes
 	if = {
 		limit = { NOT = { hidden_trigger = { has_state_flag = camp_origin_ambiguous } } }
 		set_variable = { camp_origin_ambiguity_sequence = camp_origin_observation_sequence }
 		set_state_flag = camp_origin_ambiguous
 	}
+	camp_admin_panel_end_state_update = yes
 }
 
 # STATE. A failed inverse has no complete commit receipt. Keep its verified
 # opening baseline and start a separate physical observation checkpoint only
 # after the caller has preserved the measured partial transaction receipts.
 camp_origin_quarantine_transaction = {
+	camp_admin_panel_begin_state_update = yes
 	if = {
 		limit = { NOT = { hidden_trigger = { has_state_flag = camp_origin_transaction_unresolved } } }
 		set_variable = { camp_origin_transaction_observed_population_k = state_population_k }
@@ -32,11 +35,13 @@ camp_origin_quarantine_transaction = {
 		set_state_flag = camp_origin_transaction_unresolved
 	}
 	camp_origin_mark_ambiguous = yes
+	camp_admin_panel_end_state_update = yes
 }
 
 # STATE. Reconcile the only attributable membership through its existing owner.
 # No recursion into capacity, admission, mortality or this helper is allowed.
 camp_origin_reconcile_host_membership = {
+	camp_admin_panel_begin_state_update = yes
 	set_temp_variable = { camp_origin_reconciled_custody_k = constant:camp_admin_value.zero }
 	set_temp_variable = { camp_origin_reconciled_occupation_k = constant:camp_admin_value.zero }
 	camp_origin_observe_host = yes
@@ -59,6 +64,7 @@ camp_origin_reconcile_host_membership = {
 			}
 		}
 	}
+	camp_admin_panel_end_state_update = yes
 }
 
 # STATE. Internal measured endpoint adapter after a complete owner commit or
@@ -85,6 +91,7 @@ camp_origin_commit_endpoint_observation = {
 # Already-live custody without such an opening retains a separate unverified
 # baseline reason, with no invented outside-loss receipt or origin estimate.
 camp_origin_initialize_host = {
+	camp_admin_panel_begin_state_update = yes
 	if = {
 		limit = { NOT = { hidden_trigger = { has_state_flag = camp_origin_observation_initialized } } }
 		set_state_flag = camp_origin_observation_initialized
@@ -144,12 +151,14 @@ camp_origin_initialize_host = {
 			set_variable = { camp_origin_last_verified_custody_k = camp_origin_inspect_custody_k }
 		}
 	}
+	camp_admin_panel_end_state_update = yes
 }
 
 # STATE. Consume the next physical observation interval once. Row identities and
 # living amounts are never subtracted here, even on a unique-origin control.
 # A caller must reconcile that unique row before using it in a subsequent action.
 camp_origin_observe_host = {
+	camp_admin_panel_begin_state_update = yes
 	set_temp_variable = { camp_origin_observation_ready = constant:camp_admin_value.zero }
 	set_temp_variable = { camp_origin_observed_net_decline_k = constant:camp_admin_value.zero }
 	set_temp_variable = { camp_origin_observed_shared_loss_k = constant:camp_admin_value.zero }
@@ -271,6 +280,7 @@ camp_origin_observe_host = {
 		set_variable = { camp_origin_observed_population_k = state_population_k }
 		set_variable = { camp_origin_observed_state_deaths_people = chaos_state_civilian_deaths_total }
 	}
+	camp_admin_panel_end_state_update = yes
 }
 
 # STATE. Acknowledge the existing owner's conservative retirement of the sole
@@ -278,6 +288,7 @@ camp_origin_observe_host = {
 # Inputs: single_reconcile_contract, single_reconcile_sequence and
 # single_reconcile_amount_k. No row is modified by this helper.
 camp_origin_acknowledge_single_origin_reconciliation = {
+	camp_admin_panel_begin_state_update = yes
 	set_temp_variable = { camp_origin_single_reconciliation_accepted = constant:camp_admin_value.zero }
 	if = {
 		limit = {
@@ -369,12 +380,14 @@ camp_origin_acknowledge_single_origin_reconciliation = {
 	# Consume the one-shot envelope by disarming its required value-one token.
 	# Remaining snapshots are overwritten by every provider before rearming.
 	set_temp_variable = { camp_origin_single_reconcile_contract = constant:camp_admin_value.zero }
+	camp_admin_panel_end_state_update = yes
 }
 
 # STATE. Caller supplies measured before/after snapshots from one committed
 # physical transaction or its completed inverse. This updates observation only.
 # Result is not a transfer, bind, death or release success receipt.
 camp_origin_adjust_known_receipt = {
+	camp_admin_panel_begin_state_update = yes
 	set_temp_variable = { camp_origin_known_adjustment_accepted = constant:camp_admin_value.zero }
 	if = {
 		limit = {
@@ -430,4 +443,5 @@ camp_origin_adjust_known_receipt = {
 	# A retained snapshot cannot authorize another adjustment without a new
 	# complete provider envelope. No consumer relies on temporary absence.
 	set_temp_variable = { camp_origin_known_contract = constant:camp_admin_value.zero }
+	camp_admin_panel_end_state_update = yes
 }

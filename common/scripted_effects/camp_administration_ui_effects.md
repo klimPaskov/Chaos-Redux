@@ -29,7 +29,10 @@ It performs no world scan or gameplay simulation.
 `camp_admin_view` and `camp_admin_location_filter` are enum values, while suspended/closed states remain flags.
 The GUI cache also exposes separate custody, workforce, maintenance, current deaths and capacity values for the selected location, plus countrywide cause-separated monthly and cumulative death totals.
 The window shows at most four values per view: people held, output, maintenance and deaths this month; workforce, capacity and cumulative site deaths live in their tooltips, and Records lists cumulative deaths by cause only.
-Monthly deaths display in people through `camp_admin_gui_month_deaths_people` and `camp_admin_gui_site_month_deaths_people` (thousands times `camp_admin_value.people_per_k`).
+Monthly death counts use the canonical thousand-unit sources `camp_admin_month_deaths_k` and `camp_occ_month_deaths_k`; `GetCampAdminNumberMonthDeaths` and `GetCampAdminNumberSelectedMonthDeaths` format their current values through the shared K/M/B population formatter in `common/scripted_localisation/national_policy_panel_numbers.txt`.
+The national detainee and workforce number getters sum current active and civilian site registries, deduplicate repeated sites, exclude closed active sites and retain the workforce output guard.
+They do not read the last economic census or run economic assessment, so an admission is visible without altering economic output or advancing simulation.
+For example, 1,240 people displays as 1.2K, while larger totals scale to M or B as needed.
 `camp_admin_gui_economy_frame` and `camp_admin_gui_institution_frame` drive the eleven-frame `GFX_camp_admin_meter` (frame 1 empty, frame 11 full, `camp_admin_meter` constants); the meters show only while an economic project slot is active or an institutional target exists.
 
 `camp_admin_project_institution_progress` reads the actual civilian claims, civilian review, major-country archive and oversight counters before falling back to an active or saved suspended major-country program.
@@ -90,10 +93,39 @@ if = { limit = { camp_admin_gui_site_record_visible = yes } camp_admin_cache_sel
 The 2026-10-03 archive source scenarios and mandatory MCP route gaps are recorded in `docs/plans/system_camp_repression_rework_plans/administration_redesign_2026-09-06/occupation/origin_closed_site_archive_integration_2026-10-03.md`.
 Source list membership and enablement tests are not GUI pixel or native engine evidence.
 
-## Automatic open-window observation
+## Immediate open-window publication
 
-`camp_rework_open_ledger` requests the shared [automatic panel observer](national_policy_panel_effects.md) after its ordinary opening path.
-Each hourly open-human delivery invokes only `camp_admin_refresh_interface`, which reads published existing registry, policy, work and site data without invoking the opener, registration, initialization, population reconciliation or work advancement.
-Existing command and owner display callbacks retain their immediate refresh paths, while native controls and tooltips have no dirty gate.
+`camp_rework_open_ledger` performs its ordinary opening path and records the presentation owner.
+The [shared publication contract](national_policy_panel_effects.md) rebuilds only the already open projection when its actual owning transaction publishes.
+`camp_admin_refresh_interface` reads existing registry, policy, work and site data without invoking registration, population reconciliation or work advancement.
+Selected numeric and condition getters read their actual state; the economy meter computes its frame from live progress and target through temporary GUI data.
 All seven UI foreach passes reset private break variables before traversal, and the two project quote outputs are initialized by the interface caller before consuming the helper result.
-Closed windows perform no projection, and the shared delivery retires when no eligible panel is open.
+Closed panels perform no publication and no observer is scheduled.
+
+## Live external-loss warning and location projection
+
+External population loss can invalidate `camp_origin_host_provenance_ready` without any camp transaction or authority callback.
+`camp_admin_gui_host_records_uncertain` consumes that freshness proof in the attention filter and records warning.
+The GUI therefore builds `camp_admin_live_location_states` in the location-list element's own visible trigger and binds its dynamic list to that temporary array.
+`camp_admin_gui_read_live_locations` reads the same active, civilian and known-site registries in the original order, deduplicates them into caller-initialized `camp_admin_live_location_sources`, and applies `camp_admin_gui_site_matches_filter`.
+The shared filter preserves original-record authority, current or archived visibility, labor/custody role checks, and attention for uncertain records, suspension or support below one.
+The owner-side cached list also calls that exact predicate.
+
+The list element, empty label and selected-detail panel each initialize their own output arrays before invoking the helper, avoiding assumptions about evaluation order between elements.
+A selected-detail panel is visible only while the selected state remains in its current live filtered list.
+Row selection and highlight use the actual row's state scope through PREV, so a newly admitted live row never indexes an outdated country cache.
+Paint does not change the persistent selection, and an excluded selection is hidden until a current row is chosen or an owner transaction reconciles it.
+
+`camp_admin_gui_read_live_uncertainty` outputs caller-initialized temporary `camp_admin_live_uncertain_locations`.
+It retains the original known/active/occupation warning membership and co-located host deduplication.
+`GetCampAdminUnknownOriginNote` calls that helper while the ledger is open, and `camp_admin_records_unknown_origin_note` reads its temporary count.
+The existing owner projector reuses the same reader for its cached count, preserving external compatibility without relying on the cache during paint.
+Both readers initialize nested provenance shortfall/custody/occupation outputs before consuming their callees.
+All writes in these triggers are temporary scalars or arrays, and no reconciliation, assessment, population movement or observer is invoked.
+
+Installed `documentation/triggers_documentation.md` lines1052-1066 (`all_of_scopes`) and698-712 (`add_to_temp_array`), revision `7d27ed77dadaf3a213a4b3e2c624bf9c02dae495317abe8eee833b27c2d1de29`, specify bounded array iteration and temporary array append.
+Offline `Scripted GUI modding - Hearts of Iron 4 Wiki.md` lines206-248, revision `b07d850ea78c4e1e3fc113574059ad2f3ea37df320b9259128d66814023c1f30`, explicitly allows trigger temporary arrays to feed their element's dynamic list.
+The source regression executes the real exact civilian-loss wrapper at an unchanged date and verifies immediate attention-row admission and warning-count changes for an independent record authority while its persistent UI caches remain unchanged.
+Lower manpower-neutral debit, authority facts and row-shape validation are declared test dependencies, and no native engine execution is claimed.
+The same suite checks all four filters, original order, deduplication, row selection, selected-detail visibility and empty-state behavior.
+No history publication callback was added because the existing history list already binds directly to its authoritative array.

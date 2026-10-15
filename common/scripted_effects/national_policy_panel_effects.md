@@ -1,84 +1,90 @@
-# Automatic national policy panel observation
+# Immediate national policy panel publication
 
-Migration, Famine and Camps use native per-tick scripted GUI evaluation without a `dirty` gate.
-Current native getters, action requirements, affordability, enabled controls and tooltips therefore reevaluate at the engine's GUI update cadence.
-Effects still own cached lists, selected-state copies, totals and meter frames.
-The parent accepted automatic owner notifications plus a bounded hourly open-human observer for those projections within the user's instruction that panels update automatically and have no Update reports button.
+Migration, Famine and Camps use native per-tick scripted GUI evaluation without a dirty gate.
+Simple selected-state selectors, requirements, affordability and numeric getters read actual scoped source values.
+Owner mutations publish cached humanitarian lists and aggregates before returning.
+The camp location list and provenance-warning count derive temporary projections from bounded existing registries on each native GUI evaluation, including external population freshness changes that have no camp callback.
+The accepted behavior is the user's explicit direction that changes appear immediately, including while paused.
+No delayed event or timer is scheduled, and obsolete `national_policy_panel.1` has an empty body.
+The publisher dispatches hidden `national_policy_panel.2` without any delay field; this immediately projects within an isolated country event context.
 
-## Helper map
+## Helper map and owner contract
 
-| Helper | Scope and inputs | Outputs and side effects | Call sites |
+| Helper | Scope and inputs | Outputs and side effects | Consumers |
 | --- | --- | --- | --- |
-| `national_policy_panel_has_open_window` | Country, existing panel open flags and existing eligibility predicates | True for an existing human with at least one eligible open window, no writes | Observer request |
-| `national_policy_panel_refresh_open` | Actual country, existing published subsystem data and open flags | Refreshes only open eligible panel projections, invalidates an ineligible open panel's UI, no enrollment or gameplay writes | Observer, six immediate native/GUI humanitarian action receivers, old/new controller publication callbacks |
-| `national_policy_panel_request_observer` | Actual country, no caller-owned temporary inputs | Reserves at most one pending delivery, records `national_policy_panel_observer_owner`, saves a regular actor event target, queues `national_policy_panel.1` | Both humanitarian openers, actual camp ledger opener, observer continuation |
-| `national_policy_panel_observe` | Receiving country, matching pending owner and chain-local actor | Consumes its delivery, refreshes open projections, requests one successor only while an eligible human window remains open | Hidden triggered-only `national_policy_panel.1` |
-| `national_policy_panel_observer_is_due` | Country and existing `national_policy_panel_observer_earliest` | True only at or after the reserved delivery hour, no writes | Observer receiver |
-| `national_policy_panel_retire_country` | Country at terminal/release boundary | Clears observer flag, owner and earliest date, closes panel flags, clears UI selections and arrays only | Annexed country, camp terminal country close, released-country initialization, inherited identity cleanup |
-| `national_policy_panel_reconcile_observer_identity` | Existing country during ordinary initialization | Retires copied observer/UI state when its stored owner is another country, preserves a matching live actor's chain | `national_policy_initialize_country` |
+| `national_policy_panel_refresh_open` | Actual country, open flags and committed subsystem facts | Synchronously rebuilds eligible open projections; coalesces a request inside a country batch; closed panels have no writes | Owning country actions, publication and lifecycle callbacks |
+| `national_policy_panel_publish_state` | Actual state after its transaction commits | Publishes to its actual owner and distinct controller; a regular chain-local owner target deduplicates them | Owning state mutations |
+| `national_policy_panel_begin_update` | Actual country before a multi-write transaction | Increments private presentation nesting depth only for an open human viewer | Outer owning transactions |
+| `national_policy_panel_end_update` | Same actual country after all outcomes and rollbacks settle | Decrements nesting, clears final depth and synchronously consumes any pending request | Every matching transaction exit |
+| `national_policy_panel_project_open` | Actual existing human country in no-delay `national_policy_panel.2` | Rebuilds only open humanitarian/camp projections or closes an ineligible panel; never registers, assesses, reconciles population or advances gameplay | Private publisher implementation |
+| `national_policy_panel_reconcile_identity` | Initializing country | Closes presentation copied from another actor; clears obsolete observer fields | Ordinary national-policy initialization |
+| `national_policy_panel_retire_country` | Country at removal/release boundary | Clears presentation identity, pending/nesting state, selections, arrays and open flags | Existing terminal and released-country callbacks |
+| `national_policy_panel_has_open_window` | Country | Pure open-flag predicate; projection owns eligibility-loss cleanup | Publisher/batch entry |
 
-There are no helper parameters, numeric temporary outputs or implicit gameplay defaults.
-The observer calls `camp_admin_refresh_interface` and never calls `camp_rework_open_ledger`, `camp_rework_rebuild_display_values`, initialization, reconciliation, registration, maintenance, work advancement or cost payment.
-The camp projection now resets seven private foreach break temporaries before their actual loops and initializes the two caller-owned project quote outputs before the quote helper returns.
-Its state lists use existing active, civilian and retained-record registries, and its selected-site cache reads only those source records.
-Humanitarian projection retains native owned/controlled-state iteration and its existing published-data relevance filters.
+All helpers are parameterless and have no caller-owned temporary outputs.
+The batch depth uses existing `constant:humanitarian_panel.zero/one`; no timing tuning, gameplay constant or weighted selection is added.
 
-## Tuning, target lifecycle and cleanup
+A country transaction can coalesce repeated state notifications:
 
-`@national_policy_panel_refresh_hours = 1` in `national_policy_panel_effects.txt` is the sole cadence setting.
-It is file scoped because the single native event scheduling call is in that file and takes the expanded literal.
-No shared constant category, gameplay coefficient, AI weight or probability is added.
-Scheduling derives `national_policy_panel_observer_earliest` by dividing that same integer hour count by existing `constant:chaosx_date_units.hours_per_date_unit`, then adding it to `global.date`.
-The existing date contract represents one hour as 0.00001, so no rounded fractional-day input or assumed wall-clock timer is used.
-
-`national_policy_panel_observer_actor` is a regular event target that carries through the one country event chain.
-There are no global event targets or global registries.
-The persistent pending flag and owner pointer reserve an already queued delivery across close/reopen.
-Close clears the actual open flag immediately, and the outstanding event consumes its pending fields without refreshing a closed panel or queuing another delivery.
-Reopening before that delivery arrives reuses it, while reopening after retirement starts one delivery.
-A copied pending flag whose owner is another country cannot suppress a new country's opener, and a receiver whose chain target names another country cannot refresh it.
-Eligibility loss closes only affected panel UI at the next owner notification or observer delivery and stops the chain when no eligible window remains.
-The native visibility predicate hides an ineligible window independently of that delivery.
-
-Annexation and special-country terminal closure cannot rely on their queued event arriving for a nonexistent country.
-The humanitarian annex callback and terminal camp close therefore retire the UI reservation synchronously, while released-country initialization starts from cleared UI state.
-Ordinary country initialization discards inherited foreign-owner UI state while preserving a valid same-actor chain.
-An old delayed delivery must pass the new reservation's stored earliest hour before it can consume anything.
-At the due hour the first valid delivery consumes the slot and stores the next hour, causing any second old/fresh delivery at that same hour to stop without refreshing, clearing or rescheduling.
-This follows the existing camp dispatch earliest-date guard and leaves the camp monthly timer unchanged.
-
-Example from an existing opener after its first presentation refresh:
-
-```txt
-national_policy_panel_request_observer = yes
-```
-
-Example from a synchronous owning publication callback after its transaction and scratch-input cleanup:
-
-```txt
+```text
+national_policy_panel_begin_update = yes
+# Complete authoritative mutations and accounting here.
 national_policy_panel_refresh_open = yes
+national_policy_panel_end_update = yes
 ```
 
-The publication callback must preserve the actual actor contract.
-The six humanitarian bridges perform their refresh after action accounting and input cleanup, while the state-control callback refreshes its documented ROOT new controller and FROM old controller separately.
-Existing native law publication, registered-country processing and camp command/display callbacks retain their immediate refresh paths.
+A state transaction publishes only after its accepted or rejected outcome has settled:
 
-## Cadence and validation limits
+```text
+national_policy_panel_publish_state = yes
+```
 
-Cached projections rebuild on opening, current owner publication callbacks and each elapsed game hour while open.
-The observer never advances simulation and therefore cannot invent a fresh food assessment or reception-capacity proof ahead of its owner.
-Native getters and enablement continue reevaluating while paused, and synchronous native humanitarian actions publish their projected result without waiting for game time.
-An arbitrary external edit to a cached source that emits no owner callback is picked up on the next elapsed game hour or opening.
-The event clock does not run while paused.
-No source inspection establishes a wall-clock frame rate or actual native rendering behavior.
+The owner must explicitly notify an independent receiving country, a former controller, or a responsible authority that is neither current owner nor current controller.
+Enter that exact country scope and call `national_policy_panel_refresh_open` after its last mutation.
+If both countries are modified in stages, both require their own matching batch boundaries.
+The immediate event establishes the receiving country as ROOT and isolates every temporary scalar/array from the owning transaction, including quote, date, cohort-inspection and capacity outputs.
+No brittle scratch-variable preservation inventory is maintained.
+Never publish from a read-only projection or paint getter: such a cycle violates the API and is stopped by `national_policy_panel_publishing`.
+The source publisher does not discover arbitrary external writes and deliberately has no polling fallback.
 
-`.tools/test_national_policy_panel_updates.py` executes the actual scheduling guards, event receiver, humanitarian projections and camp cache bodies against a deterministic native event queue with copied event-target envelopes.
-It covers quiet opening, close/reopen coalescing, retirement, copied pending ownership, foreign-chain rejection, capture, changing food/migration/capacity data, actual saved-date progress, camp source reads, closed-camp no-op behavior and a paused native action publication path.
-Lifecycle cases execute the actual observer retirement and country initialization/release bodies, model canceled delivery on annexation and same-tag re-release, and reject stale early and same-hour deliveries after a fresh reservation.
-Camp authority/provenance predicates and existing sale quote consumers are declared fixtures, while projection loops and selected caches execute their production bodies.
-Unrelated starting-law profile publication is also a fixture in the observer-only lifecycle model.
-The existing panel and action contract fixtures retain separate coverage of action payments, refunds, targets and generations.
-No live game, log collection or GUI layout change belongs to this observer package.
+## Native bindings and derived data
 
-No artwork, new visible controls or localisation keys are required.
-Future owner publication callbacks should call the existing open-only refresh helper at a transaction boundary rather than add another clock or world scan.
+Selected humanitarian condition/status selectors read the selected state's current published flags and variables.
+Migration reception capacity checks read current validated country capacity/load.
+Invalidating that proof immediately changes the live display to unknown; publication of a fresh proof immediately exposes its value.
+The gameplay assessment timing remains unchanged, and paint never recalculates capacity or shortens an action delay.
+Numeric display getters live in `common/scripted_localisation/national_policy_panel_numbers.txt` and consume live values or explicit owner-published aggregates.
+Famine and Migration work meter frames calculate from current date and published action start/due values in their element trigger, writing only temporary variables consumed by that element's frame property.
+The camp economy meter similarly derives its frame from live progress and target.
+Institution progress, sorted humanitarian state lists, country aggregates, selected derived causes and quote projections remain owner-published values.
+The camp location list uses its own element-trigger temporary array, with matching live empty/selection predicates and direct actual-row selection.
+The camp records warning similarly uses a fresh temporary count, preserving current authority and original co-located-host deduplication.
+Paint never calls crisis assessment, registration, progression, payments, population accounting or native event scheduling.
+
+Offline `Data structures - Hearts of Iron 4 Wiki.md` lines435-443 revision `62273f37ed30e5479acb331a8973f48dadc1867c4913c8a940e3e790e7af32d4` states that temporary variables do not carry over into events.
+Offline `Event modding - Hearts of Iron 4 Wiki.md` lines192-229 revision `96327b896298420d84058394a44ed08be7eb518726b8f207b392fea71f05d43d` specifies instant firing without delay.
+Installed `documentation/effects_documentation.md` lines2943-2967 revision `2cdc93d26775990468eed167442f7a416b13059fb8fe07d139b54250b79209af` defines `country_event` and all delay fields as optional; the existing humanitarian action bridges use the same immediate country-context structure.
+These references establish the no-delay/temporary-context source contract; paused native event execution has not been observed by this task.
+
+The installed `common/scripted_guis/_documentation.md` lines65-105 revision `43ce647fc5fde27488855b060b5463c790e5e356149fceb010d36b960b40f838` defines dynamic frame variables, dynamic lists and default per-tick updates.
+The offline `paradox_wiki/Scripted GUI modding - Hearts of Iron 4 Wiki.md` lines165-172 and206-248 revision `b07d850ea78c4e1e3fc113574059ad2f3ea37df320b9259128d66814023c1f30` explicitly documents element-trigger temporary values consumed by properties, including the trigger-to-property example.
+Installed vanilla `common/scripted_guis/SOV_paranoia_system_scripted_gui.txt` lines7-82 provides persistent variable frame precedents; no vanilla temporary-frame precedent was located.
+Temporary scripted-localisation calculations are documented in offline `Localisation - Hearts of Iron 4 Wiki.md` lines729-792 revision `1a8f72362a34b4bb653186746b9fae0b98e463205cb02f12ccf2c3d9ccd3a064`.
+
+## Lifecycle and validation
+
+`national_policy_panel_owner` identifies the actual opener; ordinary close only clears the existing open flag.
+Terminal/release retirement removes batch and identity state synchronously.
+The only event target is the short-lived state-owner pointer, which expires with the effect chain; no global target or registry is introduced.
+The previous observer fields are cleared for migration only and never schedule work.
+
+`.tools/test_national_policy_panel_updates.py` executes the production country/state publishers, nesting guard, projections, selection and retirement at an unchanged date.
+Scenarios cover both owner and controller, capture with explicit former-controller notification, nested transactions, idle closed panels, inert obsolete delivery, copied actor identity, and camp projection without work advancement.
+The documented native no-delay event boundary is modeled as an immediate receiving-country context with fresh temporary storage and no date change.
+Inherited quote, date, provenance and capacity scratch remains intact across publication; native meter arithmetic also reads changed progress at the same date without a publication call.
+Its owner/provenance native predicates and quote helpers remain declared fixtures; fixture mutation followed by the actual publisher proves publisher behavior, not coverage of every production writer callback or native rendering.
+The parent integration handoff owns the complete writer-to-callback matrix and actual-writer scenarios.
+MCP source validation returned partial coverage with unchecked native argument blocks and unknown mixed root scopes; that is not full engine validation.
+No live game execution or visual layout change is claimed.
+No new artwork, icons or player controls are needed.
+Future owner families must publish synchronously at their transaction boundary and retain the closed-panel no-op contract.

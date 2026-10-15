@@ -1,0 +1,469 @@
+# Presentation-only population formatting. Inputs stay in thousands to avoid overflowing
+# the engine's fixed-point variables when a count reaches millions or billions of people.
+# Callers set the unscoped temporary national_policy_panel_number_k, then select
+# national_policy_panel_number_from_thousands. No persistent state is changed here.
+defined_text = {
+	name = GetNationalPolicyPanelNumberFromThousands
+	text = {
+		trigger = {
+			check_variable = { var = national_policy_panel_number_k value = constant:national_policy_panel_number.billion_in_thousands compare = greater_than_or_equals }
+			set_temp_variable = { national_policy_panel_number_display = national_policy_panel_number_k }
+			divide_temp_variable = { national_policy_panel_number_display = constant:national_policy_panel_number.billion_in_thousands }
+		}
+		localization_key = national_policy_panel_number_billion
+	}
+	text = {
+		trigger = {
+			check_variable = { var = national_policy_panel_number_k value = constant:national_policy_panel_number.thousand compare = greater_than_or_equals }
+			set_temp_variable = { national_policy_panel_number_display = national_policy_panel_number_k }
+			divide_temp_variable = { national_policy_panel_number_display = constant:national_policy_panel_number.thousand }
+		}
+		localization_key = national_policy_panel_number_million
+	}
+	text = {
+		trigger = {
+			check_variable = { var = national_policy_panel_number_k value = constant:national_policy_panel_number.one compare = greater_than_or_equals }
+			set_temp_variable = { national_policy_panel_number_display = national_policy_panel_number_k }
+		}
+		localization_key = national_policy_panel_number_thousand
+	}
+	text = {
+		trigger = {
+			set_temp_variable = { national_policy_panel_number_display = national_policy_panel_number_k }
+			multiply_temp_variable = { national_policy_panel_number_display = constant:national_policy_panel_number.thousand }
+		}
+		localization_key = national_policy_panel_number_integer
+	}
+}
+
+# Round scaled counts to one decimal, omitting a redundant decimal when it is zero.
+defined_text = {
+	name = GetNationalPolicyPanelNumberPrecision
+	text = {
+		trigger = {
+			set_temp_variable = { national_policy_panel_number_decimal = national_policy_panel_number_display }
+			multiply_temp_variable = { national_policy_panel_number_decimal = constant:national_policy_panel_number.decimal_scale }
+			round_temp_variable = national_policy_panel_number_decimal
+			divide_temp_variable = { national_policy_panel_number_decimal = constant:national_policy_panel_number.decimal_scale }
+			set_temp_variable = { national_policy_panel_number_whole = national_policy_panel_number_decimal }
+			round_temp_variable = national_policy_panel_number_whole
+			check_variable = { national_policy_panel_number_decimal = national_policy_panel_number_whole }
+			set_temp_variable = { national_policy_panel_number_display = national_policy_panel_number_decimal }
+		}
+		localization_key = national_policy_panel_number_integer
+	}
+	text = {
+		trigger = { set_temp_variable = { national_policy_panel_number_display = national_policy_panel_number_decimal } }
+		localization_key = national_policy_panel_number_decimal
+	}
+}
+
+# Live source adapters. Selected-state values are read directly, never from copied GUI data.
+defined_text = {
+	name = GetCampAdminNumberDetainees
+	text = {
+		trigger = {
+			set_temp_variable = { national_policy_panel_number_k = constant:camp_admin_value.zero }
+			clear_temp_array = national_policy_panel_number_seen
+			all_of_scopes = {
+				array = camp_active_site_states
+				if = {
+					limit = {
+						NOT = { has_state_flag = camp_admin_closed }
+						NOT = { is_in_array = { array = national_policy_panel_number_seen value = THIS } }
+					}
+					add_to_temp_array = { array = national_policy_panel_number_seen value = THIS }
+					add_to_temp_variable = { national_policy_panel_number_k = camp_admin_detainees_k }
+				}
+			}
+			all_of_scopes = {
+				array = camp_admin_civilian_states
+				if = {
+					limit = { NOT = { is_in_array = { array = national_policy_panel_number_seen value = THIS } } }
+					add_to_temp_array = { array = national_policy_panel_number_seen value = THIS }
+					add_to_temp_variable = { national_policy_panel_number_k = camp_admin_detainees_k }
+				}
+			}
+		}
+		localization_key = national_policy_panel_number_from_thousands
+	}
+	text = { localization_key = national_policy_panel_number_zero }
+}
+
+defined_text = {
+	name = GetCampAdminNumberWorkforce
+	text = {
+		trigger = {
+			set_temp_variable = { national_policy_panel_number_k = constant:camp_admin_value.zero }
+			clear_temp_array = national_policy_panel_number_seen
+			all_of_scopes = {
+				array = camp_active_site_states
+				if = {
+					limit = {
+						NOT = { has_state_flag = camp_admin_closed }
+						NOT = { is_in_array = { array = national_policy_panel_number_seen value = THIS } }
+						camp_admin_gui_site_has_current_output = yes
+					}
+					add_to_temp_array = { array = national_policy_panel_number_seen value = THIS }
+					add_to_temp_variable = { national_policy_panel_number_k = camp_admin_industry_k }
+					add_to_temp_variable = { national_policy_panel_number_k = camp_admin_works_k }
+					add_to_temp_variable = { national_policy_panel_number_k = camp_admin_extraction_k }
+				}
+			}
+			all_of_scopes = {
+				array = camp_admin_civilian_states
+				if = {
+					limit = {
+						NOT = { is_in_array = { array = national_policy_panel_number_seen value = THIS } }
+						camp_admin_gui_site_has_current_output = yes
+					}
+					add_to_temp_array = { array = national_policy_panel_number_seen value = THIS }
+					add_to_temp_variable = { national_policy_panel_number_k = camp_admin_industry_k }
+					add_to_temp_variable = { national_policy_panel_number_k = camp_admin_works_k }
+					add_to_temp_variable = { national_policy_panel_number_k = camp_admin_extraction_k }
+				}
+			}
+		}
+		localization_key = national_policy_panel_number_from_thousands
+	}
+	text = { localization_key = national_policy_panel_number_zero }
+}
+
+defined_text = {
+	name = GetCampAdminNumberCustodyMonth
+	text = {
+		trigger = {
+			set_temp_variable = { national_policy_panel_number_k = camp_admin_month_deaths_k }
+		}
+		localization_key = national_policy_panel_number_from_thousands
+	}
+	text = { localization_key = national_policy_panel_number_zero }
+}
+
+defined_text = {
+	name = GetCampAdminNumberOccupationMonth
+	text = {
+		trigger = {
+			set_temp_variable = { national_policy_panel_number_k = camp_occ_month_deaths_k }
+		}
+		localization_key = national_policy_panel_number_from_thousands
+	}
+	text = { localization_key = national_policy_panel_number_zero }
+}
+
+defined_text = {
+	name = GetCampAdminNumberCustodyDeaths
+	text = {
+		trigger = {
+			set_temp_variable = { national_policy_panel_number_k = camp_admin_total_custody_deaths_k }
+		}
+		localization_key = national_policy_panel_number_from_thousands
+	}
+	text = { localization_key = national_policy_panel_number_zero }
+}
+
+defined_text = {
+	name = GetCampAdminNumberLaborDeaths
+	text = {
+		trigger = {
+			set_temp_variable = { national_policy_panel_number_k = camp_admin_total_labor_deaths_k }
+		}
+		localization_key = national_policy_panel_number_from_thousands
+	}
+	text = { localization_key = national_policy_panel_number_zero }
+}
+
+defined_text = {
+	name = GetCampAdminNumberViolenceDeaths
+	text = {
+		trigger = {
+			set_temp_variable = { national_policy_panel_number_k = camp_admin_total_violence_deaths_k }
+		}
+		localization_key = national_policy_panel_number_from_thousands
+	}
+	text = { localization_key = national_policy_panel_number_zero }
+}
+
+defined_text = {
+	name = GetCampAdminNumberInstitutionalDeaths
+	text = {
+		trigger = {
+			set_temp_variable = { national_policy_panel_number_k = camp_admin_total_institutional_deaths_k }
+		}
+		localization_key = national_policy_panel_number_from_thousands
+	}
+	text = { localization_key = national_policy_panel_number_zero }
+}
+
+defined_text = {
+	name = GetCampAdminNumberOccupationDeaths
+	text = {
+		trigger = {
+			set_temp_variable = { national_policy_panel_number_k = camp_occ_total_deaths_k }
+		}
+		localization_key = national_policy_panel_number_from_thousands
+	}
+	text = { localization_key = national_policy_panel_number_zero }
+}
+
+defined_text = {
+	name = GetCampAdminNumberArrivalMonth
+	text = {
+		trigger = {
+			set_temp_variable = { national_policy_panel_number_k = camp_admin_month_arrival_deaths_k }
+		}
+		localization_key = national_policy_panel_number_from_thousands
+	}
+	text = { localization_key = national_policy_panel_number_zero }
+}
+
+defined_text = {
+	name = GetCampAdminNumberArrivalTotal
+	text = {
+		trigger = {
+			set_temp_variable = { national_policy_panel_number_k = camp_admin_total_arrival_deaths_k }
+		}
+		localization_key = national_policy_panel_number_from_thousands
+	}
+	text = { localization_key = national_policy_panel_number_zero }
+}
+
+defined_text = {
+	name = GetCampAdminNumberEscaped
+	text = {
+		trigger = {
+			set_temp_variable = { national_policy_panel_number_k = camp_occ_total_escaped_k }
+		}
+		localization_key = national_policy_panel_number_from_thousands
+	}
+	text = { localization_key = national_policy_panel_number_zero }
+}
+
+defined_text = {
+	name = GetCampAdminNumberSelectedDetainees
+	text = {
+		trigger = {
+			var:camp_selected_state_id = {
+				set_temp_variable = { national_policy_panel_number_k = camp_admin_detainees_k }
+			}
+		}
+		localization_key = national_policy_panel_number_from_thousands
+	}
+	text = { localization_key = national_policy_panel_number_zero }
+}
+
+defined_text = {
+	name = GetCampAdminNumberSelectedCapacity
+	text = {
+		trigger = {
+			var:camp_selected_state_id = {
+				set_temp_variable = { national_policy_panel_number_k = camp_admin_capacity_k }
+			}
+		}
+		localization_key = national_policy_panel_number_from_thousands
+	}
+	text = { localization_key = national_policy_panel_number_zero }
+}
+
+defined_text = {
+	name = GetCampAdminNumberSelectedMonthDeaths
+	text = {
+		trigger = {
+			var:camp_selected_state_id = {
+				set_temp_variable = { national_policy_panel_number_k = camp_admin_month_deaths_k }
+			}
+		}
+		localization_key = national_policy_panel_number_from_thousands
+	}
+	text = { localization_key = national_policy_panel_number_zero }
+}
+
+defined_text = {
+	name = GetCampAdminNumberSelectedTotalDeaths
+	text = {
+		trigger = {
+			var:camp_selected_state_id = {
+				set_temp_variable = { national_policy_panel_number_k = camp_admin_total_deaths_k }
+			}
+		}
+		localization_key = national_policy_panel_number_from_thousands
+	}
+	text = { localization_key = national_policy_panel_number_zero }
+}
+
+defined_text = {
+	name = GetMigrationPanelNumberFleeing
+	text = {
+		trigger = {
+			set_temp_variable = { national_policy_panel_number_k = migration_panel_fleeing }
+			divide_temp_variable = { national_policy_panel_number_k = constant:national_policy_panel_number.thousand }
+		}
+		localization_key = national_policy_panel_number_from_thousands
+	}
+	text = { localization_key = national_policy_panel_number_zero }
+}
+
+defined_text = {
+	name = GetMigrationPanelNumberTrapped
+	text = {
+		trigger = {
+			set_temp_variable = { national_policy_panel_number_k = migration_panel_trapped }
+			divide_temp_variable = { national_policy_panel_number_k = constant:national_policy_panel_number.thousand }
+		}
+		localization_key = national_policy_panel_number_from_thousands
+	}
+	text = { localization_key = national_policy_panel_number_zero }
+}
+
+defined_text = {
+	name = GetMigrationPanelNumberCapacityUsed
+	text = {
+		trigger = {
+			migration_reception_capacity_is_valid = yes
+			has_variable = migration_reception_load
+			set_temp_variable = { national_policy_panel_number_k = migration_reception_load }
+			divide_temp_variable = { national_policy_panel_number_k = constant:national_policy_panel_number.thousand }
+		}
+		localization_key = national_policy_panel_number_from_thousands
+	}
+	text = { localization_key = national_policy_panel_number_zero }
+}
+
+defined_text = {
+	name = GetMigrationPanelNumberCapacity
+	text = {
+		trigger = {
+			migration_reception_capacity_is_valid = yes
+			set_temp_variable = { national_policy_panel_number_k = migration_reception_capacity }
+			divide_temp_variable = { national_policy_panel_number_k = constant:national_policy_panel_number.thousand }
+		}
+		localization_key = national_policy_panel_number_from_thousands
+	}
+	text = { localization_key = national_policy_panel_number_zero }
+}
+
+defined_text = {
+	name = GetMigrationPanelNumberSelectedFleeing
+	text = {
+		trigger = {
+			var:migration_panel_selected_state = {
+				set_temp_variable = { national_policy_panel_number_k = migration_state_flight_population }
+				divide_temp_variable = { national_policy_panel_number_k = constant:national_policy_panel_number.thousand }
+			}
+		}
+		localization_key = national_policy_panel_number_from_thousands
+	}
+	text = { localization_key = national_policy_panel_number_zero }
+}
+
+defined_text = {
+	name = GetMigrationPanelNumberSelectedTrapped
+	text = {
+		trigger = {
+			var:migration_panel_selected_state = {
+				set_temp_variable = { national_policy_panel_number_k = migration_state_trapped_population }
+				divide_temp_variable = { national_policy_panel_number_k = constant:national_policy_panel_number.thousand }
+			}
+		}
+		localization_key = national_policy_panel_number_from_thousands
+	}
+	text = { localization_key = national_policy_panel_number_zero }
+}
+
+defined_text = {
+	name = GetMigrationPanelNumberSelectedSheltered
+	text = {
+		trigger = {
+			var:migration_panel_selected_state = {
+				set_temp_variable = { national_policy_panel_number_k = migration_state_reception_load }
+				divide_temp_variable = { national_policy_panel_number_k = constant:national_policy_panel_number.thousand }
+			}
+		}
+		localization_key = national_policy_panel_number_from_thousands
+	}
+	text = { localization_key = national_policy_panel_number_zero }
+}
+
+defined_text = {
+	name = GetMigrationPanelNumberRowFleeing
+	text = {
+		trigger = {
+			set_temp_variable = { national_policy_panel_number_k = migration_state_flight_population }
+			divide_temp_variable = { national_policy_panel_number_k = constant:national_policy_panel_number.thousand }
+		}
+		localization_key = national_policy_panel_number_from_thousands
+	}
+	text = { localization_key = national_policy_panel_number_zero }
+}
+
+defined_text = {
+	name = GetMigrationPanelNumberRowTrapped
+	text = {
+		trigger = {
+			set_temp_variable = { national_policy_panel_number_k = migration_state_trapped_population }
+			divide_temp_variable = { national_policy_panel_number_k = constant:national_policy_panel_number.thousand }
+		}
+		localization_key = national_policy_panel_number_from_thousands
+	}
+	text = { localization_key = national_policy_panel_number_zero }
+}
+
+defined_text = {
+	name = GetMigrationPanelNumberRowSheltered
+	text = {
+		trigger = {
+			set_temp_variable = { national_policy_panel_number_k = migration_state_reception_load }
+			divide_temp_variable = { national_policy_panel_number_k = constant:national_policy_panel_number.thousand }
+		}
+		localization_key = national_policy_panel_number_from_thousands
+	}
+	text = { localization_key = national_policy_panel_number_zero }
+}
+
+defined_text = {
+	name = GetCampAdminNumberMonthDeaths
+	text = {
+		trigger = {
+			set_temp_variable = { national_policy_panel_number_k = camp_admin_month_deaths_k }
+			add_to_temp_variable = { national_policy_panel_number_k = camp_occ_month_deaths_k }
+		}
+		localization_key = national_policy_panel_number_from_thousands
+	}
+	text = { localization_key = national_policy_panel_number_zero }
+}
+
+defined_text = {
+	name = GetCampAdminNumberTotalDeaths
+	text = {
+		trigger = {
+			set_temp_variable = { national_policy_panel_number_k = camp_admin_total_deaths_k }
+			add_to_temp_variable = { national_policy_panel_number_k = camp_occ_total_deaths_k }
+		}
+		localization_key = national_policy_panel_number_from_thousands
+	}
+	text = { localization_key = national_policy_panel_number_zero }
+}
+
+defined_text = {
+	name = GetCampAdminNumberSelectedWorkforce
+	text = {
+		trigger = {
+			var:camp_selected_state_id = {
+				camp_admin_gui_site_has_current_output = yes
+				set_temp_variable = { national_policy_panel_number_k = camp_admin_industry_k }
+				add_to_temp_variable = { national_policy_panel_number_k = camp_admin_works_k }
+				add_to_temp_variable = { national_policy_panel_number_k = camp_admin_extraction_k }
+			}
+		}
+		localization_key = national_policy_panel_number_from_thousands
+	}
+	text = { localization_key = national_policy_panel_number_zero }
+}
+
+# State-scope list row, preserving the existing trapped/host/fleeing priority.
+defined_text = {
+	name = GetMigrationPanelNumberRowDetail
+	text = { trigger = { migration_state_has_header_trapped_people = yes } localization_key = migration_panel_number_row_trapped }
+	text = { trigger = { has_variable = migration_state_reception_load check_variable = { migration_state_reception_load > constant:humanitarian_population.zero } } localization_key = migration_panel_number_row_sheltered }
+	text = { localization_key = migration_panel_number_row_fleeing }
+}

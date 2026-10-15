@@ -199,7 +199,7 @@ class R:
             elif k in E:
                 assert v == 'yes', ('Unsupported named-block helper call', k)
                 self.run(k)
-            elif k in ('national_policy_initialize_cost_modifiers', 'migration_national_policy_changed', 'national_policy_on_warfare_law_changed', 'chaosx_test_country_register_extension_effect', 'national_policy_panel_reconcile_observer_identity', 'national_policy_panel_retire_country'):
+            elif k in ('national_policy_initialize_cost_modifiers', 'migration_national_policy_changed', 'national_policy_on_warfare_law_changed', 'chaosx_test_country_register_extension_effect', 'national_policy_panel_reconcile_identity', 'national_policy_panel_retire_country'):
                 self.calls.append((k, self.scratch()))
             else:
                 raise AssertionError('Unmodeled effect ' + k)

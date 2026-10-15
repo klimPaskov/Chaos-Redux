@@ -93,6 +93,10 @@ migration_settle_integrated_cohort = {
 				set_temp_variable = { migration_integration_settlement_result = migration_integration_result }
 				migration_refresh_reception_context = yes
 				migration_refresh_decision_phase_from_state = yes
+				if = {
+					limit = { check_variable = { var = migration_integration_settlement_result value = constant:humanitarian_runtime.one compare = equals } }
+					national_policy_panel_publish_state = yes
+				}
 			}
 			else = { set_temp_variable = { migration_integration_settlement_amount = constant:humanitarian_population.zero } }
 		}

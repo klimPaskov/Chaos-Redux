@@ -133,3 +133,6 @@ Air Winter, Camp, CBRN, Black Plague, and Event 013 now pass source-owned proof 
 
 Generic occupation-law changes, strategic-bombing recency, war declarations, peace callbacks, event roots, and cluster dispatch remain API-only until an owner supplies an exact state-local food receipt.
 Scenario intensity is consumed for the Hunger Lines scenario only, through `famine_apply_hunger_lines_scenario_pressure`; other scenarios remain API-only.
+
+The accepted Hunger Lines reserve seizure publishes its state to open owner/controller panels after reserve depletion and any stage commit finish.
+All external adapters that submit an accepted famine pressure request inherit the core request publisher; food scoring and stage progression remain owned by the existing sparse evaluator.

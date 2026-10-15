@@ -1104,6 +1104,11 @@ civilian_transfer_execute_transaction = {
 					}
 					civilian_transfer_rollback_transaction = yes
 				}
+				if = {
+					limit = { check_variable = { var = civilian_transfer_finalize_result value = constant:migration_core_reconciliation.transfer_finalize_valid compare = equals } }
+					national_policy_panel_publish_state = yes
+					event_target:civilian_transfer_route_destination = { national_policy_panel_publish_state = yes }
+				}
 			}
 		}
 	if = {

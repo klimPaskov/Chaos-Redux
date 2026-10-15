@@ -91,3 +91,7 @@ famine_calculate_food_score = yes
 
 This example does not update reserves or advance a simulation stage.
 Use the public observer contract documented in `famine_adapter_effects.md` for destination assessment, and retain the full evaluator for ordinary registered simulation.
+
+Committed `famine_evaluate_food_security` and reserve consume/import/transfer mutations call `national_policy_panel_publish_state` after state outputs settle. The reserve transfer publishes both exact endpoints only after its measured debit and credit agree; routine reserve depletion or replenishment remains in the existing date-gated evaluator.
+
+Accepted `famine_apply_pressure_request` and `famine_submit_surface_context` requests publish their committed state inputs and registration immediately without advancing the scheduled food assessment or changing its committed score/stage.

@@ -248,3 +248,39 @@ if = { limit = { camp_admin_country_sites_ready_for_reform = yes } camp_admin_be
 
 Evidence and remaining integration limits are in `docs/plans/system_camp_repression_rework_plans/administration_redesign_2026-09-06/occupation/origin_closed_site_archive_integration_2026-10-03.md`.
 No tuning constants, icons, localisation keys or recovery provider are added by this metadata contract.
+
+## Immediate panel publication
+
+`camp_admin_panel_begin_state_update = yes` and `camp_admin_panel_end_state_update = yes` bracket a complete state mutation.
+The outer begin snapshots and deduplicates the exact current owner, controller, immutable `camp_admin_responsible_country`, occupation `camp_occ_responsible_country`, and `genocide_responsible_country` when each is an existing human country with an open national policy window.
+The internal `camp_admin_panel_collect_recipient` runs in that country with the publishing state as `PREV`.
+It records the country in the state's regular `camp_admin_panel_update_recipients` array and enters that country's `national_policy_panel_begin_update` once.
+The state stores a positive regular `camp_admin_panel_update_depth` only when it enrolled an open recipient.
+Nested state mutations increment and decrement that depth without replacing the outer authority snapshot.
+Closed panels create no batch storage and receive no cache writes.
+
+At the outer end, `camp_admin_panel_publish_state` requests the current owner/controller and each explicit recorded authority through the shared display-only projector.
+The saved recipient array also receives a request and its matching `national_policy_panel_end_update`, so a former authority captured at begin is flushed before return even if its pointer changed.
+The state depth is cleared before projection and the recipient array is cleared after the bounded loop.
+The loop initializes its private `camp_admin_panel_recipient_break` temporary to zero before iteration.
+No event targets, population receipts, row identities, costs, simulation progress, or historical counters are changed by these adapters.
+They have no caller inputs or returned outputs and require no caller-owned temporary storage.
+They reuse the existing `camp_admin_value.zero` and `.one` constants and add no tuning values.
+The shared publisher isolates projection scratch in a no-delay hidden country event, preserving the calling transaction's temporary receipts and input envelopes.
+
+Example for a state effect:
+
+```txt
+camp_admin_panel_begin_state_update = yes
+# Validate and commit the complete state mutation here.
+camp_admin_panel_end_state_update = yes
+```
+
+The exact occupation transfer helpers also bracket the destination state from the staged destination event target before preflight and end it only after the complete commit or inverse and input cleanup.
+Custody row append, physical debit/credit, import binding, inverse binding, and individual transfer-row staging remain internal and do not publish partial receipts.
+Existing admission, measured death, release, reform, closure, economy assessment, origin observation/reconciliation, registration/removal and country-program command seams call these adapters or the country `national_policy_panel_begin_update`/`refresh_open`/`end_update` API.
+Country program and economy ticks publish their final stored progress at the same game date and do not change their existing simulation cadence.
+The projector retains the original-record and current-authority visibility predicates, so notifying an owner does not grant access to another authority's exact records.
+External callers that mutate displayed values after one of these seams must publish again at their own final mutation boundary.
+State-control callers must notify a former controller explicitly because a callback entered after the control change cannot recover that pointer from the current state.
+Regression fixtures must declare their external physical-loss, equipment-removal, and read-only authority/provenance dependencies separately from the publication behavior they execute.

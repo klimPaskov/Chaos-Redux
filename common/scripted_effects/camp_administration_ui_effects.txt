@@ -242,44 +242,11 @@ camp_admin_append_display_source = {
 # Country-owned projection over the existing package registries only.
 # A co-located occupation/custody host contributes one warning location.
 camp_admin_project_origin_uncertainty = {
-	set_variable = { camp_admin_gui_uncertain_locations = constant:camp_admin_value.zero }
-	set_temp_variable = { camp_admin_ui_break_1 = constant:camp_admin_value.zero }
-	for_each_scope_loop = {
-		break = camp_admin_ui_break_1
-		array = camp_admin_known_site_states
-		if = {
-			limit = { camp_admin_site_is_original_record = yes camp_admin_gui_host_records_uncertain = yes }
-			PREV = { add_to_variable = { camp_admin_gui_uncertain_locations = constant:camp_admin_value.one } }
-		}
+	set_temp_variable = { camp_admin_live_uncertain_locations = constant:camp_admin_value.zero }
+	if = {
+		limit = { camp_admin_gui_read_live_uncertainty = yes }
+		set_variable = { camp_admin_gui_uncertain_locations = camp_admin_live_uncertain_locations }
 	}
-	set_temp_variable = { camp_admin_ui_break_2 = constant:camp_admin_value.zero }
-	for_each_scope_loop = {
-		break = camp_admin_ui_break_2
-		array = camp_active_site_states
-		set_temp_variable = { camp_admin_origin_projection_host = THIS }
-		if = {
-			limit = {
-				NOT = { PREV = { is_in_array = { array = camp_admin_known_site_states value = var:camp_admin_origin_projection_host } } }
-				camp_admin_gui_host_records_uncertain = yes
-			}
-			PREV = { add_to_variable = { camp_admin_gui_uncertain_locations = constant:camp_admin_value.one } }
-		}
-	}
-	set_temp_variable = { camp_admin_ui_break_3 = constant:camp_admin_value.zero }
-	for_each_scope_loop = {
-		break = camp_admin_ui_break_3
-		array = camp_occ_states
-		set_temp_variable = { camp_admin_origin_projection_host = THIS }
-		if = {
-			limit = {
-				NOT = { PREV = { is_in_array = { array = camp_active_site_states value = var:camp_admin_origin_projection_host } } }
-				NOT = { PREV = { is_in_array = { array = camp_admin_known_site_states value = var:camp_admin_origin_projection_host } } }
-				camp_admin_gui_host_records_uncertain = yes
-			}
-			PREV = { add_to_variable = { camp_admin_gui_uncertain_locations = constant:camp_admin_value.one } }
-		}
-	}
-	# Every iteration initializes this scratch target before reading it.
 }
 
 # Country scope. Read paid workflow counters into display variables only.
@@ -370,22 +337,7 @@ camp_admin_refresh_interface = {
 		}
 		if = {
 			limit = {
-				camp_admin_gui_site_record_visible = yes
-				OR = {
-					event_target:camp_admin_ui_actor = { check_variable = { camp_admin_location_filter = constant:camp_admin_filter.all } }
-					AND = {
-						event_target:camp_admin_ui_actor = { check_variable = { camp_admin_location_filter = constant:camp_admin_filter.labor } }
-						OR = { check_variable = { camp_admin_role = constant:camp_admin_role.labor } check_variable = { camp_admin_role = constant:camp_admin_role.penal } }
-					}
-					AND = {
-						event_target:camp_admin_ui_actor = { check_variable = { camp_admin_location_filter = constant:camp_admin_filter.custody } }
-						check_variable = { camp_admin_role = constant:camp_admin_role.custody }
-					}
-					AND = {
-						event_target:camp_admin_ui_actor = { check_variable = { camp_admin_location_filter = constant:camp_admin_filter.attention } }
-						OR = { camp_admin_gui_host_records_uncertain = yes hidden_trigger = { has_state_flag = camp_admin_site_suspended } check_variable = { camp_admin_support_ratio < constant:camp_admin_value.one } }
-					}
-				}
+				camp_admin_gui_site_matches_filter = yes
 			}
 			set_temp_variable = { camp_admin_display_state = THIS }
 			event_target:camp_admin_ui_actor = { add_to_array = { array = camp_admin_gui_states value = camp_admin_display_state } }

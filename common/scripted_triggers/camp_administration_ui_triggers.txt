@@ -212,3 +212,90 @@ camp_admin_gui_host_records_uncertain = {
 		}
 	}
 }
+
+# COUNTRY read-only GUI projection. Caller preinitializes both temporary arrays.
+# Preserve active/civilian/known order and deduplicate without changing owner registries.
+camp_admin_gui_read_live_locations = {
+	clear_temp_array = camp_admin_live_location_sources
+	clear_temp_array = camp_admin_live_location_states
+	all_of_scopes = { array = camp_active_site_states camp_admin_gui_append_live_location_source = yes }
+	all_of_scopes = { array = camp_admin_civilian_states camp_admin_gui_append_live_location_source = yes }
+	all_of_scopes = { array = camp_admin_known_site_states camp_admin_gui_append_live_location_source = yes }
+	all_of_scopes = {
+		array = camp_admin_live_location_sources
+		if = {
+			limit = { camp_admin_gui_site_matches_filter = yes }
+			add_to_temp_array = { array = camp_admin_live_location_states value = THIS }
+		}
+	}
+}
+# STATE, PREV remains the actual viewing country through this trigger call.
+camp_admin_gui_append_live_location_source = {
+	if = {
+		limit = { NOT = { is_in_array = { array = camp_admin_live_location_sources value = THIS } } }
+		add_to_temp_array = { array = camp_admin_live_location_sources value = THIS }
+	}
+}
+# STATE, PREV is the actual viewer. Shared by owner projection and live GUI lists.
+camp_admin_gui_site_matches_filter = {
+	# Retain nested provenance-inspection outputs until the freshness predicate consumes them.
+	set_temp_variable = { camp_origin_inspect_shortfall_k = constant:camp_admin_value.zero }
+	set_temp_variable = { camp_origin_inspect_custody_k = constant:camp_admin_value.zero }
+	set_temp_variable = { camp_origin_inspect_occupation_k = constant:camp_admin_value.zero }
+	camp_admin_gui_site_record_visible = yes
+	OR = {
+		PREV = { check_variable = { camp_admin_location_filter = constant:camp_admin_filter.all } }
+		AND = {
+			PREV = { check_variable = { camp_admin_location_filter = constant:camp_admin_filter.labor } }
+			OR = { check_variable = { camp_admin_role = constant:camp_admin_role.labor } check_variable = { camp_admin_role = constant:camp_admin_role.penal } }
+		}
+		AND = {
+			PREV = { check_variable = { camp_admin_location_filter = constant:camp_admin_filter.custody } }
+			check_variable = { camp_admin_role = constant:camp_admin_role.custody }
+		}
+		AND = {
+			PREV = { check_variable = { camp_admin_location_filter = constant:camp_admin_filter.attention } }
+			OR = { camp_admin_gui_host_records_uncertain = yes hidden_trigger = { has_state_flag = camp_admin_site_suspended } check_variable = { camp_admin_support_ratio < constant:camp_admin_value.one } }
+		}
+	}
+}
+
+# COUNTRY live warning count over bounded authority records only.
+# Caller initializes camp_admin_live_uncertain_locations before this trigger returns it.
+# Matches the owner projector's original co-located occupation/custody deduplication.
+camp_admin_gui_read_live_uncertainty = {
+	set_temp_variable = { camp_admin_live_uncertain_locations = constant:camp_admin_value.zero }
+	set_temp_variable = { camp_origin_inspect_shortfall_k = constant:camp_admin_value.zero }
+	set_temp_variable = { camp_origin_inspect_custody_k = constant:camp_admin_value.zero }
+	set_temp_variable = { camp_origin_inspect_occupation_k = constant:camp_admin_value.zero }
+	all_of_scopes = {
+		array = camp_admin_known_site_states
+		if = {
+			limit = { camp_admin_site_is_original_record = yes camp_admin_gui_host_records_uncertain = yes }
+			add_to_temp_variable = { camp_admin_live_uncertain_locations = constant:camp_admin_value.one }
+		}
+	}
+	all_of_scopes = {
+		array = camp_active_site_states
+		set_temp_variable = { camp_admin_live_warning_host = THIS }
+		if = {
+			limit = {
+				NOT = { PREV = { is_in_array = { array = camp_admin_known_site_states value = camp_admin_live_warning_host } } }
+				camp_admin_gui_host_records_uncertain = yes
+			}
+			add_to_temp_variable = { camp_admin_live_uncertain_locations = constant:camp_admin_value.one }
+		}
+	}
+	all_of_scopes = {
+		array = camp_occ_states
+		set_temp_variable = { camp_admin_live_warning_host = THIS }
+		if = {
+			limit = {
+				NOT = { PREV = { is_in_array = { array = camp_admin_known_site_states value = camp_admin_live_warning_host } } }
+				NOT = { PREV = { is_in_array = { array = camp_active_site_states value = camp_admin_live_warning_host } } }
+				camp_admin_gui_host_records_uncertain = yes
+			}
+			add_to_temp_variable = { camp_admin_live_uncertain_locations = constant:camp_admin_value.one }
+		}
+	}
+}

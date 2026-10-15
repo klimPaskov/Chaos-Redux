@@ -1,5 +1,5 @@
 # Chaos Redux panel-local text selectors.
-# Country text consumes copied UI fields. Rows execute in the actual listed state.
+# Aggregates consume owner publications. Selected-state selectors read their live scope.
 
 defined_text = {
 	name = GetMigrationPanelDisplacement
@@ -9,7 +9,7 @@ defined_text = {
 
 defined_text = {
 	name = GetMigrationPanelCapacity
-	text = { trigger = { has_country_flag = migration_panel_capacity_assessed } localization_key = migration_panel_capacity_values }
+	text = { trigger = { migration_reception_capacity_is_valid = yes has_variable = migration_reception_load } localization_key = migration_panel_capacity_values }
 	text = { localization_key = humanitarian_panel_capacity_unknown }
 }
 
@@ -37,7 +37,7 @@ defined_text = {
 	name = GetMigrationPanelSituation
 	text = { trigger = { migration_pending_reception_issue_is_valid = yes } localization_key = migration_panel_situation_offer }
 	text = { trigger = { check_variable = { migration_panel_trapped > constant:humanitarian_panel.zero } } localization_key = migration_panel_situation_trapped }
-	text = { trigger = { has_country_flag = migration_panel_capacity_assessed check_variable = { migration_panel_capacity_used > migration_panel_capacity } } localization_key = migration_panel_situation_capacity }
+	text = { trigger = { migration_reception_capacity_is_valid = yes has_variable = migration_reception_load check_variable = { migration_reception_load > migration_reception_capacity } } localization_key = migration_panel_situation_capacity }
 	text = { trigger = { check_variable = { migration_panel_fleeing > constant:humanitarian_panel.zero } } localization_key = migration_panel_situation_fleeing }
 	text = { trigger = { check_variable = { migration_panel_state_count > constant:humanitarian_panel.zero } } localization_key = migration_panel_situation_work }
 	text = { localization_key = migration_panel_situation_calm }
@@ -51,7 +51,7 @@ defined_text = {
 
 defined_text = {
 	name = GetMigrationPanelStateSummary
-	text = { trigger = { migration_panel_has_selected_state = yes has_country_flag = migration_panel_selected_displacement_assessed } localization_key = migration_panel_state_summary_values }
+	text = { trigger = { migration_panel_has_selected_state = yes var:migration_panel_selected_state = { OR = { has_variable = migration_state_flight_population has_variable = migration_state_trapped_population has_variable = migration_state_reception_load } } } localization_key = migration_panel_state_summary_values }
 	text = { localization_key = humanitarian_panel_not_assessed }
 }
 
@@ -70,10 +70,10 @@ defined_text = {
 defined_text = {
 	name = GetMigrationPanelStateDetails
 	text = { trigger = { NOT = { migration_panel_has_selected_state = yes } } localization_key = humanitarian_panel_select_state }
-	text = { trigger = { check_variable = { migration_panel_selected_trapped > constant:humanitarian_panel.zero } } localization_key = migration_panel_state_details_trapped }
-	text = { trigger = { check_variable = { migration_panel_selected_sheltered > constant:humanitarian_panel.zero } } localization_key = migration_panel_state_details_host }
-	text = { trigger = { check_variable = { migration_panel_selected_fleeing > constant:humanitarian_panel.zero } } localization_key = migration_panel_state_details_fleeing }
-	text = { trigger = { has_country_flag = migration_panel_selected_prepared } localization_key = migration_panel_state_details_prepared }
+	text = { trigger = { var:migration_panel_selected_state = { check_variable = { migration_state_trapped_population > constant:humanitarian_panel.zero } } } localization_key = migration_panel_state_details_trapped }
+	text = { trigger = { var:migration_panel_selected_state = { check_variable = { migration_state_reception_load > constant:humanitarian_panel.zero } } } localization_key = migration_panel_state_details_host }
+	text = { trigger = { var:migration_panel_selected_state = { check_variable = { migration_state_flight_population > constant:humanitarian_panel.zero } } } localization_key = migration_panel_state_details_fleeing }
+	text = { trigger = { var:migration_panel_selected_state = { has_state_flag = migration_evacuation_prepared } } localization_key = migration_panel_state_details_prepared }
 	text = { localization_key = migration_panel_state_details_work }
 }
 
@@ -89,11 +89,11 @@ defined_text = {
 
 defined_text = {
 	name = GetFaminePanelSelectedFoodStage
-	text = { trigger = { has_country_flag = famine_panel_selected_food_assessed check_variable = { famine_panel_selected_food_stage = constant:famine_food_stage.catastrophic_famine } } localization_key = famine_food_stage_catastrophic }
-	text = { trigger = { has_country_flag = famine_panel_selected_food_assessed check_variable = { famine_panel_selected_food_stage = constant:famine_food_stage.famine } } localization_key = famine_food_stage_famine }
-	text = { trigger = { has_country_flag = famine_panel_selected_food_assessed check_variable = { famine_panel_selected_food_stage = constant:famine_food_stage.acute_shortage } } localization_key = famine_food_stage_acute_shortage }
-	text = { trigger = { has_country_flag = famine_panel_selected_food_assessed check_variable = { famine_panel_selected_food_stage = constant:famine_food_stage.supply_strain } } localization_key = famine_food_stage_supply_strain }
-	text = { trigger = { has_country_flag = famine_panel_selected_food_assessed check_variable = { famine_panel_selected_food_stage = constant:famine_food_stage.stable } } localization_key = famine_food_stage_stable }
+	text = { trigger = { var:famine_panel_selected_state = { famine_panel_state_has_food_assessment = yes } var:famine_panel_selected_state = { OR = { check_variable = { famine_food_stage = constant:famine_food_stage.catastrophic_famine } AND = { NOT = { has_variable = famine_food_stage } has_state_flag = famine_food_stage_catastrophic } } } } localization_key = famine_food_stage_catastrophic }
+	text = { trigger = { var:famine_panel_selected_state = { famine_panel_state_has_food_assessment = yes } var:famine_panel_selected_state = { OR = { check_variable = { famine_food_stage = constant:famine_food_stage.famine } AND = { NOT = { has_variable = famine_food_stage } has_state_flag = famine_food_stage_famine } } } } localization_key = famine_food_stage_famine }
+	text = { trigger = { var:famine_panel_selected_state = { famine_panel_state_has_food_assessment = yes } var:famine_panel_selected_state = { OR = { check_variable = { famine_food_stage = constant:famine_food_stage.acute_shortage } AND = { NOT = { has_variable = famine_food_stage } has_state_flag = famine_food_stage_acute_shortage } } } } localization_key = famine_food_stage_acute_shortage }
+	text = { trigger = { var:famine_panel_selected_state = { famine_panel_state_has_food_assessment = yes } var:famine_panel_selected_state = { OR = { check_variable = { famine_food_stage = constant:famine_food_stage.supply_strain } AND = { NOT = { has_variable = famine_food_stage } has_state_flag = famine_food_stage_supply_strain } } } } localization_key = famine_food_stage_supply_strain }
+	text = { trigger = { var:famine_panel_selected_state = { famine_panel_state_has_food_assessment = yes } var:famine_panel_selected_state = { OR = { check_variable = { famine_food_stage = constant:famine_food_stage.stable } } } } localization_key = famine_food_stage_stable }
 	text = { localization_key = humanitarian_panel_not_assessed }
 }
 
@@ -105,7 +105,21 @@ defined_text = {
 
 defined_text = {
 	name = GetFaminePanelSelectedReserveSummary
-	text = { trigger = { has_country_flag = famine_panel_selected_reserves_assessed } localization_key = famine_panel_selected_reserve_days }
+	text = {
+		trigger = {
+			famine_panel_has_selected_state = yes
+			set_temp_variable = { famine_panel_live_selected_reserve_days = constant:humanitarian_panel.zero }
+			var:famine_panel_selected_state = {
+				has_state_flag = famine_food_reserve_initialized
+				has_variable = famine_food_reserve_amount
+				has_variable = famine_food_reserve_daily_need
+				check_variable = { famine_food_reserve_daily_need > constant:humanitarian_panel.zero }
+				set_temp_variable = { famine_panel_live_selected_reserve_days = famine_food_reserve_amount }
+				divide_temp_variable = { famine_panel_live_selected_reserve_days = famine_food_reserve_daily_need }
+			}
+		}
+		localization_key = famine_panel_selected_reserve_days
+	}
 	text = { localization_key = humanitarian_panel_not_assessed }
 }
 
@@ -119,9 +133,9 @@ defined_text = {
 
 defined_text = {
 	name = GetFaminePanelSelectedReliefAccess
-	text = { trigger = { NOT = { has_country_flag = famine_panel_selected_food_assessed } } localization_key = humanitarian_panel_not_assessed }
-	text = { trigger = { check_variable = { famine_panel_selected_relief = constant:humanitarian_panel.relief_blocked } } localization_key = famine_relief_access_blocked }
-	text = { trigger = { check_variable = { famine_panel_selected_relief = constant:humanitarian_panel.relief_open } } localization_key = famine_relief_access_open }
+	text = { trigger = { NOT = { var:famine_panel_selected_state = { famine_panel_state_has_food_assessment = yes } } } localization_key = humanitarian_panel_not_assessed }
+	text = { trigger = { var:famine_panel_selected_state = { has_state_flag = famine_food_security_active NOT = { has_state_flag = famine_relief_access_active } } } localization_key = famine_relief_access_blocked }
+	text = { trigger = { var:famine_panel_selected_state = { has_state_flag = famine_food_security_active has_state_flag = famine_relief_access_active } } localization_key = famine_relief_access_open }
 	text = { localization_key = famine_relief_access_not_required }
 }
 
@@ -159,7 +173,7 @@ defined_text = {
 defined_text = {
 	name = GetFaminePanelStateDetails
 	text = { trigger = { NOT = { famine_panel_has_selected_state = yes } } localization_key = humanitarian_panel_select_state }
-	text = { trigger = { has_country_flag = famine_panel_selected_food_assessed } localization_key = famine_panel_state_details_cause }
+	text = { trigger = { var:famine_panel_selected_state = { famine_panel_state_has_food_assessment = yes } } localization_key = famine_panel_state_details_cause }
 	text = { localization_key = famine_panel_state_details_default }
 }
 

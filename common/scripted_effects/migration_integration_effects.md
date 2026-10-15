@@ -61,3 +61,5 @@ FROM = {
 	migration_settle_integrated_cohort = yes
 }
 ```
+
+A successful settlement publishes the host state after deferred reception debits, cohort completion, country integration credit, and local context refresh all commit. Rejected settlement attempts do not publish.

@@ -515,6 +515,7 @@ camp_rework_refresh_colonial_country_ideas = {
 # ---------------------------------------------------------------------------
 
 camp_rework_colonial_register_current_state = {
+	camp_admin_panel_begin_state_update = yes
 	if = {
 		limit = {
 			camp_rework_state_can_accept_responsibility_from_root = yes
@@ -543,6 +544,7 @@ camp_rework_colonial_register_current_state = {
 		camp_administration_civil_authorize_subject_site = yes
 		camp_admin_initialize_site = yes
 	}
+	camp_admin_panel_end_state_update = yes
 }
 
 # ---------------------------------------------------------------------------
@@ -660,6 +662,7 @@ camp_rework_clear_legacy_closure_attempt = {
 }
 
 camp_rework_expose_first_colonial_evidence = {
+	national_policy_panel_begin_update = yes
 	set_temp_variable = { camp_colonial_discovery_processed = 0 }
 	for_each_scope_loop = {
 		array = camp_evidence_states
@@ -695,6 +698,8 @@ camp_rework_expose_first_colonial_evidence = {
 		genocide_fire_country_kit_exposure_events = yes
 		camp_rework_show_colonial_reckoning_super_event = yes
 	}
+	national_policy_panel_refresh_open = yes
+	national_policy_panel_end_update = yes
 }
 
 # ---------------------------------------------------------------------------
@@ -708,11 +713,14 @@ camp_rework_expose_first_colonial_evidence = {
 # Country. Civil reform or terminal cleanup supersedes the legacy security
 # sunset timer; removing it never runs the timeout reward or failure branch.
 camp_rework_usa_cancel_security_sunset = {
+	national_policy_panel_begin_update = yes
 	if = {
 		limit = { original_tag = USA }
 		clr_country_flag = camp_rework_usa_authority_active
 		clr_country_flag = camp_rework_democratic_emergency_authorized
 	}
+	national_policy_panel_refresh_open = yes
+	national_policy_panel_end_update = yes
 }
 
 # ---------------------------------------------------------------------------
@@ -720,6 +728,7 @@ camp_rework_usa_cancel_security_sunset = {
 # ---------------------------------------------------------------------------
 
 camp_rework_france_transfer_collaboration_records = {
+	national_policy_panel_begin_update = yes
 	if = { limit = { is_ai = yes } camp_rework_select_france_unassigned_active_state = yes }
 	if = {
 		limit = {
@@ -750,6 +759,8 @@ camp_rework_france_transfer_collaboration_records = {
 		add_to_variable = { camp_policy_tribunal = constant:camp_rework_country_value.tribunal_major }
 		add_to_variable = { refugee_pressure = constant:camp_rework_country_value.resistance_minor }
 	}
+	national_policy_panel_refresh_open = yes
+	national_policy_panel_end_update = yes
 }
 
 # ---------------------------------------------------------------------------
@@ -762,6 +773,7 @@ camp_rework_france_transfer_collaboration_records = {
 
 
 camp_rework_update_colonial_country_monthly_bridge = {
+	national_policy_panel_begin_update = yes
 	if = {
 		limit = {
 			uses_normal_civilian_systems = yes
@@ -931,6 +943,8 @@ camp_rework_update_colonial_country_monthly_bridge = {
 		camp_rework_refresh_colonial_country_ideas = yes
 		camp_rework_copy_colonial_country_display_values = yes
 	}
+	national_policy_panel_refresh_open = yes
+	national_policy_panel_end_update = yes
 }
 camp_rework_select_france_legacy_state = {
 	clear_temp_array = camp_colonial_action_states
@@ -941,6 +955,7 @@ camp_rework_select_france_legacy_state = {
 	camp_rework_colonial_select_random_candidate = yes
 }
 camp_rework_france_inspect_camp_legacy = {
+	national_policy_panel_begin_update = yes
 	if = {
 		limit = { uses_normal_civilian_systems = yes NOT = { has_country_flag = camp_admin_initialized } }
 		if = { limit = { is_ai = yes } camp_rework_select_france_legacy_state = yes }
@@ -992,8 +1007,11 @@ camp_rework_france_inspect_camp_legacy = {
 		activate_mission = fr_gurs_legacy_review
 		camp_rework_register_country_for_monthly_pulse = yes
 	}
+	national_policy_panel_refresh_open = yes
+	national_policy_panel_end_update = yes
 }
 camp_rework_france_begin_legacy_closure = {
+	national_policy_panel_begin_update = yes
 	if = {
 		limit = {
 			uses_normal_civilian_systems = yes
@@ -1019,8 +1037,11 @@ camp_rework_france_begin_legacy_closure = {
 		camp_rework_consume_colonial_support_equipment = yes
 		camp_rework_start_all_french_inherited_site_dismantlement = yes
 	}
+	national_policy_panel_refresh_open = yes
+	national_policy_panel_end_update = yes
 }
 camp_rework_france_complete_legacy_closure = {
+	national_policy_panel_begin_update = yes
 	if = {
 		limit = { uses_normal_civilian_systems = yes has_country_flag = camp_admin_initialized }
 		if = {
@@ -1060,8 +1081,11 @@ camp_rework_france_complete_legacy_closure = {
 		camp_rework_update_colonial_country_monthly_bridge = yes
 		camp_rework_clear_legacy_closure_attempt = yes
 	}
+	national_policy_panel_refresh_open = yes
+	national_policy_panel_end_update = yes
 }
 camp_rework_start_all_french_inherited_site_dismantlement = {
+	national_policy_panel_begin_update = yes
 	clear_temp_array = camp_colonial_dismantlement_states
 	clear_array = camp_rework_legacy_closure_active_states
 	for_each_scope_loop = {
@@ -1076,8 +1100,11 @@ camp_rework_start_all_french_inherited_site_dismantlement = {
 		camp_rework_begin_legacy_closure_site = yes
 	}
 	clear_temp_array = camp_colonial_dismantlement_states
+	national_policy_panel_refresh_open = yes
+	national_policy_panel_end_update = yes
 }
 camp_rework_complete_all_french_inherited_site_dismantlement = {
+	national_policy_panel_begin_update = yes
 	set_temp_variable = { camp_colonial_dismantlement_all_accepted = constant:camp_admin_value.zero }
 	clear_temp_array = camp_colonial_dismantlement_states
 	for_each_scope_loop = {
@@ -1100,8 +1127,11 @@ camp_rework_complete_all_french_inherited_site_dismantlement = {
 	clear_temp_array = camp_colonial_dismantlement_states
 	camp_rework_recalculate_country_values = yes
 	camp_rework_refresh_colonial_country_ideas = yes
+	national_policy_panel_refresh_open = yes
+	national_policy_panel_end_update = yes
 }
 camp_rework_start_all_colonial_site_dismantlement = {
+	national_policy_panel_begin_update = yes
 	clear_temp_array = camp_colonial_dismantlement_states
 	clear_array = camp_rework_legacy_closure_active_states
 	for_each_scope_loop = {
@@ -1116,8 +1146,11 @@ camp_rework_start_all_colonial_site_dismantlement = {
 		camp_rework_begin_legacy_closure_site = yes
 	}
 	clear_temp_array = camp_colonial_dismantlement_states
+	national_policy_panel_refresh_open = yes
+	national_policy_panel_end_update = yes
 }
 camp_rework_belgium_open_international_inspection = {
+	national_policy_panel_begin_update = yes
 	set_country_flag = camp_rework_belgium_inspection_open
 	set_country_flag = camp_rework_inspection_active
 	set_country_flag = camp_rework_reform_route_open
@@ -1134,8 +1167,11 @@ camp_rework_belgium_open_international_inspection = {
 		set_country_flag = camp_rework_belgium_strike_route_reform
 	}
 	camp_rework_update_colonial_country_monthly_bridge = yes
+	national_policy_panel_refresh_open = yes
+	national_policy_panel_end_update = yes
 }
 camp_rework_belgium_begin_concession_reform = {
+	national_policy_panel_begin_update = yes
 	if = {
 		limit = {
 			uses_normal_civilian_systems = yes
@@ -1168,6 +1204,8 @@ camp_rework_belgium_begin_concession_reform = {
 		}
 		activate_mission = bel_concession_reform_mandate
 	}
+	national_policy_panel_refresh_open = yes
+	national_policy_panel_end_update = yes
 }
 
 
@@ -1193,6 +1231,7 @@ camp_rework_select_france_active_state = {
 	camp_rework_colonial_select_random_candidate = yes
 }
 camp_rework_begin_france_refugee_response = {
+	national_policy_panel_begin_update = yes
 	set_temp_variable = { camp_colonial_had_saved_selection = 0 }
 	if = {
 		limit = { has_variable = camp_selected_state_id }
@@ -1218,9 +1257,12 @@ camp_rework_begin_france_refugee_response = {
 	}
 	else = { clear_variable = camp_selected_state_id }
 	clear_variable = camp_colonial_saved_selection_id
+	national_policy_panel_refresh_open = yes
+	national_policy_panel_end_update = yes
 }
 
 camp_rework_complete_france_refugee_response = {
+	national_policy_panel_begin_update = yes
 	if = {
 		limit = { has_country_flag = camp_rework_france_refugee_route_aid }
 		add_to_variable = { refugee_pressure = constant:camp_rework_country_value.inspection_evidence_relief }
@@ -1257,9 +1299,12 @@ camp_rework_complete_france_refugee_response = {
 	clr_country_flag = camp_rework_france_refugee_route_suppression
 	clear_variable = fr_refugee_response_state_id
 	camp_rework_update_colonial_country_monthly_bridge = yes
+	national_policy_panel_refresh_open = yes
+	national_policy_panel_end_update = yes
 }
 
 camp_rework_expose_first_french_inherited_evidence = {
+	national_policy_panel_begin_update = yes
 	set_temp_variable = { camp_colonial_discovery_processed = 0 }
 	every_controlled_state = {
 		if = {
@@ -1318,8 +1363,11 @@ camp_rework_expose_first_french_inherited_evidence = {
 		genocide_fire_country_kit_exposure_events = yes
 		camp_rework_show_colonial_reckoning_super_event = yes
 	}
+	national_policy_panel_refresh_open = yes
+	national_policy_panel_end_update = yes
 }
 camp_rework_begin_legacy_closure_site = {
+	camp_admin_panel_begin_state_update = yes
 	if = {
 		limit = { camp_rework_legacy_closure_site_can_begin = yes }
 		if = {
@@ -1341,8 +1389,10 @@ camp_rework_begin_legacy_closure_site = {
 			}
 		}
 	}
+	camp_admin_panel_end_state_update = yes
 }
 camp_rework_complete_france_gurs_review = {
+	national_policy_panel_begin_update = yes
 	if = {
 		limit = { uses_normal_civilian_systems = yes }
 
@@ -1378,8 +1428,11 @@ camp_rework_complete_france_gurs_review = {
 		camp_administration_civil_action_two = yes
 		clr_country_flag = camp_rework_inspection_active
 	}
+	national_policy_panel_refresh_open = yes
+	national_policy_panel_end_update = yes
 }
 camp_rework_complete_belgium_concession_reform = {
+	national_policy_panel_begin_update = yes
 	if = {
 		limit = { uses_normal_civilian_systems = yes has_country_flag = camp_admin_initialized }
 		if = {
@@ -1447,10 +1500,13 @@ camp_rework_complete_belgium_concession_reform = {
 		camp_rework_update_colonial_country_monthly_bridge = yes
 		}
 camp_rework_clear_legacy_closure_attempt = yes
+	national_policy_panel_refresh_open = yes
+	national_policy_panel_end_update = yes
 }
 
 
 camp_rework_complete_all_colonial_site_dismantlement = {
+	national_policy_panel_begin_update = yes
 	set_temp_variable = { camp_colonial_dismantlement_all_accepted = constant:camp_admin_value.zero }
 	clear_temp_array = camp_colonial_dismantlement_states
 	for_each_scope_loop = {
@@ -1473,9 +1529,12 @@ camp_rework_complete_all_colonial_site_dismantlement = {
 	clear_temp_array = camp_colonial_dismantlement_states
 	camp_rework_recalculate_country_values = yes
 	camp_rework_refresh_colonial_country_ideas = yes
+	national_policy_panel_refresh_open = yes
+	national_policy_panel_end_update = yes
 }
 
 camp_rework_belgium_recognize_local_administration = {
+	national_policy_panel_begin_update = yes
 	add_stability = constant:camp_rework_cost.stability_minor
 	set_country_flag = camp_rework_belgium_local_administration_recognized
 	clear_temp_array = camp_colonial_concession_states
@@ -1500,6 +1559,8 @@ camp_rework_belgium_recognize_local_administration = {
 	add_to_variable = { concession_labor_burden = camp_colonial_relief }
 	add_to_variable = { colonial_unrest_pressure = camp_colonial_relief }
 	add_to_variable = { postwar_accountability_pressure = camp_colonial_relief }
+	national_policy_panel_refresh_open = yes
+	national_policy_panel_end_update = yes
 }
 
 
@@ -1526,6 +1587,7 @@ camp_rework_select_belgium_active_congo_state = {
 
 
 camp_rework_begin_belgium_strike_response = {
+	national_policy_panel_begin_update = yes
 	if = {
 		limit = { uses_normal_civilian_systems = yes NOT = { has_country_flag = camp_admin_initialized } }
 
@@ -1555,10 +1617,13 @@ camp_rework_begin_belgium_strike_response = {
 		else = { clear_variable = camp_selected_state_id }
 		clear_variable = camp_colonial_saved_selection_id
 	}
+	national_policy_panel_refresh_open = yes
+	national_policy_panel_end_update = yes
 }
 
 
 camp_rework_belgium_expand_concession_quotas = {
+	national_policy_panel_begin_update = yes
 	if = {
 		limit = { uses_normal_civilian_systems = yes NOT = { has_country_flag = camp_admin_initialized } }
 
@@ -1660,10 +1725,13 @@ camp_rework_belgium_expand_concession_quotas = {
 		camp_rework_recalculate_country_values = yes
 		camp_rework_update_colonial_country_monthly_bridge = yes
 	}
+	national_policy_panel_refresh_open = yes
+	national_policy_panel_end_update = yes
 }
 
 
 camp_rework_belgium_start_resource_route = {
+	national_policy_panel_begin_update = yes
 	if = {
 		limit = { uses_normal_civilian_systems = yes NOT = { has_country_flag = camp_admin_initialized } }
 
@@ -1691,10 +1759,13 @@ camp_rework_belgium_start_resource_route = {
 		}
 		camp_rework_update_colonial_country_monthly_bridge = yes
 	}
+	national_policy_panel_refresh_open = yes
+	national_policy_panel_end_update = yes
 }
 
 
 camp_rework_belgium_start_transport_corridor = {
+	national_policy_panel_begin_update = yes
 	if = {
 		limit = { uses_normal_civilian_systems = yes NOT = { has_country_flag = camp_admin_initialized } }
 
@@ -1722,10 +1793,13 @@ camp_rework_belgium_start_transport_corridor = {
 		}
 		camp_rework_update_colonial_country_monthly_bridge = yes
 	}
+	national_policy_panel_refresh_open = yes
+	national_policy_panel_end_update = yes
 }
 
 
 camp_rework_belgium_suppress_colonial_strikes = {
+	national_policy_panel_begin_update = yes
 	if = {
 		limit = { uses_normal_civilian_systems = yes NOT = { has_country_flag = camp_admin_initialized } }
 
@@ -1749,10 +1823,13 @@ camp_rework_belgium_suppress_colonial_strikes = {
 		}
 		camp_rework_update_colonial_country_monthly_bridge = yes
 	}
+	national_policy_panel_refresh_open = yes
+	national_policy_panel_end_update = yes
 }
 
 
 camp_rework_belgium_negotiate_colonial_strike_settlement = {
+	national_policy_panel_begin_update = yes
 	if = {
 		limit = { uses_normal_civilian_systems = yes NOT = { has_country_flag = camp_admin_initialized } }
 
@@ -1779,10 +1856,13 @@ camp_rework_belgium_negotiate_colonial_strike_settlement = {
 		}
 		camp_rework_update_colonial_country_monthly_bridge = yes
 	}
+	national_policy_panel_refresh_open = yes
+	national_policy_panel_end_update = yes
 }
 
 
 camp_rework_complete_belgium_quota_cycle = {
+	national_policy_panel_begin_update = yes
 	set_temp_variable = { camp_colonial_project_succeeded = constant:camp_admin_value.zero }
 	if = {
 		limit = { camp_rework_belgium_quota_current_handoff_ready = yes }
@@ -1854,10 +1934,13 @@ camp_rework_complete_belgium_quota_cycle = {
 	}
 	if = { limit = { NOT = { has_country_flag = bel_congo_quota_economy_project_pending } } clear_variable = bel_congo_quota_state_id }
 	if = { limit = { uses_normal_civilian_systems = yes } camp_rework_update_colonial_country_monthly_bridge = yes }
+	national_policy_panel_refresh_open = yes
+	national_policy_panel_end_update = yes
 }
 
 
 camp_rework_complete_belgium_transport_corridor = {
+	national_policy_panel_begin_update = yes
 	set_temp_variable = { camp_colonial_project_succeeded = constant:camp_admin_value.zero }
 	if = {
 		limit = { camp_rework_belgium_corridor_current_handoff_ready = yes }
@@ -1927,6 +2010,8 @@ camp_rework_complete_belgium_transport_corridor = {
 	}
 	if = { limit = { NOT = { has_country_flag = bel_congo_corridor_economy_project_pending } } clear_variable = bel_congo_corridor_state_id }
 	if = { limit = { uses_normal_civilian_systems = yes } camp_rework_update_colonial_country_monthly_bridge = yes }
+	national_policy_panel_refresh_open = yes
+	national_policy_panel_end_update = yes
 }
 
 
@@ -1934,6 +2019,7 @@ camp_rework_complete_belgium_transport_corridor = {
 # Administration works slot, then clear only after that exact state/type order
 # is visible in the current economy ledger.
 camp_rework_process_belgium_pending_economy_projects = {
+	national_policy_panel_begin_update = yes
 	if = {
 		limit = {
 			uses_normal_civilian_systems = yes
@@ -2058,10 +2144,13 @@ camp_rework_process_belgium_pending_economy_projects = {
 			}
 		}
 	}
+	national_policy_panel_refresh_open = yes
+	national_policy_panel_end_update = yes
 }
 
 
 camp_rework_complete_belgium_strike_response = {
+	national_policy_panel_begin_update = yes
 	if = {
 		limit = { uses_normal_civilian_systems = yes NOT = { has_country_flag = camp_admin_initialized } }
 
@@ -2105,6 +2194,8 @@ camp_rework_complete_belgium_strike_response = {
 	clr_country_flag = camp_rework_belgium_strike_route_suppression
 	clear_variable = bel_colonial_strike_state_id
 	if = { limit = { uses_normal_civilian_systems = yes } camp_rework_update_colonial_country_monthly_bridge = yes }
+	national_policy_panel_refresh_open = yes
+	national_policy_panel_end_update = yes
 }
 
 
@@ -2135,6 +2226,7 @@ camp_rework_consume_colonial_strike_suppression_resources = {
 
 
 camp_rework_colonial_expand_current_state = {
+	camp_admin_panel_begin_state_update = yes
 	if = {
 		limit = {
 			camp_rework_state_can_accept_responsibility_from_root = yes
@@ -2163,10 +2255,12 @@ camp_rework_colonial_expand_current_state = {
 		add_to_variable = { camp_state_resistance_accumulation = constant:camp_rework_country_value.resistance_major }
 		camp_admin_initialize_site = yes
 	}
+	camp_admin_panel_end_state_update = yes
 }
 
 
 camp_rework_colonial_apply_minor_project_to_current_state = {
+	camp_admin_panel_begin_state_update = yes
 	if = {
 		limit = {
 			is_valid_camp_active_site_state = yes
@@ -2191,10 +2285,12 @@ camp_rework_colonial_apply_minor_project_to_current_state = {
 		add_to_variable = { camp_state_resistance_accumulation = constant:camp_rework_country_value.resistance_minor }
 		camp_admin_initialize_site = yes
 	}
+	camp_admin_panel_end_state_update = yes
 }
 
 
 camp_rework_colonial_apply_major_harm_to_current_state = {
+	camp_admin_panel_begin_state_update = yes
 	if = {
 		limit = {
 			is_valid_camp_active_site_state = yes
@@ -2207,6 +2303,7 @@ camp_rework_colonial_apply_major_harm_to_current_state = {
 		camp_admin_initialize_site = yes
 		camp_administration_civil_record_legacy_violence = yes
 	}
+	camp_admin_panel_end_state_update = yes
 }
 
 

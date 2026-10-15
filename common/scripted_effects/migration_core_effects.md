@@ -36,3 +36,5 @@ if = {
 
 The `migration_priority_register_workforce_state` helper adds a valid nonzero-balance state to the existing `global.migration_active_states` array without publishing `migration_displacement_active`. `migration_state_has_obligations` includes the signed industrial balance, so integration does not retire a settled workforce projection. `migration_cleanup_state_registration` leaves an industrial-only state registered without changing its displacement presentation. The existing sparse `migration_process_registered_state` calls the state modifier refresh for nonzero balances; when the balance returns to zero, the ordinary obligation and unregister path retires the state. Invalid-state control changes remove the stored producer contribution and clear the balance.
 
+Accepted flight and trapped-population writers publish their committed state to open owner/controller panels. The sparse registered-state pass publishes after its state projections and movement work finish, while country aggregate and capacity outputs publish after their existing owner pass.
+

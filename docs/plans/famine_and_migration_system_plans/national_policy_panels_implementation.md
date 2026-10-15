@@ -1,6 +1,9 @@
 # National policy panels implementation record
 
-Status: the accepted implementation and source/visual review are complete. All seven maintained source-contract suites also pass from the isolated commit candidate, excluding unrelated working-tree changes. No live-game run is claimed.
+Status: the accepted core panel behavior and compact-number formatting are implemented in current source.
+External writer-family publication coverage is still under parent integration; project-wide completion is not claimed.
+The earlier isolated candidate test results remain historical evidence for that candidate, not results for the current follow-up tree.
+No live-game run is claimed.
 
 The current presentation and automatic-update contract follow the shared Camps/Migration/Famine refinement below.
 Earlier GUI v4 and manual-refresh previews remain historical baseline evidence.
@@ -31,6 +34,7 @@ Acceptance basis: the user explicitly instructed “PLEASE IMPLEMENT THIS PLAN�
 | Native policy costs and discount | Implemented within assigned scope | `.tmp/national_policy_panels/costs_handoff.md` records native PP ownership, three mutually exclusive cost variants, live doctrine discount and the corrected final run: 160 lifecycle cases, 19 paid law-option changes and five free-change rejection cases passed without macro substitution. The current `.tools/test_humanitarian_cost_display.py` result passes all four test groups against the current source hashes in `.tmp/national_policy_panels/cost_display_test_results.json`. | Native localization execution, cost rounding, affordability display and actual PP debit remain engine behavior. |
 | Country start profiles and lifecycle | Implemented/audited within assigned scope | `.tmp/national_policy_panels/country_handoff.md` plus the 91-tag matrix document the exact profiles, MAN/MEN defaults, release reset, civil-war retention, bounded startup and CXT path. | The auditor's earlier Holy Realm adapter finding was addressed in subsequent source and permission review; `.tmp/national_policy_panels/probability_handoff.md` records 21 modeled valid pairs and atomic rejection. Runtime callback execution is unresolved. |
 | Operational panel/action integration | Implemented in source and visually reviewed | `.tmp/national_policy_panels/actions_handoff.md` records 10 famine and 17 migration operations, unchanged AI missions/weights, 19 passing production-source action tests, all 11 existing famine regressions passing, and all 71 production callbacks retaining baseline equivalence. `common/script_enums.txt` contains one `script_enum_humanitarian_action_part` with 32 tokenizable members: two families, 27 operation suffixes, and three retired private receipt-compatibility IDs. The separate numeric script-constant groups carry the 10 and 17 operation IDs plus zero markers. The maintained panel test passes 10 contract groups, including quiet open/refresh/close, sparse state selection, due progress and 1,201-row collection. | Native clicks, automatic tooltip evaluation and live campaign action state remain unobserved. |
+| Immediate publication and compact numbers | Implemented within currently audited source boundaries; broader producer coverage unresolved | User correction accepts synchronous updates while paused and 1,240 → 1.2K with K/M/B. `.tmp/national_policy_panels/instant/architecture_handoff.md`, `numbers_handoff.md`, `humanitarian_publishers_handoff.md` and `instant_audit.md` record the core, formatter and bounded producer evidence. | External writer-family callbacks are still under parent integration; no complete publisher census, paused engine run or current final render is claimed. |
 | Localisation | Implemented within assigned scope | `.tmp/national_policy_panels/localisation_handoff.md` and `localisation_check.json` record the scoped key audit with no duplicate keys, missing GUI/law keys, unknown getters or missing substitutions, and 27 action-tooltip overrides retaining native requirement tokens. | Native automatic tooltip text remains unobserved; parent reviewed the rendered hover and label layouts using the declared scenarios. |
 | CXT package registration | Implemented in source/docs | The package carrier and setup effect are named above; source uses the existing CXT registration token extension. | No new grant or initialization hook is claimed from a registration fallback. |
 | Icon production and wiring | Accepted and integrated in parent scope | The five generated family icons and native strip are crosswalked below; existing GFX references resolve to their DDS paths. Parent accepted the five family icons and reviewed the two added native-strip family frames. | The reference board is excluded from runtime use. |
@@ -157,6 +161,8 @@ No skill changes were required for this refinement.
 
 ## Shared Camps styling and automatic updates: 15 October 2026
 
+Historical implementation record: the hourly-observer design and its associated test/render results below were superseded by the accepted immediate-publication correction recorded in the follow-up section. Preserve these results as evidence for the earlier candidate only; they do not describe the current source contract.
+
 Acceptance basis: the user required Camps to match the other management windows and explicitly rejected Update reports buttons in favor of automatic dynamic UI.
 Both manual report buttons, their localisation and click bindings, the humanitarian dirty gates and their obsolete producer counters are removed.
 Native visibility, affordability, enabled states and dynamic text reevaluate at the GUI tick.
@@ -197,3 +203,56 @@ The final isolated candidate also passed all five selected suites: observer life
 The exact tested tree and logs are recorded in `.tmp/national_policy_panels/consistency/candidate_tests.json`; subsequent reconciliation changes documentation only.
 
 The commit uses a separate Git index. Pre-existing Event 034 receipt work remains in the working tree at its relocated operation-body position, with its unrelated tuning change; unrelated Kruger, migration cleanup, Event 037 and CXT documentation hunks remain outside this commit. The converted decision file retains the necessary removal of an invalid root-level constant assignment; its canonical value already exists in the committed constants.
+
+## Immediate paused updates and compact population counts: 15 October 2026
+
+Acceptance basis: the user explicitly rejected hourly refresh and required panel changes to appear immediately, including while the game is paused. The user also required population counts such as 1,240 to display as 1.2K, with K/M/B suffixes.
+
+Current core source uses synchronous owner publications and a no-delay `national_policy_panel.2` projection event.
+The obsolete `national_policy_panel.1` event is inert.
+Native scripted-GUI values reevaluate each tick; direct getters read current selected-state values, and owner-published lists and aggregates rebuild after their owning mutation has settled.
+Publication requests inside country transactions coalesce until the outer transaction ends.
+This is the current source contract; the cited wiki and installed documentation establish the source semantics for no-delay event dispatch, temporary event context and native GUI reevaluation, but no paused native event delivery has been observed.
+
+Core helper and projection details are in [national_policy_panel_effects.md](../../../common/scripted_effects/national_policy_panel_effects.md).
+The current system overview and user-accepted decisions remain in [National policies](../../systems/national_policies.md) and [Part 9](../../specs/famine_and_migration_system_specs/national_policy_panels_part9.md).
+Architecture and formatter handoffs, source manifests, and the bounded immediate-publication audit are retained under `.tmp/national_policy_panels/instant/`.
+
+The numeric getter family in `common/scripted_localisation/national_policy_panel_numbers.txt` uses canonical thousand-unit sources where applicable and explicit K/M/B thresholds.
+Its handoff records the boundary examples 999 → 999, 1,000 → 1K, 1,240 → 1.2K, 1,000,000 → 1M and 1,000,000,000 → 1B.
+The 1,240 correction is also grounded in the user's supplied value and the existing preview fixture; the previous preview showed `1240`, while the current formatter source expresses the requested compact result.
+The getter reads current selected-state source values instead of stale full-person GUI copies.
+Rates, durations, percentages and other non-population units retain their own formats.
+
+Completed producer integration covers the Famine pressure/context, assessment and reserve owners, Migration flight/trapped/reception and integration owners, finalized transfer endpoints, action tails and the existing camp mutation owners.
+Country batches flush after completed work and refund paths, while deferred reception mutations remain unpublished until settlement.
+The targeted cross-system trace covers Camp and Event 022, Black Plague, Air Winter, nuclear callbacks and player-triggered CXT adapters through those owners.
+No simulation assessment, food policy, recurring world scan, payment, population mutation or AI weight was added by this follow-up.
+
+Two concrete external-dependency defects were corrected during integration.
+Camps warning counts and attention-filter membership read live temporary projections over the existing bounded registries, including when an outside population loss invalidates origin evidence for an independent record authority.
+Row selection uses the actual displayed state rather than a cached row index.
+The Camps population header and workforce tooltip sum current registered state values with deduplication and the existing output guard, so Event 022 round-ups do not wait for the economic census.
+The number regression demonstrates an admission changing 35K to 40K while a deliberately stale 777K census stays untouched, alongside workforce, closure, overlap and empty-registry cases.
+
+All eight suites passed from the isolated candidate tree `9526b61dbc510a7d6f10c4518c6a3eefd8d00ab2`: eleven immediate-publication cases, six camp publisher cases, four humanitarian writer cases, the compact-number boundaries and live-aggregate checks, eleven national-policy groups, ten panel groups, nineteen shared-action contracts and four cost-display cases.
+The law-test presentation boundary was renamed with the source helper; its policy assertions remain intact.
+The exact test logs, source inventory and reviewed patch are in `.tmp/national_policy_panels/instant/candidate_tests.json`, `commit_state.json` and `commit.patch`.
+The publication/decision auditor reviewed the changed scopes, recipients and transaction boundaries, and the localisation specialist implemented and checked the count formatting.
+The parent reviewed their findings, the actual source changes and the final previews.
+
+Final Camps source-preview revision `6fab4fbab27f733165a0d7934dc05060ea0e98e539c007ededa9c4243e21b91b` covers Administration, Locations and Records, 1366×768, and 1920×1080 at 1.25 scale.
+The parent inspected all five native-size images; they show 200K held, 1.2K monthly deaths and compact per-cause totals with no new clipping.
+Migration overview revision `535b73efcfd40507cc3d2af3a2afec5589073f0279530fcb12e99199cd5ce02b` shows 48K fleeing, 12K trapped, 18K sheltered and 62K capacity.
+Fixtures explicitly resolve the numeric getters from declared source inputs; the previews do not execute gameplay or prove native refresh timing.
+The final bare temporary-token clarification in warning deduplication is covered by source tests and changes no geometry or displayed fixture values.
+The exact artifact hashes, resolution/scale identities and number-fixture provenance are retained under `.tmp/national_policy_panels/instant/previews/` and its companion evidence files.
+The first Camps render requested an incorrect window name; correcting it resolved the missing-window result.
+A fixture read using the Windows default encoding introduced visible extra characters, which were removed by reading the UTF-8 fixture correctly before the final renders.
+
+Implementation is complete for this follow-up with no gameplay simplifications or requested controls omitted.
+Verification limits remain explicit: source models use declared native/physical-transfer receipt fixtures, MCP script validation leaves argument semantics unchecked, cross-system searches are targeted rather than an exhaustive audit of every consolidated effect, and no native paused-game execution was performed.
+Scheduled simulation still owns food assessments and project progression; the UI reads or publishes their current state without advancing them.
+No new visual assets were required; the established shared panels, icons and typography remain in use.
+Skills used: scripted GUI, decisions/missions, map/state ledgers, subagents, localisation/event prose, skill maintenance and shared Git commit isolation.
+The canonical scripted-GUI skill was updated to require freshness while paused, completed-transaction publication and display-only projection; its generated mirrors were synchronized.

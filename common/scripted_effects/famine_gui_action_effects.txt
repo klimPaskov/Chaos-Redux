@@ -104,6 +104,7 @@ famine_release_reserves_action_resolve_work = {
 						famine_show_report_relief_arrival = yes
 						add_stability = constant:famine_decision_outcome.decision_minor_stability_negative
 					}
+					national_policy_panel_publish_state = yes
 				}
 			}
 		}
@@ -135,6 +136,7 @@ famine_release_reserves_action_cancel_work = {
 }
 
 famine_emergency_imports_action_begin_work = {
+	set_temp_variable = { famine_gui_capacity_publication_pending = constant:famine_relief_runtime.zero }
 	if = {
 			limit = { famine_emergency_imports_can_start_in_context = yes }
 			var:humanitarian_action_target = {
@@ -151,6 +153,7 @@ famine_emergency_imports_action_begin_work = {
 				if = {
 					limit = { NOT = { famine_relief_contract_is_valid = yes } }
 					famine_refresh_reserve_capacity = yes
+					set_temp_variable = { famine_gui_capacity_publication_pending = constant:famine_relief_runtime.one }
 					set_variable = { famine_relief_route_mode = constant:famine_relief_route_mode.land }
 					set_variable = { famine_relief_requested_amount = famine_food_reserve_daily_need }
 					multiply_variable = { famine_relief_requested_amount = constant:famine_mission_contract.reserve_import_days }
@@ -202,7 +205,12 @@ famine_emergency_imports_action_begin_work = {
 					}
 				}
 			}
+		if = {
+			limit = { check_variable = { var = famine_gui_capacity_publication_pending value = constant:famine_relief_runtime.one compare = equals } }
+			var:humanitarian_action_target = { national_policy_panel_publish_state = yes }
 		}
+		set_temp_variable = { famine_gui_capacity_publication_pending = constant:famine_relief_runtime.zero }
+	}
 }
 
 famine_emergency_imports_action_resolve_work = {
@@ -255,6 +263,7 @@ famine_emergency_imports_action_resolve_work = {
 							famine_show_report_relief_arrival = yes
 							humanitarian_achievement_record_alternative_logistics = yes
 						}
+						national_policy_panel_publish_state = yes
 					}
 				}
 			}
@@ -337,6 +346,7 @@ famine_repair_relief_route_action_resolve_work = {
 						}
 					}
 					ROOT = { humanitarian_achievement_record_alternative_logistics = yes }
+					national_policy_panel_publish_state = yes
 				}
 			}
 		}
@@ -368,6 +378,7 @@ famine_repair_relief_route_action_cancel_work = {
 }
 
 famine_escorted_relief_convoy_action_begin_work = {
+	set_temp_variable = { famine_gui_capacity_publication_pending = constant:famine_relief_runtime.zero }
 	if = {
 			limit = { famine_escorted_relief_convoy_can_start_in_context = yes }
 			var:humanitarian_action_target = {
@@ -384,6 +395,7 @@ famine_escorted_relief_convoy_action_begin_work = {
 				if = {
 					limit = { NOT = { famine_relief_contract_is_valid = yes } }
 					famine_refresh_reserve_capacity = yes
+					set_temp_variable = { famine_gui_capacity_publication_pending = constant:famine_relief_runtime.one }
 					set_variable = { famine_relief_route_mode = constant:famine_relief_route_mode.sea }
 					set_variable = { famine_relief_requested_amount = famine_food_reserve_daily_need }
 					multiply_variable = { famine_relief_requested_amount = constant:famine_mission_contract.reserve_import_days }
@@ -436,7 +448,12 @@ famine_escorted_relief_convoy_action_begin_work = {
 					}
 				}
 			}
+		if = {
+			limit = { check_variable = { var = famine_gui_capacity_publication_pending value = constant:famine_relief_runtime.one compare = equals } }
+			var:humanitarian_action_target = { national_policy_panel_publish_state = yes }
 		}
+		set_temp_variable = { famine_gui_capacity_publication_pending = constant:famine_relief_runtime.zero }
+	}
 }
 
 famine_escorted_relief_convoy_action_resolve_work = {
@@ -490,6 +507,7 @@ famine_escorted_relief_convoy_action_resolve_work = {
 							humanitarian_achievement_record_alternative_logistics = yes
 							humanitarian_achievement_record_blockade_relief = yes
 						}
+						national_policy_panel_publish_state = yes
 					}
 				}
 			}
@@ -531,6 +549,7 @@ famine_escorted_relief_convoy_action_cancel_work = {
 }
 
 famine_emergency_airlift_action_begin_work = {
+	set_temp_variable = { famine_gui_capacity_publication_pending = constant:famine_relief_runtime.zero }
 	if = {
 			limit = { famine_emergency_airlift_can_start_in_context = yes }
 			var:humanitarian_action_target = {
@@ -547,6 +566,7 @@ famine_emergency_airlift_action_begin_work = {
 				if = {
 					limit = { NOT = { famine_relief_contract_is_valid = yes } }
 					famine_refresh_reserve_capacity = yes
+					set_temp_variable = { famine_gui_capacity_publication_pending = constant:famine_relief_runtime.one }
 					set_variable = { famine_relief_route_mode = constant:famine_relief_route_mode.air }
 					set_variable = { famine_relief_requested_amount = famine_food_reserve_daily_need }
 					multiply_variable = { famine_relief_requested_amount = constant:famine_mission_contract.reserve_import_days }
@@ -600,7 +620,12 @@ famine_emergency_airlift_action_begin_work = {
 					}
 				}
 			}
+		if = {
+			limit = { check_variable = { var = famine_gui_capacity_publication_pending value = constant:famine_relief_runtime.one compare = equals } }
+			var:humanitarian_action_target = { national_policy_panel_publish_state = yes }
 		}
+		set_temp_variable = { famine_gui_capacity_publication_pending = constant:famine_relief_runtime.zero }
+	}
 }
 
 famine_emergency_airlift_action_resolve_work = {
@@ -654,6 +679,7 @@ famine_emergency_airlift_action_resolve_work = {
 							humanitarian_achievement_record_alternative_logistics = yes
 							humanitarian_achievement_record_blockade_relief = yes
 						}
+						national_policy_panel_publish_state = yes
 					}
 				}
 			}
@@ -695,11 +721,13 @@ famine_emergency_airlift_action_cancel_work = {
 }
 
 famine_invite_relief_action_begin_work = {
+	set_temp_variable = { famine_gui_capacity_publication_pending = constant:famine_relief_runtime.zero }
 	if = {
 			limit = { famine_invite_relief_can_start_in_context = yes }
 			var:humanitarian_action_target = {
 				set_temp_variable = { famine_invite_relief_attempt_generation = constant:famine_relief_runtime.zero }
 				famine_refresh_reserve_capacity = yes
+				set_temp_variable = { famine_gui_capacity_publication_pending = constant:famine_relief_runtime.one }
 				set_variable = { famine_relief_route_mode = constant:famine_relief_route_mode.land }
 				set_variable = { famine_relief_requested_amount = famine_food_reserve_daily_need }
 				multiply_variable = { famine_relief_requested_amount = constant:famine_mission_contract.reserve_import_days }
@@ -748,7 +776,12 @@ famine_invite_relief_action_begin_work = {
 					}
 				}
 			}
+		if = {
+			limit = { check_variable = { var = famine_gui_capacity_publication_pending value = constant:famine_relief_runtime.one compare = equals } }
+			var:humanitarian_action_target = { national_policy_panel_publish_state = yes }
 		}
+		set_temp_variable = { famine_gui_capacity_publication_pending = constant:famine_relief_runtime.zero }
+	}
 }
 
 famine_invite_relief_action_resolve_work = {
@@ -883,6 +916,7 @@ famine_evacuation_action_resolve_work = {
 											humanitarian_achievement_record_gate_protection = yes
 										}
 									}
+								national_policy_panel_publish_state = yes
 								}
 							}
 						}
@@ -1084,6 +1118,7 @@ famine_requisition_safer_state_action_resolve_work = {
 									}
 								}
 								famine_register_active_state = yes
+								national_policy_panel_publish_state = yes
 							}
 							ROOT = {
 								famine_show_report_relief_arrival = yes
@@ -1154,6 +1189,7 @@ famine_conceal_crisis_action_resolve_work = {
 				set_state_flag = { flag = famine_crisis_concealed value = 1 days = famine_conceal_days }
 				add_to_variable = { famine_food_pressure = constant:famine_decision_threshold.conceal_pressure }
 				clamp_variable = { var = famine_food_pressure min = constant:famine_food_component.zero max = constant:famine_food_component.maximum }
+				national_policy_panel_publish_state = yes
 			}
 			# Condemnation is deferred until the proof-owning adapter receives its
 			# exact state, actor, policy, and receipt targets.
@@ -1217,6 +1253,7 @@ famine_maintain_extraction_action_resolve_work = {
 				add_to_variable = { famine_food_pressure = constant:famine_decision_threshold.extraction_pressure }
 				clamp_variable = { var = famine_food_pressure min = constant:famine_food_component.zero max = constant:famine_food_component.maximum }
 				ROOT = { add_war_support = constant:famine_decision_outcome.decision_maintain_extraction_war_support }
+				national_policy_panel_publish_state = yes
 			}
 		}
 		else_if = {

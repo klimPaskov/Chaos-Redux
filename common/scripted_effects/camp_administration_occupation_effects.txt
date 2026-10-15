@@ -111,6 +111,7 @@ camp_occ_reset_month_records = {
 
 # State; one-shot explicit source contract, never repopulates an exhausted or closed cohort.
 camp_occ_register_cohort = {
+	camp_admin_panel_begin_state_update = yes
 	set_temp_variable = { camp_occ_admitted_k = 0 }
 	camp_origin_reconcile_host_membership = yes
 	if = {
@@ -191,6 +192,7 @@ camp_occ_register_cohort = {
 	set_temp_variable = { camp_occ_source_authority = 0 }
 	set_temp_variable = { camp_occ_source_profile = 0 }
 	set_temp_variable = { camp_occ_source_partner = 0 }
+	camp_admin_panel_end_state_update = yes
 }
 
 # State: rows created before the origin marker existed were immobile and therefore began here.
@@ -219,6 +221,7 @@ camp_occ_distribute_external_removal = {
 
 # State. Exact conservative retirement of the one pending occupation row.
 camp_occ_distribute_known_origin_removal = {
+	camp_admin_panel_begin_state_update = yes
 	set_temp_variable = { camp_occ_known_outside_actual_k = constant:camp_admin_value.zero }
 	set_temp_variable = { camp_origin_single_reconciliation_accepted = constant:camp_admin_value.zero }
 	if = {
@@ -249,6 +252,7 @@ camp_occ_distribute_known_origin_removal = {
 		set_temp_variable = { camp_origin_single_reconcile_amount_k = camp_occ_known_outside_actual_k }
 		camp_origin_acknowledge_single_origin_reconciliation = yes
 	}
+	camp_admin_panel_end_state_update = yes
 }
 
 # State. Resolve one immutable country row against this physical host before any loss.
@@ -353,6 +357,8 @@ camp_occ_apply_population_debit = {
 # State source. Route adapter supplies proof, exact row ID and integer people, then stages a destination.
 # The route flag is consumed; source/destination receipts must match before any cohort metadata commits.
 camp_occ_transfer_survivors_exact = {
+	camp_admin_panel_begin_state_update = yes
+	if = { limit = { has_event_target = camp_occ_transfer_destination } event_target:camp_occ_transfer_destination = { camp_admin_panel_begin_state_update = yes } }
 	set_temp_variable = { camp_occ_transfer_result = constant:camp_occ_value.transfer_invalid }
 	set_temp_variable = { camp_occ_transfer_preflight_valid = constant:camp_occ_value.transfer_invalid }
 	set_temp_variable = { camp_occ_transfer_committed_people = 0 }
@@ -532,6 +538,8 @@ camp_occ_transfer_survivors_exact = {
 	set_temp_variable = { camp_occ_transfer_escape = 0 }
 	set_temp_variable = { camp_occ_transfer_requested_people = 0 }
 	set_temp_variable = { camp_occ_transfer_row_id = 0 }
+	if = { limit = { has_event_target = camp_occ_transfer_destination } event_target:camp_occ_transfer_destination = { camp_admin_panel_end_state_update = yes } }
+	camp_admin_panel_end_state_update = yes
 }
 
 # State source. Commit only after an exact, zero-residual physical receipt.
@@ -721,6 +729,8 @@ camp_occ_rollback_custody_transaction = {
 # and camp_occ_custody_destination staged from the actual destination state.
 # Outputs survive input cleanup: result, committed people, physical and bind receipts, rollback.
 camp_occ_transfer_to_custody_exact = {
+	camp_admin_panel_begin_state_update = yes
+	if = { limit = { has_event_target = camp_occ_custody_destination } event_target:camp_occ_custody_destination = { camp_admin_panel_begin_state_update = yes } }
 	set_temp_variable = { camp_occ_custody_result = constant:camp_occ_value.transfer_invalid }
 	set_temp_variable = { camp_occ_custody_preflight_valid = constant:camp_occ_value.transfer_invalid }
 	set_temp_variable = { camp_occ_custody_committed_people = 0 }
@@ -842,6 +852,8 @@ camp_occ_transfer_to_custody_exact = {
 	set_temp_variable = { camp_occ_custody_row_id = 0 }
 	set_temp_variable = { camp_occ_custody_requested_people = 0 }
 	set_temp_variable = { camp_admin_import_preflight_valid = 0 }
+	if = { limit = { has_event_target = camp_occ_custody_destination } event_target:camp_occ_custody_destination = { camp_admin_panel_end_state_update = yes } }
+	camp_admin_panel_end_state_update = yes
 }
 
 # Source state. Only one measured, fully bound custody receipt may retire this row.
@@ -864,6 +876,7 @@ camp_occ_commit_transfer_to_custody = {
 
 # State: requested amount is never the receipt. Shared helper debits once with logging disabled.
 camp_occ_record_deaths = {
+	camp_admin_panel_begin_state_update = yes
 	set_temp_variable = { camp_occ_actual_k = 0 }
 	camp_occ_reconcile_external_population = yes
 	camp_occ_prove_active_row = yes
@@ -951,6 +964,7 @@ camp_occ_record_deaths = {
 	set_temp_variable = { camp_occ_loss_contract = 0 }
 	set_temp_variable = { camp_occ_requested_k = 0 }
 	set_temp_variable = { camp_occ_loss_cause = 0 }
+	camp_admin_panel_end_state_update = yes
 }
 camp_occ_project_receipt = {
 	add_to_variable = { camp_occ_month_deaths_k = camp_occ_actual_k }
@@ -1004,6 +1018,7 @@ camp_occ_refresh_manual_transfer_source = {
 # Country ROOT with the oldest selected state. Quote its living native row and
 # site-88 headroom; the paid caller acts only after an exact custody receipt.
 camp_occ_try_manual_auschwitz_transfer = {
+	national_policy_panel_begin_update = yes
 	set_temp_variable = { camp_occ_custody_result = constant:camp_occ_value.transfer_invalid }
 	set_temp_variable = { camp_occ_custody_committed_people = 0 }
 	if = {
@@ -1062,6 +1077,8 @@ camp_occ_try_manual_auschwitz_transfer = {
 	set_temp_variable = { camp_occ_custody_route_proven = 0 }
 	set_temp_variable = { camp_occ_custody_row_id = 0 }
 	set_temp_variable = { camp_occ_custody_requested_people = 0 }
+	national_policy_panel_refresh_open = yes
+	national_policy_panel_end_update = yes
 }
 
 # Country after a committed exact custody transfer. Arrival violence applies only
@@ -1107,6 +1124,7 @@ camp_occ_apply_killing_arrival_loss = {
 # Lodz row; the pending share is a movement ceiling, not a death quota.
 # Supported monthly throughput and resident capacity are recalculated for every wave.
 camp_occ_try_lodz_auschwitz_transfer = {
+	national_policy_panel_begin_update = yes
 	set_temp_variable = { camp_occ_custody_result = constant:camp_occ_value.transfer_invalid }
 	if = {
 		limit = {
@@ -1257,9 +1275,12 @@ camp_occ_try_lodz_auschwitz_transfer = {
 			}
 		}
 	}
+	national_policy_panel_refresh_open = yes
+	national_policy_panel_end_update = yes
 }
 
 camp_occ_monthly_country = {
+	national_policy_panel_begin_update = yes
 	camp_occ_initialize_country = yes
 	camp_occ_initialize_rows = yes
 	camp_admin_prepare_month_key = yes
@@ -1325,6 +1346,8 @@ camp_occ_monthly_country = {
 		}
 		if = { limit = { original_tag = GER } camp_occ_refresh_manual_transfer_source = yes }
 	}
+	national_policy_panel_refresh_open = yes
+	national_policy_panel_end_update = yes
 }
 
 # Country, responsible German authority, once the Danish deportation order stands. Each
@@ -1334,6 +1357,7 @@ camp_occ_monthly_country = {
 # origin and responsibility kept, no death recorded. Without a valid refuge
 # nothing moves and nothing is recorded.
 camp_occ_try_danish_rescue = {
+	national_policy_panel_begin_update = yes
 	if = {
 		limit = { camp_occ_danish_refuge_available = yes }
 		set_temp_variable = { camp_occ_rescue_refuge_state = constant:camp_occ_rescue.refuge_anchor_state }
@@ -1395,6 +1419,8 @@ camp_occ_try_danish_rescue = {
 			}
 		}
 	}
+	national_policy_panel_refresh_open = yes
+	national_policy_panel_end_update = yes
 }
 
 # State, partner-held, inside the German monthly pass; temp camp_occ_partner_authority
@@ -1422,6 +1448,7 @@ camp_occ_register_partner_state = {
 # moved or recorded; cohorts still at home when the order lapses are released in
 # place by the monthly pass.
 camp_occ_try_partner_deportation = {
+	national_policy_panel_begin_update = yes
 	if = {
 		limit = {
 			original_tag = GER
@@ -1546,18 +1573,24 @@ camp_occ_try_partner_deportation = {
 		set_temp_variable = { camp_occ_custody_row_id = 0 }
 		set_temp_variable = { camp_occ_custody_requested_people = 0 }
 	}
+	national_policy_panel_refresh_open = yes
+	national_policy_panel_end_update = yes
 }
 
 # Country, Hungary, answering the German demand (camp_occ_partner.1). The
 # transports continue until the order lapses.
 camp_occ_partner_comply_with_order = {
+	national_policy_panel_begin_update = yes
 	set_country_flag = camp_occ_partner_deportations_complied
+	national_policy_panel_refresh_open = yes
+	national_policy_panel_end_update = yes
 }
 
 # Country, Hungary. The transports continue, but each month only
 # camp_occ_partner.obstructed_wave_share of the supported trains leave, and
 # Germany's opinion of Hungary falls.
 camp_occ_partner_obstruct_deportations = {
+	national_policy_panel_begin_update = yes
 	if = {
 		limit = {
 			NOT = { hidden_trigger = { has_country_flag = camp_occ_partner_deportations_halted } }
@@ -1569,6 +1602,8 @@ camp_occ_partner_obstruct_deportations = {
 			reverse_add_opinion_modifier = { target = GER modifier = camp_occ_hungary_obstructed_deportations }
 		}
 	}
+	national_policy_panel_refresh_open = yes
+	national_policy_panel_end_update = yes
 }
 
 # Country, Hungary, from the event or the paid decision. Halting is permanent:
@@ -1579,6 +1614,7 @@ camp_occ_partner_obstruct_deportations = {
 # and a German subject loses autonomy. Germany receives one notification and one
 # Records entry. A repeated call does nothing.
 camp_occ_partner_halt_deportations = {
+	national_policy_panel_begin_update = yes
 	if = {
 		limit = { NOT = { hidden_trigger = { has_country_flag = camp_occ_partner_deportations_halted } } }
 		set_country_flag = camp_occ_partner_deportations_halted
@@ -1602,10 +1638,13 @@ camp_occ_partner_halt_deportations = {
 			}
 		}
 	}
+	national_policy_panel_refresh_open = yes
+	national_policy_panel_end_update = yes
 }
 
 # Closure releases surviving exposure in place and permanently prevents reseeding this state row.
 camp_occ_close_state = {
+	camp_admin_panel_begin_state_update = yes
 	camp_occ_backfill_cohort_origin = yes
 	if = {
 		limit = { hidden_trigger = { has_state_flag = camp_occ_registered } NOT = { hidden_trigger = { has_state_flag = camp_occ_closed } } }
@@ -1622,6 +1661,7 @@ camp_occ_close_state = {
 		else = { set_state_flag = camp_origin_ambiguity_terminal }
 		set_state_flag = camp_occ_closed
 	}
+	camp_admin_panel_end_state_update = yes
 }
 
 # State. Release only the living rows physically present here, preserving all death receipts.
@@ -1647,11 +1687,14 @@ camp_occ_release_rows_at_host = {
 	}
 }
 camp_occ_close_country = {
+	national_policy_panel_begin_update = yes
 	set_country_flag = camp_occ_country_closed
 	clear_variable = camp_occ_manual_source_state_id
 	clear_variable = camp_occ_lodz_pending_people
 	clear_variable = camp_occ_lodz_source_row_id
 	for_each_scope_loop = { array = camp_occ_states camp_occ_close_state = yes }
+	national_policy_panel_refresh_open = yes
+	national_policy_panel_end_update = yes
 }
 
 # State, PREV = origin country. Records one one-time source assignment of
@@ -1814,6 +1857,7 @@ camp_occ_stage_german_origin_request = {
 	subtract_from_temp_variable = { camp_occ_source_requested_k = camp_occ_pre_enrollment_decline_k }
 }
 camp_occ_on_state_control_changed = {
+	camp_admin_panel_begin_state_update = yes
 	camp_occ_refresh_authority_held = yes
 	camp_occ_backfill_cohort_origin = yes
 	if = {
@@ -1831,10 +1875,12 @@ camp_occ_on_state_control_changed = {
 			if = { limit = { exists = yes original_tag = GER } camp_occ_refresh_manual_transfer_source = yes }
 		}
 	}
+	camp_admin_panel_end_state_update = yes
 }
 
 # Explicit historical countries, once from existing setup; no recurring world scan.
 camp_occ_historical_setup = {
+	national_policy_panel_begin_update = yes
 	if = {
 		limit = { NOT = { has_global_flag = camp_occ_historical_seeded } }
 		set_global_flag = camp_occ_historical_seeded
@@ -1872,6 +1918,8 @@ camp_occ_historical_setup = {
 		GER = { every_controlled_state = { camp_occ_track_controlled_state = yes } }
 		JAP = { every_controlled_state = { camp_occ_track_controlled_state = yes } }
 	}
+	national_policy_panel_refresh_open = yes
+	national_policy_panel_end_update = yes
 }
 
 # State source after both metadata endpoints committed or the exact inverse completed.

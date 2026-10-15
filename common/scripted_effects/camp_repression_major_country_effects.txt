@@ -562,6 +562,7 @@ camp_rework_refresh_major_country_ideas = {
 # ---------------------------------------------------------------------------
 
 camp_rework_germany_monthly_bridge = {
+	national_policy_panel_begin_update = yes
 	camp_rework_germany_initialize_country_values = yes
 	camp_rework_germany_refresh_values = yes
 	if = {
@@ -577,9 +578,12 @@ camp_rework_germany_monthly_bridge = {
 		clr_country_flag = germany_mengele_cloning_unlock_pending
 	}
 	camp_rework_germany_refresh_ideas = yes
+	national_policy_panel_refresh_open = yes
+	national_policy_panel_end_update = yes
 }
 
 camp_rework_japan_monthly_bridge = {
+	national_policy_panel_begin_update = yes
 	camp_rework_japan_initialize_country_values = yes
 	if = {
 		limit = {
@@ -660,9 +664,12 @@ camp_rework_japan_monthly_bridge = {
 		country_event = { id = japan_ishii.5 days = camp_rework_threshold_event_delay_days }
 	}
 	camp_rework_japan_refresh_ideas = yes
+	national_policy_panel_refresh_open = yes
+	national_policy_panel_end_update = yes
 }
 
 camp_rework_soviet_monthly_bridge = {
+	national_policy_panel_begin_update = yes
 	camp_rework_soviet_initialize_country_values = yes
 	camp_rework_soviet_refresh_paranoia_projection = yes
 	camp_rework_soviet_update_famine = yes
@@ -711,12 +718,17 @@ camp_rework_soviet_monthly_bridge = {
 		country_event = { id = soviet_gulag.5 days = camp_rework_threshold_event_delay_days }
 	}
 	camp_rework_soviet_refresh_ideas = yes
+	national_policy_panel_refresh_open = yes
+	national_policy_panel_end_update = yes
 }
 
 camp_rework_update_major_country_monthly_bridge = {
+	national_policy_panel_begin_update = yes
 	if = { limit = { original_tag = GER } camp_rework_germany_monthly_bridge = yes }
 	else_if = { limit = { original_tag = JAP } camp_rework_japan_monthly_bridge = yes }
 	else_if = { limit = { original_tag = SOV } camp_rework_soviet_monthly_bridge = yes }
+	national_policy_panel_refresh_open = yes
+	national_policy_panel_end_update = yes
 }
 
 # ---------------------------------------------------------------------------
@@ -756,6 +768,7 @@ germany_mengele_add_cloning_project_progress = {
 }
 
 camp_rework_germany_register_requested_laboratory_state = {
+	camp_admin_panel_begin_state_update = yes
 	if = {
 		limit = {
 			ROOT = { original_tag = GER }
@@ -776,9 +789,11 @@ camp_rework_germany_register_requested_laboratory_state = {
 			add_to_variable = { laboratory_state_reach = constant:camp_rework_country_value.decision_reach_minor }
 		}
 	}
+	camp_admin_panel_end_state_update = yes
 }
 
 camp_rework_germany_register_auschwitz_layers = {
+	national_policy_panel_begin_update = yes
 	camp_rework_germany_initialize_country_values = yes
 	set_temp_variable = { genocide_camp_conversion_succeeded = 0 }
 	88 = {
@@ -817,11 +832,14 @@ camp_rework_germany_register_auschwitz_layers = {
 		}
 	}
 	camp_rework_germany_refresh_values = yes
+	national_policy_panel_refresh_open = yes
+	national_policy_panel_end_update = yes
 }
 
 # Country ROOT and oldest eligible registered source. The decision and its AI share this paid
 # exact-cohort action; neither movement nor a later death advances research.
 camp_rework_germany_apply_exact_cohort_transfer = {
+	national_policy_panel_begin_update = yes
 	# Availability scans live rows; refresh the execution pointer before the exact receipt.
 	camp_occ_refresh_manual_transfer_source = yes
 	camp_occ_try_manual_auschwitz_transfer = yes
@@ -866,14 +884,20 @@ camp_rework_germany_apply_exact_cohort_transfer = {
 		camp_rework_recalculate_country_values = yes
 	}
 	camp_occ_refresh_manual_transfer_source = yes
+	national_policy_panel_refresh_open = yes
+	national_policy_panel_end_update = yes
 }
 
 camp_rework_germany_start_military_review_mission = {
+	national_policy_panel_begin_update = yes
 	set_country_flag = germany_mengele_military_review_active
 	activate_mission = germany_auschwitz_military_review_mission
+	national_policy_panel_refresh_open = yes
+	national_policy_panel_end_update = yes
 }
 
 camp_rework_germany_complete_military_review_mission = {
+	national_policy_panel_begin_update = yes
 	clr_country_flag = germany_mengele_military_review_active
 	set_temp_variable = { mengele_autonomy_delta = constant:camp_rework_germany.review_relief }
 	germany_mengele_add_autonomy = yes
@@ -881,28 +905,40 @@ camp_rework_germany_complete_military_review_mission = {
 	add_to_variable = { camp_policy_reform = constant:camp_rework_country_value.reform_major }
 	clamp_variable = { var = racial_policy_radicalization min = 0 max = constant:camp_rework_threshold.max_value }
 	camp_rework_recalculate_country_values = yes
+	national_policy_panel_refresh_open = yes
+	national_policy_panel_end_update = yes
 }
 
 camp_rework_germany_fail_military_review_mission = {
+	national_policy_panel_begin_update = yes
 	clr_country_flag = germany_mengele_military_review_active
 	add_to_variable = { camp_policy_hardliner = constant:camp_rework_country_value.hardliner_major }
 	add_to_variable = { camp_policy_evidence = constant:camp_rework_country_value.evidence_major }
 	add_stability = constant:camp_rework_cost.stability_major
 	camp_rework_recalculate_country_values = yes
+	national_policy_panel_refresh_open = yes
+	national_policy_panel_end_update = yes
 }
 
 camp_rework_germany_cancel_military_review_mission = {
+	national_policy_panel_begin_update = yes
 	clr_country_flag = germany_mengele_military_review_active
 	add_to_variable = { camp_policy_reform = constant:camp_rework_country_value.reform_minor }
 	camp_rework_recalculate_country_values = yes
+	national_policy_panel_refresh_open = yes
+	national_policy_panel_end_update = yes
 }
 
 camp_rework_germany_start_evidence_destruction = {
+	national_policy_panel_begin_update = yes
 	camp_rework_consume_evidence_resources = yes
 	activate_mission = germany_auschwitz_evidence_destruction_mission
+	national_policy_panel_refresh_open = yes
+	national_policy_panel_end_update = yes
 }
 
 camp_rework_germany_complete_evidence_destruction = {
+	national_policy_panel_begin_update = yes
 	88 = {
 		if = {
 			limit = {
@@ -916,9 +952,12 @@ camp_rework_germany_complete_evidence_destruction = {
 	}
 	add_to_variable = { camp_policy_tribunal = constant:camp_rework_coverup.success_tribunal_gain }
 	camp_rework_recalculate_country_values = yes
+	national_policy_panel_refresh_open = yes
+	national_policy_panel_end_update = yes
 }
 
 camp_rework_germany_fail_evidence_destruction = {
+	national_policy_panel_begin_update = yes
 	88 = {
 		if = {
 			limit = { camp_rework_state_can_accept_responsibility_from_root = yes }
@@ -930,23 +969,32 @@ camp_rework_germany_fail_evidence_destruction = {
 	add_to_variable = { camp_policy_visibility = constant:camp_rework_coverup.failure_visibility_gain }
 	add_to_variable = { camp_policy_tribunal = constant:camp_rework_coverup.failure_tribunal_gain }
 	camp_rework_recalculate_country_values = yes
+	national_policy_panel_refresh_open = yes
+	national_policy_panel_end_update = yes
 }
 
 camp_rework_germany_cancel_evidence_destruction = {
+	national_policy_panel_begin_update = yes
 	add_to_variable = { camp_policy_evidence = constant:camp_rework_country_value.evidence_minor }
 	camp_rework_recalculate_country_values = yes
+	national_policy_panel_refresh_open = yes
+	national_policy_panel_end_update = yes
 }
 
 camp_rework_germany_start_auschwitz_dismantlement = {
+	national_policy_panel_begin_update = yes
 	if = {
 		limit = { 88 = { is_controlled_by = ROOT is_valid_camp_dismantlement_state = yes camp_rework_state_can_accept_responsibility_from_root = yes camp_rework_site_can_start_dismantlement = yes } }
 		camp_rework_consume_dismantlement_resources = yes
 		88 = { camp_rework_start_dismantlement = yes }
 		activate_mission = germany_auschwitz_dismantlement_mission
 	}
+	national_policy_panel_refresh_open = yes
+	national_policy_panel_end_update = yes
 }
 
 camp_rework_germany_complete_auschwitz_dismantlement = {
+	national_policy_panel_begin_update = yes
 	set_temp_variable = { camp_germany_auschwitz_dismantlement_succeeded = 0 }
 	88 = {
 		if = {
@@ -974,9 +1022,12 @@ camp_rework_germany_complete_auschwitz_dismantlement = {
 		camp_rework_recalculate_country_values = yes
 	}
 	else = { camp_rework_germany_fail_auschwitz_dismantlement = yes }
+	national_policy_panel_refresh_open = yes
+	national_policy_panel_end_update = yes
 }
 
 camp_rework_germany_fail_auschwitz_dismantlement = {
+	national_policy_panel_begin_update = yes
 	88 = {
 		if = {
 			limit = {
@@ -991,9 +1042,12 @@ camp_rework_germany_fail_auschwitz_dismantlement = {
 	add_to_variable = { camp_policy_hardliner = constant:camp_rework_country_value.hardliner_major }
 	add_stability = constant:camp_rework_cost.stability_major
 	camp_rework_recalculate_country_values = yes
+	national_policy_panel_refresh_open = yes
+	national_policy_panel_end_update = yes
 }
 
 camp_rework_germany_cancel_auschwitz_dismantlement = {
+	national_policy_panel_begin_update = yes
 	88 = {
 		if = {
 			limit = { camp_rework_state_can_accept_responsibility_from_root = yes }
@@ -1003,6 +1057,8 @@ camp_rework_germany_cancel_auschwitz_dismantlement = {
 	}
 	add_to_variable = { camp_policy_reform = constant:camp_rework_country_value.reform_minor }
 	camp_rework_recalculate_country_values = yes
+	national_policy_panel_refresh_open = yes
+	national_policy_panel_end_update = yes
 }
 
 # ---------------------------------------------------------------------------
@@ -1010,6 +1066,7 @@ camp_rework_germany_cancel_auschwitz_dismantlement = {
 # ---------------------------------------------------------------------------
 
 camp_rework_japan_apply_outbreak_to_current_state = {
+	camp_admin_panel_begin_state_update = yes
 	if = {
 		limit = {
 			camp_rework_state_can_accept_responsibility_from_root = yes
@@ -1031,9 +1088,11 @@ camp_rework_japan_apply_outbreak_to_current_state = {
 		camp_rework_register_evidence_state = yes
 		set_temp_variable = { camp_japan_outbreak_state_selected = 1 }
 	}
+	camp_admin_panel_end_state_update = yes
 }
 
 camp_rework_japan_apply_outbreak = {
+	national_policy_panel_begin_update = yes
 	set_country_flag = camp_rework_achievement_major_outbreak_occurred
 	camp_rework_japan_initialize_country_values = yes
 	set_temp_variable = { camp_japan_outbreak_state_selected = 0 }
@@ -1066,6 +1125,8 @@ camp_rework_japan_apply_outbreak = {
 	add_to_variable = { camp_policy_tribunal = constant:camp_rework_country_value.tribunal_major }
 	camp_rework_japan_refresh_values = yes
 	camp_rework_recalculate_country_values = yes
+	national_policy_panel_refresh_open = yes
+	national_policy_panel_end_update = yes
 }
 
 camp_rework_japan_refresh_project_unlocks = {
@@ -1151,6 +1212,7 @@ camp_rework_japan_refresh_project_unlocks = {
 }
 
 camp_rework_japan_shield_ishii = {
+	national_policy_panel_begin_update = yes
 	camp_rework_japan_initialize_country_values = yes
 	add_stability = constant:camp_rework_cost.stability_minor
 	add_to_variable = { ishii_influence = constant:camp_rework_japan.ishii_influence_major }
@@ -1161,9 +1223,12 @@ camp_rework_japan_shield_ishii = {
 	add_to_variable = { camp_policy_visibility = constant:camp_rework_country_value.visibility_minor }
 	set_country_flag = japan_ishii_authority_route
 	camp_rework_recalculate_country_values = yes
+	national_policy_panel_refresh_open = yes
+	national_policy_panel_end_update = yes
 }
 
 camp_rework_japan_open_containment_office = {
+	national_policy_panel_begin_update = yes
 	camp_rework_japan_initialize_country_values = yes
 	set_country_flag = japan_biowarfare_containment_route
 	set_country_flag = camp_rework_japan_containment_mission_active
@@ -1172,9 +1237,12 @@ camp_rework_japan_open_containment_office = {
 	add_to_variable = { camp_policy_reform = constant:camp_rework_country_value.reform_minor }
 	clamp_variable = { var = outbreak_accident_risk min = 0 max = constant:camp_rework_threshold.max_value }
 	camp_rework_recalculate_country_values = yes
+	national_policy_panel_refresh_open = yes
+	national_policy_panel_end_update = yes
 }
 
 camp_rework_japan_complete_containment = {
+	national_policy_panel_begin_update = yes
 	clr_country_flag = camp_rework_japan_containment_mission_active
 	clr_country_flag = japan_biowarfare_outbreak_active
 	set_country_flag = japan_biowarfare_outbreak_contained
@@ -1184,38 +1252,53 @@ camp_rework_japan_complete_containment = {
 	add_to_variable = { camp_policy_reform = constant:camp_rework_country_value.reform_major }
 	clamp_variable = { var = outbreak_accident_risk min = 0 max = constant:camp_rework_threshold.max_value }
 	camp_rework_recalculate_country_values = yes
+	national_policy_panel_refresh_open = yes
+	national_policy_panel_end_update = yes
 }
 
 camp_rework_japan_fail_containment = {
+	national_policy_panel_begin_update = yes
 	clr_country_flag = camp_rework_japan_containment_mission_active
 	set_country_flag = japan_biowarfare_outbreak_active
 	add_to_variable = { outbreak_accident_risk = constant:camp_rework_japan.outbreak_risk_major }
 	add_to_variable = { tribunal_biowarfare_severity = constant:camp_rework_country_value.tribunal_major }
 	add_to_variable = { camp_policy_evidence = constant:camp_rework_country_value.evidence_major }
 	camp_rework_recalculate_country_values = yes
+	national_policy_panel_refresh_open = yes
+	national_policy_panel_end_update = yes
 }
 
 camp_rework_japan_cancel_containment = {
+	national_policy_panel_begin_update = yes
 	clr_country_flag = camp_rework_japan_containment_mission_active
 	add_to_variable = { imperial_army_review_pressure = constant:camp_rework_japan.occupation_records_minor }
 	camp_rework_recalculate_country_values = yes
+	national_policy_panel_refresh_open = yes
+	national_policy_panel_end_update = yes
 }
 
 camp_rework_japan_destroy_pingfang_records = {
+	national_policy_panel_begin_update = yes
 	set_country_flag = camp_rework_japan_pingfang_records_destroy_route
 	clr_country_flag = camp_rework_japan_pingfang_evacuation_route
 	set_country_flag = camp_rework_japan_pingfang_retreat_active
 	activate_mission = japan_pingfang_evacuation_mission
+	national_policy_panel_refresh_open = yes
+	national_policy_panel_end_update = yes
 }
 
 camp_rework_japan_evacuate_pingfang_records = {
+	national_policy_panel_begin_update = yes
 	set_country_flag = camp_rework_japan_pingfang_evacuation_route
 	clr_country_flag = camp_rework_japan_pingfang_records_destroy_route
 	set_country_flag = camp_rework_japan_pingfang_retreat_active
 	activate_mission = japan_pingfang_evacuation_mission
+	national_policy_panel_refresh_open = yes
+	national_policy_panel_end_update = yes
 }
 
 camp_rework_japan_complete_pingfang_retreat = {
+	national_policy_panel_begin_update = yes
 	if = {
 		limit = { has_country_flag = camp_rework_japan_pingfang_records_destroy_route }
 		328 = {
@@ -1242,9 +1325,12 @@ camp_rework_japan_complete_pingfang_retreat = {
 	clr_country_flag = camp_rework_japan_pingfang_retreat_active
 	clamp_variable = { var = occupation_test_records min = 0 max = constant:camp_rework_threshold.max_value }
 	camp_rework_recalculate_country_values = yes
+	national_policy_panel_refresh_open = yes
+	national_policy_panel_end_update = yes
 }
 
 camp_rework_japan_fail_pingfang_retreat = {
+	national_policy_panel_begin_update = yes
 	clr_country_flag = camp_rework_japan_pingfang_records_destroy_route
 	clr_country_flag = camp_rework_japan_pingfang_evacuation_route
 	clr_country_flag = camp_rework_japan_pingfang_retreat_active
@@ -1252,24 +1338,33 @@ camp_rework_japan_fail_pingfang_retreat = {
 	add_to_variable = { occupation_evidence_depth = constant:camp_rework_coverup.failure_evidence_gain }
 	add_to_variable = { tribunal_biowarfare_severity = constant:camp_rework_coverup.failure_tribunal_gain }
 	camp_rework_expose_network_crisis = yes
+	national_policy_panel_refresh_open = yes
+	national_policy_panel_end_update = yes
 }
 
 camp_rework_japan_cancel_pingfang_retreat = {
+	national_policy_panel_begin_update = yes
 	clr_country_flag = camp_rework_japan_pingfang_records_destroy_route
 	clr_country_flag = camp_rework_japan_pingfang_evacuation_route
 	clr_country_flag = camp_rework_japan_pingfang_retreat_active
 	add_to_variable = { imperial_army_review_pressure = constant:camp_rework_japan.occupation_records_minor }
 	camp_rework_recalculate_country_values = yes
+	national_policy_panel_refresh_open = yes
+	national_policy_panel_end_update = yes
 }
 
 camp_rework_japan_submit_to_army_review = {
+	national_policy_panel_begin_update = yes
 	camp_rework_japan_initialize_country_values = yes
 	set_country_flag = japan_army_medical_review_active
 	set_country_flag = camp_rework_japan_army_review_mission_active
 	activate_mission = japan_army_medical_review_mission
+	national_policy_panel_refresh_open = yes
+	national_policy_panel_end_update = yes
 }
 
 camp_rework_japan_complete_army_review = {
+	national_policy_panel_begin_update = yes
 	clr_country_flag = camp_rework_japan_army_review_mission_active
 	set_country_flag = camp_rework_achievement_japan_internal_exposure
 	add_to_variable = { ishii_influence = constant:camp_rework_japan.army_review_relief }
@@ -1286,24 +1381,33 @@ camp_rework_japan_complete_army_review = {
 	clr_country_flag = japan_ishii_authority_route
 	camp_rework_freeze_expansion_for_reform = yes
 	camp_rework_recalculate_country_values = yes
+	national_policy_panel_refresh_open = yes
+	national_policy_panel_end_update = yes
 }
 
 camp_rework_japan_fail_army_review = {
+	national_policy_panel_begin_update = yes
 	clr_country_flag = camp_rework_japan_army_review_mission_active
 	clr_country_flag = japan_army_medical_review_active
 	add_to_variable = { ishii_influence = constant:camp_rework_japan.ishii_influence_major }
 	add_to_variable = { kwantung_autonomy = constant:camp_rework_japan.kwantung_autonomy_major }
 	add_to_variable = { camp_policy_evidence = constant:camp_rework_country_value.evidence_major }
 	camp_rework_recalculate_country_values = yes
+	national_policy_panel_refresh_open = yes
+	national_policy_panel_end_update = yes
 }
 
 camp_rework_japan_cancel_army_review = {
+	national_policy_panel_begin_update = yes
 	clr_country_flag = camp_rework_japan_army_review_mission_active
 	add_to_variable = { imperial_army_review_pressure = constant:camp_rework_japan.occupation_records_minor }
 	camp_rework_recalculate_country_values = yes
+	national_policy_panel_refresh_open = yes
+	national_policy_panel_end_update = yes
 }
 
 camp_rework_japan_remove_ishii_from_program_control = {
+	national_policy_panel_begin_update = yes
 	set_country_flag = camp_rework_achievement_ishii_removed
 	set_country_flag = japan_army_medical_review_active
 	set_country_flag = japan_biowarfare_reform_route
@@ -1319,9 +1423,12 @@ camp_rework_japan_remove_ishii_from_program_control = {
 	clamp_variable = { var = bio_project_pressure min = 0 max = constant:camp_rework_threshold.max_value }
 	camp_rework_japan_refresh_project_unlocks = yes
 	camp_rework_recalculate_country_values = yes
+	national_policy_panel_refresh_open = yes
+	national_policy_panel_end_update = yes
 }
 
 camp_rework_japan_shutdown_prisoner_experiments = {
+	national_policy_panel_begin_update = yes
 	if = {
 		limit = { camp_rework_japan_dismantlement_sites_ready = yes }
 		set_country_flag = camp_rework_japan_shutdown_mission_active
@@ -1330,9 +1437,12 @@ camp_rework_japan_shutdown_prisoner_experiments = {
 		camp_rework_recalculate_country_values = yes
 		activate_mission = japan_prisoner_experiment_shutdown_mission
 	}
+	national_policy_panel_refresh_open = yes
+	national_policy_panel_end_update = yes
 }
 
 camp_rework_japan_complete_prisoner_experiment_shutdown = {
+	national_policy_panel_begin_update = yes
 	clear_temp_array = camp_japan_experiment_shutdown_states
 	set_temp_variable = { camp_japan_experiment_shutdown_blocked = 0 }
 	for_each_scope_loop = {
@@ -1383,56 +1493,77 @@ camp_rework_japan_complete_prisoner_experiment_shutdown = {
 	}
 	else = { camp_rework_japan_fail_prisoner_experiment_shutdown = yes }
 	clear_temp_array = camp_japan_experiment_shutdown_states
+	national_policy_panel_refresh_open = yes
+	national_policy_panel_end_update = yes
 }
 
 camp_rework_japan_fail_prisoner_experiment_shutdown = {
+	national_policy_panel_begin_update = yes
 	clr_country_flag = camp_rework_japan_shutdown_mission_active
 	add_to_variable = { imperial_army_review_pressure = constant:camp_rework_japan.occupation_records_major }
 	add_to_variable = { camp_policy_hardliner = constant:camp_rework_country_value.hardliner_major }
 	add_to_variable = { camp_policy_evidence = constant:camp_rework_country_value.evidence_major }
 	add_stability = constant:camp_rework_cost.stability_major
 	camp_rework_recalculate_country_values = yes
+	national_policy_panel_refresh_open = yes
+	national_policy_panel_end_update = yes
 }
 
 camp_rework_japan_cancel_prisoner_experiment_shutdown = {
+	national_policy_panel_begin_update = yes
 	clr_country_flag = camp_rework_japan_shutdown_mission_active
 	add_to_variable = { camp_policy_reform = constant:camp_rework_country_value.reform_minor }
 	camp_rework_recalculate_country_values = yes
+	national_policy_panel_refresh_open = yes
+	national_policy_panel_end_update = yes
 }
 
 camp_rework_japan_complete_pingfang_records_project = {
+	national_policy_panel_begin_update = yes
 	set_country_flag = japan_kwantung_medical_intelligence_available
 	add_to_variable = { ishii_influence = constant:camp_rework_japan.ishii_influence_minor }
 	add_to_variable = { bio_research_gain = constant:camp_rework_japan.bio_project_pressure_minor }
 	set_country_flag = japan_pingfang_route_unlocked
 	camp_rework_japan_refresh_project_unlocks = yes
+	national_policy_panel_refresh_open = yes
+	national_policy_panel_end_update = yes
 }
 
 camp_rework_japan_complete_kwantung_intelligence_project = {
+	national_policy_panel_begin_update = yes
 	set_country_flag = japan_occupation_test_ledger_available
 	add_to_variable = { kwantung_autonomy = constant:camp_rework_japan.kwantung_autonomy_major }
 	add_to_variable = { bio_project_pressure = constant:camp_rework_japan.bio_project_pressure_major }
 	add_to_variable = { outbreak_accident_risk = constant:camp_rework_japan.outbreak_risk_minor }
 	set_country_flag = japan_ishii_authority_route
 	camp_rework_japan_refresh_project_unlocks = yes
+	national_policy_panel_refresh_open = yes
+	national_policy_panel_end_update = yes
 }
 
 camp_rework_japan_complete_occupation_test_ledger_project = {
+	national_policy_panel_begin_update = yes
 	set_country_flag = japan_epidemic_mapping_bureau_available
 	add_to_variable = { occupation_test_records = constant:camp_rework_japan.occupation_records_major }
 	add_to_variable = { camp_policy_evidence = constant:camp_rework_country_value.evidence_major }
 	camp_rework_japan_refresh_project_unlocks = yes
+	national_policy_panel_refresh_open = yes
+	national_policy_panel_end_update = yes
 }
 
 camp_rework_japan_complete_epidemic_mapping_project = {
+	national_policy_panel_begin_update = yes
 	add_to_variable = { outbreak_accident_risk = constant:camp_rework_japan.shutdown_relief }
 	set_country_flag = japan_biowarfare_containment_route
 	set_country_flag = japan_biowarfare_outbreak_contained
 	clamp_variable = { var = outbreak_accident_risk min = 0 max = constant:camp_rework_threshold.max_value }
 	camp_rework_japan_refresh_project_unlocks = yes
+	national_policy_panel_refresh_open = yes
+	national_policy_panel_end_update = yes
 }
 
 camp_rework_japan_complete_cherry_blossom_dossier_project = {
+	national_policy_panel_begin_update = yes
 	add_to_variable = { ishii_influence = constant:camp_rework_japan.ishii_influence_major }
 	add_to_variable = { bio_project_pressure = constant:camp_rework_japan.bio_project_pressure_major }
 	add_to_variable = { outbreak_accident_risk = constant:camp_rework_japan.outbreak_risk_major }
@@ -1440,6 +1571,8 @@ camp_rework_japan_complete_cherry_blossom_dossier_project = {
 	set_country_flag = japan_ishii_authority_route
 	set_country_flag = japan_cherry_blossom_dossier_completed
 	camp_rework_japan_refresh_project_unlocks = yes
+	national_policy_panel_refresh_open = yes
+	national_policy_panel_end_update = yes
 }
 
 # ---------------------------------------------------------------------------
@@ -1630,6 +1763,7 @@ camp_rework_soviet_update_famine = {
 }
 
 camp_rework_soviet_apply_union_crisis_repression_bridge = {
+	national_policy_panel_begin_update = yes
 	camp_rework_soviet_initialize_country_values = yes
 	if = {
 		limit = { NOT = { has_variable = camp_rework_soviet_requested_relief } }
@@ -1735,9 +1869,12 @@ camp_rework_soviet_apply_union_crisis_repression_bridge = {
 	}
 	clamp_variable = { var = union_crisis_suppression_relief min = 0 max = constant:camp_rework_soviet.suppression_relief_cap }
 	camp_rework_soviet_refresh_values = yes
+	national_policy_panel_refresh_open = yes
+	national_policy_panel_end_update = yes
 }
 
 camp_rework_soviet_reinforce_nkvd_authority = {
+	national_policy_panel_begin_update = yes
 	camp_rework_soviet_initialize_country_values = yes
 	camp_rework_consume_guard_resources = yes
 	add_to_variable = { nkvd_authority = constant:camp_rework_soviet.nkvd_authority_major }
@@ -1752,9 +1889,12 @@ camp_rework_soviet_reinforce_nkvd_authority = {
 	set_temp_variable = { camp_rework_soviet_requested_relief = constant:camp_rework_soviet.suppression_relief_major }
 	camp_rework_soviet_apply_union_crisis_repression_bridge = yes
 	camp_rework_recalculate_country_values = yes
+	national_policy_panel_refresh_open = yes
+	national_policy_panel_end_update = yes
 }
 
 camp_rework_soviet_release_prisoners_for_military_service = {
+	national_policy_panel_begin_update = yes
 	set_variable = { camp_admin_country_last_released_k = constant:camp_admin_value.zero }
 	if = {
 		limit = { camp_rework_soviet_service_release_ready = yes }
@@ -1788,9 +1928,12 @@ camp_rework_soviet_release_prisoners_for_military_service = {
 		}
 		set_temp_variable = { camp_rework_native_pp_paid = 0 }
 	}
+	national_policy_panel_refresh_open = yes
+	national_policy_panel_end_update = yes
 }
 
 camp_rework_soviet_start_gulag_dismantlement = {
+	national_policy_panel_begin_update = yes
 	if = {
 		limit = { camp_rework_soviet_dismantlement_sites_ready = yes }
 		camp_rework_consume_dismantlement_resources = yes
@@ -1798,9 +1941,12 @@ camp_rework_soviet_start_gulag_dismantlement = {
 		camp_rework_recalculate_country_values = yes
 		activate_mission = sov_overextended_gulag_dismantlement_mission
 	}
+	national_policy_panel_refresh_open = yes
+	national_policy_panel_end_update = yes
 }
 
 camp_rework_soviet_complete_gulag_dismantlement = {
+	national_policy_panel_begin_update = yes
 	clear_temp_array = camp_soviet_dismantlement_states
 	set_temp_variable = { camp_soviet_dismantlement_blocked = 0 }
 	for_each_scope_loop = {
@@ -1849,26 +1995,35 @@ camp_rework_soviet_complete_gulag_dismantlement = {
 	}
 	else = { camp_rework_soviet_fail_gulag_dismantlement = yes }
 	clear_temp_array = camp_soviet_dismantlement_states
+	national_policy_panel_refresh_open = yes
+	national_policy_panel_end_update = yes
 }
 
 camp_rework_soviet_fail_gulag_dismantlement = {
+	national_policy_panel_begin_update = yes
 	clr_country_flag = sov_gulag_dismantlement_active
 	add_to_variable = { camp_administrator_corruption = constant:camp_rework_soviet.administrator_corruption_major }
 	add_to_variable = { old_movement_grievance = constant:camp_rework_soviet.old_movement_grievance_major }
 	add_to_variable = { camp_policy_evidence = constant:camp_rework_country_value.evidence_major }
 	add_stability = constant:camp_rework_cost.stability_medium
 	camp_rework_recalculate_country_values = yes
+	national_policy_panel_refresh_open = yes
+	national_policy_panel_end_update = yes
 }
 
 camp_rework_soviet_cancel_gulag_dismantlement = {
+	national_policy_panel_begin_update = yes
 	clr_country_flag = sov_gulag_dismantlement_active
 	add_to_variable = { camp_policy_reform = constant:camp_rework_country_value.reform_minor }
 	camp_rework_recalculate_country_values = yes
+	national_policy_panel_refresh_open = yes
+	national_policy_panel_end_update = yes
 }
 
 # Final funded-order transaction. The caller consumes and clears the success
 # receipt before recording a success cooldown or returning an upfront PP quote.
 camp_rework_soviet_emergency_famine_relief = {
+	national_policy_panel_begin_update = yes
 	clr_country_flag = camp_rework_soviet_relief_order_accepted
 	if = {
 		limit = { camp_rework_soviet_relief_order_ready = yes }
@@ -1885,9 +2040,12 @@ camp_rework_soviet_emergency_famine_relief = {
 		camp_rework_soviet_refresh_famine_states = yes
 		camp_rework_recalculate_country_values = yes
 	}
+	national_policy_panel_refresh_open = yes
+	national_policy_panel_end_update = yes
 }
 
 camp_rework_soviet_complete_famine_relief = {
+	national_policy_panel_begin_update = yes
 	clr_country_flag = sov_famine_relief_active
 	clr_country_flag = sov_famine_crisis_active
 	add_to_variable = { famine_pressure = constant:camp_rework_soviet.grain_relief }
@@ -1905,9 +2063,12 @@ camp_rework_soviet_complete_famine_relief = {
 		country_event = { id = soviet_gulag.4 days = camp_rework_threshold_event_delay_days }
 	}
 	camp_rework_recalculate_country_values = yes
+	national_policy_panel_refresh_open = yes
+	national_policy_panel_end_update = yes
 }
 
 camp_rework_soviet_fail_famine_relief = {
+	national_policy_panel_begin_update = yes
 	clr_country_flag = sov_famine_relief_active
 	set_country_flag = sov_famine_crisis_active
 	add_to_variable = { famine_pressure = constant:camp_rework_soviet.famine_pressure_major }
@@ -1915,6 +2076,8 @@ camp_rework_soviet_fail_famine_relief = {
 	add_to_variable = { camp_policy_evidence = constant:camp_rework_country_value.evidence_major }
 	camp_rework_soviet_refresh_famine_states = yes
 	camp_rework_recalculate_country_values = yes
+	national_policy_panel_refresh_open = yes
+	national_policy_panel_end_update = yes
 }
 
 # SOV country scope. Event response when the relief columns cannot be equipped:
@@ -1951,10 +2114,13 @@ camp_rework_soviet_relief_crisis_mobilization_failed = {
 }
 
 camp_rework_soviet_cancel_famine_relief = {
+	national_policy_panel_begin_update = yes
 	clr_country_flag = sov_famine_relief_active
 	add_to_variable = { famine_pressure = constant:camp_rework_soviet.famine_pressure_minor }
 	camp_rework_soviet_refresh_famine_states = yes
 	camp_rework_recalculate_country_values = yes
+	national_policy_panel_refresh_open = yes
+	national_policy_panel_end_update = yes
 }
 
 camp_rework_soviet_conceal_current_famine_state = {
@@ -1974,6 +2140,7 @@ camp_rework_soviet_conceal_current_famine_state = {
 }
 
 camp_rework_soviet_conceal_famine_mortality = {
+	national_policy_panel_begin_update = yes
 	camp_rework_soviet_initialize_country_values = yes
 	set_temp_variable = { camp_soviet_famine_state_selected = 0 }
 	if = {
@@ -2018,6 +2185,8 @@ camp_rework_soviet_conceal_famine_mortality = {
 		camp_rework_soviet_apply_union_crisis_repression_bridge = yes
 		camp_rework_recalculate_country_values = yes
 	}
+	national_policy_panel_refresh_open = yes
+	national_policy_panel_end_update = yes
 }
 
 camp_rework_soviet_admit_current_famine_state = {
@@ -2038,6 +2207,7 @@ camp_rework_soviet_admit_current_famine_state = {
 }
 
 camp_rework_soviet_admit_administrative_collapse = {
+	national_policy_panel_begin_update = yes
 	camp_rework_soviet_initialize_country_values = yes
 	set_temp_variable = { camp_soviet_famine_state_selected = 0 }
 	if = {
@@ -2085,4 +2255,6 @@ camp_rework_soviet_admit_administrative_collapse = {
 		camp_rework_soviet_refresh_famine_states = yes
 		camp_rework_recalculate_country_values = yes
 	}
+	national_policy_panel_refresh_open = yes
+	national_policy_panel_end_update = yes
 }

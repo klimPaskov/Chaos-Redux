@@ -66,6 +66,7 @@ camp_admin_initialize_country = {
 # STATE. Archive only the already recorded immutable authority; no live-country
 # requirement, active registration, population transaction or inferred identity.
 camp_admin_register_known_site = {
+	camp_admin_panel_begin_state_update = yes
 	if = {
 		limit = { has_state_flag = camp_admin_initialized has_variable = camp_admin_responsible_country }
 		var:camp_admin_responsible_country = {
@@ -75,8 +76,10 @@ camp_admin_register_known_site = {
 			}
 		}
 	}
+	camp_admin_panel_end_state_update = yes
 }
 camp_admin_initialize_site = {
+	camp_admin_panel_begin_state_update = yes
 	if = {
 		limit = { NOT = { has_state_flag = camp_admin_initialized } has_variable = genocide_responsible_country }
 		set_state_flag = camp_admin_initialized
@@ -100,6 +103,7 @@ camp_admin_initialize_site = {
 	camp_admin_initialize_records = yes
 	camp_origin_initialize_host = yes
 	camp_admin_refresh_capacity = yes
+	camp_admin_panel_end_state_update = yes
 }
 
 # State-owned sparse custody rows. IDs stay stable; a zero-live row retains history.
@@ -291,6 +295,7 @@ camp_admin_consume_outside_rows = {
 }
 
 camp_admin_refresh_capacity = {
+	camp_admin_panel_begin_state_update = yes
 	clamp_variable = { var = camp_admin_development_level min = 0 max = constant:camp_admin_value.max_development }
 	set_variable = { camp_admin_capacity_k = building_level@concentration_camp }
 	add_to_variable = { camp_admin_capacity_k = building_level@gulag_labor_camp_network }
@@ -312,8 +317,10 @@ camp_admin_refresh_capacity = {
 	set_temp_variable = { camp_admin_selected_row_id = 0 }
 	if = { limit = { check_variable = { camp_admin_rows_valid = constant:camp_admin_value.one } } camp_admin_count_live_rows = yes }
 	clamp_variable = { var = camp_admin_capacity_k min = 0 max = camp_admin_population_headroom_k }
+	camp_admin_panel_end_state_update = yes
 }
 camp_admin_admit_detainees = {
+	camp_admin_panel_begin_state_update = yes
 	set_temp_variable = { camp_admin_admission_accepted_k = 0 }
 	camp_admin_initialize_rows = yes
 	camp_admin_refresh_capacity = yes
@@ -360,6 +367,7 @@ camp_admin_admit_detainees = {
 	set_temp_variable = { camp_admin_admission_requested_k = 0 }
 	set_temp_variable = { camp_admin_admission_source_k = 0 }
 	set_temp_variable = { camp_admin_admission_proven = 0 }
+	camp_admin_panel_end_state_update = yes
 }
 
 # Destination state. Read-only quotation for a living occupation-origin arrival.
@@ -587,6 +595,7 @@ camp_admin_record_death_projection = {
 	}
 }
 camp_admin_record_deaths = {
+	camp_admin_panel_begin_state_update = yes
 	set_temp_variable = { camp_admin_death_actual_k = 0 }
 	camp_admin_initialize_rows = yes
 	if = {
@@ -668,6 +677,7 @@ camp_admin_record_deaths = {
 	set_temp_variable = { camp_admin_death_cause = 0 }
 	set_temp_variable = { camp_admin_death_row_id = 0 }
 	set_temp_variable = { camp_admin_arrival_phase_contract = 0 }
+	camp_admin_panel_end_state_update = yes
 }
 
 camp_admin_clear_state_output = {
@@ -739,6 +749,7 @@ camp_admin_scale_profile_labor_output = {
 }
 
 camp_admin_refresh_state_economy = {
+	camp_admin_panel_begin_state_update = yes
 	camp_admin_clear_state_output = yes
 	camp_admin_refresh_capacity = yes
 	if = {
@@ -836,6 +847,7 @@ camp_admin_refresh_state_economy = {
 			add_dynamic_modifier = { modifier = camp_admin_state_economy }
 		}
 	}
+	camp_admin_panel_end_state_update = yes
 }
 camp_admin_accumulate_state_economy = {
 	camp_admin_refresh_state_economy = yes
@@ -851,6 +863,7 @@ camp_admin_accumulate_state_economy = {
 	}
 }
 camp_admin_refresh_country_economy = {
+	national_policy_panel_begin_update = yes
 	save_event_target_as = camp_admin_actor
 	set_variable = { camp_admin_industrial_factor = 0 }
 	set_variable = { camp_admin_total_detainees_k = 0 }
@@ -874,6 +887,8 @@ camp_admin_refresh_country_economy = {
 		limit = { has_dynamic_modifier = { modifier = camp_admin_country_economy } }
 		remove_dynamic_modifier = { modifier = camp_admin_country_economy }
 	}
+	national_policy_panel_refresh_open = yes
+	national_policy_panel_end_update = yes
 }
 
 camp_admin_prepare_project_quote = {
@@ -969,12 +984,15 @@ camp_admin_pay_monthly_maintenance = {
 }
 
 camp_admin_release_survivors = {
+	camp_admin_panel_begin_state_update = yes
 	set_temp_variable = { camp_admin_release_requested_k = camp_admin_detainees_k }
 	camp_admin_release_detainees = yes
 	# A full release closes this site's automatic census intake; survivors remain free.
 	if = { limit = { check_variable = { camp_admin_release_actual_k > constant:camp_admin_value.zero } } set_state_flag = camp_admin_census_intake_closed }
+	camp_admin_panel_end_state_update = yes
 }
 camp_admin_release_detainees = {
+	camp_admin_panel_begin_state_update = yes
 	camp_admin_initialize_rows = yes
 	camp_admin_refresh_capacity = yes
 	camp_admin_check_rows = yes
@@ -999,8 +1017,10 @@ camp_admin_release_detainees = {
 	camp_admin_clear_state_output = yes
 	if = { limit = { has_variable = camp_admin_responsible_country } var:camp_admin_responsible_country = { camp_admin_refresh_country_economy = yes } }
 	set_temp_variable = { camp_admin_release_requested_k = 0 }
+	camp_admin_panel_end_state_update = yes
 }
 camp_admin_close_site = {
+	camp_admin_panel_begin_state_update = yes
 	camp_admin_register_known_site = yes
 	if = {
 		limit = { has_state_flag = camp_admin_initialized }
@@ -1045,8 +1065,10 @@ camp_admin_close_site = {
 	}
 	# Consume explicit terminal intent before another close in this effect chain.
 	set_temp_variable = { camp_origin_terminal_close_contract = constant:camp_admin_value.zero }
+	camp_admin_panel_end_state_update = yes
 }
 camp_admin_reopen_site = {
+	camp_admin_panel_begin_state_update = yes
 	if = {
 		limit = {
 			has_state_flag = camp_admin_closed
@@ -1061,8 +1083,10 @@ camp_admin_reopen_site = {
 		clr_state_flag = camp_admin_closed
 		# No cohort, release or death counter is reset on a legitimate same-authority reopening.
 	}
+	camp_admin_panel_end_state_update = yes
 }
 camp_admin_cancel_economy_project = {
+	national_policy_panel_begin_update = yes
 	clr_country_flag = camp_admin_economy_slot_active
 	clr_country_flag = camp_admin_project_work_v2
 	clr_country_flag = bel_congo_corridor_economy_project_started
@@ -1072,8 +1096,11 @@ camp_admin_cancel_economy_project = {
 	set_variable = { camp_admin_economy_work_rate = 0 }
 	clear_variable = camp_admin_economy_state_id
 	clear_variable = camp_admin_economy_project_type
+	national_policy_panel_refresh_open = yes
+	national_policy_panel_end_update = yes
 }
 camp_admin_reform_site = {
+	camp_admin_panel_begin_state_update = yes
 	if = {
 		limit = {
 			has_state_flag = camp_admin_initialized
@@ -1108,8 +1135,10 @@ camp_admin_reform_site = {
 			}
 		}
 	}
+	camp_admin_panel_end_state_update = yes
 }
 camp_admin_begin_reform = {
+	national_policy_panel_begin_update = yes
 	camp_admin_initialize_country = yes
 	if = {
 		limit = { camp_admin_country_sites_ready_for_reform = yes }
@@ -1124,9 +1153,12 @@ camp_admin_begin_reform = {
 		for_each_scope_loop = { array = camp_active_site_states camp_admin_reform_site = yes }
 		camp_admin_refresh_country_economy = yes
 	}
+	national_policy_panel_refresh_open = yes
+	national_policy_panel_end_update = yes
 }
 
 camp_admin_select_economy_project = {
+	national_policy_panel_begin_update = yes
 	save_event_target_as = camp_admin_actor
 	if = {
 		limit = { camp_admin_economy_slot_is_free = yes NOT = { has_country_flag = camp_admin_development_paused } }
@@ -1175,9 +1207,12 @@ camp_admin_select_economy_project = {
 			}}
 		}
 	}
+	national_policy_panel_refresh_open = yes
+	national_policy_panel_end_update = yes
 }
 # Freeze physical scale once per committed project; ordinary refresh never shrinks its target.
 camp_admin_prepare_economy_work_target = {
+	national_policy_panel_begin_update = yes
 	if = {
 		limit = {
 			has_country_flag = camp_admin_economy_slot_active
@@ -1237,8 +1272,11 @@ camp_admin_prepare_economy_work_target = {
 		multiply_variable = { camp_admin_economy_progress = camp_admin_economy_target }
 		set_country_flag = camp_admin_project_work_v2
 	}
+	national_policy_panel_refresh_open = yes
+	national_policy_panel_end_update = yes
 }
 camp_admin_progress_economy_project = {
+	national_policy_panel_begin_update = yes
 	save_event_target_as = camp_admin_actor
 	set_variable = { camp_admin_economy_work_rate = 0 }
 	if = {
@@ -1327,8 +1365,11 @@ camp_admin_progress_economy_project = {
 		}
 		# Insufficient payment or support pauses progress; target loss closes via lifecycle.
 	}
+	national_policy_panel_refresh_open = yes
+	national_policy_panel_end_update = yes
 }
 camp_admin_monthly_state = {
+	camp_admin_panel_begin_state_update = yes
 	camp_admin_prepare_month_key = yes
 	if = {
 		limit = { camp_admin_site_is_operational = yes NOT = { check_variable = { camp_admin_last_month = camp_admin_month_key } } }
@@ -1366,8 +1407,10 @@ camp_admin_monthly_state = {
 		camp_admin_country_apply_institutional_site_mortality = yes
 		camp_admin_refresh_state_economy = yes
 	}
+	camp_admin_panel_end_state_update = yes
 }
 camp_admin_monthly_country = {
+	national_policy_panel_begin_update = yes
 	camp_admin_initialize_country = yes
 	camp_admin_prepare_month_key = yes
 	if = {
@@ -1383,8 +1426,11 @@ camp_admin_monthly_country = {
 		camp_admin_progress_economy_project = yes
 		camp_admin_refresh_country_economy = yes
 	}
+	national_policy_panel_refresh_open = yes
+	national_policy_panel_end_update = yes
 }
 camp_admin_try_claim_research_award = {
+	national_policy_panel_begin_update = yes
 	camp_admin_initialize_country = yes
 	set_temp_variable = { camp_admin_research_award_accepted = 0 }
 	set_temp_variable = { camp_admin_research_award_bonus = 0 }
@@ -1410,4 +1456,64 @@ camp_admin_try_claim_research_award = {
 	set_temp_variable = { camp_admin_research_contract = 0 }
 	set_temp_variable = { camp_admin_research_program_valid = 0 }
 	set_temp_variable = { camp_admin_research_requested_bonus = 0 }
+	national_policy_panel_refresh_open = yes
+	national_policy_panel_end_update = yes
+}
+
+# Camp publication adapters. Only exact open human recipients enter the batch.
+# Authority snapshots preserve former records recipients through pointer changes.
+# Public contract and migration map: camp_administration_effects.md.
+# COUNTRY with PREV = publishing STATE. Internal deduplication and batch enrollment.
+camp_admin_panel_collect_recipient = {
+	if = {
+		limit = { exists = yes is_ai = no national_policy_panel_has_open_window = yes }
+		if = {
+			limit = { NOT = { is_in_array = { array = PREV.camp_admin_panel_update_recipients value = THIS } } }
+			PREV = { add_to_array = { array = camp_admin_panel_update_recipients value = PREV } }
+			national_policy_panel_begin_update = yes
+		}
+	}
+}
+# STATE. Nested calls share one stable recipient snapshot, never an event target.
+camp_admin_panel_begin_state_update = {
+	if = {
+		limit = { check_variable = { camp_admin_panel_update_depth > constant:camp_admin_value.zero } }
+		add_to_variable = { camp_admin_panel_update_depth = constant:camp_admin_value.one }
+	}
+	else = {
+		owner = { camp_admin_panel_collect_recipient = yes }
+		controller = { camp_admin_panel_collect_recipient = yes }
+		if = { limit = { has_variable = camp_admin_responsible_country } var:camp_admin_responsible_country = { camp_admin_panel_collect_recipient = yes } }
+		if = { limit = { has_variable = camp_occ_responsible_country } var:camp_occ_responsible_country = { camp_admin_panel_collect_recipient = yes } }
+		if = { limit = { has_variable = genocide_responsible_country } var:genocide_responsible_country = { camp_admin_panel_collect_recipient = yes } }
+		if = { limit = { check_variable = { camp_admin_panel_update_recipients^num > constant:camp_admin_value.zero } } set_variable = { camp_admin_panel_update_depth = constant:camp_admin_value.one } }
+	}
+}
+# STATE committed publisher. The cache projector retains all visibility predicates.
+camp_admin_panel_publish_state = {
+	national_policy_panel_publish_state = yes
+	if = { limit = { has_variable = camp_admin_responsible_country } var:camp_admin_responsible_country = { national_policy_panel_refresh_open = yes } }
+	if = { limit = { has_variable = camp_occ_responsible_country } var:camp_occ_responsible_country = { national_policy_panel_refresh_open = yes } }
+	if = { limit = { has_variable = genocide_responsible_country } var:genocide_responsible_country = { national_policy_panel_refresh_open = yes } }
+}
+# STATE matching end. Final projection runs before the outer transaction returns.
+camp_admin_panel_end_state_update = {
+	if = {
+		limit = { check_variable = { camp_admin_panel_update_depth > constant:camp_admin_value.zero } }
+		subtract_from_variable = { camp_admin_panel_update_depth = constant:camp_admin_value.one }
+		if = {
+			limit = { NOT = { check_variable = { camp_admin_panel_update_depth > constant:camp_admin_value.zero } } }
+			clear_variable = camp_admin_panel_update_depth
+			camp_admin_panel_publish_state = yes
+			set_temp_variable = { camp_admin_panel_recipient_break = constant:camp_admin_value.zero }
+			for_each_scope_loop = {
+				break = camp_admin_panel_recipient_break
+				array = camp_admin_panel_update_recipients
+				national_policy_panel_refresh_open = yes
+				national_policy_panel_end_update = yes
+			}
+			clear_array = camp_admin_panel_update_recipients
+		}
+	}
+	else = { camp_admin_panel_publish_state = yes }
 }

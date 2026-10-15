@@ -122,9 +122,21 @@ scripted_gui = {
 			famine_panel_action_maintain_extraction_label_visible = { ROOT = { famine_gui_can_start_maintain_extraction = yes } }
 			famine_panel_action_maintain_extraction_label_locked_visible = { ROOT = { NOT = { famine_gui_can_start_maintain_extraction = yes } } }
 			famine_panel_actions_3_visible = { ROOT = { check_variable = { famine_panel_group = constant:humanitarian_panel.group_third } } }
-			famine_panel_work_meter_visible = { ROOT = { has_country_flag = famine_panel_has_active_work } }
+			famine_panel_work_meter_visible = { ROOT = {
+				has_country_flag = famine_panel_has_active_work
+				set_temp_variable = { famine_panel_live_work_frame = global.date }
+				subtract_from_temp_variable = { famine_panel_live_work_frame = famine_panel_work_start }
+				set_temp_variable = { famine_panel_live_work_duration = famine_panel_work_due }
+				subtract_from_temp_variable = { famine_panel_live_work_duration = famine_panel_work_start }
+				check_variable = { famine_panel_live_work_duration > constant:humanitarian_panel.zero }
+				divide_temp_variable = { famine_panel_live_work_frame = famine_panel_live_work_duration }
+				multiply_temp_variable = { famine_panel_live_work_frame = constant:humanitarian_panel.work_steps }
+				round_temp_variable = famine_panel_live_work_frame
+				clamp_temp_variable = { var = famine_panel_live_work_frame min = constant:humanitarian_panel.zero max = constant:humanitarian_panel.work_steps }
+				add_to_temp_variable = { famine_panel_live_work_frame = constant:humanitarian_panel.one }
+			} }
 		}
-		properties = { famine_panel_work_meter = { frame = ROOT.famine_panel_work_frame } }
+		properties = { famine_panel_work_meter = { frame = famine_panel_live_work_frame } }
 		dynamic_lists = { famine_panel_state_list = { array = famine_panel_states change_scope = yes entry_container = "famine_panel_state_row" } }
 	}
 }

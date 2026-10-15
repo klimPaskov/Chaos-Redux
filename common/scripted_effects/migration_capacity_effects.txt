@@ -60,6 +60,18 @@ migration_mark_reception_capacity_dirty = {
 		if = { limit = { NOT = { has_variable = migration_reception_capacity_schema_version } } set_variable = { migration_reception_capacity_schema_version = constant:migration_capacity.schema_version } }
 		set_variable = { migration_reception_capacity_dirty = constant:migration_capacity.one }
 		migration_register_active_country = yes
+		if = {
+			limit = {
+				NOT = {
+					check_variable = {
+						var = migration_reception_delta_defer_refresh
+						value = constant:humanitarian_runtime.one
+						compare = equals
+					}
+				}
+			}
+			national_policy_panel_refresh_open = yes
+		}
 	}
 }
 
@@ -373,6 +385,7 @@ migration_recalculate_reception_capacity = {
 	add_to_variable = { migration_reception_capacity_revision = constant:migration_capacity.revision_increment }
 	set_variable = { migration_reception_capacity_last_refresh = global.date }
 	set_variable = { migration_reception_capacity_dirty = constant:migration_capacity.zero }
+	national_policy_panel_refresh_open = yes
 	set_temp_variable = { migration_capacity_candidate_count = constant:migration_capacity.zero }
 	set_temp_variable = { migration_capacity_invalid_candidate_count = constant:migration_capacity.zero }
 	set_temp_variable = { migration_capacity_safe_candidate_count = constant:migration_capacity.zero }

@@ -1,16 +1,8 @@
-# Human-only panel observation. No simulation enrollment or gameplay mutation.
+# Open flags only: projection owns eligibility-loss cleanup. No trigger writes.
 national_policy_panel_has_open_window = {
-	exists = yes
-	is_ai = no
 	OR = {
-		AND = { has_country_flag = famine_panel_open famine_panel_is_eligible = yes }
-		AND = { has_country_flag = migration_panel_open migration_panel_is_eligible = yes }
-		AND = { has_country_flag = camp_repression_ledger_open camp_rework_country_is_eligible = yes has_camp_category_visible_action = yes }
+		has_country_flag = famine_panel_open
+		has_country_flag = migration_panel_open
+		has_country_flag = camp_repression_ledger_open
 	}
-}
-
-# COUNTRY. An earlier incarnation's delayed event cannot consume a fresh slot.
-national_policy_panel_observer_is_due = {
-	has_variable = national_policy_panel_observer_earliest
-	check_variable = { var = national_policy_panel_observer_earliest value = global.date compare = less_than_or_equals }
 }

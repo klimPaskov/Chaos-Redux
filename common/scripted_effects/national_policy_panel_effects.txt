@@ -1,14 +1,15 @@
-# Country-owned presentation observer for Migration, Famine and Camps.
-# No world hook, simulation registration, population change, payment or work tick.
-# Native country_event hours takes a literal macro. This is the sole cadence setting.
-@national_policy_panel_refresh_hours = 1
+# Immediate owner publication for Migration, Famine and Camps.
+# No clock, world scan, simulation registration, payment or gameplay assessment.
 
-# COUNTRY terminal/rebirth boundary. A removed country's queued event may disappear.
-# Ordinary window close deliberately does not use this reservation reset.
+# COUNTRY terminal/rebirth cleanup, including obsolete observer fields.
 national_policy_panel_retire_country = {
 	clr_country_flag = national_policy_panel_observer_pending
 	clear_variable = national_policy_panel_observer_owner
 	clear_variable = national_policy_panel_observer_earliest
+	clear_variable = national_policy_panel_owner
+	clear_variable = national_policy_panel_update_depth
+	clr_country_flag = national_policy_panel_publication_pending
+	clr_country_flag = national_policy_panel_publishing
 	humanitarian_panel_invalidate_actor = yes
 	clr_country_flag = camp_repression_ledger_open
 	camp_admin_close_pickers = yes
@@ -16,20 +17,24 @@ national_policy_panel_retire_country = {
 	clear_array = camp_admin_gui_states
 }
 
-# COUNTRY initialization. An inherited reservation belongs to its original actor.
-# Preserve a valid current actor's live chain on repeated ordinary initialization.
-national_policy_panel_reconcile_observer_identity = {
+# COUNTRY initialization. Copied presentation belongs to its original actor.
+national_policy_panel_reconcile_identity = {
 	if = {
 		limit = {
-			has_variable = national_policy_panel_observer_owner
-			NOT = { check_variable = { national_policy_panel_observer_owner = THIS } }
+			OR = {
+				AND = { has_variable = national_policy_panel_owner NOT = { check_variable = { national_policy_panel_owner = THIS } } }
+				AND = { has_variable = national_policy_panel_observer_owner NOT = { check_variable = { national_policy_panel_observer_owner = THIS } } }
+			}
 		}
 		national_policy_panel_retire_country = yes
 	}
+	clr_country_flag = national_policy_panel_observer_pending
+	clear_variable = national_policy_panel_observer_owner
+	clear_variable = national_policy_panel_observer_earliest
 }
 
 # COUNTRY. Refresh only open windows. Existing owner callbacks may call this paused.
-national_policy_panel_refresh_open = {
+national_policy_panel_project_open = {
 	if = {
 		limit = { OR = { has_country_flag = famine_panel_open has_country_flag = migration_panel_open } }
 		if = {
@@ -55,48 +60,54 @@ national_policy_panel_refresh_open = {
 	}
 }
 
-# COUNTRY. Keep a queued delivery across close/reopen until it actually arrives.
-# The owner pointer rejects inherited pending flags belonging to another country.
-national_policy_panel_request_observer = {
+# COUNTRY nested transaction boundaries. Only an actual open human is tracked.
+national_policy_panel_begin_update = {
 	if = {
-		limit = {
-			national_policy_panel_has_open_window = yes
-			NOT = {
-				AND = {
-					has_country_flag = national_policy_panel_observer_pending
-					has_variable = national_policy_panel_observer_owner
-					check_variable = { national_policy_panel_observer_owner = THIS }
-				}
-			}
+		limit = { exists = yes is_ai = no national_policy_panel_has_open_window = yes }
+		add_to_variable = { national_policy_panel_update_depth = constant:humanitarian_panel.one }
+	}
+}
+# COUNTRY matching end; the final flush occurs before this effect returns.
+national_policy_panel_end_update = {
+	if = {
+		limit = { check_variable = { national_policy_panel_update_depth > constant:humanitarian_panel.zero } }
+		subtract_from_variable = { national_policy_panel_update_depth = constant:humanitarian_panel.one }
+		if = {
+			limit = { NOT = { check_variable = { national_policy_panel_update_depth > constant:humanitarian_panel.zero } } }
+			clear_variable = national_policy_panel_update_depth
+			if = { limit = { has_country_flag = national_policy_panel_publication_pending } national_policy_panel_refresh_open = yes }
 		}
-		set_country_flag = national_policy_panel_observer_pending
-		set_variable = { national_policy_panel_observer_owner = THIS }
-		# The shared date contract stores one hour as 1 / hours_per_date_unit.
-		# Integer hours avoid fractional-day rounding before conversion.
-		set_temp_variable = { national_policy_panel_observer_delay = @national_policy_panel_refresh_hours }
-		divide_temp_variable = { national_policy_panel_observer_delay = constant:chaosx_date_units.hours_per_date_unit }
-		set_variable = { national_policy_panel_observer_earliest = global.date }
-		add_to_variable = { national_policy_panel_observer_earliest = national_policy_panel_observer_delay }
-		save_event_target_as = national_policy_panel_observer_actor
-		country_event = { id = national_policy_panel.1 hours = @national_policy_panel_refresh_hours }
 	}
 }
 
-# COUNTRY receiver. Consume delivery before refresh and queue at most one successor.
-national_policy_panel_observe = {
+# COUNTRY immediate publication. Closed panels are idle; nested requests coalesce.
+# Projection callees are read-only gameplay consumers and cannot publish recursively.
+national_policy_panel_refresh_open = {
 	if = {
-		limit = {
-			has_country_flag = national_policy_panel_observer_pending
-			has_variable = national_policy_panel_observer_owner
-			check_variable = { national_policy_panel_observer_owner = THIS }
-			has_event_target = national_policy_panel_observer_actor
-			tag = event_target:national_policy_panel_observer_actor
-			national_policy_panel_observer_is_due = yes
+		limit = { exists = yes is_ai = no national_policy_panel_has_open_window = yes }
+		set_country_flag = national_policy_panel_publication_pending
+		if = {
+			limit = {
+				NOT = { check_variable = { national_policy_panel_update_depth > constant:humanitarian_panel.zero } }
+				NOT = { has_country_flag = national_policy_panel_publishing }
+			}
+			set_country_flag = national_policy_panel_publishing
+			clr_country_flag = national_policy_panel_publication_pending
+			# A no-delay hidden event establishes actor ROOT and isolated temporary storage.
+			country_event = { id = national_policy_panel.2 }
+			clr_country_flag = national_policy_panel_publishing
 		}
-		clr_country_flag = national_policy_panel_observer_pending
-		clear_variable = national_policy_panel_observer_owner
-		clear_variable = national_policy_panel_observer_earliest
-		national_policy_panel_refresh_open = yes
-		national_policy_panel_request_observer = yes
+	}
+}
+
+# STATE, after committed publication. Notify owner and distinct controller.
+# Former controllers and independent receivers require an explicit owner callback.
+national_policy_panel_publish_state = {
+	owner = { save_event_target_as = national_policy_panel_state_owner national_policy_panel_refresh_open = yes }
+	controller = {
+		if = {
+			limit = { NOT = { tag = event_target:national_policy_panel_state_owner } }
+			national_policy_panel_refresh_open = yes
+		}
 	}
 }

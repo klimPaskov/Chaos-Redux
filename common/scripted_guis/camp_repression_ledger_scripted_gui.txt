@@ -38,7 +38,7 @@ scripted_gui = {
 				}
 			}
 			camp_admin_filter_button_click = { ROOT = { camp_admin_close_pickers = yes set_country_flag = camp_admin_picker_filter } }
-			camp_admin_location_select_click = { ROOT = { set_variable = { camp_selected_state_id = camp_admin_gui_states^camp_admin_location_index } camp_admin_refresh_interface = yes } }
+			camp_admin_location_select_click = { ROOT = { set_variable = { camp_selected_state_id = PREV } camp_admin_refresh_interface = yes } }
 			camp_admin_site_work_click = { ROOT = { camp_admin_toggle_selected_work = yes } }
 			camp_admin_site_role_click = { ROOT = { camp_admin_close_pickers = yes set_country_flag = camp_admin_picker_role camp_admin_refresh_command_quotes = yes } }
 			camp_admin_site_release_click = { ROOT = { camp_admin_release_selected = yes } }
@@ -85,7 +85,19 @@ scripted_gui = {
 			camp_admin_economy_panel_visible = { ROOT = { NOT = { has_country_flag = camp_admin_maintenance_shortage } } }
 			camp_admin_institution_panel_visible = { ROOT = { NOT = { has_country_flag = camp_admin_maintenance_shortage } } }
 			camp_admin_crisis_panel_visible = { ROOT = { check_variable = { camp_admin_view = constant:camp_admin_view.administration } has_country_flag = camp_admin_maintenance_shortage NOT = { camp_admin_has_open_picker = yes } } }
-			camp_admin_economy_meter_visible = { ROOT = { has_country_flag = camp_admin_economy_slot_active } }
+			camp_admin_economy_meter_visible = { ROOT = {
+				has_country_flag = camp_admin_economy_slot_active
+				set_temp_variable = { camp_admin_live_economy_frame = constant:camp_admin_value.zero }
+				if = {
+					limit = { check_variable = { camp_admin_economy_target > constant:camp_admin_value.zero } }
+					set_temp_variable = { camp_admin_live_economy_frame = camp_admin_economy_progress }
+					divide_temp_variable = { camp_admin_live_economy_frame = camp_admin_economy_target }
+				}
+				clamp_temp_variable = { var = camp_admin_live_economy_frame min = constant:camp_admin_value.zero max = constant:camp_admin_value.one }
+				multiply_temp_variable = { camp_admin_live_economy_frame = constant:camp_admin_meter.steps }
+				round_temp_variable = camp_admin_live_economy_frame
+				add_to_temp_variable = { camp_admin_live_economy_frame = constant:camp_admin_meter.first_frame }
+			} }
 			camp_admin_institution_meter_visible = { ROOT = { check_variable = { camp_admin_gui_institution_target > constant:camp_admin_value.zero } } }
 			camp_admin_crisis_pause_visible = { ROOT = { NOT = { has_country_flag = camp_admin_development_paused } } }
 			camp_admin_crisis_pause_click_enabled = { ROOT = { NOT = { has_country_flag = camp_admin_development_paused } } }
@@ -99,9 +111,28 @@ scripted_gui = {
 			camp_admin_country_action_two_click_enabled = { ROOT = { camp_admin_ui_action_two_available = yes } }
 			camp_admin_country_action_two_locked_visible = { ROOT = { NOT = { has_country_flag = camp_admin_maintenance_shortage } camp_admin_ui_action_two_visible = yes NOT = { camp_admin_ui_action_two_available = yes } } }
 			camp_admin_country_action_two_locked_click_enabled = { ROOT = { always = no } }
-			camp_admin_location_empty_visible = { ROOT = { check_variable = { camp_admin_gui_states^num = 0 } } }
-			camp_admin_selected_panel_visible = { ROOT = { has_variable = camp_selected_state_id } }
-			camp_admin_location_selected_visible = { ROOT = { has_variable = camp_selected_state_id check_variable = { camp_selected_state_id = camp_admin_gui_states^camp_admin_location_index } } }
+			camp_admin_location_list_visible = { ROOT = {
+				has_country_flag = camp_repression_ledger_open
+				clear_temp_array = camp_admin_live_location_sources
+				clear_temp_array = camp_admin_live_location_states
+				camp_admin_gui_read_live_locations = yes
+			} }
+			camp_admin_location_empty_visible = { ROOT = {
+				has_country_flag = camp_repression_ledger_open
+				clear_temp_array = camp_admin_live_location_sources
+				clear_temp_array = camp_admin_live_location_states
+				camp_admin_gui_read_live_locations = yes
+				check_variable = { camp_admin_live_location_states^num = constant:camp_admin_value.zero }
+			} }
+			camp_admin_selected_panel_visible = { ROOT = {
+				has_country_flag = camp_repression_ledger_open
+				has_variable = camp_selected_state_id
+				clear_temp_array = camp_admin_live_location_sources
+				clear_temp_array = camp_admin_live_location_states
+				camp_admin_gui_read_live_locations = yes
+				is_in_array = { array = camp_admin_live_location_states value = camp_selected_state_id }
+			} }
+			camp_admin_location_selected_visible = { ROOT = { has_variable = camp_selected_state_id check_variable = { camp_selected_state_id = PREV } } }
 			camp_admin_site_work_visible = { ROOT = { camp_admin_can_toggle_selected_work = yes } }
 			camp_admin_site_work_click_enabled = { ROOT = { camp_admin_can_toggle_selected_work = yes } }
 			camp_admin_site_work_locked_visible = { ROOT = { NOT = { camp_admin_has_selected_operating_site = yes } } }
@@ -174,11 +205,11 @@ scripted_gui = {
 			camp_admin_picker_filter_visible = { ROOT = { has_country_flag = camp_admin_picker_filter } }
 		}
 		properties = {
-			camp_admin_economy_meter = { frame = ROOT.camp_admin_gui_economy_frame }
+			camp_admin_economy_meter = { frame = camp_admin_live_economy_frame }
 			camp_admin_institution_meter = { frame = ROOT.camp_admin_gui_institution_frame }
 		}
 		dynamic_lists = {
-			camp_admin_location_list = { array = camp_admin_gui_states value = camp_admin_location_state index = camp_admin_location_index change_scope = yes entry_container = "camp_admin_location_row" }
+			camp_admin_location_list = { array = camp_admin_live_location_states value = camp_admin_location_state index = camp_admin_location_index change_scope = yes entry_container = "camp_admin_location_row" }
 			camp_admin_history_list = { array = camp_admin_history_ids value = camp_admin_history_id index = camp_admin_history_index change_scope = no entry_container = "camp_admin_history_row" }
 		}
 	}

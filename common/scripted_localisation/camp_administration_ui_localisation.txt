@@ -83,16 +83,16 @@ defined_text = {
 }
 defined_text = {
 	name = GetCampAdminSelectedContribution
-	text = { trigger = { check_variable = { camp_admin_gui_site_industry > 0 } } localization_key = camp_admin_selected_industry }
-	text = { trigger = { check_variable = { camp_admin_gui_site_construction > 0 } } localization_key = camp_admin_selected_works }
-	text = { trigger = { check_variable = { camp_admin_gui_site_extraction > 0 } } localization_key = camp_admin_selected_extraction }
+	text = { trigger = { var:camp_selected_state_id = { camp_admin_gui_site_has_current_output = yes check_variable = { camp_admin_industrial_equivalent > constant:camp_admin_value.zero } } } localization_key = camp_admin_selected_industry }
+	text = { trigger = { var:camp_selected_state_id = { camp_admin_gui_site_has_current_output = yes check_variable = { camp_admin_construction_factor > constant:camp_admin_value.zero } } } localization_key = camp_admin_selected_works }
+	text = { trigger = { var:camp_selected_state_id = { camp_admin_gui_site_has_current_output = yes check_variable = { camp_admin_extraction_factor > constant:camp_admin_value.zero } } } localization_key = camp_admin_selected_extraction }
 	text = { localization_key = camp_admin_selected_idle }
 }
 defined_text = {
 	name = GetCampAdminSelectedContributionValue
-	text = { trigger = { check_variable = { camp_admin_gui_site_industry > 0 } } localization_key = camp_admin_selected_industry_value }
-	text = { trigger = { check_variable = { camp_admin_gui_site_construction > 0 } } localization_key = camp_admin_selected_works_value }
-	text = { trigger = { check_variable = { camp_admin_gui_site_extraction > 0 } } localization_key = camp_admin_selected_extraction_value }
+	text = { trigger = { var:camp_selected_state_id = { camp_admin_gui_site_has_current_output = yes check_variable = { camp_admin_industrial_equivalent > constant:camp_admin_value.zero } } } localization_key = camp_admin_selected_industry_value }
+	text = { trigger = { var:camp_selected_state_id = { camp_admin_gui_site_has_current_output = yes check_variable = { camp_admin_construction_factor > constant:camp_admin_value.zero } } } localization_key = camp_admin_selected_works_value }
+	text = { trigger = { var:camp_selected_state_id = { camp_admin_gui_site_has_current_output = yes check_variable = { camp_admin_extraction_factor > constant:camp_admin_value.zero } } } localization_key = camp_admin_selected_extraction_value }
 	text = { localization_key = camp_admin_selected_idle_value }
 }
 defined_text = {
@@ -100,7 +100,7 @@ defined_text = {
 	text = { trigger = { var:camp_selected_state_id = { camp_admin_gui_host_records_uncertain = yes } } localization_key = camp_admin_conditions_records }
 	text = { trigger = { var:camp_selected_state_id = { has_state_flag = camp_admin_civilian_converted } } localization_key = camp_admin_conditions_civilian }
 	text = { trigger = { var:camp_selected_state_id = { has_state_flag = camp_admin_site_suspended } } localization_key = camp_admin_conditions_suspended }
-	text = { trigger = { check_variable = { camp_admin_gui_site_support < 1 } } localization_key = camp_admin_conditions_shortage }
+	text = { trigger = { var:camp_selected_state_id = { check_variable = { camp_admin_support_ratio < constant:camp_admin_value.one } } } localization_key = camp_admin_conditions_shortage }
 	text = { localization_key = camp_admin_conditions_supplied }
 }
 defined_text = {
@@ -156,7 +156,10 @@ defined_text = {
 	name = GetCampAdminUnknownOriginNote
 	text = {
 		trigger = {
-			check_variable = { camp_admin_gui_uncertain_locations > constant:camp_admin_value.zero }
+			has_country_flag = camp_repression_ledger_open
+			set_temp_variable = { camp_admin_live_uncertain_locations = constant:camp_admin_value.zero }
+			camp_admin_gui_read_live_uncertainty = yes
+			check_variable = { camp_admin_live_uncertain_locations > constant:camp_admin_value.zero }
 		}
 		localization_key = camp_admin_records_unknown_origin_note
 	}

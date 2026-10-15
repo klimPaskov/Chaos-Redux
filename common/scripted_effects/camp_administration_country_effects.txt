@@ -103,6 +103,7 @@ camp_admin_country_clear_engineer_pending_receipt = {
 }
 
 camp_admin_country_start_program = {
+	national_policy_panel_begin_update = yes
 	if = {
 		limit = { NOT = { has_country_flag = camp_admin_institution_slot_active } NOT = { has_country_flag = camp_admin_country_engineer_release_pending } camp_admin_country_start_input_valid = yes }
 		set_variable = { camp_admin_country_program = camp_admin_start_program_input }
@@ -159,9 +160,12 @@ camp_admin_country_start_program = {
 		else = { set_variable = { camp_admin_country_program = constant:camp_admin_country_program.none } clear_variable = camp_admin_institution_state_id }
 	}
 	set_temp_variable = { camp_admin_start_program_input = constant:camp_admin_value.zero }
+	national_policy_panel_refresh_open = yes
+	national_policy_panel_end_update = yes
 }
 
 camp_admin_country_select_program = {
+	national_policy_panel_begin_update = yes
 	if = {
 		limit = { has_country_flag = camp_admin_country_programs_authorized NOT = { has_country_flag = camp_admin_development_paused } NOT = { has_country_flag = camp_admin_institution_slot_active } camp_admin_country_program_available = yes }
 		if = { limit = { camp_admin_program_ger_inspectorate_open = yes } set_temp_variable = { camp_admin_start_program_input = constant:camp_admin_country_program.ger_inspectorate } camp_admin_country_start_program = yes }
@@ -174,6 +178,8 @@ camp_admin_country_select_program = {
 		else_if = { limit = { camp_admin_program_sov_wartime_industry_open = yes } set_temp_variable = { camp_admin_start_program_input = constant:camp_admin_country_program.sov_wartime_industry } camp_admin_country_start_program = yes }
 		else_if = { limit = { camp_admin_program_sov_engineer_release_open = yes } set_temp_variable = { camp_admin_start_program_input = constant:camp_admin_country_program.sov_engineer_release } camp_admin_country_start_program = yes }
 	}
+	national_policy_panel_refresh_open = yes
+	national_policy_panel_end_update = yes
 }
 
 # Fixed program name plus engine category anti-stacking. Research progress never reads deaths.
@@ -444,6 +450,7 @@ camp_admin_country_award_program_sov_engineer_release = {
 }
 
 camp_admin_country_finish_program = {
+	national_policy_panel_begin_update = yes
 	if = { limit = { has_variable = camp_admin_institution_state_id } var:camp_admin_institution_state_id = { camp_admin_refresh_capacity = yes } }
 	if = { limit = { check_variable = { camp_admin_country_program = constant:camp_admin_country_program.ger_inspectorate } } camp_admin_country_award_program_ger_inspectorate = yes }
 	else_if = { limit = { check_variable = { camp_admin_country_program = constant:camp_admin_country_program.ger_wvha } } camp_admin_country_award_program_ger_wvha = yes }
@@ -454,6 +461,8 @@ camp_admin_country_finish_program = {
 	else_if = { limit = { check_variable = { camp_admin_country_program = constant:camp_admin_country_program.sov_design_bureaux } } camp_admin_country_award_program_sov_design_bureaux = yes }
 	else_if = { limit = { check_variable = { camp_admin_country_program = constant:camp_admin_country_program.sov_wartime_industry } } camp_admin_country_award_program_sov_wartime_industry = yes }
 	else_if = { limit = { check_variable = { camp_admin_country_program = constant:camp_admin_country_program.sov_engineer_release } } camp_admin_country_award_program_sov_engineer_release = yes }
+	national_policy_panel_refresh_open = yes
+	national_policy_panel_end_update = yes
 }
 
 # STATE scope. This continuing site consequence is separate from the finite
@@ -495,6 +504,7 @@ camp_admin_country_apply_institutional_site_mortality = {
 }
 
 camp_admin_country_tick_institution = {
+	national_policy_panel_begin_update = yes
 	if = { limit = { has_variable = camp_admin_institution_state_id } var:camp_admin_institution_state_id = { camp_admin_refresh_capacity = yes } }
 	set_country_flag = camp_admin_country_institution_paused
 	if = {
@@ -529,10 +539,13 @@ camp_admin_country_tick_institution = {
 			}
 		}
 	}
+	national_policy_panel_refresh_open = yes
+	national_policy_panel_end_update = yes
 }
 
 # Economic ministries, military commands and security authorities compete for the same commitments.
 camp_admin_country_tick_authority = {
+	national_policy_panel_begin_update = yes
 	if = {
 		limit = { has_country_flag = camp_admin_country_programs_authorized }
 		if = {
@@ -568,18 +581,24 @@ camp_admin_country_tick_authority = {
 		}
 	}
 	clamp_variable = { var = camp_admin_country_authority_pressure min = 0 max = constant:camp_admin_country.authority_max }
+	national_policy_panel_refresh_open = yes
+	national_policy_panel_end_update = yes
 }
 
 camp_admin_country_halt = {
+	national_policy_panel_begin_update = yes
 	if = { limit = { camp_administration_civil_country_supported = yes } camp_administration_civil_cleanup = yes }
 	clr_country_flag = camp_admin_country_programs_authorized
 	clr_country_flag = camp_admin_institution_slot_active
 	clr_country_flag = camp_admin_country_oversight_active
 	set_country_flag = camp_admin_country_institution_paused
 	# The saved program and progress permit explicit resumption; no further payments occur.
+	national_policy_panel_refresh_open = yes
+	national_policy_panel_end_update = yes
 }
 
 camp_admin_country_reform = {
+	national_policy_panel_begin_update = yes
 	if = {
 		limit = { camp_admin_country_sites_ready_for_reform = yes }
 		camp_admin_country_halt = yes
@@ -598,10 +617,13 @@ camp_admin_country_reform = {
 		else_if = { limit = { original_tag = JAP } set_country_flag = japan_prisoner_experiments_shutdown set_country_flag = japan_biowarfare_reform_route }
 		else_if = { limit = { original_tag = SOV } set_country_flag = camp_rework_reformed_legacy }
 	}
+	national_policy_panel_refresh_open = yes
+	national_policy_panel_end_update = yes
 }
 
 # The state receipt bounds real releases. No additive army reserve or restored population.
 camp_admin_country_release_registered_prisoners = {
+	national_policy_panel_begin_update = yes
 	set_variable = { camp_admin_country_last_released_k = 0 }
 	for_each_scope_loop = {
 		array = camp_active_site_states
@@ -621,9 +643,12 @@ camp_admin_country_release_registered_prisoners = {
 		}
 	}
 	camp_admin_refresh_country_economy = yes
+	national_policy_panel_refresh_open = yes
+	national_policy_panel_end_update = yes
 }
 
 camp_admin_country_start_oversight = {
+	national_policy_panel_begin_update = yes
 	camp_admin_country_halt = yes
 	camp_admin_country_clear_engineer_pending_receipt = yes
 	set_variable = { camp_admin_country_program = constant:camp_admin_country_program.none }
@@ -633,10 +658,13 @@ camp_admin_country_start_oversight = {
 	set_country_flag = camp_admin_country_oversight_authorized
 	set_country_flag = camp_admin_country_oversight_active
 	set_variable = { camp_admin_country_review_progress = 0 }
+	national_policy_panel_refresh_open = yes
+	national_policy_panel_end_update = yes
 }
 
 # A single command settles immediate allocation disputes but accumulates stronger security control.
 camp_admin_country_concentrate_authority = {
+	national_policy_panel_begin_update = yes
 	if = {
 		limit = { NOT = { check_variable = { camp_admin_country_sponsor = constant:camp_admin_country.sponsor_security } } }
 		add_to_variable = { camp_admin_country_authority_pressure = constant:camp_admin_country.authority_concentration_relief }
@@ -645,9 +673,12 @@ camp_admin_country_concentrate_authority = {
 		set_country_flag = camp_admin_country_programs_authorized
 		set_country_flag = camp_admin_country_legacy_active
 	}
+	national_policy_panel_refresh_open = yes
+	national_policy_panel_end_update = yes
 }
 
 camp_admin_country_tick_aftermath = {
+	national_policy_panel_begin_update = yes
 	if = {
 		limit = { has_country_flag = camp_admin_country_archive_work_active }
 		set_temp_variable = { camp_admin_quote_support = constant:camp_admin_country.archive_support }
@@ -666,6 +697,8 @@ camp_admin_country_tick_aftermath = {
 			}
 		}
 	}
+	national_policy_panel_refresh_open = yes
+	national_policy_panel_end_update = yes
 }
 
 camp_admin_country_prepare_monthly = {
@@ -679,6 +712,7 @@ camp_admin_country_prepare_monthly = {
 }
 
 camp_admin_country_monthly = {
+	national_policy_panel_begin_update = yes
 	if = { limit = { camp_administration_civil_country_supported = yes } camp_administration_civil_monthly = yes camp_admin_country_refresh_civil_institution_display = yes }
 	camp_admin_prepare_month_key = yes
 	if = {
@@ -719,9 +753,12 @@ camp_admin_country_monthly = {
 		set_variable = { camp_admin_research_progress = camp_admin_institution_progress }
 		set_variable = { camp_admin_research_target = camp_admin_institution_target }
 	}
+	national_policy_panel_refresh_open = yes
+	national_policy_panel_end_update = yes
 }
 
 camp_admin_country_action_1 = {
+	national_policy_panel_begin_update = yes
 	if = {
 		limit = { camp_admin_country_action_1_available = yes }
 		if = { limit = { camp_administration_civil_country_supported = yes } camp_administration_civil_action_one = yes camp_admin_country_refresh_civil_institution_display = yes }
@@ -732,27 +769,36 @@ camp_admin_country_action_1 = {
 			else = { camp_admin_country_select_program = yes }
 		}
 	}
+	national_policy_panel_refresh_open = yes
+	national_policy_panel_end_update = yes
 }
 camp_admin_country_action_2 = {
+	national_policy_panel_begin_update = yes
 	if = {
 		limit = { camp_admin_country_action_2_available = yes }
 		if = { limit = { camp_administration_civil_country_supported = yes } camp_administration_civil_action_two = yes camp_admin_country_refresh_civil_institution_display = yes }
 		else_if = { limit = { OR = { has_country_flag = camp_admin_country_programs_authorized has_country_flag = camp_admin_country_oversight_active } } camp_admin_country_halt = yes }
 		else = { camp_admin_country_reform = yes }
 	}
+	national_policy_panel_refresh_open = yes
+	national_policy_panel_end_update = yes
 }
 
 camp_admin_country_start_archives = {
+	national_policy_panel_begin_update = yes
 	if = {
 		limit = { camp_admin_country_archives_available = yes }
 		set_country_flag = camp_admin_country_archive_work_active
 		set_country_flag = camp_admin_institution_slot_active
 		set_variable = { camp_admin_country_archive_progress = 0 }
 	}
+	national_policy_panel_refresh_open = yes
+	national_policy_panel_end_update = yes
 }
 
 # Display adapters copy actual civil progress; they never advance a civil project.
 camp_admin_country_refresh_civil_institution_display = {
+	national_policy_panel_begin_update = yes
 	set_variable = { camp_admin_institution_progress = 0 }
 	set_variable = { camp_admin_institution_target = 0 }
 	if = {
@@ -767,6 +813,8 @@ camp_admin_country_refresh_civil_institution_display = {
 	}
 	set_variable = { camp_admin_research_progress = camp_admin_institution_progress }
 	set_variable = { camp_admin_research_target = camp_admin_institution_target }
+	national_policy_panel_refresh_open = yes
+	national_policy_panel_end_update = yes
 }
 
 # Deterministic AI policy uses the same quoted, paid budget command as player controls.

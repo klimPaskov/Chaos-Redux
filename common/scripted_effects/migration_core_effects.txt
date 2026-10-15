@@ -789,6 +789,7 @@ migration_apply_flight_request = {
 			set_variable = { migration_flight_request_generation = migration_pressure_request_generation }
 		}
 		set_temp_variable = { migration_pressure_request_result = constant:humanitarian_runtime.one }
+		national_policy_panel_publish_state = yes
 	}
 	set_temp_variable = { migration_pressure_request_proven = constant:humanitarian_runtime.zero }
 	set_temp_variable = { migration_pressure_request_amount = constant:humanitarian_population.zero }
@@ -1015,6 +1016,7 @@ migration_register_trapped_population = {
 		OWNER = { migration_register_active_country = yes }
 		migration_refresh_decision_phase_from_state = yes
 		set_temp_variable = { migration_trapped_result = constant:humanitarian_runtime.one }
+		national_policy_panel_publish_state = yes
 	}
 	set_temp_variable = { migration_trapped_request_amount = constant:humanitarian_population.zero }
 }
@@ -1087,6 +1089,7 @@ migration_mark_reception_observation_breach = {
 migration_apply_reception_delta = {
 	set_temp_variable = { migration_reception_delta_result = constant:civilian_transfer_route_result.invalid }
 	set_temp_variable = { migration_reception_delta_applied = constant:humanitarian_population.zero }
+	set_temp_variable = { migration_reception_delta_defer_refresh_input = migration_reception_delta_defer_refresh }
 	if = {
 		limit = { migration_reception_delta_request_is_valid = yes }
 		migration_initialize_state = yes
@@ -1106,19 +1109,28 @@ migration_apply_reception_delta = {
 			OWNER = { subtract_from_variable = { migration_reception_load = migration_reception_delta_amount } }
 		}
 		set_temp_variable = { migration_reception_delta_applied = migration_reception_delta_amount }
+		# Candidate registration is part of this ledger transaction. Defer its
+		# capacity-only notification until both ledgers and state context settle.
+		set_temp_variable = { migration_reception_delta_defer_refresh = constant:humanitarian_runtime.one }
 		migration_register_reception_candidate_state = yes
-		OWNER = { migration_mark_reception_capacity_dirty = yes }
+		set_temp_variable = { migration_reception_delta_defer_refresh = migration_reception_delta_defer_refresh_input }
 		if = {
-			limit = { NOT = { check_variable = { var = migration_reception_delta_defer_refresh value = constant:humanitarian_runtime.one compare = equals } } }
+			limit = { NOT = { check_variable = { var = migration_reception_delta_defer_refresh_input value = constant:humanitarian_runtime.one compare = equals } } }
 			migration_refresh_reception_context = yes
 			migration_refresh_decision_phase_from_state = yes
 		}
 		set_temp_variable = { migration_reception_delta_result = constant:civilian_transfer_route_result.valid }
+		OWNER = { migration_mark_reception_capacity_dirty = yes }
+		if = {
+			limit = { NOT = { check_variable = { var = migration_reception_delta_defer_refresh_input value = constant:humanitarian_runtime.one compare = equals } } }
+			national_policy_panel_publish_state = yes
+		}
 	}
 	set_temp_variable = { migration_reception_delta_request_proven = constant:humanitarian_runtime.zero }
 	set_temp_variable = { migration_reception_delta_amount = constant:humanitarian_population.zero }
 	set_temp_variable = { migration_reception_delta_mode = constant:humanitarian_runtime.zero }
 	set_temp_variable = { migration_reception_delta_defer_refresh = constant:humanitarian_runtime.zero }
+	set_temp_variable = { migration_reception_delta_defer_refresh_input = constant:humanitarian_runtime.zero }
 }
 
 
@@ -1786,6 +1798,7 @@ migration_process_registered_state = {
 		}
 		migration_refresh_dynamic_modifiers = yes
 	}
+	national_policy_panel_publish_state = yes
 }
 
 
@@ -1836,7 +1849,7 @@ migration_process_registered_country = {
 		set_variable = { migration_cleanup_requested = constant:humanitarian_runtime.one }
 		migration_cleanup_country_registration = yes
 	}
-	if = { limit = { has_country_flag = migration_panel_open } migration_panel_refresh = yes }
+	national_policy_panel_refresh_open = yes
 }
 
 
@@ -2247,6 +2260,7 @@ migration_handle_state_control_change = {
 		migration_cleanup_cohort_records_for_state = yes
 		migration_cleanup_state_registration = yes
 	}
+	national_policy_panel_publish_state = yes
 }
 
 migration_cleanup_mission_subjects_after_control_change = {

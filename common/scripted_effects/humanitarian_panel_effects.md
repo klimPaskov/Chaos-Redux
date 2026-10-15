@@ -12,7 +12,7 @@ All public helpers and predicates below use the actual actor country.
 | --- | --- | --- | --- |
 | `famine_panel_open_window`, `migration_panel_open_window` | Eligible actor, optional existing view/group | Sets its open flag, clears the other panel, defaults only missing view/group to overview/group 1, refreshes presentation | Parent category or GUI opener |
 | `famine_panel_close_window`, `migration_panel_close_window` | Actor | Eligible close clears its own open flag, invalid actor invokes pointer invalidation | Parent close controls |
-| `famine_panel_refresh`, `migration_panel_refresh` | Actor, optional `*_panel_selected_state` | Rebuilds the bounded state list, validates selection, copies overview/selection/work presentation | Opener, state click, existing owner publication and hourly open-human observer |
+| `famine_panel_refresh`, `migration_panel_refresh` | Actor, optional `*_panel_selected_state` | Rebuilds the bounded state list, validates selection, copies overview/selection/work presentation | Opener, state click, existing synchronous owner publication |
 | `famine_panel_is_eligible`, `migration_panel_is_eligible` | Actor | Existing human country using normal civilian systems, excluding special Chaos countries and AI | Parent visible/click guards and effects |
 | `famine_panel_has_selected_state`, `migration_panel_has_selected_state` | Actor and stored selection | Requires current list membership and exact current ownership or control in the actual state scope | Parent state/action surfaces and getters |
 
@@ -139,8 +139,8 @@ Opening or refreshing a panel must never become an initialization or simulation 
 
 ## Automatic updates
 
-The two openers call `national_policy_panel_request_observer` after their initial projection.
-The shared [automatic panel contract](national_policy_panel_effects.md) owns coalescing, country identity, close/reopen retirement and the single hourly game-time presentation observer.
-Existing country processing and law publication retain their immediate refresh calls, and humanitarian action receivers publish open-panel projections after accounting and input cleanup.
-There is no manual Update reports action or dirty gate in either management scripted GUI.
+Openers perform their initial projection and record the actual presentation owner.
+The shared [immediate publication contract](national_policy_panel_effects.md) owns country nesting, synchronous publication, state owner/controller notifications and terminal cleanup.
+Owning actions publish after their accounting and input cleanup; cached projections have no timer fallback.
+Live requirements, selected-state getters and work-meter bindings reevaluate through native GUI evaluation without persistent writes.
 Quiet opening remains observation only and never enrolls a country or state in simulation.

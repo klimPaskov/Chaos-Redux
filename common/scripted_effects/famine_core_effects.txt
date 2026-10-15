@@ -579,7 +579,7 @@ famine_process_registered_country = {
 		}
 	}
 	else = { famine_unregister_active_country = yes }
-	if = { limit = { has_country_flag = famine_panel_open } famine_panel_refresh = yes }
+	national_policy_panel_refresh_open = yes
 }
 
 # COUNTRY scope. The public sees every acute, famine, and catastrophic state the
@@ -712,6 +712,7 @@ famine_apply_pressure_request = {
 		set_variable = { famine_last_pressure_source = famine_pressure_request_source }
 		famine_register_active_state = yes
 		set_temp_variable = { famine_pressure_request_result = constant:humanitarian_runtime.one }
+		national_policy_panel_publish_state = yes
 	}
 	set_temp_variable = { famine_pressure_request_proven = constant:humanitarian_runtime.zero }
 	set_temp_variable = { famine_pressure_request_amount = constant:humanitarian_population.zero }
@@ -1099,6 +1100,7 @@ famine_submit_surface_context = {
 		set_state_flag = famine_food_security_active
 		famine_register_active_state = yes
 		set_temp_variable = { famine_surface_context_result = constant:humanitarian_runtime.one }
+		national_policy_panel_publish_state = yes
 	}
 	set_temp_variable = { famine_surface_context_proven = constant:humanitarian_runtime.zero }
 	set_temp_variable = { famine_surface_context_actor_proven = constant:humanitarian_runtime.zero }
@@ -2423,6 +2425,7 @@ famine_evaluate_food_security = {
 	set_temp_variable = { famine_food_evaluation_result = constant:humanitarian_runtime.one }
 	humanitarian_achievement_process_state = yes
 	famine_retire_recovered_state = yes
+	national_policy_panel_publish_state = yes
 	}
 }
 
@@ -2701,6 +2704,10 @@ famine_consume_reserve_for_relief = {
 	clear_variable = famine_food_reserve_release_amount
 	clear_variable = famine_food_reserve_release_request_proven
 	clear_variable = famine_food_reserve_release_actor_proven
+	if = {
+		limit = { check_variable = { var = famine_food_reserve_consume_result value = constant:civilian_transfer_route_result.valid compare = equals } }
+		national_policy_panel_publish_state = yes
+	}
 }
 
 
@@ -2739,6 +2746,10 @@ famine_add_reserves = {
 	clear_variable = famine_food_reserve_import_request_proven
 	clear_variable = famine_food_reserve_import_source_proven
 	clear_variable = famine_food_reserve_import_actor_proven
+	if = {
+		limit = { check_variable = { var = famine_food_reserve_add_result value = constant:civilian_transfer_route_result.valid compare = equals } }
+		national_policy_panel_publish_state = yes
+	}
 }
 
 
@@ -2832,6 +2843,11 @@ famine_transfer_reserves = {
 	clear_variable = famine_food_reserve_transfer_request_proven
 	clear_variable = famine_food_reserve_transfer_route_proven
 	clear_variable = famine_food_reserve_transfer_actor_proven
+	if = {
+		limit = { check_variable = { var = famine_food_reserve_transfer_result value = constant:civilian_transfer_route_result.valid compare = equals } }
+		national_policy_panel_publish_state = yes
+		event_target:famine_food_reserve_destination = { national_policy_panel_publish_state = yes }
+	}
 }
 
 

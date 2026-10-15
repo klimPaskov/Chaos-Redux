@@ -106,6 +106,10 @@ famine_relief_process_registered_donor_state = {
 			is_owned_and_controlled_by = OWNER
 		}
 	famine_update_reserve = yes
+		if = {
+			limit = { check_variable = { var = famine_food_reserve_update_result value = constant:humanitarian_runtime.one compare = equals } }
+			national_policy_panel_publish_state = yes
+		}
 	}
 	else = { famine_relief_unregister_donor_state = yes }
 }
@@ -516,6 +520,7 @@ famine_relief_deliver_contract = {
 					set_temp_variable = { famine_relief_delivery_result = constant:famine_relief_result.partial }
 				}
 				famine_relief_clear_contract = yes
+				national_policy_panel_publish_state = yes
 			}
 			else = {
 				set_temp_variable = { famine_condemnation_result = constant:humanitarian_runtime.zero }

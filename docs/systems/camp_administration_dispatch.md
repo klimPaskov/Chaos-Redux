@@ -4,11 +4,10 @@
 
 Camp Administration shares the native brass/olive management-window family with Migration and Famine.
 Its Administration, Locations, Records and policy pickers preserve existing actions and accounting, with status colors, complete scroll rows and concise text.
-There is no manual refresh control.
-Native GUI state reevaluates each tick; a separate [presentation-only observer](../../common/scripted_effects/national_policy_panel_effects.md) updates cached display fields automatically while a human window is open.
-That observer never calls this monthly processing path, changes population or advances funded work.
-It uses the existing annexation/terminal closure/release boundaries to retire stale UI reservations, with an earliest-hour guard for delayed callbacks.
-The shared [implementation report](../plans/famine_and_migration_system_plans/national_policy_panels_implementation.md#shared-camps-styling-and-automatic-updates-15-october-2026) records the source, visual, localisation and lifecycle checks.
+There is no manual refresh control or hourly presentation observer.
+Native GUI state reevaluates each tick, and synchronous owner publications rebuild cached display fields after their owning transaction settles, including while the game is paused.
+The [presentation contract](../../common/scripted_effects/national_policy_panel_effects.md) is separate from this monthly processing path and does not change population or advance funded work.
+The shared [implementation report](../plans/famine_and_migration_system_plans/national_policy_panels_implementation.md#immediate-paused-updates-and-compact-population-counts-15-october-2026) records the current publication, number-formatting and coverage limits.
 
 ## Monthly gameplay dispatch
 
