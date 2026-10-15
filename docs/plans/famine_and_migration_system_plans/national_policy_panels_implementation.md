@@ -2,6 +2,9 @@
 
 Status: the accepted implementation and source/visual review are complete. All seven maintained source-contract suites also pass from the isolated commit candidate, excluding unrelated working-tree changes. No live-game run is claimed.
 
+The current presentation follows the user-requested visual refinement below.
+Earlier GUI v4 evidence remains the baseline record; the refinement supersedes its styling only.
+
 Acceptance basis: the user explicitly instructed “PLEASE IMPLEMENT THIS PLAN” on 2026-10-15. The accepted scope is recorded in [Part 9](../../specs/famine_and_migration_system_specs/national_policy_panels_part9.md). The [country matrix](../../specs/famine_and_migration_system_specs/national_policy_country_matrix.md) supplies the exact 1936/1939 tag inventory and profile evidence.
 
 ## Source-of-truth map
@@ -98,5 +101,58 @@ Resume from this report and the current source in place. Keep the accepted Part 
 ## Isolated commit verification
 
 The reviewed candidate was exported into an ignored task directory and tested independently of unrelated working-tree modifications. All seven maintained suites passed: national law publication/lifecycle, policy pricing and sale composition, warfare permissions/retaliation, panel presentation, the 19 action-contract cases, the 11 existing famine regressions, and transport-cost display context. The candidate receipt is `.tmp/national_policy_panels/candidate_test_results.json`. Final documentation-only reconciliation does not change those tested runtime sources.
+
+## Presentation refinement: 15 October 2026
+
+Acceptance basis: after viewing the previews, the user described the UI and text as debug-like and requested more color.
+The parent accepted two generated composition references within that authorization, preserving all functional controls during native mapping.
+The windows are titled **Civilian Displacement** and **Famine Relief**.
+Muted teal and amber identify headers and selections; smooth olive panels, gold headings, larger summary values, existing decision icons and dark disabled buttons provide hierarchy.
+Red, amber, green and gray status cues retain explicit words, so color is not the sole indicator.
+Short descriptions replace terms such as unassessed, recorded need and native mission requirements.
+Mission-placement instructions were removed from the main canvas; native missions and their category entry points are unchanged.
+
+Changed sources: `interface/{migration,famine}_management.gui`, new `interface/humanitarian_panels.gfx`, `localisation/english/humanitarian_panels_l_english.yml`, `humanitarian_panel_values_l_english.yml`, the two DDS files below, this report and Part 9.
+The text review found the undefined `migration_cost_evacuate_administration` alias and linked it to the identical civilian-evacuation quote: five trains plus standard transport under existing route and affordability rules.
+No payment, law, AI, simulation, permission, receipt, mission or timing code was changed.
+
+### Asset crosswalk
+
+| Consumer | Runtime DDS and sprite | Generated source SHA-256 | Runtime SHA-256 |
+| --- | --- | --- | --- |
+| Migration header, selected tabs/row, opener and response navigation | `gfx/interface/humanitarian_panels/migration_accent_tile.dds`; `GFX_migration_panel_accent` | `5d786321fcf64e71525e85da7ed307fd8840191ad39bf0b625ad4b88328a9bfb` | `35f0898d36857bb8eecdf709ca19524cab6e0ef57d09660db9894317a7a94190` |
+| Famine header, selected tabs/row, opener and response navigation | `gfx/interface/humanitarian_panels/famine_accent_tile.dds`; `GFX_famine_panel_accent` | `75e0ecd175c56e02d28579882ed536b0ab0fc6b84276dd7a3d7f92466e98df8d` | `b25d960a835d3a45dd2ae4616fd04ea95de651179ff661c4dd0e5c54ab295cff` |
+
+Both original native-ImageGen skins are 96×96 one-frame BGRA DDS with eight-pixel corner slices and transparent outer corners, registered in `interface/humanitarian_panels.gfx`.
+The producer preserved original sources, cleaned negligible-alpha exterior noise in processed copies, resized with premultiplied alpha and documented the interior palette adjustment.
+Native-size review and exact decoded-DDS pixel comparison passed; the parent accepted both in rendered windows.
+Shared textures and sprite definitions are preserved.
+Existing category, decision, report and law-family art remains in use; composite references have no runtime consumers.
+Both famine tabs, Update reports and Show on map remain native despite their omission from a reference, and the selected-view highlight follows the actual view.
+Sources, requests, manifests and reference images are retained in ignored `.tmp/national_policy_panels/polish/asset_archive/` after retirement of the temporary `docs/assets/humanitarian_panel_polish/` workspace.
+
+### Review evidence and limits
+
+Nine declared scenarios per window cover active states, active overview, quiet overview, disabled actions, long names, 1366×768, 1920×1080 at 1.25 scale, scrolled lists and empty states.
+Intermediate renders exposed a repeating panel texture and a displaced famine context-tab highlight; the affected surfaces were corrected and rendered again.
+The final famine alignment review uses revision `d04b7604f6fa8f3f4266c7b941abcb20631b29b637df48eef48dcb6665dd1009` at both 1366×768 and 1.25 scale.
+Migration's accepted state/active-overview matrix is `7465b7408751baae68fbe71c7f311aac9476afbdf8c3d31537711c9493657bba`; its quiet-copy follow-up is `ecba45b16e961164c6cc219cf3bc0275604f0eb86f5f66d156b9bf04ac4634bb`.
+Famine's overview matrix is `9ac273ee61890099f0da0aad19c50932c2ab4d0e51b6fff4bc2c9794c4f73db4`; its state repair matrix is `e33f47b91e6372aba5572c59db43b2c4cbc18ddaf38818f20e4a46dc8dbaad02`, followed by the exact alignment correction above.
+The final empty-state wording was reviewed separately at migration revision `5fcb01bd32f9fae5a760c7a8c9d3e57250e58768540509a6c9a60580370201e5` and famine revision `980aa972782d188c5e3a096bb87dab95d3239648aaeaa4c9a6920f891f29955d`; it reports the quiet state without asking the player to select an absent row.
+Artifacts, verified matrix hashes, native PNGs and fixtures are in `.tmp/national_policy_panels/polish/preview_manifest.json` and the adjacent files.
+These are explicit layout fixtures, including control and long-text stress cases, not campaign observations.
+Cost examples resolve production aliases for an assumed affordable mainland route without discounts; the former generic preview prices were discarded.
+
+The localisation specialist reviewed the two English files and their dynamic substitutions.
+An additional decision-audit task remained uninitialized and was stopped; the parent performed its bounded checklist rather than claiming a specialist result.
+Parent review verified the same 43 migration and 31 famine button definitions, original operation/state-row hitboxes and tooltip targets, aligned click-through highlights, byte-identical scripted-GUI bindings and recursive resolution of all 25 cost strings.
+The maintained panel suite passed ten contract groups, the action suite passed nineteen cases, and the cost-display suite passed four cases.
+Evidence is recorded in `final_source_review.json`, `localisation_handoff.md` and the existing test receipts under `.tmp/national_policy_panels/`.
+Unresolved engine-state representation and hidden-element warnings remain renderer limitations; native clicks and in-game behavior are not claimed as observed.
+No controls, mechanics, assets or requested presentation states were omitted, and no functional simplifications were made.
+
+Reference basis: installed `common/scripted_guis/_documentation.md` lines 50–114, revision `43ce647fc5fde27488855b060b5463c790e5e356149fceb010d36b960b40f838`; offline Interface modding lines 196–226, revision `b74afc86be4e5dbb3b0fc600820d73a8340f7dc1821fc5ef02c9ee1f028c0b1c`; Data structures localisation lines 488–517, revision `62273f37ed30e5479acb331a8973f48dadc1867c4913c8a940e3e790e7af32d4`; and installed `interface/core.gfx` native tile, header and font definitions.
+Skills used: scripted GUI, event assets and UI-family references, subagents, player-facing event text guidance through the localisation worker, and shared Git commit isolation.
+No skill changes were required for this refinement.
 
 The commit uses a separate Git index. Pre-existing Event 034 receipt work remains in the working tree at its relocated operation-body position, with its unrelated tuning change; unrelated Kruger, migration cleanup, Event 037 and CXT documentation hunks remain outside this commit. The converted decision file retains the necessary removal of an invalid root-level constant assignment; its canonical value already exists in the committed constants.

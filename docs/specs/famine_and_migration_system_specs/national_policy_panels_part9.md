@@ -1,8 +1,12 @@
 # Part 9: National policy laws and management panels
 
-Disposition: accepted design; implementation and source/visual review complete; isolated commit verification is in progress.
+Disposition: accepted design; implementation, source/visual review and isolated commit verification complete.
 
 Acceptance basis: the user explicitly instructed “PLEASE IMPLEMENT THIS PLAN” on 2026-10-15. This accepted addendum records that decision and the associated parent-approved requirements; its location or date is not being used as evidence of acceptance.
+
+The user's subsequent request for a less debug-like interface and more color authorizes the current presentation refinement: Civilian Displacement uses muted teal selections, Famine Relief uses amber selections, and both use native olive panels, gold headings, semantic status colors, concise prose and existing action artwork.
+This changes presentation only; controls, policy authority, exact operation contracts and quiet-access behavior remain as specified below.
+The current implementation report records its reference acceptance, asset provenance, visual review and verification limits.
 
 ## Accepted decisions
 
