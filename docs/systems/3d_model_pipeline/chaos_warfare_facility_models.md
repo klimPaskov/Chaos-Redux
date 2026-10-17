@@ -70,9 +70,9 @@ The associated specialization keys are `GFX_specialization_biowarfare` and `GFX_
 
 ## Pilot placement evidence
 
-The biological pilot pair is state 338, Gloucestershire, province 6351, and the exact pair is already used by `chaosx_add_startup_biowarfare_facility_6351`.
+The biological pilot pair is state 338, Gloucestershire, province 6351, and the exact pair is already placed by `chaosx_add_startup_biowarfare_facility` with `startup_history_facility_province = 6351`.
 
-The chemical pilot pair is state 122, Wales, province 9364, and the exact pair is already used by `chaosx_add_startup_cw_facility_9364`.
+The chemical pilot pair is state 122, Wales, province 9364, and the exact pair is already placed by `chaosx_add_startup_cw_facility` with `startup_history_facility_province = 9364`.
 
 The installed vanilla state files contain those provinces, and the installed province definitions classify both as land provinces. The permanent generated `map/buildings.txt` rows provide the runtime positions for these pilots and for facilities constructed in any other covered land province.
 

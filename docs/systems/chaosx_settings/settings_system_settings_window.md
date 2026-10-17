@@ -154,7 +154,7 @@ The window reuses `GFX_tiled_window_2b_border`, `GFX_tiled_plain_bg`, `GFX_close
 
 ## Fallout control
 
-The Fallout consequence toggle lives in the Air Cleanliness tab of the Chaos Meter window (`air_fallout_toggle_checkbox`); its sprite getter `GetFalloutAllowedCheckboxSprite` and its `chaosx.fallout_toggle.*` text live in this window's scripted localisation and localisation files so they stay with the other shared settings text.
+The Fallout consequence toggle is the `fallout_system_scenario_checkbox` in the Miscellaneous menu of the settings window. Its sprite getter is `GetFalloutSystemScenarioDisabledCheckboxSprite` and its click gate is the shared `fallout_consequence_setting_available` trigger, which also locks the setting once Fallout has begun.
 
 ## Future plans
 

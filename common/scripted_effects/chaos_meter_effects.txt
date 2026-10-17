@@ -168,7 +168,6 @@ initialize_chaos_meter_system = {
 	clr_global_flag = air_contamination_threshold_75
 	clr_global_flag = air_contamination_threshold_100
 	clr_global_flag = air_contamination_irreversible
-	clr_global_flag = air_contamination_winter
 	clr_global_flag = air_contamination_news_25_fired
 	clr_global_flag = air_contamination_news_50_fired
 	clr_global_flag = air_contamination_news_75_fired
@@ -614,7 +613,6 @@ toggle_air_cleanliness_system_disabled = {
 		set_variable = { global.air_contamination_decay_bp = 0 }
 		set_variable = { global.air_contamination_last_delta_bp = 0 }
 		set_variable = { global.air_contamination_last_nuke_bp = 0 }
-		clr_global_flag = air_contamination_winter
 		air_contamination_clear_country_pressure_ideas = yes
 		every_state = {
 			limit = { has_dynamic_modifier = air_contamination_global_state }
@@ -2998,76 +2996,59 @@ chaos_meter_apply_state_death_density_multiplier = {
 	}
 }
 
-chaos_meter_apply_outbreak_state_death_environment_multiplier = {
+# Shared infrastructure ladder of the state death environment multipliers.
+# Inputs: chaos_state_death_infra_8, _6, _4, _2 and _0 (multipliers for state
+# infrastructure above 7, above 5, above 3, above 1 and otherwise). The density
+# multiplier is applied first. Output: chaos_state_deaths_mult.
+chaos_meter_apply_state_death_infrastructure_ladder = {
 	chaos_meter_apply_state_death_density_multiplier = yes
 
 	if = {
 		limit = { infrastructure > 7 }
-		multiply_temp_variable = { chaos_state_deaths_mult = constant:chaos_meter_state_death_dynamic.outbreak_infra_8 }
+		multiply_temp_variable = { chaos_state_deaths_mult = chaos_state_death_infra_8 }
 	}
 	else_if = {
 		limit = { infrastructure > 5 }
-		multiply_temp_variable = { chaos_state_deaths_mult = constant:chaos_meter_state_death_dynamic.outbreak_infra_6 }
+		multiply_temp_variable = { chaos_state_deaths_mult = chaos_state_death_infra_6 }
 	}
 	else_if = {
 		limit = { infrastructure > 3 }
-		multiply_temp_variable = { chaos_state_deaths_mult = constant:chaos_meter_state_death_dynamic.outbreak_infra_4 }
+		multiply_temp_variable = { chaos_state_deaths_mult = chaos_state_death_infra_4 }
 	}
 	else_if = {
 		limit = { infrastructure > 1 }
-		multiply_temp_variable = { chaos_state_deaths_mult = constant:chaos_meter_state_death_dynamic.outbreak_infra_2 }
+		multiply_temp_variable = { chaos_state_deaths_mult = chaos_state_death_infra_2 }
 	}
 	else = {
-		multiply_temp_variable = { chaos_state_deaths_mult = constant:chaos_meter_state_death_dynamic.outbreak_infra_0 }
+		multiply_temp_variable = { chaos_state_deaths_mult = chaos_state_death_infra_0 }
 	}
+}
+
+chaos_meter_apply_outbreak_state_death_environment_multiplier = {
+	set_temp_variable = { chaos_state_death_infra_8 = constant:chaos_meter_state_death_dynamic.outbreak_infra_8 }
+	set_temp_variable = { chaos_state_death_infra_6 = constant:chaos_meter_state_death_dynamic.outbreak_infra_6 }
+	set_temp_variable = { chaos_state_death_infra_4 = constant:chaos_meter_state_death_dynamic.outbreak_infra_4 }
+	set_temp_variable = { chaos_state_death_infra_2 = constant:chaos_meter_state_death_dynamic.outbreak_infra_2 }
+	set_temp_variable = { chaos_state_death_infra_0 = constant:chaos_meter_state_death_dynamic.outbreak_infra_0 }
+	chaos_meter_apply_state_death_infrastructure_ladder = yes
 }
 
 chaos_meter_apply_bombing_state_death_environment_multiplier = {
-	chaos_meter_apply_state_death_density_multiplier = yes
-
-	if = {
-		limit = { infrastructure > 7 }
-		multiply_temp_variable = { chaos_state_deaths_mult = constant:chaos_meter_state_death_dynamic.bombing_infra_8 }
-	}
-	else_if = {
-		limit = { infrastructure > 5 }
-		multiply_temp_variable = { chaos_state_deaths_mult = constant:chaos_meter_state_death_dynamic.bombing_infra_6 }
-	}
-	else_if = {
-		limit = { infrastructure > 3 }
-		multiply_temp_variable = { chaos_state_deaths_mult = constant:chaos_meter_state_death_dynamic.bombing_infra_4 }
-	}
-	else_if = {
-		limit = { infrastructure > 1 }
-		multiply_temp_variable = { chaos_state_deaths_mult = constant:chaos_meter_state_death_dynamic.bombing_infra_2 }
-	}
-	else = {
-		multiply_temp_variable = { chaos_state_deaths_mult = constant:chaos_meter_state_death_dynamic.bombing_infra_0 }
-	}
+	set_temp_variable = { chaos_state_death_infra_8 = constant:chaos_meter_state_death_dynamic.bombing_infra_8 }
+	set_temp_variable = { chaos_state_death_infra_6 = constant:chaos_meter_state_death_dynamic.bombing_infra_6 }
+	set_temp_variable = { chaos_state_death_infra_4 = constant:chaos_meter_state_death_dynamic.bombing_infra_4 }
+	set_temp_variable = { chaos_state_death_infra_2 = constant:chaos_meter_state_death_dynamic.bombing_infra_2 }
+	set_temp_variable = { chaos_state_death_infra_0 = constant:chaos_meter_state_death_dynamic.bombing_infra_0 }
+	chaos_meter_apply_state_death_infrastructure_ladder = yes
 }
 
 chaos_meter_apply_nuclear_state_death_environment_multiplier = {
-	chaos_meter_apply_state_death_density_multiplier = yes
-
-	if = {
-		limit = { infrastructure > 7 }
-		multiply_temp_variable = { chaos_state_deaths_mult = constant:chaos_meter_state_death_dynamic.nuclear_infra_8 }
-	}
-	else_if = {
-		limit = { infrastructure > 5 }
-		multiply_temp_variable = { chaos_state_deaths_mult = constant:chaos_meter_state_death_dynamic.nuclear_infra_6 }
-	}
-	else_if = {
-		limit = { infrastructure > 3 }
-		multiply_temp_variable = { chaos_state_deaths_mult = constant:chaos_meter_state_death_dynamic.nuclear_infra_4 }
-	}
-	else_if = {
-		limit = { infrastructure > 1 }
-		multiply_temp_variable = { chaos_state_deaths_mult = constant:chaos_meter_state_death_dynamic.nuclear_infra_2 }
-	}
-	else = {
-		multiply_temp_variable = { chaos_state_deaths_mult = constant:chaos_meter_state_death_dynamic.nuclear_infra_0 }
-	}
+	set_temp_variable = { chaos_state_death_infra_8 = constant:chaos_meter_state_death_dynamic.nuclear_infra_8 }
+	set_temp_variable = { chaos_state_death_infra_6 = constant:chaos_meter_state_death_dynamic.nuclear_infra_6 }
+	set_temp_variable = { chaos_state_death_infra_4 = constant:chaos_meter_state_death_dynamic.nuclear_infra_4 }
+	set_temp_variable = { chaos_state_death_infra_2 = constant:chaos_meter_state_death_dynamic.nuclear_infra_2 }
+	set_temp_variable = { chaos_state_death_infra_0 = constant:chaos_meter_state_death_dynamic.nuclear_infra_0 }
+	chaos_meter_apply_state_death_infrastructure_ladder = yes
 }
 
 chaos_meter_apply_nuclear_fallout_to_state = {
@@ -5251,10 +5232,6 @@ air_contamination_monthly_update = {
 		air_winter_begin_monthly_cycle = yes
 	}
 	air_cleanliness_treaty_pre_winter_pulse = yes
-	if = {
-		limit = { has_global_flag = air_contamination_winter }
-		clr_global_flag = air_contamination_winter
-	}
 
 	set_variable = { global.air_contamination_fallout_states = 0 }
 	set_variable = { global.air_contamination_fallout_bp = 0 }
@@ -5516,7 +5493,6 @@ air_contamination_monthly_update = {
 		set_variable = { global.air_contamination_decay_bp = 0 }
 		set_variable = { global.air_contamination_last_delta_bp = 0 }
 		set_variable = { global.air_contamination_last_nuke_bp = 0 }
-		clr_global_flag = air_contamination_winter
 		air_contamination_refresh_values = yes
 		air_contamination_apply_state_modifier = yes
 	}
@@ -5524,11 +5500,6 @@ air_contamination_monthly_update = {
 	# The treaty shares this existing single monthly coordinator. Its own host is
 	# date-idempotent and iterates only bounded country and route registries.
 	air_cleanliness_treaty_host_pulse = yes
-}
-
-world_end_scenario_triggered = {
-
-
 }
 
 # ============================================================================
@@ -6880,27 +6851,12 @@ chaos_meter_distribute_leader_combat_civilian_budget = {
 }
 
 chaos_meter_apply_combat_state_death_environment_multiplier = {
-	chaos_meter_apply_state_death_density_multiplier = yes
-
-	if = {
-		limit = { infrastructure > 7 }
-		multiply_temp_variable = { chaos_state_deaths_mult = constant:chaos_meter_state_death_dynamic.combat_infra_8 }
-	}
-	else_if = {
-		limit = { infrastructure > 5 }
-		multiply_temp_variable = { chaos_state_deaths_mult = constant:chaos_meter_state_death_dynamic.combat_infra_6 }
-	}
-	else_if = {
-		limit = { infrastructure > 3 }
-		multiply_temp_variable = { chaos_state_deaths_mult = constant:chaos_meter_state_death_dynamic.combat_infra_4 }
-	}
-	else_if = {
-		limit = { infrastructure > 1 }
-		multiply_temp_variable = { chaos_state_deaths_mult = constant:chaos_meter_state_death_dynamic.combat_infra_2 }
-	}
-	else = {
-		multiply_temp_variable = { chaos_state_deaths_mult = constant:chaos_meter_state_death_dynamic.combat_infra_0 }
-	}
+	set_temp_variable = { chaos_state_death_infra_8 = constant:chaos_meter_state_death_dynamic.combat_infra_8 }
+	set_temp_variable = { chaos_state_death_infra_6 = constant:chaos_meter_state_death_dynamic.combat_infra_6 }
+	set_temp_variable = { chaos_state_death_infra_4 = constant:chaos_meter_state_death_dynamic.combat_infra_4 }
+	set_temp_variable = { chaos_state_death_infra_2 = constant:chaos_meter_state_death_dynamic.combat_infra_2 }
+	set_temp_variable = { chaos_state_death_infra_0 = constant:chaos_meter_state_death_dynamic.combat_infra_0 }
+	chaos_meter_apply_state_death_infrastructure_ladder = yes
 }
 
 chaos_meter_calculate_combat_civilian_budget_to_state = {

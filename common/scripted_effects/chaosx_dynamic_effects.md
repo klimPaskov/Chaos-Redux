@@ -22,8 +22,13 @@ Event-owned orchestration, validation, adapters, and lifecycle helpers belong in
 - [chaosx_convert_days_to_date_offset](#chaosx_convert_days_to_date_offset)
 - [chaosx_convert_date_offset_to_days](#chaosx_convert_date_offset_to_days)
 - [chaosx_report_forced_event_failure](#chaosx_report_forced_event_failure)
+- [chaosx_recruit_character](#chaosx_recruit_character)
 - [owner_owned_apis](#owner_owned_apis)
 - [maintenance_notes](#maintenance_notes)
+- [chaosx_apply_non_ai_crisis_pressure_to_next_timer](#chaosx_apply_non_ai_crisis_pressure_to_next_timer)
+- [Human-country state modifier API](#human-country-state-modifier-api)
+- [Synchronous human-system retirement](#synchronous-human-system-retirement)
+- [Native warfare law integration](#native-warfare-law-integration)
 
 ## calculate_economy_scaled_factory_grant
 
@@ -556,7 +561,7 @@ The following APIs are useful to other systems but are not declared in this regi
 | `migration_runtime` | [`migration_core_effects.txt`](migration_core_effects.txt), [`migration_adapter_effects.txt`](migration_adapter_effects.txt), and [`migration_reception_preparation_effects.txt`](migration_reception_preparation_effects.txt) | [`migration_system`](../../docs/systems/migration_system.md) and [exact paid preparation contract](migration_reception_preparation_effects.md) |
 | `humanitarian_validation` | [`humanitarian_validation_triggers.txt`](../scripted_triggers/humanitarian_validation_triggers.txt) | [`famine_system`](../../docs/systems/famine_system.md) and [`migration_system`](../../docs/systems/migration_system.md) |
 | `humanitarian_legacy_decision_costs` | [`humanitarian_legacy_cost_effects.txt`](humanitarian_legacy_cost_effects.txt) and [`humanitarian_legacy_cost_triggers.txt`](../scripted_triggers/humanitarian_legacy_cost_triggers.txt) | [display-only country quote contract](humanitarian_legacy_cost_effects.md) and [inclusive component/profile predicates](../scripted_triggers/humanitarian_legacy_cost_triggers.md) |
-| `humanitarian_physical_transport_costs` | [`migration_transport_cost_effects.txt`](migration_transport_cost_effects.txt) and [`migration_transport_cost_triggers.txt`](../scripted_triggers/migration_transport_cost_triggers.txt) | [payer/action/state payment, saved refund, geography and display contract](migration_transport_cost_effects.md) |
+| `humanitarian_physical_transport_costs` | [`migration_transport_cost_effects.txt`](migration_transport_cost_effects.txt) and [`migration_transport_cost_triggers.txt`](../scripted_triggers/migration_transport_cost_triggers.txt) | [temporary-input API, native meta receipt primitives, payer/action/state payment, saved refund, geography and display contract](migration_transport_cost_effects.md) |
 | `humanitarian_panel_actions` | [`humanitarian_gui_action_effects.txt`](humanitarian_gui_action_effects.txt), [`famine_gui_action_effects.txt`](famine_gui_action_effects.txt), and [`migration_gui_action_effects.txt`](migration_gui_action_effects.txt) | [exact actor/state/action generation, shared native/GUI gates, sparse due work, cooldowns and production refunds](humanitarian_gui_action_effects.md) |
 | `national_policy_panel_publication` | [`national_policy_panel_effects.txt`](national_policy_panel_effects.txt) | [immediate owner publication, transaction coalescing, live bindings and presentation identity lifecycle](national_policy_panel_effects.md) |
 | `great_depression_start_or_deepen` | [`035_great_depression_effects.txt`](035_great_depression_effects.txt) and [`035_great_depression_triggers.txt`](../scripted_triggers/035_great_depression_triggers.txt) | [`gateway contract`](035_great_depression_effects.md) and [`great_depression`](../../docs/events/035_great_depression.md) |

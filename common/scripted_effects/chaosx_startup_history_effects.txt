@@ -18,6 +18,33 @@
 @fra_1939_respirator_factories = 1
 @fra_1939_respirator_efficiency = 100
 
+# Country-scope startup technology grants shared by the countries whose only
+# historical chemical defence entry is the baseline set. Both skip a country
+# that does not exist at the selected start date.
+chaosx_startup_grant_basic_gas_masks = {
+	if = {
+		limit = { exists = yes }
+		set_technology = {
+			basic_gas_masks = 1
+			popup = no
+		}
+		chaosx_startup_sync_chemical_technology_unlocks = yes
+	}
+}
+
+chaosx_startup_grant_minor_chemical_defence = {
+	if = {
+		limit = { exists = yes }
+		set_technology = {
+			basic_gas_masks = 1
+			portable_anemometer = 1
+			pathogen_handling_protocols = 1
+			popup = no
+		}
+		chaosx_startup_sync_chemical_technology_unlocks = yes
+	}
+}
+
 chaosx_apply_startup_history_grants = {
 	if = {
 		limit = {
@@ -26,16 +53,16 @@ chaosx_apply_startup_history_grants = {
 		set_global_flag = chaosx_startup_history_grants_applied
 
 		chaosx_startup_grant_ast = yes
-		chaosx_startup_grant_bel = yes
-		chaosx_startup_grant_bul = yes
+		BEL = { chaosx_startup_grant_minor_chemical_defence = yes }
+		BUL = { chaosx_startup_grant_basic_gas_masks = yes }
 		chaosx_startup_grant_can = yes
-		chaosx_startup_grant_cze = yes
+		CZE = { chaosx_startup_grant_minor_chemical_defence = yes }
 		chaosx_startup_grant_eng = yes
 		chaosx_startup_grant_fra = yes
 		chaosx_startup_grant_ger = yes
-		chaosx_startup_grant_gre = yes
-		chaosx_startup_grant_hol = yes
-		chaosx_startup_grant_hun = yes
+		GRE = { chaosx_startup_grant_basic_gas_masks = yes }
+		HOL = { chaosx_startup_grant_minor_chemical_defence = yes }
+		HUN = { chaosx_startup_grant_basic_gas_masks = yes }
 		chaosx_startup_grant_ita = yes
 		chaosx_startup_grant_jap = yes
 		chaosx_startup_grant_lib = yes
@@ -43,13 +70,13 @@ chaosx_apply_startup_history_grants = {
 		chaosx_startup_grant_nzl = yes
 		chaosx_startup_grant_pol = yes
 		chaosx_startup_grant_raj = yes
-		chaosx_startup_grant_rom = yes
+		ROM = { chaosx_startup_grant_basic_gas_masks = yes }
 		chaosx_startup_grant_saf = yes
 		chaosx_startup_grant_sov = yes
 		chaosx_startup_grant_spr = yes
-		chaosx_startup_grant_tur = yes
+		TUR = { chaosx_startup_grant_basic_gas_masks = yes }
 		chaosx_startup_grant_usa = yes
-		chaosx_startup_grant_yug = yes
+		YUG = { chaosx_startup_grant_basic_gas_masks = yes }
 		# Both historical bookmarks use the same military coverage bands, sized
 		# against the deployed force at the selected start date.
 		every_country = {
@@ -428,54 +455,11 @@ chaosx_startup_grant_ast = {
 	}
 }
 
-chaosx_startup_grant_bel = {
-	BEL = {
-		if = {
-			limit = { exists = yes }
-			set_technology = {
-				basic_gas_masks = 1
-				portable_anemometer = 1
-				pathogen_handling_protocols = 1
-				popup = no
-			}
-			chaosx_startup_sync_chemical_technology_unlocks = yes
-		}
-	}
-}
-
-chaosx_startup_grant_bul = {
-	BUL = {
-		if = {
-			limit = { exists = yes }
-			set_technology = {
-				basic_gas_masks = 1
-				popup = no
-			}
-			chaosx_startup_sync_chemical_technology_unlocks = yes
-		}
-	}
-}
-
 chaosx_startup_grant_can = {
 	CAN = {
 		if = {
 			limit = { exists = yes }
 			chaosx_startup_mark_historical_1939_cbrn_setup = yes
-			set_technology = {
-				basic_gas_masks = 1
-				portable_anemometer = 1
-				pathogen_handling_protocols = 1
-				popup = no
-			}
-			chaosx_startup_sync_chemical_technology_unlocks = yes
-		}
-	}
-}
-
-chaosx_startup_grant_cze = {
-	CZE = {
-		if = {
-			limit = { exists = yes }
 			set_technology = {
 				basic_gas_masks = 1
 				portable_anemometer = 1
@@ -559,14 +543,20 @@ chaosx_startup_grant_eng = {
 			}
 			if = {
 				limit = { 122 = { is_owned_by = ENG } }
-				122 = { chaosx_add_startup_cw_facility_9364 = yes }
+				122 = {
+					set_temp_variable = { startup_history_facility_province = 9364 }
+					chaosx_add_startup_cw_facility = yes
+				}
 			}
 			if = {
 				limit = {
 					date > 1939.12.31
 					338 = { is_owned_by = ENG }
 				}
-				338 = { chaosx_add_startup_biowarfare_facility_6351 = yes }
+				338 = {
+					set_temp_variable = { startup_history_facility_province = 6351 }
+					chaosx_add_startup_biowarfare_facility = yes
+				}
 			}
 		}
 	}
@@ -618,7 +608,10 @@ chaosx_startup_grant_fra = {
 			}
 			if = {
 				limit = { 16 = { is_owned_by = FRA } }
-				16 = { chaosx_add_startup_cw_facility_9725 = yes }
+				16 = {
+					set_temp_variable = { startup_history_facility_province = 9725 }
+					chaosx_add_startup_cw_facility = yes
+				}
 			}
 		}
 	}
@@ -690,49 +683,11 @@ chaosx_startup_grant_ger = {
 			country_event = { id = biowarfare.2 days = startup_history_event_days random_days = startup_history_event_random_days }
 			if = {
 				limit = { 59 = { is_owned_by = GER } }
-				59 = { chaosx_add_startup_cw_facility_6298 = yes }
+				59 = {
+					set_temp_variable = { startup_history_facility_province = 6298 }
+					chaosx_add_startup_cw_facility = yes
+				}
 			}
-		}
-	}
-}
-
-chaosx_startup_grant_gre = {
-	GRE = {
-		if = {
-			limit = { exists = yes }
-			set_technology = {
-				basic_gas_masks = 1
-				popup = no
-			}
-			chaosx_startup_sync_chemical_technology_unlocks = yes
-		}
-	}
-}
-
-chaosx_startup_grant_hol = {
-	HOL = {
-		if = {
-			limit = { exists = yes }
-			set_technology = {
-				basic_gas_masks = 1
-				portable_anemometer = 1
-				pathogen_handling_protocols = 1
-				popup = no
-			}
-			chaosx_startup_sync_chemical_technology_unlocks = yes
-		}
-	}
-}
-
-chaosx_startup_grant_hun = {
-	HUN = {
-		if = {
-			limit = { exists = yes }
-			set_technology = {
-				basic_gas_masks = 1
-				popup = no
-			}
-			chaosx_startup_sync_chemical_technology_unlocks = yes
 		}
 	}
 }
@@ -773,7 +728,10 @@ chaosx_startup_grant_ita = {
 			}
 			if = {
 				limit = { 158 = { is_owned_by = ITA } }
-				158 = { chaosx_add_startup_cw_facility_11723 = yes }
+				158 = {
+					set_temp_variable = { startup_history_facility_province = 11723 }
+					chaosx_add_startup_cw_facility = yes
+				}
 			}
 		}
 	}
@@ -859,15 +817,24 @@ chaosx_startup_grant_jap = {
 			}
 			if = {
 				limit = { 282 = { is_owned_by = JAP } }
-				282 = { chaosx_add_startup_biowarfare_facility_1182 = yes }
+				282 = {
+					set_temp_variable = { startup_history_facility_province = 1182 }
+					chaosx_add_startup_biowarfare_facility = yes
+				}
 			}
 			if = {
 				limit = { 530 = { is_owned_by = JAP } }
-				530 = { chaosx_add_startup_cw_facility_4179 = yes }
+				530 = {
+					set_temp_variable = { startup_history_facility_province = 4179 }
+					chaosx_add_startup_cw_facility = yes
+				}
 			}
 			if = {
 				limit = { 609 = { is_owned_by = JAP } }
-				609 = { chaosx_add_startup_biowarfare_facility_3900 = yes }
+				609 = {
+					set_temp_variable = { startup_history_facility_province = 3900 }
+					chaosx_add_startup_biowarfare_facility = yes
+				}
 			}
 		}
 	}
@@ -879,7 +846,10 @@ chaosx_startup_grant_man = {
 			limit = { exists = yes }
 			if = {
 				limit = { 328 = { is_owned_by = MAN } }
-				328 = { chaosx_add_startup_biowarfare_facility_10433 = yes }
+				328 = {
+					set_temp_variable = { startup_history_facility_province = 10433 }
+					chaosx_add_startup_biowarfare_facility = yes
+				}
 			}
 		}
 	}
@@ -933,7 +903,10 @@ chaosx_startup_grant_raj = {
 			chaosx_startup_sync_chemical_technology_unlocks = yes
 			if = {
 				limit = { 440 = { is_owned_by = RAJ } }
-				440 = { chaosx_add_startup_biowarfare_facility_10173 = yes }
+				440 = {
+					set_temp_variable = { startup_history_facility_province = 10173 }
+					chaosx_add_startup_biowarfare_facility = yes
+				}
 			}
 			if = {
 				limit = { is_historical_focus_on = yes }
@@ -941,19 +914,6 @@ chaosx_startup_grant_raj = {
 					set_variable = { global.famine_state = THIS }
 				}
 			}
-		}
-	}
-}
-
-chaosx_startup_grant_rom = {
-	ROM = {
-		if = {
-			limit = { exists = yes }
-			set_technology = {
-				basic_gas_masks = 1
-				popup = no
-			}
-			chaosx_startup_sync_chemical_technology_unlocks = yes
 		}
 	}
 }
@@ -1024,15 +984,24 @@ chaosx_startup_grant_sov = {
 			}
 			if = {
 				limit = { 239 = { is_owned_by = SOV } }
-				239 = { chaosx_add_startup_cw_facility_326 = yes }
+				239 = {
+					set_temp_variable = { startup_history_facility_province = 326 }
+					chaosx_add_startup_cw_facility = yes
+				}
 			}
 			if = {
 				limit = { 247 = { is_owned_by = SOV } }
-				247 = { chaosx_add_startup_biowarfare_facility_344 = yes }
+				247 = {
+					set_temp_variable = { startup_history_facility_province = 344 }
+					chaosx_add_startup_biowarfare_facility = yes
+				}
 			}
 			if = {
 				limit = { 823 = { is_owned_by = SOV } }
-				823 = { chaosx_add_startup_biowarfare_facility_12233 = yes }
+				823 = {
+					set_temp_variable = { startup_history_facility_province = 12233 }
+					chaosx_add_startup_biowarfare_facility = yes
+				}
 			}
 		}
 	}
@@ -1046,19 +1015,6 @@ chaosx_startup_grant_spr = {
 				basic_gas_masks = 1
 				portable_anemometer = 1
 				mustard_gas = 1
-				popup = no
-			}
-			chaosx_startup_sync_chemical_technology_unlocks = yes
-		}
-	}
-}
-
-chaosx_startup_grant_tur = {
-	TUR = {
-		if = {
-			limit = { exists = yes }
-			set_technology = {
-				basic_gas_masks = 1
 				popup = no
 			}
 			chaosx_startup_sync_chemical_technology_unlocks = yes
@@ -1113,223 +1069,61 @@ chaosx_startup_grant_usa = {
 			}
 			if = {
 				limit = { 361 = { is_owned_by = USA } }
-				361 = { chaosx_add_startup_cw_facility_9758 = yes }
+				361 = {
+					set_temp_variable = { startup_history_facility_province = 9758 }
+					chaosx_add_startup_cw_facility = yes
+				}
 			}
 			if = {
 				limit = {
 					date > 1943.01.01
 					816 = { is_owned_by = USA }
 				}
-				816 = { chaosx_add_startup_biowarfare_facility_11888 = yes }
+				816 = {
+					set_temp_variable = { startup_history_facility_province = 11888 }
+					chaosx_add_startup_biowarfare_facility = yes
+				}
 			}
 		}
 	}
 }
 
-chaosx_startup_grant_yug = {
-	YUG = {
-		if = {
-			limit = { exists = yes }
-			set_technology = {
-				basic_gas_masks = 1
-				popup = no
+# Startup facility placement. Input: startup_history_facility_province, the
+# province id of the facility site. The helper adds one instant starting
+# facility to the current state when it holds none of that type yet.
+chaosx_add_startup_cw_facility = {
+	if = {
+		limit = { cw_facility < 1 }
+		set_temp_variable = { var = startup_history_facility_level value = constant:startup_history_facility.starting_level }
+		meta_effect = {
+			text = {
+				add_building_construction = {
+					type = cw_facility
+					level = startup_history_facility_level
+					instant_build = yes
+					province = { id = [PROVINCE] }
+				}
 			}
-			chaosx_startup_sync_chemical_technology_unlocks = yes
+			PROVINCE = "[?startup_history_facility_province|.0]"
 		}
 	}
 }
 
-chaosx_add_startup_cw_facility_326 = {
-	if = {
-		limit = { cw_facility < 1 }
-		set_temp_variable = { var = startup_history_facility_level value = constant:startup_history_facility.starting_level }
-		add_building_construction = {
-			type = cw_facility
-			level = startup_history_facility_level
-			instant_build = yes
-			province = { id = 326 }
-		}
-	}
-}
-
-chaosx_add_startup_cw_facility_4179 = {
-	if = {
-		limit = { cw_facility < 1 }
-		set_temp_variable = { var = startup_history_facility_level value = constant:startup_history_facility.starting_level }
-		add_building_construction = {
-			type = cw_facility
-			level = startup_history_facility_level
-			instant_build = yes
-			province = { id = 4179 }
-		}
-	}
-}
-
-chaosx_add_startup_cw_facility_6298 = {
-	if = {
-		limit = { cw_facility < 1 }
-		set_temp_variable = { var = startup_history_facility_level value = constant:startup_history_facility.starting_level }
-		add_building_construction = {
-			type = cw_facility
-			level = startup_history_facility_level
-			instant_build = yes
-			province = { id = 6298 }
-		}
-	}
-}
-
-chaosx_add_startup_cw_facility_9364 = {
-	if = {
-		limit = { cw_facility < 1 }
-		set_temp_variable = { var = startup_history_facility_level value = constant:startup_history_facility.starting_level }
-		add_building_construction = {
-			type = cw_facility
-			level = startup_history_facility_level
-			instant_build = yes
-			province = { id = 9364 }
-		}
-	}
-}
-
-chaosx_add_startup_cw_facility_9725 = {
-	if = {
-		limit = { cw_facility < 1 }
-		set_temp_variable = { var = startup_history_facility_level value = constant:startup_history_facility.starting_level }
-		add_building_construction = {
-			type = cw_facility
-			level = startup_history_facility_level
-			instant_build = yes
-			province = { id = 9725 }
-		}
-	}
-}
-
-chaosx_add_startup_cw_facility_9758 = {
-	if = {
-		limit = { cw_facility < 1 }
-		set_temp_variable = { var = startup_history_facility_level value = constant:startup_history_facility.starting_level }
-		add_building_construction = {
-			type = cw_facility
-			level = startup_history_facility_level
-			instant_build = yes
-			province = { id = 9758 }
-		}
-	}
-}
-
-chaosx_add_startup_cw_facility_11723 = {
-	if = {
-		limit = { cw_facility < 1 }
-		set_temp_variable = { var = startup_history_facility_level value = constant:startup_history_facility.starting_level }
-		add_building_construction = {
-			type = cw_facility
-			level = startup_history_facility_level
-			instant_build = yes
-			province = { id = 11723 }
-		}
-	}
-}
-
-chaosx_add_startup_biowarfare_facility_344 = {
+chaosx_add_startup_biowarfare_facility = {
 	if = {
 		limit = { biowarfare_facility < 1 }
 		set_temp_variable = { var = startup_history_facility_level value = constant:startup_history_facility.starting_level }
-		add_building_construction = {
-			type = biowarfare_facility
-			level = startup_history_facility_level
-			instant_build = yes
-			province = { id = 344 }
+		meta_effect = {
+			text = {
+				add_building_construction = {
+					type = biowarfare_facility
+					level = startup_history_facility_level
+					instant_build = yes
+					province = { id = [PROVINCE] }
+				}
+			}
+			PROVINCE = "[?startup_history_facility_province|.0]"
 		}
 	}
 }
 
-chaosx_add_startup_biowarfare_facility_1182 = {
-	if = {
-		limit = { biowarfare_facility < 1 }
-		set_temp_variable = { var = startup_history_facility_level value = constant:startup_history_facility.starting_level }
-		add_building_construction = {
-			type = biowarfare_facility
-			level = startup_history_facility_level
-			instant_build = yes
-			province = { id = 1182 }
-		}
-	}
-}
-
-chaosx_add_startup_biowarfare_facility_3900 = {
-	if = {
-		limit = { biowarfare_facility < 1 }
-		set_temp_variable = { var = startup_history_facility_level value = constant:startup_history_facility.starting_level }
-		add_building_construction = {
-			type = biowarfare_facility
-			level = startup_history_facility_level
-			instant_build = yes
-			province = { id = 3900 }
-		}
-	}
-}
-
-chaosx_add_startup_biowarfare_facility_6351 = {
-	if = {
-		limit = { biowarfare_facility < 1 }
-		set_temp_variable = { var = startup_history_facility_level value = constant:startup_history_facility.starting_level }
-		add_building_construction = {
-			type = biowarfare_facility
-			level = startup_history_facility_level
-			instant_build = yes
-			province = { id = 6351 }
-		}
-	}
-}
-
-chaosx_add_startup_biowarfare_facility_10173 = {
-	if = {
-		limit = { biowarfare_facility < 1 }
-		set_temp_variable = { var = startup_history_facility_level value = constant:startup_history_facility.starting_level }
-		add_building_construction = {
-			type = biowarfare_facility
-			level = startup_history_facility_level
-			instant_build = yes
-			province = { id = 10173 }
-		}
-	}
-}
-
-chaosx_add_startup_biowarfare_facility_10433 = {
-	if = {
-		limit = { biowarfare_facility < 1 }
-		set_temp_variable = { var = startup_history_facility_level value = constant:startup_history_facility.starting_level }
-		add_building_construction = {
-			type = biowarfare_facility
-			level = startup_history_facility_level
-			instant_build = yes
-			province = { id = 10433 }
-		}
-	}
-}
-
-chaosx_add_startup_biowarfare_facility_11888 = {
-	if = {
-		limit = { biowarfare_facility < 1 }
-		set_temp_variable = { var = startup_history_facility_level value = constant:startup_history_facility.starting_level }
-		add_building_construction = {
-			type = biowarfare_facility
-			level = startup_history_facility_level
-			instant_build = yes
-			province = { id = 11888 }
-		}
-	}
-}
-
-chaosx_add_startup_biowarfare_facility_12233 = {
-	if = {
-		limit = { biowarfare_facility < 1 }
-		set_temp_variable = { var = startup_history_facility_level value = constant:startup_history_facility.starting_level }
-		add_building_construction = {
-			type = biowarfare_facility
-			level = startup_history_facility_level
-			instant_build = yes
-			province = { id = 12233 }
-		}
-	}
-}
