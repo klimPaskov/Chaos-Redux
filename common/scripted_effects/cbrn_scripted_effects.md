@@ -93,7 +93,7 @@ Source: `common/scripted_effects/cbrn_diplomacy_effects.txt`.
 
 ### `cbrn_diplomacy_classify_retaliation_action`
 
-Country-scope classifier for one exact chemical or deliberate biological action. The caller supplies `event_target:cbrn_retaliation_target_country` and may supply `cbrn_retaliation_action_proportionate_proof` only after proving a military target. Nerve suppression, doomsday delivery, and doomsday-severity actions are excluded.
+Country-scope classifier for one exact chemical or deliberate biological action. The caller supplies `event_target:cbrn_retaliation_target_country` and temporary `cbrn_retaliation_policy_family` (`constant:national_policy_family.chemical` or `.biological`, selecting the native retaliation law the country must hold), and may supply `cbrn_retaliation_action_proportionate_proof` only after proving a military target. Nerve suppression, doomsday delivery, and doomsday-severity actions are excluded.
 
 The effect returns temporary `cbrn_action_retaliation_status` as none, authorized, or proportionate. It records last-retaliation history only when the current Retaliation Authority policy, live war, and country-ID-keyed bilateral right all match the exact target. It does not change payload, harm, evidence, attribution, Condemnation, or the first-use ledger.
 

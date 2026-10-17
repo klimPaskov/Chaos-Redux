@@ -19,6 +19,8 @@
 # - event_target:cbrn_retaliation_target_country: exact proposed victim
 # - cbrn_retaliation_action_proportionate_proof: supplied only for a verified
 #   military-target response
+# - cbrn_retaliation_policy_family: national_policy_family of the acting
+#   delivery (chemical or biological); its native retaliation law is required
 # Output: cbrn_action_retaliation_status.
 cbrn_diplomacy_classify_retaliation_action = {
 	set_temp_variable = { cbrn_action_retaliation_status = constant:cbrn_retaliation_status.none }
@@ -35,7 +37,19 @@ cbrn_diplomacy_classify_retaliation_action = {
 			set_temp_variable = { cbrn_retaliation_target_id = id }
 		}
 		if = {
-			limit = { has_idea = $POLICY$ cbrn_country_has_active_retaliation_right_against_target_id = yes }
+			limit = {
+				OR = {
+					AND = {
+						check_variable = { cbrn_retaliation_policy_family = constant:national_policy_family.chemical }
+						has_idea = national_policy_chemical_retaliation
+					}
+					AND = {
+						check_variable = { cbrn_retaliation_policy_family = constant:national_policy_family.biological }
+						has_idea = national_policy_biological_retaliation
+					}
+				}
+				cbrn_country_has_active_retaliation_right_against_target_id = yes
+			}
 			set_temp_variable = { cbrn_action_retaliation_status = constant:cbrn_retaliation_status.authorized }
 			if = {
 				limit = {
@@ -91,7 +105,8 @@ cbrn_diplomacy_classify_biological_seed_retaliation = {
 		}
 		event_target:bio_seed_actor = {
 			set_temp_variable = { cbrn_action_retaliation_status = constant:cbrn_retaliation_status.none }
-			cbrn_diplomacy_classify_retaliation_action = { POLICY = national_policy_biological_retaliation }
+			set_temp_variable = { cbrn_retaliation_policy_family = constant:national_policy_family.biological }
+			cbrn_diplomacy_classify_retaliation_action = yes
 			set_temp_variable = { bio_seed_retaliation_status = cbrn_action_retaliation_status }
 		}
 	}

@@ -1,8 +1,10 @@
 # Chaos Redux native national policies.
 # Native law ideas own policy; derived variables are compatibility views.
-# Static native cost fields use file-local macros; scoped AI tuning uses script constants.
+# Static native cost fields and the AI base factor use file-local macros; scoped AI tuning uses script constants.
 @civilian_law_cost = 100
 @warfare_law_cost = 150
+# The ai_will_do base factor does not parse script constants.
+@national_policy_ai_base = 1
 
 ideas = {
 	refugee_reception = {
@@ -19,7 +21,7 @@ ideas = {
 			cancel_if_invalid = no
 			on_add = { set_temp_variable = { national_policy_requested_value = constant:migration_border_policy.humanitarian_open } national_policy_publish_reception = yes }
 			ai_will_do = {
-				factor = constant:national_policy_ai.base
+				factor = @national_policy_ai_base
 				modifier = { factor = constant:national_policy_ai.keep_current has_idea = national_policy_reception_humanitarian }
 				modifier = { factor = constant:national_policy_ai.response national_policy_ai_can_receive_arrivals = yes NOT = { has_active_biowarfare_outbreak = yes } }
 				modifier = { factor = constant:national_policy_ai.zero NOT = { has_idea = national_policy_reception_humanitarian } NOT = { national_policy_ai_can_receive_arrivals = yes NOT = { has_active_biowarfare_outbreak = yes } } }
@@ -39,7 +41,7 @@ ideas = {
 			default = yes
 			on_add = { set_temp_variable = { national_policy_requested_value = constant:migration_border_policy.controlled } national_policy_publish_reception = yes }
 			ai_will_do = {
-				factor = constant:national_policy_ai.base
+				factor = @national_policy_ai_base
 				modifier = { factor = constant:national_policy_ai.keep_current has_idea = national_policy_reception_controlled }
 				modifier = { factor = constant:national_policy_ai.zero NOT = { has_idea = national_policy_reception_controlled } }
 				modifier = { factor = constant:national_policy_ai.zero NOT = { has_idea = national_policy_reception_controlled } has_country_flag = national_policy_ai_hold_reception }
@@ -57,7 +59,7 @@ ideas = {
 			cancel_if_invalid = no
 			on_add = { set_temp_variable = { national_policy_requested_value = constant:migration_border_policy.transit_only } national_policy_publish_reception = yes }
 			ai_will_do = {
-				factor = constant:national_policy_ai.base
+				factor = @national_policy_ai_base
 				modifier = { factor = constant:national_policy_ai.keep_current has_idea = national_policy_reception_transit }
 				modifier = { factor = constant:national_policy_ai.response migration_pending_reception_issue_is_valid = yes migration_decision_reception_capacity_exhausted_is_valid = yes }
 				modifier = { factor = constant:national_policy_ai.zero NOT = { has_idea = national_policy_reception_transit } NOT = { migration_pending_reception_issue_is_valid = yes migration_decision_reception_capacity_exhausted_is_valid = yes } }
@@ -76,7 +78,7 @@ ideas = {
 			cancel_if_invalid = no
 			on_add = { set_temp_variable = { national_policy_requested_value = constant:migration_border_policy.quarantine } national_policy_publish_reception = yes }
 			ai_will_do = {
-				factor = constant:national_policy_ai.base
+				factor = @national_policy_ai_base
 				modifier = { factor = constant:national_policy_ai.keep_current has_idea = national_policy_reception_quarantine }
 				modifier = { factor = constant:national_policy_ai.response national_policy_ai_can_receive_arrivals = yes has_active_biowarfare_outbreak = yes }
 				modifier = { factor = constant:national_policy_ai.zero NOT = { has_idea = national_policy_reception_quarantine } NOT = { national_policy_ai_can_receive_arrivals = yes has_active_biowarfare_outbreak = yes } }
@@ -95,7 +97,7 @@ ideas = {
 			cancel_if_invalid = no
 			on_add = { set_temp_variable = { national_policy_requested_value = constant:migration_border_policy.closed } national_policy_publish_reception = yes }
 			ai_will_do = {
-				factor = constant:national_policy_ai.base
+				factor = @national_policy_ai_base
 				modifier = { factor = constant:national_policy_ai.keep_current has_idea = national_policy_reception_closed }
 				modifier = { factor = constant:national_policy_ai.response migration_decision_reception_capacity_exhausted_is_valid = yes NOT = { migration_pending_reception_issue_is_valid = yes } }
 				modifier = { factor = constant:national_policy_ai.zero NOT = { has_idea = national_policy_reception_closed } NOT = { migration_decision_reception_capacity_exhausted_is_valid = yes NOT = { migration_pending_reception_issue_is_valid = yes } } }
@@ -114,7 +116,7 @@ ideas = {
 			cancel_if_invalid = no
 			on_add = { set_temp_variable = { national_policy_requested_value = constant:migration_border_policy.violent } national_policy_publish_reception = yes }
 			ai_will_do = {
-				factor = constant:national_policy_ai.base
+				factor = @national_policy_ai_base
 				modifier = { factor = constant:national_policy_ai.keep_current has_idea = national_policy_reception_violent }
 				modifier = { factor = constant:national_policy_ai.zero NOT = { has_idea = national_policy_reception_violent } }
 				modifier = { factor = constant:national_policy_ai.zero NOT = { has_idea = national_policy_reception_violent } has_country_flag = national_policy_ai_hold_reception }
@@ -132,7 +134,7 @@ ideas = {
 			cancel_if_invalid = no
 			on_add = { set_temp_variable = { national_policy_requested_value = constant:migration_border_policy.forced_return } national_policy_publish_reception = yes }
 			ai_will_do = {
-				factor = constant:national_policy_ai.base
+				factor = @national_policy_ai_base
 				modifier = { factor = constant:national_policy_ai.keep_current has_idea = national_policy_reception_forced_return }
 				modifier = { factor = constant:national_policy_ai.zero NOT = { has_idea = national_policy_reception_forced_return } }
 				modifier = { factor = constant:national_policy_ai.zero NOT = { has_idea = national_policy_reception_forced_return } has_country_flag = national_policy_ai_hold_reception }
@@ -155,7 +157,7 @@ ideas = {
 			default = yes
 			on_add = { set_temp_variable = { national_policy_requested_value = constant:migration_border_policy.humanitarian_open } national_policy_publish_departure = yes }
 			ai_will_do = {
-				factor = constant:national_policy_ai.base
+				factor = @national_policy_ai_base
 				modifier = { factor = constant:national_policy_ai.keep_current has_idea = national_policy_departure_free }
 				modifier = { factor = constant:national_policy_ai.response national_policy_ai_needs_relief_departure = yes }
 				modifier = { factor = constant:national_policy_ai.zero NOT = { has_idea = national_policy_departure_free } NOT = { national_policy_ai_needs_relief_departure = yes } }
@@ -174,7 +176,7 @@ ideas = {
 			cancel_if_invalid = no
 			on_add = { set_temp_variable = { national_policy_requested_value = constant:migration_border_policy.controlled } national_policy_publish_departure = yes }
 			ai_will_do = {
-				factor = constant:national_policy_ai.base
+				factor = @national_policy_ai_base
 				modifier = { factor = constant:national_policy_ai.keep_current has_idea = national_policy_departure_permit }
 				modifier = { factor = constant:national_policy_ai.response OR = { tag = GER tag = SOV } NOT = { national_policy_ai_needs_relief_departure = yes } }
 				modifier = { factor = constant:national_policy_ai.zero NOT = { has_idea = national_policy_departure_permit } NOT = { OR = { tag = GER tag = SOV } NOT = { national_policy_ai_needs_relief_departure = yes } } }
@@ -193,7 +195,7 @@ ideas = {
 			cancel_if_invalid = no
 			on_add = { set_temp_variable = { national_policy_requested_value = constant:migration_border_policy.closed } national_policy_publish_departure = yes }
 			ai_will_do = {
-				factor = constant:national_policy_ai.base
+				factor = @national_policy_ai_base
 				modifier = { factor = constant:national_policy_ai.keep_current has_idea = national_policy_departure_prohibited }
 				modifier = { factor = constant:national_policy_ai.zero NOT = { has_idea = national_policy_departure_prohibited } }
 				modifier = { factor = constant:national_policy_ai.zero NOT = { has_idea = national_policy_departure_prohibited } has_country_flag = national_policy_ai_hold_departure }
@@ -216,7 +218,7 @@ ideas = {
 			default = yes
 			on_add = { set_temp_variable = { national_policy_requested_value = constant:national_policy_permission.retaliation } national_policy_publish_chemical = yes }
 			ai_will_do = {
-				factor = constant:national_policy_ai.base
+				factor = @national_policy_ai_base
 				modifier = { factor = constant:national_policy_ai.keep_current has_idea = national_policy_chemical_retaliation }
 				modifier = { factor = constant:national_policy_ai.response national_policy_ai_has_chemical_capability = yes national_policy_ai_has_chemical_retaliation_right = yes }
 				modifier = { factor = constant:national_policy_ai.zero NOT = { has_idea = national_policy_chemical_retaliation } NOT = { national_policy_ai_has_chemical_capability = yes national_policy_ai_has_chemical_retaliation_right = yes } }
@@ -235,7 +237,7 @@ ideas = {
 			cancel_if_invalid = no
 			on_add = { set_temp_variable = { national_policy_requested_value = constant:national_policy_permission.battlefield } national_policy_publish_chemical = yes }
 			ai_will_do = {
-				factor = constant:national_policy_ai.base
+				factor = @national_policy_ai_base
 				modifier = { factor = constant:national_policy_ai.keep_current has_idea = national_policy_chemical_battlefield }
 				modifier = { factor = constant:national_policy_ai.response has_war = yes national_policy_ai_has_chemical_capability = yes cbrn_ai_route_allows_first_use = yes }
 				modifier = { factor = constant:national_policy_ai.zero NOT = { has_idea = national_policy_chemical_battlefield } NOT = { has_war = yes national_policy_ai_has_chemical_capability = yes cbrn_ai_route_allows_first_use = yes } }
@@ -254,7 +256,7 @@ ideas = {
 			cancel_if_invalid = no
 			on_add = { set_temp_variable = { national_policy_requested_value = constant:national_policy_permission.unrestricted } national_policy_publish_chemical = yes }
 			ai_will_do = {
-				factor = constant:national_policy_ai.base
+				factor = @national_policy_ai_base
 				modifier = { factor = constant:national_policy_ai.keep_current has_idea = national_policy_chemical_unrestricted }
 				modifier = { factor = constant:national_policy_ai.profile has_idea = national_policy_chemical_unrestricted OR = { tag = JAP tag = ITA } }
 				modifier = { factor = constant:national_policy_ai.response has_war = yes national_policy_ai_has_chemical_capability = yes cbrn_ai_route_allows_unrestricted_use = yes }
@@ -279,7 +281,7 @@ ideas = {
 			default = yes
 			on_add = { set_temp_variable = { national_policy_requested_value = constant:national_policy_permission.retaliation } national_policy_publish_biological = yes }
 			ai_will_do = {
-				factor = constant:national_policy_ai.base
+				factor = @national_policy_ai_base
 				modifier = { factor = constant:national_policy_ai.keep_current has_idea = national_policy_biological_retaliation }
 				modifier = { factor = constant:national_policy_ai.response national_policy_ai_has_biological_capability = yes national_policy_ai_has_biological_retaliation_right = yes }
 				modifier = { factor = constant:national_policy_ai.zero NOT = { has_idea = national_policy_biological_retaliation } NOT = { national_policy_ai_has_biological_capability = yes national_policy_ai_has_biological_retaliation_right = yes } }
@@ -298,7 +300,7 @@ ideas = {
 			cancel_if_invalid = no
 			on_add = { set_temp_variable = { national_policy_requested_value = constant:national_policy_permission.battlefield } national_policy_publish_biological = yes }
 			ai_will_do = {
-				factor = constant:national_policy_ai.base
+				factor = @national_policy_ai_base
 				modifier = { factor = constant:national_policy_ai.keep_current has_idea = national_policy_biological_battlefield }
 				modifier = { factor = constant:national_policy_ai.response has_war = yes national_policy_ai_has_biological_capability = yes OR = { has_country_flag = cbrn_chaos_warfare_first_use_ai_route cbrn_ai_route_allows_unrestricted_use = yes } }
 				modifier = { factor = constant:national_policy_ai.zero NOT = { has_idea = national_policy_biological_battlefield } NOT = { has_war = yes national_policy_ai_has_biological_capability = yes OR = { has_country_flag = cbrn_chaos_warfare_first_use_ai_route cbrn_ai_route_allows_unrestricted_use = yes } } }
@@ -317,7 +319,7 @@ ideas = {
 			cancel_if_invalid = no
 			on_add = { set_temp_variable = { national_policy_requested_value = constant:national_policy_permission.unrestricted } national_policy_publish_biological = yes }
 			ai_will_do = {
-				factor = constant:national_policy_ai.base
+				factor = @national_policy_ai_base
 				modifier = { factor = constant:national_policy_ai.keep_current has_idea = national_policy_biological_unrestricted }
 				modifier = { factor = constant:national_policy_ai.profile has_idea = national_policy_biological_unrestricted tag = JAP }
 				modifier = { factor = constant:national_policy_ai.response has_war = yes national_policy_ai_has_biological_capability = yes cbrn_ai_route_allows_unrestricted_use = yes }
@@ -342,7 +344,7 @@ ideas = {
 			default = yes
 			on_add = { set_temp_variable = { national_policy_requested_value = constant:national_policy_permission.none } national_policy_publish_nuclear = yes }
 			ai_will_do = {
-				factor = constant:national_policy_ai.base
+				factor = @national_policy_ai_base
 				modifier = { factor = constant:national_policy_ai.keep_current has_idea = national_policy_nuclear_none }
 				modifier = { factor = constant:national_policy_ai.zero NOT = { has_idea = national_policy_nuclear_none } }
 				modifier = { factor = constant:national_policy_ai.zero NOT = { has_idea = national_policy_nuclear_none } has_country_flag = national_policy_ai_hold_nuclear }
@@ -360,7 +362,7 @@ ideas = {
 			cancel_if_invalid = no
 			on_add = { set_temp_variable = { national_policy_requested_value = constant:national_policy_permission.retaliation } national_policy_publish_nuclear = yes }
 			ai_will_do = {
-				factor = constant:national_policy_ai.base
+				factor = @national_policy_ai_base
 				modifier = { factor = constant:national_policy_ai.keep_current has_idea = national_policy_nuclear_retaliation }
 				modifier = { factor = constant:national_policy_ai.response national_policy_ai_has_nuclear_capability = yes national_policy_ai_has_nuclear_retaliation_right = yes }
 				modifier = { factor = constant:national_policy_ai.zero NOT = { has_idea = national_policy_nuclear_retaliation } NOT = { national_policy_ai_has_nuclear_capability = yes national_policy_ai_has_nuclear_retaliation_right = yes } }
@@ -379,7 +381,7 @@ ideas = {
 			cancel_if_invalid = no
 			on_add = { set_temp_variable = { national_policy_requested_value = constant:national_policy_permission.unrestricted } national_policy_publish_nuclear = yes }
 			ai_will_do = {
-				factor = constant:national_policy_ai.base
+				factor = @national_policy_ai_base
 				modifier = { factor = constant:national_policy_ai.keep_current has_idea = national_policy_nuclear_unrestricted }
 				modifier = { factor = constant:national_policy_ai.profile has_idea = national_policy_nuclear_unrestricted tag = JAP }
 				modifier = { factor = constant:national_policy_ai.response has_war = yes national_policy_ai_has_nuclear_capability = yes cbrn_ai_route_allows_unrestricted_use = yes }

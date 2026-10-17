@@ -30,14 +30,14 @@ Tests and accidents retain their separate record paths.
 
 `cbrn_country_has_active_retaliation_right_against_target_id` checks exact receipt owner, exact existing offender and expiry without choosing a family law.
 Permission callers combine that evidence with their own family law.
-`cbrn_diplomacy_classify_retaliation_action` takes required argument `POLICY`, the native retaliation law for the acting family.
-Chemical exposure passes `POLICY = national_policy_chemical_retaliation` and biological classification passes `POLICY = national_policy_biological_retaliation`.
+`cbrn_diplomacy_classify_retaliation_action` reads the required temporary input `cbrn_retaliation_policy_family`, a `national_policy_family` value whose native retaliation law the acting country must hold.
+Chemical exposure sets `constant:national_policy_family.chemical`, requiring `national_policy_chemical_retaliation`, and biological classification sets `constant:national_policy_family.biological`, requiring `national_policy_biological_retaliation`.
+Scripted effects take no parameter blocks, so the family travels through this temporary variable.
 This retains the established relief/classification exception rather than extending it to unrestricted first use.
 
 ```text
-cbrn_diplomacy_classify_retaliation_action = {
-	POLICY = national_policy_chemical_retaliation
-}
+set_temp_variable = { cbrn_retaliation_policy_family = constant:national_policy_family.chemical }
+cbrn_diplomacy_classify_retaliation_action = yes
 ```
 
 The classifier still needs `event_target:cbrn_retaliation_target_country`, current war, and the existing action class/severity proof.
