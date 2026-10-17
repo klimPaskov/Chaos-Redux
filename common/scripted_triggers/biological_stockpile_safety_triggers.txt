@@ -307,21 +307,11 @@ bio_stockpile_safety_meets_dangerous_conditions = {
 }
 
 # Explicit sabotage is accepted only when the caller's private exact-state flag
-# is set or the existing exact-state sabotage operation is active on this same
-# arsenal.
+# is set on this same arsenal.
 bio_stockpile_safety_explicit_sabotage_is_active = {
 	bio_stockpile_safety_arsenal_pointer_is_valid = yes
-	OR = {
-		var:bio_stockpile_safety_arsenal_state = {
-			hidden_trigger = { has_state_flag = bio_stockpile_safety_explicit_sabotage_active }
-		}
-		AND = {
-			hidden_trigger = { has_country_flag = bio_sabotage_operation_in_progress }
-			has_variable = bio_sabotage_active_state
-			var:bio_sabotage_active_state = {
-				state = var:bio_stockpile_safety_arsenal_state
-			}
-		}
+	var:bio_stockpile_safety_arsenal_state = {
+		hidden_trigger = { has_state_flag = bio_stockpile_safety_explicit_sabotage_active }
 	}
 }
 

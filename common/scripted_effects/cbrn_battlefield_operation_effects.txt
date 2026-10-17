@@ -9,45 +9,11 @@
 #   grant a second outcome after the native raid reservation.
 # ============================================================================
 
+# Land-raid entry point for the shared agent classifier. The class table lives
+# in cbrn_chemical_air_raid_set_agent_class_internal (cbrn_chemical_raid_effects.txt)
+# so the land, air, and missile callers cannot drift apart.
 cbrn_battlefield_set_action_agent_class_from_action = {
-	set_temp_variable = { cbrn_action_agent_class = constant:cbrn_agent_class.none }
-	if = {
-		limit = {
-			OR = {
-				check_variable = { var = cbrn_action_agent value = constant:cbrn_agent.chlorine compare = equals }
-				check_variable = { var = cbrn_action_agent value = constant:cbrn_agent.phosgene compare = equals }
-			}
-		}
-		set_temp_variable = { cbrn_action_agent_class = constant:cbrn_agent_class.choking }
-	}
-	else_if = {
-		limit = {
-			OR = {
-				check_variable = { var = cbrn_action_agent value = constant:cbrn_agent.mustard compare = equals }
-				check_variable = { var = cbrn_action_agent value = constant:cbrn_agent.lewisite compare = equals }
-			}
-		}
-		set_temp_variable = { cbrn_action_agent_class = constant:cbrn_agent_class.blister }
-	}
-	else_if = {
-		limit = {
-			OR = {
-				check_variable = { var = cbrn_action_agent value = constant:cbrn_agent.tabun compare = equals }
-				check_variable = { var = cbrn_action_agent value = constant:cbrn_agent.sarin compare = equals }
-				check_variable = { var = cbrn_action_agent value = constant:cbrn_agent.soman compare = equals }
-			}
-		}
-		set_temp_variable = { cbrn_action_agent_class = constant:cbrn_agent_class.nerve }
-	}
-	else_if = {
-		limit = {
-			OR = {
-				check_variable = { var = cbrn_action_agent value = constant:cbrn_agent.malodor compare = equals }
-				check_variable = { var = cbrn_action_agent value = constant:cbrn_agent.behavioral compare = equals }
-			}
-		}
-		set_temp_variable = { cbrn_action_agent_class = constant:cbrn_agent_class.incapacitating }
-	}
+	cbrn_chemical_air_raid_set_agent_class_internal = yes
 }
 
 cbrn_battlefield_set_severity_from_action_route = {

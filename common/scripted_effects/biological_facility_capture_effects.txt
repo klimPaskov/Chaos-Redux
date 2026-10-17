@@ -730,15 +730,9 @@ bio_facility_capture_secure_critical = {
 	}
 }
 
+# A failed destroy raid releases the same fraction as a failed secure raid.
 bio_facility_capture_destroy_failure = {
-	if = {
-		limit = { bio_facility_capture_native_context_is_valid = yes }
-		event_target:bio_facility_bridge_state = {
-			set_temp_variable = { bio_facility_capture_release_fraction = constant:bio_facility_capture_payload.raid_failure_release_fraction }
-			bio_facility_capture_dispatch_accidental_release = yes
-			bio_facility_capture_record_recovery_operation = yes
-		}
-	}
+	bio_facility_capture_secure_failure = yes
 }
 
 bio_facility_capture_destroy_limited = {
