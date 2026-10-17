@@ -87,11 +87,13 @@ The localisation and asset audits exclude Git, tooling, and documentation direct
 
 - `audit_localisation_static.py` checks every English localisation file for parse errors, BOM and header damage, duplicate keys, keys that no script binds, and events whose title or description key is missing. It reads each event's actual `title =` / `desc =` binding, so it does not assume the `<id>.t` convention, and it exempts `hidden = yes` events. It also lists flags checked in a displayed decision, mission, or focus requirement, directly or through the scripted triggers those requirements call, that have no localisation key and would show their raw identifier in the tooltip. The event-key check has a positive control: deleting a known key must make it appear.
 - `audit_asset_wiring_static.py` checks sprite registration against use. It reports `GFX_` names referenced but registered nowhere here or in vanilla, sprite registrations with no reference outside their own definition file, and texture or mesh references with no backing file. Asset references are resolved by filename, because Clausewitz searches the model folders recursively.
+- `audit_script_references_static.py` checks script definitions against use. It reports scripted effects, scripted triggers, scripted-localisation entries, script-constant categories, ideas, dynamic and opinion modifiers, and events whose name is referenced nowhere outside its own definition, splitting them into `dead` and `dynamic` (a `prefix_[`, `prefix_@`, `prefix_$` or event-id `ns.[` stem could build the name). It also lists flags checked but never set (a bug-triage list) and set but never checked, and effect and trigger bodies that are byte-identical or identical apart from numbers, constants, macros and tags. The `chaos-redux-codebase-cleanup` skill owns the verification and removal workflow for its output.
 - `reindent_script_files.py` enforces the repository's tab-indentation rule ("Indent script blocks with tabs"). It converts only the leading whitespace run of a line, preserves line endings and the UTF-8 BOM, and leaves already-tabbed lines alone. Run it with `--check` before `--apply`.
 
 ```powershell
 python .tools/audit_localisation_static.py --json .tmp/loc_audit.json
 python .tools/audit_asset_wiring_static.py --json .tmp/asset_audit.json
+python .tools/audit_script_references_static.py --json .tmp/script_reference_audit.json
 python .tools/reindent_script_files.py --check
 ```
 
@@ -99,6 +101,7 @@ Interpretation limits, which matter when reading the output:
 
 - A localisation key reported as unbound is not dead when scripted localisation or a `meta_effect` assembles its name at runtime, or when the engine resolves it by naming convention (an idea `picture`, a decision `icon`, an advisor portrait).
 - A sprite reported as unreferenced is likewise a candidate, not proof.
+- A script definition reported as `dead` is a candidate until a search of script, interface, localisation, docs, skills and tools confirms no reference; a `dynamic` one needs its builder traced. Generated registries and catalogs are reported too and keep their generated-file rules.
 - A missing localisation key and a missing asset file are exact findings and can be acted on directly.
 
 ### Event 006 static validators
