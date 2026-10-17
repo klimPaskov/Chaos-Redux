@@ -7,18 +7,6 @@
 # - Preserve a host-level receipt for optional-state secondary hosts.
 # ============================================================================
 
-# COUNTRY scope: clear only the eight bilateral deltas used by one response.
-independence_wave_host_response_clear_child_deltas = {
-	set_temp_variable = { independence_wave_decision_host_claim_delta = constant:independence_wave_value.minimum }
-	set_temp_variable = { independence_wave_decision_hostility_delta = constant:independence_wave_value.minimum }
-	set_temp_variable = { independence_wave_decision_host_obligations_delta = constant:independence_wave_value.minimum }
-	set_temp_variable = { independence_wave_decision_property_delta = constant:independence_wave_value.minimum }
-	set_temp_variable = { independence_wave_decision_population_delta = constant:independence_wave_value.minimum }
-	set_temp_variable = { independence_wave_decision_border_delta = constant:independence_wave_value.minimum }
-	set_temp_variable = { independence_wave_decision_host_pressure_delta = constant:independence_wave_value.minimum }
-	set_temp_variable = { independence_wave_decision_reconquest_fear_delta = constant:independence_wave_value.minimum }
-}
-
 # COUNTRY scope: apply the selected host action to each live, matching-generation
 # Event 006 child whose primary former host is this response host.
 independence_wave_host_response_update_primary_child_ledgers = {
@@ -56,7 +44,7 @@ independence_wave_host_response_update_primary_child_ledgers = {
 							check_variable = { var = independence_wave_former_host value = event_target:independence_wave_host_response_ledger_host compare = equals }
 						}
 						set_temp_variable = { independence_wave_host_outcome_input = constant:independence_wave_host_outcome.guarded_coexistence }
-						independence_wave_host_response_clear_child_deltas = yes
+						independence_wave_reset_host_deltas = yes
 						if = {
 							limit = { check_variable = { var = independence_wave_host_response_action_input value = constant:independence_wave_host_response_action.limited_negotiate compare = equals } }
 							set_temp_variable = { independence_wave_decision_host_claim_delta = constant:independence_wave_decision_effect.bilateral_minor_loss }

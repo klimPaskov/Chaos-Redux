@@ -99,23 +99,6 @@ has_independence_wave_axx_active_package_project = {
 	}
 }
 
-# The shared league-value writer is intentionally inert during the informal
-# network phase. AXX's Danube action promises league-wide values, so expose it
-# only once the global phase can consume those deltas.
-has_independence_wave_axx_live_league_phase = {
-	has_variable = global.independence_wave_league_phase
-	OR = {
-		check_variable = { global.independence_wave_league_phase = constant:independence_wave_league_phase.regional_conferences }
-		check_variable = { global.independence_wave_league_phase = constant:independence_wave_league_phase.congress_preparation }
-		check_variable = { global.independence_wave_league_phase = constant:independence_wave_league_phase.charter_vote }
-		check_variable = { global.independence_wave_league_phase = constant:independence_wave_league_phase.consultative_league }
-		check_variable = { global.independence_wave_league_phase = constant:independence_wave_league_phase.formal_league }
-		check_variable = { global.independence_wave_league_phase = constant:independence_wave_league_phase.durable_league }
-		check_variable = { global.independence_wave_league_phase = constant:independence_wave_league_phase.league_crisis }
-		check_variable = { global.independence_wave_league_phase = constant:independence_wave_league_phase.reformed_league }
-	}
-}
-
 has_prepared_independence_wave_iw_024_package_setup = {
 	is_independence_wave_axx_package = yes
 	has_country_flag = independence_wave_origin_prepared
@@ -293,20 +276,6 @@ has_independence_wave_bos_active_package_project = {
 		has_decision = independence_wave_bos_accept_corridor_accord
 		has_decision = independence_wave_bos_codify_drina_settlement
 		has_decision = independence_wave_bos_open_danube_network
-	}
-}
-
-has_independence_wave_bos_live_league_phase = {
-	has_variable = global.independence_wave_league_phase
-	OR = {
-		check_variable = { global.independence_wave_league_phase = constant:independence_wave_league_phase.regional_conferences }
-		check_variable = { global.independence_wave_league_phase = constant:independence_wave_league_phase.congress_preparation }
-		check_variable = { global.independence_wave_league_phase = constant:independence_wave_league_phase.charter_vote }
-		check_variable = { global.independence_wave_league_phase = constant:independence_wave_league_phase.consultative_league }
-		check_variable = { global.independence_wave_league_phase = constant:independence_wave_league_phase.formal_league }
-		check_variable = { global.independence_wave_league_phase = constant:independence_wave_league_phase.durable_league }
-		check_variable = { global.independence_wave_league_phase = constant:independence_wave_league_phase.league_crisis }
-		check_variable = { global.independence_wave_league_phase = constant:independence_wave_league_phase.reformed_league }
 	}
 }
 
@@ -492,23 +461,6 @@ has_independence_wave_bbx_active_package_project = {
 	}
 }
 
-# The shared league-value writer is intentionally inert during the informal
-# network phase. BBX's Ionian action promises league-wide values, so expose it
-# only once the global phase can consume those deltas.
-has_independence_wave_bbx_live_league_phase = {
-	has_variable = global.independence_wave_league_phase
-	OR = {
-		check_variable = { global.independence_wave_league_phase = constant:independence_wave_league_phase.regional_conferences }
-		check_variable = { global.independence_wave_league_phase = constant:independence_wave_league_phase.congress_preparation }
-		check_variable = { global.independence_wave_league_phase = constant:independence_wave_league_phase.charter_vote }
-		check_variable = { global.independence_wave_league_phase = constant:independence_wave_league_phase.consultative_league }
-		check_variable = { global.independence_wave_league_phase = constant:independence_wave_league_phase.formal_league }
-		check_variable = { global.independence_wave_league_phase = constant:independence_wave_league_phase.durable_league }
-		check_variable = { global.independence_wave_league_phase = constant:independence_wave_league_phase.league_crisis }
-		check_variable = { global.independence_wave_league_phase = constant:independence_wave_league_phase.reformed_league }
-	}
-}
-
 has_prepared_independence_wave_iw_028_package_setup = {
 	is_independence_wave_bbx_package = yes
 	has_country_flag = independence_wave_origin_prepared
@@ -687,23 +639,6 @@ has_independence_wave_mac_active_package_project = {
 	}
 }
 
-# The shared league-value writer is intentionally inert during the informal
-# network phase. MAC's Danube action promises league-wide values, so expose it
-# only once the global phase can consume those deltas.
-has_independence_wave_mac_live_league_phase = {
-	has_variable = global.independence_wave_league_phase
-	OR = {
-		check_variable = { global.independence_wave_league_phase = constant:independence_wave_league_phase.regional_conferences }
-		check_variable = { global.independence_wave_league_phase = constant:independence_wave_league_phase.congress_preparation }
-		check_variable = { global.independence_wave_league_phase = constant:independence_wave_league_phase.charter_vote }
-		check_variable = { global.independence_wave_league_phase = constant:independence_wave_league_phase.consultative_league }
-		check_variable = { global.independence_wave_league_phase = constant:independence_wave_league_phase.formal_league }
-		check_variable = { global.independence_wave_league_phase = constant:independence_wave_league_phase.durable_league }
-		check_variable = { global.independence_wave_league_phase = constant:independence_wave_league_phase.league_crisis }
-		check_variable = { global.independence_wave_league_phase = constant:independence_wave_league_phase.reformed_league }
-	}
-}
-
 has_prepared_independence_wave_iw_026_package_setup = {
 	is_independence_wave_mac_package = yes
 	has_country_flag = independence_wave_origin_prepared
@@ -797,19 +732,6 @@ is_independence_wave_mnt_project_ready = {
 	has_country_flag = independence_wave_iw_030_setup_complete
 	has_country_flag = independence_wave_mnt_compact_crisis_resolved
 	NOT = { has_country_flag = independence_wave_mnt_compact_crisis_failed }
-}
-
-# A living former host at war cannot settle its bilateral ledgers. In that
-# case the depot authority provides the additional crown legitimacy needed to
-# carry the compact through a local settlement instead of deadlocking.
-has_independence_wave_mnt_unsettled_host = {
-	OR = {
-		NOT = { has_independence_wave_living_former_host = yes }
-		AND = {
-			has_independence_wave_living_former_host = yes
-			var:independence_wave_former_host = { has_war_with = ROOT }
-		}
-	}
 }
 
 # MNT is a one-state carrier. Its single opening civilian factory is the
@@ -1093,23 +1015,6 @@ has_independence_wave_bax_active_package_project = {
 		has_decision = independence_wave_bax_accept_strait_patron_compact
 		has_decision = independence_wave_bax_codify_thrace_settlement
 		has_decision = independence_wave_bax_open_aegean_network
-	}
-}
-
-# The shared league-value writer is intentionally inert during the informal
-# network phase. BAX's Aegean action promises league-wide values, so expose it
-# only once the global phase can consume those deltas.
-has_independence_wave_bax_live_league_phase = {
-	has_variable = global.independence_wave_league_phase
-	OR = {
-		check_variable = { global.independence_wave_league_phase = constant:independence_wave_league_phase.regional_conferences }
-		check_variable = { global.independence_wave_league_phase = constant:independence_wave_league_phase.congress_preparation }
-		check_variable = { global.independence_wave_league_phase = constant:independence_wave_league_phase.charter_vote }
-		check_variable = { global.independence_wave_league_phase = constant:independence_wave_league_phase.consultative_league }
-		check_variable = { global.independence_wave_league_phase = constant:independence_wave_league_phase.formal_league }
-		check_variable = { global.independence_wave_league_phase = constant:independence_wave_league_phase.durable_league }
-		check_variable = { global.independence_wave_league_phase = constant:independence_wave_league_phase.league_crisis }
-		check_variable = { global.independence_wave_league_phase = constant:independence_wave_league_phase.reformed_league }
 	}
 }
 

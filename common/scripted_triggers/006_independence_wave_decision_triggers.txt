@@ -986,3 +986,48 @@ has_independence_wave_pending_endorsement_for_target = {
 	has_decision = independence_wave_coordinate_recognition_campaign
 	var:independence_wave_diplomatic_counterpart = { tag = event_target:independence_wave_bilateral_target }
 }
+
+# Global league phase is one of the live phases (regional conferences through reformed league). The shared league-value writer is inert during the informal network phase, so package actions that promise league-wide values expose this gate.
+has_independence_wave_live_league_phase = {
+	has_variable = global.independence_wave_league_phase
+	OR = {
+		check_variable = { global.independence_wave_league_phase = constant:independence_wave_league_phase.regional_conferences }
+		check_variable = { global.independence_wave_league_phase = constant:independence_wave_league_phase.congress_preparation }
+		check_variable = { global.independence_wave_league_phase = constant:independence_wave_league_phase.charter_vote }
+		check_variable = { global.independence_wave_league_phase = constant:independence_wave_league_phase.consultative_league }
+		check_variable = { global.independence_wave_league_phase = constant:independence_wave_league_phase.formal_league }
+		check_variable = { global.independence_wave_league_phase = constant:independence_wave_league_phase.durable_league }
+		check_variable = { global.independence_wave_league_phase = constant:independence_wave_league_phase.league_crisis }
+		check_variable = { global.independence_wave_league_phase = constant:independence_wave_league_phase.reformed_league }
+	}
+}
+
+# Country scope. Strategic cost palette that also demands stability, war support and the standard diplomatic cost.
+can_pay_independence_wave_strategic_war_support_cost = {
+	NOT = { num_of_civilian_factories_available_for_projects < constant:independence_wave_decision_cost.civilian_factory_standard }
+	NOT = { has_stability < constant:independence_wave_decision_cost.stability_standard }
+	NOT = { has_war_support < constant:independence_wave_decision_cost.war_support_minor }
+	can_pay_independence_wave_diplomatic_standard_cost = yes
+}
+
+# Country scope. No living former host exists, or the former host is at war with the calling country (PREV inside the host scope).
+has_independence_wave_unsettled_host = {
+	OR = {
+		NOT = { has_independence_wave_living_former_host = yes }
+		AND = {
+			has_independence_wave_living_former_host = yes
+			var:independence_wave_former_host = { has_war_with = PREV }
+		}
+	}
+}
+
+# Country scope. No living former host exists, or the former host is at war with ROOT. A living former host at war cannot settle its bilateral ledgers, so routes that need settlement offer an alternative while this holds.
+has_independence_wave_unsettled_host_root = {
+	OR = {
+		NOT = { has_independence_wave_living_former_host = yes }
+		AND = {
+			has_independence_wave_living_former_host = yes
+			var:independence_wave_former_host = { has_war_with = ROOT }
+		}
+	}
+}

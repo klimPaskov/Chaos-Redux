@@ -15,7 +15,7 @@ No helper grants packages, transfers states, mutates Event 005, scans all countr
 | independence_wave_clear_committed_country_opening_queue | The .2 recipient | Removes local report and actor arrays only | Called internally at capture and consumption |
 | independence_wave_resolve_country_opening_civilian_administration | A current .42/.41 generation receipt | Applies the civilian posture through the shared five-value, host, and network helpers, then resolves the receipt | Human `.41` civilian option or deterministic AI route |
 | independence_wave_resolve_country_opening_frontier_security | A current .42/.41 generation receipt | Applies force-tier and live-security scaled defense, host deterrence, and network/legitimacy/capacity tradeoffs, then resolves the receipt | Human `.41` security option or deterministic AI route |
-| independence_wave_opening_clear_host_deltas | COUNTRY scope | Sets all eight shared host-ledger deltas to zero before posture-specific inputs | Called by either posture only when its former host survives |
+| independence_wave_reset_host_deltas | COUNTRY scope | Sets all eight shared host-ledger deltas to zero before posture-specific inputs | Called by either posture only when its former host survives |
 
 There are no parameters or default actors, plan IDs, or packages.
 An absent, invalid, or overlapping report sends no opening.

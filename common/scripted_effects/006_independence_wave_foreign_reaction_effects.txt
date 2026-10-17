@@ -975,7 +975,7 @@ independence_wave_foreign_reaction_apply_recognition = {
 			add_opinion_modifier = { target = event_target:independence_wave_foreign_actor modifier = independence_wave_foreign_recognition }
 			if = {
 				limit = { has_independence_wave_living_former_host = yes }
-				independence_wave_foreign_reaction_clear_host_deltas = yes
+				independence_wave_reset_host_deltas = yes
 				set_temp_variable = { independence_wave_decision_hostility_delta = constant:independence_wave_decision_effect.bilateral_minor }
 				set_temp_variable = { independence_wave_decision_host_pressure_delta = constant:independence_wave_decision_effect.bilateral_minor }
 				independence_wave_decision_apply_host_deltas = yes
@@ -999,7 +999,7 @@ independence_wave_foreign_reaction_apply_recognition = {
 independence_wave_foreign_reaction_apply_mediation = {
 	independence_wave_decision_pay_diplomatic_standard = yes
 	event_target:independence_wave_foreign_target = {
-		independence_wave_foreign_reaction_clear_host_deltas = yes
+		independence_wave_reset_host_deltas = yes
 		set_temp_variable = { independence_wave_decision_host_claim_delta = constant:independence_wave_decision_effect.bilateral_minor_loss }
 		set_temp_variable = { independence_wave_decision_hostility_delta = constant:independence_wave_decision_effect.bilateral_standard_loss }
 		set_temp_variable = { independence_wave_decision_property_delta = constant:independence_wave_decision_effect.bilateral_minor_loss }
@@ -1032,7 +1032,7 @@ independence_wave_foreign_reaction_apply_containment = {
 	}
 	else = { independence_wave_decision_pay_diplomatic_light = yes }
 	event_target:independence_wave_foreign_target = {
-		independence_wave_foreign_reaction_clear_host_deltas = yes
+		independence_wave_reset_host_deltas = yes
 		set_temp_variable = { independence_wave_decision_hostility_delta = constant:independence_wave_decision_effect.bilateral_minor }
 		set_temp_variable = { independence_wave_decision_host_pressure_delta = constant:independence_wave_decision_effect.bilateral_minor }
 		set_temp_variable = { independence_wave_decision_reconquest_fear_delta = constant:independence_wave_decision_effect.bilateral_standard }
@@ -1305,18 +1305,6 @@ independence_wave_foreign_reaction_build_corridor = {
 			instant_build = yes
 		}
 	}
-}
-
-# Any scope. Resets the eight bilateral delta inputs before a partial update.
-independence_wave_foreign_reaction_clear_host_deltas = {
-	set_temp_variable = { independence_wave_decision_host_claim_delta = constant:independence_wave_value.minimum }
-	set_temp_variable = { independence_wave_decision_hostility_delta = constant:independence_wave_value.minimum }
-	set_temp_variable = { independence_wave_decision_host_obligations_delta = constant:independence_wave_value.minimum }
-	set_temp_variable = { independence_wave_decision_property_delta = constant:independence_wave_value.minimum }
-	set_temp_variable = { independence_wave_decision_population_delta = constant:independence_wave_value.minimum }
-	set_temp_variable = { independence_wave_decision_border_delta = constant:independence_wave_value.minimum }
-	set_temp_variable = { independence_wave_decision_host_pressure_delta = constant:independence_wave_value.minimum }
-	set_temp_variable = { independence_wave_decision_reconquest_fear_delta = constant:independence_wave_value.minimum }
 }
 
 # COUNTRY scope: the foreign actor, with the receipt target loaded. Writes one

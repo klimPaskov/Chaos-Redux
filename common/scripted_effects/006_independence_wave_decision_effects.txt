@@ -2188,3 +2188,138 @@ independence_wave_clear_bilateral_receipts = {
 	clear_array = independence_wave_guarantee_receipt_country_entries
 	independence_wave_decision_clear_diplomatic_counterpart = yes
 }
+
+# Country scope. Applies the administrative progress package: minor legitimacy, standard capacity, minor security gain and minor instability relief through independence_wave_decision_apply_country_deltas.
+independence_wave_apply_administrative_progress = {
+	set_temp_variable = { independence_wave_decision_legitimacy_delta = constant:independence_wave_decision_effect.value_minor }
+	set_temp_variable = { independence_wave_decision_recognition_delta = constant:independence_wave_value.minimum }
+	set_temp_variable = { independence_wave_decision_capacity_delta = constant:independence_wave_decision_effect.value_standard }
+	set_temp_variable = { independence_wave_decision_security_delta = constant:independence_wave_decision_effect.value_minor }
+	set_temp_variable = { independence_wave_decision_instability_delta = constant:independence_wave_decision_effect.value_minor_loss }
+	independence_wave_decision_apply_country_deltas = yes
+}
+
+# Country scope. Applies the security progress package: minor legitimacy and capacity, standard security gain and minor instability relief through independence_wave_decision_apply_country_deltas.
+independence_wave_apply_security_progress = {
+	set_temp_variable = { independence_wave_decision_legitimacy_delta = constant:independence_wave_decision_effect.value_minor }
+	set_temp_variable = { independence_wave_decision_recognition_delta = constant:independence_wave_value.minimum }
+	set_temp_variable = { independence_wave_decision_capacity_delta = constant:independence_wave_decision_effect.value_minor }
+	set_temp_variable = { independence_wave_decision_security_delta = constant:independence_wave_decision_effect.value_standard }
+	set_temp_variable = { independence_wave_decision_instability_delta = constant:independence_wave_decision_effect.value_minor_loss }
+	independence_wave_decision_apply_country_deltas = yes
+}
+
+# Country scope. Applies the diplomatic progress package: minor legitimacy, capacity and instability relief with standard recognition gain through independence_wave_decision_apply_country_deltas.
+independence_wave_apply_diplomatic_progress = {
+	set_temp_variable = { independence_wave_decision_legitimacy_delta = constant:independence_wave_decision_effect.value_minor }
+	set_temp_variable = { independence_wave_decision_recognition_delta = constant:independence_wave_decision_effect.value_standard }
+	set_temp_variable = { independence_wave_decision_capacity_delta = constant:independence_wave_decision_effect.value_minor }
+	set_temp_variable = { independence_wave_decision_security_delta = constant:independence_wave_value.minimum }
+	set_temp_variable = { independence_wave_decision_instability_delta = constant:independence_wave_decision_effect.value_minor_loss }
+	independence_wave_decision_apply_country_deltas = yes
+}
+
+# Country scope. Applies the major settlement package: standard legitimacy, recognition and capacity gain, minor security gain and standard instability relief through independence_wave_decision_apply_country_deltas.
+independence_wave_apply_major_settlement = {
+	set_temp_variable = { independence_wave_decision_legitimacy_delta = constant:independence_wave_decision_effect.value_standard }
+	set_temp_variable = { independence_wave_decision_recognition_delta = constant:independence_wave_decision_effect.value_standard }
+	set_temp_variable = { independence_wave_decision_capacity_delta = constant:independence_wave_decision_effect.value_standard }
+	set_temp_variable = { independence_wave_decision_security_delta = constant:independence_wave_decision_effect.value_minor }
+	set_temp_variable = { independence_wave_decision_instability_delta = constant:independence_wave_decision_effect.value_standard_loss }
+	independence_wave_decision_apply_country_deltas = yes
+}
+
+# Country scope. Applies the standard former-host settlement package through independence_wave_decision_apply_host_deltas when a living former host exists.
+independence_wave_apply_former_host_settlement = {
+	if = {
+		limit = { has_independence_wave_living_former_host = yes }
+		set_temp_variable = { independence_wave_decision_host_claim_delta = constant:independence_wave_decision_effect.bilateral_minor_loss }
+		set_temp_variable = { independence_wave_decision_hostility_delta = constant:independence_wave_decision_effect.bilateral_standard_loss }
+		set_temp_variable = { independence_wave_decision_host_obligations_delta = constant:independence_wave_decision_effect.bilateral_standard_loss }
+		set_temp_variable = { independence_wave_decision_property_delta = constant:independence_wave_decision_effect.bilateral_major_loss }
+		set_temp_variable = { independence_wave_decision_population_delta = constant:independence_wave_value.minimum }
+		set_temp_variable = { independence_wave_decision_border_delta = constant:independence_wave_decision_effect.bilateral_standard }
+		set_temp_variable = { independence_wave_decision_host_pressure_delta = constant:independence_wave_decision_effect.bilateral_minor_loss }
+		set_temp_variable = { independence_wave_decision_reconquest_fear_delta = constant:independence_wave_decision_effect.bilateral_minor_loss }
+		independence_wave_decision_apply_host_deltas = yes
+	}
+}
+
+# Country scope. Former-host settlement package that also requires the former host not to be at war with the calling country (PREV inside the host scope).
+independence_wave_apply_former_host_settlement_unless_at_war = {
+	if = {
+		limit = { has_independence_wave_living_former_host = yes var:independence_wave_former_host = { NOT = { has_war_with = PREV } } }
+		set_temp_variable = { independence_wave_decision_host_claim_delta = constant:independence_wave_decision_effect.bilateral_minor_loss }
+		set_temp_variable = { independence_wave_decision_hostility_delta = constant:independence_wave_decision_effect.bilateral_standard_loss }
+		set_temp_variable = { independence_wave_decision_host_obligations_delta = constant:independence_wave_decision_effect.bilateral_standard_loss }
+		set_temp_variable = { independence_wave_decision_property_delta = constant:independence_wave_decision_effect.bilateral_major_loss }
+		set_temp_variable = { independence_wave_decision_population_delta = constant:independence_wave_value.minimum }
+		set_temp_variable = { independence_wave_decision_border_delta = constant:independence_wave_decision_effect.bilateral_standard }
+		set_temp_variable = { independence_wave_decision_host_pressure_delta = constant:independence_wave_decision_effect.bilateral_minor_loss }
+		set_temp_variable = { independence_wave_decision_reconquest_fear_delta = constant:independence_wave_decision_effect.bilateral_minor_loss }
+		independence_wave_decision_apply_host_deltas = yes
+	}
+}
+
+# Country scope. Former-host settlement package that also requires the former host not to be at war with ROOT.
+independence_wave_apply_former_host_settlement_unless_at_war_with_root = {
+	if = {
+		limit = {
+			has_independence_wave_living_former_host = yes
+			var:independence_wave_former_host = { NOT = { has_war_with = ROOT } }
+		}
+		set_temp_variable = { independence_wave_decision_host_claim_delta = constant:independence_wave_decision_effect.bilateral_minor_loss }
+		set_temp_variable = { independence_wave_decision_hostility_delta = constant:independence_wave_decision_effect.bilateral_standard_loss }
+		set_temp_variable = { independence_wave_decision_host_obligations_delta = constant:independence_wave_decision_effect.bilateral_standard_loss }
+		set_temp_variable = { independence_wave_decision_property_delta = constant:independence_wave_decision_effect.bilateral_major_loss }
+		set_temp_variable = { independence_wave_decision_population_delta = constant:independence_wave_value.minimum }
+		set_temp_variable = { independence_wave_decision_border_delta = constant:independence_wave_decision_effect.bilateral_standard }
+		set_temp_variable = { independence_wave_decision_host_pressure_delta = constant:independence_wave_decision_effect.bilateral_minor_loss }
+		set_temp_variable = { independence_wave_decision_reconquest_fear_delta = constant:independence_wave_decision_effect.bilateral_minor_loss }
+		independence_wave_decision_apply_host_deltas = yes
+	}
+}
+
+# Country scope. Installs the civilian economy, export focus and volunteer only baseline laws when the country does not hold them.
+independence_wave_ensure_baseline_laws = {
+	if = { limit = { NOT = { has_idea = civilian_economy } } add_ideas = civilian_economy }
+	if = { limit = { NOT = { has_idea = export_focus } } add_ideas = export_focus }
+	if = { limit = { NOT = { has_idea = volunteer_only } } add_ideas = volunteer_only }
+}
+
+# Country scope. Applies the failed-project penalty package (standard legitimacy, capacity and security loss, minor recognition loss, major instability) through independence_wave_decision_apply_country_deltas.
+independence_wave_apply_project_failure = {
+	set_temp_variable = { independence_wave_decision_legitimacy_delta = constant:independence_wave_decision_effect.value_standard_loss }
+	set_temp_variable = { independence_wave_decision_recognition_delta = constant:independence_wave_decision_effect.value_minor_loss }
+	set_temp_variable = { independence_wave_decision_capacity_delta = constant:independence_wave_decision_effect.value_standard_loss }
+	set_temp_variable = { independence_wave_decision_security_delta = constant:independence_wave_decision_effect.value_standard_loss }
+	set_temp_variable = { independence_wave_decision_instability_delta = constant:independence_wave_decision_effect.value_major }
+	independence_wave_decision_apply_country_deltas = yes
+}
+
+# Writes the eight temporary bilateral host deltas used by independence_wave_decision_apply_host_deltas to zero.
+independence_wave_reset_host_deltas = {
+	set_temp_variable = { independence_wave_decision_host_claim_delta = constant:independence_wave_value.minimum }
+	set_temp_variable = { independence_wave_decision_hostility_delta = constant:independence_wave_value.minimum }
+	set_temp_variable = { independence_wave_decision_host_obligations_delta = constant:independence_wave_value.minimum }
+	set_temp_variable = { independence_wave_decision_property_delta = constant:independence_wave_value.minimum }
+	set_temp_variable = { independence_wave_decision_population_delta = constant:independence_wave_value.minimum }
+	set_temp_variable = { independence_wave_decision_border_delta = constant:independence_wave_value.minimum }
+	set_temp_variable = { independence_wave_decision_host_pressure_delta = constant:independence_wave_value.minimum }
+	set_temp_variable = { independence_wave_decision_reconquest_fear_delta = constant:independence_wave_value.minimum }
+}
+
+# Writes all thirteen temporary decision deltas (five country, eight bilateral host) to zero.
+independence_wave_reset_decision_deltas = {
+	independence_wave_reset_country_deltas = yes
+	independence_wave_reset_host_deltas = yes
+}
+
+# Writes the five temporary country deltas used by independence_wave_decision_apply_country_deltas to zero.
+independence_wave_reset_country_deltas = {
+	set_temp_variable = { independence_wave_decision_legitimacy_delta = constant:independence_wave_value.minimum }
+	set_temp_variable = { independence_wave_decision_recognition_delta = constant:independence_wave_value.minimum }
+	set_temp_variable = { independence_wave_decision_capacity_delta = constant:independence_wave_value.minimum }
+	set_temp_variable = { independence_wave_decision_security_delta = constant:independence_wave_value.minimum }
+	set_temp_variable = { independence_wave_decision_instability_delta = constant:independence_wave_value.minimum }
+}

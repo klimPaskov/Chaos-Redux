@@ -61,42 +61,6 @@ independence_wave_change_axx_ledgers = {
 	}
 }
 
-independence_wave_axx_apply_administrative_progress = {
-	set_temp_variable = { independence_wave_decision_legitimacy_delta = constant:independence_wave_decision_effect.value_minor }
-	set_temp_variable = { independence_wave_decision_recognition_delta = constant:independence_wave_value.minimum }
-	set_temp_variable = { independence_wave_decision_capacity_delta = constant:independence_wave_decision_effect.value_standard }
-	set_temp_variable = { independence_wave_decision_security_delta = constant:independence_wave_decision_effect.value_minor }
-	set_temp_variable = { independence_wave_decision_instability_delta = constant:independence_wave_decision_effect.value_minor_loss }
-	independence_wave_decision_apply_country_deltas = yes
-}
-
-independence_wave_axx_apply_security_progress = {
-	set_temp_variable = { independence_wave_decision_legitimacy_delta = constant:independence_wave_decision_effect.value_minor }
-	set_temp_variable = { independence_wave_decision_recognition_delta = constant:independence_wave_value.minimum }
-	set_temp_variable = { independence_wave_decision_capacity_delta = constant:independence_wave_decision_effect.value_minor }
-	set_temp_variable = { independence_wave_decision_security_delta = constant:independence_wave_decision_effect.value_standard }
-	set_temp_variable = { independence_wave_decision_instability_delta = constant:independence_wave_decision_effect.value_minor_loss }
-	independence_wave_decision_apply_country_deltas = yes
-}
-
-independence_wave_axx_apply_diplomatic_progress = {
-	set_temp_variable = { independence_wave_decision_legitimacy_delta = constant:independence_wave_decision_effect.value_minor }
-	set_temp_variable = { independence_wave_decision_recognition_delta = constant:independence_wave_decision_effect.value_standard }
-	set_temp_variable = { independence_wave_decision_capacity_delta = constant:independence_wave_decision_effect.value_minor }
-	set_temp_variable = { independence_wave_decision_security_delta = constant:independence_wave_value.minimum }
-	set_temp_variable = { independence_wave_decision_instability_delta = constant:independence_wave_decision_effect.value_minor_loss }
-	independence_wave_decision_apply_country_deltas = yes
-}
-
-independence_wave_axx_apply_major_settlement = {
-	set_temp_variable = { independence_wave_decision_legitimacy_delta = constant:independence_wave_decision_effect.value_standard }
-	set_temp_variable = { independence_wave_decision_recognition_delta = constant:independence_wave_decision_effect.value_standard }
-	set_temp_variable = { independence_wave_decision_capacity_delta = constant:independence_wave_decision_effect.value_standard }
-	set_temp_variable = { independence_wave_decision_security_delta = constant:independence_wave_decision_effect.value_minor }
-	set_temp_variable = { independence_wave_decision_instability_delta = constant:independence_wave_decision_effect.value_standard_loss }
-	independence_wave_decision_apply_country_deltas = yes
-}
-
 independence_wave_axx_apply_project_failure = {
 	set_temp_variable = { independence_wave_decision_legitimacy_delta = constant:independence_wave_decision_effect.value_standard_loss }
 	set_temp_variable = { independence_wave_decision_recognition_delta = constant:independence_wave_decision_effect.value_minor_loss }
@@ -109,23 +73,8 @@ independence_wave_axx_apply_project_failure = {
 	independence_wave_change_axx_ledgers = yes
 }
 
-independence_wave_axx_apply_former_host_settlement = {
-	if = {
-		limit = { has_independence_wave_living_former_host = yes }
-		set_temp_variable = { independence_wave_decision_host_claim_delta = constant:independence_wave_decision_effect.bilateral_minor_loss }
-		set_temp_variable = { independence_wave_decision_hostility_delta = constant:independence_wave_decision_effect.bilateral_standard_loss }
-		set_temp_variable = { independence_wave_decision_host_obligations_delta = constant:independence_wave_decision_effect.bilateral_standard_loss }
-		set_temp_variable = { independence_wave_decision_property_delta = constant:independence_wave_decision_effect.bilateral_major_loss }
-		set_temp_variable = { independence_wave_decision_population_delta = constant:independence_wave_value.minimum }
-		set_temp_variable = { independence_wave_decision_border_delta = constant:independence_wave_decision_effect.bilateral_standard }
-		set_temp_variable = { independence_wave_decision_host_pressure_delta = constant:independence_wave_decision_effect.bilateral_minor_loss }
-		set_temp_variable = { independence_wave_decision_reconquest_fear_delta = constant:independence_wave_decision_effect.bilateral_minor_loss }
-		independence_wave_decision_apply_host_deltas = yes
-	}
-}
-
 independence_wave_axx_reward_network_project = {
-	independence_wave_axx_apply_major_settlement = yes
+	independence_wave_apply_major_settlement = yes
 	set_temp_variable = { independence_wave_network_delta = constant:independence_wave_decision_effect.network_standard }
 	independence_wave_change_network_standing = yes
 	set_temp_variable = { independence_wave_league_cohesion_delta = constant:independence_wave_value.minor_gain }
@@ -303,7 +252,7 @@ independence_wave_axx_focus_settle_romanian_ledgers = {
 	set_temp_variable = { independence_wave_axx_civic_delta = constant:independence_wave_banat_pressure.standard_gain }
 	set_temp_variable = { independence_wave_axx_defence_delta = constant:independence_wave_banat_pressure.standard_gain }
 	independence_wave_change_axx_ledgers = yes
-	independence_wave_axx_apply_former_host_settlement = yes
+	independence_wave_apply_former_host_settlement = yes
 	independence_wave_focus_progress_host_negotiations = yes
 	set_country_flag = independence_wave_axx_host_ledgers_settled
 }
@@ -324,14 +273,14 @@ independence_wave_setup_iw_024_banat = {
 	clr_country_flag = independence_wave_axx_roster_checkpoint
 	# AXX is an absent-at-start carrier. Restore the three vanilla baseline laws
 	# before the initialization trigger evaluates its package contract.
-	independence_wave_ensure_axx_baseline_laws = yes
+	independence_wave_ensure_baseline_laws = yes
 	if = {
 		limit = { can_initialize_independence_wave_iw_024_package = yes }
 		# The central content-attestation trigger owns the admission decision;
 		# this runtime receipt records that the researched Otto Roth source
 		# placeholder is the consumer selected by this package.
 		set_country_flag = independence_wave_axx_portrait_attested
-		independence_wave_ensure_axx_baseline_laws = yes
+		independence_wave_ensure_baseline_laws = yes
 		independence_wave_initialize_axx_politics = yes
 		set_variable = { independence_wave_axx_civic_mandate = constant:independence_wave_banat_pressure.civic_start }
 		set_variable = { independence_wave_axx_mountain_defence = constant:independence_wave_banat_pressure.defence_start }
@@ -377,12 +326,6 @@ independence_wave_setup_iw_024_banat = {
 			set_temp_variable = { independence_wave_package_setup_success = constant:independence_wave_planner.selected }
 		}
 	}
-}
-
-independence_wave_ensure_axx_baseline_laws = {
-	if = { limit = { NOT = { has_idea = civilian_economy } } add_ideas = civilian_economy }
-	if = { limit = { NOT = { has_idea = export_focus } } add_ideas = export_focus }
-	if = { limit = { NOT = { has_idea = volunteer_only } } add_ideas = volunteer_only }
 }
 
 independence_wave_dispatch_banat_package_setup = {
@@ -520,42 +463,6 @@ independence_wave_change_bos_ledgers = {
 	}
 }
 
-independence_wave_bos_apply_administrative_progress = {
-	set_temp_variable = { independence_wave_decision_legitimacy_delta = constant:independence_wave_decision_effect.value_minor }
-	set_temp_variable = { independence_wave_decision_recognition_delta = constant:independence_wave_value.minimum }
-	set_temp_variable = { independence_wave_decision_capacity_delta = constant:independence_wave_decision_effect.value_standard }
-	set_temp_variable = { independence_wave_decision_security_delta = constant:independence_wave_decision_effect.value_minor }
-	set_temp_variable = { independence_wave_decision_instability_delta = constant:independence_wave_decision_effect.value_minor_loss }
-	independence_wave_decision_apply_country_deltas = yes
-}
-
-independence_wave_bos_apply_security_progress = {
-	set_temp_variable = { independence_wave_decision_legitimacy_delta = constant:independence_wave_decision_effect.value_minor }
-	set_temp_variable = { independence_wave_decision_recognition_delta = constant:independence_wave_value.minimum }
-	set_temp_variable = { independence_wave_decision_capacity_delta = constant:independence_wave_decision_effect.value_minor }
-	set_temp_variable = { independence_wave_decision_security_delta = constant:independence_wave_decision_effect.value_standard }
-	set_temp_variable = { independence_wave_decision_instability_delta = constant:independence_wave_decision_effect.value_minor_loss }
-	independence_wave_decision_apply_country_deltas = yes
-}
-
-independence_wave_bos_apply_diplomatic_progress = {
-	set_temp_variable = { independence_wave_decision_legitimacy_delta = constant:independence_wave_decision_effect.value_minor }
-	set_temp_variable = { independence_wave_decision_recognition_delta = constant:independence_wave_decision_effect.value_standard }
-	set_temp_variable = { independence_wave_decision_capacity_delta = constant:independence_wave_decision_effect.value_minor }
-	set_temp_variable = { independence_wave_decision_security_delta = constant:independence_wave_value.minimum }
-	set_temp_variable = { independence_wave_decision_instability_delta = constant:independence_wave_decision_effect.value_minor_loss }
-	independence_wave_decision_apply_country_deltas = yes
-}
-
-independence_wave_bos_apply_major_settlement = {
-	set_temp_variable = { independence_wave_decision_legitimacy_delta = constant:independence_wave_decision_effect.value_standard }
-	set_temp_variable = { independence_wave_decision_recognition_delta = constant:independence_wave_decision_effect.value_standard }
-	set_temp_variable = { independence_wave_decision_capacity_delta = constant:independence_wave_decision_effect.value_standard }
-	set_temp_variable = { independence_wave_decision_security_delta = constant:independence_wave_decision_effect.value_minor }
-	set_temp_variable = { independence_wave_decision_instability_delta = constant:independence_wave_decision_effect.value_standard_loss }
-	independence_wave_decision_apply_country_deltas = yes
-}
-
 independence_wave_bos_apply_project_failure = {
 	set_temp_variable = { independence_wave_decision_legitimacy_delta = constant:independence_wave_decision_effect.value_standard_loss }
 	set_temp_variable = { independence_wave_decision_recognition_delta = constant:independence_wave_decision_effect.value_minor_loss }
@@ -568,23 +475,8 @@ independence_wave_bos_apply_project_failure = {
 	independence_wave_change_bos_ledgers = yes
 }
 
-independence_wave_bos_apply_former_host_settlement = {
-	if = {
-		limit = { has_independence_wave_living_former_host = yes }
-		set_temp_variable = { independence_wave_decision_host_claim_delta = constant:independence_wave_decision_effect.bilateral_minor_loss }
-		set_temp_variable = { independence_wave_decision_hostility_delta = constant:independence_wave_decision_effect.bilateral_standard_loss }
-		set_temp_variable = { independence_wave_decision_host_obligations_delta = constant:independence_wave_decision_effect.bilateral_standard_loss }
-		set_temp_variable = { independence_wave_decision_property_delta = constant:independence_wave_decision_effect.bilateral_major_loss }
-		set_temp_variable = { independence_wave_decision_population_delta = constant:independence_wave_value.minimum }
-		set_temp_variable = { independence_wave_decision_border_delta = constant:independence_wave_decision_effect.bilateral_standard }
-		set_temp_variable = { independence_wave_decision_host_pressure_delta = constant:independence_wave_decision_effect.bilateral_minor_loss }
-		set_temp_variable = { independence_wave_decision_reconquest_fear_delta = constant:independence_wave_decision_effect.bilateral_minor_loss }
-		independence_wave_decision_apply_host_deltas = yes
-	}
-}
-
 independence_wave_bos_reward_network_project = {
-	independence_wave_bos_apply_major_settlement = yes
+	independence_wave_apply_major_settlement = yes
 	set_temp_variable = { independence_wave_network_delta = constant:independence_wave_decision_effect.network_standard }
 	independence_wave_change_network_standing = yes
 	set_temp_variable = { independence_wave_league_cohesion_delta = constant:independence_wave_value.minor_gain }
@@ -762,7 +654,7 @@ independence_wave_bos_focus_settle_yugoslav_ledgers = {
 	set_temp_variable = { independence_wave_bos_civic_delta = constant:independence_wave_bosnia_pressure.standard_gain }
 	set_temp_variable = { independence_wave_bos_defence_delta = constant:independence_wave_bosnia_pressure.standard_gain }
 	independence_wave_change_bos_ledgers = yes
-	independence_wave_bos_apply_former_host_settlement = yes
+	independence_wave_apply_former_host_settlement = yes
 	independence_wave_focus_progress_host_negotiations = yes
 	set_country_flag = independence_wave_bos_host_ledgers_settled
 }
@@ -784,7 +676,7 @@ independence_wave_setup_iw_029_bosnia = {
 	if = {
 		limit = { can_initialize_independence_wave_iw_029_package = yes }
 		independence_wave_apply_roster_checkpoint = yes
-		independence_wave_ensure_bos_baseline_laws = yes
+		independence_wave_ensure_baseline_laws = yes
 		independence_wave_initialize_bos_politics = yes
 		set_variable = { independence_wave_bos_drina_civic_mandate = constant:independence_wave_bosnia_pressure.civic_start }
 		set_variable = { independence_wave_bos_mountain_defence = constant:independence_wave_bosnia_pressure.defence_start }
@@ -840,12 +732,6 @@ independence_wave_setup_iw_029_bosnia = {
 			set_temp_variable = { independence_wave_package_setup_success = constant:independence_wave_planner.selected }
 		}
 	}
-}
-
-independence_wave_ensure_bos_baseline_laws = {
-	if = { limit = { NOT = { has_idea = civilian_economy } } add_ideas = civilian_economy }
-	if = { limit = { NOT = { has_idea = export_focus } } add_ideas = export_focus }
-	if = { limit = { NOT = { has_idea = volunteer_only } } add_ideas = volunteer_only }
 }
 
 independence_wave_dispatch_bosnia_package_setup = {
@@ -982,42 +868,6 @@ independence_wave_change_bbx_ledgers = {
 	}
 }
 
-independence_wave_bbx_apply_administrative_progress = {
-	set_temp_variable = { independence_wave_decision_legitimacy_delta = constant:independence_wave_decision_effect.value_minor }
-	set_temp_variable = { independence_wave_decision_recognition_delta = constant:independence_wave_value.minimum }
-	set_temp_variable = { independence_wave_decision_capacity_delta = constant:independence_wave_decision_effect.value_standard }
-	set_temp_variable = { independence_wave_decision_security_delta = constant:independence_wave_decision_effect.value_minor }
-	set_temp_variable = { independence_wave_decision_instability_delta = constant:independence_wave_decision_effect.value_minor_loss }
-	independence_wave_decision_apply_country_deltas = yes
-}
-
-independence_wave_bbx_apply_security_progress = {
-	set_temp_variable = { independence_wave_decision_legitimacy_delta = constant:independence_wave_decision_effect.value_minor }
-	set_temp_variable = { independence_wave_decision_recognition_delta = constant:independence_wave_value.minimum }
-	set_temp_variable = { independence_wave_decision_capacity_delta = constant:independence_wave_decision_effect.value_minor }
-	set_temp_variable = { independence_wave_decision_security_delta = constant:independence_wave_decision_effect.value_standard }
-	set_temp_variable = { independence_wave_decision_instability_delta = constant:independence_wave_decision_effect.value_minor_loss }
-	independence_wave_decision_apply_country_deltas = yes
-}
-
-independence_wave_bbx_apply_diplomatic_progress = {
-	set_temp_variable = { independence_wave_decision_legitimacy_delta = constant:independence_wave_decision_effect.value_minor }
-	set_temp_variable = { independence_wave_decision_recognition_delta = constant:independence_wave_decision_effect.value_standard }
-	set_temp_variable = { independence_wave_decision_capacity_delta = constant:independence_wave_decision_effect.value_minor }
-	set_temp_variable = { independence_wave_decision_security_delta = constant:independence_wave_value.minimum }
-	set_temp_variable = { independence_wave_decision_instability_delta = constant:independence_wave_decision_effect.value_minor_loss }
-	independence_wave_decision_apply_country_deltas = yes
-}
-
-independence_wave_bbx_apply_major_settlement = {
-	set_temp_variable = { independence_wave_decision_legitimacy_delta = constant:independence_wave_decision_effect.value_standard }
-	set_temp_variable = { independence_wave_decision_recognition_delta = constant:independence_wave_decision_effect.value_standard }
-	set_temp_variable = { independence_wave_decision_capacity_delta = constant:independence_wave_decision_effect.value_standard }
-	set_temp_variable = { independence_wave_decision_security_delta = constant:independence_wave_decision_effect.value_minor }
-	set_temp_variable = { independence_wave_decision_instability_delta = constant:independence_wave_decision_effect.value_standard_loss }
-	independence_wave_decision_apply_country_deltas = yes
-}
-
 independence_wave_bbx_apply_project_failure = {
 	set_temp_variable = { independence_wave_decision_legitimacy_delta = constant:independence_wave_decision_effect.value_standard_loss }
 	set_temp_variable = { independence_wave_decision_recognition_delta = constant:independence_wave_decision_effect.value_minor_loss }
@@ -1030,23 +880,8 @@ independence_wave_bbx_apply_project_failure = {
 	independence_wave_change_bbx_ledgers = yes
 }
 
-independence_wave_bbx_apply_former_host_settlement = {
-	if = {
-		limit = { has_independence_wave_living_former_host = yes }
-		set_temp_variable = { independence_wave_decision_host_claim_delta = constant:independence_wave_decision_effect.bilateral_minor_loss }
-		set_temp_variable = { independence_wave_decision_hostility_delta = constant:independence_wave_decision_effect.bilateral_standard_loss }
-		set_temp_variable = { independence_wave_decision_host_obligations_delta = constant:independence_wave_decision_effect.bilateral_standard_loss }
-		set_temp_variable = { independence_wave_decision_property_delta = constant:independence_wave_decision_effect.bilateral_major_loss }
-		set_temp_variable = { independence_wave_decision_population_delta = constant:independence_wave_value.minimum }
-		set_temp_variable = { independence_wave_decision_border_delta = constant:independence_wave_decision_effect.bilateral_standard }
-		set_temp_variable = { independence_wave_decision_host_pressure_delta = constant:independence_wave_decision_effect.bilateral_minor_loss }
-		set_temp_variable = { independence_wave_decision_reconquest_fear_delta = constant:independence_wave_decision_effect.bilateral_minor_loss }
-		independence_wave_decision_apply_host_deltas = yes
-	}
-}
-
 independence_wave_bbx_reward_network_project = {
-	independence_wave_bbx_apply_major_settlement = yes
+	independence_wave_apply_major_settlement = yes
 	set_temp_variable = { independence_wave_network_delta = constant:independence_wave_decision_effect.network_standard }
 	independence_wave_change_network_standing = yes
 	set_temp_variable = { independence_wave_league_cohesion_delta = constant:independence_wave_value.minor_gain }
@@ -1224,7 +1059,7 @@ independence_wave_bbx_focus_settle_hellenic_ledgers = {
 	set_temp_variable = { independence_wave_bbx_civic_delta = constant:independence_wave_epirus_pressure.standard_gain }
 	set_temp_variable = { independence_wave_bbx_defence_delta = constant:independence_wave_epirus_pressure.standard_gain }
 	independence_wave_change_bbx_ledgers = yes
-	independence_wave_bbx_apply_former_host_settlement = yes
+	independence_wave_apply_former_host_settlement = yes
 	independence_wave_focus_progress_host_negotiations = yes
 	set_country_flag = independence_wave_bbx_host_ledgers_settled
 }
@@ -1245,14 +1080,14 @@ independence_wave_setup_iw_028_epirus = {
 	clr_country_flag = independence_wave_bbx_roster_checkpoint
 	# BBX is an absent-at-start carrier. Restore the three vanilla baseline laws
 	# before the initialization trigger evaluates its package contract.
-	independence_wave_ensure_bbx_baseline_laws = yes
+	independence_wave_ensure_baseline_laws = yes
 	if = {
 		limit = { can_initialize_independence_wave_iw_028_package = yes }
 		# The central content-attestation trigger owns the admission decision;
 		# this runtime receipt records that the researched Georgios Christakis-Zografos source
 		# placeholder is the consumer selected by this package.
 		set_country_flag = independence_wave_bbx_portrait_attested
-		independence_wave_ensure_bbx_baseline_laws = yes
+		independence_wave_ensure_baseline_laws = yes
 		independence_wave_initialize_bbx_politics = yes
 		set_variable = { independence_wave_bbx_civic_mandate = constant:independence_wave_epirus_pressure.civic_start }
 		set_variable = { independence_wave_bbx_mountain_defence = constant:independence_wave_epirus_pressure.defence_start }
@@ -1298,12 +1133,6 @@ independence_wave_setup_iw_028_epirus = {
 			set_temp_variable = { independence_wave_package_setup_success = constant:independence_wave_planner.selected }
 		}
 	}
-}
-
-independence_wave_ensure_bbx_baseline_laws = {
-	if = { limit = { NOT = { has_idea = civilian_economy } } add_ideas = civilian_economy }
-	if = { limit = { NOT = { has_idea = export_focus } } add_ideas = export_focus }
-	if = { limit = { NOT = { has_idea = volunteer_only } } add_ideas = volunteer_only }
 }
 
 independence_wave_dispatch_epirus_package_setup = {
@@ -1441,42 +1270,6 @@ independence_wave_change_mac_ledgers = {
 	}
 }
 
-independence_wave_mac_apply_administrative_progress = {
-	set_temp_variable = { independence_wave_decision_legitimacy_delta = constant:independence_wave_decision_effect.value_minor }
-	set_temp_variable = { independence_wave_decision_recognition_delta = constant:independence_wave_value.minimum }
-	set_temp_variable = { independence_wave_decision_capacity_delta = constant:independence_wave_decision_effect.value_standard }
-	set_temp_variable = { independence_wave_decision_security_delta = constant:independence_wave_decision_effect.value_minor }
-	set_temp_variable = { independence_wave_decision_instability_delta = constant:independence_wave_decision_effect.value_minor_loss }
-	independence_wave_decision_apply_country_deltas = yes
-}
-
-independence_wave_mac_apply_security_progress = {
-	set_temp_variable = { independence_wave_decision_legitimacy_delta = constant:independence_wave_decision_effect.value_minor }
-	set_temp_variable = { independence_wave_decision_recognition_delta = constant:independence_wave_value.minimum }
-	set_temp_variable = { independence_wave_decision_capacity_delta = constant:independence_wave_decision_effect.value_minor }
-	set_temp_variable = { independence_wave_decision_security_delta = constant:independence_wave_decision_effect.value_standard }
-	set_temp_variable = { independence_wave_decision_instability_delta = constant:independence_wave_decision_effect.value_minor_loss }
-	independence_wave_decision_apply_country_deltas = yes
-}
-
-independence_wave_mac_apply_diplomatic_progress = {
-	set_temp_variable = { independence_wave_decision_legitimacy_delta = constant:independence_wave_decision_effect.value_minor }
-	set_temp_variable = { independence_wave_decision_recognition_delta = constant:independence_wave_decision_effect.value_standard }
-	set_temp_variable = { independence_wave_decision_capacity_delta = constant:independence_wave_decision_effect.value_minor }
-	set_temp_variable = { independence_wave_decision_security_delta = constant:independence_wave_value.minimum }
-	set_temp_variable = { independence_wave_decision_instability_delta = constant:independence_wave_decision_effect.value_minor_loss }
-	independence_wave_decision_apply_country_deltas = yes
-}
-
-independence_wave_mac_apply_major_settlement = {
-	set_temp_variable = { independence_wave_decision_legitimacy_delta = constant:independence_wave_decision_effect.value_standard }
-	set_temp_variable = { independence_wave_decision_recognition_delta = constant:independence_wave_decision_effect.value_standard }
-	set_temp_variable = { independence_wave_decision_capacity_delta = constant:independence_wave_decision_effect.value_standard }
-	set_temp_variable = { independence_wave_decision_security_delta = constant:independence_wave_decision_effect.value_minor }
-	set_temp_variable = { independence_wave_decision_instability_delta = constant:independence_wave_decision_effect.value_standard_loss }
-	independence_wave_decision_apply_country_deltas = yes
-}
-
 independence_wave_mac_apply_project_failure = {
 	set_temp_variable = { independence_wave_decision_legitimacy_delta = constant:independence_wave_decision_effect.value_standard_loss }
 	set_temp_variable = { independence_wave_decision_recognition_delta = constant:independence_wave_decision_effect.value_minor_loss }
@@ -1489,23 +1282,8 @@ independence_wave_mac_apply_project_failure = {
 	independence_wave_change_mac_ledgers = yes
 }
 
-independence_wave_mac_apply_former_host_settlement = {
-	if = {
-		limit = { has_independence_wave_living_former_host = yes }
-		set_temp_variable = { independence_wave_decision_host_claim_delta = constant:independence_wave_decision_effect.bilateral_minor_loss }
-		set_temp_variable = { independence_wave_decision_hostility_delta = constant:independence_wave_decision_effect.bilateral_standard_loss }
-		set_temp_variable = { independence_wave_decision_host_obligations_delta = constant:independence_wave_decision_effect.bilateral_standard_loss }
-		set_temp_variable = { independence_wave_decision_property_delta = constant:independence_wave_decision_effect.bilateral_major_loss }
-		set_temp_variable = { independence_wave_decision_population_delta = constant:independence_wave_value.minimum }
-		set_temp_variable = { independence_wave_decision_border_delta = constant:independence_wave_decision_effect.bilateral_standard }
-		set_temp_variable = { independence_wave_decision_host_pressure_delta = constant:independence_wave_decision_effect.bilateral_minor_loss }
-		set_temp_variable = { independence_wave_decision_reconquest_fear_delta = constant:independence_wave_decision_effect.bilateral_minor_loss }
-		independence_wave_decision_apply_host_deltas = yes
-	}
-}
-
 independence_wave_mac_reward_network_project = {
-	independence_wave_mac_apply_major_settlement = yes
+	independence_wave_apply_major_settlement = yes
 	set_temp_variable = { independence_wave_network_delta = constant:independence_wave_decision_effect.network_standard }
 	independence_wave_change_network_standing = yes
 	set_temp_variable = { independence_wave_league_cohesion_delta = constant:independence_wave_value.minor_gain }
@@ -1683,7 +1461,7 @@ independence_wave_mac_focus_settle_yugoslav_ledgers = {
 	set_temp_variable = { independence_wave_mac_civic_delta = constant:independence_wave_macedonia_pressure.standard_gain }
 	set_temp_variable = { independence_wave_mac_defence_delta = constant:independence_wave_macedonia_pressure.standard_gain }
 	independence_wave_change_mac_ledgers = yes
-	independence_wave_mac_apply_former_host_settlement = yes
+	independence_wave_apply_former_host_settlement = yes
 	independence_wave_focus_progress_host_negotiations = yes
 	set_country_flag = independence_wave_mac_host_ledgers_settled
 }
@@ -1705,7 +1483,7 @@ independence_wave_setup_iw_026_macedonia = {
 	if = {
 		limit = { can_initialize_independence_wave_iw_026_package = yes }
 		independence_wave_apply_roster_checkpoint = yes
-		independence_wave_ensure_mac_baseline_laws = yes
+		independence_wave_ensure_baseline_laws = yes
 		independence_wave_initialize_mac_politics = yes
 		set_variable = { independence_wave_mac_civic_mandate = constant:independence_wave_macedonia_pressure.civic_start }
 		set_variable = { independence_wave_mac_mountain_defence = constant:independence_wave_macedonia_pressure.defence_start }
@@ -1751,12 +1529,6 @@ independence_wave_setup_iw_026_macedonia = {
 			set_temp_variable = { independence_wave_package_setup_success = constant:independence_wave_planner.selected }
 		}
 	}
-}
-
-independence_wave_ensure_mac_baseline_laws = {
-	if = { limit = { NOT = { has_idea = civilian_economy } } add_ideas = civilian_economy }
-	if = { limit = { NOT = { has_idea = export_focus } } add_ideas = export_focus }
-	if = { limit = { NOT = { has_idea = volunteer_only } } add_ideas = volunteer_only }
 }
 
 independence_wave_dispatch_macedonia_package_setup = {
@@ -1881,42 +1653,6 @@ independence_wave_change_mnt_compact_values = {
 	}
 }
 
-independence_wave_mnt_apply_administrative_progress = {
-	set_temp_variable = { independence_wave_decision_legitimacy_delta = constant:independence_wave_decision_effect.value_minor }
-	set_temp_variable = { independence_wave_decision_recognition_delta = constant:independence_wave_value.minimum }
-	set_temp_variable = { independence_wave_decision_capacity_delta = constant:independence_wave_decision_effect.value_standard }
-	set_temp_variable = { independence_wave_decision_security_delta = constant:independence_wave_decision_effect.value_minor }
-	set_temp_variable = { independence_wave_decision_instability_delta = constant:independence_wave_decision_effect.value_minor_loss }
-	independence_wave_decision_apply_country_deltas = yes
-}
-
-independence_wave_mnt_apply_security_progress = {
-	set_temp_variable = { independence_wave_decision_legitimacy_delta = constant:independence_wave_decision_effect.value_minor }
-	set_temp_variable = { independence_wave_decision_recognition_delta = constant:independence_wave_value.minimum }
-	set_temp_variable = { independence_wave_decision_capacity_delta = constant:independence_wave_decision_effect.value_minor }
-	set_temp_variable = { independence_wave_decision_security_delta = constant:independence_wave_decision_effect.value_standard }
-	set_temp_variable = { independence_wave_decision_instability_delta = constant:independence_wave_decision_effect.value_minor_loss }
-	independence_wave_decision_apply_country_deltas = yes
-}
-
-independence_wave_mnt_apply_diplomatic_progress = {
-	set_temp_variable = { independence_wave_decision_legitimacy_delta = constant:independence_wave_decision_effect.value_minor }
-	set_temp_variable = { independence_wave_decision_recognition_delta = constant:independence_wave_decision_effect.value_standard }
-	set_temp_variable = { independence_wave_decision_capacity_delta = constant:independence_wave_decision_effect.value_minor }
-	set_temp_variable = { independence_wave_decision_security_delta = constant:independence_wave_value.minimum }
-	set_temp_variable = { independence_wave_decision_instability_delta = constant:independence_wave_decision_effect.value_minor_loss }
-	independence_wave_decision_apply_country_deltas = yes
-}
-
-independence_wave_mnt_apply_major_settlement = {
-	set_temp_variable = { independence_wave_decision_legitimacy_delta = constant:independence_wave_decision_effect.value_standard }
-	set_temp_variable = { independence_wave_decision_recognition_delta = constant:independence_wave_decision_effect.value_standard }
-	set_temp_variable = { independence_wave_decision_capacity_delta = constant:independence_wave_decision_effect.value_standard }
-	set_temp_variable = { independence_wave_decision_security_delta = constant:independence_wave_decision_effect.value_minor }
-	set_temp_variable = { independence_wave_decision_instability_delta = constant:independence_wave_decision_effect.value_standard_loss }
-	independence_wave_decision_apply_country_deltas = yes
-}
-
 # Starts a distinct paid project. This preserves same-incident failure
 # deduplication while allowing a later project to carry its own failure cost.
 independence_wave_mnt_begin_project = {
@@ -1939,26 +1675,8 @@ independence_wave_mnt_apply_project_failure = {
 	}
 }
 
-independence_wave_mnt_apply_former_host_settlement = {
-	if = {
-		limit = {
-			has_independence_wave_living_former_host = yes
-			var:independence_wave_former_host = { NOT = { has_war_with = ROOT } }
-		}
-		set_temp_variable = { independence_wave_decision_host_claim_delta = constant:independence_wave_decision_effect.bilateral_minor_loss }
-		set_temp_variable = { independence_wave_decision_hostility_delta = constant:independence_wave_decision_effect.bilateral_standard_loss }
-		set_temp_variable = { independence_wave_decision_host_obligations_delta = constant:independence_wave_decision_effect.bilateral_standard_loss }
-		set_temp_variable = { independence_wave_decision_property_delta = constant:independence_wave_decision_effect.bilateral_major_loss }
-		set_temp_variable = { independence_wave_decision_population_delta = constant:independence_wave_value.minimum }
-		set_temp_variable = { independence_wave_decision_border_delta = constant:independence_wave_decision_effect.bilateral_standard }
-		set_temp_variable = { independence_wave_decision_host_pressure_delta = constant:independence_wave_decision_effect.bilateral_minor_loss }
-		set_temp_variable = { independence_wave_decision_reconquest_fear_delta = constant:independence_wave_decision_effect.bilateral_minor_loss }
-		independence_wave_decision_apply_host_deltas = yes
-	}
-}
-
 independence_wave_mnt_reward_network_project = {
-	independence_wave_mnt_apply_major_settlement = yes
+	independence_wave_apply_major_settlement = yes
 	set_temp_variable = { independence_wave_network_delta = constant:independence_wave_decision_effect.network_standard }
 	independence_wave_change_network_standing = yes
 	set_temp_variable = { independence_wave_league_cohesion_delta = constant:independence_wave_value.minor_gain }
@@ -1972,12 +1690,6 @@ independence_wave_mnt_reward_network_project = {
 # ---------------------------------------------------------------------------
 # Politics and route governments
 # ---------------------------------------------------------------------------
-
-independence_wave_ensure_mnt_baseline_laws = {
-	if = { limit = { NOT = { has_idea = civilian_economy } } add_ideas = civilian_economy }
-	if = { limit = { NOT = { has_idea = export_focus } } add_ideas = export_focus }
-	if = { limit = { NOT = { has_idea = volunteer_only } } add_ideas = volunteer_only }
-}
 
 independence_wave_initialize_mnt_politics = {
 	set_politics = { ruling_party = democratic elections_allowed = no }
@@ -2076,7 +1788,7 @@ independence_wave_mnt_focus_reopen_depots = {
 		set_temp_variable = { independence_wave_mnt_cohesion_delta = constant:independence_wave_montenegro_pressure.major_gain }
 		set_temp_variable = { independence_wave_mnt_crown_delta = constant:independence_wave_montenegro_pressure.minor_gain }
 		if = {
-			limit = { has_independence_wave_mnt_unsettled_host = yes }
+			limit = { has_independence_wave_unsettled_host_root = yes }
 			set_temp_variable = { independence_wave_mnt_crown_delta = constant:independence_wave_montenegro_pressure.decisive_gain }
 		}
 		independence_wave_change_mnt_compact_values = yes
@@ -2113,13 +1825,13 @@ independence_wave_mnt_focus_settle_host = {
 		set_temp_variable = { independence_wave_mnt_cohesion_delta = constant:independence_wave_montenegro_pressure.minor_gain }
 		set_temp_variable = { independence_wave_mnt_crown_delta = constant:independence_wave_montenegro_pressure.standard_gain }
 		if = {
-			limit = { has_independence_wave_mnt_unsettled_host = yes }
+			limit = { has_independence_wave_unsettled_host_root = yes }
 			set_temp_variable = { independence_wave_mnt_crown_delta = constant:independence_wave_montenegro_pressure.decisive_gain }
 		}
 		independence_wave_change_mnt_compact_values = yes
 		if = {
-			limit = { NOT = { has_independence_wave_mnt_unsettled_host = yes } }
-			independence_wave_mnt_apply_former_host_settlement = yes
+			limit = { NOT = { has_independence_wave_unsettled_host_root = yes } }
+			independence_wave_apply_former_host_settlement_unless_at_war_with_root = yes
 			independence_wave_focus_progress_host_negotiations = yes
 		}
 		set_country_flag = independence_wave_mnt_host_ledgers_settled
@@ -2159,7 +1871,7 @@ independence_wave_setup_iw_030_montenegro = {
 	if = {
 		limit = { can_initialize_independence_wave_iw_030_package = yes }
 		independence_wave_apply_roster_checkpoint = yes
-		independence_wave_ensure_mnt_baseline_laws = yes
+		independence_wave_ensure_baseline_laws = yes
 		independence_wave_initialize_mnt_politics = yes
 		if = { limit = { hidden_trigger = { has_country_flag = independence_wave_mnt_roster_checkpoint } } set_country_flag = independence_wave_command_roster_ready }
 		set_variable = { independence_wave_mnt_mountain_cohesion = constant:independence_wave_montenegro_pressure.cohesion_start }
@@ -2326,42 +2038,6 @@ independence_wave_change_bax_ledgers = {
 	}
 }
 
-independence_wave_bax_apply_administrative_progress = {
-	set_temp_variable = { independence_wave_decision_legitimacy_delta = constant:independence_wave_decision_effect.value_minor }
-	set_temp_variable = { independence_wave_decision_recognition_delta = constant:independence_wave_value.minimum }
-	set_temp_variable = { independence_wave_decision_capacity_delta = constant:independence_wave_decision_effect.value_standard }
-	set_temp_variable = { independence_wave_decision_security_delta = constant:independence_wave_decision_effect.value_minor }
-	set_temp_variable = { independence_wave_decision_instability_delta = constant:independence_wave_decision_effect.value_minor_loss }
-	independence_wave_decision_apply_country_deltas = yes
-}
-
-independence_wave_bax_apply_security_progress = {
-	set_temp_variable = { independence_wave_decision_legitimacy_delta = constant:independence_wave_decision_effect.value_minor }
-	set_temp_variable = { independence_wave_decision_recognition_delta = constant:independence_wave_value.minimum }
-	set_temp_variable = { independence_wave_decision_capacity_delta = constant:independence_wave_decision_effect.value_minor }
-	set_temp_variable = { independence_wave_decision_security_delta = constant:independence_wave_decision_effect.value_standard }
-	set_temp_variable = { independence_wave_decision_instability_delta = constant:independence_wave_decision_effect.value_minor_loss }
-	independence_wave_decision_apply_country_deltas = yes
-}
-
-independence_wave_bax_apply_diplomatic_progress = {
-	set_temp_variable = { independence_wave_decision_legitimacy_delta = constant:independence_wave_decision_effect.value_minor }
-	set_temp_variable = { independence_wave_decision_recognition_delta = constant:independence_wave_decision_effect.value_standard }
-	set_temp_variable = { independence_wave_decision_capacity_delta = constant:independence_wave_decision_effect.value_minor }
-	set_temp_variable = { independence_wave_decision_security_delta = constant:independence_wave_value.minimum }
-	set_temp_variable = { independence_wave_decision_instability_delta = constant:independence_wave_decision_effect.value_minor_loss }
-	independence_wave_decision_apply_country_deltas = yes
-}
-
-independence_wave_bax_apply_major_settlement = {
-	set_temp_variable = { independence_wave_decision_legitimacy_delta = constant:independence_wave_decision_effect.value_standard }
-	set_temp_variable = { independence_wave_decision_recognition_delta = constant:independence_wave_decision_effect.value_standard }
-	set_temp_variable = { independence_wave_decision_capacity_delta = constant:independence_wave_decision_effect.value_standard }
-	set_temp_variable = { independence_wave_decision_security_delta = constant:independence_wave_decision_effect.value_minor }
-	set_temp_variable = { independence_wave_decision_instability_delta = constant:independence_wave_decision_effect.value_standard_loss }
-	independence_wave_decision_apply_country_deltas = yes
-}
-
 independence_wave_bax_apply_project_failure = {
 	set_temp_variable = { independence_wave_decision_legitimacy_delta = constant:independence_wave_decision_effect.value_standard_loss }
 	set_temp_variable = { independence_wave_decision_recognition_delta = constant:independence_wave_decision_effect.value_minor_loss }
@@ -2374,23 +2050,8 @@ independence_wave_bax_apply_project_failure = {
 	independence_wave_change_bax_ledgers = yes
 }
 
-independence_wave_bax_apply_former_host_settlement = {
-	if = {
-		limit = { has_independence_wave_living_former_host = yes }
-		set_temp_variable = { independence_wave_decision_host_claim_delta = constant:independence_wave_decision_effect.bilateral_minor_loss }
-		set_temp_variable = { independence_wave_decision_hostility_delta = constant:independence_wave_decision_effect.bilateral_standard_loss }
-		set_temp_variable = { independence_wave_decision_host_obligations_delta = constant:independence_wave_decision_effect.bilateral_standard_loss }
-		set_temp_variable = { independence_wave_decision_property_delta = constant:independence_wave_decision_effect.bilateral_major_loss }
-		set_temp_variable = { independence_wave_decision_population_delta = constant:independence_wave_value.minimum }
-		set_temp_variable = { independence_wave_decision_border_delta = constant:independence_wave_decision_effect.bilateral_standard }
-		set_temp_variable = { independence_wave_decision_host_pressure_delta = constant:independence_wave_decision_effect.bilateral_minor_loss }
-		set_temp_variable = { independence_wave_decision_reconquest_fear_delta = constant:independence_wave_decision_effect.bilateral_minor_loss }
-		independence_wave_decision_apply_host_deltas = yes
-	}
-}
-
 independence_wave_bax_reward_network_project = {
-	independence_wave_bax_apply_major_settlement = yes
+	independence_wave_apply_major_settlement = yes
 	set_temp_variable = { independence_wave_network_delta = constant:independence_wave_decision_effect.network_standard }
 	independence_wave_change_network_standing = yes
 	set_temp_variable = { independence_wave_league_cohesion_delta = constant:independence_wave_value.minor_gain }
@@ -2568,7 +2229,7 @@ independence_wave_bax_focus_settle_greek_ledgers = {
 	set_temp_variable = { independence_wave_bax_civic_delta = constant:independence_wave_thrace_pressure.standard_gain }
 	set_temp_variable = { independence_wave_bax_defence_delta = constant:independence_wave_thrace_pressure.standard_gain }
 	independence_wave_change_bax_ledgers = yes
-	independence_wave_bax_apply_former_host_settlement = yes
+	independence_wave_apply_former_host_settlement = yes
 	independence_wave_focus_progress_host_negotiations = yes
 	set_country_flag = independence_wave_bax_host_ledgers_settled
 }
@@ -2589,14 +2250,14 @@ independence_wave_setup_iw_027_thrace = {
 	clr_country_flag = independence_wave_bax_roster_checkpoint
 	# BAX is an absent-at-start carrier. Restore the three vanilla baseline laws
 	# before the initialization trigger evaluates its package contract.
-	independence_wave_ensure_bax_baseline_laws = yes
+	independence_wave_ensure_baseline_laws = yes
 	if = {
 		limit = { can_initialize_independence_wave_iw_027_package = yes }
 		# The central content-attestation trigger owns the admission decision;
 		# this runtime receipt records that the researched Hristo Silyanov source
 		# placeholder is the consumer selected by this package.
 		set_country_flag = independence_wave_bax_portrait_attested
-		independence_wave_ensure_bax_baseline_laws = yes
+		independence_wave_ensure_baseline_laws = yes
 		independence_wave_initialize_bax_politics = yes
 		set_variable = { independence_wave_bax_civic_mandate = constant:independence_wave_thrace_pressure.civic_start }
 		set_variable = { independence_wave_bax_corridor_defence = constant:independence_wave_thrace_pressure.defence_start }
@@ -2642,12 +2303,6 @@ independence_wave_setup_iw_027_thrace = {
 			set_temp_variable = { independence_wave_package_setup_success = constant:independence_wave_planner.selected }
 		}
 	}
-}
-
-independence_wave_ensure_bax_baseline_laws = {
-	if = { limit = { NOT = { has_idea = civilian_economy } } add_ideas = civilian_economy }
-	if = { limit = { NOT = { has_idea = export_focus } } add_ideas = export_focus }
-	if = { limit = { NOT = { has_idea = volunteer_only } } add_ideas = volunteer_only }
 }
 
 independence_wave_dispatch_thrace_package_setup = {
@@ -2852,42 +2507,6 @@ independence_wave_tra_focus_arbitrate_danube_border = {
 	}
 }
 
-independence_wave_tra_apply_administrative_progress = {
-	set_temp_variable = { independence_wave_decision_legitimacy_delta = constant:independence_wave_decision_effect.value_minor }
-	set_temp_variable = { independence_wave_decision_recognition_delta = constant:independence_wave_value.minimum }
-	set_temp_variable = { independence_wave_decision_capacity_delta = constant:independence_wave_decision_effect.value_standard }
-	set_temp_variable = { independence_wave_decision_security_delta = constant:independence_wave_decision_effect.value_minor }
-	set_temp_variable = { independence_wave_decision_instability_delta = constant:independence_wave_decision_effect.value_minor_loss }
-	independence_wave_decision_apply_country_deltas = yes
-}
-
-independence_wave_tra_apply_security_progress = {
-	set_temp_variable = { independence_wave_decision_legitimacy_delta = constant:independence_wave_decision_effect.value_minor }
-	set_temp_variable = { independence_wave_decision_recognition_delta = constant:independence_wave_value.minimum }
-	set_temp_variable = { independence_wave_decision_capacity_delta = constant:independence_wave_decision_effect.value_minor }
-	set_temp_variable = { independence_wave_decision_security_delta = constant:independence_wave_decision_effect.value_standard }
-	set_temp_variable = { independence_wave_decision_instability_delta = constant:independence_wave_decision_effect.value_minor_loss }
-	independence_wave_decision_apply_country_deltas = yes
-}
-
-independence_wave_tra_apply_diplomatic_progress = {
-	set_temp_variable = { independence_wave_decision_legitimacy_delta = constant:independence_wave_decision_effect.value_minor }
-	set_temp_variable = { independence_wave_decision_recognition_delta = constant:independence_wave_decision_effect.value_standard }
-	set_temp_variable = { independence_wave_decision_capacity_delta = constant:independence_wave_decision_effect.value_minor }
-	set_temp_variable = { independence_wave_decision_security_delta = constant:independence_wave_value.minimum }
-	set_temp_variable = { independence_wave_decision_instability_delta = constant:independence_wave_decision_effect.value_minor_loss }
-	independence_wave_decision_apply_country_deltas = yes
-}
-
-independence_wave_tra_apply_major_settlement = {
-	set_temp_variable = { independence_wave_decision_legitimacy_delta = constant:independence_wave_decision_effect.value_standard }
-	set_temp_variable = { independence_wave_decision_recognition_delta = constant:independence_wave_decision_effect.value_standard }
-	set_temp_variable = { independence_wave_decision_capacity_delta = constant:independence_wave_decision_effect.value_standard }
-	set_temp_variable = { independence_wave_decision_security_delta = constant:independence_wave_decision_effect.value_minor }
-	set_temp_variable = { independence_wave_decision_instability_delta = constant:independence_wave_decision_effect.value_standard_loss }
-	independence_wave_decision_apply_country_deltas = yes
-}
-
 independence_wave_tra_apply_project_failure = {
 	set_temp_variable = { independence_wave_decision_legitimacy_delta = constant:independence_wave_decision_effect.value_standard_loss }
 	set_temp_variable = { independence_wave_decision_recognition_delta = constant:independence_wave_decision_effect.value_minor_loss }
@@ -2900,23 +2519,8 @@ independence_wave_tra_apply_project_failure = {
 	independence_wave_change_tra_settlement_values = yes
 }
 
-independence_wave_tra_apply_former_host_settlement = {
-	if = {
-		limit = { has_independence_wave_living_former_host = yes }
-		set_temp_variable = { independence_wave_decision_host_claim_delta = constant:independence_wave_decision_effect.bilateral_minor_loss }
-		set_temp_variable = { independence_wave_decision_hostility_delta = constant:independence_wave_decision_effect.bilateral_standard_loss }
-		set_temp_variable = { independence_wave_decision_host_obligations_delta = constant:independence_wave_decision_effect.bilateral_standard_loss }
-		set_temp_variable = { independence_wave_decision_property_delta = constant:independence_wave_decision_effect.bilateral_major_loss }
-		set_temp_variable = { independence_wave_decision_population_delta = constant:independence_wave_value.minimum }
-		set_temp_variable = { independence_wave_decision_border_delta = constant:independence_wave_decision_effect.bilateral_standard }
-		set_temp_variable = { independence_wave_decision_host_pressure_delta = constant:independence_wave_decision_effect.bilateral_minor_loss }
-		set_temp_variable = { independence_wave_decision_reconquest_fear_delta = constant:independence_wave_decision_effect.bilateral_minor_loss }
-		independence_wave_decision_apply_host_deltas = yes
-	}
-}
-
 independence_wave_tra_reward_network_project = {
-	independence_wave_tra_apply_major_settlement = yes
+	independence_wave_apply_major_settlement = yes
 	set_temp_variable = { independence_wave_network_delta = constant:independence_wave_decision_effect.network_standard }
 	independence_wave_change_network_standing = yes
 	set_temp_variable = { independence_wave_league_cohesion_delta = constant:independence_wave_value.minor_gain }

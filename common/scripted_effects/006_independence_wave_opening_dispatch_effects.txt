@@ -249,19 +249,6 @@ independence_wave_dispatch_committed_country_opening_queue = {
 	independence_wave_clear_committed_country_opening_queue = yes
 }
 
-# COUNTRY scope. Restores the host-facing ledgers to zero before one posture
-# supplies the dimensions it actually changes.
-independence_wave_opening_clear_host_deltas = {
-	set_temp_variable = { independence_wave_decision_host_claim_delta = constant:independence_wave_value.minimum }
-	set_temp_variable = { independence_wave_decision_hostility_delta = constant:independence_wave_value.minimum }
-	set_temp_variable = { independence_wave_decision_host_obligations_delta = constant:independence_wave_value.minimum }
-	set_temp_variable = { independence_wave_decision_property_delta = constant:independence_wave_value.minimum }
-	set_temp_variable = { independence_wave_decision_population_delta = constant:independence_wave_value.minimum }
-	set_temp_variable = { independence_wave_decision_border_delta = constant:independence_wave_value.minimum }
-	set_temp_variable = { independence_wave_decision_host_pressure_delta = constant:independence_wave_value.minimum }
-	set_temp_variable = { independence_wave_decision_reconquest_fear_delta = constant:independence_wave_value.minimum }
-}
-
 # COUNTRY scope. The release keeps civilian ministries in front, accepting a
 # measured reduction in security for stronger legitimacy, recognition,
 # administrative capacity, lower founding strain, and improved host/network
@@ -312,7 +299,7 @@ independence_wave_resolve_country_opening_civilian_administration = {
 		independence_wave_change_network_standing = yes
 		if = {
 			limit = { has_independence_wave_living_former_host = yes }
-			independence_wave_opening_clear_host_deltas = yes
+			independence_wave_reset_host_deltas = yes
 			set_temp_variable = { independence_wave_decision_host_claim_delta = constant:independence_wave_decision_effect.value_minor_loss }
 			set_temp_variable = { independence_wave_decision_hostility_delta = constant:independence_wave_decision_effect.value_minor_loss }
 			set_temp_variable = { independence_wave_decision_host_obligations_delta = constant:independence_wave_decision_effect.value_minor_loss }
@@ -385,7 +372,7 @@ independence_wave_resolve_country_opening_frontier_security = {
 		independence_wave_change_network_standing = yes
 		if = {
 			limit = { has_independence_wave_living_former_host = yes }
-			independence_wave_opening_clear_host_deltas = yes
+			independence_wave_reset_host_deltas = yes
 			set_temp_variable = { independence_wave_decision_hostility_delta = constant:independence_wave_decision_effect.value_minor }
 			set_temp_variable = { independence_wave_decision_host_pressure_delta = constant:independence_wave_decision_effect.value_minor }
 			set_temp_variable = { independence_wave_decision_reconquest_fear_delta = constant:independence_wave_decision_effect.value_minor_loss }
